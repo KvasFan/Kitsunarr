@@ -1,0 +1,93 @@
+{
+ "source": "src/NzbDrone.Core.Test/IndexerTests/NewznabTests/NewznabFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_parse_indexer_flags": {
+   "params": [
+    [
+     "string",
+     "releaseGuid"
+    ],
+    [
+     "params IndexerFlags[]",
+     "indexerFlags"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "no custom attributes"
+     ]
+    },
+    {
+     "args": [
+      "prematch=1 attribute",
+      {
+       "enum": "IndexerFlags.Scene"
+      }
+     ]
+    },
+    {
+     "args": [
+      "haspretime=1 attribute",
+      {
+       "enum": "IndexerFlags.Scene"
+      }
+     ]
+    },
+    {
+     "args": [
+      "prematch=0 attribute"
+     ]
+    },
+    {
+     "args": [
+      "haspretime=0 attribute"
+     ]
+    },
+    {
+     "args": [
+      "nuked=1 attribute",
+      {
+       "enum": "IndexerFlags.Nuked"
+      }
+     ]
+    },
+    {
+     "args": [
+      "nuked=0 attribute"
+     ]
+    },
+    {
+     "args": [
+      "prematch=1 and nuked=1 attributes",
+      {
+       "enum": "IndexerFlags.Scene"
+      },
+      {
+       "enum": "IndexerFlags.Nuked"
+      }
+     ]
+    },
+    {
+     "args": [
+      "haspretime=0 and nuked=0 attributes"
+     ]
+    },
+    {
+     "args": [
+      "subs=eng",
+      {
+       "enum": "IndexerFlags.Subtitles"
+      }
+     ]
+    },
+    {
+     "args": [
+      "subs=''"
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -310,7 +310,7 @@ pub fn redact(settings: &Map<String, Value>) -> Map<String, Value> {
 }
 
 /// Keeps stored secrets when the client sends back the redaction placeholder.
-fn merge_secrets(incoming: &mut Map<String, Value>, stored: &Map<String, Value>) {
+pub(crate) fn merge_secrets(incoming: &mut Map<String, Value>, stored: &Map<String, Value>) {
     for (k, v) in incoming.iter_mut() {
         if v.as_str() == Some(REDACTED)
             && let Some(old) = stored.get(k)

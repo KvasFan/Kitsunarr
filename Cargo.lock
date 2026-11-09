@@ -2522,9 +2522,11 @@ dependencies = [
  "kitsunarr-db",
  "kitsunarr-domain",
  "kitsunarr-events",
+ "kitsunarr-indexers",
  "kitsunarr-library",
  "kitsunarr-metadata",
  "kitsunarr-migrate",
+ "kitsunarr-parser",
  "mime_guess",
  "reqwest 0.13.5",
  "serde",
@@ -2627,6 +2629,24 @@ dependencies = [
  "serde_json",
  "tokio",
  "tracing",
+]
+
+[[package]]
+name = "kitsunarr-indexers"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "chrono",
+ "kitsunarr-domain",
+ "kitsunarr-parser",
+ "quick-xml",
+ "reqwest 0.13.5",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "url",
 ]
 
 [[package]]

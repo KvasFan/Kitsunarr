@@ -61,6 +61,7 @@ pub struct AppStateInner {
     pub migrations: MigrationSessions,
     pub http: reqwest::Client,
     pub metadata: kitsunarr_metadata::Metadata,
+    pub indexers: kitsunarr_indexers::IndexerClient,
     pub logs: LogBuffer,
 }
 
@@ -96,10 +97,21 @@ impl AppState {
             assets,
             tasks,
             migrations: MigrationSessions::default(),
+            indexers: kitsunarr_indexers::IndexerClient::new(http.clone()),
             http,
             metadata,
             logs,
         }))
+    }
+
+    /// Replaces the indexer client (tests use one without the per-indexer request spacing).
+    /// Must be called before the state is shared.
+    pub fn with_indexer_client(mut self, client: kitsunarr_indexers::IndexerClient) -> Self {
+        match Arc::get_mut(&mut self.0) {
+            Some(inner) => inner.indexers = client,
+            None => tracing::warn!("indexer client not replaced: the state is already shared"),
+        }
+        self
     }
 }
 
@@ -117,6 +129,7 @@ impl AppState {
         (name = "system", description = "Status, health, tasks and backups"),
         (name = "library", description = "Series, anime, movies and collections"),
         (name = "metadata", description = "Catalogue search, adding titles and metadata refresh"),
+        (name = "search", description = "Indexer tests and interactive release search"),
         (name = "settings", description = "Profiles, providers and configuration"),
         (name = "migration", description = "Import from Sonarr and Tanukarr"),
     )

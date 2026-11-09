@@ -1,0 +1,66 @@
+{
+ "source": "src/NzbDrone.Core.Test/IndexerTests/TorznabTests/TorznabFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "url_and_api_not_jackett_all": {
+   "params": [
+    [
+     "string",
+     "baseUrl"
+    ],
+    [
+     "string",
+     "apiPath"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "http://localhost:9117/",
+      "/api"
+     ]
+    }
+   ]
+  },
+  "jackett_all_url_should_not_validate": {
+   "params": [
+    [
+     "string",
+     "baseUrl"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "http://localhost:9117/torznab/all/api"
+     ]
+    },
+    {
+     "args": [
+      "http://localhost:9117/api/v2.0/indexers/all/results/torznab"
+     ]
+    }
+   ]
+  },
+  "jackett_all_api_should_not_validate": {
+   "params": [
+    [
+     "string",
+     "apiPath"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "/torznab/all/api"
+     ]
+    },
+    {
+     "args": [
+      "/api/v2.0/indexers/all/results/torznab"
+     ]
+    }
+   ]
+  }
+ }
+}

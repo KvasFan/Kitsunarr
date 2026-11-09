@@ -158,3 +158,18 @@ Verification:
 
 Throughput is about 0.2 ms per title (`tests/perf.rs`). If parsing ever matters for large searches, the next optimisation is a required-literal prefilter per pattern.
 
+## 14. Indexers: Sonarr's Newznab/Torznab behaviour, checked against its recorded feeds
+
+`kitsunarr-indexers` ports the parts of Sonarr that talk to Newznab and Torznab indexers: `NewznabCapabilitiesProvider`, `NewznabRequestGenerator`, `NewznabRssParser`/`TorznabRssParser` and the paging loop of `HttpIndexerBase`. Upstream behaviour kept on purpose:
+
+- **Requests:** ID parameters are preferred in Sonarr's order (TheTVDB, IMDb, TVRage, TVmaze, TMDB), or sent together when the indexer supports it. Title queries follow only when the ID searches find nothing. Season 0 is sent as `00`, daily episodes as `season=yyyy&ep=MM/dd`, and anime absolute numbers padded to two digits.
+- **Paging:** a query pages until a page comes back short, up to 30 pages or 1,000 releases. The page size is Sonarr's clamp of the indexer's default and maximum.
+- **Errors:** `<error>` codes 100–199 mean a bad API key; "Request limit reached" and HTTP 429 are request limits. A Torznab feed answering a Newznab request (or the reverse) is rejected. A missing `pubDate` fails the whole feed; any other bad item is skipped.
+- **Politeness:** at least 2 s between two requests to the same indexer.
+
+Verification uses upstream's own material. `tests/fixtures/indexers/sonarr/` holds the feeds recorded in Sonarr's test suite (`src/NzbDrone.Core.Test/Files/Indexers/`), plus the `[TestCase]` rows of its Newznab, Torznab, request-generator and capabilities fixtures, extracted by `tests/fixtures/generate/sonarr_test_cases.py`.
+
+Two choices differ from Sonarr:
+
+- **Download links never reach the browser.** Newznab download URLs embed the indexer's API key, so the release list sent to the UI omits them. A future "grab" will refer to a release by indexer and GUID, and the server will resolve the link.
+- **Request errors report their cause without the URL.** For example: "Could not connect to the indexer: failed to lookup address information". The cause is useful, but the URL would expose the API key.

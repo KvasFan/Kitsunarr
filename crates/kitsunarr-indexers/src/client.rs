@@ -1,0 +1,262 @@
+//! Fetching from indexers (`HttpIndexerBase.cs`, `NewznabCapabilitiesProvider.cs`).
+
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+use std::time::{Duration, Instant};
+
+use serde::Serialize;
+
+use crate::caps::{Capabilities, capabilities_or_default};
+use crate::error::IndexerError;
+use crate::feed::{Dialect, Release, is_valid, parse_feed};
+use crate::request::{Chain, Generator, Settings};
+
+/// Minimum spacing between two requests to the same indexer (`HttpIndexerBase.RateLimit`).
+pub const RATE_LIMIT: Duration = Duration::from_secs(2);
+/// Stop paging a query once this many releases were collected (`MaxNumResultsPerQuery`).
+pub const MAX_RESULTS_PER_QUERY: usize = 1000;
+/// Capabilities are cached for a week (`NewznabCapabilitiesProvider`).
+const CAPS_TTL: Duration = Duration::from_secs(7 * 24 * 3600);
+const ACCEPT_RSS: &str = "application/rss+xml, text/rss+xml, application/xml, text/xml";
+
+/// The innermost cause of a request error (e.g. "failed to lookup address information"),
+/// without the URL, which may contain the API key.
+fn error_chain(e: &reqwest::Error) -> String {
+    use std::error::Error as _;
+    if e.is_timeout() {
+        return "the request timed out".into();
+    }
+    let mut innermost = None;
+    let mut cause = e.source();
+    while let Some(c) = cause {
+        innermost = Some(c.to_string());
+        cause = c.source();
+    }
+    match (innermost, e.url()) {
+        (Some(m), _) if !m.is_empty() => m,
+        (_, Some(url)) => e.to_string().replace(url.as_str(), "<redacted>"),
+        _ => e.to_string(),
+    }
+}
+
+/// A configured indexer.
+#[derive(Debug, Clone)]
+pub struct Indexer {
+    pub id: i64,
+    pub name: String,
+    pub dialect: Dialect,
+    pub settings: Settings,
+}
+
+/// A release with the indexer it came from.
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct IndexerRelease {
+    pub indexer_id: i64,
+    pub indexer: String,
+    #[serde(flatten)]
+    pub release: Release,
+}
+
+/// Outcome of testing an indexer.
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TestReport {
+    pub releases_found: usize,
+    pub warnings: Vec<String>,
+    pub capabilities: Capabilities,
+}
+
+#[derive(Clone, Default)]
+pub struct IndexerClient {
+    http: reqwest::Client,
+    rate_limit: Duration,
+    next_request: Arc<Mutex<HashMap<i64, Instant>>>,
+    caps: Arc<Mutex<HashMap<String, (Instant, Capabilities)>>>,
+}
+
+impl IndexerClient {
+    pub fn new(http: reqwest::Client) -> Self {
+        Self {
+            http,
+            rate_limit: RATE_LIMIT,
+            ..Default::default()
+        }
+    }
+
+    /// Overrides the per-indexer request spacing (tests).
+    pub fn with_rate_limit(mut self, rate_limit: Duration) -> Self {
+        self.rate_limit = rate_limit;
+        self
+    }
+
+    async fn wait_turn(&self, indexer_id: i64) {
+        let wait = {
+            let mut map = self.next_request.lock().unwrap_or_else(|e| e.into_inner());
+            let now = Instant::now();
+            let slot = map
+                .get(&indexer_id)
+                .copied()
+                .filter(|t| *t > now)
+                .unwrap_or(now);
+            map.insert(indexer_id, slot + self.rate_limit);
+            slot.saturating_duration_since(now)
+        };
+        if !wait.is_zero() {
+            tokio::time::sleep(wait).await;
+        }
+    }
+
+    async fn get(&self, indexer_id: i64, url: &str) -> Result<String, IndexerError> {
+        self.wait_turn(indexer_id).await;
+        let response = self
+            .http
+            .get(url)
+            .header(reqwest::header::ACCEPT, ACCEPT_RSS)
+            .timeout(Duration::from_secs(60))
+            .send()
+            .await
+            .map_err(|e| {
+                let message = error_chain(&e);
+                if e.is_connect() || e.is_timeout() {
+                    IndexerError::Connection(message)
+                } else {
+                    IndexerError::Unexpected(message)
+                }
+            })?;
+        let status = response.status();
+        if status == reqwest::StatusCode::TOO_MANY_REQUESTS {
+            let retry_after_secs = response
+                .headers()
+                .get(reqwest::header::RETRY_AFTER)
+                .and_then(|v| v.to_str().ok())
+                .and_then(|v| v.trim().parse().ok());
+            return Err(IndexerError::RequestLimit { retry_after_secs });
+        }
+        let content_type = response
+            .headers()
+            .get(reqwest::header::CONTENT_TYPE)
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or_default()
+            .to_ascii_lowercase();
+        if !status.is_success() {
+            // An XML body with an error status may carry an <error> element (checked by the parser).
+            if !content_type.contains("xml") {
+                return Err(IndexerError::Http {
+                    status: status.as_u16(),
+                });
+            }
+        } else if content_type.contains("text/html") {
+            return Err(IndexerError::Unexpected(
+                "the indexer responded with HTML content; it may be offline, behind a login, or the URL is wrong".into(),
+            ));
+        }
+        let body = response
+            .text()
+            .await
+            .map_err(|e| IndexerError::Unexpected(e.without_url().to_string()))?;
+        Ok(body)
+    }
+
+    /// Capabilities, cached per settings for a week. Failures are not cached.
+    pub async fn capabilities(&self, indexer: &Indexer) -> Result<Capabilities, IndexerError> {
+        let key = serde_json::to_string(&indexer.settings).unwrap_or_default();
+        if let Some((at, caps)) = self
+            .caps
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .get(&key)
+            .cloned()
+            && at.elapsed() < CAPS_TTL
+        {
+            return Ok(caps);
+        }
+        let body = self.get(indexer.id, &indexer.settings.caps_url()).await?;
+        let caps = capabilities_or_default(&body)?;
+        self.caps
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .insert(key, (Instant::now(), caps.clone()));
+        Ok(caps)
+    }
+
+    /// Request generator for an indexer, with its page size.
+    pub fn generator<'a>(&self, indexer: &'a Indexer, caps: &'a Capabilities) -> Generator<'a> {
+        Generator {
+            settings: &indexer.settings,
+            caps,
+            page_size: u32::try_from(caps.page_size()).unwrap_or(100),
+        }
+    }
+
+    /// `FetchReleases`: pages each request until a page is not full, stops after the first tier
+    /// that found anything, and returns valid releases without duplicate GUIDs.
+    pub async fn fetch(
+        &self,
+        indexer: &Indexer,
+        chain: &Chain,
+        recent: bool,
+    ) -> Result<Vec<IndexerRelease>, IndexerError> {
+        let mut releases: Vec<Release> = Vec::new();
+        for tier in &chain.tiers {
+            for pageable in tier {
+                let mut collected = 0usize;
+                for url in pageable.pages() {
+                    let page =
+                        parse_feed(&self.get(indexer.id, &url).await?, indexer.dialect, &url)?;
+                    let full =
+                        pageable.page_size() != 0 && page.len() >= pageable.page_size() as usize;
+                    collected += page.len();
+                    releases.extend(page);
+                    // RSS reads only the newest page until sync bookkeeping is in place.
+                    if recent || !full || collected >= MAX_RESULTS_PER_QUERY {
+                        break;
+                    }
+                }
+            }
+            if !releases.is_empty() {
+                break;
+            }
+        }
+        let mut seen = std::collections::HashSet::new();
+        Ok(releases
+            .into_iter()
+            .filter(is_valid)
+            .filter(|r| seen.insert(r.guid.clone()))
+            .map(|release| IndexerRelease {
+                indexer_id: indexer.id,
+                indexer: indexer.name.clone(),
+                release,
+            })
+            .collect())
+    }
+
+    /// `Test`: the newest page must return releases in the configured categories and the
+    /// capabilities must allow TV searches.
+    pub async fn test(&self, indexer: &Indexer) -> Result<TestReport, IndexerError> {
+        let caps = self.capabilities(indexer).await?;
+        let chain = self.generator(indexer, &caps).recent();
+        let found = self.fetch(indexer, &chain, true).await?.len();
+        if found == 0 {
+            return Err(IndexerError::Indexer(
+                "the query succeeded but returned no results in the configured categories; check the categories".into(),
+            ));
+        }
+        if !caps.usable_for_tv() {
+            return Err(IndexerError::Indexer(
+                "the indexer does not support the required search parameters (q, or tvdbid/rid with season and ep)".into(),
+            ));
+        }
+        let mut warnings = Vec::new();
+        if indexer.dialect == Dialect::Torznab && indexer.settings.is_jackett_all() {
+            warnings.push(
+                "Jackett's \"all\" endpoint is not recommended: add each tracker as its own indexer so failures and limits are tracked separately".into(),
+            );
+        }
+        Ok(TestReport {
+            releases_found: found,
+            warnings,
+            capabilities: caps,
+        })
+    }
+}

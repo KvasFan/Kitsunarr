@@ -5,6 +5,7 @@ pub mod events;
 pub mod library;
 pub mod metadata;
 pub mod migration;
+pub mod search;
 pub mod settings;
 pub mod system;
 
@@ -108,6 +109,9 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         ))
         .routes(routes!(settings::get_general, settings::put_general))
         .routes(routes!(settings::catalogues))
+        // search
+        .routes(routes!(search::test_indexer))
+        .routes(routes!(search::search_releases))
         // migration
         .routes(routes!(migration::create_api_session))
         .routes(routes!(migration::upload_backup))

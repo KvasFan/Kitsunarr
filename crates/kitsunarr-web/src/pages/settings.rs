@@ -4,7 +4,7 @@ use dioxus::prelude::*;
 use kitsunarr_domain::api::auth::ChangePasswordRequest;
 use kitsunarr_domain::api::settings::{
     CustomFormat, GeneralSettings, MediaManagementSettings, NamingSettings, ProviderItem,
-    QualityProfile, REDACTED, RootFolderCreate,
+    ProviderKind, QualityProfile, REDACTED, RootFolderCreate,
 };
 use kitsunarr_domain::{MediaKind, Quality};
 use serde_json::Value;
@@ -692,7 +692,7 @@ pub fn SettingsFormats() -> Element {
 
 #[component]
 pub fn SettingsIndexers() -> Element {
-    rsx! { ProvidersPage { kind: "indexers", title: "Indexers", note: "Torznab and Newznab indexers. Searching and RSS are not implemented yet; settings are stored and editable." } }
+    rsx! { ProvidersPage { kind: "indexers", title: "Indexers", note: "Torznab and Newznab indexers. Use Test in the editor to check one; interactive search uses every indexer with interactive search enabled. RSS sync and automatic search are not implemented yet." } }
 }
 
 #[component]
@@ -820,6 +820,27 @@ fn ProviderEditor(
     on_close: EventHandler<()>,
 ) -> Element {
     let mut draft = use_signal(|| item.clone());
+    let mut testing = use_signal(|| false);
+    let mut test_result =
+        use_signal(|| None::<Result<kitsunarr_domain::api::search::IndexerTestResult, String>>);
+    let client = crate::state::use_client();
+    let testable = item.kind == ProviderKind::Indexer
+        && matches!(item.implementation.as_str(), "Newznab" | "Torznab");
+    let run_test = move |_| {
+        let c = client.clone();
+        let d = draft();
+        testing.set(true);
+        test_result.set(None);
+        spawn(async move {
+            let req = kitsunarr_domain::api::search::IndexerTestRequest {
+                id: (d.id > 0).then_some(d.id),
+                implementation: d.implementation.clone(),
+                settings: d.settings.clone(),
+            };
+            test_result.set(Some(c.test_indexer(&req).await.map_err(|e| e.to_string())));
+            testing.set(false);
+        });
+    };
     let d = draft();
     let mut keys: Vec<String> = d.settings.keys().cloned().collect();
     keys.sort();
@@ -836,9 +857,29 @@ fn ProviderEditor(
             wide: true,
             on_close: move |_| on_close.call(()),
             footer: rsx! {
+                if testable {
+                    button { class: "btn", disabled: testing(), onclick: run_test,
+                        if testing() { "Testing…" } else { "Test" }
+                    }
+                }
+                div { class: "spacer" }
                 button { class: "btn", onclick: move |_| on_close.call(()), "Cancel" }
                 button { class: "btn primary", onclick: move |_| on_save.call(draft()), "Save" }
             },
+            if let Some(result) = test_result() {
+                match result {
+                    Ok(r) if r.ok => rsx! {
+                        div { class: "alert success", role: "status",
+                            div { class: "grow",
+                                "{r.message}"
+                                for w in r.warnings.iter() { div { key: "{w}", class: "small", "⚠ {w}" } }
+                            }
+                        }
+                    },
+                    Ok(r) => rsx! { div { class: "alert danger", role: "alert", div { class: "grow", "Test failed: {r.message}" } } },
+                    Err(e) => rsx! { div { class: "alert danger", role: "alert", div { class: "grow", "{e}" } } },
+                }
+            }
             div { class: "form-grid",
                 Field { label: "Name", input { class: "input", value: "{d.name}", oninput: move |e| draft.write().name = e.value() } }
                 Field { label: "Priority", input { class: "input", r#type: "number", value: "{d.priority}", oninput: move |e| draft.write().priority = e.value().parse().unwrap_or(1) } }

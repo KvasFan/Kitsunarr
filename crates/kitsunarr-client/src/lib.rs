@@ -21,6 +21,9 @@ use kitsunarr_domain::api::migration::{
     ApiSourceRequest, MigrationOptions, MigrationPreview, MigrationReport, MigrationRunItem,
     MigrationSession,
 };
+use kitsunarr_domain::api::search::{
+    IndexerTestRequest, IndexerTestResult, ReleaseQuery, ReleaseSearchResult,
+};
 use kitsunarr_domain::api::settings::{
     CustomFormat, GeneralSettings, MediaManagementSettings, NamingSettings, ProviderItem,
     QualityDefinition, QualityProfile, RootFolderCreate, RootFolderItem, TagCreate, TagItem,
@@ -298,6 +301,14 @@ impl Client {
     }
     pub async fn refresh_movie(&self, id: i64) -> ClientResult<()> {
         self.post(&format!("/movies/{id}/refresh"), &Empty {}).await
+    }
+
+    // --- indexers and release search ---------------------------------------------------------
+    pub async fn test_indexer(&self, req: &IndexerTestRequest) -> ClientResult<IndexerTestResult> {
+        self.post("/providers/indexers/test", req).await
+    }
+    pub async fn search_releases(&self, q: &ReleaseQuery) -> ClientResult<ReleaseSearchResult> {
+        self.get_query("/releases", q).await
     }
 
     // --- metadata catalogues --------------------------------------------------------------------

@@ -9,8 +9,9 @@ use kitsunarr_domain::api::library::{
 };
 use kitsunarr_domain::api::metadata::SUPPORTED_CATALOGUES;
 
-use crate::components::common::{Badge, Confirm, ErrorBox, Loading, Switch};
+use crate::components::common::{Badge, Confirm, ErrorBox, Loading, Modal, Switch};
 use crate::components::media::Poster;
+use crate::components::releases::ReleaseSearch;
 use crate::components::vlist::VirtualList;
 use crate::route::Route;
 use crate::state::{use_app, use_client};
@@ -48,6 +49,8 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let client = use_client();
     let nav = navigator();
     let mut confirm_delete = use_signal(|| false);
+    // Interactive search target: (season, episode id, label).
+    let mut searching = use_signal(|| None::<(Option<i32>, Option<i64>, String)>);
     let c1 = client.clone();
     let detail = use_resource(move || {
         let _ = (app.library_rev)();
@@ -171,6 +174,14 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 }
             }
         }
+        if let Some((season, episode_id, label)) = searching() {
+            Modal {
+                title: format!("Search: {} — {label}", d.item.title),
+                wide: true,
+                on_close: move |_| searching.set(None),
+                ReleaseSearch { key: "{season:?}-{episode_id:?}", series_id: id, season, episode_id }
+            }
+        }
         if confirm_delete() {
             Confirm {
                 title: "Remove series",
@@ -198,6 +209,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     move |(n, v): (i32, bool)| update(SeriesUpdate { seasons: Some(vec![SeasonMonitoring { season_number: n, monitored: v }]), ..Default::default() })
                 },
                 on_changed: move |_| episodes.restart(),
+                on_search: move |target| searching.set(Some(target)),
             }
         }
     }
@@ -214,6 +226,7 @@ fn SeasonPanel(
     episodes: Vec<EpisodeItem>,
     on_season_monitor: EventHandler<(i32, bool)>,
     on_changed: EventHandler<()>,
+    on_search: EventHandler<(Option<i32>, Option<i64>, String)>,
 ) -> Element {
     let app = use_app();
     let client = use_client();
@@ -251,6 +264,19 @@ fn SeasonPanel(
                 span { onclick: move |e| e.stop_propagation(),
                     Switch { checked: monitored, label: "Monitored", onchange: move |v| on_season_monitor.call((season_number, v)) }
                 }
+                button {
+                    class: "btn sm ghost",
+                    "aria-label": "Search indexers for {label}",
+                    title: "Interactive search",
+                    onclick: {
+                        let label = label.clone();
+                        move |e: MouseEvent| {
+                            e.stop_propagation();
+                            on_search.call((Some(season_number), None, label.clone()));
+                        }
+                    },
+                    "Search"
+                }
             }
             if open() {
                 div { class: "season-body",
@@ -282,6 +308,16 @@ fn SeasonPanel(
                                     "aria-label": "Monitor episode {e.episode_number}",
                                     checked: e.monitored,
                                     onchange: move |ev: FormEvent| toggle((ep_id, ev.checked())),
+                                }
+                                button {
+                                    class: "btn sm ghost icon",
+                                    "aria-label": "Search indexers for episode {e.episode_number}",
+                                    title: "Interactive search",
+                                    onclick: {
+                                        let label = format!("S{:02}E{:02}", e.season_number, e.episode_number);
+                                        move |_| on_search.call((None, Some(ep_id), label.clone()))
+                                    },
+                                    "⌕"
                                 }
                             }
                         },

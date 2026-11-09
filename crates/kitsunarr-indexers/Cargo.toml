@@ -1,0 +1,29 @@
+[package]
+name = "kitsunarr-indexers"
+description = "Newznab and Torznab indexers for Kitsunarr: capabilities, request generation, feed parsing."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+kitsunarr-domain = { workspace = true }
+kitsunarr-parser = { workspace = true }
+quick-xml = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tokio = { workspace = true }
+url = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+axum = { workspace = true }
+
+[lints]
+workspace = true

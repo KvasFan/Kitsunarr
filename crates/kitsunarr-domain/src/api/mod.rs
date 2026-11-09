@@ -10,6 +10,7 @@ pub mod events;
 pub mod library;
 pub mod metadata;
 pub mod migration;
+pub mod search;
 pub mod settings;
 pub mod system;
 

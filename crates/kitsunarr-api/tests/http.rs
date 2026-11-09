@@ -66,6 +66,10 @@ async fn start_with(metadata: Metadata) -> Server {
         reqwest::Client::new(),
         metadata,
         LogBuffer::default(),
+    )
+    .with_indexer_client(
+        kitsunarr_indexers::IndexerClient::new(reqwest::Client::new())
+            .with_rate_limit(std::time::Duration::ZERO),
     );
     let app = kitsunarr_api::app(state);
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
@@ -711,5 +715,239 @@ async fn catalogue_search_add_and_refresh() {
     assert_eq!(
         status(client.refresh_series(added.id).await.unwrap_err()),
         400
+    );
+}
+
+/// A local Newznab indexer replaying Sonarr's recorded responses; records the requests.
+async fn newznab_mock() -> (String, Arc<std::sync::Mutex<Vec<String>>>) {
+    use axum::extract::{Query, State};
+    use axum::response::IntoResponse;
+    use axum::routing::get;
+    type Log = Arc<std::sync::Mutex<Vec<String>>>;
+    async fn api(
+        State(log): State<Log>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        let mut keys: Vec<String> = q.iter().map(|(k, v)| format!("{k}={v}")).collect();
+        keys.sort();
+        log.lock().unwrap().push(keys.join("&"));
+        let file = if q.get("t").map(String::as_str) == Some("caps") {
+            "newznab_caps.xml"
+        } else {
+            "newznab_nzb_su.xml"
+        };
+        let mut body = std::fs::read_to_string(format!(
+            "{}/../../tests/fixtures/indexers/sonarr/{file}",
+            env!("CARGO_MANIFEST_DIR")
+        ))
+        .unwrap();
+        if q.get("t").map(String::as_str) == Some("tvsearch") {
+            // One release of the searched series among the recorded feed's other shows.
+            body = body.replacen(
+                "<title>White.Collar.S03E04.720p.HDTV.X264-DIMENSION</title>",
+                "<title>Breaking.Bad.S01.480p.WEB-DL.AAC2.0.H.264-GRP</title>",
+                1,
+            );
+        }
+        ([("content-type", "application/rss+xml")], body).into_response()
+    }
+    let log: Log = Arc::default();
+    let app = axum::Router::new()
+        .route("/api", get(api))
+        .with_state(log.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (format!("http://{addr}"), log)
+}
+
+#[tokio::test]
+async fn indexer_test_and_interactive_search() {
+    use kitsunarr_domain::api::search::{IndexerTestRequest, ReleaseQuery};
+    let tvmaze = tvmaze_mock().await;
+    let http = reqwest::Client::new();
+    let server = start_with(Metadata {
+        tvmaze: TvMaze::with_base(http.clone(), &tvmaze),
+        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
+    })
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, requests) = newznab_mock().await;
+
+    // An indexer whose API key the browser only ever sees redacted.
+    let created: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Newznab",
+                "implementation": "Newznab",
+                "options": {"enableRss": true, "enableAutomaticSearch": true, "enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "s3cret-key", "categories": [5030, 5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let id = created["id"].as_i64().unwrap();
+    assert_eq!(created["settings"]["apiKey"], REDACTED);
+
+    let result = client
+        .test_indexer(&IndexerTestRequest {
+            id: Some(id),
+            implementation: "Newznab".into(),
+            settings: serde_json::from_value(created["settings"].clone()).unwrap(),
+        })
+        .await
+        .unwrap();
+    assert!(result.ok, "{}", result.message);
+    assert_eq!(result.releases_found, 100);
+    assert!(
+        requests
+            .lock()
+            .unwrap()
+            .iter()
+            .all(|r| r.contains("apikey=s3cret-key")),
+        "the stored key replaces the redaction placeholder"
+    );
+
+    let unreachable = client
+        .test_indexer(&IndexerTestRequest {
+            id: None,
+            implementation: "Newznab".into(),
+            settings: serde_json::from_value(
+                serde_json::json!({"baseUrl": "http://127.0.0.1:9", "categories": [5030]}),
+            )
+            .unwrap(),
+        })
+        .await
+        .unwrap();
+    assert!(!unreachable.ok);
+    // The underlying cause is reported, without the request URL.
+    assert!(
+        unreachable.message.contains("Could not connect")
+            && unreachable.message.contains("refused")
+            && !unreachable.message.contains("/api?"),
+        "{}",
+        unreachable.message
+    );
+
+    // A series with known identities (TVmaze, TheTVDB, IMDb, TVRage).
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+        })
+        .await
+        .unwrap();
+
+    requests.lock().unwrap().clear();
+    let season = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: Some(1),
+            episode_id: None,
+        })
+        .await
+        .unwrap();
+    assert_eq!((season.searched_indexers, season.failures.len()), (1, 0));
+    assert_eq!(season.releases.len(), 100);
+    assert_eq!(season.description, "Season 1");
+    let first = requests.lock().unwrap()[0].clone();
+    assert!(
+        first.contains("rid=18164") && first.contains("season=1") && first.contains("t=tvsearch"),
+        "{first}"
+    );
+    let white_collar = season
+        .releases
+        .iter()
+        .find(|r| r.title == "White.Collar.S03E05.720p.HDTV.X264-DIMENSION")
+        .unwrap();
+    assert!(white_collar.parsed);
+    assert_eq!(white_collar.quality, "HDTV-720p");
+    assert_eq!(
+        (
+            white_collar.season_numbers.clone(),
+            white_collar.episode_numbers.clone()
+        ),
+        (vec![3], vec![5])
+    );
+    assert_eq!(white_collar.release_group.as_deref(), Some("DIMENSION"));
+    // The searched series comes first; the other shows follow, best quality first.
+    let bb = &season.releases[0];
+    assert_eq!(bb.title, "Breaking.Bad.S01.480p.WEB-DL.AAC2.0.H.264-GRP");
+    assert!(bb.matches_series && bb.full_season && bb.season_numbers == vec![1]);
+    assert!(!white_collar.matches_series);
+    assert_eq!(
+        season.releases.iter().filter(|r| r.matches_series).count(),
+        1
+    );
+    assert!(
+        season.releases[1..]
+            .windows(2)
+            .all(|w| w[0].quality_weight >= w[1].quality_weight)
+    );
+
+    // Download links embed indexer keys: they stay on the server.
+    let raw = reqwest::Client::new()
+        .get(format!(
+            "{}/api/v1/releases?seriesId={}&seasonNumber=1",
+            server.base, added.id
+        ))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+    assert!(!raw.contains("getnzb") && !raw.contains("s3cret-key") && !raw.contains("downloadUrl"));
+
+    let episodes = client.episodes(added.id).await.unwrap();
+    let pilot = episodes
+        .iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    let episode = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+        })
+        .await
+        .unwrap();
+    assert_eq!(episode.description, "S01E01");
+    assert!(
+        requests
+            .lock()
+            .unwrap()
+            .iter()
+            .any(|r| r.contains("ep=1") && r.contains("season=1"))
+    );
+
+    assert_eq!(
+        status(
+            client
+                .search_releases(&ReleaseQuery {
+                    series_id: added.id,
+                    season_number: None,
+                    episode_id: None
+                })
+                .await
+                .unwrap_err()
+        ),
+        422
     );
 }

@@ -1,0 +1,214 @@
+//! The fetch client against a local mock indexer replaying Sonarr's recorded responses.
+
+use std::collections::HashMap;
+use std::sync::{Arc, Mutex};
+use std::time::Duration;
+
+use axum::extract::{Query, State};
+use axum::http::{HeaderMap, StatusCode};
+use axum::response::IntoResponse;
+use axum::routing::get;
+use kitsunarr_indexers::request::search_mode;
+use kitsunarr_indexers::{
+    Criteria, Dialect, Indexer, IndexerClient, IndexerError, Search, SeriesIds, Settings,
+};
+
+fn fixture(name: &str) -> String {
+    std::fs::read_to_string(format!(
+        "{}/../../tests/fixtures/indexers/sonarr/{name}",
+        env!("CARGO_MANIFEST_DIR")
+    ))
+    .unwrap()
+}
+
+/// The first `n` items of a recorded feed.
+fn first_items(xml: &str, n: usize) -> String {
+    let mut end = xml.find("<item>").unwrap();
+    for _ in 0..n {
+        end = xml[end..]
+            .find("</item>")
+            .map(|i| end + i + "</item>".len())
+            .unwrap();
+    }
+    format!("{}</channel></rss>", &xml[..end])
+}
+
+#[derive(Clone, Default)]
+struct Mock {
+    log: Arc<Mutex<Vec<String>>>,
+    mode: Arc<Mutex<&'static str>>,
+}
+
+async fn api(
+    State(m): State<Mock>,
+    Query(q): Query<HashMap<String, String>>,
+    headers: HeaderMap,
+) -> axum::response::Response {
+    let mut line: Vec<String> = q
+        .iter()
+        .filter(|(k, _)| *k != "apikey")
+        .map(|(k, v)| format!("{k}={v}"))
+        .collect();
+    line.sort();
+    m.log.lock().unwrap().push(line.join("&"));
+    assert!(
+        headers
+            .get("accept")
+            .is_some_and(|a| a.to_str().unwrap().contains("rss"))
+    );
+    let xml = |body: String| ([("content-type", "application/rss+xml")], body).into_response();
+    match *m.mode.lock().unwrap() {
+        "unauthorized" => return xml(fixture("unauthorized.xml")),
+        "limited" => {
+            return (StatusCode::TOO_MANY_REQUESTS, [("retry-after", "60")]).into_response();
+        }
+        "html" => return ([("content-type", "text/html")], "<html>login</html>").into_response(),
+        _ => {}
+    }
+    if q.get("t").map(String::as_str) == Some("caps") {
+        return xml(fixture("newznab_caps.xml"));
+    }
+    if q.contains_key("rid") {
+        return xml(first_items(&fixture("newznab_nzb_su.xml"), 0));
+    }
+    match q.get("offset").map(String::as_str) {
+        Some("0") => xml(fixture("newznab_nzb_su.xml")),
+        Some("60") => xml(first_items(&fixture("newznab_language.xml"), 3)),
+        _ => xml(first_items(&fixture("newznab_nzb_su.xml"), 0)),
+    }
+}
+
+async fn start() -> (Mock, Indexer, IndexerClient) {
+    let mock = Mock::default();
+    *mock.mode.lock().unwrap() = "ok";
+    let app = axum::Router::new()
+        .route("/api", get(api))
+        .with_state(mock.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let indexer = Indexer {
+        id: 7,
+        name: "Mock".into(),
+        dialect: Dialect::Newznab,
+        settings: Settings {
+            base_url: format!("http://{addr}"),
+            api_path: "/api".into(),
+            api_key: Some("secret".into()),
+            categories: vec![5030, 5040],
+            anime_categories: vec![],
+            anime_standard_format_search: false,
+            additional_parameters: None,
+            minimum_seeders: None,
+        },
+    };
+    let client = IndexerClient::new(reqwest::Client::new()).with_rate_limit(Duration::ZERO);
+    (mock, indexer, client)
+}
+
+#[tokio::test]
+async fn test_reads_caps_and_the_newest_page() {
+    let (mock, indexer, client) = start().await;
+    let report = client.test(&indexer).await.unwrap();
+    assert_eq!(report.releases_found, 100);
+    assert_eq!(
+        (
+            report.capabilities.default_page_size,
+            report.capabilities.max_page_size
+        ),
+        (25, 60)
+    );
+    let log = mock.log.lock().unwrap().clone();
+    assert_eq!(log[0], "t=caps");
+    assert_eq!(
+        log[1], "cat=5030,5040&extended=1&limit=60&offset=0&t=tvsearch",
+        "RSS reads one page"
+    );
+    // Capabilities are cached.
+    client.test(&indexer).await.unwrap();
+    assert_eq!(
+        mock.log
+            .lock()
+            .unwrap()
+            .iter()
+            .filter(|l| *l == "t=caps")
+            .count(),
+        1
+    );
+}
+
+#[tokio::test]
+async fn search_falls_back_to_titles_pages_until_a_short_page_and_dedupes() {
+    let (mock, indexer, client) = start().await;
+    let caps = client.capabilities(&indexer).await.unwrap();
+    let criteria = Criteria {
+        ids: SeriesIds {
+            tv_rage: 10,
+            ..Default::default()
+        },
+        scene_titles: vec!["White Collar".into()],
+        search_mode: search_mode::DEFAULT,
+        anime: false,
+    };
+    let chain = client.generator(&indexer, &caps).search(
+        &criteria,
+        &Search::SingleEpisode {
+            season: 3,
+            episode: 5,
+        },
+    );
+    let releases = client.fetch(&indexer, &chain, false).await.unwrap();
+    // The second (short) page repeats three GUIDs of the first: duplicates are dropped.
+    assert_eq!(releases.len(), 100);
+    assert!(
+        releases
+            .iter()
+            .all(|r| r.indexer_id == 7 && r.indexer == "Mock")
+    );
+    let log = mock.log.lock().unwrap().clone();
+    assert_eq!(
+        log[1..],
+        [
+            "cat=5030,5040&ep=5&extended=1&limit=60&offset=0&rid=10&season=3&t=tvsearch",
+            "cat=5030,5040&ep=5&extended=1&limit=60&offset=0&q=White Collar&season=3&t=tvsearch",
+            "cat=5030,5040&ep=5&extended=1&limit=60&offset=60&q=White Collar&season=3&t=tvsearch",
+        ]
+    );
+}
+
+#[tokio::test]
+async fn errors_are_classified() {
+    let (mock, indexer, client) = start().await;
+    let caps = client.capabilities(&indexer).await.unwrap();
+    let chain = client.generator(&indexer, &caps).recent();
+    *mock.mode.lock().unwrap() = "unauthorized";
+    assert!(matches!(
+        client.fetch(&indexer, &chain, true).await,
+        Err(IndexerError::ApiKey(_))
+    ));
+    *mock.mode.lock().unwrap() = "limited";
+    assert!(matches!(
+        client.fetch(&indexer, &chain, true).await,
+        Err(IndexerError::RequestLimit {
+            retry_after_secs: Some(60)
+        })
+    ));
+    *mock.mode.lock().unwrap() = "html";
+    assert!(matches!(
+        client.fetch(&indexer, &chain, true).await,
+        Err(IndexerError::Unexpected(_))
+    ));
+}
+
+#[tokio::test]
+async fn requests_to_one_indexer_are_spaced() {
+    let (_mock, indexer, _) = start().await;
+    let client =
+        IndexerClient::new(reqwest::Client::new()).with_rate_limit(Duration::from_millis(300));
+    let started = std::time::Instant::now();
+    client.test(&indexer).await.unwrap();
+    assert!(
+        started.elapsed() >= Duration::from_millis(300),
+        "caps and RSS are two spaced requests"
+    );
+}

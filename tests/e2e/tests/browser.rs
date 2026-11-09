@@ -174,6 +174,32 @@ async fn tvmaze_mock(fixtures: PathBuf) -> String {
     format!("http://{addr}")
 }
 
+/// Serves Sonarr's recorded Newznab capabilities and feed for any search.
+async fn newznab_mock(fixtures: PathBuf) -> String {
+    use axum::extract::{Query, State};
+    use axum::response::IntoResponse;
+    use axum::routing::get;
+    async fn api(
+        State(dir): State<std::sync::Arc<PathBuf>>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        let file = if q.get("t").map(String::as_str) == Some("caps") {
+            "newznab_caps.xml"
+        } else {
+            "newznab_nzb_su.xml"
+        };
+        let body = std::fs::read_to_string(dir.join(file)).unwrap();
+        ([("content-type", "application/rss+xml")], body).into_response()
+    }
+    let app = axum::Router::new()
+        .route("/api", get(api))
+        .with_state(std::sync::Arc::new(fixtures));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    format!("http://{addr}")
+}
+
 #[tokio::test]
 #[ignore = "needs chromedriver, Chromium and a server build that includes the web UI"]
 async fn first_run_setup_migration_and_library() {
@@ -189,6 +215,7 @@ async fn first_run_setup_migration_and_library() {
         .unwrap_or_else(|_| root.join("target/debug/kitsunarr"));
     let port = free_port();
     let tvmaze = tvmaze_mock(root.join("tests/fixtures/metadata")).await;
+    let newznab = newznab_mock(root.join("tests/fixtures/indexers/sonarr")).await;
     let _server = Process(
         Command::new(&bin)
             .args([
@@ -467,6 +494,79 @@ async fn first_run_setup_migration_and_library() {
             !page.contains("fixture-qbit-password"),
             "secrets must never reach the browser"
         );
+
+        // Indexers: point the migrated Newznab indexer at a reachable (mock) indexer, test it,
+        // then search a season. The migrated Torznab indexer stays unreachable and is reported.
+        client
+            .goto(&format!("{base}/settings/indexers"))
+            .await
+            .unwrap();
+        client
+            .wait()
+            .for_element(Locator::XPath(
+                "//tr[contains(., 'NZBgeek (fixture)')]//button[normalize-space(.)='Edit']",
+            ))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        let base_url = client
+            .wait()
+            .for_element(Locator::XPath(
+                "//div[contains(@class,'field')][label[normalize-space(.)='baseUrl']]//input",
+            ))
+            .await
+            .unwrap();
+        base_url.clear().await.unwrap();
+        base_url.send_keys(&newznab).await.unwrap();
+        click_button(&client, "Test").await;
+        wait_text(&client, "Connected: 100 releases in the newest page").await;
+        screenshot(&client, "15-indexer-test").await;
+        click_button(&client, "Save").await;
+        wait_text(&client, "Saved.").await;
+
+        client.goto(&format!("{base}/series")).await.unwrap();
+        // An earlier step switched the library to the (persisted) table view.
+        click_button(&client, "Posters").await;
+        client
+            .wait()
+            .for_element(Locator::XPath(
+                "//a[contains(@class,'media-card')][contains(., 'Breaking Bad')]",
+            ))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        client
+            .wait()
+            .for_element(Locator::Css("button[aria-label='Search indexers for Season 1']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, "Season 1: 100 releases from 2 indexer(s)").await;
+        wait_text(&client, "Prowlarr Nyaa (fixture):").await;
+        let rows = client
+            .find_all(Locator::Css("table.releases tbody tr"))
+            .await
+            .unwrap();
+        assert_eq!(rows.len(), 100);
+        let page = client.source().await.unwrap();
+        assert!(
+            !page.contains("getnzb"),
+            "indexer download links (with their keys) never reach the browser"
+        );
+        screenshot(&client, "16-interactive-search").await;
+        client
+            .find(Locator::Css(".modal button[aria-label='Close']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
 
         // Sign out returns to the login page.
         click_button(&client, "Sign out").await;

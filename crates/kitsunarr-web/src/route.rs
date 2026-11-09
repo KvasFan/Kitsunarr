@@ -12,7 +12,8 @@ use crate::pages::dashboard::Dashboard;
 use crate::pages::detail::{MovieDetailPage, SeriesDetailPage};
 use crate::pages::import::ImportWizard;
 use crate::pages::library::{AnimeLibrary, MoviesLibrary, SeriesLibrary};
-use crate::pages::placeholders::{InteractiveSearch, NotFound};
+use crate::pages::placeholders::NotFound;
+use crate::pages::search::InteractiveSearch;
 use crate::pages::settings::{
     SettingsDownloadClients, SettingsFormats, SettingsGeneral, SettingsImportLists,
     SettingsIndexers, SettingsMedia, SettingsMetadata, SettingsNotifications, SettingsProfiles,
