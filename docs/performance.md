@@ -29,7 +29,7 @@ The browser never loads the whole library. Libraries are paged on the server (60
 
 ## WebAssembly bundle
 
-See [technical decisions §10](architecture/technical-decisions.md#10-measured-webassembly-bundle). The WASM file is 2.29 MB raw, 793 KB gzip and 606 KB brotli. CI reports the current sizes in its job summary.
+See [technical decisions §10](architecture/technical-decisions.md#10-measured-webassembly-bundle). The WASM file is 2.40 MB raw, 828 KB gzip and 629 KB brotli. CI reports the current sizes in its job summary.
 
 ## Not measured yet
 

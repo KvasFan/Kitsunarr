@@ -83,6 +83,14 @@ Because both modes run the same code, the preview cannot diverge from the result
 
 A bounded `tokio::sync::broadcast` channel of 1024 events feeds `GET /api/v1/events`. A client that falls behind receives `resync` and refetches, instead of the server buffering without limit. SSE was chosen over WebSockets because the traffic is server→client only, and SSE works through proxies with plain HTTP semantics.
 
+Over HTTP/1.1, browsers allow six connections per host. Every tab, and every page kept in the back/forward cache, shares that budget. An open event stream holds one connection permanently, so the web client holds it only while the page is in use:
+
+- The stream closes on `pagehide`, and when the tab has been hidden for more than 10 seconds.
+- It reopens when the page is shown again, followed by a refetch.
+- After a connection error, the browser's automatic reconnect also triggers a refetch, since events may have been missed.
+
+Without this, a handful of tabs or full page loads left API requests queued inside the browser. The browser end-to-end test hit exactly that: its seventh page load stalled until a cached page was evicted. Behind an HTTP/2 reverse proxy the limit does not apply, but the lifecycle rules are kept anyway.
+
 ## 9. Licensing
 
 Sonarr and Tanukarr are GPL-3.0-or-later. Kitsunarr ports their behaviour, parser rules, data formats and test cases, so it is distributed under **GPL-3.0-or-later** and keeps the upstream copyright notices (see `COPYRIGHT.md`).
@@ -91,12 +99,13 @@ The Tanukarr image is labelled `GPL-3.0-only` while its `COPYRIGHT.md` says "or 
 
 ## 10. Measured WebAssembly bundle
 
-These figures come from `dx build -p kitsunarr-web --release --profile web-release` (Dioxus 0.7.10, Rust 1.99.1), measured on 2026-11-09. They are also recomputed in CI and shown in the job summary.
+These figures come from a clean `dx build -p kitsunarr-web --release --profile web-release` (Dioxus 0.7.10, Rust 1.99.1), measured on 2026-11-09 after the Add media page landed (before it, the WASM file was 2,287,717 bytes, or 605,742 with brotli). They are also recomputed in CI and shown in the job summary.
 
 | File | Bytes | gzip -9 | brotli -11 |
 |---|---:|---:|---:|
-| `kitsunarr-web_bg-*.wasm` | 2,287,717 | 793,065 | 605,742 |
-| `kitsunarr-web-*.js` (loader) | 64,190 | 14,963 | — |
+| `kitsunarr-web_bg-*.wasm` | 2,396,162 | 828,339 | 629,362 |
+| `kitsunarr-web-*.js` (loader) | 64,189 | 14,964 | 12,803 |
+| `main-*.css` | 20,732 | 4,960 | 4,366 |
 
 Assets have content-hashed names and are served with `immutable` caching. Responses are compressed on the fly by tower-http (brotli or gzip).
 
@@ -105,3 +114,16 @@ Assets have content-hashed names and are served with `immutable` caching. Respon
 - `rust-toolchain.toml` pins 1.99.1, with `rustfmt`, `clippy` and the `wasm32-unknown-unknown` target.
 - The WebAssembly bundle is built with `dx build -p kitsunarr-web --release` using the `web-release` profile (`opt-level = "z"`, fat LTO, one codegen unit, `panic = "abort"`). The server build then embeds the output.
 - A runtime container needs no Node.js, Python or .NET. Python appears only in `tests/fixtures/generate/`, a documented developer tool used to regenerate fixtures from real Sonarr/Tanukarr containers.
+
+## 12. Metadata providers
+
+- **Adapters.** `kitsunarr-metadata` turns each catalogue into one model, `SeriesInfo` and `SearchResult`, and keeps the catalogue's own identity. TVmaze (TV) and AniList (anime and anime films) are implemented; neither needs an API key. Both endpoints can be configured (`[metadata]`) so a caching proxy can be used.
+- **Rate limits and caching.** Each adapter has a sliding-window limiter: TVmaze 18 requests per 10 s (its limit is 20), AniList 25 per minute (its degraded limit is 30). Both retry once after HTTP 429, honouring `Retry-After`. Detail responses are cached for 10 minutes; refreshes bypass the cache.
+- **Numbering matches Tanukarr.** Titles migrated from Tanukarr and titles added in Kitsunarr must refresh onto the same rows. So the TVmaze adapter fetches episodes with `specials=1`, keeps TVmaze season/number, puts unnumbered specials in season 0 in episode-id order, and sets no absolute numbers. AniList titles get one season with absolute = episode number. An inconsistent TVmaze episode list (duplicate slot or id, negative season) is rejected, so a refresh cannot overwrite good data with bad.
+- **Adding never touches the disk.** The folder path comes from the root folder and the naming settings. The web UI renders the same path with the shared `naming` module, so the preview is exact. The folder is created by the import pipeline when files arrive.
+- **Monitoring follows Sonarr.**
+  - Specials are never monitored automatically.
+  - "Future episodes" includes episodes with unknown air dates, unless a later episode of the same season has already aired. AniList has no schedule entries for multi-episode premieres, and this rule handles that case.
+  - On refresh, a newly discovered episode is monitored only when the series monitors new items and its season is monitored.
+- **Refresh scope.** A refresh updates provider-owned fields, merges external ids, replaces provider-sourced alternate titles and adds missing seasons and episodes. It never changes monitoring, file links, paths, profiles or tags. A title owned by a catalogue Kitsunarr cannot query (for example a TheTVDB series migrated from Sonarr) is not refreshed through another catalogue: episode numbering differs between catalogues and could create phantom episodes. The UI says so instead of offering the action.
+- **Library matching.** Search results and add requests are matched against the library by catalogue id and by every shared external id (TheTVDB, IMDb, MyAnimeList, ...). This prevents duplicates across catalogues.

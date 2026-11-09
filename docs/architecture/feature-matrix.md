@@ -12,12 +12,12 @@ The "Tests" column names the suites that cover the feature. Simulated tests repl
 
 | # | Feature | Reference implementation | Kitsunarr module | Status | Tests | Gaps / next steps |
 |---|---|---|---|---|---|---|
-| 1 | TV series management | Sonarr `Core/Tv`, `Api.V3/Series` | `kitsunarr-db::library::series`, `kitsunarr-api::routes::library`, web `pages::library`/`pages::detail` | Partial | db `series::tests`; HTTP `migration_over_http_then_library_operations`; browser e2e | Adding series (needs metadata providers), refresh, deletion of files from disk. |
-| 2 | Anime management | Sonarr `SeriesTypes.Anime`, Tanukarr AniList/MAL owners | same as 1, `media_kind = anime` | Partial | as 1 | Anime numbering and search logic. |
-| 3 | Movie management | Tanukarr `MediaType=Movie` | `kitsunarr-db::library::movies` | Partial | db `movies::tests`, migrate fixture tests | Add/search/download. |
+| 1 | TV series management | Sonarr `Core/Tv`, `Api.V3/Series`, `AddSeriesService`, `RefreshSeriesService` | `kitsunarr-db::library::series`, `kitsunarr-library` (add, refresh), `kitsunarr-api::routes::{library, metadata}`, web `pages::{library, detail, add}` | Partial | db `series::tests`; library `add_refresh`; HTTP `migration_over_http_then_library_operations`, `catalogue_search_add_and_refresh`; browser e2e | Series can be added and refreshed from TVmaze. Adding from TheTVDB (Sonarr's catalogue) and deleting files from disk are not implemented. |
+| 2 | Anime management | Sonarr `SeriesTypes.Anime`, Tanukarr AniList/MAL owners | same as 1, `media_kind = anime` | Partial | as 1; library `airing_is_inferred_from_later_episodes` | Anime can be added and refreshed from AniList (one season, absolute number = episode number, as in Tanukarr). Scene/absolute mapping and search logic are not implemented. |
+| 3 | Movie management | Tanukarr `MediaType=Movie` | `kitsunarr-db::library::movies`, `kitsunarr-library` | Partial | db `movies::tests`, migrate fixture tests, library `add_anilist_movie_creates_a_movie` | Anime films can be added and refreshed from AniList. Live-action films need TMDB/OMDb. Search and download are not implemented. |
 | 4 | Collections | Tanukarr `CollectionTitle`, `AnimeGroup*` | `kitsunarr-db::library::collections` | Partial | db `collections::tests`, Tanukarr fixture test | Editing UI, TMDB collections. |
-| 5 | Metadata providers | Sonarr SkyHook; Tanukarr 7 proxies | `kitsunarr-metadata` (planned) | Not started | — | Phase 3. |
-| 6 | Multiple metadata identities | Tanukarr `MetadataSource`/`ForeignId`, `MalIds`/`AniListIds` | `series/movie_external_ids`, `(metadata_provider, metadata_id)` | Model | migrate fixture tests | Provider lookups by identity. |
+| 5 | Metadata providers | Sonarr SkyHook; Tanukarr 7 proxies | `kitsunarr-metadata` (TVmaze, AniList), `kitsunarr-library`, scheduled `RefreshMetadata` | Partial | metadata unit tests (recorded TVmaze responses); library `add_refresh` (mock catalogue); HTTP `catalogue_search_add_and_refresh`; browser e2e (mock TVmaze); live `tvmaze_search_and_details` and `anilist_search_details_and_movies` (ignored, real services; passed on 2026-11-09) | 2 of 7 catalogues. Not implemented: TheTVDB, TMDB TV, TMDB Movies, MAL/Jikan, OMDb; id-prefixed search terms (`tvdb:123`); Tanukarr's presentation enrichment. |
+| 6 | Multiple metadata identities | Tanukarr `MetadataSource`/`ForeignId`, `MalIds`/`AniListIds` | `series/movie_external_ids`, `(metadata_provider, metadata_id)`, `kitsunarr-library::find_existing` | Partial | migrate fixture tests; HTTP `catalogue_search_add_and_refresh`; browser e2e | Search results and adds are matched against the library by catalogue id and any shared external id: a migrated TheTVDB-owned series shows as "in library" in TVmaze results. Changing a title's owning catalogue is not implemented. |
 | 7 | Episode numbering | Sonarr scene/absolute numbering | episode columns (absolute, scene) | Model | migrate fixture tests | Mapping logic (Phase 3/6). |
 | 8 | Quality profiles | Sonarr `Profiles/Qualities` | `kitsunarr-db::quality`, API `/qualityprofiles`, web | Done (CRUD) | db `quality::tests` | Use in the decision engine. |
 | 9 | Custom formats | Sonarr `CustomFormats` | `kitsunarr-db::quality`, API `/customformats` | Model + CRUD | db `quality::tests` | Evaluation engine (Phase 3). |
@@ -30,7 +30,7 @@ The "Tests" column names the suites that cover the feature. Simulated tests repl
 | 16 | File renaming | Sonarr `Organizer` | naming settings | Model | — | Renamer (Phase 4). |
 | 17 | Disk management | Sonarr `DiskProvider` | root folders with free space, health checks | Partial | HTTP `settings_validation_and_secret_redaction` | Path guards for file operations, recycle bin. |
 | 18 | Notifications | Sonarr `Notifications/*` | provider storage | Model | — | Webhook/Discord/Jellyfin (Phase 5). |
-| 19 | Task scheduling | Sonarr `TaskManager`, `CommandQueue` | `kitsunarr-scheduler` | Done | scheduler tests | More jobs as features land. |
+| 19 | Task scheduling | Sonarr `TaskManager`, `CommandQueue` | `kitsunarr-scheduler`; jobs Housekeeping, CleanupSessions, Backup, HealthCheck, RefreshMetadata | Done | scheduler tests; library `refresh_scheduling_follows_status_and_age` | More jobs as features land. |
 | 20 | Authentication | Sonarr Forms/Basic/API key | `kitsunarr-auth`, `kitsunarr-api::auth`, web setup and login pages | Done | auth unit tests; HTTP `first_run_setup_login_and_logout`, `login_throttling_and_api_keys`, `cross_site_writes_are_rejected`; browser e2e | Additional users and roles. |
 | 21 | API compatibility | Sonarr `/api/v3` | native `/api/v1` with OpenAPI | Partial | HTTP `openapi_spa_fallback_and_events` | Sonarr-v3 compatibility layer for third-party tools. |
 | 22 | Backup and restore | Sonarr `Backup` | `kitsunarr-db::maintenance`, CLI `backup` and `restore`, scheduled job | Done | db maintenance tests, server job tests | Restore from the web UI. |
@@ -60,7 +60,7 @@ The "Tests" column names the suites that cover the feature. Simulated tests repl
 | Feature | Tanukarr status | Kitsunarr status |
 |---|---|---|
 | Unified TV, anime and movies | Operational | Separate series and movie libraries; Tanukarr movies migrate as movies. |
-| TheTVDB, TMDB TV, TVmaze, AniList, MAL/Jikan, TMDB Movies, OMDb | Operational | Provider codes and identities are preserved; adapters not started. |
+| TheTVDB, TMDB TV, TVmaze, AniList, MAL/Jikan, TMDB Movies, OMDb | Operational | Provider codes and identities are preserved. TVmaze and AniList adapters are done, with Tanukarr's numbering: TVmaze specials go to season 0 in episode-id order with no absolute numbers; AniList titles have a single season. Refreshing a migrated TVmaze or AniList title therefore lines up with its existing episodes. The other adapters are not started. |
 | Per-title metadata ownership | Operational | Done (model and migration). |
 | TMDB episode groups | Partial | `episode_ordering` preserved by migration; not applied yet. |
 | Absolute anime numbering | Mostly upstream | Stored; logic not started. |
@@ -78,5 +78,6 @@ The "Tests" column names the suites that cover the feature. Simulated tests repl
 | Import / migration wizard | Done (browser e2e) |
 | Settings: general (API key, password), media management (root folders, naming, files), quality profiles editor, custom formats (JSON editor), indexers, download clients, notifications, import lists, tags | Done (CRUD on stored settings). Download clients covered by browser e2e. |
 | System: status and health, scheduled tasks (run now, history), backups, logs | Done |
-| Download queue, interactive search, add media, metadata sources | Honest "not available yet" pages; the backends are not implemented |
+| Add media: search TVmaze or AniList, see which results are already in the library, add dialog (root folder, profile, monitoring, series type, season folders, tags, exact folder preview); "Refresh metadata" on detail pages | Done. Browser e2e uses a mock TVmaze replaying recorded responses. |
+| Download queue, interactive search, metadata source settings | Honest "not available yet" pages; the backends are not implemented |
 | Keyboard shortcuts (`/` search, `g` + letter navigation, `Esc`), dark and light themes, responsive layout with a mobile drawer, live updates over SSE | Done |

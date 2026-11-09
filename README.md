@@ -4,7 +4,7 @@
 
 Kitsunarr is an independent, self-hosted media automation platform built with Rust, Dioxus and Axum. It manages TV shows, anime, movies, metadata, downloads, libraries and automated workflows, and it can migrate existing Sonarr and Tanukarr installations.
 
-> **Project status: early development.** The application foundation (server, database, authentication, library, settings, background tasks) and migration from Sonarr and Tanukarr work and are tested. Metadata providers, indexers, download clients, the media import pipeline and automation are **not implemented yet**, so Kitsunarr cannot download anything yet. Keep your existing installation running. Migration is read-only and never touches your media. The [feature matrix](docs/architecture/feature-matrix.md) tracks exactly what works.
+> **Project status: early development.** The application foundation (server, database, authentication, library, settings, background tasks) and migration from Sonarr and Tanukarr work and are tested. Titles can be added and refreshed from TVmaze (TV series) and AniList (anime and anime films). Other metadata catalogues, indexers, download clients, the media import pipeline and automation are **not implemented yet**, so Kitsunarr cannot download anything yet. Keep your existing installation running. Migration is read-only and never touches your media. The [feature matrix](docs/architecture/feature-matrix.md) tracks exactly what works.
 
 ## Highlights
 
@@ -15,6 +15,7 @@ Kitsunarr is an independent, self-hosted media automation platform built with Ru
   - No Node.js, Python or .NET at runtime.
 - **One library for TV, anime and movies.**
   - Per-title metadata ownership, with any number of external identities per title.
+  - Add titles from TVmaze and AniList, with daily metadata refresh that keeps your monitoring choices.
   - Collections of series and movies.
 - **Migration from Sonarr (v3/v4) and Tanukarr**, through the source API or a backup file.
   - A dry-run preview that is identical to the real run.

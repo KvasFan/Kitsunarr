@@ -46,6 +46,22 @@ location /kitsunarr/ {
 }
 ```
 
+## Metadata catalogues
+
+Kitsunarr queries TVmaze (`https://api.tvmaze.com`) and AniList (`https://graphql.anilist.co`) when you search for, add or refresh titles; no API keys are needed. Requests are rate limited below each service's published limit and retried once after HTTP 429.
+
+To route these requests through a caching proxy or a mirror, set `KITSUNARR_TVMAZE_URL` and `KITSUNARR_ANILIST_URL`, or the `[metadata]` section of `config.toml`:
+
+```toml
+[metadata]
+tvmaze_url = "http://cache.lan:8080/tvmaze"
+anilist_url = "http://cache.lan:8080/anilist"
+```
+
+The values must be `http://` or `https://` URLs.
+
+The `RefreshMetadata` task (every 12 hours) refreshes continuing titles that were last refreshed more than 6 hours ago. Ended series and released films are refreshed monthly, or sooner if an episode aired in the last 30 days. A refresh updates provider data (titles, overviews, images, air dates, new episodes). It keeps your monitoring choices and file links. Titles migrated from Sonarr are owned by TheTVDB, which Kitsunarr cannot query yet, so their imported metadata is kept as is.
+
 ## Backups
 
 - Scheduled backups run weekly; the last 8 are kept.
