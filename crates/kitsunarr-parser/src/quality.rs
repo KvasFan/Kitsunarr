@@ -37,7 +37,8 @@ pub struct ParsedQuality {
 }
 
 impl ParsedQuality {
-    fn unknown() -> Self {
+    /// `Quality.Unknown`, revision 1, nothing detected.
+    pub fn unknown() -> Self {
         Self {
             quality: Quality::unknown(),
             revision: Revision::default(),

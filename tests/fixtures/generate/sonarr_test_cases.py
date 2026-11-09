@@ -11,6 +11,9 @@ reviewed next to the code under test.
 * C# literals are decoded: strings (regular and verbatim), numbers, booleans, null, arrays
   (`new[] { ... }`, `new int[0]`) and enum references, which become {"enum": "Quality.HDTV720p"}.
 * Named arguments (e.g. `ExpectedResult = ...`) are kept under "named".
+* `[TestCaseSource(nameof(Cases))]` arrays (`new object[] { ... }` rows) are extracted for the
+  method that uses them. A string followed by `.AsOsAgnostic()` becomes
+  {"call": "AsOsAgnostic", "value": "..."}, so the test applies the same path conversion.
 
 Development tool only; Kitsunarr itself never runs Python.
 
@@ -86,7 +89,12 @@ class Lexer:
         self.ws()
         c = self.s[self.i]
         if c == '"' or self.s.startswith('@"', self.i):
-            return self.string()
+            text = self.string()
+            m = re.compile(r"\s*\.\s*(\w+)\(\)").match(self.s, self.i)
+            if m:
+                self.i = m.end()
+                return {"call": m.group(1), "value": text}
+            return text
         if self.s.startswith("new", self.i):
             return self.array()
         m = re.compile(r"-?\d+(?:\.\d+)?[lLdDfFmM]?").match(self.s, self.i)
@@ -149,10 +157,49 @@ def parse_params(text):
     return params
 
 
+SOURCE_ARRAY = re.compile(r"public static object\[\]\s+(\w+)\s*=\s*\{")
+SOURCE_USE = re.compile(r"\[TestCaseSource\(nameof\((\w+)\)\)\]")
+
+
+def source_arrays(text):
+    """`public static object[] Name = { new object[] { ... }, ... };` → {Name: [rows]}."""
+    arrays = {}
+    for m in SOURCE_ARRAY.finditer(text):
+        i, depth, rows = m.end(), 1, []
+        while depth:
+            if text.startswith("new object[]", i):
+                start = text.index("{", i) + 1
+                j, d = start, 1
+                while d:
+                    if text.startswith('@"', j) or text[j] == '"':
+                        lx = Lexer(text)
+                        lx.i = j
+                        lx.string()
+                        j = lx.i
+                        continue
+                    d += {"{": 1, "}": -1}.get(text[j], 0)
+                    j += 1
+                positional, _ = Lexer(text[start:j - 1].strip().rstrip(",")).arguments()
+                rows.append({"args": positional})
+                i = j
+                continue
+            depth += {"{": 1, "}": -1}.get(text[i], 0)
+            i += 1
+        arrays[m.group(1)] = rows
+    return arrays
+
+
 def extract(path):
     methods, pending = {}, []
+    text = open(path, encoding="utf-8-sig").read()
+    arrays = source_arrays(text)
+    sources = []
     with open(path, encoding="utf-8-sig") as f:
         for line in f:
+            u = SOURCE_USE.search(line)
+            if u and u.group(1) in arrays and not line.lstrip().startswith("//"):
+                sources.append(u.group(1))
+                continue
             if line.lstrip().startswith("//"):
                 continue
             m = TEST_CASE.match(line)
@@ -164,11 +211,13 @@ def extract(path):
                 pending.append(row)
                 continue
             m = METHOD.match(line)
-            if m and pending:
+            if m and (pending or sources):
                 name = m.group("name")
                 entry = methods.setdefault(name, {"params": parse_params(m.group("params")), "cases": []})
                 entry["cases"].extend(pending)
-                pending = []
+                for src in sources:
+                    entry["cases"].extend(arrays[src])
+                pending, sources = [], []
     return methods
 
 

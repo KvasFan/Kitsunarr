@@ -18,7 +18,7 @@ The "Tests" column names the suites that cover the feature. Simulated tests repl
 | 4 | Collections | Tanukarr `CollectionTitle`, `AnimeGroup*` | `kitsunarr-db::library::collections` | Partial | db `collections::tests`, Tanukarr fixture test | Editing UI, TMDB collections. |
 | 5 | Metadata providers | Sonarr SkyHook; Tanukarr 7 proxies | `kitsunarr-metadata` (TVmaze, AniList), `kitsunarr-library`, scheduled `RefreshMetadata` | Partial | metadata unit tests (recorded TVmaze responses); library `add_refresh` (mock catalogue); HTTP `catalogue_search_add_and_refresh`; browser e2e (mock TVmaze); live `tvmaze_search_and_details` and `anilist_search_details_and_movies` (ignored, real services; passed on 2026-11-09) | 2 of 7 catalogues. Not implemented: TheTVDB, TMDB TV, TMDB Movies, MAL/Jikan, OMDb; id-prefixed search terms (`tvdb:123`); Tanukarr's presentation enrichment. |
 | 6 | Multiple metadata identities | Tanukarr `MetadataSource`/`ForeignId`, `MalIds`/`AniListIds` | `series/movie_external_ids`, `(metadata_provider, metadata_id)`, `kitsunarr-library::find_existing` | Partial | migrate fixture tests; HTTP `catalogue_search_add_and_refresh`; browser e2e | Search results and adds are matched against the library by catalogue id and any shared external id: a migrated TheTVDB-owned series shows as "in library" in TVmaze results. Changing a title's owning catalogue is not implemented. |
-| 7 | Episode numbering | Sonarr scene/absolute numbering | episode columns (absolute, scene) | Model | migrate fixture tests | Mapping logic (Phase 3/6). |
+| 7 | Episode numbering | Sonarr scene/absolute numbering | episode columns (absolute, scene); release names parsed by `kitsunarr-parser` (standard, absolute, daily) | Partial | parser corpus (see "Release parsing") | Scene-numbering mapping to library episodes (`ParsingService`, Phase 3/6). |
 | 8 | Quality profiles | Sonarr `Profiles/Qualities` | `kitsunarr-db::quality`, API `/qualityprofiles`, web | Done (CRUD) | db `quality::tests` | Use in the decision engine. |
 | 9 | Custom formats | Sonarr `CustomFormats` | `kitsunarr-db::quality`, API `/customformats` | Model + CRUD | db `quality::tests` | Evaluation engine (Phase 3). |
 | 10 | Indexers | Sonarr `Indexers/Newznab`, `Torznab` | provider storage | Model | db `providers::tests` | Torznab/Newznab clients (Phase 3). |
@@ -39,14 +39,16 @@ The "Tests" column names the suites that cover the feature. Simulated tests repl
 
 ## Release parsing (port of Sonarr's parser)
 
-Each component is checked against Sonarr's own test cases (`tests/fixtures/parser/sonarr/`). A component is listed as done only when every active upstream case for it passes.
+Each component is checked against Sonarr's own test cases (`tests/fixtures/parser/sonarr/`, 1,683 active rows extracted from 27 upstream fixtures). A component is listed as done only when every active upstream case for it passes. 23 rows upstream keeps commented out (its known failures) are skipped, as upstream skips them.
 
 | Component | Upstream | Status | Upstream cases passing |
 |---|---|---|---|
 | Quality (source, resolution, remux, proper/repack/version, REAL), extension fallback | `QualityParser.cs`, `QualityFinder.cs`, `MediaFileExtensions.cs` | Done | 290/290 `QualityParserFixture`, 30/30 `ExtendedQualityParserRegex`, plus both `TestCaseSource` tables |
 | Release groups (including anime subgroups, exception lists, repost cleanup, Chinese/Korean pre-substitutions) | `ReleaseGroupParser.cs`, `ParserCommon.cs`, `RegexReplace.cs`, `FileExtensions.cs` | Done | 151/151 `ReleaseGroupParserFixture` |
-| Languages in release titles, subtitle languages/flags/titles, ISO 639 lookups | `LanguageParser.cs`, `IsoLanguages.cs` | Partial | 202/221 `LanguageParserFixture` (the other 19 assert on `Parser.ParseTitle` and wait for the title parser), 26/26 `IsoLanguagesFixture` |
-| Titles, seasons and episodes (standard, daily, anime/absolute, packs, specials) | `Parser.cs`, `ParserCommon.cs` | Not started | — |
+| Languages in release titles, subtitle languages/flags/titles, ISO 639 lookups | `LanguageParser.cs`, `IsoLanguages.cs` | Done | 221/221 `LanguageParserFixture`, 26/26 `IsoLanguagesFixture` |
+| Titles, seasons and episodes: standard, multi-episode, daily, anime and absolute numbering, season/multi-season/partial packs, specials, split episodes, mini-series, hashed and reversed releases, file paths | `Parser.cs` (all 109 title patterns, verbatim), `ParserCommon.cs`, `ParsedEpisodeInfo.cs` | Done | 167/167 `AbsoluteEpisodeNumberParserFixture`, 185/185 `SingleEpisodeParserFixture`, 77/77 `MultiEpisodeParserFixture`, 76/76 `SeasonParserFixture`, 57/57 `DailyEpisodeParserFixture`, 56/56 `UnicodeReleaseParserFixture`, 47/47 `ParserFixture`, 36/36 `AnimeMetadataParserFixture`, 33/33 `PathParserFixture`, 30/30 `CrapParserFixture`, 31/31 `UrlFixture`, 21/21 `SeasonTitleParserFixture`, 20/20 `HashedReleaseFixture`, 11/11 `MiniSeriesEpisodeParserFixture`, and the smaller fixtures |
+| Title normalisation (`CleanSeriesTitle`, diacritics, episode titles, IMDb ids), scene-title check, season formatting | `Parser.cs`, `SceneChecker.cs`, `SeasonNumbersFormatter.cs`, Diacritical.Net table | Done | 41/41 `NormalizeSeriesTitleFixture`, 6/6 `NormalizeEpisodeTitleFixture`, 13/13 `SceneCheckerFixture`, 8/8 `SeasonNumbersFormatterFixture` |
+| Matching parse results to library series and episodes | `ParsingService.cs` | Not started | 21 rows in `ParsingServiceTests/` (need the library lookups; part of the decision engine work, #5) |
 
 ## Migration (Phase 2)
 

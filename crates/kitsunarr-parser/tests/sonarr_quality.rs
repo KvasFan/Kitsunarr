@@ -3,7 +3,7 @@
 
 mod common;
 
-use common::{Fixture, Outcome, b, expect_eq, i, s};
+use common::{Fixture, Outcome, b, enum_name, expect_eq, i, quality_name, s};
 use kitsunarr_parser::{DetectionSource, parse_quality};
 
 /// Quality expected by each `should_parse_*_quality(title, proper)` method.
@@ -59,6 +59,25 @@ fn quality_parser_fixture() {
         if let Some(quality) = expected_quality(method) {
             return Some(verify(s(&a[0]), quality, b(&a[1])).into());
         }
+        match method {
+            // TestCaseSource: "My series S01E01 [<quality name>]" parses back to that quality.
+            "parsing_our_own_quality_enum_name" => {
+                let name = quality_name(enum_name(&a[0], "Quality"));
+                let title = format!("My series S01E01 [{name}]");
+                return Some(expect_eq("quality", parse_quality(&title).quality.name, name).into());
+            }
+            // TestCaseSource: other-source names with every separator.
+            "should_parse_quality_from_other_source" => {
+                let want = quality_name(enum_name(&a[1], "Quality"));
+                let result = ['-', '.', ' ', '_'].iter().try_for_each(|c| {
+                    let title =
+                        format!("My series S01E01 {}", s(&a[0]).replace(' ', &c.to_string()));
+                    verify(&title, want, false).map_err(|e| format!("{title}: {e}"))
+                });
+                return Some(result.into());
+            }
+            _ => {}
+        }
         let title = s(&a[0]);
         let result: Result<(), String> = match method {
             "should_parse_full_quality_from_name" => detection(title, Name, Name),
@@ -85,58 +104,6 @@ fn quality_parser_fixture() {
         };
         Some(Outcome::from(result))
     });
-}
-
-/// `parsing_our_own_quality_enum_name` (a `TestCaseSource`, not in the extracted corpus).
-#[test]
-fn parses_its_own_quality_names() {
-    for name in [
-        "SDTV",
-        "DVD",
-        "WEBDL-480p",
-        "Bluray-480p",
-        "Bluray-576p",
-        "HDTV-720p",
-        "HDTV-1080p",
-        "HDTV-2160p",
-        "WEBDL-720p",
-        "WEBDL-1080p",
-        "WEBDL-2160p",
-        "Bluray-720p",
-        "Bluray-1080p",
-        "Bluray-2160p",
-        "Bluray-1080p Remux",
-        "Bluray-2160p Remux",
-    ] {
-        let title = format!("My series S01E01 [{name}]");
-        assert_eq!(parse_quality(&title).quality.name, name, "{title}");
-    }
-}
-
-/// `should_parse_quality_from_other_source` (a `TestCaseSource`).
-#[test]
-fn parses_quality_from_other_sources() {
-    for (text, quality) in [
-        ("SD TV", "SDTV"),
-        ("SD DVD", "DVD"),
-        ("480p WEB-DL", "WEBDL-480p"),
-        ("HD TV", "HDTV-720p"),
-        ("1080p HD TV", "HDTV-1080p"),
-        ("2160p HD TV", "HDTV-2160p"),
-        ("720p WEB-DL", "WEBDL-720p"),
-        ("1080p WEB-DL", "WEBDL-1080p"),
-        ("2160p WEB-DL", "WEBDL-2160p"),
-        ("720p BluRay", "Bluray-720p"),
-        ("1080p BluRay", "Bluray-1080p"),
-        ("2160p BluRay", "Bluray-2160p"),
-        ("1080p Remux", "Bluray-1080p Remux"),
-        ("2160p Remux", "Bluray-2160p Remux"),
-    ] {
-        for c in ['-', '.', ' ', '_'] {
-            let title = format!("My series S01E01 {}", text.replace(' ', &c.to_string()));
-            verify(&title, quality, false).unwrap_or_else(|e| panic!("{title}: {e}"));
-        }
-    }
 }
 
 #[test]

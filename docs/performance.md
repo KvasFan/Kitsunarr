@@ -31,6 +31,17 @@ The browser never loads the whole library. Libraries are paged on the server (60
 
 See [technical decisions §10](architecture/technical-decisions.md#10-measured-webassembly-bundle). The WASM file is 2.40 MB raw, 828 KB gzip and 629 KB brotli. CI reports the current sizes in its job summary.
 
+## Release parsing
+
+`cargo test -p kitsunarr-parser --release --test perf -- --ignored --nocapture` parses every title of Sonarr's parser test corpus (1,629 titles, five rounds) after a warm-up. Measured on 2026-11-09:
+
+| | |
+|---|---:|
+| Average per title | 206 µs |
+| Slowest title (long anime batch name) | 1.6 ms |
+
+A search with 500 results therefore spends about 0.1 s parsing release names.
+
 ## Not measured yet
 
 - Browser rendering time at 1,000+ titles (first contentful paint, interaction latency).

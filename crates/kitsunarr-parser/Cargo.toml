@@ -11,11 +11,15 @@ authors.workspace = true
 [dependencies]
 kitsunarr-domain = { workspace = true }
 fancy-regex = { workspace = true }
+regex = { workspace = true }
+unicode-normalization = { workspace = true }
+chrono = { workspace = true }
 serde = { workspace = true }
 tracing = { workspace = true }
 
 [dev-dependencies]
 serde_json = { workspace = true }
+chrono = { workspace = true }
 
 [lints]
 workspace = true

@@ -248,7 +248,6 @@ pub(crate) static PRE_SUBSTITUTION: LazyLock<Vec<RegexReplace>> = LazyLock::new(
 });
 
 /// `PathPreSubstitutionRegex`: season and episode number separated by a space (S02 01).
-#[allow(dead_code)] // used by the title parser
 pub(crate) static PATH_PRE_SUBSTITUTION: LazyLock<Vec<RegexReplace>> = LazyLock::new(|| {
     vec![RegexReplace::new(
         r"(?<separator>^|[-_. ])S(?<season>(?<!\d+)\d{1,2}(?!\d+)) (?<episode>(?<!\d+)\d{1,2}(?!\d+))(?!\d+)",
@@ -265,7 +264,6 @@ pub(crate) static WEBSITE_PREFIX: LazyLock<RegexReplace> = LazyLock::new(|| {
     )
 });
 
-#[allow(dead_code)] // used by the title parser
 pub(crate) static WEBSITE_POSTFIX: LazyLock<RegexReplace> = LazyLock::new(|| {
     RegexReplace::new(
         r"(?:\[\s*)?(?:www\.)?[-a-z0-9-]{1,256}\.(?:xn--[a-z0-9-]{4,}|[a-z]{2,6})\b(?:\s*\])$",

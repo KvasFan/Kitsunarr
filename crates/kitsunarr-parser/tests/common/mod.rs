@@ -142,3 +142,74 @@ pub fn expect_eq<T: PartialEq + std::fmt::Debug>(
         Err(format!("{what}: got {got:?}, want {want:?}"))
     }
 }
+
+/// Sonarr `Quality` identifier → Kitsunarr quality name.
+pub fn quality_name(identifier: &str) -> &'static str {
+    match identifier {
+        "Unknown" => "Unknown",
+        "SDTV" => "SDTV",
+        "DVD" => "DVD",
+        "RAWHD" => "Raw-HD",
+        "WEBDL480p" => "WEBDL-480p",
+        "WEBRip480p" => "WEBRip-480p",
+        "Bluray480p" => "Bluray-480p",
+        "Bluray576p" => "Bluray-576p",
+        "HDTV720p" => "HDTV-720p",
+        "HDTV1080p" => "HDTV-1080p",
+        "HDTV2160p" => "HDTV-2160p",
+        "WEBDL720p" => "WEBDL-720p",
+        "WEBDL1080p" => "WEBDL-1080p",
+        "WEBDL2160p" => "WEBDL-2160p",
+        "WEBRip720p" => "WEBRip-720p",
+        "WEBRip1080p" => "WEBRip-1080p",
+        "WEBRip2160p" => "WEBRip-2160p",
+        "Bluray720p" => "Bluray-720p",
+        "Bluray1080p" => "Bluray-1080p",
+        "Bluray2160p" => "Bluray-2160p",
+        "Bluray1080pRemux" => "Bluray-1080p Remux",
+        "Bluray2160pRemux" => "Bluray-2160p Remux",
+        other => panic!("unknown quality identifier {other}"),
+    }
+}
+
+/// `AsOsAgnostic()` on Linux: `C:\a\b` → `/C/a/b`.
+pub fn as_os_agnostic(path: &str) -> String {
+    let mut p = path.to_string();
+    if p.len() > 2 && p.as_bytes()[1] == b':' {
+        p = format!("/{}", p.replace(':', ""));
+    }
+    p.replace('\\', "/")
+}
+
+/// A path argument, applying `.AsOsAgnostic()` when the test did.
+pub fn path_arg(v: &Value) -> String {
+    match v.get("call").and_then(Value::as_str) {
+        Some("AsOsAgnostic") => as_os_agnostic(s(&v["value"])),
+        Some(other) => panic!("unsupported call {other}"),
+        None => s(v).to_string(),
+    }
+}
+
+pub fn ints(v: &Value) -> Vec<i32> {
+    v.as_array()
+        .unwrap_or_else(|| panic!("expected array, got {v}"))
+        .iter()
+        .map(|x| i(x) as i32)
+        .collect()
+}
+
+/// Same elements, any order (`BeEquivalentTo`).
+pub fn equivalent<T: Ord + std::fmt::Debug + Clone>(
+    what: &str,
+    got: &[T],
+    want: &[T],
+) -> Result<(), String> {
+    let (mut g, mut w) = (got.to_vec(), want.to_vec());
+    g.sort();
+    w.sort();
+    expect_eq(what, g, w)
+}
+
+pub fn check(cond: bool, what: &str) -> Result<(), String> {
+    if cond { Ok(()) } else { Err(what.to_string()) }
+}

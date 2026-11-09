@@ -1870,6 +1870,254 @@
     }
    ]
   },
+  "parsing_our_own_quality_enum_name": {
+   "params": [
+    [
+     "Quality",
+     "quality"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      {
+       "enum": "Quality.SDTV"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.DVD"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.WEBDL480p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.Bluray480p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.Bluray576p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.HDTV720p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.HDTV1080p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.HDTV2160p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.WEBDL720p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.WEBDL1080p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.WEBDL2160p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.Bluray720p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.Bluray1080p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.Bluray2160p"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.Bluray1080pRemux"
+      }
+     ]
+    },
+    {
+     "args": [
+      {
+       "enum": "Quality.Bluray2160pRemux"
+      }
+     ]
+    }
+   ]
+  },
+  "should_parse_quality_from_other_source": {
+   "params": [
+    [
+     "string",
+     "qualityString"
+    ],
+    [
+     "Quality",
+     "quality"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "SD TV",
+      {
+       "enum": "Quality.SDTV"
+      }
+     ]
+    },
+    {
+     "args": [
+      "SD DVD",
+      {
+       "enum": "Quality.DVD"
+      }
+     ]
+    },
+    {
+     "args": [
+      "480p WEB-DL",
+      {
+       "enum": "Quality.WEBDL480p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "HD TV",
+      {
+       "enum": "Quality.HDTV720p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "1080p HD TV",
+      {
+       "enum": "Quality.HDTV1080p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "2160p HD TV",
+      {
+       "enum": "Quality.HDTV2160p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "720p WEB-DL",
+      {
+       "enum": "Quality.WEBDL720p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "1080p WEB-DL",
+      {
+       "enum": "Quality.WEBDL1080p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "2160p WEB-DL",
+      {
+       "enum": "Quality.WEBDL2160p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "720p BluRay",
+      {
+       "enum": "Quality.Bluray720p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "1080p BluRay",
+      {
+       "enum": "Quality.Bluray1080p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "2160p BluRay",
+      {
+       "enum": "Quality.Bluray2160p"
+      }
+     ]
+    },
+    {
+     "args": [
+      "1080p Remux",
+      {
+       "enum": "Quality.Bluray1080pRemux"
+      }
+     ]
+    },
+    {
+     "args": [
+      "2160p Remux",
+      {
+       "enum": "Quality.Bluray2160pRemux"
+      }
+     ]
+    }
+   ]
+  },
   "should_parse_full_quality_from_name": {
    "params": [
     [

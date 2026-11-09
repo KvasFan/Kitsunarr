@@ -45,26 +45,45 @@ fn equivalent(title: &str, expected: &[&str]) -> Result<(), String> {
     expect_eq("languages", got_names, want)
 }
 
-/// Methods asserting on `Parser.ParseTitle(title).Languages`, which uses the release tokens
-/// after the episode marker; they need the title parser.
-const NEEDS_TITLE_PARSER: &[&str] = &[
-    "should_add_original_language_to_german_release_with_dl_tag",
-    "should_not_add_original_language_to_german_release_when_title_contains_web_dl",
-    "should_add_original_language_and_english_to_german_release_with_ml_tag",
-    "should_parse_original_title_from_release_name",
-    "should_parse_english_and_ukranian",
-    "should_parse_turkish_and_ukranian",
-    "should_parse_azerbaijani",
-    "should_parse_uzbek",
-];
+/// Methods asserting on `Parser.ParseTitle(title).Languages` (languages of the release tokens
+/// after the episode marker): the exact set expected.
+fn title_languages(method: &str) -> Option<&'static [&'static str]> {
+    Some(match method {
+        "should_add_original_language_to_german_release_with_dl_tag" => &["German", "Original"],
+        "should_not_add_original_language_to_german_release_when_title_contains_web_dl" => {
+            &["German"]
+        }
+        "should_add_original_language_and_english_to_german_release_with_ml_tag" => {
+            &["German", "Original", "English"]
+        }
+        "should_parse_original_title_from_release_name" => &["Original"],
+        "should_parse_english_and_ukranian" => &["Ukrainian", "English"],
+        "should_parse_turkish_and_ukranian" => &["Ukrainian", "Turkish"],
+        "should_parse_azerbaijani" => &["Azerbaijani"],
+        "should_parse_uzbek" => &["Uzbek"],
+        _ => return None,
+    })
+}
 
 #[test]
 fn language_parser_fixture() {
     Fixture::load("LanguageParserFixture").run(|method, a| {
-        if NEEDS_TITLE_PARSER.contains(&method) {
-            return Some(Outcome::Pending(
-                "asserts on Parser.ParseTitle (title parser not ported yet)",
-            ));
+        if let Some(expected) = title_languages(method) {
+            let Some(parsed) = kitsunarr_parser::parse_title(s(&a[0])) else {
+                return Some(Outcome::Fail("not parsed".into()));
+            };
+            let got: Vec<&str> = parsed.languages.iter().map(|l| l.name).collect();
+            let want: Vec<&str> = expected.iter().map(|n| language(n).name).collect();
+            let all_present = want.iter().all(|w| got.contains(w));
+            return Some(
+                expect_eq("language count", got.len(), want.len())
+                    .and(if all_present {
+                        Ok(())
+                    } else {
+                        Err(format!("got {got:?}, want {want:?}"))
+                    })
+                    .into(),
+            );
         }
         let title = s(&a[0]);
         if let Some(rest) = method.strip_prefix("should_parse_language_") {
