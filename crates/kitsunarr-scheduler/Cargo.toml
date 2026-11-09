@@ -1,0 +1,27 @@
+[package]
+name = "kitsunarr-scheduler"
+description = "Tokio-based background task scheduler for Kitsunarr (history, progress, cancellation)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+kitsunarr-db = { workspace = true }
+kitsunarr-domain = { workspace = true }
+kitsunarr-events = { workspace = true }
+kitsunarr-api = { workspace = true }
+tokio = { workspace = true }
+tokio-util = { workspace = true }
+chrono = { workspace = true }
+tracing = { workspace = true }
+futures = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }
+sqlx = { workspace = true }
+
+[lints]
+workspace = true

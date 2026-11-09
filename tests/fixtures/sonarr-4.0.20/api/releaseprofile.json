@@ -1,0 +1,38 @@
+[
+ {
+  "enabled": true,
+  "id": 1,
+  "ignored": [
+   "CAM",
+   "TS"
+  ],
+  "indexerId": 0,
+  "name": "No CAM",
+  "required": [],
+  "tags": []
+ },
+ {
+  "enabled": true,
+  "id": 2,
+  "ignored": [
+   "CAM",
+   "TS"
+  ],
+  "indexerId": 0,
+  "name": "No CAM",
+  "required": [],
+  "tags": []
+ },
+ {
+  "enabled": true,
+  "id": 3,
+  "ignored": [
+   "CAM",
+   "TS"
+  ],
+  "indexerId": 0,
+  "name": "No CAM",
+  "required": [],
+  "tags": []
+ }
+]

@@ -1,0 +1,395 @@
+[
+ {
+  "added": "2026-11-09T17:28:34Z",
+  "airTime": "21:00",
+  "alternateTitles": [],
+  "certification": "TV-MA",
+  "cleanTitle": "breakingbad",
+  "ended": true,
+  "firstAired": "2008-01-20T00:00:00Z",
+  "genres": [
+   "Crime",
+   "Drama",
+   "Thriller",
+   "Western"
+  ],
+  "id": 1,
+  "images": [
+   {
+    "coverType": "banner",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/81189-g21.jpg",
+    "url": "/MediaCover/1/banner.jpg?lastWrite=639298421145080147"
+   },
+   {
+    "coverType": "poster",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/posters/81189-10.jpg",
+    "url": "/MediaCover/1/poster.jpg?lastWrite=639298421146470143"
+   },
+   {
+    "coverType": "fanart",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/81189-21.jpg",
+    "url": "/MediaCover/1/fanart.jpg?lastWrite=639298421147470139"
+   },
+   {
+    "coverType": "clearlogo",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/81189/clearlogo/611b4df33bac5.png",
+    "url": "/MediaCover/1/clearlogo.png?lastWrite=639298421147930138"
+   }
+  ],
+  "imdbId": "tt0903747",
+  "languageProfileId": 1,
+  "lastAired": "2013-09-29T00:00:00Z",
+  "monitorNewItems": "all",
+  "monitored": true,
+  "network": "AMC",
+  "originalLanguage": {
+   "id": 1,
+   "name": "English"
+  },
+  "overview": "",
+  "path": "/media/tv/Breaking Bad",
+  "previousAiring": "2013-09-30T01:00:00Z",
+  "qualityProfileId": 7,
+  "ratings": {
+   "value": 9.5,
+   "votes": 2703038
+  },
+  "rootFolderPath": "/media/tv",
+  "runtime": 48,
+  "seasonFolder": true,
+  "seasons": [
+   {
+    "monitored": false,
+    "seasonNumber": 0,
+    "statistics": {
+     "episodeCount": 0,
+     "episodeFileCount": 0,
+     "percentOfEpisodes": 0,
+     "releaseGroups": [],
+     "sizeOnDisk": 0,
+     "totalEpisodeCount": 18
+    }
+   },
+   {
+    "monitored": true,
+    "seasonNumber": 1,
+    "statistics": {
+     "episodeCount": 7,
+     "episodeFileCount": 7,
+     "percentOfEpisodes": 100,
+     "previousAiring": "2008-03-10T01:00:00Z",
+     "releaseGroups": [
+      "ROVERS"
+     ],
+     "sizeOnDisk": 13212057600,
+     "totalEpisodeCount": 7
+    }
+   },
+   {
+    "monitored": true,
+    "seasonNumber": 2,
+    "statistics": {
+     "episodeCount": 13,
+     "episodeFileCount": 0,
+     "percentOfEpisodes": 0,
+     "previousAiring": "2009-06-01T01:00:00Z",
+     "releaseGroups": [],
+     "sizeOnDisk": 0,
+     "totalEpisodeCount": 13
+    }
+   },
+   {
+    "monitored": true,
+    "seasonNumber": 3,
+    "statistics": {
+     "episodeCount": 13,
+     "episodeFileCount": 0,
+     "percentOfEpisodes": 0,
+     "previousAiring": "2010-06-14T01:00:00Z",
+     "releaseGroups": [],
+     "sizeOnDisk": 0,
+     "totalEpisodeCount": 13
+    }
+   },
+   {
+    "monitored": true,
+    "seasonNumber": 4,
+    "statistics": {
+     "episodeCount": 13,
+     "episodeFileCount": 0,
+     "percentOfEpisodes": 0,
+     "previousAiring": "2011-10-10T01:00:00Z",
+     "releaseGroups": [],
+     "sizeOnDisk": 0,
+     "totalEpisodeCount": 13
+    }
+   },
+   {
+    "monitored": true,
+    "seasonNumber": 5,
+    "statistics": {
+     "episodeCount": 16,
+     "episodeFileCount": 0,
+     "percentOfEpisodes": 0,
+     "previousAiring": "2013-09-30T01:00:00Z",
+     "releaseGroups": [],
+     "sizeOnDisk": 0,
+     "totalEpisodeCount": 16
+    }
+   }
+  ],
+  "seriesType": "standard",
+  "sortTitle": "breaking bad",
+  "statistics": {
+   "episodeCount": 62,
+   "episodeFileCount": 7,
+   "percentOfEpisodes": 11.290322580645162,
+   "releaseGroups": [
+    "ROVERS"
+   ],
+   "seasonCount": 5,
+   "sizeOnDisk": 13212057600,
+   "totalEpisodeCount": 80
+  },
+  "status": "ended",
+  "tags": [
+   1
+  ],
+  "title": "Breaking Bad",
+  "titleSlug": "breaking-bad",
+  "tmdbId": 1396,
+  "tvMazeId": 169,
+  "tvRageId": 18164,
+  "tvdbId": 81189,
+  "useSceneNumbering": false,
+  "year": 2008
+ },
+ {
+  "added": "2026-11-09T17:28:34Z",
+  "airTime": "21:00",
+  "alternateTitles": [],
+  "certification": "TV-MA",
+  "cleanTitle": "chernobyl",
+  "ended": true,
+  "firstAired": "2019-05-06T00:00:00Z",
+  "genres": [
+   "Drama",
+   "History",
+   "Mini-Series",
+   "Thriller"
+  ],
+  "id": 2,
+  "images": [
+   {
+    "coverType": "banner",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/360893/banners/6751caac5a993.jpg",
+    "url": "/MediaCover/2/banner.jpg?lastWrite=639298421149410133"
+   },
+   {
+    "coverType": "poster",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/posters/5cc12861c93e4.jpg",
+    "url": "/MediaCover/2/poster.jpg?lastWrite=639298421149930131"
+   },
+   {
+    "coverType": "fanart",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/series/360893/backgrounds/62017319.jpg",
+    "url": "/MediaCover/2/fanart.jpg?lastWrite=639298421150810128"
+   },
+   {
+    "coverType": "clearlogo",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/360893/clearlogo/611be4d52d6a8.png",
+    "url": "/MediaCover/2/clearlogo.png?lastWrite=639298421151230127"
+   }
+  ],
+  "imdbId": "tt7366338",
+  "languageProfileId": 1,
+  "lastAired": "2019-06-03T00:00:00Z",
+  "monitorNewItems": "all",
+  "monitored": true,
+  "network": "HBO",
+  "originalLanguage": {
+   "id": 1,
+   "name": "English"
+  },
+  "overview": "",
+  "path": "/media/tv/Chernobyl",
+  "previousAiring": "2019-06-04T01:00:00Z",
+  "qualityProfileId": 7,
+  "ratings": {
+   "value": 9.3,
+   "votes": 1075848
+  },
+  "rootFolderPath": "/media/tv",
+  "runtime": 65,
+  "seasonFolder": true,
+  "seasons": [
+   {
+    "monitored": false,
+    "seasonNumber": 0,
+    "statistics": {
+     "episodeCount": 0,
+     "episodeFileCount": 0,
+     "percentOfEpisodes": 0,
+     "releaseGroups": [],
+     "sizeOnDisk": 0,
+     "totalEpisodeCount": 12
+    }
+   },
+   {
+    "monitored": true,
+    "seasonNumber": 1,
+    "statistics": {
+     "episodeCount": 5,
+     "episodeFileCount": 3,
+     "percentOfEpisodes": 60.0,
+     "previousAiring": "2019-06-04T01:00:00Z",
+     "releaseGroups": [
+      "NTb"
+     ],
+     "sizeOnDisk": 18874368000,
+     "totalEpisodeCount": 5
+    }
+   }
+  ],
+  "seriesType": "standard",
+  "sortTitle": "chernobyl",
+  "statistics": {
+   "episodeCount": 5,
+   "episodeFileCount": 3,
+   "percentOfEpisodes": 60.0,
+   "releaseGroups": [
+    "NTb"
+   ],
+   "seasonCount": 1,
+   "sizeOnDisk": 18874368000,
+   "totalEpisodeCount": 17
+  },
+  "status": "ended",
+  "tags": [
+   4
+  ],
+  "title": "Chernobyl",
+  "titleSlug": "chernobyl",
+  "tmdbId": 87108,
+  "tvMazeId": 30770,
+  "tvRageId": 0,
+  "tvdbId": 360893,
+  "useSceneNumbering": false,
+  "year": 2019
+ },
+ {
+  "added": "2026-11-09T17:28:34Z",
+  "airTime": "17:00",
+  "alternateTitles": [],
+  "certification": "TV-MA",
+  "cleanTitle": "cowboybebop",
+  "ended": true,
+  "firstAired": "1998-04-03T00:00:00Z",
+  "genres": [
+   "Action",
+   "Adventure",
+   "Animation",
+   "Anime",
+   "Comedy",
+   "Drama",
+   "Science Fiction",
+   "Western"
+  ],
+  "id": 3,
+  "images": [
+   {
+    "coverType": "banner",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/76885-g2.jpg",
+    "url": "/MediaCover/3/banner.jpg?lastWrite=639298421150120130"
+   },
+   {
+    "coverType": "poster",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/posters/76885-3.jpg",
+    "url": "/MediaCover/3/poster.jpg?lastWrite=639298421150600129"
+   },
+   {
+    "coverType": "fanart",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/76885-20.jpg",
+    "url": "/MediaCover/3/fanart.jpg?lastWrite=639298421151030127"
+   },
+   {
+    "coverType": "clearlogo",
+    "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/76885/clearlogo/611b7facc3918.png",
+    "url": "/MediaCover/3/clearlogo.png?lastWrite=639298421151440126"
+   }
+  ],
+  "imdbId": "tt0213338",
+  "languageProfileId": 1,
+  "lastAired": "1999-04-23T00:00:00Z",
+  "monitorNewItems": "all",
+  "monitored": true,
+  "network": "WOWOW",
+  "originalLanguage": {
+   "id": 8,
+   "name": "Japanese"
+  },
+  "overview": "",
+  "path": "/media/anime/Cowboy Bebop",
+  "qualityProfileId": 6,
+  "ratings": {
+   "value": 8.9,
+   "votes": 175082
+  },
+  "rootFolderPath": "/media/anime",
+  "runtime": 25,
+  "seasonFolder": true,
+  "seasons": [
+   {
+    "monitored": false,
+    "seasonNumber": 0,
+    "statistics": {
+     "episodeCount": 0,
+     "episodeFileCount": 0,
+     "percentOfEpisodes": 0,
+     "releaseGroups": [],
+     "sizeOnDisk": 0,
+     "totalEpisodeCount": 4
+    }
+   },
+   {
+    "monitored": false,
+    "seasonNumber": 1,
+    "statistics": {
+     "episodeCount": 5,
+     "episodeFileCount": 5,
+     "percentOfEpisodes": 100,
+     "releaseGroups": [
+      "SubsPlease"
+     ],
+     "sizeOnDisk": 3670016000,
+     "totalEpisodeCount": 26
+    }
+   }
+  ],
+  "seriesType": "anime",
+  "sortTitle": "cowboy bebop",
+  "statistics": {
+   "episodeCount": 5,
+   "episodeFileCount": 5,
+   "percentOfEpisodes": 100,
+   "releaseGroups": [
+    "SubsPlease"
+   ],
+   "seasonCount": 1,
+   "sizeOnDisk": 3670016000,
+   "totalEpisodeCount": 30
+  },
+  "status": "ended",
+  "tags": [
+   2
+  ],
+  "title": "Cowboy Bebop",
+  "titleSlug": "cowboy-bebop",
+  "tmdbId": 30991,
+  "tvMazeId": 1121,
+  "tvRageId": 3157,
+  "tvdbId": 76885,
+  "useSceneNumbering": false,
+  "year": 1998
+ }
+]

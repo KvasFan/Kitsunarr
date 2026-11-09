@@ -1,0 +1,62 @@
+[
+ {
+  "autoTagIds": [],
+  "delayProfileIds": [
+   2
+  ],
+  "downloadClientIds": [
+   3
+  ],
+  "id": 1,
+  "importListIds": [],
+  "indexerIds": [],
+  "label": "4k",
+  "notificationIds": [],
+  "restrictionIds": [],
+  "seriesIds": [
+   1
+  ]
+ },
+ {
+  "autoTagIds": [],
+  "delayProfileIds": [],
+  "downloadClientIds": [],
+  "id": 2,
+  "importListIds": [],
+  "indexerIds": [
+   1
+  ],
+  "label": "anime",
+  "notificationIds": [],
+  "restrictionIds": [],
+  "seriesIds": [
+   3
+  ]
+ },
+ {
+  "autoTagIds": [],
+  "delayProfileIds": [],
+  "downloadClientIds": [],
+  "id": 3,
+  "importListIds": [],
+  "indexerIds": [],
+  "label": "kids",
+  "notificationIds": [],
+  "restrictionIds": [],
+  "seriesIds": []
+ },
+ {
+  "autoTagIds": [],
+  "delayProfileIds": [],
+  "downloadClientIds": [],
+  "id": 4,
+  "importListIds": [],
+  "indexerIds": [],
+  "label": "requested",
+  "notificationIds": [],
+  "restrictionIds": [],
+  "seriesIds": [
+   2
+  ]
+ }
+]

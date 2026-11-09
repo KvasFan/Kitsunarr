@@ -1,0 +1,40 @@
+[package]
+name = "kitsunarr-server"
+description = "Kitsunarr server: REST API, background services and the embedded web interface in one executable."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+build = "build.rs"
+
+[[bin]]
+name = "kitsunarr"
+path = "src/main.rs"
+
+[dependencies]
+kitsunarr-api = { workspace = true }
+kitsunarr-auth = { workspace = true }
+kitsunarr-config = { workspace = true }
+kitsunarr-db = { workspace = true }
+kitsunarr-events = { workspace = true }
+kitsunarr-domain = { workspace = true }
+kitsunarr-migrate = { workspace = true }
+kitsunarr-scheduler = { workspace = true }
+tokio = { workspace = true }
+tokio-util = { workspace = true }
+axum = { workspace = true }
+anyhow = { workspace = true }
+clap = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+rust-embed = { workspace = true }
+reqwest = { workspace = true }
+serde_json = { workspace = true }
+hex = { workspace = true }
+chrono = { workspace = true }
+tempfile = { workspace = true }
+
+[lints]
+workspace = true

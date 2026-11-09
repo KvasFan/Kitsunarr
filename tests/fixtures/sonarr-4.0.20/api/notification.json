@@ -1,0 +1,451 @@
+[
+ {
+  "configContract": "DiscordSettings",
+  "fields": [
+   {
+    "advanced": false,
+    "helpText": "Discord channel webhook url",
+    "isFloat": false,
+    "label": "Webhook URL",
+    "name": "webHookUrl",
+    "order": 0,
+    "privacy": "normal",
+    "type": "textbox",
+    "value": "http://hooks.local:18999/api/webhooks/000/fixture-token"
+   },
+   {
+    "advanced": false,
+    "helpText": "The username to post as, defaults to Discord webhook default",
+    "isFloat": false,
+    "label": "Username",
+    "name": "username",
+    "order": 1,
+    "privacy": "userName",
+    "type": "textbox",
+    "value": "Kitsunarr Fixture"
+   },
+   {
+    "advanced": false,
+    "helpText": "Change the avatar that is used for messages from this integration",
+    "isFloat": false,
+    "label": "Avatar",
+    "name": "avatar",
+    "order": 2,
+    "privacy": "normal",
+    "type": "textbox"
+   },
+   {
+    "advanced": true,
+    "helpText": "Override the embed author that shows for this notification. Blank is instance name",
+    "isFloat": false,
+    "label": "Author",
+    "name": "author",
+    "order": 3,
+    "privacy": "normal",
+    "type": "textbox"
+   },
+   {
+    "advanced": true,
+    "helpText": "Change the fields that are passed in for this 'on grab' notification",
+    "isFloat": false,
+    "label": "On Grab Fields",
+    "name": "grabFields",
+    "order": 4,
+    "privacy": "normal",
+    "selectOptions": [
+     {
+      "name": "Overview",
+      "order": 0,
+      "value": 0
+     },
+     {
+      "name": "Rating",
+      "order": 1,
+      "value": 1
+     },
+     {
+      "name": "Genres",
+      "order": 2,
+      "value": 2
+     },
+     {
+      "name": "Quality",
+      "order": 3,
+      "value": 3
+     },
+     {
+      "name": "Group",
+      "order": 4,
+      "value": 4
+     },
+     {
+      "name": "Size",
+      "order": 5,
+      "value": 5
+     },
+     {
+      "name": "Links",
+      "order": 6,
+      "value": 6
+     },
+     {
+      "name": "Release",
+      "order": 7,
+      "value": 7
+     },
+     {
+      "name": "Poster",
+      "order": 8,
+      "value": 8
+     },
+     {
+      "name": "Fanart",
+      "order": 9,
+      "value": 9
+     },
+     {
+      "name": "Indexer",
+      "order": 10,
+      "value": 10
+     },
+     {
+      "name": "CustomFormats",
+      "order": 11,
+      "value": 11
+     },
+     {
+      "name": "CustomFormatScore",
+      "order": 12,
+      "value": 12
+     }
+    ],
+    "type": "select",
+    "value": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ]
+   },
+   {
+    "advanced": true,
+    "helpText": "Change the fields that are passed in for this 'on import' notification",
+    "isFloat": false,
+    "label": "On Import Fields",
+    "name": "importFields",
+    "order": 5,
+    "privacy": "normal",
+    "selectOptions": [
+     {
+      "name": "Overview",
+      "order": 0,
+      "value": 0
+     },
+     {
+      "name": "Rating",
+      "order": 1,
+      "value": 1
+     },
+     {
+      "name": "Genres",
+      "order": 2,
+      "value": 2
+     },
+     {
+      "name": "Quality",
+      "order": 3,
+      "value": 3
+     },
+     {
+      "name": "Codecs",
+      "order": 4,
+      "value": 4
+     },
+     {
+      "name": "Group",
+      "order": 5,
+      "value": 5
+     },
+     {
+      "name": "Size",
+      "order": 6,
+      "value": 6
+     },
+     {
+      "name": "Languages",
+      "order": 7,
+      "value": 7
+     },
+     {
+      "name": "Subtitles",
+      "order": 8,
+      "value": 8
+     },
+     {
+      "name": "Links",
+      "order": 9,
+      "value": 9
+     },
+     {
+      "name": "Release",
+      "order": 10,
+      "value": 10
+     },
+     {
+      "name": "Poster",
+      "order": 11,
+      "value": 11
+     },
+     {
+      "name": "Fanart",
+      "order": 12,
+      "value": 12
+     },
+     {
+      "name": "CustomFormats",
+      "order": 13,
+      "value": 13
+     },
+     {
+      "name": "CustomFormatScore",
+      "order": 14,
+      "value": 14
+     }
+    ],
+    "type": "select",
+    "value": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ]
+   },
+   {
+    "advanced": true,
+    "helpText": "Change the fields that are passed in for this 'on manual interation' notification",
+    "isFloat": false,
+    "label": "On Manual Interaction Fields",
+    "name": "manualInteractionFields",
+    "order": 6,
+    "privacy": "normal",
+    "selectOptions": [
+     {
+      "name": "Overview",
+      "order": 0,
+      "value": 0
+     },
+     {
+      "name": "Rating",
+      "order": 1,
+      "value": 1
+     },
+     {
+      "name": "Genres",
+      "order": 2,
+      "value": 2
+     },
+     {
+      "name": "Quality",
+      "order": 3,
+      "value": 3
+     },
+     {
+      "name": "Group",
+      "order": 4,
+      "value": 4
+     },
+     {
+      "name": "Size",
+      "order": 5,
+      "value": 5
+     },
+     {
+      "name": "Links",
+      "order": 6,
+      "value": 6
+     },
+     {
+      "name": "DownloadTitle",
+      "order": 7,
+      "value": 7
+     },
+     {
+      "name": "Poster",
+      "order": 8,
+      "value": 8
+     },
+     {
+      "name": "Fanart",
+      "order": 9,
+      "value": 9
+     }
+    ],
+    "type": "select",
+    "value": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9
+    ]
+   }
+  ],
+  "id": 2,
+  "implementation": "Discord",
+  "implementationName": "Discord",
+  "includeHealthWarnings": false,
+  "infoLink": "https://wiki.servarr.com/sonarr/supported#discord",
+  "name": "Discord (fixture)",
+  "onApplicationUpdate": false,
+  "onDownload": true,
+  "onEpisodeFileDelete": false,
+  "onEpisodeFileDeleteForUpgrade": false,
+  "onGrab": false,
+  "onHealthIssue": false,
+  "onHealthRestored": false,
+  "onImportComplete": false,
+  "onManualInteractionRequired": false,
+  "onRename": false,
+  "onSeriesAdd": true,
+  "onSeriesDelete": false,
+  "onUpgrade": true,
+  "supportsOnApplicationUpdate": true,
+  "supportsOnDownload": true,
+  "supportsOnEpisodeFileDelete": true,
+  "supportsOnEpisodeFileDeleteForUpgrade": true,
+  "supportsOnGrab": true,
+  "supportsOnHealthIssue": true,
+  "supportsOnHealthRestored": true,
+  "supportsOnImportComplete": true,
+  "supportsOnManualInteractionRequired": true,
+  "supportsOnRename": true,
+  "supportsOnSeriesAdd": true,
+  "supportsOnSeriesDelete": true,
+  "supportsOnUpgrade": true,
+  "tags": []
+ },
+ {
+  "configContract": "WebhookSettings",
+  "fields": [
+   {
+    "advanced": false,
+    "isFloat": false,
+    "label": "Webhook URL",
+    "name": "url",
+    "order": 0,
+    "privacy": "normal",
+    "type": "url",
+    "value": "http://hooks.local:18999/kitsunarr"
+   },
+   {
+    "advanced": false,
+    "helpText": "Which HTTP method to use submit to the Webservice",
+    "isFloat": false,
+    "label": "Method",
+    "name": "method",
+    "order": 1,
+    "privacy": "normal",
+    "selectOptions": [
+     {
+      "name": "POST",
+      "order": 1,
+      "value": 1
+     },
+     {
+      "name": "PUT",
+      "order": 2,
+      "value": 2
+     }
+    ],
+    "type": "select",
+    "value": 1
+   },
+   {
+    "advanced": false,
+    "isFloat": false,
+    "label": "Username",
+    "name": "username",
+    "order": 2,
+    "privacy": "userName",
+    "type": "textbox",
+    "value": ""
+   },
+   {
+    "advanced": false,
+    "isFloat": false,
+    "label": "Password",
+    "name": "password",
+    "order": 3,
+    "privacy": "password",
+    "type": "password",
+    "value": ""
+   },
+   {
+    "advanced": true,
+    "isFloat": false,
+    "label": "Headers",
+    "name": "headers",
+    "order": 4,
+    "privacy": "normal",
+    "type": "keyValueList",
+    "value": []
+   }
+  ],
+  "id": 1,
+  "implementation": "Webhook",
+  "implementationName": "Webhook",
+  "includeHealthWarnings": false,
+  "infoLink": "https://wiki.servarr.com/sonarr/supported#webhook",
+  "name": "Webhook (fixture)",
+  "onApplicationUpdate": false,
+  "onDownload": true,
+  "onEpisodeFileDelete": false,
+  "onEpisodeFileDeleteForUpgrade": false,
+  "onGrab": true,
+  "onHealthIssue": true,
+  "onHealthRestored": false,
+  "onImportComplete": false,
+  "onManualInteractionRequired": false,
+  "onRename": false,
+  "onSeriesAdd": false,
+  "onSeriesDelete": false,
+  "onUpgrade": true,
+  "supportsOnApplicationUpdate": true,
+  "supportsOnDownload": true,
+  "supportsOnEpisodeFileDelete": true,
+  "supportsOnEpisodeFileDeleteForUpgrade": true,
+  "supportsOnGrab": true,
+  "supportsOnHealthIssue": true,
+  "supportsOnHealthRestored": true,
+  "supportsOnImportComplete": true,
+  "supportsOnManualInteractionRequired": true,
+  "supportsOnRename": true,
+  "supportsOnSeriesAdd": true,
+  "supportsOnSeriesDelete": true,
+  "supportsOnUpgrade": true,
+  "tags": []
+ }
+]

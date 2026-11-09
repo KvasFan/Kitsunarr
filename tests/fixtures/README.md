@@ -1,0 +1,31 @@
+# Test fixtures
+
+Real data produced by the applications Kitsunarr migrates from, used by `crates/kitsunarr-migrate/tests/fixtures.rs`.
+
+| Directory | Source application | Contents |
+|---|---|---|
+| `sonarr-4.0.20/` | `lscr.io/linuxserver/sonarr:latest` (4.0.20.3014-ls4), schema 217 | `backup.zip` created by Sonarr's own *Backup* command; `api/*.json` are `/api/v3` responses |
+| `tanukarr-0.1.5/` | `ghcr.io/kvasfan/tanukarr:0.1.5`, schema 254 | Same, including an AniList-owned movie and a TVmaze-owned series |
+
+## How they were generated
+
+1. Both containers were started with throwaway `/config` volumes, bound to localhost.
+2. `generate/mockservices.py` ran inside each container's network namespace, so that indexer, download-client and notification connection tests succeed against fake endpoints.
+3. `generate/populate.py` configured each instance through its API:
+   - root folders, tags, custom formats, a custom quality profile and a quality-definition change;
+   - two indexers, three download clients and two notifications, all with **fake** secrets;
+   - delay, release and remote-path rules, a list exclusion, naming and media-management changes;
+   - series added through each application's own metadata lookups.
+4. Sparse (zero-disk) media files named like real releases were created, and each series was rescanned, so the applications created real episode-file records.
+5. `generate/capture.py` saved the API responses and triggered a real backup.
+6. `generate/sanitize.py` processed the result:
+   - the instance API keys were replaced with fixed fake values;
+   - overviews, actors and translations were blanked;
+   - internal crypto salts were replaced and the `Users` table was emptied;
+   - the database was vacuumed.
+
+Python is used only by these developer scripts; Kitsunarr does not run Python.
+
+## Secrets
+
+All provider passwords and API keys in these files are fake (for example `fixture-qbit-password`). The fixture instance API keys are `0123456789abcdef0123456789abcdef` (Sonarr) and `fedcba9876543210fedcba9876543210` (Tanukarr).

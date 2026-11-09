@@ -1,0 +1,19 @@
+[
+ {
+  "absoluteEpisodeNumber": 1,
+  "airDate": "2001-09-01",
+  "airDateUtc": "2001-09-01T00:00:00Z",
+  "episodeFileId": 15,
+  "episodeNumber": 1,
+  "hasFile": true,
+  "id": 128,
+  "monitored": true,
+  "runtime": 115,
+  "seasonNumber": 1,
+  "seriesId": 4,
+  "title": "TBA",
+  "tvdbId": 0,
+  "unverifiedSceneNumbering": false,
+  "watched": false
+ }
+]

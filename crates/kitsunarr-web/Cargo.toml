@@ -1,0 +1,24 @@
+[package]
+name = "kitsunarr-web"
+description = "Kitsunarr browser interface (Dioxus, compiled to WebAssembly)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[dependencies]
+kitsunarr-domain = { workspace = true }
+kitsunarr-client = { workspace = true }
+dioxus = { workspace = true, features = ["web", "router", "lib", "launch", "logger"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true, features = ["wasmbind"] }
+web-sys = { workspace = true, features = ["EventSource", "MessageEvent", "Window", "Document", "Element", "HtmlElement", "Storage", "KeyboardEvent", "Location", "HtmlInputElement", "DomRect", "MediaQueryList"] }
+wasm-bindgen = { workspace = true }
+gloo-timers = { workspace = true }
+
+[lints]
+workspace = true

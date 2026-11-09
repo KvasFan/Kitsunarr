@@ -1,0 +1,42 @@
+[
+ {
+  "customFormatScore": 0,
+  "customFormats": [
+   {
+    "id": 3,
+    "name": "Not English"
+   }
+  ],
+  "dateAdded": "2026-11-09T17:33:59Z",
+  "id": 15,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 8,
+    "name": "Japanese"
+   }
+  ],
+  "path": "/media/movies/Cowboy Bebop - The Movie - Knockin' on Heaven's Door/Cowboy.Bebop.The.Movie.2001.1080p.BluRay.x264-AMIABLE.mkv",
+  "quality": {
+   "quality": {
+    "id": 7,
+    "isRetired": false,
+    "name": "Bluray-1080p",
+    "resolution": 1080,
+    "source": "bluray"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Cowboy.Bebop.The.Movie.2001.1080p.BluRay.x264-AMIABLE.mkv",
+  "releaseGroup": "AMIABLE",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 4,
+  "size": 4194304000
+ }
+]

@@ -1,0 +1,11 @@
+/target
+/dist
+/.dev
+*.db
+*.db-shm
+*.db-wal
+!/tests/fixtures/**
+.DS_Store
+.idea/
+*.swp
+/data

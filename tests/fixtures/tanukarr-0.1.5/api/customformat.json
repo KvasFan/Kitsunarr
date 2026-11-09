@@ -1,0 +1,542 @@
+[
+ {
+  "id": 1,
+  "includeCustomFormatWhenRenaming": true,
+  "name": "x265",
+  "specifications": [
+   {
+    "fields": [
+     {
+      "advanced": false,
+      "helpText": "Custom Format RegEx is Case Insensitive",
+      "isFloat": false,
+      "label": "Regular Expression",
+      "name": "value",
+      "order": 0,
+      "privacy": "normal",
+      "type": "textbox",
+      "value": "[xh][ ._-]?265|\\bHEVC\\b"
+     },
+     {
+      "advanced": false,
+      "helpText": "Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.",
+      "isFloat": false,
+      "label": "Ignore episode titles",
+      "name": "excludeEpisodeTitles",
+      "order": 1,
+      "privacy": "normal",
+      "type": "checkbox",
+      "value": false
+     },
+     {
+      "advanced": false,
+      "helpText": "0 applies to every match. Positive numbers create alternatives: group 1 OR group 2. Within a group, different condition types must all match; Required keeps its usual meaning.",
+      "isFloat": false,
+      "label": "Alternative group",
+      "name": "alternativeGroup",
+      "order": 2,
+      "privacy": "normal",
+      "type": "number",
+      "value": 0
+     }
+    ],
+    "implementation": "ReleaseTitleSpecification",
+    "implementationName": "Release Title",
+    "infoLink": "https://wiki.servarr.com/sonarr/settings#custom-formats-2",
+    "name": "x265/HEVC",
+    "negate": false,
+    "required": true
+   }
+  ]
+ },
+ {
+  "id": 2,
+  "includeCustomFormatWhenRenaming": false,
+  "name": "Remux",
+  "specifications": [
+   {
+    "fields": [
+     {
+      "advanced": false,
+      "isFloat": false,
+      "label": "Source",
+      "name": "value",
+      "order": 0,
+      "privacy": "normal",
+      "selectOptions": [
+       {
+        "name": "Unknown",
+        "order": 0,
+        "value": 0
+       },
+       {
+        "name": "Television",
+        "order": 1,
+        "value": 1
+       },
+       {
+        "name": "TelevisionRaw",
+        "order": 2,
+        "value": 2
+       },
+       {
+        "name": "Web",
+        "order": 3,
+        "value": 3
+       },
+       {
+        "name": "WebRip",
+        "order": 4,
+        "value": 4
+       },
+       {
+        "name": "DVD",
+        "order": 5,
+        "value": 5
+       },
+       {
+        "name": "Bluray",
+        "order": 6,
+        "value": 6
+       },
+       {
+        "name": "BlurayRaw",
+        "order": 7,
+        "value": 7
+       }
+      ],
+      "type": "select",
+      "value": 7
+     },
+     {
+      "advanced": false,
+      "helpText": "0 applies to every match. Positive numbers create alternatives: group 1 OR group 2. Within a group, different condition types must all match; Required keeps its usual meaning.",
+      "isFloat": false,
+      "label": "Alternative group",
+      "name": "alternativeGroup",
+      "order": 1,
+      "privacy": "normal",
+      "type": "number",
+      "value": 0
+     }
+    ],
+    "implementation": "SourceSpecification",
+    "implementationName": "Source",
+    "infoLink": "https://wiki.servarr.com/sonarr/settings#custom-formats-2",
+    "name": "Remux",
+    "negate": false,
+    "required": true
+   }
+  ]
+ },
+ {
+  "id": 3,
+  "includeCustomFormatWhenRenaming": false,
+  "name": "Not English",
+  "specifications": [
+   {
+    "fields": [
+     {
+      "advanced": false,
+      "isFloat": false,
+      "label": "Language",
+      "name": "value",
+      "order": 0,
+      "privacy": "normal",
+      "selectOptions": [
+       {
+        "name": "Original",
+        "order": 0,
+        "value": -2
+       },
+       {
+        "name": "Unknown",
+        "order": 0,
+        "value": 0
+       },
+       {
+        "name": "Arabic",
+        "order": 0,
+        "value": 26
+       },
+       {
+        "name": "Azerbaijani",
+        "order": 0,
+        "value": 47
+       },
+       {
+        "name": "Bosnian",
+        "order": 0,
+        "value": 41
+       },
+       {
+        "name": "Bulgarian",
+        "order": 0,
+        "value": 28
+       },
+       {
+        "name": "Catalan",
+        "order": 0,
+        "value": 38
+       },
+       {
+        "name": "Chinese",
+        "order": 0,
+        "value": 10
+       },
+       {
+        "name": "Croatian",
+        "order": 0,
+        "value": 39
+       },
+       {
+        "name": "Czech",
+        "order": 0,
+        "value": 25
+       },
+       {
+        "name": "Danish",
+        "order": 0,
+        "value": 6
+       },
+       {
+        "name": "Dutch",
+        "order": 0,
+        "value": 7
+       },
+       {
+        "name": "English",
+        "order": 0,
+        "value": 1
+       },
+       {
+        "name": "Estonian",
+        "order": 0,
+        "value": 42
+       },
+       {
+        "name": "Finnish",
+        "order": 0,
+        "value": 16
+       },
+       {
+        "name": "Flemish",
+        "order": 0,
+        "value": 19
+       },
+       {
+        "name": "French",
+        "order": 0,
+        "value": 2
+       },
+       {
+        "name": "Georgian",
+        "order": 0,
+        "value": 52
+       },
+       {
+        "name": "German",
+        "order": 0,
+        "value": 4
+       },
+       {
+        "name": "Greek",
+        "order": 0,
+        "value": 20
+       },
+       {
+        "name": "Hebrew",
+        "order": 0,
+        "value": 23
+       },
+       {
+        "name": "Hindi",
+        "order": 0,
+        "value": 27
+       },
+       {
+        "name": "Hungarian",
+        "order": 0,
+        "value": 22
+       },
+       {
+        "name": "Icelandic",
+        "order": 0,
+        "value": 9
+       },
+       {
+        "name": "Indonesian",
+        "order": 0,
+        "value": 44
+       },
+       {
+        "name": "Irish",
+        "order": 0,
+        "value": 53
+       },
+       {
+        "name": "Italian",
+        "order": 0,
+        "value": 5
+       },
+       {
+        "name": "Japanese",
+        "order": 0,
+        "value": 8
+       },
+       {
+        "name": "Korean",
+        "order": 0,
+        "value": 21
+       },
+       {
+        "name": "Latvian",
+        "order": 0,
+        "value": 36
+       },
+       {
+        "name": "Lithuanian",
+        "order": 0,
+        "value": 24
+       },
+       {
+        "name": "Macedonian",
+        "order": 0,
+        "value": 45
+       },
+       {
+        "name": "Malay",
+        "order": 0,
+        "value": 49
+       },
+       {
+        "name": "Malayalam",
+        "order": 0,
+        "value": 29
+       },
+       {
+        "name": "Norwegian",
+        "order": 0,
+        "value": 15
+       },
+       {
+        "name": "Persian",
+        "order": 0,
+        "value": 37
+       },
+       {
+        "name": "Polish",
+        "order": 0,
+        "value": 12
+       },
+       {
+        "name": "Portuguese",
+        "order": 0,
+        "value": 18
+       },
+       {
+        "name": "Portuguese (Brazil)",
+        "order": 0,
+        "value": 33
+       },
+       {
+        "name": "Romanian",
+        "order": 0,
+        "value": 35
+       },
+       {
+        "name": "Romansh",
+        "order": 0,
+        "value": 51
+       },
+       {
+        "name": "Russian",
+        "order": 0,
+        "value": 11
+       },
+       {
+        "name": "Serbian",
+        "order": 0,
+        "value": 40
+       },
+       {
+        "name": "Slovak",
+        "order": 0,
+        "value": 31
+       },
+       {
+        "name": "Slovenian",
+        "order": 0,
+        "value": 46
+       },
+       {
+        "name": "Spanish",
+        "order": 0,
+        "value": 3
+       },
+       {
+        "name": "Spanish (Latino)",
+        "order": 0,
+        "value": 34
+       },
+       {
+        "name": "Swedish",
+        "order": 0,
+        "value": 14
+       },
+       {
+        "name": "Tamil",
+        "order": 0,
+        "value": 43
+       },
+       {
+        "name": "Thai",
+        "order": 0,
+        "value": 32
+       },
+       {
+        "name": "Turkish",
+        "order": 0,
+        "value": 17
+       },
+       {
+        "name": "Ukrainian",
+        "order": 0,
+        "value": 30
+       },
+       {
+        "name": "Urdu",
+        "order": 0,
+        "value": 50
+       },
+       {
+        "name": "Uzbek",
+        "order": 0,
+        "value": 48
+       },
+       {
+        "name": "Vietnamese",
+        "order": 0,
+        "value": 13
+       }
+      ],
+      "type": "select",
+      "value": 1
+     },
+     {
+      "advanced": false,
+      "helpText": "Matches if any language other than the selected language is present",
+      "isFloat": false,
+      "label": "Except Language",
+      "name": "exceptLanguage",
+      "order": 1,
+      "privacy": "normal",
+      "type": "checkbox",
+      "value": false
+     },
+     {
+      "advanced": false,
+      "helpText": "0 applies to every match. Positive numbers create alternatives: group 1 OR group 2. Within a group, different condition types must all match; Required keeps its usual meaning.",
+      "isFloat": false,
+      "label": "Alternative group",
+      "name": "alternativeGroup",
+      "order": 2,
+      "privacy": "normal",
+      "type": "number",
+      "value": 0
+     }
+    ],
+    "implementation": "LanguageSpecification",
+    "implementationName": "Language",
+    "infoLink": "https://wiki.servarr.com/sonarr/settings#custom-formats-2",
+    "name": "English",
+    "negate": true,
+    "required": true
+   }
+  ]
+ },
+ {
+  "id": 4,
+  "includeCustomFormatWhenRenaming": false,
+  "name": "Bad Groups",
+  "specifications": [
+   {
+    "fields": [
+     {
+      "advanced": false,
+      "helpText": "Custom Format RegEx is Case Insensitive",
+      "isFloat": false,
+      "label": "Regular Expression",
+      "name": "value",
+      "order": 0,
+      "privacy": "normal",
+      "type": "textbox",
+      "value": "^(EVO|YIFY)$"
+     },
+     {
+      "advanced": false,
+      "helpText": "0 applies to every match. Positive numbers create alternatives: group 1 OR group 2. Within a group, different condition types must all match; Required keeps its usual meaning.",
+      "isFloat": false,
+      "label": "Alternative group",
+      "name": "alternativeGroup",
+      "order": 1,
+      "privacy": "normal",
+      "type": "number",
+      "value": 0
+     }
+    ],
+    "implementation": "ReleaseGroupSpecification",
+    "implementationName": "Release Group",
+    "infoLink": "https://wiki.servarr.com/sonarr/settings#custom-formats-2",
+    "name": "BadGroup",
+    "negate": false,
+    "required": false
+   },
+   {
+    "fields": [
+     {
+      "advanced": false,
+      "helpText": "Release must be greater than this size",
+      "isFloat": true,
+      "label": "Minimum Size",
+      "name": "min",
+      "order": 0,
+      "privacy": "normal",
+      "type": "number",
+      "unit": "GB",
+      "value": 0
+     },
+     {
+      "advanced": false,
+      "helpText": "Release must be less than or equal to this size",
+      "isFloat": true,
+      "label": "Maximum Size",
+      "name": "max",
+      "order": 1,
+      "privacy": "normal",
+      "type": "number",
+      "unit": "GB",
+      "value": 0.4
+     },
+     {
+      "advanced": false,
+      "helpText": "0 applies to every match. Positive numbers create alternatives: group 1 OR group 2. Within a group, different condition types must all match; Required keeps its usual meaning.",
+      "isFloat": false,
+      "label": "Alternative group",
+      "name": "alternativeGroup",
+      "order": 2,
+      "privacy": "normal",
+      "type": "number",
+      "value": 0
+     }
+    ],
+    "implementation": "SizeSpecification",
+    "implementationName": "Size",
+    "infoLink": "https://wiki.servarr.com/sonarr/settings#custom-formats-2",
+    "name": "Small",
+    "negate": false,
+    "required": false
+   }
+  ]
+ }
+]

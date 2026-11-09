@@ -1,0 +1,142 @@
+[workspace]
+resolver = "3"
+members = [
+    "apps/kitsunarr-server",
+    "crates/kitsunarr-api",
+    "crates/kitsunarr-auth",
+    "crates/kitsunarr-client",
+    "crates/kitsunarr-config",
+    "crates/kitsunarr-db",
+    "crates/kitsunarr-domain",
+    "crates/kitsunarr-events",
+    "crates/kitsunarr-migrate",
+    "crates/kitsunarr-scheduler",
+    "crates/kitsunarr-web",
+]
+# The web crate only makes sense for wasm32; `cargo build` on the host still
+# type-checks it, which keeps CI honest, but the shipped artefact is produced by `dx`.
+default-members = [
+    "apps/kitsunarr-server",
+    "crates/kitsunarr-api",
+    "crates/kitsunarr-auth",
+    "crates/kitsunarr-client",
+    "crates/kitsunarr-config",
+    "crates/kitsunarr-db",
+    "crates/kitsunarr-domain",
+    "crates/kitsunarr-events",
+    "crates/kitsunarr-migrate",
+    "crates/kitsunarr-scheduler",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.99"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/KvasFan/Kitsunarr"
+homepage = "https://github.com/KvasFan/Kitsunarr"
+authors = ["Kitsunarr contributors"]
+description = "A modern Rust-powered media manager for TV, anime and movies."
+
+[workspace.dependencies]
+# Internal crates
+kitsunarr-api = { path = "crates/kitsunarr-api" }
+kitsunarr-auth = { path = "crates/kitsunarr-auth" }
+kitsunarr-client = { path = "crates/kitsunarr-client" }
+kitsunarr-config = { path = "crates/kitsunarr-config" }
+kitsunarr-db = { path = "crates/kitsunarr-db" }
+kitsunarr-domain = { path = "crates/kitsunarr-domain" }
+kitsunarr-events = { path = "crates/kitsunarr-events" }
+kitsunarr-migrate = { path = "crates/kitsunarr-migrate" }
+kitsunarr-scheduler = { path = "crates/kitsunarr-scheduler" }
+
+# Async runtime and HTTP server
+tokio = { version = "1.54", features = ["rt-multi-thread", "macros", "signal", "fs", "time", "sync", "net"] }
+tokio-util = { version = "0.7", features = ["rt"] }
+futures = "0.3"
+axum = { version = "0.8.9", features = ["macros", "multipart"] }
+axum-extra = { version = "0.12", features = ["cookie", "typed-header", "query"] }
+tower = { version = "0.5", features = ["util", "timeout", "limit"] }
+tower-http = { version = "0.7", features = ["trace", "compression-br", "compression-gzip", "timeout", "limit", "request-id", "set-header", "sensitive-headers", "catch-panic", "util", "csrf"] }
+http = "1"
+
+# Database
+sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "sqlite-bundled", "migrate", "json", "chrono", "macros"] }
+
+# HTTP client (rustls with the platform verifier)
+reqwest = { version = "0.13", default-features = false, features = ["json", "query", "form", "rustls", "http2", "charset"] }
+
+# Serialisation and errors
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+quick-xml = { version = "0.42", features = ["serialize"] }
+thiserror = "2"
+anyhow = "1"
+
+# Observability
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "fmt"] }
+
+# OpenAPI
+utoipa = { version = "6", features = ["axum_extras", "chrono"] }
+utoipa-axum = "0.3"
+
+# Security
+argon2 = "0.6"
+rand = "0.10"
+sha2 = "0.11"
+base64 = "0.23"
+hex = "0.4"
+subtle = "2"
+
+# Misc
+chrono = { version = "0.4.45", default-features = false, features = ["serde", "clock", "std"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+regex = "1"
+url = { version = "2", features = ["serde"] }
+clap = { version = "4", features = ["derive", "env"] }
+toml = "1"
+zip = { version = "9", default-features = false, features = ["deflate"] }
+rust-embed = { version = "8.13", features = ["interpolate-folder-path", "mime-guess"] }
+mime_guess = "2"
+tempfile = "3"
+fs4 = "1"
+http-body-util = "0.1"
+time = "0.3"
+
+# Frontend
+dioxus = { version = "0.7.10", default-features = false }
+web-sys = "0.3"
+wasm-bindgen = "0.2"
+gloo-timers = { version = "0.4", features = ["futures"] }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+rust_2018_idioms = { level = "warn", priority = -1 }
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+dbg_macro = "warn"
+todo = "warn"
+unimplemented = "warn"
+
+[profile.dev]
+# Keep debug builds usable without making incremental builds slow.
+opt-level = 0
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+opt-level = 1
+
+[profile.release]
+lto = "thin"
+codegen-units = 4
+strip = "symbols"
+
+# Used by `dx build --release --profile web-release` for the WebAssembly bundle.
+[profile.web-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+panic = "abort"

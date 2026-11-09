@@ -1,0 +1,14 @@
+{
+ "animeEpisodeFormat": "{Series Title} - S{season:00}E{episode:00} - {absolute:000} - {Episode Title} [{Quality Full}]",
+ "colonReplacementFormat": 4,
+ "customColonReplacementFormat": "",
+ "dailyEpisodeFormat": "{Series Title} - {Air-Date} - {Episode Title} {Quality Full}",
+ "id": 1,
+ "multiEpisodeStyle": 5,
+ "renameEpisodes": true,
+ "replaceIllegalCharacters": true,
+ "seasonFolderFormat": "Season {season}",
+ "seriesFolderFormat": "{Series Title}",
+ "specialsFolderFormat": "Specials",
+ "standardEpisodeFormat": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]"
+}

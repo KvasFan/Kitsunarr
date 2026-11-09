@@ -1,0 +1,247 @@
+[
+ {
+  "customFormatScore": 0,
+  "customFormats": [],
+  "dateAdded": "2026-11-09T17:33:42Z",
+  "id": 1,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Breaking Bad/Season 01/Breaking.Bad.S01E01.1080p.BluRay.x264-ROVERS.mkv",
+  "quality": {
+   "quality": {
+    "id": 7,
+    "isRetired": false,
+    "name": "Bluray-1080p",
+    "resolution": 1080,
+    "source": "bluray"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 01/Breaking.Bad.S01E01.1080p.BluRay.x264-ROVERS.mkv",
+  "releaseGroup": "ROVERS",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 1,
+  "size": 1887436800
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [],
+  "dateAdded": "2026-11-09T17:33:42Z",
+  "id": 2,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Breaking Bad/Season 01/Breaking.Bad.S01E02.1080p.BluRay.x264-ROVERS.mkv",
+  "quality": {
+   "quality": {
+    "id": 7,
+    "isRetired": false,
+    "name": "Bluray-1080p",
+    "resolution": 1080,
+    "source": "bluray"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 01/Breaking.Bad.S01E02.1080p.BluRay.x264-ROVERS.mkv",
+  "releaseGroup": "ROVERS",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 1,
+  "size": 1887436800
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [],
+  "dateAdded": "2026-11-09T17:33:42Z",
+  "id": 3,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Breaking Bad/Season 01/Breaking.Bad.S01E03.1080p.BluRay.x264-ROVERS.mkv",
+  "quality": {
+   "quality": {
+    "id": 7,
+    "isRetired": false,
+    "name": "Bluray-1080p",
+    "resolution": 1080,
+    "source": "bluray"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 01/Breaking.Bad.S01E03.1080p.BluRay.x264-ROVERS.mkv",
+  "releaseGroup": "ROVERS",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 1,
+  "size": 1887436800
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [],
+  "dateAdded": "2026-11-09T17:33:42Z",
+  "id": 4,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Breaking Bad/Season 01/Breaking.Bad.S01E04.1080p.BluRay.x264-ROVERS.mkv",
+  "quality": {
+   "quality": {
+    "id": 7,
+    "isRetired": false,
+    "name": "Bluray-1080p",
+    "resolution": 1080,
+    "source": "bluray"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 01/Breaking.Bad.S01E04.1080p.BluRay.x264-ROVERS.mkv",
+  "releaseGroup": "ROVERS",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 1,
+  "size": 1887436800
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [],
+  "dateAdded": "2026-11-09T17:33:42Z",
+  "id": 5,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Breaking Bad/Season 01/Breaking.Bad.S01E05.1080p.BluRay.x264-ROVERS.mkv",
+  "quality": {
+   "quality": {
+    "id": 7,
+    "isRetired": false,
+    "name": "Bluray-1080p",
+    "resolution": 1080,
+    "source": "bluray"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 01/Breaking.Bad.S01E05.1080p.BluRay.x264-ROVERS.mkv",
+  "releaseGroup": "ROVERS",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 1,
+  "size": 1887436800
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [],
+  "dateAdded": "2026-11-09T17:33:42Z",
+  "id": 6,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Breaking Bad/Season 01/Breaking.Bad.S01E06.1080p.BluRay.x264-ROVERS.mkv",
+  "quality": {
+   "quality": {
+    "id": 7,
+    "isRetired": false,
+    "name": "Bluray-1080p",
+    "resolution": 1080,
+    "source": "bluray"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 01/Breaking.Bad.S01E06.1080p.BluRay.x264-ROVERS.mkv",
+  "releaseGroup": "ROVERS",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 1,
+  "size": 1887436800
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [],
+  "dateAdded": "2026-11-09T17:33:42Z",
+  "id": 7,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Breaking Bad/Season 01/Breaking.Bad.S01E07.1080p.BluRay.x264-ROVERS.mkv",
+  "quality": {
+   "quality": {
+    "id": 7,
+    "isRetired": false,
+    "name": "Bluray-1080p",
+    "resolution": 1080,
+    "source": "bluray"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 01/Breaking.Bad.S01E07.1080p.BluRay.x264-ROVERS.mkv",
+  "releaseGroup": "ROVERS",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 1,
+  "size": 1887436800
+ }
+]

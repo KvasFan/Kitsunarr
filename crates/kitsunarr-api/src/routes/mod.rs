@@ -1,0 +1,111 @@
+//! Route registration. Each handler carries a `#[utoipa::path]` annotation; registering it
+//! through `routes!` keeps the router and the OpenAPI document identical.
+
+pub mod events;
+pub mod library;
+pub mod migration;
+pub mod settings;
+pub mod system;
+
+use utoipa_axum::router::OpenApiRouter;
+use utoipa_axum::routes;
+
+use crate::{AppState, auth};
+
+/// Routes reachable without authentication.
+pub fn public_routes() -> OpenApiRouter<AppState> {
+    OpenApiRouter::new()
+        .routes(routes!(auth::status))
+        .routes(routes!(auth::setup))
+        .routes(routes!(auth::login))
+        .routes(routes!(system::ping))
+}
+
+/// Routes requiring a session or API key.
+pub fn protected_routes() -> OpenApiRouter<AppState> {
+    OpenApiRouter::new()
+        // auth
+        .routes(routes!(auth::logout))
+        .routes(routes!(auth::change_password))
+        .routes(routes!(auth::get_api_key))
+        .routes(routes!(auth::regenerate_api_key))
+        // system
+        .routes(routes!(system::status))
+        .routes(routes!(system::health))
+        .routes(routes!(system::tasks))
+        .routes(routes!(system::run_task))
+        .routes(routes!(system::task_runs))
+        .routes(routes!(system::backups, system::create_backup))
+        .routes(routes!(events::stream))
+        // library
+        .routes(routes!(library::stats))
+        .routes(routes!(library::list_series))
+        .routes(routes!(
+            library::get_series,
+            library::update_series,
+            library::delete_series
+        ))
+        .routes(routes!(library::bulk_edit_series))
+        .routes(routes!(library::list_episodes))
+        .routes(routes!(library::set_episodes_monitored))
+        .routes(routes!(library::list_movies))
+        .routes(routes!(
+            library::get_movie,
+            library::update_movie,
+            library::delete_movie
+        ))
+        .routes(routes!(library::bulk_edit_movies))
+        .routes(routes!(library::list_collections))
+        .routes(routes!(library::calendar))
+        .routes(routes!(library::history))
+        // settings
+        .routes(routes!(settings::list_tags, settings::create_tag))
+        .routes(routes!(settings::delete_tag))
+        .routes(routes!(
+            settings::list_root_folders,
+            settings::create_root_folder
+        ))
+        .routes(routes!(settings::delete_root_folder))
+        .routes(routes!(
+            settings::list_quality_definitions,
+            settings::update_quality_definitions
+        ))
+        .routes(routes!(
+            settings::list_quality_profiles,
+            settings::create_quality_profile
+        ))
+        .routes(routes!(
+            settings::get_quality_profile,
+            settings::update_quality_profile,
+            settings::delete_quality_profile
+        ))
+        .routes(routes!(
+            settings::list_custom_formats,
+            settings::create_custom_format
+        ))
+        .routes(routes!(
+            settings::update_custom_format,
+            settings::delete_custom_format
+        ))
+        .routes(routes!(settings::list_providers, settings::create_provider))
+        .routes(routes!(
+            settings::get_provider,
+            settings::update_provider,
+            settings::delete_provider
+        ))
+        .routes(routes!(settings::get_naming, settings::put_naming))
+        .routes(routes!(
+            settings::get_media_management,
+            settings::put_media_management
+        ))
+        .routes(routes!(settings::get_general, settings::put_general))
+        .routes(routes!(settings::catalogues))
+        // migration
+        .routes(routes!(migration::create_api_session))
+        .routes(routes!(migration::upload_backup))
+        .routes(routes!(migration::get_session, migration::discard_session))
+        .routes(routes!(migration::plan))
+        .routes(routes!(migration::apply))
+        .routes(routes!(migration::runs))
+        .routes(routes!(migration::run_report))
+}

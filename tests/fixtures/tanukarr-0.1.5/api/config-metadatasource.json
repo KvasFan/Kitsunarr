@@ -1,0 +1,17 @@
+{
+ "disabledMetadataSources": [],
+ "id": 1,
+ "metadataSourceOrder": [
+  "tvdb",
+  "tmdb",
+  "aniList",
+  "myAnimeList",
+  "tvMaze",
+  "tmdbMovie",
+  "omdb"
+ ],
+ "omdbApiKey": "",
+ "omdbApiKeyConfigured": false,
+ "tmdbApiKey": "",
+ "tmdbApiKeyConfigured": false
+}

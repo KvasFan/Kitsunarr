@@ -1,0 +1,8 @@
+[
+ {
+  "host": "qbittorrent",
+  "id": 1,
+  "localPath": "/media/downloads/",
+  "remotePath": "/downloads/"
+ }
+]

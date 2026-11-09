@@ -1,0 +1,202 @@
+[
+ {
+  "customFormatScore": 0,
+  "customFormats": [
+   {
+    "id": 3,
+    "name": "Not English"
+   }
+  ],
+  "dateAdded": "2026-11-09T17:33:43Z",
+  "id": 10,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 8,
+    "name": "Japanese"
+   }
+  ],
+  "path": "/media/anime/Cowboy Bebop/Season 1/[SubsPlease] Cowboy Bebop - 02 (1080p) [ABCD1202].mkv",
+  "quality": {
+   "quality": {
+    "id": 9,
+    "isRetired": false,
+    "name": "HDTV-1080p",
+    "resolution": 1080,
+    "source": "television"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 1/[SubsPlease] Cowboy Bebop - 02 (1080p) [ABCD1202].mkv",
+  "releaseGroup": "SubsPlease",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 3,
+  "size": 734003200
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [
+   {
+    "id": 3,
+    "name": "Not English"
+   }
+  ],
+  "dateAdded": "2026-11-09T17:33:43Z",
+  "id": 11,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 8,
+    "name": "Japanese"
+   }
+  ],
+  "path": "/media/anime/Cowboy Bebop/Season 1/[SubsPlease] Cowboy Bebop - 03 (1080p) [ABCD1203].mkv",
+  "quality": {
+   "quality": {
+    "id": 9,
+    "isRetired": false,
+    "name": "HDTV-1080p",
+    "resolution": 1080,
+    "source": "television"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 1/[SubsPlease] Cowboy Bebop - 03 (1080p) [ABCD1203].mkv",
+  "releaseGroup": "SubsPlease",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 3,
+  "size": 734003200
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [
+   {
+    "id": 3,
+    "name": "Not English"
+   }
+  ],
+  "dateAdded": "2026-11-09T17:33:43Z",
+  "id": 12,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 8,
+    "name": "Japanese"
+   }
+  ],
+  "path": "/media/anime/Cowboy Bebop/Season 1/[SubsPlease] Cowboy Bebop - 01 (1080p) [ABCD1201].mkv",
+  "quality": {
+   "quality": {
+    "id": 9,
+    "isRetired": false,
+    "name": "HDTV-1080p",
+    "resolution": 1080,
+    "source": "television"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 1/[SubsPlease] Cowboy Bebop - 01 (1080p) [ABCD1201].mkv",
+  "releaseGroup": "SubsPlease",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 3,
+  "size": 734003200
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [
+   {
+    "id": 3,
+    "name": "Not English"
+   }
+  ],
+  "dateAdded": "2026-11-09T17:33:43Z",
+  "id": 13,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 8,
+    "name": "Japanese"
+   }
+  ],
+  "path": "/media/anime/Cowboy Bebop/Season 1/[SubsPlease] Cowboy Bebop - 04 (1080p) [ABCD1204].mkv",
+  "quality": {
+   "quality": {
+    "id": 9,
+    "isRetired": false,
+    "name": "HDTV-1080p",
+    "resolution": 1080,
+    "source": "television"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 1/[SubsPlease] Cowboy Bebop - 04 (1080p) [ABCD1204].mkv",
+  "releaseGroup": "SubsPlease",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 3,
+  "size": 734003200
+ },
+ {
+  "customFormatScore": 0,
+  "customFormats": [
+   {
+    "id": 3,
+    "name": "Not English"
+   }
+  ],
+  "dateAdded": "2026-11-09T17:33:43Z",
+  "id": 14,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 8,
+    "name": "Japanese"
+   }
+  ],
+  "path": "/media/anime/Cowboy Bebop/Season 1/[SubsPlease] Cowboy Bebop - 05 (1080p) [ABCD1205].mkv",
+  "quality": {
+   "quality": {
+    "id": 9,
+    "isRetired": false,
+    "name": "HDTV-1080p",
+    "resolution": 1080,
+    "source": "television"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 1/[SubsPlease] Cowboy Bebop - 05 (1080p) [ABCD1205].mkv",
+  "releaseGroup": "SubsPlease",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 3,
+  "size": 734003200
+ }
+]

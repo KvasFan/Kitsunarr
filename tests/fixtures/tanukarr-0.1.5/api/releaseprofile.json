@@ -1,0 +1,18 @@
+[
+ {
+  "airDateGracePeriod": 0,
+  "airDateRestriction": false,
+  "allowSeasonPackWithoutAllEpisodesAired": false,
+  "enabled": true,
+  "excludedTags": [],
+  "id": 1,
+  "ignored": [
+   "CAM",
+   "TS"
+  ],
+  "indexerId": 0,
+  "name": "No CAM",
+  "required": [],
+  "tags": []
+ }
+]

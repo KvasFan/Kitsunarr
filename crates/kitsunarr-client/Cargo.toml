@@ -1,0 +1,25 @@
+[package]
+name = "kitsunarr-client"
+description = "Typed HTTP client for the Kitsunarr REST API (native and WebAssembly)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+kitsunarr-domain = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+
+# Native builds use rustls; the browser build uses the Fetch API, so no TLS stack is compiled.
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+reqwest = { workspace = true, features = ["cookies"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+reqwest = { version = "0.13", default-features = false, features = ["json", "query"] }
+
+[lints]
+workspace = true

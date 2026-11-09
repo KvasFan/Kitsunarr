@@ -1,0 +1,24 @@
+[package]
+name = "kitsunarr-domain"
+description = "Shared domain model and API contract for Kitsunarr (compiles to native and WebAssembly)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[features]
+default = []
+# Derive OpenAPI schemas for the API contract (server side only).
+openapi = ["dep:utoipa"]
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+utoipa = { workspace = true, optional = true }
+
+[lints]
+workspace = true

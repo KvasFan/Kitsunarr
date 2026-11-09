@@ -1,0 +1,80 @@
+[
+ {
+  "customFormatScore": 100,
+  "customFormats": [
+   {
+    "id": 1,
+    "name": "x265"
+   }
+  ],
+  "dateAdded": "2026-11-09T17:31:39Z",
+  "id": 1,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Chernobyl/Season 1/Chernobyl.S01E01.2160p.WEB-DL.DDP5.1.HDR.HEVC-NTb.mkv",
+  "quality": {
+   "quality": {
+    "id": 18,
+    "name": "WEBDL-2160p",
+    "resolution": 2160,
+    "source": "web"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 1/Chernobyl.S01E01.2160p.WEB-DL.DDP5.1.HDR.HEVC-NTb.mkv",
+  "releaseGroup": "NTb",
+  "releaseType": "singleEpisode",
+  "seasonNumber": 1,
+  "seriesId": 2,
+  "size": 9437184000
+ },
+ {
+  "customFormatScore": 100,
+  "customFormats": [
+   {
+    "id": 1,
+    "name": "x265"
+   }
+  ],
+  "dateAdded": "2026-11-09T17:31:39Z",
+  "id": 2,
+  "indexerFlags": 0,
+  "languages": [
+   {
+    "id": 1,
+    "name": "English"
+   }
+  ],
+  "path": "/media/tv/Chernobyl/Season 1/Chernobyl.S01E02E03.2160p.WEB-DL.DDP5.1.HDR.HEVC-NTb.mkv",
+  "quality": {
+   "quality": {
+    "id": 18,
+    "name": "WEBDL-2160p",
+    "resolution": 2160,
+    "source": "web"
+   },
+   "revision": {
+    "isRepack": false,
+    "real": 0,
+    "version": 1
+   }
+  },
+  "qualityCutoffNotMet": false,
+  "relativePath": "Season 1/Chernobyl.S01E02E03.2160p.WEB-DL.DDP5.1.HDR.HEVC-NTb.mkv",
+  "releaseGroup": "NTb",
+  "releaseType": "multiEpisode",
+  "seasonNumber": 1,
+  "seriesId": 2,
+  "size": 9437184000
+ }
+]

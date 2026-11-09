@@ -1,0 +1,14 @@
+{
+ "page": 1,
+ "pageSize": 1000,
+ "records": [
+  {
+   "id": 1,
+   "title": "House (excluded fixture)",
+   "tvdbId": 73255
+  }
+ ],
+ "sortDirection": "descending",
+ "sortKey": "id",
+ "totalRecords": 1
+}
