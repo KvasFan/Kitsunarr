@@ -1,0 +1,61 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/IsPossibleSpecialEpisodeFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "IsPossibleSpecialEpisode_should_be_true": {
+   "params": [
+    [
+     "string",
+     "title"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Title.the.Series.S02.Special-Inside.Chesters.Mill.HDTV.x264-BAJSKORV"
+     ]
+    },
+    {
+     "args": [
+      "Title.the.Series.S02.Special-Inside.Chesters.Mill.720p.HDTV.x264-BAJSKORV"
+     ]
+    },
+    {
+     "args": [
+      "Title.the.Series.S05.Special.HDTV.x264-2HD"
+     ]
+    }
+   ]
+  },
+  "IsPossibleSpecialEpisode_should_be_true_if_e00_special": {
+   "params": [
+    [
+     "string",
+     "title"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Title.the.Series.S11E00.A.Christmas.Carol.Special.720p.HDTV-FieldOfView"
+     ]
+    }
+   ]
+  },
+  "IsPossibleSpecialEpisode_should_be_false_for_Special_in_title": {
+   "params": [
+    [
+     "string",
+     "title"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Big.Special.Show.S05.HDTV.x264-2HD"
+     ]
+    }
+   ]
+  }
+ }
+}

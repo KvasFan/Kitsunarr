@@ -1,0 +1,21 @@
+[package]
+name = "kitsunarr-parser"
+description = "Release-name parsing for Kitsunarr: a port of Sonarr's parser (quality, languages, release groups, episodes)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+kitsunarr-domain = { workspace = true }
+fancy-regex = { workspace = true }
+serde = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+
+[lints]
+workspace = true

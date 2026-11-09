@@ -1,0 +1,180 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/SeasonTitleParserFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_return_the_title_when_there_is_no_season_or_episode": {
+   "params": [
+    [
+     "string",
+     "releaseTitle"
+    ],
+    [
+     "string",
+     "expectedTitle"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "[Group] Series Title Curse (BS11 1280x720 x264 AAC)",
+      "Series Title Curse"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title Curse (BDRip 1920x1080 x264 FLAC) [ABCD1234]",
+      "Series Title Curse"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series.Title - Curse (BD, 720p)",
+      "Series.Title - Curse"
+     ]
+    },
+    {
+     "args": [
+      "Series Title Curse [Bluray.1080p.HEVC.AAC.ITA.FLAC.JAP.Sub.Ita]",
+      "Series Title Curse"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title: Curse [Dual Audio 10bit 1080p][HEVC-x265]",
+      "Series Title: Curse"
+     ]
+    }
+   ]
+  },
+  "should_populate_the_fields_the_decision_engine_reads": {
+   "params": [
+    [
+     "string",
+     "releaseTitle"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "[Group] Series Title Curse (BD 1280x720 x264 AAC)"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title: Curse [Dual Audio 10bit 1080p][HEVC-x265]"
+     ]
+    }
+   ]
+  },
+  "should_not_return_a_title_when_stripping_leaves_metadata": {
+   "params": [
+    [
+     "string",
+     "releaseTitle"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "[Group][Series Title: Curse][BDRip][1080P_x265(10bit)-FLAC][ALL]"
+     ]
+    },
+    {
+     "args": [
+      "[Group][Series Title Curse][1080p][x264]"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title Curse () (1080p)"
+     ]
+    }
+   ]
+  },
+  "should_not_return_a_title_for_an_extra": {
+   "params": [
+    [
+     "string",
+     "releaseTitle"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "[Group] Series Title Curse (OVA)"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title Curse [OVA]"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title Curse (Special)"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title Curse (NCOP)"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title Curse (NCED)"
+     ]
+    }
+   ]
+  },
+  "should_not_flag_a_release_the_regexes_can_parse": {
+   "params": [
+    [
+     "string",
+     "releaseTitle"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Series Title S02E05 1080p WEB-DL"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title - 05 (1080p)"
+     ]
+    },
+    {
+     "args": [
+      "Series Title S02 1080p WEB-DL"
+     ]
+    }
+   ]
+  },
+  "should_leave_parse_title_rejecting_what_it_rejects_today": {
+   "params": [
+    [
+     "string",
+     "releaseTitle"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "THIS SHOULD NEVER PARSE"
+     ]
+    },
+    {
+     "args": [
+      "Vrq6e1Aba3U amCjuEgV5R2QvdsLEGYF3YQAQkw8"
+     ]
+    },
+    {
+     "args": [
+      "[Group] Series Title Curse (BS11 1280x720 x264 AAC)"
+     ]
+    }
+   ]
+  }
+ }
+}

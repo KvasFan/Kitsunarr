@@ -1,0 +1,326 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/NormalizeSeriesTitleFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_normalize_series_title": {
+   "params": [
+    [
+     "string",
+     "parsedSeriesName"
+    ],
+    [
+     "string",
+     "seriesName"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Series",
+      "series"
+     ]
+    },
+    {
+     "args": [
+      "Series (2009)",
+      "series2009"
+     ]
+    },
+    {
+     "args": [
+      "Series.2010",
+      "series2010"
+     ]
+    },
+    {
+     "args": [
+      "Series_and_Title_Sonarr",
+      "seriestitlesonarr"
+     ]
+    }
+   ]
+  },
+  "should_remove_special_characters_and_casing": {
+   "params": [
+    [
+     "string",
+     "dirty"
+    ],
+    [
+     "string",
+     "clean"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "CaPitAl",
+      "capital"
+     ]
+    },
+    {
+     "args": [
+      "peri.od",
+      "period"
+     ]
+    },
+    {
+     "args": [
+      "this.^&%^**$%@#$!That",
+      "thisthat"
+     ]
+    },
+    {
+     "args": [
+      "test/test",
+      "testtest"
+     ]
+    },
+    {
+     "args": [
+      "90210",
+      "90210"
+     ]
+    },
+    {
+     "args": [
+      "24",
+      "24"
+     ]
+    },
+    {
+     "args": [
+      "Test: Something à Deux",
+      "testsomethingdeux"
+     ]
+    },
+    {
+     "args": [
+      "Parler à",
+      "parlera"
+     ]
+    },
+    {
+     "args": [
+      "Ríkið",
+      "rikid"
+     ]
+    }
+   ]
+  },
+  "should_remove_common_words_from_middle_of_title": {
+   "params": [
+    [
+     "string",
+     "word"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "the"
+     ]
+    },
+    {
+     "args": [
+      "and"
+     ]
+    },
+    {
+     "args": [
+      "or"
+     ]
+    },
+    {
+     "args": [
+      "an"
+     ]
+    },
+    {
+     "args": [
+      "of"
+     ]
+    }
+   ]
+  },
+  "should_not_remove_common_words_from_end_of_title": {
+   "params": [
+    [
+     "string",
+     "word"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "the"
+     ]
+    },
+    {
+     "args": [
+      "and"
+     ]
+    },
+    {
+     "args": [
+      "or"
+     ]
+    },
+    {
+     "args": [
+      "an"
+     ]
+    },
+    {
+     "args": [
+      "of"
+     ]
+    }
+   ]
+  },
+  "should_not_remove_common_words_in_the_middle_of_word": {
+   "params": [
+    [
+     "string",
+     "word"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "the"
+     ]
+    },
+    {
+     "args": [
+      "and"
+     ]
+    },
+    {
+     "args": [
+      "or"
+     ]
+    },
+    {
+     "args": [
+      "a"
+     ]
+    },
+    {
+     "args": [
+      "an"
+     ]
+    },
+    {
+     "args": [
+      "of"
+     ]
+    }
+   ]
+  },
+  "should_not_remove_from_the_beginning_of_the_title": {
+   "params": [
+    [
+     "string",
+     "parsedSeriesName"
+    ],
+    [
+     "string",
+     "seriesName"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "The Series",
+      "theseries"
+     ]
+    },
+    {
+     "args": [
+      "The Series Show With Sonarr Dev",
+      "theseriesshowwithsonarrdev"
+     ]
+    },
+    {
+     "args": [
+      "The.Series.Show",
+      "theseriesshow"
+     ]
+    }
+   ]
+  },
+  "should_not_clean_word_from_beginning_of_string": {
+   "params": [
+    [
+     "string",
+     "word"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "the"
+     ]
+    },
+    {
+     "args": [
+      "and"
+     ]
+    },
+    {
+     "args": [
+      "or"
+     ]
+    },
+    {
+     "args": [
+      "a"
+     ]
+    },
+    {
+     "args": [
+      "an"
+     ]
+    },
+    {
+     "args": [
+      "of"
+     ]
+    }
+   ]
+  },
+  "should_replace_percent_sign_with_percent_following_numbers": {
+   "params": [
+    [
+     "string",
+     "input"
+    ],
+    [
+     "string",
+     "expected"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "3%",
+      "3percent"
+     ]
+    },
+    {
+     "args": [
+      "Series Top & 100% Coding Developers",
+      "seriestop100percentcodingdevelopers"
+     ]
+    },
+    {
+     "args": [
+      "Series Title What's Your F@%king Deal?!",
+      "seriestitlewhatsyourfkingdeal"
+     ]
+    }
+   ]
+  }
+ }
+}

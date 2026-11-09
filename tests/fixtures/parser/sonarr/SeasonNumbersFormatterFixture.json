@@ -1,0 +1,107 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/SeasonNumbersFormatterFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_format_season_numbers": {
+   "params": [
+    [
+     "int[]",
+     "seasonNumbers"
+    ],
+    [
+     "string",
+     "expected"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      [
+       2
+      ],
+      "Season 2"
+     ]
+    },
+    {
+     "args": [
+      [
+       2,
+       2
+      ],
+      "Season 2"
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       2,
+       3
+      ],
+      "Seasons 1-3"
+     ]
+    },
+    {
+     "args": [
+      [
+       3,
+       1,
+       2
+      ],
+      "Seasons 1-3"
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       3,
+       5
+      ],
+      "Seasons 1, 3, 5"
+     ]
+    }
+   ]
+  },
+  "should_format_season_numbers_with_number_format": {
+   "params": [
+    [
+     "int[]",
+     "seasonNumbers"
+    ],
+    [
+     "string",
+     "expected"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      [
+       2
+      ],
+      "Season 02"
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       2
+      ],
+      "Seasons 01-02"
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       3
+      ],
+      "Seasons 01, 03"
+     ]
+    }
+   ]
+  }
+ }
+}

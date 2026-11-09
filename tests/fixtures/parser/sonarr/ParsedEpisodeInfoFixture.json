@@ -1,0 +1,100 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/ParsedEpisodeInfoFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_format_full_season": {
+   "params": [
+    [
+     "int[]",
+     "seasonNumbers"
+    ],
+    [
+     "string",
+     "expected"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      [
+       1,
+       2,
+       3
+      ],
+      "Seasons 01-03"
+     ]
+    },
+    {
+     "args": [
+      [
+       1,
+       3,
+       5
+      ],
+      "Seasons 01, 03, 05"
+     ]
+    },
+    {
+     "args": [
+      [
+       2
+      ],
+      "Season 02"
+     ]
+    },
+    {
+     "args": [
+      [],
+      "[Unknown Season]"
+     ]
+    }
+   ]
+  },
+  "should_get_release_type": {
+   "params": [
+    [
+     "string",
+     "title"
+    ],
+    [
+     "ReleaseType",
+     "expected"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Series.Title.S01-S03.1080p.BluRay.x264-RlsGrp",
+      {
+       "enum": "ReleaseType.MultiSeasonPack"
+      }
+     ]
+    },
+    {
+     "args": [
+      "Series.Title.S01.1080p.BluRay.x264-RlsGrp",
+      {
+       "enum": "ReleaseType.SeasonPack"
+      }
+     ]
+    },
+    {
+     "args": [
+      "Series.Title.S01E01-E02.1080p.BluRay.x264-RlsGrp",
+      {
+       "enum": "ReleaseType.MultiEpisode"
+      }
+     ]
+    },
+    {
+     "args": [
+      "Series.Title.S01E01.1080p.BluRay.x264-RlsGrp",
+      {
+       "enum": "ReleaseType.SingleEpisode"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

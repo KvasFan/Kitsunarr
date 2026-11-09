@@ -1,0 +1,226 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/IsoLanguagesFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_return_iso_language_for_English": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "en"
+     ]
+    },
+    {
+     "args": [
+      "eng"
+     ]
+    },
+    {
+     "args": [
+      "en-US"
+     ]
+    },
+    {
+     "args": [
+      "en-GB"
+     ]
+    }
+   ]
+  },
+  "unknown_or_invalid_code_should_return_null": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "enus"
+     ]
+    },
+    {
+     "args": [
+      "enusa"
+     ]
+    },
+    {
+     "args": [
+      "wo"
+     ]
+    },
+    {
+     "args": [
+      "fr-CA"
+     ]
+    }
+   ]
+  },
+  "should_return_portuguese": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "pt"
+     ]
+    },
+    {
+     "args": [
+      "por"
+     ]
+    },
+    {
+     "args": [
+      "pt-PT"
+     ]
+    }
+   ]
+  },
+  "should_not_return_portuguese": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "de-AU"
+     ]
+    }
+   ]
+  },
+  "should_lookup_cze_via_alternate_iso_code_mapping": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "cze"
+     ]
+    }
+   ]
+  },
+  "should_return_urdu": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "ur"
+     ]
+    },
+    {
+     "args": [
+      "urd"
+     ]
+    },
+    {
+     "args": [
+      "ur-PK"
+     ]
+    }
+   ]
+  },
+  "should_return_romansh": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "rm"
+     ]
+    },
+    {
+     "args": [
+      "roh"
+     ]
+    },
+    {
+     "args": [
+      "rm-CH"
+     ]
+    }
+   ]
+  },
+  "should_return_georgian": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "ka"
+     ]
+    },
+    {
+     "args": [
+      "geo"
+     ]
+    },
+    {
+     "args": [
+      "kat"
+     ]
+    },
+    {
+     "args": [
+      "ka-GE"
+     ]
+    }
+   ]
+  },
+  "should_return_irish": {
+   "params": [
+    [
+     "string",
+     "isoCode"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "ga"
+     ]
+    },
+    {
+     "args": [
+      "gle"
+     ]
+    },
+    {
+     "args": [
+      "ga-IE"
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -37,6 +37,17 @@ The "Tests" column names the suites that cover the feature. Simulated tests repl
 | 23 | Jellyfin integration | Tanukarr Jellyfin refresh and watched state | — | Not started | — | Phase 6. Watched-state values are preserved by migration. |
 | 24 | Localisation | Sonarr/Tanukarr `Localization/*.json` | web `i18n` module | Partial | — | English only. Strings are centralised; more languages are planned. |
 
+## Release parsing (port of Sonarr's parser)
+
+Each component is checked against Sonarr's own test cases (`tests/fixtures/parser/sonarr/`). A component is listed as done only when every active upstream case for it passes.
+
+| Component | Upstream | Status | Upstream cases passing |
+|---|---|---|---|
+| Quality (source, resolution, remux, proper/repack/version, REAL), extension fallback | `QualityParser.cs`, `QualityFinder.cs`, `MediaFileExtensions.cs` | Done | 290/290 `QualityParserFixture`, 30/30 `ExtendedQualityParserRegex`, plus both `TestCaseSource` tables |
+| Release groups | `ReleaseGroupParser.cs` | Not started | — |
+| Languages | `LanguageParser.cs`, `IsoLanguages.cs` | Not started | — |
+| Titles, seasons and episodes (standard, daily, anime/absolute, packs, specials) | `Parser.cs`, `ParserCommon.cs` | Not started | — |
+
 ## Migration (Phase 2)
 
 | Capability | Status | Tests |

@@ -1,0 +1,409 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/ParserFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_parse_series_name": {
+   "params": [
+    [
+     "string",
+     "postTitle"
+    ],
+    [
+     "string",
+     "title"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Series Title - 4x05 - Title",
+      "seriestitle"
+     ]
+    },
+    {
+     "args": [
+      "Series & Title - 4x05 - Title",
+      "seriestitle"
+     ]
+    },
+    {
+     "args": [
+      "Bad Format",
+      "badformat"
+     ]
+    },
+    {
+     "args": [
+      "Mad Series - Season 1 [Bluray720p]",
+      "madseries"
+     ]
+    },
+    {
+     "args": [
+      "Mad Series - Season 1 [Bluray1080p]",
+      "madseries"
+     ]
+    },
+    {
+     "args": [
+      "The Daily Series -",
+      "thedailyseries"
+     ]
+    },
+    {
+     "args": [
+      "The Series Bros. (2006)",
+      "theseriesbros2006"
+     ]
+    },
+    {
+     "args": [
+      "Series (2011)",
+      "series2011"
+     ]
+    },
+    {
+     "args": [
+      "Series Time S02 720p HDTV x264 CRON",
+      "seriestime"
+     ]
+    },
+    {
+     "args": [
+      "Series Title 0",
+      "seriestitle0"
+     ]
+    },
+    {
+     "args": [
+      "Series of the Day",
+      "seriesday"
+     ]
+    },
+    {
+     "args": [
+      "Series of the Day 2",
+      "seriesday2"
+     ]
+    },
+    {
+     "args": [
+      "[ www.Torrenting.com ] - Series.S03E14.720p.HDTV.X264-DIMENSION",
+      "series"
+     ]
+    },
+    {
+     "args": [
+      "www.Torrenting.com - Series.S03E14.720p.HDTV.X264-DIMENSION",
+      "series"
+     ]
+    },
+    {
+     "args": [
+      "Series S02E09 HDTV x264-2HD [eztv]-[rarbg.com]",
+      "series"
+     ]
+    },
+    {
+     "args": [
+      "Series.911.S01.DVDRip.DD2.0.x264-DEEP",
+      "series 911"
+     ]
+    },
+    {
+     "args": [
+      "www.Torrenting.org - Series.S03E14.720p.HDTV.X264-DIMENSION",
+      "series"
+     ]
+    }
+   ]
+  },
+  "should_parse_series_title_info": {
+   "params": [
+    [
+     "string",
+     "postTitle"
+    ],
+    [
+     "string",
+     "titleWithoutYear"
+    ],
+    [
+     "int",
+     "year"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Series S03E14 720p HDTV X264-DIMENSION",
+      "Series"
+     ]
+    },
+    {
+     "args": [
+      "Series.S03E14.720p.HDTV.X264-DIMENSION",
+      "Series"
+     ]
+    },
+    {
+     "args": [
+      "Series-S03E14-720p-HDTV-X264-DIMENSION",
+      "Series"
+     ]
+    },
+    {
+     "args": [
+      "Series_S03E14_720p_HDTV_X264-DIMENSION",
+      "Series"
+     ]
+    },
+    {
+     "args": [
+      "Series 2022 S03E14 720p HDTV X264-DIMENSION",
+      "Series",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "Series (2022) S03E14 720p HDTV X264-DIMENSION",
+      "Series",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "Series.2022.S03E14.720p.HDTV.X264-DIMENSION",
+      "Series",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "Series-2022-S03E14-720p-HDTV-X264-DIMENSION",
+      "Series",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "Series_2022_S03E14_720p_HDTV_X264-DIMENSION",
+      "Series",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "1234 S03E14 720p HDTV X264-DIMENSION",
+      "1234"
+     ]
+    },
+    {
+     "args": [
+      "1234.S03E14.720p.HDTV.X264-DIMENSION",
+      "1234"
+     ]
+    },
+    {
+     "args": [
+      "1234-S03E14-720p-HDTV-X264-DIMENSION",
+      "1234"
+     ]
+    },
+    {
+     "args": [
+      "1234_S03E14_720p_HDTV_X264-DIMENSION",
+      "1234"
+     ]
+    },
+    {
+     "args": [
+      "1234 2022 S03E14 720p HDTV X264-DIMENSION",
+      "1234",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "1234 (2022) S03E14 720p HDTV X264-DIMENSION",
+      "1234",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "1234.2022.S03E14.720p.HDTV.X264-DIMENSION",
+      "1234",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "1234-2022-S03E14-720p-HDTV-X264-DIMENSION",
+      "1234",
+      2022
+     ]
+    },
+    {
+     "args": [
+      "1234_2022_S03E14_720p_HDTV_X264-DIMENSION",
+      "1234",
+      2022
+     ]
+    }
+   ]
+  },
+  "should_clean_up_invalid_path_characters": {
+   "params": [
+    [
+     "string",
+     "postTitle"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Sonar TV - Series Title : 02 Road From Code [S04].mp4"
+     ]
+    }
+   ]
+  },
+  "should_remove_request_info_from_title": {
+   "params": [
+    [
+     "string",
+     "postTitle"
+    ],
+    [
+     "string",
+     "title"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "[scnzbefnet][509103] 2.Developers.Series.S03E18.720p.HDTV.X264-DIMENSION",
+      "2 Developers Series"
+     ]
+    }
+   ]
+  },
+  "should_parse_quality_from_extension": {
+   "params": [
+    [
+     "string",
+     "title"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Series.S01E02.Chained.Title.mkv"
+     ]
+    },
+    {
+     "args": [
+      "Show - S01E01 - Title.avi"
+     ]
+    }
+   ]
+  },
+  "should_parse_releasetitle": {
+   "params": [
+    [
+     "string",
+     "path"
+    ],
+    [
+     "string",
+     "releaseTitle"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Series.S01E02.Chained.Title.mkv",
+      "Series.S01E02.Chained.Title"
+     ]
+    }
+   ]
+  },
+  "should_parse_multiple_series_titles": {
+   "params": [
+    [
+     "string",
+     "postTitle"
+    ],
+    [
+     "params string[]",
+     "titles"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Босх: Спадок (S2E1) / Series: Legacy (S2E1) (2023) WEB-DL 1080p Ukr/Eng | sub Eng",
+      "Босх: Спадок",
+      "Series: Legacy"
+     ]
+    },
+    {
+     "args": [
+      "Босх: Спадок / Series: Legacy / S2E1-4 of 10 (2023) WEB-DL 1080p Ukr/Eng | sub Eng",
+      "Босх: Спадок",
+      "Series: Legacy"
+     ]
+    },
+    {
+     "args": [
+      "Босх: Спадок AKA Series: Legacy S02 1080p NF WEB-DL Dual- Audio DD+ 5.1 Atmos H.264-APEX",
+      "Босх: Спадок",
+      "Series: Legacy"
+     ]
+    },
+    {
+     "args": [
+      "Босх.Спадок.AKA.Series.Legacy.S02.1080p.NF.WEB-DL.DUAL.DDP5.1.Atmos.H.264-APEX",
+      "Босх Спадок",
+      "Series Legacy"
+     ]
+    },
+    {
+     "args": [
+      "[Judas] Series E (Series J) (Season 04) [1080p][HEVC x265 10bit][Dual-Audio][Multi-Subs] (Batch)",
+      "Series E",
+      "Series J"
+     ]
+    },
+    {
+     "args": [
+      "Serie / Series [S01E02] [MULTI] [1080p] [HMAX] [WEB-DL] [H.264] [DDP5.1.Atmos-K83] [Lektor i Napisy PL]",
+      "Serie",
+      "Series"
+     ]
+    }
+   ]
+  },
+  "should_parse_language_after_parsing_title": {
+   "params": [
+    [
+     "string",
+     "postTitle"
+    ],
+    [
+     "string",
+     "expectedLanguage"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "[Reza] Series in Russian - S01E08 [WEBRip 1080p HEVC AAC] (Dual Audio) (Tokidoki Bosotto Russiago de Dereru Tonari no Alya-san)",
+      "Unknown"
+     ]
+    }
+   ]
+  }
+ }
+}

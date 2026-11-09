@@ -14,6 +14,8 @@ Retains the Sonarr notices above. Additional work is credited in its CONTRIBUTOR
 
 Test fixtures in `tests/fixtures/` were produced by running unmodified Sonarr 4.0.20.3014 (linuxserver.io image) and Tanukarr 0.1.5 (ghcr.io/kvasfan/tanukarr) with synthetic configuration. Titles and identifiers come from TheTVDB, AniList and TVmaze lookups performed by those applications; descriptive text was removed.
 
+`crates/kitsunarr-parser` ports Sonarr's release parser (`src/NzbDrone.Core/Parser/`, revision `c018578e4`). Its regular expressions and decision rules are Sonarr's, adapted where .NET-only regex features required it. `tests/fixtures/parser/sonarr/` contains the test cases of Sonarr's parser test suite (`src/NzbDrone.Core.Test/ParserTests/`), extracted verbatim by `tests/fixtures/generate/sonarr_test_cases.py`.
+
 The recorded TVmaze API responses in `tests/fixtures/metadata/` are TVmaze data, licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) by TVmaze.com; summaries were removed. At runtime, Kitsunarr credits TVmaze ("TV data provided by TVmaze.com under CC BY-SA 4.0") and AniList on the Add media page, where their data is searched.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.

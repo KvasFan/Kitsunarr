@@ -1,0 +1,26 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/SubGroupParserFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_parse_sub_group_from_title_as_release_group": {
+   "params": [
+    [
+     "string",
+     "title"
+    ],
+    [
+     "string",
+     "expected"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "[GHOST][1080p] Series - 25 [BD HEVC 10bit Dual Audio AC3][AE0ADDBA]",
+      "GHOST"
+     ]
+    }
+   ]
+  }
+ }
+}

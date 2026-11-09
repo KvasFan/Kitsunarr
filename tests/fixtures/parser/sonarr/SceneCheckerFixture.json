@@ -1,0 +1,103 @@
+{
+ "source": "src/NzbDrone.Core.Test/ParserTests/SceneCheckerFixture.cs",
+ "revision": "c018578e4",
+ "methods": {
+  "should_return_true_for_scene_names": {
+   "params": [
+    [
+     "string",
+     "title"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "Series.Title.S04E13.Helen.Keller.The.Musical.720p.WEBRip.AAC2.0.H.264-GC"
+     ]
+    },
+    {
+     "args": [
+      "Series.Title.S07E02.720p.WEB-DL.DD5.1.H.264-pcsyndicate"
+     ]
+    },
+    {
+     "args": [
+      "Series.Title.2009.S05E06.Baby.Shower.720p.WEB-DL.DD5.1.H.264-iT00NZ"
+     ]
+    },
+    {
+     "args": [
+      "Series.Title.S04E17.720p.HDTV.X264-DIMENSION"
+     ]
+    },
+    {
+     "args": [
+      "Series.Title.S04.720p.HDTV.X264-DIMENSION"
+     ]
+    }
+   ]
+  },
+  "should_return_false_for_non_scene_names": {
+   "params": [
+    [
+     "string",
+     "title"
+    ]
+   ],
+   "cases": [
+    {
+     "args": [
+      "S08E05 - Virtual In-Stanity [WEBDL-720p]"
+     ]
+    },
+    {
+     "args": [
+      "S08E05 - Virtual In-Stanity.With.Dots [WEBDL-720p]"
+     ]
+    },
+    {
+     "args": [
+      "Something"
+     ]
+    },
+    {
+     "args": [
+      "86de66b7ef385e2fa56a3e41b98481ea1658bfab"
+     ]
+    },
+    {
+     "args": [
+      "Series.Title.S04E17.720p.HDTV.X264"
+     ],
+     "named": {
+      "Description": "no group"
+     }
+    },
+    {
+     "args": [
+      "S04E17.720p.HDTV.X264-DIMENSION"
+     ],
+     "named": {
+      "Description": "no series title"
+     }
+    },
+    {
+     "args": [
+      "Series.Title.S04E17-DIMENSION"
+     ],
+     "named": {
+      "Description": "no quality"
+     }
+    },
+    {
+     "args": [
+      "Series.Title.720p.HDTV.X264-DIMENSION"
+     ],
+     "named": {
+      "Description": "no episode"
+     }
+    }
+   ]
+  }
+ }
+}

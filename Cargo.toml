@@ -11,6 +11,7 @@ members = [
     "crates/kitsunarr-events",
     "crates/kitsunarr-library",
     "crates/kitsunarr-metadata",
+    "crates/kitsunarr-parser",
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
     "crates/kitsunarr-web",
@@ -29,6 +30,7 @@ default-members = [
     "crates/kitsunarr-events",
     "crates/kitsunarr-library",
     "crates/kitsunarr-metadata",
+    "crates/kitsunarr-parser",
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
 ]
@@ -54,6 +56,7 @@ kitsunarr-domain = { path = "crates/kitsunarr-domain" }
 kitsunarr-events = { path = "crates/kitsunarr-events" }
 kitsunarr-library = { path = "crates/kitsunarr-library" }
 kitsunarr-metadata = { path = "crates/kitsunarr-metadata" }
+kitsunarr-parser = { path = "crates/kitsunarr-parser" }
 kitsunarr-migrate = { path = "crates/kitsunarr-migrate" }
 kitsunarr-scheduler = { path = "crates/kitsunarr-scheduler" }
 
@@ -116,6 +119,7 @@ dioxus = { version = "0.7.10", default-features = false }
 web-sys = "0.3"
 wasm-bindgen = "0.2"
 gloo-timers = { version = "0.4", features = ["futures"] }
+fancy-regex = "0.20"
 
 [workspace.lints.rust]
 unsafe_code = "forbid"
