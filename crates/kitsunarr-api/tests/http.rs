@@ -863,6 +863,17 @@ async fn indexer_test_and_interactive_search() {
         .await
         .unwrap();
     assert_eq!((season.searched_indexers, season.failures.len()), (1, 0));
+    // An indexer type without a client yet is reported rather than skipped silently.
+    let _: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Some Tracker", "implementation": "BroadcastheNet",
+                "options": {"enableInteractiveSearch": true}, "settings": {"apiKey": "k"}
+            }),
+        )
+        .await
+        .unwrap();
     assert_eq!(season.releases.len(), 100);
     assert_eq!(season.description, "Season 1");
     let first = requests.lock().unwrap()[0].clone();
@@ -929,6 +940,18 @@ async fn indexer_test_and_interactive_search() {
         .await
         .unwrap();
     assert_eq!(episode.description, "S01E01");
+    assert_eq!(episode.searched_indexers, 1);
+    assert_eq!(
+        episode
+            .failures
+            .iter()
+            .map(|f| (f.indexer.as_str(), f.message.as_str()))
+            .collect::<Vec<_>>(),
+        vec![(
+            "Some Tracker",
+            "Searching BroadcastheNet indexers is not supported yet."
+        )]
+    );
     assert!(
         requests
             .lock()

@@ -326,24 +326,41 @@ pub async fn search_releases(
         }
     };
 
-    let indexers: Vec<Indexer> = providers::list(state.db.pool(), ProviderKind::Indexer)
-        .await?
-        .into_iter()
-        .filter(|p| {
-            p.options
-                .get("enableInteractiveSearch")
-                .and_then(|v| v.as_bool())
-                .unwrap_or(true)
-        })
-        .filter_map(|p| {
-            Some(Indexer {
+    // Indexers that cannot be searched are reported, not skipped silently.
+    let mut indexers = Vec::new();
+    let mut failures = Vec::new();
+    for p in providers::list(state.db.pool(), ProviderKind::Indexer).await? {
+        let interactive = p
+            .options
+            .get("enableInteractiveSearch")
+            .and_then(|v| v.as_bool())
+            .unwrap_or(true);
+        if !interactive {
+            continue;
+        }
+        let settings = match dialect(&p.implementation) {
+            None => Err(format!(
+                "Searching {} indexers is not supported yet.",
+                p.implementation
+            )),
+            Some(dialect) => Settings::from_map(&p.settings)
+                .map(|settings| (dialect, settings))
+                .map_err(|m| format!("The indexer's settings are invalid: {m}")),
+        };
+        match settings {
+            Ok((dialect, settings)) => indexers.push(Indexer {
                 id: p.id,
-                name: p.name.clone(),
-                dialect: dialect(&p.implementation)?,
-                settings: Settings::from_map(&p.settings).ok()?,
-            })
-        })
-        .collect();
+                name: p.name,
+                dialect,
+                settings,
+            }),
+            Err(message) => failures.push(IndexerFailure {
+                indexer_id: p.id,
+                indexer: p.name,
+                message,
+            }),
+        }
+    }
 
     let client = &state.indexers;
     let outcomes = futures::future::join_all(indexers.iter().map(|indexer| {
@@ -368,7 +385,6 @@ pub async fn search_releases(
         .map(|t| kitsunarr_parser::clean_series_title(t))
         .collect();
     let mut releases = Vec::new();
-    let mut failures = Vec::new();
     for (indexer, outcome) in indexers.iter().zip(outcomes) {
         match outcome {
             Ok(found) => releases.extend(found.into_iter().map(|r| to_item(r, &clean_titles))),
