@@ -309,15 +309,17 @@ fn SeasonPanel(
                                     checked: e.monitored,
                                     onchange: move |ev: FormEvent| toggle((ep_id, ev.checked())),
                                 }
-                                button {
-                                    class: "btn sm ghost icon",
-                                    "aria-label": "Search indexers for episode {e.episode_number}",
-                                    title: "Interactive search",
-                                    onclick: {
-                                        let label = format!("S{:02}E{:02}", e.season_number, e.episode_number);
-                                        move |_| on_search.call((None, Some(ep_id), label.clone()))
-                                    },
-                                    "⌕"
+                                {
+                                    let label = format!("S{:02}E{:02}", e.season_number, e.episode_number);
+                                    rsx! {
+                                        button {
+                                            class: "btn sm ghost icon",
+                                            "aria-label": "Search indexers for {label}",
+                                            title: "Interactive search",
+                                            onclick: move |_| on_search.call((None, Some(ep_id), label.clone())),
+                                            "⌕"
+                                        }
+                                    }
                                 }
                             }
                         },

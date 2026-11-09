@@ -188,7 +188,15 @@ async fn newznab_mock(fixtures: PathBuf) -> String {
         } else {
             "newznab_nzb_su.xml"
         };
-        let body = std::fs::read_to_string(dir.join(file)).unwrap();
+        let mut body = std::fs::read_to_string(dir.join(file)).unwrap();
+        // The recorded feed is a single page: later pages are empty, which ends paging.
+        // (Repeating the full page would page to the 1,000-result cap, 2 s per request.)
+        let offset: u32 = q.get("offset").and_then(|o| o.parse().ok()).unwrap_or(0);
+        if offset > 0
+            && let (Some(start), Some(end)) = (body.find("<item>"), body.rfind("</item>"))
+        {
+            body.replace_range(start..end + "</item>".len(), "");
+        }
         ([("content-type", "application/rss+xml")], body).into_response()
     }
     let app = axum::Router::new()
@@ -560,6 +568,24 @@ async fn first_run_setup_migration_and_library() {
             "indexer download links (with their keys) never reach the browser"
         );
         screenshot(&client, "16-interactive-search").await;
+        client
+            .find(Locator::Css(".modal button[aria-label='Close']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+
+        // A single episode, from its row.
+        client
+            .wait()
+            .for_element(Locator::Css("button[aria-label='Search indexers for S01E01']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, "S01E01: 100 releases from 2 indexer(s)").await;
         client
             .find(Locator::Css(".modal button[aria-label='Close']"))
             .await
