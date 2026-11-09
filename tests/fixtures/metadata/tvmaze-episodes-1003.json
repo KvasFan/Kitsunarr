@@ -1,0 +1,130 @@
+[
+ {
+  "id": 98896,
+  "url": "https://www.tvmaze.com/episodes/98896/talking-bad-1x01-blood-money",
+  "name": "Blood Money",
+  "season": 1,
+  "number": 1,
+  "type": "regular",
+  "airdate": "2013-08-11",
+  "airtime": "23:00",
+  "airstamp": "2013-08-12T03:00:00+00:00",
+  "runtime": 30,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 98897,
+  "url": "https://www.tvmaze.com/episodes/98897/talking-bad-1x02-buried",
+  "name": "Buried",
+  "season": 1,
+  "number": 2,
+  "type": "regular",
+  "airdate": "2013-08-18",
+  "airtime": "23:05",
+  "airstamp": "2013-08-19T03:05:00+00:00",
+  "runtime": 30,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 98898,
+  "url": "https://www.tvmaze.com/episodes/98898/talking-bad-1x03-confessions",
+  "name": "Confessions",
+  "season": 1,
+  "number": 3,
+  "type": "regular",
+  "airdate": "2013-08-25",
+  "airtime": "23:05",
+  "airstamp": "2013-08-26T03:05:00+00:00",
+  "runtime": 30,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 98899,
+  "url": "https://www.tvmaze.com/episodes/98899/talking-bad-1x04-rabid-dog",
+  "name": "Rabid Dog",
+  "season": 1,
+  "number": 4,
+  "type": "regular",
+  "airdate": "2013-09-01",
+  "airtime": "23:05",
+  "airstamp": "2013-09-02T03:05:00+00:00",
+  "runtime": 30,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 98900,
+  "url": "https://www.tvmaze.com/episodes/98900/talking-bad-1x05-tohajiilee",
+  "name": "To'hajiilee",
+  "season": 1,
+  "number": 5,
+  "type": "regular",
+  "airdate": "2013-09-08",
+  "airtime": "23:05",
+  "airstamp": "2013-09-09T03:05:00+00:00",
+  "runtime": 30,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 98901,
+  "url": "https://www.tvmaze.com/episodes/98901/talking-bad-1x06-ozymandias",
+  "name": "Ozymandias",
+  "season": 1,
+  "number": 6,
+  "type": "regular",
+  "airdate": "2013-09-15",
+  "airtime": "23:05",
+  "airstamp": "2013-09-16T03:05:00+00:00",
+  "runtime": 30,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 98902,
+  "url": "https://www.tvmaze.com/episodes/98902/talking-bad-1x07-granite-state",
+  "name": "Granite State",
+  "season": 1,
+  "number": 7,
+  "type": "regular",
+  "airdate": "2013-09-22",
+  "airtime": "23:15",
+  "airstamp": "2013-09-23T03:15:00+00:00",
+  "runtime": 30,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 98903,
+  "url": "https://www.tvmaze.com/episodes/98903/talking-bad-1x08-felina",
+  "name": "Felina",
+  "season": 1,
+  "number": 8,
+  "type": "regular",
+  "airdate": "2013-09-29",
+  "airtime": "22:15",
+  "airstamp": "2013-09-30T02:15:00+00:00",
+  "runtime": 30,
+  "rating": {
+   "average": 3
+  },
+  "image": null
+ }
+]

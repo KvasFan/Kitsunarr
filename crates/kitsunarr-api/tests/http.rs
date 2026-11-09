@@ -8,12 +8,15 @@ use kitsunarr_api::{AppState, BuildInfo, LogBuffer, NoAssets, NoTasks};
 use kitsunarr_client::{Client, ClientError};
 use kitsunarr_config::Config;
 use kitsunarr_db::Database;
+use kitsunarr_domain::MetadataProvider;
 use kitsunarr_domain::api::auth::{ChangePasswordRequest, LoginRequest, SetupRequest};
 use kitsunarr_domain::api::library::{
     BulkEdit, EpisodesMonitoredUpdate, LibraryQuery, SeriesUpdate,
 };
+use kitsunarr_domain::api::metadata::{AddTitleRequest, MonitorOption, SearchQuery};
 use kitsunarr_domain::api::migration::{MigrationOptions, PathMapping, SessionStatus};
 use kitsunarr_domain::api::settings::{REDACTED, RootFolderCreate};
+use kitsunarr_metadata::{Metadata, anilist::AniList, tvmaze::TvMaze};
 
 struct Server {
     base: String,
@@ -22,6 +25,19 @@ struct Server {
 }
 
 async fn start() -> Server {
+    start_with(offline_metadata()).await
+}
+
+/// Catalogue clients pointed at a closed local port: tests never reach the real services.
+fn offline_metadata() -> Metadata {
+    let http = reqwest::Client::new();
+    Metadata {
+        tvmaze: TvMaze::with_base(http.clone(), "http://127.0.0.1:9"),
+        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
+    }
+}
+
+async fn start_with(metadata: Metadata) -> Server {
     let dir = tempfile::tempdir().unwrap();
     let db = Database::open(&dir.path().join("k.db")).await.unwrap();
     kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
@@ -48,6 +64,7 @@ async fn start() -> Server {
         Arc::new(NoAssets),
         Arc::new(NoTasks),
         reqwest::Client::new(),
+        metadata,
         LogBuffer::default(),
     );
     let app = kitsunarr_api::app(state);
@@ -529,5 +546,170 @@ async fn openapi_spa_fallback_and_events() {
             .to_str()
             .unwrap()
             .starts_with("text/event-stream")
+    );
+}
+
+/// A local stand-in for TVmaze replaying recorded responses; show 503 simulates an outage.
+async fn tvmaze_mock() -> String {
+    use axum::extract::Path;
+    use axum::response::IntoResponse;
+    use axum::routing::get;
+    fn fixture(name: &str) -> serde_json::Value {
+        let path = format!(
+            "{}/../../tests/fixtures/metadata/{name}",
+            env!("CARGO_MANIFEST_DIR")
+        );
+        serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap()
+    }
+    async fn show(Path(id): Path<String>) -> axum::response::Response {
+        if id == "503" {
+            return axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+        axum::Json(fixture("tvmaze-show-169.json")).into_response()
+    }
+    async fn episodes(Path(_id): Path<String>) -> axum::Json<serde_json::Value> {
+        axum::Json(fixture("tvmaze-show-169.json")["_embedded"]["episodes"].clone())
+    }
+    async fn search() -> axum::Json<serde_json::Value> {
+        axum::Json(fixture("tvmaze-search.json"))
+    }
+    let app = axum::Router::new()
+        .route("/search/shows", get(search))
+        .route("/shows/{id}", get(show))
+        .route("/shows/{id}/episodes", get(episodes));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    format!("http://{addr}")
+}
+
+#[tokio::test]
+async fn catalogue_search_add_and_refresh() {
+    let base = tvmaze_mock().await;
+    let http = reqwest::Client::new();
+    let server = start_with(Metadata {
+        tvmaze: TvMaze::with_base(http.clone(), &base),
+        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
+    })
+    .await;
+    let client = signed_in(&server).await;
+
+    let providers = client.metadata_providers().await.unwrap();
+    assert!(
+        providers
+            .iter()
+            .any(|p| p.provider == MetadataProvider::TvMaze && p.attribution.contains("TVmaze"))
+    );
+
+    let query = |provider, term: &str| SearchQuery {
+        provider,
+        term: term.into(),
+    };
+    let empty = client
+        .metadata_search(&query(MetadataProvider::TvMaze, "  "))
+        .await
+        .unwrap_err();
+    assert_eq!(status(empty), 422);
+    let unsupported = client
+        .metadata_search(&query(MetadataProvider::Tvdb, "breaking bad"))
+        .await
+        .unwrap_err();
+    assert_eq!(status(unsupported), 422);
+
+    let results = client
+        .metadata_search(&query(MetadataProvider::TvMaze, "breaking bad"))
+        .await
+        .unwrap();
+    let hit = results
+        .iter()
+        .find(|r| r.id == "169")
+        .expect("Breaking Bad");
+    assert!(hit.in_library.is_none());
+
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let mut add = AddTitleRequest {
+        provider: MetadataProvider::TvMaze,
+        id: "169".into(),
+        root_folder_path: "/not/a/root".into(),
+        quality_profile_id: 1,
+        monitor: MonitorOption::LatestSeason,
+        series_type: None,
+        season_folder: true,
+        tags: vec![],
+    };
+    match client.add_title(&add).await.unwrap_err() {
+        ClientError::Api { status, body } => {
+            assert_eq!(status, 422);
+            assert_eq!(body.fields[0].field, "rootFolderPath");
+        }
+        other => panic!("unexpected {other:?}"),
+    }
+    add.root_folder_path = root.clone();
+    let added = client.add_title(&add).await.unwrap();
+    assert_eq!(added.media_type, "series");
+    assert!(
+        std::fs::read_dir(dir.path()).unwrap().next().is_none(),
+        "adding never creates folders on disk"
+    );
+    let detail = client.series_detail(added.id).await.unwrap();
+    assert_eq!(detail.item.title, "Breaking Bad");
+    assert_eq!(detail.item.path, format!("{root}/Breaking Bad"));
+    assert_eq!(detail.item.episode_count, 62);
+    assert!(detail.last_refreshed_at.is_some());
+    let episodes = client.episodes(added.id).await.unwrap();
+    assert!(
+        episodes
+            .iter()
+            .all(|e| e.monitored == (e.season_number == 5)),
+        "latest season only"
+    );
+
+    // The search now reports the title as present, and a second add is refused.
+    let results = client
+        .metadata_search(&query(MetadataProvider::TvMaze, "breaking bad"))
+        .await
+        .unwrap();
+    let hit = results.iter().find(|r| r.id == "169").unwrap();
+    assert_eq!(hit.in_library.as_ref().map(|r| r.id), Some(added.id));
+    assert_eq!(status(client.add_title(&add).await.unwrap_err()), 409);
+
+    let refreshed = client.refresh_series(added.id).await.unwrap();
+    assert_eq!(
+        (refreshed.added_episodes, refreshed.updated_episodes),
+        (0, 62)
+    );
+    assert_eq!(status(client.refresh_series(9999).await.unwrap_err()), 404);
+
+    // Catalogue outage → 502 with a readable message; nothing is added.
+    add.id = "503".into();
+    match client.add_title(&add).await.unwrap_err() {
+        ClientError::Api { status, body } => {
+            assert_eq!(status, 502);
+            assert!(body.message.contains("TVmaze"), "{}", body.message);
+        }
+        other => panic!("unexpected {other:?}"),
+    }
+
+    // Titles owned by a catalogue Kitsunarr cannot query yet (e.g. migrated from Sonarr)
+    // are reported as such instead of failing with a server error.
+    let db = Database::open(&server._dir.path().join("k.db"))
+        .await
+        .unwrap();
+    sqlx::query("UPDATE series SET metadata_provider = 'tvdb' WHERE id = ?")
+        .bind(added.id)
+        .execute(db.pool())
+        .await
+        .unwrap();
+    assert_eq!(
+        status(client.refresh_series(added.id).await.unwrap_err()),
+        400
     );
 }

@@ -94,6 +94,49 @@ impl IntoResponse for ApiError {
     }
 }
 
+impl From<kitsunarr_metadata::MetadataError> for ApiError {
+    fn from(err: kitsunarr_metadata::MetadataError) -> Self {
+        use kitsunarr_metadata::MetadataError as M;
+        match err {
+            M::Unsupported(p) => {
+                ApiError::BadRequest(format!("{} is not supported yet.", p.display_name()))
+            }
+            M::NotFound(p) => {
+                ApiError::NotFound(format!("The title was not found in {}.", p.display_name()))
+            }
+            M::Http { provider, message } => {
+                tracing::warn!(%provider, %message, "metadata request failed");
+                ApiError::BadGateway(format!(
+                    "{} could not be reached. Try again later.",
+                    provider.display_name()
+                ))
+            }
+            M::Decode { provider, message } => {
+                tracing::warn!(%provider, %message, "metadata response could not be decoded");
+                ApiError::BadGateway(format!(
+                    "{} returned data Kitsunarr could not read.",
+                    provider.display_name()
+                ))
+            }
+        }
+    }
+}
+
+impl From<kitsunarr_library::LibraryError> for ApiError {
+    fn from(err: kitsunarr_library::LibraryError) -> Self {
+        use kitsunarr_library::LibraryError as L;
+        match err {
+            L::Db(e) => e.into(),
+            L::Metadata(e) => e.into(),
+            L::Invalid { field, message } => ApiError::field(field, message),
+            L::Exists(r) => ApiError::Conflict(format!(
+                "This title is already in the library ({} {}).",
+                r.media_type, r.id
+            )),
+        }
+    }
+}
+
 impl From<DbError> for ApiError {
     fn from(err: DbError) -> Self {
         match err {

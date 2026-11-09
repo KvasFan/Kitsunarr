@@ -100,6 +100,8 @@ pub struct SeriesDetail {
     pub root_folder_path: String,
     pub first_aired: Option<String>,
     pub last_aired: Option<String>,
+    /// When provider metadata was last refreshed (RFC 3339 UTC).
+    pub last_refreshed_at: Option<String>,
     pub seasons: Vec<SeasonItem>,
     pub collections: Vec<CollectionRef>,
 }
@@ -192,6 +194,8 @@ pub struct MovieDetail {
     pub in_cinemas: Option<String>,
     pub digital_release: Option<String>,
     pub physical_release: Option<String>,
+    /// When provider metadata was last refreshed (RFC 3339 UTC).
+    pub last_refreshed_at: Option<String>,
     pub file: Option<MovieFileItem>,
     pub collections: Vec<CollectionRef>,
 }

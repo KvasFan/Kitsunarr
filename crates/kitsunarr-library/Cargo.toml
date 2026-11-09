@@ -1,0 +1,28 @@
+[package]
+name = "kitsunarr-library"
+description = "Library services for Kitsunarr: adding titles from metadata providers and refreshing them."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+kitsunarr-domain = { workspace = true }
+kitsunarr-db = { workspace = true }
+kitsunarr-metadata = { workspace = true }
+sqlx = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+chrono = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }
+tempfile = { workspace = true }
+axum = { workspace = true }
+reqwest = { workspace = true }
+
+[lints]
+workspace = true

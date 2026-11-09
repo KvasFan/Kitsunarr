@@ -15,6 +15,8 @@ kitsunarr-auth = { workspace = true }
 kitsunarr-config = { workspace = true }
 kitsunarr-events = { workspace = true }
 kitsunarr-migrate = { workspace = true }
+kitsunarr-metadata = { workspace = true }
+kitsunarr-library = { workspace = true }
 axum = { workspace = true }
 axum-extra = { workspace = true }
 tower = { workspace = true }
@@ -44,6 +46,7 @@ tempfile = { workspace = true }
 tower = { workspace = true }
 http-body-util = { workspace = true }
 kitsunarr-client = { workspace = true }
+sqlx = { workspace = true }
 
 [lints]
 workspace = true

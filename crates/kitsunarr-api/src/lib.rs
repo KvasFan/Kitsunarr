@@ -60,6 +60,7 @@ pub struct AppStateInner {
     pub tasks: Arc<dyn TaskControl>,
     pub migrations: MigrationSessions,
     pub http: reqwest::Client,
+    pub metadata: kitsunarr_metadata::Metadata,
     pub logs: LogBuffer,
 }
 
@@ -81,6 +82,7 @@ impl AppState {
         assets: Arc<dyn AssetSource>,
         tasks: Arc<dyn TaskControl>,
         http: reqwest::Client,
+        metadata: kitsunarr_metadata::Metadata,
         logs: LogBuffer,
     ) -> Self {
         Self(Arc::new(AppStateInner {
@@ -95,6 +97,7 @@ impl AppState {
             tasks,
             migrations: MigrationSessions::default(),
             http,
+            metadata,
             logs,
         }))
     }
@@ -113,6 +116,7 @@ impl AppState {
         (name = "auth", description = "Setup, login and API keys"),
         (name = "system", description = "Status, health, tasks and backups"),
         (name = "library", description = "Series, anime, movies and collections"),
+        (name = "metadata", description = "Catalogue search, adding titles and metadata refresh"),
         (name = "settings", description = "Profiles, providers and configuration"),
         (name = "migration", description = "Import from Sonarr and Tanukarr"),
     )

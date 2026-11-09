@@ -10,6 +10,7 @@ pub const DEFAULT_TASKS: &[(&str, i64)] = &[
     ("HealthCheck", 6 * 60),
     ("Backup", 7 * 24 * 60),
     ("CleanupSessions", 60),
+    ("RefreshMetadata", 12 * 60),
 ];
 
 pub async fn seed_defaults(db: &Database) -> DbResult<()> {

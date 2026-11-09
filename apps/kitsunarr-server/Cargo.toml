@@ -22,6 +22,8 @@ kitsunarr-events = { workspace = true }
 kitsunarr-domain = { workspace = true }
 kitsunarr-migrate = { workspace = true }
 kitsunarr-scheduler = { workspace = true }
+kitsunarr-metadata = { workspace = true }
+kitsunarr-library = { workspace = true }
 tokio = { workspace = true }
 tokio-util = { workspace = true }
 axum = { workspace = true }

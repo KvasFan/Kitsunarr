@@ -1,11 +1,12 @@
 # Test fixtures
 
-Real data produced by the applications Kitsunarr migrates from, used by `crates/kitsunarr-migrate/tests/fixtures.rs`.
+Real data produced by the applications Kitsunarr migrates from (used by `crates/kitsunarr-migrate/tests/fixtures.rs`) and recorded catalogue responses (used by the metadata tests).
 
 | Directory | Source application | Contents |
 |---|---|---|
 | `sonarr-4.0.20/` | `lscr.io/linuxserver/sonarr:latest` (4.0.20.3014-ls4), schema 217 | `backup.zip` created by Sonarr's own *Backup* command; `api/*.json` are `/api/v3` responses |
 | `tanukarr-0.1.5/` | `ghcr.io/kvasfan/tanukarr:0.1.5`, schema 254 | Same, including an AniList-owned movie and a TVmaze-owned series |
+| `metadata/` | TVmaze public API, recorded 2026-11-09 | `tvmaze-search.json` (`/search/shows?q=breaking bad`, summaries replaced by "Synthetic."); `tvmaze-show-169.json` (`/shows/169` with embedded episodes and seasons); `tvmaze-show-1003.json` and `tvmaze-episodes-1003.json` (`/shows/1003?embed[]=seasons`, `/shows/1003/episodes?specials=1`). Summaries and `_links` were removed. Used by the metadata, library, HTTP and browser tests. |
 
 ## How they were generated
 

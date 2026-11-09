@@ -5,15 +5,26 @@ use std::time::Duration;
 
 use kitsunarr_db::{auth, maintenance, tasks};
 use kitsunarr_domain::api::events::ServerEvent;
-use kitsunarr_scheduler::{Job, job};
+use kitsunarr_metadata::Metadata;
+use kitsunarr_scheduler::{Job, JobContext, JobResult, job};
 
 /// Scheduled backups kept on disk (manual and pre-migration backups are never pruned).
 const KEEP_SCHEDULED_BACKUPS: usize = 8;
 const KEEP_TASK_RUNS: i64 = 2000;
 
-pub fn all(backup_dir: PathBuf, tmp_dir: PathBuf) -> Vec<Job> {
+pub fn all(backup_dir: PathBuf, tmp_dir: PathBuf, metadata: Metadata) -> Vec<Job> {
     let backup_dir_for_job = backup_dir.clone();
     vec![
+        job(
+            "RefreshMetadata",
+            "Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)",
+            12 * 60,
+            Duration::from_secs(6 * 3600),
+            move |ctx| {
+                let metadata = metadata.clone();
+                async move { refresh_metadata(&ctx, &metadata).await }
+            },
+        ),
         job(
             "Housekeeping",
             "Purges expired sessions, prunes task history and checks database integrity",
@@ -86,6 +97,64 @@ pub fn all(backup_dir: PathBuf, tmp_dir: PathBuf) -> Vec<Job> {
             },
         ),
     ]
+}
+
+/// Refreshes every title that is due. One failing title does not stop the others; the run
+/// fails only when every refresh failed (typically: the catalogue is unreachable).
+async fn refresh_metadata(ctx: &JobContext, metadata: &Metadata) -> JobResult {
+    let (series, movies) = kitsunarr_library::due_for_refresh(&ctx.db, chrono::Utc::now())
+        .await
+        .map_err(|e| e.to_string())?;
+    let total = series.len() + movies.len();
+    if total == 0 {
+        return Ok(Some("Nothing is due for a refresh".into()));
+    }
+    let (mut refreshed_series, mut refreshed_movies, mut failed) = (Vec::new(), Vec::new(), 0usize);
+    let work = series
+        .iter()
+        .map(|id| ("series", *id))
+        .chain(movies.iter().map(|id| ("movie", *id)));
+    for (done, (kind, id)) in work.enumerate() {
+        if ctx.cancel.is_cancelled() {
+            break;
+        }
+        ctx.progress(
+            done as f64 / total as f64,
+            &format!("Refreshing {} of {total}", done + 1),
+        )
+        .await;
+        let result = if kind == "series" {
+            kitsunarr_library::refresh_series(&ctx.db, metadata, id)
+                .await
+                .map(|_| ())
+        } else {
+            kitsunarr_library::refresh_movie(&ctx.db, metadata, id).await
+        };
+        match result {
+            Ok(()) if kind == "series" => refreshed_series.push(id),
+            Ok(()) => refreshed_movies.push(id),
+            Err(e) => {
+                failed += 1;
+                tracing::warn!(kind, id, error = %e, "metadata refresh failed");
+            }
+        }
+    }
+    let refreshed = refreshed_series.len() + refreshed_movies.len();
+    for (media_type, ids) in [("series", refreshed_series), ("movie", refreshed_movies)] {
+        if !ids.is_empty() {
+            ctx.events.publish(ServerEvent::LibraryChanged {
+                media_type: media_type.into(),
+                ids,
+                deleted: false,
+            });
+        }
+    }
+    if refreshed == 0 && failed > 0 {
+        return Err(format!("All {failed} refreshes failed; see the logs"));
+    }
+    Ok(Some(format!(
+        "{refreshed} titles refreshed, {failed} failed"
+    )))
 }
 
 fn remove_stale_files(dir: &std::path::Path, age: Duration) -> usize {

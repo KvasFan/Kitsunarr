@@ -2496,11 +2496,14 @@ dependencies = [
  "kitsunarr-db",
  "kitsunarr-domain",
  "kitsunarr-events",
+ "kitsunarr-library",
+ "kitsunarr-metadata",
  "kitsunarr-migrate",
  "mime_guess",
  "reqwest 0.13.5",
  "serde",
  "serde_json",
+ "sqlx",
  "tempfile",
  "thiserror 2.0.21",
  "time",
@@ -2581,6 +2584,7 @@ dependencies = [
 name = "kitsunarr-e2e"
 version = "0.1.0"
 dependencies = [
+ "axum",
  "fantoccini",
  "reqwest 0.13.5",
  "serde_json",
@@ -2595,6 +2599,39 @@ dependencies = [
  "kitsunarr-domain",
  "serde",
  "serde_json",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "kitsunarr-library"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "chrono",
+ "kitsunarr-db",
+ "kitsunarr-domain",
+ "kitsunarr-metadata",
+ "reqwest 0.13.5",
+ "serde_json",
+ "sqlx",
+ "tempfile",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "kitsunarr-metadata"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "chrono",
+ "kitsunarr-domain",
+ "reqwest 0.13.5",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
  "tokio",
  "tracing",
 ]
@@ -2655,6 +2692,8 @@ dependencies = [
  "kitsunarr-db",
  "kitsunarr-domain",
  "kitsunarr-events",
+ "kitsunarr-library",
+ "kitsunarr-metadata",
  "kitsunarr-migrate",
  "kitsunarr-scheduler",
  "reqwest 0.13.5",

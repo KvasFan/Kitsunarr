@@ -225,12 +225,31 @@ impl Default for LogConfig {
     }
 }
 
+/// Metadata catalogue endpoints. Change them only to route requests through a caching proxy
+/// or mirror; the defaults are the public services.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(default, deny_unknown_fields)]
+pub struct MetadataConfig {
+    pub tvmaze_url: String,
+    pub anilist_url: String,
+}
+
+impl Default for MetadataConfig {
+    fn default() -> Self {
+        Self {
+            tvmaze_url: "https://api.tvmaze.com".into(),
+            anilist_url: "https://graphql.anilist.co".into(),
+        }
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct Config {
     pub server: ServerConfig,
     pub auth: AuthConfig,
     pub log: LogConfig,
+    pub metadata: MetadataConfig,
     /// Directory holding `config.toml`.
     #[serde(skip)]
     pub config_dir: PathBuf,
@@ -244,6 +263,7 @@ impl Default for Config {
             server: ServerConfig::default(),
             auth: AuthConfig::default(),
             log: LogConfig::default(),
+            metadata: MetadataConfig::default(),
             config_dir: PathBuf::from(DEFAULT_CONFIG_DIR),
             data_dir: PathBuf::from(DEFAULT_DATA_DIR),
         }
@@ -335,6 +355,12 @@ impl Config {
         if let Some(v) = env.var("KITSUNARR_SECURE_COOKIES") {
             self.auth.secure_cookies = parse("KITSUNARR_SECURE_COOKIES", v)?;
         }
+        if let Some(v) = env.var("KITSUNARR_TVMAZE_URL") {
+            self.metadata.tvmaze_url = v;
+        }
+        if let Some(v) = env.var("KITSUNARR_ANILIST_URL") {
+            self.metadata.anilist_url = v;
+        }
         if let Some(v) = env.var("KITSUNARR_SESSION_DAYS") {
             self.auth.session_days = parse("KITSUNARR_SESSION_DAYS", v)?;
         }
@@ -353,6 +379,23 @@ impl Config {
                 key: "server.port".into(),
                 message: "must not be 0".into(),
             });
+        }
+        for (key, url) in [
+            ("metadata.tvmaze_url", &mut self.metadata.tvmaze_url),
+            ("metadata.anilist_url", &mut self.metadata.anilist_url),
+        ] {
+            let trimmed = url.trim().trim_end_matches('/');
+            let scheme_ok = trimmed.starts_with("https://") || trimmed.starts_with("http://");
+            if !scheme_ok
+                || trimmed.contains(char::is_whitespace)
+                || trimmed.len() <= "http://".len()
+            {
+                return Err(ConfigError::Invalid {
+                    key: key.into(),
+                    message: "must be an http:// or https:// URL".into(),
+                });
+            }
+            *url = trimmed.to_string();
         }
         if self.auth.session_days == 0 || self.auth.short_session_hours == 0 {
             return Err(ConfigError::Invalid {
@@ -392,7 +435,12 @@ impl Config {
              \n\
              [log]\n\
              # level = \"info\"\n\
-             # format = \"text\"           # text | json\n"
+             # format = \"text\"           # text | json\n\
+             \n\
+             [metadata]\n\
+             # Catalogue endpoints; change them only to use a caching proxy or mirror.\n\
+             # tvmaze_url = \"https://api.tvmaze.com\"\n\
+             # anilist_url = \"https://graphql.anilist.co\"\n"
         )
     }
 }
@@ -480,6 +528,24 @@ mod tests {
         let empty = tempfile::tempdir().unwrap();
         let err = Config::load(Some(empty.path()), &[("KITSUNARR_PORT", "seventy")]).unwrap_err();
         assert!(err.to_string().contains("KITSUNARR_PORT"));
+    }
+
+    #[test]
+    fn metadata_endpoints_are_validated() {
+        let empty = tempfile::tempdir().unwrap();
+        let cfg = Config::load(
+            Some(empty.path()),
+            &[("KITSUNARR_TVMAZE_URL", "http://127.0.0.1:9999/")],
+        )
+        .unwrap();
+        assert_eq!(cfg.metadata.tvmaze_url, "http://127.0.0.1:9999");
+        assert_eq!(cfg.metadata.anilist_url, "https://graphql.anilist.co");
+        let err = Config::load(
+            Some(empty.path()),
+            &[("KITSUNARR_ANILIST_URL", "file:///etc")],
+        )
+        .unwrap_err();
+        assert!(err.to_string().contains("metadata.anilist_url"), "{err}");
     }
 
     #[test]

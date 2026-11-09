@@ -290,19 +290,30 @@ async fn serve(config: Config) -> Result<()> {
     let events = EventBus::default();
     let shutdown = CancellationToken::new();
     let tmp_dir = config.data_dir.join("tmp");
+    let http = reqwest::Client::builder()
+        .user_agent(format!(
+            "Kitsunarr/{VERSION} (+https://github.com/KvasFan/Kitsunarr)"
+        ))
+        .connect_timeout(Duration::from_secs(10))
+        .timeout(Duration::from_secs(60))
+        .build()?;
+    let metadata = kitsunarr_metadata::Metadata::with_endpoints(
+        http.clone(),
+        &config.metadata.tvmaze_url,
+        &config.metadata.anilist_url,
+    );
     let scheduler = kitsunarr_scheduler::Scheduler::new(
         db.clone(),
         events.clone(),
-        jobs::all(config.backup_dir(), tmp_dir.join("migration")),
+        jobs::all(
+            config.backup_dir(),
+            tmp_dir.join("migration"),
+            metadata.clone(),
+        ),
         shutdown.child_token(),
     );
     scheduler.start(Duration::from_secs(30)).await?;
 
-    let http = reqwest::Client::builder()
-        .user_agent(format!("Kitsunarr/{VERSION}"))
-        .connect_timeout(Duration::from_secs(10))
-        .timeout(Duration::from_secs(60))
-        .build()?;
     let config = Arc::new(config);
     let state = AppState::new(
         db.clone(),
@@ -316,6 +327,7 @@ async fn serve(config: Config) -> Result<()> {
         Arc::new(assets::Embedded),
         Arc::new(scheduler.clone()),
         http,
+        metadata,
         logs,
     );
     if !assets::Embedded::has_ui() {

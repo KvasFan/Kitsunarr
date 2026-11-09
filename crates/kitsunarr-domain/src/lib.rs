@@ -10,6 +10,7 @@
 pub mod api;
 pub mod language;
 pub mod media;
+pub mod naming;
 pub mod paging;
 pub mod quality;
 pub mod text;

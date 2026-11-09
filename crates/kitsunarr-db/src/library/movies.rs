@@ -393,6 +393,7 @@ struct DetailRow {
     in_cinemas: Option<String>,
     digital_release: Option<String>,
     physical_release: Option<String>,
+    last_refreshed_at: Option<String>,
 }
 
 #[derive(FromRow)]
@@ -417,7 +418,7 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<MovieDetail> {
         .ok_or(DbError::NotFound)?;
     let d: DetailRow = sqlx::query_as(
         "SELECT overview, runtime, certification, genres, images, metadata_id, root_folder_path, in_cinemas, digital_release, \
-         physical_release FROM movies WHERE id = ?",
+         physical_release, last_refreshed_at FROM movies WHERE id = ?",
     )
     .bind(id)
     .fetch_one(db.pool())
@@ -456,6 +457,7 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<MovieDetail> {
         in_cinemas: d.in_cinemas,
         digital_release: d.digital_release,
         physical_release: d.physical_release,
+        last_refreshed_at: d.last_refreshed_at,
         file: file.map(|f| {
             let qid = f.quality_id as i32;
             MovieFileItem {
@@ -546,6 +548,59 @@ pub async fn delete(db: &Database, id: i64) -> DbResult<()> {
         .await?;
     if r.rows_affected() == 0 {
         return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
+/// Refreshes provider-owned movie fields; user settings stay untouched.
+#[allow(clippy::too_many_arguments)]
+pub async fn update_metadata(
+    conn: &mut SqliteConnection,
+    id: i64,
+    title: &str,
+    original_title: Option<&str>,
+    year: Option<i32>,
+    status: MovieStatus,
+    overview: Option<&str>,
+    studio: Option<&str>,
+    runtime: Option<i32>,
+    genres: &[String],
+    images: &[MediaImage],
+    in_cinemas: Option<&str>,
+    external_ids: &[ExternalId],
+) -> DbResult<()> {
+    let title = title.trim();
+    let r = sqlx::query(
+        "UPDATE movies SET title = ?, sort_title = ?, clean_title = ?, title_slug = ?, original_title = ?, year = ?, status = ?, \
+         overview = ?, studio = ?, runtime = ?, genres = ?, images = ?, in_cinemas = ?, last_refreshed_at = ? WHERE id = ?",
+    )
+    .bind(title)
+    .bind(kitsunarr_domain::text::sort_title(title))
+    .bind(kitsunarr_domain::text::clean_title(title))
+    .bind(kitsunarr_domain::text::slugify(title))
+    .bind(original_title)
+    .bind(year)
+    .bind(status.as_str())
+    .bind(overview)
+    .bind(studio)
+    .bind(runtime)
+    .bind(to_json(genres)?)
+    .bind(to_json(images)?)
+    .bind(in_cinemas)
+    .bind(crate::now())
+    .bind(id)
+    .execute(&mut *conn)
+    .await?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    for ext in external_ids {
+        sqlx::query("INSERT OR IGNORE INTO movie_external_ids (movie_id, kind, external_id) VALUES (?, ?, ?)")
+            .bind(id)
+            .bind(ext.kind.as_str())
+            .bind(&ext.value)
+            .execute(&mut *conn)
+            .await?;
     }
     Ok(())
 }

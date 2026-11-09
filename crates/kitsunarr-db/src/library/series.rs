@@ -557,13 +557,14 @@ struct DetailRow {
     root_folder_path: String,
     first_aired: Option<String>,
     last_aired: Option<String>,
+    last_refreshed_at: Option<String>,
 }
 
 pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
     let item = get_list_item(db, id).await?;
     let d: DetailRow = sqlx::query_as(
         "SELECT overview, runtime, certification, genres, images, metadata_id, episode_ordering, monitor_new_items, \
-         season_folder, use_scene_numbering, root_folder_path, first_aired, last_aired FROM series WHERE id = ?",
+         season_folder, use_scene_numbering, root_folder_path, first_aired, last_aired, last_refreshed_at FROM series WHERE id = ?",
     )
     .bind(id)
     .fetch_optional(db.pool())
@@ -616,6 +617,7 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
         root_folder_path: d.root_folder_path,
         first_aired: d.first_aired,
         last_aired: d.last_aired,
+        last_refreshed_at: d.last_refreshed_at,
         seasons: seasons
             .into_iter()
             .map(|(n, monitored, title, episodes, files, size)| SeasonItem {
@@ -1197,4 +1199,139 @@ pub(crate) mod tests {
                 .is_some()
         );
     }
+}
+
+/// Provider-owned fields refreshed from a metadata catalogue. User choices (monitoring,
+/// profile, path, tags, series type) are never touched by a refresh.
+#[derive(Debug, Clone, PartialEq)]
+pub struct SeriesMetadata {
+    pub title: String,
+    pub year: Option<i32>,
+    pub status: SeriesStatus,
+    pub overview: Option<String>,
+    pub network: Option<String>,
+    pub air_time: Option<String>,
+    pub runtime: Option<i32>,
+    pub original_language: Option<i32>,
+    pub genres: Vec<String>,
+    pub images: Vec<MediaImage>,
+    pub ratings: Option<serde_json::Value>,
+    pub first_aired: Option<String>,
+    pub last_aired: Option<String>,
+    pub external_ids: Vec<ExternalId>,
+    pub alternate_titles: Vec<String>,
+}
+
+pub async fn update_metadata(
+    conn: &mut SqliteConnection,
+    id: i64,
+    m: &SeriesMetadata,
+) -> DbResult<()> {
+    let title = m.title.trim();
+    let r = sqlx::query(
+        "UPDATE series SET title = ?, sort_title = ?, clean_title = ?, title_slug = ?, year = ?, status = ?, overview = ?, \
+         network = ?, air_time = ?, runtime = ?, original_language = COALESCE(?, original_language), genres = ?, images = ?, \
+         ratings = ?, first_aired = ?, last_aired = ?, last_refreshed_at = ? WHERE id = ?",
+    )
+    .bind(title)
+    .bind(kitsunarr_domain::text::sort_title(title))
+    .bind(kitsunarr_domain::text::clean_title(title))
+    .bind(kitsunarr_domain::text::slugify(title))
+    .bind(m.year)
+    .bind(m.status.as_str())
+    .bind(&m.overview)
+    .bind(&m.network)
+    .bind(&m.air_time)
+    .bind(m.runtime)
+    .bind(m.original_language)
+    .bind(to_json(&m.genres)?)
+    .bind(to_json(&m.images)?)
+    .bind(m.ratings.as_ref().map(to_json).transpose()?)
+    .bind(&m.first_aired)
+    .bind(&m.last_aired)
+    .bind(crate::now())
+    .bind(id)
+    .execute(&mut *conn)
+    .await?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    for ext in &m.external_ids {
+        sqlx::query("INSERT OR IGNORE INTO series_external_ids (series_id, kind, external_id) VALUES (?, ?, ?)")
+            .bind(id)
+            .bind(ext.kind.as_str())
+            .bind(&ext.value)
+            .execute(&mut *conn)
+            .await?;
+    }
+    sqlx::query("DELETE FROM series_alternate_titles WHERE series_id = ? AND source = 'provider'")
+        .bind(id)
+        .execute(&mut *conn)
+        .await?;
+    for alt in &m.alternate_titles {
+        sqlx::query(
+            "INSERT OR IGNORE INTO series_alternate_titles (series_id, title, clean_title, season_number, source) VALUES (?, ?, ?, NULL, 'provider')",
+        )
+        .bind(id)
+        .bind(alt.trim())
+        .bind(kitsunarr_domain::text::clean_title(alt))
+        .execute(&mut *conn)
+        .await?;
+    }
+    Ok(())
+}
+
+/// Inserts a new episode, or refreshes the provider fields of an existing one while keeping
+/// its monitoring flag and file link. Returns `true` when a row was inserted.
+pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbResult<bool> {
+    let existing: Option<i64> = sqlx::query_scalar(
+        "SELECT id FROM episodes WHERE series_id = ? AND season_number = ? AND episode_number = ?",
+    )
+    .bind(e.series_id)
+    .bind(e.season_number)
+    .bind(e.episode_number)
+    .fetch_optional(&mut *conn)
+    .await?;
+    match existing {
+        Some(id) => {
+            sqlx::query(
+                "UPDATE episodes SET absolute_episode_number = COALESCE(?, absolute_episode_number), title = COALESCE(?, title), \
+                 overview = COALESCE(?, overview), air_date = COALESCE(?, air_date), air_date_utc = COALESCE(?, air_date_utc), \
+                 runtime = COALESCE(?, runtime), provider_episode_id = COALESCE(?, provider_episode_id) WHERE id = ?",
+            )
+            .bind(e.absolute_episode_number)
+            .bind(&e.title)
+            .bind(&e.overview)
+            .bind(&e.air_date)
+            .bind(&e.air_date_utc)
+            .bind(e.runtime)
+            .bind(&e.provider_episode_id)
+            .bind(id)
+            .execute(&mut *conn)
+            .await?;
+            Ok(false)
+        }
+        None => {
+            upsert_episode(conn, e).await?;
+            Ok(true)
+        }
+    }
+}
+
+/// Inserts a season if it does not exist yet; existing seasons keep their monitoring flag.
+pub async fn ensure_season(
+    conn: &mut SqliteConnection,
+    series_id: i64,
+    season_number: i32,
+    monitored: bool,
+    title: Option<&str>,
+) -> DbResult<bool> {
+    let r = sqlx::query("INSERT OR IGNORE INTO seasons (series_id, season_number, monitored, title) VALUES (?, ?, ?, ?)")
+        .bind(series_id)
+        .bind(season_number)
+        .bind(monitored)
+        .bind(title)
+        .execute(&mut *conn)
+        .await?;
+    Ok(r.rows_affected() == 1)
 }

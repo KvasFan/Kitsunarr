@@ -14,6 +14,9 @@ use kitsunarr_domain::api::library::{
     HistoryItem, LibraryQuery, LibraryStats, MovieDetail, MovieListItem, SeriesDetail,
     SeriesListItem, SeriesUpdate,
 };
+use kitsunarr_domain::api::metadata::{
+    AddTitleRequest, CatalogueInfo, LibraryRef, RefreshResult, SearchItem, SearchQuery,
+};
 use kitsunarr_domain::api::migration::{
     ApiSourceRequest, MigrationOptions, MigrationPreview, MigrationReport, MigrationRunItem,
     MigrationSession,
@@ -289,6 +292,23 @@ impl Client {
     }
     pub async fn bulk_edit_movies(&self, edit: &BulkEdit) -> ClientResult<BulkEditResult> {
         self.post("/movies/bulk", edit).await
+    }
+    pub async fn refresh_series(&self, id: i64) -> ClientResult<RefreshResult> {
+        self.post(&format!("/series/{id}/refresh"), &Empty {}).await
+    }
+    pub async fn refresh_movie(&self, id: i64) -> ClientResult<()> {
+        self.post(&format!("/movies/{id}/refresh"), &Empty {}).await
+    }
+
+    // --- metadata catalogues --------------------------------------------------------------------
+    pub async fn metadata_providers(&self) -> ClientResult<Vec<CatalogueInfo>> {
+        self.get("/metadata/providers").await
+    }
+    pub async fn metadata_search(&self, q: &SearchQuery) -> ClientResult<Vec<SearchItem>> {
+        self.get_query("/metadata/search", q).await
+    }
+    pub async fn add_title(&self, req: &AddTitleRequest) -> ClientResult<LibraryRef> {
+        self.post("/library/add", req).await
     }
     pub async fn collections(&self) -> ClientResult<Vec<CollectionItem>> {
         self.get("/collections").await

@@ -3,6 +3,7 @@
 
 pub mod events;
 pub mod library;
+pub mod metadata;
 pub mod migration;
 pub mod settings;
 pub mod system;
@@ -59,6 +60,12 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(library::list_collections))
         .routes(routes!(library::calendar))
         .routes(routes!(library::history))
+        // metadata
+        .routes(routes!(metadata::providers))
+        .routes(routes!(metadata::search))
+        .routes(routes!(metadata::add))
+        .routes(routes!(metadata::refresh_series))
+        .routes(routes!(metadata::refresh_movie))
         // settings
         .routes(routes!(settings::list_tags, settings::create_tag))
         .routes(routes!(settings::delete_tag))
