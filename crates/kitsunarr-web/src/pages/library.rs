@@ -183,8 +183,11 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             Some(Ok(p)) if p.records.is_empty() => rsx! {
                 Empty { title: if search().is_empty() { format!("No {} yet", title.to_lowercase()) } else { "No matches".to_string() },
                     if search().is_empty() {
-                        p { "Adding titles requires metadata providers, which are not implemented yet. You can import an existing Sonarr or Tanukarr library now." }
-                        Link { to: Route::ImportWizard {}, class: "btn primary", "Import library" }
+                        p { "Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library." }
+                        div { class: "row", style: "justify-content: center",
+                            Link { to: Route::AddMedia {}, class: "btn primary", "Add media" }
+                            Link { to: Route::ImportWizard {}, class: "btn", "Import library" }
+                        }
                     }
                 }
             },
@@ -255,7 +258,11 @@ pub fn MoviesLibrary() -> Element {
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
             Some(Ok(p)) if p.records.is_empty() => rsx! {
                 Empty { title: "No movies yet",
-                    p { "Movies come from Tanukarr migrations for now; adding movies needs the TMDB/OMDb providers, which are not implemented yet." }
+                    p { "Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB provider, which is not implemented yet." }
+                    div { class: "row", style: "justify-content: center",
+                        Link { to: Route::AddMedia {}, class: "btn primary", "Add media" }
+                        Link { to: Route::ImportWizard {}, class: "btn", "Import library" }
+                    }
                 }
             },
             Some(Ok(p)) => rsx! {

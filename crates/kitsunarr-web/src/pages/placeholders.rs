@@ -18,18 +18,6 @@ pub fn InteractiveSearch() -> Element {
 }
 
 #[component]
-pub fn AddMedia() -> Element {
-    rsx! {
-        div { class: "page-head", h1 { "Add media" } }
-        NotReady {
-            feature: "Add series, anime and movies",
-            detail: "Adding titles requires the metadata providers (TheTVDB, TMDB, TVmaze, AniList, MyAnimeList/Jikan, OMDb). Until they land, bring an existing library over with the migration wizard.",
-        }
-        Link { to: Route::ImportWizard {}, class: "btn primary", "Open the migration wizard" }
-    }
-}
-
-#[component]
 pub fn NotFound(segments: Vec<String>) -> Element {
     let path = segments.join("/");
     rsx! {

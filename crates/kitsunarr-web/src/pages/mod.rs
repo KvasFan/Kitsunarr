@@ -1,4 +1,5 @@
 pub mod activity;
+pub mod add;
 pub mod auth;
 pub mod calendar;
 pub mod collections;

@@ -4,12 +4,22 @@
 //! `chromedriver` and Chromium/Chrome. Run with
 //! `cargo test -p kitsunarr-e2e -- --ignored --nocapture`.
 //! Environment: `KITSUNARR_BIN` (binary path), `CHROMEDRIVER` (default `chromedriver`),
-//! `CHROME_BIN` (browser binary), `KITSUNARR_E2E_SCREENSHOTS` (directory for screenshots).
+//! `CHROME_BIN` (browser binary), `KITSUNARR_E2E_SCREENSHOTS` (directory for screenshots),
+//! `KITSUNARR_E2E_LOG` (server log filter, default `warn`).
+//!
+//! Metadata catalogues are replaced by a local mock replaying recorded TVmaze responses, so the
+//! server never contacts the public catalogues. (The browser may still fetch the poster images
+//! referenced by the recorded responses; nothing asserts on them.)
+//!
+//! The scenario performs more than six full page loads. It therefore also guards against
+//! event streams of earlier pages staying open: browsers allow six HTTP/1.1 connections per
+//! host, and leaked streams made later requests stall (see `kitsunarr-web/src/events.rs`).
 
 use std::net::TcpListener;
 use std::path::{Path, PathBuf};
 use std::process::{Child, Command, Stdio};
-use std::time::Duration;
+use std::sync::OnceLock;
+use std::time::{Duration, Instant};
 
 use fantoccini::{Client, ClientBuilder, Locator};
 
@@ -20,6 +30,13 @@ impl Drop for Process {
         let _ = self.0.kill();
         let _ = self.0.wait();
     }
+}
+
+/// Prints a timestamped progress line (shown with `--nocapture`), to make slow steps visible.
+fn step(what: &str) {
+    static START: OnceLock<Instant> = OnceLock::new();
+    let start = START.get_or_init(Instant::now);
+    eprintln!("[e2e {:>6.1}s] {what}", start.elapsed().as_secs_f64());
 }
 
 fn free_port() -> u16 {
@@ -59,13 +76,23 @@ async fn screenshot(client: &Client, name: &str) {
 }
 
 async fn wait_text(client: &Client, text: &str) {
+    step(&format!("waiting for {text:?}"));
     let xpath = format!("//*[contains(normalize-space(.), {})]", xpath_literal(text));
-    client
+    if let Err(e) = client
         .wait()
         .at_most(Duration::from_secs(30))
         .for_element(Locator::XPath(&xpath))
         .await
-        .unwrap_or_else(|e| panic!("text {text:?} not found: {e}"));
+    {
+        // Leave evidence for debugging (locally and in CI artifacts).
+        screenshot(client, "failure").await;
+        let url = client
+            .current_url()
+            .await
+            .map(|u| u.to_string())
+            .unwrap_or_default();
+        panic!("text {text:?} not found on {url}: {e}");
+    }
 }
 
 fn xpath_literal(s: &str) -> String {
@@ -77,6 +104,7 @@ fn xpath_literal(s: &str) -> String {
 }
 
 async fn click_button(client: &Client, label: &str) {
+    step(&format!("clicking {label:?}"));
     let xpath = format!(
         "//button[contains(normalize-space(.), {})]",
         xpath_literal(label)
@@ -101,6 +129,51 @@ async fn fill(client: &Client, css: &str, value: &str) {
     el.send_keys(value).await.unwrap();
 }
 
+/// Serves recorded TVmaze responses: search, Breaking Bad (169) and Talking Bad (1003).
+async fn tvmaze_mock(fixtures: PathBuf) -> String {
+    use axum::extract::{Path as UrlPath, State};
+    use axum::http::StatusCode;
+    use axum::routing::get;
+    type Fixtures = State<std::sync::Arc<PathBuf>>;
+    fn load(dir: &Path, name: &str) -> serde_json::Value {
+        serde_json::from_str(&std::fs::read_to_string(dir.join(name)).unwrap()).unwrap()
+    }
+    async fn search(State(dir): Fixtures) -> axum::Json<serde_json::Value> {
+        axum::Json(load(&dir, "tvmaze-search.json"))
+    }
+    async fn show(
+        State(dir): Fixtures,
+        UrlPath(id): UrlPath<String>,
+    ) -> Result<axum::Json<serde_json::Value>, StatusCode> {
+        match id.as_str() {
+            "169" => Ok(axum::Json(load(&dir, "tvmaze-show-169.json"))),
+            "1003" => Ok(axum::Json(load(&dir, "tvmaze-show-1003.json"))),
+            _ => Err(StatusCode::NOT_FOUND),
+        }
+    }
+    async fn episodes(
+        State(dir): Fixtures,
+        UrlPath(id): UrlPath<String>,
+    ) -> Result<axum::Json<serde_json::Value>, StatusCode> {
+        match id.as_str() {
+            "169" => Ok(axum::Json(
+                load(&dir, "tvmaze-show-169.json")["_embedded"]["episodes"].clone(),
+            )),
+            "1003" => Ok(axum::Json(load(&dir, "tvmaze-episodes-1003.json"))),
+            _ => Err(StatusCode::NOT_FOUND),
+        }
+    }
+    let app = axum::Router::new()
+        .route("/search/shows", get(search))
+        .route("/shows/{id}", get(show))
+        .route("/shows/{id}/episodes", get(episodes))
+        .with_state(std::sync::Arc::new(fixtures));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    format!("http://{addr}")
+}
+
 #[tokio::test]
 #[ignore = "needs chromedriver, Chromium and a server build that includes the web UI"]
 async fn first_run_setup_migration_and_library() {
@@ -115,6 +188,7 @@ async fn first_run_setup_migration_and_library() {
         .map(PathBuf::from)
         .unwrap_or_else(|_| root.join("target/debug/kitsunarr"));
     let port = free_port();
+    let tvmaze = tvmaze_mock(root.join("tests/fixtures/metadata")).await;
     let _server = Process(
         Command::new(&bin)
             .args([
@@ -124,8 +198,18 @@ async fn first_run_setup_migration_and_library() {
                 tmp.path().join("data").to_str().unwrap(),
             ])
             .args(["--port", &port.to_string(), "--bind", "127.0.0.1"])
-            .env("KITSUNARR_LOG", "warn")
-            .stdout(Stdio::null())
+            .env(
+                "KITSUNARR_LOG",
+                std::env::var("KITSUNARR_E2E_LOG").unwrap_or_else(|_| "warn".into()),
+            )
+            .env("KITSUNARR_TVMAZE_URL", &tvmaze)
+            // A closed port: nothing in this test may reach the real AniList.
+            .env("KITSUNARR_ANILIST_URL", "http://127.0.0.1:9/graphql")
+            .stdout(if std::env::var_os("KITSUNARR_E2E_LOG").is_some() {
+                Stdio::inherit()
+            } else {
+                Stdio::null()
+            })
             .stderr(Stdio::inherit())
             .spawn()
             .unwrap_or_else(|e| panic!("cannot start {}: {e}", bin.display())),
@@ -253,6 +337,87 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Bluray-1080p").await;
         screenshot(&client, "08-series-detail").await;
 
+        // Add media: the migrated (TheTVDB-owned) Breaking Bad is recognised in TVmaze results
+        // through its shared TheTVDB id; a new show is added with an exact folder preview.
+        client.goto(&format!("{base}/add")).await.unwrap();
+        wait_text(&client, "Find something to add").await;
+        wait_text(&client, "TV data provided by TVmaze.com").await;
+        fill(&client, "#add-search", "breaking bad").await;
+        click_button(&client, "Search").await;
+        wait_text(&client, "Talking Bad").await;
+        client
+            .find(Locator::XPath(
+                "//article[contains(@class,'result')][.//h3[normalize-space(.)='Breaking Bad']]//a[contains(.,'In library')]",
+            ))
+            .await
+            .expect("Breaking Bad is reported as already in the library");
+        screenshot(&client, "09-add-search").await;
+        client
+            .find(Locator::Css("button[aria-label='Add Talking Bad']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, "Add Talking Bad (2013)").await;
+        let tv_root = media.join("tv").to_str().unwrap().to_string();
+        client
+            .wait()
+            .for_element(Locator::Css(".modal select.select"))
+            .await
+            .unwrap()
+            .select_by_value(&tv_root)
+            .await
+            .unwrap();
+        let preview = client
+            .wait()
+            .for_element(Locator::Css(".path-preview"))
+            .await
+            .unwrap();
+        let preview_text = preview.text().await.unwrap();
+        assert!(
+            preview_text.starts_with(&tv_root) && preview_text.contains("Talking Bad"),
+            "folder preview {preview_text:?}"
+        );
+        screenshot(&client, "10-add-dialog").await;
+        click_button(&client, "Add to library").await;
+        wait_text(&client, "Talking Bad was added to the library").await;
+        wait_text(&client, "Season 1").await;
+        wait_text(&client, "TVmaze · 1003").await;
+        click_button(&client, "Refresh metadata").await;
+        wait_text(&client, "0 new episodes, 8 updated").await;
+        screenshot(&client, "11-added-series").await;
+        assert!(
+            std::fs::read_dir(media.join("tv"))
+                .unwrap()
+                .all(|e| e.unwrap().file_name() != "Talking Bad"),
+            "adding a title never creates folders"
+        );
+
+        // Refreshing a TheTVDB-owned series is not possible yet and the button says so.
+        client.goto(&format!("{base}/series")).await.unwrap();
+        client
+            .wait()
+            .for_element(Locator::XPath(
+                "//a[contains(@class,'media-card')][contains(., 'Breaking Bad')]",
+            ))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        let refresh = client
+            .wait()
+            .for_element(Locator::XPath(
+                "//button[normalize-space(.)='Refresh metadata']",
+            ))
+            .await
+            .unwrap();
+        assert_eq!(
+            refresh.prop("disabled").await.unwrap().as_deref(),
+            Some("true")
+        );
+
         // Table view and dashboard statistics.
         client.goto(&format!("{base}/series")).await.unwrap();
         click_button(&client, "Table").await;
@@ -261,10 +426,10 @@ async fn first_run_setup_migration_and_library() {
             .for_element(Locator::Css("table.table tbody tr"))
             .await
             .unwrap();
-        screenshot(&client, "09-library-table").await;
+        screenshot(&client, "12-library-table").await;
         client.goto(&base).await.unwrap();
         wait_text(&client, "Episodes on disk").await;
-        screenshot(&client, "10-dashboard").await;
+        screenshot(&client, "13-dashboard").await;
 
         // Theme toggle persists the attribute on <html>.
         let before = client
@@ -296,7 +461,7 @@ async fn first_run_setup_migration_and_library() {
             .await
             .unwrap();
         wait_text(&client, "qBittorrent (fixture)").await;
-        screenshot(&client, "11-settings-download-clients").await;
+        screenshot(&client, "14-settings-download-clients").await;
         let page = client.source().await.unwrap();
         assert!(
             !page.contains("fixture-qbit-password"),

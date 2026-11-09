@@ -4,6 +4,7 @@ use dioxus::prelude::*;
 
 use crate::components::shell::AppShell;
 use crate::pages::activity::{Activity, Queue};
+use crate::pages::add::AddMedia;
 use crate::pages::auth::{Login, Setup};
 use crate::pages::calendar::Calendar;
 use crate::pages::collections::Collections;
@@ -11,7 +12,7 @@ use crate::pages::dashboard::Dashboard;
 use crate::pages::detail::{MovieDetailPage, SeriesDetailPage};
 use crate::pages::import::ImportWizard;
 use crate::pages::library::{AnimeLibrary, MoviesLibrary, SeriesLibrary};
-use crate::pages::placeholders::{AddMedia, InteractiveSearch, NotFound};
+use crate::pages::placeholders::{InteractiveSearch, NotFound};
 use crate::pages::settings::{
     SettingsDownloadClients, SettingsFormats, SettingsGeneral, SettingsImportLists,
     SettingsIndexers, SettingsMedia, SettingsMetadata, SettingsNotifications, SettingsProfiles,

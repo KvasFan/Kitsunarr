@@ -3,18 +3,44 @@
 use std::collections::BTreeMap;
 
 use dioxus::prelude::*;
+use kitsunarr_domain::MetadataProvider;
 use kitsunarr_domain::api::library::{
     EpisodeItem, EpisodesMonitoredUpdate, SeasonMonitoring, SeriesUpdate,
 };
+use kitsunarr_domain::api::metadata::SUPPORTED_CATALOGUES;
 
 use crate::components::common::{Badge, Confirm, ErrorBox, Loading, Switch};
 use crate::components::media::Poster;
 use crate::components::vlist::VirtualList;
 use crate::route::Route;
 use crate::state::{use_app, use_client};
-use crate::util::{format_bytes, format_date};
+use crate::util::{format_bytes, format_date, relative};
 
 const ROW_HEIGHT: f64 = 42.0;
+
+/// "Refresh metadata" button. Disabled, with an explanation, for titles owned by a catalogue
+/// Kitsunarr cannot query yet (for example TheTVDB series migrated from Sonarr).
+#[component]
+fn RefreshButton(provider: MetadataProvider, busy: bool, on_click: EventHandler<()>) -> Element {
+    let supported = SUPPORTED_CATALOGUES.contains(&provider);
+    let hint = if supported {
+        format!("Fetch the latest metadata from {}", provider.display_name())
+    } else {
+        format!(
+            "Refreshing from {} is not supported yet; the imported metadata is kept as is",
+            provider.display_name()
+        )
+    };
+    rsx! {
+        button {
+            class: "btn",
+            disabled: busy || !supported,
+            title: "{hint}",
+            onclick: move |_| on_click.call(()),
+            if busy { "Refreshing…" } else { "Refresh metadata" }
+        }
+    }
+}
 
 #[component]
 pub fn SeriesDetailPage(id: i64) -> Element {
@@ -42,6 +68,22 @@ pub fn SeriesDetailPage(id: i64) -> Element {
             if let Err(e) = c.update_series(id, &u).await {
                 app.error(&e);
             }
+        });
+    };
+    let mut refreshing = use_signal(|| false);
+    let c5 = client.clone();
+    let refresh = move |_| {
+        let c = c5.clone();
+        refreshing.set(true);
+        spawn(async move {
+            match c.refresh_series(id).await {
+                Ok(r) => app.success(format!(
+                    "Metadata refreshed: {} new episodes, {} updated.",
+                    r.added_episodes, r.updated_episodes
+                )),
+                Err(e) => app.error(&e),
+            }
+            refreshing.set(false);
         });
     };
     let c4 = client.clone();
@@ -114,6 +156,8 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     if !d.collections.is_empty() {
                         dt { "Collections" } dd { {d.collections.iter().map(|c| c.title.clone()).collect::<Vec<_>>().join(", ")} }
                     }
+                    dt { "Metadata" }
+                    dd { {d.last_refreshed_at.as_deref().map(|t| format!("refreshed {}", relative(t))).unwrap_or_else(|| "never refreshed".into())} }
                 }
                 div { class: "row", style: "margin-top: var(--sp-4)",
                     Switch {
@@ -122,6 +166,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                         onchange: move |v: bool| update_monitored(SeriesUpdate { monitored: Some(v), ..Default::default() }),
                     }
                     div { class: "spacer" }
+                    RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
                     button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Remove from library" }
                 }
             }
@@ -269,6 +314,22 @@ pub fn MovieDetailPage(id: i64) -> Element {
             }
         });
     };
+    let mut refreshing = use_signal(|| false);
+    let c4 = client.clone();
+    let refresh = move |_| {
+        let c = c4.clone();
+        refreshing.set(true);
+        spawn(async move {
+            match c.refresh_movie(id).await {
+                Ok(()) => {
+                    app.success("Metadata refreshed.");
+                    detail.restart();
+                }
+                Err(e) => app.error(&e),
+            }
+            refreshing.set(false);
+        });
+    };
     let c3 = client.clone();
     let delete = move |_| {
         let c = c3.clone();
@@ -322,10 +383,13 @@ pub fn MovieDetailPage(id: i64) -> Element {
                         dt { "Identities" }
                         dd { {d.external_ids.iter().map(|x| format!("{}:{}", x.kind, x.value)).collect::<Vec<_>>().join("  ")} }
                     }
+                    dt { "Metadata" }
+                    dd { {d.last_refreshed_at.as_deref().map(|t| format!("refreshed {}", relative(t))).unwrap_or_else(|| "never refreshed".into())} }
                 }
                 div { class: "row", style: "margin-top: var(--sp-4)",
                     Switch { checked: d.item.monitored, label: if d.item.monitored { "Monitored".to_string() } else { "Unmonitored".to_string() }, onchange: set_monitored }
                     div { class: "spacer" }
+                    RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
                     button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Remove from library" }
                 }
             }
