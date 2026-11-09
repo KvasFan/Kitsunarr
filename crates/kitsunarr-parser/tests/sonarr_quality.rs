@@ -3,7 +3,7 @@
 
 mod common;
 
-use common::{Fixture, b, expect_eq, i, s};
+use common::{Fixture, Outcome, b, expect_eq, i, s};
 use kitsunarr_parser::{DetectionSource, parse_quality};
 
 /// Quality expected by each `should_parse_*_quality(title, proper)` method.
@@ -57,10 +57,10 @@ fn quality_parser_fixture() {
     use DetectionSource::{Extension, Name, Unknown};
     Fixture::load("QualityParserFixture").run(|method, a| {
         if let Some(quality) = expected_quality(method) {
-            return Some(verify(s(&a[0]), quality, b(&a[1])));
+            return Some(verify(s(&a[0]), quality, b(&a[1])).into());
         }
         let title = s(&a[0]);
-        Some(match method {
+        let result: Result<(), String> = match method {
             "should_parse_full_quality_from_name" => detection(title, Name, Name),
             "should_parse_resolution_from_name" => detection(title, Unknown, Name),
             "should_parse_source_from_name" => detection(title, Name, Unknown),
@@ -82,7 +82,8 @@ fn quality_parser_fixture() {
                 i(&a[1]),
             ),
             _ => return None,
-        })
+        };
+        Some(Outcome::from(result))
     });
 }
 
@@ -142,7 +143,7 @@ fn parses_quality_from_other_sources() {
 fn extended_quality_parser_regex() {
     Fixture::load("ExtendedQualityParserRegex").run(|method, a| {
         let r = parse_quality(s(&a[0]));
-        Some(match method {
+        let result = match method {
             "should_parse_reality_from_title" => {
                 expect_eq("real", i64::from(r.revision.real), i(&a[1]))
             }
@@ -150,6 +151,7 @@ fn extended_quality_parser_regex() {
                 expect_eq("version", i64::from(r.revision.version), i(&a[1]))
             }
             _ => return None,
-        })
+        };
+        Some(result.into())
     });
 }

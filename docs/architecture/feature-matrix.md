@@ -44,8 +44,8 @@ Each component is checked against Sonarr's own test cases (`tests/fixtures/parse
 | Component | Upstream | Status | Upstream cases passing |
 |---|---|---|---|
 | Quality (source, resolution, remux, proper/repack/version, REAL), extension fallback | `QualityParser.cs`, `QualityFinder.cs`, `MediaFileExtensions.cs` | Done | 290/290 `QualityParserFixture`, 30/30 `ExtendedQualityParserRegex`, plus both `TestCaseSource` tables |
-| Release groups | `ReleaseGroupParser.cs` | Not started | — |
-| Languages | `LanguageParser.cs`, `IsoLanguages.cs` | Not started | — |
+| Release groups (including anime subgroups, exception lists, repost cleanup, Chinese/Korean pre-substitutions) | `ReleaseGroupParser.cs`, `ParserCommon.cs`, `RegexReplace.cs`, `FileExtensions.cs` | Done | 151/151 `ReleaseGroupParserFixture` |
+| Languages in release titles, subtitle languages/flags/titles, ISO 639 lookups | `LanguageParser.cs`, `IsoLanguages.cs` | Partial | 202/221 `LanguageParserFixture` (the other 19 assert on `Parser.ParseTitle` and wait for the title parser), 26/26 `IsoLanguagesFixture` |
 | Titles, seasons and episodes (standard, daily, anime/absolute, packs, specials) | `Parser.cs`, `ParserCommon.cs` | Not started | — |
 
 ## Migration (Phase 2)

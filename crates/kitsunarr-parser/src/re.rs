@@ -45,6 +45,18 @@ impl Re {
         self.0.captures_iter(text).filter_map(Result::ok).collect()
     }
 
+    /// `Regex.Replace` with a literal replacement (no `$` expansion).
+    pub fn replace_all_literal(&self, text: &str, replacement: &str) -> String {
+        self.0
+            .replace_all(text, fancy_regex::NoExpand(replacement))
+            .into_owned()
+    }
+
+    /// Names of the named groups.
+    pub fn group_names(&self) -> Vec<String> {
+        self.0.capture_names().flatten().map(String::from).collect()
+    }
+
     /// Number of non-overlapping matches (`Regex.Matches(...).Count`).
     pub fn count(&self, text: &str) -> usize {
         self.0.find_iter(text).filter(Result::is_ok).count()

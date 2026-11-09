@@ -1,7 +1,8 @@
 //! Language catalogue.
 //!
-//! Identifiers match Sonarr v4 (captured from `/api/v3/language` on Sonarr 4.0.20) so that
-//! file language lists, custom format specifications and profiles migrate unchanged.
+//! Identifiers match Sonarr (captured from `/api/v3/language` on Sonarr 4.0.20, plus the ids
+//! later Sonarr versions added) so that file language lists, custom format specifications and
+//! profiles migrate unchanged.
 
 use serde::Serialize;
 
@@ -68,6 +69,14 @@ pub const LANGUAGES: &[Language] = &[
     l(44, "Indonesian", "id"),
     l(45, "Macedonian", "mk"),
     l(46, "Slovenian", "sl"),
+    // Added by later Sonarr versions (ids from Sonarr's `Language.cs`, revision c018578e4).
+    l(47, "Azerbaijani", "az"),
+    l(48, "Uzbek", "uz"),
+    l(49, "Malay", "ms"),
+    l(50, "Urdu", "ur"),
+    l(51, "Romansh", "rm"),
+    l(52, "Georgian", "ka"),
+    l(53, "Irish", "ga"),
 ];
 
 impl Language {
@@ -90,7 +99,9 @@ mod tests {
 
     #[test]
     fn catalogue_matches_sonarr_size_and_ids() {
-        assert_eq!(LANGUAGES.len(), 48);
+        // Sonarr 4.0.20's 48 plus the 7 added by later versions.
+        assert_eq!(LANGUAGES.len(), 55);
+        assert_eq!(Language::by_id(53).unwrap().name, "Irish");
         assert_eq!(Language::by_id(8).unwrap().name, "Japanese");
         assert_eq!(Language::by_name("portuguese (brazil)").unwrap().id, 33);
     }

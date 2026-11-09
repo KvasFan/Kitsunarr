@@ -10,6 +10,24 @@ use std::collections::BTreeMap;
 
 use serde_json::Value;
 
+/// Result of one upstream case.
+pub enum Outcome {
+    Pass,
+    Fail(String),
+    /// Not checkable yet: the assertion needs a part of the parser that is not ported yet. Listed
+    /// in the output and counted, but not a failure.
+    Pending(&'static str),
+}
+
+impl From<Result<(), String>> for Outcome {
+    fn from(r: Result<(), String>) -> Self {
+        match r {
+            Ok(()) => Outcome::Pass,
+            Err(e) => Outcome::Fail(e),
+        }
+    }
+}
+
 pub struct Fixture {
     pub name: &'static str,
     methods: BTreeMap<String, Vec<Vec<Value>>>,
@@ -39,20 +57,29 @@ impl Fixture {
         Self { name, methods }
     }
 
-    /// Runs `check` on every case. `check` returns `None` for methods it does not handle and
-    /// `Some(Err(message))` for a failing case.
-    pub fn run(&self, check: impl Fn(&str, &[Value]) -> Option<Result<(), String>>) {
+    /// Runs `check` on every case. `check` returns `None` for methods it does not handle.
+    pub fn run(&self, check: impl Fn(&str, &[Value]) -> Option<Outcome>) {
         let mut failures = Vec::new();
+        let mut pending = std::collections::BTreeMap::<String, (usize, &str)>::new();
         let mut total = 0;
         for (method, cases) in &self.methods {
             for args in cases {
                 total += 1;
                 match check(method, args) {
                     None => failures.push(format!("{method}: not handled by the Kitsunarr test")),
-                    Some(Err(msg)) => failures.push(format!("{method}{}: {msg}", show(args))),
-                    Some(Ok(())) => {}
+                    Some(Outcome::Fail(msg)) => {
+                        failures.push(format!("{method}{}: {msg}", show(args)));
+                    }
+                    Some(Outcome::Pending(why)) => {
+                        pending.entry(method.clone()).or_insert((0, why)).0 += 1
+                    }
+                    Some(Outcome::Pass) => {}
                 }
             }
+        }
+        let pending_count: usize = pending.values().map(|(n, _)| n).sum();
+        for (method, (n, why)) in &pending {
+            eprintln!("{}: {n} case(s) of {method} pending: {why}", self.name);
         }
         assert!(
             failures.is_empty(),
@@ -61,7 +88,11 @@ impl Fixture {
             failures.len(),
             failures.join("\n")
         );
-        eprintln!("{}: all {total} upstream cases pass", self.name);
+        eprintln!(
+            "{}: {} of {total} upstream cases pass, {pending_count} pending",
+            self.name,
+            total - pending_count
+        );
     }
 }
 

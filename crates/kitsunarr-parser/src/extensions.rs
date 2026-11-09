@@ -98,6 +98,27 @@ pub fn last_extension(path: &str) -> &str {
     }
 }
 
+/// Usenet-specific extensions (`FileExtensions.UsenetExtensions`).
+const USENET_EXTENSIONS: &[&str] = &[".par2", ".nzb"];
+
+static FILE_EXTENSION: std::sync::LazyLock<crate::re::Re> =
+    std::sync::LazyLock::new(|| crate::re::Re::ci(r"\.[a-z0-9]{2,4}$"));
+
+/// `FileExtensions.RemoveFileExtension`: strips a trailing media or Usenet extension.
+pub fn remove_file_extension(title: &str) -> String {
+    match FILE_EXTENSION.captures(title).and_then(|c| c.get(0)) {
+        Some(m) => {
+            let extension = m.as_str().to_lowercase();
+            if is_video_extension(&extension) || USENET_EXTENSIONS.contains(&extension.as_str()) {
+                title[..m.start()].to_string()
+            } else {
+                title.to_string()
+            }
+        }
+        None => title.to_string(),
+    }
+}
+
 /// `ContainsInvalidPathChars` with .NET's Unix definition (only NUL is invalid).
 pub fn contains_invalid_path_chars(text: &str) -> bool {
     text.contains('\0')
