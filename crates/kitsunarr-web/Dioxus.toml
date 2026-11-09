@@ -1,0 +1,9 @@
+[application]
+name = "kitsunarr-web"
+out_dir = "dist"
+
+[web.app]
+title = "Kitsunarr"
+
+[web.watcher]
+watch_path = ["src", "assets"]

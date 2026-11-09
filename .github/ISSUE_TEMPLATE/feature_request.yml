@@ -1,0 +1,19 @@
+name: Feature request
+description: Suggest an improvement or a missing Sonarr/Tanukarr capability
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+  - type: input
+    id: reference
+    attributes:
+      label: Equivalent in Sonarr/Tanukarr (if any)

@@ -1,0 +1,23 @@
+[package]
+name = "kitsunarr-e2e"
+description = "Browser end-to-end tests for Kitsunarr (WebDriver, headless Chromium)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dev-dependencies]
+fantoccini = { version = "0.22", default-features = false, features = ["rustls-tls"] }
+tokio = { workspace = true }
+serde_json = { workspace = true }
+tempfile = { workspace = true }
+reqwest = { workspace = true }
+
+[lints]
+workspace = true

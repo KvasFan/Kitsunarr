@@ -10,6 +10,7 @@
 pub mod assets;
 pub mod auth;
 pub mod error;
+pub mod logs;
 pub mod routes;
 
 use std::sync::{Arc, RwLock};
@@ -32,8 +33,9 @@ use utoipa::OpenApi;
 use utoipa_axum::router::OpenApiRouter;
 
 pub use assets::{AssetSource, EmbeddedAsset, NoAssets};
+pub use logs::LogBuffer;
 pub use routes::migration::MigrationSessions;
-pub use routes::system::TaskControl;
+pub use routes::system::{NoTasks, TaskControl};
 
 /// Build/version information shown in the UI and status endpoint.
 #[derive(Debug, Clone)]
@@ -58,6 +60,7 @@ pub struct AppStateInner {
     pub tasks: Arc<dyn TaskControl>,
     pub migrations: MigrationSessions,
     pub http: reqwest::Client,
+    pub logs: LogBuffer,
 }
 
 impl std::ops::Deref for AppState {
@@ -78,6 +81,7 @@ impl AppState {
         assets: Arc<dyn AssetSource>,
         tasks: Arc<dyn TaskControl>,
         http: reqwest::Client,
+        logs: LogBuffer,
     ) -> Self {
         Self(Arc::new(AppStateInner {
             db,
@@ -91,6 +95,7 @@ impl AppState {
             tasks,
             migrations: MigrationSessions::default(),
             http,
+            logs,
         }))
     }
 }

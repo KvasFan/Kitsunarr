@@ -28,6 +28,7 @@ serde_json = { workspace = true }
 thiserror = { workspace = true }
 anyhow = { workspace = true }
 tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
 utoipa = { workspace = true }
 utoipa-axum = { workspace = true }
 fs4 = { workspace = true }
@@ -42,6 +43,7 @@ tempfile = { workspace = true }
 tempfile = { workspace = true }
 tower = { workspace = true }
 http-body-util = { workspace = true }
+kitsunarr-client = { workspace = true }
 
 [lints]
 workspace = true

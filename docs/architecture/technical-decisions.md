@@ -89,7 +89,18 @@ Sonarr and Tanukarr are GPL-3.0-or-later. Kitsunarr ports their behaviour, parse
 
 The Tanukarr image is labelled `GPL-3.0-only` while its `COPYRIGHT.md` says "or later". This audit records that inconsistency. The legal notice in the repository was treated as authoritative.
 
-## 10. Toolchain and build
+## 10. Measured WebAssembly bundle
+
+These figures come from `dx build -p kitsunarr-web --release --profile web-release` (Dioxus 0.7.10, Rust 1.99.1), measured on 2026-11-09. They are also recomputed in CI and shown in the job summary.
+
+| File | Bytes | gzip -9 | brotli -11 |
+|---|---:|---:|---:|
+| `kitsunarr-web_bg-*.wasm` | 2,287,717 | 793,065 | 605,742 |
+| `kitsunarr-web-*.js` (loader) | 64,190 | 14,963 | — |
+
+Assets have content-hashed names and are served with `immutable` caching. Responses are compressed on the fly by tower-http (brotli or gzip).
+
+## 11. Toolchain and build
 
 - `rust-toolchain.toml` pins 1.99.1, with `rustfmt`, `clippy` and the `wasm32-unknown-unknown` target.
 - The WebAssembly bundle is built with `dx build -p kitsunarr-web --release` using the `web-release` profile (`opt-level = "z"`, fat LTO, one codegen unit, `panic = "abort"`). The server build then embeds the output.

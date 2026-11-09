@@ -1,0 +1,23 @@
+[Unit]
+Description=Kitsunarr media manager
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kitsunarr
+Group=kitsunarr
+ExecStart=/usr/local/bin/kitsunarr --config-dir /etc/kitsunarr --data-dir /var/lib/kitsunarr serve
+Restart=on-failure
+TimeoutStopSec=45
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+ReadWritePaths=/var/lib/kitsunarr /etc/kitsunarr
+# Add your media library roots here, e.g.:
+# ReadWritePaths=/srv/media
+
+[Install]
+WantedBy=multi-user.target

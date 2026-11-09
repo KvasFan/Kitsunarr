@@ -16,9 +16,16 @@ dioxus = { workspace = true, features = ["web", "router", "lib", "launch", "logg
 serde = { workspace = true }
 serde_json = { workspace = true }
 chrono = { workspace = true, features = ["wasmbind"] }
-web-sys = { workspace = true, features = ["EventSource", "MessageEvent", "Window", "Document", "Element", "HtmlElement", "Storage", "KeyboardEvent", "Location", "HtmlInputElement", "DomRect", "MediaQueryList"] }
+futures = { workspace = true }
 wasm-bindgen = { workspace = true }
+wasm-bindgen-futures = "0.4"
+js-sys = "0.3"
 gloo-timers = { workspace = true }
+web-sys = { workspace = true, features = [
+    "Blob", "Document", "Element", "EventSource", "EventTarget", "File", "Headers", "HtmlElement",
+    "HtmlInputElement", "KeyboardEvent", "Location", "MediaQueryList", "MessageEvent", "Navigator", "Clipboard",
+    "Request", "RequestCredentials", "RequestInit", "Response", "Storage", "Window",
+] }
 
 [lints]
 workspace = true

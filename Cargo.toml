@@ -12,6 +12,7 @@ members = [
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
     "crates/kitsunarr-web",
+    "tests/e2e",
 ]
 # The web crate only makes sense for wasm32; `cargo build` on the host still
 # type-checks it, which keeps CI honest, but the shipped artefact is produced by `dx`.
@@ -140,3 +141,5 @@ opt-level = "z"
 lto = "fat"
 codegen-units = 1
 panic = "abort"
+# wasm-bindgen needs its custom sections; dx runs wasm-opt afterwards.
+strip = "none"

@@ -28,6 +28,10 @@ fn main() {
             "cargo:warning=web UI not found at {}; building without it (run `dx build -p kitsunarr-web --release` first)",
             dist.display()
         );
+        // Watch the closest existing ancestor so a later `dx build` triggers a re-run.
+        if let Some(existing) = dist.ancestors().find(|p| p.exists()) {
+            println!("cargo:rerun-if-changed={}", existing.display());
+        }
         let placeholder =
             PathBuf::from(std::env::var("OUT_DIR").expect("out dir")).join("web-placeholder");
         std::fs::create_dir_all(&placeholder).expect("create placeholder dir");

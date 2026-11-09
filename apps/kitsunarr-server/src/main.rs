@@ -117,8 +117,10 @@ fn load_config(cli: &Cli) -> Result<Config> {
     Ok(config)
 }
 
-fn init_logging(config: &Config) {
+fn init_logging(config: &Config, logs: &kitsunarr_api::LogBuffer) {
     use tracing_subscriber::EnvFilter;
+    use tracing_subscriber::layer::SubscriberExt;
+    use tracing_subscriber::util::SubscriberInitExt;
     let filter = EnvFilter::try_from_env("KITSUNARR_LOG").unwrap_or_else(|_| {
         EnvFilter::try_new(format!(
             "{},tower_http=warn,sqlx=warn,hyper=warn",
@@ -126,13 +128,13 @@ fn init_logging(config: &Config) {
         ))
         .unwrap_or_else(|_| EnvFilter::new("info"))
     });
-    let builder = tracing_subscriber::fmt()
-        .with_env_filter(filter)
-        .with_target(true);
-    match config.log.format {
-        LogFormat::Json => builder.json().flatten_event(true).init(),
-        LogFormat::Text => builder.init(),
-    }
+    let json = config.log.format == LogFormat::Json;
+    tracing_subscriber::registry()
+        .with(filter)
+        .with(json.then(|| tracing_subscriber::fmt::layer().json().flatten_event(true)))
+        .with((!json).then(|| tracing_subscriber::fmt::layer().with_target(true)))
+        .with(logs.layer())
+        .init();
 }
 
 fn ensure_writable(dir: &Path) -> Result<()> {
@@ -263,7 +265,8 @@ async fn shutdown_signal(token: CancellationToken) {
 }
 
 async fn serve(config: Config) -> Result<()> {
-    init_logging(&config);
+    let logs = kitsunarr_api::LogBuffer::default();
+    init_logging(&config, &logs);
     tracing::info!(version = VERSION, data_dir = %config.data_dir.display(), "starting Kitsunarr");
     let db = open_database(&config).await?;
     if let Some(dir) = Some(&config.config_dir).filter(|d| d.is_dir()) {
@@ -313,6 +316,7 @@ async fn serve(config: Config) -> Result<()> {
         Arc::new(assets::Embedded),
         Arc::new(scheduler.clone()),
         http,
+        logs,
     );
     if !assets::Embedded::has_ui() {
         tracing::warn!("this build does not include the web interface; only the API is served");

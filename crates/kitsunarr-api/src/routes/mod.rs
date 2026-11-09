@@ -36,6 +36,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(system::run_task))
         .routes(routes!(system::task_runs))
         .routes(routes!(system::backups, system::create_backup))
+        .routes(routes!(system::logs))
         .routes(routes!(events::stream))
         // library
         .routes(routes!(library::stats))

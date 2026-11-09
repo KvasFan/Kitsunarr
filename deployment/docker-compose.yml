@@ -1,0 +1,24 @@
+# Example deployment. Mount your media at the same paths your Sonarr/Tanukarr container used,
+# or add path mappings in the migration wizard.
+services:
+  kitsunarr:
+    image: ghcr.io/kvasfan/kitsunarr:latest
+    # build: { context: .., dockerfile: deployment/Dockerfile }   # to build locally
+    container_name: kitsunarr
+    user: "1000:1000"            # owner of ./config and your media
+    ports:
+      - "8990:8990"
+    environment:
+      - TZ=Etc/UTC
+      # - KITSUNARR_URL_BASE=/kitsunarr
+      # - KITSUNARR_TRUSTED_PROXIES=172.16.0.0/12
+      # - KITSUNARR_LOG_FORMAT=json
+    volumes:
+      - ./config:/config
+      - /srv/media:/media
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped

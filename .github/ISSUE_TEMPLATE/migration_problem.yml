@@ -1,0 +1,25 @@
+name: Migration problem
+description: Importing from Sonarr or Tanukarr failed or produced wrong data
+labels: [migration]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: Source application and version
+      placeholder: Sonarr 4.0.20.3014 / Tanukarr 0.1.5
+    validations:
+      required: true
+  - type: dropdown
+    id: method
+    attributes:
+      label: Method
+      options: [Backup upload, API connection, CLI]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What went wrong?
+      description: Include the preview or report notes. Never attach backups that contain real passwords or API keys.
+    validations:
+      required: true

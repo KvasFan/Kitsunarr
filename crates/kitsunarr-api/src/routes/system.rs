@@ -8,7 +8,7 @@ use axum::http::StatusCode;
 use kitsunarr_db::{maintenance, providers, root_folders, tasks};
 use kitsunarr_domain::api::settings::{MediaManagementSettings, ProviderKind};
 use kitsunarr_domain::api::system::{
-    BackupItem, HealthCheck, HealthLevel, ScheduledTaskItem, SystemStatus, TaskRunItem,
+    BackupItem, HealthCheck, HealthLevel, LogEntry, ScheduledTaskItem, SystemStatus, TaskRunItem,
 };
 use serde::Serialize;
 
@@ -282,4 +282,23 @@ pub async fn create_backup(
             created_at: kitsunarr_db::now(),
         }),
     ))
+}
+
+#[derive(Debug, serde::Deserialize, utoipa::IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct LogQuery {
+    /// Minimum level: error, warn, info (default), debug or trace.
+    pub level: Option<String>,
+    /// Maximum number of entries (default 500).
+    pub limit: Option<usize>,
+}
+
+/// Recent log entries kept in memory, newest first.
+#[utoipa::path(get, path = "/system/logs", tag = "system", params(LogQuery), responses((status = 200, body = Vec<LogEntry>)))]
+pub async fn logs(
+    State(state): State<AppState>,
+    axum::extract::Query(q): axum::extract::Query<LogQuery>,
+) -> Json<Vec<LogEntry>> {
+    let level = crate::logs::parse_level(q.level.as_deref());
+    Json(state.logs.snapshot(level, q.limit.unwrap_or(500).min(2000)))
 }
