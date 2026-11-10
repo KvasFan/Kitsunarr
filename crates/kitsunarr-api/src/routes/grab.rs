@@ -18,7 +18,7 @@ use kitsunarr_domain::api::search::{
 };
 use kitsunarr_domain::api::settings::ProviderKind;
 use kitsunarr_domain::quality::QualityModel;
-use kitsunarr_downloaders::qbittorrent::{self, AddRequest, Source};
+use kitsunarr_downloaders::{AddRequest, ClientSettings, Source};
 use kitsunarr_downloaders::{DownloadError, magnet_info_hash, torrent_info_hash};
 use kitsunarr_indexers::{Downloaded, IndexerRelease};
 
@@ -107,22 +107,20 @@ pub async fn test_download_client(
         let stored = providers::get(state.db.pool(), ProviderKind::DownloadClient, id).await?;
         crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
     }
-    let settings =
-        qbittorrent::Settings::from_map(&req.settings).map_err(|m| ApiError::field("host", m))?;
-    Ok(Json(
-        match state.downloads.qbittorrent.test(&settings).await {
-            Ok(report) => DownloadClientTestResult {
-                ok: true,
-                message: format!("Connected to qBittorrent (Web API {}).", report.api_version),
-                warnings: report.warnings,
-            },
-            Err(e) => DownloadClientTestResult {
-                ok: false,
-                message: describe(&e),
-                warnings: Vec::new(),
-            },
+    let settings = ClientSettings::from_provider(&req.implementation, &req.settings)
+        .map_err(|m| ApiError::field("host", m))?;
+    Ok(Json(match state.downloads.clients.test(&settings).await {
+        Ok(report) => DownloadClientTestResult {
+            ok: true,
+            message: report.message,
+            warnings: report.warnings,
         },
-    ))
+        Err(e) => DownloadClientTestResult {
+            ok: false,
+            message: describe(&e),
+            warnings: Vec::new(),
+        },
+    }))
 }
 
 /// `DownloadClientProvider.GetDownloadClient`: clients for the protocol; those sharing a tag
@@ -243,7 +241,7 @@ pub async fn grab_release(
 /// The download client a release goes to, with its parsed settings and the series' tags.
 pub(crate) struct Target {
     client: ProviderRecord,
-    settings: qbittorrent::Settings,
+    settings: ClientSettings,
     series_tags: Vec<i64>,
 }
 
@@ -268,15 +266,16 @@ pub(crate) async fn pick_client(state: &AppState, cached: &CachedRelease) -> Api
             ),
         ));
     }
-    let settings = qbittorrent::Settings::from_map(&client.settings).map_err(|m| {
-        ApiError::field(
-            "guid",
-            format!(
-                "The download client {} has invalid settings: {m}",
-                client.name
-            ),
-        )
-    })?;
+    let settings = ClientSettings::from_provider(&client.implementation, &client.settings)
+        .map_err(|m| {
+            ApiError::field(
+                "guid",
+                format!(
+                    "The download client {} has invalid settings: {m}",
+                    client.name
+                ),
+            )
+        })?;
     Ok(Target {
         client,
         settings,
@@ -313,7 +312,7 @@ pub(crate) async fn send(
         });
     let torrent_url =
         (!download_url.is_empty() && !download_url.starts_with("magnet:")).then_some(download_url);
-    let tag_labels: Vec<String> = if settings.add_series_tags {
+    let tag_labels: Vec<String> = if settings.add_series_tags() {
         tags::list(state.db.pool())
             .await?
             .into_iter()
@@ -326,22 +325,23 @@ pub(crate) async fn send(
     let add_magnet = |url: String| {
         let settings = settings.clone();
         let tag_labels = tag_labels.clone();
-        let qb = state.downloads.qbittorrent.clone();
+        let clients = state.downloads.clients.clone();
         let recent = cached.recent;
         async move {
             let hash = magnet_info_hash(&url).ok_or_else(|| {
                 DownloadError::Client("the magnet link has no BitTorrent v1 info hash".into())
             })?;
-            qb.add(
-                &settings,
-                &AddRequest {
-                    source: Source::Magnet(&url),
-                    hash: &hash,
-                    recent,
-                    tags: &tag_labels,
-                },
-            )
-            .await
+            clients
+                .add(
+                    &settings,
+                    &AddRequest {
+                        source: Source::Magnet(&url),
+                        hash: &hash,
+                        recent,
+                        tags: &tag_labels,
+                    },
+                )
+                .await
         }
     };
     let mut result = Err(DownloadError::Client(
@@ -374,7 +374,7 @@ pub(crate) async fn send(
                 let name = format!("{}.torrent", clean_file_name(&release.title));
                 state
                     .downloads
-                    .qbittorrent
+                    .clients
                     .add(
                         &settings,
                         &AddRequest {

@@ -198,7 +198,7 @@ Known differences, all reported rather than hidden:
 
 Verification: tests ported from Sonarr's `DecisionEngineTests` cover ranking (all 30 `PrioritizeDownloadDecisionFixture` tests) and the sizes, upgrades, raw discs, release restrictions, search matching, repacks and other specifications. Sonarr's custom format language and release-type fixtures are ported too. End-to-end tests run real release names through parsing, mapping, decisions and ranking. Mutation checks confirm the ranking and size tests fail when the logic is broken.
 
-## 16. Grabbing: releases resolved on the server, qBittorrent first
+## 16. Grabbing: releases resolved on the server; qBittorrent and Deluge
 
 A grab names a release by indexer and GUID, never by download link. Search results are kept on the server for 30 minutes, as in Sonarr; the grab resolves the link there, so indexer API keys stay out of the browser, the API and the history.
 
@@ -217,12 +217,18 @@ The rest follows Sonarr:
   - login caches the session cookie and retries once on 403;
   - the Test creates missing categories and rejects share-limit settings that would remove torrents before import, as upstream;
   - adding a torrent sets the category and the initial state (`stopped` on Web API 2.11 and later, `paused` before), then top priority for recent episodes, force start and series tags.
+- **Deluge** (`Deluge.cs`, `DelugeProxy.cs`), through the Web UI's JSON-RPC API (`POST /json`):
+  - logs in with the Web UI password and caches the `_session_id` cookie; when a call answers "not authenticated" or "not connected" (codes 1 and 2) or times out, it logs in again once;
+  - after login, a Web UI not connected to a daemon is connected to the local one (`127.0.0.1` in its Connection Manager), as upstream does;
+  - the Test needs the Label plugin when labels are set, and creates missing labels, as upstream;
+  - adding a torrent passes the download and completed directories and "add paused", sets the label, then moves recent (or older) episodes to the top of the queue when their priority is "first";
+  - the torrent list comes from `web.update_ui` filtered by label, with Sonarr's state mapping (error, finished unless checking, queued, paused, else downloading) and the save path plus name as output path.
 - **History:** one "Grabbed" entry per episode, with Sonarr's data keys except `downloadUrl`, which would store the indexer key.
 
 Two choices differ from Sonarr:
 
 - **Grabs are rejected rather than mapped by hand.** A release that could not be matched to episodes cannot be grabbed until manual episode selection exists; Sonarr would ask the user to pick them.
-- **"Implemented" means implemented.** Only qBittorrent is marked as an implemented download client, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.
+- **"Implemented" means implemented.** Only qBittorrent and Deluge are marked as implemented download clients, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.
 
 ## 17. Importing completed downloads, safer than upstream where files are at stake
 

@@ -12,7 +12,7 @@ use kitsunarr_db::rules;
 use kitsunarr_domain::Quality;
 use kitsunarr_domain::api::queue::{QueueClientFailure, QueueItem, QueueResult};
 use kitsunarr_domain::api::settings::ProviderKind;
-use kitsunarr_downloaders::{ItemStatus, qbittorrent};
+use kitsunarr_downloaders::{ClientSettings, ItemStatus};
 use kitsunarr_library::downloads::remap;
 
 use crate::AppState;
@@ -41,7 +41,8 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
     let mut items = Vec::new();
     let mut failures = Vec::new();
     for client in &clients {
-        let settings = match qbittorrent::Settings::from_map(&client.settings) {
+        let settings = match ClientSettings::from_provider(&client.implementation, &client.settings)
+        {
             Ok(s) => s,
             Err(m) => {
                 failures.push(QueueClientFailure {
@@ -51,8 +52,11 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
                 continue;
             }
         };
-        match state.downloads.qbittorrent.items(&settings).await {
-            Ok(list) => items.extend(list.into_iter().map(|i| (client, settings.host.clone(), i))),
+        match state.downloads.clients.items(&settings).await {
+            Ok(list) => items.extend(
+                list.into_iter()
+                    .map(|i| (client, settings.host().to_string(), i)),
+            ),
             Err(e) => failures.push(QueueClientFailure {
                 download_client: client.name.clone(),
                 message: e.to_string(),

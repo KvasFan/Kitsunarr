@@ -771,7 +771,7 @@ fn IndexerOptions() -> Element {
 
 #[component]
 pub fn SettingsDownloadClients() -> Element {
-    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent works: use Test in the editor, and grab releases from interactive search. Transmission, Deluge, SABnzbd and NZBGet settings are stored and editable, but sending downloads to them is not implemented yet. Download tracking and import come next." } }
+    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent and Deluge work: use Test in the editor; grabs, the queue and imports use them. Transmission, SABnzbd and NZBGet settings are stored and editable, but sending downloads to them is not implemented yet." } }
 }
 
 #[component]
@@ -900,7 +900,9 @@ fn ProviderEditor(
     let client = crate::state::use_client();
     let testable = match item.kind {
         ProviderKind::Indexer => matches!(item.implementation.as_str(), "Newznab" | "Torznab"),
-        ProviderKind::DownloadClient => item.implementation == "QBittorrent",
+        ProviderKind::DownloadClient => {
+            matches!(item.implementation.as_str(), "QBittorrent" | "Deluge")
+        }
         _ => false,
     };
     let run_test = move |_| {

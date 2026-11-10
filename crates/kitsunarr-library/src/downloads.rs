@@ -14,7 +14,7 @@ use kitsunarr_db::history;
 use kitsunarr_db::providers;
 use kitsunarr_db::rules::{self, RemotePathMapping};
 use kitsunarr_domain::api::settings::ProviderKind;
-use kitsunarr_downloaders::{ItemStatus, QBittorrent, qbittorrent};
+use kitsunarr_downloaders::{ClientSettings, Clients, ItemStatus};
 
 use crate::import::{self, Download};
 
@@ -74,7 +74,7 @@ pub fn remap(mappings: &[RemotePathMapping], host: &str, path: &str) -> String {
 /// Shared by the background job and the queue.
 #[derive(Clone, Default)]
 pub struct Monitor {
-    pub qbittorrent: QBittorrent,
+    pub clients: Clients,
     tracked: Arc<Mutex<HashMap<String, Tracked>>>,
     /// Downloads (upper-case ids) seen in a client and not imported, plus grabs since the last
     /// refresh: the queue the decisions compare releases with.
@@ -85,7 +85,7 @@ pub struct Monitor {
 impl Monitor {
     pub fn new(http: reqwest::Client) -> Self {
         Self {
-            qbittorrent: QBittorrent::new(http),
+            clients: Clients::new(http),
             ..Default::default()
         }
     }
@@ -173,11 +173,13 @@ impl Monitor {
         let (mut imported, mut blocked, mut failed_clients) = (0usize, 0usize, Vec::new());
         let mut seen = HashSet::new();
         for client in &clients {
-            let Ok(settings) = qbittorrent::Settings::from_map(&client.settings) else {
+            let Ok(settings) =
+                ClientSettings::from_provider(&client.implementation, &client.settings)
+            else {
                 failed_clients.push(client.name.clone());
                 continue;
             };
-            let items = match self.qbittorrent.items(&settings).await {
+            let items = match self.clients.items(&settings).await {
                 Ok(items) => items,
                 Err(e) => {
                     tracing::warn!(client = %client.name, error = %e, "cannot read the download client");
@@ -220,7 +222,7 @@ impl Monitor {
                     blocked += 1;
                     continue;
                 };
-                let local = PathBuf::from(remap(&mappings, &settings.host, output));
+                let local = PathBuf::from(remap(&mappings, settings.host(), output));
                 let outcome = import::import_download(
                     db,
                     &Download {
@@ -259,7 +261,7 @@ impl Monitor {
                     .max(1);
                 if outcome.imported_episodes() >= expected {
                     if let Err(e) = self
-                        .qbittorrent
+                        .clients
                         .mark_imported(&settings, &item.download_id)
                         .await
                     {

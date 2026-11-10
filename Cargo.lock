@@ -2626,6 +2626,7 @@ name = "kitsunarr-downloaders"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "base64 0.23.1",
  "data-encoding",
  "reqwest 0.13.5",
  "serde",
