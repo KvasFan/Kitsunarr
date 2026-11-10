@@ -771,7 +771,7 @@ fn IndexerOptions() -> Element {
 
 #[component]
 pub fn SettingsDownloadClients() -> Element {
-    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent and Deluge work: use Test in the editor; grabs, the queue and imports use them. Transmission, SABnzbd and NZBGet settings are stored and editable, but sending downloads to them is not implemented yet." } }
+    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent, Deluge and Transmission work: use Test in the editor; grabs, the queue and imports use them. SABnzbd and NZBGet settings are stored and editable, but sending downloads to them is not implemented yet." } }
 }
 
 #[component]
@@ -901,7 +901,10 @@ fn ProviderEditor(
     let testable = match item.kind {
         ProviderKind::Indexer => matches!(item.implementation.as_str(), "Newznab" | "Torznab"),
         ProviderKind::DownloadClient => {
-            matches!(item.implementation.as_str(), "QBittorrent" | "Deluge")
+            matches!(
+                item.implementation.as_str(),
+                "QBittorrent" | "Deluge" | "Transmission"
+            )
         }
         _ => false,
     };

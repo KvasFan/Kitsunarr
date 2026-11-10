@@ -1,6 +1,6 @@
 //! Download clients for Kitsunarr, ported from Sonarr's `Download/Clients`.
 //!
-//! Implemented: qBittorrent (Web API v2) and Deluge (Web UI JSON-RPC). [`Clients`] dispatches to
+//! Implemented: qBittorrent (Web API v2), Deluge (Web UI JSON-RPC) and Transmission (RPC). [`Clients`] dispatches to
 //! the client a provider's implementation names. The torrent helpers compute the info hash
 //! Sonarr tracks downloads by.
 
@@ -8,6 +8,7 @@ pub mod deluge;
 pub mod error;
 pub mod qbittorrent;
 pub mod torrent;
+pub mod transmission;
 
 use serde_json::{Map, Value};
 
@@ -15,6 +16,7 @@ pub use deluge::Deluge;
 pub use error::DownloadError;
 pub use qbittorrent::{AddRequest, QBittorrent, Source};
 pub use torrent::{magnet_info_hash, torrent_info_hash};
+pub use transmission::Transmission;
 
 /// A download's state in its client (`DownloadItemStatus`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
@@ -48,7 +50,7 @@ pub struct DownloadItem {
 
 /// Whether Kitsunarr can talk to a download client implementation.
 pub fn supported(implementation: &str) -> bool {
-    matches!(implementation, "QBittorrent" | "Deluge")
+    matches!(implementation, "QBittorrent" | "Deluge" | "Transmission")
 }
 
 /// A download client's settings, by implementation.
@@ -56,6 +58,7 @@ pub fn supported(implementation: &str) -> bool {
 pub enum ClientSettings {
     QBittorrent(qbittorrent::Settings),
     Deluge(deluge::Settings),
+    Transmission(transmission::Settings),
 }
 
 impl ClientSettings {
@@ -64,6 +67,7 @@ impl ClientSettings {
         match implementation {
             "QBittorrent" => qbittorrent::Settings::from_map(map).map(Self::QBittorrent),
             "Deluge" => deluge::Settings::from_map(map).map(Self::Deluge),
+            "Transmission" => transmission::Settings::from_map(map).map(Self::Transmission),
             other => Err(format!("{other} download clients are not supported yet")),
         }
     }
@@ -73,6 +77,7 @@ impl ClientSettings {
         match self {
             Self::QBittorrent(s) => &s.host,
             Self::Deluge(s) => &s.host,
+            Self::Transmission(s) => &s.host,
         }
     }
 
@@ -80,7 +85,7 @@ impl ClientSettings {
     pub fn add_series_tags(&self) -> bool {
         match self {
             Self::QBittorrent(s) => s.add_series_tags,
-            Self::Deluge(_) => false,
+            Self::Deluge(_) | Self::Transmission(_) => false,
         }
     }
 }
@@ -97,13 +102,15 @@ pub struct Tested {
 pub struct Clients {
     pub qbittorrent: QBittorrent,
     pub deluge: Deluge,
+    pub transmission: Transmission,
 }
 
 impl Clients {
     pub fn new(http: reqwest::Client) -> Self {
         Self {
             qbittorrent: QBittorrent::new(http.clone()),
-            deluge: Deluge::new(http),
+            deluge: Deluge::new(http.clone()),
+            transmission: Transmission::new(http),
         }
     }
 
@@ -123,6 +130,13 @@ impl Clients {
                     warnings: r.warnings,
                 }
             }
+            ClientSettings::Transmission(s) => {
+                let r = self.transmission.test(s).await?;
+                Tested {
+                    message: format!("Connected to Transmission {}.", r.version),
+                    warnings: r.warnings,
+                }
+            }
         })
     }
 
@@ -135,6 +149,11 @@ impl Clients {
         match s {
             ClientSettings::QBittorrent(s) => self.qbittorrent.add(s, req).await,
             ClientSettings::Deluge(s) => self.deluge.add(s, &req.source, req.recent).await,
+            ClientSettings::Transmission(s) => {
+                self.transmission
+                    .add(s, &req.source, req.hash, req.recent)
+                    .await
+            }
         }
     }
 
@@ -142,6 +161,7 @@ impl Clients {
         match s {
             ClientSettings::QBittorrent(s) => self.qbittorrent.items(s).await,
             ClientSettings::Deluge(s) => self.deluge.items(s).await,
+            ClientSettings::Transmission(s) => self.transmission.items(s).await,
         }
     }
 
@@ -149,6 +169,7 @@ impl Clients {
         match s {
             ClientSettings::QBittorrent(s) => self.qbittorrent.mark_imported(s, id).await,
             ClientSettings::Deluge(s) => self.deluge.mark_imported(s, id).await,
+            ClientSettings::Transmission(s) => self.transmission.mark_imported(s, id).await,
         }
     }
 }

@@ -198,7 +198,7 @@ Known differences, all reported rather than hidden:
 
 Verification: tests ported from Sonarr's `DecisionEngineTests` cover ranking (all 30 `PrioritizeDownloadDecisionFixture` tests) and the sizes, upgrades, raw discs, release restrictions, search matching, repacks and other specifications. Sonarr's custom format language and release-type fixtures are ported too. End-to-end tests run real release names through parsing, mapping, decisions and ranking. Mutation checks confirm the ranking and size tests fail when the logic is broken.
 
-## 16. Grabbing: releases resolved on the server; qBittorrent and Deluge
+## 16. Grabbing: releases resolved on the server; qBittorrent, Deluge and Transmission
 
 A grab names a release by indexer and GUID, never by download link. Search results are kept on the server for 30 minutes, as in Sonarr; the grab resolves the link there, so indexer API keys stay out of the browser, the API and the history.
 
@@ -223,12 +223,17 @@ The rest follows Sonarr:
   - the Test needs the Label plugin when labels are set, and creates missing labels, as upstream;
   - adding a torrent passes the download and completed directories and "add paused", sets the label, then moves recent (or older) episodes to the top of the queue when their priority is "first";
   - the torrent list comes from `web.update_ui` filtered by label, with Sonarr's state mapping (error, finished unless checking, queued, paused, else downloading) and the save path plus name as output path.
+- **Transmission** (`TransmissionBase.cs`, `TransmissionProxy.cs`), through its RPC API (`POST {base}/rpc`, URL base `/transmission/` by default):
+  - basic authentication; the `X-Transmission-Session-Id` handshake on HTTP 409, with the id cached per address;
+  - labels from Transmission 4: adds carry the TV label, the list keeps labelled torrents (and, for torrents from before the upgrade, those in the category folder), and imports swap the TV label for the post-import one;
+  - before Transmission 4 the category is a subfolder of the download directory, and nothing changes after import;
+  - the Test needs Transmission 2.40 or newer, as upstream.
 - **History:** one "Grabbed" entry per episode, with Sonarr's data keys except `downloadUrl`, which would store the indexer key.
 
 Two choices differ from Sonarr:
 
 - **Grabs are rejected rather than mapped by hand.** A release that could not be matched to episodes cannot be grabbed until manual episode selection exists; Sonarr would ask the user to pick them.
-- **"Implemented" means implemented.** Only qBittorrent and Deluge are marked as implemented download clients, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.
+- **"Implemented" means implemented.** Only qBittorrent, Deluge and Transmission are marked as implemented download clients, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.
 
 ## 17. Importing completed downloads, safer than upstream where files are at stake
 
