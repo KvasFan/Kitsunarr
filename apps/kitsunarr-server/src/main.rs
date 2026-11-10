@@ -303,6 +303,8 @@ async fn serve(config: Config) -> Result<()> {
         &config.metadata.anilist_url,
     );
     let downloads = kitsunarr_library::downloads::Monitor::new(http.clone());
+    // Jobs that need the API's state (RSS sync) receive it once it exists.
+    let api_state: Arc<std::sync::OnceLock<AppState>> = Arc::default();
     let scheduler = kitsunarr_scheduler::Scheduler::new(
         db.clone(),
         events.clone(),
@@ -311,10 +313,10 @@ async fn serve(config: Config) -> Result<()> {
             tmp_dir.join("migration"),
             metadata.clone(),
             downloads.clone(),
+            api_state.clone(),
         ),
         shutdown.child_token(),
     );
-    scheduler.start(Duration::from_secs(30)).await?;
 
     let config = Arc::new(config);
     let state = AppState::new(
@@ -333,6 +335,9 @@ async fn serve(config: Config) -> Result<()> {
         logs,
     )
     .with_download_monitor(downloads);
+    let _ = api_state.set(state.clone());
+    scheduler.start(Duration::from_secs(30)).await?;
+    kitsunarr_api::rss::sync_interval(&db).await?;
     if !assets::Embedded::has_ui() {
         tracing::warn!("this build does not include the web interface; only the API is served");
     }

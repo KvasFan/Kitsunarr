@@ -12,6 +12,7 @@ pub mod auth;
 pub mod error;
 pub mod logs;
 pub mod routes;
+pub mod rss;
 
 use std::sync::{Arc, RwLock};
 

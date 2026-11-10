@@ -70,6 +70,24 @@ impl<'a> Lookup<'a> {
         Self { candidates }
     }
 
+    /// Every library title, none of them searched (RSS sync).
+    pub(crate) fn library(library: &'a [LibrarySeries]) -> Self {
+        Self {
+            candidates: library
+                .iter()
+                .map(|l| Candidate {
+                    mapped: Mapped::Other(l.id),
+                    title: &l.title,
+                    year: l.year,
+                    alternate_titles: &l.alternate_titles,
+                    tvdb_id: l.tvdb_id,
+                    tv_rage_id: l.tv_rage_id,
+                    imdb_id: l.imdb_id.as_deref(),
+                })
+                .collect(),
+        }
+    }
+
     /// `FindByTitle(title)` / `FindByTitle(title, year)`: clean-title equality.
     fn by_title(&self, title: &str, year: Option<i32>) -> Option<Mapped> {
         let wanted = clean(title);
@@ -161,6 +179,30 @@ impl<'a> Lookup<'a> {
         {
             return Some(Mapped::Searched);
         }
+        self.find_by_titles_and_ids(parsed, release)
+    }
+
+    /// `FindSeries` without search criteria (RSS sync): scene mappings, then titles and ids.
+    pub(crate) fn find_series_unsearched(
+        &self,
+        parsed: &ParsedEpisodeInfo,
+        release: &Release,
+    ) -> Option<Mapped> {
+        self.by_alias(&parsed.series_title)
+            .or_else(|| self.find_by_titles_and_ids(parsed, release))
+    }
+
+    /// The part of `FindSeries` shared with and without search criteria.
+    fn find_by_titles_and_ids(
+        &self,
+        parsed: &ParsedEpisodeInfo,
+        release: &Release,
+    ) -> Option<Mapped> {
+        let (tvdb, tv_rage, imdb) = (
+            release.tvdb_id,
+            release.tv_rage_id,
+            release.imdb_id.as_deref().filter(|i| !i.trim().is_empty()),
+        );
         let info = &parsed.series_title_info;
         self.by_title(&parsed.series_title, None)
             .or_else(|| self.by_all_titles(info))
@@ -185,6 +227,58 @@ impl<'a> Lookup<'a> {
             })
     }
 
+    /// The series `ParseSpecialEpisodeTitle(…, tvdbId, tvRageId, imdbId)` looks in without
+    /// search criteria: by ids, else `GetSeries(title)`.
+    pub(crate) fn special_series(&self, release: &Release, title: &str) -> Option<Mapped> {
+        let by_ids = (release.tvdb_id > 0)
+            .then(|| self.by_id(|c| c.tvdb_id == release.tvdb_id))
+            .flatten()
+            .or_else(|| {
+                (release.tv_rage_id > 0)
+                    .then(|| self.by_id(|c| c.tv_rage_id == release.tv_rage_id))
+                    .flatten()
+            })
+            .or_else(|| {
+                release
+                    .imdb_id
+                    .as_deref()
+                    .filter(|i| !i.trim().is_empty())
+                    .and_then(|i| self.by_id(|c| c.imdb_id == Some(i)))
+            });
+        by_ids.or_else(|| self.series_by_title(release, title))
+    }
+
+    /// `GetSeries(title)`: parsed titles, then the inexact title, then the release's ids.
+    fn series_by_title(&self, release: &Release, title: &str) -> Option<Mapped> {
+        let found = match kitsunarr_parser::parse_title(title) {
+            None => self.by_title(title, None),
+            Some(p) => self
+                .by_alias(&p.series_title)
+                .or_else(|| self.by_title(&p.series_title, None))
+                .or_else(|| self.by_all_titles(&p.series_title_info))
+                .or_else(|| {
+                    self.by_title(
+                        &p.series_title_info.title_without_year,
+                        Some(p.series_title_info.year),
+                    )
+                }),
+        };
+        found.or_else(|| self.by_title_inexact(title)).or_else(|| {
+            let ids = (
+                release.tvdb_id,
+                release.tv_rage_id,
+                release.imdb_id.as_deref(),
+            );
+            self.by_id(|c| {
+                (ids.0 > 0 && c.tvdb_id == ids.0)
+                    || (ids.1 > 0 && c.tv_rage_id == ids.1)
+                    || ids
+                        .2
+                        .is_some_and(|i| !i.trim().is_empty() && c.imdb_id == Some(i))
+            })
+        })
+    }
+
     /// The series `ParseSpecialEpisodeTitle` would use, when it is the searched one.
     pub(crate) fn special_series_is_searched(
         &self,
@@ -202,34 +296,7 @@ impl<'a> Lookup<'a> {
             return true;
         }
         // `GetSeries(title)`.
-        let found = match kitsunarr_parser::parse_title(title) {
-            None => self.by_title(title, None),
-            Some(p) => self
-                .by_alias(&p.series_title)
-                .or_else(|| self.by_title(&p.series_title, None))
-                .or_else(|| self.by_all_titles(&p.series_title_info))
-                .or_else(|| {
-                    self.by_title(
-                        &p.series_title_info.title_without_year,
-                        Some(p.series_title_info.year),
-                    )
-                }),
-        };
-        let found = found.or_else(|| self.by_title_inexact(title)).or_else(|| {
-            let ids = (
-                release.tvdb_id,
-                release.tv_rage_id,
-                release.imdb_id.as_deref(),
-            );
-            self.by_id(|c| {
-                (ids.0 > 0 && c.tvdb_id == ids.0)
-                    || (ids.1 > 0 && c.tv_rage_id == ids.1)
-                    || ids
-                        .2
-                        .is_some_and(|i| !i.trim().is_empty() && c.imdb_id == Some(i))
-            })
-        });
-        found == Some(Mapped::Searched)
+        self.series_by_title(release, title) == Some(Mapped::Searched)
     }
 }
 

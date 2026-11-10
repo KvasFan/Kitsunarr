@@ -991,6 +991,7 @@ pub struct FileRecord {
     pub languages: String,
     pub indexer_flags: i64,
     pub release_type: i64,
+    pub added_at: String,
 }
 
 impl FileRecord {
@@ -1003,7 +1004,7 @@ impl FileRecord {
 pub async fn file_records(db: &Database, series_id: i64) -> DbResult<Vec<FileRecord>> {
     Ok(sqlx::query_as(
         "SELECT id, relative_path, size, scene_name, original_path, release_group, quality_id, \
-           revision_version, revision_real, is_repack, languages, indexer_flags, release_type \
+           revision_version, revision_real, is_repack, languages, indexer_flags, release_type, added_at \
          FROM episode_files WHERE series_id = ? ORDER BY id",
     )
     .bind(series_id)

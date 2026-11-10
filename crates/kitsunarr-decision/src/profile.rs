@@ -120,6 +120,16 @@ impl<'a> ProfileView<'a> {
             .and_then(|i| item_qualities(i).first().copied())
     }
 
+    /// `LastAllowedQuality().Id`: the last allowed item's quality (a group's last member).
+    pub fn last_allowed_quality(&self) -> Option<i32> {
+        self.0
+            .items
+            .iter()
+            .rev()
+            .find(|i| i.allowed)
+            .and_then(|i| item_qualities(i).last().copied())
+    }
+
     /// `QualityModelComparer.Compare(Quality, Quality)` (group order not respected).
     pub fn compare_qualities(&self, a: i32, b: i32) -> Ordering {
         self.index_of(a, false)

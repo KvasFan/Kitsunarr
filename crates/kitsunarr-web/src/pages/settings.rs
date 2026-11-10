@@ -709,7 +709,7 @@ pub fn SettingsFormats() -> Element {
 #[component]
 pub fn SettingsIndexers() -> Element {
     rsx! {
-        ProvidersPage { kind: "indexers", title: "Indexers", note: "Torznab and Newznab indexers. Use Test in the editor to check one; interactive search uses every indexer with interactive search enabled. RSS sync and automatic search are not implemented yet." }
+        ProvidersPage { kind: "indexers", title: "Indexers", note: "Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive." }
         IndexerOptions {}
     }
 }
@@ -758,7 +758,7 @@ fn IndexerOptions() -> Element {
                         Field { label: "Maximum size (MB)", help: "Larger releases are rejected. 0 means unlimited.".to_string(),
                             input { class: "input", r#type: "number", min: "0", "aria-label": "Maximum size", value: "{o.maximum_size}", oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.maximum_size = number(e.value()); } } }
                         }
-                        Field { label: "RSS sync interval (minutes)", help: "0 (off) or 10 to 120. RSS sync is not implemented yet; the value is kept.".to_string(),
+                        Field { label: "RSS sync interval (minutes)", help: "0 (off) or 10 to 120. RSS sync also runs from System › Tasks.".to_string(),
                             input { class: "input", r#type: "number", min: "0", max: "120", "aria-label": "RSS sync interval", value: "{o.rss_sync_interval}", oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.rss_sync_interval = number(e.value()); } } }
                         }
                     }

@@ -567,6 +567,7 @@ pub async fn put_indexer_options(
         ));
     }
     kv::set(state.db.pool(), kv::KEY_INDEXER_OPTIONS, &body).await?;
+    crate::rss::sync_interval(&state.db).await?;
     settings_changed(&state, "indexerOptions");
     Ok(Json(body))
 }

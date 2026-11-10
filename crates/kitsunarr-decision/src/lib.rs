@@ -45,6 +45,42 @@ pub fn map_episodes<'s>(parsed: &ParsedEpisodeInfo, series: &'s Series) -> Vec<&
     mapping::episodes(parsed, series, &none)
 }
 
+/// RSS sync, first step of `GetRssDecision`: when the title does not parse, or parses as a
+/// possible special, the library series whose specials it may name (by the release's ids, else
+/// by title). Confirm with [`rss_is_special_of`] once that series' episodes are known.
+pub fn rss_special_candidate(release: &Release, library: &[LibrarySeries]) -> Option<i64> {
+    let parsed = parse_title(&release.title);
+    if !parsed
+        .as_ref()
+        .is_none_or(ParsedEpisodeInfo::is_possible_special_episode)
+    {
+        return None;
+    }
+    match Lookup::library(library).special_series(release, &release.title) {
+        Some(Mapped::Other(id)) => Some(id),
+        _ => None,
+    }
+}
+
+/// Whether the release names one of `series`' specials (`ParseSpecialEpisodeTitle`).
+pub fn rss_is_special_of(release: &Release, series: &Series) -> bool {
+    let parsed = parse_title(&release.title);
+    mapping::parse_special_episode_title(parsed.as_ref(), &release.title, series).is_some()
+}
+
+/// RSS sync: the library series a release belongs to (`ParsingService.Map` without search
+/// criteria), or `None` when it does not parse or names no library title.
+pub fn rss_series(release: &Release, library: &[LibrarySeries]) -> Option<i64> {
+    let parsed = parse_title(&release.title).or_else(|| parse_season_title(&release.title))?;
+    if parsed.series_title.trim().is_empty() {
+        return None;
+    }
+    match Lookup::library(library).find_series_unsearched(&parsed, release) {
+        Some(Mapped::Other(id)) => Some(id),
+        _ => None,
+    }
+}
+
 /// Everything a search's decisions depend on.
 pub struct Engine<'a> {
     pub series: &'a Series,

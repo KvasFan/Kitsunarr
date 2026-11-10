@@ -35,7 +35,7 @@ fn dialect(implementation: &str) -> Option<Dialect> {
 }
 
 /// A user-facing explanation of an indexer error.
-fn describe(e: &IndexerError) -> String {
+pub(crate) fn describe(e: &IndexerError) -> String {
     match e {
         IndexerError::ApiKey(m) => format!("The indexer rejected the API key: {m}"),
         IndexerError::RequestLimit { .. } => {
@@ -257,6 +257,56 @@ fn episode_searches(
     })
 }
 
+/// Indexer settings the decisions need, by indexer id.
+pub(crate) type Extras = std::collections::HashMap<i64, IndexerExtras>;
+
+/// The indexers with `option` (`enableRss`, `enableAutomaticSearch`, `enableInteractiveSearch`)
+/// on. Indexers that cannot be used are reported, not skipped silently.
+pub(crate) async fn usable_indexers(
+    state: &AppState,
+    option: &str,
+) -> ApiResult<(Vec<Indexer>, Extras, Vec<IndexerFailure>)> {
+    let mut indexers = Vec::new();
+    let mut extras = Extras::new();
+    let mut failures = Vec::new();
+    for p in providers::list(state.db.pool(), ProviderKind::Indexer).await? {
+        let enabled = p
+            .options
+            .get(option)
+            .and_then(|v| v.as_bool())
+            .unwrap_or(true);
+        if !enabled {
+            continue;
+        }
+        let settings = match dialect(&p.implementation) {
+            None => Err(format!(
+                "Searching {} indexers is not supported yet.",
+                p.implementation
+            )),
+            Some(dialect) => Settings::from_map(&p.settings)
+                .map(|settings| (dialect, settings))
+                .map_err(|m| format!("The indexer's settings are invalid: {m}")),
+        };
+        match settings {
+            Ok((dialect, settings)) => {
+                extras.insert(p.id, IndexerExtras::of(&p, dialect, &settings));
+                indexers.push(Indexer {
+                    id: p.id,
+                    name: p.name,
+                    dialect,
+                    settings,
+                });
+            }
+            Err(message) => failures.push(IndexerFailure {
+                indexer_id: p.id,
+                indexer: p.name,
+                message,
+            }),
+        }
+    }
+    Ok((indexers, extras, failures))
+}
+
 /// A finished search: its decisions, best first, over `releases`.
 pub(crate) struct SearchRun {
     pub decisions: Vec<Decision>,
@@ -308,7 +358,8 @@ pub async fn automatic_search(
     Json(q): Json<ReleaseQuery>,
 ) -> ApiResult<Json<AutomaticSearchResult>> {
     let run = run_search(&state, &q, true).await?;
-    let (grabbed, grab_failures) = process_decisions(&state, &run, q.series_id).await;
+    let (grabbed, grab_failures) =
+        process_decisions(&state, &run, q.series_id, &mut Vec::new()).await;
     Ok(Json(AutomaticSearchResult {
         description: run.description.clone(),
         searched_indexers: run.searched_indexers,
@@ -328,11 +379,11 @@ pub(crate) async fn process_decisions(
     state: &AppState,
     run: &SearchRun,
     series_id: i64,
+    unavailable: &mut Vec<DownloadProtocol>,
 ) -> (Vec<AutomaticGrab>, Vec<AutomaticGrabFailure>) {
     let mut grabbed = Vec::new();
     let mut failures = Vec::new();
     let mut taken: Vec<i64> = Vec::new();
-    let mut unavailable: Vec<DownloadProtocol> = Vec::new();
     for d in run.decisions.iter().filter(|d| d.approved()) {
         let cached = cached_release(run, d, series_id);
         if cached.episode_ids.is_empty() || cached.episode_ids.iter().any(|e| taken.contains(e)) {
@@ -455,50 +506,12 @@ pub(crate) async fn run_search(
             }
         };
 
-    // Indexers that cannot be searched are reported, not skipped silently.
-    let mut indexers = Vec::new();
-    let mut extras = std::collections::HashMap::new();
-    let mut failures = Vec::new();
-    for p in providers::list(state.db.pool(), ProviderKind::Indexer).await? {
-        let option = if automatic {
-            "enableAutomaticSearch"
-        } else {
-            "enableInteractiveSearch"
-        };
-        let enabled = p
-            .options
-            .get(option)
-            .and_then(|v| v.as_bool())
-            .unwrap_or(true);
-        if !enabled {
-            continue;
-        }
-        let settings = match dialect(&p.implementation) {
-            None => Err(format!(
-                "Searching {} indexers is not supported yet.",
-                p.implementation
-            )),
-            Some(dialect) => Settings::from_map(&p.settings)
-                .map(|settings| (dialect, settings))
-                .map_err(|m| format!("The indexer's settings are invalid: {m}")),
-        };
-        match settings {
-            Ok((dialect, settings)) => {
-                extras.insert(p.id, IndexerExtras::of(&p, dialect, &settings));
-                indexers.push(Indexer {
-                    id: p.id,
-                    name: p.name,
-                    dialect,
-                    settings,
-                });
-            }
-            Err(message) => failures.push(IndexerFailure {
-                indexer_id: p.id,
-                indexer: p.name,
-                message,
-            }),
-        }
-    }
+    let option = if automatic {
+        "enableAutomaticSearch"
+    } else {
+        "enableInteractiveSearch"
+    };
+    let (indexers, extras, mut failures) = usable_indexers(state, option).await?;
 
     let client = &state.indexers;
     let outcomes = futures::future::join_all(indexers.iter().map(|indexer| {
@@ -618,6 +631,11 @@ pub(crate) fn cached_release(
         languages: d.languages.iter().map(|l| l.id).collect(),
         custom_format_score: d.custom_format_score,
         release_group: d.parsed.as_ref().and_then(|p| p.release_group.clone()),
+        release_type: kitsunarr_library::decision_input::release_type_name(
+            d.parsed
+                .as_ref()
+                .map_or(kitsunarr_parser::ReleaseType::Unknown, |p| p.release_type()),
+        ),
         recent: episodes
             .iter()
             .any(|e| matches!((e.air_date_utc, recent_cutoff), (Some(a), Some(c)) if a >= c)),
@@ -626,7 +644,7 @@ pub(crate) fn cached_release(
 }
 
 /// Indexer settings the decisions read.
-struct IndexerExtras {
+pub(crate) struct IndexerExtras {
     priority: i32,
     tags: Vec<i64>,
     minimum_seeders: Option<i64>,
@@ -655,7 +673,10 @@ impl IndexerExtras {
     }
 }
 
-fn decision_release(r: &IndexerRelease, extras: Option<&IndexerExtras>) -> decision::Release {
+pub(crate) fn decision_release(
+    r: &IndexerRelease,
+    extras: Option<&IndexerExtras>,
+) -> decision::Release {
     let rel = &r.release;
     decision::Release {
         guid: rel.guid.clone(),
@@ -681,16 +702,16 @@ fn decision_release(r: &IndexerRelease, extras: Option<&IndexerExtras>) -> decis
 }
 
 /// The series, library, custom formats and settings a search's decisions need.
-struct DecisionInputs {
-    series: decision::Series,
-    library: Vec<decision::LibrarySeries>,
-    formats: Vec<decision::CompiledFormat>,
-    settings: decision::Settings,
-    warnings: Vec<String>,
+pub(crate) struct DecisionInputs {
+    pub series: decision::Series,
+    pub library: Vec<decision::LibrarySeries>,
+    pub formats: Vec<decision::CompiledFormat>,
+    pub settings: decision::Settings,
+    pub warnings: Vec<String>,
 }
 
 impl DecisionInputs {
-    async fn load(
+    pub(crate) async fn load(
         state: &AppState,
         detail: &SeriesDetail,
         episodes: &[EpisodeItem],
@@ -705,6 +726,7 @@ impl DecisionInputs {
         let options: IndexerOptionsSettings =
             kv::get_or_default(db.pool(), kv::KEY_INDEXER_OPTIONS).await?;
         let settings = decision::Settings {
+            last_grabs: kitsunarr_library::decision_input::last_grabs(db, detail.item.id).await?,
             queue: state.downloads.queued_releases(db, detail.item.id).await?,
             quality_definitions: quality::list_definitions(db.pool()).await?,
             propers: media.download_propers_and_repacks,
@@ -730,6 +752,11 @@ impl DecisionInputs {
                     } else {
                         DownloadProtocol::Usenet
                     },
+                    usenet_delay: d.usenet_delay,
+                    torrent_delay: d.torrent_delay,
+                    bypass_if_highest_quality: d.bypass_if_highest_quality,
+                    bypass_if_above_custom_format_score: d.bypass_if_above_custom_format_score,
+                    minimum_custom_format_score: d.minimum_custom_format_score as i32,
                     order: d.sort_order,
                     tags: d.tags,
                 })

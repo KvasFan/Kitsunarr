@@ -252,7 +252,7 @@ pub struct IndexerOptionsSettings {
     pub retention: i32,
     /// Releases larger than this many MB are rejected (0: unlimited).
     pub maximum_size: i32,
-    /// Minutes between RSS syncs: 0 (off) or 10 to 120. RSS sync is not implemented yet.
+    /// Minutes between RSS syncs: 0 (off) or 10 to 120.
     pub rss_sync_interval: i32,
 }
 

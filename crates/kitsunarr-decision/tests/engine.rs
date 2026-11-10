@@ -69,6 +69,7 @@ fn library() -> Vec<LibrarySeries> {
 fn settings() -> Settings {
     Settings {
         queue: Vec::new(),
+        last_grabs: Vec::new(),
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -381,4 +382,65 @@ fn languages_fall_back_to_the_original_language() {
     };
     assert_eq!(formats_of(0), ["English"]);
     assert!(formats_of(1).is_empty());
+}
+
+/// RSS sync maps releases to any library title: by title, scene alias and ids; specials by
+/// episode title once the series is known; other releases match nothing.
+#[test]
+fn rss_releases_are_mapped_across_the_library() {
+    let bb = breaking_bad();
+    let mut lib = library();
+    lib.push(LibrarySeries {
+        id: bb.id,
+        title: bb.title.clone(),
+        year: bb.year,
+        alternate_titles: bb.alternate_titles.clone(),
+        tvdb_id: bb.tvdb_id,
+        tv_rage_id: bb.tv_rage_id,
+        imdb_id: bb.imdb_id.clone(),
+    });
+    let at = |title: &str| rss_series(&release(title), &lib);
+    assert_eq!(at("Breaking.Bad.S01E03.720p.HDTV.x264-GRP"), Some(1));
+    assert_eq!(at("White.Collar.S01E01.720p.HDTV.x264-GRP"), Some(2));
+    assert_eq!(at("BrBa.S01E03.720p.HDTV.x264-GRP"), Some(1), "scene alias");
+    assert_eq!(at("Unknown.Show.S01E01.720p.HDTV.x264-GRP"), None);
+    assert_eq!(at("not a release name"), None);
+    let mut by_id = release("Breaking.Bad.Original.S01E03.720p.HDTV.x264-GRP");
+    by_id.tvdb_id = 81189;
+    assert_eq!(
+        rss_series(&by_id, &lib),
+        Some(1),
+        "the release's TheTVDB id"
+    );
+
+    // A special named by its episode title.
+    let special = release("Breaking.Bad.Good.Cop.Bad.Cop.720p.WEB-DL.x264-GRP");
+    assert_eq!(rss_special_candidate(&special, &lib), Some(1));
+    assert!(rss_is_special_of(&special, &bb));
+    assert!(!rss_is_special_of(
+        &release("Breaking.Bad.Some.Other.Title.720p.WEB-DL.x264-GRP"),
+        &bb
+    ));
+    // Regular episodes are not special candidates.
+    assert_eq!(
+        rss_special_candidate(&release("Breaking.Bad.S01E03.720p.HDTV.x264-GRP"), &lib),
+        None
+    );
+
+    // RSS decisions: only monitored episodes; the search-only rules do not apply.
+    let mut bb = bb;
+    bb.episodes[2].monitored = false;
+    let decided = decide(
+        &bb,
+        SearchCriteria::rss(),
+        &[
+            release("Breaking.Bad.S01E03.720p.HDTV.x264-GRP"),
+            release("Breaking.Bad.S01E04.720p.HDTV.x264-GRP"),
+        ],
+    );
+    assert_eq!(
+        reasons(&decided, "Breaking.Bad.S01E03.720p.HDTV.x264-GRP"),
+        ["Episode is not monitored"]
+    );
+    assert!(reasons(&decided, "Breaking.Bad.S01E04.720p.HDTV.x264-GRP").is_empty());
 }

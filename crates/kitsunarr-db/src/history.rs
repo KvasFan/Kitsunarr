@@ -76,6 +76,34 @@ pub async fn grabs_for(db: &Database, download_ids: &[String]) -> DbResult<Vec<G
     Ok(q.build_query_as().fetch_all(db.pool()).await?)
 }
 
+/// An episode's most recent history event, when it is a grab.
+#[derive(Debug, Clone, FromRow)]
+pub struct LastGrab {
+    pub episode_id: i64,
+    pub date: String,
+    pub source_title: String,
+    pub quality_id: Option<i64>,
+    /// JSON `Revision`.
+    pub revision: Option<String>,
+    /// JSON list of language ids.
+    pub languages: Option<String>,
+    pub data: String,
+}
+
+/// The series' episodes whose most recent history event (`MostRecentForEpisode`: latest date,
+/// then latest entry) is a grab.
+pub async fn last_grabs_for_series(db: &Database, series_id: i64) -> DbResult<Vec<LastGrab>> {
+    Ok(sqlx::query_as(
+        "SELECT h.episode_id, h.date, h.source_title, h.quality_id, h.revision, h.languages, h.data \
+         FROM history h WHERE h.series_id = ? AND h.episode_id IS NOT NULL AND h.event_type = 'grabbed' \
+         AND NOT EXISTS (SELECT 1 FROM history n WHERE n.series_id = h.series_id \
+           AND n.episode_id = h.episode_id AND (n.date > h.date OR (n.date = h.date AND n.id > h.id)))",
+    )
+    .bind(series_id)
+    .fetch_all(db.pool())
+    .await?)
+}
+
 /// Download ids (upper-case) among `download_ids` that were imported: a
 /// `downloadFolderImported` entry newer than their last grab.
 pub async fn imported_downloads(

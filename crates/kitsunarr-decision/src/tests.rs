@@ -63,6 +63,7 @@ fn series() -> Series {
 fn settings() -> Settings {
     Settings {
         queue: Vec::new(),
+        last_grabs: Vec::new(),
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -79,6 +80,11 @@ fn delay(preferred_protocol: DownloadProtocol) -> DelayProfile {
         enable_usenet: true,
         enable_torrent: true,
         preferred_protocol,
+        usenet_delay: 0,
+        torrent_delay: 0,
+        bypass_if_highest_quality: false,
+        bypass_if_above_custom_format_score: false,
+        minimum_custom_format_score: 0,
         order: 1,
         tags: Vec::new(),
     }
@@ -562,6 +568,8 @@ struct Case {
     parsed: ParsedEpisodeInfo,
     episodes: Vec<Episode>,
     criteria: SearchCriteria,
+    /// The release's custom format score.
+    score: i32,
 }
 
 fn ep(id: i64, season: i32, number: i32, runtime: i32) -> Episode {
@@ -602,6 +610,7 @@ impl Case {
                 },
                 episode_ids: vec![5],
             },
+            score: 0,
         }
     }
 
@@ -618,7 +627,7 @@ impl Case {
             episodes: self.episodes.iter().collect(),
             mapped_season: self.parsed.season_numbers.first().copied(),
             custom_formats: Vec::new(),
-            score: 0,
+            score: self.score,
         };
         spec(&env, &subject)
     }
@@ -1033,6 +1042,7 @@ mod upgrade_disk_specification_fixture {
             size: 0,
             indexer_flags: 0,
             release_type: ReleaseType::SingleEpisode,
+            date_added: None,
         });
         c.series.episodes = c.episodes.clone();
         c
@@ -1255,4 +1265,446 @@ mod queue_specification_fixture {
         c.settings.propers = ProperDownloadType::DoNotUpgrade;
         assert!(!c.accepted(specs::queue));
     }
+}
+
+fn file_of(quality_id: i32, version: i32) -> EpisodeFile {
+    EpisodeFile {
+        id: 1,
+        quality: QualityModel {
+            quality_id,
+            revision: Revision {
+                version,
+                ..Default::default()
+            },
+        },
+        release_title: "Series.Title.S01E01.720p.HDTV.x264-Sonarr".into(),
+        file_name: "Series.Title.S01E01.mkv".into(),
+        release_group: None,
+        languages: Vec::new(),
+        size: 0,
+        indexer_flags: 0,
+        release_type: ReleaseType::SingleEpisode,
+        date_added: Some(Utc::now()),
+    }
+}
+
+const DVD: i32 = 2;
+const WEBDL720P: i32 = 5;
+const BLURAY720P: i32 = 6;
+const HDTV1080P: i32 = 9;
+
+/// `RssSync/DelaySpecificationFixture`.
+mod delay_specification_fixture {
+    use super::*;
+
+    fn case() -> Case {
+        let mut c = Case::new();
+        c.criteria = SearchCriteria::rss();
+        c.series.profile.items = [HDTV720P, WEBDL720P, BLURAY720P]
+            .iter()
+            .map(|q| QualityProfileItem {
+                quality_id: Some(*q),
+                group: None,
+                allowed: true,
+            })
+            .collect();
+        c.series.profile.cutoff = WEBDL720P;
+        c.release.protocol = DownloadProtocol::Usenet;
+        // `new ReleaseInfo()`: no publish date (year 1).
+        c.release.publish_date = chrono::DateTime::<Utc>::MIN_UTC;
+        c.parsed.quality = quality(SDTV, 1, 0);
+        c
+    }
+
+    fn delayed(c: &mut Case, minutes: i64) {
+        c.settings.delay_profiles[0].usenet_delay = minutes;
+    }
+
+    #[test]
+    fn should_be_true_when_user_invoked_search() {
+        let mut c = case();
+        delayed(&mut c, 720);
+        c.release.publish_date = Utc::now();
+        c.criteria = Case::new().criteria;
+        assert!(c.accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_true_when_profile_does_not_have_a_delay() {
+        let mut c = case();
+        delayed(&mut c, 0);
+        assert!(c.accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_false_when_quality_and_language_is_last_allowed_in_profile_and_bypass_disabled() {
+        let mut c = case();
+        c.release.publish_date = Utc::now();
+        c.parsed.quality = quality(BLURAY720P, 1, 0);
+        delayed(&mut c, 720);
+        assert_eq!(
+            c.check(specs::delay).unwrap().message,
+            "Waiting for better quality release"
+        );
+    }
+
+    #[test]
+    fn should_be_true_when_quality_and_language_is_last_allowed_in_profile_and_bypass_enabled() {
+        let mut c = case();
+        delayed(&mut c, 720);
+        c.settings.delay_profiles[0].bypass_if_highest_quality = true;
+        c.release.publish_date = Utc::now();
+        c.parsed.quality = quality(BLURAY720P, 1, 0);
+        assert!(c.accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_true_when_release_is_older_than_delay() {
+        let mut c = case();
+        c.parsed.quality = quality(HDTV720P, 1, 0);
+        c.release.publish_date = Utc::now() - Duration::hours(10);
+        delayed(&mut c, 60);
+        assert!(c.accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_false_when_release_is_younger_than_delay() {
+        let mut c = case();
+        c.release.publish_date = Utc::now();
+        delayed(&mut c, 720);
+        assert!(!c.accepted(specs::delay));
+    }
+
+    fn revision_case(propers: ProperDownloadType, new: ParsedQuality) -> Case {
+        let mut c = case();
+        c.settings.propers = propers;
+        c.parsed.quality = new;
+        c.release.publish_date = Utc::now();
+        c.episodes[0].file = Some(file_of(HDTV720P, 1));
+        delayed(&mut c, 720);
+        c
+    }
+
+    #[test]
+    fn should_be_true_when_release_is_a_proper_for_existing_episode() {
+        let c = revision_case(
+            ProperDownloadType::PreferAndUpgrade,
+            quality(HDTV720P, 2, 0),
+        );
+        assert!(c.accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_true_when_release_is_a_real_for_existing_episode() {
+        let c = revision_case(
+            ProperDownloadType::PreferAndUpgrade,
+            quality(HDTV720P, 1, 1),
+        );
+        assert!(c.accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_false_when_repacks_are_not_preferred() {
+        let c = revision_case(ProperDownloadType::DoNotUpgrade, quality(HDTV720P, 2, 0));
+        assert!(!c.accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_false_when_release_is_proper_for_existing_episode_of_different_quality() {
+        let c = revision_case(
+            ProperDownloadType::PreferAndUpgrade,
+            quality(WEBDL720P, 2, 0),
+        );
+        assert!(!c.accepted(specs::delay));
+    }
+
+    fn scored(score: i32, bypass: bool) -> Case {
+        let mut c = case();
+        c.release.publish_date = Utc::now();
+        c.score = score;
+        delayed(&mut c, 720);
+        c.settings.delay_profiles[0].bypass_if_above_custom_format_score = bypass;
+        c.settings.delay_profiles[0].minimum_custom_format_score = 50;
+        c
+    }
+
+    #[test]
+    fn should_be_false_when_custom_format_score_is_above_minimum_but_bypass_disabled() {
+        assert!(!scored(100, false).accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_false_when_custom_format_score_is_above_minimum_and_bypass_enabled_but_under_minimum()
+     {
+        assert!(!scored(5, true).accepted(specs::delay));
+    }
+
+    #[test]
+    fn should_be_true_when_custom_format_score_is_above_minimum_and_bypass_enabled() {
+        assert!(scored(100, true).accepted(specs::delay));
+    }
+}
+
+/// `RssSync/HistorySpecificationFixture` (completed download handling enabled, as it always is
+/// in Kitsunarr).
+mod history_specification_fixture {
+    use super::*;
+
+    fn case(multi: bool) -> Case {
+        let mut c = Case::new();
+        c.criteria = SearchCriteria::rss();
+        c.series.profile.upgrade_allowed = true;
+        c.series.profile.cutoff = BLURAY1080P;
+        c.parsed.quality = quality(DVD, 2, 0);
+        c.episodes = if multi {
+            vec![ep(1, 12, 3, 30), ep(2, 12, 4, 30), ep(3, 12, 5, 30)]
+        } else {
+            vec![ep(1, 12, 3, 30)]
+        };
+        c
+    }
+
+    fn grabbed(c: &mut Case, episode_id: i64, quality_id: i32, version: i32, hours_ago: i64) {
+        c.settings.last_grabs.retain(|g| g.episode_id != episode_id);
+        c.settings.last_grabs.push(HistoryGrab {
+            episode_id,
+            date: Utc::now() - Duration::hours(hours_ago),
+            title: "Series.Title.S12E03.x264-GRP".into(),
+            quality: QualityModel {
+                quality_id,
+                revision: Revision {
+                    version,
+                    ..Default::default()
+                },
+            },
+            size: 0,
+            languages: Vec::new(),
+            indexer_flags: 0,
+            release_type: ReleaseType::SingleEpisode,
+        });
+    }
+
+    const UPGRADABLE: (i32, i32) = (SDTV, 1);
+    const NOT_UPGRADABLE: (i32, i32) = (HDTV1080P, 2);
+
+    #[test]
+    fn should_return_true_if_it_is_a_search() {
+        let mut c = case(true);
+        grabbed(&mut c, 1, NOT_UPGRADABLE.0, NOT_UPGRADABLE.1, 0);
+        c.criteria = SearchCriteria {
+            monitored_episodes_only: false,
+            kind: SearchKind::Season { season: 12 },
+            episode_ids: vec![1, 2, 3],
+        };
+        assert!(c.accepted(specs::history));
+    }
+
+    #[test]
+    fn should_return_true_if_latest_history_item_is_null_or_not_a_grab() {
+        // Kitsunarr only receives episodes whose most recent event is a grab.
+        assert!(case(true).accepted(specs::history));
+    }
+
+    #[test]
+    fn should_return_true_if_latest_history_item_is_older_than_twelve_hours() {
+        let mut c = case(true);
+        grabbed(&mut c, 1, NOT_UPGRADABLE.0, NOT_UPGRADABLE.1, 13);
+        assert!(c.accepted(specs::history));
+    }
+
+    #[test]
+    fn should_be_upgradable_if_only_episode_is_upgradable() {
+        let mut c = case(false);
+        grabbed(&mut c, 1, UPGRADABLE.0, UPGRADABLE.1, 0);
+        assert!(c.accepted(specs::history));
+    }
+
+    #[test]
+    fn should_be_upgradable_if_both_episodes_are_upgradable() {
+        let mut c = case(true);
+        grabbed(&mut c, 1, UPGRADABLE.0, UPGRADABLE.1, 0);
+        grabbed(&mut c, 2, UPGRADABLE.0, UPGRADABLE.1, 0);
+        assert!(c.accepted(specs::history));
+    }
+
+    #[test]
+    fn should_not_be_upgradable_if_both_episodes_are_not_upgradable() {
+        let mut c = case(true);
+        grabbed(&mut c, 1, NOT_UPGRADABLE.0, NOT_UPGRADABLE.1, 0);
+        grabbed(&mut c, 2, NOT_UPGRADABLE.0, NOT_UPGRADABLE.1, 0);
+        assert_eq!(
+            c.check(specs::history).unwrap().message,
+            "Recent grab event in history is of equal or higher preference: HDTV-1080p v2"
+        );
+    }
+
+    #[test]
+    fn should_be_not_upgradable_if_only_first_episodes_is_upgradable() {
+        // Upstream's second setup replaces the first for the same episode.
+        let mut c = case(true);
+        grabbed(&mut c, 1, UPGRADABLE.0, UPGRADABLE.1, 0);
+        grabbed(&mut c, 1, NOT_UPGRADABLE.0, NOT_UPGRADABLE.1, 0);
+        assert!(!c.accepted(specs::history));
+    }
+
+    #[test]
+    fn should_be_not_upgradable_if_only_second_episodes_is_upgradable() {
+        let mut c = case(true);
+        grabbed(&mut c, 1, NOT_UPGRADABLE.0, NOT_UPGRADABLE.1, 0);
+        grabbed(&mut c, 2, UPGRADABLE.0, UPGRADABLE.1, 0);
+        assert!(!c.accepted(specs::history));
+    }
+
+    #[test]
+    fn should_not_be_upgradable_if_episode_is_of_same_quality_as_existing() {
+        let mut c = case(false);
+        c.series.profile.upgrade_allowed = false;
+        c.parsed.quality = quality(WEBDL1080P, 1, 0);
+        grabbed(&mut c, 1, WEBDL1080P, 1, 0);
+        assert!(!c.accepted(specs::history));
+    }
+
+    #[test]
+    fn should_not_be_upgradable_if_cutoff_already_met() {
+        let mut c = case(false);
+        c.series.profile.upgrade_allowed = false;
+        c.series.profile.cutoff = WEBDL1080P;
+        c.parsed.quality = quality(WEBDL1080P, 1, 0);
+        grabbed(&mut c, 1, WEBDL1080P, 1, 0);
+        assert_eq!(
+            c.check(specs::history).unwrap().message,
+            "Recent grab event in history already meets cutoff: WEBDL-1080p v1"
+        );
+    }
+
+    #[test]
+    fn should_return_false_if_latest_history_item_is_only_one_hour_old() {
+        let mut c = case(true);
+        grabbed(&mut c, 1, NOT_UPGRADABLE.0, NOT_UPGRADABLE.1, 1);
+        assert!(!c.accepted(specs::history));
+    }
+}
+
+/// `RssSync/ProperSpecificationFixture`.
+mod proper_specification_fixture {
+    use super::*;
+
+    fn case(multi: bool) -> Case {
+        let mut c = Case::new();
+        c.criteria = SearchCriteria::rss();
+        c.series.profile.cutoff = BLURAY1080P;
+        c.parsed.quality = quality(DVD, 2, 0);
+        let mut first = ep(1, 1, 1, 30);
+        first.file = Some(file_of(BLURAY1080P, 1));
+        let mut second = ep(2, 1, 2, 30);
+        second.file = Some(file_of(BLURAY1080P, 1));
+        c.episodes = if multi {
+            vec![first, second, ep(3, 1, 3, 30)]
+        } else {
+            vec![first, ep(3, 1, 3, 30)]
+        };
+        c
+    }
+
+    fn file(c: &mut Case, index: usize) -> &mut EpisodeFile {
+        c.episodes[index].file.as_mut().unwrap()
+    }
+
+    fn today_minus(days: u64) -> chrono::DateTime<Utc> {
+        (Utc::now().date_naive() - chrono::Days::new(days))
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_utc()
+    }
+
+    #[test]
+    fn should_return_false_when_episode_file_was_added_more_than_7_days_ago() {
+        let mut c = case(false);
+        file(&mut c, 0).quality.quality_id = DVD;
+        file(&mut c, 0).date_added = Some(today_minus(30));
+        assert_eq!(
+            c.check(specs::proper).unwrap().message,
+            "Proper for old file"
+        );
+    }
+
+    #[test]
+    fn should_return_false_when_first_episode_file_was_added_more_than_7_days_ago() {
+        let mut c = case(true);
+        file(&mut c, 0).quality.quality_id = DVD;
+        file(&mut c, 1).quality.quality_id = DVD;
+        file(&mut c, 0).date_added = Some(today_minus(30));
+        assert!(!c.accepted(specs::proper));
+    }
+
+    #[test]
+    fn should_return_false_when_second_episode_file_was_added_more_than_7_days_ago() {
+        let mut c = case(true);
+        file(&mut c, 0).quality.quality_id = DVD;
+        file(&mut c, 1).quality.quality_id = DVD;
+        file(&mut c, 1).date_added = Some(today_minus(30));
+        assert!(!c.accepted(specs::proper));
+    }
+
+    #[test]
+    fn should_return_true_when_episode_file_was_added_more_than_7_days_ago_but_proper_is_for_better_quality()
+     {
+        let mut c = case(false);
+        file(&mut c, 0).quality = QualityModel {
+            quality_id: SDTV,
+            revision: Revision::default(),
+        };
+        file(&mut c, 0).date_added = Some(today_minus(30));
+        assert!(c.accepted(specs::proper));
+    }
+
+    #[test]
+    fn should_return_true_when_episode_file_was_added_more_than_7_days_ago_but_is_for_search() {
+        let mut c = case(false);
+        file(&mut c, 0).quality.quality_id = DVD;
+        file(&mut c, 0).date_added = Some(today_minus(30));
+        c.criteria = Case::new().criteria;
+        assert!(c.accepted(specs::proper));
+    }
+
+    #[test]
+    fn should_return_false_when_proper_but_auto_download_propers_is_false() {
+        let mut c = case(false);
+        c.settings.propers = ProperDownloadType::DoNotUpgrade;
+        file(&mut c, 0).quality.quality_id = DVD;
+        file(&mut c, 0).date_added = Some(today_minus(0));
+        assert_eq!(
+            c.check(specs::proper).unwrap().message,
+            "Proper downloading is disabled"
+        );
+    }
+
+    #[test]
+    fn should_return_true_when_episode_file_was_added_today() {
+        let mut c = case(false);
+        c.settings.propers = ProperDownloadType::PreferAndUpgrade;
+        file(&mut c, 0).quality.quality_id = DVD;
+        file(&mut c, 0).date_added = Some(today_minus(0));
+        assert!(c.accepted(specs::proper));
+    }
+
+    #[test]
+    fn should_return_true_when_propers_are_not_preferred() {
+        let mut c = case(false);
+        c.settings.propers = ProperDownloadType::DoNotPrefer;
+        file(&mut c, 0).quality.quality_id = DVD;
+        file(&mut c, 0).date_added = Some(today_minus(0));
+        assert!(c.accepted(specs::proper));
+    }
+}
+
+/// RSS decisions skip the search-only rules: nothing was requested.
+#[test]
+fn rss_skips_episode_requested() {
+    let mut c = Case::new();
+    c.criteria = SearchCriteria::rss();
+    c.episodes = vec![ep(9, 1, 1, 30)];
+    assert!(c.accepted(specs::episode_requested));
+    c.criteria = Case::new().criteria;
+    assert!(!c.accepted(specs::episode_requested));
 }

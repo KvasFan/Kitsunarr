@@ -39,6 +39,8 @@ pub struct CachedRelease {
     pub languages: Vec<i32>,
     pub custom_format_score: i32,
     pub release_group: Option<String>,
+    /// Sonarr's `ReleaseType` name, stored with the grab.
+    pub release_type: &'static str,
     /// An episode aired within the last 14 days (`IsRecentEpisode`).
     pub recent: bool,
     pub cached_at: Instant,
@@ -412,6 +414,7 @@ async fn finish(
     let data = serde_json::json!({
         "indexer": r.indexer,
         "releaseGroup": cached.release_group,
+        "releaseType": cached.release_type,
         "size": r.release.size.to_string(),
         "guid": r.release.guid,
         "protocol": r.release.protocol,

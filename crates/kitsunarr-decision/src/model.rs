@@ -48,6 +48,8 @@ pub struct EpisodeFile {
     pub size: i64,
     pub indexer_flags: u32,
     pub release_type: ReleaseType,
+    /// When the file was added (`DateAdded`), for the propers rule of RSS sync.
+    pub date_added: Option<DateTime<Utc>>,
 }
 
 #[derive(Debug, Clone)]
@@ -106,12 +108,21 @@ pub struct LibrarySeries {
 /// The kind of search that found the releases (the `SearchCriteriaBase` subclass).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SearchKind {
-    SingleEpisode { season: i32, episode: i32 },
-    Season { season: i32 },
+    SingleEpisode {
+        season: i32,
+        episode: i32,
+    },
+    Season {
+        season: i32,
+    },
     DailyEpisode,
-    AnimeEpisode { season_search: bool },
+    AnimeEpisode {
+        season_search: bool,
+    },
     AnimeSeason,
     Special,
+    /// RSS sync: no search criteria (`searchCriteria == null` upstream).
+    Rss,
 }
 
 #[derive(Debug, Clone)]
@@ -122,6 +133,22 @@ pub struct SearchCriteria {
     /// Only monitored episodes are wanted (automatic season and missing searches); interactive
     /// and single-episode searches take any episode.
     pub monitored_episodes_only: bool,
+}
+
+impl SearchCriteria {
+    /// RSS sync (`GetRssDecision`): the RSS-only rules apply, the search-only ones do not, and
+    /// only monitored episodes are wanted.
+    pub fn rss() -> Self {
+        Self {
+            kind: SearchKind::Rss,
+            episode_ids: Vec::new(),
+            monitored_episodes_only: true,
+        }
+    }
+
+    pub fn is_rss(&self) -> bool {
+        self.kind == SearchKind::Rss
+    }
 }
 
 /// A download in the queue (grabbed, still in the download client, not imported).
@@ -135,6 +162,21 @@ pub struct QueuedRelease {
     pub size: i64,
     pub languages: Vec<&'static Language>,
     pub indexer_flags: u32,
+}
+
+/// An episode's most recent history event, when it is a grab (`MostRecentForEpisode`), for the
+/// history rule of RSS sync.
+#[derive(Debug, Clone)]
+pub struct HistoryGrab {
+    pub episode_id: i64,
+    pub date: DateTime<Utc>,
+    /// The grabbed release's title, for its custom formats.
+    pub title: String,
+    pub quality: QualityModel,
+    pub size: i64,
+    pub languages: Vec<&'static Language>,
+    pub indexer_flags: u32,
+    pub release_type: ReleaseType,
 }
 
 #[derive(Debug, Clone)]
@@ -152,6 +194,13 @@ pub struct DelayProfile {
     pub enable_usenet: bool,
     pub enable_torrent: bool,
     pub preferred_protocol: DownloadProtocol,
+    /// Minutes.
+    pub usenet_delay: i64,
+    /// Minutes.
+    pub torrent_delay: i64,
+    pub bypass_if_highest_quality: bool,
+    pub bypass_if_above_custom_format_score: bool,
+    pub minimum_custom_format_score: i32,
     pub order: i64,
     pub tags: Vec<i64>,
 }
@@ -171,6 +220,8 @@ pub struct Settings {
     pub maximum_size_mb: i64,
     /// Downloads in progress, for `QueueSpecification`.
     pub queue: Vec<QueuedRelease>,
+    /// Episodes whose most recent history event is a grab, for `HistorySpecification`.
+    pub last_grabs: Vec<HistoryGrab>,
     pub now: DateTime<Utc>,
 }
 
@@ -226,6 +277,17 @@ pub enum RejectionReason {
     QueueCustomFormatScoreIncrement,
     QueueUpgradesNotAllowed,
     QueuePropersDisabled,
+    HistoryRecentCutoffMet,
+    HistoryHigherPreference,
+    HistoryHigherRevision,
+    HistoryCutoffMet,
+    HistoryCustomFormatCutoffMet,
+    HistoryCustomFormatScore,
+    HistoryCustomFormatScoreIncrement,
+    HistoryUpgradesNotAllowed,
+    MinimumAgeDelay,
+    PropersDisabled,
+    ProperForOldFile,
     DecisionError,
 }
 

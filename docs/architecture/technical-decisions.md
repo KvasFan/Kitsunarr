@@ -191,7 +191,7 @@ Regular expressions in custom formats and release profiles run on the .NET-seman
 Known differences, all reported rather than hidden:
 
 - **The download queue** is checked against the downloads Kitsunarr grabbed that a download client still holds and that are not imported. The list is kept in memory: it is filled by grabs and by the minute-by-minute download check, so after a restart it is complete only after the first check.
-- **Checks that need missing data are not evaluated yet:** the blocklist, grab history, pending releases, free space, scene mappings (TheXEM) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
+- **Checks that need missing data are not evaluated yet:** the blocklist, pending releases, free space, scene mappings (TheXEM) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
 - **Settings:** minimum age, retention and maximum size (Settings › Indexers › Options) and "propers and repacks" (Settings › Media management) are Kitsunarr settings, migrated from the source's database `Config` keys or its `/config/indexer` and `/config/mediamanagement` API. Season-pack upgrades use Sonarr's default (every episode must be missing or upgradable), as that setting does not exist in Sonarr 4.
 - **Releases of other library series are rejected as "Wrong series" without evaluating that series' episodes and profile.** They are listed after the searched series' releases, in arrival order; upstream orders series groups by first appearance.
 - **A custom format specification that cannot be evaluated never matches, and a warning is shown with the search results.** This covers an unknown implementation, such as Tanukarr's `SeasonPackSpecification`, and an invalid pattern. Sonarr would refuse to load such a format.
@@ -263,4 +263,22 @@ Differences:
 
 - **Runs while the request waits:** Sonarr queues a command and reports through its command list. Kitsunarr answers with the outcome (releases found and approved, grabs, failures), shown as a notification. Scheduled searches (missing, cutoff unmet, RSS) are not implemented yet.
 - **Not covered yet:** pending releases (delay profiles hold nothing back: delays are not evaluated) and Usenet grabs (no Usenet client yet).
+
+## 20. RSS sync: library-wide mapping, then per-series decisions
+
+The `RssSync` job reads the newest releases of every indexer with RSS enabled (`GetRecentRequests`), maps each release to a library series and decides on each series' releases with the RSS rules, then grabs as automatic search does (section 19). Its interval is the "RSS sync interval" setting (0 turns it off), applied to the scheduled task when the setting is saved, after a migration and at startup.
+
+Mapping follows `GetRssDecision`: a title that does not parse, or parses as a possible special, is first checked against the specials of the series its ids or title point to. Otherwise the series is found as `FindSeries` does without search criteria: scene alias (alternate titles), title, all titles, title without year, then TheTVDB, TVRage and IMDb ids.
+
+The RSS-only rules are ported with Sonarr's fixtures:
+
+- **History:** an episode whose most recent history event is a grab from the last 12 hours, at the same or better preference, is not grabbed again. Completed download handling is always on in Kitsunarr, so older grabs do not count.
+- **Delay profiles:** a release younger than the delay of its protocol is rejected ("Waiting for better quality release"), with the bypasses for the best quality in the profile, a minimum custom format score, and propers of the preferred protocol. User-started searches are not delayed, as upstream.
+- **Propers:** a proper or repack for a file on disk is rejected when the "propers and repacks" setting is "do not upgrade", or when the file was added more than seven days ago.
+- **Monitored:** only monitored episodes of monitored series.
+
+Differences:
+
+- **No pending releases:** upstream keeps delayed releases and grabs them when the delay ends. Kitsunarr grabs a delayed release only if a later sync still finds it in the feed.
+- **Decisions are made series by series:** releases of different series are ranked separately, and a series that cannot be loaded is skipped and logged.
 

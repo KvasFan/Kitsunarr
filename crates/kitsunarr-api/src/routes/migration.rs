@@ -399,6 +399,10 @@ pub async fn apply(
                 task_state.events.publish(ServerEvent::SettingsChanged {
                     section: "all".into(),
                 });
+                // The migrated RSS interval schedules RSS sync.
+                if let Err(e) = crate::rss::sync_interval(&task_state.db).await {
+                    tracing::warn!(error = %e, "could not apply the RSS sync interval");
+                }
             }
             Err(e) => {
                 let message = match migrate_error(e) {

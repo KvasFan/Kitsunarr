@@ -24,6 +24,84 @@ pub fn release_type(id: i64) -> ReleaseType {
     }
 }
 
+/// Sonarr's `ReleaseType` name, as grab history stores it (`releaseType`).
+pub fn release_type_name(t: ReleaseType) -> &'static str {
+    match t {
+        ReleaseType::Unknown => "Unknown",
+        ReleaseType::SingleEpisode => "SingleEpisode",
+        ReleaseType::MultiEpisode => "MultiEpisode",
+        ReleaseType::SeasonPack => "SeasonPack",
+        ReleaseType::MultiSeasonPack => "MultiSeasonPack",
+    }
+}
+
+fn release_type_named(name: &str) -> ReleaseType {
+    match name {
+        n if n.eq_ignore_ascii_case("SingleEpisode") => ReleaseType::SingleEpisode,
+        n if n.eq_ignore_ascii_case("MultiEpisode") => ReleaseType::MultiEpisode,
+        n if n.eq_ignore_ascii_case("SeasonPack") => ReleaseType::SeasonPack,
+        n if n.eq_ignore_ascii_case("MultiSeasonPack") => ReleaseType::MultiSeasonPack,
+        _ => ReleaseType::Unknown,
+    }
+}
+
+/// A history date: RFC 3339, or Sonarr's `yyyy-MM-dd HH:mm:ss[.fff]Z` (migrated history).
+pub fn history_date(text: &str) -> Option<chrono::DateTime<chrono::Utc>> {
+    if let Ok(d) = chrono::DateTime::parse_from_rfc3339(text) {
+        return Some(d.with_timezone(&chrono::Utc));
+    }
+    let t = text.trim().trim_end_matches('Z');
+    chrono::NaiveDateTime::parse_from_str(t, "%Y-%m-%d %H:%M:%S%.f")
+        .or_else(|_| chrono::NaiveDateTime::parse_from_str(t, "%Y-%m-%dT%H:%M:%S%.f"))
+        .ok()
+        .map(|d| d.and_utc())
+}
+
+/// A number stored in a history entry's data (Sonarr stores numbers as strings).
+pub fn data_number(data: &serde_json::Value, key: &str) -> Option<i64> {
+    data.get(key).and_then(|v| match v {
+        serde_json::Value::String(s) => s.trim().parse::<i64>().ok(),
+        other => other.as_i64(),
+    })
+}
+
+/// The series' episodes whose most recent history event is a grab, for the history rule.
+pub async fn last_grabs(db: &Database, series_id: i64) -> DbResult<Vec<decision::HistoryGrab>> {
+    Ok(kitsunarr_db::history::last_grabs_for_series(db, series_id)
+        .await?
+        .into_iter()
+        .filter_map(|g| {
+            let data: serde_json::Value = serde_json::from_str(&g.data).unwrap_or_default();
+            let languages: Vec<i32> = g
+                .languages
+                .as_deref()
+                .and_then(|l| serde_json::from_str(l).ok())
+                .unwrap_or_default();
+            Some(decision::HistoryGrab {
+                episode_id: g.episode_id,
+                date: history_date(&g.date)?,
+                title: g.source_title,
+                quality: QualityModel {
+                    quality_id: g.quality_id.unwrap_or(0) as i32,
+                    revision: g
+                        .revision
+                        .as_deref()
+                        .and_then(|r| serde_json::from_str(r).ok())
+                        .unwrap_or_default(),
+                },
+                size: data_number(&data, "size").unwrap_or(0),
+                languages: languages.into_iter().filter_map(Language::by_id).collect(),
+                indexer_flags: data_number(&data, "indexerFlags").unwrap_or(0) as u32,
+                release_type: release_type_named(
+                    data.get("releaseType")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or_default(),
+                ),
+            })
+        })
+        .collect())
+}
+
 pub fn ids_of(external: &[(String, String)]) -> (i64, i64, Option<String>) {
     let get = |kind: &str| {
         external
@@ -128,6 +206,7 @@ pub async fn series_model(
                         size: f.size,
                         indexer_flags: f.indexer_flags as u32,
                         release_type: release_type(f.release_type),
+                        date_added: history_date(&f.added_at),
                     }
                 }),
             })

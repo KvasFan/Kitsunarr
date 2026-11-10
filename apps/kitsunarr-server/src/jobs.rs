@@ -1,6 +1,7 @@
 //! Built-in background jobs.
 
 use std::path::PathBuf;
+use std::sync::{Arc, OnceLock};
 use std::time::Duration;
 
 use kitsunarr_db::{auth, maintenance, tasks};
@@ -17,9 +18,25 @@ pub fn all(
     tmp_dir: PathBuf,
     metadata: Metadata,
     downloads: kitsunarr_library::downloads::Monitor,
+    api: Arc<OnceLock<kitsunarr_api::AppState>>,
 ) -> Vec<Job> {
     let backup_dir_for_job = backup_dir.clone();
     vec![
+        job(
+            kitsunarr_api::rss::TASK,
+            "Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones",
+            15,
+            Duration::from_secs(30 * 60),
+            move |_ctx| {
+                let api = api.clone();
+                async move {
+                    match api.get() {
+                        Some(state) => kitsunarr_api::rss::sync(state).await.map(Some),
+                        None => Ok(Some("Skipped: the server is still starting".into())),
+                    }
+                }
+            },
+        ),
         job(
             "RefreshMonitoredDownloads",
             "Reads the download clients and imports completed downloads Kitsunarr grabbed",

@@ -64,6 +64,29 @@ impl Env<'_> {
     }
 
     /// `ParseCustomFormat(EpisodeFile)` and its score.
+    /// The custom format score of a grabbed release (`ParseCustomFormat(RemoteEpisode)` for the
+    /// queue, `ParseCustomFormat(EpisodeHistory)` for history): parsed from its title.
+    fn grab_score(&self, grab: GrabInput<'_>) -> i32 {
+        let parsed = kitsunarr_parser::parse_title(grab.title);
+        let input = CustomFormatInput {
+            release_title: grab.title,
+            file_name: None,
+            release_group: parsed.as_ref().and_then(|p| p.release_group.as_deref()),
+            quality: grab.quality.quality(),
+            size: grab.size,
+            indexer_flags: grab.indexer_flags,
+            languages: grab.languages,
+            release_type: grab.release_type.unwrap_or_else(|| {
+                parsed
+                    .as_ref()
+                    .map_or(kitsunarr_parser::ReleaseType::Unknown, |p| p.release_type())
+            }),
+            original_language: self.series.original_language,
+        };
+        let formats = evaluate(self.formats, &input);
+        self.profile().format_score(formats.iter().map(|f| &f.id))
+    }
+
     fn file_formats(&self, file: &EpisodeFile) -> (Vec<&CompiledFormat>, i32) {
         let input = CustomFormatInput {
             release_title: &file.release_title,
@@ -80,6 +103,18 @@ impl Env<'_> {
         let score = self.profile().format_score(formats.iter().map(|f| &f.id));
         (formats, score)
     }
+}
+
+/// A grabbed release, as `Env::grab_score` reads it.
+#[derive(Clone, Copy)]
+struct GrabInput<'a> {
+    title: &'a str,
+    quality: &'a QualityModel,
+    size: i64,
+    indexer_flags: u32,
+    languages: &'a [&'static kitsunarr_domain::Language],
+    /// Stored with the grab (history); `None`: from the parsed title (queue).
+    release_type: Option<kitsunarr_parser::ReleaseType>,
 }
 
 fn model(p: &ParsedEpisodeInfo) -> QualityModel {
@@ -128,18 +163,21 @@ fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
 
 /// Every specification, in a stable (alphabetical) order.
 pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
-    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 26] = [
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 29] = [
         acceptable_size,
         anime_version_upgrade,
         custom_format_allowed_by_profile,
+        delay,
         episode_requested,
         full_season,
+        history,
         indexer_tag,
         maximum_size,
         minimum_age,
         monitored_episode,
         multi_season,
         not_sample,
+        proper,
         protocol,
         quality_allowed_by_profile,
         queue,
@@ -315,6 +353,9 @@ pub(crate) fn custom_format_allowed_by_profile(
 
 /// `Search/EpisodeRequestedSpecification`.
 pub(crate) fn episode_requested(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if env.criteria.is_rss() {
+        return None;
+    }
     if s.episodes
         .iter()
         .any(|e| env.criteria.episode_ids.contains(&e.id))
@@ -849,22 +890,14 @@ pub(crate) fn queue(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
             q.series_id == env.series.id && q.episode_ids.iter().any(|e| ids.contains(e))
         })
     {
-        let parsed = kitsunarr_parser::parse_title(&q.title);
-        let input = CustomFormatInput {
-            release_title: &q.title,
-            file_name: None,
-            release_group: parsed.as_ref().and_then(|p| p.release_group.as_deref()),
-            quality: q.quality.quality(),
+        let queued_score = env.grab_score(GrabInput {
+            title: &q.title,
+            quality: &q.quality,
             size: q.size,
             indexer_flags: q.indexer_flags,
             languages: &q.languages,
-            release_type: parsed
-                .as_ref()
-                .map_or(kitsunarr_parser::ReleaseType::Unknown, |p| p.release_type()),
-            original_language: env.series.original_language,
-        };
-        let queued_formats = evaluate(env.formats, &input);
-        let queued_score = profile.format_score(queued_formats.iter().map(|f| &f.id));
+            release_type: None,
+        });
         let label = quality_model_label(&q.quality);
         if !profile.cutoff_not_met(&q.quality, queued_score, Some(&new)) {
             return Some(Rejection::new(
@@ -939,6 +972,177 @@ pub(crate) fn queue(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
                 R::QueuePropersDisabled,
                 "Proper downloading is disabled",
             ));
+        }
+    }
+    None
+}
+
+/// `RssSync/HistorySpecification`: an episode's most recent event is a grab from the last 12
+/// hours at the same or better preference. (Completed download handling is always on in
+/// Kitsunarr, so older grabs do not count.)
+pub(crate) fn history(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if !env.criteria.is_rss() {
+        return None;
+    }
+    let profile = env.profile();
+    let p = &env.series.profile;
+    let new = model(s.parsed);
+    let since = env.settings.now - chrono::Duration::hours(12);
+    for e in &s.episodes {
+        let Some(g) = env
+            .settings
+            .last_grabs
+            .iter()
+            .find(|g| g.episode_id == e.id && g.date > since)
+        else {
+            continue;
+        };
+        let score = env.grab_score(GrabInput {
+            title: &g.title,
+            quality: &g.quality,
+            size: g.size,
+            indexer_flags: g.indexer_flags,
+            languages: &g.languages,
+            release_type: Some(g.release_type),
+        });
+        let label = quality_model_label(&g.quality);
+        if !profile.cutoff_not_met(&g.quality, score, Some(&new)) {
+            return Some(Rejection::new(
+                R::HistoryRecentCutoffMet,
+                format!("Recent grab event in history already meets cutoff: {label}"),
+            ));
+        }
+        let rejection = match profile
+            .is_upgradable(&g.quality, score, &new, s.score, env.settings.propers)
+            .err()
+        {
+            None => continue,
+            Some(UpgradeRejectReason::BetterQuality) => (
+                R::HistoryHigherPreference,
+                format!("Recent grab event in history is of equal or higher preference: {label}"),
+            ),
+            Some(UpgradeRejectReason::BetterRevision) => (
+                R::HistoryHigherRevision,
+                format!(
+                    "Recent grab event in history is of equal or higher revision: {}",
+                    revision_label(&g.quality.revision)
+                ),
+            ),
+            Some(UpgradeRejectReason::QualityCutoff) => (
+                R::HistoryCutoffMet,
+                format!(
+                    "Recent grab event in history meets quality cutoff: {}",
+                    profile.item_label(profile.index_of(p.cutoff, false).index)
+                ),
+            ),
+            Some(UpgradeRejectReason::CustomFormatCutoff) => (
+                R::HistoryCustomFormatCutoffMet,
+                format!(
+                    "Recent grab event in history meets Custom Format cutoff: {}",
+                    p.cutoff_format_score
+                ),
+            ),
+            Some(UpgradeRejectReason::CustomFormatScore) => (
+                R::HistoryCustomFormatScore,
+                format!(
+                    "Recent grab event in history has an equal or higher Custom Format score: {score}"
+                ),
+            ),
+            Some(UpgradeRejectReason::MinCustomFormatScore) => (
+                R::HistoryCustomFormatScoreIncrement,
+                format!(
+                    "Recent grab event in history has Custom Format score within Custom Format score increment: {}",
+                    p.min_upgrade_format_score
+                ),
+            ),
+            Some(UpgradeRejectReason::UpgradesNotAllowed) => (
+                R::HistoryUpgradesNotAllowed,
+                format!(
+                    "Recent grab event in history and Quality Profile '{}' does not allow upgrades",
+                    p.name
+                ),
+            ),
+        };
+        return Some(Rejection::new(rejection.0, rejection.1));
+    }
+    None
+}
+
+/// `RssSync/DelaySpecification`: the delay profile's waiting period. User-started searches skip
+/// it upstream, and RSS sync is the only automatic search Kitsunarr runs, so it applies to RSS
+/// only.
+pub(crate) fn delay(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if !env.criteria.is_rss() {
+        return None;
+    }
+    let d = env.delay_profile()?;
+    let delay = match s.release.protocol {
+        DownloadProtocol::Usenet => d.usenet_delay,
+        DownloadProtocol::Torrent => d.torrent_delay,
+        DownloadProtocol::Unknown => 0,
+    };
+    if delay == 0 {
+        return None;
+    }
+    let preferred = s.release.protocol == d.preferred_protocol;
+    let profile = env.profile();
+    let new = model(s.parsed);
+    if preferred && env.settings.propers == ProperDownloadType::PreferAndUpgrade {
+        for file in episode_files(s) {
+            if profile.compare_qualities(new.quality_id, file.quality.quality_id)
+                == std::cmp::Ordering::Equal
+                && crate::profile::compare_revision(&new.revision, &file.quality.revision)
+                    == std::cmp::Ordering::Greater
+            {
+                return None;
+            }
+        }
+    }
+    if d.bypass_if_highest_quality
+        && preferred
+        && let Some(best) = profile.last_allowed_quality()
+        && profile.compare_qualities(new.quality_id, best) != std::cmp::Ordering::Less
+    {
+        return None;
+    }
+    if d.bypass_if_above_custom_format_score
+        && preferred
+        && s.score >= d.minimum_custom_format_score
+    {
+        return None;
+    }
+    // `Release.AgeMinutes`. (Kitsunarr keeps no pending releases, so the "oldest pending
+    // release" exception does not arise.)
+    let age_minutes =
+        (env.settings.now - s.release.publish_date).num_milliseconds() as f64 / 60_000.0;
+    (age_minutes < delay as f64)
+        .then(|| Rejection::new(R::MinimumAgeDelay, "Waiting for better quality release"))
+}
+
+/// `RssSync/ProperSpecification`: propers and repacks for files on disk, per the "propers and
+/// repacks" setting; not for files added more than a week ago.
+pub(crate) fn proper(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if !env.criteria.is_rss() || env.settings.propers == ProperDownloadType::DoNotPrefer {
+        return None;
+    }
+    let new = model(s.parsed);
+    // `DateTime.Today.AddDays(-7)`.
+    let week_ago = (env.settings.now.date_naive() - chrono::Days::new(7))
+        .and_hms_opt(0, 0, 0)
+        .map(|d| d.and_utc());
+    for file in episode_files(s) {
+        if is_revision_upgrade(&file.quality, &new) {
+            if env.settings.propers == ProperDownloadType::DoNotUpgrade {
+                return Some(Rejection::new(
+                    R::PropersDisabled,
+                    "Proper downloading is disabled",
+                ));
+            }
+            if let (Some(added), Some(limit)) = (file.date_added, week_ago)
+                && added < limit
+            {
+                return Some(Rejection::new(R::ProperForOldFile, "Proper for old file"));
+            }
         }
     }
     None

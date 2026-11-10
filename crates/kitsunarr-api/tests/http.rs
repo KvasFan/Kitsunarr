@@ -21,6 +21,7 @@ use kitsunarr_metadata::{Metadata, anilist::AniList, tvmaze::TvMaze};
 struct Server {
     base: String,
     api_key: String,
+    state: AppState,
     _dir: tempfile::TempDir,
 }
 
@@ -71,7 +72,7 @@ async fn start_with(metadata: Metadata) -> Server {
         kitsunarr_indexers::IndexerClient::new(reqwest::Client::new())
             .with_rate_limit(std::time::Duration::ZERO),
     );
-    let app = kitsunarr_api::app(state);
+    let app = kitsunarr_api::app(state.clone());
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let addr = listener.local_addr().unwrap();
     tokio::spawn(async move {
@@ -85,6 +86,7 @@ async fn start_with(metadata: Metadata) -> Server {
     Server {
         base: format!("http://{addr}"),
         api_key,
+        state,
         _dir: dir,
     }
 }
@@ -1042,6 +1044,21 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
         }
         let base = base.lock().unwrap().clone();
         let link = format!("{base}/dl/42.torrent?apikey=t0rznab-key");
+        // The RSS feed (no query, no season) also lists S01E03 and another show.
+        let rss_only = if !q.contains_key("season") && !q.contains_key("q") {
+            r#"<item><title>Breaking.Bad.S01E03.720p.BluRay.x264-GRP</title><guid>bb-s01e03</guid>
+<link>magnet:?xt=urn:btih:d12fe1c06bba254a9dc9f519b335aa7c1367a88b&amp;dn=bb3</link>
+<pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate><size>1500000000</size>
+<enclosure url="magnet:?xt=urn:btih:d12fe1c06bba254a9dc9f519b335aa7c1367a88b&amp;dn=bb3" length="1500000000" type="application/x-bittorrent;x-scheme-handler/magnet" />
+<torznab:attr name="seeders" value="40" /><torznab:attr name="peers" value="45" /></item>
+<item><title>Some.Other.Show.S02E05.720p.HDTV.x264-GRP</title><guid>other</guid>
+<link>magnet:?xt=urn:btih:e12fe1c06bba254a9dc9f519b335aa7c1367a88c&amp;dn=o</link>
+<pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate><size>900000000</size>
+<enclosure url="magnet:?xt=urn:btih:e12fe1c06bba254a9dc9f519b335aa7c1367a88c&amp;dn=o" length="900000000" type="application/x-bittorrent;x-scheme-handler/magnet" />
+<torznab:attr name="seeders" value="40" /></item>"#
+        } else {
+            ""
+        };
         let feed = format!(
             r#"<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:torznab="http://torznab.com/schemas/2015/feed"><channel><title>Mock</title>
@@ -1055,6 +1072,7 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
 <enclosure url="magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a&amp;dn=bb" length="1500000000" type="application/x-bittorrent;x-scheme-handler/magnet" />
 <torznab:attr name="magneturl" value="magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a&amp;dn=bb" />
 <torznab:attr name="seeders" value="40" /><torznab:attr name="peers" value="45" /></item>
+{rss_only}
 </channel></rss>"#
         );
         ([("content-type", "application/rss+xml")], feed).into_response()
@@ -1431,6 +1449,29 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     // Searching again grabs nothing: S01E02 is in the queue now.
     let auto = client.automatic_search(&season).await.unwrap();
     assert_eq!((auto.approved, auto.grabbed.len()), (0, 0), "{auto:?}");
+
+    // RSS sync: S01E03 is new and grabbed; S01E01 is on disk, S01E02 queued, and the other
+    // show is not in the library.
+    qbit.lock().unwrap().clear();
+    let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
+    assert_eq!(
+        summary,
+        "4 releases found (3 for library series), 1 approved, 1 grabbed: Breaking.Bad.S01E03.720p.BluRay.x264-GRP"
+    );
+    assert!(
+        qbit.lock()
+            .unwrap()
+            .iter()
+            .any(|c| c.contains("d12fe1c06bba254a9dc9f519b335aa7c1367a88b")),
+        "{:#?}",
+        qbit.lock().unwrap()
+    );
+    // The next sync grabs nothing again.
+    let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
+    assert_eq!(
+        summary,
+        "4 releases found (3 for library series), 0 approved, 0 grabbed"
+    );
 
     // The indexer key is in neither the search results nor the history.
     for path in [
