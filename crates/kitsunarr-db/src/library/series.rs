@@ -944,6 +944,36 @@ pub async fn calendar(
         .collect())
 }
 
+/// Points the episodes at a file (`EpisodeFileAdded`).
+pub async fn link_episodes_to_file(
+    conn: &mut SqliteConnection,
+    episode_ids: &[i64],
+    file_id: i64,
+) -> DbResult<()> {
+    for id in episode_ids {
+        sqlx::query("UPDATE episodes SET episode_file_id = ? WHERE id = ?")
+            .bind(file_id)
+            .bind(id)
+            .execute(&mut *conn)
+            .await?;
+    }
+    Ok(())
+}
+
+/// Removes a file record and unlinks its episodes, keeping them monitored as they were
+/// (`MediaFileService.Delete` with reason Upgrade).
+pub async fn delete_episode_file(conn: &mut SqliteConnection, file_id: i64) -> DbResult<()> {
+    sqlx::query("UPDATE episodes SET episode_file_id = NULL WHERE episode_file_id = ?")
+        .bind(file_id)
+        .execute(&mut *conn)
+        .await?;
+    sqlx::query("DELETE FROM episode_files WHERE id = ?")
+        .bind(file_id)
+        .execute(&mut *conn)
+        .await?;
+    Ok(())
+}
+
 /// An episode file with every column release decisions read (custom formats, upgrades).
 #[derive(Debug, Clone, FromRow)]
 pub struct FileRecord {

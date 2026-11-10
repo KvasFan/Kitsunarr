@@ -62,7 +62,8 @@ pub struct AppStateInner {
     pub http: reqwest::Client,
     pub metadata: kitsunarr_metadata::Metadata,
     pub indexers: kitsunarr_indexers::IndexerClient,
-    pub qbittorrent: kitsunarr_downloaders::QBittorrent,
+    /// Download clients and completed-download handling (shared with the background job).
+    pub downloads: kitsunarr_library::downloads::Monitor,
     /// Recent search results, for grabbing.
     pub releases: routes::grab::ReleaseCache,
     /// The last download client used per protocol (round-robin between equals).
@@ -103,13 +104,23 @@ impl AppState {
             tasks,
             migrations: MigrationSessions::default(),
             indexers: kitsunarr_indexers::IndexerClient::new(http.clone()),
-            qbittorrent: kitsunarr_downloaders::QBittorrent::new(http.clone()),
+            downloads: kitsunarr_library::downloads::Monitor::new(http.clone()),
             releases: Default::default(),
             last_download_client: Default::default(),
             http,
             metadata,
             logs,
         }))
+    }
+
+    /// Shares the download monitor with the background job. Must be called before the state is
+    /// shared.
+    pub fn with_download_monitor(mut self, monitor: kitsunarr_library::downloads::Monitor) -> Self {
+        match Arc::get_mut(&mut self.0) {
+            Some(inner) => inner.downloads = monitor,
+            None => tracing::warn!("download monitor not replaced: the state is already shared"),
+        }
+        self
     }
 
     /// Replaces the indexer client (tests use one without the per-indexer request spacing).

@@ -312,6 +312,9 @@ impl Client {
     pub async fn queue(&self) -> ClientResult<kitsunarr_domain::api::queue::QueueResult> {
         self.get("/queue").await
     }
+    pub async fn refresh_queue(&self) -> ClientResult<String> {
+        self.post("/queue/refresh", &serde_json::json!({})).await
+    }
     pub async fn grab_release(&self, req: &GrabRequest) -> ClientResult<GrabResult> {
         self.post("/releases/grab", req).await
     }

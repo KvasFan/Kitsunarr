@@ -2683,9 +2683,13 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "chrono",
+ "fs4",
  "kitsunarr-db",
+ "kitsunarr-decision",
  "kitsunarr-domain",
+ "kitsunarr-downloaders",
  "kitsunarr-metadata",
+ "kitsunarr-parser",
  "reqwest 0.13.5",
  "serde_json",
  "sqlx",

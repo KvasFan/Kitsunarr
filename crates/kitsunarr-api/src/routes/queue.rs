@@ -8,43 +8,15 @@ use axum::extract::State;
 use kitsunarr_db::history;
 use kitsunarr_db::library::series;
 use kitsunarr_db::providers;
-use kitsunarr_db::rules::{self, RemotePathMapping};
+use kitsunarr_db::rules;
 use kitsunarr_domain::Quality;
 use kitsunarr_domain::api::queue::{QueueClientFailure, QueueItem, QueueResult};
 use kitsunarr_domain::api::settings::ProviderKind;
 use kitsunarr_downloaders::{ItemStatus, qbittorrent};
+use kitsunarr_library::downloads::remap;
 
 use crate::AppState;
 use crate::error::ApiResult;
-
-/// `RemotePathMappingService.RemapRemoteToLocal`: the first mapping for the client's host whose
-/// remote path contains the path.
-pub fn remap(mappings: &[RemotePathMapping], host: &str, path: &str) -> String {
-    let normal = |p: &str| p.replace('\\', "/").trim_end_matches('/').to_string();
-    let target = normal(path);
-    for m in mappings {
-        if !m.host.eq_ignore_ascii_case(host) {
-            continue;
-        }
-        let remote = normal(&m.remote_path);
-        let rest = if target == remote {
-            Some("")
-        } else {
-            target
-                .strip_prefix(&format!("{remote}/"))
-                .filter(|_| !remote.is_empty())
-        };
-        if let Some(rest) = rest {
-            let local = m.local_path.trim_end_matches(['/', '\\']);
-            return if rest.is_empty() {
-                local.to_string()
-            } else {
-                format!("{local}/{rest}")
-            };
-        }
-    }
-    path.to_string()
-}
 
 fn status_name(s: ItemStatus) -> &'static str {
     match s {
@@ -79,7 +51,7 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
                 continue;
             }
         };
-        match state.qbittorrent.items(&settings).await {
+        match state.downloads.qbittorrent.items(&settings).await {
             Ok(list) => items.extend(list.into_iter().map(|i| (client, settings.host.clone(), i))),
             Err(e) => failures.push(QueueClientFailure {
                 download_client: client.name.clone(),
@@ -138,16 +110,25 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
             .and_then(|g| serde_json::from_str(&g.data).ok())
             .unwrap_or_default();
         let mut messages: Vec<String> = item.message.clone().into_iter().collect();
+        let tracked = state.downloads.tracked(&item.download_id);
         let tracked_state = if grab.is_none() {
             messages.push(
                 "Not grabbed by Kitsunarr: it was added to the download client another way, so Kitsunarr does not know which episodes it contains.".into(),
             );
             "unknown"
         } else if item.status == ItemStatus::Completed {
-            messages.push(
-                "Downloaded. Importing completed downloads into the library is not implemented yet.".into(),
-            );
-            "importPending"
+            match tracked {
+                Some(t) => {
+                    messages.extend(t.messages);
+                    t.state.as_str()
+                }
+                None => {
+                    messages.push(
+                        "Downloaded; it is imported at the next check (every minute).".into(),
+                    );
+                    "importPending"
+                }
+            }
         } else {
             "downloading"
         };
@@ -187,25 +168,14 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
     }))
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn remote_paths_are_remapped_by_host_and_prefix() {
-        let m = vec![RemotePathMapping {
-            id: 1,
-            host: "qbit".into(),
-            remote_path: "/downloads/".into(),
-            local_path: "/mnt/media/downloads/".into(),
-        }];
-        assert_eq!(
-            remap(&m, "QBIT", "/downloads/tv/Show.S01E01"),
-            "/mnt/media/downloads/tv/Show.S01E01"
-        );
-        assert_eq!(remap(&m, "qbit", "/downloads"), "/mnt/media/downloads");
-        assert_eq!(remap(&m, "other", "/downloads/x"), "/downloads/x");
-        // A prefix that is not a whole path segment does not match.
-        assert_eq!(remap(&m, "qbit", "/downloads2/x"), "/downloads2/x");
-    }
+/// Runs one completed-download check now (`RefreshMonitoredDownloads`): imports downloads that
+/// finished. Returns the summary.
+#[utoipa::path(post, path = "/queue/refresh", tag = "queue", responses((status = 200, body = String)))]
+pub async fn refresh_queue(State(state): State<AppState>) -> ApiResult<Json<String>> {
+    state
+        .downloads
+        .refresh(&state.db)
+        .await
+        .map(Json)
+        .map_err(crate::error::ApiError::Internal)
 }

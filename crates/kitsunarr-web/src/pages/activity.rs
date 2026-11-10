@@ -30,7 +30,22 @@ fn status_tone(status: &str) -> &'static str {
 #[component]
 pub fn Queue() -> Element {
     let client = use_client();
+    let app = use_app();
+    let mut checking = use_signal(|| false);
     let mut tick = use_signal(|| 0u64);
+    let c_check = client.clone();
+    let check_now = move |_| {
+        let c = c_check.clone();
+        checking.set(true);
+        spawn(async move {
+            match c.refresh_queue().await {
+                Ok(summary) => app.success(format!("Checked: {summary}.")),
+                Err(e) => app.error(&e),
+            }
+            checking.set(false);
+            tick += 1;
+        });
+    };
     use_future(move || async move {
         loop {
             gloo_timers::future::TimeoutFuture::new(5000).await;
@@ -110,8 +125,13 @@ pub fn Queue() -> Element {
         },
     };
     rsx! {
-        div { class: "page-head", h1 { "Download queue" } }
-        p { class: "help small faint", "Read live from the download clients every few seconds. Kitsunarr does not import completed downloads yet." }
+        div { class: "page-head",
+            h1 { class: "grow", "Download queue" }
+            button { class: "btn", disabled: checking(), onclick: check_now,
+                if checking() { "Checking…" } else { "Check now" }
+            }
+        }
+        p { class: "help small faint", "Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (copied or hard-linked, so torrents keep seeding)." }
         div { class: "card", {body} }
     }
 }

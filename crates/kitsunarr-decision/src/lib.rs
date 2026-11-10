@@ -34,6 +34,16 @@ use crate::custom_format::evaluate;
 use crate::mapping::{Lookup, Mapped, index_of_ignore_case};
 use crate::specs::{Env, Subject};
 
+/// The episodes of `series` a parse result refers to (`ParsingService.GetEpisodes`, with no
+/// search criteria; specials matched by title when the parse marks a possible special).
+pub fn map_episodes<'s>(parsed: &ParsedEpisodeInfo, series: &'s Series) -> Vec<&'s Episode> {
+    let none = SearchCriteria {
+        kind: SearchKind::Special,
+        episode_ids: Vec::new(),
+    };
+    mapping::episodes(parsed, series, &none)
+}
+
 /// Everything a search's decisions depend on.
 pub struct Engine<'a> {
     pub series: &'a Series,

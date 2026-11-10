@@ -507,6 +507,28 @@ impl QBittorrent {
             .collect())
     }
 
+    /// `MarkItemAsImported`: moves the torrent to the post-import category, when one is set and
+    /// differs from the TV category.
+    pub async fn mark_imported(&self, s: &Settings, hash: &str) -> Result<(), DownloadError> {
+        let Some(imported) = s
+            .imported_category
+            .as_ref()
+            .filter(|c| s.category.as_ref() != Some(*c))
+        else {
+            return Ok(());
+        };
+        self.post(
+            s,
+            "/api/v2/torrents/setCategory",
+            vec![
+                ("hashes", hash.to_ascii_lowercase()),
+                ("category", imported.clone()),
+            ],
+        )
+        .await
+        .map(|_| ())
+    }
+
     /// `Test`: connection and version, categories (created when missing, as upstream does),
     /// share-limit settings that would remove downloads, and listing torrents.
     pub async fn test(&self, s: &Settings) -> Result<TestReport, DownloadError> {

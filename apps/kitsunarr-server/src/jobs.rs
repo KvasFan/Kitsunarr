@@ -12,9 +12,25 @@ use kitsunarr_scheduler::{Job, JobContext, JobResult, job};
 const KEEP_SCHEDULED_BACKUPS: usize = 8;
 const KEEP_TASK_RUNS: i64 = 2000;
 
-pub fn all(backup_dir: PathBuf, tmp_dir: PathBuf, metadata: Metadata) -> Vec<Job> {
+pub fn all(
+    backup_dir: PathBuf,
+    tmp_dir: PathBuf,
+    metadata: Metadata,
+    downloads: kitsunarr_library::downloads::Monitor,
+) -> Vec<Job> {
     let backup_dir_for_job = backup_dir.clone();
     vec![
+        job(
+            "RefreshMonitoredDownloads",
+            "Reads the download clients and imports completed downloads Kitsunarr grabbed",
+            1,
+            // Copying a large file (when hard links are not possible) can take a while.
+            Duration::from_secs(2 * 3600),
+            move |ctx| {
+                let downloads = downloads.clone();
+                async move { downloads.refresh(&ctx.db).await.map(Some) }
+            },
+        ),
         job(
             "RefreshMetadata",
             "Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)",

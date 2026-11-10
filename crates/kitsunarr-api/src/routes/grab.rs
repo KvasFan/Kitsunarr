@@ -107,18 +107,20 @@ pub async fn test_download_client(
     }
     let settings =
         qbittorrent::Settings::from_map(&req.settings).map_err(|m| ApiError::field("host", m))?;
-    Ok(Json(match state.qbittorrent.test(&settings).await {
-        Ok(report) => DownloadClientTestResult {
-            ok: true,
-            message: format!("Connected to qBittorrent (Web API {}).", report.api_version),
-            warnings: report.warnings,
+    Ok(Json(
+        match state.downloads.qbittorrent.test(&settings).await {
+            Ok(report) => DownloadClientTestResult {
+                ok: true,
+                message: format!("Connected to qBittorrent (Web API {}).", report.api_version),
+                warnings: report.warnings,
+            },
+            Err(e) => DownloadClientTestResult {
+                ok: false,
+                message: describe(&e),
+                warnings: Vec::new(),
+            },
         },
-        Err(e) => DownloadClientTestResult {
-            ok: false,
-            message: describe(&e),
-            warnings: Vec::new(),
-        },
-    }))
+    ))
 }
 
 /// `DownloadClientProvider.GetDownloadClient`: clients for the protocol; those sharing a tag
@@ -282,7 +284,7 @@ pub async fn grab_release(
     let add_magnet = |url: String| {
         let settings = settings.clone();
         let tag_labels = tag_labels.clone();
-        let qb = state.qbittorrent.clone();
+        let qb = state.downloads.qbittorrent.clone();
         let recent = cached.recent;
         async move {
             let hash = magnet_info_hash(&url).ok_or_else(|| {
@@ -329,6 +331,7 @@ pub async fn grab_release(
                 })?;
                 let name = format!("{}.torrent", clean_file_name(&release.title));
                 state
+                    .downloads
                     .qbittorrent
                     .add(
                         &settings,

@@ -1112,7 +1112,8 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
                 axum::Json(serde_json::json!({"dht": true})).into_response()
             }
             "/api/v2/torrents/categories" => {
-                axum::Json(serde_json::json!({"tv-kitsunarr": {}})).into_response()
+                axum::Json(serde_json::json!({"tv-kitsunarr": {}, "tv-imported": {}}))
+                    .into_response()
             }
             "/api/v2/torrents/info" => axum::Json(serde_json::Value::Array(
                 QBIT_TORRENTS.lock().unwrap().clone(),
@@ -1174,7 +1175,8 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             &serde_json::json!({
                 "name": "qBittorrent", "implementation": "QBittorrent", "enabled": true,
                 "settings": {"host": "127.0.0.1", "port": qbit_port.parse::<u16>().unwrap(),
-                    "username": "admin", "password": "secret", "tvCategory": "tv-kitsunarr"}
+                    "username": "admin", "password": "secret", "tvCategory": "tv-kitsunarr",
+                    "tvImportedCategory": "tv-imported"}
             }),
         )
         .await
@@ -1295,6 +1297,71 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             item.time_left
         ),
         ("downloading", "downloading", 600, Some(90))
+    );
+
+    // The torrent completes; the next check imports it into the series folder.
+    let downloads = tempfile::tempdir().unwrap();
+    let folder = downloads
+        .path()
+        .join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP");
+    std::fs::create_dir_all(&folder).unwrap();
+    std::fs::write(
+        folder.join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv"),
+        b"video",
+    )
+    .unwrap();
+    std::fs::write(folder.join("sample.mkv"), b"sample").unwrap();
+    {
+        let mut torrents = QBIT_TORRENTS.lock().unwrap();
+        torrents[0]["state"] = "stalledUP".into();
+        torrents[0]["progress"] = 1.0.into();
+        torrents[0]["save_path"] = downloads.path().display().to_string().into();
+        torrents[0]["content_path"] = folder.display().to_string().into();
+    }
+    qbit.lock().unwrap().clear();
+    let summary = client.refresh_queue().await.unwrap();
+    assert_eq!(summary, "1 downloads imported, 0 need attention");
+    let detail = client.series_detail(added.id).await.unwrap();
+    let imported = std::path::Path::new(&detail.item.path)
+        .join("Season 1")
+        .join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv");
+    assert_eq!(std::fs::read(&imported).unwrap(), b"video");
+    // The download keeps its data (it is still seeding).
+    assert!(
+        folder
+            .join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv")
+            .exists()
+    );
+    let episodes = client.episodes(added.id).await.unwrap();
+    let file = episodes
+        .iter()
+        .find(|e| e.id == pilot.id)
+        .and_then(|e| e.file.clone())
+        .expect("the pilot has a file");
+    assert_eq!(file.quality_name, "Bluray-720p");
+    assert_eq!(
+        file.relative_path,
+        "Season 1/Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv"
+    );
+    let imports = client
+        .history(1, 50, Some("downloadFolderImported"))
+        .await
+        .unwrap();
+    assert_eq!(imports.records.len(), 1);
+    assert!(
+        qbit.lock().unwrap().contains(&format!(
+            "/api/v2/torrents/setCategory category=tv-imported hashes={}",
+            grabbed.download_id
+        )),
+        "{:#?}",
+        qbit.lock().unwrap()
+    );
+    let queue = client.queue().await.unwrap();
+    assert_eq!(queue.items[0].tracked_state, "imported");
+    // A second check does not import it again.
+    assert_eq!(
+        client.refresh_queue().await.unwrap(),
+        "0 downloads imported, 0 need attention"
     );
 
     // The indexer key is in neither the search results nor the history.

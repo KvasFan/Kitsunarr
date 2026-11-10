@@ -4,6 +4,10 @@
 //! folder and the naming settings, and folders are created by the import pipeline when files
 //! arrive. Refreshing updates provider-owned fields only.
 
+pub mod decision_input;
+pub mod downloads;
+pub mod import;
+
 use std::collections::HashMap;
 
 use chrono::{DateTime, SecondsFormat, TimeDelta, Utc};

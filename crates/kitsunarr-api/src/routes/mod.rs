@@ -121,6 +121,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(grab::grab_release))
         .routes(routes!(grab::test_download_client))
         .routes(routes!(queue::get_queue))
+        .routes(routes!(queue::refresh_queue))
         // migration
         .routes(routes!(migration::create_api_session))
         .routes(routes!(migration::upload_backup))

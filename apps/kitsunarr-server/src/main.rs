@@ -302,6 +302,7 @@ async fn serve(config: Config) -> Result<()> {
         &config.metadata.tvmaze_url,
         &config.metadata.anilist_url,
     );
+    let downloads = kitsunarr_library::downloads::Monitor::new(http.clone());
     let scheduler = kitsunarr_scheduler::Scheduler::new(
         db.clone(),
         events.clone(),
@@ -309,6 +310,7 @@ async fn serve(config: Config) -> Result<()> {
             config.backup_dir(),
             tmp_dir.join("migration"),
             metadata.clone(),
+            downloads.clone(),
         ),
         shutdown.child_token(),
     );
@@ -329,7 +331,8 @@ async fn serve(config: Config) -> Result<()> {
         http,
         metadata,
         logs,
-    );
+    )
+    .with_download_monitor(downloads);
     if !assets::Embedded::has_ui() {
         tracing::warn!("this build does not include the web interface; only the API is served");
     }

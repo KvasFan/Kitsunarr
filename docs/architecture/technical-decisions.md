@@ -222,3 +222,20 @@ Two choices differ from Sonarr:
 
 - **Grabs are rejected rather than mapped by hand.** A release that could not be matched to episodes cannot be grabbed until manual episode selection exists; Sonarr would ask the user to pick them.
 - **"Implemented" means implemented.** Only qBittorrent is marked as an implemented download client, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.
+
+## 17. Importing completed downloads, safer than upstream where files are at stake
+
+Every minute, a check (Sonarr's `RefreshMonitoredDownloads`) reads the download clients. It imports completed downloads that Kitsunarr grabbed and has not imported yet; a "downloadFolderImported" history entry newer than the last grab marks a download as imported. The import follows `DownloadedEpisodesImportService`, `ImportDecisionMaker`, the aggregators and `ImportApprovedEpisodes`; the feature matrix lists what is covered.
+
+Where files are at stake, Kitsunarr is stricter than Sonarr:
+
+- **New file first.** The new file is placed before a file it upgrades is removed. Upstream removes first, so a failed transfer would lose the old file.
+- **Removals stay inside the series folder.** A replaced file is removed only if its path lies inside the series folder, checked lexically with `..` resolved. As upstream, it goes to the recycle bin when one is set, and is deleted otherwise.
+- **No overwrites.** An existing destination is never overwritten: "Destination already exists".
+- **Downloads stay in the client.** They are always copied, hard-linked when "Use hardlinks" is on, so torrents keep seeding. Completed downloads are never removed from the client yet.
+
+Where Kitsunarr lacks a component, it says so instead of guessing:
+
+- **Rename on:** with "Rename files on import" on, imports wait with an explanation; the naming engine is not ported yet. With it off (Sonarr's default), files keep the release or file name, cleaned as `CleanFileName` does.
+- **Custom season folders:** only `{season}`, `{season:0}` and `{season:00}` are filled in; any other token blocks the import with an explanation.
+- **Media info:** there is none yet (Sonarr uses ffprobe). Samples are recognised by name only, and quality comes from names, not from the video's resolution.
