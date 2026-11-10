@@ -454,6 +454,34 @@ pub async fn search_releases(
         all_meta.extend(list);
     }
     let decisions = engine.prioritize(Engine::dedupe(decisions, &all), &all);
+    // Kept for grabbing: download links stay on the server.
+    let recent_cutoff = (chrono::Utc::now() - chrono::Duration::days(14))
+        .date_naive()
+        .and_hms_opt(0, 0, 0)
+        .map(|d| d.and_utc());
+    for d in &decisions {
+        let episodes: Vec<&decision::Episode> = d
+            .episodes
+            .iter()
+            .filter_map(|m| inputs.series.episodes.iter().find(|e| e.id == m.id))
+            .collect();
+        state.releases.insert(crate::routes::grab::CachedRelease {
+            release: all_meta[d.release].clone(),
+            series_id: detail.item.id,
+            episode_ids: episodes.iter().map(|e| e.id).collect(),
+            quality: QualityModel {
+                quality_id: d.quality.quality.id,
+                revision: d.quality.revision,
+            },
+            languages: d.languages.iter().map(|l| l.id).collect(),
+            custom_format_score: d.custom_format_score,
+            release_group: d.parsed.as_ref().and_then(|p| p.release_group.clone()),
+            recent: episodes
+                .iter()
+                .any(|e| matches!((e.air_date_utc, recent_cutoff), (Some(a), Some(c)) if a >= c)),
+            cached_at: std::time::Instant::now(),
+        });
+    }
     let releases = decisions
         .iter()
         .map(|d| to_item(all_meta[d.release].clone(), d, detail.item.id))

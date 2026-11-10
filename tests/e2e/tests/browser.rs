@@ -570,6 +570,12 @@ async fn first_run_setup_migration_and_library() {
             "indexer download links (with their keys) never reach the browser"
         );
         screenshot(&client, "16-interactive-search").await;
+        // Rejected releases need a second click; this one cannot be matched to episodes.
+        let grab = Locator::Css("table.releases tbody tr button[aria-label^='Grab ']");
+        client.find(grab).await.unwrap().click().await.unwrap();
+        wait_text(&client, "Grab anyway?").await;
+        client.find(grab).await.unwrap().click().await.unwrap();
+        wait_text(&client, "could not be matched to episodes").await;
         client
             .find(Locator::Css(".modal button[aria-label='Close']"))
             .await

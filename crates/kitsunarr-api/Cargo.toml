@@ -19,6 +19,7 @@ kitsunarr-metadata = { workspace = true }
 kitsunarr-library = { workspace = true }
 kitsunarr-indexers = { workspace = true }
 kitsunarr-decision = { workspace = true }
+kitsunarr-downloaders = { workspace = true }
 kitsunarr-parser = { workspace = true }
 axum = { workspace = true }
 axum-extra = { workspace = true }

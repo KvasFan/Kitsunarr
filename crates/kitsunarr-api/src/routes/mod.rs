@@ -2,6 +2,7 @@
 //! through `routes!` keeps the router and the OpenAPI document identical.
 
 pub mod events;
+pub mod grab;
 pub mod library;
 pub mod metadata;
 pub mod migration;
@@ -116,6 +117,8 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         // search
         .routes(routes!(search::test_indexer))
         .routes(routes!(search::search_releases))
+        .routes(routes!(grab::grab_release))
+        .routes(routes!(grab::test_download_client))
         // migration
         .routes(routes!(migration::create_api_session))
         .routes(routes!(migration::upload_backup))

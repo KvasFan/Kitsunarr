@@ -22,7 +22,8 @@ use kitsunarr_domain::api::migration::{
     MigrationSession,
 };
 use kitsunarr_domain::api::search::{
-    IndexerTestRequest, IndexerTestResult, ReleaseQuery, ReleaseSearchResult,
+    DownloadClientTestResult, GrabRequest, GrabResult, IndexerTestRequest, IndexerTestResult,
+    ReleaseQuery, ReleaseSearchResult,
 };
 use kitsunarr_domain::api::settings::{
     CustomFormat, GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
@@ -307,6 +308,15 @@ impl Client {
     // --- indexers and release search ---------------------------------------------------------
     pub async fn test_indexer(&self, req: &IndexerTestRequest) -> ClientResult<IndexerTestResult> {
         self.post("/providers/indexers/test", req).await
+    }
+    pub async fn grab_release(&self, req: &GrabRequest) -> ClientResult<GrabResult> {
+        self.post("/releases/grab", req).await
+    }
+    pub async fn test_download_client(
+        &self,
+        req: &IndexerTestRequest,
+    ) -> ClientResult<DownloadClientTestResult> {
+        self.post("/providers/downloadclients/test", req).await
     }
     pub async fn search_releases(&self, q: &ReleaseQuery) -> ClientResult<ReleaseSearchResult> {
         self.get_query("/releases", q).await

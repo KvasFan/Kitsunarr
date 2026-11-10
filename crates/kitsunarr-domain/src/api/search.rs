@@ -110,3 +110,34 @@ pub struct IndexerTestResult {
     pub releases_found: usize,
     pub warnings: Vec<String>,
 }
+
+/// `POST /releases/grab`: a release from a recent search, by indexer and GUID. Download links
+/// stay on the server; it resolves them from its search cache.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct GrabRequest {
+    pub guid: String,
+    pub indexer_id: i64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct GrabResult {
+    /// The download client's name.
+    pub download_client: String,
+    /// The client's id for the download (a torrent's info hash).
+    pub download_id: String,
+    pub message: String,
+}
+
+/// `POST /providers/downloadclients/test` result.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct DownloadClientTestResult {
+    pub ok: bool,
+    pub message: String,
+    pub warnings: Vec<String>,
+}

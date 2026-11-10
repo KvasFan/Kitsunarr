@@ -196,3 +196,29 @@ Known differences, all reported rather than hidden:
 - **A custom format specification that cannot be evaluated never matches, and a warning is shown with the search results.** This covers an unknown implementation, such as Tanukarr's `SeasonPackSpecification`, and an invalid pattern. Sonarr would refuse to load such a format.
 
 Verification: tests ported from Sonarr's `DecisionEngineTests` cover ranking (all 30 `PrioritizeDownloadDecisionFixture` tests) and the sizes, upgrades, raw discs, release restrictions, search matching, repacks and other specifications. Sonarr's custom format language and release-type fixtures are ported too. End-to-end tests run real release names through parsing, mapping, decisions and ranking. Mutation checks confirm the ranking and size tests fail when the logic is broken.
+
+## 16. Grabbing: releases resolved on the server, qBittorrent first
+
+A grab names a release by indexer and GUID, never by download link. Search results are kept on the server for 30 minutes, as in Sonarr; the grab resolves the link there, so indexer API keys stay out of the browser, the API and the history.
+
+The rest follows Sonarr:
+
+- **Client choice** (`DownloadClientProvider`), in order:
+  1. enabled clients for the release's protocol;
+  2. among them, those sharing a tag with the series, otherwise those without tags;
+  3. the client the indexer is assigned to, if any;
+  4. the best priority, rotating between clients of equal priority.
+- **Torrent source** (`TorrentClientBase`):
+  - the magnet link is used first;
+  - if the client cannot take it, the `.torrent` file is used instead. The file is fetched through the indexer client, so it shares the indexer's rate limit, and redirects are followed by hand so a redirect to a magnet link is recognised.
+  - downloads are tracked by the BitTorrent v1 info hash, from the magnet link or the SHA-1 of the file's `info` dictionary.
+- **qBittorrent** (`QBittorrent.cs`, API v2 proxy):
+  - login caches the session cookie and retries once on 403;
+  - the Test creates missing categories and rejects share-limit settings that would remove torrents before import, as upstream;
+  - adding a torrent sets the category and the initial state (`stopped` on Web API 2.11 and later, `paused` before), then top priority for recent episodes, force start and series tags.
+- **History:** one "Grabbed" entry per episode, with Sonarr's data keys except `downloadUrl`, which would store the indexer key.
+
+Two choices differ from Sonarr:
+
+- **Grabs are rejected rather than mapped by hand.** A release that could not be matched to episodes cannot be grabbed until manual episode selection exists; Sonarr would ask the user to pick them.
+- **"Implemented" means implemented.** Only qBittorrent is marked as an implemented download client, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.

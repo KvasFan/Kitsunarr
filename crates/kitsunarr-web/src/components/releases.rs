@@ -2,11 +2,11 @@
 
 use dioxus::prelude::*;
 use kitsunarr_domain::DownloadProtocol;
-use kitsunarr_domain::api::search::{ReleaseItem, ReleaseQuery};
+use kitsunarr_domain::api::search::{GrabRequest, ReleaseItem, ReleaseQuery};
 
 use crate::components::common::{Empty, ErrorBox, Loading};
 use crate::route::Route;
-use crate::state::use_client;
+use crate::state::{use_app, use_client};
 use crate::util::{format_bytes, relative};
 
 fn episodes_label(r: &ReleaseItem) -> String {
@@ -52,8 +52,13 @@ pub fn ReleaseSearch(
     #[props(default)] episode_id: Option<i64>,
 ) -> Element {
     let client = use_client();
+    let app = use_app();
+    let mut grabbing = use_signal(|| None::<String>);
+    let mut confirm = use_signal(|| None::<String>);
+    let mut grabbed = use_signal(Vec::<String>::new);
+    let c0 = client.clone();
     let results = use_resource(move || {
-        let c = client.clone();
+        let c = c0.clone();
         let q = ReleaseQuery {
             series_id,
             season_number: season,
@@ -93,7 +98,7 @@ pub fn ReleaseSearch(
             }
         } else {
             p { class: "help small faint",
-                "Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Grabbing needs download clients, which are the next milestone."
+                "Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Grab sends a torrent to qBittorrent; rejected releases ask for a second click."
             }
             div { class: "table-wrap",
                 table { class: "table releases",
@@ -163,7 +168,46 @@ pub fn ReleaseSearch(
                                         if let Some(url) = rel.info_url.as_ref() {
                                             a { class: "btn sm ghost", href: "{url}", target: "_blank", rel: "noopener noreferrer", "aria-label": "Open on {rel.indexer}", "↗" }
                                         }
-                                        button { class: "btn sm", disabled: true, title: "Download clients are not implemented yet", "Grab" }
+                                        {
+                                            let key = format!("{}-{}", rel.indexer_id, rel.guid);
+                                            let done = grabbed.read().contains(&key);
+                                            let busy = grabbing() == Some(key.clone());
+                                            let confirming = confirm() == Some(key.clone());
+                                            let req = GrabRequest { guid: rel.guid.clone(), indexer_id: rel.indexer_id };
+                                            let approved = rel.approved;
+                                            let label = rel.title.clone();
+                                            let c = client.clone();
+                                            rsx! {
+                                                button {
+                                                    class: if confirming { "btn sm danger" } else if approved { "btn sm primary" } else { "btn sm" },
+                                                    disabled: done || busy,
+                                                    "aria-label": "Grab {label}",
+                                                    title: if approved { "Send to the download client" } else { "Rejected: click twice to grab anyway" },
+                                                    onclick: move |_| {
+                                                        if !approved && confirm() != Some(key.clone()) {
+                                                            confirm.set(Some(key.clone()));
+                                                            return;
+                                                        }
+                                                        confirm.set(None);
+                                                        grabbing.set(Some(key.clone()));
+                                                        let c = c.clone();
+                                                        let req = req.clone();
+                                                        let key = key.clone();
+                                                        spawn(async move {
+                                                            match c.grab_release(&req).await {
+                                                                Ok(r) => {
+                                                                    grabbed.write().push(key);
+                                                                    app.success(&r.message);
+                                                                }
+                                                                Err(e) => app.error(&e),
+                                                            }
+                                                            grabbing.set(None);
+                                                        });
+                                                    },
+                                                    if done { "Grabbed" } else if busy { "Grabbing…" } else if confirming { "Grab anyway?" } else { "Grab" }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

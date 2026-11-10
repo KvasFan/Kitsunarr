@@ -1,0 +1,26 @@
+[package]
+name = "kitsunarr-downloaders"
+description = "Download clients for Kitsunarr (qBittorrent first), ported from Sonarr's Download/Clients."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+reqwest = { workspace = true, features = ["multipart"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tokio = { workspace = true }
+sha1 = { workspace = true }
+data-encoding = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+axum = { workspace = true }
+
+[lints]
+workspace = true

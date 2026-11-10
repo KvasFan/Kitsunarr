@@ -771,7 +771,7 @@ fn IndexerOptions() -> Element {
 
 #[component]
 pub fn SettingsDownloadClients() -> Element {
-    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent, Transmission, Deluge, SABnzbd and NZBGet integrations are the next milestone; settings are stored and editable." } }
+    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent works: use Test in the editor, and grab releases from interactive search. Transmission, Deluge, SABnzbd and NZBGet settings are stored and editable, but sending downloads to them is not implemented yet. Download tracking and import come next." } }
 }
 
 #[component]
@@ -895,11 +895,14 @@ fn ProviderEditor(
 ) -> Element {
     let mut draft = use_signal(|| item.clone());
     let mut testing = use_signal(|| false);
-    let mut test_result =
-        use_signal(|| None::<Result<kitsunarr_domain::api::search::IndexerTestResult, String>>);
+    // (ok, message, warnings) from an indexer or download client test.
+    let mut test_result = use_signal(|| None::<Result<(bool, String, Vec<String>), String>>);
     let client = crate::state::use_client();
-    let testable = item.kind == ProviderKind::Indexer
-        && matches!(item.implementation.as_str(), "Newznab" | "Torznab");
+    let testable = match item.kind {
+        ProviderKind::Indexer => matches!(item.implementation.as_str(), "Newznab" | "Torznab"),
+        ProviderKind::DownloadClient => item.implementation == "QBittorrent",
+        _ => false,
+    };
     let run_test = move |_| {
         let c = client.clone();
         let d = draft();
@@ -911,7 +914,16 @@ fn ProviderEditor(
                 implementation: d.implementation.clone(),
                 settings: d.settings.clone(),
             };
-            test_result.set(Some(c.test_indexer(&req).await.map_err(|e| e.to_string())));
+            let outcome = if d.kind == ProviderKind::DownloadClient {
+                c.test_download_client(&req)
+                    .await
+                    .map(|r| (r.ok, r.message, r.warnings))
+            } else {
+                c.test_indexer(&req)
+                    .await
+                    .map(|r| (r.ok, r.message, r.warnings))
+            };
+            test_result.set(Some(outcome.map_err(|e| e.to_string())));
             testing.set(false);
         });
     };
@@ -942,15 +954,15 @@ fn ProviderEditor(
             },
             if let Some(result) = test_result() {
                 match result {
-                    Ok(r) if r.ok => rsx! {
+                    Ok((true, message, warnings)) => rsx! {
                         div { class: "alert success", role: "status",
                             div { class: "grow",
-                                "{r.message}"
-                                for w in r.warnings.iter() { div { key: "{w}", class: "small", "⚠ {w}" } }
+                                "{message}"
+                                for w in warnings.iter() { div { key: "{w}", class: "small", "⚠ {w}" } }
                             }
                         }
                     },
-                    Ok(r) => rsx! { div { class: "alert danger", role: "alert", div { class: "grow", "Test failed: {r.message}" } } },
+                    Ok((false, message, _)) => rsx! { div { class: "alert danger", role: "alert", div { class: "grow", "Test failed: {message}" } } },
                     Err(e) => rsx! { div { class: "alert danger", role: "alert", div { class: "grow", "{e}" } } },
                 }
             }

@@ -1014,3 +1014,277 @@ async fn indexer_test_and_interactive_search() {
         422
     );
 }
+
+/// A Torznab indexer with one Breaking Bad episode whose download link (with an API key) serves
+/// a real `.torrent` file, and a qBittorrent Web API mock that records what it is sent.
+async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>) {
+    use axum::extract::{Multipart, Query, State};
+    use axum::http::{HeaderMap, header};
+    use axum::response::IntoResponse;
+    use axum::routing::get;
+    type Log = Arc<std::sync::Mutex<Vec<String>>>;
+
+    async fn torznab(
+        State(base): State<Arc<std::sync::Mutex<String>>>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        if q.get("t").map(String::as_str) == Some("caps") {
+            let caps = std::fs::read_to_string(format!(
+                "{}/../../tests/fixtures/indexers/sonarr/newznab_caps.xml",
+                env!("CARGO_MANIFEST_DIR")
+            ))
+            .unwrap();
+            return ([("content-type", "application/xml")], caps).into_response();
+        }
+        let base = base.lock().unwrap().clone();
+        let link = format!("{base}/dl/42.torrent?apikey=t0rznab-key");
+        let feed = format!(
+            r#"<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:torznab="http://torznab.com/schemas/2015/feed"><channel><title>Mock</title>
+<item><title>Breaking.Bad.S01E01.720p.BluRay.x264-GRP</title><guid>bb-s01e01</guid>
+<link>{link}</link><pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate><size>1500000000</size>
+<enclosure url="{link}" length="1500000000" type="application/x-bittorrent" />
+<torznab:attr name="seeders" value="50" /><torznab:attr name="peers" value="60" /></item>
+</channel></rss>"#
+        );
+        ([("content-type", "application/rss+xml")], feed).into_response()
+    }
+
+    async fn torrent_file(
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        assert_eq!(q.get("apikey").map(String::as_str), Some("t0rznab-key"));
+        let mut f = b"d8:announce23:http://tracker/announce4:info".to_vec();
+        f.extend_from_slice(
+            b"d6:lengthi1024e4:name15:Show.S01E01.mkv12:piece lengthi16384e6:pieces20:",
+        );
+        f.extend_from_slice(&[7u8; 20]);
+        f.extend_from_slice(b"ee");
+        ([("content-type", "application/x-bittorrent")], f).into_response()
+    }
+
+    async fn qbit(
+        State(log): State<Log>,
+        headers: HeaderMap,
+        uri: axum::http::Uri,
+        multipart: Option<Multipart>,
+    ) -> axum::response::Response {
+        let path = uri.path().to_string();
+        if path == "/api/v2/auth/login" {
+            return ([(header::SET_COOKIE, "SID=ok; path=/")], "Ok.").into_response();
+        }
+        if !headers
+            .get(header::COOKIE)
+            .and_then(|c| c.to_str().ok())
+            .is_some_and(|c| c.contains("SID=ok"))
+        {
+            return axum::http::StatusCode::FORBIDDEN.into_response();
+        }
+        let mut fields = Vec::new();
+        if let Some(mut mp) = multipart {
+            while let Ok(Some(f)) = mp.next_field().await {
+                let name = f.name().unwrap_or_default().to_string();
+                if name == "torrents" {
+                    let bytes = f.bytes().await.unwrap();
+                    fields.push(format!("torrents=<{} bytes>", bytes.len()));
+                } else {
+                    fields.push(format!("{name}={}", f.text().await.unwrap()));
+                }
+            }
+        }
+        fields.sort();
+        log.lock()
+            .unwrap()
+            .push(format!("{path} {}", fields.join(" ")).trim().to_string());
+        match path.as_str() {
+            "/api/v2/app/webapiVersion" => "2.11.4".into_response(),
+            "/api/v2/app/preferences" => {
+                axum::Json(serde_json::json!({"dht": true})).into_response()
+            }
+            "/api/v2/torrents/categories" => {
+                axum::Json(serde_json::json!({"tv-kitsunarr": {}})).into_response()
+            }
+            "/api/v2/torrents/info" => axum::Json(serde_json::json!([])).into_response(),
+            "/api/v2/torrents/add" => "Ok.".into_response(),
+            _ => ().into_response(),
+        }
+    }
+
+    let base: Arc<std::sync::Mutex<String>> = Arc::default();
+    let app = axum::Router::new()
+        .route("/api", get(torznab))
+        .route("/dl/42.torrent", get(torrent_file))
+        .with_state(base.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let indexer = format!("http://{}", listener.local_addr().unwrap());
+    *base.lock().unwrap() = indexer.clone();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+    let log: Log = Arc::default();
+    let app = axum::Router::new()
+        .route("/api/v2/{*rest}", get(qbit).post(qbit))
+        .with_state(log.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (indexer, port.to_string(), log)
+}
+
+#[tokio::test]
+async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
+    use kitsunarr_domain::api::search::{GrabRequest, IndexerTestRequest, ReleaseQuery};
+    let tvmaze = tvmaze_mock().await;
+    let http = reqwest::Client::new();
+    let server = start_with(Metadata {
+        tvmaze: TvMaze::with_base(http.clone(), &tvmaze),
+        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
+    })
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, qbit_port, qbit) = torrent_mocks().await;
+
+    let indexer: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Torznab", "implementation": "Torznab",
+                "options": {"enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "t0rznab-key", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let indexer_id = indexer["id"].as_i64().unwrap();
+    let qb: serde_json::Value = client
+        .post(
+            "/providers/downloadclients",
+            &serde_json::json!({
+                "name": "qBittorrent", "implementation": "QBittorrent", "enabled": true,
+                "settings": {"host": "127.0.0.1", "port": qbit_port.parse::<u16>().unwrap(),
+                    "username": "admin", "password": "secret", "tvCategory": "tv-kitsunarr"}
+            }),
+        )
+        .await
+        .unwrap();
+    assert_eq!(qb["supported"], true);
+    assert_eq!(qb["settings"]["password"], REDACTED);
+
+    // The saved client tests with its stored password.
+    let test = client
+        .test_download_client(&IndexerTestRequest {
+            id: qb["id"].as_i64(),
+            implementation: "QBittorrent".into(),
+            settings: serde_json::from_value(qb["settings"].clone()).unwrap(),
+        })
+        .await
+        .unwrap();
+    assert!(test.ok, "{}", test.message);
+    assert_eq!(test.message, "Connected to qBittorrent (Web API 2.11.4).");
+
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+        })
+        .await
+        .unwrap();
+    let episodes = client.episodes(added.id).await.unwrap();
+    let pilot = episodes
+        .iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+
+    // Grabbing needs a search first.
+    let missing = client
+        .grab_release(&GrabRequest {
+            guid: "bb-s01e01".into(),
+            indexer_id,
+        })
+        .await
+        .unwrap_err();
+    assert_eq!(status(missing), 404);
+
+    let found = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+        })
+        .await
+        .unwrap();
+    let release = &found.releases[0];
+    assert_eq!(release.title, "Breaking.Bad.S01E01.720p.BluRay.x264-GRP");
+    assert!(release.approved, "{:?}", release.rejections);
+
+    qbit.lock().unwrap().clear();
+    let grabbed = client
+        .grab_release(&GrabRequest {
+            guid: release.guid.clone(),
+            indexer_id,
+        })
+        .await
+        .unwrap();
+    assert_eq!(grabbed.download_client, "qBittorrent");
+    assert_eq!(grabbed.download_id.len(), 40);
+    let calls = qbit.lock().unwrap().clone();
+    let add = calls
+        .iter()
+        .find(|c| c.starts_with("/api/v2/torrents/add"))
+        .unwrap_or_else(|| panic!("{calls:#?}"));
+    // The file itself was sent (the indexer's link, with its key, never left the server).
+    assert_eq!(
+        add,
+        "/api/v2/torrents/add category=tv-kitsunarr stopped=false torrents=<137 bytes>"
+    );
+
+    let history = client.history(1, 50, Some("grabbed")).await.unwrap();
+    let grab = history
+        .records
+        .iter()
+        .find(|h| h.event_type == "grabbed")
+        .unwrap();
+    assert_eq!(
+        grab.source_title,
+        "Breaking.Bad.S01E01.720p.BluRay.x264-GRP"
+    );
+    assert_eq!(
+        grab.download_id.as_deref(),
+        Some(grabbed.download_id.as_str())
+    );
+    // The indexer key is in neither the search results nor the history.
+    for path in [
+        "/api/v1/history?page=1&pageSize=50".to_string(),
+        format!(
+            "/api/v1/releases?seriesId={}&episodeId={}",
+            added.id, pilot.id
+        ),
+    ] {
+        let raw = reqwest::Client::new()
+            .get(format!("{}{path}", server.base))
+            .header("X-Api-Key", &server.api_key)
+            .send()
+            .await
+            .unwrap()
+            .text()
+            .await
+            .unwrap();
+        assert!(
+            !raw.contains("t0rznab-key") && !raw.contains("/dl/42"),
+            "{path}: {raw}"
+        );
+    }
+}

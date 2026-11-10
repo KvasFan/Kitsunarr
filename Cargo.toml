@@ -14,6 +14,7 @@ members = [
     "crates/kitsunarr-parser",
     "crates/kitsunarr-indexers",
     "crates/kitsunarr-decision",
+    "crates/kitsunarr-downloaders",
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
     "crates/kitsunarr-web",
@@ -35,6 +36,7 @@ default-members = [
     "crates/kitsunarr-parser",
     "crates/kitsunarr-indexers",
     "crates/kitsunarr-decision",
+    "crates/kitsunarr-downloaders",
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
 ]
@@ -63,6 +65,7 @@ kitsunarr-metadata = { path = "crates/kitsunarr-metadata" }
 kitsunarr-parser = { path = "crates/kitsunarr-parser" }
 kitsunarr-indexers = { path = "crates/kitsunarr-indexers" }
 kitsunarr-decision = { path = "crates/kitsunarr-decision" }
+kitsunarr-downloaders = { path = "crates/kitsunarr-downloaders" }
 kitsunarr-migrate = { path = "crates/kitsunarr-migrate" }
 kitsunarr-scheduler = { path = "crates/kitsunarr-scheduler" }
 
@@ -101,6 +104,8 @@ utoipa-axum = "0.3"
 argon2 = "0.6"
 rand = "0.10"
 sha2 = "0.11"
+sha1 = "0.10"
+data-encoding = "2"
 base64 = "0.23"
 hex = "0.4"
 subtle = "2"

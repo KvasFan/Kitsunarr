@@ -62,6 +62,11 @@ pub struct AppStateInner {
     pub http: reqwest::Client,
     pub metadata: kitsunarr_metadata::Metadata,
     pub indexers: kitsunarr_indexers::IndexerClient,
+    pub qbittorrent: kitsunarr_downloaders::QBittorrent,
+    /// Recent search results, for grabbing.
+    pub releases: routes::grab::ReleaseCache,
+    /// The last download client used per protocol (round-robin between equals).
+    pub last_download_client: std::sync::Mutex<std::collections::HashMap<String, i64>>,
     pub logs: LogBuffer,
 }
 
@@ -98,6 +103,9 @@ impl AppState {
             tasks,
             migrations: MigrationSessions::default(),
             indexers: kitsunarr_indexers::IndexerClient::new(http.clone()),
+            qbittorrent: kitsunarr_downloaders::QBittorrent::new(http.clone()),
+            releases: Default::default(),
+            last_download_client: Default::default(),
             http,
             metadata,
             logs,

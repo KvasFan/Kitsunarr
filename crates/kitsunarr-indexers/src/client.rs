@@ -67,9 +67,20 @@ pub struct TestReport {
     pub capabilities: Capabilities,
 }
 
+/// What a release's download link gave (`DownloadFromWebUrl`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Downloaded {
+    /// A `.torrent` (or `.nzb`) file.
+    File(Vec<u8>),
+    /// The indexer redirected to a magnet link.
+    Magnet(String),
+}
+
 #[derive(Clone, Default)]
 pub struct IndexerClient {
     http: reqwest::Client,
+    /// Without automatic redirects: a download link may redirect to a magnet link.
+    downloads: reqwest::Client,
     rate_limit: Duration,
     next_request: Arc<Mutex<HashMap<i64, Instant>>>,
     caps: Arc<Mutex<HashMap<String, (Instant, Capabilities)>>>,
@@ -77,8 +88,14 @@ pub struct IndexerClient {
 
 impl IndexerClient {
     pub fn new(http: reqwest::Client) -> Self {
+        let downloads = reqwest::Client::builder()
+            .redirect(reqwest::redirect::Policy::none())
+            .user_agent(concat!("Kitsunarr/", env!("CARGO_PKG_VERSION")))
+            .build()
+            .unwrap_or_default();
         Self {
             http,
+            downloads,
             rate_limit: RATE_LIMIT,
             ..Default::default()
         }
@@ -156,6 +173,68 @@ impl IndexerClient {
             .await
             .map_err(|e| IndexerError::Unexpected(e.without_url().to_string()))?;
         Ok(body)
+    }
+
+    /// Downloads a release's file, following redirects by hand (at most five) so that a
+    /// redirect to a magnet link is recognised. Requests share the indexer's rate limit.
+    pub async fn download(
+        &self,
+        indexer_id: i64,
+        url: &str,
+        accept: &str,
+    ) -> Result<Downloaded, IndexerError> {
+        let mut current = url.to_string();
+        for _ in 0..5 {
+            self.wait_turn(indexer_id).await;
+            let response = self
+                .downloads
+                .get(&current)
+                .header(reqwest::header::ACCEPT, accept)
+                .timeout(Duration::from_secs(60))
+                .send()
+                .await
+                .map_err(|e| IndexerError::Connection(error_chain(&e)))?;
+            let status = response.status();
+            if status.is_redirection() {
+                let location = response
+                    .headers()
+                    .get(reqwest::header::LOCATION)
+                    .and_then(|v| v.to_str().ok())
+                    .ok_or_else(|| {
+                        IndexerError::Unexpected("the indexer redirected without a location".into())
+                    })?;
+                if location.starts_with("magnet:") {
+                    return Ok(Downloaded::Magnet(location.to_string()));
+                }
+                current = url::Url::parse(&current)
+                    .and_then(|base| base.join(location))
+                    .map_err(|e| IndexerError::Unexpected(format!("invalid redirect: {e}")))?
+                    .to_string();
+                continue;
+            }
+            match status {
+                reqwest::StatusCode::NOT_FOUND | reqwest::StatusCode::GONE => {
+                    return Err(IndexerError::Indexer(
+                        "the release is no longer available on the indexer".into(),
+                    ));
+                }
+                reqwest::StatusCode::TOO_MANY_REQUESTS => {
+                    return Err(IndexerError::RequestLimit {
+                        retry_after_secs: None,
+                    });
+                }
+                s if !s.is_success() => {
+                    return Err(IndexerError::Http { status: s.as_u16() });
+                }
+                _ => {}
+            }
+            let bytes = response
+                .bytes()
+                .await
+                .map_err(|e| IndexerError::Connection(error_chain(&e)))?;
+            return Ok(Downloaded::File(bytes.to_vec()));
+        }
+        Err(IndexerError::Unexpected("too many redirects".into()))
     }
 
     /// Capabilities, cached per settings for a week. Failures are not cached.

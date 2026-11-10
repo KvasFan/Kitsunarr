@@ -2522,6 +2522,7 @@ dependencies = [
  "kitsunarr-db",
  "kitsunarr-decision",
  "kitsunarr-domain",
+ "kitsunarr-downloaders",
  "kitsunarr-events",
  "kitsunarr-indexers",
  "kitsunarr-library",
@@ -2618,6 +2619,21 @@ dependencies = [
  "serde_json",
  "thiserror 2.0.21",
  "utoipa",
+]
+
+[[package]]
+name = "kitsunarr-downloaders"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "data-encoding",
+ "reqwest 0.13.5",
+ "serde",
+ "serde_json",
+ "sha1 0.10.7",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]
@@ -3624,6 +3640,7 @@ dependencies = [
  "cookie_store",
  "encoding_rs",
  "futures-core",
+ "futures-util",
  "h2",
  "http 1.5.0",
  "http-body",
@@ -3634,6 +3651,7 @@ dependencies = [
  "js-sys",
  "log",
  "mime",
+ "mime_guess",
  "percent-encoding",
  "pin-project-lite",
  "quinn",
