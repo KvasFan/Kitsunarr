@@ -309,6 +309,9 @@ impl Client {
     pub async fn test_indexer(&self, req: &IndexerTestRequest) -> ClientResult<IndexerTestResult> {
         self.post("/providers/indexers/test", req).await
     }
+    pub async fn queue(&self) -> ClientResult<kitsunarr_domain::api::queue::QueueResult> {
+        self.get("/queue").await
+    }
     pub async fn grab_release(&self, req: &GrabRequest) -> ClientResult<GrabResult> {
         self.post("/releases/grab", req).await
     }

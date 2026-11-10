@@ -6,6 +6,7 @@ pub mod grab;
 pub mod library;
 pub mod metadata;
 pub mod migration;
+pub mod queue;
 pub mod search;
 pub mod settings;
 pub mod system;
@@ -119,6 +120,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(search::search_releases))
         .routes(routes!(grab::grab_release))
         .routes(routes!(grab::test_download_client))
+        .routes(routes!(queue::get_queue))
         // migration
         .routes(routes!(migration::create_api_session))
         .routes(routes!(migration::upload_backup))

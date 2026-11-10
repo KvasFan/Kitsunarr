@@ -43,6 +43,35 @@ pub async fn insert(conn: &mut SqliteConnection, h: &NewHistory) -> DbResult<i64
     .await?)
 }
 
+/// A "grabbed" history entry, for tracking downloads.
+#[derive(Debug, Clone, FromRow)]
+pub struct GrabRecord {
+    pub download_id: String,
+    pub date: String,
+    pub source_title: String,
+    pub series_id: Option<i64>,
+    pub episode_id: Option<i64>,
+    pub quality_id: Option<i64>,
+    pub data: String,
+}
+
+/// The grabs of the given download ids (compared case-insensitively), oldest first.
+pub async fn grabs_for(db: &Database, download_ids: &[String]) -> DbResult<Vec<GrabRecord>> {
+    if download_ids.is_empty() {
+        return Ok(Vec::new());
+    }
+    let mut q = sqlx::QueryBuilder::new(
+        "SELECT download_id, date, source_title, series_id, episode_id, quality_id, data FROM history \
+         WHERE event_type = 'grabbed' AND download_id IS NOT NULL AND upper(download_id) IN (",
+    );
+    let mut sep = q.separated(", ");
+    for id in download_ids {
+        sep.push_bind(id.to_ascii_uppercase());
+    }
+    q.push(") ORDER BY date, id");
+    Ok(q.build_query_as().fetch_all(db.pool()).await?)
+}
+
 #[derive(FromRow)]
 struct Row {
     id: i64,

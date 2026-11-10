@@ -270,3 +270,8 @@ kbd { font-family: var(--mono); font-size: var(--fs-xs); padding: 1px 6px; borde
 .table.releases td.release-title { min-width: 240px; max-width: 480px; overflow-wrap: anywhere; }
 .table.releases td.release-title .badge { margin-left: var(--sp-1); }
 .table.releases .num { text-align: right; white-space: nowrap; }
+
+/* Download queue */
+.table.queue ul.messages { margin: var(--sp-1) 0 0; padding-left: 1.1em; color: var(--warning); }
+.progress { height: 6px; border-radius: 3px; background: var(--border); overflow: hidden; min-width: 90px; margin-bottom: 2px; }
+.progress .bar { height: 100%; background: var(--accent); }

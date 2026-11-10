@@ -1015,6 +1015,10 @@ async fn indexer_test_and_interactive_search() {
     );
 }
 
+/// Torrents the qBittorrent mock was given (one test uses it).
+static QBIT_TORRENTS: std::sync::LazyLock<std::sync::Mutex<Vec<serde_json::Value>>> =
+    std::sync::LazyLock::new(Default::default);
+
 /// A Torznab indexer with one Breaking Bad episode whose download link (with an API key) serves
 /// a real `.torrent` file, and a qBittorrent Web API mock that records what it is sent.
 async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>) {
@@ -1087,6 +1091,12 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
                 if name == "torrents" {
                     let bytes = f.bytes().await.unwrap();
                     fields.push(format!("torrents=<{} bytes>", bytes.len()));
+                    let hash = kitsunarr_downloaders::torrent_info_hash(&bytes).unwrap();
+                    QBIT_TORRENTS.lock().unwrap().push(serde_json::json!({
+                        "hash": hash, "name": "Breaking.Bad.S01E01.720p.BluRay.x264-GRP",
+                        "size": 1000, "progress": 0.4, "eta": 90, "state": "downloading",
+                        "category": "tv-kitsunarr", "save_path": "/downloads", "ratio": 0.0
+                    }));
                 } else {
                     fields.push(format!("{name}={}", f.text().await.unwrap()));
                 }
@@ -1104,7 +1114,10 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
             "/api/v2/torrents/categories" => {
                 axum::Json(serde_json::json!({"tv-kitsunarr": {}})).into_response()
             }
-            "/api/v2/torrents/info" => axum::Json(serde_json::json!([])).into_response(),
+            "/api/v2/torrents/info" => axum::Json(serde_json::Value::Array(
+                QBIT_TORRENTS.lock().unwrap().clone(),
+            ))
+            .into_response(),
             "/api/v2/torrents/add" => "Ok.".into_response(),
             _ => ().into_response(),
         }
@@ -1265,6 +1278,25 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         grab.download_id.as_deref(),
         Some(grabbed.download_id.as_str())
     );
+    // The queue reads qBittorrent and recognises the grab.
+    let queue = client.queue().await.unwrap();
+    assert_eq!((queue.clients, queue.failures.len()), (1, 0));
+    let item = &queue.items[0];
+    assert_eq!(item.download_id, grabbed.download_id.to_uppercase());
+    assert_eq!(item.series_title.as_deref(), Some("Breaking Bad"));
+    assert_eq!(item.episodes, vec!["S01E01"]);
+    assert_eq!(item.quality.as_deref(), Some("Bluray-720p"));
+    assert_eq!(item.indexer.as_deref(), Some("Mock Torznab"));
+    assert_eq!(
+        (
+            item.status.as_str(),
+            item.tracked_state.as_str(),
+            item.size_left,
+            item.time_left
+        ),
+        ("downloading", "downloading", 600, Some(90))
+    );
+
     // The indexer key is in neither the search results nor the history.
     for path in [
         "/api/v1/history?page=1&pageSize=50".to_string(),

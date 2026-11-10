@@ -138,6 +138,7 @@ impl AppState {
         (name = "library", description = "Series, anime, movies and collections"),
         (name = "metadata", description = "Catalogue search, adding titles and metadata refresh"),
         (name = "search", description = "Indexer tests and interactive release search"),
+        (name = "queue", description = "Downloads in the download clients"),
         (name = "settings", description = "Profiles, providers and configuration"),
         (name = "migration", description = "Import from Sonarr and Tanukarr"),
     )

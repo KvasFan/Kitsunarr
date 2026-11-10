@@ -41,7 +41,6 @@ pub struct Strings {
     pub unmonitored: &'static str,
     pub sign_out: &'static str,
     pub search_placeholder: &'static str,
-    pub not_available_yet: &'static str,
 }
 
 pub const EN: Strings = Strings {
@@ -84,7 +83,6 @@ pub const EN: Strings = Strings {
     unmonitored: "Unmonitored",
     sign_out: "Sign out",
     search_placeholder: "Search titles…  ( / )",
-    not_available_yet: "Not available yet",
 };
 
 pub fn t() -> &'static Strings {

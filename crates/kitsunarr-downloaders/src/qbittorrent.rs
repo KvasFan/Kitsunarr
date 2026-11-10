@@ -163,8 +163,86 @@ pub struct Torrent {
     pub save_path: String,
     #[serde(default)]
     pub content_path: Option<String>,
+    /// qBittorrent 5 (Web API 2.11.2): the torrent's top folder.
+    #[serde(default)]
+    pub root_path: Option<String>,
     #[serde(default)]
     pub ratio: f64,
+}
+
+impl Torrent {
+    /// `GetRemainingTime`: unknown when negative, over a year, or qBittorrent's 8640000.
+    fn remaining_seconds(&self) -> Option<i64> {
+        (self.eta >= 0 && self.eta <= 365 * 24 * 3600 && self.eta != 8_640_000).then_some(self.eta)
+    }
+
+    /// `GetItems`: Sonarr's mapping of qBittorrent states.
+    pub fn to_item(&self, api_version: &str, dht: bool) -> crate::DownloadItem {
+        use crate::ItemStatus::*;
+        let mut remaining_seconds = self.remaining_seconds();
+        let (status, message) = match self.state.as_str() {
+            "error" => (
+                Warning,
+                Some("qBittorrent reports an error for this torrent".to_string()),
+            ),
+            "stoppedDL" | "pausedDL" => (Paused, None),
+            "queuedDL" | "checkingDL" | "checkingUP" | "checkingResumeData" => (Queued, None),
+            "pausedUP" | "stoppedUP" | "uploading" | "stalledUP" | "queuedUP" | "forcedUP" => {
+                remaining_seconds = Some(0);
+                (Completed, None)
+            }
+            "stalledDL" => (
+                Warning,
+                Some("The download is stalled with no connections".into()),
+            ),
+            "missingFiles" => (Warning, Some("The torrent is missing files".into())),
+            "metaDL" | "forcedMetaDL" if dht => {
+                (Queued, Some("qBittorrent is downloading metadata".into()))
+            }
+            "metaDL" | "forcedMetaDL" => (
+                Warning,
+                Some("qBittorrent cannot download the metadata while DHT is disabled".into()),
+            ),
+            "forcedDL" | "moving" | "downloading" => (Downloading, None),
+            other => (
+                Downloading,
+                Some(format!("Unknown download state: {other}")),
+            ),
+        };
+        let mut item = crate::DownloadItem {
+            download_id: self.hash.to_ascii_uppercase(),
+            title: self.name.clone(),
+            category: self.category.clone(),
+            total_size: self.size,
+            remaining_size: (self.size as f64 * (1.0 - self.progress)) as i64,
+            remaining_seconds,
+            status,
+            message,
+            output_path: None,
+            seed_ratio: self.ratio,
+        };
+        if status == Completed && at_least(&version(api_version), &[2, 6, 1]) {
+            let root = self
+                .root_path
+                .as_deref()
+                .filter(|r| !r.trim().is_empty() && *r != self.save_path)
+                .filter(|_| at_least(&version(api_version), &[2, 11, 2]));
+            let content = self
+                .content_path
+                .as_deref()
+                .filter(|c| *c != self.save_path);
+            match root.or(content) {
+                Some(path) => item.output_path = Some(path.to_string()),
+                None => {
+                    item.status = Warning;
+                    item.message = Some(
+                        "qBittorrent reports the download folder itself as the content path; set a category save path or let qBittorrent create subfolders".into(),
+                    );
+                }
+            }
+        }
+        item
+    }
 }
 
 /// What a test found.
@@ -417,6 +495,18 @@ impl QBittorrent {
         Self::json(&self.get(s, "/api/v2/torrents/info", &query).await?)
     }
 
+    /// `GetItems`: the downloads in the TV category, with Sonarr's status mapping.
+    pub async fn items(&self, s: &Settings) -> Result<Vec<crate::DownloadItem>, DownloadError> {
+        let version = self.api_version(s).await?;
+        let dht = self.preferences(s).await?.dht;
+        Ok(self
+            .torrents(s)
+            .await?
+            .iter()
+            .map(|t| t.to_item(&version, dht))
+            .collect())
+    }
+
     /// `Test`: connection and version, categories (created when missing, as upstream does),
     /// share-limit settings that would remove downloads, and listing torrents.
     pub async fn test(&self, s: &Settings) -> Result<TestReport, DownloadError> {
@@ -613,6 +703,77 @@ mod tests {
         let bad: Map<String, Value> =
             serde_json::from_value(serde_json::json!({"host": "http://x"})).unwrap();
         assert!(Settings::from_map(&bad).is_err());
+    }
+
+    #[test]
+    fn states_map_as_upstream() {
+        let torrent = |state: &str, eta: i64| Torrent {
+            hash: "abc".into(),
+            name: "Show.S01E01".into(),
+            size: 1000,
+            progress: 0.25,
+            eta,
+            state: state.into(),
+            category: "tv".into(),
+            save_path: "/downloads".into(),
+            content_path: Some("/downloads/Show.S01E01".into()),
+            root_path: None,
+            ratio: 0.5,
+        };
+        use crate::ItemStatus::*;
+        let item = torrent("downloading", 120).to_item("2.11.4", true);
+        assert_eq!(
+            (
+                item.download_id.as_str(),
+                item.status,
+                item.remaining_size,
+                item.remaining_seconds
+            ),
+            ("ABC", Downloading, 750, Some(120))
+        );
+        assert_eq!(
+            torrent("downloading", 8_640_000)
+                .to_item("2.11.4", true)
+                .remaining_seconds,
+            None
+        );
+        assert_eq!(
+            torrent("stalledDL", 0).to_item("2.11.4", true).status,
+            Warning
+        );
+        assert_eq!(torrent("metaDL", 0).to_item("2.11.4", true).status, Queued);
+        assert_eq!(
+            torrent("metaDL", 0).to_item("2.11.4", false).status,
+            Warning
+        );
+        assert_eq!(
+            torrent("pausedDL", 0).to_item("2.11.4", true).status,
+            Paused
+        );
+        let done = torrent("stalledUP", 8_640_000).to_item("2.11.4", true);
+        assert_eq!(
+            (
+                done.status,
+                done.remaining_seconds,
+                done.output_path.as_deref()
+            ),
+            (Completed, Some(0), Some("/downloads/Show.S01E01"))
+        );
+        // Content path equal to the save path: no folder to import from.
+        let mut flat = torrent("uploading", 0);
+        flat.content_path = Some("/downloads".into());
+        assert_eq!(flat.to_item("2.11.4", true).status, Warning);
+        // qBittorrent 5's root path wins when set.
+        let mut rooted = torrent("stoppedUP", 0);
+        rooted.root_path = Some("/downloads/Show.S01E01.Pack".into());
+        assert_eq!(
+            rooted.to_item("2.11.4", true).output_path.as_deref(),
+            Some("/downloads/Show.S01E01.Pack")
+        );
+        assert_eq!(
+            torrent("weirdNewState", 5).to_item("2.11.4", true).status,
+            Downloading
+        );
     }
 
     #[test]

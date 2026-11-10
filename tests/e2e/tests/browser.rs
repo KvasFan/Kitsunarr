@@ -602,6 +602,15 @@ async fn first_run_setup_migration_and_library() {
             .await
             .unwrap();
 
+        // The queue reads the migrated qBittorrent client (an unreachable fixture address).
+        client
+            .goto(&format!("{base}/activity/queue"))
+            .await
+            .unwrap();
+        wait_text(&client, "Read live from the download clients").await;
+        wait_text(&client, "qBittorrent").await;
+        screenshot(&client, "17-queue").await;
+
         // Sign out returns to the login page.
         click_button(&client, "Sign out").await;
         wait_text(&client, "Keep me signed in").await;

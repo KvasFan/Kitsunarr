@@ -176,25 +176,6 @@ pub fn Confirm(
     }
 }
 
-/// Honest notice for features that are planned but not implemented yet.
-#[component]
-pub fn NotReady(feature: String, detail: String) -> Element {
-    rsx! {
-        div { class: "card",
-            div { class: "card-head",
-                h2 { class: "grow", "{feature}" }
-                Badge { text: t().not_available_yet.to_string(), tone: "warning" }
-            }
-            p { class: "muted", "{detail}" }
-            p { class: "small",
-                "Implementation status is tracked in the "
-                a { href: "https://github.com/KvasFan/Kitsunarr/blob/main/docs/architecture/feature-matrix.md", target: "_blank", rel: "noopener", "feature matrix" }
-                "."
-            }
-        }
-    }
-}
-
 #[component]
 pub fn Field(label: String, #[props(default)] help: Option<String>, children: Element) -> Element {
     rsx! {
