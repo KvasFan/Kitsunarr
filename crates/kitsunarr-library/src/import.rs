@@ -12,13 +12,13 @@
 //! - downloads from a download client are copied (hard-linked when allowed), never moved, so
 //!   seeding torrents keep their data.
 
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::path::{Component, Path, PathBuf};
 use std::sync::LazyLock;
 
 use kitsunarr_db::history::{self, GrabRecord, NewHistory};
 use kitsunarr_db::library::series::{self, NewEpisodeFile};
-use kitsunarr_db::{Database, settings};
+use kitsunarr_db::{Database, quality, settings};
 use kitsunarr_decision::{self as decision, ProfileView};
 use kitsunarr_domain::api::settings::{
     MediaManagementSettings, NamingSettings, ProperDownloadType,
@@ -31,6 +31,8 @@ use kitsunarr_parser::{
     DetectionSource, ParsedQuality, is_scene_title, parse_languages, parse_path, parse_quality,
     parse_release_group, parse_title,
 };
+
+use crate::file_names;
 
 /// `MediaFileExtensions`.
 const VIDEO_EXTENSIONS: &[&str] = &[
@@ -130,26 +132,6 @@ pub fn clean_file_name(name: &str) -> String {
         })
         .collect();
     s.trim_start_matches([' ', '.']).trim_end().to_string()
-}
-
-/// The season folder name for the default tokens (`{season}`, `{season:0}`, `{season:00}`).
-/// Other naming tokens need the naming engine, which Kitsunarr does not have yet.
-fn season_folder(naming: &NamingSettings, season: i32) -> Result<String, String> {
-    let format = if season == 0 {
-        &naming.specials_folder_format
-    } else {
-        &naming.season_folder_format
-    };
-    let name = format
-        .replace("{season:00}", &format!("{season:02}"))
-        .replace("{season:0}", &season.to_string())
-        .replace("{season}", &season.to_string());
-    if name.contains('{') {
-        return Err(format!(
-            "The season folder format \"{format}\" uses naming tokens Kitsunarr cannot fill in yet; use \"Season {{season}}\" or \"Season {{season:00}}\"."
-        ));
-    }
-    Ok(clean_file_name(&name))
 }
 
 /// `true` when `path` is `root` or inside it, compared lexically after normalising `.` and
@@ -282,6 +264,8 @@ struct Candidate {
     languages: Vec<i32>,
     release_group: Option<String>,
     scene_name: Option<String>,
+    /// Destination relative to the series folder (`BuildFilePath`).
+    relative_dest: String,
     errors: Vec<String>,
 }
 
@@ -296,11 +280,6 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
     let naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING)
         .await
         .map_err(err)?;
-    if naming.rename_episodes {
-        return Ok(Outcome::blocked(
-            "\"Rename files on import\" is on, but Kitsunarr's episode naming is not implemented yet. Turn it off in Settings › Media management to import with the release's own file names.",
-        ));
-    }
     let media: MediaManagementSettings =
         settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
             .await
@@ -324,6 +303,27 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         .await
         .map_err(err)?;
     let profile = ProfileView(&model.profile);
+    let naming_series = file_names::Series {
+        season_titles: detail
+            .seasons
+            .iter()
+            .filter_map(|s| s.title.clone().map(|t| (s.season_number, t)))
+            .collect(),
+        ..file_names::Series::from_parts(
+            &detail.item.title,
+            detail.item.year,
+            detail.item.series_type,
+            &detail.external_ids,
+        )
+    };
+    let quality_titles: HashMap<i32, String> = quality::list_definitions(db.pool())
+        .await
+        .map_err(err)?
+        .into_iter()
+        .map(|d| (d.quality_id, d.title))
+        .collect();
+    let (formats, _) =
+        decision::compile_formats(&quality::list_custom_formats(db.pool()).await.map_err(err)?);
 
     let files: Vec<PathBuf> = if output.is_dir() {
         video_files(output)
@@ -497,13 +497,168 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             });
         }
         let ids: Vec<i64> = mapped.iter().map(|e| e.id).collect();
+        // The destination, named as `BuildFilePath` names it.
+        let naming_episodes: Vec<file_names::Episode> = mapped
+            .iter()
+            .map(|e| file_names::Episode {
+                season_number: e.season_number,
+                episode_number: e.episode_number,
+                absolute_episode_number: e.absolute_episode_number,
+                title: e.title.clone().unwrap_or_default(),
+                air_date: e.air_date.clone(),
+            })
+            .collect();
+        let quality_title = quality_titles
+            .get(&quality.quality_id)
+            .cloned()
+            .unwrap_or_else(|| {
+                kitsunarr_domain::Quality::by_id(quality.quality_id)
+                    .unwrap_or_else(kitsunarr_domain::Quality::unknown)
+                    .name
+                    .to_string()
+            });
+        let release_title = scene_name.clone().unwrap_or_else(|| stem(&path));
+        let release_type = info.release_type();
+        let indexer_flags = grab_data
+            .get("indexerFlags")
+            .and_then(|v| v.as_str())
+            .and_then(|v| v.parse::<u32>().ok())
+            .unwrap_or(0);
+        let language_list: Vec<&'static Language> = languages
+            .iter()
+            .filter_map(|id| Language::by_id(*id))
+            .collect();
+        let formats_for = |file_name: &str| {
+            decision::custom_format::evaluate(
+                &formats,
+                &decision::CustomFormatInput {
+                    release_title: &release_title,
+                    file_name: Some(file_name),
+                    release_group: release_group.as_deref(),
+                    quality: quality.quality(),
+                    size,
+                    indexer_flags,
+                    languages: &language_list,
+                    release_type,
+                    original_language: model.original_language,
+                },
+            )
+        };
+        let before_rename = formats_for(&name);
+        let naming_file = file_names::File {
+            id: 0,
+            scene_name: scene_name.clone(),
+            relative_path: None,
+            path: Some(path.to_string_lossy().into_owned()),
+            release_group: release_group.clone(),
+            release_hash: Some(info.release_hash.clone()).filter(|h| !h.is_empty()),
+            quality,
+            quality_title,
+            custom_formats: before_rename
+                .iter()
+                .map(|f| (f.name.clone(), f.include_when_renaming))
+                .collect(),
+        };
+        let relative_dest = match file_names::build_relative_path(
+            &naming_episodes,
+            &naming_series,
+            &naming_file,
+            &path
+                .extension()
+                .map(|e| format!(".{}", e.to_string_lossy()))
+                .unwrap_or_default(),
+            detail.season_folder,
+            "",
+            &naming,
+        ) {
+            Ok(r) => r.trim_start_matches('/').to_string(),
+            Err(e) => {
+                results.push(FileResult {
+                    path,
+                    imported: false,
+                    episode_ids: ids,
+                    errors: vec![e.0],
+                });
+                continue;
+            }
+        };
+        let dest_name = Path::new(&relative_dest)
+            .file_name()
+            .map(|n| n.to_string_lossy().into_owned())
+            .unwrap_or_default();
+        let after_rename = formats_for(&dest_name);
+        let score_of =
+            |f: &[&decision::CompiledFormat]| profile.format_score(f.iter().map(|x| &x.id));
+        let names_of = |f: &[&decision::CompiledFormat]| {
+            f.iter()
+                .map(|x| x.name.as_str())
+                .collect::<Vec<_>>()
+                .join(", ")
+        };
+        let (new_score, before_score) = (score_of(&after_rename), score_of(&before_rename));
+        // `EpisodeTitleSpecification` (episode titles are required whenever the format uses them).
+        if file_names::requires_episode_title(&naming, &naming_series, &naming_episodes) {
+            let recent = chrono::Utc::now() - chrono::Duration::hours(48);
+            for e in &mapped {
+                if e.air_date_utc.is_some_and(|a| a < recent) {
+                    continue;
+                }
+                let title = e.title.as_deref().unwrap_or_default();
+                if title.trim().is_empty() {
+                    errors.push("Episode does not have a title and recently aired".into());
+                    break;
+                }
+                if title == "TBA" {
+                    errors.push("Episode has a TBA title and recently aired".into());
+                    break;
+                }
+            }
+        }
+        for existing in mapped.iter().filter_map(|e| e.file.as_ref()) {
+            let current = decision::custom_format::evaluate(
+                &formats,
+                &decision::CustomFormatInput {
+                    release_title: &existing.release_title,
+                    file_name: Some(&existing.file_name),
+                    release_group: existing.release_group.as_deref(),
+                    quality: existing.quality.quality(),
+                    size: existing.size,
+                    indexer_flags: existing.indexer_flags,
+                    languages: &existing.languages,
+                    release_type: existing.release_type,
+                    original_language: model.original_language,
+                },
+            );
+            let current_score = score_of(&current);
+            if profile.compare_qualities(quality.quality_id, existing.quality.quality_id)
+                == std::cmp::Ordering::Equal
+                && new_score < current_score
+            {
+                errors.push(if before_score > current_score {
+                    format!(
+                        "Not a Custom Format upgrade for existing episode file(s). AfterRename: [{}] ({new_score}) do not improve on Existing: [{}] ({current_score}) even though BeforeRename: [{}] ({before_score}) did.",
+                        names_of(&after_rename),
+                        names_of(&current),
+                        names_of(&before_rename)
+                    )
+                } else {
+                    format!(
+                        "Not a Custom Format upgrade for existing episode file(s). New: [{}] ({new_score}) do not improve on Existing: [{}] ({current_score})",
+                        names_of(&after_rename),
+                        names_of(&current)
+                    )
+                });
+            }
+        }
         for existing in mapped.iter().filter_map(|e| e.file.as_ref()) {
             let order = profile.compare_qualities(quality.quality_id, existing.quality.quality_id);
             if order == std::cmp::Ordering::Less {
                 errors.push(format!(
                     "Not an upgrade for existing episode file(s). Existing quality: {}. New Quality {}.",
-                    decision::profile::quality_model_label(&existing.quality),
-                    decision::profile::quality_model_label(&quality)
+                    existing.quality.quality().name,
+                    kitsunarr_domain::Quality::by_id(quality.quality_id)
+                        .unwrap_or_else(kitsunarr_domain::Quality::unknown)
+                        .name
                 ));
             } else if order == std::cmp::Ordering::Equal
                 && media.download_propers_and_repacks != ProperDownloadType::DoNotPrefer
@@ -539,6 +694,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             languages,
             release_group,
             scene_name,
+            relative_dest,
             errors,
         });
     }
@@ -572,18 +728,8 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             continue;
         }
         done.extend(c.episodes.iter().copied());
-        let outcome = transfer_and_record(
-            db,
-            d,
-            &detail,
-            &model,
-            &media,
-            &naming,
-            &series_path,
-            &c,
-            &grab_data,
-        )
-        .await;
+        let outcome =
+            transfer_and_record(db, d, &detail, &model, &media, &series_path, &c, &grab_data).await;
         results.push(FileResult {
             imported: outcome.is_ok(),
             errors: outcome.err().into_iter().collect(),
@@ -620,7 +766,6 @@ async fn transfer_and_record(
     detail: &kitsunarr_domain::api::library::SeriesDetail,
     model: &decision::Series,
     media: &MediaManagementSettings,
-    naming: &NamingSettings,
     series_path: &Path,
     c: &Candidate,
     grab_data: &serde_json::Value,
@@ -628,20 +773,15 @@ async fn transfer_and_record(
     if !Path::new(&detail.root_folder_path).is_dir() {
         return Err("Failed to import episode, Root folder missing.".into());
     }
-    let mut dir = series_path.to_path_buf();
-    if detail.season_folder {
-        dir.push(season_folder(naming, c.season)?);
-    }
-    let base = c.scene_name.clone().unwrap_or_else(|| stem(&c.path));
-    let file_name = format!(
-        "{}{}",
-        clean_file_name(&base),
-        c.path
-            .extension()
-            .map(|e| format!(".{}", e.to_string_lossy()))
-            .unwrap_or_default()
-    );
-    let dest = dir.join(&file_name);
+    let dest = series_path.join(&c.relative_dest);
+    let dir = dest
+        .parent()
+        .map(Path::to_path_buf)
+        .unwrap_or_else(|| series_path.to_path_buf());
+    let file_name = dest
+        .file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .unwrap_or_default();
     if !is_within(&dest, series_path) || file_name.is_empty() {
         return Err(
             "Failed to import episode, the destination is outside the series folder.".into(),
@@ -907,17 +1047,6 @@ mod tests {
         std::fs::write(&old, "x").unwrap();
         remove_or_recycle(&old, &media, &root).unwrap();
         assert!(!old.exists());
-    }
-
-    #[test]
-    fn season_folders_use_the_default_tokens() {
-        let mut naming = NamingSettings::default();
-        assert_eq!(season_folder(&naming, 3).unwrap(), "Season 3");
-        naming.season_folder_format = "Season {season:00}".into();
-        assert_eq!(season_folder(&naming, 3).unwrap(), "Season 03");
-        assert_eq!(season_folder(&naming, 0).unwrap(), "Specials");
-        naming.season_folder_format = "{Series Title} S{season:00}".into();
-        assert!(season_folder(&naming, 1).is_err());
     }
 
     #[test]

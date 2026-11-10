@@ -67,6 +67,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(metadata::providers))
         .routes(routes!(metadata::search))
         .routes(routes!(metadata::add))
+        .routes(routes!(metadata::folder_preview))
         .routes(routes!(metadata::refresh_series))
         .routes(routes!(metadata::refresh_movie))
         // settings

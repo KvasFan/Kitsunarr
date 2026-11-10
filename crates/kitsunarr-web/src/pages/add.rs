@@ -240,14 +240,21 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
     let client = use_client();
     let nav = navigator();
     let c1 = client.clone();
+    let preview_query = kitsunarr_domain::api::metadata::FolderPreviewQuery {
+        title: item.title.clone(),
+        year: item.year,
+        movie: item.kind == EntryKind::Movie,
+    };
     let options = use_resource(move || {
         let c = c1.clone();
+        let q = preview_query.clone();
         async move {
             let roots = c.root_folders().await?;
             let profiles = c.quality_profiles().await?;
             let tags = c.tags().await?;
-            let naming = c.naming().await?;
-            Ok::<_, kitsunarr_client::ClientError>((roots, profiles, tags, naming))
+            // Named by the server with the same engine that names the folder on add.
+            let folder = c.folder_preview(&q).await?;
+            Ok::<_, kitsunarr_client::ClientError>((roots, profiles, tags, folder))
         }
     });
     let is_movie = item.kind == EntryKind::Movie;
@@ -330,20 +337,8 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
     let (body, ready) = match &*read {
         None => (rsx! { Loading {} }, false),
         Some(Err(e)) => (rsx! { ErrorBox { message: e.to_string() } }, false),
-        Some(Ok((roots, profiles, all_tags, naming_settings))) => {
-            let format = if is_movie {
-                &naming_settings.movie_folder_format
-            } else {
-                &naming_settings.series_folder_format
-            };
-            let folder = naming::folder_name(
-                format,
-                &item.title,
-                item.year,
-                naming_settings.colon_replacement_format,
-                &naming_settings.custom_colon_replacement_format,
-            );
-            let preview = root().map(|r| naming::join(&r, &folder));
+        Some(Ok((roots, profiles, all_tags, folder))) => {
+            let preview = root().map(|r| naming::join(&r, folder));
             let ready = !roots.is_empty() && !profiles.is_empty();
             let body = rsx! {
                 if roots.is_empty() {

@@ -6,6 +6,7 @@
 
 pub mod decision_input;
 pub mod downloads;
+pub mod file_names;
 pub mod import;
 
 use std::collections::HashMap;
@@ -238,12 +239,9 @@ pub async fn add_title(
     } else {
         MediaKind::Series
     };
-    let folder = naming::folder_name(
-        &naming_settings.series_folder_format,
-        &info.title,
-        info.year,
-        naming_settings.colon_replacement_format,
-        &naming_settings.custom_colon_replacement_format,
+    let folder = file_names::series_folder(
+        &file_names::Series::from_parts(&info.title, info.year, series_type, &info.external_ids),
+        &naming_settings,
     );
     let latest = info
         .episodes
@@ -550,6 +548,32 @@ pub async fn due_for_refresh(
         .fetch_all(db.pool())
         .await?;
     Ok((series_ids, movie_ids))
+}
+
+/// The folder a title would get under a root folder (`GetSeriesFolder` for series, the movie
+/// folder format for movies), as the add dialog previews it.
+pub async fn folder_preview(
+    db: &Database,
+    title: &str,
+    year: Option<i32>,
+    movie: bool,
+) -> Result<String, DbError> {
+    let naming_settings: NamingSettings =
+        settings::get_or_default(db.pool(), settings::KEY_NAMING).await?;
+    Ok(if movie {
+        naming::folder_name(
+            &naming_settings.movie_folder_format,
+            title,
+            year,
+            naming_settings.colon_replacement_format,
+            &naming_settings.custom_colon_replacement_format,
+        )
+    } else {
+        file_names::series_folder(
+            &file_names::Series::from_parts(title, year, SeriesType::Standard, &[]),
+            &naming_settings,
+        )
+    })
 }
 
 #[cfg(test)]

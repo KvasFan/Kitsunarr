@@ -42,6 +42,19 @@ pub struct SearchQuery {
     pub term: String,
 }
 
+/// `GET /library/folder-preview`: the folder a title would get.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::IntoParams, utoipa::ToSchema))]
+#[cfg_attr(feature = "openapi", into_params(parameter_in = Query))]
+#[serde(rename_all = "camelCase")]
+pub struct FolderPreviewQuery {
+    pub title: String,
+    #[serde(default)]
+    pub year: Option<i32>,
+    #[serde(default)]
+    pub movie: bool,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]

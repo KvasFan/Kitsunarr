@@ -7,7 +7,8 @@ use kitsunarr_domain::MetadataProvider;
 use kitsunarr_domain::api::error::ApiErrorBody;
 use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::metadata::{
-    AddTitleRequest, CatalogueInfo, LibraryRef, RefreshResult, SearchItem, SearchQuery,
+    AddTitleRequest, CatalogueInfo, FolderPreviewQuery, LibraryRef, RefreshResult, SearchItem,
+    SearchQuery,
 };
 use kitsunarr_metadata::Metadata;
 
@@ -82,6 +83,18 @@ pub async fn search(
         });
     }
     Ok(Json(items))
+}
+
+/// The folder name a title would get under a root folder, from the naming settings.
+#[utoipa::path(get, path = "/library/folder-preview", tag = "metadata", params(FolderPreviewQuery),
+    responses((status = 200, body = String)))]
+pub async fn folder_preview(
+    State(state): State<AppState>,
+    Query(q): Query<FolderPreviewQuery>,
+) -> ApiResult<Json<String>> {
+    Ok(Json(
+        kitsunarr_library::folder_preview(&state.db, &q.title, q.year, q.movie).await?,
+    ))
 }
 
 /// Adds a catalogue entry to the library. Series and anime get their seasons and episodes;

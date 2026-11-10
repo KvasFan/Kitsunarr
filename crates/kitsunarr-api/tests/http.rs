@@ -1318,13 +1318,18 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         torrents[0]["save_path"] = downloads.path().display().to_string().into();
         torrents[0]["content_path"] = folder.display().to_string().into();
     }
+    // Renaming on, with Sonarr's default formats.
+    let mut naming = client.naming().await.unwrap();
+    naming.rename_episodes = true;
+    naming.season_folder_format = "Season {season:00}".into();
+    client.put_naming(&naming).await.unwrap();
     qbit.lock().unwrap().clear();
     let summary = client.refresh_queue().await.unwrap();
     assert_eq!(summary, "1 downloads imported, 0 need attention");
     let detail = client.series_detail(added.id).await.unwrap();
     let imported = std::path::Path::new(&detail.item.path)
-        .join("Season 1")
-        .join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv");
+        .join("Season 01")
+        .join("Breaking Bad - S01E01 - Pilot Bluray-720p.mkv");
     assert_eq!(std::fs::read(&imported).unwrap(), b"video");
     // The download keeps its data (it is still seeding).
     assert!(
@@ -1341,7 +1346,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     assert_eq!(file.quality_name, "Bluray-720p");
     assert_eq!(
         file.relative_path,
-        "Season 1/Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv"
+        "Season 01/Breaking Bad - S01E01 - Pilot Bluray-720p.mkv"
     );
     let imports = client
         .history(1, 50, Some("downloadFolderImported"))

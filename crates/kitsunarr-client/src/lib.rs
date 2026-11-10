@@ -335,6 +335,12 @@ impl Client {
     pub async fn metadata_search(&self, q: &SearchQuery) -> ClientResult<Vec<SearchItem>> {
         self.get_query("/metadata/search", q).await
     }
+    pub async fn folder_preview(
+        &self,
+        q: &kitsunarr_domain::api::metadata::FolderPreviewQuery,
+    ) -> ClientResult<String> {
+        self.get_query("/library/folder-preview", q).await
+    }
     pub async fn add_title(&self, req: &AddTitleRequest) -> ClientResult<LibraryRef> {
         self.post("/library/add", req).await
     }

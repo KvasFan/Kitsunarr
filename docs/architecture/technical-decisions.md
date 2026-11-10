@@ -236,6 +236,20 @@ Where files are at stake, Kitsunarr is stricter than Sonarr:
 
 Where Kitsunarr lacks a component, it says so instead of guessing:
 
-- **Rename on:** with "Rename files on import" on, imports wait with an explanation; the naming engine is not ported yet. With it off (Sonarr's default), files keep the release or file name, cleaned as `CleanFileName` does.
-- **Custom season folders:** only `{season}`, `{season:0}` and `{season:00}` are filled in; any other token blocks the import with an explanation.
+- **Naming:** files and season folders are named by the port of `FileNameBuilder` (section 18). With "Rename files on import" off (Sonarr's default), files keep the release or file name, cleaned as `CleanFileName` does.
 - **Media info:** there is none yet (Sonarr uses ffprobe). Samples are recognised by name only, and quality comes from names, not from the video's resolution.
+
+## 18. File and folder naming: Sonarr's `FileNameBuilder`, ported token by token
+
+`kitsunarr-library::file_names` ports `FileNameBuilder`: the token regular expression, token matching that ignores case and separators, casing rules (an all-lower-case token lowers its value), separators, prefixes and suffixes, `{{`/`}}` escapes, the six multi-episode styles for season/episode and absolute numbers, episode titles shortened to fit 255 bytes, `CleanFileName` with the colon settings, and reserved device names. It runs on the parser's .NET-semantics regex engine.
+
+It is tested with Sonarr's naming fixtures (about 80 cases). Mutation checks confirm the tests fail when separator collapsing or the casing rules are broken.
+
+Series folders are named with it when a title is added. The add dialog previews the folder through `GET /library/folder-preview`, so the preview always matches the folder actually created; the browser does not carry its own copy of the engine.
+
+Differences:
+
+- **Fallback release group:** "Kitsunarr" instead of "Sonarr".
+- **No media info:** media-info tokens render empty, as upstream does for files without media info.
+- **Movies:** movie folders still use the simple helper, which covers Tanukarr's default movie formats.
+- **Default multi-episode style:** corrected to Sonarr's (PrefixedRange). Kitsunarr previously defaulted to Extend.

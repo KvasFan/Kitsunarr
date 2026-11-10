@@ -69,6 +69,8 @@ struct CompiledSpec {
 pub struct CompiledFormat {
     pub id: i64,
     pub name: String,
+    /// Shown by the `{Custom Formats}` naming token.
+    pub include_when_renaming: bool,
     specs: Vec<CompiledSpec>,
 }
 
@@ -145,6 +147,7 @@ pub fn compile_formats(formats: &[CustomFormat]) -> (Vec<CompiledFormat>, Vec<St
         .map(|f| CompiledFormat {
             id: f.id,
             name: f.name.clone(),
+            include_when_renaming: f.include_when_renaming,
             specs: f
                 .specifications
                 .iter()

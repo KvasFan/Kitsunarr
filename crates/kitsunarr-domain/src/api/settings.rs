@@ -198,7 +198,8 @@ impl Default for NamingSettings {
             replace_illegal_characters: true,
             colon_replacement_format: 4,
             custom_colon_replacement_format: String::new(),
-            multi_episode_style: 0,
+            // PrefixedRange, Sonarr's default.
+            multi_episode_style: 5,
             standard_episode_format:
                 "{Series Title} - S{season:00}E{episode:00} - {Episode Title} {Quality Full}".into(),
             daily_episode_format: "{Series Title} - {Air-Date} - {Episode Title} {Quality Full}"
