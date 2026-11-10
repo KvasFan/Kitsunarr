@@ -98,6 +98,9 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
     if let Some(mm) = raw.table("mediamanagement").first() {
         snap.media_management = Some(mm.clone());
     }
+    if let Some(io) = raw.table("indexerconfig").first() {
+        snap.indexer_options = Some(io.clone());
+    }
     if let Some(cfg) = raw.table("config").first() {
         let mut mm = Map::new();
         for (k, v) in &cfg.0 {

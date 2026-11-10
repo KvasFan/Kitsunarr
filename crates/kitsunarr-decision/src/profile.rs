@@ -160,15 +160,7 @@ pub fn is_revision_upgrade(current: &QualityModel, new: &QualityModel) -> bool {
         && compare_revision(&new.revision, &current.revision) == Ordering::Greater
 }
 
-/// How propers and repacks are handled (`ProperDownloadTypes`).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, serde::Serialize, serde::Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub enum ProperDownloadType {
-    #[default]
-    PreferAndUpgrade,
-    DoNotUpgrade,
-    DoNotPrefer,
-}
+pub use kitsunarr_domain::api::settings::ProperDownloadType;
 
 /// Why a release is not an upgrade (`UpgradeableRejectReason`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -8,9 +8,9 @@ use kitsunarr_db::providers::{self, ProviderRecord};
 use kitsunarr_db::{quality, root_folders, settings as kv, tags};
 use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::settings::{
-    CustomFormat, GeneralSettings, MediaManagementSettings, NamingSettings, ProviderItem,
-    ProviderKind, QualityDefinition, QualityProfile, REDACTED, RootFolderCreate, RootFolderItem,
-    TagCreate, TagItem,
+    CustomFormat, GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
+    ProviderItem, ProviderKind, QualityDefinition, QualityProfile, REDACTED, RootFolderCreate,
+    RootFolderItem, TagCreate, TagItem,
 };
 use kitsunarr_domain::{Language, MediaKind, Quality};
 use serde::{Deserialize, Serialize};
@@ -532,6 +532,42 @@ pub async fn put_media_management(
     }
     kv::set(state.db.pool(), kv::KEY_MEDIA_MANAGEMENT, &body).await?;
     settings_changed(&state, "mediaManagement");
+    Ok(Json(body))
+}
+
+#[utoipa::path(get, path = "/settings/indexeroptions", tag = "settings", responses((status = 200, body = IndexerOptionsSettings)))]
+pub async fn get_indexer_options(
+    State(state): State<AppState>,
+) -> ApiResult<Json<IndexerOptionsSettings>> {
+    Ok(Json(
+        kv::get_or_default(state.db.pool(), kv::KEY_INDEXER_OPTIONS).await?,
+    ))
+}
+
+#[utoipa::path(put, path = "/settings/indexeroptions", tag = "settings", request_body = IndexerOptionsSettings,
+    responses((status = 200, body = IndexerOptionsSettings), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn put_indexer_options(
+    State(state): State<AppState>,
+    Json(body): Json<IndexerOptionsSettings>,
+) -> ApiResult<Json<IndexerOptionsSettings>> {
+    for (field, value) in [
+        ("minimumAge", body.minimum_age),
+        ("retention", body.retention),
+        ("maximumSize", body.maximum_size),
+    ] {
+        if value < 0 {
+            return Err(ApiError::field(field, "Use 0 or a positive number."));
+        }
+    }
+    // Sonarr's rule: off, or between 10 and 120 minutes.
+    if body.rss_sync_interval != 0 && !(10..=120).contains(&body.rss_sync_interval) {
+        return Err(ApiError::field(
+            "rssSyncInterval",
+            "Use 0 (off) or between 10 and 120 minutes.",
+        ));
+    }
+    kv::set(state.db.pool(), kv::KEY_INDEXER_OPTIONS, &body).await?;
+    settings_changed(&state, "indexerOptions");
     Ok(Json(body))
 }
 

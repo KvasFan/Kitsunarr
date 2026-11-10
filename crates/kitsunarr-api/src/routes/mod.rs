@@ -107,6 +107,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             settings::get_media_management,
             settings::put_media_management
         ))
+        .routes(routes!(
+            settings::get_indexer_options,
+            settings::put_indexer_options
+        ))
         .routes(routes!(settings::get_general, settings::put_general))
         .routes(routes!(settings::catalogues))
         // search

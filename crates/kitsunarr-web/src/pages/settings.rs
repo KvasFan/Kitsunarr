@@ -3,8 +3,8 @@
 use dioxus::prelude::*;
 use kitsunarr_domain::api::auth::ChangePasswordRequest;
 use kitsunarr_domain::api::settings::{
-    CustomFormat, GeneralSettings, MediaManagementSettings, NamingSettings, ProviderItem,
-    ProviderKind, QualityProfile, REDACTED, RootFolderCreate,
+    CustomFormat, GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
+    ProperDownloadType, ProviderItem, ProviderKind, QualityProfile, REDACTED, RootFolderCreate,
 };
 use kitsunarr_domain::{MediaKind, Quality};
 use serde_json::Value;
@@ -306,6 +306,22 @@ pub fn SettingsMedia() -> Element {
                         }
                         Field { label: "Extra file extensions",
                             input { class: "input", value: "{m.extra_file_extensions}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.extra_file_extensions = e.value(); } } }
+                        }
+                        Field { label: "Propers and repacks", help: "Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).".to_string(),
+                            select { class: "select", "aria-label": "Propers and repacks",
+                                onchange: move |e: FormEvent| {
+                                    if let Some(x) = mm.write().as_mut() {
+                                        x.download_propers_and_repacks = match e.value().as_str() {
+                                            "doNotUpgrade" => ProperDownloadType::DoNotUpgrade,
+                                            "doNotPrefer" => ProperDownloadType::DoNotPrefer,
+                                            _ => ProperDownloadType::PreferAndUpgrade,
+                                        };
+                                    }
+                                },
+                                option { value: "preferAndUpgrade", selected: m.download_propers_and_repacks == ProperDownloadType::PreferAndUpgrade, "Prefer and upgrade" }
+                                option { value: "doNotUpgrade", selected: m.download_propers_and_repacks == ProperDownloadType::DoNotUpgrade, "Prefer, do not upgrade" }
+                                option { value: "doNotPrefer", selected: m.download_propers_and_repacks == ProperDownloadType::DoNotPrefer, "Do not prefer" }
+                            }
                         }
                     }
                     div { class: "row end", button { class: "btn primary", onclick: save_mm, "Save" } }
@@ -692,7 +708,65 @@ pub fn SettingsFormats() -> Element {
 
 #[component]
 pub fn SettingsIndexers() -> Element {
-    rsx! { ProvidersPage { kind: "indexers", title: "Indexers", note: "Torznab and Newznab indexers. Use Test in the editor to check one; interactive search uses every indexer with interactive search enabled. RSS sync and automatic search are not implemented yet." } }
+    rsx! {
+        ProvidersPage { kind: "indexers", title: "Indexers", note: "Torznab and Newznab indexers. Use Test in the editor to check one; interactive search uses every indexer with interactive search enabled. RSS sync and automatic search are not implemented yet." }
+        IndexerOptions {}
+    }
+}
+
+/// Sonarr's indexer options; the decision engine applies them to search results.
+#[component]
+fn IndexerOptions() -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut opts = use_signal(|| None::<IndexerOptionsSettings>);
+    let c1 = client.clone();
+    use_future(move || {
+        let c = c1.clone();
+        async move {
+            match c.indexer_options().await {
+                Ok(o) => opts.set(Some(o)),
+                Err(e) => app.error(&e),
+            }
+        }
+    });
+    let c2 = client.clone();
+    let save = move |_| {
+        let Some(o) = opts() else { return };
+        let c = c2.clone();
+        spawn(async move {
+            match c.put_indexer_options(&o).await {
+                Ok(_) => app.success("Indexer options saved."),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let number = |v: String| v.trim().parse::<i32>().unwrap_or(0);
+    rsx! {
+        div { class: "card",
+            h3 { "Options" }
+            match opts() {
+                None => rsx! { Loading {} },
+                Some(o) => rsx! {
+                    div { class: "form-grid",
+                        Field { label: "Minimum age (minutes)", help: "Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.".to_string(),
+                            input { class: "input", r#type: "number", min: "0", "aria-label": "Minimum age", value: "{o.minimum_age}", oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.minimum_age = number(e.value()); } } }
+                        }
+                        Field { label: "Retention (days)", help: "Usenet only: older releases are rejected. 0 means unlimited.".to_string(),
+                            input { class: "input", r#type: "number", min: "0", "aria-label": "Retention", value: "{o.retention}", oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.retention = number(e.value()); } } }
+                        }
+                        Field { label: "Maximum size (MB)", help: "Larger releases are rejected. 0 means unlimited.".to_string(),
+                            input { class: "input", r#type: "number", min: "0", "aria-label": "Maximum size", value: "{o.maximum_size}", oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.maximum_size = number(e.value()); } } }
+                        }
+                        Field { label: "RSS sync interval (minutes)", help: "0 (off) or 10 to 120. RSS sync is not implemented yet; the value is kept.".to_string(),
+                            input { class: "input", r#type: "number", min: "0", max: "120", "aria-label": "RSS sync interval", value: "{o.rss_sync_interval}", oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.rss_sync_interval = number(e.value()); } } }
+                        }
+                    }
+                    div { class: "row end", button { class: "btn primary", onclick: save, "Save options" } }
+                },
+            }
+        }
+    }
 }
 
 #[component]

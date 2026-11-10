@@ -913,6 +913,44 @@ async fn indexer_test_and_interactive_search() {
     assert!(season.releases[1..].iter().all(|r| !r.approved));
     assert!(season.warnings.is_empty(), "{:?}", season.warnings);
 
+    // Indexer options are validated as Sonarr does, and reach the decisions.
+    use kitsunarr_domain::api::settings::IndexerOptionsSettings;
+    let invalid = IndexerOptionsSettings {
+        rss_sync_interval: 5,
+        ..Default::default()
+    };
+    assert_eq!(
+        status(client.put_indexer_options(&invalid).await.unwrap_err()),
+        422
+    );
+    let limited = IndexerOptionsSettings {
+        maximum_size: 100,
+        ..Default::default()
+    };
+    client.put_indexer_options(&limited).await.unwrap();
+    assert_eq!(client.indexer_options().await.unwrap(), limited);
+    let capped = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: Some(1),
+            episode_id: None,
+        })
+        .await
+        .unwrap();
+    let pack = &capped.releases[0];
+    assert!(!pack.approved);
+    assert!(
+        pack.rejections
+            .iter()
+            .any(|r| r.ends_with("maximum size is 100.0 MB (Settings->Indexers->Maximum Size)")),
+        "{:?}",
+        pack.rejections
+    );
+    client
+        .put_indexer_options(&IndexerOptionsSettings::default())
+        .await
+        .unwrap();
+
     // Download links embed indexer keys: they stay on the server.
     let raw = reqwest::Client::new()
         .get(format!(

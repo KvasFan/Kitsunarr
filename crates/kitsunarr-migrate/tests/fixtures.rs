@@ -574,6 +574,7 @@ async fn serve_captures(dir: PathBuf) -> String {
                 }
                 "config/naming" => "config-naming".into(),
                 "config/mediamanagement" => "config-mediamanagement".into(),
+                "config/indexer" => "config-indexer".into(),
                 other => other.to_string(),
             };
             match std::fs::read_to_string(dir.join(format!("{file}.json"))) {

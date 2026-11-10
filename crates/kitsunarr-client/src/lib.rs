@@ -25,8 +25,9 @@ use kitsunarr_domain::api::search::{
     IndexerTestRequest, IndexerTestResult, ReleaseQuery, ReleaseSearchResult,
 };
 use kitsunarr_domain::api::settings::{
-    CustomFormat, GeneralSettings, MediaManagementSettings, NamingSettings, ProviderItem,
-    QualityDefinition, QualityProfile, RootFolderCreate, RootFolderItem, TagCreate, TagItem,
+    CustomFormat, GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
+    ProviderItem, QualityDefinition, QualityProfile, RootFolderCreate, RootFolderItem, TagCreate,
+    TagItem,
 };
 use kitsunarr_domain::api::system::{
     BackupItem, HealthCheck, ScheduledTaskItem, SystemStatus, TaskRunItem,
@@ -435,6 +436,15 @@ impl Client {
         s: &MediaManagementSettings,
     ) -> ClientResult<MediaManagementSettings> {
         self.put("/settings/mediamanagement", s).await
+    }
+    pub async fn indexer_options(&self) -> ClientResult<IndexerOptionsSettings> {
+        self.get("/settings/indexeroptions").await
+    }
+    pub async fn put_indexer_options(
+        &self,
+        s: &IndexerOptionsSettings,
+    ) -> ClientResult<IndexerOptionsSettings> {
+        self.put("/settings/indexeroptions", s).await
     }
     pub async fn general(&self) -> ClientResult<GeneralSettings> {
         self.get("/settings/general").await

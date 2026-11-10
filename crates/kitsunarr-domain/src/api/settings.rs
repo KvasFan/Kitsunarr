@@ -214,6 +214,58 @@ impl Default for NamingSettings {
     }
 }
 
+/// How propers and repacks are treated (Sonarr's `ProperDownloadTypes`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum ProperDownloadType {
+    /// Prefer them, and upgrade existing files to them.
+    #[default]
+    PreferAndUpgrade,
+    /// Prefer them in searches, but do not replace existing files.
+    DoNotUpgrade,
+    /// Treat them like any other release (custom formats decide).
+    DoNotPrefer,
+}
+
+impl ProperDownloadType {
+    /// Sonarr's names, in any case (`PreferAndUpgrade`, `preferAndUpgrade`).
+    pub fn from_sonarr(name: &str) -> Option<Self> {
+        match name.to_ascii_lowercase().as_str() {
+            "preferandupgrade" => Some(Self::PreferAndUpgrade),
+            "donotupgrade" => Some(Self::DoNotUpgrade),
+            "donotprefer" => Some(Self::DoNotPrefer),
+            _ => None,
+        }
+    }
+}
+
+/// Indexer options (Sonarr's Settings › Indexers › Options).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct IndexerOptionsSettings {
+    /// Usenet releases younger than this many minutes are rejected (0: off).
+    pub minimum_age: i32,
+    /// Usenet releases older than this many days are rejected (0: unlimited).
+    pub retention: i32,
+    /// Releases larger than this many MB are rejected (0: unlimited).
+    pub maximum_size: i32,
+    /// Minutes between RSS syncs: 0 (off) or 10 to 120. RSS sync is not implemented yet.
+    pub rss_sync_interval: i32,
+}
+
+impl Default for IndexerOptionsSettings {
+    fn default() -> Self {
+        Self {
+            minimum_age: 0,
+            retention: 0,
+            maximum_size: 0,
+            rss_sync_interval: 15,
+        }
+    }
+}
+
 /// File handling settings.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
@@ -230,6 +282,8 @@ pub struct MediaManagementSettings {
     pub skip_free_space_check: bool,
     pub import_extra_files: bool,
     pub extra_file_extensions: String,
+    #[serde(default)]
+    pub download_propers_and_repacks: ProperDownloadType,
 }
 
 impl Default for MediaManagementSettings {
@@ -246,6 +300,7 @@ impl Default for MediaManagementSettings {
             skip_free_space_check: false,
             import_extra_files: false,
             extra_file_extensions: "srt".into(),
+            download_propers_and_repacks: ProperDownloadType::PreferAndUpgrade,
         }
     }
 }

@@ -25,8 +25,9 @@ use kitsunarr_domain::api::migration::{
     ValidationCheck, WarningSeverity,
 };
 use kitsunarr_domain::api::settings::{
-    CustomFormat, FormatScore, MediaManagementSettings, NamingSettings, OrderedF64, ProviderKind,
-    QualityDefinition, QualityGroup, QualityProfile, QualityProfileItem,
+    CustomFormat, FormatScore, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
+    OrderedF64, ProperDownloadType, ProviderKind, QualityDefinition, QualityGroup, QualityProfile,
+    QualityProfileItem,
 };
 use kitsunarr_domain::{
     ExternalId, ExternalIdKind, MediaKind, MetadataProvider, MinimumAvailability, MovieStatus,
@@ -52,6 +53,12 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "skipfreespacecheckwhenimporting",
     "importextrafiles",
     "extrafileextensions",
+    "downloadpropersandrepacks",
+    // Indexer options (database `Config` keys; the API serves them separately).
+    "minimumage",
+    "retention",
+    "maximumsize",
+    "rsssyncinterval",
 ];
 
 /// Custom-format specification implementations Sonarr v4 provides (others are kept but flagged).
@@ -1029,10 +1036,50 @@ impl<'a> Importer<'a> {
             next.extra_file_extensions = mm
                 .str("extrafileextensions")
                 .unwrap_or(next.extra_file_extensions);
+            if let Some(v) = mm.str("downloadpropersandrepacks") {
+                match ProperDownloadType::from_sonarr(&v) {
+                    Some(p) => next.download_propers_and_repacks = p,
+                    None => self.warn(
+                        WarningSeverity::Warning,
+                        "settings",
+                        None,
+                        Some("Propers and repacks"),
+                        format!("Unknown \"propers and repacks\" value {v:?}; Kitsunarr's setting was kept."),
+                    ),
+                }
+            }
             if next == current {
                 self.count("settings", Act::Skip);
             } else if current == MediaManagementSettings::default() || self.update_existing() {
                 settings::set(&mut *conn, settings::KEY_MEDIA_MANAGEMENT, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
+        // Indexer options: the API's `/config/indexer`, or the database's `Config` keys.
+        if let Some(io) = self
+            .snap
+            .indexer_options
+            .clone()
+            .or_else(|| self.snap.media_management.clone())
+            .filter(|r| {
+                ["minimumage", "retention", "maximumsize", "rsssyncinterval"]
+                    .iter()
+                    .any(|k| r.has(k))
+            })
+        {
+            let current: IndexerOptionsSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_INDEXER_OPTIONS).await?;
+            let mut next = current.clone();
+            next.minimum_age = io.i32("minimumage").unwrap_or(next.minimum_age);
+            next.retention = io.i32("retention").unwrap_or(next.retention);
+            next.maximum_size = io.i32("maximumsize").unwrap_or(next.maximum_size);
+            next.rss_sync_interval = io.i32("rsssyncinterval").unwrap_or(next.rss_sync_interval);
+            if next == current {
+                self.count("settings", Act::Skip);
+            } else if current == IndexerOptionsSettings::default() || self.update_existing() {
+                settings::set(&mut *conn, settings::KEY_INDEXER_OPTIONS, &next).await?;
                 self.count("settings", Act::Update);
             } else {
                 self.count("settings", Act::Skip);

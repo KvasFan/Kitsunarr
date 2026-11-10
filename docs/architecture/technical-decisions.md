@@ -191,7 +191,7 @@ Regular expressions in custom formats and release profiles run on the .NET-seman
 Known differences, all reported rather than hidden:
 
 - **Checks that need missing data are not evaluated yet:** the blocklist, the download queue, grab history, pending releases, free space, scene mappings (TheXEM) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
-- **Some settings don't exist in Kitsunarr yet and use Sonarr's defaults:** minimum age, retention and maximum size (all off), "propers and repacks" (prefer and upgrade), and season-pack upgrades (every episode must be missing or upgradable).
+- **Settings:** minimum age, retention and maximum size (Settings › Indexers › Options) and "propers and repacks" (Settings › Media management) are Kitsunarr settings, migrated from the source's database `Config` keys or its `/config/indexer` and `/config/mediamanagement` API. Season-pack upgrades use Sonarr's default (every episode must be missing or upgradable), as that setting does not exist in Sonarr 4.
 - **Releases of other library series are rejected as "Wrong series" without evaluating that series' episodes and profile.** They are listed after the searched series' releases, in arrival order; upstream orders series groups by first appearance.
 - **A custom format specification that cannot be evaluated never matches, and a warning is shown with the search results.** This covers an unknown implementation, such as Tanukarr's `SeasonPackSpecification`, and an invalid pattern. Sonarr would refuse to load such a format.
 

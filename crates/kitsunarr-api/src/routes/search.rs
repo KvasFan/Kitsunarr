@@ -3,6 +3,7 @@
 use axum::Json;
 use axum::extract::{Query, State};
 use kitsunarr_db::library::series;
+use kitsunarr_db::settings as kv;
 use kitsunarr_db::{providers, quality, rules};
 use kitsunarr_decision::{self as decision, Decision, Engine, SearchKind};
 use kitsunarr_domain::api::error::ApiErrorBody;
@@ -11,7 +12,9 @@ use kitsunarr_domain::api::search::{
     IndexerFailure, IndexerTestRequest, IndexerTestResult, ReleaseItem, ReleaseQuery,
     ReleaseSearchResult,
 };
-use kitsunarr_domain::api::settings::ProviderKind;
+use kitsunarr_domain::api::settings::{
+    IndexerOptionsSettings, MediaManagementSettings, ProviderKind,
+};
 use kitsunarr_domain::quality::{QualityModel, Revision};
 use kitsunarr_domain::{DownloadProtocol, ExternalIdKind, Language, SeriesType};
 use kitsunarr_indexers::feed::flags;
@@ -669,9 +672,13 @@ impl DecisionInputs {
             .collect();
         let (formats, warnings) =
             decision::compile_formats(&quality::list_custom_formats(db.pool()).await?);
+        let media: MediaManagementSettings =
+            kv::get_or_default(db.pool(), kv::KEY_MEDIA_MANAGEMENT).await?;
+        let options: IndexerOptionsSettings =
+            kv::get_or_default(db.pool(), kv::KEY_INDEXER_OPTIONS).await?;
         let settings = decision::Settings {
             quality_definitions: quality::list_definitions(db.pool()).await?,
-            propers: decision::ProperDownloadType::default(),
+            propers: media.download_propers_and_repacks,
             release_profiles: rules::list_release_profiles(db.pool())
                 .await?
                 .into_iter()
@@ -698,9 +705,9 @@ impl DecisionInputs {
                     tags: d.tags,
                 })
                 .collect(),
-            minimum_age_minutes: 0,
-            retention_days: 0,
-            maximum_size_mb: 0,
+            minimum_age_minutes: i64::from(options.minimum_age),
+            retention_days: i64::from(options.retention),
+            maximum_size_mb: i64::from(options.maximum_size),
             now: chrono::Utc::now(),
         };
         Ok(Self {
