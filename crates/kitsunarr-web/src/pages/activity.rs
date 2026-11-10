@@ -206,7 +206,7 @@ pub fn Activity() -> Element {
                                             span { class: "muted", "—" }
                                         }
                                     }
-                                    td { class: "hide-mobile small ellipsis", style: "max-width: 420px", title: "{h.source_title}", "{h.source_title}" }
+                                    td { class: "hide-mobile small ellipsis", style: "max-width: 26rem", title: "{h.source_title}", "{h.source_title}" }
                                     td { {h.quality_name.clone().unwrap_or_default()} }
                                     td { class: "muted small", {format_datetime(&h.date)} }
                                 }

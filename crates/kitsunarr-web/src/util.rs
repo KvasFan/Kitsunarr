@@ -48,6 +48,20 @@ pub fn prefers_light() -> bool {
         .is_some_and(|m| m.matches())
 }
 
+/// Pixels per `rem`: 16 unless the reader chose another default text size. (Browser zoom
+/// scales CSS pixels and rems alike, so it does not change this.)
+pub fn rem_px() -> f64 {
+    web_sys::window()
+        .and_then(|w| {
+            let root = w.document()?.document_element()?;
+            w.get_computed_style(&root).ok().flatten()
+        })
+        .and_then(|style| style.get_property_value("font-size").ok())
+        .and_then(|size| size.trim_end_matches("px").parse::<f64>().ok())
+        .filter(|px| *px > 0.0)
+        .unwrap_or(16.0)
+}
+
 pub fn set_theme_attribute(theme: &str) {
     if let Some(el) = web_sys::window()
         .and_then(|w| w.document())

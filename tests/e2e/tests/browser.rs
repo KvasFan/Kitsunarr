@@ -661,6 +661,71 @@ async fn first_run_setup_migration_and_library() {
             .unwrap();
         wait_text(&client, "Cutoff unmet").await;
 
+        // Browser zoom: 1366x768 at 50% to 200% zoom is a CSS viewport of 2732 to 683 pixels.
+        // No page may scroll sideways at any of these sizes.
+        let mut overflowing = Vec::new();
+        for (zoom, w, h) in [
+            (50, 2732, 1536),
+            (67, 2039, 1146),
+            (125, 1093, 614),
+            (150, 911, 512),
+            (200, 683, 384),
+        ] {
+            client.set_window_size(w, h).await.unwrap();
+            for path in [
+                "/",
+                "/series",
+                "/series/1",
+                "/wanted/missing",
+                "/activity/queue",
+                "/activity/history",
+                "/calendar",
+                "/add",
+                "/settings/indexers",
+                "/settings/profiles",
+                "/system/tasks",
+            ] {
+                client.goto(&format!("{base}{path}")).await.unwrap();
+                tokio::time::sleep(Duration::from_millis(700)).await;
+                let wide = client
+                    .execute(
+                        "return [document.documentElement.scrollWidth, window.innerWidth]",
+                        vec![],
+                    )
+                    .await
+                    .unwrap();
+                let (scroll, inner) = (wide[0].as_i64().unwrap(), wide[1].as_i64().unwrap());
+                if scroll > inner {
+                    overflowing.push(format!("{path} at {zoom}%: {scroll} > {inner}"));
+                }
+                if std::env::var("KITSUNARR_E2E_ZOOM_TOUR").is_ok() {
+                    let name = format!("zoom-{zoom}{}", path.replace('/', "-"));
+                    screenshot(&client, &name).await;
+                }
+            }
+        }
+        client.set_window_size(1366, 900).await.unwrap();
+        // A larger default text size (20 px instead of 16) enlarges every control with it.
+        for path in ["/series/1", "/wanted/missing", "/settings/indexers", "/system/tasks"] {
+            client.goto(&format!("{base}{path}")).await.unwrap();
+            let wide = client
+                .execute(
+                    "document.documentElement.style.fontSize = '20px'; \
+                     return new Promise(r => setTimeout(() => r([document.documentElement.scrollWidth, window.innerWidth]), 700));",
+                    vec![],
+                )
+                .await
+                .unwrap();
+            let (scroll, inner) = (wide[0].as_i64().unwrap(), wide[1].as_i64().unwrap());
+            if scroll > inner {
+                overflowing.push(format!("{path} with 20px text: {scroll} > {inner}"));
+            }
+            if std::env::var("KITSUNARR_E2E_ZOOM_TOUR").is_ok() {
+                screenshot(&client, &format!("text-20px{}", path.replace('/', "-"))).await;
+            }
+        }
+        assert!(overflowing.is_empty(), "pages scroll sideways: {overflowing:#?}");
+
         // Sign out returns to the login page.
         click_button(&client, "Sign out").await;
         wait_text(&client, "Keep me signed in").await;

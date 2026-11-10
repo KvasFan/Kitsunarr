@@ -22,7 +22,7 @@ wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
 gloo-timers = { workspace = true }
 web-sys = { workspace = true, features = [
-    "Blob", "Document", "Element", "EventSource", "EventTarget", "File", "Headers", "HtmlElement",
+    "Blob", "CssStyleDeclaration", "Document", "Element", "EventSource", "EventTarget", "File", "Headers", "HtmlElement",
     "HtmlInputElement", "KeyboardEvent", "Location", "MediaQueryList", "MessageEvent", "Navigator", "Clipboard",
     "Request", "RequestCredentials", "RequestInit", "Response", "Storage", "Window",
 ] }

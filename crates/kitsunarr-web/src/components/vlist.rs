@@ -22,7 +22,7 @@ pub fn VirtualList(
     rsx! {
         div {
             class: "vlist",
-            style: "height: {height}px",
+            style: "height: {height}px; max-height: 70vh; min-height: {row_height}px",
             role: "list",
             "aria-label": label.unwrap_or_default(),
             onscroll: move |e: ScrollEvent| scroll_top.set(e.scroll_top()),

@@ -145,7 +145,7 @@ fn WantedPage(list: WantedList) -> Element {
                                         td { Link { to: Route::SeriesDetailPage { id: e.series_id }, "{e.series_title}" } }
                                         td { class: "mono", "S{e.season_number:02}E{e.episode_number:02}"
                                             if let Some(a) = e.absolute_episode_number { span { class: "muted xs", " ({a})" } } }
-                                        td { class: "hide-mobile ellipsis", style: "max-width: 360px", {e.title.clone().unwrap_or_else(|| "TBA".into())} }
+                                        td { class: "hide-mobile ellipsis", style: "max-width: 22rem", {e.title.clone().unwrap_or_else(|| "TBA".into())} }
                                         td { class: "small", {e.air_date_utc.as_deref().map(format_date).unwrap_or_default()} }
                                         if list == WantedList::CutoffUnmet {
                                             td { Badge { text: e.quality_name.clone().unwrap_or_default() } }

@@ -17,7 +17,8 @@ use crate::route::Route;
 use crate::state::{ToastLevel, use_app, use_client};
 use crate::util::{format_bytes, format_date, relative};
 
-const ROW_HEIGHT: f64 = 42.0;
+/// Episode row height in rems (42 px at the default text size).
+const ROW_HEIGHT_REM: f64 = 2.625;
 
 /// The toast for an automatic search's outcome.
 fn automatic_summary(
@@ -320,7 +321,10 @@ fn SeasonPanel(
             }
         });
     };
-    let height = (list.len() as f64 * ROW_HEIGHT).clamp(ROW_HEIGHT, 520.0);
+    // The list shows every row up to a large cap; CSS limits it to part of the viewport, so it
+    // follows the window (and browser zoom) instead of a fixed height.
+    let row_height = ROW_HEIGHT_REM * crate::util::rem_px();
+    let height = (list.len() as f64 * row_height).clamp(row_height, 40.0 * row_height);
     rsx! {
         section { class: "season",
             div { class: "season-head", role: "button", tabindex: "0", "aria-expanded": "{open}", onclick: move |_| open.toggle(),
@@ -362,7 +366,7 @@ fn SeasonPanel(
                 div { class: "season-body",
                     VirtualList {
                         count: list.len(),
-                        row_height: ROW_HEIGHT,
+                        row_height,
                         height,
                         label: label.clone(),
                         render: move |i: usize| {
@@ -370,13 +374,13 @@ fn SeasonPanel(
                             let ep_id = e.id;
                             let toggle = toggle_episode.clone();
                             rsx! {
-                                span { class: "faint small", style: "width: 52px",
+                                span { class: "faint small", style: "width: 3.25rem; flex: none",
                                     "{e.episode_number}"
                                     if let Some(a) = e.absolute_episode_number { span { class: "xs", " ({a})" } }
                                 }
                                 span { class: "grow ellipsis", title: e.title.clone().unwrap_or_default(), {e.title.clone().unwrap_or_else(|| "TBA".into())} }
-                                span { class: "small muted hide-mobile", style: "width: 96px", {e.air_date.clone().unwrap_or_default()} }
-                                span { style: "width: 150px; text-align: right",
+                                span { class: "small muted hide-mobile", style: "width: 6rem; flex: none", {e.air_date.clone().unwrap_or_default()} }
+                                span { style: "width: 9.5rem; flex: none; text-align: right",
                                     if let Some(f) = &e.file {
                                         span { class: "badge success", title: "{f.relative_path}", "{f.quality_name}" }
                                     } else {

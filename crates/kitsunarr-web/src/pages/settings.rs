@@ -405,7 +405,7 @@ pub fn SettingsProfiles() -> Element {
                 button { class: "btn primary", onclick: move |_| editing.set(Some(QualityProfile { id: 0, name: "New profile".into(), ..t.clone() })), "+ New profile" }
             }
         }
-        div { class: "media-grid", style: "grid-template-columns: repeat(auto-fill, minmax(260px, 1fr))",
+        div { class: "media-grid", style: "grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr))",
             for p in list.iter() {
                 button { key: "{p.id}", class: "choice", onclick: { let p = p.clone(); move |_| editing.set(Some(p.clone())) },
                     h3 { "{p.name}" }
@@ -1138,7 +1138,7 @@ pub fn SettingsTags() -> Element {
             Some(Ok(list)) => rsx! {
                 div { class: "row",
                     for t in list.iter() {
-                        span { key: "{t.id}", class: "badge", style: "height: 30px; padding: 0 4px 0 12px",
+                        span { key: "{t.id}", class: "badge", style: "min-height: 1.875rem; padding: 0 4px 0 12px",
                             "{t.label}"
                             span { class: "faint", " · {t.usage_count}" }
                             button { class: "btn ghost sm", "aria-label": "Delete tag {t.label}", onclick: { let id = t.id; let d = delete.clone(); move |_| d(id) }, "✕" }

@@ -255,7 +255,7 @@ fn TopBar() -> Element {
             input {
                 id: "global-search",
                 class: "input search grow",
-                style: "max-width: 420px",
+                style: "max-width: 26rem",
                 r#type: "search",
                 placeholder: t().search_placeholder,
                 "aria-label": "Search the library",
