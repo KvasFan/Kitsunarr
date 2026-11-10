@@ -1049,6 +1049,12 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
 <link>{link}</link><pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate><size>1500000000</size>
 <enclosure url="{link}" length="1500000000" type="application/x-bittorrent" />
 <torznab:attr name="seeders" value="50" /><torznab:attr name="peers" value="60" /></item>
+<item><title>Breaking.Bad.S01E02.720p.BluRay.x264-GRP</title><guid>bb-s01e02</guid>
+<link>magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a&amp;dn=bb</link>
+<pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate><size>1500000000</size>
+<enclosure url="magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a&amp;dn=bb" length="1500000000" type="application/x-bittorrent;x-scheme-handler/magnet" />
+<torznab:attr name="magneturl" value="magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a&amp;dn=bb" />
+<torznab:attr name="seeders" value="40" /><torznab:attr name="peers" value="45" /></item>
 </channel></rss>"#
         );
         ([("content-type", "application/rss+xml")], feed).into_response()
@@ -1241,8 +1247,11 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         })
         .await
         .unwrap();
-    let release = &found.releases[0];
-    assert_eq!(release.title, "Breaking.Bad.S01E01.720p.BluRay.x264-GRP");
+    let release = found
+        .releases
+        .iter()
+        .find(|r| r.title == "Breaking.Bad.S01E01.720p.BluRay.x264-GRP")
+        .unwrap();
     assert!(release.approved, "{:?}", release.rejections);
 
     qbit.lock().unwrap().clear();
@@ -1297,6 +1306,28 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             item.time_left
         ),
         ("downloading", "downloading", 600, Some(90))
+    );
+    // While it downloads, the same release is rejected because it is in the queue.
+    let again = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+        })
+        .await
+        .unwrap();
+    let queued = again
+        .releases
+        .iter()
+        .find(|r| r.guid == "bb-s01e01")
+        .unwrap();
+    assert!(
+        queued
+            .rejections
+            .iter()
+            .any(|m| m.starts_with("Release in queue")),
+        "{:?}",
+        queued.rejections
     );
 
     // The torrent completes; the next check imports it into the series folder.
@@ -1368,6 +1399,38 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         client.refresh_queue().await.unwrap(),
         "0 downloads imported, 0 need attention"
     );
+
+    // An automatic season search grabs what is missing (S01E02, by magnet) and skips S01E01,
+    // which is on disk now.
+    qbit.lock().unwrap().clear();
+    let season = ReleaseQuery {
+        series_id: added.id,
+        season_number: Some(1),
+        episode_id: None,
+    };
+    let auto = client.automatic_search(&season).await.unwrap();
+    assert_eq!((auto.found, auto.approved), (2, 1), "{auto:?}");
+    assert!(auto.grab_failures.is_empty(), "{auto:?}");
+    assert_eq!(auto.grabbed.len(), 1);
+    assert_eq!(
+        auto.grabbed[0].title,
+        "Breaking.Bad.S01E02.720p.BluRay.x264-GRP"
+    );
+    assert_eq!(
+        auto.grabbed[0].download_id,
+        "c12fe1c06bba254a9dc9f519b335aa7c1367a88a"
+    );
+    assert!(
+        qbit.lock()
+            .unwrap()
+            .iter()
+            .any(|c| c.starts_with("/api/v2/torrents/add") && c.contains("urls=magnet:")),
+        "{:#?}",
+        qbit.lock().unwrap()
+    );
+    // Searching again grabs nothing: S01E02 is in the queue now.
+    let auto = client.automatic_search(&season).await.unwrap();
+    assert_eq!((auto.approved, auto.grabbed.len()), (0, 0), "{auto:?}");
 
     // The indexer key is in neither the search results nor the history.
     for path in [

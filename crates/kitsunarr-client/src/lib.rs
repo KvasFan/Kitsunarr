@@ -318,6 +318,13 @@ impl Client {
     pub async fn grab_release(&self, req: &GrabRequest) -> ClientResult<GrabResult> {
         self.post("/releases/grab", req).await
     }
+    /// Automatic search: searches and grabs the best approved releases.
+    pub async fn automatic_search(
+        &self,
+        q: &ReleaseQuery,
+    ) -> ClientResult<kitsunarr_domain::api::search::AutomaticSearchResult> {
+        self.post("/releases/search", q).await
+    }
     pub async fn test_download_client(
         &self,
         req: &IndexerTestRequest,

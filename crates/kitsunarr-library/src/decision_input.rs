@@ -62,6 +62,7 @@ pub async fn series_model(
         .collect();
     let (tvdb_id, tv_rage_id, imdb_id) = ids_of(&external);
     Ok(decision::Series {
+        monitored: detail.item.monitored,
         id: detail.item.id,
         title: detail.item.title.clone(),
         year: detail.item.year.unwrap_or(0),

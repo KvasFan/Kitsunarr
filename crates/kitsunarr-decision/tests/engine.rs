@@ -36,6 +36,7 @@ fn breaking_bad() -> Series {
     p.cutoff = BLURAY1080P;
     p.format_items = scores(&[(1, 50)]);
     Series {
+        monitored: true,
         id: 1,
         title: "Breaking Bad".into(),
         year: 2008,
@@ -67,6 +68,7 @@ fn library() -> Vec<LibrarySeries> {
 
 fn settings() -> Settings {
     Settings {
+        queue: Vec::new(),
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -159,6 +161,7 @@ fn single_episode_search() {
     let decided = decide(
         &series,
         SearchCriteria {
+            monitored_episodes_only: false,
             kind: SearchKind::SingleEpisode {
                 season: 1,
                 episode: 1,
@@ -235,6 +238,7 @@ fn season_search_and_specials() {
     let decided = decide(
         &series,
         SearchCriteria {
+            monitored_episodes_only: false,
             kind: SearchKind::Season { season: 1 },
             episode_ids: (101..=107).collect(),
         },
@@ -276,6 +280,7 @@ fn anime_absolute_and_daily_numbering() {
     let decided = decide(
         &anime,
         SearchCriteria {
+            monitored_episodes_only: false,
             kind: SearchKind::AnimeEpisode {
                 season_search: false,
             },
@@ -295,6 +300,7 @@ fn anime_absolute_and_daily_numbering() {
     let decided = decide(
         &daily,
         SearchCriteria {
+            monitored_episodes_only: false,
             kind: SearchKind::DailyEpisode,
             episode_ids: vec![103],
         },
@@ -314,6 +320,7 @@ fn release_ids_map_titles_the_library_does_not_know() {
     let series = breaking_bad();
     let mut r = release("Breaking.Bad.Remastered.S01E01.720p.HDTV.x264-GRP");
     let criteria = || SearchCriteria {
+        monitored_episodes_only: false,
         kind: SearchKind::SingleEpisode {
             season: 1,
             episode: 1,
@@ -340,6 +347,7 @@ fn languages_fall_back_to_the_original_language() {
     let library = library();
     let settings = settings();
     let criteria = SearchCriteria {
+        monitored_episodes_only: false,
         kind: SearchKind::SingleEpisode {
             season: 1,
             episode: 1,

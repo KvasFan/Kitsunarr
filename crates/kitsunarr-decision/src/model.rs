@@ -72,6 +72,7 @@ pub struct Episode {
 #[derive(Debug, Clone)]
 pub struct Series {
     pub id: i64,
+    pub monitored: bool,
     pub title: String,
     /// 0 when unknown.
     pub year: i32,
@@ -118,6 +119,22 @@ pub struct SearchCriteria {
     pub kind: SearchKind,
     /// The requested episodes (`SearchCriteria.Episodes`).
     pub episode_ids: Vec<i64>,
+    /// Only monitored episodes are wanted (automatic season and missing searches); interactive
+    /// and single-episode searches take any episode.
+    pub monitored_episodes_only: bool,
+}
+
+/// A download in the queue (grabbed, still in the download client, not imported).
+#[derive(Debug, Clone)]
+pub struct QueuedRelease {
+    pub series_id: i64,
+    pub episode_ids: Vec<i64>,
+    /// The grabbed release's title, for its custom formats.
+    pub title: String,
+    pub quality: QualityModel,
+    pub size: i64,
+    pub languages: Vec<&'static Language>,
+    pub indexer_flags: u32,
 }
 
 #[derive(Debug, Clone)]
@@ -152,6 +169,8 @@ pub struct Settings {
     pub retention_days: i64,
     /// Maximum release size in MB (0: unlimited).
     pub maximum_size_mb: i64,
+    /// Downloads in progress, for `QueueSpecification`.
+    pub queue: Vec<QueuedRelease>,
     pub now: DateTime<Utc>,
 }
 
@@ -197,6 +216,16 @@ pub enum RejectionReason {
     UnknownReleaseGroup,
     ReleaseGroupDoesNotMatch,
     ExistingFileHasMoreEpisodes,
+    SeriesNotMonitored,
+    EpisodeNotMonitored,
+    QueueCutoffMet,
+    QueueHigherPreference,
+    QueueHigherRevision,
+    QueueCustomFormatCutoffMet,
+    QueueCustomFormatScore,
+    QueueCustomFormatScoreIncrement,
+    QueueUpgradesNotAllowed,
+    QueuePropersDisabled,
     DecisionError,
 }
 

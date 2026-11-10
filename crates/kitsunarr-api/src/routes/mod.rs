@@ -120,6 +120,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(search::test_indexer))
         .routes(routes!(search::search_releases))
         .routes(routes!(grab::grab_release))
+        .routes(routes!(search::automatic_search))
         .routes(routes!(grab::test_download_client))
         .routes(routes!(queue::get_queue))
         .routes(routes!(queue::refresh_queue))

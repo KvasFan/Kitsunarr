@@ -5,7 +5,7 @@
 //! imported yet, and keeps a per-download state for the queue. Downloads are never removed from
 //! the client.
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
@@ -76,6 +76,9 @@ pub fn remap(mappings: &[RemotePathMapping], host: &str, path: &str) -> String {
 pub struct Monitor {
     pub qbittorrent: QBittorrent,
     tracked: Arc<Mutex<HashMap<String, Tracked>>>,
+    /// Downloads (upper-case ids) seen in a client and not imported, plus grabs since the last
+    /// refresh: the queue the decisions compare releases with.
+    active: Arc<Mutex<HashSet<String>>>,
     running: Arc<tokio::sync::Mutex<()>>,
 }
 
@@ -94,6 +97,41 @@ impl Monitor {
             .unwrap_or_else(|e| e.into_inner())
             .get(&download_id.to_ascii_uppercase())
             .cloned()
+    }
+
+    /// Records a grab: the download is in the queue until a refresh sees it imported or gone.
+    pub fn note_grabbed(&self, download_id: &str) {
+        self.active
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .insert(download_id.to_ascii_uppercase());
+    }
+
+    /// The grabbed releases still in the queue for a series (`QueueService.GetQueue`, as
+    /// `QueueSpecification` reads it).
+    pub async fn queued_releases(
+        &self,
+        db: &Database,
+        series_id: i64,
+    ) -> Result<Vec<kitsunarr_decision::QueuedRelease>, kitsunarr_db::DbError> {
+        let ids: Vec<String> = self
+            .active
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .iter()
+            .filter(|id| {
+                !matches!(
+                    self.tracked(id),
+                    Some(Tracked {
+                        state: State::Imported,
+                        ..
+                    })
+                )
+            })
+            .cloned()
+            .collect();
+        let grabs = history::grabs_for(db, &ids).await?;
+        Ok(queued_from_grabs(&grabs, series_id))
     }
 
     fn set(&self, id: &str, state: State, messages: Vec<String>) {
@@ -118,6 +156,7 @@ impl Monitor {
             .await
             .map_err(|e| e.to_string())?;
         let (mut imported, mut blocked, mut failed_clients) = (0usize, 0usize, Vec::new());
+        let mut seen = HashSet::new();
         for client in &clients {
             let Ok(settings) = qbittorrent::Settings::from_map(&client.settings) else {
                 failed_clients.push(client.name.clone());
@@ -131,6 +170,7 @@ impl Monitor {
                     continue;
                 }
             };
+            seen.extend(items.iter().map(|i| i.download_id.to_ascii_uppercase()));
             let completed: Vec<_> = items
                 .into_iter()
                 .filter(|i| i.status == ItemStatus::Completed)
@@ -229,6 +269,24 @@ impl Monitor {
                 }
             }
         }
+        {
+            let mut active = self.active.lock().unwrap_or_else(|e| e.into_inner());
+            if failed_clients.is_empty() {
+                // Downloads gone from the clients leave the queue.
+                active.retain(|id| seen.contains(id));
+            }
+            active.extend(seen);
+            let tracked = self.tracked.lock().unwrap_or_else(|e| e.into_inner());
+            active.retain(|id| {
+                !matches!(
+                    tracked.get(id),
+                    Some(Tracked {
+                        state: State::Imported,
+                        ..
+                    })
+                )
+            });
+        }
         let mut summary = format!("{imported} downloads imported, {blocked} need attention");
         if !failed_clients.is_empty() {
             summary.push_str(&format!("; could not read: {}", failed_clients.join(", ")));
@@ -237,9 +295,88 @@ impl Monitor {
     }
 }
 
+/// One queued release per download of the series, from its grab history.
+pub fn queued_from_grabs(
+    grabs: &[history::GrabRecord],
+    series_id: i64,
+) -> Vec<kitsunarr_decision::QueuedRelease> {
+    let mut out: Vec<(String, kitsunarr_decision::QueuedRelease)> = Vec::new();
+    for g in grabs.iter().filter(|g| g.series_id == Some(series_id)) {
+        let key = g.download_id.to_ascii_uppercase();
+        if let Some((_, q)) = out.iter_mut().find(|(k, _)| *k == key) {
+            if let Some(e) = g.episode_id
+                && !q.episode_ids.contains(&e)
+            {
+                q.episode_ids.push(e);
+            }
+            continue;
+        }
+        let data: serde_json::Value = serde_json::from_str(&g.data).unwrap_or_default();
+        let text = |k: &str| {
+            data.get(k).and_then(|v| match v {
+                serde_json::Value::String(s) => s.parse::<i64>().ok(),
+                other => other.as_i64(),
+            })
+        };
+        let languages: Vec<i32> = g
+            .languages
+            .as_deref()
+            .and_then(|l| serde_json::from_str(l).ok())
+            .unwrap_or_default();
+        out.push((
+            key,
+            kitsunarr_decision::QueuedRelease {
+                series_id,
+                episode_ids: g.episode_id.into_iter().collect(),
+                title: g.source_title.clone(),
+                quality: kitsunarr_domain::quality::QualityModel {
+                    quality_id: g.quality_id.unwrap_or(0) as i32,
+                    revision: g
+                        .revision
+                        .as_deref()
+                        .and_then(|r| serde_json::from_str(r).ok())
+                        .unwrap_or_default(),
+                },
+                size: text("size").unwrap_or(0),
+                languages: languages
+                    .into_iter()
+                    .filter_map(kitsunarr_domain::Language::by_id)
+                    .collect(),
+                indexer_flags: text("indexerFlags").unwrap_or(0) as u32,
+            },
+        ));
+    }
+    out.into_iter().map(|(_, q)| q).collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn grabs_become_one_queued_release_per_download() {
+        let grab = |id: &str, episode: i64| history::GrabRecord {
+            download_id: id.into(),
+            date: "2026-11-10T10:00:00Z".into(),
+            source_title: "Show.S01E01E02.720p.HDTV.x264-GRP".into(),
+            series_id: Some(3),
+            episode_id: Some(episode),
+            quality_id: Some(4),
+            revision: Some(r#"{"version":2,"real":0,"isRepack":false}"#.into()),
+            languages: Some("[1]".into()),
+            data: r#"{"size":"1500","indexerFlags":"8"}"#.into(),
+        };
+        let mut other = grab("ffff", 9);
+        other.series_id = Some(4);
+        let q = queued_from_grabs(&[grab("abcd", 1), grab("ABCD", 2), other], 3);
+        assert_eq!(q.len(), 1);
+        assert_eq!(q[0].episode_ids, vec![1, 2]);
+        assert_eq!(q[0].quality.quality_id, 4);
+        assert_eq!(q[0].quality.revision.version, 2);
+        assert_eq!(q[0].size, 1500);
+        assert_eq!(q[0].indexer_flags, 8);
+        assert_eq!(q[0].languages.len(), 1);
+    }
 
     #[test]
     fn remote_paths_are_remapped_by_host_and_prefix() {

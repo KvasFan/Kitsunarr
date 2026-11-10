@@ -234,9 +234,29 @@ pub async fn grab_release(
             "The release could not be matched to episodes of the series, so it cannot be grabbed (choosing episodes by hand is not implemented yet).",
         ));
     }
+    let target = pick_client(&state, &cached).await?;
+    send(&state, &cached, target).await.map(Json)
+}
+
+/// The download client a release goes to, with its parsed settings and the series' tags.
+pub(crate) struct Target {
+    client: ProviderRecord,
+    settings: qbittorrent::Settings,
+    series_tags: Vec<i64>,
+}
+
+/// Chooses the download client for a release (`DownloadClientProvider.GetDownloadClient`).
+/// Errors mean no usable client for the release's protocol (`DownloadClientUnavailableException`).
+pub(crate) async fn pick_client(state: &AppState, cached: &CachedRelease) -> ApiResult<Target> {
     let release = &cached.release.release;
     let series = series::get_list_item(&state.db, cached.series_id).await?;
-    let client = choose_client(&state, release.protocol, req.indexer_id, &series.tags).await?;
+    let client = choose_client(
+        state,
+        release.protocol,
+        cached.release.indexer_id,
+        &series.tags,
+    )
+    .await?;
     if !kitsunarr_downloaders::supported(&client.implementation) {
         return Err(ApiError::field(
             "guid",
@@ -255,6 +275,26 @@ pub async fn grab_release(
             ),
         )
     })?;
+    Ok(Target {
+        client,
+        settings,
+        series_tags: series.tags,
+    })
+}
+
+/// Sends a release to its download client and records the grab (`DownloadService.DownloadReport`).
+pub(crate) async fn send(
+    state: &AppState,
+    cached: &CachedRelease,
+    target: Target,
+) -> ApiResult<GrabResult> {
+    let Target {
+        client,
+        settings,
+        series_tags,
+    } = target;
+    let release = &cached.release.release;
+    let indexer_id = cached.release.indexer_id;
     let failed = |m: String| ApiError::field("guid", m);
 
     // `TorrentClientBase.Download`: the magnet link first (qBittorrent does not prefer
@@ -275,7 +315,7 @@ pub async fn grab_release(
         tags::list(state.db.pool())
             .await?
             .into_iter()
-            .filter(|t| series.tags.contains(&t.id))
+            .filter(|t| series_tags.contains(&t.id))
             .map(|t| t.label)
             .collect()
     } else {
@@ -312,13 +352,13 @@ pub async fn grab_release(
             matches!(result, Err(DownloadError::Unsupported(_))) && torrent_url.is_some();
         if !fall_back {
             let id = result.map_err(|e| failed(describe(&e)))?;
-            return finish(&state, &cached, &client, id).await;
+            return finish(state, cached, &client, id).await;
         }
     }
     if let Some(url) = torrent_url {
         let fetched = state
             .indexers
-            .download(req.indexer_id, &url, "application/x-bittorrent")
+            .download(indexer_id, &url, "application/x-bittorrent")
             .await
             .map_err(|e| failed(format!("Downloading the torrent failed: {e}")))?;
         result = match fetched {
@@ -350,7 +390,7 @@ pub async fn grab_release(
         };
     }
     let id = result.map_err(|e| failed(describe(&e)))?;
-    finish(&state, &cached, &client, id).await
+    finish(state, cached, &client, id).await
 }
 
 /// `FileNameBuilder.CleanFileName`, simplified: characters that are invalid in file names.
@@ -367,7 +407,7 @@ async fn finish(
     cached: &CachedRelease,
     client: &ProviderRecord,
     download_id: String,
-) -> ApiResult<Json<GrabResult>> {
+) -> ApiResult<GrabResult> {
     let r = &cached.release;
     let data = serde_json::json!({
         "indexer": r.indexer,
@@ -410,10 +450,11 @@ async fn finish(
         )
         .await?;
     }
+    state.downloads.note_grabbed(&download_id);
     tracing::info!(release = %r.release.title, client = %client.name, %download_id, "release grabbed");
-    Ok(Json(GrabResult {
+    Ok(GrabResult {
         download_client: client.name.clone(),
         message: format!("Sent \"{}\" to {}.", r.release.title, client.name),
         download_id,
-    }))
+    })
 }

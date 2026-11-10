@@ -190,7 +190,8 @@ Regular expressions in custom formats and release profiles run on the .NET-seman
 
 Known differences, all reported rather than hidden:
 
-- **Checks that need missing data are not evaluated yet:** the blocklist, the download queue, grab history, pending releases, free space, scene mappings (TheXEM) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
+- **The download queue** is checked against the downloads Kitsunarr grabbed that a download client still holds and that are not imported. The list is kept in memory: it is filled by grabs and by the minute-by-minute download check, so after a restart it is complete only after the first check.
+- **Checks that need missing data are not evaluated yet:** the blocklist, grab history, pending releases, free space, scene mappings (TheXEM) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
 - **Settings:** minimum age, retention and maximum size (Settings › Indexers › Options) and "propers and repacks" (Settings › Media management) are Kitsunarr settings, migrated from the source's database `Config` keys or its `/config/indexer` and `/config/mediamanagement` API. Season-pack upgrades use Sonarr's default (every episode must be missing or upgradable), as that setting does not exist in Sonarr 4.
 - **Releases of other library series are rejected as "Wrong series" without evaluating that series' episodes and profile.** They are listed after the searched series' releases, in arrival order; upstream orders series groups by first appearance.
 - **A custom format specification that cannot be evaluated never matches, and a warning is shown with the search results.** This covers an unknown implementation, such as Tanukarr's `SeasonPackSpecification`, and an invalid pattern. Sonarr would refuse to load such a format.
@@ -253,3 +254,13 @@ Differences:
 - **No media info:** media-info tokens render empty, as upstream does for files without media info.
 - **Movies:** movie folders still use the simple helper, which covers Tanukarr's default movie formats.
 - **Default multi-episode style:** corrected to Sonarr's (PrefixedRange). Kitsunarr previously defaulted to Extend.
+
+## 19. Automatic search: Sonarr's processing of decisions, run on request
+
+`POST /releases/search` runs the same search as interactive search for a season or an episode, on the indexers enabled for automatic search, then grabs as `ProcessDownloadDecisions.ProcessDecisions` does: approved releases best first; a release is skipped when one of its episodes was already grabbed by this search; when no download client is usable for a protocol, the remaining releases of that protocol are skipped. Automatic season searches only want monitored episodes (`MonitoredEpisodeSpecification`); episode searches take the requested episode whatever its flag, as Sonarr's `EpisodeSearch` command does.
+
+Differences:
+
+- **Runs while the request waits:** Sonarr queues a command and reports through its command list. Kitsunarr answers with the outcome (releases found and approved, grabs, failures), shown as a notification. Scheduled searches (missing, cutoff unmet, RSS) are not implemented yet.
+- **Not covered yet:** pending releases (delay profiles hold nothing back: delays are not evaluated) and Usenet grabs (no Usenet client yet).
+

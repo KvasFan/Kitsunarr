@@ -32,6 +32,7 @@ fn items() -> Vec<QualityProfileItem> {
 
 fn series() -> Series {
     Series {
+        monitored: true,
         id: 1,
         title: "Series Title".into(),
         year: 0,
@@ -61,6 +62,7 @@ fn series() -> Series {
 
 fn settings() -> Settings {
     Settings {
+        queue: Vec::new(),
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -593,6 +595,7 @@ impl Case {
             },
             episodes: vec![ep(5, 1, 1, 30)],
             criteria: SearchCriteria {
+                monitored_episodes_only: false,
                 kind: SearchKind::SingleEpisode {
                     season: 1,
                     episode: 1,
@@ -1135,4 +1138,121 @@ fn not_sample_multi_season_split_and_full_season() {
     assert!(c.accepted(specs::full_season));
     c.episodes[1].air_date_utc = None;
     assert!(!c.accepted(specs::full_season));
+}
+
+/// `MonitoredEpisodeSpecificationFixture`.
+#[test]
+fn monitored_episode_specification_fixture() {
+    let mut c = Case::new();
+    c.criteria.monitored_episodes_only = true;
+    c.episodes = vec![ep(1, 1, 1, 30), ep(2, 1, 2, 30)];
+    assert!(c.accepted(specs::monitored_episode), "all monitored");
+    c.series.monitored = false;
+    assert_eq!(
+        c.check(specs::monitored_episode).unwrap().message,
+        "Series is not monitored"
+    );
+    c.series.monitored = true;
+    c.episodes[1].monitored = false;
+    assert_eq!(
+        c.check(specs::monitored_episode).unwrap().message,
+        "One or more episodes is not monitored"
+    );
+    c.episodes[0].monitored = false;
+    assert!(!c.accepted(specs::monitored_episode), "both unmonitored");
+    c.episodes.truncate(1);
+    assert_eq!(
+        c.check(specs::monitored_episode).unwrap().message,
+        "Episode is not monitored"
+    );
+    // Searches that are not limited to monitored episodes (single episode, interactive).
+    c.criteria.monitored_episodes_only = false;
+    c.series.monitored = false;
+    assert!(c.accepted(specs::monitored_episode));
+}
+
+/// `QueueSpecificationFixture` (the subject is a DVD release of episode 5).
+mod queue_specification_fixture {
+    use super::*;
+
+    fn case(queued: &[(i64, Vec<i64>, i32, i32)]) -> Case {
+        let mut c = Case::new();
+        c.series.profile.upgrade_allowed = true;
+        c.series.profile.cutoff = BLURAY1080P;
+        c.parsed.quality = quality(2, 1, 0);
+        c.settings.queue = queued
+            .iter()
+            .map(|(series_id, episodes, q, version)| QueuedRelease {
+                series_id: *series_id,
+                episode_ids: episodes.clone(),
+                title: "Series.Title.S01E01.GRP".into(),
+                quality: QualityModel {
+                    quality_id: *q,
+                    revision: Revision {
+                        version: *version,
+                        ..Default::default()
+                    },
+                },
+                size: 0,
+                languages: Vec::new(),
+                indexer_flags: 0,
+            })
+            .collect();
+        c
+    }
+
+    const DVD: i32 = 2;
+
+    #[test]
+    fn queue_matching() {
+        assert!(case(&[]).accepted(specs::queue), "empty queue");
+        assert!(
+            case(&[(2, vec![5], DVD, 1)]).accepted(specs::queue),
+            "other series"
+        );
+        assert!(
+            case(&[(1, vec![6], DVD, 1)]).accepted(specs::queue),
+            "other episode"
+        );
+        assert!(
+            case(&[(1, vec![5], SDTV, 1)]).accepted(specs::queue),
+            "lower quality queued"
+        );
+        assert_eq!(
+            case(&[(1, vec![5], DVD, 1)])
+                .check(specs::queue)
+                .unwrap()
+                .reason,
+            RejectionReason::QueueCustomFormatScore,
+            "everything the same"
+        );
+        assert_eq!(
+            case(&[(1, vec![5], HDTV720P, 1)])
+                .check(specs::queue)
+                .unwrap()
+                .message,
+            "Release in queue is of equal or higher preference: HDTV-720p v1"
+        );
+        // A multi-episode download holding one of the episodes.
+        assert!(!case(&[(1, vec![4, 5], HDTV720P, 1)]).accepted(specs::queue));
+    }
+
+    #[test]
+    fn cutoff_and_upgrades() {
+        let mut c = case(&[(1, vec![5], HDTV720P, 1)]);
+        c.series.profile.cutoff = DVD;
+        assert_eq!(
+            c.check(specs::queue).unwrap().message,
+            "Release in queue already meets cutoff: HDTV-720p v1"
+        );
+        let mut c = case(&[(1, vec![5], BLURAY1080P, 1)]);
+        c.series.profile.upgrade_allowed = false;
+        assert!(!c.accepted(specs::queue));
+        // should_return_false_if_same_quality_non_proper_in_queue_and_download_propers_is_do_not_upgrade
+        let mut c = case(&[(1, vec![5], HDTV720P, 1)]);
+        c.parsed.quality = quality(HDTV720P, 2, 0);
+        c.series.profile.cutoff = HDTV720P;
+        c.settings.propers = ProperDownloadType::DoNotUpgrade;
+        assert!(!c.accepted(specs::queue));
+    }
 }

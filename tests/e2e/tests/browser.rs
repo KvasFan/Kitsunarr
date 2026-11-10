@@ -602,6 +602,29 @@ async fn first_run_setup_migration_and_library() {
             .await
             .unwrap();
 
+        // Automatic search.
+        // Centred first: notifications from earlier steps cover the bottom of the window.
+        let auto = client
+            .find(Locator::Css("button[aria-label='Automatic search for Season 1']"))
+            .await
+            .unwrap();
+        client
+            .execute(
+                "arguments[0].scrollIntoView({block: 'center'})",
+                vec![serde_json::to_value(&auto).unwrap()],
+            )
+            .await
+            .unwrap();
+        auto.click().await.unwrap();
+        // Only indexers enabled for automatic search are used: the migrated NZBgeek has it off,
+        // so only the unreachable Nyaa indexer is searched, and its failure is reported.
+        wait_text(
+            &client,
+            "Automatic search for Season 1: 0 releases found, 0 approved, nothing grabbed. Prowlarr Nyaa (fixture) failed: Could not connect to the indexer",
+        )
+        .await;
+        screenshot(&client, "16b-automatic-search").await;
+
         // The queue reads the migrated qBittorrent client (an unreachable fixture address).
         client
             .goto(&format!("{base}/activity/queue"))

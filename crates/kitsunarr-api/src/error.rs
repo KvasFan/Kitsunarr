@@ -44,6 +44,23 @@ impl ApiError {
         }])
     }
 
+    /// A message for people: field messages for validation errors; internal details stay in
+    /// the log.
+    pub fn message(&self) -> String {
+        match self {
+            ApiError::Validation(fields) => fields
+                .iter()
+                .map(|f| f.message.as_str())
+                .collect::<Vec<_>>()
+                .join(" "),
+            ApiError::Internal(detail) => {
+                tracing::error!(error = %detail, "internal error");
+                "Internal error; see the log.".into()
+            }
+            other => other.to_string(),
+        }
+    }
+
     fn parts(&self) -> (StatusCode, &'static str) {
         match self {
             ApiError::NotFound(_) => (StatusCode::NOT_FOUND, "not_found"),

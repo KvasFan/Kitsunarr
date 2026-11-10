@@ -14,10 +14,56 @@ use crate::components::media::Poster;
 use crate::components::releases::ReleaseSearch;
 use crate::components::vlist::VirtualList;
 use crate::route::Route;
-use crate::state::{use_app, use_client};
+use crate::state::{ToastLevel, use_app, use_client};
 use crate::util::{format_bytes, format_date, relative};
 
 const ROW_HEIGHT: f64 = 42.0;
+
+/// The toast for an automatic search's outcome.
+fn automatic_summary(
+    label: &str,
+    r: &kitsunarr_domain::api::search::AutomaticSearchResult,
+) -> (ToastLevel, String) {
+    if r.searched_indexers == 0 {
+        return (
+            ToastLevel::Warning,
+            "No indexer is enabled for automatic search.".into(),
+        );
+    }
+    let mut parts = Vec::new();
+    if r.grabbed.is_empty() {
+        parts.push(format!(
+            "Automatic search for {label}: {} releases found, {} approved, nothing grabbed.",
+            r.found, r.approved
+        ));
+    } else {
+        let titles: Vec<String> = r
+            .grabbed
+            .iter()
+            .map(|g| format!("{} ({})", g.title, g.download_client))
+            .collect();
+        parts.push(format!(
+            "Automatic search for {label}: grabbed {}.",
+            titles.join(", ")
+        ));
+    }
+    for f in &r.grab_failures {
+        parts.push(format!("Could not grab {}: {}", f.title, f.message));
+    }
+    if !r.failures.is_empty() {
+        for f in &r.failures {
+            parts.push(format!("{} failed: {}", f.indexer, f.message));
+        }
+    }
+    let level = if !r.grab_failures.is_empty() || !r.failures.is_empty() {
+        ToastLevel::Warning
+    } else if r.grabbed.is_empty() {
+        ToastLevel::Info
+    } else {
+        ToastLevel::Success
+    };
+    (level, parts.join(" "))
+}
 
 /// "Refresh metadata" button. Disabled, with an explanation, for titles owned by a catalogue
 /// Kitsunarr cannot query yet (for example TheTVDB series migrated from Sonarr).
@@ -87,6 +133,25 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 Err(e) => app.error(&e),
             }
             refreshing.set(false);
+        });
+    };
+    let c6 = client.clone();
+    let auto_search = move |(season, episode_id, label): (Option<i32>, Option<i64>, String)| {
+        let c = c6.clone();
+        app.toast(ToastLevel::Info, format!("Searching for {label}…"));
+        spawn(async move {
+            let q = kitsunarr_domain::api::search::ReleaseQuery {
+                series_id: id,
+                season_number: season,
+                episode_id,
+            };
+            match c.automatic_search(&q).await {
+                Ok(r) => {
+                    let (level, message) = automatic_summary(&label, &r);
+                    app.toast(level, message);
+                }
+                Err(e) => app.error(&e),
+            }
         });
     };
     let c4 = client.clone();
@@ -210,6 +275,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 },
                 on_changed: move |_| episodes.restart(),
                 on_search: move |target| searching.set(Some(target)),
+                on_auto_search: auto_search.clone(),
             }
         }
     }
@@ -227,6 +293,7 @@ fn SeasonPanel(
     on_season_monitor: EventHandler<(i32, bool)>,
     on_changed: EventHandler<()>,
     on_search: EventHandler<(Option<i32>, Option<i64>, String)>,
+    on_auto_search: EventHandler<(Option<i32>, Option<i64>, String)>,
 ) -> Element {
     let app = use_app();
     let client = use_client();
@@ -266,8 +333,21 @@ fn SeasonPanel(
                 }
                 button {
                     class: "btn sm ghost",
+                    "aria-label": "Automatic search for {label}",
+                    title: "Search the indexers and grab the best releases for the monitored episodes",
+                    onclick: {
+                        let label = label.clone();
+                        move |e: MouseEvent| {
+                            e.stop_propagation();
+                            on_auto_search.call((Some(season_number), None, label.clone()));
+                        }
+                    },
+                    "Search"
+                }
+                button {
+                    class: "btn sm ghost",
                     "aria-label": "Search indexers for {label}",
-                    title: "Interactive search",
+                    title: "Interactive search: see every release and choose",
                     onclick: {
                         let label = label.clone();
                         move |e: MouseEvent| {
@@ -275,7 +355,7 @@ fn SeasonPanel(
                             on_search.call((Some(season_number), None, label.clone()));
                         }
                     },
-                    "Search"
+                    "Interactive"
                 }
             }
             if open() {
@@ -311,13 +391,21 @@ fn SeasonPanel(
                                 }
                                 {
                                     let label = format!("S{:02}E{:02}", e.season_number, e.episode_number);
+                                    let label2 = label.clone();
                                     rsx! {
                                         button {
                                             class: "btn sm ghost icon",
-                                            "aria-label": "Search indexers for {label}",
-                                            title: "Interactive search",
-                                            onclick: move |_| on_search.call((None, Some(ep_id), label.clone())),
+                                            "aria-label": "Automatic search for {label}",
+                                            title: "Automatic search: grab the best release",
+                                            onclick: move |_| on_auto_search.call((None, Some(ep_id), label2.clone())),
                                             "⌕"
+                                        }
+                                        button {
+                                            class: "btn sm ghost icon",
+                                            "aria-label": "Search indexers for {label}",
+                                            title: "Interactive search: see every release and choose",
+                                            onclick: move |_| on_search.call((None, Some(ep_id), label.clone())),
+                                            "☰"
                                         }
                                     }
                                 }

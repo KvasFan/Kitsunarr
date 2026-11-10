@@ -128,7 +128,7 @@ fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
 
 /// Every specification, in a stable (alphabetical) order.
 pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
-    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 24] = [
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 26] = [
         acceptable_size,
         anime_version_upgrade,
         custom_format_allowed_by_profile,
@@ -137,10 +137,12 @@ pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
         indexer_tag,
         maximum_size,
         minimum_age,
+        monitored_episode,
         multi_season,
         not_sample,
         protocol,
         quality_allowed_by_profile,
+        queue,
         raw_disk,
         release_restrictions,
         repack,
@@ -807,6 +809,137 @@ pub(crate) fn upgrade_disk(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> 
             ),
         };
         return Some(Rejection::new(code, message));
+    }
+    None
+}
+
+/// `RssSync/MonitoredEpisodeSpecification`.
+pub(crate) fn monitored_episode(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if !env.criteria.monitored_episodes_only {
+        return None;
+    }
+    if !env.series.monitored {
+        return Some(Rejection::new(
+            R::SeriesNotMonitored,
+            "Series is not monitored",
+        ));
+    }
+    let monitored = s.episodes.iter().filter(|e| e.monitored).count();
+    if monitored == s.episodes.len() {
+        return None;
+    }
+    Some(if s.episodes.len() == 1 {
+        Rejection::new(R::EpisodeNotMonitored, "Episode is not monitored")
+    } else {
+        Rejection::new(
+            R::EpisodeNotMonitored,
+            "One or more episodes is not monitored",
+        )
+    })
+}
+
+/// `QueueSpecification`: an episode already downloading at the same or better preference.
+pub(crate) fn queue(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let profile = env.profile();
+    let ids: Vec<i64> = s.episodes.iter().map(|e| e.id).collect();
+    let new = model(s.parsed);
+    let p = &env.series.profile;
+    for q in
+        env.settings.queue.iter().filter(|q| {
+            q.series_id == env.series.id && q.episode_ids.iter().any(|e| ids.contains(e))
+        })
+    {
+        let parsed = kitsunarr_parser::parse_title(&q.title);
+        let input = CustomFormatInput {
+            release_title: &q.title,
+            file_name: None,
+            release_group: parsed.as_ref().and_then(|p| p.release_group.as_deref()),
+            quality: q.quality.quality(),
+            size: q.size,
+            indexer_flags: q.indexer_flags,
+            languages: &q.languages,
+            release_type: parsed
+                .as_ref()
+                .map_or(kitsunarr_parser::ReleaseType::Unknown, |p| p.release_type()),
+            original_language: env.series.original_language,
+        };
+        let queued_formats = evaluate(env.formats, &input);
+        let queued_score = profile.format_score(queued_formats.iter().map(|f| &f.id));
+        let label = quality_model_label(&q.quality);
+        if !profile.cutoff_not_met(&q.quality, queued_score, Some(&new)) {
+            return Some(Rejection::new(
+                R::QueueCutoffMet,
+                format!("Release in queue already meets cutoff: {label}"),
+            ));
+        }
+        let reason = profile
+            .is_upgradable(
+                &q.quality,
+                queued_score,
+                &new,
+                s.score,
+                env.settings.propers,
+            )
+            .err();
+        let rejection = match reason {
+            None => None,
+            Some(UpgradeRejectReason::BetterQuality) => Some((
+                R::QueueHigherPreference,
+                format!("Release in queue is of equal or higher preference: {label}"),
+            )),
+            Some(UpgradeRejectReason::BetterRevision) => Some((
+                R::QueueHigherRevision,
+                format!(
+                    "Release in queue is of equal or higher revision: {}",
+                    revision_label(&q.quality.revision)
+                ),
+            )),
+            Some(UpgradeRejectReason::QualityCutoff) => Some((
+                R::QueueCutoffMet,
+                format!(
+                    "Release in queue meets quality cutoff: {}",
+                    profile.item_label(profile.index_of(p.cutoff, false).index)
+                ),
+            )),
+            Some(UpgradeRejectReason::CustomFormatCutoff) => Some((
+                R::QueueCustomFormatCutoffMet,
+                format!(
+                    "Release in queue meets Custom Format cutoff: {}",
+                    p.cutoff_format_score
+                ),
+            )),
+            Some(UpgradeRejectReason::CustomFormatScore) => Some((
+                R::QueueCustomFormatScore,
+                format!(
+                    "Release in queue has an equal or higher Custom Format score: {queued_score}"
+                ),
+            )),
+            Some(UpgradeRejectReason::MinCustomFormatScore) => Some((
+                R::QueueCustomFormatScoreIncrement,
+                format!(
+                    "Release in queue has Custom Format score within Custom Format score increment: {}",
+                    p.min_upgrade_format_score
+                ),
+            )),
+            Some(UpgradeRejectReason::UpgradesNotAllowed) => Some((
+                R::QueueUpgradesNotAllowed,
+                format!(
+                    "Release in queue and Quality Profile '{}' does not allow upgrades",
+                    p.name
+                ),
+            )),
+        };
+        if let Some((code, message)) = rejection {
+            return Some(Rejection::new(code, message));
+        }
+        if is_revision_upgrade(&q.quality, &new)
+            && env.settings.propers == ProperDownloadType::DoNotUpgrade
+        {
+            return Some(Rejection::new(
+                R::QueuePropersDisabled,
+                "Proper downloading is disabled",
+            ));
+        }
     }
     None
 }

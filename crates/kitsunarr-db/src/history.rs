@@ -52,6 +52,10 @@ pub struct GrabRecord {
     pub series_id: Option<i64>,
     pub episode_id: Option<i64>,
     pub quality_id: Option<i64>,
+    /// JSON `Revision`.
+    pub revision: Option<String>,
+    /// JSON list of language ids.
+    pub languages: Option<String>,
     pub data: String,
 }
 
@@ -61,8 +65,8 @@ pub async fn grabs_for(db: &Database, download_ids: &[String]) -> DbResult<Vec<G
         return Ok(Vec::new());
     }
     let mut q = sqlx::QueryBuilder::new(
-        "SELECT download_id, date, source_title, series_id, episode_id, quality_id, data FROM history \
-         WHERE event_type = 'grabbed' AND download_id IS NOT NULL AND upper(download_id) IN (",
+        "SELECT download_id, date, source_title, series_id, episode_id, quality_id, revision, languages, data \
+         FROM history WHERE event_type = 'grabbed' AND download_id IS NOT NULL AND upper(download_id) IN (",
     );
     let mut sep = q.separated(", ");
     for id in download_ids {

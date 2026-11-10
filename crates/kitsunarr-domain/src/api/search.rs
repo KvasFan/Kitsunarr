@@ -132,6 +132,45 @@ pub struct GrabResult {
     pub message: String,
 }
 
+/// A release an automatic search sent to a download client.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AutomaticGrab {
+    pub title: String,
+    pub download_client: String,
+    pub download_id: String,
+}
+
+/// A release an automatic search chose but could not send.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AutomaticGrabFailure {
+    pub title: String,
+    pub message: String,
+}
+
+/// `POST /releases/search`: the outcome of an automatic search (Sonarr's `EpisodeSearch` and
+/// `SeasonSearch` commands).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AutomaticSearchResult {
+    pub description: String,
+    /// Indexers queried (enabled for automatic search).
+    pub searched_indexers: usize,
+    pub failures: Vec<IndexerFailure>,
+    #[serde(default)]
+    pub warnings: Vec<String>,
+    /// Releases the indexers returned.
+    pub found: usize,
+    /// Releases with no rejection.
+    pub approved: usize,
+    pub grabbed: Vec<AutomaticGrab>,
+    pub grab_failures: Vec<AutomaticGrabFailure>,
+}
+
 /// `POST /providers/downloadclients/test` result.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

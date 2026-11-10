@@ -9,8 +9,8 @@ use kitsunarr_decision::{self as decision, Decision, Engine, SearchKind};
 use kitsunarr_domain::api::error::ApiErrorBody;
 use kitsunarr_domain::api::library::{EpisodeItem, SeriesDetail};
 use kitsunarr_domain::api::search::{
-    IndexerFailure, IndexerTestRequest, IndexerTestResult, ReleaseItem, ReleaseQuery,
-    ReleaseSearchResult,
+    AutomaticGrab, AutomaticGrabFailure, AutomaticSearchResult, IndexerFailure, IndexerTestRequest,
+    IndexerTestResult, ReleaseItem, ReleaseQuery, ReleaseSearchResult,
 };
 use kitsunarr_domain::api::settings::{
     IndexerOptionsSettings, MediaManagementSettings, ProviderKind,
@@ -257,6 +257,17 @@ fn episode_searches(
     })
 }
 
+/// A finished search: its decisions, best first, over `releases`.
+pub(crate) struct SearchRun {
+    pub decisions: Vec<Decision>,
+    pub releases: Vec<IndexerRelease>,
+    pub failures: Vec<IndexerFailure>,
+    pub searched_indexers: usize,
+    pub description: String,
+    pub warnings: Vec<String>,
+    pub series: decision::Series,
+}
+
 /// Search every indexer enabled for interactive search for a season or an episode.
 #[utoipa::path(get, path = "/releases", tag = "search", params(ReleaseQuery),
     responses(
@@ -268,6 +279,110 @@ pub async fn search_releases(
     State(state): State<AppState>,
     Query(q): Query<ReleaseQuery>,
 ) -> ApiResult<Json<ReleaseSearchResult>> {
+    let run = run_search(&state, &q, false).await?;
+    cache(&state, &run, q.series_id);
+    let releases = run
+        .decisions
+        .iter()
+        .map(|d| to_item(run.releases[d.release].clone(), d, q.series_id))
+        .collect();
+    Ok(Json(ReleaseSearchResult {
+        releases,
+        failures: run.failures,
+        searched_indexers: run.searched_indexers,
+        description: run.description,
+        warnings: run.warnings,
+    }))
+}
+
+/// Search the indexers enabled for automatic search for a season or an episode and grab the
+/// best approved releases, as Sonarr's `EpisodeSearch`/`SeasonSearch` commands do.
+#[utoipa::path(post, path = "/releases/search", tag = "search", request_body = ReleaseQuery,
+    responses(
+        (status = 200, body = AutomaticSearchResult),
+        (status = 404, body = ApiErrorBody),
+        (status = 422, body = ApiErrorBody)
+    ))]
+pub async fn automatic_search(
+    State(state): State<AppState>,
+    Json(q): Json<ReleaseQuery>,
+) -> ApiResult<Json<AutomaticSearchResult>> {
+    let run = run_search(&state, &q, true).await?;
+    let (grabbed, grab_failures) = process_decisions(&state, &run, q.series_id).await;
+    Ok(Json(AutomaticSearchResult {
+        description: run.description.clone(),
+        searched_indexers: run.searched_indexers,
+        failures: run.failures.clone(),
+        warnings: run.warnings.clone(),
+        found: run.releases.len(),
+        approved: run.decisions.iter().filter(|d| d.approved()).count(),
+        grabbed,
+        grab_failures,
+    }))
+}
+
+/// `ProcessDownloadDecisions.ProcessDecisions`: the approved releases, best first, each grabbed
+/// unless an episode of it was already grabbed by this search; a protocol whose download client
+/// is unavailable is skipped from then on.
+pub(crate) async fn process_decisions(
+    state: &AppState,
+    run: &SearchRun,
+    series_id: i64,
+) -> (Vec<AutomaticGrab>, Vec<AutomaticGrabFailure>) {
+    let mut grabbed = Vec::new();
+    let mut failures = Vec::new();
+    let mut taken: Vec<i64> = Vec::new();
+    let mut unavailable: Vec<DownloadProtocol> = Vec::new();
+    for d in run.decisions.iter().filter(|d| d.approved()) {
+        let cached = cached_release(run, d, series_id);
+        if cached.episode_ids.is_empty() || cached.episode_ids.iter().any(|e| taken.contains(e)) {
+            continue;
+        }
+        let protocol = cached.release.release.protocol;
+        if unavailable.contains(&protocol) {
+            continue;
+        }
+        let title = cached.release.release.title.clone();
+        let target = match crate::routes::grab::pick_client(state, &cached).await {
+            Ok(t) => t,
+            Err(e) => {
+                unavailable.push(protocol);
+                failures.push(AutomaticGrabFailure {
+                    title,
+                    message: e.message(),
+                });
+                continue;
+            }
+        };
+        match crate::routes::grab::send(state, &cached, target).await {
+            Ok(r) => {
+                taken.extend(&cached.episode_ids);
+                grabbed.push(AutomaticGrab {
+                    title,
+                    download_client: r.download_client,
+                    download_id: r.download_id,
+                });
+            }
+            Err(e) => {
+                tracing::warn!(release = %title, error = %e.message(), "automatic grab failed");
+                failures.push(AutomaticGrabFailure {
+                    title,
+                    message: e.message(),
+                });
+            }
+        }
+    }
+    (grabbed, failures)
+}
+
+/// Searches the indexers enabled for interactive (or, when `automatic`, automatic) search and
+/// decides on every release. Automatic season searches only want monitored episodes, as
+/// upstream's `SeasonSearchCommand` does.
+pub(crate) async fn run_search(
+    state: &AppState,
+    q: &ReleaseQuery,
+    automatic: bool,
+) -> ApiResult<SearchRun> {
     let detail = series::get_detail(&state.db, q.series_id).await?;
     let id_of = |kind: ExternalIdKind| {
         detail
@@ -345,12 +460,17 @@ pub async fn search_releases(
     let mut extras = std::collections::HashMap::new();
     let mut failures = Vec::new();
     for p in providers::list(state.db.pool(), ProviderKind::Indexer).await? {
-        let interactive = p
+        let option = if automatic {
+            "enableAutomaticSearch"
+        } else {
+            "enableInteractiveSearch"
+        };
+        let enabled = p
             .options
-            .get("enableInteractiveSearch")
+            .get(option)
             .and_then(|v| v.as_bool())
             .unwrap_or(true);
-        if !interactive {
+        if !enabled {
             continue;
         }
         let settings = match dialect(&p.implementation) {
@@ -423,7 +543,7 @@ pub async fn search_releases(
         }
     }
 
-    let inputs = DecisionInputs::load(&state, &detail, &episodes).await?;
+    let inputs = DecisionInputs::load(state, &detail, &episodes).await?;
     let engine = Engine {
         series: &inputs.series,
         library: &inputs.library,
@@ -442,6 +562,7 @@ pub async fn search_releases(
             .map(|r| decision_release(r, extras.get(&r.indexer_id)))
             .collect();
         let criteria = decision::SearchCriteria {
+            monitored_episodes_only: automatic && q.episode_id.is_none(),
             kind: *kind,
             episode_ids: requested.clone(),
         };
@@ -453,45 +574,55 @@ pub async fn search_releases(
         all_meta.extend(list);
     }
     let decisions = engine.prioritize(Engine::dedupe(decisions, &all), &all);
-    // Kept for grabbing: download links stay on the server.
-    let recent_cutoff = (chrono::Utc::now() - chrono::Duration::days(14))
-        .date_naive()
-        .and_hms_opt(0, 0, 0)
-        .map(|d| d.and_utc());
-    for d in &decisions {
-        let episodes: Vec<&decision::Episode> = d
-            .episodes
-            .iter()
-            .filter_map(|m| inputs.series.episodes.iter().find(|e| e.id == m.id))
-            .collect();
-        state.releases.insert(crate::routes::grab::CachedRelease {
-            release: all_meta[d.release].clone(),
-            series_id: detail.item.id,
-            episode_ids: episodes.iter().map(|e| e.id).collect(),
-            quality: QualityModel {
-                quality_id: d.quality.quality.id,
-                revision: d.quality.revision,
-            },
-            languages: d.languages.iter().map(|l| l.id).collect(),
-            custom_format_score: d.custom_format_score,
-            release_group: d.parsed.as_ref().and_then(|p| p.release_group.clone()),
-            recent: episodes
-                .iter()
-                .any(|e| matches!((e.air_date_utc, recent_cutoff), (Some(a), Some(c)) if a >= c)),
-            cached_at: std::time::Instant::now(),
-        });
-    }
-    let releases = decisions
-        .iter()
-        .map(|d| to_item(all_meta[d.release].clone(), d, detail.item.id))
-        .collect();
-    Ok(Json(ReleaseSearchResult {
-        releases,
+    Ok(SearchRun {
+        decisions,
+        releases: all_meta,
         failures,
         searched_indexers: indexers.len(),
         description,
         warnings: inputs.warnings,
-    }))
+        series: inputs.series,
+    })
+}
+
+/// Keeps a search's releases for grabbing: download links stay on the server.
+pub(crate) fn cache(state: &AppState, run: &SearchRun, series_id: i64) {
+    for d in &run.decisions {
+        state.releases.insert(cached_release(run, d, series_id));
+    }
+}
+
+/// The grab-cache entry for one decision.
+pub(crate) fn cached_release(
+    run: &SearchRun,
+    d: &Decision,
+    series_id: i64,
+) -> crate::routes::grab::CachedRelease {
+    let recent_cutoff = (chrono::Utc::now() - chrono::Duration::days(14))
+        .date_naive()
+        .and_hms_opt(0, 0, 0)
+        .map(|d| d.and_utc());
+    let episodes: Vec<&decision::Episode> = d
+        .episodes
+        .iter()
+        .filter_map(|m| run.series.episodes.iter().find(|e| e.id == m.id))
+        .collect();
+    crate::routes::grab::CachedRelease {
+        release: run.releases[d.release].clone(),
+        series_id,
+        episode_ids: episodes.iter().map(|e| e.id).collect(),
+        quality: QualityModel {
+            quality_id: d.quality.quality.id,
+            revision: d.quality.revision,
+        },
+        languages: d.languages.iter().map(|l| l.id).collect(),
+        custom_format_score: d.custom_format_score,
+        release_group: d.parsed.as_ref().and_then(|p| p.release_group.clone()),
+        recent: episodes
+            .iter()
+            .any(|e| matches!((e.air_date_utc, recent_cutoff), (Some(a), Some(c)) if a >= c)),
+        cached_at: std::time::Instant::now(),
+    }
 }
 
 /// Indexer settings the decisions read.
@@ -574,6 +705,7 @@ impl DecisionInputs {
         let options: IndexerOptionsSettings =
             kv::get_or_default(db.pool(), kv::KEY_INDEXER_OPTIONS).await?;
         let settings = decision::Settings {
+            queue: state.downloads.queued_releases(db, detail.item.id).await?,
             quality_definitions: quality::list_definitions(db.pool()).await?,
             propers: media.download_propers_and_repacks,
             release_profiles: rules::list_release_profiles(db.pool())
