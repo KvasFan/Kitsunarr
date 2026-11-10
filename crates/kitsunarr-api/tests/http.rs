@@ -650,6 +650,7 @@ async fn catalogue_search_add_and_refresh() {
         series_type: None,
         season_folder: true,
         tags: vec![],
+        search_for_missing: false,
     };
     match client.add_title(&add).await.unwrap_err() {
         ClientError::Api { status, body } => {
@@ -851,6 +852,7 @@ async fn indexer_test_and_interactive_search() {
             series_type: None,
             season_folder: true,
             tags: vec![],
+            search_for_missing: false,
         })
         .await
         .unwrap();
@@ -1238,6 +1240,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             series_type: None,
             season_folder: true,
             tags: vec![],
+            search_for_missing: false,
         })
         .await
         .unwrap();
@@ -1471,6 +1474,94 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     assert_eq!(
         summary,
         "4 releases found (3 for library series), 0 approved, 0 grabbed"
+    );
+
+    // Wanted › Missing: every aired monitored episode without a file (S01E01 is on disk).
+    use kitsunarr_domain::api::wanted::{WantedList, WantedQuery, WantedSearchRequest};
+    let all = WantedQuery {
+        page_size: Some(100),
+        ..Default::default()
+    };
+    let missing = client.wanted_missing(&all).await.unwrap();
+    assert_eq!(missing.total_records, 61);
+    assert!(
+        missing
+            .records
+            .iter()
+            .all(|e| e.series_title == "Breaking Bad")
+    );
+    assert!(!missing.records.iter().any(|e| e.episode_id == pilot.id));
+    let newest = &missing.records[0];
+    assert_eq!((newest.season_number, newest.episode_number), (5, 16));
+    let s2e1 = missing
+        .records
+        .iter()
+        .find(|e| e.season_number == 2 && e.episode_number == 1)
+        .unwrap()
+        .clone();
+    assert_eq!(s2e1.last_search_at, None, "never searched");
+
+    // Searching chosen episodes runs in the background; queued episodes are skipped.
+    let queued = episodes
+        .iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 2)
+        .unwrap();
+    let started = client
+        .search_wanted(&WantedSearchRequest {
+            list: WantedList::Missing,
+            episode_ids: vec![queued.id],
+            monitored: None,
+        })
+        .await
+        .unwrap();
+    assert_eq!((started.episodes, started.searches), (0, 0));
+    assert_eq!(
+        started.message,
+        "Nothing to search: no wanted episode outside the queue."
+    );
+    let started = client
+        .search_wanted(&WantedSearchRequest {
+            list: WantedList::Missing,
+            episode_ids: vec![s2e1.episode_id, queued.id],
+            monitored: None,
+        })
+        .await
+        .unwrap();
+    assert_eq!((started.episodes, started.searches), (1, 1));
+    // The search records its time (nothing in the mock feed is S02E01, so nothing is grabbed).
+    let mut searched = None;
+    for _ in 0..100 {
+        let page = client.wanted_missing(&all).await.unwrap();
+        searched = page
+            .records
+            .into_iter()
+            .find(|e| e.episode_id == s2e1.episode_id)
+            .and_then(|e| e.last_search_at);
+        if searched.is_some() {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert!(searched.is_some(), "the background search ran");
+
+    // Cutoff unmet: with upgrades to Bluray-1080p, the Bluray-720p pilot qualifies.
+    assert_eq!(client.wanted_cutoff(&all).await.unwrap().total_records, 0);
+    let mut profile = client
+        .quality_profiles()
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|p| p.id == 1)
+        .unwrap();
+    profile.upgrade_allowed = true;
+    profile.cutoff = 7;
+    client.update_quality_profile(&profile).await.unwrap();
+    let cutoff = client.wanted_cutoff(&all).await.unwrap();
+    assert_eq!(cutoff.total_records, 1);
+    assert_eq!(cutoff.records[0].episode_id, pilot.id);
+    assert_eq!(
+        cutoff.records[0].quality_name.as_deref(),
+        Some("Bluray-720p")
     );
 
     // The indexer key is in neither the search results nor the history.

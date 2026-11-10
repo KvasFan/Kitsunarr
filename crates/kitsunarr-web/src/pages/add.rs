@@ -273,6 +273,7 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
     };
     let mut series_type = use_signal(|| initial_type);
     let mut season_folder = use_signal(|| true);
+    let mut search_missing = use_signal(|| false);
     let mut tags = use_signal(Vec::<i64>::new);
     let mut busy = use_signal(|| false);
     let mut error = use_signal(|| None::<String>);
@@ -310,6 +311,7 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
             series_type: if is_movie { None } else { Some(series_type()) },
             season_folder: season_folder(),
             tags: tags(),
+            search_for_missing: !is_movie && search_missing(),
         };
         let c = client.clone();
         let name = request_item.title.clone();
@@ -414,6 +416,13 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
                                     checked: season_folder(),
                                     label: if season_folder() { "One folder per season".to_string() } else { "All episodes in the series folder".to_string() },
                                     onchange: move |v| season_folder.set(v),
+                                }
+                            }
+                            Field { label: "Search",
+                                Switch {
+                                    checked: search_missing(),
+                                    label: "Start search for missing episodes".to_string(),
+                                    onchange: move |v| search_missing.set(v),
                                 }
                             }
                         }

@@ -10,6 +10,7 @@ pub mod queue;
 pub mod search;
 pub mod settings;
 pub mod system;
+pub mod wanted;
 
 use utoipa_axum::router::OpenApiRouter;
 use utoipa_axum::routes;
@@ -124,6 +125,9 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(grab::test_download_client))
         .routes(routes!(queue::get_queue))
         .routes(routes!(queue::refresh_queue))
+        .routes(routes!(wanted::missing))
+        .routes(routes!(wanted::cutoff_unmet))
+        .routes(routes!(wanted::search_wanted))
         // migration
         .routes(routes!(migration::create_api_session))
         .routes(routes!(migration::upload_backup))

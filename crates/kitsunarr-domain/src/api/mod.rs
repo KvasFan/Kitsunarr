@@ -14,6 +14,7 @@ pub mod queue;
 pub mod search;
 pub mod settings;
 pub mod system;
+pub mod wanted;
 
 /// Version prefix of the native API.
 pub const API_PREFIX: &str = "/api/v1";

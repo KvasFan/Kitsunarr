@@ -329,7 +329,7 @@ pub async fn search_releases(
     State(state): State<AppState>,
     Query(q): Query<ReleaseQuery>,
 ) -> ApiResult<Json<ReleaseSearchResult>> {
-    let run = run_search(&state, &q, false).await?;
+    let run = run_search(&state, &q, SearchOptions::INTERACTIVE).await?;
     cache(&state, &run, q.series_id);
     let releases = run
         .decisions
@@ -357,7 +357,16 @@ pub async fn automatic_search(
     State(state): State<AppState>,
     Json(q): Json<ReleaseQuery>,
 ) -> ApiResult<Json<AutomaticSearchResult>> {
-    let run = run_search(&state, &q, true).await?;
+    let run = run_search(
+        &state,
+        &q,
+        SearchOptions {
+            automatic: true,
+            monitored_only: q.episode_id.is_none(),
+            episodes: None,
+        },
+    )
+    .await?;
     let (grabbed, grab_failures) =
         process_decisions(&state, &run, q.series_id, &mut Vec::new()).await;
     Ok(Json(AutomaticSearchResult {
@@ -426,14 +435,34 @@ pub(crate) async fn process_decisions(
     (grabbed, failures)
 }
 
-/// Searches the indexers enabled for interactive (or, when `automatic`, automatic) search and
-/// decides on every release. Automatic season searches only want monitored episodes, as
-/// upstream's `SeasonSearchCommand` does.
+/// How a search runs.
+#[derive(Debug, Clone, Copy)]
+pub(crate) struct SearchOptions<'a> {
+    /// Indexers enabled for automatic search (else interactive search).
+    pub automatic: bool,
+    /// Only monitored episodes are wanted (automatic season searches, wanted lists).
+    pub monitored_only: bool,
+    /// For a season search: the requested episodes (default: the whole season).
+    pub episodes: Option<&'a [i64]>,
+}
+
+impl SearchOptions<'_> {
+    pub(crate) const INTERACTIVE: Self = Self {
+        automatic: false,
+        monitored_only: false,
+        episodes: None,
+    };
+}
+
+/// Searches the indexers enabled for interactive or automatic search that share a tag with the
+/// series (or have none), decides on every release and records the episodes' last search time
+/// (`ReleaseSearchService.Dispatch`).
 pub(crate) async fn run_search(
     state: &AppState,
     q: &ReleaseQuery,
-    automatic: bool,
+    options: SearchOptions<'_>,
 ) -> ApiResult<SearchRun> {
+    let automatic = options.automatic;
     let detail = series::get_detail(&state.db, q.series_id).await?;
     let id_of = |kind: ExternalIdKind| {
         detail
@@ -491,11 +520,14 @@ pub(crate) async fn run_search(
                 } else {
                     (Search::Season { season }, SearchKind::Season { season })
                 };
-                let requested = episodes
-                    .iter()
-                    .filter(|e| e.season_number == season)
-                    .map(|e| e.id)
-                    .collect();
+                let requested = match options.episodes {
+                    Some(ids) => ids.to_vec(),
+                    None => episodes
+                        .iter()
+                        .filter(|e| e.season_number == season)
+                        .map(|e| e.id)
+                        .collect(),
+                };
                 (vec![search], format!("Season {season}"), requested)
             }
             (None, None) => {
@@ -511,7 +543,12 @@ pub(crate) async fn run_search(
     } else {
         "enableInteractiveSearch"
     };
-    let (indexers, extras, mut failures) = usable_indexers(state, option).await?;
+    let (mut indexers, extras, mut failures) = usable_indexers(state, option).await?;
+    indexers.retain(|i| {
+        extras.get(&i.id).is_none_or(|x| {
+            x.tags.is_empty() || x.tags.iter().any(|t| detail.item.tags.contains(t))
+        })
+    });
 
     let client = &state.indexers;
     let outcomes = futures::future::join_all(indexers.iter().map(|indexer| {
@@ -546,7 +583,7 @@ pub(crate) async fn run_search(
                 }
             }
             Err(e) => {
-                tracing::warn!(indexer = %indexer.name, error = %e, "interactive search failed");
+                tracing::warn!(indexer = %indexer.name, error = %e, "search failed");
                 failures.push(IndexerFailure {
                     indexer_id: indexer.id,
                     indexer: indexer.name.clone(),
@@ -554,6 +591,11 @@ pub(crate) async fn run_search(
                 });
             }
         }
+    }
+    // `UpdateLastSearchTime` when at least one indexer was searched.
+    if !indexers.is_empty() {
+        let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
+        kitsunarr_db::library::wanted::set_last_search(&state.db, &requested, &now).await?;
     }
 
     let inputs = DecisionInputs::load(state, &detail, &episodes).await?;
@@ -575,7 +617,7 @@ pub(crate) async fn run_search(
             .map(|r| decision_release(r, extras.get(&r.indexer_id)))
             .collect();
         let criteria = decision::SearchCriteria {
-            monitored_episodes_only: automatic && q.episode_id.is_none(),
+            monitored_episodes_only: options.monitored_only,
             kind: *kind,
             episode_ids: requested.clone(),
         };

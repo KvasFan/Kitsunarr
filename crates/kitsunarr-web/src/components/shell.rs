@@ -185,6 +185,7 @@ fn Sidebar() -> Element {
             div { class: "nav-section", "{s.activity}" }
             NavLink { to: Route::Queue {}, icon: "⇣", label: s.queue }
             NavLink { to: Route::Activity {}, icon: "↺", label: s.history }
+            NavLink { to: Route::WantedMissing {}, icon: "◌", label: s.wanted }
             NavLink { to: Route::InteractiveSearch {}, icon: "⌕", label: s.search }
             NavLink { to: Route::AddMedia {}, icon: "+", label: s.add_media }
             NavLink { to: Route::ImportWizard {}, icon: "⇪", label: s.import_migration }

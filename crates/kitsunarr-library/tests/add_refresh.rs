@@ -85,6 +85,7 @@ fn request(provider: MetadataProvider, id: &str, monitor: MonitorOption) -> AddT
         series_type: None,
         season_folder: true,
         tags: vec![],
+        search_for_missing: false,
     }
 }
 

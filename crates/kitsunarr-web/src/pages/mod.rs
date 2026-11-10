@@ -11,3 +11,4 @@ pub mod placeholders;
 pub mod search;
 pub mod settings;
 pub mod system;
+pub mod wanted;

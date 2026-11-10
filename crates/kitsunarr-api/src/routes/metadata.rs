@@ -117,6 +117,9 @@ pub async fn add(
     ensure_supported("provider", req.provider)?;
     let added = kitsunarr_library::add_title(&state.db, &state.metadata, &req).await?;
     changed(&state, &added.media_type, added.id);
+    if req.search_for_missing && added.media_type == "series" {
+        crate::routes::wanted::search_missing_of_series(&state, added.id);
+    }
     Ok((StatusCode::CREATED, Json(added)))
 }
 

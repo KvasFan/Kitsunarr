@@ -318,6 +318,26 @@ impl Client {
     pub async fn grab_release(&self, req: &GrabRequest) -> ClientResult<GrabResult> {
         self.post("/releases/grab", req).await
     }
+    // --- wanted ------------------------------------------------------------------------------
+    pub async fn wanted_missing(
+        &self,
+        q: &kitsunarr_domain::api::wanted::WantedQuery,
+    ) -> ClientResult<Page<kitsunarr_domain::api::wanted::WantedEpisode>> {
+        self.get_query("/wanted/missing", q).await
+    }
+    pub async fn wanted_cutoff(
+        &self,
+        q: &kitsunarr_domain::api::wanted::WantedQuery,
+    ) -> ClientResult<Page<kitsunarr_domain::api::wanted::WantedEpisode>> {
+        self.get_query("/wanted/cutoff", q).await
+    }
+    /// Starts a background search for wanted episodes.
+    pub async fn search_wanted(
+        &self,
+        req: &kitsunarr_domain::api::wanted::WantedSearchRequest,
+    ) -> ClientResult<kitsunarr_domain::api::wanted::WantedSearchStarted> {
+        self.post("/wanted/search", req).await
+    }
     /// Automatic search: searches and grabs the best approved releases.
     pub async fn automatic_search(
         &self,

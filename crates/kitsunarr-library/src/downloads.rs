@@ -114,8 +114,25 @@ impl Monitor {
         db: &Database,
         series_id: i64,
     ) -> Result<Vec<kitsunarr_decision::QueuedRelease>, kitsunarr_db::DbError> {
-        let ids: Vec<String> = self
-            .active
+        let grabs = history::grabs_for(db, &self.active_ids()).await?;
+        Ok(queued_from_grabs(&grabs, series_id))
+    }
+
+    /// Every episode in the queue (`GetQueuedEpisodeIds`), whatever its series.
+    pub async fn queued_episode_ids(
+        &self,
+        db: &Database,
+    ) -> Result<HashSet<i64>, kitsunarr_db::DbError> {
+        Ok(history::grabs_for(db, &self.active_ids())
+            .await?
+            .into_iter()
+            .filter_map(|g| g.episode_id)
+            .collect())
+    }
+
+    /// Queued downloads (upper-case ids) not known to be imported.
+    fn active_ids(&self) -> Vec<String> {
+        self.active
             .lock()
             .unwrap_or_else(|e| e.into_inner())
             .iter()
@@ -129,9 +146,7 @@ impl Monitor {
                 )
             })
             .cloned()
-            .collect();
-        let grabs = history::grabs_for(db, &ids).await?;
-        Ok(queued_from_grabs(&grabs, series_id))
+            .collect()
     }
 
     fn set(&self, id: &str, state: State, messages: Vec<String>) {

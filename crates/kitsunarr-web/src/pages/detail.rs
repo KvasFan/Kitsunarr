@@ -27,7 +27,7 @@ fn automatic_summary(
     if r.searched_indexers == 0 {
         return (
             ToastLevel::Warning,
-            "No indexer is enabled for automatic search.".into(),
+            "No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.".into(),
         );
     }
     let mut parts = Vec::new();

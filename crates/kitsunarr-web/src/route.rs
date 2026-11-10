@@ -20,6 +20,7 @@ use crate::pages::settings::{
     SettingsTags,
 };
 use crate::pages::system::{SystemBackups, SystemLogs, SystemStatusPage, SystemTasks};
+use crate::pages::wanted::{WantedCutoff, WantedMissing};
 
 #[derive(Routable, Clone, PartialEq, Debug)]
 #[rustfmt::skip]
@@ -49,6 +50,10 @@ pub enum Route {
         Queue {},
         #[route("/activity/history")]
         Activity {},
+        #[route("/wanted/missing")]
+        WantedMissing {},
+        #[route("/wanted/cutoffunmet")]
+        WantedCutoff {},
         #[route("/search")]
         InteractiveSearch {},
         #[route("/add")]

@@ -4,6 +4,7 @@ pub mod collections;
 pub mod movies;
 pub mod series;
 pub mod stats;
+pub mod wanted;
 
 /// Escapes `%`, `_` and `\` for use in a `LIKE ... ESCAPE '\'` pattern.
 pub(crate) fn like_pattern(term: &str) -> String {

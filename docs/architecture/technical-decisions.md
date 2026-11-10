@@ -282,3 +282,20 @@ Differences:
 - **No pending releases:** upstream keeps delayed releases and grabs them when the delay ends. Kitsunarr grabs a delayed release only if a later sync still finds it in the feed.
 - **Decisions are made series by series:** releases of different series are ranked separately, and a series that cannot be loaded is skipped and logged.
 
+## 21. Wanted lists and bulk searches
+
+Wanted › Missing ports `EpisodesWithoutFiles`: episodes without a file whose air date plus the series runtime has passed, specials included, either monitored (episode and series) or not. Cutoff unmet ports `EpisodesWhereCutoffUnmet`: episodes whose file quality ranks before the profile's cutoff (the first allowed quality when upgrades are off). As in Sonarr 4, custom format scores do not put an episode on the cutoff list.
+
+Searching ports `EpisodeSearchService.SearchForBulkEpisodes`:
+
+- **Skipped:** episodes already in the queue.
+- **Grouping:** the rest are grouped by series and season, and the groups searched never-searched first, then oldest search first.
+- **Search per group:** a season search limited to the group's episodes when it has several, an episode search otherwise. Each group's approved releases are grabbed as automatic search grabs them (section 19).
+- **Last search time:** every search records it on the searched episodes when at least one indexer was queried (`UpdateLastSearchTime`).
+- **Indexers:** only indexers without tags, or sharing a tag with the series, are searched, as `ReleaseSearchService` does.
+
+Differences:
+
+- **Runs as a background task of the server, not a queued command.** One wanted search runs at a time: another request is refused until it finishes, and a search started by adding a series waits for its turn. The outcome arrives as a notification and in the log.
+- **No scheduled missing or cutoff searches**, as in Sonarr, where they only run on request.
+

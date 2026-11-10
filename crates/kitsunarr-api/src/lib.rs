@@ -69,6 +69,8 @@ pub struct AppStateInner {
     pub releases: routes::grab::ReleaseCache,
     /// The last download client used per protocol (round-robin between equals).
     pub last_download_client: std::sync::Mutex<std::collections::HashMap<String, i64>>,
+    /// Held while a wanted-episodes search runs (one at a time).
+    pub wanted_search: Arc<tokio::sync::Mutex<()>>,
     pub logs: LogBuffer,
 }
 
@@ -108,6 +110,7 @@ impl AppState {
             downloads: kitsunarr_library::downloads::Monitor::new(http.clone()),
             releases: Default::default(),
             last_download_client: Default::default(),
+            wanted_search: Default::default(),
             http,
             metadata,
             logs,
@@ -151,6 +154,7 @@ impl AppState {
         (name = "metadata", description = "Catalogue search, adding titles and metadata refresh"),
         (name = "search", description = "Indexer tests and interactive release search"),
         (name = "queue", description = "Downloads in the download clients"),
+        (name = "wanted", description = "Missing and cutoff-unmet episodes, and searching for them"),
         (name = "settings", description = "Profiles, providers and configuration"),
         (name = "migration", description = "Import from Sonarr and Tanukarr"),
     )

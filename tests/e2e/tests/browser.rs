@@ -555,8 +555,8 @@ async fn first_run_setup_migration_and_library() {
             .click()
             .await
             .unwrap();
-        wait_text(&client, "Season 1: 100 releases from 2 indexer(s)").await;
-        wait_text(&client, "Prowlarr Nyaa (fixture):").await;
+        // The migrated Nyaa indexer is tagged "anime": untagged Breaking Bad does not use it.
+        wait_text(&client, "Season 1: 100 releases from 1 indexer(s)").await;
         // Decisions: the recorded feed's shows are not in the library.
         wait_text(&client, "Unknown Series").await;
         let rows = client
@@ -593,7 +593,7 @@ async fn first_run_setup_migration_and_library() {
             .click()
             .await
             .unwrap();
-        wait_text(&client, "S01E01: 100 releases from 2 indexer(s)").await;
+        wait_text(&client, "S01E01: 100 releases from 1 indexer(s)").await;
         client
             .find(Locator::Css(".modal button[aria-label='Close']"))
             .await
@@ -617,10 +617,10 @@ async fn first_run_setup_migration_and_library() {
             .unwrap();
         auto.click().await.unwrap();
         // Only indexers enabled for automatic search are used: the migrated NZBgeek has it off,
-        // so only the unreachable Nyaa indexer is searched, and its failure is reported.
+        // and the Nyaa indexer is for "anime"-tagged series only.
         wait_text(
             &client,
-            "Automatic search for Season 1: 0 releases found, 0 approved, nothing grabbed. Prowlarr Nyaa (fixture) failed: Could not connect to the indexer",
+            "No indexer can search this series automatically",
         )
         .await;
         screenshot(&client, "16b-automatic-search").await;
@@ -633,6 +633,33 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Read live from the download clients").await;
         wait_text(&client, "qBittorrent").await;
         screenshot(&client, "17-queue").await;
+
+        // Wanted: the migrated library's missing episodes; searching them runs in the background
+        // and reports when done.
+        client
+            .goto(&format!("{base}/wanted/missing"))
+            .await
+            .unwrap();
+        wait_text(&client, "Wanted").await;
+        client
+            .wait()
+            .for_element(Locator::XPath(
+                "//table//tr[.//a[normalize-space(.)='Breaking Bad']]",
+            ))
+            .await
+            .expect("missing Breaking Bad episodes are listed");
+        screenshot(&client, "18-wanted-missing").await;
+        click_button(&client, "Search all").await;
+        wait_text(&client, "a notification follows").await;
+        wait_text(&client, "Searched ").await;
+        client
+            .find(Locator::LinkText("Cutoff unmet"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, "Cutoff unmet").await;
 
         // Sign out returns to the login page.
         click_button(&client, "Sign out").await;

@@ -112,6 +112,10 @@ pub struct AddTitleRequest {
     pub season_folder: bool,
     #[serde(default)]
     pub tags: Vec<i64>,
+    /// Search for the missing monitored episodes once added (Sonarr's "Start search for missing
+    /// episodes").
+    #[serde(default)]
+    pub search_for_missing: bool,
 }
 
 fn default_true() -> bool {
