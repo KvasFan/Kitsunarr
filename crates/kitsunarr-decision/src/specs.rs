@@ -1,0 +1,812 @@
+//! The decision specifications (`DecisionEngine/Specifications`) that apply to searches and for
+//! which Kitsunarr has the data. Each returns `None` to accept or the rejection.
+
+use std::sync::LazyLock;
+
+use kitsunarr_domain::quality::QualityModel;
+use kitsunarr_domain::{DownloadProtocol, SeriesType};
+use kitsunarr_parser::ParsedEpisodeInfo;
+use kitsunarr_parser::netregex::NetRegex;
+
+use crate::custom_format::{CompiledFormat, CustomFormatInput, evaluate};
+use crate::model::{
+    DelayProfile, Episode, EpisodeFile, Rejection, RejectionReason as R, Release, ReleaseProfile,
+    SearchCriteria, SearchKind, Series, Settings,
+};
+use crate::profile::{
+    ProfileView, ProperDownloadType, UpgradeRejectReason, is_revision_upgrade, quality_model_label,
+    revision_label,
+};
+
+const MB: i64 = 1024 * 1024;
+
+/// A release mapped to the searched series, with everything the specifications read.
+pub(crate) struct Subject<'a> {
+    pub release: &'a Release,
+    pub parsed: &'a ParsedEpisodeInfo,
+    pub episodes: Vec<&'a Episode>,
+    /// `MappedSeasonNumber`.
+    pub mapped_season: Option<i32>,
+    pub custom_formats: Vec<&'a CompiledFormat>,
+    pub score: i32,
+}
+
+pub(crate) struct Env<'a> {
+    pub series: &'a Series,
+    pub settings: &'a Settings,
+    pub formats: &'a [CompiledFormat],
+    pub criteria: &'a SearchCriteria,
+}
+
+impl Env<'_> {
+    fn profile(&self) -> ProfileView<'_> {
+        ProfileView(&self.series.profile)
+    }
+
+    /// `ReleaseProfileService.EnabledForTags(series.Tags, indexerId)`.
+    fn release_profiles(&self, indexer_id: i64) -> Vec<&ReleaseProfile> {
+        self.settings
+            .release_profiles
+            .iter()
+            .filter(|r| r.tags.is_empty() || r.tags.iter().any(|t| self.series.tags.contains(t)))
+            .filter(|r| r.enabled)
+            .filter(|r| r.indexer_ids.is_empty() || r.indexer_ids.contains(&indexer_id))
+            .collect()
+    }
+
+    /// `DelayProfileService.BestForTags(series.Tags)`.
+    pub(crate) fn delay_profile(&self) -> Option<&DelayProfile> {
+        self.settings
+            .delay_profiles
+            .iter()
+            .filter(|d| d.tags.is_empty() || d.tags.iter().any(|t| self.series.tags.contains(t)))
+            .min_by_key(|d| d.order)
+    }
+
+    /// `ParseCustomFormat(EpisodeFile)` and its score.
+    fn file_formats(&self, file: &EpisodeFile) -> (Vec<&CompiledFormat>, i32) {
+        let input = CustomFormatInput {
+            release_title: &file.release_title,
+            file_name: Some(&file.file_name),
+            release_group: file.release_group.as_deref(),
+            quality: file.quality.quality(),
+            size: file.size,
+            indexer_flags: file.indexer_flags,
+            languages: &file.languages,
+            release_type: file.release_type,
+            original_language: self.series.original_language,
+        };
+        let formats = evaluate(self.formats, &input);
+        let score = self.profile().format_score(formats.iter().map(|f| &f.id));
+        (formats, score)
+    }
+}
+
+fn model(p: &ParsedEpisodeInfo) -> QualityModel {
+    QualityModel {
+        quality_id: p.quality.quality.id,
+        revision: p.quality.revision,
+    }
+}
+
+/// `long.SizeSuffix()`: `"1.4 GB"`, `"1,023.5 MB"` (`{0:n1}`, invariant culture).
+pub(crate) fn size_suffix(bytes: i64) -> String {
+    const UNITS: [&str; 7] = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+    if bytes == 0 {
+        return "0 B".into();
+    }
+    if bytes < 0 {
+        return format!("-{}", size_suffix(bytes.checked_abs().unwrap_or(i64::MAX)));
+    }
+    let mag = ((bytes as f64).ln() / 1024f64.ln()) as usize;
+    let adjusted = bytes as f64 / 1024f64.powi(mag as i32);
+    let fixed = format!("{adjusted:.1}");
+    let (int, frac) = fixed.split_once('.').unwrap_or((&fixed, "0"));
+    let mut grouped = String::new();
+    for (i, c) in int.chars().enumerate() {
+        if i > 0 && (int.len() - i) % 3 == 0 {
+            grouped.push(',');
+        }
+        grouped.push(c);
+    }
+    format!("{grouped}.{frac} {}", UNITS[mag.min(6)])
+}
+
+/// .NET `{0:0.#}`-style formatting with up to `decimals` digits, trailing zeros removed.
+fn format_number(v: f64, decimals: usize) -> String {
+    let s = format!("{v:.decimals$}");
+    if s.contains('.') {
+        s.trim_end_matches('0').trim_end_matches('.').to_string()
+    } else {
+        s
+    }
+}
+
+fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
+    s.episodes.iter().filter_map(|e| e.file.as_ref())
+}
+
+/// Every specification, in a stable (alphabetical) order.
+pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 24] = [
+        acceptable_size,
+        anime_version_upgrade,
+        custom_format_allowed_by_profile,
+        episode_requested,
+        full_season,
+        indexer_tag,
+        maximum_size,
+        minimum_age,
+        multi_season,
+        not_sample,
+        protocol,
+        quality_allowed_by_profile,
+        raw_disk,
+        release_restrictions,
+        repack,
+        retention,
+        same_episodes_grab,
+        season_match,
+        series_spec,
+        single_episode_search_match,
+        split_episode,
+        torrent_seeding,
+        upgrade_allowed,
+        upgrade_disk,
+    ];
+    specs.iter().filter_map(|spec| spec(env, s)).collect()
+}
+
+/// `AcceptableSizeSpecification`, with Kitsunarr's quality definitions providing the sizes
+/// (as Sonarr v4 does; v5 moved them into quality profiles).
+pub(crate) fn acceptable_size(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if s.parsed.special || s.release.size == 0 {
+        return None;
+    }
+    let series = env.series;
+    let mut series_runtime = series.runtime;
+    if series_runtime == 0 {
+        let first_season = series
+            .episodes
+            .iter()
+            .filter(|e| e.season_number > 0)
+            .map(|e| e.season_number)
+            .min();
+        let pilot = first_season.and_then(|season| {
+            series
+                .episodes
+                .iter()
+                .filter(|e| e.season_number == season)
+                .min_by_key(|e| e.episode_number)
+        });
+        if let (Some(pilot), Some(first)) = (pilot, s.episodes.first())
+            && first.season_number == pilot.season_number
+        {
+            let grace_end =
+                pilot.air_date_utc.unwrap_or(s.release.publish_date) + chrono::Duration::hours(24);
+            if s.episodes
+                .iter()
+                .all(|e| e.air_date_utc.is_none_or(|a| a < grace_end))
+            {
+                series_runtime = 45;
+            }
+        }
+    }
+    let runtime: i64 = s
+        .episodes
+        .iter()
+        .map(|e| {
+            i64::from(if e.runtime > 0 {
+                e.runtime
+            } else {
+                series_runtime
+            })
+        })
+        .sum();
+    if runtime == 0 {
+        return Some(Rejection::new(
+            R::UnknownRuntime,
+            "Runtime of all episodes is 0, unable to validate size until it is available",
+        ));
+    }
+    let definition = env
+        .settings
+        .quality_definitions
+        .iter()
+        .find(|d| d.quality_id == s.parsed.quality.quality.id)?;
+    let runtime_message = if s.episodes.len() == 1 {
+        format!("{runtime}min")
+    } else {
+        format!("{} episodes totalling {runtime}min", s.episodes.len())
+    };
+    if let Some(min) = definition.min_size {
+        let min_size = megabytes(min.0) * runtime;
+        if s.release.size < min_size {
+            return Some(Rejection::new(
+                R::BelowMinimumSize,
+                format!(
+                    "{} is smaller than minimum allowed {} (for {runtime_message})",
+                    size_suffix(s.release.size),
+                    size_suffix(min_size)
+                ),
+            ));
+        }
+    }
+    if let Some(max) = definition.max_size.filter(|m| m.0 != 0.0) {
+        let max_size = megabytes(max.0) * runtime;
+        if s.release.size > max_size {
+            return Some(Rejection::new(
+                R::AboveMaximumSize,
+                format!(
+                    "{} is larger than maximum allowed {} (for {runtime_message})",
+                    size_suffix(s.release.size),
+                    size_suffix(max_size)
+                ),
+            ));
+        }
+    }
+    None
+}
+
+/// `double.Megabytes()`: `Convert.ToInt64(mb * 1024 * 1024)`.
+pub(crate) fn megabytes(mb: f64) -> i64 {
+    (mb * MB as f64).round_ties_even() as i64
+}
+
+pub(crate) fn anime_version_upgrade(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if env.series.series_type != SeriesType::Anime
+        || env.settings.propers == ProperDownloadType::DoNotPrefer
+    {
+        return None;
+    }
+    let group = s.parsed.release_group.as_deref().unwrap_or_default();
+    for file in episode_files(s) {
+        if is_revision_upgrade(&file.quality, &model(s.parsed)) {
+            let file_group = file.release_group.as_deref().unwrap_or_default();
+            if file_group.trim().is_empty() {
+                return Some(Rejection::new(
+                    R::UnknownReleaseGroup,
+                    "Existing release group is unknown",
+                ));
+            }
+            if group.trim().is_empty() {
+                return Some(Rejection::new(
+                    R::UnknownReleaseGroup,
+                    "Release group is unknown",
+                ));
+            }
+            if file_group != group {
+                return Some(Rejection::new(
+                    R::ReleaseGroupDoesNotMatch,
+                    format!("{group} does not match existing release group {file_group}"),
+                ));
+            }
+        }
+    }
+    None
+}
+
+fn format_names(formats: &[&CompiledFormat]) -> String {
+    formats
+        .iter()
+        .map(|f| f.name.as_str())
+        .collect::<Vec<_>>()
+        .join(", ")
+}
+
+pub(crate) fn custom_format_allowed_by_profile(
+    env: &Env<'_>,
+    s: &Subject<'_>,
+) -> Option<Rejection> {
+    let min = env.series.profile.min_format_score;
+    (s.score < min).then(|| {
+        Rejection::new(
+            R::CustomFormatMinimumScore,
+            format!(
+                "Custom Formats {} have score {} below Series profile minimum {min}",
+                format_names(&s.custom_formats),
+                s.score
+            ),
+        )
+    })
+}
+
+/// `Search/EpisodeRequestedSpecification`.
+pub(crate) fn episode_requested(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if s.episodes
+        .iter()
+        .any(|e| env.criteria.episode_ids.contains(&e.id))
+    {
+        return None;
+    }
+    let mut eps: Vec<&&Episode> = s.episodes.iter().collect();
+    eps.sort_by_key(|e| (e.season_number, e.episode_number));
+    let message = match (eps.first(), eps.last()) {
+        (Some(first), Some(last)) if eps.len() > 1 => format!(
+            "Episode wasn't requested: {}x{}-{}",
+            first.season_number, first.episode_number, last.episode_number
+        ),
+        (Some(first), _) => format!(
+            "Episode wasn't requested: {}x{}",
+            first.season_number, first.episode_number
+        ),
+        _ => "Episode wasn't requested".into(),
+    };
+    Some(Rejection::new(R::WrongEpisode, message))
+}
+
+/// `FullSeasonSpecification` (release profiles cannot allow incomplete seasons in Kitsunarr).
+pub(crate) fn full_season(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let cutoff = env.settings.now + chrono::Duration::hours(24);
+    (s.parsed.full_season
+        && s.episodes
+            .iter()
+            .any(|e| e.air_date_utc.is_none_or(|a| a > cutoff)))
+    .then(|| {
+        Rejection::new(
+            R::FullSeasonNotAired,
+            "Full season release rejected. All episodes haven't aired yet.",
+        )
+    })
+}
+
+/// `RssSync/IndexerTagSpecification`.
+pub(crate) fn indexer_tag(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let tags = &s.release.indexer_tags;
+    (!tags.is_empty() && !tags.iter().any(|t| env.series.tags.contains(t))).then(|| {
+        Rejection::new(
+            R::NoMatchingTag,
+            "Series tags do not match any of the indexer tags",
+        )
+    })
+}
+
+pub(crate) fn maximum_size(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let maximum = env.settings.maximum_size_mb * MB;
+    (maximum != 0 && s.release.size != 0 && s.release.size > maximum).then(|| {
+        Rejection::new(
+            R::MaximumSizeExceeded,
+            format!(
+                "{} is too big, maximum size is {} (Settings->Indexers->Maximum Size)",
+                size_suffix(s.release.size),
+                size_suffix(maximum)
+            ),
+        )
+    })
+}
+
+pub(crate) fn minimum_age(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if s.release.protocol != DownloadProtocol::Usenet || env.settings.minimum_age_minutes == 0 {
+        return None;
+    }
+    let age = (env.settings.now - s.release.publish_date).num_milliseconds() as f64 / 60_000.0;
+    (age < env.settings.minimum_age_minutes as f64).then(|| {
+        Rejection::new(
+            R::MinimumAge,
+            format!(
+                "Only {} minutes old, minimum age is {} minutes",
+                format_number((age * 10.0).round_ties_even() / 10.0, 1),
+                env.settings.minimum_age_minutes
+            ),
+        )
+    })
+}
+
+pub(crate) fn multi_season(_: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    s.parsed.is_multi_season().then(|| {
+        Rejection::new(
+            R::MultiSeason,
+            "Multi-season release, not grabbed automatically. Grab it from interactive search to import all seasons",
+        )
+    })
+}
+
+pub(crate) fn not_sample(_: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    (s.release.title.to_lowercase().contains("sample") && s.release.size < 70 * MB)
+        .then(|| Rejection::new(R::Sample, "Sample"))
+}
+
+pub(crate) fn protocol(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let profile = env.delay_profile()?;
+    match s.release.protocol {
+        DownloadProtocol::Usenet if !profile.enable_usenet => Some(Rejection::new(
+            R::ProtocolDisabled,
+            "Usenet is not enabled for this series",
+        )),
+        DownloadProtocol::Torrent if !profile.enable_torrent => Some(Rejection::new(
+            R::ProtocolDisabled,
+            "Torrent is not enabled for this series",
+        )),
+        _ => None,
+    }
+}
+
+pub(crate) fn quality_allowed_by_profile(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let quality = s.parsed.quality.quality;
+    (!env.profile().allowed(quality.id)).then(|| {
+        Rejection::new(
+            R::QualityNotWanted,
+            format!("{} is not wanted in profile", quality.name),
+        )
+    })
+}
+
+static DISC: LazyLock<[NetRegex; 3]> = LazyLock::new(|| {
+    [
+        NetRegex::compile(
+            r"(?:dis[ck])(?:[-_. ]\d+[-_. ])(?:(?:(?:480|720|1080|2160)[ip]|)[-_. ])?(?:Blu\-?ray)",
+            true,
+        ),
+        NetRegex::compile(
+            r"(?:(?:480|720|1080|2160)[ip]|)[-_. ](?:full)[-_. ](?:Blu\-?ray)",
+            true,
+        ),
+        NetRegex::compile(r"(?:\d?x?M?DVD-?[R59])(?:[ ._]|$)", true),
+    ]
+});
+
+/// `RawDiskSpecification` (indexers here never report a container, so only the title counts).
+pub(crate) fn raw_disk(_: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    DISC.iter()
+        .any(|r| r.is_match(&s.release.title))
+        .then(|| Rejection::new(R::Raw, "Raw Bluray/DVD release"))
+}
+
+/// A release-profile term: `/pattern/modifiers` is a regular expression, anything else a
+/// case-insensitive substring (`TermMatcherService`, `PerlRegexFactory`).
+enum Term {
+    Text(String),
+    Regex(NetRegex),
+    Invalid(String),
+}
+
+fn term(t: &str) -> Term {
+    static PERL: LazyLock<NetRegex> =
+        LazyLock::new(|| NetRegex::compile(r"/(?<pattern>.*)/(?<modifiers>[a-z]*)", false));
+    let Some(m) = PERL.find(t) else {
+        return Term::Text(t.to_lowercase());
+    };
+    let pattern = m.value("pattern");
+    let modifiers = m.value("modifiers");
+    let mut ignore_case = false;
+    for c in modifiers.chars() {
+        match c {
+            'i' => ignore_case = true,
+            // Titles are one line, and captures are not used: these change nothing here.
+            'm' | 's' | 'n' => {}
+            'x' => {
+                return Term::Invalid(format!(
+                    "the x (ignore pattern whitespace) modifier of {t} is not supported yet"
+                ));
+            }
+            other => {
+                return Term::Invalid(format!(
+                    "Unknown or unsupported perl regex modifier: {other}"
+                ));
+            }
+        }
+    }
+    match NetRegex::new(&pattern, ignore_case) {
+        Ok(r) => Term::Regex(r),
+        Err(e) => Term::Invalid(format!("{t} is not a valid regular expression: {e}")),
+    }
+}
+
+/// `ReleaseRestrictionsSpecification`.
+pub(crate) fn release_restrictions(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let title = &s.release.title;
+    let lower = title.to_lowercase();
+    let profiles = env.release_profiles(s.release.indexer_id);
+    let found = |terms: &[String]| -> Result<Vec<String>, String> {
+        let mut out = Vec::new();
+        for t in terms {
+            let hit = match term(t) {
+                Term::Text(x) => lower.contains(&x),
+                Term::Regex(r) => r.is_match(title),
+                Term::Invalid(e) => return Err(e),
+            };
+            if hit {
+                out.push(t.clone());
+            }
+        }
+        Ok(out)
+    };
+    for r in profiles.iter().filter(|r| !r.required.is_empty()) {
+        match found(&r.required) {
+            Err(e) => {
+                return Some(Rejection::new(
+                    R::DecisionError,
+                    format!("ReleaseRestrictionsSpecification: {e}"),
+                ));
+            }
+            Ok(hits) if hits.is_empty() => {
+                return Some(Rejection::new(
+                    R::MustContainMissing,
+                    format!(
+                        "Does not contain one of the required terms: {}",
+                        r.required.join(", ")
+                    ),
+                ));
+            }
+            Ok(_) => {}
+        }
+    }
+    for r in profiles.iter().filter(|r| !r.ignored.is_empty()) {
+        match found(&r.ignored) {
+            Err(e) => {
+                return Some(Rejection::new(
+                    R::DecisionError,
+                    format!("ReleaseRestrictionsSpecification: {e}"),
+                ));
+            }
+            Ok(hits) if !hits.is_empty() => {
+                return Some(Rejection::new(
+                    R::MustNotContainPresent,
+                    format!("Contains these ignored terms: {}", hits.join(", ")),
+                ));
+            }
+            Ok(_) => {}
+        }
+    }
+    None
+}
+
+pub(crate) fn repack(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let propers = env.settings.propers;
+    if !s.parsed.quality.revision.is_repack || propers == ProperDownloadType::DoNotPrefer {
+        return None;
+    }
+    let group = s.parsed.release_group.as_deref().unwrap_or_default();
+    for file in episode_files(s) {
+        if !is_revision_upgrade(&file.quality, &model(s.parsed)) {
+            continue;
+        }
+        if propers == ProperDownloadType::DoNotUpgrade {
+            return Some(Rejection::new(
+                R::RepackDisabled,
+                "Repack downloading is disabled",
+            ));
+        }
+        let file_group = file.release_group.as_deref().unwrap_or_default();
+        if file_group.trim().is_empty() {
+            return Some(Rejection::new(
+                R::RepackUnknownReleaseGroup,
+                "Unable to determine release group for the existing file",
+            ));
+        }
+        if group.trim().is_empty() {
+            return Some(Rejection::new(
+                R::RepackUnknownReleaseGroup,
+                "Unable to determine release group for this release",
+            ));
+        }
+        if file_group.to_lowercase() != group.to_lowercase() {
+            return Some(Rejection::new(
+                R::RepackReleaseGroupDoesNotMatch,
+                format!(
+                    "Release is a repack for a different release group. Release Group: {group}. File release group: {file_group}"
+                ),
+            ));
+        }
+    }
+    None
+}
+
+pub(crate) fn retention(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let days = (env.settings.now - s.release.publish_date).num_days();
+    (s.release.protocol == DownloadProtocol::Usenet
+        && env.settings.retention_days > 0
+        && days > env.settings.retention_days)
+        .then(|| Rejection::new(R::MaximumAge, "Older than configured retention"))
+}
+
+/// `SameEpisodesGrabSpecification`: files must not hold episodes the release lacks.
+pub(crate) fn same_episodes_grab(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let ids: Vec<i64> = s.episodes.iter().map(|e| e.id).collect();
+    let mut file_ids: Vec<i64> = episode_files(s).map(|f| f.id).collect();
+    file_ids.dedup();
+    let more = file_ids.iter().any(|fid| {
+        env.series
+            .episodes
+            .iter()
+            .any(|e| e.file.as_ref().is_some_and(|f| f.id == *fid) && !ids.contains(&e.id))
+    });
+    more.then(|| {
+        Rejection::new(
+            R::ExistingFileHasMoreEpisodes,
+            "Episode file on disk contains more episodes than this release contains",
+        )
+    })
+}
+
+fn season_matches(s: &Subject<'_>, season: i32) -> bool {
+    if s.parsed.season_numbers.is_empty() {
+        s.mapped_season == Some(season)
+    } else {
+        s.parsed.season_numbers.contains(&season)
+    }
+}
+
+/// `Search/SeasonMatchSpecification`.
+pub(crate) fn season_match(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    match env.criteria.kind {
+        SearchKind::Season { season } if !season_matches(s, season) => {
+            Some(Rejection::new(R::WrongSeason, "Wrong season"))
+        }
+        _ => None,
+    }
+}
+
+/// `Search/SeriesSpecification`: releases reach the specifications only once mapped to the
+/// searched series (others are rejected when mapped), so this always accepts here.
+pub(crate) fn series_spec(_: &Env<'_>, _: &Subject<'_>) -> Option<Rejection> {
+    None
+}
+
+/// `Search/SingleEpisodeSearchMatchSpecification`.
+pub(crate) fn single_episode_search_match(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    match env.criteria.kind {
+        SearchKind::SingleEpisode { season, episode } => {
+            if !season_matches(s, season) {
+                return Some(Rejection::new(R::WrongSeason, "Wrong season"));
+            }
+            if s.parsed.episode_numbers.is_empty() {
+                return Some(Rejection::new(R::FullSeason, "Full season pack"));
+            }
+            (!s.parsed.episode_numbers.contains(&episode))
+                .then(|| Rejection::new(R::WrongEpisode, "Wrong episode"))
+        }
+        SearchKind::AnimeEpisode { season_search } => (s.parsed.full_season && !season_search)
+            .then(|| Rejection::new(R::FullSeason, "Full season pack")),
+        _ => None,
+    }
+}
+
+pub(crate) fn split_episode(_: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    s.parsed
+        .is_split_episode
+        .then(|| Rejection::new(R::SplitEpisode, "Split episode releases are not supported"))
+}
+
+pub(crate) fn torrent_seeding(_: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if s.release.protocol != DownloadProtocol::Torrent || s.release.indexer_id == 0 {
+        return None;
+    }
+    let (Some(seeders), Some(minimum)) = (s.release.seeders, s.release.minimum_seeders) else {
+        return None;
+    };
+    (seeders < minimum).then(|| {
+        Rejection::new(
+            R::MinimumSeeders,
+            format!("Not enough seeders: {seeders}. Minimum seeders: {minimum}"),
+        )
+    })
+}
+
+pub(crate) fn upgrade_allowed(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let profile = env.profile();
+    for file in episode_files(s) {
+        let (_, file_score) = env.file_formats(file);
+        if !profile.is_upgrade_allowed(&file.quality, file_score, &model(s.parsed), s.score) {
+            return Some(Rejection::new(
+                R::QualityUpgradesDisabled,
+                "Existing file and the Quality profile does not allow upgrades",
+            ));
+        }
+    }
+    None
+}
+
+/// `UpgradeDiskSpecification` with the default season-pack rule (every episode must be missing
+/// or upgradable).
+pub(crate) fn upgrade_disk(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let profile = env.profile();
+    let new = model(s.parsed);
+    let propers = env.settings.propers;
+    if s.parsed.full_season {
+        let total = s.episodes.len();
+        if total == 0 {
+            return None;
+        }
+        let mut upgraded = s.episodes.iter().filter(|e| e.file.is_none()).count();
+        let existing: Vec<&EpisodeFile> = episode_files(s).collect();
+        if existing.is_empty() {
+            return None;
+        }
+        for file in existing {
+            let (_, file_score) = env.file_formats(file);
+            if !profile.cutoff_not_met(&file.quality, file_score, Some(&new)) {
+                continue;
+            }
+            if profile
+                .is_upgradable(&file.quality, file_score, &new, s.score, propers)
+                .is_ok()
+            {
+                upgraded += 1;
+            }
+        }
+        let percentage = upgraded as f64 / total as f64 * 100.0;
+        if percentage >= 100.0 {
+            return None;
+        }
+        return Some(Rejection::new(
+            R::DiskCutoffMet,
+            format!(
+                "Season pack does not meet the upgrade criteria. Upgradable: {upgraded}/{total} ({}%), Mode: All, Threshold: 100%",
+                format_number(percentage, 2)
+            ),
+        ));
+    }
+    for file in episode_files(s) {
+        let (formats, file_score) = env.file_formats(file);
+        if !profile.cutoff_not_met(&file.quality, file_score, Some(&new)) {
+            let cutoff = profile.effective_cutoff();
+            return Some(Rejection::new(
+                R::DiskCutoffMet,
+                format!(
+                    "Existing file meets cutoff: {}",
+                    profile.item_label(profile.index_of(cutoff, false).index)
+                ),
+            ));
+        }
+        let reason = match profile.is_upgradable(&file.quality, file_score, &new, s.score, propers)
+        {
+            Ok(()) => continue,
+            Err(r) => r,
+        };
+        let p = &env.series.profile;
+        let (code, message) = match reason {
+            UpgradeRejectReason::BetterQuality => (
+                R::DiskHigherPreference,
+                format!(
+                    "Existing file on disk is of equal or higher preference: {}",
+                    quality_model_label(&file.quality)
+                ),
+            ),
+            UpgradeRejectReason::BetterRevision => (
+                R::DiskHigherRevision,
+                format!(
+                    "Existing file on disk is of equal or higher revision: {}",
+                    revision_label(&file.quality.revision)
+                ),
+            ),
+            UpgradeRejectReason::QualityCutoff => (
+                R::DiskCutoffMet,
+                format!(
+                    "Existing file on disk meets quality cutoff: {}",
+                    profile.item_label(profile.index_of(p.cutoff, false).index)
+                ),
+            ),
+            UpgradeRejectReason::CustomFormatCutoff => (
+                R::DiskCustomFormatCutoffMet,
+                format!(
+                    "Existing file on disk meets Custom Format cutoff: {}",
+                    p.cutoff_format_score
+                ),
+            ),
+            UpgradeRejectReason::CustomFormatScore => (
+                R::DiskCustomFormatScore,
+                format!(
+                    "Existing file on disk has a equal or higher Custom Format score: {}",
+                    profile.format_score(formats.iter().map(|f| &f.id))
+                ),
+            ),
+            UpgradeRejectReason::MinCustomFormatScore => (
+                R::DiskCustomFormatScoreIncrement,
+                format!(
+                    "Existing file on disk has Custom Format score within Custom Format score increment: {}",
+                    p.min_upgrade_format_score
+                ),
+            ),
+            UpgradeRejectReason::UpgradesNotAllowed => (
+                R::DiskUpgradesNotAllowed,
+                format!(
+                    "Existing file on disk and Quality Profile '{}' does not allow upgrades",
+                    p.name
+                ),
+            ),
+        };
+        return Some(Rejection::new(code, message));
+    }
+    None
+}

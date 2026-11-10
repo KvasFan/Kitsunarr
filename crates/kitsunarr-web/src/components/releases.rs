@@ -79,6 +79,9 @@ pub fn ReleaseSearch(
                 div { class: "grow", strong { "{f.indexer}: " } "{f.message}" }
             }
         }
+        for (i, w) in r.warnings.iter().enumerate() {
+            div { key: "w{i}", class: "alert warning", role: "status", div { class: "grow", "{w}" } }
+        }
         if r.searched_indexers == 0 {
             Empty { title: "No indexers to search",
                 p { "Add a Newznab or Torznab indexer and enable interactive search for it." }
@@ -90,12 +93,13 @@ pub fn ReleaseSearch(
             }
         } else {
             p { class: "help small faint",
-                "Grabbing releases needs download clients, which are the next milestone; release details are shown so you can review what is available."
+                "Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Grabbing needs download clients, which are the next milestone."
             }
             div { class: "table-wrap",
                 table { class: "table releases",
                     thead {
                         tr {
+                            th { span { class: "sr-only", "Decision" } }
                             th { "Source" }
                             th { "Age" }
                             th { "Title" }
@@ -105,12 +109,20 @@ pub fn ReleaseSearch(
                             th { class: "num", "Peers" }
                             th { "Languages" }
                             th { "Quality" }
+                            th { class: "num", "Score" }
                             th { span { class: "sr-only", "Actions" } }
                         }
                     }
                     tbody {
                         for rel in r.releases.iter() {
-                            tr { key: "{rel.indexer_id}-{rel.guid}",
+                            tr { key: "{rel.indexer_id}-{rel.guid}", class: if rel.approved { "" } else { "rejected" },
+                                td {
+                                    if rel.approved {
+                                        span { class: "decision ok", title: "Accepted", "aria-label": "Accepted", "✓" }
+                                    } else {
+                                        span { class: "decision no", title: "{rel.rejections.join(\"\n\")}", "aria-label": "Rejected", "✕" }
+                                    }
+                                }
                                 td {
                                     span { class: if rel.protocol == DownloadProtocol::Torrent { "badge info" } else { "badge accent" },
                                         if rel.protocol == DownloadProtocol::Torrent { "torrent" } else { "nzb" }
@@ -122,13 +134,18 @@ pub fn ReleaseSearch(
                                     for flag in rel.indexer_flags.iter() {
                                         span { key: "{flag}", class: "badge", " {flag}" }
                                     }
-                                }
-                                td { class: "small",
-                                    {episodes_label(rel)}
-                                    if rel.parsed && !rel.matches_series {
-                                        span { class: "badge warning", title: "Parsed as \"{rel.series_title.clone().unwrap_or_default()}\"", " other series" }
+                                    for cf in rel.custom_formats.iter() {
+                                        span { key: "cf-{cf}", class: "badge accent", "{cf}" }
+                                    }
+                                    if !rel.rejections.is_empty() {
+                                        ul { class: "rejections small",
+                                            for (i, why) in rel.rejections.iter().enumerate() {
+                                                li { key: "{i}", "{why}" }
+                                            }
+                                        }
                                     }
                                 }
+                                td { class: "small", title: "{rel.mapped_episodes.join(\", \")}", {episodes_label(rel)} }
                                 td { class: "small", "{rel.indexer}" }
                                 td { class: "num small", {format_bytes(rel.size)} }
                                 td { class: "num small",
@@ -140,6 +157,7 @@ pub fn ReleaseSearch(
                                 }
                                 td { class: "small", {rel.languages.join(", ")} }
                                 td { span { class: "badge", "{rel.quality}" } }
+                                td { class: "num small", title: "Custom format score", "{rel.custom_format_score}" }
                                 td { class: "actions",
                                     div { class: "row tight",
                                         if let Some(url) = rel.info_url.as_ref() {

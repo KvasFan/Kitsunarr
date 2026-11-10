@@ -557,6 +557,8 @@ async fn first_run_setup_migration_and_library() {
             .unwrap();
         wait_text(&client, "Season 1: 100 releases from 2 indexer(s)").await;
         wait_text(&client, "Prowlarr Nyaa (fixture):").await;
+        // Decisions: the recorded feed's shows are not in the library.
+        wait_text(&client, "Unknown Series").await;
         let rows = client
             .find_all(Locator::Css("table.releases tbody tr"))
             .await

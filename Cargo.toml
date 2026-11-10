@@ -13,6 +13,7 @@ members = [
     "crates/kitsunarr-metadata",
     "crates/kitsunarr-parser",
     "crates/kitsunarr-indexers",
+    "crates/kitsunarr-decision",
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
     "crates/kitsunarr-web",
@@ -33,6 +34,7 @@ default-members = [
     "crates/kitsunarr-metadata",
     "crates/kitsunarr-parser",
     "crates/kitsunarr-indexers",
+    "crates/kitsunarr-decision",
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
 ]
@@ -60,6 +62,7 @@ kitsunarr-library = { path = "crates/kitsunarr-library" }
 kitsunarr-metadata = { path = "crates/kitsunarr-metadata" }
 kitsunarr-parser = { path = "crates/kitsunarr-parser" }
 kitsunarr-indexers = { path = "crates/kitsunarr-indexers" }
+kitsunarr-decision = { path = "crates/kitsunarr-decision" }
 kitsunarr-migrate = { path = "crates/kitsunarr-migrate" }
 kitsunarr-scheduler = { path = "crates/kitsunarr-scheduler" }
 

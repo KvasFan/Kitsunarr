@@ -896,20 +896,22 @@ async fn indexer_test_and_interactive_search() {
         (vec![3], vec![5])
     );
     assert_eq!(white_collar.release_group.as_deref(), Some("DIMENSION"));
-    // The searched series comes first; the other shows follow, best quality first.
+    // The decision engine maps the season pack to the series' seven season-1 episodes and
+    // accepts it; the recorded feed's other shows are not in the library.
     let bb = &season.releases[0];
     assert_eq!(bb.title, "Breaking.Bad.S01.480p.WEB-DL.AAC2.0.H.264-GRP");
     assert!(bb.matches_series && bb.full_season && bb.season_numbers == vec![1]);
-    assert!(!white_collar.matches_series);
+    assert!(bb.approved, "{:?}", bb.rejections);
+    assert_eq!(bb.mapped_episodes.len(), 7);
+    assert_eq!(bb.mapped_episodes[0], "S01E01");
+    assert!(!white_collar.matches_series && !white_collar.approved);
+    assert_eq!(white_collar.rejections, vec!["Unknown Series"]);
     assert_eq!(
         season.releases.iter().filter(|r| r.matches_series).count(),
         1
     );
-    assert!(
-        season.releases[1..]
-            .windows(2)
-            .all(|w| w[0].quality_weight >= w[1].quality_weight)
-    );
+    assert!(season.releases[1..].iter().all(|r| !r.approved));
+    assert!(season.warnings.is_empty(), "{:?}", season.warnings);
 
     // Download links embed indexer keys: they stay on the server.
     let raw = reqwest::Client::new()

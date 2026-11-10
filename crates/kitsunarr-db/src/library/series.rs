@@ -944,6 +944,101 @@ pub async fn calendar(
         .collect())
 }
 
+/// An episode file with every column release decisions read (custom formats, upgrades).
+#[derive(Debug, Clone, FromRow)]
+pub struct FileRecord {
+    pub id: i64,
+    pub relative_path: String,
+    pub size: i64,
+    pub scene_name: Option<String>,
+    pub original_path: Option<String>,
+    pub release_group: Option<String>,
+    pub quality_id: i64,
+    pub revision_version: i64,
+    pub revision_real: i64,
+    pub is_repack: bool,
+    /// Language ids.
+    pub languages: String,
+    pub indexer_flags: i64,
+    pub release_type: i64,
+}
+
+impl FileRecord {
+    pub fn language_ids(&self) -> Vec<i32> {
+        serde_json::from_str(&self.languages).unwrap_or_default()
+    }
+}
+
+/// The files of a series.
+pub async fn file_records(db: &Database, series_id: i64) -> DbResult<Vec<FileRecord>> {
+    Ok(sqlx::query_as(
+        "SELECT id, relative_path, size, scene_name, original_path, release_group, quality_id, \
+           revision_version, revision_real, is_repack, languages, indexer_flags, release_type \
+         FROM episode_files WHERE series_id = ? ORDER BY id",
+    )
+    .bind(series_id)
+    .fetch_all(db.pool())
+    .await?)
+}
+
+/// The series' original language id, when known.
+pub async fn original_language(db: &Database, series_id: i64) -> DbResult<Option<i64>> {
+    Ok(
+        sqlx::query_scalar("SELECT original_language FROM series WHERE id = ?")
+            .bind(series_id)
+            .fetch_optional(db.pool())
+            .await?
+            .flatten(),
+    )
+}
+
+/// How a library series can be recognised in a release name.
+#[derive(Debug, Clone)]
+pub struct TitleRecord {
+    pub id: i64,
+    pub title: String,
+    pub year: Option<i64>,
+    pub alternate_titles: Vec<String>,
+    /// `(kind, value)` pairs, e.g. `("tvdb", "81189")`.
+    pub external_ids: Vec<(String, String)>,
+}
+
+/// Titles, years, alternate titles and identifiers of every series.
+pub async fn title_records(db: &Database) -> DbResult<Vec<TitleRecord>> {
+    let rows: Vec<(i64, String, Option<i64>)> =
+        sqlx::query_as("SELECT id, title, year FROM series ORDER BY id")
+            .fetch_all(db.pool())
+            .await?;
+    let alternates: Vec<(i64, String)> = sqlx::query_as(
+        "SELECT series_id, title FROM series_alternate_titles ORDER BY series_id, title",
+    )
+    .fetch_all(db.pool())
+    .await?;
+    let ids: Vec<(i64, String, String)> = sqlx::query_as(
+        "SELECT series_id, kind, external_id FROM series_external_ids ORDER BY series_id, kind",
+    )
+    .fetch_all(db.pool())
+    .await?;
+    Ok(rows
+        .into_iter()
+        .map(|(id, title, year)| TitleRecord {
+            id,
+            title,
+            year,
+            alternate_titles: alternates
+                .iter()
+                .filter(|(s, _)| *s == id)
+                .map(|(_, t)| t.clone())
+                .collect(),
+            external_ids: ids
+                .iter()
+                .filter(|(s, _, _)| *s == id)
+                .map(|(_, k, v)| (k.clone(), v.clone()))
+                .collect(),
+        })
+        .collect())
+}
+
 #[cfg(test)]
 pub(crate) mod tests {
     use super::*;

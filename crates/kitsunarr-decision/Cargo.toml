@@ -1,0 +1,22 @@
+[package]
+name = "kitsunarr-decision"
+description = "Kitsunarr's decision engine: custom formats, quality profiles, release decisions and ranking (a port of Sonarr's)."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+kitsunarr-domain = { workspace = true }
+kitsunarr-parser = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+
+[lints]
+workspace = true

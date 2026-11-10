@@ -261,6 +261,11 @@ kbd { font-family: var(--mono); font-size: var(--fs-xs); padding: 1px 6px; borde
 /* Interactive search */
 .modal.wide:has(.table.releases) { width: min(1280px, 100%); }
 .table.releases td.age { white-space: nowrap; }
+.table.releases tr.rejected td { color: var(--text-muted); }
+.table.releases .decision { font-weight: 700; }
+.table.releases .decision.ok { color: var(--success); }
+.table.releases .decision.no { color: var(--danger); cursor: help; }
+.table.releases ul.rejections { margin: var(--sp-1) 0 0; padding-left: 1.1em; color: var(--danger); }
 .table.releases td.actions .row { flex-wrap: nowrap; justify-content: flex-end; }
 .table.releases td.release-title { min-width: 240px; max-width: 480px; overflow-wrap: anywhere; }
 .table.releases td.release-title .badge { margin-left: var(--sp-1); }

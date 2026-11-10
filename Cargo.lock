@@ -2520,6 +2520,7 @@ dependencies = [
  "kitsunarr-client",
  "kitsunarr-config",
  "kitsunarr-db",
+ "kitsunarr-decision",
  "kitsunarr-domain",
  "kitsunarr-events",
  "kitsunarr-indexers",
@@ -2595,6 +2596,17 @@ dependencies = [
  "thiserror 2.0.21",
  "tokio",
  "tracing",
+]
+
+[[package]]
+name = "kitsunarr-decision"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "kitsunarr-domain",
+ "kitsunarr-parser",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

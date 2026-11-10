@@ -173,3 +173,26 @@ Two choices differ from Sonarr:
 
 - **Download links never reach the browser.** Newznab download URLs embed the indexer's API key, so the release list sent to the UI omits them. A future "grab" will refer to a release by indexer and GUID, and the server will resolve the link.
 - **Request errors report their cause without the URL.** For example: "Could not connect to the indexer: failed to lookup address information". The cause is useful, but the URL would expose the API key.
+
+## 15. Release decisions: Sonarr's decision engine, with Kitsunarr's v4 data model
+
+`kitsunarr-decision` decides whether each release found by a search is wanted, and ranks the results. It ports Sonarr's `DownloadDecisionMaker`, the decision specifications, `CustomFormatCalculationService` and its eight specifications, `UpgradableSpecification`, `DownloadDecisionComparer`, `AggregateLanguages`, and the search side of `ParsingService`. It follows the same Sonarr revision as the parser (`c018578e4`, the v5 line), with one deliberate exception: size limits come from the quality definitions, as in Sonarr v4. Kitsunarr's data model, like the Sonarr 4 installations it migrates, keeps sizes there; v5 moved them into quality profiles.
+
+What a search does with each release, as upstream:
+
+1. **Parse:** parse the title, then try a special-episode title match and a season-title parse.
+2. **Map:** map the release to a series and episodes. Titles, alternate titles and the identifiers the indexer reported are checked against the searched series first, then the rest of the library.
+3. **Score:** aggregate languages (indexer languages, episode-title words, multi-language indexers, the series' original language), evaluate custom formats and sum their scores.
+4. **Check:** run every applicable specification and keep all rejection messages.
+5. **Rank:** de-duplicate by GUID (fewest rejections, then indexer priority), and rank with the comparer chain: quality and revision, custom format score, preferred protocol, season packs and episode count, episode number, indexer priority, seeders and peers, age, closeness to the preferred size. Ranking ignores rejections, as in Sonarr.
+
+Regular expressions in custom formats and release profiles run on the .NET-semantics engine of the parser crate, so patterns written for Sonarr behave the same.
+
+Known differences, all reported rather than hidden:
+
+- **Checks that need missing data are not evaluated yet:** the blocklist, the download queue, grab history, pending releases, free space, scene mappings (TheXEM) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
+- **Some settings don't exist in Kitsunarr yet and use Sonarr's defaults:** minimum age, retention and maximum size (all off), "propers and repacks" (prefer and upgrade), and season-pack upgrades (every episode must be missing or upgradable).
+- **Releases of other library series are rejected as "Wrong series" without evaluating that series' episodes and profile.** They are listed after the searched series' releases, in arrival order; upstream orders series groups by first appearance.
+- **A custom format specification that cannot be evaluated never matches, and a warning is shown with the search results.** This covers an unknown implementation, such as Tanukarr's `SeasonPackSpecification`, and an invalid pattern. Sonarr would refuse to load such a format.
+
+Verification: tests ported from Sonarr's `DecisionEngineTests` cover ranking (all 30 `PrioritizeDownloadDecisionFixture` tests) and the sizes, upgrades, raw discs, release restrictions, search matching, repacks and other specifications. Sonarr's custom format language and release-type fixtures are ported too. End-to-end tests run real release names through parsing, mapping, decisions and ranking. Mutation checks confirm the ranking and size tests fail when the logic is broken.

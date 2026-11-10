@@ -48,9 +48,19 @@ pub struct ReleaseItem {
     pub absolute_episode_numbers: Vec<i32>,
     pub full_season: bool,
     pub special: bool,
-    /// The parsed series title matches the searched series (title or an alternate title,
-    /// compared as Sonarr compares clean titles).
+    /// The release was mapped to the searched series (by title, alternate title or the
+    /// identifiers the indexer reported).
     pub matches_series: bool,
+    /// The decision engine accepts the release (no rejections).
+    pub approved: bool,
+    /// Why the release would not be grabbed automatically (Sonarr's rejection messages).
+    pub rejections: Vec<String>,
+    /// Matched custom formats, by name.
+    pub custom_formats: Vec<String>,
+    /// Their total score in the series' quality profile.
+    pub custom_format_score: i32,
+    /// The library episodes the release contains, as `S01E05`.
+    pub mapped_episodes: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -72,6 +82,9 @@ pub struct ReleaseSearchResult {
     pub searched_indexers: usize,
     /// Human-readable description of the search (e.g. "S01E05").
     pub description: String,
+    /// Problems that affect every decision, e.g. a custom format that cannot be evaluated.
+    #[serde(default)]
+    pub warnings: Vec<String>,
 }
 
 /// `POST /providers/indexers/test`: unsaved settings, or a saved indexer's id whose stored

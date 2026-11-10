@@ -18,6 +18,8 @@ Test fixtures in `tests/fixtures/` were produced by running unmodified Sonarr 4.
 
 `crates/kitsunarr-indexers` ports Sonarr's Newznab and Torznab support (`src/NzbDrone.Core/Indexers/`, revision `c018578e4`). `tests/fixtures/indexers/sonarr/` contains the indexer responses recorded in Sonarr's test suite (`src/NzbDrone.Core.Test/Files/Indexers/`), copied unmodified, and the test cases of its Newznab and Torznab fixtures (`src/NzbDrone.Core.Test/IndexerTests/`), extracted by the same script.
 
+`crates/kitsunarr-decision` ports Sonarr's decision engine, custom formats and release-to-episode mapping (`src/NzbDrone.Core/DecisionEngine/`, `CustomFormats/`, `Parser/ParsingService.cs`, revision `c018578e4`; size limits follow tag `v4.0.20.3014`). Its tests port cases from Sonarr's `src/NzbDrone.Core.Test/DecisionEngineTests/` and `CustomFormats/`.
+
 `crates/kitsunarr-parser/src/diacritics.rs` is generated from Diacritical.Net 1.0.5 (https://github.com/anth12/diacritical-dotnet), used under the MIT License:
 
 > Copyright (c) 2019 Anthony Halliday
