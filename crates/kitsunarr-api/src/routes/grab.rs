@@ -373,6 +373,80 @@ pub(crate) async fn send(
                 .await
         }
     };
+    // Tanukarr's fake release protection: the title, then the torrent's file list, which is
+    // fetched first whenever there is a torrent file (even for clients that prefer magnets).
+    let options: kitsunarr_domain::api::settings::IndexerOptionsSettings =
+        kitsunarr_db::settings::get_or_default(
+            state.db.pool(),
+            kitsunarr_db::settings::KEY_INDEXER_OPTIONS,
+        )
+        .await?;
+    if options.enable_fake_release_protection {
+        if kitsunarr_downloaders::fake::dangerous_title(&release.title) {
+            return Err(failed(
+                "Fake release: the release title ends in an executable extension.".into(),
+            ));
+        }
+        if let Some(url) = torrent_url.clone() {
+            match state
+                .indexers
+                .download(indexer_id, &url, "application/x-bittorrent")
+                .await
+            {
+                Ok(Downloaded::File(bytes)) => {
+                    match kitsunarr_downloaders::fake::torrent_files(&bytes) {
+                        Ok(files) => {
+                            if let Some(fake) = kitsunarr_downloaders::fake::inspect(&files) {
+                                tracing::warn!(release = %release.title, reason = ?fake.reason, "fake release rejected");
+                                return Err(failed(format!("Fake release: {}.", fake.message)));
+                            }
+                        }
+                        Err(e) => {
+                            tracing::warn!(release = %release.title, error = %e, "torrent contents unreadable; not inspected");
+                        }
+                    }
+                    let hash = torrent_info_hash(&bytes).map_err(|e| {
+                        failed(format!(
+                            "The indexer did not return a valid torrent file ({e})."
+                        ))
+                    })?;
+                    let name = format!("{}.torrent", clean_file_name(&release.title));
+                    let id = state
+                        .downloads
+                        .clients
+                        .add(
+                            &settings,
+                            &AddRequest {
+                                source: Source::File {
+                                    name: &name,
+                                    content: &bytes,
+                                },
+                                hash: &hash,
+                                recent: cached.recent,
+                                tags: &tag_labels,
+                            },
+                        )
+                        .await
+                        .map_err(|e| failed(describe(&e)))?;
+                    return finish(state, cached, &client, id).await;
+                }
+                Ok(Downloaded::Magnet(m)) => {
+                    tracing::warn!(release = %release.title, "the torrent link redirects to a magnet; contents not inspected");
+                    let id = add_magnet(m).await.map_err(|e| failed(describe(&e)))?;
+                    return finish(state, cached, &client, id).await;
+                }
+                Err(e) if magnet.is_some() => {
+                    tracing::warn!(release = %release.title, error = %e, "the torrent file could not be fetched; the magnet is used, not inspected");
+                }
+                Err(e) => {
+                    return Err(failed(format!("Downloading the torrent failed: {e}")));
+                }
+            }
+        } else if magnet.is_some() {
+            tracing::warn!(release = %release.title, "magnet-only release; contents not inspected");
+        }
+    }
+
     let mut result = Err(DownloadError::Client(
         "the release has no download link".into(),
     ));

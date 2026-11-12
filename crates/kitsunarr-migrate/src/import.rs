@@ -47,6 +47,7 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "recyclebin",
     "recyclebincleanupdays",
     "deleteemptyfolders",
+    "skipunmonitoredepisodesfrompacks",
     "createemptyseriesfolders",
     "minimumfreespacewhenimporting",
     "setpermissionslinux",
@@ -61,6 +62,7 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "maximumsize",
     "rsssyncinterval",
     "enablemultiseasonreleases",
+    "enablefakereleaseprotection",
     // Download client options (database `Config` keys).
     "enablecompleteddownloadhandling",
     "autoredownloadfailed",
@@ -1027,6 +1029,10 @@ impl<'a> Importer<'a> {
                 .i32("recyclebincleanupdays")
                 .unwrap_or(next.recycle_bin_cleanup_days);
             next.delete_empty_folders = mm.bool_or("deleteemptyfolders", next.delete_empty_folders);
+            next.skip_unmonitored_episodes_from_packs = mm.bool_or(
+                "skipunmonitoredepisodesfrompacks",
+                next.skip_unmonitored_episodes_from_packs,
+            );
             next.create_empty_series_folders =
                 mm.bool_or("createemptyseriesfolders", next.create_empty_series_folders);
             next.minimum_free_space_mb = mm
@@ -1079,6 +1085,7 @@ impl<'a> Importer<'a> {
                     "maximumsize",
                     "rsssyncinterval",
                     "enablemultiseasonreleases",
+                    "enablefakereleaseprotection",
                 ]
                 .iter()
                 .any(|k| r.has(k))
@@ -1093,6 +1100,9 @@ impl<'a> Importer<'a> {
             next.rss_sync_interval = io.i32("rsssyncinterval").unwrap_or(next.rss_sync_interval);
             if let Some(v) = io.bool("enablemultiseasonreleases") {
                 next.enable_multi_season_releases = v;
+            }
+            if let Some(v) = io.bool("enablefakereleaseprotection") {
+                next.enable_fake_release_protection = v;
             }
             if next == current {
                 self.count("settings", Act::Skip);

@@ -1103,7 +1103,7 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
         assert_eq!(q.get("apikey").map(String::as_str), Some("t0rznab-key"));
         let mut f = b"d8:announce23:http://tracker/announce4:info".to_vec();
         f.extend_from_slice(
-            b"d6:lengthi1024e4:name15:Show.S01E01.mkv12:piece lengthi16384e6:pieces20:",
+            b"d6:lengthi734003200e4:name15:Show.S01E01.mkv12:piece lengthi16384e6:pieces20:",
         );
         f.extend_from_slice(&[7u8; 20]);
         f.extend_from_slice(b"ee");
@@ -1314,7 +1314,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     // The file itself was sent (the indexer's link, with its key, never left the server).
     assert_eq!(
         add,
-        "/api/v2/torrents/add category=tv-kitsunarr stopped=false torrents=<137 bytes>"
+        "/api/v2/torrents/add category=tv-kitsunarr stopped=false torrents=<142 bytes>"
     );
 
     let history = client.history(1, 50, Some("grabbed")).await.unwrap();
@@ -2689,6 +2689,25 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
         b"s2",
     )
     .unwrap();
+    // Pack trimming: an unmonitored episode is skipped, and the download still counts as
+    // imported.
+    let mut media = client.media_management().await.unwrap();
+    media.skip_unmonitored_episodes_from_packs = true;
+    client.put_media_management(&media).await.unwrap();
+    let e7 = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 7)
+        .unwrap();
+    client
+        .set_episodes_monitored(&EpisodesMonitoredUpdate {
+            episode_ids: vec![e7.id],
+            monitored: false,
+        })
+        .await
+        .unwrap();
     sab.lock().unwrap()["history"] = serde_json::json!([{"status": "Completed", "nzo_id": "SABnzbd_nzo_x1",
         "name": "Breaking.Bad.S01-S02.720p.HDTV.x264-GRP", "category": "tv", "bytes": 15,
         "storage": job.display().to_string()}]);
@@ -2702,7 +2721,7 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
             .iter()
             .filter(|e| e.season_number == 1 && e.file.is_some())
             .count(),
-        7
+        6
     );
     assert!(
         episodes
@@ -2850,5 +2869,154 @@ async fn complete_series_search_reads_packs_of_the_series() {
         "search Breaking Bad S03",
     ] {
         assert!(queries.contains(&q.to_string()), "{q}: {queries:?}");
+    }
+}
+
+#[tokio::test]
+async fn fake_torrents_are_rejected_before_grabbing() {
+    use axum::extract::{Query, State};
+    use axum::response::IntoResponse;
+    use axum::routing::get;
+    use kitsunarr_domain::api::search::{GrabRequest, ReleaseQuery};
+    async fn torznab(
+        State(base): State<Arc<std::sync::Mutex<String>>>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        if q.get("t").map(String::as_str) == Some("caps") {
+            let caps = std::fs::read_to_string(format!(
+                "{}/../../tests/fixtures/indexers/sonarr/newznab_caps.xml",
+                env!("CARGO_MANIFEST_DIR")
+            ))
+            .unwrap();
+            return ([("content-type", "application/xml")], caps).into_response();
+        }
+        let link = format!("{}/dl/fake.torrent", base.lock().unwrap());
+        let feed = format!(
+            r#"<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:torznab="http://torznab.com/schemas/2015/feed"><channel>
+<item><title>Breaking.Bad.S01E01.720p.HDTV.x264-GRP</title><guid>fake</guid><link>{link}</link>
+<pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate><size>734003200</size>
+<enclosure url="{link}" length="734003200" type="application/x-bittorrent" />
+<torznab:attr name="seeders" value="40" /></item></channel></rss>"#
+        );
+        ([("content-type", "application/rss+xml")], feed).into_response()
+    }
+    async fn torrent() -> axum::response::Response {
+        let f: &[u8] = b"d4:infod5:filesld6:lengthi734003200e4:pathl38:Breaking.Bad.S01E01.720p.HDTV.x264.mkveed6:lengthi4096e4:pathl9:setup.exeeee4:name4:Show12:piece lengthi16384e6:pieces20:\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07ee";
+        ([("content-type", "application/x-bittorrent")], f).into_response()
+    }
+    let base: Arc<std::sync::Mutex<String>> = Arc::default();
+    let app = axum::Router::new()
+        .route("/api", get(torznab))
+        .route("/dl/fake.torrent", get(torrent))
+        .with_state(base.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let indexer_url = format!("http://{}", listener.local_addr().unwrap());
+    *base.lock().unwrap() = indexer_url.clone();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let indexer: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Torznab", "implementation": "Torznab",
+                "options": {"enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "k", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    // The client is never reached.
+    let _: serde_json::Value = client
+        .post(
+            "/providers/downloadclients",
+            &serde_json::json!({"name": "qBittorrent", "implementation": "QBittorrent", "enabled": true,
+                "settings": {"host": "127.0.0.1", "port": 9}}),
+        )
+        .await
+        .unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+        })
+        .await
+        .unwrap();
+    let pilot = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+            complete_series: false,
+        })
+        .await
+        .unwrap();
+    match client
+        .grab_release(&GrabRequest {
+            guid: "fake".into(),
+            indexer_id: indexer["id"].as_i64().unwrap(),
+        })
+        .await
+        .unwrap_err()
+    {
+        ClientError::Api { status, body } => {
+            assert_eq!(status, 422);
+            assert!(
+                body.message.contains(
+                    "Fake release: Contains an executable or script payload: 'setup.exe'"
+                ),
+                "{}",
+                body.message
+            );
+        }
+        other => panic!("unexpected {other:?}"),
+    }
+    // With the protection off, the grab goes ahead (and fails at the unreachable client).
+    let mut options = client.indexer_options().await.unwrap();
+    options.enable_fake_release_protection = false;
+    client.put_indexer_options(&options).await.unwrap();
+    match client
+        .grab_release(&GrabRequest {
+            guid: "fake".into(),
+            indexer_id: indexer["id"].as_i64().unwrap(),
+        })
+        .await
+        .unwrap_err()
+    {
+        ClientError::Api { body, .. } => {
+            assert!(!body.message.contains("Fake release"), "{}", body.message)
+        }
+        other => panic!("unexpected {other:?}"),
     }
 }

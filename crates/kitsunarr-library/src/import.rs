@@ -494,6 +494,14 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         if SAMPLE_NAME.is_match(&stem(&path)) {
             errors.push("Sample".into());
         }
+        // Tanukarr's import `MonitoredEpisodeSpecification` (pack trimming).
+        if media.skip_unmonitored_episodes_from_packs
+            && model.monitored
+            && !mapped.is_empty()
+            && mapped.iter().all(|e| !e.monitored)
+        {
+            errors.push("Episode is not monitored".into());
+        }
         let missing: Vec<&decision::Episode> = mapped
             .iter()
             .filter(|e| !grab_episodes.is_empty() && !grab_episodes.contains(&e.id))

@@ -286,6 +286,14 @@ impl Monitor {
             kv::get_or_default(db.pool(), kv::KEY_DOWNLOAD_CLIENT_OPTIONS)
                 .await
                 .map_err(|e| e.to_string())?;
+        let trimming =
+            kv::get_or_default::<kitsunarr_domain::api::settings::MediaManagementSettings>(
+                db.pool(),
+                kv::KEY_MEDIA_MANAGEMENT,
+            )
+            .await
+            .map_err(|e| e.to_string())?
+            .skip_unmonitored_episodes_from_packs;
         let (mut imported, mut blocked, mut failed_clients) = (0usize, 0usize, Vec::new());
         let mut failed_downloads = 0usize;
         let mut seen = HashSet::new();
@@ -468,13 +476,23 @@ impl Monitor {
                     );
                     continue;
                 }
-                // `VerifyImport`: every grabbed episode (at least one) was imported.
-                let expected = mine
-                    .iter()
-                    .filter_map(|g| g.episode_id)
-                    .collect::<std::collections::HashSet<_>>()
-                    .len()
-                    .max(1);
+                // `VerifyImport`: every grabbed episode (at least one) was imported. With pack
+                // trimming on, unmonitored episodes are not expected (Tanukarr would leave the
+                // download blocked).
+                let mut grabbed: std::collections::HashSet<i64> =
+                    mine.iter().filter_map(|g| g.episode_id).collect();
+                if trimming {
+                    let monitored: std::collections::HashSet<i64> =
+                        kitsunarr_db::library::series::list_episodes(db, series_id, None)
+                            .await
+                            .map_err(|e| e.to_string())?
+                            .into_iter()
+                            .filter(|e| e.monitored)
+                            .map(|e| e.id)
+                            .collect();
+                    grabbed.retain(|id| monitored.contains(id));
+                }
+                let expected = grabbed.len().max(1);
                 if outcome.imported_episodes() >= expected {
                     if let Err(e) = self
                         .clients

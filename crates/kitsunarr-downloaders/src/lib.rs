@@ -7,6 +7,7 @@
 
 pub mod deluge;
 pub mod error;
+pub mod fake;
 pub mod nzbget;
 pub mod qbittorrent;
 pub mod sabnzbd;

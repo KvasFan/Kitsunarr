@@ -295,6 +295,7 @@ pub fn SettingsMedia() -> Element {
                     div { class: "stack", style: "margin-bottom: var(--sp-4)",
                         Switch { checked: m.use_hardlinks, label: "Use hardlinks instead of copying", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.use_hardlinks = v; } } }
                         Switch { checked: m.delete_empty_folders, label: "Delete empty series folders", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.delete_empty_folders = v; } } }
+                        Switch { checked: m.skip_unmonitored_episodes_from_packs, label: "Skip unmonitored episodes when importing packs", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.skip_unmonitored_episodes_from_packs = v; } } }
                         Switch { checked: m.skip_free_space_check, label: "Skip the free-space check", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.skip_free_space_check = v; } } }
                         Switch { checked: m.import_extra_files, label: "Import extra files (subtitles…)", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.import_extra_files = v; } } }
                     }
@@ -763,6 +764,8 @@ fn IndexerOptions() -> Element {
                             input { class: "input", r#type: "number", min: "0", max: "120", "aria-label": "RSS sync interval", value: "{o.rss_sync_interval}", oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.rss_sync_interval = number(e.value()); } } }
                         }
                     }
+                    Switch { checked: o.enable_fake_release_protection, label: "Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video",
+                        onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.enable_fake_release_protection = v; } } }
                     Switch { checked: o.enable_multi_season_releases, label: "Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)",
                         onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.enable_multi_season_releases = v; } } }
                     div { class: "row end", button { class: "btn primary", onclick: save, "Save options" } }

@@ -278,6 +278,8 @@ pub struct IndexerOptionsSettings {
     pub rss_sync_interval: i32,
     /// Tanukarr: accept multi-season packs (a season search takes the pack for its season).
     pub enable_multi_season_releases: bool,
+    /// Tanukarr: inspect torrents before sending them (executables, password bait, no video).
+    pub enable_fake_release_protection: bool,
 }
 
 impl Default for IndexerOptionsSettings {
@@ -288,6 +290,7 @@ impl Default for IndexerOptionsSettings {
             maximum_size: 0,
             rss_sync_interval: 15,
             enable_multi_season_releases: true,
+            enable_fake_release_protection: true,
         }
     }
 }
@@ -344,6 +347,9 @@ pub struct MediaManagementSettings {
     pub extra_file_extensions: String,
     #[serde(default)]
     pub download_propers_and_repacks: ProperDownloadType,
+    /// Tanukarr: files whose episodes are all unmonitored are not imported from downloads.
+    #[serde(default)]
+    pub skip_unmonitored_episodes_from_packs: bool,
 }
 
 impl Default for MediaManagementSettings {
@@ -361,6 +367,7 @@ impl Default for MediaManagementSettings {
             import_extra_files: false,
             extra_file_extensions: "srt".into(),
             download_propers_and_repacks: ProperDownloadType::PreferAndUpgrade,
+            skip_unmonitored_episodes_from_packs: false,
         }
     }
 }

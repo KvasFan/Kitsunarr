@@ -406,3 +406,14 @@ The series page's "Complete series" button runs Tanukarr's complete-series searc
   Other releases are left out, and releases whose ids name another series are rejected. Automatic searches need the whole series; interactive ones also list packs of some of its seasons.
 
 Not ported: collection titles (anime groups do not exist yet), and the automatic complete-series attempt that Tanukarr makes before series and missing searches.
+
+## 27. Fake release protection and pack trimming (Tanukarr)
+
+- **Fake releases** (`FakeReleaseInspector`, default on): a release title ending in an executable extension is refused. A torrent with a `.torrent` link is fetched first, even for clients that prefer magnets, and its file list (BEP-47 padding ignored) is refused when it holds:
+  - a disguised executable (`.mkv.exe`);
+  - any executable or script;
+  - archives with no video, next to a "password"/"how to open" file;
+  - neither video of at least 10 MiB nor archives.
+
+  Unreadable file lists and magnet-only releases pass, with a warning. A rejected grab moves an automatic search on to the next release; nothing is stored, as upstream.
+- **Pack trimming** (Media management, default off): a file whose episodes are all unmonitored is not imported from a download. Tanukarr still expects those episodes, so a trimmed pack stays "import blocked" forever. Kitsunarr expects only the monitored grabbed episodes, so the download completes.
