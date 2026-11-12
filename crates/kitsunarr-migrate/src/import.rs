@@ -1183,6 +1183,11 @@ impl<'a> Importer<'a> {
                 next.skip_free_space_check,
             );
             next.import_extra_files = mm.bool_or("importextrafiles", next.import_extra_files);
+            if let Some(v) = mm.str("filedate")
+                && let Some(d) = kitsunarr_domain::api::settings::FileDate::from_sonarr(&v)
+            {
+                next.file_date = d;
+            }
             next.extra_file_extensions = mm
                 .str("extrafileextensions")
                 .unwrap_or(next.extra_file_extensions);

@@ -984,6 +984,7 @@ async fn transfer_and_record(
         .await
         .is_ok_and(|o| o.keep_versions);
     let mut replaced = Vec::new();
+    let mut preserved_date: Option<std::time::SystemTime> = None;
     for old in replaced_files {
         let record = series::file_records(db, model.id)
             .await
@@ -993,6 +994,10 @@ async fn transfer_and_record(
         let Some(record) = record else { continue };
         replaced.push(record.relative_path.clone());
         let old_path = series_path.join(&record.relative_path);
+        // Tanukarr's "preserve original" file date: the replaced file's date.
+        if preserved_date.is_none() {
+            preserved_date = std::fs::metadata(&old_path).and_then(|m| m.modified()).ok();
+        }
         let episode_ids: Vec<i64> = model
             .episodes
             .iter()
@@ -1037,6 +1042,7 @@ async fn transfer_and_record(
             .map_err(|e| e.to_string())?;
     }
 
+    apply_file_date(db, media, model, &c.episodes, &dest, preserved_date).await;
     let relative = dest
         .strip_prefix(series_path)
         .map(|p| p.to_string_lossy().into_owned())
@@ -1125,6 +1131,70 @@ async fn transfer_and_record(
     })
 }
 
+/// Sonarr's `UpdateEpisodeFileService.ChangeFileDate` (and Tanukarr's "preserve original"),
+/// then the permissions setting (`SetPermissions`, Linux and macOS): files get the folder mode
+/// without its execute bits.
+async fn apply_file_date(
+    db: &Database,
+    media: &MediaManagementSettings,
+    model: &decision::Series,
+    episode_ids: &[i64],
+    dest: &Path,
+    preserved: Option<std::time::SystemTime>,
+) {
+    use kitsunarr_domain::api::settings::FileDate;
+    let first = episode_ids
+        .iter()
+        .find_map(|id| model.episodes.iter().find(|e| e.id == *id));
+    let date: Option<std::time::SystemTime> = match media.file_date {
+        FileDate::None => None,
+        FileDate::PreserveOriginal => preserved,
+        FileDate::UtcAirDate => first
+            .and_then(|e| e.air_date_utc)
+            .map(std::time::SystemTime::from),
+        FileDate::LocalAirDate => {
+            let air_time: Option<String> =
+                sqlx::query_scalar("SELECT air_time FROM series WHERE id = ?")
+                    .bind(model.id)
+                    .fetch_optional(db.pool())
+                    .await
+                    .ok()
+                    .flatten();
+            first.and_then(|e| e.air_date.as_deref()).and_then(|d| {
+                let day = chrono::NaiveDate::parse_from_str(d, "%Y-%m-%d").ok()?;
+                let time = air_time
+                    .as_deref()
+                    .and_then(|t| chrono::NaiveTime::parse_from_str(t, "%H:%M").ok())
+                    .unwrap_or_default();
+                let local = day
+                    .and_time(time)
+                    .and_local_timezone(chrono::Local)
+                    .earliest()?;
+                Some(std::time::SystemTime::from(local))
+            })
+        }
+    };
+    if let Some(date) = date
+        && let Ok(f) = std::fs::File::options().write(true).open(dest)
+        && let Err(e) = f.set_modified(date)
+    {
+        tracing::warn!(path = %dest.display(), error = %e, "could not change the file date");
+    }
+    #[cfg(unix)]
+    if media.set_permissions
+        && let Ok(mode) = u32::from_str_radix(media.chmod_folder.trim(), 8)
+    {
+        use std::os::unix::fs::PermissionsExt;
+        let file_mode = mode & !0o111;
+        if let Err(e) = std::fs::set_permissions(dest, std::fs::Permissions::from_mode(file_mode)) {
+            tracing::warn!(path = %dest.display(), error = %e, "could not set the file permissions");
+        }
+        if let Some(dir) = dest.parent() {
+            let _ = std::fs::set_permissions(dir, std::fs::Permissions::from_mode(mode));
+        }
+    }
+}
+
 /// `RecycleBinProvider.DeleteFile`: into `<recycle bin>/<path relative to the root folder>`
 /// with `_2`, `_3`… on collisions, or deleted when no recycle bin is set.
 pub(crate) fn remove_or_recycle(
@@ -1175,6 +1245,43 @@ pub(crate) fn remove_or_recycle(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Sonarr's file dates and Tanukarr's "preserve original", then the permissions.
+    #[tokio::test]
+    async fn imported_files_get_their_date_and_permissions() {
+        use kitsunarr_domain::api::settings::FileDate;
+        let db = Database::open_in_memory().await.unwrap();
+        let dir = tempfile::tempdir().unwrap();
+        let file = dir.path().join("Show.S01E01.mkv");
+        std::fs::write(&file, b"x").unwrap();
+        let mut model = mapped_series();
+        let aired = chrono::DateTime::parse_from_rfc3339("2008-01-20T02:00:00Z")
+            .unwrap()
+            .with_timezone(&chrono::Utc);
+        model.episodes[0].air_date_utc = Some(aired);
+        let id = model.episodes[0].id;
+        let mtime = || std::fs::metadata(&file).unwrap().modified().unwrap();
+        let mut media = MediaManagementSettings {
+            file_date: FileDate::UtcAirDate,
+            ..Default::default()
+        };
+        apply_file_date(&db, &media, &model, &[id], &file, None).await;
+        assert_eq!(mtime(), std::time::SystemTime::from(aired));
+        let original =
+            std::time::SystemTime::UNIX_EPOCH + std::time::Duration::from_secs(1_000_000);
+        media.file_date = FileDate::PreserveOriginal;
+        apply_file_date(&db, &media, &model, &[id], &file, Some(original)).await;
+        assert_eq!(mtime(), original);
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            media.set_permissions = true;
+            media.chmod_folder = "775".into();
+            apply_file_date(&db, &media, &model, &[id], &file, None).await;
+            let mode = std::fs::metadata(&file).unwrap().permissions().mode() & 0o777;
+            assert_eq!(mode, 0o664);
+        }
+    }
 
     fn mapped_series() -> decision::Series {
         let ep = |id: i64, season: i32, episode: i32, absolute: Option<i32>| decision::Episode {

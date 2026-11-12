@@ -312,6 +312,25 @@ pub fn SettingsMedia() -> Element {
                         Field { label: "Extra file extensions",
                             input { class: "input", value: "{m.extra_file_extensions}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.extra_file_extensions = e.value(); } } }
                         }
+                        Field { label: "File date", help: "The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.".to_string(),
+                            select { class: "select", "aria-label": "File date",
+                                onchange: move |e: FormEvent| {
+                                    if let Some(x) = mm.write().as_mut() {
+                                        x.file_date = kitsunarr_domain::api::settings::FileDate::from_sonarr(&e.value()).unwrap_or_default();
+                                    }
+                                },
+                                {
+                                    use kitsunarr_domain::api::settings::FileDate as F;
+                                    let cur = m.file_date;
+                                    rsx! {
+                                        option { value: "none", selected: cur == F::None, "Unchanged" }
+                                        option { value: "localAirDate", selected: cur == F::LocalAirDate, "Local air date" }
+                                        option { value: "utcAirDate", selected: cur == F::UtcAirDate, "UTC air date" }
+                                        option { value: "preserveOriginal", selected: cur == F::PreserveOriginal, "Keep the replaced file's date (upgrades)" }
+                                    }
+                                }
+                            }
+                        }
                         Field { label: "Propers and repacks", help: "Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).".to_string(),
                             select { class: "select", "aria-label": "Propers and repacks",
                                 onchange: move |e: FormEvent| {

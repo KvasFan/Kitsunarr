@@ -553,6 +553,37 @@ pub struct MediaManagementSettings {
     /// Tanukarr: files whose episodes are all unmonitored are not imported from downloads.
     #[serde(default)]
     pub skip_unmonitored_episodes_from_packs: bool,
+    /// Sonarr's "Change file date" (plus Tanukarr's "preserve original" for upgrades).
+    #[serde(default)]
+    pub file_date: FileDate,
+}
+
+/// Sonarr's `FileDateType` and Tanukarr's `PreserveOriginal`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum FileDate {
+    #[default]
+    None,
+    /// The episode's air date at the series' air time, in local time.
+    LocalAirDate,
+    /// The episode's UTC air date and time.
+    UtcAirDate,
+    /// On an upgrade, the replaced file's date.
+    PreserveOriginal,
+}
+
+impl FileDate {
+    /// Sonarr's numbers (0-2) and names; Tanukarr's 3 is "preserve original".
+    pub fn from_sonarr(v: &str) -> Option<Self> {
+        Some(match v.trim().to_ascii_lowercase().as_str() {
+            "0" | "none" => Self::None,
+            "1" | "localairdate" => Self::LocalAirDate,
+            "2" | "utcairdate" => Self::UtcAirDate,
+            "3" | "preserveoriginal" => Self::PreserveOriginal,
+            _ => return None,
+        })
+    }
 }
 
 impl Default for MediaManagementSettings {
@@ -571,6 +602,7 @@ impl Default for MediaManagementSettings {
             extra_file_extensions: "srt".into(),
             download_propers_and_repacks: ProperDownloadType::PreferAndUpgrade,
             skip_unmonitored_episodes_from_packs: false,
+            file_date: FileDate::None,
         }
     }
 }
