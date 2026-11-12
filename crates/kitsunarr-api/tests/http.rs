@@ -4239,4 +4239,41 @@ async fn custom_quality_presets_round_trip() {
             .title_pattern,
         r"\bAMZN\b"
     );
+
+    // Global codec factors: one profile overriding HEVC makes it mixed; a global value is
+    // written into every profile; null resets.
+    use kitsunarr_domain::api::settings::OrderedF64;
+    let factors = client.codec_factors().await.unwrap();
+    let hevc = factors.iter().find(|f| f.codec == "HEVC").unwrap();
+    assert_eq!(
+        (hevc.factor, hevc.is_mixed),
+        (Some(OrderedF64(1.67)), false)
+    );
+    let mut p = client.quality_profiles().await.unwrap().remove(0);
+    p.codec_multipliers.insert("HEVC".into(), OrderedF64(1.2));
+    client.update_quality_profile(&p).await.unwrap();
+    let hevc = client
+        .codec_factors()
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|f| f.codec == "HEVC")
+        .unwrap();
+    assert!(hevc.is_mixed && hevc.factor.is_none());
+    let set = |v: Option<f64>| {
+        std::collections::BTreeMap::from([("HEVC".to_string(), v.map(OrderedF64))])
+    };
+    let after = client.update_codec_factors(&set(Some(1.5))).await.unwrap();
+    let hevc = after.iter().find(|f| f.codec == "HEVC").unwrap();
+    assert_eq!((hevc.factor, hevc.is_mixed), (Some(OrderedF64(1.5)), false));
+    assert!(client.update_codec_factors(&set(Some(42.0))).await.is_err());
+    client.update_codec_factors(&set(None)).await.unwrap();
+    assert!(
+        client
+            .quality_profiles()
+            .await
+            .unwrap()
+            .iter()
+            .all(|p| !p.codec_multipliers.contains_key("HEVC"))
+    );
 }

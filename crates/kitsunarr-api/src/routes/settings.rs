@@ -184,6 +184,30 @@ pub async fn create_custom_quality(
     Ok((StatusCode::CREATED, Json(d)))
 }
 
+/// Codec size factors across every profile (Tanukarr's global editor).
+#[utoipa::path(get, path = "/qualitydefinitions/codecfactors", tag = "settings",
+    responses((status = 200, body = Vec<kitsunarr_domain::api::settings::CodecFactorSummary>)))]
+pub async fn codec_factors(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::settings::CodecFactorSummary>>> {
+    Ok(Json(quality::codec_factor_summary(state.db.pool()).await?))
+}
+
+/// Sets codec size factors in every profile (`null` resets a family to its default).
+#[utoipa::path(put, path = "/qualitydefinitions/codecfactors", tag = "settings",
+    request_body = std::collections::BTreeMap<String, Option<f64>>,
+    responses((status = 200, body = Vec<kitsunarr_domain::api::settings::CodecFactorSummary>), (status = 422)))]
+pub async fn update_codec_factors(
+    State(state): State<AppState>,
+    Json(factors): Json<
+        std::collections::BTreeMap<String, Option<kitsunarr_domain::api::settings::OrderedF64>>,
+    >,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::settings::CodecFactorSummary>>> {
+    quality::set_codec_factors(&state.db, &factors).await?;
+    settings_changed(&state, "qualityProfiles");
+    Ok(Json(quality::codec_factor_summary(state.db.pool()).await?))
+}
+
 /// Retires a quality (kept for history, no longer matched); refused while a profile allows it.
 #[utoipa::path(delete, path = "/qualitydefinitions/{id}", tag = "settings", params(("id" = i32, Path)),
     responses((status = 204), (status = 404), (status = 409)))]

@@ -288,6 +288,75 @@ pub async fn retire(db: &crate::Database, id: i32) -> DbResult<()> {
     set_retired(db, id, true).await
 }
 
+/// Tanukarr's global codec factors: per family, the factor every profile uses (its override or
+/// the default), or "mixed".
+pub async fn codec_factor_summary(
+    ex: impl SqliteExecutor<'_>,
+) -> DbResult<Vec<kitsunarr_domain::api::settings::CodecFactorSummary>> {
+    use kitsunarr_domain::codec;
+    let profiles = list_profiles(ex).await?;
+    Ok(codec::FAMILIES
+        .iter()
+        .map(|family| {
+            let default = codec::default_factor(family);
+            let values: Vec<f64> = profiles
+                .iter()
+                .map(|p| {
+                    p.codec_multipliers
+                        .iter()
+                        .find(|(k, _)| k.eq_ignore_ascii_case(family))
+                        .map_or(default, |(_, v)| v.0)
+                })
+                .collect();
+            let first = values.first().copied().unwrap_or(default);
+            let mixed = values.iter().any(|v| (v - first).abs() > 1e-9);
+            kitsunarr_domain::api::settings::CodecFactorSummary {
+                codec: (*family).to_string(),
+                label: codec::label(family).to_string(),
+                factor: (!mixed).then_some(OrderedF64(first)),
+                is_mixed: mixed,
+                default_factor: OrderedF64(default),
+            }
+        })
+        .collect())
+}
+
+/// Writes the given families' factors into every profile (`null` resets a family to its
+/// default); families not given are left as each profile has them.
+pub async fn set_codec_factors(
+    db: &crate::Database,
+    factors: &std::collections::BTreeMap<String, Option<OrderedF64>>,
+) -> DbResult<()> {
+    use kitsunarr_domain::codec;
+    for (family, factor) in factors {
+        if !codec::FAMILIES.contains(&family.as_str()) {
+            return Err(DbError::Invalid(format!("unknown codec family {family}")));
+        }
+        if factor.is_some_and(|f| !(0.01..=10.0).contains(&f.0)) {
+            return Err(DbError::Invalid(format!(
+                "the {family} factor must be between 0.01 and 10"
+            )));
+        }
+    }
+    let mut tx = db.pool().begin().await?;
+    for mut p in list_profiles(&mut *tx).await? {
+        for (family, factor) in factors {
+            p.codec_multipliers
+                .retain(|k, _| !k.eq_ignore_ascii_case(family));
+            if let Some(f) = factor {
+                p.codec_multipliers.insert(family.clone(), *f);
+            }
+        }
+        sqlx::query("UPDATE quality_profiles SET codec_multipliers = ? WHERE id = ?")
+            .bind(to_json(&p.codec_multipliers)?)
+            .bind(p.id)
+            .execute(&mut *tx)
+            .await?;
+    }
+    tx.commit().await?;
+    Ok(())
+}
+
 /// Tanukarr's profile guards for presets: retired qualities cannot be allowed, and custom
 /// presets a profile omits are kept in it (not allowed).
 pub async fn prepare_profile(db: &crate::Database, p: &mut QualityProfile) -> DbResult<()> {

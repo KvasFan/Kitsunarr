@@ -140,6 +140,21 @@ pub struct QualityDefinition {
     pub is_retired: bool,
 }
 
+/// A codec family's factor across every profile (Tanukarr's global codec factors): the value
+/// when all profiles agree, else "mixed".
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CodecFactorSummary {
+    pub codec: String,
+    pub label: String,
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<f64>))]
+    pub factor: Option<OrderedF64>,
+    pub is_mixed: bool,
+    #[cfg_attr(feature = "openapi", schema(value_type = f64))]
+    pub default_factor: OrderedF64,
+}
+
 /// Creates a custom quality preset (Tanukarr's `POST /qualitydefinition`).
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

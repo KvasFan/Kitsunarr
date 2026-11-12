@@ -456,8 +456,90 @@ pub fn SettingsProfiles() -> Element {
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
             None => rsx! {},
         }
+        GlobalCodecFactors { on_change: move |_| profiles.restart() }
         DelayProfiles {}
         ReleaseProfiles {}
+    }
+}
+
+/// Tanukarr's global codec factor editor: one factor per codec family across every profile
+/// ("mixed" where profiles differ); only edited families are written.
+#[component]
+fn GlobalCodecFactors(on_change: EventHandler<()>) -> Element {
+    use kitsunarr_domain::api::settings::OrderedF64;
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut summary = use_resource(move || {
+        let _ = (app.settings_rev)();
+        let c = c0.clone();
+        async move { c.codec_factors().await }
+    });
+    // Edited families: Some(value) sets, None resets to the default.
+    let mut edits = use_signal(std::collections::BTreeMap::<String, Option<OrderedF64>>::new);
+    let save = move |_| {
+        let c = client.clone();
+        let e = edits();
+        spawn(async move {
+            match c.update_codec_factors(&e).await {
+                Ok(_) => {
+                    edits.write().clear();
+                    summary.restart();
+                    app.success("Codec factors saved in every profile.");
+                    on_change.call(());
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let rows = match &*summary.read() {
+        Some(Ok(r)) => r.clone(),
+        Some(Err(e)) => return rsx! { ErrorBox { message: e.to_string() } },
+        None => return rsx! {},
+    };
+    rsx! {
+        details { class: "card", style: "margin-top: var(--sp-6)",
+            summary { strong { "Codec size factors" } span { class: "muted small", " — all profiles at once" } }
+            p { class: "help small faint", "A release's size is multiplied by its codec's factor before the size limits apply. \"Mixed\" means profiles use different factors; a value entered here is written into every profile." }
+            div { class: "table-wrap",
+                table { class: "table",
+                    thead { tr { th { "Codec" } th { class: "num", "Factor" } th { class: "num", "Default" } th { span { class: "sr-only", "Actions" } } } }
+                    tbody {
+                        for r in rows.iter() {
+                            {
+                                let codec = r.codec.clone();
+                                let codec2 = r.codec.clone();
+                                let edited = edits().get(&r.codec).cloned();
+                                let shown = match &edited {
+                                    Some(Some(v)) => v.0.to_string(),
+                                    Some(None) => r.default_factor.0.to_string(),
+                                    None => r.factor.map(|f| f.0.to_string()).unwrap_or_default(),
+                                };
+                                rsx! {
+                                    tr { key: "{r.codec}",
+                                        td { "{r.label}" if r.is_mixed && edited.is_none() { span { class: "badge", " mixed" } } }
+                                        td { class: "num",
+                                            input { class: "input", style: "width: 7rem", r#type: "number", step: "0.01", min: "0.01", max: "10",
+                                                "aria-label": "Factor for {r.label}", placeholder: if r.is_mixed { "mixed" } else { "" }, value: "{shown}",
+                                                oninput: move |e| {
+                                                    if let Ok(v) = e.value().parse::<f64>() {
+                                                        edits.write().insert(codec.clone(), Some(OrderedF64(v)));
+                                                    }
+                                                } }
+                                        }
+                                        td { class: "num small muted", "{r.default_factor.0}" }
+                                        td { class: "actions",
+                                            button { class: "btn sm ghost", onclick: move |_| { edits.write().insert(codec2.clone(), None); }, "Default" }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            div { class: "row", button { class: "btn primary", disabled: edits().is_empty(), onclick: save, "Save factors" } }
+        }
     }
 }
 

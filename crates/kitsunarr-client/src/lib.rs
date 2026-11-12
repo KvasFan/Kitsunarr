@@ -832,6 +832,20 @@ impl Client {
     ) -> ClientResult<QualityDefinition> {
         self.post("/qualitydefinitions", c).await
     }
+    pub async fn codec_factors(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::settings::CodecFactorSummary>> {
+        self.get("/qualitydefinitions/codecfactors").await
+    }
+    pub async fn update_codec_factors(
+        &self,
+        factors: &std::collections::BTreeMap<
+            String,
+            Option<kitsunarr_domain::api::settings::OrderedF64>,
+        >,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::settings::CodecFactorSummary>> {
+        self.put("/qualitydefinitions/codecfactors", factors).await
+    }
     pub async fn retire_quality(&self, id: i32) -> ClientResult<()> {
         self.delete(&format!("/qualitydefinitions/{id}")).await
     }

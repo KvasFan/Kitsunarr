@@ -110,6 +110,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             settings::create_custom_quality
         ))
         .routes(routes!(settings::retire_quality))
+        .routes(routes!(
+            settings::codec_factors,
+            settings::update_codec_factors
+        ))
         .routes(routes!(settings::restore_quality))
         .routes(routes!(
             settings::list_quality_profiles,
