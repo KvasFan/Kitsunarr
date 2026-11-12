@@ -524,6 +524,28 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::settings::LibraryToolsSettings> {
         self.put("/settings/librarytools", s).await
     }
+    pub async fn storage_outlook(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library_tools::StorageOutlook>> {
+        self.get("/librarytools/storage").await
+    }
+    pub async fn check_library(
+        &self,
+    ) -> ClientResult<kitsunarr_domain::api::library_tools::LibraryCheck> {
+        self.post("/librarytools/audit", &serde_json::json!({}))
+            .await
+    }
+    pub async fn recycle_bin(
+        &self,
+    ) -> ClientResult<kitsunarr_domain::api::library_tools::RecycleBin> {
+        self.get("/librarytools/recycle").await
+    }
+    pub async fn restore_recycled(
+        &self,
+        req: &kitsunarr_domain::api::library_tools::RecycleRestoreRequest,
+    ) -> ClientResult<String> {
+        self.post("/librarytools/recycle/restore", req).await
+    }
     pub async fn recent_searches(
         &self,
     ) -> ClientResult<Vec<kitsunarr_domain::api::settings::SearchActivity>> {

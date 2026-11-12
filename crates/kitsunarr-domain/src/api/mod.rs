@@ -9,6 +9,7 @@ pub mod error;
 pub mod events;
 pub mod import_lists;
 pub mod library;
+pub mod library_tools;
 pub mod metadata;
 pub mod migration;
 pub mod queue;

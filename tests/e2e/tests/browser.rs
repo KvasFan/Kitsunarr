@@ -526,6 +526,14 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Codec size factors").await;
         wait_text(&client, "Size limits").await;
         click_button(&client, "Cancel").await;
+        // Library tools: switches, storage outlook, library check, recycle bin, recent searches.
+        client.goto(&format!("{base}/system/library")).await.unwrap();
+        wait_text(&client, "Pause automation").await;
+        wait_text(&client, "Storage outlook").await;
+        click_button(&client, "Check library").await;
+        wait_text(&client, "series and").await;
+        wait_text(&client, "Recent searches").await;
+        screenshot(&client, "11f-library-tools").await;
         // Migrated notifications are sent now (no "stored only" badge).
         client
             .goto(&format!("{base}/settings/notifications"))
@@ -825,6 +833,7 @@ async fn first_run_setup_migration_and_library() {
                 "/settings/indexers",
                 "/settings/profiles",
                 "/system/tasks",
+                "/system/library",
             ] {
                 client.goto(&format!("{base}{path}")).await.unwrap();
                 tokio::time::sleep(Duration::from_millis(700)).await;

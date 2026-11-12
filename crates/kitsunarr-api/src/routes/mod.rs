@@ -158,6 +158,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             library_tools::put_settings
         ))
         .routes(routes!(library_tools::searches))
+        .routes(routes!(library_tools::storage))
+        .routes(routes!(library_tools::audit))
+        .routes(routes!(library_tools::recycle))
+        .routes(routes!(library_tools::restore))
         .routes(routes!(
             import_lists::get_options,
             import_lists::put_options

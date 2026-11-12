@@ -1029,6 +1029,13 @@ impl FileRecord {
 }
 
 /// The files of a series.
+/// Every series' (id, folder).
+pub async fn paths(db: &Database) -> DbResult<Vec<(i64, String)>> {
+    Ok(sqlx::query_as("SELECT id, path FROM series")
+        .fetch_all(db.pool())
+        .await?)
+}
+
 pub async fn file_records(db: &Database, series_id: i64) -> DbResult<Vec<FileRecord>> {
     Ok(sqlx::query_as(
         "SELECT id, relative_path, size, scene_name, original_path, release_group, quality_id, \

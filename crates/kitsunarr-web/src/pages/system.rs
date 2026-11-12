@@ -339,6 +339,8 @@ pub fn SystemLibraryTools() -> Element {
                 },
             }
         }
+        StorageAndCheck {}
+        RecycleBinCard {}
         div { class: "card",
             h3 { "Recent searches" }
             match &*searches.read() {
@@ -369,6 +371,201 @@ pub fn SystemLibraryTools() -> Element {
                         }
                     }
                 },
+            }
+        }
+    }
+}
+
+/// Storage outlook per root folder and the read-only library check.
+#[component]
+fn StorageAndCheck() -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let storage = use_resource(move || {
+        let c = c0.clone();
+        async move { c.storage_outlook().await }
+    });
+    let mut check = use_signal(|| None::<kitsunarr_domain::api::library_tools::LibraryCheck>);
+    let mut checking = use_signal(|| false);
+    let run_check = move |_| {
+        let c = client.clone();
+        checking.set(true);
+        spawn(async move {
+            match c.check_library().await {
+                Ok(r) => check.set(Some(r)),
+                Err(e) => app.error(&e),
+            }
+            checking.set(false);
+        });
+    };
+    rsx! {
+        div { class: "card",
+            h3 { "Storage outlook" }
+            match &*storage.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) if list.is_empty() => rsx! { p { class: "muted small", "No root folders." } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Root folder" } th { class: "num", "Free" } th { class: "num", "Downloads" } th { class: "num", "Still downloading" } th { class: "num", "Imports need" } th { "" } } }
+                            tbody {
+                                for r in list.iter() {
+                                    tr { key: "{r.root_folder}",
+                                        td { class: "mono small", "{r.root_folder}" }
+                                        td { class: "num", {r.free_space.map(|b| format_bytes(b as i64)).unwrap_or_else(|| "unknown".into())} }
+                                        td { class: "num", "{r.queued_downloads}" }
+                                        td { class: "num", {format_bytes(r.download_remaining as i64)} }
+                                        td { class: "num", title: "{r.import_mode}", {format_bytes(r.import_space_estimate as i64)} }
+                                        td { if r.may_run_out_of_space { Badge { text: "may run out of space", tone: "danger" } } else { Badge { text: "ok", tone: "success" } } }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+        div { class: "card",
+            div { class: "row",
+                h3 { class: "grow", "Library check" }
+                button { class: "btn", disabled: checking(), onclick: run_check, if checking() { "Checking…" } else { "Check library" } }
+            }
+            p { class: "muted small", "Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk." }
+            if let Some(r) = check() {
+                p { class: "small", "{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues." }
+                if !r.issues.is_empty() {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Series" } th { "Problem" } th { "Path" } } }
+                            tbody {
+                                for (i, issue) in r.issues.iter().enumerate() {
+                                    tr { key: "{i}",
+                                        td { "{issue.series_title}" }
+                                        td { Badge { text: issue.problem.clone(), tone: "warning" } }
+                                        td { class: "mono small", "{issue.path}" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// The recycle bin's media and subtitle files, with a guarded restore into a series' season.
+#[component]
+fn RecycleBinCard() -> Element {
+    let client = use_client();
+    let c0 = client.clone();
+    let mut bin = use_resource(move || {
+        let c = c0.clone();
+        async move { c.recycle_bin().await }
+    });
+    let mut restoring = use_signal(|| None::<kitsunarr_domain::api::library_tools::RecycledFile>);
+    rsx! {
+        div { class: "card",
+            h3 { "Recycle bin" }
+            match &*bin.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(b)) if !b.configured => rsx! { p { class: "muted small", "No recycle bin is set (Settings › Media management)." } },
+                Some(Ok(b)) if b.files.is_empty() => rsx! { p { class: "muted small", "The recycle bin has no media or subtitle files." } },
+                Some(Ok(b)) => rsx! {
+                    if b.truncated { p { class: "small warning", "Only the 2000 newest files are listed." } }
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "File" } th { class: "num", "Size" } th { "Recycled" } th { "" } } }
+                            tbody {
+                                for f in b.files.iter() {
+                                    tr { key: "{f.token}",
+                                        td { class: "small", title: "{f.relative_path}", "{f.name}" }
+                                        td { class: "num", {format_bytes(f.size as i64)} }
+                                        td { class: "small", {f.recycled_at.as_deref().map(relative).unwrap_or_default()} }
+                                        td { class: "shrink", button { class: "btn sm", onclick: { let f = f.clone(); move |_| restoring.set(Some(f.clone())) }, "Restore…" } }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+        if let Some(file) = restoring() {
+            RestoreDialog { file, on_close: move |done: bool| { restoring.set(None); if done { bin.restart(); } } }
+        }
+    }
+}
+
+#[component]
+fn RestoreDialog(
+    file: kitsunarr_domain::api::library_tools::RecycledFile,
+    on_close: EventHandler<bool>,
+) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let series = use_resource(move || {
+        let c = c0.clone();
+        async move {
+            c.series(&kitsunarr_domain::api::library::LibraryQuery {
+                page_size: Some(5000),
+                ..Default::default()
+            })
+            .await
+            .map(|p| p.records)
+        }
+    });
+    let mut series_id = use_signal(|| None::<i64>);
+    let mut season = use_signal(|| 1i32);
+    let mut busy = use_signal(|| false);
+    let token = file.token.clone();
+    let restore = move |_| {
+        let Some(sid) = series_id() else { return };
+        let c = client.clone();
+        let token = token.clone();
+        busy.set(true);
+        spawn(async move {
+            let req = kitsunarr_domain::api::library_tools::RecycleRestoreRequest {
+                token,
+                series_id: sid,
+                season_number: season(),
+            };
+            match c.restore_recycled(&req).await {
+                Ok(m) => {
+                    app.success(m);
+                    on_close.call(true);
+                }
+                Err(e) => {
+                    app.error(&e);
+                    busy.set(false);
+                }
+            }
+        });
+    };
+    rsx! {
+        crate::components::common::Modal { title: format!("Restore {}", file.name), on_close: move |_| on_close.call(false),
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", onclick: move |_| on_close.call(false), "Cancel" }
+                button { class: "btn primary", disabled: busy() || series_id().is_none(), onclick: restore, if busy() { "Restoring…" } else { "Restore" } }
+            },
+            p { class: "help small", "The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned." }
+            div { class: "form-grid",
+                crate::components::common::Field { label: "Series",
+                    select { class: "select", "aria-label": "Series", onchange: move |e| series_id.set(e.value().parse().ok()),
+                        option { value: "", "Choose…" }
+                        if let Some(Ok(list)) = &*series.read() {
+                            for s in list.iter() { option { key: "{s.id}", value: "{s.id}", "{s.title}" } }
+                        }
+                    }
+                }
+                crate::components::common::Field { label: "Season",
+                    input { class: "input", r#type: "number", min: "0", value: "{season}", oninput: move |e| season.set(e.value().parse().unwrap_or(1)) }
+                }
             }
         }
     }

@@ -2704,6 +2704,7 @@ name = "kitsunarr-library"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "base64 0.23.1",
  "chrono",
  "fs4",
  "hex",
@@ -2715,6 +2716,7 @@ dependencies = [
  "kitsunarr-notifications",
  "kitsunarr-parser",
  "reqwest 0.13.5",
+ "serde",
  "serde_json",
  "sha2 0.11.1",
  "sqlx",

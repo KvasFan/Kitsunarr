@@ -31,3 +31,117 @@ pub async fn put_settings(
 pub async fn searches(State(state): State<AppState>) -> Json<Vec<SearchActivity>> {
     Json(crate::library_tools::recent_searches(&state).await)
 }
+
+/// Per root folder: the downloads in progress for its series and whether their imports fit.
+#[utoipa::path(get, path = "/librarytools/storage", tag = "system",
+    responses((status = 200, body = Vec<kitsunarr_domain::api::library_tools::StorageOutlook>)))]
+pub async fn storage(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library_tools::StorageOutlook>>> {
+    use kitsunarr_domain::api::library_tools::StorageOutlook;
+    let tools = crate::library_tools::settings(&state).await;
+    let media: kitsunarr_domain::api::settings::MediaManagementSettings =
+        kv::get_or_default(state.db.pool(), kv::KEY_MEDIA_MANAGEMENT).await?;
+    let queue = crate::routes::queue::get_queue(State(state.clone()))
+        .await?
+        .0;
+    let series_paths: Vec<(i64, String)> = kitsunarr_db::library::series::paths(&state.db).await?;
+    let roots = kitsunarr_db::root_folders::list(state.db.pool()).await?;
+    let mut out = Vec::new();
+    for root in roots {
+        let root_path = std::path::Path::new(&root.path);
+        let mut seen = std::collections::HashSet::new();
+        let (mut count, mut remaining, mut total) = (0i64, 0u64, 0u64);
+        for item in &queue.items {
+            let in_root = item.series_id.is_some_and(|id| {
+                series_paths
+                    .iter()
+                    .any(|(sid, p)| *sid == id && std::path::Path::new(p).starts_with(root_path))
+            });
+            if !in_root
+                || matches!(
+                    item.tracked_state.as_str(),
+                    "imported" | "ignored" | "failed"
+                )
+                || !seen.insert((item.download_client.clone(), item.download_id.clone()))
+            {
+                continue;
+            }
+            count += 1;
+            remaining += item.size_left.max(0) as u64;
+            total += item.size.max(0) as u64;
+        }
+        let estimate = if tools.hardlink_only { 0 } else { total };
+        let free = fs4::available_space(root_path).ok();
+        out.push(StorageOutlook {
+            root_folder: root.path.clone(),
+            free_space: free,
+            queued_downloads: count,
+            download_remaining: remaining,
+            import_space_estimate: estimate,
+            may_run_out_of_space: free.is_some_and(|f| estimate > f),
+            import_mode: if tools.hardlink_only {
+                "Hardlink-only: imports take no extra space".into()
+            } else if media.use_hardlinks {
+                "Hard link when possible, else copy: the estimate assumes copies".into()
+            } else {
+                "Copy: imports take the downloads' size again".into()
+            },
+        });
+    }
+    Ok(Json(out))
+}
+
+/// A read-only check: missing series folders, file records outside their folder, duplicate
+/// records, files missing on disk.
+#[utoipa::path(post, path = "/librarytools/audit", tag = "system",
+    responses((status = 200, body = kitsunarr_domain::api::library_tools::LibraryCheck)))]
+pub async fn audit(
+    State(state): State<AppState>,
+) -> ApiResult<Json<kitsunarr_domain::api::library_tools::LibraryCheck>> {
+    Ok(Json(
+        kitsunarr_library::tools::check_library(&state.db)
+            .await
+            .map_err(crate::error::ApiError::internal)?,
+    ))
+}
+
+/// The media and subtitle files of the recycle bin.
+#[utoipa::path(get, path = "/librarytools/recycle", tag = "system",
+    responses((status = 200, body = kitsunarr_domain::api::library_tools::RecycleBin)))]
+pub async fn recycle(
+    State(state): State<AppState>,
+) -> ApiResult<Json<kitsunarr_domain::api::library_tools::RecycleBin>> {
+    Ok(Json(
+        kitsunarr_library::tools::browse_recycle_bin(&state.db)
+            .await
+            .map_err(crate::error::ApiError::internal)?,
+    ))
+}
+
+/// Moves a recycled file back into a series' season folder (never overwriting) and rescans the
+/// series.
+#[utoipa::path(post, path = "/librarytools/recycle/restore", tag = "system",
+    request_body = kitsunarr_domain::api::library_tools::RecycleRestoreRequest,
+    responses((status = 200, body = String), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn restore(
+    State(state): State<AppState>,
+    Json(body): Json<kitsunarr_domain::api::library_tools::RecycleRestoreRequest>,
+) -> ApiResult<Json<String>> {
+    let message = kitsunarr_library::tools::restore_recycled(
+        &state.db,
+        &body.token,
+        body.series_id,
+        body.season_number,
+    )
+    .await
+    .map_err(|m| crate::error::ApiError::field("token", m))?;
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids: vec![body.series_id],
+            deleted: false,
+        });
+    Ok(Json(message))
+}
