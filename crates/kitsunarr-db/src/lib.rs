@@ -9,6 +9,7 @@
 
 pub mod auth;
 pub mod blocklist;
+pub mod companion_keys;
 pub mod history;
 pub mod import_lists;
 pub mod library;

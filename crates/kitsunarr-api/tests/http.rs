@@ -3612,3 +3612,97 @@ async fn sonarr_v3_api_serves_overseerr_and_prowlarr_flows() {
         200
     );
 }
+
+/// Companion app keys reach only the Sonarr v3 library reads (and adds, with that permission).
+#[tokio::test]
+async fn companion_keys_are_scoped_to_v3_library_reads_and_adds() {
+    use kitsunarr_domain::api::library_tools::CompanionKeyCreate;
+    use serde_json::json;
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let created = client
+        .create_companion_key(&CompanionKeyCreate {
+            name: "Phone".into(),
+            permission: "read-library".into(),
+            days: 30,
+        })
+        .await
+        .unwrap();
+    assert!(created.token.starts_with("spr_"));
+    let token = created.token.clone();
+    let http = reqwest::Client::new();
+    let call = |method: reqwest::Method, path: &str, token: &str| {
+        http.request(method, format!("{}{path}", server.base))
+            .header("X-Api-Key", token)
+            .json(&json!({}))
+            .send()
+    };
+    let code = |r: reqwest::Response| r.status().as_u16();
+    assert_eq!(
+        code(
+            call(reqwest::Method::GET, "/api/v3/series", &token)
+                .await
+                .unwrap()
+        ),
+        200
+    );
+    assert_eq!(
+        code(
+            call(reqwest::Method::GET, "/api/v3/qualityprofile", &token)
+                .await
+                .unwrap()
+        ),
+        200
+    );
+    // Not a library read, not v3, or not allowed for reading keys.
+    for (m, p) in [
+        (reqwest::Method::GET, "/api/v3/system/status"),
+        (reqwest::Method::GET, "/api/v3/series/lookup"),
+        (reqwest::Method::GET, "/api/v1/series"),
+        (reqwest::Method::POST, "/api/v3/series"),
+        (reqwest::Method::POST, "/api/v3/command"),
+        (reqwest::Method::DELETE, "/api/v3/series/1"),
+        (reqwest::Method::GET, "/api/v3/series/..%2Fsystem"),
+    ] {
+        assert_eq!(
+            code(call(m.clone(), p, &token).await.unwrap()),
+            401,
+            "{m} {p}"
+        );
+    }
+    // An "add series" key may add, within the policy.
+    let adder = client
+        .create_companion_key(&CompanionKeyCreate {
+            name: "Requests".into(),
+            permission: "add-series".into(),
+            days: 1,
+        })
+        .await
+        .unwrap();
+    let post = |body: serde_json::Value| {
+        http.post(format!("{}/api/v3/series", server.base))
+            .header("X-Api-Key", &adder.token)
+            .json(&body)
+            .send()
+    };
+    let r = post(json!({"tvdbId": 81189, "rootFolderPath": "/somewhere/else", "path": "/x"}))
+        .await
+        .unwrap();
+    assert_eq!(code(r), 422);
+    let r = post(json!({"tvdbId": 81189, "rootFolderPath": "/nowhere"}))
+        .await
+        .unwrap();
+    assert_eq!(code(r), 422, "not a registered root folder");
+    // Revoked keys stop working; keys are listed without their token.
+    let keys = client.companion_keys().await.unwrap();
+    assert_eq!(keys.len(), 2);
+    client.delete_companion_key(&created.key.id).await.unwrap();
+    assert_eq!(
+        code(
+            call(reqwest::Method::GET, "/api/v3/series", &token)
+                .await
+                .unwrap()
+        ),
+        401
+    );
+}

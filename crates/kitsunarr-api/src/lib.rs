@@ -196,7 +196,7 @@ pub fn app(state: AppState) -> Router {
     // Sonarr's `/api/v3` for third-party tools, behind the same authentication.
     let v3 = v3::router().route_layer(axum::middleware::from_fn_with_state(
         state.clone(),
-        auth::require_auth,
+        auth::require_auth_v3,
     ));
     let inner = Router::new()
         .merge(api)

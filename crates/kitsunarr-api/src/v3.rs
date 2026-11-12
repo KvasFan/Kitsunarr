@@ -503,6 +503,7 @@ struct SeasonBody {
 #[serde(rename_all = "camelCase", default)]
 struct AddOptions {
     search_for_missing_episodes: bool,
+    search_for_cutoff_unmet_episodes: bool,
     monitor: Option<String>,
 }
 
@@ -510,6 +511,7 @@ struct AddOptions {
 #[serde(rename_all = "camelCase", default)]
 struct SeriesBody {
     id: Option<i64>,
+    path: Option<String>,
     tvdb_id: i64,
     quality_profile_id: Option<i64>,
     root_folder_path: Option<String>,
@@ -532,8 +534,42 @@ fn series_type(s: Option<&str>) -> Option<SeriesType> {
 
 async fn add_series(
     State(state): State<AppState>,
+    principal: Option<axum::Extension<crate::auth::Principal>>,
     Json(mut body): Json<SeriesBody>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
+    // Tanukarr's `CompanionAddSeriesPolicy`: companion keys add into a registered root folder,
+    // never at a chosen path, and never start searches.
+    if let Some(axum::Extension(crate::auth::Principal::Companion { .. })) = &principal {
+        if body.path.as_deref().is_some_and(|p| !p.trim().is_empty()) {
+            return Err(ApiError::field(
+                "path",
+                "Companion keys cannot choose a series path.",
+            ));
+        }
+        let roots = kitsunarr_db::root_folders::list(state.db.pool()).await?;
+        let wanted = body.root_folder_path.clone().unwrap_or_default();
+        let wanted = wanted.trim_end_matches(['/', '\\']);
+        let Some(root) = roots
+            .iter()
+            .find(|r| r.path.trim_end_matches(['/', '\\']) == wanted)
+        else {
+            return Err(ApiError::field(
+                "rootFolderPath",
+                "Choose a registered root folder.",
+            ));
+        };
+        body.root_folder_path = Some(root.path.clone());
+        if body
+            .add_options
+            .as_ref()
+            .is_some_and(|o| o.search_for_missing_episodes || o.search_for_cutoff_unmet_episodes)
+        {
+            return Err(ApiError::field(
+                "addOptions",
+                "Companion keys cannot start searches.",
+            ));
+        }
+    }
     if body.tvdb_id <= 0 {
         return Err(ApiError::field("tvdbId", "A TheTVDB id is required."));
     }

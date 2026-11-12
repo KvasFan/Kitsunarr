@@ -70,6 +70,7 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "stalledtorrenttimeout",
     // Library tools (Tanukarr's `ProOptions` JSON; per-series options are not mapped).
     "prooptions",
+    "proaccesskeys",
     // Import list options (database `Config` keys).
     "listsynclevel",
     "listsynctag",
@@ -1229,6 +1230,56 @@ impl<'a> Importer<'a> {
                 self.count("settings", Act::Update);
             } else {
                 self.count("settings", Act::Skip);
+            }
+        }
+        // Tanukarr's companion app keys (`ProAccessKeys`): only hashes are stored, so the
+        // tokens given to companion apps keep working.
+        if let Some(Value::Array(keys)) = self
+            .snap
+            .media_management
+            .clone()
+            .and_then(|r| r.json("proaccesskeys"))
+        {
+            for k in keys {
+                let field = |n: &str| {
+                    k.get(n)
+                        .or_else(|| k.get(format!("{}{}", n[..1].to_uppercase(), &n[1..])))
+                        .and_then(Value::as_str)
+                        .map(str::to_string)
+                };
+                let (Some(id), Some(name), Some(hash), Some(permission), Some(expires)) = (
+                    field("id"),
+                    field("name"),
+                    field("hash"),
+                    field("permission"),
+                    field("expires"),
+                ) else {
+                    continue;
+                };
+                if hash.len() != 64
+                    || !hash.chars().all(|c| c.is_ascii_hexdigit())
+                    || !matches!(permission.as_str(), "read-library" | "add-series")
+                {
+                    continue;
+                }
+                let expires = chrono::DateTime::parse_from_rfc3339(&expires)
+                    .map(|d| {
+                        d.with_timezone(&chrono::Utc)
+                            .to_rfc3339_opts(chrono::SecondsFormat::Secs, true)
+                    })
+                    .unwrap_or(expires);
+                sqlx::query(
+                    "INSERT OR IGNORE INTO companion_keys (id, name, hash, permission, created_at, expires_at) VALUES (?, ?, ?, ?, ?, ?)",
+                )
+                .bind(&id)
+                .bind(&name)
+                .bind(hash.to_uppercase())
+                .bind(&permission)
+                .bind(field("created").unwrap_or_else(kitsunarr_db::now))
+                .bind(&expires)
+                .execute(&mut *conn)
+                .await?;
+                self.count("settings", Act::Create);
             }
         }
         // Import list options: the API's `/config/importlist`, or `Config` keys.

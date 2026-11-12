@@ -85,3 +85,35 @@ pub struct SeriesNamingOptions {
     /// Season folder titles replacing the catalogue's (`{Season Title}`), by season number.
     pub season_titles: std::collections::BTreeMap<i32, String>,
 }
+
+/// A companion app key (the token itself is shown once, at creation).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CompanionKeyItem {
+    pub id: String,
+    pub name: String,
+    /// `read-library` or `add-series`.
+    pub permission: String,
+    pub created: String,
+    pub expires: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CompanionKeyCreate {
+    pub name: String,
+    pub permission: String,
+    /// Validity in days, 1 to 365.
+    pub days: i64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CompanionKeyCreated {
+    pub key: CompanionKeyItem,
+    /// The token to give the companion app; it cannot be shown again.
+    pub token: String,
+}

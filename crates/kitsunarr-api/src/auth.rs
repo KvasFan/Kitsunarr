@@ -34,6 +34,11 @@ pub enum Principal {
         username: String,
     },
     ApiKey,
+    /// A companion app key (Sonarr v3 API only, scoped by its permission).
+    Companion {
+        id: String,
+        permission: String,
+    },
 }
 
 impl<S: Send + Sync> FromRequestParts<S> for Principal {
@@ -205,6 +210,68 @@ pub async fn authenticate(
         user_id: session.user_id,
         username: session.username,
     }))
+}
+
+/// What a companion key may call on the Sonarr v3 API (Tanukarr's allowlist): reads of the
+/// library resources (a list, or one item by numeric id), and adding a series with the
+/// `add-series` permission. Everything else (commands, settings, updates, deletes) is refused.
+pub fn companion_allows(permission: &str, method: &axum::http::Method, path: &str) -> bool {
+    let path = path.strip_prefix("/api/v3").unwrap_or(path);
+    if path.contains('%') || path.contains("..") {
+        return false;
+    }
+    let segs: Vec<&str> = path.trim_start_matches('/').split('/').collect();
+    let readable = [
+        "series",
+        "episode",
+        "episodefile",
+        "calendar",
+        "tag",
+        "rootfolder",
+        "qualityprofile",
+    ];
+    match *method {
+        axum::http::Method::GET => {
+            readable.contains(&segs[0])
+                && (segs.len() == 1
+                    || (segs.len() == 2 && segs[1].parse::<u64>().is_ok_and(|n| n > 0)))
+        }
+        axum::http::Method::POST => permission == "add-series" && segs == ["series"],
+        _ => false,
+    }
+}
+
+/// Middleware for the Sonarr v3 API: the master key or a session, else a companion key within
+/// its permission.
+pub async fn require_auth_v3(
+    State(state): State<AppState>,
+    mut req: Request,
+    next: Next,
+) -> Response {
+    let query = req.uri().query().map(str::to_string);
+    match authenticate(&state, req.headers(), query.as_deref()).await {
+        Ok(Some(principal)) => {
+            req.extensions_mut().insert(principal);
+            return next.run(req).await;
+        }
+        Err(e) => return e.into_response(),
+        Ok(None) => {}
+    }
+    if let Some(key) = api_key_from(req.headers(), query.as_deref())
+        && key.starts_with("spr_")
+    {
+        let hash = kitsunarr_auth::hash_companion_token(&key);
+        if let Ok(Some(k)) = kitsunarr_db::companion_keys::find_valid(state.db.pool(), &hash).await
+            && companion_allows(&k.permission, req.method(), req.uri().path())
+        {
+            req.extensions_mut().insert(Principal::Companion {
+                id: k.id,
+                permission: k.permission,
+            });
+            return next.run(req).await;
+        }
+    }
+    ApiError::Unauthorized.into_response()
 }
 
 /// Middleware for protected routes.
@@ -486,6 +553,32 @@ pub async fn regenerate_api_key(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn companion_allowlist() {
+        use axum::http::Method;
+        assert!(companion_allows("read-library", &Method::GET, "/series"));
+        assert!(companion_allows(
+            "read-library",
+            &Method::GET,
+            "/api/v3/episode/12"
+        ));
+        assert!(!companion_allows(
+            "read-library",
+            &Method::GET,
+            "/series/lookup"
+        ));
+        assert!(!companion_allows("read-library", &Method::GET, "/series/0"));
+        assert!(!companion_allows("read-library", &Method::POST, "/series"));
+        assert!(companion_allows("add-series", &Method::POST, "/series"));
+        assert!(!companion_allows("add-series", &Method::PUT, "/series/1"));
+        assert!(!companion_allows("add-series", &Method::GET, "/command"));
+        assert!(!companion_allows(
+            "read-library",
+            &Method::GET,
+            "/series/%2e%2e"
+        ));
+    }
 
     #[test]
     fn forwarded_headers_only_from_trusted_proxies() {

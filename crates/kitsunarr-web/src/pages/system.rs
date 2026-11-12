@@ -341,6 +341,7 @@ pub fn SystemLibraryTools() -> Element {
         }
         StorageAndCheck {}
         RecycleBinCard {}
+        CompanionKeys {}
         div { class: "card",
             h3 { "Recent searches" }
             match &*searches.read() {
@@ -566,6 +567,98 @@ fn RestoreDialog(
                 crate::components::common::Field { label: "Season",
                     input { class: "input", r#type: "number", min: "0", value: "{season}", oninput: move |e| season.set(e.value().parse().unwrap_or(1)) }
                 }
+            }
+        }
+    }
+}
+
+/// Companion app keys: scoped, expiring keys for the Sonarr v3 API.
+#[component]
+fn CompanionKeys() -> Element {
+    use kitsunarr_domain::api::library_tools::CompanionKeyCreate;
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut keys = use_resource(move || {
+        let c = c0.clone();
+        async move { c.companion_keys().await }
+    });
+    let mut draft = use_signal(|| CompanionKeyCreate {
+        name: String::new(),
+        permission: "read-library".into(),
+        days: 90,
+    });
+    let mut token = use_signal(|| None::<String>);
+    let c1 = client.clone();
+    let create = move |_| {
+        let c = c1.clone();
+        let d = draft();
+        spawn(async move {
+            match c.create_companion_key(&d).await {
+                Ok(created) => {
+                    token.set(Some(created.token));
+                    draft.write().name.clear();
+                    keys.restart();
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let revoke = move |id: String| {
+        let c = client.clone();
+        spawn(async move {
+            match c.delete_companion_key(&id).await {
+                Ok(()) => keys.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        div { class: "card",
+            h3 { "Companion app keys" }
+            p { class: "muted small", "Keys for companion apps using the Sonarr v3 API: they read the library, and \"add series\" keys can also add series (into a root folder, without searching). Nothing else is allowed." }
+            if let Some(t) = token() {
+                div { class: "alert success", role: "status",
+                    div { class: "grow", "Copy the token now; it is not shown again: " code { class: "mono", "{t}" } }
+                    button { class: "btn sm", onclick: move |_| token.set(None), "Done" }
+                }
+            }
+            div { class: "row wrap",
+                input { class: "input grow", "aria-label": "Key name", placeholder: "name (e.g. phone)", value: "{draft().name}", oninput: move |e| draft.write().name = e.value() }
+                select { class: "select", style: "width: auto", "aria-label": "Key permission", onchange: move |e| draft.write().permission = e.value(),
+                    option { value: "read-library", selected: draft().permission == "read-library", "Read the library" }
+                    option { value: "add-series", selected: draft().permission == "add-series", "Read and add series" }
+                }
+                input { class: "input", style: "width: 6rem", r#type: "number", min: "1", max: "365", "aria-label": "Valid days", value: "{draft().days}", oninput: move |e| draft.write().days = e.value().parse().unwrap_or(90) }
+                button { class: "btn", disabled: draft().name.trim().is_empty(), onclick: create, "Create key" }
+            }
+            match &*keys.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) if list.is_empty() => rsx! { p { class: "small faint", "No companion keys." } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Name" } th { "Permission" } th { "Expires" } th { "" } } }
+                            tbody {
+                                for k in list.iter() {
+                                    {
+                                        let id = k.id.clone();
+                                        let revoke = revoke.clone();
+                                        rsx! {
+                                            tr { key: "{k.id}",
+                                                td { "{k.name}" }
+                                                td { "{k.permission}" }
+                                                td { class: "small", {format_datetime(&k.expires)} }
+                                                td { class: "shrink", button { class: "btn sm danger", onclick: move |_| revoke(id.clone()), "Revoke" } }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
             }
         }
     }

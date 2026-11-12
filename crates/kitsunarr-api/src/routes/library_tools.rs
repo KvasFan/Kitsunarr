@@ -171,3 +171,89 @@ pub async fn put_series_naming(
         kitsunarr_db::library::series::naming_options(&state.db, id).await?,
     ))
 }
+
+fn key_item(
+    k: kitsunarr_db::companion_keys::CompanionKey,
+) -> kitsunarr_domain::api::library_tools::CompanionKeyItem {
+    kitsunarr_domain::api::library_tools::CompanionKeyItem {
+        id: k.id,
+        name: k.name,
+        permission: k.permission,
+        created: k.created_at,
+        expires: k.expires_at,
+    }
+}
+
+/// Companion app keys: scoped, expiring keys for the Sonarr v3 API (reading the library, or
+/// also adding series).
+#[utoipa::path(get, path = "/librarytools/keys", tag = "system",
+    responses((status = 200, body = Vec<kitsunarr_domain::api::library_tools::CompanionKeyItem>)))]
+pub async fn list_keys(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library_tools::CompanionKeyItem>>> {
+    Ok(Json(
+        kitsunarr_db::companion_keys::list(state.db.pool())
+            .await?
+            .into_iter()
+            .map(key_item)
+            .collect(),
+    ))
+}
+
+#[utoipa::path(post, path = "/librarytools/keys", tag = "system",
+    request_body = kitsunarr_domain::api::library_tools::CompanionKeyCreate,
+    responses((status = 201, body = kitsunarr_domain::api::library_tools::CompanionKeyCreated), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn create_key(
+    State(state): State<AppState>,
+    Json(body): Json<kitsunarr_domain::api::library_tools::CompanionKeyCreate>,
+) -> ApiResult<(
+    axum::http::StatusCode,
+    Json<kitsunarr_domain::api::library_tools::CompanionKeyCreated>,
+)> {
+    use crate::error::ApiError;
+    let name = body.name.trim();
+    if name.is_empty() || name.chars().count() > 80 {
+        return Err(ApiError::field(
+            "name",
+            "A name of 1 to 80 characters is required.",
+        ));
+    }
+    if !matches!(body.permission.as_str(), "read-library" | "add-series") {
+        return Err(ApiError::field(
+            "permission",
+            "Choose read-library or add-series.",
+        ));
+    }
+    if !(1..=365).contains(&body.days) {
+        return Err(ApiError::field("days", "Keys are valid for 1 to 365 days."));
+    }
+    let token = kitsunarr_auth::generate_companion_token();
+    let expires = (chrono::Utc::now() + chrono::Duration::days(body.days))
+        .to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
+    let key = kitsunarr_db::companion_keys::create(
+        state.db.pool(),
+        &kitsunarr_auth::generate_api_key(),
+        name,
+        &kitsunarr_auth::hash_companion_token(&token),
+        &body.permission,
+        &expires,
+    )
+    .await?;
+    Ok((
+        axum::http::StatusCode::CREATED,
+        Json(kitsunarr_domain::api::library_tools::CompanionKeyCreated {
+            key: key_item(key),
+            token,
+        }),
+    ))
+}
+
+#[utoipa::path(delete, path = "/librarytools/keys/{id}", tag = "system", params(("id" = String, Path)),
+    responses((status = 204)))]
+pub async fn delete_key(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+) -> ApiResult<axum::http::StatusCode> {
+    kitsunarr_db::companion_keys::delete(state.db.pool(), &id).await?;
+    Ok(axum::http::StatusCode::NO_CONTENT)
+}

@@ -559,6 +559,20 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::library_tools::SeriesNamingOptions> {
         self.put(&format!("/series/{id}/naming"), o).await
     }
+    pub async fn companion_keys(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library_tools::CompanionKeyItem>> {
+        self.get("/librarytools/keys").await
+    }
+    pub async fn create_companion_key(
+        &self,
+        req: &kitsunarr_domain::api::library_tools::CompanionKeyCreate,
+    ) -> ClientResult<kitsunarr_domain::api::library_tools::CompanionKeyCreated> {
+        self.post("/librarytools/keys", req).await
+    }
+    pub async fn delete_companion_key(&self, id: &str) -> ClientResult<()> {
+        self.delete(&format!("/librarytools/keys/{id}")).await
+    }
     pub async fn recent_searches(
         &self,
     ) -> ClientResult<Vec<kitsunarr_domain::api::settings::SearchActivity>> {

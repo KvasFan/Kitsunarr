@@ -65,6 +65,17 @@ pub fn generate_api_key() -> String {
     hex::encode(random_bytes::<16>())
 }
 
+/// A companion app key token (Tanukarr's format: `spr_` and 32 random bytes in hex).
+pub fn generate_companion_token() -> String {
+    format!("spr_{}", hex::encode(random_bytes::<32>()))
+}
+
+/// The stored form of a companion token: uppercase hex SHA-256 (as Tanukarr stores it, so
+/// migrated keys keep working).
+pub fn hash_companion_token(token: &str) -> String {
+    hex::encode_upper(Sha256::digest(token.as_bytes()))
+}
+
 /// SHA-256 digest (hex) of a session token, as stored in the database.
 pub fn hash_token(token: &str) -> String {
     hex::encode(Sha256::digest(token.as_bytes()))
