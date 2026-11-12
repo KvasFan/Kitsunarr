@@ -13,7 +13,10 @@ use crate::decision_input::data_number;
 /// A search to run because a download failed.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Redownload {
+    /// 0 for a film's download.
     pub series_id: i64,
+    /// A film's download (Tanukarr's movies): the film is searched for again.
+    pub movie_id: Option<i64>,
     pub episode_ids: Vec<i64>,
     /// Sonarr's `ReleaseSourceType` of the failed grab (`InteractiveSearch`, `Search`, `Rss`).
     pub release_source: String,
@@ -43,7 +46,8 @@ pub async fn mark_failed(
     let Some(first) = sorted.first() else {
         return Ok(None);
     };
-    let Some(series_id) = first.series_id else {
+    let movie_id = first.movie_id;
+    let Some(series_id) = first.series_id.or(movie_id.map(|_| 0)) else {
         return Ok(None);
     };
     let mut episode_ids: Vec<i64> = Vec::new();
@@ -77,6 +81,35 @@ pub async fn mark_failed(
     let release_source = text("releaseSource").unwrap_or_else(|| "Unknown".into());
 
     let mut tx = db.pool().begin().await?;
+    if let Some(movie) = movie_id {
+        history::insert(
+            &mut tx,
+            &NewHistory {
+                event_type: "downloadFailed".into(),
+                date: now.clone(),
+                source_title: first.source_title.clone(),
+                series_id: None,
+                episode_id: None,
+                movie_id: Some(movie),
+                quality_id: first.quality_id.map(|q| q as i32),
+                revision: revision.clone(),
+                languages: languages.clone(),
+                custom_format_score: None,
+                download_id: Some(first.download_id.clone()),
+                data: serde_json::json!({
+                    "downloadClient": text("downloadClient"),
+                    "downloadClientName": text("downloadClientName"),
+                    "message": failure.message,
+                    "source": failure.source,
+                    "releaseSource": release_source,
+                    "indexer": text("indexer"),
+                    "size": text("size"),
+                    "publishedDate": text("publishedDate"),
+                }),
+            },
+        )
+        .await?;
+    }
     for episode_id in &episode_ids {
         history::insert(
             &mut tx,
@@ -109,7 +142,8 @@ pub async fn mark_failed(
     blocklist::insert(
         &mut *tx,
         &NewBlocklist {
-            series_id,
+            series_id: first.series_id,
+            movie_id,
             episode_ids: episode_ids.clone(),
             source_title: first.source_title.clone(),
             quality_id: first.quality_id.map(|q| q as i32),
@@ -139,6 +173,7 @@ pub async fn mark_failed(
     tracing::info!(release = %first.source_title, message = failure.message, "download failed; release blocklisted");
     Ok((!failure.skip_redownload).then_some(Redownload {
         series_id,
+        movie_id,
         episode_ids,
         release_source,
     }))

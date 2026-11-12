@@ -382,7 +382,12 @@ pub fn Blocklist() -> Element {
                         tbody {
                             for b in p.records.iter() {
                                 tr { key: "{b.id}",
-                                    td { Link { to: Route::SeriesDetailPage { id: b.series_id }, {b.series_title.clone().unwrap_or_default()} } }
+                                    td {
+                                        match b.movie_id {
+                                            Some(id) => rsx! { Link { to: Route::MovieDetailPage { id }, {b.series_title.clone().unwrap_or_default()} } },
+                                            None => rsx! { Link { to: Route::SeriesDetailPage { id: b.series_id }, {b.series_title.clone().unwrap_or_default()} } },
+                                        }
+                                    }
                                     td { class: "small ellipsis", style: "max-width: 26rem", title: "{b.source_title}", "{b.source_title}" }
                                     td { {b.quality.clone().unwrap_or_default()} }
                                     td { class: "hide-mobile small", {b.indexer.clone().unwrap_or_default()} }

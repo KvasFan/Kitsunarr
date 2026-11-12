@@ -356,7 +356,9 @@ pub(crate) async fn process(
         else {
             continue;
         };
-        let Ok(inputs) = DecisionInputs::with_model(state, model, None).await else {
+        let Ok(inputs) =
+            DecisionInputs::with_model(state, model, search::Owner::Movie(movie_id)).await
+        else {
             continue;
         };
         let group: Vec<decision::Release> =

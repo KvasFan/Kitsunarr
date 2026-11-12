@@ -71,7 +71,26 @@ pub async fn blocklist(db: &Database, series_id: i64) -> DbResult<Vec<decision::
         .await?
         .into_iter()
         .map(|b| decision::Blocklisted {
-            series_id: b.series_id,
+            series_id: b.series_id.unwrap_or(0),
+            title: b.source_title,
+            protocol: b
+                .protocol
+                .parse()
+                .unwrap_or(kitsunarr_domain::DownloadProtocol::Unknown),
+            indexer: b.indexer,
+            published_date: b.published_date.as_deref().and_then(history_date),
+            torrent_info_hash: b.torrent_info_hash,
+        })
+        .collect())
+}
+
+/// A film's blocklisted releases, keyed by the film's id (the engine's series id for a film).
+pub async fn movie_blocklist(db: &Database, movie_id: i64) -> DbResult<Vec<decision::Blocklisted>> {
+    Ok(kitsunarr_db::blocklist::for_movie(db, movie_id)
+        .await?
+        .into_iter()
+        .map(|b| decision::Blocklisted {
+            series_id: movie_id,
             title: b.source_title,
             protocol: b
                 .protocol

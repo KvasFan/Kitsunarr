@@ -904,6 +904,13 @@ pub(crate) fn decision_release(
     }
 }
 
+/// What a model stands for.
+#[derive(Debug, Clone, Copy)]
+pub(crate) enum Owner {
+    Series(i64),
+    Movie(i64),
+}
+
 /// The series, library, custom formats and settings a search's decisions need.
 pub(crate) struct DecisionInputs {
     pub series: decision::Series,
@@ -921,16 +928,20 @@ impl DecisionInputs {
     ) -> ApiResult<Self> {
         let db = &state.db;
         let series = kitsunarr_library::decision_input::series_model(db, detail, episodes).await?;
-        Self::with_model(state, series, Some(detail.item.id)).await
+        Self::with_model(state, series, Owner::Series(detail.item.id)).await
     }
 
-    /// The inputs for a ready model: `series_id` is `None` for a film (the series-keyed
-    /// history, blocklist, pending and queue rules have nothing to compare it with).
+    /// The inputs for a ready model. A film has its own blocklist; the series-keyed history,
+    /// pending and queue rules have nothing to compare it with.
     pub(crate) async fn with_model(
         state: &AppState,
         series: decision::Series,
-        series_id: Option<i64>,
+        owner: Owner,
     ) -> ApiResult<Self> {
+        let series_id = match owner {
+            Owner::Series(id) => Some(id),
+            Owner::Movie(_) => None,
+        };
         let db = &state.db;
         let library = kitsunarr_library::decision_input::library_titles(db).await?;
         let (formats, warnings) =
@@ -946,9 +957,11 @@ impl DecisionInputs {
                 Some(id) => kitsunarr_library::decision_input::last_grabs(db, id).await?,
                 None => Vec::new(),
             },
-            blocklist: match series_id {
-                Some(id) => kitsunarr_library::decision_input::blocklist(db, id).await?,
-                None => Vec::new(),
+            blocklist: match owner {
+                Owner::Series(id) => kitsunarr_library::decision_input::blocklist(db, id).await?,
+                Owner::Movie(id) => {
+                    kitsunarr_library::decision_input::movie_blocklist(db, id).await?
+                }
             },
             pending: kitsunarr_db::pending::list(db.pool())
                 .await?

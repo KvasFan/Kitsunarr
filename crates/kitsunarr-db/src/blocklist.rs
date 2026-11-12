@@ -9,7 +9,10 @@ use crate::{Database, DbResult, from_json, to_json};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct NewBlocklist {
-    pub series_id: i64,
+    /// The series, or `None` for a film's entry.
+    pub series_id: Option<i64>,
+    /// The film, for a film's entry.
+    pub movie_id: Option<i64>,
     pub episode_ids: Vec<i64>,
     pub source_title: String,
     pub quality_id: Option<i32>,
@@ -29,11 +32,12 @@ pub struct NewBlocklist {
 
 pub async fn insert(ex: impl SqliteExecutor<'_>, b: &NewBlocklist) -> DbResult<i64> {
     Ok(sqlx::query_scalar(
-        "INSERT INTO blocklist (series_id, episode_ids, source_title, quality_id, revision, languages, date, \
+        "INSERT INTO blocklist (series_id, movie_id, episode_ids, source_title, quality_id, revision, languages, date, \
          published_date, size, protocol, indexer, indexer_flags, release_type, message, source, torrent_info_hash) \
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
     )
     .bind(b.series_id)
+    .bind(b.movie_id)
     .bind(to_json(&b.episode_ids)?)
     .bind(&b.source_title)
     .bind(b.quality_id)
@@ -56,7 +60,8 @@ pub async fn insert(ex: impl SqliteExecutor<'_>, b: &NewBlocklist) -> DbResult<i
 /// What release matching needs (`ReleaseComparerModel`).
 #[derive(Debug, Clone, PartialEq, FromRow)]
 pub struct BlocklistMatch {
-    pub series_id: i64,
+    pub series_id: Option<i64>,
+    pub movie_id: Option<i64>,
     pub source_title: String,
     pub protocol: String,
     pub indexer: Option<String>,
@@ -67,7 +72,7 @@ pub struct BlocklistMatch {
 /// The entries of one series.
 pub async fn for_series(db: &Database, series_id: i64) -> DbResult<Vec<BlocklistMatch>> {
     Ok(sqlx::query_as(
-        "SELECT series_id, source_title, protocol, indexer, published_date, torrent_info_hash \
+        "SELECT series_id, movie_id, source_title, protocol, indexer, published_date, torrent_info_hash \
          FROM blocklist WHERE series_id = ?",
     )
     .bind(series_id)
@@ -75,10 +80,21 @@ pub async fn for_series(db: &Database, series_id: i64) -> DbResult<Vec<Blocklist
     .await?)
 }
 
+/// The entries of one film.
+pub async fn for_movie(db: &Database, movie_id: i64) -> DbResult<Vec<BlocklistMatch>> {
+    Ok(sqlx::query_as(
+        "SELECT series_id, movie_id, source_title, protocol, indexer, published_date, torrent_info_hash \
+         FROM blocklist WHERE movie_id = ?",
+    )
+    .bind(movie_id)
+    .fetch_all(db.pool())
+    .await?)
+}
+
 /// Every entry (RSS sync looks across the library).
 pub async fn all(db: &Database) -> DbResult<Vec<BlocklistMatch>> {
     Ok(sqlx::query_as(
-        "SELECT series_id, source_title, protocol, indexer, published_date, torrent_info_hash FROM blocklist",
+        "SELECT series_id, movie_id, source_title, protocol, indexer, published_date, torrent_info_hash FROM blocklist",
     )
     .fetch_all(db.pool())
     .await?)
@@ -87,7 +103,8 @@ pub async fn all(db: &Database) -> DbResult<Vec<BlocklistMatch>> {
 #[derive(FromRow)]
 struct Row {
     id: i64,
-    series_id: i64,
+    series_id: Option<i64>,
+    movie_id: Option<i64>,
     series_title: Option<String>,
     episode_ids: String,
     source_title: String,
@@ -110,8 +127,9 @@ pub async fn list(db: &Database, paging: &PageRequest) -> DbResult<Page<Blocklis
         "DESC"
     };
     let sql = format!(
-        "SELECT b.id, b.series_id, s.title AS series_title, b.episode_ids, b.source_title, b.quality_id, b.date, \
-         b.protocol, b.indexer, b.message, b.source FROM blocklist b LEFT JOIN series s ON s.id = b.series_id \
+        "SELECT b.id, b.series_id, b.movie_id, COALESCE(s.title, m.title) AS series_title, b.episode_ids, b.source_title, \
+         b.quality_id, b.date, b.protocol, b.indexer, b.message, b.source FROM blocklist b \
+         LEFT JOIN series s ON s.id = b.series_id LEFT JOIN movies m ON m.id = b.movie_id \
          ORDER BY b.date {order}, b.id {order} LIMIT ?1 OFFSET ?2"
     );
     let rows: Vec<Row> = sqlx::query_as(sqlx::AssertSqlSafe(sql))
@@ -123,7 +141,8 @@ pub async fn list(db: &Database, paging: &PageRequest) -> DbResult<Page<Blocklis
     for r in rows {
         records.push(BlocklistItem {
             id: r.id,
-            series_id: r.series_id,
+            series_id: r.series_id.unwrap_or(0),
+            movie_id: r.movie_id,
             series_title: r.series_title,
             episode_ids: from_json(&r.episode_ids)?,
             source_title: r.source_title,
@@ -177,7 +196,8 @@ mod tests {
         let db = crate::test_support::db().await;
         let series_id = crate::library::series::tests::insert_sample(&db, "Show", "1", 2).await;
         let entry = |title: &str, hash: Option<&str>| NewBlocklist {
-            series_id,
+            movie_id: None,
+            series_id: Some(series_id),
             episode_ids: vec![],
             source_title: title.into(),
             quality_id: Some(4),

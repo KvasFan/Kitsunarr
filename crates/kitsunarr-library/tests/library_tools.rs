@@ -526,3 +526,71 @@ async fn film_downloads_are_imported() {
     );
     assert!(imported.is_file());
 }
+
+/// A failed film download is recorded, blocklisted for the film and searched for again.
+#[tokio::test]
+async fn failed_film_downloads_are_blocklisted() {
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    let profile: i64 = sqlx::query_scalar("SELECT MIN(id) FROM quality_profiles")
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    sqlx::query(
+        "INSERT INTO movies (id, title, sort_title, clean_title, title_slug, year, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at) VALUES (9, 'Up', 'up', 'up', 'up', 2009, 'tmdbMovie', '14160', ?, '/m', '/m/Up', '2026-11-01T00:00:00Z')",
+    )
+    .bind(profile)
+    .execute(db.pool())
+    .await
+    .unwrap();
+    let grabs = vec![kitsunarr_db::history::GrabRecord {
+        download_id: "XYZ".into(),
+        date: "2026-11-01T00:00:00Z".into(),
+        source_title: "Up.2009.1080p.BluRay.x264-GRP".into(),
+        series_id: None,
+        episode_id: None,
+        quality_id: Some(7),
+        revision: None,
+        languages: None,
+        data: r#"{"indexer": "Mock", "protocol": "torrent", "releaseSource": "Search"}"#.into(),
+        movie_id: Some(9),
+    }];
+    let redownload = kitsunarr_library::failed::mark_failed(
+        &db,
+        &grabs,
+        &kitsunarr_library::failed::Failure {
+            message: "Manually marked as failed",
+            source: None,
+            torrent_hash: None,
+            skip_redownload: false,
+        },
+    )
+    .await
+    .unwrap()
+    .unwrap();
+    assert_eq!(redownload.movie_id, Some(9));
+    let blocked = kitsunarr_db::blocklist::for_movie(&db, 9).await.unwrap();
+    assert_eq!(blocked.len(), 1);
+    assert_eq!(blocked[0].source_title, "Up.2009.1080p.BluRay.x264-GRP");
+    let failed: String = sqlx::query_scalar("SELECT event_type FROM history WHERE movie_id = 9")
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    assert_eq!(failed, "downloadFailed");
+    let page = kitsunarr_db::blocklist::list(&db, &Default::default())
+        .await
+        .unwrap();
+    assert_eq!(
+        (
+            page.records[0].movie_id,
+            page.records[0].series_title.as_deref()
+        ),
+        (Some(9), Some("Up"))
+    );
+    let model_blocklist = kitsunarr_library::decision_input::movie_blocklist(&db, 9)
+        .await
+        .unwrap();
+    assert_eq!(model_blocklist[0].series_id, 9);
+}

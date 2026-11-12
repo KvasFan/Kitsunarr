@@ -15,8 +15,8 @@ use kitsunarr_indexers::{Criteria, IndexerError, IndexerRelease, Search, SeriesI
 use crate::AppState;
 use crate::error::ApiResult;
 use crate::routes::search::{
-    DecisionInputs, SearchRun, cached_release, decision_release, describe, record_outcome, to_item,
-    usable_indexers,
+    DecisionInputs, Owner, SearchRun, cached_release, decision_release, describe, record_outcome,
+    to_item, usable_indexers,
 };
 
 /// Searches the indexers for a film and decides on every release.
@@ -113,7 +113,7 @@ pub(crate) async fn run_movie_search(
         movies::set_last_search(&state.db, movie_id, &now).await?;
     }
     let model = kitsunarr_library::decision_input::movie_model(&state.db, &detail).await?;
-    let inputs = DecisionInputs::with_model(state, model, None).await?;
+    let inputs = DecisionInputs::with_model(state, model, Owner::Movie(movie_id)).await?;
     let engine = Engine {
         series: &inputs.series,
         library: &inputs.library,

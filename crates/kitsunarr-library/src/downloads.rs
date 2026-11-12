@@ -495,7 +495,10 @@ impl Monitor {
                         .filter(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
                         .cloned()
                         .collect();
-                    if mine.iter().all(|g| g.series_id.is_none()) {
+                    if mine
+                        .iter()
+                        .all(|g| g.series_id.is_none() && g.movie_id.is_none())
+                    {
                         continue;
                     }
                     let redownload = failed::mark_failed(

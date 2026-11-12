@@ -64,7 +64,11 @@ pub struct QueueResult {
 #[serde(rename_all = "camelCase")]
 pub struct BlocklistItem {
     pub id: i64,
+    /// 0 for a film's entry.
     pub series_id: i64,
+    /// A film's entry (Tanukarr's movies); `series_title` then holds the film's title.
+    #[serde(default)]
+    pub movie_id: Option<i64>,
     pub series_title: Option<String>,
     pub episode_ids: Vec<i64>,
     pub source_title: String,
