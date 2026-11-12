@@ -185,6 +185,32 @@ pub async fn compute_health(state: &AppState) -> ApiResult<Vec<HealthCheck>> {
             });
         }
     }
+    // `IndexerStatusCheck`.
+    let indexers = providers::list(state.db.pool(), ProviderKind::Indexer).await?;
+    let enabled: Vec<_> = indexers.iter().filter(|p| p.enabled).collect();
+    let blocked =
+        kitsunarr_db::indexer_status::blocked(state.db.pool(), chrono::Utc::now()).await?;
+    let names: Vec<String> = enabled
+        .iter()
+        .filter(|p| blocked.iter().any(|b| b.indexer_id == p.id))
+        .map(|p| p.name.clone())
+        .collect();
+    if !names.is_empty() {
+        let all = names.len() == enabled.len();
+        out.push(HealthCheck {
+            source: "IndexerStatusCheck".into(),
+            level: if all {
+                HealthLevel::Error
+            } else {
+                HealthLevel::Warning
+            },
+            message: if all {
+                "All indexers are unavailable due to failures".into()
+            } else {
+                format!("Indexers unavailable due to failures: {}", names.join(", "))
+            },
+        });
+    }
     if let Ok(data_free) = fs4::available_space(&state.config.data_dir)
         && data_free < 200 * 1024 * 1024
     {

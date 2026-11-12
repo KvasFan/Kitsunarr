@@ -50,6 +50,40 @@ pub(crate) fn describe(e: &IndexerError) -> String {
     }
 }
 
+/// Records an indexer request's outcome for the failure back-off (`IndexerStatusService`).
+pub(crate) async fn record_outcome<T>(
+    state: &AppState,
+    indexer_id: i64,
+    outcome: &Result<T, IndexerError>,
+) {
+    use kitsunarr_db::indexer_status::{self, Failure};
+    let pool = state.db.pool();
+    let result = match outcome {
+        Ok(_) => indexer_status::record_success(pool, indexer_id).await,
+        Err(e) => {
+            let failure = match e {
+                IndexerError::Connection(_) => Failure::Connection,
+                IndexerError::RequestLimit { retry_after_secs } => Failure::RateLimited(
+                    chrono::Duration::seconds(retry_after_secs.unwrap_or(0).min(86_400) as i64),
+                ),
+                _ => Failure::Failure,
+            };
+            indexer_status::record_failure(
+                pool,
+                indexer_id,
+                failure,
+                state.started_at,
+                chrono::Utc::now(),
+            )
+            .await
+            .map(|_| ())
+        }
+    };
+    if let Err(e) = result {
+        tracing::warn!(indexer_id, error = %e, "the indexer status could not be stored");
+    }
+}
+
 /// Test an indexer's settings: capabilities, plus the newest page of results.
 #[utoipa::path(post, path = "/providers/indexers/test", tag = "search", request_body = IndexerTestRequest,
     responses(
@@ -331,6 +365,9 @@ pub(crate) async fn usable_indexers(
     let mut indexers = Vec::new();
     let mut extras = Extras::new();
     let mut failures = Vec::new();
+    // `FilterBlockedIndexers`: indexers backing off after failures are skipped.
+    let blocked =
+        kitsunarr_db::indexer_status::blocked(state.db.pool(), chrono::Utc::now()).await?;
     for p in providers::list(state.db.pool(), ProviderKind::Indexer).await? {
         let enabled = p
             .options
@@ -338,6 +375,17 @@ pub(crate) async fn usable_indexers(
             .and_then(|v| v.as_bool())
             .unwrap_or(true);
         if !enabled {
+            continue;
+        }
+        if let Some(b) = blocked.iter().find(|b| b.indexer_id == p.id) {
+            failures.push(IndexerFailure {
+                indexer_id: p.id,
+                indexer: p.name,
+                message: format!(
+                    "Temporarily disabled after recent failures, until {}",
+                    b.disabled_till.as_deref().unwrap_or_default()
+                ),
+            });
             continue;
         }
         let settings = match dialect(&p.implementation) {
@@ -667,6 +715,7 @@ pub(crate) async fn run_search(
     // Each search's releases, in arrival order.
     let mut found: Vec<Vec<IndexerRelease>> = vec![Vec::new(); searches.len()];
     for (indexer, outcome) in indexers.iter().zip(outcomes) {
+        record_outcome(state, indexer.id, &outcome).await;
         match outcome {
             Ok(list) => {
                 for (k, r) in list {

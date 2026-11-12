@@ -12,6 +12,7 @@ pub mod blocklist;
 pub mod companion_keys;
 pub mod history;
 pub mod import_lists;
+pub mod indexer_status;
 pub mod library;
 pub mod maintenance;
 pub mod migration_runs;

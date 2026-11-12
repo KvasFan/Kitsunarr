@@ -1042,6 +1042,44 @@ async fn indexer_test_and_interactive_search() {
     let recent = client.recent_searches().await.unwrap();
     assert!(!recent.is_empty());
     assert!(recent[0].indexers >= 1, "{recent:?}");
+
+    // An indexer backing off after failures is skipped and reported (`IndexerStatusCheck`).
+    kitsunarr_db::indexer_status::record_failure(
+        server.state.db.pool(),
+        id,
+        kitsunarr_db::indexer_status::Failure::Failure,
+        server.state.started_at,
+        chrono::Utc::now(),
+    )
+    .await
+    .unwrap();
+    let skipped = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+            complete_series: false,
+            season_packs_only: false,
+        })
+        .await
+        .unwrap();
+    assert_eq!(skipped.searched_indexers, 0);
+    assert!(
+        skipped
+            .failures
+            .iter()
+            .any(|f| f.indexer_id == id && f.message.starts_with("Temporarily disabled")),
+        "{:?}",
+        skipped.failures
+    );
+    let health = client.health().await.unwrap();
+    assert!(
+        health.iter().any(|h| h.source == "IndexerStatusCheck"),
+        "{health:?}"
+    );
+    kitsunarr_db::indexer_status::record_success(server.state.db.pool(), id)
+        .await
+        .unwrap();
 }
 
 /// Torrents the qBittorrent mock was given (one test uses it).

@@ -333,6 +333,7 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
     let mut releases: Vec<IndexerRelease> = Vec::new();
     let mut read = 0usize;
     for (indexer, outcome) in indexers.iter().zip(outcomes) {
+        search::record_outcome(state, indexer.id, &outcome).await;
         match outcome {
             Ok(list) => {
                 read += 1;
