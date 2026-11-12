@@ -8,7 +8,7 @@ use std::collections::HashMap;
 
 use kitsunarr_domain::api::settings::{CustomFormatSpecification, ProviderKind};
 use kitsunarr_domain::{MediaImage, MetadataProvider, MonitorNewItems, SeriesStatus, SeriesType};
-use serde_json::{Map, Value};
+use serde_json::{Map, Value, json};
 
 use crate::model::*;
 use crate::values::{Rec, as_bool, as_i64};
@@ -149,7 +149,36 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
         .filter_map(episode_file)
         .collect();
     snap.history = raw.table("history").iter().filter_map(history).collect();
+    snap.retained_versions = raw
+        .table("retainedversions")
+        .iter()
+        .filter_map(retained_version)
+        .collect();
     snap
+}
+
+/// A `RetainedVersions` row; its `MetadataJson` is the replaced `EpisodeFile` (Newtonsoft,
+/// camelCase).
+fn retained_version(r: &Rec) -> Option<SrcRetainedVersion> {
+    let series_id = r.i64("seriesid")?;
+    let mut metadata = match r.json("metadatajson")? {
+        Value::Object(m) => Rec::from_map(m),
+        _ => return None,
+    };
+    metadata.0.insert("id".into(), json!(0));
+    metadata.0.insert("seriesid".into(), json!(series_id));
+    let episode_ids = match r.json("episodeidsjson") {
+        Some(Value::Array(a)) => a.iter().filter_map(Value::as_i64).collect(),
+        _ => Vec::new(),
+    };
+    Some(SrcRetainedVersion {
+        id: r.i64("id")?,
+        series_id,
+        archive_path: r.str("relativepath")?.replace('\\', "/"),
+        file: episode_file(&metadata)?,
+        episode_ids,
+        created: r.ts("created"),
+    })
 }
 
 // ---------------------------------------------------------------------------------------------

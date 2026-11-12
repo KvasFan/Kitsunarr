@@ -197,6 +197,8 @@ const TABLES: &[(&str, &[&str])] = &[
     ("remotepathmappings", &["RemotePathMappings"]),
     ("history", &["History"]),
     ("scenemappings", &["SceneMappings"]),
+    // Tanukarr's retained episode versions (migration 239).
+    ("retainedversions", &["RetainedVersions"]),
 ];
 
 fn row_to_rec(row: &sqlx::sqlite::SqliteRow) -> Rec {

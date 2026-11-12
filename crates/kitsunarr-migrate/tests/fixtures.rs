@@ -623,6 +623,116 @@ async fn tanukarr_backup_preserves_provider_identities_and_movies() {
     assert_eq!(tree(&media), before, "no filesystem changes");
 }
 
+/// Tanukarr's retained episode versions come over with their record and episodes; the archived
+/// files are left where they are.
+#[tokio::test]
+async fn tanukarr_retained_versions_are_imported() {
+    let tmp = tempfile::tempdir().unwrap();
+    let media = tmp.path().join("media");
+    make_media(
+        &media,
+        &[
+            "/tv/Breaking Bad",
+            "/tv/Chernobyl",
+            "/anime/Cowboy Bebop",
+            "/tv/Cowboy Bebop",
+            "/movies/Cowboy Bebop - The Movie - Knockin' on Heaven's Door",
+        ],
+    );
+    // The backup's database, with a version of Breaking Bad S01E01 (episode 19) and an episode
+    // that no longer exists.
+    let file = std::fs::File::open(fixture("tanukarr-0.1.5/backup.zip")).unwrap();
+    let mut archive = zip::ZipArchive::new(file).unwrap();
+    let db_path = tmp.path().join("sonarr.db");
+    std::io::copy(
+        &mut archive.by_name("sonarr.db").unwrap(),
+        &mut std::fs::File::create(&db_path).unwrap(),
+    )
+    .unwrap();
+    let source = sqlx::SqlitePool::connect(&format!("sqlite://{}", db_path.display()))
+        .await
+        .unwrap();
+    let metadata = serde_json::json!({
+        "seriesId": 1, "seasonNumber": 1, "relativePath": "Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-OLD.mkv",
+        "size": 123, "dateAdded": "2026-10-01T10:00:00Z", "sceneName": "Breaking.Bad.S01E01.720p.HDTV.x264-OLD",
+        "releaseGroup": "OLD",
+        "quality": {"quality": {"id": 4, "name": "HDTV-720p", "source": "television", "resolution": 720},
+                    "revision": {"version": 2, "real": 0, "isRepack": true}},
+        "indexerFlags": 0, "languages": [{"id": 1, "name": "English"}], "releaseType": "singleEpisode",
+        "mediaInfo": {"schemaRevision": 14, "width": 1280, "height": 720, "runTime": "00:47:00"}
+    });
+    sqlx::query("INSERT INTO RetainedVersions (SeriesId, RelativePath, MetadataJson, EpisodeIdsJson, Created) VALUES (1, ?, ?, '[19, 999]', '2026-10-02 10:00:00Z')")
+        .bind("Plex Versions/0123abcd/Breaking.Bad.S01E01.720p.HDTV.x264-OLD.mkv")
+        .bind(metadata.to_string())
+        .execute(&source)
+        .await
+        .unwrap();
+    source.close().await;
+
+    let src = load_from_backup(&db_path, tmp.path()).await.unwrap();
+    assert_eq!(src.snapshot.retained_versions.len(), 1);
+    let db = fresh_db(tmp.path()).await;
+    for _ in 0..2 {
+        run(
+            &db,
+            &src,
+            &options(&media),
+            Mode::Apply {
+                backup_dir: tmp.path().join("b"),
+            },
+            &noop,
+        )
+        .await
+        .unwrap();
+    }
+    let rows: Vec<(i64, String, String, String)> = sqlx::query_as(
+        "SELECT series_id, relative_path, archive_path, episode_ids FROM retained_versions",
+    )
+    .fetch_all(db.pool())
+    .await
+    .unwrap();
+    assert_eq!(rows.len(), 1, "a second run does not duplicate it");
+    let (series_id, relative, archive, episodes) = &rows[0];
+    let breaking_bad: i64 =
+        sqlx::query_scalar("SELECT id FROM series WHERE title = 'Breaking Bad'")
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert_eq!(*series_id, breaking_bad);
+    assert_eq!(
+        relative,
+        "Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-OLD.mkv"
+    );
+    assert_eq!(
+        archive,
+        "Plex Versions/0123abcd/Breaking.Bad.S01E01.720p.HDTV.x264-OLD.mkv"
+    );
+    let e1: i64 = sqlx::query_scalar(
+        "SELECT id FROM episodes WHERE series_id = ? AND season_number = 1 AND episode_number = 1",
+    )
+    .bind(breaking_bad)
+    .fetch_one(db.pool())
+    .await
+    .unwrap();
+    assert_eq!(episodes, &format!("[{e1}]"));
+    // The record snapshot is in Kitsunarr's shape (as `versions::preserve` writes it).
+    let metadata: String = sqlx::query_scalar("SELECT metadata FROM retained_versions")
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    let m: serde_json::Value = serde_json::from_str(&metadata).unwrap();
+    assert_eq!(m["releaseGroup"], "OLD");
+    assert_eq!(m["qualityId"], 4);
+    assert_eq!(
+        (m["revisionVersion"].clone(), m["isRepack"].clone()),
+        (2.into(), true.into())
+    );
+    assert_eq!(m["languages"], serde_json::json!([1]));
+    assert_eq!(m["releaseType"], 1);
+    assert_eq!(m["mediaInfo"]["height"], 720);
+    assert_eq!(m["addedAt"], "2026-10-01T10:00:00Z");
+}
+
 // ---------------------------------------------------------------------------------------------
 // Simulated API source: replays captured /api/v3 responses.
 // ---------------------------------------------------------------------------------------------

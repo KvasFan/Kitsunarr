@@ -197,6 +197,20 @@ pub struct SrcEpisodeFile {
     pub unmapped: Map<String, Value>,
 }
 
+/// Tanukarr's `RetainedVersion`: an episode file an upgrade replaced, kept in
+/// `Plex Versions/<id>/` with a snapshot of its record.
+#[derive(Debug, Clone, PartialEq)]
+pub struct SrcRetainedVersion {
+    pub id: i64,
+    pub series_id: i64,
+    /// The archive, relative to the series folder.
+    pub archive_path: String,
+    /// The file's record when it was replaced (its `relative_path` is where it lived).
+    pub file: SrcEpisodeFile,
+    pub episode_ids: Vec<i64>,
+    pub created: Option<String>,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct SrcProfileItem {
     pub quality_id: Option<i32>,
@@ -347,6 +361,8 @@ pub struct SourceSnapshot {
     pub episodes: Vec<SrcEpisode>,
     pub episode_files: Vec<SrcEpisodeFile>,
     pub history: Vec<SrcHistory>,
+    /// Tanukarr's retained episode versions (backups only).
+    pub retained_versions: Vec<SrcRetainedVersion>,
     /// Source settings Kitsunarr does not model (key → value), already filtered of internals.
     pub unmapped_settings: Map<String, Value>,
     /// Count of internal source keys deliberately skipped (crypto salts, client ids, ...).

@@ -1600,6 +1600,78 @@ impl<'a> Importer<'a> {
 
     /// Tanukarr's per-series Library tools options (`ProOptions.series`): renaming mode, season
     /// folder titles and "keep versions" (Tanukarr's kept files themselves are not migrated).
+    /// Tanukarr's retained episode versions: the rows, with their record snapshot in
+    /// Kitsunarr's shape and the episodes mapped. The archived files stay where they are.
+    async fn retained_versions(&mut self, conn: &mut SqliteConnection) -> Result<(), MigrateError> {
+        if !self.enabled("series") || self.snap.retained_versions.is_empty() {
+            return Ok(());
+        }
+        let versions = self.snap.retained_versions.clone();
+        for v in &versions {
+            let Some(&series_id) = self.series_map.get(&v.series_id) else {
+                self.count("retainedVersions", Act::Skip);
+                continue;
+            };
+            let exists: Option<i64> = sqlx::query_scalar(
+                "SELECT id FROM retained_versions WHERE series_id = ? AND archive_path = ?",
+            )
+            .bind(series_id)
+            .bind(&v.archive_path)
+            .fetch_optional(&mut *conn)
+            .await?;
+            if exists.is_some() {
+                self.count("retainedVersions", Act::Skip);
+                continue;
+            }
+            let f = &v.file;
+            let metadata = json!({
+                "seasonNumber": f.season_number,
+                "relativePath": f.relative_path,
+                "size": f.size,
+                "addedAt": f.date_added,
+                "sceneName": f.scene_name,
+                "releaseGroup": f.release_group,
+                "qualityId": if Quality::by_id(f.quality_id).is_some() { f.quality_id } else { 0 },
+                "revisionVersion": f.revision.version,
+                "revisionReal": f.revision.real,
+                "isRepack": f.revision.is_repack,
+                "languages": f.languages,
+                "mediaInfo": f.media_info,
+                "originalPath": f.original_file_path,
+                "indexerFlags": f.indexer_flags,
+                "releaseType": f.release_type,
+            });
+            let episodes: Vec<i64> = v
+                .episode_ids
+                .iter()
+                .filter_map(|e| self.episode_map.get(e).copied())
+                .collect();
+            if episodes.len() < v.episode_ids.len() {
+                self.warn(
+                    WarningSeverity::Info,
+                    "retainedVersions",
+                    Some(v.id),
+                    Some(&v.archive_path),
+                    "Some of the version's episodes no longer exist; it was kept for the others.",
+                );
+            }
+            sqlx::query(
+                "INSERT INTO retained_versions (series_id, relative_path, archive_path, metadata, episode_ids, created_at) \
+                 VALUES (?, ?, ?, ?, ?, ?)",
+            )
+            .bind(series_id)
+            .bind(&f.relative_path)
+            .bind(&v.archive_path)
+            .bind(metadata.to_string())
+            .bind(serde_json::to_string(&episodes).unwrap_or_else(|_| "[]".into()))
+            .bind(v.created.clone().unwrap_or_else(kitsunarr_db::now))
+            .execute(&mut *conn)
+            .await?;
+            self.count("retainedVersions", Act::Create);
+        }
+        Ok(())
+    }
+
     async fn series_naming_options(
         &mut self,
         conn: &mut SqliteConnection,
@@ -2546,6 +2618,7 @@ pub async fn run(
         imp.movies(conn).await?;
         imp.collections(conn).await?;
         imp.series_naming_options(conn).await?;
+        imp.retained_versions(conn).await?;
         imp.history(conn).await?;
         Ok(())
     }
