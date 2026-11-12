@@ -663,3 +663,37 @@ pub async fn test_notification(
         },
     ))
 }
+
+/// Jellyfin's libraries or users for a connection's settings (stored secrets are reused).
+#[utoipa::path(post, path = "/providers/notifications/choices/{kind}", tag = "settings",
+    params(("kind" = String, Path, description = "libraries | users")),
+    request_body = IndexerTestRequest,
+    responses((status = 200, body = Vec<kitsunarr_domain::api::settings::ProviderChoice>), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn notification_choices(
+    State(state): State<AppState>,
+    axum::extract::Path(kind): axum::extract::Path<String>,
+    Json(mut req): Json<IndexerTestRequest>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::settings::ProviderChoice>>> {
+    if !req.implementation.eq_ignore_ascii_case("Jellyfin") {
+        return Err(ApiError::field(
+            "implementation",
+            "Only Jellyfin connections offer choices.",
+        ));
+    }
+    if let Some(id) = req.id {
+        let stored = providers::get(state.db.pool(), ProviderKind::Notification, id).await?;
+        crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
+    }
+    let list = kitsunarr_library::jellyfin::choices(&state.http, &req.settings, &kind)
+        .await
+        .map_err(|m| ApiError::field("host", m))?;
+    Ok(Json(
+        list.into_iter()
+            .map(|c| kitsunarr_domain::api::settings::ProviderChoice {
+                value: c.value,
+                name: c.name,
+                hint: c.hint,
+            })
+            .collect(),
+    ))
+}

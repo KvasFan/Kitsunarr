@@ -356,6 +356,16 @@ impl Default for DownloadClientOptionsSettings {
     }
 }
 
+/// A value a provider setting can take, read from the service (Jellyfin libraries and users).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ProviderChoice {
+    pub value: String,
+    pub name: String,
+    pub hint: Option<String>,
+}
+
 /// Tanukarr's Library tools switches (`ProOptions`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

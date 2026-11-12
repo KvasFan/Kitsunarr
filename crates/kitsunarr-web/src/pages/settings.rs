@@ -947,6 +947,74 @@ pub fn SettingsImportLists() -> Element {
     }
 }
 
+/// Jellyfin library and user pickers (Tanukarr's `RequestAction("libraries" | "users")`): read
+/// from the server with the editor's host and API key.
+#[component]
+fn JellyfinPickers(mut draft: Signal<ProviderItem>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut libraries = use_signal(Vec::<kitsunarr_domain::api::settings::ProviderChoice>::new);
+    let mut users = use_signal(Vec::<kitsunarr_domain::api::settings::ProviderChoice>::new);
+    let load = move |kind: &'static str| {
+        let c = client.clone();
+        let d = draft();
+        spawn(async move {
+            let req = kitsunarr_domain::api::search::IndexerTestRequest {
+                id: (d.id > 0).then_some(d.id),
+                implementation: d.implementation.clone(),
+                settings: d.settings.clone(),
+            };
+            match c.notification_choices(kind, &req).await {
+                Ok(list) if kind == "libraries" => libraries.set(list),
+                Ok(list) => users.set(list),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let load_libraries = load.clone();
+    let load_users = load;
+    let d = draft();
+    let current = |k: &str| {
+        d.settings
+            .get(k)
+            .and_then(Value::as_str)
+            .unwrap_or_default()
+            .replace('-', "")
+            .to_lowercase()
+    };
+    let (library, user) = (current("libraryId"), current("watchedUserId"));
+    rsx! {
+        h3 { "Jellyfin library and user" }
+        div { class: "form-grid",
+            Field { label: "Library",
+                div { class: "row tight",
+                    select { class: "select grow", "aria-label": "Jellyfin library",
+                        onchange: move |e| { draft.write().settings.insert("libraryId".into(), Value::String(e.value())); },
+                        option { value: "", if libraries().is_empty() { "Load the libraries…" } else { "Choose…" } }
+                        for l in libraries() {
+                            option { key: "{l.value}", value: "{l.value}", selected: l.value.replace('-', "").to_lowercase() == library,
+                                "{l.name}" if let Some(h) = &l.hint { " ({h})" } }
+                        }
+                    }
+                    button { class: "btn sm", onclick: move |_| load_libraries("libraries"), "Load" }
+                }
+            }
+            Field { label: "Watched sync user",
+                div { class: "row tight",
+                    select { class: "select grow", "aria-label": "Jellyfin user",
+                        onchange: move |e| { draft.write().settings.insert("watchedUserId".into(), Value::String(e.value())); },
+                        option { value: "", if users().is_empty() { "Load the users…" } else { "Choose…" } }
+                        for u in users() {
+                            option { key: "{u.value}", value: "{u.value}", selected: u.value.replace('-', "").to_lowercase() == user, "{u.name}" }
+                        }
+                    }
+                    button { class: "btn sm", onclick: move |_| load_users("users"), "Load" }
+                }
+            }
+        }
+    }
+}
+
 /// Names of a Sonarr enum option stored as a name or as its number.
 fn enum_option(v: Option<&Value>, names: &[&'static str]) -> &'static str {
     match v {
@@ -1637,6 +1705,9 @@ fn ProviderEditor(
             }
             if item.kind == ProviderKind::ImportList {
                 ImportListFields { draft }
+            }
+            if item.kind == ProviderKind::Notification && item.implementation.eq_ignore_ascii_case("Jellyfin") {
+                JellyfinPickers { draft }
             }
             h3 { "Settings" }
             div { class: "form-grid",

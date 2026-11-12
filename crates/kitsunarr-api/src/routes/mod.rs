@@ -144,6 +144,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(search::automatic_search))
         .routes(routes!(grab::test_download_client))
         .routes(routes!(grab::test_notification))
+        .routes(routes!(grab::notification_choices))
         .routes(routes!(import_lists::test_import_list))
         .routes(routes!(import_lists::sync_now))
         .routes(routes!(import_lists::status))

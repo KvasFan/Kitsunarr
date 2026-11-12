@@ -222,3 +222,26 @@ async fn a_wrong_key_or_user_is_reported() {
         .unwrap_err();
     assert!(err.contains("user does not exist"), "{err}");
 }
+
+#[tokio::test]
+async fn libraries_and_users_are_listed_for_the_editor() {
+    let (_dir, db, _mock, http) = setup(json!({})).await;
+    let c = kitsunarr_library::notify::connections(&db).await.remove(0);
+    let libraries = kitsunarr_library::jellyfin::choices(&http, &c.settings, "libraries")
+        .await
+        .unwrap();
+    assert_eq!(libraries.len(), 1);
+    assert_eq!(libraries[0].name, "Anime");
+    assert_eq!(libraries[0].value, LIBRARY.replace('-', ""));
+    let users = kitsunarr_library::jellyfin::choices(&http, &c.settings, "users")
+        .await
+        .unwrap();
+    assert_eq!(users[0].name, "anna");
+    let mut wrong = c.settings.clone();
+    wrong.insert("apiKey".into(), json!("nope"));
+    assert!(
+        kitsunarr_library::jellyfin::choices(&http, &wrong, "users")
+            .await
+            .is_err()
+    );
+}

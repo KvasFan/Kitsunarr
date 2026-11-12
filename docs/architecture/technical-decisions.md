@@ -453,8 +453,8 @@ The scheduled task `SyncJellyfinWatched` runs every minute and syncs when the co
   rotating it keeps pending work; any other target change resets the state. Before refreshing,
   the library must be listed once with locations Jellyfin has scanned as folders; the refresh
   must answer 204. A process-wide in-flight guard keeps one refresh loop per connection.
-- **Not ported:** Tanukarr's user and library pickers (the ids are typed) and list progress
-  sync.
+- **Not ported:** list progress sync. The editor's library and user pickers read Jellyfin with
+  the editor's (or the stored) host and API key.
 
 ## 29. Import lists
 

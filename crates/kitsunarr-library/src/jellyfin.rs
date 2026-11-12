@@ -539,3 +539,68 @@ mod tests {
         );
     }
 }
+
+/// A choice for the connection editor (Tanukarr's `RequestAction("libraries" | "users")`).
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct Choice {
+    pub value: String,
+    pub name: String,
+    pub hint: Option<String>,
+}
+
+/// Jellyfin's libraries (`kind == "libraries"`) or users (`"users"`) for the editor's settings.
+pub async fn choices(
+    http: &reqwest::Client,
+    settings: &serde_json::Map<String, Value>,
+    kind: &str,
+) -> Result<Vec<Choice>, String> {
+    let host = text(settings, "host").ok_or("Enter the Jellyfin host first")?;
+    let api_key = text(settings, "apiKey").ok_or("Enter the Jellyfin API key first")?;
+    let partial = WatchedSettings {
+        connection_id: 0,
+        host,
+        port: settings.get("port").and_then(Value::as_i64).unwrap_or(8096),
+        use_ssl: flag(settings, "useSsl"),
+        url_base: text(settings, "urlBase").unwrap_or_default(),
+        api_key,
+        library_id: String::new(),
+        user_id: String::new(),
+        interval_minutes: 5,
+        unmonitor_watched: false,
+        remonitor_unwatched: false,
+        jellyfin_prefix: None,
+        local_prefix: None,
+        tags: Vec::new(),
+    };
+    let mut out: Vec<Choice> = match kind {
+        "libraries" => get(http, &partial, "/Library/VirtualFolders")
+            .await?
+            .as_array()
+            .ok_or("Jellyfin returned an invalid library list")?
+            .iter()
+            .filter_map(|f| {
+                Some(Choice {
+                    value: f["ItemId"].as_str().filter(|i| !i.is_empty())?.to_string(),
+                    name: f["Name"].as_str().unwrap_or_default().to_string(),
+                    hint: f["CollectionType"].as_str().map(str::to_string),
+                })
+            })
+            .collect(),
+        "users" => get(http, &partial, "/Users")
+            .await?
+            .as_array()
+            .ok_or("Jellyfin returned an invalid user list")?
+            .iter()
+            .filter_map(|u| {
+                Some(Choice {
+                    value: u["Id"].as_str().filter(|i| !i.is_empty())?.to_string(),
+                    name: u["Name"].as_str().unwrap_or_default().to_string(),
+                    hint: None,
+                })
+            })
+            .collect(),
+        _ => return Err("Unknown choice list".into()),
+    };
+    out.sort_by_key(|c| c.name.to_lowercase());
+    Ok(out)
+}

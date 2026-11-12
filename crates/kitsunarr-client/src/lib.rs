@@ -564,6 +564,14 @@ impl Client {
     ) -> ClientResult<Vec<kitsunarr_domain::api::settings::SearchActivity>> {
         self.get("/librarytools/searches").await
     }
+    pub async fn notification_choices(
+        &self,
+        kind: &str,
+        req: &IndexerTestRequest,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::settings::ProviderChoice>> {
+        self.post(&format!("/providers/notifications/choices/{kind}"), req)
+            .await
+    }
     pub async fn test_notification(
         &self,
         req: &IndexerTestRequest,
