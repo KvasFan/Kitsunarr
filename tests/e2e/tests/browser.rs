@@ -512,6 +512,20 @@ async fn first_run_setup_migration_and_library() {
             .expect("the rename preview opens");
         screenshot(&client, "11d-rename-preview").await;
         click_button(&client, "Cancel").await;
+        // TheTVDB series can switch episode order (the choices need no catalogue request).
+        click_button(&client, "Episode order").await;
+        wait_text(&client, "Aired order (TheTVDB default)").await;
+        wait_text(&client, "Absolute order").await;
+        click_button(&client, "Cancel").await;
+        // Profiles carry Tanukarr's codec factors (migrated) and per-quality size limits.
+        client
+            .goto(&format!("{base}/settings/profiles"))
+            .await
+            .unwrap();
+        click_button(&client, "Kitsunarr Fixture 1080p").await;
+        wait_text(&client, "Codec size factors").await;
+        wait_text(&client, "Size limits").await;
+        click_button(&client, "Cancel").await;
         // Migrated notifications are sent now (no "stored only" badge).
         client
             .goto(&format!("{base}/settings/notifications"))
