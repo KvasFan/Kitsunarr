@@ -94,6 +94,9 @@ pub struct Monitor {
     /// Per download (upper-case id): its last status and remaining size, and when either last
     /// changed (`TrackedDownload.LastProgressDate`, in memory as upstream).
     progress: Arc<Mutex<Progress>>,
+    /// Downloads (upper-case ids) already announced as needing manual interaction
+    /// (`HasNotifiedManualInteractionRequired`).
+    notified_manual: Arc<Mutex<HashSet<String>>>,
 }
 
 impl Monitor {
@@ -216,6 +219,65 @@ impl Monitor {
             &client.implementation,
         )
         .await;
+    }
+
+    /// Blocks a download's import and, the first time, sends "Manual Interaction Required"
+    /// (`ManualInteractionRequiredEvent`).
+    #[allow(clippy::too_many_arguments)]
+    async fn block(
+        &self,
+        db: &Database,
+        item: &DownloadItem,
+        client: &providers::ProviderRecord,
+        series_id: i64,
+        grabs: &[kitsunarr_db::history::GrabRecord],
+        messages: Vec<String>,
+    ) {
+        self.set(&item.download_id, State::ImportBlocked, messages.clone());
+        let first = self
+            .notified_manual
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .insert(item.download_id.to_ascii_uppercase());
+        if !first {
+            return;
+        }
+        let series = crate::notify::series_ref(db, series_id).await;
+        let episode_ids: Vec<i64> = grabs.iter().filter_map(|g| g.episode_id).collect();
+        let episodes = crate::notify::episode_refs(db, series_id, &episode_ids).await;
+        let grab = grabs.first();
+        let data: serde_json::Value = grab
+            .and_then(|g| serde_json::from_str(&g.data).ok())
+            .unwrap_or_default();
+        let text = |k: &str| data.get(k).and_then(|v| v.as_str()).map(str::to_string);
+        let revision: kitsunarr_domain::quality::Revision = grab
+            .and_then(|g| g.revision.as_deref())
+            .and_then(|r| serde_json::from_str(r).ok())
+            .unwrap_or_default();
+        let event = kitsunarr_notifications::Event::ManualInteractionRequired(Box::new(
+            kitsunarr_notifications::ManualInteraction {
+                series,
+                episodes,
+                title: item.title.clone(),
+                quality: grab
+                    .and_then(|g| g.quality_id)
+                    .map_or_else(|| "Unknown".into(), crate::notify::quality_name),
+                quality_version: revision.version,
+                size: item.total_size,
+                download_client: Some(client.name.clone()),
+                download_client_type: Some(client.implementation.clone()),
+                download_id: item.download_id.clone(),
+                messages,
+                release: kitsunarr_notifications::GrabbedRef {
+                    release_title: grab.map(|g| g.source_title.clone()),
+                    indexer: text("indexer"),
+                    size: text("size").and_then(|v| v.parse().ok()),
+                    indexer_flags: Vec::new(),
+                    release_type: text("releaseType"),
+                },
+            },
+        ));
+        crate::notify::spawn(db, &self.notifier, event);
     }
 
     /// `DownloadEventHub.RemoveFromDownloadClient`: removes the download and its data.
@@ -417,11 +479,15 @@ impl Monitor {
                     continue;
                 };
                 let Some(output) = item.output_path.as_deref() else {
-                    self.set(
-                        &item.download_id,
-                        State::ImportBlocked,
+                    self.block(
+                        db,
+                        &item,
+                        client,
+                        series_id,
+                        &mine,
                         vec!["Download doesn't contain intermediate path, Skipping.".into()],
-                    );
+                    )
+                    .await;
                     blocked += 1;
                     continue;
                 };
@@ -448,7 +514,8 @@ impl Monitor {
                     }
                 }
                 if let Some(reason) = outcome.blocked {
-                    self.set(&item.download_id, State::ImportBlocked, vec![reason]);
+                    self.block(db, &item, client, series_id, &mine, vec![reason])
+                        .await;
                     blocked += 1;
                     continue;
                 }
@@ -506,7 +573,8 @@ impl Monitor {
                             .unwrap_or_default();
                         messages.push(format!("{name}: {}", r.errors.join(", ")));
                     }
-                    self.set(&item.download_id, State::ImportBlocked, messages);
+                    self.block(db, &item, client, series_id, &mine, messages)
+                        .await;
                     blocked += 1;
                 }
             }

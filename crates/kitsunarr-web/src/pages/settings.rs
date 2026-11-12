@@ -2199,6 +2199,14 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
                                                     for (k, v) in &t.settings {
                                                         p.settings.entry(k.clone()).or_insert_with(|| v.clone());
                                                     }
+                                                    // Event switches added since it was saved are off.
+                                                    if p.kind == ProviderKind::Notification {
+                                                        for (k, v) in &t.options {
+                                                            if v.is_boolean() {
+                                                                p.options.entry(k.clone()).or_insert(Value::Bool(false));
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                                 editing.set(Some(p));
                                             } }, "Edit" }

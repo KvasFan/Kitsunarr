@@ -371,3 +371,46 @@ async fn the_recycle_bin_is_cleaned_after_the_configured_days() {
     assert!(!old.exists() && !bin.join("Show").exists());
     assert!(fresh.exists() && bin.exists());
 }
+
+/// "Application Update" goes out once per new version, never on the first start.
+#[tokio::test]
+async fn a_new_version_is_announced_once() {
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    let heard = std::sync::Arc::new(std::sync::Mutex::new(Vec::<serde_json::Value>::new()));
+    let h = heard.clone();
+    let hook = axum::Router::new().route(
+        "/hook",
+        axum::routing::post(move |axum::Json(v): axum::Json<serde_json::Value>| {
+            let h = h.clone();
+            async move {
+                h.lock().unwrap().push(v);
+                "ok"
+            }
+        }),
+    );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let hook_url = format!("http://{}/hook", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, hook).await.unwrap() });
+    sqlx::query("INSERT INTO notifications (name, implementation, settings, triggers, created_at) VALUES ('Hook', 'Webhook', ?, '{\"onApplicationUpdate\": true}', '2026-11-01T00:00:00Z')")
+        .bind(serde_json::json!({"url": hook_url, "method": 1}).to_string())
+        .execute(db.pool())
+        .await
+        .unwrap();
+    let notifier = kitsunarr_notifications::Notifier::new(reqwest::Client::new());
+    use kitsunarr_library::notify::announce_version;
+    announce_version(&db, &notifier, "0.1.0").await;
+    announce_version(&db, &notifier, "0.1.0").await;
+    announce_version(&db, &notifier, "0.2.0").await;
+    for _ in 0..50 {
+        if !heard.lock().unwrap().is_empty() {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    let heard = heard.lock().unwrap();
+    assert_eq!(heard.len(), 1, "{heard:?}");
+    assert_eq!(heard[0]["eventType"], "ApplicationUpdate");
+    assert_eq!(heard[0]["newVersion"], "0.2.0");
+}

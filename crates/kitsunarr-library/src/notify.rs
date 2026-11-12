@@ -243,3 +243,30 @@ pub async fn imported(
         }));
     spawn(db, notifier, event);
 }
+
+/// Sends "Application Update" when this version differs from the one that started last
+/// (Sonarr's `ApplicationUpdatedEvent`); the first start of an installation sends nothing.
+pub async fn announce_version(db: &Database, notifier: &Notifier, version: &str) {
+    let key = kitsunarr_db::settings::KEY_LAST_VERSION;
+    let previous: Option<String> = kitsunarr_db::settings::get(db.pool(), key)
+        .await
+        .ok()
+        .flatten();
+    if previous.as_deref() == Some(version) {
+        return;
+    }
+    if let Err(e) = kitsunarr_db::settings::set(db.pool(), key, &version.to_string()).await {
+        tracing::warn!(error = %e, "the started version could not be stored");
+        return;
+    }
+    if let Some(previous) = previous {
+        spawn(
+            db,
+            notifier,
+            Event::ApplicationUpdate {
+                previous_version: previous,
+                new_version: version.to_string(),
+            },
+        );
+    }
+}

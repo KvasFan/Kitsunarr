@@ -147,6 +147,22 @@ pub fn environment(event: &Event, instance: &Instance) -> BTreeMap<String, Strin
                 );
             }
         }
+        "ManualInteractionRequired" => {
+            episode_vars("Download", &mut put);
+            let d = &p["downloadInfo"];
+            put("Download_Client", s(&p["downloadClient"]));
+            put("Download_Client_Type", s(&p["downloadClientType"]));
+            put("Download_Id", s(&p["downloadId"]));
+            put("Download_Size", s(&d["size"]));
+            put("Download_Title", s(&d["title"]));
+            put("Download_Quality", s(&d["quality"]));
+            put("Download_Quality_Version", s(&d["qualityVersion"]));
+        }
+        "ApplicationUpdate" => {
+            put("Update_Message", s(&p["message"]));
+            put("Update_NewVersion", s(&p["newVersion"]));
+            put("Update_PreviousVersion", s(&p["previousVersion"]));
+        }
         "Rename" => {
             let files = &p["renamedEpisodeFiles"];
             put("EpisodeFile_Ids", join(files, "id", ","));

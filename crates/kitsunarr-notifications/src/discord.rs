@@ -312,6 +312,38 @@ pub fn embed(s: &Map<String, Value>, event: &Event, instance: &Instance) -> Valu
             colors::SUCCESS,
             None,
         ),
+        Event::ManualInteractionRequired(m) => {
+            thumbnail = m
+                .series
+                .as_ref()
+                .and_then(|s| s.poster())
+                .map(str::to_string);
+            fields.push(field("Download", m.title.clone(), false));
+            if !m.messages.is_empty() {
+                fields.push(field("Reason", m.messages.join("\n"), false));
+            }
+            (
+                m.series
+                    .as_ref()
+                    .map_or_else(|| m.title.clone(), |s| title(s, &m.episodes)),
+                "Manual Interaction Required".to_string(),
+                colors::WARNING,
+                m.series.as_ref(),
+            )
+        }
+        Event::ApplicationUpdate {
+            previous_version,
+            new_version,
+        } => {
+            fields.push(field("Previous Version", previous_version.clone(), true));
+            fields.push(field("New Version", new_version.clone(), true));
+            (
+                "Application Updated".to_string(),
+                event.message(),
+                colors::STANDARD,
+                None,
+            )
+        }
     };
     let mut e = json!({
         "author": author,

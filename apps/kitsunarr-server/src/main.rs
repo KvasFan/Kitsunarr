@@ -342,6 +342,8 @@ async fn serve(config: Config) -> Result<()> {
     )
     .with_download_monitor(downloads);
     let _ = api_state.set(state.clone());
+    // `ApplicationUpdatedEvent`: the first start of a new version.
+    kitsunarr_library::notify::announce_version(&db, &state.downloads.notifier, VERSION).await;
     if let Err(e) = kitsunarr_api::routes::settings::apply_metadata_keys(&state).await {
         tracing::warn!(error = %e.message(), "could not load the metadata catalogue keys");
     }

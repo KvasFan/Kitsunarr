@@ -101,6 +101,39 @@ pub fn payload(event: &Event, instance: &Instance) -> Value {
             m.insert("deleteReason".into(), reason.clone().into());
             m
         }
+        Event::ManualInteractionRequired(mi) => {
+            let mut m = base("ManualInteractionRequired");
+            m.insert("series".into(), json!(mi.series));
+            m.insert("episodes".into(), json!(mi.episodes));
+            m.insert(
+                "downloadInfo".into(),
+                json!({"quality": mi.quality, "qualityVersion": mi.quality_version, "title": mi.title, "size": mi.size}),
+            );
+            m.insert("downloadClient".into(), json!(mi.download_client));
+            m.insert("downloadClientType".into(), json!(mi.download_client_type));
+            m.insert("downloadId".into(), mi.download_id.clone().into());
+            m.insert("downloadStatus".into(), "Warning".into());
+            m.insert(
+                "downloadStatusMessages".into(),
+                json!([{"title": mi.title, "messages": mi.messages}]),
+            );
+            m.insert(
+                "customFormatInfo".into(),
+                json!({"customFormats": [], "customFormatScore": 0}),
+            );
+            m.insert("release".into(), json!(mi.release));
+            m
+        }
+        Event::ApplicationUpdate {
+            previous_version,
+            new_version,
+        } => {
+            let mut m = base("ApplicationUpdate");
+            m.insert("message".into(), event.message().into());
+            m.insert("previousVersion".into(), previous_version.clone().into());
+            m.insert("newVersion".into(), new_version.clone().into());
+            m
+        }
         Event::HealthIssue(h) | Event::HealthRestored(h) => {
             let mut m = base(if matches!(event, Event::HealthIssue(_)) {
                 "Health"
@@ -209,5 +242,46 @@ mod tests {
         assert_eq!(p["release"]["releaseGroup"], "GRP");
         assert_eq!(p["downloadId"], "ABC");
         assert_eq!(p["customFormatInfo"]["customFormatScore"], 0);
+    }
+
+    #[test]
+    fn manual_interaction_and_update_payloads() {
+        let instance = Instance {
+            name: "Kitsunarr".into(),
+            application_url: None,
+        };
+        let Event::Grab(g) = grab() else {
+            unreachable!()
+        };
+        let mi = Event::ManualInteractionRequired(Box::new(crate::ManualInteraction {
+            series: Some(g.series.clone()),
+            episodes: g.episodes.clone(),
+            title: "Show.S01E01.1080p".into(),
+            quality: "WEBDL-1080p".into(),
+            quality_version: 1,
+            size: 1000,
+            download_client: Some("qBittorrent".into()),
+            download_client_type: Some("QBittorrent".into()),
+            download_id: "ABC".into(),
+            messages: vec!["No files found".into()],
+            release: Default::default(),
+        }));
+        let p = payload(&mi, &instance);
+        assert_eq!(p["eventType"], "ManualInteractionRequired");
+        assert_eq!(p["downloadInfo"]["title"], "Show.S01E01.1080p");
+        assert_eq!(p["downloadStatus"], "Warning");
+        assert_eq!(
+            p["downloadStatusMessages"][0]["messages"][0],
+            "No files found"
+        );
+        assert_eq!(mi.title(), "Manual Interaction Required");
+        let up = Event::ApplicationUpdate {
+            previous_version: "0.1.0".into(),
+            new_version: "0.2.0".into(),
+        };
+        let p = payload(&up, &instance);
+        assert_eq!(p["eventType"], "ApplicationUpdate");
+        assert_eq!(p["message"], "Kitsunarr updated from 0.1.0 to 0.2.0");
+        assert_eq!(p["previousVersion"], "0.1.0");
     }
 }

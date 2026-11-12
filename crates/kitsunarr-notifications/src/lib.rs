@@ -255,6 +255,33 @@ pub enum Event {
         series: Box<SeriesRef>,
         files: Vec<RenamedFile>,
     },
+    /// A completed download that cannot be imported without the user (Sonarr's
+    /// `OnManualInteractionRequired`).
+    ManualInteractionRequired(Box<ManualInteraction>),
+    /// Kitsunarr started with a new version (Sonarr's `OnApplicationUpdate`).
+    ApplicationUpdate {
+        previous_version: String,
+        new_version: String,
+    },
+}
+
+/// A download waiting for the user (`ManualInteractionRequiredMessage`).
+#[derive(Debug, Clone, Default, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ManualInteraction {
+    /// The series the download was grabbed for, when known.
+    pub series: Option<SeriesRef>,
+    pub episodes: Vec<EpisodeRef>,
+    pub title: String,
+    pub quality: String,
+    pub quality_version: i32,
+    pub size: i64,
+    pub download_client: Option<String>,
+    pub download_client_type: Option<String>,
+    pub download_id: String,
+    /// Why the import is blocked.
+    pub messages: Vec<String>,
+    pub release: GrabbedRef,
 }
 
 /// A renamed episode file (Sonarr's `RenamedEpisodeFile`).
@@ -278,6 +305,7 @@ impl Event {
             Self::SeriesDelete { series, .. }
             | Self::EpisodeFileDelete { series, .. }
             | Self::Rename { series, .. } => Some(series),
+            Self::ManualInteractionRequired(m) => m.series.as_ref(),
             _ => None,
         }
     }
@@ -295,6 +323,8 @@ impl Event {
             Self::HealthIssue(_) => "Health Check Failure",
             Self::HealthRestored(_) => "Health Check Restored",
             Self::Rename { .. } => "Series Renamed",
+            Self::ManualInteractionRequired(_) => "Manual Interaction Required",
+            Self::ApplicationUpdate { .. } => "Application Updated",
         }
     }
 
@@ -337,6 +367,18 @@ impl Event {
             Self::Rename { series, files } => {
                 format!("{}: {} files renamed", series.title, files.len())
             }
+            Self::ManualInteractionRequired(m) => match &m.series {
+                Some(series) => episode_message(
+                    series,
+                    &m.episodes,
+                    &quality_string(series, &m.quality, m.quality_version),
+                ),
+                None => m.title.clone(),
+            },
+            Self::ApplicationUpdate {
+                previous_version,
+                new_version,
+            } => format!("Kitsunarr updated from {previous_version} to {new_version}"),
         }
     }
 
@@ -352,6 +394,8 @@ impl Event {
             Self::HealthIssue(_) => "onHealthIssue",
             Self::HealthRestored(_) => "onHealthRestored",
             Self::Rename { .. } => "onRename",
+            Self::ManualInteractionRequired(_) => "onManualInteractionRequired",
+            Self::ApplicationUpdate { .. } => "onApplicationUpdate",
         }
     }
 }

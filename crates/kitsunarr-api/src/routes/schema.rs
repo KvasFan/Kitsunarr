@@ -141,7 +141,8 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             let on = json!({
                 "onGrab": true, "onDownload": true, "onUpgrade": true, "onSeriesAdd": false,
                 "onSeriesDelete": false, "onEpisodeFileDelete": false, "onHealthIssue": false,
-                "includeHealthWarnings": false, "onHealthRestored": false, "onRename": false
+                "includeHealthWarnings": false, "onHealthRestored": false, "onRename": false,
+                "onManualInteractionRequired": false, "onApplicationUpdate": false
             });
             let n = |name: &str, implementation: &str, settings: Value| {
                 template(kind, name, implementation, on.clone(), settings)
