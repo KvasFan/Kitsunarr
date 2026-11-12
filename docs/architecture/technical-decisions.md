@@ -515,3 +515,19 @@ episodes the ordering lacks unless a file is linked and the old number is free, 
 nothing uses, stores the ordering and refreshes. Matching by number (as a plain refresh does)
 would move files to other episodes. TheTVDB's default season type is stored as `official` and
 TMDB's default as no ordering.
+
+## 32. Tanukarr's parser and matching changes
+
+- **Season lists.** Two seasons form a range only with a dash separator ("S01-S04") or
+  "Complete Series"; "S01 S04" names seasons 1 and 4 (Tanukarr's `seasonseparator` and
+  `completeseries` groups). Three upstream `SeasonParserFixture` cases carry Tanukarr's
+  expectations, marked in the fixture.
+- **Trailing-subgroup anime** ("Title S2 - 10 [Group][1080p]") is parsed before the generic
+  multi-season pattern, keeping "Title S2" as the series title (an alternate title then maps
+  it).
+- **Season suffix lookup.** A season release whose title ends in its own season number ("Title
+  4 - S04E16") is looked up without the number, after the exact and year forms and before the
+  release's ids. Absolute releases and titles with a parsed year are left alone.
+- **Not ported:** the scene-vs-aired `EpisodeNumberingResolver`. It only acts on series with
+  scene numbering from TheXEM or Sonarr's scene-mapping feed, which Kitsunarr does not consume
+  (Tanukarr itself blocks Sonarr's feed).

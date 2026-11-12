@@ -149,6 +149,21 @@ impl<'a> Lookup<'a> {
         found
     }
 
+    /// Tanukarr's `FindByTitleWithoutSeasonSuffix`: "Title 4 - S04E16" names series "Title". Only
+    /// for season releases without a parsed year whose title ends in that season's number.
+    fn without_season_suffix(parsed: &ParsedEpisodeInfo) -> Option<String> {
+        let season = *parsed.season_numbers.first()?;
+        if season <= 0 || parsed.series_title_info.year > 0 || parsed.is_absolute_numbering() {
+            return None;
+        }
+        let title = parsed.series_title.trim_end();
+        let (head, number) = title.rsplit_once(' ')?;
+        let n: i32 = (number.len() <= 2 && number.chars().all(|c| c.is_ascii_digit()))
+            .then(|| number.parse().ok())
+            .flatten()?;
+        (n == season && !head.trim().is_empty()).then(|| head.trim_end().to_string())
+    }
+
     /// `FindSeries` with search criteria.
     pub(crate) fn find_series(
         &self,
@@ -176,6 +191,11 @@ impl<'a> Lookup<'a> {
         if let Some(imdb) = imdb
             && series.imdb_id.as_deref() == Some(imdb)
             && tvdb <= 0
+        {
+            return Some(Mapped::Searched);
+        }
+        if let Some(stripped) = Self::without_season_suffix(parsed)
+            && clean(&series.title) == clean(&stripped)
         {
             return Some(Mapped::Searched);
         }
@@ -210,6 +230,10 @@ impl<'a> Lookup<'a> {
                 (info.year > 0)
                     .then(|| self.by_title(&info.title_without_year, Some(info.year)))
                     .flatten()
+            })
+            .or_else(|| {
+                Self::without_season_suffix(parsed)
+                    .and_then(|t| self.by_alias(&t).or_else(|| self.by_title(&t, None)))
             })
             .or_else(|| {
                 (tvdb > 0)
@@ -537,4 +561,33 @@ fn standard<'e>(
         }
     }
     out
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Lookup;
+
+    /// Tanukarr's `TrailingSeasonSuffixFixture`.
+    #[test]
+    fn season_suffixes_are_stripped_only_for_matching_season_releases() {
+        let stripped = |title: &str| {
+            let parsed = kitsunarr_parser::parse_title(title).unwrap();
+            Lookup::without_season_suffix(&parsed)
+        };
+        assert_eq!(
+            stripped("Tensei Shitara Slime Datta Ken 4 - S04E16 1080p WEB-DL").as_deref(),
+            Some("Tensei Shitara Slime Datta Ken")
+        );
+        // The number must be the release's season; absolute releases never strip.
+        assert_eq!(
+            stripped("Tensei Shitara Slime Datta Ken 2 - S04E16 1080p"),
+            None
+        );
+        assert_eq!(
+            stripped("[Group] Tensei Shitara Slime Datta Ken 4 - 88 [1080p]"),
+            None
+        );
+        // A parsed year keeps the title as is.
+        assert_eq!(stripped("Series Title 2019 4 - S04E01"), None);
+    }
 }

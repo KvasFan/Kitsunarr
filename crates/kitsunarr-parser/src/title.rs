@@ -370,10 +370,16 @@ fn parse_match_collection(
                 last_index = last_index.max(capture.end);
             }
         }
+        // Tanukarr: two seasons are a range only with a dash separator ("S01-S04") or
+        // "Complete Series"; "S01 S04" names seasons 1 and 4.
+        let range = seasons.len() == 2
+            && seasons[0] <= seasons[1]
+            && (first_match.value("seasonseparator").contains('-')
+                || first_match.success("completeseries"));
         seasons.sort_unstable();
         seasons.dedup();
         match seasons.len() {
-            2 => result.season_numbers = (seasons[0]..=seasons[1]).collect(),
+            2 if range => result.season_numbers = (seasons[0]..=seasons[1]).collect(),
             0 => {
                 if result.absolute_episode_numbers.is_empty() && !result.episode_numbers.is_empty()
                 {
@@ -691,7 +697,7 @@ mod tests {
 
     #[test]
     fn every_pattern_compiles() {
-        assert_eq!(REPORT_TITLE.len(), 109);
+        assert_eq!(REPORT_TITLE.len(), 110);
         let _ = (&*SPECIAL_EPISODE_TITLE, &*REJECT_HASHED, &*SEASON_FOLDERS);
         let _ = (
             &*REVERSED_TITLE,
