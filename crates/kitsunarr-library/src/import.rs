@@ -291,7 +291,7 @@ fn label(e: &decision::Episode) -> String {
 /// per file; only problems with the whole download stop the import.
 pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome, String> {
     let err = |e: kitsunarr_db::DbError| e.to_string();
-    let naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING)
+    let mut naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING)
         .await
         .map_err(err)?;
     let media: MediaManagementSettings =
@@ -317,19 +317,13 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         .await
         .map_err(err)?;
     let profile = ProfileView(&model.profile);
-    let naming_series = file_names::Series {
-        season_titles: detail
-            .seasons
-            .iter()
-            .filter_map(|s| s.title.clone().map(|t| (s.season_number, t)))
-            .collect(),
-        ..file_names::Series::from_parts(
-            &detail.item.title,
-            detail.item.year,
-            detail.item.series_type,
-            &detail.external_ids,
-        )
-    };
+    let (naming_series, naming_options) = crate::files::naming_series(db, &detail).await?;
+    // Tanukarr's per-series renaming mode.
+    match naming_options.renaming_mode.as_str() {
+        "manual" => naming.rename_episodes = false,
+        "automatic" => naming.rename_episodes = true,
+        _ => {}
+    }
     let quality_titles: HashMap<i32, String> = quality::list_definitions(db.pool())
         .await
         .map_err(err)?

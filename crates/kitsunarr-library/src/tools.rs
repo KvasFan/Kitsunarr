@@ -211,19 +211,7 @@ pub async fn restore_recycled(
     let naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING)
         .await
         .map_err(err)?;
-    let naming_series = file_names::Series {
-        season_titles: detail
-            .seasons
-            .iter()
-            .filter_map(|s| s.title.clone().map(|t| (s.season_number, t)))
-            .collect(),
-        ..file_names::Series::from_parts(
-            &detail.item.title,
-            detail.item.year,
-            detail.item.series_type,
-            &detail.external_ids,
-        )
-    };
+    let (naming_series, _) = crate::files::naming_series(db, &detail).await?;
     let dir = match file_names::season_path(&naming_series, season, detail.season_folder, &naming) {
         Some(s) => series_path.join(s),
         None => series_path.clone(),

@@ -546,6 +546,19 @@ impl Client {
     ) -> ClientResult<String> {
         self.post("/librarytools/recycle/restore", req).await
     }
+    pub async fn series_naming(
+        &self,
+        id: i64,
+    ) -> ClientResult<kitsunarr_domain::api::library_tools::SeriesNamingOptions> {
+        self.get(&format!("/series/{id}/naming")).await
+    }
+    pub async fn put_series_naming(
+        &self,
+        id: i64,
+        o: &kitsunarr_domain::api::library_tools::SeriesNamingOptions,
+    ) -> ClientResult<kitsunarr_domain::api::library_tools::SeriesNamingOptions> {
+        self.put(&format!("/series/{id}/naming"), o).await
+    }
     pub async fn recent_searches(
         &self,
     ) -> ClientResult<Vec<kitsunarr_domain::api::settings::SearchActivity>> {

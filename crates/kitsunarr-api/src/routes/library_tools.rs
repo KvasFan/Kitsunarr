@@ -145,3 +145,29 @@ pub async fn restore(
         });
     Ok(Json(message))
 }
+
+/// A series' renaming mode and season folder titles.
+#[utoipa::path(get, path = "/series/{id}/naming", tag = "library", params(("id" = i64, Path)),
+    responses((status = 200, body = kitsunarr_domain::api::library_tools::SeriesNamingOptions), (status = 404, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn get_series_naming(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<i64>,
+) -> ApiResult<Json<kitsunarr_domain::api::library_tools::SeriesNamingOptions>> {
+    Ok(Json(
+        kitsunarr_db::library::series::naming_options(&state.db, id).await?,
+    ))
+}
+
+#[utoipa::path(put, path = "/series/{id}/naming", tag = "library", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::library_tools::SeriesNamingOptions,
+    responses((status = 200, body = kitsunarr_domain::api::library_tools::SeriesNamingOptions), (status = 400, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn put_series_naming(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<i64>,
+    Json(body): Json<kitsunarr_domain::api::library_tools::SeriesNamingOptions>,
+) -> ApiResult<Json<kitsunarr_domain::api::library_tools::SeriesNamingOptions>> {
+    kitsunarr_db::library::series::set_naming_options(&state.db, id, &body).await?;
+    Ok(Json(
+        kitsunarr_db::library::series::naming_options(&state.db, id).await?,
+    ))
+}

@@ -99,6 +99,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut delete_folder = use_signal(|| false);
     let mut renaming = use_signal(|| false);
     let mut ordering = use_signal(|| false);
+    let mut naming_open = use_signal(|| false);
     let mut scanning = use_signal(|| false);
     // An episode file to delete: (file id, relative path).
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
@@ -300,6 +301,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                         if scanning() { "Scanning…" } else { "Scan disk" }
                     }
                     button { class: "btn", title: "Rename files to the naming settings", onclick: move |_| renaming.set(true), "Rename files" }
+                    button { class: "btn", title: "This series' renaming mode and season folder titles", onclick: move |_| naming_open.set(true), "Naming" }
                     if matches!(d.item.metadata_provider, MetadataProvider::TmdbTv | MetadataProvider::Tvdb) {
                         button { class: "btn", title: "Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)", onclick: move |_| ordering.set(true), "Episode order" }
                     }
@@ -346,6 +348,13 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     input { r#type: "checkbox", checked: delete_folder(), onchange: move |e: FormEvent| delete_folder.set(e.checked()) }
                     "Also delete the series folder and its files (to the recycle bin when one is set)"
                 }
+            }
+        }
+        if naming_open() {
+            NamingDialog {
+                series_id: id,
+                seasons: d.seasons.iter().map(|s| (s.season_number, s.title.clone().unwrap_or_default())).collect::<Vec<_>>(),
+                on_close: move |_| naming_open.set(false),
             }
         }
         if ordering() {
@@ -812,6 +821,80 @@ fn OrderingDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
                                     if o.current { " " Badge { text: "current", tone: "accent" } }
                                     if let Some(desc) = &o.description { div { class: "small muted", "{desc}" } }
                                 }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+    }
+}
+
+/// Tanukarr's per-series naming options: renaming on import and season folder titles.
+#[component]
+fn NamingDialog(
+    series_id: i64,
+    seasons: Vec<(i32, String)>,
+    on_close: EventHandler<()>,
+) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut options =
+        use_signal(|| None::<kitsunarr_domain::api::library_tools::SeriesNamingOptions>);
+    use_future(move || {
+        let c = c0.clone();
+        async move {
+            match c.series_naming(series_id).await {
+                Ok(o) => options.set(Some(o)),
+                Err(e) => app.error(&e),
+            }
+        }
+    });
+    let save = move |_| {
+        let Some(o) = options() else { return };
+        let c = client.clone();
+        spawn(async move {
+            match c.put_series_naming(series_id, &o).await {
+                Ok(_) => {
+                    app.success("Naming options saved.");
+                    on_close.call(());
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        Modal { title: "Naming".to_string(), on_close: move |_| on_close.call(()),
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", onclick: move |_| on_close.call(()), "Cancel" }
+                button { class: "btn primary", disabled: options().is_none(), onclick: save, "Save" }
+            },
+            match options() {
+                None => rsx! { Loading {} },
+                Some(o) => rsx! {
+                    label { class: "field",
+                        span { class: "label", "Rename files on import" }
+                        select { class: "select", "aria-label": "Renaming mode",
+                            onchange: move |e| { if let Some(x) = options.write().as_mut() { x.renaming_mode = e.value(); } },
+                            for (v, l) in [("default", "As Settings › Media management says"), ("manual", "Never: keep the release's names"), ("automatic", "Always, even when renaming is off")] {
+                                option { key: "{v}", value: v, selected: o.renaming_mode == v, "{l}" }
+                            }
+                        }
+                    }
+                    p { class: "help small", "Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's." }
+                    div { class: "form-grid",
+                        for (n, catalogue) in seasons.iter().filter(|(n, _)| *n > 0).cloned() {
+                            label { key: "{n}", class: "field",
+                                span { class: "label", "Season {n}" }
+                                input { class: "input", "aria-label": "Season {n} title", placeholder: "{catalogue}",
+                                    value: "{o.season_titles.get(&n).cloned().unwrap_or_default()}",
+                                    oninput: move |e: FormEvent| {
+                                        if let Some(x) = options.write().as_mut() {
+                                            if e.value().trim().is_empty() { x.season_titles.remove(&n); } else { x.season_titles.insert(n, e.value()); }
+                                        }
+                                    } }
                             }
                         }
                     }

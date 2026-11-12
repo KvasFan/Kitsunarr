@@ -163,6 +163,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(library_tools::recycle))
         .routes(routes!(library_tools::restore))
         .routes(routes!(
+            library_tools::get_series_naming,
+            library_tools::put_series_naming
+        ))
+        .routes(routes!(
             import_lists::get_options,
             import_lists::put_options
         ))

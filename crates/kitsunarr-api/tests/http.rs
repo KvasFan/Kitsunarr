@@ -3292,3 +3292,73 @@ async fn paused_automation_skips_rss_and_scheduled_list_syncs() {
     );
     assert!(client.recent_searches().await.unwrap().is_empty());
 }
+
+#[tokio::test]
+async fn series_naming_options_round_trip_and_validate() {
+    use kitsunarr_domain::api::library_tools::SeriesNamingOptions;
+    let (skyhook, _log) = skyhook_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::Tvdb,
+            id: "81189".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+        })
+        .await
+        .unwrap();
+    let initial = client.series_naming(added.id).await.unwrap();
+    assert_eq!(initial.renaming_mode, "default");
+    assert!(initial.season_titles.is_empty());
+    let saved = client
+        .put_series_naming(
+            added.id,
+            &SeriesNamingOptions {
+                renaming_mode: "manual".into(),
+                season_titles: [(1, " Pilot Season ".to_string()), (2, String::new())].into(),
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(saved.renaming_mode, "manual");
+    assert_eq!(
+        saved.season_titles,
+        [(1, "Pilot Season".to_string())].into()
+    );
+    for bad in [
+        SeriesNamingOptions {
+            renaming_mode: "sometimes".into(),
+            ..Default::default()
+        },
+        SeriesNamingOptions {
+            renaming_mode: "default".into(),
+            season_titles: [(99, "No such season".to_string())].into(),
+        },
+    ] {
+        assert_eq!(
+            status(client.put_series_naming(added.id, &bad).await.unwrap_err()),
+            400
+        );
+    }
+}

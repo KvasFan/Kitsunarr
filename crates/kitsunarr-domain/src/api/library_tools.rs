@@ -73,3 +73,15 @@ pub struct StorageOutlook {
     pub may_run_out_of_space: bool,
     pub import_mode: String,
 }
+
+/// Tanukarr's per-series naming options.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct SeriesNamingOptions {
+    /// `default` (follow "Rename episodes"), `manual` (never rename on import) or `automatic`
+    /// (always rename on import).
+    pub renaming_mode: String,
+    /// Season folder titles replacing the catalogue's (`{Season Title}`), by season number.
+    pub season_titles: std::collections::BTreeMap<i32, String>,
+}

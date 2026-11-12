@@ -288,9 +288,11 @@ pub async fn rename_previews(
     series_id: i64,
     season: Option<i32>,
 ) -> Result<Vec<RenamePreview>, String> {
-    let naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING)
+    let mut naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING)
         .await
         .map_err(err)?;
+    // Tanukarr: a manual rename always applies the naming format.
+    naming.rename_episodes = true;
     let detail = series::get_detail(db, series_id).await.map_err(err)?;
     let episodes = series::list_episodes(db, series_id, None)
         .await
@@ -307,19 +309,7 @@ pub async fn rename_previews(
             .collect();
     let (formats, _) =
         decision::compile_formats(&quality::list_custom_formats(db.pool()).await.map_err(err)?);
-    let naming_series = file_names::Series {
-        season_titles: detail
-            .seasons
-            .iter()
-            .filter_map(|s| s.title.clone().map(|t| (s.season_number, t)))
-            .collect(),
-        ..file_names::Series::from_parts(
-            &detail.item.title,
-            detail.item.year,
-            detail.item.series_type,
-            &detail.external_ids,
-        )
-    };
+    let (naming_series, _) = naming_series(db, &detail).await?;
     let mut out = Vec::new();
     for r in series::file_records(db, series_id).await.map_err(err)? {
         let mut linked: Vec<&decision::Episode> = model
@@ -629,6 +619,42 @@ fn copy_dir(from: &Path, to: &Path) -> std::io::Result<()> {
         }
     }
     Ok(())
+}
+
+/// The series as the naming formats see it, with Tanukarr's per-series season folder titles
+/// overriding the catalogue's, and its naming options.
+pub(crate) async fn naming_series(
+    db: &Database,
+    detail: &kitsunarr_domain::api::library::SeriesDetail,
+) -> Result<
+    (
+        file_names::Series,
+        kitsunarr_domain::api::library_tools::SeriesNamingOptions,
+    ),
+    String,
+> {
+    let options = series::naming_options(db, detail.item.id)
+        .await
+        .map_err(err)?;
+    let mut season_titles: Vec<(i32, String)> = detail
+        .seasons
+        .iter()
+        .filter(|s| !options.season_titles.contains_key(&s.season_number))
+        .filter_map(|s| s.title.clone().map(|t| (s.season_number, t)))
+        .collect();
+    season_titles.extend(options.season_titles.iter().map(|(n, t)| (*n, t.clone())));
+    Ok((
+        file_names::Series {
+            season_titles,
+            ..file_names::Series::from_parts(
+                &detail.item.title,
+                detail.item.year,
+                detail.item.series_type,
+                &detail.external_ids,
+            )
+        },
+        options,
+    ))
 }
 
 #[cfg(test)]

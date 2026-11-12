@@ -1395,6 +1395,58 @@ impl<'a> Importer<'a> {
         }
     }
 
+    /// Tanukarr's per-series Library tools options (`ProOptions.series`): renaming mode and
+    /// season folder titles ("keep versions" is not mapped).
+    async fn series_naming_options(
+        &mut self,
+        conn: &mut SqliteConnection,
+    ) -> Result<(), MigrateError> {
+        let Some(Value::Object(per_series)) = self
+            .snap
+            .media_management
+            .clone()
+            .and_then(|r| r.json("prooptions"))
+            .and_then(|v| v.get("series").cloned())
+        else {
+            return Ok(());
+        };
+        for (source_id, options) in per_series {
+            let Some(&id) = source_id
+                .parse::<i64>()
+                .ok()
+                .and_then(|s| self.series_map.get(&s))
+            else {
+                continue;
+            };
+            let mode = options
+                .get("automaticRenaming")
+                .and_then(Value::as_str)
+                .filter(|m| matches!(*m, "default" | "manual" | "automatic"))
+                .unwrap_or("default");
+            let titles: std::collections::BTreeMap<i32, String> = options
+                .get("seasonTitles")
+                .and_then(Value::as_object)
+                .map(|m| {
+                    m.iter()
+                        .filter_map(|(k, v)| {
+                            Some((k.parse().ok()?, v.as_str()?.chars().take(200).collect()))
+                        })
+                        .collect()
+                })
+                .unwrap_or_default();
+            if mode == "default" && titles.is_empty() {
+                continue;
+            }
+            sqlx::query("UPDATE series SET renaming_mode = ?, season_titles = ? WHERE id = ?")
+                .bind(mode)
+                .bind(serde_json::to_string(&titles).unwrap_or_else(|_| "{}".into()))
+                .bind(id)
+                .execute(&mut *conn)
+                .await?;
+        }
+        Ok(())
+    }
+
     async fn series(&mut self, conn: &mut SqliteConnection) -> Result<(), MigrateError> {
         if !self.enabled("series") {
             return Ok(());
@@ -2283,6 +2335,7 @@ pub async fn run(
         imp.series(conn).await?;
         imp.movies(conn).await?;
         imp.collections(conn).await?;
+        imp.series_naming_options(conn).await?;
         imp.history(conn).await?;
         Ok(())
     }

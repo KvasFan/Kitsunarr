@@ -1029,6 +1029,67 @@ impl FileRecord {
 }
 
 /// The files of a series.
+/// Tanukarr's per-series naming options.
+pub async fn naming_options(
+    db: &Database,
+    id: i64,
+) -> DbResult<kitsunarr_domain::api::library_tools::SeriesNamingOptions> {
+    let (mode, titles): (String, String) =
+        sqlx::query_as("SELECT renaming_mode, season_titles FROM series WHERE id = ?")
+            .bind(id)
+            .fetch_optional(db.pool())
+            .await?
+            .ok_or(DbError::NotFound)?;
+    Ok(kitsunarr_domain::api::library_tools::SeriesNamingOptions {
+        renaming_mode: mode,
+        season_titles: crate::from_json(&titles)?,
+    })
+}
+
+pub async fn set_naming_options(
+    db: &Database,
+    id: i64,
+    o: &kitsunarr_domain::api::library_tools::SeriesNamingOptions,
+) -> DbResult<()> {
+    if !matches!(o.renaming_mode.as_str(), "default" | "manual" | "automatic") {
+        return Err(DbError::Invalid(
+            "the renaming mode must be default, manual or automatic".into(),
+        ));
+    }
+    if o.season_titles
+        .values()
+        .any(|t| t.chars().count() > 200 || t.chars().any(char::is_control))
+    {
+        return Err(DbError::Invalid(
+            "season titles are at most 200 characters, without control characters".into(),
+        ));
+    }
+    let titles: std::collections::BTreeMap<i32, String> = o
+        .season_titles
+        .iter()
+        .filter(|(_, t)| !t.trim().is_empty())
+        .map(|(n, t)| (*n, t.trim().to_string()))
+        .collect();
+    let seasons: Vec<i64> =
+        sqlx::query_scalar("SELECT season_number FROM seasons WHERE series_id = ?")
+            .bind(id)
+            .fetch_all(db.pool())
+            .await?;
+    if let Some(n) = titles.keys().find(|n| !seasons.contains(&i64::from(**n))) {
+        return Err(DbError::Invalid(format!("the series has no season {n}")));
+    }
+    let r = sqlx::query("UPDATE series SET renaming_mode = ?, season_titles = ? WHERE id = ?")
+        .bind(&o.renaming_mode)
+        .bind(crate::to_json(&titles)?)
+        .bind(id)
+        .execute(db.pool())
+        .await?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
 /// Every series' (id, folder).
 pub async fn paths(db: &Database) -> DbResult<Vec<(i64, String)>> {
     Ok(sqlx::query_as("SELECT id, path FROM series")
