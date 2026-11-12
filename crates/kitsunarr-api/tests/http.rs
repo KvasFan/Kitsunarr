@@ -4426,6 +4426,13 @@ async fn movies_are_searched_and_grabbed() {
         "The.Matrix.1999.1080p.BluRay.x264-GRP"
     );
 
+    // RSS sync: a release no series claims is matched with the film and grabbed; the next
+    // sync leaves the film alone while that grab downloads.
+    let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
+    assert!(summary.contains("1 grabbed: The.Matrix.1999.1080p.BluRay.x264-GRP"), "{summary}");
+    let again = kitsunarr_api::rss::sync(&server.state).await.unwrap();
+    assert!(again.contains("0 grabbed"), "{again}");
+
     let result = client.automatic_movie_search(7).await.unwrap();
     assert_eq!(result.grabbed.len(), 1, "{result:?}");
     assert_eq!(

@@ -69,8 +69,14 @@ fn feed_uses_all_distinct_categories() {
     let caps = Capabilities::default();
     let s = settings();
     let chain = generator(&s, &caps).recent();
-    assert_eq!(chain.all().count(), 1);
+    // TV and anime categories, then Tanukarr's generic search on the movie categories.
+    assert_eq!(chain.all().count(), 2);
     assert!(first_urls(&chain)[0].contains("&cat=1,2,3,4&"));
+    let film = first_urls(&chain)[1].clone();
+    assert!(film.contains("?t=search&cat=2000&"), "{film}");
+    let mut no_films = settings();
+    no_films.movie_categories.clear();
+    assert_eq!(generator(&no_films, &caps).recent().all().count(), 1);
     let mut dup = settings();
     dup.categories = vec![1, 2, 3];
     assert!(first_urls(&generator(&dup, &caps).recent())[0].contains("&cat=1,2,3,4&"));

@@ -137,6 +137,23 @@ pub async fn add(
     if req.search_for_missing && added.media_type == "series" {
         crate::routes::wanted::search_missing_of_series(&state, added.id);
     }
+    // Tanukarr: a film added with "search for missing" is searched for at once.
+    if req.search_for_missing && added.media_type == "movie" {
+        let (state, id) = (state.clone(), added.id);
+        tokio::spawn(async move {
+            if crate::library_tools::paused(&state).await {
+                return;
+            }
+            match crate::routes::movie_search::run_movie_search(&state, id, true).await {
+                Ok(run) => {
+                    crate::routes::movie_search::grab_best(&state, &run, id, "Search").await;
+                }
+                Err(e) => {
+                    tracing::warn!(movie = id, error = %e.message(), "the film search failed")
+                }
+            }
+        });
+    }
     Ok((StatusCode::CREATED, Json(added)))
 }
 

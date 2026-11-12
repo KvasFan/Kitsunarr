@@ -605,6 +605,40 @@ pub async fn update_metadata(
     Ok(())
 }
 
+/// A monitored film as RSS releases are matched with it.
+#[derive(Debug, Clone, sqlx::FromRow)]
+pub struct MovieMatch {
+    pub id: i64,
+    pub title: String,
+    pub original_title: Option<String>,
+    pub year: Option<i64>,
+    pub imdb_id: Option<String>,
+    pub metadata_provider: String,
+}
+
+/// Monitored films, for RSS sync (Tanukarr's movie RSS mapping).
+pub async fn monitored_for_matching(db: &Database) -> DbResult<Vec<MovieMatch>> {
+    Ok(sqlx::query_as(
+        "SELECT m.id, m.title, m.original_title, m.year, \
+         (SELECT external_id FROM movie_external_ids x WHERE x.movie_id = m.id AND x.kind = 'imdb' LIMIT 1) AS imdb_id, \
+         m.metadata_provider FROM movies m WHERE m.monitored = 1",
+    )
+    .fetch_all(db.pool())
+    .await?)
+}
+
+/// When a film was last grabbed, if its most recent history event is that grab (the history
+/// rule of RSS sync: a film being downloaded is not grabbed again).
+pub async fn pending_grab_date(db: &Database, id: i64) -> DbResult<Option<String>> {
+    let last: Option<(String, String)> = sqlx::query_as(
+        "SELECT event_type, date FROM history WHERE movie_id = ? ORDER BY date DESC, id DESC LIMIT 1",
+    )
+    .bind(id)
+    .fetch_optional(db.pool())
+    .await?;
+    Ok(last.filter(|(e, _)| e == "grabbed").map(|(_, d)| d))
+}
+
 /// A film's original title (searches and release matching).
 pub async fn original_title(db: &Database, id: i64) -> DbResult<Option<String>> {
     Ok(

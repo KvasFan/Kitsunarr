@@ -201,7 +201,37 @@ pub(crate) async fn process(
             None => groups.push((id, vec![i])),
         }
     }
-    let matched: usize = groups.iter().map(|(_, m)| m.len()).sum();
+    let mut matched: usize = groups.iter().map(|(_, m)| m.len()).sum();
+    // Tanukarr's films: a release no series claims is matched with one monitored film
+    // (`MovieReleaseParser.MatchUnique`).
+    let claimed: std::collections::HashSet<usize> =
+        groups.iter().flat_map(|(_, m)| m.iter().copied()).collect();
+    let films = kitsunarr_db::library::movies::monitored_for_matching(&state.db)
+        .await
+        .map_err(|e| e.to_string())?;
+    let mut film_groups: Vec<(i64, Vec<usize>)> = Vec::new();
+    if !films.is_empty() {
+        for (i, r) in candidates.iter().enumerate() {
+            if claimed.contains(&i) || kitsunarr_parser::movie::parse_movie(&r.title).is_none() {
+                continue;
+            }
+            let hits: Vec<i64> = films
+                .iter()
+                .filter(|f| {
+                    kitsunarr_parser::movie::match_movie(&r.title, &film_candidate(f)).is_some()
+                })
+                .map(|f| f.id)
+                .take(2)
+                .collect();
+            if let [id] = hits[..] {
+                match film_groups.iter_mut().find(|(g, _)| *g == id) {
+                    Some((_, members)) => members.push(i),
+                    None => film_groups.push((id, vec![i])),
+                }
+            }
+        }
+    }
+    matched += film_groups.iter().map(|(_, m)| m.len()).sum::<usize>();
 
     let criteria = SearchCriteria::rss();
     let mut approved = 0usize;
@@ -302,6 +332,82 @@ pub(crate) async fn process(
         grab_failures.extend(f);
     }
 
+    for (movie_id, members) in film_groups {
+        // `HistorySpecification`: a grab in the last 12 hours is still being downloaded.
+        let recent_grab = kitsunarr_db::library::movies::pending_grab_date(&state.db, movie_id)
+            .await
+            .ok()
+            .flatten()
+            .and_then(|d| chrono::DateTime::parse_from_rfc3339(&d).ok())
+            .is_some_and(|d| {
+                chrono::Utc::now() - d.with_timezone(&chrono::Utc) < chrono::Duration::hours(12)
+            });
+        if recent_grab {
+            continue;
+        }
+        let Ok(detail) = kitsunarr_db::library::movies::get_detail(&state.db, movie_id).await
+        else {
+            continue;
+        };
+        let Some(film) = films.iter().find(|f| f.id == movie_id) else {
+            continue;
+        };
+        let Ok(model) = kitsunarr_library::decision_input::movie_model(&state.db, &detail).await
+        else {
+            continue;
+        };
+        let Ok(inputs) = DecisionInputs::with_model(state, model, None).await else {
+            continue;
+        };
+        let group: Vec<decision::Release> =
+            members.iter().map(|&i| candidates[i].clone()).collect();
+        let engine = Engine {
+            series: &inputs.series,
+            library: &inputs.library,
+            formats: &inputs.formats,
+            settings: &inputs.settings,
+        };
+        let decisions = engine.prioritize(
+            Engine::dedupe(
+                engine.evaluate_movie(&group, &criteria, &film_candidate(film)),
+                &group,
+            ),
+            &group,
+        );
+        approved += decisions.iter().filter(|d| d.approved()).count();
+        for d in &decisions {
+            outcomes[members[d.release]] = ReleaseOutcome {
+                series_id: None,
+                approved: d.approved(),
+                temporarily_rejected: false,
+                rejections: d.rejections.iter().map(|x| x.message.clone()).collect(),
+                grabbed: false,
+            };
+        }
+        if !decisions.iter().any(|d| d.approved()) {
+            continue;
+        }
+        let run = SearchRun {
+            decisions,
+            releases: members.iter().map(|&i| releases[i].clone()).collect(),
+            failures: Vec::new(),
+            searched_indexers: 0,
+            description: String::new(),
+            warnings: Vec::new(),
+            series: inputs.series.clone(),
+        };
+        let r = crate::routes::movie_search::grab_best(state, &run, movie_id, "Rss").await;
+        for g in &r.grabbed {
+            if let Some(k) = members
+                .iter()
+                .position(|&i| releases[i].release.title == g.title)
+            {
+                outcomes[members[k]].grabbed = true;
+            }
+        }
+        grabbed.extend(r.grabbed);
+        grab_failures.extend(r.grab_failures);
+    }
     Ok(Processed {
         matched,
         approved,
@@ -403,4 +509,18 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
     }
     tracing::info!(%summary, "RSS sync completed");
     Ok(summary)
+}
+
+/// A monitored film as the release matcher sees it.
+fn film_candidate(
+    f: &kitsunarr_db::library::movies::MovieMatch,
+) -> kitsunarr_parser::movie::MovieCandidate<'_> {
+    kitsunarr_parser::movie::MovieCandidate {
+        title: &f.title,
+        original_title: f.original_title.as_deref(),
+        alternate_titles: &[],
+        year: f.year.unwrap_or(0) as i32,
+        imdb_id: f.imdb_id.as_deref(),
+        anime_catalogue: f.metadata_provider == "aniList" || f.metadata_provider == "myAnimeList",
+    }
 }

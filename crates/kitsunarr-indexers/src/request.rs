@@ -491,6 +491,11 @@ impl Generator<'_> {
         } else if self.caps.search_params.is_some() {
             chain.add(self.paged(&self.settings.anime_categories, "search", String::new()));
         }
+        // Tanukarr: TV-search APIs may leave films out even with a movie category, so films
+        // are read with a generic search of their own.
+        if self.caps.search_params.is_some() && !self.settings.movie_categories.is_empty() {
+            chain.add(self.paged(&self.settings.movie_categories, "search", String::new()));
+        }
         chain
     }
 
