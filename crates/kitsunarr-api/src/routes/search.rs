@@ -1062,6 +1062,7 @@ impl DecisionInputs {
             minimum_age_minutes: i64::from(options.minimum_age),
             retention_days: i64::from(options.retention),
             maximum_size_mb: i64::from(options.maximum_size),
+            free_space: free_space(db, owner, &media).await,
             now: chrono::Utc::now(),
         };
         Ok(Self {
@@ -1072,6 +1073,39 @@ impl DecisionInputs {
             warnings,
         })
     }
+}
+
+/// `FreeSpaceSpecification`'s disk: the series' (or film's) folder, else its root folder;
+/// `None` when the check is off or the space cannot be read.
+async fn free_space(
+    db: &kitsunarr_db::Database,
+    owner: Owner,
+    media: &MediaManagementSettings,
+) -> Option<decision::FreeSpace> {
+    if media.skip_free_space_check {
+        return None;
+    }
+    let (path, root) = match owner {
+        Owner::Series(id) => {
+            let d = series::get_detail(db, id).await.ok()?;
+            (d.item.path, d.root_folder_path)
+        }
+        Owner::Movie(id) => {
+            let d = kitsunarr_db::library::movies::get_detail(db, id)
+                .await
+                .ok()?;
+            (d.item.path, d.root_folder_path)
+        }
+    };
+    let dir = [path, root]
+        .into_iter()
+        .map(std::path::PathBuf::from)
+        .find(|p| p.is_dir())?;
+    let available = fs4::available_space(&dir).ok()?;
+    Some(decision::FreeSpace {
+        available: i64::try_from(available).unwrap_or(i64::MAX),
+        minimum: media.minimum_free_space_mb.max(0) * 1024 * 1024,
+    })
 }
 
 #[cfg(test)]

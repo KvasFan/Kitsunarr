@@ -262,7 +262,19 @@ pub struct Settings {
     pub enable_multi_season_releases: bool,
     /// Tanukarr's Library tools "match external ids".
     pub match_external_ids: bool,
+    /// Free space where the series' files go, for `FreeSpaceSpecification` (`None`: unknown or
+    /// the check is off).
+    pub free_space: Option<FreeSpace>,
     pub now: DateTime<Utc>,
+}
+
+/// The disk the series imports to.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct FreeSpace {
+    /// Bytes available.
+    pub available: i64,
+    /// Media management's minimum free space, in bytes.
+    pub minimum: i64,
 }
 
 /// Why a release was rejected (`DownloadRejectionReason`).
@@ -281,6 +293,7 @@ pub enum RejectionReason {
     AboveMaximumSize,
     UnknownRuntime,
     MaximumSizeExceeded,
+    MinimumFreeSpace,
     MinimumAge,
     MaximumAge,
     Sample,

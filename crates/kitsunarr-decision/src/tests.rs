@@ -77,6 +77,7 @@ fn settings() -> Settings {
         minimum_age_minutes: 0,
         retention_days: 0,
         maximum_size_mb: 0,
+        free_space: None,
         now: Utc::now(),
     }
 }
@@ -1893,4 +1894,32 @@ fn complete_season_upgrade_specification_fixture() {
     c.episodes[0].file = Some(file_of(HDTV720P, 1));
     c.criteria = Case::new().criteria;
     assert!(c.accepted(specs::complete_season_upgrade));
+}
+
+/// `FreeSpaceSpecificationFixture`: the release must leave the minimum free space.
+#[test]
+fn free_space_specification() {
+    let gib = 1024 * MB;
+    let message = |c: &Case| c.check(specs::free_space).map(|r| r.message);
+    let mut c = Case::new();
+    c.release.size = 50 * gib;
+    assert_eq!(message(&c), None, "unknown free space, or the check off");
+    c.settings.free_space = Some(FreeSpace {
+        available: 10 * gib,
+        minimum: gib,
+    });
+    c.release.size = 2 * gib;
+    assert_eq!(message(&c), None);
+    c.release.size = 9 * gib + gib / 2;
+    assert_eq!(
+        message(&c).as_deref(),
+        Some(
+            "Not enough free space (1.0 GB) to import after download: 512.0 MB. (Settings: Media Management: Minimum Free Space)"
+        )
+    );
+    c.release.size = 10 * gib;
+    assert_eq!(
+        message(&c).as_deref(),
+        Some("Importing after download will exceed available disk space")
+    );
 }

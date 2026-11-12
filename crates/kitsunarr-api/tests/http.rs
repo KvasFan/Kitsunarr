@@ -45,6 +45,23 @@ async fn start_with(metadata: Metadata) -> Server {
     let dir = tempfile::tempdir().unwrap();
     let db = Database::open(&dir.path().join("k.db")).await.unwrap();
     kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    // Release sizes in these tests are made up: the free-space checks would depend on the
+    // machine's disk (they are tested in the decision engine and the importer).
+    let mut media: kitsunarr_domain::api::settings::MediaManagementSettings =
+        kitsunarr_db::settings::get_or_default(
+            db.pool(),
+            kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+        )
+        .await
+        .unwrap();
+    media.skip_free_space_check = true;
+    kitsunarr_db::settings::set(
+        db.pool(),
+        kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+        &media,
+    )
+    .await
+    .unwrap();
     let api_key = kitsunarr_db::seed::ensure_api_key(&db, kitsunarr_auth::generate_api_key)
         .await
         .unwrap();

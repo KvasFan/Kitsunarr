@@ -163,7 +163,7 @@ fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
 
 /// Every specification, in a stable (alphabetical) order.
 pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
-    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 32] = [
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 33] = [
         acceptable_size,
         anime_version_upgrade,
         blocklist,
@@ -172,6 +172,7 @@ pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
         delay,
         episode_requested,
         external_ids,
+        free_space,
         full_season,
         history,
         indexer_tag,
@@ -523,6 +524,28 @@ pub(crate) fn indexer_tag(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
         Rejection::new(
             R::NoMatchingTag,
             "Series tags do not match any of the indexer tags",
+        )
+    })
+}
+
+/// `FreeSpaceSpecification`: importing the release must leave the minimum free space.
+pub(crate) fn free_space(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let free = env.settings.free_space?;
+    let remaining = free.available - s.release.size;
+    if remaining <= 0 {
+        return Some(Rejection::new(
+            R::MinimumFreeSpace,
+            "Importing after download will exceed available disk space",
+        ));
+    }
+    (remaining < free.minimum).then(|| {
+        Rejection::new(
+            R::MinimumFreeSpace,
+            format!(
+                "Not enough free space ({}) to import after download: {}. (Settings: Media Management: Minimum Free Space)",
+                size_suffix(free.minimum),
+                size_suffix(remaining)
+            ),
         )
     })
 }

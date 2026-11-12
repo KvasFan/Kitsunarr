@@ -81,6 +81,7 @@ fn settings() -> Settings {
         minimum_age_minutes: 0,
         retention_days: 0,
         maximum_size_mb: 0,
+        free_space: None,
         now: Utc::now(),
     }
 }
