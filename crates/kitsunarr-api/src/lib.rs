@@ -216,9 +216,15 @@ pub fn app(state: AppState) -> Router {
         state.clone(),
         auth::require_auth_v3,
     ));
+    // The few v5 routes the optional compression worker calls back on.
+    let v5 = v3::worker_router().route_layer(axum::middleware::from_fn_with_state(
+        state.clone(),
+        auth::require_auth_v3,
+    ));
     let inner = Router::new()
         .merge(api)
         .nest("/api/v3", v3)
+        .nest("/api/v5", v5)
         .route(
             "/api/v1/openapi.json",
             get(move || {

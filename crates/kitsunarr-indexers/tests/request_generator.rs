@@ -14,6 +14,7 @@ fn settings() -> Settings {
         additional_parameters: None,
         minimum_seeders: None,
         movie_categories: vec![2000],
+        ..Settings::default()
     }
 }
 

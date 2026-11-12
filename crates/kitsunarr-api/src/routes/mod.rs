@@ -1,6 +1,7 @@
 //! Route registration. Each handler carries a `#[utoipa::path]` annotation; registering it
 //! through `routes!` keeps the router and the OpenAPI document identical.
 
+pub mod compression;
 pub mod events;
 pub mod grab;
 pub mod import_lists;
@@ -207,6 +208,12 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             library_tools::manual_import
         ))
         .routes(routes!(library_tools::activate_version))
+        .routes(routes!(compression::capabilities))
+        .routes(routes!(
+            compression::status,
+            compression::start,
+            compression::cancel
+        ))
         .routes(routes!(library_tools::delete_version))
         .routes(routes!(library_tools::delete_key))
         .routes(routes!(

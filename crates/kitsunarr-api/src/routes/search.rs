@@ -27,12 +27,7 @@ use crate::AppState;
 use crate::error::{ApiError, ApiResult};
 
 fn dialect(implementation: &str) -> Option<Dialect> {
-    match implementation {
-        "Newznab" => Some(Dialect::Newznab),
-        "Torznab" => Some(Dialect::Torznab),
-        "Nyaa" => Some(Dialect::Nyaa),
-        _ => None,
-    }
+    Dialect::from_implementation(implementation)
 }
 
 /// A user-facing explanation of an indexer error.
@@ -110,7 +105,9 @@ pub async fn test_indexer(
         crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
         name = stored.name;
     }
-    let settings = Settings::from_map(&req.settings).map_err(|m| ApiError::field("baseUrl", m))?;
+    let settings = Settings::from_map(&req.settings)
+        .and_then(|s| s.validate(dialect).map(|()| s))
+        .map_err(|m| ApiError::field("baseUrl", m))?;
     let indexer = Indexer {
         id: req.id.unwrap_or(0),
         name,
@@ -243,6 +240,12 @@ fn episode_searches(
                 (
                     Search::Special {
                         episode_query_titles: queries,
+                        episode_titles: e
+                            .title
+                            .iter()
+                            .filter(|t| !t.trim().is_empty())
+                            .cloned()
+                            .collect(),
                     },
                     SearchKind::Special,
                 ),
@@ -403,7 +406,7 @@ pub(crate) async fn usable_indexers(
                 p.implementation
             )),
             Some(dialect) => Settings::from_map(&p.settings)
-                .map(|settings| (dialect, settings))
+                .and_then(|settings| settings.validate(dialect).map(|()| (dialect, settings)))
                 .map_err(|m| format!("The indexer's settings are invalid: {m}")),
         };
         match settings {
@@ -705,7 +708,7 @@ pub(crate) async fn run_search(
     });
     // Tanukarr's `Dispatch`: complete-series searches use torrent indexers only.
     if q.complete_series {
-        indexers.retain(|i| matches!(i.dialect, Dialect::Torznab | Dialect::Nyaa));
+        indexers.retain(|i| i.dialect.is_torrent());
         if indexers.is_empty() {
             return Err(ApiError::field(
                 "completeSeries",
@@ -882,7 +885,8 @@ impl IndexerExtras {
             priority: p.priority,
             tags: p.tags.clone(),
             // Torrent indexers default to 1 (`IndexerDefaults.MINIMUM_SEEDERS`).
-            minimum_seeders: matches!(dialect, Dialect::Torznab | Dialect::Nyaa)
+            minimum_seeders: dialect
+                .is_torrent()
                 .then(|| i64::from(settings.minimum_seeders.unwrap_or(1))),
             multi_languages: p
                 .settings
@@ -1100,7 +1104,8 @@ mod tests {
             searches(SeriesType::Standard, &["Breaking Bad"], &e),
             vec![
                 Search::Special {
-                    episode_query_titles: vec!["Breaking+Bad Minisode+Good+Cop+Bad+Cop".into()]
+                    episode_query_titles: vec!["Breaking+Bad Minisode+Good+Cop+Bad+Cop".into()],
+                    episode_titles: vec!["Minisode: Good Cop / Bad Cop".into()],
                 },
                 Search::SingleEpisode {
                     season: 0,
@@ -1112,7 +1117,7 @@ mod tests {
         // searches by number.
         let office = searches(SeriesType::Standard, &["The Office", "the office"], &e);
         assert!(
-            matches!(&office[0], Search::Special { episode_query_titles } if episode_query_titles.len() == 1)
+            matches!(&office[0], Search::Special { episode_query_titles, .. } if episode_query_titles.len() == 1)
         );
         let untitled = searches(
             SeriesType::Standard,
@@ -1122,7 +1127,8 @@ mod tests {
         assert_eq!(
             untitled[0],
             Search::Special {
-                episode_query_titles: vec![]
+                episode_query_titles: vec![],
+                episode_titles: vec![],
             }
         );
     }

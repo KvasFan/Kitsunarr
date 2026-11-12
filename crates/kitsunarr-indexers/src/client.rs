@@ -1,4 +1,5 @@
-//! Fetching from indexers (`HttpIndexerBase.cs`, `NewznabCapabilitiesProvider.cs`).
+//! Fetching from indexers (`HttpIndexerBase.cs`, `NewznabCapabilitiesProvider.cs`), with each
+//! dialect's response checks and parser.
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
@@ -9,7 +10,8 @@ use serde::Serialize;
 use crate::caps::{Capabilities, capabilities_or_default};
 use crate::error::IndexerError;
 use crate::feed::{Dialect, Release, is_valid, parse_feed};
-use crate::request::{Chain, Generator, Settings};
+use crate::request::{ACCEPT_RSS, Chain, Generator, Method, Request, Settings};
+use crate::torrent_rss::ParserFactory;
 
 /// Minimum spacing between two requests to the same indexer (`HttpIndexerBase.RateLimit`).
 pub const RATE_LIMIT: Duration = Duration::from_secs(2);
@@ -17,7 +19,13 @@ pub const RATE_LIMIT: Duration = Duration::from_secs(2);
 pub const MAX_RESULTS_PER_QUERY: usize = 1000;
 /// Capabilities are cached for a week (`NewznabCapabilitiesProvider`).
 const CAPS_TTL: Duration = Duration::from_secs(7 * 24 * 3600);
-const ACCEPT_RSS: &str = "application/rss+xml, text/rss+xml, application/xml, text/xml";
+
+/// An indexer's answer, before the dialect's checks.
+struct Response {
+    status: u16,
+    content_type: String,
+    body: String,
+}
 
 /// The innermost cause of a request error (e.g. "failed to lookup address information"),
 /// without the URL, which may contain the API key.
@@ -124,6 +132,8 @@ pub struct IndexerClient {
     rate_limit: Duration,
     next_request: Arc<Mutex<HashMap<i64, Instant>>>,
     caps: Arc<Mutex<HashMap<String, (Instant, Capabilities)>>>,
+    /// Torrent RSS feed layouts, detected from each feed's first response.
+    torrent_rss: Arc<ParserFactory>,
 }
 
 impl IndexerClient {
@@ -160,7 +170,21 @@ impl IndexerClient {
         self
     }
 
+    /// The spacing between two requests to an indexer: BroadcasTheNet asks for 5 s instead of
+    /// 2 s (`RateLimit`), scaled with the configured spacing.
+    fn spacing(&self, dialect: Dialect) -> Duration {
+        if dialect == Dialect::BroadcastheNet {
+            self.rate_limit.mul_f64(2.5)
+        } else {
+            self.rate_limit
+        }
+    }
+
     async fn wait_turn(&self, indexer_id: i64) {
+        self.wait_turn_for(indexer_id, self.rate_limit).await;
+    }
+
+    async fn wait_turn_for(&self, indexer_id: i64, spacing: Duration) {
         let wait = {
             let mut map = self.next_request.lock().unwrap_or_else(|e| e.into_inner());
             let now = Instant::now();
@@ -169,7 +193,7 @@ impl IndexerClient {
                 .copied()
                 .filter(|t| *t > now)
                 .unwrap_or(now);
-            map.insert(indexer_id, slot + self.rate_limit);
+            map.insert(indexer_id, slot + spacing);
             slot.saturating_duration_since(now)
         };
         if !wait.is_zero() {
@@ -177,23 +201,36 @@ impl IndexerClient {
         }
     }
 
-    async fn get(&self, indexer_id: i64, url: &str) -> Result<String, IndexerError> {
-        self.wait_turn(indexer_id).await;
-        let response = self
-            .http
-            .get(url)
-            .header(reqwest::header::ACCEPT, ACCEPT_RSS)
-            .timeout(Duration::from_secs(60))
-            .send()
-            .await
-            .map_err(|e| {
-                let message = error_chain(&e);
-                if e.is_connect() || e.is_timeout() {
-                    IndexerError::Connection(message)
-                } else {
-                    IndexerError::Unexpected(message)
-                }
-            })?;
+    /// Sends a request in the indexer's turn. Connection failures and HTTP 429 are errors;
+    /// other statuses are left to the dialect's checks.
+    async fn send(&self, indexer: &Indexer, request: &Request) -> Result<Response, IndexerError> {
+        self.wait_turn_for(indexer.id, self.spacing(indexer.dialect))
+            .await;
+        let mut builder = match request.method {
+            Method::Get => self.http.get(&request.url),
+            Method::Post => self.http.post(&request.url),
+        }
+        .header(reqwest::header::ACCEPT, request.accept)
+        .timeout(Duration::from_secs(60));
+        if let Some(body) = &request.body {
+            builder = builder
+                .header(reqwest::header::CONTENT_TYPE, "application/json")
+                .body(body.clone());
+        }
+        if let Some((user, password)) = &request.basic_auth {
+            builder = builder.basic_auth(user, Some(password));
+        }
+        if let Some(cookie) = &request.cookie {
+            builder = builder.header(reqwest::header::COOKIE, cookie);
+        }
+        let response = builder.send().await.map_err(|e| {
+            let message = error_chain(&e);
+            if e.is_connect() || e.is_timeout() {
+                IndexerError::Connection(message)
+            } else {
+                IndexerError::Unexpected(message)
+            }
+        })?;
         let status = response.status();
         if status == reqwest::StatusCode::TOO_MANY_REQUESTS {
             let retry_after_secs = response
@@ -209,6 +246,22 @@ impl IndexerClient {
             .and_then(|v| v.to_str().ok())
             .unwrap_or_default()
             .to_ascii_lowercase();
+        let body = response
+            .text()
+            .await
+            .map_err(|e| IndexerError::Unexpected(e.without_url().to_string()))?;
+        Ok(Response {
+            status: status.as_u16(),
+            content_type,
+            body,
+        })
+    }
+
+    /// The checks of an RSS/XML response (`RssParser.PreProcess` and the HTTP client).
+    fn check_xml(response: &Response) -> Result<(), IndexerError> {
+        let status = reqwest::StatusCode::from_u16(response.status)
+            .unwrap_or(reqwest::StatusCode::INTERNAL_SERVER_ERROR);
+        let content_type = &response.content_type;
         if !status.is_success() {
             // An XML body with an error status may carry an <error> element (checked by the parser).
             if !content_type.contains("xml") {
@@ -221,11 +274,74 @@ impl IndexerClient {
                 "the indexer responded with HTML content; it may be offline, behind a login, or the URL is wrong".into(),
             ));
         }
-        let body = response
-            .text()
-            .await
-            .map_err(|e| IndexerError::Unexpected(e.without_url().to_string()))?;
-        Ok(body)
+        Ok(())
+    }
+
+    /// A GET of an RSS/XML document (capabilities).
+    async fn get(&self, indexer: &Indexer, url: &str) -> Result<String, IndexerError> {
+        let response = self.send(indexer, &Request::get(url, ACCEPT_RSS)).await?;
+        Self::check_xml(&response)?;
+        Ok(response.body)
+    }
+
+    /// One page: the request, the dialect's response checks and its parser.
+    async fn fetch_page(
+        &self,
+        indexer: &Indexer,
+        request: &Request,
+    ) -> Result<Vec<Release>, IndexerError> {
+        let response = self.send(indexer, request).await?;
+        let url = request.url.as_str();
+        match indexer.dialect {
+            Dialect::FileList => {
+                if !(200..300).contains(&response.status) {
+                    return Err(IndexerError::Http {
+                        status: response.status,
+                    });
+                }
+                crate::filelist::check_response(response.status, &response.content_type)?;
+                crate::filelist::parse(&response.body, &indexer.settings)
+            }
+            Dialect::HdBits => {
+                if !(200..300).contains(&response.status) {
+                    return Err(IndexerError::Http {
+                        status: response.status,
+                    });
+                }
+                crate::hdbits::parse(&response.body, &indexer.settings)
+            }
+            Dialect::BroadcastheNet => {
+                crate::broadcasthenet::check_response(
+                    response.status,
+                    &response.content_type,
+                    &response.body,
+                )?;
+                crate::broadcasthenet::parse(&response.body, url)
+            }
+            Dialect::TorrentRss => {
+                Self::check_xml(&response)?;
+                // `TorrentRssParserFactory`: the layout is detected once per settings (from
+                // this response rather than an extra request) and kept for a week.
+                let key = serde_json::to_string(&indexer.settings).unwrap_or_default();
+                let parser = self.torrent_rss.get_parser(&key, || {
+                    crate::torrent_rss::detect(
+                        &response.body,
+                        url,
+                        indexer.settings.allow_zero_size,
+                    )
+                })?;
+                parser.parse(&response.body, url)
+            }
+            Dialect::Newznab
+            | Dialect::Torznab
+            | Dialect::Nyaa
+            | Dialect::IpTorrents
+            | Dialect::Torrentleech
+            | Dialect::Fanzub => {
+                Self::check_xml(&response)?;
+                parse_feed(&response.body, indexer.dialect, url)
+            }
+        }
     }
 
     /// Downloads a release's file, following redirects by hand (at most five) so that a
@@ -292,8 +408,9 @@ impl IndexerClient {
 
     /// Capabilities, cached per settings for a week. Failures are not cached.
     pub async fn capabilities(&self, indexer: &Indexer) -> Result<Capabilities, IndexerError> {
-        // Nyaa has no capabilities document: its RSS search takes a plain term.
-        if indexer.dialect == Dialect::Nyaa {
+        // Only Newznab and Torznab have a capabilities document; the others search their own
+        // way (Nyaa's RSS search takes a plain term).
+        if !indexer.dialect.has_capabilities() {
             return Ok(Capabilities::default());
         }
         let key = serde_json::to_string(&indexer.settings).unwrap_or_default();
@@ -307,7 +424,7 @@ impl IndexerClient {
         {
             return Ok(caps);
         }
-        let body = self.get(indexer.id, &indexer.settings.caps_url()).await?;
+        let body = self.get(indexer, &indexer.settings.caps_url()).await?;
         let caps = capabilities_or_default(&body)?;
         self.caps
             .lock()
@@ -353,6 +470,15 @@ impl IndexerClient {
         chain: &Chain,
         last: Option<&LastRelease>,
     ) -> Result<RecentFetch, IndexerError> {
+        // BroadcasTheNet reads from just before the last torrent seen (`LastRecentTorrentId`).
+        let btn_chain;
+        let chain = match last.and_then(|l| crate::broadcasthenet::torrent_id(&l.guid)) {
+            Some(id) if indexer.dialect == Dialect::BroadcastheNet => {
+                btn_chain = crate::broadcasthenet::recent(&indexer.settings, Some(id));
+                &btn_chain
+            }
+            _ => chain,
+        };
         let (releases, fully_updated) = self.fetch_with(indexer, chain, Mode::Recent(last)).await?;
         let newest = releases
             .iter()
@@ -389,9 +515,8 @@ impl IndexerClient {
         for tier in &chain.tiers {
             for pageable in tier {
                 let mut paged: Vec<Release> = Vec::new();
-                for url in pageable.pages() {
-                    let page =
-                        parse_feed(&self.get(indexer.id, &url).await?, indexer.dialect, &url)?;
+                for request in pageable.requests() {
+                    let page = self.fetch_page(indexer, &request).await?;
                     let full =
                         pageable.page_size() != 0 && page.len() >= pageable.page_size() as usize;
                     let oldest = page.iter().map(|r| r.publish_date).min();

@@ -1,5 +1,6 @@
 //! Request generation (`NewznabRequestGenerator.cs`, `IndexerPageableRequestChain.cs`,
-//! `SearchCriteriaBase.cs`), shared by Newznab and Torznab as upstream does.
+//! `SearchCriteriaBase.cs`), shared by Newznab and Torznab as upstream does. The other indexers'
+//! generators live in their own modules and are dispatched from [`Generator`].
 
 use std::sync::LazyLock;
 
@@ -9,12 +10,61 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 
 use crate::caps::Capabilities;
+use crate::feed::Dialect;
 
 /// Pages requested per pageable request (`MaxPages`).
 pub const MAX_PAGES: u32 = 30;
 
-/// Indexer settings (`NewznabSettings` / `TorznabSettings`), read from the stored provider.
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+/// `HttpAccept.Rss`.
+pub const ACCEPT_RSS: &str = "application/rss+xml, text/rss+xml, application/xml, text/xml";
+/// `HttpAccept.Json`.
+pub const ACCEPT_JSON: &str = "application/json";
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Method {
+    Get,
+    Post,
+}
+
+/// One HTTP request to an indexer (`IndexerRequest`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Request {
+    pub url: String,
+    pub method: Method,
+    /// The `Accept` header.
+    pub accept: &'static str,
+    /// The JSON body of a POST.
+    pub body: Option<String>,
+    /// HTTP basic credentials (FileList).
+    pub basic_auth: Option<(String, String)>,
+    /// The `Cookie` header (Torrent RSS feeds behind a login).
+    pub cookie: Option<String>,
+}
+
+impl Request {
+    pub fn get(url: impl Into<String>, accept: &'static str) -> Self {
+        Self {
+            url: url.into(),
+            method: Method::Get,
+            accept,
+            body: None,
+            basic_auth: None,
+            cookie: None,
+        }
+    }
+
+    pub fn post_json(url: impl Into<String>, accept: &'static str, body: String) -> Self {
+        Self {
+            method: Method::Post,
+            body: Some(body),
+            ..Self::get(url, accept)
+        }
+    }
+}
+
+/// Indexer settings (`NewznabSettings` / `TorznabSettings` and the other indexers' settings),
+/// read from the stored provider.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
     pub base_url: String,
@@ -27,6 +77,24 @@ pub struct Settings {
     pub minimum_seeders: Option<i32>,
     /// Tanukarr's movie categories (default `[2000]`).
     pub movie_categories: Vec<i32>,
+    /// Torrent RSS: cookies sent with the feed request (`a=b; c=d`).
+    #[serde(default)]
+    pub cookie: Option<String>,
+    /// Torrent RSS: accept a feed without release sizes (`AllowZeroSize`).
+    #[serde(default)]
+    pub allow_zero_size: bool,
+    /// FileList and HDBits user name.
+    #[serde(default)]
+    pub username: Option<String>,
+    /// FileList's passkey (HDBits and the others call theirs `apiKey`).
+    #[serde(default)]
+    pub passkey: Option<String>,
+    /// HDBits codecs (`HdBitsCodec`).
+    #[serde(default)]
+    pub codecs: Vec<i32>,
+    /// HDBits mediums (`HdBitsMedium`).
+    #[serde(default)]
+    pub mediums: Vec<i32>,
 }
 
 impl Settings {
@@ -50,7 +118,22 @@ impl Settings {
                 })
                 .unwrap_or_default()
         };
+        let text = |key: &str| {
+            map.get(key)
+                .and_then(Value::as_str)
+                .filter(|s| !s.trim().is_empty())
+                .map(str::to_string)
+        };
         Ok(Self {
+            cookie: text("cookie"),
+            allow_zero_size: map
+                .get("allowZeroSize")
+                .and_then(Value::as_bool)
+                .unwrap_or(false),
+            username: text("username"),
+            passkey: text("passkey"),
+            codecs: ints("codecs"),
+            mediums: ints("mediums"),
             base_url,
             api_path: map
                 .get("apiPath")
@@ -84,6 +167,39 @@ impl Settings {
                 vec![2000]
             },
         })
+    }
+
+    /// The settings validators of the indexers that have rules beyond a URL
+    /// (`IPTorrentsSettingsValidator`, `FileListSettingsValidator`, …).
+    pub fn validate(&self, dialect: Dialect) -> Result<(), String> {
+        let api_key = || {
+            if self.api_key.is_none() {
+                Err("the indexer needs an API key".to_string())
+            } else {
+                Ok(())
+            }
+        };
+        match dialect {
+            Dialect::IpTorrents => crate::torrent_rss::validate_iptorrents_url(&self.base_url),
+            Dialect::Torrentleech | Dialect::HdBits | Dialect::BroadcastheNet => api_key(),
+            Dialect::FileList => {
+                if self.username.is_none() {
+                    return Err("the indexer needs a user name".into());
+                }
+                if self.passkey.is_none() {
+                    return Err("the indexer needs a passkey".into());
+                }
+                if self.categories.is_empty() && self.anime_categories.is_empty() {
+                    return Err("Either 'Categories' or 'Anime Categories' must be provided".into());
+                }
+                Ok(())
+            }
+            Dialect::Newznab
+            | Dialect::Torznab
+            | Dialect::Nyaa
+            | Dialect::TorrentRss
+            | Dialect::Fanzub => Ok(()),
+        }
     }
 
     /// `{BaseUrl}{ApiPath}` without trailing slashes.
@@ -168,6 +284,9 @@ pub enum Search {
     },
     Special {
         episode_query_titles: Vec<String>,
+        /// The episode's own titles (BroadcasTheNet searches them alone).
+        #[serde(default)]
+        episode_titles: Vec<String>,
     },
     /// Tanukarr's `MovieSearch`: "Title Year" text searches on the movie categories (and the
     /// anime categories for anime films).
@@ -182,7 +301,8 @@ pub enum Search {
     },
 }
 
-/// A paged request: the URL without paging plus the criteria parameters.
+/// A paged request: the URL without paging plus the criteria parameters, or the requests of
+/// an indexer with its own paging.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Pageable {
     prefix: String,
@@ -190,11 +310,40 @@ pub struct Pageable {
     page_size: u32,
     /// Empty category list: upstream yields no requests for it.
     empty: bool,
+    /// Explicit requests (indexers other than Newznab, Torznab and Nyaa).
+    requests: Option<Vec<Request>>,
 }
 
 impl Pageable {
+    /// Explicit page requests; a page shorter than `page_size` (or any page when it is 0)
+    /// ends the paging.
+    pub(crate) fn of(requests: Vec<Request>, page_size: u32) -> Self {
+        Self {
+            prefix: String::new(),
+            parameters: String::new(),
+            page_size,
+            empty: requests.is_empty(),
+            requests: Some(requests),
+        }
+    }
+
+    /// The pages' requests.
+    pub fn requests(&self) -> Vec<Request> {
+        match &self.requests {
+            Some(r) => r.clone(),
+            None => self
+                .pages()
+                .into_iter()
+                .map(|u| Request::get(u, ACCEPT_RSS))
+                .collect(),
+        }
+    }
+
     /// Page URLs, `MAX_PAGES` of them (one when the page size is 0).
     pub fn pages(&self) -> Vec<String> {
+        if let Some(requests) = &self.requests {
+            return requests.iter().map(|r| r.url.clone()).collect();
+        }
         if self.empty {
             return Vec::new();
         }
@@ -234,14 +383,14 @@ impl Default for Chain {
 }
 
 impl Chain {
-    fn add(&mut self, p: Pageable) {
+    pub(crate) fn add(&mut self, p: Pageable) {
         if let Some(last) = self.tiers.last_mut() {
             last.push(p);
         }
     }
 
     /// Starts a new tier unless the current one is empty.
-    fn add_tier(&mut self) {
+    pub(crate) fn add_tier(&mut self) {
         if self.tiers.last().is_some_and(|t| !t.is_empty()) {
             self.tiers.push(Vec::new());
         }
@@ -279,7 +428,7 @@ fn distinct(v: impl IntoIterator<Item = String>) -> Vec<String> {
     out
 }
 
-fn clean_titles(titles: &[String]) -> Vec<String> {
+pub(crate) fn clean_titles(titles: &[String]) -> Vec<String> {
     distinct(titles.iter().map(|t| clean_scene_title(t)))
 }
 
@@ -356,6 +505,7 @@ impl Generator<'_> {
             parameters,
             page_size: self.page_size,
             empty: categories.is_empty(),
+            requests: None,
         }
     }
 
@@ -480,10 +630,20 @@ impl Generator<'_> {
 
     /// `GetRecentRequests` (RSS).
     pub fn recent(&self) -> Chain {
-        if self.dialect == crate::Dialect::Nyaa {
-            let mut chain = Chain::default();
-            chain.add(self.nyaa_request(None));
-            return chain;
+        match self.dialect {
+            Dialect::Nyaa => {
+                let mut chain = Chain::default();
+                chain.add(self.nyaa_request(None));
+                return chain;
+            }
+            Dialect::TorrentRss | Dialect::IpTorrents | Dialect::Torrentleech => {
+                return crate::torrent_rss::recent(self.dialect, self.settings);
+            }
+            Dialect::Fanzub => return crate::fanzub::recent(self.settings),
+            Dialect::FileList => return crate::filelist::recent(self.settings),
+            Dialect::HdBits => return crate::hdbits::recent(self.settings),
+            Dialect::BroadcastheNet => return crate::broadcasthenet::recent(self.settings, None),
+            Dialect::Newznab | Dialect::Torznab => {}
         }
         let mut chain = Chain::default();
         if self.caps.tv_search_params.is_some() {
@@ -523,6 +683,7 @@ impl Generator<'_> {
             parameters: String::new(),
             page_size: 0,
             empty: false,
+            requests: None,
         }
     }
 
@@ -581,6 +742,7 @@ impl Generator<'_> {
             }
             Search::Special {
                 episode_query_titles,
+                ..
             } => titles.extend(episode_query_titles.iter().map(|t| q(t))),
             Search::Movie { query_titles } => titles.extend(query_titles.iter().map(|t| q(t))),
             Search::CompleteSeries {
@@ -600,8 +762,19 @@ impl Generator<'_> {
     }
 
     pub fn search(&self, c: &Criteria, search: &Search) -> Chain {
-        if self.dialect == crate::Dialect::Nyaa {
-            return self.nyaa_search(c, search);
+        match self.dialect {
+            Dialect::Nyaa => return self.nyaa_search(c, search),
+            // RSS-only indexers (`SupportsSearch => false`).
+            Dialect::TorrentRss | Dialect::IpTorrents | Dialect::Torrentleech => {
+                return Chain::default();
+            }
+            Dialect::Fanzub => return crate::fanzub::search(self.settings, c, search),
+            Dialect::FileList => return crate::filelist::search(self.settings, c, search),
+            Dialect::HdBits => return crate::hdbits::search(self.settings, c, search),
+            Dialect::BroadcastheNet => {
+                return crate::broadcasthenet::search(self.settings, c, search);
+            }
+            Dialect::Newznab | Dialect::Torznab => {}
         }
         let caps = self.caps;
         let text_or_id = caps.supports_tv_text_searches() || caps.supports_tv_id_searches();
@@ -760,6 +933,7 @@ impl Generator<'_> {
             }
             Search::Special {
                 episode_query_titles,
+                ..
             } => {
                 let mut chain = Chain::default();
                 if caps.supports_search() {

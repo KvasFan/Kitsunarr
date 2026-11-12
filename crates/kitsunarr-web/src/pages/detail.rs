@@ -9,7 +9,7 @@ use kitsunarr_domain::api::library::{
 };
 use kitsunarr_domain::api::metadata::SUPPORTED_CATALOGUES;
 
-use crate::components::common::{Badge, Confirm, ErrorBox, Loading, Modal, Switch};
+use crate::components::common::{Badge, Confirm, ErrorBox, Field, Loading, Modal, Switch};
 use crate::components::media::Poster;
 use crate::components::releases::ReleaseSearch;
 use crate::components::vlist::VirtualList;
@@ -101,6 +101,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut ordering = use_signal(|| false);
     let mut naming_open = use_signal(|| false);
     let mut versions_open = use_signal(|| false);
+    let mut compression_open = use_signal(|| false);
     let mut scanning = use_signal(|| false);
     // An episode file to delete: (file id, relative path).
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
@@ -321,6 +322,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     button { class: "btn", title: "Rename files to the naming settings", onclick: move |_| renaming.set(true), "Rename files" }
                     button { class: "btn", title: "This series' renaming mode, season folder titles and kept versions", onclick: move |_| naming_open.set(true), "Naming" }
                     button { class: "btn", title: "Files upgrades replaced, kept as versions", onclick: move |_| versions_open.set(true), "Versions" }
+                    button { class: "btn", title: "Re-encode this series' files with the compression worker", onclick: move |_| compression_open.set(true), "Compression" }
                     if matches!(d.item.metadata_provider, MetadataProvider::TmdbTv | MetadataProvider::Tvdb) {
                         button { class: "btn", title: "Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)", onclick: move |_| ordering.set(true), "Episode order" }
                     }
@@ -368,6 +370,9 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     "Also delete the series folder and its files (to the recycle bin when one is set)"
                 }
             }
+        }
+        if compression_open() {
+            CompressionDialog { series_id: id, on_close: move |_| compression_open.set(false) }
         }
         if versions_open() {
             VersionsDialog { series_id: id, on_close: move |_| versions_open.set(false) }
@@ -967,6 +972,99 @@ fn NamingDialog(
 }
 
 /// Tanukarr's retained versions: files upgrades replaced, which can be made current again.
+/// Tanukarr's per-show compression panel: the worker's modes, the series' job, start and
+/// cancel. Refreshed every 30 seconds while open.
+#[component]
+fn CompressionDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut mode = use_signal(String::new);
+    let mut min_size = use_signal(|| 0i64);
+    let c0 = client.clone();
+    let mut status = use_resource(move || {
+        let c = c0.clone();
+        async move { c.compression(series_id).await }
+    });
+    use_future(move || async move {
+        loop {
+            gloo_timers::future::TimeoutFuture::new(30_000).await;
+            status.restart();
+        }
+    });
+    let c1 = client.clone();
+    let start = move |_| {
+        let c = c1.clone();
+        let (m, size) = (mode(), min_size());
+        spawn(async move {
+            match c.start_compression(series_id, &m, size).await {
+                Ok(_) => {
+                    app.success("Compression queued.");
+                    status.restart();
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let cancel = move |_| {
+        let c = client.clone();
+        spawn(async move {
+            match c.cancel_compression(series_id).await {
+                Ok(()) => status.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let text = |v: &serde_json::Value, k: &str| v[k].as_str().unwrap_or_default().to_string();
+    rsx! {
+        Modal { title: "Compression".to_string(), wide: true, on_close: move |_| on_close.call(()),
+            footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| on_close.call(()), "Close" } },
+            match &*status.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(s)) if s["available"] == serde_json::json!(false) => rsx! {
+                    p { class: "muted", {s["message"].as_str().unwrap_or("Compression worker is not connected.").to_string()} }
+                    p { class: "help small faint", "The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET." }
+                },
+                Some(Ok(s)) => {
+                    let job = s["job"].clone();
+                    let active = matches!(job["status"].as_str(), Some("queued" | "running" | "cancelling"));
+                    let modes: Vec<serde_json::Value> = s["modes"].as_array().cloned().unwrap_or_default();
+                    rsx! {
+                        if !job.is_null() {
+                            dl { class: "kv",
+                                dt { "Job" } dd { "{text(&job, \"status\")} · {text(&job, \"modeName\")}" }
+                                dt { "Progress" } dd { "{job[\"completedFiles\"]} / {job[\"totalFiles\"]} files · {job[\"percent\"]}% · saved {crate::util::format_bytes(job[\"savedBytes\"].as_i64().unwrap_or(0))}" }
+                                if !text(&job, "currentFile").is_empty() { dt { "Current file" } dd { class: "mono small", "{text(&job, \"currentFile\")}" } }
+                                if !text(&job, "message").is_empty() { dt { "Message" } dd { "{text(&job, \"message\")}" } }
+                            }
+                        }
+                        if active {
+                            div { class: "row end", button { class: "btn danger", onclick: cancel, "Cancel compression" } }
+                        } else {
+                            div { class: "form-grid",
+                                Field { label: "Mode",
+                                    select { class: "select", "aria-label": "Compression mode", value: "{mode}",
+                                        onchange: move |e: FormEvent| mode.set(e.value()),
+                                        option { value: "", "Choose a mode" }
+                                        for m in modes.iter().filter(|m| m["available"] == serde_json::json!(true)) {
+                                            option { key: "{text(m, \"id\")}", value: "{text(m, \"id\")}", title: "{text(m, \"description\")}", "{text(m, \"name\")}" }
+                                        }
+                                    }
+                                }
+                                Field { label: "Skip files smaller than (MB)",
+                                    input { class: "input", r#type: "number", min: "0", max: "100000", value: "{min_size}",
+                                        oninput: move |e: FormEvent| min_size.set(e.value().parse().unwrap_or(0)) }
+                                }
+                            }
+                            div { class: "row end", button { class: "btn primary", disabled: mode().is_empty(), onclick: start, "Compress series" } }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 #[component]
 fn VersionsDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
     let app = use_app();

@@ -15,7 +15,18 @@ use crate::{DbError, DbResult, from_json, now, to_json};
 /// Implementations Kitsunarr runs natively. Others are stored and shown as unsupported.
 pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
     let list: &[&str] = match kind {
-        ProviderKind::Indexer => &["Torznab", "Newznab", "Nyaa"],
+        ProviderKind::Indexer => &[
+            "Torznab",
+            "Newznab",
+            "Nyaa",
+            "TorrentRssIndexer",
+            "IPTorrents",
+            "Torrentleech",
+            "Fanzub",
+            "FileList",
+            "HDBits",
+            "BroadcastheNet",
+        ],
         ProviderKind::DownloadClient => {
             &["QBittorrent", "Deluge", "Transmission", "Sabnzbd", "Nzbget"]
         }
@@ -71,10 +82,12 @@ pub fn protocol_for(implementation: &str) -> DownloadProtocol {
     match implementation.to_ascii_lowercase().as_str() {
         "torznab" | "qbittorrent" | "transmission" | "deluge" | "rtorrent" | "utorrent"
         | "vuze" | "aria2" | "flood" | "hadouken" | "downloadstation" | "torrentblackhole"
-        | "freeboxdownload" | "nyaa" | "torrentrssindexer" | "iptorrents" | "broadcastthenet"
-        | "filelist" | "hdbits" | "torrentday" => DownloadProtocol::Torrent,
+        | "freeboxdownload" | "nyaa" | "torrentrssindexer" | "iptorrents" | "broadcasthenet"
+        | "broadcastthenet" | "torrentleech" | "filelist" | "hdbits" | "torrentday" => {
+            DownloadProtocol::Torrent
+        }
         "newznab" | "sabnzbd" | "nzbget" | "nzbvortex" | "pneumatic" | "usenetblackhole"
-        | "omgwtfnzbs" => DownloadProtocol::Usenet,
+        | "omgwtfnzbs" | "fanzub" => DownloadProtocol::Usenet,
         _ => DownloadProtocol::Unknown,
     }
 }
@@ -520,6 +533,13 @@ mod tests {
         for (kind, imp) in [
             (ProviderKind::Indexer, "Torznab"),
             (ProviderKind::Indexer, "Nyaa"),
+            (ProviderKind::Indexer, "TorrentRssIndexer"),
+            (ProviderKind::Indexer, "IPTorrents"),
+            (ProviderKind::Indexer, "Torrentleech"),
+            (ProviderKind::Indexer, "Fanzub"),
+            (ProviderKind::Indexer, "FileList"),
+            (ProviderKind::Indexer, "HDBits"),
+            (ProviderKind::Indexer, "BroadcastheNet"),
             (ProviderKind::DownloadClient, "QBittorrent"),
             (ProviderKind::Notification, "Webhook"),
             (ProviderKind::ImportList, "SonarrImport"),
@@ -543,5 +563,21 @@ mod tests {
             assert!(list(db.pool(), kind).await.unwrap().is_empty());
         }
         assert_eq!(protocol_for("Sabnzbd"), DownloadProtocol::Usenet);
+        assert_eq!(protocol_for("Fanzub"), DownloadProtocol::Usenet);
+        for torrent in [
+            "TorrentRssIndexer",
+            "IPTorrents",
+            "Torrentleech",
+            "FileList",
+            "HDBits",
+            "BroadcastheNet",
+        ] {
+            assert_eq!(
+                protocol_for(torrent),
+                DownloadProtocol::Torrent,
+                "{torrent}"
+            );
+            assert!(is_supported(ProviderKind::Indexer, torrent));
+        }
     }
 }

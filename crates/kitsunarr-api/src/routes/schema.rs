@@ -47,6 +47,22 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
         "enableRss": true, "enableAutomaticSearch": true, "enableInteractiveSearch": true,
         "downloadClientId": 0, "seasonSearchMaximumSingleEpisodeAge": 0
     });
+    // RSS-only indexers (`SupportsSearch => false`) start with searches off.
+    let rss_only_options = json!({
+        "enableRss": true, "enableAutomaticSearch": false, "enableInteractiveSearch": false,
+        "downloadClientId": 0, "seasonSearchMaximumSingleEpisodeAge": 0
+    });
+    // The settings every torrent indexer has (`ITorrentIndexerSettings`).
+    let torrent = |settings: Value| {
+        let mut m = map(settings);
+        m.extend(map(json!({
+            "minimumSeeders": 1,
+            "seedCriteria.seedRatio": null, "seedCriteria.seedTime": null,
+            "seedCriteria.seasonPackSeedGoal": 0,
+            "seedCriteria.seasonPackSeedRatio": null, "seedCriteria.seasonPackSeedTime": null
+        })));
+        Value::Object(m)
+    };
     let client_options = json!({"removeCompletedDownloads": true, "removeFailedDownloads": true});
     match kind {
         ProviderKind::Indexer => vec![
@@ -78,7 +94,7 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 kind,
                 "Torznab",
                 "Torznab",
-                indexer_options,
+                indexer_options.clone(),
                 json!({
                     "baseUrl": "", "apiPath": "/api", "apiKey": "",
                     "categories": [5030, 5040], "animeCategories": [],
@@ -88,6 +104,61 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                     "seedCriteria.seasonPackSeedGoal": 0,
                     "seedCriteria.seasonPackSeedRatio": null, "seedCriteria.seasonPackSeedTime": null
                 }),
+            ),
+            template(
+                kind,
+                "Torrent RSS Feed",
+                "TorrentRssIndexer",
+                rss_only_options.clone(),
+                torrent(json!({"baseUrl": "", "cookie": "", "allowZeroSize": false})),
+            ),
+            template(
+                kind,
+                "IP Torrents",
+                "IPTorrents",
+                rss_only_options.clone(),
+                torrent(json!({"baseUrl": ""})),
+            ),
+            template(
+                kind,
+                "TorrentLeech",
+                "Torrentleech",
+                rss_only_options,
+                torrent(json!({"baseUrl": "http://rss.torrentleech.org", "apiKey": ""})),
+            ),
+            template(
+                kind,
+                "Fanzub",
+                "Fanzub",
+                indexer_options.clone(),
+                json!({"baseUrl": "http://fanzub.com/rss/", "animeStandardFormatSearch": false}),
+            ),
+            template(
+                kind,
+                "FileList",
+                "FileList",
+                indexer_options.clone(),
+                torrent(json!({
+                    "username": "", "passkey": "", "baseUrl": "https://filelist.io",
+                    "categories": [23, 21, 27], "animeCategories": []
+                })),
+            ),
+            template(
+                kind,
+                "HDBits",
+                "HDBits",
+                indexer_options.clone(),
+                torrent(json!({
+                    "baseUrl": "https://hdbits.org", "username": "", "apiKey": "",
+                    "categories": [2, 3], "codecs": [], "mediums": []
+                })),
+            ),
+            template(
+                kind,
+                "BroadcasTheNet",
+                "BroadcastheNet",
+                indexer_options,
+                torrent(json!({"baseUrl": "https://api.broadcasthe.net/", "apiKey": ""})),
             ),
         ],
         ProviderKind::DownloadClient => vec![

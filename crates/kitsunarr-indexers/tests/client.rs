@@ -101,6 +101,7 @@ async fn start() -> (Mock, Indexer, IndexerClient) {
             additional_parameters: None,
             minimum_seeders: None,
             movie_categories: vec![2000],
+            ..Settings::default()
         },
     };
     let client = IndexerClient::new(reqwest::Client::new()).with_rate_limit(Duration::ZERO);
@@ -252,6 +253,7 @@ async fn nyaa_tests_and_searches_through_its_rss_page() {
             additional_parameters: Some("&cats=1_0&filter=1".into()),
             minimum_seeders: Some(1),
             movie_categories: vec![2000],
+            ..Settings::default()
         },
     };
     let client = IndexerClient::new(reqwest::Client::new()).with_rate_limit(Duration::ZERO);

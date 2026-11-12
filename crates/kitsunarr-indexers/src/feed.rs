@@ -1,5 +1,5 @@
 //! Newznab and Torznab feed parsing (`RssParser.cs`, `NewznabRssParser.cs`, `TorznabRssParser.cs`,
-//! `TorrentRssParser.cs`).
+//! `TorrentRssParser.cs`); the other RSS indexers' parsers live in [`crate::torrent_rss`].
 
 use chrono::{DateTime, NaiveDateTime, Utc};
 use kitsunarr_domain::{DownloadProtocol, Language};
@@ -36,6 +36,69 @@ pub enum Dialect {
     Torznab,
     /// Sonarr's `Nyaa`: a torrent RSS feed with `nyaa:` elements, searched by title.
     Nyaa,
+    /// Sonarr's `TorrentRssIndexer`: any torrent RSS feed, its layout detected from the feed.
+    TorrentRss,
+    /// Sonarr's `IPTorrents`: the tracker's RSS feed (RSS only).
+    IpTorrents,
+    /// Sonarr's `Torrentleech`: the tracker's RSS feed (RSS only).
+    Torrentleech,
+    /// Sonarr's `Fanzub`: a usenet anime RSS feed, searched by title.
+    Fanzub,
+    /// Sonarr's `FileList`: the tracker's JSON API.
+    FileList,
+    /// Sonarr's `HDBits`: the tracker's JSON API (POST).
+    HdBits,
+    /// Sonarr's `BroadcastheNet`: the tracker's JSON-RPC API.
+    BroadcastheNet,
+}
+
+impl Dialect {
+    /// The dialect of a provider implementation (Sonarr's class names).
+    pub fn from_implementation(implementation: &str) -> Option<Self> {
+        Some(match implementation {
+            "Newznab" => Self::Newznab,
+            "Torznab" => Self::Torznab,
+            "Nyaa" => Self::Nyaa,
+            "TorrentRssIndexer" => Self::TorrentRss,
+            "IPTorrents" => Self::IpTorrents,
+            "Torrentleech" => Self::Torrentleech,
+            "Fanzub" => Self::Fanzub,
+            "FileList" => Self::FileList,
+            "HDBits" => Self::HdBits,
+            "BroadcastheNet" => Self::BroadcastheNet,
+            _ => return None,
+        })
+    }
+
+    pub fn protocol(self) -> DownloadProtocol {
+        match self {
+            Self::Newznab | Self::Fanzub => DownloadProtocol::Usenet,
+            _ => DownloadProtocol::Torrent,
+        }
+    }
+
+    /// Torrent indexers (minimum seeders, seed criteria, complete-series searches).
+    pub fn is_torrent(self) -> bool {
+        self.protocol() == DownloadProtocol::Torrent
+    }
+
+    /// `SupportsSearch`: the RSS-only indexers generate no search requests.
+    pub fn supports_search(self) -> bool {
+        !matches!(
+            self,
+            Self::TorrentRss | Self::IpTorrents | Self::Torrentleech
+        )
+    }
+
+    /// Newznab and Torznab read a capabilities document; the others search their own way.
+    pub fn has_capabilities(self) -> bool {
+        matches!(self, Self::Newznab | Self::Torznab)
+    }
+
+    /// Indexers answering JSON instead of an RSS feed.
+    pub fn is_json(self) -> bool {
+        matches!(self, Self::FileList | Self::HdBits | Self::BroadcastheNet)
+    }
 }
 
 /// One release from an indexer feed (`ReleaseInfo` / `TorrentInfo`).
@@ -238,6 +301,26 @@ pub fn parse_feed(
     dialect: Dialect,
     request_url: &str,
 ) -> Result<Vec<Release>, IndexerError> {
+    match dialect {
+        Dialect::TorrentRss => {
+            // Without a cached layout the feed's own layout is detected first.
+            let settings = crate::torrent_rss::detect(body, request_url, false)?;
+            return crate::torrent_rss::parser_for(&settings).parse(body, request_url);
+        }
+        Dialect::IpTorrents => {
+            return crate::torrent_rss::RssParser::iptorrents().parse(body, request_url);
+        }
+        Dialect::Torrentleech => {
+            return crate::torrent_rss::RssParser::torrentleech().parse(body, request_url);
+        }
+        Dialect::Fanzub => return crate::torrent_rss::RssParser::fanzub().parse(body, request_url),
+        Dialect::FileList | Dialect::HdBits | Dialect::BroadcastheNet => {
+            return Err(IndexerError::Unexpected(format!(
+                "{dialect:?} answers JSON, not an RSS feed"
+            )));
+        }
+        Dialect::Newznab | Dialect::Torznab | Dialect::Nyaa => {}
+    }
     let base = url::Url::parse(request_url).map_err(|e| IndexerError::Unexpected(e.to_string()))?;
     let doc = xml::parse(body).map_err(IndexerError::InvalidXml)?;
     if dialect == Dialect::Nyaa {
@@ -262,7 +345,7 @@ pub fn parse_feed(
     types.dedup();
     let (own, other): (&[&str], &[&str]) = match dialect {
         Dialect::Newznab => (&[NZB_MIME], TORRENT_MIMES),
-        Dialect::Torznab | Dialect::Nyaa => (TORRENT_MIMES, &[NZB_MIME]),
+        _ => (TORRENT_MIMES, &[NZB_MIME]),
     };
     if !types.is_empty()
         && !types.iter().any(|t| own.contains(&t.as_str()))
@@ -282,7 +365,7 @@ pub fn parse_feed(
 
     let ns = match dialect {
         Dialect::Newznab => NEWZNAB_NS,
-        Dialect::Torznab | Dialect::Nyaa => TORZNAB_NS,
+        _ => TORZNAB_NS,
     };
     let mut releases = Vec::with_capacity(items.len());
     for item in items {
@@ -397,7 +480,7 @@ fn parse_item(
         let encl = enclosures(item);
         let date_text = match dialect {
             Dialect::Newznab => Some(attrs.get("usenetdate")).filter(|d| !d.trim().is_empty()),
-            Dialect::Torznab | Dialect::Nyaa => None,
+            _ => None,
         }
         .or(item.child_text("pubDate"))
         .filter(|d| !d.trim().is_empty())
@@ -415,7 +498,7 @@ fn parse_item(
                 base,
                 preferred(&encl, &[NZB_MIME]).and_then(|e| e.url.as_deref()),
             ),
-            Dialect::Torznab | Dialect::Nyaa => {
+            _ => {
                 let url = resolve_url(
                     base,
                     preferred(&encl, TORRENT_MIMES).and_then(|e| e.url.as_deref()),
@@ -430,7 +513,7 @@ fn parse_item(
         let size = size_attr.unwrap_or_else(|| {
             let mimes: &[&str] = match dialect {
                 Dialect::Newznab => &[NZB_MIME],
-                Dialect::Torznab | Dialect::Nyaa => TORRENT_MIMES,
+                _ => TORRENT_MIMES,
             };
             preferred(&encl, mimes).map_or(0, |e| e.length)
         });
@@ -455,7 +538,7 @@ fn parse_item(
                         .map(str::trim)
                         .filter(|s| !s.is_empty())
                         .collect::<Vec<_>>(),
-                    Dialect::Torznab | Dialect::Nyaa => vec![v.as_str()],
+                    _ => vec![v.as_str()],
                 })
                 .filter_map(language_by_name)
                 .collect()
@@ -475,10 +558,7 @@ fn parse_item(
             ),
             comment_url: resolve_url(base, Some(comments)),
             publish_date,
-            protocol: match dialect {
-                Dialect::Newznab => DownloadProtocol::Usenet,
-                Dialect::Torznab | Dialect::Nyaa => DownloadProtocol::Torrent,
-            },
+            protocol: dialect.protocol(),
             tvdb_id: int_or_zero(attrs.get("tvdbid")),
             tv_rage_id: int_or_zero(attrs.get("rageid")),
             imdb_id: imdb(attrs.get("imdb")),
@@ -501,7 +581,7 @@ fn parse_item(
                     release.indexer_flags |= flags::SUBTITLES;
                 }
             }
-            Dialect::Torznab | Dialect::Nyaa => {
+            _ => {
                 let factor = |k: &str| attrs.get(k).trim().parse::<f32>().unwrap_or(1.0);
                 let (down, up) = (factor("downloadvolumefactor"), factor("uploadvolumefactor"));
                 for (value, flag) in [
@@ -555,7 +635,7 @@ fn parse_item(
 }
 
 /// `Guid.NewGuid()` stand-in for items without a guid.
-fn random_guid() -> String {
+pub(crate) fn random_guid() -> String {
     use std::sync::atomic::{AtomicU64, Ordering};
     static COUNTER: AtomicU64 = AtomicU64::new(0);
     let n = COUNTER.fetch_add(1, Ordering::Relaxed);

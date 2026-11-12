@@ -128,6 +128,7 @@ pub async fn restore(
     State(state): State<AppState>,
     Json(body): Json<kitsunarr_domain::api::library_tools::RecycleRestoreRequest>,
 ) -> ApiResult<Json<String>> {
+    crate::routes::compression::ensure_idle(body.series_id).await?;
     let message = kitsunarr_library::tools::restore_recycled(
         &state.db,
         &body.token,
@@ -281,6 +282,7 @@ pub async fn activate_version(
     State(state): State<AppState>,
     axum::extract::Path((id, version)): axum::extract::Path<(i64, i64)>,
 ) -> ApiResult<Json<String>> {
+    crate::routes::compression::ensure_idle(id).await?;
     let message = kitsunarr_library::versions::activate(&state.db, id, version)
         .await
         .map_err(|m| crate::error::ApiError::field("version", m))?;

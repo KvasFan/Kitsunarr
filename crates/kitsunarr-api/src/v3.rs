@@ -31,6 +31,17 @@ use crate::error::{ApiError, ApiResult};
 /// The Sonarr version reported to tools.
 const SONARR_VERSION: &str = "4.0.0.0";
 
+/// The Sonarr v5 routes Tanukarr's compression worker calls back on (`series/{id}`,
+/// `episodefile`, `command` with `RescanSeries`), answered as v3 answers them: the fields the
+/// worker reads (`title`, `path`, `seriesId`, `relativePath`) are the same.
+pub fn worker_router() -> Router<AppState> {
+    Router::new()
+        .route("/series/{id}", get(get_series))
+        .route("/episodefile", get(list_episode_files))
+        .route("/episodefile/{id}", get(get_episode_file))
+        .route("/command", post(command))
+}
+
 pub fn router() -> Router<AppState> {
     Router::new()
         .route("/system/status", get(system_status))
@@ -1088,13 +1099,20 @@ fn indexer_json(p: &ProviderRecord) -> Value {
         "implementation": p.implementation,
         "implementationName": p.implementation,
         "configContract": format!("{}Settings", p.implementation),
-        "protocol": if p.implementation == "Newznab" { "usenet" } else { "torrent" },
+        "protocol": if providers::protocol_for(&p.implementation)
+            == kitsunarr_domain::DownloadProtocol::Usenet
+        {
+            "usenet"
+        } else {
+            "torrent"
+        },
         "priority": p.priority,
         "enableRss": opt("enableRss", true),
         "enableAutomaticSearch": opt("enableAutomaticSearch", true),
         "enableInteractiveSearch": opt("enableInteractiveSearch", true),
         "supportsRss": true,
-        "supportsSearch": true,
+        "supportsSearch": kitsunarr_indexers::Dialect::from_implementation(&p.implementation)
+            .is_none_or(|d| d.supports_search()),
         "downloadClientId": p.options.get("downloadClientId").cloned().unwrap_or(json!(0)),
         "seasonSearchMaximumSingleEpisodeAge": p.options.get("seasonSearchMaximumSingleEpisodeAge").cloned().unwrap_or(json!(0)),
         "tags": p.tags,
@@ -1125,7 +1143,7 @@ struct Field {
 }
 
 fn record(id: i64, b: &IndexerBody) -> ApiResult<ProviderRecord> {
-    if !matches!(b.implementation.as_str(), "Newznab" | "Torznab" | "Nyaa") {
+    if kitsunarr_indexers::Dialect::from_implementation(&b.implementation).is_none() {
         return Err(ApiError::field(
             "implementation",
             format!("{} indexers are not supported.", b.implementation),

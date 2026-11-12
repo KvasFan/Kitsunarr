@@ -613,6 +613,25 @@ impl Client {
         )
         .await
     }
+    /// Tanukarr's per-show compression: `{available, job, modes, message}` from the worker.
+    pub async fn compression(&self, id: i64) -> ClientResult<serde_json::Value> {
+        self.get(&format!("/series/{id}/compression")).await
+    }
+    pub async fn start_compression(
+        &self,
+        id: i64,
+        mode: &str,
+        min_size_mb: i64,
+    ) -> ClientResult<serde_json::Value> {
+        self.post(
+            &format!("/series/{id}/compression"),
+            &serde_json::json!({"mode": mode, "minSizeMb": min_size_mb}),
+        )
+        .await
+    }
+    pub async fn cancel_compression(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/series/{id}/compression")).await
+    }
     pub async fn delete_version(&self, id: i64, version: i64) -> ClientResult<()> {
         self.delete(&format!("/series/{id}/versions/{version}"))
             .await

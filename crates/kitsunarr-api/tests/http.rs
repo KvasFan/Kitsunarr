@@ -931,7 +931,7 @@ async fn indexer_test_and_interactive_search() {
         .post(
             "/providers/indexers",
             &serde_json::json!({
-                "name": "Some Tracker", "implementation": "BroadcastheNet",
+                "name": "Some Tracker", "implementation": "Omgwtfnzbs",
                 "options": {"enableInteractiveSearch": true}, "settings": {"apiKey": "k"}
             }),
         )
@@ -1056,7 +1056,7 @@ async fn indexer_test_and_interactive_search() {
             .collect::<Vec<_>>(),
         vec![(
             "Some Tracker",
-            "Searching BroadcastheNet indexers is not supported yet."
+            "Searching Omgwtfnzbs indexers is not supported yet."
         )]
     );
     assert!(
@@ -3672,6 +3672,26 @@ async fn sonarr_v3_api_serves_overseerr_and_prowlarr_flows() {
     assert_eq!(added.status(), 201);
     let added: Value = added.json().await.unwrap();
     let id = added["id"].as_i64().unwrap();
+    // The v5 routes the compression worker calls back on, with the same key.
+    let v5: Value = http
+        .get(format!("{}/api/v5/series/{id}", server.base))
+        .header("X-Api-Key", &key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(v5["title"], "Breaking Bad");
+    assert!(v5["path"].as_str().is_some_and(|p| !p.is_empty()), "{v5}");
+    assert_eq!(
+        http.get(format!("{}/api/v5/episodefile?seriesId={id}", server.base))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        401
+    );
     assert_eq!(added["tvdbId"], 81189);
     let season = |v: &Value, n: i64| {
         v["seasons"]

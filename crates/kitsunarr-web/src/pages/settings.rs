@@ -2504,7 +2504,19 @@ fn ProviderEditor(
     let client = crate::state::use_client();
     let testable = match item.kind {
         ProviderKind::Indexer => {
-            matches!(item.implementation.as_str(), "Newznab" | "Torznab" | "Nyaa")
+            matches!(
+                item.implementation.as_str(),
+                "Newznab"
+                    | "Torznab"
+                    | "Nyaa"
+                    | "TorrentRssIndexer"
+                    | "IPTorrents"
+                    | "Torrentleech"
+                    | "Fanzub"
+                    | "FileList"
+                    | "HDBits"
+                    | "BroadcastheNet"
+            )
         }
         ProviderKind::DownloadClient => {
             matches!(
@@ -2639,6 +2651,19 @@ fn field_label(key: &str) -> String {
         ("baseUrl", "URL"),
         ("apiPath", "API path"),
         ("apiKey", "API key"),
+        ("passkey", "Passkey"),
+        ("username", "User name"),
+        (
+            "cookie",
+            "Cookie (sent with the feed request, e.g. uid=1; pass=…)",
+        ),
+        (
+            "allowZeroSize",
+            "Allow zero size (the feed has no release sizes)",
+        ),
+        ("minimumSeeders", "Minimum seeders"),
+        ("codecs", "Codecs"),
+        ("mediums", "Mediums"),
         ("urlBase", "URL base"),
         ("useSsl", "Use SSL"),
         ("tvCategory", "Category"),
