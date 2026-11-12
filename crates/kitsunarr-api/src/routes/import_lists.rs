@@ -36,26 +36,33 @@ pub async fn test_import_list(
         let stored = providers::get(state.db.pool(), ProviderKind::ImportList, id).await?;
         crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
     }
-    Ok(Json(
-        match kitsunarr_importlists::fetch(&state.http, &req.implementation, &req.settings).await {
-            Ok(items) if items.is_empty() => DownloadClientTestResult {
-                ok: true,
-                message: "Connected, but the list contains no shows with the current filters."
-                    .into(),
-                warnings: vec!["The list is empty.".into()],
-            },
-            Ok(items) => DownloadClientTestResult {
-                ok: true,
-                message: format!("Read {} shows.", items.len()),
-                warnings: Vec::new(),
-            },
-            Err(e) => DownloadClientTestResult {
-                ok: false,
-                message: e.to_string(),
-                warnings: Vec::new(),
-            },
+    let read = async {
+        let settings =
+            match kitsunarr_importlists::renew(&state.http, &req.implementation, &req.settings)
+                .await?
+            {
+                Some(renewed) => renewed,
+                None => req.settings.clone(),
+            };
+        kitsunarr_importlists::fetch(&state.http, &req.implementation, &settings).await
+    };
+    Ok(Json(match read.await {
+        Ok(items) if items.is_empty() => DownloadClientTestResult {
+            ok: true,
+            message: "Connected, but the list contains no shows with the current filters.".into(),
+            warnings: vec!["The list is empty.".into()],
         },
-    ))
+        Ok(items) => DownloadClientTestResult {
+            ok: true,
+            message: format!("Read {} shows.", items.len()),
+            warnings: Vec::new(),
+        },
+        Err(e) => DownloadClientTestResult {
+            ok: false,
+            message: e.to_string(),
+            warnings: Vec::new(),
+        },
+    }))
 }
 
 /// Syncs every list, or one, now (reading them even when not due).

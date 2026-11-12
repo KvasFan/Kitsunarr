@@ -340,7 +340,22 @@ async fn lists(state: &AppState) -> Result<Vec<(ProviderRecord, ListOptions)>, S
 
 /// Reads one list now and stores its membership; `Err` keeps the previous membership.
 pub async fn read_list(state: &AppState, p: &ProviderRecord) -> Result<Vec<ListItem>, String> {
-    match kitsunarr_importlists::fetch(&state.http, &p.implementation, &p.settings).await {
+    let read = async {
+        let mut settings = p.settings.clone();
+        if let Some(renewed) =
+            kitsunarr_importlists::renew(&state.http, &p.implementation, &settings).await?
+        {
+            // Keep the renewed token: the old refresh token may be single-use.
+            let mut rec = p.clone();
+            rec.settings = renewed.clone();
+            if let Err(e) = providers::update(state.db.pool(), &rec).await {
+                tracing::warn!(list = %p.name, error = %e, "the renewed list token could not be stored");
+            }
+            settings = renewed;
+        }
+        kitsunarr_importlists::fetch(&state.http, &p.implementation, &settings).await
+    };
+    match read.await {
         Ok(items) => {
             let rows: Vec<ListItemRow> = items.iter().map(|i| to_row(p.id, i)).collect();
             let removed = db_lists::replace_items(state.db.pool(), p.id, &rows)

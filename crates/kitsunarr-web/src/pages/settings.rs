@@ -844,7 +844,7 @@ pub fn SettingsNotifications() -> Element {
 #[component]
 pub fn SettingsImportLists() -> Element {
     rsx! {
-        ProvidersPage { kind: "importlists", title: "Import lists", note: "AniList, MDBList, Plex watchlist RSS, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Lists of other services are kept and shown as stored only." }
+        ProvidersPage { kind: "importlists", title: "Import lists", note: "AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working)." }
         ImportListExtras {}
     }
 }

@@ -7,13 +7,19 @@
 //! status or shape error fails the whole fetch, so the previous membership is kept.
 //!
 //! Implementations (Sonarr's names): `AniListImport`, `CustomImport`, `SonarrImport`,
-//! `PlexRssImport` and `MDBListImport`.
+//! `PlexRssImport`, `PlexImport`, `MDBListImport`, `MyAnimeListImport`, `TmdbListImport`,
+//! `TraktListImport`, `TraktUserImport`, `TraktPopularImport` and `SimklUserImport`.
 
 pub mod anilist;
 pub mod custom;
 pub mod mdblist;
+pub mod myanimelist;
+pub mod plex;
 pub mod rss;
+pub mod simkl;
 pub mod sonarr;
+pub mod tmdb;
+pub mod trakt;
 
 use std::collections::{HashMap, HashSet};
 use std::time::Duration;
@@ -65,6 +71,17 @@ pub const SUPPORTED: &[&str] = &[
     "SonarrImport",
     "PlexRssImport",
     "MDBListImport",
+    "MyAnimeListImport",
+    "TmdbListImport",
+    "TraktListImport",
+    "TraktUserImport",
+    "TraktPopularImport",
+    "TraktSmartListImport",
+    "TmdbDiscoverImport",
+    "TmdbAccountImport",
+    "TmdbPersonImport",
+    "SimklUserImport",
+    "PlexImport",
 ];
 
 pub fn is_supported(implementation: &str) -> bool {
@@ -77,7 +94,7 @@ pub fn is_supported(implementation: &str) -> bool {
 pub fn min_refresh_interval(implementation: &str) -> Duration {
     match implementation {
         "SonarrImport" => Duration::from_secs(5 * 60),
-        "TraktListImport" | "TraktUserImport" | "TraktPopularImport" => {
+        "TraktListImport" | "TraktUserImport" | "TraktPopularImport" | "TraktSmartListImport" => {
             Duration::from_secs(12 * 3600)
         }
         _ => Duration::from_secs(6 * 3600),
@@ -96,6 +113,16 @@ pub async fn fetch(
         "SonarrImport" => sonarr::fetch(http, settings).await?,
         "PlexRssImport" => rss::fetch(http, settings).await?,
         "MDBListImport" => mdblist::fetch(http, settings).await?,
+        "MyAnimeListImport" => myanimelist::fetch(http, settings).await?,
+        "TmdbListImport" => tmdb::fetch(http, settings).await?,
+        "SimklUserImport" => simkl::fetch(http, settings).await?,
+        "PlexImport" => plex::fetch(http, settings).await?,
+        "TmdbDiscoverImport" | "TmdbAccountImport" | "TmdbPersonImport" => {
+            tmdb::fetch_other(http, implementation, settings).await?
+        }
+        "TraktListImport" | "TraktUserImport" | "TraktPopularImport" | "TraktSmartListImport" => {
+            trakt::fetch(http, implementation, settings).await?
+        }
         other => {
             return Err(ListError::Settings(format!(
                 "{other} lists are not supported yet"
@@ -103,6 +130,18 @@ pub async fn fetch(
         }
     };
     Ok(cleanup(items))
+}
+
+/// Renews an expiring OAuth token before a read: the settings to store, or `None`.
+pub async fn renew(
+    http: &reqwest::Client,
+    implementation: &str,
+    settings: &Map<String, Value>,
+) -> Result<Option<Map<String, Value>>, ListError> {
+    match implementation {
+        "MyAnimeListImport" => myanimelist::renew(http, settings).await,
+        _ => Ok(None),
+    }
 }
 
 /// `ImportListBase.CleanupListItems`: one entry per (title, TVDB id, IMDb id).

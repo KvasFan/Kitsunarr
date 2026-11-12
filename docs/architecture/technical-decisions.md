@@ -475,7 +475,10 @@ a search.
   removed even when the included list knows it by TheTVDB and TMDB ids.
 - **Clean library** runs only when every automatic-add list has synced successfully and some
   list lost an item since the last clean; it logs, unmonitors or tags titles on no list.
-- **Credentials.** Kitsunarr cannot use the servarr OAuth relay. AniList public lists need
-  only the username; a token typed in the settings (or migrated from Tanukarr) reads private
-  ones. Trakt, Simkl, MyAnimeList and TMDB account lists, which require OAuth, are kept as
-  stored-only lists for now.
+- **Credentials.** Kitsunarr cannot use the servarr OAuth relay or Sonarr's own Trakt, Simkl
+  and Plex application ids. AniList public lists need only the username; a token reads private
+  ones. MyAnimeList reads public lists with the user's registered Client ID (Tanukarr's field)
+  and renews a token with its refresh token, storing the renewed token before reading. Trakt and
+  Simkl need the user's own application Client ID (`clientId`, `clientIdV2`) and, for private
+  data, a token of that application; Plex needs the account token; TMDB lists use the API Read
+  Access Token. Sign-in flows (OAuth pages) are not implemented: tokens are pasted or migrated.

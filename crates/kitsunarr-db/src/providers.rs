@@ -47,6 +47,17 @@ pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
             "SonarrImport",
             "PlexRssImport",
             "MDBListImport",
+            "MyAnimeListImport",
+            "TmdbListImport",
+            "TraktListImport",
+            "TraktUserImport",
+            "TraktPopularImport",
+            "TraktSmartListImport",
+            "TmdbDiscoverImport",
+            "TmdbAccountImport",
+            "TmdbPersonImport",
+            "SimklUserImport",
+            "PlexImport",
         ],
     };
     list.iter().any(|i| i.eq_ignore_ascii_case(implementation))

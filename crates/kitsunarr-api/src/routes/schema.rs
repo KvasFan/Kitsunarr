@@ -186,6 +186,21 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                     "includedCustomLists": [], "excludedCustomLists": []
                 })),
                 l("MDBList", "MDBListImport", json!({"apiKey": "", "includedListUrls": [], "excludedListUrls": []})),
+                l("MyAnimeList", "MyAnimeListImport", json!({
+                    "username": "", "clientId": "", "clientSecret": "", "accessToken": "", "refreshToken": "",
+                    "listStatuses": [1, 5], "includedTags": [], "excludedTags": [], "minimumScore": 0,
+                    "importFinished": true, "importAiring": true, "importUnreleased": true
+                })),
+                l("TMDB list", "TmdbListImport", json!({"authToken": "", "includedListIds": [], "excludedListIds": []})),
+                l("Trakt list", "TraktListImport", json!({"clientId": "", "accessToken": "", "username": "", "listname": "", "excludedLists": [], "limit": 100, "rating": "", "genres": "", "years": ""})),
+                l("Trakt user", "TraktUserImport", json!({"clientId": "", "accessToken": "", "username": "", "traktListType": 0, "traktWatchedListType": 0, "traktWatchSorting": 0, "limit": 100})),
+                l("Trakt popular", "TraktPopularImport", json!({"clientId": "", "traktListType": 0, "limit": 100, "rating": "", "genres": "", "years": ""})),
+                l("Trakt smart list", "TraktSmartListImport", json!({"clientId": "", "accessToken": "", "smartList": "", "limit": 100})),
+                l("TMDB discover", "TmdbDiscoverImport", json!({"authToken": "", "sortByType": 7, "originalLanguage": "", "withGenreTypes": [], "withNetworks": [], "airDateMinimum": "", "airDateMaximum": "", "voteAverageMinimum": "", "voteCountMinimum": "", "withCompanies": "", "withKeywords": "", "includeNullFirstAirDates": false})),
+                l("TMDB account", "TmdbAccountImport", json!({"authToken": "", "accountId": "", "accountListType": 3})),
+                l("TMDB person", "TmdbPersonImport", json!({"authToken": "", "personId": 0, "includingCastCredits": true, "includeDepartmentTypes": []})),
+                l("Simkl", "SimklUserImport", json!({"clientIdV2": "", "accessToken": "", "showType": 0, "listType": 0})),
+                l("Plex Watchlist", "PlexImport", json!({"accessToken": ""})),
                 l("Plex Watchlist RSS", "PlexRssImport", json!({"url": ""})),
                 l("Sonarr", "SonarrImport", json!({
                     "baseUrl": "", "apiKey": "", "syncSeasonMonitoring": false,
