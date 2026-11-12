@@ -429,7 +429,7 @@ pub async fn rename_files(
     db: &Database,
     series_id: i64,
     file_ids: &[i64],
-) -> Result<(usize, Vec<String>), String> {
+) -> Result<(Vec<(i64, String, String)>, Vec<String>), String> {
     let detail = series::get_detail(db, series_id).await.map_err(err)?;
     let series_path = PathBuf::from(&detail.item.path);
     let previews: Vec<RenamePreview> = rename_previews(db, series_id, None)
@@ -441,7 +441,7 @@ pub async fn rename_files(
         .await
         .map_err(err)?;
     let mut conn = db.pool().acquire().await.map_err(err)?;
-    let (mut renamed, mut problems) = (0usize, Vec::new());
+    let (mut renamed, mut problems) = (Vec::new(), Vec::new());
     for p in previews {
         let src = series_path.join(&p.existing_path);
         let dst = series_path.join(&p.new_path);
@@ -512,7 +512,11 @@ pub async fn rename_files(
         {
             let _ = std::fs::remove_dir(old_dir);
         }
-        renamed += 1;
+        renamed.push((
+            p.episode_file_id,
+            p.existing_path.clone(),
+            p.new_path.clone(),
+        ));
     }
     Ok((renamed, problems))
 }

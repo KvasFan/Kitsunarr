@@ -68,6 +68,12 @@ pub fn payload(event: &Event, instance: &Instance) -> Value {
             }
             m
         }
+        Event::Rename { series, files } => {
+            let mut m = base("Rename");
+            m.insert("series".into(), json!(series));
+            m.insert("renamedEpisodeFiles".into(), json!(files));
+            m
+        }
         Event::SeriesAdd(s) => {
             let mut m = base("SeriesAdd");
             m.insert("series".into(), json!(s));

@@ -359,8 +359,32 @@ pub async fn rename_series_files(
             .await
             .map_err(ApiError::Internal)?;
     changed(&state, "series", vec![id], false);
+    // Sonarr's `OnRename`.
+    if !renamed.is_empty()
+        && let Some(series) = kitsunarr_library::notify::series_ref(&state.db, id).await
+    {
+        let base = std::path::PathBuf::from(&series.path);
+        let files = renamed
+            .iter()
+            .map(|(file_id, old, new)| kitsunarr_notifications::RenamedFile {
+                id: *file_id,
+                previous_relative_path: old.clone(),
+                previous_path: base.join(old).display().to_string(),
+                relative_path: new.clone(),
+                path: base.join(new).display().to_string(),
+            })
+            .collect();
+        kitsunarr_library::notify::spawn(
+            &state.db,
+            &state.downloads.notifier,
+            kitsunarr_notifications::Event::Rename {
+                series: Box::new(series),
+                files,
+            },
+        );
+    }
     Ok(Json(FileOperationResult {
-        message: format!("{renamed} files renamed."),
+        message: format!("{} files renamed.", renamed.len()),
         problems,
     }))
 }

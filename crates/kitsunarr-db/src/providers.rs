@@ -39,6 +39,9 @@ pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
             "Jellyfin",
             "PlexServer",
             "Xbmc",
+            "CustomScript",
+            "Mailgun",
+            "SendGrid",
         ],
         // Kept in step with `kitsunarr_importlists::SUPPORTED`.
         ProviderKind::ImportList => &[

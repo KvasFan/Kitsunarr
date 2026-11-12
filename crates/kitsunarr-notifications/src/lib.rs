@@ -9,8 +9,10 @@
 //! refresh) and Kodi (library scan and notifications).
 
 pub mod discord;
+pub mod email;
 pub mod media;
 pub mod push;
+pub mod script;
 pub mod webhook;
 
 use serde::Serialize;
@@ -54,6 +56,9 @@ pub const SUPPORTED: &[&str] = &[
     "Jellyfin",
     "PlexServer",
     "Xbmc",
+    "CustomScript",
+    "Mailgun",
+    "SendGrid",
 ];
 
 pub fn supported(implementation: &str) -> bool {
@@ -244,6 +249,22 @@ pub enum Event {
     },
     HealthIssue(Health),
     HealthRestored(Health),
+    /// Episode files renamed (Sonarr's `OnRename`).
+    Rename {
+        series: Box<SeriesRef>,
+        files: Vec<RenamedFile>,
+    },
+}
+
+/// A renamed episode file (Sonarr's `RenamedEpisodeFile`).
+#[derive(Debug, Clone, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RenamedFile {
+    pub id: i64,
+    pub previous_relative_path: String,
+    pub previous_path: String,
+    pub relative_path: String,
+    pub path: String,
 }
 
 impl Event {
@@ -253,9 +274,9 @@ impl Event {
             Self::Grab(g) => Some(&g.series),
             Self::Download(d) => Some(&d.series),
             Self::SeriesAdd(s) => Some(s),
-            Self::SeriesDelete { series, .. } | Self::EpisodeFileDelete { series, .. } => {
-                Some(series)
-            }
+            Self::SeriesDelete { series, .. }
+            | Self::EpisodeFileDelete { series, .. }
+            | Self::Rename { series, .. } => Some(series),
             _ => None,
         }
     }
@@ -272,6 +293,7 @@ impl Event {
             Self::EpisodeFileDelete { .. } => "Episode Deleted",
             Self::HealthIssue(_) => "Health Check Failure",
             Self::HealthRestored(_) => "Health Check Restored",
+            Self::Rename { .. } => "Series Renamed",
         }
     }
 
@@ -311,6 +333,9 @@ impl Event {
                 &quality_string(series, &file.quality, file.quality_version),
             ),
             Self::HealthIssue(h) | Self::HealthRestored(h) => h.message.clone(),
+            Self::Rename { series, files } => {
+                format!("{}: {} files renamed", series.title, files.len())
+            }
         }
     }
 
@@ -325,6 +350,7 @@ impl Event {
             Self::EpisodeFileDelete { .. } => "onEpisodeFileDelete",
             Self::HealthIssue(_) => "onHealthIssue",
             Self::HealthRestored(_) => "onHealthRestored",
+            Self::Rename { .. } => "onRename",
         }
     }
 }
@@ -471,6 +497,9 @@ impl Notifier {
             "mediabrowser" | "jellyfin" => media::emby(self, s, event).await,
             "plexserver" => media::plex(self, s, event).await,
             "xbmc" => media::kodi(self, s, event).await,
+            "customscript" => script::run(s, event, instance).await,
+            "mailgun" => email::mailgun(self, s, event).await,
+            "sendgrid" => email::sendgrid(self, s, event).await,
             other => Err(NotifyError::Settings(format!(
                 "{other} notifications are not supported yet"
             ))),

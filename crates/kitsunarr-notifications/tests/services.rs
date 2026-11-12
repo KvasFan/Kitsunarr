@@ -326,3 +326,121 @@ async fn dispatch_skips_unwanted_and_survives_failures() {
     assert_eq!(paths, vec!["/ok"]);
     assert!(!supported("Twitter"));
 }
+
+#[test]
+fn custom_scripts_get_sonarrs_environment() {
+    let env = kitsunarr_notifications::script::environment(&download(), &instance());
+    assert_eq!(env["Sonarr_EventType"], "Download");
+    assert_eq!(env["Sonarr_Series_Title"], "Breaking Bad");
+    assert_eq!(env["Sonarr_Series_TvdbId"], "81189");
+    assert_eq!(env["Sonarr_EpisodeFile_EpisodeNumbers"], "1");
+    assert_eq!(env["Sonarr_EpisodeFile_Quality"], "HDTV-720p");
+    assert_eq!(env["Sonarr_Download_Client"], "SABnzbd");
+    assert_eq!(env["Sonarr_IsUpgrade"], "False");
+    let rename = Event::Rename {
+        series: Box::new(series()),
+        files: vec![RenamedFile {
+            id: 3,
+            previous_relative_path: "a.mkv".into(),
+            previous_path: "/tv/Breaking Bad/a.mkv".into(),
+            relative_path: "Season 01/b.mkv".into(),
+            path: "/tv/Breaking Bad/Season 01/b.mkv".into(),
+        }],
+    };
+    let env = kitsunarr_notifications::script::environment(&rename, &instance());
+    assert_eq!(env["Sonarr_EventType"], "Rename");
+    assert_eq!(env["Sonarr_EpisodeFile_PreviousRelativePaths"], "a.mkv");
+    assert_eq!(
+        env["Sonarr_EpisodeFile_Paths"],
+        "/tv/Breaking Bad/Season 01/b.mkv"
+    );
+}
+
+#[cfg(unix)]
+#[tokio::test]
+async fn custom_scripts_run_and_failures_are_reported() {
+    use std::os::unix::fs::PermissionsExt;
+    let dir = tempfile::tempdir().unwrap();
+    let out = dir.path().join("out.txt");
+    let script = dir.path().join("hook.sh");
+    std::fs::write(
+        &script,
+        format!(
+            "#!/bin/sh\necho \"$Sonarr_EventType $Sonarr_Series_Title $1\" > '{}'\n",
+            out.display()
+        ),
+    )
+    .unwrap();
+    std::fs::set_permissions(&script, std::fs::Permissions::from_mode(0o755)).unwrap();
+    let n = Notifier::default();
+    n.send(
+        &conn(
+            "CustomScript",
+            json!({"path": script.display().to_string(), "arguments": "extra"}),
+        ),
+        &download(),
+        &instance(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        std::fs::read_to_string(&out).unwrap().trim(),
+        "Download Breaking Bad extra"
+    );
+    let failing = dir.path().join("fail.sh");
+    std::fs::write(&failing, "#!/bin/sh\necho broken >&2\nexit 3\n").unwrap();
+    std::fs::set_permissions(&failing, std::fs::Permissions::from_mode(0o755)).unwrap();
+    let err = n
+        .send(
+            &conn(
+                "CustomScript",
+                json!({"path": failing.display().to_string()}),
+            ),
+            &Event::Test,
+            &instance(),
+        )
+        .await
+        .unwrap_err();
+    assert!(err.to_string().contains("broken"), "{err}");
+}
+
+#[tokio::test]
+async fn mailgun_and_sendgrid_mail_the_message() {
+    let (base, _port, log) = mock().await;
+    let n = Notifier::default();
+    n.send(
+        &conn("Mailgun", json!({"baseUrl": base, "apiKey": "mg-key", "senderDomain": "mg.example", "from": "k@mg.example", "recipients": ["me@example.org"]})),
+        &download(),
+        &instance(),
+    )
+    .await
+    .unwrap();
+    n.send(
+        &conn("SendGrid", json!({"baseUrl": base, "apiKey": "sg-key", "from": "k@example.org", "recipients": ["me@example.org", "you@example.org"]})),
+        &download(),
+        &instance(),
+    )
+    .await
+    .unwrap();
+    let seen = log.lock().unwrap().clone();
+    assert_eq!(seen[0].path, "/v3/mg.example/messages");
+    assert!(
+        seen[0].body.contains("to=me%40example.org"),
+        "{}",
+        seen[0].body
+    );
+    assert!(
+        seen[0].headers["authorization"]
+            .to_str()
+            .unwrap()
+            .starts_with("Basic ")
+    );
+    assert_eq!(seen[1].path, "/v3/mail/send");
+    assert_eq!(seen[1].headers["authorization"], "Bearer sg-key");
+    let body: Value = serde_json::from_str(&seen[1].body).unwrap();
+    assert_eq!(
+        body["personalizations"][0]["to"].as_array().unwrap().len(),
+        2
+    );
+    assert_eq!(body["subject"], "Kitsunarr - Episode Downloaded");
+}

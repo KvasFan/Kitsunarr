@@ -250,6 +250,15 @@ pub fn embed(s: &Map<String, Value>, event: &Event, instance: &Instance) -> Valu
                 Some(series),
             )
         }
+        Event::Rename { series, files } => {
+            thumbnail = series.poster().map(str::to_string);
+            (
+                series.title.clone(),
+                format!("{} files renamed", files.len()),
+                colors::STANDARD,
+                Some(series.as_ref()),
+            )
+        }
         Event::SeriesAdd(series) => {
             thumbnail = series.poster().map(str::to_string);
             (

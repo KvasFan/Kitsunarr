@@ -138,13 +138,16 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             let on = json!({
                 "onGrab": true, "onDownload": true, "onUpgrade": true, "onSeriesAdd": false,
                 "onSeriesDelete": false, "onEpisodeFileDelete": false, "onHealthIssue": false,
-                "includeHealthWarnings": false, "onHealthRestored": false
+                "includeHealthWarnings": false, "onHealthRestored": false, "onRename": false
             });
             let n = |name: &str, implementation: &str, settings: Value| {
                 template(kind, name, implementation, on.clone(), settings)
             };
             vec![
                 n("Webhook", "Webhook", json!({"url": "", "method": 1, "username": "", "password": "", "headers": []})),
+                n("Custom Script", "CustomScript", json!({"path": "", "arguments": ""})),
+                n("Mailgun", "Mailgun", json!({"apiKey": "", "useEuEndpoint": false, "from": "", "senderDomain": "", "recipients": []})),
+                n("SendGrid", "SendGrid", json!({"apiKey": "", "from": "", "recipients": []})),
                 n("Discord", "Discord", json!({"webHookUrl": "", "username": "", "avatar": "", "author": "",
                     "grabFields": [0, 1, 2, 3, 5, 6, 7, 8, 9], "importFields": [0, 1, 2, 3, 5, 6, 9, 10, 11, 12]})),
                 n("Telegram", "Telegram", json!({"botToken": "", "chatId": "", "topicId": "", "sendSilently": false, "includeAppNameInTitle": false})),

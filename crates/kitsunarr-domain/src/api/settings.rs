@@ -212,6 +212,9 @@ pub const NOTIFICATION_IMPLEMENTATIONS: &[&str] = &[
     "Jellyfin",
     "PlexServer",
     "Xbmc",
+    "CustomScript",
+    "Mailgun",
+    "SendGrid",
 ];
 
 /// Episode/folder naming configuration (Sonarr-compatible tokens).
