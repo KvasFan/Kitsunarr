@@ -605,6 +605,11 @@ pub async fn apply_metadata_keys(state: &AppState) -> ApiResult<()> {
     let s: MetadataSourcesSettings =
         kv::get_or_default(state.db.pool(), kv::KEY_METADATA_SOURCES).await?;
     state.metadata.set_api_keys(s.tmdb_api_key, s.omdb_api_key);
+    state
+        .metadata
+        .set_tvdb_language(&kitsunarr_library::metadata_language_code(
+            s.preferred_metadata_language,
+        ));
     Ok(())
 }
 
@@ -624,6 +629,7 @@ pub async fn get_metadata_sources(
     Ok(Json(MetadataSourcesSettings {
         tmdb_api_key: redact_key(&s.tmdb_api_key),
         omdb_api_key: redact_key(&s.omdb_api_key),
+        preferred_metadata_language: s.preferred_metadata_language,
     }))
 }
 
@@ -640,9 +646,19 @@ pub async fn put_metadata_sources(
         Some(k) => Some(k.trim().to_string()).filter(|k| !k.is_empty()),
         None => None,
     };
+    if let Some(id) = body.preferred_metadata_language
+        && kitsunarr_library::metadata_language_code(Some(id)) == "eng"
+        && id != 1
+    {
+        return Err(ApiError::field(
+            "preferredMetadataLanguage",
+            "TheTVDB has no titles in this language.",
+        ));
+    }
     let next = MetadataSourcesSettings {
         tmdb_api_key: keep(body.tmdb_api_key, stored.tmdb_api_key),
         omdb_api_key: keep(body.omdb_api_key, stored.omdb_api_key),
+        preferred_metadata_language: body.preferred_metadata_language,
     };
     kv::set(state.db.pool(), kv::KEY_METADATA_SOURCES, &next).await?;
     apply_metadata_keys(&state).await?;
@@ -650,6 +666,7 @@ pub async fn put_metadata_sources(
     Ok(Json(MetadataSourcesSettings {
         tmdb_api_key: redact_key(&next.tmdb_api_key),
         omdb_api_key: redact_key(&next.omdb_api_key),
+        preferred_metadata_language: next.preferred_metadata_language,
     }))
 }
 

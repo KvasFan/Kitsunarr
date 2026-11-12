@@ -100,6 +100,8 @@ pub struct SrcSeries {
     pub genres: Vec<String>,
     pub ratings: Option<Value>,
     pub original_language: Option<i32>,
+    /// Sonarr's `Series.Language`: the language TheTVDB titles are read in.
+    pub metadata_language: Option<i32>,
     pub quality_profile_id: i64,
     pub tags: Vec<i64>,
     pub added: Option<String>,

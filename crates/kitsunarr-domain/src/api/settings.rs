@@ -413,6 +413,9 @@ impl Default for IndexerOptionsSettings {
 pub struct MetadataSourcesSettings {
     pub tmdb_api_key: Option<String>,
     pub omdb_api_key: Option<String>,
+    /// Sonarr's "Preferred metadata language" (a language id; English when unset): the
+    /// language TheTVDB titles are searched and added in. Each series keeps its own.
+    pub preferred_metadata_language: Option<i32>,
 }
 
 /// Download client options (Sonarr's Settings › Download Clients: completed and failed

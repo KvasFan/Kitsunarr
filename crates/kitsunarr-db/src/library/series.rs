@@ -551,6 +551,7 @@ struct DetailRow {
     images: String,
     metadata_id: String,
     episode_ordering: Option<String>,
+    metadata_language: Option<i64>,
     monitor_new_items: String,
     season_folder: bool,
     use_scene_numbering: bool,
@@ -563,7 +564,7 @@ struct DetailRow {
 pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
     let item = get_list_item(db, id).await?;
     let d: DetailRow = sqlx::query_as(
-        "SELECT overview, runtime, certification, genres, images, metadata_id, episode_ordering, monitor_new_items, \
+        "SELECT overview, runtime, certification, genres, images, metadata_id, episode_ordering, metadata_language, monitor_new_items, \
          season_folder, use_scene_numbering, root_folder_path, first_aired, last_aired, last_refreshed_at FROM series WHERE id = ?",
     )
     .bind(id)
@@ -611,6 +612,7 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
             .collect(),
         alternate_titles,
         episode_ordering: d.episode_ordering,
+        metadata_language: d.metadata_language.map(|l| l as i32),
         monitor_new_items: d.monitor_new_items.parse().unwrap_or(MonitorNewItems::All),
         season_folder: d.season_folder,
         use_scene_numbering: d.use_scene_numbering,
@@ -761,6 +763,13 @@ pub async fn apply_update(db: &Database, id: i64, u: &SeriesUpdate) -> DbResult<
     if let Some(t) = u.series_type {
         sqlx::query("UPDATE series SET series_type = ? WHERE id = ?")
             .bind(t.as_str())
+            .bind(id)
+            .execute(&mut *tx)
+            .await?;
+    }
+    if let Some(l) = u.metadata_language {
+        sqlx::query("UPDATE series SET metadata_language = ? WHERE id = ?")
+            .bind(l)
             .bind(id)
             .execute(&mut *tx)
             .await?;

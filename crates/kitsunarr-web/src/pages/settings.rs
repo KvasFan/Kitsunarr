@@ -2798,7 +2798,7 @@ pub fn SettingsMetadata() -> Element {
             },
         }
         div { class: "card", style: "margin-top: var(--sp-4)",
-            h3 { "API keys" }
+            h3 { "API keys and language" }
             match keys() {
                 None => rsx! { Loading {} },
                 Some(k) => rsx! {
@@ -2810,6 +2810,14 @@ pub fn SettingsMetadata() -> Element {
                         Field { label: "OMDb API key", help: "Request one at omdbapi.com. Used for films by IMDb id.".to_string(),
                             input { class: "input", r#type: "password", autocomplete: "off", "aria-label": "OMDb API key", value: "{text(&k.omdb_api_key)}",
                                 oninput: move |e| { if let Some(x) = keys.write().as_mut() { x.omdb_api_key = value(e.value()); } } }
+                        }
+                        Field { label: "Preferred metadata language", help: "TheTVDB titles are searched and added in this language; each series can be changed in its editor.".to_string(),
+                            select { class: "select", "aria-label": "Preferred metadata language", value: "{k.preferred_metadata_language.unwrap_or(1)}",
+                                onchange: move |e: FormEvent| { if let Some(x) = keys.write().as_mut() { x.preferred_metadata_language = e.value().parse().ok(); } },
+                                for l in kitsunarr_domain::Language::all().iter().filter(|l| l.id > 0) {
+                                    option { key: "{l.id}", value: "{l.id}", "{l.name}" }
+                                }
+                            }
                         }
                     }
                     p { class: "help small faint", "Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one." }

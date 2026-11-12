@@ -26,6 +26,7 @@
 | Delay profiles, release profiles, remote path mappings, list exclusions | ✓ | ✓ | |
 | Naming and media-management settings | ✓ | ✓ (`Config` table) | Unmapped keys are preserved in `migration_unmapped`. |
 | Tanukarr retained episode versions (`RetainedVersions`) | — (not in the API) | ✓ | Rows, record snapshots and episodes; the archived files are left in `Plex Versions`. |
+| Metadata language (`PreferredMetadataLanguage`, `Series.Language`) | — (series language from v5 resources only) | ✓ | The preferred language and TheTVDB series' languages. |
 | Proxy (Settings › General) | ✓ (`/config/host`) | ✓ (`Config` table) | Type, host, port, credentials, bypass list and local bypass. |
 | History | ✓ (up to 100,000 newest) | ✓ (all) | |
 | Users and passwords | ✗ | ✗ | Kitsunarr creates its own administrator at first run. |

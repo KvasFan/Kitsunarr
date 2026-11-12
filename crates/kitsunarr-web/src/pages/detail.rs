@@ -255,6 +255,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     };
     let monitored = d.item.monitored;
     let update_monitored = update.clone();
+    let update_language = update.clone();
     let title = d.item.title.clone();
 
     rsx! {
@@ -289,6 +290,22 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     }
                     dt { "Metadata" }
                     dd { {d.last_refreshed_at.as_deref().map(|t| format!("refreshed {}", relative(t))).unwrap_or_else(|| "never refreshed".into())} }
+                    if d.item.metadata_provider == MetadataProvider::Tvdb {
+                        dt { "Metadata language" }
+                        dd {
+                            select { class: "select", "aria-label": "Metadata language", value: "{d.metadata_language.unwrap_or(1)}",
+                                title: "TheTVDB titles in this language; changing it refreshes the series",
+                                onchange: move |e: FormEvent| {
+                                    if let Ok(l) = e.value().parse::<i32>() {
+                                        update_language(SeriesUpdate { metadata_language: Some(l), ..Default::default() });
+                                    }
+                                },
+                                for l in kitsunarr_domain::Language::all().iter().filter(|l| l.id > 0) {
+                                    option { key: "{l.id}", value: "{l.id}", "{l.name}" }
+                                }
+                            }
+                        }
+                    }
                 }
                 div { class: "row", style: "margin-top: var(--sp-4)",
                     Switch {

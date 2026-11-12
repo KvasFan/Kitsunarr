@@ -57,8 +57,33 @@ pub async fn update_series(
     Path(id): Path<i64>,
     Json(update): Json<SeriesUpdate>,
 ) -> ApiResult<Json<SeriesDetail>> {
+    let before = series::get_detail(&state.db, id).await?;
+    if let Some(l) = update.metadata_language
+        && kitsunarr_library::metadata_language_code(Some(l)) == "eng"
+        && l != 1
+    {
+        return Err(ApiError::field(
+            "metadataLanguage",
+            "TheTVDB has no titles in this language.",
+        ));
+    }
     series::apply_update(&state.db, id, &update).await?;
     changed(&state, "series", vec![id], false);
+    // `SeriesEditedService`: a new language is read at once.
+    if update
+        .metadata_language
+        .is_some_and(|l| before.metadata_language.unwrap_or(1) != l)
+        && before.item.metadata_provider == kitsunarr_domain::MetadataProvider::Tvdb
+    {
+        let state = state.clone();
+        tokio::spawn(async move {
+            if let Err(e) = kitsunarr_library::refresh_series(&state.db, &state.metadata, id).await
+            {
+                tracing::warn!(series_id = id, error = %e, "refresh after a language change failed");
+            }
+            changed(&state, "series", vec![id], false);
+        });
+    }
     Ok(Json(series::get_detail(&state.db, id).await?))
 }
 

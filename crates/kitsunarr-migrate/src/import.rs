@@ -85,7 +85,8 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "proxypassword",
     "proxybypassfilter",
     "proxybypasslocaladdresses",
-    // Catalogue keys (Tanukarr).
+    // Catalogue keys (Tanukarr) and Sonarr's preferred metadata language.
+    "preferredmetadatalanguage",
     "tmdbapikey",
     "omdbapikey",
 ];
@@ -1478,12 +1479,9 @@ impl<'a> Importer<'a> {
             }
         }
         // Catalogue keys (Tanukarr's `tmdbapikey` and `omdbapikey` `Config` entries).
-        if let Some(cfg) = self
-            .snap
-            .media_management
-            .clone()
-            .filter(|r| r.has("tmdbapikey") || r.has("omdbapikey"))
-        {
+        if let Some(cfg) = self.snap.media_management.clone().filter(|r| {
+            r.has("tmdbapikey") || r.has("omdbapikey") || r.has("preferredmetadatalanguage")
+        }) {
             let current: MetadataSourcesSettings =
                 settings::get_or_default(&mut *conn, settings::KEY_METADATA_SOURCES).await?;
             let mut next = current.clone();
@@ -1492,6 +1490,9 @@ impl<'a> Importer<'a> {
             }
             if let Some(k) = cfg.str("omdbapikey").filter(|k| k != "********") {
                 next.omdb_api_key = Some(k);
+            }
+            if let Some(l) = cfg.i32("preferredmetadatalanguage").filter(|l| *l > 0) {
+                next.preferred_metadata_language = Some(l);
             }
             if next == current {
                 self.count("settings", Act::Skip);
@@ -1861,6 +1862,13 @@ impl<'a> Importer<'a> {
             };
             self.series_map.insert(s.id, target);
             self.remember(conn, "series", s.id, target).await?;
+            if s.identity().0 == MetadataProvider::Tvdb {
+                sqlx::query("UPDATE series SET metadata_language = ? WHERE id = ?")
+                    .bind(s.metadata_language.unwrap_or(1))
+                    .bind(target)
+                    .execute(&mut *conn)
+                    .await?;
+            }
             for (k, v) in &s.unmapped {
                 self.keep_unmapped("series", Some(s.id), k, v.clone());
             }

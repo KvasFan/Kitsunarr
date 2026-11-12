@@ -409,6 +409,7 @@ async fn sonarr_proxy_settings_are_imported() {
         ("proxypassword", "secret"),
         ("proxybypassfilter", "*.lan,192.168.0.0/16"),
         ("proxybypasslocaladdresses", "False"),
+        ("preferredmetadatalanguage", "2"),
     ] {
         config.insert(k.into(), v.into());
     }
@@ -442,6 +443,14 @@ async fn sonarr_proxy_settings_are_imported() {
             bypass_local_addresses: false,
         }
     );
+    let sources: kitsunarr_domain::api::settings::MetadataSourcesSettings =
+        kitsunarr_db::settings::get_or_default(
+            db.pool(),
+            kitsunarr_db::settings::KEY_METADATA_SOURCES,
+        )
+        .await
+        .unwrap();
+    assert_eq!(sources.preferred_metadata_language, Some(2));
 }
 
 #[tokio::test]
@@ -699,6 +708,14 @@ async fn tanukarr_retained_versions_are_imported() {
             .await
             .unwrap();
     assert_eq!(*series_id, breaking_bad);
+    // Tanukarr's `Series.Language` for a TheTVDB series.
+    let language: Option<i64> =
+        sqlx::query_scalar("SELECT metadata_language FROM series WHERE id = ?")
+            .bind(breaking_bad)
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert_eq!(language, Some(1));
     assert_eq!(
         relative,
         "Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-OLD.mkv"

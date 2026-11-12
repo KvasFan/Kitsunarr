@@ -353,7 +353,7 @@ Every title belongs to one catalogue (`metadata_provider`, `metadata_id`), as in
 
 Keys are stored in the settings table (`metadataSources`), migrated from Tanukarr's `tmdbapikey`/`omdbapikey`, redacted in API responses (the placeholder keeps a key), and applied to the clients at start-up and on save. A catalogue that needs a key is listed as unavailable: searches and refreshes say so, and the scheduled refresh skips its titles.
 
-Tanukarr's presentation enrichment (a missing overview or artwork from up to two other catalogues) and the ordering choice when adding a title were ported later (section 5 of the feature matrix). Not ported: TheTVDB languages other than English. TMDB, OMDb and Jikan are tested on their documented response shapes, not against the live services (no keys; Jikan was unreachable from the test network); SkyHook is tested on recorded responses and live.
+Tanukarr's presentation enrichment (a missing overview or artwork from up to two other catalogues) and the ordering choice when adding a title were ported later (section 5 of the feature matrix). TheTVDB languages followed later: the preferred metadata language and each series' language choose SkyHook's language segment (its ISO 639-2 code from Kitsunarr's ISO table; languages without one are refused). TMDB, OMDb and Jikan are tested on their documented response shapes, not against the live services (no keys; Jikan was unreachable from the test network); SkyHook is tested on recorded responses and live.
 
 ## 24. Notifications: Sonarr's services and payloads
 

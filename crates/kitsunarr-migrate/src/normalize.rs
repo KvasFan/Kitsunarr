@@ -386,7 +386,6 @@ fn series(r: &Rec, scene: &HashMap<i64, Vec<(String, Option<i32>)>>) -> Option<S
     for key in [
         "orderingid",
         "pendingpath",
-        "language",
         "animegroupfolder",
         "animegroupmemberfolder",
         "animegroupmoviefolderstyle",
@@ -469,6 +468,14 @@ fn series(r: &Rec, scene: &HashMap<i64, Vec<(String, Option<i32>)>>) -> Option<S
                 .and_then(|i| i32::try_from(i).ok()),
             _ => r.i32("originallanguage"),
         },
+        metadata_language: match r.raw("language") {
+            Some(Value::Object(o)) => o
+                .get("id")
+                .and_then(as_i64)
+                .and_then(|i| i32::try_from(i).ok()),
+            _ => r.i32("language"),
+        }
+        .filter(|l| *l > 0),
         quality_profile_id: r
             .i64("qualityprofileid")
             .or_else(|| r.i64("profileid"))

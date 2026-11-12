@@ -2364,6 +2364,72 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     assert_eq!(refreshed.added_episodes, 0);
     assert_eq!(refreshed.updated_episodes as usize, episodes.len());
 
+    // Sonarr's metadata language: the preferred one for searches and new series, each series
+    // its own (changing it refreshes in the new language).
+    assert_eq!(
+        client
+            .series_detail(added.id)
+            .await
+            .unwrap()
+            .metadata_language,
+        Some(1)
+    );
+    client
+        .put_metadata_sources(&kitsunarr_domain::api::settings::MetadataSourcesSettings {
+            preferred_metadata_language: Some(2),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    let bad = client
+        .put_metadata_sources(&kitsunarr_domain::api::settings::MetadataSourcesSettings {
+            preferred_metadata_language: Some(9999),
+            ..Default::default()
+        })
+        .await
+        .unwrap_err();
+    assert_eq!(status(bad), 422);
+    log.lock().unwrap().clear();
+    client
+        .metadata_search(&SearchQuery {
+            provider: MetadataProvider::Tvdb,
+            term: "Breaking Bad".into(),
+        })
+        .await
+        .unwrap();
+    assert_eq!(log.lock().unwrap().as_slice(), ["search fra breaking bad"]);
+    // The series keeps English until it is changed.
+    client.refresh_series(added.id).await.unwrap();
+    assert!(
+        log.lock()
+            .unwrap()
+            .contains(&"shows/eng/81189/official".to_string())
+    );
+    let changed = client
+        .update_series(
+            added.id,
+            &kitsunarr_domain::api::library::SeriesUpdate {
+                metadata_language: Some(2),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(changed.metadata_language, Some(2));
+    let mut refreshed_in_french = false;
+    for _ in 0..100 {
+        if log
+            .lock()
+            .unwrap()
+            .contains(&"shows/fra/81189/official".to_string())
+        {
+            refreshed_in_french = true;
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert!(refreshed_in_french, "{:?}", log.lock().unwrap());
+
     // TMDB and OMDb need the user's keys: unavailable, then available once a key is saved,
     // which never comes back in clear.
     let providers = client.metadata_providers().await.unwrap();
@@ -2384,6 +2450,7 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
         .put_metadata_sources(&kitsunarr_domain::api::settings::MetadataSourcesSettings {
             tmdb_api_key: Some("secret-key".into()),
             omdb_api_key: None,
+            ..Default::default()
         })
         .await
         .unwrap();

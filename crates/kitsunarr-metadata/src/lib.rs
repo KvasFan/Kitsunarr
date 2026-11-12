@@ -285,6 +285,12 @@ impl Metadata {
         self.omdb.set_api_key(omdb);
     }
 
+    /// Sonarr's preferred metadata language for TheTVDB (an ISO 639-2 code): searches and
+    /// titles without their own language.
+    pub fn set_tvdb_language(&self, code: &str) {
+        self.tvdb.set_language(code);
+    }
+
     pub fn supports(provider: MetadataProvider) -> bool {
         kitsunarr_domain::api::metadata::SUPPORTED_CATALOGUES.contains(&provider)
     }
@@ -398,12 +404,24 @@ impl Metadata {
         id: &str,
         ordering: Option<&str>,
     ) -> MetadataResult<SeriesInfo> {
+        self.series_ordered_in(provider, id, ordering, None).await
+    }
+
+    /// [`Self::series_ordered`] in a language (an ISO 639-2 code; only TheTVDB has titles in
+    /// several languages).
+    pub async fn series_ordered_in(
+        &self,
+        provider: MetadataProvider,
+        id: &str,
+        ordering: Option<&str>,
+        language: Option<&str>,
+    ) -> MetadataResult<SeriesInfo> {
         match provider {
             MetadataProvider::TvMaze => self.tvmaze.series(id).await,
             MetadataProvider::AniList => self.anilist.series(id).await,
             MetadataProvider::Tvdb => {
                 self.tvdb
-                    .series_ordered(id, ordering.unwrap_or("official"))
+                    .series_in(id, ordering.unwrap_or("official"), language)
                     .await
             }
             MetadataProvider::TmdbTv => self.tmdb.tv(id, ordering).await,
@@ -535,6 +553,17 @@ impl Metadata {
         id: &str,
         ordering: Option<&str>,
     ) -> MetadataResult<SeriesInfo> {
+        self.series_fresh_in(provider, id, ordering, None).await
+    }
+
+    /// [`Self::series_fresh`] in a language (TheTVDB).
+    pub async fn series_fresh_in(
+        &self,
+        provider: MetadataProvider,
+        id: &str,
+        ordering: Option<&str>,
+        language: Option<&str>,
+    ) -> MetadataResult<SeriesInfo> {
         match provider {
             MetadataProvider::TvMaze => self.tvmaze.forget(id),
             MetadataProvider::AniList => self.anilist.forget(id),
@@ -543,7 +572,8 @@ impl Metadata {
             MetadataProvider::MyAnimeList => self.jikan.forget(id),
             MetadataProvider::Omdb => self.omdb.forget(id),
         }
-        self.series_ordered(provider, id, ordering).await
+        self.series_ordered_in(provider, id, ordering, language)
+            .await
     }
 }
 

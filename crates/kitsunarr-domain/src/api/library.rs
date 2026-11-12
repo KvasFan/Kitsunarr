@@ -94,6 +94,9 @@ pub struct SeriesDetail {
     pub external_ids: Vec<ExternalId>,
     pub alternate_titles: Vec<String>,
     pub episode_ordering: Option<String>,
+    /// The language TheTVDB titles are read in (a language id; English when unset).
+    #[serde(default)]
+    pub metadata_language: Option<i32>,
     pub monitor_new_items: MonitorNewItems,
     pub season_folder: bool,
     pub use_scene_numbering: bool,
@@ -297,6 +300,9 @@ pub struct SeriesUpdate {
     pub tags: Option<Vec<i64>>,
     /// `(seasonNumber, monitored)` pairs.
     pub seasons: Option<Vec<SeasonMonitoring>>,
+    /// Sonarr's `Series.Language` for TheTVDB titles (a language id); changing it refreshes.
+    #[serde(default)]
+    pub metadata_language: Option<i32>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]

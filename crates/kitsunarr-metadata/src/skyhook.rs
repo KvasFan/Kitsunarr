@@ -3,9 +3,9 @@
 //! `SkyHookProxy` mapping (`MapSeries`, `MapEpisode`, `MapSeriesStatus`).
 //!
 //! Requests: `GET {base}/shows/{iso639-3}/{tvdbId}/{seasonType}` and
-//! `GET {base}/search/?language={iso639-3}&term={term}`. Titles are always asked for in English,
-//! as Sonarr does for series without a language preference; the season type is the title's
-//! episode ordering (`official`, `dvd`, `absolute`, `alternate`, ...).
+//! `GET {base}/search/?language={iso639-3}&term={term}`. Titles come in the series' metadata
+//! language, else the preferred one (Sonarr's `PreferredMetadataLanguage`, English by default);
+//! the season type is the title's episode ordering (`official`, `dvd`, `absolute`, ...).
 
 use std::time::Duration;
 
@@ -21,14 +21,17 @@ use crate::{
 
 const P: MetadataProvider = MetadataProvider::Tvdb;
 pub const DEFAULT_BASE: &str = "https://skyhook.sonarr.tv/v2/tvdb";
-const LANGUAGE: &str = "eng";
+const DEFAULT_LANGUAGE: &str = "eng";
 
 #[derive(Clone)]
 pub struct SkyHook {
     http: reqwest::Client,
     base: String,
     limiter: RateLimiter,
-    cache: TtlCache<SeriesInfo>,
+    /// Answers with the language they were asked in.
+    cache: TtlCache<(String, SeriesInfo)>,
+    /// The preferred language's ISO 639-2 code, for searches and series without one.
+    language: std::sync::Arc<std::sync::RwLock<String>>,
 }
 
 #[derive(Deserialize, Clone, Default)]
@@ -284,7 +287,30 @@ impl SkyHook {
             // SkyHook publishes no limit; stay polite.
             limiter: RateLimiter::new(10, Duration::from_secs(10)),
             cache: TtlCache::new(Duration::from_secs(600), 64),
+            language: std::sync::Arc::new(std::sync::RwLock::new(DEFAULT_LANGUAGE.into())),
         }
+    }
+
+    /// Sets the preferred language (an ISO 639-2 code; English when empty).
+    pub fn set_language(&self, code: &str) {
+        let code = code.trim().to_ascii_lowercase();
+        *self.language.write().unwrap_or_else(|e| e.into_inner()) = if code.len() == 3 {
+            code
+        } else {
+            DEFAULT_LANGUAGE.into()
+        };
+    }
+
+    fn language_or_preferred(&self, language: Option<&str>) -> String {
+        language
+            .map(|l| l.trim().to_ascii_lowercase())
+            .filter(|l| l.len() == 3)
+            .unwrap_or_else(|| {
+                self.language
+                    .read()
+                    .unwrap_or_else(|e| e.into_inner())
+                    .clone()
+            })
     }
 
     /// `SearchForNewSeries`: `tvdb:{id}` (or `tvdbid:`) looks the title up directly; other
@@ -305,10 +331,11 @@ impl SkyHook {
             };
         }
         let url = format!("{}/search/", self.base);
+        let language = self.language_or_preferred(None);
         let shows: Vec<Show> = send_json(P, &self.limiter, || {
             self.http
                 .get(&url)
-                .query(&[("language", LANGUAGE), ("term", lower.as_str())])
+                .query(&[("language", language.as_str()), ("term", lower.as_str())])
         })
         .await?;
         Ok(shows
@@ -351,15 +378,29 @@ impl SkyHook {
         self.series_ordered(id, "official").await
     }
 
-    /// `GetSeriesInfo(tvdbId, language, seasonType)`.
+    /// `GetSeriesInfo(tvdbId, language, seasonType)` in the preferred language.
     pub async fn series_ordered(&self, id: &str, season_type: &str) -> MetadataResult<SeriesInfo> {
+        self.series_in(id, season_type, None).await
+    }
+
+    /// `GetSeriesInfo(tvdbId, language, seasonType)`: `language` is an ISO 639-2 code (the
+    /// preferred language when `None`).
+    pub async fn series_in(
+        &self,
+        id: &str,
+        season_type: &str,
+        language: Option<&str>,
+    ) -> MetadataResult<SeriesInfo> {
         let season_type = if season_type.trim().is_empty() {
             "official"
         } else {
             season_type.trim()
         };
+        let language = self.language_or_preferred(language);
         let key = format!("{id}/{season_type}");
-        if let Some(hit) = self.cache.get(&key) {
+        if let Some((cached_language, hit)) = self.cache.get(&key)
+            && cached_language == language
+        {
             return Ok(hit);
         }
         let tvdb_id: i64 = id
@@ -368,7 +409,7 @@ impl SkyHook {
             .ok()
             .filter(|v| *v > 0)
             .ok_or(crate::MetadataError::NotFound(P))?;
-        let url = format!("{}/shows/{LANGUAGE}/{tvdb_id}/{season_type}", self.base);
+        let url = format!("{}/shows/{language}/{tvdb_id}/{season_type}", self.base);
         let show: Show = send_json(P, &self.limiter, || self.http.get(&url)).await?;
         if show.tvdb_id != tvdb_id {
             return Err(crate::MetadataError::Decode {
@@ -377,7 +418,7 @@ impl SkyHook {
             });
         }
         let info = map_show(show);
-        self.cache.insert(key, info.clone());
+        self.cache.insert(key, (language, info.clone()));
         Ok(info)
     }
 }

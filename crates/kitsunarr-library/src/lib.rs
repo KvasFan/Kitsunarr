@@ -165,6 +165,38 @@ fn ratings(info: &SeriesInfo) -> Option<serde_json::Value> {
 }
 
 /// Adds a title from a metadata catalogue.
+/// The ISO 639-2 code TheTVDB is asked in for a language id (English when unknown or when
+/// Kitsunarr's ISO table has none).
+pub fn metadata_language_code(language: Option<i32>) -> String {
+    language
+        .and_then(kitsunarr_domain::Language::by_id)
+        .and_then(kitsunarr_parser::iso_for)
+        .map(|iso| iso.three_letter.to_string())
+        .filter(|c| c.len() == 3)
+        .unwrap_or_else(|| "eng".into())
+}
+
+/// The preferred metadata language (Sonarr's `PreferredMetadataLanguage`).
+async fn preferred_metadata_language(db: &Database) -> Option<i32> {
+    kitsunarr_db::settings::get_or_default::<
+        kitsunarr_domain::api::settings::MetadataSourcesSettings,
+    >(db.pool(), kitsunarr_db::settings::KEY_METADATA_SOURCES)
+    .await
+    .ok()
+    .and_then(|s| s.preferred_metadata_language)
+}
+
+/// A series' TheTVDB language code (`Series.Language`).
+async fn series_language_code(db: &Database, id: i64) -> LibraryResult<String> {
+    let language: Option<i64> =
+        sqlx::query_scalar("SELECT metadata_language FROM series WHERE id = ?")
+            .bind(id)
+            .fetch_optional(db.pool())
+            .await?
+            .flatten();
+    Ok(metadata_language_code(language.map(|l| l as i32)))
+}
+
 pub async fn add_title(
     db: &Database,
     metadata: &Metadata,
@@ -196,8 +228,15 @@ pub async fn add_title(
         .as_deref()
         .map(str::trim)
         .filter(|o| !o.is_empty());
+    // Sonarr's `Series.Language`: TheTVDB titles in the preferred metadata language.
+    let language = preferred_metadata_language(db).await;
     let mut info = metadata
-        .series_ordered(req.provider, &req.id, ordering)
+        .series_ordered_in(
+            req.provider,
+            &req.id,
+            ordering,
+            Some(&metadata_language_code(language)),
+        )
         .await?;
     // Tanukarr's presentation enrichment (series only).
     if info.kind != EntryKind::Movie {
@@ -347,6 +386,13 @@ pub async fn add_title(
         },
     )
     .await?;
+    if req.provider == MetadataProvider::Tvdb {
+        sqlx::query("UPDATE series SET metadata_language = ? WHERE id = ?")
+            .bind(language.unwrap_or(1))
+            .bind(id)
+            .execute(&mut *tx)
+            .await?;
+    }
     let mut season_numbers: Vec<i32> = info
         .seasons
         .iter()
@@ -460,8 +506,9 @@ pub async fn set_episode_ordering(
         ));
     }
     // Read the new ordering first: a failure leaves the series untouched.
+    let language = series_language_code(db, id).await?;
     let info = metadata
-        .series_fresh(provider, &metadata_id, ordering.as_deref())
+        .series_fresh_in(provider, &metadata_id, ordering.as_deref(), Some(&language))
         .await?;
     let by_provider_id: HashMap<&str, (i32, i32)> = info
         .episodes
@@ -571,8 +618,9 @@ pub async fn refresh_series(
     if !Metadata::supports(provider) {
         return Err(LibraryError::Metadata(MetadataError::Unsupported(provider)));
     }
+    let language = series_language_code(db, id).await?;
     let mut info = metadata
-        .series_fresh(provider, &metadata_id, ordering.as_deref())
+        .series_fresh_in(provider, &metadata_id, ordering.as_deref(), Some(&language))
         .await?;
     // An empty answer keeps the overview and artwork the title had (Tanukarr), then the
     // presentation enrichment fills what is still missing.
