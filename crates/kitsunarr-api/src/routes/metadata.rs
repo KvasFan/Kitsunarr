@@ -192,6 +192,38 @@ pub async fn refresh_movie(
     Ok(StatusCode::NO_CONTENT)
 }
 
+#[derive(serde::Deserialize, utoipa::IntoParams)]
+pub struct OrderingQuery {
+    pub provider: kitsunarr_domain::MetadataProvider,
+    pub id: String,
+}
+
+/// The episode orderings a catalogue title offers before it is added (Tanukarr's ordering
+/// choice in the add dialog); empty for catalogues with one order.
+#[utoipa::path(get, path = "/metadata/orderings", tag = "metadata", params(OrderingQuery),
+    responses((status = 200, body = Vec<kitsunarr_domain::api::library::EpisodeOrderingItem>), (status = 502, body = ApiErrorBody)))]
+pub async fn catalogue_orderings(
+    State(state): State<AppState>,
+    axum::extract::Query(q): axum::extract::Query<OrderingQuery>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library::EpisodeOrderingItem>>> {
+    let orderings = state
+        .metadata
+        .orderings(q.provider, &q.id)
+        .await
+        .map_err(kitsunarr_library::LibraryError::from)?;
+    Ok(Json(
+        orderings
+            .into_iter()
+            .map(|o| kitsunarr_domain::api::library::EpisodeOrderingItem {
+                current: o.id.is_empty(),
+                id: o.id,
+                name: o.name,
+                description: o.description,
+            })
+            .collect(),
+    ))
+}
+
 /// The episode orderings the series' catalogue offers (TMDB episode groups, TheTVDB season
 /// types); empty for catalogues with one order.
 #[utoipa::path(get, path = "/series/{id}/orderings", tag = "metadata", params(("id" = i64, Path)),

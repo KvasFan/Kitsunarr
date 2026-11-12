@@ -189,7 +189,15 @@ pub async fn add_title(
             "One of the tags does not exist.",
         ));
     }
-    let info = metadata.series(req.provider, &req.id).await?;
+    // Tanukarr: an ordering chosen when adding numbers the episodes from the start.
+    let ordering = req
+        .episode_ordering
+        .as_deref()
+        .map(str::trim)
+        .filter(|o| !o.is_empty());
+    let info = metadata
+        .series_ordered(req.provider, &req.id, ordering)
+        .await?;
     if let Some(existing) = find_existing(db, req.provider, &req.id, &info.external_ids).await? {
         return Err(LibraryError::Exists(existing));
     }
@@ -284,7 +292,7 @@ pub async fn add_title(
             series_type,
             metadata_provider: info.provider,
             metadata_id: info.id.clone(),
-            episode_ordering: None,
+            episode_ordering: ordering.map(str::to_string),
             monitored: true,
             monitor_new_items: if req.monitor == MonitorOption::None {
                 MonitorNewItems::None

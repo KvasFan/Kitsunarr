@@ -76,6 +76,7 @@ async fn switching_to_an_episode_group_keeps_files_with_their_episodes() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         },
     )
     .await
@@ -146,4 +147,57 @@ async fn switching_to_an_episode_group_keeps_files_with_their_episodes() {
     .await
     .unwrap();
     assert_eq!(files, vec![(1, 3, Some(1)), (1, 4, Some(2))]);
+}
+
+/// Tanukarr's ordering choice when adding: the series is numbered by the group from the start.
+#[tokio::test]
+async fn a_series_can_be_added_in_an_episode_group() {
+    let app = axum::Router::new()
+        .route("/tv/{id}", get(show))
+        .route("/tv/{id}/season/{n}", get(season))
+        .route("/tv/{id}/episode_groups", get(groups))
+        .route("/tv/episode_group/{gid}", get(group));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let metadata = Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tmdb: format!("http://{addr}"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    );
+    metadata.set_api_keys(Some("key".into()), None);
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    kitsunarr_db::root_folders::create(db.pool(), "/media/tv", None)
+        .await
+        .unwrap();
+    let added = kitsunarr_library::add_title(
+        &db,
+        &metadata,
+        &AddTitleRequest {
+            provider: MetadataProvider::TmdbTv,
+            id: "100".into(),
+            root_folder_path: "/media/tv".into(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: Some("grp1".into()),
+        },
+    )
+    .await
+    .unwrap();
+    let (ordering, seasons): (Option<String>, i64) = sqlx::query_as(
+        "SELECT episode_ordering, (SELECT MAX(season_number) FROM episodes WHERE series_id = s.id) FROM series s WHERE id = ?",
+    )
+    .bind(added.id)
+    .fetch_one(db.pool())
+    .await
+    .unwrap();
+    assert_eq!((ordering.as_deref(), seasons), (Some("grp1"), 2));
 }

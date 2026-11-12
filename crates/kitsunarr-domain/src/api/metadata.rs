@@ -130,6 +130,10 @@ pub struct AddTitleRequest {
     /// episodes").
     #[serde(default)]
     pub search_for_missing: bool,
+    /// Tanukarr's ordering chosen when adding (a TMDB episode group, a TheTVDB season type);
+    /// `None` for the catalogue's default.
+    #[serde(default)]
+    pub episode_ordering: Option<String>,
 }
 
 fn default_true() -> bool {

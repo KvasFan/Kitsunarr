@@ -280,6 +280,28 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
     let mut tags = use_signal(Vec::<i64>::new);
     let mut busy = use_signal(|| false);
     let mut error = use_signal(|| None::<String>);
+    // Tanukarr: the episode ordering can be chosen when adding (TMDB episode groups, TheTVDB
+    // season types).
+    let mut ordering = use_signal(String::new);
+    let with_orderings = matches!(
+        item.provider,
+        kitsunarr_domain::MetadataProvider::TmdbTv | kitsunarr_domain::MetadataProvider::Tvdb
+    ) && !is_movie;
+    let c_ord = client.clone();
+    let (ord_provider, ord_id) = (item.provider, item.id.clone());
+    let orderings = use_resource(move || {
+        let c = c_ord.clone();
+        let id = ord_id.clone();
+        async move {
+            if with_orderings {
+                c.catalogue_orderings(ord_provider, &id)
+                    .await
+                    .unwrap_or_default()
+            } else {
+                Vec::new()
+            }
+        }
+    });
 
     // Preselect a root folder meant for this kind of title (else one not reserved for another
     // kind), and the first profile.
@@ -315,6 +337,7 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
             season_folder: season_folder(),
             tags: tags(),
             search_for_missing: !is_movie && search_missing(),
+            episode_ordering: Some(ordering()).filter(|o| !o.is_empty()),
         };
         let c = client.clone();
         let name = request_item.title.clone();
@@ -412,6 +435,16 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
                                         }
                                     },
                                     for (t, label) in SERIES_TYPES.iter() { option { key: "{t}", value: t.as_str(), "{label}" } }
+                                }
+                            }
+                            if let Some(list) = orderings.read().as_ref().filter(|l| l.len() > 1) {
+                                Field { label: "Episode order", help: "How the catalogue numbers the episodes (it can be changed later on the series page).".to_string(),
+                                    select {
+                                        class: "select",
+                                        value: ordering(),
+                                        onchange: move |e: FormEvent| ordering.set(e.value()),
+                                        for o in list.iter() { option { key: "{o.id}", value: "{o.id}", "{o.name}" } }
+                                    }
                                 }
                             }
                             Field { label: "Season folders",

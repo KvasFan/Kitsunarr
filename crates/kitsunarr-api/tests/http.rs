@@ -658,6 +658,7 @@ async fn catalogue_search_add_and_refresh() {
         season_folder: true,
         tags: vec![],
         search_for_missing: false,
+        episode_ordering: None,
     };
     match client.add_title(&add).await.unwrap_err() {
         ClientError::Api { status, body } => {
@@ -866,6 +867,7 @@ async fn indexer_test_and_interactive_search() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -1327,6 +1329,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -1914,6 +1917,7 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -2058,6 +2062,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -2302,6 +2307,7 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -2493,6 +2499,7 @@ async fn notifications_follow_series_grabs_and_imports() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -2590,6 +2597,7 @@ async fn disk_scan_rename_and_file_deletion() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -2766,6 +2774,7 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -2967,6 +2976,7 @@ async fn complete_series_search_reads_packs_of_the_series() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -3130,6 +3140,7 @@ async fn fake_torrents_are_rejected_before_grabbing() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();
@@ -3414,6 +3425,7 @@ async fn series_naming_options_round_trip_and_validate() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         })
         .await
         .unwrap();

@@ -264,6 +264,18 @@ impl Client {
     pub async fn update_series(&self, id: i64, u: &SeriesUpdate) -> ClientResult<SeriesDetail> {
         self.patch(&format!("/series/{id}"), u).await
     }
+    /// The orderings a catalogue title offers before it is added.
+    pub async fn catalogue_orderings(
+        &self,
+        provider: kitsunarr_domain::MetadataProvider,
+        id: &str,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library::EpisodeOrderingItem>> {
+        self.get_query(
+            "/metadata/orderings",
+            &[("provider", provider.as_str()), ("id", id)],
+        )
+        .await
+    }
     pub async fn series_orderings(
         &self,
         id: i64,

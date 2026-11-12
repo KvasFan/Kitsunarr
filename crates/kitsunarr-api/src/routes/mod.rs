@@ -100,6 +100,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(metadata::refresh_series))
         .routes(routes!(metadata::refresh_movie))
         .routes(routes!(metadata::series_orderings))
+        .routes(routes!(metadata::catalogue_orderings))
         .routes(routes!(metadata::set_series_ordering))
         // settings
         .routes(routes!(settings::list_tags, settings::create_tag))

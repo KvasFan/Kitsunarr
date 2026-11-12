@@ -71,6 +71,7 @@ async fn an_added_sequel_joins_its_franchise_group() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         },
     )
     .await
@@ -149,6 +150,7 @@ async fn an_added_tmdb_film_joins_its_collection_in_release_order() {
             season_folder: true,
             tags: vec![],
             search_for_missing: false,
+            episode_ordering: None,
         },
     )
     .await

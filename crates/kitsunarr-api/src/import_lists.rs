@@ -565,6 +565,7 @@ async fn process_items(
             season_folder: list.season_folder,
             tags: list.tags.clone(),
             search_for_missing: list.search_for_missing,
+            episode_ordering: None,
         };
         match kitsunarr_library::add_title(&state.db, &state.metadata, &req).await {
             Ok(r) => {
@@ -896,6 +897,7 @@ pub async fn add_selected(
             season_folder: true,
             tags: list.tags.clone(),
             search_for_missing: false,
+            episode_ordering: None,
         };
         match crate::routes::metadata::add(axum::extract::State(state.clone()), axum::Json(add))
             .await

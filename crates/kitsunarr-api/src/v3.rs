@@ -612,6 +612,7 @@ async fn add_series(
         season_folder: body.season_folder.unwrap_or(true),
         tags: body.tags.clone().unwrap_or_default(),
         search_for_missing: false,
+        episode_ordering: None,
     };
     let (_, Json(added)) = crate::routes::metadata::add(State(state.clone()), Json(req)).await?;
     // The request's season choices (Overseerr monitors the requested seasons only).
