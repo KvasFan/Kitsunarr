@@ -647,6 +647,45 @@ fn movie_search() {
         d(titles[2]).rejections[0].message,
         "Unable to parse release as a movie"
     );
+
+    // Tanukarr's collection packs: `{collection} {first}-{last}` stands for the film, with
+    // sizes judged by every film's runtime (a 30 GiB pack is too big for one film's limits).
+    let pack = kitsunarr_parser::movie::CollectionPack {
+        title: "The Matrix".into(),
+        movies: vec![
+            kitsunarr_parser::movie::PackMovie {
+                id: 42,
+                year: 1999,
+                runtime: 136,
+            },
+            kitsunarr_parser::movie::PackMovie {
+                id: 43,
+                year: 2003,
+                runtime: 138,
+            },
+            kitsunarr_parser::movie::PackMovie {
+                id: 44,
+                year: 2003,
+                runtime: 129,
+            },
+        ],
+    };
+    let pack_title = "The.Matrix.Complete.1999-2003.1080p.BluRay.x264-GRP";
+    let mut big = release(pack_title);
+    big.size = 30 * 1024 * 1024 * 1024;
+    let in_collection = kitsunarr_parser::movie::MovieCandidate {
+        collection: Some(&pack),
+        ..candidate.clone()
+    };
+    let packs = engine.evaluate_movie(std::slice::from_ref(&big), &criteria, &in_collection);
+    assert!(packs[0].approved(), "{:?}", packs[0].rejections);
+    assert_eq!(
+        packs[0].episodes.iter().map(|e| e.id).collect::<Vec<_>>(),
+        vec![42]
+    );
+    let alone = engine.evaluate_movie(std::slice::from_ref(&big), &criteria, &candidate);
+    // Without the collection it names another film ("The Matrix Complete").
+    assert_eq!(alone[0].rejections[0].message, "Wrong movie");
 }
 
 /// Tanukarr's collection numbering: a group's "Saga S02" is this member's season 1.

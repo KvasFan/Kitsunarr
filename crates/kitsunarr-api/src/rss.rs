@@ -617,5 +617,7 @@ fn film_candidate(
         year: f.year.unwrap_or(0) as i32,
         imdb_id: f.imdb_id.as_deref(),
         anime_catalogue: f.metadata_provider == "aniList" || f.metadata_provider == "myAnimeList",
+        // Collection packs are recognised by film searches only (Tanukarr's criteria).
+        collection: None,
     }
 }

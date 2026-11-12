@@ -98,7 +98,7 @@ async fn run_movie_search_as(
         titles.push(o);
     }
     titles.truncate(3);
-    let query_titles: Vec<String> = titles
+    let mut query_titles: Vec<String> = titles
         .iter()
         .map(|t| {
             if year > 0 {
@@ -108,6 +108,13 @@ async fn run_movie_search_as(
             }
         })
         .collect();
+    // Tanukarr's collection packs: `{collection} {first year}-{last year}` is searched too.
+    let pack = kitsunarr_library::decision_input::collection_pack(&state.db, movie_id).await?;
+    if let Some(p) = &pack {
+        let first = p.movies.iter().map(|m| m.year).min().unwrap_or(0);
+        let last = p.movies.iter().map(|m| m.year).max().unwrap_or(0);
+        query_titles.push(format!("{} {first}-{last}", p.title));
+    }
     let anime = matches!(
         detail.item.metadata_provider,
         MetadataProvider::AniList | MetadataProvider::MyAnimeList
@@ -188,6 +195,7 @@ async fn run_movie_search_as(
         year,
         imdb_id: imdb.as_deref(),
         anime_catalogue: anime,
+        collection: pack.as_ref(),
     };
     let criteria = decision::SearchCriteria {
         kind: SearchKind::Special,

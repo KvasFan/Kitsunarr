@@ -381,3 +381,42 @@ pub async fn movie_model(
         }],
     })
 }
+
+/// The film's collection whose packs stand for it (Tanukarr's `CollectionMovies`): the first
+/// collection holding it with 2 to 999 films that all have a year and a runtime.
+pub async fn collection_pack(
+    db: &Database,
+    movie_id: i64,
+) -> Result<Option<kitsunarr_parser::movie::CollectionPack>, kitsunarr_db::DbError> {
+    let collections: Vec<(i64, String)> = sqlx::query_as(
+        "SELECT c.id, c.title FROM collections c JOIN collection_members m ON m.collection_id = c.id \
+         WHERE m.movie_id = ? ORDER BY c.id",
+    )
+    .bind(movie_id)
+    .fetch_all(db.pool())
+    .await?;
+    for (id, title) in collections {
+        let movies: Vec<(i64, Option<i64>, Option<i64>)> = sqlx::query_as(
+            "SELECT mv.id, mv.year, mv.runtime FROM collection_members m JOIN movies mv ON mv.id = m.movie_id \
+             WHERE m.collection_id = ? ORDER BY m.position, mv.id",
+        )
+        .bind(id)
+        .fetch_all(db.pool())
+        .await?;
+        let pack = kitsunarr_parser::movie::CollectionPack {
+            title,
+            movies: movies
+                .into_iter()
+                .map(|(id, year, runtime)| kitsunarr_parser::movie::PackMovie {
+                    id,
+                    year: year.unwrap_or(0) as i32,
+                    runtime: runtime.unwrap_or(0) as i32,
+                })
+                .collect(),
+        };
+        if pack.is_valid() {
+            return Ok(Some(pack));
+        }
+    }
+    Ok(None)
+}

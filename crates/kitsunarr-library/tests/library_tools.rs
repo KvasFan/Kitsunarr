@@ -506,6 +506,7 @@ async fn film_downloads_are_imported() {
         client_name: "qBittorrent",
         client_implementation: "QBittorrent",
         move_files: false,
+        source: None,
     };
     let outcome = import_movie_download(&db, &d).await.unwrap();
     assert!(outcome.results.iter().any(|r| r.imported), "{outcome:?}");
@@ -554,6 +555,81 @@ async fn film_downloads_are_imported() {
         vec!["Not an upgrade for existing movie file(s)"]
     );
     assert!(imported.is_file());
+
+    // Tanukarr's collection packs: each film's file goes to that film; the pack is complete
+    // once every film of the collection has its file.
+    let reloaded_path = root.join("The Matrix Reloaded (2003)");
+    sqlx::query(
+        "INSERT INTO movies (id, title, sort_title, clean_title, title_slug, year, runtime, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at) VALUES (8, 'The Matrix Reloaded', 'matrix reloaded', \
+         'thematrixreloaded', 'the-matrix-reloaded', 2003, 138, 'tmdbMovie', '604', ?, ?, ?, '2026-11-01T00:00:00Z')",
+    )
+    .bind(profile)
+    .bind(root.display().to_string())
+    .bind(reloaded_path.display().to_string())
+    .execute(db.pool())
+    .await
+    .unwrap();
+    let pack = dir
+        .path()
+        .join("downloads/The.Matrix.Complete.1999-2003.2160p.UHD.BluRay.x265-GRP");
+    std::fs::create_dir_all(&pack).unwrap();
+    std::fs::write(
+        pack.join("The.Matrix.1999.2160p.UHD.BluRay.x265-GRP.mkv"),
+        vec![3u8; 5000],
+    )
+    .unwrap();
+    let grabs = vec![grab(
+        "The.Matrix.Complete.1999-2003.2160p.UHD.BluRay.x265-GRP",
+    )];
+    let pack_download = MovieDownload {
+        title: "The.Matrix.Complete.1999-2003.2160p.UHD.BluRay.x265-GRP",
+        output_path: &pack,
+        grabs: &grabs,
+        ..d
+    };
+    // Only the first film is in the pack yet: incomplete.
+    let partial =
+        kitsunarr_library::movie_import::import_collection_pack(&db, &pack_download, &[7, 8])
+            .await
+            .unwrap();
+    assert!(!partial.complete);
+    assert!(partial.films.iter().any(|(id, o)| *id == 8 && o.is_none()));
+    std::fs::write(
+        pack.join("The.Matrix.Reloaded.2003.2160p.UHD.BluRay.x265-GRP.mkv"),
+        vec![4u8; 6000],
+    )
+    .unwrap();
+    let full =
+        kitsunarr_library::movie_import::import_collection_pack(&db, &pack_download, &[7, 8])
+            .await
+            .unwrap();
+    assert!(full.complete, "{full:?}");
+    // The first film was imported by the partial run; now it is not an upgrade.
+    assert!(full.films.iter().any(|(id, o)| {
+        *id == 8
+            && o.as_ref()
+                .is_some_and(|o| o.results.iter().any(|r| r.imported))
+    }));
+    let quality = |id: i64| {
+        let db = &db;
+        async move {
+            kitsunarr_db::library::movies::get_detail(db, id)
+                .await
+                .unwrap()
+                .file
+                .unwrap()
+                .quality_name
+        }
+    };
+    assert_eq!(quality(7).await, "Bluray-2160p");
+    assert_eq!(quality(8).await, "Bluray-2160p");
+    assert_eq!(
+        std::fs::metadata(reloaded_path.join("The Matrix Reloaded (2003) Bluray-2160p.mkv"))
+            .unwrap()
+            .len(),
+        6000
+    );
 }
 
 /// A failed film download is recorded, blocklisted for the film and searched for again.

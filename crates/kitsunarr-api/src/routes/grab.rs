@@ -584,6 +584,16 @@ async fn finish(
         data["manualEpisodeMapping"] = serde_json::json!(true);
         data["manualEpisodeIds"] = serde_json::json!(cached.episode_ids);
     }
+    // Tanukarr's `MovieGrabContext`: a collection pack's films, each imported from it.
+    if let Some(movie_id) = cached.movie_id
+        && let Ok(Some(pack)) =
+            kitsunarr_library::decision_input::collection_pack(&state.db, movie_id).await
+        && kitsunarr_parser::movie::match_collection_pack(&r.release.title, &pack).is_some()
+    {
+        data["movieCollectionPack"] = serde_json::json!(true);
+        data["collectionMovieIds"] =
+            serde_json::json!(pack.movies.iter().map(|m| m.id).collect::<Vec<_>>());
+    }
     let mut conn = state
         .db
         .pool()

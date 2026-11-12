@@ -32,6 +32,8 @@ pub struct MovieDownload<'a> {
     pub client_name: &'a str,
     pub client_implementation: &'a str,
     pub move_files: bool,
+    /// The file to import (a collection pack's file for this film); else the largest video.
+    pub source: Option<&'a Path>,
 }
 
 fn err(e: impl std::fmt::Display) -> String {
@@ -43,6 +45,113 @@ fn is_sample(path: &Path) -> bool {
         .to_ascii_lowercase()
         .split(|c: char| !c.is_ascii_alphanumeric())
         .any(|w| w == "sample")
+}
+
+/// A film as the release matcher sees it: title, original title, year, IMDb id, anime.
+type Candidate = (String, Option<String>, i32, Option<String>, bool);
+
+async fn candidate_of(db: &Database, movie_id: i64) -> Option<Candidate> {
+    let detail = movies::get_detail(db, movie_id).await.ok()?;
+    let imdb = detail
+        .external_ids
+        .iter()
+        .find(|x| x.kind == kitsunarr_domain::ExternalIdKind::Imdb)
+        .map(|x| x.value.clone());
+    let anime = matches!(
+        detail.item.metadata_provider,
+        kitsunarr_domain::MetadataProvider::AniList
+            | kitsunarr_domain::MetadataProvider::MyAnimeList
+    );
+    Some((
+        detail.item.title.clone(),
+        None,
+        detail.item.year.unwrap_or(0),
+        imdb,
+        anime,
+    ))
+}
+
+/// What a collection pack's import did (Tanukarr's `VerifyMovieCoverage`).
+#[derive(Debug, Default)]
+pub struct PackOutcome {
+    /// Per film: its import outcome, or `None` when no file of the pack names it.
+    pub films: Vec<(i64, Option<Outcome>)>,
+    /// Every film of the collection has its feature now.
+    pub complete: bool,
+}
+
+/// Imports a collection pack: each film's file is the one video naming that film alone
+/// (`MovieReleaseParser.MatchUnique`), imported as the film's download. The pack is complete
+/// when every film of the collection has a file afterwards.
+pub async fn import_collection_pack(
+    db: &Database,
+    d: &MovieDownload<'_>,
+    members: &[i64],
+) -> Result<PackOutcome, String> {
+    let files: Vec<PathBuf> = if d.output_path.is_dir() {
+        video_files(d.output_path)
+    } else {
+        vec![d.output_path.to_path_buf()]
+    };
+    let mut candidates = Vec::new();
+    for &id in members {
+        if let Some(c) = candidate_of(db, id).await {
+            candidates.push((id, c));
+        }
+    }
+    fn matcher(c: &Candidate) -> kitsunarr_parser::movie::MovieCandidate<'_> {
+        kitsunarr_parser::movie::MovieCandidate {
+            title: &c.0,
+            original_title: c.1.as_deref(),
+            alternate_titles: &[],
+            year: c.2,
+            imdb_id: c.3.as_deref(),
+            anime_catalogue: c.4,
+            collection: None,
+        }
+    }
+    let mut out = PackOutcome::default();
+    for (id, c) in &candidates {
+        // The film's file: one video names it, and that video names no other film.
+        let mine: Vec<&PathBuf> = files
+            .iter()
+            .filter(|f| !is_sample(f))
+            .filter(|f| {
+                let name = f.to_string_lossy();
+                kitsunarr_parser::movie::match_movie(&name, &matcher(c)).is_some()
+                    && candidates
+                        .iter()
+                        .filter(|(other, _)| other != id)
+                        .all(|(_, o)| {
+                            kitsunarr_parser::movie::match_movie(&name, &matcher(o)).is_none()
+                        })
+            })
+            .collect();
+        let [file] = mine.as_slice() else {
+            out.films.push((*id, None));
+            continue;
+        };
+        let outcome = import_movie_download(
+            db,
+            &MovieDownload {
+                movie_id: *id,
+                source: Some(file),
+                ..*d
+            },
+        )
+        .await?;
+        out.films.push((*id, Some(outcome)));
+    }
+    let mut complete = !members.is_empty();
+    for &id in members {
+        let has_file = movies::get_detail(db, id)
+            .await
+            .map(|m| m.file.is_some())
+            .unwrap_or(false);
+        complete &= has_file;
+    }
+    out.complete = complete;
+    Ok(out)
 }
 
 /// Imports a finished film download.
@@ -66,12 +175,15 @@ pub async fn import_movie_download(
     } else {
         vec![d.output_path.to_path_buf()]
     };
-    let Some(source) = files
-        .iter()
-        .filter(|p| !is_sample(p))
-        .max_by_key(|p| std::fs::metadata(p).map(|m| m.len()).unwrap_or(0))
-        .cloned()
-    else {
+    let chosen = match d.source {
+        Some(p) => Some(p.to_path_buf()),
+        None => files
+            .iter()
+            .filter(|p| !is_sample(p))
+            .max_by_key(|p| std::fs::metadata(p).map(|m| m.len()).unwrap_or(0))
+            .cloned(),
+    };
+    let Some(source) = chosen else {
         return Ok(Outcome {
             results: Vec::new(),
             blocked: None,

@@ -143,39 +143,54 @@ impl Engine<'_> {
         criteria: &SearchCriteria,
         movie: &kitsunarr_parser::movie::MovieCandidate<'_>,
     ) -> Vec<Decision> {
+        // Tanukarr's collection packs: sizes are judged by every film's runtime together.
+        let pack_series = movie.collection.map(|pack| {
+            let mut s = self.series.clone();
+            s.runtime = pack.runtime();
+            for e in &mut s.episodes {
+                e.runtime = pack.runtime();
+            }
+            s
+        });
+        let as_episode = |m: kitsunarr_parser::movie::ParsedMovie, r: &Release| ParsedEpisodeInfo {
+            release_title: r.title.clone(),
+            series_title: m.title.clone(),
+            series_title_info: kitsunarr_parser::SeriesTitleInfo {
+                title: m.title.clone(),
+                title_without_year: m.title.clone(),
+                year: m.year,
+                all_titles: None,
+            },
+            quality: m.quality,
+            languages: m.languages,
+            release_group: m.release_group,
+            season_numbers: vec![1],
+            episode_numbers: vec![1],
+            ..Default::default()
+        };
         releases
             .iter()
             .enumerate()
-            .map(
-                |(i, r)| match kitsunarr_parser::movie::match_movie(&r.title, movie) {
-                    Some(m) => {
-                        let parsed = ParsedEpisodeInfo {
-                            release_title: r.title.clone(),
-                            series_title: m.title.clone(),
-                            series_title_info: kitsunarr_parser::SeriesTitleInfo {
-                                title: m.title.clone(),
-                                title_without_year: m.title.clone(),
-                                year: m.year,
-                                all_titles: None,
-                            },
-                            quality: m.quality,
-                            languages: m.languages,
-                            release_group: m.release_group,
-                            season_numbers: vec![1],
-                            episode_numbers: vec![1],
-                            ..Default::default()
-                        };
-                        self.decide_mapped(criteria, i, r, parsed)
-                    }
-                    None if kitsunarr_parser::movie::parse_movie(&r.title).is_some() => self
-                        .rejected(
-                            i,
-                            r,
-                            None,
-                            None,
-                            Rejection::new(RejectionReason::WrongSeries, "Wrong movie"),
-                        ),
-                    None => self.rejected(
+            .map(|(i, r)| {
+                if let Some(m) = kitsunarr_parser::movie::match_movie(&r.title, movie) {
+                    return self.decide_mapped(criteria, i, r, as_episode(m, r));
+                }
+                if let (Some(pack), Some(series)) = (movie.collection, pack_series.as_ref())
+                    && let Some(m) = kitsunarr_parser::movie::match_collection_pack(&r.title, pack)
+                {
+                    let engine = Engine { series, ..*self };
+                    return engine.decide_mapped(criteria, i, r, as_episode(m, r));
+                }
+                if kitsunarr_parser::movie::parse_movie(&r.title).is_some() {
+                    self.rejected(
+                        i,
+                        r,
+                        None,
+                        None,
+                        Rejection::new(RejectionReason::WrongSeries, "Wrong movie"),
+                    )
+                } else {
+                    self.rejected(
                         i,
                         r,
                         None,
@@ -184,9 +199,9 @@ impl Engine<'_> {
                             RejectionReason::UnableToParse,
                             "Unable to parse release as a movie",
                         ),
-                    ),
-                },
-            )
+                    )
+                }
+            })
             .collect()
     }
 

@@ -568,7 +568,15 @@ impl Monitor {
                     .find(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
                     .and_then(|g| kitsunarr_parser::parse_title(&g.source_title))
                     .is_some_and(|p| p.is_multi_season());
-                if done.contains(&item.download_id.to_ascii_uppercase()) {
+                // A collection pack is done only once every film has its file (checked below).
+                let collection_pack = grabs
+                    .iter()
+                    .filter(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
+                    .any(|g| {
+                        serde_json::from_str::<serde_json::Value>(&g.data)
+                            .is_ok_and(|d| d["movieCollectionPack"] == serde_json::json!(true))
+                    });
+                if done.contains(&item.download_id.to_ascii_uppercase()) && !collection_pack {
                     self.set(&item.download_id, State::Imported, Vec::new());
                     // `DownloadCanBeRemovedEvent`: seeding finished after the import.
                     if remove_completed && item.can_be_removed && !multi_season {
@@ -594,6 +602,74 @@ impl Monitor {
                     };
                     let local = PathBuf::from(remap(&mappings, settings.host(), output));
                     self.set(&item.download_id, State::Importing, Vec::new());
+                    // Tanukarr's collection packs: each film of the collection from its file.
+                    let pack_members: Option<Vec<i64>> = mine.iter().find_map(|g| {
+                        let data: serde_json::Value = serde_json::from_str(&g.data).ok()?;
+                        (data["movieCollectionPack"] == serde_json::json!(true))
+                            .then(|| {
+                                serde_json::from_value(data["collectionMovieIds"].clone()).ok()
+                            })
+                            .flatten()
+                    });
+                    if let Some(members) = pack_members {
+                        let pack = crate::movie_import::import_collection_pack(
+                            db,
+                            &crate::movie_import::MovieDownload {
+                                download_id: &item.download_id,
+                                title: &item.title,
+                                output_path: &local,
+                                movie_id,
+                                grabs: &mine,
+                                client_name: &client.name,
+                                client_implementation: &client.implementation,
+                                move_files: false,
+                                source: None,
+                            },
+                            &members,
+                        )
+                        .await
+                        .inspect_err(|e| {
+                            self.set(&item.download_id, State::ImportPending, vec![e.clone()]);
+                        })?;
+                        let mut messages = Vec::new();
+                        for (film, outcome) in &pack.films {
+                            match outcome {
+                                None => messages
+                                    .push(format!("No single file of the pack names film {film}.")),
+                                Some(o) => {
+                                    for r in o.results.iter().filter(|r| r.imported) {
+                                        if let (Some(f), Some((series, feature))) = (
+                                            &r.imported_file,
+                                            crate::notify::movie_refs(db, *film).await,
+                                        ) {
+                                            self.notify_movie_import(
+                                                db, series, feature, f, &item, client, &mine,
+                                            )
+                                            .await;
+                                        }
+                                    }
+                                    messages.extend(o.blocked.clone());
+                                    messages
+                                        .extend(o.results.iter().flat_map(|r| r.errors.clone()));
+                                }
+                            }
+                        }
+                        if pack.complete {
+                            if let Err(e) = self
+                                .clients
+                                .mark_imported(&settings, &item.download_id)
+                                .await
+                            {
+                                tracing::warn!(error = %e, "could not set the post-import category");
+                            }
+                            self.set(&item.download_id, State::Imported, Vec::new());
+                            imported += 1;
+                        } else {
+                            self.set(&item.download_id, State::ImportBlocked, messages);
+                            blocked += 1;
+                        }
+                        continue;
+                    }
                     let outcome = crate::movie_import::import_movie_download(
                         db,
                         &crate::movie_import::MovieDownload {
@@ -605,6 +681,7 @@ impl Monitor {
                             client_name: &client.name,
                             client_implementation: &client.implementation,
                             move_files: settings.is_usenet(),
+                            source: None,
                         },
                     )
                     .await

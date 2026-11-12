@@ -3,8 +3,8 @@
 //! `ffprobe` (or `KITSUNARR_FFPROBE`) is run with Sonarr's arguments: a 50 MB probe, again with
 //! 150 MB and a longer analysis when the first audio stream's channel layout is unknown, and the
 //! first video frame's side data when the transfer function is PQ (to tell HDR10, HDR10+ and
-//! Dolby Vision apart). Without ffprobe, files simply have no media information. Unlike Sonarr,
-//! the raw ffprobe output is not stored.
+//! Dolby Vision apart). Without ffprobe, or for a file without a video stream, there is no
+//! media information. Unlike Sonarr, the raw ffprobe output is not stored.
 
 use std::path::Path;
 use std::time::Duration;
@@ -117,6 +117,12 @@ pub async fn read(path: &Path) -> Option<MediaInfo> {
         }
         _ => None,
     };
+    // ffprobe reads some non-video data as a stream-less container: no media information
+    // (it would otherwise be a zero-length "sample").
+    if primary_video(&probe).is_none() {
+        tracing::debug!(path = %path.display(), "no video stream: no media info");
+        return None;
+    }
     let info = from_ffprobe(&probe, frames.as_ref());
     tracing::debug!(path = %path.display(), "media info read");
     Some(info)
