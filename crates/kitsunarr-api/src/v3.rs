@@ -65,6 +65,8 @@ pub fn router() -> Router<AppState> {
             get(get_indexer).put(update_indexer).delete(delete_indexer),
         )
         .route("/release/push", post(push_release))
+        .route("/wanted/missing", get(wanted_missing))
+        .route("/wanted/cutoff", get(wanted_cutoff))
         .route("/history", get(history))
         .route("/history/series", get(history_of_series))
         .route("/history/since", get(history_since))
@@ -1727,4 +1729,90 @@ async fn notification(
 ) -> ApiResult<Json<Value>> {
     let p = providers::get(state.db.pool(), ProviderKind::Notification, id).await?;
     Ok(Json(provider_json(&p)))
+}
+
+// ---- wanted ---------------------------------------------------------------------------------
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct V3WantedQuery {
+    page: Option<u32>,
+    page_size: Option<u32>,
+    sort_direction: Option<String>,
+    monitored: Option<bool>,
+    include_series: Option<bool>,
+}
+
+impl V3WantedQuery {
+    fn native(&self) -> kitsunarr_domain::api::wanted::WantedQuery {
+        use kitsunarr_domain::paging::SortDirection;
+        kitsunarr_domain::api::wanted::WantedQuery {
+            page: self.page,
+            page_size: self.page_size,
+            sort_direction: match self.sort_direction.as_deref() {
+                Some("ascending" | "asc") => Some(SortDirection::Asc),
+                Some("descending" | "desc") => Some(SortDirection::Desc),
+                _ => None,
+            },
+            monitored: self.monitored,
+        }
+    }
+}
+
+async fn wanted_json(
+    state: &AppState,
+    q: &V3WantedQuery,
+    page: kitsunarr_domain::Page<kitsunarr_domain::api::wanted::WantedEpisode>,
+) -> ApiResult<Value> {
+    let mut series_cache: std::collections::HashMap<i64, Value> = std::collections::HashMap::new();
+    let mut records = Vec::new();
+    for w in &page.records {
+        let mut r = json!({
+            "id": w.episode_id,
+            "seriesId": w.series_id,
+            "tvdbId": 0,
+            "seasonNumber": w.season_number,
+            "episodeNumber": w.episode_number,
+            "absoluteEpisodeNumber": w.absolute_episode_number,
+            "title": w.title,
+            "airDateUtc": w.air_date_utc,
+            "airDate": w.air_date_utc.as_deref().map(|d| d.chars().take(10).collect::<String>()),
+            "monitored": w.monitored,
+            "hasFile": w.quality_name.is_some(),
+            "lastSearchTime": w.last_search_at,
+        });
+        if q.include_series.unwrap_or(false) {
+            if let std::collections::hash_map::Entry::Vacant(slot) = series_cache.entry(w.series_id)
+            {
+                slot.insert(series_json(&detail(state, w.series_id).await?));
+            }
+            r["series"] = series_cache[&w.series_id].clone();
+        }
+        records.push(r);
+    }
+    Ok(json!({
+        "page": page.page, "pageSize": page.page_size, "sortKey": "airDateUtc",
+        "sortDirection": if q.sort_direction.as_deref() == Some("ascending") { "ascending" } else { "descending" },
+        "totalRecords": page.total_records, "records": records,
+    }))
+}
+
+/// `GET /wanted/missing` (LunaSea, nzb360).
+async fn wanted_missing(
+    State(state): State<AppState>,
+    Query(q): Query<V3WantedQuery>,
+) -> ApiResult<Json<Value>> {
+    let Json(page) =
+        crate::routes::wanted::missing(State(state.clone()), Query(q.native())).await?;
+    Ok(Json(wanted_json(&state, &q, page).await?))
+}
+
+/// `GET /wanted/cutoff`.
+async fn wanted_cutoff(
+    State(state): State<AppState>,
+    Query(q): Query<V3WantedQuery>,
+) -> ApiResult<Json<Value>> {
+    let Json(page) =
+        crate::routes::wanted::cutoff_unmet(State(state.clone()), Query(q.native())).await?;
+    Ok(Json(wanted_json(&state, &q, page).await?))
 }

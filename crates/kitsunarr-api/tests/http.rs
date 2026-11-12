@@ -3739,6 +3739,20 @@ async fn sonarr_v3_api_serves_overseerr_and_prowlarr_flows() {
     assert!(clients.is_array());
     let connections: Value = get("/notification").await.unwrap().json().await.unwrap();
     assert!(connections.is_array());
+    let missing: Value =
+        get("/wanted/missing?page=1&pageSize=10&sortDirection=ascending&includeSeries=true")
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
+    assert_eq!(missing["sortDirection"], "ascending");
+    assert!(missing["records"].is_array(), "{missing}");
+    if let Some(first) = missing["records"].as_array().unwrap().first() {
+        assert_eq!(first["series"]["title"], "Breaking Bad");
+    }
+    let cutoff = get("/wanted/cutoff").await.unwrap();
+    assert_eq!(cutoff.status(), 200);
 }
 
 /// Companion app keys reach only the Sonarr v3 library reads (and adds, with that permission).
