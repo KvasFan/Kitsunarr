@@ -436,6 +436,85 @@ impl AniList {
     }
 }
 
+/// An anime's format, title and its PREQUEL/SEQUEL/PARENT/SIDE_STORY relations (Tanukarr's
+/// `AniListProxy.GetAnimeRelations`), for grouping a franchise.
+pub async fn relations(client: &AniList, id: i64) -> MetadataResult<crate::AnimeNode> {
+    #[derive(serde::Deserialize, Default)]
+    #[serde(default)]
+    struct Title {
+        english: Option<String>,
+        romaji: Option<String>,
+    }
+    #[derive(serde::Deserialize, Default)]
+    #[serde(default)]
+    struct Node {
+        id: i64,
+        #[serde(rename = "type")]
+        kind: Option<String>,
+        format: Option<String>,
+        title: Title,
+    }
+    #[derive(serde::Deserialize, Default)]
+    #[serde(default, rename_all = "camelCase")]
+    struct Edge {
+        relation_type: Option<String>,
+        node: Node,
+    }
+    #[derive(serde::Deserialize, Default)]
+    #[serde(default)]
+    struct Edges {
+        edges: Vec<Edge>,
+    }
+    #[derive(serde::Deserialize, Default)]
+    #[serde(default)]
+    struct Media {
+        id: i64,
+        format: Option<String>,
+        title: Title,
+        relations: Edges,
+    }
+    #[derive(serde::Deserialize, Default)]
+    #[serde(default)]
+    struct Data {
+        #[serde(rename = "Media")]
+        media: Option<Media>,
+    }
+    let q = "query ($id: Int) { Media(id: $id, type: ANIME) { id format title { english romaji } relations { edges { relationType(version: 2) node { id type format title { english romaji } } } } } }";
+    let data: Data = client.query(q, json!({ "id": id })).await?;
+    let m = data.media.ok_or(MetadataError::NotFound(P))?;
+    let title = |t: &Title| {
+        t.english
+            .clone()
+            .filter(|s| !s.trim().is_empty())
+            .or_else(|| t.romaji.clone())
+            .unwrap_or_default()
+    };
+    Ok(crate::AnimeNode {
+        id: m.id,
+        format: m.format.unwrap_or_default(),
+        title: title(&m.title),
+        relations: m
+            .relations
+            .edges
+            .into_iter()
+            .filter(|e| e.node.kind.as_deref() == Some("ANIME") && e.node.id > 0)
+            .filter_map(|e| {
+                let kind = e.relation_type?;
+                matches!(
+                    kind.as_str(),
+                    "PREQUEL" | "SEQUEL" | "PARENT" | "SIDE_STORY"
+                )
+                .then(|| crate::AnimeRelation {
+                    kind,
+                    id: e.node.id,
+                    format: e.node.format.clone().unwrap_or_default(),
+                    title: title(&e.node.title),
+                })
+            })
+            .collect(),
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

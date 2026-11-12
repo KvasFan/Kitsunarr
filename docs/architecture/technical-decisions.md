@@ -531,3 +531,14 @@ TMDB's default as no ordering.
 - **Not ported:** the scene-vs-aired `EpisodeNumberingResolver`. It only acts on series with
   scene numbering from TheXEM or Sonarr's scene-mapping feed, which Kitsunarr does not consume
   (Tanukarr itself blocks Sonarr's feed).
+
+## 33. Automatic grouping into collections
+
+Tanukarr stores group membership on series rows; Kitsunarr keeps it in `collections` and
+`collection_members`, which migrated groups already use. When a title is added, a background
+task (the walk can cost up to 16 rate-limited AniList requests) resolves its group once:
+AniList titles by Tanukarr's `AnimeGroupingResolver` rules (eligible formats TV, TV short, ONA
+and film; prequels must list the title as their only sequel of its kind; a prequel that is
+another prequel's reciprocal side story is ignored; ambiguity leaves the title ungrouped), TMDB
+films by their TMDB collection. Members never move and folders are not derived from groups:
+paths stay as the naming settings make them.

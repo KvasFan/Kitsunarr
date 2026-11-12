@@ -80,6 +80,35 @@ pub struct EpisodeInfo {
     pub provider_episode_id: Option<String>,
 }
 
+/// A TMDB film collection, its films ordered by release date.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MovieCollection {
+    pub id: i64,
+    pub name: String,
+    pub overview: Option<String>,
+    /// TMDB movie ids.
+    pub parts: Vec<i64>,
+}
+
+/// An anime and its franchise relations (for automatic grouping).
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct AnimeNode {
+    pub id: i64,
+    /// `TV`, `TV_SHORT`, `ONA`, `MOVIE`, `OVA`, `SPECIAL`, ...
+    pub format: String,
+    pub title: String,
+    pub relations: Vec<AnimeRelation>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct AnimeRelation {
+    /// `PREQUEL`, `SEQUEL`, `PARENT` or `SIDE_STORY`.
+    pub kind: String,
+    pub id: i64,
+    pub format: String,
+    pub title: String,
+}
+
 /// An episode ordering a catalogue offers for a series (`id` is stored in
 /// `series.episode_ordering`; the empty id is the catalogue's default order).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -383,6 +412,16 @@ impl Metadata {
     }
 
     /// Like [`Self::series_ordered`] but bypasses the in-memory cache (used by refreshes).
+    /// The TMDB collection a TMDB film belongs to.
+    pub async fn movie_collection(&self, id: &str) -> MetadataResult<Option<MovieCollection>> {
+        self.tmdb.movie_collection(id).await
+    }
+
+    /// An AniList anime with its franchise relations.
+    pub async fn anime_relations(&self, id: i64) -> MetadataResult<AnimeNode> {
+        anilist::relations(&self.anilist, id).await
+    }
+
     /// The episode orderings a series can use: TMDB episode groups, TheTVDB season types. Other
     /// catalogues have one order (an empty list).
     pub async fn orderings(

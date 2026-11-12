@@ -9,6 +9,7 @@ pub mod downloads;
 pub mod failed;
 pub mod file_names;
 pub mod files;
+pub mod grouping;
 pub mod import;
 pub mod jellyfin;
 pub mod jellyfin_refresh;
@@ -232,6 +233,7 @@ pub async fn add_title(
         )
         .await?;
         tracing::info!(title = %info.title, provider = %info.provider, "movie added");
+        spawn_grouping(db, metadata, req.provider, grouping::Member::Movie(id));
         return Ok(LibraryRef {
             media_type: "movie".into(),
             id,
@@ -355,10 +357,29 @@ pub async fn add_title(
     }
     tx.commit().await?;
     tracing::info!(title = %info.title, provider = %info.provider, episodes = info.episodes.len(), "series added");
+    spawn_grouping(db, metadata, req.provider, grouping::Member::Series(id));
     Ok(LibraryRef {
         media_type: "series".into(),
         id,
     })
+}
+
+/// Groups a new AniList title into its franchise, or a TMDB film into its collection, in the
+/// background (the relation walk can take many rate-limited requests).
+fn spawn_grouping(
+    db: &Database,
+    metadata: &Metadata,
+    provider: MetadataProvider,
+    member: grouping::Member,
+) {
+    if !matches!(
+        provider,
+        MetadataProvider::AniList | MetadataProvider::TmdbMovie
+    ) {
+        return;
+    }
+    let (db, metadata) = (db.clone(), metadata.clone());
+    tokio::spawn(async move { grouping::group_new_title(&db, &metadata, member).await });
 }
 
 /// Switches a series to another episode ordering (a TMDB episode group, a TheTVDB season type;

@@ -606,6 +606,76 @@ impl Tmdb {
         Ok(info)
     }
 
+    /// The collection a film belongs to, its parts ordered by release date then id (Tanukarr's
+    /// `TmdbMovieProxy` collection lookup). `None` for a film outside any collection.
+    pub async fn movie_collection(
+        &self,
+        id: &str,
+    ) -> MetadataResult<Option<crate::MovieCollection>> {
+        #[derive(Deserialize, Default)]
+        #[serde(default)]
+        struct Ref {
+            id: i64,
+            name: String,
+        }
+        #[derive(Deserialize, Default)]
+        #[serde(default)]
+        struct Belongs {
+            belongs_to_collection: Option<Ref>,
+        }
+        #[derive(Deserialize, Default)]
+        #[serde(default)]
+        struct Part {
+            id: i64,
+            title: String,
+            release_date: Option<String>,
+        }
+        #[derive(Deserialize, Default)]
+        #[serde(default)]
+        struct Collection {
+            id: i64,
+            name: String,
+            overview: Option<String>,
+            parts: Vec<Part>,
+        }
+        let p = MetadataProvider::TmdbMovie;
+        let movie_id: i64 = id
+            .trim()
+            .parse()
+            .ok()
+            .filter(|v| *v > 0)
+            .ok_or(MetadataError::NotFound(p))?;
+        let movie: Belongs = self.get(p, &format!("/movie/{movie_id}"), &[]).await?;
+        let Some(r) = movie.belongs_to_collection.filter(|r| r.id > 0) else {
+            return Ok(None);
+        };
+        let c: Collection = self.get(p, &format!("/collection/{}", r.id), &[]).await?;
+        let mut parts: Vec<Part> = c
+            .parts
+            .into_iter()
+            .filter(|p| p.id > 0 && !p.title.trim().is_empty())
+            .collect();
+        parts.sort_by(|a, b| {
+            let date = |p: &Part| {
+                p.release_date
+                    .clone()
+                    .filter(|d| !d.is_empty())
+                    .unwrap_or_else(|| "9999".into())
+            };
+            date(a).cmp(&date(b)).then(a.id.cmp(&b.id))
+        });
+        Ok(Some(crate::MovieCollection {
+            id: c.id.max(r.id),
+            name: if c.name.trim().is_empty() {
+                r.name
+            } else {
+                c.name
+            },
+            overview: c.overview.filter(|o| !o.trim().is_empty()),
+            parts: parts.into_iter().map(|p| p.id).collect(),
+        }))
+    }
+
     /// A series' episode groups (`GET /tv/{id}/episode_groups`), for choosing an ordering.
     pub async fn episode_groups(&self, id: &str) -> MetadataResult<Vec<crate::EpisodeOrdering>> {
         #[derive(Deserialize, Default)]
