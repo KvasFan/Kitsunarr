@@ -38,28 +38,31 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
         .filter(|c| c.enabled && kitsunarr_downloaders::supported(&c.implementation))
         .collect();
     let mappings = rules::list_remote_path_mappings(state.db.pool()).await?;
+    // Clients are read in parallel, each for at most 15 seconds, so one unreachable client
+    // does not hold up the others.
+    let reads = clients.iter().map(|client| {
+        let state = state.clone();
+        async move {
+            let settings = ClientSettings::from_provider(&client.implementation, &client.settings)
+                .map_err(|m| format!("Invalid settings: {m}"))?;
+            let list = tokio::time::timeout(
+                std::time::Duration::from_secs(15),
+                state.downloads.clients.items(&settings),
+            )
+            .await
+            .map_err(|_| "The download client did not answer within 15 seconds.".to_string())?
+            .map_err(|e| e.to_string())?;
+            Ok::<_, String>((settings.host().to_string(), list))
+        }
+    });
     let mut items = Vec::new();
     let mut failures = Vec::new();
-    for client in &clients {
-        let settings = match ClientSettings::from_provider(&client.implementation, &client.settings)
-        {
-            Ok(s) => s,
-            Err(m) => {
-                failures.push(QueueClientFailure {
-                    download_client: client.name.clone(),
-                    message: format!("Invalid settings: {m}"),
-                });
-                continue;
-            }
-        };
-        match state.downloads.clients.items(&settings).await {
-            Ok(list) => items.extend(
-                list.into_iter()
-                    .map(|i| (client, settings.host().to_string(), i)),
-            ),
-            Err(e) => failures.push(QueueClientFailure {
+    for (client, read) in clients.iter().zip(futures::future::join_all(reads).await) {
+        match read {
+            Ok((host, list)) => items.extend(list.into_iter().map(|i| (client, host.clone(), i))),
+            Err(message) => failures.push(QueueClientFailure {
                 download_client: client.name.clone(),
-                message: e.to_string(),
+                message,
             }),
         }
     }

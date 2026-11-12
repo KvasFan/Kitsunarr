@@ -320,7 +320,7 @@ pub(crate) fn merge_secrets(incoming: &mut Map<String, Value>, stored: &Map<Stri
     }
 }
 
-fn parse_kind(raw: &str) -> ApiResult<ProviderKind> {
+pub(crate) fn parse_kind(raw: &str) -> ApiResult<ProviderKind> {
     match raw {
         "indexers" | "indexer" => Ok(ProviderKind::Indexer),
         "downloadclients" | "downloadclient" => Ok(ProviderKind::DownloadClient),

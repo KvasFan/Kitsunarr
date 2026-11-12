@@ -7,6 +7,7 @@ pub mod library;
 pub mod metadata;
 pub mod migration;
 pub mod queue;
+pub mod schema;
 pub mod search;
 pub mod settings;
 pub mod system;
@@ -101,6 +102,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             settings::delete_custom_format
         ))
         .routes(routes!(settings::list_providers, settings::create_provider))
+        .routes(routes!(schema::provider_schema))
         .routes(routes!(
             settings::get_provider,
             settings::update_provider,

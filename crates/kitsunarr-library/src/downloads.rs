@@ -179,7 +179,17 @@ impl Monitor {
                 failed_clients.push(client.name.clone());
                 continue;
             };
-            let items = match self.clients.items(&settings).await {
+            let read = tokio::time::timeout(
+                std::time::Duration::from_secs(30),
+                self.clients.items(&settings),
+            )
+            .await
+            .unwrap_or_else(|_| {
+                Err(kitsunarr_downloaders::DownloadError::Connection(
+                    "no answer within 30 seconds".into(),
+                ))
+            });
+            let items = match read {
                 Ok(items) => items,
                 Err(e) => {
                     tracing::warn!(client = %client.name, error = %e, "cannot read the download client");

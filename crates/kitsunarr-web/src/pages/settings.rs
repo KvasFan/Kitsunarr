@@ -796,11 +796,22 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
         let c = c0.clone();
         async move { c.providers(kind).await }
     });
+    let mut adding = use_signal(|| false);
+    let c3 = client.clone();
+    let templates = use_resource(move || {
+        let c = c3.clone();
+        async move { c.provider_schema(kind).await }
+    });
     let c1 = client.clone();
     let save = move |item: ProviderItem| {
         let c = c1.clone();
         spawn(async move {
-            match c.update_provider(kind, &item).await {
+            let saved = if item.id == 0 {
+                c.create_provider(kind, &item).await
+            } else {
+                c.update_provider(kind, &item).await
+            };
+            match saved {
                 Ok(_) => {
                     editing.set(None);
                     items.restart();
@@ -822,13 +833,19 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
             }
         });
     };
+    let can_add = matches!(&*templates.read(), Some(Ok(t)) if !t.is_empty());
     rsx! {
-        div { class: "page-head", h1 { "{title}" } }
+        div { class: "page-head",
+            h1 { "{title}" }
+            if can_add {
+                button { class: "btn primary", onclick: move |_| adding.set(true), "Add" }
+            }
+        }
         p { class: "muted small", "{note}" }
         match &*items.read() {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
-            Some(Ok(list)) if list.is_empty() => rsx! { Empty { title: format!("No {}", title.to_lowercase()), p { "They are created by migrating from Sonarr/Tanukarr." } } },
+            Some(Ok(list)) if list.is_empty() => rsx! { Empty { title: format!("No {}", title.to_lowercase()), p { if can_add { "Add one, or migrate them from Sonarr/Tanukarr." } else { "They are created by migrating from Sonarr/Tanukarr." } } } },
             Some(Ok(list)) => rsx! {
                 div { class: "table-wrap",
                     table { class: "table",
@@ -855,6 +872,27 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
                     }
                 }
             },
+        }
+        if adding() {
+            Modal {
+                title: format!("Add — {}", title.to_lowercase()),
+                on_close: move |_| adding.set(false),
+                footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| adding.set(false), "Cancel" } },
+                match &*templates.read() {
+                    Some(Ok(list)) => rsx! {
+                        div { class: "stack",
+                            for t in list.iter() {
+                                button { key: "{t.implementation}", class: "btn", style: "justify-content: flex-start",
+                                    onclick: { let t = t.clone(); move |_| { adding.set(false); editing.set(Some(t.clone())); } },
+                                    strong { "{t.name}" }
+                                    if let Some(p) = t.protocol { span { class: "muted small", " · {p:?}" } }
+                                }
+                            }
+                        }
+                    },
+                    _ => rsx! { Loading {} },
+                }
+            }
         }
         if let Some(item) = editing() {
             ProviderEditor { item, on_save: save, on_close: move |_| editing.set(None) }
@@ -944,7 +982,7 @@ fn ProviderEditor(
     option_keys.sort();
     rsx! {
         Modal {
-            title: format!("{} ({})", item.name, item.implementation),
+            title: if item.id == 0 { format!("Add {}", item.implementation) } else { format!("{} ({})", item.name, item.implementation) },
             wide: true,
             on_close: move |_| on_close.call(()),
             footer: rsx! {
@@ -975,6 +1013,10 @@ fn ProviderEditor(
                 Field { label: "Name", input { class: "input", value: "{d.name}", oninput: move |e| draft.write().name = e.value() } }
                 Field { label: "Priority", input { class: "input", r#type: "number", value: "{d.priority}", oninput: move |e| draft.write().priority = e.value().parse().unwrap_or(1) } }
             }
+            // Indexers are enabled through their RSS/search switches; other providers have their own.
+            if item.kind != ProviderKind::Indexer {
+                Switch { checked: d.enabled, label: "Enabled", onchange: move |v| draft.write().enabled = v }
+            }
             if !option_keys.is_empty() {
                 div { class: "form-grid", style: "margin-bottom: var(--sp-4)",
                     for k in option_keys {
@@ -984,12 +1026,10 @@ fn ProviderEditor(
                                 checked: d.options.get(&k).and_then(Value::as_bool).unwrap_or(false),
                                 onchange: { let k = k.clone(); move |e: FormEvent| { draft.write().options.insert(k.clone(), Value::Bool(e.checked())); } },
                             }
-                            "{k}"
+                            "{field_label(&k)}"
                         }
                     }
                 }
-            } else {
-                Switch { checked: d.enabled, label: "Enabled", onchange: move |v| draft.write().enabled = v }
             }
             h3 { "Settings" }
             div { class: "form-grid",
@@ -998,23 +1038,65 @@ fn ProviderEditor(
                         on_change: move |(name, v): (String, Value)| { draft.write().settings.insert(name, v); } }
                 }
             }
-            p { class: "help small faint", "Secrets show as {REDACTED}; leave them unchanged to keep the stored value." }
+            if item.id != 0 {
+                p { class: "help small faint", "Secrets show as {REDACTED}; leave them unchanged to keep the stored value." }
+            }
         }
     }
+}
+
+/// A readable label for a provider setting or option stored under Sonarr's field name.
+fn field_label(key: &str) -> String {
+    let known = [
+        ("baseUrl", "URL"),
+        ("apiPath", "API path"),
+        ("apiKey", "API key"),
+        ("urlBase", "URL base"),
+        ("useSsl", "Use SSL"),
+        ("tvCategory", "Category"),
+        ("tvImportedCategory", "Post-import category"),
+        ("tvDirectory", "Directory"),
+        ("recentTvPriority", "Recent priority"),
+        ("olderTvPriority", "Older priority"),
+        ("animeCategories", "Anime categories"),
+        ("animeStandardFormatSearch", "Anime standard format search"),
+        ("enableRss", "Enable RSS"),
+        ("enableAutomaticSearch", "Enable automatic search"),
+        ("enableInteractiveSearch", "Enable interactive search"),
+        ("removeCompletedDownloads", "Remove completed downloads"),
+        ("removeFailedDownloads", "Remove failed downloads"),
+        ("firstAndLast", "First and last pieces first"),
+    ];
+    if let Some((_, l)) = known.iter().find(|(k, _)| *k == key) {
+        return (*l).to_string();
+    }
+    let mut out = String::new();
+    for (i, c) in key.chars().enumerate() {
+        if i == 0 {
+            out.extend(c.to_uppercase());
+        } else if c.is_uppercase() {
+            out.push(' ');
+            out.extend(c.to_lowercase());
+        } else {
+            out.push(c);
+        }
+    }
+    out
 }
 
 #[component]
 fn ProviderField(name: String, value: Value, on_change: EventHandler<(String, Value)>) -> Element {
     let n = name.clone();
+    let label = field_label(&name);
     match value {
         Value::Bool(b) => rsx! {
             label { class: "check small", style: "margin-bottom: var(--sp-4)",
                 input { r#type: "checkbox", checked: b, onchange: move |e: FormEvent| on_change.call((n.clone(), Value::Bool(e.checked()))) }
-                "{name}"
+                "{label}"
             }
         },
         Value::Number(num) => rsx! {
-            Field { label: name.clone(),
+            Field { label: label.clone(),
                 input { class: "input", r#type: "number", value: "{num}", oninput: move |e: FormEvent| {
                     let v = e.value();
                     let parsed = v.parse::<i64>().map(Value::from).or_else(|_| v.parse::<f64>().map(Value::from)).unwrap_or(Value::Null);
@@ -1023,17 +1105,17 @@ fn ProviderField(name: String, value: Value, on_change: EventHandler<(String, Va
             }
         },
         Value::String(s) => rsx! {
-            Field { label: name.clone(),
+            Field { label: label.clone(),
                 input { class: "input", r#type: if is_secret(&name) { "password" } else { "text" }, autocomplete: "off", value: "{s}", oninput: move |e: FormEvent| on_change.call((n.clone(), Value::String(e.value()))) }
             }
         },
         Value::Null => rsx! {
-            Field { label: name.clone(),
+            Field { label: label.clone(),
                 input { class: "input", value: "", placeholder: "(empty)", oninput: move |e: FormEvent| on_change.call((n.clone(), Value::String(e.value()))) }
             }
         },
         other => rsx! {
-            Field { label: name.clone(), help: "JSON".to_string(),
+            Field { label: label.clone(), help: "JSON".to_string(),
                 input { class: "input mono", value: "{other}", oninput: move |e: FormEvent| {
                     if let Ok(v) = serde_json::from_str::<Value>(&e.value()) { on_change.call((n.clone(), v)); }
                 } }

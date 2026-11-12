@@ -502,6 +502,27 @@ async fn first_run_setup_migration_and_library() {
             !page.contains("fixture-qbit-password"),
             "secrets must never reach the browser"
         );
+        // New clients start from upstream's defaults for the chosen implementation.
+        client
+            .wait()
+            .for_element(Locator::XPath("//button[normalize-space(.)='Add']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        click_button(&client, "SABnzbd · Usenet").await;
+        wait_text(&client, "Add Sabnzbd").await;
+        let category = client
+            .wait()
+            .for_element(Locator::XPath(
+                "//div[contains(@class,'field')][label[normalize-space(.)='Category']]//input",
+            ))
+            .await
+            .unwrap();
+        assert_eq!(category.prop("value").await.unwrap().as_deref(), Some("tv"));
+        screenshot(&client, "14b-add-download-client").await;
+        click_button(&client, "Cancel").await;
 
         // Indexers: point the migrated Newznab indexer at a reachable (mock) indexer, test it,
         // then search a season. The migrated Torznab indexer stays unreachable and is reported.
@@ -522,7 +543,7 @@ async fn first_run_setup_migration_and_library() {
         let base_url = client
             .wait()
             .for_element(Locator::XPath(
-                "//div[contains(@class,'field')][label[normalize-space(.)='baseUrl']]//input",
+                "//div[contains(@class,'field')][label[normalize-space(.)='URL']]//input",
             ))
             .await
             .unwrap();

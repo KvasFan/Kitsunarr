@@ -456,6 +456,21 @@ impl Client {
     pub async fn providers(&self, kind: &str) -> ClientResult<Vec<ProviderItem>> {
         self.get(&format!("/providers/{kind}")).await
     }
+    /// Blank providers of each implementation Kitsunarr runs (`GET /providers/{kind}/schema`).
+    pub async fn provider_schema(&self, kind: &str) -> ClientResult<Vec<ProviderItem>> {
+        self.get(&format!("/providers/{kind}/schema")).await
+    }
+    pub async fn create_provider(
+        &self,
+        kind: &str,
+        item: &ProviderItem,
+    ) -> ClientResult<ProviderItem> {
+        let body = serde_json::json!({
+            "name": item.name, "implementation": item.implementation, "enabled": item.enabled,
+            "priority": item.priority, "tags": item.tags, "options": item.options, "settings": item.settings,
+        });
+        self.post(&format!("/providers/{kind}"), &body).await
+    }
     pub async fn update_provider(
         &self,
         kind: &str,
