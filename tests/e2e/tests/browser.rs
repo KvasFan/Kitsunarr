@@ -526,6 +526,8 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Codec size factors").await;
         wait_text(&client, "Size limits").await;
         click_button(&client, "Cancel").await;
+        wait_text(&client, "Delay profiles").await;
+        wait_text(&client, "Release profiles").await;
         // Library tools: switches, storage outlook, library check, recycle bin, recent searches.
         client.goto(&format!("{base}/system/library")).await.unwrap();
         wait_text(&client, "Pause automation").await;
@@ -627,6 +629,7 @@ async fn first_run_setup_migration_and_library() {
             "secrets must never reach the browser"
         );
         wait_text(&client, "Completed and failed download handling").await;
+        wait_text(&client, "Remote path mappings").await;
         // New clients start from upstream's defaults for the chosen implementation.
         client
             .wait()
