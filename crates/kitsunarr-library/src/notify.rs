@@ -186,3 +186,60 @@ pub fn spawn(db: &Database, notifier: &Notifier, event: Event) {
         notifier.dispatch(&others, &event, &instance).await;
     });
 }
+
+/// Builds and sends the "Download" (or upgrade) notification for an imported file.
+#[allow(clippy::too_many_arguments)]
+pub async fn imported(
+    db: &Database,
+    notifier: &Notifier,
+    series_id: i64,
+    r: &crate::import::FileResult,
+    f: &crate::import::ImportedFile,
+    download_id: &str,
+    client_name: &str,
+    client_implementation: &str,
+) {
+    let Some(series) = series_ref(db, series_id).await else {
+        return;
+    };
+    let Some(mut file) = file_ref(db, &series, f.file_id).await else {
+        return;
+    };
+    file.source_path = Some(f.source_path.clone());
+    let episodes = episode_refs(db, series_id, &r.episode_ids).await;
+    let grabs = kitsunarr_db::history::grabs_for(db, &[download_id.to_string()])
+        .await
+        .unwrap_or_default();
+    let data: serde_json::Value = grabs
+        .first()
+        .and_then(|g| serde_json::from_str(&g.data).ok())
+        .unwrap_or_default();
+    let text = |k: &str| data.get(k).and_then(|v| v.as_str()).map(str::to_string);
+    let deleted_files = f
+        .replaced
+        .iter()
+        .map(|rel| kitsunarr_notifications::FileRef {
+            relative_path: rel.clone(),
+            path: format!("{}/{rel}", series.path.trim_end_matches('/')),
+            ..Default::default()
+        })
+        .collect();
+    let event =
+        kitsunarr_notifications::Event::Download(Box::new(kitsunarr_notifications::Download {
+            series,
+            episodes,
+            file,
+            release: kitsunarr_notifications::GrabbedRef {
+                release_title: grabs.first().map(|g| g.source_title.clone()),
+                indexer: text("indexer"),
+                size: text("size").and_then(|v| v.parse().ok()),
+                indexer_flags: Vec::new(),
+                release_type: text("releaseType"),
+            },
+            deleted_files,
+            download_client: Some(client_name.to_string()),
+            download_client_type: Some(client_implementation.to_string()),
+            download_id: Some(download_id.to_string()),
+        }));
+    spawn(db, notifier, event);
+}

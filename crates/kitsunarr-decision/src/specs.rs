@@ -1272,10 +1272,28 @@ pub(crate) fn delay(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
     {
         return None;
     }
-    // `Release.AgeMinutes`. (Sonarr's "oldest pending release" exception is not ported:
-    // pending releases are decided again by each RSS sync instead.)
-    let age_minutes =
-        (env.settings.now - s.release.publish_date).num_milliseconds() as f64 / 60_000.0;
+    let age = |published: chrono::DateTime<chrono::Utc>| {
+        (env.settings.now - published).num_milliseconds() as f64 / 60_000.0
+    };
+    // `OldestPendingRelease`: a release for these episodes already held back longer than the
+    // delay lets this one through.
+    let oldest = env
+        .settings
+        .pending
+        .iter()
+        .filter(|p| {
+            p.series_id == env.series.id
+                && p.episode_ids
+                    .iter()
+                    .any(|id| s.episodes.iter().any(|e| e.id == *id))
+        })
+        .map(|p| p.publish_date)
+        .min();
+    if oldest.is_some_and(|p| age(p) > delay as f64) {
+        return None;
+    }
+    // `Release.AgeMinutes`.
+    let age_minutes = age(s.release.publish_date);
     (age_minutes < delay as f64)
         .then(|| Rejection::new(R::MinimumAgeDelay, "Waiting for better quality release"))
 }

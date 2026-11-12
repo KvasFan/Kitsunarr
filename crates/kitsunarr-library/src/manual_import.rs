@@ -133,8 +133,10 @@ pub async fn scan(
 }
 
 /// Imports the chosen files (each with its series and episodes), moving or copying them.
+/// Each imported file is announced as a "Download" (Sonarr's `EpisodeImportedEvent`).
 pub async fn import(
     db: &Database,
+    notifier: &kitsunarr_notifications::Notifier,
     files: &[ManualImportFile],
     move_files: bool,
 ) -> Vec<(String, Result<import::Outcome, String>)> {
@@ -189,7 +191,23 @@ pub async fn import(
                 client_implementation: "ManualImport",
                 move_files,
             };
-            import::import_download(db, &d).await
+            let outcome = import::import_download(db, &d).await?;
+            for r in outcome.results.iter().filter(|r| r.imported) {
+                if let Some(imported) = &r.imported_file {
+                    crate::notify::imported(
+                        db,
+                        notifier,
+                        f.series_id,
+                        r,
+                        imported,
+                        &download_id,
+                        "Manual Import",
+                        "ManualImport",
+                    )
+                    .await;
+                }
+            }
+            Ok(outcome)
         }
         .await;
         out.push((f.path.clone(), result));

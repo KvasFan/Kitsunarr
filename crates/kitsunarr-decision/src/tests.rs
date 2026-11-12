@@ -67,6 +67,7 @@ fn settings() -> Settings {
         queue: Vec::new(),
         last_grabs: Vec::new(),
         blocklist: Vec::new(),
+        pending: Vec::new(),
         enable_multi_season_releases: true,
         match_external_ids: false,
         quality_definitions: Vec::new(),
@@ -1491,6 +1492,27 @@ mod delay_specification_fixture {
         let mut c = case();
         c.release.publish_date = Utc::now();
         delayed(&mut c, 720);
+        assert!(!c.accepted(specs::delay));
+    }
+
+    /// `OldestPendingRelease`: a release for the same episodes held back longer than the
+    /// delay lets a new one through; one for other episodes does not.
+    #[test]
+    fn should_be_true_when_an_older_pending_release_waited_longer_than_the_delay() {
+        let mut c = case();
+        c.release.publish_date = Utc::now();
+        delayed(&mut c, 60);
+        let episode = c.episodes[0].id;
+        let series = c.series.id;
+        c.settings.pending = vec![PendingRelease {
+            series_id: series,
+            episode_ids: vec![episode + 1000],
+            publish_date: Utc::now() - Duration::hours(2),
+        }];
+        assert!(!c.accepted(specs::delay));
+        c.settings.pending[0].episode_ids.push(episode);
+        assert!(c.accepted(specs::delay));
+        c.settings.pending[0].publish_date = Utc::now() - Duration::minutes(30);
         assert!(!c.accepted(specs::delay));
     }
 

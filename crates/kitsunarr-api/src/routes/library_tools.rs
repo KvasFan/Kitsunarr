@@ -346,8 +346,13 @@ pub async fn manual_import(
 ) -> ApiResult<Json<Vec<kitsunarr_domain::api::library_tools::ManualImportResult>>> {
     use kitsunarr_domain::api::library_tools::ManualImportResult;
     let move_files = req.import_mode.eq_ignore_ascii_case("move");
-    let outcomes =
-        kitsunarr_library::manual_import::import(&state.db, &req.files, move_files).await;
+    let outcomes = kitsunarr_library::manual_import::import(
+        &state.db,
+        &state.downloads.notifier,
+        &req.files,
+        move_files,
+    )
+    .await;
     let mut series_ids: Vec<i64> = req.files.iter().map(|f| f.series_id).collect();
     series_ids.sort_unstable();
     series_ids.dedup();

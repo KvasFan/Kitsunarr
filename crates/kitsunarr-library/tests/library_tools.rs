@@ -249,9 +249,33 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
         .unwrap();
     assert_eq!(unknown.rejections, vec!["Unknown series"]);
 
+    // A webhook hears about the import (`OnDownload`).
+    let heard = std::sync::Arc::new(std::sync::Mutex::new(Vec::<serde_json::Value>::new()));
+    let h = heard.clone();
+    let hook = axum::Router::new().route(
+        "/hook",
+        axum::routing::post(move |axum::Json(v): axum::Json<serde_json::Value>| {
+            let h = h.clone();
+            async move {
+                h.lock().unwrap().push(v);
+                "ok"
+            }
+        }),
+    );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let hook_url = format!("http://{}/hook", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, hook).await.unwrap() });
+    sqlx::query("INSERT INTO notifications (name, implementation, settings, triggers, created_at) VALUES ('Hook', 'Webhook', ?, '{\"onDownload\": true}', '2026-11-01T00:00:00Z')")
+        .bind(serde_json::json!({"url": hook_url, "method": 1}).to_string())
+        .execute(pool)
+        .await
+        .unwrap();
+    let notifier = kitsunarr_notifications::Notifier::new(reqwest::Client::new());
+
     // Imported as episode 3 by hand: the choice wins over the name.
     let results = kitsunarr_library::manual_import::import(
         &db,
+        &notifier,
         &[ManualImportFile {
             path: ep2.path.clone(),
             series_id: 1,
@@ -275,6 +299,7 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
     // Episodes of another series are refused.
     let bad = kitsunarr_library::manual_import::import(
         &db,
+        &notifier,
         &[ManualImportFile {
             path: ep2.path.clone(),
             series_id: 1,
@@ -284,4 +309,15 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
     )
     .await;
     assert!(bad[0].1.is_err());
+    for _ in 0..50 {
+        if !heard.lock().unwrap().is_empty() {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    let heard = heard.lock().unwrap();
+    assert_eq!(heard.len(), 1, "{heard:?}");
+    assert_eq!(heard[0]["eventType"], "Download");
+    assert_eq!(heard[0]["downloadClient"], "Manual Import");
+    assert_eq!(heard[0]["episodes"][0]["episodeNumber"], 3);
 }

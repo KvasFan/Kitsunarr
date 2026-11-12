@@ -71,6 +71,7 @@ fn settings() -> Settings {
         queue: Vec::new(),
         last_grabs: Vec::new(),
         blocklist: Vec::new(),
+        pending: Vec::new(),
         enable_multi_season_releases: true,
         match_external_ids: false,
         quality_definitions: Vec::new(),

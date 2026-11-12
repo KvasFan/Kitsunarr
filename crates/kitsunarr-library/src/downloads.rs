@@ -205,49 +205,17 @@ impl Monitor {
         download_id: &str,
         client: &providers::ProviderRecord,
     ) {
-        let Some(series) = crate::notify::series_ref(db, series_id).await else {
-            return;
-        };
-        let Some(mut file) = crate::notify::file_ref(db, &series, f.file_id).await else {
-            return;
-        };
-        file.source_path = Some(f.source_path.clone());
-        let episodes = crate::notify::episode_refs(db, series_id, &r.episode_ids).await;
-        let grabs = history::grabs_for(db, &[download_id.to_string()])
-            .await
-            .unwrap_or_default();
-        let data: serde_json::Value = grabs
-            .first()
-            .and_then(|g| serde_json::from_str(&g.data).ok())
-            .unwrap_or_default();
-        let text = |k: &str| data.get(k).and_then(|v| v.as_str()).map(str::to_string);
-        let deleted_files = f
-            .replaced
-            .iter()
-            .map(|rel| kitsunarr_notifications::FileRef {
-                relative_path: rel.clone(),
-                path: format!("{}/{rel}", series.path.trim_end_matches('/')),
-                ..Default::default()
-            })
-            .collect();
-        let event =
-            kitsunarr_notifications::Event::Download(Box::new(kitsunarr_notifications::Download {
-                series,
-                episodes,
-                file,
-                release: kitsunarr_notifications::GrabbedRef {
-                    release_title: grabs.first().map(|g| g.source_title.clone()),
-                    indexer: text("indexer"),
-                    size: text("size").and_then(|v| v.parse().ok()),
-                    indexer_flags: Vec::new(),
-                    release_type: text("releaseType"),
-                },
-                deleted_files,
-                download_client: Some(client.name.clone()),
-                download_client_type: Some(client.implementation.clone()),
-                download_id: Some(download_id.to_string()),
-            }));
-        crate::notify::spawn(db, &self.notifier, event);
+        crate::notify::imported(
+            db,
+            &self.notifier,
+            series_id,
+            r,
+            f,
+            download_id,
+            &client.name,
+            &client.implementation,
+        )
+        .await;
     }
 
     /// `DownloadEventHub.RemoveFromDownloadClient`: removes the download and its data.

@@ -883,6 +883,19 @@ impl DecisionInputs {
         let settings = decision::Settings {
             last_grabs: kitsunarr_library::decision_input::last_grabs(db, detail.item.id).await?,
             blocklist: kitsunarr_library::decision_input::blocklist(db, detail.item.id).await?,
+            pending: kitsunarr_db::pending::list(db.pool())
+                .await?
+                .into_iter()
+                .filter(|p| p.series_id == detail.item.id)
+                .filter_map(|p| {
+                    let release: serde_json::Value = serde_json::from_str(&p.release).ok()?;
+                    Some(decision::PendingRelease {
+                        series_id: p.series_id,
+                        episode_ids: serde_json::from_str(&p.episode_ids).unwrap_or_default(),
+                        publish_date: release["publishDate"].as_str()?.parse().ok()?,
+                    })
+                })
+                .collect(),
             enable_multi_season_releases: options.enable_multi_season_releases,
             match_external_ids: tools.match_external_ids,
             queue: state.downloads.queued_releases(db, detail.item.id).await?,

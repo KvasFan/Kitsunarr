@@ -224,6 +224,14 @@ pub struct DelayProfile {
     pub tags: Vec<i64>,
 }
 
+/// A release a delay profile holds back (`PendingRelease`), for the delay rule.
+#[derive(Debug, Clone)]
+pub struct PendingRelease {
+    pub series_id: i64,
+    pub episode_ids: Vec<i64>,
+    pub publish_date: DateTime<Utc>,
+}
+
 /// Instance settings the decisions depend on.
 #[derive(Debug, Clone)]
 pub struct Settings {
@@ -243,6 +251,8 @@ pub struct Settings {
     pub last_grabs: Vec<HistoryGrab>,
     /// Blocklisted releases, for `BlocklistSpecification`.
     pub blocklist: Vec<Blocklisted>,
+    /// Releases held back by a delay profile, for `DelaySpecification`.
+    pub pending: Vec<PendingRelease>,
     /// Tanukarr's "multi-season releases" option.
     pub enable_multi_season_releases: bool,
     /// Tanukarr's Library tools "match external ids".
