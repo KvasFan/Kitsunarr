@@ -3,7 +3,7 @@
 use dioxus::prelude::*;
 
 use crate::components::shell::AppShell;
-use crate::pages::activity::{Activity, Blocklist, Queue};
+use crate::pages::activity::{Activity, Blocklist, ManualImport, Queue};
 use crate::pages::add::AddMedia;
 use crate::pages::auth::{Login, Setup};
 use crate::pages::calendar::Calendar;
@@ -54,6 +54,8 @@ pub enum Route {
         Activity {},
         #[route("/activity/blocklist")]
         Blocklist {},
+        #[route("/activity/manualimport")]
+        ManualImport {},
         #[route("/wanted/missing")]
         WantedMissing {},
         #[route("/wanted/cutoffunmet")]

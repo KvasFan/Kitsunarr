@@ -13,6 +13,7 @@ pub mod grouping;
 pub mod import;
 pub mod jellyfin;
 pub mod jellyfin_refresh;
+pub mod manual_import;
 pub mod notify;
 pub mod tools;
 pub mod versions;

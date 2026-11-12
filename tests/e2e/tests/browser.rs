@@ -534,6 +534,8 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "series and").await;
         wait_text(&client, "Recent searches").await;
         screenshot(&client, "11f-library-tools").await;
+        client.goto(&format!("{base}/activity/manualimport")).await.unwrap();
+        wait_text(&client, "Scan folder").await;
         // Migrated notifications are sent now (no "stored only" badge).
         client
             .goto(&format!("{base}/settings/notifications"))
@@ -834,6 +836,7 @@ async fn first_run_setup_migration_and_library() {
                 "/settings/profiles",
                 "/system/tasks",
                 "/system/library",
+                "/activity/manualimport",
             ] {
                 client.goto(&format!("{base}{path}")).await.unwrap();
                 tokio::time::sleep(Duration::from_millis(700)).await;

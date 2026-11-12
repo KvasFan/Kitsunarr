@@ -193,3 +193,95 @@ async fn kept_versions_can_be_made_current_again() {
         "kept versions are not imported by disk scans"
     );
 }
+
+#[tokio::test]
+async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
+    use kitsunarr_domain::api::library_tools::ManualImportFile;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("tv");
+    let show = root.join("Show");
+    std::fs::create_dir_all(&show).unwrap();
+    let incoming = dir.path().join("incoming");
+    std::fs::create_dir_all(&incoming).unwrap();
+    std::fs::write(incoming.join("Show.S01E02.720p.HDTV.x264-GRP.mkv"), b"ep2").unwrap();
+    std::fs::write(
+        incoming.join("Unknown.Thing.S03E04.720p.HDTV.x264-GRP.mkv"),
+        b"x",
+    )
+    .unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    let pool = db.pool();
+    sqlx::query(
+        "INSERT INTO series (id, media_kind, title, sort_title, clean_title, title_slug, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at) VALUES (1, 'series', 'Show', 'show', 'show', 'show', \
+         'tvMaze', '1', 1, ?, ?, '2026-11-01T00:00:00Z')",
+    )
+    .bind(root.display().to_string())
+    .bind(show.display().to_string())
+    .execute(pool)
+    .await
+    .unwrap();
+    sqlx::query("INSERT INTO seasons (series_id, season_number, monitored) VALUES (1, 1, 1)")
+        .execute(pool)
+        .await
+        .unwrap();
+    for n in 1..=3 {
+        sqlx::query("INSERT INTO episodes (id, series_id, season_number, episode_number, title, air_date_utc) VALUES (?, 1, 1, ?, 'x', '2020-01-01T00:00:00Z')")
+            .bind(n)
+            .bind(n)
+            .execute(pool)
+            .await
+            .unwrap();
+    }
+
+    let items = kitsunarr_library::manual_import::scan(&db, &incoming, None)
+        .await
+        .unwrap();
+    assert_eq!(items.len(), 2);
+    let ep2 = items.iter().find(|i| i.name.starts_with("Show.")).unwrap();
+    assert_eq!(ep2.series_id, Some(1));
+    assert_eq!(ep2.episodes, vec!["S01E02"]);
+    assert!(ep2.rejections.is_empty(), "{:?}", ep2.rejections);
+    let unknown = items
+        .iter()
+        .find(|i| i.name.starts_with("Unknown"))
+        .unwrap();
+    assert_eq!(unknown.rejections, vec!["Unknown series"]);
+
+    // Imported as episode 3 by hand: the choice wins over the name.
+    let results = kitsunarr_library::manual_import::import(
+        &db,
+        &[ManualImportFile {
+            path: ep2.path.clone(),
+            series_id: 1,
+            episode_ids: vec![3],
+        }],
+        false,
+    )
+    .await;
+    let outcome = results[0].1.as_ref().unwrap();
+    assert!(outcome.results.iter().any(|f| f.imported), "{outcome:?}");
+    let linked: Option<i64> =
+        sqlx::query_scalar("SELECT episode_file_id FROM episodes WHERE id = 3")
+            .fetch_one(pool)
+            .await
+            .unwrap();
+    assert!(linked.is_some());
+    assert!(
+        incoming.join("Show.S01E02.720p.HDTV.x264-GRP.mkv").exists(),
+        "copied, not moved"
+    );
+    // Episodes of another series are refused.
+    let bad = kitsunarr_library::manual_import::import(
+        &db,
+        &[ManualImportFile {
+            path: ep2.path.clone(),
+            series_id: 1,
+            episode_ids: vec![99],
+        }],
+        false,
+    )
+    .await;
+    assert!(bad[0].1.is_err());
+}

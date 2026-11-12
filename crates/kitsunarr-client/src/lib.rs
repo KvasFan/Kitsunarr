@@ -598,6 +598,23 @@ impl Client {
         self.delete(&format!("/series/{id}/versions/{version}"))
             .await
     }
+    pub async fn manual_import_scan(
+        &self,
+        folder: &str,
+        series_id: Option<i64>,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library_tools::ManualImportItem>> {
+        let mut path = format!("/manualimport?folder={}", urlencoding(folder));
+        if let Some(id) = series_id {
+            path.push_str(&format!("&seriesId={id}"));
+        }
+        self.get(&path).await
+    }
+    pub async fn manual_import(
+        &self,
+        req: &kitsunarr_domain::api::library_tools::ManualImportRequest,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library_tools::ManualImportResult>> {
+        self.post("/manualimport", req).await
+    }
     pub async fn recent_searches(
         &self,
     ) -> ClientResult<Vec<kitsunarr_domain::api::settings::SearchActivity>> {

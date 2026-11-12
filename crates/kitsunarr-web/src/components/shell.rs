@@ -223,6 +223,7 @@ fn Sidebar() -> Element {
             NavLink { to: Route::Queue {}, icon: "⇣", label: s.queue }
             NavLink { to: Route::Activity {}, icon: "↺", label: s.history }
             NavLink { to: Route::Blocklist {}, icon: "⊘", label: s.blocklist }
+            NavLink { to: Route::ManualImport {}, icon: "⇲", label: s.manual_import }
             NavLink { to: Route::WantedMissing {}, icon: "◌", label: s.wanted }
             NavLink { to: Route::InteractiveSearch {}, icon: "⌕", label: s.search }
             NavLink { to: Route::AddMedia {}, icon: "+", label: s.add_media }

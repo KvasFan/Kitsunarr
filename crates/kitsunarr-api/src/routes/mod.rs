@@ -166,6 +166,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(library_tools::restore))
         .routes(routes!(library_tools::list_keys, library_tools::create_key))
         .routes(routes!(library_tools::versions))
+        .routes(routes!(
+            library_tools::manual_import_scan,
+            library_tools::manual_import
+        ))
         .routes(routes!(library_tools::activate_version))
         .routes(routes!(library_tools::delete_version))
         .routes(routes!(library_tools::delete_key))

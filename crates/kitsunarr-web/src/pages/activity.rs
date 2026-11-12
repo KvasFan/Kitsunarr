@@ -411,3 +411,223 @@ pub fn Blocklist() -> Element {
         }
     }
 }
+
+/// Sonarr's manual import: the video files of a folder, matched to series and episodes, imported
+/// with the user's choices.
+#[component]
+pub fn ManualImport() -> Element {
+    use kitsunarr_domain::api::library_tools::{
+        ManualImportFile, ManualImportItem, ManualImportRequest,
+    };
+    let app = use_app();
+    let client = use_client();
+    let mut folder = use_signal(String::new);
+    let mut items = use_signal(Vec::<ManualImportItem>::new);
+    let mut chosen = use_signal(Vec::<usize>::new);
+    let mut mode = use_signal(|| "copy".to_string());
+    let mut busy = use_signal(|| false);
+    let mut picking = use_signal(|| None::<usize>);
+    let c0 = client.clone();
+    let series = use_resource(move || {
+        let c = c0.clone();
+        async move {
+            c.series(&kitsunarr_domain::api::library::LibraryQuery {
+                page_size: Some(5000),
+                ..Default::default()
+            })
+            .await
+            .map(|p| p.records)
+            .unwrap_or_default()
+        }
+    });
+    let c1 = client.clone();
+    let scan = move |_| {
+        let c = c1.clone();
+        let f = folder();
+        busy.set(true);
+        spawn(async move {
+            match c.manual_import_scan(&f, None).await {
+                Ok(list) => {
+                    chosen.set(
+                        (0..list.len())
+                            .filter(|i| list[*i].rejections.is_empty())
+                            .collect(),
+                    );
+                    items.set(list);
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    let c2 = client.clone();
+    let run = move |_| {
+        let c = c2.clone();
+        let list = items();
+        let files: Vec<ManualImportFile> = chosen()
+            .into_iter()
+            .filter_map(|i| list.get(i))
+            .filter_map(|it| {
+                Some(ManualImportFile {
+                    path: it.path.clone(),
+                    series_id: it.series_id?,
+                    episode_ids: it.episode_ids.clone(),
+                })
+            })
+            .collect();
+        let req = ManualImportRequest {
+            files,
+            import_mode: mode(),
+        };
+        busy.set(true);
+        spawn(async move {
+            match c.manual_import(&req).await {
+                Ok(results) => {
+                    let ok = results.iter().filter(|r| r.imported).count();
+                    let problems: Vec<String> = results
+                        .iter()
+                        .filter(|r| !r.imported)
+                        .map(|r| format!("{}: {}", r.path, r.messages.join(", ")))
+                        .collect();
+                    if problems.is_empty() {
+                        app.success(format!("{ok} files imported."));
+                    } else {
+                        app.toast(
+                            crate::state::ToastLevel::Warning,
+                            format!("{ok} imported; {}", problems.join("; ")),
+                        );
+                    }
+                    items.set(Vec::new());
+                    chosen.set(Vec::new());
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    let ready = !chosen().is_empty()
+        && chosen().iter().all(|i| {
+            items()
+                .get(*i)
+                .is_some_and(|it| it.series_id.is_some() && !it.episode_ids.is_empty())
+        });
+    rsx! {
+        div { class: "page-head", h1 { "Manual import" } }
+        p { class: "muted small", "Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings)." }
+        div { class: "row wrap",
+            input { class: "input grow", "aria-label": "Folder", placeholder: "/downloads/complete/Show", value: "{folder}", oninput: move |e| folder.set(e.value()) }
+            button { class: "btn", disabled: busy() || folder().trim().is_empty(), onclick: scan, "Scan folder" }
+        }
+        if !items().is_empty() {
+            div { class: "table-wrap", style: "margin-top: var(--sp-3)",
+                table { class: "table",
+                    thead { tr { th { "" } th { "File" } th { "Series" } th { "Episodes" } th { "Quality" } th { "" } } }
+                    tbody {
+                        for (i, it) in items().into_iter().enumerate() {
+                            tr { key: "{i}",
+                                td { class: "shrink", input { r#type: "checkbox", "aria-label": "Import {it.name}", checked: chosen().contains(&i),
+                                    onchange: move |e: FormEvent| { let mut w = chosen.write(); w.retain(|x| *x != i); if e.checked() { w.push(i); } } } }
+                                td { class: "small", title: "{it.path}", "{it.relative_path}" }
+                                td {
+                                    select { class: "select", "aria-label": "Series of {it.name}",
+                                        onchange: move |e| {
+                                            let id = e.value().parse::<i64>().ok();
+                                            let mut w = items.write();
+                                            if let Some(x) = w.get_mut(i) && x.series_id != id { x.series_id = id; x.episode_ids.clear(); x.episodes.clear(); }
+                                        },
+                                        option { value: "", "Choose…" }
+                                        for s in series().unwrap_or_default() { option { key: "{s.id}", value: "{s.id}", selected: it.series_id == Some(s.id), "{s.title}" } }
+                                    }
+                                }
+                                td {
+                                    span { class: "small", {if it.episodes.is_empty() { "—".to_string() } else { it.episodes.join(", ") }} }
+                                    " "
+                                    button { class: "btn sm ghost", disabled: it.series_id.is_none(), onclick: move |_| picking.set(Some(i)), "Choose…" }
+                                }
+                                td { span { class: "badge", "{it.quality}" } }
+                                td { for r in it.rejections.iter() { div { class: "small warning", "{r}" } } }
+                            }
+                        }
+                    }
+                }
+            }
+            div { class: "row", style: "margin-top: var(--sp-3)",
+                select { class: "select", style: "width: auto", "aria-label": "Import mode", onchange: move |e| mode.set(e.value()),
+                    option { value: "copy", selected: mode() == "copy", "Copy (keep the originals)" }
+                    option { value: "move", selected: mode() == "move", "Move" }
+                }
+                div { class: "spacer" }
+                button { class: "btn primary", disabled: busy() || !ready, onclick: run, if busy() { "Importing…" } else { "Import {chosen().len()} files" } }
+            }
+        }
+        if let Some(i) = picking() {
+            if let Some(sid) = items().get(i).and_then(|it| it.series_id) {
+                PickEpisodes { series_id: sid, initial: items().get(i).map(|it| it.episode_ids.clone()).unwrap_or_default(),
+                    on_done: move |picked: Option<Vec<(i64, String)>>| {
+                        if let Some(p) = picked && let Some(x) = items.write().get_mut(i) {
+                            x.episode_ids = p.iter().map(|(id, _)| *id).collect();
+                            x.episodes = p.into_iter().map(|(_, l)| l).collect();
+                        }
+                        picking.set(None);
+                    } }
+            }
+        }
+    }
+}
+
+#[component]
+fn PickEpisodes(
+    series_id: i64,
+    initial: Vec<i64>,
+    on_done: EventHandler<Option<Vec<(i64, String)>>>,
+) -> Element {
+    let client = use_client();
+    let episodes = use_resource(move || {
+        let c = client.clone();
+        async move { c.episodes(series_id).await }
+    });
+    let mut chosen = use_signal(|| initial.clone());
+    let done = move |_| {
+        let picked = match &*episodes.read() {
+            Some(Ok(list)) => list
+                .iter()
+                .filter(|e| chosen().contains(&e.id))
+                .map(|e| {
+                    (
+                        e.id,
+                        format!("S{:02}E{:02}", e.season_number, e.episode_number),
+                    )
+                })
+                .collect(),
+            _ => Vec::new(),
+        };
+        on_done.call(Some(picked));
+    };
+    rsx! {
+        Modal { title: "Episodes".to_string(), on_close: move |_| on_done.call(None),
+            footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| on_done.call(None), "Cancel" } button { class: "btn primary", onclick: done, "Use these episodes" } },
+            match &*episodes.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "stack", style: "max-height: 60vh; overflow: auto",
+                        for e in list.iter() {
+                            {
+                                let id = e.id;
+                                rsx! {
+                                    label { key: "{e.id}", class: "check small",
+                                        input { r#type: "checkbox", checked: chosen().contains(&id),
+                                            onchange: move |ev: FormEvent| { let mut w = chosen.write(); w.retain(|x| *x != id); if ev.checked() { w.push(id); } } }
+                                        "S{e.season_number:02}E{e.episode_number:02} "
+                                        {e.title.clone().unwrap_or_default()}
+                                        if e.file.is_some() { " " Badge { text: "has a file".to_string() } }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+    }
+}

@@ -138,3 +138,53 @@ pub struct CompanionKeyCreated {
     /// The token to give the companion app; it cannot be shown again.
     pub token: String,
 }
+
+/// A video file found for manual import, with what it matched.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ManualImportItem {
+    pub path: String,
+    pub relative_path: String,
+    pub name: String,
+    pub size: i64,
+    pub series_id: Option<i64>,
+    pub series_title: Option<String>,
+    pub season_number: Option<i32>,
+    pub episode_ids: Vec<i64>,
+    /// `S01E02` labels of the matched episodes.
+    pub episodes: Vec<String>,
+    pub quality: String,
+    pub release_group: Option<String>,
+    /// Why it would not import as is (it can still be imported with explicit choices).
+    pub rejections: Vec<String>,
+}
+
+/// A file to import, with the series and episodes chosen for it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ManualImportFile {
+    pub path: String,
+    pub series_id: i64,
+    pub episode_ids: Vec<i64>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ManualImportRequest {
+    pub files: Vec<ManualImportFile>,
+    /// `move` or `copy` (default).
+    #[serde(default)]
+    pub import_mode: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ManualImportResult {
+    pub path: String,
+    pub imported: bool,
+    pub messages: Vec<String>,
+}

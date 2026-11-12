@@ -305,3 +305,78 @@ pub async fn delete_version(
         .map_err(|m| crate::error::ApiError::field("version", m))?;
     Ok(axum::http::StatusCode::NO_CONTENT)
 }
+
+#[derive(serde::Deserialize, utoipa::IntoParams)]
+#[serde(rename_all = "camelCase")]
+pub struct ManualImportQuery {
+    /// A folder (or one file) on the server.
+    pub folder: String,
+    /// Match every file to this series.
+    pub series_id: Option<i64>,
+}
+
+/// Manual import: the video files of a folder with the series and episodes they match.
+#[utoipa::path(get, path = "/manualimport", tag = "library", params(ManualImportQuery),
+    responses((status = 200, body = Vec<kitsunarr_domain::api::library_tools::ManualImportItem>), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn manual_import_scan(
+    State(state): State<AppState>,
+    axum::extract::Query(q): axum::extract::Query<ManualImportQuery>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library_tools::ManualImportItem>>> {
+    let folder = std::path::PathBuf::from(q.folder.trim());
+    if !folder.is_absolute() {
+        return Err(crate::error::ApiError::field(
+            "folder",
+            "Enter an absolute path.",
+        ));
+    }
+    Ok(Json(
+        kitsunarr_library::manual_import::scan(&state.db, &folder, q.series_id)
+            .await
+            .map_err(|m| crate::error::ApiError::field("folder", m))?,
+    ))
+}
+
+/// Imports the chosen files with their series and episodes (copying, or moving them).
+#[utoipa::path(post, path = "/manualimport", tag = "library",
+    request_body = kitsunarr_domain::api::library_tools::ManualImportRequest,
+    responses((status = 200, body = Vec<kitsunarr_domain::api::library_tools::ManualImportResult>)))]
+pub async fn manual_import(
+    State(state): State<AppState>,
+    Json(req): Json<kitsunarr_domain::api::library_tools::ManualImportRequest>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library_tools::ManualImportResult>>> {
+    use kitsunarr_domain::api::library_tools::ManualImportResult;
+    let move_files = req.import_mode.eq_ignore_ascii_case("move");
+    let outcomes =
+        kitsunarr_library::manual_import::import(&state.db, &req.files, move_files).await;
+    let mut series_ids: Vec<i64> = req.files.iter().map(|f| f.series_id).collect();
+    series_ids.sort_unstable();
+    series_ids.dedup();
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids: series_ids,
+            deleted: false,
+        });
+    Ok(Json(
+        outcomes
+            .into_iter()
+            .map(|(path, r)| match r {
+                Ok(outcome) => {
+                    let mut messages: Vec<String> = outcome.blocked.into_iter().collect();
+                    messages.extend(outcome.results.iter().flat_map(|f| f.errors.clone()));
+                    ManualImportResult {
+                        path,
+                        imported: outcome.results.iter().any(|f| f.imported),
+                        messages,
+                    }
+                }
+                Err(m) => ManualImportResult {
+                    path,
+                    imported: false,
+                    messages: vec![m],
+                },
+            })
+            .collect(),
+    ))
+}
