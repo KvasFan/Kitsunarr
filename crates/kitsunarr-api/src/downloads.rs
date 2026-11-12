@@ -78,7 +78,7 @@ pub(crate) fn redownload(state: &AppState, r: Redownload) {
             targets.into_iter().map(|t| vec![t]).collect()
         };
         let _guard = state.wanted_search.clone().lock_owned().await;
-        let summary = crate::routes::wanted::bulk_search(&state, groups, false, false).await;
+        let summary = crate::routes::wanted::bulk_search(&state, groups, false, false, false).await;
         tracing::info!(series_id = r.series_id, %summary, "searched again after a failed download");
         state.events.publish(ServerEvent::Notice {
             level: "info".into(),

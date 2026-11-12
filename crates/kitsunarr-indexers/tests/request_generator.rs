@@ -119,6 +119,7 @@ fn anime_standard_numbering() {
     let season = Search::AnimeSeason {
         season: 3,
         season_scene_titles: vec![],
+        pack_search_only: false,
     };
     let chain = generator(&s, &caps).search(&criteria(&["Monkey Island"]), &season);
     assert_eq!(chain.tiers[0].len(), 2);
@@ -135,6 +136,7 @@ fn anime_season_title_aliases() {
     let alias = Search::AnimeSeason {
         season: 3,
         season_scene_titles: vec!["Monkey Island".into()],
+        pack_search_only: false,
     };
     let urls = first_urls(&generator(&s, &caps).search(&criteria(&["Monkey Island"]), &alias));
     assert_eq!(urls.iter().filter(|u| u.contains("q=")).count(), 1);
@@ -151,6 +153,7 @@ fn anime_season_title_aliases() {
     let both = Search::AnimeSeason {
         season: 3,
         season_scene_titles: vec!["Monkey Island Revenge".into()],
+        pack_search_only: false,
     };
     let urls = first_urls(&generator(&s, &caps).search(
         &criteria(&["Monkey Island", "Monkey Island Revenge"]),
@@ -371,6 +374,7 @@ fn nyaa_feed_and_anime_searches() {
     let anime_season = Search::AnimeSeason {
         season: 2,
         season_scene_titles: vec!["Monkey+Island+II".into()],
+        pack_search_only: false,
     };
     let urls = first_urls(&nyaa(&s, &caps).search(
         &criteria(&["Monkey+Island", "Monkey+Island+II"]),
@@ -379,5 +383,27 @@ fn nyaa_feed_and_anime_searches() {
     assert_eq!(
         urls,
         vec!["https://nyaa.si/?page=rss&cats=1_0&filter=1&term=Monkey+Island+II".to_string()]
+    );
+    // `PackSearchOnly`: a season-pack search also asks for the bare title.
+    let packs = Search::AnimeSeason {
+        season: 2,
+        season_scene_titles: vec![],
+        pack_search_only: true,
+    };
+    assert_eq!(
+        first_urls(&nyaa(&s, &caps).search(&criteria(&["Monkey+Island"]), &packs)),
+        vec!["https://nyaa.si/?page=rss&cats=1_0&filter=1&term=Monkey+Island".to_string()]
+    );
+    let not_packs = Search::AnimeSeason {
+        season: 2,
+        season_scene_titles: vec![],
+        pack_search_only: false,
+    };
+    assert!(
+        nyaa(&s, &caps)
+            .search(&criteria(&["Monkey+Island"]), &not_packs)
+            .all()
+            .next()
+            .is_none()
     );
 }

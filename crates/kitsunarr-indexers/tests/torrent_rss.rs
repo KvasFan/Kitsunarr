@@ -781,6 +781,7 @@ fn fanzub_searches() {
     let anime_season = Search::AnimeSeason {
         season: 3,
         season_scene_titles: Vec::new(),
+        pack_search_only: false,
     };
     // should_not_search_season
     assert_eq!(fanzub_query(false, &season), None);

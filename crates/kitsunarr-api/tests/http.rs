@@ -3156,6 +3156,39 @@ async fn complete_series_search_reads_packs_of_the_series() {
         .await
         .unwrap_err();
     assert_eq!(status(invalid), 422);
+    // Tanukarr's missing searches try a complete-series pack first for a series missing more
+    // than one season (no download client here: the grab fails, but the pack is chosen first).
+    log.lock().unwrap().clear();
+    let started = client
+        .search_wanted(&kitsunarr_domain::api::wanted::WantedSearchRequest {
+            list: kitsunarr_domain::api::wanted::WantedList::Missing,
+            episode_ids: vec![],
+            monitored: None,
+        })
+        .await
+        .unwrap();
+    assert!(started.episodes > 0, "{started:?}");
+    let mut complete_first = false;
+    for _ in 0..200 {
+        let queries = log.lock().unwrap().clone();
+        if let Some(complete) = queries
+            .iter()
+            .position(|q| q == "search Breaking Bad complete")
+        {
+            // The complete-series search (series by id, then its titles) comes first.
+            complete_first = complete < 4;
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert!(complete_first, "{:?}", log.lock().unwrap());
+    // Wait for the search to finish (the next one would conflict).
+    for _ in 0..200 {
+        if server.state.wanted_search.try_lock().is_ok() {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
 }
 
 #[tokio::test]

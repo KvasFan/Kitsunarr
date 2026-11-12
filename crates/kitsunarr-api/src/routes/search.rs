@@ -670,6 +670,7 @@ pub(crate) async fn run_search(
                         Search::AnimeSeason {
                             season,
                             season_scene_titles: Vec::new(),
+                            pack_search_only: q.season_packs_only,
                         },
                         SearchKind::AnimeSeason,
                     )

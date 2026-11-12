@@ -135,10 +135,35 @@ pub(crate) async fn bulk_search(
     groups: Vec<Vec<SearchTarget>>,
     monitored_only: bool,
     user_invoked: bool,
+    complete_series_first: bool,
 ) -> String {
     let episodes: usize = groups.iter().map(Vec::len).sum();
     let (mut grabbed, mut failed) = (Vec::new(), Vec::new());
+    // Tanukarr's missing searches: a complete-series pack first for a series missing more than
+    // one regular season, or episodes of a single-season series; the season and episode
+    // searches then skip what a grabbed pack covers.
+    let covered = if complete_series_first {
+        complete_series_step(
+            state,
+            &groups,
+            monitored_only,
+            user_invoked,
+            &mut grabbed,
+            &mut failed,
+        )
+        .await
+    } else {
+        std::collections::HashSet::new()
+    };
     for group in &groups {
+        let group: Vec<SearchTarget> = group
+            .iter()
+            .filter(|t| !covered.contains(&t.episode_id))
+            .cloned()
+            .collect();
+        if group.is_empty() {
+            continue;
+        }
         let first = &group[0];
         let ids: Vec<i64> = group.iter().map(|t| t.episode_id).collect();
         let season = group.len() > 1;
@@ -187,6 +212,78 @@ pub(crate) async fn bulk_search(
     summary
 }
 
+/// The complete-series step of missing searches (`EpisodeSearchService`, Tanukarr): returns the
+/// episodes grabbed packs cover.
+async fn complete_series_step(
+    state: &AppState,
+    groups: &[Vec<SearchTarget>],
+    monitored_only: bool,
+    user_invoked: bool,
+    grabbed: &mut Vec<String>,
+    failed: &mut Vec<String>,
+) -> std::collections::HashSet<i64> {
+    let mut covered = std::collections::HashSet::new();
+    let mut seasons: std::collections::BTreeMap<i64, std::collections::BTreeSet<i64>> =
+        std::collections::BTreeMap::new();
+    for t in groups.iter().flatten().filter(|t| t.season_number > 0) {
+        seasons
+            .entry(t.series_id)
+            .or_default()
+            .insert(t.season_number);
+    }
+    for (series_id, missing) in seasons {
+        let regular = kitsunarr_db::library::series::list_episodes(&state.db, series_id, None)
+            .await
+            .map(|list| {
+                list.iter()
+                    .filter(|e| e.season_number > 0)
+                    .map(|e| e.season_number)
+                    .collect::<std::collections::BTreeSet<_>>()
+                    .len()
+            })
+            .unwrap_or(0);
+        if missing.len() < 2 && !(missing.len() == 1 && regular == 1) {
+            continue;
+        }
+        let q = ReleaseQuery {
+            series_id,
+            season_number: None,
+            episode_id: None,
+            complete_series: true,
+            season_packs_only: false,
+        };
+        let options = SearchOptions {
+            automatic: true,
+            monitored_only,
+            episodes: None,
+            user_invoked,
+        };
+        let run = match search::run_search(state, &q, options).await {
+            Ok(run) => run,
+            Err(e) => {
+                // No torrent indexer, for instance: the season searches still run.
+                tracing::info!(series_id, error = %e.message(), "complete-series search unavailable");
+                continue;
+            }
+        };
+        let (g, f) =
+            search::process_decisions(state, &run, series_id, &mut Vec::new(), "Search").await;
+        crate::rss::keep_pending(state, series_id, &run).await;
+        for grab in &g {
+            if let Some(d) = run
+                .decisions
+                .iter()
+                .find(|d| d.approved() && run.releases[d.release].release.title == grab.title)
+            {
+                covered.extend(d.episodes.iter().map(|e| e.id));
+            }
+        }
+        grabbed.extend(g.into_iter().map(|g| g.title));
+        failed.extend(f.into_iter().map(|f| format!("{}: {}", f.title, f.message)));
+    }
+    covered
+}
+
 /// `MissingEpisodeSearch` for one series (after adding it), in the background: waits for any
 /// running wanted search, then searches the series' missing monitored episodes outside the
 /// queue and reports with a notification.
@@ -219,7 +316,7 @@ pub(crate) fn search_missing_of_series(state: &AppState, series_id: i64, user_in
         if targets.is_empty() {
             return;
         }
-        let summary = bulk_search(&state, groups(targets), true, user_invoked).await;
+        let summary = bulk_search(&state, groups(targets), true, user_invoked, true).await;
         tracing::info!(series_id, %summary, "search for missing episodes completed");
         state.events.publish(ServerEvent::Notice {
             level: "info".into(),
@@ -284,10 +381,13 @@ pub async fn search_wanted(
         // Chosen episodes are searched as `EpisodeSearch` (monitored or not); whole lists keep
         // their monitored filter.
         let monitored_only = req.episode_ids.is_empty() && monitored;
+        // "Search all missing" (monitored) tries complete-series packs first, as Tanukarr.
+        let complete_first = monitored_only && matches!(req.list, WantedList::Missing);
         let task_state = state.clone();
         tokio::spawn(async move {
             let _guard = guard;
-            let summary = bulk_search(&task_state, groups, monitored_only, true).await;
+            let summary =
+                bulk_search(&task_state, groups, monitored_only, true, complete_first).await;
             tracing::info!(%summary, "wanted search completed");
             task_state.events.publish(ServerEvent::Notice {
                 level: "info".into(),

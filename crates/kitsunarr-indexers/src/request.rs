@@ -281,6 +281,9 @@ pub enum Search {
     AnimeSeason {
         season: i32,
         season_scene_titles: Vec<String>,
+        /// Tanukarr's `PackSearchOnly` (a season-pack search): Nyaa also searches bare titles.
+        #[serde(default)]
+        pack_search_only: bool,
     },
     Special {
         episode_query_titles: Vec<String>,
@@ -728,6 +731,7 @@ impl Generator<'_> {
             Search::AnimeSeason {
                 season,
                 season_scene_titles,
+                pack_search_only,
             } => {
                 for t in &c.scene_titles {
                     if season_scene_titles
@@ -737,6 +741,8 @@ impl Generator<'_> {
                         titles.push(q(t));
                     } else if standard && *season > 0 {
                         titles.push(format!("{}+s{season:02}", q(t)));
+                    } else if *pack_search_only {
+                        titles.push(q(t));
                     }
                 }
             }
@@ -852,6 +858,7 @@ impl Generator<'_> {
             Search::AnimeSeason {
                 season,
                 season_scene_titles,
+                ..
             } => {
                 let mut chain = Chain::default();
                 if !caps.supports_search() || *season <= 0 {
