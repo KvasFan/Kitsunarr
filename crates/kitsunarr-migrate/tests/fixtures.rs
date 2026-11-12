@@ -541,6 +541,28 @@ async fn tanukarr_backup_preserves_provider_identities_and_movies() {
         .await
         .unwrap();
     assert!(original.is_some());
+    // Tanukarr's per-profile item sizes and codec factors are applied, not just reported.
+    let profile = kitsunarr_db::quality::list_profiles(db.pool())
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|p| p.name == "Kitsunarr Fixture 1080p")
+        .unwrap();
+    assert_eq!(profile.codec_multipliers.len(), 18);
+    assert_eq!(profile.codec_multipliers["HEVC"].0, 1.67);
+    let sdtv = profile
+        .size_limits
+        .iter()
+        .find(|l| l.quality_id == 1)
+        .unwrap();
+    assert_eq!(
+        (
+            sdtv.min_size.map(|v| v.0),
+            sdtv.preferred_size.map(|v| v.0),
+            sdtv.max_size.map(|v| v.0)
+        ),
+        (Some(2.0), Some(95.0), Some(100.0))
+    );
     assert_eq!(tree(&media), before, "no filesystem changes");
 }
 

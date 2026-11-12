@@ -8,6 +8,7 @@
 //! * the typed REST contract (`api`) used by the Axum server and the Dioxus client.
 
 pub mod api;
+pub mod codec;
 pub mod language;
 pub mod media;
 pub mod naming;

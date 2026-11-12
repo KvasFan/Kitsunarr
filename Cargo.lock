@@ -2608,6 +2608,7 @@ dependencies = [
  "chrono",
  "kitsunarr-domain",
  "kitsunarr-parser",
+ "regex",
  "serde",
  "serde_json",
 ]

@@ -28,7 +28,7 @@ use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, FormatScore, ImportListOptionsSettings,
     IndexerOptionsSettings, ListSyncLevel, MediaManagementSettings, MetadataSourcesSettings,
     NamingSettings, OrderedF64, ProperDownloadType, ProviderKind, QualityDefinition, QualityGroup,
-    QualityProfile, QualityProfileItem,
+    QualityProfile, QualityProfileItem, QualitySizeLimit,
 };
 use kitsunarr_domain::{
     ExternalId, ExternalIdKind, MediaKind, MetadataProvider, MinimumAvailability, MovieStatus,
@@ -622,7 +622,38 @@ impl<'a> Importer<'a> {
                 p.unmapped.keys().cloned().collect::<Vec<_>>().join(", ")
             ));
         }
-        QualityProfile {
+        let mut size_limits = Vec::new();
+        for l in &p.size_limits {
+            if Quality::by_id(l.quality_id).is_none() {
+                self.warn(WarningSeverity::Warning, "qualityProfiles", Some(p.id), Some(&p.name), format!(
+                    "Size limits of quality #{} were dropped: Kitsunarr has no such quality (custom presets are not imported).",
+                    l.quality_id
+                ));
+                continue;
+            }
+            let o = |v: Option<f64>| {
+                v.filter(|x| x.is_finite())
+                    .map(|x| OrderedF64(x.clamp(0.0, 1000.0)))
+            };
+            size_limits.push(QualitySizeLimit {
+                quality_id: l.quality_id,
+                min_size: o(l.min_size),
+                preferred_size: o(l.preferred_size),
+                max_size: o(l.max_size),
+            });
+        }
+        let mut codec_multipliers = std::collections::BTreeMap::new();
+        for (k, v) in &p.codec_multipliers {
+            match kitsunarr_domain::codec::canonical(k) {
+                Some(family) if (0.01..=10.0).contains(v) => {
+                    codec_multipliers.insert(family.to_string(), OrderedF64(*v));
+                }
+                _ => self.warn(WarningSeverity::Warning, "qualityProfiles", Some(p.id), Some(&p.name), format!(
+                    "The codec factor {k} = {v} was dropped: unknown codec or outside 0.01 to 10."
+                )),
+            }
+        }
+        let profile = QualityProfile {
             id: 0,
             name: p.name.clone(),
             upgrade_allowed: p.upgrade_allowed,
@@ -632,7 +663,20 @@ impl<'a> Importer<'a> {
             cutoff_format_score: p.cutoff_format_score,
             min_upgrade_format_score: p.min_upgrade_format_score.max(1),
             format_items,
+            size_limits,
+            codec_multipliers,
+        };
+        if quality::validate_profile(&profile).is_err() {
+            // Inconsistent source sizes (minimum above maximum): keep the profile without them.
+            let mut fallback = profile.clone();
+            fallback.size_limits.clear();
+            if quality::validate_profile(&fallback).is_ok() {
+                self.warn(WarningSeverity::Warning, "qualityProfiles", Some(p.id), Some(&p.name),
+                    "The profile's size limits are inconsistent and were dropped; the global quality definitions apply.".to_string());
+                return fallback;
+            }
         }
+        profile
     }
 
     async fn quality_profiles(&mut self, conn: &mut SqliteConnection) -> Result<(), MigrateError> {

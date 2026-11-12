@@ -85,6 +85,29 @@ pub struct QualityProfile {
     pub cutoff_format_score: i32,
     pub min_upgrade_format_score: i32,
     pub format_items: Vec<FormatScore>,
+    /// Per-quality size limits of this profile (Sonarr v5 and Tanukarr keep sizes on profile
+    /// items); a quality without an entry uses the global quality definition.
+    #[serde(default)]
+    pub size_limits: Vec<QualitySizeLimit>,
+    /// Tanukarr's codec size factors overriding the defaults for this profile (codec family →
+    /// factor, 0.01 to 10).
+    #[serde(default)]
+    #[cfg_attr(feature = "openapi", schema(value_type = std::collections::BTreeMap<String, f64>))]
+    pub codec_multipliers: std::collections::BTreeMap<String, OrderedF64>,
+}
+
+/// Size limits of one quality in a profile, in MiB per minute of runtime (`None`: no limit).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct QualitySizeLimit {
+    pub quality_id: i32,
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<f64>))]
+    pub min_size: Option<OrderedF64>,
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<f64>))]
+    pub preferred_size: Option<OrderedF64>,
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<f64>))]
+    pub max_size: Option<OrderedF64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

@@ -559,17 +559,25 @@ fn episode_file(r: &Rec) -> Option<SrcEpisodeFile> {
     })
 }
 
-fn profile_item(v: &Value, unmapped_sizes: &mut bool) -> Option<SrcProfileItem> {
+fn profile_item(v: &Value, sizes: &mut Vec<SrcSizeLimit>) -> Option<SrcProfileItem> {
     let r = Rec::from_value(v.clone());
     let allowed = r.bool_or("allowed", false);
-    if r.has("minsize") || r.has("maxsize") || r.has("preferredsize") {
-        *unmapped_sizes = true;
-    }
     if let Some(q) = r.raw("quality") {
         let id = match q {
             Value::Object(o) => o.get("id").and_then(as_i64),
             other => as_i64(other),
         }?;
+        // Sonarr v5 and Tanukarr keep size limits on profile items (MiB per minute).
+        if (r.has("minsize") || r.has("maxsize") || r.has("preferredsize"))
+            && let Ok(quality_id) = i32::try_from(id)
+        {
+            sizes.push(SrcSizeLimit {
+                quality_id,
+                min_size: r.f64("minsize"),
+                preferred_size: r.f64("preferredsize"),
+                max_size: r.f64("maxsize").filter(|m| *m > 0.0),
+            });
+        }
         return Some(SrcProfileItem {
             quality_id: i32::try_from(id).ok(),
             group: None,
@@ -581,7 +589,7 @@ fn profile_item(v: &Value, unmapped_sizes: &mut bool) -> Option<SrcProfileItem> 
     let members: Vec<i32> = r
         .array("items")
         .iter()
-        .filter_map(|sub| profile_item(sub, unmapped_sizes).and_then(|i| i.quality_id))
+        .filter_map(|sub| profile_item(sub, sizes).and_then(|i| i.quality_id))
         .collect();
     Some(SrcProfileItem {
         quality_id: None,
@@ -591,20 +599,21 @@ fn profile_item(v: &Value, unmapped_sizes: &mut bool) -> Option<SrcProfileItem> 
 }
 
 fn quality_profile(r: &Rec) -> Option<SrcQualityProfile> {
-    let mut sizes = false;
+    let mut size_limits = Vec::new();
     let items: Vec<SrcProfileItem> = r
         .array("items")
         .iter()
-        .filter_map(|v| profile_item(v, &mut sizes))
+        .filter_map(|v| profile_item(v, &mut size_limits))
         .collect();
     let mut unmapped = Map::new();
-    note(&mut unmapped, r, "codecmultipliers", zero_or_empty);
-    if sizes {
-        unmapped.insert(
-            "itemSizeLimits".into(),
-            r.json("items").unwrap_or(Value::Null),
-        );
-    }
+    // Tanukarr's codec factors: a JSON object (a string in databases).
+    let codec_multipliers: Vec<(String, f64)> = match r.json("codecmultipliers") {
+        Some(Value::Object(m)) => m
+            .iter()
+            .filter_map(|(k, v)| Some((k.clone(), as_f64(v)?)))
+            .collect(),
+        _ => Vec::new(),
+    };
     // Sonarr v3 language profiles were folded into custom formats in v4; keep the reference.
     note(&mut unmapped, r, "language", zero_or_empty);
     Some(SrcQualityProfile {
@@ -624,8 +633,14 @@ fn quality_profile(r: &Rec) -> Option<SrcQualityProfile> {
         min_format_score: r.i32("minformatscore").unwrap_or(0),
         cutoff_format_score: r.i32("cutoffformatscore").unwrap_or(0),
         min_upgrade_format_score: r.i32("minupgradeformatscore").unwrap_or(1),
+        size_limits,
+        codec_multipliers,
         unmapped,
     })
+}
+
+fn as_f64(v: &Value) -> Option<f64> {
+    v.as_f64().or_else(|| v.as_str()?.trim().parse().ok())
 }
 
 fn quality_definition(r: &Rec) -> Option<SrcQualityDefinition> {

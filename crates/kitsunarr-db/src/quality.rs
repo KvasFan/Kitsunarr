@@ -93,6 +93,8 @@ struct ProfileRow {
     cutoff_format_score: i64,
     min_upgrade_format_score: i64,
     format_items: String,
+    size_limits: String,
+    codec_multipliers: String,
 }
 
 impl ProfileRow {
@@ -107,6 +109,8 @@ impl ProfileRow {
             cutoff_format_score: self.cutoff_format_score as i32,
             min_upgrade_format_score: self.min_upgrade_format_score as i32,
             format_items: from_json(&self.format_items)?,
+            size_limits: from_json(&self.size_limits)?,
+            codec_multipliers: from_json(&self.codec_multipliers)?,
         })
     }
 }
@@ -167,6 +171,45 @@ pub fn validate_profile(p: &QualityProfile) -> Result<(), DbError> {
         }
         any_allowed |= item.allowed;
     }
+    for (codec, factor) in &p.codec_multipliers {
+        if !kitsunarr_domain::codec::FAMILIES.contains(&codec.as_str()) {
+            return Err(DbError::Invalid(format!("unknown codec family {codec}")));
+        }
+        if !(0.01..=10.0).contains(&factor.0) {
+            return Err(DbError::Invalid(format!(
+                "the {codec} factor must be between 0.01 and 10"
+            )));
+        }
+    }
+    let mut limited = std::collections::HashSet::new();
+    for l in &p.size_limits {
+        if Quality::by_id(l.quality_id).is_none() || !limited.insert(l.quality_id) {
+            return Err(DbError::Invalid(format!(
+                "invalid or duplicate size limit for quality {}",
+                l.quality_id
+            )));
+        }
+        let v = |o: Option<kitsunarr_domain::api::settings::OrderedF64>| o.map(|x| x.0);
+        let (min, preferred, max) = (v(l.min_size), v(l.preferred_size), v(l.max_size));
+        if [min, preferred, max]
+            .into_iter()
+            .flatten()
+            .any(|x| !x.is_finite() || !(0.0..=1000.0).contains(&x))
+        {
+            return Err(DbError::Invalid(
+                "sizes must be between 0 and 1000 MiB per minute".into(),
+            ));
+        }
+        let max = max.filter(|m| *m > 0.0);
+        if min.zip(preferred).is_some_and(|(a, b)| a > b)
+            || max.is_some_and(|m| min.is_some_and(|a| a > m) || preferred.is_some_and(|b| b > m))
+        {
+            return Err(DbError::Invalid(format!(
+                "quality {}: minimum ≤ preferred ≤ maximum",
+                l.quality_id
+            )));
+        }
+    }
     if !any_allowed {
         return Err(DbError::Invalid(
             "at least one quality must be allowed".into(),
@@ -184,7 +227,7 @@ pub async fn create_profile(ex: impl SqliteExecutor<'_>, p: &QualityProfile) -> 
     validate_profile(p)?;
     sqlx::query_scalar(
         "INSERT INTO quality_profiles (name, upgrade_allowed, cutoff, items, min_format_score, cutoff_format_score, \
-         min_upgrade_format_score, format_items) VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+         min_upgrade_format_score, format_items, size_limits, codec_multipliers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
     )
     .bind(p.name.trim())
     .bind(p.upgrade_allowed)
@@ -194,6 +237,8 @@ pub async fn create_profile(ex: impl SqliteExecutor<'_>, p: &QualityProfile) -> 
     .bind(p.cutoff_format_score)
     .bind(p.min_upgrade_format_score)
     .bind(to_json(&p.format_items)?)
+    .bind(to_json(&p.size_limits)?)
+    .bind(to_json(&p.codec_multipliers)?)
     .fetch_one(ex)
     .await
     .map_err(|e| DbError::from_write(e, "quality profile"))
@@ -203,7 +248,8 @@ pub async fn update_profile(ex: impl SqliteExecutor<'_>, p: &QualityProfile) -> 
     validate_profile(p)?;
     let r = sqlx::query(
         "UPDATE quality_profiles SET name = ?, upgrade_allowed = ?, cutoff = ?, items = ?, min_format_score = ?, \
-         cutoff_format_score = ?, min_upgrade_format_score = ?, format_items = ? WHERE id = ?",
+         cutoff_format_score = ?, min_upgrade_format_score = ?, format_items = ?, size_limits = ?, \
+         codec_multipliers = ? WHERE id = ?",
     )
     .bind(p.name.trim())
     .bind(p.upgrade_allowed)
@@ -213,6 +259,8 @@ pub async fn update_profile(ex: impl SqliteExecutor<'_>, p: &QualityProfile) -> 
     .bind(p.cutoff_format_score)
     .bind(p.min_upgrade_format_score)
     .bind(to_json(&p.format_items)?)
+    .bind(to_json(&p.size_limits)?)
+    .bind(to_json(&p.codec_multipliers)?)
     .bind(p.id)
     .execute(ex)
     .await
@@ -293,6 +341,8 @@ pub fn default_profiles() -> Vec<QualityProfile> {
         cutoff_format_score: 0,
         min_upgrade_format_score: 1,
         format_items: Vec::new(),
+        size_limits: Vec::new(),
+        codec_multipliers: Default::default(),
     };
     vec![
         make("Any", 1, &[1, 1000, 2, 13, 22, 4, 9, 1001, 6, 1002, 7]),

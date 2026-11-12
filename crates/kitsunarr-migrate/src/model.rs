@@ -215,7 +215,19 @@ pub struct SrcQualityProfile {
     pub min_format_score: i32,
     pub cutoff_format_score: i32,
     pub min_upgrade_format_score: i32,
+    /// Per-quality size limits from profile items (Sonarr v5, Tanukarr).
+    pub size_limits: Vec<SrcSizeLimit>,
+    /// Tanukarr's codec size factors (family, factor).
+    pub codec_multipliers: Vec<(String, f64)>,
     pub unmapped: Map<String, Value>,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct SrcSizeLimit {
+    pub quality_id: i32,
+    pub min_size: Option<f64>,
+    pub preferred_size: Option<f64>,
+    pub max_size: Option<f64>,
 }
 
 #[derive(Debug, Clone, PartialEq)]

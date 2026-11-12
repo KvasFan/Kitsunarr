@@ -490,3 +490,18 @@ a search.
   Simkl need the user's own application Client ID (`clientId`, `clientIdV2`) and, for private
   data, a token of that application; Plex needs the account token; TMDB lists use the API Read
   Access Token. Sign-in flows (OAuth pages) are not implemented: tokens are pasted or migrated.
+
+## 30. Codec size factors and per-profile size limits (Tanukarr)
+
+- **Sizes.** A quality profile may carry `size_limits` (minimum, preferred and maximum MiB per
+  minute per quality), as Sonarr v5 and Tanukarr keep sizes on profile items. A quality with an
+  entry uses it (an empty value means no limit); others use the global quality definition, so
+  Sonarr v4 behaviour is unchanged for profiles without limits. Migrated profile item sizes
+  become entries; inconsistent ones (minimum above maximum) are dropped with a warning.
+- **Codec factors.** Tanukarr's `CodecSizeNormalizer`: the codec family is read from the release
+  title tokens (exactly one family, else `Unknown`; series title and trailing group removed;
+  letter/number boundaries checked by hand because the `regex` crate has no look-around) and the
+  size multiplied by the profile's override or the default factor (H.264 1.00, HEVC 1.67, AV1
+  2.22, ...). Only the size limits and the preferred-size ranking use the normalised size; grabs,
+  disk and free-space checks use the actual bytes. Factors live in `codec_multipliers`
+  (canonical family keys, 0.01 to 10).

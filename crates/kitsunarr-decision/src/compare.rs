@@ -158,17 +158,30 @@ impl Comparer<'_> {
     fn size(&self, x: &Decision, y: &Decision) -> Ordering {
         let step = megabytes(200.0);
         let value = |d: &Decision| {
-            let size = self.release(d).size;
-            let preferred = self
-                .settings
-                .quality_definitions
-                .iter()
-                .find(|q| q.quality_id == d.quality.quality.id)
-                .and_then(|q| q.preferred_size);
+            let release = self.release(d);
+            // Tanukarr: the codec-normalised size is ranked.
+            let size = match &d.parsed {
+                Some(parsed) => {
+                    crate::codec::normalize(
+                        &self.series.profile,
+                        &release.title,
+                        parsed,
+                        release.size,
+                    )
+                    .2
+                }
+                None => release.size,
+            };
+            let preferred = crate::specs::size_limits(
+                self.settings,
+                &self.series.profile,
+                d.quality.quality.id,
+            )
+            .and_then(|(_, p, _)| p);
             let runtime = self.runtime(d);
             match preferred {
                 Some(p) if runtime > 0 => {
-                    let preferred_size = runtime * megabytes(p.0);
+                    let preferred_size = runtime * megabytes(p);
                     -round_to(size - preferred_size, step).abs()
                 }
                 _ => round_to(size, step),

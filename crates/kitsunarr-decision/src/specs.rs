@@ -289,43 +289,88 @@ pub(crate) fn acceptable_size(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejectio
             "Runtime of all episodes is 0, unable to validate size until it is available",
         ));
     }
-    let definition = env
-        .settings
-        .quality_definitions
-        .iter()
-        .find(|d| d.quality_id == s.parsed.quality.quality.id)?;
+    let (min_limit, _, max_limit) = size_limits(
+        env.settings,
+        &env.series.profile,
+        s.parsed.quality.quality.id,
+    )?;
     let runtime_message = if s.episodes.len() == 1 {
         format!("{runtime}min")
     } else {
         format!("{} episodes totalling {runtime}min", s.episodes.len())
     };
-    if let Some(min) = definition.min_size {
-        let min_size = megabytes(min.0) * runtime;
-        if s.release.size < min_size {
+    // Tanukarr: the limits apply to the codec-normalised size.
+    let (family, factor, size) = crate::codec::normalize(
+        &env.series.profile,
+        &s.release.title,
+        s.parsed,
+        s.release.size,
+    );
+    let shown = if factor == 1.0 {
+        size_suffix(s.release.size)
+    } else {
+        format!(
+            "{} actual, {} codec-normalized ({family} ×{factor:.2})",
+            size_suffix(s.release.size),
+            size_suffix(size)
+        )
+    };
+    if let Some(min) = min_limit {
+        let min_size = megabytes(min) * runtime;
+        if size < min_size {
             return Some(Rejection::new(
                 R::BelowMinimumSize,
                 format!(
-                    "{} is smaller than minimum allowed {} (for {runtime_message})",
-                    size_suffix(s.release.size),
+                    "{shown} is smaller than minimum allowed {} (for {runtime_message})",
                     size_suffix(min_size)
                 ),
             ));
         }
     }
-    if let Some(max) = definition.max_size.filter(|m| m.0 != 0.0) {
-        let max_size = megabytes(max.0) * runtime;
-        if s.release.size > max_size {
+    if let Some(max) = max_limit.filter(|m| *m != 0.0) {
+        let max_size = megabytes(max) * runtime;
+        if size > max_size {
             return Some(Rejection::new(
                 R::AboveMaximumSize,
                 format!(
-                    "{} is larger than maximum allowed {} (for {runtime_message})",
-                    size_suffix(s.release.size),
+                    "{shown} is larger than maximum allowed {} (for {runtime_message})",
                     size_suffix(max_size)
                 ),
             ));
         }
     }
     None
+}
+
+/// A quality's (minimum, preferred, maximum) size in MiB per minute: the profile's own limits
+/// when it has an entry for the quality, else the global quality definition.
+pub(crate) fn size_limits(
+    settings: &Settings,
+    profile: &kitsunarr_domain::api::settings::QualityProfile,
+    quality_id: i32,
+) -> Option<(Option<f64>, Option<f64>, Option<f64>)> {
+    if let Some(l) = profile
+        .size_limits
+        .iter()
+        .find(|l| l.quality_id == quality_id)
+    {
+        return Some((
+            l.min_size.map(|v| v.0),
+            l.preferred_size.map(|v| v.0),
+            l.max_size.map(|v| v.0),
+        ));
+    }
+    settings
+        .quality_definitions
+        .iter()
+        .find(|d| d.quality_id == quality_id)
+        .map(|d| {
+            (
+                d.min_size.map(|v| v.0),
+                d.preferred_size.map(|v| v.0),
+                d.max_size.map(|v| v.0),
+            )
+        })
 }
 
 /// `double.Megabytes()`: `Convert.ToInt64(mb * 1024 * 1024)`.

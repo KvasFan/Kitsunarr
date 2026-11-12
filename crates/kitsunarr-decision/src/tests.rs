@@ -55,6 +55,8 @@ pub(crate) fn series() -> Series {
             cutoff_format_score: 0,
             min_upgrade_format_score: 0,
             format_items: Vec::new(),
+            size_limits: Vec::new(),
+            codec_multipliers: Default::default(),
         },
         episodes: Vec::new(),
     }
@@ -638,6 +640,74 @@ impl Case {
 
     fn accepted(&self, spec: fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>) -> bool {
         self.check(spec).is_none()
+    }
+}
+
+/// Tanukarr's codec-normalised sizes (`CodecNormalizedSizeFixture`) and per-profile size limits
+/// (`QualityProfileSizeLimit`).
+mod codec_normalized_size_fixture {
+    use super::*;
+    use kitsunarr_domain::api::settings::QualitySizeLimit;
+
+    /// SDTV, 30 minutes, max 10 MB per minute: 300 MB.
+    fn case(title: &str, size_mb: i64) -> Case {
+        let mut c = Case::new();
+        c.series.runtime = 30;
+        c.settings.quality_definitions = vec![QualityDefinition {
+            quality_id: SDTV,
+            title: "SDTV".into(),
+            weight: 2,
+            min_size: Some(OrderedF64(2.0)),
+            preferred_size: None,
+            max_size: Some(OrderedF64(10.0)),
+        }];
+        c.release = release(title);
+        c.release.size = size_mb * MB;
+        c
+    }
+
+    #[test]
+    fn hevc_releases_are_judged_by_their_normalised_size() {
+        // 250 MB of x264 fits; 250 MB of x265 counts as 417 MB and is too large.
+        assert!(
+            case("Series.Title.S01E01.720p.HDTV.x264-GRP", 250).accepted(specs::acceptable_size)
+        );
+        let r = case("Series.Title.S01E01.720p.HDTV.x265-GRP", 250)
+            .check(specs::acceptable_size)
+            .unwrap();
+        assert_eq!(r.reason, RejectionReason::AboveMaximumSize);
+        assert!(
+            r.message.contains("codec-normalized (HEVC ×1.67)"),
+            "{}",
+            r.message
+        );
+        // 50 MB of XviD (×0.67) falls under the 60 MB minimum, 50 MB of x264 too; 100 MB of
+        // XviD (67 MB normalised) fits.
+        assert!(
+            !case("Series.Title.S01E01.720p.HDTV.XviD-GRP", 50).accepted(specs::acceptable_size)
+        );
+        assert!(
+            case("Series.Title.S01E01.720p.HDTV.XviD-GRP", 100).accepted(specs::acceptable_size)
+        );
+    }
+
+    #[test]
+    fn profile_overrides_and_size_limits_apply() {
+        let mut c = case("Series.Title.S01E01.720p.HDTV.x265-GRP", 250);
+        c.series
+            .profile
+            .codec_multipliers
+            .insert("HEVC".into(), OrderedF64(1.0));
+        assert!(c.accepted(specs::acceptable_size));
+        // The profile's own limits replace the global definition.
+        let mut c = case("Series.Title.S01E01.720p.HDTV.x264-GRP", 250);
+        c.series.profile.size_limits = vec![QualitySizeLimit {
+            quality_id: SDTV,
+            min_size: None,
+            preferred_size: None,
+            max_size: Some(OrderedF64(5.0)),
+        }];
+        assert!(!c.accepted(specs::acceptable_size));
     }
 }
 

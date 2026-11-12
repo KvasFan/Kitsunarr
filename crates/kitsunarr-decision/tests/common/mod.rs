@@ -69,6 +69,8 @@ pub fn profile(items: Vec<QualityProfileItem>) -> QualityProfile {
         cutoff_format_score: 0,
         min_upgrade_format_score: 0,
         format_items: Vec::new(),
+        size_limits: Vec::new(),
+        codec_multipliers: Default::default(),
     }
 }
 

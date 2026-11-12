@@ -11,6 +11,7 @@
 //! space, scene mappings and TheXEM numbering.
 
 pub mod anime_pack;
+pub mod codec;
 pub mod complete_series;
 pub mod custom_format;
 pub mod model;

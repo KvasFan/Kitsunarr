@@ -557,6 +557,52 @@ fn ProfileEditor(
                 Field { label: "Minimum format score", input { class: "input", r#type: "number", value: "{current.min_format_score}", oninput: move |e| p.write().min_format_score = e.value().parse().unwrap_or(0) } }
                 Field { label: "Upgrade until format score", input { class: "input", r#type: "number", value: "{current.cutoff_format_score}", oninput: move |e| p.write().cutoff_format_score = e.value().parse().unwrap_or(0) } }
             }
+            details { style: "margin-top: var(--sp-4)",
+                summary { strong { "Size limits" } span { class: "muted small", " — MiB per minute; empty uses Settings › Quality" } }
+                div { class: "table-wrap",
+                    table { class: "table",
+                        thead { tr { th { "Quality" } th { "Minimum" } th { "Preferred" } th { "Maximum" } } }
+                        tbody {
+                            for qid in profile_quality_ids(&current) {
+                                {
+                                    let limit = current.size_limits.iter().find(|l| l.quality_id == qid).cloned();
+                                    let name = Quality::by_id(qid).map_or_else(|| qid.to_string(), |q| q.name.to_string());
+                                    let cell = move |field: u8| {
+                                        let value = limit.as_ref().and_then(|l| match field { 0 => l.min_size, 1 => l.preferred_size, _ => l.max_size }).map(|v| v.0.to_string()).unwrap_or_default();
+                                        rsx! {
+                                            td { input { class: "input", r#type: "number", min: "0", max: "1000", step: "0.1", style: "width: 6rem",
+                                                "aria-label": "{field_name(field)} size of {qid}",
+                                                placeholder: "global", value: "{value}",
+                                                oninput: move |e: FormEvent| set_size_limit(&mut p.write(), qid, field, e.value().trim().parse().ok()) } }
+                                        }
+                                    };
+                                    rsx! { tr { key: "{qid}", td { "{name}" } {cell(0)} {cell(1)} {cell(2)} } }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            details { style: "margin-top: var(--sp-2)",
+                summary { strong { "Codec size factors" } span { class: "muted small", " — a release's size is multiplied by its codec's factor before the size limits apply" } }
+                div { class: "form-grid",
+                    for family in kitsunarr_domain::codec::FAMILIES.iter().copied() {
+                        Field { key: "{family}", label: kitsunarr_domain::codec::label(family).to_string(),
+                            input { class: "input", r#type: "number", min: "0.01", max: "10", step: "0.01",
+                                "aria-label": "{family} factor",
+                                placeholder: "{kitsunarr_domain::codec::default_factor(family):.2}",
+                                value: "{current.codec_multipliers.get(family).map(|v| v.0.to_string()).unwrap_or_default()}",
+                                oninput: move |e: FormEvent| {
+                                    let mut w = p.write();
+                                    match e.value().trim().parse::<f64>() {
+                                        Ok(v) => { w.codec_multipliers.insert(family.to_string(), kitsunarr_domain::api::settings::OrderedF64(v)); }
+                                        Err(_) => { w.codec_multipliers.remove(family); }
+                                    }
+                                } }
+                        }
+                    }
+                }
+            }
         }
         if confirm() {
             Confirm {
@@ -568,6 +614,58 @@ fn ProfileEditor(
                 on_cancel: move |_| confirm.set(false),
             }
         }
+    }
+}
+
+/// Every quality of a profile (group members included), best first.
+fn profile_quality_ids(p: &QualityProfile) -> Vec<i32> {
+    p.items
+        .iter()
+        .rev()
+        .flat_map(|i| match (&i.quality_id, &i.group) {
+            (Some(q), _) => vec![*q],
+            (None, Some(g)) => g.quality_ids.clone(),
+            _ => Vec::new(),
+        })
+        .collect()
+}
+
+fn field_name(field: u8) -> &'static str {
+    match field {
+        0 => "Minimum",
+        1 => "Preferred",
+        _ => "Maximum",
+    }
+}
+
+/// Sets one size of a quality; a quality left with no sizes falls back to the global definition.
+fn set_size_limit(p: &mut QualityProfile, quality_id: i32, field: u8, value: Option<f64>) {
+    use kitsunarr_domain::api::settings::{OrderedF64, QualitySizeLimit};
+    let idx = match p
+        .size_limits
+        .iter()
+        .position(|l| l.quality_id == quality_id)
+    {
+        Some(i) => i,
+        None => {
+            p.size_limits.push(QualitySizeLimit {
+                quality_id,
+                min_size: None,
+                preferred_size: None,
+                max_size: None,
+            });
+            p.size_limits.len() - 1
+        }
+    };
+    let l = &mut p.size_limits[idx];
+    let v = value.map(OrderedF64);
+    match field {
+        0 => l.min_size = v,
+        1 => l.preferred_size = v,
+        _ => l.max_size = v,
+    }
+    if l.min_size.is_none() && l.preferred_size.is_none() && l.max_size.is_none() {
+        p.size_limits.remove(idx);
     }
 }
 
