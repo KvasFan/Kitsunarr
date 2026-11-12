@@ -6,6 +6,7 @@
 
 pub mod decision_input;
 pub mod downloads;
+pub mod extras;
 pub mod failed;
 pub mod file_names;
 pub mod files;

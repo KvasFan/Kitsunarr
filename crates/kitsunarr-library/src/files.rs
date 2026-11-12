@@ -476,6 +476,8 @@ pub async fn rename_files(
         series::set_file_path(&mut conn, p.episode_file_id, &p.new_path)
             .await
             .map_err(err)?;
+        // `ExtraFileRenamer`: the file's extras follow its new name.
+        crate::extras::rename_for_file(db, &series_path, p.episode_file_id, &src, &dst).await;
         for e in episodes
             .iter()
             .filter(|e| e.file.as_ref().is_some_and(|f| f.id == p.episode_file_id))

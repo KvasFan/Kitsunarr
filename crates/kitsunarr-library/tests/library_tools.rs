@@ -594,3 +594,111 @@ async fn failed_film_downloads_are_blocklisted() {
         .unwrap();
     assert_eq!(model_blocklist[0].series_id, 9);
 }
+
+/// Sonarr's extra files: subtitles named for the video or in a folder named for it come along
+/// with their language; other extras named for the video take the episode's name.
+#[tokio::test]
+async fn subtitles_and_extras_come_with_the_episode() {
+    use kitsunarr_library::extras::{ExtraImport, import_extras};
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    let profile: i64 = sqlx::query_scalar("SELECT MIN(id) FROM quality_profiles")
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    let series_path = dir.path().join("tv/Show");
+    std::fs::create_dir_all(series_path.join("Season 01")).unwrap();
+    sqlx::query(
+        "INSERT INTO series (id, media_kind, title, sort_title, clean_title, title_slug, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at) VALUES (1, 'series', 'Show', 'show', 'show', 'show', 'tvdb', '1', ?, ?, ?, '2026-11-01T00:00:00Z')",
+    )
+    .bind(profile)
+    .bind(dir.path().join("tv").display().to_string())
+    .bind(series_path.display().to_string())
+    .execute(db.pool())
+    .await
+    .unwrap();
+    sqlx::query("INSERT INTO episode_files (id, series_id, season_number, relative_path, added_at) VALUES (5, 1, 1, 'Season 01/Show - S01E01.mkv', '2026-11-01T00:00:00Z')")
+        .execute(db.pool())
+        .await
+        .unwrap();
+    let download = dir.path().join("dl/Show.S01E01.720p.HDTV-GRP");
+    std::fs::create_dir_all(download.join("Subs/Show.S01E01")).unwrap();
+    let video = download.join("Show.S01E01.mkv");
+    std::fs::write(&video, b"v").unwrap();
+    std::fs::write(download.join("Show.S01E01.en.srt"), b"en").unwrap();
+    std::fs::write(download.join("Show.S01E01.nfo"), b"nfo").unwrap();
+    std::fs::write(download.join("Subs/Show.S01E01/2_French.srt"), b"fr").unwrap();
+    std::fs::write(download.join("unrelated.srt.bak"), b"x").unwrap();
+    let mut media: kitsunarr_domain::api::settings::MediaManagementSettings =
+        kv::get_or_default(db.pool(), kv::KEY_MEDIA_MANAGEMENT)
+            .await
+            .unwrap();
+    media.import_extra_files = true;
+    media.extra_file_extensions = "srt, nfo".into();
+    let episode_file = series_path.join("Season 01/Show - S01E01.mkv");
+    let info = kitsunarr_parser::parse_path(&video.to_string_lossy());
+    let n = import_extras(
+        &db,
+        &media,
+        &ExtraImport {
+            series_id: 1,
+            series_path: &series_path,
+            season_number: 1,
+            episode_file_id: 5,
+            episode_file: &episode_file,
+            source: &video,
+            source_info: info.as_ref(),
+            read_only: true,
+        },
+    )
+    .await;
+    assert_eq!(n, 3);
+    let season = series_path.join("Season 01");
+    let mut names: Vec<String> = std::fs::read_dir(&season)
+        .unwrap()
+        .flatten()
+        .map(|e| e.file_name().to_string_lossy().into_owned())
+        .collect();
+    names.sort();
+    assert_eq!(
+        names,
+        vec![
+            "Show - S01E01.en.srt",
+            "Show - S01E01.fr.srt",
+            "Show - S01E01.nfo"
+        ]
+    );
+    assert!(
+        download.join("Show.S01E01.en.srt").exists(),
+        "torrents keep their files"
+    );
+    let recorded: i64 =
+        sqlx::query_scalar("SELECT COUNT(*) FROM extra_files WHERE episode_file_id = 5")
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert_eq!(recorded, 3);
+    // A rename takes them along.
+    kitsunarr_library::extras::rename_for_file(
+        &db,
+        &series_path,
+        5,
+        &episode_file,
+        &season.join("Show - S01E01 - Pilot.mkv"),
+    )
+    .await;
+    assert!(season.join("Show - S01E01 - Pilot.fr.srt").is_file());
+    assert!(season.join("Show - S01E01 - Pilot.nfo").is_file());
+    // An upgrade removes them with the replaced file.
+    kitsunarr_library::extras::remove_for_file(
+        &db,
+        &media,
+        &series_path,
+        &dir.path().join("tv"),
+        5,
+    )
+    .await;
+    assert_eq!(std::fs::read_dir(&season).unwrap().count(), 0);
+}

@@ -1011,6 +1011,15 @@ async fn transfer_and_record(
             } else {
                 remove_or_recycle(&old_path, media, Path::new(&detail.root_folder_path))?;
             }
+            // The replaced file's extras go with it.
+            crate::extras::remove_for_file(
+                db,
+                media,
+                series_path,
+                Path::new(&detail.root_folder_path),
+                old.id,
+            )
+            .await;
         }
         for episode_id in &episode_ids {
             history::insert(
@@ -1124,6 +1133,23 @@ async fn transfer_and_record(
         .map_err(|e| e.to_string())?;
     }
     tracing::info!(file = %dest.display(), linked, "episode imported");
+    // Sonarr's `ExtraService.ImportEpisode`: subtitles and other extras come along.
+    let source_info = parse_path(&c.path.to_string_lossy());
+    crate::extras::import_extras(
+        db,
+        media,
+        &crate::extras::ExtraImport {
+            series_id: model.id,
+            series_path,
+            season_number: c.season,
+            episode_file_id: file_id,
+            episode_file: &dest,
+            source: &c.path,
+            source_info: source_info.as_ref(),
+            read_only: !d.move_files,
+        },
+    )
+    .await;
     Ok(ImportedFile {
         file_id,
         source_path: c.path.to_string_lossy().into_owned(),

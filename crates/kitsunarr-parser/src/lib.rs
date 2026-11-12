@@ -24,7 +24,7 @@ pub mod title;
 mod title_patterns;
 
 pub use language::{
-    IsoLanguage, SubtitleTitleInfo, find_iso, parse_language_tags, parse_languages,
+    IsoLanguage, SubtitleTitleInfo, find_iso, iso_for, parse_language_tags, parse_languages,
     parse_subtitle_language, parse_subtitle_language_information,
 };
 pub use model::{ParsedEpisodeInfo, ReleaseType, SeriesTitleInfo, format_season_numbers};

@@ -107,6 +107,8 @@ static SUBTITLE_LANGUAGE_TITLE: LazyLock<Re> = LazyLock::new(|| {
         r".+?(?<pre>(?:\.(?:(?:{TAGS})|(?:[a-z]{{2,3}})))*)[-_. ](?<title>[^.]*)(?<post>(?:\.(?:(?:{TAGS})|(?:[a-z]{{2,3}})))*)$"
     ))
 });
+static EPISODE_TOKEN: LazyLock<regex::Regex> =
+    LazyLock::new(|| regex::Regex::new(r"(?i)\bS\d+E\d+\b").unwrap());
 static TAG_OR_ISO: LazyLock<Re> = LazyLock::new(|| {
     Re::ci(&format!(
         r"\.(?:(?<tag>{TAGS})|(?<iso>[a-z]{{2,3}}))(?=\.|$)"
@@ -291,8 +293,14 @@ pub fn parse_subtitle_language_information(file_name: &str) -> SubtitleTitleInfo
     if isos.len() != 1 {
         return parse_basic_subtitle(file_name);
     }
-    let language =
-        find_iso(&isos[0].to_lowercase()).map_or_else(|| lang(UNKNOWN), |i| i.language());
+    // Tanukarr: an unknown code, or a "title" that is the episode number, is no title.
+    let Some(iso) = find_iso(&isos[0].to_lowercase()) else {
+        return parse_basic_subtitle(file_name);
+    };
+    if EPISODE_TOKEN.is_match(title.as_str()) {
+        return parse_basic_subtitle(file_name);
+    }
+    let language = iso.language();
     // Upstream's `Union` compares `Capture` objects by reference, so equal values are kept.
     let language_tags: Vec<String> = tags1
         .iter()
@@ -441,6 +449,14 @@ const ISO_639_BT: &[(&str, &str)] = &[
     ("tib", "bod"),
     ("wel", "cym"),
 ];
+
+/// `IsoLanguages.Get`: the ISO entry of a language (its two-letter code for file names).
+pub fn iso_for(language: &Language) -> Option<IsoLanguage> {
+    ISO_LANGUAGES
+        .iter()
+        .find(|l| l.language_id == language.id)
+        .copied()
+}
 
 /// `IsoLanguages.Find`: an ISO 639-1 (optionally with a country, `pt-br`) or 639-2 code.
 pub fn find_iso(code: &str) -> Option<IsoLanguage> {
