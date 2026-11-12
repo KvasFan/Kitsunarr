@@ -64,3 +64,28 @@ pub struct ImportListExclusionItem {
     #[serde(default)]
     pub title: Option<String>,
 }
+
+/// Adds chosen shows of a list (Tanukarr's import-list preview "add"): by their position in
+/// `GET /importlists/items?importListId=`.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ImportListAddRequest {
+    /// 1 to 25 positions.
+    pub items: Vec<usize>,
+    pub root_folder_path: String,
+    pub quality_profile_id: i64,
+    #[serde(default)]
+    pub monitored: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ImportListAddOutcome {
+    pub title: String,
+    /// `added`, `exists`, `excluded`, `unsupported` or `failed`.
+    pub outcome: String,
+    pub message: Option<String>,
+    pub series_id: Option<i64>,
+}

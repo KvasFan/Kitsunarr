@@ -11,7 +11,7 @@ use kitsunarr_domain::{MediaKind, Quality};
 use serde_json::Value;
 
 use crate::components::common::{Badge, Confirm, Empty, ErrorBox, Field, Loading, Modal, Switch};
-use crate::state::{use_app, use_client};
+use crate::state::{ToastLevel, use_app, use_client};
 use crate::util::format_bytes;
 
 // ---------------------------------------------------------------------------------------------
@@ -1400,17 +1400,90 @@ fn ImportListExtras() -> Element {
     }
 }
 
-/// The shows a list contained at its last read, and whether each is in the library.
+/// The shows a list contained at its last read, whether each is in the library, and Tanukarr's
+/// selective add (up to 25 at a time).
 #[component]
 fn ImportListShows(id: i64, name: String, on_close: EventHandler<()>) -> Element {
+    let app = use_app();
     let client = use_client();
-    let entries = use_resource(move || {
-        let c = client.clone();
+    let c0 = client.clone();
+    let mut entries = use_resource(move || {
+        let c = c0.clone();
         async move { c.import_list_entries(id).await }
     });
+    let c1 = client.clone();
+    let roots = use_resource(move || {
+        let c = c1.clone();
+        async move { c.root_folders().await.unwrap_or_default() }
+    });
+    let c2 = client.clone();
+    let profiles = use_resource(move || {
+        let c = c2.clone();
+        async move { c.quality_profiles().await.unwrap_or_default() }
+    });
+    let mut chosen = use_signal(Vec::<usize>::new);
+    let mut root = use_signal(String::new);
+    let mut profile = use_signal(|| 0i64);
+    let mut monitored = use_signal(|| false);
+    let mut busy = use_signal(|| false);
+    let add = move |_| {
+        let c = client.clone();
+        let req = kitsunarr_domain::api::import_lists::ImportListAddRequest {
+            items: chosen(),
+            root_folder_path: root(),
+            quality_profile_id: profile(),
+            monitored: monitored(),
+        };
+        busy.set(true);
+        spawn(async move {
+            match c.add_import_list_items(id, &req).await {
+                Ok(results) => {
+                    let added = results.iter().filter(|r| r.outcome == "added").count();
+                    let failed: Vec<String> = results
+                        .iter()
+                        .filter(|r| r.outcome == "failed")
+                        .map(|r| format!("{}: {}", r.title, r.message.clone().unwrap_or_default()))
+                        .collect();
+                    if failed.is_empty() {
+                        app.success(format!("{added} shows added."));
+                    } else {
+                        app.toast(
+                            ToastLevel::Warning,
+                            format!("{added} added; {}", failed.join("; ")),
+                        );
+                    }
+                    chosen.set(Vec::new());
+                    entries.restart();
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    let can_add = !chosen().is_empty()
+        && chosen().len() <= 25
+        && !root().is_empty()
+        && profile() > 0
+        && !busy();
     rsx! {
         Modal { title: format!("{name}: shows"), wide: true, on_close: move |_| on_close.call(()),
-            footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| on_close.call(()), "Close" } },
+            footer: rsx! {
+                span { class: "small muted", "{chosen().len()} chosen (at most 25)" }
+                div { class: "spacer" }
+                button { class: "btn", onclick: move |_| on_close.call(()), "Close" }
+                button { class: "btn primary", disabled: !can_add, onclick: add, if busy() { "Adding…" } else { "Add selected" } }
+            },
+            div { class: "row wrap", style: "margin-bottom: var(--sp-3)",
+                select { class: "select", style: "width: auto", "aria-label": "Root folder for added shows", onchange: move |e| root.set(e.value()),
+                    option { value: "", "Root folder…" }
+                    for r in roots().unwrap_or_default() { option { key: "{r.id}", value: "{r.path}", "{r.path}" } }
+                }
+                select { class: "select", style: "width: auto", "aria-label": "Quality profile for added shows", onchange: move |e| profile.set(e.value().parse().unwrap_or(0)),
+                    option { value: "0", "Quality profile…" }
+                    for p in profiles().unwrap_or_default() { option { key: "{p.id}", value: "{p.id}", "{p.name}" } }
+                }
+                label { class: "check small", input { r#type: "checkbox", checked: monitored(), onchange: move |e: FormEvent| monitored.set(e.checked()) } "Monitored" }
+            }
             match &*entries.read() {
                 None => rsx! { Loading {} },
                 Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
@@ -1418,10 +1491,16 @@ fn ImportListShows(id: i64, name: String, on_close: EventHandler<()>) -> Element
                 Some(Ok(list)) => rsx! {
                     div { class: "table-wrap",
                         table { class: "table",
-                            thead { tr { th { "Title" } th { "Year" } th { "Ids" } th { "" } } }
+                            thead { tr { th { "" } th { "Title" } th { "Year" } th { "Ids" } th { "" } } }
                             tbody {
                                 for (i, e) in list.iter().enumerate() {
                                     tr { key: "{i}",
+                                        td { class: "shrink",
+                                            if e.series_id.is_none() && !e.excluded {
+                                                input { r#type: "checkbox", "aria-label": "Choose {e.title}", checked: chosen().contains(&i),
+                                                    onchange: move |ev: FormEvent| { let mut w = chosen.write(); w.retain(|x| *x != i); if ev.checked() { w.push(i); } } }
+                                            }
+                                        }
                                         td { "{e.title}" }
                                         td { {e.year.map(|y| y.to_string()).unwrap_or_default()} }
                                         td { class: "small mono",

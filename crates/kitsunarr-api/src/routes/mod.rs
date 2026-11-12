@@ -149,6 +149,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(import_lists::sync_now))
         .routes(routes!(import_lists::status))
         .routes(routes!(import_lists::entries))
+        .routes(routes!(import_lists::add_items))
         .routes(routes!(
             import_lists::list_exclusions,
             import_lists::create_exclusion

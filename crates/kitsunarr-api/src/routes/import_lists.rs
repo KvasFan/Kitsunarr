@@ -244,3 +244,15 @@ pub async fn put_options(
     crate::routes::settings::settings_changed(&state, "importListOptions");
     Ok(Json(body))
 }
+
+/// Adds chosen shows of a list's last read (1 to 25), with a root folder and profile.
+#[utoipa::path(post, path = "/importlists/{id}/add", tag = "importlists", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::import_lists::ImportListAddRequest,
+    responses((status = 200, body = Vec<kitsunarr_domain::api::import_lists::ImportListAddOutcome>), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn add_items(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<kitsunarr_domain::api::import_lists::ImportListAddRequest>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::import_lists::ImportListAddOutcome>>> {
+    Ok(Json(sync::add_selected(&state, id, &req).await?))
+}

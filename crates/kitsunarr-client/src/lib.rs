@@ -488,6 +488,14 @@ impl Client {
         self.get(&format!("/importlists/items?importListId={import_list_id}"))
             .await
     }
+    pub async fn add_import_list_items(
+        &self,
+        import_list_id: i64,
+        req: &kitsunarr_domain::api::import_lists::ImportListAddRequest,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::import_lists::ImportListAddOutcome>> {
+        self.post(&format!("/importlists/{import_list_id}/add"), req)
+            .await
+    }
     pub async fn import_list_exclusions(
         &self,
     ) -> ClientResult<Vec<kitsunarr_domain::api::import_lists::ImportListExclusionItem>> {

@@ -390,7 +390,12 @@ pub async fn sync(state: &AppState, only: Option<i64>, force: bool) -> Result<St
     let all = lists(state).await?;
     let selected: Vec<_> = all
         .iter()
-        .filter(|(_, o)| o.automatic_add && only.is_none_or(|id| id == o.id))
+        // A list without automatic add is read when synced on its own (for its preview); its
+        // shows are only added through the selective add.
+        .filter(|(p, o)| match only {
+            Some(id) => id == o.id && (o.automatic_add || p.enabled),
+            None => o.automatic_add,
+        })
         .collect();
     if selected.is_empty() {
         return Ok("No import lists with automatic add enabled".into());
@@ -806,6 +811,100 @@ async fn clean_library(
     db_lists::mark_cleaned(state.db.pool())
         .await
         .map_err(|e| e.to_string())
+}
+
+/// Tanukarr's selective add from a list preview: the chosen shows of the list's stored
+/// membership are added with the given root folder and profile (monitored or not, no search).
+/// Titles in the library or excluded are skipped. Unlike Tanukarr, the list's preferred
+/// catalogue is honoured.
+pub async fn add_selected(
+    state: &AppState,
+    list_id: i64,
+    req: &kitsunarr_domain::api::import_lists::ImportListAddRequest,
+) -> Result<Vec<kitsunarr_domain::api::import_lists::ImportListAddOutcome>, crate::error::ApiError>
+{
+    use crate::error::ApiError;
+    use kitsunarr_domain::api::import_lists::ImportListAddOutcome;
+    if req.items.is_empty() || req.items.len() > 25 {
+        return Err(ApiError::field("items", "Choose 1 to 25 shows."));
+    }
+    let record = providers::get(state.db.pool(), ProviderKind::ImportList, list_id).await?;
+    let list = ListOptions::from_record(&record);
+    let rows = db_lists::items(state.db.pool(), Some(list_id)).await?;
+    if req.items.iter().any(|i| *i >= rows.len()) {
+        return Err(ApiError::field(
+            "items",
+            "A chosen show is not in the list any more.",
+        ));
+    }
+    let exclusions: Vec<(String, String)> = kitsunarr_db::rules::list_exclusions(state.db.pool())
+        .await?
+        .into_iter()
+        .map(|e| (e.provider, e.external_id))
+        .collect();
+    let mut out = Vec::new();
+    for &i in &req.items {
+        let item = from_row(&rows[i]);
+        let outcome =
+            |o: &str, message: Option<String>, series_id: Option<i64>| ImportListAddOutcome {
+                title: item.title.clone(),
+                outcome: o.into(),
+                message,
+                series_id,
+            };
+        let library = library_series(state).await.map_err(ApiError::internal)?;
+        if let Some(s) = library.iter().find(|s| s.matches(&item)) {
+            out.push(outcome("exists", None, Some(s.id)));
+            continue;
+        }
+        let mut cand = candidate(state, &item, list.preferred);
+        if cand.is_none()
+            && let Some(imdb) = &item.imdb_id
+            && let Ok(found) = state.metadata.search(MetadataProvider::Tvdb, imdb).await
+        {
+            cand = found
+                .first()
+                .map(|r| (MetadataProvider::Tvdb, r.id.clone()));
+        }
+        if exclusion_matches(&exclusions, &item, cand.as_ref()) {
+            out.push(outcome("excluded", None, None));
+            continue;
+        }
+        let Some((provider, id)) = cand else {
+            out.push(outcome(
+                "unsupported",
+                Some("No usable catalogue id.".into()),
+                None,
+            ));
+            continue;
+        };
+        let add = AddTitleRequest {
+            provider,
+            id,
+            root_folder_path: req.root_folder_path.clone(),
+            quality_profile_id: req.quality_profile_id,
+            monitor: if req.monitored {
+                MonitorOption::All
+            } else {
+                MonitorOption::None
+            },
+            series_type: matches!(
+                provider,
+                MetadataProvider::AniList | MetadataProvider::MyAnimeList
+            )
+            .then_some(SeriesType::Anime),
+            season_folder: true,
+            tags: list.tags.clone(),
+            search_for_missing: false,
+        };
+        match crate::routes::metadata::add(axum::extract::State(state.clone()), axum::Json(add))
+            .await
+        {
+            Ok((_, axum::Json(r))) => out.push(outcome("added", None, Some(r.id))),
+            Err(e) => out.push(outcome("failed", Some(e.message()), None)),
+        }
+    }
+    Ok(out)
 }
 
 #[cfg(test)]

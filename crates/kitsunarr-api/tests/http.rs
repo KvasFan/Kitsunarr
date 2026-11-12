@@ -3706,3 +3706,89 @@ async fn companion_keys_are_scoped_to_v3_library_reads_and_adds() {
         401
     );
 }
+
+/// Tanukarr's import-list preview and selective add.
+#[tokio::test]
+async fn import_list_shows_can_be_added_selectively() {
+    use kitsunarr_domain::api::import_lists::{ImportListAddRequest, ImportListExclusionItem};
+    let (skyhook, _log) = skyhook_mock().await;
+    let (list_url, list) = custom_list_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    *list.lock().unwrap() = serde_json::json!([
+        {"title": "Breaking Bad", "tvdbId": 81189},
+        {"title": "Excluded show", "tvdbId": 424242}
+    ]);
+    let mut item = client
+        .provider_schema("importlists")
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|t| t.implementation == "CustomImport")
+        .unwrap();
+    item.name = "Picks".into();
+    item.settings.insert("baseUrl".into(), list_url.into());
+    item.options
+        .insert("enableAutomaticAdd".into(), false.into());
+    let created = client.create_provider("importlists", &item).await.unwrap();
+    client
+        .create_import_list_exclusion(&ImportListExclusionItem {
+            id: 0,
+            provider: "tvdb".into(),
+            external_id: "424242".into(),
+            title: None,
+        })
+        .await
+        .unwrap();
+    // Reading the list on its own adds nothing: automatic add is off.
+    let read = client.sync_import_lists(Some(created.id)).await.unwrap();
+    assert!(read.message.contains("0 titles added"), "{}", read.message);
+    assert_eq!(
+        client.import_list_entries(created.id).await.unwrap().len(),
+        2
+    );
+    let request = |items: Vec<usize>| ImportListAddRequest {
+        items,
+        root_folder_path: root.clone(),
+        quality_profile_id: 1,
+        monitored: true,
+    };
+    let results = client
+        .add_import_list_items(created.id, &request(vec![0, 1]))
+        .await
+        .unwrap();
+    assert_eq!(results[0].outcome, "added", "{results:?}");
+    assert_eq!(results[1].outcome, "excluded");
+    let again = client
+        .add_import_list_items(created.id, &request(vec![0]))
+        .await
+        .unwrap();
+    assert_eq!(again[0].outcome, "exists");
+    assert_eq!(
+        status(
+            client
+                .add_import_list_items(created.id, &request(vec![7]))
+                .await
+                .unwrap_err()
+        ),
+        422
+    );
+    let entries = client.import_list_entries(created.id).await.unwrap();
+    assert_eq!(entries[0].series_id, results[0].series_id);
+}
