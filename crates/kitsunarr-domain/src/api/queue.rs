@@ -16,6 +16,11 @@ pub struct QueueItem {
     /// The library series, when Kitsunarr grabbed the download.
     pub series_id: Option<i64>,
     pub series_title: Option<String>,
+    /// The library film, for a film's download (Tanukarr's movies).
+    #[serde(default)]
+    pub movie_id: Option<i64>,
+    #[serde(default)]
+    pub movie_title: Option<String>,
     /// Episodes as `S01E05`.
     pub episodes: Vec<String>,
     pub quality: Option<String>,

@@ -57,6 +57,9 @@ pub struct GrabRecord {
     /// JSON list of language ids.
     pub languages: Option<String>,
     pub data: String,
+    /// A film's grab (Tanukarr's movies).
+    #[sqlx(default)]
+    pub movie_id: Option<i64>,
 }
 
 /// The grabs of the given download ids (compared case-insensitively), oldest first.
@@ -65,7 +68,7 @@ pub async fn grabs_for(db: &Database, download_ids: &[String]) -> DbResult<Vec<G
         return Ok(Vec::new());
     }
     let mut q = sqlx::QueryBuilder::new(
-        "SELECT download_id, date, source_title, series_id, episode_id, quality_id, revision, languages, data \
+        "SELECT download_id, date, source_title, series_id, episode_id, quality_id, revision, languages, data, movie_id \
          FROM history WHERE event_type = 'grabbed' AND download_id IS NOT NULL AND upper(download_id) IN (",
     );
     let mut sep = q.separated(", ");

@@ -474,6 +474,68 @@ impl Monitor {
                     .filter(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
                     .cloned()
                     .collect();
+                // Tanukarr's films: the download becomes the film's file.
+                if let Some(movie_id) = mine.iter().find_map(|g| g.movie_id) {
+                    let Some(output) = item.output_path.as_deref() else {
+                        self.set(
+                            &item.download_id,
+                            State::ImportBlocked,
+                            vec!["Download doesn't contain intermediate path, Skipping.".into()],
+                        );
+                        blocked += 1;
+                        continue;
+                    };
+                    let local = PathBuf::from(remap(&mappings, settings.host(), output));
+                    let outcome = crate::movie_import::import_movie_download(
+                        db,
+                        &crate::movie_import::MovieDownload {
+                            download_id: &item.download_id,
+                            title: &item.title,
+                            output_path: &local,
+                            movie_id,
+                            grabs: &mine,
+                            client_name: &client.name,
+                            client_implementation: &client.implementation,
+                            move_files: settings.is_usenet(),
+                        },
+                    )
+                    .await?;
+                    if let Some(reason) = outcome.blocked {
+                        self.set(&item.download_id, State::ImportBlocked, vec![reason]);
+                        blocked += 1;
+                    } else if outcome.results.iter().any(|r| r.imported) {
+                        if let Err(e) = self
+                            .clients
+                            .mark_imported(&settings, &item.download_id)
+                            .await
+                        {
+                            tracing::warn!(error = %e, "could not set the post-import category");
+                        }
+                        self.set(&item.download_id, State::Imported, Vec::new());
+                        imported += 1;
+                        if remove_completed && item.can_be_removed {
+                            self.remove_from_client(&settings, &item).await;
+                        }
+                    } else if outcome.results.is_empty() {
+                        self.set(
+                            &item.download_id,
+                            State::ImportPending,
+                            vec![format!(
+                                "No files found are eligible for import in {}",
+                                local.display()
+                            )],
+                        );
+                    } else {
+                        let messages = outcome
+                            .results
+                            .iter()
+                            .flat_map(|r| r.errors.clone())
+                            .collect();
+                        self.set(&item.download_id, State::ImportBlocked, messages);
+                        blocked += 1;
+                    }
+                    continue;
+                }
                 // Not grabbed by Kitsunarr: left alone (the queue explains why).
                 let Some(series_id) = mine.iter().find_map(|g| g.series_id) else {
                     continue;
@@ -709,6 +771,7 @@ mod tests {
             revision: Some(r#"{"version":2,"real":0,"isRepack":false}"#.into()),
             languages: Some("[1]".into()),
             data: r#"{"size":"1500","indexerFlags":"8"}"#.into(),
+            movie_id: None,
         };
         let mut other = grab("ffff", 9);
         other.series_id = Some(4);

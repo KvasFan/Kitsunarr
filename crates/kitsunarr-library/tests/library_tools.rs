@@ -414,3 +414,115 @@ async fn a_new_version_is_announced_once() {
     assert_eq!(heard[0]["eventType"], "ApplicationUpdate");
     assert_eq!(heard[0]["newVersion"], "0.2.0");
 }
+
+/// A finished film download: its main video becomes the film's file, named with the movie
+/// format; a lower quality afterwards is not an upgrade.
+#[tokio::test]
+async fn film_downloads_are_imported() {
+    use kitsunarr_library::movie_import::{MovieDownload, import_movie_download};
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    let root = dir.path().join("movies");
+    std::fs::create_dir_all(&root).unwrap();
+    let movie_path = root.join("The Matrix (1999)");
+    let profile: i64 = sqlx::query_scalar("SELECT id FROM quality_profiles WHERE name = 'Any'")
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    sqlx::query(
+        "INSERT INTO movies (id, title, sort_title, clean_title, title_slug, year, runtime, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at) VALUES (7, 'The Matrix', 'matrix', 'thematrix', 'the-matrix', 1999, 136, \
+         'tmdbMovie', '603', ?, ?, ?, '2026-11-01T00:00:00Z')",
+    )
+    .bind(profile)
+    .bind(root.display().to_string())
+    .bind(movie_path.display().to_string())
+    .execute(db.pool())
+    .await
+    .unwrap();
+    let mut naming: kitsunarr_domain::api::settings::NamingSettings =
+        kv::get_or_default(db.pool(), kv::KEY_NAMING).await.unwrap();
+    naming.rename_episodes = true;
+    kv::set(db.pool(), kv::KEY_NAMING, &naming).await.unwrap();
+    let download = dir
+        .path()
+        .join("downloads/The.Matrix.1999.1080p.BluRay.x264-GRP");
+    std::fs::create_dir_all(&download).unwrap();
+    std::fs::write(
+        download.join("The.Matrix.1999.1080p.BluRay.x264-GRP.mkv"),
+        vec![1u8; 4096],
+    )
+    .unwrap();
+    std::fs::write(download.join("sample.mkv"), vec![1u8; 8192]).unwrap();
+    let grab = |title: &str| kitsunarr_db::history::GrabRecord {
+        download_id: "ABC".into(),
+        date: "2026-11-01T00:00:00Z".into(),
+        source_title: title.into(),
+        series_id: None,
+        episode_id: None,
+        quality_id: None,
+        revision: None,
+        languages: None,
+        data: "{}".into(),
+        movie_id: Some(7),
+    };
+    let grabs = vec![grab("The.Matrix.1999.1080p.BluRay.x264-GRP")];
+    let d = MovieDownload {
+        download_id: "ABC",
+        title: "The.Matrix.1999.1080p.BluRay.x264-GRP",
+        output_path: &download,
+        movie_id: 7,
+        grabs: &grabs,
+        client_name: "qBittorrent",
+        client_implementation: "QBittorrent",
+        move_files: false,
+    };
+    let outcome = import_movie_download(&db, &d).await.unwrap();
+    assert!(outcome.results.iter().any(|r| r.imported), "{outcome:?}");
+    let imported = movie_path.join("The Matrix (1999) Bluray-1080p.mkv");
+    let listed: Vec<_> = std::fs::read_dir(&movie_path)
+        .unwrap()
+        .flatten()
+        .map(|e| e.file_name())
+        .collect();
+    assert!(imported.is_file(), "{listed:?}");
+    assert_eq!(
+        std::fs::metadata(&imported).unwrap().len(),
+        4096,
+        "the sample is skipped"
+    );
+    let detail = kitsunarr_db::library::movies::get_detail(&db, 7)
+        .await
+        .unwrap();
+    assert_eq!(detail.file.unwrap().quality_name, "Bluray-1080p");
+    let event: String = sqlx::query_scalar("SELECT event_type FROM history WHERE movie_id = 7")
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    assert_eq!(event, "downloadFolderImported");
+
+    // A lower quality is refused and the film's file stays.
+    let worse = dir
+        .path()
+        .join("downloads/The.Matrix.1999.720p.HDTV.x264-GRP.mkv");
+    std::fs::write(&worse, vec![2u8; 100]).unwrap();
+    let grabs = vec![grab("The.Matrix.1999.720p.HDTV.x264-GRP")];
+    let outcome = import_movie_download(
+        &db,
+        &MovieDownload {
+            title: "The.Matrix.1999.720p.HDTV.x264-GRP",
+            output_path: &worse,
+            grabs: &grabs,
+            ..d
+        },
+    )
+    .await
+    .unwrap();
+    assert!(!outcome.results[0].imported);
+    assert_eq!(
+        outcome.results[0].errors,
+        vec!["Not an upgrade for existing movie file(s)"]
+    );
+    assert!(imported.is_file());
+}

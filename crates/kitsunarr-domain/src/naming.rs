@@ -66,6 +66,31 @@ pub fn folder_name(
     }
 }
 
+/// Renders a film file name (without extension) from the movie file format: Tanukarr's
+/// `MovieFormat` tokens `{Movie Title}`, `{Movie TitleYear}`, `{Movie CleanTitle}`,
+/// `{Release Year}`, `{Year}`, `{Quality Full}`, `{Quality Title}`, `{Release Group}`.
+pub fn movie_file_name(
+    format: &str,
+    title: &str,
+    year: Option<i32>,
+    quality_full: &str,
+    release_group: Option<&str>,
+    colon_format: i32,
+    custom_colon: &str,
+) -> String {
+    let quality_title = quality_full
+        .trim_end_matches(" Proper")
+        .trim_end_matches(" REAL")
+        .to_string();
+    let with_quality = format
+        .replace("{Quality Full}", quality_full)
+        .replace("{Quality Title}", &quality_title)
+        .replace("{Movie CleanTitle}", &crate::text::clean_title(title))
+        .replace("{Release Group}", release_group.unwrap_or_default());
+    let name = folder_name(&with_quality, title, year, colon_format, custom_colon);
+    name.replace("[]", "").trim().to_string()
+}
+
 /// Joins a root folder and a child name with the root's separator style.
 pub fn join(root: &str, child: &str) -> String {
     let sep = if root.contains('\\') && !root.contains('/') {
@@ -78,6 +103,34 @@ pub fn join(root: &str, child: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn movie_file_names() {
+        assert_eq!(
+            super::movie_file_name(
+                "{Movie Title} ({Release Year}) {Quality Full}",
+                "Blade Runner: 2049",
+                Some(2017),
+                "Bluray-1080p",
+                None,
+                4,
+                ""
+            ),
+            "Blade Runner - 2049 (2017) Bluray-1080p"
+        );
+        assert_eq!(
+            super::movie_file_name(
+                "{Movie TitleYear} [{Quality Title}]-{Release Group}",
+                "Up",
+                Some(2009),
+                "WEBDL-1080p Proper",
+                Some("GRP"),
+                4,
+                ""
+            ),
+            "Up (2009) [WEBDL-1080p]-GRP"
+        );
+    }
+
     use super::*;
 
     #[test]

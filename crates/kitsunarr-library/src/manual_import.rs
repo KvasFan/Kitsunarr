@@ -179,6 +179,7 @@ pub async fn import(
                     revision: None,
                     languages: None,
                     data: data.clone(),
+                    movie_id: None,
                 })
                 .collect();
             let d = Download {

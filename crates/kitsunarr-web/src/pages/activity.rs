@@ -109,9 +109,10 @@ pub fn Queue() -> Element {
                                     rsx! {
                                         tr { key: "{item.download_id}",
                                             td {
-                                                match item.series_id {
-                                                    Some(id) => rsx! { Link { to: Route::SeriesDetailPage { id }, "{item.series_title.clone().unwrap_or_default()}" } },
-                                                    None => rsx! { span { class: "muted", "Unknown" } },
+                                                match (item.series_id, item.movie_id) {
+                                                    (Some(id), _) => rsx! { Link { to: Route::SeriesDetailPage { id }, "{item.series_title.clone().unwrap_or_default()}" } },
+                                                    (None, Some(id)) => rsx! { Link { to: Route::MovieDetailPage { id }, "{item.movie_title.clone().unwrap_or_default()}" } },
+                                                    (None, None) => rsx! { span { class: "muted", "Unknown" } },
                                                 }
                                             }
                                             td { class: "small", {item.episodes.join(", ")} }

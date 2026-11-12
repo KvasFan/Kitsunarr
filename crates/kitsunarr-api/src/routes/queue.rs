@@ -84,6 +84,14 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
             .filter(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
             .collect();
         let series_id = mine.iter().find_map(|g| g.series_id);
+        let movie_id = mine.iter().find_map(|g| g.movie_id);
+        let movie_title = match movie_id {
+            Some(id) => kitsunarr_db::library::movies::get_detail(&state.db, id)
+                .await
+                .ok()
+                .map(|m| m.item.title),
+            None => None,
+        };
         let mut series_title = None;
         let mut episodes = Vec::new();
         if let Some(id) = series_id {
@@ -155,6 +163,8 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
             protocol: client.protocol,
             series_id,
             series_title,
+            movie_id,
+            movie_title,
             episodes,
             quality: grab
                 .and_then(|g| g.quality_id)
@@ -203,6 +213,8 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
                 .await
                 .ok()
                 .map(|s| s.title),
+            movie_id: None,
+            movie_title: None,
             episodes: labels,
             quality: Some(
                 kitsunarr_parser::parse_quality(&r.release.title)
@@ -319,7 +331,10 @@ pub async fn remove_from_queue(
     let mut done = Vec::new();
     if q.blocklist {
         let grabs = history::grabs_for(&state.db, std::slice::from_ref(&download_id)).await?;
-        if grabs.iter().all(|g| g.series_id.is_none()) {
+        if grabs
+            .iter()
+            .all(|g| g.series_id.is_none() && g.movie_id.is_none())
+        {
             return Err(ApiError::field(
                 "blocklist",
                 "Kitsunarr did not grab this download, so it cannot blocklist the release.",
