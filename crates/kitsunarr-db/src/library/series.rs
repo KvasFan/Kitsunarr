@@ -1034,15 +1034,17 @@ pub async fn naming_options(
     db: &Database,
     id: i64,
 ) -> DbResult<kitsunarr_domain::api::library_tools::SeriesNamingOptions> {
-    let (mode, titles): (String, String) =
-        sqlx::query_as("SELECT renaming_mode, season_titles FROM series WHERE id = ?")
-            .bind(id)
-            .fetch_optional(db.pool())
-            .await?
-            .ok_or(DbError::NotFound)?;
+    let (mode, titles, keep): (String, String, bool) = sqlx::query_as(
+        "SELECT renaming_mode, season_titles, keep_versions FROM series WHERE id = ?",
+    )
+    .bind(id)
+    .fetch_optional(db.pool())
+    .await?
+    .ok_or(DbError::NotFound)?;
     Ok(kitsunarr_domain::api::library_tools::SeriesNamingOptions {
         renaming_mode: mode,
         season_titles: crate::from_json(&titles)?,
+        keep_versions: keep,
     })
 }
 
@@ -1078,12 +1080,15 @@ pub async fn set_naming_options(
     if let Some(n) = titles.keys().find(|n| !seasons.contains(&i64::from(**n))) {
         return Err(DbError::Invalid(format!("the series has no season {n}")));
     }
-    let r = sqlx::query("UPDATE series SET renaming_mode = ?, season_titles = ? WHERE id = ?")
-        .bind(&o.renaming_mode)
-        .bind(crate::to_json(&titles)?)
-        .bind(id)
-        .execute(db.pool())
-        .await?;
+    let r = sqlx::query(
+        "UPDATE series SET renaming_mode = ?, season_titles = ?, keep_versions = ? WHERE id = ?",
+    )
+    .bind(&o.renaming_mode)
+    .bind(crate::to_json(&titles)?)
+    .bind(o.keep_versions)
+    .bind(id)
+    .execute(db.pool())
+    .await?;
     if r.rows_affected() == 0 {
         return Err(DbError::NotFound);
     }

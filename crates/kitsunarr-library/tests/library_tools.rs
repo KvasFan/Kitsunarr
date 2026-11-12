@@ -96,3 +96,100 @@ async fn check_finds_missing_files_and_restore_brings_a_recycled_episode_back() 
             .is_err()
     );
 }
+
+#[tokio::test]
+async fn kept_versions_can_be_made_current_again() {
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("tv");
+    let show = root.join("Show");
+    std::fs::create_dir_all(show.join("Season 1")).unwrap();
+    std::fs::write(show.join("Season 1/Show - S01E01 - WEB.mkv"), b"old web").unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    let pool = db.pool();
+    sqlx::query(
+        "INSERT INTO series (id, media_kind, title, sort_title, clean_title, title_slug, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at, keep_versions) VALUES (1, 'series', 'Show', 'show', 'show', 'show', \
+         'tvMaze', '1', 1, ?, ?, '2026-11-01T00:00:00Z', 1)",
+    )
+    .bind(root.display().to_string())
+    .bind(show.display().to_string())
+    .execute(pool)
+    .await
+    .unwrap();
+    sqlx::query("INSERT INTO seasons (series_id, season_number, monitored) VALUES (1, 1, 1)")
+        .execute(pool)
+        .await
+        .unwrap();
+    sqlx::query("INSERT INTO episode_files (id, series_id, season_number, relative_path, size, quality_id, added_at, release_group) VALUES (1, 1, 1, 'Season 1/Show - S01E01 - WEB.mkv', 7, 3, '2026-11-01T00:00:00Z', 'WEBGRP')")
+        .execute(pool)
+        .await
+        .unwrap();
+    sqlx::query("INSERT INTO episodes (id, series_id, season_number, episode_number, episode_file_id) VALUES (5, 1, 1, 1, 1)")
+        .execute(pool)
+        .await
+        .unwrap();
+
+    // An upgrade keeps the WEB file, then the new Bluray file takes its record's place.
+    kitsunarr_library::versions::preserve(&db, 1, &show, 1, &[5])
+        .await
+        .unwrap();
+    assert!(!show.join("Season 1/Show - S01E01 - WEB.mkv").exists());
+    std::fs::write(
+        show.join("Season 1/Show - S01E01 - Bluray.mkv"),
+        b"new bluray",
+    )
+    .unwrap();
+    sqlx::query("UPDATE episode_files SET relative_path = 'Season 1/Show - S01E01 - Bluray.mkv', size = 10, quality_id = 7, release_group = 'BDGRP' WHERE id = 1")
+        .execute(pool)
+        .await
+        .unwrap();
+    let versions = kitsunarr_library::versions::list(&db, 1).await.unwrap();
+    assert_eq!(versions.len(), 1);
+    assert!(versions[0].available && versions[0].archive_path.starts_with("Plex Versions/"));
+    assert_eq!(versions[0].release_group.as_deref(), Some("WEBGRP"));
+
+    // Making the WEB file current: it is copied back under the same record, the Bluray file
+    // becomes a version, and the archive stays.
+    kitsunarr_library::versions::activate(&db, 1, versions[0].id)
+        .await
+        .unwrap();
+    assert_eq!(
+        std::fs::read(show.join("Season 1/Show - S01E01 - WEB.mkv")).unwrap(),
+        b"old web"
+    );
+    assert!(!show.join("Season 1/Show - S01E01 - Bluray.mkv").exists());
+    let (path, group, quality): (String, Option<String>, i64) = sqlx::query_as(
+        "SELECT relative_path, release_group, quality_id FROM episode_files WHERE id = 1",
+    )
+    .fetch_one(pool)
+    .await
+    .unwrap();
+    assert_eq!(
+        (path.as_str(), group.as_deref(), quality),
+        ("Season 1/Show - S01E01 - WEB.mkv", Some("WEBGRP"), 3)
+    );
+    let versions = kitsunarr_library::versions::list(&db, 1).await.unwrap();
+    assert_eq!(versions.len(), 2);
+    assert!(versions.iter().all(|v| v.available));
+    // Deleting a version removes its file; disk scans never see "Plex Versions".
+    let bluray = versions
+        .iter()
+        .find(|v| v.release_group.as_deref() == Some("BDGRP"))
+        .unwrap();
+    kitsunarr_library::versions::delete(&db, 1, bluray.id)
+        .await
+        .unwrap();
+    assert_eq!(
+        kitsunarr_library::versions::list(&db, 1)
+            .await
+            .unwrap()
+            .len(),
+        1
+    );
+    let scan = kitsunarr_library::files::scan_series(&db, 1).await.unwrap();
+    assert_eq!(
+        scan.added, 0,
+        "kept versions are not imported by disk scans"
+    );
+}

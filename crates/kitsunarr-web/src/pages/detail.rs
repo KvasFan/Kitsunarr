@@ -100,6 +100,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut renaming = use_signal(|| false);
     let mut ordering = use_signal(|| false);
     let mut naming_open = use_signal(|| false);
+    let mut versions_open = use_signal(|| false);
     let mut scanning = use_signal(|| false);
     // An episode file to delete: (file id, relative path).
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
@@ -301,7 +302,8 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                         if scanning() { "Scanning…" } else { "Scan disk" }
                     }
                     button { class: "btn", title: "Rename files to the naming settings", onclick: move |_| renaming.set(true), "Rename files" }
-                    button { class: "btn", title: "This series' renaming mode and season folder titles", onclick: move |_| naming_open.set(true), "Naming" }
+                    button { class: "btn", title: "This series' renaming mode, season folder titles and kept versions", onclick: move |_| naming_open.set(true), "Naming" }
+                    button { class: "btn", title: "Files upgrades replaced, kept as versions", onclick: move |_| versions_open.set(true), "Versions" }
                     if matches!(d.item.metadata_provider, MetadataProvider::TmdbTv | MetadataProvider::Tvdb) {
                         button { class: "btn", title: "Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)", onclick: move |_| ordering.set(true), "Episode order" }
                     }
@@ -349,6 +351,9 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     "Also delete the series folder and its files (to the recycle bin when one is set)"
                 }
             }
+        }
+        if versions_open() {
+            VersionsDialog { series_id: id, on_close: move |_| versions_open.set(false) }
         }
         if naming_open() {
             NamingDialog {
@@ -883,6 +888,11 @@ fn NamingDialog(
                             }
                         }
                     }
+                    label { class: "check", style: "margin-bottom: var(--sp-3)",
+                        input { r#type: "checkbox", checked: o.keep_versions,
+                            onchange: move |e: FormEvent| { if let Some(x) = options.write().as_mut() { x.keep_versions = e.checked(); } } }
+                        "Keep files replaced by upgrades as versions (in \"Plex Versions\")"
+                    }
                     p { class: "help small", "Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's." }
                     div { class: "form-grid",
                         for (n, catalogue) in seasons.iter().filter(|(n, _)| *n > 0).cloned() {
@@ -895,6 +905,78 @@ fn NamingDialog(
                                             if e.value().trim().is_empty() { x.season_titles.remove(&n); } else { x.season_titles.insert(n, e.value()); }
                                         }
                                     } }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+    }
+}
+
+/// Tanukarr's retained versions: files upgrades replaced, which can be made current again.
+#[component]
+fn VersionsDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut versions = use_resource(move || {
+        let c = c0.clone();
+        async move { c.series_versions(series_id).await }
+    });
+    let c1 = client.clone();
+    let activate = move |v: i64| {
+        let c = c1.clone();
+        spawn(async move {
+            match c.activate_version(series_id, v).await {
+                Ok(m) => {
+                    app.success(m);
+                    versions.restart();
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let remove = move |v: i64| {
+        let c = client.clone();
+        spawn(async move {
+            match c.delete_version(series_id, v).await {
+                Ok(()) => versions.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        Modal { title: "Kept versions".to_string(), wide: true, on_close: move |_| on_close.call(()),
+            footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| on_close.call(()), "Close" } },
+            match &*versions.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) if list.is_empty() => rsx! { p { class: "muted", "No kept versions. Turn on \"Keep files replaced by upgrades\" in Naming." } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "File" } th { "Kept" } th { class: "num", "Size" } th { "" } } }
+                            tbody {
+                                for v in list.iter() {
+                                    {
+                                        let (id, activate, remove) = (v.id, activate.clone(), remove.clone());
+                                        rsx! {
+                                            tr { key: "{v.id}",
+                                                td { class: "small", title: "{v.archive_path}", "{v.relative_path}"
+                                                    if !v.available { " " Badge { text: "missing".to_string(), tone: "danger" } } }
+                                                td { class: "small", {relative(&v.created)} }
+                                                td { class: "num", {format_bytes(v.size)} }
+                                                td { class: "shrink",
+                                                    div { class: "row tight",
+                                                        button { class: "btn sm", disabled: !v.available, onclick: move |_| activate(id), "Make current" }
+                                                        button { class: "btn sm danger", onclick: move |_| remove(id), "Delete" }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

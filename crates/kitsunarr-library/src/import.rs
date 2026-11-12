@@ -970,6 +970,9 @@ async fn transfer_and_record(
             .filter(|f| seen.insert(f.id))
             .collect()
     };
+    let keep_versions = series::naming_options(db, model.id)
+        .await
+        .is_ok_and(|o| o.keep_versions);
     let mut replaced = Vec::new();
     for old in replaced_files {
         let record = series::file_records(db, model.id)
@@ -980,15 +983,20 @@ async fn transfer_and_record(
         let Some(record) = record else { continue };
         replaced.push(record.relative_path.clone());
         let old_path = series_path.join(&record.relative_path);
-        if is_within(&old_path, series_path) && old_path != dest && old_path.is_file() {
-            remove_or_recycle(&old_path, media, Path::new(&detail.root_folder_path))?;
-        }
         let episode_ids: Vec<i64> = model
             .episodes
             .iter()
             .filter(|e| e.file.as_ref().is_some_and(|f| f.id == old.id))
             .map(|e| e.id)
             .collect();
+        if is_within(&old_path, series_path) && old_path != dest && old_path.is_file() {
+            // Tanukarr's "keep versions": the replaced file is kept, not recycled.
+            if keep_versions {
+                crate::versions::preserve(db, model.id, series_path, old.id, &episode_ids).await?;
+            } else {
+                remove_or_recycle(&old_path, media, Path::new(&detail.root_folder_path))?;
+            }
+        }
         for episode_id in &episode_ids {
             history::insert(
                 &mut conn,

@@ -1446,8 +1446,8 @@ impl<'a> Importer<'a> {
         }
     }
 
-    /// Tanukarr's per-series Library tools options (`ProOptions.series`): renaming mode and
-    /// season folder titles ("keep versions" is not mapped).
+    /// Tanukarr's per-series Library tools options (`ProOptions.series`): renaming mode, season
+    /// folder titles and "keep versions" (Tanukarr's kept files themselves are not migrated).
     async fn series_naming_options(
         &mut self,
         conn: &mut SqliteConnection,
@@ -1485,12 +1485,19 @@ impl<'a> Importer<'a> {
                         .collect()
                 })
                 .unwrap_or_default();
-            if mode == "default" && titles.is_empty() {
+            let keep = options
+                .get("keepVersions")
+                .and_then(Value::as_bool)
+                .unwrap_or(false);
+            if mode == "default" && titles.is_empty() && !keep {
                 continue;
             }
-            sqlx::query("UPDATE series SET renaming_mode = ?, season_titles = ? WHERE id = ?")
+            sqlx::query(
+                "UPDATE series SET renaming_mode = ?, season_titles = ?, keep_versions = ? WHERE id = ?",
+            )
                 .bind(mode)
                 .bind(serde_json::to_string(&titles).unwrap_or_else(|_| "{}".into()))
+                .bind(keep)
                 .bind(id)
                 .execute(&mut *conn)
                 .await?;

@@ -3346,11 +3346,13 @@ async fn series_naming_options_round_trip_and_validate() {
             &SeriesNamingOptions {
                 renaming_mode: "manual".into(),
                 season_titles: [(1, " Pilot Season ".to_string()), (2, String::new())].into(),
+                keep_versions: true,
             },
         )
         .await
         .unwrap();
     assert_eq!(saved.renaming_mode, "manual");
+    assert!(saved.keep_versions);
     assert_eq!(
         saved.season_titles,
         [(1, "Pilot Season".to_string())].into()
@@ -3363,6 +3365,7 @@ async fn series_naming_options_round_trip_and_validate() {
         SeriesNamingOptions {
             renaming_mode: "default".into(),
             season_titles: [(99, "No such season".to_string())].into(),
+            ..Default::default()
         },
     ] {
         assert_eq!(

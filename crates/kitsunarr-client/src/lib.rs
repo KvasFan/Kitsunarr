@@ -581,6 +581,23 @@ impl Client {
     pub async fn delete_companion_key(&self, id: &str) -> ClientResult<()> {
         self.delete(&format!("/librarytools/keys/{id}")).await
     }
+    pub async fn series_versions(
+        &self,
+        id: i64,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library_tools::RetainedVersion>> {
+        self.get(&format!("/series/{id}/versions")).await
+    }
+    pub async fn activate_version(&self, id: i64, version: i64) -> ClientResult<String> {
+        self.post(
+            &format!("/series/{id}/versions/{version}/activate"),
+            &serde_json::json!({}),
+        )
+        .await
+    }
+    pub async fn delete_version(&self, id: i64, version: i64) -> ClientResult<()> {
+        self.delete(&format!("/series/{id}/versions/{version}"))
+            .await
+    }
     pub async fn recent_searches(
         &self,
     ) -> ClientResult<Vec<kitsunarr_domain::api::settings::SearchActivity>> {

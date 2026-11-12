@@ -84,6 +84,27 @@ pub struct SeriesNamingOptions {
     pub renaming_mode: String,
     /// Season folder titles replacing the catalogue's (`{Season Title}`), by season number.
     pub season_titles: std::collections::BTreeMap<i32, String>,
+    /// Keep files replaced by upgrades as retained versions (Tanukarr's "keep versions").
+    pub keep_versions: bool,
+}
+
+/// A file an upgrade replaced, kept under the series folder's "Plex Versions".
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct RetainedVersion {
+    pub id: i64,
+    pub created: String,
+    /// The file's place in the series when it was active.
+    pub relative_path: String,
+    /// Where the kept file is, relative to the series folder.
+    pub archive_path: String,
+    /// The kept file exists.
+    pub available: bool,
+    pub size: i64,
+    pub quality_id: i32,
+    pub release_group: Option<String>,
+    pub episode_ids: Vec<i64>,
 }
 
 /// A companion app key (the token itself is shown once, at creation).

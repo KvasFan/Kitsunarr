@@ -257,3 +257,51 @@ pub async fn delete_key(
     kitsunarr_db::companion_keys::delete(state.db.pool(), &id).await?;
     Ok(axum::http::StatusCode::NO_CONTENT)
 }
+
+/// Files upgrades replaced in a series with "keep versions" on, newest first.
+#[utoipa::path(get, path = "/series/{id}/versions", tag = "library", params(("id" = i64, Path)),
+    responses((status = 200, body = Vec<kitsunarr_domain::api::library_tools::RetainedVersion>)))]
+pub async fn versions(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<i64>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library_tools::RetainedVersion>>> {
+    kitsunarr_db::library::series::get_list_item(&state.db, id).await?;
+    Ok(Json(
+        kitsunarr_library::versions::list(&state.db, id)
+            .await
+            .map_err(crate::error::ApiError::internal)?,
+    ))
+}
+
+/// Makes a kept version the current file again (the current file is kept as a version).
+#[utoipa::path(post, path = "/series/{id}/versions/{version}/activate", tag = "library",
+    params(("id" = i64, Path), ("version" = i64, Path)),
+    responses((status = 200, body = String), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn activate_version(
+    State(state): State<AppState>,
+    axum::extract::Path((id, version)): axum::extract::Path<(i64, i64)>,
+) -> ApiResult<Json<String>> {
+    let message = kitsunarr_library::versions::activate(&state.db, id, version)
+        .await
+        .map_err(|m| crate::error::ApiError::field("version", m))?;
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids: vec![id],
+            deleted: false,
+        });
+    Ok(Json(message))
+}
+
+#[utoipa::path(delete, path = "/series/{id}/versions/{version}", tag = "library",
+    params(("id" = i64, Path), ("version" = i64, Path)), responses((status = 204)))]
+pub async fn delete_version(
+    State(state): State<AppState>,
+    axum::extract::Path((id, version)): axum::extract::Path<(i64, i64)>,
+) -> ApiResult<axum::http::StatusCode> {
+    kitsunarr_library::versions::delete(&state.db, id, version)
+        .await
+        .map_err(|m| crate::error::ApiError::field("version", m))?;
+    Ok(axum::http::StatusCode::NO_CONTENT)
+}
