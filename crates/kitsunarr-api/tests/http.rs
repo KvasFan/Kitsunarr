@@ -3664,6 +3664,81 @@ async fn sonarr_v3_api_serves_overseerr_and_prowlarr_flows() {
             .status(),
         200
     );
+
+    // Release push (Prowlarr, autobrr): decided with the RSS rules.
+    let pushed = http
+        .post(url("/release/push"))
+        .header("X-Api-Key", &key)
+        .json(&json!({"title": "Unknown.Show.S01E01.1080p.WEB-DL-GRP", "downloadUrl": "magnet:?xt=urn:btih:abc",
+            "protocol": "torrent", "indexer": "Nyaa", "publishDate": "2026-11-01T00:00:00Z", "size": 1000}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(pushed.status(), 200);
+    let pushed: Value = pushed.json().await.unwrap();
+    assert_eq!(pushed[0]["approved"], false);
+    assert_eq!(pushed[0]["rejections"][0], "Unknown Series");
+    assert_eq!(pushed[0]["protocol"], "torrent");
+    assert!(pushed[0]["guid"].as_str().unwrap().starts_with("PUSH-"));
+    let missing = http
+        .post(url("/release/push"))
+        .header("X-Api-Key", &key)
+        .json(&json!({"title": "No.Url.S01E01"}))
+        .send()
+        .await
+        .unwrap();
+    assert!(missing.status().is_client_error(), "{}", missing.status());
+
+    // A library series' release is mapped and decided (no download client here, so not grabbed).
+    let library: Value = get("/series").await.unwrap().json().await.unwrap();
+    if let Some(bb) = library
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["title"] == "Breaking Bad")
+    {
+        let pushed: Value = http
+            .post(url("/release/push"))
+            .header("X-Api-Key", &key)
+            .json(&json!({"title": "Breaking.Bad.S01E01.1080p.WEB-DL-GRP", "downloadUrl": "magnet:?xt=urn:btih:def",
+                "publishDate": "2026-11-01T00:00:00Z", "size": 1_500_000_000_i64}))
+            .send()
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
+        assert_eq!(pushed[0]["seriesId"], bb["id"], "{pushed}");
+    } else {
+        panic!("the added series is gone: {library}");
+    }
+
+    // History, blocklist, download clients and connections.
+    let history: Value = get("/history?page=1&pageSize=5&eventType=1")
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(history["page"], 1);
+    assert!(history["records"].is_array());
+    let since = get("/history/since?date=2026-01-01T00:00:00Z")
+        .await
+        .unwrap();
+    assert_eq!(since.status(), 200);
+    assert!(
+        get("/history/series")
+            .await
+            .unwrap()
+            .status()
+            .is_client_error()
+    );
+    let blocklist: Value = get("/blocklist").await.unwrap().json().await.unwrap();
+    assert_eq!(blocklist["totalRecords"], 0);
+    let clients: Value = get("/downloadclient").await.unwrap().json().await.unwrap();
+    assert!(clients.is_array());
+    let connections: Value = get("/notification").await.unwrap().json().await.unwrap();
+    assert!(connections.is_array());
 }
 
 /// Companion app keys reach only the Sonarr v3 library reads (and adds, with that permission).

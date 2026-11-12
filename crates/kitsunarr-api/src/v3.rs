@@ -64,6 +64,20 @@ pub fn router() -> Router<AppState> {
             "/indexer/{id}",
             get(get_indexer).put(update_indexer).delete(delete_indexer),
         )
+        .route("/release/push", post(push_release))
+        .route("/history", get(history))
+        .route("/history/series", get(history_of_series))
+        .route("/history/since", get(history_since))
+        .route("/blocklist", get(blocklist))
+        .route("/blocklist/{id}", axum::routing::delete(delete_blocklisted))
+        .route(
+            "/blocklist/bulk",
+            axum::routing::delete(delete_blocklisted_bulk),
+        )
+        .route("/downloadclient", get(download_clients))
+        .route("/downloadclient/{id}", get(download_client))
+        .route("/notification", get(notifications))
+        .route("/notification/{id}", get(notification))
 }
 
 // ---- helpers ----------------------------------------------------------------------------
@@ -1262,4 +1276,455 @@ async fn test_indexer(
             ),
         ))
     }
+}
+
+// ---- release push (Prowlarr, autobrr) -----------------------------------------------------
+
+/// Sonarr's `ReleaseResource` as pushed (`ReleasePushController`).
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct PushBody {
+    guid: Option<String>,
+    title: Option<String>,
+    download_url: Option<String>,
+    magnet_url: Option<String>,
+    info_url: Option<String>,
+    info_hash: Option<String>,
+    protocol: Option<Value>,
+    publish_date: Option<String>,
+    indexer: Option<String>,
+    indexer_id: Option<i64>,
+    size: Option<i64>,
+    seeders: Option<i64>,
+    leechers: Option<i64>,
+    tvdb_id: Option<i64>,
+    tv_rage_id: Option<i64>,
+    imdb_id: Option<String>,
+}
+
+fn push_protocol(b: &PushBody) -> kitsunarr_domain::DownloadProtocol {
+    use kitsunarr_domain::DownloadProtocol::{Torrent, Usenet};
+    match &b.protocol {
+        Some(Value::String(p)) if p.eq_ignore_ascii_case("usenet") => Usenet,
+        Some(Value::String(p)) if p.eq_ignore_ascii_case("torrent") => Torrent,
+        Some(Value::Number(n)) if n.as_i64() == Some(1) => Usenet,
+        Some(Value::Number(n)) if n.as_i64() == Some(2) => Torrent,
+        _ if b.magnet_url.is_some()
+            || b.download_url.as_deref().is_some_and(|u| {
+                u.starts_with("magnet:") || u.to_ascii_lowercase().ends_with(".torrent")
+            }) =>
+        {
+            Torrent
+        }
+        _ => Usenet,
+    }
+}
+
+/// `POST /release/push`: one release decided with the RSS rules, then grabbed when approved
+/// or kept pending when a delay profile holds it back.
+async fn push_release(
+    State(state): State<AppState>,
+    Json(b): Json<PushBody>,
+) -> ApiResult<Json<Vec<Value>>> {
+    let title = b
+        .title
+        .clone()
+        .filter(|t| !t.trim().is_empty())
+        .ok_or_else(|| ApiError::field("title", "The release needs a title."))?;
+    let download_url = b.download_url.clone().filter(|u| !u.trim().is_empty());
+    let magnet_url = b.magnet_url.clone().filter(|u| !u.trim().is_empty());
+    if download_url.is_none() && magnet_url.is_none() {
+        return Err(ApiError::field(
+            "downloadUrl",
+            "The release needs a download URL or a magnet link.",
+        ));
+    }
+    let protocol = push_protocol(&b);
+    // The indexer by id, else by name (Sonarr's `ResolveIndexer`).
+    let indexers = providers::list(state.db.pool(), ProviderKind::Indexer).await?;
+    let indexer = indexers
+        .iter()
+        .find(|p| b.indexer_id.is_some_and(|id| id > 0 && p.id == id))
+        .or_else(|| {
+            b.indexer
+                .as_deref()
+                .and_then(|n| indexers.iter().find(|p| p.name.eq_ignore_ascii_case(n)))
+        });
+    let (_, extras, _) = crate::routes::search::usable_indexers(&state, "enableRss").await?;
+    let publish_date = b
+        .publish_date
+        .as_deref()
+        .and_then(|d| chrono::DateTime::parse_from_rfc3339(d).ok())
+        .map(|d| d.with_timezone(&chrono::Utc))
+        .unwrap_or_else(chrono::Utc::now);
+    let guid = b.guid.clone().filter(|g| !g.is_empty()).unwrap_or_else(|| {
+        format!(
+            "PUSH-{}",
+            download_url
+                .clone()
+                .or(magnet_url.clone())
+                .unwrap_or_default()
+        )
+    });
+    let release = kitsunarr_indexers::IndexerRelease {
+        indexer_id: indexer.map_or(0, |p| p.id),
+        indexer: indexer
+            .map(|p| p.name.clone())
+            .or(b.indexer.clone())
+            .unwrap_or_default(),
+        release: kitsunarr_indexers::Release {
+            guid,
+            title: title.clone(),
+            size: b.size.unwrap_or(0),
+            download_url: download_url.clone().or(magnet_url.clone()),
+            info_url: b.info_url.clone(),
+            comment_url: None,
+            publish_date,
+            protocol,
+            tvdb_id: b.tvdb_id.unwrap_or(0),
+            tv_rage_id: b.tv_rage_id.unwrap_or(0),
+            imdb_id: b.imdb_id.clone(),
+            languages: Vec::new(),
+            indexer_flags: 0,
+            info_hash: b.info_hash.clone(),
+            magnet_url,
+            seeders: b.seeders,
+            peers: match (b.seeders, b.leechers) {
+                (Some(s), Some(l)) => Some(s + l),
+                _ => None,
+            },
+        },
+    };
+    let processed = crate::rss::process(&state, std::slice::from_ref(&release), &extras)
+        .await
+        .map_err(ApiError::internal)?;
+    let o = processed.outcomes.first().cloned().unwrap_or_default();
+    let quality = kitsunarr_parser::parse_quality(&title);
+    Ok(Json(vec![json!({
+        "guid": release.release.guid,
+        "title": title,
+        "indexer": release.indexer,
+        "indexerId": release.indexer_id,
+        "protocol": protocol,
+        "size": release.release.size,
+        "publishDate": publish_date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
+        "downloadUrl": release.release.download_url,
+        "quality": quality_json(quality.quality.id),
+        "seriesId": o.series_id,
+        "approved": o.approved,
+        "temporarilyRejected": o.temporarily_rejected,
+        "rejected": !o.approved,
+        "rejections": o.rejections,
+        "downloadAllowed": o.series_id.is_some(),
+    })]))
+}
+
+// ---- history --------------------------------------------------------------------------------
+
+/// Sonarr's `EpisodeHistoryEventType` numbers.
+const HISTORY_EVENTS: [&str; 8] = [
+    "unknown",
+    "grabbed",
+    "seriesFolderImported",
+    "downloadFolderImported",
+    "downloadFailed",
+    "episodeFileDeleted",
+    "episodeFileRenamed",
+    "downloadIgnored",
+];
+
+fn history_json(h: &kitsunarr_domain::api::library::HistoryItem) -> Value {
+    let quality = h
+        .quality_name
+        .as_deref()
+        .and_then(Quality::by_name)
+        .map_or(0, |q| q.id);
+    let data: Map<String, Value> = h
+        .data
+        .as_object()
+        .map(|o| {
+            o.iter()
+                .map(|(k, v)| {
+                    let v = match v {
+                        Value::String(_) | Value::Null => v.clone(),
+                        other => Value::String(other.to_string()),
+                    };
+                    (k.clone(), v)
+                })
+                .collect()
+        })
+        .unwrap_or_default();
+    json!({
+        "id": h.id,
+        "episodeId": h.episode_id.unwrap_or(0),
+        "seriesId": h.series_id.unwrap_or(0),
+        "sourceTitle": h.source_title,
+        "languages": [],
+        "quality": quality_json(quality),
+        "customFormats": [],
+        "customFormatScore": 0,
+        "qualityCutoffNotMet": false,
+        "date": h.date,
+        "downloadId": h.download_id,
+        "eventType": h.event_type,
+        "data": data,
+    })
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct HistoryQuery {
+    page: Option<u32>,
+    page_size: Option<u32>,
+    sort_direction: Option<String>,
+    event_type: Option<Value>,
+    series_id: Option<i64>,
+    episode_id: Option<i64>,
+    date: Option<String>,
+    download_id: Option<String>,
+}
+
+fn event_name(v: &Option<Value>) -> Option<String> {
+    match v {
+        Some(Value::Number(n)) => n
+            .as_u64()
+            .and_then(|i| HISTORY_EVENTS.get(i as usize))
+            .map(|s| s.to_string()),
+        Some(Value::String(s)) => s
+            .parse::<usize>()
+            .ok()
+            .and_then(|i| HISTORY_EVENTS.get(i))
+            .map(|s| s.to_string())
+            .or_else(|| {
+                HISTORY_EVENTS
+                    .iter()
+                    .find(|e| e.eq_ignore_ascii_case(s))
+                    .map(|s| s.to_string())
+            }),
+        _ => None,
+    }
+}
+
+/// `GET /history`: paged, newest first.
+async fn history(
+    State(state): State<AppState>,
+    Query(q): Query<HistoryQuery>,
+) -> ApiResult<Json<Value>> {
+    let event = event_name(&q.event_type);
+    if q.series_id.is_some() || q.episode_id.is_some() || q.download_id.is_some() {
+        let all = filtered_history(&state, &q, event.as_deref()).await?;
+        let total = all.len();
+        let size = q.page_size.unwrap_or(10).max(1) as usize;
+        let page = q.page.unwrap_or(1).max(1) as usize;
+        let records: Vec<Value> = all.into_iter().skip((page - 1) * size).take(size).collect();
+        return Ok(Json(
+            json!({"page": page, "pageSize": size, "sortKey": "date", "sortDirection": "descending", "totalRecords": total, "records": records}),
+        ));
+    }
+    let paging = kitsunarr_domain::paging::PageRequest {
+        page: q.page,
+        page_size: q.page_size,
+        sort_key: None,
+        sort_direction: (q.sort_direction.as_deref() == Some("ascending"))
+            .then_some(kitsunarr_domain::paging::SortDirection::Asc),
+        search: None,
+    };
+    let p = kitsunarr_db::history::list(&state.db, &paging, event.as_deref()).await?;
+    Ok(Json(json!({
+        "page": p.page, "pageSize": p.page_size, "sortKey": "date",
+        "sortDirection": if paging.sort_direction.is_some() { "ascending" } else { "descending" },
+        "totalRecords": p.total_records,
+        "records": p.records.iter().map(history_json).collect::<Vec<_>>(),
+    })))
+}
+
+/// Every history record matching the filters, newest first.
+async fn filtered_history(
+    state: &AppState,
+    q: &HistoryQuery,
+    event: Option<&str>,
+) -> ApiResult<Vec<Value>> {
+    let mut out = Vec::new();
+    let mut page = 1;
+    loop {
+        let paging = kitsunarr_domain::paging::PageRequest {
+            page: Some(page),
+            page_size: Some(1000),
+            ..Default::default()
+        };
+        let p = kitsunarr_db::history::list(&state.db, &paging, event).await?;
+        let done = p.records.len() < 1000;
+        for h in &p.records {
+            if q.series_id.is_some_and(|s| h.series_id != Some(s))
+                || q.episode_id.is_some_and(|e| h.episode_id != Some(e))
+                || q.download_id
+                    .as_deref()
+                    .is_some_and(|d| h.download_id.as_deref() != Some(d))
+                || q.date.as_deref().is_some_and(|d| {
+                    match (
+                        chrono::DateTime::parse_from_rfc3339(d),
+                        chrono::DateTime::parse_from_rfc3339(&h.date),
+                    ) {
+                        (Ok(since), Ok(at)) => at < since,
+                        _ => false,
+                    }
+                })
+            {
+                continue;
+            }
+            out.push(history_json(h));
+        }
+        if done || page >= 100 {
+            break;
+        }
+        page += 1;
+    }
+    Ok(out)
+}
+
+/// `GET /history/series?seriesId=`: the series' records (unpaged).
+async fn history_of_series(
+    State(state): State<AppState>,
+    Query(q): Query<HistoryQuery>,
+) -> ApiResult<Json<Vec<Value>>> {
+    if q.series_id.is_none() {
+        return Err(ApiError::field("seriesId", "seriesId is required."));
+    }
+    let event = event_name(&q.event_type);
+    Ok(Json(filtered_history(&state, &q, event.as_deref()).await?))
+}
+
+/// `GET /history/since?date=`: records since a date (unpaged).
+async fn history_since(
+    State(state): State<AppState>,
+    Query(q): Query<HistoryQuery>,
+) -> ApiResult<Json<Vec<Value>>> {
+    if q.date.is_none() {
+        return Err(ApiError::field("date", "date is required."));
+    }
+    let event = event_name(&q.event_type);
+    Ok(Json(filtered_history(&state, &q, event.as_deref()).await?))
+}
+
+// ---- blocklist -----------------------------------------------------------------------------
+
+async fn blocklist(
+    State(state): State<AppState>,
+    Query(q): Query<HistoryQuery>,
+) -> ApiResult<Json<Value>> {
+    let paging = kitsunarr_domain::paging::PageRequest {
+        page: q.page,
+        page_size: q.page_size,
+        ..Default::default()
+    };
+    let p = kitsunarr_db::blocklist::list(&state.db, &paging).await?;
+    let records: Vec<Value> = p
+        .records
+        .iter()
+        .map(|b| {
+            let quality = b
+                .quality
+                .as_deref()
+                .and_then(Quality::by_name)
+                .map_or(0, |q| q.id);
+            json!({
+                "id": b.id, "seriesId": b.series_id, "episodeIds": b.episode_ids,
+                "sourceTitle": b.source_title, "languages": [], "quality": quality_json(quality),
+                "customFormats": [], "date": b.date, "protocol": b.protocol,
+                "indexer": b.indexer, "message": b.message,
+            })
+        })
+        .collect();
+    Ok(Json(json!({
+        "page": p.page, "pageSize": p.page_size, "sortKey": "date", "sortDirection": "descending",
+        "totalRecords": p.total_records, "records": records,
+    })))
+}
+
+async fn delete_blocklisted(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
+    kitsunarr_db::blocklist::delete(&state.db, &[id]).await?;
+    Ok(Json(json!({})))
+}
+
+#[derive(Deserialize, Default)]
+#[serde(default)]
+struct BulkIds {
+    ids: Vec<i64>,
+}
+
+async fn delete_blocklisted_bulk(
+    State(state): State<AppState>,
+    Json(b): Json<BulkIds>,
+) -> ApiResult<Json<Value>> {
+    kitsunarr_db::blocklist::delete(&state.db, &b.ids).await?;
+    Ok(Json(json!({})))
+}
+
+// ---- download clients and connections (read-only) ------------------------------------------
+
+fn provider_json(p: &ProviderRecord) -> Value {
+    let settings = crate::routes::settings::redact(&p.settings);
+    let fields: Vec<Value> = settings
+        .iter()
+        .map(|(k, v)| json!({"name": k, "value": v}))
+        .collect();
+    let mut v = json!({
+        "id": p.id,
+        "name": p.name,
+        "implementation": p.implementation,
+        "implementationName": p.implementation,
+        "configContract": format!("{}Settings", p.implementation),
+        "enable": p.enabled,
+        "protocol": p.protocol,
+        "priority": p.priority,
+        "tags": p.tags,
+        "fields": fields,
+    });
+    if p.kind == ProviderKind::Notification
+        && let Some(o) = v.as_object_mut()
+    {
+        for (k, t) in &p.options {
+            o.insert(k.clone(), t.clone());
+        }
+    }
+    v
+}
+
+async fn download_clients(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    Ok(Json(
+        providers::list(state.db.pool(), ProviderKind::DownloadClient)
+            .await?
+            .iter()
+            .map(provider_json)
+            .collect(),
+    ))
+}
+
+async fn download_client(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
+    let p = providers::get(state.db.pool(), ProviderKind::DownloadClient, id).await?;
+    Ok(Json(provider_json(&p)))
+}
+
+async fn notifications(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    Ok(Json(
+        providers::list(state.db.pool(), ProviderKind::Notification)
+            .await?
+            .iter()
+            .map(provider_json)
+            .collect(),
+    ))
+}
+
+async fn notification(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
+    let p = providers::get(state.db.pool(), ProviderKind::Notification, id).await?;
+    Ok(Json(provider_json(&p)))
 }

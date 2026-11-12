@@ -567,6 +567,9 @@ from the native data with Sonarr's field names; handlers reuse the native routes
 - Commands start in the background and answer `started`; `GET /command/{id}` reports completed.
 - Indexers map Sonarr's `fields` list onto stored settings; secrets read back masked and a
   masked value on update keeps the stored one. A `downloadClientId` of 0 means none.
+- Pushed releases (`release/push`) go through the same code as RSS sync (`rss::process`):
+  mapping, RSS decisions, pending releases and grabs. They are not affected by the automation
+  pause, since a tool sent them on purpose.
 
 ## 36. List progress sync
 

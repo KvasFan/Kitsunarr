@@ -137,6 +137,180 @@ async fn load<'a>(
     loaded.get(&series_id).and_then(Option::as_ref)
 }
 
+/// What became of one release.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct ReleaseOutcome {
+    pub series_id: Option<i64>,
+    pub approved: bool,
+    /// Held back only by a delay profile (pending).
+    pub temporarily_rejected: bool,
+    pub rejections: Vec<String>,
+    pub grabbed: bool,
+}
+
+pub(crate) struct Processed {
+    pub matched: usize,
+    pub approved: usize,
+    pub grabbed: Vec<kitsunarr_domain::api::search::AutomaticGrab>,
+    pub grab_failures: Vec<kitsunarr_domain::api::search::AutomaticGrabFailure>,
+    /// One per release, in order.
+    pub outcomes: Vec<ReleaseOutcome>,
+}
+
+/// `GetRssDecision` and `ProcessDecisions`: maps releases to library series, decides with the
+/// RSS rules, keeps the ones a delay holds back as pending and grabs the approved ones best
+/// first. RSS sync and pushed releases (`/api/v3/release/push`) both go through it.
+pub(crate) async fn process(
+    state: &AppState,
+    releases: &[IndexerRelease],
+    extras: &search::Extras,
+) -> Result<Processed, String> {
+    let library = kitsunarr_library::decision_input::library_titles(&state.db)
+        .await
+        .map_err(|e| e.to_string())?;
+    let mut outcomes: Vec<ReleaseOutcome> = releases
+        .iter()
+        .map(|_| ReleaseOutcome {
+            rejections: vec!["Unknown Series".into()],
+            ..Default::default()
+        })
+        .collect();
+    let candidates: Vec<decision::Release> = releases
+        .iter()
+        .map(|r| search::decision_release(r, extras.get(&r.indexer_id)))
+        .collect();
+
+    // `GetRssDecision`'s mapping: specials first (they need the series' episodes), then the
+    // series named by the title or the release's ids.
+    let mut loaded = Loaded::new();
+    let mut groups: Vec<(i64, Vec<usize>)> = Vec::new();
+    for (i, r) in candidates.iter().enumerate() {
+        let mut target = None;
+        if let Some(id) = decision::rss_special_candidate(r, &library)
+            && load(state, &mut loaded, id)
+                .await
+                .is_some_and(|inputs| decision::rss_is_special_of(r, &inputs.series))
+        {
+            target = Some(id);
+        }
+        let Some(id) = target.or_else(|| decision::rss_series(r, &library)) else {
+            continue;
+        };
+        match groups.iter_mut().find(|(g, _)| *g == id) {
+            Some((_, members)) => members.push(i),
+            None => groups.push((id, vec![i])),
+        }
+    }
+    let matched: usize = groups.iter().map(|(_, m)| m.len()).sum();
+
+    let criteria = SearchCriteria::rss();
+    let mut approved = 0usize;
+    let mut grabbed = Vec::new();
+    let mut grab_failures = Vec::new();
+    let mut unavailable = Vec::new();
+    for (series_id, members) in groups {
+        let Some(inputs) = load(state, &mut loaded, series_id).await else {
+            continue;
+        };
+        let group: Vec<decision::Release> =
+            members.iter().map(|&i| candidates[i].clone()).collect();
+        let engine = Engine {
+            series: &inputs.series,
+            library: &inputs.library,
+            formats: &inputs.formats,
+            settings: &inputs.settings,
+        };
+        let decisions = engine.prioritize(
+            Engine::dedupe(engine.evaluate(&group, &criteria), &group),
+            &group,
+        );
+        approved += decisions.iter().filter(|d| d.approved()).count();
+        for d in &decisions {
+            outcomes[members[d.release]] = ReleaseOutcome {
+                series_id: Some(series_id),
+                approved: d.approved(),
+                temporarily_rejected: !d.rejections.is_empty()
+                    && d.rejections
+                        .iter()
+                        .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay),
+                rejections: d.rejections.iter().map(|x| x.message.clone()).collect(),
+                grabbed: false,
+            };
+        }
+        // Held back only by the delay profile: pending; anything else: no longer pending.
+        for d in &decisions {
+            let r = &releases[members[d.release]];
+            let delayed = !d.rejections.is_empty()
+                && !d.episodes.is_empty()
+                && d.rejections
+                    .iter()
+                    .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay);
+            let db = state.db.pool();
+            let result = if delayed {
+                let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
+                kitsunarr_db::pending::upsert(
+                    db,
+                    series_id,
+                    r.indexer_id,
+                    &r.release.guid,
+                    &r.release.title,
+                    &serde_json::to_string(&StoredRelease::of(r)).unwrap_or_default(),
+                    &episodes,
+                )
+                .await
+            } else if !d.approved() {
+                kitsunarr_db::pending::remove(db, r.indexer_id, &r.release.guid).await
+            } else {
+                Ok(())
+            };
+            if let Err(e) = result {
+                tracing::warn!(error = %e, "pending release bookkeeping failed");
+            }
+        }
+        if !decisions.iter().any(|d| d.approved()) {
+            continue;
+        }
+        let run = SearchRun {
+            decisions,
+            releases: members.iter().map(|&i| releases[i].clone()).collect(),
+            failures: Vec::new(),
+            searched_indexers: 0,
+            description: String::new(),
+            warnings: Vec::new(),
+            series: inputs.series.clone(),
+        };
+        let (g, f) =
+            search::process_decisions(state, &run, series_id, &mut unavailable, "Rss").await;
+        // A grab for an episode ends every pending release of that episode (and the grabbed one).
+        for grab in &g {
+            if let Some(d) = run
+                .decisions
+                .iter()
+                .find(|d| d.approved() && run.releases[d.release].release.title == grab.title)
+            {
+                outcomes[members[d.release]].grabbed = true;
+                let r = &run.releases[d.release];
+                let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
+                let _ =
+                    kitsunarr_db::pending::remove(state.db.pool(), r.indexer_id, &r.release.guid)
+                        .await;
+                let _ =
+                    kitsunarr_db::pending::remove_for_episodes(state.db.pool(), &episodes).await;
+            }
+        }
+        grabbed.extend(g);
+        grab_failures.extend(f);
+    }
+
+    Ok(Processed {
+        matched,
+        approved,
+        grabbed,
+        grab_failures,
+        outcomes,
+    })
+}
+
 /// One RSS sync. Returns the summary for the task history; fails when no indexer could be read.
 pub async fn sync(state: &AppState) -> Result<String, String> {
     if crate::library_tools::paused(state).await {
@@ -202,122 +376,9 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
         }
     }
 
-    let library = kitsunarr_library::decision_input::library_titles(&state.db)
-        .await
-        .map_err(|e| e.to_string())?;
-    let candidates: Vec<decision::Release> = releases
-        .iter()
-        .map(|r| search::decision_release(r, extras.get(&r.indexer_id)))
-        .collect();
-
-    // `GetRssDecision`'s mapping: specials first (they need the series' episodes), then the
-    // series named by the title or the release's ids.
-    let mut loaded = Loaded::new();
-    let mut groups: Vec<(i64, Vec<usize>)> = Vec::new();
-    for (i, r) in candidates.iter().enumerate() {
-        let mut target = None;
-        if let Some(id) = decision::rss_special_candidate(r, &library)
-            && load(state, &mut loaded, id)
-                .await
-                .is_some_and(|inputs| decision::rss_is_special_of(r, &inputs.series))
-        {
-            target = Some(id);
-        }
-        let Some(id) = target.or_else(|| decision::rss_series(r, &library)) else {
-            continue;
-        };
-        match groups.iter_mut().find(|(g, _)| *g == id) {
-            Some((_, members)) => members.push(i),
-            None => groups.push((id, vec![i])),
-        }
-    }
-    let matched: usize = groups.iter().map(|(_, m)| m.len()).sum();
-
-    let criteria = SearchCriteria::rss();
-    let mut approved = 0usize;
-    let mut grabbed = Vec::new();
-    let mut grab_failures = Vec::new();
-    let mut unavailable = Vec::new();
-    for (series_id, members) in groups {
-        let Some(inputs) = load(state, &mut loaded, series_id).await else {
-            continue;
-        };
-        let group: Vec<decision::Release> =
-            members.iter().map(|&i| candidates[i].clone()).collect();
-        let engine = Engine {
-            series: &inputs.series,
-            library: &inputs.library,
-            formats: &inputs.formats,
-            settings: &inputs.settings,
-        };
-        let decisions = engine.prioritize(
-            Engine::dedupe(engine.evaluate(&group, &criteria), &group),
-            &group,
-        );
-        approved += decisions.iter().filter(|d| d.approved()).count();
-        // Held back only by the delay profile: pending; anything else: no longer pending.
-        for d in &decisions {
-            let r = &releases[members[d.release]];
-            let delayed = !d.rejections.is_empty()
-                && !d.episodes.is_empty()
-                && d.rejections
-                    .iter()
-                    .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay);
-            let db = state.db.pool();
-            let result = if delayed {
-                let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
-                kitsunarr_db::pending::upsert(
-                    db,
-                    series_id,
-                    r.indexer_id,
-                    &r.release.guid,
-                    &r.release.title,
-                    &serde_json::to_string(&StoredRelease::of(r)).unwrap_or_default(),
-                    &episodes,
-                )
-                .await
-            } else if !d.approved() {
-                kitsunarr_db::pending::remove(db, r.indexer_id, &r.release.guid).await
-            } else {
-                Ok(())
-            };
-            if let Err(e) = result {
-                tracing::warn!(error = %e, "pending release bookkeeping failed");
-            }
-        }
-        if !decisions.iter().any(|d| d.approved()) {
-            continue;
-        }
-        let run = SearchRun {
-            decisions,
-            releases: members.iter().map(|&i| releases[i].clone()).collect(),
-            failures: Vec::new(),
-            searched_indexers: 0,
-            description: String::new(),
-            warnings: Vec::new(),
-            series: inputs.series.clone(),
-        };
-        let (g, f) =
-            search::process_decisions(state, &run, series_id, &mut unavailable, "Rss").await;
-        // A grab for an episode ends every pending release of that episode (and the grabbed one).
-        for grab in &g {
-            if let Some(d) = run
-                .decisions
-                .iter()
-                .find(|d| d.approved() && run.releases[d.release].release.title == grab.title)
-            {
-                let r = &run.releases[d.release];
-                let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
-                let _ =
-                    kitsunarr_db::pending::remove(state.db.pool(), r.indexer_id, &r.release.guid)
-                        .await;
-                let _ =
-                    kitsunarr_db::pending::remove_for_episodes(state.db.pool(), &episodes).await;
-            }
-        }
-        grabbed.extend(g);
-        grab_failures.extend(f);
-    }
+    let p = process(state, &releases, &extras).await?;
+    let (matched, approved, grabbed, grab_failures) =
+        (p.matched, p.approved, p.grabbed, p.grab_failures);
 
     let mut summary = format!(
         "{} releases found ({matched} for library series{}), {approved} approved, {} grabbed",
