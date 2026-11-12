@@ -239,6 +239,8 @@ pub struct Settings {
     pub last_grabs: Vec<HistoryGrab>,
     /// Blocklisted releases, for `BlocklistSpecification`.
     pub blocklist: Vec<Blocklisted>,
+    /// Tanukarr's "multi-season releases" option.
+    pub enable_multi_season_releases: bool,
     pub now: DateTime<Utc>,
 }
 
@@ -277,6 +279,7 @@ pub enum RejectionReason {
     DiskCustomFormatScore,
     DiskCustomFormatScoreIncrement,
     DiskUpgradesNotAllowed,
+    DiskNotUpgrade,
     QualityUpgradesDisabled,
     RepackDisabled,
     RepackUnknownReleaseGroup,

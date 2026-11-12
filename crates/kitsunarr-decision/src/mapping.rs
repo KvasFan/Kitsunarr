@@ -12,7 +12,7 @@ use kitsunarr_parser::{
     parse_languages, parse_quality, parse_release_group,
 };
 
-use crate::model::{Episode, LibrarySeries, Release, SearchCriteria, Series};
+use crate::model::{Episode, LibrarySeries, Release, SearchCriteria, SearchKind, Series};
 
 /// The series a release was mapped to.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -392,6 +392,14 @@ pub(crate) fn episodes<'e>(
     }
     let all = &series.episodes;
     if parsed.full_season {
+        // Tanukarr: a multi-season pack found by a season search stands for that season only.
+        if parsed.is_multi_season()
+            && !series.use_scene_numbering
+            && let SearchKind::Season { season: wanted } = criteria.kind
+            && parsed.season_numbers.contains(&wanted)
+        {
+            return all.iter().filter(|e| e.season_number == wanted).collect();
+        }
         if parsed.is_multi_season() {
             let mut out: Vec<&Episode> = Vec::new();
             for s in &parsed.season_numbers {

@@ -71,6 +71,7 @@ fn settings() -> Settings {
         queue: Vec::new(),
         last_grabs: Vec::new(),
         blocklist: Vec::new(),
+        enable_multi_season_releases: true,
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -174,14 +175,15 @@ fn single_episode_search() {
         },
         &releases,
     );
-    // Ranking ignores rejections (as upstream): best quality first, by this profile's order
+    // Ranking ignores rejections (as upstream). Tanukarr's `CompareReleaseScope` comes first,
+    // so the season pack leads; then best quality, by this profile's order
     // (`GetDefaultQualities` puts Bluray-720p above WEBDL-1080p).
     let order: Vec<&str> = decided.iter().map(|d| d.0.as_str()).collect();
     assert_eq!(
         &order[..3],
         [
-            "Breaking.Bad.S01E01.Pilot.1080p.BluRay.x264-GRP",
             "Breaking.Bad.S01.720p.BluRay.x264-GRP",
+            "Breaking.Bad.S01E01.Pilot.1080p.BluRay.x264-GRP",
             "BrBa.S01E01.1080p.WEB-DL.DD5.1.H.265-GRP",
         ]
     );

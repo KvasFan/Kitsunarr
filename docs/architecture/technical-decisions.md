@@ -378,3 +378,15 @@ Not ported yet: the rename, episode-file-deleted, manual-interaction and applica
   As upstream, a series whose root folder is missing or empty is skipped, so a disconnected drive does not empty the library. Records only are removed, never files, and a later scan adds the files back once they are reachable again. The exclusion rules for extras and system folders are the import's (`FilterPaths`).
 - **Renaming** previews every file whose path differs from what the naming settings give, with the same naming engine imports use (custom formats evaluated on the file), then renames the chosen files. Destinations stay inside the series folder and are never overwritten. Each rename writes "episodeFileRenamed" history (source and new path), and an emptied season folder is removed.
 - **Deleting** a file sends it to the recycle bin (or deletes it when none is set), with "episodeFileDeleted" history (reason `Manual`). Removing a series can also delete its folder, in the same way. The folder is deleted only when it lies inside its root folder.
+
+## 26. Multi-season packs: Tanukarr's rules
+
+Kitsunarr follows Tanukarr here, not upstream Sonarr. Upstream rejects multi-season packs from automatic grabs and imports every season of a pack grabbed by hand.
+
+- **Accepted** (`MultiSeasonSpecification`) when Settings › Indexers › Options "Multi-season releases" is on (default; migrated from Tanukarr's `enablemultiseasonreleases`) and the pack maps to episodes.
+- **In a season search**, a pack that contains the season stands for that season's episodes only; otherwise it maps to every season it names.
+- **Ranking** puts the release scope first (`CompareReleaseScope`): a multi-season pack beats a season pack, which beats episodes, before quality. As in Tanukarr, a lower-quality pack can therefore outrank a better single episode.
+- **RSS** does not upgrade complete seasons (`CompleteSeasonUpgradeSpecification`): a feed release whose seasons have no monitored, aired episode without a file is rejected. Searches keep the upgrade rules.
+- **Import** takes only the grabbed episodes; files of other seasons are refused one by one. The pack is copied, never moved (Usenet included), and it is never removed from the client, so its other seasons stay intact.
+
+The parser keeps upstream's season-range rule (`S01 S04` → seasons 1–4), which passes Sonarr's parser fixtures; Tanukarr's narrower rule (`S01 S04` → 1 and 4) is not ported.

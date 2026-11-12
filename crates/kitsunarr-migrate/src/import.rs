@@ -60,6 +60,7 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "retention",
     "maximumsize",
     "rsssyncinterval",
+    "enablemultiseasonreleases",
     // Download client options (database `Config` keys).
     "enablecompleteddownloadhandling",
     "autoredownloadfailed",
@@ -1072,9 +1073,15 @@ impl<'a> Importer<'a> {
             .clone()
             .or_else(|| self.snap.media_management.clone())
             .filter(|r| {
-                ["minimumage", "retention", "maximumsize", "rsssyncinterval"]
-                    .iter()
-                    .any(|k| r.has(k))
+                [
+                    "minimumage",
+                    "retention",
+                    "maximumsize",
+                    "rsssyncinterval",
+                    "enablemultiseasonreleases",
+                ]
+                .iter()
+                .any(|k| r.has(k))
             })
         {
             let current: IndexerOptionsSettings =
@@ -1084,6 +1091,9 @@ impl<'a> Importer<'a> {
             next.retention = io.i32("retention").unwrap_or(next.retention);
             next.maximum_size = io.i32("maximumsize").unwrap_or(next.maximum_size);
             next.rss_sync_interval = io.i32("rsssyncinterval").unwrap_or(next.rss_sync_interval);
+            if let Some(v) = io.bool("enablemultiseasonreleases") {
+                next.enable_multi_season_releases = v;
+            }
             if next == current {
                 self.count("settings", Act::Skip);
             } else if current == IndexerOptionsSettings::default() || self.update_existing() {

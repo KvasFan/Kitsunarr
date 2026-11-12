@@ -763,6 +763,8 @@ fn IndexerOptions() -> Element {
                             input { class: "input", r#type: "number", min: "0", max: "120", "aria-label": "RSS sync interval", value: "{o.rss_sync_interval}", oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.rss_sync_interval = number(e.value()); } } }
                         }
                     }
+                    Switch { checked: o.enable_multi_season_releases, label: "Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)",
+                        onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.enable_multi_season_releases = v; } } }
                     div { class: "row end", button { class: "btn primary", onclick: save, "Save options" } }
                 },
             }

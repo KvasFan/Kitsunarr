@@ -163,10 +163,11 @@ fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
 
 /// Every specification, in a stable (alphabetical) order.
 pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
-    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 30] = [
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 31] = [
         acceptable_size,
         anime_version_upgrade,
         blocklist,
+        complete_season_upgrade,
         custom_format_allowed_by_profile,
         delay,
         episode_requested,
@@ -474,11 +475,49 @@ pub(crate) fn minimum_age(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
     })
 }
 
-pub(crate) fn multi_season(_: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
-    s.parsed.is_multi_season().then(|| {
+/// Tanukarr's `MultiSeasonSpecification`: multi-season packs are accepted when enabled
+/// (Settings › Indexers › Options) and when they map to episodes.
+pub(crate) fn multi_season(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if !s.parsed.is_multi_season() {
+        return None;
+    }
+    if !env.settings.enable_multi_season_releases {
+        return Some(Rejection::new(
+            R::MultiSeason,
+            "Multi-season releases are not enabled",
+        ));
+    }
+    s.episodes.is_empty().then(|| {
         Rejection::new(
             R::MultiSeason,
-            "Multi-season release, not grabbed automatically. Grab it from interactive search to import all seasons",
+            "Multi-season release does not match any wanted episodes",
+        )
+    })
+}
+
+/// Tanukarr's `CompleteSeasonUpgradeSpecification` (RSS only): a release for seasons whose
+/// monitored, aired episodes all have files is not grabbed from the feeds, so RSS never
+/// upgrades complete seasons; searches keep the upgrade rules.
+pub(crate) fn complete_season_upgrade(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if !env.criteria.is_rss()
+        || s.episodes.is_empty()
+        || s.episodes.iter().any(|e| e.monitored && e.file.is_none())
+    {
+        return None;
+    }
+    let now = env.settings.now;
+    let seasons: std::collections::HashSet<i32> =
+        s.episodes.iter().map(|e| e.season_number).collect();
+    let open = env.series.episodes.iter().any(|e| {
+        seasons.contains(&e.season_number)
+            && e.monitored
+            && e.file.is_none()
+            && e.air_date_utc.is_some_and(|a| a <= now)
+    });
+    (!open).then(|| {
+        Rejection::new(
+            R::DiskNotUpgrade,
+            "Automatic feed upgrades are disabled for fully downloaded seasons",
         )
     })
 }

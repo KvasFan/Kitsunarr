@@ -65,6 +65,7 @@ fn settings() -> Settings {
         queue: Vec::new(),
         last_grabs: Vec::new(),
         blocklist: Vec::new(),
+        enable_multi_season_releases: true,
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -1136,8 +1137,21 @@ fn not_sample_multi_season_split_and_full_season() {
     assert_eq!(c.check(specs::not_sample).unwrap().message, "Sample");
     c.release.size = 100 * MB;
     assert!(c.accepted(specs::not_sample));
+    // Tanukarr's `MultiSeasonSpecificationFixture`: accepted when enabled and mapped.
     c.parsed.season_numbers = vec![1, 2];
-    assert!(!c.accepted(specs::multi_season));
+    c.episodes = vec![ep(1, 1, 1, 30)];
+    assert!(c.accepted(specs::multi_season));
+    c.settings.enable_multi_season_releases = false;
+    assert_eq!(
+        c.check(specs::multi_season).unwrap().message,
+        "Multi-season releases are not enabled"
+    );
+    c.settings.enable_multi_season_releases = true;
+    c.episodes.clear();
+    assert_eq!(
+        c.check(specs::multi_season).unwrap().message,
+        "Multi-season release does not match any wanted episodes"
+    );
     c.parsed.is_split_episode = true;
     assert!(!c.accepted(specs::split_episode));
     // `FullSeasonSpecificationFixture`: every episode must have aired a day ago or earlier.
@@ -1710,4 +1724,33 @@ fn rss_skips_episode_requested() {
     assert!(c.accepted(specs::episode_requested));
     c.criteria = Case::new().criteria;
     assert!(!c.accepted(specs::episode_requested));
+}
+
+/// Tanukarr's `CompleteSeasonUpgradeSpecificationFixture`.
+#[test]
+fn complete_season_upgrade_specification_fixture() {
+    let mut c = Case::new();
+    c.criteria = SearchCriteria::rss();
+    c.episodes[0].file = Some(file_of(HDTV720P, 1));
+    c.series.episodes = c.episodes.clone();
+    // RSS, every monitored aired episode of the season has a file: rejected.
+    assert_eq!(
+        c.check(specs::complete_season_upgrade).unwrap().message,
+        "Automatic feed upgrades are disabled for fully downloaded seasons"
+    );
+    // Another episode of the season is monitored, aired and missing: accepted.
+    let mut missing = ep(6, 1, 2, 30);
+    missing.air_date_utc = Some(Utc::now() - Duration::days(1));
+    c.series.episodes.push(missing.clone());
+    assert!(c.accepted(specs::complete_season_upgrade));
+    // Not aired yet: it does not count.
+    c.series.episodes[1].air_date_utc = Some(Utc::now() + Duration::days(1));
+    assert!(!c.accepted(specs::complete_season_upgrade));
+    // An episode of the release itself missing: accepted.
+    c.episodes[0].file = None;
+    assert!(c.accepted(specs::complete_season_upgrade));
+    // Searches keep their upgrade rules.
+    c.episodes[0].file = Some(file_of(HDTV720P, 1));
+    c.criteria = Case::new().criteria;
+    assert!(c.accepted(specs::complete_season_upgrade));
 }

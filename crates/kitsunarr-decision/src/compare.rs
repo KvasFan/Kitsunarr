@@ -31,7 +31,8 @@ impl Comparer<'_> {
 
     /// `Compare(x, y)`: `Greater` when `x` is the better release.
     pub(crate) fn compare(&self, x: &Decision, y: &Decision) -> Ordering {
-        self.quality(x, y)
+        Self::scope(x, y)
+            .then_with(|| self.quality(x, y))
             .then_with(|| x.custom_format_score.cmp(&y.custom_format_score))
             .then_with(|| self.protocol(x, y))
             .then_with(|| self.episode_count(x, y))
@@ -45,6 +46,17 @@ impl Comparer<'_> {
             .then_with(|| self.peers_if_torrent(x, y))
             .then_with(|| self.age_if_usenet(x, y))
             .then_with(|| self.size(x, y))
+    }
+
+    /// Tanukarr's `CompareReleaseScope`, first in the chain: among acceptable releases, a
+    /// multi-season pack beats a season pack, which beats episodes.
+    fn scope(x: &Decision, y: &Decision) -> Ordering {
+        let scope = |d: &Decision| match &d.parsed {
+            Some(p) if p.full_season && p.is_multi_season() => 2,
+            Some(p) if p.full_season => 1,
+            _ => 0,
+        };
+        scope(x).cmp(&scope(y))
     }
 
     fn quality(&self, x: &Decision, y: &Decision) -> Ordering {

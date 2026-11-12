@@ -276,6 +276,8 @@ pub struct IndexerOptionsSettings {
     pub maximum_size: i32,
     /// Minutes between RSS syncs: 0 (off) or 10 to 120.
     pub rss_sync_interval: i32,
+    /// Tanukarr: accept multi-season packs (a season search takes the pack for its season).
+    pub enable_multi_season_releases: bool,
 }
 
 impl Default for IndexerOptionsSettings {
@@ -285,6 +287,7 @@ impl Default for IndexerOptionsSettings {
             retention: 0,
             maximum_size: 0,
             rss_sync_interval: 15,
+            enable_multi_season_releases: true,
         }
     }
 }

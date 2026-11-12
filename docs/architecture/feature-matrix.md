@@ -79,7 +79,7 @@ Each component is checked against Sonarr's own test cases (`tests/fixtures/parse
 | Absolute anime numbering | Mostly upstream | Stored; logic not started. |
 | Prequel/sequel relationships, manual grouping | Operational | Groups migrate to collections; relation traversal not started. |
 | Movie and series collections | Operational | Done (model, migration and listing). |
-| Multi-season and complete-series packs, interactive pack search | Operational | Not started (Phase 6). |
+| Multi-season and complete-series packs, interactive pack search | Operational | Partial: multi-season packs are accepted (Indexers › Options, migrated), stand for the searched season in season searches, rank first (`CompareReleaseScope`), import only the grabbed episodes by copy and stay in the client; RSS does not upgrade complete seasons (`CompleteSeasonUpgradeSpecification`). Complete-series search is not implemented yet. Tests: decision `complete_season_upgrade_specification_fixture`, multi-season fixture; HTTP `multi_season_packs_serve_season_searches_and_keep_their_source`. |
 | Quality and codec settings | Operational | Codec factors and per-item sizes are preserved as unmapped values; not applied. |
 | Jellyfin refresh and watched state | Operational | Watched episode ids are preserved as unmapped values; integration not started. |
 

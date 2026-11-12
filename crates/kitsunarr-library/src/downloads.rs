@@ -397,10 +397,17 @@ impl Monitor {
                 .await
                 .map_err(|e| e.to_string())?;
             for item in completed {
+                // Tanukarr: a multi-season pack keeps its files (copied, never moved) and stays
+                // in the client, since only the grabbed seasons are imported from it.
+                let multi_season = grabs
+                    .iter()
+                    .find(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
+                    .and_then(|g| kitsunarr_parser::parse_title(&g.source_title))
+                    .is_some_and(|p| p.is_multi_season());
                 if done.contains(&item.download_id.to_ascii_uppercase()) {
                     self.set(&item.download_id, State::Imported, Vec::new());
                     // `DownloadCanBeRemovedEvent`: seeding finished after the import.
-                    if remove_completed && item.can_be_removed {
+                    if remove_completed && item.can_be_removed && !multi_season {
                         self.remove_from_client(&settings, &item).await;
                     }
                     continue;
@@ -434,7 +441,7 @@ impl Monitor {
                         grabs: &mine,
                         client_name: &client.name,
                         client_implementation: &client.implementation,
-                        move_files: settings.is_usenet(),
+                        move_files: settings.is_usenet() && !multi_season,
                     },
                 )
                 .await?;
@@ -479,7 +486,7 @@ impl Monitor {
                     self.set(&item.download_id, State::Imported, Vec::new());
                     imported += 1;
                     // `DownloadCompletedEvent`.
-                    if remove_completed && item.can_be_removed {
+                    if remove_completed && item.can_be_removed && !multi_season {
                         self.remove_from_client(&settings, &item).await;
                     }
                 } else {

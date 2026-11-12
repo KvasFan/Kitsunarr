@@ -785,6 +785,7 @@ impl DecisionInputs {
         let settings = decision::Settings {
             last_grabs: kitsunarr_library::decision_input::last_grabs(db, detail.item.id).await?,
             blocklist: kitsunarr_library::decision_input::blocklist(db, detail.item.id).await?,
+            enable_multi_season_releases: options.enable_multi_season_releases,
             queue: state.downloads.queued_releases(db, detail.item.id).await?,
             quality_definitions: quality::list_definitions(db.pool()).await?,
             propers: media.download_propers_and_repacks,
