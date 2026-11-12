@@ -170,7 +170,19 @@ pub fn spawn(db: &Database, notifier: &Notifier, event: Event) {
         if connections.is_empty() {
             return;
         }
+        // Jellyfin connections with a selected library (Tanukarr's `Jellyfin`) only refresh that
+        // library after imports, through the durable refresh queue.
+        let (queued, others): (Vec<Connection>, Vec<Connection>) = connections
+            .into_iter()
+            .partition(crate::jellyfin_refresh::is_queue_managed);
+        if matches!(event, Event::Download(_)) {
+            for c in queued.iter().filter(|c| c.wants(&event)) {
+                if let Some(r) = crate::jellyfin_refresh::RefreshSettings::from_connection(c) {
+                    crate::jellyfin_refresh::on_import(&db, notifier.http(), &r).await;
+                }
+            }
+        }
         let instance = instance(&db).await;
-        notifier.dispatch(&connections, &event, &instance).await;
+        notifier.dispatch(&others, &event, &instance).await;
     });
 }

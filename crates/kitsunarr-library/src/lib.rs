@@ -11,6 +11,7 @@ pub mod file_names;
 pub mod files;
 pub mod import;
 pub mod jellyfin;
+pub mod jellyfin_refresh;
 pub mod notify;
 
 use std::collections::HashMap;

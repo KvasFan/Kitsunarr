@@ -445,8 +445,16 @@ The scheduled task `SyncJellyfinWatched` runs every minute and syncs when the co
   sync unmonitored it and its series and season are monitored. Any manual monitoring edit clears
   the owner. The update is one SQL statement against the current row, so a manual change made
   while the snapshot was read is not overwritten.
-- **Not ported:** Tanukarr's user and library pickers (the ids are typed), list progress sync
-  and the Jellyfin refresh queue.
+- **Refresh queue** (Tanukarr's migration 243). A `Jellyfin` connection with a library and
+  "on import" never receives the generic media-server update: each imported file bumps
+  `imported_generation` in `jellyfin_refresh_states`. "Each import" acknowledges one import per
+  refresh request; "interval" acknowledges all pending imports once per interval; a mode change
+  acknowledges nothing new and replays nothing. The target fingerprint excludes the API key, so
+  rotating it keeps pending work; any other target change resets the state. Before refreshing,
+  the library must be listed once with locations Jellyfin has scanned as folders; the refresh
+  must answer 204. A process-wide in-flight guard keeps one refresh loop per connection.
+- **Not ported:** Tanukarr's user and library pickers (the ids are typed) and list progress
+  sync.
 
 ## 29. Import lists
 

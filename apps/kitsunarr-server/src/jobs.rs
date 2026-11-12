@@ -77,6 +77,23 @@ pub fn all(
             },
         ),
         job(
+            "ProcessPendingJellyfinRefresh",
+            "Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)",
+            1,
+            Duration::from_secs(15 * 60),
+            {
+                let http = reqwest::Client::new();
+                move |ctx| {
+                    let http = http.clone();
+                    async move {
+                        kitsunarr_library::jellyfin_refresh::process_pending(&ctx.db, &http)
+                            .await
+                            .map(Some)
+                    }
+                }
+            },
+        ),
+        job(
             "SyncJellyfinWatched",
             "Reads which episodes a Jellyfin user has watched (on the connection's own interval)",
             1,

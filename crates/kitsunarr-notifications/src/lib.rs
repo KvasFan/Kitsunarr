@@ -436,6 +436,11 @@ pub struct Notifier {
 }
 
 impl Notifier {
+    /// The HTTP client notifications use.
+    pub fn http(&self) -> &reqwest::Client {
+        &self.http
+    }
+
     pub fn new(http: reqwest::Client) -> Self {
         Self { http }
     }
