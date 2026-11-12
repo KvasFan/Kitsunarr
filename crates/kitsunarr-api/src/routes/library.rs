@@ -337,7 +337,7 @@ pub async fn search_collection(
     let mut count = 0usize;
     for m in &detail.members {
         if let Some(series) = m.series_id {
-            crate::routes::wanted::search_missing_of_series(&state, series);
+            crate::routes::wanted::search_missing_of_series(&state, series, true);
             count += 1;
         } else if let Some(movie) = m.movie_id {
             let state = state.clone();

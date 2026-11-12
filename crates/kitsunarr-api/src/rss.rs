@@ -419,6 +419,44 @@ pub(crate) async fn process(
     })
 }
 
+/// Sonarr's pending releases for a search the server started: what only a delay profile holds
+/// back is kept (and decided again by RSS sync); other rejections end a pending entry.
+pub(crate) async fn keep_pending(state: &AppState, series_id: i64, run: &SearchRun) {
+    let db = state.db.pool();
+    for d in &run.decisions {
+        let r = &run.releases[d.release];
+        let delayed = !d.rejections.is_empty()
+            && !d.episodes.is_empty()
+            && d.rejections
+                .iter()
+                .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay);
+        let result = if delayed {
+            let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
+            kitsunarr_db::pending::upsert(
+                db,
+                series_id,
+                r.indexer_id,
+                &r.release.guid,
+                &r.release.title,
+                &serde_json::to_string(&StoredRelease::of(r)).unwrap_or_default(),
+                &episodes,
+            )
+            .await
+        } else if !d.approved() {
+            kitsunarr_db::pending::remove(db, r.indexer_id, &r.release.guid).await
+        } else {
+            // An accepted release (grabbed) ends the pending ones of its episodes.
+            let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
+            kitsunarr_db::pending::remove_for_episodes(db, &episodes)
+                .await
+                .map(|_| ())
+        };
+        if let Err(e) = result {
+            tracing::warn!(error = %e, "pending release bookkeeping failed");
+        }
+    }
+}
+
 /// One RSS sync. Returns the summary for the task history; fails when no indexer could be read.
 pub async fn sync(state: &AppState) -> Result<String, String> {
     if crate::library_tools::paused(state).await {

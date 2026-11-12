@@ -169,6 +169,7 @@ fn single_episode_search() {
         &series,
         SearchCriteria {
             monitored_episodes_only: false,
+            user_invoked: true,
             kind: SearchKind::SingleEpisode {
                 season: 1,
                 episode: 1,
@@ -247,6 +248,7 @@ fn season_search_and_specials() {
         &series,
         SearchCriteria {
             monitored_episodes_only: false,
+            user_invoked: true,
             kind: SearchKind::Season { season: 1 },
             episode_ids: (101..=107).collect(),
         },
@@ -289,6 +291,7 @@ fn anime_absolute_and_daily_numbering() {
         &anime,
         SearchCriteria {
             monitored_episodes_only: false,
+            user_invoked: true,
             kind: SearchKind::AnimeEpisode {
                 season_search: false,
             },
@@ -309,6 +312,7 @@ fn anime_absolute_and_daily_numbering() {
         &daily,
         SearchCriteria {
             monitored_episodes_only: false,
+            user_invoked: true,
             kind: SearchKind::DailyEpisode,
             episode_ids: vec![103],
         },
@@ -329,6 +333,7 @@ fn release_ids_map_titles_the_library_does_not_know() {
     let mut r = release("Breaking.Bad.Remastered.S01E01.720p.HDTV.x264-GRP");
     let criteria = || SearchCriteria {
         monitored_episodes_only: false,
+        user_invoked: true,
         kind: SearchKind::SingleEpisode {
             season: 1,
             episode: 1,
@@ -356,6 +361,7 @@ fn languages_fall_back_to_the_original_language() {
     let settings = settings();
     let criteria = SearchCriteria {
         monitored_episodes_only: false,
+        user_invoked: true,
         kind: SearchKind::SingleEpisode {
             season: 1,
             episode: 1,
@@ -544,6 +550,7 @@ fn blocklisted_releases_are_rejected() {
     ];
     let criteria = SearchCriteria {
         monitored_episodes_only: false,
+        user_invoked: true,
         kind: SearchKind::Season { season: 1 },
         episode_ids: Vec::new(),
     };
@@ -620,6 +627,7 @@ fn movie_search() {
         kind: SearchKind::Special,
         episode_ids: vec![42],
         monitored_episodes_only: false,
+        user_invoked: true,
     };
     let decided = engine.evaluate_movie(&releases, &criteria, &candidate);
     let d = |t: &str| {
@@ -672,6 +680,7 @@ fn complete_series_search_reads_collection_numbered_packs() {
         },
         episode_ids: Vec::new(),
         monitored_episodes_only: false,
+        user_invoked: true,
     };
     let decided = engine.evaluate_collection(&releases, &criteria, Some(("Saga", 2)));
     assert_eq!(decided.len(), 1, "only the slot-2 pack names this series");

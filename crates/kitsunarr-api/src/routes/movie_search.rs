@@ -137,6 +137,7 @@ pub(crate) async fn run_movie_search(
         kind: SearchKind::Special,
         episode_ids: vec![movie_id],
         monitored_episodes_only: automatic,
+        user_invoked: true,
     };
     let decisions = engine.evaluate_movie(&group, &criteria, &candidate);
     let decisions = engine.prioritize(Engine::dedupe(decisions, &group), &group);

@@ -43,6 +43,7 @@ use crate::specs::{Env, Subject};
 pub fn map_episodes<'s>(parsed: &ParsedEpisodeInfo, series: &'s Series) -> Vec<&'s Episode> {
     let none = SearchCriteria {
         monitored_episodes_only: false,
+        user_invoked: true,
         kind: SearchKind::Special,
         episode_ids: Vec::new(),
     };
@@ -303,6 +304,7 @@ impl Engine<'_> {
     fn env_for<'c>(&'c self, criteria: Option<&'c SearchCriteria>) -> Env<'c> {
         static NONE: SearchCriteria = SearchCriteria {
             monitored_episodes_only: false,
+            user_invoked: true,
             kind: SearchKind::Special,
             episode_ids: Vec::new(),
         };

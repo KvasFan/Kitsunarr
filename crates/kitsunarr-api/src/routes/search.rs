@@ -482,6 +482,7 @@ pub async fn automatic_search(
             automatic: true,
             monitored_only: q.episode_id.is_none(),
             episodes: None,
+            user_invoked: true,
         },
     )
     .await?;
@@ -564,6 +565,8 @@ pub(crate) struct SearchOptions<'a> {
     pub monitored_only: bool,
     /// For a season search: the requested episodes (default: the whole season).
     pub episodes: Option<&'a [i64]>,
+    /// Started by the user: delay profiles do not apply (Sonarr's `UserInvokedSearch`).
+    pub user_invoked: bool,
 }
 
 impl SearchOptions<'_> {
@@ -571,6 +574,7 @@ impl SearchOptions<'_> {
         automatic: false,
         monitored_only: false,
         episodes: None,
+        user_invoked: true,
     };
 }
 
@@ -778,6 +782,7 @@ pub(crate) async fn run_search(
             .collect();
         let criteria = decision::SearchCriteria {
             monitored_episodes_only: options.monitored_only,
+            user_invoked: options.user_invoked,
             kind: *kind,
             episode_ids: requested.clone(),
         };

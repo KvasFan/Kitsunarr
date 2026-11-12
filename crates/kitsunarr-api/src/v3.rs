@@ -620,7 +620,7 @@ async fn add_series(
         apply(&state, added.id, &body).await?;
     }
     if options.search_for_missing_episodes {
-        crate::routes::wanted::search_missing_of_series(&state, added.id);
+        crate::routes::wanted::search_missing_of_series(&state, added.id, false);
     }
     Ok((
         StatusCode::CREATED,
@@ -858,7 +858,7 @@ async fn command(
                 .series_id
                 .ok_or_else(|| ApiError::field("seriesId", "A series id is required."))?;
             detail(&state, sid).await?;
-            crate::routes::wanted::search_missing_of_series(&state, sid);
+            crate::routes::wanted::search_missing_of_series(&state, sid, true);
             "Searching the series' missing monitored episodes"
         }
         "SeasonSearch" | "EpisodeSearch" => {

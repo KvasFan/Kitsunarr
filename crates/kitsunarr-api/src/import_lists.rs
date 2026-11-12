@@ -608,7 +608,7 @@ async fn process_items(
                     );
                 }
                 if req.search_for_missing {
-                    crate::routes::wanted::search_missing_of_series(state, r.id);
+                    crate::routes::wanted::search_missing_of_series(state, r.id, false);
                 }
             }
             Err(e) => {

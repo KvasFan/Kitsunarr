@@ -134,6 +134,7 @@ pub(crate) async fn bulk_search(
     state: &AppState,
     groups: Vec<Vec<SearchTarget>>,
     monitored_only: bool,
+    user_invoked: bool,
 ) -> String {
     let episodes: usize = groups.iter().map(Vec::len).sum();
     let (mut grabbed, mut failed) = (Vec::new(), Vec::new());
@@ -152,6 +153,7 @@ pub(crate) async fn bulk_search(
             automatic: true,
             monitored_only: season && monitored_only,
             episodes: season.then_some(ids.as_slice()),
+            user_invoked,
         };
         let run = match search::run_search(state, &q, options).await {
             Ok(run) => run,
@@ -164,6 +166,9 @@ pub(crate) async fn bulk_search(
         let (g, f) =
             search::process_decisions(state, &run, first.series_id, &mut Vec::new(), "Search")
                 .await;
+        // A search the server started keeps what a delay profile holds back as pending; any
+        // grab ends the pending releases of its episodes.
+        crate::rss::keep_pending(state, first.series_id, &run).await;
         grabbed.extend(g.into_iter().map(|g| g.title));
         failed.extend(f.into_iter().map(|f| format!("{}: {}", f.title, f.message)));
     }
@@ -185,7 +190,7 @@ pub(crate) async fn bulk_search(
 /// `MissingEpisodeSearch` for one series (after adding it), in the background: waits for any
 /// running wanted search, then searches the series' missing monitored episodes outside the
 /// queue and reports with a notification.
-pub(crate) fn search_missing_of_series(state: &AppState, series_id: i64) {
+pub(crate) fn search_missing_of_series(state: &AppState, series_id: i64, user_invoked: bool) {
     let state = state.clone();
     tokio::spawn(async move {
         // Tanukarr also suppresses "add and search" while automation is paused.
@@ -214,7 +219,7 @@ pub(crate) fn search_missing_of_series(state: &AppState, series_id: i64) {
         if targets.is_empty() {
             return;
         }
-        let summary = bulk_search(&state, groups(targets), true).await;
+        let summary = bulk_search(&state, groups(targets), true, user_invoked).await;
         tracing::info!(series_id, %summary, "search for missing episodes completed");
         state.events.publish(ServerEvent::Notice {
             level: "info".into(),
@@ -282,7 +287,7 @@ pub async fn search_wanted(
         let task_state = state.clone();
         tokio::spawn(async move {
             let _guard = guard;
-            let summary = bulk_search(&task_state, groups, monitored_only).await;
+            let summary = bulk_search(&task_state, groups, monitored_only, true).await;
             tracing::info!(%summary, "wanted search completed");
             task_state.events.publish(ServerEvent::Notice {
                 level: "info".into(),

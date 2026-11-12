@@ -135,7 +135,7 @@ pub async fn add(
         );
     }
     if req.search_for_missing && added.media_type == "series" {
-        crate::routes::wanted::search_missing_of_series(&state, added.id);
+        crate::routes::wanted::search_missing_of_series(&state, added.id, false);
     }
     // Tanukarr: a film added with "search for missing" is searched for at once.
     if req.search_for_missing && added.media_type == "movie" {

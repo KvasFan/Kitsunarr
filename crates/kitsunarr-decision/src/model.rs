@@ -152,6 +152,10 @@ pub struct SearchCriteria {
     /// Only monitored episodes are wanted (automatic season and missing searches); interactive
     /// and single-episode searches take any episode.
     pub monitored_episodes_only: bool,
+    /// Started by the user (Sonarr's `UserInvokedSearch`): delay profiles do not hold its
+    /// releases back. Searches the server starts itself (after adding a title, redownloads)
+    /// are delayed like RSS sync.
+    pub user_invoked: bool,
 }
 
 impl SearchCriteria {
@@ -162,6 +166,7 @@ impl SearchCriteria {
             kind: SearchKind::Rss,
             episode_ids: Vec::new(),
             monitored_episodes_only: true,
+            user_invoked: false,
         }
     }
 

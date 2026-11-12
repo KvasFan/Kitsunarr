@@ -613,6 +613,7 @@ impl Case {
             episodes: vec![ep(5, 1, 1, 30)],
             criteria: SearchCriteria {
                 monitored_episodes_only: false,
+                user_invoked: true,
                 kind: SearchKind::SingleEpisode {
                     season: 1,
                     episode: 1,
@@ -1452,6 +1453,17 @@ mod delay_specification_fixture {
         assert!(c.accepted(specs::delay));
     }
 
+    /// A search the server starts itself (not `UserInvokedSearch`) waits like RSS sync.
+    #[test]
+    fn should_be_false_when_a_server_search_meets_a_delay() {
+        let mut c = case();
+        delayed(&mut c, 720);
+        c.release.publish_date = Utc::now();
+        c.criteria = Case::new().criteria;
+        c.criteria.user_invoked = false;
+        assert!(!c.accepted(specs::delay));
+    }
+
     #[test]
     fn should_be_true_when_profile_does_not_have_a_delay() {
         let mut c = case();
@@ -1637,6 +1649,7 @@ mod history_specification_fixture {
         grabbed(&mut c, 1, NOT_UPGRADABLE.0, NOT_UPGRADABLE.1, 0);
         c.criteria = SearchCriteria {
             monitored_episodes_only: false,
+            user_invoked: true,
             kind: SearchKind::Season { season: 12 },
             episode_ids: vec![1, 2, 3],
         };

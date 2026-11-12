@@ -1229,11 +1229,10 @@ pub(crate) fn history(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
     None
 }
 
-/// `RssSync/DelaySpecification`: the delay profile's waiting period. User-started searches skip
-/// it upstream, and RSS sync is the only automatic search Kitsunarr runs, so it applies to RSS
-/// only.
+/// `RssSync/DelaySpecification`: the delay profile's waiting period, for RSS sync and the
+/// searches the server starts itself; user-started searches skip it.
 pub(crate) fn delay(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
-    if !env.criteria.is_rss() {
+    if !env.criteria.is_rss() && env.criteria.user_invoked {
         return None;
     }
     let d = env.delay_profile()?;
