@@ -3845,3 +3845,80 @@ async fn import_list_shows_can_be_added_selectively() {
     let entries = client.import_list_entries(created.id).await.unwrap();
     assert_eq!(entries[0].series_id, results[0].series_id);
 }
+
+#[tokio::test]
+async fn delay_release_profiles_and_remote_path_mappings_are_managed() {
+    use kitsunarr_domain::api::settings::{DelayProfile, ReleaseProfile, RemotePathMapping};
+    let server = start().await;
+    let client = signed_in(&server).await;
+    // Sonarr's default delay profile exists from the start.
+    let delays = client.delay_profiles().await.unwrap();
+    assert_eq!(delays.len(), 1);
+    assert_eq!(delays[0].sort_order, i64::from(i32::MAX));
+    let created = client
+        .save_delay_profile(&DelayProfile {
+            id: 0,
+            enable_usenet: true,
+            enable_torrent: true,
+            preferred_protocol: "torrent".into(),
+            usenet_delay: 0,
+            torrent_delay: 120,
+            bypass_if_highest_quality: true,
+            bypass_if_above_custom_format_score: false,
+            minimum_custom_format_score: 0,
+            sort_order: 0,
+            tags: vec![],
+        })
+        .await
+        .unwrap();
+    assert!(created.id > 0 && created.sort_order < i64::from(i32::MAX));
+    let mut edit = created.clone();
+    edit.torrent_delay = 30;
+    client.save_delay_profile(&edit).await.unwrap();
+    let delays = client.delay_profiles().await.unwrap();
+    assert_eq!(
+        delays[0].torrent_delay, 30,
+        "new profiles come before the default"
+    );
+    let mut bad = edit.clone();
+    bad.preferred_protocol = "carrier pigeon".into();
+    assert_eq!(
+        status(client.save_delay_profile(&bad).await.unwrap_err()),
+        400
+    );
+    client.delete_delay_profile(created.id).await.unwrap();
+
+    let release = client
+        .save_release_profile(&ReleaseProfile {
+            id: 0,
+            name: Some("No CAMs".into()),
+            enabled: true,
+            required: vec![],
+            ignored: vec!["CAM".into(), "/\\bTS\\b/".into()],
+            indexer_ids: vec![],
+            tags: vec![],
+        })
+        .await
+        .unwrap();
+    assert_eq!(client.release_profiles().await.unwrap()[0].ignored.len(), 2);
+    client.delete_release_profile(release.id).await.unwrap();
+
+    let mapping = client
+        .save_remote_path_mapping(&RemotePathMapping {
+            id: 0,
+            host: "qbittorrent".into(),
+            remote_path: "/downloads/".into(),
+            local_path: "/data/downloads/".into(),
+        })
+        .await
+        .unwrap();
+    let mut m = mapping.clone();
+    m.local_path = "/mnt/downloads/".into();
+    client.save_remote_path_mapping(&m).await.unwrap();
+    assert_eq!(
+        client.remote_path_mappings().await.unwrap()[0].local_path,
+        "/mnt/downloads/"
+    );
+    client.delete_remote_path_mapping(mapping.id).await.unwrap();
+    assert!(client.remote_path_mappings().await.unwrap().is_empty());
+}

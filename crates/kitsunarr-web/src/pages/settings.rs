@@ -431,6 +431,8 @@ pub fn SettingsProfiles() -> Element {
                 on_close: move |_| editing.set(None),
             }
         }
+        DelayProfiles {}
+        ReleaseProfiles {}
     }
 }
 
@@ -878,6 +880,294 @@ pub fn SettingsDownloadClients() -> Element {
     rsx! {
         ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent, Deluge, Transmission, SABnzbd and NZBGet work: use Test in the editor; grabs, the queue and imports use them. Each client's \"Remove completed/failed downloads\" options remove downloads (with their files) once the client is done with them." }
         DownloadClientOptions {}
+        RemotePathMappings {}
+    }
+}
+
+fn split_terms(v: &str) -> Vec<String> {
+    v.split(',')
+        .map(|t| t.trim().to_string())
+        .filter(|t| !t.is_empty())
+        .collect()
+}
+
+fn tag_ids(v: &str) -> Vec<i64> {
+    v.split(',').filter_map(|t| t.trim().parse().ok()).collect()
+}
+
+/// Sonarr's delay profiles: how long to wait for a better release, per protocol.
+#[component]
+fn DelayProfiles() -> Element {
+    use kitsunarr_domain::api::settings::DelayProfile;
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut list = use_resource(move || {
+        let c = c0.clone();
+        async move { c.delay_profiles().await }
+    });
+    let mut editing = use_signal(|| None::<DelayProfile>);
+    let c1 = client.clone();
+    let save = move |_| {
+        let Some(d) = editing() else { return };
+        let c = c1.clone();
+        spawn(async move {
+            match c.save_delay_profile(&d).await {
+                Ok(_) => {
+                    editing.set(None);
+                    list.restart();
+                    app.success("Delay profile saved.");
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let remove = move |id: i64| {
+        let c = client.clone();
+        spawn(async move {
+            match c.delete_delay_profile(id).await {
+                Ok(()) => list.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        div { class: "card",
+            div { class: "row",
+                h3 { class: "grow", "Delay profiles" }
+                button { class: "btn", onclick: move |_| editing.set(Some(DelayProfile { id: 0, enable_usenet: true, enable_torrent: true, preferred_protocol: "usenet".into(), usenet_delay: 0, torrent_delay: 0, bypass_if_highest_quality: true, bypass_if_above_custom_format_score: false, minimum_custom_format_score: 0, sort_order: 0, tags: Vec::new() })), "Add" }
+            }
+            p { class: "muted small", "RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default." }
+            match &*list.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(items)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Preferred" } th { class: "num", "Usenet delay" } th { class: "num", "Torrent delay" } th { "Tags" } th { "" } } }
+                            tbody {
+                                for d in items.iter() {
+                                    {
+                                        let (dd, id, remove) = (d.clone(), d.id, remove.clone());
+                                        let default = d.tags.is_empty() && d.sort_order >= i64::from(i32::MAX);
+                                        rsx! {
+                                            tr { key: "{d.id}",
+                                                td { "{d.preferred_protocol}" }
+                                                td { class: "num", if d.enable_usenet { "{d.usenet_delay} min" } else { "off" } }
+                                                td { class: "num", if d.enable_torrent { "{d.torrent_delay} min" } else { "off" } }
+                                                td { class: "small", if default { "default" } else { {d.tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(", ")} } }
+                                                td { class: "shrink", div { class: "row tight",
+                                                    button { class: "btn sm", onclick: move |_| editing.set(Some(dd.clone())), "Edit" }
+                                                    if !default { button { class: "btn sm danger", onclick: move |_| remove(id), {crate::i18n::t().delete} } }
+                                                } }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+        if let Some(d) = editing() {
+            Modal { title: "Delay profile".to_string(), on_close: move |_| editing.set(None),
+                footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| editing.set(None), "Cancel" } button { class: "btn primary", onclick: save, "Save" } },
+                div { class: "stack",
+                    Switch { checked: d.enable_usenet, label: "Usenet", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.enable_usenet = v; } } }
+                    Switch { checked: d.enable_torrent, label: "Torrent", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.enable_torrent = v; } } }
+                }
+                div { class: "form-grid",
+                    Field { label: "Preferred protocol",
+                        select { class: "select", "aria-label": "Preferred protocol", onchange: move |e| { if let Some(x) = editing.write().as_mut() { x.preferred_protocol = e.value(); } },
+                            option { value: "usenet", selected: d.preferred_protocol == "usenet", "Usenet" }
+                            option { value: "torrent", selected: d.preferred_protocol == "torrent", "Torrent" }
+                        }
+                    }
+                    Field { label: "Usenet delay (minutes)", input { class: "input", r#type: "number", min: "0", value: "{d.usenet_delay}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.usenet_delay = e.value().parse().unwrap_or(0); } } } }
+                    Field { label: "Torrent delay (minutes)", input { class: "input", r#type: "number", min: "0", value: "{d.torrent_delay}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.torrent_delay = e.value().parse().unwrap_or(0); } } } }
+                    Field { label: "Tags (ids, comma separated)", input { class: "input", value: "{d.tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(\", \")}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.tags = tag_ids(&e.value()); } } } }
+                    Field { label: "Minimum custom format score", input { class: "input", r#type: "number", value: "{d.minimum_custom_format_score}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.minimum_custom_format_score = e.value().parse().unwrap_or(0); } } } }
+                }
+                div { class: "stack",
+                    Switch { checked: d.bypass_if_highest_quality, label: "No delay for the profile's best quality in the preferred protocol", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.bypass_if_highest_quality = v; } } }
+                    Switch { checked: d.bypass_if_above_custom_format_score, label: "No delay above the minimum custom format score", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.bypass_if_above_custom_format_score = v; } } }
+                }
+            }
+        }
+    }
+}
+
+/// Sonarr's release profiles: terms a release must or must not contain.
+#[component]
+fn ReleaseProfiles() -> Element {
+    use kitsunarr_domain::api::settings::ReleaseProfile;
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut list = use_resource(move || {
+        let c = c0.clone();
+        async move { c.release_profiles().await }
+    });
+    let mut editing = use_signal(|| None::<ReleaseProfile>);
+    let c1 = client.clone();
+    let save = move |_| {
+        let Some(r) = editing() else { return };
+        let c = c1.clone();
+        spawn(async move {
+            match c.save_release_profile(&r).await {
+                Ok(_) => {
+                    editing.set(None);
+                    list.restart();
+                    app.success("Release profile saved.");
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let remove = move |id: i64| {
+        let c = client.clone();
+        spawn(async move {
+            match c.delete_release_profile(id).await {
+                Ok(()) => list.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        div { class: "card",
+            div { class: "row",
+                h3 { class: "grow", "Release profiles" }
+                button { class: "btn", onclick: move |_| editing.set(Some(ReleaseProfile { id: 0, name: None, enabled: true, required: Vec::new(), ignored: Vec::new(), indexer_ids: Vec::new(), tags: Vec::new() })), "Add" }
+            }
+            match &*list.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(items)) if items.is_empty() => rsx! { p { class: "small faint", "No release profiles." } },
+                Some(Ok(items)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Name" } th { "Must contain" } th { "Must not contain" } th { "" } } }
+                            tbody {
+                                for r in items.iter() {
+                                    {
+                                        let (rr, id, remove) = (r.clone(), r.id, remove.clone());
+                                        rsx! {
+                                            tr { key: "{r.id}",
+                                                td { {r.name.clone().unwrap_or_default()} if !r.enabled { " " Badge { text: "disabled".to_string() } } }
+                                                td { class: "small", {r.required.join(", ")} }
+                                                td { class: "small", {r.ignored.join(", ")} }
+                                                td { class: "shrink", div { class: "row tight",
+                                                    button { class: "btn sm", onclick: move |_| editing.set(Some(rr.clone())), "Edit" }
+                                                    button { class: "btn sm danger", onclick: move |_| remove(id), {crate::i18n::t().delete} }
+                                                } }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+        if let Some(r) = editing() {
+            Modal { title: "Release profile".to_string(), on_close: move |_| editing.set(None),
+                footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| editing.set(None), "Cancel" } button { class: "btn primary", onclick: save, "Save" } },
+                Switch { checked: r.enabled, label: "Enabled", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.enabled = v; } } }
+                div { class: "form-grid",
+                    Field { label: "Name", input { class: "input", value: "{r.name.clone().unwrap_or_default()}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.name = Some(e.value()).filter(|v| !v.trim().is_empty()); } } } }
+                    Field { label: "Must contain (comma separated; /regex/ allowed)", input { class: "input", value: "{r.required.join(\", \")}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.required = split_terms(&e.value()); } } } }
+                    Field { label: "Must not contain", input { class: "input", value: "{r.ignored.join(\", \")}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.ignored = split_terms(&e.value()); } } } }
+                    Field { label: "Tags (ids, comma separated)", input { class: "input", value: "{r.tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(\", \")}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.tags = tag_ids(&e.value()); } } } }
+                }
+            }
+        }
+    }
+}
+
+/// Sonarr's remote path mappings: where a download client's paths are for Kitsunarr.
+#[component]
+fn RemotePathMappings() -> Element {
+    use kitsunarr_domain::api::settings::RemotePathMapping;
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut list = use_resource(move || {
+        let c = c0.clone();
+        async move { c.remote_path_mappings().await }
+    });
+    let mut editing = use_signal(|| None::<RemotePathMapping>);
+    let c1 = client.clone();
+    let save = move |_| {
+        let Some(m) = editing() else { return };
+        let c = c1.clone();
+        spawn(async move {
+            match c.save_remote_path_mapping(&m).await {
+                Ok(_) => {
+                    editing.set(None);
+                    list.restart();
+                    app.success("Remote path mapping saved.");
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let remove = move |id: i64| {
+        let c = client.clone();
+        spawn(async move {
+            match c.delete_remote_path_mapping(id).await {
+                Ok(()) => list.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        div { class: "card",
+            div { class: "row",
+                h3 { class: "grow", "Remote path mappings" }
+                button { class: "btn", onclick: move |_| editing.set(Some(RemotePathMapping { id: 0, host: String::new(), remote_path: String::new(), local_path: String::new() })), "Add" }
+            }
+            p { class: "muted small", "When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path." }
+            match &*list.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(items)) if items.is_empty() => rsx! { p { class: "small faint", "No mappings." } },
+                Some(Ok(items)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Host" } th { "Remote path" } th { "Local path" } th { "" } } }
+                            tbody {
+                                for m in items.iter() {
+                                    {
+                                        let (mm, id, remove) = (m.clone(), m.id, remove.clone());
+                                        rsx! {
+                                            tr { key: "{m.id}",
+                                                td { "{m.host}" } td { class: "mono small", "{m.remote_path}" } td { class: "mono small", "{m.local_path}" }
+                                                td { class: "shrink", div { class: "row tight",
+                                                    button { class: "btn sm", onclick: move |_| editing.set(Some(mm.clone())), "Edit" }
+                                                    button { class: "btn sm danger", onclick: move |_| remove(id), {crate::i18n::t().delete} }
+                                                } }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+        if let Some(m) = editing() {
+            Modal { title: "Remote path mapping".to_string(), on_close: move |_| editing.set(None),
+                footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| editing.set(None), "Cancel" } button { class: "btn primary", onclick: save, "Save" } },
+                div { class: "form-grid",
+                    Field { label: "Host (as in the download client's settings)", input { class: "input", value: "{m.host}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.host = e.value(); } } } }
+                    Field { label: "Remote path", input { class: "input", value: "{m.remote_path}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.remote_path = e.value(); } } } }
+                    Field { label: "Local path", input { class: "input", value: "{m.local_path}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.local_path = e.value(); } } } }
+                }
+            }
+        }
     }
 }
 

@@ -360,6 +360,56 @@ impl Default for DownloadClientOptionsSettings {
     }
 }
 
+/// Sonarr's delay profile: how long to wait for a better release per protocol.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct DelayProfile {
+    #[serde(default)]
+    pub id: i64,
+    pub enable_usenet: bool,
+    pub enable_torrent: bool,
+    /// `usenet` or `torrent`.
+    pub preferred_protocol: String,
+    /// Minutes.
+    pub usenet_delay: i64,
+    /// Minutes.
+    pub torrent_delay: i64,
+    pub bypass_if_highest_quality: bool,
+    pub bypass_if_above_custom_format_score: bool,
+    pub minimum_custom_format_score: i64,
+    pub sort_order: i64,
+    pub tags: Vec<i64>,
+}
+
+/// Sonarr's release profile: terms a release must or must not contain.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ReleaseProfile {
+    #[serde(default)]
+    pub id: i64,
+    pub name: Option<String>,
+    pub enabled: bool,
+    pub required: Vec<String>,
+    pub ignored: Vec<String>,
+    /// Empty = applies to every indexer.
+    pub indexer_ids: Vec<i64>,
+    pub tags: Vec<i64>,
+}
+
+/// Sonarr's remote path mapping: a download client's path as Kitsunarr sees it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct RemotePathMapping {
+    #[serde(default)]
+    pub id: i64,
+    pub host: String,
+    pub remote_path: String,
+    pub local_path: String,
+}
+
 /// A value a provider setting can take, read from the service (Jellyfin libraries and users).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

@@ -9,6 +9,7 @@ pub mod library_tools;
 pub mod metadata;
 pub mod migration;
 pub mod queue;
+pub mod rules;
 pub mod schema;
 pub mod search;
 pub mod settings;
@@ -165,6 +166,12 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(library_tools::recycle))
         .routes(routes!(library_tools::restore))
         .routes(routes!(library_tools::list_keys, library_tools::create_key))
+        .routes(routes!(rules::list_delay, rules::create_delay))
+        .routes(routes!(rules::update_delay, rules::delete_delay))
+        .routes(routes!(rules::list_release, rules::create_release))
+        .routes(routes!(rules::update_release, rules::delete_release))
+        .routes(routes!(rules::list_mappings, rules::create_mapping))
+        .routes(routes!(rules::update_mapping, rules::delete_mapping))
         .routes(routes!(library_tools::versions))
         .routes(routes!(
             library_tools::manual_import_scan,

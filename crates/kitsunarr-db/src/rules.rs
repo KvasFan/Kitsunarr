@@ -3,24 +3,9 @@
 use serde::{Deserialize, Serialize};
 use sqlx::{FromRow, SqliteExecutor};
 
-use crate::{DbError, DbResult, from_json, to_json};
+pub use kitsunarr_domain::api::settings::{DelayProfile, ReleaseProfile, RemotePathMapping};
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct DelayProfile {
-    pub id: i64,
-    pub enable_usenet: bool,
-    pub enable_torrent: bool,
-    /// `usenet` or `torrent`.
-    pub preferred_protocol: String,
-    pub usenet_delay: i64,
-    pub torrent_delay: i64,
-    pub bypass_if_highest_quality: bool,
-    pub bypass_if_above_custom_format_score: bool,
-    pub minimum_custom_format_score: i64,
-    pub sort_order: i64,
-    pub tags: Vec<i64>,
-}
+use crate::{DbError, DbResult, from_json, to_json};
 
 #[derive(FromRow)]
 struct DelayRow {
@@ -86,19 +71,6 @@ pub async fn create_delay_profile(ex: impl SqliteExecutor<'_>, d: &DelayProfile)
     .map_err(|e| DbError::from_write(e, "delay profile"))
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ReleaseProfile {
-    pub id: i64,
-    pub name: Option<String>,
-    pub enabled: bool,
-    pub required: Vec<String>,
-    pub ignored: Vec<String>,
-    /// Empty = applies to every indexer.
-    pub indexer_ids: Vec<i64>,
-    pub tags: Vec<i64>,
-}
-
 #[derive(FromRow)]
 struct ReleaseRow {
     id: i64,
@@ -147,23 +119,23 @@ pub async fn create_release_profile(
     .map_err(|e| DbError::from_write(e, "release profile"))
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, FromRow)]
-#[serde(rename_all = "camelCase")]
-pub struct RemotePathMapping {
-    pub id: i64,
-    pub host: String,
-    pub remote_path: String,
-    pub local_path: String,
-}
-
 pub async fn list_remote_path_mappings(
     ex: impl SqliteExecutor<'_>,
 ) -> DbResult<Vec<RemotePathMapping>> {
-    Ok(
-        sqlx::query_as("SELECT * FROM remote_path_mappings ORDER BY host, remote_path")
-            .fetch_all(ex)
-            .await?,
+    let rows: Vec<(i64, String, String, String)> = sqlx::query_as(
+        "SELECT id, host, remote_path, local_path FROM remote_path_mappings ORDER BY host, remote_path",
     )
+    .fetch_all(ex)
+    .await?;
+    Ok(rows
+        .into_iter()
+        .map(|(id, host, remote_path, local_path)| RemotePathMapping {
+            id,
+            host,
+            remote_path,
+            local_path,
+        })
+        .collect())
 }
 
 pub async fn create_remote_path_mapping(
@@ -239,6 +211,118 @@ pub async fn delete_exclusion(ex: impl SqliteExecutor<'_>, id: i64) -> DbResult<
         return Err(crate::DbError::NotFound);
     }
     Ok(())
+}
+
+fn validate_delay(d: &DelayProfile) -> DbResult<()> {
+    if d.preferred_protocol != "usenet" && d.preferred_protocol != "torrent" {
+        return Err(DbError::Invalid(
+            "preferred protocol must be usenet or torrent".into(),
+        ));
+    }
+    if d.usenet_delay < 0 || d.torrent_delay < 0 {
+        return Err(DbError::Invalid("delays cannot be negative".into()));
+    }
+    Ok(())
+}
+
+pub async fn update_delay_profile(ex: impl SqliteExecutor<'_>, d: &DelayProfile) -> DbResult<()> {
+    validate_delay(d)?;
+    let r = sqlx::query(
+        "UPDATE delay_profiles SET enable_usenet = ?, enable_torrent = ?, preferred_protocol = ?, usenet_delay = ?, \
+         torrent_delay = ?, bypass_if_highest_quality = ?, bypass_if_above_custom_format_score = ?, \
+         minimum_custom_format_score = ?, sort_order = ?, tags = ? WHERE id = ?",
+    )
+    .bind(d.enable_usenet)
+    .bind(d.enable_torrent)
+    .bind(&d.preferred_protocol)
+    .bind(d.usenet_delay)
+    .bind(d.torrent_delay)
+    .bind(d.bypass_if_highest_quality)
+    .bind(d.bypass_if_above_custom_format_score)
+    .bind(d.minimum_custom_format_score)
+    .bind(d.sort_order)
+    .bind(to_json(&d.tags)?)
+    .bind(d.id)
+    .execute(ex)
+    .await?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
+pub async fn update_release_profile(
+    ex: impl SqliteExecutor<'_>,
+    p: &ReleaseProfile,
+) -> DbResult<()> {
+    if p.required.is_empty() && p.ignored.is_empty() {
+        return Err(DbError::Invalid(
+            "a release profile needs required or ignored terms".into(),
+        ));
+    }
+    let r = sqlx::query(
+        "UPDATE release_profiles SET name = ?, enabled = ?, required = ?, ignored = ?, indexer_ids = ?, tags = ? WHERE id = ?",
+    )
+    .bind(&p.name)
+    .bind(p.enabled)
+    .bind(to_json(&p.required)?)
+    .bind(to_json(&p.ignored)?)
+    .bind(to_json(&p.indexer_ids)?)
+    .bind(to_json(&p.tags)?)
+    .bind(p.id)
+    .execute(ex)
+    .await?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
+pub async fn update_remote_path_mapping(
+    ex: impl SqliteExecutor<'_>,
+    m: &RemotePathMapping,
+) -> DbResult<()> {
+    if m.host.trim().is_empty() || m.remote_path.trim().is_empty() || m.local_path.trim().is_empty()
+    {
+        return Err(DbError::Invalid(
+            "host, remote path and local path are required".into(),
+        ));
+    }
+    let r = sqlx::query(
+        "UPDATE remote_path_mappings SET host = ?, remote_path = ?, local_path = ? WHERE id = ?",
+    )
+    .bind(m.host.trim())
+    .bind(m.remote_path.trim())
+    .bind(m.local_path.trim())
+    .bind(m.id)
+    .execute(ex)
+    .await
+    .map_err(|e| DbError::from_write(e, "remote path mapping"))?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
+/// Deletes a delay profile, release profile or remote path mapping by table.
+pub async fn delete_rule(ex: impl SqliteExecutor<'_>, table: RuleTable, id: i64) -> DbResult<()> {
+    let sql = match table {
+        RuleTable::DelayProfiles => "DELETE FROM delay_profiles WHERE id = ?",
+        RuleTable::ReleaseProfiles => "DELETE FROM release_profiles WHERE id = ?",
+        RuleTable::RemotePathMappings => "DELETE FROM remote_path_mappings WHERE id = ?",
+    };
+    let r = sqlx::query(sql).bind(id).execute(ex).await?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RuleTable {
+    DelayProfiles,
+    ReleaseProfiles,
+    RemotePathMappings,
 }
 
 #[cfg(test)]

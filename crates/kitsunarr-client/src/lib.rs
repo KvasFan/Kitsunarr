@@ -615,6 +615,60 @@ impl Client {
     ) -> ClientResult<Vec<kitsunarr_domain::api::library_tools::ManualImportResult>> {
         self.post("/manualimport", req).await
     }
+    pub async fn delay_profiles(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::settings::DelayProfile>> {
+        self.get("/delayprofiles").await
+    }
+    pub async fn save_delay_profile(
+        &self,
+        d: &kitsunarr_domain::api::settings::DelayProfile,
+    ) -> ClientResult<kitsunarr_domain::api::settings::DelayProfile> {
+        if d.id > 0 {
+            self.put(&format!("/delayprofiles/{}", d.id), d).await
+        } else {
+            self.post("/delayprofiles", d).await
+        }
+    }
+    pub async fn delete_delay_profile(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/delayprofiles/{id}")).await
+    }
+    pub async fn release_profiles(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::settings::ReleaseProfile>> {
+        self.get("/releaseprofiles").await
+    }
+    pub async fn save_release_profile(
+        &self,
+        r: &kitsunarr_domain::api::settings::ReleaseProfile,
+    ) -> ClientResult<kitsunarr_domain::api::settings::ReleaseProfile> {
+        if r.id > 0 {
+            self.put(&format!("/releaseprofiles/{}", r.id), r).await
+        } else {
+            self.post("/releaseprofiles", r).await
+        }
+    }
+    pub async fn delete_release_profile(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/releaseprofiles/{id}")).await
+    }
+    pub async fn remote_path_mappings(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::settings::RemotePathMapping>> {
+        self.get("/remotepathmappings").await
+    }
+    pub async fn save_remote_path_mapping(
+        &self,
+        m: &kitsunarr_domain::api::settings::RemotePathMapping,
+    ) -> ClientResult<kitsunarr_domain::api::settings::RemotePathMapping> {
+        if m.id > 0 {
+            self.put(&format!("/remotepathmappings/{}", m.id), m).await
+        } else {
+            self.post("/remotepathmappings", m).await
+        }
+    }
+    pub async fn delete_remote_path_mapping(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/remotepathmappings/{id}")).await
+    }
     pub async fn recent_searches(
         &self,
     ) -> ClientResult<Vec<kitsunarr_domain::api::settings::SearchActivity>> {

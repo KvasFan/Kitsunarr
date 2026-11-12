@@ -32,6 +32,29 @@ pub async fn seed_defaults(db: &Database) -> DbResult<()> {
             quality::create_profile(&mut *tx, &p).await?;
         }
     }
+    // Sonarr's default delay profile: no delay, last in order, for every series.
+    let delays: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM delay_profiles")
+        .fetch_one(&mut *tx)
+        .await?;
+    if delays == 0 {
+        crate::rules::create_delay_profile(
+            &mut *tx,
+            &crate::rules::DelayProfile {
+                id: 0,
+                enable_usenet: true,
+                enable_torrent: true,
+                preferred_protocol: "usenet".into(),
+                usenet_delay: 0,
+                torrent_delay: 0,
+                bypass_if_highest_quality: true,
+                bypass_if_above_custom_format_score: false,
+                minimum_custom_format_score: 0,
+                sort_order: i64::from(i32::MAX),
+                tags: Vec::new(),
+            },
+        )
+        .await?;
+    }
     settings::set_if_absent(&mut *tx, settings::KEY_NAMING, &NamingSettings::default()).await?;
     settings::set_if_absent(
         &mut *tx,
