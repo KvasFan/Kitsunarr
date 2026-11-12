@@ -572,6 +572,7 @@ impl Transmission {
         source: &Source<'_>,
         hash: &str,
         recent: bool,
+        seed: Option<crate::qbittorrent::SeedConfig>,
     ) -> Result<String, DownloadError> {
         let labels = self.supports_labels(s).await?;
         let mut args = match source {
@@ -589,6 +590,19 @@ impl Transmission {
         }
         self.call(s, "torrent-add", Some(args)).await?;
         let hash = hash.to_ascii_lowercase();
+        // `SetTorrentSeedingConfiguration`: the ratio, and the seed time as the idle limit.
+        if let Some(c) = seed.filter(crate::qbittorrent::SeedConfig::is_set) {
+            let mut set = json!({ "ids": [hash] });
+            if let Some(r) = c.ratio {
+                set["seedRatioLimit"] = json!(r);
+                set["seedRatioMode"] = json!(1);
+            }
+            if let Some(t) = c.seed_time_minutes {
+                set["seedIdleLimit"] = json!(t);
+                set["seedIdleMode"] = json!(1);
+            }
+            self.call(s, "torrent-set", Some(set)).await?;
+        }
         let priority = if recent {
             s.recent_priority
         } else {

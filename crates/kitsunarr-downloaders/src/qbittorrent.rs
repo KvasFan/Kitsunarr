@@ -329,6 +329,40 @@ pub struct AddRequest<'a> {
     pub recent: bool,
     /// Series tag labels (for `addSeriesTags`).
     pub tags: &'a [String],
+    /// The indexer's seed criteria (`TorrentSeedConfiguration`).
+    pub seed: Option<SeedConfig>,
+}
+
+/// Seed goals a torrent indexer asks for (Sonarr's `TorrentSeedConfiguration`).
+#[derive(Debug, Clone, Copy, PartialEq, Default)]
+pub struct SeedConfig {
+    pub ratio: Option<f64>,
+    pub seed_time_minutes: Option<i64>,
+}
+
+impl SeedConfig {
+    pub fn is_set(&self) -> bool {
+        self.ratio.is_some() || self.seed_time_minutes.is_some()
+    }
+
+    /// `AddTorrentSeedingFormParameters`: -2 means "use the global setting".
+    fn form(&self, always: bool) -> Vec<(&'static str, String)> {
+        let mut out = Vec::new();
+        if self.ratio.is_some() || always {
+            out.push((
+                "ratioLimit",
+                self.ratio.map_or("-2".into(), |r| r.to_string()),
+            ));
+        }
+        if self.seed_time_minutes.is_some() || always {
+            out.push((
+                "seedingTimeLimit",
+                self.seed_time_minutes
+                    .map_or("-2".into(), |t| t.to_string()),
+            ));
+        }
+        out
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -757,6 +791,16 @@ impl QBittorrent {
             return Ok(hash);
         }
         let mut form = self.add_fields(s).await?;
+        let seed = req.seed.filter(SeedConfig::is_set);
+        // Share limits go with the add from Web API 2.8.1, else in a call of their own.
+        let seed_with_add = match seed {
+            Some(_) => at_least(&version(&self.api_version(s).await?), &[2, 8, 1]),
+            None => false,
+        };
+        if let (Some(c), true) = (seed, seed_with_add) {
+            form.extend(c.form(false));
+        }
+        let set_limits_after = seed.is_some() && !seed_with_add;
         let body = match req.source {
             Source::Magnet(url) => {
                 if !url.contains("&tr=") && !self.preferences(s).await?.dht {
@@ -800,7 +844,7 @@ impl QBittorrent {
         let move_to_top = priority == 1;
         let force_start = s.initial_state == 1;
         let tag = s.add_series_tags && !req.tags.is_empty();
-        if move_to_top || force_start || tag {
+        if move_to_top || force_start || tag || set_limits_after {
             // `WaitForTorrent`: up to ten checks, 100 ms apart.
             let mut loaded = false;
             for _ in 0..10 {
@@ -812,6 +856,17 @@ impl QBittorrent {
             }
             if loaded {
                 // Upstream logs and ignores failures of these follow-up calls.
+                if let (true, Some(c)) = (set_limits_after, seed) {
+                    let mut form = vec![("hashes", hash.clone())];
+                    form.extend(c.form(true));
+                    match self.post(s, "/api/v2/torrents/setShareLimits", form).await {
+                        // Web API 2.0 has no share limits.
+                        Ok(_) | Err(DownloadError::Http { status: 404 }) => {}
+                        Err(e) => {
+                            tracing::warn!(error = %e, %hash, "failed to set the torrent seed criteria");
+                        }
+                    }
+                }
                 if move_to_top
                     && let Err(e) = self
                         .post(

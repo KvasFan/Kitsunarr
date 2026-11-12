@@ -370,6 +370,7 @@ pub(crate) async fn send(
     } else {
         Vec::new()
     };
+    let seed = seed_config(state, indexer_id, cached.release_type).await;
     let add_magnet = |url: String| {
         let settings = settings.clone();
         let tag_labels = tag_labels.clone();
@@ -387,6 +388,7 @@ pub(crate) async fn send(
                         hash: &hash,
                         recent,
                         tags: &tag_labels,
+                        seed,
                     },
                 )
                 .await
@@ -443,6 +445,7 @@ pub(crate) async fn send(
                                 hash: &hash,
                                 recent: cached.recent,
                                 tags: &tag_labels,
+                                seed,
                             },
                         )
                         .await
@@ -507,6 +510,7 @@ pub(crate) async fn send(
                             hash: &hash,
                             recent: cached.recent,
                             tags: &tag_labels,
+                            seed,
                         },
                     )
                     .await
@@ -719,4 +723,44 @@ pub async fn notification_choices(
             })
             .collect(),
     ))
+}
+
+/// `SeedConfigProvider.GetSeedConfiguration`: the indexer's seed ratio and seed time, or its
+/// season-pack goals for a season pack when it asks for them. Settings are read either flat
+/// (`seedCriteria.seedRatio`, Sonarr's API fields) or nested (its database).
+async fn seed_config(
+    state: &AppState,
+    indexer_id: i64,
+    release_type: &str,
+) -> Option<kitsunarr_downloaders::SeedConfig> {
+    if indexer_id <= 0 {
+        return None;
+    }
+    let p = kitsunarr_db::providers::get(
+        state.db.pool(),
+        kitsunarr_domain::api::settings::ProviderKind::Indexer,
+        indexer_id,
+    )
+    .await
+    .ok()?;
+    let nested = p.settings.get("seedCriteria").and_then(|v| v.as_object());
+    let get = |k: &str| {
+        p.settings
+            .get(&format!("seedCriteria.{k}"))
+            .or_else(|| nested.and_then(|n| n.get(k)))
+            .filter(|v| !v.is_null())
+            .and_then(|v| v.as_f64().or_else(|| v.as_str()?.trim().parse().ok()))
+    };
+    let full_season = matches!(release_type, "SeasonPack" | "MultiSeasonPack");
+    let pack_goal = get("seasonPackSeedGoal").is_some_and(|g| g as i64 == 1);
+    let (ratio, time) = if full_season && pack_goal {
+        (get("seasonPackSeedRatio"), get("seasonPackSeedTime"))
+    } else {
+        (get("seedRatio"), get("seedTime"))
+    };
+    let c = kitsunarr_downloaders::SeedConfig {
+        ratio,
+        seed_time_minutes: time.map(|t| t as i64),
+    };
+    c.is_set().then_some(c)
 }

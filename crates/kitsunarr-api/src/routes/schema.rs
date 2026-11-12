@@ -70,7 +70,10 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                     "baseUrl": "", "apiPath": "/api", "apiKey": "",
                     "categories": [5030, 5040], "animeCategories": [],
                     "animeStandardFormatSearch": false, "additionalParameters": "",
-                    "minimumSeeders": 1
+                    "minimumSeeders": 1,
+                    "seedCriteria.seedRatio": null, "seedCriteria.seedTime": null,
+                    "seedCriteria.seasonPackSeedGoal": 0,
+                    "seedCriteria.seasonPackSeedRatio": null, "seedCriteria.seasonPackSeedTime": null
                 }),
             ),
         ],

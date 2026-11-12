@@ -102,6 +102,7 @@ async fn json_rpc(State(m): State<Shared>, headers: HeaderMap, body: String) -> 
         }
         "label.set_torrent" => rpc(id, Value::Null),
         "core.queue_top" => rpc(id, Value::Null),
+        "core.set_torrent_options" => rpc(id, Value::Null),
         "core.add_torrent_magnet" => rpc(id, json!("c12fe1c06bba254a9dc9f519b335aa7c1367a88a")),
         "core.add_torrent_file" => {
             let bytes = base64::engine::general_purpose::STANDARD
@@ -192,7 +193,10 @@ async fn adds_label_and_queue_position() {
     let (s, mock) = mock_deluge().await;
     let deluge = Deluge::new(reqwest::Client::new());
     let magnet = "magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a&dn=x";
-    let id = deluge.add(&s, &Source::Magnet(magnet), true).await.unwrap();
+    let id = deluge
+        .add(&s, &Source::Magnet(magnet), true, None)
+        .await
+        .unwrap();
     assert_eq!(id, "C12FE1C06BBA254A9DC9F519B335AA7C1367A88A");
     let id = deluge
         .add(
@@ -202,11 +206,24 @@ async fn adds_label_and_queue_position() {
                 content: b"d4:infod4:name1:xee",
             },
             false,
+            Some(kitsunarr_downloaders::SeedConfig {
+                ratio: Some(1.0),
+                seed_time_minutes: Some(30),
+            }),
         )
         .await
         .unwrap();
     assert_eq!(id, "AA11BB22CC33DD44EE55FF66AA11BB22CC33DD44");
     let calls = mock.lock().unwrap().calls.clone();
+    // Deluge takes the seed ratio only.
+    assert!(
+        calls
+            .iter()
+            .any(|c| c.starts_with("core.set_torrent_options")
+                && c.contains("\"stop_at_ratio\":1")
+                && c.contains("\"stop_ratio\":1.0")),
+        "{calls:#?}"
+    );
     let after_login: Vec<&String> = calls.iter().filter(|c| !c.starts_with("web.")).collect();
     assert_eq!(
         after_login[0],
@@ -224,11 +241,13 @@ async fn adds_label_and_queue_position() {
         "core.queue_top [[\"c12fe1c06bba254a9dc9f519b335aa7c1367a88a\"]]"
     );
     assert!(after_login[3].starts_with("core.add_torrent_file [\"x.torrent\","));
+    // Sonarr's order: seed options, then the label.
+    assert!(after_login[4].starts_with("core.set_torrent_options"));
     assert_eq!(
-        after_login[4],
+        after_login[5],
         "label.set_torrent [\"aa11bb22cc33dd44ee55ff66aa11bb22cc33dd44\",\"tv-kitsunarr\"]"
     );
-    assert_eq!(after_login.len(), 5);
+    assert_eq!(after_login.len(), 6);
 }
 
 #[tokio::test]

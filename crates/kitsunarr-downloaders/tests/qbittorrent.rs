@@ -200,6 +200,7 @@ async fn adds_magnets_and_files_with_the_category() {
                 hash: "C9E15763F722F23E98A29DECDFAE341B98D53056",
                 recent: false,
                 tags: &[],
+                seed: None,
             },
         )
         .await
@@ -235,6 +236,7 @@ async fn adds_magnets_and_files_with_the_category() {
                 hash: &expected,
                 recent: true,
                 tags: &["anime".into(), "4k".into()],
+                seed: None,
             },
         )
         .await
@@ -266,6 +268,7 @@ async fn adds_magnets_and_files_with_the_category() {
                 hash: &expected,
                 recent: false,
                 tags: &[],
+                seed: None,
             },
         )
         .await
@@ -278,6 +281,34 @@ async fn adds_magnets_and_files_with_the_category() {
             .iter()
             .any(|c| c.starts_with("/api/v2/torrents/addTags") && c.contains(&tag)),
         "{calls:#?}"
+    );
+
+    // The indexer's seed criteria go with the add (Web API 2.8.1 and newer).
+    let seeded = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&tr=udp://t";
+    client
+        .add(
+            &settings,
+            &AddRequest {
+                source: Source::Magnet(seeded),
+                hash: "0123456789abcdef0123456789abcdef01234567",
+                recent: false,
+                tags: &[],
+                seed: Some(kitsunarr_downloaders::SeedConfig {
+                    ratio: Some(2.0),
+                    seed_time_minutes: Some(90),
+                }),
+            },
+        )
+        .await
+        .unwrap();
+    let calls = mock.lock().unwrap().calls.clone();
+    let add = calls
+        .iter()
+        .rfind(|c| c.starts_with("/api/v2/torrents/add "))
+        .unwrap();
+    assert!(
+        add.contains("ratioLimit=2 ") && add.contains("seedingTimeLimit=90 "),
+        "{add}"
     );
 }
 
@@ -317,6 +348,7 @@ async fn live_qbittorrent() {
                 hash: &hash,
                 recent: false,
                 tags: &[],
+                seed: None,
             },
         )
         .await;

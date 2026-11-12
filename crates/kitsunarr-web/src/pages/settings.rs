@@ -2422,6 +2422,23 @@ fn field_label(key: &str) -> String {
         ("removeCompletedDownloads", "Remove completed downloads"),
         ("removeFailedDownloads", "Remove failed downloads"),
         ("firstAndLast", "First and last pieces first"),
+        (
+            "seedCriteria.seedRatio",
+            "Seed ratio (empty: the client's default)",
+        ),
+        (
+            "seedCriteria.seedTime",
+            "Seed time, minutes (empty: the client's default)",
+        ),
+        (
+            "seedCriteria.seasonPackSeedGoal",
+            "Season packs: 1 uses the season-pack goals below",
+        ),
+        ("seedCriteria.seasonPackSeedRatio", "Season-pack seed ratio"),
+        (
+            "seedCriteria.seasonPackSeedTime",
+            "Season-pack seed time, minutes",
+        ),
     ];
     if let Some((_, l)) = known.iter().find(|(k, _)| *k == key) {
         return (*l).to_string();

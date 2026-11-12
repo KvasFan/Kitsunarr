@@ -124,6 +124,10 @@ async fn transmission_4_uses_labels() {
             &Source::Magnet(magnet),
             "c12fe1c06bba254a9dc9f519b335aa7c1367a88a",
             true,
+            Some(kitsunarr_downloaders::SeedConfig {
+                ratio: Some(1.5),
+                seed_time_minutes: Some(60),
+            }),
         )
         .await
         .unwrap();
@@ -131,8 +135,13 @@ async fn transmission_4_uses_labels() {
     {
         let m = mock.lock().unwrap();
         let n = m.calls.len();
+        // The seed criteria: the ratio, and the seed time as the idle limit.
         assert_eq!(
             m.calls[n - 2],
+            "torrent-set {\"ids\":[\"c12fe1c06bba254a9dc9f519b335aa7c1367a88a\"],\"seedIdleLimit\":60,\"seedIdleMode\":1,\"seedRatioLimit\":1.5,\"seedRatioMode\":1}"
+        );
+        assert_eq!(
+            m.calls[n - 3],
             format!(
                 "torrent-add {{\"filename\":\"{magnet}\",\"labels\":[\"tv-kitsunarr\"],\"paused\":false}}"
             )
@@ -183,6 +192,7 @@ async fn older_transmission_uses_the_category_folder() {
         },
         "aa11bb22cc33dd44ee55ff66aa11bb22cc33dd44",
         false,
+        None,
     )
     .await
     .unwrap();

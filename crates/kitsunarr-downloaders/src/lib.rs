@@ -20,7 +20,7 @@ use serde_json::{Map, Value};
 pub use deluge::Deluge;
 pub use error::DownloadError;
 pub use nzbget::Nzbget;
-pub use qbittorrent::{AddRequest, QBittorrent, Source};
+pub use qbittorrent::{AddRequest, QBittorrent, SeedConfig, Source};
 pub use sabnzbd::Sabnzbd;
 pub use torrent::{magnet_info_hash, torrent_info_hash};
 pub use transmission::Transmission;
@@ -191,10 +191,12 @@ impl Clients {
     ) -> Result<String, DownloadError> {
         match s {
             ClientSettings::QBittorrent(s) => self.qbittorrent.add(s, req).await,
-            ClientSettings::Deluge(s) => self.deluge.add(s, &req.source, req.recent).await,
+            ClientSettings::Deluge(s) => {
+                self.deluge.add(s, &req.source, req.recent, req.seed).await
+            }
             ClientSettings::Transmission(s) => {
                 self.transmission
-                    .add(s, &req.source, req.hash, req.recent)
+                    .add(s, &req.source, req.hash, req.recent, req.seed)
                     .await
             }
             ClientSettings::Sabnzbd(_) | ClientSettings::Nzbget(_) => Err(

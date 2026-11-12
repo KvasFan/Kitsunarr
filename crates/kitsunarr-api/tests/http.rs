@@ -1274,7 +1274,8 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             &serde_json::json!({
                 "name": "Mock Torznab", "implementation": "Torznab",
                 "options": {"enableInteractiveSearch": true},
-                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "t0rznab-key", "categories": [5040]}
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "t0rznab-key", "categories": [5040],
+                    "seedCriteria.seedRatio": "2.5", "seedCriteria.seedTime": null}
             }),
         )
         .await
@@ -1382,7 +1383,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     // The file itself was sent (the indexer's link, with its key, never left the server).
     assert_eq!(
         add,
-        "/api/v2/torrents/add category=tv-kitsunarr stopped=false torrents=<142 bytes>"
+        "/api/v2/torrents/add category=tv-kitsunarr ratioLimit=2.5 stopped=false torrents=<142 bytes>"
     );
 
     let history = client.history(1, 50, Some("grabbed")).await.unwrap();

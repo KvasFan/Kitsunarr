@@ -544,6 +544,7 @@ impl Deluge {
         s: &Settings,
         source: &crate::qbittorrent::Source<'_>,
         recent: bool,
+        seed: Option<crate::qbittorrent::SeedConfig>,
     ) -> Result<String, DownloadError> {
         let options = s.add_options();
         let (result, what) = match source {
@@ -567,6 +568,15 @@ impl Deluge {
             .filter(|h| !h.is_empty())
             .ok_or_else(|| DownloadError::Client(format!("Deluge failed to add the {what}")))?
             .to_string();
+        // `SetTorrentSeedingConfiguration`: Deluge takes the ratio only.
+        if let Some(ratio) = seed.and_then(|c| c.ratio) {
+            self.call(
+                s,
+                "core.set_torrent_options",
+                json!([[hash], {"stop_ratio": ratio, "stop_at_ratio": 1}]),
+            )
+            .await?;
+        }
         if let Some(label) = &s.category {
             self.call(s, "label.set_torrent", json!([hash, label]))
                 .await?;
