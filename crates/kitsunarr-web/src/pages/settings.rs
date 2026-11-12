@@ -303,6 +303,9 @@ pub fn SettingsMedia() -> Element {
                         Field { label: "Recycle bin", help: "Absolute path; empty to delete permanently.".to_string(),
                             input { class: "input mono", value: "{m.recycle_bin.clone().unwrap_or_default()}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.recycle_bin = Some(e.value()).filter(|v| !v.is_empty()); } } }
                         }
+                        Field { label: "Recycle bin cleanup (days)", help: "Files older than this are deleted from the recycle bin daily; 0 keeps them.".to_string(),
+                            input { class: "input", r#type: "number", min: "0", value: "{m.recycle_bin_cleanup_days}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.recycle_bin_cleanup_days = e.value().parse().unwrap_or(0); } } }
+                        }
                         Field { label: "Minimum free space (MiB)",
                             input { class: "input", r#type: "number", min: "0", value: "{m.minimum_free_space_mb}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.minimum_free_space_mb = e.value().parse().unwrap_or(0); } } }
                         }

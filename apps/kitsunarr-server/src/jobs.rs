@@ -113,6 +113,17 @@ pub fn all(
             },
         ),
         job(
+            "CleanUpRecycleBin",
+            "Deletes files kept in the recycle bin longer than the media management setting allows",
+            24 * 60,
+            Duration::from_secs(3600),
+            |ctx| async move {
+                kitsunarr_library::tools::clean_recycle_bin(&ctx.db)
+                    .await
+                    .map(Some)
+            },
+        ),
+        job(
             "RescanFolders",
             "Scans every series folder: forgets files that are gone and adds files found there",
             12 * 60,

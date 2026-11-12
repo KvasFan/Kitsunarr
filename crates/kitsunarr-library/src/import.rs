@@ -1155,6 +1155,8 @@ pub(crate) fn remove_or_recycle(
                 std::fs::copy(path, &target).map_err(failed)?;
                 std::fs::remove_file(path).map_err(failed)?;
             }
+            // The cleanup counts days from the recycling (Sonarr's `SetLastWriteTime`).
+            crate::tools::touch(&target);
             Ok(())
         }
     }

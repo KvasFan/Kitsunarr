@@ -601,11 +601,12 @@ pub async fn delete_series_folder(db: &Database, series_id: i64) -> Result<(), S
                 target = Path::new(bin).join(format!("{}_{n}", name.to_string_lossy()));
                 n += 1;
             }
-            if std::fs::rename(&path, &target).is_ok() {
-                return Ok(());
+            if std::fs::rename(&path, &target).is_err() {
+                copy_dir(&path, &target).map_err(err)?;
+                std::fs::remove_dir_all(&path).map_err(err)?;
             }
-            copy_dir(&path, &target).map_err(err)?;
-            std::fs::remove_dir_all(&path).map_err(err)
+            crate::tools::touch_all(&target);
+            Ok(())
         }
     }
 }

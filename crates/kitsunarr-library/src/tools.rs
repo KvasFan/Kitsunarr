@@ -95,6 +95,82 @@ async fn recycle_root(db: &Database) -> Result<Option<PathBuf>, String> {
         .map(PathBuf::from))
 }
 
+/// Marks a recycled file as recycled now (the cleanup's clock).
+pub(crate) fn touch(path: &Path) {
+    if let Ok(f) = std::fs::File::options().write(true).open(path) {
+        let _ = f.set_modified(std::time::SystemTime::now());
+    }
+}
+
+/// [`touch`] for every file of a recycled folder.
+pub(crate) fn touch_all(path: &Path) {
+    let mut stack = vec![path.to_path_buf()];
+    while let Some(dir) = stack.pop() {
+        let Ok(entries) = std::fs::read_dir(&dir) else {
+            touch(&dir);
+            continue;
+        };
+        for e in entries.flatten() {
+            match e.file_type() {
+                Ok(t) if t.is_dir() => stack.push(e.path()),
+                Ok(t) if t.is_file() => touch(&e.path()),
+                _ => {}
+            }
+        }
+    }
+}
+
+/// `RecycleBinProvider.Cleanup`: deletes recycled files older than the "recycle bin cleanup"
+/// days (0: never) and the folders left empty. Symbolic links are neither followed nor removed.
+pub async fn clean_recycle_bin(db: &Database) -> Result<String, String> {
+    let Some(root) = recycle_root(db).await? else {
+        return Ok("The recycle bin is not set".into());
+    };
+    let media: MediaManagementSettings =
+        settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
+            .await
+            .map_err(err)?;
+    let days = media.recycle_bin_cleanup_days;
+    if days <= 0 {
+        return Ok("Automatic cleanup of the recycle bin is off".into());
+    }
+    let cutoff =
+        std::time::SystemTime::now() - std::time::Duration::from_secs(days as u64 * 86_400);
+    let (mut removed, mut kept) = (0usize, 0usize);
+    let mut dirs = Vec::new();
+    let mut stack = vec![root.clone()];
+    while let Some(dir) = stack.pop() {
+        let Ok(entries) = std::fs::read_dir(&dir) else {
+            continue;
+        };
+        for e in entries.flatten() {
+            let Ok(t) = e.file_type() else { continue };
+            if t.is_dir() {
+                dirs.push(e.path());
+                stack.push(e.path());
+            } else if t.is_file() {
+                let old = e
+                    .metadata()
+                    .and_then(|m| m.modified())
+                    .is_ok_and(|m| m < cutoff);
+                if old && std::fs::remove_file(e.path()).is_ok() {
+                    removed += 1;
+                } else {
+                    kept += 1;
+                }
+            }
+        }
+    }
+    // Deepest first, so parents empty out after their children.
+    dirs.sort_by_key(|d| std::cmp::Reverse(d.components().count()));
+    for d in dirs {
+        let _ = std::fs::remove_dir(d);
+    }
+    Ok(format!(
+        "{removed} files older than {days} days removed from the recycle bin, {kept} kept"
+    ))
+}
+
 /// Lists the media and subtitle files of the recycle bin (symbolic links are skipped), newest
 /// first, at most 2000.
 pub async fn browse_recycle_bin(db: &Database) -> Result<RecycleBin, String> {

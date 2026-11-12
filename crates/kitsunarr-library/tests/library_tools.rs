@@ -321,3 +321,53 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
     assert_eq!(heard[0]["downloadClient"], "Manual Import");
     assert_eq!(heard[0]["episodes"][0]["episodeNumber"], 3);
 }
+
+/// `RecycleBinProvider.Cleanup`: files recycled longer ago than the setting are deleted with
+/// the folders they leave empty; recent ones stay; 0 days turns it off.
+#[tokio::test]
+async fn the_recycle_bin_is_cleaned_after_the_configured_days() {
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    let bin = dir.path().join("bin");
+    std::fs::create_dir_all(bin.join("Show/Season 01")).unwrap();
+    let old = bin.join("Show/Season 01/old.mkv");
+    let fresh = bin.join("fresh.mkv");
+    std::fs::write(&old, b"x").unwrap();
+    std::fs::write(&fresh, b"y").unwrap();
+    std::fs::File::options()
+        .write(true)
+        .open(&old)
+        .unwrap()
+        .set_modified(std::time::SystemTime::now() - std::time::Duration::from_secs(10 * 86_400))
+        .unwrap();
+    let mut media: kitsunarr_domain::api::settings::MediaManagementSettings =
+        kv::get_or_default(db.pool(), kv::KEY_MEDIA_MANAGEMENT)
+            .await
+            .unwrap();
+    assert_eq!(
+        kitsunarr_library::tools::clean_recycle_bin(&db)
+            .await
+            .unwrap(),
+        "The recycle bin is not set"
+    );
+    media.recycle_bin = Some(bin.display().to_string());
+    media.recycle_bin_cleanup_days = 0;
+    kv::set(db.pool(), kv::KEY_MEDIA_MANAGEMENT, &media)
+        .await
+        .unwrap();
+    kitsunarr_library::tools::clean_recycle_bin(&db)
+        .await
+        .unwrap();
+    assert!(old.exists(), "0 days: off");
+    media.recycle_bin_cleanup_days = 7;
+    kv::set(db.pool(), kv::KEY_MEDIA_MANAGEMENT, &media)
+        .await
+        .unwrap();
+    let summary = kitsunarr_library::tools::clean_recycle_bin(&db)
+        .await
+        .unwrap();
+    assert!(summary.starts_with("1 files"), "{summary}");
+    assert!(!old.exists() && !bin.join("Show").exists());
+    assert!(fresh.exists() && bin.exists());
+}
