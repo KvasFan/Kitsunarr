@@ -28,8 +28,8 @@ use kitsunarr_domain::{Language, QualitySource};
 use kitsunarr_parser::netregex::NetRegex;
 use kitsunarr_parser::quality::find_by_source_and_resolution;
 use kitsunarr_parser::{
-    DetectionSource, ParsedQuality, is_scene_title, parse_languages, parse_path, parse_quality,
-    parse_release_group, parse_title,
+    DetectionSource, ParsedEpisodeInfo, ParsedQuality, is_scene_title, parse_languages, parse_path,
+    parse_quality, parse_release_group, parse_title,
 };
 
 use crate::file_names;
@@ -396,6 +396,14 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                 info = Some(f.clone());
             }
         }
+        // Tanukarr's persistent manual mapping: episodes chosen by hand at grab time.
+        let manual = manual_episodes(&grab_data, &model, other_videos, file_info.as_ref());
+        let info = match (info, &manual) {
+            (Some(i), _) => Some(i),
+            // A single file with a saved choice needs no parse.
+            (None, Some(Ok(_))) => Some(ParsedEpisodeInfo::default()),
+            (None, _) => None,
+        };
         let Some(info) = info else {
             results.push(FileResult {
                 path,
@@ -406,7 +414,20 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             });
             continue;
         };
-        let mapped: Vec<&decision::Episode> = decision::map_episodes(&info, &model);
+        let mapped: Vec<&decision::Episode> = match manual {
+            Some(Ok(episodes)) => episodes,
+            Some(Err(message)) => {
+                results.push(FileResult {
+                    path,
+                    imported: false,
+                    episode_ids: Vec::new(),
+                    errors: vec![message],
+                    imported_file: None,
+                });
+                continue;
+            }
+            None => decision::map_episodes(&info, &model),
+        };
         if mapped.is_empty() {
             let message = if info.is_partial_season {
                 "Partial season packs are not supported"
@@ -776,6 +797,78 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
     })
 }
 
+/// Tanukarr's `ManualEpisodeMappingService.Find`: the episodes chosen at grab time for this
+/// file, `None` without a saved choice. One file takes every chosen episode; with several files,
+/// each takes the chosen episodes its name numbers (absolute numbers, else episode numbers, in
+/// the chosen season when everything chosen is in one season); full-season names and any
+/// mismatch are refused.
+fn manual_episodes<'m>(
+    grab_data: &serde_json::Value,
+    model: &'m decision::Series,
+    several_files: bool,
+    file: Option<&ParsedEpisodeInfo>,
+) -> Option<Result<Vec<&'m decision::Episode>, String>> {
+    if grab_data["manualEpisodeMapping"].as_bool() != Some(true) {
+        return None;
+    }
+    let refused = || {
+        Err("Your saved episode choice could not be mapped unambiguously to this file. Use Manual Import.".to_string())
+    };
+    let ids: HashSet<i64> = grab_data["manualEpisodeIds"]
+        .as_array()
+        .map(|a| a.iter().filter_map(serde_json::Value::as_i64).collect())
+        .unwrap_or_default();
+    let chosen: Vec<&decision::Episode> = model
+        .episodes
+        .iter()
+        .filter(|e| ids.contains(&e.id))
+        .collect();
+    if ids.is_empty() || chosen.len() != ids.len() {
+        return Some(refused());
+    }
+    if !several_files {
+        return Some(Ok(chosen));
+    }
+    let Some(file) = file.filter(|f| !f.full_season && f.season_numbers.len() <= 1) else {
+        return Some(refused());
+    };
+    let picked: Vec<&decision::Episode> = if !file.absolute_episode_numbers.is_empty() {
+        let wanted: HashSet<i32> = file.absolute_episode_numbers.iter().copied().collect();
+        let picked: Vec<_> = chosen
+            .iter()
+            .copied()
+            .filter(|e| {
+                e.absolute_episode_number
+                    .is_some_and(|a| wanted.contains(&a))
+            })
+            .collect();
+        if picked.len() != wanted.len() {
+            return Some(refused());
+        }
+        picked
+    } else {
+        let one_season = chosen
+            .iter()
+            .map(|e| e.season_number)
+            .collect::<HashSet<_>>()
+            .len()
+            == 1;
+        let season = file.season_numbers.first().copied();
+        let numbers: HashSet<i32> = file.episode_numbers.iter().copied().collect();
+        let picked: Vec<_> = chosen
+            .iter()
+            .copied()
+            .filter(|e| numbers.contains(&e.episode_number))
+            .filter(|e| one_season || season == Some(e.season_number))
+            .collect();
+        if numbers.is_empty() || picked.len() != numbers.len() {
+            return Some(refused());
+        }
+        picked
+    };
+    Some(Ok(picked))
+}
+
 fn remove_extension(title: &str) -> String {
     let p = Path::new(title);
     if VIDEO_EXTENSIONS.contains(&extension(p).as_str()) {
@@ -1062,6 +1155,107 @@ pub(crate) fn remove_or_recycle(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn mapped_series() -> decision::Series {
+        let ep = |id: i64, season: i32, episode: i32, absolute: Option<i32>| decision::Episode {
+            id,
+            season_number: season,
+            episode_number: episode,
+            absolute_episode_number: absolute,
+            scene_season_number: None,
+            scene_episode_number: None,
+            title: None,
+            air_date: None,
+            air_date_utc: None,
+            runtime: 24,
+            monitored: true,
+            file: None,
+        };
+        decision::Series {
+            id: 1,
+            monitored: true,
+            title: "Show".into(),
+            year: 0,
+            series_type: kitsunarr_domain::SeriesType::Standard,
+            tvdb_id: 0,
+            tv_rage_id: 0,
+            imdb_id: None,
+            alternate_titles: Vec::new(),
+            runtime: 24,
+            original_language: None,
+            use_scene_numbering: false,
+            tags: Vec::new(),
+            profile: kitsunarr_db::quality::default_profiles().remove(0),
+            episodes: vec![
+                ep(11, 1, 1, Some(1)),
+                ep(12, 1, 2, Some(2)),
+                ep(21, 2, 1, Some(13)),
+            ],
+        }
+    }
+
+    /// Tanukarr's `ManualEpisodeMappingFixture`.
+    #[test]
+    fn saved_episode_choices_map_files() {
+        let model = mapped_series();
+        let data = |ids: &[i64]| serde_json::json!({"manualEpisodeMapping": true, "manualEpisodeIds": ids});
+        let ids = |r: Option<Result<Vec<&decision::Episode>, String>>| {
+            r.unwrap().unwrap().iter().map(|e| e.id).collect::<Vec<_>>()
+        };
+        // No saved choice: the normal mapping applies.
+        assert!(super::manual_episodes(&serde_json::json!({}), &model, false, None).is_none());
+        // One file takes every chosen episode, parsed or not.
+        assert_eq!(
+            ids(super::manual_episodes(
+                &data(&[11, 12]),
+                &model,
+                false,
+                None
+            )),
+            vec![11, 12]
+        );
+        // Several files: each takes the chosen episodes its name numbers.
+        let file = parse_title("Show - 02 [Group].mkv");
+        assert_eq!(
+            ids(super::manual_episodes(
+                &data(&[11, 12]),
+                &model,
+                true,
+                file.as_ref()
+            )),
+            vec![12]
+        );
+        let file = parse_title("Show.S05E01.720p.mkv");
+        // The chosen episodes are all in season 2: the file's season 5 is remapped.
+        assert_eq!(
+            ids(super::manual_episodes(
+                &data(&[21]),
+                &model,
+                true,
+                file.as_ref()
+            )),
+            vec![21]
+        );
+        // A full-season name, or numbers the choice lacks, are refused.
+        let pack = parse_title("Show.S01.720p.WEB");
+        assert!(
+            super::manual_episodes(&data(&[11, 12]), &model, true, pack.as_ref())
+                .unwrap()
+                .is_err()
+        );
+        let file = parse_title("Show.S01E09.720p.mkv");
+        assert!(
+            super::manual_episodes(&data(&[11, 12]), &model, true, file.as_ref())
+                .unwrap()
+                .is_err()
+        );
+        // An episode of another series in the choice.
+        assert!(
+            super::manual_episodes(&data(&[11, 999]), &model, false, None)
+                .unwrap()
+                .is_err()
+        );
+    }
 
     #[test]
     fn clean_file_names_like_upstream() {

@@ -126,6 +126,10 @@ pub struct IndexerTestResult {
 pub struct GrabRequest {
     pub guid: String,
     pub indexer_id: i64,
+    /// Episodes chosen by hand for a release that did not map (Sonarr's override). The choice
+    /// is kept with the grab and used when the download is imported (Tanukarr).
+    #[serde(default)]
+    pub episode_ids: Vec<i64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

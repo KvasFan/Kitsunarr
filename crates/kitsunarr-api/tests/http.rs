@@ -1302,6 +1302,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         .grab_release(&GrabRequest {
             guid: "bb-s01e01".into(),
             indexer_id,
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap_err();
@@ -1329,6 +1330,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         .grab_release(&GrabRequest {
             guid: release.guid.clone(),
             indexer_id,
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap();
@@ -1858,6 +1860,7 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
         .grab_release(&GrabRequest {
             guid: release.guid.clone(),
             indexer_id,
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap();
@@ -2007,6 +2010,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
         .grab_release(&GrabRequest {
             guid: "nzb-77".into(),
             indexer_id,
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap();
@@ -2066,6 +2070,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
         .grab_release(&GrabRequest {
             guid: "nzb-77".into(),
             indexer_id,
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap();
@@ -2439,6 +2444,7 @@ async fn notifications_follow_series_grabs_and_imports() {
         .grab_release(&GrabRequest {
             guid: "nzb-77".into(),
             indexer_id: indexer["id"].as_i64().unwrap(),
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap();
@@ -2718,6 +2724,7 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
         .grab_release(&GrabRequest {
             guid: "nzb-77".into(),
             indexer_id: indexer["id"].as_i64().unwrap(),
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap();
@@ -3067,6 +3074,7 @@ async fn fake_torrents_are_rejected_before_grabbing() {
         .grab_release(&GrabRequest {
             guid: "fake".into(),
             indexer_id: indexer["id"].as_i64().unwrap(),
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap_err()
@@ -3091,6 +3099,7 @@ async fn fake_torrents_are_rejected_before_grabbing() {
         .grab_release(&GrabRequest {
             guid: "fake".into(),
             indexer_id: indexer["id"].as_i64().unwrap(),
+            episode_ids: Vec::new(),
         })
         .await
         .unwrap_err()

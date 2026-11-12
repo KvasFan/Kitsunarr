@@ -781,6 +781,7 @@ pub(crate) fn cached_release(
             .iter()
             .any(|e| matches!((e.air_date_utc, recent_cutoff), (Some(a), Some(c)) if a >= c)),
         release_source: "Search",
+        manual_mapping: false,
         cached_at: std::time::Instant::now(),
     }
 }

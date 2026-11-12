@@ -45,6 +45,8 @@ pub struct CachedRelease {
     pub recent: bool,
     /// Sonarr's `ReleaseSourceType`: `Rss`, `Search` or `InteractiveSearch`.
     pub release_source: &'static str,
+    /// The episodes were chosen by hand at grab time (Tanukarr's persistent manual mapping).
+    pub manual_mapping: bool,
     pub cached_at: Instant,
 }
 
@@ -230,10 +232,27 @@ pub async fn grab_release(
                 "The release is no longer in the search cache (results are kept for 30 minutes); search again.".into(),
             )
         })?;
+    let mut cached = cached;
+    if !req.episode_ids.is_empty() {
+        // Sonarr's override: the chosen episodes, which must belong to the searched series.
+        for id in &req.episode_ids {
+            if series::series_of_episode(&state.db, *id).await? != Some(cached.series_id) {
+                return Err(ApiError::field(
+                    "episodeIds",
+                    "The chosen episodes must belong to the searched series.",
+                ));
+            }
+        }
+        let mut ids = req.episode_ids.clone();
+        ids.sort_unstable();
+        ids.dedup();
+        cached.episode_ids = ids;
+        cached.manual_mapping = true;
+    }
     if cached.episode_ids.is_empty() {
         return Err(ApiError::field(
             "guid",
-            "The release could not be matched to episodes of the series, so it cannot be grabbed (choosing episodes by hand is not implemented yet).",
+            "The release could not be matched to episodes of the series: choose its episodes to grab it.",
         ));
     }
     let target = pick_client(&state, &cached).await?;
@@ -514,7 +533,7 @@ async fn finish(
     download_id: String,
 ) -> ApiResult<GrabResult> {
     let r = &cached.release;
-    let data = serde_json::json!({
+    let mut data = serde_json::json!({
         "indexer": r.indexer,
         "releaseGroup": cached.release_group,
         "releaseType": cached.release_type,
@@ -531,6 +550,10 @@ async fn finish(
         "releaseSource": cached.release_source,
         "torrentInfoHash": r.release.info_hash,
     });
+    if cached.manual_mapping {
+        data["manualEpisodeMapping"] = serde_json::json!(true);
+        data["manualEpisodeIds"] = serde_json::json!(cached.episode_ids);
+    }
     let mut conn = state
         .db
         .pool()

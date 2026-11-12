@@ -62,6 +62,8 @@ pub fn ReleaseSearch(
     let mut grabbing = use_signal(|| None::<String>);
     let mut confirm = use_signal(|| None::<String>);
     let mut grabbed = use_signal(Vec::<String>::new);
+    // A release whose episodes are being chosen by hand: (indexer id, guid, title).
+    let mut choosing = use_signal(|| None::<(i64, String, String)>);
     let c0 = client.clone();
     let results = use_resource(move || {
         let c = c0.clone();
@@ -181,7 +183,7 @@ pub fn ReleaseSearch(
                                             let done = grabbed.read().contains(&key);
                                             let busy = grabbing() == Some(key.clone());
                                             let confirming = confirm() == Some(key.clone());
-                                            let req = GrabRequest { guid: rel.guid.clone(), indexer_id: rel.indexer_id };
+                                            let req = GrabRequest { guid: rel.guid.clone(), indexer_id: rel.indexer_id, episode_ids: Vec::new() };
                                             let approved = rel.approved;
                                             let label = rel.title.clone();
                                             let c = client.clone();
@@ -216,12 +218,99 @@ pub fn ReleaseSearch(
                                                 }
                                             }
                                         }
+                                        {
+                                            let target = (rel.indexer_id, rel.guid.clone(), rel.title.clone());
+                                            rsx! {
+                                                button { class: "btn sm ghost", "aria-label": "Choose episodes for {rel.title}",
+                                                    title: "Choose the episodes of this release by hand, then grab it (the choice is kept for the import)",
+                                                    onclick: move |_| choosing.set(Some(target.clone())), "Episodes…" }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
+            }
+        }
+        if let Some((indexer_id, guid, title)) = choosing() {
+            ChooseEpisodes { series_id, indexer_id, guid, title, on_close: move |done: bool| {
+                if done && let Some((i, g, _)) = choosing() { grabbed.write().push(format!("{i}-{g}")); }
+                choosing.set(None);
+            } }
+        }
+    }
+}
+
+/// Sonarr's grab override: choose a release's episodes by hand, then grab it. The choice is
+/// kept with the grab and used to import the download (Tanukarr's persistent manual mapping).
+#[component]
+fn ChooseEpisodes(
+    series_id: i64,
+    indexer_id: i64,
+    guid: String,
+    title: String,
+    on_close: EventHandler<bool>,
+) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let episodes = use_resource(move || {
+        let c = c0.clone();
+        async move { c.episodes(series_id).await }
+    });
+    let mut chosen = use_signal(Vec::<i64>::new);
+    let mut busy = use_signal(|| false);
+    let grab = move |_| {
+        let c = client.clone();
+        let req = GrabRequest {
+            guid: guid.clone(),
+            indexer_id,
+            episode_ids: chosen(),
+        };
+        busy.set(true);
+        spawn(async move {
+            match c.grab_release(&req).await {
+                Ok(r) => {
+                    app.success(&r.message);
+                    on_close.call(true);
+                }
+                Err(e) => {
+                    app.error(&e);
+                    busy.set(false);
+                }
+            }
+        });
+    };
+    rsx! {
+        crate::components::common::Modal { title: format!("Episodes of {title}"), on_close: move |_| on_close.call(false),
+            footer: rsx! {
+                span { class: "small muted", "{chosen().len()} chosen" }
+                div { class: "spacer" }
+                button { class: "btn", onclick: move |_| on_close.call(false), "Cancel" }
+                button { class: "btn primary", disabled: chosen().is_empty() || busy(), onclick: grab, if busy() { "Grabbing…" } else { "Grab with these episodes" } }
+            },
+            match &*episodes.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "stack", style: "max-height: 60vh; overflow: auto",
+                        for e in list.iter() {
+                            {
+                                let id = e.id;
+                                rsx! {
+                                    label { key: "{e.id}", class: "check small",
+                                        input { r#type: "checkbox", checked: chosen().contains(&id),
+                                            onchange: move |ev: FormEvent| { let mut w = chosen.write(); w.retain(|x| *x != id); if ev.checked() { w.push(id); } } }
+                                        "S{e.season_number:02}E{e.episode_number:02} "
+                                        {e.title.clone().unwrap_or_default()}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
             }
         }
     }
