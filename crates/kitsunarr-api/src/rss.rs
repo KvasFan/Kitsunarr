@@ -43,7 +43,7 @@ pub(crate) struct StoredRelease {
 }
 
 impl StoredRelease {
-    fn of(r: &IndexerRelease) -> Self {
+    pub(crate) fn of(r: &IndexerRelease) -> Self {
         let x = &r.release;
         Self {
             indexer_id: r.indexer_id,
@@ -377,14 +377,41 @@ pub(crate) async fn process(
             &group,
         );
         approved += decisions.iter().filter(|d| d.approved()).count();
+        let delayed = |d: &decision::Decision| {
+            !d.rejections.is_empty()
+                && d.rejections
+                    .iter()
+                    .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay)
+        };
         for d in &decisions {
             outcomes[members[d.release]] = ReleaseOutcome {
                 series_id: None,
                 approved: d.approved(),
-                temporarily_rejected: false,
+                temporarily_rejected: delayed(d),
                 rejections: d.rejections.iter().map(|x| x.message.clone()).collect(),
                 grabbed: false,
             };
+            // Held back only by the delay profile: pending, as for episodes.
+            let r = &releases[members[d.release]];
+            let db = state.db.pool();
+            let result = if delayed(d) {
+                kitsunarr_db::pending::upsert_movie(
+                    db,
+                    movie_id,
+                    r.indexer_id,
+                    &r.release.guid,
+                    &r.release.title,
+                    &serde_json::to_string(&StoredRelease::of(r)).unwrap_or_default(),
+                )
+                .await
+            } else if !d.approved() {
+                kitsunarr_db::pending::remove(db, r.indexer_id, &r.release.guid).await
+            } else {
+                Ok(())
+            };
+            if let Err(e) = result {
+                tracing::warn!(error = %e, "pending release bookkeeping failed");
+            }
         }
         if !decisions.iter().any(|d| d.approved()) {
             continue;
@@ -399,6 +426,9 @@ pub(crate) async fn process(
             series: inputs.series.clone(),
         };
         let r = crate::routes::movie_search::grab_best(state, &run, movie_id, "Rss").await;
+        if !r.grabbed.is_empty() {
+            let _ = kitsunarr_db::pending::remove_for_movie(state.db.pool(), movie_id).await;
+        }
         for g in &r.grabbed {
             if let Some(k) = members
                 .iter()

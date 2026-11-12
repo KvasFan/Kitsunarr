@@ -55,12 +55,7 @@ pub(crate) fn redownload(state: &AppState, r: Redownload) {
     tokio::spawn(async move {
         // A film is searched for again as a whole.
         if let Some(movie) = r.movie_id {
-            match crate::routes::movie_search::run_movie_search(&state, movie, true).await {
-                Ok(run) => {
-                    crate::routes::movie_search::grab_best(&state, &run, movie, "Search").await;
-                }
-                Err(e) => tracing::warn!(movie, error = %e.message(), "the film search failed"),
-            }
+            crate::routes::movie_search::server_search(&state, movie).await;
             return;
         }
         let targets = match wanted::targets(&state.db, &r.episode_ids).await {

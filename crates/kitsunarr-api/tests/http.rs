@@ -4574,12 +4574,50 @@ async fn movies_are_searched_and_grabbed() {
         .execute(pool)
         .await
         .unwrap();
+    // A long torrent delay holds the film's releases back: pending, shown in the queue.
+    sqlx::query("DELETE FROM delay_profiles")
+        .execute(pool)
+        .await
+        .unwrap();
+    sqlx::query(
+        "INSERT INTO delay_profiles (torrent_delay, preferred_protocol, bypass_if_highest_quality, sort_order) \
+         VALUES (10000000, 'usenet', 0, 2147483647)",
+    )
+    .execute(pool)
+    .await
+    .unwrap();
+    let held = kitsunarr_api::rss::sync(&server.state).await.unwrap();
+    assert!(held.contains("0 grabbed"), "{held}");
+    let queue = client.queue().await.unwrap();
+    let pending: Vec<_> = queue
+        .items
+        .iter()
+        .filter(|i| i.tracked_state == "pending")
+        .collect();
+    assert!(!pending.is_empty(), "{:?}", queue.items);
+    assert!(
+        pending
+            .iter()
+            .all(|p| p.movie_id == Some(7) && p.movie_title.as_deref() == Some("The Matrix")),
+        "{pending:?}"
+    );
+    sqlx::query("UPDATE delay_profiles SET torrent_delay = 0")
+        .execute(pool)
+        .await
+        .unwrap();
     // RSS sync: a release no series claims is matched with the film and grabbed; the next
     // sync leaves the film alone while that grab downloads.
     let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
     assert!(
         summary.contains("1 grabbed: The.Matrix.1999.1080p.BluRay.x264-GRP"),
         "{summary}"
+    );
+    assert!(
+        kitsunarr_db::pending::list(server.state.db.pool())
+            .await
+            .unwrap()
+            .is_empty(),
+        "a grab for the film ends its pending releases"
     );
     let again = kitsunarr_api::rss::sync(&server.state).await.unwrap();
     assert!(again.contains("0 grabbed"), "{again}");

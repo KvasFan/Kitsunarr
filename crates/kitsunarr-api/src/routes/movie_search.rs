@@ -19,11 +19,67 @@ use crate::routes::search::{
     to_item, usable_indexers,
 };
 
-/// Searches the indexers for a film and decides on every release.
+/// Searches the indexers for a film and decides on every release (a search the user started:
+/// delay profiles do not apply).
 pub(crate) async fn run_movie_search(
     state: &AppState,
     movie_id: i64,
     automatic: bool,
+) -> ApiResult<SearchRun> {
+    run_movie_search_as(state, movie_id, automatic, true).await
+}
+
+/// A film search the server starts (a failed download's redownload, add and search): delay
+/// profiles apply, and the releases they hold become pending for the RSS sync.
+pub(crate) async fn server_search(state: &AppState, movie_id: i64) {
+    match run_movie_search_as(state, movie_id, true, false).await {
+        Ok(run) => {
+            let r = grab_best(state, &run, movie_id, "Search").await;
+            keep_pending(state, movie_id, &run, !r.grabbed.is_empty()).await;
+        }
+        Err(e) => tracing::warn!(movie = movie_id, error = %e.message(), "the film search failed"),
+    }
+}
+
+/// `rss::keep_pending` for a film.
+async fn keep_pending(state: &AppState, movie_id: i64, run: &SearchRun, grabbed: bool) {
+    let db = state.db.pool();
+    if grabbed {
+        let _ = kitsunarr_db::pending::remove_for_movie(db, movie_id).await;
+        return;
+    }
+    for d in &run.decisions {
+        let r = &run.releases[d.release];
+        let delayed = !d.rejections.is_empty()
+            && d.rejections
+                .iter()
+                .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay);
+        let result = if delayed {
+            kitsunarr_db::pending::upsert_movie(
+                db,
+                movie_id,
+                r.indexer_id,
+                &r.release.guid,
+                &r.release.title,
+                &serde_json::to_string(&crate::rss::StoredRelease::of(r)).unwrap_or_default(),
+            )
+            .await
+        } else if !d.approved() {
+            kitsunarr_db::pending::remove(db, r.indexer_id, &r.release.guid).await
+        } else {
+            Ok(())
+        };
+        if let Err(e) = result {
+            tracing::warn!(error = %e, "pending release bookkeeping failed");
+        }
+    }
+}
+
+async fn run_movie_search_as(
+    state: &AppState,
+    movie_id: i64,
+    automatic: bool,
+    user_invoked: bool,
 ) -> ApiResult<SearchRun> {
     let detail = movies::get_detail(&state.db, movie_id).await?;
     let id_of = |kind: ExternalIdKind| {
@@ -137,7 +193,7 @@ pub(crate) async fn run_movie_search(
         kind: SearchKind::Special,
         episode_ids: vec![movie_id],
         monitored_episodes_only: automatic,
-        user_invoked: true,
+        user_invoked,
     };
     let decisions = engine.evaluate_movie(&group, &criteria, &candidate);
     let decisions = engine.prioritize(Engine::dedupe(decisions, &group), &group);

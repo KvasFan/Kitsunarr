@@ -995,15 +995,22 @@ impl DecisionInputs {
                     kitsunarr_library::decision_input::movie_blocklist(db, id).await?
                 }
             },
+            // A film's model is the film as series and episode (both with the film's id).
             pending: kitsunarr_db::pending::list(db.pool())
                 .await?
                 .into_iter()
-                .filter(|p| Some(p.series_id) == series_id)
                 .filter_map(|p| {
+                    let (owner_id, episode_ids) = match (owner, p.series_id, p.movie_id) {
+                        (Owner::Series(id), Some(s), _) if s == id => {
+                            (id, serde_json::from_str(&p.episode_ids).unwrap_or_default())
+                        }
+                        (Owner::Movie(id), _, Some(m)) if m == id => (id, vec![id]),
+                        _ => return None,
+                    };
                     let release: serde_json::Value = serde_json::from_str(&p.release).ok()?;
                     Some(decision::PendingRelease {
-                        series_id: p.series_id,
-                        episode_ids: serde_json::from_str(&p.episode_ids).unwrap_or_default(),
+                        series_id: owner_id,
+                        episode_ids,
                         publish_date: release["publishDate"].as_str()?.parse().ok()?,
                     })
                 })

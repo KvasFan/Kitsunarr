@@ -7,7 +7,10 @@ use crate::{DbResult, now};
 #[derive(Debug, Clone, PartialEq, Eq, FromRow)]
 pub struct PendingRow {
     pub id: i64,
-    pub series_id: i64,
+    /// The series it was held for, or `None` for a film's.
+    pub series_id: Option<i64>,
+    /// The film it was held for (Tanukarr's films).
+    pub movie_id: Option<i64>,
     pub indexer_id: i64,
     pub guid: String,
     pub title: String,
@@ -19,11 +22,12 @@ pub struct PendingRow {
 }
 
 pub async fn list(pool: &SqlitePool) -> DbResult<Vec<PendingRow>> {
-    Ok(
-        sqlx::query_as("SELECT * FROM pending_releases ORDER BY added_at, id")
-            .fetch_all(pool)
-            .await?,
+    Ok(sqlx::query_as(
+        "SELECT id, series_id, movie_id, indexer_id, guid, title, release, episode_ids, added_at \
+             FROM pending_releases ORDER BY added_at, id",
     )
+    .fetch_all(pool)
+    .await?)
 }
 
 /// Adds or refreshes a pending release (keeping when it was first held).
@@ -39,7 +43,7 @@ pub async fn upsert(
     sqlx::query(
         "INSERT INTO pending_releases (series_id, indexer_id, guid, title, release, episode_ids, added_at) \
          VALUES (?, ?, ?, ?, ?, ?, ?) ON CONFLICT (indexer_id, guid) DO UPDATE SET release = excluded.release, \
-         episode_ids = excluded.episode_ids, series_id = excluded.series_id, title = excluded.title",
+         episode_ids = excluded.episode_ids, series_id = excluded.series_id, movie_id = NULL, title = excluded.title",
     )
     .bind(series_id)
     .bind(indexer_id)
@@ -51,6 +55,42 @@ pub async fn upsert(
     .execute(pool)
     .await?;
     Ok(())
+}
+
+/// Adds or refreshes a film's pending release (keeping when it was first held).
+pub async fn upsert_movie(
+    pool: &SqlitePool,
+    movie_id: i64,
+    indexer_id: i64,
+    guid: &str,
+    title: &str,
+    release: &str,
+) -> DbResult<()> {
+    sqlx::query(
+        "INSERT INTO pending_releases (movie_id, indexer_id, guid, title, release, added_at) \
+         VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (indexer_id, guid) DO UPDATE SET release = excluded.release, \
+         movie_id = excluded.movie_id, series_id = NULL, episode_ids = '[]', title = excluded.title",
+    )
+    .bind(movie_id)
+    .bind(indexer_id)
+    .bind(guid)
+    .bind(title)
+    .bind(release)
+    .bind(now())
+    .execute(pool)
+    .await?;
+    Ok(())
+}
+
+/// Removes a film's pending releases (a release was grabbed for it).
+pub async fn remove_for_movie(pool: &SqlitePool, movie_id: i64) -> DbResult<u64> {
+    Ok(
+        sqlx::query("DELETE FROM pending_releases WHERE movie_id = ?")
+            .bind(movie_id)
+            .execute(pool)
+            .await?
+            .rows_affected(),
+    )
 }
 
 pub async fn remove(pool: &SqlitePool, indexer_id: i64, guid: &str) -> DbResult<()> {

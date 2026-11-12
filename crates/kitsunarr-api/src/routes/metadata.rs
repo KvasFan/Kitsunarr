@@ -144,14 +144,7 @@ pub async fn add(
             if crate::library_tools::paused(&state).await {
                 return;
             }
-            match crate::routes::movie_search::run_movie_search(&state, id, true).await {
-                Ok(run) => {
-                    crate::routes::movie_search::grab_best(&state, &run, id, "Search").await;
-                }
-                Err(e) => {
-                    tracing::warn!(movie = id, error = %e.message(), "the film search failed")
-                }
-            }
+            crate::routes::movie_search::server_search(&state, id).await;
         });
     }
     Ok((StatusCode::CREATED, Json(added)))

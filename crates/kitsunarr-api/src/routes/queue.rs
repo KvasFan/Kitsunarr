@@ -194,27 +194,40 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
         };
         let r = stored.release();
         let episode_ids: Vec<i64> = serde_json::from_str(&p.episode_ids).unwrap_or_default();
-        let labels = series::list_episodes(&state.db, p.series_id, None)
-            .await
-            .map(|list| {
-                list.into_iter()
-                    .filter(|e| episode_ids.contains(&e.id))
-                    .map(|e| format!("S{:02}E{:02}", e.season_number, e.episode_number))
-                    .collect()
-            })
-            .unwrap_or_default();
+        let (labels, series_title) = match p.series_id {
+            Some(sid) => (
+                series::list_episodes(&state.db, sid, None)
+                    .await
+                    .map(|list| {
+                        list.into_iter()
+                            .filter(|e| episode_ids.contains(&e.id))
+                            .map(|e| format!("S{:02}E{:02}", e.season_number, e.episode_number))
+                            .collect()
+                    })
+                    .unwrap_or_default(),
+                series::get_list_item(&state.db, sid)
+                    .await
+                    .ok()
+                    .map(|s| s.title),
+            ),
+            None => (Vec::new(), None),
+        };
+        let movie_title = match p.movie_id {
+            Some(mid) => kitsunarr_db::library::movies::get_detail(&state.db, mid)
+                .await
+                .ok()
+                .map(|m| m.item.title),
+            None => None,
+        };
         out.push(QueueItem {
             download_id: format!("pending-{}", p.id),
             title: p.title,
             download_client: String::new(),
             protocol: r.release.protocol,
-            series_id: Some(p.series_id),
-            series_title: series::get_list_item(&state.db, p.series_id)
-                .await
-                .ok()
-                .map(|s| s.title),
-            movie_id: None,
-            movie_title: None,
+            series_id: p.series_id,
+            series_title,
+            movie_id: p.movie_id,
+            movie_title,
             episodes: labels,
             quality: Some(
                 kitsunarr_parser::parse_quality(&r.release.title)
