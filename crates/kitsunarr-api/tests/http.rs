@@ -4049,3 +4049,131 @@ async fn delay_release_profiles_and_remote_path_mappings_are_managed() {
     client.delete_remote_path_mapping(mapping.id).await.unwrap();
     assert!(client.remote_path_mappings().await.unwrap().is_empty());
 }
+
+/// Tanukarr's manual grouping: create a group, add, relabel, reorder and remove members; a
+/// title joining a group leaves its previous franchise or manual group.
+#[tokio::test]
+async fn collections_can_be_edited_by_hand() {
+    use kitsunarr_domain::api::library::{CollectionEdit, CollectionMemberEdit};
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let pool = server.state.db.pool();
+    let profile: i64 = sqlx::query_scalar("SELECT MIN(id) FROM quality_profiles")
+        .fetch_one(pool)
+        .await
+        .unwrap();
+    for (id, title) in [(1, "Part One"), (2, "Part Two")] {
+        sqlx::query(
+            "INSERT INTO series (id, media_kind, title, sort_title, clean_title, title_slug, metadata_provider, metadata_id, \
+             quality_profile_id, root_folder_path, path, added_at) VALUES (?, 'anime', ?, ?, ?, ?, 'aniList', ?, ?, '/a', ?, '2026-11-01T00:00:00Z')",
+        )
+        .bind(id)
+        .bind(title)
+        .bind(title.to_lowercase())
+        .bind(title.to_lowercase())
+        .bind(format!("slug-{id}"))
+        .bind(id.to_string())
+        .bind(profile)
+        .bind(format!("/a/{id}"))
+        .execute(pool)
+        .await
+        .unwrap();
+    }
+    let created = client
+        .create_collection(&CollectionEdit {
+            title: "My Franchise".into(),
+            overview: None,
+        })
+        .await
+        .unwrap();
+    assert_eq!(created.kind, "manual");
+    let cid = created.id;
+    let add = |series: i64, role: &str| CollectionMemberEdit {
+        series_id: Some(series),
+        role: Some(role.into()),
+        ..Default::default()
+    };
+    client
+        .add_collection_member(cid, &add(1, "season"))
+        .await
+        .unwrap();
+    let d = client
+        .add_collection_member(cid, &add(2, "season"))
+        .await
+        .unwrap();
+    let labels: Vec<_> = d
+        .members
+        .iter()
+        .map(|m| m.label.clone().unwrap_or_default())
+        .collect();
+    assert_eq!(labels, vec!["Season 1", "Season 2"]);
+    assert_eq!(d.members[0].title, "Part One");
+    // The same title twice: a conflict; an unknown role: invalid.
+    assert!(
+        client
+            .add_collection_member(cid, &add(1, "season"))
+            .await
+            .is_err()
+    );
+    let other = client
+        .create_collection(&CollectionEdit {
+            title: "Elsewhere".into(),
+            overview: None,
+        })
+        .await
+        .unwrap();
+    assert!(
+        client
+            .add_collection_member(other.id, &add(1, "chapter"))
+            .await
+            .is_err()
+    );
+    // Moving Part One to another group takes it out of the first.
+    client
+        .add_collection_member(other.id, &add(1, "season"))
+        .await
+        .unwrap();
+    let d = client.collection(cid).await.unwrap();
+    assert_eq!(d.members.len(), 1);
+    // Relabel and reorder, rename, remove, delete.
+    let m = d.members[0].id;
+    let d = client
+        .update_collection_member(
+            cid,
+            m,
+            &CollectionMemberEdit {
+                label: Some("Final Season".into()),
+                position: Some(9),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        (d.members[0].label.as_deref(), d.members[0].position),
+        (Some("Final Season"), 9)
+    );
+    let d = client
+        .update_collection(
+            cid,
+            &CollectionEdit {
+                title: "Renamed".into(),
+                overview: Some("Story".into()),
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        (d.title.as_str(), d.overview.as_deref()),
+        ("Renamed", Some("Story"))
+    );
+    let d = client.remove_collection_member(cid, m).await.unwrap();
+    assert!(d.members.is_empty());
+    client.delete_collection(cid).await.unwrap();
+    assert!(client.collection(cid).await.is_err());
+    let series: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM series")
+        .fetch_one(pool)
+        .await
+        .unwrap();
+    assert_eq!(series, 2, "titles stay in the library");
+}

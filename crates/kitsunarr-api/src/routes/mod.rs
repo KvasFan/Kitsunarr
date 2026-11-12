@@ -71,7 +71,20 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             library::delete_movie
         ))
         .routes(routes!(library::bulk_edit_movies))
-        .routes(routes!(library::list_collections))
+        .routes(routes!(
+            library::list_collections,
+            library::create_collection
+        ))
+        .routes(routes!(
+            library::get_collection,
+            library::update_collection,
+            library::delete_collection
+        ))
+        .routes(routes!(library::add_collection_member))
+        .routes(routes!(
+            library::update_collection_member,
+            library::remove_collection_member
+        ))
         .routes(routes!(library::calendar))
         .routes(routes!(library::history))
         // metadata

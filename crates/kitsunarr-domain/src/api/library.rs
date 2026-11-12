@@ -224,6 +224,66 @@ pub struct CollectionItem {
     pub movie_count: i64,
 }
 
+/// A collection with its members (Tanukarr's collection page).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CollectionDetail {
+    pub id: i64,
+    pub title: String,
+    /// `manual`, `provider` or `animeGroup`.
+    pub kind: String,
+    pub overview: Option<String>,
+    pub members: Vec<CollectionMember>,
+}
+
+/// A series or movie in a collection, in position order.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CollectionMember {
+    pub id: i64,
+    pub series_id: Option<i64>,
+    pub movie_id: Option<i64>,
+    pub title: String,
+    pub year: Option<i32>,
+    pub poster_url: Option<String>,
+    pub position: i32,
+    /// `season`, `movie` or `special` (Tanukarr's member kinds), else empty.
+    pub role: Option<String>,
+    pub label: Option<String>,
+}
+
+/// Creates a manual collection, or renames one.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CollectionEdit {
+    pub title: String,
+    #[serde(default)]
+    pub overview: Option<String>,
+}
+
+/// Adds a series or a movie to a collection, or changes a member.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CollectionMemberEdit {
+    #[serde(default)]
+    pub series_id: Option<i64>,
+    #[serde(default)]
+    pub movie_id: Option<i64>,
+    /// `season`, `movie` or `special`.
+    #[serde(default)]
+    pub role: Option<String>,
+    /// Default: "Season N", "Movie N" or "Special N" for the role's next number.
+    #[serde(default)]
+    pub label: Option<String>,
+    /// Default: after the last member.
+    #[serde(default)]
+    pub position: Option<i32>,
+}
+
 /// Partial update of a series; absent fields are left unchanged.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

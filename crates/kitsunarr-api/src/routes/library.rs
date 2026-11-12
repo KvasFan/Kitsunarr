@@ -5,12 +5,13 @@ use axum::extract::{Path, Query, State};
 use axum::http::StatusCode;
 use kitsunarr_db::history;
 use kitsunarr_db::library::{collections, movies, series, stats};
+use kitsunarr_domain::api::error::ApiErrorBody;
 use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::library::{
-    BulkEdit, BulkEditResult, CalendarEntry, CalendarQuery, CollectionItem, EpisodeItem,
-    EpisodesMonitoredUpdate, FileOperationResult, HistoryItem, LibraryQuery, LibraryStats,
-    MovieDetail, MovieListItem, RenamePreview, RenameRequest, SeriesDetail, SeriesListItem,
-    SeriesUpdate,
+    BulkEdit, BulkEditResult, CalendarEntry, CalendarQuery, CollectionDetail, CollectionEdit,
+    CollectionItem, CollectionMemberEdit, EpisodeItem, EpisodesMonitoredUpdate,
+    FileOperationResult, HistoryItem, LibraryQuery, LibraryStats, MovieDetail, MovieListItem,
+    RenamePreview, RenameRequest, SeriesDetail, SeriesListItem, SeriesUpdate,
 };
 use kitsunarr_domain::{Page, PageRequest};
 use serde::Deserialize;
@@ -238,6 +239,99 @@ pub async fn list_collections(
     State(state): State<AppState>,
 ) -> ApiResult<Json<Vec<CollectionItem>>> {
     Ok(Json(collections::list(&state.db).await?))
+}
+
+/// A collection with its members.
+#[utoipa::path(get, path = "/collections/{id}", tag = "library",
+    responses((status = 200, body = CollectionDetail), (status = 404, body = ApiErrorBody)))]
+pub async fn get_collection(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<CollectionDetail>> {
+    Ok(Json(collections::detail(&state.db, id).await?))
+}
+
+fn collections_changed(state: &AppState) {
+    changed(state, "collection", Vec::new(), false);
+}
+
+/// Creates a manual collection (Tanukarr's manual group).
+#[utoipa::path(post, path = "/collections", tag = "library", request_body = CollectionEdit,
+    responses((status = 201, body = CollectionDetail), (status = 422, body = ApiErrorBody)))]
+pub async fn create_collection(
+    State(state): State<AppState>,
+    Json(edit): Json<CollectionEdit>,
+) -> ApiResult<(StatusCode, Json<CollectionDetail>)> {
+    let id = collections::create_manual(&state.db, &edit).await?;
+    collections_changed(&state);
+    Ok((
+        StatusCode::CREATED,
+        Json(collections::detail(&state.db, id).await?),
+    ))
+}
+
+/// Renames a collection (any kind; its members stay where they are).
+#[utoipa::path(put, path = "/collections/{id}", tag = "library", request_body = CollectionEdit,
+    responses((status = 200, body = CollectionDetail), (status = 404, body = ApiErrorBody)))]
+pub async fn update_collection(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(edit): Json<CollectionEdit>,
+) -> ApiResult<Json<CollectionDetail>> {
+    collections::rename(&state.db, id, &edit).await?;
+    collections_changed(&state);
+    Ok(Json(collections::detail(&state.db, id).await?))
+}
+
+/// Deletes a collection; its series and movies stay in the library.
+#[utoipa::path(delete, path = "/collections/{id}", tag = "library",
+    responses((status = 204), (status = 404, body = ApiErrorBody)))]
+pub async fn delete_collection(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<StatusCode> {
+    collections::delete(&state.db, id).await?;
+    collections_changed(&state);
+    Ok(StatusCode::NO_CONTENT)
+}
+
+/// Adds a series or movie to a collection; joining a franchise or manual group leaves any
+/// other one.
+#[utoipa::path(post, path = "/collections/{id}/members", tag = "library", request_body = CollectionMemberEdit,
+    responses((status = 200, body = CollectionDetail), (status = 404, body = ApiErrorBody), (status = 409, body = ApiErrorBody)))]
+pub async fn add_collection_member(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(edit): Json<CollectionMemberEdit>,
+) -> ApiResult<Json<CollectionDetail>> {
+    collections::add_member_manually(&state.db, id, &edit).await?;
+    collections_changed(&state);
+    Ok(Json(collections::detail(&state.db, id).await?))
+}
+
+/// Changes a member's role, label or position.
+#[utoipa::path(put, path = "/collections/{id}/members/{member_id}", tag = "library", request_body = CollectionMemberEdit,
+    responses((status = 200, body = CollectionDetail), (status = 404, body = ApiErrorBody)))]
+pub async fn update_collection_member(
+    State(state): State<AppState>,
+    Path((id, member_id)): Path<(i64, i64)>,
+    Json(edit): Json<CollectionMemberEdit>,
+) -> ApiResult<Json<CollectionDetail>> {
+    collections::update_member(&state.db, id, member_id, &edit).await?;
+    collections_changed(&state);
+    Ok(Json(collections::detail(&state.db, id).await?))
+}
+
+/// Removes a member (the title itself stays in the library).
+#[utoipa::path(delete, path = "/collections/{id}/members/{member_id}", tag = "library",
+    responses((status = 200, body = CollectionDetail), (status = 404, body = ApiErrorBody)))]
+pub async fn remove_collection_member(
+    State(state): State<AppState>,
+    Path((id, member_id)): Path<(i64, i64)>,
+) -> ApiResult<Json<CollectionDetail>> {
+    collections::remove_member(&state.db, id, member_id).await?;
+    collections_changed(&state);
+    Ok(Json(collections::detail(&state.db, id).await?))
 }
 
 fn parse_ts(raw: Option<&str>, field: &str) -> ApiResult<Option<chrono::DateTime<chrono::Utc>>> {

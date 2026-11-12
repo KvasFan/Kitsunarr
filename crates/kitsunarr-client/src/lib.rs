@@ -10,9 +10,9 @@ use kitsunarr_domain::api::auth::{
 };
 use kitsunarr_domain::api::error::ApiErrorBody;
 use kitsunarr_domain::api::library::{
-    BulkEdit, BulkEditResult, CalendarEntry, CollectionItem, EpisodeItem, EpisodesMonitoredUpdate,
-    HistoryItem, LibraryQuery, LibraryStats, MovieDetail, MovieListItem, SeriesDetail,
-    SeriesListItem, SeriesUpdate,
+    BulkEdit, BulkEditResult, CalendarEntry, CollectionDetail, CollectionEdit, CollectionItem,
+    CollectionMemberEdit, EpisodeItem, EpisodesMonitoredUpdate, HistoryItem, LibraryQuery,
+    LibraryStats, MovieDetail, MovieListItem, SeriesDetail, SeriesListItem, SeriesUpdate,
 };
 use kitsunarr_domain::api::metadata::{
     AddTitleRequest, CatalogueInfo, LibraryRef, RefreshResult, SearchItem, SearchQuery,
@@ -716,6 +716,49 @@ impl Client {
     }
     pub async fn collections(&self) -> ClientResult<Vec<CollectionItem>> {
         self.get("/collections").await
+    }
+    pub async fn collection(&self, id: i64) -> ClientResult<CollectionDetail> {
+        self.get(&format!("/collections/{id}")).await
+    }
+    pub async fn create_collection(&self, edit: &CollectionEdit) -> ClientResult<CollectionDetail> {
+        self.post("/collections", edit).await
+    }
+    pub async fn update_collection(
+        &self,
+        id: i64,
+        edit: &CollectionEdit,
+    ) -> ClientResult<CollectionDetail> {
+        self.put(&format!("/collections/{id}"), edit).await
+    }
+    pub async fn delete_collection(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/collections/{id}")).await
+    }
+    pub async fn add_collection_member(
+        &self,
+        id: i64,
+        edit: &CollectionMemberEdit,
+    ) -> ClientResult<CollectionDetail> {
+        self.post(&format!("/collections/{id}/members"), edit).await
+    }
+    pub async fn update_collection_member(
+        &self,
+        id: i64,
+        member_id: i64,
+        edit: &CollectionMemberEdit,
+    ) -> ClientResult<CollectionDetail> {
+        self.put(&format!("/collections/{id}/members/{member_id}"), edit)
+            .await
+    }
+    pub async fn remove_collection_member(
+        &self,
+        id: i64,
+        member_id: i64,
+    ) -> ClientResult<CollectionDetail> {
+        self.send(self.request(
+            reqwest::Method::DELETE,
+            &format!("/collections/{id}/members/{member_id}"),
+        ))
+        .await
     }
     pub async fn calendar(
         &self,

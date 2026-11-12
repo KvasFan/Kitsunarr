@@ -538,6 +538,13 @@ async fn first_run_setup_migration_and_library() {
         screenshot(&client, "11f-library-tools").await;
         client.goto(&format!("{base}/activity/manualimport")).await.unwrap();
         wait_text(&client, "Scan folder").await;
+        // Manual grouping: create a group and open its editor.
+        client.goto(&format!("{base}/collections")).await.unwrap();
+        fill(&client, "input[aria-label='New group title']", "E2E Group").await;
+        click_button(&client, "Create group").await;
+        wait_text(&client, "Add a title").await;
+        wait_text(&client, "Delete group").await;
+        screenshot(&client, "11g-collection-editor").await;
         // Migrated notifications are sent now (no "stored only" badge).
         client
             .goto(&format!("{base}/settings/notifications"))

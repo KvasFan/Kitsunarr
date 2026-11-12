@@ -7,7 +7,7 @@ use crate::pages::activity::{Activity, Blocklist, ManualImport, Queue};
 use crate::pages::add::AddMedia;
 use crate::pages::auth::{Login, Setup};
 use crate::pages::calendar::Calendar;
-use crate::pages::collections::Collections;
+use crate::pages::collections::{CollectionDetailPage, Collections};
 use crate::pages::dashboard::Dashboard;
 use crate::pages::detail::{MovieDetailPage, SeriesDetailPage};
 use crate::pages::import::ImportWizard;
@@ -44,6 +44,8 @@ pub enum Route {
         MoviesLibrary {},
         #[route("/movies/:id")]
         MovieDetailPage { id: i64 },
+        #[route("/collections/:id")]
+        CollectionDetailPage { id: i64 },
         #[route("/collections")]
         Collections {},
         #[route("/calendar")]
