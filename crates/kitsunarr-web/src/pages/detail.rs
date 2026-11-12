@@ -104,6 +104,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     // Interactive search target: (season, episode id, label).
     let mut searching = use_signal(|| None::<(Option<i32>, Option<i64>, String)>);
     let mut searching_complete = use_signal(|| false);
+    let mut searching_packs = use_signal(|| None::<i32>);
     let c1 = client.clone();
     let detail = use_resource(move || {
         let _ = (app.library_rev)();
@@ -152,6 +153,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 season_number: season,
                 episode_id,
                 complete_series: false,
+                season_packs_only: false,
             };
             match c.automatic_search(&q).await {
                 Ok(r) => {
@@ -302,6 +304,14 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 }
             }
         }
+        if let Some(season) = searching_packs() {
+            Modal {
+                title: format!("Search: {} — season {season} packs", d.item.title),
+                wide: true,
+                on_close: move |_| searching_packs.set(None),
+                ReleaseSearch { key: "packs-{season}", series_id: id, season: Some(season), season_packs_only: true }
+            }
+        }
         if searching_complete() {
             Modal {
                 title: format!("Search: {} — complete series", d.item.title),
@@ -365,6 +375,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 },
                 on_changed: move |_| episodes.restart(),
                 on_delete_file: move |target| deleting_file.set(Some(target)),
+                on_pack_search: move |season| searching_packs.set(Some(season)),
                 on_search: move |target| searching.set(Some(target)),
                 on_auto_search: auto_search.clone(),
             }
@@ -384,6 +395,7 @@ fn SeasonPanel(
     on_season_monitor: EventHandler<(i32, bool)>,
     on_changed: EventHandler<()>,
     on_delete_file: EventHandler<(i64, String)>,
+    on_pack_search: EventHandler<i32>,
     on_search: EventHandler<(Option<i32>, Option<i64>, String)>,
     on_auto_search: EventHandler<(Option<i32>, Option<i64>, String)>,
 ) -> Element {
@@ -451,6 +463,18 @@ fn SeasonPanel(
                         }
                     },
                     "Interactive"
+                }
+                if season_number > 0 {
+                    button {
+                        class: "btn sm ghost hide-mobile",
+                        "aria-label": "Search season packs for {label}",
+                        title: "Interactive search for full-season packs only",
+                        onclick: move |e: MouseEvent| {
+                            e.stop_propagation();
+                            on_pack_search.call(season_number);
+                        },
+                        "Packs"
+                    }
                 }
             }
             if open() {

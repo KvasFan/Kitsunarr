@@ -146,6 +146,7 @@ pub(crate) async fn bulk_search(
             season_number: season.then_some(first.season_number as i32),
             episode_id: (!season).then_some(first.episode_id),
             complete_series: false,
+            season_packs_only: false,
         };
         let options = SearchOptions {
             automatic: true,

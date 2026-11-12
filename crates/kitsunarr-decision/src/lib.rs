@@ -10,6 +10,7 @@
 //! pending releases, delay profiles' delays (searches bypass them in Sonarr anyway), free disk
 //! space, scene mappings and TheXEM numbering.
 
+pub mod anime_pack;
 pub mod complete_series;
 pub mod custom_format;
 pub mod model;
@@ -267,6 +268,22 @@ impl Engine<'_> {
         }
         if parsed.is_none() {
             parsed = parse_season_title(&release.title);
+        }
+        // Tanukarr's `AnimePackMatcher`, in anime season searches.
+        if criteria.kind == SearchKind::AnimeSeason
+            && parsed.as_ref().is_none_or(|p| {
+                !p.full_season
+                    && p.episode_numbers.is_empty()
+                    && p.absolute_episode_numbers.is_empty()
+            })
+            && let Some(season) = series
+                .episodes
+                .iter()
+                .find(|e| criteria.episode_ids.contains(&e.id))
+                .map(|e| e.season_number)
+            && let Some(pack) = anime_pack::match_pack(&release.title, series, season, &[])
+        {
+            return self.decide_mapped(criteria, index, release, pack);
         }
         let parsed = match parsed {
             Some(p) if !p.series_title.trim().is_empty() => p,

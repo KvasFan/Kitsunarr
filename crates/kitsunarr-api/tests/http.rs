@@ -877,6 +877,7 @@ async fn indexer_test_and_interactive_search() {
             season_number: Some(1),
             episode_id: None,
             complete_series: false,
+            season_packs_only: false,
         })
         .await
         .unwrap();
@@ -953,6 +954,7 @@ async fn indexer_test_and_interactive_search() {
             season_number: Some(1),
             episode_id: None,
             complete_series: false,
+            season_packs_only: false,
         })
         .await
         .unwrap();
@@ -996,6 +998,7 @@ async fn indexer_test_and_interactive_search() {
             season_number: None,
             episode_id: Some(pilot.id),
             complete_series: false,
+            season_packs_only: false,
         })
         .await
         .unwrap();
@@ -1028,6 +1031,7 @@ async fn indexer_test_and_interactive_search() {
                     season_number: None,
                     episode_id: None,
                     complete_series: false,
+                    season_packs_only: false,
                 })
                 .await
                 .unwrap_err()
@@ -1286,6 +1290,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             season_number: None,
             episode_id: Some(pilot.id),
             complete_series: false,
+            season_packs_only: false,
         })
         .await
         .unwrap();
@@ -1356,6 +1361,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             season_number: None,
             episode_id: Some(pilot.id),
             complete_series: false,
+            season_packs_only: false,
         })
         .await
         .unwrap();
@@ -1451,6 +1457,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         season_number: Some(1),
         episode_id: None,
         complete_series: false,
+        season_packs_only: false,
     };
     let auto = client.automatic_search(&season).await.unwrap();
     assert_eq!((auto.found, auto.approved), (2, 1), "{auto:?}");
@@ -1800,6 +1807,7 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
             season_number: None,
             episode_id: Some(pilot.id),
             complete_series: false,
+            season_packs_only: false,
         })
         .await
         .unwrap();
@@ -1941,6 +1949,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
         season_number: None,
         episode_id: Some(pilot.id),
         complete_series: false,
+        season_packs_only: false,
     };
     let search = || async {
         client
@@ -2381,6 +2390,7 @@ async fn notifications_follow_series_grabs_and_imports() {
             season_number: None,
             episode_id: Some(pilot.id),
             complete_series: false,
+            season_packs_only: false,
         })
         .await
         .unwrap();
@@ -2637,6 +2647,7 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
         season_number: Some(1),
         episode_id: None,
         complete_series: false,
+        season_packs_only: false,
     };
     let found = client.search_releases(&season_1).await.unwrap();
     let pack = found.releases.iter().find(|r| r.guid == "nzb-77").unwrap();
@@ -2836,6 +2847,7 @@ async fn complete_series_search_reads_packs_of_the_series() {
         season_number: None,
         episode_id: None,
         complete_series: true,
+        season_packs_only: false,
     };
     // Torrent indexers only.
     let none = client.search_releases(&query).await.unwrap_err();
@@ -2870,6 +2882,33 @@ async fn complete_series_search_reads_packs_of_the_series() {
     ] {
         assert!(queries.contains(&q.to_string()), "{q}: {queries:?}");
     }
+    // A season-pack search lists full-season releases only (the S01-S05 pack stands for
+    // season 2 there).
+    let packs = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: Some(2),
+            episode_id: None,
+            complete_series: false,
+            season_packs_only: true,
+        })
+        .await
+        .unwrap();
+    let mut guids: Vec<&str> = packs.releases.iter().map(|r| r.guid.as_str()).collect();
+    guids.sort_unstable();
+    assert_eq!(guids, vec!["pack", "season"]);
+    assert!(packs.releases.iter().all(|r| r.full_season));
+    let invalid = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: None,
+            complete_series: false,
+            season_packs_only: true,
+        })
+        .await
+        .unwrap_err();
+    assert_eq!(status(invalid), 422);
 }
 
 #[tokio::test]
@@ -2979,6 +3018,7 @@ async fn fake_torrents_are_rejected_before_grabbing() {
             season_number: None,
             episode_id: Some(pilot.id),
             complete_series: false,
+            season_packs_only: false,
         })
         .await
         .unwrap();

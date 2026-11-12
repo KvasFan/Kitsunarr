@@ -561,6 +561,14 @@ pub(crate) async fn run_search(
     };
 
     let episodes = series::list_episodes(&state.db, q.series_id, None).await?;
+    if q.season_packs_only
+        && (q.season_number.is_none_or(|s| s <= 0) || q.episode_id.is_some() || q.complete_series)
+    {
+        return Err(ApiError::field(
+            "seasonPacksOnly",
+            "A season-pack search takes a season (above 0) and nothing else.",
+        ));
+    }
     let (searches, description, requested): PlannedSearch = if q.complete_series {
         if q.episode_id.is_some() || q.season_number.is_some() {
             return Err(ApiError::field(
@@ -711,7 +719,11 @@ pub(crate) async fn run_search(
         all.extend(group);
         all_meta.extend(list);
     }
-    let decisions = engine.prioritize(Engine::dedupe(decisions, &all), &all);
+    let mut decisions = engine.prioritize(Engine::dedupe(decisions, &all), &all);
+    // Tanukarr's `SeasonPackSearch`: full-season releases only.
+    if q.season_packs_only {
+        decisions.retain(|d| d.parsed.as_ref().is_some_and(|p| p.full_season));
+    }
     Ok(SearchRun {
         decisions,
         releases: all_meta,

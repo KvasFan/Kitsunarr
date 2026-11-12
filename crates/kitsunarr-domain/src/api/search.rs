@@ -20,6 +20,9 @@ pub struct ReleaseQuery {
     /// and, in interactive searches, packs of some of its seasons. Torrent indexers only.
     #[serde(default)]
     pub complete_series: bool,
+    /// Tanukarr's season-pack search: a season search that lists only full-season releases.
+    #[serde(default)]
+    pub season_packs_only: bool,
 }
 
 /// A release found on an indexer, with what the parser reads from its name. Download URLs are
