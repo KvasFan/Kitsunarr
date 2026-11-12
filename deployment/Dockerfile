@@ -10,6 +10,9 @@ ARG DX_SHA256=4363e4ed2a3f1eb7f4d38d2d59aed59ce43271c44c16b425e92c89a64761fbe7
 FROM docker.io/library/rust:${RUST_VERSION}-trixie AS build
 ARG DX_VERSION
 ARG DX_SHA256
+# dx probes `cargo +nightly` and falls back to the pinned toolchain when it is missing; without
+# this, rustup downloads a whole nightly toolchain first, which can stall the build.
+ENV RUSTUP_AUTO_INSTALL=0
 WORKDIR /src
 RUN rustup target add wasm32-unknown-unknown \
  && curl -fsSL -o /tmp/dx.tar.gz "https://github.com/DioxusLabs/dioxus/releases/download/v${DX_VERSION}/dx-x86_64-unknown-linux-gnu.tar.gz" \
