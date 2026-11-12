@@ -1272,8 +1272,8 @@ pub(crate) fn delay(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
     {
         return None;
     }
-    // `Release.AgeMinutes`. (Kitsunarr keeps no pending releases, so the "oldest pending
-    // release" exception does not arise.)
+    // `Release.AgeMinutes`. (Sonarr's "oldest pending release" exception is not ported:
+    // pending releases are decided again by each RSS sync instead.)
     let age_minutes =
         (env.settings.now - s.release.publish_date).num_milliseconds() as f64 / 60_000.0;
     (age_minutes < delay as f64)

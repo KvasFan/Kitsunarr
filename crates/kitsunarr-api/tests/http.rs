@@ -1526,13 +1526,54 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     let auto = client.automatic_search(&season).await.unwrap();
     assert_eq!((auto.approved, auto.grabbed.len()), (0, 0), "{auto:?}");
 
+    // A long torrent delay holds S01E03 back: it becomes a pending release, shown in the queue.
+    let set_delay = |minutes: i64| {
+        let pool = server.state.db.pool().clone();
+        async move {
+            sqlx::query("DELETE FROM delay_profiles")
+                .execute(&pool)
+                .await
+                .unwrap();
+            sqlx::query(
+                "INSERT INTO delay_profiles (torrent_delay, preferred_protocol, bypass_if_highest_quality, sort_order) \
+                 VALUES (?, 'usenet', 0, 2147483647)",
+            )
+            .bind(minutes)
+            .execute(&pool)
+            .await
+            .unwrap();
+        }
+    };
+    set_delay(10_000_000).await;
+    let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
+    assert_eq!(
+        summary,
+        "4 releases found (3 for library series), 0 approved, 0 grabbed"
+    );
+    let queue = client.queue().await.unwrap();
+    let pending = queue
+        .items
+        .iter()
+        .find(|i| i.tracked_state == "pending")
+        .expect("the delayed release is in the queue");
+    assert_eq!(pending.title, "Breaking.Bad.S01E03.720p.BluRay.x264-GRP");
+    assert_eq!(pending.episodes, vec!["S01E03"]);
+    // The delay is over: the pending release is decided again and grabbed.
+    set_delay(0).await;
     // RSS sync: S01E03 is new and grabbed; S01E01 is on disk, S01E02 queued, and the other
     // show is not in the library.
     qbit.lock().unwrap().clear();
     let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
     assert_eq!(
         summary,
-        "4 releases found (3 for library series), 1 approved, 1 grabbed: Breaking.Bad.S01E03.720p.BluRay.x264-GRP"
+        "4 releases found (3 for library series, 1 pending before), 1 approved, 1 grabbed: Breaking.Bad.S01E03.720p.BluRay.x264-GRP"
+    );
+    assert!(
+        kitsunarr_db::pending::list(server.state.db.pool())
+            .await
+            .unwrap()
+            .is_empty(),
+        "a grabbed release is no longer pending"
     );
     assert!(
         qbit.lock()

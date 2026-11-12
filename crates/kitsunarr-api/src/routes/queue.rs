@@ -177,6 +177,52 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
             added: grab.map(|g| g.date.clone()),
         });
     }
+    // Releases a delay profile holds back (Sonarr shows them in the queue as "Delay").
+    for p in kitsunarr_db::pending::list(state.db.pool()).await? {
+        let Ok(stored) = serde_json::from_str::<crate::rss::StoredRelease>(&p.release) else {
+            continue;
+        };
+        let r = stored.release();
+        let episode_ids: Vec<i64> = serde_json::from_str(&p.episode_ids).unwrap_or_default();
+        let labels = series::list_episodes(&state.db, p.series_id, None)
+            .await
+            .map(|list| {
+                list.into_iter()
+                    .filter(|e| episode_ids.contains(&e.id))
+                    .map(|e| format!("S{:02}E{:02}", e.season_number, e.episode_number))
+                    .collect()
+            })
+            .unwrap_or_default();
+        out.push(QueueItem {
+            download_id: format!("pending-{}", p.id),
+            title: p.title,
+            download_client: String::new(),
+            protocol: r.release.protocol,
+            series_id: Some(p.series_id),
+            series_title: series::get_list_item(&state.db, p.series_id)
+                .await
+                .ok()
+                .map(|s| s.title),
+            episodes: labels,
+            quality: Some(
+                kitsunarr_parser::parse_quality(&r.release.title)
+                    .quality
+                    .name
+                    .to_string(),
+            ),
+            indexer: Some(r.indexer),
+            size: r.release.size,
+            size_left: r.release.size,
+            time_left: None,
+            status: "delay".into(),
+            tracked_state: "pending".into(),
+            messages: vec![
+                "Held back by a delay profile: an RSS sync grabs it once the delay is over.".into(),
+            ],
+            output_path: None,
+            added: Some(p.added_at),
+        });
+    }
     Ok(Json(QueueResult {
         items: out,
         failures,
@@ -249,6 +295,21 @@ pub async fn remove_from_queue(
     axum::extract::Path(download_id): axum::extract::Path<String>,
     axum::extract::Query(q): axum::extract::Query<QueueRemoval>,
 ) -> ApiResult<Json<QueueRemovalResult>> {
+    // A pending release: forgotten (it is grabbed only if a later search finds it again).
+    if let Some(id) = download_id
+        .strip_prefix("pending-")
+        .and_then(|i| i.parse::<i64>().ok())
+    {
+        let pending = kitsunarr_db::pending::list(state.db.pool()).await?;
+        let p = pending
+            .into_iter()
+            .find(|p| p.id == id)
+            .ok_or_else(|| ApiError::NotFound("The pending release does not exist.".into()))?;
+        kitsunarr_db::pending::remove(state.db.pool(), p.indexer_id, &p.guid).await?;
+        return Ok(Json(QueueRemovalResult {
+            message: format!("{} is no longer pending.", p.title),
+        }));
+    }
     let found = find_download(&state, &download_id).await?;
     if found.is_none() && !q.blocklist {
         return Err(ApiError::NotFound(

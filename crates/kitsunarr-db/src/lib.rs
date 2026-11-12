@@ -15,6 +15,7 @@ pub mod import_lists;
 pub mod library;
 pub mod maintenance;
 pub mod migration_runs;
+pub mod pending;
 pub mod providers;
 pub mod quality;
 pub mod root_folders;

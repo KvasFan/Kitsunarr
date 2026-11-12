@@ -17,6 +17,88 @@ use kitsunarr_indexers::IndexerRelease;
 use crate::AppState;
 use crate::routes::search::{self, DecisionInputs, SearchRun};
 
+/// A pending release as stored (Sonarr's `PendingRelease.Release`).
+#[derive(serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct StoredRelease {
+    indexer_id: i64,
+    indexer: String,
+    guid: String,
+    title: String,
+    size: i64,
+    download_url: Option<String>,
+    info_url: Option<String>,
+    comment_url: Option<String>,
+    publish_date: chrono::DateTime<chrono::Utc>,
+    protocol: kitsunarr_domain::DownloadProtocol,
+    tvdb_id: i64,
+    tv_rage_id: i64,
+    imdb_id: Option<String>,
+    languages: Vec<i32>,
+    indexer_flags: u32,
+    info_hash: Option<String>,
+    magnet_url: Option<String>,
+    seeders: Option<i64>,
+    peers: Option<i64>,
+}
+
+impl StoredRelease {
+    fn of(r: &IndexerRelease) -> Self {
+        let x = &r.release;
+        Self {
+            indexer_id: r.indexer_id,
+            indexer: r.indexer.clone(),
+            guid: x.guid.clone(),
+            title: x.title.clone(),
+            size: x.size,
+            download_url: x.download_url.clone(),
+            info_url: x.info_url.clone(),
+            comment_url: x.comment_url.clone(),
+            publish_date: x.publish_date,
+            protocol: x.protocol,
+            tvdb_id: x.tvdb_id,
+            tv_rage_id: x.tv_rage_id,
+            imdb_id: x.imdb_id.clone(),
+            languages: x.languages.iter().map(|l| l.id).collect(),
+            indexer_flags: x.indexer_flags,
+            info_hash: x.info_hash.clone(),
+            magnet_url: x.magnet_url.clone(),
+            seeders: x.seeders,
+            peers: x.peers,
+        }
+    }
+
+    pub(crate) fn release(self) -> IndexerRelease {
+        IndexerRelease {
+            indexer_id: self.indexer_id,
+            indexer: self.indexer,
+            release: kitsunarr_indexers::Release {
+                guid: self.guid,
+                title: self.title,
+                size: self.size,
+                download_url: self.download_url,
+                info_url: self.info_url,
+                comment_url: self.comment_url,
+                publish_date: self.publish_date,
+                protocol: self.protocol,
+                tvdb_id: self.tvdb_id,
+                tv_rage_id: self.tv_rage_id,
+                imdb_id: self.imdb_id,
+                languages: self
+                    .languages
+                    .iter()
+                    .filter_map(|id| kitsunarr_domain::language::Language::by_id(*id))
+                    .collect(),
+                indexer_flags: self.indexer_flags,
+                info_hash: self.info_hash,
+                magnet_url: self.magnet_url,
+                seeders: self.seeders,
+                peers: self.peers,
+            },
+        }
+    }
+}
+
 /// The scheduled task's name.
 pub const TASK: &str = "RssSync";
 
@@ -103,6 +185,23 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
         return Err(format!("No indexer could be read: {}", failed(&failures)));
     }
 
+    // Sonarr's pending releases: those a delay profile held back are decided again.
+    let pending = kitsunarr_db::pending::list(state.db.pool())
+        .await
+        .map_err(|e| e.to_string())?;
+    let pending_count = pending.len();
+    for p in pending {
+        if releases
+            .iter()
+            .any(|r| r.indexer_id == p.indexer_id && r.release.guid == p.guid)
+        {
+            continue;
+        }
+        if let Ok(stored) = serde_json::from_str::<StoredRelease>(&p.release) {
+            releases.push(stored.release());
+        }
+    }
+
     let library = kitsunarr_library::decision_input::library_titles(&state.db)
         .await
         .map_err(|e| e.to_string())?;
@@ -156,6 +255,36 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
             &group,
         );
         approved += decisions.iter().filter(|d| d.approved()).count();
+        // Held back only by the delay profile: pending; anything else: no longer pending.
+        for d in &decisions {
+            let r = &releases[members[d.release]];
+            let delayed = !d.rejections.is_empty()
+                && !d.episodes.is_empty()
+                && d.rejections
+                    .iter()
+                    .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay);
+            let db = state.db.pool();
+            let result = if delayed {
+                let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
+                kitsunarr_db::pending::upsert(
+                    db,
+                    series_id,
+                    r.indexer_id,
+                    &r.release.guid,
+                    &r.release.title,
+                    &serde_json::to_string(&StoredRelease::of(r)).unwrap_or_default(),
+                    &episodes,
+                )
+                .await
+            } else if !d.approved() {
+                kitsunarr_db::pending::remove(db, r.indexer_id, &r.release.guid).await
+            } else {
+                Ok(())
+            };
+            if let Err(e) = result {
+                tracing::warn!(error = %e, "pending release bookkeeping failed");
+            }
+        }
         if !decisions.iter().any(|d| d.approved()) {
             continue;
         }
@@ -170,13 +299,34 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
         };
         let (g, f) =
             search::process_decisions(state, &run, series_id, &mut unavailable, "Rss").await;
+        // A grab for an episode ends every pending release of that episode (and the grabbed one).
+        for grab in &g {
+            if let Some(d) = run
+                .decisions
+                .iter()
+                .find(|d| d.approved() && run.releases[d.release].release.title == grab.title)
+            {
+                let r = &run.releases[d.release];
+                let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
+                let _ =
+                    kitsunarr_db::pending::remove(state.db.pool(), r.indexer_id, &r.release.guid)
+                        .await;
+                let _ =
+                    kitsunarr_db::pending::remove_for_episodes(state.db.pool(), &episodes).await;
+            }
+        }
         grabbed.extend(g);
         grab_failures.extend(f);
     }
 
     let mut summary = format!(
-        "{} releases found ({matched} for library series), {approved} approved, {} grabbed",
+        "{} releases found ({matched} for library series{}), {approved} approved, {} grabbed",
         releases.len(),
+        if pending_count > 0 {
+            format!(", {pending_count} pending before")
+        } else {
+            String::new()
+        },
         grabbed.len()
     );
     if !grabbed.is_empty() {
