@@ -58,6 +58,13 @@ pub fn all(
             },
         ),
         job(
+            "RescanFolders",
+            "Scans every series folder: forgets files that are gone and adds files found there",
+            12 * 60,
+            Duration::from_secs(6 * 3600),
+            |ctx| async move { rescan_folders(&ctx).await },
+        ),
+        job(
             "RefreshMetadata",
             "Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)",
             12 * 60,
@@ -246,6 +253,48 @@ fn prune_scheduled_backups(dir: &std::path::Path, keep: usize) -> usize {
         .skip(keep)
         .filter(|(name, _, _)| std::fs::remove_file(dir.join(name)).is_ok())
         .count()
+}
+
+/// `RescanSeries` for every series. A series whose root folder is missing or empty is skipped
+/// (a disconnected drive must not empty the library); the run fails only when every scan did.
+async fn rescan_folders(ctx: &JobContext) -> JobResult {
+    let ids: Vec<i64> =
+        kitsunarr_db::sqlx::query_scalar("SELECT id FROM series ORDER BY sort_title")
+            .fetch_all(ctx.db.pool())
+            .await
+            .map_err(|e| e.to_string())?;
+    let (mut added, mut removed, mut failed) = (0usize, 0usize, 0usize);
+    for (done, id) in ids.iter().enumerate() {
+        match kitsunarr_library::files::scan_series(&ctx.db, *id).await {
+            Ok(s) => {
+                added += s.added;
+                removed += s.removed;
+            }
+            Err(e) => {
+                tracing::warn!(series_id = id, error = %e, "folder scan skipped");
+                failed += 1;
+            }
+        }
+        ctx.progress(
+            (done + 1) as f64 / ids.len().max(1) as f64,
+            &format!("Scanned {} of {} series", done + 1, ids.len()),
+        )
+        .await;
+    }
+    if failed > 0 && failed == ids.len() {
+        return Err(format!("every folder scan failed ({failed})"));
+    }
+    if added + removed > 0 {
+        ctx.events.publish(ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids: Vec::new(),
+            deleted: false,
+        });
+    }
+    Ok(Some(format!(
+        "Scanned {} series: {added} files added, {removed} missing files removed, {failed} skipped",
+        ids.len()
+    )))
 }
 
 #[cfg(test)]

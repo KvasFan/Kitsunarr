@@ -53,6 +53,12 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             library::delete_series
         ))
         .routes(routes!(library::bulk_edit_series))
+        .routes(routes!(library::rescan_series))
+        .routes(routes!(
+            library::rename_preview,
+            library::rename_series_files
+        ))
+        .routes(routes!(library::delete_episode_file))
         .routes(routes!(library::list_episodes))
         .routes(routes!(library::set_episodes_monitored))
         .routes(routes!(library::list_movies))

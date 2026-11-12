@@ -66,20 +66,20 @@ static EXCLUDED_EXTRA_FILES: LazyLock<NetRegex> = LazyLock::new(|| {
 /// name only.
 static SAMPLE_NAME: LazyLock<NetRegex> = LazyLock::new(|| NetRegex::compile(r"\bsample\b", true));
 
-fn extension(path: &Path) -> String {
+pub(crate) fn extension(path: &Path) -> String {
     path.extension()
         .map(|e| format!(".{}", e.to_string_lossy().to_lowercase()))
         .unwrap_or_default()
 }
 
-fn stem(path: &Path) -> String {
+pub(crate) fn stem(path: &Path) -> String {
     path.file_stem()
         .map(|s| s.to_string_lossy().into_owned())
         .unwrap_or_default()
 }
 
 /// Recursive video files, without following symbolic links, filtered as `FilterPaths` does.
-fn video_files(base: &Path) -> Vec<PathBuf> {
+pub(crate) fn video_files(base: &Path) -> Vec<PathBuf> {
     let mut out = Vec::new();
     let mut stack = vec![base.to_path_buf()];
     while let Some(dir) = stack.pop() {
@@ -136,7 +136,7 @@ pub fn clean_file_name(name: &str) -> String {
 
 /// `true` when `path` is `root` or inside it, compared lexically after normalising `.` and
 /// `..` (no symbolic links are followed).
-fn is_within(path: &Path, root: &Path) -> bool {
+pub(crate) fn is_within(path: &Path, root: &Path) -> bool {
     fn normal(p: &Path) -> Option<PathBuf> {
         let mut out = PathBuf::new();
         for c in p.components() {
@@ -997,7 +997,7 @@ async fn transfer_and_record(
 
 /// `RecycleBinProvider.DeleteFile`: into `<recycle bin>/<path relative to the root folder>`
 /// with `_2`, `_3`… on collisions, or deleted when no recycle bin is set.
-fn remove_or_recycle(
+pub(crate) fn remove_or_recycle(
     path: &Path,
     media: &MediaManagementSettings,
     root: &Path,

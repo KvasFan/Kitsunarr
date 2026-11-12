@@ -137,7 +137,8 @@ textarea.input { height: auto; min-height: 120px; padding: var(--sp-2) var(--sp-
 .stat .label { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--text-faint); }
 .stat.accent .value { color: var(--accent); }
 .two-col { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--sp-4); }
-@media (max-width: 1100px) { .two-col { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) { .two-col { grid-template-columns: minmax(0, 1fr); } }
+.two-col > * { min-width: 0; }
 
 /* ---------------------------------------------------------------- feedback */
 .badge { display: inline-flex; align-items: center; gap: 4px; min-height: 1.375rem; padding: 0 8px; border-radius: var(--r-full); font-size: var(--fs-xs); font-weight: 600; background: var(--bg-elev-2); color: var(--text-muted); border: 1px solid var(--border); white-space: nowrap; }

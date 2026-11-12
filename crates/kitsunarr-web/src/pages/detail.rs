@@ -96,6 +96,11 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let client = use_client();
     let nav = navigator();
     let mut confirm_delete = use_signal(|| false);
+    let mut delete_folder = use_signal(|| false);
+    let mut renaming = use_signal(|| false);
+    let mut scanning = use_signal(|| false);
+    // An episode file to delete: (file id, relative path).
+    let mut deleting_file = use_signal(|| None::<(i64, String)>);
     // Interactive search target: (season, episode id, label).
     let mut searching = use_signal(|| None::<(Option<i32>, Option<i64>, String)>);
     let c1 = client.clone();
@@ -158,11 +163,61 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let c4 = client.clone();
     let delete = move |_| {
         let c = c4.clone();
+        let with_files = delete_folder();
+        confirm_delete.set(false);
         spawn(async move {
-            match c.delete_series(id).await {
+            let done = if with_files {
+                c.delete_series_with_files(id).await
+            } else {
+                c.delete_series(id).await
+            };
+            match done {
                 Ok(()) => {
-                    app.success("Series removed from Kitsunarr. Files on disk were not touched.");
+                    app.success(if with_files {
+                        "Series removed, and its folder deleted."
+                    } else {
+                        "Series removed from Kitsunarr. Files on disk were not touched."
+                    });
                     nav.push(Route::SeriesLibrary {});
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let c7 = client.clone();
+    let rescan = move |_| {
+        let c = c7.clone();
+        scanning.set(true);
+        spawn(async move {
+            match c.rescan_series(id).await {
+                Ok(r) if r.problems.is_empty() => {
+                    app.success(format!("Disk scanned: {}", r.message))
+                }
+                Ok(r) => app.toast(
+                    ToastLevel::Warning,
+                    format!(
+                        "Disk scanned: {} Not matched: {}",
+                        r.message,
+                        r.problems.join("; ")
+                    ),
+                ),
+                Err(e) => app.error(&e),
+            }
+            scanning.set(false);
+        });
+    };
+    let c8 = client.clone();
+    let delete_file = move |_| {
+        let Some((file_id, _)) = deleting_file() else {
+            return;
+        };
+        deleting_file.set(None);
+        let c = c8.clone();
+        spawn(async move {
+            match c.delete_episode_file(id, file_id).await {
+                Ok(()) => {
+                    app.success("File deleted.");
+                    episodes.restart();
                 }
                 Err(e) => app.error(&e),
             }
@@ -236,7 +291,11 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     }
                     div { class: "spacer" }
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
-                    button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Remove from library" }
+                    button { class: "btn", disabled: scanning(), title: "Find files added to or removed from the series folder", onclick: rescan,
+                        if scanning() { "Scanning…" } else { "Scan disk" }
+                    }
+                    button { class: "btn", title: "Rename files to the naming settings", onclick: move |_| renaming.set(true), "Rename files" }
+                    button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true) }, "Remove from library" }
                 }
             }
         }
@@ -249,13 +308,32 @@ pub fn SeriesDetailPage(id: i64) -> Element {
             }
         }
         if confirm_delete() {
+            Modal {
+                title: "Remove series".to_string(),
+                on_close: move |_| confirm_delete.set(false),
+                footer: rsx! {
+                    div { class: "spacer" }
+                    button { class: "btn", onclick: move |_| confirm_delete.set(false), "Cancel" }
+                    button { class: "btn danger solid", onclick: delete, "Remove" }
+                },
+                p { "Remove “{title}” and its episode records from Kitsunarr?" }
+                label { class: "check",
+                    input { r#type: "checkbox", checked: delete_folder(), onchange: move |e: FormEvent| delete_folder.set(e.checked()) }
+                    "Also delete the series folder and its files (to the recycle bin when one is set)"
+                }
+            }
+        }
+        if renaming() {
+            RenameDialog { series_id: id, on_close: move |_| { renaming.set(false); episodes.restart(); } }
+        }
+        if let Some((_, path)) = deleting_file() {
             Confirm {
-                title: "Remove series",
-                message: format!("Remove “{title}” and its episode records from Kitsunarr? Files on disk are not deleted."),
-                confirm_label: "Remove",
+                title: "Delete file",
+                message: format!("Delete “{path}”? It goes to the recycle bin when one is set."),
+                confirm_label: "Delete",
                 danger: true,
-                on_confirm: delete,
-                on_cancel: move |_| confirm_delete.set(false),
+                on_confirm: delete_file,
+                on_cancel: move |_| deleting_file.set(None),
             }
         }
         h2 { "Seasons" }
@@ -275,6 +353,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     move |(n, v): (i32, bool)| update(SeriesUpdate { seasons: Some(vec![SeasonMonitoring { season_number: n, monitored: v }]), ..Default::default() })
                 },
                 on_changed: move |_| episodes.restart(),
+                on_delete_file: move |target| deleting_file.set(Some(target)),
                 on_search: move |target| searching.set(Some(target)),
                 on_auto_search: auto_search.clone(),
             }
@@ -293,6 +372,7 @@ fn SeasonPanel(
     episodes: Vec<EpisodeItem>,
     on_season_monitor: EventHandler<(i32, bool)>,
     on_changed: EventHandler<()>,
+    on_delete_file: EventHandler<(i64, String)>,
     on_search: EventHandler<(Option<i32>, Option<i64>, String)>,
     on_auto_search: EventHandler<(Option<i32>, Option<i64>, String)>,
 ) -> Element {
@@ -383,6 +463,16 @@ fn SeasonPanel(
                                 span { style: "width: 9.5rem; flex: none; text-align: right",
                                     if let Some(f) = &e.file {
                                         span { class: "badge success", title: "{f.relative_path}", "{f.quality_name}" }
+                                        button {
+                                            class: "btn sm ghost icon",
+                                            "aria-label": "Delete the file of episode {e.episode_number}",
+                                            title: "Delete file",
+                                            onclick: {
+                                                let target = (f.id, f.relative_path.clone());
+                                                move |_| on_delete_file.call(target.clone())
+                                            },
+                                            "✕"
+                                        }
                                     } else {
                                         span { class: "badge", "missing" }
                                     }
@@ -532,6 +622,87 @@ pub fn MovieDetailPage(id: i64) -> Element {
                 danger: true,
                 on_confirm: delete,
                 on_cancel: move |_| confirm_delete.set(false),
+            }
+        }
+    }
+}
+
+/// Rename preview (Sonarr's "Organize"): the files whose names differ from the naming
+/// settings, each selectable, renamed on confirmation.
+#[component]
+fn RenameDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let previews = use_resource(move || {
+        let c = c0.clone();
+        async move { c.rename_preview(series_id, None).await }
+    });
+    let mut unchecked = use_signal(std::collections::HashSet::<i64>::new);
+    let mut busy = use_signal(|| false);
+    let rename = move |_| {
+        let Some(Ok(list)) = &*previews.read() else {
+            return;
+        };
+        let ids: Vec<i64> = list
+            .iter()
+            .map(|p| p.episode_file_id)
+            .filter(|i| !unchecked().contains(i))
+            .collect();
+        if ids.is_empty() {
+            return;
+        }
+        let c = client.clone();
+        busy.set(true);
+        spawn(async move {
+            match c.rename_files(series_id, &ids).await {
+                Ok(r) if r.problems.is_empty() => app.success(r.message),
+                Ok(r) => app.toast(
+                    ToastLevel::Warning,
+                    format!("{} {}", r.message, r.problems.join("; ")),
+                ),
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+            on_close.call(());
+        });
+    };
+    rsx! {
+        Modal {
+            title: "Rename files".to_string(),
+            wide: true,
+            on_close: move |_| on_close.call(()),
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", onclick: move |_| on_close.call(()), "Cancel" }
+                button { class: "btn primary", disabled: busy() || !matches!(&*previews.read(), Some(Ok(l)) if !l.is_empty()), onclick: rename,
+                    if busy() { "Renaming…" } else { "Rename" }
+                }
+            },
+            match &*previews.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) if list.is_empty() => rsx! { p { class: "muted", "Every file already follows the naming settings." } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "stack",
+                        for p in list.iter() {
+                            label { key: "{p.episode_file_id}", class: "check rename-row",
+                                input {
+                                    r#type: "checkbox",
+                                    checked: !unchecked().contains(&p.episode_file_id),
+                                    onchange: {
+                                        let id = p.episode_file_id;
+                                        move |e: FormEvent| { if e.checked() { unchecked.write().remove(&id); } else { unchecked.write().insert(id); } }
+                                    },
+                                }
+                                div { class: "grow",
+                                    div { class: "mono small muted", "{p.existing_path}" }
+                                    div { class: "mono small", "→ {p.new_path}" }
+                                }
+                            }
+                        }
+                    }
+                },
             }
         }
     }

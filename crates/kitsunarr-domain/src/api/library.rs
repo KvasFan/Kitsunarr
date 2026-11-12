@@ -338,3 +338,34 @@ pub struct HistoryItem {
     pub download_id: Option<String>,
     pub data: serde_json::Value,
 }
+
+/// A file whose name differs from what the naming settings give (Sonarr's
+/// `RenameEpisodeResource`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct RenamePreview {
+    pub episode_file_id: i64,
+    pub season_number: i32,
+    pub episode_numbers: Vec<i32>,
+    /// Relative to the series folder.
+    pub existing_path: String,
+    pub new_path: String,
+}
+
+/// Files to rename (`episodeFileIds`; empty: every previewed file).
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct RenameRequest {
+    pub episode_file_ids: Vec<i64>,
+}
+
+/// The outcome of a file operation (disk scan, rename).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct FileOperationResult {
+    pub message: String,
+    pub problems: Vec<String>,
+}

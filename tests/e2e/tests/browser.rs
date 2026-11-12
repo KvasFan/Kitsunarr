@@ -484,6 +484,34 @@ async fn first_run_setup_migration_and_library() {
             .await
             .unwrap();
         wait_text(&client, "0 new episodes, 80 updated").await;
+        screenshot(&client, "11b-refresh-thetvdb").await;
+        // Disk scan and the rename preview of the migrated files.
+        client
+            .wait()
+            .for_element(Locator::XPath("//button[normalize-space(.)='Scan disk']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, "Disk scanned").await;
+        client
+            .wait()
+            .for_element(Locator::XPath("//button[normalize-space(.)='Rename files']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        client
+            .wait()
+            .for_element(Locator::XPath(
+                "//div[contains(@class,'modal')][.//*[contains(.,'→') or contains(.,'already follows')]]",
+            ))
+            .await
+            .expect("the rename preview opens");
+        screenshot(&client, "11d-rename-preview").await;
+        click_button(&client, "Cancel").await;
         // Migrated notifications are sent now (no "stored only" badge).
         client
             .goto(&format!("{base}/settings/notifications"))
@@ -492,7 +520,6 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Emby/Jellyfin, Plex and Kodi are sent").await;
         assert!(!client.source().await.unwrap().contains("stored only"));
         client.goto(&format!("{base}/series")).await.unwrap();
-        screenshot(&client, "11b-refresh-thetvdb").await;
         client
             .goto(&format!("{base}/settings/metadata"))
             .await

@@ -8,8 +8,9 @@ use kitsunarr_db::library::{collections, movies, series, stats};
 use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::library::{
     BulkEdit, BulkEditResult, CalendarEntry, CalendarQuery, CollectionItem, EpisodeItem,
-    EpisodesMonitoredUpdate, HistoryItem, LibraryQuery, LibraryStats, MovieDetail, MovieListItem,
-    SeriesDetail, SeriesListItem, SeriesUpdate,
+    EpisodesMonitoredUpdate, FileOperationResult, HistoryItem, LibraryQuery, LibraryStats,
+    MovieDetail, MovieListItem, RenamePreview, RenameRequest, SeriesDetail, SeriesListItem,
+    SeriesUpdate,
 };
 use kitsunarr_domain::{Page, PageRequest};
 use serde::Deserialize;
@@ -60,13 +61,27 @@ pub async fn update_series(
     Ok(Json(series::get_detail(&state.db, id).await?))
 }
 
-#[utoipa::path(delete, path = "/series/{id}", tag = "library", params(("id" = i64, Path)),
-    responses((status = 204, description = "Database records removed; files on disk are never deleted by this call")))]
+#[derive(Debug, Deserialize, Default, utoipa::IntoParams)]
+#[into_params(parameter_in = Query)]
+#[serde(rename_all = "camelCase", default)]
+pub struct DeleteSeriesQuery {
+    /// Also delete the series folder (to the recycle bin when one is set).
+    pub delete_files: bool,
+}
+
+#[utoipa::path(delete, path = "/series/{id}", tag = "library", params(("id" = i64, Path), DeleteSeriesQuery),
+    responses((status = 204, description = "Removed; the folder is deleted only with deleteFiles")))]
 pub async fn delete_series(
     State(state): State<AppState>,
     Path(id): Path<i64>,
+    Query(q): Query<DeleteSeriesQuery>,
 ) -> ApiResult<StatusCode> {
     let notification = kitsunarr_library::notify::series_ref(&state.db, id).await;
+    if q.delete_files {
+        kitsunarr_library::files::delete_series_folder(&state.db, id)
+            .await
+            .map_err(|m| ApiError::field("deleteFiles", m))?;
+    }
     series::delete(&state.db, id).await?;
     changed(&state, "series", vec![id], true);
     if let Some(series) = notification {
@@ -75,7 +90,7 @@ pub async fn delete_series(
             &state.downloads.notifier,
             kitsunarr_notifications::Event::SeriesDelete {
                 series: Box::new(series),
-                deleted_files: false,
+                deleted_files: q.delete_files,
             },
         );
     }
@@ -283,4 +298,84 @@ pub async fn history(
         )
         .await?,
     ))
+}
+
+/// Rescan the series folder (Sonarr's `RescanSeries`): forget files that are gone, add the
+/// video files the library does not know (in place), update sizes.
+#[utoipa::path(post, path = "/series/{id}/rescan", tag = "library", params(("id" = i64, Path)),
+    responses((status = 200, body = FileOperationResult), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn rescan_series(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<FileOperationResult>> {
+    series::get_list_item(&state.db, id).await?;
+    let summary = kitsunarr_library::files::scan_series(&state.db, id)
+        .await
+        .map_err(|m| ApiError::field("id", m))?;
+    changed(&state, "series", vec![id], false);
+    Ok(Json(FileOperationResult {
+        message: format!(
+            "{} files added, {} missing files removed, {} sizes updated.",
+            summary.added, summary.removed, summary.updated
+        ),
+        problems: summary.skipped,
+    }))
+}
+
+#[derive(Debug, Deserialize, Default, utoipa::IntoParams)]
+#[into_params(parameter_in = Query)]
+#[serde(rename_all = "camelCase", default)]
+pub struct RenameQuery {
+    pub season_number: Option<i32>,
+}
+
+/// The series' files whose names differ from the naming settings (Sonarr's `GET /rename`).
+#[utoipa::path(get, path = "/series/{id}/rename", tag = "library", params(("id" = i64, Path), RenameQuery),
+    responses((status = 200, body = Vec<RenamePreview>)))]
+pub async fn rename_preview(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Query(q): Query<RenameQuery>,
+) -> ApiResult<Json<Vec<RenamePreview>>> {
+    series::get_list_item(&state.db, id).await?;
+    Ok(Json(
+        kitsunarr_library::files::rename_previews(&state.db, id, q.season_number)
+            .await
+            .map_err(ApiError::Internal)?,
+    ))
+}
+
+/// Rename the chosen files (all previewed files when none is given).
+#[utoipa::path(post, path = "/series/{id}/rename", tag = "library", params(("id" = i64, Path)),
+    request_body = RenameRequest, responses((status = 200, body = FileOperationResult)))]
+pub async fn rename_series_files(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<RenameRequest>,
+) -> ApiResult<Json<FileOperationResult>> {
+    series::get_list_item(&state.db, id).await?;
+    let (renamed, problems) =
+        kitsunarr_library::files::rename_files(&state.db, id, &req.episode_file_ids)
+            .await
+            .map_err(ApiError::Internal)?;
+    changed(&state, "series", vec![id], false);
+    Ok(Json(FileOperationResult {
+        message: format!("{renamed} files renamed."),
+        problems,
+    }))
+}
+
+/// Delete an episode file (to the recycle bin when one is set).
+#[utoipa::path(delete, path = "/series/{id}/files/{file_id}", tag = "library",
+    params(("id" = i64, Path), ("file_id" = i64, Path)),
+    responses((status = 204), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn delete_episode_file(
+    State(state): State<AppState>,
+    Path((id, file_id)): Path<(i64, i64)>,
+) -> ApiResult<StatusCode> {
+    kitsunarr_library::files::delete_file(&state.db, id, file_id)
+        .await
+        .map_err(|m| ApiError::field("fileId", m))?;
+    changed(&state, "series", vec![id], false);
+    Ok(StatusCode::NO_CONTENT)
 }

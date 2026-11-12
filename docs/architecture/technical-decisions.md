@@ -365,3 +365,16 @@ Not ported: Tanukarr's presentation enrichment (filling a missing overview or ar
 - **Health notifications** compare each evaluation with the previous one, and send issues that appeared and issues that cleared. The first evaluation after start-up only records the baseline, so restarts do not repeat known issues; upstream notifies on start-up after a grace period.
 
 Not ported yet: the rename, episode-file-deleted, manual-interaction and application-update events; the Email, Custom Script, Twitter, Trakt, Synology, Mailgun, SendGrid and Pushcut services; Tanukarr's Jellyfin watched-state sync. Migrated connections of those types stay stored and are reported as not implemented.
+
+## 25. Library file operations: disk scans, renames, deletions
+
+`kitsunarr-library::files` ports `DiskScanService`, `RenameEpisodeFileService` and `MediaFileDeletionService`:
+
+- **Disk scan** (series page "Scan disk", the `RescanFolders` task every 12 hours):
+  - file records whose file is gone are removed, with "episodeFileDeleted" history (reason `MissingFromDisk`);
+  - video files in the series folder that the library does not know are matched by their names and recorded where they are (`newDownload: false`: nothing is moved and no history is written), unless an episode already has a file;
+  - sizes are updated.
+
+  As upstream, a series whose root folder is missing or empty is skipped, so a disconnected drive does not empty the library. Records only are removed, never files, and a later scan adds the files back once they are reachable again. The exclusion rules for extras and system folders are the import's (`FilterPaths`).
+- **Renaming** previews every file whose path differs from what the naming settings give, with the same naming engine imports use (custom formats evaluated on the file), then renames the chosen files. Destinations stay inside the series folder and are never overwritten. Each rename writes "episodeFileRenamed" history (source and new path), and an emptied season folder is removed.
+- **Deleting** a file sends it to the recycle bin (or deletes it when none is set), with "episodeFileDeleted" history (reason `Manual`). Removing a series can also delete its folder, in the same way. The folder is deleted only when it lies inside its root folder.

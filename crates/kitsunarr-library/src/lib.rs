@@ -8,6 +8,7 @@ pub mod decision_input;
 pub mod downloads;
 pub mod failed;
 pub mod file_names;
+pub mod files;
 pub mod import;
 pub mod notify;
 

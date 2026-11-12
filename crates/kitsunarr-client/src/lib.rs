@@ -267,6 +267,45 @@ impl Client {
     pub async fn delete_series(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/series/{id}")).await
     }
+    /// Removes the series and its folder (to the recycle bin when one is set).
+    pub async fn delete_series_with_files(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/series/{id}?deleteFiles=true")).await
+    }
+    pub async fn rescan_series(
+        &self,
+        id: i64,
+    ) -> ClientResult<kitsunarr_domain::api::library::FileOperationResult> {
+        self.post(&format!("/series/{id}/rescan"), &Empty {}).await
+    }
+    pub async fn rename_preview(
+        &self,
+        id: i64,
+        season: Option<i32>,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library::RenamePreview>> {
+        match season {
+            Some(n) => {
+                self.get(&format!("/series/{id}/rename?seasonNumber={n}"))
+                    .await
+            }
+            None => self.get(&format!("/series/{id}/rename")).await,
+        }
+    }
+    pub async fn rename_files(
+        &self,
+        id: i64,
+        episode_file_ids: &[i64],
+    ) -> ClientResult<kitsunarr_domain::api::library::FileOperationResult> {
+        self.post(
+            &format!("/series/{id}/rename"),
+            &kitsunarr_domain::api::library::RenameRequest {
+                episode_file_ids: episode_file_ids.to_vec(),
+            },
+        )
+        .await
+    }
+    pub async fn delete_episode_file(&self, id: i64, file_id: i64) -> ClientResult<()> {
+        self.delete(&format!("/series/{id}/files/{file_id}")).await
+    }
     pub async fn bulk_edit_series(&self, edit: &BulkEdit) -> ClientResult<BulkEditResult> {
         self.post("/series/bulk", edit).await
     }

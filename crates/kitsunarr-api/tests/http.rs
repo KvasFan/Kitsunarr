@@ -2406,3 +2406,155 @@ async fn notifications_follow_series_grabs_and_imports() {
         "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
     );
 }
+
+#[tokio::test]
+async fn disk_scan_rename_and_file_deletion() {
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+        })
+        .await
+        .unwrap();
+    let detail = client.series_detail(added.id).await.unwrap();
+    let folder = std::path::PathBuf::from(&detail.item.path);
+    std::fs::create_dir_all(folder.join("Season 01")).unwrap();
+    for name in [
+        "Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv",
+        "Season 01/Breaking.Bad.S01E02.1080p.BluRay.x264-GRP.mkv",
+        "Season 01/notes.mkv",
+    ] {
+        std::fs::write(folder.join(name), b"video").unwrap();
+    }
+
+    let scanned = client.rescan_series(added.id).await.unwrap();
+    assert_eq!(
+        scanned.message,
+        "2 files added, 0 missing files removed, 0 sizes updated."
+    );
+    assert_eq!(scanned.problems.len(), 1, "{:?}", scanned.problems);
+    let episodes = client.episodes(added.id).await.unwrap();
+    let file_of = |s: i32, e: i32| {
+        episodes
+            .iter()
+            .find(|x| x.season_number == s && x.episode_number == e)
+            .and_then(|x| x.file.clone())
+    };
+    assert_eq!(file_of(1, 1).unwrap().quality_name, "HDTV-720p");
+    assert_eq!(file_of(1, 2).unwrap().quality_name, "Bluray-1080p");
+    // Scanning again changes nothing.
+    assert_eq!(
+        client.rescan_series(added.id).await.unwrap().message,
+        "0 files added, 0 missing files removed, 0 sizes updated."
+    );
+
+    // Rename to the naming settings.
+    let mut naming = client.naming().await.unwrap();
+    naming.rename_episodes = true;
+    naming.season_folder_format = "Season {season:00}".into();
+    client.put_naming(&naming).await.unwrap();
+    let previews = client.rename_preview(added.id, None).await.unwrap();
+    assert_eq!(previews.len(), 2);
+    assert_eq!(
+        previews[0].new_path,
+        "Season 01/Breaking Bad - S01E01 - Pilot HDTV-720p.mkv"
+    );
+    assert_eq!(
+        client
+            .rename_preview(added.id, Some(2))
+            .await
+            .unwrap()
+            .len(),
+        0
+    );
+    let renamed = client.rename_files(added.id, &[]).await.unwrap();
+    assert_eq!(renamed.message, "2 files renamed.");
+    assert!(renamed.problems.is_empty(), "{:?}", renamed.problems);
+    assert!(
+        folder
+            .join("Season 01/Breaking Bad - S01E01 - Pilot HDTV-720p.mkv")
+            .is_file()
+    );
+    assert!(
+        !folder
+            .join("Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv")
+            .exists()
+    );
+    assert!(
+        client
+            .rename_preview(added.id, None)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    let history = client
+        .history(1, 50, Some("episodeFileRenamed"))
+        .await
+        .unwrap();
+    assert_eq!(history.records.len(), 2);
+
+    // A file that disappeared is forgotten by the next scan.
+    std::fs::remove_file(folder.join("Season 01/Breaking Bad - S01E01 - Pilot HDTV-720p.mkv"))
+        .unwrap();
+    assert_eq!(
+        client.rescan_series(added.id).await.unwrap().message,
+        "0 files added, 1 missing files removed, 0 sizes updated."
+    );
+    // Deleting a file removes it from disk and the library.
+    let second = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|x| x.season_number == 1 && x.episode_number == 2)
+        .and_then(|x| x.file)
+        .unwrap();
+    client
+        .delete_episode_file(added.id, second.id)
+        .await
+        .unwrap();
+    assert!(!folder.join(&second.relative_path).exists());
+    let deleted = client
+        .history(1, 50, Some("episodeFileDeleted"))
+        .await
+        .unwrap();
+    assert_eq!(deleted.records.len(), 2);
+    assert!(
+        client
+            .episodes(added.id)
+            .await
+            .unwrap()
+            .iter()
+            .all(|e| e.file.is_none())
+    );
+
+    // Deleting the series with its files removes the folder.
+    client.delete_series_with_files(added.id).await.unwrap();
+    assert!(!folder.exists());
+    assert!(dir.path().is_dir());
+}

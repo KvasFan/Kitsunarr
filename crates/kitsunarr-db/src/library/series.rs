@@ -962,6 +962,30 @@ pub async fn link_episodes_to_file(
 
 /// Removes a file record and unlinks its episodes, keeping them monitored as they were
 /// (`MediaFileService.Delete` with reason Upgrade).
+/// A renamed file's new path (relative to the series folder).
+pub async fn set_file_path(
+    conn: &mut SqliteConnection,
+    file_id: i64,
+    relative_path: &str,
+) -> DbResult<()> {
+    sqlx::query("UPDATE episode_files SET relative_path = ? WHERE id = ?")
+        .bind(relative_path)
+        .bind(file_id)
+        .execute(&mut *conn)
+        .await?;
+    Ok(())
+}
+
+/// A file's size as found on disk.
+pub async fn set_file_size(conn: &mut SqliteConnection, file_id: i64, size: i64) -> DbResult<()> {
+    sqlx::query("UPDATE episode_files SET size = ? WHERE id = ?")
+        .bind(size)
+        .bind(file_id)
+        .execute(&mut *conn)
+        .await?;
+    Ok(())
+}
+
 pub async fn delete_episode_file(conn: &mut SqliteConnection, file_id: i64) -> DbResult<()> {
     sqlx::query("UPDATE episodes SET episode_file_id = NULL WHERE episode_file_id = ?")
         .bind(file_id)
