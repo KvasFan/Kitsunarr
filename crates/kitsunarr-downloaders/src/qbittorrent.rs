@@ -128,6 +128,11 @@ pub struct Preferences {
     pub max_ratio_act: i64,
     #[serde(default)]
     pub max_ratio: f64,
+    /// qBittorrent 4.6: stop seeding after this many minutes without activity.
+    #[serde(default)]
+    pub max_inactive_seeding_time_enabled: bool,
+    #[serde(default)]
+    pub max_inactive_seeding_time: i64,
     #[serde(default = "default_true")]
     pub dht: bool,
 }
@@ -179,6 +184,12 @@ pub struct Torrent {
     /// Seconds (qBittorrent 4.3 and newer).
     #[serde(default)]
     pub seeding_time: Option<i64>,
+    /// Minutes; -2: the global limit, -1: none (qBittorrent 4.6).
+    #[serde(default = "minus_two_i")]
+    pub inactive_seeding_time_limit: i64,
+    /// Unix seconds of the last upload or download.
+    #[serde(default)]
+    pub last_activity: i64,
     /// Comma-separated tags.
     #[serde(default)]
     pub tags: String,
@@ -215,8 +226,25 @@ impl Torrent {
         self.tags.split(',').any(|t| t.trim() == tag)
     }
 
-    /// `HasReachedSeedLimit` (ratio and seeding time; the inactive-seeding limit is not read).
+    /// `HasReachedSeedLimit`: ratio, seeding time or inactive seeding time.
     pub fn has_reached_seed_limit(&self, prefs: &Preferences) -> bool {
+        self.has_reached_ratio_or_time(prefs) || self.has_reached_inactive_limit(prefs)
+    }
+
+    /// `HasReachedInactiveSeedingTimeLimit`.
+    fn has_reached_inactive_limit(&self, prefs: &Preferences) -> bool {
+        let limit = if self.inactive_seeding_time_limit >= 0 {
+            self.inactive_seeding_time_limit * 60
+        } else if self.inactive_seeding_time_limit == -2 && prefs.max_inactive_seeding_time_enabled
+        {
+            prefs.max_inactive_seeding_time * 60
+        } else {
+            return false;
+        };
+        self.last_activity > 0 && now_unix() - self.last_activity > limit
+    }
+
+    fn has_reached_ratio_or_time(&self, prefs: &Preferences) -> bool {
         if self.ratio_limit >= 0.0 {
             if self.ratio_limit - self.ratio <= 0.001 {
                 return true;
@@ -906,6 +934,13 @@ impl QBittorrent {
     }
 }
 
+fn now_unix() -> i64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs() as i64)
+        .unwrap_or(0)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -945,6 +980,8 @@ mod tests {
             ratio_limit: -2.0,
             seeding_time_limit: -2,
             seeding_time: Some(600),
+            inactive_seeding_time_limit: -2,
+            last_activity: 0,
             tags: String::new(),
         };
         use crate::ItemStatus::*;
@@ -956,6 +993,8 @@ mod tests {
             max_seeding_time: 0,
             max_ratio_act: 0,
             max_ratio: 1.0,
+            max_inactive_seeding_time_enabled: false,
+            max_inactive_seeding_time: 0,
             dht: true,
         };
         let mut t = torrent("pausedUP", 0);
@@ -968,6 +1007,12 @@ mod tests {
         t.seeding_time_limit = 10;
         assert!(t.has_reached_seed_limit(&global));
         t.seeding_time_limit = 11;
+        assert!(!t.has_reached_seed_limit(&global));
+        // qBittorrent 4.6's inactive-seeding limit: an hour without activity.
+        t.inactive_seeding_time_limit = 60;
+        t.last_activity = now_unix() - 2 * 3600;
+        assert!(t.has_reached_seed_limit(&global));
+        t.last_activity = now_unix() - 600;
         assert!(!t.has_reached_seed_limit(&global));
         let item = torrent("downloading", 120).to_item("2.11.4", true);
         assert_eq!(
@@ -1036,6 +1081,8 @@ mod tests {
             max_seeding_time: time,
             max_ratio_act: act,
             max_ratio: 1.0,
+            max_inactive_seeding_time_enabled: false,
+            max_inactive_seeding_time: 0,
             dht: true,
         };
         assert!(prefs(true, false, 0, 1).removes_completed_downloads());
