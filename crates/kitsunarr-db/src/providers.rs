@@ -16,7 +16,9 @@ use crate::{DbError, DbResult, from_json, now, to_json};
 pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
     let list: &[&str] = match kind {
         ProviderKind::Indexer => &["Torznab", "Newznab"],
-        ProviderKind::DownloadClient => &["QBittorrent", "Deluge", "Transmission"],
+        ProviderKind::DownloadClient => {
+            &["QBittorrent", "Deluge", "Transmission", "Sabnzbd", "Nzbget"]
+        }
         // Notifications are stored but none is sent yet (#9).
         ProviderKind::Notification => &[],
         ProviderKind::ImportList => &[],

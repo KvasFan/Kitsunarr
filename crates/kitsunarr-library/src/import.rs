@@ -218,6 +218,9 @@ pub struct Download<'a> {
     pub grabs: &'a [GrabRecord],
     pub client_name: &'a str,
     pub client_implementation: &'a str,
+    /// The client lets Kitsunarr move the files (Usenet: `CanMoveFiles`); torrents keep
+    /// seeding, so their files are copied or hard-linked.
+    pub move_files: bool,
 }
 
 /// What happened to one file.
@@ -797,9 +800,14 @@ async fn transfer_and_record(
             format!("Failed to import episode: {e}")
         }
     })?;
-    // Downloads stay in the client (seeding): hard link when allowed, else copy.
-    let linked = media.use_hardlinks && std::fs::hard_link(&c.path, &dest).is_ok();
-    if !linked {
+    // Usenet downloads are moved (`TransferMode.Move`); torrents stay in the client (seeding):
+    // hard link when allowed, else copy.
+    let moved = d.move_files && std::fs::rename(&c.path, &dest).is_ok();
+    let linked = !moved
+        && !d.move_files
+        && media.use_hardlinks
+        && std::fs::hard_link(&c.path, &dest).is_ok();
+    if !moved && !linked {
         std::fs::copy(&c.path, &dest).map_err(|e| {
             let _ = std::fs::remove_file(&dest);
             if e.kind() == std::io::ErrorKind::PermissionDenied {
@@ -808,6 +816,12 @@ async fn transfer_and_record(
                 format!("Failed to import episode: {e}")
             }
         })?;
+        if d.move_files {
+            // A move across file systems: the copy is in place, so the source can go.
+            if let Err(e) = std::fs::remove_file(&c.path) {
+                tracing::warn!(path = %c.path.display(), error = %e, "could not remove the moved file's source");
+            }
+        }
     }
 
     let mut conn = db.pool().acquire().await.map_err(|e| e.to_string())?;

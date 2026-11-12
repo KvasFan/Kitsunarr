@@ -1587,3 +1587,233 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         );
     }
 }
+
+/// A Newznab indexer whose release links to an NZB, and SABnzbd: the upload, then the job in
+/// the history once it completes.
+async fn usenet_mocks() -> (String, u16, Arc<std::sync::Mutex<serde_json::Value>>) {
+    use axum::extract::{Multipart, Query, State};
+    use axum::response::IntoResponse;
+    use axum::routing::get;
+    type Sab = Arc<std::sync::Mutex<serde_json::Value>>;
+
+    async fn newznab(
+        State(base): State<Arc<std::sync::Mutex<String>>>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        if q.get("t").map(String::as_str) == Some("caps") {
+            let caps = std::fs::read_to_string(format!(
+                "{}/../../tests/fixtures/indexers/sonarr/newznab_caps.xml",
+                env!("CARGO_MANIFEST_DIR")
+            ))
+            .unwrap();
+            return ([("content-type", "application/xml")], caps).into_response();
+        }
+        let base = base.lock().unwrap().clone();
+        let link = format!("{base}/getnzb/77.nzb?apikey=n3wznab-key");
+        let feed = format!(
+            r#"<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:newznab="http://www.newznab.com/DTD/2010/feeds/attributes/"><channel><title>Mock</title>
+<item><title>Breaking.Bad.S01E01.720p.HDTV.x264-GRP</title><guid>nzb-77</guid>
+<link>{link}</link><pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate>
+<enclosure url="{link}" length="1500000000" type="application/x-nzb" />
+<newznab:attr name="size" value="1500000000" /></item>
+</channel></rss>"#
+        );
+        ([("content-type", "application/rss+xml")], feed).into_response()
+    }
+
+    async fn nzb(
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        assert_eq!(q.get("apikey").map(String::as_str), Some("n3wznab-key"));
+        (
+            [("content-type", "application/x-nzb")],
+            r#"<?xml version="1.0"?><nzb xmlns="http://www.newzbin.com/DTD/2003/nzb"><file subject="x"><segments/></file></nzb>"#,
+        )
+            .into_response()
+    }
+
+    async fn sab(
+        State(state): State<Sab>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+        multipart: Option<Multipart>,
+    ) -> axum::response::Response {
+        assert_eq!(q.get("apikey").map(String::as_str), Some("sab-key"));
+        let mut uploaded = None;
+        if let Some(mut mp) = multipart {
+            let field = mp.next_field().await.unwrap().unwrap();
+            uploaded = field.file_name().map(str::to_string);
+        }
+        let mut s = state.lock().unwrap();
+        let body = match q.get("mode").map(String::as_str).unwrap_or_default() {
+            "version" => serde_json::json!({"version": "4.3.2"}),
+            "get_config" => serde_json::json!({"config": {
+                "misc": {"complete_dir": "/complete", "history_retention_option": "all"},
+                "categories": [{"name": "tv", "dir": "tv"}], "sorters": []}}),
+            "addfile" => {
+                s["uploaded"] = uploaded.unwrap_or_default().into();
+                s["category"] = q.get("cat").cloned().unwrap_or_default().into();
+                serde_json::json!({"status": true, "nzo_ids": ["SABnzbd_nzo_x1"]})
+            }
+            "queue" => serde_json::json!({"queue": {"paused": false, "slots": s["queue"].clone()}}),
+            "history" => serde_json::json!({"history": {"slots": s["history"].clone()}}),
+            _ => serde_json::json!({"status": false, "error": "unexpected"}),
+        };
+        axum::Json(body).into_response()
+    }
+
+    let base: Arc<std::sync::Mutex<String>> = Arc::default();
+    let app = axum::Router::new()
+        .route("/api", get(newznab))
+        .route("/getnzb/77.nzb", get(nzb))
+        .with_state(base.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let indexer = format!("http://{}", listener.local_addr().unwrap());
+    *base.lock().unwrap() = indexer.clone();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+    let state: Sab = Arc::new(std::sync::Mutex::new(
+        serde_json::json!({"queue": [], "history": []}),
+    ));
+    let app = axum::Router::new()
+        .route("/api", get(sab).post(sab))
+        .with_state(state.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (indexer, port, state)
+}
+
+#[tokio::test]
+async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
+    use kitsunarr_domain::api::search::{GrabRequest, ReleaseQuery};
+    let tvmaze = tvmaze_mock().await;
+    let http = reqwest::Client::new();
+    let server = start_with(Metadata {
+        tvmaze: TvMaze::with_base(http.clone(), &tvmaze),
+        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
+    })
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, sab_port, sab) = usenet_mocks().await;
+    let indexer: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Newznab", "implementation": "Newznab",
+                "options": {"enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "n3wznab-key", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let indexer_id = indexer["id"].as_i64().unwrap();
+    let sabnzbd: serde_json::Value = client
+        .post(
+            "/providers/downloadclients",
+            &serde_json::json!({
+                "name": "SABnzbd", "implementation": "Sabnzbd", "enabled": true,
+                "settings": {"host": "127.0.0.1", "port": sab_port, "apiKey": "sab-key", "tvCategory": "tv"}
+            }),
+        )
+        .await
+        .unwrap();
+    assert_eq!(sabnzbd["supported"], true);
+    assert_eq!(sabnzbd["protocol"], "usenet");
+
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+        })
+        .await
+        .unwrap();
+    let pilot = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    let found = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+        })
+        .await
+        .unwrap();
+    let release = found.releases.iter().find(|r| r.guid == "nzb-77").unwrap();
+    assert!(release.approved, "{:?}", release.rejections);
+    let grabbed = client
+        .grab_release(&GrabRequest {
+            guid: release.guid.clone(),
+            indexer_id,
+        })
+        .await
+        .unwrap();
+    assert_eq!(grabbed.download_client, "SABnzbd");
+    assert_eq!(grabbed.download_id, "SABnzbd_nzo_x1");
+    assert_eq!(
+        sab.lock().unwrap()["uploaded"],
+        "Breaking.Bad.S01E01.720p.HDTV.x264-GRP.nzb"
+    );
+    assert_eq!(sab.lock().unwrap()["category"], "tv");
+
+    // Downloading: the queue matches the job to the grab.
+    sab.lock().unwrap()["queue"] = serde_json::json!([{"status": "Downloading", "nzo_id": "SABnzbd_nzo_x1",
+        "filename": "Breaking.Bad.S01E01.720p.HDTV.x264-GRP", "cat": "tv", "mb": "1430", "mbleft": "715",
+        "timeleft": "0:02:00", "priority": "Normal"}]);
+    let queue = client.queue().await.unwrap();
+    assert_eq!(queue.items.len(), 1);
+    assert_eq!(queue.items[0].series_title.as_deref(), Some("Breaking Bad"));
+    assert_eq!(queue.items[0].time_left, Some(120));
+
+    // Completed: the file is moved into the series folder.
+    let downloads = tempfile::tempdir().unwrap();
+    let job = downloads
+        .path()
+        .join("Breaking.Bad.S01E01.720p.HDTV.x264-GRP");
+    std::fs::create_dir_all(&job).unwrap();
+    let video = job.join("Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv");
+    std::fs::write(&video, b"video").unwrap();
+    {
+        let mut s = sab.lock().unwrap();
+        s["queue"] = serde_json::json!([]);
+        s["history"] = serde_json::json!([{"status": "Completed", "nzo_id": "SABnzbd_nzo_x1",
+            "name": "Breaking.Bad.S01E01.720p.HDTV.x264-GRP", "category": "tv", "bytes": 5,
+            "storage": video.display().to_string()}]);
+    }
+    assert_eq!(
+        client.refresh_queue().await.unwrap(),
+        "1 downloads imported, 0 need attention"
+    );
+    assert!(!video.exists(), "Usenet downloads are moved, not copied");
+    let file = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.id == pilot.id)
+        .and_then(|e| e.file)
+        .expect("the pilot has a file");
+    assert_eq!(file.quality_name, "HDTV-720p");
+    let detail = client.series_detail(added.id).await.unwrap();
+    let on_disk = std::path::Path::new(&detail.item.path).join(&file.relative_path);
+    assert_eq!(std::fs::read(on_disk).unwrap(), b"video");
+}

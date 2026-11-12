@@ -489,6 +489,22 @@ impl Deluge {
 
     /// `MarkItemAsImported`: the post-import label, when one is set and differs from the TV
     /// label. Failures are logged, as upstream.
+    /// `RemoveItem`: `core.remove_torrent`, with the data when asked.
+    pub async fn remove(
+        &self,
+        s: &Settings,
+        hash: &str,
+        delete_data: bool,
+    ) -> Result<(), DownloadError> {
+        self.call(
+            s,
+            "core.remove_torrent",
+            json!([hash.to_ascii_lowercase(), delete_data]),
+        )
+        .await
+        .map(|_| ())
+    }
+
     pub async fn mark_imported(&self, s: &Settings, hash: &str) -> Result<(), DownloadError> {
         let Some(imported) = s
             .imported_category

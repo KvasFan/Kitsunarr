@@ -298,6 +298,33 @@ pub(crate) async fn send(
     let indexer_id = cached.release.indexer_id;
     let failed = |m: String| ApiError::field("guid", m);
 
+    // `UsenetClientBase.Download`: fetch the NZB through the indexer, validate it, send it.
+    if settings.is_usenet() {
+        let url = release
+            .download_url
+            .clone()
+            .filter(|u| !u.trim().is_empty())
+            .ok_or_else(|| failed("The release has no download link.".into()))?;
+        let fetched = state
+            .indexers
+            .download(indexer_id, &url, "application/x-nzb")
+            .await
+            .map_err(|e| failed(format!("Downloading the NZB failed: {e}")))?;
+        let Downloaded::File(bytes) = fetched else {
+            return Err(failed(
+                "The indexer returned a magnet link for a Usenet release.".into(),
+            ));
+        };
+        let name = format!("{}.nzb", clean_file_name(&release.title));
+        let id = state
+            .downloads
+            .clients
+            .add_nzb(&settings, &name, &bytes, cached.recent)
+            .await
+            .map_err(|e| failed(describe(&e)))?;
+        return finish(state, cached, &client, id).await;
+    }
+
     // `TorrentClientBase.Download`: the magnet link first (qBittorrent does not prefer
     // torrent files), else the file behind the download link.
     let download_url = release.download_url.clone().unwrap_or_default();

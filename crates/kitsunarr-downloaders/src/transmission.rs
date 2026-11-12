@@ -451,6 +451,22 @@ impl Transmission {
     }
 
     /// `MarkItemAsImported` (Transmission 4): swaps the TV label for the post-import one.
+    /// `RemoveItem`: `torrent-remove`, with the local data when asked.
+    pub async fn remove(
+        &self,
+        s: &Settings,
+        hash: &str,
+        delete_data: bool,
+    ) -> Result<(), DownloadError> {
+        self.call(
+            s,
+            "torrent-remove",
+            Some(json!({ "ids": [hash.to_ascii_lowercase()], "delete-local-data": delete_data })),
+        )
+        .await
+        .map(|_| ())
+    }
+
     pub async fn mark_imported(&self, s: &Settings, hash: &str) -> Result<(), DownloadError> {
         let Some(imported) = s
             .imported_category

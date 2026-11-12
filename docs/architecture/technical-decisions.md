@@ -198,7 +198,7 @@ Known differences, all reported rather than hidden:
 
 Verification: tests ported from Sonarr's `DecisionEngineTests` cover ranking (all 30 `PrioritizeDownloadDecisionFixture` tests) and the sizes, upgrades, raw discs, release restrictions, search matching, repacks and other specifications. Sonarr's custom format language and release-type fixtures are ported too. End-to-end tests run real release names through parsing, mapping, decisions and ranking. Mutation checks confirm the ranking and size tests fail when the logic is broken.
 
-## 16. Grabbing: releases resolved on the server; qBittorrent, Deluge and Transmission
+## 16. Grabbing: releases resolved on the server; qBittorrent, Deluge, Transmission, SABnzbd and NZBGet
 
 A grab names a release by indexer and GUID, never by download link. Search results are kept on the server for 30 minutes, as in Sonarr; the grab resolves the link there, so indexer API keys stay out of the browser, the API and the history.
 
@@ -228,12 +228,22 @@ The rest follows Sonarr:
   - labels from Transmission 4: adds carry the TV label, the list keeps labelled torrents (and, for torrents from before the upgrade, those in the category folder), and imports swap the TV label for the post-import one;
   - before Transmission 4 the category is a subfolder of the download directory, and nothing changes after import;
   - the Test needs Transmission 2.40 or newer, as upstream.
+- **SABnzbd** (`Sabnzbd.cs`, `SabnzbdProxy.cs`), through `GET {base}/api?mode=..&output=json` with the API key (or `ma_username`/`ma_password`):
+  - NZBs are uploaded with `mode=addfile` (multipart field `name`), with the category and the recent or older priority; the answer's first `nzo_id` is the download id;
+  - the queue and the history (60 entries, as upstream's default `DownloadClientHistoryLimit`) are read with Sonarr's state mapping; a history job's output path is the outermost folder named after the job;
+  - the Test follows upstream: version 0.7+, "check before download" before 1.1, the category must exist and not end with `*` (job folders), no TV/movie/date sorting for it, and a warning when the history is kept for less than 14 days;
+  - SABnzbd returns numbers as strings and booleans as 0/1; answers are read leniently, as Newtonsoft does upstream.
+- **NZBGet** (`Nzbget.cs`, `NzbgetProxy.cs`), through `POST {base}/jsonrpc` with basic authentication:
+  - only NZBGet 16 (2016) and newer: `append` carries a `drone` parameter with a random id, which tracks the download. Upstream's legacy forms for 12–15 (append, then find the job and set the parameter) are not ported, and the Test reports older versions;
+  - sizes are joined from their 32-bit halves; time left accumulates over the queue at the current download rate; history states follow the PAR, unpack, move, script, delete and mark statuses as upstream.
+- **NZBs** are fetched through the indexer client (its rate limit and redirects) and validated as `NzbValidationService` does (an `nzb` root with at least one `file`; an indexer `<error>` document is reported) before they reach the client.
+- **Usenet imports move the files** (`CanMoveFiles`); across file systems the file is copied, then the source removed. Torrent imports still copy or hard-link.
 - **History:** one "Grabbed" entry per episode, with Sonarr's data keys except `downloadUrl`, which would store the indexer key.
 
 Two choices differ from Sonarr:
 
 - **Grabs are rejected rather than mapped by hand.** A release that could not be matched to episodes cannot be grabbed until manual episode selection exists; Sonarr would ask the user to pick them.
-- **"Implemented" means implemented.** Only qBittorrent, Deluge and Transmission are marked as implemented download clients, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.
+- **"Implemented" means implemented.** qBittorrent, Deluge, Transmission, SABnzbd and NZBGet are marked as implemented download clients, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.
 
 ## 17. Importing completed downloads, safer than upstream where files are at stake
 

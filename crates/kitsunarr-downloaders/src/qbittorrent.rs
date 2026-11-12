@@ -529,6 +529,25 @@ impl QBittorrent {
         .map(|_| ())
     }
 
+    /// `RemoveItem`: `torrents/delete`, with the files when asked.
+    pub async fn remove(
+        &self,
+        s: &Settings,
+        hash: &str,
+        delete_files: bool,
+    ) -> Result<(), DownloadError> {
+        self.post(
+            s,
+            "/api/v2/torrents/delete",
+            vec![
+                ("hashes", hash.to_ascii_lowercase()),
+                ("deleteFiles", delete_files.to_string()),
+            ],
+        )
+        .await
+        .map(|_| ())
+    }
+
     /// `Test`: connection and version, categories (created when missing, as upstream does),
     /// share-limit settings that would remove downloads, and listing torrents.
     pub async fn test(&self, s: &Settings) -> Result<TestReport, DownloadError> {

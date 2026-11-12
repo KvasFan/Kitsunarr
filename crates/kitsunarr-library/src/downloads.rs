@@ -1,5 +1,5 @@
 //! Completed download handling: Sonarr's `DownloadMonitoringService` and
-//! `CompletedDownloadService`, for the download clients Kitsunarr implements (qBittorrent).
+//! `CompletedDownloadService`, for the download clients Kitsunarr implements.
 //!
 //! Each refresh reads the clients, imports completed downloads Kitsunarr grabbed and has not
 //! imported yet, and keeps a per-download state for the queue. Downloads are never removed from
@@ -233,6 +233,7 @@ impl Monitor {
                         grabs: &mine,
                         client_name: &client.name,
                         client_implementation: &client.implementation,
+                        move_files: settings.is_usenet(),
                     },
                 )
                 .await?;

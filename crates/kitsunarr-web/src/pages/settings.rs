@@ -771,7 +771,7 @@ fn IndexerOptions() -> Element {
 
 #[component]
 pub fn SettingsDownloadClients() -> Element {
-    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent, Deluge and Transmission work: use Test in the editor; grabs, the queue and imports use them. SABnzbd and NZBGet settings are stored and editable, but sending downloads to them is not implemented yet." } }
+    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent, Deluge, Transmission, SABnzbd and NZBGet work: use Test in the editor; grabs, the queue and imports use them." } }
 }
 
 #[component]
@@ -903,7 +903,7 @@ fn ProviderEditor(
         ProviderKind::DownloadClient => {
             matches!(
                 item.implementation.as_str(),
-                "QBittorrent" | "Deluge" | "Transmission"
+                "QBittorrent" | "Deluge" | "Transmission" | "Sabnzbd" | "Nzbget"
             )
         }
         _ => false,

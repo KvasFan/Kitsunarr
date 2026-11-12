@@ -2628,6 +2628,7 @@ dependencies = [
  "axum",
  "base64 0.23.1",
  "data-encoding",
+ "quick-xml",
  "reqwest 0.13.5",
  "serde",
  "serde_json",
@@ -2635,6 +2636,7 @@ dependencies = [
  "thiserror 2.0.21",
  "tokio",
  "tracing",
+ "uuid",
 ]
 
 [[package]]
@@ -5060,6 +5062,7 @@ checksum = "bed99139f7dac9b5cfe5f17be4d66dc7079a34dee1d74bcc77217119240e267c"
 dependencies = [
  "getrandom 0.4.3",
  "js-sys",
+ "serde_core",
  "wasm-bindgen",
 ]
 
