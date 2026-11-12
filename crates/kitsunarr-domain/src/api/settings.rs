@@ -263,6 +263,9 @@ pub const NOTIFICATION_IMPLEMENTATIONS: &[&str] = &[
     "Email",
     "Mailgun",
     "SendGrid",
+    "Pushcut",
+    "SynologyIndexer",
+    "Trakt",
 ];
 
 /// Episode/folder naming configuration (Sonarr-compatible tokens).

@@ -10,6 +10,7 @@
 
 pub mod discord;
 pub mod email;
+pub mod extra;
 pub mod media;
 pub mod push;
 pub mod script;
@@ -546,6 +547,9 @@ impl Notifier {
             "email" => email::smtp(s, event).await,
             "mailgun" => email::mailgun(self, s, event).await,
             "sendgrid" => email::sendgrid(self, s, event).await,
+            "pushcut" => extra::pushcut(self, s, event).await,
+            "synologyindexer" => extra::synology(s, event).await,
+            "trakt" => extra::trakt(self, s, event).await,
             other => Err(NotifyError::Settings(format!(
                 "{other} notifications are not supported yet"
             ))),

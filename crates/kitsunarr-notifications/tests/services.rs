@@ -507,3 +507,60 @@ async fn email_is_sent_over_smtp() {
     assert!(transcript.contains("RCPT TO:<audit@example.org>"));
     assert!(transcript.contains("Subject: Kitsunarr - Episode Downloaded"));
 }
+
+/// Pushcut (the named notification), Trakt (the collection) and Synology Indexer (synoindex).
+#[tokio::test]
+async fn pushcut_trakt_and_synology() {
+    let (base, _, log) = mock().await;
+    let n = Notifier::new(reqwest::Client::new());
+    n.send(
+        &conn("Pushcut", json!({"notificationName": "Kitsunarr Alert", "apiKey": "pk", "timeSensitive": true, "baseUrl": base})),
+        &download(),
+        &instance(),
+    )
+    .await
+    .unwrap();
+    n.send(
+        &conn("Trakt", json!({"clientId": "cid", "accessToken": "tok", "baseUrl": base})),
+        &download(),
+        &instance(),
+    )
+    .await
+    .unwrap();
+    let seen = log.lock().unwrap().clone();
+    let push = seen.iter().find(|s| s.path.starts_with("/v1/notifications/")).unwrap();
+    assert_eq!(push.path, "/v1/notifications/Kitsunarr%20Alert");
+    assert_eq!(push.headers["api-key"], "pk");
+    let body: Value = serde_json::from_str(&push.body).unwrap();
+    assert_eq!((body["title"].as_str(), body["isTimeSensitive"].as_bool()), (Some("Episode Downloaded"), Some(true)));
+    let trakt = seen.iter().find(|s| s.path == "/sync/collection").unwrap();
+    assert_eq!(trakt.headers["trakt-api-key"], "cid");
+    assert_eq!(trakt.headers["authorization"], "Bearer tok");
+    let body: Value = serde_json::from_str(&trakt.body).unwrap();
+    let show = &body["shows"][0];
+    assert_eq!(show["ids"]["tvdb"], 81189);
+    assert_eq!(show["seasons"][0]["episodes"][0]["resolution"], "hd_720p");
+    assert_eq!(show["seasons"][0]["episodes"][0]["media_type"], "vhs");
+
+    // Synology: a stand-in synoindex that records its arguments.
+    let dir = tempfile::tempdir().unwrap();
+    let tool = dir.path().join("synoindex");
+    let out = dir.path().join("calls");
+    std::fs::write(&tool, format!("#!/bin/sh\necho \"$@\" >> {}\n", out.display())).unwrap();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        std::fs::set_permissions(&tool, std::fs::Permissions::from_mode(0o755)).unwrap();
+        n.send(
+            &conn("SynologyIndexer", json!({"updateLibrary": true, "synoindexPath": tool.display().to_string()})),
+            &download(),
+            &instance(),
+        )
+        .await
+        .unwrap();
+        assert_eq!(
+            std::fs::read_to_string(&out).unwrap().trim(),
+            "-a /tv/Breaking Bad/Season 01/Breaking Bad - S01E01.mkv"
+        );
+    }
+}
