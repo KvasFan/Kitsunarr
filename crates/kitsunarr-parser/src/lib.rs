@@ -12,6 +12,7 @@ mod diacritics;
 pub mod extensions;
 pub mod language;
 pub mod model;
+pub mod movie;
 pub mod netregex;
 pub mod quality;
 mod re;

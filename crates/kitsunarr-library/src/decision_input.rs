@@ -252,3 +252,113 @@ pub async fn library_titles(db: &Database) -> DbResult<Vec<decision::LibrarySeri
         })
         .collect())
 }
+
+/// A library film as the decision engine's one-episode series (Tanukarr models a film as
+/// S01E01): the episode carries the film's id, runtime, monitoring and file.
+pub async fn movie_model(
+    db: &Database,
+    detail: &kitsunarr_domain::api::library::MovieDetail,
+) -> DbResult<decision::Series> {
+    let profile = quality::get_profile(db.pool(), detail.item.quality_profile_id).await?;
+    let external: Vec<(String, String)> = detail
+        .external_ids
+        .iter()
+        .map(|e| (e.kind.to_string(), e.value.clone()))
+        .collect();
+    let (_, _, imdb_id) = ids_of(&external);
+    #[derive(sqlx::FromRow)]
+    struct Row {
+        id: i64,
+        relative_path: String,
+        quality_id: i64,
+        revision_version: i64,
+        revision_real: i64,
+        is_repack: bool,
+        languages: String,
+        release_group: Option<String>,
+        scene_name: Option<String>,
+        original_path: Option<String>,
+        size: i64,
+        added_at: String,
+    }
+    let row: Option<Row> = sqlx::query_as(
+        "SELECT id, relative_path, quality_id, revision_version, revision_real, is_repack, languages, \
+         release_group, scene_name, original_path, size, added_at FROM movie_files WHERE movie_id = ?",
+    )
+    .bind(detail.item.id)
+    .fetch_optional(db.pool())
+    .await?;
+    let file = row.map(|f| decision::EpisodeFile {
+        id: f.id,
+        quality: QualityModel {
+            quality_id: f.quality_id as i32,
+            revision: Revision {
+                version: f.revision_version as i32,
+                real: f.revision_real as i32,
+                is_repack: f.is_repack,
+            },
+        },
+        release_title: f
+            .scene_name
+            .filter(|n| !n.trim().is_empty())
+            .or_else(|| {
+                f.original_path
+                    .as_deref()
+                    .filter(|p| !p.trim().is_empty())
+                    .map(file_name)
+            })
+            .unwrap_or_else(|| file_name(&f.relative_path)),
+        file_name: file_name(&f.relative_path),
+        release_group: f.release_group,
+        languages: serde_json::from_str::<Vec<i32>>(&f.languages)
+            .unwrap_or_default()
+            .into_iter()
+            .filter_map(Language::by_id)
+            .collect(),
+        size: f.size,
+        indexer_flags: 0,
+        release_type: kitsunarr_parser::ReleaseType::SingleEpisode,
+        date_added: chrono::DateTime::parse_from_rfc3339(&f.added_at)
+            .ok()
+            .map(|d| d.with_timezone(&chrono::Utc)),
+    });
+    let runtime = detail.runtime.unwrap_or(0);
+    let date = detail
+        .digital_release
+        .clone()
+        .or_else(|| detail.physical_release.clone())
+        .or_else(|| detail.in_cinemas.clone());
+    Ok(decision::Series {
+        monitored: detail.item.monitored,
+        id: detail.item.id,
+        title: detail.item.title.clone(),
+        year: detail.item.year.unwrap_or(0),
+        series_type: kitsunarr_domain::SeriesType::Standard,
+        tvdb_id: 0,
+        tv_rage_id: 0,
+        imdb_id,
+        alternate_titles: Vec::new(),
+        runtime,
+        original_language: None,
+        use_scene_numbering: false,
+        tags: detail.item.tags.clone(),
+        profile,
+        episodes: vec![decision::Episode {
+            id: detail.item.id,
+            season_number: 1,
+            episode_number: 1,
+            absolute_episode_number: None,
+            scene_season_number: None,
+            scene_episode_number: None,
+            title: Some(detail.item.title.clone()),
+            air_date: date.as_deref().map(|d| d.chars().take(10).collect()),
+            air_date_utc: date
+                .as_deref()
+                .and_then(|d| chrono::DateTime::parse_from_rfc3339(d).ok())
+                .map(|d| d.with_timezone(&chrono::Utc)),
+            runtime,
+            monitored: detail.item.monitored,
+            file,
+        }],
+    })
+}

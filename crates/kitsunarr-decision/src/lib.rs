@@ -133,6 +133,62 @@ impl Engine<'_> {
             .collect()
     }
 
+    /// Tanukarr's films: the engine's series is the film as one episode (S01E01, the film's
+    /// runtime and file), and a release must name the film (`MovieReleaseParser.Match`) to be
+    /// decided like an episode release.
+    pub fn evaluate_movie(
+        &self,
+        releases: &[Release],
+        criteria: &SearchCriteria,
+        movie: &kitsunarr_parser::movie::MovieCandidate<'_>,
+    ) -> Vec<Decision> {
+        releases
+            .iter()
+            .enumerate()
+            .map(
+                |(i, r)| match kitsunarr_parser::movie::match_movie(&r.title, movie) {
+                    Some(m) => {
+                        let parsed = ParsedEpisodeInfo {
+                            release_title: r.title.clone(),
+                            series_title: m.title.clone(),
+                            series_title_info: kitsunarr_parser::SeriesTitleInfo {
+                                title: m.title.clone(),
+                                title_without_year: m.title.clone(),
+                                year: m.year,
+                                all_titles: None,
+                            },
+                            quality: m.quality,
+                            languages: m.languages,
+                            release_group: m.release_group,
+                            season_numbers: vec![1],
+                            episode_numbers: vec![1],
+                            ..Default::default()
+                        };
+                        self.decide_mapped(criteria, i, r, parsed)
+                    }
+                    None if kitsunarr_parser::movie::parse_movie(&r.title).is_some() => self
+                        .rejected(
+                            i,
+                            r,
+                            None,
+                            None,
+                            Rejection::new(RejectionReason::WrongSeries, "Wrong movie"),
+                        ),
+                    None => self.rejected(
+                        i,
+                        r,
+                        None,
+                        None,
+                        Rejection::new(
+                            RejectionReason::UnableToParse,
+                            "Unable to parse release as a movie",
+                        ),
+                    ),
+                },
+            )
+            .collect()
+    }
+
     /// Complete-series search: only releases `CompleteSeriesReleaseParser` reads as a run of
     /// this series are decided; the others are left out, as upstream.
     fn evaluate_complete_series(

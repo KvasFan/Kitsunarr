@@ -47,6 +47,8 @@ pub struct CachedRelease {
     pub release_source: &'static str,
     /// The episodes were chosen by hand at grab time (Tanukarr's persistent manual mapping).
     pub manual_mapping: bool,
+    /// A film's release (Tanukarr's movies): `series_id` is then 0 and `episode_ids` empty.
+    pub movie_id: Option<i64>,
     pub cached_at: Instant,
 }
 
@@ -233,6 +235,10 @@ pub async fn grab_release(
             )
         })?;
     let mut cached = cached;
+    if cached.movie_id.is_some() {
+        let target = pick_client(&state, &cached).await?;
+        return send(&state, &cached, target).await.map(Json);
+    }
     if !req.episode_ids.is_empty() {
         // Sonarr's override: the chosen episodes, which must belong to the searched series.
         for id in &req.episode_ids {
@@ -270,14 +276,20 @@ pub(crate) struct Target {
 /// Errors mean no usable client for the release's protocol (`DownloadClientUnavailableException`).
 pub(crate) async fn pick_client(state: &AppState, cached: &CachedRelease) -> ApiResult<Target> {
     let release = &cached.release.release;
-    let series = series::get_list_item(&state.db, cached.series_id).await?;
-    let client = choose_client(
-        state,
-        release.protocol,
-        cached.release.indexer_id,
-        &series.tags,
-    )
-    .await?;
+    let tags = match cached.movie_id {
+        Some(movie) => {
+            kitsunarr_db::library::movies::get_detail(&state.db, movie)
+                .await?
+                .item
+                .tags
+        }
+        None => {
+            series::get_list_item(&state.db, cached.series_id)
+                .await?
+                .tags
+        }
+    };
+    let client = choose_client(state, release.protocol, cached.release.indexer_id, &tags).await?;
     if !kitsunarr_downloaders::supported(&client.implementation) {
         return Err(ApiError::field(
             "guid",
@@ -300,7 +312,7 @@ pub(crate) async fn pick_client(state: &AppState, cached: &CachedRelease) -> Api
     Ok(Target {
         client,
         settings,
-        series_tags: series.tags,
+        series_tags: tags,
     })
 }
 
@@ -565,6 +577,26 @@ async fn finish(
         .await
         .map_err(|e| ApiError::Internal(e.to_string()))?;
     let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
+    if let Some(movie_id) = cached.movie_id {
+        history::insert(
+            &mut conn,
+            &NewHistory {
+                event_type: "grabbed".into(),
+                date: now.clone(),
+                source_title: r.release.title.clone(),
+                series_id: None,
+                episode_id: None,
+                movie_id: Some(movie_id),
+                quality_id: Some(cached.quality.quality_id),
+                revision: serde_json::to_value(cached.quality.revision).ok(),
+                languages: cached.languages.clone(),
+                custom_format_score: Some(cached.custom_format_score),
+                download_id: Some(download_id.clone()),
+                data: data.clone(),
+            },
+        )
+        .await?;
+    }
     for episode_id in &cached.episode_ids {
         history::insert(
             &mut conn,

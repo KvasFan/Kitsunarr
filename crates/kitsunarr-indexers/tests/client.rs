@@ -100,6 +100,7 @@ async fn start() -> (Mock, Indexer, IndexerClient) {
             anime_standard_format_search: false,
             additional_parameters: None,
             minimum_seeders: None,
+            movie_categories: vec![2000],
         },
     };
     let client = IndexerClient::new(reqwest::Client::new()).with_rate_limit(Duration::ZERO);

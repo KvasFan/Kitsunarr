@@ -697,6 +697,21 @@ impl Client {
     pub async fn search_releases(&self, q: &ReleaseQuery) -> ClientResult<ReleaseSearchResult> {
         self.get_query("/releases", q).await
     }
+    /// Interactive release search for a film.
+    pub async fn search_movie_releases(&self, movie_id: i64) -> ClientResult<ReleaseSearchResult> {
+        self.get(&format!("/movies/{movie_id}/releases")).await
+    }
+    /// Automatic search for a film (grabs the best approved release).
+    pub async fn automatic_movie_search(
+        &self,
+        movie_id: i64,
+    ) -> ClientResult<kitsunarr_domain::api::search::AutomaticSearchResult> {
+        self.post(
+            &format!("/movies/{movie_id}/search"),
+            &serde_json::json!({}),
+        )
+        .await
+    }
 
     // --- metadata catalogues --------------------------------------------------------------------
     pub async fn metadata_providers(&self) -> ClientResult<Vec<CatalogueInfo>> {

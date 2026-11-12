@@ -13,6 +13,7 @@ fn settings() -> Settings {
         anime_standard_format_search: false,
         additional_parameters: None,
         minimum_seeders: None,
+        movie_categories: vec![2000],
     }
 }
 

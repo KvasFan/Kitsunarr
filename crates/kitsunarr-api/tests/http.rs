@@ -4278,3 +4278,171 @@ async fn custom_quality_presets_round_trip() {
             .all(|p| !p.codec_multipliers.contains_key("HEVC"))
     );
 }
+
+/// Tanukarr's movie search: "Title Year" on the movie categories, releases decided as the
+/// film's feature, the best one grabbed into the film's history.
+#[tokio::test]
+async fn movies_are_searched_and_grabbed() {
+    use axum::extract::{Query, State};
+    use axum::response::IntoResponse;
+    type Seen = Arc<std::sync::Mutex<Vec<String>>>;
+    async fn torznab(
+        State(seen): State<Seen>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        if q.get("t").map(String::as_str) == Some("caps") {
+            let caps = std::fs::read_to_string(format!(
+                "{}/../../tests/fixtures/indexers/sonarr/newznab_caps.xml",
+                env!("CARGO_MANIFEST_DIR")
+            ))
+            .unwrap();
+            return ([("content-type", "application/xml")], caps).into_response();
+        }
+        seen.lock().unwrap().push(format!(
+            "t={} q={} cat={}",
+            q.get("t").cloned().unwrap_or_default(),
+            q.get("q").cloned().unwrap_or_default(),
+            q.get("cat").cloned().unwrap_or_default()
+        ));
+        let item = |title: &str, hash: &str| {
+            format!(
+                r#"<item><title>{title}</title><guid>{hash}</guid>
+<link>magnet:?xt=urn:btih:{hash}&amp;dn=x&amp;tr=udp://t</link><pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate>
+<size>8000000000</size><enclosure url="magnet:?xt=urn:btih:{hash}&amp;dn=x&amp;tr=udp://t" length="8000000000" type="application/x-bittorrent;x-scheme-handler/magnet" />
+<torznab:attr name="seeders" value="50" /></item>"#
+            )
+        };
+        let feed = format!(
+            r#"<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:torznab="http://torznab.com/schemas/2015/feed"><channel><title>Mock</title>{}{}{}</channel></rss>"#,
+            item(
+                "The.Matrix.1999.1080p.BluRay.x264-GRP",
+                "a12fe1c06bba254a9dc9f519b335aa7c1367a88a"
+            ),
+            item(
+                "The.Matrix.Reloaded.2003.1080p.BluRay.x264-GRP",
+                "b12fe1c06bba254a9dc9f519b335aa7c1367a88b"
+            ),
+            item(
+                "The.Matrix.1999.720p.HDTV.x264-GRP",
+                "c12fe1c06bba254a9dc9f519b335aa7c1367a88c"
+            ),
+        );
+        ([("content-type", "application/rss+xml")], feed).into_response()
+    }
+    async fn qbit(
+        State(seen): State<Seen>,
+        uri: axum::http::Uri,
+        body: axum::body::Bytes,
+    ) -> axum::response::Response {
+        let path = uri.path().to_string();
+        seen.lock()
+            .unwrap()
+            .push(format!("{path} {}", String::from_utf8_lossy(&body)));
+        match path.as_str() {
+            "/api/v2/auth/login" => "Ok.".into_response(),
+            "/api/v2/app/webapiVersion" => "2.11.4".into_response(),
+            "/api/v2/app/version" => "v5.0.0".into_response(),
+            "/api/v2/app/preferences" => {
+                axum::Json(serde_json::json!({"dht": true})).into_response()
+            }
+            "/api/v2/torrents/info" => axum::Json(serde_json::json!([])).into_response(),
+            "/api/v2/torrents/categories" => {
+                axum::Json(serde_json::json!({"tv-kitsunarr": {}})).into_response()
+            }
+            "/api/v2/torrents/add" => "Ok.".into_response(),
+            "/api/v2/torrents/properties" => axum::http::StatusCode::NOT_FOUND.into_response(),
+            _ => ().into_response(),
+        }
+    }
+    let searches: Seen = Arc::default();
+    let app = axum::Router::new()
+        .route("/api", axum::routing::get(torznab))
+        .with_state(searches.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let indexer_url = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let adds: Seen = Arc::default();
+    let app = axum::Router::new()
+        .route("/api/v2/{*rest}", axum::routing::get(qbit).post(qbit))
+        .with_state(adds.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let qbit_port = listener.local_addr().unwrap().port();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+    let server = start().await;
+    let client = signed_in(&server).await;
+    client
+        .post::<serde_json::Value, _>(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Movies", "implementation": "Torznab",
+                "options": {"enableInteractiveSearch": true, "enableAutomaticSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "categories": [5040], "movieCategories": [2000, 2040]}
+            }),
+        )
+        .await
+        .unwrap();
+    client
+        .post::<serde_json::Value, _>(
+            "/providers/downloadclients",
+            &serde_json::json!({
+                "name": "qBittorrent", "implementation": "QBittorrent", "enabled": true,
+                "settings": {"host": "127.0.0.1", "port": qbit_port, "tvCategory": "tv-kitsunarr"}
+            }),
+        )
+        .await
+        .unwrap();
+    let pool = server.state.db.pool();
+    let profile: i64 = sqlx::query_scalar("SELECT id FROM quality_profiles WHERE name = 'Any'")
+        .fetch_one(pool)
+        .await
+        .unwrap();
+    sqlx::query(
+        "INSERT INTO movies (id, title, sort_title, clean_title, title_slug, year, runtime, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at) VALUES (7, 'The Matrix', 'matrix', 'thematrix', 'the-matrix', 1999, 136, \
+         'tmdbMovie', '603', ?, '/movies', '/movies/The Matrix (1999)', '2026-11-01T00:00:00Z')",
+    )
+    .bind(profile)
+    .execute(pool)
+    .await
+    .unwrap();
+
+    let found = client.search_movie_releases(7).await.unwrap();
+    assert_eq!(found.description, "The Matrix (1999)");
+    assert_eq!(found.searched_indexers, 1);
+    let seen = searches.lock().unwrap().clone();
+    assert!(
+        seen.iter()
+            .any(|s| s == "t=search q=The Matrix 1999 cat=2000,2040"),
+        "{seen:?}"
+    );
+    let by_title = |t: &str| found.releases.iter().find(|r| r.title == t).unwrap();
+    assert!(by_title("The.Matrix.1999.1080p.BluRay.x264-GRP").approved);
+    let wrong = by_title("The.Matrix.Reloaded.2003.1080p.BluRay.x264-GRP");
+    assert!(!wrong.approved && wrong.rejections.iter().any(|r| r == "Wrong movie"));
+    // Best first: the Blu-ray before the HDTV release.
+    assert_eq!(
+        found.releases[0].title,
+        "The.Matrix.1999.1080p.BluRay.x264-GRP"
+    );
+
+    let result = client.automatic_movie_search(7).await.unwrap();
+    assert_eq!(result.grabbed.len(), 1, "{result:?}");
+    assert_eq!(
+        result.grabbed[0].title,
+        "The.Matrix.1999.1080p.BluRay.x264-GRP"
+    );
+    let adds = adds.lock().unwrap().clone();
+    assert!(
+        adds.iter().any(|a| a.starts_with("/api/v2/torrents/add ")
+            && a.contains("a12fe1c06bba254a9dc9f519b335aa7c1367a88a")),
+        "{adds:?}"
+    );
+    let history: (Option<i64>, Option<i64>, String) = sqlx::query_as(
+        "SELECT movie_id, series_id, event_type FROM history WHERE source_title = 'The.Matrix.1999.1080p.BluRay.x264-GRP'",
+    )
+    .fetch_one(pool)
+    .await
+    .unwrap();
+    assert_eq!(history, (Some(7), None, "grabbed".into()));
+}

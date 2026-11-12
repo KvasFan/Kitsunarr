@@ -563,3 +563,80 @@ fn blocklisted_releases_are_rejected() {
     assert!(blocked(3));
     assert!(!blocked(4));
 }
+
+/// Tanukarr's films: decided as their one feature episode, after `MovieReleaseParser.Match`.
+#[test]
+fn movie_search() {
+    let mut p = profile(default_items(&[]));
+    p.upgrade_allowed = true;
+    p.cutoff = BLURAY1080P;
+    let mut feature = episode(42, 1, 1);
+    feature.runtime = 136;
+    let movie = Series {
+        monitored: true,
+        id: 42,
+        title: "The Matrix".into(),
+        year: 1999,
+        series_type: SeriesType::Standard,
+        tvdb_id: 0,
+        tv_rage_id: 0,
+        imdb_id: Some("tt0133093".into()),
+        alternate_titles: Vec::new(),
+        runtime: 136,
+        original_language: None,
+        use_scene_numbering: false,
+        tags: Vec::new(),
+        profile: p,
+        episodes: vec![feature],
+    };
+    let titles = [
+        "The.Matrix.1999.1080p.BluRay.x264-GRP",
+        "The.Matrix.Reloaded.2003.1080p.BluRay.x264-GRP",
+        "The.Matrix.S01E01.1080p.WEB-DL-GRP",
+    ];
+    let releases: Vec<Release> = titles
+        .iter()
+        .map(|t| {
+            let mut r = release(t);
+            r.size = 8 * 1024 * 1024 * 1024;
+            r
+        })
+        .collect();
+    let library = library();
+    let settings = settings();
+    let engine = Engine {
+        series: &movie,
+        library: &library,
+        formats: &[],
+        settings: &settings,
+    };
+    let candidate = kitsunarr_parser::movie::MovieCandidate {
+        title: "The Matrix",
+        year: 1999,
+        imdb_id: Some("tt0133093"),
+        ..Default::default()
+    };
+    let criteria = SearchCriteria {
+        kind: SearchKind::Special,
+        episode_ids: vec![42],
+        monitored_episodes_only: false,
+    };
+    let decided = engine.evaluate_movie(&releases, &criteria, &candidate);
+    let d = |t: &str| {
+        decided
+            .iter()
+            .find(|d| releases[d.release].title == t)
+            .unwrap()
+    };
+    let good = d(titles[0]);
+    assert!(good.approved(), "{:?}", good.rejections);
+    assert_eq!(
+        good.episodes.iter().map(|e| e.id).collect::<Vec<_>>(),
+        vec![42]
+    );
+    assert_eq!(d(titles[1]).rejections[0].message, "Wrong movie");
+    assert_eq!(
+        d(titles[2]).rejections[0].message,
+        "Unable to parse release as a movie"
+    );
+}

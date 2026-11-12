@@ -56,6 +56,9 @@ pub fn ReleaseSearch(
     /// Tanukarr's season-pack search: full-season releases only.
     #[props(default)]
     season_packs_only: bool,
+    /// A film's search (Tanukarr's movies); `series_id` is then ignored.
+    #[props(default)]
+    movie_id: Option<i64>,
 ) -> Element {
     let client = use_client();
     let app = use_app();
@@ -74,7 +77,12 @@ pub fn ReleaseSearch(
             complete_series,
             season_packs_only,
         };
-        async move { c.search_releases(&q).await }
+        async move {
+            match movie_id {
+                Some(m) => c.search_movie_releases(m).await,
+                None => c.search_releases(&q).await,
+            }
+        }
     });
     let read = results.read();
     let Some(outcome) = &*read else {
@@ -218,12 +226,14 @@ pub fn ReleaseSearch(
                                                 }
                                             }
                                         }
-                                        {
-                                            let target = (rel.indexer_id, rel.guid.clone(), rel.title.clone());
-                                            rsx! {
-                                                button { class: "btn sm ghost", "aria-label": "Choose episodes for {rel.title}",
-                                                    title: "Choose the episodes of this release by hand, then grab it (the choice is kept for the import)",
-                                                    onclick: move |_| choosing.set(Some(target.clone())), "Episodes…" }
+                                        if movie_id.is_none() {
+                                            {
+                                                let target = (rel.indexer_id, rel.guid.clone(), rel.title.clone());
+                                                rsx! {
+                                                    button { class: "btn sm ghost", "aria-label": "Choose episodes for {rel.title}",
+                                                        title: "Choose the episodes of this release by hand, then grab it (the choice is kept for the import)",
+                                                        onclick: move |_| choosing.set(Some(target.clone())), "Episodes…" }
+                                                }
                                             }
                                         }
                                     }

@@ -577,6 +577,29 @@ pub fn MovieDetailPage(id: i64) -> Element {
     let client = use_client();
     let nav = navigator();
     let mut confirm_delete = use_signal(|| false);
+    let mut searching = use_signal(|| false);
+    let mut auto_busy = use_signal(|| false);
+    let c5 = client.clone();
+    let auto_search = move |_| {
+        let c = c5.clone();
+        auto_busy.set(true);
+        spawn(async move {
+            match c.automatic_movie_search(id).await {
+                Ok(r) if !r.grabbed.is_empty() => {
+                    app.success(format!("Grabbed {}.", r.grabbed[0].title))
+                }
+                Ok(r) => app.toast(
+                    ToastLevel::Info,
+                    format!(
+                        "{} releases found, {} accepted, nothing grabbed.",
+                        r.found, r.approved
+                    ),
+                ),
+                Err(e) => app.error(&e),
+            }
+            auto_busy.set(false);
+        });
+    };
     let c1 = client.clone();
     let mut detail = use_resource(move || {
         let _ = (app.library_rev)();
@@ -669,8 +692,20 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     Switch { checked: d.item.monitored, label: if d.item.monitored { "Monitored".to_string() } else { "Unmonitored".to_string() }, onchange: set_monitored }
                     div { class: "spacer" }
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
+                    button { class: "btn", title: "Search the indexers and choose a release", onclick: move |_| searching.set(true), "Search" }
+                    button { class: "btn", disabled: auto_busy(), title: "Search the indexers and grab the best accepted release", onclick: auto_search,
+                        if auto_busy() { "Searching…" } else { "Automatic search" }
+                    }
                     button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Remove from library" }
                 }
+            }
+        }
+        if searching() {
+            Modal {
+                title: format!("Search: {}", d.item.title),
+                wide: true,
+                on_close: move |_| searching.set(false),
+                ReleaseSearch { series_id: 0, movie_id: Some(id) }
             }
         }
         if confirm_delete() {

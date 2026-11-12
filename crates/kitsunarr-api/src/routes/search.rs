@@ -153,7 +153,7 @@ fn flag_names(bits: u32) -> Vec<String> {
     .collect()
 }
 
-fn to_item(r: IndexerRelease, d: &Decision, series_id: i64) -> ReleaseItem {
+pub(crate) fn to_item(r: IndexerRelease, d: &Decision, series_id: i64) -> ReleaseItem {
     let parsed = d.parsed.as_ref();
     ReleaseItem {
         guid: r.release.guid,
@@ -831,6 +831,7 @@ pub(crate) fn cached_release(
             .any(|e| matches!((e.air_date_utc, recent_cutoff), (Some(a), Some(c)) if a >= c)),
         release_source: "Search",
         manual_mapping: false,
+        movie_id: None,
         cached_at: std::time::Instant::now(),
     }
 }
@@ -838,7 +839,7 @@ pub(crate) fn cached_release(
 /// Indexer settings the decisions read.
 pub(crate) struct IndexerExtras {
     priority: i32,
-    tags: Vec<i64>,
+    pub(crate) tags: Vec<i64>,
     minimum_seeders: Option<i64>,
     multi_languages: Vec<i32>,
 }
@@ -920,6 +921,17 @@ impl DecisionInputs {
     ) -> ApiResult<Self> {
         let db = &state.db;
         let series = kitsunarr_library::decision_input::series_model(db, detail, episodes).await?;
+        Self::with_model(state, series, Some(detail.item.id)).await
+    }
+
+    /// The inputs for a ready model: `series_id` is `None` for a film (the series-keyed
+    /// history, blocklist, pending and queue rules have nothing to compare it with).
+    pub(crate) async fn with_model(
+        state: &AppState,
+        series: decision::Series,
+        series_id: Option<i64>,
+    ) -> ApiResult<Self> {
+        let db = &state.db;
         let library = kitsunarr_library::decision_input::library_titles(db).await?;
         let (formats, warnings) =
             decision::compile_formats(&quality::list_custom_formats(db.pool()).await?);
@@ -930,12 +942,18 @@ impl DecisionInputs {
         let tools: kitsunarr_domain::api::settings::LibraryToolsSettings =
             kv::get_or_default(db.pool(), kv::KEY_LIBRARY_TOOLS).await?;
         let settings = decision::Settings {
-            last_grabs: kitsunarr_library::decision_input::last_grabs(db, detail.item.id).await?,
-            blocklist: kitsunarr_library::decision_input::blocklist(db, detail.item.id).await?,
+            last_grabs: match series_id {
+                Some(id) => kitsunarr_library::decision_input::last_grabs(db, id).await?,
+                None => Vec::new(),
+            },
+            blocklist: match series_id {
+                Some(id) => kitsunarr_library::decision_input::blocklist(db, id).await?,
+                None => Vec::new(),
+            },
             pending: kitsunarr_db::pending::list(db.pool())
                 .await?
                 .into_iter()
-                .filter(|p| p.series_id == detail.item.id)
+                .filter(|p| Some(p.series_id) == series_id)
                 .filter_map(|p| {
                     let release: serde_json::Value = serde_json::from_str(&p.release).ok()?;
                     Some(decision::PendingRelease {
@@ -947,7 +965,10 @@ impl DecisionInputs {
                 .collect(),
             enable_multi_season_releases: options.enable_multi_season_releases,
             match_external_ids: tools.match_external_ids,
-            queue: state.downloads.queued_releases(db, detail.item.id).await?,
+            queue: match series_id {
+                Some(id) => state.downloads.queued_releases(db, id).await?,
+                None => Vec::new(),
+            },
             quality_definitions: quality::list_definitions(db.pool()).await?,
             propers: media.download_propers_and_repacks,
             release_profiles: rules::list_release_profiles(db.pool())

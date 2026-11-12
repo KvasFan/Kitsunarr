@@ -605,6 +605,27 @@ pub async fn update_metadata(
     Ok(())
 }
 
+/// A film's original title (searches and release matching).
+pub async fn original_title(db: &Database, id: i64) -> DbResult<Option<String>> {
+    Ok(
+        sqlx::query_scalar::<_, Option<String>>("SELECT original_title FROM movies WHERE id = ?")
+            .bind(id)
+            .fetch_optional(db.pool())
+            .await?
+            .flatten(),
+    )
+}
+
+/// Records when a film was last searched for.
+pub async fn set_last_search(db: &Database, id: i64, at: &str) -> DbResult<()> {
+    sqlx::query("UPDATE movies SET last_search_at = ? WHERE id = ?")
+        .bind(at)
+        .bind(id)
+        .execute(db.pool())
+        .await?;
+    Ok(())
+}
+
 #[cfg(test)]
 pub(crate) mod tests {
     use super::*;

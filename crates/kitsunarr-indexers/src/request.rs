@@ -25,6 +25,8 @@ pub struct Settings {
     pub anime_standard_format_search: bool,
     pub additional_parameters: Option<String>,
     pub minimum_seeders: Option<i32>,
+    /// Tanukarr's movie categories (default `[2000]`).
+    pub movie_categories: Vec<i32>,
 }
 
 impl Settings {
@@ -76,6 +78,11 @@ impl Settings {
                 .get("minimumSeeders")
                 .and_then(Value::as_i64)
                 .map(|v| v as i32),
+            movie_categories: if map.contains_key("movieCategories") {
+                ints("movieCategories")
+            } else {
+                vec![2000]
+            },
         })
     }
 
@@ -161,6 +168,11 @@ pub enum Search {
     },
     Special {
         episode_query_titles: Vec<String>,
+    },
+    /// Tanukarr's `MovieSearch`: "Title Year" text searches on the movie categories (and the
+    /// anime categories for anime films).
+    Movie {
+        query_titles: Vec<String>,
     },
     /// Tanukarr's complete-series search: the series by id, then text queries for its titles
     /// and for packs (`Title S01-S05`, `Title complete`, season packs).
@@ -618,6 +630,24 @@ impl Generator<'_> {
                     }
                 } else {
                     self.add_title_requests(&mut chain, c, "");
+                }
+                chain
+            }
+            Search::Movie { query_titles } => {
+                let mut chain = Chain::default();
+                if caps.supports_search() {
+                    let mut cats = self.settings.movie_categories.clone();
+                    if c.anime {
+                        for a in &self.settings.anime_categories {
+                            if !cats.contains(a) {
+                                cats.push(*a);
+                            }
+                        }
+                    }
+                    for title in query_titles {
+                        let q = url_encode(&title.replace('+', " "));
+                        chain.add(self.paged(&cats, "search", format!("&q={q}")));
+                    }
                 }
                 chain
             }
