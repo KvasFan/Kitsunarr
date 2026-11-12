@@ -88,3 +88,84 @@ pub async fn sendgrid(n: &Notifier, s: &Map<String, Value>, event: &Event) -> No
     .await
     .map(|_| ())
 }
+
+fn addresses(s: &Map<String, Value>, key: &str) -> Vec<String> {
+    match s.get(key) {
+        Some(Value::Array(a)) => a
+            .iter()
+            .filter_map(|v| v.as_str().map(str::to_string))
+            .collect(),
+        Some(Value::String(v)) => v
+            .split(',')
+            .map(|r| r.trim().to_string())
+            .filter(|r| !r.is_empty())
+            .collect(),
+        _ => Vec::new(),
+    }
+}
+
+/// Sonarr's `Email`: SMTP with STARTTLS when offered (`useEncryption` 0), required (1) or off
+/// (2); port 465 uses implicit TLS. Recipients in `to`, `cc` and `bcc`.
+pub async fn smtp(s: &Map<String, Value>, event: &Event) -> NotifyResult<()> {
+    use lettre::message::Mailbox;
+    use lettre::transport::smtp::authentication::Credentials;
+    use lettre::transport::smtp::client::{Tls, TlsParameters};
+    use lettre::{AsyncSmtpTransport, AsyncTransport, Message, Tokio1Executor};
+
+    let server = crate::required(s, "server", "The SMTP server")?;
+    let port = s.get("port").and_then(Value::as_u64).unwrap_or(587) as u16;
+    let from: Mailbox = crate::required(s, "from", "The sender")?
+        .parse()
+        .map_err(|e| crate::NotifyError::Settings(format!("the sender is not an address: {e}")))?;
+    let (to, cc, bcc) = (addresses(s, "to"), addresses(s, "cc"), addresses(s, "bcc"));
+    if to.is_empty() && cc.is_empty() && bcc.is_empty() {
+        return Err(crate::NotifyError::Settings(
+            "Add at least one recipient".into(),
+        ));
+    }
+    let (subject, body) = text(event);
+    let mut builder = Message::builder().from(from).subject(subject);
+    let parse = |a: &String| -> NotifyResult<Mailbox> {
+        a.parse()
+            .map_err(|e| crate::NotifyError::Settings(format!("{a} is not an address: {e}")))
+    };
+    for a in &to {
+        builder = builder.to(parse(a)?);
+    }
+    for a in &cc {
+        builder = builder.cc(parse(a)?);
+    }
+    for a in &bcc {
+        builder = builder.bcc(parse(a)?);
+    }
+    let message = builder
+        .body(body)
+        .map_err(|e| crate::NotifyError::Settings(e.to_string()))?;
+    let tls_params = TlsParameters::new(server.clone())
+        .map_err(|e| crate::NotifyError::Settings(e.to_string()))?;
+    let encryption = s.get("useEncryption").and_then(Value::as_i64).unwrap_or(0);
+    let tls = if port == 465 {
+        Tls::Wrapper(tls_params)
+    } else {
+        match encryption {
+            1 => Tls::Required(tls_params),
+            2 => Tls::None,
+            _ => Tls::Opportunistic(tls_params),
+        }
+    };
+    let mut transport = AsyncSmtpTransport::<Tokio1Executor>::builder_dangerous(server)
+        .port(port)
+        .tls(tls)
+        .timeout(Some(std::time::Duration::from_secs(30)));
+    if let (Some(user), Some(pass)) = (crate::text(s, "username"), crate::text(s, "password")) {
+        transport = transport.credentials(Credentials::new(user, pass));
+    }
+    transport
+        .build()
+        .send(message)
+        .await
+        .map(|_| ())
+        .map_err(|e| {
+            crate::NotifyError::Settings(format!("the mail server refused the message: {e}"))
+        })
+}

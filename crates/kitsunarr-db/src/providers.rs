@@ -40,6 +40,7 @@ pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
             "PlexServer",
             "Xbmc",
             "CustomScript",
+            "Email",
             "Mailgun",
             "SendGrid",
         ],

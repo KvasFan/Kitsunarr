@@ -57,6 +57,7 @@ pub const SUPPORTED: &[&str] = &[
     "PlexServer",
     "Xbmc",
     "CustomScript",
+    "Email",
     "Mailgun",
     "SendGrid",
 ];
@@ -498,6 +499,7 @@ impl Notifier {
             "plexserver" => media::plex(self, s, event).await,
             "xbmc" => media::kodi(self, s, event).await,
             "customscript" => script::run(s, event, instance).await,
+            "email" => email::smtp(s, event).await,
             "mailgun" => email::mailgun(self, s, event).await,
             "sendgrid" => email::sendgrid(self, s, event).await,
             other => Err(NotifyError::Settings(format!(

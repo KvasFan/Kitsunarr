@@ -213,6 +213,7 @@ pub const NOTIFICATION_IMPLEMENTATIONS: &[&str] = &[
     "PlexServer",
     "Xbmc",
     "CustomScript",
+    "Email",
     "Mailgun",
     "SendGrid",
 ];

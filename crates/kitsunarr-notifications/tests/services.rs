@@ -444,3 +444,66 @@ async fn mailgun_and_sendgrid_mail_the_message() {
     );
     assert_eq!(body["subject"], "Kitsunarr - Episode Downloaded");
 }
+
+/// A minimal SMTP server: accepts one message and returns what it received.
+async fn smtp_server() -> (u16, tokio::sync::oneshot::Receiver<String>) {
+    use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    let (tx, rx) = tokio::sync::oneshot::channel();
+    tokio::spawn(async move {
+        let (socket, _) = listener.accept().await.unwrap();
+        let (read, mut write) = socket.into_split();
+        let mut lines = BufReader::new(read).lines();
+        write.write_all(b"220 test ESMTP\r\n").await.unwrap();
+        let mut transcript = String::new();
+        let mut in_data = false;
+        while let Ok(Some(line)) = lines.next_line().await {
+            transcript.push_str(&line);
+            transcript.push('\n');
+            if in_data {
+                if line == "." {
+                    in_data = false;
+                    write.write_all(b"250 queued\r\n").await.unwrap();
+                }
+                continue;
+            }
+            let upper = line.to_uppercase();
+            let reply: &[u8] = if upper.starts_with("EHLO") {
+                b"250-test\r\n250 OK\r\n"
+            } else if upper.starts_with("DATA") {
+                in_data = true;
+                b"354 go\r\n"
+            } else if upper.starts_with("QUIT") {
+                write.write_all(b"221 bye\r\n").await.unwrap();
+                break;
+            } else {
+                b"250 OK\r\n"
+            };
+            write.write_all(reply).await.unwrap();
+        }
+        let _ = tx.send(transcript);
+    });
+    (port, rx)
+}
+
+#[tokio::test]
+async fn email_is_sent_over_smtp() {
+    let (port, rx) = smtp_server().await;
+    Notifier::default()
+        .send(
+            &conn("Email", json!({"server": "127.0.0.1", "port": port, "useEncryption": 2, "from": "Kitsunarr <k@example.org>", "to": ["me@example.org"], "bcc": ["audit@example.org"]})),
+            &download(),
+            &instance(),
+        )
+        .await
+        .unwrap();
+    let transcript = rx.await.unwrap();
+    assert!(
+        transcript.contains("MAIL FROM:<k@example.org>"),
+        "{transcript}"
+    );
+    assert!(transcript.contains("RCPT TO:<me@example.org>"));
+    assert!(transcript.contains("RCPT TO:<audit@example.org>"));
+    assert!(transcript.contains("Subject: Kitsunarr - Episode Downloaded"));
+}

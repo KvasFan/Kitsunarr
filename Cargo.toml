@@ -90,6 +90,8 @@ sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio",
 
 # HTTP client (rustls with the platform verifier)
 reqwest = { version = "0.13", default-features = false, features = ["json", "query", "form", "rustls", "http2", "charset"] }
+# SMTP for e-mail notifications (rustls, platform certificates)
+lettre = { version = "0.11", default-features = false, features = ["builder", "smtp-transport", "tokio1", "tokio1-rustls", "rustls-platform-verifier", "aws-lc-rs", "hostname"] }
 
 # Serialisation and errors
 serde = { version = "1", features = ["derive"] }

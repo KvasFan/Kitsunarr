@@ -146,6 +146,7 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             vec![
                 n("Webhook", "Webhook", json!({"url": "", "method": 1, "username": "", "password": "", "headers": []})),
                 n("Custom Script", "CustomScript", json!({"path": "", "arguments": ""})),
+                n("Email", "Email", json!({"server": "", "port": 587, "useEncryption": 0, "username": "", "password": "", "from": "", "to": [], "cc": [], "bcc": []})),
                 n("Mailgun", "Mailgun", json!({"apiKey": "", "useEuEndpoint": false, "from": "", "senderDomain": "", "recipients": []})),
                 n("SendGrid", "SendGrid", json!({"apiKey": "", "from": "", "recipients": []})),
                 n("Discord", "Discord", json!({"webHookUrl": "", "username": "", "avatar": "", "author": "",
