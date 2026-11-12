@@ -76,7 +76,7 @@ Each component is checked against Sonarr's own test cases (`tests/fixtures/parse
 | Unified TV, anime and movies | Operational | Separate series and movie libraries; Tanukarr movies migrate as movies. |
 | TheTVDB, TMDB TV, TVmaze, AniList, MAL/Jikan, TMDB Movies, OMDb | Operational | All seven adapters are implemented with Tanukarr's numbering (TVmaze specials in season 0; AniList and Jikan single-season with absolute = episode; TMDB absolute numbers synthesised; films as one feature). |
 | Per-title metadata ownership | Operational | Done (model and migration). |
-| TMDB episode groups | Partial | Applied on refresh for TMDB-owned titles with a migrated `episode_ordering` (Tanukarr's `TmdbEpisodeGroupProjector`); choosing a group in the UI is not implemented. |
+| TMDB episode groups | Partial | Done: applied on refresh for TMDB-owned titles (Tanukarr's `TmdbEpisodeGroupProjector`); the series page's "Episode order" lists the title's TMDB episode groups (or TheTVDB's aired, DVD and absolute orders) and switches to one: episodes are renumbered by their catalogue episode id, keeping files, monitoring and history (library `episode_ordering` test on a TMDB mock). |
 | Absolute anime numbering | Mostly upstream | Stored; logic not started. |
 | Prequel/sequel relationships, manual grouping | Operational | Groups migrate to collections; relation traversal not started. |
 | Movie and series collections | Operational | Done (model, migration and listing). |

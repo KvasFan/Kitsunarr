@@ -361,6 +361,122 @@ pub async fn add_title(
     })
 }
 
+/// Switches a series to another episode ordering (a TMDB episode group, a TheTVDB season type;
+/// `None` for the catalogue's default) and refreshes it. Existing episodes keep their files,
+/// monitoring and history: they are matched with the new numbering by the catalogue's episode
+/// id. Episodes the new ordering does not contain are removed unless a file is linked to them
+/// and their old number is still free.
+pub async fn set_episode_ordering(
+    db: &Database,
+    metadata: &Metadata,
+    id: i64,
+    ordering: Option<String>,
+) -> LibraryResult<RefreshResult> {
+    let ordering = ordering
+        .map(|o| o.trim().to_string())
+        .filter(|o| !o.is_empty());
+    let (provider, metadata_id): (String, String) =
+        sqlx::query_as("SELECT metadata_provider, metadata_id FROM series WHERE id = ?")
+            .bind(id)
+            .fetch_optional(db.pool())
+            .await?
+            .ok_or(LibraryError::Db(DbError::NotFound))?;
+    let provider: MetadataProvider = provider
+        .parse()
+        .map_err(|_| LibraryError::invalid("metadataProvider", "Unknown metadata provider."))?;
+    if !matches!(provider, MetadataProvider::TmdbTv | MetadataProvider::Tvdb) {
+        return Err(LibraryError::invalid(
+            "ordering",
+            "This catalogue has a single episode order.",
+        ));
+    }
+    // Read the new ordering first: a failure leaves the series untouched.
+    let info = metadata
+        .series_fresh(provider, &metadata_id, ordering.as_deref())
+        .await?;
+    let by_provider_id: HashMap<&str, (i32, i32)> = info
+        .episodes
+        .iter()
+        .filter_map(|e| {
+            Some((
+                e.provider_episode_id.as_deref()?,
+                (e.season_number, e.episode_number),
+            ))
+        })
+        .collect();
+    let mut tx = db.pool().begin().await?;
+    // (id, season, episode, catalogue episode id, linked file)
+    type Row = (i64, i64, i64, Option<String>, Option<i64>);
+    let existing: Vec<Row> = sqlx::query_as(
+        "SELECT id, season_number, episode_number, provider_episode_id, episode_file_id FROM episodes WHERE series_id = ?",
+    )
+    .bind(id)
+    .fetch_all(&mut *tx)
+    .await?;
+    // Free every number first (negative ids are unique), then assign the new ones.
+    sqlx::query("UPDATE episodes SET episode_number = -id WHERE series_id = ?")
+        .bind(id)
+        .execute(&mut *tx)
+        .await?;
+    let mut taken = std::collections::HashSet::new();
+    let mut unmatched = Vec::new();
+    for (eid, season, episode, pid, file) in &existing {
+        match pid.as_deref().and_then(|p| by_provider_id.get(p)) {
+            Some(&(s, e)) if taken.insert((s, e)) => {
+                sqlx::query(
+                    "UPDATE episodes SET season_number = ?, episode_number = ?, absolute_episode_number = NULL WHERE id = ?",
+                )
+                .bind(s)
+                .bind(e)
+                .bind(eid)
+                .execute(&mut *tx)
+                .await?;
+            }
+            _ => unmatched.push((*eid, *season as i32, *episode as i32, *file)),
+        }
+    }
+    let mut removed = 0u64;
+    for (eid, season, episode, file) in unmatched {
+        if file.is_some() && taken.insert((season, episode)) {
+            sqlx::query("UPDATE episodes SET episode_number = ? WHERE id = ?")
+                .bind(episode)
+                .bind(eid)
+                .execute(&mut *tx)
+                .await?;
+        } else {
+            sqlx::query("DELETE FROM episodes WHERE id = ?")
+                .bind(eid)
+                .execute(&mut *tx)
+                .await?;
+            removed += 1;
+        }
+    }
+    // Seasons the new ordering does not have and no episode uses any more.
+    let seasons: Vec<i32> = info.seasons.iter().map(|s| s.season_number).collect();
+    sqlx::query(
+        "DELETE FROM seasons WHERE series_id = ?1 AND season_number NOT IN (SELECT value FROM json_each(?2)) \
+         AND season_number NOT IN (SELECT season_number FROM episodes WHERE series_id = ?1)",
+    )
+    .bind(id)
+    .bind(serde_json::to_string(&seasons).unwrap_or_else(|_| "[]".into()))
+    .execute(&mut *tx)
+    .await?;
+    sqlx::query("UPDATE series SET episode_ordering = ? WHERE id = ?")
+        .bind(&ordering)
+        .bind(id)
+        .execute(&mut *tx)
+        .await?;
+    tx.commit().await?;
+    if removed > 0 {
+        tracing::info!(
+            series = id,
+            removed,
+            "episodes not in the new ordering were removed"
+        );
+    }
+    refresh_series(db, metadata, id).await
+}
+
 /// Refreshes a series from its owning catalogue.
 pub async fn refresh_series(
     db: &Database,

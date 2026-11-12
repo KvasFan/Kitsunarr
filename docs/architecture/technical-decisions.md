@@ -505,3 +505,13 @@ a search.
   2.22, ...). Only the size limits and the preferred-size ranking use the normalised size; grabs,
   disk and free-space checks use the actual bytes. Factors live in `codec_multipliers`
   (canonical family keys, 0.01 to 10).
+
+## 31. Changing a series' episode ordering
+
+`PUT /series/{id}/ordering` reads the series in the new ordering first (a failure changes
+nothing), then, in one transaction, frees every episode number (`episode_number = -id`), gives
+each existing episode the number its catalogue episode id has in the new ordering, removes
+episodes the ordering lacks unless a file is linked and the old number is free, drops seasons
+nothing uses, stores the ordering and refreshes. Matching by number (as a plain refresh does)
+would move files to other episodes. TheTVDB's default season type is stored as `official` and
+TMDB's default as no ordering.

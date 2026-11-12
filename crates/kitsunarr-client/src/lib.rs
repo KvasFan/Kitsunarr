@@ -264,6 +264,23 @@ impl Client {
     pub async fn update_series(&self, id: i64, u: &SeriesUpdate) -> ClientResult<SeriesDetail> {
         self.patch(&format!("/series/{id}"), u).await
     }
+    pub async fn series_orderings(
+        &self,
+        id: i64,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library::EpisodeOrderingItem>> {
+        self.get(&format!("/series/{id}/orderings")).await
+    }
+    pub async fn set_series_ordering(
+        &self,
+        id: i64,
+        ordering: Option<String>,
+    ) -> ClientResult<RefreshResult> {
+        self.put(
+            &format!("/series/{id}/ordering"),
+            &kitsunarr_domain::api::library::EpisodeOrderingUpdate { ordering },
+        )
+        .await
+    }
     pub async fn delete_series(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/series/{id}")).await
     }

@@ -174,3 +174,48 @@ pub async fn refresh_movie(
     changed(&state, "movie", id);
     Ok(StatusCode::NO_CONTENT)
 }
+
+/// The episode orderings the series' catalogue offers (TMDB episode groups, TheTVDB season
+/// types); empty for catalogues with one order.
+#[utoipa::path(get, path = "/series/{id}/orderings", tag = "metadata", params(("id" = i64, Path)),
+    responses((status = 200, body = Vec<kitsunarr_domain::api::library::EpisodeOrderingItem>), (status = 404, body = ApiErrorBody), (status = 502, body = ApiErrorBody)))]
+pub async fn series_orderings(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library::EpisodeOrderingItem>>> {
+    let detail = kitsunarr_db::library::series::get_detail(&state.db, id).await?;
+    let current = detail.episode_ordering.clone().unwrap_or_default();
+    let orderings = state
+        .metadata
+        .orderings(detail.item.metadata_provider, &detail.metadata_id)
+        .await
+        .map_err(kitsunarr_library::LibraryError::from)?;
+    Ok(Json(
+        orderings
+            .into_iter()
+            .map(|o| kitsunarr_domain::api::library::EpisodeOrderingItem {
+                // TheTVDB's default season type is stored as `official`.
+                current: o.id == current || (o.id.is_empty() && current == "official"),
+                id: o.id,
+                name: o.name,
+                description: o.description,
+            })
+            .collect(),
+    ))
+}
+
+/// Switches the series to another episode ordering and refreshes it; episodes keep their files.
+#[utoipa::path(put, path = "/series/{id}/ordering", tag = "metadata", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::library::EpisodeOrderingUpdate,
+    responses((status = 200, body = RefreshResult), (status = 404, body = ApiErrorBody), (status = 422, body = ApiErrorBody), (status = 502, body = ApiErrorBody)))]
+pub async fn set_series_ordering(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(body): Json<kitsunarr_domain::api::library::EpisodeOrderingUpdate>,
+) -> ApiResult<Json<RefreshResult>> {
+    let result =
+        kitsunarr_library::set_episode_ordering(&state.db, &state.metadata, id, body.ordering)
+            .await?;
+    changed(&state, "series", id);
+    Ok(Json(result))
+}

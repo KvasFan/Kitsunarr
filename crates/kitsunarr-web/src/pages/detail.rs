@@ -98,6 +98,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut confirm_delete = use_signal(|| false);
     let mut delete_folder = use_signal(|| false);
     let mut renaming = use_signal(|| false);
+    let mut ordering = use_signal(|| false);
     let mut scanning = use_signal(|| false);
     // An episode file to delete: (file id, relative path).
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
@@ -299,6 +300,9 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                         if scanning() { "Scanning…" } else { "Scan disk" }
                     }
                     button { class: "btn", title: "Rename files to the naming settings", onclick: move |_| renaming.set(true), "Rename files" }
+                    if matches!(d.item.metadata_provider, MetadataProvider::TmdbTv | MetadataProvider::Tvdb) {
+                        button { class: "btn", title: "Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)", onclick: move |_| ordering.set(true), "Episode order" }
+                    }
                     button { class: "btn", title: "Interactive search for packs of the whole series (and of its seasons) on torrent indexers", onclick: move |_| searching_complete.set(true), "Complete series" }
                     button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true) }, "Remove from library" }
                 }
@@ -343,6 +347,9 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     "Also delete the series folder and its files (to the recycle bin when one is set)"
                 }
             }
+        }
+        if ordering() {
+            OrderingDialog { series_id: id, on_close: move |_| ordering.set(false) }
         }
         if renaming() {
             RenameDialog { series_id: id, on_close: move |_| { renaming.set(false); episodes.restart(); } }
@@ -736,6 +743,74 @@ fn RenameDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
                                 div { class: "grow",
                                     div { class: "mono small muted", "{p.existing_path}" }
                                     div { class: "mono small", "→ {p.new_path}" }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+    }
+}
+
+/// Chooses the episode ordering (Tanukarr's episode groups): the series is renumbered and
+/// refreshed; episodes keep their files.
+#[component]
+fn OrderingDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let orderings = use_resource(move || {
+        let c = c0.clone();
+        async move { c.series_orderings(series_id).await }
+    });
+    let mut chosen = use_signal(|| None::<String>);
+    let mut busy = use_signal(|| false);
+    let apply = move |_| {
+        let Some(id) = chosen() else { return };
+        let c = client.clone();
+        busy.set(true);
+        spawn(async move {
+            match c
+                .set_series_ordering(series_id, Some(id).filter(|i| !i.is_empty()))
+                .await
+            {
+                Ok(r) => app.success(format!(
+                    "Episode order changed: {} episodes updated, {} added.",
+                    r.updated_episodes, r.added_episodes
+                )),
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+            on_close.call(());
+        });
+    };
+    rsx! {
+        Modal {
+            title: "Episode order".to_string(),
+            on_close: move |_| on_close.call(()),
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", onclick: move |_| on_close.call(()), "Cancel" }
+                button { class: "btn primary", disabled: busy() || chosen().is_none(), onclick: apply,
+                    if busy() { "Applying…" } else { "Apply" }
+                }
+            },
+            p { class: "help small", "Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers." }
+            match &*orderings.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "stack",
+                        for o in list.iter() {
+                            label { key: "{o.id}", class: "check",
+                                input { r#type: "radio", name: "ordering",
+                                    checked: chosen().map_or(o.current, |c| c == o.id),
+                                    onchange: { let id = o.id.clone(); move |_| chosen.set(Some(id.clone())) } }
+                                span {
+                                    strong { "{o.name}" }
+                                    if o.current { " " Badge { text: "current", tone: "accent" } }
+                                    if let Some(desc) = &o.description { div { class: "small muted", "{desc}" } }
                                 }
                             }
                         }

@@ -80,6 +80,16 @@ pub struct EpisodeInfo {
     pub provider_episode_id: Option<String>,
 }
 
+/// An episode ordering a catalogue offers for a series (`id` is stored in
+/// `series.episode_ordering`; the empty id is the catalogue's default order).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct EpisodeOrdering {
+    pub id: String,
+    pub name: String,
+    pub description: Option<String>,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SeasonInfo {
@@ -373,6 +383,41 @@ impl Metadata {
     }
 
     /// Like [`Self::series_ordered`] but bypasses the in-memory cache (used by refreshes).
+    /// The episode orderings a series can use: TMDB episode groups, TheTVDB season types. Other
+    /// catalogues have one order (an empty list).
+    pub async fn orderings(
+        &self,
+        provider: MetadataProvider,
+        id: &str,
+    ) -> MetadataResult<Vec<EpisodeOrdering>> {
+        let default = |name: &str| EpisodeOrdering {
+            id: String::new(),
+            name: name.into(),
+            description: None,
+        };
+        match provider {
+            MetadataProvider::TmdbTv => {
+                let mut out = vec![default("Seasons (TMDB default)")];
+                out.extend(self.tmdb.episode_groups(id).await?);
+                Ok(out)
+            }
+            MetadataProvider::Tvdb => Ok(vec![
+                default("Aired order (TheTVDB default)"),
+                EpisodeOrdering {
+                    id: "dvd".into(),
+                    name: "DVD order".into(),
+                    description: None,
+                },
+                EpisodeOrdering {
+                    id: "absolute".into(),
+                    name: "Absolute order".into(),
+                    description: Some("One season numbered from the first episode".into()),
+                },
+            ]),
+            _ => Ok(Vec::new()),
+        }
+    }
+
     pub async fn series_fresh(
         &self,
         provider: MetadataProvider,

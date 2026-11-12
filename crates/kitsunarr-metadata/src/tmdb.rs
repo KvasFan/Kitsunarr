@@ -606,6 +606,64 @@ impl Tmdb {
         Ok(info)
     }
 
+    /// A series' episode groups (`GET /tv/{id}/episode_groups`), for choosing an ordering.
+    pub async fn episode_groups(&self, id: &str) -> MetadataResult<Vec<crate::EpisodeOrdering>> {
+        #[derive(Deserialize, Default)]
+        #[serde(default)]
+        struct Groups {
+            results: Vec<GroupSummary>,
+        }
+        #[derive(Deserialize, Default)]
+        #[serde(default)]
+        struct GroupSummary {
+            id: String,
+            name: String,
+            description: Option<String>,
+            r#type: i64,
+            episode_count: Option<i64>,
+            group_count: Option<i64>,
+        }
+        let tmdb_id: i64 = id
+            .trim()
+            .parse()
+            .ok()
+            .filter(|v| *v > 0)
+            .ok_or(MetadataError::NotFound(MetadataProvider::TmdbTv))?;
+        let groups: Groups = self
+            .get(
+                MetadataProvider::TmdbTv,
+                &format!("/tv/{tmdb_id}/episode_groups"),
+                &[],
+            )
+            .await?;
+        let kind = |t: i64| match t {
+            1 => "Original air date",
+            2 => "Absolute",
+            3 => "DVD",
+            4 => "Digital",
+            5 => "Story arc",
+            6 => "Production",
+            7 => "TV",
+            _ => "Episode group",
+        };
+        Ok(groups
+            .results
+            .into_iter()
+            .filter(|g| !g.id.is_empty())
+            .map(|g| crate::EpisodeOrdering {
+                name: format!("{} ({})", g.name, kind(g.r#type)),
+                description: g.description.filter(|d| !d.trim().is_empty()).or_else(|| {
+                    Some(format!(
+                        "{} episodes in {} groups",
+                        g.episode_count.unwrap_or(0),
+                        g.group_count.unwrap_or(0)
+                    ))
+                }),
+                id: g.id,
+            })
+            .collect())
+    }
+
     pub async fn movie(&self, id: &str) -> MetadataResult<SeriesInfo> {
         let key = format!("movie/{id}");
         if let Some(hit) = self.cache.get(&key) {

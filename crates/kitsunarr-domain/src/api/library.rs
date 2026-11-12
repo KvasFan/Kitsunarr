@@ -372,3 +372,24 @@ pub struct FileOperationResult {
     pub message: String,
     pub problems: Vec<String>,
 }
+
+/// An episode ordering a series can use (TMDB episode groups, TheTVDB season types).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct EpisodeOrderingItem {
+    /// Empty for the catalogue's default order.
+    pub id: String,
+    pub name: String,
+    pub description: Option<String>,
+    /// The series uses it now.
+    pub current: bool,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct EpisodeOrderingUpdate {
+    /// `None` or empty: the catalogue's default order.
+    pub ordering: Option<String>,
+}
