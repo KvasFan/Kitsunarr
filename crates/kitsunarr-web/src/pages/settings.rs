@@ -1892,7 +1892,18 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
                                     td { class: "num", "{p.priority}" }
                                     td { class: "shrink",
                                         div { class: "row tight",
-                                            button { class: "btn sm", onclick: { let p = p.clone(); move |_| editing.set(Some(p.clone())) }, "Edit" }
+                                            button { class: "btn sm", onclick: { let p = p.clone(); move |_| {
+                                                // Settings added since the provider was saved show with their defaults.
+                                                let mut p = p.clone();
+                                                if let Some(Ok(ts)) = &*templates.read()
+                                                    && let Some(t) = ts.iter().find(|t| t.implementation == p.implementation)
+                                                {
+                                                    for (k, v) in &t.settings {
+                                                        p.settings.entry(k.clone()).or_insert_with(|| v.clone());
+                                                    }
+                                                }
+                                                editing.set(Some(p));
+                                            } }, "Edit" }
                                             button { class: "btn sm danger", onclick: { let p = p.clone(); move |_| confirm_delete.set(Some(p.clone())) }, {crate::i18n::t().delete} }
                                         }
                                     }

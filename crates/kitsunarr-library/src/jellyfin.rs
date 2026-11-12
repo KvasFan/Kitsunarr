@@ -295,6 +295,8 @@ struct EpisodeState {
 pub struct SyncSummary {
     pub matched_files: usize,
     pub updated_episodes: usize,
+    /// Every series with a matched file (list progress is checked for each).
+    pub matched_series: std::collections::BTreeSet<i64>,
 }
 
 /// `ApplySnapshot`: matches translated paths with library files and updates their episodes.
@@ -340,7 +342,7 @@ pub async fn apply(
         .into_iter()
         .collect()
     };
-    let mut local: HashMap<String, Option<i64>> = HashMap::new();
+    let mut local: HashMap<String, Option<(i64, i64)>> = HashMap::new();
     for (file_id, series_id, series_path, relative) in files {
         if !s.tags.is_empty() && !tagged.contains(&series_id) {
             continue;
@@ -356,17 +358,18 @@ pub async fn apply(
         local
             .entry(p)
             .and_modify(|v| *v = None)
-            .or_insert(Some(file_id));
+            .or_insert(Some((file_id, series_id)));
     }
     let fp = s.fingerprint();
     let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
     let mut summary = SyncSummary::default();
     let mut tx = db.pool().begin().await.map_err(err)?;
     for (path, item) in &remote {
-        let Some(Some(file_id)) = local.get(path) else {
+        let Some(Some((file_id, series_id))) = local.get(path) else {
             continue;
         };
         summary.matched_files += 1;
+        summary.matched_series.insert(*series_id);
         let episodes: Vec<EpisodeState> = sqlx::query_as(
             "SELECT e.id, e.monitored, e.watched, e.watched_source, \
              e.jellyfin_unmonitor_owner, e.episode_file_id, s.monitored AS series_monitored, \
@@ -481,12 +484,71 @@ pub async fn sync(db: &Database, http: &reqwest::Client, force: bool) -> Result<
     .execute(db.pool())
     .await
     .map_err(|e| e.to_string())?;
+    let mut written = 0;
+    if flag(&c.settings, "syncListProgress") {
+        let source = crate::list_progress::Source {
+            connection_id: Some(c.id),
+            fingerprint: fp.clone(),
+        };
+        for series_id in &summary.matched_series {
+            match crate::list_progress::sync_series(db, http, *series_id, &source).await {
+                Ok(n) => written += n,
+                Err(e) => tracing::warn!(series_id, error = %e, "list progress was not synced"),
+            }
+        }
+    }
+    let progress = if written > 0 {
+        format!(", {written} list progress updates")
+    } else {
+        String::new()
+    };
     Ok(format!(
-        "{} items read, {} files matched, {} episodes updated",
+        "{} items read, {} files matched, {} episodes updated{progress}",
         items.len(),
         summary.matched_files,
         summary.updated_episodes
     ))
+}
+
+/// `IsProgressAuthorized`: the connection is still the only one syncing watched state, with
+/// the same target and list progress on, and the series is still in its tag scope.
+pub async fn progress_authorized(
+    db: &Database,
+    connection_id: i64,
+    fingerprint: &str,
+    series_id: i64,
+) -> bool {
+    let watched: Vec<_> = notify::connections(db)
+        .await
+        .into_iter()
+        .filter(|c| {
+            c.implementation.eq_ignore_ascii_case("Jellyfin")
+                && flag(&c.settings, "enableWatchedSync")
+        })
+        .collect();
+    let [c] = watched.as_slice() else {
+        return false;
+    };
+    if c.id != connection_id || !flag(&c.settings, "syncListProgress") {
+        return false;
+    }
+    let Ok(s) = WatchedSettings::from_connection(c) else {
+        return false;
+    };
+    if s.fingerprint() != fingerprint {
+        return false;
+    }
+    if s.tags.is_empty() {
+        return true;
+    }
+    sqlx::query_scalar::<_, i64>(
+        "SELECT COUNT(*) FROM series_tags WHERE series_id = ? AND tag_id IN (SELECT value FROM json_each(?))",
+    )
+    .bind(series_id)
+    .bind(serde_json::to_string(&s.tags).unwrap_or_default())
+    .fetch_one(db.pool())
+    .await
+    .is_ok_and(|n| n > 0)
 }
 
 #[cfg(test)]

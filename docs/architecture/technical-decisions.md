@@ -567,3 +567,15 @@ from the native data with Sonarr's field names; handlers reuse the native routes
 - Commands start in the background and answer `started`; `GET /command/{id}` reports completed.
 - Indexers map Sonarr's `fields` list onto stored settings; secrets read back masked and a
   masked value on update keeps the stored one. A `downloadClientId` of 0 means none.
+
+## 36. List progress sync
+
+Tanukarr's watched-progress queue is ported with its guards: progress is the contiguous
+watched prefix from one Jellyfin source; rows (`import_list_progress_states`) are written before
+any request; every request re-checks the connection, the list and its stored membership; writes
+only grow an entry the user already has. The writers live in `kitsunarr-importlists::progress`
+(HTTP only) and the queue in `kitsunarr-library::list_progress`, which the Jellyfin watched sync
+calls for every matched series. The 10-writes-a-minute budget is in memory, as upstream.
+Kitsunarr has no OAuth sign-in, so writers use the list's pasted (or migrated) token; an
+expired token waits a day like any unusable account, and MyAnimeList tokens are renewed by the
+list sync.

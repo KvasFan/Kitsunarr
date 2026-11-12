@@ -15,6 +15,7 @@ pub mod custom;
 pub mod mdblist;
 pub mod myanimelist;
 pub mod plex;
+pub mod progress;
 pub mod rss;
 pub mod simkl;
 pub mod sonarr;

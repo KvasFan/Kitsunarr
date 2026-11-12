@@ -2698,6 +2698,7 @@ name = "kitsunarr-importlists"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "chrono",
  "kitsunarr-indexers",
  "regex",
  "reqwest 0.13.5",
@@ -2739,6 +2740,7 @@ dependencies = [
  "kitsunarr-decision",
  "kitsunarr-domain",
  "kitsunarr-downloaders",
+ "kitsunarr-importlists",
  "kitsunarr-metadata",
  "kitsunarr-notifications",
  "kitsunarr-parser",

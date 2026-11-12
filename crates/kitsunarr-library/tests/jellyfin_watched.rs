@@ -245,3 +245,191 @@ async fn libraries_and_users_are_listed_for_the_editor() {
             .is_err()
     );
 }
+
+/// AniList and MyAnimeList stand-ins for the progress writers.
+#[derive(Clone, Default)]
+struct Lists {
+    on_list: Arc<Mutex<bool>>,
+    anilist_progress: Arc<Mutex<i64>>,
+    anilist_writes: Arc<Mutex<Vec<i64>>>,
+    mal_watched: Arc<Mutex<i64>>,
+    mal_writes: Arc<Mutex<Vec<i64>>>,
+}
+
+async fn anilist(
+    State(l): State<Lists>,
+    h: HeaderMap,
+    Json(body): Json<Value>,
+) -> Result<Json<Value>, StatusCode> {
+    if h.get("authorization").and_then(|v| v.to_str().ok()) != Some("Bearer token") {
+        return Err(StatusCode::UNAUTHORIZED);
+    }
+    let q = body["query"].as_str().unwrap_or_default();
+    let vars = &body["variables"];
+    if q.contains("Viewer") {
+        assert_eq!(vars["name"], "anna");
+        return Ok(Json(
+            json!({"data": {"Viewer": {"id": 7, "name": "anna"}, "User": {"id": 7, "name": "anna"}}}),
+        ));
+    }
+    if q.contains("SaveMediaListEntry") {
+        assert_eq!(vars["id"], 99);
+        let p = vars["progress"].as_i64().unwrap();
+        *l.anilist_progress.lock().unwrap() = p;
+        l.anilist_writes.lock().unwrap().push(p);
+        return Ok(Json(
+            json!({"data": {"SaveMediaListEntry": {"id": 99, "userId": 7, "mediaId": 154587, "progress": p}}}),
+        ));
+    }
+    assert!(q.contains("MediaList("), "{q}");
+    assert_eq!(vars["media"], 154587);
+    assert_eq!(vars["user"], 7);
+    if !*l.on_list.lock().unwrap() {
+        return Ok(Json(json!({"data": {"MediaList": null}})));
+    }
+    let p = *l.anilist_progress.lock().unwrap();
+    Ok(Json(
+        json!({"data": {"MediaList": {"id": 99, "userId": 7, "mediaId": 154587, "progress": p, "media": {"episodes": 28, "type": "ANIME"}}}}),
+    ))
+}
+
+async fn mal_me() -> Json<Value> {
+    Json(json!({"id": 1, "name": "anna"}))
+}
+
+async fn mal_anime(State(l): State<Lists>) -> Json<Value> {
+    let w = *l.mal_watched.lock().unwrap();
+    Json(json!({"id": 5, "num_episodes": 12, "my_list_status": {"num_episodes_watched": w}}))
+}
+
+async fn mal_patch(
+    State(l): State<Lists>,
+    axum::Form(f): axum::Form<std::collections::HashMap<String, String>>,
+) -> Json<Value> {
+    let n: i64 = f["num_watched_episodes"].parse().unwrap();
+    *l.mal_watched.lock().unwrap() = n;
+    l.mal_writes.lock().unwrap().push(n);
+    Json(json!({"status": "watching", "num_episodes_watched": n}))
+}
+
+async fn lists_mock() -> (Lists, String) {
+    let l = Lists::default();
+    let app = axum::Router::new()
+        .route("/graphql", axum::routing::post(anilist))
+        .route("/mal/users/@me", get(mal_me))
+        .route("/mal/anime/{id}", get(mal_anime))
+        .route(
+            "/mal/anime/{id}/my_list_status",
+            axum::routing::patch(mal_patch),
+        )
+        .with_state(l.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (l, base)
+}
+
+async fn progress_state(db: &Database) -> Option<(i64, i64, i64, Option<String>)> {
+    sqlx::query_as(
+        "SELECT pending_progress, acknowledged_progress, failure_count, last_error FROM import_list_progress_states",
+    )
+    .fetch_optional(db.pool())
+    .await
+    .unwrap()
+}
+
+#[tokio::test]
+async fn watched_progress_reaches_the_anilist_list() {
+    let (_dir, db, mock, http) = setup(json!({"syncListProgress": true})).await;
+    let (lists, base) = lists_mock().await;
+    let settings = json!({"accessToken": "token", "username": "anna", "baseUrl": format!("{base}/graphql"),
+        "syncWatchedProgress": true});
+    sqlx::query("INSERT INTO import_lists (id, name, implementation, settings, created_at) VALUES (1, 'AniList', 'AniListImport', ?, '2026-11-01T00:00:00Z')")
+        .bind(settings.to_string())
+        .execute(db.pool())
+        .await
+        .unwrap();
+    // A list without its own opt-in receives nothing.
+    sqlx::query("INSERT INTO import_lists (id, name, implementation, settings, created_at) VALUES (2, 'Other', 'AniListImport', ?, '2026-11-01T00:00:00Z')")
+        .bind(json!({"accessToken": "token", "username": "anna", "baseUrl": format!("{base}/graphql")}).to_string())
+        .execute(db.pool())
+        .await
+        .unwrap();
+    for list in [1, 2] {
+        sqlx::query("INSERT INTO import_list_items (import_list_id, title, anilist_id) VALUES (?, 'Frieren', 154587)")
+            .bind(list)
+            .execute(db.pool())
+            .await
+            .unwrap();
+    }
+    *mock.items.lock().unwrap() = vec![(path(1), true), (path(2), true), (path(3), false)];
+
+    // Not on the user's list: nothing is created; retried after a day.
+    let summary = kitsunarr_library::jellyfin::sync(&db, &http, true)
+        .await
+        .unwrap();
+    assert!(!summary.contains("list progress"), "{summary}");
+    let (pending, ack, failures, error) = progress_state(&db).await.unwrap();
+    assert_eq!((pending, ack, failures), (2, 0, 1));
+    assert!(error.unwrap().contains("not on the AniList list"));
+    let next: String =
+        sqlx::query_scalar("SELECT next_attempt_at FROM import_list_progress_states")
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    let next = chrono::DateTime::parse_from_rfc3339(&next).unwrap();
+    assert!(next > chrono::Utc::now() + chrono::Duration::hours(23));
+    assert!(lists.anilist_writes.lock().unwrap().is_empty());
+
+    // On the list and due: the watched prefix is written.
+    *lists.on_list.lock().unwrap() = true;
+    sqlx::query("UPDATE import_list_progress_states SET next_attempt_at = '2026-01-01T00:00:00Z'")
+        .execute(db.pool())
+        .await
+        .unwrap();
+    let summary = kitsunarr_library::jellyfin::sync(&db, &http, true)
+        .await
+        .unwrap();
+    assert!(summary.contains("1 list progress updates"), "{summary}");
+    assert_eq!(*lists.anilist_writes.lock().unwrap(), vec![2]);
+    assert_eq!(progress_state(&db).await.unwrap(), (2, 2, 0, None));
+
+    // Nothing new: nothing sent.
+    kitsunarr_library::jellyfin::sync(&db, &http, true)
+        .await
+        .unwrap();
+    assert_eq!(lists.anilist_writes.lock().unwrap().len(), 1);
+
+    // The next episode advances it.
+    mock.items.lock().unwrap()[2].1 = true;
+    kitsunarr_library::jellyfin::sync(&db, &http, true)
+        .await
+        .unwrap();
+    assert_eq!(*lists.anilist_writes.lock().unwrap(), vec![2, 3]);
+
+    // Progress never goes down: unwatching episode 1 breaks the prefix; nothing is sent.
+    mock.items.lock().unwrap()[0].1 = false;
+    kitsunarr_library::jellyfin::sync(&db, &http, true)
+        .await
+        .unwrap();
+    assert_eq!(*lists.anilist_writes.lock().unwrap(), vec![2, 3]);
+    assert_eq!(*lists.anilist_progress.lock().unwrap(), 3);
+
+    // MyAnimeList's writer never lowers a count either.
+    let mal = json!({"accessToken": "t", "username": "anna", "baseUrl": format!("{base}/mal")});
+    let mal = mal.as_object().unwrap();
+    let n = kitsunarr_importlists::progress::myanimelist(&http, mal, 5, 4)
+        .await
+        .unwrap();
+    assert_eq!(n, 4);
+    let n = kitsunarr_importlists::progress::myanimelist(&http, mal, 5, 2)
+        .await
+        .unwrap();
+    assert_eq!(n, 4);
+    assert_eq!(*lists.mal_writes.lock().unwrap(), vec![4]);
+    let other = json!({"accessToken": "t", "username": "bob", "baseUrl": format!("{base}/mal")});
+    let e = kitsunarr_importlists::progress::myanimelist(&http, other.as_object().unwrap(), 5, 6)
+        .await
+        .unwrap_err();
+    assert!(e.to_string().contains("another account"), "{e}");
+}

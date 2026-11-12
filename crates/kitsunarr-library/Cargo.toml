@@ -16,6 +16,7 @@ kitsunarr-parser = { workspace = true }
 kitsunarr-decision = { workspace = true }
 kitsunarr-downloaders = { workspace = true }
 kitsunarr-notifications = { workspace = true }
+kitsunarr-importlists = { workspace = true }
 sha2 = { workspace = true }
 hex = { workspace = true }
 uuid = { workspace = true }

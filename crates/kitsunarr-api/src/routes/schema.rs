@@ -164,7 +164,7 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 n("Apprise", "Apprise", json!({"serverUrl": "", "configurationKey": "", "statelessUrls": "", "notificationType": 0, "tags": [], "authUsername": "", "authPassword": ""})),
                 n("Notifiarr", "Notifiarr", json!({"apiKey": ""})),
                 n("Emby / Jellyfin", "MediaBrowser", json!({"host": "localhost", "port": 8096, "useSsl": false, "urlBase": "", "apiKey": "", "notify": false, "updateLibrary": true, "mapFrom": "", "mapTo": ""})),
-                n("Jellyfin", "Jellyfin", json!({"host": "localhost", "port": 8096, "useSsl": false, "urlBase": "", "apiKey": "", "libraryId": "", "refreshMode": 1, "refreshIntervalMinutes": 60, "enableWatchedSync": false, "watchedUserId": "", "watchedSyncIntervalMinutes": 5, "unmonitorWatchedEpisodes": false, "remonitorUnwatchedEpisodes": false, "jellyfinPathPrefix": "", "kitsunarrPathPrefix": ""})),
+                n("Jellyfin", "Jellyfin", json!({"host": "localhost", "port": 8096, "useSsl": false, "urlBase": "", "apiKey": "", "libraryId": "", "refreshMode": 1, "refreshIntervalMinutes": 60, "enableWatchedSync": false, "watchedUserId": "", "watchedSyncIntervalMinutes": 5, "unmonitorWatchedEpisodes": false, "remonitorUnwatchedEpisodes": false, "syncListProgress": false, "jellyfinPathPrefix": "", "kitsunarrPathPrefix": ""})),
                 n("Plex Media Server", "PlexServer", json!({"host": "localhost", "port": 32400, "useSsl": false, "urlBase": "", "authToken": "", "updateLibrary": true, "mapFrom": "", "mapTo": ""})),
                 n("Kodi", "Xbmc", json!({"host": "localhost", "port": 8080, "useSsl": false, "urlBase": "", "username": "", "password": "", "displayTime": 5, "notify": false, "updateLibrary": true, "cleanLibrary": false})),
             ]
@@ -187,23 +187,23 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                     "importDropped": false, "importPaused": false, "importRepeating": false,
                     "importFinished": true, "importReleasing": true, "importUnreleased": false,
                     "importCancelled": false, "importHiatus": false,
-                    "includedCustomLists": [], "excludedCustomLists": []
+                    "includedCustomLists": [], "excludedCustomLists": [], "syncWatchedProgress": false
                 })),
                 l("MDBList", "MDBListImport", json!({"apiKey": "", "includedListUrls": [], "excludedListUrls": []})),
                 l("MyAnimeList", "MyAnimeListImport", json!({
                     "username": "", "clientId": "", "clientSecret": "", "accessToken": "", "refreshToken": "",
                     "listStatuses": [1, 5], "includedTags": [], "excludedTags": [], "minimumScore": 0,
-                    "importFinished": true, "importAiring": true, "importUnreleased": true
+                    "importFinished": true, "importAiring": true, "importUnreleased": true, "syncWatchedProgress": false
                 })),
                 l("TMDB list", "TmdbListImport", json!({"authToken": "", "includedListIds": [], "excludedListIds": []})),
-                l("Trakt list", "TraktListImport", json!({"clientId": "", "accessToken": "", "username": "", "listname": "", "excludedLists": [], "limit": 100, "rating": "", "genres": "", "years": ""})),
-                l("Trakt user", "TraktUserImport", json!({"clientId": "", "accessToken": "", "username": "", "traktListType": 0, "traktWatchedListType": 0, "traktWatchSorting": 0, "limit": 100})),
+                l("Trakt list", "TraktListImport", json!({"clientId": "", "accessToken": "", "username": "", "listname": "", "excludedLists": [], "limit": 100, "rating": "", "genres": "", "years": "", "syncWatchedProgress": false})),
+                l("Trakt user", "TraktUserImport", json!({"clientId": "", "accessToken": "", "username": "", "traktListType": 0, "traktWatchedListType": 0, "traktWatchSorting": 0, "limit": 100, "syncWatchedProgress": false})),
                 l("Trakt popular", "TraktPopularImport", json!({"clientId": "", "traktListType": 0, "limit": 100, "rating": "", "genres": "", "years": ""})),
                 l("Trakt smart list", "TraktSmartListImport", json!({"clientId": "", "accessToken": "", "smartList": "", "limit": 100})),
                 l("TMDB discover", "TmdbDiscoverImport", json!({"authToken": "", "sortByType": 7, "originalLanguage": "", "withGenreTypes": [], "withNetworks": [], "airDateMinimum": "", "airDateMaximum": "", "voteAverageMinimum": "", "voteCountMinimum": "", "withCompanies": "", "withKeywords": "", "includeNullFirstAirDates": false})),
                 l("TMDB account", "TmdbAccountImport", json!({"authToken": "", "accountId": "", "accountListType": 3})),
                 l("TMDB person", "TmdbPersonImport", json!({"authToken": "", "personId": 0, "includingCastCredits": true, "includeDepartmentTypes": []})),
-                l("Simkl", "SimklUserImport", json!({"clientIdV2": "", "accessToken": "", "showType": 0, "listType": 0})),
+                l("Simkl", "SimklUserImport", json!({"clientIdV2": "", "accessToken": "", "showType": 0, "listType": 0, "syncWatchedProgress": false})),
                 l("Plex Watchlist", "PlexImport", json!({"accessToken": ""})),
                 l("Plex Watchlist RSS", "PlexRssImport", json!({"url": ""})),
                 l("Sonarr", "SonarrImport", json!({
