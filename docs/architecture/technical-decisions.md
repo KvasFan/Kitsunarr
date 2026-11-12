@@ -238,7 +238,7 @@ The rest follows Sonarr:
   - the Test follows upstream: version 0.7+, "check before download" before 1.1, the category must exist and not end with `*` (job folders), no TV/movie/date sorting for it, and a warning when the history is kept for less than 14 days;
   - SABnzbd returns numbers as strings and booleans as 0/1; answers are read leniently, as Newtonsoft does upstream.
 - **NZBGet** (`Nzbget.cs`, `NzbgetProxy.cs`), through `POST {base}/jsonrpc` with basic authentication:
-  - only NZBGet 16 (2016) and newer: `append` carries a `drone` parameter with a random id, which tracks the download. Upstream's legacy forms for 12–15 (append, then find the job and set the parameter) are not ported, and the Test reports older versions;
+  - NZBGet 12 and newer, as upstream: on 16+ `append` carries a `drone` parameter with a random id, which tracks the download; on 13–15 and 12 the id is set on the queued item afterwards (`GroupSetParameter`), the item found by its NZBGet id (13–15) or by name (12). Upstream's legacy forms for 12–15 (append, then find the job and set the parameter) are not ported, and the Test reports older versions;
   - sizes are joined from their 32-bit halves; time left accumulates over the queue at the current download rate; history states follow the PAR, unpack, move, script, delete and mark statuses as upstream.
 - **NZBs** are fetched through the indexer client (its rate limit and redirects) and validated as `NzbValidationService` does (an `nzb` root with at least one `file`; an indexer `<error>` document is reported) before they reach the client.
 - **Usenet imports move the files** (`CanMoveFiles`); across file systems the file is copied, then the source removed. Torrent imports still copy or hard-link.

@@ -244,16 +244,34 @@ async fn nzb_rpc(State(m): State<NzbShared>, headers: HeaderMap, body: String) -
         ]),
         "append" => {
             let p = params.as_array().unwrap();
-            m.calls.push(format!(
-                "append {} {} {} paused={} {}",
-                p[0], p[2], p[3], p[5], p[9][0]
-            ));
-            assert!(!p[1].as_str().unwrap().is_empty());
-            json!(42)
+            match p.len() {
+                // NZBGet 12: name, category, priority, add to top, content; true on success.
+                5 => {
+                    m.calls.push(format!("append12 {} {} {}", p[0], p[1], p[2]));
+                    assert!(!p[4].as_str().unwrap().is_empty());
+                    json!(true)
+                }
+                // NZBGet 13–15: no parameters.
+                9 => {
+                    m.calls.push(format!(
+                        "append13 {} {} {} paused={}",
+                        p[0], p[2], p[3], p[5]
+                    ));
+                    json!(42)
+                }
+                _ => {
+                    m.calls.push(format!(
+                        "append {} {} {} paused={} {}",
+                        p[0], p[2], p[3], p[5], p[9][0]
+                    ));
+                    assert!(!p[1].as_str().unwrap().is_empty());
+                    json!(42)
+                }
+            }
         }
         "status" => json!({"DownloadPaused": false, "DownloadRate": 10}),
         "listgroups" => json!([
-            {"NZBID": 42, "NZBName": "Show.S01E01", "Category": "tv", "FileSizeLo": 100, "FileSizeHi": 0,
+            {"NZBID": 42, "LastID": 99, "NZBName": "Show.S01E01", "Category": "tv", "FileSizeLo": 100, "FileSizeHi": 0,
              "RemainingSizeLo": 50, "RemainingSizeHi": 0, "PausedSizeLo": 0, "PausedSizeHi": 0, "ActiveDownloads": 1,
              "Parameters": [{"Name": "drone", "Value": "aaaabbbbccccddddeeeeffff00001111"}]}
         ]),
@@ -265,6 +283,13 @@ async fn nzb_rpc(State(m): State<NzbShared>, headers: HeaderMap, body: String) -
             {"ID": 8, "Name": "Other", "Category": "movies", "ParStatus": "SUCCESS", "UnpackStatus": "SUCCESS",
              "MoveStatus": "SUCCESS", "ScriptStatus": "NONE", "DeleteStatus": "", "MarkStatus": "", "DestDir": "/m"}
         ]),
+        "editqueue" if params[0] == "GroupSetParameter" => {
+            let text = params[2].as_str().unwrap();
+            assert!(text.starts_with("drone=") && text.len() == 6 + 32, "{text}");
+            m.calls
+                .push(format!("editqueue {} {}", params[0], params[3]));
+            json!(true)
+        }
         "editqueue" => {
             m.calls
                 .push(format!("editqueue {} {}", params[0], params[3]));
@@ -333,9 +358,47 @@ async fn nzbget_test_add_list_and_remove() {
     assert!(calls.contains(&r#"editqueue "HistoryDelete" 7"#.to_string()));
 }
 
+/// `DownloadNzbLegacy13` and `DownloadNzbLegacy12`: the drone id is set on the queued item.
+#[tokio::test]
+async fn older_nzbget_versions_get_the_drone_id_afterwards() {
+    for (version, expected) in [
+        (
+            "15.0",
+            vec![
+                r#"append13 "Show.S01E01.nzb" "tv" 50 paused=false"#,
+                r#"editqueue "GroupSetParameter" 42"#,
+            ],
+        ),
+        (
+            "12.0-r1",
+            vec![
+                r#"append12 "Show.S01E01.nzb" "tv" 50"#,
+                r#"editqueue "GroupSetParameter" 99"#,
+            ],
+        ),
+    ] {
+        let (settings, mock) = nzb_mock(version, "7", "pass").await;
+        let clients = Clients::default();
+        assert!(clients.test(&settings).await.is_ok(), "{version}");
+        let id = clients
+            .add_nzb(&settings, "Show.S01E01.nzb", NZB, true)
+            .await
+            .unwrap();
+        assert_eq!(id.len(), 32);
+        assert_eq!(mock.lock().unwrap().calls, expected, "{version}");
+    }
+    // Not in the queue after adding: rejected, as upstream.
+    let (settings, _) = nzb_mock("12.0", "7", "pass").await;
+    let err = Clients::default()
+        .add_nzb(&settings, "Unknown.nzb", NZB, true)
+        .await
+        .unwrap_err();
+    assert!(matches!(err, DownloadError::Rejected(_)), "{err}");
+}
+
 #[tokio::test]
 async fn nzbget_test_reports_problems() {
-    let (settings, _) = nzb_mock("15.0", "7", "pass").await;
+    let (settings, _) = nzb_mock("11.0", "7", "pass").await;
     let err = Clients::default().test(&settings).await.unwrap_err();
     assert!(err.to_string().contains("too old"), "{err}");
     let (settings, _) = nzb_mock("21.1", "0", "pass").await;

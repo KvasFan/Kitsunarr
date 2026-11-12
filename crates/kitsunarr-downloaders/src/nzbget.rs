@@ -1,8 +1,9 @@
 //! NZBGet through its JSON-RPC API (Sonarr's `Nzbget.cs` and `NzbgetProxy.cs`).
 //!
-//! Calls are `POST {base}/jsonrpc` with HTTP basic authentication. Kitsunarr needs NZBGet 16
-//! or newer (released in 2016): `append` then carries a `drone` parameter with a random id,
-//! which is how downloads are tracked, as upstream. Sizes arrive as two 32-bit halves.
+//! Calls are `POST {base}/jsonrpc` with HTTP basic authentication. NZBGet 12 or newer is
+//! needed, as upstream. Downloads are tracked by a `drone` parameter with a random id: NZBGet 16
+//! takes it with `append`, older versions get it set on the new queue item. Sizes arrive as two
+//! 32-bit halves.
 
 use serde_json::{Map, Value, json};
 
@@ -317,7 +318,9 @@ impl Nzbget {
             .unwrap_or_default())
     }
 
-    /// `DownloadNzb` (NZBGet 16+): returns the `drone` id.
+    /// `DownloadNzb`: returns the `drone` id. NZBGet 16+ takes it with `append`; 13–15 get it
+    /// set on the new queue item (`DownloadNzbLegacy13`); 12 has the old `append` signature,
+    /// and the item is found by name (`DownloadNzbLegacy12`).
     pub async fn add(
         &self,
         s: &Settings,
@@ -326,39 +329,84 @@ impl Nzbget {
         recent: bool,
     ) -> Result<String, DownloadError> {
         use base64::Engine as _;
-        if self.major(s).await? < 16 {
-            return Err(DownloadError::Unsupported(
-                "NZBGet 16 or newer is required to send downloads".into(),
-            ));
-        }
+        let major = self.major(s).await?;
         let priority = if recent {
             s.recent_priority
         } else {
             s.older_priority
         };
+        let nzb = base64::engine::general_purpose::STANDARD.encode(content);
+        let category = s.category.clone().unwrap_or_default();
+        let rejected =
+            || DownloadError::Rejected("NZBGet rejected the NZB for an unknown reason".into());
         let drone = uuid_hex();
-        let id = self
+        if major >= 16 {
+            let id = self
+                .call(
+                    s,
+                    "append",
+                    json!([
+                        name,
+                        nzb,
+                        category,
+                        priority,
+                        false,
+                        s.add_paused,
+                        "",
+                        0,
+                        "all",
+                        ["drone", drone]
+                    ]),
+                )
+                .await?;
+            if num(Some(&id)) <= 0.0 {
+                return Err(rejected());
+            }
+            return Ok(drone);
+        }
+        let group_id = if major >= 13 {
+            let id = self
+                .call(
+                    s,
+                    "append",
+                    json!([name, nzb, category, priority, false, false, "", 0, "all"]),
+                )
+                .await?;
+            let id = num(Some(&id)) as i64;
+            if id <= 0 {
+                return Err(rejected());
+            }
+            let groups = self.list(s, "listgroups").await?;
+            groups
+                .iter()
+                .find(|g| num(g.get("NZBID")) as i64 == id)
+                .map(|g| num(g.get("NZBID")) as i64)
+        } else {
+            let ok = self
+                .call(s, "append", json!([name, category, priority, false, nzb]))
+                .await?;
+            if ok != Value::Bool(true) {
+                return Err(rejected());
+            }
+            let title = name.strip_suffix(".nzb").unwrap_or(name);
+            let groups = self.list(s, "listgroups").await?;
+            groups
+                .iter()
+                .find(|g| string(g.get("NZBName")) == title)
+                .map(|g| num(g.get("LastID")) as i64)
+        };
+        let Some(group_id) = group_id else {
+            return Err(rejected());
+        };
+        let set = self
             .call(
                 s,
-                "append",
-                json!([
-                    name,
-                    base64::engine::general_purpose::STANDARD.encode(content),
-                    s.category.clone().unwrap_or_default(),
-                    priority,
-                    false,
-                    s.add_paused,
-                    "",
-                    0,
-                    "all",
-                    ["drone", drone]
-                ]),
+                "editqueue",
+                json!(["GroupSetParameter", 0, format!("drone={drone}"), group_id]),
             )
             .await?;
-        if num(Some(&id)) <= 0.0 {
-            return Err(DownloadError::Rejected(
-                "NZBGet rejected the NZB for an unknown reason".into(),
-            ));
+        if set != Value::Bool(true) {
+            tracing::warn!(group_id, "NZBGet did not keep the download's drone id");
         }
         Ok(drone)
     }
@@ -411,9 +459,9 @@ impl Nzbget {
             .next()
             .and_then(|m| m.trim().parse::<u64>().ok())
             .unwrap_or(0);
-        if major < 16 {
+        if major < 12 {
             return Err(DownloadError::Client(format!(
-                "NZBGet {version} is too old; Kitsunarr needs version 16 or newer"
+                "NZBGet {version} is too old; version 12 or newer is required"
             )));
         }
         let config = self.config(s).await?;
