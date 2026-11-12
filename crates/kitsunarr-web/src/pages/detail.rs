@@ -103,6 +103,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
     // Interactive search target: (season, episode id, label).
     let mut searching = use_signal(|| None::<(Option<i32>, Option<i64>, String)>);
+    let mut searching_complete = use_signal(|| false);
     let c1 = client.clone();
     let detail = use_resource(move || {
         let _ = (app.library_rev)();
@@ -150,6 +151,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 series_id: id,
                 season_number: season,
                 episode_id,
+                complete_series: false,
             };
             match c.automatic_search(&q).await {
                 Ok(r) => {
@@ -295,8 +297,17 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                         if scanning() { "Scanning…" } else { "Scan disk" }
                     }
                     button { class: "btn", title: "Rename files to the naming settings", onclick: move |_| renaming.set(true), "Rename files" }
+                    button { class: "btn", title: "Interactive search for packs of the whole series (and of its seasons) on torrent indexers", onclick: move |_| searching_complete.set(true), "Complete series" }
                     button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true) }, "Remove from library" }
                 }
+            }
+        }
+        if searching_complete() {
+            Modal {
+                title: format!("Search: {} — complete series", d.item.title),
+                wide: true,
+                on_close: move |_| searching_complete.set(false),
+                ReleaseSearch { series_id: id, complete_series: true }
             }
         }
         if let Some((season, episode_id, label)) = searching() {

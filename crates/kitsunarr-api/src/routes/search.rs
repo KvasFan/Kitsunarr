@@ -257,6 +257,68 @@ fn episode_searches(
     })
 }
 
+/// The searches to run (each with its decision kind), their description and the requested
+/// episodes.
+type PlannedSearch = (Vec<(Search, SearchKind)>, String, Vec<i64>);
+
+/// Tanukarr's `CompleteSeriesSearch`: every regular episode; the series' first three clean
+/// titles, `Title S01-Sxx` and `Title complete` queries, and in interactive searches one
+/// season-pack query per season.
+fn complete_series_search(
+    scene_titles: &[String],
+    episodes: &[EpisodeItem],
+    automatic: bool,
+) -> ApiResult<PlannedSearch> {
+    let regular: Vec<&EpisodeItem> = episodes.iter().filter(|e| e.season_number > 0).collect();
+    if regular.is_empty() {
+        return Err(ApiError::field(
+            "completeSeries",
+            "The series has no regular episodes to search for.",
+        ));
+    }
+    let mut query_titles: Vec<String> = Vec::new();
+    for t in scene_titles
+        .iter()
+        .map(|t| clean_scene_title(t).replace('+', " "))
+    {
+        if !t.is_empty()
+            && !query_titles
+                .iter()
+                .any(|q| q.to_lowercase() == t.to_lowercase())
+        {
+            query_titles.push(t);
+        }
+    }
+    query_titles.truncate(3);
+    let mut seasons: Vec<i32> = regular.iter().map(|e| e.season_number).collect();
+    seasons.sort_unstable();
+    seasons.dedup();
+    let last = seasons.last().copied().unwrap_or(1);
+    let mut packs: Vec<String> = Vec::new();
+    for t in &query_titles {
+        if last > 1 {
+            packs.push(format!("{t} S01-S{last:02}"));
+        }
+        packs.push(format!("{t} complete"));
+    }
+    if !automatic && let Some(first) = query_titles.first() {
+        packs.extend(seasons.iter().map(|s| format!("{first} S{s:02}")));
+    }
+    Ok((
+        vec![(
+            Search::CompleteSeries {
+                query_titles,
+                pack_query_titles: packs,
+            },
+            SearchKind::CompleteSeries {
+                include_season_packs: !automatic,
+            },
+        )],
+        "Complete series".into(),
+        regular.iter().map(|e| e.id).collect(),
+    ))
+}
+
 /// Indexer settings the decisions need, by indexer id.
 pub(crate) type Extras = std::collections::HashMap<i64, IndexerExtras>;
 
@@ -499,7 +561,15 @@ pub(crate) async fn run_search(
     };
 
     let episodes = series::list_episodes(&state.db, q.series_id, None).await?;
-    let (searches, description, requested): (Vec<(Search, SearchKind)>, String, Vec<i64>) =
+    let (searches, description, requested): PlannedSearch = if q.complete_series {
+        if q.episode_id.is_some() || q.season_number.is_some() {
+            return Err(ApiError::field(
+                "completeSeries",
+                "A complete-series search takes no season or episode.",
+            ));
+        }
+        complete_series_search(&criteria.scene_titles, &episodes, automatic)?
+    } else {
         match (q.episode_id, q.season_number) {
             (Some(episode_id), _) => {
                 let e = episodes
@@ -538,7 +608,8 @@ pub(crate) async fn run_search(
                     "Choose a season or an episode to search for.",
                 ));
             }
-        };
+        }
+    };
 
     let option = if automatic {
         "enableAutomaticSearch"
@@ -551,6 +622,16 @@ pub(crate) async fn run_search(
             x.tags.is_empty() || x.tags.iter().any(|t| detail.item.tags.contains(t))
         })
     });
+    // Tanukarr's `Dispatch`: complete-series searches use torrent indexers only.
+    if q.complete_series {
+        indexers.retain(|i| i.dialect == Dialect::Torznab);
+        if indexers.is_empty() {
+            return Err(ApiError::field(
+                "completeSeries",
+                "No torrent indexers are enabled for complete-series search.",
+            ));
+        }
+    }
 
     let client = &state.indexers;
     let outcomes = futures::future::join_all(indexers.iter().map(|indexer| {

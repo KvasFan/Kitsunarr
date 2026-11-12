@@ -390,3 +390,19 @@ Kitsunarr follows Tanukarr here, not upstream Sonarr. Upstream rejects multi-sea
 - **Import** takes only the grabbed episodes; files of other seasons are refused one by one. The pack is copied, never moved (Usenet included), and it is never removed from the client, so its other seasons stay intact.
 
 The parser keeps upstream's season-range rule (`S01 S04` → seasons 1–4), which passes Sonarr's parser fixtures; Tanukarr's narrower rule (`S01 S04` → 1 and 4) is not ported.
+
+### Complete-series search
+
+The series page's "Complete series" button runs Tanukarr's complete-series search interactively (`GET /releases?seriesId=…&completeSeries=true`; automatic grabs through `POST /releases/search` take the same flag):
+
+- **Indexers:** torrent indexers only, as Tanukarr's `Dispatch`.
+- **Requests:** an ID search for the series, then text queries for its first three clean titles, `Title S01-Sxx` and `Title complete`, and (interactive) one `Title Sxx` per season.
+- **Reading releases:** only `CompleteSeriesReleaseParser` reads the results. The release must start with one of the series' titles (with its year, when it gives one), then name a complete run:
+  - a "complete" label;
+  - seasons or season ranges, which must be seasons of the series;
+  - for anime, an absolute range covering every episode;
+  - for a single-season show, only quality tokens.
+
+  Other releases are left out, and releases whose ids name another series are rejected. Automatic searches need the whole series; interactive ones also list packs of some of its seasons.
+
+Not ported: collection titles (anime groups do not exist yet), and the automatic complete-series attempt that Tanukarr makes before series and missing searches.

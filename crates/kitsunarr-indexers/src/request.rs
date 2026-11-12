@@ -162,6 +162,12 @@ pub enum Search {
     Special {
         episode_query_titles: Vec<String>,
     },
+    /// Tanukarr's complete-series search: the series by id, then text queries for its titles
+    /// and for packs (`Title S01-S05`, `Title complete`, season packs).
+    CompleteSeries {
+        query_titles: Vec<String>,
+        pack_query_titles: Vec<String>,
+    },
 }
 
 /// A paged request: the URL without paging plus the criteria parameters.
@@ -592,6 +598,26 @@ impl Generator<'_> {
                             format!("&q={}{p}", newznabify_title(&title)),
                         ));
                     }
+                }
+                chain
+            }
+            Search::CompleteSeries {
+                query_titles,
+                pack_query_titles,
+            } => {
+                let mut chain = Chain::default();
+                let cats = self.search_categories(c).to_vec();
+                self.add_id_requests(&mut chain, &cats, c, "");
+                // ID results can be single episodes, so title and pack queries share their tier.
+                if caps.supports_search() {
+                    let mut seen = std::collections::HashSet::new();
+                    for q in query_titles.iter().chain(pack_query_titles) {
+                        if seen.insert(q.to_lowercase()) {
+                            chain.add(self.paged(&cats, "search", format!("&q={}", url_encode(q))));
+                        }
+                    }
+                } else {
+                    self.add_title_requests(&mut chain, c, "");
                 }
                 chain
             }

@@ -10,6 +10,7 @@
 //! pending releases, delay profiles' delays (searches bypass them in Sonarr anyway), free disk
 //! space, scene mappings and TheXEM numbering.
 
+pub mod complete_series;
 pub mod custom_format;
 pub mod model;
 pub mod profile;
@@ -115,11 +116,57 @@ impl Engine<'_> {
 
     /// The decision on each release, in input order. `Decision::release` indexes `releases`.
     pub fn evaluate(&self, releases: &[Release], criteria: &SearchCriteria) -> Vec<Decision> {
+        if let SearchKind::CompleteSeries {
+            include_season_packs,
+        } = criteria.kind
+        {
+            return self.evaluate_complete_series(releases, criteria, include_season_packs);
+        }
         let lookup = Lookup::new(self.series, self.library);
         releases
             .iter()
             .enumerate()
             .map(|(i, r)| self.decide_one(&lookup, criteria, i, r))
+            .collect()
+    }
+
+    /// Complete-series search: only releases `CompleteSeriesReleaseParser` reads as a run of
+    /// this series are decided; the others are left out, as upstream.
+    fn evaluate_complete_series(
+        &self,
+        releases: &[Release],
+        criteria: &SearchCriteria,
+        include_season_packs: bool,
+    ) -> Vec<Decision> {
+        let series = self.series;
+        let titles: Vec<String> = std::iter::once(series.title.clone())
+            .chain(series.alternate_titles.iter().cloned())
+            .collect();
+        releases
+            .iter()
+            .enumerate()
+            .filter_map(|(i, r)| {
+                let parsed =
+                    complete_series::parse(&r.title, series, &titles, include_season_packs)?;
+                // Release identifiers that name another series.
+                let conflicts = (r.tvdb_id > 0 && series.tvdb_id > 0 && r.tvdb_id != series.tvdb_id)
+                    || (r.tv_rage_id > 0 && series.tv_rage_id > 0 && r.tv_rage_id != series.tv_rage_id)
+                    || matches!((&r.imdb_id, &series.imdb_id), (Some(a), Some(b)) if !a.is_empty() && !b.is_empty() && a != b);
+                Some(if conflicts {
+                    self.rejected(
+                        i,
+                        r,
+                        Some(parsed),
+                        Some(series.id),
+                        Rejection::new(
+                            RejectionReason::WrongSeries,
+                            "Release identifiers conflict with searched series",
+                        ),
+                    )
+                } else {
+                    self.decide_mapped(criteria, i, r, parsed)
+                })
+            })
             .collect()
     }
 

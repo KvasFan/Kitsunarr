@@ -876,6 +876,7 @@ async fn indexer_test_and_interactive_search() {
             series_id: added.id,
             season_number: Some(1),
             episode_id: None,
+            complete_series: false,
         })
         .await
         .unwrap();
@@ -951,6 +952,7 @@ async fn indexer_test_and_interactive_search() {
             series_id: added.id,
             season_number: Some(1),
             episode_id: None,
+            complete_series: false,
         })
         .await
         .unwrap();
@@ -993,6 +995,7 @@ async fn indexer_test_and_interactive_search() {
             series_id: added.id,
             season_number: None,
             episode_id: Some(pilot.id),
+            complete_series: false,
         })
         .await
         .unwrap();
@@ -1023,7 +1026,8 @@ async fn indexer_test_and_interactive_search() {
                 .search_releases(&ReleaseQuery {
                     series_id: added.id,
                     season_number: None,
-                    episode_id: None
+                    episode_id: None,
+                    complete_series: false,
                 })
                 .await
                 .unwrap_err()
@@ -1281,6 +1285,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             series_id: added.id,
             season_number: None,
             episode_id: Some(pilot.id),
+            complete_series: false,
         })
         .await
         .unwrap();
@@ -1350,6 +1355,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             series_id: added.id,
             season_number: None,
             episode_id: Some(pilot.id),
+            complete_series: false,
         })
         .await
         .unwrap();
@@ -1444,6 +1450,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         series_id: added.id,
         season_number: Some(1),
         episode_id: None,
+        complete_series: false,
     };
     let auto = client.automatic_search(&season).await.unwrap();
     assert_eq!((auto.found, auto.approved), (2, 1), "{auto:?}");
@@ -1792,6 +1799,7 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
             series_id: added.id,
             season_number: None,
             episode_id: Some(pilot.id),
+            complete_series: false,
         })
         .await
         .unwrap();
@@ -1932,6 +1940,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
         series_id: added.id,
         season_number: None,
         episode_id: Some(pilot.id),
+        complete_series: false,
     };
     let search = || async {
         client
@@ -2371,6 +2380,7 @@ async fn notifications_follow_series_grabs_and_imports() {
             series_id: added.id,
             season_number: None,
             episode_id: Some(pilot.id),
+            complete_series: false,
         })
         .await
         .unwrap();
@@ -2626,6 +2636,7 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
         series_id: added.id,
         season_number: Some(1),
         episode_id: None,
+        complete_series: false,
     };
     let found = client.search_releases(&season_1).await.unwrap();
     let pack = found.releases.iter().find(|r| r.guid == "nzb-77").unwrap();
@@ -2707,4 +2718,137 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
         sab.lock().unwrap()["calls"].is_null(),
         "the job is not removed"
     );
+}
+
+#[tokio::test]
+async fn complete_series_search_reads_packs_of_the_series() {
+    use axum::extract::{Query, State};
+    use axum::response::IntoResponse;
+    use axum::routing::get;
+    use kitsunarr_domain::api::search::ReleaseQuery;
+    type Log = Arc<std::sync::Mutex<Vec<String>>>;
+    async fn torznab(
+        State(log): State<Log>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::response::Response {
+        if q.get("t").map(String::as_str) == Some("caps") {
+            let caps = std::fs::read_to_string(format!(
+                "{}/../../tests/fixtures/indexers/sonarr/newznab_caps.xml",
+                env!("CARGO_MANIFEST_DIR")
+            ))
+            .unwrap();
+            return ([("content-type", "application/xml")], caps).into_response();
+        }
+        log.lock().unwrap().push(format!(
+            "{} {}",
+            q.get("t").cloned().unwrap_or_default(),
+            q.get("q").cloned().unwrap_or_default()
+        ));
+        let item = |title: &str, guid: &str, hash: &str| {
+            format!(
+                r#"<item><title>{title}</title><guid>{guid}</guid>
+<link>magnet:?xt=urn:btih:{hash}</link><pubDate>Mon, 03 Nov 2025 10:00:00 +0000</pubDate><size>50000000000</size>
+<enclosure url="magnet:?xt=urn:btih:{hash}" length="50000000000" type="application/x-bittorrent;x-scheme-handler/magnet" />
+<torznab:attr name="seeders" value="40" /></item>"#
+            )
+        };
+        let feed = format!(
+            r#"<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:torznab="http://torznab.com/schemas/2015/feed"><channel>{}{}{}</channel></rss>"#,
+            item(
+                "Breaking.Bad.S01-S05.1080p.BluRay.x264-GRP",
+                "pack",
+                "a12fe1c06bba254a9dc9f519b335aa7c1367a88a"
+            ),
+            item(
+                "Breaking.Bad.S01E01.720p.HDTV.x264-GRP",
+                "episode",
+                "b12fe1c06bba254a9dc9f519b335aa7c1367a88a"
+            ),
+            item(
+                "Breaking.Bad.S02.1080p.BluRay.x264-GRP",
+                "season",
+                "c12fe1c06bba254a9dc9f519b335aa7c1367a88a"
+            ),
+        );
+        ([("content-type", "application/rss+xml")], feed).into_response()
+    }
+    let log: Log = Arc::default();
+    let app = axum::Router::new()
+        .route("/api", get(torznab))
+        .with_state(log.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let indexer_url = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+        })
+        .await
+        .unwrap();
+    let query = ReleaseQuery {
+        series_id: added.id,
+        season_number: None,
+        episode_id: None,
+        complete_series: true,
+    };
+    // Torrent indexers only.
+    let none = client.search_releases(&query).await.unwrap_err();
+    assert_eq!(status(none), 422);
+    let _: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Torznab", "implementation": "Torznab",
+                "options": {"enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "k", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let found = client.search_releases(&query).await.unwrap();
+    // The single episode is not a run of the series and is left out; the season pack shows
+    // in interactive searches.
+    let guids: Vec<&str> = found.releases.iter().map(|r| r.guid.as_str()).collect();
+    assert_eq!(guids, vec!["pack", "season"], "{:?}", found.releases);
+    let pack = &found.releases[0];
+    assert!(pack.approved, "{:?}", pack.rejections);
+    assert_eq!(pack.season_numbers, vec![1, 2, 3, 4, 5]);
+    assert_eq!(pack.mapped_episodes.len(), 62);
+    assert_eq!(found.releases[1].season_numbers, vec![2]);
+    let queries = log.lock().unwrap().clone();
+    for q in [
+        "search Breaking Bad",
+        "search Breaking Bad S01-S05",
+        "search Breaking Bad complete",
+        "search Breaking Bad S03",
+    ] {
+        assert!(queries.contains(&q.to_string()), "{q}: {queries:?}");
+    }
 }

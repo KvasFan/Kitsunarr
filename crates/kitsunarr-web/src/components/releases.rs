@@ -50,6 +50,9 @@ pub fn ReleaseSearch(
     series_id: i64,
     #[props(default)] season: Option<i32>,
     #[props(default)] episode_id: Option<i64>,
+    /// Tanukarr's complete-series search (torrent indexers).
+    #[props(default)]
+    complete_series: bool,
 ) -> Element {
     let client = use_client();
     let app = use_app();
@@ -63,6 +66,7 @@ pub fn ReleaseSearch(
             series_id,
             season_number: season,
             episode_id,
+            complete_series,
         };
         async move { c.search_releases(&q).await }
     });

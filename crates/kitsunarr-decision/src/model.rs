@@ -138,6 +138,10 @@ pub enum SearchKind {
     Special,
     /// RSS sync: no search criteria (`searchCriteria == null` upstream).
     Rss,
+    /// Tanukarr's complete-series search; interactive searches also take packs of some seasons.
+    CompleteSeries {
+        include_season_packs: bool,
+    },
 }
 
 #[derive(Debug, Clone)]

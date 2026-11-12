@@ -30,7 +30,7 @@ fn items() -> Vec<QualityProfileItem> {
         .collect()
 }
 
-fn series() -> Series {
+pub(crate) fn series() -> Series {
     Series {
         monitored: true,
         id: 1,

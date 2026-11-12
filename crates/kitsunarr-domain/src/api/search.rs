@@ -16,6 +16,10 @@ pub struct ReleaseQuery {
     pub season_number: Option<i32>,
     #[serde(default)]
     pub episode_id: Option<i64>,
+    /// Tanukarr's complete-series search (no season or episode): packs of the whole series,
+    /// and, in interactive searches, packs of some of its seasons. Torrent indexers only.
+    #[serde(default)]
+    pub complete_series: bool,
 }
 
 /// A release found on an indexer, with what the parser reads from its name. Download URLs are
