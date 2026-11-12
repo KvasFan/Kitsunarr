@@ -5,6 +5,7 @@ pub mod events;
 pub mod grab;
 pub mod import_lists;
 pub mod library;
+pub mod library_tools;
 pub mod metadata;
 pub mod migration;
 pub mod queue;
@@ -152,6 +153,11 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             import_lists::create_exclusion
         ))
         .routes(routes!(import_lists::delete_exclusion))
+        .routes(routes!(
+            library_tools::get_settings,
+            library_tools::put_settings
+        ))
+        .routes(routes!(library_tools::searches))
         .routes(routes!(
             import_lists::get_options,
             import_lists::put_options

@@ -26,9 +26,9 @@ use kitsunarr_domain::api::migration::{
 };
 use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, FormatScore, ImportListOptionsSettings,
-    IndexerOptionsSettings, ListSyncLevel, MediaManagementSettings, MetadataSourcesSettings,
-    NamingSettings, OrderedF64, ProperDownloadType, ProviderKind, QualityDefinition, QualityGroup,
-    QualityProfile, QualityProfileItem, QualitySizeLimit,
+    IndexerOptionsSettings, LibraryToolsSettings, ListSyncLevel, MediaManagementSettings,
+    MetadataSourcesSettings, NamingSettings, OrderedF64, ProperDownloadType, ProviderKind,
+    QualityDefinition, QualityGroup, QualityProfile, QualityProfileItem, QualitySizeLimit,
 };
 use kitsunarr_domain::{
     ExternalId, ExternalIdKind, MediaKind, MetadataProvider, MinimumAvailability, MovieStatus,
@@ -68,6 +68,8 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "autoredownloadfailed",
     "autoredownloadfailedfrominteractivesearch",
     "stalledtorrenttimeout",
+    // Library tools (Tanukarr's `ProOptions` JSON; per-series options are not mapped).
+    "prooptions",
     // Import list options (database `Config` keys).
     "listsynclevel",
     "listsynctag",
@@ -1198,6 +1200,32 @@ impl<'a> Importer<'a> {
             } else if current == DownloadClientOptionsSettings::default() || self.update_existing()
             {
                 settings::set(&mut *conn, settings::KEY_DOWNLOAD_CLIENT_OPTIONS, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
+        // Tanukarr's Library tools switches (`ProOptions`, a JSON object in `Config`).
+        if let Some(raw) = self
+            .snap
+            .media_management
+            .clone()
+            .and_then(|r| r.json("prooptions"))
+            .filter(Value::is_object)
+        {
+            let flag = |k: &str| raw.get(k).and_then(Value::as_bool).unwrap_or(false);
+            let next = LibraryToolsSettings {
+                automation_paused: flag("automationPaused"),
+                hardlink_only: flag("hardlinkOnly"),
+                match_external_ids: flag("matchExternalIds"),
+                prefer_anime_season_packs: flag("preferAnimeSeasonPacks"),
+            };
+            let current: LibraryToolsSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_LIBRARY_TOOLS).await?;
+            if next == current {
+                self.count("settings", Act::Skip);
+            } else if current == LibraryToolsSettings::default() || self.update_existing() {
+                settings::set(&mut *conn, settings::KEY_LIBRARY_TOOLS, &next).await?;
                 self.count("settings", Act::Update);
             } else {
                 self.count("settings", Act::Skip);

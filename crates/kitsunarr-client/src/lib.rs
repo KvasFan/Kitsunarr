@@ -513,6 +513,22 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::settings::ImportListOptionsSettings> {
         self.put("/settings/importlistoptions", s).await
     }
+    pub async fn library_tools(
+        &self,
+    ) -> ClientResult<kitsunarr_domain::api::settings::LibraryToolsSettings> {
+        self.get("/settings/librarytools").await
+    }
+    pub async fn put_library_tools(
+        &self,
+        s: &kitsunarr_domain::api::settings::LibraryToolsSettings,
+    ) -> ClientResult<kitsunarr_domain::api::settings::LibraryToolsSettings> {
+        self.put("/settings/librarytools", s).await
+    }
+    pub async fn recent_searches(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::settings::SearchActivity>> {
+        self.get("/librarytools/searches").await
+    }
     pub async fn test_notification(
         &self,
         req: &IndexerTestRequest,

@@ -245,6 +245,8 @@ pub struct Settings {
     pub blocklist: Vec<Blocklisted>,
     /// Tanukarr's "multi-season releases" option.
     pub enable_multi_season_releases: bool,
+    /// Tanukarr's Library tools "match external ids".
+    pub match_external_ids: bool,
     pub now: DateTime<Utc>,
 }
 

@@ -12,6 +12,7 @@ pub mod auth;
 pub mod downloads;
 pub mod error;
 pub mod import_lists;
+pub mod library_tools;
 pub mod logs;
 pub mod routes;
 pub mod rss;

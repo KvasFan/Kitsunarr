@@ -68,6 +68,7 @@ fn settings() -> Settings {
         last_grabs: Vec::new(),
         blocklist: Vec::new(),
         enable_multi_season_releases: true,
+        match_external_ids: false,
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -640,6 +641,37 @@ impl Case {
 
     fn accepted(&self, spec: fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>) -> bool {
         self.check(spec).is_none()
+    }
+}
+
+/// Tanukarr's `ExternalIdsFixture`.
+mod external_ids_fixture {
+    use super::*;
+
+    #[test]
+    fn wrong_ids_are_rejected_only_when_enabled() {
+        let mut c = Case::new();
+        c.series.tvdb_id = 100;
+        c.series.imdb_id = Some("tt0000123".into());
+        c.release.tvdb_id = 200;
+        assert!(c.accepted(specs::external_ids));
+        c.settings.match_external_ids = true;
+        assert_eq!(
+            c.check(specs::external_ids).unwrap().reason,
+            RejectionReason::WrongSeries
+        );
+        c.release.tvdb_id = 100;
+        c.release.imdb_id = Some("tt123".into());
+        assert!(
+            c.accepted(specs::external_ids),
+            "same IMDb id once normalised"
+        );
+        c.release.imdb_id = Some("tt0000124".into());
+        assert!(!c.accepted(specs::external_ids));
+        // Unknown ids never reject.
+        c.release.tvdb_id = 0;
+        c.release.imdb_id = None;
+        assert!(c.accepted(specs::external_ids));
     }
 }
 

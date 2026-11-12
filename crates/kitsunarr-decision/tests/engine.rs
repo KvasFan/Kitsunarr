@@ -72,6 +72,7 @@ fn settings() -> Settings {
         last_grabs: Vec::new(),
         blocklist: Vec::new(),
         enable_multi_season_releases: true,
+        match_external_ids: false,
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),

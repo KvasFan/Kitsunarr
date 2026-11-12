@@ -724,7 +724,7 @@ pub(crate) async fn run_search(
     if q.season_packs_only {
         decisions.retain(|d| d.parsed.as_ref().is_some_and(|p| p.full_season));
     }
-    Ok(SearchRun {
+    let run = SearchRun {
         decisions,
         releases: all_meta,
         failures,
@@ -732,7 +732,9 @@ pub(crate) async fn run_search(
         description,
         warnings: inputs.warnings,
         series: inputs.series,
-    })
+    };
+    crate::library_tools::record_search(state, &run, q.series_id, automatic).await;
+    Ok(run)
 }
 
 /// Keeps a search's releases for grabbing: download links stay on the server.
@@ -875,10 +877,13 @@ impl DecisionInputs {
             kv::get_or_default(db.pool(), kv::KEY_MEDIA_MANAGEMENT).await?;
         let options: IndexerOptionsSettings =
             kv::get_or_default(db.pool(), kv::KEY_INDEXER_OPTIONS).await?;
+        let tools: kitsunarr_domain::api::settings::LibraryToolsSettings =
+            kv::get_or_default(db.pool(), kv::KEY_LIBRARY_TOOLS).await?;
         let settings = decision::Settings {
             last_grabs: kitsunarr_library::decision_input::last_grabs(db, detail.item.id).await?,
             blocklist: kitsunarr_library::decision_input::blocklist(db, detail.item.id).await?,
             enable_multi_season_releases: options.enable_multi_season_releases,
+            match_external_ids: tools.match_external_ids,
             queue: state.downloads.queued_releases(db, detail.item.id).await?,
             quality_definitions: quality::list_definitions(db.pool()).await?,
             propers: media.download_propers_and_repacks,

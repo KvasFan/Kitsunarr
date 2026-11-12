@@ -19,7 +19,9 @@ use crate::pages::settings::{
     SettingsIndexers, SettingsMedia, SettingsMetadata, SettingsNotifications, SettingsProfiles,
     SettingsTags,
 };
-use crate::pages::system::{SystemBackups, SystemLogs, SystemStatusPage, SystemTasks};
+use crate::pages::system::{
+    SystemBackups, SystemLibraryTools, SystemLogs, SystemStatusPage, SystemTasks,
+};
 use crate::pages::wanted::{WantedCutoff, WantedMissing};
 
 #[derive(Routable, Clone, PartialEq, Debug)]
@@ -86,6 +88,8 @@ pub enum Route {
         SystemStatusPage {},
         #[route("/system/tasks")]
         SystemTasks {},
+        #[route("/system/library")]
+        SystemLibraryTools {},
         #[route("/system/backups")]
         SystemBackups {},
         #[route("/system/logs")]

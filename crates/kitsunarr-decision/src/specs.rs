@@ -163,7 +163,7 @@ fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
 
 /// Every specification, in a stable (alphabetical) order.
 pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
-    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 31] = [
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 32] = [
         acceptable_size,
         anime_version_upgrade,
         blocklist,
@@ -171,6 +171,7 @@ pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
         custom_format_allowed_by_profile,
         delay,
         episode_requested,
+        external_ids,
         full_season,
         history,
         indexer_tag,
@@ -235,6 +236,43 @@ pub(crate) fn blocklist(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
         }),
     };
     hit.then(|| Rejection::new(R::Blocklisted, "Release is blocklisted".to_string()))
+}
+
+/// Tanukarr's `ExternalIdsSpecification` (Library tools "match external ids", off by
+/// default): a release whose TheTVDB id or IMDb id names another series is the wrong series.
+pub(crate) fn external_ids(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if !env.settings.match_external_ids {
+        return None;
+    }
+    let series = env.series;
+    if s.release.tvdb_id > 0 && series.tvdb_id > 0 && s.release.tvdb_id != series.tvdb_id {
+        return Some(Rejection::new(
+            R::WrongSeries,
+            format!(
+                "Release TheTVDB id {} does not match the series' {}",
+                s.release.tvdb_id, series.tvdb_id
+            ),
+        ));
+    }
+    // IMDb ids compared as numbers (`tt` and leading zeros removed).
+    let imdb = |v: Option<&str>| -> Option<u64> {
+        let v = v?.trim().to_lowercase();
+        v.trim_start_matches("tt")
+            .trim_start_matches('0')
+            .parse()
+            .ok()
+    };
+    if let (Some(a), Some(b)) = (
+        imdb(s.release.imdb_id.as_deref()),
+        imdb(series.imdb_id.as_deref()),
+    ) && a != b
+    {
+        return Some(Rejection::new(
+            R::WrongSeries,
+            "Release IMDb id does not match the series' IMDb id",
+        ));
+    }
+    None
 }
 
 /// `AcceptableSizeSpecification`, with Kitsunarr's quality definitions providing the sizes

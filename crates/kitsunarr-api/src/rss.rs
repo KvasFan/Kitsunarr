@@ -57,6 +57,9 @@ async fn load<'a>(
 
 /// One RSS sync. Returns the summary for the task history; fails when no indexer could be read.
 pub async fn sync(state: &AppState) -> Result<String, String> {
+    if crate::library_tools::paused(state).await {
+        return Ok(crate::library_tools::PAUSED.into());
+    }
     let (indexers, extras, mut failures) = search::usable_indexers(state, "enableRss")
         .await
         .map_err(|e| e.message())?;

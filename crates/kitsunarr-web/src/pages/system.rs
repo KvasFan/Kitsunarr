@@ -1,4 +1,4 @@
-//! System pages: status and health, scheduled tasks, backups and logs.
+//! System pages: status and health, scheduled tasks, library tools, backups and logs.
 
 use dioxus::prelude::*;
 use kitsunarr_domain::api::system::{HealthLevel, LogEntry};
@@ -279,6 +279,97 @@ pub fn SystemLogs() -> Element {
                     }
                 }
             },
+        }
+    }
+}
+
+/// Tanukarr's Library tools: automation pause and acquisition switches, and recent searches.
+#[component]
+pub fn SystemLibraryTools() -> Element {
+    use kitsunarr_domain::api::settings::LibraryToolsSettings;
+    let app = use_app();
+    let client = use_client();
+    let mut opts = use_signal(|| None::<LibraryToolsSettings>);
+    let c0 = client.clone();
+    use_future(move || {
+        let c = c0.clone();
+        async move {
+            match c.library_tools().await {
+                Ok(o) => opts.set(Some(o)),
+                Err(e) => app.error(&e),
+            }
+        }
+    });
+    let c1 = client.clone();
+    let searches = use_resource(move || {
+        let c = c1.clone();
+        async move { c.recent_searches().await }
+    });
+    let save = move |_| {
+        let Some(o) = opts() else { return };
+        let c = client.clone();
+        let mut app = app;
+        spawn(async move {
+            match c.put_library_tools(&o).await {
+                Ok(_) => {
+                    app.success("Library tools saved.");
+                    app.settings_rev += 1;
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        div { class: "page-head", h1 { "Library tools" } }
+        div { class: "card",
+            match opts() {
+                None => rsx! { Loading {} },
+                Some(o) => rsx! {
+                    div { class: "stack",
+                        crate::components::common::Switch { checked: o.automation_paused, label: "Pause automation (RSS sync, scheduled list syncs, automatic searches)",
+                            onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.automation_paused = v; } } }
+                        crate::components::common::Switch { checked: o.hardlink_only, label: "Hardlink-only imports: never copy downloads that keep seeding",
+                            onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.hardlink_only = v; } } }
+                        crate::components::common::Switch { checked: o.match_external_ids, label: "Reject releases whose TheTVDB or IMDb id names another series",
+                            onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.match_external_ids = v; } } }
+                        crate::components::common::Switch { checked: o.prefer_anime_season_packs, label: "Prefer anime season packs (Kitsunarr's anime season searches already search the season once)",
+                            onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.prefer_anime_season_packs = v; } } }
+                    }
+                    div { class: "row end", button { class: "btn primary", onclick: save, "Save" } }
+                },
+            }
+        }
+        div { class: "card",
+            h3 { "Recent searches" }
+            match &*searches.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) if list.is_empty() => rsx! { p { class: "muted small", "No searches yet." } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "When" } th { "Search" } th { class: "num", "Found" } th { class: "num", "Accepted" } th { "Main rejections" } } }
+                            tbody {
+                                for (i, a) in list.iter().enumerate() {
+                                    tr { key: "{i}",
+                                        td { class: "small", "{relative(&a.date)}" }
+                                        td {
+                                            "{a.query}"
+                                            if a.automatic { " " Badge { text: "automatic" } }
+                                            for f in a.provider_failures.iter() { div { class: "small danger", "{f}" } }
+                                        }
+                                        td { class: "num", "{a.found}" }
+                                        td { class: "num", "{a.accepted}" }
+                                        td { class: "small muted",
+                                            {a.rejections.iter().take(3).map(|r| format!("{} ×{}", r.message, r.count)).collect::<Vec<_>>().join("; ")}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
         }
     }
 }

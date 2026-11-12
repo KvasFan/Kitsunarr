@@ -1038,6 +1038,10 @@ async fn indexer_test_and_interactive_search() {
         ),
         422
     );
+    // Library tools › Recent searches records each search, newest first.
+    let recent = client.recent_searches().await.unwrap();
+    assert!(!recent.is_empty());
+    assert!(recent[0].indexers >= 1, "{recent:?}");
 }
 
 /// Torrents the qBittorrent mock was given (one test uses it).
@@ -1422,6 +1426,14 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     naming.rename_episodes = true;
     naming.season_folder_format = "Season {season:00}".into();
     client.put_naming(&naming).await.unwrap();
+    // Library tools: hardlink-only imports link the seeding download into the library.
+    client
+        .put_library_tools(&kitsunarr_domain::api::settings::LibraryToolsSettings {
+            hardlink_only: true,
+            ..Default::default()
+        })
+        .await
+        .unwrap();
     qbit.lock().unwrap().clear();
     let summary = client.refresh_queue().await.unwrap();
     assert_eq!(summary, "1 downloads imported, 0 need attention");
@@ -1430,6 +1442,16 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         .join("Season 01")
         .join("Breaking Bad - S01E01 - Pilot Bluray-720p.mkv");
     assert_eq!(std::fs::read(&imported).unwrap(), b"video");
+    {
+        use std::os::unix::fs::MetadataExt;
+        assert_eq!(
+            std::fs::metadata(&imported).unwrap().ino(),
+            std::fs::metadata(folder.join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv"))
+                .unwrap()
+                .ino(),
+            "hard-linked, not copied"
+        );
+    }
     // The download keeps its data (it is still seeding).
     assert!(
         folder
@@ -3233,4 +3255,40 @@ async fn import_lists_add_titles_respect_exclusions_and_clean_the_library() {
     assert!(status[0].last_error.is_some());
     assert_eq!(status[0].item_count, 1);
     let _ = ProviderKind::ImportList;
+}
+
+#[tokio::test]
+async fn paused_automation_skips_rss_and_scheduled_list_syncs() {
+    use kitsunarr_domain::api::settings::LibraryToolsSettings;
+    let server = start().await;
+    let client = signed_in(&server).await;
+    assert_eq!(
+        client.library_tools().await.unwrap(),
+        LibraryToolsSettings::default()
+    );
+    let saved = client
+        .put_library_tools(&LibraryToolsSettings {
+            automation_paused: true,
+            match_external_ids: true,
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert!(saved.automation_paused);
+    assert_eq!(
+        kitsunarr_api::rss::sync(&server.state).await.unwrap(),
+        kitsunarr_api::library_tools::PAUSED
+    );
+    assert_eq!(
+        kitsunarr_api::import_lists::sync(&server.state, None, false)
+            .await
+            .unwrap(),
+        kitsunarr_api::library_tools::PAUSED
+    );
+    // "Sync now" is a manual action.
+    assert_ne!(
+        client.sync_import_lists(None).await.unwrap().message,
+        kitsunarr_api::library_tools::PAUSED
+    );
+    assert!(client.recent_searches().await.unwrap().is_empty());
 }

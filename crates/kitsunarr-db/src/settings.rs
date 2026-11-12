@@ -13,6 +13,9 @@ pub const KEY_METADATA_SOURCES: &str = "metadataSources";
 pub const KEY_INDEXER_OPTIONS: &str = "indexerOptions";
 pub const KEY_DOWNLOAD_CLIENT_OPTIONS: &str = "downloadClientOptions";
 pub const KEY_IMPORT_LIST_OPTIONS: &str = "importListOptions";
+pub const KEY_LIBRARY_TOOLS: &str = "libraryTools";
+/// The last 100 searches (Library tools › Recent searches).
+pub const KEY_SEARCH_HISTORY: &str = "searchHistory";
 
 pub async fn get<T: DeserializeOwned>(
     ex: impl SqliteExecutor<'_>,

@@ -188,6 +188,11 @@ pub(crate) async fn bulk_search(
 pub(crate) fn search_missing_of_series(state: &AppState, series_id: i64) {
     let state = state.clone();
     tokio::spawn(async move {
+        // Tanukarr also suppresses "add and search" while automation is paused.
+        if crate::library_tools::paused(&state).await {
+            tracing::info!(series_id, "{}", crate::library_tools::PAUSED);
+            return;
+        }
         let _guard = state.wanted_search.clone().lock_owned().await;
         let now = now();
         let targets = match wanted::all(&state.db, Wanted::Missing { now: &now }, true).await {

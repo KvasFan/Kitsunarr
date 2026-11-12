@@ -831,12 +831,29 @@ async fn transfer_and_record(
         }
     })?;
     // Usenet downloads are moved (`TransferMode.Move`); torrents stay in the client (seeding):
-    // hard link when allowed, else copy.
+    // hard link when allowed, else copy. Tanukarr's "hardlink-only imports" never copy: the
+    // import fails (before any existing file is replaced) when the link cannot be made.
+    let tools: kitsunarr_domain::api::settings::LibraryToolsSettings =
+        kitsunarr_db::settings::get_or_default(
+            db.pool(),
+            kitsunarr_db::settings::KEY_LIBRARY_TOOLS,
+        )
+        .await
+        .unwrap_or_default();
+    if tools.hardlink_only && !d.move_files {
+        std::fs::hard_link(&c.path, &dest).map_err(|e| {
+            format!(
+                "Hardlink-only import cannot link this download to the library ({e}). Existing files have been kept."
+            )
+        })?;
+    }
+    let linked_only = tools.hardlink_only && !d.move_files;
     let moved = d.move_files && std::fs::rename(&c.path, &dest).is_ok();
-    let linked = !moved
-        && !d.move_files
-        && media.use_hardlinks
-        && std::fs::hard_link(&c.path, &dest).is_ok();
+    let linked = linked_only
+        || (!moved
+            && !d.move_files
+            && media.use_hardlinks
+            && std::fs::hard_link(&c.path, &dest).is_ok());
     if !moved && !linked {
         std::fs::copy(&c.path, &dest).map_err(|e| {
             let _ = std::fs::remove_file(&dest);

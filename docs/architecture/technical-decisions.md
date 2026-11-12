@@ -542,3 +542,12 @@ and film; prequels must list the title as their only sequel of its kind; a prequ
 another prequel's reciprocal side story is ignored; ambiguity leaves the title ungrouped), TMDB
 films by their TMDB collection. Members never move and folders are not derived from groups:
 paths stay as the naming settings make them.
+
+## 34. Library tools (Tanukarr)
+
+Tanukarr's `ProOptions` switches live in the `libraryTools` settings key. Kitsunarr has no
+command queue, so the automation pause is checked where automatic work starts: the RSS sync
+task, scheduled import list syncs, redownloads after failures, "search for missing" after adding
+a title (Tanukarr suppresses it too) and list adds. Everything the user starts (searches, grabs,
+"Sync now", task runs other than RSS sync) still runs, as do imports of current downloads.
+Recent searches are kept as one JSON value (the last 100), like Tanukarr's `ProSearchHistory`.

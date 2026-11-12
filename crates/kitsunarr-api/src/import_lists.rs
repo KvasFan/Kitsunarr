@@ -383,6 +383,10 @@ pub async fn read_list(state: &AppState, p: &ProviderRecord) -> Result<Vec<ListI
 
 /// Syncs every list (or the one `only`), reading lists when due or when `force`.
 pub async fn sync(state: &AppState, only: Option<i64>, force: bool) -> Result<String, String> {
+    // A scheduled sync is automation; "Sync now" is a manual action.
+    if !force && crate::library_tools::paused(state).await {
+        return Ok(crate::library_tools::PAUSED.into());
+    }
     let all = lists(state).await?;
     let selected: Vec<_> = all
         .iter()

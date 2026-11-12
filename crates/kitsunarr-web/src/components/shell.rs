@@ -53,10 +53,47 @@ pub fn AppShell() -> Element {
             div { class: "scrim", onclick: move |_| app.nav_open.set(false) }
             div { class: "main",
                 TopBar {}
+                AutomationBanner {}
                 main { class: "content", id: "content", Outlet::<Route> {} }
             }
         }
         Toasts {}
+    }
+}
+
+/// Tanukarr's global pause banner, with a "Resume automation" button.
+#[component]
+fn AutomationBanner() -> Element {
+    let app = use_app();
+    let client = crate::state::use_client();
+    let c0 = client.clone();
+    let mut tools = use_resource(move || {
+        let _ = (app.settings_rev)();
+        let c = c0.clone();
+        async move { c.library_tools().await.ok() }
+    });
+    let resume = move |_| {
+        let c = client.clone();
+        let Some(Some(mut t)) = tools() else { return };
+        t.automation_paused = false;
+        spawn(async move {
+            match c.put_library_tools(&t).await {
+                Ok(_) => {
+                    app.success("Automation resumed.");
+                    tools.restart();
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    if !matches!(tools(), Some(Some(t)) if t.automation_paused) {
+        return rsx! {};
+    }
+    rsx! {
+        div { class: "alert warning", role: "status", style: "margin: var(--sp-2) var(--sp-4) 0",
+            div { class: "grow", "Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue." }
+            button { class: "btn sm", onclick: resume, "Resume automation" }
+        }
     }
 }
 
@@ -204,6 +241,7 @@ fn Sidebar() -> Element {
             div { class: "nav-section", "{s.system}" }
             NavLink { to: Route::SystemStatusPage {}, icon: "♥", label: s.status }
             NavLink { to: Route::SystemTasks {}, icon: "⏱", label: s.tasks }
+            NavLink { to: Route::SystemLibraryTools {}, icon: "⚒", label: s.library_tools }
             NavLink { to: Route::SystemBackups {}, icon: "⛁", label: s.backups }
             NavLink { to: Route::SystemLogs {}, icon: "☷", label: s.logs }
         }

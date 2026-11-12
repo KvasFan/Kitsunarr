@@ -23,6 +23,10 @@ pub(crate) async fn run_redownloads(state: &AppState) {
     if pending.is_empty() {
         return;
     }
+    if crate::library_tools::paused(state).await {
+        tracing::info!(count = pending.len(), "{}", crate::library_tools::PAUSED);
+        return;
+    }
     let options: DownloadClientOptionsSettings =
         kv::get_or_default(state.db.pool(), kv::KEY_DOWNLOAD_CLIENT_OPTIONS)
             .await

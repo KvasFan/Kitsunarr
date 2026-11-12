@@ -356,6 +356,48 @@ impl Default for DownloadClientOptionsSettings {
     }
 }
 
+/// Tanukarr's Library tools switches (`ProOptions`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct LibraryToolsSettings {
+    /// Pause RSS sync, scheduled list syncs and the searches Kitsunarr starts by itself; manual
+    /// actions and current downloads continue.
+    pub automation_paused: bool,
+    /// Downloads that keep seeding are hard-linked into the library, never copied.
+    pub hardlink_only: bool,
+    /// Reject releases whose TheTVDB or IMDb id names another series.
+    pub match_external_ids: bool,
+    /// In automatic anime season searches, skip episode searches an accepted season pack covers.
+    pub prefer_anime_season_packs: bool,
+}
+
+/// One search, for the "Recent searches" diagnostics (Tanukarr's `SearchActivity`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct SearchActivity {
+    pub date: String,
+    pub series_id: i64,
+    pub query: String,
+    /// Interactive or automatic.
+    pub automatic: bool,
+    pub found: i64,
+    pub accepted: i64,
+    pub indexers: i64,
+    /// The most frequent rejection messages, with their counts.
+    pub rejections: Vec<RejectionCount>,
+    pub provider_failures: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct RejectionCount {
+    pub message: String,
+    pub count: i64,
+}
+
 /// What a list sync does with library titles no list contains any more (Sonarr's
 /// `ListSyncLevelType`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
