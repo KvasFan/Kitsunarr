@@ -249,6 +249,35 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
         .unwrap();
     assert_eq!(unknown.rejections, vec!["Unknown series"]);
 
+    // Sonarr's folder matching: the folder names the series and episode of a file whose own
+    // name says nothing.
+    let named = dir.path().join("Show.S01E03.720p.HDTV.x264-GRP");
+    std::fs::create_dir_all(&named).unwrap();
+    std::fs::write(named.join("abc123.mkv"), b"ep3").unwrap();
+    let by_folder = kitsunarr_library::manual_import::scan(&db, &named, None)
+        .await
+        .unwrap();
+    assert_eq!(by_folder.len(), 1);
+    assert_eq!(by_folder[0].series_id, Some(1));
+    assert_eq!(by_folder[0].season_number, Some(1));
+    assert_eq!(by_folder[0].episodes, vec!["S01E03"]);
+    assert!(
+        by_folder[0].rejections.is_empty(),
+        "{:?}",
+        by_folder[0].rejections
+    );
+    // A folder named for the series: its files belong to it.
+    let series_folder = dir.path().join("Show");
+    std::fs::create_dir_all(&series_folder).unwrap();
+    std::fs::write(series_folder.join("Episode.S01E01.mkv"), b"ep1").unwrap();
+    let in_series_folder = kitsunarr_library::manual_import::scan(&db, &series_folder, None)
+        .await
+        .unwrap();
+    assert_eq!(in_series_folder[0].series_id, Some(1));
+    assert_eq!(in_series_folder[0].episodes, vec!["S01E01"]);
+    std::fs::remove_dir_all(&named).unwrap();
+    std::fs::remove_dir_all(&series_folder).unwrap();
+
     // A webhook hears about the import (`OnDownload`).
     let heard = std::sync::Arc::new(std::sync::Mutex::new(Vec::<serde_json::Value>::new()));
     let h = heard.clone();

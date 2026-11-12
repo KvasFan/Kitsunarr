@@ -12,7 +12,9 @@ use kitsunarr_db::history::GrabRecord;
 use kitsunarr_db::library::series;
 use kitsunarr_domain::api::library_tools::{ManualImportFile, ManualImportItem};
 use kitsunarr_domain::text::clean_title;
-use kitsunarr_parser::{parse_path, parse_quality, parse_release_group};
+use kitsunarr_parser::{
+    is_scene_title, parse_path, parse_quality, parse_release_group, parse_title,
+};
 
 use crate::import::{self, Download};
 
@@ -38,7 +40,19 @@ async fn find_series(db: &Database, title: &str) -> Result<Option<i64>, String> 
         .map(|(id, _)| id))
 }
 
+/// `ParsingService.GetSeries(title)`: the series a release-like name names, or the name itself
+/// as a title.
+async fn series_named(db: &Database, name: &str) -> Result<Option<i64>, String> {
+    match parse_title(name) {
+        Some(p) if !p.series_title.trim().is_empty() => find_series(db, &p.series_title).await,
+        _ => find_series(db, name).await,
+    }
+}
+
 /// Lists the folder's video files (or the one file) with the series and episodes they match.
+/// As Sonarr's `ProcessFolder`/`ProcessFile`, the series comes from the folder name, then from
+/// each file's first path component, its relative path, and its parsed title; a single video
+/// whose name has no episode numbers takes the folder's.
 pub async fn scan(
     db: &Database,
     folder: &Path,
@@ -57,6 +71,16 @@ pub async fn scan(
     } else {
         folder.parent().map(Path::to_path_buf).unwrap_or_default()
     };
+    let folder_name = folder
+        .is_dir()
+        .then(|| folder.file_name().map(|n| n.to_string_lossy().into_owned()))
+        .flatten();
+    let folder_info = folder_name.as_deref().and_then(parse_title);
+    let folder_series = match (series_id, folder_name.as_deref()) {
+        (None, Some(name)) => series_named(db, name).await?,
+        _ => None,
+    };
+    let other_videos = files.len() > 1;
     let mut out = Vec::new();
     for path in files {
         let name = path
@@ -66,15 +90,36 @@ pub async fn scan(
         let size = std::fs::metadata(&path)
             .map(|m| m.len() as i64)
             .unwrap_or(0);
-        let parsed = parse_path(&path.to_string_lossy());
-        let mut rejections = Vec::new();
-        let sid = match series_id {
-            Some(id) => Some(id),
-            None => match &parsed {
-                Some(p) => find_series(db, &p.series_title).await?,
-                None => None,
-            },
+        let file_info = parse_path(&path.to_string_lossy());
+        // `AggregateEpisodes`: a single video not named like a release takes the folder's
+        // numbers when its own name has none (or names a whole season).
+        let parsed = match (&file_info, &folder_info) {
+            (f, Some(folder))
+                if f.as_ref().is_none_or(|f| f.full_season)
+                    && !folder.full_season
+                    && !other_videos
+                    && !is_scene_title(&import::stem(&path)) =>
+            {
+                Some(folder.clone())
+            }
+            _ => file_info.clone(),
         };
+        let mut rejections = Vec::new();
+        let relative = path.strip_prefix(&base).unwrap_or(&path).to_path_buf();
+        let mut sid = series_id.or(folder_series);
+        if sid.is_none()
+            && let Some(first) = relative.components().next()
+        {
+            sid = series_named(db, &first.as_os_str().to_string_lossy()).await?;
+        }
+        if sid.is_none() && relative.components().count() > 1 {
+            sid = series_named(db, &relative.to_string_lossy()).await?;
+        }
+        if sid.is_none()
+            && let Some(p) = &parsed
+        {
+            sid = find_series(db, &p.series_title).await?;
+        }
         let mut item = ManualImportItem {
             path: path.display().to_string(),
             relative_path: path
