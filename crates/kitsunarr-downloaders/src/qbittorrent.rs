@@ -179,6 +179,9 @@ pub struct Torrent {
     /// Seconds (qBittorrent 4.3 and newer).
     #[serde(default)]
     pub seeding_time: Option<i64>,
+    /// Comma-separated tags.
+    #[serde(default)]
+    pub tags: String,
 }
 
 fn minus_two() -> f64 {
@@ -189,7 +192,29 @@ fn minus_two_i() -> i64 {
     -2
 }
 
+/// Tanukarr's `ReuseTag`: marks torrents reused from other categories.
+pub fn reuse_tag(s: &Settings) -> String {
+    let category: String = s
+        .category
+        .as_deref()
+        .unwrap_or_default()
+        .bytes()
+        .map(|b| {
+            if b.is_ascii_alphanumeric() || b"-_.~".contains(&b) {
+                (b as char).to_string()
+            } else {
+                format!("%{b:02X}")
+            }
+        })
+        .collect();
+    format!("kitsunarr-reuse-{category}")
+}
+
 impl Torrent {
+    pub fn has_tag(&self, tag: &str) -> bool {
+        self.tags.split(',').any(|t| t.trim() == tag)
+    }
+
     /// `HasReachedSeedLimit` (ratio and seeding time; the inactive-seeding limit is not read).
     pub fn has_reached_seed_limit(&self, prefs: &Preferences) -> bool {
         if self.ratio_limit >= 0.0 {
@@ -528,13 +553,54 @@ impl QBittorrent {
     }
 
     /// Torrents in the TV category (all torrents when no category is set).
+    /// The torrents in Kitsunarr's category, plus torrents it reused from other categories
+    /// (Tanukarr fetches every torrent and filters, since reused ones keep their category).
     pub async fn torrents(&self, s: &Settings) -> Result<Vec<Torrent>, DownloadError> {
-        let query: Vec<(&str, &str)> = s
-            .category
-            .as_deref()
-            .map(|c| vec![("category", c)])
-            .unwrap_or_default();
-        Self::json(&self.get(s, "/api/v2/torrents/info", &query).await?)
+        let all: Vec<Torrent> = Self::json(&self.get(s, "/api/v2/torrents/info", &[]).await?)?;
+        let tag = reuse_tag(s);
+        Ok(all
+            .into_iter()
+            .filter(|t| match &s.category {
+                Some(c) => &t.category == c || t.has_tag(&tag),
+                None => true,
+            })
+            .collect())
+    }
+
+    /// Tanukarr's `TryReuseTorrent`: a torrent qBittorrent already has (any category) is tagged
+    /// for Kitsunarr instead of being added again, so its seeding and save path are untouched.
+    async fn try_reuse(
+        &self,
+        s: &Settings,
+        hash: &str,
+        tags: &[String],
+    ) -> Result<bool, DownloadError> {
+        if !at_least(&version(&self.api_version(s).await?), &[2, 3])
+            || !self.is_loaded(s, hash).await
+        {
+            return Ok(false);
+        }
+        let mut labels = vec![reuse_tag(s)];
+        if s.add_series_tags {
+            labels.extend(tags.iter().cloned());
+        }
+        self.post(
+            s,
+            "/api/v2/torrents/addTags",
+            vec![("hashes", hash.to_string()), ("tags", labels.join(","))],
+        )
+        .await?;
+        tracing::info!(%hash, "reused a torrent already loaded in qBittorrent");
+        Ok(true)
+    }
+
+    async fn is_reused(&self, s: &Settings, hash: &str) -> bool {
+        let tag = reuse_tag(s);
+        self.get(s, "/api/v2/torrents/info", &[("hashes", hash)])
+            .await
+            .ok()
+            .and_then(|b| Self::json::<Vec<Torrent>>(&b).ok())
+            .is_some_and(|list| list.iter().any(|t| t.has_tag(&tag)))
     }
 
     /// `GetItems`: the downloads in the TV category, with Sonarr's status mapping.
@@ -547,9 +613,10 @@ impl QBittorrent {
             .iter()
             .map(|t| {
                 let mut item = t.to_item(&version, prefs.dht);
-                // Stopped by qBittorrent at its seed limit.
+                // Stopped by qBittorrent at its seed limit; reused torrents are never removed.
                 item.can_be_removed = matches!(t.state.as_str(), "pausedUP" | "stoppedUP")
-                    && t.has_reached_seed_limit(&prefs);
+                    && t.has_reached_seed_limit(&prefs)
+                    && !t.has_tag(&reuse_tag(s));
                 item
             })
             .collect())
@@ -558,6 +625,10 @@ impl QBittorrent {
     /// `MarkItemAsImported`: moves the torrent to the post-import category, when one is set and
     /// differs from the TV category.
     pub async fn mark_imported(&self, s: &Settings, hash: &str) -> Result<(), DownloadError> {
+        // A reused torrent keeps its category.
+        if self.is_reused(s, &hash.to_ascii_lowercase()).await {
+            return Ok(());
+        }
         let Some(imported) = s
             .imported_category
             .as_ref()
@@ -584,6 +655,11 @@ impl QBittorrent {
         hash: &str,
         delete_files: bool,
     ) -> Result<(), DownloadError> {
+        if self.is_reused(s, &hash.to_ascii_lowercase()).await {
+            return Err(DownloadError::Unsupported(
+                "reused torrents are kept in qBittorrent; remove them there".into(),
+            ));
+        }
         self.post(
             s,
             "/api/v2/torrents/delete",
@@ -677,6 +753,9 @@ impl QBittorrent {
     /// `AddFromMagnetLink` / `AddFromTorrentFile`. Returns the info hash.
     pub async fn add(&self, s: &Settings, req: &AddRequest<'_>) -> Result<String, DownloadError> {
         let hash = req.hash.to_ascii_lowercase();
+        if self.try_reuse(s, &hash, req.tags).await? {
+            return Ok(hash);
+        }
         let mut form = self.add_fields(s).await?;
         let body = match req.source {
             Source::Magnet(url) => {
@@ -811,6 +890,7 @@ mod tests {
             ratio_limit: -2.0,
             seeding_time_limit: -2,
             seeding_time: Some(600),
+            tags: String::new(),
         };
         use crate::ItemStatus::*;
         // Seed limits: the torrent's own, else qBittorrent's global ones.

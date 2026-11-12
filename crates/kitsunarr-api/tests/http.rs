@@ -1167,6 +1167,25 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
             ))
             .into_response(),
             "/api/v2/torrents/add" => "Ok.".into_response(),
+            "/api/v2/torrents/properties" => {
+                let hash = uri
+                    .query()
+                    .unwrap_or_default()
+                    .split('&')
+                    .find_map(|kv| kv.strip_prefix("hash="))
+                    .unwrap_or_default()
+                    .to_string();
+                if QBIT_TORRENTS
+                    .lock()
+                    .unwrap()
+                    .iter()
+                    .any(|t| t["hash"].as_str() == Some(hash.as_str()))
+                {
+                    axum::Json(serde_json::json!({})).into_response()
+                } else {
+                    axum::http::StatusCode::NOT_FOUND.into_response()
+                }
+            }
             _ => ().into_response(),
         }
     }

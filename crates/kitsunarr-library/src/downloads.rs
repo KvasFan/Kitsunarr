@@ -91,6 +91,9 @@ pub struct Monitor {
     running: Arc<tokio::sync::Mutex<()>>,
     /// Searches to run because downloads failed, for the caller (which owns searching).
     redownloads: Arc<Mutex<Vec<Redownload>>>,
+    /// Per download (upper-case id): its last status and remaining size, and when either last
+    /// changed (`TrackedDownload.LastProgressDate`, in memory as upstream).
+    progress: Arc<Mutex<Progress>>,
 }
 
 impl Monitor {
@@ -336,10 +339,23 @@ impl Monitor {
             );
             let torrent = !settings.is_usenet();
 
+            // Tanukarr's stalled torrent recovery (`CheckStalled`): a downloading torrent with
+            // no progress for the configured time fails.
+            let timeout = options.stalled_torrent_timeout.clamp(0, 43_200) as u64 * 60;
+            let stalled = stalled_downloads(
+                &mut self.progress.lock().unwrap_or_else(|e| e.into_inner()),
+                &items,
+                if torrent { timeout } else { 0 },
+                std::time::Instant::now(),
+            );
+
             // `FailedDownloadService.Check` + `ProcessFailed`.
             let failed_items: Vec<&DownloadItem> = items
                 .iter()
-                .filter(|i| i.status == ItemStatus::Failed)
+                .filter(|i| {
+                    i.status == ItemStatus::Failed
+                        || stalled.contains(&i.download_id.to_ascii_uppercase())
+                })
                 .collect();
             if !failed_items.is_empty() {
                 let ids: Vec<String> = failed_items.iter().map(|i| i.download_id.clone()).collect();
@@ -350,11 +366,14 @@ impl Monitor {
                     .await
                     .map_err(|e| e.to_string())?;
                 for item in failed_items {
-                    let message = item
-                        .message
-                        .clone()
-                        .filter(|m| !m.trim().is_empty())
-                        .unwrap_or_else(|| "Failed download detected".into());
+                    let message = if item.status != ItemStatus::Failed {
+                        "Download stalled with no progress".to_string()
+                    } else {
+                        item.message
+                            .clone()
+                            .filter(|m| !m.trim().is_empty())
+                            .unwrap_or_else(|| "Failed download detected".into())
+                    };
                     if handled.contains(&item.download_id.to_ascii_uppercase()) {
                         self.set(&item.download_id, State::Failed, vec![message]);
                         continue;
@@ -553,6 +572,37 @@ impl Monitor {
     }
 }
 
+/// Progress bookkeeping for stalled torrents: each download's last status and remaining size,
+/// and when either last changed.
+type Progress = HashMap<String, (ItemStatus, i64, std::time::Instant)>;
+
+/// `CheckStalled`: records each item's progress and returns the downloads (upper-case ids) that
+/// are downloading (or warning) with no change for `timeout` seconds (0: never).
+fn stalled_downloads(
+    progress: &mut Progress,
+    items: &[DownloadItem],
+    timeout: u64,
+    now: std::time::Instant,
+) -> HashSet<String> {
+    let mut stalled = HashSet::new();
+    for i in items {
+        let id = i.download_id.to_ascii_uppercase();
+        let entry = progress
+            .entry(id.clone())
+            .or_insert((i.status, i.remaining_size, now));
+        if entry.0 != i.status || entry.1 != i.remaining_size {
+            *entry = (i.status, i.remaining_size, now);
+        }
+        if timeout > 0
+            && matches!(i.status, ItemStatus::Downloading | ItemStatus::Warning)
+            && now.duration_since(entry.2).as_secs() >= timeout
+        {
+            stalled.insert(id);
+        }
+    }
+    stalled
+}
+
 /// One queued release per download of the series, from its grab history.
 pub fn queued_from_grabs(
     grabs: &[history::GrabRecord],
@@ -634,6 +684,47 @@ mod tests {
         assert_eq!(q[0].size, 1500);
         assert_eq!(q[0].indexer_flags, 8);
         assert_eq!(q[0].languages.len(), 1);
+    }
+
+    /// Tanukarr's `StalledRecoveryFixture`: only downloading or warning torrents with no
+    /// progress for the timeout stall; progress or a status change restarts the clock.
+    #[test]
+    fn stalled_torrents_follow_tanukarr() {
+        let item = |id: &str, status, left| DownloadItem {
+            download_id: id.into(),
+            title: id.into(),
+            category: "tv".into(),
+            total_size: 100,
+            remaining_size: left,
+            remaining_seconds: None,
+            status,
+            message: None,
+            output_path: None,
+            seed_ratio: 0.0,
+            can_be_removed: false,
+        };
+        let start = std::time::Instant::now();
+        let later = start + std::time::Duration::from_secs(600);
+        let mut progress = Progress::new();
+        let first = [
+            item("a", ItemStatus::Downloading, 50),
+            item("b", ItemStatus::Paused, 50),
+            item("c", ItemStatus::Warning, 50),
+            item("d", ItemStatus::Downloading, 50),
+        ];
+        assert!(stalled_downloads(&mut progress, &first, 300, start).is_empty());
+        let second = [
+            item("a", ItemStatus::Downloading, 50),
+            item("b", ItemStatus::Paused, 50),
+            item("c", ItemStatus::Warning, 50),
+            item("d", ItemStatus::Downloading, 40),
+        ];
+        let stalled = stalled_downloads(&mut progress, &second, 300, later);
+        let mut ids: Vec<&String> = stalled.iter().collect();
+        ids.sort();
+        assert_eq!(ids, vec!["A", "C"]);
+        // Off.
+        assert!(stalled_downloads(&mut progress, &second, 0, later).is_empty());
     }
 
     #[test]

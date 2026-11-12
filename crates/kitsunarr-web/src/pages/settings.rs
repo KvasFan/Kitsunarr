@@ -821,6 +821,10 @@ fn DownloadClientOptions() -> Element {
                             onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.enable_completed_download_handling = v; } } }
                         Switch { checked: o.auto_redownload_failed, label: "Search again when a download fails",
                             onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.auto_redownload_failed = v; } } }
+                        Field { label: "Stalled torrent timeout (minutes)", help: "A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.".to_string(),
+                            input { class: "input", r#type: "number", min: "0", max: "43200", "aria-label": "Stalled torrent timeout", value: "{o.stalled_torrent_timeout}",
+                                oninput: move |e| { if let Some(x) = opts.write().as_mut() { x.stalled_torrent_timeout = e.value().trim().parse().unwrap_or(0); } } }
+                        }
                         Switch { checked: o.auto_redownload_failed_from_interactive_search, disabled: !o.auto_redownload_failed,
                             label: "Also for releases grabbed from interactive search",
                             onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.auto_redownload_failed_from_interactive_search = v; } } }

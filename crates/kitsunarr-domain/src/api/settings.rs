@@ -317,6 +317,9 @@ pub struct DownloadClientOptionsSettings {
     pub auto_redownload_failed: bool,
     /// Also for releases grabbed from an interactive search.
     pub auto_redownload_failed_from_interactive_search: bool,
+    /// Minutes without progress after which a downloading torrent fails (0: off, at most
+    /// 43200). Tanukarr's stalled torrent recovery.
+    pub stalled_torrent_timeout: i32,
 }
 
 impl Default for DownloadClientOptionsSettings {
@@ -325,6 +328,7 @@ impl Default for DownloadClientOptionsSettings {
             enable_completed_download_handling: true,
             auto_redownload_failed: true,
             auto_redownload_failed_from_interactive_search: true,
+            stalled_torrent_timeout: 0,
         }
     }
 }

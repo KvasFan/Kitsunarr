@@ -254,7 +254,7 @@ async fn adds_magnets_and_files_with_the_category() {
     let listed = client.torrents(&settings).await.unwrap();
     assert_eq!(listed.len(), 2);
 
-    // Adding the same torrent again is a conflict.
+    // Tanukarr's reuse: a torrent qBittorrent already has is tagged, not added again.
     let again = client
         .add(
             &settings,
@@ -269,8 +269,16 @@ async fn adds_magnets_and_files_with_the_category() {
             },
         )
         .await
-        .unwrap_err();
-    assert!(matches!(again, DownloadError::Rejected(_)));
+        .unwrap();
+    assert_eq!(again, expected);
+    let calls = mock.lock().unwrap().calls.clone();
+    let tag = kitsunarr_downloaders::qbittorrent::reuse_tag(&settings);
+    assert!(
+        calls
+            .iter()
+            .any(|c| c.starts_with("/api/v2/torrents/addTags") && c.contains(&tag)),
+        "{calls:#?}"
+    );
 }
 
 /// Against a real qBittorrent: set `KITSUNARR_QBIT_URL` (e.g. `http://127.0.0.1:8080`),

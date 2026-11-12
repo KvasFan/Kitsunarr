@@ -67,6 +67,7 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "enablecompleteddownloadhandling",
     "autoredownloadfailed",
     "autoredownloadfailedfrominteractivesearch",
+    "stalledtorrenttimeout",
     // Catalogue keys (Tanukarr).
     "tmdbapikey",
     "omdbapikey",
@@ -1124,6 +1125,7 @@ impl<'a> Importer<'a> {
                     "enablecompleteddownloadhandling",
                     "autoredownloadfailed",
                     "autoredownloadfailedfrominteractivesearch",
+                    "stalledtorrenttimeout",
                 ]
                 .iter()
                 .any(|k| r.has(k))
@@ -1140,6 +1142,9 @@ impl<'a> Importer<'a> {
             }
             if let Some(v) = dc.bool("autoredownloadfailedfrominteractivesearch") {
                 next.auto_redownload_failed_from_interactive_search = v;
+            }
+            if let Some(v) = dc.i32("stalledtorrenttimeout") {
+                next.stalled_torrent_timeout = v.clamp(0, 43_200);
             }
             if next == current {
                 self.count("settings", Act::Skip);
