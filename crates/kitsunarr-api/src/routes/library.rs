@@ -66,8 +66,19 @@ pub async fn delete_series(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
+    let notification = kitsunarr_library::notify::series_ref(&state.db, id).await;
     series::delete(&state.db, id).await?;
     changed(&state, "series", vec![id], true);
+    if let Some(series) = notification {
+        kitsunarr_library::notify::spawn(
+            &state.db,
+            &state.downloads.notifier,
+            kitsunarr_notifications::Event::SeriesDelete {
+                series: Box::new(series),
+                deleted_files: false,
+            },
+        );
+    }
     Ok(StatusCode::NO_CONTENT)
 }
 

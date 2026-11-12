@@ -2219,3 +2219,190 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
         .unwrap_err();
     assert_eq!(status(unreachable), 502);
 }
+
+/// Records webhook deliveries.
+async fn webhook_mock() -> (String, Arc<std::sync::Mutex<Vec<serde_json::Value>>>) {
+    use axum::extract::State;
+    use axum::routing::post;
+    type Log = Arc<std::sync::Mutex<Vec<serde_json::Value>>>;
+    async fn hook(State(log): State<Log>, body: String) -> &'static str {
+        log.lock()
+            .unwrap()
+            .push(serde_json::from_str(&body).unwrap());
+        "ok"
+    }
+    let log: Log = Arc::default();
+    let app = axum::Router::new()
+        .route("/hook", post(hook))
+        .with_state(log.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (format!("http://{addr}/hook"), log)
+}
+
+async fn wait_for(log: &Arc<std::sync::Mutex<Vec<serde_json::Value>>>, n: usize) {
+    for _ in 0..100 {
+        if log.lock().unwrap().len() >= n {
+            return;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    panic!("expected {n} deliveries, got {:#?}", log.lock().unwrap());
+}
+
+#[tokio::test]
+async fn notifications_follow_series_grabs_and_imports() {
+    use kitsunarr_domain::api::search::{GrabRequest, IndexerTestRequest, ReleaseQuery};
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let (hook_url, hook) = webhook_mock().await;
+    let (indexer_url, sab_port, sab) = usenet_mocks().await;
+
+    // The template lists the services; Test sends Sonarr's test payload.
+    let templates: Vec<serde_json::Value> =
+        client.get("/providers/notifications/schema").await.unwrap();
+    assert!(templates.iter().any(|t| t["implementation"] == "Discord"));
+    let tested = client
+        .test_notification(&IndexerTestRequest {
+            id: None,
+            implementation: "Webhook".into(),
+            settings: serde_json::from_value(serde_json::json!({"url": hook_url})).unwrap(),
+        })
+        .await
+        .unwrap();
+    assert!(tested.ok, "{}", tested.message);
+    assert_eq!(hook.lock().unwrap()[0]["eventType"], "Test");
+    let unreachable = client
+        .test_notification(&IndexerTestRequest {
+            id: None,
+            implementation: "Webhook".into(),
+            settings: serde_json::from_value(serde_json::json!({"url": "http://127.0.0.1:9/x"}))
+                .unwrap(),
+        })
+        .await
+        .unwrap();
+    assert!(!unreachable.ok);
+
+    let created: serde_json::Value = client
+        .post(
+            "/providers/notifications",
+            &serde_json::json!({
+                "name": "Hook", "implementation": "Webhook",
+                "options": {"onGrab": true, "onDownload": true, "onSeriesAdd": true},
+                "settings": {"url": hook_url}
+            }),
+        )
+        .await
+        .unwrap();
+    assert_eq!(created["supported"], true);
+    let indexer: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Newznab", "implementation": "Newznab",
+                "options": {"enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "n3wznab-key", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let _: serde_json::Value = client
+        .post(
+            "/providers/downloadclients",
+            &serde_json::json!({
+                "name": "SABnzbd", "implementation": "Sabnzbd", "enabled": true,
+                "settings": {"host": "127.0.0.1", "port": sab_port, "apiKey": "sab-key", "tvCategory": "tv"}
+            }),
+        )
+        .await
+        .unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+        })
+        .await
+        .unwrap();
+    wait_for(&hook, 2).await;
+    {
+        let seen = hook.lock().unwrap();
+        assert_eq!(seen[1]["eventType"], "SeriesAdd");
+        assert_eq!(seen[1]["series"]["title"], "Breaking Bad");
+        assert_eq!(seen[1]["series"]["tvdbId"], 81189);
+    }
+    let pilot = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+        })
+        .await
+        .unwrap();
+    client
+        .grab_release(&GrabRequest {
+            guid: "nzb-77".into(),
+            indexer_id: indexer["id"].as_i64().unwrap(),
+        })
+        .await
+        .unwrap();
+    wait_for(&hook, 3).await;
+    {
+        let seen = hook.lock().unwrap();
+        assert_eq!(seen[2]["eventType"], "Grab");
+        assert_eq!(seen[2]["episodes"][0]["title"], "Pilot");
+        assert_eq!(seen[2]["release"]["quality"], "HDTV-720p");
+        assert_eq!(seen[2]["downloadClient"], "SABnzbd");
+        assert_eq!(seen[2]["downloadId"], "SABnzbd_nzo_x1");
+    }
+    let downloads = tempfile::tempdir().unwrap();
+    let job = downloads
+        .path()
+        .join("Breaking.Bad.S01E01.720p.HDTV.x264-GRP");
+    std::fs::create_dir_all(&job).unwrap();
+    let video = job.join("Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv");
+    std::fs::write(&video, b"video").unwrap();
+    sab.lock().unwrap()["history"] = serde_json::json!([{"status": "Completed", "nzo_id": "SABnzbd_nzo_x1",
+        "name": "Breaking.Bad.S01E01.720p.HDTV.x264-GRP", "category": "tv", "bytes": 5,
+        "storage": video.display().to_string()}]);
+    client.refresh_queue().await.unwrap();
+    wait_for(&hook, 4).await;
+    let seen = hook.lock().unwrap();
+    assert_eq!(seen[3]["eventType"], "Download");
+    assert_eq!(seen[3]["isUpgrade"], false);
+    assert_eq!(seen[3]["episodeFile"]["quality"], "HDTV-720p");
+    assert_eq!(
+        seen[3]["release"]["releaseTitle"],
+        "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
+    );
+}

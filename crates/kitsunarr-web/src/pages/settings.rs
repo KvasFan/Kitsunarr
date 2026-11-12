@@ -829,7 +829,7 @@ fn DownloadClientOptions() -> Element {
 
 #[component]
 pub fn SettingsNotifications() -> Element {
-    rsx! { ProvidersPage { kind: "notifications", title: "Notifications", note: "Notification delivery is not implemented yet; imported connections and their event switches are kept." } }
+    rsx! { ProvidersPage { kind: "notifications", title: "Notifications", note: "Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, series added or deleted, health issues. Use Test in the editor." } }
 }
 
 #[component]
@@ -997,6 +997,9 @@ fn ProviderEditor(
                 "QBittorrent" | "Deluge" | "Transmission" | "Sabnzbd" | "Nzbget"
             )
         }
+        ProviderKind::Notification => kitsunarr_domain::api::settings::NOTIFICATION_IMPLEMENTATIONS
+            .iter()
+            .any(|i| i.eq_ignore_ascii_case(&item.implementation)),
         _ => false,
     };
     let run_test = move |_| {
@@ -1012,6 +1015,10 @@ fn ProviderEditor(
             };
             let outcome = if d.kind == ProviderKind::DownloadClient {
                 c.test_download_client(&req)
+                    .await
+                    .map(|r| (r.ok, r.message, r.warnings))
+            } else if d.kind == ProviderKind::Notification {
+                c.test_notification(&req)
                     .await
                     .map(|r| (r.ok, r.message, r.warnings))
             } else {

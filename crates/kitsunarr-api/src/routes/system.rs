@@ -200,6 +200,58 @@ pub async fn compute_health(state: &AppState) -> ApiResult<Vec<HealthCheck>> {
     Ok(out)
 }
 
+/// Re-evaluates health and notifies the connections about warnings and errors that appeared
+/// (`OnHealthIssue`) or cleared (`OnHealthRestored`) since the previous evaluation. The first
+/// evaluation after start-up only records the baseline, so restarts do not repeat old issues.
+pub async fn check_health_and_notify(state: &AppState) -> ApiResult<String> {
+    let current: Vec<HealthCheck> = compute_health(state)
+        .await?
+        .into_iter()
+        .filter(|h| matches!(h.level, HealthLevel::Warning | HealthLevel::Error))
+        .collect();
+    let previous = state
+        .last_health
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .replace(current.clone());
+    let Some(previous) = previous else {
+        return Ok(format!("{} health issues", current.len()));
+    };
+    let key = |h: &HealthCheck| (h.source.clone(), h.message.clone());
+    let to_event = |h: &HealthCheck| kitsunarr_notifications::Health {
+        level: if h.level == HealthLevel::Error {
+            "error".into()
+        } else {
+            "warning".into()
+        },
+        message: h.message.clone(),
+        source: h.source.clone(),
+        wiki_url: None,
+    };
+    let mut events = Vec::new();
+    for h in current
+        .iter()
+        .filter(|h| !previous.iter().any(|p| key(p) == key(h)))
+    {
+        events.push(kitsunarr_notifications::Event::HealthIssue(to_event(h)));
+    }
+    for h in previous
+        .iter()
+        .filter(|p| !current.iter().any(|c| key(c) == key(p)))
+    {
+        events.push(kitsunarr_notifications::Event::HealthRestored(to_event(h)));
+    }
+    let summary = format!(
+        "{} health issues; {} notifications to send",
+        current.len(),
+        events.len()
+    );
+    for e in events {
+        kitsunarr_library::notify::spawn(&state.db, &state.downloads.notifier, e);
+    }
+    Ok(summary)
+}
+
 #[utoipa::path(get, path = "/system/health", tag = "system", responses((status = 200, body = Vec<HealthCheck>)))]
 pub async fn health(State(state): State<AppState>) -> ApiResult<Json<Vec<HealthCheck>>> {
     Ok(Json(compute_health(&state).await?))

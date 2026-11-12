@@ -125,6 +125,15 @@ pub async fn add(
     ensure_supported("provider", req.provider)?;
     let added = kitsunarr_library::add_title(&state.db, &state.metadata, &req).await?;
     changed(&state, &added.media_type, added.id);
+    if added.media_type == "series"
+        && let Some(series) = kitsunarr_library::notify::series_ref(&state.db, added.id).await
+    {
+        kitsunarr_library::notify::spawn(
+            &state.db,
+            &state.downloads.notifier,
+            kitsunarr_notifications::Event::SeriesAdd(Box::new(series)),
+        );
+    }
     if req.search_for_missing && added.media_type == "series" {
         crate::routes::wanted::search_missing_of_series(&state, added.id);
     }

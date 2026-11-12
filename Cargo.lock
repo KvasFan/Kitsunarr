@@ -2528,6 +2528,7 @@ dependencies = [
  "kitsunarr-library",
  "kitsunarr-metadata",
  "kitsunarr-migrate",
+ "kitsunarr-notifications",
  "kitsunarr-parser",
  "mime_guess",
  "reqwest 0.13.5",
@@ -2692,6 +2693,7 @@ dependencies = [
  "kitsunarr-domain",
  "kitsunarr-downloaders",
  "kitsunarr-metadata",
+ "kitsunarr-notifications",
  "kitsunarr-parser",
  "reqwest 0.13.5",
  "serde_json",
@@ -2740,6 +2742,20 @@ dependencies = [
  "tracing",
  "url",
  "zip",
+]
+
+[[package]]
+name = "kitsunarr-notifications"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "chrono",
+ "reqwest 0.13.5",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]

@@ -73,6 +73,8 @@ pub struct AppStateInner {
     /// Held while a wanted-episodes search runs (one at a time).
     pub wanted_search: Arc<tokio::sync::Mutex<()>>,
     pub logs: LogBuffer,
+    /// The warnings and errors of the last health evaluation, for health notifications.
+    pub last_health: std::sync::Mutex<Option<Vec<kitsunarr_domain::api::system::HealthCheck>>>,
 }
 
 impl std::ops::Deref for AppState {
@@ -112,6 +114,7 @@ impl AppState {
             releases: Default::default(),
             last_download_client: Default::default(),
             wanted_search: Default::default(),
+            last_health: Default::default(),
             http,
             metadata,
             logs,

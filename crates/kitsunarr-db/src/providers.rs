@@ -19,8 +19,27 @@ pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
         ProviderKind::DownloadClient => {
             &["QBittorrent", "Deluge", "Transmission", "Sabnzbd", "Nzbget"]
         }
-        // Notifications are stored but none is sent yet (#9).
-        ProviderKind::Notification => &[],
+        // Kept in step with `kitsunarr_notifications::SUPPORTED`.
+        ProviderKind::Notification => &[
+            "Webhook",
+            "Notifiarr",
+            "Discord",
+            "Slack",
+            "Telegram",
+            "Gotify",
+            "Ntfy",
+            "Pushover",
+            "PushBullet",
+            "Join",
+            "Prowl",
+            "Simplepush",
+            "Signal",
+            "Apprise",
+            "MediaBrowser",
+            "Jellyfin",
+            "PlexServer",
+            "Xbmc",
+        ],
         ProviderKind::ImportList => &[],
     };
     list.iter().any(|i| i.eq_ignore_ascii_case(implementation))

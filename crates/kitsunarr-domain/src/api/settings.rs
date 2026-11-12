@@ -169,6 +169,28 @@ pub struct ProviderItem {
 
 pub const REDACTED: &str = "********";
 
+/// Notification implementations Kitsunarr sends (Sonarr's names).
+pub const NOTIFICATION_IMPLEMENTATIONS: &[&str] = &[
+    "Webhook",
+    "Notifiarr",
+    "Discord",
+    "Slack",
+    "Telegram",
+    "Gotify",
+    "Ntfy",
+    "Pushover",
+    "PushBullet",
+    "Join",
+    "Prowl",
+    "Simplepush",
+    "Signal",
+    "Apprise",
+    "MediaBrowser",
+    "Jellyfin",
+    "PlexServer",
+    "Xbmc",
+];
+
 /// Episode/folder naming configuration (Sonarr-compatible tokens).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

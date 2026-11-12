@@ -9,6 +9,7 @@ pub mod downloads;
 pub mod failed;
 pub mod file_names;
 pub mod import;
+pub mod notify;
 
 use std::collections::HashMap;
 

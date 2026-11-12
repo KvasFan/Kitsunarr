@@ -484,6 +484,14 @@ async fn first_run_setup_migration_and_library() {
             .await
             .unwrap();
         wait_text(&client, "0 new episodes, 80 updated").await;
+        // Migrated notifications are sent now (no "stored only" badge).
+        client
+            .goto(&format!("{base}/settings/notifications"))
+            .await
+            .unwrap();
+        wait_text(&client, "Emby/Jellyfin, Plex and Kodi are sent").await;
+        assert!(!client.source().await.unwrap().contains("stored only"));
+        client.goto(&format!("{base}/series")).await.unwrap();
         screenshot(&client, "11b-refresh-thetvdb").await;
         client
             .goto(&format!("{base}/settings/metadata"))

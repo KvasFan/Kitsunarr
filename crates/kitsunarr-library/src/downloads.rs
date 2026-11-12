@@ -82,6 +82,8 @@ pub fn remap(mappings: &[RemotePathMapping], host: &str, path: &str) -> String {
 #[derive(Clone, Default)]
 pub struct Monitor {
     pub clients: Clients,
+    /// Sends grab and import notifications.
+    pub notifier: kitsunarr_notifications::Notifier,
     tracked: Arc<Mutex<HashMap<String, Tracked>>>,
     /// Downloads (upper-case ids) seen in a client and not imported, plus grabs since the last
     /// refresh: the queue the decisions compare releases with.
@@ -94,7 +96,8 @@ pub struct Monitor {
 impl Monitor {
     pub fn new(http: reqwest::Client) -> Self {
         Self {
-            clients: Clients::new(http),
+            clients: Clients::new(http.clone()),
+            notifier: kitsunarr_notifications::Notifier::new(http),
             ..Default::default()
         }
     }
@@ -187,6 +190,61 @@ impl Monitor {
             })
             .cloned()
             .collect()
+    }
+
+    /// Builds and sends the "Download" (or upgrade) notification for an imported file.
+    async fn notify_import(
+        &self,
+        db: &Database,
+        series_id: i64,
+        r: &import::FileResult,
+        f: &import::ImportedFile,
+        download_id: &str,
+        client: &providers::ProviderRecord,
+    ) {
+        let Some(series) = crate::notify::series_ref(db, series_id).await else {
+            return;
+        };
+        let Some(mut file) = crate::notify::file_ref(db, &series, f.file_id).await else {
+            return;
+        };
+        file.source_path = Some(f.source_path.clone());
+        let episodes = crate::notify::episode_refs(db, series_id, &r.episode_ids).await;
+        let grabs = history::grabs_for(db, &[download_id.to_string()])
+            .await
+            .unwrap_or_default();
+        let data: serde_json::Value = grabs
+            .first()
+            .and_then(|g| serde_json::from_str(&g.data).ok())
+            .unwrap_or_default();
+        let text = |k: &str| data.get(k).and_then(|v| v.as_str()).map(str::to_string);
+        let deleted_files = f
+            .replaced
+            .iter()
+            .map(|rel| kitsunarr_notifications::FileRef {
+                relative_path: rel.clone(),
+                path: format!("{}/{rel}", series.path.trim_end_matches('/')),
+                ..Default::default()
+            })
+            .collect();
+        let event =
+            kitsunarr_notifications::Event::Download(Box::new(kitsunarr_notifications::Download {
+                series,
+                episodes,
+                file,
+                release: kitsunarr_notifications::GrabbedRef {
+                    release_title: grabs.first().map(|g| g.source_title.clone()),
+                    indexer: text("indexer"),
+                    size: text("size").and_then(|v| v.parse().ok()),
+                    indexer_flags: Vec::new(),
+                    release_type: text("releaseType"),
+                },
+                deleted_files,
+                download_client: Some(client.name.clone()),
+                download_client_type: Some(client.implementation.clone()),
+                download_id: Some(download_id.to_string()),
+            }));
+        crate::notify::spawn(db, &self.notifier, event);
     }
 
     /// `DownloadEventHub.RemoveFromDownloadClient`: removes the download and its data.
@@ -380,6 +438,13 @@ impl Monitor {
                     },
                 )
                 .await?;
+                // `EpisodeImportedEvent` → `OnDownload`, one per imported file.
+                for r in outcome.results.iter().filter(|r| r.imported) {
+                    if let Some(f) = &r.imported_file {
+                        self.notify_import(db, series_id, r, f, &item.download_id, client)
+                            .await;
+                    }
+                }
                 if let Some(reason) = outcome.blocked {
                     self.set(&item.download_id, State::ImportBlocked, vec![reason]);
                     blocked += 1;

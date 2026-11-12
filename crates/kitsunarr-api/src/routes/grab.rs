@@ -485,10 +485,107 @@ async fn finish(
         .await?;
     }
     state.downloads.note_grabbed(&download_id);
+    notify_grab(state, cached, client, &download_id).await;
     tracing::info!(release = %r.release.title, client = %client.name, %download_id, "release grabbed");
     Ok(GrabResult {
         download_client: client.name.clone(),
         message: format!("Sent \"{}\" to {}.", r.release.title, client.name),
         download_id,
     })
+}
+
+/// `OnGrab` notifications.
+async fn notify_grab(
+    state: &AppState,
+    cached: &CachedRelease,
+    client: &ProviderRecord,
+    download_id: &str,
+) {
+    use kitsunarr_library::notify;
+    let Some(series) = notify::series_ref(&state.db, cached.series_id).await else {
+        return;
+    };
+    let episodes = notify::episode_refs(&state.db, cached.series_id, &cached.episode_ids).await;
+    let r = &cached.release;
+    let event = kitsunarr_notifications::Event::Grab(Box::new(kitsunarr_notifications::Grab {
+        series,
+        episodes,
+        release: kitsunarr_notifications::ReleaseRef {
+            quality: notify::quality_name(i64::from(cached.quality.quality_id)),
+            quality_version: cached.quality.revision.version,
+            release_group: cached.release_group.clone(),
+            release_title: r.release.title.clone(),
+            indexer: r.indexer.clone(),
+            size: r.release.size,
+            custom_format_score: cached.custom_format_score,
+            custom_formats: Vec::new(),
+            languages: cached
+                .languages
+                .iter()
+                .filter_map(|l| notify::language(*l))
+                .collect(),
+            indexer_flags: Vec::new(),
+        },
+        download_client: client.name.clone(),
+        download_client_type: client.implementation.clone(),
+        download_id: download_id.to_string(),
+    }));
+    notify::spawn(&state.db, &state.downloads.notifier, event);
+}
+
+/// Send a test notification with a connection's settings (stored secrets are reused).
+#[utoipa::path(post, path = "/providers/notifications/test", tag = "settings", request_body = IndexerTestRequest,
+    responses(
+        (status = 200, body = DownloadClientTestResult, description = "Test outcome (ok or not)"),
+        (status = 422, body = ApiErrorBody)
+    ))]
+pub async fn test_notification(
+    State(state): State<AppState>,
+    Json(mut req): Json<IndexerTestRequest>,
+) -> ApiResult<Json<DownloadClientTestResult>> {
+    if !kitsunarr_notifications::supported(&req.implementation) {
+        return Err(ApiError::field(
+            "implementation",
+            format!(
+                "{} notifications are not supported yet.",
+                req.implementation
+            ),
+        ));
+    }
+    if let Some(id) = req.id {
+        let stored = providers::get(state.db.pool(), ProviderKind::Notification, id).await?;
+        crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
+    }
+    let connection = kitsunarr_notifications::Connection {
+        id: req.id.unwrap_or(0),
+        name: req.implementation.clone(),
+        implementation: req.implementation.clone(),
+        triggers: Default::default(),
+        tags: Vec::new(),
+        settings: req.settings,
+    };
+    let instance = kitsunarr_library::notify::instance(&state.db).await;
+    Ok(Json(
+        match state
+            .downloads
+            .notifier
+            .send(
+                &connection,
+                &kitsunarr_notifications::Event::Test,
+                &instance,
+            )
+            .await
+        {
+            Ok(()) => DownloadClientTestResult {
+                ok: true,
+                message: "Test notification sent.".into(),
+                warnings: Vec::new(),
+            },
+            Err(e) => DownloadClientTestResult {
+                ok: false,
+                message: format!("Sending failed: {e}."),
+                warnings: Vec::new(),
+            },
+        },
+    ))
 }

@@ -134,7 +134,37 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 }),
             ),
         ],
-        ProviderKind::Notification | ProviderKind::ImportList => Vec::new(),
+        ProviderKind::Notification => {
+            let on = json!({
+                "onGrab": true, "onDownload": true, "onUpgrade": true, "onSeriesAdd": false,
+                "onSeriesDelete": false, "onEpisodeFileDelete": false, "onHealthIssue": false,
+                "includeHealthWarnings": false, "onHealthRestored": false
+            });
+            let n = |name: &str, implementation: &str, settings: Value| {
+                template(kind, name, implementation, on.clone(), settings)
+            };
+            vec![
+                n("Webhook", "Webhook", json!({"url": "", "method": 1, "username": "", "password": "", "headers": []})),
+                n("Discord", "Discord", json!({"webHookUrl": "", "username": "", "avatar": "", "author": "",
+                    "grabFields": [0, 1, 2, 3, 5, 6, 7, 8, 9], "importFields": [0, 1, 2, 3, 5, 6, 9, 10, 11, 12]})),
+                n("Telegram", "Telegram", json!({"botToken": "", "chatId": "", "topicId": "", "sendSilently": false, "includeAppNameInTitle": false})),
+                n("Slack", "Slack", json!({"webHookUrl": "", "username": "", "icon": "", "channel": ""})),
+                n("Gotify", "Gotify", json!({"server": "", "appToken": "", "priority": 5, "includeSeriesPoster": false})),
+                n("ntfy", "Ntfy", json!({"serverUrl": "https://ntfy.sh", "accessToken": "", "userName": "", "password": "", "priority": 3, "topics": [], "tags": [], "clickUrl": ""})),
+                n("Pushover", "Pushover", json!({"apiKey": "", "userKey": "", "devices": [], "priority": 0, "retry": 0, "expire": 0, "sound": ""})),
+                n("Pushbullet", "PushBullet", json!({"apiKey": "", "deviceIds": [], "channelTags": [], "senderId": ""})),
+                n("Join", "Join", json!({"apiKey": "", "deviceNames": "", "priority": 0})),
+                n("Prowl", "Prowl", json!({"apiKey": "", "priority": 0})),
+                n("Simplepush", "Simplepush", json!({"key": "", "event": ""})),
+                n("Signal", "Signal", json!({"host": "localhost", "port": 8080, "useSsl": false, "senderNumber": "", "receiverId": "", "authUsername": "", "authPassword": ""})),
+                n("Apprise", "Apprise", json!({"serverUrl": "", "configurationKey": "", "statelessUrls": "", "notificationType": 0, "tags": [], "authUsername": "", "authPassword": ""})),
+                n("Notifiarr", "Notifiarr", json!({"apiKey": ""})),
+                n("Emby / Jellyfin", "MediaBrowser", json!({"host": "localhost", "port": 8096, "useSsl": false, "urlBase": "", "apiKey": "", "notify": false, "updateLibrary": true, "mapFrom": "", "mapTo": ""})),
+                n("Plex Media Server", "PlexServer", json!({"host": "localhost", "port": 32400, "useSsl": false, "urlBase": "", "authToken": "", "updateLibrary": true, "mapFrom": "", "mapTo": ""})),
+                n("Kodi", "Xbmc", json!({"host": "localhost", "port": 8080, "useSsl": false, "urlBase": "", "username": "", "password": "", "displayTime": 5, "notify": false, "updateLibrary": true, "cleanLibrary": false})),
+            ]
+        }
+        ProviderKind::ImportList => Vec::new(),
     }
     .into_iter()
     .filter(|t| t.supported)

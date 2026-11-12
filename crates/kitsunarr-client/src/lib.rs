@@ -403,6 +403,12 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::search::AutomaticSearchResult> {
         self.post("/releases/search", q).await
     }
+    pub async fn test_notification(
+        &self,
+        req: &IndexerTestRequest,
+    ) -> ClientResult<DownloadClientTestResult> {
+        self.post("/providers/notifications/test", req).await
+    }
     pub async fn test_download_client(
         &self,
         req: &IndexerTestRequest,

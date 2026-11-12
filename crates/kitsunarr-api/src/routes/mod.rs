@@ -133,6 +133,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(grab::grab_release))
         .routes(routes!(search::automatic_search))
         .routes(routes!(grab::test_download_client))
+        .routes(routes!(grab::test_notification))
         .routes(routes!(queue::get_queue))
         .routes(routes!(queue::refresh_queue))
         .routes(routes!(queue::remove_from_queue))

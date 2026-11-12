@@ -350,3 +350,18 @@ Every title belongs to one catalogue (`metadata_provider`, `metadata_id`), as in
 Keys are stored in the settings table (`metadataSources`), migrated from Tanukarr's `tmdbapikey`/`omdbapikey`, redacted in API responses (the placeholder keeps a key), and applied to the clients at start-up and on save. A catalogue that needs a key is listed as unavailable: searches and refreshes say so, and the scheduled refresh skips its titles.
 
 Not ported: Tanukarr's presentation enrichment (filling a missing overview or artwork from a second catalogue), choosing an ordering when adding a title, and TheTVDB languages other than English. TMDB, OMDb and Jikan are tested on their documented response shapes, not against the live services (no keys; Jikan was unreachable from the test network); SkyHook is tested on recorded responses and live.
+
+## 24. Notifications: Sonarr's services and payloads
+
+`kitsunarr-notifications` ports `NotificationService`'s filters and each service's message format. An event goes to every stored connection whose switch for it is on (`onGrab`, `onDownload`, `onSeriesAdd`, ...). An upgrade also needs `onUpgrade`, and health warnings need `includeHealthWarnings`. Connection tags filter series events (`ShouldHandleSeries`); health events ignore tags, as upstream. Deliveries run in the background after the action that caused them. A failing connection is logged and never stops the others.
+
+- **Texts** are Sonarr's: titles ("Episode Grabbed", "Episode Downloaded", ...), and messages built by `GetMessage` (`Title - 1x01x02 - First + Second [Quality Proper]`, anime `v2`, daily by air date).
+- **Webhook payloads** keep Sonarr's shape (`eventType` `Grab`/`Download`/`SeriesAdd`/`SeriesDelete`/`Health`/`HealthRestored`/`Test`, camelCase properties, the series with its ids and tag labels), so existing receivers and Notifiarr work unchanged. The webhook can use POST or PUT, basic authentication and custom headers.
+- **Discord** builds upstream's embed: colours, title, description, the grab and import field choices, the poster as thumbnail and the fanart as image.
+- **Media servers** refresh the series folder after imports and deletions, mapped with `mapFrom`/`mapTo` (or Tanukarr's Jellyfin path prefixes):
+  - Emby/Jellyfin: `POST /Library/Media/Updated`, plus admin notifications when asked;
+  - Plex: the TV sections that hold the folder;
+  - Kodi: `VideoLibrary.Scan` of the folder, plus `GUI.ShowNotification` and an optional clean.
+- **Health notifications** compare each evaluation with the previous one, and send issues that appeared and issues that cleared. The first evaluation after start-up only records the baseline, so restarts do not repeat known issues; upstream notifies on start-up after a grace period.
+
+Not ported yet: the rename, episode-file-deleted, manual-interaction and application-update events; the Email, Custom Script, Twitter, Trakt, Synology, Mailgun, SendGrid and Pushcut services; Tanukarr's Jellyfin watched-state sync. Migrated connections of those types stay stored and are reported as not implemented.

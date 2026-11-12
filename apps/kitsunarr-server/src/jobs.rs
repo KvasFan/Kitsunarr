@@ -22,6 +22,7 @@ pub fn all(
 ) -> Vec<Job> {
     let backup_dir_for_job = backup_dir.clone();
     let api_for_downloads = api.clone();
+    let api_for_health = api.clone();
     vec![
         job(
             kitsunarr_api::rss::TASK,
@@ -129,12 +130,23 @@ pub fn all(
         ),
         job(
             "HealthCheck",
-            "Re-evaluates health checks and notifies connected browsers",
+            "Re-evaluates health checks, notifies connected browsers and sends health notifications",
             6 * 60,
             Duration::from_secs(60),
-            |ctx| async move {
-                ctx.events.publish(ServerEvent::HealthChanged);
-                Ok(None)
+            move |ctx| {
+                let api = api_for_health.clone();
+                async move {
+                    ctx.events.publish(ServerEvent::HealthChanged);
+                    match api.get() {
+                        Some(state) => {
+                            kitsunarr_api::routes::system::check_health_and_notify(state)
+                                .await
+                                .map(Some)
+                                .map_err(|e| e.message())
+                        }
+                        None => Ok(None),
+                    }
+                }
             },
         ),
     ]

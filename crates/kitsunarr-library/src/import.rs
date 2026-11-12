@@ -230,6 +230,17 @@ pub struct FileResult {
     pub imported: bool,
     pub episode_ids: Vec<i64>,
     pub errors: Vec<String>,
+    /// The imported file's record and the files it replaced (for notifications).
+    pub imported_file: Option<ImportedFile>,
+}
+
+/// An imported file (`EpisodeFile`) and what it replaced (`OldFiles`).
+#[derive(Debug, Clone, PartialEq, Default)]
+pub struct ImportedFile {
+    pub file_id: i64,
+    pub source_path: String,
+    /// Relative paths (within the series folder) of the replaced files.
+    pub replaced: Vec<String>,
 }
 
 #[derive(Debug, Clone, Default, PartialEq)]
@@ -376,6 +387,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                 imported: false,
                 episode_ids: Vec::new(),
                 errors,
+                imported_file: None,
             });
             continue;
         }
@@ -396,6 +408,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                 imported: false,
                 episode_ids: Vec::new(),
                 errors: vec!["Unable to parse file".into()],
+                imported_file: None,
             });
             continue;
         };
@@ -413,6 +426,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                 imported: false,
                 episode_ids: Vec::new(),
                 errors: vec![message.into()],
+                imported_file: None,
             });
             continue;
         }
@@ -581,6 +595,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                     imported: false,
                     episode_ids: ids,
                     errors: vec![e.0],
+                    imported_file: None,
                 });
                 continue;
             }
@@ -727,17 +742,23 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                 imported: false,
                 episode_ids: c.episodes,
                 errors: vec!["Episode has already been imported".into()],
+                imported_file: None,
             });
             continue;
         }
         done.extend(c.episodes.iter().copied());
         let outcome =
             transfer_and_record(db, d, &detail, &model, &media, &series_path, &c, &grab_data).await;
+        let (imported_file, errors) = match outcome {
+            Ok(f) => (Some(f), Vec::new()),
+            Err(e) => (None, vec![e]),
+        };
         results.push(FileResult {
-            imported: outcome.is_ok(),
-            errors: outcome.err().into_iter().collect(),
+            imported: imported_file.is_some(),
+            errors,
             path: c.path,
             episode_ids: c.episodes,
+            imported_file,
         });
     }
     results.extend(rejected.into_iter().map(|c| FileResult {
@@ -745,6 +766,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         imported: false,
         episode_ids: c.episodes,
         errors: c.errors,
+        imported_file: None,
     }));
     Ok(Outcome {
         results,
@@ -772,7 +794,7 @@ async fn transfer_and_record(
     series_path: &Path,
     c: &Candidate,
     grab_data: &serde_json::Value,
-) -> Result<(), String> {
+) -> Result<ImportedFile, String> {
     if !Path::new(&detail.root_folder_path).is_dir() {
         return Err("Failed to import episode, Root folder missing.".into());
     }
@@ -827,7 +849,7 @@ async fn transfer_and_record(
     let mut conn = db.pool().acquire().await.map_err(|e| e.to_string())?;
     let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
     // Replaced files: after the new one is in place, and only inside the series folder.
-    let replaced: Vec<&decision::EpisodeFile> = {
+    let replaced_files: Vec<&decision::EpisodeFile> = {
         let mut seen = HashSet::new();
         c.episodes
             .iter()
@@ -836,13 +858,15 @@ async fn transfer_and_record(
             .filter(|f| seen.insert(f.id))
             .collect()
     };
-    for old in replaced {
+    let mut replaced = Vec::new();
+    for old in replaced_files {
         let record = series::file_records(db, model.id)
             .await
             .map_err(|e| e.to_string())?
             .into_iter()
             .find(|f| f.id == old.id);
         let Some(record) = record else { continue };
+        replaced.push(record.relative_path.clone());
         let old_path = series_path.join(&record.relative_path);
         if is_within(&old_path, series_path) && old_path != dest && old_path.is_file() {
             remove_or_recycle(&old_path, media, Path::new(&detail.root_folder_path))?;
@@ -964,7 +988,11 @@ async fn transfer_and_record(
         .map_err(|e| e.to_string())?;
     }
     tracing::info!(file = %dest.display(), linked, "episode imported");
-    Ok(())
+    Ok(ImportedFile {
+        file_id,
+        source_path: c.path.to_string_lossy().into_owned(),
+        replaced,
+    })
 }
 
 /// `RecycleBinProvider.DeleteFile`: into `<recycle bin>/<path relative to the root folder>`
