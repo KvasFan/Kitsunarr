@@ -650,9 +650,19 @@ pub(crate) async fn naming_series(
         .filter_map(|s| s.title.clone().map(|t| (s.season_number, t)))
         .collect();
     season_titles.extend(options.season_titles.iter().map(|(n, t)| (*n, t.clone())));
+    // Tanukarr's group tokens.
+    let group = kitsunarr_db::library::collections::group_of_series(db, detail.item.id)
+        .await
+        .map_err(err)?
+        .map(|(title, role, ordinal)| file_names::GroupMembership {
+            title,
+            season: ordinal.filter(|_| role.as_deref() == Some("season")),
+            movie: ordinal.filter(|_| role.as_deref() == Some("movie")),
+        });
     Ok((
         file_names::Series {
             season_titles,
+            group,
             ..file_names::Series::from_parts(
                 &detail.item.title,
                 detail.item.year,

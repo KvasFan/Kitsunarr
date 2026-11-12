@@ -282,6 +282,11 @@ pub fn SettingsMedia() -> Element {
                         NamingInput { label: "Series folder format", value: n.series_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.series_folder_format = v; } } }
                         NamingInput { label: "Season folder format", value: n.season_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.season_folder_format = v; } } }
                         NamingInput { label: "Movie file format", value: n.movie_file_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.movie_file_format = v; } } }
+                        NamingInput { label: "Group folder format", value: n.anime_group_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_folder_format = v; } } }
+                        NamingInput { label: "Group season folder format", value: n.anime_group_season_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_season_folder_format = v; } } }
+                        NamingInput { label: "Group story-arc folder format", value: n.anime_group_arc_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_arc_folder_format = v; } } }
+                        NamingInput { label: "Group film folder format", value: n.anime_group_movie_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_movie_folder_format = v; } } }
+                        NamingInput { label: "Collection film folder format", value: n.anime_group_movie_saga_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_movie_saga_folder_format = v; } } }
                     }
                     div { class: "row end", button { class: "btn primary", onclick: save_naming, "Save naming" } }
                 },

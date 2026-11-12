@@ -26,7 +26,7 @@ fn re(pattern: &str, ignore_case: bool) -> NetRegex {
 
 static TITLE: LazyLock<NetRegex> = LazyLock::new(|| {
     re(
-        r"(?<escaped>\{\{|\}\})|\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))?)(?::(?<customFormat>[ ,a-z0-9+-]+(?<![- ])))?(?<suffix>[- ._)\]]*)\}",
+        r"(?<escaped>\{\{|\}\})|\{(?<prefix>[- ._\[(]*)(?<token>(?:[a-z0-9]+)(?:(?<separator>[- ._]+)(?:[a-z0-9]+))*)(?::(?<customFormat>[ ,a-z0-9+-]+(?<![- ])))?(?<suffix>[- ._)\]]*)\}",
         true,
     )
 });
@@ -83,6 +83,40 @@ pub struct Series {
     pub tmdb_id: i64,
     /// Season titles by season number.
     pub season_titles: Vec<(i32, String)>,
+    /// Tanukarr's anime group the series belongs to (`{Group Title}`, `{Group Season}`…).
+    pub group: Option<GroupMembership>,
+}
+
+/// A series' place in its franchise or manual group.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct GroupMembership {
+    pub title: String,
+    /// The ordinal of a season member.
+    pub season: Option<i32>,
+    /// The ordinal of a movie member.
+    pub movie: Option<i32>,
+}
+
+/// `FileNameBuilder.GetMemberArcTitle`: the subtitle after the group title (`Group: Arc`), or
+/// the member's whole title.
+pub fn arc_title(member: &str, group: &str) -> String {
+    if member.to_lowercase().starts_with(&group.to_lowercase())
+        && let Some(rest) = member.get(group.len()..)
+    {
+        let rest = rest.trim_start();
+        if let Some(sub) = rest
+            .strip_prefix(':')
+            .or_else(|| rest.strip_prefix('-'))
+            .or_else(|| rest.strip_prefix('–'))
+            .or_else(|| rest.strip_prefix('—'))
+        {
+            let sub = sub.trim();
+            if !sub.is_empty() {
+                return sub.to_string();
+            }
+        }
+    }
+    member.to_string()
 }
 
 impl Default for Series {
@@ -96,6 +130,7 @@ impl Default for Series {
             tvmaze_id: 0,
             tmdb_id: 0,
             season_titles: Vec::new(),
+            group: None,
         }
     }
 }
@@ -517,6 +552,33 @@ fn add_series_tokens<'a>(h: &mut Handlers<'a>, series: &'a Series, title: &'a st
         ))
     });
     h.text("{Series Year}", year.to_string());
+}
+
+/// Tanukarr's group tokens; empty for an ungrouped series or another kind of member.
+fn add_group_tokens<'a>(h: &mut Handlers<'a>, series: &'a Series) {
+    let group = series.group.as_ref();
+    h.set("{Group Title}", move |m| {
+        Some(truncate(
+            group.map_or("", |g| g.title.as_str()),
+            m.custom_format.as_deref(),
+        ))
+    });
+    h.set("{Group Arc Title}", move |m| {
+        Some(truncate(
+            &group.map_or_else(String::new, |g| arc_title(&series.title, &g.title)),
+            m.custom_format.as_deref(),
+        ))
+    });
+    h.set("{Group Season}", move |m| {
+        Some(group.and_then(|g| g.season).map_or_else(String::new, |n| {
+            format_number(n, m.custom_format.as_deref())
+        }))
+    });
+    h.set("{Group Movie}", move |m| {
+        Some(group.and_then(|g| g.movie).map_or_else(String::new, |n| {
+            format_number(n, m.custom_format.as_deref())
+        }))
+    });
 }
 
 fn add_id_tokens<'a>(h: &mut Handlers<'a>, series: &'a Series) {
@@ -1051,6 +1113,7 @@ fn build_file_name_within(
         split = add_absolute_numbering_tokens(split, &mut h, series, &sorted, naming);
         split = split.replace("...", "{{ellipsis}}");
         add_series_tokens(&mut h, series, &series.title);
+        add_group_tokens(&mut h, series);
         add_id_tokens(&mut h, series);
         add_episode_tokens(&mut h, &sorted);
         add_episode_title_placeholders(&mut h);
@@ -1080,10 +1143,40 @@ fn build_file_name_within(
 pub fn series_folder(series: &Series, naming: &NamingSettings) -> String {
     let mut h = Handlers::default();
     add_series_tokens(&mut h, series, &series.title);
+    add_group_tokens(&mut h, series);
     add_id_tokens(&mut h, series);
     let name = replace_tokens(&naming.series_folder_format, &h, naming, false);
     let name = reserved_device_names(&clean_folder_name(&name));
     name.replace("{ellipsis}", "...")
+}
+
+/// Tanukarr's `GetAnimeGroupFolder` / `GetAnimeGroupMemberFolder`: a folder of the group's
+/// formats (`{Group Title}`, `Season {Group Season:00}`, `{Group Arc Title}`, `Film {Group
+/// Movie:00}`, `{Series Title}`) for a grouped series.
+pub fn group_folder(format: &str, series: &Series, naming: &NamingSettings) -> String {
+    let mut h = Handlers::default();
+    add_series_tokens(&mut h, series, &series.title);
+    add_group_tokens(&mut h, series);
+    add_id_tokens(&mut h, series);
+    let name = replace_tokens(format, &h, naming, false);
+    let name = clean_folder_name(&name)
+        .trim_matches([' ', '.', '-', '_'])
+        .to_string();
+    reserved_device_names(&name).replace("{ellipsis}", "...")
+}
+
+/// Tanukarr's strict story-arc rule: the member's title is the group's title, a separator,
+/// and a subtitle ending in "arc", "hen" or "chapter".
+pub fn is_story_arc(member: &str, group: &str) -> bool {
+    let arc = arc_title(member, group);
+    arc != member && {
+        let last = arc
+            .split_whitespace()
+            .last()
+            .unwrap_or_default()
+            .to_lowercase();
+        matches!(last.as_str(), "arc" | "hen" | "chapter")
+    }
 }
 
 /// `GetSeasonFolder`.
@@ -1095,6 +1188,7 @@ pub fn season_folder(series: &Series, season: i32, naming: &NamingSettings) -> S
         .map(|(_, t)| t.as_str());
     let mut h = Handlers::default();
     add_series_tokens(&mut h, series, &series.title);
+    add_group_tokens(&mut h, series);
     add_id_tokens(&mut h, series);
     add_season_number_token(&mut h, season);
     add_season_title_token(&mut h, title);
@@ -1170,6 +1264,7 @@ impl Series {
             tvmaze_id: int(K::TvMaze),
             tmdb_id: int(K::Tmdb),
             season_titles: Vec::new(),
+            group: None,
         }
     }
 }

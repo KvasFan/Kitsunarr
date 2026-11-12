@@ -217,6 +217,13 @@ pub async fn add_title(
             naming_settings.colon_replacement_format,
             &naming_settings.custom_colon_replacement_format,
         );
+        // Tanukarr: a film of a TMDB collection goes to `{root}/{collection}/Film NN`.
+        let planned = if info.provider == MetadataProvider::TmdbMovie {
+            grouping::plan_movie_path(db, metadata, &info.id, &info.title, &root, &naming_settings)
+                .await
+        } else {
+            None
+        };
         let mut conn = db.pool().acquire().await?;
         let id = movies::insert(
             &mut conn,
@@ -242,7 +249,7 @@ pub async fn add_title(
                 minimum_availability: MinimumAvailability::Released,
                 quality_profile_id: req.quality_profile_id,
                 root_folder_path: root.clone(),
-                path: naming::join(&root, &folder),
+                path: planned.unwrap_or_else(|| naming::join(&root, &folder)),
                 added_at: now,
                 last_refreshed_at: Some(kitsunarr_db::now()),
                 tags: req.tags.clone(),
@@ -274,6 +281,23 @@ pub async fn add_title(
         .map(|e| e.season_number)
         .max()
         .unwrap_or(1);
+    // Tanukarr's group folders: an AniList or MyAnimeList series resolved into a franchise
+    // goes to `{root}/{group}/{member}`, without season folders.
+    let planned = match (info.provider, info.id.parse::<i64>()) {
+        (MetadataProvider::AniList | MetadataProvider::MyAnimeList, Ok(anime_id)) => {
+            grouping::plan_series_path(
+                db,
+                metadata,
+                info.provider,
+                anime_id,
+                &info.title,
+                &root,
+                &naming_settings,
+            )
+            .await
+        }
+        _ => None,
+    };
     let mut tx = db.pool().begin().await?;
     let id = series::insert(
         &mut tx,
@@ -303,11 +327,13 @@ pub async fn add_title(
             } else {
                 MonitorNewItems::All
             },
-            season_folder: req.season_folder,
+            season_folder: req.season_folder && planned.is_none(),
             use_scene_numbering: false,
             quality_profile_id: req.quality_profile_id,
             root_folder_path: root.clone(),
-            path: naming::join(&root, &folder),
+            path: planned
+                .as_ref()
+                .map_or_else(|| naming::join(&root, &folder), |(p, _)| p.clone()),
             added_at: now.clone(),
             last_refreshed_at: Some(now.clone()),
             tags: req.tags.clone(),
@@ -375,6 +401,9 @@ pub async fn add_title(
     }
     tx.commit().await?;
     tracing::info!(title = %info.title, provider = %info.provider, episodes = info.episodes.len(), "series added");
+    if let Some((_, g)) = &planned {
+        grouping::join_resolved(db, info.provider, g, grouping::Member::Series(id)).await;
+    }
     spawn_grouping(db, metadata, req.provider, grouping::Member::Series(id));
     Ok(LibraryRef {
         media_type: "series".into(),

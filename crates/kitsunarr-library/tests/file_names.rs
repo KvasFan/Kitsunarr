@@ -671,3 +671,23 @@ fn folder_fixtures() {
         );
     }
 }
+
+/// Tanukarr's group tokens (`AnimeGroupNamingFixture`): empty for an ungrouped series.
+#[test]
+fn anime_group_tokens() {
+    let format = "{Group Title} - {Group Season:00} - {Group Arc Title} - {season:00}x{episode:00}";
+    let mut f = fixture().with(format);
+    f.series.title = "Show: Kyoto Arc".into();
+    f.series.group = Some(kitsunarr_library::file_names::GroupMembership {
+        title: "Show".into(),
+        season: Some(2),
+        movie: None,
+    });
+    assert_eq!(f.name(), "Show - 02 - Kyoto Arc - 15x06");
+    let plain = fixture().with("{Series Title} {Group Title}{Group Season}");
+    assert_eq!(plain.name(), "South Park");
+    assert_eq!(
+        kitsunarr_library::file_names::arc_title("Other", "Show"),
+        "Other"
+    );
+}

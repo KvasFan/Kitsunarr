@@ -134,6 +134,50 @@ pub async fn list(db: &Database) -> DbResult<Vec<CollectionItem>> {
         .collect())
 }
 
+/// (group title, role, ordinal).
+pub type GroupPlace = (String, Option<String>, Option<i32>);
+
+/// A series' franchise or manual group, for naming: (group title, role, ordinal). The ordinal
+/// is the label's number ("Season 2", "Film 03"), else the member's rank among its role.
+pub async fn group_of_series(db: &Database, series_id: i64) -> DbResult<Option<GroupPlace>> {
+    type Row = (i64, i64, String, Option<String>, Option<String>, i64);
+    let row: Option<Row> = sqlx::query_as(
+        "SELECT m.id, c.id, c.title, m.role, m.label, m.position FROM collection_members m \
+         JOIN collections c ON c.id = m.collection_id \
+         WHERE m.series_id = ? AND c.kind IN ('animeGroup', 'manual') \
+         ORDER BY CASE c.kind WHEN 'manual' THEN 0 ELSE 1 END, c.id LIMIT 1",
+    )
+    .bind(series_id)
+    .fetch_optional(db.pool())
+    .await?;
+    let Some((member_id, collection_id, title, role, label, position)) = row else {
+        return Ok(None);
+    };
+    let from_label = label.as_deref().and_then(|l| {
+        l.split(|c: char| !c.is_ascii_digit())
+            .find(|p| !p.is_empty())
+            .and_then(|n| n.parse::<i32>().ok())
+    });
+    let ordinal = match from_label {
+        Some(n) => Some(n),
+        None => {
+            let rank: i64 = sqlx::query_scalar(
+                "SELECT COUNT(*) FROM collection_members WHERE collection_id = ? AND role IS ? \
+                 AND (position < ? OR (position = ? AND id <= ?))",
+            )
+            .bind(collection_id)
+            .bind(&role)
+            .bind(position)
+            .bind(position)
+            .bind(member_id)
+            .fetch_one(db.pool())
+            .await?;
+            Some(rank as i32)
+        }
+    };
+    Ok(Some((title, role, ordinal)))
+}
+
 /// Kinds a title belongs to at most one of (Tanukarr: one group per series).
 const GROUP_KINDS: &str = "('manual', 'animeGroup')";
 

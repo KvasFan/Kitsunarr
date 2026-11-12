@@ -95,6 +95,15 @@ async fn an_added_sequel_joins_its_franchise_group() {
         member,
         Some(("Franchise part 1".into(), "1".into(), "Season 2".into(), 2))
     );
+    // Tanukarr's group folders: `{root}/{Group Title}/Season NN`, no season folders.
+    let (path, season_folder): (String, bool) =
+        sqlx::query_as("SELECT path, season_folder FROM series WHERE id = ?")
+            .bind(added.id)
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert_eq!(path, "/media/anime/Franchise part 1/Season 02");
+    assert!(!season_folder);
 }
 
 async fn tmdb_movie(axum::extract::Path(id): axum::extract::Path<i64>) -> Json<Value> {
@@ -180,6 +189,13 @@ async fn an_added_tmdb_film_joins_its_collection_in_release_order() {
             3
         ))
     );
+    // Tanukarr's collection folder: `{root}/{collection}/Film NN` in release order.
+    let path: String = sqlx::query_scalar("SELECT path FROM movies WHERE id = ?")
+        .bind(added.id)
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    assert_eq!(path, "/media/movies/The Saga Collection/Film 03");
 }
 
 /// Jikan's `/anime/{id}/full`: TV 20 → film 21 → TV 22, with an OVA side story of 22.

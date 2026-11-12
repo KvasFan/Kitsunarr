@@ -288,6 +288,34 @@ pub struct NamingSettings {
     pub specials_folder_format: String,
     pub movie_file_format: String,
     pub movie_folder_format: String,
+    /// Tanukarr's group folders (titles added to an anime group or TMDB collection go to
+    /// `{root}/{group folder}/{member folder}`).
+    #[serde(default = "group_folder_default")]
+    pub anime_group_folder_format: String,
+    #[serde(default = "group_season_default")]
+    pub anime_group_season_folder_format: String,
+    #[serde(default = "group_arc_default")]
+    pub anime_group_arc_folder_format: String,
+    #[serde(default = "group_movie_default")]
+    pub anime_group_movie_folder_format: String,
+    #[serde(default = "group_saga_default")]
+    pub anime_group_movie_saga_folder_format: String,
+}
+
+fn group_folder_default() -> String {
+    "{Group Title}".into()
+}
+fn group_season_default() -> String {
+    "Season {Group Season:00}".into()
+}
+fn group_arc_default() -> String {
+    "{Group Arc Title}".into()
+}
+fn group_movie_default() -> String {
+    "{Series Title}".into()
+}
+fn group_saga_default() -> String {
+    "Film {Group Movie:00}".into()
 }
 
 impl Default for NamingSettings {
@@ -310,6 +338,11 @@ impl Default for NamingSettings {
             specials_folder_format: "Specials".into(),
             movie_file_format: "{Movie Title} ({Release Year}) {Quality Full}".into(),
             movie_folder_format: "{Movie Title} ({Release Year})".into(),
+            anime_group_folder_format: group_folder_default(),
+            anime_group_season_folder_format: group_season_default(),
+            anime_group_arc_folder_format: group_arc_default(),
+            anime_group_movie_folder_format: group_movie_default(),
+            anime_group_movie_saga_folder_format: group_saga_default(),
         }
     }
 }

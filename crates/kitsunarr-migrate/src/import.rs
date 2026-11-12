@@ -1124,15 +1124,30 @@ impl<'a> Importer<'a> {
                     *slot = v;
                 }
             }
-            for key in [
-                "animegroupfolderformat",
-                "animegroupseasonfolderformat",
-                "animegrouparcfolderformat",
-                "animegroupmoviefolderformat",
-                "animegroupmoviesagafolderformat",
+            for (key, field) in [
+                (
+                    "animegroupfolderformat",
+                    &mut next.anime_group_folder_format,
+                ),
+                (
+                    "animegroupseasonfolderformat",
+                    &mut next.anime_group_season_folder_format,
+                ),
+                (
+                    "animegrouparcfolderformat",
+                    &mut next.anime_group_arc_folder_format,
+                ),
+                (
+                    "animegroupmoviefolderformat",
+                    &mut next.anime_group_movie_folder_format,
+                ),
+                (
+                    "animegroupmoviesagafolderformat",
+                    &mut next.anime_group_movie_saga_folder_format,
+                ),
             ] {
                 if let Some(v) = n.str(key) {
-                    self.keep_unmapped("naming", None, key, json!(v));
+                    *field = v;
                 }
             }
             if next == current {
