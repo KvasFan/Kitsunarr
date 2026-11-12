@@ -15,6 +15,7 @@ pub mod choices;
 pub mod custom;
 pub mod mdblist;
 pub mod myanimelist;
+pub mod oauth;
 pub mod plex;
 pub mod progress;
 pub mod rss;

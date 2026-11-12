@@ -496,6 +496,48 @@ pub struct RemotePathMapping {
     pub local_path: String,
 }
 
+/// Signing in to a list service from the list editor (Simkl, Trakt, Plex, MyAnimeList).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct SignInRequest {
+    #[serde(default)]
+    pub id: Option<i64>,
+    pub implementation: String,
+    #[serde(default)]
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
+    pub settings: serde_json::Map<String, serde_json::Value>,
+    /// Kitsunarr's MyAnimeList callback as the browser reaches it (start only).
+    #[serde(default)]
+    pub callback: Option<String>,
+    /// The state [`SignInStarted`] gave (poll only).
+    #[serde(default)]
+    pub state: Option<String>,
+}
+
+/// A sign-in in progress: open `url` (entering `code` when there is one), then poll.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct SignInStarted {
+    pub url: String,
+    pub code: Option<String>,
+    pub state: String,
+    pub interval: u64,
+    pub expires_in: u64,
+}
+
+/// A poll's outcome: when done, the settings to merge into the list (the token and its
+/// companions).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct SignInPolled {
+    pub done: bool,
+    #[cfg_attr(feature = "openapi", schema(value_type = Object))]
+    pub settings: serde_json::Map<String, serde_json::Value>,
+}
+
 /// A value a provider setting can take, read from the service (Jellyfin libraries and users).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

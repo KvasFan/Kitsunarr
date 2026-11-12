@@ -71,6 +71,8 @@ pub struct AppStateInner {
     pub http: reqwest::Client,
     /// The proxy `http` (and the indexer download client) consult per request.
     pub proxy: proxy::HttpProxy,
+    /// MyAnimeList sign-in codes Kitsunarr's callback received, by sign-in nonce.
+    pub oauth_codes: std::sync::Mutex<std::collections::HashMap<String, String>>,
     pub metadata: kitsunarr_metadata::Metadata,
     pub indexers: kitsunarr_indexers::IndexerClient,
     /// Download clients and completed-download handling (shared with the background job).
@@ -125,6 +127,7 @@ impl AppState {
             wanted_search: Default::default(),
             last_health: Default::default(),
             proxy: Default::default(),
+            oauth_codes: Default::default(),
             http,
             metadata,
             logs,

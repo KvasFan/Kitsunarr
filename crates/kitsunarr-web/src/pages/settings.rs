@@ -1655,6 +1655,88 @@ pub fn SettingsImportLists() -> Element {
 /// Jellyfin library and user pickers (Tanukarr's `RequestAction("libraries" | "users")`): read
 /// from the server with the editor's host and API key.
 /// Tanukarr's account-list pickers: the account's lists, each to include or exclude.
+/// Signing in to the list's service instead of pasting a token: the service's page opens (with
+/// a code to enter for Simkl and Trakt), and the token is filled in once the user is done.
+#[component]
+fn SignInButton(mut draft: Signal<ProviderItem>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut waiting = use_signal(|| None::<kitsunarr_domain::api::settings::SignInStarted>);
+    let sign_in = move |_| {
+        let c = client.clone();
+        let d = draft();
+        spawn(async move {
+            let base = web_sys::window()
+                .and_then(|w| w.location().href().ok())
+                .and_then(|h| h.split("/settings").next().map(str::to_string))
+                .unwrap_or_default();
+            let mut req = kitsunarr_domain::api::settings::SignInRequest {
+                id: (d.id > 0).then_some(d.id),
+                implementation: d.implementation.clone(),
+                settings: d.settings.clone(),
+                callback: Some(format!(
+                    "{}/api/v1/importlists/oauth/callback",
+                    base.trim_end_matches('/')
+                )),
+                state: None,
+            };
+            let started = match c.sign_in_start(&req).await {
+                Ok(s) => s,
+                Err(e) => {
+                    app.error(&e);
+                    return;
+                }
+            };
+            if let Some(w) = web_sys::window() {
+                let _ = w.open_with_url_and_target(&started.url, "_blank");
+            }
+            waiting.set(Some(started.clone()));
+            req.state = Some(started.state.clone());
+            req.callback = None;
+            let deadline = js_sys::Date::now() + started.expires_in as f64 * 1000.0;
+            while js_sys::Date::now() < deadline && waiting().is_some() {
+                gloo_timers::future::TimeoutFuture::new(started.interval as u32 * 1000).await;
+                match c.sign_in_poll(&req).await {
+                    Ok(p) if p.done => {
+                        draft.write().settings.extend(p.settings);
+                        waiting.set(None);
+                        app.success("Signed in. Save the list to keep the token.");
+                        return;
+                    }
+                    Ok(_) => {}
+                    Err(e) => {
+                        waiting.set(None);
+                        app.error(&e);
+                        return;
+                    }
+                }
+            }
+            if waiting().is_some() {
+                waiting.set(None);
+                app.toast(ToastLevel::Error, "The sign-in expired; try again.");
+            }
+        });
+    };
+    rsx! {
+        div { class: "row", style: "margin-bottom: var(--sp-3)",
+            match waiting() {
+                None => rsx! {
+                    button { class: "btn", r#type: "button", onclick: sign_in, "Sign in" }
+                    span { class: "muted small", "Opens the service to authorize Kitsunarr and fills in the token." }
+                },
+                Some(s) => rsx! {
+                    span { class: "small",
+                        "Waiting for the sign-in at "
+                        a { href: "{s.url}", target: "_blank", rel: "noopener", "{s.url}" }
+                        if let Some(code) = &s.code { " — enter the code " strong { class: "mono", "{code}" } }
+                    }
+                    button { class: "btn sm", r#type: "button", onclick: move |_| waiting.set(None), "Cancel" }
+                },
+            }
+        }
+    }
+}
+
 #[component]
 fn AccountListPickers(mut draft: Signal<ProviderItem>) -> Element {
     let app = use_app();
@@ -2627,6 +2709,11 @@ fn ProviderEditor(
             }
             if item.kind == ProviderKind::Notification && item.implementation.eq_ignore_ascii_case("Jellyfin") {
                 JellyfinPickers { draft }
+            }
+            if item.kind == ProviderKind::ImportList
+                && matches!(item.implementation.as_str(), "SimklUserImport" | "TraktListImport" | "TraktUserImport" | "TraktPopularImport" | "TraktSmartListImport" | "PlexImport" | "MyAnimeListImport")
+            {
+                SignInButton { draft }
             }
             if matches!(item.implementation.as_str(), "AniListImport" | "TraktListImport" | "SimklUserImport") {
                 AccountListPickers { draft }

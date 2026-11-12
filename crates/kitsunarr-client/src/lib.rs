@@ -277,6 +277,19 @@ impl Client {
         .await
     }
     /// The lists of an import list's account (include/exclude pickers).
+    /// Starts signing in to a list service (Simkl, Trakt, Plex, MyAnimeList).
+    pub async fn sign_in_start(
+        &self,
+        req: &kitsunarr_domain::api::settings::SignInRequest,
+    ) -> ClientResult<kitsunarr_domain::api::settings::SignInStarted> {
+        self.post("/providers/importlists/signin/start", req).await
+    }
+    pub async fn sign_in_poll(
+        &self,
+        req: &kitsunarr_domain::api::settings::SignInRequest,
+    ) -> ClientResult<kitsunarr_domain::api::settings::SignInPolled> {
+        self.post("/providers/importlists/signin/poll", req).await
+    }
     pub async fn import_list_choices(
         &self,
         req: &kitsunarr_domain::api::search::IndexerTestRequest,

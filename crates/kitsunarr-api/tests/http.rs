@@ -396,6 +396,34 @@ async fn settings_validation_and_secret_redaction() {
     again.enabled = false;
     client.put_proxy(&again).await.unwrap();
     assert!(server.state.proxy.current().is_none());
+
+    // MyAnimeList's sign-in callback is public; the code waits for the editor's poll.
+    let page = reqwest::Client::new()
+        .get(format!(
+            "{}/api/v1/importlists/oauth/callback?code=authcode&state=nonce1",
+            server.base
+        ))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(page.status(), 200);
+    assert_eq!(
+        server
+            .state
+            .oauth_codes
+            .lock()
+            .unwrap()
+            .get("nonce1")
+            .map(String::as_str),
+        Some("authcode")
+    );
+    let no_sign_in: Result<serde_json::Value, _> = client
+        .post(
+            "/providers/importlists/signin/start",
+            &serde_json::json!({"implementation": "AniListImport", "settings": {}}),
+        )
+        .await;
+    assert_eq!(status(no_sign_in.unwrap_err()), 422);
 }
 
 #[tokio::test]

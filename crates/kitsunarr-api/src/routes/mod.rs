@@ -30,6 +30,7 @@ pub fn public_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(auth::setup))
         .routes(routes!(auth::login))
         .routes(routes!(system::ping))
+        .routes(routes!(import_lists::sign_in_callback))
 }
 
 /// Routes requiring a session or API key.
@@ -177,6 +178,8 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(grab::notification_choices))
         .routes(routes!(import_lists::test_import_list))
         .routes(routes!(import_lists::import_list_choices))
+        .routes(routes!(import_lists::sign_in_start))
+        .routes(routes!(import_lists::sign_in_poll))
         .routes(routes!(import_lists::sync_now))
         .routes(routes!(import_lists::status))
         .routes(routes!(import_lists::entries))

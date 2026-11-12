@@ -96,7 +96,7 @@ pub async fn renew(
     Ok(Some(next))
 }
 
-fn now_secs() -> i64 {
+pub(crate) fn now_secs() -> i64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .map(|d| d.as_secs() as i64)
@@ -126,7 +126,7 @@ fn chrono_like_parse(s: &str) -> Option<i64> {
     Some(days * 86_400 + h * 3600 + mi * 60 + se)
 }
 
-fn format_secs(t: i64) -> String {
+pub(crate) fn format_secs(t: i64) -> String {
     let days = t.div_euclid(86_400);
     let rem = t.rem_euclid(86_400);
     let z = days + 719_468;

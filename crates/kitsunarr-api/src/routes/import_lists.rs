@@ -47,6 +47,134 @@ pub async fn import_list_choices(
     ))
 }
 
+/// Where MyAnimeList sends the browser back after signing in.
+pub const SIGN_IN_CALLBACK: &str = "/api/v1/importlists/oauth/callback";
+
+/// Starts signing in to a list service (Simkl, Trakt, Plex, MyAnimeList) with the editor's
+/// settings; stored secrets are reused.
+#[utoipa::path(post, path = "/providers/importlists/signin/start", tag = "settings",
+    request_body = kitsunarr_domain::api::settings::SignInRequest,
+    responses((status = 200, body = kitsunarr_domain::api::settings::SignInStarted), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn sign_in_start(
+    State(state): State<AppState>,
+    Json(mut req): Json<kitsunarr_domain::api::settings::SignInRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::settings::SignInStarted>> {
+    if !kitsunarr_importlists::oauth::supported(&req.implementation) {
+        return Err(ApiError::field(
+            "implementation",
+            "This list has no sign-in; enter its token.",
+        ));
+    }
+    if let Some(id) = req.id {
+        let stored = providers::get(state.db.pool(), ProviderKind::ImportList, id).await?;
+        crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
+    }
+    let callback = req
+        .callback
+        .clone()
+        .filter(|c| {
+            (c.starts_with("http://") || c.starts_with("https://")) && c.ends_with(SIGN_IN_CALLBACK)
+        })
+        .unwrap_or_default();
+    if req.implementation == "MyAnimeListImport" && callback.is_empty() {
+        return Err(ApiError::field(
+            "callback",
+            "MyAnimeList needs Kitsunarr's callback address.",
+        ));
+    }
+    let s = kitsunarr_importlists::oauth::start(
+        &state.http,
+        &req.implementation,
+        &req.settings,
+        &callback,
+    )
+    .await
+    .map_err(|e| ApiError::field("settings", e.to_string()))?;
+    Ok(Json(kitsunarr_domain::api::settings::SignInStarted {
+        url: s.url,
+        code: s.code,
+        state: s.state,
+        interval: s.interval,
+        expires_in: s.expires_in,
+    }))
+}
+
+/// Checks a sign-in: when the user has finished, the settings to merge into the list.
+#[utoipa::path(post, path = "/providers/importlists/signin/poll", tag = "settings",
+    request_body = kitsunarr_domain::api::settings::SignInRequest,
+    responses((status = 200, body = kitsunarr_domain::api::settings::SignInPolled), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn sign_in_poll(
+    State(state): State<AppState>,
+    Json(mut req): Json<kitsunarr_domain::api::settings::SignInRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::settings::SignInPolled>> {
+    let sign_in = req
+        .state
+        .clone()
+        .ok_or_else(|| ApiError::field("state", "Start signing in first."))?;
+    if let Some(id) = req.id {
+        let stored = providers::get(state.db.pool(), ProviderKind::ImportList, id).await?;
+        crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
+    }
+    let code = kitsunarr_importlists::oauth::nonce_of(&sign_in).and_then(|n| {
+        state
+            .oauth_codes
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .remove(&n)
+    });
+    let polled = kitsunarr_importlists::oauth::poll(
+        &state.http,
+        &req.implementation,
+        &req.settings,
+        &sign_in,
+        code.as_deref(),
+    )
+    .await
+    .map_err(|e| ApiError::field("settings", e.to_string()))?;
+    Ok(Json(match polled {
+        kitsunarr_importlists::oauth::Polled::Pending => {
+            kitsunarr_domain::api::settings::SignInPolled {
+                done: false,
+                settings: Default::default(),
+            }
+        }
+        kitsunarr_importlists::oauth::Polled::Done(settings) => {
+            kitsunarr_domain::api::settings::SignInPolled {
+                done: true,
+                settings,
+            }
+        }
+    }))
+}
+
+#[derive(Debug, Deserialize, Default, utoipa::IntoParams)]
+#[into_params(parameter_in = Query)]
+#[serde(default)]
+pub struct SignInCallback {
+    pub code: String,
+    pub state: String,
+}
+
+/// MyAnimeList's redirect after signing in: the code waits for the editor's next poll.
+#[utoipa::path(get, path = "/importlists/oauth/callback", tag = "settings", params(SignInCallback),
+    responses((status = 200, description = "A page saying the window can be closed")))]
+pub async fn sign_in_callback(
+    State(state): State<AppState>,
+    axum::extract::Query(q): axum::extract::Query<SignInCallback>,
+) -> axum::response::Html<&'static str> {
+    if !q.code.is_empty() && !q.state.is_empty() && q.state.len() <= 64 && q.code.len() <= 4096 {
+        let mut codes = state.oauth_codes.lock().unwrap_or_else(|e| e.into_inner());
+        // Unclaimed codes are few; old ones are dropped.
+        if codes.len() >= 100 {
+            codes.clear();
+        }
+        codes.insert(q.state, q.code);
+    }
+    axum::response::Html(
+        "<!doctype html><meta charset=utf-8><title>Kitsunarr</title><p>Signed in. You can close this window and return to Kitsunarr.</p>",
+    )
+}
+
 #[utoipa::path(post, path = "/providers/importlists/test", tag = "settings", request_body = IndexerTestRequest,
     responses((status = 200, body = DownloadClientTestResult), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
 pub async fn test_import_list(
