@@ -23,6 +23,7 @@ pub fn all(
     let backup_dir_for_job = backup_dir.clone();
     let api_for_downloads = api.clone();
     let api_for_health = api.clone();
+    let api_for_watched = api.clone();
     vec![
         job(
             kitsunarr_api::rss::TASK,
@@ -53,6 +54,25 @@ pub fn all(
                         Some(state) => kitsunarr_api::downloads::refresh(state).await.map(Some),
                         // Before the API is up: import only; searches wait for the next run.
                         None => downloads.refresh(&ctx.db).await.map(Some),
+                    }
+                }
+            },
+        ),
+        job(
+            "SyncJellyfinWatched",
+            "Reads which episodes a Jellyfin user has watched (on the connection's own interval)",
+            1,
+            Duration::from_secs(15 * 60),
+            move |ctx| {
+                let api = api_for_watched.clone();
+                async move {
+                    match api.get() {
+                        Some(state) => {
+                            kitsunarr_library::jellyfin::sync(&ctx.db, &state.http, false)
+                                .await
+                                .map(Some)
+                        }
+                        None => Ok(None),
                     }
                 }
             },

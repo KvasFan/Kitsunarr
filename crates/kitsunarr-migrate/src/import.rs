@@ -1534,7 +1534,6 @@ impl<'a> Importer<'a> {
                 }
             }
             let (mut monitored, mut linked, mut orphan_links) = (0i64, 0i64, 0u64);
-            let mut watched = Vec::new();
             for e in chosen.values() {
                 let file_id = e.episode_file_id.and_then(|f| file_map.get(&f).copied());
                 if e.episode_file_id.is_some() && file_id.is_none() {
@@ -1566,8 +1565,23 @@ impl<'a> Importer<'a> {
                 self.count("episodes", Act::Create);
                 monitored += i64::from(e.monitored);
                 linked += i64::from(file_id.is_some());
+                // Tanukarr's watched state (migration 248), kept as "migrated".
                 if e.unmapped.contains_key("watched") {
-                    watched.push(e.id);
+                    let at = e
+                        .unmapped
+                        .get("watchedatutc")
+                        .and_then(|v| v.as_str())
+                        .map(str::to_string);
+                    sqlx::query(
+                        "UPDATE episodes SET watched = 1, watched_at = ?, watched_source = 'migrated' \
+                         WHERE series_id = ? AND season_number = ? AND episode_number = ?",
+                    )
+                    .bind(at)
+                    .bind(target)
+                    .bind(e.season_number)
+                    .bind(e.episode_number)
+                    .execute(&mut *conn)
+                    .await?;
                 }
             }
             for e in &episodes {
@@ -1588,9 +1602,6 @@ impl<'a> Importer<'a> {
                 self.warn(WarningSeverity::Info, "episodes", Some(s.id), Some(&s.title), format!(
                     "{orphan_links} episode(s) referenced file records that no longer exist in the source; they were imported without a file."
                 ));
-            }
-            if !watched.is_empty() {
-                self.keep_unmapped("series", Some(s.id), "watchedEpisodeIds", json!(watched));
             }
             self.expects.push(Expect {
                 target,

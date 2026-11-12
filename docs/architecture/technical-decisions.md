@@ -417,3 +417,33 @@ Not ported: collection titles (anime groups do not exist yet), and the automatic
 
   Unreadable file lists and magnet-only releases pass, with a warning. A rejected grab moves an automatic search on to the next release; nothing is stored, as upstream.
 - **Pack trimming** (Media management, default off): a file whose episodes are all unmonitored is not imported from a download. Tanukarr still expects those episodes, so a trimmed pack stays "import blocked" forever. Kitsunarr expects only the monitored grabbed episodes, so the download completes.
+
+## 28. Jellyfin watched sync (Tanukarr)
+
+Ported from Tanukarr's `JellyfinWatchedService`, `JellyfinWatchProxy` and `JellyfinWatchPath`.
+A Jellyfin connection (Settings › Connections) with `enableWatchedSync` reads, for one user
+(`watchedUserId`) and one library (`libraryId`), the played state of every episode and film.
+The scheduled task `SyncJellyfinWatched` runs every minute and syncs when the connection's
+`watchedSyncIntervalMinutes` (default 5) has passed or its target changed.
+
+- **All or nothing.** The user must exist, the library must exist and be visible to the user,
+  every page must agree on the total (at most 100 000 items, 200 per page), ids must be unique
+  and every item must have a valid path and a played flag. Any failure keeps the previous state.
+  Two Jellyfin items with the same translated path and different played states reject the
+  snapshot. Nothing is written until the whole snapshot is checked, then all updates run in one
+  transaction.
+- **Paths.** Jellyfin paths are normalised (`.`/`..` segments rejected; Windows paths compared
+  without case) and translated from `jellyfinPathPrefix` to `kitsunarrPathPrefix` (Tanukarr's
+  `tanukarrPathPrefix` is read too) on directory boundaries. They are matched against
+  `series.path/relative_path` of files in the connection's tag scope; paths shared by two files
+  are ignored. Items Jellyfin does not list never mark anything unwatched.
+- **Ownership.** The source is a SHA-256 fingerprint of the connection id, host, port, TLS,
+  URL base, library, user and prefixes. With `unmonitorWatchedEpisodes`, an episode that becomes
+  watched is unmonitored and the fingerprint recorded as its owner (on the first sync, or when
+  the target or the option changed, already-watched episodes are unmonitored too). With
+  `remonitorUnwatchedEpisodes`, an episode marked unwatched again is monitored only if this
+  sync unmonitored it and its series and season are monitored. Any manual monitoring edit clears
+  the owner. The update is one SQL statement against the current row, so a manual change made
+  while the snapshot was read is not overwritten.
+- **Not ported:** Tanukarr's user and library pickers (the ids are typed), list progress sync
+  and the Jellyfin refresh queue.

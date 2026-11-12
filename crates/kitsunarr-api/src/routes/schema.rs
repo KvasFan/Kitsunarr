@@ -160,6 +160,7 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 n("Apprise", "Apprise", json!({"serverUrl": "", "configurationKey": "", "statelessUrls": "", "notificationType": 0, "tags": [], "authUsername": "", "authPassword": ""})),
                 n("Notifiarr", "Notifiarr", json!({"apiKey": ""})),
                 n("Emby / Jellyfin", "MediaBrowser", json!({"host": "localhost", "port": 8096, "useSsl": false, "urlBase": "", "apiKey": "", "notify": false, "updateLibrary": true, "mapFrom": "", "mapTo": ""})),
+                n("Jellyfin", "Jellyfin", json!({"host": "localhost", "port": 8096, "useSsl": false, "urlBase": "", "apiKey": "", "libraryId": "", "updateLibrary": true, "enableWatchedSync": false, "watchedUserId": "", "watchedSyncIntervalMinutes": 5, "unmonitorWatchedEpisodes": false, "remonitorUnwatchedEpisodes": false, "jellyfinPathPrefix": "", "kitsunarrPathPrefix": ""})),
                 n("Plex Media Server", "PlexServer", json!({"host": "localhost", "port": 32400, "useSsl": false, "urlBase": "", "authToken": "", "updateLibrary": true, "mapFrom": "", "mapTo": ""})),
                 n("Kodi", "Xbmc", json!({"host": "localhost", "port": 8080, "useSsl": false, "urlBase": "", "username": "", "password": "", "displayTime": 5, "notify": false, "updateLibrary": true, "cleanLibrary": false})),
             ]

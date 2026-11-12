@@ -16,6 +16,8 @@ kitsunarr-parser = { workspace = true }
 kitsunarr-decision = { workspace = true }
 kitsunarr-downloaders = { workspace = true }
 kitsunarr-notifications = { workspace = true }
+sha2 = { workspace = true }
+hex = { workspace = true }
 sqlx = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }

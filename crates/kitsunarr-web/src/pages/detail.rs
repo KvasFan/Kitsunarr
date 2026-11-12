@@ -494,6 +494,9 @@ fn SeasonPanel(
                                     if let Some(a) = e.absolute_episode_number { span { class: "xs", " ({a})" } }
                                 }
                                 span { class: "grow ellipsis", title: e.title.clone().unwrap_or_default(), {e.title.clone().unwrap_or_else(|| "TBA".into())} }
+                                if e.watched {
+                                    span { class: "badge info", title: "Watched (Jellyfin watched sync)", "watched" }
+                                }
                                 span { class: "small muted hide-mobile", style: "width: 6rem; flex: none", {e.air_date.clone().unwrap_or_default()} }
                                 span { style: "width: 9.5rem; flex: none; text-align: right",
                                     if let Some(f) = &e.file {

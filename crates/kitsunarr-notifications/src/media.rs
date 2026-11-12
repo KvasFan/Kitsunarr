@@ -11,6 +11,10 @@ use crate::{Event, Notifier, NotifyError, NotifyResult, SeriesRef, base_url, fla
 pub fn map_path(s: &Map<String, Value>, path: &str) -> String {
     let pairs = [
         (text(s, "mapFrom"), text(s, "mapTo")),
+        (
+            text(s, "kitsunarrPathPrefix"),
+            text(s, "jellyfinPathPrefix"),
+        ),
         (text(s, "tanukarrPathPrefix"), text(s, "jellyfinPathPrefix")),
     ];
     for (from, to) in pairs {

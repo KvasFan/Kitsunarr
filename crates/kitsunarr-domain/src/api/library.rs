@@ -136,6 +136,9 @@ pub struct EpisodeItem {
     pub air_date_utc: Option<String>,
     pub runtime: Option<i32>,
     pub monitored: bool,
+    /// Watched in Jellyfin (watched sync) or in Tanukarr before migration.
+    #[serde(default)]
+    pub watched: bool,
     pub file: Option<EpisodeFileItem>,
 }
 

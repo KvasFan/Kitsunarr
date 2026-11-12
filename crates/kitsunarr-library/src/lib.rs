@@ -10,6 +10,7 @@ pub mod failed;
 pub mod file_names;
 pub mod files;
 pub mod import;
+pub mod jellyfin;
 pub mod notify;
 
 use std::collections::HashMap;

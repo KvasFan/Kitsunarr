@@ -661,6 +661,7 @@ struct EpisodeRow {
     air_date_utc: Option<String>,
     runtime: Option<i64>,
     monitored: bool,
+    watched: bool,
     file_id: Option<i64>,
     file_relative_path: Option<String>,
     file_size: Option<i64>,
@@ -677,7 +678,7 @@ pub async fn list_episodes(
 ) -> DbResult<Vec<EpisodeItem>> {
     let rows: Vec<EpisodeRow> = sqlx::query_as(
         "SELECT e.id, e.series_id, e.season_number, e.episode_number, e.absolute_episode_number, e.scene_season_number, \
-         e.scene_episode_number, e.title, e.air_date, e.air_date_utc, e.runtime, e.monitored, \
+         e.scene_episode_number, e.title, e.air_date, e.air_date_utc, e.runtime, e.monitored, e.watched, \
          f.id AS file_id, f.relative_path AS file_relative_path, f.size AS file_size, f.quality_id AS file_quality_id, \
          f.languages AS file_languages, f.release_group AS file_release_group, f.added_at AS file_added_at \
          FROM episodes e LEFT JOIN episode_files f ON f.id = e.episode_file_id \
@@ -725,6 +726,7 @@ pub async fn list_episodes(
                 air_date_utc: r.air_date_utc,
                 runtime: r.runtime.map(|v| v as i32),
                 monitored: r.monitored,
+                watched: r.watched,
                 file,
             }
         })
@@ -803,7 +805,8 @@ pub async fn apply_update(db: &Database, id: i64, u: &SeriesUpdate) -> DbResult<
             .await?;
             // Season monitoring cascades to its episodes, as in Sonarr.
             sqlx::query(
-                "UPDATE episodes SET monitored = ? WHERE series_id = ? AND season_number = ?",
+                // A manual change relinquishes watched sync's ownership (Tanukarr).
+                "UPDATE episodes SET monitored = ?, jellyfin_unmonitor_owner = NULL WHERE series_id = ? AND season_number = ?",
             )
             .bind(s.monitored)
             .bind(id)
@@ -868,7 +871,8 @@ pub async fn set_episodes_monitored(db: &Database, ids: &[i64], monitored: bool)
     let mut n = 0;
     for chunk in ids.chunks(500) {
         let mut qb = QueryBuilder::<Sqlite>::new("UPDATE episodes SET monitored = ");
-        qb.push_bind(monitored).push(" WHERE id IN (");
+        qb.push_bind(monitored)
+            .push(", jellyfin_unmonitor_owner = NULL WHERE id IN (");
         let mut sep = qb.separated(", ");
         for id in chunk {
             sep.push_bind(*id);
