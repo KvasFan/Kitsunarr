@@ -65,6 +65,25 @@ pub fn data_number(data: &serde_json::Value, key: &str) -> Option<i64> {
     })
 }
 
+/// The series' blocklisted releases, for `BlocklistSpecification`.
+pub async fn blocklist(db: &Database, series_id: i64) -> DbResult<Vec<decision::Blocklisted>> {
+    Ok(kitsunarr_db::blocklist::for_series(db, series_id)
+        .await?
+        .into_iter()
+        .map(|b| decision::Blocklisted {
+            series_id: b.series_id,
+            title: b.source_title,
+            protocol: b
+                .protocol
+                .parse()
+                .unwrap_or(kitsunarr_domain::DownloadProtocol::Unknown),
+            indexer: b.indexer,
+            published_date: b.published_date.as_deref().and_then(history_date),
+            torrent_info_hash: b.torrent_info_hash,
+        })
+        .collect())
+}
+
 /// The series' episodes whose most recent history event is a grab, for the history rule.
 pub async fn last_grabs(db: &Database, series_id: i64) -> DbResult<Vec<decision::HistoryGrab>> {
     Ok(kitsunarr_db::history::last_grabs_for_series(db, series_id)

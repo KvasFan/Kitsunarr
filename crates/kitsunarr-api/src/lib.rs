@@ -9,6 +9,7 @@
 
 pub mod assets;
 pub mod auth;
+pub mod downloads;
 pub mod error;
 pub mod logs;
 pub mod routes;

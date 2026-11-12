@@ -26,9 +26,9 @@ use kitsunarr_domain::api::search::{
     ReleaseQuery, ReleaseSearchResult,
 };
 use kitsunarr_domain::api::settings::{
-    CustomFormat, GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
-    ProviderItem, QualityDefinition, QualityProfile, RootFolderCreate, RootFolderItem, TagCreate,
-    TagItem,
+    CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
+    MediaManagementSettings, NamingSettings, ProviderItem, QualityDefinition, QualityProfile,
+    RootFolderCreate, RootFolderItem, TagCreate, TagItem,
 };
 use kitsunarr_domain::api::system::{
     BackupItem, HealthCheck, ScheduledTaskItem, SystemStatus, TaskRunItem,
@@ -315,6 +315,55 @@ impl Client {
     pub async fn refresh_queue(&self) -> ClientResult<String> {
         self.post("/queue/refresh", &serde_json::json!({})).await
     }
+    /// `DELETE /queue/{downloadId}`: remove from the client and/or blocklist the release.
+    pub async fn remove_queue_item(
+        &self,
+        download_id: &str,
+        removal: &kitsunarr_domain::api::queue::QueueRemoval,
+    ) -> ClientResult<kitsunarr_domain::api::queue::QueueRemovalResult> {
+        let path = format!(
+            "/queue/{}?removeFromClient={}&blocklist={}&skipRedownload={}",
+            urlencoding(download_id),
+            removal.remove_from_client,
+            removal.blocklist,
+            removal.skip_redownload
+        );
+        self.send(self.request(reqwest::Method::DELETE, &path))
+            .await
+    }
+    pub async fn blocklist(
+        &self,
+        page: u32,
+        page_size: u32,
+    ) -> ClientResult<Page<kitsunarr_domain::api::queue::BlocklistItem>> {
+        self.get(&format!("/blocklist?page={page}&pageSize={page_size}"))
+            .await
+    }
+    pub async fn delete_blocklist(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/blocklist/{id}")).await
+    }
+    pub async fn remove_blocklist(
+        &self,
+        removal: &kitsunarr_domain::api::queue::BlocklistRemoval,
+    ) -> ClientResult<u64> {
+        self.post("/blocklist/remove", removal).await
+    }
+    pub async fn mark_history_failed(
+        &self,
+        id: i64,
+    ) -> ClientResult<kitsunarr_domain::api::queue::QueueRemovalResult> {
+        self.post(&format!("/history/{id}/failed"), &serde_json::json!({}))
+            .await
+    }
+    pub async fn download_client_options(&self) -> ClientResult<DownloadClientOptionsSettings> {
+        self.get("/settings/downloadclientoptions").await
+    }
+    pub async fn put_download_client_options(
+        &self,
+        s: &DownloadClientOptionsSettings,
+    ) -> ClientResult<DownloadClientOptionsSettings> {
+        self.put("/settings/downloadclientoptions", s).await
+    }
     pub async fn grab_release(&self, req: &GrabRequest) -> ClientResult<GrabResult> {
         self.post("/releases/grab", req).await
     }
@@ -574,4 +623,17 @@ fn build_http() -> reqwest::Client {
 #[cfg(target_arch = "wasm32")]
 fn build_http() -> reqwest::Client {
     reqwest::Client::new()
+}
+
+/// Percent-encodes a path segment (download ids may contain characters such as `|`).
+fn urlencoding(segment: &str) -> String {
+    segment
+        .bytes()
+        .map(|b| match b {
+            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'_' | b'.' | b'~' => {
+                (b as char).to_string()
+            }
+            other => format!("%{other:02X}"),
+        })
+        .collect()
 }

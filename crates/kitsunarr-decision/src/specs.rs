@@ -10,8 +10,8 @@ use kitsunarr_parser::netregex::NetRegex;
 
 use crate::custom_format::{CompiledFormat, CustomFormatInput, evaluate};
 use crate::model::{
-    DelayProfile, Episode, EpisodeFile, Rejection, RejectionReason as R, Release, ReleaseProfile,
-    SearchCriteria, SearchKind, Series, Settings,
+    Blocklisted, DelayProfile, Episode, EpisodeFile, Rejection, RejectionReason as R, Release,
+    ReleaseProfile, SearchCriteria, SearchKind, Series, Settings,
 };
 use crate::profile::{
     ProfileView, ProperDownloadType, UpgradeRejectReason, is_revision_upgrade, quality_model_label,
@@ -163,9 +163,10 @@ fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
 
 /// Every specification, in a stable (alphabetical) order.
 pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
-    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 29] = [
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 30] = [
         acceptable_size,
         anime_version_upgrade,
+        blocklist,
         custom_format_allowed_by_profile,
         delay,
         episode_requested,
@@ -195,6 +196,44 @@ pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
         upgrade_disk,
     ];
     specs.iter().filter_map(|spec| spec(env, s)).collect()
+}
+
+/// `BlocklistSpecification` (`BlocklistService.Blocklisted`, `ReleaseComparer`): torrents by
+/// info hash, else by title and indexer; Usenet by title, indexer and publish date. Titles match
+/// when the blocklisted title contains the release's, ignoring case (upstream's `Contains`).
+pub(crate) fn blocklist(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let r = s.release;
+    let same_indexer = |b: &Blocklisted| {
+        b.indexer
+            .as_deref()
+            .is_none_or(|i| i.trim().is_empty() || i.eq_ignore_ascii_case(&r.indexer))
+    };
+    let title = r.title.to_lowercase();
+    let mut entries = env
+        .settings
+        .blocklist
+        .iter()
+        .filter(|b| b.series_id == env.series.id);
+    let hash = r.info_hash.as_deref().filter(|h| !h.trim().is_empty());
+    let hit = match (r.protocol, hash) {
+        (DownloadProtocol::Torrent, Some(h)) => entries.any(|b| {
+            b.torrent_info_hash
+                .as_deref()
+                .is_some_and(|x| x.eq_ignore_ascii_case(h))
+        }),
+        (DownloadProtocol::Torrent, None) => entries.any(|b| {
+            b.protocol == DownloadProtocol::Torrent
+                && b.title.to_lowercase().contains(&title)
+                && same_indexer(b)
+        }),
+        _ => entries.any(|b| {
+            b.protocol == DownloadProtocol::Usenet
+                && b.title.to_lowercase().contains(&title)
+                && same_indexer(b)
+                && b.published_date == Some(r.publish_date)
+        }),
+    };
+    hit.then(|| Rejection::new(R::Blocklisted, "Release is blocklisted".to_string()))
 }
 
 /// `AcceptableSizeSpecification`, with Kitsunarr's quality definitions providing the sizes

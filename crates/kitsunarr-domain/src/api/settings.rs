@@ -267,6 +267,30 @@ impl Default for IndexerOptionsSettings {
     }
 }
 
+/// Download client options (Sonarr's Settings › Download Clients: completed and failed
+/// download handling).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct DownloadClientOptionsSettings {
+    /// Import completed downloads Kitsunarr grabbed.
+    pub enable_completed_download_handling: bool,
+    /// Search again when a download fails or is blocklisted.
+    pub auto_redownload_failed: bool,
+    /// Also for releases grabbed from an interactive search.
+    pub auto_redownload_failed_from_interactive_search: bool,
+}
+
+impl Default for DownloadClientOptionsSettings {
+    fn default() -> Self {
+        Self {
+            enable_completed_download_handling: true,
+            auto_redownload_failed: true,
+            auto_redownload_failed_from_interactive_search: true,
+        }
+    }
+}
+
 /// File handling settings.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

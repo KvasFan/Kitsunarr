@@ -52,3 +52,53 @@ pub struct QueueResult {
     /// Enabled download clients Kitsunarr can read.
     pub clients: usize,
 }
+
+/// A blocklisted release (Sonarr's `BlocklistResource`).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct BlocklistItem {
+    pub id: i64,
+    pub series_id: i64,
+    pub series_title: Option<String>,
+    pub episode_ids: Vec<i64>,
+    pub source_title: String,
+    pub quality: Option<String>,
+    /// When it was blocklisted (RFC 3339).
+    pub date: String,
+    pub protocol: DownloadProtocol,
+    pub indexer: Option<String>,
+    pub message: Option<String>,
+    pub source: Option<String>,
+}
+
+/// `DELETE /queue/{downloadId}` options (Sonarr's `QueueController.Remove`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema, utoipa::IntoParams))]
+#[serde(rename_all = "camelCase", default)]
+pub struct QueueRemoval {
+    /// Remove the download (and its data) from the download client.
+    pub remove_from_client: bool,
+    /// Blocklist the release (marks the download as failed).
+    pub blocklist: bool,
+    /// With `blocklist`: do not search for a replacement.
+    pub skip_redownload: bool,
+}
+
+/// What removing a queue item did.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct QueueRemovalResult {
+    pub message: String,
+}
+
+/// Releases to take off the blocklist.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct BlocklistRemoval {
+    pub ids: Vec<i64>,
+    /// Clear the whole blocklist (`ids` is ignored).
+    pub all: bool,
+}

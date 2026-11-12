@@ -33,6 +33,21 @@ pub struct Release {
     pub minimum_seeders: Option<i64>,
     /// The indexer's "multi languages" setting (language ids).
     pub multi_languages: Vec<i32>,
+    /// The indexer's name, for blocklist matching.
+    pub indexer: String,
+    /// Torrents: the info hash the indexer gave (or the magnet link's).
+    pub info_hash: Option<String>,
+}
+
+/// A blocklisted release (`ReleaseComparerModel`).
+#[derive(Debug, Clone)]
+pub struct Blocklisted {
+    pub series_id: i64,
+    pub title: String,
+    pub protocol: DownloadProtocol,
+    pub indexer: Option<String>,
+    pub published_date: Option<DateTime<Utc>>,
+    pub torrent_info_hash: Option<String>,
 }
 
 /// A file on disk, as custom formats and upgrade rules see it.
@@ -222,6 +237,8 @@ pub struct Settings {
     pub queue: Vec<QueuedRelease>,
     /// Episodes whose most recent history event is a grab, for `HistorySpecification`.
     pub last_grabs: Vec<HistoryGrab>,
+    /// Blocklisted releases, for `BlocklistSpecification`.
+    pub blocklist: Vec<Blocklisted>,
     pub now: DateTime<Utc>,
 }
 
@@ -285,6 +302,7 @@ pub enum RejectionReason {
     HistoryCustomFormatScore,
     HistoryCustomFormatScoreIncrement,
     HistoryUpgradesNotAllowed,
+    Blocklisted,
     MinimumAgeDelay,
     PropersDisabled,
     ProperForOldFile,

@@ -53,6 +53,9 @@ pub struct DownloadItem {
     /// Where the finished files are, as the client sees the path.
     pub output_path: Option<String>,
     pub seed_ratio: f64,
+    /// The client is done with it (Usenet: always; torrents: seeding stopped at the seed
+    /// limit), so it may be removed after import (`CanBeRemoved`).
+    pub can_be_removed: bool,
 }
 
 /// Whether Kitsunarr can talk to a download client implementation.

@@ -154,6 +154,19 @@ pub struct Torrent {
     pub uploaded_ever: i64,
     pub downloaded_ever: i64,
     pub labels: Vec<String>,
+    pub seed_ratio_mode: i64,
+    pub seed_ratio_limit: f64,
+    pub seed_idle_mode: i64,
+    pub seed_idle_limit: i64,
+    pub seconds_seeding: i64,
+}
+
+/// The session's seeding limits, for `HasReachedSeedLimit`.
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct SeedConfig {
+    pub ratio_limited: bool,
+    pub ratio_limit: f64,
+    pub idle_limit_enabled: bool,
 }
 
 /// `torrent-get`'s fields (`GetTorrentStatus`).
@@ -182,6 +195,23 @@ const FIELDS: [&str; 21] = [
 ];
 
 impl Torrent {
+    /// `HasReachedSeedLimit`.
+    pub fn has_reached_seed_limit(&self, ratio: f64, config: &SeedConfig) -> bool {
+        let stopped = self.status == status::STOPPED;
+        let seeding = self.status == status::SEEDING;
+        match self.seed_ratio_mode {
+            1 if stopped && ratio >= self.seed_ratio_limit => return true,
+            0 if stopped && config.ratio_limited && ratio >= config.ratio_limit => return true,
+            _ => {}
+        }
+        match self.seed_idle_mode {
+            1 => (stopped || seeding) && self.seconds_seeding > self.seed_idle_limit * 60,
+            // The global idle limit is a real idle limit: stopped is enough.
+            0 => stopped && config.idle_limit_enabled,
+            _ => false,
+        }
+    }
+
     /// `GetItems`' mapping of one torrent.
     pub fn to_item(&self, category: Option<&str>) -> DownloadItem {
         let (item_status, message) = if !self.error_string.trim().is_empty() {
@@ -224,6 +254,7 @@ impl Torrent {
             } else {
                 self.uploaded_ever as f64 / self.downloaded_ever as f64
             },
+            can_be_removed: false,
         }
     }
 }
@@ -424,6 +455,21 @@ impl Transmission {
         let labels = self.supports_labels(s).await?;
         let directory = self.download_directory(s, labels).await?;
         let torrents = self.torrents(s, None).await?;
+        let config = self.config(s).await?;
+        let seed = SeedConfig {
+            ratio_limited: config
+                .get("seedRatioLimited")
+                .and_then(Value::as_bool)
+                .unwrap_or(false),
+            ratio_limit: config
+                .get("seedRatioLimit")
+                .and_then(Value::as_f64)
+                .unwrap_or(0.0),
+            idle_limit_enabled: config
+                .get("idle-seeding-limit-enabled")
+                .and_then(Value::as_bool)
+                .unwrap_or(false),
+        };
         Ok(torrents
             .iter()
             .filter(|t| {
@@ -446,7 +492,11 @@ impl Transmission {
                         || dir.starts_with(&format!("{d}\\"))
                 })
             })
-            .map(|t| t.to_item(s.category.as_deref()))
+            .map(|t| {
+                let mut item = t.to_item(s.category.as_deref());
+                item.can_be_removed = t.has_reached_seed_limit(item.seed_ratio, &seed);
+                item
+            })
             .collect())
     }
 
@@ -583,6 +633,39 @@ impl Transmission {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn seed_limits_follow_sonarr() {
+        let t = |status: i64, ratio_mode: i64, idle_mode: i64| Torrent {
+            status,
+            seed_ratio_mode: ratio_mode,
+            seed_ratio_limit: 2.0,
+            seed_idle_mode: idle_mode,
+            seed_idle_limit: 10,
+            seconds_seeding: 601,
+            ..Default::default()
+        };
+        let global = SeedConfig {
+            ratio_limited: true,
+            ratio_limit: 1.0,
+            idle_limit_enabled: false,
+        };
+        // Per-torrent ratio, once stopped.
+        assert!(t(status::STOPPED, 1, 2).has_reached_seed_limit(2.0, &global));
+        assert!(!t(status::SEEDING, 1, 2).has_reached_seed_limit(2.0, &global));
+        assert!(!t(status::STOPPED, 1, 2).has_reached_seed_limit(1.5, &global));
+        // The global ratio.
+        assert!(t(status::STOPPED, 0, 2).has_reached_seed_limit(1.0, &global));
+        // Per-torrent idle limit: seeding long enough.
+        assert!(t(status::SEEDING, 2, 1).has_reached_seed_limit(0.0, &global));
+        // The global idle limit: stopped is enough.
+        let idle = SeedConfig {
+            idle_limit_enabled: true,
+            ..Default::default()
+        };
+        assert!(t(status::STOPPED, 2, 0).has_reached_seed_limit(0.0, &idle));
+        assert!(!t(status::SEEDING, 2, 0).has_reached_seed_limit(0.0, &idle));
+    }
+
     use super::*;
 
     #[test]

@@ -502,6 +502,7 @@ async fn first_run_setup_migration_and_library() {
             !page.contains("fixture-qbit-password"),
             "secrets must never reach the browser"
         );
+        wait_text(&client, "Completed and failed download handling").await;
         // New clients start from upstream's defaults for the chosen implementation.
         client
             .wait()
@@ -654,6 +655,11 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Read live from the download clients").await;
         wait_text(&client, "qBittorrent").await;
         screenshot(&client, "17-queue").await;
+        client
+            .goto(&format!("{base}/activity/blocklist"))
+            .await
+            .unwrap();
+        wait_text(&client, "The blocklist is empty").await;
 
         // Wanted: the migrated library's missing episodes; searching them runs in the background
         // and reports when done.

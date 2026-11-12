@@ -163,6 +163,12 @@ pub struct Torrent {
     pub total_done: i64,
     #[serde(default)]
     pub ratio: f64,
+    #[serde(default)]
+    pub is_auto_managed: bool,
+    #[serde(default)]
+    pub stop_at_ratio: bool,
+    #[serde(default)]
+    pub stop_ratio: f64,
 }
 
 /// `web.update_ui`'s properties (`RequiredProperties`).
@@ -225,6 +231,11 @@ impl Torrent {
             message,
             output_path: Some(join(&self.save_path, name)),
             seed_ratio: self.ratio,
+            // Deluge manages it and stopped it at its ratio.
+            can_be_removed: self.is_auto_managed
+                && self.stop_at_ratio
+                && self.ratio >= self.stop_ratio
+                && self.state == "Paused",
         })
     }
 }

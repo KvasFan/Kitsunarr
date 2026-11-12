@@ -254,7 +254,8 @@ Where files are at stake, Kitsunarr is stricter than Sonarr:
 - **New file first.** The new file is placed before a file it upgrades is removed. Upstream removes first, so a failed transfer would lose the old file.
 - **Removals stay inside the series folder.** A replaced file is removed only if its path lies inside the series folder, checked lexically with `..` resolved. As upstream, it goes to the recycle bin when one is set, and is deleted otherwise.
 - **No overwrites.** An existing destination is never overwritten: "Destination already exists".
-- **Downloads stay in the client.** They are always copied, hard-linked when "Use hardlinks" is on, so torrents keep seeding. Completed downloads are never removed from the client yet.
+- **Torrents stay in the client.** Their files are copied, hard-linked when "Use hardlinks" is on, so they keep seeding. Usenet downloads are moved, as upstream (section 16).
+- **Removal from the client follows upstream.** With the client's "Remove completed downloads" option on, a download is removed (with its data) after import only when the client is done with it (`CanBeRemoved`): Usenet jobs always; qBittorrent torrents stopped at their seed limit (ratio or seeding time, the torrent's or the global one); Transmission torrents past their ratio or idle limit; Deluge torrents it manages and stopped at their ratio. A torrent that finishes seeding later is removed by a later check (`DownloadCanBeRemovedEvent`). The inactive-seeding limit of qBittorrent is not read, so such torrents stay.
 
 Where Kitsunarr lacks a component, it says so instead of guessing:
 
@@ -283,7 +284,7 @@ Differences:
 Differences:
 
 - **Runs while the request waits:** Sonarr queues a command and reports through its command list. Kitsunarr answers with the outcome (releases found and approved, grabs, failures), shown as a notification. Scheduled searches (missing, cutoff unmet, RSS) are not implemented yet.
-- **Not covered yet:** pending releases (delay profiles hold nothing back: delays are not evaluated) and Usenet grabs (no Usenet client yet).
+- **Not covered yet:** pending releases (delay profiles hold nothing back: delays are not evaluated).
 
 ## 20. RSS sync: library-wide mapping, then per-series decisions
 
@@ -320,3 +321,18 @@ Differences:
 - **Runs as a background task of the server, not a queued command.** One wanted search runs at a time: another request is refused until it finishes, and a search started by adding a series waits for its turn. The outcome arrives as a notification and in the log.
 - **No scheduled missing or cutoff searches**, as in Sonarr, where they only run on request.
 
+
+## 22. Failed downloads and the blocklist
+
+Failed download handling follows Sonarr's `FailedDownloadService` and the handlers of its `DownloadFailedEvent`:
+
+- **Detection:** a download Kitsunarr grabbed that its client reports as failed (SABnzbd's failed jobs, NZBGet's failed PAR/unpack/script/delete statuses) is handled once: a "downloadFailed" history entry per episode, a blocklist entry describing the release (indexer, publish date, size, protocol, info hash for torrents), and, when the client's "Remove failed downloads" option is on, its removal from the client. A "downloadFailed" entry newer than the last grab marks it as handled, so later checks leave it alone.
+- **Searching again** (`RedownloadFailedDownloadService`): unless Settings › Download clients turns it off (separately for releases grabbed from interactive search), one episode is searched as an episode search, a whole season as a season search, and other multi-episode releases episode by episode. Searches run in the background after the check and report with a notification. Grabs now record their source (`Rss`, `Search`, `InteractiveSearch`) as upstream's `releaseSource`.
+- **By hand:** the queue's Remove (Sonarr's `QueueController.Remove`) can remove the download from its client, blocklist the release (which marks it as failed, with or without a new search), or both; "Mark as failed" on a grab in History does the same as upstream's `MarkAsFailed`.
+- **The blocklist** (`BlocklistSpecification`, `BlocklistService.Blocklisted`, `ReleaseComparer`) rejects, for the same series, a torrent with the same info hash, a torrent without one whose title is contained in a blocklisted torrent's title from the same indexer (or an entry without indexer), and a Usenet release with such a title, indexer and the same publish date. Activity › Blocklist lists the entries; they can be removed one by one or all at once.
+
+Differences:
+
+- **Stalled torrents** are not failed automatically (upstream's newer stalled-torrent timeout) and encrypted SABnzbd jobs are not detected as such.
+- **Migration** does not import Sonarr's or Tanukarr's blocklist yet (the fixtures hold none to verify against).
+- A failed download's queue entry stays until the client removes it; it no longer counts as "in the queue" for decisions, so the new search is not blocked by it.

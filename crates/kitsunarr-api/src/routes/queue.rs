@@ -5,18 +5,21 @@ use std::collections::HashMap;
 
 use axum::Json;
 use axum::extract::State;
-use kitsunarr_db::history;
 use kitsunarr_db::library::series;
 use kitsunarr_db::providers;
 use kitsunarr_db::rules;
+use kitsunarr_db::{blocklist, history};
 use kitsunarr_domain::Quality;
-use kitsunarr_domain::api::queue::{QueueClientFailure, QueueItem, QueueResult};
+use kitsunarr_domain::api::queue::{
+    BlocklistItem, BlocklistRemoval, QueueClientFailure, QueueItem, QueueRemoval,
+    QueueRemovalResult, QueueResult,
+};
 use kitsunarr_domain::api::settings::ProviderKind;
 use kitsunarr_downloaders::{ClientSettings, ItemStatus};
 use kitsunarr_library::downloads::remap;
 
 use crate::AppState;
-use crate::error::ApiResult;
+use crate::error::{ApiError, ApiResult};
 
 fn status_name(s: ItemStatus) -> &'static str {
     match s {
@@ -123,6 +126,12 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
                 "Not grabbed by Kitsunarr: it was added to the download client another way, so Kitsunarr does not know which episodes it contains.".into(),
             );
             "unknown"
+        } else if let Some(t) = tracked
+            .clone()
+            .filter(|t| t.state == kitsunarr_library::downloads::State::Failed)
+        {
+            messages.extend(t.messages);
+            "failed"
         } else if item.status == ItemStatus::Completed {
             match tracked {
                 Some(t) => {
@@ -179,10 +188,234 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
 /// finished. Returns the summary.
 #[utoipa::path(post, path = "/queue/refresh", tag = "queue", responses((status = 200, body = String)))]
 pub async fn refresh_queue(State(state): State<AppState>) -> ApiResult<Json<String>> {
-    state
-        .downloads
-        .refresh(&state.db)
+    crate::downloads::refresh(&state)
         .await
         .map(Json)
         .map_err(crate::error::ApiError::Internal)
+}
+
+/// Finds a download in the enabled clients Kitsunarr can read: its client record, settings and
+/// item.
+async fn find_download(
+    state: &AppState,
+    download_id: &str,
+) -> ApiResult<
+    Option<(
+        providers::ProviderRecord,
+        ClientSettings,
+        kitsunarr_downloaders::DownloadItem,
+    )>,
+> {
+    let clients: Vec<_> = providers::list(state.db.pool(), ProviderKind::DownloadClient)
+        .await?
+        .into_iter()
+        .filter(|c| c.enabled && kitsunarr_downloaders::supported(&c.implementation))
+        .collect();
+    for client in clients {
+        let Ok(settings) = ClientSettings::from_provider(&client.implementation, &client.settings)
+        else {
+            continue;
+        };
+        let Ok(Ok(items)) = tokio::time::timeout(
+            std::time::Duration::from_secs(15),
+            state.downloads.clients.items(&settings),
+        )
+        .await
+        else {
+            continue;
+        };
+        if let Some(item) = items
+            .into_iter()
+            .find(|i| i.download_id.eq_ignore_ascii_case(download_id))
+        {
+            return Ok(Some((client, settings, item)));
+        }
+    }
+    Ok(None)
+}
+
+/// Remove a download from the queue (Sonarr's `QueueController.Remove`): optionally remove it
+/// (and its data) from the download client, and optionally blocklist the release, which marks
+/// the download as failed and, unless skipped, searches for a replacement.
+#[utoipa::path(delete, path = "/queue/{download_id}", tag = "queue",
+    params(("download_id" = String, Path), QueueRemoval),
+    responses(
+        (status = 200, body = QueueRemovalResult),
+        (status = 404, body = kitsunarr_domain::api::error::ApiErrorBody),
+        (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)
+    ))]
+pub async fn remove_from_queue(
+    State(state): State<AppState>,
+    axum::extract::Path(download_id): axum::extract::Path<String>,
+    axum::extract::Query(q): axum::extract::Query<QueueRemoval>,
+) -> ApiResult<Json<QueueRemovalResult>> {
+    let found = find_download(&state, &download_id).await?;
+    if found.is_none() && !q.blocklist {
+        return Err(ApiError::NotFound(
+            "The download is not in any download client Kitsunarr can read.".into(),
+        ));
+    }
+    let mut done = Vec::new();
+    if q.blocklist {
+        let grabs = history::grabs_for(&state.db, std::slice::from_ref(&download_id)).await?;
+        if grabs.iter().all(|g| g.series_id.is_none()) {
+            return Err(ApiError::field(
+                "blocklist",
+                "Kitsunarr did not grab this download, so it cannot blocklist the release.",
+            ));
+        }
+        let torrent = found
+            .as_ref()
+            .is_some_and(|(_, settings, _)| !settings.is_usenet());
+        let redownload = kitsunarr_library::failed::mark_failed(
+            &state.db,
+            &grabs,
+            &kitsunarr_library::failed::Failure {
+                message: "Manually marked as failed",
+                source: None,
+                torrent_hash: torrent.then_some(download_id.as_str()),
+                skip_redownload: q.skip_redownload,
+            },
+        )
+        .await?;
+        state
+            .downloads
+            .note_failed(&download_id, "Manually marked as failed");
+        done.push("blocklisted the release".to_string());
+        if let Some(r) = redownload {
+            state.downloads.push_redownload(r);
+            crate::downloads::run_redownloads(&state).await;
+            done.push("searching for a replacement".into());
+        }
+    }
+    if q.remove_from_client
+        && let Some((client, settings, item)) = &found
+    {
+        state
+            .downloads
+            .clients
+            .remove(settings, item, true)
+            .await
+            .map_err(|e| ApiError::field("removeFromClient", format!("{}: {e}", client.name)))?;
+        state.downloads.forget(&download_id);
+        done.push(format!("removed it from {}", client.name));
+    }
+    let title = found
+        .as_ref()
+        .map(|(_, _, i)| i.title.clone())
+        .unwrap_or_else(|| download_id.clone());
+    Ok(Json(QueueRemovalResult {
+        message: if done.is_empty() {
+            format!("Nothing to do for \"{title}\".")
+        } else {
+            let mut m = format!("\"{title}\": {}.", done.join(", "));
+            if let Some(f) = m.get_mut(..1) {
+                f.make_ascii_uppercase();
+            }
+            m
+        },
+    }))
+}
+
+#[derive(Debug, serde::Deserialize, utoipa::IntoParams)]
+#[serde(rename_all = "camelCase")]
+pub struct BlocklistQuery {
+    pub page: Option<u32>,
+    pub page_size: Option<u32>,
+    pub sort_direction: Option<kitsunarr_domain::SortDirection>,
+}
+
+/// Blocklisted releases, newest first.
+#[utoipa::path(get, path = "/blocklist", tag = "queue", params(BlocklistQuery),
+    responses((status = 200, body = kitsunarr_domain::Page<BlocklistItem>)))]
+pub async fn list_blocklist(
+    State(state): State<AppState>,
+    axum::extract::Query(q): axum::extract::Query<BlocklistQuery>,
+) -> ApiResult<Json<kitsunarr_domain::Page<BlocklistItem>>> {
+    let paging = kitsunarr_domain::PageRequest {
+        page: q.page,
+        page_size: q.page_size,
+        sort_direction: q.sort_direction,
+        ..Default::default()
+    };
+    Ok(Json(blocklist::list(&state.db, &paging).await?))
+}
+
+/// Remove one release from the blocklist: it may be grabbed again.
+#[utoipa::path(delete, path = "/blocklist/{id}", tag = "queue", params(("id" = i64, Path)),
+    responses((status = 204), (status = 404, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn delete_blocklist(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<i64>,
+) -> ApiResult<axum::http::StatusCode> {
+    if blocklist::delete(&state.db, &[id]).await? == 0 {
+        return Err(ApiError::NotFound("No such blocklist entry.".into()));
+    }
+    Ok(axum::http::StatusCode::NO_CONTENT)
+}
+
+/// Remove several releases from the blocklist (`ids`), or every one (`all`).
+#[utoipa::path(post, path = "/blocklist/remove", tag = "queue", request_body = BlocklistRemoval,
+    responses((status = 200, body = u64)))]
+pub async fn remove_blocklist(
+    State(state): State<AppState>,
+    Json(req): Json<BlocklistRemoval>,
+) -> ApiResult<Json<u64>> {
+    Ok(Json(if req.all {
+        blocklist::clear(&state.db).await?
+    } else {
+        blocklist::delete(&state.db, &req.ids).await?
+    }))
+}
+
+/// Mark a grab as failed (Sonarr's `HistoryController.MarkAsFailed`): blocklists the release
+/// and, unless skipped, searches again.
+#[utoipa::path(post, path = "/history/{id}/failed", tag = "library", params(("id" = i64, Path)),
+    responses((status = 200, body = QueueRemovalResult), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn mark_history_failed(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<i64>,
+) -> ApiResult<Json<QueueRemovalResult>> {
+    let (event_type, download_id) = history::get(&state.db, id).await?;
+    let Some(download_id) = download_id.filter(|d| !d.trim().is_empty()) else {
+        return Err(ApiError::field(
+            "id",
+            "This history entry has no download id, so the download cannot be marked as failed.",
+        ));
+    };
+    if event_type != "grabbed" {
+        return Err(ApiError::field("id", "Only grabs can be marked as failed."));
+    }
+    let grabs = history::grabs_for(&state.db, std::slice::from_ref(&download_id)).await?;
+    let torrent = grabs
+        .first()
+        .and_then(|g| serde_json::from_str::<serde_json::Value>(&g.data).ok())
+        .and_then(|d| {
+            d.get("protocol")
+                .and_then(|p| p.as_str())
+                .map(|p| p == "torrent")
+        })
+        .unwrap_or(false);
+    let redownload = kitsunarr_library::failed::mark_failed(
+        &state.db,
+        &grabs,
+        &kitsunarr_library::failed::Failure {
+            message: "Manually marked as failed",
+            source: None,
+            torrent_hash: torrent.then_some(download_id.as_str()),
+            skip_redownload: false,
+        },
+    )
+    .await?;
+    state
+        .downloads
+        .note_failed(&download_id, "Manually marked as failed");
+    let mut message = "Marked as failed and blocklisted".to_string();
+    if let Some(r) = redownload {
+        state.downloads.push_redownload(r);
+        crate::downloads::run_redownloads(&state).await;
+        message.push_str("; searching for a replacement");
+    }
+    message.push('.');
+    Ok(Json(QueueRemovalResult { message }))
 }

@@ -129,6 +129,40 @@ pub async fn imported_downloads(
     Ok(rows.into_iter().map(|(d,)| d).collect())
 }
 
+/// Download ids (upper-case) among `download_ids` that failed: a `downloadFailed` entry newer
+/// than their last grab.
+pub async fn failed_downloads(
+    db: &Database,
+    download_ids: &[String],
+) -> DbResult<std::collections::HashSet<String>> {
+    if download_ids.is_empty() {
+        return Ok(Default::default());
+    }
+    let mut q = sqlx::QueryBuilder::new(
+        "SELECT upper(download_id) FROM history h WHERE event_type = 'downloadFailed' \
+         AND download_id IS NOT NULL AND upper(download_id) IN (",
+    );
+    let mut sep = q.separated(", ");
+    for id in download_ids {
+        sep.push_bind(id.to_ascii_uppercase());
+    }
+    q.push(
+        ") AND NOT EXISTS (SELECT 1 FROM history g WHERE g.event_type = 'grabbed' \
+         AND upper(g.download_id) = upper(h.download_id) AND g.id > h.id)",
+    );
+    let rows: Vec<(String,)> = q.build_query_as().fetch_all(db.pool()).await?;
+    Ok(rows.into_iter().map(|(d,)| d).collect())
+}
+
+/// A history entry by id, for "mark as failed".
+pub async fn get(db: &Database, id: i64) -> DbResult<(String, Option<String>)> {
+    sqlx::query_as("SELECT event_type, download_id FROM history WHERE id = ?")
+        .bind(id)
+        .fetch_optional(db.pool())
+        .await?
+        .ok_or(crate::DbError::NotFound)
+}
+
 #[derive(FromRow)]
 struct Row {
     id: i64,

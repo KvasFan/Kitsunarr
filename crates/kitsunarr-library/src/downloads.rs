@@ -2,8 +2,11 @@
 //! `CompletedDownloadService`, for the download clients Kitsunarr implements.
 //!
 //! Each refresh reads the clients, imports completed downloads Kitsunarr grabbed and has not
-//! imported yet, and keeps a per-download state for the queue. Downloads are never removed from
-//! the client.
+//! imported yet, handles failed downloads (`FailedDownloadService`: history, blocklist, a search
+//! to run again) and keeps a per-download state for the queue. As `DownloadEventHub` does, a
+//! download is removed from its client (with its data) only when the client's "remove
+//! completed/failed downloads" option is on and the client is done with it (`CanBeRemoved`:
+//! Usenet always, torrents once seeding stopped at the seed limit).
 
 use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
@@ -13,9 +16,11 @@ use kitsunarr_db::Database;
 use kitsunarr_db::history;
 use kitsunarr_db::providers;
 use kitsunarr_db::rules::{self, RemotePathMapping};
-use kitsunarr_domain::api::settings::ProviderKind;
-use kitsunarr_downloaders::{ClientSettings, Clients, ItemStatus};
+use kitsunarr_db::settings as kv;
+use kitsunarr_domain::api::settings::{DownloadClientOptionsSettings, ProviderKind};
+use kitsunarr_downloaders::{ClientSettings, Clients, DownloadItem, ItemStatus};
 
+use crate::failed::{self, Failure, Redownload};
 use crate::import::{self, Download};
 
 /// Where an import stands (`TrackedDownloadState`, the states Kitsunarr uses).
@@ -24,6 +29,7 @@ pub enum State {
     ImportPending,
     ImportBlocked,
     Imported,
+    Failed,
 }
 
 impl State {
@@ -32,6 +38,7 @@ impl State {
             Self::ImportPending => "importPending",
             Self::ImportBlocked => "importBlocked",
             Self::Imported => "imported",
+            Self::Failed => "failed",
         }
     }
 }
@@ -80,6 +87,8 @@ pub struct Monitor {
     /// refresh: the queue the decisions compare releases with.
     active: Arc<Mutex<HashSet<String>>>,
     running: Arc<tokio::sync::Mutex<()>>,
+    /// Searches to run because downloads failed, for the caller (which owns searching).
+    redownloads: Arc<Mutex<Vec<Redownload>>>,
 }
 
 impl Monitor {
@@ -130,7 +139,38 @@ impl Monitor {
             .collect())
     }
 
-    /// Queued downloads (upper-case ids) not known to be imported.
+    /// The searches failed downloads asked for since the last call.
+    pub fn take_redownloads(&self) -> Vec<Redownload> {
+        std::mem::take(&mut *self.redownloads.lock().unwrap_or_else(|e| e.into_inner()))
+    }
+
+    /// Records a search to run again (a download marked as failed by hand).
+    pub fn push_redownload(&self, r: Redownload) {
+        self.redownloads
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .push(r);
+    }
+
+    /// Stops tracking a download (removed from its client by hand).
+    pub fn forget(&self, download_id: &str) {
+        let id = download_id.to_ascii_uppercase();
+        self.active
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .remove(&id);
+        self.tracked
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .remove(&id);
+    }
+
+    /// Marks a download as failed (by hand or by failed download handling).
+    pub fn note_failed(&self, download_id: &str, message: &str) {
+        self.set(download_id, State::Failed, vec![message.to_string()]);
+    }
+
+    /// Queued downloads (upper-case ids) not known to be imported or failed.
     fn active_ids(&self) -> Vec<String> {
         self.active
             .lock()
@@ -140,13 +180,27 @@ impl Monitor {
                 !matches!(
                     self.tracked(id),
                     Some(Tracked {
-                        state: State::Imported,
+                        state: State::Imported | State::Failed,
                         ..
                     })
                 )
             })
             .cloned()
             .collect()
+    }
+
+    /// `DownloadEventHub.RemoveFromDownloadClient`: removes the download and its data.
+    async fn remove_from_client(&self, settings: &ClientSettings, item: &DownloadItem) -> bool {
+        match self.clients.remove(settings, item, true).await {
+            Ok(()) => {
+                tracing::info!(title = %item.title, "removed the download from the download client");
+                true
+            }
+            Err(e) => {
+                tracing::warn!(title = %item.title, error = %e, "could not remove the download from the download client");
+                false
+            }
+        }
     }
 
     fn set(&self, id: &str, state: State, messages: Vec<String>) {
@@ -170,7 +224,12 @@ impl Monitor {
         let mappings = rules::list_remote_path_mappings(db.pool())
             .await
             .map_err(|e| e.to_string())?;
+        let options: DownloadClientOptionsSettings =
+            kv::get_or_default(db.pool(), kv::KEY_DOWNLOAD_CLIENT_OPTIONS)
+                .await
+                .map_err(|e| e.to_string())?;
         let (mut imported, mut blocked, mut failed_clients) = (0usize, 0usize, Vec::new());
+        let mut failed_downloads = 0usize;
         let mut seen = HashSet::new();
         for client in &clients {
             let Ok(settings) =
@@ -198,6 +257,76 @@ impl Monitor {
                 }
             };
             seen.extend(items.iter().map(|i| i.download_id.to_ascii_uppercase()));
+            let option = |key: &str| {
+                client
+                    .options
+                    .get(key)
+                    .and_then(serde_json::Value::as_bool)
+                    .unwrap_or(true)
+            };
+            let (remove_completed, remove_failed) = (
+                option("removeCompletedDownloads"),
+                option("removeFailedDownloads"),
+            );
+            let torrent = !settings.is_usenet();
+
+            // `FailedDownloadService.Check` + `ProcessFailed`.
+            let failed_items: Vec<&DownloadItem> = items
+                .iter()
+                .filter(|i| i.status == ItemStatus::Failed)
+                .collect();
+            if !failed_items.is_empty() {
+                let ids: Vec<String> = failed_items.iter().map(|i| i.download_id.clone()).collect();
+                let grabs = history::grabs_for(db, &ids)
+                    .await
+                    .map_err(|e| e.to_string())?;
+                let handled = history::failed_downloads(db, &ids)
+                    .await
+                    .map_err(|e| e.to_string())?;
+                for item in failed_items {
+                    let message = item
+                        .message
+                        .clone()
+                        .filter(|m| !m.trim().is_empty())
+                        .unwrap_or_else(|| "Failed download detected".into());
+                    if handled.contains(&item.download_id.to_ascii_uppercase()) {
+                        self.set(&item.download_id, State::Failed, vec![message]);
+                        continue;
+                    }
+                    let mine: Vec<_> = grabs
+                        .iter()
+                        .filter(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
+                        .cloned()
+                        .collect();
+                    if mine.iter().all(|g| g.series_id.is_none()) {
+                        continue;
+                    }
+                    let redownload = failed::mark_failed(
+                        db,
+                        &mine,
+                        &Failure {
+                            message: &message,
+                            source: Some("Kitsunarr Failed Download Handling"),
+                            torrent_hash: torrent.then_some(item.download_id.as_str()),
+                            skip_redownload: false,
+                        },
+                    )
+                    .await
+                    .map_err(|e| e.to_string())?;
+                    failed_downloads += 1;
+                    self.set(&item.download_id, State::Failed, vec![message]);
+                    if let Some(r) = redownload {
+                        self.push_redownload(r);
+                    }
+                    if remove_failed && item.can_be_removed {
+                        self.remove_from_client(&settings, item).await;
+                    }
+                }
+            }
+
+            if !options.enable_completed_download_handling {
+                continue;
+            }
             let completed: Vec<_> = items
                 .into_iter()
                 .filter(|i| i.status == ItemStatus::Completed)
@@ -210,8 +339,12 @@ impl Monitor {
                 .await
                 .map_err(|e| e.to_string())?;
             for item in completed {
-                if done.contains(&item.download_id) {
+                if done.contains(&item.download_id.to_ascii_uppercase()) {
                     self.set(&item.download_id, State::Imported, Vec::new());
+                    // `DownloadCanBeRemovedEvent`: seeding finished after the import.
+                    if remove_completed && item.can_be_removed {
+                        self.remove_from_client(&settings, &item).await;
+                    }
                     continue;
                 }
                 let mine: Vec<_> = grabs
@@ -280,6 +413,10 @@ impl Monitor {
                     }
                     self.set(&item.download_id, State::Imported, Vec::new());
                     imported += 1;
+                    // `DownloadCompletedEvent`.
+                    if remove_completed && item.can_be_removed {
+                        self.remove_from_client(&settings, &item).await;
+                    }
                 } else {
                     let mut messages = vec![
                         "One or more episodes expected in this release were not imported or missing from the release".to_string(),
@@ -309,13 +446,16 @@ impl Monitor {
                 !matches!(
                     tracked.get(id),
                     Some(Tracked {
-                        state: State::Imported,
+                        state: State::Imported | State::Failed,
                         ..
                     })
                 )
             });
         }
         let mut summary = format!("{imported} downloads imported, {blocked} need attention");
+        if failed_downloads > 0 {
+            summary.push_str(&format!(", {failed_downloads} failed"));
+        }
         if !failed_clients.is_empty() {
             summary.push_str(&format!("; could not read: {}", failed_clients.join(", ")));
         }

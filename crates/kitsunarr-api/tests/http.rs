@@ -1655,6 +1655,19 @@ async fn usenet_mocks() -> (String, u16, Arc<std::sync::Mutex<serde_json::Value>
                 s["category"] = q.get("cat").cloned().unwrap_or_default().into();
                 serde_json::json!({"status": true, "nzo_ids": ["SABnzbd_nzo_x1"]})
             }
+            mode @ ("queue" | "history") if q.contains_key("name") => {
+                let mut call = format!("{mode} {}", q["name"]);
+                for k in ["value", "del_files", "archive"] {
+                    if let Some(v) = q.get(k) {
+                        call.push_str(&format!(" {k}={v}"));
+                    }
+                }
+                if !s["calls"].is_array() {
+                    s["calls"] = serde_json::json!([]);
+                }
+                s["calls"].as_array_mut().unwrap().push(call.into());
+                serde_json::json!({"status": true})
+            }
             "queue" => serde_json::json!({"queue": {"paused": false, "slots": s["queue"].clone()}}),
             "history" => serde_json::json!({"history": {"slots": s["history"].clone()}}),
             _ => serde_json::json!({"status": false, "error": "unexpected"}),
@@ -1816,4 +1829,203 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
     let detail = client.series_detail(added.id).await.unwrap();
     let on_disk = std::path::Path::new(&detail.item.path).join(&file.relative_path);
     assert_eq!(std::fs::read(on_disk).unwrap(), b"video");
+}
+
+#[tokio::test]
+async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
+    use kitsunarr_domain::api::queue::{BlocklistRemoval, QueueRemoval};
+    use kitsunarr_domain::api::search::{GrabRequest, ReleaseQuery};
+    let tvmaze = tvmaze_mock().await;
+    let http = reqwest::Client::new();
+    let server = start_with(Metadata {
+        tvmaze: TvMaze::with_base(http.clone(), &tvmaze),
+        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
+    })
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, sab_port, sab) = usenet_mocks().await;
+    let indexer: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Newznab", "implementation": "Newznab",
+                "options": {"enableInteractiveSearch": true, "enableAutomaticSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "n3wznab-key", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let indexer_id = indexer["id"].as_i64().unwrap();
+    let _: serde_json::Value = client
+        .post(
+            "/providers/downloadclients",
+            &serde_json::json!({
+                "name": "SABnzbd", "implementation": "Sabnzbd", "enabled": true,
+                "settings": {"host": "127.0.0.1", "port": sab_port, "apiKey": "sab-key", "tvCategory": "tv"}
+            }),
+        )
+        .await
+        .unwrap();
+    // No automatic search after failures here: the test checks the blocklist by hand.
+    let mut options = client.download_client_options().await.unwrap();
+    assert!(options.auto_redownload_failed);
+    options.auto_redownload_failed = false;
+    client.put_download_client_options(&options).await.unwrap();
+
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+        })
+        .await
+        .unwrap();
+    let pilot = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    let query = ReleaseQuery {
+        series_id: added.id,
+        season_number: None,
+        episode_id: Some(pilot.id),
+    };
+    let search = || async {
+        client
+            .search_releases(&query)
+            .await
+            .unwrap()
+            .releases
+            .into_iter()
+            .find(|r| r.guid == "nzb-77")
+            .unwrap()
+    };
+    assert!(search().await.approved);
+    client
+        .grab_release(&GrabRequest {
+            guid: "nzb-77".into(),
+            indexer_id,
+        })
+        .await
+        .unwrap();
+
+    // SABnzbd reports the job as failed: failed download handling records it, blocklists the
+    // release and removes the job (Usenet jobs can always be removed).
+    sab.lock().unwrap()["history"] = serde_json::json!([{"status": "Failed", "nzo_id": "SABnzbd_nzo_x1",
+        "name": "Breaking.Bad.S01E01.720p.HDTV.x264-GRP", "category": "tv", "bytes": 5,
+        "fail_message": "Aborted, cannot be completed", "storage": ""}]);
+    assert_eq!(
+        client.refresh_queue().await.unwrap(),
+        "0 downloads imported, 0 need attention, 1 failed"
+    );
+    let failed = client.history(1, 50, Some("downloadFailed")).await.unwrap();
+    assert_eq!(failed.records.len(), 1);
+    assert_eq!(
+        failed.records[0].data["message"],
+        "Aborted, cannot be completed"
+    );
+    let blocked = client.blocklist(1, 50).await.unwrap();
+    assert_eq!(blocked.total_records, 1);
+    assert_eq!(
+        blocked.records[0].source_title,
+        "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
+    );
+    assert_eq!(blocked.records[0].indexer.as_deref(), Some("Mock Newznab"));
+    assert_eq!(
+        sab.lock().unwrap()["calls"],
+        serde_json::json!(["history delete value=SABnzbd_nzo_x1 del_files=1 archive=0"])
+    );
+    let queue = client.queue().await.unwrap();
+    assert_eq!(queue.items[0].tracked_state, "failed");
+    // Handled once: the next check does nothing more.
+    assert_eq!(
+        client.refresh_queue().await.unwrap(),
+        "0 downloads imported, 0 need attention"
+    );
+    // The release is rejected from now on.
+    let rejected = search().await;
+    assert!(!rejected.approved);
+    assert!(
+        rejected
+            .rejections
+            .contains(&"Release is blocklisted".to_string()),
+        "{:?}",
+        rejected.rejections
+    );
+
+    // Taken off the blocklist, it can be grabbed again; removing it from the queue with
+    // "blocklist" blocklists it again and removes the job from SABnzbd.
+    client
+        .delete_blocklist(blocked.records[0].id)
+        .await
+        .unwrap();
+    assert!(search().await.approved);
+    client
+        .grab_release(&GrabRequest {
+            guid: "nzb-77".into(),
+            indexer_id,
+        })
+        .await
+        .unwrap();
+    {
+        let mut s = sab.lock().unwrap();
+        s["history"] = serde_json::json!([]);
+        s["calls"] = serde_json::json!([]);
+        s["queue"] = serde_json::json!([{"status": "Downloading", "nzo_id": "SABnzbd_nzo_x1",
+            "filename": "Breaking.Bad.S01E01.720p.HDTV.x264-GRP", "cat": "tv", "mb": "1430", "mbleft": "715",
+            "timeleft": "0:02:00", "priority": "Normal"}]);
+    }
+    let removed = client
+        .remove_queue_item(
+            "SABnzbd_nzo_x1",
+            &QueueRemoval {
+                remove_from_client: true,
+                blocklist: true,
+                skip_redownload: true,
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        removed.message,
+        "\"Breaking.Bad.S01E01.720p.HDTV.x264-GRP\": blocklisted the release, removed it from SABnzbd."
+    );
+    assert_eq!(
+        sab.lock().unwrap()["calls"],
+        serde_json::json!(["queue delete value=SABnzbd_nzo_x1 del_files=1"])
+    );
+    assert_eq!(client.blocklist(1, 50).await.unwrap().total_records, 1);
+    // Clearing the blocklist.
+    assert_eq!(
+        client
+            .remove_blocklist(&BlocklistRemoval {
+                ids: vec![],
+                all: true
+            })
+            .await
+            .unwrap(),
+        1
+    );
+    // A download Kitsunarr does not know cannot be removed.
+    let missing = client
+        .remove_queue_item("nope", &QueueRemoval::default())
+        .await
+        .unwrap_err();
+    assert_eq!(status(missing), 404);
 }

@@ -318,6 +318,9 @@ pub struct SourceSnapshot {
     pub media_management: Option<Rec>,
     /// The API's indexer options (`/config/indexer`); databases keep them in `Config`.
     pub indexer_options: Option<Rec>,
+    /// The API's download client options (`/config/downloadclient`); databases keep them in
+    /// `Config`.
+    pub download_client_options: Option<Rec>,
     pub series: Vec<SrcSeries>,
     pub episodes: Vec<SrcEpisode>,
     pub episode_files: Vec<SrcEpisodeFile>,

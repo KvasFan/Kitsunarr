@@ -118,6 +118,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             settings::put_indexer_options
         ))
         .routes(routes!(settings::get_general, settings::put_general))
+        .routes(routes!(
+            settings::get_download_client_options,
+            settings::put_download_client_options
+        ))
         .routes(routes!(settings::catalogues))
         // search
         .routes(routes!(search::test_indexer))
@@ -127,6 +131,11 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(grab::test_download_client))
         .routes(routes!(queue::get_queue))
         .routes(routes!(queue::refresh_queue))
+        .routes(routes!(queue::remove_from_queue))
+        .routes(routes!(queue::list_blocklist))
+        .routes(routes!(queue::delete_blocklist))
+        .routes(routes!(queue::remove_blocklist))
+        .routes(routes!(queue::mark_history_failed))
         .routes(routes!(wanted::missing))
         .routes(routes!(wanted::cutoff_unmet))
         .routes(routes!(wanted::search_wanted))

@@ -159,7 +159,9 @@ pub(crate) async fn bulk_search(
                 continue;
             }
         };
-        let (g, f) = search::process_decisions(state, &run, first.series_id, &mut Vec::new()).await;
+        let (g, f) =
+            search::process_decisions(state, &run, first.series_id, &mut Vec::new(), "Search")
+                .await;
         grabbed.extend(g.into_iter().map(|g| g.title));
         failed.extend(f.into_iter().map(|f| format!("{}: {}", f.title, f.message)));
     }

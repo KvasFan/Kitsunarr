@@ -21,6 +21,7 @@ pub fn all(
     api: Arc<OnceLock<kitsunarr_api::AppState>>,
 ) -> Vec<Job> {
     let backup_dir_for_job = backup_dir.clone();
+    let api_for_downloads = api.clone();
     vec![
         job(
             kitsunarr_api::rss::TASK,
@@ -45,7 +46,14 @@ pub fn all(
             Duration::from_secs(2 * 3600),
             move |ctx| {
                 let downloads = downloads.clone();
-                async move { downloads.refresh(&ctx.db).await.map(Some) }
+                let api = api_for_downloads.clone();
+                async move {
+                    match api.get() {
+                        Some(state) => kitsunarr_api::downloads::refresh(state).await.map(Some),
+                        // Before the API is up: import only; searches wait for the next run.
+                        None => downloads.refresh(&ctx.db).await.map(Some),
+                    }
+                }
             },
         ),
         job(

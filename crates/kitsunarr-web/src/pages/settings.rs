@@ -3,8 +3,9 @@
 use dioxus::prelude::*;
 use kitsunarr_domain::api::auth::ChangePasswordRequest;
 use kitsunarr_domain::api::settings::{
-    CustomFormat, GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
-    ProperDownloadType, ProviderItem, ProviderKind, QualityProfile, REDACTED, RootFolderCreate,
+    CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
+    MediaManagementSettings, NamingSettings, ProperDownloadType, ProviderItem, ProviderKind,
+    QualityProfile, REDACTED, RootFolderCreate,
 };
 use kitsunarr_domain::{MediaKind, Quality};
 use serde_json::Value;
@@ -771,7 +772,59 @@ fn IndexerOptions() -> Element {
 
 #[component]
 pub fn SettingsDownloadClients() -> Element {
-    rsx! { ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent, Deluge, Transmission, SABnzbd and NZBGet work: use Test in the editor; grabs, the queue and imports use them." } }
+    rsx! {
+        ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent, Deluge, Transmission, SABnzbd and NZBGet work: use Test in the editor; grabs, the queue and imports use them. Each client's \"Remove completed/failed downloads\" options remove downloads (with their files) once the client is done with them." }
+        DownloadClientOptions {}
+    }
+}
+
+/// Sonarr's completed and failed download handling options.
+#[component]
+fn DownloadClientOptions() -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut opts = use_signal(|| None::<DownloadClientOptionsSettings>);
+    let c1 = client.clone();
+    use_future(move || {
+        let c = c1.clone();
+        async move {
+            match c.download_client_options().await {
+                Ok(o) => opts.set(Some(o)),
+                Err(e) => app.error(&e),
+            }
+        }
+    });
+    let c2 = client.clone();
+    let save = move |_| {
+        let Some(o) = opts() else { return };
+        let c = c2.clone();
+        spawn(async move {
+            match c.put_download_client_options(&o).await {
+                Ok(_) => app.success("Download client options saved."),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        div { class: "card",
+            h3 { "Completed and failed download handling" }
+            match opts() {
+                None => rsx! { Loading {} },
+                Some(o) => rsx! {
+                    div { class: "stack",
+                        Switch { checked: o.enable_completed_download_handling, label: "Import completed downloads",
+                            onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.enable_completed_download_handling = v; } } }
+                        Switch { checked: o.auto_redownload_failed, label: "Search again when a download fails",
+                            onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.auto_redownload_failed = v; } } }
+                        Switch { checked: o.auto_redownload_failed_from_interactive_search, disabled: !o.auto_redownload_failed,
+                            label: "Also for releases grabbed from interactive search",
+                            onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.auto_redownload_failed_from_interactive_search = v; } } }
+                    }
+                    div { class: "row end", button { class: "btn primary", onclick: save, "Save options" } }
+                },
+            }
+        }
+    }
 }
 
 #[component]

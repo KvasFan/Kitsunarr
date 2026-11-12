@@ -8,9 +8,9 @@ use kitsunarr_db::providers::{self, ProviderRecord};
 use kitsunarr_db::{quality, root_folders, settings as kv, tags};
 use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::settings::{
-    CustomFormat, GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
-    ProviderItem, ProviderKind, QualityDefinition, QualityProfile, REDACTED, RootFolderCreate,
-    RootFolderItem, TagCreate, TagItem,
+    CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
+    MediaManagementSettings, NamingSettings, ProviderItem, ProviderKind, QualityDefinition,
+    QualityProfile, REDACTED, RootFolderCreate, RootFolderItem, TagCreate, TagItem,
 };
 use kitsunarr_domain::{Language, MediaKind, Quality};
 use serde::{Deserialize, Serialize};
@@ -532,6 +532,27 @@ pub async fn put_media_management(
     }
     kv::set(state.db.pool(), kv::KEY_MEDIA_MANAGEMENT, &body).await?;
     settings_changed(&state, "mediaManagement");
+    Ok(Json(body))
+}
+
+#[utoipa::path(get, path = "/settings/downloadclientoptions", tag = "settings",
+    responses((status = 200, body = DownloadClientOptionsSettings)))]
+pub async fn get_download_client_options(
+    State(state): State<AppState>,
+) -> ApiResult<Json<DownloadClientOptionsSettings>> {
+    Ok(Json(
+        kv::get_or_default(state.db.pool(), kv::KEY_DOWNLOAD_CLIENT_OPTIONS).await?,
+    ))
+}
+
+#[utoipa::path(put, path = "/settings/downloadclientoptions", tag = "settings",
+    request_body = DownloadClientOptionsSettings, responses((status = 200, body = DownloadClientOptionsSettings)))]
+pub async fn put_download_client_options(
+    State(state): State<AppState>,
+    Json(body): Json<DownloadClientOptionsSettings>,
+) -> ApiResult<Json<DownloadClientOptionsSettings>> {
+    kv::set(state.db.pool(), kv::KEY_DOWNLOAD_CLIENT_OPTIONS, &body).await?;
+    settings_changed(&state, "downloadClientOptions");
     Ok(Json(body))
 }
 

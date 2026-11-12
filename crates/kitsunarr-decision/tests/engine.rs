@@ -70,6 +70,7 @@ fn settings() -> Settings {
     Settings {
         queue: Vec::new(),
         last_grabs: Vec::new(),
+        blocklist: Vec::new(),
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -100,6 +101,8 @@ fn release(title: &str) -> Release {
         imdb_id: None,
         minimum_seeders: None,
         multi_languages: Vec::new(),
+        indexer: "Indexer".into(),
+        info_hash: None,
     }
 }
 
@@ -443,4 +446,116 @@ fn rss_releases_are_mapped_across_the_library() {
         ["Episode is not monitored"]
     );
     assert!(reasons(&decided, "Breaking.Bad.S01E04.720p.HDTV.x264-GRP").is_empty());
+}
+
+/// `BlocklistSpecification` with `BlocklistService.Blocklisted` and `ReleaseComparer`.
+#[test]
+fn blocklisted_releases_are_rejected() {
+    let series = breaking_bad();
+    let library = library();
+    let (formats, _) = compile_formats(&[]);
+    let published = Utc.with_ymd_and_hms(2026, 11, 1, 10, 0, 0).unwrap();
+    let entry = |title: &str, protocol, indexer: Option<&str>, hash: Option<&str>| Blocklisted {
+        series_id: 1,
+        title: title.into(),
+        protocol,
+        indexer: indexer.map(str::to_string),
+        published_date: Some(published),
+        torrent_info_hash: hash.map(str::to_string),
+    };
+    let mut settings = settings();
+    settings.blocklist = vec![
+        entry(
+            "Breaking.Bad.S01E01.720p.HDTV.x264-GRP",
+            DownloadProtocol::Usenet,
+            Some("Indexer"),
+            None,
+        ),
+        entry(
+            "Breaking.Bad.S01E02.720p.HDTV.x264-GRP",
+            DownloadProtocol::Torrent,
+            Some("Other"),
+            Some("ABCDEF"),
+        ),
+        entry(
+            "Breaking.Bad.S01E03.720p.HDTV.x264-GRP",
+            DownloadProtocol::Torrent,
+            None,
+            None,
+        ),
+    ];
+    let engine = Engine {
+        series: &series,
+        library: &library,
+        formats: &formats,
+        settings: &settings,
+    };
+    let rel = |title: &str, protocol, hash: Option<&str>, date| {
+        let mut r = release(title);
+        r.guid = format!("{title}-{date}-{hash:?}");
+        r.protocol = protocol;
+        r.info_hash = hash.map(str::to_string);
+        r.publish_date = date;
+        if protocol == DownloadProtocol::Torrent {
+            r.seeders = Some(50);
+        }
+        r
+    };
+    let releases = vec![
+        // Usenet: same title, indexer and publish date.
+        rel(
+            "Breaking.Bad.S01E01.720p.HDTV.x264-GRP",
+            DownloadProtocol::Usenet,
+            None,
+            published,
+        ),
+        // Usenet: posted again later is another release.
+        rel(
+            "Breaking.Bad.S01E01.720p.HDTV.x264-GRP",
+            DownloadProtocol::Usenet,
+            None,
+            published + chrono::Duration::days(1),
+        ),
+        // Torrent with an info hash: the hash decides, whatever the title or indexer.
+        rel(
+            "Breaking.Bad.S01E05.720p.HDTV.x264-OTHER",
+            DownloadProtocol::Torrent,
+            Some("abcdef"),
+            published,
+        ),
+        // Torrent without a hash: by title, and an entry without indexer matches any.
+        rel(
+            "Breaking.Bad.S01E03.720p.HDTV.x264-GRP",
+            DownloadProtocol::Torrent,
+            None,
+            published,
+        ),
+        // A torrent's hash that is not blocklisted.
+        rel(
+            "Breaking.Bad.S01E02.720p.HDTV.x264-GRP",
+            DownloadProtocol::Torrent,
+            Some("123456"),
+            published,
+        ),
+    ];
+    let criteria = SearchCriteria {
+        monitored_episodes_only: false,
+        kind: SearchKind::Season { season: 1 },
+        episode_ids: Vec::new(),
+    };
+    let decisions = engine.decide(&releases, &criteria);
+    let blocked = |i: usize| {
+        decisions
+            .iter()
+            .find(|d| d.release == i)
+            .unwrap()
+            .rejections
+            .iter()
+            .any(|r| r.message == "Release is blocklisted")
+    };
+    assert!(blocked(0));
+    assert!(!blocked(1));
+    assert!(blocked(2));
+    assert!(blocked(3));
+    assert!(!blocked(4));
 }

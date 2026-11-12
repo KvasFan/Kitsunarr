@@ -64,6 +64,7 @@ fn settings() -> Settings {
     Settings {
         queue: Vec::new(),
         last_grabs: Vec::new(),
+        blocklist: Vec::new(),
         quality_definitions: Vec::new(),
         propers: ProperDownloadType::PreferAndUpgrade,
         release_profiles: Vec::new(),
@@ -109,6 +110,8 @@ fn release(title: &str) -> Release {
         imdb_id: None,
         minimum_seeders: None,
         multi_languages: Vec::new(),
+        indexer: "Indexer".into(),
+        info_hash: None,
     }
 }
 

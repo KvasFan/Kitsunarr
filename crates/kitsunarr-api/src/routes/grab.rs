@@ -43,6 +43,8 @@ pub struct CachedRelease {
     pub release_type: &'static str,
     /// An episode aired within the last 14 days (`IsRecentEpisode`).
     pub recent: bool,
+    /// Sonarr's `ReleaseSourceType`: `Rss`, `Search` or `InteractiveSearch`.
+    pub release_source: &'static str,
     pub cached_at: Instant,
 }
 
@@ -452,6 +454,8 @@ async fn finish(
         "indexerFlags": r.release.indexer_flags.to_string(),
         "nzbInfoUrl": r.release.info_url,
         "tvdbId": r.release.tvdb_id.to_string(),
+        "releaseSource": cached.release_source,
+        "torrentInfoHash": r.release.info_hash,
     });
     let mut conn = state
         .db

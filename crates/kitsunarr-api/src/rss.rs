@@ -165,7 +165,8 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
             warnings: Vec::new(),
             series: inputs.series.clone(),
         };
-        let (g, f) = search::process_decisions(state, &run, series_id, &mut unavailable).await;
+        let (g, f) =
+            search::process_decisions(state, &run, series_id, &mut unavailable, "Rss").await;
         grabbed.extend(g);
         grab_failures.extend(f);
     }

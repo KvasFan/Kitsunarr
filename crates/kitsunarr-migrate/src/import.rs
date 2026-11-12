@@ -25,9 +25,9 @@ use kitsunarr_domain::api::migration::{
     ValidationCheck, WarningSeverity,
 };
 use kitsunarr_domain::api::settings::{
-    CustomFormat, FormatScore, IndexerOptionsSettings, MediaManagementSettings, NamingSettings,
-    OrderedF64, ProperDownloadType, ProviderKind, QualityDefinition, QualityGroup, QualityProfile,
-    QualityProfileItem,
+    CustomFormat, DownloadClientOptionsSettings, FormatScore, IndexerOptionsSettings,
+    MediaManagementSettings, NamingSettings, OrderedF64, ProperDownloadType, ProviderKind,
+    QualityDefinition, QualityGroup, QualityProfile, QualityProfileItem,
 };
 use kitsunarr_domain::{
     ExternalId, ExternalIdKind, MediaKind, MetadataProvider, MinimumAvailability, MovieStatus,
@@ -59,6 +59,10 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "retention",
     "maximumsize",
     "rsssyncinterval",
+    // Download client options (database `Config` keys).
+    "enablecompleteddownloadhandling",
+    "autoredownloadfailed",
+    "autoredownloadfailedfrominteractivesearch",
 ];
 
 /// Custom-format specification implementations Sonarr v4 provides (others are kept but flagged).
@@ -1080,6 +1084,44 @@ impl<'a> Importer<'a> {
                 self.count("settings", Act::Skip);
             } else if current == IndexerOptionsSettings::default() || self.update_existing() {
                 settings::set(&mut *conn, settings::KEY_INDEXER_OPTIONS, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
+        // Download client options: the API's `/config/downloadclient`, or `Config` keys.
+        if let Some(dc) = self
+            .snap
+            .download_client_options
+            .clone()
+            .or_else(|| self.snap.media_management.clone())
+            .filter(|r| {
+                [
+                    "enablecompleteddownloadhandling",
+                    "autoredownloadfailed",
+                    "autoredownloadfailedfrominteractivesearch",
+                ]
+                .iter()
+                .any(|k| r.has(k))
+            })
+        {
+            let current: DownloadClientOptionsSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_DOWNLOAD_CLIENT_OPTIONS).await?;
+            let mut next = current.clone();
+            if let Some(v) = dc.bool("enablecompleteddownloadhandling") {
+                next.enable_completed_download_handling = v;
+            }
+            if let Some(v) = dc.bool("autoredownloadfailed") {
+                next.auto_redownload_failed = v;
+            }
+            if let Some(v) = dc.bool("autoredownloadfailedfrominteractivesearch") {
+                next.auto_redownload_failed_from_interactive_search = v;
+            }
+            if next == current {
+                self.count("settings", Act::Skip);
+            } else if current == DownloadClientOptionsSettings::default() || self.update_existing()
+            {
+                settings::set(&mut *conn, settings::KEY_DOWNLOAD_CLIENT_OPTIONS, &next).await?;
                 self.count("settings", Act::Update);
             } else {
                 self.count("settings", Act::Skip);

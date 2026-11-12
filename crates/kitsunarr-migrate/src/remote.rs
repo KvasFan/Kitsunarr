@@ -316,6 +316,7 @@ pub async fn load(
         ("namingconfig", "api/v3/config/naming"),
         ("mediamanagement", "api/v3/config/mediamanagement"),
         ("indexerconfig", "api/v3/config/indexer"),
+        ("downloadclientconfig", "api/v3/config/downloadclient"),
     ];
     let total = resources.len() as u64 + 2;
     for (i, (name, path)) in resources.iter().enumerate() {

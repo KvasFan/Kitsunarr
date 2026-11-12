@@ -126,6 +126,8 @@ pub struct Preferences {
     pub max_seeding_time: i64,
     #[serde(default)]
     pub max_ratio_act: i64,
+    #[serde(default)]
+    pub max_ratio: f64,
     #[serde(default = "default_true")]
     pub dht: bool,
 }
@@ -168,9 +170,48 @@ pub struct Torrent {
     pub root_path: Option<String>,
     #[serde(default)]
     pub ratio: f64,
+    /// -2: the global limit, -1: none.
+    #[serde(default = "minus_two")]
+    pub ratio_limit: f64,
+    /// Minutes; -2: the global limit, -1: none.
+    #[serde(default = "minus_two_i")]
+    pub seeding_time_limit: i64,
+    /// Seconds (qBittorrent 4.3 and newer).
+    #[serde(default)]
+    pub seeding_time: Option<i64>,
+}
+
+fn minus_two() -> f64 {
+    -2.0
+}
+
+fn minus_two_i() -> i64 {
+    -2
 }
 
 impl Torrent {
+    /// `HasReachedSeedLimit` (ratio and seeding time; the inactive-seeding limit is not read).
+    pub fn has_reached_seed_limit(&self, prefs: &Preferences) -> bool {
+        if self.ratio_limit >= 0.0 {
+            if self.ratio_limit - self.ratio <= 0.001 {
+                return true;
+            }
+        } else if self.ratio_limit == -2.0
+            && prefs.max_ratio_enabled
+            && prefs.max_ratio - self.ratio <= 0.001
+        {
+            return true;
+        }
+        let limit = if self.seeding_time_limit >= 0 {
+            self.seeding_time_limit * 60
+        } else if self.seeding_time_limit == -2 && prefs.max_seeding_time_enabled {
+            prefs.max_seeding_time * 60
+        } else {
+            return false;
+        };
+        self.seeding_time.is_some_and(|t| t >= limit)
+    }
+
     /// `GetRemainingTime`: unknown when negative, over a year, or qBittorrent's 8640000.
     fn remaining_seconds(&self) -> Option<i64> {
         (self.eta >= 0 && self.eta <= 365 * 24 * 3600 && self.eta != 8_640_000).then_some(self.eta)
@@ -220,6 +261,7 @@ impl Torrent {
             message,
             output_path: None,
             seed_ratio: self.ratio,
+            can_be_removed: false,
         };
         if status == Completed && at_least(&version(api_version), &[2, 6, 1]) {
             let root = self
@@ -498,12 +540,18 @@ impl QBittorrent {
     /// `GetItems`: the downloads in the TV category, with Sonarr's status mapping.
     pub async fn items(&self, s: &Settings) -> Result<Vec<crate::DownloadItem>, DownloadError> {
         let version = self.api_version(s).await?;
-        let dht = self.preferences(s).await?.dht;
+        let prefs = self.preferences(s).await?;
         Ok(self
             .torrents(s)
             .await?
             .iter()
-            .map(|t| t.to_item(&version, dht))
+            .map(|t| {
+                let mut item = t.to_item(&version, prefs.dht);
+                // Stopped by qBittorrent at its seed limit.
+                item.can_be_removed = matches!(t.state.as_str(), "pausedUP" | "stoppedUP")
+                    && t.has_reached_seed_limit(&prefs);
+                item
+            })
             .collect())
     }
 
@@ -760,8 +808,32 @@ mod tests {
             content_path: Some("/downloads/Show.S01E01".into()),
             root_path: None,
             ratio: 0.5,
+            ratio_limit: -2.0,
+            seeding_time_limit: -2,
+            seeding_time: Some(600),
         };
         use crate::ItemStatus::*;
+        // Seed limits: the torrent's own, else qBittorrent's global ones.
+        let global = Preferences {
+            save_path: String::new(),
+            max_ratio_enabled: true,
+            max_seeding_time_enabled: false,
+            max_seeding_time: 0,
+            max_ratio_act: 0,
+            max_ratio: 1.0,
+            dht: true,
+        };
+        let mut t = torrent("pausedUP", 0);
+        assert!(!t.has_reached_seed_limit(&global));
+        t.ratio = 1.0;
+        assert!(t.has_reached_seed_limit(&global));
+        t.ratio_limit = 2.0;
+        assert!(!t.has_reached_seed_limit(&global));
+        t.ratio_limit = -1.0;
+        t.seeding_time_limit = 10;
+        assert!(t.has_reached_seed_limit(&global));
+        t.seeding_time_limit = 11;
+        assert!(!t.has_reached_seed_limit(&global));
         let item = torrent("downloading", 120).to_item("2.11.4", true);
         assert_eq!(
             (
@@ -828,6 +900,7 @@ mod tests {
             max_seeding_time_enabled: seeding,
             max_seeding_time: time,
             max_ratio_act: act,
+            max_ratio: 1.0,
             dht: true,
         };
         assert!(prefs(true, false, 0, 1).removes_completed_downloads());

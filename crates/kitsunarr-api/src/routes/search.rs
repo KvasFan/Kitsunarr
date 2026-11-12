@@ -368,7 +368,7 @@ pub async fn automatic_search(
     )
     .await?;
     let (grabbed, grab_failures) =
-        process_decisions(&state, &run, q.series_id, &mut Vec::new()).await;
+        process_decisions(&state, &run, q.series_id, &mut Vec::new(), "Search").await;
     Ok(Json(AutomaticSearchResult {
         description: run.description.clone(),
         searched_indexers: run.searched_indexers,
@@ -389,12 +389,14 @@ pub(crate) async fn process_decisions(
     run: &SearchRun,
     series_id: i64,
     unavailable: &mut Vec<DownloadProtocol>,
+    release_source: &'static str,
 ) -> (Vec<AutomaticGrab>, Vec<AutomaticGrabFailure>) {
     let mut grabbed = Vec::new();
     let mut failures = Vec::new();
     let mut taken: Vec<i64> = Vec::new();
     for d in run.decisions.iter().filter(|d| d.approved()) {
-        let cached = cached_release(run, d, series_id);
+        let mut cached = cached_release(run, d, series_id);
+        cached.release_source = release_source;
         if cached.episode_ids.is_empty() || cached.episode_ids.iter().any(|e| taken.contains(e)) {
             continue;
         }
@@ -643,7 +645,9 @@ pub(crate) async fn run_search(
 /// Keeps a search's releases for grabbing: download links stay on the server.
 pub(crate) fn cache(state: &AppState, run: &SearchRun, series_id: i64) {
     for d in &run.decisions {
-        state.releases.insert(cached_release(run, d, series_id));
+        let mut cached = cached_release(run, d, series_id);
+        cached.release_source = "InteractiveSearch";
+        state.releases.insert(cached);
     }
 }
 
@@ -681,6 +685,7 @@ pub(crate) fn cached_release(
         recent: episodes
             .iter()
             .any(|e| matches!((e.air_date_utc, recent_cutoff), (Some(a), Some(c)) if a >= c)),
+        release_source: "Search",
         cached_at: std::time::Instant::now(),
     }
 }
@@ -740,6 +745,16 @@ pub(crate) fn decision_release(
         multi_languages: extras
             .map(|e| e.multi_languages.clone())
             .unwrap_or_default(),
+        indexer: r.indexer.clone(),
+        info_hash: rel
+            .info_hash
+            .clone()
+            .filter(|h| !h.trim().is_empty())
+            .or_else(|| {
+                rel.magnet_url
+                    .as_deref()
+                    .and_then(kitsunarr_downloaders::magnet_info_hash)
+            }),
     }
 }
 
@@ -769,6 +784,7 @@ impl DecisionInputs {
             kv::get_or_default(db.pool(), kv::KEY_INDEXER_OPTIONS).await?;
         let settings = decision::Settings {
             last_grabs: kitsunarr_library::decision_input::last_grabs(db, detail.item.id).await?,
+            blocklist: kitsunarr_library::decision_input::blocklist(db, detail.item.id).await?,
             queue: state.downloads.queued_releases(db, detail.item.id).await?,
             quality_definitions: quality::list_definitions(db.pool()).await?,
             propers: media.download_propers_and_repacks,

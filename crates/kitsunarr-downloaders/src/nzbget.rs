@@ -126,6 +126,7 @@ fn queue_items(status: &Value, groups: &[Value]) -> Vec<DownloadItem> {
                 message: None,
                 output_path: None,
                 seed_ratio: 0.0,
+                can_be_removed: true,
             }
         })
         .collect()
@@ -160,6 +161,7 @@ fn history_items(history: &[Value]) -> Vec<DownloadItem> {
             )),
             output_path: (!dir.trim().is_empty()).then_some(dir),
             seed_ratio: 0.0,
+            can_be_removed: true,
         };
         if delete == "MANUAL" {
             if mark == "BAD" {
