@@ -21,7 +21,7 @@ use crate::AppState;
 use crate::error::{ApiError, ApiResult};
 use crate::routes::system::disk_space;
 
-fn settings_changed(state: &AppState, section: &str) {
+pub(crate) fn settings_changed(state: &AppState, section: &str) {
     state.events.publish(ServerEvent::SettingsChanged {
         section: section.into(),
     });

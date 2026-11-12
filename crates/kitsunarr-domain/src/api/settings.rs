@@ -333,6 +333,29 @@ impl Default for DownloadClientOptionsSettings {
     }
 }
 
+/// What a list sync does with library titles no list contains any more (Sonarr's
+/// `ListSyncLevelType`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum ListSyncLevel {
+    #[default]
+    Disabled,
+    LogOnly,
+    KeepAndUnmonitor,
+    KeepAndTag,
+}
+
+/// Import list options (Sonarr's Settings › Import Lists: "Clean library level").
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct ImportListOptionsSettings {
+    pub list_sync_level: ListSyncLevel,
+    /// The tag `keepAndTag` adds.
+    pub list_sync_tag: Option<i64>,
+}
+
 /// File handling settings.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

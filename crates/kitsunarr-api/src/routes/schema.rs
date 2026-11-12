@@ -165,7 +165,35 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 n("Kodi", "Xbmc", json!({"host": "localhost", "port": 8080, "useSsl": false, "urlBase": "", "username": "", "password": "", "displayTime": 5, "notify": false, "updateLibrary": true, "cleanLibrary": false})),
             ]
         }
-        ProviderKind::ImportList => Vec::new(),
+        ProviderKind::ImportList => {
+            // Sonarr's list behaviour; root folder and quality profile are chosen in the editor.
+            let list_options = json!({
+                "enableAutomaticAdd": true, "searchForMissingEpisodes": true, "shouldMonitor": "all",
+                "monitorNewItems": "all", "rootFolderPath": "", "qualityProfileId": 0,
+                "seriesType": "standard", "seasonFolder": true, "tagExisting": "none",
+                "preferredMetadataSource": "automatic"
+            });
+            let l = |name: &str, implementation: &str, settings: Value| {
+                template(kind, name, implementation, list_options.clone(), settings)
+            };
+            vec![
+                l("AniList", "AniListImport", json!({
+                    "username": "", "accessToken": "",
+                    "importCurrent": true, "importPlanning": true, "importCompleted": false,
+                    "importDropped": false, "importPaused": false, "importRepeating": false,
+                    "importFinished": true, "importReleasing": true, "importUnreleased": false,
+                    "importCancelled": false, "importHiatus": false,
+                    "includedCustomLists": [], "excludedCustomLists": []
+                })),
+                l("MDBList", "MDBListImport", json!({"apiKey": "", "includedListUrls": [], "excludedListUrls": []})),
+                l("Plex Watchlist RSS", "PlexRssImport", json!({"url": ""})),
+                l("Sonarr", "SonarrImport", json!({
+                    "baseUrl": "", "apiKey": "", "syncSeasonMonitoring": false,
+                    "profileIds": [], "tagIds": [], "rootFolderPaths": [], "languageProfileIds": []
+                })),
+                l("Custom list", "CustomImport", json!({"baseUrl": ""})),
+            ]
+        }
     }
     .into_iter()
     .filter(|t| t.supported)

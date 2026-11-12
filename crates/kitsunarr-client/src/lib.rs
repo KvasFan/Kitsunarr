@@ -442,6 +442,60 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::search::AutomaticSearchResult> {
         self.post("/releases/search", q).await
     }
+    pub async fn test_import_list(
+        &self,
+        req: &IndexerTestRequest,
+    ) -> ClientResult<DownloadClientTestResult> {
+        self.post("/providers/importlists/test", req).await
+    }
+    // --- import lists ------------------------------------------------------------------------
+    pub async fn sync_import_lists(
+        &self,
+        import_list_id: Option<i64>,
+    ) -> ClientResult<kitsunarr_domain::api::import_lists::ImportListSyncResult> {
+        self.post(
+            "/importlists/sync",
+            &kitsunarr_domain::api::import_lists::ImportListSyncRequest { import_list_id },
+        )
+        .await
+    }
+    pub async fn import_list_status(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::import_lists::ImportListStatusItem>> {
+        self.get("/importlists/status").await
+    }
+    pub async fn import_list_entries(
+        &self,
+        import_list_id: i64,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::import_lists::ImportListEntry>> {
+        self.get(&format!("/importlists/items?importListId={import_list_id}"))
+            .await
+    }
+    pub async fn import_list_exclusions(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::import_lists::ImportListExclusionItem>> {
+        self.get("/importlists/exclusions").await
+    }
+    pub async fn create_import_list_exclusion(
+        &self,
+        e: &kitsunarr_domain::api::import_lists::ImportListExclusionItem,
+    ) -> ClientResult<kitsunarr_domain::api::import_lists::ImportListExclusionItem> {
+        self.post("/importlists/exclusions", e).await
+    }
+    pub async fn delete_import_list_exclusion(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/importlists/exclusions/{id}")).await
+    }
+    pub async fn import_list_options(
+        &self,
+    ) -> ClientResult<kitsunarr_domain::api::settings::ImportListOptionsSettings> {
+        self.get("/settings/importlistoptions").await
+    }
+    pub async fn put_import_list_options(
+        &self,
+        s: &kitsunarr_domain::api::settings::ImportListOptionsSettings,
+    ) -> ClientResult<kitsunarr_domain::api::settings::ImportListOptionsSettings> {
+        self.put("/settings/importlistoptions", s).await
+    }
     pub async fn test_notification(
         &self,
         req: &IndexerTestRequest,

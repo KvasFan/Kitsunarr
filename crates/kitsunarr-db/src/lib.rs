@@ -10,6 +10,7 @@
 pub mod auth;
 pub mod blocklist;
 pub mod history;
+pub mod import_lists;
 pub mod library;
 pub mod maintenance;
 pub mod migration_runs;

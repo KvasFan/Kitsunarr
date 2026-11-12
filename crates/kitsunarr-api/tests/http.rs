@@ -3079,3 +3079,158 @@ async fn fake_torrents_are_rejected_before_grabbing() {
         other => panic!("unexpected {other:?}"),
     }
 }
+
+/// A custom import list (Sonarr's `CustomImport`) whose contents the test changes.
+async fn custom_list_mock() -> (String, Arc<std::sync::Mutex<serde_json::Value>>) {
+    use axum::extract::State;
+    use axum::routing::get;
+    type Body = Arc<std::sync::Mutex<serde_json::Value>>;
+    async fn list(State(b): State<Body>) -> axum::Json<serde_json::Value> {
+        axum::Json(b.lock().unwrap().clone())
+    }
+    let body: Body = Arc::new(std::sync::Mutex::new(serde_json::json!([])));
+    let app = axum::Router::new()
+        .route("/list", get(list))
+        .with_state(body.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (format!("http://{addr}/list"), body)
+}
+
+#[tokio::test]
+async fn import_lists_add_titles_respect_exclusions_and_clean_the_library() {
+    use kitsunarr_domain::api::import_lists::ImportListExclusionItem;
+    use kitsunarr_domain::api::search::IndexerTestRequest;
+    use kitsunarr_domain::api::settings::{
+        ImportListOptionsSettings, ListSyncLevel, ProviderItem, ProviderKind,
+    };
+    let (skyhook, log) = skyhook_mock().await;
+    let (list_url, list) = custom_list_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let tag = client.create_tag("from-list").await.unwrap();
+    *list.lock().unwrap() = serde_json::json!([
+        {"title": "Breaking Bad", "tvdbId": 81189},
+        {"title": "Excluded show", "tvdbId": 424242},
+        {"title": "", "tvdbId": 0}
+    ]);
+
+    // The template is filled in as the editor does.
+    let mut item: ProviderItem = client
+        .provider_schema("importlists")
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|t| t.implementation == "CustomImport")
+        .unwrap();
+    item.name = "My list".into();
+    item.settings
+        .insert("baseUrl".into(), list_url.clone().into());
+    item.options
+        .insert("rootFolderPath".into(), root.clone().into());
+    item.options.insert("qualityProfileId".into(), 1.into());
+    item.options
+        .insert("searchForMissingEpisodes".into(), false.into());
+    item.tags = vec![tag.id];
+    let test = client
+        .test_import_list(&IndexerTestRequest {
+            id: None,
+            implementation: item.implementation.clone(),
+            settings: item.settings.clone(),
+        })
+        .await
+        .unwrap();
+    assert!(test.ok, "{}", test.message);
+    assert_eq!(test.message, "Read 3 shows.");
+    let created = client.create_provider("importlists", &item).await.unwrap();
+    assert!(created.supported);
+
+    client
+        .create_import_list_exclusion(&ImportListExclusionItem {
+            id: 0,
+            provider: "tvdb".into(),
+            external_id: "424242".into(),
+            title: Some("Excluded show".into()),
+        })
+        .await
+        .unwrap();
+    let result = client.sync_import_lists(None).await.unwrap();
+    assert!(
+        result.message.contains("1 titles added"),
+        "{}",
+        result.message
+    );
+    // The excluded show was never looked up.
+    assert!(!log.lock().unwrap().iter().any(|l| l.contains("424242")));
+    let series = client.series(&LibraryQuery::default()).await.unwrap();
+    assert_eq!(series.records.len(), 1);
+    assert_eq!(series.records[0].title, "Breaking Bad");
+    assert_eq!(series.records[0].tags, vec![tag.id]);
+    let series_id = series.records[0].id;
+
+    let entries = client.import_list_entries(created.id).await.unwrap();
+    assert_eq!(entries.len(), 3);
+    assert_eq!(entries[0].series_id, Some(series_id));
+    assert!(entries[1].excluded);
+    let status = client.import_list_status().await.unwrap();
+    assert!(status[0].last_info_sync.is_some() && status[0].last_error.is_none());
+    assert_eq!(status[0].item_count, 3);
+
+    // A second sync adds nothing; a scheduled run within the interval reads nothing.
+    let again = client.sync_import_lists(Some(created.id)).await.unwrap();
+    assert!(
+        again.message.contains("0 titles added"),
+        "{}",
+        again.message
+    );
+    assert_eq!(
+        kitsunarr_api::import_lists::sync(&server.state, None, false)
+            .await
+            .unwrap(),
+        "No list was due for a sync"
+    );
+
+    // Clean library: the series leaves the list and is unmonitored.
+    client
+        .put_import_list_options(&ImportListOptionsSettings {
+            list_sync_level: ListSyncLevel::KeepAndUnmonitor,
+            list_sync_tag: None,
+        })
+        .await
+        .unwrap();
+    *list.lock().unwrap() = serde_json::json!([{"title": "Excluded show", "tvdbId": 424242}]);
+    let cleaned = client.sync_import_lists(None).await.unwrap();
+    assert!(cleaned.message.contains("1 cleaned"), "{}", cleaned.message);
+    let series = client.series(&LibraryQuery::default()).await.unwrap();
+    assert!(!series.records[0].monitored);
+
+    // A failing list keeps its previous membership and reports the error.
+    *list.lock().unwrap() = serde_json::json!({"not": "a list"});
+    let failed = client.sync_import_lists(None).await.unwrap();
+    assert!(
+        failed.message.contains("failed: My list"),
+        "{}",
+        failed.message
+    );
+    let status = client.import_list_status().await.unwrap();
+    assert!(status[0].last_error.is_some());
+    assert_eq!(status[0].item_count, 1);
+    let _ = ProviderKind::ImportList;
+}

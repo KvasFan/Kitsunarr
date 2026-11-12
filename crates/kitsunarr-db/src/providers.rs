@@ -40,7 +40,14 @@ pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
             "PlexServer",
             "Xbmc",
         ],
-        ProviderKind::ImportList => &[],
+        // Kept in step with `kitsunarr_importlists::SUPPORTED`.
+        ProviderKind::ImportList => &[
+            "AniListImport",
+            "CustomImport",
+            "SonarrImport",
+            "PlexRssImport",
+            "MDBListImport",
+        ],
     };
     list.iter().any(|i| i.eq_ignore_ascii_case(implementation))
 }

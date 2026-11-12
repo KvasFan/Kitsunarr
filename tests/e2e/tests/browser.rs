@@ -527,6 +527,31 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "API key needed").await;
         wait_text(&client, "TMDB API key (v3)").await;
         screenshot(&client, "11c-settings-metadata").await;
+        // Import lists: list behaviour fields in the editor, clean library and exclusions.
+        client
+            .goto(&format!("{base}/settings/importlists"))
+            .await
+            .unwrap();
+        wait_text(&client, "Clean library").await;
+        wait_text(&client, "Exclusions").await;
+        client
+            .wait()
+            .for_element(Locator::XPath("//button[normalize-space(.)='Add']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        click_button(&client, "AniList").await;
+        wait_text(&client, "Add AniListImport").await;
+        wait_text(&client, "Adding titles").await;
+        client
+            .wait()
+            .for_element(Locator::Css("select[aria-label='Root folder']"))
+            .await
+            .unwrap();
+        screenshot(&client, "11e-import-list-editor").await;
+        click_button(&client, "Cancel").await;
 
         // Table view and dashboard statistics.
         client.goto(&format!("{base}/series")).await.unwrap();

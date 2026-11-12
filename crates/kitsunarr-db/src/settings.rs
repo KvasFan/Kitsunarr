@@ -12,6 +12,7 @@ pub const KEY_GENERAL: &str = "general";
 pub const KEY_METADATA_SOURCES: &str = "metadataSources";
 pub const KEY_INDEXER_OPTIONS: &str = "indexerOptions";
 pub const KEY_DOWNLOAD_CLIENT_OPTIONS: &str = "downloadClientOptions";
+pub const KEY_IMPORT_LIST_OPTIONS: &str = "importListOptions";
 
 pub async fn get<T: DeserializeOwned>(
     ex: impl SqliteExecutor<'_>,

@@ -7,6 +7,7 @@
 pub mod auth;
 pub mod error;
 pub mod events;
+pub mod import_lists;
 pub mod library;
 pub mod metadata;
 pub mod migration;

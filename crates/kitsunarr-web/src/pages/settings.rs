@@ -843,7 +843,440 @@ pub fn SettingsNotifications() -> Element {
 
 #[component]
 pub fn SettingsImportLists() -> Element {
-    rsx! { ProvidersPage { kind: "importlists", title: "Import lists", note: "List synchronisation is not implemented yet; imported list settings are kept." } }
+    rsx! {
+        ProvidersPage { kind: "importlists", title: "Import lists", note: "AniList, MDBList, Plex watchlist RSS, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Lists of other services are kept and shown as stored only." }
+        ImportListExtras {}
+    }
+}
+
+/// Names of a Sonarr enum option stored as a name or as its number.
+fn enum_option(v: Option<&Value>, names: &[&'static str]) -> &'static str {
+    match v {
+        Some(Value::String(s)) => names
+            .iter()
+            .copied()
+            .find(|n| n.eq_ignore_ascii_case(s))
+            .unwrap_or(names[0]),
+        Some(Value::Number(n)) => n
+            .as_u64()
+            .and_then(|i| names.get(i as usize).copied())
+            .unwrap_or(names[0]),
+        _ => names[0],
+    }
+}
+
+const MONITOR_NAMES: &[&str] = &[
+    "unknown",
+    "all",
+    "future",
+    "missing",
+    "existing",
+    "firstSeason",
+    "lastSeason",
+    "latestSeason",
+    "pilot",
+    "recent",
+    "monitorSpecials",
+    "unmonitorSpecials",
+    "none",
+    "skip",
+];
+
+/// The list behaviour Sonarr keeps beside a list's settings: root folder, profile, monitoring,
+/// type, tagging and the preferred catalogue.
+#[component]
+fn ImportListFields(mut draft: Signal<ProviderItem>) -> Element {
+    let client = use_client();
+    let c1 = client.clone();
+    let roots = use_resource(move || {
+        let c = c1.clone();
+        async move { c.root_folders().await.unwrap_or_default() }
+    });
+    let c2 = client.clone();
+    let profiles = use_resource(move || {
+        let c = c2.clone();
+        async move { c.quality_profiles().await.unwrap_or_default() }
+    });
+    let c3 = client.clone();
+    let tags = use_resource(move || {
+        let c = c3.clone();
+        async move { c.tags().await.unwrap_or_default() }
+    });
+    let d = draft();
+    let o = d.options.clone();
+    let mut set = move |k: &'static str, v: Value| {
+        draft.write().options.insert(k.into(), v);
+    };
+    let root = o
+        .get("rootFolderPath")
+        .and_then(Value::as_str)
+        .unwrap_or_default()
+        .to_string();
+    let profile = o
+        .get("qualityProfileId")
+        .and_then(Value::as_i64)
+        .unwrap_or(0);
+    let monitor = match enum_option(o.get("shouldMonitor"), MONITOR_NAMES) {
+        "unknown" => "all",
+        "latestSeason" => "lastSeason",
+        m => m,
+    };
+    let series_type = enum_option(o.get("seriesType"), &["standard", "daily", "anime"]);
+    let tag_existing = enum_option(o.get("tagExisting"), &["none", "add", "sync"]);
+    let preferred = enum_option(
+        o.get("preferredMetadataSource"),
+        &["automatic", "tvdb", "tmdb", "aniList", "myAnimeList"],
+    );
+    rsx! {
+        h3 { "Adding titles" }
+        div { class: "form-grid",
+            Field { label: "Root folder",
+                select { class: "select", "aria-label": "Root folder", value: "{root}",
+                    onchange: move |e| set("rootFolderPath", Value::String(e.value())),
+                    option { value: "", "Choose…" }
+                    for r in roots().unwrap_or_default() {
+                        option { key: "{r.id}", value: "{r.path}", selected: r.path == root, "{r.path}" }
+                    }
+                }
+            }
+            Field { label: "Quality profile",
+                select { class: "select", "aria-label": "Quality profile", value: "{profile}",
+                    onchange: move |e| set("qualityProfileId", Value::from(e.value().parse::<i64>().unwrap_or(0))),
+                    option { value: "0", "Choose…" }
+                    for p in profiles().unwrap_or_default() {
+                        option { key: "{p.id}", value: "{p.id}", selected: p.id == profile, "{p.name}" }
+                    }
+                }
+            }
+            Field { label: "Monitor",
+                select { class: "select", "aria-label": "Monitor", value: "{monitor}",
+                    onchange: move |e| set("shouldMonitor", Value::String(e.value())),
+                    for (v, l) in [("all", "All episodes"), ("future", "Future episodes"), ("firstSeason", "First season"), ("lastSeason", "Last season"), ("none", "None")] {
+                        option { key: "{v}", value: v, selected: v == monitor, "{l}" }
+                    }
+                }
+            }
+            Field { label: "Series type", help: "AniList and MyAnimeList titles are always added as anime.".to_string(),
+                select { class: "select", "aria-label": "Series type", value: "{series_type}",
+                    onchange: move |e| set("seriesType", Value::String(e.value())),
+                    for (v, l) in [("standard", "Standard"), ("daily", "Daily"), ("anime", "Anime")] {
+                        option { key: "{v}", value: v, selected: v == series_type, "{l}" }
+                    }
+                }
+            }
+            Field { label: "Catalogue", help: "The catalogue new titles are added from when the list knows their id there.".to_string(),
+                select { class: "select", "aria-label": "Preferred catalogue", value: "{preferred}",
+                    onchange: move |e| set("preferredMetadataSource", Value::String(e.value())),
+                    for (v, l) in [("automatic", "Automatic"), ("tvdb", "TheTVDB"), ("tmdb", "TMDB"), ("aniList", "AniList"), ("myAnimeList", "MyAnimeList")] {
+                        option { key: "{v}", value: v, selected: v == preferred, "{l}" }
+                    }
+                }
+            }
+            Field { label: "Tag titles already in the library",
+                select { class: "select", "aria-label": "Tag existing titles", value: "{tag_existing}",
+                    onchange: move |e| set("tagExisting", Value::String(e.value())),
+                    for (v, l) in [("none", "No"), ("add", "Add the list's tags"), ("sync", "Add, and remove when they leave the list")] {
+                        option { key: "{v}", value: v, selected: v == tag_existing, "{l}" }
+                    }
+                }
+            }
+        }
+        if !tags().unwrap_or_default().is_empty() {
+            Field { label: "Tags", help: "Added to the titles this list adds.".to_string(),
+                div { class: "row wrap",
+                    for t in tags().unwrap_or_default() {
+                        label { key: "{t.id}", class: "check small",
+                            input { r#type: "checkbox", checked: d.tags.contains(&t.id),
+                                onchange: move |e: FormEvent| {
+                                    let mut w = draft.write();
+                                    w.tags.retain(|x| *x != t.id);
+                                    if e.checked() { w.tags.push(t.id); }
+                                } }
+                            "{t.label}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// Clean-library options, per-list status with "Sync now" and the list contents, and exclusions.
+#[component]
+fn ImportListExtras() -> Element {
+    use kitsunarr_domain::api::import_lists::ImportListExclusionItem;
+    use kitsunarr_domain::api::settings::{ImportListOptionsSettings, ListSyncLevel};
+    let app = use_app();
+    let client = use_client();
+    let mut opts = use_signal(|| None::<ImportListOptionsSettings>);
+    let c0 = client.clone();
+    use_future(move || {
+        let c = c0.clone();
+        async move {
+            match c.import_list_options().await {
+                Ok(o) => opts.set(Some(o)),
+                Err(e) => app.error(&e),
+            }
+        }
+    });
+    let c1 = client.clone();
+    let tags = use_resource(move || {
+        let c = c1.clone();
+        async move { c.tags().await.unwrap_or_default() }
+    });
+    let c2 = client.clone();
+    let mut lists = use_resource(move || {
+        let _ = (app.settings_rev)();
+        let c = c2.clone();
+        async move {
+            (
+                c.providers("importlists").await.unwrap_or_default(),
+                c.import_list_status().await.unwrap_or_default(),
+            )
+        }
+    });
+    let c3 = client.clone();
+    let mut exclusions = use_resource(move || {
+        let c = c3.clone();
+        async move { c.import_list_exclusions().await }
+    });
+    let mut syncing = use_signal(|| false);
+    let mut preview = use_signal(|| None::<(i64, String)>);
+    let mut new_excl = use_signal(|| ImportListExclusionItem {
+        id: 0,
+        provider: "tvdb".into(),
+        external_id: String::new(),
+        title: None,
+    });
+    let c4 = client.clone();
+    let save = move |_| {
+        let Some(o) = opts() else { return };
+        let c = c4.clone();
+        spawn(async move {
+            match c.put_import_list_options(&o).await {
+                Ok(_) => app.success("Import list options saved."),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let c5 = client.clone();
+    let sync = move |id: Option<i64>| {
+        let c = c5.clone();
+        syncing.set(true);
+        spawn(async move {
+            match c.sync_import_lists(id).await {
+                Ok(r) => app.success(&r.message),
+                Err(e) => app.error(&e),
+            }
+            syncing.set(false);
+            lists.restart();
+        });
+    };
+    let mut sync_all = sync.clone();
+    let c6 = client.clone();
+    let add_exclusion = move |_| {
+        let c = c6.clone();
+        let e = new_excl();
+        spawn(async move {
+            match c.create_import_list_exclusion(&e).await {
+                Ok(_) => {
+                    new_excl.write().external_id.clear();
+                    new_excl.write().title = None;
+                    exclusions.restart();
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let c7 = client.clone();
+    let delete_exclusion = move |id: i64| {
+        let c = c7.clone();
+        spawn(async move {
+            match c.delete_import_list_exclusion(id).await {
+                Ok(()) => exclusions.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let (list_items, statuses) = lists().unwrap_or_default();
+    let supported: Vec<ProviderItem> = list_items.into_iter().filter(|l| l.supported).collect();
+    rsx! {
+        if !supported.is_empty() {
+            div { class: "card",
+                div { class: "row",
+                    h3 { class: "grow", "Sync" }
+                    button { class: "btn", disabled: syncing(), onclick: move |_| sync_all(None),
+                        if syncing() { "Syncing…" } else { "Sync all lists now" } }
+                }
+                div { class: "table-wrap",
+                    table { class: "table",
+                        thead { tr { th { "List" } th { "Last read" } th { class: "num", "Shows" } th { "Status" } th { "" } } }
+                        tbody {
+                            for l in supported.iter() {
+                                {
+                                    let st = statuses.iter().find(|s| s.import_list_id == l.id).cloned();
+                                    let id = l.id;
+                                    let name = l.name.clone();
+                                    let mut sync_one = sync.clone();
+                                    rsx! {
+                                        tr { key: "{l.id}",
+                                            td { strong { "{l.name}" } }
+                                            td { class: "small", {st.as_ref().and_then(|s| s.last_info_sync.clone()).unwrap_or_else(|| "never".into())} }
+                                            td { class: "num", {st.as_ref().map(|s| s.item_count.to_string()).unwrap_or_default()} }
+                                            td {
+                                                match st.as_ref().and_then(|s| s.last_error.clone()) {
+                                                    Some(err) => rsx! { span { class: "badge danger", title: "{err}", "failing" } span { class: "small muted", " {err}" } },
+                                                    None if st.as_ref().is_some_and(|s| s.last_info_sync.is_some()) => rsx! { Badge { text: "ok", tone: "success" } },
+                                                    None => rsx! { Badge { text: "not read yet" } },
+                                                }
+                                            }
+                                            td { class: "shrink",
+                                                div { class: "row tight",
+                                                    button { class: "btn sm", disabled: syncing(), onclick: move |_| sync_one(Some(id)), "Sync" }
+                                                    button { class: "btn sm", onclick: move |_| preview.set(Some((id, name.clone()))), "Shows" }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        div { class: "card",
+            h3 { "Clean library" }
+            match opts() {
+                None => rsx! { Loading {} },
+                Some(o) => rsx! {
+                    div { class: "form-grid",
+                        Field { label: "Titles on no list", help: "Applied after every list has been read successfully and some title left a list.".to_string(),
+                            select { class: "select", "aria-label": "Clean library level",
+                                onchange: move |e| {
+                                    let v = match e.value().as_str() {
+                                        "logOnly" => ListSyncLevel::LogOnly,
+                                        "keepAndUnmonitor" => ListSyncLevel::KeepAndUnmonitor,
+                                        "keepAndTag" => ListSyncLevel::KeepAndTag,
+                                        _ => ListSyncLevel::Disabled,
+                                    };
+                                    if let Some(x) = opts.write().as_mut() { x.list_sync_level = v; }
+                                },
+                                for (v, l, lvl) in [("disabled", "Do nothing", ListSyncLevel::Disabled), ("logOnly", "Log them", ListSyncLevel::LogOnly), ("keepAndUnmonitor", "Unmonitor them", ListSyncLevel::KeepAndUnmonitor), ("keepAndTag", "Tag them", ListSyncLevel::KeepAndTag)] {
+                                    option { key: "{v}", value: v, selected: o.list_sync_level == lvl, "{l}" }
+                                }
+                            }
+                        }
+                        if o.list_sync_level == ListSyncLevel::KeepAndTag {
+                            Field { label: "Tag",
+                                select { class: "select", "aria-label": "Clean library tag",
+                                    onchange: move |e| { if let Some(x) = opts.write().as_mut() { x.list_sync_tag = e.value().parse().ok(); } },
+                                    option { value: "", "Choose…" }
+                                    for t in tags().unwrap_or_default() {
+                                        option { key: "{t.id}", value: "{t.id}", selected: o.list_sync_tag == Some(t.id), "{t.label}" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    div { class: "row end", button { class: "btn primary", onclick: save, "Save options" } }
+                },
+            }
+        }
+        div { class: "card",
+            h3 { "Exclusions" }
+            p { class: "muted small", "Titles import lists never add." }
+            div { class: "row wrap",
+                select { class: "select", "aria-label": "Exclusion catalogue", style: "width: auto",
+                    onchange: move |e| new_excl.write().provider = e.value(),
+                    for (v, l) in [("tvdb", "TheTVDB"), ("tmdb", "TMDB"), ("aniList", "AniList"), ("myAnimeList", "MyAnimeList")] {
+                        option { key: "{v}", value: v, selected: new_excl().provider == v, "{l}" }
+                    }
+                }
+                input { class: "input", style: "width: 8rem", "aria-label": "Exclusion id", placeholder: "id", value: "{new_excl().external_id}",
+                    oninput: move |e| new_excl.write().external_id = e.value() }
+                input { class: "input grow", "aria-label": "Exclusion title", placeholder: "title (optional)", value: "{new_excl().title.clone().unwrap_or_default()}",
+                    oninput: move |e| new_excl.write().title = Some(e.value()) }
+                button { class: "btn", onclick: add_exclusion, "Add exclusion" }
+            }
+            match &*exclusions.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) if list.is_empty() => rsx! { p { class: "small faint", "No exclusions." } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Title" } th { "Catalogue" } th { "Id" } th { "" } } }
+                            tbody {
+                                for e in list.iter() {
+                                    {
+                                        let id = e.id;
+                                        let del = delete_exclusion.clone();
+                                        rsx! {
+                                            tr { key: "{e.id}",
+                                                td { {e.title.clone().unwrap_or_default()} }
+                                                td { "{e.provider}" }
+                                                td { class: "mono", "{e.external_id}" }
+                                                td { class: "shrink", button { class: "btn sm danger", onclick: move |_| del(id), {crate::i18n::t().delete} } }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+        if let Some((id, name)) = preview() {
+            ImportListShows { id, name, on_close: move |_| preview.set(None) }
+        }
+    }
+}
+
+/// The shows a list contained at its last read, and whether each is in the library.
+#[component]
+fn ImportListShows(id: i64, name: String, on_close: EventHandler<()>) -> Element {
+    let client = use_client();
+    let entries = use_resource(move || {
+        let c = client.clone();
+        async move { c.import_list_entries(id).await }
+    });
+    rsx! {
+        Modal { title: format!("{name}: shows"), wide: true, on_close: move |_| on_close.call(()),
+            footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| on_close.call(()), "Close" } },
+            match &*entries.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(list)) if list.is_empty() => rsx! { p { class: "muted", "The list has not been read, or it is empty." } },
+                Some(Ok(list)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Title" } th { "Year" } th { "Ids" } th { "" } } }
+                            tbody {
+                                for (i, e) in list.iter().enumerate() {
+                                    tr { key: "{i}",
+                                        td { "{e.title}" }
+                                        td { {e.year.map(|y| y.to_string()).unwrap_or_default()} }
+                                        td { class: "small mono",
+                                            {[("tvdb", e.tvdb_id.map(|v| v.to_string())), ("tmdb", e.tmdb_id.map(|v| v.to_string())), ("imdb", e.imdb_id.clone()), ("anilist", e.ani_list_id.map(|v| v.to_string())), ("mal", e.mal_id.map(|v| v.to_string()))]
+                                                .into_iter().filter_map(|(k, v)| v.map(|v| format!("{k}:{v}"))).collect::<Vec<_>>().join(" ")}
+                                        }
+                                        td {
+                                            if e.excluded { Badge { text: "excluded", tone: "warning" } }
+                                            else if let Some(sid) = e.series_id {
+                                                Link { to: crate::route::Route::SeriesDetailPage { id: sid }, Badge { text: "in library", tone: "success" } }
+                                            } else { Badge { text: "not added" } }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+    }
 }
 
 #[component]
@@ -1009,7 +1442,7 @@ fn ProviderEditor(
         ProviderKind::Notification => kitsunarr_domain::api::settings::NOTIFICATION_IMPLEMENTATIONS
             .iter()
             .any(|i| i.eq_ignore_ascii_case(&item.implementation)),
-        _ => false,
+        ProviderKind::ImportList => item.supported,
     };
     let run_test = move |_| {
         let c = client.clone();
@@ -1028,6 +1461,10 @@ fn ProviderEditor(
                     .map(|r| (r.ok, r.message, r.warnings))
             } else if d.kind == ProviderKind::Notification {
                 c.test_notification(&req)
+                    .await
+                    .map(|r| (r.ok, r.message, r.warnings))
+            } else if d.kind == ProviderKind::ImportList {
+                c.test_import_list(&req)
                     .await
                     .map(|r| (r.ok, r.message, r.warnings))
             } else {
@@ -1099,6 +1536,9 @@ fn ProviderEditor(
                         }
                     }
                 }
+            }
+            if item.kind == ProviderKind::ImportList {
+                ImportListFields { draft }
             }
             h3 { "Settings" }
             div { class: "form-grid",

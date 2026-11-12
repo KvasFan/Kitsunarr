@@ -229,6 +229,18 @@ pub async fn upsert_exclusion(
         .await?)
 }
 
+pub async fn delete_exclusion(ex: impl SqliteExecutor<'_>, id: i64) -> DbResult<()> {
+    let n = sqlx::query("DELETE FROM import_list_exclusions WHERE id = ?")
+        .bind(id)
+        .execute(ex)
+        .await?
+        .rows_affected();
+    if n == 0 {
+        return Err(crate::DbError::NotFound);
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

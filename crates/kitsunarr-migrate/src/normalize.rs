@@ -104,6 +104,9 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
     if let Some(dc) = raw.table("downloadclientconfig").first() {
         snap.download_client_options = Some(dc.clone());
     }
+    if let Some(il) = raw.table("importlistconfig").first() {
+        snap.import_list_options = Some(il.clone());
+    }
     if let Some(cfg) = raw.table("config").first() {
         let mut mm = Map::new();
         for (k, v) in &cfg.0 {

@@ -321,6 +321,8 @@ pub struct SourceSnapshot {
     /// The API's download client options (`/config/downloadclient`); databases keep them in
     /// `Config`.
     pub download_client_options: Option<Rec>,
+    /// The API's import list options (`/config/importlist`); databases keep them in `Config`.
+    pub import_list_options: Option<Rec>,
     pub series: Vec<SrcSeries>,
     pub episodes: Vec<SrcEpisode>,
     pub episode_files: Vec<SrcEpisodeFile>,

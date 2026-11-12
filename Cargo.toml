@@ -16,6 +16,7 @@ members = [
     "crates/kitsunarr-decision",
     "crates/kitsunarr-downloaders",
     "crates/kitsunarr-notifications",
+    "crates/kitsunarr-importlists",
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
     "crates/kitsunarr-web",
@@ -39,6 +40,7 @@ default-members = [
     "crates/kitsunarr-decision",
     "crates/kitsunarr-downloaders",
     "crates/kitsunarr-notifications",
+    "crates/kitsunarr-importlists",
     "crates/kitsunarr-migrate",
     "crates/kitsunarr-scheduler",
 ]
@@ -69,6 +71,7 @@ kitsunarr-indexers = { path = "crates/kitsunarr-indexers" }
 kitsunarr-decision = { path = "crates/kitsunarr-decision" }
 kitsunarr-downloaders = { path = "crates/kitsunarr-downloaders" }
 kitsunarr-notifications = { path = "crates/kitsunarr-notifications" }
+kitsunarr-importlists = { path = "crates/kitsunarr-importlists" }
 kitsunarr-migrate = { path = "crates/kitsunarr-migrate" }
 kitsunarr-scheduler = { path = "crates/kitsunarr-scheduler" }
 

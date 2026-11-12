@@ -11,6 +11,7 @@ pub mod assets;
 pub mod auth;
 pub mod downloads;
 pub mod error;
+pub mod import_lists;
 pub mod logs;
 pub mod routes;
 pub mod rss;
@@ -159,6 +160,7 @@ impl AppState {
         (name = "search", description = "Indexer tests and interactive release search"),
         (name = "queue", description = "Downloads in the download clients"),
         (name = "wanted", description = "Missing and cutoff-unmet episodes, and searching for them"),
+        (name = "importlists", description = "Import list sync, membership and exclusions"),
         (name = "settings", description = "Profiles, providers and configuration"),
         (name = "migration", description = "Import from Sonarr and Tanukarr"),
     )

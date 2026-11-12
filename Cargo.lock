@@ -2524,6 +2524,7 @@ dependencies = [
  "kitsunarr-domain",
  "kitsunarr-downloaders",
  "kitsunarr-events",
+ "kitsunarr-importlists",
  "kitsunarr-indexers",
  "kitsunarr-library",
  "kitsunarr-metadata",
@@ -2662,6 +2663,21 @@ dependencies = [
  "serde_json",
  "tokio",
  "tracing",
+]
+
+[[package]]
+name = "kitsunarr-importlists"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "kitsunarr-indexers",
+ "regex",
+ "reqwest 0.13.5",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "url",
 ]
 
 [[package]]

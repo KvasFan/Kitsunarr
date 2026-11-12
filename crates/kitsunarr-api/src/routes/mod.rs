@@ -3,6 +3,7 @@
 
 pub mod events;
 pub mod grab;
+pub mod import_lists;
 pub mod library;
 pub mod metadata;
 pub mod migration;
@@ -140,6 +141,19 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(search::automatic_search))
         .routes(routes!(grab::test_download_client))
         .routes(routes!(grab::test_notification))
+        .routes(routes!(import_lists::test_import_list))
+        .routes(routes!(import_lists::sync_now))
+        .routes(routes!(import_lists::status))
+        .routes(routes!(import_lists::entries))
+        .routes(routes!(
+            import_lists::list_exclusions,
+            import_lists::create_exclusion
+        ))
+        .routes(routes!(import_lists::delete_exclusion))
+        .routes(routes!(
+            import_lists::get_options,
+            import_lists::put_options
+        ))
         .routes(routes!(queue::get_queue))
         .routes(routes!(queue::refresh_queue))
         .routes(routes!(queue::remove_from_queue))

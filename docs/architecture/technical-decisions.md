@@ -447,3 +447,35 @@ The scheduled task `SyncJellyfinWatched` runs every minute and syncs when the co
   while the snapshot was read is not overwritten.
 - **Not ported:** Tanukarr's user and library pickers (the ids are typed), list progress sync
   and the Jellyfin refresh queue.
+
+## 29. Import lists
+
+Ported from Sonarr's `ImportListSyncService` and `FetchAndParseImportListService` with
+Tanukarr's identity and set rules. Readers live in `kitsunarr-importlists` (no database); the
+sync lives in `kitsunarr-api::import_lists` because adding a title also notifies and may start
+a search.
+
+- **Membership.** A complete read replaces the list's rows in `import_list_items`; any error
+  (HTTP status, malformed page, inconsistent pagination) keeps the previous rows and records a
+  failure with Sonarr's escalating back-off (`import_list_status`; a rate limit's Retry-After
+  replaces the period). Lists not due (Sonarr's minimum refresh interval: 6 hours, 5 minutes
+  for Sonarr, 12 hours for Trakt) reuse their stored rows, as Tanukarr resumes completed
+  fetches. The scheduled task (every 15 minutes) only processes items when a list was read;
+  "Sync now" reads every list.
+- **Identity.** Items carry TheTVDB, TMDB, IMDb, AniList and MyAnimeList ids. A library title
+  matches when it owns or carries any of them, except that an AniList item matches an
+  AniList-owned title only by that title's own id (a sequel cour shares TheTVDB ids). New
+  titles come from the list's preferred catalogue when the item has its id, else TheTVDB,
+  AniList, TMDB, MyAnimeList, skipping catalogues that are unusable here (TMDB without a key);
+  an IMDb-only item is looked up on TheTVDB. Exclusions match an item's id in their catalogue
+  or the chosen catalogue id. `find_existing` guards against adding a title (or film) that is
+  already in the library under another catalogue.
+- **Set operations.** MDBList's included lists minus excluded lists follow Tanukarr's
+  `Compose`: ids an entry carries together are linked, so a show excluded by its TMDB id is
+  removed even when the included list knows it by TheTVDB and TMDB ids.
+- **Clean library** runs only when every automatic-add list has synced successfully and some
+  list lost an item since the last clean; it logs, unmonitors or tags titles on no list.
+- **Credentials.** Kitsunarr cannot use the servarr OAuth relay. AniList public lists need
+  only the username; a token typed in the settings (or migrated from Tanukarr) reads private
+  ones. Trakt, Simkl, MyAnimeList and TMDB account lists, which require OAuth, are kept as
+  stored-only lists for now.

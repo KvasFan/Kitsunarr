@@ -24,6 +24,7 @@ pub fn all(
     let api_for_downloads = api.clone();
     let api_for_health = api.clone();
     let api_for_watched = api.clone();
+    let api_for_lists = api.clone();
     vec![
         job(
             kitsunarr_api::rss::TASK,
@@ -54,6 +55,23 @@ pub fn all(
                         Some(state) => kitsunarr_api::downloads::refresh(state).await.map(Some),
                         // Before the API is up: import only; searches wait for the next run.
                         None => downloads.refresh(&ctx.db).await.map(Some),
+                    }
+                }
+            },
+        ),
+        job(
+            kitsunarr_api::import_lists::TASK,
+            "Reads the import lists that are due and adds their new titles",
+            15,
+            Duration::from_secs(2 * 3600),
+            move |_ctx| {
+                let api = api_for_lists.clone();
+                async move {
+                    match api.get() {
+                        Some(state) => kitsunarr_api::import_lists::sync(state, None, false)
+                            .await
+                            .map(Some),
+                        None => Ok(None),
                     }
                 }
             },

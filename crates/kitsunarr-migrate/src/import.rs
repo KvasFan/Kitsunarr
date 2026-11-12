@@ -25,10 +25,10 @@ use kitsunarr_domain::api::migration::{
     ValidationCheck, WarningSeverity,
 };
 use kitsunarr_domain::api::settings::{
-    CustomFormat, DownloadClientOptionsSettings, FormatScore, IndexerOptionsSettings,
-    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, OrderedF64,
-    ProperDownloadType, ProviderKind, QualityDefinition, QualityGroup, QualityProfile,
-    QualityProfileItem,
+    CustomFormat, DownloadClientOptionsSettings, FormatScore, ImportListOptionsSettings,
+    IndexerOptionsSettings, ListSyncLevel, MediaManagementSettings, MetadataSourcesSettings,
+    NamingSettings, OrderedF64, ProperDownloadType, ProviderKind, QualityDefinition, QualityGroup,
+    QualityProfile, QualityProfileItem,
 };
 use kitsunarr_domain::{
     ExternalId, ExternalIdKind, MediaKind, MetadataProvider, MinimumAvailability, MovieStatus,
@@ -68,6 +68,9 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "autoredownloadfailed",
     "autoredownloadfailedfrominteractivesearch",
     "stalledtorrenttimeout",
+    // Import list options (database `Config` keys).
+    "listsynclevel",
+    "listsynctag",
     // Catalogue keys (Tanukarr).
     "tmdbapikey",
     "omdbapikey",
@@ -1151,6 +1154,49 @@ impl<'a> Importer<'a> {
             } else if current == DownloadClientOptionsSettings::default() || self.update_existing()
             {
                 settings::set(&mut *conn, settings::KEY_DOWNLOAD_CLIENT_OPTIONS, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
+        // Import list options: the API's `/config/importlist`, or `Config` keys.
+        if let Some(il) = self
+            .snap
+            .import_list_options
+            .clone()
+            .or_else(|| self.snap.media_management.clone())
+            .filter(|r| r.has("listsynclevel"))
+        {
+            let current: ImportListOptionsSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_IMPORT_LIST_OPTIONS).await?;
+            let mut next = current.clone();
+            let level = match il.raw("listsynclevel") {
+                Some(Value::String(s)) => s.to_ascii_lowercase(),
+                Some(Value::Number(n)) => match n.as_i64() {
+                    Some(1) => "logonly".into(),
+                    Some(2) => "keepandunmonitor".into(),
+                    Some(3) => "keepandtag".into(),
+                    _ => "disabled".into(),
+                },
+                _ => "disabled".into(),
+            };
+            next.list_sync_level = match level.as_str() {
+                "logonly" => ListSyncLevel::LogOnly,
+                "keepandunmonitor" => ListSyncLevel::KeepAndUnmonitor,
+                "keepandtag" => ListSyncLevel::KeepAndTag,
+                _ => ListSyncLevel::Disabled,
+            };
+            next.list_sync_tag = il
+                .i64("listsynctag")
+                .filter(|t| *t > 0)
+                .and_then(|t| self.tag_map.get(&t).copied());
+            if next.list_sync_level == ListSyncLevel::KeepAndTag && next.list_sync_tag.is_none() {
+                next.list_sync_level = ListSyncLevel::Disabled;
+            }
+            if next == current {
+                self.count("settings", Act::Skip);
+            } else if current == ImportListOptionsSettings::default() || self.update_existing() {
+                settings::set(&mut *conn, settings::KEY_IMPORT_LIST_OPTIONS, &next).await?;
                 self.count("settings", Act::Update);
             } else {
                 self.count("settings", Act::Skip);
