@@ -110,6 +110,7 @@ impl Database {
             .await?;
         let db = Self { pool };
         db.migrate().await?;
+        let _ = indexer_status::process_started();
         Ok(db)
     }
 

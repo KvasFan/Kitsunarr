@@ -71,3 +71,65 @@ async fn the_startup_grace_period_caps_the_back_off() {
     assert_eq!(s.escalation_level, 1, "no escalation just after start-up");
     assert!(s.disabled_till().unwrap() <= now + Duration::minutes(5));
 }
+
+/// Download clients: within 5 minutes of the first failure nothing is disabled; after that the
+/// back-off escalates, at most to 1 hour.
+#[tokio::test]
+async fn download_clients_wait_five_minutes_and_cap_at_an_hour() {
+    use kitsunarr_db::indexer_status::Kind;
+    let (_dir, db) = db().await;
+    let pool = db.pool();
+    sqlx::query("INSERT INTO download_clients (id, name, implementation, protocol, settings, created_at) VALUES (3, 'qB', 'QBittorrent', 'torrent', '{}', '2026-11-01T00:00:00Z')")
+        .execute(pool)
+        .await
+        .unwrap();
+    let started = Utc::now() - Duration::hours(1);
+    let t0 = Utc::now();
+    let s = indexer_status::record_failure_of(
+        Kind::DownloadClient,
+        pool,
+        3,
+        Failure::Failure,
+        started,
+        t0,
+    )
+    .await
+    .unwrap();
+    assert_eq!(s.escalation_level, 1);
+    assert!(
+        s.disabled_till.is_none(),
+        "the first failure only starts the grace period"
+    );
+    let s = indexer_status::record_failure_of(
+        Kind::DownloadClient,
+        pool,
+        3,
+        Failure::Failure,
+        started,
+        t0 + Duration::minutes(2),
+    )
+    .await
+    .unwrap();
+    assert_eq!((s.escalation_level, s.disabled_till.is_none()), (1, true));
+    let mut last = s;
+    for k in 0..10 {
+        last = indexer_status::record_failure_of(
+            Kind::DownloadClient,
+            pool,
+            3,
+            Failure::Failure,
+            started,
+            t0 + Duration::minutes(10 + k),
+        )
+        .await
+        .unwrap();
+    }
+    assert_eq!(last.escalation_level, 5, "capped at one hour");
+    assert_eq!(
+        indexer_status::blocked_of(Kind::DownloadClient, pool, t0 + Duration::minutes(20))
+            .await
+            .unwrap()
+            .len(),
+        1
+    );
+}

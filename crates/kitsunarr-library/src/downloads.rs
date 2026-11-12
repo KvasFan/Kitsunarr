@@ -429,10 +429,29 @@ impl Monitor {
                     "no answer within 30 seconds".into(),
                 ))
             });
+            // `DownloadClientStatusService`: reading the queue succeeds or counts as a failure.
+            use kitsunarr_db::indexer_status as status;
             let items = match read {
-                Ok(items) => items,
+                Ok(items) => {
+                    let _ = status::record_success_of(
+                        status::Kind::DownloadClient,
+                        db.pool(),
+                        client.id,
+                    )
+                    .await;
+                    items
+                }
                 Err(e) => {
                     tracing::warn!(client = %client.name, error = %e, "cannot read the download client");
+                    let _ = status::record_failure_of(
+                        status::Kind::DownloadClient,
+                        db.pool(),
+                        client.id,
+                        status::Failure::Failure,
+                        status::process_started(),
+                        chrono::Utc::now(),
+                    )
+                    .await;
                     failed_clients.push(client.name.clone());
                     continue;
                 }

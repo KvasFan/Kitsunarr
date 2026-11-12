@@ -192,6 +192,20 @@ async fn choose_client(
             ));
         }
     }
+    // `FilterBlockedDownloadClients`: clients backing off after failures are skipped.
+    let blocked = kitsunarr_db::indexer_status::blocked_of(
+        kitsunarr_db::indexer_status::Kind::DownloadClient,
+        state.db.pool(),
+        chrono::Utc::now(),
+    )
+    .await?;
+    candidates.retain(|c| !blocked.iter().any(|b| b.indexer_id == c.id));
+    if candidates.is_empty() {
+        return Err(ApiError::field(
+            "guid",
+            format!("All {label} download clients are unavailable due to failures."),
+        ));
+    }
     let best = candidates.iter().map(|c| c.priority).min().unwrap_or(0);
     let mut equals: Vec<&ProviderRecord> = candidates
         .into_iter()
@@ -618,6 +632,12 @@ async fn finish(
         .await?;
     }
     state.downloads.note_grabbed(&download_id);
+    let _ = kitsunarr_db::indexer_status::record_success_of(
+        kitsunarr_db::indexer_status::Kind::DownloadClient,
+        state.db.pool(),
+        client.id,
+    )
+    .await;
     notify_grab(state, cached, client, &download_id).await;
     tracing::info!(release = %r.release.title, client = %client.name, %download_id, "release grabbed");
     Ok(GrabResult {

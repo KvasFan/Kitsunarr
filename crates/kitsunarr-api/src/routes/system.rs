@@ -185,6 +185,39 @@ pub async fn compute_health(state: &AppState) -> ApiResult<Vec<HealthCheck>> {
             });
         }
     }
+    // `DownloadClientStatusCheck`.
+    let clients = providers::list(state.db.pool(), ProviderKind::DownloadClient).await?;
+    let enabled_clients: Vec<_> = clients.iter().filter(|p| p.enabled).collect();
+    let blocked_clients = kitsunarr_db::indexer_status::blocked_of(
+        kitsunarr_db::indexer_status::Kind::DownloadClient,
+        state.db.pool(),
+        chrono::Utc::now(),
+    )
+    .await?;
+    let names: Vec<String> = enabled_clients
+        .iter()
+        .filter(|p| blocked_clients.iter().any(|b| b.indexer_id == p.id))
+        .map(|p| p.name.clone())
+        .collect();
+    if !names.is_empty() {
+        let all = names.len() == enabled_clients.len();
+        out.push(HealthCheck {
+            source: "DownloadClientStatusCheck".into(),
+            level: if all {
+                HealthLevel::Error
+            } else {
+                HealthLevel::Warning
+            },
+            message: if all {
+                "All download clients are unavailable due to failures".into()
+            } else {
+                format!(
+                    "Download clients are unavailable due to failures: {}",
+                    names.join(", ")
+                )
+            },
+        });
+    }
     // `IndexerStatusCheck`.
     let indexers = providers::list(state.db.pool(), ProviderKind::Indexer).await?;
     let enabled: Vec<_> = indexers.iter().filter(|p| p.enabled).collect();

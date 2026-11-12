@@ -24,12 +24,84 @@ pub const PERIODS: [i64; 10] = [
     12 * 3600,
     24 * 3600,
 ];
-const MAX_LEVEL: i64 = PERIODS.len() as i64 - 1;
+/// When this process started (the start-up grace period), fixed when the database opens.
+static STARTED: std::sync::LazyLock<DateTime<Utc>> = std::sync::LazyLock::new(Utc::now);
+
+pub fn process_started() -> DateTime<Utc> {
+    *STARTED
+}
+
 /// `MinimumTimeSinceStartup`.
 const STARTUP_GRACE_MINUTES: i64 = 15;
 
+/// Which providers' status (Sonarr's `IndexerStatusService` / `DownloadClientStatusService`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Kind {
+    Indexer,
+    /// Download clients: no escalation within 5 minutes of the first failure, at most 1 hour.
+    DownloadClient,
+}
+
+impl Kind {
+    fn max_level(self) -> i64 {
+        match self {
+            Self::Indexer => PERIODS.len() as i64 - 1,
+            Self::DownloadClient => 5,
+        }
+    }
+
+    fn initial_grace(self) -> Duration {
+        match self {
+            Self::Indexer => Duration::zero(),
+            Self::DownloadClient => Duration::minutes(5),
+        }
+    }
+
+    fn select_one(self) -> &'static str {
+        match self {
+            Self::Indexer => {
+                "SELECT indexer_id, initial_failure, most_recent_failure, escalation_level, disabled_till \
+                 FROM indexer_status WHERE indexer_id = ?"
+            }
+            Self::DownloadClient => {
+                "SELECT download_client_id AS indexer_id, initial_failure, most_recent_failure, escalation_level, \
+                 disabled_till FROM download_client_status WHERE download_client_id = ?"
+            }
+        }
+    }
+
+    fn select_all(self) -> &'static str {
+        match self {
+            Self::Indexer => {
+                "SELECT indexer_id, initial_failure, most_recent_failure, escalation_level, disabled_till \
+                 FROM indexer_status ORDER BY indexer_id"
+            }
+            Self::DownloadClient => {
+                "SELECT download_client_id AS indexer_id, initial_failure, most_recent_failure, escalation_level, \
+                 disabled_till FROM download_client_status ORDER BY download_client_id"
+            }
+        }
+    }
+
+    fn upsert(self) -> &'static str {
+        match self {
+            Self::Indexer => {
+                "INSERT INTO indexer_status (indexer_id, initial_failure, most_recent_failure, escalation_level, disabled_till) \
+                 VALUES (?1, ?2, ?3, ?4, ?5) ON CONFLICT (indexer_id) DO UPDATE SET initial_failure = ?2, \
+                 most_recent_failure = ?3, escalation_level = ?4, disabled_till = ?5"
+            }
+            Self::DownloadClient => {
+                "INSERT INTO download_client_status (download_client_id, initial_failure, most_recent_failure, \
+                 escalation_level, disabled_till) VALUES (?1, ?2, ?3, ?4, ?5) ON CONFLICT (download_client_id) DO UPDATE SET \
+                 initial_failure = ?2, most_recent_failure = ?3, escalation_level = ?4, disabled_till = ?5"
+            }
+        }
+    }
+}
+
 #[derive(Debug, Clone, Default, PartialEq, Eq, FromRow)]
 pub struct IndexerStatus {
+    /// The indexer's (or download client's) id.
     pub indexer_id: i64,
     pub initial_failure: Option<String>,
     pub most_recent_failure: Option<String>,
@@ -55,68 +127,76 @@ fn stamp(t: DateTime<Utc>) -> String {
     t.to_rfc3339_opts(chrono::SecondsFormat::Secs, true)
 }
 
-fn period(level: i64) -> Duration {
-    Duration::seconds(PERIODS[level.clamp(0, MAX_LEVEL) as usize])
+fn period(kind: Kind, level: i64) -> Duration {
+    Duration::seconds(PERIODS[level.clamp(0, kind.max_level()) as usize])
 }
 
 pub async fn get(pool: &SqlitePool, indexer_id: i64) -> DbResult<IndexerStatus> {
-    Ok(sqlx::query_as(
-        "SELECT indexer_id, initial_failure, most_recent_failure, escalation_level, disabled_till \
-         FROM indexer_status WHERE indexer_id = ?",
-    )
-    .bind(indexer_id)
-    .fetch_optional(pool)
-    .await?
-    .unwrap_or(IndexerStatus {
-        indexer_id,
-        ..Default::default()
-    }))
+    get_of(Kind::Indexer, pool, indexer_id).await
+}
+
+pub async fn get_of(kind: Kind, pool: &SqlitePool, indexer_id: i64) -> DbResult<IndexerStatus> {
+    Ok(sqlx::query_as(kind.select_one())
+        .bind(indexer_id)
+        .fetch_optional(pool)
+        .await?
+        .unwrap_or(IndexerStatus {
+            indexer_id,
+            ..Default::default()
+        }))
 }
 
 pub async fn all(pool: &SqlitePool) -> DbResult<Vec<IndexerStatus>> {
-    Ok(sqlx::query_as(
-        "SELECT indexer_id, initial_failure, most_recent_failure, escalation_level, disabled_till \
-         FROM indexer_status ORDER BY indexer_id",
-    )
-    .fetch_all(pool)
-    .await?)
+    all_of(Kind::Indexer, pool).await
+}
+
+pub async fn all_of(kind: Kind, pool: &SqlitePool) -> DbResult<Vec<IndexerStatus>> {
+    Ok(sqlx::query_as(kind.select_all()).fetch_all(pool).await?)
 }
 
 /// `GetBlockedProviders`: the indexers disabled at `now`.
 pub async fn blocked(pool: &SqlitePool, now: DateTime<Utc>) -> DbResult<Vec<IndexerStatus>> {
-    Ok(all(pool)
+    blocked_of(Kind::Indexer, pool, now).await
+}
+
+pub async fn blocked_of(
+    kind: Kind,
+    pool: &SqlitePool,
+    now: DateTime<Utc>,
+) -> DbResult<Vec<IndexerStatus>> {
+    Ok(all_of(kind, pool)
         .await?
         .into_iter()
         .filter(|s| s.is_disabled(now))
         .collect())
 }
 
-async fn save(pool: &SqlitePool, s: &IndexerStatus) -> DbResult<()> {
-    // An indexer deleted meanwhile has no status (the foreign key refuses it).
-    let _ = sqlx::query(
-        "INSERT INTO indexer_status (indexer_id, initial_failure, most_recent_failure, escalation_level, disabled_till) \
-         VALUES (?1, ?2, ?3, ?4, ?5) ON CONFLICT (indexer_id) DO UPDATE SET initial_failure = ?2, \
-         most_recent_failure = ?3, escalation_level = ?4, disabled_till = ?5",
-    )
-    .bind(s.indexer_id)
-    .bind(&s.initial_failure)
-    .bind(&s.most_recent_failure)
-    .bind(s.escalation_level)
-    .bind(&s.disabled_till)
-    .execute(pool)
-    .await;
+async fn save(kind: Kind, pool: &SqlitePool, s: &IndexerStatus) -> DbResult<()> {
+    // A provider deleted meanwhile has no status (the foreign key refuses it).
+    let _ = sqlx::query(kind.upsert())
+        .bind(s.indexer_id)
+        .bind(&s.initial_failure)
+        .bind(&s.most_recent_failure)
+        .bind(s.escalation_level)
+        .bind(&s.disabled_till)
+        .execute(pool)
+        .await;
     Ok(())
 }
 
 /// `RecordSuccess`.
 pub async fn record_success(pool: &SqlitePool, indexer_id: i64) -> DbResult<()> {
-    let mut s = get(pool, indexer_id).await?;
+    record_success_of(Kind::Indexer, pool, indexer_id).await
+}
+
+pub async fn record_success_of(kind: Kind, pool: &SqlitePool, indexer_id: i64) -> DbResult<()> {
+    let mut s = get_of(kind, pool, indexer_id).await?;
     if s.escalation_level == 0 {
         return Ok(());
     }
     s.escalation_level -= 1;
     s.disabled_till = None;
-    save(pool, &s).await
+    save(kind, pool, &s).await
 }
 
 /// How a request failed, for [`record_failure`].
@@ -138,7 +218,19 @@ pub async fn record_failure(
     started_at: DateTime<Utc>,
     now: DateTime<Utc>,
 ) -> DbResult<IndexerStatus> {
-    let mut s = get(pool, indexer_id).await?;
+    record_failure_of(Kind::Indexer, pool, indexer_id, failure, started_at, now).await
+}
+
+pub async fn record_failure_of(
+    kind: Kind,
+    pool: &SqlitePool,
+    indexer_id: i64,
+    failure: Failure,
+    started_at: DateTime<Utc>,
+    now: DateTime<Utc>,
+) -> DbResult<IndexerStatus> {
+    let max_level = kind.max_level();
+    let mut s = get_of(kind, pool, indexer_id).await?;
     let mut escalate = failure != Failure::Connection;
     let minimum = match failure {
         Failure::RateLimited(d) => Some(d),
@@ -151,19 +243,26 @@ pub async fn record_failure(
         escalate = false;
     }
     let in_startup_grace = started_at + Duration::minutes(STARTUP_GRACE_MINUTES) > now;
-    if escalate && !in_startup_grace {
-        s.escalation_level = (s.escalation_level + 1).min(MAX_LEVEL);
+    let in_grace = s
+        .initial_failure
+        .as_deref()
+        .and_then(|d| DateTime::parse_from_rfc3339(d).ok())
+        .is_some_and(|d| d.with_timezone(&Utc) + kind.initial_grace() > now);
+    if escalate && !in_grace && !in_startup_grace {
+        s.escalation_level = (s.escalation_level + 1).min(max_level);
     }
     if let Some(minimum) = minimum {
-        while s.escalation_level < MAX_LEVEL && period(s.escalation_level) < minimum {
+        while s.escalation_level < max_level && period(kind, s.escalation_level) < minimum {
             s.escalation_level += 1;
         }
     }
-    let mut till = now + period(s.escalation_level);
-    if in_startup_grace && minimum.is_none() {
-        till = till.min(now + Duration::seconds(PERIODS[2]));
+    if !in_grace || minimum.is_some() {
+        let mut till = now + period(kind, s.escalation_level);
+        if in_startup_grace && minimum.is_none() {
+            till = till.min(now + Duration::seconds(PERIODS[2]));
+        }
+        s.disabled_till = Some(stamp(till));
     }
-    s.disabled_till = Some(stamp(till));
-    save(pool, &s).await?;
+    save(kind, pool, &s).await?;
     Ok(s)
 }
