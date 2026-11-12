@@ -4,8 +4,8 @@ use dioxus::prelude::*;
 use kitsunarr_domain::api::auth::ChangePasswordRequest;
 use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
-    MediaManagementSettings, NamingSettings, ProperDownloadType, ProviderItem, ProviderKind,
-    QualityProfile, REDACTED, RootFolderCreate,
+    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProperDownloadType,
+    ProviderItem, ProviderKind, QualityProfile, REDACTED, RootFolderCreate,
 };
 use kitsunarr_domain::{MediaKind, Quality};
 use serde_json::Value;
@@ -1183,48 +1183,86 @@ fn ProviderField(name: String, value: Value, on_change: EventHandler<(String, Va
 
 #[component]
 pub fn SettingsMetadata() -> Element {
-    let providers = [
-        (
-            "TheTVDB",
-            "TV series and anime",
-            "Default owner for titles migrated from Sonarr.",
-        ),
-        (
-            "TMDB (TV)",
-            "TV series, episode groups",
-            "Requires a TMDB API key.",
-        ),
-        ("TVmaze", "TV series", "No key required."),
-        (
-            "AniList",
-            "Anime, prequel/sequel relations",
-            "No key required.",
-        ),
-        (
-            "MyAnimeList (Jikan)",
-            "Anime",
-            "Public Jikan API; rate limited.",
-        ),
-        (
-            "TMDB (Movies)",
-            "Movies and collections",
-            "Requires a TMDB API key.",
-        ),
-        ("OMDb", "Movies (IMDb ids)", "Requires an OMDb API key."),
-    ];
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut catalogues = use_resource(move || {
+        let c = c0.clone();
+        async move { c.metadata_providers().await }
+    });
+    let mut keys = use_signal(|| None::<MetadataSourcesSettings>);
+    let c1 = client.clone();
+    use_future(move || {
+        let c = c1.clone();
+        async move {
+            match c.metadata_sources().await {
+                Ok(k) => keys.set(Some(k)),
+                Err(e) => app.error(&e),
+            }
+        }
+    });
+    let c2 = client.clone();
+    let save = move |_| {
+        let Some(k) = keys() else { return };
+        let c = c2.clone();
+        spawn(async move {
+            match c.put_metadata_sources(&k).await {
+                Ok(saved) => {
+                    keys.set(Some(saved));
+                    catalogues.restart();
+                    app.success("Metadata keys saved.");
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let text = |v: &Option<String>| v.clone().unwrap_or_default();
+    let value = |v: String| Some(v.trim().to_string()).filter(|v| !v.is_empty());
     rsx! {
         div { class: "page-head", h1 { "Metadata sources" } }
-        div { class: "alert warning",
-            "Metadata adapters are not implemented yet. Every title already records which catalogue owns it and all of its identifiers, including those migrated from Tanukarr, so adapters can refresh titles without re-matching."
-        }
-        div { class: "table-wrap",
-            table { class: "table",
-                thead { tr { th { "Catalogue" } th { "Covers" } th { "Notes" } th { "Status" } } }
-                tbody {
-                    for (name, covers, notes) in providers {
-                        tr { key: "{name}", td { strong { "{name}" } } td { "{covers}" } td { class: "small muted", "{notes}" } td { Badge { text: "planned", tone: "warning" } } }
+        p { class: "muted small", "Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB." }
+        match &*catalogues.read() {
+            None => rsx! { Loading {} },
+            Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+            Some(Ok(list)) => rsx! {
+                div { class: "table-wrap",
+                    table { class: "table",
+                        thead { tr { th { "Catalogue" } th { "Covers" } th { class: "hide-mobile", "Credit" } th { "Status" } } }
+                        tbody {
+                            for c in list.iter() {
+                                tr { key: "{c.provider}",
+                                    td { a { href: "{c.url}", target: "_blank", rel: "noopener", strong { "{c.name}" } } }
+                                    td { class: "small", "{c.description}" }
+                                    td { class: "hide-mobile small muted", "{c.attribution}" }
+                                    td {
+                                        if c.available { Badge { text: "available", tone: "success" } }
+                                        else { Badge { text: "API key needed", tone: "warning" } }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+            },
+        }
+        div { class: "card", style: "margin-top: var(--sp-4)",
+            h3 { "API keys" }
+            match keys() {
+                None => rsx! { Loading {} },
+                Some(k) => rsx! {
+                    div { class: "form-grid",
+                        Field { label: "TMDB API key (v3)", help: "Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.".to_string(),
+                            input { class: "input", r#type: "password", autocomplete: "off", "aria-label": "TMDB API key", value: "{text(&k.tmdb_api_key)}",
+                                oninput: move |e| { if let Some(x) = keys.write().as_mut() { x.tmdb_api_key = value(e.value()); } } }
+                        }
+                        Field { label: "OMDb API key", help: "Request one at omdbapi.com. Used for films by IMDb id.".to_string(),
+                            input { class: "input", r#type: "password", autocomplete: "off", "aria-label": "OMDb API key", value: "{text(&k.omdb_api_key)}",
+                                oninput: move |e| { if let Some(x) = keys.write().as_mut() { x.omdb_api_key = value(e.value()); } } }
+                        }
+                    }
+                    p { class: "help small faint", "Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one." }
+                    div { class: "row end", button { class: "btn primary", onclick: save, "Save keys" } }
+                },
             }
         }
     }

@@ -336,3 +336,17 @@ Differences:
 - **Stalled torrents** are not failed automatically (upstream's newer stalled-torrent timeout) and encrypted SABnzbd jobs are not detected as such.
 - **Migration** does not import Sonarr's or Tanukarr's blocklist yet (the fixtures hold none to verify against).
 - A failed download's queue entry stays until the client removes it; it no longer counts as "in the queue" for decisions, so the new search is not blocked by it.
+
+## 23. Metadata catalogues: Tanukarr's seven, with its numbering
+
+Every title belongs to one catalogue (`metadata_provider`, `metadata_id`), as in Tanukarr; refreshes read that catalogue only. The adapters port Tanukarr's proxies and keep their numbering, so migrated titles line up with refreshed ones:
+
+- **TheTVDB through SkyHook** (`SkyHookProxy`): `GET {base}/shows/eng/{tvdbId}/{seasonType}` and `GET {base}/search/?language=eng&term=…`, no key. Sonarr's mapping: statuses (ended, upcoming, else continuing), the original-language title from the translations, air time, ratings, cross-ids (TMDB, TVmaze, TVRage, IMDb, MyAnimeList, AniList), artwork. The title's `episode_ordering` is the season type (`official`, `dvd`, `absolute`, ...). Anime are recognised by TheTVDB's "Anime" genre. Titles migrated from Sonarr belong to TheTVDB, so they refresh without re-matching. SkyHook is Sonarr's service; Kitsunarr calls it as Tanukarr does, identified by its own user agent, and the endpoint can be changed (`KITSUNARR_TVDB_URL`).
+- **TMDB** (`TmdbProxy`, `TmdbMovieProxy`), with the user's v3 key: `/tv/{id}` with `external_ids`, one request per season, and `/tv/episode_group/{id}` when the title's ordering is an episode group. `TmdbEpisodeGroupProjector` is ported: positions number the episodes, group order the seasons, duplicates are ignored, unlisted episodes keep their numbers; seasons follow the episodes; absolute numbers are given in order. A failed group fetch fails the refresh, keeping the numbering on disk. Films: `/movie/{id}`, `/find/{imdbId}` and `/search/movie`, one feature episode.
+- **MyAnimeList through Jikan** (`JikanProxy`): `/anime/{id}/full` and up to 30 pages of `/anime/{id}/episodes`, 3 requests a second and 60 a minute. One season; episode number = Jikan's episode id; numbers up to the declared count are filled when the list is short. Unlike Tanukarr, a filled-in episode gets no provider id and episodes are matched by number, so the data-loss path the audit found (placeholders recreated when titles arrive) cannot happen. Adult (`Rx`) entries are left out of searches.
+- **OMDb** (`OmdbProxy`), with the user's key: films by IMDb id or title; only `Type == movie`; posters only from IMDb's image hosts.
+- **TVmaze and AniList** as before (section 12 of the migration design).
+
+Keys are stored in the settings table (`metadataSources`), migrated from Tanukarr's `tmdbapikey`/`omdbapikey`, redacted in API responses (the placeholder keeps a key), and applied to the clients at start-up and on save. A catalogue that needs a key is listed as unavailable: searches and refreshes say so, and the scheduled refresh skips its titles.
+
+Not ported: Tanukarr's presentation enrichment (filling a missing overview or artwork from a second catalogue), choosing an ordering when adding a title, and TheTVDB languages other than English. TMDB, OMDb and Jikan are tested on their documented response shapes, not against the live services (no keys; Jikan was unreachable from the test network); SkyHook is tested on recorded responses and live.

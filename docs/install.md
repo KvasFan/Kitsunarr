@@ -48,19 +48,31 @@ location /kitsunarr/ {
 
 ## Metadata catalogues
 
-Kitsunarr queries TVmaze (`https://api.tvmaze.com`) and AniList (`https://graphql.anilist.co`) when you search for, add or refresh titles; no API keys are needed. Requests are rate limited below each service's published limit and retried once after HTTP 429.
+Kitsunarr queries these catalogues when you search for, add or refresh titles:
 
-To route these requests through a caching proxy or a mirror, set `KITSUNARR_TVMAZE_URL` and `KITSUNARR_ANILIST_URL`, or the `[metadata]` section of `config.toml`:
+| Catalogue | Endpoint | Key |
+|---|---|---|
+| TheTVDB, through SkyHook (the proxy Sonarr uses) | `https://skyhook.sonarr.tv/v2/tvdb` | none |
+| TMDB (TV and films) | `https://api.themoviedb.org/3` | your TMDB v3 API key, in Settings › Metadata |
+| TVmaze | `https://api.tvmaze.com` | none |
+| AniList | `https://graphql.anilist.co` | none |
+| MyAnimeList, through Jikan | `https://api.jikan.moe/v4` | none |
+| OMDb (films) | `https://www.omdbapi.com` | your OMDb API key, in Settings › Metadata |
+
+Requests are rate limited below each service's published limit and retried once after HTTP 429. TMDB and OMDb are unavailable until their key is entered.
+
+To route requests through a caching proxy or a mirror, set `KITSUNARR_TVDB_URL`, `KITSUNARR_TMDB_URL`, `KITSUNARR_TVMAZE_URL`, `KITSUNARR_ANILIST_URL`, `KITSUNARR_JIKAN_URL` and `KITSUNARR_OMDB_URL`, or the `[metadata]` section of `config.toml`:
 
 ```toml
 [metadata]
+tvdb_url = "http://cache.lan:8080/skyhook"
 tvmaze_url = "http://cache.lan:8080/tvmaze"
 anilist_url = "http://cache.lan:8080/anilist"
 ```
 
 The values must be `http://` or `https://` URLs.
 
-The `RefreshMetadata` task (every 12 hours) refreshes continuing titles that were last refreshed more than 6 hours ago. Ended series and released films are refreshed monthly, or sooner if an episode aired in the last 30 days. A refresh updates provider data (titles, overviews, images, air dates, new episodes). It keeps your monitoring choices and file links. Titles migrated from Sonarr are owned by TheTVDB, which Kitsunarr cannot query yet, so their imported metadata is kept as is.
+The `RefreshMetadata` task (every 12 hours) refreshes continuing titles that were last refreshed more than 6 hours ago. Ended series and released films are refreshed monthly, or sooner if an episode aired in the last 30 days. A refresh updates provider data (titles, overviews, images, air dates, new episodes) from the catalogue that owns the title, in the title's episode ordering (TheTVDB's season type, or a TMDB episode group). It keeps your monitoring choices and file links. Titles migrated from Sonarr are owned by TheTVDB and refresh through SkyHook.
 
 ## Backups
 

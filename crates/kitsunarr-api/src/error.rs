@@ -118,6 +118,10 @@ impl From<kitsunarr_metadata::MetadataError> for ApiError {
             M::Unsupported(p) => {
                 ApiError::BadRequest(format!("{} is not supported yet.", p.display_name()))
             }
+            M::MissingKey(p) => ApiError::BadRequest(format!(
+                "{} needs an API key: enter it in Settings › Metadata.",
+                p.display_name()
+            )),
             M::NotFound(p) => {
                 ApiError::NotFound(format!("The title was not found in {}.", p.display_name()))
             }

@@ -39,8 +39,16 @@ fn changed(state: &AppState, media_type: &str, id: i64) {
 /// Catalogues available for search, with the attribution their terms require.
 #[utoipa::path(get, path = "/metadata/providers", tag = "metadata",
     responses((status = 200, body = Vec<CatalogueInfo>)))]
-pub async fn providers() -> Json<Vec<CatalogueInfo>> {
-    Json(Metadata::catalogues())
+pub async fn providers(State(state): State<AppState>) -> Json<Vec<CatalogueInfo>> {
+    Json(
+        Metadata::catalogues()
+            .into_iter()
+            .map(|mut c| {
+                c.available = state.metadata.available(c.provider);
+                c
+            })
+            .collect(),
+    )
 }
 
 /// Searches a catalogue. Each result says whether it is already in the library (matched by

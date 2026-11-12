@@ -163,10 +163,24 @@ async fn tvmaze_mock(fixtures: PathBuf) -> String {
             _ => Err(StatusCode::NOT_FOUND),
         }
     }
+    // SkyHook (TheTVDB), under /skyhook: the recorded Breaking Bad (81189).
+    async fn skyhook_show(
+        State(dir): Fixtures,
+        UrlPath((_lang, id, _season_type)): UrlPath<(String, String, String)>,
+    ) -> Result<axum::Json<serde_json::Value>, StatusCode> {
+        match id.as_str() {
+            "81189" => Ok(axum::Json(load(&dir, "skyhook-show-81189.json"))),
+            _ => Err(StatusCode::NOT_FOUND),
+        }
+    }
     let app = axum::Router::new()
         .route("/search/shows", get(search))
         .route("/shows/{id}", get(show))
         .route("/shows/{id}/episodes", get(episodes))
+        .route(
+            "/skyhook/shows/{lang}/{id}/{season_type}",
+            get(skyhook_show),
+        )
         .with_state(std::sync::Arc::new(fixtures));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let addr = listener.local_addr().unwrap();
@@ -238,8 +252,12 @@ async fn first_run_setup_migration_and_library() {
                 std::env::var("KITSUNARR_E2E_LOG").unwrap_or_else(|_| "warn".into()),
             )
             .env("KITSUNARR_TVMAZE_URL", &tvmaze)
-            // A closed port: nothing in this test may reach the real AniList.
+            .env("KITSUNARR_TVDB_URL", format!("{tvmaze}/skyhook"))
+            // Closed ports: nothing in this test may reach the real catalogues.
             .env("KITSUNARR_ANILIST_URL", "http://127.0.0.1:9/graphql")
+            .env("KITSUNARR_TMDB_URL", "http://127.0.0.1:9")
+            .env("KITSUNARR_JIKAN_URL", "http://127.0.0.1:9")
+            .env("KITSUNARR_OMDB_URL", "http://127.0.0.1:9")
             .stdout(if std::env::var_os("KITSUNARR_E2E_LOG").is_some() {
                 Stdio::inherit()
             } else {
@@ -376,6 +394,20 @@ async fn first_run_setup_migration_and_library() {
         // through its shared TheTVDB id; a new show is added with an exact folder preview.
         client.goto(&format!("{base}/add")).await.unwrap();
         wait_text(&client, "Find something to add").await;
+        // TheTVDB is the default catalogue; TMDB waits for its API key.
+        wait_text(&client, "provided by TheTVDB.com").await;
+        let catalogue = client
+            .find(Locator::Css("select[aria-label='Catalogue']"))
+            .await
+            .unwrap();
+        assert!(
+            client
+                .source()
+                .await
+                .unwrap()
+                .contains("TMDB (TV) (API key needed)")
+        );
+        catalogue.select_by_value("tvMaze").await.unwrap();
         wait_text(&client, "TV data provided by TVmaze.com").await;
         fill(&client, "#add-search", "breaking bad").await;
         click_button(&client, "Search").await;
@@ -429,7 +461,7 @@ async fn first_run_setup_migration_and_library() {
             "adding a title never creates folders"
         );
 
-        // Refreshing a TheTVDB-owned series is not possible yet and the button says so.
+        // The migrated (TheTVDB-owned) series refreshes through SkyHook.
         client.goto(&format!("{base}/series")).await.unwrap();
         client
             .wait()
@@ -441,17 +473,25 @@ async fn first_run_setup_migration_and_library() {
             .click()
             .await
             .unwrap();
-        let refresh = client
+        client
             .wait()
             .for_element(Locator::XPath(
                 "//button[normalize-space(.)='Refresh metadata']",
             ))
             .await
+            .unwrap()
+            .click()
+            .await
             .unwrap();
-        assert_eq!(
-            refresh.prop("disabled").await.unwrap().as_deref(),
-            Some("true")
-        );
+        wait_text(&client, "0 new episodes, 80 updated").await;
+        screenshot(&client, "11b-refresh-thetvdb").await;
+        client
+            .goto(&format!("{base}/settings/metadata"))
+            .await
+            .unwrap();
+        wait_text(&client, "API key needed").await;
+        wait_text(&client, "TMDB API key (v3)").await;
+        screenshot(&client, "11c-settings-metadata").await;
 
         // Table view and dashboard statistics.
         client.goto(&format!("{base}/series")).await.unwrap();

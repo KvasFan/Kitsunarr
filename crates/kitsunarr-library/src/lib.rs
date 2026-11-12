@@ -363,8 +363,15 @@ pub async fn refresh_series(
     metadata: &Metadata,
     id: i64,
 ) -> LibraryResult<RefreshResult> {
-    let (provider, metadata_id, monitored, monitor_new): (String, String, bool, String) =
-        sqlx::query_as("SELECT metadata_provider, metadata_id, monitored, monitor_new_items FROM series WHERE id = ?")
+    let (provider, metadata_id, monitored, monitor_new, ordering): (
+        String,
+        String,
+        bool,
+        String,
+        Option<String>,
+    ) = sqlx::query_as(
+        "SELECT metadata_provider, metadata_id, monitored, monitor_new_items, episode_ordering FROM series WHERE id = ?",
+    )
             .bind(id)
             .fetch_optional(db.pool())
             .await?
@@ -375,7 +382,9 @@ pub async fn refresh_series(
     if !Metadata::supports(provider) {
         return Err(LibraryError::Metadata(MetadataError::Unsupported(provider)));
     }
-    let info = metadata.series_fresh(provider, &metadata_id).await?;
+    let info = metadata
+        .series_fresh(provider, &metadata_id, ordering.as_deref())
+        .await?;
     let monitor_new = monitored && monitor_new == "all";
     let mut tx = db.pool().begin().await?;
     // Like Sonarr, a newly discovered episode is monitored only when new items are monitored
@@ -481,7 +490,7 @@ pub async fn refresh_movie(db: &Database, metadata: &Metadata, id: i64) -> Libra
     if !Metadata::supports(provider) {
         return Err(LibraryError::Metadata(MetadataError::Unsupported(provider)));
     }
-    let info = metadata.series_fresh(provider, &metadata_id).await?;
+    let info = metadata.series_fresh(provider, &metadata_id, None).await?;
     let mut conn = db.pool().acquire().await?;
     movies::update_metadata(
         &mut conn,
@@ -506,14 +515,16 @@ pub async fn refresh_movie(db: &Database, metadata: &Metadata, id: i64) -> Libra
 ///
 /// Mirrors Sonarr's policy: titles are refreshed at most every 6 hours; ended (or removed)
 /// series and released movies only monthly unless an episode aired in the last 30 days.
-/// Only titles owned by a supported catalogue are returned.
+/// Only titles owned by a catalogue that can be queried now are returned (TMDB and OMDb need
+/// their API keys).
 pub async fn due_for_refresh(
     db: &Database,
+    metadata: &Metadata,
     now: DateTime<Utc>,
 ) -> LibraryResult<(Vec<i64>, Vec<i64>)> {
     let providers: Vec<&str> = MetadataProvider::ALL
         .iter()
-        .filter(|p| Metadata::supports(**p))
+        .filter(|p| metadata.available(**p))
         .map(|p| p.as_str())
         .collect();
     let placeholders = providers.iter().map(|_| "?").collect::<Vec<_>>().join(",");

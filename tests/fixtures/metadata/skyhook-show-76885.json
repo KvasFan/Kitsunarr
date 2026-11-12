@@ -1,0 +1,541 @@
+{
+ "title": "Cowboy Bebop",
+ "originalTitle": "カウボーイビバップ",
+ "tvdbId": 76885,
+ "tmdbId": 30991,
+ "tvRageId": 3157,
+ "tvMazeId": 1121,
+ "imdbId": "tt0213338",
+ "overview": "In the year 2071 humanity has colonized the entire Solar System through the use of \"Phase Difference Space Gates\". A catastrophic accident occurred during the development of the Gates, damaging both the Earth and the Moon, heavily irradiating the surface, and forcing most of mankind to evacuate to other planets of the Solar System.\r\n\r\nWherever humanity goes, so goes its criminal element, and thus the need for those who hunt criminals. The newly formed solar system police reinstated the bounty scheme of the Wild West. Cowboy Bebop is the story of the four inhabitants of the spaceship Bebop, and the living they barely make at bounty hunting.",
+ "slug": "cowboy-bebop",
+ "formats": [
+  "anthology"
+ ],
+ "originalCountry": "jpn",
+ "originalLanguage": "jpn",
+ "language": "eng",
+ "firstAired": "1998-04-03",
+ "lastAired": "1999-04-23",
+ "malIds": [
+  1,
+  5
+ ],
+ "anidbIds": [
+  23,
+  219
+ ],
+ "aniListIds": [
+  1,
+  5
+ ],
+ "lastUpdated": "2026-09-09T08:21:11Z",
+ "status": "Ended",
+ "runtime": 25,
+ "timeOfDay": {
+  "hours": 17,
+  "minutes": 0
+ },
+ "originalNetwork": "TV Tokyo",
+ "network": "WOWOW",
+ "genres": [
+  "Action",
+  "Adventure",
+  "Animation",
+  "Anime",
+  "Comedy",
+  "Drama",
+  "Science Fiction",
+  "Western"
+ ],
+ "contentRating": "TV-MA",
+ "rating": {
+  "count": 175171,
+  "value": "8.9"
+ },
+ "alternativeTitles": [
+  {
+   "title": "Cowboy Bebop (1998)"
+  }
+ ],
+ "translations": [
+  {
+   "language": "eng",
+   "title": "Cowboy Bebop",
+   "overview": "In the year 2071 humanity has colonized the entire Solar System through the use of \"Phase Difference Space Gates\". A catastrophic accident occurred during the development of the Gates, damaging both the Earth and the Moon, heavily irradiating the surface, and forcing most of mankind to evacuate to other planets of the Solar System.\r\n\r\nWherever humanity goes, so goes its criminal element, and thus the need for those who hunt criminals. The newly formed solar system police reinstated the bounty scheme of the Wild West. Cowboy Bebop is the story of the four inhabitants of the spaceship Bebop, and the living they barely make at bounty hunting."
+  },
+  {
+   "language": "jpn",
+   "title": "カウボーイビバップ",
+   "overview": "ワープゲートで各惑星が結ばれた2071年の太陽系。 賞金稼ぎのスパイクとジェット、 謎の女フェイ、 天才ハッカー少女のエド、 人間並みの知能を持つデータ犬アインの4人と1匹が、 運命のいたずらから奇妙な共同生活を送ることになる。 先の見えない賞金稼ぎを続けながら、 彼らはなにを追い求めるのか？"
+  }
+ ],
+ "seasonTypes": [
+  {
+   "name": "Aired Order",
+   "type": "official",
+   "seasonNumbers": [
+    0,
+    1
+   ],
+   "episodeCount": 26
+  },
+  {
+   "name": "DVD Order",
+   "type": "dvd",
+   "seasonNumbers": [
+    0,
+    1
+   ],
+   "episodeCount": 26
+  }
+ ],
+ "actors": [
+  {
+   "name": "Kouichi Yamadera",
+   "character": "Spike Spiegel",
+   "image": "https://artworks.thetvdb.com/banners/v4/actor/7916957/photo/61ff8d2552665.jpg"
+  },
+  {
+   "name": "Unshou Ishizuka",
+   "character": "Jet Black",
+   "image": "https://artworks.thetvdb.com/banners/person/7878699/primary.jpg"
+  }
+ ],
+ "images": [
+  {
+   "coverType": "Banner",
+   "url": "https://artworks.thetvdb.com/banners/graphical/76885-g2.jpg"
+  },
+  {
+   "coverType": "Poster",
+   "url": "https://artworks.thetvdb.com/banners/posters/76885-3.jpg"
+  },
+  {
+   "coverType": "Fanart",
+   "url": "https://artworks.thetvdb.com/banners/fanart/original/76885-20.jpg"
+  },
+  {
+   "coverType": "Clearlogo",
+   "url": "https://artworks.thetvdb.com/banners/v4/series/76885/clearlogo/611b7facc3918.png"
+  }
+ ],
+ "seasons": [
+  {
+   "seasonNumber": 0,
+   "year": 1998,
+   "images": [
+    {
+     "coverType": "Poster",
+     "url": "https://artworks.thetvdb.com/banners/seasons/76885-0-3.jpg"
+    }
+   ]
+  },
+  {
+   "seasonNumber": 1,
+   "year": 1998,
+   "images": [
+    {
+     "coverType": "Poster",
+     "url": "https://artworks.thetvdb.com/banners/seasons/76885-1.jpg"
+    },
+    {
+     "coverType": "Banner",
+     "url": "https://artworks.thetvdb.com/banners/seasonswide/76885-1.jpg"
+    }
+   ]
+  }
+ ],
+ "episodes": [
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 7987639,
+   "seasonNumber": 0,
+   "episodeNumber": 1,
+   "title": "Mish-Mash Blues",
+   "airDate": "1998-06-26",
+   "airDateUtc": "1998-06-26T08:00:00Z",
+   "runtime": 26,
+   "finaleType": "midseason",
+   "overview": "Nothing lasts forever. All things must come to an end. That is the so-called way of Nature. It's rather sudden, but this is the last episode, so I would like to take this opportunity to remember all the things that have happened and think about them."
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 937401,
+   "seasonNumber": 0,
+   "episodeNumber": 2,
+   "title": "Session #0",
+   "airDate": "1998-08-25",
+   "airDateUtc": "1998-08-25T08:00:00Z",
+   "runtime": 26,
+   "overview": "This episode is a teaser for the release of the series to DVD. It contains interviews with the staff and cast, character info, a story digest of the episodes not broadcast on television (due to its depictions of gratuitous violence, only a handful of episodes were aired originally. The remaining episodes were not broadcast until 1999), the complete beginning/closing title sequences without the interference of credits or other text, and a couple of full length music videos featuring the theme track \"Tank!\" accompanied by the jaw-dropping animation found throughout the series.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/937401.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 360926,
+   "seasonNumber": 0,
+   "episodeNumber": 3,
+   "airedBeforeSeasonNumber": 1,
+   "airedBeforeEpisodeNumber": 23,
+   "title": "Cowboy Bebop: The Movie",
+   "airDate": "2001-09-01",
+   "airDateUtc": "2001-09-01T08:00:00Z",
+   "runtime": 115,
+   "overview": "A tanker truck is blown to smithereens in the middle of a busy street, and a deadly viral infection is released with the explosion. The Bebop crew - Spike Spiegel, Jet Black, Faye Valentine, and Edward Wong Hau Pepelu Tivrusky IV - are instantly after the culprit when the gargantuan reward of 300,000,000 woolongs is announced. But the case gets stranger and stranger as the cold-blooded Vincent Volaju, who supposedly has been dead for ten years, seems to be the prime suspect. Meanwhile, Spike encounters the dangerous Electra, who too seeks the madman. Conspiracies and secrets better left alone are uncovered, and Vincent's reign of terror is nowhere near over yet...",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/360926.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 4478966,
+   "seasonNumber": 0,
+   "episodeNumber": 4,
+   "title": "Ein's Summer Vacation",
+   "airDate": "2012-12-21",
+   "airDateUtc": "2012-12-21T08:00:00Z",
+   "runtime": 1,
+   "finaleType": "season",
+   "overview": "A newly animated special starring Ein! Included in the new Blu-Ray release.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/4478966.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219121,
+   "seasonNumber": 1,
+   "episodeNumber": 1,
+   "absoluteEpisodeNumber": 2,
+   "title": "Session #2: Stray Dog Strut",
+   "airDate": "1998-04-03",
+   "airDateUtc": "1998-04-03T08:00:00Z",
+   "runtime": 25,
+   "overview": "A bounty takes Spike and Jet to Mars, where their target, Abdul Hakim, is wanted for stealing a valuable lab animal. To avoid capture, Hakim has had plastic surgery to change his appearance.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219121.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219122,
+   "seasonNumber": 1,
+   "episodeNumber": 2,
+   "absoluteEpisodeNumber": 3,
+   "title": "Session #3: Honky Tonk Women",
+   "airDate": "1998-04-10",
+   "airDateUtc": "1998-04-10T08:00:00Z",
+   "runtime": 25,
+   "overview": "A night at the casino lands Spike and Jet in hot water when they cross paths with Faye Valentine, a stunning con artist wanted by the law – and the bad guys.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219122.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219126,
+   "seasonNumber": 1,
+   "episodeNumber": 3,
+   "absoluteEpisodeNumber": 7,
+   "title": "Session #7: Heavy Metal Queen",
+   "airDate": "1998-04-17",
+   "airDateUtc": "1998-04-17T08:00:00Z",
+   "runtime": 25,
+   "overview": "The Bebop crew pursues a renegade explosives expert, and Spike crosses paths with a nameless space trucker that hates bounty hunters.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219126.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219127,
+   "seasonNumber": 1,
+   "episodeNumber": 4,
+   "absoluteEpisodeNumber": 8,
+   "title": "Session #8: Waltz for Venus",
+   "airDate": "1998-04-24",
+   "airDateUtc": "1998-04-24T08:00:00Z",
+   "runtime": 25,
+   "overview": "Spike gets involved with a fugitive who is willing to risk his own life to restore his sister’s sight. Can the Bebop crew save the day before tragedy strikes?",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219127.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219128,
+   "seasonNumber": 1,
+   "episodeNumber": 5,
+   "absoluteEpisodeNumber": 9,
+   "title": "Session #9: Jamming with Edward",
+   "airDate": "1998-05-01",
+   "airDateUtc": "1998-05-01T08:00:00Z",
+   "runtime": 25,
+   "overview": "The Bebop crew tries to crack the case of mysterious satellite drawings appearing on the Earth’s surface, but they’ll need help from a hacker know as Radical Edward to earn their bounty!",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219128.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219129,
+   "seasonNumber": 1,
+   "episodeNumber": 6,
+   "absoluteEpisodeNumber": 10,
+   "title": "Session #10: Ganymede Elegy",
+   "airDate": "1998-05-08",
+   "airDateUtc": "1998-05-08T08:00:00Z",
+   "runtime": 25,
+   "overview": "When a case takes the Bebop crew to Jet’s old stomping ground, the big man crosses paths with an old lover – and her wanted boyfriend.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219129.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219130,
+   "seasonNumber": 1,
+   "episodeNumber": 7,
+   "absoluteEpisodeNumber": 11,
+   "title": "Session #11: Toys in the Attic",
+   "airDate": "1998-05-15",
+   "airDateUtc": "1998-05-15T08:00:00Z",
+   "runtime": 25,
+   "overview": "When an unusual, blob-like space creature infects Ein, Faye, and Jet, Spike and Radical Edward must figure out a way to save their friends.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219130.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219131,
+   "seasonNumber": 1,
+   "episodeNumber": 8,
+   "absoluteEpisodeNumber": 12,
+   "title": "Session #12: Jupiter Jazz (1)",
+   "airDate": "1998-05-22",
+   "airDateUtc": "1998-05-22T08:00:00Z",
+   "runtime": 25,
+   "overview": "Faye robs and abandons the Bebop crew, Spike goes in search of a woman he once knew, and Vicious makes another deadly appearance.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219131.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219132,
+   "seasonNumber": 1,
+   "episodeNumber": 9,
+   "absoluteEpisodeNumber": 13,
+   "title": "Session #13: Jupiter Jazz (2)",
+   "airDate": "1998-05-29",
+   "airDateUtc": "1998-05-29T08:00:00Z",
+   "runtime": 25,
+   "overview": "Jet continues his mission to reunite his Bebop comrades, and Spike finds himself locked in a brutal dogfight with his old nemesis Vicious.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219132.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300636,
+   "seasonNumber": 1,
+   "episodeNumber": 10,
+   "absoluteEpisodeNumber": 14,
+   "title": "Session #14: Bohemian Rhapsody",
+   "airDate": "1998-06-05",
+   "airDateUtc": "1998-06-05T08:00:00Z",
+   "runtime": 25,
+   "overview": "The Bebop Crew embarks on a wild goose chase of a bounty hunt that leads them deep into space in search of an ancient chess master.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300636.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300637,
+   "seasonNumber": 1,
+   "episodeNumber": 11,
+   "absoluteEpisodeNumber": 15,
+   "title": "Session #15: My Funny Valentine",
+   "airDate": "1998-06-12",
+   "airDateUtc": "1998-06-12T08:00:00Z",
+   "runtime": 25,
+   "overview": "When Jet brings in a fugitive from Faye’s past, the rebellious beauty must decide whether to turn him in – or give an old flame one last chance.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300637.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300640,
+   "seasonNumber": 1,
+   "episodeNumber": 12,
+   "absoluteEpisodeNumber": 18,
+   "title": "Session #18: Speak Like a Child",
+   "airDate": "1998-06-19",
+   "airDateUtc": "1998-06-19T08:00:00Z",
+   "runtime": 25,
+   "overview": "When a mysterious package arrives, Faye disappears on a gambling binge, and Spike and Jet embark on a frustrating search for ancient technology!",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300640.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219120,
+   "seasonNumber": 1,
+   "episodeNumber": 13,
+   "absoluteEpisodeNumber": 1,
+   "title": "Session #1: Asteroid Blues",
+   "airDate": "1998-04-03",
+   "airDateUtc": "1998-04-03T08:00:00Z",
+   "runtime": 25,
+   "overview": "Spike and Jet head to Tijuana to track down an outlaw smuggling a dangerous drug known as blood-eye. Jet wants the bounty, but Spike has eyes for a far prettier prize.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219120.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219123,
+   "seasonNumber": 1,
+   "episodeNumber": 14,
+   "absoluteEpisodeNumber": 4,
+   "title": "Session #4: Gateway Shuffle",
+   "airDate": "1998-11-13",
+   "airDateUtc": "1998-11-13T08:00:00Z",
+   "runtime": 25,
+   "overview": "Faye teams up with Spike and Jet to track down a gang of space activists that plans on turning the human population into monkeys!",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219123.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219124,
+   "seasonNumber": 1,
+   "episodeNumber": 15,
+   "absoluteEpisodeNumber": 5,
+   "title": "Session #5: Ballad of Fallen Angels",
+   "airDate": "1998-11-20",
+   "airDateUtc": "1998-11-20T08:00:00Z",
+   "runtime": 25,
+   "overview": "Spike aims to collect the bounty on a member of the Red Dragon Syndicate, but his mission leads him into a deadly showdown with a face from his past!",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219124.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 219125,
+   "seasonNumber": 1,
+   "episodeNumber": 16,
+   "absoluteEpisodeNumber": 6,
+   "title": "Session #6: Sympathy for the Devil",
+   "airDate": "1998-11-27",
+   "airDateUtc": "1998-11-27T08:00:00Z",
+   "runtime": 25,
+   "overview": "The latest case for the crew of the Bebop finds Spike pitted against a young boy with a talent for the harmonica – and murder.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/219125.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300638,
+   "seasonNumber": 1,
+   "episodeNumber": 17,
+   "absoluteEpisodeNumber": 16,
+   "title": "Session #16: Black Dog Serenade",
+   "airDate": "1999-02-12",
+   "airDateUtc": "1999-02-12T08:00:00Z",
+   "runtime": 25,
+   "overview": "Jet teams up with a former partner to settle the score with the man who took his arm, but he soon discovers that memories can be deceiving.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300638.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300639,
+   "seasonNumber": 1,
+   "episodeNumber": 18,
+   "absoluteEpisodeNumber": 17,
+   "title": "Session #17: Mushroom Samba",
+   "airDate": "1999-02-19",
+   "airDateUtc": "1999-02-19T08:00:00Z",
+   "runtime": 25,
+   "overview": "After the Bebop crash lands, Ed and Ein’s search for food turns up some very expensive mushrooms with psychedelic side effects!",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300639.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300641,
+   "seasonNumber": 1,
+   "episodeNumber": 19,
+   "absoluteEpisodeNumber": 19,
+   "title": "Session #19: Wild Horses",
+   "airDate": "1999-03-05",
+   "airDateUtc": "1999-03-05T08:00:00Z",
+   "runtime": 25,
+   "overview": "While Spike pays a visit to the man who built his ship, Faye and Jet go fishing for space pirates.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300641.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300642,
+   "seasonNumber": 1,
+   "episodeNumber": 20,
+   "absoluteEpisodeNumber": 20,
+   "title": "Session #20: Pierrot Le Fou",
+   "airDate": "1999-03-12",
+   "airDateUtc": "1999-03-12T08:00:00Z",
+   "runtime": 25,
+   "overview": "Spike takes a beating during a chance encounter with an indestructible assassin. While Jet searches for the secret to the madman’s power, Spike goes looking for payback!",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300642.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300643,
+   "seasonNumber": 1,
+   "episodeNumber": 21,
+   "absoluteEpisodeNumber": 21,
+   "title": "Session #21: Boogie Woogie Feng Shui",
+   "airDate": "1999-03-19",
+   "airDateUtc": "1999-03-19T08:00:00Z",
+   "runtime": 25,
+   "overview": "Spurred by a cryptic email, Jet goes looking for an old friend, but finds his daughter – and a mysterious sun stone – instead.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300643.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300644,
+   "seasonNumber": 1,
+   "episodeNumber": 22,
+   "absoluteEpisodeNumber": 22,
+   "title": "Session #22: Cowboy Funk",
+   "airDate": "1999-03-26",
+   "airDateUtc": "1999-03-26T08:00:00Z",
+   "runtime": 25,
+   "overview": "Spike’s attempts to apprehend the infamous Teddy Bear Bomber are maddeningly derailed by a mysterious – and clueless – cowboy!",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300644.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300645,
+   "seasonNumber": 1,
+   "episodeNumber": 23,
+   "absoluteEpisodeNumber": 23,
+   "title": "Session #23: Brain Scratch",
+   "airDate": "1999-04-02",
+   "airDateUtc": "1999-04-02T08:00:00Z",
+   "runtime": 25,
+   "overview": "Faye goes undercover to collect the bounty on a deranged cult leader, but when the mysterious organization brainwashes her into a very deep sleep – she’ll need a little help from her friends.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300645.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300646,
+   "seasonNumber": 1,
+   "episodeNumber": 24,
+   "absoluteEpisodeNumber": 24,
+   "title": "Session #24: Hard Luck Woman",
+   "airDate": "1999-04-09",
+   "airDateUtc": "1999-04-09T08:00:00Z",
+   "runtime": 25,
+   "overview": "Faye and Ed discover clues to their respective pasts that could send the crew of the Bebop heading in very different directions.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300646.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300647,
+   "seasonNumber": 1,
+   "episodeNumber": 25,
+   "absoluteEpisodeNumber": 25,
+   "title": "Session #25: The Real Folk Blues (1)",
+   "airDate": "1999-04-16",
+   "airDateUtc": "1999-04-16T08:00:00Z",
+   "runtime": 25,
+   "overview": "Spike and Jet are ambushed by members of the syndicate, and Faye has an unexpected encounter with a woman from Spike’s past.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300647.jpg"
+  },
+  {
+   "tvdbShowId": 76885,
+   "tvdbId": 300648,
+   "seasonNumber": 1,
+   "episodeNumber": 26,
+   "absoluteEpisodeNumber": 26,
+   "title": "Session #26: The Real Folk Blues (2)",
+   "airDate": "1999-04-23",
+   "airDateUtc": "1999-04-23T08:00:00Z",
+   "runtime": 24,
+   "finaleType": "series",
+   "overview": "Spike finally finds the woman he’s been searching for, and Faye makes a surprising return to the Bebop. With the syndicate in hot pursuit, Spike seeks to end the reign of Vicious.",
+   "image": "https://artworks.thetvdb.com/banners/episodes/76885/300648.jpg"
+  }
+ ],
+ "metadataSource": "tvdb"
+}

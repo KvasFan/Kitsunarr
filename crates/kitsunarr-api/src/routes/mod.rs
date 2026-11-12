@@ -119,6 +119,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         ))
         .routes(routes!(settings::get_general, settings::put_general))
         .routes(routes!(
+            settings::get_metadata_sources,
+            settings::put_metadata_sources
+        ))
+        .routes(routes!(
             settings::get_download_client_options,
             settings::put_download_client_options
         ))

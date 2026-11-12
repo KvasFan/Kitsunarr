@@ -267,6 +267,16 @@ impl Default for IndexerOptionsSettings {
     }
 }
 
+/// Metadata catalogue settings: the API keys TMDB and OMDb need (Tanukarr's `TmdbApiKey` and
+/// `OmdbApiKey`). Keys are redacted in responses; sending the placeholder back keeps them.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct MetadataSourcesSettings {
+    pub tmdb_api_key: Option<String>,
+    pub omdb_api_key: Option<String>,
+}
+
 /// Download client options (Sonarr's Settings › Download Clients: completed and failed
 /// download handling).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

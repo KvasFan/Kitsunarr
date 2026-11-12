@@ -9,7 +9,7 @@ use kitsunarr_db::Database;
 use kitsunarr_domain::api::metadata::{AddTitleRequest, MonitorOption};
 use kitsunarr_domain::{MetadataProvider, MonitorNewItems};
 use kitsunarr_library::{LibraryError, add_title, due_for_refresh, refresh_series};
-use kitsunarr_metadata::{Metadata, anilist::AniList, tvmaze::TvMaze};
+use kitsunarr_metadata::Metadata;
 use serde_json::{Value, json};
 
 #[derive(Clone)]
@@ -61,11 +61,14 @@ async fn setup() -> (tempfile::TempDir, Database, Metadata, Mock) {
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let addr = listener.local_addr().unwrap();
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
-    let http = reqwest::Client::new();
-    let metadata = Metadata {
-        tvmaze: TvMaze::with_base(http.clone(), &format!("http://{addr}")),
-        anilist: AniList::with_base(http, &format!("http://{addr}/graphql")),
-    };
+    let metadata = Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: format!("http://{addr}"),
+            anilist: format!("http://{addr}/graphql"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    );
     let dir = tempfile::tempdir().unwrap();
     let db = Database::open(&dir.path().join("k.db")).await.unwrap();
     kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
@@ -260,7 +263,7 @@ async fn refresh_scheduling_follows_status_and_age() {
     .unwrap();
     let now = chrono::Utc::now();
     assert_eq!(
-        due_for_refresh(&db, now).await.unwrap(),
+        due_for_refresh(&db, &metadata, now).await.unwrap(),
         (vec![], vec![]),
         "just added"
     );
@@ -284,7 +287,7 @@ async fn refresh_scheduling_follows_status_and_age() {
     set("series", show.id, 7).await;
     set("movies", movie.id, 7).await;
     assert_eq!(
-        due_for_refresh(&db, now).await.unwrap(),
+        due_for_refresh(&db, &metadata, now).await.unwrap(),
         (vec![], vec![]),
         "ended series and released films wait a month"
     );
@@ -293,7 +296,7 @@ async fn refresh_scheduling_follows_status_and_age() {
         .await
         .unwrap();
     assert_eq!(
-        due_for_refresh(&db, now).await.unwrap().0,
+        due_for_refresh(&db, &metadata, now).await.unwrap().0,
         vec![show.id],
         "continuing series refresh after 6 hours"
     );
@@ -304,17 +307,26 @@ async fn refresh_scheduling_follows_status_and_age() {
     set("series", show.id, 40).await;
     set("movies", movie.id, 40).await;
     assert_eq!(
-        due_for_refresh(&db, now).await.unwrap(),
+        due_for_refresh(&db, &metadata, now).await.unwrap(),
         (vec![show.id], vec![movie.id])
     );
 
-    // Titles owned by catalogues Kitsunarr cannot query (e.g. migrated TheTVDB series) are skipped.
+    // TheTVDB-owned titles (migrated from Sonarr) refresh through SkyHook.
     sqlx::query("UPDATE series SET metadata_provider = 'tvdb'")
         .execute(db.pool())
         .await
         .unwrap();
     assert_eq!(
-        due_for_refresh(&db, now).await.unwrap().0,
+        due_for_refresh(&db, &metadata, now).await.unwrap().0,
+        vec![show.id]
+    );
+    // Titles owned by a catalogue that needs a key nobody entered are skipped.
+    sqlx::query("UPDATE series SET metadata_provider = 'tmdb'")
+        .execute(db.pool())
+        .await
+        .unwrap();
+    assert_eq!(
+        due_for_refresh(&db, &metadata, now).await.unwrap().0,
         Vec::<i64>::new()
     );
 }

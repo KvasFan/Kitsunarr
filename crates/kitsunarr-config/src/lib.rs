@@ -232,6 +232,11 @@ impl Default for LogConfig {
 pub struct MetadataConfig {
     pub tvmaze_url: String,
     pub anilist_url: String,
+    /// TheTVDB through SkyHook, Sonarr's proxy.
+    pub tvdb_url: String,
+    pub tmdb_url: String,
+    pub jikan_url: String,
+    pub omdb_url: String,
 }
 
 impl Default for MetadataConfig {
@@ -239,6 +244,10 @@ impl Default for MetadataConfig {
         Self {
             tvmaze_url: "https://api.tvmaze.com".into(),
             anilist_url: "https://graphql.anilist.co".into(),
+            tvdb_url: "https://skyhook.sonarr.tv/v2/tvdb".into(),
+            tmdb_url: "https://api.themoviedb.org/3".into(),
+            jikan_url: "https://api.jikan.moe/v4".into(),
+            omdb_url: "https://www.omdbapi.com".into(),
         }
     }
 }
@@ -361,6 +370,18 @@ impl Config {
         if let Some(v) = env.var("KITSUNARR_ANILIST_URL") {
             self.metadata.anilist_url = v;
         }
+        if let Some(v) = env.var("KITSUNARR_TVDB_URL") {
+            self.metadata.tvdb_url = v;
+        }
+        if let Some(v) = env.var("KITSUNARR_TMDB_URL") {
+            self.metadata.tmdb_url = v;
+        }
+        if let Some(v) = env.var("KITSUNARR_JIKAN_URL") {
+            self.metadata.jikan_url = v;
+        }
+        if let Some(v) = env.var("KITSUNARR_OMDB_URL") {
+            self.metadata.omdb_url = v;
+        }
         if let Some(v) = env.var("KITSUNARR_SESSION_DAYS") {
             self.auth.session_days = parse("KITSUNARR_SESSION_DAYS", v)?;
         }
@@ -383,6 +404,10 @@ impl Config {
         for (key, url) in [
             ("metadata.tvmaze_url", &mut self.metadata.tvmaze_url),
             ("metadata.anilist_url", &mut self.metadata.anilist_url),
+            ("metadata.tvdb_url", &mut self.metadata.tvdb_url),
+            ("metadata.tmdb_url", &mut self.metadata.tmdb_url),
+            ("metadata.jikan_url", &mut self.metadata.jikan_url),
+            ("metadata.omdb_url", &mut self.metadata.omdb_url),
         ] {
             let trimmed = url.trim().trim_end_matches('/');
             let scheme_ok = trimmed.starts_with("https://") || trimmed.starts_with("http://");
@@ -440,7 +465,11 @@ impl Config {
              [metadata]\n\
              # Catalogue endpoints; change them only to use a caching proxy or mirror.\n\
              # tvmaze_url = \"https://api.tvmaze.com\"\n\
-             # anilist_url = \"https://graphql.anilist.co\"\n"
+             # anilist_url = \"https://graphql.anilist.co\"\n\
+             # tvdb_url = \"https://skyhook.sonarr.tv/v2/tvdb\"\n\
+             # tmdb_url = \"https://api.themoviedb.org/3\"\n\
+             # jikan_url = \"https://api.jikan.moe/v4\"\n\
+             # omdb_url = \"https://www.omdbapi.com\"\n"
         )
     }
 }

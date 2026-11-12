@@ -16,7 +16,7 @@ use kitsunarr_domain::api::library::{
 use kitsunarr_domain::api::metadata::{AddTitleRequest, MonitorOption, SearchQuery};
 use kitsunarr_domain::api::migration::{MigrationOptions, PathMapping, SessionStatus};
 use kitsunarr_domain::api::settings::{REDACTED, RootFolderCreate};
-use kitsunarr_metadata::{Metadata, anilist::AniList, tvmaze::TvMaze};
+use kitsunarr_metadata::Metadata;
 
 struct Server {
     base: String,
@@ -31,11 +31,14 @@ async fn start() -> Server {
 
 /// Catalogue clients pointed at a closed local port: tests never reach the real services.
 fn offline_metadata() -> Metadata {
-    let http = reqwest::Client::new();
-    Metadata {
-        tvmaze: TvMaze::with_base(http.clone(), "http://127.0.0.1:9"),
-        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
-    }
+    Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: "http://127.0.0.1:9".to_string(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    )
 }
 
 async fn start_with(metadata: Metadata) -> Server {
@@ -592,11 +595,14 @@ async fn tvmaze_mock() -> String {
 #[tokio::test]
 async fn catalogue_search_add_and_refresh() {
     let base = tvmaze_mock().await;
-    let http = reqwest::Client::new();
-    let server = start_with(Metadata {
-        tvmaze: TvMaze::with_base(http.clone(), &base),
-        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
-    })
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: base.clone(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
     .await;
     let client = signed_in(&server).await;
 
@@ -616,11 +622,12 @@ async fn catalogue_search_add_and_refresh() {
         .await
         .unwrap_err();
     assert_eq!(status(empty), 422);
-    let unsupported = client
+    // TheTVDB (SkyHook) is unreachable in this test.
+    let unreachable = client
         .metadata_search(&query(MetadataProvider::Tvdb, "breaking bad"))
         .await
         .unwrap_err();
-    assert_eq!(status(unsupported), 422);
+    assert_eq!(status(unreachable), 502);
 
     let results = client
         .metadata_search(&query(MetadataProvider::TvMaze, "breaking bad"))
@@ -705,20 +712,23 @@ async fn catalogue_search_add_and_refresh() {
         other => panic!("unexpected {other:?}"),
     }
 
-    // Titles owned by a catalogue Kitsunarr cannot query yet (e.g. migrated from Sonarr)
-    // are reported as such instead of failing with a server error.
+    // A title owned by TMDB (for example migrated from Tanukarr) cannot refresh without the
+    // user's TMDB key, and says so instead of failing with a server error.
     let db = Database::open(&server._dir.path().join("k.db"))
         .await
         .unwrap();
-    sqlx::query("UPDATE series SET metadata_provider = 'tvdb' WHERE id = ?")
+    sqlx::query("UPDATE series SET metadata_provider = 'tmdb' WHERE id = ?")
         .bind(added.id)
         .execute(db.pool())
         .await
         .unwrap();
-    assert_eq!(
-        status(client.refresh_series(added.id).await.unwrap_err()),
-        400
-    );
+    match client.refresh_series(added.id).await.unwrap_err() {
+        ClientError::Api { status, body } => {
+            assert_eq!(status, 400);
+            assert!(body.message.contains("API key"), "{}", body.message);
+        }
+        other => panic!("unexpected {other:?}"),
+    }
 }
 
 /// A local Newznab indexer replaying Sonarr's recorded responses; records the requests.
@@ -768,11 +778,14 @@ async fn newznab_mock() -> (String, Arc<std::sync::Mutex<Vec<String>>>) {
 async fn indexer_test_and_interactive_search() {
     use kitsunarr_domain::api::search::{IndexerTestRequest, ReleaseQuery};
     let tvmaze = tvmaze_mock().await;
-    let http = reqwest::Client::new();
-    let server = start_with(Metadata {
-        tvmaze: TvMaze::with_base(http.clone(), &tvmaze),
-        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
-    })
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: tvmaze.clone(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
     .await;
     let client = signed_in(&server).await;
     let (indexer_url, requests) = newznab_mock().await;
@@ -1174,11 +1187,14 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
 async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     use kitsunarr_domain::api::search::{GrabRequest, IndexerTestRequest, ReleaseQuery};
     let tvmaze = tvmaze_mock().await;
-    let http = reqwest::Client::new();
-    let server = start_with(Metadata {
-        tvmaze: TvMaze::with_base(http.clone(), &tvmaze),
-        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
-    })
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: tvmaze.clone(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
     .await;
     let client = signed_in(&server).await;
     let (indexer_url, qbit_port, qbit) = torrent_mocks().await;
@@ -1701,11 +1717,14 @@ async fn usenet_mocks() -> (String, u16, Arc<std::sync::Mutex<serde_json::Value>
 async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
     use kitsunarr_domain::api::search::{GrabRequest, ReleaseQuery};
     let tvmaze = tvmaze_mock().await;
-    let http = reqwest::Client::new();
-    let server = start_with(Metadata {
-        tvmaze: TvMaze::with_base(http.clone(), &tvmaze),
-        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
-    })
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: tvmaze.clone(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
     .await;
     let client = signed_in(&server).await;
     let (indexer_url, sab_port, sab) = usenet_mocks().await;
@@ -1836,11 +1855,14 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
     use kitsunarr_domain::api::queue::{BlocklistRemoval, QueueRemoval};
     use kitsunarr_domain::api::search::{GrabRequest, ReleaseQuery};
     let tvmaze = tvmaze_mock().await;
-    let http = reqwest::Client::new();
-    let server = start_with(Metadata {
-        tvmaze: TvMaze::with_base(http.clone(), &tvmaze),
-        anilist: AniList::with_base(http, "http://127.0.0.1:9/graphql"),
-    })
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: tvmaze.clone(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
     .await;
     let client = signed_in(&server).await;
     let (indexer_url, sab_port, sab) = usenet_mocks().await;
@@ -2028,4 +2050,172 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
         .await
         .unwrap_err();
     assert_eq!(status(missing), 404);
+}
+
+/// A local stand-in for SkyHook replaying recorded responses (Breaking Bad, the search).
+async fn skyhook_mock() -> (String, Arc<std::sync::Mutex<Vec<String>>>) {
+    use axum::extract::{Path, Query, State};
+    use axum::response::IntoResponse;
+    use axum::routing::get;
+    type Log = Arc<std::sync::Mutex<Vec<String>>>;
+    fn fixture(name: &str) -> serde_json::Value {
+        let path = format!(
+            "{}/../../tests/fixtures/metadata/{name}",
+            env!("CARGO_MANIFEST_DIR")
+        );
+        serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap()
+    }
+    async fn show(
+        State(log): State<Log>,
+        Path((lang, id, season_type)): Path<(String, String, String)>,
+    ) -> axum::response::Response {
+        log.lock()
+            .unwrap()
+            .push(format!("shows/{lang}/{id}/{season_type}"));
+        if id != "81189" {
+            return axum::http::StatusCode::NOT_FOUND.into_response();
+        }
+        axum::Json(fixture("skyhook-show-81189.json")).into_response()
+    }
+    async fn search(
+        State(log): State<Log>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::Json<serde_json::Value> {
+        log.lock().unwrap().push(format!(
+            "search {} {}",
+            q.get("language").cloned().unwrap_or_default(),
+            q.get("term").cloned().unwrap_or_default()
+        ));
+        axum::Json(fixture("skyhook-search-breaking-bad.json"))
+    }
+    let log: Log = Arc::default();
+    let app = axum::Router::new()
+        .route("/search/", get(search))
+        .route("/shows/{lang}/{id}/{season_type}", get(show))
+        .with_state(log.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (format!("http://{addr}"), log)
+}
+
+#[tokio::test]
+async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
+    let (skyhook, log) = skyhook_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let found = client
+        .metadata_search(&SearchQuery {
+            provider: MetadataProvider::Tvdb,
+            term: "Breaking Bad".into(),
+        })
+        .await
+        .unwrap();
+    assert_eq!(found[0].title, "Breaking Bad");
+    assert_eq!(found[0].id, "81189");
+    // `tvdb:` terms look the title up directly.
+    let direct = client
+        .metadata_search(&SearchQuery {
+            provider: MetadataProvider::Tvdb,
+            term: "tvdb:81189".into(),
+        })
+        .await
+        .unwrap();
+    assert_eq!(direct.len(), 1);
+    assert_eq!(
+        log.lock().unwrap().as_slice(),
+        ["search eng breaking bad", "shows/eng/81189/official"]
+    );
+
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::Tvdb,
+            id: "81189".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+        })
+        .await
+        .unwrap();
+    let episodes = client.episodes(added.id).await.unwrap();
+    let pilot = episodes
+        .iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    assert_eq!(pilot.title.as_deref(), Some("Pilot"));
+    assert!(episodes.iter().any(|e| e.season_number == 0));
+    let refreshed = client.refresh_series(added.id).await.unwrap();
+    assert_eq!(refreshed.added_episodes, 0);
+    assert_eq!(refreshed.updated_episodes as usize, episodes.len());
+
+    // TMDB and OMDb need the user's keys: unavailable, then available once a key is saved,
+    // which never comes back in clear.
+    let providers = client.metadata_providers().await.unwrap();
+    let tmdb = providers
+        .iter()
+        .find(|c| c.provider == MetadataProvider::TmdbTv)
+        .unwrap();
+    assert!(!tmdb.available);
+    let missing = client
+        .metadata_search(&SearchQuery {
+            provider: MetadataProvider::TmdbTv,
+            term: "x".into(),
+        })
+        .await
+        .unwrap_err();
+    assert_eq!(status(missing), 400);
+    let saved = client
+        .put_metadata_sources(&kitsunarr_domain::api::settings::MetadataSourcesSettings {
+            tmdb_api_key: Some("secret-key".into()),
+            omdb_api_key: None,
+        })
+        .await
+        .unwrap();
+    assert_eq!(saved.tmdb_api_key.as_deref(), Some(REDACTED));
+    assert_eq!(saved.omdb_api_key, None);
+    // Sending the placeholder back keeps the key.
+    client.put_metadata_sources(&saved).await.unwrap();
+    let providers = client.metadata_providers().await.unwrap();
+    assert!(
+        providers
+            .iter()
+            .find(|c| c.provider == MetadataProvider::TmdbMovie)
+            .unwrap()
+            .available
+    );
+    assert!(
+        !providers
+            .iter()
+            .find(|c| c.provider == MetadataProvider::Omdb)
+            .unwrap()
+            .available
+    );
+    // With a key, TMDB is queried (and is unreachable here).
+    let unreachable = client
+        .metadata_search(&SearchQuery {
+            provider: MetadataProvider::TmdbTv,
+            term: "x".into(),
+        })
+        .await
+        .unwrap_err();
+    assert_eq!(status(unreachable), 502);
 }

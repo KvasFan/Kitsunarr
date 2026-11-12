@@ -5,8 +5,15 @@ use serde::{Deserialize, Serialize};
 use crate::media::{ExternalId, MetadataProvider, SeriesStatus, SeriesType};
 
 /// Catalogues Kitsunarr can currently search, add from and refresh from.
-pub const SUPPORTED_CATALOGUES: &[MetadataProvider] =
-    &[MetadataProvider::TvMaze, MetadataProvider::AniList];
+pub const SUPPORTED_CATALOGUES: &[MetadataProvider] = &[
+    MetadataProvider::Tvdb,
+    MetadataProvider::TmdbTv,
+    MetadataProvider::TvMaze,
+    MetadataProvider::AniList,
+    MetadataProvider::MyAnimeList,
+    MetadataProvider::TmdbMovie,
+    MetadataProvider::Omdb,
+];
 
 /// What a catalogue entry is.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -31,6 +38,13 @@ pub struct CatalogueInfo {
     /// Credit required by the catalogue's licence or terms; shown wherever its data is used.
     pub attribution: String,
     pub url: String,
+    /// Usable now: it needs no API key, or its key is set.
+    #[serde(default = "available_default")]
+    pub available: bool,
+}
+
+fn available_default() -> bool {
+    true
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

@@ -68,7 +68,7 @@ pub fn AddMedia() -> Element {
     let mut provider = use_signal(|| {
         load_pref(PROVIDER_PREF)
             .and_then(|p| p.parse::<MetadataProvider>().ok())
-            .unwrap_or(MetadataProvider::TvMaze)
+            .unwrap_or(MetadataProvider::Tvdb)
     });
     let mut term = use_signal(String::new);
     // The last submitted search; results follow it.
@@ -114,12 +114,17 @@ pub fn AddMedia() -> Element {
     drop(read);
     let current = list
         .iter()
-        .find(|c| c.provider == provider())
-        .or(list.first())
+        .find(|c| c.provider == provider() && c.available)
+        .or(list.iter().find(|c| c.available))
         .cloned();
     let placeholder = match current.as_ref().map(|c| c.provider) {
-        Some(MetadataProvider::AniList) => "Anime title, e.g. Frieren",
-        _ => "Series title, e.g. Severance",
+        Some(MetadataProvider::AniList | MetadataProvider::MyAnimeList) => {
+            "Anime title, e.g. Frieren"
+        }
+        Some(MetadataProvider::TmdbMovie | MetadataProvider::Omdb) => {
+            "Film title or IMDb id, e.g. Arrival"
+        }
+        _ => "Series title, e.g. Severance (or tvdb:12345)",
     };
 
     rsx! {
@@ -129,22 +134,20 @@ pub fn AddMedia() -> Element {
             Link { to: Route::ImportWizard {}, class: "btn", "Import a Sonarr or Tanukarr library" }
         }
         form { class: "toolbar", role: "search", onsubmit: search,
-            div { class: "seg", role: "group", "aria-label": "Catalogue",
+            select { class: "select", "aria-label": "Catalogue",
+                onchange: move |e: FormEvent| {
+                    if let Ok(p) = e.value().parse::<MetadataProvider>() {
+                        provider.set(p);
+                        save_pref(PROVIDER_PREF, p.as_str());
+                    }
+                },
                 for c in list.iter() {
-                    button {
+                    option {
                         key: "{c.provider}",
-                        r#type: "button",
-                        class: if current.as_ref().map(|x| x.provider) == Some(c.provider) { "on" } else { "" },
-                        "aria-pressed": "{current.as_ref().map(|x| x.provider) == Some(c.provider)}",
-                        title: "{c.description}",
-                        onclick: {
-                            let p = c.provider;
-                            move |_| {
-                                provider.set(p);
-                                save_pref(PROVIDER_PREF, p.as_str());
-                            }
-                        },
-                        "{c.name}"
+                        value: "{c.provider.as_str()}",
+                        selected: current.as_ref().map(|x| x.provider) == Some(c.provider),
+                        disabled: !c.available,
+                        if c.available { "{c.name}" } else { "{c.name} (API key needed)" }
                     }
                 }
             }
@@ -189,7 +192,7 @@ pub fn AddMedia() -> Element {
             None => rsx! { Loading { label: "Searching…" } },
             Some(Ok(None)) => rsx! {
                 Empty { title: "Find something to add",
-                    p { "TVmaze covers TV series; AniList covers anime series and anime films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline." }
+                    p { "TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline." }
                 }
             },
         }

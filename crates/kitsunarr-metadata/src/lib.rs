@@ -4,12 +4,17 @@
 //! keeps the provider's native identity. Requests are rate limited per provider, retried once
 //! on HTTP 429 (honouring `Retry-After`) and cached briefly in memory.
 //!
-//! Implemented: TVmaze (TV, no key) and AniList (anime and anime films, no key). Other
-//! catalogues are tracked in the feature matrix.
+//! Implemented: TheTVDB through SkyHook (TV and anime, no key), TMDB (TV and films, the user's
+//! API key), TVmaze (TV, no key), AniList (anime and anime films, no key), MyAnimeList through
+//! Jikan (anime and anime films, no key) and OMDb (films, the user's API key).
 
 pub mod anilist;
 mod cache;
+pub mod jikan;
+pub mod omdb;
 mod ratelimit;
+pub mod skyhook;
+pub mod tmdb;
 pub mod tvmaze;
 
 use std::time::Duration;
@@ -24,6 +29,8 @@ pub use ratelimit::RateLimiter;
 pub enum MetadataError {
     #[error("{0} is not supported yet")]
     Unsupported(MetadataProvider),
+    #[error("{0} needs an API key; enter it in Settings › Metadata")]
+    MissingKey(MetadataProvider),
     #[error("not found in {0}")]
     NotFound(MetadataProvider),
     #[error("{provider} request failed: {message}")]
@@ -133,39 +140,153 @@ pub fn strip_html(raw: &str) -> String {
         .join(" ")
 }
 
+/// The search result describing a title fetched in full.
+pub(crate) fn result_of(info: &SeriesInfo) -> SearchResult {
+    SearchResult {
+        provider: info.provider,
+        id: info.id.clone(),
+        kind: info.kind,
+        title: info.title.clone(),
+        year: info.year,
+        overview: info.overview.clone(),
+        network: info.network.clone(),
+        status: info.status,
+        poster_url: info
+            .images
+            .iter()
+            .find(|i| i.cover_type == "poster")
+            .map(|i| i.remote_url.clone()),
+        external_ids: info.external_ids.clone(),
+    }
+}
+
+/// Where each catalogue is reached (a caching proxy, a mirror, or a local mock in tests).
+#[derive(Debug, Clone)]
+pub struct Endpoints {
+    pub tvmaze: String,
+    pub anilist: String,
+    pub tvdb: String,
+    pub tmdb: String,
+    pub jikan: String,
+    pub omdb: String,
+}
+
+impl Default for Endpoints {
+    fn default() -> Self {
+        Self {
+            tvmaze: tvmaze::DEFAULT_BASE.into(),
+            anilist: anilist::DEFAULT_BASE.into(),
+            tvdb: skyhook::DEFAULT_BASE.into(),
+            tmdb: tmdb::DEFAULT_BASE.into(),
+            jikan: jikan::DEFAULT_BASE.into(),
+            omdb: omdb::DEFAULT_BASE.into(),
+        }
+    }
+}
+
+impl Endpoints {
+    /// Every catalogue at an unreachable address (tests that must not touch the network).
+    pub fn offline() -> Self {
+        let dead = "http://127.0.0.1:9".to_string();
+        Self {
+            tvmaze: dead.clone(),
+            anilist: format!("{dead}/graphql"),
+            tvdb: dead.clone(),
+            tmdb: dead.clone(),
+            jikan: dead.clone(),
+            omdb: dead,
+        }
+    }
+}
+
 /// Provider registry with shared HTTP client, rate limits and caches.
 #[derive(Clone)]
 pub struct Metadata {
     pub tvmaze: tvmaze::TvMaze,
     pub anilist: anilist::AniList,
+    pub tvdb: skyhook::SkyHook,
+    pub tmdb: tmdb::Tmdb,
+    pub jikan: jikan::Jikan,
+    pub omdb: omdb::Omdb,
 }
 
 impl Metadata {
     pub fn new(http: reqwest::Client) -> Self {
-        Self::with_endpoints(http, tvmaze::DEFAULT_BASE, anilist::DEFAULT_BASE)
+        Self::with(http, &Endpoints::default())
     }
 
-    /// Uses alternative endpoints (a caching proxy, a mirror, or a local mock in tests).
+    /// Uses alternative endpoints for TVmaze and AniList, the defaults for the others.
     pub fn with_endpoints(http: reqwest::Client, tvmaze_url: &str, anilist_url: &str) -> Self {
+        Self::with(
+            http,
+            &Endpoints {
+                tvmaze: tvmaze_url.into(),
+                anilist: anilist_url.into(),
+                ..Endpoints::default()
+            },
+        )
+    }
+
+    pub fn with(http: reqwest::Client, e: &Endpoints) -> Self {
         Self {
-            tvmaze: tvmaze::TvMaze::with_base(http.clone(), tvmaze_url),
-            anilist: anilist::AniList::with_base(http, anilist_url),
+            tvmaze: tvmaze::TvMaze::with_base(http.clone(), &e.tvmaze),
+            anilist: anilist::AniList::with_base(http.clone(), &e.anilist),
+            tvdb: skyhook::SkyHook::with_base(http.clone(), &e.tvdb),
+            tmdb: tmdb::Tmdb::with_base(http.clone(), &e.tmdb),
+            jikan: jikan::Jikan::with_base(http.clone(), &e.jikan),
+            omdb: omdb::Omdb::with_base(http, &e.omdb),
         }
+    }
+
+    /// The user's API keys for TMDB and OMDb (`None` or empty: the catalogue is unavailable).
+    pub fn set_api_keys(&self, tmdb: Option<String>, omdb: Option<String>) {
+        self.tmdb.set_api_key(tmdb);
+        self.omdb.set_api_key(omdb);
     }
 
     pub fn supports(provider: MetadataProvider) -> bool {
         kitsunarr_domain::api::metadata::SUPPORTED_CATALOGUES.contains(&provider)
     }
 
+    /// Whether the catalogue can be used now (it needs no key, or its key is set).
+    pub fn available(&self, provider: MetadataProvider) -> bool {
+        match provider {
+            MetadataProvider::TmdbTv | MetadataProvider::TmdbMovie => self.tmdb.has_api_key(),
+            MetadataProvider::Omdb => self.omdb.has_api_key(),
+            other => Self::supports(other),
+        }
+    }
+
     /// The catalogues that can be searched, with the credit their terms ask for.
     pub fn catalogues() -> Vec<CatalogueInfo> {
         vec![
+            CatalogueInfo {
+                provider: MetadataProvider::Tvdb,
+                name: "TheTVDB".into(),
+                description: "TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)"
+                    .into(),
+                kinds: vec![EntryKind::Series, EntryKind::Anime],
+                attribution: "TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates".into(),
+                available: true,
+                url: "https://thetvdb.com".into(),
+            },
+            CatalogueInfo {
+                provider: MetadataProvider::TmdbTv,
+                name: "TMDB (TV)".into(),
+                description: "TV series, with TMDB's episode groups as orderings (needs an API key)"
+                    .into(),
+                kinds: vec![EntryKind::Series, EntryKind::Anime],
+                attribution: "This product uses the TMDB API but is not endorsed or certified by TMDB".into(),
+                available: true,
+                url: "https://www.themoviedb.org".into(),
+            },
             CatalogueInfo {
                 provider: MetadataProvider::TvMaze,
                 name: "TVmaze".into(),
                 description: "TV series and their episode guides".into(),
                 kinds: vec![EntryKind::Series],
                 attribution: "TV data provided by TVmaze.com under CC BY-SA 4.0".into(),
+                available: true,
                 url: "https://www.tvmaze.com".into(),
             },
             CatalogueInfo {
@@ -174,7 +295,36 @@ impl Metadata {
                 description: "Anime series and anime films".into(),
                 kinds: vec![EntryKind::Anime, EntryKind::Movie],
                 attribution: "Anime data provided by AniList".into(),
+                available: true,
                 url: "https://anilist.co".into(),
+            },
+            CatalogueInfo {
+                provider: MetadataProvider::MyAnimeList,
+                name: "MyAnimeList (Jikan)".into(),
+                description: "Anime with episode titles and air dates, through the Jikan API"
+                    .into(),
+                kinds: vec![EntryKind::Anime, EntryKind::Movie],
+                attribution: "Anime data from MyAnimeList, served by the unofficial Jikan API".into(),
+                available: true,
+                url: "https://jikan.moe".into(),
+            },
+            CatalogueInfo {
+                provider: MetadataProvider::TmdbMovie,
+                name: "TMDB (Movies)".into(),
+                description: "Films (needs an API key)".into(),
+                kinds: vec![EntryKind::Movie],
+                attribution: "This product uses the TMDB API but is not endorsed or certified by TMDB".into(),
+                available: true,
+                url: "https://www.themoviedb.org".into(),
+            },
+            CatalogueInfo {
+                provider: MetadataProvider::Omdb,
+                name: "OMDb".into(),
+                description: "Films by IMDb id or title (needs an API key)".into(),
+                kinds: vec![EntryKind::Movie],
+                attribution: "Film data provided by the OMDb API".into(),
+                available: true,
+                url: "https://www.omdbapi.com".into(),
             },
         ]
     }
@@ -187,30 +337,57 @@ impl Metadata {
         match provider {
             MetadataProvider::TvMaze => self.tvmaze.search(term).await,
             MetadataProvider::AniList => self.anilist.search(term).await,
-            other => Err(MetadataError::Unsupported(other)),
+            MetadataProvider::Tvdb => self.tvdb.search(term).await,
+            MetadataProvider::TmdbTv => self.tmdb.search_tv(term).await,
+            MetadataProvider::TmdbMovie => self.tmdb.search_movies(term).await,
+            MetadataProvider::MyAnimeList => self.jikan.search(term).await,
+            MetadataProvider::Omdb => self.omdb.search(term).await,
         }
     }
 
     pub async fn series(&self, provider: MetadataProvider, id: &str) -> MetadataResult<SeriesInfo> {
+        self.series_ordered(provider, id, None).await
+    }
+
+    /// A title in a given episode ordering: TheTVDB's season type (`dvd`, `absolute`, ...) or a
+    /// TMDB episode group id. Other catalogues have one ordering.
+    pub async fn series_ordered(
+        &self,
+        provider: MetadataProvider,
+        id: &str,
+        ordering: Option<&str>,
+    ) -> MetadataResult<SeriesInfo> {
         match provider {
             MetadataProvider::TvMaze => self.tvmaze.series(id).await,
             MetadataProvider::AniList => self.anilist.series(id).await,
-            other => Err(MetadataError::Unsupported(other)),
+            MetadataProvider::Tvdb => {
+                self.tvdb
+                    .series_ordered(id, ordering.unwrap_or("official"))
+                    .await
+            }
+            MetadataProvider::TmdbTv => self.tmdb.tv(id, ordering).await,
+            MetadataProvider::TmdbMovie => self.tmdb.movie(id).await,
+            MetadataProvider::MyAnimeList => self.jikan.series(id).await,
+            MetadataProvider::Omdb => self.omdb.movie(id).await,
         }
     }
 
-    /// Like [`Self::series`] but bypasses the in-memory cache (used by refreshes).
+    /// Like [`Self::series_ordered`] but bypasses the in-memory cache (used by refreshes).
     pub async fn series_fresh(
         &self,
         provider: MetadataProvider,
         id: &str,
+        ordering: Option<&str>,
     ) -> MetadataResult<SeriesInfo> {
         match provider {
             MetadataProvider::TvMaze => self.tvmaze.forget(id),
             MetadataProvider::AniList => self.anilist.forget(id),
-            _ => {}
+            MetadataProvider::Tvdb => self.tvdb.forget(id),
+            MetadataProvider::TmdbTv | MetadataProvider::TmdbMovie => self.tmdb.forget(id),
+            MetadataProvider::MyAnimeList => self.jikan.forget(id),
+            MetadataProvider::Omdb => self.omdb.forget(id),
         }
-        self.series(provider, id).await
+        self.series_ordered(provider, id, ordering).await
     }
 }
 

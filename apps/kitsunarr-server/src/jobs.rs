@@ -143,9 +143,10 @@ pub fn all(
 /// Refreshes every title that is due. One failing title does not stop the others; the run
 /// fails only when every refresh failed (typically: the catalogue is unreachable).
 async fn refresh_metadata(ctx: &JobContext, metadata: &Metadata) -> JobResult {
-    let (series, movies) = kitsunarr_library::due_for_refresh(&ctx.db, chrono::Utc::now())
-        .await
-        .map_err(|e| e.to_string())?;
+    let (series, movies) =
+        kitsunarr_library::due_for_refresh(&ctx.db, metadata, chrono::Utc::now())
+            .await
+            .map_err(|e| e.to_string())?;
     let total = series.len() + movies.len();
     if total == 0 {
         return Ok(Some("Nothing is due for a refresh".into()));

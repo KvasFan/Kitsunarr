@@ -26,8 +26,9 @@ use kitsunarr_domain::api::migration::{
 };
 use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, FormatScore, IndexerOptionsSettings,
-    MediaManagementSettings, NamingSettings, OrderedF64, ProperDownloadType, ProviderKind,
-    QualityDefinition, QualityGroup, QualityProfile, QualityProfileItem,
+    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, OrderedF64,
+    ProperDownloadType, ProviderKind, QualityDefinition, QualityGroup, QualityProfile,
+    QualityProfileItem,
 };
 use kitsunarr_domain::{
     ExternalId, ExternalIdKind, MediaKind, MetadataProvider, MinimumAvailability, MovieStatus,
@@ -63,6 +64,9 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "enablecompleteddownloadhandling",
     "autoredownloadfailed",
     "autoredownloadfailedfrominteractivesearch",
+    // Catalogue keys (Tanukarr).
+    "tmdbapikey",
+    "omdbapikey",
 ];
 
 /// Custom-format specification implementations Sonarr v4 provides (others are kept but flagged).
@@ -1122,6 +1126,31 @@ impl<'a> Importer<'a> {
             } else if current == DownloadClientOptionsSettings::default() || self.update_existing()
             {
                 settings::set(&mut *conn, settings::KEY_DOWNLOAD_CLIENT_OPTIONS, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
+        // Catalogue keys (Tanukarr's `tmdbapikey` and `omdbapikey` `Config` entries).
+        if let Some(cfg) = self
+            .snap
+            .media_management
+            .clone()
+            .filter(|r| r.has("tmdbapikey") || r.has("omdbapikey"))
+        {
+            let current: MetadataSourcesSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_METADATA_SOURCES).await?;
+            let mut next = current.clone();
+            if let Some(k) = cfg.str("tmdbapikey").filter(|k| k != "********") {
+                next.tmdb_api_key = Some(k);
+            }
+            if let Some(k) = cfg.str("omdbapikey").filter(|k| k != "********") {
+                next.omdb_api_key = Some(k);
+            }
+            if next == current {
+                self.count("settings", Act::Skip);
+            } else if current == MetadataSourcesSettings::default() || self.update_existing() {
+                settings::set(&mut *conn, settings::KEY_METADATA_SOURCES, &next).await?;
                 self.count("settings", Act::Update);
             } else {
                 self.count("settings", Act::Skip);

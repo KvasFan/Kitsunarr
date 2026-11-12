@@ -27,8 +27,8 @@ use kitsunarr_domain::api::search::{
 };
 use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
-    MediaManagementSettings, NamingSettings, ProviderItem, QualityDefinition, QualityProfile,
-    RootFolderCreate, RootFolderItem, TagCreate, TagItem,
+    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProviderItem,
+    QualityDefinition, QualityProfile, RootFolderCreate, RootFolderItem, TagCreate, TagItem,
 };
 use kitsunarr_domain::api::system::{
     BackupItem, HealthCheck, ScheduledTaskItem, SystemStatus, TaskRunItem,
@@ -354,6 +354,15 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::queue::QueueRemovalResult> {
         self.post(&format!("/history/{id}/failed"), &serde_json::json!({}))
             .await
+    }
+    pub async fn metadata_sources(&self) -> ClientResult<MetadataSourcesSettings> {
+        self.get("/settings/metadatasources").await
+    }
+    pub async fn put_metadata_sources(
+        &self,
+        s: &MetadataSourcesSettings,
+    ) -> ClientResult<MetadataSourcesSettings> {
+        self.put("/settings/metadatasources", s).await
     }
     pub async fn download_client_options(&self) -> ClientResult<DownloadClientOptionsSettings> {
         self.get("/settings/downloadclientoptions").await

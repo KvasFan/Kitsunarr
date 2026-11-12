@@ -297,10 +297,16 @@ async fn serve(config: Config) -> Result<()> {
         .connect_timeout(Duration::from_secs(10))
         .timeout(Duration::from_secs(60))
         .build()?;
-    let metadata = kitsunarr_metadata::Metadata::with_endpoints(
+    let metadata = kitsunarr_metadata::Metadata::with(
         http.clone(),
-        &config.metadata.tvmaze_url,
-        &config.metadata.anilist_url,
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: config.metadata.tvmaze_url.clone(),
+            anilist: config.metadata.anilist_url.clone(),
+            tvdb: config.metadata.tvdb_url.clone(),
+            tmdb: config.metadata.tmdb_url.clone(),
+            jikan: config.metadata.jikan_url.clone(),
+            omdb: config.metadata.omdb_url.clone(),
+        },
     );
     let downloads = kitsunarr_library::downloads::Monitor::new(http.clone());
     // Jobs that need the API's state (RSS sync) receive it once it exists.
@@ -336,6 +342,9 @@ async fn serve(config: Config) -> Result<()> {
     )
     .with_download_monitor(downloads);
     let _ = api_state.set(state.clone());
+    if let Err(e) = kitsunarr_api::routes::settings::apply_metadata_keys(&state).await {
+        tracing::warn!(error = %e.message(), "could not load the metadata catalogue keys");
+    }
     scheduler.start(Duration::from_secs(30)).await?;
     kitsunarr_api::rss::sync_interval(&db).await?;
     if !assets::Embedded::has_ui() {

@@ -39,6 +39,14 @@ impl<V: Clone> TtlCache<V> {
             .remove(key);
     }
 
+    /// Removes every entry whose key starts with `prefix`.
+    pub fn remove_prefix(&self, prefix: &str) {
+        self.entries
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .retain(|k, _| !k.starts_with(prefix));
+    }
+
     pub fn insert(&self, key: String, value: V) {
         let mut map = self.entries.lock().unwrap_or_else(|e| e.into_inner());
         if map.len() >= self.capacity {

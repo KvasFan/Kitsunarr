@@ -1,0 +1,374 @@
+[
+ {
+  "title": "Breaking Bad",
+  "originalTitle": "Breaking Bad",
+  "tvdbId": 81189,
+  "tmdbId": 1396,
+  "tvRageId": 18164,
+  "tvMazeId": 169,
+  "imdbId": "tt0903747",
+  "overview": "When Walter White, a chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of two years left to live, he chooses to enter a dangerous world of drugs and crime with the intent to secure his family's financial security.",
+  "slug": "breaking-bad",
+  "formats": [
+   "unknown"
+  ],
+  "originalCountry": "usa",
+  "originalLanguage": "eng",
+  "language": "eng",
+  "firstAired": "2008-01-20",
+  "lastAired": "2013-09-29",
+  "malIds": [],
+  "anidbIds": [],
+  "aniListIds": [],
+  "lastUpdated": "2026-11-05T04:42:58Z",
+  "status": "Ended",
+  "runtime": 48,
+  "timeOfDay": {
+   "hours": 21,
+   "minutes": 0
+  },
+  "originalNetwork": "AMC",
+  "network": "AMC",
+  "genres": [
+   "Crime",
+   "Drama",
+   "Thriller",
+   "Western"
+  ],
+  "contentRating": "TV-MA",
+  "rating": {
+   "count": 2704185,
+   "value": "9.5"
+  },
+  "alternativeTitles": [
+   {
+    "title": "Breaking Bad: Original Minisodes"
+   }
+  ],
+  "translations": [
+   {
+    "language": "eng",
+    "title": "Breaking Bad",
+    "overview": "When Walter White, a chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of two years left to live, he chooses to enter a dangerous world of drugs and crime with the intent to secure his family's financial security."
+   }
+  ],
+  "seasonTypes": [
+   {
+    "name": "Aired Order",
+    "type": "official",
+    "seasonNumbers": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "episodeCount": 62
+   },
+   {
+    "name": "DVD Order",
+    "type": "dvd",
+    "seasonNumbers": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5
+    ],
+    "episodeCount": 62
+   }
+  ],
+  "actors": [],
+  "images": [
+   {
+    "coverType": "Banner",
+    "url": "https://artworks.thetvdb.com/banners/graphical/81189-g21.jpg"
+   },
+   {
+    "coverType": "Poster",
+    "url": "https://artworks.thetvdb.com/banners/posters/81189-10.jpg"
+   },
+   {
+    "coverType": "Fanart",
+    "url": "https://artworks.thetvdb.com/banners/fanart/original/81189-21.jpg"
+   },
+   {
+    "coverType": "Clearlogo",
+    "url": "https://artworks.thetvdb.com/banners/v4/series/81189/clearlogo/611b4df33bac5.png"
+   }
+  ],
+  "seasons": [
+   {
+    "seasonNumber": 0,
+    "year": 2009,
+    "images": [
+     {
+      "coverType": "Poster",
+      "url": "https://artworks.thetvdb.com/banners/seasons/81189-0.jpg"
+     }
+    ]
+   },
+   {
+    "seasonNumber": 1,
+    "year": 2008,
+    "images": [
+     {
+      "coverType": "Poster",
+      "url": "https://artworks.thetvdb.com/banners/seasons/81189-1-3.jpg"
+     },
+     {
+      "coverType": "Banner",
+      "url": "https://artworks.thetvdb.com/banners/seasonswide/81189-1.jpg"
+     }
+    ]
+   },
+   {
+    "seasonNumber": 2,
+    "year": 2009,
+    "images": [
+     {
+      "coverType": "Poster",
+      "url": "https://artworks.thetvdb.com/banners/seasons/81189-2-17.jpg"
+     },
+     {
+      "coverType": "Banner",
+      "url": "https://artworks.thetvdb.com/banners/seasonswide/81189-2.jpg"
+     }
+    ]
+   },
+   {
+    "seasonNumber": 3,
+    "year": 2010,
+    "images": [
+     {
+      "coverType": "Poster",
+      "url": "https://artworks.thetvdb.com/banners/seasons/81189-3-16.jpg"
+     },
+     {
+      "coverType": "Banner",
+      "url": "https://artworks.thetvdb.com/banners/seasonswide/81189-3.jpg"
+     }
+    ]
+   },
+   {
+    "seasonNumber": 4,
+    "year": 2011,
+    "images": [
+     {
+      "coverType": "Poster",
+      "url": "https://artworks.thetvdb.com/banners/seasons/81189-4-15.jpg"
+     },
+     {
+      "coverType": "Banner",
+      "url": "https://artworks.thetvdb.com/banners/seasonswide/81189-4.jpg"
+     }
+    ]
+   },
+   {
+    "seasonNumber": 5,
+    "year": 2012,
+    "images": [
+     {
+      "coverType": "Poster",
+      "url": "https://artworks.thetvdb.com/banners/seasons/81189-5-18.jpg"
+     },
+     {
+      "coverType": "Banner",
+      "url": "https://artworks.thetvdb.com/banners/seasonswide/81189-5.jpg"
+     }
+    ]
+   }
+  ],
+  "metadataSource": "tvdb"
+ },
+ {
+  "title": "Breaking Band",
+  "originalTitle": "Breaking Band",
+  "tvdbId": 306432,
+  "tvMazeId": 6101,
+  "imdbId": "tt4854852",
+  "overview": "Six emerging musicians are each paired with one rock legend, who provides guidance to help the up and comers work to achieve their dreams of stardom. Mentors Dave Navarro, Moby, Sebastian Bach, Robin Zander, Belinda Carlisle, and Mark McGrath share invaluable advice and collaborate with their proteges before deciding whether to join them on stage for a live performance at YouTube Space LA.",
+  "slug": "breaking-band",
+  "formats": [
+   "unknown"
+  ],
+  "originalCountry": "usa",
+  "originalLanguage": "eng",
+  "language": "eng",
+  "firstAired": "2016-01-24",
+  "lastAired": "2016-02-28",
+  "malIds": [],
+  "anidbIds": [],
+  "aniListIds": [],
+  "lastUpdated": "2021-05-10T19:20:34Z",
+  "status": "Ended",
+  "runtime": 30,
+  "timeOfDay": {
+   "hours": 21,
+   "minutes": 30
+  },
+  "originalNetwork": "AXS TV",
+  "network": "AXS TV",
+  "genres": [
+   "Musical",
+   "Reality"
+  ],
+  "rating": {
+   "count": 11,
+   "value": "6.4"
+  },
+  "translations": [
+   {
+    "language": "eng",
+    "title": "Breaking Band",
+    "overview": "Six emerging musicians are each paired with one rock legend, who provides guidance to help the up and comers work to achieve their dreams of stardom. Mentors Dave Navarro, Moby, Sebastian Bach, Robin Zander, Belinda Carlisle, and Mark McGrath share invaluable advice and collaborate with their proteges before deciding whether to join them on stage for a live performance at YouTube Space LA."
+   }
+  ],
+  "seasonTypes": [
+   {
+    "name": "Aired Order",
+    "type": "official",
+    "seasonNumbers": [
+     0,
+     1
+    ],
+    "episodeCount": 6
+   }
+  ],
+  "seasons": [
+   {
+    "seasonNumber": 0
+   },
+   {
+    "seasonNumber": 1,
+    "year": 2016
+   }
+  ],
+  "metadataSource": "tvdb",
+  "actors": []
+ },
+ {
+  "title": "Bradley & Barney Walsh: Breaking Dad",
+  "originalTitle": "Bradley & Barney Walsh: Breaking Dad",
+  "tvdbId": 357539,
+  "tmdbId": 85466,
+  "tvMazeId": 39967,
+  "imdbId": "tt9516768",
+  "overview": "Actor Bradley Walsh and his 20-year-old son Barney are hitting the road together for a brand-new four-part series, travelling over 2000 miles from Los Angeles to New Orleans.",
+  "slug": "bradley-walsh-and-son-breaking-dad",
+  "formats": [
+   "unknown"
+  ],
+  "originalCountry": "gbr",
+  "originalLanguage": "eng",
+  "language": "eng",
+  "firstAired": "2019-01-02",
+  "lastAired": "2026-06-12",
+  "malIds": [],
+  "anidbIds": [],
+  "aniListIds": [],
+  "lastUpdated": "2026-06-12T20:09:40Z",
+  "status": "Continuing",
+  "runtime": 28,
+  "timeOfDay": {
+   "hours": 20,
+   "minutes": 0
+  },
+  "originalNetwork": "ITV1",
+  "network": "ITV1",
+  "genres": [
+   "Comedy",
+   "Documentary",
+   "Reality"
+  ],
+  "rating": {
+   "count": 217,
+   "value": "7.4"
+  },
+  "alternativeTitles": [
+   {
+    "title": "Bradley Walsh & Son: Breaking Dad"
+   },
+   {
+    "title": "Bradley Walsh and Son Breaking Dad"
+   }
+  ],
+  "translations": [
+   {
+    "language": "eng",
+    "title": "Bradley & Barney Walsh: Breaking Dad",
+    "overview": "Actor Bradley Walsh and his 20-year-old son Barney are hitting the road together for a brand-new four-part series, travelling over 2000 miles from Los Angeles to New Orleans."
+   }
+  ],
+  "seasonTypes": [
+   {
+    "name": "Aired Order",
+    "type": "official",
+    "seasonNumbers": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "episodeCount": 41
+   }
+  ],
+  "actors": [],
+  "images": [
+   {
+    "coverType": "Banner",
+    "url": "https://artworks.thetvdb.com/banners/v4/series/357539/banners/67ec2f1a2b3d8.jpg"
+   },
+   {
+    "coverType": "Poster",
+    "url": "https://artworks.thetvdb.com/banners/v4/series/357539/posters/60ef7c4f4f42d.jpg"
+   },
+   {
+    "coverType": "Fanart",
+    "url": "https://artworks.thetvdb.com/banners/v4/series/357539/backgrounds/67ece38e63eeb.jpg"
+   }
+  ],
+  "seasons": [
+   {
+    "seasonNumber": 0,
+    "year": 2020
+   },
+   {
+    "seasonNumber": 1,
+    "year": 2019
+   },
+   {
+    "seasonNumber": 2,
+    "year": 2020
+   },
+   {
+    "seasonNumber": 3,
+    "year": 2021,
+    "title": "Europe"
+   },
+   {
+    "seasonNumber": 4,
+    "year": 2022
+   },
+   {
+    "seasonNumber": 5,
+    "year": 2023
+   },
+   {
+    "seasonNumber": 6,
+    "year": 2025
+   },
+   {
+    "seasonNumber": 7,
+    "year": 2026
+   }
+  ],
+  "metadataSource": "tvdb"
+ }
+]
