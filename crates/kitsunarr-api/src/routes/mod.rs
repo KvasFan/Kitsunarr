@@ -74,6 +74,8 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(library::bulk_edit_movies))
         .routes(routes!(movie_search::search_movie_releases))
         .routes(routes!(movie_search::automatic_movie_search))
+        .routes(routes!(movie_search::missing_movies))
+        .routes(routes!(movie_search::search_missing_movies))
         .routes(routes!(
             library::list_collections,
             library::create_collection

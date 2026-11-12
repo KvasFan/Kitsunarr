@@ -203,6 +203,71 @@ pub async fn automatic_movie_search(
     Ok(Json(grab_best(&state, &run, id, "Search").await))
 }
 
+/// Monitored films without a file that are available.
+#[utoipa::path(get, path = "/wanted/movies", tag = "wanted",
+    responses((status = 200, body = Vec<kitsunarr_domain::api::wanted::WantedMovie>)))]
+pub async fn missing_movies(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::wanted::WantedMovie>>> {
+    let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
+    Ok(Json(movies::missing(&state.db, &today).await?))
+}
+
+/// Searches for missing films (all of them, or the given ones) in the background, grabbing
+/// each one's best accepted release.
+#[utoipa::path(post, path = "/wanted/movies/search", tag = "wanted",
+    request_body = kitsunarr_domain::api::wanted::WantedMovieSearchRequest,
+    responses((status = 202, body = kitsunarr_domain::api::wanted::WantedSearchStarted)))]
+pub async fn search_missing_movies(
+    State(state): State<AppState>,
+    Json(req): Json<kitsunarr_domain::api::wanted::WantedMovieSearchRequest>,
+) -> ApiResult<(
+    axum::http::StatusCode,
+    Json<kitsunarr_domain::api::wanted::WantedSearchStarted>,
+)> {
+    let ids: Vec<i64> = if req.movie_ids.is_empty() {
+        let today = chrono::Utc::now().format("%Y-%m-%d").to_string();
+        movies::missing(&state.db, &today)
+            .await?
+            .into_iter()
+            .map(|m| m.id)
+            .collect()
+    } else {
+        req.movie_ids.clone()
+    };
+    let count = ids.len();
+    let task_state = state.clone();
+    tokio::spawn(async move {
+        let mut grabbed = 0usize;
+        for id in ids {
+            match run_movie_search(&task_state, id, true).await {
+                Ok(run) => {
+                    grabbed += grab_best(&task_state, &run, id, "Search")
+                        .await
+                        .grabbed
+                        .len();
+                }
+                Err(e) => {
+                    tracing::warn!(movie = id, error = %e.message(), "the film search failed")
+                }
+            }
+        }
+        tracing::info!(searched = count, grabbed, "missing film search finished");
+    });
+    Ok((
+        axum::http::StatusCode::ACCEPTED,
+        Json(kitsunarr_domain::api::wanted::WantedSearchStarted {
+            episodes: count,
+            searches: count,
+            message: if count == 0 {
+                "Nothing to search: no missing film.".into()
+            } else {
+                format!("Searching {count} films.")
+            },
+        }),
+    ))
+}
+
 /// Grabs the best approved release of a film search.
 pub(crate) async fn grab_best(
     state: &AppState,

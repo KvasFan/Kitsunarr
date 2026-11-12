@@ -160,5 +160,67 @@ fn WantedPage(list: WantedList) -> Element {
                 }
             }
         }
+        if list == WantedList::Missing {
+            MissingFilms {}
+        }
+    }
+}
+
+/// Monitored films without a file that are available (Tanukarr lists films with episodes).
+#[component]
+fn MissingFilms() -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let films = use_resource(move || {
+        let _ = (app.library_rev)();
+        let c = c0.clone();
+        async move { c.missing_movies().await }
+    });
+    let search = move |ids: Vec<i64>| {
+        let c = client.clone();
+        spawn(async move {
+            match c.search_missing_movies(&ids).await {
+                Ok(r) => app.toast(ToastLevel::Info, r.message),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let list = match &*films.read() {
+        Some(Ok(l)) => l.clone(),
+        Some(Err(e)) => return rsx! { ErrorBox { message: e.to_string() } },
+        None => return rsx! {},
+    };
+    if list.is_empty() {
+        return rsx! {};
+    }
+    let all = search.clone();
+    rsx! {
+        div { class: "page-head", style: "margin-top: var(--sp-6)",
+            h2 { class: "grow", "Missing films" }
+            button { class: "btn", onclick: move |_| all(Vec::new()), "Search all films" }
+        }
+        div { class: "table-wrap",
+            table { class: "table",
+                thead { tr { th { "Film" } th { "Available from" } th { class: "hide-mobile", "Last searched" } th { span { class: "sr-only", "Actions" } } } }
+                tbody {
+                    for m in list.iter() {
+                        {
+                            let id = m.id;
+                            let one = search.clone();
+                            let year = m.year.map(|y| format!(" ({y})")).unwrap_or_default();
+                            rsx! {
+                                tr { key: "{m.id}",
+                                    td { Link { to: Route::MovieDetailPage { id: m.id }, "{m.title}{year}" } }
+                                    td { class: "small", "{m.minimum_availability}" }
+                                    td { class: "hide-mobile small muted", {m.last_search_at.as_deref().map(relative).unwrap_or_else(|| "never".into())} }
+                                    td { class: "actions", button { class: "btn sm", "aria-label": "Search for {m.title}", onclick: move |_| one(vec![id]), "Search" } }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

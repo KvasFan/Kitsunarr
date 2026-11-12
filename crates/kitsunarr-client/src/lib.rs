@@ -697,6 +697,25 @@ impl Client {
     pub async fn search_releases(&self, q: &ReleaseQuery) -> ClientResult<ReleaseSearchResult> {
         self.get_query("/releases", q).await
     }
+    /// Monitored films without a file that are available.
+    pub async fn missing_movies(
+        &self,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::wanted::WantedMovie>> {
+        self.get("/wanted/movies").await
+    }
+    /// Searches for missing films (empty: all of them).
+    pub async fn search_missing_movies(
+        &self,
+        movie_ids: &[i64],
+    ) -> ClientResult<kitsunarr_domain::api::wanted::WantedSearchStarted> {
+        self.post(
+            "/wanted/movies/search",
+            &kitsunarr_domain::api::wanted::WantedMovieSearchRequest {
+                movie_ids: movie_ids.to_vec(),
+            },
+        )
+        .await
+    }
     /// Interactive release search for a film.
     pub async fn search_movie_releases(&self, movie_id: i64) -> ClientResult<ReleaseSearchResult> {
         self.get(&format!("/movies/{movie_id}/releases")).await

@@ -639,6 +639,44 @@ pub async fn pending_grab_date(db: &Database, id: i64) -> DbResult<Option<String
     Ok(last.filter(|(e, _)| e == "grabbed").map(|(_, d)| d))
 }
 
+/// Monitored films without a file that are available: `announced` always, `inCinemas` from
+/// the cinema release, `released` from the digital or physical release (or 90 days after the
+/// cinema release, or the year after the film's year when no date is known).
+pub async fn missing(
+    db: &Database,
+    today: &str,
+) -> DbResult<Vec<kitsunarr_domain::api::wanted::WantedMovie>> {
+    type Row = (i64, String, Option<i64>, String, Option<String>);
+    let rows: Vec<Row> = sqlx::query_as(
+        "SELECT m.id, m.title, m.year, m.minimum_availability, m.last_search_at FROM movies m \
+         WHERE m.monitored = 1 AND NOT EXISTS (SELECT 1 FROM movie_files f WHERE f.movie_id = m.id) AND ( \
+           m.minimum_availability = 'announced' \
+           OR (m.minimum_availability = 'inCinemas' AND (substr(m.in_cinemas, 1, 10) <= ?1 \
+               OR (m.in_cinemas IS NULL AND m.year IS NOT NULL AND m.year <= CAST(substr(?1, 1, 4) AS INTEGER)))) \
+           OR (substr(m.digital_release, 1, 10) <= ?1 OR substr(m.physical_release, 1, 10) <= ?1 \
+               OR (m.digital_release IS NULL AND m.physical_release IS NULL AND m.in_cinemas IS NOT NULL \
+                   AND date(substr(m.in_cinemas, 1, 10), '+90 days') <= ?1) \
+               OR (m.digital_release IS NULL AND m.physical_release IS NULL AND m.in_cinemas IS NULL \
+                   AND m.year IS NOT NULL AND m.year < CAST(substr(?1, 1, 4) AS INTEGER))) \
+         ) ORDER BY m.sort_title",
+    )
+    .bind(today)
+    .fetch_all(db.pool())
+    .await?;
+    Ok(rows
+        .into_iter()
+        .map(|(id, title, year, minimum_availability, last_search_at)| {
+            kitsunarr_domain::api::wanted::WantedMovie {
+                id,
+                title,
+                year: year.map(|y| y as i32),
+                minimum_availability,
+                last_search_at,
+            }
+        })
+        .collect())
+}
+
 /// A film's original title (searches and release matching).
 pub async fn original_title(db: &Database, id: i64) -> DbResult<Option<String>> {
     Ok(

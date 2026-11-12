@@ -4407,6 +4407,9 @@ async fn movies_are_searched_and_grabbed() {
     .await
     .unwrap();
 
+    // Wanted: a monitored film without a file, released (1999, no dates known).
+    let missing = client.missing_movies().await.unwrap();
+    assert_eq!(missing.iter().map(|m| m.id).collect::<Vec<_>>(), vec![7]);
     let found = client.search_movie_releases(7).await.unwrap();
     assert_eq!(found.description, "The Matrix (1999)");
     assert_eq!(found.searched_indexers, 1);
@@ -4429,7 +4432,10 @@ async fn movies_are_searched_and_grabbed() {
     // RSS sync: a release no series claims is matched with the film and grabbed; the next
     // sync leaves the film alone while that grab downloads.
     let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
-    assert!(summary.contains("1 grabbed: The.Matrix.1999.1080p.BluRay.x264-GRP"), "{summary}");
+    assert!(
+        summary.contains("1 grabbed: The.Matrix.1999.1080p.BluRay.x264-GRP"),
+        "{summary}"
+    );
     let again = kitsunarr_api::rss::sync(&server.state).await.unwrap();
     assert!(again.contains("0 grabbed"), "{again}");
 

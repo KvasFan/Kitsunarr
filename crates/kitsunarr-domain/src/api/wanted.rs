@@ -65,6 +65,28 @@ pub struct WantedSearchRequest {
     pub monitored: Option<bool>,
 }
 
+/// A monitored film without a file that is available by its minimum availability.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct WantedMovie {
+    pub id: i64,
+    pub title: String,
+    pub year: Option<i32>,
+    pub minimum_availability: String,
+    pub last_search_at: Option<String>,
+}
+
+/// `POST /wanted/movies/search`: search for some (or all) missing films.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct WantedMovieSearchRequest {
+    /// Films to search; empty: every missing film.
+    #[serde(default)]
+    pub movie_ids: Vec<i64>,
+}
+
 /// The search started in the background; its outcome arrives as a notification.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
