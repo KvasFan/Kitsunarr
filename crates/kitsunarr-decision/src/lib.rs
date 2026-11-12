@@ -123,7 +123,7 @@ impl Engine<'_> {
             include_season_packs,
         } = criteria.kind
         {
-            return self.evaluate_complete_series(releases, criteria, include_season_packs);
+            return self.evaluate_complete_series(releases, criteria, include_season_packs, None);
         }
         let lookup = Lookup::new(self.series, self.library);
         releases
@@ -189,6 +189,26 @@ impl Engine<'_> {
             .collect()
     }
 
+    /// [`Self::evaluate`] for a series in an anime group (Tanukarr's
+    /// `UseCollectionNumbering`): complete-series releases may also be named with the group's
+    /// title and its season numbering (`Group S02` for the group's second season, this series'
+    /// season 1). `collection` is the group title and this series' first slot.
+    pub fn evaluate_collection(
+        &self,
+        releases: &[Release],
+        criteria: &SearchCriteria,
+        collection: Option<(&str, i32)>,
+    ) -> Vec<Decision> {
+        match criteria.kind {
+            SearchKind::CompleteSeries {
+                include_season_packs,
+            } => {
+                self.evaluate_complete_series(releases, criteria, include_season_packs, collection)
+            }
+            _ => self.evaluate(releases, criteria),
+        }
+    }
+
     /// Complete-series search: only releases `CompleteSeriesReleaseParser` reads as a run of
     /// this series are decided; the others are left out, as upstream.
     fn evaluate_complete_series(
@@ -196,7 +216,16 @@ impl Engine<'_> {
         releases: &[Release],
         criteria: &SearchCriteria,
         include_season_packs: bool,
+        collection: Option<(&str, i32)>,
     ) -> Vec<Decision> {
+        // The series as its group numbers it, for collection-numbered releases.
+        let shifted = collection.map(|(title, slot)| {
+            let mut s = self.series.clone();
+            for e in s.episodes.iter_mut().filter(|e| e.season_number > 0) {
+                e.season_number += slot - 1;
+            }
+            (vec![title.to_string()], s, slot - 1)
+        });
         let series = self.series;
         let titles: Vec<String> = std::iter::once(series.title.clone())
             .chain(series.alternate_titles.iter().cloned())
@@ -205,8 +234,16 @@ impl Engine<'_> {
             .iter()
             .enumerate()
             .filter_map(|(i, r)| {
-                let parsed =
-                    complete_series::parse(&r.title, series, &titles, include_season_packs)?;
+                let parsed = complete_series::parse(&r.title, series, &titles, include_season_packs)
+                    .or_else(|| {
+                        let (titles, shifted, offset) = shifted.as_ref()?;
+                        let mut p =
+                            complete_series::parse(&r.title, shifted, titles, include_season_packs)?;
+                        for s in p.season_numbers.iter_mut() {
+                            *s -= offset;
+                        }
+                        Some(p)
+                    })?;
                 // Release identifiers that name another series.
                 let conflicts = (r.tvdb_id > 0 && series.tvdb_id > 0 && r.tvdb_id != series.tvdb_id)
                     || (r.tv_rage_id > 0 && series.tv_rage_id > 0 && r.tv_rage_id != series.tv_rage_id)

@@ -145,6 +145,23 @@ fn CollectionEditor(detail: CollectionDetail, on_change: EventHandler<()>) -> El
             Badge { text: kind_label(&detail.kind) }
             div { class: "spacer" }
             Link { class: "btn ghost", to: Route::Collections {}, "All collections" }
+            {
+                let c = client.clone();
+                rsx! {
+                    button { class: "btn", title: "Search every member's missing episodes (films: the film)",
+                        onclick: move |_| {
+                            let c = c.clone();
+                            spawn(async move {
+                                match c.search_collection(id).await {
+                                    Ok(r) => app.success(r.message),
+                                    Err(e) => app.error(&e),
+                                }
+                            });
+                        },
+                        "Search collection"
+                    }
+                }
+            }
             button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Delete group" }
         }
         div { class: "card stack",

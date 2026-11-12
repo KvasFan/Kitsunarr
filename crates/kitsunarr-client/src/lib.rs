@@ -776,6 +776,13 @@ impl Client {
     ) -> ClientResult<CollectionDetail> {
         self.put(&format!("/collections/{id}"), edit).await
     }
+    pub async fn search_collection(
+        &self,
+        id: i64,
+    ) -> ClientResult<kitsunarr_domain::api::wanted::WantedSearchStarted> {
+        self.post(&format!("/collections/{id}/search"), &serde_json::json!({}))
+            .await
+    }
     pub async fn delete_collection(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/collections/{id}")).await
     }

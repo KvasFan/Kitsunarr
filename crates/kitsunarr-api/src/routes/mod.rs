@@ -86,6 +86,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             library::delete_collection
         ))
         .routes(routes!(library::add_collection_member))
+        .routes(routes!(library::search_collection))
         .routes(routes!(
             library::update_collection_member,
             library::remove_collection_member

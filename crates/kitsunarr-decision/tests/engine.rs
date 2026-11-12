@@ -640,3 +640,45 @@ fn movie_search() {
         "Unable to parse release as a movie"
     );
 }
+
+/// Tanukarr's collection numbering: a group's "Saga S02" is this member's season 1.
+#[test]
+fn complete_series_search_reads_collection_numbered_packs() {
+    let series = breaking_bad();
+    let releases: Vec<Release> = [
+        "Saga.S02.1080p.BluRay.x264-GRP",
+        "Saga.S05.1080p.BluRay.x264-GRP",
+    ]
+    .iter()
+    .map(|t| {
+        let mut r = release(t);
+        r.protocol = DownloadProtocol::Torrent;
+        r.size = 30 * 1024 * 1024 * 1024;
+        r.seeders = Some(10);
+        r
+    })
+    .collect();
+    let library = library();
+    let settings = settings();
+    let engine = Engine {
+        series: &series,
+        library: &library,
+        formats: &[],
+        settings: &settings,
+    };
+    let criteria = SearchCriteria {
+        kind: SearchKind::CompleteSeries {
+            include_season_packs: false,
+        },
+        episode_ids: Vec::new(),
+        monitored_episodes_only: false,
+    };
+    let decided = engine.evaluate_collection(&releases, &criteria, Some(("Saga", 2)));
+    assert_eq!(decided.len(), 1, "only the slot-2 pack names this series");
+    let d = &decided[0];
+    assert_eq!(releases[d.release].title, "Saga.S02.1080p.BluRay.x264-GRP");
+    assert_eq!(d.parsed.as_ref().unwrap().season_numbers, vec![1]);
+    assert!(!d.episodes.is_empty());
+    // Without the group, nothing names the series.
+    assert!(engine.evaluate(&releases, &criteria).is_empty());
+}

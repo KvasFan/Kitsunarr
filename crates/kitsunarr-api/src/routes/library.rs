@@ -322,6 +322,48 @@ pub async fn update_collection_member(
     Ok(Json(collections::detail(&state.db, id).await?))
 }
 
+/// Tanukarr's "Search collection": each member's missing episodes, or the film, are searched
+/// for in the background.
+#[utoipa::path(post, path = "/collections/{id}/search", tag = "library",
+    responses((status = 202, body = kitsunarr_domain::api::wanted::WantedSearchStarted), (status = 404, body = ApiErrorBody)))]
+pub async fn search_collection(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<(
+    StatusCode,
+    Json<kitsunarr_domain::api::wanted::WantedSearchStarted>,
+)> {
+    let detail = collections::detail(&state.db, id).await?;
+    let mut count = 0usize;
+    for m in &detail.members {
+        if let Some(series) = m.series_id {
+            crate::routes::wanted::search_missing_of_series(&state, series);
+            count += 1;
+        } else if let Some(movie) = m.movie_id {
+            let state = state.clone();
+            tokio::spawn(async move {
+                if crate::library_tools::paused(&state).await {
+                    return;
+                }
+                if let Ok(run) =
+                    crate::routes::movie_search::run_movie_search(&state, movie, true).await
+                {
+                    crate::routes::movie_search::grab_best(&state, &run, movie, "Search").await;
+                }
+            });
+            count += 1;
+        }
+    }
+    Ok((
+        StatusCode::ACCEPTED,
+        Json(kitsunarr_domain::api::wanted::WantedSearchStarted {
+            episodes: 0,
+            searches: count,
+            message: format!("Searching {count} titles of {}.", detail.title),
+        }),
+    ))
+}
+
 /// Removes a member (the title itself stays in the library).
 #[utoipa::path(delete, path = "/collections/{id}/members/{member_id}", tag = "library",
     responses((status = 200, body = CollectionDetail), (status = 404, body = ApiErrorBody)))]

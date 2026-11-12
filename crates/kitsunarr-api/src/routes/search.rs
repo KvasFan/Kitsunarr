@@ -302,6 +302,7 @@ fn complete_series_search(
     scene_titles: &[String],
     episodes: &[EpisodeItem],
     automatic: bool,
+    collection: Option<&(String, i32)>,
 ) -> ApiResult<PlannedSearch> {
     let regular: Vec<&EpisodeItem> = episodes.iter().filter(|e| e.season_number > 0).collect();
     if regular.is_empty() {
@@ -337,6 +338,13 @@ fn complete_series_search(
     }
     if !automatic && let Some(first) = query_titles.first() {
         packs.extend(seasons.iter().map(|s| format!("{first} S{s:02}")));
+    }
+    // `CollectionQueryTitles`: the group's title with its season number.
+    if let Some((title, slot)) = collection {
+        let t = clean_scene_title(title).replace('+', " ");
+        if !t.is_empty() {
+            packs.push(format!("{t} S{slot:02}"));
+        }
     }
     Ok((
         vec![(
@@ -609,6 +617,13 @@ pub(crate) async fn run_search(
     };
 
     let episodes = series::list_episodes(&state.db, q.series_id, None).await?;
+    // Tanukarr's collection numbering: a season member of an anime group.
+    let collection: Option<(String, i32)> =
+        kitsunarr_db::library::collections::group_of_series(&state.db, q.series_id)
+            .await?
+            .and_then(|(title, role, slot)| {
+                (role.as_deref() == Some("season")).then_some((title, slot?))
+            });
     if q.season_packs_only
         && (q.season_number.is_none_or(|s| s <= 0) || q.episode_id.is_some() || q.complete_series)
     {
@@ -624,7 +639,12 @@ pub(crate) async fn run_search(
                 "A complete-series search takes no season or episode.",
             ));
         }
-        complete_series_search(&criteria.scene_titles, &episodes, automatic)?
+        complete_series_search(
+            &criteria.scene_titles,
+            &episodes,
+            automatic,
+            collection.as_ref(),
+        )?
     } else {
         match (q.episode_id, q.season_number) {
             (Some(episode_id), _) => {
@@ -761,10 +781,16 @@ pub(crate) async fn run_search(
             kind: *kind,
             episode_ids: requested.clone(),
         };
-        decisions.extend(engine.evaluate(&group, &criteria).into_iter().map(|mut d| {
-            d.release += offset;
-            d
-        }));
+        let slot = collection.as_ref().map(|(t, s)| (t.as_str(), *s));
+        decisions.extend(
+            engine
+                .evaluate_collection(&group, &criteria, slot)
+                .into_iter()
+                .map(|mut d| {
+                    d.release += offset;
+                    d
+                }),
+        );
         all.extend(group);
         all_meta.extend(list);
     }

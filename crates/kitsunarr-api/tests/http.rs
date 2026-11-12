@@ -4121,6 +4121,9 @@ async fn collections_can_be_edited_by_hand() {
         .collect();
     assert_eq!(labels, vec!["Season 1", "Season 2"]);
     assert_eq!(d.members[0].title, "Part One");
+    // Tanukarr's "Search collection": every member is searched.
+    let started = client.search_collection(cid).await.unwrap();
+    assert_eq!(started.searches, 2);
     // The same title twice: a conflict; an unknown role: invalid.
     assert!(
         client
