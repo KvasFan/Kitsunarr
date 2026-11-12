@@ -47,6 +47,7 @@ fn generator<'a>(s: &'a Settings, c: &'a Capabilities) -> Generator<'a> {
         settings: s,
         caps: c,
         page_size: 100,
+        dialect: kitsunarr_indexers::Dialect::Torznab,
     }
 }
 
@@ -301,5 +302,81 @@ fn daily_and_season_zero_formats() {
     assert!(
         first_urls(&generator(&s, &caps).search(&criteria(&["Show"]), &special))[0]
             .contains("&season=00&ep=3")
+    );
+}
+
+fn nyaa_settings(standard: bool) -> Settings {
+    Settings {
+        base_url: "https://nyaa.si/".into(),
+        additional_parameters: Some("&cats=1_0&filter=1".into()),
+        anime_standard_format_search: standard,
+        ..settings()
+    }
+}
+
+fn nyaa<'a>(s: &'a Settings, c: &'a Capabilities) -> Generator<'a> {
+    Generator {
+        dialect: kitsunarr_indexers::Dialect::Nyaa,
+        ..generator(s, c)
+    }
+}
+
+/// `NyaaRequestGenerator`: the RSS page with a search term, one page per request.
+#[test]
+fn nyaa_feed_and_anime_searches() {
+    let caps = Capabilities::default();
+    let s = nyaa_settings(false);
+    assert_eq!(
+        first_urls(&nyaa(&s, &caps).recent()),
+        vec!["https://nyaa.si/?page=rss&cats=1_0&filter=1".to_string()]
+    );
+    let episode = Search::AnimeEpisode {
+        absolute: 8,
+        season: 1,
+        episode: 8,
+    };
+    let chain = nyaa(&s, &caps).search(&criteria(&["Monkey+Island"]), &episode);
+    assert_eq!(
+        first_urls(&chain),
+        vec![
+            "https://nyaa.si/?page=rss&cats=1_0&filter=1&term=Monkey+Island+8".to_string(),
+            "https://nyaa.si/?page=rss&cats=1_0&filter=1&term=Monkey+Island+08".to_string(),
+        ]
+    );
+    assert_eq!(chain.all().next().unwrap().pages().len(), 1);
+    // Standard numbering is searched only with "anime standard format search".
+    assert!(
+        nyaa(&s, &caps)
+            .search(&criteria(&["Monkey+Island"]), &SINGLE)
+            .all()
+            .next()
+            .is_none()
+    );
+    let std = nyaa_settings(true);
+    let urls = first_urls(&nyaa(&std, &caps).search(&criteria(&["Monkey+Island"]), &episode));
+    assert_eq!(urls.len(), 3);
+    assert!(
+        urls[2].ends_with("&term=Monkey+Island+s01e08"),
+        "{}",
+        urls[2]
+    );
+    let season = Search::Season { season: 2 };
+    let urls = first_urls(&nyaa(&std, &caps).search(&criteria(&["Monkey+Island"]), &season));
+    assert_eq!(
+        urls,
+        vec!["https://nyaa.si/?page=rss&cats=1_0&filter=1&term=Monkey+Island+s02".to_string()]
+    );
+    // A season's own title is searched as it is.
+    let anime_season = Search::AnimeSeason {
+        season: 2,
+        season_scene_titles: vec!["Monkey+Island+II".into()],
+    };
+    let urls = first_urls(&nyaa(&s, &caps).search(
+        &criteria(&["Monkey+Island", "Monkey+Island+II"]),
+        &anime_season,
+    ));
+    assert_eq!(
+        urls,
+        vec!["https://nyaa.si/?page=rss&cats=1_0&filter=1&term=Monkey+Island+II".to_string()]
     );
 }

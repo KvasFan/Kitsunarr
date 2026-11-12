@@ -30,6 +30,7 @@ fn dialect(implementation: &str) -> Option<Dialect> {
     match implementation {
         "Newznab" => Some(Dialect::Newznab),
         "Torznab" => Some(Dialect::Torznab),
+        "Nyaa" => Some(Dialect::Nyaa),
         _ => None,
     }
 }
@@ -704,7 +705,7 @@ pub(crate) async fn run_search(
     });
     // Tanukarr's `Dispatch`: complete-series searches use torrent indexers only.
     if q.complete_series {
-        indexers.retain(|i| i.dialect == Dialect::Torznab);
+        indexers.retain(|i| matches!(i.dialect, Dialect::Torznab | Dialect::Nyaa));
         if indexers.is_empty() {
             return Err(ApiError::field(
                 "completeSeries",
@@ -880,8 +881,8 @@ impl IndexerExtras {
         Self {
             priority: p.priority,
             tags: p.tags.clone(),
-            // Torznab's default is 1 (`IndexerDefaults.MINIMUM_SEEDERS`).
-            minimum_seeders: (dialect == Dialect::Torznab)
+            // Torrent indexers default to 1 (`IndexerDefaults.MINIMUM_SEEDERS`).
+            minimum_seeders: matches!(dialect, Dialect::Torznab | Dialect::Nyaa)
                 .then(|| i64::from(settings.minimum_seeders.unwrap_or(1))),
             multi_languages: p
                 .settings

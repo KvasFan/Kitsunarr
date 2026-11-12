@@ -63,6 +63,19 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             ),
             template(
                 kind,
+                "Nyaa",
+                "Nyaa",
+                indexer_options.clone(),
+                json!({
+                    "baseUrl": "https://nyaa.si", "animeStandardFormatSearch": false,
+                    "additionalParameters": "&cats=1_0&filter=1", "minimumSeeders": 1,
+                    "seedCriteria.seedRatio": null, "seedCriteria.seedTime": null,
+                    "seedCriteria.seasonPackSeedGoal": 0,
+                    "seedCriteria.seasonPackSeedRatio": null, "seedCriteria.seasonPackSeedTime": null
+                }),
+            ),
+            template(
+                kind,
                 "Torznab",
                 "Torznab",
                 indexer_options,

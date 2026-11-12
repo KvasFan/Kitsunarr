@@ -213,3 +213,71 @@ async fn requests_to_one_indexer_are_spaced() {
         "caps and RSS are two spaced requests"
     );
 }
+
+/// Nyaa: no capabilities request; the RSS page is read once, with the search term.
+#[tokio::test]
+async fn nyaa_tests_and_searches_through_its_rss_page() {
+    let log: Arc<Mutex<Vec<String>>> = Arc::default();
+    let app = axum::Router::new()
+        .route(
+            "/",
+            get(
+                |State(log): State<Arc<Mutex<Vec<String>>>>,
+                 Query(q): Query<HashMap<String, String>>| async move {
+                    let mut line: Vec<String> = q.iter().map(|(k, v)| format!("{k}={v}")).collect();
+                    line.sort();
+                    log.lock().unwrap().push(line.join("&"));
+                    (
+                        [("content-type", "application/rss+xml")],
+                        fixture("nyaa_2021.xml"),
+                    )
+                },
+            ),
+        )
+        .with_state(log.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let indexer = Indexer {
+        id: 9,
+        name: "Nyaa".into(),
+        dialect: Dialect::Nyaa,
+        settings: Settings {
+            base_url: format!("http://{addr}"),
+            api_path: "/api".into(),
+            api_key: None,
+            categories: vec![],
+            anime_categories: vec![],
+            anime_standard_format_search: false,
+            additional_parameters: Some("&cats=1_0&filter=1".into()),
+            minimum_seeders: Some(1),
+            movie_categories: vec![2000],
+        },
+    };
+    let client = IndexerClient::new(reqwest::Client::new()).with_rate_limit(Duration::ZERO);
+    assert_eq!(client.test(&indexer).await.unwrap().releases_found, 3);
+    let caps = client.capabilities(&indexer).await.unwrap();
+    let criteria = Criteria {
+        ids: SeriesIds::default(),
+        scene_titles: vec!["Mahouka+Koukou".into()],
+        search_mode: search_mode::DEFAULT,
+        anime: true,
+    };
+    let chain = client.generator(&indexer, &caps).search(
+        &criteria,
+        &Search::AnimeEpisode {
+            absolute: 12,
+            season: 1,
+            episode: 12,
+        },
+    );
+    let found = client.fetch(&indexer, &chain, false).await.unwrap();
+    assert_eq!(found.len(), 3);
+    assert_eq!(
+        log.lock().unwrap().clone(),
+        vec![
+            "cats=1_0&filter=1&page=rss".to_string(),
+            "cats=1_0&filter=1&page=rss&term=Mahouka Koukou 12".to_string(),
+        ]
+    );
+}

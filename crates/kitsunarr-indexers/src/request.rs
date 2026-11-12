@@ -335,6 +335,8 @@ pub struct Generator<'a> {
     pub settings: &'a Settings,
     pub caps: &'a Capabilities,
     pub page_size: u32,
+    /// Nyaa searches by title through its RSS feed instead of the Newznab API.
+    pub dialect: crate::Dialect,
 }
 
 impl Generator<'_> {
@@ -478,6 +480,11 @@ impl Generator<'_> {
 
     /// `GetRecentRequests` (RSS).
     pub fn recent(&self) -> Chain {
+        if self.dialect == crate::Dialect::Nyaa {
+            let mut chain = Chain::default();
+            chain.add(self.nyaa_request(None));
+            return chain;
+        }
         let mut chain = Chain::default();
         if self.caps.tv_search_params.is_some() {
             let cats: Vec<i32> = self
@@ -500,7 +507,102 @@ impl Generator<'_> {
     }
 
     /// `GetSearchRequests` for each criteria type.
+    /// `NyaaRequestGenerator.GetPagedRequests`: `{base}/?page=rss{additional}&term=…`.
+    fn nyaa_request(&self, term: Option<String>) -> Pageable {
+        let mut prefix = format!(
+            "{}/?page=rss{}",
+            self.settings.base_url.trim_end_matches('/'),
+            self.settings.additional_parameters.as_deref().unwrap_or("")
+        );
+        if let Some(t) = term {
+            prefix.push_str("&term=");
+            prefix.push_str(&t);
+        }
+        Pageable {
+            prefix,
+            parameters: String::new(),
+            page_size: 0,
+            empty: false,
+        }
+    }
+
+    /// `NyaaRequestGenerator`'s searches: titles (escaped, spaces as `+`) with the absolute
+    /// number for anime episodes, `sXXeYY`/`sXX` with "anime standard format search". Scene
+    /// and query titles arrive cleaned, with `+` between words.
+    fn nyaa_search(&self, c: &Criteria, search: &Search) -> Chain {
+        let q = |t: &str| url_encode(&t.replace('+', " "));
+        let mut chain = Chain::default();
+        let standard = self.settings.anime_standard_format_search;
+        let mut titles: Vec<String> = Vec::new();
+        match search {
+            Search::SingleEpisode { season, episode }
+                if standard && *season > 0 && *episode > 0 =>
+            {
+                for t in &c.scene_titles {
+                    titles.push(format!("{}+s{season:02}e{episode:02}", q(t)));
+                }
+            }
+            Search::Season { season } if standard && *season > 0 => {
+                for t in &c.scene_titles {
+                    titles.push(format!("{}+s{season:02}", q(t)));
+                }
+            }
+            Search::AnimeEpisode {
+                absolute,
+                season,
+                episode,
+            } => {
+                for t in &c.scene_titles {
+                    if *absolute > 0 {
+                        titles.push(format!("{}+{absolute}", q(t)));
+                        if *absolute < 10 {
+                            titles.push(format!("{}+{absolute:02}", q(t)));
+                        }
+                    }
+                    if standard && *season > 0 && *episode > 0 {
+                        titles.push(format!("{}+s{season:02}e{episode:02}", q(t)));
+                    }
+                }
+            }
+            Search::AnimeSeason {
+                season,
+                season_scene_titles,
+            } => {
+                for t in &c.scene_titles {
+                    if season_scene_titles
+                        .iter()
+                        .any(|s| s.eq_ignore_ascii_case(t))
+                    {
+                        titles.push(q(t));
+                    } else if standard && *season > 0 {
+                        titles.push(format!("{}+s{season:02}", q(t)));
+                    }
+                }
+            }
+            Search::Special {
+                episode_query_titles,
+            } => titles.extend(episode_query_titles.iter().map(|t| q(t))),
+            Search::Movie { query_titles } => titles.extend(query_titles.iter().map(|t| q(t))),
+            Search::CompleteSeries {
+                query_titles,
+                pack_query_titles,
+            } => titles.extend(query_titles.iter().chain(pack_query_titles).map(|t| q(t))),
+            _ => {}
+        }
+        let mut seen = Vec::new();
+        for t in titles {
+            if !seen.iter().any(|s: &String| s.eq_ignore_ascii_case(&t)) {
+                seen.push(t.clone());
+                chain.add(self.nyaa_request(Some(t)));
+            }
+        }
+        chain
+    }
+
     pub fn search(&self, c: &Criteria, search: &Search) -> Chain {
+        if self.dialect == crate::Dialect::Nyaa {
+            return self.nyaa_search(c, search);
+        }
         let caps = self.caps;
         let text_or_id = caps.supports_tv_text_searches() || caps.supports_tv_id_searches();
         match search {

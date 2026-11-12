@@ -239,6 +239,10 @@ impl IndexerClient {
 
     /// Capabilities, cached per settings for a week. Failures are not cached.
     pub async fn capabilities(&self, indexer: &Indexer) -> Result<Capabilities, IndexerError> {
+        // Nyaa has no capabilities document: its RSS search takes a plain term.
+        if indexer.dialect == Dialect::Nyaa {
+            return Ok(Capabilities::default());
+        }
         let key = serde_json::to_string(&indexer.settings).unwrap_or_default();
         if let Some((at, caps)) = self
             .caps
@@ -265,6 +269,7 @@ impl IndexerClient {
             settings: &indexer.settings,
             caps,
             page_size: u32::try_from(caps.page_size()).unwrap_or(100),
+            dialect: indexer.dialect,
         }
     }
 

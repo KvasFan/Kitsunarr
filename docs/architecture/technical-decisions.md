@@ -174,6 +174,8 @@ Two choices differ from Sonarr:
 - **Download links never reach the browser.** Newznab download URLs embed the indexer's API key, so the release list sent to the UI omits them. A future "grab" will refer to a release by indexer and GUID, and the server will resolve the link.
 - **Request errors report their cause without the URL.** For example: "Could not connect to the indexer: failed to lookup address information". The cause is useful, but the URL would expose the API key.
 
+Nyaa (Tanukarr's `Nyaa` indexer) shares the Torznab feed parser's checks but reads the `nyaa:` elements: the item link is the `.torrent`, the GUID the info page, and size, seeders, leechers and info hash come from the feed (no magnet link, as upstream). It has no capabilities document, so none is requested, and every request is one RSS page (`?page=rss{additional parameters}&term=…`). Titles reach the indexers cleaned, with `+` between words; the Nyaa request turns them back into spaces before escaping, so the term matches upstream's escaped scene title except for punctuation the cleaning removed. Sizes round as .NET's `Convert.ToInt64` (ties to even).
+
 ## 15. Release decisions: Sonarr's decision engine, with Kitsunarr's v4 data model
 
 `kitsunarr-decision` decides whether each release found by a search is wanted, and ranks the results. It ports Sonarr's `DownloadDecisionMaker`, the decision specifications, `CustomFormatCalculationService` and its eight specifications, `UpgradableSpecification`, `DownloadDecisionComparer`, `AggregateLanguages`, and the search side of `ParsingService`. It follows the same Sonarr revision as the parser (`c018578e4`, the v5 line), with one deliberate exception: size limits come from the quality definitions, as in Sonarr v4. Kitsunarr's data model, like the Sonarr 4 installations it migrates, keeps sizes there; v5 moved them into quality profiles.
@@ -349,7 +351,7 @@ Every title belongs to one catalogue (`metadata_provider`, `metadata_id`), as in
 
 Keys are stored in the settings table (`metadataSources`), migrated from Tanukarr's `tmdbapikey`/`omdbapikey`, redacted in API responses (the placeholder keeps a key), and applied to the clients at start-up and on save. A catalogue that needs a key is listed as unavailable: searches and refreshes say so, and the scheduled refresh skips its titles.
 
-Not ported: Tanukarr's presentation enrichment (filling a missing overview or artwork from a second catalogue), choosing an ordering when adding a title, and TheTVDB languages other than English. TMDB, OMDb and Jikan are tested on their documented response shapes, not against the live services (no keys; Jikan was unreachable from the test network); SkyHook is tested on recorded responses and live.
+Tanukarr's presentation enrichment (a missing overview or artwork from up to two other catalogues) and the ordering choice when adding a title were ported later (section 5 of the feature matrix). Not ported: TheTVDB languages other than English. TMDB, OMDb and Jikan are tested on their documented response shapes, not against the live services (no keys; Jikan was unreachable from the test network); SkyHook is tested on recorded responses and live.
 
 ## 24. Notifications: Sonarr's services and payloads
 

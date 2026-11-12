@@ -302,3 +302,34 @@ fn capabilities_provider_fixture() {
     );
     assert!(caps.usable_for_tv());
 }
+
+/// `NyaaFixture.should_parse_2021_recent_feed_from_Nyaa`.
+#[test]
+fn nyaa_2021_feed() {
+    let releases = valid(Dialect::Nyaa, "nyaa_2021.xml");
+    assert_eq!(releases.len(), 3);
+    let r = &releases[0];
+    assert_eq!(
+        r.title,
+        "[Foxy-Subs] Mahouka Koukou no Yuutousei - 08 [720p] [3194D881].mkv"
+    );
+    assert_eq!(r.protocol, DownloadProtocol::Torrent);
+    assert_eq!(
+        r.download_url.as_deref(),
+        Some("https://nyaa.si/download/1424896.torrent")
+    );
+    assert_eq!(r.info_url.as_deref(), Some("https://nyaa.si/view/1424896"));
+    assert_eq!(r.comment_url, None);
+    assert_eq!(
+        r.publish_date,
+        Utc.with_ymd_and_hms(2021, 8, 24, 22, 18, 46).unwrap()
+    );
+    assert_eq!(r.size, 639_211_930);
+    assert_eq!(r.magnet_url, None);
+    assert_eq!(
+        r.info_hash.as_deref(),
+        Some("e8ca5e20eca876339f41c3d9e95ea66c1d7caaee")
+    );
+    assert_eq!(r.seeders, Some(4));
+    assert_eq!(r.peers, Some(3 + 4));
+}

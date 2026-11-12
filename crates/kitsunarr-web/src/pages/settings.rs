@@ -2422,7 +2422,9 @@ fn ProviderEditor(
     let mut test_result = use_signal(|| None::<Result<(bool, String, Vec<String>), String>>);
     let client = crate::state::use_client();
     let testable = match item.kind {
-        ProviderKind::Indexer => matches!(item.implementation.as_str(), "Newznab" | "Torznab"),
+        ProviderKind::Indexer => {
+            matches!(item.implementation.as_str(), "Newznab" | "Torznab" | "Nyaa")
+        }
         ProviderKind::DownloadClient => {
             matches!(
                 item.implementation.as_str(),

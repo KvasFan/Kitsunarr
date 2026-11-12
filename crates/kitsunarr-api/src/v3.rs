@@ -1125,7 +1125,7 @@ struct Field {
 }
 
 fn record(id: i64, b: &IndexerBody) -> ApiResult<ProviderRecord> {
-    if !matches!(b.implementation.as_str(), "Newznab" | "Torznab") {
+    if !matches!(b.implementation.as_str(), "Newznab" | "Torznab" | "Nyaa") {
         return Err(ApiError::field(
             "implementation",
             format!("{} indexers are not supported.", b.implementation),

@@ -34,6 +34,8 @@ pub mod flags {
 pub enum Dialect {
     Newznab,
     Torznab,
+    /// Sonarr's `Nyaa`: a torrent RSS feed with `nyaa:` elements, searched by title.
+    Nyaa,
 }
 
 /// One release from an indexer feed (`ReleaseInfo` / `TorrentInfo`).
@@ -238,6 +240,9 @@ pub fn parse_feed(
 ) -> Result<Vec<Release>, IndexerError> {
     let base = url::Url::parse(request_url).map_err(|e| IndexerError::Unexpected(e.to_string()))?;
     let doc = xml::parse(body).map_err(IndexerError::InvalidXml)?;
+    if dialect == Dialect::Nyaa {
+        return parse_nyaa(&doc, &base);
+    }
     check_error(
         &doc,
         dialect == Dialect::Newznab,
@@ -257,7 +262,7 @@ pub fn parse_feed(
     types.dedup();
     let (own, other): (&[&str], &[&str]) = match dialect {
         Dialect::Newznab => (&[NZB_MIME], TORRENT_MIMES),
-        Dialect::Torznab => (TORRENT_MIMES, &[NZB_MIME]),
+        Dialect::Torznab | Dialect::Nyaa => (TORRENT_MIMES, &[NZB_MIME]),
     };
     if !types.is_empty()
         && !types.iter().any(|t| own.contains(&t.as_str()))
@@ -277,7 +282,7 @@ pub fn parse_feed(
 
     let ns = match dialect {
         Dialect::Newznab => NEWZNAB_NS,
-        Dialect::Torznab => TORZNAB_NS,
+        Dialect::Torznab | Dialect::Nyaa => TORZNAB_NS,
     };
     let mut releases = Vec::with_capacity(items.len());
     for item in items {
@@ -298,6 +303,84 @@ pub fn parse_feed(
     Ok(releases)
 }
 
+/// Sonarr's `TorrentRssParser` as `Nyaa` configures it: the link is the torrent, the guid the
+/// info page, and `nyaa:seeders`, `nyaa:leechers` (peers = both), `nyaa:infoHash` and
+/// `nyaa:size` ("1.4 GiB") describe the torrent.
+fn parse_nyaa(doc: &Element, base: &url::Url) -> Result<Vec<Release>, IndexerError> {
+    let items: Vec<&Element> = doc
+        .child("channel")
+        .map(|c| c.children_named("item").collect())
+        .unwrap_or_default();
+    let any = |item: &Element, name: &str| {
+        item.children
+            .iter()
+            .find(|c| c.name == name)
+            .map(|c| c.text.trim().to_string())
+            .filter(|t| !t.is_empty())
+    };
+    let mut out = Vec::with_capacity(items.len());
+    for item in items {
+        let Some(date) = item.child_text("pubDate").and_then(parse_date) else {
+            continue;
+        };
+        let Some(link) = resolve_url(base, item.child_text("link")) else {
+            continue;
+        };
+        let guid = item
+            .child_text("guid")
+            .map(str::to_string)
+            .unwrap_or_else(|| link.clone());
+        let seeders = any(item, "seeders").and_then(|v| v.parse::<i64>().ok());
+        let leechers = any(item, "leechers").and_then(|v| v.parse::<i64>().ok());
+        let info_hash = any(item, "infoHash").map(|h| h.to_ascii_lowercase());
+        out.push(Release {
+            info_url: resolve_url(base, Some(guid.as_str())),
+            guid,
+            title: xml::html_decode(item.child_text("title").unwrap_or("Unknown")),
+            size: any(item, "size").as_deref().map_or(0, parse_size),
+            // Like upstream's `TorrentRssParser` for Nyaa: the .torrent link, no magnet.
+            magnet_url: None,
+            download_url: Some(link),
+            comment_url: None,
+            publish_date: date,
+            protocol: DownloadProtocol::Torrent,
+            tvdb_id: 0,
+            tv_rage_id: 0,
+            imdb_id: None,
+            languages: Vec::new(),
+            indexer_flags: 0,
+            info_hash,
+            seeders,
+            peers: match (seeders, leechers) {
+                (Some(s), Some(l)) => Some(s + l),
+                (s, _) => s,
+            },
+        });
+    }
+    Ok(out)
+}
+
+/// `ParseSize`: "1.4 GiB", "700 MiB", "512 KB", or plain bytes.
+pub(crate) fn parse_size(text: &str) -> i64 {
+    let t = text.trim().replace(',', "");
+    let (number, unit) = match t.find(|c: char| c.is_ascii_alphabetic()) {
+        Some(i) => (t[..i].trim(), t[i..].trim().to_ascii_lowercase()),
+        None => (t.as_str(), String::new()),
+    };
+    let Ok(n) = number.parse::<f64>() else {
+        return 0;
+    };
+    let factor: f64 = match unit.as_str() {
+        "kib" | "kb" => 1024.0,
+        "mib" | "mb" => 1024.0 * 1024.0,
+        "gib" | "gb" => 1024.0 * 1024.0 * 1024.0,
+        "tib" | "tb" => 1024.0_f64.powi(4),
+        _ => 1.0,
+    };
+    // `Convert.ToInt64`: rounded, ties to even.
+    (n * factor).round_ties_even() as i64
+}
+
 enum ItemError {
     Feed(IndexerError),
     Skip(String),
@@ -314,7 +397,7 @@ fn parse_item(
         let encl = enclosures(item);
         let date_text = match dialect {
             Dialect::Newznab => Some(attrs.get("usenetdate")).filter(|d| !d.trim().is_empty()),
-            Dialect::Torznab => None,
+            Dialect::Torznab | Dialect::Nyaa => None,
         }
         .or(item.child_text("pubDate"))
         .filter(|d| !d.trim().is_empty())
@@ -332,7 +415,7 @@ fn parse_item(
                 base,
                 preferred(&encl, &[NZB_MIME]).and_then(|e| e.url.as_deref()),
             ),
-            Dialect::Torznab => {
+            Dialect::Torznab | Dialect::Nyaa => {
                 let url = resolve_url(
                     base,
                     preferred(&encl, TORRENT_MIMES).and_then(|e| e.url.as_deref()),
@@ -347,7 +430,7 @@ fn parse_item(
         let size = size_attr.unwrap_or_else(|| {
             let mimes: &[&str] = match dialect {
                 Dialect::Newznab => &[NZB_MIME],
-                Dialect::Torznab => TORRENT_MIMES,
+                Dialect::Torznab | Dialect::Nyaa => TORRENT_MIMES,
             };
             preferred(&encl, mimes).map_or(0, |e| e.length)
         });
@@ -372,7 +455,7 @@ fn parse_item(
                         .map(str::trim)
                         .filter(|s| !s.is_empty())
                         .collect::<Vec<_>>(),
-                    Dialect::Torznab => vec![v.as_str()],
+                    Dialect::Torznab | Dialect::Nyaa => vec![v.as_str()],
                 })
                 .filter_map(language_by_name)
                 .collect()
@@ -394,7 +477,7 @@ fn parse_item(
             publish_date,
             protocol: match dialect {
                 Dialect::Newznab => DownloadProtocol::Usenet,
-                Dialect::Torznab => DownloadProtocol::Torrent,
+                Dialect::Torznab | Dialect::Nyaa => DownloadProtocol::Torrent,
             },
             tvdb_id: int_or_zero(attrs.get("tvdbid")),
             tv_rage_id: int_or_zero(attrs.get("rageid")),
@@ -418,7 +501,7 @@ fn parse_item(
                     release.indexer_flags |= flags::SUBTITLES;
                 }
             }
-            Dialect::Torznab => {
+            Dialect::Torznab | Dialect::Nyaa => {
                 let factor = |k: &str| attrs.get(k).trim().parse::<f32>().unwrap_or(1.0);
                 let (down, up) = (factor("downloadvolumefactor"), factor("uploadvolumefactor"));
                 for (value, flag) in [

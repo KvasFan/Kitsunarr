@@ -15,7 +15,7 @@ use crate::{DbError, DbResult, from_json, now, to_json};
 /// Implementations Kitsunarr runs natively. Others are stored and shown as unsupported.
 pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
     let list: &[&str] = match kind {
-        ProviderKind::Indexer => &["Torznab", "Newznab"],
+        ProviderKind::Indexer => &["Torznab", "Newznab", "Nyaa"],
         ProviderKind::DownloadClient => {
             &["QBittorrent", "Deluge", "Transmission", "Sabnzbd", "Nzbget"]
         }
@@ -519,6 +519,7 @@ mod tests {
         let db = crate::test_support::db().await;
         for (kind, imp) in [
             (ProviderKind::Indexer, "Torznab"),
+            (ProviderKind::Indexer, "Nyaa"),
             (ProviderKind::DownloadClient, "QBittorrent"),
             (ProviderKind::Notification, "Webhook"),
             (ProviderKind::ImportList, "SonarrImport"),
