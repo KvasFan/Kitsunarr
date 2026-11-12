@@ -141,6 +141,19 @@ impl IndexerClient {
         }
     }
 
+    /// Sends downloads through this proxy (the search client is built by the caller).
+    pub fn with_download_proxy(mut self, proxy: reqwest::Proxy) -> Self {
+        if let Ok(downloads) = reqwest::Client::builder()
+            .redirect(reqwest::redirect::Policy::none())
+            .user_agent(concat!("Kitsunarr/", env!("CARGO_PKG_VERSION")))
+            .proxy(proxy)
+            .build()
+        {
+            self.downloads = downloads;
+        }
+        self
+    }
+
     /// Overrides the per-indexer request spacing (tests).
     pub fn with_rate_limit(mut self, rate_limit: Duration) -> Self {
         self.rate_limit = rate_limit;

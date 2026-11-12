@@ -316,6 +316,7 @@ pub async fn load(
         ("namingconfig", "api/v3/config/naming"),
         ("mediamanagement", "api/v3/config/mediamanagement"),
         ("indexerconfig", "api/v3/config/indexer"),
+        ("hostconfig", "api/v3/config/host"),
         ("downloadclientconfig", "api/v3/config/downloadclient"),
         ("importlistconfig", "api/v3/config/importlist"),
     ];

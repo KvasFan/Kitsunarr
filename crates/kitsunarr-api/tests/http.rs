@@ -354,6 +354,48 @@ async fn settings_validation_and_secret_redaction() {
         400,
         "the placeholder is not a valid new secret"
     );
+
+    // The proxy: validated, its password redacted and kept when the placeholder comes back.
+    use kitsunarr_domain::api::settings::{ProxySettings, ProxyType};
+    assert_eq!(client.proxy().await.unwrap(), ProxySettings::default());
+    let mut proxy = ProxySettings {
+        enabled: true,
+        proxy_type: ProxyType::Socks5,
+        hostname: "http://proxy.invalid".into(),
+        port: 1080,
+        username: "me".into(),
+        password: "proxy-secret".into(),
+        ..Default::default()
+    };
+    assert_eq!(status(client.put_proxy(&proxy).await.unwrap_err()), 422);
+    proxy.hostname = "proxy.invalid".into();
+    let saved = client.put_proxy(&proxy).await.unwrap();
+    assert_eq!(saved.password, REDACTED);
+    let mut again = client.proxy().await.unwrap();
+    assert_eq!(again.password, REDACTED);
+    assert_eq!(
+        server.state.proxy.current().unwrap().password,
+        "proxy-secret"
+    );
+    again.port = 1081;
+    client.put_proxy(&again).await.unwrap();
+    let applied = server.state.proxy.current().unwrap();
+    assert_eq!(
+        (applied.port, applied.password.as_str()),
+        (1081, "proxy-secret")
+    );
+    // `ProxyCheck`: a host that does not resolve is reported.
+    assert!(
+        client
+            .health()
+            .await
+            .unwrap()
+            .iter()
+            .any(|h| h.source == "ProxyCheck"),
+    );
+    again.enabled = false;
+    client.put_proxy(&again).await.unwrap();
+    assert!(server.state.proxy.current().is_none());
 }
 
 #[tokio::test]

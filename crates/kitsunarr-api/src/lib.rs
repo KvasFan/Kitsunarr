@@ -17,6 +17,7 @@ pub mod error;
 pub mod import_lists;
 pub mod library_tools;
 pub mod logs;
+pub mod proxy;
 pub mod routes;
 pub mod rss;
 pub mod v3;
@@ -68,6 +69,8 @@ pub struct AppStateInner {
     pub tasks: Arc<dyn TaskControl>,
     pub migrations: MigrationSessions,
     pub http: reqwest::Client,
+    /// The proxy `http` (and the indexer download client) consult per request.
+    pub proxy: proxy::HttpProxy,
     pub metadata: kitsunarr_metadata::Metadata,
     pub indexers: kitsunarr_indexers::IndexerClient,
     /// Download clients and completed-download handling (shared with the background job).
@@ -121,6 +124,7 @@ impl AppState {
             last_download_client: Default::default(),
             wanted_search: Default::default(),
             last_health: Default::default(),
+            proxy: Default::default(),
             http,
             metadata,
             logs,
@@ -133,6 +137,20 @@ impl AppState {
         match Arc::get_mut(&mut self.0) {
             Some(inner) => inner.downloads = monitor,
             None => tracing::warn!("download monitor not replaced: the state is already shared"),
+        }
+        self
+    }
+
+    /// Shares the proxy the HTTP client was built with; the indexer download client (which
+    /// does not follow redirects) uses it too. Must be called before the state is shared.
+    pub fn with_proxy(mut self, proxy: proxy::HttpProxy) -> Self {
+        match Arc::get_mut(&mut self.0) {
+            Some(inner) => {
+                inner.indexers =
+                    std::mem::take(&mut inner.indexers).with_download_proxy(proxy.reqwest());
+                inner.proxy = proxy;
+            }
+            None => tracing::warn!("proxy not applied: the state is already shared"),
         }
         self
     }

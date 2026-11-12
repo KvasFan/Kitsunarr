@@ -28,7 +28,8 @@ use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, FormatScore, ImportListOptionsSettings,
     IndexerOptionsSettings, LibraryToolsSettings, ListSyncLevel, MediaManagementSettings,
     MetadataSourcesSettings, NamingSettings, OrderedF64, ProperDownloadType, ProviderKind,
-    QualityDefinition, QualityGroup, QualityProfile, QualityProfileItem, QualitySizeLimit,
+    ProxySettings, ProxyType, QualityDefinition, QualityGroup, QualityProfile, QualityProfileItem,
+    QualitySizeLimit,
 };
 use kitsunarr_domain::{
     ExternalId, ExternalIdKind, MediaKind, MetadataProvider, MinimumAvailability, MovieStatus,
@@ -74,6 +75,15 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     // Import list options (database `Config` keys).
     "listsynclevel",
     "listsynctag",
+    // Proxy (database `Config` keys; the API serves them in `/config/host`).
+    "proxyenabled",
+    "proxytype",
+    "proxyhostname",
+    "proxyport",
+    "proxyusername",
+    "proxypassword",
+    "proxybypassfilter",
+    "proxybypasslocaladdresses",
     // Catalogue keys (Tanukarr).
     "tmdbapikey",
     "omdbapikey",
@@ -1263,6 +1273,42 @@ impl<'a> Importer<'a> {
                 self.count("settings", Act::Skip);
             } else if current == IndexerOptionsSettings::default() || self.update_existing() {
                 settings::set(&mut *conn, settings::KEY_INDEXER_OPTIONS, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
+        // Proxy: the API's `/config/host`, or the database's `Config` keys.
+        if let Some(h) = self
+            .snap
+            .host_options
+            .clone()
+            .or_else(|| self.snap.media_management.clone())
+            .filter(|r| r.has("proxyenabled") || r.has("proxyhostname"))
+        {
+            let current: ProxySettings =
+                settings::get_or_default(&mut *conn, settings::KEY_PROXY).await?;
+            let mut next = current.clone();
+            if let Some(v) = h.bool("proxyenabled") {
+                next.enabled = v;
+            }
+            if let Some(t) = h.str("proxytype").as_deref().and_then(ProxyType::parse) {
+                next.proxy_type = t;
+            }
+            next.hostname = h.str("proxyhostname").unwrap_or(next.hostname);
+            if let Some(port) = h.i64("proxyport").and_then(|p| u16::try_from(p).ok()) {
+                next.port = port;
+            }
+            next.username = h.str("proxyusername").unwrap_or(next.username);
+            next.password = h.str("proxypassword").unwrap_or(next.password);
+            next.bypass_filter = h.str("proxybypassfilter").unwrap_or(next.bypass_filter);
+            if let Some(v) = h.bool("proxybypasslocaladdresses") {
+                next.bypass_local_addresses = v;
+            }
+            if next == current {
+                self.count("settings", Act::Skip);
+            } else if current == ProxySettings::default() || self.update_existing() {
+                settings::set(&mut *conn, settings::KEY_PROXY, &next).await?;
                 self.count("settings", Act::Update);
             } else {
                 self.count("settings", Act::Skip);

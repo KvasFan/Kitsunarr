@@ -27,7 +27,7 @@ use kitsunarr_domain::api::search::{
 };
 use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
-    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProviderItem,
+    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProviderItem, ProxySettings,
     QualityDefinition, QualityProfile, RootFolderCreate, RootFolderItem, TagCreate, TagItem,
 };
 use kitsunarr_domain::api::system::{
@@ -992,6 +992,12 @@ impl Client {
         s: &IndexerOptionsSettings,
     ) -> ClientResult<IndexerOptionsSettings> {
         self.put("/settings/indexeroptions", s).await
+    }
+    pub async fn proxy(&self) -> ClientResult<ProxySettings> {
+        self.get("/settings/proxy").await
+    }
+    pub async fn put_proxy(&self, s: &ProxySettings) -> ClientResult<ProxySettings> {
+        self.put("/settings/proxy", s).await
     }
     pub async fn general(&self) -> ClientResult<GeneralSettings> {
         self.get("/settings/general").await

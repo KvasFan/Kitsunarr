@@ -5,7 +5,8 @@ use kitsunarr_domain::api::auth::ChangePasswordRequest;
 use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
     MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProperDownloadType,
-    ProviderItem, ProviderKind, QualityProfile, REDACTED, RootFolderCreate,
+    ProviderItem, ProviderKind, ProxySettings, ProxyType, QualityProfile, REDACTED,
+    RootFolderCreate,
 };
 use kitsunarr_domain::{MediaKind, Quality};
 use serde_json::Value;
@@ -130,6 +131,7 @@ pub fn SettingsGeneral() -> Element {
                 button { class: "btn danger", onclick: move |_| confirm_regen.set(true), "Regenerate" }
             }
         }
+        ProxyCard {}
         if confirm_regen() {
             Confirm {
                 title: "Regenerate API key",
@@ -147,6 +149,84 @@ pub fn SettingsGeneral() -> Element {
                 Field { label: "New password", help: "At least 10 characters.".to_string(), input { class: "input", r#type: "password", autocomplete: "new-password", value: "{new_pw}", oninput: move |e| new_pw.set(e.value()) } }
             }
             div { class: "row end", button { class: "btn primary", r#type: "submit", disabled: current_pw().is_empty() || new_pw().is_empty(), "Change password" } }
+        }
+    }
+}
+
+/// Sonarr's Settings › General › Proxy.
+#[component]
+fn ProxyCard() -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut form = use_signal(|| None::<ProxySettings>);
+    let c0 = client.clone();
+    use_future(move || {
+        let c = c0.clone();
+        async move {
+            match c.proxy().await {
+                Ok(p) => form.set(Some(p)),
+                Err(e) => app.error(&e),
+            }
+        }
+    });
+    let save = move |_| {
+        let Some(p) = form() else { return };
+        let c = client.clone();
+        spawn(async move {
+            match c.put_proxy(&p).await {
+                Ok(saved) => {
+                    form.set(Some(saved));
+                    app.success("Proxy saved.");
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let mut edit = move |f: &dyn Fn(&mut ProxySettings)| {
+        if let Some(p) = form.write().as_mut() {
+            f(p);
+        }
+    };
+    rsx! {
+        div { class: "card",
+            h3 { "Proxy" }
+            p { class: "muted small", "Send requests to indexers, catalogues, lists, download clients and connections through a proxy." }
+            match form() {
+                None => rsx! { Loading {} },
+                Some(p) => rsx! {
+                    Switch { checked: p.enabled, label: "Use a proxy", onchange: move |v| edit(&|x| x.enabled = v) }
+                    if p.enabled {
+                        div { class: "form-grid",
+                            Field { label: "Proxy type",
+                                select { class: "select", "aria-label": "Proxy type",
+                                    value: match p.proxy_type { ProxyType::Http => "http", ProxyType::Socks4 => "socks4", ProxyType::Socks5 => "socks5" },
+                                    onchange: move |e: FormEvent| { let t = ProxyType::parse(&e.value()).unwrap_or_default(); edit(&|x| x.proxy_type = t) },
+                                    option { value: "http", "HTTP(S)" }
+                                    option { value: "socks4", "SOCKS4" }
+                                    option { value: "socks5", "SOCKS5" }
+                                }
+                            }
+                            Field { label: "Hostname",
+                                input { class: "input", "aria-label": "Proxy hostname", value: "{p.hostname}", oninput: move |e: FormEvent| { let v = e.value(); edit(&|x| x.hostname = v.clone()) } }
+                            }
+                            Field { label: "Port",
+                                input { class: "input", r#type: "number", min: "1", max: "65535", "aria-label": "Proxy port", value: "{p.port}", oninput: move |e: FormEvent| { let v = e.value().parse().unwrap_or(0); edit(&|x| x.port = v) } }
+                            }
+                            Field { label: "Username", help: "Only when the proxy needs one.".to_string(),
+                                input { class: "input", autocomplete: "off", value: "{p.username}", oninput: move |e: FormEvent| { let v = e.value(); edit(&|x| x.username = v.clone()) } }
+                            }
+                            Field { label: "Password",
+                                input { class: "input", r#type: "password", autocomplete: "new-password", value: "{p.password}", oninput: move |e: FormEvent| { let v = e.value(); edit(&|x| x.password = v.clone()) } }
+                            }
+                            Field { label: "Ignored addresses", help: "Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.".to_string(),
+                                input { class: "input", "aria-label": "Ignored addresses", value: "{p.bypass_filter}", oninput: move |e: FormEvent| { let v = e.value(); edit(&|x| x.bypass_filter = v.clone()) } }
+                            }
+                        }
+                        Switch { checked: p.bypass_local_addresses, label: "Bypass the proxy for local addresses", onchange: move |v| edit(&|x| x.bypass_local_addresses = v) }
+                    }
+                    div { class: "row end", button { class: "btn primary", onclick: save, {crate::i18n::t().save} } }
+                },
+            }
         }
     }
 }

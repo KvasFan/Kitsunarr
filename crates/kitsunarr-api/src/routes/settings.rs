@@ -10,8 +10,8 @@ use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
     MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProviderItem, ProviderKind,
-    QualityDefinition, QualityProfile, REDACTED, RootFolderCreate, RootFolderItem, TagCreate,
-    TagItem,
+    ProxySettings, QualityDefinition, QualityProfile, REDACTED, RootFolderCreate, RootFolderItem,
+    TagCreate, TagItem,
 };
 use kitsunarr_domain::{Language, MediaKind, Quality};
 use serde::{Deserialize, Serialize};
@@ -709,6 +709,38 @@ pub async fn put_indexer_options(
     crate::rss::sync_interval(&state.db).await?;
     settings_changed(&state, "indexerOptions");
     Ok(Json(body))
+}
+
+/// The stored proxy with its password redacted.
+fn redact_proxy(mut s: ProxySettings) -> ProxySettings {
+    if !s.password.is_empty() {
+        s.password = REDACTED.into();
+    }
+    s
+}
+
+#[utoipa::path(get, path = "/settings/proxy", tag = "settings", responses((status = 200, body = ProxySettings)))]
+pub async fn get_proxy(State(state): State<AppState>) -> ApiResult<Json<ProxySettings>> {
+    let s: ProxySettings = kv::get_or_default(state.db.pool(), kv::KEY_PROXY).await?;
+    Ok(Json(redact_proxy(s)))
+}
+
+#[utoipa::path(put, path = "/settings/proxy", tag = "settings", request_body = ProxySettings,
+    responses((status = 200, body = ProxySettings), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn put_proxy(
+    State(state): State<AppState>,
+    Json(mut body): Json<ProxySettings>,
+) -> ApiResult<Json<ProxySettings>> {
+    crate::proxy::validate(&body).map_err(|(field, message)| ApiError::field(field, message))?;
+    if body.password == REDACTED {
+        let stored: ProxySettings = kv::get_or_default(state.db.pool(), kv::KEY_PROXY).await?;
+        body.password = stored.password;
+    }
+    body.hostname = body.hostname.trim().to_string();
+    kv::set(state.db.pool(), kv::KEY_PROXY, &body).await?;
+    state.proxy.set(body.clone());
+    settings_changed(&state, "proxy");
+    Ok(Json(redact_proxy(body)))
 }
 
 #[utoipa::path(get, path = "/settings/general", tag = "settings", responses((status = 200, body = GeneralSettings)))]

@@ -25,6 +25,7 @@
 | Indexers, download clients, notifications, import lists | ✓ (secrets masked) | ✓ (with secrets) | Every setting is kept verbatim; implementations Kitsunarr cannot run yet are stored and flagged. |
 | Delay profiles, release profiles, remote path mappings, list exclusions | ✓ | ✓ | |
 | Naming and media-management settings | ✓ | ✓ (`Config` table) | Unmapped keys are preserved in `migration_unmapped`. |
+| Proxy (Settings › General) | ✓ (`/config/host`) | ✓ (`Config` table) | Type, host, port, credentials, bypass list and local bypass. |
 | History | ✓ (up to 100,000 newest) | ✓ (all) | |
 | Users and passwords | ✗ | ✗ | Kitsunarr creates its own administrator at first run. |
 | Blocklist, pending releases, queue | ✗ | ✗ | Transient download state; not started. |

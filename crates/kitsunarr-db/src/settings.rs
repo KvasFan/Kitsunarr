@@ -9,6 +9,7 @@ pub const KEY_API_KEY: &str = "auth.apiKey";
 pub const KEY_NAMING: &str = "naming";
 pub const KEY_MEDIA_MANAGEMENT: &str = "mediaManagement";
 pub const KEY_GENERAL: &str = "general";
+pub const KEY_PROXY: &str = "proxy";
 pub const KEY_METADATA_SOURCES: &str = "metadataSources";
 pub const KEY_INDEXER_OPTIONS: &str = "indexerOptions";
 pub const KEY_DOWNLOAD_CLIENT_OPTIONS: &str = "downloadClientOptions";

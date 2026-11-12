@@ -665,3 +665,60 @@ impl Default for GeneralSettings {
         }
     }
 }
+
+/// The proxy protocol (Sonarr's `ProxyType`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum ProxyType {
+    #[default]
+    Http,
+    Socks4,
+    Socks5,
+}
+
+impl ProxyType {
+    /// Sonarr's names and numbers (`Http`/0, `Socks4`/1, `Socks5`/2), any case.
+    pub fn parse(s: &str) -> Option<Self> {
+        match s.trim().to_ascii_lowercase().as_str() {
+            "http" | "0" => Some(Self::Http),
+            "socks4" | "1" => Some(Self::Socks4),
+            "socks5" | "2" => Some(Self::Socks5),
+            _ => None,
+        }
+    }
+}
+
+/// The proxy for outgoing requests (Sonarr's Settings › General › Proxy). The password is
+/// redacted in responses; sending the placeholder back keeps it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct ProxySettings {
+    pub enabled: bool,
+    pub proxy_type: ProxyType,
+    pub hostname: String,
+    pub port: u16,
+    pub username: String,
+    pub password: String,
+    /// Comma-separated hosts (`*` wildcards, e.g. `*.lan`) and IP addresses or ranges
+    /// (`192.168.1.0/24`, `10.0.0.1-10.0.0.9`) reached directly.
+    pub bypass_filter: String,
+    /// Loopback addresses and single-label host names are reached directly.
+    pub bypass_local_addresses: bool,
+}
+
+impl Default for ProxySettings {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            proxy_type: ProxyType::Http,
+            hostname: String::new(),
+            port: 8080,
+            username: String::new(),
+            password: String::new(),
+            bypass_filter: String::new(),
+            bypass_local_addresses: true,
+        }
+    }
+}

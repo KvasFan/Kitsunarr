@@ -244,6 +244,25 @@ pub async fn compute_health(state: &AppState) -> ApiResult<Vec<HealthCheck>> {
             },
         });
     }
+    // `ProxyCheck`: the proxy's host must resolve (Tanukarr does not ping Sonarr's servers).
+    if let Some(proxy) = state.proxy.current() {
+        let host = proxy.hostname.trim().to_string();
+        let resolves = tokio::time::timeout(
+            std::time::Duration::from_secs(5),
+            tokio::net::lookup_host((host.as_str(), proxy.port)),
+        )
+        .await
+        .is_ok_and(|r| r.is_ok_and(|mut a| a.next().is_some()));
+        if !resolves {
+            out.push(HealthCheck {
+                source: "ProxyCheck".into(),
+                level: HealthLevel::Error,
+                message: format!(
+                    "Failed to resolve the IP address of the configured proxy host {host}"
+                ),
+            });
+        }
+    }
     if let Ok(data_free) = fs4::available_space(&state.config.data_dir)
         && data_free < 200 * 1024 * 1024
     {

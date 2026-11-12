@@ -387,6 +387,63 @@ async fn update_policy_overwrites_and_skip_policy_preserves() {
     );
 }
 
+/// Sonarr's proxy, stored in its `Config` table as text, becomes Kitsunarr's proxy settings.
+#[tokio::test]
+async fn sonarr_proxy_settings_are_imported() {
+    let tmp = tempfile::tempdir().unwrap();
+    let media = tmp.path().join("media");
+    make_media(
+        &media,
+        &["/tv/Breaking Bad", "/tv/Chernobyl", "/anime/Cowboy Bebop"],
+    );
+    let mut src = load_from_backup(&fixture("sonarr-4.0.20/backup.zip"), tmp.path())
+        .await
+        .unwrap();
+    let config = &mut src.snapshot.media_management.as_mut().unwrap().0;
+    for (k, v) in [
+        ("proxyenabled", "True"),
+        ("proxytype", "Socks5"),
+        ("proxyhostname", "proxy.lan"),
+        ("proxyport", "1080"),
+        ("proxyusername", "me"),
+        ("proxypassword", "secret"),
+        ("proxybypassfilter", "*.lan,192.168.0.0/16"),
+        ("proxybypasslocaladdresses", "False"),
+    ] {
+        config.insert(k.into(), v.into());
+    }
+    let db = fresh_db(tmp.path()).await;
+    run(
+        &db,
+        &src,
+        &options(&media),
+        Mode::Apply {
+            backup_dir: tmp.path().join("b"),
+        },
+        &noop,
+    )
+    .await
+    .unwrap();
+    use kitsunarr_domain::api::settings::{ProxySettings, ProxyType};
+    let proxy: ProxySettings =
+        kitsunarr_db::settings::get_or_default(db.pool(), kitsunarr_db::settings::KEY_PROXY)
+            .await
+            .unwrap();
+    assert_eq!(
+        proxy,
+        ProxySettings {
+            enabled: true,
+            proxy_type: ProxyType::Socks5,
+            hostname: "proxy.lan".into(),
+            port: 1080,
+            username: "me".into(),
+            password: "secret".into(),
+            bypass_filter: "*.lan,192.168.0.0/16".into(),
+            bypass_local_addresses: false,
+        }
+    );
+}
+
 #[tokio::test]
 async fn missing_media_blocks_apply_but_not_preview() {
     let tmp = tempfile::tempdir().unwrap();

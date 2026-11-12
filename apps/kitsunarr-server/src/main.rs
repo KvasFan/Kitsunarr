@@ -290,7 +290,19 @@ async fn serve(config: Config) -> Result<()> {
     let events = EventBus::default();
     let shutdown = CancellationToken::new();
     let tmp_dir = config.data_dir.join("tmp");
+    // Every outgoing request consults the proxy settings, so saving them applies at once.
+    let proxy = kitsunarr_api::proxy::HttpProxy::default();
+    match kitsunarr_db::settings::get_or_default::<kitsunarr_domain::api::settings::ProxySettings>(
+        db.pool(),
+        kitsunarr_db::settings::KEY_PROXY,
+    )
+    .await
+    {
+        Ok(s) => proxy.set(s),
+        Err(e) => tracing::warn!(error = %e, "could not load the proxy settings"),
+    }
     let http = reqwest::Client::builder()
+        .proxy(proxy.reqwest())
         .user_agent(format!(
             "Kitsunarr/{VERSION} (+https://github.com/KvasFan/Kitsunarr)"
         ))
@@ -340,7 +352,8 @@ async fn serve(config: Config) -> Result<()> {
         metadata,
         logs,
     )
-    .with_download_monitor(downloads);
+    .with_download_monitor(downloads)
+    .with_proxy(proxy);
     let _ = api_state.set(state.clone());
     // `ApplicationUpdatedEvent`: the first start of a new version.
     kitsunarr_library::notify::announce_version(&db, &state.downloads.notifier, VERSION).await;

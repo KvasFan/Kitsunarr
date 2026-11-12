@@ -156,6 +156,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             settings::put_indexer_options
         ))
         .routes(routes!(settings::get_general, settings::put_general))
+        .routes(routes!(settings::get_proxy, settings::put_proxy))
         .routes(routes!(
             settings::get_metadata_sources,
             settings::put_metadata_sources

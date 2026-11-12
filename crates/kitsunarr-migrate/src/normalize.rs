@@ -101,6 +101,9 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
     if let Some(io) = raw.table("indexerconfig").first() {
         snap.indexer_options = Some(io.clone());
     }
+    if let Some(h) = raw.table("hostconfig").first() {
+        snap.host_options = Some(h.clone());
+    }
     if let Some(dc) = raw.table("downloadclientconfig").first() {
         snap.download_client_options = Some(dc.clone());
     }
