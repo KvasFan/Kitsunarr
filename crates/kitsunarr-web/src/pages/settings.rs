@@ -893,11 +893,23 @@ fn ProfileEditor(
                                     let name = Quality::by_id(qid).map_or_else(|| qid.to_string(), |q| q.name.to_string());
                                     let cell = move |field: u8| {
                                         let value = limit.as_ref().and_then(|l| match field { 0 => l.min_size, 1 => l.preferred_size, _ => l.max_size }).map(|v| v.0.to_string()).unwrap_or_default();
+                                        // Tanukarr's sliders: each thumb edits its own limit; the GiB per hour
+                                        // preview reads like the Quality settings.
+                                        let per_hour = value.parse::<f64>().ok().map(|v| format!("{:.1} GiB/h", v * 60.0 / 1024.0));
                                         rsx! {
-                                            td { input { class: "input", r#type: "number", min: "0", max: "1000", step: "0.1", style: "width: 6rem",
-                                                "aria-label": "{field_name(field)} size of {qid}",
-                                                placeholder: "global", value: "{value}",
-                                                oninput: move |e: FormEvent| set_size_limit(&mut p.write(), qid, field, e.value().trim().parse().ok()) } }
+                                            td {
+                                                div { class: "stack tight",
+                                                    input { class: "input", r#type: "number", min: "0", max: "1000", step: "0.1", style: "width: 6rem",
+                                                        "aria-label": "{field_name(field)} size of {qid}",
+                                                        placeholder: "global", value: "{value}",
+                                                        oninput: move |e: FormEvent| set_size_limit(&mut p.write(), qid, field, e.value().trim().parse().ok()) }
+                                                    input { r#type: "range", min: "0", max: "1000", step: "0.5", style: "width: 8rem",
+                                                        "aria-label": "{field_name(field)} size slider of {qid}",
+                                                        value: "{value}",
+                                                        oninput: move |e: FormEvent| set_size_limit(&mut p.write(), qid, field, e.value().trim().parse().ok()) }
+                                                    if let Some(h) = per_hour { span { class: "xs muted", "{h}" } }
+                                                }
+                                            }
                                         }
                                     };
                                     rsx! { tr { key: "{qid}", td { "{name}" } {cell(0)} {cell(1)} {cell(2)} } }
