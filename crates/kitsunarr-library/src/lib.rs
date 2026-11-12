@@ -195,9 +195,13 @@ pub async fn add_title(
         .as_deref()
         .map(str::trim)
         .filter(|o| !o.is_empty());
-    let info = metadata
+    let mut info = metadata
         .series_ordered(req.provider, &req.id, ordering)
         .await?;
+    // Tanukarr's presentation enrichment (series only).
+    if info.kind != EntryKind::Movie {
+        metadata.enrich(&mut info).await;
+    }
     if let Some(existing) = find_existing(db, req.provider, &req.id, &info.external_ids).await? {
         return Err(LibraryError::Exists(existing));
     }
@@ -537,9 +541,23 @@ pub async fn refresh_series(
     if !Metadata::supports(provider) {
         return Err(LibraryError::Metadata(MetadataError::Unsupported(provider)));
     }
-    let info = metadata
+    let mut info = metadata
         .series_fresh(provider, &metadata_id, ordering.as_deref())
         .await?;
+    // An empty answer keeps the overview and artwork the title had (Tanukarr), then the
+    // presentation enrichment fills what is still missing.
+    let (old_overview, old_images): (Option<String>, String) =
+        sqlx::query_as("SELECT overview, images FROM series WHERE id = ?")
+            .bind(id)
+            .fetch_one(db.pool())
+            .await?;
+    if info.overview.as_deref().is_none_or(|o| o.trim().is_empty()) {
+        info.overview = old_overview;
+    }
+    if info.images.is_empty() {
+        info.images = serde_json::from_str(&old_images).unwrap_or_default();
+    }
+    metadata.enrich(&mut info).await;
     let monitor_new = monitored && monitor_new == "all";
     let mut tx = db.pool().begin().await?;
     // Like Sonarr, a newly discovered episode is monitored only when new items are monitored

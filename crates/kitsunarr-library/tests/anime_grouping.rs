@@ -268,3 +268,57 @@ async fn a_myanimelist_title_joins_its_franchise_group_through_jikan() {
         ))
     );
 }
+
+/// Tanukarr's presentation enrichment: an AniList title without an overview takes
+/// MyAnimeList's (through its verified MyAnimeList id).
+#[tokio::test]
+async fn a_missing_overview_comes_from_another_catalogue() {
+    async fn anilist(Json(body): Json<Value>) -> Json<Value> {
+        let q = body["query"].as_str().unwrap_or_default();
+        if q.contains("airingSchedule") && !q.contains("coverImage") {
+            return Json(
+                json!({"data": {"Media": {"airingSchedule": {"pageInfo": {"hasNextPage": false}, "nodes": []}}}}),
+            );
+        }
+        if q.contains("relations") && !q.contains("coverImage") {
+            return Json(
+                json!({"data": {"Media": {"id": 30, "format": "TV", "title": {"english": "Quiet"}, "relations": {"edges": []}}}}),
+            );
+        }
+        let mut m = media(30);
+        m["description"] = Value::Null;
+        Json(json!({"data": {"Media": m}}))
+    }
+    async fn jikan(axum::extract::Path(id): axum::extract::Path<i64>) -> Json<Value> {
+        Json(
+            json!({"data": {"mal_id": id, "title": "Quiet", "type": "TV", "synopsis": "From MyAnimeList.",
+            "episodes": 2, "status": "Finished Airing",
+            "images": {"jpg": {"large_image_url": "https://cdn.myanimelist.net/images/anime/1/1.jpg"}}}}),
+        )
+    }
+    async fn no_episodes() -> Json<Value> {
+        Json(json!({"data": [], "pagination": {"has_next_page": false}}))
+    }
+    let app = axum::Router::new()
+        .route("/graphql", post(anilist))
+        .route("/anime/{id}/full", axum::routing::get(jikan))
+        .route("/anime/{id}/episodes", axum::routing::get(no_episodes));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let metadata = Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            anilist: format!("http://{addr}/graphql"),
+            jikan: format!("http://{addr}"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    );
+    let mut info = metadata
+        .series(MetadataProvider::AniList, "30")
+        .await
+        .unwrap();
+    assert!(info.overview.as_deref().is_none_or(str::is_empty));
+    metadata.enrich(&mut info).await;
+    assert_eq!(info.overview.as_deref(), Some("From MyAnimeList."));
+}

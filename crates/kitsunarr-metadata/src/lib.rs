@@ -19,7 +19,9 @@ pub mod tvmaze;
 
 use std::time::Duration;
 
-use kitsunarr_domain::{ExternalId, MediaImage, MetadataProvider, SeriesStatus, SeriesType};
+use kitsunarr_domain::{
+    ExternalId, ExternalIdKind, MediaImage, MetadataProvider, SeriesStatus, SeriesType,
+};
 use serde::{Deserialize, Serialize};
 
 pub use cache::TtlCache;
@@ -417,6 +419,71 @@ impl Metadata {
         self.tmdb.movie_collection(id).await
     }
 
+    /// Tanukarr's `SeriesPresentationService.Enrich`: a missing overview, poster or fanart is
+    /// taken from up to two other catalogues the title has a verified id in (TheTVDB, TMDB TV,
+    /// AniList, MyAnimeList), within 5 seconds each; only artwork on their own HTTPS hosts is
+    /// used. Failures leave the title as it was.
+    pub async fn enrich(&self, info: &mut SeriesInfo) {
+        let wants = |info: &SeriesInfo| {
+            let has = |t: &str| {
+                info.images
+                    .iter()
+                    .any(|i| i.cover_type.eq_ignore_ascii_case(t))
+            };
+            (
+                info.overview.as_deref().is_none_or(|o| o.trim().is_empty()),
+                !has("poster"),
+                !has("fanart"),
+            )
+        };
+        if wants(info) == (false, false, false) || info.kind == EntryKind::Movie {
+            return;
+        }
+        let candidates: Vec<(MetadataProvider, String)> = [
+            (ExternalIdKind::Tvdb, MetadataProvider::Tvdb),
+            (ExternalIdKind::Tmdb, MetadataProvider::TmdbTv),
+            (ExternalIdKind::AniList, MetadataProvider::AniList),
+            (ExternalIdKind::MyAnimeList, MetadataProvider::MyAnimeList),
+        ]
+        .into_iter()
+        .filter(|(_, p)| *p != info.provider && Self::supports(*p))
+        .filter_map(|(kind, p)| {
+            info.external_ids
+                .iter()
+                .find(|e| e.kind == kind && e.value.trim().parse::<i64>().is_ok_and(|n| n > 0))
+                .map(|e| (p, e.value.clone()))
+        })
+        .take(2)
+        .collect();
+        for (provider, id) in candidates {
+            let (overview, poster, fanart) = wants(info);
+            if !overview && !poster && !fanart {
+                break;
+            }
+            let Ok(Ok(other)) = tokio::time::timeout(
+                std::time::Duration::from_secs(5),
+                self.series(provider, &id),
+            )
+            .await
+            else {
+                continue;
+            };
+            if overview && let Some(o) = other.overview.filter(|o| !o.trim().is_empty()) {
+                info.overview = Some(o);
+            }
+            for (wanted, kind) in [(poster, "poster"), (fanart, "fanart")] {
+                if !wanted {
+                    continue;
+                }
+                if let Some(img) = other.images.iter().find(|i| {
+                    i.cover_type.eq_ignore_ascii_case(kind) && trusted_image(&i.remote_url)
+                }) {
+                    info.images.push(img.clone());
+                }
+            }
+        }
+    }
+
     /// An AniList anime with its franchise relations.
     pub async fn anime_relations(&self, id: i64) -> MetadataResult<AnimeNode> {
         anilist::relations(&self.anilist, id).await
@@ -531,6 +598,22 @@ pub(crate) async fn send_json<T: serde::de::DeserializeOwned>(
         provider,
         message: "rate limited".into(),
     })
+}
+
+/// Artwork hosts presentation enrichment accepts (HTTPS only).
+fn trusted_image(url: &str) -> bool {
+    const HOSTS: &[&str] = &[
+        "s4.anilist.co",
+        "s3.anilist.co",
+        "s.anilist.co",
+        "cdn.myanimelist.net",
+        "image.tmdb.org",
+        "artworks.thetvdb.com",
+        "banners.thetvdb.com",
+    ];
+    url.strip_prefix("https://")
+        .and_then(|rest| rest.split('/').next())
+        .is_some_and(|host| HOSTS.contains(&host.to_ascii_lowercase().as_str()))
 }
 
 #[cfg(test)]
