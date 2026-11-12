@@ -274,6 +274,7 @@ mod prioritize_download_decision_fixture {
                 min_size: None,
                 preferred_size: Some(OrderedF64(mb_per_minute)),
                 max_size: None,
+                ..Default::default()
             })
             .collect();
     }
@@ -693,6 +694,7 @@ mod codec_normalized_size_fixture {
             min_size: Some(OrderedF64(2.0)),
             preferred_size: None,
             max_size: Some(OrderedF64(10.0)),
+            ..Default::default()
         }];
         c.release = release(title);
         c.release.size = size_mb * MB;
@@ -759,6 +761,7 @@ mod acceptable_size_specification_fixture {
             min_size: Some(OrderedF64(2.0)),
             preferred_size: None,
             max_size: Some(OrderedF64(10.0)),
+            ..Default::default()
         }];
         c.release.size = size_mb * MB;
         c.episodes = (0..episodes)

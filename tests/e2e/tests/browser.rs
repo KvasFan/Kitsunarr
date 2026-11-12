@@ -528,6 +528,7 @@ async fn first_run_setup_migration_and_library() {
         click_button(&client, "Cancel").await;
         wait_text(&client, "Delay profiles").await;
         wait_text(&client, "Release profiles").await;
+        wait_text(&client, "Quality presets").await;
         // Library tools: switches, storage outlook, library check, recycle bin, recent searches.
         client.goto(&format!("{base}/system/library")).await.unwrap();
         wait_text(&client, "Pause automation").await;

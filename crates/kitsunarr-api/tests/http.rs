@@ -4177,3 +4177,66 @@ async fn collections_can_be_edited_by_hand() {
         .unwrap();
     assert_eq!(series, 2, "titles stay in the library");
 }
+
+/// Tanukarr's custom quality presets through the API: create, list, retire, restore.
+#[tokio::test]
+async fn custom_quality_presets_round_trip() {
+    use kitsunarr_domain::api::settings::CustomQualityCreate;
+    use kitsunarr_domain::quality::QualitySource;
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let d = client
+        .create_custom_quality(&CustomQualityCreate {
+            title: "Anime BD 1080p HEVC".into(),
+            source: Some(QualitySource::Bluray),
+            resolution: Some(1080),
+            codec: "HEVC".into(),
+            title_pattern: String::new(),
+            copy_from_id: Some(7),
+        })
+        .await
+        .unwrap();
+    assert!(d.quality_id >= 10_000);
+    let defs = client.quality_definitions().await.unwrap();
+    let stored = defs.iter().find(|x| x.quality_id == d.quality_id).unwrap();
+    assert_eq!(stored.codec, "HEVC");
+    let profiles = client.quality_profiles().await.unwrap();
+    assert!(
+        profiles
+            .iter()
+            .all(|p| p.items.iter().any(|i| i.quality_id == Some(d.quality_id)))
+    );
+    client.retire_quality(d.quality_id).await.unwrap();
+    assert!(
+        client
+            .quality_definitions()
+            .await
+            .unwrap()
+            .iter()
+            .any(|x| x.quality_id == d.quality_id && x.is_retired)
+    );
+    client.restore_quality(d.quality_id).await.unwrap();
+    assert!(
+        client
+            .quality_definitions()
+            .await
+            .unwrap()
+            .iter()
+            .any(|x| x.quality_id == d.quality_id && !x.is_retired)
+    );
+    // Criteria on a standard quality are kept by the bulk update.
+    let mut defs = client.quality_definitions().await.unwrap();
+    defs.iter_mut()
+        .find(|x| x.quality_id == 3)
+        .unwrap()
+        .title_pattern = r"\bAMZN\b".into();
+    let saved = client.update_quality_definitions(&defs).await.unwrap();
+    assert_eq!(
+        saved
+            .iter()
+            .find(|x| x.quality_id == 3)
+            .unwrap()
+            .title_pattern,
+        r"\bAMZN\b"
+    );
+}

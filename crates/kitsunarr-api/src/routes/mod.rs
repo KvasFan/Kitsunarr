@@ -106,8 +106,11 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(settings::delete_root_folder))
         .routes(routes!(
             settings::list_quality_definitions,
-            settings::update_quality_definitions
+            settings::update_quality_definitions,
+            settings::create_custom_quality
         ))
+        .routes(routes!(settings::retire_quality))
+        .routes(routes!(settings::restore_quality))
         .routes(routes!(
             settings::list_quality_profiles,
             settings::create_quality_profile

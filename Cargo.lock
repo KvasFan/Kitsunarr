@@ -2619,6 +2619,7 @@ dependencies = [
  "chrono",
  "futures",
  "kitsunarr-domain",
+ "regex",
  "serde",
  "serde_json",
  "sqlx",

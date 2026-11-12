@@ -393,7 +393,61 @@ impl<'a> Importer<'a> {
         let current = quality::list_definitions(&mut *conn).await?;
         let defaults = quality::default_definitions();
         for d in &self.snap.quality_definitions {
-            if d.min_size.is_none() && d.max_size.is_none() && d.preferred_size.is_none() {
+            // Tanukarr's custom presets keep their ids, so profiles, files and history still
+            // name them.
+            if d.quality_id >= kitsunarr_domain::quality::CUSTOM_QUALITY_BASE {
+                let new = QualityDefinition {
+                    quality_id: d.quality_id,
+                    title: d.title.clone(),
+                    weight: 19,
+                    min_size: d.min_size.map(OrderedF64),
+                    preferred_size: d.preferred_size.map(OrderedF64),
+                    max_size: d.max_size.map(OrderedF64),
+                    source: d.source,
+                    resolution: d.resolution,
+                    codec: d.codec.clone(),
+                    title_pattern: d.title_pattern.clone(),
+                    is_retired: d.is_retired,
+                };
+                let exists = current.iter().any(|c| c.quality_id == d.quality_id);
+                if exists && !self.update_existing() {
+                    self.count("qualityDefinitions", Act::Skip);
+                    continue;
+                }
+                match quality::upsert_definition(&mut *conn, &new).await {
+                    Ok(()) => {
+                        sqlx::query(
+                            "UPDATE quality_definitions SET is_retired = ? WHERE quality_id = ?",
+                        )
+                        .bind(d.is_retired)
+                        .bind(d.quality_id)
+                        .execute(&mut *conn)
+                        .await
+                        .map_err(kitsunarr_db::DbError::from)?;
+                        self.count(
+                            "qualityDefinitions",
+                            if exists { Act::Update } else { Act::Create },
+                        );
+                    }
+                    Err(e) => {
+                        self.warn(
+                            WarningSeverity::Warning,
+                            "qualityDefinitions",
+                            Some(i64::from(d.quality_id)),
+                            Some(&d.title),
+                            format!("The custom quality preset could not be imported: {e}"),
+                        );
+                        self.count("qualityDefinitions", Act::Unsupported);
+                    }
+                }
+                continue;
+            }
+            let has_criteria = !d.codec.is_empty() || !d.title_pattern.is_empty() || d.is_retired;
+            if d.min_size.is_none()
+                && d.max_size.is_none()
+                && d.preferred_size.is_none()
+                && !has_criteria
+            {
                 continue; // Tanukarr keeps sizes on profile items instead.
             }
             let Some(q) = Quality::by_id(d.quality_id) else {
@@ -411,22 +465,52 @@ impl<'a> Importer<'a> {
                 }
                 _ => true,
             };
+            // Sizes Tanukarr keeps on profile items stay as they are here.
+            let sizes = d.min_size.is_some() || d.max_size.is_some() || d.preferred_size.is_some();
             let new = QualityDefinition {
                 quality_id: q.id,
                 title: cur.map_or_else(|| q.name.to_string(), |c| c.title.clone()),
                 weight: q.weight,
-                min_size: d.min_size.map(OrderedF64),
-                preferred_size: d.preferred_size.map(OrderedF64),
-                max_size: d.max_size.map(OrderedF64),
+                min_size: if sizes {
+                    d.min_size.map(OrderedF64)
+                } else {
+                    cur.and_then(|c| c.min_size)
+                },
+                preferred_size: if sizes {
+                    d.preferred_size.map(OrderedF64)
+                } else {
+                    cur.and_then(|c| c.preferred_size)
+                },
+                max_size: if sizes {
+                    d.max_size.map(OrderedF64)
+                } else {
+                    cur.and_then(|c| c.max_size)
+                },
+                codec: d.codec.clone(),
+                title_pattern: d.title_pattern.clone(),
+                is_retired: d.is_retired,
+                ..Default::default()
             };
             if cur.is_some_and(|c| {
                 c.min_size == new.min_size
                     && c.max_size == new.max_size
                     && c.preferred_size == new.preferred_size
+                    && c.codec == new.codec
+                    && c.title_pattern == new.title_pattern
+                    && c.is_retired == new.is_retired
             }) {
                 self.count("qualityDefinitions", Act::Skip);
             } else if is_default || self.update_existing() {
                 quality::upsert_definition(&mut *conn, &new).await?;
+                if new.is_retired {
+                    sqlx::query(
+                        "UPDATE quality_definitions SET is_retired = 1 WHERE quality_id = ?",
+                    )
+                    .bind(new.quality_id)
+                    .execute(&mut *conn)
+                    .await
+                    .map_err(kitsunarr_db::DbError::from)?;
+                }
                 self.count("qualityDefinitions", Act::Update);
             } else {
                 self.count("qualityDefinitions", Act::Skip);

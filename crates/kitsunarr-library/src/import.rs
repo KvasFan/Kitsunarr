@@ -324,11 +324,10 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         "automatic" => naming.rename_episodes = true,
         _ => {}
     }
-    let quality_titles: HashMap<i32, String> = quality::list_definitions(db.pool())
-        .await
-        .map_err(err)?
-        .into_iter()
-        .map(|d| (d.quality_id, d.title))
+    let definitions = quality::list_definitions(db.pool()).await.map_err(err)?;
+    let quality_titles: HashMap<i32, String> = definitions
+        .iter()
+        .map(|d| (d.quality_id, d.title.clone()))
         .collect();
     let (formats, _) =
         decision::compile_formats(&quality::list_custom_formats(db.pool()).await.map_err(err)?);
@@ -448,7 +447,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         let size = std::fs::metadata(&path)
             .map(|m| m.len() as i64)
             .unwrap_or(0);
-        let quality = aggregate_quality(&[
+        let mut quality = aggregate_quality(&[
             parse_quality(&name),
             folder_name
                 .as_deref()
@@ -457,6 +456,17 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             parse_quality(d.title),
             parse_quality(&grab_title),
         ]);
+        // Tanukarr's custom quality presets (`ProfileQualityMatcher` for new files).
+        if let Some(parsed) = file_info.as_ref() {
+            quality.quality_id = decision::quality_match::match_quality(
+                quality.quality(),
+                &name,
+                parsed,
+                &model.profile,
+                &definitions,
+            )
+            .id;
+        }
         // `AggregateLanguage`: the last of file, folder and download names that names one.
         let mut languages = vec![original];
         for source in [Some(name.as_str()), folder_name.as_deref(), Some(d.title)]

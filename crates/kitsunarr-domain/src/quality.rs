@@ -109,13 +109,86 @@ pub const QUALITIES: &[Quality] = &[
     q!(21, "Bluray-2160p Remux", BlurayRaw, 2160, 18, 35.0, None),
 ];
 
+/// The first id of Tanukarr's custom quality presets.
+pub const CUSTOM_QUALITY_BASE: i32 = 10_000;
+/// Tanukarr's weight for custom presets (ranking follows the profile's order).
+const CUSTOM_WEIGHT: i32 = 19;
+
+/// Custom quality presets registered at run time (loaded from the database).
+static CUSTOM: std::sync::RwLock<Vec<&'static Quality>> = std::sync::RwLock::new(Vec::new());
+
 impl Quality {
     pub fn by_id(id: i32) -> Option<&'static Quality> {
-        QUALITIES.iter().find(|q| q.id == id)
+        QUALITIES.iter().find(|q| q.id == id).or_else(|| {
+            (id >= CUSTOM_QUALITY_BASE)
+                .then(|| {
+                    CUSTOM
+                        .read()
+                        .unwrap_or_else(|e| e.into_inner())
+                        .iter()
+                        .find(|q| q.id == id)
+                        .copied()
+                })
+                .flatten()
+        })
     }
 
     pub fn by_name(name: &str) -> Option<&'static Quality> {
-        QUALITIES.iter().find(|q| q.name.eq_ignore_ascii_case(name))
+        QUALITIES
+            .iter()
+            .find(|q| q.name.eq_ignore_ascii_case(name))
+            .or_else(|| {
+                CUSTOM
+                    .read()
+                    .unwrap_or_else(|e| e.into_inner())
+                    .iter()
+                    .find(|q| q.name.eq_ignore_ascii_case(name))
+                    .copied()
+            })
+    }
+
+    /// Whether this is one of Tanukarr's custom presets (id 10000 and up).
+    pub fn is_custom(&self) -> bool {
+        self.id >= CUSTOM_QUALITY_BASE
+    }
+
+    /// Registers (or renames) a custom preset (`Quality.Register`). Each registration keeps a
+    /// small allocation for the life of the process, as presets are few and rarely edited.
+    pub fn register(
+        id: i32,
+        name: &str,
+        source: QualitySource,
+        resolution: i32,
+    ) -> &'static Quality {
+        let mut list = CUSTOM.write().unwrap_or_else(|e| e.into_inner());
+        if let Some(q) = list.iter().find(|q| {
+            q.id == id && q.name == name && q.source == source && q.resolution == resolution
+        }) {
+            return q;
+        }
+        let base = QUALITIES
+            .iter()
+            .find(|q| q.source == source && q.resolution == resolution);
+        let q: &'static Quality = Box::leak(Box::new(Quality {
+            id,
+            name: Box::leak(name.to_string().into_boxed_str()),
+            source,
+            resolution,
+            weight: CUSTOM_WEIGHT,
+            default_min_size: base.map_or(2.0, |b| b.default_min_size),
+            default_preferred_size: 95.0,
+            default_max_size: base.and_then(|b| b.default_max_size),
+        }));
+        list.retain(|x| x.id != id);
+        list.push(q);
+        q
+    }
+
+    /// The registered custom presets, by id.
+    pub fn custom() -> Vec<&'static Quality> {
+        let mut out = CUSTOM.read().unwrap_or_else(|e| e.into_inner()).clone();
+        out.sort_by_key(|q| q.id);
+        out
     }
 
     pub fn unknown() -> &'static Quality {

@@ -16,6 +16,7 @@ pub mod complete_series;
 pub mod custom_format;
 pub mod model;
 pub mod profile;
+pub mod quality_match;
 
 mod compare;
 mod mapping;
@@ -324,9 +325,17 @@ impl Engine<'_> {
         criteria: &SearchCriteria,
         index: usize,
         release: &Release,
-        parsed: ParsedEpisodeInfo,
+        mut parsed: ParsedEpisodeInfo,
     ) -> Decision {
         let series = self.series;
+        // Tanukarr's custom quality presets.
+        parsed.quality.quality = quality_match::match_quality(
+            parsed.quality.quality,
+            &release.title,
+            &parsed,
+            &series.profile,
+            &self.settings.quality_definitions,
+        );
         let episodes = mapping::episodes(&parsed, series, criteria);
         if episodes.is_empty() {
             return self.rejected(

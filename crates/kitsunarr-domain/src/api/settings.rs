@@ -110,7 +110,7 @@ pub struct QualitySizeLimit {
     pub max_size: Option<OrderedF64>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct QualityDefinition {
@@ -123,6 +123,38 @@ pub struct QualityDefinition {
     pub preferred_size: Option<OrderedF64>,
     #[cfg_attr(feature = "openapi", schema(value_type = Option<f64>))]
     pub max_size: Option<OrderedF64>,
+    /// Tanukarr's preset criteria: the source and resolution (a custom preset's own; empty
+    /// for a standard quality, which uses its built-in ones).
+    #[serde(default)]
+    pub source: Option<crate::quality::QualitySource>,
+    #[serde(default)]
+    pub resolution: Option<i32>,
+    /// A codec family releases must use to get this quality (empty: any).
+    #[serde(default)]
+    pub codec: String,
+    /// A regular expression release titles must match (empty: any).
+    #[serde(default)]
+    pub title_pattern: String,
+    /// Retired presets are kept for history but no longer used.
+    #[serde(default)]
+    pub is_retired: bool,
+}
+
+/// Creates a custom quality preset (Tanukarr's `POST /qualitydefinition`).
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CustomQualityCreate {
+    pub title: String,
+    pub source: Option<crate::quality::QualitySource>,
+    pub resolution: Option<i32>,
+    #[serde(default)]
+    pub codec: String,
+    #[serde(default)]
+    pub title_pattern: String,
+    /// Copies this quality's size limits (global and per profile).
+    #[serde(default)]
+    pub copy_from_id: Option<i32>,
 }
 
 /// `f64` wrapper with `Eq` so that DTOs containing sizes can still derive `Eq`.

@@ -365,6 +365,19 @@ pub fn SettingsProfiles() -> Element {
         let c = c1.clone();
         async move { c.custom_formats().await }
     });
+    // Custom quality presets, registered so their names show here.
+    let c4 = client.clone();
+    let mut definitions = use_resource(move || {
+        let _ = (app.settings_rev)();
+        let c = c4.clone();
+        async move {
+            let defs = c.quality_definitions().await;
+            if let Ok(defs) = &defs {
+                register_presets(defs);
+            }
+            defs
+        }
+    });
     let c2 = client.clone();
     let save = move |p: QualityProfile| {
         let c = c2.clone();
@@ -434,8 +447,208 @@ pub fn SettingsProfiles() -> Element {
                 on_close: move |_| editing.set(None),
             }
         }
+        match &*definitions.read() {
+            Some(Ok(defs)) => {
+                // Remounted when the presets change, so the editor starts from the stored ones.
+                let key = defs.iter().map(|d| format!("{}:{}:{}:{}:{}", d.quality_id, d.is_retired, d.codec, d.title_pattern, d.title)).collect::<Vec<_>>().join("|");
+                rsx! { QualityPresets { key: "{key}", definitions: defs.clone(), on_change: move |_| { definitions.restart(); profiles.restart(); } } }
+            }
+            Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+            None => rsx! {},
+        }
         DelayProfiles {}
         ReleaseProfiles {}
+    }
+}
+
+/// Registers custom presets in the browser's quality catalogue (names in profiles).
+fn register_presets(defs: &[kitsunarr_domain::api::settings::QualityDefinition]) {
+    for d in defs
+        .iter()
+        .filter(|d| d.quality_id >= kitsunarr_domain::quality::CUSTOM_QUALITY_BASE)
+    {
+        Quality::register(
+            d.quality_id,
+            &d.title,
+            d.source
+                .unwrap_or(kitsunarr_domain::quality::QualitySource::Unknown),
+            d.resolution.unwrap_or(0),
+        );
+    }
+}
+
+const PRESET_SOURCES: &[(kitsunarr_domain::quality::QualitySource, &str)] = {
+    use kitsunarr_domain::quality::QualitySource as S;
+    &[
+        (S::Television, "Television"),
+        (S::TelevisionRaw, "Television (raw)"),
+        (S::Web, "Web"),
+        (S::WebRip, "WebRip"),
+        (S::Dvd, "DVD"),
+        (S::Bluray, "Blu-ray"),
+        (S::BlurayRaw, "Blu-ray (raw / remux)"),
+        (S::Unknown, "Unknown"),
+    ]
+};
+
+fn source_label(s: Option<kitsunarr_domain::quality::QualitySource>) -> &'static str {
+    s.and_then(|s| {
+        PRESET_SOURCES
+            .iter()
+            .find(|(x, _)| *x == s)
+            .map(|(_, l)| *l)
+    })
+    .unwrap_or("—")
+}
+
+/// Tanukarr's quality presets: criteria on standard qualities, custom presets (create, retire,
+/// restore).
+#[component]
+fn QualityPresets(
+    definitions: Vec<kitsunarr_domain::api::settings::QualityDefinition>,
+    on_change: EventHandler<()>,
+) -> Element {
+    use kitsunarr_domain::api::settings::CustomQualityCreate;
+    let app = use_app();
+    let client = use_client();
+    let mut defs = use_signal(|| definitions.clone());
+    let mut new = use_signal(|| CustomQualityCreate {
+        source: Some(kitsunarr_domain::quality::QualitySource::Web),
+        resolution: Some(1080),
+        ..Default::default()
+    });
+    let c1 = client.clone();
+    let save = move |_| {
+        let c = c1.clone();
+        let list = defs();
+        spawn(async move {
+            match c.update_quality_definitions(&list).await {
+                Ok(_) => {
+                    app.success("Quality presets saved.");
+                    on_change.call(());
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let c2 = client.clone();
+    let create = move |_| {
+        let c = c2.clone();
+        let req = new();
+        spawn(async move {
+            match c.create_custom_quality(&req).await {
+                Ok(d) => {
+                    app.success(format!(
+                        "{} added to every profile (not allowed yet).",
+                        d.title
+                    ));
+                    new.write().title.clear();
+                    on_change.call(());
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let c3 = client.clone();
+    let toggle_retired = move |(id, retired): (i32, bool)| {
+        let c = c3.clone();
+        spawn(async move {
+            let r = if retired {
+                c.restore_quality(id).await
+            } else {
+                c.retire_quality(id).await
+            };
+            match r {
+                Ok(()) => on_change.call(()),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let families = kitsunarr_domain::codec::FAMILIES;
+    rsx! {
+        details { class: "card", style: "margin-top: var(--sp-6)",
+            summary { strong { "Quality presets" } span { class: "muted small", " — codec and title criteria, custom qualities (Tanukarr)" } }
+            p { class: "help small faint", "A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed." }
+            div { class: "table-wrap",
+                table { class: "table",
+                    thead { tr { th { "Quality" } th { "Source" } th { class: "num", "Resolution" } th { "Codec" } th { "Title pattern" } th { span { class: "sr-only", "Actions" } } } }
+                    tbody {
+                        for (i, d) in defs().iter().enumerate() {
+                            {
+                                let custom = d.quality_id >= kitsunarr_domain::quality::CUSTOM_QUALITY_BASE;
+                                let q = Quality::by_id(d.quality_id);
+                                let source = d.source.or(q.map(|q| q.source));
+                                let resolution = d.resolution.or(q.map(|q| q.resolution)).unwrap_or(0);
+                                let (id, retired) = (d.quality_id, d.is_retired);
+                                let toggle = toggle_retired.clone();
+                                rsx! {
+                                    tr { key: "{d.quality_id}", class: if d.is_retired { "rejected" } else { "" },
+                                        td {
+                                            "{d.title}"
+                                            if custom { span { class: "badge accent", " custom" } }
+                                            if d.is_retired { span { class: "badge", " retired" } }
+                                        }
+                                        td { class: "small", {source_label(source)} }
+                                        td { class: "num small", "{resolution}" }
+                                        td {
+                                            select { class: "input", "aria-label": "Codec of {d.title}", value: "{d.codec}",
+                                                onchange: move |e| { defs.write()[i].codec = e.value(); },
+                                                option { value: "", "Any" }
+                                                for f in families.iter() { option { key: "{f}", value: "{f}", "{f}" } }
+                                            }
+                                        }
+                                        td { input { class: "input mono", "aria-label": "Title pattern of {d.title}", value: "{d.title_pattern}",
+                                            oninput: move |e| { defs.write()[i].title_pattern = e.value(); } } }
+                                        td { class: "actions",
+                                            if d.quality_id != 0 {
+                                                button { class: "btn sm ghost", onclick: move |_| toggle((id, retired)),
+                                                    if retired { "Restore" } else { "Retire" } }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            div { class: "row", button { class: "btn primary", onclick: save, "Save criteria" } }
+            h3 { "New custom preset" }
+            div { class: "form-grid",
+                Field { label: "Title",
+                    input { class: "input", "aria-label": "Preset title", value: "{new().title}", oninput: move |e| new.write().title = e.value() }
+                }
+                Field { label: "Source",
+                    select { class: "input", value: "{PRESET_SOURCES.iter().position(|(s, _)| Some(*s) == new().source).unwrap_or(0)}",
+                        onchange: move |e| { if let Ok(i) = e.value().parse::<usize>() { new.write().source = PRESET_SOURCES.get(i).map(|(s, _)| *s); } },
+                        for (i, (_, l)) in PRESET_SOURCES.iter().enumerate() { option { key: "{i}", value: "{i}", "{l}" } }
+                    }
+                }
+                Field { label: "Resolution",
+                    select { class: "input", value: "{new().resolution.unwrap_or(0)}",
+                        onchange: move |e| new.write().resolution = e.value().parse().ok(),
+                        for r in [2160, 1080, 720, 576, 480, 0] { option { key: "{r}", value: "{r}", "{r}" } }
+                    }
+                }
+                Field { label: "Codec",
+                    select { class: "input", value: "{new().codec}", onchange: move |e| new.write().codec = e.value(),
+                        option { value: "", "Any" }
+                        for f in families.iter() { option { key: "{f}", value: "{f}", "{f}" } }
+                    }
+                }
+                Field { label: "Title pattern", help: "A regular expression, case-insensitive; empty matches every title.".to_string(),
+                    input { class: "input mono", value: "{new().title_pattern}", oninput: move |e| new.write().title_pattern = e.value() }
+                }
+                Field { label: "Copy sizes from",
+                    select { class: "input", value: "{new().copy_from_id.map(|v| v.to_string()).unwrap_or_default()}",
+                        onchange: move |e| new.write().copy_from_id = e.value().parse().ok(),
+                        option { value: "", "Defaults" }
+                        for d in definitions.iter() { option { key: "{d.quality_id}", value: "{d.quality_id}", "{d.title}" } }
+                    }
+                }
+            }
+            div { class: "row", button { class: "btn primary", disabled: new().title.trim().is_empty(), onclick: create, "Add preset" } }
+        }
     }
 }
 

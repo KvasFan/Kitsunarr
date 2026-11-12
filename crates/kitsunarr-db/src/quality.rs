@@ -1,10 +1,10 @@
 //! Quality definitions, quality profiles and custom formats.
 
 use kitsunarr_domain::api::settings::{
-    CustomFormat, CustomFormatSpecification, FormatScore, OrderedF64, QualityDefinition,
-    QualityGroup, QualityProfile, QualityProfileItem,
+    CustomFormat, CustomFormatSpecification, CustomQualityCreate, FormatScore, OrderedF64,
+    QualityDefinition, QualityGroup, QualityProfile, QualityProfileItem,
 };
-use kitsunarr_domain::quality::{QUALITIES, Quality};
+use kitsunarr_domain::quality::{CUSTOM_QUALITY_BASE, QUALITIES, Quality, QualitySource};
 use sqlx::{FromRow, SqliteExecutor};
 
 use crate::{DbError, DbResult, from_json, to_json};
@@ -20,6 +20,62 @@ struct DefinitionRow {
     min_size: Option<f64>,
     preferred_size: Option<f64>,
     max_size: Option<f64>,
+    source: Option<String>,
+    resolution: Option<i64>,
+    codec: String,
+    title_pattern: String,
+    is_retired: bool,
+}
+
+fn source_of(raw: Option<&str>) -> Option<QualitySource> {
+    raw.and_then(|s| serde_json::from_value(serde_json::Value::String(s.into())).ok())
+}
+
+fn source_name(s: QualitySource) -> String {
+    serde_json::to_value(s)
+        .ok()
+        .and_then(|v| v.as_str().map(str::to_string))
+        .unwrap_or_default()
+}
+
+/// Registers the stored custom presets (`Quality.Register` at start-up).
+pub async fn register_custom(ex: impl SqliteExecutor<'_>) -> DbResult<()> {
+    let rows: Vec<(i64, String, Option<String>, Option<i64>)> = sqlx::query_as(
+        "SELECT quality_id, title, source, resolution FROM quality_definitions WHERE quality_id >= ?",
+    )
+    .bind(CUSTOM_QUALITY_BASE)
+    .fetch_all(ex)
+    .await?;
+    for (id, title, source, resolution) in rows {
+        Quality::register(
+            id as i32,
+            &title,
+            source_of(source.as_deref()).unwrap_or(QualitySource::Unknown),
+            resolution.unwrap_or(0) as i32,
+        );
+    }
+    Ok(())
+}
+
+/// Tanukarr's resolutions for presets.
+const RESOLUTIONS: [i32; 6] = [0, 480, 576, 720, 1080, 2160];
+
+/// Validates a preset's codec and title pattern.
+fn check_criteria(codec: &str, pattern: &str) -> DbResult<()> {
+    if !codec.is_empty() && !kitsunarr_domain::codec::FAMILIES.contains(&codec) {
+        return Err(DbError::Invalid(format!("unknown codec family {codec}")));
+    }
+    if pattern.chars().count() > 256 {
+        return Err(DbError::Invalid(
+            "the title pattern is limited to 256 characters".into(),
+        ));
+    }
+    if !pattern.is_empty() && regex::Regex::new(pattern).is_err() {
+        return Err(DbError::Invalid(
+            "the title pattern is not a valid regular expression".into(),
+        ));
+    }
+    Ok(())
 }
 
 pub async fn list_definitions(ex: impl SqliteExecutor<'_>) -> DbResult<Vec<QualityDefinition>> {
@@ -37,6 +93,11 @@ pub async fn list_definitions(ex: impl SqliteExecutor<'_>) -> DbResult<Vec<Quali
                 min_size: r.min_size.map(OrderedF64),
                 preferred_size: r.preferred_size.map(OrderedF64),
                 max_size: r.max_size.map(OrderedF64),
+                source: source_of(r.source.as_deref()),
+                resolution: r.resolution.map(|v| v as i32),
+                codec: r.codec,
+                title_pattern: r.title_pattern,
+                is_retired: r.is_retired,
             }
         })
         .collect();
@@ -45,7 +106,7 @@ pub async fn list_definitions(ex: impl SqliteExecutor<'_>) -> DbResult<Vec<Quali
 }
 
 pub async fn upsert_definition(ex: impl SqliteExecutor<'_>, d: &QualityDefinition) -> DbResult<()> {
-    if Quality::by_id(d.quality_id).is_none() {
+    if d.quality_id < CUSTOM_QUALITY_BASE && Quality::by_id(d.quality_id).is_none() {
         return Err(DbError::Invalid(format!(
             "unknown quality id {}",
             d.quality_id
@@ -63,18 +124,210 @@ pub async fn upsert_definition(ex: impl SqliteExecutor<'_>, d: &QualityDefinitio
             "minimum size must not exceed maximum size".into(),
         ));
     }
+    check_criteria(&d.codec, &d.title_pattern)?;
+    let custom = d.quality_id >= CUSTOM_QUALITY_BASE;
+    // A standard quality keeps its own source and resolution.
+    let (source, resolution) = if custom {
+        let source = d
+            .source
+            .ok_or(DbError::Invalid("the source is required".into()))?;
+        let resolution =
+            d.resolution
+                .filter(|r| RESOLUTIONS.contains(r))
+                .ok_or(DbError::Invalid(
+                    "the resolution must be 0, 480, 576, 720, 1080 or 2160".into(),
+                ))?;
+        (Some(source_name(source)), Some(resolution))
+    } else {
+        (None, None)
+    };
     sqlx::query(
-        "INSERT INTO quality_definitions (quality_id, title, min_size, preferred_size, max_size) VALUES (?, ?, ?, ?, ?) \
+        "INSERT INTO quality_definitions (quality_id, title, min_size, preferred_size, max_size, source, resolution, codec, title_pattern) \
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) \
          ON CONFLICT(quality_id) DO UPDATE SET title = excluded.title, min_size = excluded.min_size, \
-         preferred_size = excluded.preferred_size, max_size = excluded.max_size",
+         preferred_size = excluded.preferred_size, max_size = excluded.max_size, source = excluded.source, \
+         resolution = excluded.resolution, codec = excluded.codec, title_pattern = excluded.title_pattern",
     )
     .bind(d.quality_id)
     .bind(d.title.trim())
     .bind(min)
     .bind(pref)
     .bind(max)
+    .bind(&source)
+    .bind(resolution)
+    .bind(d.codec.trim())
+    .bind(d.title_pattern.trim())
     .execute(ex)
     .await?;
+    if custom && let (Some(s), Some(r)) = (d.source, resolution) {
+        Quality::register(d.quality_id, d.title.trim(), s, r);
+    }
+    Ok(())
+}
+
+/// `QualityDefinitionService.Add`: a custom preset (id 10000 and up), appended to every profile
+/// as not allowed; `copy_from_id` copies a quality's size limits, globally and per profile.
+pub async fn create_custom(
+    db: &crate::Database,
+    c: &CustomQualityCreate,
+) -> DbResult<QualityDefinition> {
+    let title = c.title.trim();
+    if title.is_empty() || title.chars().count() > 100 {
+        return Err(DbError::Invalid(
+            "the title must have 1 to 100 characters".into(),
+        ));
+    }
+    let defs = list_definitions(db.pool()).await?;
+    if defs.iter().any(|d| d.title.eq_ignore_ascii_case(title))
+        || QUALITIES.iter().any(|q| q.name.eq_ignore_ascii_case(title))
+    {
+        return Err(DbError::Conflict(format!("a quality named {title} exists")));
+    }
+    let source = c
+        .source
+        .ok_or(DbError::Invalid("the source is required".into()))?;
+    let resolution = c
+        .resolution
+        .filter(|r| RESOLUTIONS.contains(r))
+        .ok_or(DbError::Invalid(
+            "the resolution must be 0, 480, 576, 720, 1080 or 2160".into(),
+        ))?;
+    check_criteria(c.codec.trim(), c.title_pattern.trim())?;
+    let copy = match c.copy_from_id {
+        Some(id) => Some(
+            defs.iter()
+                .find(|d| d.quality_id == id)
+                .cloned()
+                .ok_or(DbError::Invalid(format!("unknown quality id {id}")))?,
+        ),
+        None => None,
+    };
+    let mut tx = db.pool().begin().await?;
+    let max: Option<i64> = sqlx::query_scalar("SELECT MAX(quality_id) FROM quality_definitions")
+        .fetch_one(&mut *tx)
+        .await?;
+    let id = (max.unwrap_or(0) as i32 + 1).max(CUSTOM_QUALITY_BASE);
+    let base = QUALITIES
+        .iter()
+        .find(|q| q.source == source && q.resolution == resolution);
+    let def = QualityDefinition {
+        quality_id: id,
+        title: title.to_string(),
+        weight: 19,
+        min_size: copy
+            .as_ref()
+            .map_or(base.map(|b| OrderedF64(b.default_min_size)), |d| d.min_size),
+        preferred_size: copy
+            .as_ref()
+            .map_or(base.map(|b| OrderedF64(b.default_preferred_size)), |d| {
+                d.preferred_size
+            }),
+        max_size: copy
+            .as_ref()
+            .map_or(base.and_then(|b| b.default_max_size.map(OrderedF64)), |d| {
+                d.max_size
+            }),
+        source: Some(source),
+        resolution: Some(resolution),
+        codec: c.codec.trim().to_string(),
+        title_pattern: c.title_pattern.trim().to_string(),
+        is_retired: false,
+    };
+    upsert_definition(&mut *tx, &def).await?;
+    for mut p in list_profiles(&mut *tx).await? {
+        p.items.push(q(id, false));
+        if let Some(from) = c.copy_from_id
+            && let Some(l) = p.size_limits.iter().find(|l| l.quality_id == from).cloned()
+        {
+            p.size_limits
+                .push(kitsunarr_domain::api::settings::QualitySizeLimit {
+                    quality_id: id,
+                    ..l
+                });
+        }
+        sqlx::query("UPDATE quality_profiles SET items = ?, size_limits = ? WHERE id = ?")
+            .bind(to_json(&p.items)?)
+            .bind(to_json(&p.size_limits)?)
+            .bind(p.id)
+            .execute(&mut *tx)
+            .await?;
+    }
+    tx.commit().await?;
+    Ok(def)
+}
+
+/// `QualityDefinitionService.Delete` (retire): refused for Unknown and while a profile allows
+/// the quality or uses it as its cutoff.
+pub async fn retire(db: &crate::Database, id: i32) -> DbResult<()> {
+    if id == 0 {
+        return Err(DbError::Invalid(
+            "the Unknown quality cannot be retired".into(),
+        ));
+    }
+    let using: Vec<String> = list_profiles(db.pool())
+        .await?
+        .into_iter()
+        .filter(|p| {
+            p.cutoff == id
+                || p.items.iter().any(|i| {
+                    i.allowed
+                        && (i.quality_id == Some(id)
+                            || i.group
+                                .as_ref()
+                                .is_some_and(|g| g.quality_ids.contains(&id)))
+                })
+        })
+        .map(|p| p.name)
+        .collect();
+    if !using.is_empty() {
+        return Err(DbError::Conflict(format!(
+            "the quality is allowed in: {}",
+            using.join(", ")
+        )));
+    }
+    set_retired(db, id, true).await
+}
+
+/// Tanukarr's profile guards for presets: retired qualities cannot be allowed, and custom
+/// presets a profile omits are kept in it (not allowed).
+pub async fn prepare_profile(db: &crate::Database, p: &mut QualityProfile) -> DbResult<()> {
+    let defs = list_definitions(db.pool()).await?;
+    let ids_of = |i: &QualityProfileItem| -> Vec<i32> {
+        match (&i.quality_id, &i.group) {
+            (Some(q), _) => vec![*q],
+            (None, Some(g)) => g.quality_ids.clone(),
+            _ => Vec::new(),
+        }
+    };
+    for item in p.items.iter().filter(|i| i.allowed) {
+        for id in ids_of(item) {
+            if let Some(d) = defs.iter().find(|d| d.quality_id == id && d.is_retired) {
+                return Err(DbError::Invalid(format!(
+                    "{} is retired and cannot be allowed",
+                    d.title
+                )));
+            }
+        }
+    }
+    let present: std::collections::HashSet<i32> = p.items.iter().flat_map(ids_of).collect();
+    for d in defs
+        .iter()
+        .filter(|d| d.quality_id >= CUSTOM_QUALITY_BASE && !present.contains(&d.quality_id))
+    {
+        p.items.push(q(d.quality_id, false));
+    }
+    Ok(())
+}
+
+pub async fn set_retired(db: &crate::Database, id: i32, retired: bool) -> DbResult<()> {
+    let r = sqlx::query("UPDATE quality_definitions SET is_retired = ? WHERE quality_id = ?")
+        .bind(retired)
+        .bind(id)
+        .execute(db.pool())
+        .await?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
     Ok(())
 }
 
@@ -365,6 +618,7 @@ pub fn default_definitions() -> Vec<QualityDefinition> {
             min_size: Some(OrderedF64(q.default_min_size)),
             preferred_size: Some(OrderedF64(q.default_preferred_size)),
             max_size: q.default_max_size.map(OrderedF64),
+            ..Default::default()
         })
         .collect()
 }

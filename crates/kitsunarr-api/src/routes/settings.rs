@@ -170,6 +170,44 @@ pub async fn update_quality_definitions(
     Ok(Json(quality::list_definitions(state.db.pool()).await?))
 }
 
+/// Creates a custom quality preset (Tanukarr), added to every profile as not allowed.
+#[utoipa::path(post, path = "/qualitydefinitions", tag = "settings",
+    request_body = kitsunarr_domain::api::settings::CustomQualityCreate,
+    responses((status = 201, body = QualityDefinition), (status = 409), (status = 422)))]
+pub async fn create_custom_quality(
+    State(state): State<AppState>,
+    Json(c): Json<kitsunarr_domain::api::settings::CustomQualityCreate>,
+) -> ApiResult<(StatusCode, Json<QualityDefinition>)> {
+    let d = quality::create_custom(&state.db, &c).await?;
+    settings_changed(&state, "qualityDefinitions");
+    settings_changed(&state, "qualityProfiles");
+    Ok((StatusCode::CREATED, Json(d)))
+}
+
+/// Retires a quality (kept for history, no longer matched); refused while a profile allows it.
+#[utoipa::path(delete, path = "/qualitydefinitions/{id}", tag = "settings", params(("id" = i32, Path)),
+    responses((status = 204), (status = 404), (status = 409)))]
+pub async fn retire_quality(
+    State(state): State<AppState>,
+    Path(id): Path<i32>,
+) -> ApiResult<StatusCode> {
+    quality::retire(&state.db, id).await?;
+    settings_changed(&state, "qualityDefinitions");
+    Ok(StatusCode::NO_CONTENT)
+}
+
+/// Brings a retired quality back.
+#[utoipa::path(post, path = "/qualitydefinitions/{id}/restore", tag = "settings", params(("id" = i32, Path)),
+    responses((status = 204), (status = 404)))]
+pub async fn restore_quality(
+    State(state): State<AppState>,
+    Path(id): Path<i32>,
+) -> ApiResult<StatusCode> {
+    quality::set_retired(&state.db, id, false).await?;
+    settings_changed(&state, "qualityDefinitions");
+    Ok(StatusCode::NO_CONTENT)
+}
+
 #[utoipa::path(get, path = "/qualityprofiles", tag = "settings", responses((status = 200, body = Vec<QualityProfile>)))]
 pub async fn list_quality_profiles(
     State(state): State<AppState>,
@@ -188,8 +226,9 @@ pub async fn get_quality_profile(
 #[utoipa::path(post, path = "/qualityprofiles", tag = "settings", request_body = QualityProfile, responses((status = 201, body = QualityProfile)))]
 pub async fn create_quality_profile(
     State(state): State<AppState>,
-    Json(p): Json<QualityProfile>,
+    Json(mut p): Json<QualityProfile>,
 ) -> ApiResult<(StatusCode, Json<QualityProfile>)> {
+    quality::prepare_profile(&state.db, &mut p).await?;
     let id = quality::create_profile(state.db.pool(), &p).await?;
     settings_changed(&state, "qualityProfiles");
     Ok((
@@ -206,6 +245,7 @@ pub async fn update_quality_profile(
     Json(mut p): Json<QualityProfile>,
 ) -> ApiResult<Json<QualityProfile>> {
     p.id = id;
+    quality::prepare_profile(&state.db, &mut p).await?;
     quality::update_profile(state.db.pool(), &p).await?;
     settings_changed(&state, "qualityProfiles");
     Ok(Json(quality::get_profile(state.db.pool(), id).await?))

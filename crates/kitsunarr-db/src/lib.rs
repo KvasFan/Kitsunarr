@@ -127,6 +127,7 @@ impl Database {
 
     pub async fn migrate(&self) -> DbResult<()> {
         MIGRATOR.run(&self.pool).await?;
+        quality::register_custom(&self.pool).await?;
         Ok(())
     }
 

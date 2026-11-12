@@ -582,3 +582,13 @@ calls for every matched series. The 10-writes-a-minute budget is in memory, as u
 Kitsunarr has no OAuth sign-in, so writers use the list's pasted (or migrated) token; an
 expired token waits a day like any unusable account, and MyAnimeList tokens are renewed by the
 list sync.
+
+## 37. Custom quality presets
+
+Kitsunarr's quality catalogue is a constant table, so Tanukarr's custom presets (ids from
+10000) live in a small run-time registry beside it: `Quality::register` keeps each preset for
+the life of the process, and `Quality::by_id` finds them like built-in qualities. The database
+registers the stored presets when it opens, and creating or renaming one registers it again;
+the web client registers the presets it reads so profile editors can name them. The preset
+matcher (`kitsunarr-decision::quality_match`) runs once per release after mapping, and on
+new files at import, with the instance's quality definitions.

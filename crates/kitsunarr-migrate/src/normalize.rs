@@ -654,6 +654,20 @@ fn quality_definition(r: &Rec) -> Option<SrcQualityDefinition> {
         min_size: r.f64("minsize"),
         preferred_size: r.f64("preferredsize"),
         max_size: r.f64("maxsize"),
+        // A number in Tanukarr's database, a camelCase name in its API.
+        source: match r.raw("source") {
+            Some(Value::String(s)) => s
+                .parse::<i64>()
+                .ok()
+                .and_then(kitsunarr_domain::quality::QualitySource::from_sonarr_id)
+                .or_else(|| serde_json::from_value(Value::String(s.clone())).ok()),
+            Some(v) => as_i64(v).and_then(kitsunarr_domain::quality::QualitySource::from_sonarr_id),
+            None => None,
+        },
+        resolution: r.i32("resolution"),
+        codec: r.str("codec").unwrap_or_default(),
+        title_pattern: r.str("titlepattern").unwrap_or_default(),
+        is_retired: r.bool("isretired").unwrap_or(false),
     })
 }
 

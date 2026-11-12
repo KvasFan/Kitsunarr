@@ -820,6 +820,29 @@ impl Client {
     pub async fn quality_definitions(&self) -> ClientResult<Vec<QualityDefinition>> {
         self.get("/qualitydefinitions").await
     }
+    pub async fn update_quality_definitions(
+        &self,
+        defs: &[QualityDefinition],
+    ) -> ClientResult<Vec<QualityDefinition>> {
+        self.put("/qualitydefinitions", defs).await
+    }
+    pub async fn create_custom_quality(
+        &self,
+        c: &kitsunarr_domain::api::settings::CustomQualityCreate,
+    ) -> ClientResult<QualityDefinition> {
+        self.post("/qualitydefinitions", c).await
+    }
+    pub async fn retire_quality(&self, id: i32) -> ClientResult<()> {
+        self.delete(&format!("/qualitydefinitions/{id}")).await
+    }
+    pub async fn restore_quality(&self, id: i32) -> ClientResult<()> {
+        self.post::<serde_json::Value, _>(
+            &format!("/qualitydefinitions/{id}/restore"),
+            &serde_json::json!({}),
+        )
+        .await
+        .map(|_| ())
+    }
     pub async fn quality_profiles(&self) -> ClientResult<Vec<QualityProfile>> {
         self.get("/qualityprofiles").await
     }

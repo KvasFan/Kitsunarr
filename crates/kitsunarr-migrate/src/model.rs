@@ -237,6 +237,12 @@ pub struct SrcQualityDefinition {
     pub min_size: Option<f64>,
     pub preferred_size: Option<f64>,
     pub max_size: Option<f64>,
+    /// Tanukarr's preset criteria (migration 251).
+    pub source: Option<kitsunarr_domain::quality::QualitySource>,
+    pub resolution: Option<i32>,
+    pub codec: String,
+    pub title_pattern: String,
+    pub is_retired: bool,
 }
 
 #[derive(Debug, Clone, PartialEq)]
