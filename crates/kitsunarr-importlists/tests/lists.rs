@@ -401,9 +401,16 @@ async fn simkl(h: HeaderMap) -> Result<Json<Value>, StatusCode> {
         return Err(StatusCode::UNAUTHORIZED);
     }
     Ok(Json(json!({"anime": [
-        {"anime_type": "tv", "show": {"title": "Frieren", "ids": {"mal": "52991", "anilist": 154587}}},
-        {"anime_type": "movie", "show": {"title": "A film", "ids": {"mal": "1"}}}
+        {"anime_type": "tv", "show": {"title": "Frieren", "ids": {"simkl": 11, "mal": "52991", "anilist": 154587}}},
+        {"anime_type": "tv", "show": {"title": "Dropped later", "ids": {"simkl": 12, "mal": "5"}}},
+        {"anime_type": "movie", "show": {"title": "A film", "ids": {"simkl": 13, "mal": "1"}}}
     ]})))
+}
+
+/// A Simkl custom list (Tanukarr's V2 custom lists).
+async fn simkl_list(axum::extract::Path(id): axum::extract::Path<i64>) -> Json<Value> {
+    assert_eq!(id, 77);
+    Json(json!({"id": 77, "media_type": "anime", "items": [{"simkl_id": 12}]}))
 }
 
 async fn plex(
@@ -430,6 +437,7 @@ async fn simkl_and_plex_watchlists() {
     let base = serve(
         axum::Router::new()
             .route("/sync/all-items/anime/plantowatch", get(simkl))
+            .route("/lists/{id}", get(simkl_list))
             .route("/library/sections/watchlist/all", get(plex)),
     )
     .await;
@@ -438,10 +446,27 @@ async fn simkl_and_plex_watchlists() {
         json!({"baseUrl": base, "clientIdV2": "app", "accessToken": "tok", "showType": 1, "listType": 1}),
     );
     let items = fetch(&http, "SimklUserImport", &s).await.unwrap();
-    assert_eq!(items.len(), 1);
+    assert_eq!(items.len(), 2);
     assert_eq!(
         (items[0].mal_id, items[0].anilist_id),
         (Some(52991), Some(154587))
+    );
+    // Excluding a custom list's members; including only them.
+    let s = settings(
+        json!({"baseUrl": base, "clientIdV2": "app", "accessToken": "tok", "showType": 1, "listType": 1, "excludedCustomListIds": [77]}),
+    );
+    let items = fetch(&http, "SimklUserImport", &s).await.unwrap();
+    assert_eq!(
+        items.iter().map(|i| i.title.as_str()).collect::<Vec<_>>(),
+        vec!["Frieren"]
+    );
+    let s = settings(
+        json!({"baseUrl": base, "clientIdV2": "app", "accessToken": "tok", "showType": 1, "listType": 1, "includedCustomListIds": [77]}),
+    );
+    let items = fetch(&http, "SimklUserImport", &s).await.unwrap();
+    assert_eq!(
+        items.iter().map(|i| i.title.as_str()).collect::<Vec<_>>(),
+        vec!["Dropped later"]
     );
     let s = settings(json!({"baseUrl": base, "accessToken": "plex-token"}));
     let items = fetch(&http, "PlexImport", &s).await.unwrap();

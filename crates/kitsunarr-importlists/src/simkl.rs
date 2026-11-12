@@ -49,6 +49,7 @@ pub async fn fetch(
         // Simkl answers `null` for an empty list.
         return Ok(Vec::new());
     }
+    let simkl_id = |e: &Value| positive(&e["show"]["ids"]["simkl"]);
     let map = |e: &Value| {
         let show = &e["show"];
         let ids = &show["ids"];
@@ -63,13 +64,32 @@ pub async fn fetch(
             ..Default::default()
         }
     };
+    // Tanukarr's custom lists: the watchlist rows narrowed to the included lists and without
+    // the excluded ones, matched by Simkl id.
+    let included = custom_list_members(http, s, &base, "includedCustomListIds").await?;
+    let excluded = custom_list_members(http, s, &base, "excludedCustomListIds").await?;
+    let keep = |e: &Value| {
+        let id = simkl_id(e);
+        included
+            .as_ref()
+            .is_none_or(|ids| id.is_some_and(|i| ids.contains(&i)))
+            && excluded
+                .as_ref()
+                .is_none_or(|ids| id.is_none_or(|i| !ids.contains(&i)))
+    };
     let mut out: Vec<ListItem> = body["shows"]
         .as_array()
         .into_iter()
         .flatten()
+        .filter(|e| keep(e))
         .map(map)
         .collect();
-    for a in body["anime"].as_array().into_iter().flatten() {
+    for a in body["anime"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter(|e| keep(e))
+    {
         // Sonarr skips films and music videos.
         if !matches!(
             a["anime_type"].as_str(),
@@ -87,4 +107,77 @@ pub async fn fetch(
         }
     }
     Ok(out)
+}
+
+/// The Simkl ids of the custom lists in `key` (`None` when there are none): `lists/{id}`,
+/// 500 a page, at most 20 pages (Tanukarr's `SimklCustomListReader`).
+async fn custom_list_members(
+    http: &reqwest::Client,
+    s: &Map<String, Value>,
+    base: &str,
+    key: &str,
+) -> Result<Option<std::collections::HashSet<i64>>, ListError> {
+    let ids = crate::ints(s, key);
+    if ids.is_empty() {
+        return Ok(None);
+    }
+    let client_id = text(s, "clientIdV2")
+        .or_else(|| text(s, "clientId"))
+        .unwrap_or_default();
+    let token = text(s, "accessToken").unwrap_or_default();
+    let mut members = std::collections::HashSet::new();
+    for id in ids.into_iter().filter(|i| *i > 0) {
+        for page in 1..=20 {
+            let resp = http
+                .get(format!("{}/lists/{id}", base.trim_end_matches('/')))
+                .query(&[("limit", "500"), ("page", &page.to_string())])
+                .header("simkl-api-key", &client_id)
+                .bearer_auth(&token)
+                .send()
+                .await
+                .map_err(connection_error)?;
+            if resp.status().as_u16() == 404 {
+                return Err(ListError::Settings(format!(
+                    "Simkl has no custom list {id}"
+                )));
+            }
+            check_status(&resp)?;
+            let body: Value = resp.json().await.map_err(|_| {
+                ListError::Invalid(
+                    "Simkl did not answer a custom list; the previous list is kept".into(),
+                )
+            })?;
+            let items = body["items"]
+                .as_array()
+                .or_else(|| body.as_array())
+                .cloned()
+                .unwrap_or_default();
+            for item in &items {
+                let member = positive(&item["simkl_id"])
+                    .or_else(|| positive(&item["ids"]["simkl"]))
+                    .or_else(|| positive(&item["show"]["ids"]["simkl"]))
+                    .or_else(|| positive(&item["anime"]["ids"]["simkl"]));
+                match member {
+                    Some(m) => {
+                        members.insert(m);
+                    }
+                    None => {
+                        return Err(ListError::Invalid(
+                            "a Simkl custom list member has no Simkl id; the previous list is kept"
+                                .into(),
+                        ));
+                    }
+                }
+            }
+            if items.len() < 500 {
+                break;
+            }
+            if page == 20 {
+                return Err(ListError::Invalid(
+                    "a Simkl custom list has more than 10000 members".into(),
+                ));
+            }
+        }
+    }
+    Ok(Some(members))
 }

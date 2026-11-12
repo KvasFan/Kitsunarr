@@ -521,18 +521,27 @@ async fn pushcut_trakt_and_synology() {
     .await
     .unwrap();
     n.send(
-        &conn("Trakt", json!({"clientId": "cid", "accessToken": "tok", "baseUrl": base})),
+        &conn(
+            "Trakt",
+            json!({"clientId": "cid", "accessToken": "tok", "baseUrl": base}),
+        ),
         &download(),
         &instance(),
     )
     .await
     .unwrap();
     let seen = log.lock().unwrap().clone();
-    let push = seen.iter().find(|s| s.path.starts_with("/v1/notifications/")).unwrap();
+    let push = seen
+        .iter()
+        .find(|s| s.path.starts_with("/v1/notifications/"))
+        .unwrap();
     assert_eq!(push.path, "/v1/notifications/Kitsunarr%20Alert");
     assert_eq!(push.headers["api-key"], "pk");
     let body: Value = serde_json::from_str(&push.body).unwrap();
-    assert_eq!((body["title"].as_str(), body["isTimeSensitive"].as_bool()), (Some("Episode Downloaded"), Some(true)));
+    assert_eq!(
+        (body["title"].as_str(), body["isTimeSensitive"].as_bool()),
+        (Some("Episode Downloaded"), Some(true))
+    );
     let trakt = seen.iter().find(|s| s.path == "/sync/collection").unwrap();
     assert_eq!(trakt.headers["trakt-api-key"], "cid");
     assert_eq!(trakt.headers["authorization"], "Bearer tok");
@@ -546,13 +555,20 @@ async fn pushcut_trakt_and_synology() {
     let dir = tempfile::tempdir().unwrap();
     let tool = dir.path().join("synoindex");
     let out = dir.path().join("calls");
-    std::fs::write(&tool, format!("#!/bin/sh\necho \"$@\" >> {}\n", out.display())).unwrap();
+    std::fs::write(
+        &tool,
+        format!("#!/bin/sh\necho \"$@\" >> {}\n", out.display()),
+    )
+    .unwrap();
     #[cfg(unix)]
     {
         use std::os::unix::fs::PermissionsExt;
         std::fs::set_permissions(&tool, std::fs::Permissions::from_mode(0o755)).unwrap();
         n.send(
-            &conn("SynologyIndexer", json!({"updateLibrary": true, "synoindexPath": tool.display().to_string()})),
+            &conn(
+                "SynologyIndexer",
+                json!({"updateLibrary": true, "synoindexPath": tool.display().to_string()}),
+            ),
             &download(),
             &instance(),
         )

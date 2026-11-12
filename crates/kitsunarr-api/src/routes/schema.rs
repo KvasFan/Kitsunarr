@@ -210,7 +210,7 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 l("TMDB discover", "TmdbDiscoverImport", json!({"authToken": "", "sortByType": 7, "originalLanguage": "", "withGenreTypes": [], "withNetworks": [], "airDateMinimum": "", "airDateMaximum": "", "voteAverageMinimum": "", "voteCountMinimum": "", "withCompanies": "", "withKeywords": "", "includeNullFirstAirDates": false})),
                 l("TMDB account", "TmdbAccountImport", json!({"authToken": "", "accountId": "", "accountListType": 3})),
                 l("TMDB person", "TmdbPersonImport", json!({"authToken": "", "personId": 0, "includingCastCredits": true, "includeDepartmentTypes": []})),
-                l("Simkl", "SimklUserImport", json!({"clientIdV2": "", "accessToken": "", "showType": 0, "listType": 0, "syncWatchedProgress": false})),
+                l("Simkl", "SimklUserImport", json!({"clientIdV2": "", "accessToken": "", "showType": 0, "listType": 0, "includedCustomListIds": [], "excludedCustomListIds": [], "syncWatchedProgress": false})),
                 l("Plex Watchlist", "PlexImport", json!({"accessToken": ""})),
                 l("Plex Watchlist RSS", "PlexRssImport", json!({"url": ""})),
                 l("Sonarr", "SonarrImport", json!({

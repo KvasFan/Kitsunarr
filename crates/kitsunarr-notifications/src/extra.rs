@@ -192,6 +192,9 @@ pub async fn trakt(n: &Notifier, s: &Map<String, Value>, event: &Event) -> Notif
         }
         _ => return Ok(()),
     };
-    let resp = send(path, body).send().await.map_err(crate::connection_error)?;
+    let resp = send(path, body)
+        .send()
+        .await
+        .map_err(crate::connection_error)?;
     crate::check(resp).await.map(|_| ())
 }
