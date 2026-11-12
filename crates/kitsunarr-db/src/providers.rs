@@ -345,7 +345,7 @@ pub async fn create(ex: impl SqliteExecutor<'_>, p: &ProviderRecord) -> DbResult
             .bind(opt_bool(o, "enableAutomaticSearch", true))
             .bind(opt_bool(o, "enableInteractiveSearch", true))
             .bind(p.priority)
-            .bind(o.get("downloadClientId").and_then(Value::as_i64))
+            .bind(o.get("downloadClientId").and_then(Value::as_i64).filter(|v| *v > 0))
             .bind(opt_i64(o, "seasonSearchMaximumSingleEpisodeAge", 0))
             .bind(&tags)
             .bind(&ts)
@@ -421,7 +421,7 @@ pub async fn update(ex: impl SqliteExecutor<'_>, p: &ProviderRecord) -> DbResult
         .bind(opt_bool(o, "enableAutomaticSearch", true))
         .bind(opt_bool(o, "enableInteractiveSearch", true))
         .bind(p.priority)
-        .bind(o.get("downloadClientId").and_then(Value::as_i64))
+        .bind(o.get("downloadClientId").and_then(Value::as_i64).filter(|v| *v > 0))
         .bind(opt_i64(o, "seasonSearchMaximumSingleEpisodeAge", 0))
         .bind(&tags)
         .bind(p.id)
@@ -521,6 +521,8 @@ mod tests {
         ] {
             let mut r = record(kind, "one", imp);
             r.options.insert("onGrab".into(), true.into());
+            // Templates send `downloadClientId: 0` for "any client": stored as none.
+            r.options.insert("downloadClientId".into(), 0.into());
             let id = create(db.pool(), &r).await.unwrap();
             let mut got = get(db.pool(), kind, id).await.unwrap();
             assert_eq!(got.settings.get("apiKey").unwrap(), "secret");

@@ -7,6 +7,9 @@
 //!
 //! Everything is optionally nested under the configured URL base.
 
+// The Sonarr v3 series resource is one large `json!` literal.
+#![recursion_limit = "256"]
+
 pub mod assets;
 pub mod auth;
 pub mod downloads;
@@ -16,6 +19,7 @@ pub mod library_tools;
 pub mod logs;
 pub mod routes;
 pub mod rss;
+pub mod v3;
 
 use std::sync::{Arc, RwLock};
 
@@ -189,8 +193,14 @@ pub fn app(state: AppState) -> Router {
     let max_body = state.config.server.max_body_bytes;
     let url_base = state.config.server.url_base.clone();
 
+    // Sonarr's `/api/v3` for third-party tools, behind the same authentication.
+    let v3 = v3::router().route_layer(axum::middleware::from_fn_with_state(
+        state.clone(),
+        auth::require_auth,
+    ));
     let inner = Router::new()
         .merge(api)
+        .nest("/api/v3", v3)
         .route(
             "/api/v1/openapi.json",
             get(move || {

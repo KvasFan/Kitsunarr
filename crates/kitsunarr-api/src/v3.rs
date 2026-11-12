@@ -1,0 +1,1229 @@
+//! Sonarr `/api/v3` compatibility for third-party tools (Overseerr/Jellyseerr, Prowlarr
+//! indexer sync, Bazarr, mobile clients): the subset they call, mapped onto the native model.
+//!
+//! Resources use Sonarr's JSON shapes and names. Series are identified for these tools by their
+//! TheTVDB id; titles owned by other catalogues are listed with the TheTVDB id they carry (or 0).
+//! New series are added from TheTVDB (through SkyHook), as Sonarr does. The reported version is
+//! Sonarr's major version 4 so that tools take their v4 code paths; `kitsunarrVersion` carries
+//! Kitsunarr's own.
+
+use axum::Json;
+use axum::Router;
+use axum::extract::{Path, Query, State};
+use axum::http::StatusCode;
+use axum::routing::{get, post, put};
+use kitsunarr_db::library::series;
+use kitsunarr_db::providers::{self, ProviderRecord};
+use kitsunarr_domain::api::library::{
+    EpisodeItem, LibraryQuery, SeasonMonitoring, SeriesDetail, SeriesUpdate,
+};
+use kitsunarr_domain::api::metadata::{AddTitleRequest, MonitorOption};
+use kitsunarr_domain::api::search::{IndexerTestRequest, ReleaseQuery};
+use kitsunarr_domain::api::settings::{ProviderKind, QualityProfile};
+use kitsunarr_domain::quality::Quality;
+use kitsunarr_domain::{ExternalIdKind, MetadataProvider, SeriesType};
+use serde::Deserialize;
+use serde_json::{Map, Value, json};
+
+use crate::AppState;
+use crate::error::{ApiError, ApiResult};
+
+/// The Sonarr version reported to tools.
+const SONARR_VERSION: &str = "4.0.0.0";
+
+pub fn router() -> Router<AppState> {
+    Router::new()
+        .route("/system/status", get(system_status))
+        .route("/health", get(health))
+        .route("/qualityprofile", get(quality_profiles))
+        .route("/languageprofile", get(language_profiles))
+        .route("/rootfolder", get(root_folders))
+        .route("/tag", get(tags).post(create_tag))
+        .route(
+            "/series",
+            get(list_series).post(add_series).put(update_series_body),
+        )
+        .route("/series/lookup", get(lookup))
+        .route(
+            "/series/{id}",
+            get(get_series).put(update_series).delete(delete_series),
+        )
+        .route("/episode", get(list_episodes))
+        .route("/episode/{id}", get(get_episode))
+        .route("/episode/monitor", put(monitor_episodes))
+        .route("/episodefile", get(list_episode_files))
+        .route("/episodefile/{id}", get(get_episode_file))
+        .route("/command", post(command))
+        .route("/command/{id}", get(get_command))
+        .route("/queue", get(queue))
+        .route("/calendar", get(calendar))
+        .route("/indexer", get(list_indexers).post(create_indexer))
+        .route("/indexer/schema", get(indexer_schema))
+        .route("/indexer/test", post(test_indexer))
+        .route(
+            "/indexer/{id}",
+            get(get_indexer).put(update_indexer).delete(delete_indexer),
+        )
+}
+
+// ---- helpers ----------------------------------------------------------------------------
+
+fn ext(detail: &SeriesDetail, kind: ExternalIdKind) -> Option<String> {
+    detail
+        .external_ids
+        .iter()
+        .find(|e| e.kind == kind)
+        .map(|e| e.value.clone())
+}
+
+fn ext_int(detail: &SeriesDetail, kind: ExternalIdKind) -> i64 {
+    ext(detail, kind)
+        .and_then(|v| v.trim().parse().ok())
+        .unwrap_or(0)
+}
+
+fn quality_json(id: i32) -> Value {
+    let q = Quality::by_id(id);
+    json!({
+        "id": id,
+        "name": q.map_or("Unknown", |q| q.name),
+        "source": q.map_or("unknown".to_string(), |q| format!("{:?}", q.source).to_lowercase()),
+        "resolution": q.map_or(0, |q| q.resolution),
+    })
+}
+
+fn images(detail: &SeriesDetail) -> Vec<Value> {
+    detail
+        .images
+        .iter()
+        .map(|i| json!({"coverType": i.cover_type, "url": i.remote_url, "remoteUrl": i.remote_url}))
+        .collect()
+}
+
+fn series_json(detail: &SeriesDetail) -> Value {
+    let item = &detail.item;
+    let percent = |files: i64, total: i64| {
+        if total > 0 {
+            (files as f64 / total as f64) * 100.0
+        } else {
+            0.0
+        }
+    };
+    let seasons: Vec<Value> = detail
+        .seasons
+        .iter()
+        .map(|s| {
+            json!({
+                "seasonNumber": s.season_number,
+                "monitored": s.monitored,
+                "statistics": {
+                    "episodeFileCount": s.episode_file_count,
+                    "episodeCount": s.episode_count,
+                    "totalEpisodeCount": s.episode_count,
+                    "sizeOnDisk": s.size_on_disk,
+                    "percentOfEpisodes": percent(s.episode_file_count, s.episode_count),
+                }
+            })
+        })
+        .collect();
+    let images = images(detail);
+    let poster = detail
+        .images
+        .iter()
+        .find(|i| i.cover_type == "poster")
+        .map(|i| i.remote_url.clone());
+    json!({
+        "id": item.id,
+        "title": item.title,
+        "sortTitle": item.sort_title,
+        "status": item.status.as_str(),
+        "ended": item.status.as_str() == "ended",
+        "overview": detail.overview,
+        "network": item.network,
+        "images": images,
+        "remotePoster": poster,
+        "seasons": seasons,
+        "year": item.year.unwrap_or(0),
+        "path": item.path,
+        "qualityProfileId": item.quality_profile_id,
+        "languageProfileId": 1,
+        "seasonFolder": detail.season_folder,
+        "monitored": item.monitored,
+        "useSceneNumbering": detail.use_scene_numbering,
+        "runtime": detail.runtime.unwrap_or(0),
+        "tvdbId": ext_int(detail, ExternalIdKind::Tvdb),
+        "tvRageId": ext_int(detail, ExternalIdKind::TvRage),
+        "tvMazeId": ext_int(detail, ExternalIdKind::TvMaze),
+        "tmdbId": ext_int(detail, ExternalIdKind::Tmdb),
+        "imdbId": ext(detail, ExternalIdKind::Imdb),
+        "firstAired": detail.first_aired,
+        "lastAired": detail.last_aired,
+        "seriesType": item.series_type.as_str(),
+        "cleanTitle": kitsunarr_domain::text::clean_title(&item.title),
+        "titleSlug": item.sort_title.replace(' ', "-"),
+        "rootFolderPath": detail.root_folder_path,
+        "certification": detail.certification,
+        "genres": detail.genres,
+        "tags": item.tags,
+        "added": item.added_at,
+        "alternateTitles": detail.alternate_titles.iter().map(|t| json!({"title": t, "seasonNumber": -1})).collect::<Vec<_>>(),
+        "ratings": {"votes": 0, "value": 0},
+        "statistics": {
+            "seasonCount": item.season_count,
+            "episodeFileCount": item.episode_file_count,
+            "episodeCount": item.episode_count,
+            "totalEpisodeCount": item.episode_count,
+            "sizeOnDisk": item.size_on_disk,
+            "percentOfEpisodes": percent(item.episode_file_count, item.episode_count),
+        },
+    })
+}
+
+fn episode_json(e: &EpisodeItem) -> Value {
+    json!({
+        "id": e.id,
+        "seriesId": e.series_id,
+        "tvdbId": 0,
+        "episodeFileId": e.file.as_ref().map_or(0, |f| f.id),
+        "seasonNumber": e.season_number,
+        "episodeNumber": e.episode_number,
+        "title": e.title,
+        "airDate": e.air_date,
+        "airDateUtc": e.air_date_utc,
+        "runtime": e.runtime.unwrap_or(0),
+        "hasFile": e.file.is_some(),
+        "monitored": e.monitored,
+        "absoluteEpisodeNumber": e.absolute_episode_number,
+        "sceneSeasonNumber": e.scene_season_number,
+        "sceneEpisodeNumber": e.scene_episode_number,
+        "unverifiedSceneNumbering": false,
+    })
+}
+
+fn episode_file_json(detail: &SeriesDetail, f: &series::FileRecord, languages: &[i32]) -> Value {
+    let path = std::path::Path::new(&detail.item.path).join(&f.relative_path);
+    json!({
+        "id": f.id,
+        "seriesId": detail.item.id,
+        "relativePath": f.relative_path,
+        "path": path.display().to_string(),
+        "size": f.size,
+        "dateAdded": f.added_at,
+        "sceneName": f.scene_name,
+        "releaseGroup": f.release_group,
+        "languages": languages.iter().map(|id| json!({"id": id, "name": kitsunarr_domain::language::Language::by_id(*id).map_or("Unknown", |l| l.name)})).collect::<Vec<_>>(),
+        "quality": {
+            "quality": quality_json(f.quality_id as i32),
+            "revision": {"version": f.revision_version, "real": f.revision_real, "isRepack": f.is_repack},
+        },
+        "qualityCutoffNotMet": false,
+    })
+}
+
+async fn detail(state: &AppState, id: i64) -> ApiResult<SeriesDetail> {
+    Ok(series::get_detail(&state.db, id).await?)
+}
+
+async fn all_series(state: &AppState) -> ApiResult<Vec<SeriesDetail>> {
+    let page = series::list(
+        &state.db,
+        &LibraryQuery {
+            page_size: Some(100_000),
+            ..Default::default()
+        },
+    )
+    .await?;
+    let mut out = Vec::new();
+    for s in page.records {
+        out.push(detail(state, s.id).await?);
+    }
+    Ok(out)
+}
+
+// ---- system -----------------------------------------------------------------------------
+
+async fn system_status(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+    let native = crate::routes::system::status(State(state)).await?.0;
+    Ok(Json(json!({
+        "appName": native.app_name,
+        "instanceName": native.instance_name,
+        "version": SONARR_VERSION,
+        "kitsunarrVersion": native.version,
+        "buildTime": native.start_time,
+        "startTime": native.start_time,
+        "isDebug": false,
+        "isProduction": true,
+        "isAdmin": false,
+        "isUserInteractive": false,
+        "osName": native.os,
+        "isDocker": native.is_container,
+        "isLinux": native.os == "linux",
+        "isWindows": native.os == "windows",
+        "isOsx": native.os == "macos",
+        "urlBase": native.url_base,
+        "appData": native.data_directory,
+        "databaseType": "sqLite",
+        "authentication": "forms",
+        "branch": "main",
+    })))
+}
+
+async fn health(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    let checks = crate::routes::system::health(State(state)).await?.0;
+    Ok(Json(
+        checks
+            .into_iter()
+            .map(|c| json!({"source": c.source, "type": format!("{:?}", c.level).to_lowercase(), "message": c.message}))
+            .collect(),
+    ))
+}
+
+// ---- settings -----------------------------------------------------------------------------
+
+fn profile_json(p: &QualityProfile) -> Value {
+    let items: Vec<Value> = p
+        .items
+        .iter()
+        .map(|i| match (&i.quality_id, &i.group) {
+            (Some(q), _) => json!({"quality": quality_json(*q), "items": [], "allowed": i.allowed}),
+            (None, Some(g)) => json!({
+                "id": g.id, "name": g.name, "allowed": i.allowed,
+                "items": g.quality_ids.iter().map(|q| json!({"quality": quality_json(*q), "items": [], "allowed": i.allowed})).collect::<Vec<_>>(),
+            }),
+            _ => json!({}),
+        })
+        .collect();
+    json!({
+        "id": p.id,
+        "name": p.name,
+        "upgradeAllowed": p.upgrade_allowed,
+        "cutoff": p.cutoff,
+        "items": items,
+        "minFormatScore": p.min_format_score,
+        "cutoffFormatScore": p.cutoff_format_score,
+        "formatItems": [],
+    })
+}
+
+async fn quality_profiles(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    Ok(Json(
+        kitsunarr_db::quality::list_profiles(state.db.pool())
+            .await?
+            .iter()
+            .map(profile_json)
+            .collect(),
+    ))
+}
+
+/// Sonarr v4 has no language profiles; it answers one placeholder, as here.
+async fn language_profiles() -> Json<Vec<Value>> {
+    Json(vec![json!({
+        "id": 1, "name": "Deprecated", "upgradeAllowed": false,
+        "cutoff": {"id": 1, "name": "English"}, "languages": []
+    })])
+}
+
+async fn root_folders(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    let list = crate::routes::settings::list_root_folders(State(state))
+        .await?
+        .0;
+    Ok(Json(
+        list.into_iter()
+            .map(|r| json!({"id": r.id, "path": r.path, "accessible": r.accessible, "freeSpace": r.free_space, "totalSpace": r.total_space, "unmappedFolders": []}))
+            .collect(),
+    ))
+}
+
+async fn tags(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    let list = kitsunarr_db::tags::list(state.db.pool()).await?;
+    Ok(Json(
+        list.into_iter()
+            .map(|t| json!({"id": t.id, "label": t.label}))
+            .collect(),
+    ))
+}
+
+#[derive(Deserialize)]
+struct TagBody {
+    label: String,
+}
+
+async fn create_tag(
+    State(state): State<AppState>,
+    Json(body): Json<TagBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    let label = body.label.trim().to_lowercase();
+    if label.is_empty() {
+        return Err(ApiError::field("label", "A tag needs a label."));
+    }
+    let existing = kitsunarr_db::tags::list(state.db.pool())
+        .await?
+        .into_iter()
+        .find(|t| t.label.eq_ignore_ascii_case(&label));
+    let id = match existing {
+        Some(t) => t.id,
+        None => kitsunarr_db::tags::create(state.db.pool(), &label).await?,
+    };
+    Ok((StatusCode::CREATED, Json(json!({"id": id, "label": label}))))
+}
+
+// ---- series -------------------------------------------------------------------------------
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct SeriesFilter {
+    tvdb_id: Option<i64>,
+}
+
+async fn list_series(
+    State(state): State<AppState>,
+    Query(f): Query<SeriesFilter>,
+) -> ApiResult<Json<Vec<Value>>> {
+    Ok(Json(
+        all_series(&state)
+            .await?
+            .iter()
+            .filter(|d| {
+                f.tvdb_id
+                    .is_none_or(|t| ext_int(d, ExternalIdKind::Tvdb) == t)
+            })
+            .map(series_json)
+            .collect(),
+    ))
+}
+
+async fn get_series(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+    Ok(Json(series_json(&detail(&state, id).await?)))
+}
+
+#[derive(Deserialize)]
+struct LookupQuery {
+    term: String,
+}
+
+/// `GET /series/lookup?term=`: `tvdb:ID` reads that series (with its seasons); other terms
+/// search TheTVDB. Titles already in the library come back as their library resource (with
+/// an id), as in Sonarr.
+async fn lookup(
+    State(state): State<AppState>,
+    Query(q): Query<LookupQuery>,
+) -> ApiResult<Json<Vec<Value>>> {
+    let term = q.term.trim();
+    let library = all_series(&state).await?;
+    let in_library = |tvdb: i64| {
+        library
+            .iter()
+            .find(|d| tvdb > 0 && ext_int(d, ExternalIdKind::Tvdb) == tvdb)
+    };
+    if let Some(id) = term.strip_prefix("tvdb:").map(str::trim) {
+        let tvdb: i64 = id
+            .parse()
+            .map_err(|_| ApiError::field("term", "Not a TheTVDB id."))?;
+        if let Some(d) = in_library(tvdb) {
+            return Ok(Json(vec![series_json(d)]));
+        }
+        let info = match state
+            .metadata
+            .series_ordered(MetadataProvider::Tvdb, id, None)
+            .await
+        {
+            Ok(info) => info,
+            Err(kitsunarr_metadata::MetadataError::NotFound(_)) => return Ok(Json(Vec::new())),
+            Err(e) => return Err(kitsunarr_library::LibraryError::from(e).into()),
+        };
+        let poster = info
+            .images
+            .iter()
+            .find(|i| i.cover_type == "poster")
+            .map(|i| i.remote_url.clone());
+        return Ok(Json(vec![json!({
+            "title": info.title,
+            "sortTitle": kitsunarr_domain::text::sort_title(&info.title),
+            "status": info.status.as_str(),
+            "overview": info.overview,
+            "network": info.network,
+            "images": info.images.iter().map(|i| json!({"coverType": i.cover_type, "url": i.remote_url, "remoteUrl": i.remote_url})).collect::<Vec<_>>(),
+            "remotePoster": poster,
+            "seasons": info.seasons.iter().map(|s| json!({"seasonNumber": s.season_number, "monitored": s.season_number > 0})).collect::<Vec<_>>(),
+            "year": info.year.unwrap_or(0),
+            "tvdbId": tvdb,
+            "imdbId": info.external_ids.iter().find(|e| e.kind == ExternalIdKind::Imdb).map(|e| e.value.clone()),
+            "tmdbId": info.external_ids.iter().find(|e| e.kind == ExternalIdKind::Tmdb).and_then(|e| e.value.parse::<i64>().ok()).unwrap_or(0),
+            "seriesType": info.series_type.as_str(),
+            "runtime": info.runtime.unwrap_or(0),
+            "genres": info.genres,
+            "firstAired": info.first_aired,
+            "monitored": false,
+            "seasonFolder": true,
+            "added": "0001-01-01T00:00:00Z",
+            "ratings": {"votes": 0, "value": 0},
+        })]));
+    }
+    let found = state
+        .metadata
+        .search(MetadataProvider::Tvdb, term)
+        .await
+        .map_err(kitsunarr_library::LibraryError::from)?;
+    Ok(Json(
+        found
+            .iter()
+            .map(|r| {
+                let tvdb: i64 = r.id.parse().unwrap_or(0);
+                match in_library(tvdb) {
+                    Some(d) => series_json(d),
+                    None => json!({
+                        "title": r.title,
+                        "sortTitle": kitsunarr_domain::text::sort_title(&r.title),
+                        "status": r.status.as_str(),
+                        "overview": r.overview,
+                        "network": r.network,
+                        "images": r.poster_url.iter().map(|u| json!({"coverType": "poster", "url": u, "remoteUrl": u})).collect::<Vec<_>>(),
+                        "remotePoster": r.poster_url,
+                        "seasons": [],
+                        "year": r.year.unwrap_or(0),
+                        "tvdbId": tvdb,
+                        "monitored": false,
+                        "added": "0001-01-01T00:00:00Z",
+                        "ratings": {"votes": 0, "value": 0},
+                    }),
+                }
+            })
+            .collect(),
+    ))
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct SeasonBody {
+    season_number: i32,
+    monitored: bool,
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct AddOptions {
+    search_for_missing_episodes: bool,
+    monitor: Option<String>,
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct SeriesBody {
+    id: Option<i64>,
+    tvdb_id: i64,
+    quality_profile_id: Option<i64>,
+    root_folder_path: Option<String>,
+    season_folder: Option<bool>,
+    monitored: Option<bool>,
+    series_type: Option<String>,
+    tags: Option<Vec<i64>>,
+    seasons: Option<Vec<SeasonBody>>,
+    add_options: Option<AddOptions>,
+}
+
+fn series_type(s: Option<&str>) -> Option<SeriesType> {
+    match s? {
+        "anime" => Some(SeriesType::Anime),
+        "daily" => Some(SeriesType::Daily),
+        "standard" => Some(SeriesType::Standard),
+        _ => None,
+    }
+}
+
+async fn add_series(
+    State(state): State<AppState>,
+    Json(mut body): Json<SeriesBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    if body.tvdb_id <= 0 {
+        return Err(ApiError::field("tvdbId", "A TheTVDB id is required."));
+    }
+    let root = body
+        .root_folder_path
+        .clone()
+        .filter(|r| !r.trim().is_empty())
+        .ok_or_else(|| ApiError::field("rootFolderPath", "A root folder is required."))?;
+    let options = body.add_options.take().unwrap_or_default();
+    let monitor = match options.monitor.as_deref() {
+        Some("future") => MonitorOption::Future,
+        Some("firstSeason") => MonitorOption::FirstSeason,
+        Some("latestSeason") | Some("lastSeason") => MonitorOption::LatestSeason,
+        Some("none") => MonitorOption::None,
+        _ => MonitorOption::All,
+    };
+    let req = AddTitleRequest {
+        provider: MetadataProvider::Tvdb,
+        id: body.tvdb_id.to_string(),
+        root_folder_path: root,
+        quality_profile_id: body.quality_profile_id.unwrap_or(1),
+        monitor,
+        series_type: series_type(body.series_type.as_deref()),
+        season_folder: body.season_folder.unwrap_or(true),
+        tags: body.tags.clone().unwrap_or_default(),
+        search_for_missing: false,
+    };
+    let (_, Json(added)) = crate::routes::metadata::add(State(state.clone()), Json(req)).await?;
+    // The request's season choices (Overseerr monitors the requested seasons only).
+    if body.seasons.is_some() || body.monitored.is_some() {
+        apply(&state, added.id, &body).await?;
+    }
+    if options.search_for_missing_episodes {
+        crate::routes::wanted::search_missing_of_series(&state, added.id);
+    }
+    Ok((
+        StatusCode::CREATED,
+        Json(series_json(&detail(&state, added.id).await?)),
+    ))
+}
+
+async fn apply(state: &AppState, id: i64, body: &SeriesBody) -> ApiResult<()> {
+    let update = SeriesUpdate {
+        monitored: body.monitored,
+        quality_profile_id: body.quality_profile_id,
+        series_type: series_type(body.series_type.as_deref()),
+        season_folder: body.season_folder,
+        tags: body.tags.clone(),
+        seasons: body.seasons.as_ref().map(|s| {
+            s.iter()
+                .map(|s| SeasonMonitoring {
+                    season_number: s.season_number,
+                    monitored: s.monitored,
+                })
+                .collect()
+        }),
+        ..Default::default()
+    };
+    series::apply_update(&state.db, id, &update).await?;
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids: vec![id],
+            deleted: false,
+        });
+    Ok(())
+}
+
+async fn update_series(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(body): Json<SeriesBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    detail(&state, id).await?;
+    apply(&state, id, &body).await?;
+    Ok((
+        StatusCode::ACCEPTED,
+        Json(series_json(&detail(&state, id).await?)),
+    ))
+}
+
+/// `PUT /series` with the id in the body (Overseerr).
+async fn update_series_body(
+    State(state): State<AppState>,
+    Json(body): Json<SeriesBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    let id = body
+        .id
+        .ok_or_else(|| ApiError::field("id", "The series id is required."))?;
+    update_series(State(state), Path(id), Json(body)).await
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct DeleteQuery {
+    delete_files: bool,
+}
+
+async fn delete_series(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Query(q): Query<DeleteQuery>,
+) -> ApiResult<StatusCode> {
+    crate::routes::library::delete_series(
+        State(state),
+        Path(id),
+        Query(crate::routes::library::DeleteSeriesQuery {
+            delete_files: q.delete_files,
+        }),
+    )
+    .await?;
+    Ok(StatusCode::OK)
+}
+
+// ---- episodes and files -------------------------------------------------------------------
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct EpisodeFilter {
+    series_id: Option<i64>,
+    season_number: Option<i32>,
+    #[serde(default)]
+    episode_ids: Option<String>,
+}
+
+async fn list_episodes(
+    State(state): State<AppState>,
+    Query(f): Query<EpisodeFilter>,
+) -> ApiResult<Json<Vec<Value>>> {
+    let Some(series_id) = f.series_id else {
+        let ids: Vec<i64> = f
+            .episode_ids
+            .as_deref()
+            .unwrap_or_default()
+            .split(',')
+            .filter_map(|v| v.trim().parse().ok())
+            .collect();
+        let mut out = Vec::new();
+        for id in ids {
+            if let Ok(Json(v)) = get_episode(State(state.clone()), Path(id)).await {
+                out.push(v);
+            }
+        }
+        return Ok(Json(out));
+    };
+    let list = series::list_episodes(&state.db, series_id, f.season_number).await?;
+    Ok(Json(list.iter().map(episode_json).collect()))
+}
+
+async fn get_episode(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+    let series_id: i64 = sqlx_series_of_episode(&state, id).await?;
+    let list = series::list_episodes(&state.db, series_id, None).await?;
+    let e = list
+        .iter()
+        .find(|e| e.id == id)
+        .ok_or_else(|| ApiError::NotFound("The episode does not exist.".into()))?;
+    Ok(Json(episode_json(e)))
+}
+
+async fn sqlx_series_of_episode(state: &AppState, id: i64) -> ApiResult<i64> {
+    series::series_of_episode(&state.db, id)
+        .await?
+        .ok_or_else(|| ApiError::NotFound("The episode does not exist.".into()))
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct MonitorBody {
+    episode_ids: Vec<i64>,
+    monitored: bool,
+}
+
+async fn monitor_episodes(
+    State(state): State<AppState>,
+    Json(body): Json<MonitorBody>,
+) -> ApiResult<StatusCode> {
+    series::set_episodes_monitored(&state.db, &body.episode_ids, body.monitored).await?;
+    Ok(StatusCode::ACCEPTED)
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct FileFilter {
+    series_id: Option<i64>,
+}
+
+async fn files_of(state: &AppState, series_id: i64) -> ApiResult<Vec<Value>> {
+    let d = detail(state, series_id).await?;
+    let episodes = series::list_episodes(&state.db, series_id, None).await?;
+    Ok(series::file_records(&state.db, series_id)
+        .await?
+        .iter()
+        .map(|f| {
+            let languages = episodes
+                .iter()
+                .find_map(|e| {
+                    e.file
+                        .as_ref()
+                        .filter(|x| x.id == f.id)
+                        .map(|x| x.languages.clone())
+                })
+                .unwrap_or_default();
+            let mut v = episode_file_json(&d, f, &languages);
+            if let Some(season) = episodes
+                .iter()
+                .find(|e| e.file.as_ref().is_some_and(|x| x.id == f.id))
+                .map(|e| e.season_number)
+            {
+                v["seasonNumber"] = json!(season);
+            }
+            v
+        })
+        .collect())
+}
+
+async fn list_episode_files(
+    State(state): State<AppState>,
+    Query(f): Query<FileFilter>,
+) -> ApiResult<Json<Vec<Value>>> {
+    let series_id = f
+        .series_id
+        .ok_or_else(|| ApiError::field("seriesId", "A series id is required."))?;
+    Ok(Json(files_of(&state, series_id).await?))
+}
+
+async fn get_episode_file(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
+    let series_id = series::series_of_file(&state.db, id)
+        .await?
+        .ok_or_else(|| ApiError::NotFound("The episode file does not exist.".into()))?;
+    files_of(&state, series_id)
+        .await?
+        .into_iter()
+        .find(|v| v["id"] == json!(id))
+        .map(Json)
+        .ok_or_else(|| ApiError::NotFound("The episode file does not exist.".into()))
+}
+
+// ---- commands -----------------------------------------------------------------------------
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct CommandBody {
+    name: String,
+    series_id: Option<i64>,
+    season_number: Option<i32>,
+    episode_ids: Vec<i64>,
+}
+
+fn command_json(id: i64, name: &str, status: &str, message: &str) -> Value {
+    let now = kitsunarr_db::now();
+    json!({"id": id, "name": name, "commandName": name, "status": status, "message": message,
+        "queued": now, "started": now, "ended": now, "trigger": "manual", "body": {"name": name}})
+}
+
+/// Commands run in the background (searches, refreshes); they report as started at once.
+async fn command(
+    State(state): State<AppState>,
+    Json(body): Json<CommandBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    let id = chrono::Utc::now().timestamp_millis();
+    let name = body.name.clone();
+    let message = match name.as_str() {
+        "SeriesSearch" => {
+            let sid = body
+                .series_id
+                .ok_or_else(|| ApiError::field("seriesId", "A series id is required."))?;
+            detail(&state, sid).await?;
+            crate::routes::wanted::search_missing_of_series(&state, sid);
+            "Searching the series' missing monitored episodes"
+        }
+        "SeasonSearch" | "EpisodeSearch" => {
+            let queries: Vec<ReleaseQuery> = if name == "SeasonSearch" {
+                let sid = body
+                    .series_id
+                    .ok_or_else(|| ApiError::field("seriesId", "A series id is required."))?;
+                vec![ReleaseQuery {
+                    series_id: sid,
+                    season_number: body.season_number,
+                    episode_id: None,
+                    complete_series: false,
+                    season_packs_only: false,
+                }]
+            } else {
+                let mut q = Vec::new();
+                for e in &body.episode_ids {
+                    q.push(ReleaseQuery {
+                        series_id: sqlx_series_of_episode(&state, *e).await?,
+                        season_number: None,
+                        episode_id: Some(*e),
+                        complete_series: false,
+                        season_packs_only: false,
+                    });
+                }
+                q
+            };
+            let st = state.clone();
+            tokio::spawn(async move {
+                for q in queries {
+                    if let Err(e) =
+                        crate::routes::search::automatic_search(State(st.clone()), Json(q)).await
+                    {
+                        tracing::warn!(error = %e.message(), "v3 search command failed");
+                    }
+                }
+            });
+            "Searching"
+        }
+        "RefreshSeries" | "RescanSeries" => {
+            let targets: Vec<i64> = match body.series_id {
+                Some(s) => vec![s],
+                None => all_series(&state)
+                    .await?
+                    .iter()
+                    .map(|d| d.item.id)
+                    .collect(),
+            };
+            let st = state.clone();
+            let refresh = name == "RefreshSeries";
+            tokio::spawn(async move {
+                for s in targets {
+                    let r = if refresh {
+                        crate::routes::metadata::refresh_series(State(st.clone()), Path(s))
+                            .await
+                            .map(|_| ())
+                    } else {
+                        crate::routes::library::rescan_series(State(st.clone()), Path(s))
+                            .await
+                            .map(|_| ())
+                    };
+                    if let Err(e) = r {
+                        tracing::warn!(series = s, error = %e.message(), "v3 command failed");
+                    }
+                }
+            });
+            if refresh { "Refreshing" } else { "Rescanning" }
+        }
+        "MissingEpisodeSearch" | "CutoffUnmetEpisodeSearch" => {
+            let list = if name == "MissingEpisodeSearch" {
+                kitsunarr_domain::api::wanted::WantedList::Missing
+            } else {
+                kitsunarr_domain::api::wanted::WantedList::CutoffUnmet
+            };
+            let _started = crate::routes::wanted::search_wanted(
+                State(state.clone()),
+                Json(kitsunarr_domain::api::wanted::WantedSearchRequest {
+                    list,
+                    episode_ids: body.episode_ids.clone(),
+                    monitored: Some(true),
+                }),
+            )
+            .await?;
+            "Searching wanted episodes"
+        }
+        "RssSync" => {
+            let st = state.clone();
+            tokio::spawn(async move {
+                if let Err(e) = crate::rss::sync(&st).await {
+                    tracing::warn!(error = %e, "v3 RSS sync failed");
+                }
+            });
+            "RSS sync started"
+        }
+        other => {
+            return Err(ApiError::field(
+                "name",
+                format!("The command {other} is not supported."),
+            ));
+        }
+    };
+    Ok((
+        StatusCode::CREATED,
+        Json(command_json(id, &name, "started", message)),
+    ))
+}
+
+async fn get_command(Path(id): Path<i64>) -> Json<Value> {
+    Json(command_json(id, "Command", "completed", "Completed"))
+}
+
+// ---- queue and calendar -------------------------------------------------------------------
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct QueueQuery {
+    page: Option<i64>,
+    page_size: Option<i64>,
+}
+
+async fn queue(
+    State(state): State<AppState>,
+    Query(q): Query<QueueQuery>,
+) -> ApiResult<Json<Value>> {
+    let native = crate::routes::queue::get_queue(State(state.clone()))
+        .await?
+        .0;
+    let ids: Vec<String> = native.items.iter().map(|i| i.download_id.clone()).collect();
+    let grabs = kitsunarr_db::history::grabs_for(&state.db, &ids).await?;
+    let mut records = Vec::new();
+    for (n, i) in native.items.iter().enumerate() {
+        let episode_ids: Vec<i64> = grabs
+            .iter()
+            .filter(|g| g.download_id.eq_ignore_ascii_case(&i.download_id))
+            .filter_map(|g| g.episode_id)
+            .collect();
+        let base = json!({
+            "id": n as i64 + 1,
+            "seriesId": i.series_id,
+            "title": i.title,
+            "size": i.size,
+            "sizeleft": i.size_left,
+            "timeleft": i.time_left.map(|s| format!("{:02}:{:02}:{:02}", s / 3600, s / 60 % 60, s % 60)),
+            "estimatedCompletionTime": i.time_left.map(|s| (chrono::Utc::now() + chrono::Duration::seconds(s)).to_rfc3339_opts(chrono::SecondsFormat::Secs, true)),
+            "status": i.status,
+            "trackedDownloadStatus": if i.messages.is_empty() { "ok" } else { "warning" },
+            "trackedDownloadState": i.tracked_state,
+            "statusMessages": i.messages.iter().map(|m| json!({"title": i.title, "messages": [m]})).collect::<Vec<_>>(),
+            "downloadId": i.download_id,
+            "protocol": format!("{:?}", i.protocol).to_lowercase(),
+            "downloadClient": i.download_client,
+            "indexer": i.indexer,
+            "outputPath": i.output_path,
+        });
+        if episode_ids.is_empty() {
+            records.push(base.clone());
+        }
+        // One record per episode, as Sonarr's queue does.
+        for e in episode_ids {
+            let mut r = base.clone();
+            r["episodeId"] = json!(e);
+            records.push(r);
+        }
+    }
+    let total = records.len() as i64;
+    let page = q.page.unwrap_or(1).max(1);
+    let size = q.page_size.unwrap_or(total.max(1)).max(1);
+    let records: Vec<Value> = records
+        .into_iter()
+        .skip(((page - 1) * size) as usize)
+        .take(size as usize)
+        .collect();
+    Ok(Json(
+        json!({"page": page, "pageSize": size, "sortKey": "timeleft", "sortDirection": "ascending", "totalRecords": total, "records": records}),
+    ))
+}
+
+#[derive(Deserialize)]
+struct CalendarQuery {
+    start: Option<String>,
+    end: Option<String>,
+}
+
+async fn calendar(
+    State(state): State<AppState>,
+    Query(q): Query<CalendarQuery>,
+) -> ApiResult<Json<Vec<Value>>> {
+    let today = chrono::Utc::now().date_naive();
+    let start = q.start.unwrap_or_else(|| today.to_string());
+    let end = q
+        .end
+        .unwrap_or_else(|| (today + chrono::Duration::days(2)).to_string());
+    let list = series::calendar(&state.db, &start, &end, true).await?;
+    Ok(Json(
+        list.iter()
+            .map(|e| {
+                json!({
+                    "id": e.episode_id,
+                    "seriesId": e.series_id,
+                    "seasonNumber": e.season_number,
+                    "episodeNumber": e.episode_number,
+                    "absoluteEpisodeNumber": e.absolute_episode_number,
+                    "title": e.title,
+                    "airDateUtc": e.air_date_utc,
+                    "airDate": e.air_date_utc.get(..10),
+                    "monitored": e.monitored,
+                    "hasFile": e.has_file,
+                    "series": {"id": e.series_id, "title": e.series_title},
+                })
+            })
+            .collect(),
+    ))
+}
+
+// ---- indexers (Prowlarr sync) -------------------------------------------------------------
+
+fn indexer_json(p: &ProviderRecord) -> Value {
+    let settings = crate::routes::settings::redact(&p.settings);
+    let fields: Vec<Value> = settings
+        .iter()
+        .map(|(k, v)| json!({"name": k, "value": v}))
+        .collect();
+    let opt = |k: &str, d: bool| p.options.get(k).and_then(Value::as_bool).unwrap_or(d);
+    json!({
+        "id": p.id,
+        "name": p.name,
+        "implementation": p.implementation,
+        "implementationName": p.implementation,
+        "configContract": format!("{}Settings", p.implementation),
+        "protocol": if p.implementation == "Newznab" { "usenet" } else { "torrent" },
+        "priority": p.priority,
+        "enableRss": opt("enableRss", true),
+        "enableAutomaticSearch": opt("enableAutomaticSearch", true),
+        "enableInteractiveSearch": opt("enableInteractiveSearch", true),
+        "supportsRss": true,
+        "supportsSearch": true,
+        "downloadClientId": p.options.get("downloadClientId").cloned().unwrap_or(json!(0)),
+        "seasonSearchMaximumSingleEpisodeAge": p.options.get("seasonSearchMaximumSingleEpisodeAge").cloned().unwrap_or(json!(0)),
+        "tags": p.tags,
+        "fields": fields,
+    })
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct IndexerBody {
+    name: String,
+    implementation: String,
+    priority: Option<i32>,
+    enable_rss: Option<bool>,
+    enable_automatic_search: Option<bool>,
+    enable_interactive_search: Option<bool>,
+    download_client_id: Option<i64>,
+    season_search_maximum_single_episode_age: Option<i64>,
+    tags: Vec<i64>,
+    fields: Vec<Field>,
+}
+
+#[derive(Deserialize, Default)]
+#[serde(default)]
+struct Field {
+    name: String,
+    value: Value,
+}
+
+fn record(id: i64, b: &IndexerBody) -> ApiResult<ProviderRecord> {
+    if !matches!(b.implementation.as_str(), "Newznab" | "Torznab") {
+        return Err(ApiError::field(
+            "implementation",
+            format!("{} indexers are not supported.", b.implementation),
+        ));
+    }
+    let mut settings = Map::new();
+    for f in &b.fields {
+        if !f.name.is_empty() {
+            settings.insert(f.name.clone(), f.value.clone());
+        }
+    }
+    let mut options = Map::new();
+    options.insert("enableRss".into(), json!(b.enable_rss.unwrap_or(true)));
+    options.insert(
+        "enableAutomaticSearch".into(),
+        json!(b.enable_automatic_search.unwrap_or(true)),
+    );
+    options.insert(
+        "enableInteractiveSearch".into(),
+        json!(b.enable_interactive_search.unwrap_or(true)),
+    );
+    options.insert(
+        "downloadClientId".into(),
+        json!(b.download_client_id.unwrap_or(0)),
+    );
+    options.insert(
+        "seasonSearchMaximumSingleEpisodeAge".into(),
+        json!(b.season_search_maximum_single_episode_age.unwrap_or(0)),
+    );
+    Ok(ProviderRecord {
+        id,
+        kind: ProviderKind::Indexer,
+        name: b.name.clone(),
+        implementation: b.implementation.clone(),
+        protocol: providers::protocol_for(&b.implementation),
+        enabled: true,
+        priority: b.priority.unwrap_or(25),
+        tags: b.tags.clone(),
+        options,
+        settings,
+    })
+}
+
+async fn list_indexers(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    Ok(Json(
+        providers::list(state.db.pool(), ProviderKind::Indexer)
+            .await?
+            .iter()
+            .map(indexer_json)
+            .collect(),
+    ))
+}
+
+async fn get_indexer(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+    Ok(Json(indexer_json(
+        &providers::get(state.db.pool(), ProviderKind::Indexer, id).await?,
+    )))
+}
+
+async fn create_indexer(
+    State(state): State<AppState>,
+    Json(body): Json<IndexerBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    let rec = record(0, &body)?;
+    let id = providers::create(state.db.pool(), &rec).await?;
+    crate::routes::settings::settings_changed(&state, "indexers");
+    Ok((
+        StatusCode::CREATED,
+        Json(indexer_json(
+            &providers::get(state.db.pool(), ProviderKind::Indexer, id).await?,
+        )),
+    ))
+}
+
+async fn update_indexer(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(body): Json<IndexerBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    let stored = providers::get(state.db.pool(), ProviderKind::Indexer, id).await?;
+    let mut rec = record(id, &body)?;
+    crate::routes::settings::merge_secrets(&mut rec.settings, &stored.settings);
+    rec.enabled = stored.enabled;
+    providers::update(state.db.pool(), &rec).await?;
+    crate::routes::settings::settings_changed(&state, "indexers");
+    Ok((
+        StatusCode::ACCEPTED,
+        Json(indexer_json(
+            &providers::get(state.db.pool(), ProviderKind::Indexer, id).await?,
+        )),
+    ))
+}
+
+async fn delete_indexer(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<StatusCode> {
+    providers::delete(state.db.pool(), ProviderKind::Indexer, id).await?;
+    crate::routes::settings::settings_changed(&state, "indexers");
+    Ok(StatusCode::OK)
+}
+
+async fn indexer_schema() -> Json<Vec<Value>> {
+    Json(
+        crate::routes::schema::templates(ProviderKind::Indexer)
+            .iter()
+            .map(|t| {
+                let rec = ProviderRecord {
+                    id: 0,
+                    kind: ProviderKind::Indexer,
+                    name: t.name.clone(),
+                    implementation: t.implementation.clone(),
+                    protocol: providers::protocol_for(&t.implementation),
+                    enabled: true,
+                    priority: t.priority,
+                    tags: Vec::new(),
+                    options: t.options.clone(),
+                    settings: t.settings.clone(),
+                };
+                indexer_json(&rec)
+            })
+            .collect(),
+    )
+}
+
+/// `POST /indexer/test`: 200 when the indexer answers, else 400 with Sonarr's validation list.
+async fn test_indexer(
+    State(state): State<AppState>,
+    Json(body): Json<Value>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    let parsed: IndexerBody = serde_json::from_value(body.clone()).unwrap_or_default();
+    let mut settings = Map::new();
+    for f in &parsed.fields {
+        settings.insert(f.name.clone(), f.value.clone());
+    }
+    let req = IndexerTestRequest {
+        id: body.get("id").and_then(Value::as_i64).filter(|i| *i > 0),
+        implementation: parsed.implementation.clone(),
+        settings,
+    };
+    let result = crate::routes::search::test_indexer(State(state), Json(req))
+        .await?
+        .0;
+    if result.ok {
+        Ok((StatusCode::OK, Json(json!({}))))
+    } else {
+        Ok((
+            StatusCode::BAD_REQUEST,
+            Json(
+                json!([{"propertyName": "", "errorMessage": result.message, "severity": "error"}]),
+            ),
+        ))
+    }
+}

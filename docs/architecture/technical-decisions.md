@@ -551,3 +551,19 @@ task, scheduled import list syncs, redownloads after failures, "search for missi
 a title (Tanukarr suppresses it too) and list adds. Everything the user starts (searches, grabs,
 "Sync now", task runs other than RSS sync) still runs, as do imports of current downloads.
 Recent searches are kept as one JSON value (the last 100), like Tanukarr's `ProSearchHistory`.
+
+## 35. Sonarr `/api/v3` compatibility
+
+Third-party tools speak Sonarr's API, so `/api/v3` serves the subset they use (module
+`kitsunarr-api::v3`), outside the OpenAPI document of the native `/api/v1`. Resources are built
+from the native data with Sonarr's field names; handlers reuse the native routes, so behaviour
+(validation, notifications, events, searches) is the same. Choices:
+
+- `system/status` reports version `4.0.0.0` so tools take their Sonarr v4 paths (some refuse
+  versions below 3); Kitsunarr's own version is in `kitsunarrVersion`.
+- Series are found and added by TheTVDB id (SkyHook), as Sonarr does; titles owned by other
+  catalogues are listed with the TheTVDB id they carry. `PUT /series` accepts the id in the
+  body (Overseerr) or the path.
+- Commands start in the background and answer `started`; `GET /command/{id}` reports completed.
+- Indexers map Sonarr's `fields` list onto stored settings; secrets read back masked and a
+  masked value on update keeps the stored one. A `downloadClientId` of 0 means none.

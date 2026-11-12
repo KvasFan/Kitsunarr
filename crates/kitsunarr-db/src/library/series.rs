@@ -1090,6 +1090,26 @@ pub async fn set_naming_options(
     Ok(())
 }
 
+/// The series an episode belongs to.
+pub async fn series_of_episode(db: &Database, episode_id: i64) -> DbResult<Option<i64>> {
+    Ok(
+        sqlx::query_scalar("SELECT series_id FROM episodes WHERE id = ?")
+            .bind(episode_id)
+            .fetch_optional(db.pool())
+            .await?,
+    )
+}
+
+/// The series an episode file belongs to.
+pub async fn series_of_file(db: &Database, file_id: i64) -> DbResult<Option<i64>> {
+    Ok(
+        sqlx::query_scalar("SELECT series_id FROM episode_files WHERE id = ?")
+            .bind(file_id)
+            .fetch_optional(db.pool())
+            .await?,
+    )
+}
+
 /// Every series' (id, folder).
 pub async fn paths(db: &Database) -> DbResult<Vec<(i64, String)>> {
     Ok(sqlx::query_as("SELECT id, path FROM series")

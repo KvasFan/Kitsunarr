@@ -35,7 +35,7 @@
 |---|---|
 | Native `/api/v1` (OpenAPI 3.1 at `/api/v1/openapi.json`) | Available |
 | `X-Api-Key` header, `?apikey=` query and `Authorization: Bearer` | Available (Sonarr-compatible header and query names) |
-| Sonarr `/api/v3` compatibility for Overseerr/Jellyseerr, Prowlarr, Bazarr, LunaSea | Not started |
+| Sonarr `/api/v3` compatibility for Overseerr/Jellyseerr, Prowlarr, Bazarr, LunaSea | Partial: `system/status` (reports Sonarr 4.0.0.0, plus `kitsunarrVersion`), `health`, `qualityprofile`, `languageprofile` (v4's placeholder), `rootfolder`, `tag`, `series` (list, `?tvdbId=`, get, add from TheTVDB with season choices, update by path or body id, delete), `series/lookup` (`tvdb:ID` with seasons, or a TheTVDB search; library titles come back with their id), `episode` (by series, by ids, one, `episode/monitor`), `episodefile`, `command` (SeriesSearch, SeasonSearch, EpisodeSearch, RefreshSeries, RescanSeries, MissingEpisodeSearch, CutoffUnmetEpisodeSearch, RssSync), `queue`, `calendar`, `indexer` (CRUD, schema, test — Prowlarr sync). Tested with an Overseerr-like and a Prowlarr-like flow (HTTP `sonarr_v3_api_serves_overseerr_and_prowlarr_flows`), not against the real tools. Not implemented: history, blocklist, download clients, notifications, release push, wanted lists, SignalR. |
 
 ## Platforms
 

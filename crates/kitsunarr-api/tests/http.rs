@@ -3362,3 +3362,253 @@ async fn series_naming_options_round_trip_and_validate() {
         );
     }
 }
+
+/// Sonarr `/api/v3` as Overseerr (lookup, add with season choices, update) and Prowlarr
+/// (indexer sync) use it.
+#[tokio::test]
+async fn sonarr_v3_api_serves_overseerr_and_prowlarr_flows() {
+    use serde_json::{Value, json};
+    let (skyhook, _log) = skyhook_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let http = reqwest::Client::new();
+    let url = |p: &str| format!("{}/api/v3{p}", server.base);
+    let key = server.api_key.clone();
+    let get = |p: &str| http.get(url(p)).header("X-Api-Key", &key).send();
+    // Without a key: 401.
+    assert_eq!(
+        http.get(url("/system/status"))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        401
+    );
+    let status: Value = get("/system/status").await.unwrap().json().await.unwrap();
+    assert_eq!(status["version"], "4.0.0.0");
+    assert_eq!(status["appName"], "Kitsunarr");
+    let profiles: Value = get("/qualityprofile").await.unwrap().json().await.unwrap();
+    assert!(
+        profiles
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|p| p["name"] == "Any")
+    );
+    assert_eq!(
+        get("/languageprofile")
+            .await
+            .unwrap()
+            .json::<Value>()
+            .await
+            .unwrap()[0]["id"],
+        1
+    );
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    signed_in(&server)
+        .await
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let roots: Value = get("/rootfolder").await.unwrap().json().await.unwrap();
+    assert_eq!(roots[0]["path"], root.as_str());
+    let tag: Value = http
+        .post(url("/tag"))
+        .header("X-Api-Key", &key)
+        .json(&json!({"label": "Overseerr"}))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(tag["label"], "overseerr");
+
+    // Overseerr: lookup by TheTVDB id, then add with only season 1 monitored.
+    let found: Value = get("/series/lookup?term=tvdb:81189")
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(found[0]["title"], "Breaking Bad");
+    assert!(found[0].get("id").is_none());
+    assert!(found[0]["seasons"].as_array().unwrap().len() > 1);
+    let added = http
+        .post(url("/series"))
+        .header("X-Api-Key", &key)
+        .json(&json!({
+            "tvdbId": 81189, "title": "Breaking Bad", "qualityProfileId": 1, "languageProfileId": 1,
+            "rootFolderPath": root, "seasonFolder": true, "monitored": true, "seriesType": "standard",
+            "tags": [tag["id"]], "seasons": [{"seasonNumber": 1, "monitored": true}, {"seasonNumber": 2, "monitored": false}],
+            "addOptions": {"ignoreEpisodesWithFiles": true, "searchForMissingEpisodes": false}
+        }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(added.status(), 201);
+    let added: Value = added.json().await.unwrap();
+    let id = added["id"].as_i64().unwrap();
+    assert_eq!(added["tvdbId"], 81189);
+    let season = |v: &Value, n: i64| {
+        v["seasons"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|s| s["seasonNumber"] == n)
+            .unwrap()["monitored"]
+            .clone()
+    };
+    assert_eq!(season(&added, 1), true);
+    assert_eq!(season(&added, 2), false);
+    // Now in the library: lookups and filters return it with its id.
+    let again: Value = get("/series/lookup?term=tvdb:81189")
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(again[0]["id"], id);
+    let listed: Value = get("/series?tvdbId=81189")
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(listed.as_array().unwrap().len(), 1);
+    // Overseerr's later request for season 2: PUT /series with the id in the body.
+    let mut body = again[0].clone();
+    body["seasons"] =
+        json!([{"seasonNumber": 1, "monitored": true}, {"seasonNumber": 2, "monitored": true}]);
+    let updated: Value = http
+        .put(url("/series"))
+        .header("X-Api-Key", &key)
+        .json(&body)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(season(&updated, 2), true);
+    let episodes: Value = get(&format!("/episode?seriesId={id}"))
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let first = &episodes.as_array().unwrap()[0];
+    let one: Value = get(&format!("/episode/{}", first["id"]))
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(one["id"], first["id"]);
+    assert_eq!(
+        get(&format!("/episodefile?seriesId={id}"))
+            .await
+            .unwrap()
+            .json::<Value>()
+            .await
+            .unwrap(),
+        json!([])
+    );
+    let command = http
+        .post(url("/command"))
+        .header("X-Api-Key", &key)
+        .json(&json!({"name": "RescanSeries", "seriesId": id}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(command.status(), 201);
+    let queue: Value = get("/queue?page=1&pageSize=50")
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(queue["totalRecords"], 0);
+
+    // Prowlarr: schema, add a Torznab indexer, read it back (key masked), update, delete.
+    let schema: Value = get("/indexer/schema").await.unwrap().json().await.unwrap();
+    assert!(
+        schema
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|s| s["implementation"] == "Torznab")
+    );
+    let created = http
+        .post(url("/indexer"))
+        .header("X-Api-Key", &key)
+        .json(&json!({
+            "name": "Nyaa (Prowlarr)", "implementation": "Torznab", "configContract": "TorznabSettings",
+            "enableRss": true, "enableAutomaticSearch": true, "enableInteractiveSearch": false, "priority": 25,
+            "tags": [], "fields": [
+                {"name": "baseUrl", "value": "http://prowlarr:9696/1/"}, {"name": "apiPath", "value": "/api"},
+                {"name": "apiKey", "value": "prowlarr-secret"}, {"name": "categories", "value": [5030, 5040]},
+                {"name": "animeCategories", "value": [5070]}
+            ]
+        }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(created.status(), 201, "{:?}", created.text().await);
+    let created: Value = created.json().await.unwrap();
+    let iid = created["id"].as_i64().unwrap();
+    assert_eq!(created["enableInteractiveSearch"], false);
+    let field = |v: &Value, n: &str| {
+        v["fields"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|f| f["name"] == n)
+            .unwrap()["value"]
+            .clone()
+    };
+    assert_eq!(field(&created, "apiKey"), "********");
+    let mut edit = created.clone();
+    edit["name"] = json!("Nyaa");
+    let edited: Value = http
+        .put(url(&format!("/indexer/{iid}")))
+        .header("X-Api-Key", &key)
+        .json(&edit)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(edited["name"], "Nyaa");
+    let stored = kitsunarr_db::providers::get(
+        server.state.db.pool(),
+        kitsunarr_domain::api::settings::ProviderKind::Indexer,
+        iid,
+    )
+    .await
+    .unwrap();
+    assert_eq!(
+        stored.settings["apiKey"], "prowlarr-secret",
+        "the masked key is kept"
+    );
+    assert_eq!(
+        http.delete(url(&format!("/indexer/{iid}")))
+            .header("X-Api-Key", &key)
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        200
+    );
+}
