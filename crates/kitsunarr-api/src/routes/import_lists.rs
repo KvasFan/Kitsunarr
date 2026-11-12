@@ -20,6 +20,33 @@ use crate::error::{ApiError, ApiResult};
 use crate::import_lists as sync;
 
 /// Reads a list with the editor's settings (stored secrets are reused) without storing it.
+/// The lists an account holds, for an import list's include and exclude fields (Tanukarr's
+/// `getCustomLists`): AniList custom lists, Trakt lists, Simkl custom lists.
+#[utoipa::path(post, path = "/providers/importlists/lists", tag = "settings", request_body = IndexerTestRequest,
+    responses((status = 200, body = Vec<kitsunarr_domain::api::settings::ProviderChoice>), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn import_list_choices(
+    State(state): State<AppState>,
+    Json(mut req): Json<IndexerTestRequest>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::settings::ProviderChoice>>> {
+    if let Some(id) = req.id {
+        let stored = providers::get(state.db.pool(), ProviderKind::ImportList, id).await?;
+        crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
+    }
+    let list =
+        kitsunarr_importlists::choices::lists(&state.http, &req.implementation, &req.settings)
+            .await
+            .map_err(|e| ApiError::field("settings", e.to_string()))?;
+    Ok(Json(
+        list.into_iter()
+            .map(|c| kitsunarr_domain::api::settings::ProviderChoice {
+                value: c.value,
+                name: c.name,
+                hint: None,
+            })
+            .collect(),
+    ))
+}
+
 #[utoipa::path(post, path = "/providers/importlists/test", tag = "settings", request_body = IndexerTestRequest,
     responses((status = 200, body = DownloadClientTestResult), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
 pub async fn test_import_list(

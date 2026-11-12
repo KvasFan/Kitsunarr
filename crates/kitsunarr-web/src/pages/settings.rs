@@ -1573,6 +1573,108 @@ pub fn SettingsImportLists() -> Element {
 
 /// Jellyfin library and user pickers (Tanukarr's `RequestAction("libraries" | "users")`): read
 /// from the server with the editor's host and API key.
+/// Tanukarr's account-list pickers: the account's lists, each to include or exclude.
+#[component]
+fn AccountListPickers(mut draft: Signal<ProviderItem>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut lists = use_signal(Vec::<kitsunarr_domain::api::settings::ProviderChoice>::new);
+    let implementation = draft().implementation.clone();
+    // The setting names and whether values are numbers (Simkl list ids).
+    let (include_key, exclude_key, numeric) = match implementation.as_str() {
+        "AniListImport" => ("includedCustomLists", "excludedCustomLists", false),
+        "TraktListImport" => ("includedLists", "excludedLists", false),
+        _ => ("includedCustomListIds", "excludedCustomListIds", true),
+    };
+    let load = move |_| {
+        let c = client.clone();
+        let d = draft();
+        spawn(async move {
+            let req = kitsunarr_domain::api::search::IndexerTestRequest {
+                id: (d.id > 0).then_some(d.id),
+                implementation: d.implementation.clone(),
+                settings: d.settings.clone(),
+            };
+            match c.import_list_choices(&req).await {
+                Ok(list) => lists.set(list),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let selected = |key: &str| -> Vec<String> {
+        draft()
+            .settings
+            .get(key)
+            .and_then(Value::as_array)
+            .map(|a| {
+                a.iter()
+                    .map(|v| {
+                        v.as_str()
+                            .map(str::to_string)
+                            .unwrap_or_else(|| v.to_string())
+                    })
+                    .collect()
+            })
+            .unwrap_or_default()
+    };
+    let (included, excluded) = (selected(include_key), selected(exclude_key));
+    let mut toggle = move |key: &'static str, value: String, on: bool| {
+        let mut d = draft.write();
+        let mut current: Vec<Value> = d
+            .settings
+            .get(key)
+            .and_then(Value::as_array)
+            .cloned()
+            .unwrap_or_default();
+        let matches = |v: &Value| {
+            v.as_str()
+                .map(str::to_string)
+                .unwrap_or_else(|| v.to_string())
+                == value
+        };
+        current.retain(|v| !matches(v));
+        if on {
+            current.push(if numeric {
+                value
+                    .parse::<i64>()
+                    .map(Value::from)
+                    .unwrap_or(Value::String(value.clone()))
+            } else {
+                Value::String(value.clone())
+            });
+        }
+        d.settings.insert(key.into(), Value::Array(current));
+    };
+    rsx! {
+        h3 { "Account lists" }
+        p { class: "help small faint", "Include only titles on some lists, or leave out the titles of others." }
+        div { class: "row", button { class: "btn sm", onclick: load, "Load the account's lists" } }
+        if !lists().is_empty() {
+            div { class: "table-wrap",
+                table { class: "table",
+                    thead { tr { th { "List" } th { "Include" } th { "Exclude" } } }
+                    tbody {
+                        for l in lists() {
+                            {
+                                let (v1, v2) = (l.value.clone(), l.value.clone());
+                                rsx! {
+                                    tr { key: "{l.value}",
+                                        td { "{l.name}" }
+                                        td { input { r#type: "checkbox", "aria-label": "Include {l.name}", checked: included.contains(&l.value),
+                                            onchange: move |e: FormEvent| toggle(include_key, v1.clone(), e.checked()) } }
+                                        td { input { r#type: "checkbox", "aria-label": "Exclude {l.name}", checked: excluded.contains(&l.value),
+                                            onchange: move |e: FormEvent| toggle(exclude_key, v2.clone(), e.checked()) } }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 #[component]
 fn JellyfinPickers(mut draft: Signal<ProviderItem>) -> Element {
     let app = use_app();
@@ -2430,6 +2532,9 @@ fn ProviderEditor(
             }
             if item.kind == ProviderKind::Notification && item.implementation.eq_ignore_ascii_case("Jellyfin") {
                 JellyfinPickers { draft }
+            }
+            if matches!(item.implementation.as_str(), "AniListImport" | "TraktListImport" | "SimklUserImport") {
+                AccountListPickers { draft }
             }
             h3 { "Settings" }
             div { class: "form-grid",

@@ -276,6 +276,13 @@ impl Client {
         )
         .await
     }
+    /// The lists of an import list's account (include/exclude pickers).
+    pub async fn import_list_choices(
+        &self,
+        req: &kitsunarr_domain::api::search::IndexerTestRequest,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::settings::ProviderChoice>> {
+        self.post("/providers/importlists/lists", req).await
+    }
     pub async fn series_orderings(
         &self,
         id: i64,

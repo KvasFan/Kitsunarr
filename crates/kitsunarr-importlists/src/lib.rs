@@ -11,6 +11,7 @@
 //! `TraktListImport`, `TraktUserImport`, `TraktPopularImport` and `SimklUserImport`.
 
 pub mod anilist;
+pub mod choices;
 pub mod custom;
 pub mod mdblist;
 pub mod myanimelist;

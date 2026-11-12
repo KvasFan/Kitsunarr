@@ -533,3 +533,56 @@ async fn tmdb_discover_person_and_trakt_smart_lists() {
     let items = fetch(&http, "TraktSmartListImport", &s).await.unwrap();
     assert_eq!(items[0].tvdb_id, Some(77));
 }
+
+/// Account-list pickers: AniList custom lists, Trakt lists, Simkl custom lists.
+#[tokio::test]
+async fn account_lists_are_listed_for_the_pickers() {
+    async fn anilist() -> Json<Value> {
+        Json(
+            json!({"data": {"User": {"mediaListOptions": {"animeList": {"customLists": ["Favourites", "Rewatch"]}}}}}),
+        )
+    }
+    async fn trakt() -> Json<Value> {
+        Json(json!([{"name": "Weekend", "ids": {"slug": "weekend"}}]))
+    }
+    async fn simkl_me() -> Json<Value> {
+        Json(json!({"account": {"id": 42}}))
+    }
+    async fn simkl_lists() -> Json<Value> {
+        Json(
+            json!({"lists": [{"id": 7, "name": "Seasonal", "media_type": "anime"}, {"id": 8, "name": "TV", "media_type": "tv"}]}),
+        )
+    }
+    let base = serve(
+        axum::Router::new()
+            .route("/graphql", axum::routing::post(anilist))
+            .route("/users/anna/lists", get(trakt))
+            .route("/users/settings", get(simkl_me))
+            .route("/lists/user/42", get(simkl_lists)),
+    )
+    .await;
+    let http = reqwest::Client::new();
+    use kitsunarr_importlists::choices::lists;
+    let names = |c: Vec<kitsunarr_importlists::choices::Choice>| {
+        c.into_iter().map(|c| (c.value, c.name)).collect::<Vec<_>>()
+    };
+    let s = settings(json!({"baseUrl": format!("{base}/graphql"), "username": "anna"}));
+    assert_eq!(
+        names(lists(&http, "AniListImport", &s).await.unwrap()),
+        vec![
+            ("Favourites".into(), "Favourites".into()),
+            ("Rewatch".into(), "Rewatch".into())
+        ]
+    );
+    let s = settings(json!({"baseUrl": base, "username": "anna", "clientId": "c"}));
+    assert_eq!(
+        names(lists(&http, "TraktListImport", &s).await.unwrap()),
+        vec![("weekend".into(), "Weekend".into())]
+    );
+    let s =
+        settings(json!({"baseUrl": base, "clientIdV2": "c", "accessToken": "t", "showType": 1}));
+    assert_eq!(
+        names(lists(&http, "SimklUserImport", &s).await.unwrap()),
+        vec![("7".into(), "Seasonal".into())]
+    );
+}
