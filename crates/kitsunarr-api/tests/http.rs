@@ -4429,6 +4429,27 @@ async fn movies_are_searched_and_grabbed() {
         "The.Matrix.1999.1080p.BluRay.x264-GRP"
     );
 
+    // A webhook hears the film's grab (as a one-episode series, Tanukarr's shape).
+    let heard: Seen = Arc::default();
+    let h = heard.clone();
+    let hook = axum::Router::new().route(
+        "/hook",
+        axum::routing::post(move |body: String| {
+            let h = h.clone();
+            async move {
+                h.lock().unwrap().push(body);
+                "ok"
+            }
+        }),
+    );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let hook_url = format!("http://{}/hook", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, hook).await.unwrap() });
+    sqlx::query("INSERT INTO notifications (name, implementation, settings, triggers, created_at) VALUES ('Hook', 'Webhook', ?, '{\"onGrab\": true}', '2026-11-01T00:00:00Z')")
+        .bind(serde_json::json!({"url": hook_url, "method": 1}).to_string())
+        .execute(pool)
+        .await
+        .unwrap();
     // RSS sync: a release no series claims is matched with the film and grabbed; the next
     // sync leaves the film alone while that grab downloads.
     let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
@@ -4438,6 +4459,16 @@ async fn movies_are_searched_and_grabbed() {
     );
     let again = kitsunarr_api::rss::sync(&server.state).await.unwrap();
     assert!(again.contains("0 grabbed"), "{again}");
+    for _ in 0..50 {
+        if !heard.lock().unwrap().is_empty() {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(20)).await;
+    }
+    let grab: serde_json::Value = serde_json::from_str(&heard.lock().unwrap()[0]).unwrap();
+    assert_eq!(grab["eventType"], "Grab");
+    assert_eq!(grab["series"]["title"], "The Matrix");
+    assert_eq!(grab["episodes"][0]["episodeNumber"], 1);
 
     let result = client.automatic_movie_search(7).await.unwrap();
     assert_eq!(result.grabbed.len(), 1, "{result:?}");

@@ -221,6 +221,88 @@ impl Monitor {
         .await;
     }
 
+    /// `OnDownload` for an imported film.
+    #[allow(clippy::too_many_arguments)]
+    async fn notify_movie_import(
+        &self,
+        db: &Database,
+        series: kitsunarr_notifications::SeriesRef,
+        feature: kitsunarr_notifications::EpisodeRef,
+        f: &import::ImportedFile,
+        item: &DownloadItem,
+        client: &providers::ProviderRecord,
+        grabs: &[kitsunarr_db::history::GrabRecord],
+    ) {
+        type Row = (
+            String,
+            i64,
+            i64,
+            Option<String>,
+            Option<String>,
+            i64,
+            String,
+        );
+        let row: Option<Row> =
+            sqlx::query_as(
+                "SELECT relative_path, quality_id, revision_version, release_group, scene_name, size, added_at \
+                 FROM movie_files WHERE id = ?",
+            )
+            .bind(f.file_id)
+            .fetch_optional(db.pool())
+            .await
+            .ok()
+            .flatten();
+        let Some((relative, quality, version, group, scene, size, added)) = row else {
+            return;
+        };
+        let grab = grabs.first();
+        let data: serde_json::Value = grab
+            .and_then(|g| serde_json::from_str(&g.data).ok())
+            .unwrap_or_default();
+        let text = |k: &str| data.get(k).and_then(|v| v.as_str()).map(str::to_string);
+        let file = kitsunarr_notifications::FileRef {
+            id: f.file_id,
+            path: format!("{}/{relative}", series.path.trim_end_matches('/')),
+            relative_path: relative,
+            quality: crate::notify::quality_name(quality),
+            quality_version: version as i32,
+            release_group: group,
+            scene_name: scene,
+            size,
+            date_added: added,
+            languages: Vec::new(),
+            source_path: Some(f.source_path.clone()),
+            recycle_bin_path: None,
+        };
+        let deleted_files = f
+            .replaced
+            .iter()
+            .map(|rel| kitsunarr_notifications::FileRef {
+                relative_path: rel.clone(),
+                path: format!("{}/{rel}", series.path.trim_end_matches('/')),
+                ..Default::default()
+            })
+            .collect();
+        let event =
+            kitsunarr_notifications::Event::Download(Box::new(kitsunarr_notifications::Download {
+                series,
+                episodes: vec![feature],
+                file,
+                release: kitsunarr_notifications::GrabbedRef {
+                    release_title: grab.map(|g| g.source_title.clone()),
+                    indexer: text("indexer"),
+                    size: text("size").and_then(|v| v.parse().ok()),
+                    indexer_flags: Vec::new(),
+                    release_type: text("releaseType"),
+                },
+                deleted_files,
+                download_client: Some(client.name.clone()),
+                download_client_type: Some(client.implementation.clone()),
+                download_id: Some(item.download_id.clone()),
+            }));
+        crate::notify::spawn(db, &self.notifier, event);
+    }
+
     /// Blocks a download's import and, the first time, sends "Manual Interaction Required"
     /// (`ManualInteractionRequiredEvent`).
     #[allow(clippy::too_many_arguments)]
@@ -504,6 +586,18 @@ impl Monitor {
                         self.set(&item.download_id, State::ImportBlocked, vec![reason]);
                         blocked += 1;
                     } else if outcome.results.iter().any(|r| r.imported) {
+                        // `OnDownload` with the film as a one-episode series.
+                        for r in outcome.results.iter().filter(|r| r.imported) {
+                            if let (Some(f), Some((series, feature))) = (
+                                &r.imported_file,
+                                crate::notify::movie_refs(db, movie_id).await,
+                            ) {
+                                self.notify_movie_import(
+                                    db, series, feature, f, &item, client, &mine,
+                                )
+                                .await;
+                            }
+                        }
                         if let Err(e) = self
                             .clients
                             .mark_imported(&settings, &item.download_id)

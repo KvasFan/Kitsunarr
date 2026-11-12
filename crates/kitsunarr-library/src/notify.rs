@@ -270,3 +270,81 @@ pub async fn announce_version(db: &Database, notifier: &Notifier, version: &str)
         );
     }
 }
+
+/// A film as Sonarr's payloads carry it (Tanukarr's films are one-episode series): the film
+/// as the series and its feature as episode S01E01.
+pub async fn movie_refs(db: &Database, id: i64) -> Option<(SeriesRef, EpisodeRef)> {
+    let d = kitsunarr_db::library::movies::get_detail(db, id)
+        .await
+        .ok()?;
+    let labels = tags::list(db.pool()).await.unwrap_or_default();
+    let ext = |kind: ExternalIdKind| {
+        d.external_ids
+            .iter()
+            .filter(|e| e.kind == kind)
+            .map(|e| e.value.clone())
+            .collect::<Vec<_>>()
+    };
+    let num = |kind| {
+        ext(kind)
+            .first()
+            .and_then(|v| v.parse::<i64>().ok())
+            .unwrap_or(0)
+    };
+    let nums = |kind| {
+        ext(kind)
+            .iter()
+            .filter_map(|v| v.parse::<i64>().ok())
+            .collect::<Vec<_>>()
+    };
+    let series = SeriesRef {
+        id,
+        title: d.item.title.clone(),
+        title_slug: kitsunarr_domain::text::slugify(&d.item.title),
+        path: d.item.path.clone(),
+        tvdb_id: 0,
+        tv_maze_id: 0,
+        tmdb_id: num(ExternalIdKind::Tmdb),
+        imdb_id: ext(ExternalIdKind::Imdb).first().cloned(),
+        mal_ids: nums(ExternalIdKind::MyAnimeList),
+        ani_list_ids: nums(ExternalIdKind::AniList),
+        series_type: "standard".into(),
+        year: d.item.year.unwrap_or(0),
+        genres: d.genres.clone(),
+        images: d
+            .images
+            .iter()
+            .map(|i| ImageRef {
+                cover_type: i.cover_type.clone(),
+                url: None,
+                remote_url: Some(i.remote_url.clone()),
+            })
+            .collect(),
+        tags: labels
+            .iter()
+            .filter(|t| d.item.tags.contains(&t.id))
+            .map(|t| t.label.clone())
+            .collect(),
+        tag_ids: d.item.tags.clone(),
+        original_language: None,
+        overview: d.overview.clone(),
+        rating: None,
+    };
+    let date = d
+        .digital_release
+        .clone()
+        .or_else(|| d.physical_release.clone())
+        .or_else(|| d.in_cinemas.clone());
+    let episode = EpisodeRef {
+        id,
+        episode_number: 1,
+        season_number: 1,
+        title: Some(d.item.title.clone()),
+        overview: d.overview.clone(),
+        air_date: date.as_deref().map(|x| x.chars().take(10).collect()),
+        air_date_utc: date,
+        series_id: id,
+        tvdb_id: 0,
+    };
+    Some((series, episode))
+}

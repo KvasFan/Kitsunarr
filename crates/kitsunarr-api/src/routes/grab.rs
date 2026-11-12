@@ -635,10 +635,21 @@ async fn notify_grab(
     download_id: &str,
 ) {
     use kitsunarr_library::notify;
-    let Some(series) = notify::series_ref(&state.db, cached.series_id).await else {
-        return;
+    let (series, episodes) = match cached.movie_id {
+        // Tanukarr's films: the film as a one-episode series.
+        Some(movie) => match notify::movie_refs(&state.db, movie).await {
+            Some((series, feature)) => (series, vec![feature]),
+            None => return,
+        },
+        None => {
+            let Some(series) = notify::series_ref(&state.db, cached.series_id).await else {
+                return;
+            };
+            let episodes =
+                notify::episode_refs(&state.db, cached.series_id, &cached.episode_ids).await;
+            (series, episodes)
+        }
     };
-    let episodes = notify::episode_refs(&state.db, cached.series_id, &cached.episode_ids).await;
     let r = &cached.release;
     let event = kitsunarr_notifications::Event::Grab(Box::new(kitsunarr_notifications::Grab {
         series,
