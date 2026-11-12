@@ -378,7 +378,7 @@ fn spawn_grouping(
 ) {
     if !matches!(
         provider,
-        MetadataProvider::AniList | MetadataProvider::TmdbMovie
+        MetadataProvider::AniList | MetadataProvider::MyAnimeList | MetadataProvider::TmdbMovie
     ) {
         return;
     }

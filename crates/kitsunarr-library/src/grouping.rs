@@ -1,4 +1,5 @@
-//! Automatic anime grouping: Tanukarr's `AnimeGroupingResolver` (AniList relations) and TMDB
+//! Automatic anime grouping: Tanukarr's `AnimeGroupingResolver` (AniList relations, or
+//! MyAnimeList's through Jikan) and TMDB
 //! movie collections.
 //!
 //! An AniList title is walked back through its PREQUEL links to the franchise's first TV entry;
@@ -221,10 +222,15 @@ pub async fn group_new_title(db: &Database, metadata: &Metadata, member: Member)
         }
         return;
     }
-    if provider != MetadataProvider::AniList.as_str() {
+    // AniList relations, or MyAnimeList's through Jikan; groups never cross catalogues.
+    let source = if provider == MetadataProvider::AniList.as_str() {
+        MetadataProvider::AniList
+    } else if provider == MetadataProvider::MyAnimeList.as_str() {
+        MetadataProvider::MyAnimeList
+    } else {
         return;
-    }
-    let Ok(anilist_id) = metadata_id.parse::<i64>() else {
+    };
+    let Ok(anime_id) = metadata_id.parse::<i64>() else {
         return;
     };
     let grouped: i64 = sqlx::query_scalar(membership)
@@ -235,18 +241,26 @@ pub async fn group_new_title(db: &Database, metadata: &Metadata, member: Member)
     if grouped > 0 {
         return;
     }
-    let resolution = match resolve(anilist_id, |n| metadata.anime_relations(n)).await {
+    let resolved = if source == MetadataProvider::AniList {
+        resolve(anime_id, |n| metadata.anime_relations(n)).await
+    } else {
+        resolve(anime_id, |n| metadata.mal_relations(n)).await
+    };
+    let resolution = match resolved {
         Ok(r) => r,
         Err(e) => {
             tracing::warn!(title = id, error = %e, "the anime group could not be resolved");
             return;
         }
     };
-    let Resolution::Resolved(g) = resolution else {
+    let Resolution::Resolved(mut g) = resolution else {
         tracing::debug!(title = id, ?resolution, "not grouped");
         return;
     };
-    if let Err(e) = join(db, &g, member).await {
+    if source == MetadataProvider::MyAnimeList {
+        g.id = format!("mal:{}", g.root);
+    }
+    if let Err(e) = join(db, source, &g, member).await {
         tracing::warn!(title = id, error = %e, "the anime group could not be saved");
     }
 }
@@ -309,12 +323,17 @@ async fn join_tmdb_collection(
     tx.commit().await.map_err(|e| e.to_string())
 }
 
-async fn join(db: &Database, g: &Group, member: Member) -> kitsunarr_db::DbResult<()> {
+async fn join(
+    db: &Database,
+    source: MetadataProvider,
+    g: &Group,
+    member: Member,
+) -> kitsunarr_db::DbResult<()> {
     let mut tx = db.pool().begin().await?;
     let existing: Option<i64> = sqlx::query_scalar(
         "SELECT id FROM collections WHERE kind = 'animeGroup' AND metadata_provider = ? AND metadata_id = ?",
     )
-    .bind(MetadataProvider::AniList.as_str())
+    .bind(source.as_str())
     .bind(g.root.to_string())
     .fetch_optional(&mut *tx)
     .await?;
@@ -326,7 +345,7 @@ async fn join(db: &Database, g: &Group, member: Member) -> kitsunarr_db::DbResul
                 &NewCollection {
                     title: g.title.clone(),
                     kind: "animeGroup".into(),
-                    metadata_provider: Some(MetadataProvider::AniList),
+                    metadata_provider: Some(source),
                     metadata_id: Some(g.root.to_string()),
                     overview: None,
                     images: Vec::new(),

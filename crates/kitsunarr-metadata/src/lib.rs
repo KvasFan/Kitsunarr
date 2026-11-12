@@ -422,6 +422,11 @@ impl Metadata {
         anilist::relations(&self.anilist, id).await
     }
 
+    /// A MyAnimeList anime with its franchise relations (through Jikan).
+    pub async fn mal_relations(&self, id: i64) -> MetadataResult<AnimeNode> {
+        self.jikan.relations(id).await
+    }
+
     /// The episode orderings a series can use: TMDB episode groups, TheTVDB season types. Other
     /// catalogues have one order (an empty list).
     pub async fn orderings(

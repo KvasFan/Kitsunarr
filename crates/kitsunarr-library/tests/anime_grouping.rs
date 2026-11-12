@@ -179,3 +179,90 @@ async fn an_added_tmdb_film_joins_its_collection_in_release_order() {
         ))
     );
 }
+
+/// Jikan's `/anime/{id}/full`: TV 20 → film 21 → TV 22, with an OVA side story of 22.
+async fn jikan_full(axum::extract::Path(id): axum::extract::Path<i64>) -> Json<Value> {
+    let entry =
+        |n: i64| json!([{"mal_id": n, "type": "anime", "name": format!("Part {n}"), "url": ""}]);
+    let (kind, relations) = match id {
+        20 => ("TV", json!([{"relation": "Sequel", "entry": entry(21)}])),
+        21 => (
+            "Movie",
+            json!([{"relation": "Prequel", "entry": entry(20)}, {"relation": "Sequel", "entry": entry(22)}]),
+        ),
+        22 => (
+            "TV",
+            json!([{"relation": "Prequel", "entry": entry(21)}, {"relation": "Side story", "entry": entry(23)},
+                   {"relation": "Adaptation", "entry": [{"mal_id": 5, "type": "manga", "name": "Manga", "url": ""}]}]),
+        ),
+        _ => (
+            "OVA",
+            json!([{"relation": "Parent story", "entry": entry(22)}]),
+        ),
+    };
+    Json(
+        json!({"data": {"mal_id": id, "title": format!("Part {id}"), "title_english": format!("Saga part {id}"),
+        "type": kind, "relations": relations}}),
+    )
+}
+
+#[tokio::test]
+async fn a_myanimelist_title_joins_its_franchise_group_through_jikan() {
+    let app = axum::Router::new().route("/anime/{id}/full", axum::routing::get(jikan_full));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let metadata = Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            jikan: format!("http://{addr}"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    );
+    let node = metadata.mal_relations(22).await.unwrap();
+    assert_eq!(node.format, "TV");
+    assert_eq!(node.title, "Saga part 22");
+    let kinds: Vec<(&str, i64, &str)> = node
+        .relations
+        .iter()
+        .map(|r| (r.kind.as_str(), r.id, r.format.as_str()))
+        .collect();
+    assert_eq!(
+        kinds,
+        vec![("PREQUEL", 21, "MOVIE"), ("SIDE_STORY", 23, "OVA")]
+    );
+
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    sqlx::query(
+        "INSERT INTO series (id, media_kind, title, sort_title, clean_title, title_slug, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at) VALUES (7, 'anime', 'Saga part 22', 'saga', 'saga', 'saga', \
+         'myAnimeList', '22', 1, '/media/anime', '/media/anime/Saga', '2026-11-01T00:00:00Z')",
+    )
+    .execute(db.pool())
+    .await
+    .unwrap();
+    kitsunarr_library::grouping::group_new_title(
+        &db,
+        &metadata,
+        kitsunarr_library::grouping::Member::Series(7),
+    )
+    .await;
+    let member = sqlx::query_as::<_, (String, String, String, String)>(
+        "SELECT c.title, c.metadata_provider, c.metadata_id, m.label FROM collection_members m \
+         JOIN collections c ON c.id = m.collection_id WHERE c.kind = 'animeGroup' AND m.series_id = 7",
+    )
+    .fetch_optional(db.pool())
+    .await
+    .unwrap();
+    assert_eq!(
+        member,
+        Some((
+            "Saga part 20".into(),
+            "myAnimeList".into(),
+            "20".into(),
+            "Season 2".into()
+        ))
+    );
+}

@@ -32,6 +32,7 @@ pub struct Jikan {
     per_second: RateLimiter,
     per_minute: RateLimiter,
     cache: TtlCache<SeriesInfo>,
+    relations_cache: TtlCache<RelatedAnime>,
 }
 
 #[derive(Deserialize, Default, Clone)]
@@ -96,6 +97,47 @@ struct Anime {
 #[serde(default)]
 struct One {
     data: Option<Anime>,
+}
+
+#[derive(Deserialize, Default, Clone)]
+#[serde(default)]
+struct RelationEntry {
+    mal_id: i64,
+    #[serde(rename = "type")]
+    kind: String,
+    name: String,
+}
+
+#[derive(Deserialize, Default, Clone)]
+#[serde(default)]
+struct Relation {
+    relation: String,
+    entry: Vec<RelationEntry>,
+}
+
+#[derive(Deserialize, Default, Clone)]
+#[serde(default)]
+struct RelatedAnime {
+    mal_id: i64,
+    title: String,
+    title_english: Option<String>,
+    #[serde(rename = "type")]
+    kind: Option<String>,
+    relations: Vec<Relation>,
+}
+
+#[derive(Deserialize, Default)]
+#[serde(default)]
+struct OneRelated {
+    data: Option<RelatedAnime>,
+}
+
+/// AniList's format names for Jikan's types (`TV Special` → `TV_SPECIAL`).
+fn format_of(kind: Option<&str>) -> String {
+    kind.unwrap_or_default()
+        .trim()
+        .to_uppercase()
+        .replace(' ', "_")
 }
 
 #[derive(Deserialize, Default)]
@@ -312,6 +354,7 @@ impl Jikan {
             per_second: RateLimiter::new(3, Duration::from_secs(1)),
             per_minute: RateLimiter::new(60, Duration::from_secs(60)),
             cache: TtlCache::new(Duration::from_secs(600), 64),
+            relations_cache: TtlCache::new(Duration::from_secs(900), 256),
         }
     }
 
@@ -354,6 +397,60 @@ impl Jikan {
 
     pub fn forget(&self, id: &str) {
         self.cache.remove(id);
+    }
+
+    async fn related(&self, id: i64) -> MetadataResult<RelatedAnime> {
+        if let Some(hit) = self.relations_cache.get(&id.to_string()) {
+            return Ok(hit);
+        }
+        let a = self
+            .get::<OneRelated>(&format!("/anime/{id}/full"))
+            .await?
+            .data
+            .filter(|a| a.mal_id == id)
+            .ok_or(crate::MetadataError::NotFound(P))?;
+        self.relations_cache.insert(id.to_string(), a.clone());
+        Ok(a)
+    }
+
+    /// `JikanProxy.GetAnimeRelations`: prequels, sequels, parent and side stories that are
+    /// anime. Jikan does not give the neighbours' types, so each costs a request of its own
+    /// (cached for 15 minutes).
+    pub async fn relations(&self, id: i64) -> MetadataResult<crate::AnimeNode> {
+        let a = self.related(id).await?;
+        let mut relations = Vec::new();
+        for r in &a.relations {
+            let kind = match r.relation.as_str() {
+                "Prequel" => "PREQUEL",
+                "Sequel" => "SEQUEL",
+                "Parent story" => "PARENT",
+                "Side story" => "SIDE_STORY",
+                _ => continue,
+            };
+            for e in r.entry.iter().filter(|e| e.kind == "anime" && e.mal_id > 0) {
+                let format = match self.related(e.mal_id).await {
+                    Ok(n) => format_of(n.kind.as_deref()),
+                    Err(crate::MetadataError::NotFound(_)) => String::new(),
+                    Err(err) => return Err(err),
+                };
+                relations.push(crate::AnimeRelation {
+                    kind: kind.into(),
+                    id: e.mal_id,
+                    format,
+                    title: e.name.clone(),
+                });
+            }
+        }
+        Ok(crate::AnimeNode {
+            id: a.mal_id,
+            format: format_of(a.kind.as_deref()),
+            title: a
+                .title_english
+                .clone()
+                .filter(|t| !t.trim().is_empty())
+                .unwrap_or_else(|| a.title.clone()),
+            relations,
+        })
     }
 
     pub async fn series(&self, id: &str) -> MetadataResult<SeriesInfo> {
