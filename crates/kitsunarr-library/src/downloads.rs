@@ -27,6 +27,8 @@ use crate::import::{self, Download};
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum State {
     ImportPending,
+    /// Files are being copied or moved into the library (`TrackedDownloadState.Importing`).
+    Importing,
     ImportBlocked,
     Imported,
     Failed,
@@ -36,6 +38,7 @@ impl State {
     pub fn as_str(self) -> &'static str {
         match self {
             Self::ImportPending => "importPending",
+            Self::Importing => "importing",
             Self::ImportBlocked => "importBlocked",
             Self::Imported => "imported",
             Self::Failed => "failed",
@@ -590,6 +593,7 @@ impl Monitor {
                         continue;
                     };
                     let local = PathBuf::from(remap(&mappings, settings.host(), output));
+                    self.set(&item.download_id, State::Importing, Vec::new());
                     let outcome = crate::movie_import::import_movie_download(
                         db,
                         &crate::movie_import::MovieDownload {
@@ -603,7 +607,10 @@ impl Monitor {
                             move_files: settings.is_usenet(),
                         },
                     )
-                    .await?;
+                    .await
+                    .inspect_err(|e| {
+                        self.set(&item.download_id, State::ImportPending, vec![e.clone()]);
+                    })?;
                     if let Some(reason) = outcome.blocked {
                         self.set(&item.download_id, State::ImportBlocked, vec![reason]);
                         blocked += 1;
@@ -670,6 +677,7 @@ impl Monitor {
                     continue;
                 };
                 let local = PathBuf::from(remap(&mappings, settings.host(), output));
+                self.set(&item.download_id, State::Importing, Vec::new());
                 let outcome = import::import_download(
                     db,
                     &Download {
@@ -683,7 +691,10 @@ impl Monitor {
                         move_files: settings.is_usenet() && !multi_season,
                     },
                 )
-                .await?;
+                .await
+                .inspect_err(|e| {
+                    self.set(&item.download_id, State::ImportPending, vec![e.clone()]);
+                })?;
                 // `EpisodeImportedEvent` → `OnDownload`, one per imported file.
                 for r in outcome.results.iter().filter(|r| r.imported) {
                     if let Some(f) = &r.imported_file {

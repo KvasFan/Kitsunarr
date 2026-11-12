@@ -29,6 +29,18 @@ fn status_tone(status: &str) -> &'static str {
     }
 }
 
+/// What Kitsunarr does with a finished download (Sonarr's tracked download state).
+fn import_state(tracked: &str) -> Option<(&'static str, &'static str)> {
+    match tracked {
+        "importPending" => Some(("Import pending", "info")),
+        "importing" => Some(("Importing", "info")),
+        "importBlocked" => Some(("Import blocked", "warning")),
+        "imported" => Some(("Imported", "success")),
+        "failed" => Some(("Failed", "danger")),
+        _ => None,
+    }
+}
+
 #[component]
 pub fn Queue() -> Element {
     let client = use_client();
@@ -125,7 +137,12 @@ pub fn Queue() -> Element {
                                                 }
                                             }
                                             td { if let Some(qn) = &item.quality { span { class: "badge", "{qn}" } } }
-                                            td { Badge { text: item.status.clone(), tone: status_tone(&item.status) } }
+                                            td {
+                                                Badge { text: item.status.clone(), tone: status_tone(&item.status) }
+                                                if let Some((label, tone)) = import_state(&item.tracked_state) {
+                                                    " " Badge { text: label.to_string(), tone }
+                                                }
+                                            }
                                             td {
                                                 div { class: "progress", role: "progressbar", "aria-valuenow": "{done}", "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Progress of {item.title}",
                                                     div { class: "bar", style: "width: {done}%" }

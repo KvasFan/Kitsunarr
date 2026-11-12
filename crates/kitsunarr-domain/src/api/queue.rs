@@ -31,7 +31,9 @@ pub struct QueueItem {
     pub time_left: Option<i64>,
     /// `queued`, `paused`, `downloading`, `completed`, `failed` or `warning`.
     pub status: String,
-    /// What Kitsunarr does with it next: `downloading`, `importPending`, `unknown`.
+    /// What Kitsunarr does with it (Sonarr's tracked state): `downloading`, `importPending`,
+    /// `importing` (files being copied or moved), `importBlocked`, `imported`, `failed`,
+    /// `pending` (held by a delay profile) or `unknown` (not grabbed by Kitsunarr).
     pub tracked_state: String,
     pub messages: Vec<String>,
     /// Local path of the finished files (after remote path mappings).
