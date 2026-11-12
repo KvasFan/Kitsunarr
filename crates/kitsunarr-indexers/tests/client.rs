@@ -281,3 +281,65 @@ async fn nyaa_tests_and_searches_through_its_rss_page() {
         ]
     );
 }
+
+/// Sonarr's RSS bookkeeping: the feed is paged back to the previous sync's newest release.
+#[tokio::test]
+async fn rss_sync_pages_back_to_the_last_synced_release() {
+    let (mock, mut indexer, client) = start().await;
+    // Only the TV feed (no film-category request).
+    indexer.settings.movie_categories.clear();
+    let caps = client.capabilities(&indexer).await.unwrap();
+    let chain = client.generator(&indexer, &caps).recent();
+    let offsets = |mock: &Mock| -> Vec<String> {
+        let log = std::mem::take(&mut *mock.log.lock().unwrap());
+        log.iter()
+            .filter_map(|l| {
+                l.split('&')
+                    .find(|p| p.starts_with("offset="))
+                    .map(str::to_string)
+            })
+            .collect()
+    };
+    offsets(&mock);
+
+    // The first sync reads the newest page and remembers its newest release.
+    let first = client.fetch_recent(&indexer, &chain, None).await.unwrap();
+    assert_eq!(offsets(&mock), vec!["offset=0"]);
+    assert_eq!(first.releases.len(), 100);
+    assert_eq!(first.gap, None);
+    let newest = first.newest.clone().unwrap();
+    assert!(
+        first
+            .releases
+            .iter()
+            .all(|r| r.release.publish_date <= newest.publish_date)
+    );
+
+    // The previous sync's release is on the newest page: nothing more is read.
+    let again = client
+        .fetch_recent(&indexer, &chain, Some(&newest))
+        .await
+        .unwrap();
+    assert_eq!(offsets(&mock), vec!["offset=0"]);
+    assert_eq!(again.gap, None);
+
+    // Not reached: the next page is read; the feed ends first, leaving a gap.
+    let old = kitsunarr_indexers::LastRelease {
+        publish_date: chrono::DateTime::from_timestamp(0, 0).unwrap(),
+        download_url: Some("http://elsewhere/1.nzb".into()),
+        guid: "x".into(),
+        title: "x".into(),
+    };
+    let behind = client
+        .fetch_recent(&indexer, &chain, Some(&old))
+        .await
+        .unwrap();
+    assert_eq!(offsets(&mock), vec!["offset=0", "offset=60"]);
+    let oldest = behind
+        .releases
+        .iter()
+        .map(|r| r.release.publish_date)
+        .min()
+        .unwrap();
+    assert_eq!(behind.gap, Some((old.publish_date, oldest)));
+}

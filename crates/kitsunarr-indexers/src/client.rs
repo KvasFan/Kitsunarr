@@ -48,6 +48,46 @@ pub struct Indexer {
     pub settings: Settings,
 }
 
+/// How [`IndexerClient::fetch_with`] pages.
+#[derive(Clone, Copy)]
+enum Mode<'a> {
+    Search,
+    FirstPage,
+    Recent(Option<&'a LastRelease>),
+}
+
+/// The newest release of an RSS sync (Sonarr's `LastRssSyncReleaseInfo`), kept by the caller.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct LastRelease {
+    pub publish_date: chrono::DateTime<chrono::Utc>,
+    pub download_url: Option<String>,
+    pub guid: String,
+    pub title: String,
+}
+
+impl LastRelease {
+    pub fn of(r: &Release) -> Self {
+        Self {
+            publish_date: r.publish_date,
+            download_url: r.download_url.clone(),
+            guid: r.guid.clone(),
+            title: r.title.clone(),
+        }
+    }
+}
+
+/// What an RSS sync read from one indexer.
+#[derive(Debug, Clone)]
+pub struct RecentFetch {
+    pub releases: Vec<IndexerRelease>,
+    /// The newest release read, to remember for the next sync.
+    pub newest: Option<LastRelease>,
+    /// The period between the previous sync and the oldest release read, when paging stopped
+    /// before reaching the previous sync.
+    pub gap: Option<(chrono::DateTime<chrono::Utc>, chrono::DateTime<chrono::Utc>)>,
+}
+
 /// A release with the indexer it came from.
 #[derive(Debug, Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -273,46 +313,127 @@ impl IndexerClient {
         }
     }
 
-    /// `FetchReleases`: pages each request until a page is not full, stops after the first tier
-    /// that found anything, and returns valid releases without duplicate GUIDs.
+    /// `FetchReleases` for searches: pages each request until a page is not full, stops after
+    /// the first tier that found anything, and returns valid releases without duplicate GUIDs.
+    /// With `first_page_only` (an indexer test) each request reads its newest page.
     pub async fn fetch(
         &self,
         indexer: &Indexer,
         chain: &Chain,
-        recent: bool,
+        first_page_only: bool,
     ) -> Result<Vec<IndexerRelease>, IndexerError> {
+        let mode = if first_page_only {
+            Mode::FirstPage
+        } else {
+            Mode::Search
+        };
+        Ok(self.fetch_with(indexer, chain, mode).await?.0)
+    }
+
+    /// `FetchReleases` for an RSS sync: pages the feed back until it reaches `last` (the newest
+    /// release of the previous sync, by date or download link), or reads the newest page when
+    /// there was none. Returns the newest release to remember, and the period not covered
+    /// when 1,000 releases older than a day were read without reaching `last`.
+    pub async fn fetch_recent(
+        &self,
+        indexer: &Indexer,
+        chain: &Chain,
+        last: Option<&LastRelease>,
+    ) -> Result<RecentFetch, IndexerError> {
+        let (releases, fully_updated) = self.fetch_with(indexer, chain, Mode::Recent(last)).await?;
+        let newest = releases
+            .iter()
+            .max_by_key(|r| r.release.publish_date)
+            .map(|r| LastRelease::of(&r.release));
+        let gap = match (last, releases.iter().map(|r| r.release.publish_date).min()) {
+            (Some(l), Some(oldest)) if !fully_updated => {
+                tracing::warn!(
+                    indexer = %indexer.name,
+                    from = %l.publish_date,
+                    to = %oldest,
+                    "RSS sync didn't cover the period between the last sync and the oldest release read; a search may be required"
+                );
+                Some((l.publish_date, oldest))
+            }
+            _ => None,
+        };
+        Ok(RecentFetch {
+            releases,
+            newest,
+            gap,
+        })
+    }
+
+    async fn fetch_with(
+        &self,
+        indexer: &Indexer,
+        chain: &Chain,
+        mode: Mode<'_>,
+    ) -> Result<(Vec<IndexerRelease>, bool), IndexerError> {
         let mut releases: Vec<Release> = Vec::new();
+        let mut fully_updated = false;
+        let now = chrono::Utc::now();
         for tier in &chain.tiers {
             for pageable in tier {
-                let mut collected = 0usize;
+                let mut paged: Vec<Release> = Vec::new();
                 for url in pageable.pages() {
                     let page =
                         parse_feed(&self.get(indexer.id, &url).await?, indexer.dialect, &url)?;
                     let full =
                         pageable.page_size() != 0 && page.len() >= pageable.page_size() as usize;
-                    collected += page.len();
-                    releases.extend(page);
-                    // RSS reads only the newest page until sync bookkeeping is in place.
-                    if recent || !full || collected >= MAX_RESULTS_PER_QUERY {
+                    let oldest = page.iter().map(|r| r.publish_date).min();
+                    let reached = match mode {
+                        Mode::Recent(Some(l)) => {
+                            oldest.is_some_and(|o| o < l.publish_date)
+                                || page.iter().any(|r| {
+                                    r.download_url.is_some() && r.download_url == l.download_url
+                                })
+                        }
+                        _ => false,
+                    };
+                    paged.extend(page);
+                    match (mode, oldest) {
+                        (Mode::FirstPage, _) => break,
+                        (Mode::Recent(None), Some(_)) => {
+                            fully_updated = true;
+                            break;
+                        }
+                        (Mode::Recent(Some(_)), Some(oldest)) => {
+                            if reached {
+                                fully_updated = true;
+                                break;
+                            }
+                            if paged.len() >= MAX_RESULTS_PER_QUERY
+                                && oldest < now - chrono::Duration::hours(24)
+                            {
+                                fully_updated = false;
+                                break;
+                            }
+                        }
+                        _ if paged.len() >= MAX_RESULTS_PER_QUERY => break,
+                        _ => {}
+                    }
+                    if !full {
                         break;
                     }
                 }
+                releases.extend(paged.into_iter().filter(is_valid));
             }
             if !releases.is_empty() {
                 break;
             }
         }
         let mut seen = std::collections::HashSet::new();
-        Ok(releases
+        let releases = releases
             .into_iter()
-            .filter(is_valid)
             .filter(|r| seen.insert(r.guid.clone()))
             .map(|release| IndexerRelease {
                 indexer_id: indexer.id,
                 indexer: indexer.name.clone(),
                 release,
             })
-            .collect())
+            .collect();
+        Ok((releases, fully_updated))
     }
 
     /// `Test`: the newest page must return releases in the configured categories and the

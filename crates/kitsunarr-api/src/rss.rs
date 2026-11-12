@@ -12,7 +12,7 @@ use kitsunarr_db::{Database, DbResult, tasks};
 use kitsunarr_decision::{self as decision, Engine, SearchCriteria};
 use kitsunarr_domain::api::search::IndexerFailure;
 use kitsunarr_domain::api::settings::IndexerOptionsSettings;
-use kitsunarr_indexers::IndexerRelease;
+use kitsunarr_indexers::{IndexerRelease, LastRelease};
 
 use crate::AppState;
 use crate::routes::search::{self, DecisionInputs, SearchRun};
@@ -470,20 +470,39 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
     }
 
     let client = &state.indexers;
+    let pool = state.db.pool();
+    // Sonarr's RSS bookkeeping: each feed is paged back to the previous sync's newest release.
     let outcomes = futures::future::join_all(indexers.iter().map(|indexer| async move {
+        let last: Option<LastRelease> =
+            kitsunarr_db::indexer_status::last_rss_sync_release(pool, indexer.id)
+                .await
+                .ok()
+                .flatten()
+                .and_then(|j| serde_json::from_str(&j).ok());
         let caps = client.capabilities(indexer).await?;
         let chain = client.generator(indexer, &caps).recent();
-        client.fetch(indexer, &chain, true).await
+        client.fetch_recent(indexer, &chain, last.as_ref()).await
     }))
     .await;
     let mut releases: Vec<IndexerRelease> = Vec::new();
     let mut read = 0usize;
+    let mut gaps: Vec<String> = Vec::new();
     for (indexer, outcome) in indexers.iter().zip(outcomes) {
         search::record_outcome(state, indexer.id, &outcome).await;
         match outcome {
-            Ok(list) => {
+            Ok(fetched) => {
                 read += 1;
-                releases.extend(list);
+                if let Some(newest) = &fetched.newest
+                    && let Ok(json) = serde_json::to_string(newest)
+                    && let Err(e) =
+                        kitsunarr_db::indexer_status::update_rss_sync(pool, indexer.id, &json).await
+                {
+                    tracing::warn!(indexer = %indexer.name, error = %e, "RSS sync bookkeeping failed");
+                }
+                if fetched.gap.is_some() {
+                    gaps.push(indexer.name.clone());
+                }
+                releases.extend(fetched.releases);
             }
             Err(e) => {
                 tracing::warn!(indexer = %indexer.name, error = %e, "RSS sync could not read an indexer");
@@ -546,6 +565,12 @@ pub async fn sync(state: &AppState) -> Result<String, String> {
     }
     if !failures.is_empty() {
         summary.push_str(&format!("; indexers that failed: {}", failed(&failures)));
+    }
+    if !gaps.is_empty() {
+        summary.push_str(&format!(
+            "; not caught up since the last sync (a search may be needed): {}",
+            gaps.join(", ")
+        ));
     }
     tracing::info!(%summary, "RSS sync completed");
     Ok(summary)

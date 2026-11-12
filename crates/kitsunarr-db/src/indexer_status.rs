@@ -266,3 +266,28 @@ pub async fn record_failure_of(
     save(kind, pool, &s).await?;
     Ok(s)
 }
+
+/// `GetLastRssSyncReleaseInfo`: the newest release of the indexer's last RSS sync (JSON).
+pub async fn last_rss_sync_release(pool: &SqlitePool, indexer_id: i64) -> DbResult<Option<String>> {
+    Ok(
+        sqlx::query_scalar("SELECT last_rss_sync_release FROM indexer_status WHERE indexer_id = ?")
+            .bind(indexer_id)
+            .fetch_optional(pool)
+            .await?
+            .flatten(),
+    )
+}
+
+/// `UpdateRssSyncStatus`.
+pub async fn update_rss_sync(pool: &SqlitePool, indexer_id: i64, release: &str) -> DbResult<()> {
+    // A provider deleted meanwhile has no status (the foreign key refuses it).
+    let _ = sqlx::query(
+        "INSERT INTO indexer_status (indexer_id, last_rss_sync_release) VALUES (?1, ?2) \
+         ON CONFLICT (indexer_id) DO UPDATE SET last_rss_sync_release = ?2",
+    )
+    .bind(indexer_id)
+    .bind(release)
+    .execute(pool)
+    .await;
+    Ok(())
+}

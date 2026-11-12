@@ -133,3 +133,47 @@ async fn download_clients_wait_five_minutes_and_cap_at_an_hour() {
         1
     );
 }
+
+/// `UpdateRssSyncStatus` keeps the back-off state, and a failure keeps the RSS bookkeeping.
+#[tokio::test]
+async fn the_last_rss_release_is_kept_with_the_status() {
+    let (_dir, db) = db().await;
+    let pool = db.pool();
+    assert_eq!(
+        indexer_status::last_rss_sync_release(pool, 1)
+            .await
+            .unwrap(),
+        None
+    );
+    indexer_status::update_rss_sync(pool, 1, r#"{"guid":"a"}"#)
+        .await
+        .unwrap();
+    let now = Utc::now();
+    indexer_status::record_failure(pool, 1, Failure::Failure, now - Duration::hours(1), now)
+        .await
+        .unwrap();
+    indexer_status::update_rss_sync(pool, 1, r#"{"guid":"b"}"#)
+        .await
+        .unwrap();
+    assert_eq!(
+        indexer_status::last_rss_sync_release(pool, 1)
+            .await
+            .unwrap()
+            .as_deref(),
+        Some(r#"{"guid":"b"}"#)
+    );
+    assert_eq!(
+        indexer_status::get(pool, 1).await.unwrap().escalation_level,
+        1
+    );
+    // A deleted indexer has no status to update.
+    indexer_status::update_rss_sync(pool, 99, "{}")
+        .await
+        .unwrap();
+    assert_eq!(
+        indexer_status::last_rss_sync_release(pool, 99)
+            .await
+            .unwrap(),
+        None
+    );
+}
