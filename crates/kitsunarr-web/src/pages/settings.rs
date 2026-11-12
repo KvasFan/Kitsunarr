@@ -381,6 +381,7 @@ pub fn SettingsMedia() -> Element {
                         Switch { checked: m.use_hardlinks, label: "Use hardlinks instead of copying", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.use_hardlinks = v; } } }
                         Switch { checked: m.delete_empty_folders, label: "Delete empty series folders", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.delete_empty_folders = v; } } }
                         Switch { checked: m.skip_unmonitored_episodes_from_packs, label: "Skip unmonitored episodes when importing packs", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.skip_unmonitored_episodes_from_packs = v; } } }
+                        Switch { checked: m.enable_media_info, label: "Analyze video files (resolution, runtime and codecs, with ffprobe)", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.enable_media_info = v; } } }
                         Switch { checked: m.skip_free_space_check, label: "Skip the free-space check", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.skip_free_space_check = v; } } }
                         Switch { checked: m.import_extra_files, label: "Import extra files (subtitles…)", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.import_extra_files = v; } } }
                     }

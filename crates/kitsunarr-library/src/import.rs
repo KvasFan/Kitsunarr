@@ -62,9 +62,42 @@ static EXCLUDED_EXTRA_FILES: LazyLock<NetRegex> = LazyLock::new(|| {
         true,
     )
 });
-/// Kitsunarr cannot measure runtimes yet (Sonarr uses ffprobe), so samples are recognised by
-/// name only.
+/// Without media information (no ffprobe), samples are recognised by name.
 static SAMPLE_NAME: LazyLock<NetRegex> = LazyLock::new(|| NetRegex::compile(r"\bsample\b", true));
+
+/// `NotSampleSpecification` / `DetectSample`: specials, `.flv` and `.strm` files are never
+/// samples; with media information a file shorter than the minimum for its episodes' runtime
+/// (the series' when an episode has none) is one. Unlike Sonarr, which rejects files it cannot
+/// measure, a file without media information is a sample only when named so.
+pub(crate) fn is_sample(
+    path: &Path,
+    episodes: &[&decision::Episode],
+    series_runtime: i32,
+    media: Option<&crate::media_info::MediaInfo>,
+) -> bool {
+    let ext = extension(path);
+    if (!episodes.is_empty() && episodes.iter().all(|e| e.season_number == 0))
+        || ext == ".flv"
+        || ext == ".strm"
+    {
+        return false;
+    }
+    match media {
+        Some(m) => m.is_sample(
+            episodes
+                .iter()
+                .map(|e| {
+                    if e.runtime > 0 {
+                        e.runtime
+                    } else {
+                        series_runtime
+                    }
+                })
+                .sum(),
+        ),
+        None => SAMPLE_NAME.is_match(&stem(path)),
+    }
+}
 
 pub(crate) fn extension(path: &Path) -> String {
     path.extension()
@@ -169,6 +202,15 @@ fn confidence(d: DetectionSource) -> u8 {
 
 /// `AggregateQuality`: candidates in augmenter order (file, folder, client title, grab title).
 pub fn aggregate_quality(candidates: &[ParsedQuality]) -> QualityModel {
+    aggregate_quality_with_media(candidates, None)
+}
+
+/// `AggregateQuality` with `AugmentQualityFromMediaInfo`: the file's measured resolution (and a
+/// source its title tag names) outrank anything read from names.
+pub fn aggregate_quality_with_media(
+    candidates: &[ParsedQuality],
+    media: Option<&crate::media_info::MediaInfo>,
+) -> QualityModel {
     let (mut source, mut source_conf) = (QualitySource::Unknown, 0u8);
     let (mut resolution, mut resolution_conf) = (0i32, 0u8);
     let (mut revision, mut revision_conf) = (Revision::default(), 1u8);
@@ -197,6 +239,17 @@ pub fn aggregate_quality(candidates: &[ParsedQuality]) -> QualityModel {
         {
             revision = c.revision;
             revision_conf = vc;
+        }
+    }
+    if let Some((media_source, media_resolution)) = media.and_then(|m| m.quality_augment()) {
+        let mc = confidence(DetectionSource::MediaInfo);
+        if media_source != QualitySource::Unknown
+            && (source == QualitySource::Unknown || mc > source_conf)
+        {
+            source = media_source;
+        }
+        if resolution == 0 || mc > resolution_conf {
+            resolution = media_resolution;
         }
     }
     QualityModel {
@@ -281,6 +334,7 @@ struct Candidate {
     /// Destination relative to the series folder (`BuildFilePath`).
     relative_dest: String,
     errors: Vec<String>,
+    media_info: Option<crate::media_info::MediaInfo>,
 }
 
 fn label(e: &decision::Episode) -> String {
@@ -447,15 +501,20 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         let size = std::fs::metadata(&path)
             .map(|m| m.len() as i64)
             .unwrap_or(0);
-        let mut quality = aggregate_quality(&[
-            parse_quality(&name),
-            folder_name
-                .as_deref()
-                .map(parse_quality)
-                .unwrap_or_else(ParsedQuality::unknown),
-            parse_quality(d.title),
-            parse_quality(&grab_title),
-        ]);
+        // `AggregateMediaInfo`: new files are always read (when ffprobe is installed).
+        let media_info = crate::media_info::reader::read(&path).await;
+        let mut quality = aggregate_quality_with_media(
+            &[
+                parse_quality(&name),
+                folder_name
+                    .as_deref()
+                    .map(parse_quality)
+                    .unwrap_or_else(ParsedQuality::unknown),
+                parse_quality(d.title),
+                parse_quality(&grab_title),
+            ],
+            media_info.as_ref(),
+        );
         // Tanukarr's custom quality presets (`ProfileQualityMatcher` for new files).
         if let Some(parsed) = file_info.as_ref() {
             quality.quality_id = decision::quality_match::match_quality(
@@ -516,7 +575,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         if info.is_split_episode {
             errors.push("Single episode split into multiple files".into());
         }
-        if SAMPLE_NAME.is_match(&stem(&path)) {
+        if is_sample(&path, &mapped, model.runtime, media_info.as_ref()) {
             errors.push("Sample".into());
         }
         // Tanukarr's import `MonitoredEpisodeSpecification` (pack trimming).
@@ -608,6 +667,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                 .iter()
                 .map(|f| (f.name.clone(), f.include_when_renaming))
                 .collect(),
+            media_info: media_info.clone(),
         };
         let relative_dest = match file_names::build_relative_path(
             &naming_episodes,
@@ -747,6 +807,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             scene_name,
             relative_dest,
             errors,
+            media_info,
         });
     }
 
@@ -1089,7 +1150,10 @@ async fn transfer_and_record(
             revision_real: c.quality.revision.real,
             is_repack: c.quality.revision.is_repack,
             languages: c.languages.clone(),
-            media_info: None,
+            media_info: c
+                .media_info
+                .as_ref()
+                .and_then(|m| serde_json::to_value(m).ok()),
             original_path,
             indexer_flags,
             release_type,

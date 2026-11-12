@@ -29,8 +29,9 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
  && install -m 0755 target/release/kitsunarr /kitsunarr
 
 FROM docker.io/library/debian:trixie-slim
+# ffprobe (from ffmpeg) reads media information from video files, as Sonarr's bundled one.
 RUN apt-get update \
- && apt-get install -y --no-install-recommends ca-certificates tzdata \
+ && apt-get install -y --no-install-recommends ca-certificates tzdata ffmpeg \
  && rm -rf /var/lib/apt/lists/* \
  && mkdir -p /config /usr/share/doc/kitsunarr \
  && chown 1000:1000 /config

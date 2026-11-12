@@ -592,6 +592,14 @@ pub struct MediaManagementSettings {
     /// Sonarr's "Change file date" (plus Tanukarr's "preserve original" for upgrades).
     #[serde(default)]
     pub file_date: FileDate,
+    /// Sonarr's "Analyze video files" (`EnableMediaInfo`): disk scans read resolution, runtime
+    /// and codecs from files already in the library. New downloads are always read.
+    #[serde(default = "default_true")]
+    pub enable_media_info: bool,
+}
+
+fn default_true() -> bool {
+    true
 }
 
 /// Sonarr's `FileDateType` and Tanukarr's `PreserveOriginal`.
@@ -639,6 +647,7 @@ impl Default for MediaManagementSettings {
             download_propers_and_repacks: ProperDownloadType::PreferAndUpgrade,
             skip_unmonitored_episodes_from_packs: false,
             file_date: FileDate::None,
+            enable_media_info: true,
         }
     }
 }

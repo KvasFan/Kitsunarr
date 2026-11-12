@@ -28,6 +28,8 @@ sudo mkdir -p /etc/kitsunarr /var/lib/kitsunarr
 kitsunarr --config-dir /etc/kitsunarr --data-dir /var/lib/kitsunarr
 ```
 
+Install **ffprobe** (part of ffmpeg: `apt install ffmpeg`, `dnf install ffmpeg`, `pacman -S ffmpeg`) so Kitsunarr can read resolution, runtime and codecs from video files, as Sonarr does with its bundled copy. Without it, files have no media information: quality and samples are judged from names only, and `{MediaInfo …}` naming tokens stay empty. Set `KITSUNARR_FFPROBE` to use an ffprobe outside `PATH`. The Docker image includes it.
+
 A systemd unit is provided in `deployment/kitsunarr.service`.
 
 ## Reverse proxy

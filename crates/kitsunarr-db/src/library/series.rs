@@ -990,6 +990,20 @@ pub async fn set_file_size(conn: &mut SqliteConnection, file_id: i64, size: i64)
     Ok(())
 }
 
+/// Stores a file's media information (Sonarr's `MediaInfoModel` JSON).
+pub async fn set_file_media_info(
+    conn: &mut SqliteConnection,
+    file_id: i64,
+    media_info: &serde_json::Value,
+) -> DbResult<()> {
+    sqlx::query("UPDATE episode_files SET media_info = ? WHERE id = ?")
+        .bind(media_info.to_string())
+        .bind(file_id)
+        .execute(&mut *conn)
+        .await?;
+    Ok(())
+}
+
 pub async fn delete_episode_file(conn: &mut SqliteConnection, file_id: i64) -> DbResult<()> {
     sqlx::query("UPDATE episodes SET episode_file_id = NULL WHERE episode_file_id = ?")
         .bind(file_id)
@@ -1020,6 +1034,8 @@ pub struct FileRecord {
     pub indexer_flags: i64,
     pub release_type: i64,
     pub added_at: String,
+    /// Media information (Sonarr's `MediaInfoModel` JSON).
+    pub media_info: Option<String>,
 }
 
 impl FileRecord {
@@ -1125,7 +1141,7 @@ pub async fn paths(db: &Database) -> DbResult<Vec<(i64, String)>> {
 pub async fn file_records(db: &Database, series_id: i64) -> DbResult<Vec<FileRecord>> {
     Ok(sqlx::query_as(
         "SELECT id, relative_path, size, scene_name, original_path, release_group, quality_id, \
-           revision_version, revision_real, is_repack, languages, indexer_flags, release_type, added_at \
+           revision_version, revision_real, is_repack, languages, indexer_flags, release_type, added_at, media_info \
          FROM episode_files WHERE series_id = ? ORDER BY id",
     )
     .bind(series_id)

@@ -596,3 +596,10 @@ registers the stored presets when it opens, and creating or renaming one registe
 the web client registers the presets it reads so profile editors can name them. The preset
 matcher (`kitsunarr-decision::quality_match`) runs once per release after mapping, and on
 new files at import, with the instance's quality definitions.
+
+## Media information: ffprobe when installed, names otherwise
+
+Kitsunarr reads media information with ffprobe as Sonarr's `VideoFileInfoReader` does: the same probe sizes, a second probe when the first audio stream has no channel layout, and the first video frame's side data to tell HDR10, HDR10+ and Dolby Vision apart. The model is stored in Sonarr's own JSON shape (camelCase keys, enum names, `runTime` as a .NET `TimeSpan` string), so records migrated from Sonarr or Tanukarr are used as they are, and the formatter is a port of `MediaInfoFormatter` checked against upstream's fixture cases.
+
+Sonarr bundles ffprobe; Kitsunarr uses the one on `PATH` (or `KITSUNARR_FFPROBE`), and the Docker image installs Debian's ffmpeg. Upstream rejects a new file it cannot measure ("Unable to determine if file is a sample"); Kitsunarr instead falls back to its name-based sample check, so imports keep working on a host without ffprobe. The raw ffprobe output (`RawStreamData`) is not stored. Stream languages map to two-letter codes through Kitsunarr's ISO table (upstream uses .NET's `CultureInfo`); codes outside it are kept as written, which is also what upstream does when `CultureInfo` fails.
+

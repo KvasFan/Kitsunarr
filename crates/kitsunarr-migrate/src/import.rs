@@ -55,6 +55,7 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "chmodfolder",
     "skipfreespacecheckwhenimporting",
     "importextrafiles",
+    "enablemediainfo",
     "extrafileextensions",
     "downloadpropersandrepacks",
     // Indexer options (database `Config` keys; the API serves them separately).
@@ -1208,6 +1209,7 @@ impl<'a> Importer<'a> {
                 next.skip_free_space_check,
             );
             next.import_extra_files = mm.bool_or("importextrafiles", next.import_extra_files);
+            next.enable_media_info = mm.bool_or("enablemediainfo", next.enable_media_info);
             if let Some(v) = mm.str("filedate")
                 && let Some(d) = kitsunarr_domain::api::settings::FileDate::from_sonarr(&v)
             {

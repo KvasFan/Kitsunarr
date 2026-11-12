@@ -160,6 +160,8 @@ pub struct File {
     pub quality_title: String,
     /// Matched custom formats: (name, include when renaming).
     pub custom_formats: Vec<(String, bool)>,
+    /// Media information, for the `{MediaInfo …}` tokens.
+    pub media_info: Option<crate::media_info::MediaInfo>,
 }
 
 impl Default for File {
@@ -177,6 +179,7 @@ impl Default for File {
             },
             quality_title: String::new(),
             custom_formats: Vec::new(),
+            media_info: None,
         }
     }
 }
@@ -957,6 +960,155 @@ fn add_quality_tokens(h: &mut Handlers<'_>, series: &Series, file: &File) {
     h.text("{Quality Real}", real);
 }
 
+/// `GetLanguagesToken`: stream languages as upper-case two-letter codes (ISO 639-2 codes
+/// mapped through Kitsunarr's ISO table; unknown codes kept), `und` dropped, filtered by the
+/// token's format (`-DE` excludes, `EN+DE` keeps those, a trailing `+` marks the rest with
+/// `--`), English alone omitted when asked, and bracketed.
+fn languages_token(
+    languages: &[String],
+    filter: Option<&str>,
+    skip_english_only: bool,
+    quoted: bool,
+) -> String {
+    let mut tokens: Vec<String> = Vec::new();
+    for l in languages.iter().map(|l| l.trim()) {
+        if l.is_empty() || l == "und" {
+            continue;
+        }
+        let code = kitsunarr_parser::find_iso(&l.to_lowercase())
+            .map_or_else(|| l.to_string(), |iso| iso.two_letter.to_uppercase());
+        if !tokens.contains(&code) {
+            tokens.push(code);
+        }
+    }
+    let filter = filter.filter(|f| !is_blank(f));
+    let mut filtered: Vec<String> = match filter {
+        Some(f) if f.starts_with('-') => {
+            let excluded: Vec<&str> = f.split('-').collect();
+            tokens
+                .iter()
+                .filter(|t| !excluded.contains(&t.as_str()))
+                .cloned()
+                .collect()
+        }
+        Some(f) => f
+            .split('+')
+            .filter(|w| tokens.iter().any(|t| t == w))
+            .map(str::to_string)
+            .fold(Vec::new(), |mut acc, w| {
+                if !acc.contains(&w) {
+                    acc.push(w);
+                }
+                acc
+            }),
+        None => tokens.clone(),
+    };
+    if filter.is_some_and(|f| f.ends_with('+')) && filtered.len() != tokens.len() {
+        filtered.push("--".into());
+    }
+    if skip_english_only && filtered.len() == 1 && filtered[0] == "EN" {
+        return String::new();
+    }
+    let joined = filtered.join("+");
+    if quoted && !joined.is_empty() {
+        format!("[{joined}]")
+    } else {
+        joined
+    }
+}
+
+/// `AddMediaInfoTokens`: nothing without media information.
+fn add_media_info_tokens<'a>(h: &mut Handlers<'a>, file: &'a File, fallback: bool) {
+    use crate::media_info::format;
+    let Some(info) = file.media_info.as_ref() else {
+        return;
+    };
+    // `GetSceneOrFileName`.
+    let scene_name = file
+        .scene_name
+        .clone()
+        .filter(|s| !is_blank(s))
+        .unwrap_or_else(|| original_file_name(file, fallback));
+    let video = format::format_video_codec(info, &scene_name);
+    let audio = format::format_audio_codec(info.primary_audio(), &scene_name);
+    let channels = format::format_audio_channels(info.primary_audio());
+    let audio_languages: Vec<String> = info
+        .audio_streams
+        .iter()
+        .map(|a| a.language.clone().unwrap_or_default())
+        .collect();
+    let subtitles: Vec<String> = info
+        .subtitle_streams
+        .iter()
+        .map(|s| s.language.clone().unwrap_or_default())
+        .collect();
+    let bit_depth = if info.video_bit_depth > 0 {
+        info.video_bit_depth
+    } else {
+        8
+    };
+    h.text("{MediaInfo Video}", video.clone());
+    h.text("{MediaInfo VideoCodec}", video.clone());
+    h.text("{MediaInfo VideoBitDepth}", bit_depth.to_string());
+    h.text("{MediaInfo Audio}", audio.clone());
+    h.text("{MediaInfo AudioCodec}", audio.clone());
+    h.text(
+        "{MediaInfo AudioChannels}",
+        if channels > 0.0 {
+            format!("{channels:.1}")
+        } else {
+            String::new()
+        },
+    );
+    let (al, al2) = (audio_languages.clone(), audio_languages.clone());
+    h.set("{MediaInfo AudioLanguages}", move |m| {
+        Some(languages_token(&al, m.custom_format.as_deref(), true, true))
+    });
+    h.set("{MediaInfo AudioLanguagesAll}", move |m| {
+        Some(languages_token(
+            &al2,
+            m.custom_format.as_deref(),
+            false,
+            true,
+        ))
+    });
+    let (sl, sl2) = (subtitles.clone(), subtitles.clone());
+    h.set("{MediaInfo SubtitleLanguages}", move |m| {
+        Some(languages_token(
+            &sl,
+            m.custom_format.as_deref(),
+            false,
+            true,
+        ))
+    });
+    h.set("{MediaInfo SubtitleLanguagesAll}", move |m| {
+        Some(languages_token(
+            &sl2,
+            m.custom_format.as_deref(),
+            false,
+            true,
+        ))
+    });
+    h.text("{MediaInfo Simple}", format!("{video} {audio}"));
+    let (v2, a2) = (video, audio);
+    h.set("{MediaInfo Full}", move |m| {
+        let f = m.custom_format.as_deref();
+        Some(format!(
+            "{v2} {a2}{} {}",
+            languages_token(&audio_languages, f, true, true),
+            languages_token(&subtitles, f, false, true)
+        ))
+    });
+    h.text(
+        "{MediaInfo VideoDynamicRange}",
+        format::format_video_dynamic_range(info),
+    );
+    h.text(
+        "{MediaInfo VideoDynamicRangeType}",
+        format::format_video_dynamic_range_type(info),
+    );
+}
+
 fn add_custom_formats<'a>(h: &mut Handlers<'a>, file: &'a File) {
     h.set("{Custom Formats}", move |m| {
         let included: Vec<&str> = file
@@ -1120,6 +1272,7 @@ fn build_file_name_within(
         add_episode_file_tokens(&mut h, file, !has_identifier || file.id == 0);
         add_quality_tokens(&mut h, series, file);
         add_custom_formats(&mut h, file);
+        add_media_info_tokens(&mut h, file, !has_identifier || file.id == 0);
         let mut component = replace_tokens(&split, &h, naming, true).trim().to_string();
         let mut max_segment = MAX_FILE_NAME_LENGTH.min(max_path) as i64;
         if i == parts.len() - 1 {

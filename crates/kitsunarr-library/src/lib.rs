@@ -16,6 +16,7 @@ pub mod jellyfin;
 pub mod jellyfin_refresh;
 pub mod list_progress;
 pub mod manual_import;
+pub mod media_info;
 pub mod movie_import;
 pub mod notify;
 pub mod tools;

@@ -18,7 +18,8 @@ use kitsunarr_domain::quality::Revision;
 use kitsunarr_parser::{ParsedQuality, parse_languages, parse_quality, parse_release_group};
 
 use crate::import::{
-    FileResult, ImportedFile, Outcome, aggregate_quality, extension, is_within, stem, video_files,
+    FileResult, ImportedFile, Outcome, aggregate_quality_with_media, extension, is_within, stem,
+    video_files,
 };
 
 /// A finished download grabbed for a film.
@@ -89,15 +90,19 @@ pub async fn import_movie_download(
                 .map(|n| n.to_string_lossy().into_owned())
         })
         .flatten();
-    let mut quality = aggregate_quality(&[
-        parse_quality(&name),
-        folder_name
-            .as_deref()
-            .map(parse_quality)
-            .unwrap_or_else(ParsedQuality::unknown),
-        parse_quality(d.title),
-        parse_quality(&grab_title),
-    ]);
+    let media_info = crate::media_info::reader::read(&source).await;
+    let mut quality = aggregate_quality_with_media(
+        &[
+            parse_quality(&name),
+            folder_name
+                .as_deref()
+                .map(parse_quality)
+                .unwrap_or_else(ParsedQuality::unknown),
+            parse_quality(d.title),
+            parse_quality(&grab_title),
+        ],
+        media_info.as_ref(),
+    );
     // The grab's quality wins when the names say nothing (`AggregateQuality` from history).
     if quality.quality_id == 0
         && let Some(q) = grab.and_then(|g| g.quality_id)
@@ -119,6 +124,17 @@ pub async fn import_movie_download(
         errors: Vec::new(),
         imported_file: None,
     };
+    // `DetectSample`: measured shorter than the film's minimum.
+    if media_info
+        .as_ref()
+        .is_some_and(|m| m.is_sample(detail.runtime.unwrap_or(0)))
+    {
+        result.errors.push("Sample".into());
+        return Ok(Outcome {
+            results: vec![result],
+            blocked: None,
+        });
+    }
     // `UpgradeSpecification`: a file of the film must be improved on.
     if let Some(f) = &detail.file {
         let order = view.compare_qualities(quality.quality_id, f.quality_id);
@@ -266,7 +282,9 @@ pub async fn import_movie_download(
             } else {
                 languages.clone()
             },
-            media_info: None,
+            media_info: media_info
+                .as_ref()
+                .and_then(|m| serde_json::to_value(m).ok()),
             original_path: Some(source.display().to_string()),
             edition: None,
         },

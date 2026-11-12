@@ -1,0 +1,55 @@
+{
+ "frames": [
+  {
+   "media_type": "video",
+   "stream_index": 0,
+   "key_frame": 1,
+   "pts": 0,
+   "pts_time": "0.000000",
+   "best_effort_timestamp": 0,
+   "best_effort_timestamp_time": "0.000000",
+   "duration": 512,
+   "duration_time": "0.040000",
+   "pkt_pos": "44",
+   "pkt_size": "5784",
+   "width": 640,
+   "height": 360,
+   "crop_top": 0,
+   "crop_bottom": 0,
+   "crop_left": 0,
+   "crop_right": 0,
+   "pix_fmt": "yuv420p10le",
+   "sample_aspect_ratio": "1:1",
+   "pict_type": "I",
+   "interlaced_frame": 0,
+   "top_field_first": 0,
+   "lossless": 0,
+   "repeat_pict": 0,
+   "color_range": "tv",
+   "color_space": "bt2020nc",
+   "color_primaries": "bt2020",
+   "color_transfer": "smpte2084",
+   "chroma_location": "left",
+   "side_data_list": [
+    {
+     "side_data_type": "Mastering display metadata",
+     "red_x": "34000/50000",
+     "red_y": "16000/50000",
+     "green_x": "13250/50000",
+     "green_y": "34500/50000",
+     "blue_x": "7500/50000",
+     "blue_y": "3000/50000",
+     "white_point_x": "15635/50000",
+     "white_point_y": "16450/50000",
+     "min_luminance": "1/10000",
+     "max_luminance": "10000000/10000"
+    },
+    {
+     "side_data_type": "Content light level metadata",
+     "max_content": 1000,
+     "max_average": 400
+    }
+   ]
+  }
+ ]
+}

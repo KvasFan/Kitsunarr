@@ -21,7 +21,7 @@ use kitsunarr_parser::{
 
 use crate::file_names;
 use crate::import::{
-    aggregate_quality, extension, is_within, remove_or_recycle, stem, video_files,
+    aggregate_quality_with_media, extension, is_within, remove_or_recycle, stem, video_files,
 };
 
 fn err(e: impl std::fmt::Display) -> String {
@@ -142,6 +142,38 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
         }
     }
 
+    // `UpdateMediaInfoService`: files without media information, or with an older schema, are
+    // read again when "Analyze video files" is on.
+    let media: MediaManagementSettings =
+        settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
+            .await
+            .map_err(err)?;
+    if media.enable_media_info {
+        for r in records
+            .iter()
+            .filter(|r| on_disk.contains(&r.relative_path.replace('\\', "/")))
+        {
+            let current = r
+                .media_info
+                .as_deref()
+                .and_then(|j| serde_json::from_str::<crate::media_info::MediaInfo>(j).ok());
+            if current
+                .is_some_and(|m| m.schema_revision >= crate::media_info::MINIMUM_SCHEMA_REVISION)
+            {
+                continue;
+            }
+            if let Some(info) =
+                crate::media_info::reader::read(&series_path.join(&r.relative_path)).await
+                && let Ok(json) = serde_json::to_value(&info)
+            {
+                series::set_file_media_info(&mut conn, r.id, &json)
+                    .await
+                    .map_err(err)?;
+                summary.updated += 1;
+            }
+        }
+    }
+
     // Unknown files: matched like an import (`ImportDecisionMaker` with `newDownload: false`).
     let known: HashSet<String> = records
         .iter()
@@ -189,7 +221,13 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
                 continue;
             }
             let ids: Vec<i64> = mapped.iter().map(|e| e.id).collect();
-            let quality = aggregate_quality(&[parse_quality(&name)]);
+            let media_info = if media.enable_media_info {
+                crate::media_info::reader::read(path).await
+            } else {
+                None
+            };
+            let quality =
+                aggregate_quality_with_media(&[parse_quality(&name)], media_info.as_ref());
             let found = parse_languages(&name);
             let languages: Vec<i32> = if found.is_empty() || (found.len() == 1 && found[0].id == 0)
             {
@@ -213,7 +251,9 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
                     revision_real: quality.revision.real,
                     is_repack: quality.revision.is_repack,
                     languages,
-                    media_info: None,
+                    media_info: media_info
+                        .as_ref()
+                        .and_then(|m| serde_json::to_value(m).ok()),
                     original_path: None,
                     indexer_flags: 0,
                     release_type: 0,
@@ -380,6 +420,10 @@ pub async fn rename_previews(
                 .iter()
                 .map(|f| (f.name.clone(), f.include_when_renaming))
                 .collect(),
+            media_info: r
+                .media_info
+                .as_deref()
+                .and_then(|j| serde_json::from_str(j).ok()),
         };
         let naming_episodes: Vec<file_names::Episode> = linked
             .iter()
