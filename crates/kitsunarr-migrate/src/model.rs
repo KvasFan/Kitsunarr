@@ -354,6 +354,8 @@ pub struct SourceSnapshot {
     pub quality_definitions: Vec<SrcQualityDefinition>,
     pub custom_formats: Vec<SrcCustomFormat>,
     pub auto_tags: Vec<SrcAutoTag>,
+    /// Sonarr's metadata consumers (`Metadata`), when the source has them.
+    pub metadata_consumers: Option<kitsunarr_domain::api::settings::MetadataConsumersSettings>,
     pub quality_profiles: Vec<SrcQualityProfile>,
     pub delay_profiles: Vec<SrcDelayProfile>,
     pub release_profiles: Vec<SrcReleaseProfile>,

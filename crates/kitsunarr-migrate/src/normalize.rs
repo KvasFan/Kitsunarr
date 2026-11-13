@@ -87,6 +87,7 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
             })
             .collect(),
         naming: raw.table("namingconfig").first().cloned(),
+        metadata_consumers: metadata_consumers(raw.table("metadata")),
         ..Default::default()
     };
     for (table, kind) in [
@@ -725,6 +726,85 @@ const SPEC_META_KEYS: &[&str] = &[
     "required",
     "presets",
 ];
+
+/// Sonarr's `Metadata` rows (database: `Settings` object; API: `fields`), by implementation.
+fn metadata_consumers(
+    rows: &[Rec],
+) -> Option<kitsunarr_domain::api::settings::MetadataConsumersSettings> {
+    if rows.is_empty() {
+        return None;
+    }
+    let mut out = kitsunarr_domain::api::settings::MetadataConsumersSettings::default();
+    for r in rows {
+        let settings: Map<String, Value> = match r.object("settings") {
+            Some(o) => {
+                o.0.iter()
+                    .map(|(k, v)| (k.to_ascii_lowercase(), v.clone()))
+                    .collect()
+            }
+            None => r
+                .array("fields")
+                .into_iter()
+                .filter_map(|f| {
+                    let f = Rec::from_value(f);
+                    Some((f.str("name")?.to_ascii_lowercase(), f.raw("value")?.clone()))
+                })
+                .collect(),
+        };
+        let flag = |key: &str, default: bool| {
+            settings
+                .get(&key.to_ascii_lowercase())
+                .and_then(as_bool)
+                .unwrap_or(default)
+        };
+        let enable = r.bool_or("enable", false);
+        match r.str("implementation").as_deref() {
+            Some("XbmcMetadata") => {
+                let d = out.kodi;
+                out.kodi = kitsunarr_domain::api::settings::KodiMetadataSettings {
+                    enable,
+                    series_metadata: flag("seriesMetadata", d.series_metadata),
+                    series_metadata_episode_guide: flag(
+                        "seriesMetadataEpisodeGuide",
+                        d.series_metadata_episode_guide,
+                    ),
+                    series_metadata_url: flag("seriesMetadataUrl", d.series_metadata_url),
+                    episode_metadata: flag("episodeMetadata", d.episode_metadata),
+                    episode_image_thumb: flag("episodeImageThumb", d.episode_image_thumb),
+                    series_images: flag("seriesImages", d.series_images),
+                    season_images: flag("seasonImages", d.season_images),
+                    episode_images: flag("episodeImages", d.episode_images),
+                };
+            }
+            Some(kind @ ("RoksboxMetadata" | "WdtvMetadata")) => {
+                let d = kitsunarr_domain::api::settings::XmlMetadataSettings::default();
+                let x = kitsunarr_domain::api::settings::XmlMetadataSettings {
+                    enable,
+                    episode_metadata: flag("episodeMetadata", d.episode_metadata),
+                    series_images: flag("seriesImages", d.series_images),
+                    season_images: flag("seasonImages", d.season_images),
+                    episode_images: flag("episodeImages", d.episode_images),
+                };
+                if kind == "RoksboxMetadata" {
+                    out.roksbox = x;
+                } else {
+                    out.wdtv = x;
+                }
+            }
+            Some("PlexMetadata") => {
+                let d = out.plex;
+                out.plex = kitsunarr_domain::api::settings::PlexMetadataSettings {
+                    enable,
+                    series_plex_match_file: flag("seriesPlexMatchFile", d.series_plex_match_file),
+                    episode_mappings: flag("episodeMappings", d.episode_mappings),
+                };
+            }
+            // Kometa's consumer is deprecated upstream and writes nothing.
+            _ => {}
+        }
+    }
+    Some(out)
+}
 
 fn auto_tag(r: &Rec) -> Option<SrcAutoTag> {
     Some(SrcAutoTag {

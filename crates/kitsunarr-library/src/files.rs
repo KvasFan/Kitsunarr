@@ -120,6 +120,12 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
             "MissingFromDisk",
         )
         .await?;
+        // The file's extras and metadata go with it (`ExtraFileService`).
+        let media: MediaManagementSettings =
+            settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
+                .await
+                .map_err(err)?;
+        crate::extras::remove_for_file(db, &media, &series_path, root, r.id).await;
         series::delete_episode_file(&mut conn, r.id)
             .await
             .map_err(err)?;
@@ -275,6 +281,9 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
         .await
         .ok();
     tracing::info!(series_id, summary = %summary.describe(), "disk scan");
+    // `SeriesScannedEvent`: existing metadata files are recorded, then the consumers write.
+    crate::metadata_files::import_existing(db, series_id).await;
+    crate::metadata_files::after_series_scan(db, series_id).await;
     Ok(summary)
 }
 
@@ -522,6 +531,7 @@ pub async fn rename_files(
             .map_err(err)?;
         // `ExtraFileRenamer`: the file's extras follow its new name.
         crate::extras::rename_for_file(db, &series_path, p.episode_file_id, &src, &dst).await;
+        crate::metadata_files::move_after_rename(db, series_id, p.episode_file_id).await;
         for e in episodes
             .iter()
             .filter(|e| e.file.as_ref().is_some_and(|f| f.id == p.episode_file_id))
@@ -608,6 +618,14 @@ pub async fn delete_file(db: &Database, series_id: i64, file_id: i64) -> Result<
         "Manual",
     )
     .await?;
+    crate::extras::remove_for_file(
+        db,
+        &media,
+        &series_path,
+        Path::new(&detail.root_folder_path),
+        file_id,
+    )
+    .await;
     series::delete_episode_file(&mut conn, file_id)
         .await
         .map_err(err)?;

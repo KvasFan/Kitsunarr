@@ -829,3 +829,24 @@ mod tests {
         assert_eq!(incoming["host"], "qb2");
     }
 }
+
+#[utoipa::path(get, path = "/settings/metadataconsumers", tag = "settings", responses((status = 200, body = kitsunarr_domain::api::settings::MetadataConsumersSettings)))]
+pub async fn get_metadata_consumers(
+    State(state): State<AppState>,
+) -> ApiResult<Json<kitsunarr_domain::api::settings::MetadataConsumersSettings>> {
+    Ok(Json(
+        kv::get_or_default(state.db.pool(), kv::KEY_METADATA_CONSUMERS).await?,
+    ))
+}
+
+/// Sonarr's Settings › Metadata: Kodi (XBMC) / Emby, Roksbox, WDTV and Plex files.
+#[utoipa::path(put, path = "/settings/metadataconsumers", tag = "settings", request_body = kitsunarr_domain::api::settings::MetadataConsumersSettings,
+    responses((status = 200, body = kitsunarr_domain::api::settings::MetadataConsumersSettings)))]
+pub async fn put_metadata_consumers(
+    State(state): State<AppState>,
+    Json(body): Json<kitsunarr_domain::api::settings::MetadataConsumersSettings>,
+) -> ApiResult<Json<kitsunarr_domain::api::settings::MetadataConsumersSettings>> {
+    kv::set(state.db.pool(), kv::KEY_METADATA_CONSUMERS, &body).await?;
+    settings_changed(&state, "metadataConsumers");
+    Ok(Json(body))
+}

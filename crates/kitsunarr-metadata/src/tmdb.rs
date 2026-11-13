@@ -85,6 +85,7 @@ struct Episode {
     overview: Option<String>,
     air_date: Option<String>,
     runtime: Option<i32>,
+    still_path: Option<String>,
 }
 
 #[derive(Deserialize, Default)]
@@ -275,6 +276,7 @@ fn map_show(
                 } else {
                     None
                 },
+                images: Vec::new(),
             });
         }
     }
@@ -341,6 +343,11 @@ fn map_episode(e: &Episode) -> EpisodeInfo {
         air_date: air,
         runtime: e.runtime,
         provider_episode_id: Some(e.id.to_string()),
+        image: e
+            .still_path
+            .as_deref()
+            .filter(|p| p.starts_with('/'))
+            .map(|p| format!("{IMAGE_BASE}/original{p}")),
     }
 }
 
@@ -402,6 +409,7 @@ fn map_movie(m: &Movie) -> SeriesInfo {
         seasons: vec![SeasonInfo {
             season_number: 1,
             title: None,
+            images: Vec::new(),
         }],
         episodes: vec![EpisodeInfo {
             season_number: 1,
@@ -413,6 +421,7 @@ fn map_movie(m: &Movie) -> SeriesInfo {
             air_date_utc: release.map(|d| format!("{d}T00:00:00Z")),
             runtime: m.runtime.filter(|r| *r > 0),
             provider_episode_id: Some(m.id.to_string()),
+            image: None,
         }],
     }
 }

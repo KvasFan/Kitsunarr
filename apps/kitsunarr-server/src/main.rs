@@ -337,6 +337,8 @@ async fn serve(config: Config) -> Result<()> {
     );
 
     let config = Arc::new(config);
+    // Metadata consumers download artwork through the same (proxy-aware) client.
+    kitsunarr_library::metadata_files::install_http_client(http.clone());
     let state = AppState::new(
         db.clone(),
         config.clone(),

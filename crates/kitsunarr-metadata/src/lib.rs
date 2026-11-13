@@ -80,6 +80,8 @@ pub struct EpisodeInfo {
     pub air_date_utc: Option<String>,
     pub runtime: Option<i32>,
     pub provider_episode_id: Option<String>,
+    /// The episode's screenshot (Sonarr's `MediaCoverTypes.Screenshot`), for metadata files.
+    pub image: Option<String>,
 }
 
 /// A TMDB film collection, its films ordered by release date.
@@ -126,6 +128,8 @@ pub struct EpisodeOrdering {
 pub struct SeasonInfo {
     pub season_number: i32,
     pub title: Option<String>,
+    /// Season artwork (poster, banner), for metadata files.
+    pub images: Vec<MediaImage>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

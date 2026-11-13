@@ -155,6 +155,7 @@ fn map(r: &Resource) -> Option<SeriesInfo> {
         seasons: vec![SeasonInfo {
             season_number: 1,
             title: None,
+            images: Vec::new(),
         }],
         episodes: vec![EpisodeInfo {
             season_number: 1,
@@ -166,6 +167,7 @@ fn map(r: &Resource) -> Option<SeriesInfo> {
             air_date_utc: release.map(|d| format!("{d}T00:00:00Z")),
             runtime,
             provider_episode_id: Some(imdb),
+            image: None,
         }],
     })
 }

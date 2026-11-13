@@ -564,6 +564,96 @@ pub struct ProviderChoice {
     pub hint: Option<String>,
 }
 
+/// Sonarr's metadata consumers (Settings › Metadata): files written next to the media for
+/// media centres. Field names and defaults are Sonarr's (`XbmcMetadataSettings`,
+/// `RoksboxMetadataSettings`, `WdtvMetadataSettings`, `PlexMetadataSettings`); every consumer
+/// starts disabled, as Sonarr seeds them.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct MetadataConsumersSettings {
+    /// "Kodi (XBMC) / Emby": `tvshow.nfo`, `<episode>.nfo`, artwork.
+    pub kodi: KodiMetadataSettings,
+    pub roksbox: XmlMetadataSettings,
+    pub wdtv: XmlMetadataSettings,
+    /// Plex: `.plexmatch`.
+    pub plex: PlexMetadataSettings,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct KodiMetadataSettings {
+    pub enable: bool,
+    pub series_metadata: bool,
+    pub series_metadata_episode_guide: bool,
+    pub series_metadata_url: bool,
+    pub episode_metadata: bool,
+    pub episode_image_thumb: bool,
+    pub series_images: bool,
+    pub season_images: bool,
+    pub episode_images: bool,
+}
+
+impl Default for KodiMetadataSettings {
+    fn default() -> Self {
+        Self {
+            enable: false,
+            series_metadata: true,
+            series_metadata_episode_guide: false,
+            series_metadata_url: false,
+            episode_metadata: true,
+            episode_image_thumb: false,
+            series_images: true,
+            season_images: true,
+            episode_images: true,
+        }
+    }
+}
+
+/// Roksbox and WDTV share their settings' shape.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct XmlMetadataSettings {
+    pub enable: bool,
+    pub episode_metadata: bool,
+    pub series_images: bool,
+    pub season_images: bool,
+    pub episode_images: bool,
+}
+
+impl Default for XmlMetadataSettings {
+    fn default() -> Self {
+        Self {
+            enable: false,
+            episode_metadata: true,
+            series_images: true,
+            season_images: true,
+            episode_images: true,
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct PlexMetadataSettings {
+    pub enable: bool,
+    pub series_plex_match_file: bool,
+    pub episode_mappings: bool,
+}
+
+impl Default for PlexMetadataSettings {
+    fn default() -> Self {
+        Self {
+            enable: false,
+            series_plex_match_file: true,
+            episode_mappings: false,
+        }
+    }
+}
+
 /// Tanukarr's Library tools switches (`ProOptions`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

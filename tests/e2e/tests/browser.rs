@@ -546,6 +546,14 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Add a title").await;
         wait_text(&client, "Delete group").await;
         screenshot(&client, "11g-collection-editor").await;
+        // Metadata files (Sonarr's Settings › Metadata): migrated consumers, all off.
+        client
+            .goto(&format!("{base}/settings/metadata"))
+            .await
+            .unwrap();
+        wait_text(&client, "Metadata files").await;
+        wait_text(&client, "Kodi (XBMC) / Emby").await;
+        wait_text(&client, "WDTV").await;
         // Auto tagging (Sonarr's Settings › Tags): a rule with a genre condition.
         client.goto(&format!("{base}/settings/tags")).await.unwrap();
         click_button(&client, "Add auto tag").await;

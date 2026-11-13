@@ -1395,6 +1395,19 @@ impl<'a> Importer<'a> {
                 self.count("settings", Act::Skip);
             }
         }
+        // Metadata consumers (Sonarr's `Metadata` rows).
+        if let Some(next) = self.snap.metadata_consumers {
+            let current: kitsunarr_domain::api::settings::MetadataConsumersSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_METADATA_CONSUMERS).await?;
+            if next == current {
+                self.count("settings", Act::Skip);
+            } else if current == Default::default() || self.update_existing() {
+                settings::set(&mut *conn, settings::KEY_METADATA_CONSUMERS, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
         // Proxy: the API's `/config/host`, or the database's `Config` keys.
         if let Some(h) = self
             .snap

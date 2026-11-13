@@ -13,6 +13,7 @@ kitsunarr-domain = { workspace = true }
 kitsunarr-db = { workspace = true }
 kitsunarr-metadata = { workspace = true }
 kitsunarr-parser = { workspace = true }
+regex = { workspace = true }
 kitsunarr-decision = { workspace = true }
 kitsunarr-downloaders = { workspace = true }
 kitsunarr-notifications = { workspace = true }

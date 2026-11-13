@@ -274,6 +274,7 @@ fn map_media(m: Media, schedule: Vec<Airing>) -> SeriesInfo {
                     .or(movie_date.map(|d| format!("{d}T00:00:00Z"))),
                 runtime: m.duration,
                 provider_episode_id: Some(format!("{}:{n}", m.id)),
+                image: None,
             }
         })
         .collect();
@@ -325,6 +326,7 @@ fn map_media(m: Media, schedule: Vec<Airing>) -> SeriesInfo {
         seasons: vec![SeasonInfo {
             season_number: 1,
             title: None,
+            images: Vec::new(),
         }],
         episodes,
     }

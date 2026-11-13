@@ -305,6 +305,7 @@ pub async fn load(
         ("qualitydefinitions", "api/v3/qualitydefinition"),
         ("customformats", "api/v3/customformat"),
         ("autotagging", "api/v3/autotagging"),
+        ("metadata", "api/v3/metadata"),
         ("qualityprofiles", "api/v3/qualityprofile"),
         ("delayprofiles", "api/v3/delayprofile"),
         ("releaseprofiles", "api/v3/releaseprofile"),

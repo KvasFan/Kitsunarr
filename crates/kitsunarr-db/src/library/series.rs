@@ -1219,6 +1219,49 @@ pub async fn title_records(db: &Database) -> DbResult<Vec<TitleRecord>> {
         .collect())
 }
 
+/// Replaces a season's artwork with the catalogue's (kept when the catalogue gives none).
+pub async fn set_season_images(
+    conn: &mut SqliteConnection,
+    series_id: i64,
+    season_number: i32,
+    images: &[MediaImage],
+) -> DbResult<()> {
+    if images.is_empty() {
+        return Ok(());
+    }
+    sqlx::query("UPDATE seasons SET images = ? WHERE series_id = ? AND season_number = ?")
+        .bind(to_json(images)?)
+        .bind(series_id)
+        .bind(season_number)
+        .execute(&mut *conn)
+        .await?;
+    Ok(())
+}
+
+/// Records an episode's screenshot (Sonarr's episode `Screenshot` image) from the catalogue;
+/// an answer without one keeps the stored one.
+pub async fn set_episode_screenshot(
+    conn: &mut SqliteConnection,
+    series_id: i64,
+    season_number: i32,
+    episode_number: i32,
+    url: Option<&str>,
+) -> DbResult<()> {
+    let Some(url) = url.filter(|u| !u.trim().is_empty()) else {
+        return Ok(());
+    };
+    sqlx::query(
+        "UPDATE episodes SET screenshot = ? WHERE series_id = ? AND season_number = ? AND episode_number = ?",
+    )
+    .bind(url)
+    .bind(series_id)
+    .bind(season_number)
+    .bind(episode_number)
+    .execute(&mut *conn)
+    .await?;
+    Ok(())
+}
+
 /// Records the catalogue's country of origin (Sonarr's `OriginalCountry`); a catalogue that
 /// gives none keeps the one already stored (for example migrated from Sonarr).
 pub async fn set_original_country(

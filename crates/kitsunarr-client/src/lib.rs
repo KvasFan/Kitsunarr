@@ -1041,6 +1041,17 @@ impl Client {
     ) -> ClientResult<IndexerOptionsSettings> {
         self.put("/settings/indexeroptions", s).await
     }
+    pub async fn metadata_consumers(
+        &self,
+    ) -> ClientResult<kitsunarr_domain::api::settings::MetadataConsumersSettings> {
+        self.get("/settings/metadataconsumers").await
+    }
+    pub async fn put_metadata_consumers(
+        &self,
+        s: &kitsunarr_domain::api::settings::MetadataConsumersSettings,
+    ) -> ClientResult<kitsunarr_domain::api::settings::MetadataConsumersSettings> {
+        self.put("/settings/metadataconsumers", s).await
+    }
     pub async fn proxy(&self) -> ClientResult<ProxySettings> {
         self.get("/settings/proxy").await
     }

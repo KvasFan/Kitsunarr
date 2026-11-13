@@ -321,6 +321,7 @@ pub async fn remove_for_file(
             .execute(db.pool())
             .await;
     }
+    crate::metadata_files::remove_for_file(db, media, series_path, root, episode_file_id).await;
 }
 
 /// Renames an episode file's extras after the file (`ExtraFileRenamer`): each keeps what

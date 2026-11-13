@@ -2937,6 +2937,98 @@ pub fn SettingsMetadata() -> Element {
                 },
             }
         }
+        MetadataConsumers {}
+    }
+}
+
+/// Sonarr's Settings › Metadata: files written next to the media for media centres.
+#[component]
+fn MetadataConsumers() -> Element {
+    use kitsunarr_domain::api::settings::MetadataConsumersSettings;
+    let app = use_app();
+    let client = use_client();
+    let mut form = use_signal(|| None::<MetadataConsumersSettings>);
+    let c0 = client.clone();
+    use_future(move || {
+        let c = c0.clone();
+        async move {
+            match c.metadata_consumers().await {
+                Ok(m) => form.set(Some(m)),
+                Err(e) => app.error(&e),
+            }
+        }
+    });
+    let save = move |_| {
+        let Some(m) = form() else { return };
+        let c = client.clone();
+        spawn(async move {
+            match c.put_metadata_consumers(&m).await {
+                Ok(saved) => {
+                    form.set(Some(saved));
+                    app.success("Metadata settings saved. Files are written at the next disk scan, refresh or import.");
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let Some(m) = form() else {
+        return rsx! { div { class: "card", style: "margin-top: var(--sp-4)", Loading {} } };
+    };
+    macro_rules! flag {
+        ($label:expr, $($path:ident).+) => {
+            rsx! { Switch { checked: m.$($path).+, label: $label, onchange: move |v| { if let Some(x) = form.write().as_mut() { x.$($path).+ = v; } } } }
+        };
+    }
+    rsx! {
+        div { class: "card", style: "margin-top: var(--sp-4)",
+            h3 { "Metadata files" }
+            p { class: "small faint", "Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them." }
+            div { class: "form-grid",
+                div {
+                    h4 { "Kodi (XBMC) / Emby" }
+                    {flag!("Enabled", kodi.enable)}
+                    if m.kodi.enable {
+                        {flag!("Series metadata (tvshow.nfo)", kodi.series_metadata)}
+                        {flag!("Series metadata episode guide", kodi.series_metadata_episode_guide)}
+                        {flag!("Series metadata URL", kodi.series_metadata_url)}
+                        {flag!("Episode metadata (<filename>.nfo)", kodi.episode_metadata)}
+                        {flag!("Episode image thumbs in the NFO", kodi.episode_image_thumb)}
+                        {flag!("Series images (fanart.jpg, poster.jpg, banner.jpg)", kodi.series_images)}
+                        {flag!("Season images (season##-poster.jpg)", kodi.season_images)}
+                        {flag!("Episode images (<filename>-thumb.jpg)", kodi.episode_images)}
+                    }
+                }
+                div {
+                    h4 { "Plex" }
+                    {flag!("Enabled", plex.enable)}
+                    if m.plex.enable {
+                        {flag!("Series .plexmatch file", plex.series_plex_match_file)}
+                        {flag!("Episode mappings in .plexmatch", plex.episode_mappings)}
+                    }
+                }
+                div {
+                    h4 { "Roksbox" }
+                    {flag!("Enabled", roksbox.enable)}
+                    if m.roksbox.enable {
+                        {flag!("Episode metadata (Season##/filename.xml)", roksbox.episode_metadata)}
+                        {flag!("Series images (Series Title.jpg)", roksbox.series_images)}
+                        {flag!("Season images (Season ##.jpg)", roksbox.season_images)}
+                        {flag!("Episode images (Season##/filename.jpg)", roksbox.episode_images)}
+                    }
+                }
+                div {
+                    h4 { "WDTV" }
+                    {flag!("Enabled", wdtv.enable)}
+                    if m.wdtv.enable {
+                        {flag!("Episode metadata (Season##/filename.xml)", wdtv.episode_metadata)}
+                        {flag!("Series images (folder.jpg)", wdtv.series_images)}
+                        {flag!("Season images (Season##/folder.jpg)", wdtv.season_images)}
+                        {flag!("Episode images (Season##/filename.metathumb)", wdtv.episode_images)}
+                    }
+                }
+            }
+            div { class: "row end", button { class: "btn primary", onclick: save, "Save metadata files" } }
+        }
     }
 }
 

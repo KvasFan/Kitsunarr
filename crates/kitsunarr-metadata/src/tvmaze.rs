@@ -103,6 +103,8 @@ struct Episode {
     airstamp: Option<String>,
     runtime: Option<i32>,
     summary: Option<String>,
+    #[serde(default)]
+    image: Option<Image>,
 }
 
 #[derive(Deserialize, Clone)]
@@ -221,6 +223,7 @@ fn map_show(show: Show, all_episodes: Vec<Episode>) -> MetadataResult<SeriesInfo
             air_date_utc: to_utc(e.airstamp.as_deref()),
             runtime: e.runtime,
             provider_episode_id: Some(e.id.to_string()),
+            image: e.image.as_ref().and_then(|i| i.original.clone()),
         });
     }
     let embedded = show.embedded.clone().unwrap_or_default();
@@ -230,6 +233,7 @@ fn map_show(show: Show, all_episodes: Vec<Episode>) -> MetadataResult<SeriesInfo
         .map(|s| SeasonInfo {
             season_number: s.number,
             title: s.name.clone().filter(|n| !n.is_empty()),
+            images: Vec::new(),
         })
         .collect();
     if !specials.is_empty() && !seasons.iter().any(|s| s.season_number == 0) {
@@ -238,6 +242,7 @@ fn map_show(show: Show, all_episodes: Vec<Episode>) -> MetadataResult<SeriesInfo
             SeasonInfo {
                 season_number: 0,
                 title: Some("Specials".into()),
+                images: Vec::new(),
             },
         );
     }
@@ -448,6 +453,7 @@ mod tests {
             airstamp: None,
             runtime: None,
             summary: None,
+            image: None,
         }
     }
 

@@ -261,6 +261,7 @@ fn map_anime(a: &Anime, listed: &[Episode]) -> SeriesInfo {
             air_date_utc: aired.map(|d| d.to_rfc3339_opts(chrono::SecondsFormat::Secs, true)),
             runtime,
             provider_episode_id: Some(number.to_string()),
+            image: None,
         });
     }
     // `FillMissingEpisodes`: up to the declared count (at least one for a film).
@@ -281,6 +282,7 @@ fn map_anime(a: &Anime, listed: &[Episode]) -> SeriesInfo {
                 air_date_utc: None,
                 runtime,
                 provider_episode_id: None,
+                image: None,
             });
         }
     }
@@ -338,6 +340,7 @@ fn map_anime(a: &Anime, listed: &[Episode]) -> SeriesInfo {
         seasons: vec![SeasonInfo {
             season_number: 1,
             title: None,
+            images: Vec::new(),
         }],
         episodes,
     }

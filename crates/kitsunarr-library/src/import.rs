@@ -855,6 +855,10 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             imported_file,
         });
     }
+    // `DownloadsProcessedEvent`: the series metadata once the download's files are in.
+    if results.iter().any(|r| r.imported) {
+        crate::metadata_files::after_episodes_imported(db, model.id).await;
+    }
     results.extend(rejected.into_iter().map(|c| FileResult {
         path: c.path,
         imported: false,
@@ -981,6 +985,9 @@ async fn transfer_and_record(
     if dest.exists() {
         return Err("Failed to import episode, Destination already exists.".into());
     }
+    // `EpisodeFolderCreatedEvent`: which folders this import creates.
+    let series_folder_created = !series_path.is_dir();
+    let season_folder_created = dir != series_path && !dir.is_dir();
     std::fs::create_dir_all(&dir).map_err(|e| {
         if e.kind() == std::io::ErrorKind::PermissionDenied {
             "Failed to import episode due to permission issues.".to_string()
@@ -1212,6 +1219,15 @@ async fn transfer_and_record(
             source_info: source_info.as_ref(),
             read_only: !d.move_files,
         },
+    )
+    .await;
+    // `ExtraService.ImportEpisode` then `EpisodeFolderCreatedEvent`: metadata files.
+    crate::metadata_files::after_episode_import(
+        db,
+        model.id,
+        file_id,
+        series_folder_created,
+        season_folder_created,
     )
     .await;
     Ok(ImportedFile {

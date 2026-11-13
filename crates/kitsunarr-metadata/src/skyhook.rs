@@ -72,6 +72,7 @@ struct AlternativeTitle {
 #[serde(rename_all = "camelCase", default)]
 struct Season {
     season_number: i32,
+    images: Vec<Image>,
 }
 
 #[derive(Deserialize, Clone, Default)]
@@ -86,6 +87,7 @@ struct Episode {
     air_date_utc: Option<String>,
     runtime: Option<i32>,
     overview: Option<String>,
+    image: Option<String>,
 }
 
 #[derive(Deserialize, Clone, Default)]
@@ -205,6 +207,15 @@ fn map_show(show: Show) -> SeriesInfo {
             seasons.push(SeasonInfo {
                 season_number: s.season_number,
                 title: None,
+                images: s
+                    .images
+                    .iter()
+                    .filter(|i| i.url.starts_with("http"))
+                    .map(|i| MediaImage {
+                        cover_type: i.cover_type.to_ascii_lowercase(),
+                        remote_url: i.url.clone(),
+                    })
+                    .collect(),
             });
         }
     }
@@ -221,6 +232,7 @@ fn map_show(show: Show) -> SeriesInfo {
             air_date_utc: e.air_date_utc.clone().filter(|t| !t.is_empty()),
             runtime: e.runtime,
             provider_episode_id: (e.tvdb_id > 0).then(|| e.tvdb_id.to_string()),
+            image: e.image.clone().filter(|i| i.starts_with("http")),
         })
         .collect();
     let mut alternate_titles: Vec<String> = Vec::new();

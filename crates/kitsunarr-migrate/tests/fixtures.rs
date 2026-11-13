@@ -787,6 +787,15 @@ async fn auto_tagging_and_original_country_are_imported() {
         .execute(&source)
         .await
         .unwrap();
+    // Kodi metadata turned on with episode thumbs in the NFO; Plex with episode mappings.
+    sqlx::query("UPDATE Metadata SET Enable = 1, Settings = '{\"seriesMetadata\": true, \"seriesMetadataEpisodeGuide\": false, \"seriesMetadataUrl\": false, \"episodeMetadata\": true, \"episodeImageThumb\": true, \"seriesImages\": false, \"seasonImages\": true, \"episodeImages\": true}' WHERE Implementation = 'XbmcMetadata'")
+        .execute(&source)
+        .await
+        .unwrap();
+    sqlx::query("UPDATE Metadata SET Enable = 1, Settings = '{\"seriesPlexMatchFile\": true, \"episodeMappings\": true}' WHERE Implementation = 'PlexMetadata'")
+        .execute(&source)
+        .await
+        .unwrap();
     source.close().await;
 
     let src = load_from_backup(&db_path, tmp.path()).await.unwrap();
@@ -834,6 +843,19 @@ async fn auto_tagging_and_original_country_are_imported() {
     assert!(rule.specifications[2].required);
     assert_eq!(field(3, "value"), serde_json::json!(tag("requested").await));
     assert!(rule.specifications[3].negate);
+
+    // Sonarr's metadata consumers become Settings › Metadata's.
+    let consumers: kitsunarr_domain::api::settings::MetadataConsumersSettings =
+        kitsunarr_db::settings::get_or_default(
+            db.pool(),
+            kitsunarr_db::settings::KEY_METADATA_CONSUMERS,
+        )
+        .await
+        .unwrap();
+    assert!(consumers.kodi.enable && consumers.kodi.episode_image_thumb);
+    assert!(!consumers.kodi.series_images);
+    assert!(consumers.plex.enable && consumers.plex.episode_mappings);
+    assert!(!consumers.wdtv.enable && !consumers.roksbox.enable);
 
     // Tanukarr's `OriginalCountry` is kept, from SkyHook ("usa") and AniList ("JP").
     let countries: Vec<(String, Option<String>)> =

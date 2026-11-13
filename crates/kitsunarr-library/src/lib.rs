@@ -17,6 +17,7 @@ pub mod jellyfin_refresh;
 pub mod list_progress;
 pub mod manual_import;
 pub mod media_info;
+pub mod metadata_files;
 pub mod movie_import;
 pub mod notify;
 pub mod tools;
@@ -404,11 +405,8 @@ pub async fn add_title(
     season_numbers.sort_unstable();
     season_numbers.dedup();
     for n in season_numbers {
-        let title = info
-            .seasons
-            .iter()
-            .find(|s| s.season_number == n)
-            .and_then(|s| s.title.clone());
+        let season = info.seasons.iter().find(|s| s.season_number == n);
+        let title = season.and_then(|s| s.title.clone());
         let monitored = episode_monitored(req.monitor, n, latest, None);
         series::upsert_season(
             &mut tx,
@@ -417,7 +415,7 @@ pub async fn add_title(
                 season_number: n,
                 monitored,
                 title,
-                images: vec![],
+                images: season.map(|s| s.images.clone()).unwrap_or_default(),
             },
         )
         .await?;
@@ -445,6 +443,14 @@ pub async fn add_title(
                 provider_episode_id: e.provider_episode_id.clone(),
                 last_search_at: None,
             },
+        )
+        .await?;
+        series::set_episode_screenshot(
+            &mut tx,
+            id,
+            e.season_number,
+            e.episode_number,
+            e.image.as_deref(),
         )
         .await?;
     }
@@ -688,6 +694,7 @@ pub async fn refresh_series(
             s.title.as_deref(),
         )
         .await?;
+        series::set_season_images(&mut tx, id, s.season_number, &s.images).await?;
     }
     let (mut added, mut updated) = (0u64, 0u64);
     for e in &info.episodes {
@@ -722,12 +729,23 @@ pub async fn refresh_series(
             },
         )
         .await?;
+        series::set_episode_screenshot(
+            &mut tx,
+            id,
+            e.season_number,
+            e.episode_number,
+            e.image.as_deref(),
+        )
+        .await?;
         if inserted { added += 1 } else { updated += 1 }
     }
     series::set_original_country(&mut tx, id, info.original_country.as_deref()).await?;
     // Sonarr's refresh re-applies auto tagging (`RefreshSeriesService`).
     kitsunarr_db::auto_tags::apply_series(&mut tx, id).await?;
     tx.commit().await?;
+    // Sonarr rescans after a refresh (`MediaCoversUpdatedEvent`, `SeriesScannedEvent`): the
+    // metadata consumers write with the new information.
+    metadata_files::after_series_scan(db, id).await;
     Ok(RefreshResult {
         added_episodes: added,
         updated_episodes: updated,
@@ -883,6 +901,7 @@ mod tests {
             air_date_utc: air.map(str::to_string),
             runtime: None,
             provider_episode_id: None,
+            image: None,
         }
     }
 
