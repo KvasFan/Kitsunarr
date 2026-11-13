@@ -431,6 +431,7 @@ pub async fn import_movie_download(
     .await
     .map_err(err)?;
     result.imported = true;
+    crate::metadata_files::after_movie_change(db, d.movie_id).await;
     result.imported_file = Some(ImportedFile {
         file_id,
         source_path: source.display().to_string(),

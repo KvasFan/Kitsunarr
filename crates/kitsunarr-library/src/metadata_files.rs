@@ -972,6 +972,195 @@ fn is_kodi_nfo(path: &Path) -> bool {
 }
 
 // ---------------------------------------------------------------------------------------------
+// Films (Kodi): `movie.nfo`, poster and fanart in the film's folder
+// ---------------------------------------------------------------------------------------------
+
+/// What `movie.nfo` says about a film, as Radarr's Kodi consumer writes it.
+pub struct MovieNfo<'a> {
+    pub title: &'a str,
+    pub original_title: Option<&'a str>,
+    pub sort_title: &'a str,
+    pub overview: Option<&'a str>,
+    pub certification: Option<&'a str>,
+    pub runtime: Option<i32>,
+    pub tmdb_id: Option<&'a str>,
+    pub imdb_id: Option<&'a str>,
+    pub genres: &'a [String],
+    pub premiered: Option<&'a str>,
+    pub year: Option<i32>,
+    pub studio: Option<&'a str>,
+    pub images: &'a [MediaImage],
+}
+
+pub fn kodi_movie(m: &MovieNfo<'_>) -> String {
+    let mut movie = El::new("movie");
+    movie.add(El::text("title", m.title.to_string()));
+    movie.add(El::text(
+        "originaltitle",
+        m.original_title.unwrap_or(m.title).to_string(),
+    ));
+    movie.add(El::text("sorttitle", m.sort_title.to_string()));
+    movie.add(El::text("plot", m.overview.map(str::to_string)));
+    movie.add(El::text("mpaa", m.certification.map(str::to_string)));
+    if let Some(r) = m.runtime.filter(|r| *r > 0) {
+        movie.add(El::text("runtime", r.to_string()));
+    }
+    if let Some(imdb) = m.imdb_id {
+        movie.add(El::text("id", imdb.to_string()));
+    }
+    if let Some(tmdb) = m.tmdb_id {
+        movie.add(
+            El::text("uniqueid", tmdb.to_string())
+                .attr("type", "tmdb")
+                .attr("default", "true"),
+        );
+    }
+    if let Some(imdb) = m.imdb_id {
+        let el = El::text("uniqueid", imdb.to_string()).attr("type", "imdb");
+        movie.add(if m.tmdb_id.is_none() {
+            el.attr("default", "true")
+        } else {
+            el
+        });
+    }
+    for g in m.genres {
+        movie.add(El::text("genre", g.clone()));
+    }
+    if let Some(p) = m.premiered.and_then(date) {
+        movie.add(El::text("premiered", p));
+    }
+    if let Some(y) = m.year {
+        movie.add(El::text("year", y.to_string()));
+    }
+    if let Some(st) = m.studio {
+        movie.add(El::text("studio", st.to_string()));
+    }
+    if let Some(poster) = m.images.iter().find(|i| i.cover_type == "poster") {
+        movie.add(El::text("thumb", poster.remote_url.clone()).attr("aspect", "poster"));
+    }
+    if let Some(fanart) = m.images.iter().find(|i| i.cover_type == "fanart") {
+        let mut f = El::new("fanart");
+        f.add(El::text("thumb", fanart.remote_url.clone()));
+        movie.add(f);
+    }
+    format!(
+        "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\n{}",
+        movie.to_string_indented()
+    )
+}
+
+/// Writes a film's Kodi files when the Kodi consumer is on (its series-metadata option
+/// writes `movie.nfo`, its series-images option the poster and fanart). Called after a film
+/// is imported or refreshed; failures are logged.
+pub async fn after_movie_change(db: &Database, movie_id: i64) {
+    let kodi = consumers(db).await.kodi;
+    if !kodi.enable || !(kodi.series_metadata || kodi.series_images) {
+        return;
+    }
+    let Ok(d) = kitsunarr_db::library::movies::get_detail(db, movie_id).await else {
+        return;
+    };
+    let folder = PathBuf::from(&d.item.path);
+    if !folder.is_dir() {
+        return;
+    }
+    let tracked: Vec<(i64, String, Option<String>)> = sqlx::query_as(
+        "SELECT id, relative_path, hash FROM movie_metadata_files WHERE movie_id = ? AND consumer = 'XbmcMetadata'",
+    )
+    .bind(movie_id)
+    .fetch_all(db.pool())
+    .await
+    .unwrap_or_default();
+    let record = |relative: String, hash: Option<String>, kind: i64| async move {
+        let now = kitsunarr_db::now();
+        let r = sqlx::query(
+            "INSERT INTO movie_metadata_files (movie_id, consumer, type, relative_path, hash, added_at, last_updated) \
+             VALUES (?, 'XbmcMetadata', ?, ?, ?, ?, ?) ON CONFLICT (movie_id, relative_path) DO UPDATE SET \
+             hash = excluded.hash, last_updated = excluded.last_updated",
+        )
+        .bind(movie_id)
+        .bind(kind)
+        .bind(&relative)
+        .bind(&hash)
+        .bind(&now)
+        .bind(&now)
+        .execute(db.pool())
+        .await;
+        if let Err(e) = r {
+            tracing::warn!(error = %e, path = %relative, "film metadata file not recorded");
+        }
+    };
+    if kodi.series_metadata {
+        let original = kitsunarr_db::library::movies::original_title(db, movie_id)
+            .await
+            .ok()
+            .flatten();
+        let id_of = |kind: kitsunarr_domain::ExternalIdKind| {
+            d.external_ids
+                .iter()
+                .find(|e| e.kind == kind)
+                .map(|e| e.value.as_str())
+        };
+        let xml = kodi_movie(&MovieNfo {
+            title: &d.item.title,
+            original_title: original.as_deref(),
+            sort_title: &d.item.sort_title,
+            overview: d.overview.as_deref(),
+            certification: d.certification.as_deref(),
+            runtime: d.runtime,
+            tmdb_id: id_of(kitsunarr_domain::ExternalIdKind::Tmdb),
+            imdb_id: id_of(kitsunarr_domain::ExternalIdKind::Imdb),
+            genres: &d.genres,
+            premiered: d
+                .in_cinemas
+                .as_deref()
+                .or(d.digital_release.as_deref())
+                .or(d.physical_release.as_deref()),
+            year: d.item.year,
+            studio: d.item.studio.as_deref(),
+            images: &d.images,
+        });
+        let h = hash(&xml);
+        let path = folder.join("movie.nfo");
+        let unchanged = path.is_file()
+            && tracked
+                .iter()
+                .any(|(_, rel, old)| rel == "movie.nfo" && old.as_deref() == Some(h.as_str()));
+        if !unchanged {
+            match std::fs::write(&path, &xml) {
+                Ok(()) => record("movie.nfo".into(), Some(h), 1).await,
+                Err(e) => {
+                    tracing::warn!(path = %path.display(), error = %e, "could not write movie.nfo")
+                }
+            }
+        }
+    }
+    if kodi.series_images {
+        for cover in ["poster", "fanart"] {
+            let Some(image) = d.images.iter().find(|i| i.cover_type == cover) else {
+                continue;
+            };
+            let relative = format!("{cover}{}", url_extension(&image.remote_url));
+            let path = folder.join(&relative);
+            if path.is_file() {
+                continue;
+            }
+            let bytes = match http().get(&image.remote_url).send().await {
+                Ok(r) if r.status().is_success() => r.bytes().await.ok(),
+                _ => None,
+            };
+            let Some(bytes) = bytes else {
+                tracing::warn!(url = %image.remote_url, "couldn't download film artwork");
+                continue;
+            };
+            if std::fs::write(&path, &bytes).is_ok() {
+                record(relative, None, 3).await;
+            }
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------------------------
 // Loading and writing (`MetadataService`)
 // ---------------------------------------------------------------------------------------------
 

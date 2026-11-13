@@ -797,6 +797,8 @@ pub async fn refresh_movie(db: &Database, metadata: &Metadata, id: i64) -> Libra
     .await?;
     movies::set_original_country(&mut conn, id, info.original_country.as_deref()).await?;
     kitsunarr_db::auto_tags::apply_movie(&mut conn, id).await?;
+    drop(conn);
+    metadata_files::after_movie_change(db, id).await;
     Ok(())
 }
 
