@@ -694,6 +694,28 @@ impl Transmission {
     }
 }
 
+impl Transmission {
+    /// `GetStatus`: the download directory Kitsunarr uses, else Transmission's own.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let labels = self.supports_labels(s).await?;
+        let dir = match self.download_directory(s, labels).await? {
+            Some(d) => d,
+            None => self
+                .config(s)
+                .await?
+                .get("download-dir")
+                .and_then(Value::as_str)
+                .unwrap_or_default()
+                .to_string(),
+        };
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![dir].into_iter().filter(|d| !d.is_empty()).collect(),
+            ..Default::default()
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     #[test]

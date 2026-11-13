@@ -537,7 +537,7 @@ pub async fn set_episode_ordering(
             ))
         })
         .collect();
-    let mut tx = db.pool().begin().await?;
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
     // (id, season, episode, catalogue episode id, linked file)
     type Row = (i64, i64, i64, Option<String>, Option<i64>);
     let existing: Vec<Row> = sqlx::query_as(
@@ -654,7 +654,9 @@ pub async fn refresh_series(
     }
     metadata.enrich(&mut info).await;
     let monitor_new = monitored && monitor_new == "all";
-    let mut tx = db.pool().begin().await?;
+    // Immediate: it reads before writing, and a write committed in between (TheXEM after an
+    // add, a scan) would otherwise fail the upgrade instead of waiting.
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
     // Like Sonarr, a newly discovered episode is monitored only when new items are monitored
     // and its season is monitored; seasons created now get the default (specials excluded).
     let season_flags: HashMap<i64, bool> =

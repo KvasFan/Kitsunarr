@@ -361,6 +361,21 @@ fn chrono_now() -> i64 {
         .unwrap_or(0)
 }
 
+impl Tribler {
+    /// `GetStatus`: the default save folder, with the category as a hidden subfolder.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let mut dir = self.seeding(s).await?.save_as;
+        if let Some(c) = s.category.as_deref().filter(|c| !c.trim().is_empty()) {
+            dir = format!("{dir}/.{c}");
+        }
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![dir],
+            ..Default::default()
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

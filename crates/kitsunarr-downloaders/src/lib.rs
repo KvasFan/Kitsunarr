@@ -108,6 +108,51 @@ pub struct SeedProgress {
     pub finished_at: Option<i64>,
 }
 
+/// What a download client says about where it puts downloads (`DownloadClientInfo`), for the
+/// health checks. Folders are the client's own paths, before remote path mappings.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct ClientStatus {
+    pub is_localhost: bool,
+    pub output_root_folders: Vec<String>,
+    /// The client removes finished downloads before Kitsunarr can import them.
+    pub removes_completed_downloads: bool,
+    /// The client sorts downloads into folders of its own (SABnzbd's TV, movie or date
+    /// sorting).
+    pub sorting_mode: Option<String>,
+}
+
+/// `IsLocalhostAddress`.
+pub fn is_localhost(host: &str) -> bool {
+    let h = host.trim().trim_start_matches('[').trim_end_matches(']');
+    if h.to_ascii_lowercase().contains("localhost") {
+        return true;
+    }
+    h.parse::<std::net::IpAddr>()
+        .is_ok_and(|ip| ip.is_loopback())
+}
+
+/// Whether a path is absolute, on Unix or Windows.
+pub(crate) fn is_rooted(path: &str) -> bool {
+    path.starts_with('/') || path.starts_with('\\') || path.as_bytes().get(1) == Some(&b':')
+}
+
+/// `OsPath` addition: `base` + `rest`, with one separator of the base's kind.
+pub(crate) fn join_path(base: &str, rest: &str) -> String {
+    if base.is_empty() {
+        return rest.to_string();
+    }
+    let sep = if base.contains('\\') && !base.contains('/') {
+        '\\'
+    } else {
+        '/'
+    };
+    format!(
+        "{}{sep}{}",
+        base.trim_end_matches(['/', '\\']),
+        rest.trim_start_matches(['/', '\\'])
+    )
+}
+
 /// Whether Kitsunarr can talk to a download client implementation.
 pub fn supported(implementation: &str) -> bool {
     kitsunarr_domain::api::settings::DOWNLOAD_CLIENT_IMPLEMENTATIONS.contains(&implementation)
@@ -286,6 +331,40 @@ impl Clients {
             freebox: Freebox::new(http.clone()),
             downloadstation: DownloadStation::new(http),
         }
+    }
+
+    /// `GetStatus` of any client.
+    pub async fn status(&self, s: &ClientSettings) -> Result<ClientStatus, DownloadError> {
+        let local = |folder: Option<&str>| ClientStatus {
+            is_localhost: true,
+            output_root_folders: folder.map(str::to_string).into_iter().collect(),
+            ..Default::default()
+        };
+        let remote = |host: &str| ClientStatus {
+            is_localhost: is_localhost(host),
+            ..Default::default()
+        };
+        Ok(match s {
+            ClientSettings::QBittorrent(s) => self.qbittorrent.status(s).await?,
+            ClientSettings::Deluge(s) => self.deluge.status(s).await?,
+            ClientSettings::Transmission(s) => self.transmission.status(s).await?,
+            ClientSettings::Sabnzbd(s) => self.sabnzbd.status(s).await?,
+            ClientSettings::Nzbget(s) => self.nzbget.status(s).await?,
+            ClientSettings::UTorrent(s) => self.utorrent.status(s).await?,
+            ClientSettings::Flood(s) => self.flood.status(s).await?,
+            ClientSettings::Aria2(s) => self.aria2.status(s).await?,
+            ClientSettings::Hadouken(s) => self.hadouken.status(s).await?,
+            ClientSettings::Tribler(s) => self.tribler.status(s).await?,
+            ClientSettings::Freebox(s) => self.freebox.status(s).await?,
+            ClientSettings::DownloadStation(s) => self.downloadstation.status(s).await?,
+            // rTorrent, rqbit and NZBVortex report no folder upstream either.
+            ClientSettings::RTorrent(s) => remote(&s.host),
+            ClientSettings::RQBit(s) => remote(&s.host),
+            ClientSettings::NzbVortex(s) => remote(&s.host),
+            ClientSettings::Pneumatic(_) => local(None),
+            ClientSettings::TorrentBlackhole(s) => local(Some(&s.watch_folder)),
+            ClientSettings::UsenetBlackhole(s) => local(Some(&s.watch_folder)),
+        })
     }
 
     pub async fn test(&self, s: &ClientSettings) -> Result<Tested, DownloadError> {

@@ -538,6 +538,45 @@ impl UTorrent {
     }
 }
 
+impl UTorrent {
+    /// `GetStatus`: the active, else the completed download folder (with the label's
+    /// subfolder when uTorrent adds it).
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let v = self
+            .request(s, &[("action", "getsettings".into())], None)
+            .await?;
+        let mut config = std::collections::HashMap::new();
+        for entry in v["settings"].as_array().into_iter().flatten() {
+            if let (Some(name), Some(value)) = (entry.get(0).and_then(Value::as_str), entry.get(2))
+            {
+                let value = match value {
+                    Value::String(x) => x.clone(),
+                    other => other.to_string(),
+                };
+                config.insert(name.to_string(), value);
+            }
+        }
+        let get = |k: &str| config.get(k).cloned().unwrap_or_default();
+        let mut dest = String::new();
+        if get("dir_active_download_flag") == "true" {
+            dest = get("dir_active_download");
+        }
+        if get("dir_completed_download_flag") == "true" {
+            dest = get("dir_completed_download");
+            if get("dir_add_label") == "true"
+                && let Some(c) = &s.category
+            {
+                dest = crate::join_path(&dest, c);
+            }
+        }
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![dest].into_iter().filter(|d| !d.is_empty()).collect(),
+            ..Default::default()
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -653,6 +653,51 @@ fn join(left: &str, right: &str) -> String {
     format!("{}{sep}{}", left.trim_end_matches(['/', '\\']), right)
 }
 
+impl Sabnzbd {
+    /// `GetStatus`: the category's folder (or the default `*` one), its sorting and whether
+    /// the history keeps finished downloads.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let config = self.config(s).await?;
+        let categories = self.categories(s, &config).await?;
+        let wanted = s.category.as_deref();
+        let category = categories
+            .iter()
+            .find(|c| Some(c.0.as_str()) == wanted)
+            .or_else(|| categories.iter().find(|c| c.0 == "*"));
+        let misc = config.get("misc").cloned().unwrap_or(Value::Null);
+        let mut status = crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            removes_completed_downloads: removes_completed_downloads(&misc),
+            ..Default::default()
+        };
+        if let Some((_, _, full)) = category {
+            let sorters = config
+                .get("sorters")
+                .and_then(Value::as_array)
+                .cloned()
+                .unwrap_or_default();
+            let sorted = |key: &str, cats: &str| {
+                flag(misc.get(key)) && contains_category(&strings(misc.get(cats)), wanted)
+            };
+            status.sorting_mode = if sorted("enable_tv_sorting", "tv_categories")
+                || sorters.iter().any(|x| {
+                    flag(x.get("is_active"))
+                        && contains_category(&strings(x.get("sort_cats")), wanted)
+                }) {
+                Some("TV".into())
+            } else if sorted("enable_movie_sorting", "movie_categories") {
+                Some("Movie".into())
+            } else if sorted("enable_date_sorting", "date_categories") {
+                Some("Date".into())
+            } else {
+                None
+            };
+            status.output_root_folders = vec![full.clone()];
+        }
+        Ok(status)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

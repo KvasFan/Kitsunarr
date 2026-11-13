@@ -368,6 +368,23 @@ impl Aria2 {
     }
 }
 
+impl Aria2 {
+    /// `GetStatus`: aria2's global `dir`.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let globals = self.call(s, "aria2.getGlobalOption", &[]).await?;
+        let dir = globals
+            .member("dir")
+            .and_then(|v| v.as_str())
+            .unwrap_or_default()
+            .to_string();
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![dir].into_iter().filter(|d| !d.is_empty()).collect(),
+            ..Default::default()
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

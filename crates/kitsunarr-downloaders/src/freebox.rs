@@ -421,6 +421,18 @@ impl Freebox {
     }
 }
 
+impl Freebox {
+    /// `GetStatus`: the folder downloads go to.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let dir = self.directory(s, "").await?;
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![dir].into_iter().filter(|d| !d.is_empty()).collect(),
+            ..Default::default()
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

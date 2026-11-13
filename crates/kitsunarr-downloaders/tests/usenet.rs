@@ -412,3 +412,23 @@ async fn nzbget_test_reports_problems() {
     let half = json!({"username": "x"});
     assert!(nzbget::Settings::from_map(half.as_object().unwrap()).is_err());
 }
+
+/// `GetStatus`: the category's folder under the complete folder, the category's sorting, and
+/// whether SABnzbd keeps finished downloads.
+#[tokio::test]
+async fn sabnzbd_status_reports_folders_sorting_and_history_retention() {
+    let (settings, _) = sab_mock(sab_config()).await;
+    let status = Clients::default().status(&settings).await.unwrap();
+    assert!(status.is_localhost);
+    assert_eq!(status.output_root_folders, ["/data/complete/tv"]);
+    assert_eq!(status.sorting_mode, None);
+    assert!(!status.removes_completed_downloads);
+
+    let mut config = sab_config();
+    config["misc"]["enable_tv_sorting"] = json!(1);
+    config["misc"]["history_retention_option"] = json!("number-delete");
+    let (settings, _) = sab_mock(config).await;
+    let status = Clients::default().status(&settings).await.unwrap();
+    assert_eq!(status.sorting_mode.as_deref(), Some("TV"));
+    assert!(status.removes_completed_downloads);
+}

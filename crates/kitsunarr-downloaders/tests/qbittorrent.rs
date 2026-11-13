@@ -186,6 +186,25 @@ async fn test_creates_the_category_and_reports_share_limits() {
     ));
 }
 
+/// `GetStatus`: the save path and whether share limits remove finished torrents.
+#[tokio::test]
+async fn status_reports_the_save_path_and_share_limit_removal() {
+    let (settings, mock) = mock_qbittorrent().await;
+    let client = QBittorrent::new(reqwest::Client::new());
+    let status = client.status(&settings).await.unwrap();
+    assert!(status.is_localhost);
+    assert_eq!(status.output_root_folders, ["/downloads"]);
+    assert!(!status.removes_completed_downloads);
+    mock.lock().unwrap().remove_at_ratio = true;
+    assert!(
+        client
+            .status(&settings)
+            .await
+            .unwrap()
+            .removes_completed_downloads
+    );
+}
+
 #[tokio::test]
 async fn adds_magnets_and_files_with_the_category() {
     let (mut settings, mock) = mock_qbittorrent().await;

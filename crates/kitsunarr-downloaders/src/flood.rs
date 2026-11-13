@@ -451,6 +451,29 @@ impl Flood {
     }
 }
 
+impl Flood {
+    /// `GetStatus`: the destination, else Flood's default directory.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let dest = match s.destination.clone().filter(|d| !d.trim().is_empty()) {
+            Some(d) => d,
+            None => {
+                let body = self
+                    .request(s, reqwest::Method::GET, "client/settings", None)
+                    .await?;
+                serde_json::from_str::<Value>(&body)
+                    .ok()
+                    .and_then(|v| v["directoryDefault"].as_str().map(str::to_string))
+                    .unwrap_or_default()
+            }
+        };
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![dest].into_iter().filter(|d| !d.is_empty()).collect(),
+            ..Default::default()
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

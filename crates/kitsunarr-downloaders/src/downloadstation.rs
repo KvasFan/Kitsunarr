@@ -732,6 +732,20 @@ impl DownloadStation {
     }
 }
 
+impl DownloadStation {
+    /// `GetStatus`: the download folder as the NAS's real path.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let serial = self.serial(s).await?;
+        let shared = format!("/{}", self.directory(s).await?.unwrap_or_default());
+        let full = self.full_path(s, &shared, &serial).await?;
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![full],
+            ..Default::default()
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -212,6 +212,8 @@ pub async fn more_checks(state: &AppState, out: &mut Vec<HealthCheck>) -> ApiRes
         ));
     }
 
+    download_client_checks(state, &clients, dco.enable_completed_download_handling, out).await?;
+
     // `ImportListStatusCheck` and `ImportListRootFolderCheck`.
     let lists: Vec<ProviderRecord> = providers::list(pool, ProviderKind::ImportList)
         .await?
@@ -365,6 +367,262 @@ pub async fn more_checks(state: &AppState, out: &mut Vec<HealthCheck>) -> ApiRes
     Ok(())
 }
 
+/// Client statuses, kept five minutes so the health page does not wait on every client.
+type StatusCache = std::sync::Mutex<
+    std::collections::HashMap<
+        String,
+        (
+            std::time::Instant,
+            Option<kitsunarr_downloaders::ClientStatus>,
+        ),
+    >,
+>;
+static CLIENT_STATUS: std::sync::LazyLock<StatusCache> = std::sync::LazyLock::new(Default::default);
+
+async fn client_status(
+    state: &AppState,
+    client: &ProviderRecord,
+) -> Option<kitsunarr_downloaders::ClientStatus> {
+    let key = format!(
+        "{}:{}:{}",
+        client.id,
+        client.implementation,
+        serde_json::Value::Object(client.settings.clone())
+    );
+    if let Some((at, status)) = CLIENT_STATUS
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .get(&key)
+        && at.elapsed() < std::time::Duration::from_secs(300)
+    {
+        return status.clone();
+    }
+    let settings = kitsunarr_downloaders::ClientSettings::from_provider(
+        &client.implementation,
+        &client.settings,
+    )
+    .ok()?;
+    let status = tokio::time::timeout(
+        std::time::Duration::from_secs(5),
+        state.downloads.clients.status(&settings),
+    )
+    .await
+    .ok()
+    .and_then(Result::ok);
+    CLIENT_STATUS
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .insert(key, (std::time::Instant::now(), status.clone()));
+    status
+}
+
+/// Whether a path is valid on this system (Kitsunarr runs on Unix: an absolute Unix path).
+fn valid_here(path: &str) -> bool {
+    path.starts_with('/') && !path.contains('\\')
+}
+
+fn os_name() -> String {
+    std::fs::read_to_string("/etc/os-release")
+        .ok()
+        .and_then(|r| {
+            r.lines()
+                .find_map(|l| l.strip_prefix("ID="))
+                .map(|v| v.trim_matches('"').to_string())
+        })
+        .filter(|n| !n.is_empty())
+        .unwrap_or_else(|| std::env::consts::OS.to_string())
+}
+
+fn in_docker() -> bool {
+    Path::new("/.dockerenv").exists()
+        || Path::new("/run/.containerenv").exists()
+        || std::fs::read_to_string("/proc/1/cgroup").is_ok_and(|c| c.contains("/docker/"))
+}
+
+/// What a client's reported folders say, as Sonarr's checks word it (one problem per check).
+#[derive(Debug, Default, PartialEq)]
+pub struct ClientFolderProblems {
+    pub removes_completed: Option<String>,
+    pub sorting: Option<String>,
+    pub root_folder: Option<String>,
+    pub remote_path: Option<String>,
+}
+
+/// Where the folder checks run: completed download handling on, inside a container, and the
+/// system's name for messages.
+pub struct FolderCheckEnv {
+    pub completed_handling: bool,
+    pub docker: bool,
+    pub os: String,
+}
+
+/// `DownloadClientRemovesCompletedDownloadsCheck`, `DownloadClientSortingCheck`,
+/// `DownloadClientRootFolderCheck` and `RemotePathMappingCheck` for one client, its status
+/// folders already mapped to local paths.
+pub fn client_folder_problems(
+    name: &str,
+    status: &kitsunarr_downloaders::ClientStatus,
+    local_folders: &[String],
+    root_folders: &[String],
+    env: &FolderCheckEnv,
+    exists: impl Fn(&str) -> bool,
+) -> ClientFolderProblems {
+    let (completed_handling, docker, os) = (env.completed_handling, env.docker, env.os.as_str());
+    let mut p = ClientFolderProblems::default();
+    if status.removes_completed_downloads {
+        p.removes_completed = Some(format!(
+            "Download client {name} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them."
+        ));
+    }
+    if let Some(mode) = status
+        .sorting_mode
+        .as_deref()
+        .filter(|m| !m.trim().is_empty())
+    {
+        p.sorting = Some(format!(
+            "Download client {name} has {mode} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues."
+        ));
+    }
+    let trim = |x: &str| x.trim_end_matches('/').to_string();
+    if let Some(root) = root_folders.iter().find(|r| {
+        local_folders.iter().any(|f| {
+            let (r, f) = (trim(r), trim(f));
+            f == r || f.starts_with(&format!("{r}/"))
+        })
+    }) {
+        p.root_folder = Some(format!(
+            "Download client {name} places downloads in the root folder {root}. You should not download to a root folder."
+        ));
+    }
+    if completed_handling {
+        for path in local_folders {
+            let message = if !valid_here(path) {
+                if !status.is_localhost {
+                    format!(
+                        "Remote download client {name} places downloads in {path} but this is not a valid {os} path. Review your remote path mappings and download client settings."
+                    )
+                } else if docker {
+                    format!(
+                        "You are using docker; download client {name} places downloads in {path} but this is not a valid {os} path. Review your remote path mappings and download client settings."
+                    )
+                } else {
+                    format!(
+                        "Local download client {name} places downloads in {path} but this is not a valid {os} path. Review your download client settings."
+                    )
+                }
+            } else if !exists(path) {
+                if docker {
+                    format!(
+                        "You are using docker; download client {name} places downloads in {path} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings."
+                    )
+                } else if !status.is_localhost {
+                    format!(
+                        "Remote download client {name} places downloads in {path} but this directory does not appear to exist. Likely missing or incorrect remote path mapping."
+                    )
+                } else {
+                    format!(
+                        "Download client {name} places downloads in {path} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions."
+                    )
+                }
+            } else {
+                continue;
+            };
+            p.remote_path = Some(message);
+            break;
+        }
+    }
+    p
+}
+
+/// The checks that need each client's status (`GetStatus`), for enabled clients that are not
+/// backing off after failures.
+async fn download_client_checks(
+    state: &AppState,
+    clients: &[ProviderRecord],
+    completed_handling: bool,
+    out: &mut Vec<HealthCheck>,
+) -> ApiResult<()> {
+    let pool = state.db.pool();
+    let blocked = kitsunarr_db::indexer_status::blocked_of(
+        kitsunarr_db::indexer_status::Kind::DownloadClient,
+        pool,
+        Utc::now(),
+    )
+    .await?;
+    let usable: Vec<&ProviderRecord> = clients
+        .iter()
+        .filter(|c| {
+            c.enabled
+                && kitsunarr_downloaders::supported(&c.implementation)
+                && !blocked.iter().any(|b| b.indexer_id == c.id)
+        })
+        .collect();
+    if usable.is_empty() {
+        return Ok(());
+    }
+    let mappings = kitsunarr_db::rules::list_remote_path_mappings(pool).await?;
+    let roots: Vec<String> = kitsunarr_db::root_folders::list(pool)
+        .await?
+        .into_iter()
+        .map(|r| r.path)
+        .collect();
+    let statuses = futures::future::join_all(usable.iter().map(|c| client_status(state, c))).await;
+    let env = FolderCheckEnv {
+        completed_handling,
+        docker: in_docker(),
+        os: os_name(),
+    };
+    let mut found = ClientFolderProblems::default();
+    for (client, status) in usable.iter().zip(statuses) {
+        let Some(status) = status else { continue };
+        let host = kitsunarr_downloaders::ClientSettings::from_provider(
+            &client.implementation,
+            &client.settings,
+        )
+        .map(|s| s.host().to_string())
+        .unwrap_or_default();
+        let local: Vec<String> = status
+            .output_root_folders
+            .iter()
+            .map(|f| kitsunarr_library::downloads::remap(&mappings, &host, f))
+            .collect();
+        let p = client_folder_problems(&client.name, &status, &local, &roots, &env, |path| {
+            Path::new(path).is_dir()
+        });
+        found.removes_completed = found.removes_completed.or(p.removes_completed);
+        found.sorting = found.sorting.or(p.sorting);
+        found.root_folder = found.root_folder.or(p.root_folder);
+        found.remote_path = found.remote_path.or(p.remote_path);
+    }
+    for (source, level, message) in [
+        (
+            "DownloadClientRemovesCompletedDownloadsCheck",
+            HealthLevel::Warning,
+            found.removes_completed,
+        ),
+        (
+            "DownloadClientSortingCheck",
+            HealthLevel::Warning,
+            found.sorting,
+        ),
+        (
+            "DownloadClientRootFolderCheck",
+            HealthLevel::Warning,
+            found.root_folder,
+        ),
+        (
+            "RemotePathMappingCheck",
+            HealthLevel::Error,
+            found.remote_path,
+        ),
+    ] {
+        if let Some(m) = message {
+            out.push(check(source, level, m));
+        }
+    }
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -424,5 +682,79 @@ mod tests {
         );
         assert_eq!(read_only_mount(mounts, Path::new("/media/tv/Show")), None);
         assert_eq!(read_only_mount(mounts, Path::new("/srv/x")), None);
+    }
+
+    #[test]
+    fn download_client_folders_are_checked_as_sonarr_does() {
+        use kitsunarr_downloaders::ClientStatus;
+        let env = FolderCheckEnv {
+            completed_handling: true,
+            docker: false,
+            os: "debian".into(),
+        };
+        let roots = vec!["/media/tv".to_string()];
+        let status = ClientStatus {
+            is_localhost: false,
+            output_root_folders: Vec::new(),
+            removes_completed_downloads: true,
+            sorting_mode: Some("TV".into()),
+        };
+        let p = client_folder_problems(
+            "SAB",
+            &status,
+            &["/media/tv/downloads".into()],
+            &roots,
+            &env,
+            |_| true,
+        );
+        assert!(
+            p.removes_completed
+                .unwrap()
+                .starts_with("Download client SAB is set to remove completed downloads.")
+        );
+        assert!(p.sorting.unwrap().contains("has TV sorting enabled"));
+        assert_eq!(
+            p.root_folder.as_deref(),
+            Some(
+                "Download client SAB places downloads in the root folder /media/tv. You should not download to a root folder."
+            )
+        );
+        assert_eq!(p.remote_path, None);
+        // A Windows path from a remote client, and a missing folder.
+        let p = client_folder_problems(
+            "SAB",
+            &status,
+            &["D:\\Downloads".into()],
+            &roots,
+            &env,
+            |_| true,
+        );
+        assert!(p.remote_path.unwrap().starts_with("Remote download client SAB places downloads in D:\\Downloads but this is not a valid debian path."));
+        let p =
+            client_folder_problems("SAB", &status, &["/downloads".into()], &roots, &env, |_| {
+                false
+            });
+        assert!(
+            p.remote_path
+                .unwrap()
+                .contains("Likely missing or incorrect remote path mapping.")
+        );
+        let local = ClientStatus {
+            is_localhost: true,
+            ..ClientStatus::default()
+        };
+        let p = client_folder_problems("qB", &local, &["/downloads".into()], &roots, &env, |_| {
+            false
+        });
+        assert!(p.remote_path.unwrap().contains("cannot see this directory"));
+        // Without completed download handling the folders are not checked.
+        let off = FolderCheckEnv {
+            completed_handling: false,
+            ..env
+        };
+        let p = client_folder_problems("qB", &local, &["/downloads".into()], &roots, &off, |_| {
+            false
+        });
+        assert_eq!(p, ClientFolderProblems::default());
     }
 }

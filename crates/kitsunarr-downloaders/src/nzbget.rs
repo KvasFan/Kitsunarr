@@ -505,6 +505,22 @@ fn uuid_hex() -> String {
     uuid::Uuid::new_v4().simple().to_string()
 }
 
+impl Nzbget {
+    /// `GetStatus`: the category's destination folder.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let config = self.config(s).await?;
+        let dest = categories(&config)
+            .into_iter()
+            .find(|(n, _)| Some(n.as_str()) == s.category.as_deref())
+            .map(|(_, d)| d);
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: dest.into_iter().filter(|d| !d.is_empty()).collect(),
+            ..Default::default()
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

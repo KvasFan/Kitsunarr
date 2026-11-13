@@ -645,3 +645,51 @@ fn strings(v: Value) -> Vec<String> {
         })
         .unwrap_or_default()
 }
+
+impl Deluge {
+    /// `GetStatus`: the completed or download directory Kitsunarr set, else the label's or
+    /// Deluge's move-completed folder, else its download location.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let dest = if let Some(d) = s.completed_directory.clone().filter(|d| !d.is_empty()) {
+            d
+        } else if let Some(d) = s.download_directory.clone().filter(|d| !d.is_empty()) {
+            d
+        } else {
+            let label = match &s.category {
+                Some(c) => self
+                    .call(s, "label.get_options", json!([c]))
+                    .await
+                    .ok()
+                    .filter(|v| v.is_object()),
+                None => None,
+            };
+            let truthy = |v: &Value| v.as_bool().unwrap_or(false);
+            match label {
+                Some(l) if truthy(&l["apply_move_completed"]) && truthy(&l["move_completed"]) => l
+                    ["move_completed_path"]
+                    .as_str()
+                    .unwrap_or_default()
+                    .to_string(),
+                _ => {
+                    let config = self.call(s, "core.get_config", json!([])).await?;
+                    if truthy(&config["move_completed"]) {
+                        config["move_completed_path"]
+                            .as_str()
+                            .unwrap_or_default()
+                            .to_string()
+                    } else {
+                        config["download_location"]
+                            .as_str()
+                            .unwrap_or_default()
+                            .to_string()
+                    }
+                }
+            }
+        };
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![dest].into_iter().filter(|d| !d.is_empty()).collect(),
+            ..Default::default()
+        })
+    }
+}

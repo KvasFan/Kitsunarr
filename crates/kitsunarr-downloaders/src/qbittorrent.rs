@@ -946,6 +946,42 @@ fn now_unix() -> i64 {
         .unwrap_or(0)
 }
 
+impl QBittorrent {
+    /// `GetStatus`: the save path (the category's own when it has one), and whether share
+    /// limits remove finished torrents.
+    pub async fn status(&self, s: &Settings) -> Result<crate::ClientStatus, DownloadError> {
+        let prefs = self.preferences(s).await?;
+        let mut dest = prefs.save_path.clone();
+        if let Some(category) = s.category.as_deref().filter(|c| !c.trim().is_empty())
+            && let Ok(map) = Self::json::<Map<String, Value>>(
+                &self.get(s, "/api/v2/torrents/categories", &[]).await?,
+            )
+            && let Some(path) = map
+                .get(category)
+                .and_then(|c| c.get("savePath"))
+                .and_then(Value::as_str)
+                .filter(|p| !p.trim().is_empty())
+        {
+            let path = if path.starts_with("//") {
+                path.replace('/', "\\")
+            } else {
+                path.to_string()
+            };
+            dest = if crate::is_rooted(&path) {
+                path
+            } else {
+                crate::join_path(&dest, &path)
+            };
+        }
+        Ok(crate::ClientStatus {
+            is_localhost: crate::is_localhost(&s.host),
+            output_root_folders: vec![dest].into_iter().filter(|d| !d.is_empty()).collect(),
+            removes_completed_downloads: prefs.removes_completed_downloads(),
+            sorting_mode: None,
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
