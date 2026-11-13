@@ -554,6 +554,22 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Metadata files").await;
         wait_text(&client, "Kodi (XBMC) / Emby").await;
         wait_text(&client, "WDTV").await;
+        // The calendar's iCal link carries the API key.
+        client.goto(&format!("{base}/calendar")).await.unwrap();
+        click_button(&client, "iCal link").await;
+        wait_text(&client, "Subscribe to this address").await;
+        let feed = client
+            .wait()
+            .at_most(Duration::from_secs(20))
+            .for_element(Locator::Css("input[aria-label='iCal feed address']"))
+            .await
+            .unwrap()
+            .prop("value")
+            .await
+            .unwrap()
+            .unwrap_or_default();
+        assert!(feed.contains("/feed/v3/calendar/Kitsunarr.ics?pastDays=7&futureDays=28&apikey="), "{feed}");
+        click_button(&client, "Close").await;
         // Auto tagging (Sonarr's Settings › Tags): a rule with a genre condition.
         client.goto(&format!("{base}/settings/tags")).await.unwrap();
         click_button(&client, "Add auto tag").await;

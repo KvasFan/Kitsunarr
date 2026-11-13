@@ -838,6 +838,33 @@ pub struct GeneralSettings {
     pub default_media_kind: crate::media::MediaKind,
     pub ui_language: String,
     pub first_day_of_week: u8,
+    /// Sonarr's Settings › General › Security › Certificate Validation.
+    #[serde(default)]
+    pub certificate_validation: CertificateValidation,
+}
+
+/// Sonarr's `CertificateValidationType`: when HTTPS certificates are checked.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum CertificateValidation {
+    #[default]
+    Enabled,
+    DisabledForLocalAddresses,
+    Disabled,
+}
+
+impl CertificateValidation {
+    /// Sonarr's stored or API value (`DisabledForLocalAddresses`, `disabledForLocalAddresses`,
+    /// or its number).
+    pub fn parse(v: &str) -> Option<Self> {
+        match v.trim().to_ascii_lowercase().as_str() {
+            "enabled" | "0" => Some(Self::Enabled),
+            "disabledforlocaladdresses" | "1" => Some(Self::DisabledForLocalAddresses),
+            "disabled" | "2" => Some(Self::Disabled),
+            _ => None,
+        }
+    }
 }
 
 impl Default for GeneralSettings {
@@ -847,6 +874,7 @@ impl Default for GeneralSettings {
             default_media_kind: crate::media::MediaKind::Series,
             ui_language: "en".into(),
             first_day_of_week: 1,
+            certificate_validation: CertificateValidation::Enabled,
         }
     }
 }

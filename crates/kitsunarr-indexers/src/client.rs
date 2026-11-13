@@ -151,6 +151,12 @@ impl IndexerClient {
         }
     }
 
+    /// Replaces the client release downloads use (it must not follow redirects).
+    pub fn with_download_client(mut self, downloads: reqwest::Client) -> Self {
+        self.downloads = downloads;
+        self
+    }
+
     /// Sends downloads through this proxy (the search client is built by the caller).
     pub fn with_download_proxy(mut self, proxy: reqwest::Proxy) -> Self {
         if let Ok(downloads) = reqwest::Client::builder()

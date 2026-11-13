@@ -4344,6 +4344,97 @@ async fn import_list_shows_can_be_added_selectively() {
 }
 
 #[tokio::test]
+async fn ical_feed_lists_episodes_for_calendar_apps() {
+    let (skyhook, _log) = skyhook_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::Tvdb,
+            id: "81189".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+        })
+        .await
+        .unwrap();
+    let http = reqwest::Client::new();
+    let feed = |q: &str| {
+        format!(
+            "{}/feed/v3/calendar/Sonarr.ics?pastDays=10000&futureDays=1{q}",
+            server.base
+        )
+    };
+    // The API key is required (in the query, as calendar apps send it).
+    assert_eq!(http.get(feed("")).send().await.unwrap().status(), 401);
+    let resp = http
+        .get(feed(&format!("&apikey={}", server.api_key)))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(resp.status(), 200);
+    assert!(
+        resp.headers()["content-type"]
+            .to_str()
+            .unwrap()
+            .starts_with("text/calendar")
+    );
+    let ics = resp.text().await.unwrap();
+    assert!(ics.starts_with("BEGIN:VCALENDAR\r\n"));
+    assert!(
+        ics.contains("SUMMARY:Breaking Bad - 1x01 - Pilot\r\n"),
+        "{ics}"
+    );
+    assert!(ics.contains("STATUS:TENTATIVE"), "no file yet");
+    assert!(ics.contains("CATEGORIES:AMC"));
+    let premieres = http
+        .get(feed(&format!(
+            "&premieresOnly=true&apikey={}",
+            server.api_key
+        )))
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+    assert!(premieres.matches("BEGIN:VEVENT").count() < ics.matches("BEGIN:VEVENT").count());
+    assert!(premieres.contains("1x01"));
+    assert!(!premieres.contains("1x02"));
+    // A tag no series has leaves nothing.
+    client.create_tag("none").await.unwrap();
+    let tagged = http
+        .get(feed(&format!("&tags=none&apikey={}", server.api_key)))
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+    assert!(!tagged.contains("BEGIN:VEVENT"));
+}
+
+#[tokio::test]
 async fn auto_tagging_applies_on_add_edit_and_refresh() {
     use kitsunarr_domain::api::library::SeriesUpdate;
     use kitsunarr_domain::api::settings::{AutoTag, CustomFormatSpecification};

@@ -785,6 +785,8 @@ pub async fn put_general(
         ));
     }
     kv::set(state.db.pool(), kv::KEY_GENERAL, &body).await?;
+    // Applies to the next HTTPS connection.
+    state.certificates.set(body.certificate_validation);
     settings_changed(&state, "general");
     Ok(Json(body))
 }

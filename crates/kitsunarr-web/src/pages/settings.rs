@@ -116,6 +116,14 @@ pub fn SettingsGeneral() -> Element {
                         Field { label: "Interface language", help: "More languages can be added to the string tables.".to_string(),
                             select { class: "select", disabled: true, option { "English" } }
                         }
+                        Field { label: "Certificate validation", help: "When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.".to_string(),
+                            select { class: "select", "aria-label": "Certificate validation",
+                                onchange: move |e: FormEvent| { if let Some(f) = form.write().as_mut() { f.certificate_validation = kitsunarr_domain::api::settings::CertificateValidation::parse(&e.value()).unwrap_or_default(); } },
+                                for (v, label) in [("enabled", "Enabled"), ("disabledForLocalAddresses", "Disabled for local addresses"), ("disabled", "Disabled")] {
+                                    option { key: "{v}", value: "{v}", selected: kitsunarr_domain::api::settings::CertificateValidation::parse(v) == Some(g.certificate_validation), "{label}" }
+                                }
+                            }
+                        }
                     }
                     div { class: "row end", button { class: "btn primary", onclick: save, {crate::i18n::t().save} } }
                 },

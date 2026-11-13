@@ -14,12 +14,14 @@ pub mod assets;
 pub mod auth;
 pub mod downloads;
 pub mod error;
+pub mod ical;
 pub mod import_lists;
 pub mod library_tools;
 pub mod logs;
 pub mod proxy;
 pub mod routes;
 pub mod rss;
+pub mod tls;
 pub mod v3;
 
 use std::sync::{Arc, RwLock};
@@ -71,6 +73,8 @@ pub struct AppStateInner {
     pub http: reqwest::Client,
     /// The proxy `http` (and the indexer download client) consult per request.
     pub proxy: proxy::HttpProxy,
+    /// Sonarr's certificate validation, consulted by every HTTPS request.
+    pub certificates: tls::CertificatePolicy,
     /// MyAnimeList sign-in codes Kitsunarr's callback received, by sign-in nonce.
     pub oauth_codes: std::sync::Mutex<std::collections::HashMap<String, String>>,
     pub metadata: kitsunarr_metadata::Metadata,
@@ -127,6 +131,7 @@ impl AppState {
             wanted_search: Default::default(),
             last_health: Default::default(),
             proxy: Default::default(),
+            certificates: Default::default(),
             oauth_codes: Default::default(),
             http,
             metadata,
@@ -154,6 +159,29 @@ impl AppState {
                 inner.proxy = proxy;
             }
             None => tracing::warn!("proxy not applied: the state is already shared"),
+        }
+        self
+    }
+
+    /// Shares the certificate policy the HTTP client was built with; the indexer download
+    /// client is rebuilt with it and the proxy. Must be called before the state is shared.
+    pub fn with_certificates(mut self, certificates: tls::CertificatePolicy) -> Self {
+        match Arc::get_mut(&mut self.0) {
+            Some(inner) => {
+                let mut builder = reqwest::Client::builder()
+                    .redirect(reqwest::redirect::Policy::none())
+                    .user_agent(concat!("Kitsunarr/", env!("CARGO_PKG_VERSION")))
+                    .proxy(inner.proxy.reqwest());
+                if let Some(config) = certificates.rustls_config() {
+                    builder = builder.tls_backend_preconfigured(config);
+                }
+                if let Ok(downloads) = builder.build() {
+                    inner.indexers =
+                        std::mem::take(&mut inner.indexers).with_download_client(downloads);
+                }
+                inner.certificates = certificates;
+            }
+            None => tracing::warn!("certificate policy not applied: the state is already shared"),
         }
         self
     }
@@ -224,9 +252,15 @@ pub fn app(state: AppState) -> Router {
         state.clone(),
         auth::require_auth_v3,
     ));
+    // Sonarr's iCal feed, for calendar apps (API key in the query).
+    let feed = ical::feed_router().route_layer(axum::middleware::from_fn_with_state(
+        state.clone(),
+        auth::require_auth_v3,
+    ));
     let inner = Router::new()
         .merge(api)
         .nest("/api/v3", v3)
+        .nest("/feed/v3", feed)
         .nest("/api/v5", v5)
         .route(
             "/api/v1/openapi.json",

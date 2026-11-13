@@ -301,7 +301,22 @@ async fn serve(config: Config) -> Result<()> {
         Ok(s) => proxy.set(s),
         Err(e) => tracing::warn!(error = %e, "could not load the proxy settings"),
     }
-    let http = reqwest::Client::builder()
+    // Sonarr's certificate validation, consulted by every HTTPS connection.
+    let certificates = kitsunarr_api::tls::CertificatePolicy::default();
+    match kitsunarr_db::settings::get_or_default::<kitsunarr_domain::api::settings::GeneralSettings>(
+        db.pool(),
+        kitsunarr_db::settings::KEY_GENERAL,
+    )
+    .await
+    {
+        Ok(g) => certificates.set(g.certificate_validation),
+        Err(e) => tracing::warn!(error = %e, "could not load the general settings"),
+    }
+    let mut http = reqwest::Client::builder();
+    if let Some(config) = certificates.rustls_config() {
+        http = http.tls_backend_preconfigured(config);
+    }
+    let http = http
         .proxy(proxy.reqwest())
         .user_agent(format!(
             "Kitsunarr/{VERSION} (+https://github.com/KvasFan/Kitsunarr)"
@@ -355,7 +370,8 @@ async fn serve(config: Config) -> Result<()> {
         logs,
     )
     .with_download_monitor(downloads)
-    .with_proxy(proxy);
+    .with_proxy(proxy)
+    .with_certificates(certificates);
     let _ = api_state.set(state.clone());
     // `ApplicationUpdatedEvent`: the first start of a new version.
     kitsunarr_library::notify::announce_version(&db, &state.downloads.notifier, VERSION).await;

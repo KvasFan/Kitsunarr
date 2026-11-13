@@ -796,6 +796,10 @@ async fn auto_tagging_and_original_country_are_imported() {
         .execute(&source)
         .await
         .unwrap();
+    sqlx::query("INSERT INTO Config (Key, Value) VALUES ('certificatevalidation', 'DisabledForLocalAddresses')")
+        .execute(&source)
+        .await
+        .unwrap();
     source.close().await;
 
     let src = load_from_backup(&db_path, tmp.path()).await.unwrap();
@@ -856,6 +860,14 @@ async fn auto_tagging_and_original_country_are_imported() {
     assert!(!consumers.kodi.series_images);
     assert!(consumers.plex.enable && consumers.plex.episode_mappings);
     assert!(!consumers.wdtv.enable && !consumers.roksbox.enable);
+    let general: kitsunarr_domain::api::settings::GeneralSettings =
+        kitsunarr_db::settings::get_or_default(db.pool(), kitsunarr_db::settings::KEY_GENERAL)
+            .await
+            .unwrap();
+    assert_eq!(
+        general.certificate_validation,
+        kitsunarr_domain::api::settings::CertificateValidation::DisabledForLocalAddresses
+    );
 
     // Tanukarr's `OriginalCountry` is kept, from SkyHook ("usa") and AniList ("JP").
     let countries: Vec<(String, Option<String>)> =

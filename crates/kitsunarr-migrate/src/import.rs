@@ -1395,6 +1395,38 @@ impl<'a> Importer<'a> {
                 self.count("settings", Act::Skip);
             }
         }
+        // Certificate validation: the API's `/config/host`, or the database's `Config` key.
+        if let Some(mode) = self
+            .snap
+            .host_options
+            .clone()
+            .or_else(|| self.snap.media_management.clone())
+            .and_then(|r| match r.raw("certificatevalidation") {
+                Some(serde_json::Value::String(s)) => {
+                    kitsunarr_domain::api::settings::CertificateValidation::parse(s)
+                }
+                Some(serde_json::Value::Number(n)) => {
+                    kitsunarr_domain::api::settings::CertificateValidation::parse(&n.to_string())
+                }
+                _ => None,
+            })
+        {
+            let current: kitsunarr_domain::api::settings::GeneralSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_GENERAL).await?;
+            if current.certificate_validation == mode {
+                self.count("settings", Act::Skip);
+            } else if current.certificate_validation == Default::default() || self.update_existing()
+            {
+                let next = kitsunarr_domain::api::settings::GeneralSettings {
+                    certificate_validation: mode,
+                    ..current
+                };
+                settings::set(&mut *conn, settings::KEY_GENERAL, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
         // Metadata consumers (Sonarr's `Metadata` rows).
         if let Some(next) = self.snap.metadata_consumers {
             let current: kitsunarr_domain::api::settings::MetadataConsumersSettings =
