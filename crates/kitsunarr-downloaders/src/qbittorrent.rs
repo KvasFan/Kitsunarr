@@ -354,6 +354,8 @@ pub struct AddRequest<'a> {
     pub source: Source<'a>,
     /// The release title (a Blackhole names its file after it).
     pub title: &'a str,
+    /// What Flood's additional tags read (`RemoteEpisode`).
+    pub release: Option<&'a crate::ReleaseInfo>,
     /// The expected info hash (from the magnet or the file).
     pub hash: &'a str,
     /// An episode aired within the last two weeks (`IsRecentEpisode`).

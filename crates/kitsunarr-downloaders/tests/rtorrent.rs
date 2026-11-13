@@ -147,6 +147,7 @@ async fn rtorrent_adds_lists_marks_and_removes() {
             &s,
             &AddRequest {
                 title: "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE",
+                release: None,
                 source: Source::File {
                     name: "x.torrent",
                     content: b"d4:infoe",

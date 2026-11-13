@@ -222,6 +222,28 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             ),
             template(
                 kind,
+                "uTorrent",
+                "UTorrent",
+                client_options.clone(),
+                json!({
+                    "host": "localhost", "port": 8080, "useSsl": false, "urlBase": "",
+                    "username": "", "password": "", "tvCategory": "tv-kitsunarr", "tvImportedCategory": "",
+                    "recentTvPriority": 0, "olderTvPriority": 0, "intialState": 0
+                }),
+            ),
+            template(
+                kind,
+                "Flood",
+                "Flood",
+                client_options.clone(),
+                json!({
+                    "host": "localhost", "port": 3000, "useSsl": false, "urlBase": "",
+                    "username": "", "password": "", "destination": "", "tags": ["kitsunarr"],
+                    "postImportTags": [], "additionalTags": [], "startOnAdd": true
+                }),
+            ),
+            template(
+                kind,
                 "Torrent Blackhole",
                 "TorrentBlackhole",
                 client_options.clone(),

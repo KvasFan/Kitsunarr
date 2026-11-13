@@ -9,6 +9,7 @@ pub mod blackhole;
 pub mod deluge;
 pub mod error;
 pub mod fake;
+pub mod flood;
 pub mod nzbget;
 pub mod qbittorrent;
 pub mod rtorrent;
@@ -16,6 +17,7 @@ pub mod sabnzbd;
 pub mod torrent;
 pub mod transmission;
 pub mod usenet;
+pub mod utorrent;
 pub mod xmlrpc;
 
 use serde_json::{Map, Value};
@@ -23,6 +25,7 @@ use serde_json::{Map, Value};
 pub use blackhole::Blackhole;
 pub use deluge::Deluge;
 pub use error::DownloadError;
+pub use flood::Flood;
 pub use nzbget::Nzbget;
 pub use qbittorrent::{AddRequest, QBittorrent, SeedConfig, Source};
 pub use rtorrent::RTorrent;
@@ -30,6 +33,7 @@ pub use sabnzbd::Sabnzbd;
 pub use torrent::{magnet_info_hash, torrent_info_hash};
 pub use transmission::Transmission;
 pub use usenet::validate_nzb;
+pub use utorrent::UTorrent;
 
 /// A download's state in its client (`DownloadItemStatus`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
@@ -68,6 +72,19 @@ pub struct DownloadItem {
     pub seed_progress: Option<SeedProgress>,
 }
 
+/// The release and its title, for clients that tag downloads with them (Flood's additional
+/// tags).
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct ReleaseInfo {
+    pub title_slug: String,
+    pub quality: String,
+    pub languages: Vec<String>,
+    pub release_group: String,
+    pub year: String,
+    pub indexer: String,
+    pub network: String,
+}
+
 /// A finished torrent's seeding, for clients that do not enforce seed goals themselves.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct SeedProgress {
@@ -90,6 +107,8 @@ pub enum ClientSettings {
     Sabnzbd(sabnzbd::Settings),
     Nzbget(nzbget::Settings),
     RTorrent(rtorrent::Settings),
+    Flood(flood::Settings),
+    UTorrent(utorrent::Settings),
     TorrentBlackhole(blackhole::TorrentSettings),
     UsenetBlackhole(blackhole::UsenetSettings),
 }
@@ -106,6 +125,8 @@ impl ClientSettings {
             "Sabnzbd" => sabnzbd::Settings::from_map(map).map(Self::Sabnzbd),
             "Nzbget" => nzbget::Settings::from_map(map).map(Self::Nzbget),
             "RTorrent" => rtorrent::Settings::from_map(map).map(Self::RTorrent),
+            "Flood" => flood::Settings::from_map(map).map(Self::Flood),
+            "UTorrent" => utorrent::Settings::from_map(map).map(Self::UTorrent),
             "TorrentBlackhole" => {
                 blackhole::TorrentSettings::from_map(map).map(Self::TorrentBlackhole)
             }
@@ -125,6 +146,8 @@ impl ClientSettings {
             Self::Sabnzbd(s) => &s.host,
             Self::Nzbget(s) => &s.host,
             Self::RTorrent(s) => &s.host,
+            Self::Flood(s) => &s.host,
+            Self::UTorrent(s) => &s.host,
             // Blackholes are local folders (`IsLocalhost`).
             Self::TorrentBlackhole(_) | Self::UsenetBlackhole(_) => "localhost",
         }
@@ -177,6 +200,8 @@ pub struct Clients {
     pub nzbget: Nzbget,
     pub blackhole: Blackhole,
     pub rtorrent: RTorrent,
+    pub flood: Flood,
+    pub utorrent: UTorrent,
 }
 
 impl Clients {
@@ -188,7 +213,9 @@ impl Clients {
             sabnzbd: Sabnzbd::new(http.clone()),
             nzbget: Nzbget::new(http.clone()),
             blackhole: Blackhole::default(),
-            rtorrent: RTorrent::new(http),
+            rtorrent: RTorrent::new(http.clone()),
+            flood: Flood::new(http.clone()),
+            utorrent: UTorrent::new(http),
         }
     }
 
@@ -231,6 +258,20 @@ impl Clients {
                 Tested {
                     message: format!("Connected to NZBGet {}.", r.version),
                     warnings: r.warnings,
+                }
+            }
+            ClientSettings::UTorrent(s) => Tested {
+                message: format!(
+                    "Connected to uTorrent (build {}).",
+                    self.utorrent.test(s).await?
+                ),
+                warnings: Vec::new(),
+            },
+            ClientSettings::Flood(s) => {
+                self.flood.test(s).await?;
+                Tested {
+                    message: "Connected to Flood.".into(),
+                    warnings: Vec::new(),
                 }
             }
             ClientSettings::RTorrent(s) => Tested {
@@ -276,6 +317,15 @@ impl Clients {
                 self.rtorrent
                     .add(s, &req.source, req.hash, req.recent)
                     .await
+            }
+            ClientSettings::UTorrent(s) => {
+                self.utorrent
+                    .add(s, &req.source, req.hash, req.recent, req.seed)
+                    .await
+            }
+            ClientSettings::Flood(s) => {
+                let info = req.release.cloned().unwrap_or_default();
+                self.flood.add(s, &req.source, req.hash, &info).await
             }
             ClientSettings::TorrentBlackhole(s) => {
                 self.blackhole.add_torrent(s, req.title, &req.source)
@@ -349,6 +399,12 @@ impl Clients {
                 }
                 self.rtorrent.remove(s, &item.download_id).await
             }
+            ClientSettings::Flood(s) => self.flood.remove(s, &item.download_id, delete_data).await,
+            ClientSettings::UTorrent(s) => {
+                self.utorrent
+                    .remove(s, &item.download_id, delete_data)
+                    .await
+            }
         }
     }
 
@@ -360,6 +416,8 @@ impl Clients {
             ClientSettings::Sabnzbd(s) => self.sabnzbd.items(s).await,
             ClientSettings::Nzbget(s) => self.nzbget.items(s).await,
             ClientSettings::RTorrent(s) => self.rtorrent.items(s).await,
+            ClientSettings::Flood(s) => self.flood.items(s).await,
+            ClientSettings::UTorrent(s) => self.utorrent.items(s).await,
             ClientSettings::TorrentBlackhole(s) => {
                 Ok(self
                     .blackhole
@@ -379,6 +437,8 @@ impl Clients {
             ClientSettings::Deluge(s) => self.deluge.mark_imported(s, id).await,
             ClientSettings::Transmission(s) => self.transmission.mark_imported(s, id).await,
             ClientSettings::RTorrent(s) => self.rtorrent.mark_imported(s, id).await,
+            ClientSettings::Flood(s) => self.flood.mark_imported(s, id).await,
+            ClientSettings::UTorrent(s) => self.utorrent.mark_imported(s, id).await,
             // Usenet clients and blackholes have no post-import category.
             ClientSettings::Sabnzbd(_)
             | ClientSettings::Nzbget(_)

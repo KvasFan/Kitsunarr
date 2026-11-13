@@ -397,12 +397,14 @@ pub(crate) async fn send(
         Vec::new()
     };
     let seed = seed_config(state, indexer_id, cached.release_type).await;
+    let release_info = release_info(state, cached).await;
     let add_magnet = |url: String| {
         let settings = settings.clone();
         let tag_labels = tag_labels.clone();
         let clients = state.downloads.clients.clone();
         let recent = cached.recent;
         let title = release.title.clone();
+        let info = release_info.clone();
         async move {
             let hash = magnet_info_hash(&url).ok_or_else(|| {
                 DownloadError::Client("the magnet link has no BitTorrent v1 info hash".into())
@@ -413,6 +415,7 @@ pub(crate) async fn send(
                     &AddRequest {
                         source: Source::Magnet(&url),
                         title: &title,
+                        release: Some(&info),
                         hash: &hash,
                         recent,
                         tags: &tag_labels,
@@ -471,6 +474,7 @@ pub(crate) async fn send(
                                     content: &bytes,
                                 },
                                 title: &release.title,
+                                release: Some(&release_info),
                                 hash: &hash,
                                 recent: cached.recent,
                                 tags: &tag_labels,
@@ -539,6 +543,7 @@ pub(crate) async fn send(
                                 content: &bytes,
                             },
                             title: &release.title,
+                            release: Some(&release_info),
                             hash: &hash,
                             recent: cached.recent,
                             tags: &tag_labels,
@@ -551,6 +556,48 @@ pub(crate) async fn send(
     }
     let id = result.map_err(|e| failed(describe(&e)))?;
     finish(state, cached, &client, id).await
+}
+
+/// The release and its title as Flood's additional tags read them (`RemoteEpisode`).
+async fn release_info(
+    state: &AppState,
+    cached: &CachedRelease,
+) -> kitsunarr_downloaders::ReleaseInfo {
+    let row: Option<(String, Option<i32>, Option<String>)> = match cached.movie_id {
+        Some(id) => {
+            kitsunarr_db::sqlx::query_as("SELECT title, year, studio FROM movies WHERE id = ?")
+                .bind(id)
+                .fetch_optional(state.db.pool())
+                .await
+                .ok()
+                .flatten()
+        }
+        None => {
+            kitsunarr_db::sqlx::query_as("SELECT title, year, network FROM series WHERE id = ?")
+                .bind(cached.series_id)
+                .fetch_optional(state.db.pool())
+                .await
+                .ok()
+                .flatten()
+        }
+    };
+    let (title, year, network) = row.unwrap_or_default();
+    kitsunarr_downloaders::ReleaseInfo {
+        title_slug: kitsunarr_domain::text::slugify(&title),
+        quality: kitsunarr_domain::Quality::by_id(cached.quality.quality_id)
+            .map(|q| q.name.to_string())
+            .unwrap_or_default(),
+        languages: cached
+            .languages
+            .iter()
+            .filter_map(|l| kitsunarr_domain::Language::by_id(*l))
+            .map(|l| l.name.to_string())
+            .collect(),
+        release_group: cached.release_group.clone().unwrap_or_default(),
+        year: year.unwrap_or(0).to_string(),
+        indexer: cached.release.indexer.clone(),
+        network: network.unwrap_or_default(),
+    }
 }
 
 /// `FileNameBuilder.CleanFileName`, simplified: characters that are invalid in file names.
