@@ -26,6 +26,7 @@ pub mod signalr;
 pub mod tls;
 pub mod v3;
 mod v3_more;
+mod v3_providers;
 mod v3_settings;
 
 use std::sync::{Arc, RwLock};
@@ -250,6 +251,7 @@ pub fn app(state: AppState) -> Router {
     let v3 = v3::router()
         .merge(v3_more::router())
         .merge(v3_settings::router())
+        .merge(v3_providers::router())
         .route_layer(axum::middleware::from_fn_with_state(
             state.clone(),
             auth::require_auth_v3,

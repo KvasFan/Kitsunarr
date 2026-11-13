@@ -5766,3 +5766,111 @@ async fn signalr_hub_streams_series_changes() {
     assert_eq!(message["arguments"][0]["body"]["resource"]["id"], 42);
     ws.send(Message::text("{\"type\":7}\u{1e}")).await.unwrap();
 }
+
+/// Sonarr's v3 download clients and connections written by tools: create from the schema,
+/// update keeping the stored secret, delete.
+#[tokio::test]
+async fn sonarr_v3_download_clients_and_notifications_are_written() {
+    use serde_json::{Value, json};
+    let server = start().await;
+    let http = reqwest::Client::new();
+    let url = |p: &str| format!("{}/api/v3{p}", server.base);
+    let key = server.api_key.clone();
+    let send = |m: reqwest::Method, p: &str, body: Option<Value>| {
+        let mut r = http.request(m, url(p)).header("X-Api-Key", &key);
+        if let Some(b) = body {
+            r = r.json(&b);
+        }
+        r.send()
+    };
+    use reqwest::Method as M;
+    let schema: Value = send(M::GET, "/downloadclient/schema", None)
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let mut qbit = schema
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["implementation"] == "QBittorrent")
+        .unwrap()
+        .clone();
+    qbit["name"] = json!("qBittorrent");
+    for f in qbit["fields"].as_array_mut().unwrap() {
+        if f["name"] == "password" {
+            f["value"] = json!("s3cret");
+        }
+    }
+    let created = send(M::POST, "/downloadclient", Some(qbit)).await.unwrap();
+    assert_eq!(created.status(), 201);
+    let created: Value = created.json().await.unwrap();
+    let id = created["id"].as_i64().unwrap();
+    let password = |v: &Value| {
+        v["fields"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|f| f["name"] == "password")
+            .unwrap()["value"]
+            .clone()
+    };
+    assert_ne!(password(&created), "s3cret", "secrets come back redacted");
+    let mut renamed = created.clone();
+    renamed["name"] = json!("qB");
+    let updated = send(M::PUT, &format!("/downloadclient/{id}"), Some(renamed))
+        .await
+        .unwrap();
+    assert_eq!(updated.status(), 202);
+    let stored = kitsunarr_db::providers::get(
+        server.state.db.pool(),
+        kitsunarr_domain::api::settings::ProviderKind::DownloadClient,
+        id,
+    )
+    .await
+    .unwrap();
+    assert_eq!(stored.name, "qB");
+    assert_eq!(
+        stored.settings["password"], "s3cret",
+        "the redacted secret is kept"
+    );
+
+    let hook = send(
+        M::POST,
+        "/notification",
+        Some(json!({
+            "name": "Hook", "implementation": "Webhook", "onGrab": true, "onDownload": false,
+            "tags": [], "fields": [{"name": "url", "value": "http://127.0.0.1:9/hook"}, {"name": "method", "value": 1}]
+        })),
+    )
+    .await
+    .unwrap();
+    assert_eq!(hook.status(), 201);
+    let hook: Value = hook.json().await.unwrap();
+    assert_eq!(hook["onGrab"], true);
+    assert_eq!(hook["onDownload"], false);
+    let nid = hook["id"].as_i64().unwrap();
+    assert_eq!(
+        send(M::DELETE, &format!("/notification/{nid}"), None)
+            .await
+            .unwrap()
+            .status(),
+        200
+    );
+    assert_eq!(
+        send(M::DELETE, &format!("/downloadclient/{id}"), None)
+            .await
+            .unwrap()
+            .status(),
+        200
+    );
+    let unsupported = send(
+        M::POST,
+        "/downloadclient",
+        Some(json!({"name": "x", "implementation": "Nope", "fields": []})),
+    )
+    .await
+    .unwrap();
+    assert_eq!(unsupported.status(), 422);
+}

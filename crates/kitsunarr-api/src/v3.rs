@@ -1662,7 +1662,7 @@ async fn delete_blocklisted_bulk(
 
 // ---- download clients and connections (read-only) ------------------------------------------
 
-fn provider_json(p: &ProviderRecord) -> Value {
+pub(crate) fn provider_json(p: &ProviderRecord) -> Value {
     let settings = crate::routes::settings::redact(&p.settings);
     let fields: Vec<Value> = settings
         .iter()
