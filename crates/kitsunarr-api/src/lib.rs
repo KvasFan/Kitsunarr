@@ -22,6 +22,7 @@ pub mod logs;
 pub mod proxy;
 pub mod routes;
 pub mod rss;
+pub mod signalr;
 pub mod tls;
 pub mod v3;
 mod v3_more;
@@ -263,9 +264,15 @@ pub fn app(state: AppState) -> Router {
         state.clone(),
         auth::require_auth_v3,
     ));
+    // Sonarr's SignalR hub, for tools that follow changes live (Bazarr).
+    let signalr = signalr::router().route_layer(axum::middleware::from_fn_with_state(
+        state.clone(),
+        auth::require_auth_v3,
+    ));
     let inner = Router::new()
         .merge(api)
         .nest("/api/v3", v3)
+        .nest("/signalr", signalr)
         .nest("/feed/v3", feed)
         .nest("/api/v5", v5)
         .route(

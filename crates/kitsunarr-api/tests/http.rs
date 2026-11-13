@@ -5689,3 +5689,80 @@ async fn sonarr_v3_settings_serve_recyclarr_sync() {
             .any(|l| l["name"] == "English")
     );
 }
+
+/// Sonarr's SignalR hub as Bazarr uses it: negotiate, the JSON hub handshake over a WebSocket
+/// (key in `access_token`), then `receiveMessage` invocations for library changes.
+#[tokio::test]
+async fn signalr_hub_streams_series_changes() {
+    use futures::{SinkExt, StreamExt};
+    use serde_json::Value;
+    use tokio_tungstenite::tungstenite::Message;
+    let server = start().await;
+    let http = reqwest::Client::new();
+    let negotiated: Value = http
+        .post(format!(
+            "{}/signalr/messages/negotiate?negotiateVersion=1",
+            server.base
+        ))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(
+        negotiated["availableTransports"][0]["transport"],
+        "WebSockets"
+    );
+    let token = negotiated["connectionToken"].as_str().unwrap();
+    // Without a key: refused.
+    let refused = http
+        .post(format!("{}/signalr/messages/negotiate", server.base))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(refused.status(), 401);
+
+    let ws_url = format!(
+        "{}/signalr/messages?id={token}&access_token={}",
+        server.base.replace("http://", "ws://"),
+        server.api_key
+    );
+    let (mut ws, _) = tokio_tungstenite::connect_async(ws_url).await.unwrap();
+    ws.send(Message::text("{\"protocol\":\"json\",\"version\":1}\u{1e}"))
+        .await
+        .unwrap();
+    let handshake = ws.next().await.unwrap().unwrap();
+    assert_eq!(handshake.to_text().unwrap(), "{}\u{1e}");
+
+    server
+        .state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids: vec![42],
+            deleted: false,
+        });
+    let message = loop {
+        let frame = tokio::time::timeout(std::time::Duration::from_secs(5), ws.next())
+            .await
+            .unwrap()
+            .unwrap()
+            .unwrap();
+        let text = frame
+            .to_text()
+            .unwrap()
+            .trim_end_matches('\u{1e}')
+            .to_string();
+        let v: Value = serde_json::from_str(&text).unwrap();
+        if v["type"] == 1 {
+            break v;
+        }
+    };
+    assert_eq!(message["target"], "receiveMessage");
+    assert_eq!(message["arguments"][0]["name"], "series");
+    assert_eq!(message["arguments"][0]["body"]["action"], "updated");
+    assert_eq!(message["arguments"][0]["body"]["resource"]["id"], 42);
+    ws.send(Message::text("{\"type\":7}\u{1e}")).await.unwrap();
+}

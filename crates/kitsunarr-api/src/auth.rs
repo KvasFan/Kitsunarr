@@ -162,11 +162,12 @@ fn api_key_from(headers: &HeaderMap, query: Option<&str>) -> Option<String> {
     {
         return Some(token.trim().to_string());
     }
-    // Sonarr-compatible `?apikey=` query parameter.
+    // Sonarr-compatible `?apikey=` query parameter, and `?access_token=` (SignalR clients).
     query.and_then(|q| {
         q.split('&').find_map(|pair| {
             let (k, v) = pair.split_once('=')?;
-            k.eq_ignore_ascii_case("apikey").then(|| v.to_string())
+            (k.eq_ignore_ascii_case("apikey") || k.eq_ignore_ascii_case("access_token"))
+                .then(|| v.to_string())
         })
     })
 }

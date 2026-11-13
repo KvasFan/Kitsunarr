@@ -79,7 +79,7 @@ kitsunarr-scheduler = { path = "crates/kitsunarr-scheduler" }
 tokio = { version = "1.54", features = ["rt-multi-thread", "macros", "signal", "fs", "time", "sync", "net"] }
 tokio-util = { version = "0.7", features = ["rt"] }
 futures = "0.3"
-axum = { version = "0.8.9", features = ["macros", "multipart"] }
+axum = { version = "0.8.9", features = ["macros", "multipart", "ws"] }
 axum-extra = { version = "0.12", features = ["cookie", "typed-header", "query"] }
 tower = { version = "0.5", features = ["util", "timeout", "limit"] }
 tower-http = { version = "0.7", features = ["trace", "compression-br", "compression-gzip", "timeout", "limit", "request-id", "set-header", "sensitive-headers", "catch-panic", "util", "csrf"] }
