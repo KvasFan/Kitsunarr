@@ -571,6 +571,8 @@ async fn finish(
     let r = &cached.release;
     let mut data = serde_json::json!({
         "indexer": r.indexer,
+        // `DownloadHistory.IndexerId`, for the seed goals of clients that leave them to us.
+        "indexerId": r.indexer_id,
         "releaseGroup": cached.release_group,
         "releaseType": cached.release_type,
         "size": r.release.size.to_string(),
@@ -812,34 +814,10 @@ async fn seed_config(
     indexer_id: i64,
     release_type: &str,
 ) -> Option<kitsunarr_downloaders::SeedConfig> {
-    if indexer_id <= 0 {
-        return None;
-    }
-    let p = kitsunarr_db::providers::get(
-        state.db.pool(),
-        kitsunarr_domain::api::settings::ProviderKind::Indexer,
+    kitsunarr_library::downloads::indexer_seed_config(
+        &state.db,
         indexer_id,
+        matches!(release_type, "SeasonPack" | "MultiSeasonPack"),
     )
     .await
-    .ok()?;
-    let nested = p.settings.get("seedCriteria").and_then(|v| v.as_object());
-    let get = |k: &str| {
-        p.settings
-            .get(&format!("seedCriteria.{k}"))
-            .or_else(|| nested.and_then(|n| n.get(k)))
-            .filter(|v| !v.is_null())
-            .and_then(|v| v.as_f64().or_else(|| v.as_str()?.trim().parse().ok()))
-    };
-    let full_season = matches!(release_type, "SeasonPack" | "MultiSeasonPack");
-    let pack_goal = get("seasonPackSeedGoal").is_some_and(|g| g as i64 == 1);
-    let (ratio, time) = if full_season && pack_goal {
-        (get("seasonPackSeedRatio"), get("seasonPackSeedTime"))
-    } else {
-        (get("seedRatio"), get("seedTime"))
-    };
-    let c = kitsunarr_downloaders::SeedConfig {
-        ratio,
-        seed_time_minutes: time.map(|t| t as i64),
-    };
-    c.is_set().then_some(c)
 }

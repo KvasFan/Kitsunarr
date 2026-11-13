@@ -388,10 +388,12 @@ pub async fn remove_from_queue(
     if q.remove_from_client
         && let Some((client, settings, item)) = &found
     {
+        let mappings = kitsunarr_db::rules::list_remote_path_mappings(state.db.pool()).await?;
+        let item = kitsunarr_library::downloads::local_item(item, &mappings, settings.host());
         state
             .downloads
             .clients
-            .remove(settings, item, true)
+            .remove(settings, &item, true)
             .await
             .map_err(|e| ApiError::field("removeFromClient", format!("{}: {e}", client.name)))?;
         state.downloads.forget(&download_id);

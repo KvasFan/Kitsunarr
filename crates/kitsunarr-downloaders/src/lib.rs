@@ -11,10 +11,12 @@ pub mod error;
 pub mod fake;
 pub mod nzbget;
 pub mod qbittorrent;
+pub mod rtorrent;
 pub mod sabnzbd;
 pub mod torrent;
 pub mod transmission;
 pub mod usenet;
+pub mod xmlrpc;
 
 use serde_json::{Map, Value};
 
@@ -23,6 +25,7 @@ pub use deluge::Deluge;
 pub use error::DownloadError;
 pub use nzbget::Nzbget;
 pub use qbittorrent::{AddRequest, QBittorrent, SeedConfig, Source};
+pub use rtorrent::RTorrent;
 pub use sabnzbd::Sabnzbd;
 pub use torrent::{magnet_info_hash, torrent_info_hash};
 pub use transmission::Transmission;
@@ -59,6 +62,18 @@ pub struct DownloadItem {
     /// The client is done with it (Usenet: always; torrents: seeding stopped at the seed
     /// limit), so it may be removed after import (`CanBeRemoved`).
     pub can_be_removed: bool,
+    /// Set by clients that leave seed goals to Kitsunarr (rTorrent, Flood, RQBit): the
+    /// finished torrent's ratio and when it finished, checked against the grabbing indexer's
+    /// seed criteria (`DownloadSeedConfigProvider`).
+    pub seed_progress: Option<SeedProgress>,
+}
+
+/// A finished torrent's seeding, for clients that do not enforce seed goals themselves.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct SeedProgress {
+    pub ratio: f64,
+    /// Unix seconds.
+    pub finished_at: Option<i64>,
 }
 
 /// Whether Kitsunarr can talk to a download client implementation.
@@ -74,6 +89,7 @@ pub enum ClientSettings {
     Transmission(transmission::Settings),
     Sabnzbd(sabnzbd::Settings),
     Nzbget(nzbget::Settings),
+    RTorrent(rtorrent::Settings),
     TorrentBlackhole(blackhole::TorrentSettings),
     UsenetBlackhole(blackhole::UsenetSettings),
 }
@@ -89,6 +105,7 @@ impl ClientSettings {
                 .map(|s| Self::Transmission(transmission::Settings { vuze: true, ..s })),
             "Sabnzbd" => sabnzbd::Settings::from_map(map).map(Self::Sabnzbd),
             "Nzbget" => nzbget::Settings::from_map(map).map(Self::Nzbget),
+            "RTorrent" => rtorrent::Settings::from_map(map).map(Self::RTorrent),
             "TorrentBlackhole" => {
                 blackhole::TorrentSettings::from_map(map).map(Self::TorrentBlackhole)
             }
@@ -107,6 +124,7 @@ impl ClientSettings {
             Self::Transmission(s) => &s.host,
             Self::Sabnzbd(s) => &s.host,
             Self::Nzbget(s) => &s.host,
+            Self::RTorrent(s) => &s.host,
             // Blackholes are local folders (`IsLocalhost`).
             Self::TorrentBlackhole(_) | Self::UsenetBlackhole(_) => "localhost",
         }
@@ -158,6 +176,7 @@ pub struct Clients {
     pub sabnzbd: Sabnzbd,
     pub nzbget: Nzbget,
     pub blackhole: Blackhole,
+    pub rtorrent: RTorrent,
 }
 
 impl Clients {
@@ -167,8 +186,9 @@ impl Clients {
             deluge: Deluge::new(http.clone()),
             transmission: Transmission::new(http.clone()),
             sabnzbd: Sabnzbd::new(http.clone()),
-            nzbget: Nzbget::new(http),
+            nzbget: Nzbget::new(http.clone()),
             blackhole: Blackhole::default(),
+            rtorrent: RTorrent::new(http),
         }
     }
 
@@ -213,6 +233,10 @@ impl Clients {
                     warnings: r.warnings,
                 }
             }
+            ClientSettings::RTorrent(s) => Tested {
+                message: format!("Connected to rTorrent {}.", self.rtorrent.test(s).await?),
+                warnings: Vec::new(),
+            },
             ClientSettings::TorrentBlackhole(s) => {
                 Blackhole::test_folder(&s.torrent_folder, "torrent folder")?;
                 Blackhole::test_folder(&s.watch_folder, "watch folder")?;
@@ -246,6 +270,11 @@ impl Clients {
             ClientSettings::Transmission(s) => {
                 self.transmission
                     .add(s, &req.source, req.hash, req.recent, req.seed)
+                    .await
+            }
+            ClientSettings::RTorrent(s) => {
+                self.rtorrent
+                    .add(s, &req.source, req.hash, req.recent)
                     .await
             }
             ClientSettings::TorrentBlackhole(s) => {
@@ -314,6 +343,12 @@ impl Clients {
             ClientSettings::TorrentBlackhole(_) | ClientSettings::UsenetBlackhole(_) => {
                 self.blackhole.remove(item, delete_data)
             }
+            ClientSettings::RTorrent(s) => {
+                if delete_data {
+                    delete_item_data(item)?;
+                }
+                self.rtorrent.remove(s, &item.download_id).await
+            }
         }
     }
 
@@ -324,6 +359,7 @@ impl Clients {
             ClientSettings::Transmission(s) => self.transmission.items(s).await,
             ClientSettings::Sabnzbd(s) => self.sabnzbd.items(s).await,
             ClientSettings::Nzbget(s) => self.nzbget.items(s).await,
+            ClientSettings::RTorrent(s) => self.rtorrent.items(s).await,
             ClientSettings::TorrentBlackhole(s) => {
                 Ok(self
                     .blackhole
@@ -342,6 +378,7 @@ impl Clients {
             ClientSettings::QBittorrent(s) => self.qbittorrent.mark_imported(s, id).await,
             ClientSettings::Deluge(s) => self.deluge.mark_imported(s, id).await,
             ClientSettings::Transmission(s) => self.transmission.mark_imported(s, id).await,
+            ClientSettings::RTorrent(s) => self.rtorrent.mark_imported(s, id).await,
             // Usenet clients and blackholes have no post-import category.
             ClientSettings::Sabnzbd(_)
             | ClientSettings::Nzbget(_)
@@ -349,4 +386,25 @@ impl Clients {
             | ClientSettings::UsenetBlackhole(_) => Ok(()),
         }
     }
+}
+
+/// `DeleteItemData`: removes a download's files or folder (its output path as Kitsunarr sees
+/// it), for clients that cannot delete data themselves.
+pub fn delete_item_data(item: &DownloadItem) -> Result<(), DownloadError> {
+    let Some(path) = item
+        .output_path
+        .as_deref()
+        .map(std::path::Path::new)
+        .filter(|p| p.is_absolute())
+    else {
+        return Ok(());
+    };
+    let result = if path.is_dir() {
+        std::fs::remove_dir_all(path)
+    } else if path.is_file() {
+        std::fs::remove_file(path)
+    } else {
+        Ok(())
+    };
+    result.map_err(|e| DownloadError::Client(format!("could not delete {}: {e}", path.display())))
 }

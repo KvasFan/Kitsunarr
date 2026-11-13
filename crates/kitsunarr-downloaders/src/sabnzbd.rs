@@ -549,6 +549,7 @@ fn queue_items(queue: &Value) -> Vec<DownloadItem> {
                 output_path: None,
                 seed_ratio: 0.0,
                 can_be_removed: true,
+                seed_progress: None,
             }
         })
         .collect()
@@ -605,6 +606,7 @@ fn history_items(history: &Value) -> Vec<DownloadItem> {
                 output_path,
                 seed_ratio: 0.0,
                 can_be_removed: true,
+                seed_progress: None,
             }
         })
         .collect()

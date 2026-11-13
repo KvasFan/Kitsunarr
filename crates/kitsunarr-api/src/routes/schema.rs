@@ -211,6 +211,17 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             ),
             template(
                 kind,
+                "rTorrent",
+                "RTorrent",
+                client_options.clone(),
+                json!({
+                    "host": "localhost", "port": 8080, "useSsl": false, "urlBase": "RPC2",
+                    "username": "", "password": "", "tvCategory": "tv-kitsunarr", "tvImportedCategory": "",
+                    "tvDirectory": "", "recentTvPriority": 2, "olderTvPriority": 2, "addStopped": false
+                }),
+            ),
+            template(
+                kind,
                 "Torrent Blackhole",
                 "TorrentBlackhole",
                 client_options.clone(),

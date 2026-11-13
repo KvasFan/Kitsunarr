@@ -325,6 +325,7 @@ impl Blackhole {
                 seed_ratio: 0.0,
                 // `RemoveCompletedDownloads` decides.
                 can_be_removed: true,
+                seed_progress: None,
             })
             .collect()
     }

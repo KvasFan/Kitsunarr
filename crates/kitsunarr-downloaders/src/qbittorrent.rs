@@ -315,6 +315,7 @@ impl Torrent {
             output_path: None,
             seed_ratio: self.ratio,
             can_be_removed: false,
+            seed_progress: None,
         };
         if status == Completed && at_least(&version(api_version), &[2, 6, 1]) {
             let root = self

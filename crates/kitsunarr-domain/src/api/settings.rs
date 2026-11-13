@@ -265,6 +265,7 @@ pub const DOWNLOAD_CLIENT_IMPLEMENTATIONS: &[&str] = &[
     "Vuze",
     "Sabnzbd",
     "Nzbget",
+    "RTorrent",
     "TorrentBlackhole",
     "UsenetBlackhole",
 ];

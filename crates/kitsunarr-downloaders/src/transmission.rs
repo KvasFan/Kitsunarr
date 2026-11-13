@@ -276,6 +276,7 @@ impl Torrent {
                 self.uploaded_ever as f64 / self.downloaded_ever as f64
             },
             can_be_removed: false,
+            seed_progress: None,
         }
     }
 }

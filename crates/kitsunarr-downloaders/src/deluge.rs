@@ -236,6 +236,7 @@ impl Torrent {
                 && self.stop_at_ratio
                 && self.ratio >= self.stop_ratio
                 && self.state == "Paused",
+            seed_progress: None,
         })
     }
 }

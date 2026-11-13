@@ -54,6 +54,110 @@ pub struct Tracked {
 
 /// `RemotePathMappingService.RemapRemoteToLocal`: the first mapping for the client's host whose
 /// remote path contains the path.
+/// `IndexerSeedConfigProvider`: an indexer's seed goals (`seedCriteria.*`), the season-pack
+/// ones for full seasons when the indexer sets them.
+pub async fn indexer_seed_config(
+    db: &Database,
+    indexer_id: i64,
+    full_season: bool,
+) -> Option<kitsunarr_downloaders::SeedConfig> {
+    if indexer_id <= 0 {
+        return None;
+    }
+    let p = kitsunarr_db::providers::get(
+        db.pool(),
+        kitsunarr_domain::api::settings::ProviderKind::Indexer,
+        indexer_id,
+    )
+    .await
+    .ok()?;
+    let nested = p.settings.get("seedCriteria").and_then(|v| v.as_object());
+    let get = |k: &str| {
+        p.settings
+            .get(&format!("seedCriteria.{k}"))
+            .or_else(|| nested.and_then(|n| n.get(k)))
+            .filter(|v| !v.is_null())
+            .and_then(|v| v.as_f64().or_else(|| v.as_str()?.trim().parse().ok()))
+    };
+    let pack_goal = get("seasonPackSeedGoal").is_some_and(|g| g as i64 == 1);
+    let (ratio, time) = if full_season && pack_goal {
+        (get("seasonPackSeedRatio"), get("seasonPackSeedTime"))
+    } else {
+        (get("seedRatio"), get("seedTime"))
+    };
+    let c = kitsunarr_downloaders::SeedConfig {
+        ratio,
+        seed_time_minutes: time.map(|t| t as i64),
+    };
+    c.is_set().then_some(c)
+}
+
+/// `DownloadSeedConfigProvider`: for clients that leave seed goals to Kitsunarr (rTorrent,
+/// Flood, RQBit), a finished torrent may be removed once it reaches the seed ratio or seed
+/// time of the indexer it was grabbed from.
+async fn apply_seed_goals(db: &Database, items: &mut [DownloadItem]) {
+    let ids: Vec<String> = items
+        .iter()
+        .filter(|i| i.seed_progress.is_some() && i.status == ItemStatus::Completed)
+        .map(|i| i.download_id.clone())
+        .collect();
+    if ids.is_empty() {
+        return;
+    }
+    let grabs = history::grabs_for(db, &ids).await.unwrap_or_default();
+    let indexers = kitsunarr_db::providers::list(
+        db.pool(),
+        kitsunarr_domain::api::settings::ProviderKind::Indexer,
+    )
+    .await
+    .unwrap_or_default();
+    let now = chrono::Utc::now().timestamp();
+    for item in items.iter_mut() {
+        let Some(progress) = item.seed_progress else {
+            continue;
+        };
+        if item.status != ItemStatus::Completed {
+            continue;
+        }
+        let Some(grab) = grabs
+            .iter()
+            .filter(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
+            .max_by(|a, b| a.date.cmp(&b.date))
+        else {
+            continue;
+        };
+        let data: serde_json::Value = serde_json::from_str(&grab.data).unwrap_or_default();
+        let indexer_id = data["indexerId"].as_i64().or_else(|| {
+            let name = data["indexer"].as_str()?;
+            indexers.iter().find(|p| p.name == name).map(|p| p.id)
+        });
+        let full_season = matches!(
+            data["releaseType"].as_str(),
+            Some("SeasonPack" | "MultiSeasonPack")
+        );
+        let Some(goal) = indexer_seed_config(db, indexer_id.unwrap_or(0), full_season).await else {
+            continue;
+        };
+        let ratio_met = goal.ratio.is_some_and(|r| progress.ratio >= r);
+        let time_met = goal
+            .seed_time_minutes
+            .zip(progress.finished_at)
+            .is_some_and(|(minutes, finished)| now - finished >= minutes * 60);
+        item.can_be_removed = ratio_met || time_met;
+    }
+}
+
+/// The item with its output path as Kitsunarr sees it (for clients whose data Kitsunarr
+/// deletes itself, `DeleteItemData`).
+pub fn local_item(item: &DownloadItem, mappings: &[RemotePathMapping], host: &str) -> DownloadItem {
+    let mut local = item.clone();
+    local.output_path = item
+        .output_path
+        .as_deref()
+        .map(|p| remap(mappings, host, p));
+    local
+}
+
 pub fn remap(mappings: &[RemotePathMapping], host: &str, path: &str) -> String {
     let normal = |p: &str| p.replace('\\', "/").trim_end_matches('/').to_string();
     let target = normal(path);
@@ -366,8 +470,14 @@ impl Monitor {
     }
 
     /// `DownloadEventHub.RemoveFromDownloadClient`: removes the download and its data.
-    async fn remove_from_client(&self, settings: &ClientSettings, item: &DownloadItem) -> bool {
-        match self.clients.remove(settings, item, true).await {
+    async fn remove_from_client(
+        &self,
+        settings: &ClientSettings,
+        item: &DownloadItem,
+        mappings: &[RemotePathMapping],
+    ) -> bool {
+        let item = local_item(item, mappings, settings.host());
+        match self.clients.remove(settings, &item, true).await {
             Ok(()) => {
                 tracing::info!(title = %item.title, "removed the download from the download client");
                 true
@@ -459,6 +569,8 @@ impl Monitor {
                     continue;
                 }
             };
+            let mut items = items;
+            apply_seed_goals(db, &mut items).await;
             seen.extend(items.iter().map(|i| i.download_id.to_ascii_uppercase()));
             let option = |key: &str| {
                 client
@@ -541,7 +653,7 @@ impl Monitor {
                         self.push_redownload(r);
                     }
                     if remove_failed && item.can_be_removed {
-                        self.remove_from_client(&settings, item).await;
+                        self.remove_from_client(&settings, item, &mappings).await;
                     }
                 }
             }
@@ -580,7 +692,7 @@ impl Monitor {
                     self.set(&item.download_id, State::Imported, Vec::new());
                     // `DownloadCanBeRemovedEvent`: seeding finished after the import.
                     if remove_completed && item.can_be_removed && !multi_season {
-                        self.remove_from_client(&settings, &item).await;
+                        self.remove_from_client(&settings, &item, &mappings).await;
                     }
                     continue;
                 }
@@ -714,7 +826,7 @@ impl Monitor {
                         self.set(&item.download_id, State::Imported, Vec::new());
                         imported += 1;
                         if remove_completed && item.can_be_removed {
-                            self.remove_from_client(&settings, &item).await;
+                            self.remove_from_client(&settings, &item, &mappings).await;
                         }
                     } else if outcome.results.is_empty() {
                         self.set(
@@ -835,7 +947,7 @@ impl Monitor {
                     imported += 1;
                     // `DownloadCompletedEvent`.
                     if remove_completed && item.can_be_removed && !multi_season {
-                        self.remove_from_client(&settings, &item).await;
+                        self.remove_from_client(&settings, &item, &mappings).await;
                     }
                 } else {
                     let mut messages = vec![
@@ -971,6 +1083,93 @@ pub fn queued_from_grabs(
 
 #[cfg(test)]
 mod tests {
+    #[tokio::test]
+    async fn seed_goals_of_the_grabbing_indexer_allow_removal() {
+        let dir = tempfile::tempdir().unwrap();
+        let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+        kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+        let indexer = kitsunarr_db::providers::create(
+            db.pool(),
+            &kitsunarr_db::providers::ProviderRecord {
+                id: 0,
+                kind: ProviderKind::Indexer,
+                name: "Tracker".into(),
+                implementation: "Torznab".into(),
+                protocol: kitsunarr_domain::DownloadProtocol::Torrent,
+                enabled: true,
+                priority: 25,
+                tags: vec![],
+                options: serde_json::Map::new(),
+                settings: serde_json::json!({"baseUrl": "http://x", "seedCriteria.seedRatio": "2",
+                    "seedCriteria.seedTime": 60})
+                .as_object()
+                .cloned()
+                .unwrap(),
+            },
+        )
+        .await
+        .unwrap();
+        let mut conn = db.pool().acquire().await.unwrap();
+        for (id, data) in [
+            ("RATIO", serde_json::json!({"indexerId": indexer})),
+            // Older grabs name the indexer only.
+            ("TIME", serde_json::json!({"indexer": "Tracker"})),
+            ("NEITHER", serde_json::json!({"indexerId": indexer})),
+        ] {
+            history::insert(
+                &mut conn,
+                &history::NewHistory {
+                    event_type: "grabbed".into(),
+                    date: "2026-11-01T00:00:00Z".into(),
+                    source_title: "x".into(),
+                    series_id: None,
+                    episode_id: None,
+                    movie_id: None,
+                    quality_id: None,
+                    revision: None,
+                    languages: vec![],
+                    custom_format_score: None,
+                    download_id: Some(id.into()),
+                    data,
+                },
+            )
+            .await
+            .unwrap();
+        }
+        drop(conn);
+        let now = chrono::Utc::now().timestamp();
+        let item = |id: &str, ratio: f64, finished: i64| DownloadItem {
+            download_id: id.into(),
+            title: id.into(),
+            category: "tv".into(),
+            total_size: 1,
+            remaining_size: 0,
+            remaining_seconds: Some(0),
+            status: ItemStatus::Completed,
+            message: None,
+            output_path: None,
+            seed_ratio: ratio,
+            can_be_removed: false,
+            seed_progress: Some(kitsunarr_downloaders::SeedProgress {
+                ratio,
+                finished_at: Some(finished),
+            }),
+        };
+        let mut items = vec![
+            item("RATIO", 2.5, now),
+            item("TIME", 0.1, now - 2 * 3600),
+            item("NEITHER", 1.0, now - 60),
+            item("UNKNOWN", 9.0, now - 99_999),
+        ];
+        apply_seed_goals(&db, &mut items).await;
+        let removable: Vec<&str> = items
+            .iter()
+            .filter(|i| i.can_be_removed)
+            .map(|i| i.download_id.as_str())
+            .collect();
+        assert_eq!(removable, ["RATIO", "TIME"]);
+    }
+
     use super::*;
 
     #[test]
@@ -1015,6 +1214,7 @@ mod tests {
             output_path: None,
             seed_ratio: 0.0,
             can_be_removed: false,
+            seed_progress: None,
         };
         let start = std::time::Instant::now();
         let later = start + std::time::Duration::from_secs(600);
