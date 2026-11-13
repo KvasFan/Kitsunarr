@@ -13,12 +13,15 @@ pub mod fake;
 pub mod flood;
 pub mod hadouken;
 pub mod nzbget;
+pub mod nzbvortex;
 pub mod pneumatic;
 pub mod qbittorrent;
+pub mod rqbit;
 pub mod rtorrent;
 pub mod sabnzbd;
 pub mod torrent;
 pub mod transmission;
+pub mod tribler;
 pub mod usenet;
 pub mod utorrent;
 pub mod xmlrpc;
@@ -32,11 +35,14 @@ pub use error::DownloadError;
 pub use flood::Flood;
 pub use hadouken::Hadouken;
 pub use nzbget::Nzbget;
+pub use nzbvortex::NzbVortex;
 pub use qbittorrent::{AddRequest, QBittorrent, SeedConfig, Source};
+pub use rqbit::RQBit;
 pub use rtorrent::RTorrent;
 pub use sabnzbd::Sabnzbd;
 pub use torrent::{magnet_info_hash, torrent_info_hash};
 pub use transmission::Transmission;
+pub use tribler::Tribler;
 pub use usenet::validate_nzb;
 pub use utorrent::UTorrent;
 
@@ -117,6 +123,9 @@ pub enum ClientSettings {
     Aria2(aria2::Settings),
     Hadouken(hadouken::Settings),
     Pneumatic(pneumatic::Settings),
+    NzbVortex(nzbvortex::Settings),
+    RQBit(rqbit::Settings),
+    Tribler(tribler::Settings),
     TorrentBlackhole(blackhole::TorrentSettings),
     UsenetBlackhole(blackhole::UsenetSettings),
 }
@@ -138,6 +147,11 @@ impl ClientSettings {
             "Aria2" => aria2::Settings::from_map(map).map(Self::Aria2),
             "Hadouken" => hadouken::Settings::from_map(map).map(Self::Hadouken),
             "Pneumatic" => pneumatic::Settings::from_map(map).map(Self::Pneumatic),
+            "NzbVortex" => nzbvortex::Settings::from_map(map).map(Self::NzbVortex),
+            "RQBit" => rqbit::Settings::from_map(map).map(Self::RQBit),
+            "TriblerDownloadClient" | "Tribler" => {
+                tribler::Settings::from_map(map).map(Self::Tribler)
+            }
             "TorrentBlackhole" => {
                 blackhole::TorrentSettings::from_map(map).map(Self::TorrentBlackhole)
             }
@@ -161,6 +175,9 @@ impl ClientSettings {
             Self::UTorrent(s) => &s.host,
             Self::Aria2(s) => &s.host,
             Self::Hadouken(s) => &s.host,
+            Self::NzbVortex(s) => &s.host,
+            Self::RQBit(s) => &s.host,
+            Self::Tribler(s) => &s.host,
             // Blackholes and Pneumatic are local folders (`IsLocalhost`).
             Self::TorrentBlackhole(_) | Self::UsenetBlackhole(_) | Self::Pneumatic(_) => {
                 "localhost"
@@ -172,7 +189,11 @@ impl ClientSettings {
     pub fn is_usenet(&self) -> bool {
         matches!(
             self,
-            Self::Sabnzbd(_) | Self::Nzbget(_) | Self::UsenetBlackhole(_) | Self::Pneumatic(_)
+            Self::Sabnzbd(_)
+                | Self::Nzbget(_)
+                | Self::UsenetBlackhole(_)
+                | Self::Pneumatic(_)
+                | Self::NzbVortex(_)
         )
     }
 
@@ -219,6 +240,9 @@ pub struct Clients {
     pub utorrent: UTorrent,
     pub aria2: Aria2,
     pub hadouken: Hadouken,
+    pub nzbvortex: NzbVortex,
+    pub rqbit: RQBit,
+    pub tribler: Tribler,
 }
 
 impl Clients {
@@ -234,7 +258,10 @@ impl Clients {
             flood: Flood::new(http.clone()),
             utorrent: UTorrent::new(http.clone()),
             aria2: Aria2::new(http.clone()),
-            hadouken: Hadouken::new(http),
+            hadouken: Hadouken::new(http.clone()),
+            nzbvortex: NzbVortex::new(http.clone()),
+            rqbit: RQBit::new(http.clone()),
+            tribler: Tribler::new(http),
         }
     }
 
@@ -277,6 +304,24 @@ impl Clients {
                 Tested {
                     message: format!("Connected to NZBGet {}.", r.version),
                     warnings: r.warnings,
+                }
+            }
+            ClientSettings::Tribler(s) => {
+                self.tribler.test(s).await?;
+                Tested {
+                    message: "Connected to Tribler.".into(),
+                    warnings: Vec::new(),
+                }
+            }
+            ClientSettings::RQBit(s) => Tested {
+                message: format!("Connected to rqbit {}.", self.rqbit.test(s).await?),
+                warnings: Vec::new(),
+            },
+            ClientSettings::NzbVortex(s) => {
+                let (version, warnings) = self.nzbvortex.test(s).await?;
+                Tested {
+                    message: format!("Connected to NZBVortex {version}."),
+                    warnings,
                 }
             }
             ClientSettings::Pneumatic(s) => {
@@ -360,6 +405,8 @@ impl Clients {
             }
             ClientSettings::Aria2(s) => self.aria2.add(s, &req.source, req.hash).await,
             ClientSettings::Hadouken(s) => self.hadouken.add(s, &req.source, req.hash).await,
+            ClientSettings::RQBit(s) => self.rqbit.add(s, &req.source, req.hash).await,
+            ClientSettings::Tribler(s) => self.tribler.add(s, &req.source).await,
             ClientSettings::Flood(s) => {
                 let info = req.release.cloned().unwrap_or_default();
                 self.flood.add(s, &req.source, req.hash, &info).await
@@ -370,7 +417,8 @@ impl Clients {
             ClientSettings::Sabnzbd(_)
             | ClientSettings::Nzbget(_)
             | ClientSettings::UsenetBlackhole(_)
-            | ClientSettings::Pneumatic(_) => Err(DownloadError::Unsupported(
+            | ClientSettings::Pneumatic(_)
+            | ClientSettings::NzbVortex(_) => Err(DownloadError::Unsupported(
                 "Usenet clients cannot take torrents".into(),
             )),
         }
@@ -391,6 +439,7 @@ impl Clients {
             ClientSettings::Nzbget(s) => self.nzbget.add(s, name, content, recent).await,
             ClientSettings::UsenetBlackhole(s) => self.blackhole.add_nzb(s, name, content),
             ClientSettings::Pneumatic(s) => pneumatic::add(s, name, content),
+            ClientSettings::NzbVortex(s) => self.nzbvortex.add(s, name, content, recent).await,
             _ => Err(DownloadError::Unsupported(
                 "torrent clients cannot take NZBs".into(),
             )),
@@ -452,6 +501,15 @@ impl Clients {
             ClientSettings::Pneumatic(_) => Err(DownloadError::Unsupported(
                 "Pneumatic downloads cannot be removed".into(),
             )),
+            ClientSettings::NzbVortex(s) => {
+                self.nzbvortex
+                    .remove(s, &item.download_id, delete_data)
+                    .await
+            }
+            ClientSettings::RQBit(s) => self.rqbit.remove(s, &item.download_id, delete_data).await,
+            ClientSettings::Tribler(s) => {
+                self.tribler.remove(s, &item.download_id, delete_data).await
+            }
             ClientSettings::Aria2(s) => {
                 self.aria2.remove(s, &item.download_id).await?;
                 if delete_data {
@@ -475,6 +533,9 @@ impl Clients {
             ClientSettings::Aria2(s) => self.aria2.items(s).await,
             ClientSettings::Hadouken(s) => self.hadouken.items(s).await,
             ClientSettings::Pneumatic(s) => Ok(pneumatic::items(s)),
+            ClientSettings::NzbVortex(s) => self.nzbvortex.items(s).await,
+            ClientSettings::RQBit(s) => self.rqbit.items(s).await,
+            ClientSettings::Tribler(s) => self.tribler.items(s).await,
             ClientSettings::TorrentBlackhole(s) => {
                 Ok(self
                     .blackhole
@@ -500,6 +561,9 @@ impl Clients {
             ClientSettings::Aria2(_)
             | ClientSettings::Hadouken(_)
             | ClientSettings::Pneumatic(_)
+            | ClientSettings::NzbVortex(_)
+            | ClientSettings::RQBit(_)
+            | ClientSettings::Tribler(_)
             | ClientSettings::Sabnzbd(_)
             | ClientSettings::Nzbget(_)
             | ClientSettings::TorrentBlackhole(_)

@@ -253,6 +253,23 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             ),
             template(
                 kind,
+                "Tribler",
+                "TriblerDownloadClient",
+                client_options.clone(),
+                json!({
+                    "host": "localhost", "port": 20100, "useSsl": false, "urlBase": "", "apiKey": "",
+                    "tvCategory": "", "tvDirectory": "", "anonymityLevel": 1, "safeSeeding": true
+                }),
+            ),
+            template(
+                kind,
+                "rqbit",
+                "RQBit",
+                client_options.clone(),
+                json!({"host": "localhost", "port": 3030, "useSsl": false, "urlBase": "/"}),
+            ),
+            template(
+                kind,
                 "Flood",
                 "Flood",
                 client_options.clone(),
@@ -278,6 +295,16 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 "UsenetBlackhole",
                 client_options.clone(),
                 json!({"nzbFolder": "", "watchFolder": ""}),
+            ),
+            template(
+                kind,
+                "NZBVortex",
+                "NzbVortex",
+                client_options.clone(),
+                json!({
+                    "host": "localhost", "port": 4321, "urlBase": "", "apiKey": "",
+                    "tvCategory": "TV Shows", "recentTvPriority": 0, "olderTvPriority": 0
+                }),
             ),
             template(
                 kind,

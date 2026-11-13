@@ -270,9 +270,12 @@ pub const DOWNLOAD_CLIENT_IMPLEMENTATIONS: &[&str] = &[
     "UTorrent",
     "Aria2",
     "Hadouken",
+    "RQBit",
+    "TriblerDownloadClient",
     "TorrentBlackhole",
     "UsenetBlackhole",
     "Pneumatic",
+    "NzbVortex",
 ];
 
 pub const NOTIFICATION_IMPLEMENTATIONS: &[&str] = &[

@@ -80,14 +80,41 @@ pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
 
 pub fn protocol_for(implementation: &str) -> DownloadProtocol {
     match implementation.to_ascii_lowercase().as_str() {
-        "torznab" | "qbittorrent" | "transmission" | "deluge" | "rtorrent" | "utorrent"
-        | "vuze" | "aria2" | "flood" | "hadouken" | "downloadstation" | "torrentblackhole"
-        | "freeboxdownload" | "nyaa" | "torrentrssindexer" | "iptorrents" | "broadcasthenet"
-        | "broadcastthenet" | "torrentleech" | "filelist" | "hdbits" | "torrentday" => {
-            DownloadProtocol::Torrent
-        }
-        "newznab" | "sabnzbd" | "nzbget" | "nzbvortex" | "pneumatic" | "usenetblackhole"
-        | "omgwtfnzbs" | "fanzub" => DownloadProtocol::Usenet,
+        "torznab"
+        | "qbittorrent"
+        | "transmission"
+        | "deluge"
+        | "rtorrent"
+        | "utorrent"
+        | "vuze"
+        | "aria2"
+        | "flood"
+        | "hadouken"
+        | "downloadstation"
+        | "torrentblackhole"
+        | "freeboxdownload"
+        | "rqbit"
+        | "tribler"
+        | "triblerdownloadclient"
+        | "torrentdownloadstation"
+        | "nyaa"
+        | "torrentrssindexer"
+        | "iptorrents"
+        | "broadcasthenet"
+        | "broadcastthenet"
+        | "torrentleech"
+        | "filelist"
+        | "hdbits"
+        | "torrentday" => DownloadProtocol::Torrent,
+        "newznab"
+        | "sabnzbd"
+        | "nzbget"
+        | "nzbvortex"
+        | "pneumatic"
+        | "usenetblackhole"
+        | "usenetdownloadstation"
+        | "omgwtfnzbs"
+        | "fanzub" => DownloadProtocol::Usenet,
         _ => DownloadProtocol::Unknown,
     }
 }
