@@ -824,6 +824,8 @@ pub async fn apply_update(db: &Database, id: i64, u: &SeriesUpdate) -> DbResult<
             .await?;
         }
     }
+    // Sonarr's `UpdateSeries` re-applies auto tagging after an edit.
+    crate::auto_tags::apply_series(&mut tx, id).await?;
     tx.commit().await?;
     Ok(())
 }
@@ -869,6 +871,7 @@ pub async fn bulk_edit(db: &Database, edit: &BulkEdit) -> DbResult<u64> {
                 .execute(&mut *tx)
                 .await?;
         }
+        crate::auto_tags::apply_series(&mut tx, *id).await?;
         updated += 1;
     }
     tx.commit().await?;
@@ -1214,6 +1217,21 @@ pub async fn title_records(db: &Database) -> DbResult<Vec<TitleRecord>> {
                 .collect(),
         })
         .collect())
+}
+
+/// Records the catalogue's country of origin (Sonarr's `OriginalCountry`); a catalogue that
+/// gives none keeps the one already stored (for example migrated from Sonarr).
+pub async fn set_original_country(
+    conn: &mut SqliteConnection,
+    id: i64,
+    country: Option<&str>,
+) -> DbResult<()> {
+    sqlx::query("UPDATE series SET original_country = COALESCE(?, original_country) WHERE id = ?")
+        .bind(country.map(str::trim).filter(|c| !c.is_empty()))
+        .bind(id)
+        .execute(&mut *conn)
+        .await?;
+    Ok(())
 }
 
 #[cfg(test)]

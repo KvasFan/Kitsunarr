@@ -333,6 +333,7 @@ fn map_anime(a: &Anime, listed: &[Episode]) -> SeriesInfo {
         first_aired: from.map(|d| d.format("%Y-%m-%d").to_string()),
         last_aired: to.map(|d| d.format("%Y-%m-%d").to_string()),
         original_language: kitsunarr_domain::Language::by_name("Japanese").map(|l| l.id),
+        original_country: Some("JP".into()),
         external_ids: external_ids(a),
         seasons: vec![SeasonInfo {
             season_number: 1,

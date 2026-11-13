@@ -482,14 +482,17 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<MovieDetail> {
 }
 
 pub async fn set_monitored(db: &Database, id: i64, monitored: bool) -> DbResult<()> {
+    let mut conn = db.pool().acquire().await?;
     let r = sqlx::query("UPDATE movies SET monitored = ? WHERE id = ?")
         .bind(monitored)
         .bind(id)
-        .execute(db.pool())
+        .execute(&mut *conn)
         .await?;
     if r.rows_affected() == 0 {
         return Err(DbError::NotFound);
     }
+    // A Tanukarr film is a series: editing it re-applies auto tagging.
+    crate::auto_tags::apply_movie(&mut conn, id).await?;
     Ok(())
 }
 
@@ -534,6 +537,7 @@ pub async fn bulk_edit(db: &Database, edit: &BulkEdit) -> DbResult<u64> {
                 .execute(&mut *tx)
                 .await?;
         }
+        crate::auto_tags::apply_movie(&mut tx, *id).await?;
         updated += 1;
     }
     tx.commit().await?;
@@ -694,6 +698,21 @@ pub async fn set_last_search(db: &Database, id: i64, at: &str) -> DbResult<()> {
         .bind(at)
         .bind(id)
         .execute(db.pool())
+        .await?;
+    Ok(())
+}
+
+/// Records the catalogue's country of origin (Sonarr's `OriginalCountry`); a catalogue that
+/// gives none keeps the one already stored (for example migrated from Sonarr).
+pub async fn set_original_country(
+    conn: &mut SqliteConnection,
+    id: i64,
+    country: Option<&str>,
+) -> DbResult<()> {
+    sqlx::query("UPDATE movies SET original_country = COALESCE(?, original_country) WHERE id = ?")
+        .bind(country.map(str::trim).filter(|c| !c.is_empty()))
+        .bind(id)
+        .execute(&mut *conn)
         .await?;
     Ok(())
 }

@@ -20,6 +20,7 @@ const PROVIDER_TABLES: &[&str] = &[
     "import_lists",
     "delay_profiles",
     "release_profiles",
+    "auto_tags",
 ];
 
 pub async fn list(ex: impl SqliteExecutor<'_>) -> DbResult<Vec<TagItem>> {
@@ -32,7 +33,8 @@ pub async fn list(ex: impl SqliteExecutor<'_>) -> DbResult<Vec<TagItem>> {
            (SELECT COUNT(*) FROM notifications x, json_each(x.tags) j WHERE j.value = t.id) + \
            (SELECT COUNT(*) FROM import_lists x, json_each(x.tags) j WHERE j.value = t.id) + \
            (SELECT COUNT(*) FROM delay_profiles x, json_each(x.tags) j WHERE j.value = t.id) + \
-           (SELECT COUNT(*) FROM release_profiles x, json_each(x.tags) j WHERE j.value = t.id) AS usage_count \
+           (SELECT COUNT(*) FROM release_profiles x, json_each(x.tags) j WHERE j.value = t.id) + \
+           (SELECT COUNT(*) FROM auto_tags x, json_each(x.tags) j WHERE j.value = t.id) AS usage_count \
          FROM tags t ORDER BY t.label COLLATE NOCASE",
     )
     .fetch_all(ex)

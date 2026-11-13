@@ -50,6 +50,7 @@ fn group_label(g: &str) -> &'static str {
         "qualityProfiles" => "Quality profiles",
         "delayProfiles" => "Delay profiles",
         "releaseProfiles" => "Release profiles",
+        "autoTagging" => "Auto tagging",
         "indexers" => "Indexers",
         "downloadClients" => "Download clients",
         "notifications" => "Notifications",

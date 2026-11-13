@@ -184,6 +184,7 @@ const TABLES: &[(&str, &[&str])] = &[
     ("qualityprofiles", &["QualityProfiles", "Profiles"]),
     ("qualitydefinitions", &["QualityDefinitions"]),
     ("customformats", &["CustomFormats"]),
+    ("autotagging", &["AutoTagging"]),
     ("delayprofiles", &["DelayProfiles"]),
     ("releaseprofiles", &["ReleaseProfiles", "Restrictions"]),
     ("indexers", &["Indexers"]),

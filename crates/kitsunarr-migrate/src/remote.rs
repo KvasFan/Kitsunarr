@@ -304,6 +304,7 @@ pub async fn load(
         ("rootfolders", "api/v3/rootfolder"),
         ("qualitydefinitions", "api/v3/qualitydefinition"),
         ("customformats", "api/v3/customformat"),
+        ("autotagging", "api/v3/autotagging"),
         ("qualityprofiles", "api/v3/qualityprofile"),
         ("delayprofiles", "api/v3/delayprofile"),
         ("releaseprofiles", "api/v3/releaseprofile"),

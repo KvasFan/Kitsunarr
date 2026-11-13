@@ -146,6 +146,7 @@ const ORDER: &[&str] = &[
     "importLists",
     "delayProfiles",
     "releaseProfiles",
+    "autoTagging",
     "remotePathMappings",
     "importListExclusions",
     "settings",
@@ -527,6 +528,119 @@ impl<'a> Importer<'a> {
             } else {
                 self.count("qualityDefinitions", Act::Skip);
             }
+        }
+        Ok(())
+    }
+
+    /// Sonarr's auto tagging rules, with their tags, quality profiles and root folders mapped
+    /// to Kitsunarr's. A rule whose condition names something that was not imported keeps the
+    /// condition (it can never match) and is reported.
+    async fn auto_tags(&mut self, conn: &mut SqliteConnection) -> Result<(), MigrateError> {
+        if !self.enabled("autoTagging") {
+            return Ok(());
+        }
+        let existing = kitsunarr_db::auto_tags::list(&mut *conn).await?;
+        let rules = self.snap.auto_tags.clone();
+        for rule in &rules {
+            let mut unmatched = Vec::new();
+            let specifications: Vec<kitsunarr_domain::api::settings::CustomFormatSpecification> =
+                rule.specifications
+                    .iter()
+                    .map(|spec| {
+                        let mut spec = spec.clone();
+                        let source = spec.fields.get("value").and_then(Value::as_i64);
+                        match spec.implementation.as_str() {
+                            "QualityProfileSpecification" => {
+                                let mapped = source.and_then(|v| self.profile_map.get(&v).copied());
+                                if mapped.is_none() {
+                                    unmatched.push(spec.name.clone());
+                                }
+                                spec.fields
+                                    .insert("value".into(), json!(mapped.unwrap_or(0)));
+                            }
+                            "TagSpecification" => {
+                                let mapped = source.and_then(|v| self.tag_map.get(&v).copied());
+                                if mapped.is_none() {
+                                    unmatched.push(spec.name.clone());
+                                }
+                                spec.fields
+                                    .insert("value".into(), json!(mapped.unwrap_or(0)));
+                            }
+                            "RootFolderSpecification" => {
+                                if let Some(path) = spec.fields.get("value").and_then(Value::as_str)
+                                {
+                                    let mapped = self.mapper.map(path);
+                                    spec.fields.insert("value".into(), json!(mapped));
+                                }
+                            }
+                            _ => {}
+                        }
+                        spec
+                    })
+                    .collect();
+            let tags = self.map_tags(&rule.tags);
+            if !unmatched.is_empty() || tags.len() != rule.tags.len() {
+                self.warn(
+                    WarningSeverity::Warning,
+                    "autoTagging",
+                    Some(rule.id),
+                    Some(&rule.name),
+                    format!(
+                        "Some tags or quality profiles this rule names were not imported{}; review the rule in Settings › Tags.",
+                        if unmatched.is_empty() {
+                            String::new()
+                        } else {
+                            format!(" (conditions: {})", unmatched.join(", "))
+                        }
+                    ),
+                );
+            }
+            let model = kitsunarr_domain::api::settings::AutoTag {
+                id: 0,
+                name: rule.name.clone(),
+                remove_tags_automatically: rule.remove_tags_automatically,
+                specifications,
+                tags,
+            };
+            if kitsunarr_domain::auto_tagging::validate(&model).is_err() {
+                self.warn(
+                    WarningSeverity::Warning,
+                    "autoTagging",
+                    Some(rule.id),
+                    Some(&rule.name),
+                    "This rule is not valid without the records it names and was not imported.",
+                );
+                self.count("autoTagging", Act::Unsupported);
+                continue;
+            }
+            let found = match self.mapped(conn, "autoTag", rule.id, "auto_tags").await? {
+                Some(id) => Some(id),
+                None => existing
+                    .iter()
+                    .find(|e| e.name.eq_ignore_ascii_case(&rule.name))
+                    .map(|e| e.id),
+            };
+            let target = match found {
+                Some(id) if self.update_existing() => {
+                    kitsunarr_db::auto_tags::update(
+                        &mut *conn,
+                        &kitsunarr_domain::api::settings::AutoTag { id, ..model },
+                    )
+                    .await?;
+                    self.count("autoTagging", Act::Update);
+                    id
+                }
+                Some(id) => {
+                    self.count("autoTagging", Act::Skip);
+                    id
+                }
+                None => {
+                    let id = kitsunarr_db::auto_tags::create(&mut *conn, &model).await?;
+                    self.count("autoTagging", Act::Create);
+                    id
+                }
+            };
+            self.remember(conn, "autoTag", rule.id, target).await?;
         }
         Ok(())
     }
@@ -1862,6 +1976,9 @@ impl<'a> Importer<'a> {
             };
             self.series_map.insert(s.id, target);
             self.remember(conn, "series", s.id, target).await?;
+            if write {
+                series::set_original_country(conn, target, s.original_country.as_deref()).await?;
+            }
             if s.identity().0 == MetadataProvider::Tvdb {
                 sqlx::query("UPDATE series SET metadata_language = ? WHERE id = ?")
                     .bind(s.metadata_language.unwrap_or(1))
@@ -2165,6 +2282,9 @@ impl<'a> Importer<'a> {
             };
             self.movie_by_series.insert(s.id, target);
             self.remember(conn, "movie", s.id, target).await?;
+            if write {
+                movies::set_original_country(conn, target, s.original_country.as_deref()).await?;
+            }
             if write {
                 self.movies_written.push(target);
                 let files: Vec<&SrcEpisodeFile> = self
@@ -2621,6 +2741,7 @@ pub async fn run(
         imp.providers(conn, ProviderKind::ImportList, "importLists")
             .await?;
         imp.delay_and_release_profiles(conn).await?;
+        imp.auto_tags(conn).await?;
         imp.settings(conn).await?;
         imp.series(conn).await?;
         imp.movies(conn).await?;

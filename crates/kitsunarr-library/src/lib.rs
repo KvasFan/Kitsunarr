@@ -297,6 +297,8 @@ pub async fn add_title(
             },
         )
         .await?;
+        movies::set_original_country(&mut conn, id, info.original_country.as_deref()).await?;
+        kitsunarr_db::auto_tags::apply_movie(&mut conn, id).await?;
         tracing::info!(title = %info.title, provider = %info.provider, "movie added");
         spawn_grouping(db, metadata, req.provider, grouping::Member::Movie(id));
         return Ok(LibraryRef {
@@ -446,6 +448,8 @@ pub async fn add_title(
         )
         .await?;
     }
+    series::set_original_country(&mut tx, id, info.original_country.as_deref()).await?;
+    kitsunarr_db::auto_tags::apply_series(&mut tx, id).await?;
     tx.commit().await?;
     tracing::info!(title = %info.title, provider = %info.provider, episodes = info.episodes.len(), "series added");
     if let Some((_, g)) = &planned {
@@ -720,6 +724,9 @@ pub async fn refresh_series(
         .await?;
         if inserted { added += 1 } else { updated += 1 }
     }
+    series::set_original_country(&mut tx, id, info.original_country.as_deref()).await?;
+    // Sonarr's refresh re-applies auto tagging (`RefreshSeriesService`).
+    kitsunarr_db::auto_tags::apply_series(&mut tx, id).await?;
     tx.commit().await?;
     Ok(RefreshResult {
         added_episodes: added,
@@ -759,6 +766,8 @@ pub async fn refresh_movie(db: &Database, metadata: &Metadata, id: i64) -> Libra
         &info.external_ids,
     )
     .await?;
+    movies::set_original_country(&mut conn, id, info.original_country.as_deref()).await?;
+    kitsunarr_db::auto_tags::apply_movie(&mut conn, id).await?;
     Ok(())
 }
 

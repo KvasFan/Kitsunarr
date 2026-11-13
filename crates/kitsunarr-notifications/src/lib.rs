@@ -94,6 +94,8 @@ pub struct SeriesRef {
     #[serde(skip)]
     pub tag_ids: Vec<i64>,
     pub original_language: Option<LanguageRef>,
+    /// Sonarr v5's `OriginalCountry` (as Tanukarr's webhook sends it).
+    pub original_country: Option<String>,
     #[serde(skip)]
     pub overview: Option<String>,
     #[serde(skip)]

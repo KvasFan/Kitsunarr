@@ -293,6 +293,7 @@ fn map_show(show: Show, all_episodes: Vec<Episode>) -> MetadataResult<SeriesInfo
             .language
             .as_deref()
             .and_then(|l| kitsunarr_domain::Language::by_name(l).map(|l| l.id)),
+        original_country: None,
         external_ids: external_ids(&show),
         seasons,
         episodes,

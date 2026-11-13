@@ -100,6 +100,8 @@ pub struct SrcSeries {
     pub genres: Vec<String>,
     pub ratings: Option<Value>,
     pub original_language: Option<i32>,
+    /// Sonarr's `OriginalCountry` (v5, migration 227).
+    pub original_country: Option<String>,
     /// Sonarr's `Series.Language`: the language TheTVDB titles are read in.
     pub metadata_language: Option<i32>,
     pub quality_profile_id: i64,
@@ -269,6 +271,16 @@ pub struct SrcCustomFormat {
     pub specifications: Vec<CustomFormatSpecification>,
 }
 
+/// Sonarr's `AutoTagging` rule; specifications use the custom format shape.
+#[derive(Debug, Clone, PartialEq)]
+pub struct SrcAutoTag {
+    pub id: i64,
+    pub name: String,
+    pub remove_tags_automatically: bool,
+    pub specifications: Vec<CustomFormatSpecification>,
+    pub tags: Vec<i64>,
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub struct SrcProvider {
     pub kind: ProviderKind,
@@ -341,6 +353,7 @@ pub struct SourceSnapshot {
     pub root_folders: Vec<(i64, String)>,
     pub quality_definitions: Vec<SrcQualityDefinition>,
     pub custom_formats: Vec<SrcCustomFormat>,
+    pub auto_tags: Vec<SrcAutoTag>,
     pub quality_profiles: Vec<SrcQualityProfile>,
     pub delay_profiles: Vec<SrcDelayProfile>,
     pub release_profiles: Vec<SrcReleaseProfile>,
@@ -408,6 +421,7 @@ impl SourceSnapshot {
             ("importListExclusions".into(), self.exclusions.len() as u64),
             ("delayProfiles".into(), self.delay_profiles.len() as u64),
             ("releaseProfiles".into(), self.release_profiles.len() as u64),
+            ("autoTagging".into(), self.auto_tags.len() as u64),
             (
                 "remotePathMappings".into(),
                 self.remote_path_mappings.len() as u64,

@@ -702,6 +702,22 @@ impl Client {
     pub async fn delete_release_profile(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/releaseprofiles/{id}")).await
     }
+    pub async fn auto_tags(&self) -> ClientResult<Vec<kitsunarr_domain::api::settings::AutoTag>> {
+        self.get("/autotagging").await
+    }
+    pub async fn save_auto_tag(
+        &self,
+        r: &kitsunarr_domain::api::settings::AutoTag,
+    ) -> ClientResult<kitsunarr_domain::api::settings::AutoTag> {
+        if r.id > 0 {
+            self.put(&format!("/autotagging/{}", r.id), r).await
+        } else {
+            self.post("/autotagging", r).await
+        }
+    }
+    pub async fn delete_auto_tag(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/autotagging/{id}")).await
+    }
     pub async fn remote_path_mappings(
         &self,
     ) -> ClientResult<Vec<kitsunarr_domain::api::settings::RemotePathMapping>> {

@@ -147,6 +147,7 @@ fn map(r: &Resource) -> Option<SeriesInfo> {
         first_aired: release.clone(),
         last_aired: release.clone(),
         original_language: None,
+        original_country: None,
         external_ids: vec![ExternalId {
             kind: ExternalIdKind::Imdb,
             value: imdb.clone(),

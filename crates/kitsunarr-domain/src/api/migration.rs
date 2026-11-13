@@ -175,6 +175,7 @@ pub const MIGRATION_ENTITY_GROUPS: &[&str] = &[
     "qualityProfiles",
     "delayProfiles",
     "releaseProfiles",
+    "autoTagging",
     "indexers",
     "downloadClients",
     "notifications",

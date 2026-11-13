@@ -4194,6 +4194,159 @@ async fn import_list_shows_can_be_added_selectively() {
 }
 
 #[tokio::test]
+async fn auto_tagging_applies_on_add_edit_and_refresh() {
+    use kitsunarr_domain::api::library::SeriesUpdate;
+    use kitsunarr_domain::api::settings::{AutoTag, CustomFormatSpecification};
+    let (skyhook, _log) = skyhook_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let american = client.create_tag("american").await.unwrap().id;
+    let daily = client.create_tag("daily").await.unwrap().id;
+    let spec = |implementation: &str, fields: serde_json::Value| CustomFormatSpecification {
+        name: implementation.trim_end_matches("Specification").into(),
+        implementation: implementation.into(),
+        negate: false,
+        required: false,
+        fields: fields.as_object().cloned().unwrap(),
+    };
+    // Sonarr's validation: tags and conditions are required.
+    let invalid = AutoTag {
+        id: 0,
+        name: "Nothing".into(),
+        remove_tags_automatically: false,
+        specifications: vec![],
+        tags: vec![american],
+    };
+    assert_eq!(
+        status(client.save_auto_tag(&invalid).await.unwrap_err()),
+        400
+    );
+    let rule = client
+        .save_auto_tag(&AutoTag {
+            id: 0,
+            name: "American drama".into(),
+            remove_tags_automatically: false,
+            specifications: vec![
+                spec(
+                    "OriginalCountrySpecification",
+                    serde_json::json!({"value": ["USA"]}),
+                ),
+                spec(
+                    "GenreSpecification",
+                    serde_json::json!({"value": ["Drama"]}),
+                ),
+                spec(
+                    "GenreSpecification",
+                    serde_json::json!({"value": ["Comedy"]}),
+                ),
+            ],
+            tags: vec![american],
+        })
+        .await
+        .unwrap();
+    assert!(rule.id > 0);
+    let daily_rule = client
+        .save_auto_tag(&AutoTag {
+            id: 0,
+            name: "Daily shows".into(),
+            remove_tags_automatically: true,
+            specifications: vec![spec(
+                "SeriesTypeSpecification",
+                serde_json::json!({"value": 1}),
+            )],
+            tags: vec![daily],
+        })
+        .await
+        .unwrap();
+    assert_eq!(client.auto_tags().await.unwrap().len(), 2);
+
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::Tvdb,
+            id: "81189".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+        })
+        .await
+        .unwrap();
+    // SkyHook's `originalCountry` ("usa") and a drama genre: tagged when added.
+    let tags = |id| {
+        let c = client.clone();
+        async move { c.series_detail(id).await.unwrap().item.tags }
+    };
+    assert_eq!(tags(added.id).await, vec![american]);
+
+    // An edit that makes it daily adds the second rule's tag; a manual tag removal of the
+    // first is undone by the next refresh, as in Sonarr.
+    client
+        .update_series(
+            added.id,
+            &SeriesUpdate {
+                series_type: Some(kitsunarr_domain::SeriesType::Daily),
+                tags: Some(vec![]),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    let mut now = tags(added.id).await;
+    now.sort_unstable();
+    assert_eq!(now, vec![american, daily]);
+    client
+        .update_series(
+            added.id,
+            &SeriesUpdate {
+                series_type: Some(kitsunarr_domain::SeriesType::Standard),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        tags(added.id).await,
+        vec![american],
+        "removed automatically"
+    );
+
+    // Deleting the rule leaves the tags; the rule is gone.
+    client.delete_auto_tag(daily_rule.id).await.unwrap();
+    client.refresh_series(added.id).await.unwrap();
+    assert_eq!(tags(added.id).await, vec![american]);
+    assert_eq!(client.auto_tags().await.unwrap().len(), 1);
+    // The rule counts as a use of its tag.
+    let listed = client.tags().await.unwrap();
+    assert_eq!(
+        listed
+            .iter()
+            .find(|t| t.id == american)
+            .unwrap()
+            .usage_count,
+        2
+    );
+}
+
+#[tokio::test]
 async fn delay_release_profiles_and_remote_path_mappings_are_managed() {
     use kitsunarr_domain::api::settings::{DelayProfile, ReleaseProfile, RemotePathMapping};
     let server = start().await;

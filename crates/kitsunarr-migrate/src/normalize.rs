@@ -49,6 +49,11 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
             .iter()
             .filter_map(custom_format)
             .collect(),
+        auto_tags: raw
+            .table("autotagging")
+            .iter()
+            .filter_map(auto_tag)
+            .collect(),
         quality_profiles: raw
             .table("qualityprofiles")
             .iter()
@@ -461,6 +466,7 @@ fn series(r: &Rec, scene: &HashMap<i64, Vec<(String, Option<i32>)>>) -> Option<S
         certification: r.str("certification"),
         genres: r.string_list("genres"),
         ratings: r.json("ratings").filter(|v| v.is_object()),
+        original_country: r.str("originalcountry").filter(|c| !c.trim().is_empty()),
         original_language: match r.raw("originallanguage") {
             Some(Value::Object(o)) => o
                 .get("id")
@@ -720,9 +726,29 @@ const SPEC_META_KEYS: &[&str] = &[
     "presets",
 ];
 
+fn auto_tag(r: &Rec) -> Option<SrcAutoTag> {
+    Some(SrcAutoTag {
+        id: r.i64("id")?,
+        name: r.str("name")?,
+        remove_tags_automatically: r.bool_or("removetagsautomatically", false),
+        specifications: specifications(r),
+        tags: r.int_list("tags"),
+    })
+}
+
 fn custom_format(r: &Rec) -> Option<SrcCustomFormat> {
-    let specifications = r
-        .array("specifications")
+    Some(SrcCustomFormat {
+        id: r.i64("id")?,
+        name: r.str("name")?,
+        include_when_renaming: r.bool_or("includecustomformatwhenrenaming", false),
+        specifications: specifications(r),
+    })
+}
+
+/// Specifications of a custom format or an auto tag: `{type, body}` in a database,
+/// `{implementation, fields}` in the API.
+fn specifications(r: &Rec) -> Vec<CustomFormatSpecification> {
+    r.array("specifications")
         .into_iter()
         .filter_map(|v| {
             let s = Rec::from_value(v);
@@ -761,13 +787,7 @@ fn custom_format(r: &Rec) -> Option<SrcCustomFormat> {
                 fields,
             })
         })
-        .collect();
-    Some(SrcCustomFormat {
-        id: r.i64("id")?,
-        name: r.str("name")?,
-        include_when_renaming: r.bool_or("includecustomformatwhenrenaming", false),
-        specifications,
-    })
+        .collect()
 }
 
 /// Original (camelCase) keys of a `{type, body}` specification body.

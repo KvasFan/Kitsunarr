@@ -1401,7 +1401,7 @@ fn DelayProfiles() -> Element {
                     }
                     Field { label: "Usenet delay (minutes)", input { class: "input", r#type: "number", min: "0", value: "{d.usenet_delay}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.usenet_delay = e.value().parse().unwrap_or(0); } } } }
                     Field { label: "Torrent delay (minutes)", input { class: "input", r#type: "number", min: "0", value: "{d.torrent_delay}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.torrent_delay = e.value().parse().unwrap_or(0); } } } }
-                    Field { label: "Tags (ids, comma separated)", input { class: "input", value: "{d.tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(\", \")}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.tags = tag_ids(&e.value()); } } } }
+                    Field { label: "Tags (ids, comma separated)", input { class: "input", value: "{d.tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(\", \")}", onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.tags = tag_ids(&e.value()); } } } }
                     Field { label: "Minimum custom format score", input { class: "input", r#type: "number", value: "{d.minimum_custom_format_score}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.minimum_custom_format_score = e.value().parse().unwrap_or(0); } } } }
                 }
                 div { class: "stack",
@@ -1492,9 +1492,9 @@ fn ReleaseProfiles() -> Element {
                 Switch { checked: r.enabled, label: "Enabled", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.enabled = v; } } }
                 div { class: "form-grid",
                     Field { label: "Name", input { class: "input", value: "{r.name.clone().unwrap_or_default()}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.name = Some(e.value()).filter(|v| !v.trim().is_empty()); } } } }
-                    Field { label: "Must contain (comma separated; /regex/ allowed)", input { class: "input", value: "{r.required.join(\", \")}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.required = split_terms(&e.value()); } } } }
-                    Field { label: "Must not contain", input { class: "input", value: "{r.ignored.join(\", \")}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.ignored = split_terms(&e.value()); } } } }
-                    Field { label: "Tags (ids, comma separated)", input { class: "input", value: "{r.tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(\", \")}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.tags = tag_ids(&e.value()); } } } }
+                    Field { label: "Must contain (comma separated; /regex/ allowed)", input { class: "input", value: "{r.required.join(\", \")}", onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.required = split_terms(&e.value()); } } } }
+                    Field { label: "Must not contain", input { class: "input", value: "{r.ignored.join(\", \")}", onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.ignored = split_terms(&e.value()); } } } }
+                    Field { label: "Tags (ids, comma separated)", input { class: "input", value: "{r.tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(\", \")}", onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.tags = tag_ids(&e.value()); } } } }
                 }
             }
         }
@@ -2996,6 +2996,252 @@ pub fn SettingsTags() -> Element {
                     }
                 }
             },
+        }
+        AutoTagging {}
+    }
+}
+
+/// Default fields of a new condition of the given implementation.
+fn auto_tag_spec(
+    implementation: &str,
+) -> kitsunarr_domain::api::settings::CustomFormatSpecification {
+    let name = kitsunarr_domain::auto_tagging::SPECIFICATIONS
+        .iter()
+        .find(|(i, _)| *i == implementation)
+        .map_or("Condition", |(_, n)| n);
+    let fields = match implementation {
+        "GenreSpecification" | "NetworkSpecification" | "OriginalCountrySpecification" => {
+            serde_json::json!({"value": []})
+        }
+        "MonitoredSpecification" => serde_json::json!({}),
+        "RootFolderSpecification" => serde_json::json!({"value": ""}),
+        "StatusSpecification" => serde_json::json!({"status": 0}),
+        "YearSpecification" => serde_json::json!({"min": 2000, "max": 2030}),
+        "OriginalLanguageSpecification" => serde_json::json!({"value": 1}),
+        _ => serde_json::json!({"value": 0}),
+    };
+    kitsunarr_domain::api::settings::CustomFormatSpecification {
+        name: name.to_string(),
+        implementation: implementation.to_string(),
+        negate: false,
+        required: false,
+        fields: fields.as_object().cloned().unwrap_or_default(),
+    }
+}
+
+/// Sonarr's auto tagging (Settings › Tags › Auto Tagging): rules that add tags to titles
+/// matching their conditions when a title is added, edited or refreshed.
+#[component]
+fn AutoTagging() -> Element {
+    use kitsunarr_domain::api::settings::AutoTag;
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let mut list = use_resource(move || {
+        let _ = (app.settings_rev)();
+        let c = c0.clone();
+        async move { c.auto_tags().await }
+    });
+    let c1 = client.clone();
+    let lookups = use_resource(move || {
+        let _ = (app.settings_rev)();
+        let c = c1.clone();
+        async move {
+            let tags = c.tags().await.unwrap_or_default();
+            let profiles = c.quality_profiles().await.unwrap_or_default();
+            let roots = c.root_folders().await.unwrap_or_default();
+            (tags, profiles, roots)
+        }
+    });
+    let mut editing = use_signal(|| None::<AutoTag>);
+    let mut new_kind = use_signal(|| "GenreSpecification".to_string());
+    let c2 = client.clone();
+    let save = move |_| {
+        let Some(r) = editing() else { return };
+        let c = c2.clone();
+        spawn(async move {
+            match c.save_auto_tag(&r).await {
+                Ok(_) => {
+                    editing.set(None);
+                    list.restart();
+                    app.success("Auto tag saved. It applies when titles are next added, edited or refreshed.");
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let remove = move |id: i64| {
+        let c = client.clone();
+        spawn(async move {
+            match c.delete_auto_tag(id).await {
+                Ok(()) => list.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let (tags, profiles, roots) = lookups.read().clone().unwrap_or_default();
+    let tag_label = {
+        let tags = tags.clone();
+        move |id: i64| {
+            tags.iter()
+                .find(|t| t.id == id)
+                .map_or_else(|| format!("#{id}"), |t| t.label.clone())
+        }
+    };
+    rsx! {
+        div { class: "card", style: "margin-top: var(--sp-5)",
+            div { class: "row",
+                h3 { class: "grow", "Auto tagging" }
+                button { class: "btn", onclick: move |_| editing.set(Some(AutoTag { id: 0, name: String::new(), remove_tags_automatically: false, specifications: Vec::new(), tags: Vec::new() })), "Add auto tag" }
+            }
+            p { class: "small faint", "Tags are added to series and films that match every kind of condition when they are added, edited or refreshed." }
+            match &*list.read() {
+                None => rsx! { Loading {} },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                Some(Ok(items)) if items.is_empty() => rsx! { p { class: "small faint", "No auto tags." } },
+                Some(Ok(items)) => rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { "Name" } th { "Tags" } th { "Conditions" } th { "" } } }
+                            tbody {
+                                for r in items.iter() {
+                                    {
+                                        let (rr, id, remove) = (r.clone(), r.id, remove.clone());
+                                        let labels: Vec<String> = r.tags.iter().map(|t| tag_label(*t)).collect();
+                                        let conditions: Vec<String> = r.specifications.iter().map(|s| s.name.clone()).collect();
+                                        rsx! {
+                                            tr { key: "{r.id}",
+                                                td { "{r.name}" if r.remove_tags_automatically { " " Badge { text: "removes".to_string() } } }
+                                                td { class: "small", {labels.join(", ")} }
+                                                td { class: "small", {conditions.join(", ")} }
+                                                td { class: "shrink", div { class: "row tight",
+                                                    button { class: "btn sm", onclick: move |_| editing.set(Some(rr.clone())), "Edit" }
+                                                    button { class: "btn sm danger", onclick: move |_| remove(id), {crate::i18n::t().delete} }
+                                                } }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+            }
+        }
+        if let Some(r) = editing() {
+            Modal { title: "Auto tag".to_string(), wide: true, on_close: move |_| editing.set(None),
+                footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| editing.set(None), "Cancel" } button { class: "btn primary", onclick: save, "Save" } },
+                div { class: "form-grid",
+                    Field { label: "Name", input { class: "input", "aria-label": "Auto tag name", value: "{r.name}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.name = e.value(); } } } }
+                    Field { label: "Tags",
+                        div { class: "row",
+                            for t in tags.iter() {
+                                {
+                                    let (id, on) = (t.id, r.tags.contains(&t.id));
+                                    rsx! {
+                                        label { key: "{t.id}", class: "row tight small",
+                                            input { r#type: "checkbox", checked: on, "aria-label": "Tag {t.label}",
+                                                onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.tags.retain(|v| *v != id); if e.checked() { x.tags.push(id); } } } }
+                                            "{t.label}"
+                                        }
+                                    }
+                                }
+                            }
+                            if tags.is_empty() { span { class: "small faint", "Add a tag above first." } }
+                        }
+                    }
+                }
+                Switch { checked: r.remove_tags_automatically, label: "Remove tags automatically (from titles that stop matching)", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.remove_tags_automatically = v; } } }
+                h4 { "Conditions" }
+                p { class: "small faint", "Conditions of one kind match when any of them matches (all the required ones must); every kind must match." }
+                for (i, spec) in r.specifications.iter().enumerate() {
+                    {
+                        let spec = spec.clone();
+                        let kind_name = kitsunarr_domain::auto_tagging::SPECIFICATIONS.iter().find(|(k, _)| *k == spec.implementation).map_or(spec.implementation.clone(), |(_, n)| n.to_string());
+                        let mut set_field = move |k: &'static str, v: Value| { if let Some(x) = editing.write().as_mut() { x.specifications[i].fields.insert(k.to_string(), v); } };
+                        let value = spec.fields.get("value").cloned().unwrap_or(Value::Null);
+                        let int_value = value.as_i64().unwrap_or(0);
+                        rsx! {
+                            div { key: "{i}-{spec.implementation}", class: "card", style: "padding: var(--sp-3); margin-bottom: var(--sp-3)",
+                                div { class: "row",
+                                    Badge { text: kind_name }
+                                    input { class: "input grow", "aria-label": "Condition name", value: "{spec.name}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.specifications[i].name = e.value(); } } }
+                                    button { class: "btn sm danger", "aria-label": "Remove condition", onclick: move |_| { if let Some(x) = editing.write().as_mut() { x.specifications.remove(i); } }, "✕" }
+                                }
+                                div { class: "row", style: "margin-top: var(--sp-2)",
+                                    match spec.implementation.as_str() {
+                                        "GenreSpecification" | "NetworkSpecification" | "OriginalCountrySpecification" => {
+                                            let text = value.as_array().map(|a| a.iter().filter_map(|v| v.as_str()).collect::<Vec<_>>().join(", ")).unwrap_or_default();
+                                            rsx! { input { class: "input grow", "aria-label": "Values", placeholder: "comma separated", value: "{text}",
+                                                onchange: move |e: FormEvent| set_field("value", Value::from(split_terms(&e.value()))) } }
+                                        }
+                                        "MonitoredSpecification" => rsx! { span { class: "small faint", "Matches monitored titles." } },
+                                        "OriginalLanguageSpecification" => rsx! {
+                                            select { class: "select", "aria-label": "Language", value: "{int_value}", onchange: move |e: FormEvent| set_field("value", Value::from(e.value().parse::<i64>().unwrap_or(1))),
+                                                for l in kitsunarr_domain::Language::all().iter() { option { key: "{l.id}", value: "{l.id}", selected: i64::from(l.id) == int_value, "{l.name}" } }
+                                            }
+                                        },
+                                        "QualityProfileSpecification" => rsx! {
+                                            select { class: "select", "aria-label": "Quality profile", onchange: move |e: FormEvent| set_field("value", Value::from(e.value().parse::<i64>().unwrap_or(0))),
+                                                option { value: "0", selected: int_value == 0, "Choose…" }
+                                                for p in profiles.iter() { option { key: "{p.id}", value: "{p.id}", selected: p.id == int_value, "{p.name}" } }
+                                            }
+                                        },
+                                        "RootFolderSpecification" => {
+                                            let current = value.as_str().unwrap_or_default().to_string();
+                                            rsx! {
+                                                select { class: "select", "aria-label": "Root folder", onchange: move |e: FormEvent| set_field("value", Value::from(e.value())),
+                                                    option { value: "", selected: current.is_empty(), "Choose…" }
+                                                    for f in roots.iter() { option { key: "{f.id}", value: "{f.path}", selected: f.path == current, "{f.path}" } }
+                                                }
+                                            }
+                                        }
+                                        "SeriesTypeSpecification" => rsx! {
+                                            select { class: "select", "aria-label": "Series type", onchange: move |e: FormEvent| set_field("value", Value::from(e.value().parse::<i64>().unwrap_or(0))),
+                                                for (v, n) in [(0, "Standard"), (1, "Daily"), (2, "Anime")] { option { key: "{v}", value: "{v}", selected: v == int_value, "{n}" } }
+                                            }
+                                        },
+                                        "StatusSpecification" => {
+                                            let status = spec.fields.get("status").and_then(Value::as_i64).unwrap_or(0);
+                                            rsx! {
+                                                select { class: "select", "aria-label": "Status", onchange: move |e: FormEvent| set_field("status", Value::from(e.value().parse::<i64>().unwrap_or(0))),
+                                                    for (v, n) in [(0, "Continuing"), (1, "Ended"), (2, "Upcoming"), (-1, "Deleted")] { option { key: "{v}", value: "{v}", selected: v == status, "{n}" } }
+                                                }
+                                            }
+                                        }
+                                        "TagSpecification" => rsx! {
+                                            select { class: "select", "aria-label": "Tag", onchange: move |e: FormEvent| set_field("value", Value::from(e.value().parse::<i64>().unwrap_or(0))),
+                                                option { value: "0", selected: int_value == 0, "Choose…" }
+                                                for t in tags.iter() { option { key: "{t.id}", value: "{t.id}", selected: t.id == int_value, "{t.label}" } }
+                                            }
+                                        },
+                                        "YearSpecification" => {
+                                            let min = spec.fields.get("min").and_then(Value::as_i64).unwrap_or(0);
+                                            let max = spec.fields.get("max").and_then(Value::as_i64).unwrap_or(0);
+                                            rsx! {
+                                                input { class: "input", r#type: "number", "aria-label": "Minimum year", value: "{min}", oninput: move |e| set_field("min", Value::from(e.value().parse::<i64>().unwrap_or(0))) }
+                                                span { "to" }
+                                                input { class: "input", r#type: "number", "aria-label": "Maximum year", value: "{max}", oninput: move |e| set_field("max", Value::from(e.value().parse::<i64>().unwrap_or(0))) }
+                                            }
+                                        }
+                                        _ => rsx! { span { class: "small faint", "Not evaluated by Kitsunarr." } },
+                                    }
+                                }
+                                div { class: "row", style: "margin-top: var(--sp-2)",
+                                    Switch { checked: spec.negate, label: "Negate", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.specifications[i].negate = v; } } }
+                                    Switch { checked: spec.required, label: "Required", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.specifications[i].required = v; } } }
+                                }
+                            }
+                        }
+                    }
+                }
+                div { class: "row",
+                    select { class: "select", "aria-label": "Condition type", onchange: move |e: FormEvent| new_kind.set(e.value()),
+                        for (k, n) in kitsunarr_domain::auto_tagging::SPECIFICATIONS.iter() { option { key: "{k}", value: "{k}", selected: *k == new_kind(), "{n}" } }
+                    }
+                    button { class: "btn", onclick: move |_| { let spec = auto_tag_spec(&new_kind()); if let Some(x) = editing.write().as_mut() { x.specifications.push(spec); } }, "Add condition" }
+                }
+            }
         }
     }
 }

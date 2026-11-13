@@ -320,6 +320,7 @@ fn map_media(m: Media, schedule: Vec<Airing>) -> SeriesInfo {
         first_aired: start_date,
         last_aired: m.end.iso(),
         original_language: language(m.country.as_deref()),
+        original_country: m.country.clone(),
         external_ids: external_ids(&m),
         seasons: vec![SeasonInfo {
             season_number: 1,

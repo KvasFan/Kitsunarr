@@ -546,6 +546,36 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Add a title").await;
         wait_text(&client, "Delete group").await;
         screenshot(&client, "11g-collection-editor").await;
+        // Auto tagging (Sonarr's Settings › Tags): a rule with a genre condition.
+        client.goto(&format!("{base}/settings/tags")).await.unwrap();
+        click_button(&client, "Add auto tag").await;
+        fill(&client, "input[aria-label='Auto tag name']", "E2E anime").await;
+        client
+            .find(Locator::Css("input[aria-label='Tag anime']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        click_button(&client, "Add condition").await;
+        fill(&client, "input[aria-label='Values']", "Anime, Animation").await;
+        screenshot(&client, "11h-auto-tag-editor").await;
+        click_button(&client, "Save").await;
+        wait_text(&client, "Auto tag saved").await;
+        wait_text(&client, "E2E anime").await;
+        // The comma-separated values were kept as typed.
+        click_button(&client, "Edit").await;
+        let values = client
+            .wait()
+            .at_most(Duration::from_secs(20))
+            .for_element(Locator::Css("input[aria-label='Values']"))
+            .await
+            .unwrap()
+            .prop("value")
+            .await
+            .unwrap();
+        assert_eq!(values.as_deref(), Some("Anime, Animation"));
+        click_button(&client, "Cancel").await;
         // Migrated notifications are sent now (no "stored only" badge).
         client
             .goto(&format!("{base}/settings/notifications"))

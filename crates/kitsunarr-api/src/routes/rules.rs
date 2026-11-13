@@ -1,11 +1,12 @@
-//! Delay profiles, release profiles and remote path mappings (Sonarr's Settings › Profiles and
-//! Settings › Download Clients).
+//! Delay profiles, release profiles, remote path mappings and auto tagging (Sonarr's
+//! Settings › Profiles, Settings › Download Clients and Settings › Tags).
 
 use axum::Json;
 use axum::extract::{Path, State};
 use axum::http::StatusCode;
+use kitsunarr_db::auto_tags;
 use kitsunarr_db::rules::{self, RuleTable};
-use kitsunarr_domain::api::settings::{DelayProfile, ReleaseProfile, RemotePathMapping};
+use kitsunarr_domain::api::settings::{AutoTag, DelayProfile, ReleaseProfile, RemotePathMapping};
 
 use crate::AppState;
 use crate::error::ApiResult;
@@ -155,5 +156,44 @@ pub async fn delete_mapping(
 ) -> ApiResult<StatusCode> {
     rules::delete_rule(state.db.pool(), RuleTable::RemotePathMappings, id).await?;
     changed(&state, "remotePathMappings");
+    Ok(StatusCode::NO_CONTENT)
+}
+
+#[utoipa::path(get, path = "/autotagging", tag = "settings", responses((status = 200, body = Vec<AutoTag>)))]
+pub async fn list_auto_tags(State(state): State<AppState>) -> ApiResult<Json<Vec<AutoTag>>> {
+    Ok(Json(auto_tags::list(state.db.pool()).await?))
+}
+
+#[utoipa::path(post, path = "/autotagging", tag = "settings", request_body = AutoTag,
+    responses((status = 201, body = AutoTag), (status = 400, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn create_auto_tag(
+    State(state): State<AppState>,
+    Json(mut body): Json<AutoTag>,
+) -> ApiResult<(StatusCode, Json<AutoTag>)> {
+    body.id = auto_tags::create(state.db.pool(), &body).await?;
+    changed(&state, "autoTagging");
+    Ok((StatusCode::CREATED, Json(body)))
+}
+
+#[utoipa::path(put, path = "/autotagging/{id}", tag = "settings", params(("id" = i64, Path)), request_body = AutoTag,
+    responses((status = 200, body = AutoTag), (status = 400, body = kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn update_auto_tag(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(mut body): Json<AutoTag>,
+) -> ApiResult<Json<AutoTag>> {
+    body.id = id;
+    auto_tags::update(state.db.pool(), &body).await?;
+    changed(&state, "autoTagging");
+    Ok(Json(body))
+}
+
+#[utoipa::path(delete, path = "/autotagging/{id}", tag = "settings", params(("id" = i64, Path)), responses((status = 204)))]
+pub async fn delete_auto_tag(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<StatusCode> {
+    auto_tags::delete(state.db.pool(), id).await?;
+    changed(&state, "autoTagging");
     Ok(StatusCode::NO_CONTENT)
 }

@@ -8,6 +8,7 @@
 //! live database; every repository function is covered by tests against a real SQLite file.
 
 pub mod auth;
+pub mod auto_tags;
 pub mod blocklist;
 pub mod companion_keys;
 pub mod history;

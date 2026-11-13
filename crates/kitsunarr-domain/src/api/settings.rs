@@ -202,6 +202,22 @@ pub struct CustomFormat {
     pub specifications: Vec<CustomFormatSpecification>,
 }
 
+/// A Sonarr auto-tagging rule (`AutoTag`): when every condition group matches a title, its
+/// tags are added; otherwise, with `remove_tags_automatically`, they are removed.
+///
+/// Conditions use Sonarr's implementation names (`GenreSpecification`,
+/// `StatusSpecification`, …) and values (series types and statuses as Sonarr's integers).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AutoTag {
+    pub id: i64,
+    pub name: String,
+    pub remove_tags_automatically: bool,
+    pub specifications: Vec<CustomFormatSpecification>,
+    pub tags: Vec<i64>,
+}
+
 /// Kinds of configurable provider.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

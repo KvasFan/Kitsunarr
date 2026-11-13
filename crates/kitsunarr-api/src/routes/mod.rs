@@ -205,6 +205,8 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(rules::update_release, rules::delete_release))
         .routes(routes!(rules::list_mappings, rules::create_mapping))
         .routes(routes!(rules::update_mapping, rules::delete_mapping))
+        .routes(routes!(rules::list_auto_tags, rules::create_auto_tag))
+        .routes(routes!(rules::update_auto_tag, rules::delete_auto_tag))
         .routes(routes!(library_tools::versions))
         .routes(routes!(
             library_tools::manual_import_scan,

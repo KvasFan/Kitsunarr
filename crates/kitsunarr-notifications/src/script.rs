@@ -45,6 +45,7 @@ pub fn environment(event: &Event, instance: &Instance) -> BTreeMap<String, Strin
         put("Series_ImdbId", s(&series["imdbId"]));
         put("Series_Type", s(&series["type"]));
         put("Series_Year", s(&series["year"]));
+        put("Series_OriginalCountry", s(&series["originalCountry"]));
         put(
             "Series_Genres",
             series["genres"]

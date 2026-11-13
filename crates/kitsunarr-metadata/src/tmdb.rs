@@ -64,6 +64,7 @@ struct Show {
     status: Option<String>,
     episode_run_time: Vec<i32>,
     original_language: Option<String>,
+    origin_country: Option<Vec<String>>,
     genres: Vec<Named>,
     vote_average: Option<f64>,
     vote_count: Option<i64>,
@@ -120,6 +121,7 @@ struct Movie {
     title: String,
     original_title: Option<String>,
     original_language: Option<String>,
+    origin_country: Option<Vec<String>>,
     overview: Option<String>,
     status: Option<String>,
     runtime: Option<i32>,
@@ -317,6 +319,10 @@ fn map_show(
         first_aired: show.first_air_date.clone().filter(|d| !d.is_empty()),
         last_aired: show.last_air_date.clone().filter(|d| !d.is_empty()),
         original_language: language(show.original_language.as_deref()),
+        original_country: show
+            .origin_country
+            .as_ref()
+            .and_then(|c| c.first().cloned()),
         external_ids: show_ids(show),
         seasons,
         episodes,
@@ -391,6 +397,7 @@ fn map_movie(m: &Movie) -> SeriesInfo {
         first_aired: release.clone(),
         last_aired: release.clone(),
         original_language: language(m.original_language.as_deref()),
+        original_country: m.origin_country.as_ref().and_then(|c| c.first().cloned()),
         external_ids: ids,
         seasons: vec![SeasonInfo {
             season_number: 1,

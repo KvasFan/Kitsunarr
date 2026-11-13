@@ -113,6 +113,13 @@ pub async fn series_ref(db: &Database, id: i64) -> Option<SeriesRef> {
             .collect(),
         tag_ids: d.item.tags.clone(),
         original_language,
+        original_country: sqlx::query_scalar("SELECT original_country FROM series WHERE id = ?")
+            .bind(id)
+            .fetch_optional(db.pool())
+            .await
+            .ok()
+            .flatten()
+            .flatten(),
         overview: d.overview.clone(),
         rating: None,
     })
@@ -327,6 +334,13 @@ pub async fn movie_refs(db: &Database, id: i64) -> Option<(SeriesRef, EpisodeRef
             .collect(),
         tag_ids: d.item.tags.clone(),
         original_language: None,
+        original_country: sqlx::query_scalar("SELECT original_country FROM movies WHERE id = ?")
+            .bind(id)
+            .fetch_optional(db.pool())
+            .await
+            .ok()
+            .flatten()
+            .flatten(),
         overview: d.overview.clone(),
         rating: None,
     };

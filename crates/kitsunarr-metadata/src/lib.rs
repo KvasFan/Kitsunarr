@@ -152,6 +152,8 @@ pub struct SeriesInfo {
     pub last_aired: Option<String>,
     /// Kitsunarr language id.
     pub original_language: Option<i32>,
+    /// ISO 3166 country code of origin as the catalogue gives it (Sonarr's `OriginalCountry`).
+    pub original_country: Option<String>,
     pub external_ids: Vec<ExternalId>,
     pub seasons: Vec<SeasonInfo>,
     pub episodes: Vec<EpisodeInfo>,

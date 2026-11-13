@@ -750,6 +750,126 @@ async fn tanukarr_retained_versions_are_imported() {
     assert_eq!(m["addedAt"], "2026-10-01T10:00:00Z");
 }
 
+#[tokio::test]
+async fn auto_tagging_and_original_country_are_imported() {
+    let tmp = tempfile::tempdir().unwrap();
+    let media = tmp.path().join("media");
+    make_media(
+        &media,
+        &[
+            "/tv/Breaking Bad",
+            "/tv/Chernobyl",
+            "/anime/Cowboy Bebop",
+            "/tv/Cowboy Bebop",
+            "/movies/Cowboy Bebop - The Movie - Knockin' on Heaven's Door",
+        ],
+    );
+    let file = std::fs::File::open(fixture("tanukarr-0.1.5/backup.zip")).unwrap();
+    let mut archive = zip::ZipArchive::new(file).unwrap();
+    let db_path = tmp.path().join("sonarr.db");
+    std::io::copy(
+        &mut archive.by_name("sonarr.db").unwrap(),
+        &mut std::fs::File::create(&db_path).unwrap(),
+    )
+    .unwrap();
+    let source = sqlx::SqlitePool::connect(&format!("sqlite://{}", db_path.display()))
+        .await
+        .unwrap();
+    // Sonarr's stored shape: `{type, body}` conditions, tag ids, integer enums.
+    let specifications = serde_json::json!([
+        {"type": "QualityProfileSpecification", "body": {"name": "Fixture profile", "value": 7, "negate": false, "required": false}},
+        {"type": "OriginalCountrySpecification", "body": {"name": "American", "value": ["usa"], "negate": false, "required": false}},
+        {"type": "RootFolderSpecification", "body": {"name": "TV folder", "value": "/media/tv", "negate": false, "required": true}},
+        {"type": "TagSpecification", "body": {"name": "Requested", "value": 4, "negate": true, "required": false}}
+    ]);
+    sqlx::query("INSERT INTO AutoTagging (Name, Specifications, RemoveTagsAutomatically, Tags) VALUES ('US drama', ?, 1, '[3]')")
+        .bind(specifications.to_string())
+        .execute(&source)
+        .await
+        .unwrap();
+    source.close().await;
+
+    let src = load_from_backup(&db_path, tmp.path()).await.unwrap();
+    assert_eq!(src.snapshot.auto_tags.len(), 1);
+    let db = fresh_db(tmp.path()).await;
+    for _ in 0..2 {
+        run(
+            &db,
+            &src,
+            &options(&media),
+            Mode::Apply {
+                backup_dir: tmp.path().join("b"),
+            },
+            &noop,
+        )
+        .await
+        .unwrap();
+    }
+    let rules = kitsunarr_db::auto_tags::list(db.pool()).await.unwrap();
+    assert_eq!(rules.len(), 1, "a second run does not duplicate it");
+    let rule = &rules[0];
+    assert!(rule.remove_tags_automatically);
+    let tag_ids: std::collections::HashMap<String, i64> =
+        sqlx::query_as::<_, (String, i64)>("SELECT label, id FROM tags")
+            .fetch_all(db.pool())
+            .await
+            .unwrap()
+            .into_iter()
+            .collect();
+    let tag = |label: &str| std::future::ready(tag_ids[label]);
+    assert_eq!(rule.tags, vec![tag("kids").await]);
+    let profile: i64 = sqlx::query_scalar(
+        "SELECT id FROM quality_profiles WHERE name = 'Kitsunarr Fixture 1080p'",
+    )
+    .fetch_one(db.pool())
+    .await
+    .unwrap();
+    let field = |i: usize, k: &str| rule.specifications[i].fields[k].clone();
+    assert_eq!(field(0, "value"), serde_json::json!(profile));
+    assert_eq!(field(1, "value"), serde_json::json!(["usa"]));
+    assert_eq!(
+        field(2, "value"),
+        serde_json::json!(media.join("tv").display().to_string())
+    );
+    assert!(rule.specifications[2].required);
+    assert_eq!(field(3, "value"), serde_json::json!(tag("requested").await));
+    assert!(rule.specifications[3].negate);
+
+    // Tanukarr's `OriginalCountry` is kept, from SkyHook ("usa") and AniList ("JP").
+    let countries: Vec<(String, Option<String>)> =
+        sqlx::query_as("SELECT title, original_country FROM series ORDER BY id")
+            .fetch_all(db.pool())
+            .await
+            .unwrap();
+    assert!(countries.contains(&("Breaking Bad".into(), Some("usa".into()))));
+    let film: Option<String> = sqlx::query_scalar("SELECT original_country FROM movies")
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    assert_eq!(film.as_deref(), Some("JP"));
+
+    // The imported rule tags Breaking Bad (American, profile 7, in the TV folder, not
+    // requested) when it is next edited; Chernobyl is requested.
+    let mut conn = db.pool().acquire().await.unwrap();
+    let ids: Vec<(i64, String)> = sqlx::query_as("SELECT id, title FROM series")
+        .fetch_all(&mut *conn)
+        .await
+        .unwrap();
+    for (id, _) in &ids {
+        kitsunarr_db::auto_tags::apply_series(&mut conn, *id)
+            .await
+            .unwrap();
+    }
+    let tagged: Vec<String> = sqlx::query_scalar(
+        "SELECT s.title FROM series s JOIN series_tags t ON t.series_id = s.id WHERE t.tag_id = ?",
+    )
+    .bind(tag("kids").await)
+    .fetch_all(&mut *conn)
+    .await
+    .unwrap();
+    assert_eq!(tagged, vec!["Breaking Bad".to_string()]);
+}
+
 // ---------------------------------------------------------------------------------------------
 // Simulated API source: replays captured /api/v3 responses.
 // ---------------------------------------------------------------------------------------------
