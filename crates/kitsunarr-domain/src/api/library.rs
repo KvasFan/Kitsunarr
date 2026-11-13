@@ -134,6 +134,12 @@ pub struct EpisodeItem {
     pub absolute_episode_number: Option<i32>,
     pub scene_season_number: Option<i32>,
     pub scene_episode_number: Option<i32>,
+    /// TheXEM's scene absolute number (anime searches use it).
+    #[serde(default)]
+    pub scene_absolute_episode_number: Option<i32>,
+    /// The scene numbering was extrapolated, not listed by TheXEM.
+    #[serde(default)]
+    pub unverified_scene_numbering: bool,
     pub title: Option<String>,
     pub air_date: Option<String>,
     pub air_date_utc: Option<String>,

@@ -280,6 +280,7 @@ mod tests {
                     absolute_episode_number: (season > 0).then_some(absolute),
                     scene_season_number: None,
                     scene_episode_number: None,
+                    scene_absolute_episode_number: None,
                     title: None,
                     air_date: None,
                     air_date_utc: None,

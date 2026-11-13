@@ -44,6 +44,7 @@ pub(crate) fn series() -> Series {
         runtime: 60,
         original_language: None,
         use_scene_numbering: false,
+        scene_season_titles: Vec::new(),
         tags: Vec::new(),
         profile: kitsunarr_domain::api::settings::QualityProfile {
             id: 1,
@@ -590,6 +591,7 @@ fn ep(id: i64, season: i32, number: i32, runtime: i32) -> Episode {
         absolute_episode_number: None,
         scene_season_number: None,
         scene_episode_number: None,
+        scene_absolute_episode_number: None,
         title: None,
         air_date: None,
         air_date_utc: None,

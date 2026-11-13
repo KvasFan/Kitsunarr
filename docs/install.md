@@ -60,10 +60,11 @@ Kitsunarr queries these catalogues when you search for, add or refresh titles:
 | AniList | `https://graphql.anilist.co` | none |
 | MyAnimeList, through Jikan | `https://api.jikan.moe/v4` | none |
 | OMDb (films) | `https://www.omdbapi.com` | your OMDb API key, in Settings › Metadata |
+| TheXEM (scene numbering of TheTVDB series) | `https://thexem.info` | none |
 
 Requests are rate limited below each service's published limit and retried once after HTTP 429. TMDB and OMDb are unavailable until their key is entered.
 
-To route requests through a caching proxy or a mirror, set `KITSUNARR_TVDB_URL`, `KITSUNARR_TMDB_URL`, `KITSUNARR_TVMAZE_URL`, `KITSUNARR_ANILIST_URL`, `KITSUNARR_JIKAN_URL` and `KITSUNARR_OMDB_URL`, or the `[metadata]` section of `config.toml`:
+To route requests through a caching proxy or a mirror, set `KITSUNARR_TVDB_URL`, `KITSUNARR_TMDB_URL`, `KITSUNARR_TVMAZE_URL`, `KITSUNARR_ANILIST_URL`, `KITSUNARR_JIKAN_URL`, `KITSUNARR_OMDB_URL` and `KITSUNARR_XEM_URL`, or the `[metadata]` section of `config.toml`:
 
 ```toml
 [metadata]
@@ -74,7 +75,7 @@ anilist_url = "http://cache.lan:8080/anilist"
 
 The values must be `http://` or `https://` URLs.
 
-The `RefreshMetadata` task (every 12 hours) refreshes continuing titles that were last refreshed more than 6 hours ago. Ended series and released films are refreshed monthly, or sooner if an episode aired in the last 30 days. A refresh updates provider data (titles, overviews, images, air dates, new episodes) from the catalogue that owns the title, in the title's episode ordering (TheTVDB's season type, or a TMDB episode group). It keeps your monitoring choices and file links. Titles migrated from Sonarr are owned by TheTVDB and refresh through SkyHook.
+The `RefreshMetadata` task (every 12 hours) refreshes continuing titles that were last refreshed more than 6 hours ago. Ended series and released films are refreshed monthly, or sooner if an episode aired in the last 30 days. A refresh updates provider data (titles, overviews, images, air dates, new episodes) from the catalogue that owns the title, in the title's episode ordering (TheTVDB's season type, or a TMDB episode group). It keeps your monitoring choices and file links. Titles migrated from Sonarr are owned by TheTVDB and refresh through SkyHook. As in Sonarr, a refresh of a TheTVDB series in the official order also reads its scene numbering and scene names from TheXEM.
 
 ## Backups
 

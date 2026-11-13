@@ -75,6 +75,7 @@ pub struct Episode {
     pub absolute_episode_number: Option<i32>,
     pub scene_season_number: Option<i32>,
     pub scene_episode_number: Option<i32>,
+    pub scene_absolute_episode_number: Option<i32>,
     pub title: Option<String>,
     /// `yyyy-MM-dd`.
     pub air_date: Option<String>,
@@ -103,6 +104,8 @@ pub struct Series {
     pub runtime: i32,
     pub original_language: Option<&'static Language>,
     pub use_scene_numbering: bool,
+    /// Scene names of one scene season (TheXEM's), with that season.
+    pub scene_season_titles: Vec<(String, i32)>,
     pub tags: Vec<i64>,
     pub profile: QualityProfile,
     pub episodes: Vec<Episode>,

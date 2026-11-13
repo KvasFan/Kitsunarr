@@ -658,6 +658,8 @@ struct EpisodeRow {
     absolute_episode_number: Option<i64>,
     scene_season_number: Option<i64>,
     scene_episode_number: Option<i64>,
+    scene_absolute_episode_number: Option<i64>,
+    unverified_scene_numbering: bool,
     title: Option<String>,
     air_date: Option<String>,
     air_date_utc: Option<String>,
@@ -680,7 +682,8 @@ pub async fn list_episodes(
 ) -> DbResult<Vec<EpisodeItem>> {
     let rows: Vec<EpisodeRow> = sqlx::query_as(
         "SELECT e.id, e.series_id, e.season_number, e.episode_number, e.absolute_episode_number, e.scene_season_number, \
-         e.scene_episode_number, e.title, e.air_date, e.air_date_utc, e.runtime, e.monitored, e.watched, \
+         e.scene_episode_number, e.scene_absolute_episode_number, e.unverified_scene_numbering, e.title, e.air_date, \
+         e.air_date_utc, e.runtime, e.monitored, e.watched, \
          f.id AS file_id, f.relative_path AS file_relative_path, f.size AS file_size, f.quality_id AS file_quality_id, \
          f.languages AS file_languages, f.release_group AS file_release_group, f.added_at AS file_added_at \
          FROM episodes e LEFT JOIN episode_files f ON f.id = e.episode_file_id \
@@ -723,6 +726,8 @@ pub async fn list_episodes(
                 absolute_episode_number: r.absolute_episode_number.map(|v| v as i32),
                 scene_season_number: r.scene_season_number.map(|v| v as i32),
                 scene_episode_number: r.scene_episode_number.map(|v| v as i32),
+                scene_absolute_episode_number: r.scene_absolute_episode_number.map(|v| v as i32),
+                unverified_scene_numbering: r.unverified_scene_numbering,
                 title: r.title,
                 air_date: r.air_date,
                 air_date_utc: r.air_date_utc,
@@ -1181,6 +1186,18 @@ pub struct TitleRecord {
     pub alternate_titles: Vec<String>,
     /// `(kind, value)` pairs, e.g. `("tvdb", "81189")`.
     pub external_ids: Vec<(String, String)>,
+}
+
+/// Alternate titles that name one scene season (TheXEM's names), with that season.
+pub async fn season_titles(db: &Database, series_id: i64) -> DbResult<Vec<(String, i32)>> {
+    let rows: Vec<(String, i64)> = sqlx::query_as(
+        "SELECT title, season_number FROM series_alternate_titles \
+         WHERE series_id = ? AND season_number IS NOT NULL ORDER BY title",
+    )
+    .bind(series_id)
+    .fetch_all(db.pool())
+    .await?;
+    Ok(rows.into_iter().map(|(t, s)| (t, s as i32)).collect())
 }
 
 /// Titles, years, alternate titles and identifiers of every series.

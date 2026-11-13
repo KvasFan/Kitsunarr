@@ -195,7 +195,7 @@ Regular expressions in custom formats and release profiles run on the .NET-seman
 Known differences, all reported rather than hidden:
 
 - **The download queue** is checked against the downloads Kitsunarr grabbed that a download client still holds and that are not imported. The list is kept in memory: it is filled by grabs and by the minute-by-minute download check, so after a restart it is complete only after the first check.
-- **Checks that need missing data are not evaluated yet:** the blocklist, pending releases, free space, scene mappings (TheXEM) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
+- **Checks that need missing data are not evaluated yet:** the blocklist, pending releases, free space, scene-mapping origins (`SceneMappingSpecification`: only Sonarr's scene-mapping feed sets them, and Tanukarr blocks it; TheXEM's names have none) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
 - **Settings:** minimum age, retention and maximum size (Settings › Indexers › Options) and "propers and repacks" (Settings › Media management) are Kitsunarr settings, migrated from the source's database `Config` keys or its `/config/indexer` and `/config/mediamanagement` API. Season-pack upgrades use Sonarr's default (every episode must be missing or upgradable), as that setting does not exist in Sonarr 4.
 - **Releases of other library series are rejected as "Wrong series" without evaluating that series' episodes and profile.** They are listed after the searched series' releases, in arrival order; upstream orders series groups by first appearance.
 - **A custom format specification that cannot be evaluated never matches, and a warning is shown with the search results.** This covers an unknown implementation, such as Tanukarr's `SeasonPackSpecification`, and an invalid pattern. Sonarr would refuse to load such a format.
@@ -532,9 +532,12 @@ TMDB's default as no ordering.
 - **Season suffix lookup.** A season release whose title ends in its own season number ("Title
   4 - S04E16") is looked up without the number, after the exact and year forms and before the
   release's ids. Absolute releases and titles with a parsed year are left alone.
-- **Not ported:** the scene-vs-aired `EpisodeNumberingResolver`. It only acts on series with
-  scene numbering from TheXEM or Sonarr's scene-mapping feed, which Kitsunarr does not consume
-  (Tanukarr itself blocks Sonarr's feed).
+- **Scene numbering comes from TheXEM** (Sonarr's `XemService`), read after a TheTVDB series in
+  the official order is added or refreshed; Sonarr's own scene-mapping feed stays unused, as
+  Tanukarr blocks it. TheXEM's names are kept as alternate titles with their scene season:
+  searches use a name only for its season, and a release named for a later season and numbered
+  from 1 under that name maps to that scene season.
+- **Not ported yet:** the scene-vs-aired `EpisodeNumberingResolver`.
 
 ## 33. Automatic grouping into collections
 

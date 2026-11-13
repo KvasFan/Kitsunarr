@@ -402,12 +402,37 @@ pub(crate) fn parse_special_episode_title(
 }
 
 /// `GetEpisodes` for the searched series (scene source, no scene mapping).
+/// The scene season a scene name of the series stands for (`GetSceneSeasonNumber`): the
+/// release's series title is one of TheXEM's names for a single season.
+pub(crate) fn scene_season_of_title(parsed: &ParsedEpisodeInfo, series: &Series) -> Option<i32> {
+    let wanted = clean(&parsed.series_title);
+    if wanted.is_empty() {
+        return None;
+    }
+    series
+        .scene_season_titles
+        .iter()
+        .find(|(t, _)| clean(t) == wanted)
+        .map(|(_, s)| *s)
+}
+
+/// `RemoteEpisode.MappedSeasonNumber`: a release named with TheXEM's name of a later season
+/// (numbered from season 1 under that name, or a season title) belongs to that scene season.
+pub(crate) fn mapped_season(parsed: &ParsedEpisodeInfo, series: &Series) -> Option<i32> {
+    let parsed_season = parsed.season_numbers.first().copied();
+    match scene_season_of_title(parsed, series) {
+        Some(scene) if parsed.is_season_title => Some(scene),
+        Some(scene) if parsed_season == Some(1) && scene != 1 => Some(scene),
+        _ => parsed_season,
+    }
+}
+
 pub(crate) fn episodes<'e>(
     parsed: &ParsedEpisodeInfo,
     series: &'e Series,
     criteria: &SearchCriteria,
 ) -> Vec<&'e Episode> {
-    let Some(&season) = parsed.season_numbers.first() else {
+    let Some(season) = mapped_season(parsed, series) else {
         return Vec::new();
     };
     // `ValidateForSeriesType`.
@@ -474,6 +499,7 @@ pub(crate) fn episodes<'e>(
         return on_date.get(part - 1).map(|e| vec![*e]).unwrap_or_default();
     }
     if parsed.is_absolute_numbering() {
+        let scene_season = scene_season_of_title(parsed, series);
         let mut out = Vec::new();
         for &absolute in &parsed.absolute_episode_numbers {
             let mut found: Vec<&Episode> = Vec::new();
@@ -482,6 +508,21 @@ pub(crate) fn episodes<'e>(
                     all.iter()
                         .find(|e| e.season_number == 0 && e.episode_number == absolute),
                 );
+            } else if let Some(scene) = scene_season {
+                // Numbered within the scene season the release's name stands for.
+                found = all
+                    .iter()
+                    .filter(|e| {
+                        e.scene_season_number == Some(scene)
+                            && e.scene_episode_number == Some(absolute)
+                    })
+                    .collect();
+                if found.is_empty() {
+                    found.extend(
+                        all.iter()
+                            .find(|e| e.season_number == scene && e.episode_number == absolute),
+                    );
+                }
             } else if season > 1 && parsed.episode_numbers.is_empty() {
                 found = all
                     .iter()
@@ -495,6 +536,16 @@ pub(crate) fn episodes<'e>(
                         all.iter()
                             .find(|e| e.season_number == season && e.episode_number == absolute),
                     );
+                }
+            } else {
+                // TheXEM's scene absolute numbers; several matches without a scene name are
+                // ambiguous and ignored.
+                found = all
+                    .iter()
+                    .filter(|e| e.scene_absolute_episode_number == Some(absolute))
+                    .collect();
+                if found.len() > 1 {
+                    found.clear();
                 }
             }
             if found.is_empty() {
@@ -512,12 +563,12 @@ pub(crate) fn episodes<'e>(
             parse_special_episode_title(Some(parsed), &parsed.release_title, series)
     {
         let s = special.season_numbers.first().copied().unwrap_or(0);
-        return standard(&special, series, s, false);
+        return standard(&special, series, s, false, &criteria.episode_ids);
     }
     if parsed.special && season != 0 {
         return Vec::new();
     }
-    standard(parsed, series, season, true)
+    standard(parsed, series, season, true, &criteria.episode_ids)
 }
 
 /// `GetStandardEpisodes`.
@@ -526,16 +577,20 @@ fn standard<'e>(
     series: &'e Series,
     season: i32,
     scene_source: bool,
+    requested: &[i64],
 ) -> Vec<&'e Episode> {
     let all = &series.episodes;
     let mut out = Vec::new();
     for &number in &parsed.episode_numbers {
         if series.use_scene_numbering && scene_source {
+            // The searched episodes by the release's own season first, then every episode by
+            // the mapped season.
             let parsed_season = parsed.season_numbers.first().copied().unwrap_or(-1);
             let mut found: Vec<&Episode> = all
                 .iter()
                 .filter(|e| {
-                    e.scene_season_number == Some(parsed_season)
+                    requested.contains(&e.id)
+                        && e.scene_season_number == Some(parsed_season)
                         && e.scene_episode_number == Some(number)
                 })
                 .collect();
@@ -589,5 +644,70 @@ mod tests {
         );
         // A parsed year keeps the title as is.
         assert_eq!(stripped("Series Title 2019 4 - S04E01"), None);
+    }
+
+    /// TheXEM: TheTVDB's 1x07–1x08 are the scene's 2x01–2x02 (absolute 7–8), named
+    /// "Series Title Part Two".
+    fn xem_series(series_type: kitsunarr_domain::SeriesType) -> crate::Series {
+        let mut s = crate::tests::series();
+        s.series_type = series_type;
+        s.use_scene_numbering = true;
+        s.alternate_titles = vec!["Series Title Part Two".into()];
+        s.scene_season_titles = vec![("Series Title Part Two".into(), 2)];
+        s.episodes = (1..=8)
+            .map(|n| crate::Episode {
+                id: i64::from(n),
+                season_number: 1,
+                episode_number: n,
+                absolute_episode_number: Some(n),
+                scene_season_number: Some(if n > 6 { 2 } else { 1 }),
+                scene_episode_number: Some(if n > 6 { n - 6 } else { n }),
+                scene_absolute_episode_number: Some(n),
+                title: None,
+                air_date: None,
+                air_date_utc: None,
+                runtime: 30,
+                monitored: true,
+                file: None,
+            })
+            .collect();
+        s
+    }
+
+    fn mapped(title: &str, series: &crate::Series) -> Vec<(i32, i32)> {
+        let parsed = kitsunarr_parser::parse_title(title).unwrap();
+        crate::map_episodes(&parsed, series)
+            .iter()
+            .map(|e| (e.season_number, e.episode_number))
+            .collect()
+    }
+
+    #[test]
+    fn scene_numbers_and_xem_names_map_to_thetvdb_episodes() {
+        let standard = xem_series(kitsunarr_domain::SeriesType::Standard);
+        assert_eq!(
+            mapped("Series.Title.S02E01.720p.HDTV-GRP", &standard),
+            [(1, 7)]
+        );
+        assert_eq!(
+            mapped("Series.Title.S01E02.720p.HDTV-GRP", &standard),
+            [(1, 2)]
+        );
+        // Named for scene season 2 and numbered from 1 under that name (`MappedSeasonNumber`).
+        assert_eq!(
+            mapped("Series.Title.Part.Two.S01E02.720p.HDTV-GRP", &standard),
+            [(1, 8)]
+        );
+        let anime = xem_series(kitsunarr_domain::SeriesType::Anime);
+        // Absolute numbers within the scene season the name stands for.
+        assert_eq!(
+            mapped("[Group] Series Title Part Two - 01 [1080p]", &anime),
+            [(1, 7)]
+        );
+        // TheXEM's scene absolute numbers.
+        assert_eq!(
+            mapped("[Group] Series Title - 08 [1080p]", &anime),
+            [(1, 8)]
+        );
     }
 }

@@ -202,15 +202,22 @@ fn episode_searches(
     scene_titles: &[String],
     e: &EpisodeItem,
 ) -> ApiResult<(Vec<(Search, SearchKind)>, String)> {
-    let label = format!("S{:02}E{:02}", e.season_number, e.episode_number);
+    // Releases carry scene numbering: searches ask for the episode's scene numbers when TheXEM
+    // (or the source of a migration) gave it some (`episode.SceneSeasonNumber ?? SeasonNumber`).
+    let scene_season = e.scene_season_number.unwrap_or(e.season_number);
+    let scene_episode = e.scene_episode_number.unwrap_or(e.episode_number);
+    let mut label = format!("S{:02}E{:02}", e.season_number, e.episode_number);
+    if (scene_season, scene_episode) != (e.season_number, e.episode_number) {
+        label = format!("{label} (scene S{scene_season:02}E{scene_episode:02})");
+    }
     let single = (
         Search::SingleEpisode {
-            season: e.season_number,
-            episode: e.episode_number,
+            season: scene_season,
+            episode: scene_episode,
         },
         SearchKind::SingleEpisode {
-            season: e.season_number,
-            episode: e.episode_number,
+            season: scene_season,
+            episode: scene_episode,
         },
     );
     // `SearchSpecial`: "<series> <episode title>" queries, then the season/episode search.
@@ -271,17 +278,24 @@ fn episode_searches(
                 format!("{label} ({date})"),
             )
         }
-        SeriesType::Anime if e.season_number == 0 && e.absolute_episode_number.is_none() => {
+        SeriesType::Anime
+            if e.season_number == 0
+                && e.scene_absolute_episode_number.is_none()
+                && e.absolute_episode_number.is_none() =>
+        {
             special()
         }
         SeriesType::Anime => {
-            let absolute = e.absolute_episode_number.unwrap_or(0);
+            let absolute = e
+                .scene_absolute_episode_number
+                .or(e.absolute_episode_number)
+                .unwrap_or(0);
             (
                 vec![(
                     Search::AnimeEpisode {
                         absolute,
-                        season: e.season_number,
-                        episode: e.episode_number,
+                        season: scene_season,
+                        episode: scene_episode,
                     },
                     SearchKind::AnimeEpisode {
                         season_search: false,
@@ -604,9 +618,36 @@ pub(crate) async fn run_search(
             .and_then(|v| v.trim().parse::<i64>().ok())
             .unwrap_or(0)
     };
+    let episodes = series::list_episodes(&state.db, q.series_id, None).await?;
+    // Names of one scene season (TheXEM's) are only searched for that season, like Sonarr's
+    // scene mappings with a `SceneSeasonNumber`.
+    let season_titles = series::season_titles(&state.db, q.series_id).await?;
+    let scene_seasons: Vec<i32> = if q.complete_series {
+        Vec::new()
+    } else if let Some(e) = q
+        .episode_id
+        .and_then(|id| episodes.iter().find(|e| e.id == id))
+    {
+        vec![e.scene_season_number.unwrap_or(e.season_number)]
+    } else if let Some(season) = q.season_number {
+        episodes
+            .iter()
+            .filter(|e| e.season_number == season)
+            .map(|e| e.scene_season_number.unwrap_or(season))
+            .collect()
+    } else {
+        Vec::new()
+    };
     let mut scene_titles = vec![detail.item.title.clone()];
     for t in &detail.alternate_titles {
-        if !scene_titles.contains(t) {
+        let seasons: Vec<i32> = season_titles
+            .iter()
+            .filter(|(title, _)| title == t)
+            .map(|(_, s)| *s)
+            .collect();
+        if !scene_titles.contains(t)
+            && (seasons.is_empty() || seasons.iter().any(|s| scene_seasons.contains(s)))
+        {
             scene_titles.push(t.clone());
         }
     }
@@ -624,7 +665,6 @@ pub(crate) async fn run_search(
         anime,
     };
 
-    let episodes = series::list_episodes(&state.db, q.series_id, None).await?;
     // Tanukarr's collection numbering: a season member of an anime group.
     let collection: Option<(String, i32)> =
         kitsunarr_db::library::collections::group_of_series(&state.db, q.series_id)
@@ -665,18 +705,6 @@ pub(crate) async fn run_search(
                 (searches, description, vec![episode_id])
             }
             (None, Some(season)) => {
-                let search = if anime {
-                    (
-                        Search::AnimeSeason {
-                            season,
-                            season_scene_titles: Vec::new(),
-                            pack_search_only: q.season_packs_only,
-                        },
-                        SearchKind::AnimeSeason,
-                    )
-                } else {
-                    (Search::Season { season }, SearchKind::Season { season })
-                };
                 let requested = match options.episodes {
                     Some(ids) => ids.to_vec(),
                     None => episodes
@@ -685,7 +713,45 @@ pub(crate) async fn run_search(
                         .map(|e| e.id)
                         .collect(),
                 };
-                (vec![search], format!("Season {season}"), requested)
+                // `GetSceneSeasonMappings`: one search per scene season the requested episodes
+                // fall in (in most series just the season itself).
+                let mut seasons: Vec<i32> = episodes
+                    .iter()
+                    .filter(|e| e.season_number == season && requested.contains(&e.id))
+                    .map(|e| e.scene_season_number.unwrap_or(season))
+                    .collect();
+                seasons.sort_unstable();
+                seasons.dedup();
+                if seasons.is_empty() {
+                    seasons.push(season);
+                }
+                let searches = seasons
+                    .iter()
+                    .map(|&scene| {
+                        if anime {
+                            (
+                                Search::AnimeSeason {
+                                    season: scene,
+                                    season_scene_titles: Vec::new(),
+                                    pack_search_only: q.season_packs_only,
+                                },
+                                SearchKind::AnimeSeason,
+                            )
+                        } else {
+                            (
+                                Search::Season { season: scene },
+                                SearchKind::Season { season: scene },
+                            )
+                        }
+                    })
+                    .collect();
+                let description = if seasons == [season] {
+                    format!("Season {season}")
+                } else {
+                    let scene: Vec<String> = seasons.iter().map(|s| s.to_string()).collect();
+                    format!("Season {season} (scene seasons {})", scene.join(", "))
+                };
+                (searches, description, requested)
             }
             (None, None) => {
                 return Err(ApiError::field(

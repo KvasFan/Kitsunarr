@@ -1397,6 +1397,7 @@ mod tests {
             absolute_episode_number: absolute,
             scene_season_number: None,
             scene_episode_number: None,
+            scene_absolute_episode_number: None,
             title: None,
             air_date: None,
             air_date_utc: None,
@@ -1417,6 +1418,7 @@ mod tests {
             runtime: 24,
             original_language: None,
             use_scene_numbering: false,
+            scene_season_titles: Vec::new(),
             tags: Vec::new(),
             profile: kitsunarr_db::quality::default_profiles().remove(0),
             episodes: vec![

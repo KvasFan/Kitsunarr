@@ -177,6 +177,7 @@ pub async fn series_model(
         .map(|e| (e.kind.to_string(), e.value.clone()))
         .collect();
     let (tvdb_id, tv_rage_id, imdb_id) = ids_of(&external);
+    let scene_season_titles = series::season_titles(db, detail.item.id).await?;
     Ok(decision::Series {
         monitored: detail.item.monitored,
         id: detail.item.id,
@@ -190,6 +191,7 @@ pub async fn series_model(
         runtime: detail.runtime.unwrap_or(0),
         original_language,
         use_scene_numbering: detail.use_scene_numbering,
+        scene_season_titles,
         tags: detail.item.tags.clone(),
         profile,
         episodes: episodes
@@ -201,6 +203,7 @@ pub async fn series_model(
                 absolute_episode_number: e.absolute_episode_number,
                 scene_season_number: e.scene_season_number,
                 scene_episode_number: e.scene_episode_number,
+                scene_absolute_episode_number: e.scene_absolute_episode_number,
                 title: e.title.clone(),
                 air_date: e.air_date.clone(),
                 air_date_utc: e
@@ -360,6 +363,7 @@ pub async fn movie_model(
         runtime,
         original_language: None,
         use_scene_numbering: false,
+        scene_season_titles: Vec::new(),
         tags: detail.item.tags.clone(),
         profile,
         episodes: vec![decision::Episode {
@@ -369,6 +373,7 @@ pub async fn movie_model(
             absolute_episode_number: None,
             scene_season_number: None,
             scene_episode_number: None,
+            scene_absolute_episode_number: None,
             title: Some(detail.item.title.clone()),
             air_date: date.as_deref().map(|d| d.chars().take(10).collect()),
             air_date_utc: date

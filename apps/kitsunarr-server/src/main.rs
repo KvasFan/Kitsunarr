@@ -333,6 +333,7 @@ async fn serve(config: Config) -> Result<()> {
             tmdb: config.metadata.tmdb_url.clone(),
             jikan: config.metadata.jikan_url.clone(),
             omdb: config.metadata.omdb_url.clone(),
+            xem: config.metadata.xem_url.clone(),
         },
     );
     let downloads = kitsunarr_library::downloads::Monitor::new(http.clone());

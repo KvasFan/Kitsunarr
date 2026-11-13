@@ -16,6 +16,7 @@ mod ratelimit;
 pub mod skyhook;
 pub mod tmdb;
 pub mod tvmaze;
+pub mod xem;
 
 use std::time::Duration;
 
@@ -216,6 +217,8 @@ pub struct Endpoints {
     pub tmdb: String,
     pub jikan: String,
     pub omdb: String,
+    /// TheXEM, for scene numbering.
+    pub xem: String,
 }
 
 impl Default for Endpoints {
@@ -227,6 +230,7 @@ impl Default for Endpoints {
             tmdb: tmdb::DEFAULT_BASE.into(),
             jikan: jikan::DEFAULT_BASE.into(),
             omdb: omdb::DEFAULT_BASE.into(),
+            xem: xem::DEFAULT_BASE.into(),
         }
     }
 }
@@ -241,7 +245,8 @@ impl Endpoints {
             tvdb: dead.clone(),
             tmdb: dead.clone(),
             jikan: dead.clone(),
-            omdb: dead,
+            omdb: dead.clone(),
+            xem: dead,
         }
     }
 }
@@ -255,6 +260,7 @@ pub struct Metadata {
     pub tmdb: tmdb::Tmdb,
     pub jikan: jikan::Jikan,
     pub omdb: omdb::Omdb,
+    pub xem: xem::Xem,
 }
 
 impl Metadata {
@@ -281,7 +287,8 @@ impl Metadata {
             tvdb: skyhook::SkyHook::with_base(http.clone(), &e.tvdb),
             tmdb: tmdb::Tmdb::with_base(http.clone(), &e.tmdb),
             jikan: jikan::Jikan::with_base(http.clone(), &e.jikan),
-            omdb: omdb::Omdb::with_base(http, &e.omdb),
+            omdb: omdb::Omdb::with_base(http.clone(), &e.omdb),
+            xem: xem::Xem::with_base(http, &e.xem),
         }
     }
 

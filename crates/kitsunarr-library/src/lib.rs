@@ -22,6 +22,7 @@ pub mod movie_import;
 pub mod notify;
 pub mod tools;
 pub mod versions;
+pub mod xem;
 
 use std::collections::HashMap;
 
@@ -462,6 +463,12 @@ pub async fn add_title(
         grouping::join_resolved(db, info.provider, g, grouping::Member::Series(id)).await;
     }
     spawn_grouping(db, metadata, req.provider, grouping::Member::Series(id));
+    if req.provider == MetadataProvider::Tvdb {
+        let (db, metadata) = (db.clone(), metadata.clone());
+        tokio::spawn(async move {
+            xem::update_series(&db, &metadata, id).await;
+        });
+    }
     Ok(LibraryRef {
         media_type: "series".into(),
         id,
@@ -743,6 +750,8 @@ pub async fn refresh_series(
     // Sonarr's refresh re-applies auto tagging (`RefreshSeriesService`).
     kitsunarr_db::auto_tags::apply_series(&mut tx, id).await?;
     tx.commit().await?;
+    // `XemService` handles `SeriesUpdatedEvent`: TheXEM's scene numbering and names.
+    xem::update_series(db, metadata, id).await;
     // Sonarr rescans after a refresh (`MediaCoversUpdatedEvent`, `SeriesScannedEvent`): the
     // metadata consumers write with the new information.
     metadata_files::after_series_scan(db, id).await;

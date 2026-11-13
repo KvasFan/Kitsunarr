@@ -491,7 +491,7 @@ impl Engine<'_> {
                 release,
                 parsed: &parsed,
                 episodes: episodes.clone(),
-                mapped_season: parsed.season_numbers.first().copied(),
+                mapped_season: mapping::mapped_season(&parsed, series),
                 custom_formats: formats.clone(),
                 score,
             },

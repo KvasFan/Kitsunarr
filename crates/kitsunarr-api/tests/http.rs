@@ -5193,3 +5193,189 @@ async fn movies_are_searched_and_grabbed() {
     .unwrap();
     assert_eq!(history, (Some(7), None, "grabbed".into()));
 }
+
+/// A local TheXEM: Breaking Bad's 1x07 is the scene's 2x01, and "Breaking Bad Part Two" names
+/// scene season 2.
+async fn xem_mock() -> (String, Arc<std::sync::Mutex<Vec<String>>>) {
+    use axum::extract::{Path, Query, State};
+    use axum::routing::get;
+    type Log = Arc<std::sync::Mutex<Vec<String>>>;
+    async fn map(
+        State(log): State<Log>,
+        Path(resource): Path<String>,
+        Query(q): Query<std::collections::HashMap<String, String>>,
+    ) -> axum::Json<serde_json::Value> {
+        assert_eq!(q.get("origin").map(String::as_str), Some("tvdb"));
+        log.lock().unwrap().push(resource.clone());
+        let v =
+            |s: i32, e: i32, a: i32| serde_json::json!({"season": s, "episode": e, "absolute": a});
+        axum::Json(match resource.as_str() {
+            "havemap" => {
+                serde_json::json!({"result": "success", "data": ["81189", "73244"], "message": ""})
+            }
+            "all" => {
+                assert_eq!(q.get("id").map(String::as_str), Some("81189"));
+                let mut data: Vec<serde_json::Value> = (1..=6)
+                    .map(|e| serde_json::json!({"scene": v(1, e, e), "tvdb": v(1, e, e)}))
+                    .collect();
+                data.push(serde_json::json!({"scene": v(2, 1, 7), "tvdb": v(1, 7, 7)}));
+                serde_json::json!({"result": "success", "data": data, "message": ""})
+            }
+            "allNames" => serde_json::json!({"result": "success", "data": {
+                "81189": [{"Breaking Bad": -1}, {"Breaking Bad Part Two": 2}],
+                "73244": [{"The Office": -1}]
+            }, "message": ""}),
+            _ => serde_json::json!({"result": "failure", "data": [], "message": "unknown"}),
+        })
+    }
+    let log: Log = Arc::default();
+    let app = axum::Router::new()
+        .route("/map/{resource}", get(map))
+        .with_state(log.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (format!("http://{addr}"), log)
+}
+
+#[tokio::test]
+async fn thexem_scene_numbering_is_applied_and_searched() {
+    use kitsunarr_domain::api::search::ReleaseQuery;
+    let (skyhook, _) = skyhook_mock().await;
+    let (xem, xem_log) = xem_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            xem,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::Tvdb,
+            id: "81189".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+        })
+        .await
+        .unwrap();
+    client.refresh_series(added.id).await.unwrap();
+    assert!(xem_log.lock().unwrap().contains(&"all".to_string()));
+
+    let detail = client.series_detail(added.id).await.unwrap();
+    assert!(detail.use_scene_numbering);
+    assert!(
+        detail
+            .alternate_titles
+            .contains(&"Breaking Bad Part Two".to_string())
+    );
+    let episodes = client.episodes(added.id).await.unwrap();
+    let ep = |s: i32, n: i32| {
+        episodes
+            .iter()
+            .find(|e| e.season_number == s && e.episode_number == n)
+            .unwrap()
+            .clone()
+    };
+    let e7 = ep(1, 7);
+    assert_eq!(
+        (
+            e7.scene_season_number,
+            e7.scene_episode_number,
+            e7.scene_absolute_episode_number,
+            e7.unverified_scene_numbering
+        ),
+        (Some(2), Some(1), Some(7), false)
+    );
+    // TheTVDB's season 2 is past TheXEM's mappings, which shift seasons by one.
+    let s2 = ep(2, 1);
+    assert_eq!(
+        (
+            s2.scene_season_number,
+            s2.scene_episode_number,
+            s2.unverified_scene_numbering
+        ),
+        (Some(3), Some(1), true)
+    );
+
+    let (indexer_url, requests) = newznab_mock().await;
+    let _: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Newznab", "implementation": "Newznab",
+                "options": {"enableRss": true, "enableAutomaticSearch": true, "enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "k", "categories": [5030, 5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    requests.lock().unwrap().clear();
+    let found = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(e7.id),
+            complete_series: false,
+            season_packs_only: false,
+        })
+        .await
+        .unwrap();
+    assert_eq!(found.description, "S01E07 (scene S02E01)");
+    let searched: Vec<String> = requests
+        .lock()
+        .unwrap()
+        .iter()
+        .filter(|r| r.contains("t=tvsearch"))
+        .cloned()
+        .collect();
+    assert!(!searched.is_empty());
+    assert!(
+        searched
+            .iter()
+            .all(|r| r.contains("season=2") && r.contains("ep=1")),
+        "{searched:?}"
+    );
+
+    // A season search asks for each scene season the season's episodes fall in.
+    requests.lock().unwrap().clear();
+    let season = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: Some(1),
+            episode_id: None,
+            complete_series: false,
+            season_packs_only: false,
+        })
+        .await
+        .unwrap();
+    assert_eq!(season.description, "Season 1 (scene seasons 1, 2)");
+    let seasons: Vec<bool> = ["season=1", "season=2"]
+        .iter()
+        .map(|s| {
+            requests
+                .lock()
+                .unwrap()
+                .iter()
+                .any(|r| r.contains("t=tvsearch") && r.contains(s))
+        })
+        .collect();
+    assert_eq!(seasons, [true, true]);
+}

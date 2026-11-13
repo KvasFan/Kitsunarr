@@ -237,6 +237,8 @@ pub struct MetadataConfig {
     pub tmdb_url: String,
     pub jikan_url: String,
     pub omdb_url: String,
+    /// TheXEM, for scene numbering of TheTVDB series.
+    pub xem_url: String,
 }
 
 impl Default for MetadataConfig {
@@ -248,6 +250,7 @@ impl Default for MetadataConfig {
             tmdb_url: "https://api.themoviedb.org/3".into(),
             jikan_url: "https://api.jikan.moe/v4".into(),
             omdb_url: "https://www.omdbapi.com".into(),
+            xem_url: "https://thexem.info".into(),
         }
     }
 }
@@ -382,6 +385,9 @@ impl Config {
         if let Some(v) = env.var("KITSUNARR_OMDB_URL") {
             self.metadata.omdb_url = v;
         }
+        if let Some(v) = env.var("KITSUNARR_XEM_URL") {
+            self.metadata.xem_url = v;
+        }
         if let Some(v) = env.var("KITSUNARR_SESSION_DAYS") {
             self.auth.session_days = parse("KITSUNARR_SESSION_DAYS", v)?;
         }
@@ -408,6 +414,7 @@ impl Config {
             ("metadata.tmdb_url", &mut self.metadata.tmdb_url),
             ("metadata.jikan_url", &mut self.metadata.jikan_url),
             ("metadata.omdb_url", &mut self.metadata.omdb_url),
+            ("metadata.xem_url", &mut self.metadata.xem_url),
         ] {
             let trimmed = url.trim().trim_end_matches('/');
             let scheme_ok = trimmed.starts_with("https://") || trimmed.starts_with("http://");
@@ -469,7 +476,8 @@ impl Config {
              # tvdb_url = \"https://skyhook.sonarr.tv/v2/tvdb\"\n\
              # tmdb_url = \"https://api.themoviedb.org/3\"\n\
              # jikan_url = \"https://api.jikan.moe/v4\"\n\
-             # omdb_url = \"https://www.omdbapi.com\"\n"
+             # omdb_url = \"https://www.omdbapi.com\"\n\
+             # xem_url = \"https://thexem.info\"\n"
         )
     }
 }

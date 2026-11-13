@@ -537,6 +537,15 @@ fn SeasonPanel(
                                     if let Some(a) = e.absolute_episode_number { span { class: "xs", " ({a})" } }
                                 }
                                 span { class: "grow ellipsis", title: e.title.clone().unwrap_or_default(), {e.title.clone().unwrap_or_else(|| "TBA".into())} }
+                                if let (Some(ss), Some(se)) = (e.scene_season_number, e.scene_episode_number)
+                                    && (ss, se) != (e.season_number, e.episode_number)
+                                {
+                                    span {
+                                        class: "badge",
+                                        title: if e.unverified_scene_numbering { "Scene numbering extrapolated from TheXEM (unverified)" } else { "Scene numbering from TheXEM" },
+                                        if e.unverified_scene_numbering { "scene {ss}x{se:02}?" } else { "scene {ss}x{se:02}" }
+                                    }
+                                }
                                 if e.watched {
                                     span { class: "badge info", title: "Watched (Jellyfin watched sync)", "watched" }
                                 }
