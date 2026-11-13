@@ -402,6 +402,7 @@ pub(crate) async fn send(
         let tag_labels = tag_labels.clone();
         let clients = state.downloads.clients.clone();
         let recent = cached.recent;
+        let title = release.title.clone();
         async move {
             let hash = magnet_info_hash(&url).ok_or_else(|| {
                 DownloadError::Client("the magnet link has no BitTorrent v1 info hash".into())
@@ -411,6 +412,7 @@ pub(crate) async fn send(
                     &settings,
                     &AddRequest {
                         source: Source::Magnet(&url),
+                        title: &title,
                         hash: &hash,
                         recent,
                         tags: &tag_labels,
@@ -468,6 +470,7 @@ pub(crate) async fn send(
                                     name: &name,
                                     content: &bytes,
                                 },
+                                title: &release.title,
                                 hash: &hash,
                                 recent: cached.recent,
                                 tags: &tag_labels,
@@ -498,6 +501,8 @@ pub(crate) async fn send(
     let mut result = Err(DownloadError::Client(
         "the release has no download link".into(),
     ));
+    // `PreferTorrentFile` (Torrent Blackhole): the file first, the magnet only without one.
+    let magnet = magnet.filter(|_| !(settings.prefers_torrent_file() && torrent_url.is_some()));
     if let Some(m) = magnet {
         result = add_magnet(m).await;
         // A client that cannot take this magnet falls back to the torrent file, if any.
@@ -533,6 +538,7 @@ pub(crate) async fn send(
                                 name: &name,
                                 content: &bytes,
                             },
+                            title: &release.title,
                             hash: &hash,
                             recent: cached.recent,
                             tags: &tag_labels,
@@ -615,7 +621,7 @@ async fn finish(
                 revision: serde_json::to_value(cached.quality.revision).ok(),
                 languages: cached.languages.clone(),
                 custom_format_score: Some(cached.custom_format_score),
-                download_id: Some(download_id.clone()),
+                download_id: Some(download_id.clone()).filter(|d| !d.is_empty()),
                 data: data.clone(),
             },
         )
@@ -635,7 +641,7 @@ async fn finish(
                 revision: serde_json::to_value(cached.quality.revision).ok(),
                 languages: cached.languages.clone(),
                 custom_format_score: Some(cached.custom_format_score),
-                download_id: Some(download_id.clone()),
+                download_id: Some(download_id.clone()).filter(|d| !d.is_empty()),
                 data: data.clone(),
             },
         )

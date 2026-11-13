@@ -5,6 +5,7 @@
 //! implementation names. The torrent helpers compute the info hash
 //! Sonarr tracks downloads by.
 
+pub mod blackhole;
 pub mod deluge;
 pub mod error;
 pub mod fake;
@@ -17,6 +18,7 @@ pub mod usenet;
 
 use serde_json::{Map, Value};
 
+pub use blackhole::Blackhole;
 pub use deluge::Deluge;
 pub use error::DownloadError;
 pub use nzbget::Nzbget;
@@ -61,10 +63,7 @@ pub struct DownloadItem {
 
 /// Whether Kitsunarr can talk to a download client implementation.
 pub fn supported(implementation: &str) -> bool {
-    matches!(
-        implementation,
-        "QBittorrent" | "Deluge" | "Transmission" | "Sabnzbd" | "Nzbget"
-    )
+    kitsunarr_domain::api::settings::DOWNLOAD_CLIENT_IMPLEMENTATIONS.contains(&implementation)
 }
 
 /// A download client's settings, by implementation.
@@ -75,6 +74,8 @@ pub enum ClientSettings {
     Transmission(transmission::Settings),
     Sabnzbd(sabnzbd::Settings),
     Nzbget(nzbget::Settings),
+    TorrentBlackhole(blackhole::TorrentSettings),
+    UsenetBlackhole(blackhole::UsenetSettings),
 }
 
 impl ClientSettings {
@@ -84,8 +85,16 @@ impl ClientSettings {
             "QBittorrent" => qbittorrent::Settings::from_map(map).map(Self::QBittorrent),
             "Deluge" => deluge::Settings::from_map(map).map(Self::Deluge),
             "Transmission" => transmission::Settings::from_map(map).map(Self::Transmission),
+            "Vuze" => transmission::Settings::from_map(map)
+                .map(|s| Self::Transmission(transmission::Settings { vuze: true, ..s })),
             "Sabnzbd" => sabnzbd::Settings::from_map(map).map(Self::Sabnzbd),
             "Nzbget" => nzbget::Settings::from_map(map).map(Self::Nzbget),
+            "TorrentBlackhole" => {
+                blackhole::TorrentSettings::from_map(map).map(Self::TorrentBlackhole)
+            }
+            "UsenetBlackhole" => {
+                blackhole::UsenetSettings::from_map(map).map(Self::UsenetBlackhole)
+            }
             other => Err(format!("{other} download clients are not supported yet")),
         }
     }
@@ -98,12 +107,30 @@ impl ClientSettings {
             Self::Transmission(s) => &s.host,
             Self::Sabnzbd(s) => &s.host,
             Self::Nzbget(s) => &s.host,
+            // Blackholes are local folders (`IsLocalhost`).
+            Self::TorrentBlackhole(_) | Self::UsenetBlackhole(_) => "localhost",
         }
     }
 
     /// Whether the client downloads from Usenet (its files may be moved on import).
     pub fn is_usenet(&self) -> bool {
-        matches!(self, Self::Sabnzbd(_) | Self::Nzbget(_))
+        matches!(
+            self,
+            Self::Sabnzbd(_) | Self::Nzbget(_) | Self::UsenetBlackhole(_)
+        )
+    }
+
+    /// `CanMoveFiles`: Usenet downloads, and a Torrent Blackhole's when it is not read-only.
+    pub fn can_move_files(&self) -> bool {
+        match self {
+            Self::TorrentBlackhole(s) => !s.read_only,
+            other => other.is_usenet(),
+        }
+    }
+
+    /// `PreferTorrentFile`: the torrent file is sent before the magnet link.
+    pub fn prefers_torrent_file(&self) -> bool {
+        matches!(self, Self::TorrentBlackhole(_))
     }
 
     /// Whether the series' tags are added to the torrent (qBittorrent's `addSeriesTags`).
@@ -130,6 +157,7 @@ pub struct Clients {
     pub transmission: Transmission,
     pub sabnzbd: Sabnzbd,
     pub nzbget: Nzbget,
+    pub blackhole: Blackhole,
 }
 
 impl Clients {
@@ -140,6 +168,7 @@ impl Clients {
             transmission: Transmission::new(http.clone()),
             sabnzbd: Sabnzbd::new(http.clone()),
             nzbget: Nzbget::new(http),
+            blackhole: Blackhole::default(),
         }
     }
 
@@ -162,7 +191,11 @@ impl Clients {
             ClientSettings::Transmission(s) => {
                 let r = self.transmission.test(s).await?;
                 Tested {
-                    message: format!("Connected to Transmission {}.", r.version),
+                    message: format!(
+                        "Connected to {} {}.",
+                        if s.vuze { "Vuze" } else { "Transmission" },
+                        r.version
+                    ),
                     warnings: r.warnings,
                 }
             }
@@ -178,6 +211,22 @@ impl Clients {
                 Tested {
                     message: format!("Connected to NZBGet {}.", r.version),
                     warnings: r.warnings,
+                }
+            }
+            ClientSettings::TorrentBlackhole(s) => {
+                Blackhole::test_folder(&s.torrent_folder, "torrent folder")?;
+                Blackhole::test_folder(&s.watch_folder, "watch folder")?;
+                Tested {
+                    message: "Both folders can be written to.".into(),
+                    warnings: Vec::new(),
+                }
+            }
+            ClientSettings::UsenetBlackhole(s) => {
+                Blackhole::test_folder(&s.nzb_folder, "NZB folder")?;
+                Blackhole::test_folder(&s.watch_folder, "watch folder")?;
+                Tested {
+                    message: "Both folders can be written to.".into(),
+                    warnings: Vec::new(),
                 }
             }
         })
@@ -199,9 +248,14 @@ impl Clients {
                     .add(s, &req.source, req.hash, req.recent, req.seed)
                     .await
             }
-            ClientSettings::Sabnzbd(_) | ClientSettings::Nzbget(_) => Err(
-                DownloadError::Unsupported("Usenet clients cannot take torrents".into()),
-            ),
+            ClientSettings::TorrentBlackhole(s) => {
+                self.blackhole.add_torrent(s, req.title, &req.source)
+            }
+            ClientSettings::Sabnzbd(_)
+            | ClientSettings::Nzbget(_)
+            | ClientSettings::UsenetBlackhole(_) => Err(DownloadError::Unsupported(
+                "Usenet clients cannot take torrents".into(),
+            )),
         }
     }
 
@@ -218,6 +272,7 @@ impl Clients {
         match s {
             ClientSettings::Sabnzbd(s) => self.sabnzbd.add(s, name, content, recent).await,
             ClientSettings::Nzbget(s) => self.nzbget.add(s, name, content, recent).await,
+            ClientSettings::UsenetBlackhole(s) => self.blackhole.add_nzb(s, name, content),
             _ => Err(DownloadError::Unsupported(
                 "torrent clients cannot take NZBs".into(),
             )),
@@ -256,6 +311,9 @@ impl Clients {
                     .await
             }
             ClientSettings::Nzbget(s) => self.nzbget.remove(s, &item.download_id).await,
+            ClientSettings::TorrentBlackhole(_) | ClientSettings::UsenetBlackhole(_) => {
+                self.blackhole.remove(item, delete_data)
+            }
         }
     }
 
@@ -266,6 +324,16 @@ impl Clients {
             ClientSettings::Transmission(s) => self.transmission.items(s).await,
             ClientSettings::Sabnzbd(s) => self.sabnzbd.items(s).await,
             ClientSettings::Nzbget(s) => self.nzbget.items(s).await,
+            ClientSettings::TorrentBlackhole(s) => {
+                Ok(self
+                    .blackhole
+                    .items("TorrentBlackhole", &s.watch_folder, s.grace))
+            }
+            ClientSettings::UsenetBlackhole(s) => {
+                Ok(self
+                    .blackhole
+                    .items("UsenetBlackhole", &s.watch_folder, s.grace))
+            }
         }
     }
 
@@ -274,8 +342,11 @@ impl Clients {
             ClientSettings::QBittorrent(s) => self.qbittorrent.mark_imported(s, id).await,
             ClientSettings::Deluge(s) => self.deluge.mark_imported(s, id).await,
             ClientSettings::Transmission(s) => self.transmission.mark_imported(s, id).await,
-            // Usenet clients have no post-import category.
-            ClientSettings::Sabnzbd(_) | ClientSettings::Nzbget(_) => Ok(()),
+            // Usenet clients and blackholes have no post-import category.
+            ClientSettings::Sabnzbd(_)
+            | ClientSettings::Nzbget(_)
+            | ClientSettings::TorrentBlackhole(_)
+            | ClientSettings::UsenetBlackhole(_) => Ok(()),
         }
     }
 }

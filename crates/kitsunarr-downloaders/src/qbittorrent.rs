@@ -351,6 +351,8 @@ pub struct TestReport {
 #[derive(Debug, Clone)]
 pub struct AddRequest<'a> {
     pub source: Source<'a>,
+    /// The release title (a Blackhole names its file after it).
+    pub title: &'a str,
     /// The expected info hash (from the magnet or the file).
     pub hash: &'a str,
     /// An episode aired within the last two weeks (`IsRecentEpisode`).

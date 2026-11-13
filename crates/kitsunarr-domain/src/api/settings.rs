@@ -256,6 +256,19 @@ pub struct ProviderItem {
 pub const REDACTED: &str = "********";
 
 /// Notification implementations Kitsunarr sends (Sonarr's names).
+/// Download client implementations Kitsunarr talks to (Sonarr's names); kept in step with
+/// `kitsunarr_downloaders::ClientSettings::from_provider`.
+pub const DOWNLOAD_CLIENT_IMPLEMENTATIONS: &[&str] = &[
+    "QBittorrent",
+    "Deluge",
+    "Transmission",
+    "Vuze",
+    "Sabnzbd",
+    "Nzbget",
+    "TorrentBlackhole",
+    "UsenetBlackhole",
+];
+
 pub const NOTIFICATION_IMPLEMENTATIONS: &[&str] = &[
     "Webhook",
     "Notifiarr",

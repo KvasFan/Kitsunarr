@@ -680,7 +680,7 @@ impl Monitor {
                             grabs: &mine,
                             client_name: &client.name,
                             client_implementation: &client.implementation,
-                            move_files: settings.is_usenet(),
+                            move_files: settings.can_move_files(),
                             source: None,
                         },
                     )
@@ -736,9 +736,19 @@ impl Monitor {
                     }
                     continue;
                 }
-                // Not grabbed by Kitsunarr: left alone (the queue explains why).
-                let Some(series_id) = mine.iter().find_map(|g| g.series_id) else {
-                    continue;
+                // `TrackedDownloadService`: a download Kitsunarr did not grab (a Blackhole's,
+                // or one added to the client by hand) is imported when it is in the client's
+                // category and its title names a library series; otherwise it is left alone
+                // ("Download wasn't grabbed by Sonarr and not in a category, Skipping").
+                let series_id = match mine.iter().find_map(|g| g.series_id) {
+                    Some(id) => id,
+                    None if mine.is_empty() && !item.category.trim().is_empty() => {
+                        match crate::manual_import::series_named(db, &item.title).await {
+                            Ok(Some(id)) => id,
+                            _ => continue,
+                        }
+                    }
+                    None => continue,
                 };
                 let Some(output) = item.output_path.as_deref() else {
                     self.block(
@@ -765,7 +775,7 @@ impl Monitor {
                         grabs: &mine,
                         client_name: &client.name,
                         client_implementation: &client.implementation,
-                        move_files: settings.is_usenet() && !multi_season,
+                        move_files: settings.can_move_files() && !multi_season,
                     },
                 )
                 .await

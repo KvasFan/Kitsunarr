@@ -1342,6 +1342,156 @@ async fn torrent_mocks() -> (String, String, Arc<std::sync::Mutex<Vec<String>>>)
 }
 
 #[tokio::test]
+async fn torrent_blackhole_writes_grabs_and_imports_the_watch_folder() {
+    use kitsunarr_domain::api::search::{GrabRequest, ReleaseQuery};
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: tvmaze.clone(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, _qbit_port, _qbit) = torrent_mocks().await;
+    let indexer: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Torznab", "implementation": "Torznab",
+                "options": {"enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "t0rznab-key", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let indexer_id = indexer["id"].as_i64().unwrap();
+    let folders = tempfile::tempdir().unwrap();
+    let (torrents, watch) = (
+        folders.path().join("torrents"),
+        folders.path().join("watch"),
+    );
+    std::fs::create_dir_all(&torrents).unwrap();
+    std::fs::create_dir_all(&watch).unwrap();
+    let blackhole: serde_json::Value = client
+        .post(
+            "/providers/downloadclients",
+            &serde_json::json!({
+                "name": "Blackhole", "implementation": "TorrentBlackhole", "enabled": true,
+                "settings": {"torrentFolder": torrents.display().to_string(),
+                    "watchFolder": watch.display().to_string(), "saveMagnetFiles": true,
+                    "magnetFileExtension": ".magnet", "readOnly": true, "scanGracePeriodSeconds": 0}
+            }),
+        )
+        .await
+        .unwrap();
+    assert_eq!(blackhole["supported"], true);
+    let test = client
+        .test_download_client(&kitsunarr_domain::api::search::IndexerTestRequest {
+            id: blackhole["id"].as_i64(),
+            implementation: "TorrentBlackhole".into(),
+            settings: serde_json::from_value(blackhole["settings"].clone()).unwrap(),
+        })
+        .await
+        .unwrap();
+    assert!(test.ok, "{}", test.message);
+
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+        })
+        .await
+        .unwrap();
+    let episodes = client.episodes(added.id).await.unwrap();
+    let pilot = episodes
+        .iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    let found = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+            complete_series: false,
+            season_packs_only: false,
+        })
+        .await
+        .unwrap();
+    // A release with both a torrent file and (from RSS) a magnet: the file is written.
+    let release = found
+        .releases
+        .iter()
+        .find(|r| r.title == "Breaking.Bad.S01E01.720p.BluRay.x264-GRP")
+        .unwrap();
+    let grabbed = client
+        .grab_release(&GrabRequest {
+            guid: release.guid.clone(),
+            indexer_id,
+            episode_ids: Vec::new(),
+        })
+        .await
+        .unwrap();
+    assert_eq!(grabbed.download_client, "Blackhole");
+    assert!(grabbed.download_id.is_empty(), "blackholes report no id");
+    let torrent = torrents.join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP.torrent");
+    assert!(std::fs::read(&torrent).unwrap().starts_with(b"d8:announce"));
+
+    // The other program finishes the download in the watch folder; Kitsunarr imports it by
+    // its title, copying (read-only) rather than moving.
+    let done = watch.join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP");
+    std::fs::create_dir_all(&done).unwrap();
+    std::fs::write(
+        done.join("Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv"),
+        vec![0u8; 4096],
+    )
+    .unwrap();
+    let report = client.refresh_queue().await.unwrap();
+    assert!(report.starts_with("1 download"), "{report}");
+    let file = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.id == pilot.id)
+        .unwrap()
+        .file
+        .expect("imported");
+    assert_eq!(
+        file.relative_path,
+        "Season 1/Breaking.Bad.S01E01.720p.BluRay.x264-GRP.mkv"
+    );
+    // "Remove completed downloads" (on by default) deletes a blackhole's download once it is
+    // imported, as upstream; the queue no longer lists it.
+    assert!(!done.exists());
+    let queue = client.queue().await.unwrap();
+    assert!(!queue.items.iter().any(|i| i.title.contains("S01E01")));
+    let imports = client
+        .history(1, 50, Some("downloadFolderImported"))
+        .await
+        .unwrap();
+    assert_eq!(imports.records.len(), 1);
+}
+
+#[tokio::test]
 async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     use kitsunarr_domain::api::search::{GrabRequest, IndexerTestRequest, ReleaseQuery};
     let tvmaze = tvmaze_mock().await;

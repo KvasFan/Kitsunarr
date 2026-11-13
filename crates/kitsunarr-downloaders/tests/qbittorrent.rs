@@ -196,6 +196,7 @@ async fn adds_magnets_and_files_with_the_category() {
         .add(
             &settings,
             &AddRequest {
+                title: "Show.S01E01",
                 source: Source::Magnet(magnet),
                 hash: "C9E15763F722F23E98A29DECDFAE341B98D53056",
                 recent: false,
@@ -229,6 +230,7 @@ async fn adds_magnets_and_files_with_the_category() {
         .add(
             &settings,
             &AddRequest {
+                title: "Show.S01E01",
                 source: Source::File {
                     name: "Show.S01E01.torrent",
                     content: &file,
@@ -261,6 +263,7 @@ async fn adds_magnets_and_files_with_the_category() {
         .add(
             &settings,
             &AddRequest {
+                title: "Show.S01E01",
                 source: Source::File {
                     name: "Show.S01E01.torrent",
                     content: &file,
@@ -289,6 +292,7 @@ async fn adds_magnets_and_files_with_the_category() {
         .add(
             &settings,
             &AddRequest {
+                title: "Show.S01E01",
                 source: Source::Magnet(seeded),
                 hash: "0123456789abcdef0123456789abcdef01234567",
                 recent: false,
@@ -341,6 +345,7 @@ async fn live_qbittorrent() {
         .add(
             &settings,
             &AddRequest {
+                title: "Show.S01E01",
                 source: Source::File {
                     name: "kitsunarr-live-test.torrent",
                     content: &file,

@@ -28,7 +28,7 @@ pub fn is_supported(kind: ProviderKind, implementation: &str) -> bool {
             "BroadcastheNet",
         ],
         ProviderKind::DownloadClient => {
-            &["QBittorrent", "Deluge", "Transmission", "Sabnzbd", "Nzbget"]
+            kitsunarr_domain::api::settings::DOWNLOAD_CLIENT_IMPLEMENTATIONS
         }
         // Kept in step with `kitsunarr_notifications::SUPPORTED`.
         ProviderKind::Notification => &[

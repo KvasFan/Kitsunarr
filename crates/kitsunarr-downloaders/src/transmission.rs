@@ -37,6 +37,9 @@ pub struct Settings {
     pub recent_priority: i64,
     pub older_priority: i64,
     pub add_paused: bool,
+    /// Vuze (`Vuze : TransmissionBase`): Transmission's RPC, protocol version 14 or newer,
+    /// no labels, and uTorrent's output paths.
+    pub vuze: bool,
 }
 
 fn text(map: &Map<String, Value>, key: &str) -> Option<String> {
@@ -100,6 +103,7 @@ impl Settings {
                 .get("addPaused")
                 .and_then(Value::as_bool)
                 .unwrap_or(false),
+            vuze: false,
         })
     }
 
@@ -159,6 +163,8 @@ pub struct Torrent {
     pub seed_idle_mode: i64,
     pub seed_idle_limit: i64,
     pub seconds_seeding: i64,
+    #[serde(alias = "file-count")]
+    pub file_count: i64,
 }
 
 /// The session's seeding limits, for `HasReachedSeedLimit`.
@@ -214,6 +220,12 @@ impl Torrent {
 
     /// `GetItems`' mapping of one torrent.
     pub fn to_item(&self, category: Option<&str>) -> DownloadItem {
+        self.to_item_for(category, false)
+    }
+
+    /// `GetItems`' mapping; Vuze's `GetOutputPath` keeps a job folder (a multi-file torrent,
+    /// or a directory already named for it) and appends the name only for single files.
+    pub fn to_item_for(&self, category: Option<&str>, vuze: bool) -> DownloadItem {
         let (item_status, message) = if !self.error_string.trim().is_empty() {
             (
                 ItemStatus::Warning,
@@ -248,7 +260,16 @@ impl Torrent {
             status: item_status,
             message,
             // `GetOutputPath`: the directory plus the name, with ':' replaced.
-            output_path: Some(format!("{dir}/{}", self.name.replace(':', "_"))),
+            output_path: Some(
+                if vuze
+                    && (dir.rsplit(['/', '\\']).next() == Some(self.name.as_str())
+                        || self.file_count > 1)
+                {
+                    dir.to_string()
+                } else {
+                    format!("{dir}/{}", self.name.replace(':', "_"))
+                },
+            ),
             seed_ratio: if self.downloaded_ever <= 0 {
                 0.0
             } else {
@@ -404,8 +425,11 @@ impl Transmission {
             .to_string())
     }
 
-    /// `SupportsLabels`: Transmission 4.0 or newer.
+    /// `SupportsLabels`: Transmission 4.0 or newer (never Vuze).
     async fn supports_labels(&self, s: &Settings) -> Result<bool, DownloadError> {
+        if s.vuze {
+            return Ok(false);
+        }
         Ok(at_least(&parse_version(&self.version(s).await?), &[4, 0]))
     }
 
@@ -493,7 +517,7 @@ impl Transmission {
                 })
             })
             .map(|t| {
-                let mut item = t.to_item(s.category.as_deref());
+                let mut item = t.to_item_for(s.category.as_deref(), s.vuze);
                 item.can_be_removed = t.has_reached_seed_limit(item.seed_ratio, &seed);
                 item
             })
@@ -508,10 +532,16 @@ impl Transmission {
         hash: &str,
         delete_data: bool,
     ) -> Result<(), DownloadError> {
+        // Vuze takes the id as listed; Transmission the lower-case hash.
+        let id = if s.vuze {
+            hash.to_string()
+        } else {
+            hash.to_ascii_lowercase()
+        };
         self.call(
             s,
             "torrent-remove",
-            Some(json!({ "ids": [hash.to_ascii_lowercase()], "delete-local-data": delete_data })),
+            Some(json!({ "ids": [id], "delete-local-data": delete_data })),
         )
         .await
         .map(|_| ())
@@ -621,6 +651,24 @@ impl Transmission {
     /// `Test`: version (2.40 or newer), category and directory together only with labels, and
     /// listing torrents.
     pub async fn test(&self, s: &Settings) -> Result<TestReport, DownloadError> {
+        if s.vuze {
+            // `Vuze.ValidateVersion`: the RPC protocol version, 14 or newer.
+            let config = self.config(s).await?;
+            let protocol = config
+                .get("rpc-version")
+                .and_then(|v| v.as_i64().or_else(|| v.as_str()?.parse().ok()))
+                .unwrap_or(0);
+            if protocol < 14 {
+                return Err(DownloadError::Unsupported(format!(
+                    "Vuze's RPC protocol version 14 or newer is required; it reports {protocol}"
+                )));
+            }
+            self.torrents(s, None).await?;
+            return Ok(TestReport {
+                version: format!("(protocol {protocol})"),
+                warnings: Vec::new(),
+            });
+        }
         let version = self.version(s).await?;
         let v = parse_version(&version);
         if !at_least(&v, &[2, 40]) {
@@ -681,6 +729,52 @@ mod tests {
     }
 
     use super::*;
+
+    #[test]
+    fn vuze_output_paths_follow_vuze_fixture() {
+        // `should_have_correct_output_directory_for_multifile_torrents`: the directory is the
+        // job folder.
+        let multi = Torrent {
+            name: "Droned.S01E01.Pilot.1080p.WEB-DL-DRONE".into(),
+            download_dir: "/downloads/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE".into(),
+            ..Default::default()
+        };
+        assert_eq!(
+            multi.to_item_for(None, true).output_path.as_deref(),
+            Some("/downloads/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE")
+        );
+        let several = Torrent {
+            name: "Pack".into(),
+            download_dir: "/downloads/elsewhere".into(),
+            file_count: 3,
+            ..Default::default()
+        };
+        assert_eq!(
+            several.to_item_for(None, true).output_path.as_deref(),
+            Some("/downloads/elsewhere")
+        );
+        // `…_for_singlefile_torrents`: the file in the root folder.
+        let single = Torrent {
+            name: "Droned.S01E01.mkv".into(),
+            download_dir: "/downloads".into(),
+            file_count: 1,
+            ..Default::default()
+        };
+        assert_eq!(
+            single.to_item_for(None, true).output_path.as_deref(),
+            Some("/downloads/Droned.S01E01.mkv")
+        );
+        // Transmission always appends the name.
+        assert_eq!(
+            multi.to_item(None).output_path.as_deref(),
+            Some(
+                "/downloads/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE/Droned.S01E01.Pilot.1080p.WEB-DL-DRONE"
+            )
+        );
+        let map = serde_json::Map::new();
+        let s = crate::ClientSettings::from_provider("Vuze", &map).unwrap();
+        assert!(matches!(s, crate::ClientSettings::Transmission(t) if t.vuze));
+    }
 
     #[test]
     fn versions_and_states() {

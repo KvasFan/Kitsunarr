@@ -129,7 +129,15 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
             .unwrap_or_default();
         let mut messages: Vec<String> = item.message.clone().into_iter().collect();
         let tracked = state.downloads.tracked(&item.download_id);
-        let tracked_state = if grab.is_none() {
+        let tracked_state = if grab.is_none()
+            && let Some(t) = tracked.clone()
+        {
+            // Not grabbed, but imported (or being imported) by its title, as Sonarr does with
+            // downloads in its category.
+            messages.push("Not grabbed by Kitsunarr: matched to a series by its title.".into());
+            messages.extend(t.messages);
+            t.state.as_str()
+        } else if grab.is_none() {
             messages.push(
                 "Not grabbed by Kitsunarr: it was added to the download client another way, so Kitsunarr does not know which episodes it contains.".into(),
             );

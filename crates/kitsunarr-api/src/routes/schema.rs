@@ -200,6 +200,34 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             ),
             template(
                 kind,
+                "Vuze",
+                "Vuze",
+                client_options.clone(),
+                json!({
+                    "host": "localhost", "port": 9091, "useSsl": false, "urlBase": "/transmission/",
+                    "username": "", "password": "", "tvCategory": "tv-kitsunarr",
+                    "tvDirectory": "", "recentTvPriority": 0, "olderTvPriority": 0, "addPaused": false
+                }),
+            ),
+            template(
+                kind,
+                "Torrent Blackhole",
+                "TorrentBlackhole",
+                client_options.clone(),
+                json!({
+                    "torrentFolder": "", "watchFolder": "", "saveMagnetFiles": false,
+                    "magnetFileExtension": ".magnet", "readOnly": true
+                }),
+            ),
+            template(
+                kind,
+                "Usenet Blackhole",
+                "UsenetBlackhole",
+                client_options.clone(),
+                json!({"nzbFolder": "", "watchFolder": ""}),
+            ),
+            template(
+                kind,
                 "SABnzbd",
                 "Sabnzbd",
                 client_options.clone(),
@@ -327,8 +355,13 @@ mod tests {
     fn templates_parse_as_runtime_settings() {
         for t in templates(ProviderKind::DownloadClient) {
             let mut settings = t.settings.clone();
-            // SABnzbd needs credentials to be valid.
+            // SABnzbd needs credentials, blackholes their folders.
             settings.insert("apiKey".into(), "k".into());
+            for folder in ["torrentFolder", "nzbFolder", "watchFolder"] {
+                if settings.contains_key(folder) {
+                    settings.insert(folder.into(), "/downloads".into());
+                }
+            }
             kitsunarr_downloaders::ClientSettings::from_provider(&t.implementation, &settings)
                 .unwrap_or_else(|e| panic!("{}: {e}", t.implementation));
         }
@@ -338,6 +371,10 @@ mod tests {
             kitsunarr_indexers::request::Settings::from_map(&settings)
                 .unwrap_or_else(|e| panic!("{}: {e}", t.implementation));
         }
-        assert_eq!(templates(ProviderKind::DownloadClient).len(), 5);
+        // One template per implementation Kitsunarr talks to.
+        assert_eq!(
+            templates(ProviderKind::DownloadClient).len(),
+            kitsunarr_domain::api::settings::DOWNLOAD_CLIENT_IMPLEMENTATIONS.len()
+        );
     }
 }

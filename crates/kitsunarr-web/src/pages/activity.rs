@@ -100,7 +100,7 @@ pub fn Queue() -> Element {
             }
             if q.clients == 0 {
                 Empty { title: "No download client to read",
-                    p { "Add a download client (qBittorrent, Deluge, Transmission, SABnzbd or NZBGet) and enable it." }
+                    p { "Add a download client in Settings › Download clients and enable it." }
                     Link { to: Route::SettingsDownloadClients {}, class: "btn", "Download clients" }
                 }
             } else if q.items.is_empty() {

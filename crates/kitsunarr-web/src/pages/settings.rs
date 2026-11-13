@@ -1293,7 +1293,7 @@ fn IndexerOptions() -> Element {
 #[component]
 pub fn SettingsDownloadClients() -> Element {
     rsx! {
-        ProvidersPage { kind: "downloadclients", title: "Download clients", note: "qBittorrent, Deluge, Transmission, SABnzbd and NZBGet work: use Test in the editor; grabs, the queue and imports use them. Each client's \"Remove completed/failed downloads\" options remove downloads (with their files) once the client is done with them." }
+        ProvidersPage { kind: "downloadclients", title: "Download clients", note: "Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's \"Remove completed/failed downloads\" options remove downloads (with their files) once the client is done with them." }
         DownloadClientOptions {}
         RemotePathMappings {}
     }
@@ -2601,10 +2601,8 @@ fn ProviderEditor(
             )
         }
         ProviderKind::DownloadClient => {
-            matches!(
-                item.implementation.as_str(),
-                "QBittorrent" | "Deluge" | "Transmission" | "Sabnzbd" | "Nzbget"
-            )
+            kitsunarr_domain::api::settings::DOWNLOAD_CLIENT_IMPLEMENTATIONS
+                .contains(&item.implementation.as_str())
         }
         ProviderKind::Notification => kitsunarr_domain::api::settings::NOTIFICATION_IMPLEMENTATIONS
             .iter()
