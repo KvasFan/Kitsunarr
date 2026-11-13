@@ -1,0 +1,968 @@
+# Dutch interface strings: English<TAB>Dutch. {…} marks a placeholder.
+custom	aangepast
+indeterminate	onbepaald
+mixed	gemengd
+retired	uitgefaseerd
+· container	· container
+· finished {format_datetime(f)}	· voltooid {format_datetime(f)}
+· missing	· ontbrekend
+· on disk	· op schijf
+· today	· vandaag
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} afl
+— MiB per minute; empty uses Settings › Quality	— MiB per minuut; leeg gebruikt Instellingen › Kwaliteit
+— a release's size is multiplied by its codec's factor before the size limits apply	— de grootte van een release wordt vermenigvuldigd met de factor van de codec voordat de groottelimieten gelden
+— all profiles at once	— alle profielen tegelijk
+— codec and title criteria, custom qualities (Tanukarr)	— codec- en titelcriteria, aangepaste kwaliteiten (Tanukarr)
+— enter the code	— voer de code in
+(empty)	(leeg)
++ Add mapping	+ Toewijzing toevoegen
++ New format	+ Nieuw formaat
++ New profile	+ Nieuw profiel
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (uit) of 10 tot 120. RSS-synchronisatie draait ook via Systeem › Taken.
+3 hours ago	3 uur geleden
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Een downloadende torrent die zo lang geen voortgang maakt, wordt als mislukt beschouwd, op de blokkeerlijst gezet en opnieuw gezocht. 0 schakelt dit uit; voortgang wordt bijgehouden vanaf de start van Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Een franchisegroep gevonden via relaties op AniList of MyAnimeList. Titels die later uit dezelfde franchise worden toegevoegd, sluiten zich er ook bij aan.
+A new API key was generated. Update the applications that use it.	Er is een nieuwe API-sleutel gegenereerd. Werk de applicaties bij die hem gebruiken.
+A regular expression, case-insensitive; empty matches every title.	Een reguliere expressie, niet hoofdlettergevoelig; leeg komt overeen met elke titel.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Een release krijgt de meest specifieke preset die in het profiel van zijn serie is toegestaan en waarvan bron, resolutie, codec en titelpatroon overeenkomen. Een standaardkwaliteit met een codec of patroon maakt releases die daar niet aan voldoen Onbekend. Aangepaste presets worden aan elk profiel toegevoegd als niet toegestaan.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	De grootte van een release wordt vermenigvuldigd met de factor van de codec voordat de groottelimieten gelden. "Gemengd" betekent dat profielen verschillende factoren gebruiken; een waarde die je hier invoert, wordt in elk profiel geschreven.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Een titel die zich bij een franchise of handmatige groep aansluit, verlaat zijn vorige groep. Bestanden en mappen worden niet verplaatst.
+API key	API-sleutel
+API key needed	API-sleutel vereist
+API keys and language	API-sleutels en taal
+API path	API-pad
+About	Over
+Absolute path; empty to delete permanently.	Absoluut pad; leeg om permanent te verwijderen.
+Accepted	Geaccepteerd
+Account lists	Accountlijsten
+Actions	Acties
+Actual	Werkelijk
+Add	Toevoegen
+Add a Newznab or Torznab indexer and enable interactive search for it.	Voeg een Newznab- of Torznab-indexeerder toe en schakel er interactief zoeken voor in.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Voeg een client toe vanuit zijn sjabloon en gebruik Test in de editor; ophalen, de wachtrij en imports gebruiken elke ingeschakelde client. Een blackhole schrijft opgehaalde releases naar een map en importeert wat in zijn bewaakte map verschijnt. De opties "Voltooide/mislukte downloads verwijderen" van elke client verwijderen downloads (met hun bestanden) zodra de client ermee klaar is.
+Add a download client in Settings › Download clients and enable it.	Voeg een downloadclient toe in Instellingen › Downloadclients en schakel hem in.
+Add a root folder first: it is where this title's folder will live.	Voeg eerst een hoofdmap toe: daarin komt de map van deze titel.
+Add a tag above first.	Voeg eerst hierboven een tag toe.
+Add a title	Titel toevoegen
+Add auto tag	Automatische tag toevoegen
+Add condition	Voorwaarde toevoegen
+Add exclusion	Uitsluiting toevoegen
+Add media	Media toevoegen
+Add one, or migrate them from Sonarr/Tanukarr.	Voeg er een toe, of migreer ze vanuit Sonarr/Tanukarr.
+Add preset	Preset toevoegen
+Add selected	Selectie toevoegen
+Add series or movies below.	Voeg hieronder series of films toe.
+Add tag	Tag toevoegen
+Add the list's tags	Tags van de lijst toevoegen
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Voeg titels toe vanuit TVmaze of AniList, of haal een bestaande Sonarr- of Tanukarr-bibliotheek over.
+Add to library	Toevoegen aan bibliotheek
+Add {}	{} toevoegen
+Add {} ({y})	{} ({y}) toevoegen
+Add — {}	Toevoegen — {}
+Add, and remove when they leave the list	Toevoegen, en verwijderen wanneer ze van de lijst verdwijnen
+Added	Toegevoegd
+Added to the titles this list adds.	Toegevoegd aan de titels die deze lijst toevoegt.
+Adding titles	Titels toevoegen
+Adding…	Toevoegen…
+Address	Adres
+Age	Ouderdom
+Aired	Uitgezonden
+Aired monitored episodes without a file appear here.	Uitgezonden gemonitorde afleveringen zonder bestand verschijnen hier.
+All	Alle
+All collections	Alle collecties
+All episodes	Alle afleveringen
+All episodes in the series folder	Alle afleveringen in de seriemap
+All events	Alle gebeurtenissen
+Allow zero size (the feed has no release sizes)	Grootte nul toestaan (de feed geeft geen releasegroottes)
+Also delete the series folder and its files (to the recycle bin when one is set)	Ook de seriemap en de bestanden verwijderen (naar de prullenbak als die is ingesteld)
+Also for releases grabbed from interactive search	Ook voor releases opgehaald via interactief zoeken
+Also known as	Ook bekend als
+Always, even when renaming is off	Altijd, ook als hernoemen uit staat
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Videobestanden analyseren (resolutie, speelduur en codecs, met ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Titels van AniList en MyAnimeList worden altijd als anime toegevoegd.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Lijsten van AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, een andere Sonarr en aangepaste JSON-lijsten worden om de paar uur gelezen; nieuwe titels worden toegevoegd met de hoofdmap, het profiel en de monitoring van elke lijst. Diensten die OAuth vereisen, gebruiken de Client ID van je eigen applicatie en een token dat je plakt (tokens gemigreerd uit Tanukarr blijven werken).
+Anime	Anime
+Anime / absolute numbering	Anime / absolute nummering
+Anime categories	Anime-categorieën
+Anime episode format	Formaat anime-aflevering
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Anime-films kunnen worden toegevoegd vanuit AniList, en migraties uit Tanukarr nemen hun films mee. Live-action films vereisen de TMDB-catalogus.
+Anime standard format search	Anime zoeken in standaardformaat
+Anime title, e.g. Frieren	Animetitel, bijv. Frieren
+Any	Willekeurig
+Any library	Elke bibliotheek
+Applications using the current key will stop working until you give them the new one.	Applicaties die de huidige sleutel gebruiken, werken niet meer totdat je ze de nieuwe geeft.
+Applied after every list has been read successfully and some title left a list.	Toegepast nadat elke lijst succesvol is gelezen en een titel een lijst heeft verlaten.
+Apply	Toepassen
+Apply migration	Migratie toepassen
+Apply profile	Profiel toepassen
+Applying migration	Migratie wordt toegepast
+Applying…	Toepassen…
+As Settings › Media management says	Zoals Instellingen › Mediabeheer aangeeft
+At least 10 characters.	Minstens 10 tekens.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Minstens {MIN_PASSWORD_LENGTH} tekens. Een wachtwoordzin werkt goed.
+Auto tag	Automatische tag
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automatische tag opgeslagen. Hij geldt wanneer titels opnieuw worden toegevoegd, bewerkt of vernieuwd.
+Auto tagging	Automatisch taggen
+Auto-refresh	Automatisch vernieuwen
+Automatic	Automatisch
+Automatic search	Automatisch zoeken
+Automatic search for {label}: grabbed {}.	Automatisch zoeken naar {label}: {} opgehaald.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automatisch zoeken naar {label}: {} releases gevonden, {} goedgekeurd, niets opgehaald.
+Automatic search: grab the best release	Automatisch zoeken: de beste release ophalen
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatisering is gepauzeerd: RSS-synchronisatie, geplande lijstsynchronisaties en automatische zoekopdrachten worden overgeslagen. Handmatige acties en lopende downloads gaan door.
+Automation resumed.	Automatisering hervat.
+Available from	Beschikbaar vanaf
+Back to the dashboard	Terug naar het dashboard
+Back up now	Nu back-up maken
+Backup {} created.	Back-up {} aangemaakt.
+Backups	Back-ups
+Blocking:	Blokkerend:
+Blocklist	Blokkeerlijst
+Blocklist the release and search again	Release op de blokkeerlijst zetten en opnieuw zoeken
+Blocklist the release: it is never grabbed again	Release op de blokkeerlijst zetten: hij wordt nooit meer opgehaald
+Blocklist “{title}” and search for a replacement?	“{title}” op de blokkeerlijst zetten en een vervanging zoeken?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Breng je bibliotheek en instellingen van Sonarr (v3/v4) of Tanukarr over naar Kitsunarr. De bron wordt alleen gelezen, nooit gewijzigd, en
+Bypass the proxy for local addresses	Proxy omzeilen voor lokale adressen
+Calendar	Kalender
+Calendar →	Kalender →
+Cancel	Annuleren
+Cancel compression	Compressie annuleren
+Cannot reach the server: {e}	Kan de server niet bereiken: {e}
+Catalogue	Catalogus
+Category	Categorie
+Certificate validation	Certificaatvalidatie
+Change password	Wachtwoord wijzigen
+Change series	Serie wijzigen
+Changes	Wijzigingen
+Check	Controleren
+Check library	Bibliotheek controleren
+Check now	Nu controleren
+Check that the mapped series folders exist (read-only)	Controleren of de toegewezen seriemappen bestaan (alleen-lezen)
+Checked: {summary}.	Gecontroleerd: {summary}.
+Checking…	Controleren…
+Choose a backup file	Kies een back-upbestand
+Choose a mode	Kies een modus
+Choose a root folder and a quality profile.	Kies een hoofdmap en een kwaliteitsprofiel.
+Choose a season	Kies een seizoen
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Kies een serie en een seizoen of aflevering. De resultaten tonen wat elke release is, zoals de parser van Kitsunarr hem leest.
+Choose a series or movie…	Kies een serie of film…
+Choose source	Bron kiezen
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Kies de afleveringen van deze release handmatig en haal hem dan op (de keuze blijft bewaard voor de import)
+Choose…	Kiezen…
+Clean library	Bibliotheek opschonen
+Clear	Wissen
+Clear blocklist	Blokkeerlijst wissen
+Cleared {n} releases from the blocklist.	{n} releases van de blokkeerlijst verwijderd.
+Client	Client
+Close	Sluiten
+Codec	Codec
+Codec factors saved in every profile.	Codecfactoren opgeslagen in elk profiel.
+Codec size factors	Groottefactoren per codec
+Codecs	Codecs
+Collection film folder format	Mapformaat voor films in een collectie
+Collections	Collecties
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Collecties verschijnen wanneer ze uit Tanukarr worden gemigreerd, uit providergegevens worden aangemaakt of hier worden aangemaakt.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Kom je van Sonarr of Tanukarr? Importeer je bestaande series, instellingen en historie in een paar stappen.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Kommagescheiden; * is een jokerteken (*.lan), en IP-bereiken zoals 192.168.1.0/24 werken.
+Companion app keys	Sleutels voor companion-apps
+Complete series	Volledige serie
+Completed and failed download handling	Afhandeling van voltooide en mislukte downloads
+Component	Component
+Compress series	Serie comprimeren
+Compression	Compressie
+Compression queued.	Compressie in de wachtrij geplaatst.
+Compression worker is not connected.	De compressieworker is niet verbonden.
+Condition	Voorwaarde
+Conditions	Voorwaarden
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Voorwaarden van één soort komen overeen als er één overeenkomt (alle verplichte moeten overeenkomen); elke soort moet overeenkomen.
+Configure	Configureren
+Confirm password	Wachtwoord bevestigen
+Connect	Verbinden
+Connect to a running instance	Verbinden met een draaiende instantie
+Connecting…	Verbinden…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Consistente kopieën van de database. Geplande back-ups draaien wekelijks (de laatste acht worden bewaard); elke migratie maakt er ook eerst een. Om te herstellen: stop Kitsunarr en voer uit
+Continuing	Lopend
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (meegestuurd met het feedverzoek, bijv. uid=1; pass=…)
+Copied.	Gekopieerd.
+Copy	Kopiëren
+Copy (keep the originals)	Kopiëren (originelen behouden)
+Copy sizes from	Groottes kopiëren van
+Copy the token now; it is not shown again:	Kopieer het token nu; het wordt niet opnieuw getoond:
+Could not grab {}: {}	Kan {} niet ophalen: {}
+Covers	Dekt
+Create	Aanmaken
+Create account	Account aanmaken
+Create group	Groep aanmaken
+Create key	Sleutel aanmaken
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Maak er een aan op themoviedb.org › Settings › API. Gebruikt voor tv-series en films van TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Maak het beheerdersaccount aan. Hiermee meld je je aan bij Kitsunarr.
+Created	Aangemaakt
+Created when the first file is imported. Nothing is written to disk now.	Wordt aangemaakt wanneer het eerste bestand wordt geïmporteerd. Er wordt nu niets naar schijf geschreven.
+Creating…	Aanmaken…
+Credit	Credits
+Current file	Huidig bestand
+Current password	Huidig wachtwoord
+Custom format saved.	Aangepast formaat opgeslagen.
+Custom format score	Score aangepast formaat
+Custom format scores	Scores aangepaste formaten
+Custom formats	Aangepaste formaten
+Cutoff unmet	Drempel niet bereikt
+Daily	Dagelijks
+Daily episode format	Formaat dagelijkse aflevering
+Dashboard	Dashboard
+Data directory	Gegevensmap
+Database backup taken before the import: {b}	Databaseback-up gemaakt vóór de import: {b}
+Database schema	Databaseschema
+Date	Datum
+Date added	Datum toegevoegd
+Debug	Debug
+Decision	Beslissing
+Default	Standaard
+Defaults	Standaardwaarden
+Delay profile	Vertragingsprofiel
+Delay profile saved.	Vertragingsprofiel opgeslagen.
+Delay profiles	Vertragingsprofielen
+Delete	Verwijderen
+Delete empty series folders	Lege seriemappen verwijderen
+Delete file	Bestand verwijderen
+Delete group	Groep verwijderen
+Delete profile	Profiel verwijderen
+Delete “{path}”? It goes to the recycle bin when one is set.	“{path}” verwijderen? Het gaat naar de prullenbak als die is ingesteld.
+Delete “{}”?	“{}” verwijderen?
+Delete “{}”? Its series and movies stay in the library.	“{}” verwijderen? De series en films ervan blijven in de bibliotheek.
+Deleted	Verwijderd
+Directory	Map
+Disabled	Uitgeschakeld
+Disabled for local addresses	Uitgeschakeld voor lokale adressen
+Disk scanned: {}	Schijf gescand: {}
+Disk scanned: {} Not matched: {}	Schijf gescand: {} Niet gekoppeld: {}
+Do not prefer	Geen voorkeur
+Do not search for a replacement	Niet zoeken naar een vervanging
+Do nothing	Niets doen
+Done	Klaar
+Download client options saved.	Downloadclientopties opgeslagen.
+Download clients	Downloadclients
+Download failed	Download mislukt
+Download queue	Downloadwachtrij
+Downloads	Downloads
+Duration	Duur
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Elke titel hoort bij één catalogus, die bij het vernieuwen wordt gelezen; elke identifier die hij heeft (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) blijft bewaard. Titels gemigreerd uit Sonarr horen bij TheTVDB.
+Edit	Bewerken
+Edit “{name}”	“{name}” bewerken
+Edit “{}”	“{}” bewerken
+Enable RSS	RSS inschakelen
+Enable automatic search	Automatisch zoeken inschakelen
+Enable interactive search	Interactief zoeken inschakelen
+Enabled	Ingeschakeld
+Ended	Beëindigd
+English	English
+Entity	Entiteit
+Episode	Aflevering
+Episode and movie naming	Naamgeving van afleveringen en films
+Episode image thumbs in the NFO	Afleveringsminiaturen in de NFO
+Episode images (<filename>-thumb.jpg)	Afleveringsafbeeldingen (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Afleveringsafbeeldingen (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Afleveringsafbeeldingen (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Afleveringstoewijzingen in .plexmatch
+Episode metadata (<filename>.nfo)	Afleveringsmetadata (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Afleveringsmetadata (Season##/filename.xml)
+Episode order	Afleveringsvolgorde
+Episode order changed: {} episodes updated, {} added.	Afleveringsvolgorde gewijzigd: {} afleveringen bijgewerkt, {} toegevoegd.
+Episodes	Afleveringen
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Afleveringen worden hernummerd volgens de gekozen volgorde; bestanden, monitoring en historie blijven bij hun afleveringen. Hernoem daarna de bestanden zodat ze de nieuwe nummers volgen.
+Episodes of {title}	Afleveringen van {title}
+Episodes on disk	Afleveringen op schijf
+Episodes whose file is below the quality profile's cutoff appear here.	Afleveringen waarvan het bestand onder de drempel van het kwaliteitsprofiel ligt, verschijnen hier.
+Episodes…	Afleveringen…
+Errors	Fouten
+Errors {errors}	Fouten {errors}
+Event	Gebeurtenis
+Every file already follows the naming settings.	Elk bestand volgt de naamgevingsinstellingen al.
+Every file meets its cutoff	Elk bestand haalt zijn drempel
+Exclude	Uitsluiten
+Exclusions	Uitsluitingen
+Expected	Verwacht
+Expires	Verloopt
+Extra file extensions	Extensies van extra bestanden
+Factor	Factor
+Failed	Mislukt
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Bescherming tegen nepreleases: torrents inspecteren voordat ze worden opgehaald en uitvoerbare bestanden, lokaasarchieven met wachtwoord en inhoud zonder video weigeren
+Feed address	Feedadres
+Fetch the latest metadata from {}	Nieuwste metadata ophalen van {}
+File	Bestand
+File date	Bestandsdatum
+File deleted	Bestand verwijderd
+File deleted.	Bestand verwijderd.
+File management	Bestandsbeheer
+File management settings saved.	Instellingen voor bestandsbeheer opgeslagen.
+File renamed	Bestand hernoemd
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Bestanden ouder dan dit worden dagelijks uit de prullenbak verwijderd; 0 bewaart ze.
+Files upgrades replaced, kept as versions	Door upgrades vervangen bestanden, bewaard als versies
+Film	Film
+Film title or IMDb id, e.g. Arrival	Filmtitel of IMDb-id, bijv. Arrival
+Find a series in your library	Zoek een serie in je bibliotheek
+Find files added to or removed from the series folder	Bestanden zoeken die aan de seriemap zijn toegevoegd of eruit zijn verwijderd
+Find something to add	Zoek iets om toe te voegen
+First and last pieces first	Eerste en laatste stukken eerst
+First day of the week	Eerste dag van de week
+First season	Eerste seizoen
+Folder	Map
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formaten gebruiken de specificatietypen van Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores worden per kwaliteitsprofiel toegekend.
+Found	Gevonden
+Free	Vrij
+Free space	Vrije ruimte
+Future days	Dagen vooruit
+Future episodes	Toekomstige afleveringen
+General	Algemeen
+GiB	GiB
+Grab	Ophalen
+Grab a release from interactive search; downloads in the client's TV category show up here.	Haal een release op via interactief zoeken; downloads in de tv-categorie van de client verschijnen hier.
+Grab anyway?	Toch ophalen?
+Grab with these episodes	Ophalen met deze afleveringen
+Grabbed	Opgehaald
+Grabbed {}.	{} opgehaald.
+Grabbing…	Ophalen…
+Grabs, imports and file changes appear here. Migrated history is included.	Opgehaalde releases, imports en bestandswijzigingen verschijnen hier. Gemigreerde historie is inbegrepen.
+Group film folder format	Mapformaat voor films in een groep
+Group folder format	Mapformaat voor groepen
+Group season folder format	Mapformaat voor seizoenen in een groep
+Group story-arc folder format	Mapformaat voor verhaalbogen in een groep
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Groepen van verwante series en films: providercollecties, animefranchises (prequel/sequel-groepen) en handmatige groepen, inclusief die uit Tanukarr gemigreerd.
+Hardlink-only imports: never copy downloads that keep seeding	Imports alleen via hardlinks: downloads die nog seeden nooit kopiëren
+Health	Systeemstatus
+Hide	Verbergen
+History	Historie
+History →	Historie →
+Host	Host
+Host (as in the download client's settings)	Host (zoals in de instellingen van de downloadclient)
+Hostname	Hostnaam
+How the catalogue numbers the episodes (it can be changed later on the series page).	Hoe de catalogus de afleveringen nummert (later te wijzigen op de seriepagina).
+Id	Id
+Identities	Identiteiten
+Ids	Id's
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Als Kitsunarr je media onder andere paden ziet dan de bron (bijvoorbeeld andere Docker-volumes), wijs dan elke bronmap toe aan de locatie in Kitsunarr. Paden worden alleen in de database herschreven.
+Ignored	Genegeerd
+Ignored addresses	Genegeerde adressen
+Implementation	Implementatie
+Import / Migration	Import / Migratie
+Import a Sonarr or Tanukarr library	Een Sonarr- of Tanukarr-bibliotheek importeren
+Import blocked	Import geblokkeerd
+Import completed downloads	Voltooide downloads importeren
+Import extra files (subtitles…)	Extra bestanden importeren (ondertitels…)
+Import from Sonarr/Tanukarr	Importeren uit Sonarr/Tanukarr
+Import history	Historie importeren
+Import library	Bibliotheek importeren
+Import list options saved.	Opties van importlijsten opgeslagen.
+Import lists	Importlijsten
+Import pending	Import in afwachting
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importeer videobestanden uit elke map die de server kan lezen: controleer voor welke serie en afleveringen elk bestand is en kopieer of verplaats ze dan naar de bibliotheek (hernoemd volgens de naamgevingsinstellingen).
+Import {chosen().len()} files	{chosen().len()} bestanden importeren
+Imported	Geïmporteerd
+Imported from series folder	Geïmporteerd uit de seriemap
+Importing	Importeren
+Importing…	Importeren…
+Imports need	Imports vereisen
+In library ›	In bibliotheek ›
+Include	Opnemen
+Include in file names ({{Custom Formats}} token)	Opnemen in bestandsnamen (token {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Neem alleen titels op die op bepaalde lijsten staan, of laat de titels van andere lijsten weg.
+Include unmonitored	Niet-gemonitorde opnemen
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Inclusief de URL-basis, bijv. http://192.168.1.10:8989 of https://host/sonarr
+Indexer	Indexeerder
+Indexer options saved.	Indexeerderopties opgeslagen.
+Indexer settings	Indexeerderinstellingen
+Indexers	Indexeerders
+Info	Info
+Info {infos}	Info {infos}
+Instance	Instantie
+Instance name	Instantienaam
+Instance: {name}	Instantie: {name}
+Interactive	Interactief
+Interactive search	Interactief zoeken
+Interactive search for full-season packs only	Interactief zoeken naar alleen volledige seizoenspakketten
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interactief zoeken naar pakketten van de hele serie (en van de seizoenen) bij torrent-indexeerders
+Interactive search: see every release and choose	Interactief zoeken: elke release bekijken en kiezen
+Interface language	Interfacetaal
+Interval	Interval
+Jellyfin library and user	Jellyfin-bibliotheek en -gebruiker
+Job	Taak
+Keep / skip	Behouden / overslaan
+Keep files replaced by upgrades as versions (in "Plex Versions")	Door upgrades vervangen bestanden als versies bewaren (in "Plex Versions")
+Keep me signed in	Ingelogd blijven
+Keep the replaced file's date (upgrades)	Datum van het vervangen bestand behouden (upgrades)
+Kept	Behouden
+Kept versions	Bewaarde versies
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Sleutels voor companion-apps die de Sonarr v3 API gebruiken: ze lezen de bibliotheek, en sleutels met "serie toevoegen" kunnen ook series toevoegen (in een hoofdmap, zonder te zoeken). Verder is niets toegestaan.
+KiB	KiB
+Kind	Soort
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr is vrije software (GPL-3.0-or-later).
+Kitsunarr path	Pad in Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr maakt een back-up van zijn eigen database, importeert de bekeken gegevens in één transactie en valideert ze voordat ze worden vastgelegd. De bron en je mediabestanden worden niet gewijzigd.
+Label	Label
+Languages	Talen
+Larger releases are rejected. 0 means unlimited.	Grotere releases worden geweigerd. 0 betekent onbeperkt.
+Last read	Laatst gelezen
+Last run	Laatst uitgevoerd
+Last search	Laatste zoekopdracht
+Last searched	Laatst gezocht
+Last season	Laatste seizoen
+Later ›	Later ›
+Latest season	Nieuwste seizoen
+Level	Niveau
+Library	Bibliotheek
+Library check	Bibliotheekcontrole
+Library tools	Bibliotheekhulpmiddelen
+Library tools saved.	Bibliotheekhulpmiddelen opgeslagen.
+List	Lijst
+Listed best first. Grouped qualities rank equally.	Beste eerst. Gegroepeerde kwaliteiten zijn gelijkwaardig.
+Live updates connected	Live-updates verbonden
+Live updates disconnected	Live-updates verbroken
+Load	Laden
+Load the account's lists	Lijsten van het account laden
+Load the libraries…	Bibliotheken laden…
+Load the users…	Gebruikers laden…
+Local air date	Lokale uitzenddatum
+Local path	Lokaal pad
+Log them	Loggen
+Logs	Logs
+Main rejections	Belangrijkste afwijzingen
+Make current	Huidig maken
+Manual import	Handmatige import
+Mark as failed	Als mislukt markeren
+Matches monitored titles.	Komt overeen met gemonitorde titels.
+Maximum	Maximum
+Maximum size (MB)	Maximale grootte (MB)
+Media management	Mediabeheer
+Media management settings	Instellingen voor mediabeheer
+Media paths	Mediapaden
+Mediums	Dragers
+Members	Leden
+Message	Bericht
+Metadata	Metadata
+Metadata files	Metadatabestanden
+Metadata keys saved.	Metadatasleutels opgeslagen.
+Metadata language	Metadatataal
+Metadata refreshed.	Metadata vernieuwd.
+Metadata refreshed: {} new episodes, {} updated.	Metadata vernieuwd: {} nieuwe afleveringen, {} bijgewerkt.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Metadata-instellingen opgeslagen. Bestanden worden geschreven bij de volgende schijfscan, vernieuwing of import.
+Metadata sources	Metadatabronnen
+MiB	MiB
+Migration completed.	Migratie voltooid.
+Migration report #{}	Migratierapport #{}
+Minimum	Minimum
+Minimum age (minutes)	Minimale ouderdom (minuten)
+Minimum custom format score	Minimale score aangepaste formaten
+Minimum format score	Minimale formaatscore
+Minimum free space (MiB)	Minimale vrije ruimte (MiB)
+Minimum seeders	Minimaal aantal seeders
+Missing	Ontbrekend
+Missing (monitored)	Ontbrekend (gemonitord)
+Missing films	Ontbrekende films
+Mode	Modus
+Monday	Maandag
+Monitor	Monitoren
+Monitored	Gemonitord
+More languages can be added to the string tables.	Meer talen kunnen aan de teksttabellen worden toegevoegd.
+Move	Verplaatsen
+Movie	Film
+Movie file format	Bestandsformaat film
+Movie removed from Kitsunarr. Files on disk were not touched.	Film verwijderd uit Kitsunarr. Bestanden op schijf zijn niet aangeraakt.
+Movies	Films
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Releases met meerdere seizoenen: pakketten van meerdere seizoenen accepteren (een seizoenszoekopdracht neemt het pakket voor dat seizoen)
+Must contain	Moet bevatten
+Must contain (comma separated; /regex/ allowed)	Moet bevatten (kommagescheiden; /regex/ toegestaan)
+Must not contain	Mag niet bevatten
+NOT	NIET
+Name	Naam
+Naming	Naamgeving
+Naming options saved.	Naamgevingsopties opgeslagen.
+Naming saved.	Naamgeving opgeslagen.
+Negate	Omkeren
+Network	Netwerk
+Never: keep the release's names	Nooit: de namen van de release behouden
+New custom format	Nieuw aangepast formaat
+New custom preset	Nieuwe aangepaste preset
+New group title	Titel nieuwe groep
+New password	Nieuw wachtwoord
+New quality profile	Nieuw kwaliteitsprofiel
+Next airing	Volgende uitzending
+Next run	Volgende uitvoering
+Next ›	Volgende ›
+No	Nee
+No activity yet.	Nog geen activiteit.
+No auto tags.	Geen automatische tags.
+No backups yet	Nog geen back-ups
+No collections yet	Nog geen collecties
+No companion keys.	Geen companion-sleutels.
+No custom formats	Geen aangepaste formaten
+No custom formats defined.	Geen aangepaste formaten gedefinieerd.
+No delay above the minimum custom format score	Geen vertraging boven de minimale score aangepaste formaten
+No delay for the profile's best quality in the preferred protocol	Geen vertraging voor de beste kwaliteit van het profiel in het voorkeursprotocol
+No download client to read	Geen downloadclient om te lezen
+No exclusions.	Geen uitsluitingen.
+No history	Geen historie
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Geen enkele indexeerder kan deze serie automatisch doorzoeken: geen heeft automatisch zoeken ingeschakeld met daarbij geen tags of een van de tags van de serie.
+No indexers to search	Geen indexeerders om te doorzoeken
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Geen bewaarde versies. Schakel "Door upgrades vervangen bestanden bewaren" in bij Naamgeving.
+No log entries at this level	Geen logregels op dit niveau
+No mappings.	Geen toewijzingen.
+No matches	Geen overeenkomsten
+No members	Geen leden
+No migrations have been run yet.	Er zijn nog geen migraties uitgevoerd.
+No movies yet	Nog geen films
+No notes.	Geen opmerkingen.
+No recycle bin is set (Settings › Media management).	Er is geen prullenbak ingesteld (Instellingen › Mediabeheer).
+No release profiles.	Geen releaseprofielen.
+No root folders yet.	Nog geen hoofdmappen.
+No root folders.	Geen hoofdmappen.
+No runs yet	Nog geen uitvoeringen
+No searches yet.	Nog geen zoekopdrachten.
+No series in your library match.	Geen enkele serie in je bibliotheek komt overeen.
+No tags	Geen tags
+No {}	Geen {}
+No {} yet	Nog geen {}
+None	Geen
+Not evaluated by Kitsunarr.	Niet beoordeeld door Kitsunarr.
+Not imported	Niet geïmporteerd
+Not monitored	Niet gemonitord
+Notes	Opmerkingen
+Notes ({preview.warnings.len()})	Opmerkingen ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Opmerkingen ({report.warnings.len()})
+Nothing airs in the next seven days.	Niets wordt uitgezonden in de komende zeven dagen.
+Nothing downloading	Niets aan het downloaden
+Nothing found	Niets gevonden
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Niets in deze catalogus komt overeen met de zoekopdracht. Probeer een andere spelling, de originele titel of de andere catalogus.
+Nothing in this period	Niets in deze periode
+Nothing missing	Niets ontbreekt
+Notifications	Meldingen
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Afleveringen nummeren volgens een andere volgorde van de catalogus (TMDB-afleveringsgroepen, DVD- of absolute volgorde van TheTVDB)
+OMDb API key	OMDb API-sleutel
+Older priority	Prioriteit ouder
+One folder per season	Eén map per seizoen
+Only the 2000 newest files are listed.	Alleen de 2000 nieuwste bestanden worden getoond.
+Only when the proxy needs one.	Alleen als de proxy er een vereist.
+Open the library	Bibliotheek openen
+OpenAPI document	OpenAPI-document
+Opens the service to authorize Kitsunarr and fills in the token.	Opent de dienst om Kitsunarr te autoriseren en vult het token in.
+Options	Opties
+Organize	Organiseren
+Other	Overig
+Overview	Overzicht
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Records overschrijven die al in Kitsunarr bestaan (anders worden ze behouden)
+Packs	Pakketten
+Page not found	Pagina niet gevonden
+Page {page} / {pages}	Pagina {page} / {pages}
+Password	Wachtwoord
+Password changed. Other sessions were signed out.	Wachtwoord gewijzigd. Andere sessies zijn afgemeld.
+Past days	Dagen terug
+Path	Pad
+Path mappings	Padtoewijzingen
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Automatisering pauzeren (RSS-synchronisatie, geplande lijstsynchronisaties, automatische zoekopdrachten)
+Peers	Peers
+Permission	Rechten
+PiB	PiB
+Platform	Platform
+Port	Poort
+Position	Positie
+Post-import category	Categorie na import
+Posters	Posters
+Prefer and upgrade	Voorkeur en upgraden
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Voorkeur voor anime-seizoenspakketten (de anime-seizoenszoekopdrachten van Kitsunarr zoeken het seizoen al één keer)
+Prefer, do not upgrade	Voorkeur, niet upgraden
+Preferred	Voorkeur
+Preferred metadata language	Voorkeurstaal voor metadata
+Preferred protocol	Voorkeursprotocol
+Preparing preview…	Voorbeeld voorbereiden…
+Preview	Voorbeeld
+Preview migration	Voorbeeld van migratie
+Previous migrations	Eerdere migraties
+Priority	Prioriteit
+Problem	Probleem
+Profile	Profiel
+Profile saved.	Profiel opgeslagen.
+Profiles still used by series or movies cannot be deleted.	Profielen die nog door series of films worden gebruikt, kunnen niet worden verwijderd.
+Progress	Voortgang
+Propers and repacks	Propers en repacks
+Proxy	Proxy
+Proxy saved.	Proxy opgeslagen.
+Proxy type	Proxytype
+Qualities	Kwaliteiten
+Quality	Kwaliteit
+Quality presets	Kwaliteitspresets
+Quality presets saved.	Kwaliteitspresets opgeslagen.
+Quality profile	Kwaliteitsprofiel
+Quality profiles	Kwaliteitsprofielen
+Quality profile…	Kwaliteitsprofiel…
+RSS sync interval (minutes)	RSS-synchronisatie-interval (minuten)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS-synchronisatie wacht zo lang nadat een release verschijnt op een betere; uitgestelde releases staan in de wachtrij. Het eerste profiel waarvan de tags overeenkomen met de serie geldt; het laatste (zonder tags) is de standaard.
+Re-encode this series' files with the compression worker	De bestanden van deze serie opnieuw coderen met de compressieworker
+Read and add series	Bibliotheek lezen en series toevoegen
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Live gelezen uit de downloadclients om de paar seconden. Voltooide downloads die Kitsunarr heeft opgehaald, worden elke minuut in de seriemap geïmporteerd (torrents worden gekopieerd of gehardlinkt, zodat ze blijven seeden; Usenet-downloads worden verplaatst). Mislukte downloads worden op de blokkeerlijst gezet en opnieuw gezocht.
+Read the library	Bibliotheek lezen
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Alleen-lezen: vindt ontbrekende seriemappen, bestandsrecords buiten hun map of dubbel geregistreerd, en bestanden die op schijf ontbreken.
+Reading the download clients…	Downloadclients lezen…
+Reading the source	Bron lezen
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Leest alles via de API. Wachtwoorden en API-sleutels van providers worden door de bron verborgen en moeten daarna opnieuw worden ingevoerd.
+Recent activity	Recente activiteit
+Recent priority	Prioriteit recent
+Recent runs	Recente uitvoeringen
+Recent searches	Recente zoekopdrachten
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Aanbevolen. Open in Sonarr/Tanukarr Systeem → Back-up, maak een back-up en download de .zip (of gebruik sonarr.db). Bevat de wachtwoorden van indexeerders en downloadclients.
+Recycle bin	Prullenbak
+Recycle bin cleanup (days)	Prullenbak opschonen (dagen)
+Recycled	In prullenbak
+Refresh metadata	Metadata vernieuwen
+Refresh preview	Voorbeeld vernieuwen
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Vernieuwen vanuit {} wordt nog niet ondersteund; de geïmporteerde metadata blijft ongewijzigd
+Refreshing…	Vernieuwen…
+Regenerate	Opnieuw genereren
+Regenerate API key	API-sleutel opnieuw genereren
+Reject releases whose TheTVDB or IMDb id names another series	Releases weigeren waarvan het TheTVDB- of IMDb-id naar een andere serie verwijst
+Rejected: click twice to grab anyway	Geweigerd: klik twee keer om toch op te halen
+Release	Release
+Release profile	Releaseprofiel
+Release profile saved.	Releaseprofiel opgeslagen.
+Release profiles	Releaseprofielen
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Releases worden getoetst aan het kwaliteitsprofiel, de aangepaste formaten en de releaseprofielen van de serie, en gerangschikt, zoals Sonarr doet. Geweigerde releases vragen om een tweede klik.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Releases die mislukt zijn of handmatig op de blokkeerlijst zijn gezet. Zoekopdrachten en RSS-synchronisatie halen ze nooit meer op; verwijder er een om hem toe te staan.
+Remote path	Extern pad
+Remote path mapping	Externe padtoewijzing
+Remote path mapping saved.	Externe padtoewijzing opgeslagen.
+Remote path mappings	Externe padtoewijzingen
+Remove	Verwijderen
+Remove completed downloads	Voltooide downloads verwijderen
+Remove every release from the blocklist?	Alle releases van de blokkeerlijst verwijderen?
+Remove failed downloads	Mislukte downloads verwijderen
+Remove from library	Uit bibliotheek verwijderen
+Remove from queue	Uit wachtrij verwijderen
+Remove from the download client (deletes its files there)	Uit de downloadclient verwijderen (verwijdert daar de bestanden)
+Remove movie	Film verwijderen
+Remove series	Serie verwijderen
+Remove tags automatically (from titles that stop matching)	Tags automatisch verwijderen (van titels die niet meer overeenkomen)
+Remove “{title}” and its episode records from Kitsunarr?	“{title}” en de afleveringsrecords verwijderen uit Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	“{title}” verwijderen uit Kitsunarr? Bestanden op schijf worden niet verwijderd.
+Removed	Verwijderd
+Removed from the blocklist.	Verwijderd van de blokkeerlijst.
+Rename	Hernoemen
+Rename files	Bestanden hernoemen
+Rename files on import	Bestanden hernoemen bij import
+Rename files to the naming settings	Bestanden hernoemen volgens de naamgevingsinstellingen
+Formats use Sonarr's tokens.	Formaten gebruiken de tokens van Sonarr.
+Renaming…	Hernoemen…
+Report	Rapport
+Request one at omdbapi.com. Used for films by IMDb id.	Vraag er een aan op omdbapi.com. Gebruikt voor films via IMDb-id.
+Required	Vereist
+Resolution	Resolutie
+Restore	Herstellen
+Restore {}	{} herstellen
+Restore…	Herstellen…
+Restoring…	Herstellen…
+Resume automation	Automatisering hervatten
+Retention (days)	Bewaartermijn (dagen)
+Retire	Uitfaseren
+Revoke	Intrekken
+Root folder	Hoofdmap
+Root folders	Hoofdmappen
+Root folder…	Hoofdmap…
+Run #{run.id}: {run.status}	Uitvoering #{run.id}: {run.status}
+Run now	Nu uitvoeren
+Running…	Bezig…
+Saturday	Zaterdag
+Save	Opslaan
+Save criteria	Criteria opslaan
+Save factors	Factoren opslaan
+Save keys	Sleutels opslaan
+Save metadata files	Metadatabestanden opslaan
+Save naming	Naamgeving opslaan
+Save options	Opties opslaan
+Saved	Opgeslagen
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Opgeslagen sleutels worden getoond als {REDACTED}; laat ze ongewijzigd om ze te behouden, of maak het veld leeg om er een te verwijderen.
+Saved.	Opgeslagen.
+Scan disk	Schijf scannen
+Scan folder	Map scannen
+Scanning…	Scannen…
+Scheduled tasks	Geplande taken
+Score	Score
+Search	Zoeken
+Search again when a download fails	Opnieuw zoeken als een download mislukt
+Search all	Alles zoeken
+Search all films	Alle films zoeken
+Search collection	Collectie zoeken
+Search every episode of the list, one search per season	Elke aflevering van de lijst zoeken, één zoekopdracht per seizoen
+Search every member's missing episodes (films: the film)	De ontbrekende afleveringen van elk lid zoeken (films: de film)
+Search indexers	Indexeerders doorzoeken
+Search selected	Selectie zoeken
+Search the indexers and choose a release	Indexeerders doorzoeken en een release kiezen
+Search the indexers and grab the best accepted release	Indexeerders doorzoeken en de beste geaccepteerde release ophalen
+Search the indexers and grab the best releases for the monitored episodes	Indexeerders doorzoeken en de beste releases voor de gemonitorde afleveringen ophalen
+Search your indexers	Doorzoek je indexeerders
+Search {chosen} selected	{chosen} geselecteerde zoeken
+Search: {}	Zoeken: {}
+Search: {} — complete series	Zoeken: {} — volledige serie
+Search: {} — season {season} packs	Zoeken: {} — pakketten seizoen {season}
+Search: {} — {label}	Zoeken: {} — {label}
+Searching for {label}…	Zoeken naar {label}…
+Searching indexers…	Indexeerders doorzoeken…
+Searching…	Zoeken…
+Season	Seizoen
+Season folder format	Formaat seizoensmap
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Titels van seizoensmappen vervangen die van de catalogus in {{Season Title}}. Laat leeg om die van de catalogus te behouden.
+Season folders	Seizoensmappen
+Season images (Season ##.jpg)	Seizoensafbeeldingen (Season ##.jpg)
+Season images (Season##/folder.jpg)	Seizoensafbeeldingen (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Seizoensafbeeldingen (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Seizoenspakketten: 1 gebruikt de doelen voor seizoenspakketten hieronder
+Season premieres only	Alleen seizoenspremières
+Season {n}	Seizoen {n}
+Season {one}	Seizoen {one}
+Season {se.season_number}	Seizoen {se.season_number}
+Season {season_number}	Seizoen {season_number}
+Season-pack seed ratio	Seedratio voor seizoenspakketten
+Season-pack seed time, minutes	Seedtijd voor seizoenspakketten, minuten
+Seasons	Seizoenen
+Seasons {first}-{last}	Seizoenen {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Geheimen worden getoond als {REDACTED}; laat ze ongewijzigd om de opgeslagen waarde te behouden.
+Seed ratio (empty: the client's default)	Seedratio (leeg: standaard van de client)
+Seed time, minutes (empty: the client's default)	Seedtijd, minuten (leeg: standaard van de client)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Verzoeken aan indexeerders, catalogi, lijsten, downloadclients en integraties via een proxy sturen.
+Send to the download client	Naar de downloadclient sturen
+Series	Series
+Series .plexmatch file	.plexmatch-bestand van de serie
+Series folder format	Formaat seriemap
+Series images (Series Title.jpg)	Serieafbeeldingen (Serietitel.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Serieafbeeldingen (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Serieafbeeldingen (folder.jpg)
+Series metadata (tvshow.nfo)	Seriemetadata (tvshow.nfo)
+Series metadata URL	URL seriemetadata
+Series metadata episode guide	Afleveringsgids in de seriemetadata
+Series removed from Kitsunarr. Files on disk were not touched.	Serie verwijderd uit Kitsunarr. Bestanden op schijf zijn niet aangeraakt.
+Series removed, and its folder deleted.	Serie verwijderd en de map ervan gewist.
+Series type	Serietype
+Set quality profile…	Kwaliteitsprofiel instellen…
+Settings	Instellingen
+Settings saved.	Instellingen opgeslagen.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security in Sonarr/Tanukarr.
+Show	Tonen
+Show as all-day events	Tonen als hele-dag-gebeurtenissen
+Show unmonitored	Niet-gemonitorde tonen
+Shows	Series
+Sign in	Aanmelden
+Signed in. Save the list to keep the token.	Aangemeld. Sla de lijst op om het token te behouden.
+Signing in…	Aanmelden…
+Size	Grootte
+Size limits	Groottelimieten
+Size on disk	Grootte op schijf
+Skip files smaller than (MB)	Bestanden overslaan kleiner dan (MB)
+Skip the free-space check	Controle op vrije ruimte overslaan
+Skip unmonitored episodes when importing packs	Niet-gemonitorde afleveringen overslaan bij het importeren van pakketten
+Source	Bron
+Source code	Broncode
+Source path	Bronpad
+Special	Special
+Specials	Specials
+Specials are never monitored automatically.	Specials worden nooit automatisch gemonitord.
+Specifications	Specificaties
+Specifications (JSON)	Specificaties (JSON)
+Specifications must be valid JSON: {e}	Specificaties moeten geldige JSON zijn: {e}
+Stalled torrent timeout (minutes)	Time-out vastgelopen torrents (minuten)
+Standard	Standaard
+Standard episode format	Formaat standaardaflevering
+Start migration	Migratie starten
+Start over	Opnieuw beginnen
+Start search for missing episodes	Zoeken naar ontbrekende afleveringen starten
+Started	Gestart
+Started {format_datetime(&run.started_at)}	Gestart {format_datetime(&run.started_at)}
+Status	Status
+Status & health	Status en systeemstatus
+Still downloading	Nog aan het downloaden
+Storage outlook	Opslagprognose
+Studio	Studio
+Subscribe	Abonneren
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Abonneer je op dit adres in een agenda-app. Het bevat je API-sleutel: houd het privé.
+Sunday	Zondag
+Sync	Synchroniseren
+Sync all lists now	Alle lijsten nu synchroniseren
+Sync now	Nu synchroniseren
+Syncing…	Synchroniseren…
+System →	Systeem →
+TMDB API key (v3)	TMDB API-sleutel (v3)
+TV Series	Tv-series
+TV series	Tv-series
+Table	Tabel
+Tag	Tag
+Tag them	Taggen
+Tag titles already in the library	Titels taggen die al in de bibliotheek staan
+Tags	Tags
+Tags (comma separated)	Tags (kommagescheiden)
+Tags (ids, comma separated)	Tags (id's, kommagescheiden)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Tags worden toegevoegd aan series en films die aan elke soort voorwaarde voldoen wanneer ze worden toegevoegd, bewerkt of vernieuwd.
+Task	Taak
+Television	Televisie
+Television (raw)	Televisie (raw)
+Test	Test
+Test failed: {message}	Test mislukt: {message}
+Testing…	Testen…
+The blocklist is empty	De blokkeerlijst is leeg
+The catalogue new titles are added from when the list knows their id there.	De catalogus waaruit nieuwe titels worden toegevoegd wanneer de lijst hun id daar kent.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	De datum die geïmporteerde bestanden krijgen: de uitzenddatum van de aflevering (lokaal of UTC), of bij een upgrade de datum van het vervangen bestand.
+The dry run completed without blocking problems. Nothing has been written yet.	De proefrun is voltooid zonder blokkerende problemen. Er is nog niets geschreven.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Het bestand wordt naar de seizoensmap verplaatst (een bestaand bestand wordt nooit overschreven) en de serie wordt opnieuw gescand.
+The folder must already exist; Kitsunarr never creates or removes it.	De map moet al bestaan; Kitsunarr maakt hem nooit aan en verwijdert hem nooit.
+The indexers returned no releases for this search.	De indexeerders gaven geen releases terug voor deze zoekopdracht.
+The instance is on my local network (private or loopback address)	De instantie staat in mijn lokale netwerk (privé- of loopbackadres)
+The list has not been read, or it is empty.	De lijst is niet gelezen, of is leeg.
+The migration did not complete; nothing was changed.	De migratie is niet voltooid; er is niets gewijzigd.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	De meest recente regels die in het geheugen worden bewaard. Volledige logs gaan naar de uitvoer van het proces (containerlogs of journal).
+The passwords do not match.	De wachtwoorden komen niet overeen.
+The recycle bin has no media or subtitle files.	De prullenbak bevat geen media- of ondertitelbestanden.
+The sign-in expired; try again.	De aanmelding is verlopen; probeer het opnieuw.
+The upload failed (network error).	Het uploaden is mislukt (netwerkfout).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	De worker is een optioneel hostcomponent (de compressieworker van Tanukarr), bereikbaar via de socket in KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (de catalogus van Sonarr), TMDB en TVmaze dekken tv-series; AniList en MyAnimeList dekken animeseries en anime-films; TMDB en OMDb dekken films. Een titel toevoegen maakt de bibliotheekvermelding en de afleveringslijst aan; bestanden worden later door de import opgepikt.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Titels van TheTVDB worden in deze taal gezocht en toegevoegd; elke serie kan dit wijzigen in zijn editor.
+TheTVDB titles in this language; changing it refreshes the series	Titels van TheTVDB in deze taal; wijzigen vernieuwt de serie
+There is nothing at /{path}.	Er is niets op /{path}.
+They are created by migrating from Sonarr/Tanukarr.	Ze worden aangemaakt door te migreren vanuit Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Hernoemmodus, titels van seizoensmappen en bewaarde versies van deze serie
+TiB	TiB
+Time	Tijd
+Time left	Resterende tijd
+Title	Titel
+Title pattern	Titelpatroon
+Titles import lists never add.	Titels die importlijsten nooit toevoegen.
+Titles on no list	Titels op geen enkele lijst
+Today	Vandaag
+Torrent	Torrent
+Torrent delay	Torrentvertraging
+Torrent delay (minutes)	Torrentvertraging (minuten)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab- en Newznab-indexeerders. Gebruik Test in de editor om er een te controleren; elke zoekopdracht gebruikt de indexeerders waarvoor dat soort zoeken is ingeschakeld: RSS, automatisch of interactief.
+Trigger	Trigger
+URL base	URL-basis
+UTC air date	UTC-uitzenddatum
+Unchanged	Ongewijzigd
+Unknown	Onbekend
+Unmonitor	Niet monitoren
+Unmonitor them	Niet meer monitoren
+Unmonitored	Niet gemonitord
+Upcoming	Binnenkort
+Upcoming 7 days	Komende 7 dagen
+Update	Bijwerken
+Updated {} items.	{} items bijgewerkt.
+Upgrade until (cutoff)	Upgraden tot (drempel)
+Upgrade until format score	Upgraden tot formaatscore
+Upgrades allowed	Upgrades toegestaan
+Upload a backup	Back-up uploaden
+Upload failed (HTTP {}).	Uploaden mislukt (HTTP {}).
+Uploading…	Uploaden…
+Use SSL	SSL gebruiken
+Use a proxy	Een proxy gebruiken
+Use hardlinks instead of copying	Hardlinks gebruiken in plaats van kopiëren
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Gebruik hem als X-Api-Key-header (of ?apikey=) vanuit andere applicaties. Compatibel met de header die Sonarr gebruikt.
+Use these episodes	Deze afleveringen gebruiken
+Usenet	Usenet
+Usenet delay	Usenet-vertraging
+Usenet delay (minutes)	Usenet-vertraging (minuten)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Alleen Usenet: nieuwere releases worden geweigerd, zodat ze tijd krijgen om te verspreiden. 0 schakelt dit uit.
+Usenet only: older releases are rejected. 0 means unlimited.	Alleen Usenet: oudere releases worden geweigerd. 0 betekent onbeperkt.
+User name	Gebruikersnaam
+Username	Gebruikersnaam
+Validation	Validatie
+Version	Versie
+Versions	Versies
+Waiting for the sign-in at	Wachten op aanmelding bij
+Wanted	Gezocht
+Warnings	Waarschuwingen
+Warnings {warnings}	Waarschuwingen {warnings}
+Watched (Jellyfin watched sync)	Bekeken (Jellyfin-synchronisatie van bekeken)
+Watched sync user	Gebruiker voor synchronisatie van bekeken
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, aangepaste scripts (met de omgevingsvariabelen van Sonarr), Emby/Jellyfin, Plex en Kodi ontvangen: opgehaalde releases, imports en upgrades, hernoemingen, toegevoegde of verwijderde series, verwijderde bestanden, problemen met de systeemstatus. Gebruik Test in de editor.
+Welcome	Welkom
+What to import	Wat importeren
+When	Wanneer
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Wanneer HTTPS-certificaten van indexeerders, downloadclients en diensten worden gecontroleerd (instelling van Sonarr). Zelfondertekende certificaten in je netwerk vereisen een soepelere instelling.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Als een downloadclient paden meldt die Kitsunarr ergens anders ziet (een andere machine of container), wijs dan de host en het pad van de client toe aan het lokale pad.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Of releases die een slechte release herstellen de voorkeur krijgen en bestaande bestanden upgraden (zoals in Sonarr).
+Whole season	Heel seizoen
+Working…	Bezig…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Geschreven in de seriemappen wanneer series worden gescand, vernieuwd of geïmporteerd, zoals de metadataconsumers van Sonarr ze schrijven.
+Year	Jaar
+Your library is empty.	Je bibliotheek is leeg.
+all checks passed	alle controles geslaagd
+comma separated	kommagescheiden
+cutoff: {}	drempel: {}
+has a file	heeft een bestand
+iCal link	iCal-link
+in 2 days	over 2 dagen
+in a moment	zo meteen
+in file names	in bestandsnamen
+in library	in bibliotheek
+in {text}	over {text}
+just now	zojuist
+may run out of space	kan zonder ruimte komen te zitten
+name (e.g. phone)	naam (bijv. telefoon)
+never refreshed	nooit vernieuwd
+no media files are moved, renamed or deleted.	er worden geen mediabestanden verplaatst, hernoemd of verwijderd.
+not accessible	niet toegankelijk
+not added	niet toegevoegd
+not checked	niet gecontroleerd
+not read yet	nog niet gelezen
+on disk	op schijf
+refreshed {}	vernieuwd {}
+schema {s}	schema {s}
+secrets included	inclusief geheimen
+secrets masked	geheimen gemaskeerd
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip of sonarr.db
+stored only	alleen opgeslagen
+title (optional)	titel (optioneel)
+{:.1} GiB/h	{:.1} GiB/u
+{added} added; {}	{added} toegevoegd; {}
+{added} shows added.	{added} series toegevoegd.
+{c.name} (API key needed)	{c.name} (API-sleutel vereist)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} series · {c.movie_count} films
+{chosen().len()} chosen	{chosen().len()} gekozen
+{chosen().len()} chosen (at most 25)	{chosen().len()} gekozen (maximaal 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} op schijf · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% van {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · toegevoegd {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} van {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} bestanden · {job["percent"]}% · bespaard {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} gestart.
+{name} was added to the library.	{name} is aan de bibliotheek toegevoegd.
+{name}: shows	{name}: series
+{ok} files imported.	{ok} bestanden geïmporteerd.
+{ok} imported; {}	{ok} geïmporteerd; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} releases van {r.searched_indexers} indexeerder(s).
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} series en {r.files_checked} bestanden gecontroleerd: {r.issues.len()} problemen.
+{selected.read().len()} selected	{selected.read().len()} geselecteerd
+{text} ago	{text} geleden
+{} (not accessible)	{} (niet toegankelijk)
+{} ({} free)	{} ({} vrij)
+{} added to every profile (not allowed yet).	{} toegevoegd aan elk profiel (nog niet toegestaan).
+{} day(s)	{} dag(en)
+{} failed: {}	{} mislukt: {}
+{} format scores	{} formaatscores
+{} free of {}	{} vrij van {}
+{} week(s)	{} week/weken
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Terug
+‹ Earlier	‹ Eerder
+‹ Prev	‹ Vorige
+○ offline	○ offline
+● live	● live
+✓ No issues detected.	✓ Geen problemen gevonden.
+Activity	Activiteit
+Queue	Wachtrij
+System	Systeem
+Tasks	Taken
+Retry	Opnieuw proberen
+Sign out	Afmelden
+Search titles…  ( / )	Titels zoeken…  ( / )
+Loading…	Laden…
+Profiles	Profielen
+scene {}	scene {}
+Scene numbering from TheXEM	Scenenummering van TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Scenenummering geëxtrapoleerd uit TheXEM (niet geverifieerd)
+Season {} (scene seasons {})	Seizoen {} (sceneseizoenen {})
+{} (scene {})	{} (scene {})

@@ -26,7 +26,11 @@ fn dictionary_source(lang: &str) -> Option<&'static str> {
         "es" => Some(include_str!("../translations/es.tsv")),
         "fr" => Some(include_str!("../translations/fr.tsv")),
         "it" => Some(include_str!("../translations/it.tsv")),
+        "nl" => Some(include_str!("../translations/nl.tsv")),
+        "pl" => Some(include_str!("../translations/pl.tsv")),
         "pt_BR" => Some(include_str!("../translations/pt_BR.tsv")),
+        "ru" => Some(include_str!("../translations/ru.tsv")),
+        "zh_CN" => Some(include_str!("../translations/zh_CN.tsv")),
         _ => None,
     }
 }

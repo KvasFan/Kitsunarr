@@ -1,0 +1,968 @@
+# Russian interface strings: English<TAB>Russian. {…} marks a placeholder.
+custom	своя
+indeterminate	не определено
+mixed	смешанный
+retired	устарело
+· container	· контейнер
+· finished {format_datetime(f)}	· завершено {format_datetime(f)}
+· missing	· отсутствует
+· on disk	· на диске
+· today	· сегодня
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} эп.
+— MiB per minute; empty uses Settings › Quality	— МиБ в минуту; пусто — из Настройки › Качество
+— a release's size is multiplied by its codec's factor before the size limits apply	— размер релиза умножается на коэффициент кодека перед проверкой ограничений размера
+— all profiles at once	— сразу для всех профилей
+— codec and title criteria, custom qualities (Tanukarr)	— критерии кодека и названия, свои качества (Tanukarr)
+— enter the code	— введите код
+(empty)	(пусто)
++ Add mapping	+ Добавить сопоставление
++ New format	+ Новый формат
++ New profile	+ Новый профиль
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (выкл.) или от 10 до 120. Синхронизацию RSS также можно запустить в Система › Задачи.
+3 hours ago	3 часа назад
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Торрент без прогресса загрузки в течение этого времени считается неудачным, вносится в черный список и ищется заново. 0 отключает; прогресс отслеживается с момента запуска Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Группа франшизы, найденная по связям AniList или MyAnimeList. Тайтлы той же франшизы, добавленные позже, тоже входят в неё.
+A new API key was generated. Update the applications that use it.	Создан новый API-ключ. Обновите его в приложениях, которые его используют.
+A regular expression, case-insensitive; empty matches every title.	Регулярное выражение без учёта регистра; пустое совпадает с любым названием.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Релиз получает самый точный пресет, разрешённый в профиле его сериала, источнику, разрешению, кодеку и шаблону названия которого он соответствует. Стандартное качество с заданным кодеком или шаблоном делает несоответствующие релизы «Неизвестными». Свои пресеты добавляются во все профили как неразрешённые.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Размер релиза умножается на коэффициент кодека перед проверкой ограничений размера. «Смешанный» означает, что профили используют разные коэффициенты; введённое здесь значение записывается во все профили.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Тайтл, добавленный во франшизу или ручную группу, покидает прежнюю группу. Файлы и папки не перемещаются.
+API key	API-ключ
+API key needed	Нужен API-ключ
+API keys and language	API-ключи и язык
+API path	Путь API
+About	О программе
+Absolute path; empty to delete permanently.	Абсолютный путь; пусто — удалять безвозвратно.
+Accepted	Принят
+Account lists	Списки аккаунта
+Actions	Действия
+Actual	Фактически
+Add	Добавить
+Add a Newznab or Torznab indexer and enable interactive search for it.	Добавьте индексатор Newznab или Torznab и включите для него интерактивный поиск.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Добавьте клиент из шаблона и нажмите «Тест» в редакторе; захваты, очередь и импорт используют все включённые клиенты. Blackhole записывает захваты в папку и импортирует то, что появляется в папке наблюдения. Параметры клиента «Удалять завершённые/неудачные загрузки» удаляют загрузки (вместе с файлами), когда клиент с ними закончил.
+Add a download client in Settings › Download clients and enable it.	Добавьте клиент загрузки в Настройки › Клиенты загрузки и включите его.
+Add a root folder first: it is where this title's folder will live.	Сначала добавьте корневую папку: в ней будет находиться папка этого тайтла.
+Add a tag above first.	Сначала добавьте тег выше.
+Add a title	Добавить тайтл
+Add auto tag	Добавить автотег
+Add condition	Добавить условие
+Add exclusion	Добавить исключение
+Add media	Добавить медиа
+Add one, or migrate them from Sonarr/Tanukarr.	Добавьте вручную или перенесите из Sonarr/Tanukarr.
+Add preset	Добавить пресет
+Add selected	Добавить выбранные
+Add series or movies below.	Добавьте сериалы или фильмы ниже.
+Add tag	Добавить тег
+Add the list's tags	Добавлять теги списка
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Добавьте тайтлы из TVmaze или AniList или перенесите существующую библиотеку Sonarr или Tanukarr.
+Add to library	Добавить в библиотеку
+Add {}	Добавить {}
+Add {} ({y})	Добавить {} ({y})
+Add — {}	Добавить — {}
+Add, and remove when they leave the list	Добавлять и удалять при выходе из списка
+Added	Добавлено
+Added to the titles this list adds.	Добавляются к тайтлам, которые добавляет этот список.
+Adding titles	Добавление тайтлов
+Adding…	Добавление…
+Address	Адрес
+Age	Возраст
+Aired	Вышел
+Aired monitored episodes without a file appear here.	Здесь показаны вышедшие отслеживаемые эпизоды без файла.
+All	Все
+All collections	Все коллекции
+All episodes	Все эпизоды
+All episodes in the series folder	Все эпизоды в папке сериала
+All events	Все события
+Allow zero size (the feed has no release sizes)	Разрешить нулевой размер (в ленте нет размеров релизов)
+Also delete the series folder and its files (to the recycle bin when one is set)	Также удалить папку сериала и её файлы (в корзину, если она задана)
+Also for releases grabbed from interactive search	Также для релизов, захваченных через интерактивный поиск
+Also known as	Также известен как
+Always, even when renaming is off	Всегда, даже если переименование выключено
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Анализировать видеофайлы (разрешение, длительность и кодеки, через ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Тайтлы AniList и MyAnimeList всегда добавляются как аниме.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Списки AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, другого Sonarr и пользовательские JSON читаются каждые несколько часов; новые тайтлы добавляются с корневой папкой, профилем и отслеживанием своего списка. Сервисы с OAuth используют Client ID вашего собственного приложения и вставленный вами токен (токены, перенесённые из Tanukarr, продолжают работать).
+Anime	Аниме
+Anime / absolute numbering	Аниме / абсолютная нумерация
+Anime categories	Категории аниме
+Anime episode format	Формат аниме-эпизода
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Аниме-фильмы можно добавить из AniList, а миграция из Tanukarr переносит и фильмы. Для игровых фильмов нужен каталог TMDB.
+Anime standard format search	Поиск аниме в стандартном формате
+Anime title, e.g. Frieren	Название аниме, например Frieren
+Any	Любой
+Any library	Любая библиотека
+Applications using the current key will stop working until you give them the new one.	Приложения с текущим ключом перестанут работать, пока вы не укажете им новый.
+Applied after every list has been read successfully and some title left a list.	Применяется, когда все списки успешно прочитаны и какой-либо тайтл покинул список.
+Apply	Применить
+Apply migration	Применить миграцию
+Apply profile	Применить профиль
+Applying migration	Применение миграции
+Applying…	Применение…
+As Settings › Media management says	Как в Настройки › Управление медиа
+At least 10 characters.	Не менее 10 символов.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Не менее {MIN_PASSWORD_LENGTH} символов. Хорошо подойдёт парольная фраза.
+Auto tag	Автотег
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Автотег сохранён. Он применится при следующем добавлении, изменении или обновлении тайтлов.
+Auto tagging	Автоматическая маркировка
+Auto-refresh	Автообновление
+Automatic	Автоматически
+Automatic search	Автоматический поиск
+Automatic search for {label}: grabbed {}.	Автоматический поиск для {label}: захвачено {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Автоматический поиск для {label}: найдено релизов: {}, одобрено: {}, ничего не захвачено.
+Automatic search: grab the best release	Автоматический поиск: захватить лучший релиз
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Автоматизация приостановлена: синхронизация RSS, плановая синхронизация списков и автоматический поиск пропускаются. Ручные действия и текущие загрузки продолжаются.
+Automation resumed.	Автоматизация возобновлена.
+Available from	Доступно с
+Back to the dashboard	Назад на панель
+Back up now	Создать резервную копию
+Backup {} created.	Резервная копия {} создана.
+Backups	Резервные копии
+Blocking:	Блокирует:
+Blocklist	Черный список
+Blocklist the release and search again	Внести релиз в черный список и искать снова
+Blocklist the release: it is never grabbed again	Внести релиз в черный список: он больше не будет захвачен
+Blocklist “{title}” and search for a replacement?	Внести «{title}» в черный список и искать замену?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Перенесите библиотеку и настройки Sonarr (v3/v4) или Tanukarr в Kitsunarr. Источник только читается и никогда не изменяется, а
+Bypass the proxy for local addresses	Обходить прокси для локальных адресов
+Calendar	Календарь
+Calendar →	Календарь →
+Cancel	Отмена
+Cancel compression	Отменить сжатие
+Cannot reach the server: {e}	Сервер недоступен: {e}
+Catalogue	Каталог
+Category	Категория
+Certificate validation	Проверка сертификата
+Change password	Сменить пароль
+Change series	Сменить сериал
+Changes	Изменения
+Check	Проверить
+Check library	Проверить библиотеку
+Check now	Проверить сейчас
+Check that the mapped series folders exist (read-only)	Проверить, существуют ли сопоставленные папки сериалов (только чтение)
+Checked: {summary}.	Проверено: {summary}.
+Checking…	Проверка…
+Choose a backup file	Выберите файл резервной копии
+Choose a mode	Выберите режим
+Choose a root folder and a quality profile.	Выберите корневую папку и профиль качества.
+Choose a season	Выберите сезон
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Выберите сериал и сезон или эпизод. Результаты показывают, чем является каждый релиз с точки зрения парсера Kitsunarr.
+Choose a series or movie…	Выберите сериал или фильм…
+Choose source	Выберите источник
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Выбрать эпизоды этого релиза вручную и захватить его (выбор сохраняется для импорта)
+Choose…	Выбрать…
+Clean library	Очистить библиотеку
+Clear	Очистить
+Clear blocklist	Очистить черный список
+Cleared {n} releases from the blocklist.	Удалено релизов из черного списка: {n}.
+Client	Клиент
+Close	Закрыть
+Codec	Кодек
+Codec factors saved in every profile.	Коэффициенты кодеков сохранены во всех профилях.
+Codec size factors	Коэффициенты размера по кодекам
+Codecs	Кодеки
+Collection film folder format	Формат папки фильма коллекции
+Collections	Коллекции
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Коллекции появляются при миграции из Tanukarr, создаются по данным провайдеров или вручную здесь.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Переходите с Sonarr или Tanukarr? Импортируйте существующие сериалы, настройки и историю за несколько шагов.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Через запятую; * — подстановочный знак (*.lan), диапазоны IP вроде 192.168.1.0/24 поддерживаются.
+Companion app keys	Ключи приложений-компаньонов
+Complete series	Весь сериал
+Completed and failed download handling	Обработка завершённых и неудачных загрузок
+Component	Компонент
+Compress series	Сжать сериал
+Compression	Сжатие
+Compression queued.	Сжатие поставлено в очередь.
+Compression worker is not connected.	Обработчик сжатия не подключён.
+Condition	Условие
+Conditions	Условия
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Условия одного типа выполняются, если выполнено любое из них (обязательные — все); выполниться должен каждый тип.
+Configure	Настроить
+Confirm password	Подтвердите пароль
+Connect	Подключения
+Connect to a running instance	Подключиться к работающему экземпляру
+Connecting…	Подключение…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Согласованные копии базы данных. Плановые резервные копии создаются еженедельно (хранятся последние восемь); каждая миграция тоже сначала создаёт копию. Для восстановления остановите Kitsunarr и выполните
+Continuing	Продолжается
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (отправляется с запросом ленты, например uid=1; pass=…)
+Copied.	Скопировано.
+Copy	Копировать
+Copy (keep the originals)	Копировать (сохранить оригиналы)
+Copy sizes from	Копировать размеры из
+Copy the token now; it is not shown again:	Скопируйте токен сейчас; он больше не будет показан:
+Could not grab {}: {}	Не удалось захватить {}: {}
+Covers	Обложки
+Create	Создать
+Create account	Создать аккаунт
+Create group	Создать группу
+Create key	Создать ключ
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Создайте его на themoviedb.org › Settings › API. Используется для сериалов и фильмов TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Создайте учётную запись администратора. С ней вы будете входить в Kitsunarr.
+Created	Создано
+Created when the first file is imported. Nothing is written to disk now.	Создаётся при импорте первого файла. Сейчас на диск ничего не записывается.
+Creating…	Создание…
+Credit	Благодарности
+Current file	Текущий файл
+Current password	Текущий пароль
+Custom format saved.	Пользовательский формат сохранён.
+Custom format score	Оценка пользовательского формата
+Custom format scores	Оценки пользовательских форматов
+Custom formats	Пользовательские форматы
+Cutoff unmet	Порог не достигнут
+Daily	Ежедневный
+Daily episode format	Формат ежедневных эпизодов
+Dashboard	Панель
+Data directory	Каталог данных
+Database backup taken before the import: {b}	Резервная копия базы данных перед импортом: {b}
+Database schema	Схема базы данных
+Date	Дата
+Date added	Дата добавления
+Debug	Отладка
+Decision	Решение
+Default	По умолчанию
+Defaults	Значения по умолчанию
+Delay profile	Профиль задержки
+Delay profile saved.	Профиль задержки сохранён.
+Delay profiles	Профили задержки
+Delete	Удалить
+Delete empty series folders	Удалять пустые папки сериалов
+Delete file	Удалить файл
+Delete group	Удалить группу
+Delete profile	Удалить профиль
+Delete “{path}”? It goes to the recycle bin when one is set.	Удалить «{path}»? Файл попадёт в корзину, если она задана.
+Delete “{}”?	Удалить «{}»?
+Delete “{}”? Its series and movies stay in the library.	Удалить «{}»? Его сериалы и фильмы останутся в библиотеке.
+Deleted	Удалено
+Directory	Каталог
+Disabled	Выключено
+Disabled for local addresses	Отключено для локальных адресов
+Disk scanned: {}	Диск просканирован: {}
+Disk scanned: {} Not matched: {}	Диск просканирован: {} Не сопоставлено: {}
+Do not prefer	Не предпочитать
+Do not search for a replacement	Не искать замену
+Do nothing	Ничего не делать
+Done	Готово
+Download client options saved.	Параметры клиентов загрузки сохранены.
+Download clients	Клиенты загрузки
+Download failed	Ошибка загрузки
+Download queue	Очередь загрузок
+Downloads	Загрузки
+Duration	Длительность
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Каждый тайтл принадлежит одному каталогу, из которого он обновляется; все его идентификаторы (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) сохраняются. Тайтлы, перенесённые из Sonarr, принадлежат TheTVDB.
+Edit	Редактировать
+Edit “{name}”	Редактировать «{name}»
+Edit “{}”	Редактировать «{}»
+Enable RSS	Включить RSS
+Enable automatic search	Включить автоматический поиск
+Enable interactive search	Включить интерактивный поиск
+Enabled	Включено
+Ended	Завершён
+English	Английский
+Entity	Объект
+Episode	Эпизод
+Episode and movie naming	Именование эпизодов и фильмов
+Episode image thumbs in the NFO	Миниатюры эпизодов в NFO
+Episode images (<filename>-thumb.jpg)	Изображения эпизодов (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Изображения эпизодов (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Изображения эпизодов (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Сопоставления эпизодов в .plexmatch
+Episode metadata (<filename>.nfo)	Метаданные эпизодов (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Метаданные эпизодов (Season##/filename.xml)
+Episode order	Порядок эпизодов
+Episode order changed: {} episodes updated, {} added.	Порядок эпизодов изменён: обновлено эпизодов: {}, добавлено: {}.
+Episodes	Эпизоды
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Эпизоды перенумеровываются в выбранном порядке; файлы, отслеживание и история остаются при своих эпизодах. Затем переименуйте файлы под новые номера.
+Episodes of {title}	Эпизоды {title}
+Episodes on disk	Эпизоды на диске
+Episodes whose file is below the quality profile's cutoff appear here.	Здесь показаны эпизоды, файл которых не достигает порога профиля качества.
+Episodes…	Эпизоды…
+Errors	Ошибки
+Errors {errors}	Ошибки {errors}
+Event	Событие
+Every file already follows the naming settings.	Все файлы уже соответствуют настройкам именования.
+Every file meets its cutoff	Все файлы достигли порога
+Exclude	Исключить
+Exclusions	Исключения
+Expected	Ожидается
+Expires	Истекает
+Extra file extensions	Расширения дополнительных файлов
+Factor	Коэффициент
+Failed	Неудачно
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Защита от фейковых релизов: проверять торренты перед захватом и отклонять исполняемые файлы, архивы-приманки с паролем и содержимое без видео
+Feed address	Адрес ленты
+Fetch the latest metadata from {}	Получить последние метаданные из {}
+File	Файл
+File date	Дата файла
+File deleted	Файл удалён
+File deleted.	Файл удалён.
+File management	Управление файлами
+File management settings saved.	Настройки управления файлами сохранены.
+File renamed	Файл переименован
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Файлы старше этого срока ежедневно удаляются из корзины; 0 — хранить всегда.
+Files upgrades replaced, kept as versions	Файлы, заменённые улучшениями и сохранённые как версии
+Film	Фильм
+Film title or IMDb id, e.g. Arrival	Название фильма или IMDb id, например Arrival
+Find a series in your library	Найти сериал в библиотеке
+Find files added to or removed from the series folder	Найти файлы, добавленные в папку сериала или удалённые из неё
+Find something to add	Найдите, что добавить
+First and last pieces first	Сначала первые и последние части
+First day of the week	Первый день недели
+First season	Первый сезон
+Folder	Папка
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Форматы используют типы спецификаций Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Оценки задаются в каждом профиле качества.
+Found	Найдено
+Free	Свободно
+Free space	Свободное место
+Future days	Дней вперёд
+Future episodes	Будущие эпизоды
+General	Общие
+GiB	ГиБ
+Grab	Захватить
+Grab a release from interactive search; downloads in the client's TV category show up here.	Захватите релиз через интерактивный поиск; загрузки в ТВ-категории клиента появятся здесь.
+Grab anyway?	Всё равно захватить?
+Grab with these episodes	Захватить с этими эпизодами
+Grabbed	Захвачено
+Grabbed {}.	Захвачено: {}.
+Grabbing…	Захват…
+Grabs, imports and file changes appear here. Migrated history is included.	Здесь показаны захваты, импорты и изменения файлов, включая перенесённую историю.
+Group film folder format	Формат папки фильма группы
+Group folder format	Формат папки группы
+Group season folder format	Формат папки сезона группы
+Group story-arc folder format	Формат папки сюжетной арки группы
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Группы связанных сериалов и фильмов: коллекции провайдеров, аниме-франшизы (группы приквелов/сиквелов) и ручные группы, включая перенесённые из Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Импорт только жёсткими ссылками: никогда не копировать раздающиеся загрузки
+Health	Состояние
+Hide	Скрыть
+History	История
+History →	История →
+Host	Хост
+Host (as in the download client's settings)	Хост (как в настройках клиента загрузки)
+Hostname	Имя хоста
+How the catalogue numbers the episodes (it can be changed later on the series page).	Как каталог нумерует эпизоды (можно изменить позже на странице сериала).
+Id	Id
+Identities	Идентификаторы
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Если Kitsunarr видит ваши медиа по другим путям, чем источник (например, другие тома Docker), сопоставьте каждую папку источника с её расположением в Kitsunarr. Пути переписываются только в базе данных.
+Ignored	Проигнорировано
+Ignored addresses	Игнорируемые адреса
+Implementation	Реализация
+Import / Migration	Импорт / Миграция
+Import a Sonarr or Tanukarr library	Импорт библиотеки Sonarr или Tanukarr
+Import blocked	Импорт заблокирован
+Import completed downloads	Импортировать завершённые загрузки
+Import extra files (subtitles…)	Импортировать дополнительные файлы (субтитры…)
+Import from Sonarr/Tanukarr	Импорт из Sonarr/Tanukarr
+Import history	Импортировать историю
+Import library	Импортировать библиотеку
+Import list options saved.	Параметры списков импорта сохранены.
+Import lists	Списки импорта
+Import pending	Ожидает импорта
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Импорт видеофайлов из любой папки, доступной серверу: проверьте сериал и эпизоды каждого файла, затем скопируйте или переместите их в библиотеку (с переименованием по настройкам именования).
+Import {chosen().len()} files	Импортировать файлы: {chosen().len()}
+Imported	Импортировано
+Imported from series folder	Импортировано из папки сериала
+Importing	Импорт
+Importing…	Импорт…
+Imports need	Для импорта нужно
+In library ›	В библиотеке ›
+Include	Включить
+Include in file names ({{Custom Formats}} token)	Включать в имена файлов (токен {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Включать только тайтлы из одних списков или исключать тайтлы других.
+Include unmonitored	Включая неотслеживаемые
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Включая базовый URL, например http://192.168.1.10:8989 или https://host/sonarr
+Indexer	Индексатор
+Indexer options saved.	Параметры индексаторов сохранены.
+Indexer settings	Настройки индексатора
+Indexers	Индексаторы
+Info	Информация
+Info {infos}	Информация {infos}
+Instance	Экземпляр
+Instance name	Имя экземпляра
+Instance: {name}	Экземпляр: {name}
+Interactive	Интерактивный
+Interactive search	Интерактивный поиск
+Interactive search for full-season packs only	Интерактивный поиск только полных сезонных паков
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Интерактивный поиск паков всего сериала (и его сезонов) на торрент-индексаторах
+Interactive search: see every release and choose	Интерактивный поиск: показать все релизы и выбрать
+Interface language	Язык интерфейса
+Interval	Интервал
+Jellyfin library and user	Библиотека и пользователь Jellyfin
+Job	Задание
+Keep / skip	Оставить / пропустить
+Keep files replaced by upgrades as versions (in "Plex Versions")	Сохранять файлы, заменённые улучшениями, как версии (в «Plex Versions»)
+Keep me signed in	Не выходить из системы
+Keep the replaced file's date (upgrades)	Сохранять дату заменённого файла (улучшения)
+Kept	Сохранено
+Kept versions	Сохранённые версии
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Ключи для приложений-компаньонов, использующих API Sonarr v3: они читают библиотеку, а ключи «добавление сериалов» также могут добавлять сериалы (в корневую папку, без поиска). Больше ничего не разрешено.
+KiB	КиБ
+Kind	Тип
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr — свободное программное обеспечение (GPL-3.0-or-later).
+Kitsunarr path	Путь в Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr создаст резервную копию своей базы данных, импортирует просмотренные данные одной транзакцией и проверит их перед фиксацией. Источник и ваши медиафайлы не изменяются.
+Label	Метка
+Languages	Языки
+Larger releases are rejected. 0 means unlimited.	Релизы большего размера отклоняются. 0 — без ограничений.
+Last read	Последнее чтение
+Last run	Последний запуск
+Last search	Последний поиск
+Last searched	Последний поиск
+Last season	Последний сезон
+Later ›	Позже ›
+Latest season	Самый новый сезон
+Level	Уровень
+Library	Библиотека
+Library check	Проверка библиотеки
+Library tools	Инструменты библиотеки
+Library tools saved.	Инструменты библиотеки сохранены.
+List	Список
+Listed best first. Grouped qualities rank equally.	Сначала лучшие. Сгруппированные качества равноценны.
+Live updates connected	Обновления в реальном времени подключены
+Live updates disconnected	Обновления в реальном времени отключены
+Load	Загрузить
+Load the account's lists	Загрузить списки аккаунта
+Load the libraries…	Загрузить библиотеки…
+Load the users…	Загрузить пользователей…
+Local air date	Местная дата выхода
+Local path	Локальный путь
+Log them	Записывать в журнал
+Logs	Журналы
+Main rejections	Основные причины отклонения
+Make current	Сделать текущей
+Manual import	Ручной импорт
+Mark as failed	Пометить как неудачный
+Matches monitored titles.	Совпадает с отслеживаемыми тайтлами.
+Maximum	Максимум
+Maximum size (MB)	Максимальный размер (МБ)
+Media management	Управление медиа
+Media management settings	Настройки управления медиа
+Media paths	Пути медиа
+Mediums	Носители
+Members	Участники
+Message	Сообщение
+Metadata	Метаданные
+Metadata files	Файлы метаданных
+Metadata keys saved.	Ключи метаданных сохранены.
+Metadata language	Язык метаданных
+Metadata refreshed.	Метаданные обновлены.
+Metadata refreshed: {} new episodes, {} updated.	Метаданные обновлены: новых эпизодов: {}, обновлено: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Настройки метаданных сохранены. Файлы будут записаны при следующем сканировании диска, обновлении или импорте.
+Metadata sources	Источники метаданных
+MiB	МиБ
+Migration completed.	Миграция завершена.
+Migration report #{}	Отчёт о миграции #{}
+Minimum	Минимум
+Minimum age (minutes)	Минимальный возраст (минуты)
+Minimum custom format score	Минимальная оценка пользовательского формата
+Minimum format score	Минимальная оценка формата
+Minimum free space (MiB)	Минимальное свободное место (МиБ)
+Minimum seeders	Минимум сидеров
+Missing	Отсутствуют
+Missing (monitored)	Отсутствуют (отслеживаемые)
+Missing films	Отсутствующие фильмы
+Mode	Режим
+Monday	Понедельник
+Monitor	Отслеживать
+Monitored	Отслеживается
+More languages can be added to the string tables.	Другие языки можно добавить в таблицы строк.
+Move	Переместить
+Movie	Фильм
+Movie file format	Формат файла фильма
+Movie removed from Kitsunarr. Files on disk were not touched.	Фильм удалён из Kitsunarr. Файлы на диске не затронуты.
+Movies	Фильмы
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Многосезонные релизы: принимать паки из нескольких сезонов (поиск сезона берёт пак для своего сезона)
+Must contain	Должно содержать
+Must contain (comma separated; /regex/ allowed)	Должно содержать (через запятую; допускается /regex/)
+Must not contain	Не должно содержать
+NOT	НЕ
+Name	Имя
+Naming	Именование
+Naming options saved.	Параметры именования сохранены.
+Naming saved.	Именование сохранено.
+Negate	Инвертировать
+Network	Сеть
+Never: keep the release's names	Никогда: сохранять имена релиза
+New custom format	Новый пользовательский формат
+New custom preset	Новый свой пресет
+New group title	Название новой группы
+New password	Новый пароль
+New quality profile	Новый профиль качества
+Next airing	Следующий выход
+Next run	Следующий запуск
+Next ›	Далее ›
+No	Нет
+No activity yet.	Активности пока нет.
+No auto tags.	Нет автотегов.
+No backups yet	Резервных копий пока нет
+No collections yet	Коллекций пока нет
+No companion keys.	Нет ключей компаньонов.
+No custom formats	Нет пользовательских форматов
+No custom formats defined.	Пользовательские форматы не заданы.
+No delay above the minimum custom format score	Без задержки при минимальной оценке пользовательского формата и выше
+No delay for the profile's best quality in the preferred protocol	Без задержки для лучшего качества профиля в предпочтительном протоколе
+No download client to read	Нет клиента загрузки для чтения
+No exclusions.	Нет исключений.
+No history	Нет истории
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Ни один индексатор не может искать этот сериал автоматически: ни у одного не включён автоматический поиск при отсутствии тегов или с одним из тегов сериала.
+No indexers to search	Нет индексаторов для поиска
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Нет сохранённых версий. Включите «Сохранять файлы, заменённые улучшениями» в разделе «Именование».
+No log entries at this level	Нет записей журнала этого уровня
+No mappings.	Нет сопоставлений.
+No matches	Нет совпадений
+No members	Нет участников
+No migrations have been run yet.	Миграции ещё не выполнялись.
+No movies yet	Фильмов пока нет
+No notes.	Нет примечаний.
+No recycle bin is set (Settings › Media management).	Корзина не задана (Настройки › Управление медиа).
+No release profiles.	Нет профилей релизов.
+No root folders yet.	Корневых папок пока нет.
+No root folders.	Нет корневых папок.
+No runs yet	Запусков пока нет
+No searches yet.	Поисков пока не было.
+No series in your library match.	В библиотеке нет подходящих сериалов.
+No tags	Нет тегов
+No {}	Нет: {}
+No {} yet	{}: пока нет
+None	Ничего
+Not evaluated by Kitsunarr.	Не оценивается Kitsunarr.
+Not imported	Не импортировано
+Not monitored	Не отслеживается
+Notes	Примечания
+Notes ({preview.warnings.len()})	Примечания ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Примечания ({report.warnings.len()})
+Nothing airs in the next seven days.	В ближайшие семь дней ничего не выходит.
+Nothing downloading	Ничего не загружается
+Nothing found	Ничего не найдено
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	В этом каталоге ничего не найдено. Попробуйте другое написание, оригинальное название или другой каталог.
+Nothing in this period	За этот период ничего нет
+Nothing missing	Ничего не отсутствует
+Notifications	Уведомления
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Нумеровать эпизоды по другому порядку каталога (группы эпизодов TMDB, DVD или абсолютный порядок TheTVDB)
+OMDb API key	API-ключ OMDb
+Older priority	Приоритет старых
+One folder per season	Отдельная папка для каждого сезона
+Only the 2000 newest files are listed.	Показаны только 2000 новейших файлов.
+Only when the proxy needs one.	Только если прокси этого требует.
+Open the library	Открыть библиотеку
+OpenAPI document	Документ OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Открывает сервис для авторизации Kitsunarr и заполняет токен.
+Options	Параметры
+Organize	Организовать
+Other	Другое
+Overview	Обзор
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Перезаписывать записи, уже существующие в Kitsunarr (иначе они сохраняются)
+Packs	Паки
+Page not found	Страница не найдена
+Page {page} / {pages}	Страница {page} / {pages}
+Password	Пароль
+Password changed. Other sessions were signed out.	Пароль изменён. Выполнен выход из других сеансов.
+Past days	Дней назад
+Path	Путь
+Path mappings	Сопоставления путей
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Приостановить автоматизацию (синхронизация RSS, плановая синхронизация списков, автоматический поиск)
+Peers	Пиры
+Permission	Права доступа
+PiB	ПиБ
+Platform	Платформа
+Port	Порт
+Position	Позиция
+Post-import category	Категория после импорта
+Posters	Постеры
+Prefer and upgrade	Предпочитать и улучшать
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Предпочитать сезонные паки аниме (сезонный поиск аниме в Kitsunarr и так ищет сезон один раз)
+Prefer, do not upgrade	Предпочитать, не улучшать
+Preferred	Предпочтительный
+Preferred metadata language	Предпочтительный язык метаданных
+Preferred protocol	Предпочтительный протокол
+Preparing preview…	Подготовка предпросмотра…
+Preview	Предпросмотр
+Preview migration	Предпросмотр миграции
+Previous migrations	Предыдущие миграции
+Priority	Приоритет
+Problem	Проблема
+Profile	Профиль
+Profile saved.	Профиль сохранён.
+Profiles still used by series or movies cannot be deleted.	Профили, которые ещё используются сериалами или фильмами, нельзя удалить.
+Progress	Прогресс
+Propers and repacks	Проперы и репаки
+Proxy	Прокси
+Proxy saved.	Прокси сохранён.
+Proxy type	Тип прокси
+Qualities	Качества
+Quality	Качество
+Quality presets	Пресеты качества
+Quality presets saved.	Пресеты качества сохранены.
+Quality profile	Профиль качества
+Quality profiles	Профили качества
+Quality profile…	Профиль качества…
+RSS sync interval (minutes)	Интервал синхронизации RSS (минуты)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	После появления релиза синхронизация RSS ждёт столько времени более качественный; отложенные релизы показываются в очереди. Применяется первый профиль, теги которого совпадают с сериалом; последний (без тегов) — профиль по умолчанию.
+Re-encode this series' files with the compression worker	Перекодировать файлы этого сериала обработчиком сжатия
+Read and add series	Чтение и добавление сериалов
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Данные читаются из клиентов загрузки каждые несколько секунд. Завершённые загрузки, захваченные Kitsunarr, импортируются в папку сериала каждую минуту (торренты копируются или связываются жёсткими ссылками, чтобы продолжать раздачу; загрузки Usenet перемещаются). Неудачные загрузки вносятся в черный список и ищутся заново.
+Read the library	Чтение библиотеки
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Только чтение: находит отсутствующие папки сериалов, записи файлов вне своей папки или записанные дважды и файлы, отсутствующие на диске.
+Reading the download clients…	Чтение клиентов загрузки…
+Reading the source	Чтение источника
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Всё читается через API. Пароли и API-ключи провайдеров скрываются источником, их нужно ввести заново.
+Recent activity	Недавняя активность
+Recent priority	Приоритет новых
+Recent runs	Недавние запуски
+Recent searches	Недавние поиски
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Рекомендуется. В Sonarr/Tanukarr откройте Система → Резервное копирование, создайте копию и скачайте .zip (или используйте sonarr.db). Включает пароли индексаторов и клиентов загрузки.
+Recycle bin	Корзина
+Recycle bin cleanup (days)	Очистка корзины (дни)
+Recycled	В корзине
+Refresh metadata	Обновить метаданные
+Refresh preview	Обновить предпросмотр
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Обновление из {} пока не поддерживается; импортированные метаданные сохраняются как есть
+Refreshing…	Обновление…
+Regenerate	Сгенерировать заново
+Regenerate API key	Сгенерировать новый API-ключ
+Reject releases whose TheTVDB or IMDb id names another series	Отклонять релизы, у которых id TheTVDB или IMDb указывает на другой сериал
+Rejected: click twice to grab anyway	Отклонён: нажмите дважды, чтобы всё равно захватить
+Release	Релиз
+Release profile	Профиль релиза
+Release profile saved.	Профиль релиза сохранён.
+Release profiles	Профили релизов
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Релизы проверяются по профилю качества сериала, пользовательским форматам и профилям релизов и ранжируются, как в Sonarr. Для отклонённых релизов нужно второе нажатие.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Релизы, загрузка которых не удалась или которые внесены в черный список вручную. Поиск и синхронизация RSS их больше не захватывают; удалите релиз, чтобы разрешить его.
+Remote path	Удалённый путь
+Remote path mapping	Сопоставление удалённого пути
+Remote path mapping saved.	Сопоставление удалённого пути сохранено.
+Remote path mappings	Сопоставления удалённых путей
+Remove	Удалить
+Remove completed downloads	Удалять завершённые загрузки
+Remove every release from the blocklist?	Удалить все релизы из черного списка?
+Remove failed downloads	Удалять неудачные загрузки
+Remove from library	Удалить из библиотеки
+Remove from queue	Удалить из очереди
+Remove from the download client (deletes its files there)	Удалить из клиента загрузки (удаляет там его файлы)
+Remove movie	Удалить фильм
+Remove series	Удалить сериал
+Remove tags automatically (from titles that stop matching)	Удалять теги автоматически (у тайтлов, которые перестали соответствовать)
+Remove “{title}” and its episode records from Kitsunarr?	Удалить «{title}» и записи его эпизодов из Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Удалить «{title}» из Kitsunarr? Файлы на диске не удаляются.
+Removed	Удалено
+Removed from the blocklist.	Удалено из черного списка.
+Rename	Переименовать
+Rename files	Переименовать файлы
+Rename files on import	Переименовывать файлы при импорте
+Rename files to the naming settings	Переименовать файлы по настройкам именования
+Formats use Sonarr's tokens.	Форматы используют токены Sonarr.
+Renaming…	Переименование…
+Report	Отчёт
+Request one at omdbapi.com. Used for films by IMDb id.	Запросите его на omdbapi.com. Используется для фильмов по IMDb id.
+Required	Обязательно
+Resolution	Разрешение
+Restore	Восстановить
+Restore {}	Восстановить {}
+Restore…	Восстановить…
+Restoring…	Восстановление…
+Resume automation	Возобновить автоматизацию
+Retention (days)	Хранение (дни)
+Retire	Вывести из использования
+Revoke	Отозвать
+Root folder	Корневая папка
+Root folders	Корневые папки
+Root folder…	Корневая папка…
+Run #{run.id}: {run.status}	Запуск #{run.id}: {run.status}
+Run now	Запустить
+Running…	Выполняется…
+Saturday	Суббота
+Save	Сохранить
+Save criteria	Сохранить критерии
+Save factors	Сохранить коэффициенты
+Save keys	Сохранить ключи
+Save metadata files	Сохранить файлы метаданных
+Save naming	Сохранить именование
+Save options	Сохранить параметры
+Saved	Сохранено
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Сохранённые ключи показаны как {REDACTED}; оставьте без изменений, чтобы сохранить, или очистите поле, чтобы удалить ключ.
+Saved.	Сохранено.
+Scan disk	Сканировать диск
+Scan folder	Сканировать папку
+Scanning…	Сканирование…
+Scheduled tasks	Запланированные задачи
+Score	Оценка
+Search	Поиск
+Search again when a download fails	Искать снова при неудачной загрузке
+Search all	Искать все
+Search all films	Искать все фильмы
+Search collection	Искать коллекцию
+Search every episode of the list, one search per season	Искать все эпизоды списка, один поиск на сезон
+Search every member's missing episodes (films: the film)	Искать отсутствующие эпизоды всех участников (для фильмов — фильм)
+Search indexers	Искать в индексаторах
+Search selected	Искать выбранные
+Search the indexers and choose a release	Искать в индексаторах и выбрать релиз
+Search the indexers and grab the best accepted release	Искать в индексаторах и захватить лучший принятый релиз
+Search the indexers and grab the best releases for the monitored episodes	Искать в индексаторах и захватить лучшие релизы для отслеживаемых эпизодов
+Search your indexers	Поиск в индексаторах
+Search {chosen} selected	Искать выбранные: {chosen}
+Search: {}	Поиск: {}
+Search: {} — complete series	Поиск: {} — весь сериал
+Search: {} — season {season} packs	Поиск: {} — паки сезона {season}
+Search: {} — {label}	Поиск: {} — {label}
+Searching for {label}…	Поиск {label}…
+Searching indexers…	Поиск в индексаторах…
+Searching…	Поиск…
+Season	Сезон
+Season folder format	Формат папки сезона
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Названия папок сезонов заменяют названия каталога в {{Season Title}}. Оставьте пустым, чтобы использовать названия каталога.
+Season folders	Папки сезонов
+Season images (Season ##.jpg)	Изображения сезонов (Season ##.jpg)
+Season images (Season##/folder.jpg)	Изображения сезонов (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Изображения сезонов (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Сезонные паки: 1 — использовать цели для сезонных паков ниже
+Season premieres only	Только премьеры сезонов
+Season {n}	Сезон {n}
+Season {one}	Сезон {one}
+Season {se.season_number}	Сезон {se.season_number}
+Season {season_number}	Сезон {season_number}
+Season-pack seed ratio	Рейтинг раздачи сезонных паков
+Season-pack seed time, minutes	Время раздачи сезонных паков, минуты
+Seasons	Сезоны
+Seasons {first}-{last}	Сезоны {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Секреты показаны как {REDACTED}; оставьте без изменений, чтобы сохранить текущее значение.
+Seed ratio (empty: the client's default)	Рейтинг раздачи (пусто: по умолчанию клиента)
+Seed time, minutes (empty: the client's default)	Время раздачи, минуты (пусто: по умолчанию клиента)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Отправлять запросы к индексаторам, каталогам, спискам, клиентам загрузки и подключениям через прокси.
+Send to the download client	Отправить в клиент загрузки
+Series	Сериалы
+Series .plexmatch file	Файл .plexmatch сериала
+Series folder format	Формат папки сериала
+Series images (Series Title.jpg)	Изображения сериала (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Изображения сериала (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Изображения сериала (folder.jpg)
+Series metadata (tvshow.nfo)	Метаданные сериала (tvshow.nfo)
+Series metadata URL	URL метаданных сериала
+Series metadata episode guide	Гид по эпизодам в метаданных сериала
+Series removed from Kitsunarr. Files on disk were not touched.	Сериал удалён из Kitsunarr. Файлы на диске не затронуты.
+Series removed, and its folder deleted.	Сериал удалён, его папка удалена.
+Series type	Тип сериала
+Set quality profile…	Задать профиль качества…
+Settings	Настройки
+Settings saved.	Настройки сохранены.
+Settings → General → Security in Sonarr/Tanukarr.	Настройки → Общие → Безопасность в Sonarr/Tanukarr.
+Show	Показать
+Show as all-day events	Показывать как события на весь день
+Show unmonitored	Показывать неотслеживаемые
+Shows	Сериалы
+Sign in	Войти
+Signed in. Save the list to keep the token.	Вход выполнен. Сохраните список, чтобы сохранить токен.
+Signing in…	Вход…
+Size	Размер
+Size limits	Ограничения размера
+Size on disk	Размер на диске
+Skip files smaller than (MB)	Пропускать файлы меньше (МБ)
+Skip the free-space check	Пропускать проверку свободного места
+Skip unmonitored episodes when importing packs	Пропускать неотслеживаемые эпизоды при импорте паков
+Source	Источник
+Source code	Исходный код
+Source path	Путь источника
+Special	Спецвыпуск
+Specials	Спецвыпуски
+Specials are never monitored automatically.	Спецвыпуски никогда не отслеживаются автоматически.
+Specifications	Спецификации
+Specifications (JSON)	Спецификации (JSON)
+Specifications must be valid JSON: {e}	Спецификации должны быть корректным JSON: {e}
+Stalled torrent timeout (minutes)	Тайм-аут зависшего торрента (минуты)
+Standard	Стандартный
+Standard episode format	Стандартный формат эпизода
+Start migration	Начать миграцию
+Start over	Начать заново
+Start search for missing episodes	Начать поиск отсутствующих эпизодов
+Started	Запущено
+Started {format_datetime(&run.started_at)}	Запущено {format_datetime(&run.started_at)}
+Status	Статус
+Status & health	Статус и состояние
+Still downloading	Ещё загружается
+Storage outlook	Прогноз хранилища
+Studio	Студия
+Subscribe	Подписаться
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Подпишитесь на этот адрес в приложении-календаре. Он содержит ваш API-ключ: не передавайте его.
+Sunday	Воскресенье
+Sync	Синхронизация
+Sync all lists now	Синхронизировать все списки сейчас
+Sync now	Синхронизировать сейчас
+Syncing…	Синхронизация…
+System →	Система →
+TMDB API key (v3)	API-ключ TMDB (v3)
+TV Series	ТВ-сериалы
+TV series	ТВ-сериалы
+Table	Таблица
+Tag	Тег
+Tag them	Пометить тегом
+Tag titles already in the library	Пометить тайтлы, уже находящиеся в библиотеке
+Tags	Теги
+Tags (comma separated)	Теги (через запятую)
+Tags (ids, comma separated)	Теги (id через запятую)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Теги добавляются к сериалам и фильмам, соответствующим всем типам условий, при их добавлении, изменении или обновлении.
+Task	Задача
+Television	Телевидение
+Television (raw)	Телевидение (raw)
+Test	Тест
+Test failed: {message}	Тест не пройден: {message}
+Testing…	Тестирование…
+The blocklist is empty	Черный список пуст
+The catalogue new titles are added from when the list knows their id there.	Каталог, из которого добавляются новые тайтлы, если список знает их id в нём.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Дата импортированных файлов: дата выхода эпизода (местная или UTC) или, при улучшении, дата заменённого файла.
+The dry run completed without blocking problems. Nothing has been written yet.	Пробный прогон завершён без блокирующих проблем. Пока ничего не записано.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Файл перемещается в папку сезона (существующий файл никогда не перезаписывается), и сериал пересканируется.
+The folder must already exist; Kitsunarr never creates or removes it.	Папка должна уже существовать; Kitsunarr никогда не создаёт и не удаляет её.
+The indexers returned no releases for this search.	Индексаторы не вернули релизов по этому запросу.
+The instance is on my local network (private or loopback address)	Экземпляр находится в моей локальной сети (частный адрес или loopback)
+The list has not been read, or it is empty.	Список ещё не прочитан или пуст.
+The migration did not complete; nothing was changed.	Миграция не завершилась; ничего не изменено.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Последние записи, хранящиеся в памяти. Полные журналы идут в вывод процесса (журналы контейнера или journal).
+The passwords do not match.	Пароли не совпадают.
+The recycle bin has no media or subtitle files.	В корзине нет медиафайлов или субтитров.
+The sign-in expired; try again.	Срок входа истёк; попробуйте снова.
+The upload failed (network error).	Ошибка загрузки (сетевая ошибка).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Обработчик — необязательный компонент хоста (обработчик сжатия Tanukarr), доступный через сокет KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (каталог Sonarr), TMDB и TVmaze охватывают ТВ-сериалы; AniList и MyAnimeList — аниме-сериалы и аниме-фильмы; TMDB и OMDb — фильмы. Добавление тайтла создаёт его запись в библиотеке и список эпизодов; файлы подхватываются позже конвейером импорта.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Тайтлы TheTVDB ищутся и добавляются на этом языке; для каждого сериала его можно изменить в редакторе.
+TheTVDB titles in this language; changing it refreshes the series	Тайтлы TheTVDB на этом языке; изменение обновляет сериал
+There is nothing at /{path}.	По адресу /{path} ничего нет.
+They are created by migrating from Sonarr/Tanukarr.	Они создаются при миграции из Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Режим переименования, названия папок сезонов и сохранённые версии этого сериала
+TiB	ТиБ
+Time	Время
+Time left	Осталось
+Title	Название
+Title pattern	Шаблон названия
+Titles import lists never add.	Тайтлы, которые списки импорта никогда не добавляют.
+Titles on no list	Тайтлы вне списков
+Today	Сегодня
+Torrent	Торрент
+Torrent delay	Задержка торрентов
+Torrent delay (minutes)	Задержка торрентов (минуты)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Индексаторы Torznab и Newznab. Для проверки нажмите «Тест» в редакторе; каждый поиск использует индексаторы, у которых включён этот вид поиска: RSS, автоматический или интерактивный.
+Trigger	Триггер
+URL base	Базовый URL
+UTC air date	Дата выхода (UTC)
+Unchanged	Без изменений
+Unknown	Неизвестно
+Unmonitor	Не отслеживать
+Unmonitor them	Перестать отслеживать
+Unmonitored	Не отслеживается
+Upcoming	Предстоящие
+Upcoming 7 days	Ближайшие 7 дней
+Update	Обновить
+Updated {} items.	Обновлено элементов: {}.
+Upgrade until (cutoff)	Улучшать до (порог)
+Upgrade until format score	Улучшать до оценки формата
+Upgrades allowed	Улучшения разрешены
+Upload a backup	Загрузить резервную копию
+Upload failed (HTTP {}).	Ошибка загрузки (HTTP {}).
+Uploading…	Загрузка…
+Use SSL	Использовать SSL
+Use a proxy	Использовать прокси
+Use hardlinks instead of copying	Использовать жёсткие ссылки вместо копирования
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Используйте его в заголовке X-Api-Key (или ?apikey=) в других приложениях. Совместим с заголовком, который использует Sonarr.
+Use these episodes	Использовать эти эпизоды
+Usenet	Usenet
+Usenet delay	Задержка Usenet
+Usenet delay (minutes)	Задержка Usenet (минуты)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Только Usenet: более новые релизы отклоняются, чтобы дать им время распространиться. 0 отключает.
+Usenet only: older releases are rejected. 0 means unlimited.	Только Usenet: более старые релизы отклоняются. 0 — без ограничений.
+User name	Имя пользователя
+Username	Имя пользователя
+Validation	Проверка
+Version	Версия
+Versions	Версии
+Waiting for the sign-in at	Ожидание входа по адресу
+Wanted	Ожидаемые
+Warnings	Предупреждения
+Warnings {warnings}	Предупреждения {warnings}
+Watched (Jellyfin watched sync)	Просмотрено (синхронизация просмотров Jellyfin)
+Watched sync user	Пользователь синхронизации просмотров
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Уведомления отправляются в Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, пользовательские скрипты (с переменными окружения Sonarr), Emby/Jellyfin, Plex и Kodi: захваты, импорты и улучшения, переименования, добавление и удаление сериалов, удалённые файлы, проблемы состояния. Нажмите «Тест» в редакторе.
+Welcome	Добро пожаловать
+What to import	Что импортировать
+When	Когда
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Когда проверяются HTTPS-сертификаты индексаторов, клиентов загрузки и сервисов (настройка Sonarr). Для самоподписанных сертификатов в вашей сети проверку нужно ослабить.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Если клиент загрузки сообщает пути, которые Kitsunarr видит в другом месте (другая машина или контейнер), сопоставьте хост и путь клиента с локальным путём.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Предпочитать ли релизы, исправляющие плохой релиз, и улучшать ли ими существующие файлы (как в Sonarr).
+Whole season	Весь сезон
+Working…	Выполняется…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Записываются в папки сериалов при их сканировании, обновлении или импорте, так же как их записывают потребители метаданных Sonarr.
+Year	Год
+Your library is empty.	Ваша библиотека пуста.
+all checks passed	все проверки пройдены
+comma separated	через запятую
+cutoff: {}	порог: {}
+has a file	есть файл
+iCal link	Ссылка iCal
+in 2 days	через 2 дня
+in a moment	сейчас
+in file names	в именах файлов
+in library	в библиотеке
+in {text}	через {text}
+just now	только что
+may run out of space	может закончиться место
+name (e.g. phone)	имя (например, телефон)
+never refreshed	не обновлялось
+no media files are moved, renamed or deleted.	медиафайлы не перемещаются, не переименовываются и не удаляются.
+not accessible	недоступно
+not added	не добавлено
+not checked	не проверено
+not read yet	ещё не прочитано
+on disk	на диске
+refreshed {}	обновлено {}
+schema {s}	схема {s}
+secrets included	секреты включены
+secrets masked	секреты скрыты
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip или sonarr.db
+stored only	только сохранено
+title (optional)	название (необязательно)
+{:.1} GiB/h	{:.1} ГиБ/ч
+{added} added; {}	добавлено: {added}; {}
+{added} shows added.	Добавлено сериалов: {added}.
+{c.name} (API key needed)	{c.name} (нужен API-ключ)
+{c.series_count} series · {c.movie_count} movies	Сериалов: {c.series_count} · фильмов: {c.movie_count}
+{chosen().len()} chosen	Выбрано: {chosen().len()}
+{chosen().len()} chosen (at most 25)	Выбрано: {chosen().len()} (не более 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} на диске · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% из {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · добавлено {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} из {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} файлов · {job["percent"]}% · сэкономлено {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name}: запущено.
+{name} was added to the library.	{name} добавлен в библиотеку.
+{name}: shows	{name}: сериалы
+{ok} files imported.	Импортировано файлов: {ok}.
+{ok} imported; {}	Импортировано: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: релизов: {r.releases.len()}, индексаторов: {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Проверено сериалов: {r.series_checked}, файлов: {r.files_checked}; проблем: {r.issues.len()}.
+{selected.read().len()} selected	Выбрано: {selected.read().len()}
+{text} ago	{text} назад
+{} (not accessible)	{} (недоступно)
+{} ({} free)	{} (свободно {})
+{} added to every profile (not allowed yet).	{} добавлен во все профили (пока не разрешён).
+{} day(s)	Дней: {}
+{} failed: {}	{} — ошибка: {}
+{} format scores	Оценки форматов: {}
+{} free of {}	Свободно {} из {}
+{} week(s)	Недель: {}
+{}{year} — movie	{}{year} — фильм
+‹ Back	‹ Назад
+‹ Earlier	‹ Раньше
+‹ Prev	‹ Пред.
+○ offline	○ не в сети
+● live	● в сети
+✓ No issues detected.	✓ Проблем не обнаружено.
+Activity	Активность
+Queue	Очередь
+System	Система
+Tasks	Задачи
+Retry	Повторить
+Sign out	Выйти
+Search titles…  ( / )	Поиск тайтлов…  ( / )
+Loading…	Загрузка…
+Profiles	Профили
+scene {}	сцена {}
+Scene numbering from TheXEM	Нумерация сцен из TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Нумерация сцен, экстраполированная из TheXEM (не проверено)
+Season {} (scene seasons {})	Сезон {} (сезоны сцены {})
+{} (scene {})	{} (сцена {})

@@ -850,7 +850,11 @@ pub const UI_LANGUAGES: &[(&str, &str)] = &[
     ("es", "Español"),
     ("fr", "Français"),
     ("it", "Italiano"),
+    ("nl", "Nederlands"),
+    ("pl", "Polski"),
     ("pt_BR", "Português (Brasil)"),
+    ("ru", "Русский"),
+    ("zh_CN", "简体中文"),
 ];
 
 /// Sonarr's `CertificateValidationType`: when HTTPS certificates are checked.

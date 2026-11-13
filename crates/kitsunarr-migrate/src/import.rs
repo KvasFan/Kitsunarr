@@ -1441,6 +1441,10 @@ impl<'a> Importer<'a> {
                 3 => Some("es"),
                 4 => Some("de"),
                 5 => Some("it"),
+                7 => Some("nl"),
+                10 => Some("zh_CN"),
+                11 => Some("ru"),
+                12 => Some("pl"),
                 33 => Some("pt_BR"),
                 _ => None,
             })

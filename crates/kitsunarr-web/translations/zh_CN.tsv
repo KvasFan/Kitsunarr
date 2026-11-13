@@ -1,0 +1,968 @@
+# Simplified Chinese interface strings: English<TAB>Chinese. {…} marks a placeholder.
+custom	自定义
+indeterminate	不确定
+mixed	混合
+retired	已退役
+· container	· 容器
+· finished {format_datetime(f)}	· 完成于 {format_datetime(f)}
+· missing	· 缺失
+· on disk	· 已在磁盘
+· today	· 今天
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} 集
+— MiB per minute; empty uses Settings › Quality	— 每分钟 MiB；留空则使用 设置 › 质量
+— a release's size is multiplied by its codec's factor before the size limits apply	— 应用大小限制前，发布资源的大小会乘以其编码的系数
+— all profiles at once	— 一次应用到所有配置
+— codec and title criteria, custom qualities (Tanukarr)	— 编码与标题条件、自定义质量（Tanukarr）
+— enter the code	— 输入代码
+(empty)	（空）
++ Add mapping	+ 添加映射
++ New format	+ 新建格式
++ New profile	+ 新建配置
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0（关闭）或 10 到 120。RSS 同步也可从 系统 › 任务 运行。
+3 hours ago	3 小时前
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	下载中的种子若在此时长内无进度，将判为失败、加入黑名单并重新搜索。0 表示关闭；进度从 Kitsunarr 启动时开始计算。
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	根据 AniList 或 MyAnimeList 关联找到的系列作品分组。之后添加的同系列标题仍会加入该分组。
+A new API key was generated. Update the applications that use it.	已生成新的 API 密钥。请更新使用它的应用程序。
+A regular expression, case-insensitive; empty matches every title.	正则表达式，不区分大小写；留空则匹配所有标题。
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	发布资源会采用其节目配置中允许的、来源、分辨率、编码和标题模式均匹配的最具体预设。为标准质量指定编码或模式后，不符合的发布资源将变为“未知”。自定义预设会以“不允许”添加到每个配置中。
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	应用大小限制前，发布资源的大小会乘以其编码的系数。“混合”表示各配置使用不同的系数；在此输入的值会写入每个配置。
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	加入系列作品分组或手动分组的标题会离开原所在分组。文件和文件夹不会被移动。
+API key	API 密钥
+API key needed	需要 API 密钥
+API keys and language	API 密钥与语言
+API path	API 路径
+About	关于
+Absolute path; empty to delete permanently.	绝对路径；留空则永久删除。
+Accepted	已接受
+Account lists	账户列表
+Actions	操作
+Actual	实际
+Add	添加
+Add a Newznab or Torznab indexer and enable interactive search for it.	添加一个 Newznab 或 Torznab 索引器并为其启用手动搜索。
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	从模板添加客户端，并在编辑器中使用“测试”；抓取、队列和导入会使用所有已启用的客户端。Blackhole 会将抓取内容写入文件夹，并导入其监视文件夹中出现的内容。每个客户端的“移除已完成/失败的下载”选项会在客户端处理完毕后移除下载（连同其文件）。
+Add a download client in Settings › Download clients and enable it.	在 设置 › 下载客户端 中添加并启用一个下载客户端。
+Add a root folder first: it is where this title's folder will live.	请先添加根目录：此标题的文件夹将位于其中。
+Add a tag above first.	请先在上方添加标签。
+Add a title	添加标题
+Add auto tag	添加自动标签
+Add condition	添加条件
+Add exclusion	添加排除项
+Add media	添加媒体
+Add one, or migrate them from Sonarr/Tanukarr.	添加一个，或从 Sonarr/Tanukarr 迁移。
+Add preset	添加预设
+Add selected	添加所选
+Add series or movies below.	在下方添加节目或电影。
+Add tag	添加标签
+Add the list's tags	添加列表的标签
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	从 TVmaze 或 AniList 添加标题，或导入现有的 Sonarr 或 Tanukarr 媒体库。
+Add to library	添加到媒体库
+Add {}	添加 {}
+Add {} ({y})	添加 {}（{y}）
+Add — {}	添加 — {}
+Add, and remove when they leave the list	添加，并在其离开列表时移除
+Added	添加时间
+Added to the titles this list adds.	会添加到此列表所添加的标题上。
+Adding titles	正在添加标题
+Adding…	正在添加…
+Address	地址
+Age	寿命
+Aired	已播出
+Aired monitored episodes without a file appear here.	已播出但没有文件的已追踪剧集会显示在这里。
+All	全部
+All collections	所有合集
+All episodes	所有剧集
+All episodes in the series folder	节目文件夹中的所有剧集
+All events	所有事件
+Allow zero size (the feed has no release sizes)	允许大小为零（该源未提供发布资源大小）
+Also delete the series folder and its files (to the recycle bin when one is set)	同时删除节目文件夹及其文件（若已设置回收站则移至回收站）
+Also for releases grabbed from interactive search	同样适用于从手动搜索抓取的发布资源
+Also known as	又名
+Always, even when renaming is off	始终，即使重命名已关闭
+Analyze video files (resolution, runtime and codecs, with ffprobe)	分析视频文件（分辨率、时长和编码，使用 ffprobe）
+AniList and MyAnimeList titles are always added as anime.	来自 AniList 和 MyAnimeList 的标题始终作为动漫添加。
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList、MyAnimeList、Trakt、Simkl、TMDB、MDBList、Plex、其他 Sonarr 以及自定义 JSON 列表每隔几小时读取一次；新标题会使用各列表的根目录、配置和追踪设置添加。需要 OAuth 的服务使用你自己应用程序的 Client ID 和你粘贴的令牌（从 Tanukarr 迁移的令牌仍可使用）。
+Anime	动漫
+Anime / absolute numbering	动漫 / 绝对编号
+Anime categories	动漫分类
+Anime episode format	动漫剧集格式
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	动漫电影可从 AniList 添加，Tanukarr 迁移也会一并带来其电影。真人电影需要 TMDB 目录。
+Anime standard format search	以标准格式搜索动漫
+Anime title, e.g. Frieren	动漫标题，例如 Frieren
+Any	任意
+Any library	任意媒体库
+Applications using the current key will stop working until you give them the new one.	使用当前密钥的应用程序将停止工作，直到你为其提供新密钥。
+Applied after every list has been read successfully and some title left a list.	在所有列表均成功读取且有标题离开列表后应用。
+Apply	应用
+Apply migration	应用迁移
+Apply profile	应用配置
+Applying migration	正在应用迁移
+Applying…	正在应用…
+As Settings › Media management says	按 设置 › 媒体管理 的设定
+At least 10 characters.	至少 10 个字符。
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	至少 {MIN_PASSWORD_LENGTH} 个字符。建议使用密码短语。
+Auto tag	自动标签
+Auto tag saved. It applies when titles are next added, edited or refreshed.	自动标签已保存。将在下次添加、编辑或刷新标题时生效。
+Auto tagging	自动标签
+Auto-refresh	自动刷新
+Automatic	自动
+Automatic search	自动搜索
+Automatic search for {label}: grabbed {}.	{label} 的自动搜索：已抓取 {}。
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	{label} 的自动搜索：找到 {} 个发布资源，{} 个通过，未抓取任何内容。
+Automatic search: grab the best release	自动搜索：抓取最佳发布资源
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	自动化已暂停：将跳过 RSS 同步、计划的列表同步和自动搜索。手动操作和当前下载会继续。
+Automation resumed.	自动化已恢复。
+Available from	可用起始
+Back to the dashboard	返回仪表盘
+Back up now	立即备份
+Backup {} created.	已创建备份 {}。
+Backups	备份
+Blocking:	阻止原因：
+Blocklist	黑名单
+Blocklist the release and search again	将发布资源加入黑名单并重新搜索
+Blocklist the release: it is never grabbed again	将发布资源加入黑名单：不再抓取
+Blocklist “{title}” and search for a replacement?	将“{title}”加入黑名单并搜索替代资源？
+Blu-ray	蓝光
+Blu-ray (raw / remux)	蓝光（原盘 / Remux）
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	将你的 Sonarr（v3/v4）或 Tanukarr 媒体库和设置导入 Kitsunarr。源仅被读取，不会被修改，并且
+Bypass the proxy for local addresses	本地地址不使用代理
+Calendar	日历
+Calendar →	日历 →
+Cancel	取消
+Cancel compression	取消压缩
+Cannot reach the server: {e}	无法连接服务器：{e}
+Catalogue	目录
+Category	分类
+Certificate validation	证书验证
+Change password	修改密码
+Change series	更换节目
+Changes	更改
+Check	检查
+Check library	检查媒体库
+Check now	立即检查
+Check that the mapped series folders exist (read-only)	检查已映射的节目文件夹是否存在（只读）
+Checked: {summary}.	已检查：{summary}。
+Checking…	正在检查…
+Choose a backup file	选择备份文件
+Choose a mode	选择模式
+Choose a root folder and a quality profile.	选择根目录和质量配置。
+Choose a season	选择季
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	选择节目以及季或集。结果显示 Kitsunarr 解析器识别出的每个发布资源内容。
+Choose a series or movie…	选择节目或电影…
+Choose source	选择来源
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	手动选择此发布资源包含的剧集，然后抓取（选择会保留用于导入）
+Choose…	选择…
+Clean library	清理媒体库
+Clear	清除
+Clear blocklist	清空黑名单
+Cleared {n} releases from the blocklist.	已从黑名单中清除 {n} 个发布资源。
+Client	客户端
+Close	关闭
+Codec	编码
+Codec factors saved in every profile.	编码系数已保存到所有配置。
+Codec size factors	编码大小系数
+Codecs	编码
+Collection film folder format	合集电影文件夹格式
+Collections	合集
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	合集会在从 Tanukarr 迁移、根据数据源创建或在此处创建时出现。
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	来自 Sonarr 或 Tanukarr？只需几步即可导入你现有的节目、设置和历史记录。
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	以逗号分隔；* 为通配符（*.lan），也支持 192.168.1.0/24 这样的 IP 范围。
+Companion app keys	配套应用密钥
+Complete series	完整节目
+Completed and failed download handling	已完成和失败下载处理
+Component	组件
+Compress series	压缩节目
+Compression	压缩
+Compression queued.	压缩已加入队列。
+Compression worker is not connected.	压缩工作进程未连接。
+Condition	条件
+Conditions	条件
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	同类条件中任一匹配即可（但所有必需条件都须匹配）；每一类都必须匹配。
+Configure	配置
+Confirm password	确认密码
+Connect	连接
+Connect to a running instance	连接到正在运行的实例
+Connecting…	正在连接…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	数据库的一致性副本。计划备份每周运行（保留最近八个）；每次迁移前也会先创建一个。如需恢复，请停止 Kitsunarr 并运行
+Continuing	仍在继续
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie（随源请求发送，例如 uid=1; pass=…）
+Copied.	已复制。
+Copy	复制
+Copy (keep the originals)	复制（保留原文件）
+Copy sizes from	复制大小自
+Copy the token now; it is not shown again:	请立即复制令牌；它不会再次显示：
+Could not grab {}: {}	无法抓取 {}：{}
+Covers	涵盖
+Create	创建
+Create account	创建账户
+Create group	创建分组
+Create key	创建密钥
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	在 themoviedb.org › Settings › API 创建。用于 TMDB 电视节目和电影。
+Create the administrator account. You will use it to sign in to Kitsunarr.	创建管理员账户。你将用它登录 Kitsunarr。
+Created	已创建
+Created when the first file is imported. Nothing is written to disk now.	导入第一个文件时创建。现在不会向磁盘写入任何内容。
+Creating…	正在创建…
+Credit	致谢
+Current file	当前文件
+Current password	当前密码
+Custom format saved.	自定义格式已保存。
+Custom format score	自定义格式分数
+Custom format scores	自定义格式分数
+Custom formats	自定义格式
+Cutoff unmet	未达阈值
+Daily	日常
+Daily episode format	日常剧集格式
+Dashboard	仪表盘
+Data directory	数据目录
+Database backup taken before the import: {b}	导入前已备份数据库：{b}
+Database schema	数据库架构
+Date	日期
+Date added	添加日期
+Debug	调试
+Decision	决定
+Default	默认
+Defaults	默认值
+Delay profile	延时配置
+Delay profile saved.	延时配置已保存。
+Delay profiles	延时配置
+Delete	删除
+Delete empty series folders	删除空的节目文件夹
+Delete file	删除文件
+Delete group	删除分组
+Delete profile	删除配置
+Delete “{path}”? It goes to the recycle bin when one is set.	删除“{path}”？若已设置回收站则移至回收站。
+Delete “{}”?	删除“{}”？
+Delete “{}”? Its series and movies stay in the library.	删除“{}”？其节目和电影会保留在媒体库中。
+Deleted	已删除
+Directory	目录
+Disabled	已禁用
+Disabled for local addresses	对本地地址禁用
+Disk scanned: {}	磁盘已扫描：{}
+Disk scanned: {} Not matched: {}	磁盘已扫描：{} 未匹配：{}
+Do not prefer	不优先
+Do not search for a replacement	不搜索替代资源
+Do nothing	不执行任何操作
+Done	完成
+Download client options saved.	下载客户端选项已保存。
+Download clients	下载客户端
+Download failed	下载失败
+Download queue	下载队列
+Downloads	下载
+Duration	时长
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	每个标题属于一个目录，刷新时读取该目录；其携带的所有标识符（TheTVDB、TMDB、IMDb、TVmaze、AniList、MyAnimeList）都会保留。从 Sonarr 迁移的标题属于 TheTVDB。
+Edit	编辑
+Edit “{name}”	编辑“{name}”
+Edit “{}”	编辑“{}”
+Enable RSS	启用 RSS
+Enable automatic search	启用自动搜索
+Enable interactive search	启用手动搜索
+Enabled	已启用
+Ended	已完结
+English	English
+Entity	实体
+Episode	集
+Episode and movie naming	剧集与电影命名
+Episode image thumbs in the NFO	NFO 中的剧集缩略图
+Episode images (<filename>-thumb.jpg)	剧集图片（<filename>-thumb.jpg）
+Episode images (Season##/filename.jpg)	剧集图片（Season##/filename.jpg）
+Episode images (Season##/filename.metathumb)	剧集图片（Season##/filename.metathumb）
+Episode mappings in .plexmatch	.plexmatch 中的剧集映射
+Episode metadata (<filename>.nfo)	剧集元数据（<filename>.nfo）
+Episode metadata (Season##/filename.xml)	剧集元数据（Season##/filename.xml）
+Episode order	剧集顺序
+Episode order changed: {} episodes updated, {} added.	剧集顺序已更改：更新 {} 集，新增 {} 集。
+Episodes	剧集
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	剧集按所选顺序重新编号；文件、追踪状态和历史记录随剧集保留。之后请重命名文件以匹配新编号。
+Episodes of {title}	{title} 的剧集
+Episodes on disk	磁盘上的剧集
+Episodes whose file is below the quality profile's cutoff appear here.	文件低于质量配置阈值的剧集会显示在这里。
+Episodes…	剧集…
+Errors	错误
+Errors {errors}	错误 {errors}
+Event	事件
+Every file already follows the naming settings.	所有文件均已符合命名设置。
+Every file meets its cutoff	所有文件均已达到阈值
+Exclude	排除
+Exclusions	排除项
+Expected	预期
+Expires	过期时间
+Extra file extensions	额外文件扩展名
+Factor	系数
+Failed	失败
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	虚假发布资源防护：抓取前检查种子，拒绝可执行文件、密码诱饵压缩包和不含视频的内容
+Feed address	源地址
+Fetch the latest metadata from {}	从 {} 获取最新元数据
+File	文件
+File date	文件日期
+File deleted	文件已删除
+File deleted.	文件已删除。
+File management	文件管理
+File management settings saved.	文件管理设置已保存。
+File renamed	文件已重命名
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	回收站中早于此时长的文件每天删除；0 表示保留。
+Files upgrades replaced, kept as versions	被升级替换的文件，保留为版本
+Film	电影
+Film title or IMDb id, e.g. Arrival	电影标题或 IMDb ID，例如 Arrival
+Find a series in your library	在媒体库中查找节目
+Find files added to or removed from the series folder	查找节目文件夹中新增或移除的文件
+Find something to add	查找要添加的内容
+First and last pieces first	优先下载首尾分块
+First day of the week	每周第一天
+First season	第一季
+Folder	文件夹
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	格式使用 Sonarr 的规格类型（ReleaseTitle、ReleaseGroup、Source、Resolution、Language、Size、IndexerFlag、ReleaseType）。分数按质量配置分配。
+Found	已找到
+Free	可用
+Free space	可用空间
+Future days	未来天数
+Future episodes	未来剧集
+General	通用
+GiB	GiB
+Grab	抓取
+Grab a release from interactive search; downloads in the client's TV category show up here.	从手动搜索抓取发布资源；客户端电视分类中的下载会显示在这里。
+Grab anyway?	仍然抓取？
+Grab with these episodes	以这些剧集抓取
+Grabbed	已抓取
+Grabbed {}.	已抓取 {}。
+Grabbing…	正在抓取…
+Grabs, imports and file changes appear here. Migrated history is included.	抓取、导入和文件更改会显示在这里，包括迁移的历史记录。
+Group film folder format	分组电影文件夹格式
+Group folder format	分组文件夹格式
+Group season folder format	分组季文件夹格式
+Group story-arc folder format	分组故事篇章文件夹格式
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	相关节目和电影的分组：数据源合集、动漫系列作品（前传/续集分组）以及手动分组，包括从 Tanukarr 迁移的分组。
+Hardlink-only imports: never copy downloads that keep seeding	仅硬链接导入：绝不复制仍在做种的下载
+Health	健康度
+Hide	隐藏
+History	历史记录
+History →	历史记录 →
+Host	主机
+Host (as in the download client's settings)	主机（与下载客户端设置中一致）
+Hostname	主机名
+How the catalogue numbers the episodes (it can be changed later on the series page).	目录对剧集的编号方式（之后可在节目页面更改）。
+Id	ID
+Identities	身份标识
+Ids	ID
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	如果 Kitsunarr 访问媒体的路径与源不同（例如不同的 Docker 卷），请将每个源文件夹映射到其在 Kitsunarr 中的位置。路径仅在数据库中改写。
+Ignored	已忽略
+Ignored addresses	忽略的地址
+Implementation	实现
+Import / Migration	导入 / 迁移
+Import a Sonarr or Tanukarr library	导入 Sonarr 或 Tanukarr 媒体库
+Import blocked	导入被阻止
+Import completed downloads	导入已完成的下载
+Import extra files (subtitles…)	导入额外文件（字幕…）
+Import from Sonarr/Tanukarr	从 Sonarr/Tanukarr 导入
+Import history	导入历史记录
+Import library	导入媒体库
+Import list options saved.	导入列表选项已保存。
+Import lists	导入列表
+Import pending	等待导入
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	从服务器可读的任意文件夹导入视频文件：确认每个文件对应的节目和剧集，然后复制或移动到媒体库（按命名设置重命名）。
+Import {chosen().len()} files	导入 {chosen().len()} 个文件
+Imported	已导入
+Imported from series folder	从节目文件夹导入
+Importing	导入中
+Importing…	正在导入…
+Imports need	导入需要
+In library ›	已在媒体库 ›
+Include	包含
+Include in file names ({{Custom Formats}} token)	包含在文件名中（{{Custom Formats}} 令牌）
+Include only titles on some lists, or leave out the titles of others.	仅包含某些列表中的标题，或排除其他列表中的标题。
+Include unmonitored	包含未追踪项
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	包括 URL 基础路径，例如 http://192.168.1.10:8989 或 https://host/sonarr
+Indexer	索引器
+Indexer options saved.	索引器选项已保存。
+Indexer settings	索引器设置
+Indexers	索引器
+Info	信息
+Info {infos}	信息 {infos}
+Instance	实例
+Instance name	实例名称
+Instance: {name}	实例：{name}
+Interactive	手动
+Interactive search	手动搜索
+Interactive search for full-season packs only	仅手动搜索整季包
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	在种子索引器上手动搜索整部节目（及其各季）的合集包
+Interactive search: see every release and choose	手动搜索：查看所有发布资源并自行选择
+Interface language	界面语言
+Interval	间隔
+Jellyfin library and user	Jellyfin 媒体库和用户
+Job	作业
+Keep / skip	保留 / 跳过
+Keep files replaced by upgrades as versions (in "Plex Versions")	将被升级替换的文件保留为版本（在“Plex Versions”中）
+Keep me signed in	保持登录
+Keep the replaced file's date (upgrades)	保留被替换文件的日期（升级）
+Kept	已保留
+Kept versions	保留的版本
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	供使用 Sonarr v3 API 的配套应用使用的密钥：可读取媒体库，“添加节目”密钥还可添加节目（添加到根目录，不进行搜索）。不允许其他任何操作。
+KiB	KiB
+Kind	类型
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr 是自由软件（GPL-3.0-or-later）。
+Kitsunarr path	Kitsunarr 路径
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr 将备份自身数据库，在单个事务中导入预览的数据，并在提交前进行校验。源和你的媒体文件不会被修改。
+Label	标签
+Languages	语言
+Larger releases are rejected. 0 means unlimited.	更大的发布资源将被拒绝。0 表示不限制。
+Last read	上次读取
+Last run	上次运行
+Last search	上次搜索
+Last searched	上次搜索
+Last season	最后一季
+Later ›	更晚 ›
+Latest season	最新一季
+Level	级别
+Library	媒体库
+Library check	媒体库检查
+Library tools	媒体库工具
+Library tools saved.	媒体库工具已保存。
+List	列表
+Listed best first. Grouped qualities rank equally.	按从优到劣排列。同组质量等同。
+Live updates connected	实时更新已连接
+Live updates disconnected	实时更新已断开
+Load	加载
+Load the account's lists	加载账户的列表
+Load the libraries…	加载媒体库…
+Load the users…	加载用户…
+Local air date	本地播出日期
+Local path	本地路径
+Log them	记录到日志
+Logs	日志
+Main rejections	主要拒绝原因
+Make current	设为当前
+Manual import	手动导入
+Mark as failed	标记为失败
+Matches monitored titles.	匹配已追踪的标题。
+Maximum	最大
+Maximum size (MB)	最大大小（MB）
+Media management	媒体管理
+Media management settings	媒体管理设置
+Media paths	媒体路径
+Mediums	介质
+Members	成员
+Message	消息
+Metadata	元数据
+Metadata files	元数据文件
+Metadata keys saved.	元数据密钥已保存。
+Metadata language	元数据语言
+Metadata refreshed.	元数据已刷新。
+Metadata refreshed: {} new episodes, {} updated.	元数据已刷新：新增 {} 集，更新 {} 集。
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	元数据设置已保存。文件将在下次磁盘扫描、刷新或导入时写入。
+Metadata sources	元数据来源
+MiB	MiB
+Migration completed.	迁移已完成。
+Migration report #{}	迁移报告 #{}
+Minimum	最小
+Minimum age (minutes)	最低间隔（分钟）
+Minimum custom format score	最小自定义格式分数
+Minimum format score	最小格式分数
+Minimum free space (MiB)	最小可用空间（MiB）
+Minimum seeders	最少做种数
+Missing	缺失
+Missing (monitored)	缺失（已追踪）
+Missing films	缺失的电影
+Mode	模式
+Monday	星期一
+Monitor	追踪
+Monitored	已追踪
+More languages can be added to the string tables.	可以向字符串表中添加更多语言。
+Move	移动
+Movie	电影
+Movie file format	电影文件格式
+Movie removed from Kitsunarr. Files on disk were not touched.	电影已从 Kitsunarr 移除。磁盘上的文件未被改动。
+Movies	电影
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	多季发布资源：接受包含多季的合集包（季搜索会采用涵盖该季的合集包）
+Must contain	必须包含
+Must contain (comma separated; /regex/ allowed)	必须包含（逗号分隔；允许 /regex/）
+Must not contain	必须不包含
+NOT	非
+Name	名称
+Naming	命名
+Naming options saved.	命名选项已保存。
+Naming saved.	命名已保存。
+Negate	取反
+Network	网络
+Never: keep the release's names	从不：保留发布资源的原名称
+New custom format	新建自定义格式
+New custom preset	新建自定义预设
+New group title	新分组标题
+New password	新密码
+New quality profile	新建质量配置
+Next airing	下次播出
+Next run	下次运行
+Next ›	下一步 ›
+No	否
+No activity yet.	暂无活动。
+No auto tags.	无自动标签。
+No backups yet	暂无备份
+No collections yet	暂无合集
+No companion keys.	无配套应用密钥。
+No custom formats	无自定义格式
+No custom formats defined.	未定义自定义格式。
+No delay above the minimum custom format score	达到最小自定义格式分数时不延时
+No delay for the profile's best quality in the preferred protocol	首选协议下达到配置的最佳质量时不延时
+No download client to read	没有可读取的下载客户端
+No exclusions.	无排除项。
+No history	无历史记录
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	没有索引器可以自动搜索此节目：没有索引器同时启用自动搜索并且未设标签或带有该节目的某个标签。
+No indexers to search	没有可搜索的索引器
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	没有保留的版本。请在“命名”中开启“将被升级替换的文件保留为版本”。
+No log entries at this level	此级别下没有日志条目
+No mappings.	无映射。
+No matches	无匹配项
+No members	无成员
+No migrations have been run yet.	尚未执行任何迁移。
+No movies yet	暂无电影
+No notes.	无备注。
+No recycle bin is set (Settings › Media management).	未设置回收站（设置 › 媒体管理）。
+No release profiles.	无发布配置。
+No root folders yet.	暂无根目录。
+No root folders.	无根目录。
+No runs yet	暂无运行记录
+No searches yet.	暂无搜索。
+No series in your library match.	媒体库中没有匹配的节目。
+No tags	无标签
+No {}	无{}
+No {} yet	暂无{}
+None	无
+Not evaluated by Kitsunarr.	未经 Kitsunarr 评估。
+Not imported	未导入
+Not monitored	未追踪
+Notes	备注
+Notes ({preview.warnings.len()})	备注（{preview.warnings.len()}）
+Notes ({report.warnings.len()})	备注（{report.warnings.len()}）
+Nothing airs in the next seven days.	未来七天内没有播出内容。
+Nothing downloading	没有正在下载的内容
+Nothing found	未找到任何内容
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	此目录中没有与搜索匹配的内容。请尝试其他拼写、原始标题或另一个目录。
+Nothing in this period	此期间内没有内容
+Nothing missing	没有缺失内容
+Notifications	通知
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	按目录的其他顺序为剧集编号（TMDB 剧集组、TheTVDB DVD 顺序或绝对顺序）
+OMDb API key	OMDb API 密钥
+Older priority	优先较早的
+One folder per season	每季一个文件夹
+Only the 2000 newest files are listed.	仅列出最新的 2000 个文件。
+Only when the proxy needs one.	仅在代理需要时填写。
+Open the library	打开媒体库
+OpenAPI document	OpenAPI 文档
+Opens the service to authorize Kitsunarr and fills in the token.	打开服务以授权 Kitsunarr 并填入令牌。
+Options	选项
+Organize	整理
+Other	其他
+Overview	概览
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	覆盖 Kitsunarr 中已存在的记录（否则保留）
+Packs	合集包
+Page not found	页面未找到
+Page {page} / {pages}	第 {page} / {pages} 页
+Password	密码
+Password changed. Other sessions were signed out.	密码已修改。其他会话已注销。
+Past days	过去天数
+Path	路径
+Path mappings	路径映射
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	暂停自动化（RSS 同步、计划的列表同步、自动搜索）
+Peers	用户
+Permission	权限
+PiB	PiB
+Platform	平台
+Port	端口
+Position	位置
+Post-import category	导入后分类
+Posters	海报
+Prefer and upgrade	优先并升级
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	优先动漫季包（Kitsunarr 的动漫季搜索已会对该季搜索一次）
+Prefer, do not upgrade	优先，不升级
+Preferred	首选
+Preferred metadata language	首选元数据语言
+Preferred protocol	首选协议
+Preparing preview…	正在准备预览…
+Preview	预览
+Preview migration	预览迁移
+Previous migrations	以往的迁移
+Priority	优先级
+Problem	问题
+Profile	配置
+Profile saved.	配置已保存。
+Profiles still used by series or movies cannot be deleted.	仍被节目或电影使用的配置无法删除。
+Progress	进度
+Propers and repacks	Proper 和 Repack
+Proxy	代理
+Proxy saved.	代理已保存。
+Proxy type	代理类型
+Qualities	质量
+Quality	质量
+Quality presets	质量预设
+Quality presets saved.	质量预设已保存。
+Quality profile	质量配置
+Quality profiles	质量配置
+Quality profile…	质量配置…
+RSS sync interval (minutes)	RSS 同步间隔（分钟）
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	发布资源出现后，RSS 同步会等待此时长以寻找更好的资源；被延时的发布资源显示在队列中。应用第一个标签与节目匹配的配置；最后一个（无标签）为默认配置。
+Re-encode this series' files with the compression worker	使用压缩工作进程重新编码此节目的文件
+Read and add series	读取和添加节目
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	每隔几秒从下载客户端实时读取。Kitsunarr 抓取的已完成下载每分钟导入到节目文件夹（种子会被复制或硬链接，以便继续做种；Usenet 下载会被移动）。失败的下载会加入黑名单并重新搜索。
+Read the library	读取媒体库
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	只读：查找缺失的节目文件夹、位于文件夹之外或重复记录的文件记录，以及磁盘上缺失的文件。
+Reading the download clients…	正在读取下载客户端…
+Reading the source	正在读取源
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	通过 API 读取所有内容。数据源的密码和 API 密钥会被源隐藏，之后需要重新输入。
+Recent activity	最近活动
+Recent priority	优先较新的
+Recent runs	最近运行
+Recent searches	最近搜索
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	推荐。在 Sonarr/Tanukarr 中打开 系统 → 备份，创建备份并下载 .zip（或使用 sonarr.db）。包含索引器和下载客户端的密码。
+Recycle bin	回收站
+Recycle bin cleanup (days)	回收站清理（天）
+Recycled	已移至回收站
+Refresh metadata	刷新元数据
+Refresh preview	刷新预览
+Refreshing from {} is not supported yet; the imported metadata is kept as is	尚不支持从 {} 刷新；导入的元数据将保持原样
+Refreshing…	正在刷新…
+Regenerate	重新生成
+Regenerate API key	重新生成 API 密钥
+Reject releases whose TheTVDB or IMDb id names another series	拒绝 TheTVDB 或 IMDb ID 指向其他节目的发布资源
+Rejected: click twice to grab anyway	已拒绝：点击两次以仍然抓取
+Release	发布资源
+Release profile	发布配置
+Release profile saved.	发布配置已保存。
+Release profiles	发布配置
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	发布资源会根据节目的质量配置、自定义格式和发布配置进行检查并排序，与 Sonarr 相同。被拒绝的发布资源需要再次点击确认。
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	失败或被手动加入黑名单的发布资源。搜索和 RSS 同步不会再抓取它们；移除某项即可重新允许。
+Remote path	远程路径
+Remote path mapping	远程路径映射
+Remote path mapping saved.	远程路径映射已保存。
+Remote path mappings	远程路径映射
+Remove	移除
+Remove completed downloads	移除已完成的下载
+Remove every release from the blocklist?	从黑名单中移除所有发布资源？
+Remove failed downloads	移除失败的下载
+Remove from library	从媒体库移除
+Remove from queue	从队列移除
+Remove from the download client (deletes its files there)	从下载客户端移除（会删除其中的文件）
+Remove movie	移除电影
+Remove series	移除节目
+Remove tags automatically (from titles that stop matching)	自动移除标签（从不再匹配的标题上）
+Remove “{title}” and its episode records from Kitsunarr?	从 Kitsunarr 移除“{title}”及其剧集记录？
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	从 Kitsunarr 移除“{title}”？磁盘上的文件不会被删除。
+Removed	已移除
+Removed from the blocklist.	已从黑名单移除。
+Rename	重命名
+Rename files	重命名文件
+Rename files on import	导入时重命名文件
+Rename files to the naming settings	按命名设置重命名文件
+Formats use Sonarr's tokens.	格式使用 Sonarr 的令牌。
+Renaming…	正在重命名…
+Report	报告
+Request one at omdbapi.com. Used for films by IMDb id.	在 omdbapi.com 申请。用于通过 IMDb ID 获取电影。
+Required	强制匹配
+Resolution	分辨率
+Restore	恢复
+Restore {}	恢复 {}
+Restore…	恢复…
+Restoring…	正在恢复…
+Resume automation	恢复自动化
+Retention (days)	保留（天）
+Retire	停用
+Revoke	撤销
+Root folder	根目录
+Root folders	根目录
+Root folder…	根目录…
+Run #{run.id}: {run.status}	运行 #{run.id}：{run.status}
+Run now	立即运行
+Running…	运行中…
+Saturday	星期六
+Save	保存
+Save criteria	保存条件
+Save factors	保存系数
+Save keys	保存密钥
+Save metadata files	保存元数据文件
+Save naming	保存命名
+Save options	保存选项
+Saved	已保存
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	已保存的密钥显示为 {REDACTED}；保持不变即保留，清空字段则移除。
+Saved.	已保存。
+Scan disk	扫描磁盘
+Scan folder	扫描文件夹
+Scanning…	正在扫描…
+Scheduled tasks	计划任务
+Score	分数
+Search	搜索
+Search again when a download fails	下载失败时重新搜索
+Search all	全部搜索
+Search all films	搜索所有电影
+Search collection	搜索合集
+Search every episode of the list, one search per season	搜索列表中的所有剧集，每季搜索一次
+Search every member's missing episodes (films: the film)	搜索每个成员缺失的剧集（电影：搜索该电影）
+Search indexers	搜索索引器
+Search selected	搜索所选
+Search the indexers and choose a release	搜索索引器并选择发布资源
+Search the indexers and grab the best accepted release	搜索索引器并抓取最佳的已接受发布资源
+Search the indexers and grab the best releases for the monitored episodes	搜索索引器并为已追踪的剧集抓取最佳发布资源
+Search your indexers	搜索你的索引器
+Search {chosen} selected	搜索所选的 {chosen} 项
+Search: {}	搜索：{}
+Search: {} — complete series	搜索：{} — 完整节目
+Search: {} — season {season} packs	搜索：{} — 第 {season} 季合集包
+Search: {} — {label}	搜索：{} — {label}
+Searching for {label}…	正在搜索 {label}…
+Searching indexers…	正在搜索索引器…
+Searching…	正在搜索…
+Season	季
+Season folder format	季文件夹格式
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	季文件夹标题会替换 {{Season Title}} 中的目录标题。留空则保留目录标题。
+Season folders	季文件夹
+Season images (Season ##.jpg)	季图片（Season ##.jpg）
+Season images (Season##/folder.jpg)	季图片（Season##/folder.jpg）
+Season images (season##-poster.jpg)	季图片（season##-poster.jpg）
+Season packs: 1 uses the season-pack goals below	季包：1 表示使用下方的季包目标
+Season premieres only	仅季首播
+Season {n}	第 {n} 季
+Season {one}	第 {one} 季
+Season {se.season_number}	第 {se.season_number} 季
+Season {season_number}	第 {season_number} 季
+Season-pack seed ratio	季包做种比率
+Season-pack seed time, minutes	季包做种时间（分钟）
+Seasons	季
+Seasons {first}-{last}	第 {first}-{last} 季
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	机密信息显示为 {REDACTED}；保持不变即保留已存储的值。
+Seed ratio (empty: the client's default)	做种比率（留空：使用客户端默认值）
+Seed time, minutes (empty: the client's default)	做种时间（分钟，留空：使用客户端默认值）
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	通过代理发送对索引器、目录、列表、下载客户端和连接的请求。
+Send to the download client	发送到下载客户端
+Series	节目
+Series .plexmatch file	节目 .plexmatch 文件
+Series folder format	节目文件夹格式
+Series images (Series Title.jpg)	节目图片（Series Title.jpg）
+Series images (fanart.jpg, poster.jpg, banner.jpg)	节目图片（fanart.jpg、poster.jpg、banner.jpg）
+Series images (folder.jpg)	节目图片（folder.jpg）
+Series metadata (tvshow.nfo)	节目元数据（tvshow.nfo）
+Series metadata URL	节目元数据 URL
+Series metadata episode guide	节目元数据剧集指南
+Series removed from Kitsunarr. Files on disk were not touched.	节目已从 Kitsunarr 移除。磁盘上的文件未被改动。
+Series removed, and its folder deleted.	节目已移除，其文件夹已删除。
+Series type	节目类型
+Set quality profile…	设置质量配置…
+Settings	设置
+Settings saved.	设置已保存。
+Settings → General → Security in Sonarr/Tanukarr.	Sonarr/Tanukarr 中的 设置 → 通用 → 安全。
+Show	显示
+Show as all-day events	显示为全天事件
+Show unmonitored	显示未追踪项
+Shows	节目
+Sign in	登录
+Signed in. Save the list to keep the token.	已登录。保存列表以保留令牌。
+Signing in…	正在登录…
+Size	大小
+Size limits	大小限制
+Size on disk	磁盘占用
+Skip files smaller than (MB)	跳过小于此大小的文件（MB）
+Skip the free-space check	跳过可用空间检查
+Skip unmonitored episodes when importing packs	导入合集包时跳过未追踪的剧集
+Source	来源
+Source code	源代码
+Source path	源路径
+Special	特别篇
+Specials	特别节目
+Specials are never monitored automatically.	特别节目永远不会被自动追踪。
+Specifications	规格
+Specifications (JSON)	规格（JSON）
+Specifications must be valid JSON: {e}	规格必须是有效的 JSON：{e}
+Stalled torrent timeout (minutes)	停滞种子超时（分钟）
+Standard	标准
+Standard episode format	标准剧集格式
+Start migration	开始迁移
+Start over	重新开始
+Start search for missing episodes	开始搜索缺失的剧集
+Started	已开始
+Started {format_datetime(&run.started_at)}	开始于 {format_datetime(&run.started_at)}
+Status	状态
+Status & health	状态与健康度
+Still downloading	仍在下载
+Storage outlook	存储空间预测
+Studio	制作公司
+Subscribe	订阅
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	在日历应用中订阅此地址。其中包含你的 API 密钥：请妥善保密。
+Sunday	星期日
+Sync	同步
+Sync all lists now	立即同步所有列表
+Sync now	立即同步
+Syncing…	正在同步…
+System →	系统 →
+TMDB API key (v3)	TMDB API 密钥（v3）
+TV Series	电视节目
+TV series	电视节目
+Table	表格
+Tag	标签
+Tag them	为其添加标签
+Tag titles already in the library	为已在媒体库中的标题添加标签
+Tags	标签
+Tags (comma separated)	标签（逗号分隔）
+Tags (ids, comma separated)	标签（ID，逗号分隔）
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	节目和电影在添加、编辑或刷新时，若满足每一类条件，就会被添加标签。
+Task	任务
+Television	电视
+Television (raw)	电视（原始）
+Test	测试
+Test failed: {message}	测试失败：{message}
+Testing…	正在测试…
+The blocklist is empty	黑名单为空
+The catalogue new titles are added from when the list knows their id there.	当列表知道标题在该目录中的 ID 时，从该目录添加新标题。
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	导入文件获得的日期：剧集的播出日期（本地或 UTC），升级时则为被替换文件的日期。
+The dry run completed without blocking problems. Nothing has been written yet.	试运行已完成，没有阻止性问题。尚未写入任何内容。
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	文件会被移动到季文件夹（不会覆盖已有文件），并重新扫描该节目。
+The folder must already exist; Kitsunarr never creates or removes it.	该文件夹必须已存在；Kitsunarr 永远不会创建或删除它。
+The indexers returned no releases for this search.	索引器未针对此搜索返回任何发布资源。
+The instance is on my local network (private or loopback address)	该实例位于我的局域网内（私有或环回地址）
+The list has not been read, or it is empty.	该列表尚未读取，或为空。
+The migration did not complete; nothing was changed.	迁移未完成；未做任何更改。
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	保留在内存中的最新条目。完整日志输出到进程输出（容器日志或 journal）。
+The passwords do not match.	两次输入的密码不一致。
+The recycle bin has no media or subtitle files.	回收站中没有媒体或字幕文件。
+The sign-in expired; try again.	登录已过期；请重试。
+The upload failed (network error).	上传失败（网络错误）。
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	工作进程是可选的主机组件（Tanukarr 的压缩工作进程），通过 KITSUNARR_COMPRESSION_SOCKET 处的套接字连接。
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB（Sonarr 的目录）、TMDB 和 TVmaze 涵盖电视节目；AniList 和 MyAnimeList 涵盖动漫节目和动漫电影；TMDB 和 OMDb 涵盖电影。添加标题会创建其媒体库条目和剧集列表；文件稍后由导入流程识别。
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB 标题以此语言搜索和添加；每个节目可在其编辑器中更改。
+TheTVDB titles in this language; changing it refreshes the series	以此语言显示 TheTVDB 标题；更改后会刷新节目
+There is nothing at /{path}.	/{path} 处没有任何内容。
+They are created by migrating from Sonarr/Tanukarr.	它们通过从 Sonarr/Tanukarr 迁移创建。
+This series' renaming mode, season folder titles and kept versions	此节目的重命名模式、季文件夹标题和保留的版本
+TiB	TiB
+Time	时间
+Time left	剩余时间
+Title	标题
+Title pattern	标题模式
+Titles import lists never add.	导入列表永远不会添加的标题。
+Titles on no list	不在任何列表中的标题
+Today	今天
+Torrent	种子
+Torrent delay	种子延时
+Torrent delay (minutes)	种子延时（分钟）
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab 和 Newznab 索引器。在编辑器中使用“测试”进行检查；每种搜索会使用启用了该类搜索的索引器：RSS、自动或手动。
+Trigger	触发
+URL base	URL 基础路径
+UTC air date	UTC 播出日期
+Unchanged	未更改
+Unknown	未知
+Unmonitor	取消追踪
+Unmonitor them	取消追踪
+Unmonitored	未追踪
+Upcoming	即将播出
+Upcoming 7 days	未来 7 天
+Update	更新
+Updated {} items.	已更新 {} 项。
+Upgrade until (cutoff)	升级直到（阈值）
+Upgrade until format score	升级直到格式分数
+Upgrades allowed	允许升级
+Upload a backup	上传备份
+Upload failed (HTTP {}).	上传失败（HTTP {}）。
+Uploading…	正在上传…
+Use SSL	使用 SSL
+Use a proxy	使用代理
+Use hardlinks instead of copying	使用硬链接而非复制
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	在其他应用程序中将其用作 X-Api-Key 请求头（或 ?apikey=）。与 Sonarr 使用的请求头兼容。
+Use these episodes	使用这些剧集
+Usenet	Usenet
+Usenet delay	Usenet 延时
+Usenet delay (minutes)	Usenet 延时（分钟）
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	仅限 Usenet：拒绝较新的发布资源，给予其传播时间。0 表示关闭。
+Usenet only: older releases are rejected. 0 means unlimited.	仅限 Usenet：拒绝较旧的发布资源。0 表示不限制。
+User name	用户名
+Username	用户名
+Validation	校验
+Version	版本
+Versions	版本
+Waiting for the sign-in at	正在等待登录：
+Wanted	待寻
+Warnings	警告
+Warnings {warnings}	警告 {warnings}
+Watched (Jellyfin watched sync)	已观看（Jellyfin 观看状态同步）
+Watched sync user	观看状态同步用户
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	发送 Webhook、Notifiarr、Discord、Slack、Telegram、Gotify、ntfy、Pushover、Pushbullet、Join、Prowl、Simplepush、Signal、Apprise、电子邮件（SMTP）、Mailgun、SendGrid、自定义脚本（使用 Sonarr 的环境变量）、Emby/Jellyfin、Plex 和 Kodi 通知：抓取、导入和升级、重命名、节目添加或删除、文件删除、健康问题。在编辑器中使用“测试”。
+Welcome	欢迎
+What to import	导入内容
+When	时间
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	何时检查索引器、下载客户端和服务的 HTTPS 证书（Sonarr 的设置）。局域网中的自签名证书需要放宽此项。
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	当下载客户端报告的路径在 Kitsunarr 中位于其他位置（另一台机器或容器）时，将客户端的主机和路径映射到本地路径。
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	是否优先选择修正有问题发布资源的版本，并升级现有文件（与 Sonarr 相同）。
+Whole season	整季
+Working…	处理中…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	在扫描、刷新或导入节目时写入节目文件夹，与 Sonarr 的元数据使用方写入方式相同。
+Year	年份
+Your library is empty.	你的媒体库为空。
+all checks passed	所有检查均已通过
+comma separated	逗号分隔
+cutoff: {}	阈值：{}
+has a file	有文件
+iCal link	iCal 链接
+in 2 days	2 天后
+in a moment	马上
+in file names	在文件名中
+in library	已在媒体库
+in {text}	{text}后
+just now	刚刚
+may run out of space	可能空间不足
+name (e.g. phone)	名称（例如 手机）
+never refreshed	从未刷新
+no media files are moved, renamed or deleted.	不会移动、重命名或删除任何媒体文件。
+not accessible	无法访问
+not added	未添加
+not checked	未检查
+not read yet	尚未读取
+on disk	在磁盘上
+refreshed {}	已刷新 {}
+schema {s}	架构 {s}
+secrets included	包含机密信息
+secrets masked	已隐藏机密信息
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip 或 sonarr.db
+stored only	仅存储
+title (optional)	标题（可选）
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	已添加 {added}；{}
+{added} shows added.	已添加 {added} 个节目。
+{c.name} (API key needed)	{c.name}（需要 API 密钥）
+{c.series_count} series · {c.movie_count} movies	{c.series_count} 个节目 · {c.movie_count} 部电影
+{chosen().len()} chosen	已选择 {chosen().len()} 项
+{chosen().len()} chosen (at most 25)	已选择 {chosen().len()} 项（最多 25 项）
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} 已在磁盘 · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{format_bytes(item.size)} 的 {done}%
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · 添加于 {format_date(&f.added_at)}
+{first}–{last} of {total}	第 {first}–{last} 项，共 {total} 项
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} 个文件 · {job["percent"]}% · 已节省 {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} 已开始。
+{name} was added to the library.	{name} 已添加到媒体库。
+{name}: shows	{name}：节目
+{ok} files imported.	已导入 {ok} 个文件。
+{ok} imported; {}	已导入 {ok} 个；{}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}：来自 {r.searched_indexers} 个索引器的 {r.releases.len()} 个发布资源。
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	已检查 {r.series_checked} 个节目和 {r.files_checked} 个文件：{r.issues.len()} 个问题。
+{selected.read().len()} selected	已选择 {selected.read().len()} 项
+{text} ago	{text}前
+{} (not accessible)	{}（无法访问）
+{} ({} free)	{}（可用 {}）
+{} added to every profile (not allowed yet).	{} 已添加到每个配置（暂不允许）。
+{} day(s)	{} 天
+{} failed: {}	{} 失败：{}
+{} format scores	{} 格式分数
+{} free of {}	{} 可用，共 {}
+{} week(s)	{} 周
+{}{year} — movie	{}{year} — 电影
+‹ Back	‹ 返回
+‹ Earlier	‹ 更早
+‹ Prev	‹ 上一页
+○ offline	○ 离线
+● live	● 实时
+✓ No issues detected.	✓ 未检测到问题。
+Activity	活动
+Queue	队列
+System	系统
+Tasks	任务
+Retry	重试
+Sign out	退出登录
+Search titles…  ( / )	搜索标题…  ( / )
+Loading…	加载中…
+Profiles	配置
+scene {}	场景 {}
+Scene numbering from TheXEM	来自 TheXEM 的场景编号
+Scene numbering extrapolated from TheXEM (unverified)	从 TheXEM 推算的场景编号（未验证）
+Season {} (scene seasons {})	第 {} 季（场景季 {}）
+{} (scene {})	{}（场景 {}）
