@@ -43,7 +43,7 @@ async fn find_series(db: &Database, title: &str) -> Result<Option<i64>, String> 
 
 /// `ParsingService.GetSeries(title)`: the series a release-like name names, or the name itself
 /// as a title.
-pub(crate) async fn series_named(db: &Database, name: &str) -> Result<Option<i64>, String> {
+pub async fn series_named(db: &Database, name: &str) -> Result<Option<i64>, String> {
     match parse_title(name) {
         Some(p) if !p.series_title.trim().is_empty() => find_series(db, &p.series_title).await,
         _ => find_series(db, name).await,

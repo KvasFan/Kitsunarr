@@ -5393,3 +5393,299 @@ async fn thexem_scene_numbering_is_applied_and_searched() {
         pack.rejections
     );
 }
+
+/// More of Sonarr's v3, as nzb360, LunaSea and Homepage call it: interactive search and grab
+/// (`/release`), `/parse`, `/diskspace`, and queue and episode-file removal.
+#[tokio::test]
+async fn sonarr_v3_release_parse_diskspace_and_removals() {
+    use serde_json::{Value, json};
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, _) = newznab_mock().await;
+    let _: Value = client
+        .post(
+            "/providers/indexers",
+            &json!({
+                "name": "Mock Newznab", "implementation": "Newznab",
+                "options": {"enableRss": true, "enableAutomaticSearch": true, "enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "k", "categories": [5030, 5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+        })
+        .await
+        .unwrap();
+
+    let http = reqwest::Client::new();
+    let url = |p: &str| format!("{}/api/v3{p}", server.base);
+    let key = server.api_key.clone();
+    let get = |p: String| http.get(url(&p)).header("X-Api-Key", &key).send();
+
+    let releases: Value = get(format!("/release?seriesId={}&seasonNumber=1", added.id))
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let pack = releases
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|r| r["title"] == "Breaking.Bad.S01.480p.WEB-DL.AAC2.0.H.264-GRP")
+        .unwrap();
+    assert_eq!(pack["fullSeason"], true);
+    assert_eq!(pack["seasonNumber"], 1);
+    assert_eq!(pack["protocol"], "usenet");
+    assert_eq!(pack["seriesId"], added.id);
+    assert_eq!(pack["quality"]["quality"]["name"], "WEBDL-480p");
+    // A release no longer in the search cache cannot be grabbed.
+    let stale = http
+        .post(url("/release"))
+        .header("X-Api-Key", &key)
+        .json(&json!({"guid": "nope", "indexerId": 1}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(stale.status(), 404);
+
+    let parsed: Value = get("/parse?title=Breaking.Bad.S01E02.720p.HDTV.x264-GRP".into())
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(parsed["parsedEpisodeInfo"]["seriesTitle"], "Breaking Bad");
+    assert_eq!(parsed["parsedEpisodeInfo"]["episodeNumbers"], json!([2]));
+    assert_eq!(parsed["series"]["title"], "Breaking Bad");
+    assert_eq!(parsed["episodes"][0]["episodeNumber"], 2);
+
+    let disks: Value = get("/diskspace".into())
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(disks[0]["path"], dir.path().display().to_string());
+    assert!(disks[0]["totalSpace"].as_i64().unwrap() > 0);
+
+    let missing = |p: &str| http.delete(url(p)).header("X-Api-Key", &key).send();
+    assert_eq!(missing("/queue/12345").await.unwrap().status(), 404);
+    assert_eq!(missing("/episodefile/12345").await.unwrap().status(), 404);
+}
+
+/// Sonarr's v3 settings as Recyclarr syncs TRaSH guides: custom formats, quality definition
+/// sizes, profile scores and release profiles.
+#[tokio::test]
+async fn sonarr_v3_settings_serve_recyclarr_sync() {
+    use serde_json::{Value, json};
+    let server = start().await;
+    let http = reqwest::Client::new();
+    let url = |p: &str| format!("{}/api/v3{p}", server.base);
+    let key = server.api_key.clone();
+    let send = |m: reqwest::Method, p: &str, body: Option<Value>| {
+        let mut r = http.request(m, url(p)).header("X-Api-Key", &key);
+        if let Some(b) = body {
+            r = r.json(&b);
+        }
+        r.send()
+    };
+    let json_of = |r: reqwest::Response| async move {
+        let status = r.status();
+        let v: Value = r.json().await.unwrap();
+        (status.as_u16(), v)
+    };
+    use reqwest::Method as M;
+
+    let schema = json_of(send(M::GET, "/customformat/schema", None).await.unwrap())
+        .await
+        .1;
+    assert!(
+        schema
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|s| s["implementation"] == "ReleaseTitleSpecification")
+    );
+    let (status, cf) = json_of(
+        send(
+            M::POST,
+            "/customformat",
+            Some(json!({
+                "name": "x265 (HD)",
+                "includeCustomFormatWhenRenaming": false,
+                "specifications": [{"name": "x265", "implementation": "ReleaseTitleSpecification",
+                    "negate": false, "required": false, "fields": [{"name": "value", "value": "[xh][ ._-]?265|\\bHEVC(\\b|\\d)"}]}]
+            })),
+        )
+        .await
+        .unwrap(),
+    )
+    .await;
+    assert_eq!(status, 201, "{cf}");
+    let cf_id = cf["id"].as_i64().unwrap();
+    assert_eq!(
+        cf["specifications"][0]["fields"][0]["value"],
+        "[xh][ ._-]?265|\\bHEVC(\\b|\\d)"
+    );
+    let mut renamed = cf.clone();
+    renamed["name"] = json!("x265");
+    let (status, updated) = json_of(
+        send(M::PUT, &format!("/customformat/{cf_id}"), Some(renamed))
+            .await
+            .unwrap(),
+    )
+    .await;
+    assert_eq!((status, updated["name"].as_str()), (202, Some("x265")));
+
+    // Sizes for one quality (Recyclarr's `PUT /qualitydefinition/update`).
+    let defs = json_of(send(M::GET, "/qualitydefinition", None).await.unwrap())
+        .await
+        .1;
+    let mut hdtv = defs
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|d| d["quality"]["name"] == "HDTV-720p")
+        .unwrap()
+        .clone();
+    hdtv["minSize"] = json!(10.5);
+    hdtv["preferredSize"] = json!(95.0);
+    hdtv["maxSize"] = json!(100.0);
+    let (status, saved) = json_of(
+        send(M::PUT, "/qualitydefinition/update", Some(json!([hdtv])))
+            .await
+            .unwrap(),
+    )
+    .await;
+    assert_eq!(status, 202);
+    assert_eq!(saved[0]["minSize"], 10.5);
+    assert_eq!(saved[0]["maxSize"], 100.0);
+
+    // A profile from the schema, with the format scored.
+    let mut profile = json_of(send(M::GET, "/qualityprofile/schema", None).await.unwrap())
+        .await
+        .1;
+    profile["name"] = json!("WEB-1080p");
+    for item in profile["items"].as_array_mut().unwrap() {
+        if item["quality"]["name"] == "WEBDL-1080p" || item["quality"]["name"] == "HDTV-720p" {
+            item["allowed"] = json!(true);
+        }
+    }
+    let webdl = profile["items"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|i| i["quality"]["name"] == "WEBDL-1080p")
+        .unwrap()["quality"]["id"]
+        .clone();
+    profile["cutoff"] = webdl;
+    for f in profile["formatItems"].as_array_mut().unwrap() {
+        if f["format"] == cf_id {
+            f["score"] = json!(-10000);
+        }
+    }
+    profile["minFormatScore"] = json!(0);
+    let (status, created) = json_of(
+        send(M::POST, "/qualityprofile", Some(profile))
+            .await
+            .unwrap(),
+    )
+    .await;
+    assert_eq!(status, 201, "{created}");
+    let pid = created["id"].as_i64().unwrap();
+    let scored = created["formatItems"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|f| f["format"] == cf_id)
+        .unwrap()
+        .clone();
+    assert_eq!(scored["score"], -10000);
+    let mut changed = created.clone();
+    changed["upgradeAllowed"] = json!(true);
+    let (status, put) = json_of(
+        send(M::PUT, &format!("/qualityprofile/{pid}"), Some(changed))
+            .await
+            .unwrap(),
+    )
+    .await;
+    assert_eq!((status, put["upgradeAllowed"].as_bool()), (202, Some(true)));
+    let listed = json_of(send(M::GET, "/qualityprofile", None).await.unwrap())
+        .await
+        .1;
+    assert!(
+        listed
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|p| p["name"] == "WEB-1080p")
+    );
+
+    // Release profiles with Sonarr v4's term lists.
+    let (status, rp) = json_of(
+        send(
+            M::POST,
+            "/releaseprofile",
+            Some(json!({"name": "No x265", "enabled": true, "required": [], "ignored": ["x265", "HEVC"], "indexerId": 0, "tags": []})),
+        )
+        .await
+        .unwrap(),
+    )
+    .await;
+    assert_eq!(status, 201, "{rp}");
+    assert_eq!(rp["ignored"], json!(["x265", "HEVC"]));
+    let rid = rp["id"].as_i64().unwrap();
+    assert_eq!(
+        send(M::DELETE, &format!("/releaseprofile/{rid}"), None)
+            .await
+            .unwrap()
+            .status(),
+        200
+    );
+    assert_eq!(
+        send(M::DELETE, &format!("/customformat/{cf_id}"), None)
+            .await
+            .unwrap()
+            .status(),
+        200
+    );
+    let languages = json_of(send(M::GET, "/language", None).await.unwrap())
+        .await
+        .1;
+    assert!(
+        languages
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|l| l["name"] == "English")
+    );
+}

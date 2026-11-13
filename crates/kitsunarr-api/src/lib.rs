@@ -24,6 +24,8 @@ pub mod routes;
 pub mod rss;
 pub mod tls;
 pub mod v3;
+mod v3_more;
+mod v3_settings;
 
 use std::sync::{Arc, RwLock};
 
@@ -244,10 +246,13 @@ pub fn app(state: AppState) -> Router {
     let url_base = state.config.server.url_base.clone();
 
     // Sonarr's `/api/v3` for third-party tools, behind the same authentication.
-    let v3 = v3::router().route_layer(axum::middleware::from_fn_with_state(
-        state.clone(),
-        auth::require_auth_v3,
-    ));
+    let v3 = v3::router()
+        .merge(v3_more::router())
+        .merge(v3_settings::router())
+        .route_layer(axum::middleware::from_fn_with_state(
+            state.clone(),
+            auth::require_auth_v3,
+        ));
     // The few v5 routes the optional compression worker calls back on.
     let v5 = v3::worker_router().route_layer(axum::middleware::from_fn_with_state(
         state.clone(),

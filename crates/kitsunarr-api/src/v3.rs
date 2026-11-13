@@ -19,7 +19,7 @@ use kitsunarr_domain::api::library::{
 };
 use kitsunarr_domain::api::metadata::{AddTitleRequest, MonitorOption};
 use kitsunarr_domain::api::search::{IndexerTestRequest, ReleaseQuery};
-use kitsunarr_domain::api::settings::{ProviderKind, QualityProfile};
+use kitsunarr_domain::api::settings::ProviderKind;
 use kitsunarr_domain::quality::Quality;
 use kitsunarr_domain::{ExternalIdKind, MetadataProvider, SeriesType};
 use serde::Deserialize;
@@ -109,7 +109,7 @@ fn ext_int(detail: &SeriesDetail, kind: ExternalIdKind) -> i64 {
         .unwrap_or(0)
 }
 
-fn quality_json(id: i32) -> Value {
+pub(crate) fn quality_json(id: i32) -> Value {
     let q = Quality::by_id(id);
     json!({
         "id": id,
@@ -127,7 +127,7 @@ fn images(detail: &SeriesDetail) -> Vec<Value> {
         .collect()
 }
 
-fn series_json(detail: &SeriesDetail) -> Value {
+pub(crate) fn series_json(detail: &SeriesDetail) -> Value {
     let item = &detail.item;
     let percent = |files: i64, total: i64| {
         if total > 0 {
@@ -206,7 +206,7 @@ fn series_json(detail: &SeriesDetail) -> Value {
     })
 }
 
-fn episode_json(e: &EpisodeItem) -> Value {
+pub(crate) fn episode_json(e: &EpisodeItem) -> Value {
     json!({
         "id": e.id,
         "seriesId": e.series_id,
@@ -307,37 +307,13 @@ async fn health(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
 
 // ---- settings -----------------------------------------------------------------------------
 
-fn profile_json(p: &QualityProfile) -> Value {
-    let items: Vec<Value> = p
-        .items
-        .iter()
-        .map(|i| match (&i.quality_id, &i.group) {
-            (Some(q), _) => json!({"quality": quality_json(*q), "items": [], "allowed": i.allowed}),
-            (None, Some(g)) => json!({
-                "id": g.id, "name": g.name, "allowed": i.allowed,
-                "items": g.quality_ids.iter().map(|q| json!({"quality": quality_json(*q), "items": [], "allowed": i.allowed})).collect::<Vec<_>>(),
-            }),
-            _ => json!({}),
-        })
-        .collect();
-    json!({
-        "id": p.id,
-        "name": p.name,
-        "upgradeAllowed": p.upgrade_allowed,
-        "cutoff": p.cutoff,
-        "items": items,
-        "minFormatScore": p.min_format_score,
-        "cutoffFormatScore": p.cutoff_format_score,
-        "formatItems": [],
-    })
-}
-
 async fn quality_profiles(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    let formats = kitsunarr_db::quality::list_custom_formats(state.db.pool()).await?;
     Ok(Json(
         kitsunarr_db::quality::list_profiles(state.db.pool())
             .await?
             .iter()
-            .map(profile_json)
+            .map(|p| crate::v3_settings::profile_json(p, &formats))
             .collect(),
     ))
 }
@@ -1000,14 +976,14 @@ async fn queue(
     let ids: Vec<String> = native.items.iter().map(|i| i.download_id.clone()).collect();
     let grabs = kitsunarr_db::history::grabs_for(&state.db, &ids).await?;
     let mut records = Vec::new();
-    for (n, i) in native.items.iter().enumerate() {
+    for i in &native.items {
         let episode_ids: Vec<i64> = grabs
             .iter()
             .filter(|g| g.download_id.eq_ignore_ascii_case(&i.download_id))
             .filter_map(|g| g.episode_id)
             .collect();
         let base = json!({
-            "id": n as i64 + 1,
+            "id": crate::v3_more::queue_id(&i.download_id),
             "seriesId": i.series_id,
             "title": i.title,
             "size": i.size,
