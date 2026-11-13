@@ -198,3 +198,215 @@ pub async fn trakt(n: &Notifier, s: &Map<String, Value>, event: &Event) -> Notif
         .map_err(crate::connection_error)?;
     crate::check(resp).await.map(|_| ())
 }
+
+/// Sonarr's Twitter connection on the X API v2: a post (with the mention appended), or a direct
+/// message to the mentioned account (`TwitterService.SendNotification`), signed with OAuth 1.0a
+/// from the app's consumer key and the account's access token.
+pub async fn twitter(n: &Notifier, s: &Map<String, Value>, event: &Event) -> NotifyResult {
+    let keys = OAuth1 {
+        consumer_key: required(s, "consumerKey", "The consumer key")?,
+        consumer_secret: required(s, "consumerSecret", "The consumer secret")?,
+        token: required(s, "accessToken", "The access token")?,
+        token_secret: required(s, "accessTokenSecret", "The access token secret")?,
+    };
+    let base = text(s, "apiUrl").unwrap_or_else(|| "https://api.x.com".into());
+    let base = base.trim_end_matches('/');
+    let mention = text(s, "mention").map(|m| m.trim_start_matches('@').to_string());
+    let mut message = twitter_message(event);
+    if flag(s, "directMessage", true) {
+        let mention = mention.ok_or_else(|| {
+            NotifyError::Settings("A mention is required for direct messages".into())
+        })?;
+        let url = format!("{base}/2/users/by/username/{}", encode(&mention));
+        let resp = n
+            .http
+            .get(&url)
+            .header("Authorization", keys.header("GET", &url))
+            .timeout(std::time::Duration::from_secs(30))
+            .send()
+            .await
+            .map_err(crate::connection_error)?;
+        let body: Value = serde_json::from_str(&crate::check(resp).await?).unwrap_or_default();
+        let id = body["data"]["id"]
+            .as_str()
+            .ok_or_else(|| NotifyError::Service(format!("The account @{mention} was not found")))?;
+        let url = format!("{base}/2/dm_conversations/with/{}/messages", encode(id));
+        let req = n
+            .http
+            .post(&url)
+            .header("Authorization", keys.header("POST", &url));
+        return n
+            .post_json(req, &json!({ "text": message }))
+            .await
+            .map(|_| ());
+    }
+    if let Some(m) = mention {
+        message.push_str(&format!(" @{m}"));
+    }
+    let url = format!("{base}/2/tweets");
+    let req = n
+        .http
+        .post(&url)
+        .header("Authorization", keys.header("POST", &url));
+    n.post_json(req, &json!({ "text": message }))
+        .await
+        .map(|_| ())
+}
+
+/// `Twitter.On…`: the event's message after Sonarr's prefix.
+fn twitter_message(event: &Event) -> String {
+    let prefix = match event {
+        Event::Test => return "This is a test message from Kitsunarr".into(),
+        Event::Grab(_) => "Grabbed",
+        Event::Download(_) => "Imported",
+        Event::EpisodeFileDelete { .. } => "Episode Deleted",
+        Event::SeriesAdd(_) => "Series Added",
+        Event::SeriesDelete { .. } => "Series Deleted",
+        Event::HealthIssue(_) => "Health Issue",
+        Event::HealthRestored(_) => "Health Issue Resolved",
+        Event::ApplicationUpdate { .. } => "Application Updated",
+        Event::ManualInteractionRequired(_) => "Manual Interaction Required",
+        Event::Rename { .. } => "Renamed",
+    };
+    format!("{prefix}: {}", event.message())
+}
+
+/// OAuth 1.0a credentials (RFC 5849), HMAC-SHA1 signed.
+struct OAuth1 {
+    consumer_key: String,
+    consumer_secret: String,
+    token: String,
+    token_secret: String,
+}
+
+impl OAuth1 {
+    fn header(&self, method: &str, url: &str) -> String {
+        let nonce = hex::encode(
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_nanos())
+                .unwrap_or_default()
+                .to_le_bytes(),
+        );
+        let timestamp = chrono::Utc::now().timestamp().to_string();
+        self.header_with(method, url, &[], &nonce, &timestamp)
+    }
+
+    /// `form`: form-encoded body parameters (signed too); JSON bodies are not.
+    fn header_with(
+        &self,
+        method: &str,
+        url: &str,
+        form: &[(&str, &str)],
+        nonce: &str,
+        timestamp: &str,
+    ) -> String {
+        let (base_url, query) = url.split_once('?').unwrap_or((url, ""));
+        let mut params: Vec<(String, String)> = vec![
+            ("oauth_consumer_key".into(), self.consumer_key.clone()),
+            ("oauth_nonce".into(), nonce.into()),
+            ("oauth_signature_method".into(), "HMAC-SHA1".into()),
+            ("oauth_timestamp".into(), timestamp.into()),
+            ("oauth_token".into(), self.token.clone()),
+            ("oauth_version".into(), "1.0".into()),
+        ];
+        let oauth: Vec<(String, String)> = params.clone();
+        for pair in query.split('&').filter(|p| !p.is_empty()) {
+            let (k, v) = pair.split_once('=').unwrap_or((pair, ""));
+            params.push((k.to_string(), v.to_string()));
+        }
+        params.extend(form.iter().map(|(k, v)| (k.to_string(), v.to_string())));
+        let mut encoded: Vec<(String, String)> =
+            params.iter().map(|(k, v)| (encode(k), encode(v))).collect();
+        encoded.sort();
+        let joined = encoded
+            .iter()
+            .map(|(k, v)| format!("{k}={v}"))
+            .collect::<Vec<_>>()
+            .join("&");
+        let base = format!("{method}&{}&{}", encode(base_url), encode(&joined));
+        let key = format!(
+            "{}&{}",
+            encode(&self.consumer_secret),
+            encode(&self.token_secret)
+        );
+        use base64::Engine as _;
+        let signature = base64::engine::general_purpose::STANDARD
+            .encode(hmac_sha1(key.as_bytes(), base.as_bytes()));
+        let mut parts: Vec<String> = oauth
+            .iter()
+            .map(|(k, v)| format!("{k}=\"{}\"", encode(v)))
+            .collect();
+        parts.push(format!("oauth_signature=\"{}\"", encode(&signature)));
+        format!("OAuth {}", parts.join(", "))
+    }
+}
+
+/// HMAC-SHA1 (RFC 2104).
+fn hmac_sha1(key: &[u8], message: &[u8]) -> [u8; 20] {
+    use sha1::{Digest, Sha1};
+    let mut k = [0u8; 64];
+    if key.len() > 64 {
+        k[..20].copy_from_slice(&Sha1::digest(key));
+    } else {
+        k[..key.len()].copy_from_slice(key);
+    }
+    let mut inner = Sha1::new();
+    inner.update(k.map(|b| b ^ 0x36));
+    inner.update(message);
+    let mut outer = Sha1::new();
+    outer.update(k.map(|b| b ^ 0x5c));
+    outer.update(inner.finalize());
+    outer.finalize().into()
+}
+
+#[cfg(test)]
+mod twitter_tests {
+    use super::*;
+
+    /// The worked example of X's "Creating a signature" documentation.
+    #[test]
+    fn oauth1_signatures_match_the_reference() {
+        let keys = OAuth1 {
+            consumer_key: "xvz1evFS4wEEPTGEFPHBog".into(),
+            consumer_secret: "kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw".into(),
+            token: "370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb".into(),
+            token_secret: "LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE".into(),
+        };
+        let header = keys.header_with(
+            "POST",
+            "https://api.twitter.com/1.1/statuses/update.json?include_entities=true",
+            &[(
+                "status",
+                "Hello Ladies + Gentlemen, a signed OAuth request!",
+            )],
+            "kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg",
+            "1318622958",
+        );
+        assert!(header.starts_with("OAuth oauth_consumer_key=\"xvz1evFS4wEEPTGEFPHBog\""));
+        assert!(
+            header.ends_with("oauth_signature=\"hCtSmYh%2BiHYCEqBWrE7C7hYmtUk%3D\""),
+            "{header}"
+        );
+        assert_eq!(
+            hex::encode(hmac_sha1(
+                b"key",
+                b"The quick brown fox jumps over the lazy dog"
+            )),
+            "de7c9b85b8b78aa6bc8a7a36f70a90701c9db4d9"
+        );
+    }
+
+    #[test]
+    fn messages_carry_sonarrs_prefixes() {
+        assert_eq!(
+            twitter_message(&Event::HealthIssue(crate::Health {
+                level: "warning".into(),
+                message: "Indexers are down".into(),
+                source: "IndexerStatusCheck".into(),
+                wiki_url: None,
+            })),
+            "Health Issue: Indexers are down"
+        );
+    }
+}

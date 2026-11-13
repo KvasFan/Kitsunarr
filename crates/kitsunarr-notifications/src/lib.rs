@@ -61,6 +61,10 @@ pub const SUPPORTED: &[&str] = &[
     "Email",
     "Mailgun",
     "SendGrid",
+    "Pushcut",
+    "SynologyIndexer",
+    "Trakt",
+    "Twitter",
 ];
 
 pub fn supported(implementation: &str) -> bool {
@@ -552,6 +556,7 @@ impl Notifier {
             "pushcut" => extra::pushcut(self, s, event).await,
             "synologyindexer" => extra::synology(s, event).await,
             "trakt" => extra::trakt(self, s, event).await,
+            "twitter" => extra::twitter(self, s, event).await,
             other => Err(NotifyError::Settings(format!(
                 "{other} notifications are not supported yet"
             ))),

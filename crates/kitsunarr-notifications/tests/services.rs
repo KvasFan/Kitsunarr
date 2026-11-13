@@ -35,6 +35,9 @@ async fn record(
         headers,
         body: String::from_utf8_lossy(&body).into_owned(),
     });
+    if path.starts_with("/2/users/by/username/") {
+        return axum::Json(json!({"data": {"id": "42", "username": "me"}})).into_response();
+    }
     if path == "/library/sections" {
         return axum::Json(json!({"MediaContainer": {"Directory": [
             {"key": "2", "type": "show", "Location": [{"path": "/media/tv"}]},
@@ -317,14 +320,14 @@ async fn dispatch_skips_unwanted_and_survives_failures() {
     let mut off = conn("Webhook", json!({"url": format!("{base}/off")}));
     off.triggers = json!({"onGrab": true}).as_object().unwrap().clone();
     let broken = conn("Webhook", json!({"url": "http://127.0.0.1:9/x"}));
-    let unsupported = conn("Twitter", json!({}));
+    let unsupported = conn("Boxcar", json!({}));
     let sent = n
         .dispatch(&[broken, off, ok, unsupported], &download(), &instance())
         .await;
     assert_eq!(sent, 1);
     let paths: Vec<String> = log.lock().unwrap().iter().map(|s| s.path.clone()).collect();
     assert_eq!(paths, vec!["/ok"]);
-    assert!(!supported("Twitter"));
+    assert!(!supported("Boxcar"));
 }
 
 #[test]
@@ -579,4 +582,65 @@ async fn pushcut_trakt_and_synology() {
             "-a /tv/Breaking Bad/Season 01/Breaking Bad - S01E01.mkv"
         );
     }
+}
+
+/// Sonarr's Twitter connection on X's API v2: a post with the mention, or a direct message to
+/// the mentioned account, OAuth 1.0a signed.
+#[tokio::test]
+async fn twitter_posts_or_sends_a_direct_message() {
+    let (base, _, log) = mock().await;
+    let n = Notifier::default();
+    let keys = json!({"apiUrl": base, "consumerKey": "ck", "consumerSecret": "cs",
+                      "accessToken": "at", "accessTokenSecret": "as", "mention": "@me"});
+    let mut post = keys.clone();
+    post["directMessage"] = json!(false);
+    n.send(&conn("Twitter", post), &download(), &instance())
+        .await
+        .unwrap();
+    let seen = log.lock().unwrap()[0].clone();
+    assert_eq!(
+        (seen.method.as_str(), seen.path.as_str()),
+        ("POST", "/2/tweets")
+    );
+    let body: Value = serde_json::from_str(&seen.body).unwrap();
+    assert!(
+        body["text"]
+            .as_str()
+            .unwrap()
+            .starts_with("Imported: Breaking Bad - 1x01 - Pilot")
+    );
+    assert!(body["text"].as_str().unwrap().ends_with(" @me"));
+    let auth = seen.headers["authorization"].to_str().unwrap();
+    assert!(
+        auth.starts_with("OAuth oauth_consumer_key=\"ck\""),
+        "{auth}"
+    );
+    assert!(auth.contains("oauth_token=\"at\"") && auth.contains("oauth_signature="));
+
+    log.lock().unwrap().clear();
+    n.send(&conn("Twitter", keys), &Event::Test, &instance())
+        .await
+        .unwrap();
+    let calls: Vec<(String, String)> = log
+        .lock()
+        .unwrap()
+        .iter()
+        .map(|c| (c.method.clone(), c.path.clone()))
+        .collect();
+    assert_eq!(
+        calls,
+        [
+            ("GET".to_string(), "/2/users/by/username/me".to_string()),
+            (
+                "POST".to_string(),
+                "/2/dm_conversations/with/42/messages".to_string()
+            )
+        ]
+    );
+    assert!(
+        supported("Twitter")
+            && supported("Pushcut")
+            && supported("Trakt")
+            && supported("SynologyIndexer")
+    );
 }

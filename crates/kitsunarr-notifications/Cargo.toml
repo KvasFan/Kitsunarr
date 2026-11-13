@@ -18,6 +18,9 @@ tracing = { workspace = true }
 tokio = { workspace = true, features = ["process"] }
 chrono = { workspace = true }
 lettre = { workspace = true }
+sha1 = { workspace = true }
+base64 = { workspace = true }
+hex = { workspace = true }
 
 [dev-dependencies]
 tokio = { workspace = true, features = ["test-util"] }

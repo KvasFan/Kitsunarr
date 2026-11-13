@@ -350,6 +350,7 @@ pub fn is_secret_field(name: &str) -> bool {
         "webhookurl",
         "accesskey",
         "privatekey",
+        "consumerkey",
     ]
     .iter()
     .any(|s| n.contains(s))

@@ -400,6 +400,7 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 n("Pushcut", "Pushcut", json!({"notificationName": "", "apiKey": "", "timeSensitive": false, "includePoster": false})),
                 n("Synology Indexer", "SynologyIndexer", json!({"updateLibrary": true})),
                 n("Trakt", "Trakt", json!({"clientId": "", "accessToken": ""})),
+                n("Twitter", "Twitter", json!({"consumerKey": "", "consumerSecret": "", "accessToken": "", "accessTokenSecret": "", "mention": "", "directMessage": true})),
                 n("Emby / Jellyfin", "MediaBrowser", json!({"host": "localhost", "port": 8096, "useSsl": false, "urlBase": "", "apiKey": "", "notify": false, "updateLibrary": true, "mapFrom": "", "mapTo": ""})),
                 n("Jellyfin", "Jellyfin", json!({"host": "localhost", "port": 8096, "useSsl": false, "urlBase": "", "apiKey": "", "libraryId": "", "refreshMode": 1, "refreshIntervalMinutes": 60, "enableWatchedSync": false, "watchedUserId": "", "watchedSyncIntervalMinutes": 5, "unmonitorWatchedEpisodes": false, "remonitorUnwatchedEpisodes": false, "syncListProgress": false, "jellyfinPathPrefix": "", "kitsunarrPathPrefix": ""})),
                 n("Plex Media Server", "PlexServer", json!({"host": "localhost", "port": 32400, "useSsl": false, "urlBase": "", "authToken": "", "updateLibrary": true, "mapFrom": "", "mapTo": ""})),
