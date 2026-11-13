@@ -13,8 +13,36 @@ use crate::AppState;
 /// `RefreshMonitoredDownloads`, then the searches for failed downloads (in the background).
 pub async fn refresh(state: &AppState) -> Result<String, String> {
     let summary = state.downloads.refresh(&state.db).await?;
+    publish_imports(state);
     run_redownloads(state).await;
     Ok(summary)
+}
+
+/// Live updates for what the refresh imported, and the queue.
+pub(crate) fn publish_imports(state: &AppState) {
+    let imports = state.downloads.take_imports();
+    let failures = state.downloads.take_import_failures();
+    crate::health::note_imports(state, &failures, !imports.is_empty());
+    let mut series: Vec<i64> = Vec::new();
+    for i in imports {
+        if !series.contains(&i.series_id) {
+            series.push(i.series_id);
+        }
+        state.events.publish(ServerEvent::EpisodeFileChanged {
+            series_id: i.series_id,
+            episode_file_id: i.episode_file_id,
+            episode_ids: i.episode_ids,
+            deleted: false,
+        });
+    }
+    if !series.is_empty() {
+        state.events.publish(ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids: series,
+            deleted: false,
+        });
+    }
+    state.events.publish(ServerEvent::QueueChanged);
 }
 
 /// Starts the searches the monitor collected, as the download client options allow.

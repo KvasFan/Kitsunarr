@@ -220,7 +220,9 @@ pub fn use_server_events(app: AppState) {
                 Msg::Closed => app.connected.set(false),
                 Msg::Reopened => refetch_all(&mut app),
                 Msg::Event(data) => match serde_json::from_str::<ServerEvent>(&data) {
-                    Ok(ServerEvent::LibraryChanged { .. }) => app.library_rev += 1,
+                    Ok(ServerEvent::LibraryChanged { .. })
+                    | Ok(ServerEvent::EpisodeFileChanged { .. }) => app.library_rev += 1,
+                    Ok(ServerEvent::QueueChanged) => {}
                     Ok(ServerEvent::SettingsChanged { .. }) => app.settings_rev += 1,
                     Ok(ServerEvent::HealthChanged) => app.health_rev += 1,
                     Ok(ServerEvent::Task { .. }) => app.tasks_rev += 1,

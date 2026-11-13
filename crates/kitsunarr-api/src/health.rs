@@ -558,6 +558,7 @@ async fn download_client_checks(
         })
         .collect();
     if usable.is_empty() {
+        import_failure_check(state, completed_handling, out);
         return Ok(());
     }
     let mappings = kitsunarr_db::rules::list_remote_path_mappings(pool).await?;
@@ -620,7 +621,102 @@ async fn download_client_checks(
             out.push(check(source, level, m));
         }
     }
+    import_failure_check(state, completed_handling, out);
     Ok(())
+}
+
+/// The check a failed import left, unless the folders already gave one.
+fn import_failure_check(state: &AppState, completed_handling: bool, out: &mut Vec<HealthCheck>) {
+    if completed_handling
+        && !out.iter().any(|h| h.source == "RemotePathMappingCheck")
+        && let Some(h) = state
+            .import_health
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .clone()
+    {
+        out.push(h);
+    }
+}
+
+/// `RemotePathMappingCheck.Check(EpisodeImportFailedEvent)`: what a failed import says about
+/// paths and permissions.
+pub fn import_failure_message(
+    f: &kitsunarr_library::downloads::ImportFailure,
+    is_localhost: bool,
+    docker: bool,
+    os: &str,
+    file_exists: impl Fn(&Path) -> bool,
+    dir_exists: impl Fn(&str) -> bool,
+) -> String {
+    let name = &f.client_name;
+    if let Some(file) = &f.file {
+        let path = file.display();
+        return if file_exists(file) {
+            format!(
+                "Kitsunarr can see but not access downloaded episode {path}. Likely permissions error."
+            )
+        } else {
+            format!("File {path} was removed part way through processing.")
+        };
+    }
+    let path = f.output_path.as_str();
+    if path.trim().is_empty() {
+        return "Kitsunarr failed to import (an) episode(s). Check your logs for details.".into();
+    }
+    if !valid_here(path) {
+        return if !is_localhost {
+            format!(
+                "Remote download client {name} reported files in {path} but this is not a valid {os} path. Review your remote path mappings and download client settings."
+            )
+        } else if docker {
+            format!(
+                "You are using docker; download client {name} reported files in {path} but this is not a valid {os} path. Review your remote path mappings and download client settings."
+            )
+        } else {
+            format!(
+                "Local download client {name} reported files in {path} but this is not a valid {os} path. Review your download client settings."
+            )
+        };
+    }
+    if dir_exists(path) || docker {
+        return format!(
+            "Kitsunarr can see but not access download directory {path}. Likely permissions error."
+        );
+    }
+    if !is_localhost {
+        return format!(
+            "Remote download client {name} reported files in {path} but this directory does not appear to exist. Likely missing remote path mapping."
+        );
+    }
+    format!(
+        "Download client {name} reported files in {path} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions."
+    )
+}
+
+/// Records what a refresh's imports said: a failure keeps the check until an import works.
+pub fn note_imports(
+    state: &AppState,
+    failures: &[kitsunarr_library::downloads::ImportFailure],
+    imported: bool,
+) {
+    let mut slot = state
+        .import_health
+        .lock()
+        .unwrap_or_else(|e| e.into_inner());
+    if let Some(f) = failures.last() {
+        let message = import_failure_message(
+            f,
+            kitsunarr_downloaders::is_localhost(&f.client_host),
+            in_docker(),
+            &os_name(),
+            |p| p.exists(),
+            |p| Path::new(p).is_dir(),
+        );
+        *slot = Some(check("RemotePathMappingCheck", HealthLevel::Error, message));
+    } else if imported {
+        *slot = None;
+    }
 }
 
 #[cfg(test)]
@@ -756,5 +852,40 @@ mod tests {
             false
         });
         assert_eq!(p, ClientFolderProblems::default());
+    }
+
+    #[test]
+    fn failed_imports_are_explained_as_sonarr_does() {
+        use kitsunarr_library::downloads::ImportFailure;
+        let f = |output: &str, file: Option<&str>| ImportFailure {
+            client_name: "SAB".into(),
+            client_host: "nas".into(),
+            output_path: output.into(),
+            file: file.map(std::path::PathBuf::from),
+        };
+        let msg = |f: &ImportFailure, local: bool, docker: bool, exists: bool| {
+            import_failure_message(f, local, docker, "debian", |_| exists, |_| exists)
+        };
+        assert_eq!(
+            msg(&f("/dl/x", Some("/dl/x/a.mkv")), false, false, true),
+            "Kitsunarr can see but not access downloaded episode /dl/x/a.mkv. Likely permissions error."
+        );
+        assert_eq!(
+            msg(&f("/dl/x", Some("/dl/x/a.mkv")), false, false, false),
+            "File /dl/x/a.mkv was removed part way through processing."
+        );
+        assert!(msg(&f("C:\\dl\\x", None), false, false, false).starts_with("Remote download client SAB reported files in C:\\dl\\x but this is not a valid debian path."));
+        assert!(
+            msg(&f("/dl/x", None), false, false, false)
+                .ends_with("Likely missing remote path mapping.")
+        );
+        assert!(
+            msg(&f("/dl/x", None), true, false, false)
+                .ends_with("You may need to adjust the folder's permissions.")
+        );
+        assert!(
+            msg(&f("/dl/x", None), true, false, true)
+                .starts_with("Kitsunarr can see but not access download directory /dl/x.")
+        );
     }
 }

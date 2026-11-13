@@ -13,6 +13,17 @@ pub enum ServerEvent {
         ids: Vec<i64>,
         deleted: bool,
     },
+    /// An episode file was imported or deleted (Sonarr's `EpisodeImportedEvent`,
+    /// `EpisodeFileDeletedEvent`).
+    #[serde(rename_all = "camelCase")]
+    EpisodeFileChanged {
+        series_id: i64,
+        episode_file_id: i64,
+        episode_ids: Vec<i64>,
+        deleted: bool,
+    },
+    /// The download queue may have changed.
+    QueueChanged,
     /// A background task changed state or reported progress.
     #[serde(rename_all = "camelCase")]
     Task {
@@ -46,6 +57,8 @@ impl ServerEvent {
     pub fn name(&self) -> &'static str {
         match self {
             Self::LibraryChanged { .. } => "libraryChanged",
+            Self::EpisodeFileChanged { .. } => "episodeFileChanged",
+            Self::QueueChanged => "queueChanged",
             Self::Task { .. } => "task",
             Self::Migration { .. } => "migration",
             Self::HealthChanged => "healthChanged",

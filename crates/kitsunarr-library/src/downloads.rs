@@ -204,6 +204,30 @@ pub struct Monitor {
     /// Downloads (upper-case ids) already announced as needing manual interaction
     /// (`HasNotifiedManualInteractionRequired`).
     notified_manual: Arc<Mutex<HashSet<String>>>,
+    /// Files imported since the last call to [`Monitor::take_imports`], for live updates.
+    imports: Arc<Mutex<Vec<ImportedEpisodes>>>,
+    /// Imports that failed since the last call to [`Monitor::take_import_failures`].
+    import_failures: Arc<Mutex<Vec<ImportFailure>>>,
+}
+
+/// A failed import (`EpisodeImportFailedEvent`): the download's folder could not be read, or
+/// one of its files could not be transferred.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ImportFailure {
+    pub client_name: String,
+    pub client_host: String,
+    /// The download's folder, after remote path mappings.
+    pub output_path: String,
+    /// The file that failed (`None`: the folder itself).
+    pub file: Option<PathBuf>,
+}
+
+/// An imported file and its episodes.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ImportedEpisodes {
+    pub series_id: i64,
+    pub episode_file_id: i64,
+    pub episode_ids: Vec<i64>,
 }
 
 impl Monitor {
@@ -253,6 +277,21 @@ impl Monitor {
             .into_iter()
             .filter_map(|g| g.episode_id)
             .collect())
+    }
+
+    /// The files imported since the last call.
+    pub fn take_imports(&self) -> Vec<ImportedEpisodes> {
+        std::mem::take(&mut *self.imports.lock().unwrap_or_else(|e| e.into_inner()))
+    }
+
+    /// The imports that failed since the last call.
+    pub fn take_import_failures(&self) -> Vec<ImportFailure> {
+        std::mem::take(
+            &mut *self
+                .import_failures
+                .lock()
+                .unwrap_or_else(|e| e.into_inner()),
+        )
     }
 
     /// The searches failed downloads asked for since the last call.
@@ -897,9 +936,43 @@ impl Monitor {
                 // `EpisodeImportedEvent` → `OnDownload`, one per imported file.
                 for r in outcome.results.iter().filter(|r| r.imported) {
                     if let Some(f) = &r.imported_file {
+                        self.imports.lock().unwrap_or_else(|e| e.into_inner()).push(
+                            ImportedEpisodes {
+                                series_id,
+                                episode_file_id: f.file_id,
+                                episode_ids: r.episode_ids.clone(),
+                            },
+                        );
                         self.notify_import(db, series_id, r, f, &item.download_id, client)
                             .await;
                     }
+                }
+                let failure = |file: Option<PathBuf>| ImportFailure {
+                    client_name: client.name.clone(),
+                    client_host: settings.host().to_string(),
+                    output_path: local.display().to_string(),
+                    file,
+                };
+                if outcome
+                    .blocked
+                    .as_deref()
+                    .is_some_and(|b| b.starts_with("Import failed, path does not exist"))
+                {
+                    self.import_failures
+                        .lock()
+                        .unwrap_or_else(|e| e.into_inner())
+                        .push(failure(None));
+                }
+                for r in outcome.results.iter().filter(|r| {
+                    !r.imported
+                        && r.errors
+                            .iter()
+                            .any(|e| e.starts_with("Failed to import episode"))
+                }) {
+                    self.import_failures
+                        .lock()
+                        .unwrap_or_else(|e| e.into_inner())
+                        .push(failure(Some(r.path.clone())));
                 }
                 if let Some(reason) = outcome.blocked {
                     self.block(db, &item, client, series_id, &mine, vec![reason])

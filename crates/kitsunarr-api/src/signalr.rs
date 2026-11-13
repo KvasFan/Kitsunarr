@@ -71,6 +71,26 @@ pub fn messages(event: &ServerEvent) -> Vec<Value> {
             "command",
             json!({"action": "updated", "resource": {"id": run_id, "name": task_name, "commandName": task_name, "status": status, "message": message}}),
         )],
+        ServerEvent::EpisodeFileChanged {
+            series_id,
+            episode_file_id,
+            episode_ids,
+            deleted,
+        } => {
+            let action = if *deleted { "deleted" } else { "updated" };
+            let mut out = vec![invocation(
+                "episodefile",
+                json!({"action": action, "resource": {"id": episode_file_id, "seriesId": series_id}}),
+            )];
+            out.extend(episode_ids.iter().map(|id| {
+                invocation(
+                    "episode",
+                    json!({"action": "updated", "resource": {"id": id, "seriesId": series_id, "episodeFileId": if *deleted { 0 } else { *episode_file_id }, "hasFile": !*deleted}}),
+                )
+            }));
+            out
+        }
+        ServerEvent::QueueChanged => vec![invocation("queue", json!({"action": "sync"}))],
         ServerEvent::HealthChanged => vec![invocation("health", json!({"action": "sync"}))],
         _ => Vec::new(),
     }
@@ -162,6 +182,38 @@ mod tests {
         assert_eq!(
             messages(&ServerEvent::HealthChanged)[0]["arguments"][0]["name"],
             "health"
+        );
+    }
+
+    #[test]
+    fn imports_become_episodefile_and_episode_messages() {
+        let m = messages(&ServerEvent::EpisodeFileChanged {
+            series_id: 3,
+            episode_file_id: 9,
+            episode_ids: vec![11, 12],
+            deleted: false,
+        });
+        let names: Vec<&str> = m
+            .iter()
+            .map(|v| v["arguments"][0]["name"].as_str().unwrap())
+            .collect();
+        assert_eq!(names, ["episodefile", "episode", "episode"]);
+        assert_eq!(m[0]["arguments"][0]["body"]["resource"]["seriesId"], 3);
+        assert_eq!(m[2]["arguments"][0]["body"]["resource"]["episodeFileId"], 9);
+        let gone = messages(&ServerEvent::EpisodeFileChanged {
+            series_id: 3,
+            episode_file_id: 9,
+            episode_ids: vec![11],
+            deleted: true,
+        });
+        assert_eq!(gone[0]["arguments"][0]["body"]["action"], "deleted");
+        assert_eq!(
+            gone[1]["arguments"][0]["body"]["resource"]["hasFile"],
+            false
+        );
+        assert_eq!(
+            messages(&ServerEvent::QueueChanged)[0]["arguments"][0]["name"],
+            "queue"
         );
     }
 }

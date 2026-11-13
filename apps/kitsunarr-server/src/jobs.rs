@@ -330,11 +330,15 @@ async fn rescan_folders(ctx: &JobContext) -> JobResult {
             .await
             .map_err(|e| e.to_string())?;
     let (mut added, mut removed, mut failed) = (0usize, 0usize, 0usize);
+    let mut changed_series: Vec<i64> = Vec::new();
     for (done, id) in ids.iter().enumerate() {
         match kitsunarr_library::files::scan_series(&ctx.db, *id).await {
             Ok(s) => {
                 added += s.added;
                 removed += s.removed;
+                if s.added + s.removed > 0 {
+                    changed_series.push(*id);
+                }
             }
             Err(e) => {
                 tracing::warn!(series_id = id, error = %e, "folder scan skipped");
@@ -350,10 +354,10 @@ async fn rescan_folders(ctx: &JobContext) -> JobResult {
     if failed > 0 && failed == ids.len() {
         return Err(format!("every folder scan failed ({failed})"));
     }
-    if added + removed > 0 {
+    if !changed_series.is_empty() {
         ctx.events.publish(ServerEvent::LibraryChanged {
             media_type: "series".into(),
-            ids: Vec::new(),
+            ids: changed_series,
             deleted: false,
         });
     }

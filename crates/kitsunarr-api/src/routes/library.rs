@@ -558,9 +558,21 @@ pub async fn delete_episode_file(
     State(state): State<AppState>,
     Path((id, file_id)): Path<(i64, i64)>,
 ) -> ApiResult<StatusCode> {
+    let episode_ids: Vec<i64> =
+        kitsunarr_db::sqlx::query_scalar("SELECT id FROM episodes WHERE episode_file_id = ?")
+            .bind(file_id)
+            .fetch_all(state.db.pool())
+            .await
+            .unwrap_or_default();
     kitsunarr_library::files::delete_file(&state.db, id, file_id)
         .await
         .map_err(|m| ApiError::field("fileId", m))?;
+    state.events.publish(ServerEvent::EpisodeFileChanged {
+        series_id: id,
+        episode_file_id: file_id,
+        episode_ids,
+        deleted: true,
+    });
     changed(&state, "series", vec![id], false);
     Ok(StatusCode::NO_CONTENT)
 }

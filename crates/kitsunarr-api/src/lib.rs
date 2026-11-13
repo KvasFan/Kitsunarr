@@ -95,6 +95,9 @@ pub struct AppStateInner {
     pub logs: LogBuffer,
     /// The warnings and errors of the last health evaluation, for health notifications.
     pub last_health: std::sync::Mutex<Option<Vec<kitsunarr_domain::api::system::HealthCheck>>>,
+    /// `RemotePathMappingCheck` after a failed import (`EpisodeImportFailedEvent`), until an
+    /// import succeeds.
+    pub import_health: std::sync::Mutex<Option<kitsunarr_domain::api::system::HealthCheck>>,
 }
 
 impl std::ops::Deref for AppState {
@@ -135,6 +138,7 @@ impl AppState {
             last_download_client: Default::default(),
             wanted_search: Default::default(),
             last_health: Default::default(),
+            import_health: Default::default(),
             proxy: Default::default(),
             certificates: Default::default(),
             oauth_codes: Default::default(),
