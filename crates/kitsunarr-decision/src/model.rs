@@ -346,6 +346,7 @@ pub enum RejectionReason {
     MinimumAgeDelay,
     PropersDisabled,
     ProperForOldFile,
+    AmbiguousNumbering,
     DecisionError,
 }
 

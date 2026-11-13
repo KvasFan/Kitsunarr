@@ -15,6 +15,7 @@ pub mod codec;
 pub mod complete_series;
 pub mod custom_format;
 pub mod model;
+pub mod numbering;
 pub mod profile;
 pub mod quality_match;
 
@@ -446,7 +447,30 @@ impl Engine<'_> {
             &series.profile,
             &self.settings.quality_definitions,
         );
-        let episodes = mapping::episodes(&parsed, series, criteria);
+        let mut episodes = mapping::episodes(&parsed, series, criteria);
+        let mut mapped_season = mapping::mapped_season(&parsed, series);
+        let mut numbering_rejection = None;
+        // Tanukarr's `EpisodeNumberingResolver` (not for complete-series searches): scene or
+        // aired numbering, decided by the episode title or the scene mapping's origin.
+        if !matches!(criteria.kind, SearchKind::CompleteSeries { .. }) {
+            let lookup = numbering::xem_lookup(series);
+            if let Some(r) = numbering::resolve(series, &parsed, None, None, &lookup) {
+                numbering_rejection = r.rejection;
+                if let Some(mut resolved) = r.episodes {
+                    if parsed.is_multi_season()
+                        && let SearchKind::Season { season } = criteria.kind
+                    {
+                        resolved.retain(|e| e.season_number == season);
+                    }
+                    let mut seasons: Vec<i32> = resolved.iter().map(|e| e.season_number).collect();
+                    seasons.dedup();
+                    if let [season] = seasons.as_slice() {
+                        mapped_season = Some(*season);
+                    }
+                    episodes = resolved;
+                }
+            }
+        }
         if episodes.is_empty() {
             return self.rejected(
                 index,
@@ -491,7 +515,8 @@ impl Engine<'_> {
                 release,
                 parsed: &parsed,
                 episodes: episodes.clone(),
-                mapped_season: mapping::mapped_season(&parsed, series),
+                mapped_season,
+                numbering_rejection,
                 custom_formats: formats.clone(),
                 score,
             },

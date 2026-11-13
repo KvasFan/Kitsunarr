@@ -807,3 +807,100 @@ async fn subtitles_and_extras_come_with_the_episode() {
     .await;
     assert_eq!(std::fs::read_dir(&season).unwrap().count(), 0);
 }
+
+/// Tanukarr's numbering resolver in manual import: on a series whose scene numbering differs,
+/// episode titles decide, a pack whose titles agree carries its untitled files, and a file
+/// nothing vouches for is left to the user.
+#[tokio::test]
+async fn manual_import_resolves_scene_and_aired_numbering_by_title() {
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("tv");
+    let show = root.join("Example Show");
+    std::fs::create_dir_all(&show).unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    let pool = db.pool();
+    sqlx::query(
+        "INSERT INTO series (id, media_kind, title, sort_title, clean_title, title_slug, metadata_provider, metadata_id, \
+         quality_profile_id, root_folder_path, path, added_at, use_scene_numbering) VALUES (1, 'series', 'Example Show', \
+         'example show', 'exampleshow', 'example-show', 'tvdb', '42', 1, ?, ?, '2026-11-01T00:00:00Z', 1)",
+    )
+    .bind(root.display().to_string())
+    .bind(show.display().to_string())
+    .execute(pool)
+    .await
+    .unwrap();
+    for (id, s, n, ss, sn, title) in [
+        (51, 5, 1, 4, 1, "1600 Candles"),
+        (52, 5, 2, 4, 2, "The One That Got Away"),
+        (53, 5, 3, 4, 3, "One Little Word"),
+        (61, 6, 1, 5, 1, "In Country... Club"),
+        (62, 6, 2, 5, 2, "Moon Over Isla Island"),
+        (63, 6, 3, 5, 3, "Home Adrone"),
+    ] {
+        sqlx::query(
+            "INSERT OR IGNORE INTO seasons (series_id, season_number, monitored) VALUES (1, ?, 1)",
+        )
+        .bind(s)
+        .execute(pool)
+        .await
+        .unwrap();
+        sqlx::query(
+            "INSERT INTO episodes (id, series_id, season_number, episode_number, scene_season_number, \
+             scene_episode_number, title) VALUES (?, 1, ?, ?, ?, ?, ?)",
+        )
+        .bind(id)
+        .bind(s)
+        .bind(n)
+        .bind(ss)
+        .bind(sn)
+        .bind(title)
+        .execute(pool)
+        .await
+        .unwrap();
+    }
+    let scan = |folder: std::path::PathBuf| {
+        let db = db.clone();
+        async move {
+            kitsunarr_library::manual_import::scan(&db, &folder, Some(1))
+                .await
+                .unwrap()
+        }
+    };
+
+    let single = dir.path().join("single");
+    std::fs::create_dir_all(&single).unwrap();
+    std::fs::write(
+        single.join("Example.Show.S05E01.In.Country.Club.720p.HDTV.mkv"),
+        b"x",
+    )
+    .unwrap();
+    std::fs::write(single.join("Example.Show.S05E03.1080p.mkv"), b"x").unwrap();
+    let items = scan(single.clone()).await;
+    let titled = items.iter().find(|i| i.name.contains("Country")).unwrap();
+    // The title names TheTVDB's 6x01, the scene's 5x01.
+    assert_eq!(titled.episodes, vec!["S06E01"]);
+    assert!(titled.rejections.is_empty(), "{:?}", titled.rejections);
+    let untitled = items.iter().find(|i| i.name.contains("S05E03")).unwrap();
+    assert!(untitled.episodes.is_empty());
+    assert!(
+        untitled.rejections[0].starts_with("Ambiguous scene/library numbering"),
+        "{:?}",
+        untitled.rejections
+    );
+
+    // Two titles of the pack agree on TheTVDB's numbering: the untitled file follows.
+    let pack = dir.path().join("pack");
+    std::fs::create_dir_all(&pack).unwrap();
+    for name in [
+        "Example.Show.S05E01.1600.Candles.1080p.mkv",
+        "Example.Show.S05E02.The.One.That.Got.Away.1080p.mkv",
+        "Example.Show.S05E03.1080p.mkv",
+    ] {
+        std::fs::write(pack.join(name), b"x").unwrap();
+    }
+    let items = scan(pack).await;
+    let third = items.iter().find(|i| i.name.contains("S05E03")).unwrap();
+    assert_eq!(third.episodes, vec!["S05E03"]);
+    assert!(third.rejections.is_empty(), "{:?}", third.rejections);
+}

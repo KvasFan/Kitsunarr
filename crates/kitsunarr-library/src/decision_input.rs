@@ -190,7 +190,12 @@ pub async fn series_model(
         alternate_titles: detail.alternate_titles.clone(),
         runtime: detail.runtime.unwrap_or(0),
         original_language,
-        use_scene_numbering: detail.use_scene_numbering,
+        // Sonarr ignores scene numbering outside the official order (`SeasonType`).
+        use_scene_numbering: detail.use_scene_numbering
+            && detail
+                .episode_ordering
+                .as_deref()
+                .is_none_or(|o| o == "official"),
         scene_season_titles,
         tags: detail.item.tags.clone(),
         profile,

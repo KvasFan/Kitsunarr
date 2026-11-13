@@ -537,7 +537,10 @@ TMDB's default as no ordering.
   Tanukarr blocks it. TheXEM's names are kept as alternate titles with their scene season:
   searches use a name only for its season, and a release named for a later season and numbered
   from 1 under that name maps to that scene season.
-- **Not ported yet:** the scene-vs-aired `EpisodeNumberingResolver`.
+- **Scene or aired numbering** follows Tanukarr's `EpisodeNumberingResolver`: where TheXEM's
+  scene numbers and TheTVDB's name different episodes, only an episode title (or a download's
+  agreeing titles) decides; scene-mapping origins that would decide too come only from Sonarr's
+  blocked feed, so other releases are rejected as ambiguous rather than guessed.
 
 ## 33. Automatic grouping into collections
 

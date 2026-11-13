@@ -5,6 +5,7 @@
 //! with a synthetic grab carrying the chosen episodes (the persistent manual mapping), so naming,
 //! upgrade rules, history and the recycle bin behave as for downloads.
 
+use kitsunarr_decision::numbering;
 use std::path::{Path, PathBuf};
 
 use kitsunarr_db::Database;
@@ -81,6 +82,16 @@ pub async fn scan(
         _ => None,
     };
     let other_videos = files.len() > 1;
+    let file_names: Vec<String> = files
+        .iter()
+        .filter_map(|p| p.file_name().map(|n| n.to_string_lossy().into_owned()))
+        .collect();
+    let names: Vec<&str> = file_names.iter().map(String::as_str).collect();
+    // The numbering each series' files establish (`InferBatch`), once per series.
+    let mut batches: std::collections::HashMap<
+        i64,
+        std::collections::HashMap<i32, numbering::NumberingConvention>,
+    > = std::collections::HashMap::new();
     let mut out = Vec::new();
     for path in files {
         let name = path
@@ -152,8 +163,32 @@ pub async fn scan(
                 match parsed {
                     None => rejections.push("Unable to parse the file name".to_string()),
                     Some(p) => {
-                        let mapped = kitsunarr_decision::map_episodes(p, &model);
-                        if mapped.is_empty() {
+                        let mut mapped = kitsunarr_decision::map_episodes(p, &model);
+                        // Tanukarr's numbering resolver: the file's numbers and title decide
+                        // between scene and TheTVDB numbering; ambiguous files are left for the
+                        // user to choose.
+                        let lookup = numbering::xem_lookup(&model);
+                        let batch = batches
+                            .entry(id)
+                            .or_insert_with(|| numbering::infer_batch(&model, &names, &lookup))
+                            .clone();
+                        let local = numbering::LocalContext {
+                            existing_file: path.starts_with(&detail.item.path),
+                            scene_source: true,
+                            download_client_info: None,
+                            folder_info: folder_info.as_ref(),
+                            batch: Some(&batch),
+                        };
+                        let own = file_info.as_ref().filter(|f| !f.full_season).unwrap_or(p);
+                        if let Some(r) = numbering::resolve_local(&model, &local, own, &lookup) {
+                            if let Some(message) = r.rejection {
+                                rejections.push(message);
+                                mapped.clear();
+                            } else if let Some(episodes) = r.episodes {
+                                mapped = episodes;
+                            }
+                        }
+                        if mapped.is_empty() && rejections.is_empty() {
                             rejections.push("No matching episodes".to_string());
                         }
                         for e in mapped {

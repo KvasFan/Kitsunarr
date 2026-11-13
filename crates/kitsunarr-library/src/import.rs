@@ -341,6 +341,57 @@ fn label(e: &decision::Episode) -> String {
     format!("{}x{:02}", e.season_number, e.episode_number)
 }
 
+/// `MatchesFolderSpecification` (with Tanukarr's verified numbering): a file in a download
+/// folder must not hold episodes the folder's name leaves out.
+fn matches_folder(
+    model: &decision::Series,
+    folder: &ParsedEpisodeInfo,
+    file: &ParsedEpisodeInfo,
+    mapped: &[&decision::Episode],
+    verified: Option<decision::numbering::NumberingConvention>,
+    lookup: &decision::numbering::MappingLookup<'_>,
+) -> Option<String> {
+    let mut folder_episodes = decision::map_episodes(folder, model);
+    let mut file_episodes = decision::map_episodes(file, model);
+    if let Some(verified) = verified
+        && !mapped.is_empty()
+    {
+        let mut numbering = decision::numbering::resolve(model, folder, None, None, lookup);
+        if numbering.as_ref().is_some_and(|n| n.needs_evidence) {
+            numbering = decision::numbering::resolve(model, folder, None, Some(verified), lookup);
+        }
+        if let Some(n) = numbering {
+            if let Some(rejection) = n.rejection {
+                return Some(rejection);
+            }
+            if let Some(episodes) = n.episodes {
+                folder_episodes = episodes;
+            }
+        }
+        file_episodes = mapped.to_vec();
+    }
+    if folder_episodes.is_empty() {
+        return None;
+    }
+    let unexpected: Vec<String> = file_episodes
+        .iter()
+        .filter(|e| folder_episodes.iter().all(|f| f.id != e.id))
+        .map(|e| label(e))
+        .collect();
+    match unexpected.as_slice() {
+        [] => None,
+        [one] => Some(format!(
+            "Episode {one} was unexpected considering the {} folder name",
+            folder.release_title
+        )),
+        many => Some(format!(
+            "Episodes {} were unexpected considering the {} folder name",
+            many.join(", "),
+            folder.release_title
+        )),
+    }
+}
+
 /// Imports a completed download. Database or filesystem failures of single files are reported
 /// per file; only problems with the whole download stop the import.
 pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome, String> {
@@ -412,6 +463,18 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
     let unknown = Language::by_id(0).map(|l| l.id).unwrap_or(0);
     let original = model.original_language.map(|l| l.id).unwrap_or(unknown);
 
+    // Tanukarr's `InferBatch`: file titles of the download that establish its numbering.
+    let numbering_lookup = decision::numbering::xem_lookup(&model);
+    let file_names: Vec<String> = files
+        .iter()
+        .filter_map(|p| p.file_name().map(|n| n.to_string_lossy().into_owned()))
+        .collect();
+    let batch = decision::numbering::infer_batch(
+        &model,
+        &file_names.iter().map(String::as_str).collect::<Vec<_>>(),
+        &numbering_lookup,
+    );
+
     let mut candidates = Vec::new();
     let mut results = Vec::new();
     for path in files {
@@ -467,6 +530,8 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             });
             continue;
         };
+        let manual_mapping = manual.is_some();
+        let mut verified = None;
         let mapped: Vec<&decision::Episode> = match manual {
             Some(Ok(episodes)) => episodes,
             Some(Err(message)) => {
@@ -479,7 +544,41 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                 });
                 continue;
             }
-            None => decision::map_episodes(&info, &model),
+            None => {
+                let mut mapped = decision::map_episodes(&info, &model);
+                // Tanukarr's `AggregateEpisodes`: the file's own numbers and title decide
+                // between scene and TheTVDB numbering (a pack name cannot vouch for a file).
+                let parsed = file_info
+                    .as_ref()
+                    .filter(|f| !f.full_season)
+                    .unwrap_or(&info);
+                let local = decision::numbering::LocalContext {
+                    existing_file: false,
+                    scene_source: true,
+                    download_client_info: client_info.as_ref(),
+                    folder_info: folder_info.as_ref(),
+                    batch: Some(&batch),
+                };
+                if let Some(r) =
+                    decision::numbering::resolve_local(&model, &local, parsed, &numbering_lookup)
+                {
+                    if let Some(message) = r.rejection {
+                        results.push(FileResult {
+                            path,
+                            imported: false,
+                            episode_ids: Vec::new(),
+                            errors: vec![message],
+                            imported_file: None,
+                        });
+                        continue;
+                    }
+                    if let Some(episodes) = r.episodes {
+                        mapped = episodes;
+                        verified = Some(r.convention);
+                    }
+                }
+                mapped
+            }
         };
         if mapped.is_empty() {
             let message = if info.is_partial_season {
@@ -574,6 +673,13 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         }
         if info.is_split_episode {
             errors.push("Single episode split into multiple files".into());
+        }
+        if !manual_mapping
+            && let (Some(folder), Some(file)) = (folder_info.as_ref(), file_info.as_ref())
+            && let Some(message) =
+                matches_folder(&model, folder, file, &mapped, verified, &numbering_lookup)
+        {
+            errors.push(message);
         }
         if is_sample(&path, &mapped, model.runtime, media_info.as_ref()) {
             errors.push("Sample".into());
@@ -1427,6 +1533,49 @@ mod tests {
                 ep(21, 2, 1, Some(13)),
             ],
         }
+    }
+
+    /// Sonarr's `MatchesFolderSpecificationFixture`.
+    #[test]
+    fn files_must_match_their_download_folder() {
+        let model = mapped_series();
+        let none = |_: &ParsedEpisodeInfo| None;
+        let check = |folder: &str, file: &str| {
+            let folder = parse_title(folder).unwrap();
+            let file = parse_title(file).unwrap();
+            super::matches_folder(&model, &folder, &file, &[], None, &none)
+        };
+        assert_eq!(
+            check("Show.S01E01.720p.HDTV-Sonarr", "Show.S01E01.mkv"),
+            None
+        );
+        assert_eq!(
+            check("Show.S01E01E02.720p.HDTV-Sonarr", "Show.S01E01.mkv"),
+            None
+        );
+        assert_eq!(check("Show.S01.720p.HDTV-Sonarr", "Show.S01E02.mkv"), None);
+        assert_eq!(
+            check("Show.S01-S02.720p.HDTV-Sonarr", "Show.S02E01.mkv"),
+            None
+        );
+        assert_eq!(
+            check("Show.S01E01.720p.HDTV-Sonarr", "Show.S01E02.mkv").as_deref(),
+            Some(
+                "Episode 1x02 was unexpected considering the Show.S01E01.720p.HDTV-Sonarr folder name"
+            )
+        );
+        assert_eq!(
+            check("Show.S01.720p.HDTV-Sonarr", "Show.S02E01.mkv").as_deref(),
+            Some(
+                "Episode 2x01 was unexpected considering the Show.S01.720p.HDTV-Sonarr folder name"
+            )
+        );
+        assert_eq!(
+            check("Show.S02E01.720p.HDTV-Sonarr", "Show.S01E01E02.mkv").as_deref(),
+            Some(
+                "Episodes 1x01, 1x02 were unexpected considering the Show.S02E01.720p.HDTV-Sonarr folder name"
+            )
+        );
     }
 
     /// Tanukarr's `ManualEpisodeMappingFixture`.

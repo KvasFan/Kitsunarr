@@ -5378,4 +5378,18 @@ async fn thexem_scene_numbering_is_applied_and_searched() {
         })
         .collect();
     assert_eq!(seasons, [true, true]);
+    // Tanukarr's numbering resolver: a season pack of a season whose numbering differs is
+    // ambiguous without a title or an origin to decide.
+    let pack = season
+        .releases
+        .iter()
+        .find(|r| r.title == "Breaking.Bad.S01.480p.WEB-DL.AAC2.0.H.264-GRP")
+        .unwrap();
+    assert!(
+        pack.rejections
+            .iter()
+            .any(|r| r.starts_with("Ambiguous scene/library numbering")),
+        "{:?}",
+        pack.rejections
+    );
 }

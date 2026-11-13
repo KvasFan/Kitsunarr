@@ -27,6 +27,8 @@ pub(crate) struct Subject<'a> {
     pub episodes: Vec<&'a Episode>,
     /// `MappedSeasonNumber`.
     pub mapped_season: Option<i32>,
+    /// Tanukarr's `NumberingRejection`: the release's numbering is ambiguous.
+    pub numbering_rejection: Option<String>,
     pub custom_formats: Vec<&'a CompiledFormat>,
     pub score: i32,
 }
@@ -163,13 +165,14 @@ fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
 
 /// Every specification, in a stable (alphabetical) order.
 pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
-    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 33] = [
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 34] = [
         acceptable_size,
         anime_version_upgrade,
         blocklist,
         complete_season_upgrade,
         custom_format_allowed_by_profile,
         delay,
+        episode_numbering,
         episode_requested,
         external_ids,
         free_space,
@@ -199,6 +202,14 @@ pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
         upgrade_disk,
     ];
     specs.iter().filter_map(|spec| spec(env, s)).collect()
+}
+
+/// Tanukarr's `EpisodeNumberingSpecification` (permanent): an unresolved numbering must not
+/// reach the delay queue.
+pub(crate) fn episode_numbering(_env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    s.numbering_rejection
+        .as_ref()
+        .map(|m| Rejection::new(R::AmbiguousNumbering, m.clone()))
 }
 
 /// `BlocklistSpecification` (`BlocklistService.Blocklisted`, `ReleaseComparer`): torrents by

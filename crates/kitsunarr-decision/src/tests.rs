@@ -639,6 +639,7 @@ impl Case {
             parsed: &self.parsed,
             episodes: self.episodes.iter().collect(),
             mapped_season: self.parsed.season_numbers.first().copied(),
+            numbering_rejection: None,
             custom_formats: Vec::new(),
             score: self.score,
         };
