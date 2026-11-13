@@ -193,9 +193,13 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
         let episodes = series::list_episodes(db, series_id, None)
             .await
             .map_err(err)?;
-        let model = crate::decision_input::series_model(db, &detail, &episodes)
-            .await
-            .map_err(err)?;
+        // Files in the series folder carry aired numbering (Sonarr scans them with
+        // `sceneSource: false`).
+        let model = decision::aired_numbering(
+            &crate::decision_input::series_model(db, &detail, &episodes)
+                .await
+                .map_err(err)?,
+        );
         let original = model.original_language.map(|l| l.id).unwrap_or(0);
         let mut taken: HashSet<i64> = model
             .episodes

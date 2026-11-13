@@ -117,10 +117,21 @@ impl<'a> Lookup<'a> {
 
     /// Scene mappings: the alternate titles.
     fn by_alias(&self, title: &str) -> Option<Mapped> {
+        self.alias_candidate(title).map(|c| c.mapped)
+    }
+
+    fn alias_candidate(&self, title: &str) -> Option<&Candidate<'a>> {
         let wanted = clean(title);
         self.candidates
             .iter()
             .find(|c| c.alternate_titles.iter().any(|a| clean(a) == wanted))
+    }
+
+    /// `GetSeriesAliasTitleAndYear`: the title without its year is a scene name of a series of
+    /// that year.
+    fn by_alias_and_year(&self, info: &SeriesTitleInfo) -> Option<Mapped> {
+        self.alias_candidate(&info.title_without_year)
+            .filter(|c| c.year == info.year)
             .map(|c| c.mapped)
     }
 
@@ -128,7 +139,8 @@ impl<'a> Lookup<'a> {
         self.candidates.iter().find(|c| f(c)).map(|c| c.mapped)
     }
 
-    /// `GetSeriesByAllTitles`: every title must resolve to the same series.
+    /// `GetSeriesByAllTitles`: every title (by name, else by scene mapping) must resolve to the
+    /// same series.
     fn by_all_titles(&self, info: &SeriesTitleInfo) -> Option<Mapped> {
         let titles = info.all_titles.as_ref()?;
         let mut found = None;
@@ -138,7 +150,8 @@ impl<'a> Lookup<'a> {
                     .or_else(|| self.by_title(&format!("{title} {}", info.year), None))
             } else {
                 self.by_title(title, None)
-            };
+            }
+            .or_else(|| self.by_alias(title));
             match (found, m) {
                 (_, None) => continue,
                 (None, Some(m)) => found = Some(m),
@@ -228,13 +241,13 @@ impl<'a> Lookup<'a> {
             .or_else(|| self.by_all_titles(info))
             .or_else(|| {
                 (info.year > 0)
-                    .then(|| self.by_title(&info.title_without_year, Some(info.year)))
+                    .then(|| {
+                        self.by_title(&info.title_without_year, Some(info.year))
+                            .or_else(|| self.by_alias_and_year(info))
+                    })
                     .flatten()
             })
-            .or_else(|| {
-                Self::without_season_suffix(parsed)
-                    .and_then(|t| self.by_alias(&t).or_else(|| self.by_title(&t, None)))
-            })
+            .or_else(|| self.without_season_suffix_series(parsed))
             .or_else(|| {
                 (tvdb > 0)
                     .then(|| self.by_id(|c| c.tvdb_id == tvdb))
@@ -272,9 +285,11 @@ impl<'a> Lookup<'a> {
         by_ids.or_else(|| self.series_by_title(release, title))
     }
 
-    /// `GetSeries(title)`: parsed titles, then the inexact title, then the release's ids.
-    fn series_by_title(&self, release: &Release, title: &str) -> Option<Mapped> {
-        let found = match kitsunarr_parser::parse_title(title) {
+    /// `GetSeries(title)`: the title as is when it does not parse, else the parsed title's scene
+    /// mapping, the title, every title of a multi-title name, the title without its year, and
+    /// the title without a trailing season number.
+    pub(crate) fn get_series(&self, title: &str) -> Option<Mapped> {
+        match kitsunarr_parser::parse_title(title) {
             None => self.by_title(title, None),
             Some(p) => self
                 .by_alias(&p.series_title)
@@ -285,22 +300,36 @@ impl<'a> Lookup<'a> {
                         &p.series_title_info.title_without_year,
                         Some(p.series_title_info.year),
                     )
-                }),
-        };
-        found.or_else(|| self.by_title_inexact(title)).or_else(|| {
-            let ids = (
-                release.tvdb_id,
-                release.tv_rage_id,
-                release.imdb_id.as_deref(),
-            );
-            self.by_id(|c| {
-                (ids.0 > 0 && c.tvdb_id == ids.0)
-                    || (ids.1 > 0 && c.tv_rage_id == ids.1)
-                    || ids
-                        .2
-                        .is_some_and(|i| !i.trim().is_empty() && c.imdb_id == Some(i))
+                })
+                .or_else(|| self.without_season_suffix_series(&p)),
+        }
+    }
+
+    /// `FindByTitleWithoutSeasonSuffix`: the stripped title's scene mapping, else the title.
+    fn without_season_suffix_series(&self, parsed: &ParsedEpisodeInfo) -> Option<Mapped> {
+        Self::without_season_suffix(parsed)
+            .and_then(|t| self.by_alias(&t).or_else(|| self.by_title(&t, None)))
+    }
+
+    /// `ParseSpecialEpisodeTitle`'s series without search criteria: `GetSeries(title)`, then the
+    /// inexact title, then the release's ids.
+    fn series_by_title(&self, release: &Release, title: &str) -> Option<Mapped> {
+        self.get_series(title)
+            .or_else(|| self.by_title_inexact(title))
+            .or_else(|| {
+                let ids = (
+                    release.tvdb_id,
+                    release.tv_rage_id,
+                    release.imdb_id.as_deref(),
+                );
+                self.by_id(|c| {
+                    (ids.0 > 0 && c.tvdb_id == ids.0)
+                        || (ids.1 > 0 && c.tv_rage_id == ids.1)
+                        || ids
+                            .2
+                            .is_some_and(|i| !i.trim().is_empty() && c.imdb_id == Some(i))
+                })
             })
-        })
     }
 
     /// The series `ParseSpecialEpisodeTitle` would use, when it is the searched one.
@@ -401,7 +430,6 @@ pub(crate) fn parse_special_episode_title(
     })
 }
 
-/// `GetEpisodes` for the searched series (scene source, no scene mapping).
 /// The scene season a scene name of the series stands for (`GetSceneSeasonNumber`): the
 /// release's series title is one of TheXEM's names for a single season.
 pub(crate) fn scene_season_of_title(parsed: &ParsedEpisodeInfo, series: &Series) -> Option<i32> {
@@ -427,6 +455,51 @@ pub(crate) fn mapped_season(parsed: &ParsedEpisodeInfo, series: &Series) -> Opti
     }
 }
 
+/// What `ParsingService.Map(parsedEpisodeInfo, series, searchCriteria)` yields for a release
+/// already mapped to `series` (`RemoteEpisode`).
+pub(crate) struct Remote<'e> {
+    pub(crate) episodes: Vec<&'e Episode>,
+    pub(crate) mapped_season: Option<i32>,
+    pub(crate) numbering_rejection: Option<String>,
+}
+
+/// `Map` for a known series: `GetEpisodes`, then Tanukarr's `EpisodeNumberingResolver` (not for
+/// complete-series searches), which picks scene or aired numbering by the episode title or the
+/// scene mapping's origin.
+pub(crate) fn map_remote<'e>(
+    parsed: &ParsedEpisodeInfo,
+    series: &'e Series,
+    criteria: &SearchCriteria,
+) -> Remote<'e> {
+    let mut remote = Remote {
+        episodes: episodes(parsed, series, criteria),
+        mapped_season: mapped_season(parsed, series),
+        numbering_rejection: None,
+    };
+    if matches!(criteria.kind, SearchKind::CompleteSeries { .. }) {
+        return remote;
+    }
+    let lookup = crate::numbering::xem_lookup(series);
+    if let Some(r) = crate::numbering::resolve(series, parsed, None, None, &lookup) {
+        remote.numbering_rejection = r.rejection;
+        if let Some(mut resolved) = r.episodes {
+            if parsed.is_multi_season()
+                && let SearchKind::Season { season } = criteria.kind
+            {
+                resolved.retain(|e| e.season_number == season);
+            }
+            let mut seasons: Vec<i32> = resolved.iter().map(|e| e.season_number).collect();
+            seasons.dedup();
+            if let [season] = seasons.as_slice() {
+                remote.mapped_season = Some(*season);
+            }
+            remote.episodes = resolved;
+        }
+    }
+    remote
+}
+
+/// `GetEpisodes` for the searched series (scene source, no scene mapping).
 pub(crate) fn episodes<'e>(
     parsed: &ParsedEpisodeInfo,
     series: &'e Series,

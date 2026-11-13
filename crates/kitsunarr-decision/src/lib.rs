@@ -6,9 +6,9 @@
 //! revision), except where Kitsunarr's data model is Sonarr v4's: size limits come from the
 //! quality definitions.
 //!
-//! What is not evaluated yet, for lack of data: the blocklist, the download queue, history,
-//! pending releases, delay profiles' delays (searches bypass them in Sonarr anyway), free disk
-//! space, scene mappings and TheXEM numbering.
+//! Scene numbering comes from TheXEM (episodes' scene numbers and the series' scene-season
+//! names); Tanukarr's numbering resolver decides between scene and aired numbers. Sonarr's
+//! scene-mapping feed (origins, TheTVDB season offsets) is not used: Tanukarr blocks it.
 
 pub mod anime_pack;
 pub mod codec;
@@ -23,6 +23,8 @@ mod compare;
 #[cfg(test)]
 mod get_episodes_tests;
 mod mapping;
+#[cfg(test)]
+mod parsing_service_tests;
 mod specs;
 #[cfg(test)]
 mod tests;
@@ -43,6 +45,20 @@ use crate::specs::{Env, Subject};
 
 /// The episodes of `series` a parse result refers to (`ParsingService.GetEpisodes`, with no
 /// search criteria; specials matched by title when the parse marks a possible special).
+/// The series as aired numbering sees it (`GetEpisodes` with `sceneSource: false`): no scene
+/// numbers or scene-season names. Files already in the series folder are mapped with it.
+pub fn aired_numbering(series: &Series) -> Series {
+    let mut s = series.clone();
+    s.use_scene_numbering = false;
+    s.scene_season_titles.clear();
+    for e in &mut s.episodes {
+        e.scene_season_number = None;
+        e.scene_episode_number = None;
+        e.scene_absolute_episode_number = None;
+    }
+    s
+}
+
 pub fn map_episodes<'s>(parsed: &ParsedEpisodeInfo, series: &'s Series) -> Vec<&'s Episode> {
     let none = SearchCriteria {
         monitored_episodes_only: false,
@@ -449,30 +465,11 @@ impl Engine<'_> {
             &series.profile,
             &self.settings.quality_definitions,
         );
-        let mut episodes = mapping::episodes(&parsed, series, criteria);
-        let mut mapped_season = mapping::mapped_season(&parsed, series);
-        let mut numbering_rejection = None;
-        // Tanukarr's `EpisodeNumberingResolver` (not for complete-series searches): scene or
-        // aired numbering, decided by the episode title or the scene mapping's origin.
-        if !matches!(criteria.kind, SearchKind::CompleteSeries { .. }) {
-            let lookup = numbering::xem_lookup(series);
-            if let Some(r) = numbering::resolve(series, &parsed, None, None, &lookup) {
-                numbering_rejection = r.rejection;
-                if let Some(mut resolved) = r.episodes {
-                    if parsed.is_multi_season()
-                        && let SearchKind::Season { season } = criteria.kind
-                    {
-                        resolved.retain(|e| e.season_number == season);
-                    }
-                    let mut seasons: Vec<i32> = resolved.iter().map(|e| e.season_number).collect();
-                    seasons.dedup();
-                    if let [season] = seasons.as_slice() {
-                        mapped_season = Some(*season);
-                    }
-                    episodes = resolved;
-                }
-            }
-        }
+        let mapping::Remote {
+            episodes,
+            mapped_season,
+            numbering_rejection,
+        } = mapping::map_remote(&parsed, series, criteria);
         if episodes.is_empty() {
             return self.rejected(
                 index,

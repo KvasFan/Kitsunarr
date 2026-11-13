@@ -63,7 +63,7 @@ pub(crate) fn series() -> Series {
     }
 }
 
-fn settings() -> Settings {
+pub(crate) fn settings() -> Settings {
     Settings {
         queue: Vec::new(),
         last_grabs: Vec::new(),
@@ -98,7 +98,7 @@ fn delay(preferred_protocol: DownloadProtocol) -> DelayProfile {
     }
 }
 
-fn release(title: &str) -> Release {
+pub(crate) fn release(title: &str) -> Release {
     Release {
         guid: title.into(),
         title: title.into(),
@@ -583,7 +583,7 @@ struct Case {
     score: i32,
 }
 
-fn ep(id: i64, season: i32, number: i32, runtime: i32) -> Episode {
+pub(crate) fn ep(id: i64, season: i32, number: i32, runtime: i32) -> Episode {
     Episode {
         id,
         season_number: season,
