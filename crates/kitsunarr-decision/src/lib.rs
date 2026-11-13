@@ -20,6 +20,8 @@ pub mod profile;
 pub mod quality_match;
 
 mod compare;
+#[cfg(test)]
+mod get_episodes_tests;
 mod mapping;
 mod specs;
 #[cfg(test)]

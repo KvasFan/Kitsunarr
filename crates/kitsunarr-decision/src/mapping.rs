@@ -450,23 +450,33 @@ pub(crate) fn episodes<'e>(
             return all.iter().filter(|e| e.season_number == wanted).collect();
         }
         if parsed.is_multi_season() {
+            // `GetSceneSeasonMapping` for each season: TheXEM's name of another scene season
+            // moves season 1 to that scene season.
+            let xem = scene_season_of_title(parsed, series);
             let mut out: Vec<&Episode> = Vec::new();
-            for s in &parsed.season_numbers {
+            for &s in &parsed.season_numbers {
+                let mapped = match xem {
+                    Some(scene) if scene >= 0 && s == 1 && scene != s => scene,
+                    _ => s,
+                };
                 let mut found: Vec<&Episode> = if series.use_scene_numbering {
                     all.iter()
-                        .filter(|e| e.scene_season_number == Some(*s))
+                        .filter(|e| e.scene_season_number == Some(mapped))
                         .collect()
                 } else {
                     Vec::new()
                 };
                 if found.is_empty() {
-                    found = all.iter().filter(|e| e.season_number == *s).collect();
+                    found = all.iter().filter(|e| e.season_number == mapped).collect();
                 }
                 for e in found {
                     if !out.iter().any(|o| o.id == e.id) {
                         out.push(e);
                     }
                 }
+            }
+            if let SearchKind::Season { season: wanted } = criteria.kind {
+                out.retain(|e| e.season_number == wanted);
             }
             return out;
         }
@@ -490,13 +500,9 @@ pub(crate) fn episodes<'e>(
         if requested.len() == 1 {
             return requested;
         }
-        let mut on_date: Vec<&Episode> = all
-            .iter()
-            .filter(|e| e.air_date.as_deref() == Some(date))
-            .collect();
-        on_date.sort_by_key(|e| (e.season_number, e.episode_number));
-        let part = parsed.daily_part.unwrap_or(1).max(1) as usize;
-        return on_date.get(part - 1).map(|e| vec![*e]).unwrap_or_default();
+        return find_by_air_date(all, date, parsed.daily_part)
+            .map(|e| vec![e])
+            .unwrap_or_default();
     }
     if parsed.is_absolute_numbering() {
         let scene_season = scene_season_of_title(parsed, series);
@@ -569,6 +575,33 @@ pub(crate) fn episodes<'e>(
         return Vec::new();
     }
     standard(parsed, series, season, true, &criteria.episode_ids)
+}
+
+/// `EpisodeService.FindEpisode(seriesId, airDate, part)` (`FindOneByAirDate`): the only episode
+/// of the day, else specials aside the only one or the `part`-th in season and episode order.
+fn find_by_air_date<'e>(all: &'e [Episode], date: &str, part: Option<i32>) -> Option<&'e Episode> {
+    let on_date: Vec<&Episode> = all
+        .iter()
+        .filter(|e| e.air_date.as_deref() == Some(date))
+        .collect();
+    if on_date.len() <= 1 {
+        return on_date.first().copied();
+    }
+    let mut regular: Vec<&Episode> = on_date
+        .into_iter()
+        .filter(|e| e.season_number > 0)
+        .collect();
+    match part {
+        None if regular.len() == 1 => Some(regular[0]),
+        Some(part) if part as usize <= regular.len() => {
+            regular.sort_by_key(|e| (e.season_number, e.episode_number));
+            usize::try_from(part - 1)
+                .ok()
+                .and_then(|i| regular.get(i).copied())
+        }
+        // Upstream throws: several episodes air that day.
+        _ => None,
+    }
 }
 
 /// `GetStandardEpisodes`.
@@ -709,5 +742,27 @@ mod tests {
             mapped("[Group] Series Title - 08 [1080p]", &anime),
             [(1, 8)]
         );
+    }
+
+    /// `GetEpisodes`: a multi-season pack found by a season search stands for the searched
+    /// season, scene numbering or not.
+    #[test]
+    fn multi_season_packs_found_by_a_season_search_keep_that_season() {
+        // TheTVDB's 1x01 moved to season 2 (scene 2x01).
+        let mut series = xem_series(kitsunarr_domain::SeriesType::Standard);
+        series.episodes[0].season_number = 2;
+        series.episodes[0].scene_season_number = Some(2);
+        let parsed = kitsunarr_parser::parse_title("Series.Title.S01-S02.720p.HDTV-GRP").unwrap();
+        let criteria = crate::SearchCriteria {
+            kind: crate::SearchKind::Season { season: 2 },
+            episode_ids: vec![1],
+            monitored_episodes_only: false,
+            user_invoked: true,
+        };
+        let ids: Vec<i64> = super::episodes(&parsed, &series, &criteria)
+            .iter()
+            .map(|e| e.id)
+            .collect();
+        assert_eq!(ids, [1]);
     }
 }
