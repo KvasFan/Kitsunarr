@@ -14,6 +14,7 @@ pub mod assets;
 pub mod auth;
 pub mod downloads;
 pub mod error;
+pub mod health;
 pub mod ical;
 pub mod import_lists;
 pub mod library_tools;

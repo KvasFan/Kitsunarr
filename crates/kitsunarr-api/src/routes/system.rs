@@ -275,6 +275,7 @@ pub async fn compute_health(state: &AppState) -> ApiResult<Vec<HealthCheck>> {
             ),
         });
     }
+    crate::health::more_checks(state, &mut out).await?;
     Ok(out)
 }
 

@@ -4344,6 +4344,55 @@ async fn import_list_shows_can_be_added_selectively() {
 }
 
 #[tokio::test]
+async fn sonarr_health_checks_report_indexer_list_and_folder_problems() {
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let sources = |c: &Client| {
+        let c = c.clone();
+        async move {
+            c.health()
+                .await
+                .unwrap()
+                .into_iter()
+                .map(|h| (h.source, h.message))
+                .collect::<Vec<_>>()
+        }
+    };
+    // A Jackett "all" indexer with RSS off (an indexer tied to a missing client is refused when
+    // saved, so `IndexerDownloadClientCheck` only reports older data).
+    client
+        .post::<serde_json::Value, _>(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Jackett all", "implementation": "Torznab",
+                "options": {"enableRss": false, "enableAutomaticSearch": true, "enableInteractiveSearch": true},
+                "settings": {"baseUrl": "http://jackett:9117/api/v2.0/indexers/all/results/torznab", "apiPath": "/api", "apiKey": "k"}
+            }),
+        )
+        .await
+        .unwrap();
+    // A recycle bin that cannot be written, and completed download handling off.
+    let mut mm = client.media_management().await.unwrap();
+    mm.recycle_bin = Some("/nonexistent/kitsunarr-recycle".into());
+    client.put_media_management(&mm).await.unwrap();
+    let health = sources(&client).await;
+    let has = |src: &str, text: &str| health.iter().any(|(s, m)| s == src && m.contains(text));
+    assert!(
+        has(
+            "IndexerRssCheck",
+            "No indexers available with RSS sync enabled"
+        ),
+        "{health:#?}"
+    );
+    assert!(has("IndexerJackettAllCheck", "Jackett all"), "{health:#?}");
+    assert!(has("RecyclingBinCheck", "/nonexistent/kitsunarr-recycle"));
+    assert!(
+        !health.iter().any(|(s, _)| s == "ApiKeyValidationCheck"),
+        "generated keys are long"
+    );
+}
+
+#[tokio::test]
 async fn ical_feed_lists_episodes_for_calendar_apps() {
     let (skyhook, _log) = skyhook_mock().await;
     let server = start_with(Metadata::with(
