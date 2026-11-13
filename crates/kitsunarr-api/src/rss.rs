@@ -40,6 +40,10 @@ pub(crate) struct StoredRelease {
     magnet_url: Option<String>,
     seeders: Option<i64>,
     peers: Option<i64>,
+    #[serde(default)]
+    codec: Option<String>,
+    #[serde(default)]
+    container: Option<String>,
 }
 
 impl StoredRelease {
@@ -65,6 +69,8 @@ impl StoredRelease {
             magnet_url: x.magnet_url.clone(),
             seeders: x.seeders,
             peers: x.peers,
+            codec: x.codec.clone(),
+            container: x.container.clone(),
         }
     }
 
@@ -94,6 +100,8 @@ impl StoredRelease {
                 magnet_url: self.magnet_url,
                 seeders: self.seeders,
                 peers: self.peers,
+                codec: self.codec,
+                container: self.container,
             },
         }
     }

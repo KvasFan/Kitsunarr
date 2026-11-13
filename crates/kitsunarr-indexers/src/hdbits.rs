@@ -83,11 +83,11 @@ pub(crate) fn search(settings: &Settings, c: &Criteria, search: &Search) -> Chai
         Search::Season { season } | Search::AnimeSeason { season, .. } => {
             tvdb_query(c, Some(*season), None)
         }
-        Search::DailyEpisode { date } => tvdb_query(c, None, None).map(|mut q| {
+        Search::DailyEpisode { date, .. } => tvdb_query(c, None, None).map(|mut q| {
             q.insert("search".into(), json!(date.format("%Y-%m-%d").to_string()));
             q
         }),
-        Search::DailySeason { year } => tvdb_query(c, None, None).map(|mut q| {
+        Search::DailySeason { year, .. } => tvdb_query(c, None, None).map(|mut q| {
             q.insert("search".into(), json!(format!("{year}-")));
             q
         }),
@@ -157,6 +157,8 @@ pub fn parse(body: &str, settings: &Settings) -> Result<Vec<Release>, IndexerErr
             imdb_id: None,
             languages: Vec::new(),
             indexer_flags,
+            codec: None,
+            container: None,
             info_hash: lenient::text(r.get("hash")),
             magnet_url: None,
             seeders: Some(seeders),

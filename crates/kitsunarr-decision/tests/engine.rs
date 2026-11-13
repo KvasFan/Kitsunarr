@@ -108,6 +108,8 @@ fn release(title: &str) -> Release {
         minimum_seeders: None,
         multi_languages: Vec::new(),
         indexer: "Indexer".into(),
+        codec: None,
+        container: None,
         info_hash: None,
     }
 }

@@ -118,6 +118,8 @@ pub(crate) fn release(title: &str) -> Release {
         minimum_seeders: None,
         multi_languages: Vec::new(),
         indexer: "Indexer".into(),
+        codec: None,
+        container: None,
         info_hash: None,
     }
 }
@@ -706,6 +708,19 @@ mod codec_normalized_size_fixture {
         c
     }
 
+    /// `DetectCodec`: the indexer's codec (`StructuredCodec`) before the title's.
+    #[test]
+    fn the_indexers_codec_comes_before_the_title() {
+        let mut c = case("Series.Title.S01E01.720p.HDTV.x264-GRP", 250);
+        c.release.codec = Some("H.265".into());
+        assert!(!c.accepted(specs::acceptable_size));
+        c.release.codec = Some("nonsense".into());
+        assert!(
+            c.accepted(specs::acceptable_size),
+            "an unknown codec name falls back"
+        );
+    }
+
     #[test]
     fn hevc_releases_are_judged_by_their_normalised_size() {
         // 250 MB of x264 fits; 250 MB of x265 counts as 417 MB and is too large.
@@ -907,6 +922,28 @@ fn raw_disk_specification_fixture() {
         let mut c = Case::new();
         c.release.title = title.into();
         assert_eq!(c.accepted(specs::raw_disk), !raw, "{title}");
+    }
+}
+
+/// `RawDiskSpecificationFixture`: the container the indexer reported (case-insensitive).
+#[test]
+fn raw_disk_specification_containers() {
+    for (container, message) in [
+        (None, None),
+        (Some("MKV"), None),
+        (Some("VOB"), Some("Raw DVD release")),
+        (Some("ISO"), Some("Raw DVD release")),
+        (Some("vob"), Some("Raw DVD release")),
+        (Some("M2TS"), Some("Raw Bluray release")),
+    ] {
+        let mut c = Case::new();
+        c.release.title = "Series.Title.S01E01.720p.HDTV.x264-GRP".into();
+        c.release.container = container.map(str::to_string);
+        assert_eq!(
+            c.check(specs::raw_disk).map(|r| r.message),
+            message.map(str::to_string),
+            "{container:?}"
+        );
     }
 }
 

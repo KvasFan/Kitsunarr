@@ -191,7 +191,8 @@ fn filelist_requests() {
         g.search(
             &criteria(1, Some("tt1")),
             &Search::DailyEpisode {
-                date: NaiveDate::from_ymd_opt(2020, 1, 2).unwrap()
+                date: NaiveDate::from_ymd_opt(2020, 1, 2).unwrap(),
+                episodes: Vec::new(),
             }
         )
         .all()
@@ -313,6 +314,7 @@ fn hdbits_requests() {
         &criteria(78901, None),
         &Search::DailyEpisode {
             date: NaiveDate::from_ymd_opt(2015, 4, 4).unwrap(),
+            episodes: Vec::new(),
         },
     );
     let q = body(&daily.all().next().unwrap().requests()[0]);
@@ -748,4 +750,32 @@ async fn torrent_rss_detects_the_layout_once() {
         .generator(&rss, &caps)
         .search(&criteria(1, None), &Search::Season { season: 1 });
     assert_eq!(search.all().count(), 0);
+}
+
+/// `BroadcastheNetRequestGenerator`: daily searches by date, then a tier by season and episode.
+#[test]
+fn daily_searches_add_a_season_and_episode_tier() {
+    let chain = btn_search(
+        433335,
+        &Search::DailyEpisode {
+            date: NaiveDate::from_ymd_opt(2023, 4, 2).unwrap(),
+            episodes: vec![(2023, 41)],
+        },
+    );
+    assert_eq!(chain.tiers.len(), 2);
+    assert_eq!(queried(&chain, 0)[0]["name"], "2023.04.02");
+    assert_eq!(queried(&chain, 1)[0]["name"], "S2023E41");
+    let season = btn_search(
+        433335,
+        &Search::DailySeason {
+            year: 2023,
+            episodes: vec![(2023, 40), (2023, 41)],
+        },
+    );
+    assert_eq!(queried(&season, 0)[0]["name"], "2023%");
+    let names: Vec<String> = queried(&season, 1)
+        .iter()
+        .map(|n| n["name"].as_str().unwrap().to_string())
+        .collect();
+    assert_eq!(names, ["S2023E40", "S2023E41"]);
 }

@@ -160,13 +160,17 @@ pub fn factor(profile: &QualityProfile, family: &str) -> f64 {
 }
 
 /// `Normalize`: (family, factor, normalised size in bytes).
+/// The family is the indexer's codec when it names one (`StructuredCodec`), else the title's.
 pub fn normalize(
     profile: &QualityProfile,
     title: &str,
     parsed: &ParsedEpisodeInfo,
     size: i64,
+    codec: Option<&str>,
 ) -> (&'static str, f64, i64) {
-    let family = from_title(title, parsed);
+    let family = codec
+        .and_then(structured)
+        .unwrap_or_else(|| from_title(title, parsed));
     let m = factor(profile, family);
     (family, m, (size as f64 * m).round() as i64)
 }

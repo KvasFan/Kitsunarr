@@ -196,6 +196,109 @@ pub(crate) fn to_item(r: IndexerRelease, d: &Decision, series_id: i64) -> Releas
     }
 }
 
+/// `SeasonSearch` for daily series (`SearchDailySeason`: one search per air year, a single
+/// episode by its date) and for specials (`SearchSpecial`). `None`: a regular season search.
+fn season_by_kind(
+    series_type: SeriesType,
+    season: i32,
+    episodes: &[&EpisodeItem],
+    scene_titles: &[String],
+    monitored_only: bool,
+) -> Option<(Vec<(Search, SearchKind)>, String)> {
+    let eligible: Vec<&&EpisodeItem> = episodes
+        .iter()
+        .filter(|e| !monitored_only || e.monitored)
+        .collect();
+    if series_type == SeriesType::Daily && season > 0 {
+        let mut years: std::collections::BTreeMap<i32, Vec<(&EpisodeItem, chrono::NaiveDate)>> =
+            std::collections::BTreeMap::new();
+        for e in &eligible {
+            if let Some(date) = e
+                .air_date
+                .as_deref()
+                .and_then(|d| chrono::NaiveDate::parse_from_str(d, "%Y-%m-%d").ok())
+            {
+                use chrono::Datelike;
+                years.entry(date.year()).or_default().push((e, date));
+            }
+        }
+        let searches = years
+            .into_iter()
+            .map(|(year, eps)| {
+                let numbers: Vec<(i32, i32)> = eps
+                    .iter()
+                    .map(|(e, _)| (e.season_number, e.episode_number))
+                    .collect();
+                match eps.as_slice() {
+                    [(_, date)] => (
+                        Search::DailyEpisode {
+                            date: *date,
+                            episodes: numbers,
+                        },
+                        SearchKind::DailyEpisode,
+                    ),
+                    _ => (
+                        Search::DailySeason {
+                            year,
+                            episodes: numbers,
+                        },
+                        SearchKind::DailySeason,
+                    ),
+                }
+            })
+            .collect();
+        return Some((searches, format!("Season {season} (by air date)")));
+    }
+    if season == 0 {
+        let mut clean: Vec<String> = Vec::new();
+        for t in scene_titles.iter().map(|t| clean_scene_title(t)) {
+            if !clean.contains(&t) {
+                clean.push(t);
+            }
+        }
+        let mut queries: Vec<String> = Vec::new();
+        for e in &eligible {
+            let Some(title) = e.title.as_deref().filter(|t| !t.trim().is_empty()) else {
+                continue;
+            };
+            for c in &clean {
+                let query = format!("{c} {}", clean_scene_title(title));
+                if !queries
+                    .iter()
+                    .any(|q| q.to_lowercase() == query.to_lowercase())
+                {
+                    queries.push(query);
+                }
+            }
+        }
+        let mut searches = vec![(
+            Search::Special {
+                episode_query_titles: queries,
+                episode_titles: eligible
+                    .iter()
+                    .filter_map(|e| e.title.clone())
+                    .filter(|t| !t.trim().is_empty())
+                    .collect(),
+            },
+            SearchKind::Special,
+        )];
+        for e in &eligible {
+            searches.push((
+                Search::SingleEpisode {
+                    season: 0,
+                    episode: e.episode_number,
+                },
+                SearchKind::SingleEpisode {
+                    season: 0,
+                    episode: e.episode_number,
+                },
+            ));
+        }
+        return Some((searches, "Specials".into()));
+    }
+    None
+}
+
 /// `ReleaseSearchService.EpisodeSearch`: the searches for one episode, with a description.
 fn episode_searches(
     series_type: SeriesType,
@@ -274,7 +377,13 @@ fn episode_searches(
                     )
                 })?;
             (
-                vec![(Search::DailyEpisode { date }, SearchKind::DailyEpisode)],
+                vec![(
+                    Search::DailyEpisode {
+                        date,
+                        episodes: vec![(e.season_number, e.episode_number)],
+                    },
+                    SearchKind::DailyEpisode,
+                )],
                 format!("{label} ({date})"),
             )
         }
@@ -713,45 +822,87 @@ pub(crate) async fn run_search(
                         .map(|e| e.id)
                         .collect(),
                 };
-                // `GetSceneSeasonMappings`: one search per scene season the requested episodes
-                // fall in (in most series just the season itself).
-                let mut seasons: Vec<i32> = episodes
+                let wanted: Vec<&EpisodeItem> = episodes
                     .iter()
                     .filter(|e| e.season_number == season && requested.contains(&e.id))
-                    .map(|e| e.scene_season_number.unwrap_or(season))
                     .collect();
-                seasons.sort_unstable();
-                seasons.dedup();
-                if seasons.is_empty() {
-                    seasons.push(season);
-                }
-                let searches = seasons
-                    .iter()
-                    .map(|&scene| {
-                        if anime {
-                            (
-                                Search::AnimeSeason {
-                                    season: scene,
-                                    season_scene_titles: Vec::new(),
-                                    pack_search_only: q.season_packs_only,
-                                },
-                                SearchKind::AnimeSeason,
-                            )
-                        } else {
-                            (
-                                Search::Season { season: scene },
-                                SearchKind::Season { season: scene },
-                            )
-                        }
-                    })
-                    .collect();
-                let description = if seasons == [season] {
-                    format!("Season {season}")
+                if let Some(planned) = season_by_kind(
+                    detail.item.series_type,
+                    season,
+                    &wanted,
+                    &criteria.scene_titles,
+                    automatic && options.monitored_only,
+                ) {
+                    (planned.0, planned.1, requested)
                 } else {
-                    let scene: Vec<String> = seasons.iter().map(|s| s.to_string()).collect();
-                    format!("Season {season} (scene seasons {})", scene.join(", "))
-                };
-                (searches, description, requested)
+                    // `GetSceneSeasonMappings`: one search per scene season the requested episodes
+                    // fall in (in most series just the season itself).
+                    let mut seasons: Vec<i32> = episodes
+                        .iter()
+                        .filter(|e| e.season_number == season && requested.contains(&e.id))
+                        .map(|e| e.scene_season_number.unwrap_or(season))
+                        .collect();
+                    seasons.sort_unstable();
+                    seasons.dedup();
+                    if seasons.is_empty() {
+                        seasons.push(season);
+                    }
+                    let searches: Vec<(Search, SearchKind)> = seasons
+                        .iter()
+                        .map(|&scene| {
+                            if anime {
+                                (
+                                    Search::AnimeSeason {
+                                        season: scene,
+                                        season_scene_titles: Vec::new(),
+                                        pack_search_only: q.season_packs_only,
+                                    },
+                                    SearchKind::AnimeSeason,
+                                )
+                            } else {
+                                (
+                                    Search::Season { season: scene },
+                                    SearchKind::Season { season: scene },
+                                )
+                            }
+                        })
+                        .collect();
+                    let description = if seasons == [season] {
+                        format!("Season {season}")
+                    } else {
+                        let scene: Vec<String> = seasons.iter().map(|s| s.to_string()).collect();
+                        format!("Season {season} (scene seasons {})", scene.join(", "))
+                    };
+                    // A scene season holding a single requested episode is searched as that
+                    // episode (`SeasonSearch`: `mapping.Episodes.Count == 1`).
+                    let searches = searches
+                        .into_iter()
+                        .zip(seasons.iter())
+                        .map(|(search, &scene)| {
+                            let single: Vec<&&EpisodeItem> = wanted
+                                .iter()
+                                .filter(|e| e.scene_season_number.unwrap_or(season) == scene)
+                                .collect();
+                            match single.as_slice() {
+                                [e] if !anime => {
+                                    let n = e.scene_episode_number.unwrap_or(e.episode_number);
+                                    (
+                                        Search::SingleEpisode {
+                                            season: scene,
+                                            episode: n,
+                                        },
+                                        SearchKind::SingleEpisode {
+                                            season: scene,
+                                            episode: n,
+                                        },
+                                    )
+                                }
+                                _ => search,
+                            }
+                        })
+                        .collect();
+                    (searches, description, requested)
+                }
             }
             (None, None) => {
                 return Err(ApiError::field(
@@ -995,6 +1146,8 @@ pub(crate) fn decision_release(
             .map(|e| e.multi_languages.clone())
             .unwrap_or_default(),
         indexer: r.indexer.clone(),
+        codec: rel.codec.clone(),
+        container: rel.container.clone(),
         info_hash: rel
             .info_hash
             .clone()
@@ -1272,8 +1425,64 @@ mod tests {
         assert_eq!(
             searches(SeriesType::Daily, &["Show"], &dated),
             vec![Search::DailyEpisode {
-                date: chrono::NaiveDate::from_ymd_opt(2024, 3, 5).unwrap()
+                date: chrono::NaiveDate::from_ymd_opt(2024, 3, 5).unwrap(),
+                episodes: vec![(2024, 1)],
             }]
         );
+    }
+
+    /// `SeasonSearch` for daily series and specials.
+    #[test]
+    fn daily_and_special_seasons_are_searched_as_sonarr_does() {
+        let mut a = episode(1, 1, None, "One");
+        a.id = 1;
+        a.air_date = Some("2023-12-30".into());
+        let mut b = episode(1, 2, None, "Two");
+        b.id = 2;
+        b.air_date = Some("2024-01-02".into());
+        let mut c = episode(1, 3, None, "Three");
+        c.id = 3;
+        c.air_date = Some("2024-01-03".into());
+        let eps = [&a, &b, &c];
+        let (searches, _) =
+            season_by_kind(SeriesType::Daily, 1, &eps, &["Show".into()], false).unwrap();
+        assert_eq!(
+            searches.iter().map(|(s, _)| s.clone()).collect::<Vec<_>>(),
+            vec![
+                Search::DailyEpisode {
+                    date: chrono::NaiveDate::from_ymd_opt(2023, 12, 30).unwrap(),
+                    episodes: vec![(1, 1)],
+                },
+                Search::DailySeason {
+                    year: 2024,
+                    episodes: vec![(1, 2), (1, 3)],
+                },
+            ]
+        );
+        assert_eq!(searches[1].1, SearchKind::DailySeason);
+        // Standard seasons above 0 are regular season searches.
+        assert!(season_by_kind(SeriesType::Standard, 1, &eps, &[], false).is_none());
+        // Specials: title queries, then each episode by number.
+        let mut s1 = episode(0, 1, None, "The Special");
+        s1.monitored = false;
+        let s2 = episode(0, 2, None, "Another One");
+        let (searches, label) =
+            season_by_kind(SeriesType::Standard, 0, &[&s1, &s2], &["Show".into()], true).unwrap();
+        assert_eq!(label, "Specials");
+        assert_eq!(
+            searches[0].0,
+            Search::Special {
+                episode_query_titles: vec!["Show Another+One".into()],
+                episode_titles: vec!["Another One".into()],
+            }
+        );
+        assert_eq!(
+            searches[1].0,
+            Search::SingleEpisode {
+                season: 0,
+                episode: 2
+            }
+        );
+        assert_eq!(searches.len(), 2, "unmonitored specials are skipped");
     }
 }

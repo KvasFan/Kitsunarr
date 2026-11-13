@@ -294,6 +294,7 @@ fn daily_and_season_zero_formats() {
     let caps = Capabilities::default();
     let daily = Search::DailyEpisode {
         date: chrono::NaiveDate::from_ymd_opt(2024, 3, 7).unwrap(),
+        episodes: Vec::new(),
     };
     assert!(
         first_urls(&generator(&s, &caps).search(&criteria(&["Show"]), &daily))[0]

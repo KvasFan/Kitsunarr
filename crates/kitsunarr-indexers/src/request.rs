@@ -269,9 +269,15 @@ pub enum Search {
     },
     DailyEpisode {
         date: NaiveDate,
+        /// The searched episodes' (season, episode), for indexers that also search by number
+        /// (BroadcasTheNet's second tier).
+        #[serde(default)]
+        episodes: Vec<(i32, i32)>,
     },
     DailySeason {
         year: i32,
+        #[serde(default)]
+        episodes: Vec<(i32, i32)>,
     },
     AnimeEpisode {
         absolute: i32,
@@ -799,7 +805,7 @@ impl Generator<'_> {
                 let p = format!("&season={}", newznabify_season(*season));
                 self.standard(c, &self.settings.categories, &p)
             }
-            Search::DailyEpisode { date } => {
+            Search::DailyEpisode { date, .. } => {
                 if !caps.supports_episode_search() || !text_or_id {
                     return Chain::default();
                 }
@@ -811,7 +817,7 @@ impl Generator<'_> {
                 );
                 self.standard(c, &self.settings.categories, &p)
             }
-            Search::DailySeason { year } => {
+            Search::DailySeason { year, .. } => {
                 if !caps.supports_episode_search() || !text_or_id {
                     return Chain::default();
                 }

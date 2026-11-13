@@ -119,6 +119,9 @@ pub struct Release {
     pub languages: Vec<&'static Language>,
     pub indexer_flags: u32,
     pub info_hash: Option<String>,
+    /// The video codec and container the indexer reported (BroadcasTheNet).
+    pub codec: Option<String>,
+    pub container: Option<String>,
     pub magnet_url: Option<String>,
     pub seeders: Option<i64>,
     pub peers: Option<i64>,
@@ -433,6 +436,8 @@ fn parse_nyaa(doc: &Element, base: &url::Url) -> Result<Vec<Release>, IndexerErr
             languages: Vec::new(),
             indexer_flags: 0,
             info_hash,
+            codec: None,
+            container: None,
             seeders,
             peers: match (seeders, leechers) {
                 (Some(s), Some(l)) => Some(s + l),
@@ -564,6 +569,8 @@ fn parse_item(
             imdb_id: imdb(attrs.get("imdb")),
             languages,
             indexer_flags: 0,
+            codec: None,
+            container: None,
             info_hash: None,
             magnet_url: None,
             seeders: None,

@@ -37,6 +37,10 @@ pub struct Release {
     pub indexer: String,
     /// Torrents: the info hash the indexer gave (or the magnet link's).
     pub info_hash: Option<String>,
+    /// The video codec the indexer reported (BroadcasTheNet), before the title's.
+    pub codec: Option<String>,
+    /// The container the indexer reported (BroadcasTheNet: `VOB`, `ISO`, `M2TS` are discs).
+    pub container: Option<String>,
 }
 
 /// A blocklisted release (`ReleaseComparerModel`).
@@ -134,6 +138,8 @@ pub enum SearchKind {
         season: i32,
     },
     DailyEpisode,
+    /// Sonarr's `DailySeasonSearchCriteria`: a daily series' episodes of one year.
+    DailySeason,
     AnimeEpisode {
         season_search: bool,
     },

@@ -86,9 +86,33 @@ fn series(c: &Criteria) -> Option<(&'static str, String)> {
     }
 }
 
+/// The second tier of daily searches: each episode by season and episode number.
+fn daily_tier(
+    settings: &Settings,
+    mut chain: Chain,
+    id: &(&'static str, String),
+    episodes: &[(i32, i32)],
+) -> Chain {
+    chain.add_tier();
+    for (season, episode) in episodes {
+        chain.add(paged(
+            settings,
+            &query(&[
+                id.clone(),
+                ("category", "Episode".into()),
+                ("name", format!("S{season:02}E{episode:02}")),
+            ]),
+        ));
+    }
+    chain
+}
+
+fn date_name(date: chrono::NaiveDate) -> String {
+    date.format("%Y.%m.%d").to_string()
+}
+
 /// `GetSearchRequests`. Episode numbers below 100 are wildcarded so that three-digit numbers
-/// match too. Daily searches have no season/episode tier: Kitsunarr's daily criteria carry
-/// only the air date.
+/// match too. Daily searches add a second tier by the episodes' season and episode numbers.
 pub(crate) fn search(settings: &Settings, c: &Criteria, search: &Search) -> Chain {
     let mut chain = Chain::default();
     let Some(id) = series(c) else {
@@ -114,8 +138,14 @@ pub(crate) fn search(settings: &Settings, c: &Criteria, search: &Search) -> Chai
             // The season wildcard already matches three-digit episode numbers.
             add("Episode", format!("S{season:02}E%"));
         }
-        Search::DailyEpisode { date } => add("Episode", date.format("%Y.%m.%d").to_string()),
-        Search::DailySeason { year } => add("Episode", format!("{year}%")),
+        Search::DailyEpisode { date, episodes } => {
+            add("Episode", date_name(*date));
+            return daily_tier(settings, chain, &id, episodes);
+        }
+        Search::DailySeason { year, episodes } => {
+            add("Episode", format!("{year}%"));
+            return daily_tier(settings, chain, &id, episodes);
+        }
         Search::AnimeEpisode {
             season, episode, ..
         } => {
@@ -256,6 +286,8 @@ pub fn parse(body: &str, request_url: &str) -> Result<Vec<Release>, IndexerError
                 .map(|i| format!("tt{i:07}")),
             languages: Vec::new(),
             indexer_flags,
+            codec: lenient::text(t.get("Codec")),
+            container: lenient::text(t.get("Container")),
             info_hash: lenient::text(t.get("InfoHash")),
             magnet_url: None,
             seeders,

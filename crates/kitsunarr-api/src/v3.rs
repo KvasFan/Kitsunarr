@@ -1383,6 +1383,8 @@ async fn push_release(
             imdb_id: b.imdb_id.clone(),
             languages: Vec::new(),
             indexer_flags: 0,
+            codec: None,
+            container: None,
             info_hash: b.info_hash.clone(),
             magnet_url,
             seeders: b.seeders,

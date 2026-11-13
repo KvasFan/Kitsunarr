@@ -249,6 +249,8 @@ impl RssParser {
             imdb_id: None,
             languages: Vec::new(),
             indexer_flags: 0,
+            codec: None,
+            container: None,
             info_hash: None,
             magnet_url: None,
             seeders: None,

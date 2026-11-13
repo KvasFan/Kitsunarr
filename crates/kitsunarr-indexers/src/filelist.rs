@@ -183,6 +183,8 @@ pub fn parse(body: &str, settings: &Settings) -> Result<Vec<Release>, IndexerErr
                 .and_then(|i| lenient::imdb(&i)),
             languages: Vec::new(),
             indexer_flags,
+            codec: None,
+            container: None,
             info_hash: None,
             magnet_url: None,
             seeders: Some(seeders),

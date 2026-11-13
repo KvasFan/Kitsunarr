@@ -167,6 +167,7 @@ impl Comparer<'_> {
                         &release.title,
                         parsed,
                         release.size,
+                        release.codec.as_deref(),
                     )
                     .2
                 }

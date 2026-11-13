@@ -355,6 +355,7 @@ pub(crate) fn acceptable_size(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejectio
         &s.release.title,
         s.parsed,
         s.release.size,
+        s.release.codec.as_deref(),
     );
     let shown = if factor == 1.0 {
         size_suffix(s.release.size)
@@ -685,9 +686,21 @@ static DISC: LazyLock<[NetRegex; 3]> = LazyLock::new(|| {
 
 /// `RawDiskSpecification` (indexers here never report a container, so only the title counts).
 pub(crate) fn raw_disk(_: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
-    DISC.iter()
-        .any(|r| r.is_match(&s.release.title))
-        .then(|| Rejection::new(R::Raw, "Raw Bluray/DVD release"))
+    if DISC.iter().any(|r| r.is_match(&s.release.title)) {
+        return Some(Rejection::new(R::Raw, "Raw Bluray/DVD release"));
+    }
+    // The container the indexer reported.
+    match s
+        .release
+        .container
+        .as_deref()
+        .map(str::to_lowercase)
+        .as_deref()
+    {
+        Some("vob" | "iso") => Some(Rejection::new(R::Raw, "Raw DVD release")),
+        Some("m2ts") => Some(Rejection::new(R::Raw, "Raw Bluray release")),
+        _ => None,
+    }
 }
 
 /// A release-profile term: `/pattern/modifiers` is a regular expression, anything else a
