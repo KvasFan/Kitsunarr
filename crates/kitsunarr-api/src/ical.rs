@@ -85,9 +85,34 @@ fn fold(line: &str, out: &mut String) {
     out.push_str("\r\n");
 }
 
+/// A film's release (Tanukarr's films are series of one feature): written as an all-day
+/// event, as Radarr's feed writes releases.
+#[derive(Debug, Clone, PartialEq)]
+pub struct FeedMovie {
+    pub movie_id: i64,
+    pub title: String,
+    pub studio: Option<String>,
+    pub overview: Option<String>,
+    /// `cinemas`, `digital` or `physical`.
+    pub kind: &'static str,
+    pub date: chrono::NaiveDate,
+    pub has_file: bool,
+}
+
 /// The calendar document.
 pub fn render(
     episodes: &[FeedEpisode],
+    q: &FeedQuery,
+    product: &str,
+    now: DateTime<Utc>,
+) -> String {
+    render_with_movies(episodes, &[], q, product, now)
+}
+
+/// The calendar document, with film releases.
+pub fn render_with_movies(
+    episodes: &[FeedEpisode],
+    movies: &[FeedMovie],
     q: &FeedQuery,
     product: &str,
     now: DateTime<Utc>,
@@ -142,6 +167,35 @@ pub fn render(
         ));
         lines.push(format!("SUMMARY:{}", escape(&summary)));
         lines.push(format!("UID:NzbDrone_episode_{}", e.episode_id));
+        lines.push("END:VEVENT".to_string());
+        for l in lines {
+            fold(&l, &mut out);
+        }
+    }
+    for m in movies {
+        let label = match m.kind {
+            "cinemas" => "Cinema Release",
+            "digital" => "Digital Release",
+            _ => "Physical Release",
+        };
+        let mut lines = vec!["BEGIN:VEVENT".to_string()];
+        if let Some(st) = m.studio.as_deref().filter(|x| !x.is_empty()) {
+            lines.push(format!("CATEGORIES:{}", escape(st)));
+        }
+        if let Some(o) = m.overview.as_deref().filter(|o| !o.is_empty()) {
+            lines.push(format!("DESCRIPTION:{}", escape(o)));
+        }
+        lines.push(format!("DTSTART;VALUE=DATE:{}", m.date.format("%Y%m%d")));
+        lines.push(format!("DTSTAMP:{stamp}"));
+        lines.push(format!(
+            "STATUS:{}",
+            if m.has_file { "CONFIRMED" } else { "TENTATIVE" }
+        ));
+        lines.push(format!(
+            "SUMMARY:{}",
+            escape(&format!("{} ({label})", m.title))
+        ));
+        lines.push(format!("UID:Kitsunarr_movie_{}_{}", m.movie_id, m.kind));
         lines.push("END:VEVENT".to_string());
         for l in lines {
             fold(&l, &mut out);
@@ -234,12 +288,76 @@ async fn calendar_feed(
         .map_err(kitsunarr_db::DbError::from)?;
         episodes.retain(|e| tagged.contains(&e.episode_id));
     }
-    let body = render(&episodes, &q, "Kitsunarr", Utc::now());
+    let movies = feed_movies(&state, &q, start, end, &tag_ids).await?;
+    let body = render_with_movies(&episodes, &movies, &q, "Kitsunarr", Utc::now());
     Ok((
         [(header::CONTENT_TYPE, "text/calendar; charset=utf-8")],
         body,
     )
         .into_response())
+}
+
+/// Film releases (cinema, digital, physical) between `start` and `end`.
+async fn feed_movies(
+    state: &AppState,
+    q: &FeedQuery,
+    start: DateTime<Utc>,
+    end: DateTime<Utc>,
+    tag_ids: &[i64],
+) -> ApiResult<Vec<FeedMovie>> {
+    type Row = (
+        i64,
+        String,
+        Option<String>,
+        Option<String>,
+        Option<String>,
+        Option<String>,
+        Option<String>,
+        bool,
+    );
+    let rows: Vec<Row> = kitsunarr_db::sqlx::query_as(
+        "SELECT m.id, m.title, m.studio, m.overview, m.in_cinemas, m.digital_release, m.physical_release, \
+           EXISTS (SELECT 1 FROM movie_files f WHERE f.movie_id = m.id) \
+         FROM movies m WHERE (? OR m.monitored = 1) \
+           AND (? = '[]' OR EXISTS (SELECT 1 FROM movie_tags t WHERE t.movie_id = m.id \
+                AND t.tag_id IN (SELECT value FROM json_each(?))))",
+    )
+    .bind(q.unmonitored)
+    .bind(serde_json::to_string(tag_ids).unwrap_or_default())
+    .bind(serde_json::to_string(tag_ids).unwrap_or_default())
+    .fetch_all(state.db.pool())
+    .await
+    .map_err(kitsunarr_db::DbError::from)?;
+    let (first, last) = (start.date_naive(), end.date_naive());
+    let mut out = Vec::new();
+    for (id, title, studio, overview, cinemas, digital, physical, has_file) in rows {
+        for (kind, date) in [
+            ("cinemas", cinemas),
+            ("digital", digital),
+            ("physical", physical),
+        ] {
+            let Some(date) = date
+                .as_deref()
+                .and_then(|d| d.get(..10))
+                .and_then(|d| chrono::NaiveDate::parse_from_str(d, "%Y-%m-%d").ok())
+            else {
+                continue;
+            };
+            if date >= first && date < last {
+                out.push(FeedMovie {
+                    movie_id: id,
+                    title: title.clone(),
+                    studio: studio.clone(),
+                    overview: overview.clone(),
+                    kind,
+                    date,
+                    has_file,
+                });
+            }
+        }
+    }
+    out.sort_by_key(|m| m.date);
+    Ok(out)
 }
 
 #[cfg(test)]
@@ -307,5 +425,27 @@ mod tests {
         long.overview = Some("x".repeat(200));
         let ics = render(&[long], &FeedQuery::default(), "Kitsunarr", now);
         assert!(ics.lines().all(|l| l.len() <= 75));
+    }
+
+    #[test]
+    fn film_releases_are_all_day_events() {
+        let now = DateTime::parse_from_rfc3339("2026-11-13T10:00:00Z")
+            .unwrap()
+            .with_timezone(&Utc);
+        let movie = FeedMovie {
+            movie_id: 3,
+            title: "Suzume".into(),
+            studio: Some("CoMix Wave".into()),
+            overview: None,
+            kind: "digital",
+            date: chrono::NaiveDate::from_ymd_opt(2026, 11, 20).unwrap(),
+            has_file: false,
+        };
+        let ics = render_with_movies(&[], &[movie], &FeedQuery::default(), "Kitsunarr", now);
+        assert!(ics.contains("DTSTART;VALUE=DATE:20261120\r\n"), "{ics}");
+        assert!(ics.contains("SUMMARY:Suzume (Digital Release)\r\n"));
+        assert!(ics.contains("UID:Kitsunarr_movie_3_digital\r\n"));
+        assert!(ics.contains("CATEGORIES:CoMix Wave\r\n"));
+        assert!(ics.contains("STATUS:TENTATIVE\r\n"));
     }
 }
