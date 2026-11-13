@@ -1,0 +1,968 @@
+# Japanese interface strings: English	Japanese. {…} marks a placeholder.
+custom	カスタム
+indeterminate	不確定
+mixed	混在
+retired	廃止
+· container	· コンテナ
+· finished {format_datetime(f)}	· 完了 {format_datetime(f)}
+· missing	· 欠落
+· on disk	· ディスク上
+· today	· 今日
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} 話
+— MiB per minute; empty uses Settings › Quality	— 1分あたりのMiB。空欄の場合は 設定 › 品質 を使用
+— a release's size is multiplied by its codec's factor before the size limits apply	— サイズ制限を適用する前に、リリースのサイズにそのコーデックの係数を掛けます
+— all profiles at once	— すべてのプロファイルに一括適用
+— codec and title criteria, custom qualities (Tanukarr)	— コーデックとタイトルの条件、カスタム品質 (Tanukarr)
+— enter the code	— コードを入力
+(empty)	(空)
++ Add mapping	+ マッピングを追加
++ New format	+ 新しいフォーマット
++ New profile	+ 新しいプロファイル
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (オフ) または 10～120。RSS同期は システム › タスク からも実行できます。
+3 hours ago	3時間前
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	この時間進捗のないダウンロード中のトレントは失敗とみなされ、ブロックリストに追加されて再検索されます。0 でオフ。進捗は Kitsunarr の起動時から追跡されます。
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	AniList または MyAnimeList の関連情報から見つかったフランチャイズグループ。後から追加された同じフランチャイズのタイトルも参加します。
+A new API key was generated. Update the applications that use it.	新しいAPIキーが生成されました。これを使用しているアプリケーションを更新してください。
+A regular expression, case-insensitive; empty matches every title.	正規表現 (大文字と小文字を区別しない)。空欄はすべてのタイトルに一致します。
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	リリースには、シリーズのプロファイルで許可されたプリセットのうち、ソース、解像度、コーデック、タイトルパターンが一致する最も具体的なものが割り当てられます。コーデックまたはパターンを指定した標準品質では、それを満たさないリリースは Unknown になります。カスタムプリセットはすべてのプロファイルに不許可として追加されます。
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	サイズ制限を適用する前に、リリースのサイズにそのコーデックの係数を掛けます。「混在」はプロファイルごとに係数が異なることを意味します。ここに入力した値はすべてのプロファイルに書き込まれます。
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	フランチャイズまたは手動グループに参加したタイトルは、それまでのグループから外れます。ファイルとフォルダーは移動されません。
+API key	APIキー
+API key needed	APIキーが必要
+API keys and language	APIキーと言語
+API path	APIパス
+About	このソフトウェアについて
+Absolute path; empty to delete permanently.	絶対パス。空欄の場合は完全に削除します。
+Accepted	承認
+Account lists	アカウントのリスト
+Actions	アクション
+Actual	実際
+Add	追加
+Add a Newznab or Torznab indexer and enable interactive search for it.	Newznab または Torznab のインデクサーを追加し、インタラクティブ検索を有効にしてください。
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	テンプレートからクライアントを追加し、エディターでテストを使用してください。取得、キュー、インポートは有効なすべてのクライアントを使用します。ブラックホールは取得したものをフォルダーに書き込み、監視フォルダーに現れたものをインポートします。各クライアントの「完了/失敗したダウンロードを削除」オプションは、クライアントの処理が終わったダウンロードを (ファイルごと) 削除します。
+Add a download client in Settings › Download clients and enable it.	設定 › ダウンロードクライアント でダウンロードクライアントを追加して有効にしてください。
+Add a root folder first: it is where this title's folder will live.	先にルートフォルダーを追加してください。このタイトルのフォルダーはそこに作成されます。
+Add a tag above first.	先に上でタグを追加してください。
+Add a title	タイトルを追加
+Add auto tag	オートタグを追加
+Add condition	条件の追加
+Add exclusion	除外を追加
+Add media	メディアを追加
+Add one, or migrate them from Sonarr/Tanukarr.	追加するか、Sonarr/Tanukarr から移行してください。
+Add preset	プリセットを追加
+Add selected	選択項目を追加
+Add series or movies below.	下でシリーズまたは映画を追加してください。
+Add tag	タグを追加
+Add the list's tags	リストのタグを追加
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	TVmaze または AniList からタイトルを追加するか、既存の Sonarr または Tanukarr のライブラリを取り込んでください。
+Add to library	ライブラリに追加
+Add {}	{} を追加
+Add {} ({y})	{} ({y}) を追加
+Add — {}	追加 — {}
+Add, and remove when they leave the list	追加し、リストから外れたら削除
+Added	追加日
+Added to the titles this list adds.	このリストが追加するタイトルに付与されます。
+Adding titles	タイトルを追加中
+Adding…	追加中…
+Address	アドレス
+Age	経過
+Aired	放送済み
+Aired monitored episodes without a file appear here.	ファイルのない放送済みの監視中エピソードがここに表示されます。
+All	すべて
+All collections	すべてのコレクション
+All episodes	すべてのエピソード
+All episodes in the series folder	シリーズフォルダー内のすべてのエピソード
+All events	すべてのイベント
+Allow zero size (the feed has no release sizes)	サイズ0を許可 (フィードにリリースサイズがない)
+Also delete the series folder and its files (to the recycle bin when one is set)	シリーズフォルダーとそのファイルも削除する (ごみ箱が設定されていればごみ箱へ)
+Also for releases grabbed from interactive search	インタラクティブ検索で取得したリリースにも適用
+Also known as	別名
+Always, even when renaming is off	常に (リネームがオフでも)
+Analyze video files (resolution, runtime and codecs, with ffprobe)	動画ファイルを解析 (ffprobe で解像度、再生時間、コーデック)
+AniList and MyAnimeList titles are always added as anime.	AniList と MyAnimeList のタイトルは常にアニメとして追加されます。
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList、MyAnimeList、Trakt、Simkl、TMDB、MDBList、Plex、別の Sonarr、カスタムJSONのリストは数時間ごとに読み込まれます。新しいタイトルは各リストのルートフォルダー、プロファイル、監視設定で追加されます。OAuth が必要なサービスでは、自分のアプリケーションの Client ID と貼り付けたトークンを使用します (Tanukarr から移行したトークンも引き続き使えます)。
+Anime	アニメ
+Anime / absolute numbering	アニメ / 絶対番号
+Anime categories	アニメカテゴリ
+Anime episode format	アニメエピソードの形式
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	アニメ映画は AniList から追加でき、Tanukarr からの移行では映画も一緒に取り込まれます。実写映画には TMDB カタログが必要です。
+Anime standard format search	アニメの標準形式検索
+Anime title, e.g. Frieren	アニメのタイトル (例: Frieren)
+Any	任意
+Any library	任意のライブラリ
+Applications using the current key will stop working until you give them the new one.	現在のキーを使用しているアプリケーションは、新しいキーを設定するまで動作しなくなります。
+Applied after every list has been read successfully and some title left a list.	すべてのリストが正常に読み込まれ、いずれかのタイトルがリストから外れた後に適用されます。
+Apply	適用
+Apply migration	移行を適用
+Apply profile	プロファイルを適用
+Applying migration	移行を適用中
+Applying…	適用中…
+As Settings › Media management says	設定 › メディア管理 の指定どおり
+At least 10 characters.	10文字以上。
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	{MIN_PASSWORD_LENGTH}文字以上。パスフレーズがおすすめです。
+Auto tag	オートタグ
+Auto tag saved. It applies when titles are next added, edited or refreshed.	オートタグを保存しました。次にタイトルが追加、編集、更新されたときに適用されます。
+Auto tagging	オートタグ
+Auto-refresh	自動更新
+Automatic	自動
+Automatic search	自動検索
+Automatic search for {label}: grabbed {}.	{label} の自動検索: {} を取得しました。
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	{label} の自動検索: {} 件のリリースが見つかり、{} 件が承認されましたが、何も取得されませんでした。
+Automatic search: grab the best release	自動検索: 最適なリリースを取得
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	自動化は一時停止中です: RSS同期、スケジュールされたリスト同期、自動検索はスキップされます。手動操作と進行中のダウンロードは継続します。
+Automation resumed.	自動化を再開しました。
+Available from	利用可能日
+Back to the dashboard	ダッシュボードに戻る
+Back up now	今すぐバックアップ
+Backup {} created.	バックアップ {} を作成しました。
+Backups	バックアップ
+Blocking:	ブロック要因:
+Blocklist	ブロックリスト
+Blocklist the release and search again	リリースをブロックリストに追加して再検索
+Blocklist the release: it is never grabbed again	リリースをブロックリストに追加: 二度と取得されません
+Blocklist “{title}” and search for a replacement?	「{title}」をブロックリストに追加して代わりを検索しますか？
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Sonarr (v3/v4) または Tanukarr のライブラリと設定を Kitsunarr に取り込みます。移行元は読み取られるだけで変更されることはなく、
+Bypass the proxy for local addresses	ローカルアドレスにはプロキシを使用しない
+Calendar	カレンダー
+Calendar →	カレンダー →
+Cancel	キャンセル
+Cancel compression	圧縮をキャンセル
+Cannot reach the server: {e}	サーバーに接続できません: {e}
+Catalogue	カタログ
+Category	カテゴリ
+Certificate validation	証明書の検証
+Change password	パスワードを変更
+Change series	シリーズを変更
+Changes	変更
+Check	確認
+Check library	ライブラリを確認
+Check now	今すぐ確認
+Check that the mapped series folders exist (read-only)	マッピングされたシリーズフォルダーが存在するか確認 (読み取り専用)
+Checked: {summary}.	確認完了: {summary}。
+Checking…	確認中…
+Choose a backup file	バックアップファイルを選択
+Choose a mode	モードを選択
+Choose a root folder and a quality profile.	ルートフォルダーと品質プロファイルを選択してください。
+Choose a season	シーズンを選択
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	シリーズとシーズンまたはエピソードを選択してください。結果には、Kitsunarr のパーサーが解釈した各リリースの内容が表示されます。
+Choose a series or movie…	シリーズまたは映画を選択…
+Choose source	移行元を選択
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	このリリースのエピソードを手動で選択してから取得 (選択内容はインポート時にも保持されます)
+Choose…	選択…
+Clean library	ライブラリを整理
+Clear	クリア
+Clear blocklist	ブロックリストをクリア
+Cleared {n} releases from the blocklist.	ブロックリストから {n} 件のリリースを削除しました。
+Client	クライアント
+Close	閉じる
+Codec	コーデック
+Codec factors saved in every profile.	コーデック係数をすべてのプロファイルに保存しました。
+Codec size factors	コーデック別サイズ係数
+Codecs	コーデック
+Collection film folder format	コレクションの映画フォルダー形式
+Collections	コレクション
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	コレクションは、Tanukarr から移行したとき、プロバイダーのデータから作成されたとき、またはここで作成したときに表示されます。
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Sonarr または Tanukarr から移行しますか？ 既存のシリーズ、設定、履歴を数ステップでインポートできます。
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	カンマ区切り。* はワイルドカード (*.lan) で、192.168.1.0/24 のようなIP範囲も使えます。
+Companion app keys	コンパニオンアプリのキー
+Complete series	シリーズ全体
+Completed and failed download handling	完了・失敗したダウンロードの処理
+Component	コンポーネント
+Compress series	シリーズを圧縮
+Compression	圧縮
+Compression queued.	圧縮をキューに追加しました。
+Compression worker is not connected.	圧縮ワーカーが接続されていません。
+Condition	条件
+Conditions	条件
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	同じ種類の条件は、いずれかが一致すれば一致となります (必須のものはすべて一致する必要があります)。すべての種類が一致する必要があります。
+Configure	設定
+Confirm password	パスワードの確認
+Connect	接続
+Connect to a running instance	実行中のインスタンスに接続
+Connecting…	接続中…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	データベースの整合性のあるコピーです。スケジュールされたバックアップは毎週実行されます (最新の8件を保持)。移行のたびにも事前に作成されます。復元するには、Kitsunarr を停止して次を実行してください:
+Continuing	継続中
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (フィードのリクエストと共に送信。例: uid=1; pass=…)
+Copied.	コピーしました。
+Copy	コピー
+Copy (keep the originals)	コピー (元ファイルを保持)
+Copy sizes from	サイズのコピー元
+Copy the token now; it is not shown again:	今すぐトークンをコピーしてください。再表示されません:
+Could not grab {}: {}	{} を取得できませんでした: {}
+Covers	対象
+Create	作成
+Create account	アカウントを作成
+Create group	グループを作成
+Create key	キーを作成
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	themoviedb.org › Settings › API で作成してください。TMDB のテレビシリーズと映画に使用されます。
+Create the administrator account. You will use it to sign in to Kitsunarr.	管理者アカウントを作成します。Kitsunarr へのサインインに使用します。
+Created	作成日
+Created when the first file is imported. Nothing is written to disk now.	最初のファイルがインポートされたときに作成されます。現時点ではディスクに何も書き込まれません。
+Creating…	作成中…
+Credit	クレジット
+Current file	現在のファイル
+Current password	現在のパスワード
+Custom format saved.	カスタムフォーマットを保存しました。
+Custom format score	カスタムフォーマットスコア
+Custom format scores	カスタムフォーマットスコア
+Custom formats	カスタムフォーマット
+Cutoff unmet	カットオフ未達
+Daily	デイリー
+Daily episode format	デイリーエピソードの形式
+Dashboard	ダッシュボード
+Data directory	データディレクトリ
+Database backup taken before the import: {b}	インポート前に作成したデータベースのバックアップ: {b}
+Database schema	データベーススキーマ
+Date	日付
+Date added	追加日
+Debug	デバッグ
+Decision	判定
+Default	デフォルト
+Defaults	デフォルト値
+Delay profile	遅延プロファイル
+Delay profile saved.	遅延プロファイルを保存しました。
+Delay profiles	遅延プロファイル
+Delete	削除
+Delete empty series folders	空のシリーズフォルダーを削除
+Delete file	ファイルを削除
+Delete group	グループを削除
+Delete profile	プロファイルを削除
+Delete “{path}”? It goes to the recycle bin when one is set.	「{path}」を削除しますか？ ごみ箱が設定されていればごみ箱に移動します。
+Delete “{}”?	「{}」を削除しますか？
+Delete “{}”? Its series and movies stay in the library.	「{}」を削除しますか？ そのシリーズと映画はライブラリに残ります。
+Deleted	削除済み
+Directory	ディレクトリ
+Disabled	無効
+Disabled for local addresses	ローカルアドレスでは無効
+Disk scanned: {}	ディスクをスキャンしました: {}
+Disk scanned: {} Not matched: {}	ディスクをスキャンしました: {} 一致なし: {}
+Do not prefer	優先しない
+Do not search for a replacement	代わりを検索しない
+Do nothing	何もしない
+Done	完了
+Download client options saved.	ダウンロードクライアントのオプションを保存しました。
+Download clients	ダウンロードクライアント
+Download failed	ダウンロード失敗
+Download queue	ダウンロードキュー
+Downloads	ダウンロード
+Duration	期間
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	各タイトルは1つのカタログに属し、更新時はそのカタログを読み込みます。タイトルが持つすべての識別子 (TheTVDB、TMDB、IMDb、TVmaze、AniList、MyAnimeList) は保持されます。Sonarr から移行したタイトルは TheTVDB に属します。
+Edit	編集
+Edit “{name}”	「{name}」を編集
+Edit “{}”	「{}」を編集
+Enable RSS	RSSを有効化
+Enable automatic search	自動検索を有効化
+Enable interactive search	インタラクティブ検索を有効化
+Enabled	有効
+Ended	終了
+English	English
+Entity	エンティティ
+Episode	エピソード
+Episode and movie naming	エピソードと映画の命名
+Episode image thumbs in the NFO	NFO 内のエピソードのサムネイル
+Episode images (<filename>-thumb.jpg)	エピソード画像 (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	エピソード画像 (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	エピソード画像 (Season##/filename.metathumb)
+Episode mappings in .plexmatch	.plexmatch 内のエピソードマッピング
+Episode metadata (<filename>.nfo)	エピソードのメタデータ (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	エピソードのメタデータ (Season##/filename.xml)
+Episode order	エピソードの順序
+Episode order changed: {} episodes updated, {} added.	エピソードの順序を変更しました: {} 件のエピソードを更新、{} 件を追加。
+Episodes	エピソード
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	エピソードは選択した順序で番号が振り直されます。ファイル、監視、履歴はそれぞれのエピソードに残ります。その後、新しい番号に合わせてファイルをリネームしてください。
+Episodes of {title}	{title} のエピソード
+Episodes on disk	ディスク上のエピソード
+Episodes whose file is below the quality profile's cutoff appear here.	ファイルが品質プロファイルのカットオフを下回っているエピソードがここに表示されます。
+Episodes…	エピソード…
+Errors	エラー
+Errors {errors}	エラー {errors}
+Event	イベント
+Every file already follows the naming settings.	すべてのファイルはすでに命名設定に従っています。
+Every file meets its cutoff	すべてのファイルがカットオフを満たしています
+Exclude	除外
+Exclusions	除外
+Expected	予定
+Expires	有効期限
+Extra file extensions	追加ファイルの拡張子
+Factor	係数
+Failed	失敗
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	偽リリース対策: 取得前にトレントを検査し、実行ファイル、パスワード誘導型のアーカイブ、動画を含まない内容を拒否する
+Feed address	フィードのアドレス
+Fetch the latest metadata from {}	{} から最新のメタデータを取得
+File	ファイル
+File date	ファイルの日付
+File deleted	ファイル削除
+File deleted.	ファイルを削除しました。
+File management	ファイル管理
+File management settings saved.	ファイル管理の設定を保存しました。
+File renamed	ファイル名変更
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	これより古いファイルは毎日ごみ箱から削除されます。0 の場合は保持します。
+Files upgrades replaced, kept as versions	アップグレードで置き換えられ、バージョンとして保持されたファイル
+Film	映画
+Film title or IMDb id, e.g. Arrival	映画のタイトルまたはIMDb ID (例: Arrival)
+Find a series in your library	ライブラリ内のシリーズを検索
+Find files added to or removed from the series folder	シリーズフォルダーに追加・削除されたファイルを検出
+Find something to add	追加するものを探す
+First and last pieces first	最初と最後のピースを優先
+First day of the week	週の始まり
+First season	最初のシーズン
+Folder	フォルダー
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	フォーマットは Sonarr の仕様タイプ (ReleaseTitle、ReleaseGroup、Source、Resolution、Language、Size、IndexerFlag、ReleaseType) を使用します。スコアは品質プロファイルごとに割り当てます。
+Found	検出
+Free	空き
+Free space	空き容量
+Future days	今後の日数
+Future episodes	今後のエピソード
+General	一般
+GiB	GiB
+Grab	取得
+Grab a release from interactive search; downloads in the client's TV category show up here.	インタラクティブ検索からリリースを取得してください。クライアントのTVカテゴリにあるダウンロードがここに表示されます。
+Grab anyway?	それでも取得しますか？
+Grab with these episodes	これらのエピソードで取得
+Grabbed	取得済み
+Grabbed {}.	{} を取得しました。
+Grabbing…	取得中…
+Grabs, imports and file changes appear here. Migrated history is included.	取得、インポート、ファイルの変更がここに表示されます。移行した履歴も含まれます。
+Group film folder format	グループの映画フォルダー形式
+Group folder format	グループのフォルダー形式
+Group season folder format	グループのシーズンフォルダー形式
+Group story-arc folder format	グループのストーリーアークフォルダー形式
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	関連するシリーズと映画のグループ: プロバイダーのコレクション、アニメのフランチャイズ (前日譚/続編のグループ)、手動グループ (Tanukarr から移行したものを含む)。
+Hardlink-only imports: never copy downloads that keep seeding	ハードリンクのみでインポート: シード中のダウンロードはコピーしない
+Health	ヘルス
+Hide	非表示
+History	履歴
+History →	履歴 →
+Host	ホスト
+Host (as in the download client's settings)	ホスト (ダウンロードクライアントの設定と同じ)
+Hostname	ホスト名
+How the catalogue numbers the episodes (it can be changed later on the series page).	カタログでのエピソードの番号付け方法 (後でシリーズのページから変更できます)。
+Id	ID
+Identities	ID
+Ids	ID
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Kitsunarr から見たメディアのパスが移行元と異なる場合 (例: Docker のボリュームが異なる)、移行元の各フォルダーを Kitsunarr での場所にマッピングしてください。パスはデータベース内でのみ書き換えられます。
+Ignored	無視
+Ignored addresses	除外アドレス
+Implementation	実装
+Import / Migration	インポート / 移行
+Import a Sonarr or Tanukarr library	Sonarr または Tanukarr のライブラリをインポート
+Import blocked	インポートがブロックされました
+Import completed downloads	完了したダウンロードをインポート
+Import extra files (subtitles…)	追加ファイルをインポート (字幕など)
+Import from Sonarr/Tanukarr	Sonarr/Tanukarr からインポート
+Import history	履歴をインポート
+Import library	ライブラリをインポート
+Import list options saved.	インポートリストのオプションを保存しました。
+Import lists	インポートリスト
+Import pending	インポート待ち
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	サーバーが読み取れる任意のフォルダーから動画ファイルをインポートします。各ファイルのシリーズとエピソードを確認してから、ライブラリにコピーまたは移動します (命名設定に従ってリネームされます)。
+Import {chosen().len()} files	{chosen().len()} 件のファイルをインポート
+Imported	インポート済み
+Imported from series folder	シリーズフォルダーからインポート
+Importing	インポート中
+Importing…	インポート中…
+Imports need	インポートに必要なもの:
+In library ›	ライブラリ内 ›
+Include	含める
+Include in file names ({{Custom Formats}} token)	ファイル名に含める ({{Custom Formats}} トークン)
+Include only titles on some lists, or leave out the titles of others.	特定のリストにあるタイトルのみを含めるか、他のリストのタイトルを除外します。
+Include unmonitored	未監視を含める
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	URLベースを含む。例: http://192.168.1.10:8989 または https://host/sonarr
+Indexer	インデクサー
+Indexer options saved.	インデクサーのオプションを保存しました。
+Indexer settings	インデクサーの設定
+Indexers	インデクサー
+Info	情報
+Info {infos}	情報 {infos}
+Instance	インスタンス
+Instance name	インスタンス名
+Instance: {name}	インスタンス: {name}
+Interactive	インタラクティブ
+Interactive search	インタラクティブ検索
+Interactive search for full-season packs only	シーズン全体のパックのみをインタラクティブ検索
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	トレントインデクサーでシリーズ全体 (およびそのシーズン) のパックをインタラクティブ検索
+Interactive search: see every release and choose	インタラクティブ検索: すべてのリリースを見て選択
+Interface language	インターフェースの言語
+Interval	間隔
+Jellyfin library and user	Jellyfin のライブラリとユーザー
+Job	ジョブ
+Keep / skip	保持 / スキップ
+Keep files replaced by upgrades as versions (in "Plex Versions")	アップグレードで置き換えられたファイルをバージョンとして保持 ("Plex Versions" 内)
+Keep me signed in	ログイン状態を保持
+Keep the replaced file's date (upgrades)	置き換えられたファイルの日付を保持 (アップグレード時)
+Kept	保持
+Kept versions	保持されたバージョン
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Sonarr v3 API を使用するコンパニオンアプリ用のキー: ライブラリを読み取ることができ、「シリーズの追加」キーではシリーズの追加 (ルートフォルダーへ、検索なし) も可能です。それ以外は許可されません。
+KiB	KiB
+Kind	種類
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr はフリーソフトウェアです (GPL-3.0-or-later)。
+Kitsunarr path	Kitsunarr でのパス
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr は自身のデータベースをバックアップし、プレビューしたデータを1つのトランザクションでインポートし、確定前に検証します。移行元とメディアファイルは変更されません。
+Label	ラベル
+Languages	言語
+Larger releases are rejected. 0 means unlimited.	これより大きいリリースは拒否されます。0 は無制限です。
+Last read	最終読み込み
+Last run	最終実行
+Last search	最終検索
+Last searched	最終検索日時
+Last season	最後のシーズン
+Later ›	後へ ›
+Latest season	最新のシーズン
+Level	レベル
+Library	ライブラリ
+Library check	ライブラリの確認
+Library tools	ライブラリツール
+Library tools saved.	ライブラリツールを保存しました。
+List	リスト
+Listed best first. Grouped qualities rank equally.	良いものから順に表示。グループ化された品質は同順位です。
+Live updates connected	ライブ更新: 接続中
+Live updates disconnected	ライブ更新: 切断
+Load	読み込み
+Load the account's lists	アカウントのリストを読み込む
+Load the libraries…	ライブラリを読み込む…
+Load the users…	ユーザーを読み込む…
+Local air date	ローカル放送日
+Local path	ローカルパス
+Log them	ログに記録
+Logs	ログ
+Main rejections	主な拒否理由
+Make current	現在のものにする
+Manual import	手動インポート
+Mark as failed	失敗としてマーク
+Matches monitored titles.	監視中のタイトルに一致します。
+Maximum	最大
+Maximum size (MB)	最大サイズ (MB)
+Media management	メディア管理
+Media management settings	メディア管理の設定
+Media paths	メディアのパス
+Mediums	メディア
+Members	メンバー
+Message	メッセージ
+Metadata	メタデータ
+Metadata files	メタデータファイル
+Metadata keys saved.	メタデータのキーを保存しました。
+Metadata language	メタデータの言語
+Metadata refreshed.	メタデータを更新しました。
+Metadata refreshed: {} new episodes, {} updated.	メタデータを更新しました: 新規エピソード {} 件、更新 {} 件。
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	メタデータの設定を保存しました。ファイルは次回のディスクスキャン、更新、またはインポート時に書き込まれます。
+Metadata sources	メタデータのソース
+MiB	MiB
+Migration completed.	移行が完了しました。
+Migration report #{}	移行レポート #{}
+Minimum	最小
+Minimum age (minutes)	最小経過時間 (分)
+Minimum custom format score	最小カスタムフォーマットスコア
+Minimum format score	最小フォーマットスコア
+Minimum free space (MiB)	最小空き容量 (MiB)
+Minimum seeders	最小シーダー数
+Missing	欠落
+Missing (monitored)	欠落 (監視中)
+Missing films	欠落している映画
+Mode	モード
+Monday	月曜日
+Monitor	監視
+Monitored	監視中
+More languages can be added to the string tables.	文字列テーブルに他の言語を追加できます。
+Move	移動
+Movie	映画
+Movie file format	映画ファイルの形式
+Movie removed from Kitsunarr. Files on disk were not touched.	映画を Kitsunarr から削除しました。ディスク上のファイルには触れていません。
+Movies	映画
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	複数シーズンのリリース: 複数シーズンのパックを受け入れる (シーズン検索ではそのシーズンのパックを取得)
+Must contain	含む必要あり
+Must contain (comma separated; /regex/ allowed)	含む必要あり (カンマ区切り。/regex/ 可)
+Must not contain	含んではならない
+NOT	NOT
+Name	名前
+Naming	命名
+Naming options saved.	命名オプションを保存しました。
+Naming saved.	命名を保存しました。
+Negate	否定
+Network	ネットワーク
+Never: keep the release's names	しない: リリースの名前を保持
+New custom format	新しいカスタムフォーマット
+New custom preset	新しいカスタムプリセット
+New group title	新しいグループのタイトル
+New password	新しいパスワード
+New quality profile	新しい品質プロファイル
+Next airing	次回放送
+Next run	次回実行
+Next ›	次へ ›
+No	いいえ
+No activity yet.	まだアクティビティはありません。
+No auto tags.	オートタグはありません。
+No backups yet	まだバックアップはありません
+No collections yet	まだコレクションはありません
+No companion keys.	コンパニオンキーはありません。
+No custom formats	カスタムフォーマットなし
+No custom formats defined.	カスタムフォーマットが定義されていません。
+No delay above the minimum custom format score	最小カスタムフォーマットスコアを超える場合は遅延なし
+No delay for the profile's best quality in the preferred protocol	優先プロトコルでプロファイルの最高品質の場合は遅延なし
+No download client to read	読み込むダウンロードクライアントがありません
+No exclusions.	除外はありません。
+No history	履歴なし
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	このシリーズを自動検索できるインデクサーがありません: 自動検索が有効で、かつタグなしまたはシリーズのタグのいずれかを持つインデクサーがありません。
+No indexers to search	検索するインデクサーがありません
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	保持されたバージョンはありません。命名 で「アップグレードで置き換えられたファイルを保持」をオンにしてください。
+No log entries at this level	このレベルのログはありません
+No mappings.	マッピングはありません。
+No matches	一致なし
+No members	メンバーなし
+No migrations have been run yet.	まだ移行は実行されていません。
+No movies yet	まだ映画はありません
+No notes.	メモはありません。
+No recycle bin is set (Settings › Media management).	ごみ箱が設定されていません (設定 › メディア管理)。
+No release profiles.	リリースプロファイルはありません。
+No root folders yet.	まだルートフォルダーはありません。
+No root folders.	ルートフォルダーはありません。
+No runs yet	まだ実行はありません
+No searches yet.	まだ検索はありません。
+No series in your library match.	ライブラリ内に一致するシリーズはありません。
+No tags	タグなし
+No {}	{} なし
+No {} yet	まだ {} はありません
+None	なし
+Not evaluated by Kitsunarr.	Kitsunarr では評価されていません。
+Not imported	未インポート
+Not monitored	未監視
+Notes	メモ
+Notes ({preview.warnings.len()})	メモ ({preview.warnings.len()})
+Notes ({report.warnings.len()})	メモ ({report.warnings.len()})
+Nothing airs in the next seven days.	今後7日間に放送予定はありません。
+Nothing downloading	ダウンロード中のものはありません
+Nothing found	見つかりませんでした
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	このカタログには検索に一致するものがありません。別の表記、原題、または他のカタログを試してください。
+Nothing in this period	この期間には何もありません
+Nothing missing	欠落はありません
+Notifications	通知
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	カタログの別の順序でエピソードに番号を付ける (TMDB のエピソードグループ、TheTVDB の DVD 順または絶対順)
+OMDb API key	OMDb APIキー
+Older priority	古いものを優先
+One folder per season	シーズンごとに1フォルダー
+Only the 2000 newest files are listed.	最新の2000ファイルのみ表示されます。
+Only when the proxy needs one.	プロキシが必要とする場合のみ。
+Open the library	ライブラリを開く
+OpenAPI document	OpenAPI ドキュメント
+Opens the service to authorize Kitsunarr and fills in the token.	サービスを開いて Kitsunarr を認可し、トークンを入力します。
+Options	オプション
+Organize	整理
+Other	その他
+Overview	あらすじ
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Kitsunarr に既に存在するレコードを上書きする (上書きしない場合は保持)
+Packs	パック
+Page not found	ページが見つかりません
+Page {page} / {pages}	ページ {page} / {pages}
+Password	パスワード
+Password changed. Other sessions were signed out.	パスワードを変更しました。他のセッションはサインアウトされました。
+Past days	過去の日数
+Path	パス
+Path mappings	パスのマッピング
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	自動化を一時停止 (RSS同期、スケジュールされたリスト同期、自動検索)
+Peers	ピア
+Permission	権限
+PiB	PiB
+Platform	プラットフォーム
+Port	ポート
+Position	位置
+Post-import category	インポート後のカテゴリ
+Posters	ポスター
+Prefer and upgrade	優先してアップグレード
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	アニメのシーズンパックを優先 (Kitsunarr のアニメのシーズン検索ではすでにシーズンを一度検索します)
+Prefer, do not upgrade	優先するがアップグレードしない
+Preferred	優先
+Preferred metadata language	優先するメタデータの言語
+Preferred protocol	優先プロトコル
+Preparing preview…	プレビューを準備中…
+Preview	プレビュー
+Preview migration	移行をプレビュー
+Previous migrations	過去の移行
+Priority	優先度
+Problem	問題
+Profile	プロファイル
+Profile saved.	プロファイルを保存しました。
+Profiles still used by series or movies cannot be deleted.	シリーズまたは映画で使用中のプロファイルは削除できません。
+Progress	進捗
+Propers and repacks	Proper と Repack
+Proxy	プロキシ
+Proxy saved.	プロキシを保存しました。
+Proxy type	プロキシの種類
+Qualities	品質
+Quality	品質
+Quality presets	品質プリセット
+Quality presets saved.	品質プリセットを保存しました。
+Quality profile	品質プロファイル
+Quality profiles	品質プロファイル
+Quality profile…	品質プロファイル…
+RSS sync interval (minutes)	RSS同期の間隔 (分)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS同期は、リリースが現れてからこの時間、より良いリリースを待ちます。遅延中のリリースはキューに表示されます。タグがシリーズに一致する最初のプロファイルが適用され、最後のもの (タグなし) がデフォルトです。
+Re-encode this series' files with the compression worker	圧縮ワーカーでこのシリーズのファイルを再エンコード
+Read and add series	ライブラリの読み取りとシリーズの追加
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	数秒ごとにダウンロードクライアントからリアルタイムで読み込みます。Kitsunarr が取得した完了済みダウンロードは毎分シリーズフォルダーにインポートされます (トレントはコピーまたはハードリンクされるのでシードを継続し、Usenet のダウンロードは移動されます)。失敗したダウンロードはブロックリストに追加され、再検索されます。
+Read the library	ライブラリの読み取り
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	読み取り専用: 存在しないシリーズフォルダー、フォルダー外または重複して記録されたファイルレコード、ディスク上に存在しないファイルを検出します。
+Reading the download clients…	ダウンロードクライアントを読み込み中…
+Reading the source	移行元を読み込み中
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	すべてを API 経由で読み込みます。プロバイダーのパスワードとAPIキーは移行元で隠されているため、後で再入力する必要があります。
+Recent activity	最近のアクティビティ
+Recent priority	新しいものを優先
+Recent runs	最近の実行
+Recent searches	最近の検索
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	推奨。Sonarr/Tanukarr で システム → バックアップ を開き、バックアップを作成して .zip をダウンロードしてください (または sonarr.db を使用)。インデクサーとダウンロードクライアントのパスワードも含まれます。
+Recycle bin	ごみ箱
+Recycle bin cleanup (days)	ごみ箱のクリーンアップ (日)
+Recycled	ごみ箱へ移動
+Refresh metadata	メタデータを更新
+Refresh preview	プレビューを更新
+Refreshing from {} is not supported yet; the imported metadata is kept as is	{} からの更新はまだサポートされていません。インポートしたメタデータはそのまま保持されます
+Refreshing…	更新中…
+Regenerate	再生成
+Regenerate API key	APIキーを再生成
+Reject releases whose TheTVDB or IMDb id names another series	TheTVDB または IMDb の ID が別のシリーズを示すリリースを拒否
+Rejected: click twice to grab anyway	拒否: もう一度クリックすると取得します
+Release	リリース
+Release profile	リリースプロファイル
+Release profile saved.	リリースプロファイルを保存しました。
+Release profiles	リリースプロファイル
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	リリースは Sonarr と同様に、シリーズの品質プロファイル、カスタムフォーマット、リリースプロファイルに照らしてチェックされ、順位付けされます。拒否されたリリースは2回目のクリックが必要です。
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	失敗したか手動でブロックリストに追加されたリリース。検索やRSS同期で再び取得されることはありません。許可するには削除してください。
+Remote path	リモートパス
+Remote path mapping	リモートパスのマッピング
+Remote path mapping saved.	リモートパスのマッピングを保存しました。
+Remote path mappings	リモートパスのマッピング
+Remove	削除
+Remove completed downloads	完了したダウンロードを削除
+Remove every release from the blocklist?	ブロックリストからすべてのリリースを削除しますか？
+Remove failed downloads	失敗したダウンロードを削除
+Remove from library	ライブラリから削除
+Remove from queue	キューから削除
+Remove from the download client (deletes its files there)	ダウンロードクライアントから削除 (そこにあるファイルも削除されます)
+Remove movie	映画を削除
+Remove series	シリーズを削除
+Remove tags automatically (from titles that stop matching)	タグを自動で削除 (一致しなくなったタイトルから)
+Remove “{title}” and its episode records from Kitsunarr?	「{title}」とそのエピソードのレコードを Kitsunarr から削除しますか？
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	「{title}」を Kitsunarr から削除しますか？ ディスク上のファイルは削除されません。
+Removed	削除済み
+Removed from the blocklist.	ブロックリストから削除しました。
+Rename	リネーム
+Rename files	ファイルをリネーム
+Rename files on import	インポート時にファイルをリネーム
+Rename files to the naming settings	命名設定に従ってファイルをリネーム
+Formats use Sonarr's tokens.	形式は Sonarr のトークンを使用します。
+Renaming…	リネーム中…
+Report	レポート
+Request one at omdbapi.com. Used for films by IMDb id.	omdbapi.com で取得してください。IMDb ID による映画の検索に使用されます。
+Required	必須
+Resolution	解像度
+Restore	復元
+Restore {}	{} を復元
+Restore…	復元…
+Restoring…	復元中…
+Resume automation	自動化を再開
+Retention (days)	保持期間 (日)
+Retire	廃止
+Revoke	取り消し
+Root folder	ルートフォルダー
+Root folders	ルートフォルダー
+Root folder…	ルートフォルダー…
+Run #{run.id}: {run.status}	実行 #{run.id}: {run.status}
+Run now	今すぐ実行
+Running…	実行中…
+Saturday	土曜日
+Save	保存
+Save criteria	条件を保存
+Save factors	係数を保存
+Save keys	キーを保存
+Save metadata files	メタデータファイルを保存
+Save naming	命名を保存
+Save options	オプションを保存
+Saved	保存済み
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	保存済みのキーは {REDACTED} と表示されます。保持するにはそのままにし、削除するにはフィールドを空にしてください。
+Saved.	保存しました。
+Scan disk	ディスクをスキャン
+Scan folder	フォルダーをスキャン
+Scanning…	スキャン中…
+Scheduled tasks	スケジュールされたタスク
+Score	スコア
+Search	検索
+Search again when a download fails	ダウンロードが失敗したら再検索
+Search all	すべて検索
+Search all films	すべての映画を検索
+Search collection	コレクションを検索
+Search every episode of the list, one search per season	リストのすべてのエピソードを検索 (シーズンごとに1回検索)
+Search every member's missing episodes (films: the film)	各メンバーの欠落エピソードを検索 (映画の場合は映画)
+Search indexers	インデクサーを検索
+Search selected	選択項目を検索
+Search the indexers and choose a release	インデクサーを検索してリリースを選択
+Search the indexers and grab the best accepted release	インデクサーを検索し、承認された最適なリリースを取得
+Search the indexers and grab the best releases for the monitored episodes	インデクサーを検索し、監視中のエピソードに最適なリリースを取得
+Search your indexers	インデクサーを検索
+Search {chosen} selected	選択した {chosen} 件を検索
+Search: {}	検索: {}
+Search: {} — complete series	検索: {} — シリーズ全体
+Search: {} — season {season} packs	検索: {} — シーズン {season} のパック
+Search: {} — {label}	検索: {} — {label}
+Searching for {label}…	{label} を検索中…
+Searching indexers…	インデクサーを検索中…
+Searching…	検索中…
+Season	シーズン
+Season folder format	シーズンフォルダーの形式
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	シーズンフォルダーのタイトルは {{Season Title}} 内のカタログのタイトルを置き換えます。カタログのタイトルを使う場合は空欄にしてください。
+Season folders	シーズンフォルダー
+Season images (Season ##.jpg)	シーズン画像 (Season ##.jpg)
+Season images (Season##/folder.jpg)	シーズン画像 (Season##/folder.jpg)
+Season images (season##-poster.jpg)	シーズン画像 (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	シーズンパック: 1 の場合は下のシーズンパック用の目標を使用
+Season premieres only	シーズンプレミアのみ
+Season {n}	シーズン {n}
+Season {one}	シーズン {one}
+Season {se.season_number}	シーズン {se.season_number}
+Season {season_number}	シーズン {season_number}
+Season-pack seed ratio	シーズンパックのシード比率
+Season-pack seed time, minutes	シーズンパックのシード時間 (分)
+Seasons	シーズン
+Seasons {first}-{last}	シーズン {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	シークレットは {REDACTED} と表示されます。保存済みの値を保持するにはそのままにしてください。
+Seed ratio (empty: the client's default)	シード比率 (空欄: クライアントのデフォルト)
+Seed time, minutes (empty: the client's default)	シード時間 (分) (空欄: クライアントのデフォルト)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	インデクサー、カタログ、リスト、ダウンロードクライアント、接続へのリクエストをプロキシ経由で送信します。
+Send to the download client	ダウンロードクライアントに送信
+Series	シリーズ
+Series .plexmatch file	シリーズの .plexmatch ファイル
+Series folder format	シリーズフォルダーの形式
+Series images (Series Title.jpg)	シリーズ画像 (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	シリーズ画像 (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	シリーズ画像 (folder.jpg)
+Series metadata (tvshow.nfo)	シリーズのメタデータ (tvshow.nfo)
+Series metadata URL	シリーズのメタデータURL
+Series metadata episode guide	シリーズのメタデータのエピソードガイド
+Series removed from Kitsunarr. Files on disk were not touched.	シリーズを Kitsunarr から削除しました。ディスク上のファイルには触れていません。
+Series removed, and its folder deleted.	シリーズを削除し、そのフォルダーも削除しました。
+Series type	シリーズの種類
+Set quality profile…	品質プロファイルを設定…
+Settings	設定
+Settings saved.	設定を保存しました。
+Settings → General → Security in Sonarr/Tanukarr.	Sonarr/Tanukarr の 設定 → 一般 → セキュリティ。
+Show	表示
+Show as all-day events	終日イベントとして表示
+Show unmonitored	未監視を表示
+Shows	番組
+Sign in	サインイン
+Signed in. Save the list to keep the token.	サインインしました。トークンを保持するにはリストを保存してください。
+Signing in…	サインイン中…
+Size	サイズ
+Size limits	サイズ制限
+Size on disk	ディスク上のサイズ
+Skip files smaller than (MB)	これより小さいファイルをスキップ (MB)
+Skip the free-space check	空き容量のチェックをスキップ
+Skip unmonitored episodes when importing packs	パックのインポート時に未監視のエピソードをスキップ
+Source	ソース
+Source code	ソースコード
+Source path	移行元のパス
+Special	スペシャル
+Specials	スペシャル
+Specials are never monitored automatically.	スペシャルが自動で監視されることはありません。
+Specifications	仕様
+Specifications (JSON)	仕様 (JSON)
+Specifications must be valid JSON: {e}	仕様は有効なJSONである必要があります: {e}
+Stalled torrent timeout (minutes)	停滞したトレントのタイムアウト (分)
+Standard	標準
+Standard episode format	標準エピソードの形式
+Start migration	移行を開始
+Start over	最初からやり直す
+Start search for missing episodes	欠落エピソードの検索を開始
+Started	開始
+Started {format_datetime(&run.started_at)}	開始 {format_datetime(&run.started_at)}
+Status	ステータス
+Status & health	ステータスとヘルス
+Still downloading	ダウンロード中
+Storage outlook	ストレージの見通し
+Studio	スタジオ
+Subscribe	購読
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	カレンダーアプリでこのアドレスを購読してください。APIキーが含まれているため、外部に公開しないでください。
+Sunday	日曜日
+Sync	同期
+Sync all lists now	すべてのリストを今すぐ同期
+Sync now	今すぐ同期
+Syncing…	同期中…
+System →	システム →
+TMDB API key (v3)	TMDB APIキー (v3)
+TV Series	テレビシリーズ
+TV series	テレビシリーズ
+Table	テーブル
+Tag	タグ
+Tag them	タグを付ける
+Tag titles already in the library	ライブラリにあるタイトルにタグを付ける
+Tags	タグ
+Tags (comma separated)	タグ (カンマ区切り)
+Tags (ids, comma separated)	タグ (ID、カンマ区切り)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	すべての種類の条件に一致するシリーズと映画には、追加、編集、更新時にタグが付けられます。
+Task	タスク
+Television	テレビ
+Television (raw)	テレビ (raw)
+Test	テスト
+Test failed: {message}	テスト失敗: {message}
+Testing…	テスト中…
+The blocklist is empty	ブロックリストは空です
+The catalogue new titles are added from when the list knows their id there.	リストが ID を把握している場合に、新しいタイトルの追加元となるカタログ。
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	インポートしたファイルに付ける日付: エピソードの放送日 (ローカルまたはUTC)、またはアップグレード時は置き換えられたファイルの日付。
+The dry run completed without blocking problems. Nothing has been written yet.	試行実行はブロックする問題なく完了しました。まだ何も書き込まれていません。
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	ファイルはシーズンフォルダーに移動され (既存のファイルが上書きされることはありません)、シリーズが再スキャンされます。
+The folder must already exist; Kitsunarr never creates or removes it.	フォルダーは既に存在している必要があります。Kitsunarr がフォルダーを作成または削除することはありません。
+The indexers returned no releases for this search.	インデクサーはこの検索に対してリリースを返しませんでした。
+The instance is on my local network (private or loopback address)	インスタンスはローカルネットワーク上にある (プライベートまたはループバックアドレス)
+The list has not been read, or it is empty.	リストは読み込まれていないか、空です。
+The migration did not complete; nothing was changed.	移行は完了しませんでした。何も変更されていません。
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	メモリに保持されている最新のエントリ。完全なログはプロセスの出力 (コンテナのログまたは journal) に出力されます。
+The passwords do not match.	パスワードが一致しません。
+The recycle bin has no media or subtitle files.	ごみ箱にメディアファイルや字幕ファイルはありません。
+The sign-in expired; try again.	サインインの有効期限が切れました。もう一度お試しください。
+The upload failed (network error).	アップロードに失敗しました (ネットワークエラー)。
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	ワーカーはオプションのホストコンポーネント (Tanukarr の圧縮ワーカー) で、KITSUNARR_COMPRESSION_SOCKET のソケット経由で接続します。
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarr のカタログ)、TMDB、TVmaze はテレビシリーズを、AniList と MyAnimeList はアニメシリーズとアニメ映画を、TMDB と OMDb は映画を扱います。タイトルを追加するとライブラリのエントリとエピソード一覧が作成され、ファイルは後でインポート処理によって取り込まれます。
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB のタイトルはこの言語で検索・追加されます。シリーズごとにエディターで変更できます。
+TheTVDB titles in this language; changing it refreshes the series	この言語での TheTVDB のタイトル。変更するとシリーズが更新されます
+There is nothing at /{path}.	/{path} には何もありません。
+They are created by migrating from Sonarr/Tanukarr.	Sonarr/Tanukarr からの移行で作成されます。
+This series' renaming mode, season folder titles and kept versions	このシリーズのリネームモード、シーズンフォルダーのタイトル、保持されたバージョン
+TiB	TiB
+Time	時刻
+Time left	残り時間
+Title	タイトル
+Title pattern	タイトルパターン
+Titles import lists never add.	インポートリストが追加しないタイトル。
+Titles on no list	どのリストにもないタイトル
+Today	今日
+Torrent	トレント
+Torrent delay	トレントの遅延
+Torrent delay (minutes)	トレントの遅延 (分)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab と Newznab のインデクサー。エディターでテストを使用して確認できます。各検索は、その種類の検索 (RSS、自動、インタラクティブ) が有効なインデクサーを使用します。
+Trigger	トリガー
+URL base	URLベース
+UTC air date	UTC放送日
+Unchanged	変更なし
+Unknown	不明
+Unmonitor	監視を解除
+Unmonitor them	監視を解除
+Unmonitored	未監視
+Upcoming	近日公開
+Upcoming 7 days	今後7日間
+Update	更新
+Updated {} items.	{} 件の項目を更新しました。
+Upgrade until (cutoff)	アップグレードの上限 (カットオフ)
+Upgrade until format score	アップグレードの上限フォーマットスコア
+Upgrades allowed	アップグレードを許可
+Upload a backup	バックアップをアップロード
+Upload failed (HTTP {}).	アップロードに失敗しました (HTTP {})。
+Uploading…	アップロード中…
+Use SSL	SSLを使用する
+Use a proxy	プロキシを使用
+Use hardlinks instead of copying	コピーの代わりにハードリンクを使用
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	他のアプリケーションから X-Api-Key ヘッダー (または ?apikey=) として使用してください。Sonarr が使用するヘッダーと互換性があります。
+Use these episodes	これらのエピソードを使用
+Usenet	Usenet
+Usenet delay	Usenet の遅延
+Usenet delay (minutes)	Usenet の遅延 (分)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Usenet のみ: これより新しいリリースは拒否され、伝播する時間が確保されます。0 でオフ。
+Usenet only: older releases are rejected. 0 means unlimited.	Usenet のみ: これより古いリリースは拒否されます。0 は無制限です。
+User name	ユーザー名
+Username	ユーザー名
+Validation	検証
+Version	バージョン
+Versions	バージョン
+Waiting for the sign-in at	サインインを待機中:
+Wanted	未取得
+Warnings	警告
+Warnings {warnings}	警告 {warnings}
+Watched (Jellyfin watched sync)	視聴済み (Jellyfin の視聴済み同期)
+Watched sync user	視聴済み同期のユーザー
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook、Notifiarr、Discord、Slack、Telegram、Gotify、ntfy、Pushover、Pushbullet、Join、Prowl、Simplepush、Signal、Apprise、メール (SMTP)、Mailgun、SendGrid、カスタムスクリプト (Sonarr の環境変数付き)、Emby/Jellyfin、Plex、Kodi に送信されます: 取得、インポートとアップグレード、リネーム、シリーズの追加・削除、ファイルの削除、ヘルスの問題。エディターでテストを使用してください。
+Welcome	ようこそ
+What to import	インポートする内容
+When	日時
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	インデクサー、ダウンロードクライアント、サービスの HTTPS 証明書を検証するタイミング (Sonarr の設定)。ネットワーク内の自己署名証明書では緩める必要があります。
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	ダウンロードクライアントが報告するパスが Kitsunarr からは別の場所 (別のマシンやコンテナ) に見える場合、クライアントのホストとパスをローカルパスにマッピングしてください。
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	不良リリースを修正したリリースを優先し、既存のファイルをアップグレードするかどうか (Sonarr と同様)。
+Whole season	シーズン全体
+Working…	処理中…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	シリーズのスキャン、更新、インポート時に、Sonarr のメタデータコンシューマーと同様にシリーズフォルダーに書き込まれます。
+Year	年
+Your library is empty.	ライブラリは空です。
+all checks passed	すべてのチェックに合格
+comma separated	カンマ区切り
+cutoff: {}	カットオフ: {}
+has a file	ファイルあり
+iCal link	iCal リンク
+in 2 days	2日後
+in a moment	まもなく
+in file names	ファイル名内
+in library	ライブラリ内
+in {text}	{text}後
+just now	たった今
+may run out of space	容量不足になる可能性あり
+name (e.g. phone)	名前 (例: スマートフォン)
+never refreshed	未更新
+no media files are moved, renamed or deleted.	メディアファイルが移動、リネーム、削除されることはありません。
+not accessible	アクセス不可
+not added	未追加
+not checked	未確認
+not read yet	未読み込み
+on disk	ディスク上
+refreshed {}	{} に更新
+schema {s}	スキーマ {s}
+secrets included	シークレットを含む
+secrets masked	シークレットをマスク
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip または sonarr.db
+stored only	保存のみ
+title (optional)	タイトル (任意)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} 件追加。{}
+{added} shows added.	{added} 件の番組を追加しました。
+{c.name} (API key needed)	{c.name} (APIキーが必要)
+{c.series_count} series · {c.movie_count} movies	シリーズ {c.series_count} · 映画 {c.movie_count}
+{chosen().len()} chosen	{chosen().len()} 件選択
+{chosen().len()} chosen (at most 25)	{chosen().len()} 件選択 (最大25件)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	ディスク上 {d.item.episode_file_count} / {d.item.episode_count} · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{format_bytes(item.size)} 中 {done}%
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · 追加日 {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} / {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} ファイル · {job["percent"]}% · 削減 {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} を開始しました。
+{name} was added to the library.	{name} をライブラリに追加しました。
+{name}: shows	{name}: 番組
+{ok} files imported.	{ok} 件のファイルをインポートしました。
+{ok} imported; {}	{ok} 件インポート。{}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.searched_indexers} 件のインデクサーから {r.releases.len()} 件のリリース。
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	シリーズ {r.series_checked} 件とファイル {r.files_checked} 件を確認: 問題 {r.issues.len()} 件。
+{selected.read().len()} selected	{selected.read().len()} 件選択
+{text} ago	{text}前
+{} (not accessible)	{} (アクセス不可)
+{} ({} free)	{} (空き {})
+{} added to every profile (not allowed yet).	{} をすべてのプロファイルに追加しました (まだ許可されていません)。
+{} day(s)	{} 日
+{} failed: {}	{} 失敗: {}
+{} format scores	{} フォーマットスコア
+{} free of {}	空き {} / {}
+{} week(s)	{} 週間
+{}{year} — movie	{}{year} — 映画
+‹ Back	‹ 戻る
+‹ Earlier	‹ 前へ
+‹ Prev	‹ 前
+○ offline	○ オフライン
+● live	● ライブ
+✓ No issues detected.	✓ 問題は検出されませんでした。
+Activity	アクティビティ
+Queue	キュー
+System	システム
+Tasks	タスク
+Retry	再試行
+Sign out	サインアウト
+Search titles…  ( / )	タイトルを検索…  ( / )
+Loading…	読み込み中…
+Profiles	プロファイル
+scene {}	シーン {}
+Scene numbering from TheXEM	TheXEM のシーン番号
+Scene numbering extrapolated from TheXEM (unverified)	TheXEM から推定したシーン番号 (未検証)
+Season {} (scene seasons {})	シーズン {} (シーンシーズン {})
+{} (scene {})	{} (シーン {})

@@ -20,16 +20,38 @@ pub use kitsunarr_domain::api::settings::UI_LANGUAGES as LANGUAGES;
 
 const STORAGE_KEY: &str = "kitsunarr.language";
 
+/// Languages written right to left: the page is mirrored for them.
+pub fn is_rtl(lang: &str) -> bool {
+    matches!(lang, "ar" | "fa" | "he")
+}
+
 fn dictionary_source(lang: &str) -> Option<&'static str> {
     match lang {
+        "ar" => Some(include_str!("../translations/ar.tsv")),
+        "bg" => Some(include_str!("../translations/bg.tsv")),
+        "ca" => Some(include_str!("../translations/ca.tsv")),
+        "cs" => Some(include_str!("../translations/cs.tsv")),
+        "da" => Some(include_str!("../translations/da.tsv")),
         "de" => Some(include_str!("../translations/de.tsv")),
+        "el" => Some(include_str!("../translations/el.tsv")),
         "es" => Some(include_str!("../translations/es.tsv")),
+        "et" => Some(include_str!("../translations/et.tsv")),
+        "fi" => Some(include_str!("../translations/fi.tsv")),
         "fr" => Some(include_str!("../translations/fr.tsv")),
+        "he" => Some(include_str!("../translations/he.tsv")),
+        "hu" => Some(include_str!("../translations/hu.tsv")),
         "it" => Some(include_str!("../translations/it.tsv")),
+        "ja" => Some(include_str!("../translations/ja.tsv")),
+        "ko" => Some(include_str!("../translations/ko.tsv")),
+        "nb_NO" => Some(include_str!("../translations/nb_NO.tsv")),
         "nl" => Some(include_str!("../translations/nl.tsv")),
         "pl" => Some(include_str!("../translations/pl.tsv")),
         "pt_BR" => Some(include_str!("../translations/pt_BR.tsv")),
+        "ro" => Some(include_str!("../translations/ro.tsv")),
         "ru" => Some(include_str!("../translations/ru.tsv")),
+        "sv" => Some(include_str!("../translations/sv.tsv")),
+        "tr" => Some(include_str!("../translations/tr.tsv")),
+        "uk" => Some(include_str!("../translations/uk.tsv")),
         "zh_CN" => Some(include_str!("../translations/zh_CN.tsv")),
         _ => None,
     }
@@ -267,6 +289,9 @@ pub fn install() {
         .and_then(|d| d.document_element())
     {
         let _ = html.set_attribute("lang", &lang.replace('_', "-"));
+        if is_rtl(&lang) {
+            let _ = html.set_attribute("dir", "rtl");
+        }
     }
     let Some(body) = web_sys::window()
         .and_then(|w| w.document())

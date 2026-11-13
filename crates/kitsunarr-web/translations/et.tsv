@@ -1,0 +1,968 @@
+# Estonian interface strings: English<TAB>Estonian. {…} marks a placeholder.
+custom	kohandatud
+indeterminate	määramata
+mixed	segatud
+retired	kasutusest kõrvaldatud
+· container	· konteiner
+· finished {format_datetime(f)}	· lõpetatud {format_datetime(f)}
+· missing	· puudub
+· on disk	· kettal
+· today	· täna
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep
+— MiB per minute; empty uses Settings › Quality	— MiB minutis; tühi kasutab: Seaded › Kvaliteet
+— a release's size is multiplied by its codec's factor before the size limits apply	— väljalaske suurus korrutatakse selle koodeki teguriga enne suuruspiirangute rakendamist
+— all profiles at once	— kõik profiilid korraga
+— codec and title criteria, custom qualities (Tanukarr)	— koodeki ja pealkirja kriteeriumid, kohandatud kvaliteedid (Tanukarr)
+— enter the code	— sisesta kood
+(empty)	(tühi)
++ Add mapping	+ Lisa kaardistus
++ New format	+ Uus vorming
++ New profile	+ Uus profiil
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (väljas) või 10 kuni 120. RSS-sünkroonimist saab käivitada ka jaotisest Süsteem › Ülesanded.
+3 hours ago	3 tundi tagasi
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Allalaaditav torrent, mis pole nii kaua edenenud, märgitakse nurjunuks, lisatakse blokeerimisloendisse ja seda otsitakse uuesti. 0 lülitab selle välja; edenemist jälgitakse Kitsunarri käivitamisest alates.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	AniListi või MyAnimeListi seoste põhjal leitud frantsiisirühm. Samast frantsiisist hiljem lisatud pealkirjad liituvad sellega samuti.
+A new API key was generated. Update the applications that use it.	Loodi uus API-võti. Uuenda rakendusi, mis seda kasutavad.
+A regular expression, case-insensitive; empty matches every title.	Regulaaravaldis, tõstutundetu; tühi sobib iga pealkirjaga.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Väljalase saab kõige täpsema eelseadistuse, mis on lubatud tema sarja profiilis ja mille allika, eraldusvõime, koodeki ning pealkirjamustriga see sobib. Standardkvaliteet, millele on antud koodek või muster, muudab sellele mittevastavad väljalasked kvaliteediks Teadmata. Kohandatud eelseadistused lisatakse igasse profiili mittelubatuna.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Väljalaske suurus korrutatakse selle koodeki teguriga enne suuruspiirangute rakendamist. „Segatud“ tähendab, et profiilid kasutavad erinevaid tegureid; siia sisestatud väärtus kirjutatakse igasse profiili.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Frantsiisi või käsitsi loodud rühmaga liituv pealkiri lahkub oma senisest rühmast. Faile ja kaustu ei teisaldata.
+API key	API-võti
+API key needed	Vaja on API-võtit
+API keys and language	API-võtmed ja keel
+API path	API tee
+About	Teave
+Absolute path; empty to delete permanently.	Absoluutne tee; tühi kustutab jäädavalt.
+Accepted	Aktsepteeritud
+Account lists	Konto loendid
+Actions	Toimingud
+Actual	Tegelik
+Add	Lisa
+Add a Newznab or Torznab indexer and enable interactive search for it.	Lisa Newznabi või Torznabi indekser ja luba selle jaoks interaktiivne otsing.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Lisa klient selle malli põhjal ja kasuta redaktoris nuppu Testi; haaramised, järjekord ja importimised kasutavad kõiki lubatud kliente. Blackhole kirjutab haaramised kausta ja impordib selle jälgitavasse kausta ilmuva sisu. Iga kliendi valikud „Eemalda lõpetatud/nurjunud allalaadimised“ eemaldavad allalaadimised (koos failidega), kui klient on nendega lõpetanud.
+Add a download client in Settings › Download clients and enable it.	Lisa allalaadimisklient jaotises Seaded › Allalaadimiskliendid ja luba see.
+Add a root folder first: it is where this title's folder will live.	Lisa esmalt juurkaust: sinna luuakse selle pealkirja kaust.
+Add a tag above first.	Lisa esmalt ülal silt.
+Add a title	Lisa pealkiri
+Add auto tag	Lisa automaatne silt
+Add condition	Lisa tingimus
+Add exclusion	Lisa välistus
+Add media	Lisa meediat
+Add one, or migrate them from Sonarr/Tanukarr.	Lisa üks või migreeri need Sonarrist/Tanukarrist.
+Add preset	Lisa eelseadistus
+Add selected	Lisa valitud
+Add series or movies below.	Lisa allpool sarju või filme.
+Add tag	Lisa silt
+Add the list's tags	Lisa loendi sildid
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Lisa pealkirju TVmaze'ist või AniListist või too üle olemasolev Sonarri või Tanukarri teek.
+Add to library	Lisa teeki
+Add {}	Lisa {}
+Add {} ({y})	Lisa {} ({y})
+Add — {}	Lisa — {}
+Add, and remove when they leave the list	Lisa ja eemalda, kui need loendist lahkuvad
+Added	Lisatud
+Added to the titles this list adds.	Lisatakse pealkirjadele, mida see loend lisab.
+Adding titles	Pealkirjade lisamine
+Adding…	Lisamine…
+Address	Aadress
+Age	Vanus
+Aired	Eetris olnud
+Aired monitored episodes without a file appear here.	Siin kuvatakse eetris olnud jälgitavad episoodid, millel pole faili.
+All	Kõik
+All collections	Kõik kollektsioonid
+All episodes	Kõik episoodid
+All episodes in the series folder	Kõik episoodid sarja kaustas
+All events	Kõik sündmused
+Allow zero size (the feed has no release sizes)	Luba nullsuurus (voog ei sisalda väljalasete suurusi)
+Also delete the series folder and its files (to the recycle bin when one is set)	Kustuta ka sarja kaust ja selle failid (prügikasti, kui see on määratud)
+Also for releases grabbed from interactive search	Ka interaktiivsest otsingust haaratud väljalasete puhul
+Also known as	Tuntud ka kui
+Always, even when renaming is off	Alati, ka siis, kui ümbernimetamine on välja lülitatud
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analüüsi videofaile (eraldusvõime, kestus ja koodekid, ffprobe'iga)
+AniList and MyAnimeList titles are always added as anime.	AniListi ja MyAnimeListi pealkirjad lisatakse alati animena.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniListi, MyAnimeListi, Trakti, Simkli, TMDB, MDBListi, Plexi, teise Sonarri ja kohandatud JSON-loendeid loetakse iga paari tunni järel; uued pealkirjad lisatakse iga loendi juurkausta, profiili ja jälgimisega. OAuthi vajavad teenused kasutavad sinu enda rakenduse Client ID-d ja kleebitud tokenit (Tanukarrist migreeritud tokenid töötavad edasi).
+Anime	Anime
+Anime / absolute numbering	Anime / absoluutne nummerdus
+Anime categories	Anime kategooriad
+Anime episode format	Anime episoodide vorming
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Animefilme saab lisada AniListist ja Tanukarri migratsioonid toovad kaasa ka nende filmid. Näitlejatega filmide jaoks on vaja TMDB kataloogi.
+Anime standard format search	Anime otsing standardvormingus
+Anime title, e.g. Frieren	Anime pealkiri, nt Frieren
+Any	Ükskõik milline
+Any library	Ükskõik milline teek
+Applications using the current key will stop working until you give them the new one.	Praegust võtit kasutavad rakendused lakkavad töötamast, kuni annad neile uue võtme.
+Applied after every list has been read successfully and some title left a list.	Rakendatakse, kui kõik loendid on edukalt loetud ja mõni pealkiri on loendist lahkunud.
+Apply	Rakenda
+Apply migration	Rakenda migratsioon
+Apply profile	Rakenda profiil
+Applying migration	Migratsiooni rakendamine
+Applying…	Rakendamine…
+As Settings › Media management says	Nagu määrab Seaded › Meediahaldus
+At least 10 characters.	Vähemalt 10 märki.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Vähemalt {MIN_PASSWORD_LENGTH} märki. Paroolifraas sobib hästi.
+Auto tag	Automaatne silt
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automaatne silt salvestatud. See rakendub, kui pealkirju järgmine kord lisatakse, muudetakse või värskendatakse.
+Auto tagging	Automaatne sildistamine
+Auto-refresh	Automaatne värskendus
+Automatic	Automaatne
+Automatic search	Automaatne otsing
+Automatic search for {label}: grabbed {}.	Automaatne otsing ({label}): haarati {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automaatne otsing ({label}): leitud väljalaskeid {}, heaks kiidetud {}, midagi ei haaratud.
+Automatic search: grab the best release	Automaatne otsing: haara parim väljalase
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatiseerimine on peatatud: RSS-sünkroonimine, ajastatud loendite sünkroonimised ja automaatsed otsingud jäetakse vahele. Käsitsi toimingud ja käimasolevad allalaadimised jätkuvad.
+Automation resumed.	Automatiseerimine jätkub.
+Available from	Saadaval alates
+Back to the dashboard	Tagasi juhtpaneelile
+Back up now	Varunda kohe
+Backup {} created.	Varukoopia {} loodud.
+Backups	Varukoopiad
+Blocking:	Blokeerivad:
+Blocklist	Blokeerimisloend
+Blocklist the release and search again	Lisa väljalase blokeerimisloendisse ja otsi uuesti
+Blocklist the release: it is never grabbed again	Lisa väljalase blokeerimisloendisse: seda ei haarata enam kunagi
+Blocklist “{title}” and search for a replacement?	Kas lisada „{title}“ blokeerimisloendisse ja otsida asendust?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Too oma Sonarri (v3/v4) või Tanukarri teek ja seaded Kitsunarri. Allikat ainult loetakse, seda ei muudeta kunagi, ja
+Bypass the proxy for local addresses	Ära kasuta proksit kohalike aadresside jaoks
+Calendar	Kalender
+Calendar →	Kalender →
+Cancel	Tühista
+Cancel compression	Tühista tihendamine
+Cannot reach the server: {e}	Serveriga ei saa ühendust: {e}
+Catalogue	Kataloog
+Category	Kategooria
+Certificate validation	Sertifikaadi valideerimine
+Change password	Muuda parooli
+Change series	Muuda sarja
+Changes	Muudatused
+Check	Kontrolli
+Check library	Kontrolli teeki
+Check now	Kontrolli kohe
+Check that the mapped series folders exist (read-only)	Kontrolli, kas kaardistatud sarjade kaustad on olemas (ainult lugemiseks)
+Checked: {summary}.	Kontrollitud: {summary}.
+Checking…	Kontrollimine…
+Choose a backup file	Vali varukoopia fail
+Choose a mode	Vali režiim
+Choose a root folder and a quality profile.	Vali juurkaust ja kvaliteediprofiil.
+Choose a season	Vali hooaeg
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Vali sari ja hooaeg või episood. Tulemused näitavad, mis iga väljalase on, nagu Kitsunarri parser seda tõlgendab.
+Choose a series or movie…	Vali sari või film…
+Choose source	Vali allikas
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Vali selle väljalaske episoodid käsitsi ja haara see (valik säilitatakse importimiseks)
+Choose…	Vali…
+Clean library	Puhasta teek
+Clear	Tühjenda
+Clear blocklist	Tühjenda blokeerimisloend
+Cleared {n} releases from the blocklist.	Blokeerimisloendist eemaldatud väljalaskeid: {n}.
+Client	Klient
+Close	Sulge
+Codec	Koodek
+Codec factors saved in every profile.	Koodekitegurid salvestati igasse profiili.
+Codec size factors	Koodekite suurustegurid
+Codecs	Koodekid
+Collection film folder format	Kollektsiooni filmikausta vorming
+Collections	Kollektsioonid
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Kollektsioonid ilmuvad, kui need migreeritakse Tanukarrist, luuakse kataloogide andmetest või luuakse siin.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Tuled Sonarrist või Tanukarrist? Impordi olemasolevad sarjad, seaded ja ajalugu mõne sammuga.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Komadega eraldatud; * on metamärk (*.lan) ja toimivad ka IP-vahemikud nagu 192.168.1.0/24.
+Companion app keys	Kaasrakenduste võtmed
+Complete series	Terve sari
+Completed and failed download handling	Lõpetatud ja nurjunud allalaadimiste käitlemine
+Component	Komponent
+Compress series	Tihenda sari
+Compression	Tihendamine
+Compression queued.	Tihendamine lisati järjekorda.
+Compression worker is not connected.	Tihendustöötaja pole ühendatud.
+Condition	Tingimus
+Conditions	Tingimused
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Sama liiki tingimused sobivad, kui neist mõni sobib (kõik nõutavad peavad sobima); iga liik peab sobima.
+Configure	Seadista
+Confirm password	Kinnita parool
+Connect	Ühenda
+Connect to a running instance	Ühenda töötava eksemplariga
+Connecting…	Ühendamine…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Andmebaasi järjepidevad koopiad. Ajastatud varundused toimuvad kord nädalas (säilitatakse viimased kaheksa); iga migratsioon loob enne ühe. Taastamiseks peata Kitsunarr ja käivita
+Continuing	Jätkub
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Küpsis (saadetakse koos voo päringuga, nt uid=1; pass=…)
+Copied.	Kopeeritud.
+Copy	Kopeeri
+Copy (keep the originals)	Kopeeri (säilita originaalid)
+Copy sizes from	Kopeeri suurused allikast
+Copy the token now; it is not shown again:	Kopeeri token kohe; seda ei näidata uuesti:
+Could not grab {}: {}	{} haaramine nurjus: {}
+Covers	Hõlmab
+Create	Loo
+Create account	Loo konto
+Create group	Loo rühm
+Create key	Loo võti
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Loo see aadressil themoviedb.org › Settings › API. Kasutatakse TMDB telesarjade ja filmide jaoks.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Loo administraatori konto. Sellega logid sisse Kitsunarri.
+Created	Loodud
+Created when the first file is imported. Nothing is written to disk now.	Luuakse esimese faili importimisel. Praegu kettale midagi ei kirjutata.
+Creating…	Loomine…
+Credit	Tegijad
+Current file	Praegune fail
+Current password	Praegune parool
+Custom format saved.	Kohandatud vorming salvestatud.
+Custom format score	Kohandatud vormingu skoor
+Custom format scores	Kohandatud vormingute skoorid
+Custom formats	Kohandatud vormingud
+Cutoff unmet	Lävend täitmata
+Daily	Igapäevane
+Daily episode format	Igapäevaste episoodide vorming
+Dashboard	Juhtpaneel
+Data directory	Andmekaust
+Database backup taken before the import: {b}	Enne importi tehtud andmebaasi varukoopia: {b}
+Database schema	Andmebaasi skeem
+Date	Kuupäev
+Date added	Lisamise kuupäev
+Debug	Silumine
+Decision	Otsus
+Default	Vaikimisi
+Defaults	Vaikeväärtused
+Delay profile	Viivitusprofiil
+Delay profile saved.	Viivitusprofiil salvestatud.
+Delay profiles	Viivitusprofiilid
+Delete	Kustuta
+Delete empty series folders	Kustuta tühjad sarjakaustad
+Delete file	Kustuta fail
+Delete group	Kustuta rühm
+Delete profile	Kustuta profiil
+Delete “{path}”? It goes to the recycle bin when one is set.	Kas kustutada „{path}“? See läheb prügikasti, kui see on määratud.
+Delete “{}”?	Kas kustutada „{}“?
+Delete “{}”? Its series and movies stay in the library.	Kas kustutada „{}“? Selle sarjad ja filmid jäävad teeki.
+Deleted	Kustutatud
+Directory	Kaust
+Disabled	Välja lülitatud
+Disabled for local addresses	Kohalike aadresside jaoks välja lülitatud
+Disk scanned: {}	Ketas skaneeritud: {}
+Disk scanned: {} Not matched: {}	Ketas skaneeritud: {} Sobitamata: {}
+Do not prefer	Ära eelista
+Do not search for a replacement	Ära otsi asendust
+Do nothing	Ära tee midagi
+Done	Valmis
+Download client options saved.	Allalaadimisklientide valikud salvestatud.
+Download clients	Allalaadimiskliendid
+Download failed	Allalaadimine nurjus
+Download queue	Allalaadimiste järjekord
+Downloads	Allalaadimised
+Duration	Kestus
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Iga pealkiri kuulub ühte kataloogi, mida selle värskendused loevad; kõik selle identifikaatorid (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) säilitatakse. Sonarrist migreeritud pealkirjad kuuluvad TheTVDB-le.
+Edit	Muuda
+Edit “{name}”	Muuda „{name}“
+Edit “{}”	Muuda „{}“
+Enable RSS	Luba RSS
+Enable automatic search	Luba automaatne otsing
+Enable interactive search	Luba interaktiivne otsing
+Enabled	Lubatud
+Ended	Lõppenud
+English	English
+Entity	Olem
+Episode	Episood
+Episode and movie naming	Episoodide ja filmide nimetamine
+Episode image thumbs in the NFO	Episoodide pisipildid NFO-s
+Episode images (<filename>-thumb.jpg)	Episoodide pildid (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Episoodide pildid (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Episoodide pildid (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Episoodide kaardistused failis .plexmatch
+Episode metadata (<filename>.nfo)	Episoodide metaandmed (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Episoodide metaandmed (Season##/filename.xml)
+Episode order	Episoodide järjestus
+Episode order changed: {} episodes updated, {} added.	Episoodide järjestus muudetud: uuendatud {}, lisatud {}.
+Episodes	Episoodid
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Episoodid nummerdatakse valitud järjestuse järgi ümber; failid, jälgimine ja ajalugu jäävad oma episoodide juurde. Seejärel nimeta failid ümber, et need vastaksid uutele numbritele.
+Episodes of {title}	Episoodid: {title}
+Episodes on disk	Episoodid kettal
+Episodes whose file is below the quality profile's cutoff appear here.	Siin kuvatakse episoodid, mille fail jääb alla kvaliteediprofiili lävendi.
+Episodes…	Episoodid…
+Errors	Vead
+Errors {errors}	Vead {errors}
+Event	Sündmus
+Every file already follows the naming settings.	Kõik failid järgivad juba nimetamise seadeid.
+Every file meets its cutoff	Kõik failid vastavad oma lävendile
+Exclude	Välista
+Exclusions	Välistused
+Expected	Oodatud
+Expires	Aegub
+Extra file extensions	Lisafailide laiendid
+Factor	Tegur
+Failed	Nurjus
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Võltsväljalasete kaitse: kontrolli torrente enne haaramist ja lükka tagasi käivitatavad failid, parooliga peibutusarhiivid ja videota sisu
+Feed address	Voo aadress
+Fetch the latest metadata from {}	Too uusimad metaandmed allikast {}
+File	Fail
+File date	Faili kuupäev
+File deleted	Fail kustutatud
+File deleted.	Fail kustutatud.
+File management	Failihaldus
+File management settings saved.	Failihalduse seaded salvestatud.
+File renamed	Fail ümber nimetatud
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Sellest vanemad failid kustutatakse prügikastist iga päev; 0 säilitab need.
+Files upgrades replaced, kept as versions	Täiendustega asendatud failid, säilitatud versioonidena
+Film	Film
+Film title or IMDb id, e.g. Arrival	Filmi pealkiri või IMDb ID, nt Arrival
+Find a series in your library	Leia sari oma teegist
+Find files added to or removed from the series folder	Leia sarja kausta lisatud või sealt eemaldatud failid
+Find something to add	Leia midagi lisamiseks
+First and last pieces first	Esimene ja viimane tükk enne
+First day of the week	Nädala esimene päev
+First season	Esimene hooaeg
+Folder	Kaust
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Vormingud kasutavad Sonarri spetsifikatsioonitüüpe (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Skoorid määratakse kvaliteediprofiilide kaupa.
+Found	Leitud
+Free	Vaba
+Free space	Vaba ruum
+Future days	Tulevased päevad
+Future episodes	Tulevased episoodid
+General	Üldine
+GiB	GiB
+Grab	Haara
+Grab a release from interactive search; downloads in the client's TV category show up here.	Haara väljalase interaktiivsest otsingust; kliendi TV-kategooria allalaadimised kuvatakse siin.
+Grab anyway?	Kas haarata siiski?
+Grab with these episodes	Haara nende episoodidega
+Grabbed	Haaratud
+Grabbed {}.	Haaratud: {}.
+Grabbing…	Haaramine…
+Grabs, imports and file changes appear here. Migrated history is included.	Siin kuvatakse haaramised, importimised ja failimuudatused. Kaasa arvatud on ka migreeritud ajalugu.
+Group film folder format	Rühma filmikausta vorming
+Group folder format	Rühma kausta vorming
+Group season folder format	Rühma hooajakausta vorming
+Group story-arc folder format	Rühma süžeekaare kausta vorming
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Seotud sarjade ja filmide rühmad: kataloogide kollektsioonid, anime frantsiisid (eelloo/järje rühmad) ja käsitsi loodud rühmad, sh Tanukarrist migreeritud.
+Hardlink-only imports: never copy downloads that keep seeding	Ainult püsiviitega importimine: ära kunagi kopeeri allalaadimisi, mida veel jagatakse
+Health	Seisund
+Hide	Peida
+History	Ajalugu
+History →	Ajalugu →
+Host	Host
+Host (as in the download client's settings)	Host (nagu allalaadimiskliendi seadetes)
+Hostname	Hostinimi
+How the catalogue numbers the episodes (it can be changed later on the series page).	Kuidas kataloog episoode nummerdab (seda saab hiljem sarja lehel muuta).
+Id	ID
+Identities	Identiteedid
+Ids	ID-d
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Kui Kitsunarr näeb sinu meediat allikast erinevate teede all (näiteks erinevad Dockeri köited), kaardista iga allika kaust selle asukohaga Kitsunarris. Teid kirjutatakse ümber ainult andmebaasis.
+Ignored	Eiratud
+Ignored addresses	Eiratud aadressid
+Implementation	Teostus
+Import / Migration	Import / migratsioon
+Import a Sonarr or Tanukarr library	Impordi Sonarri või Tanukarri teek
+Import blocked	Import blokeeritud
+Import completed downloads	Impordi lõpetatud allalaadimised
+Import extra files (subtitles…)	Impordi lisafailid (subtiitrid…)
+Import from Sonarr/Tanukarr	Impordi Sonarrist/Tanukarrist
+Import history	Impordi ajalugu
+Import library	Impordi teek
+Import list options saved.	Impordiloendite valikud salvestatud.
+Import lists	Impordiloendid
+Import pending	Import ootel
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Impordi videofaile mis tahes kaustast, mida server saab lugeda: kontrolli iga faili sarja ja episoode, seejärel kopeeri või teisalda need teeki (ümbernimetatuna nimetamise seadete järgi).
+Import {chosen().len()} files	Impordi faile: {chosen().len()}
+Imported	Imporditud
+Imported from series folder	Imporditud sarja kaustast
+Importing	Importimine
+Importing…	Importimine…
+Imports need	Importimiseks on vaja
+In library ›	Teegis ›
+Include	Kaasa
+Include in file names ({{Custom Formats}} token)	Kaasa failinimedesse ({{Custom Formats}} märgend)
+Include only titles on some lists, or leave out the titles of others.	Kaasa ainult mõnes loendis olevad pealkirjad või jäta teiste loendite pealkirjad välja.
+Include unmonitored	Kaasa jälgimata
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Koos baas-URL-iga, nt http://192.168.1.10:8989 või https://host/sonarr
+Indexer	Indekser
+Indexer options saved.	Indekserite valikud salvestatud.
+Indexer settings	Indekseri seaded
+Indexers	Indekserid
+Info	Teave
+Info {infos}	Teave {infos}
+Instance	Eksemplar
+Instance name	Eksemplari nimi
+Instance: {name}	Eksemplar: {name}
+Interactive	Interaktiivne
+Interactive search	Interaktiivne otsing
+Interactive search for full-season packs only	Interaktiivne otsing ainult tervete hooaegade pakkide jaoks
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interaktiivne otsing kogu sarja (ja selle hooaegade) pakkide jaoks torrentiindekserites
+Interactive search: see every release and choose	Interaktiivne otsing: vaata kõiki väljalaskeid ja vali
+Interface language	Liidese keel
+Interval	Intervall
+Jellyfin library and user	Jellyfini teek ja kasutaja
+Job	Töö
+Keep / skip	Säilita / jäta vahele
+Keep files replaced by upgrades as versions (in "Plex Versions")	Säilita täiendustega asendatud failid versioonidena (kaustas "Plex Versions")
+Keep me signed in	Jäta mind sisselogituks
+Keep the replaced file's date (upgrades)	Säilita asendatud faili kuupäev (täiendused)
+Kept	Säilitatud
+Kept versions	Säilitatud versioonid
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Võtmed kaasrakendustele, mis kasutavad Sonarri v3 API-t: need loevad teeki ja „lisa sarju“ võtmed saavad ka sarju lisada (juurkausta, ilma otsinguta). Muud pole lubatud.
+KiB	KiB
+Kind	Liik
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr on vaba tarkvara (GPL-3.0-or-later).
+Kitsunarr path	Kitsunarri tee
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr varundab oma andmebaasi, impordib eelvaate andmed ühe tehinguga ja valideerib need enne kinnitamist. Allikat ja sinu meediafaile ei muudeta.
+Label	Nimetus
+Languages	Keeled
+Larger releases are rejected. 0 means unlimited.	Suuremad väljalasked lükatakse tagasi. 0 tähendab piiramatut.
+Last read	Viimati loetud
+Last run	Viimane käivitus
+Last search	Viimane otsing
+Last searched	Viimati otsitud
+Last season	Viimane hooaeg
+Later ›	Hilisemad ›
+Latest season	Uusim hooaeg
+Level	Tase
+Library	Teek
+Library check	Teegi kontroll
+Library tools	Teegi tööriistad
+Library tools saved.	Teegi tööriistad salvestatud.
+List	Loend
+Listed best first. Grouped qualities rank equally.	Parim on esimene. Rühmitatud kvaliteedid on võrdsed.
+Live updates connected	Reaalajas uuendused ühendatud
+Live updates disconnected	Reaalajas uuendused katkestatud
+Load	Laadi
+Load the account's lists	Laadi konto loendid
+Load the libraries…	Laadi teegid…
+Load the users…	Laadi kasutajad…
+Local air date	Kohalik eetrikuupäev
+Local path	Kohalik tee
+Log them	Logi need
+Logs	Logid
+Main rejections	Peamised tagasilükkamised
+Make current	Muuda praeguseks
+Manual import	Käsitsi importimine
+Mark as failed	Märgi nurjunuks
+Matches monitored titles.	Sobib jälgitavate pealkirjadega.
+Maximum	Maksimum
+Maximum size (MB)	Maksimaalne suurus (MB)
+Media management	Meediahaldus
+Media management settings	Meediahalduse seaded
+Media paths	Meedia teed
+Mediums	Andmekandjad
+Members	Liikmed
+Message	Sõnum
+Metadata	Metaandmed
+Metadata files	Metaandmete failid
+Metadata keys saved.	Metaandmete võtmed salvestatud.
+Metadata language	Metaandmete keel
+Metadata refreshed.	Metaandmed värskendatud.
+Metadata refreshed: {} new episodes, {} updated.	Metaandmed värskendatud: uusi episoode {}, uuendatud {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Metaandmete seaded salvestatud. Failid kirjutatakse järgmisel ketta skaneerimisel, värskendamisel või importimisel.
+Metadata sources	Metaandmete allikad
+MiB	MiB
+Migration completed.	Migratsioon lõpetatud.
+Migration report #{}	Migratsiooni aruanne nr {}
+Minimum	Miinimum
+Minimum age (minutes)	Minimaalne vanus (minutites)
+Minimum custom format score	Kohandatud vormingu miinimumskoor
+Minimum format score	Vormingu miinimumskoor
+Minimum free space (MiB)	Minimaalne vaba ruum (MiB)
+Minimum seeders	Minimaalne jagajate arv
+Missing	Puuduvad
+Missing (monitored)	Puuduvad (jälgitavad)
+Missing films	Puuduvad filmid
+Mode	Režiim
+Monday	Esmaspäev
+Monitor	Jälgi
+Monitored	Jälgitav
+More languages can be added to the string tables.	Tõlketabelitesse saab lisada rohkem keeli.
+Move	Teisalda
+Movie	Film
+Movie file format	Filmifaili vorming
+Movie removed from Kitsunarr. Files on disk were not touched.	Film eemaldati Kitsunarrist. Kettal olevaid faile ei puudutatud.
+Movies	Filmid
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Mitme hooaja väljalasked: aktsepteeri mitme hooaja pakke (hooaja otsing võtab paki oma hooaja jaoks)
+Must contain	Peab sisaldama
+Must contain (comma separated; /regex/ allowed)	Peab sisaldama (komadega eraldatud; /regex/ lubatud)
+Must not contain	Ei tohi sisaldada
+NOT	MITTE
+Name	Nimi
+Naming	Nimetamine
+Naming options saved.	Nimetamise valikud salvestatud.
+Naming saved.	Nimetamine salvestatud.
+Negate	Eita
+Network	Võrk
+Never: keep the release's names	Mitte kunagi: säilita väljalaske nimed
+New custom format	Uus kohandatud vorming
+New custom preset	Uus kohandatud eelseadistus
+New group title	Uue rühma pealkiri
+New password	Uus parool
+New quality profile	Uus kvaliteediprofiil
+Next airing	Järgmine eetriaeg
+Next run	Järgmine käivitus
+Next ›	Järgmine ›
+No	Ei
+No activity yet.	Tegevusi veel pole.
+No auto tags.	Automaatseid silte pole.
+No backups yet	Varukoopiaid veel pole
+No collections yet	Kollektsioone veel pole
+No companion keys.	Kaasrakenduste võtmeid pole.
+No custom formats	Kohandatud vorminguid pole
+No custom formats defined.	Kohandatud vorminguid pole määratud.
+No delay above the minimum custom format score	Viivitust pole, kui kohandatud vormingu miinimumskoor on ületatud
+No delay for the profile's best quality in the preferred protocol	Viivitust pole profiili parima kvaliteedi korral eelistatud protokollis
+No download client to read	Pole allalaadimisklienti, mida lugeda
+No exclusions.	Välistusi pole.
+No history	Ajalugu pole
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Ükski indekser ei saa seda sarja automaatselt otsida: ühelgi pole lubatud automaatne otsing koos kas siltide puudumise või mõne sarja sildiga.
+No indexers to search	Pole indeksereid, kust otsida
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Säilitatud versioone pole. Lülita jaotises Nimetamine sisse „Säilita täiendustega asendatud failid“.
+No log entries at this level	Sellel tasemel logikirjeid pole
+No mappings.	Kaardistusi pole.
+No matches	Vasteid pole
+No members	Liikmeid pole
+No migrations have been run yet.	Migratsioone pole veel käivitatud.
+No movies yet	Filme veel pole
+No notes.	Märkusi pole.
+No recycle bin is set (Settings › Media management).	Prügikasti pole määratud (Seaded › Meediahaldus).
+No release profiles.	Väljalaskeprofiile pole.
+No root folders yet.	Juurkaustu veel pole.
+No root folders.	Juurkaustu pole.
+No runs yet	Käivitusi veel pole
+No searches yet.	Otsinguid veel pole.
+No series in your library match.	Ükski sari sinu teegis ei sobi.
+No tags	Silte pole
+No {}	Pole: {}
+No {} yet	Veel pole: {}
+None	Puudub
+Not evaluated by Kitsunarr.	Kitsunarr ei hinnanud.
+Not imported	Importimata
+Not monitored	Ei jälgita
+Notes	Märkused
+Notes ({preview.warnings.len()})	Märkused ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Märkused ({report.warnings.len()})
+Nothing airs in the next seven days.	Järgmise seitsme päeva jooksul pole midagi eetris.
+Nothing downloading	Midagi ei laadita alla
+Nothing found	Midagi ei leitud
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Selles kataloogis ei vasta otsingule midagi. Proovi teistsugust kirjapilti, originaalpealkirja või teist kataloogi.
+Nothing in this period	Selles ajavahemikus pole midagi
+Nothing missing	Midagi ei puudu
+Notifications	Teavitused
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Nummerda episoodid kataloogi muu järjestuse järgi (TMDB episoodirühmad, TheTVDB DVD- või absoluutne järjestus)
+OMDb API key	OMDb API-võti
+Older priority	Vanemate prioriteet
+One folder per season	Iga hooaja jaoks eraldi kaust
+Only the 2000 newest files are listed.	Loetletakse ainult 2000 uusimat faili.
+Only when the proxy needs one.	Ainult siis, kui proksi seda nõuab.
+Open the library	Ava teek
+OpenAPI document	OpenAPI dokument
+Opens the service to authorize Kitsunarr and fills in the token.	Avab teenuse Kitsunarri autoriseerimiseks ja täidab tokeni.
+Options	Valikud
+Organize	Korrasta
+Other	Muu
+Overview	Ülevaade
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Kirjuta üle Kitsunarris juba olemasolevad kirjed (muidu need säilitatakse)
+Packs	Pakid
+Page not found	Lehte ei leitud
+Page {page} / {pages}	Leht {page} / {pages}
+Password	Parool
+Password changed. Other sessions were signed out.	Parool muudetud. Teised seansid logiti välja.
+Past days	Möödunud päevad
+Path	Tee
+Path mappings	Teede kaardistused
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Peata automatiseerimine (RSS-sünkroonimine, ajastatud loendite sünkroonimised, automaatsed otsingud)
+Peers	Peerid
+Permission	Õigus
+PiB	PiB
+Platform	Platvorm
+Port	Port
+Position	Asukoht
+Post-import category	Kategooria pärast importi
+Posters	Plakatid
+Prefer and upgrade	Eelista ja täienda
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Eelista anime hooajapakke (Kitsunarri anime hooajaotsingud otsivad hooaega juba ühe korra)
+Prefer, do not upgrade	Eelista, ära täienda
+Preferred	Eelistatud
+Preferred metadata language	Eelistatud metaandmete keel
+Preferred protocol	Eelistatud protokoll
+Preparing preview…	Eelvaate ettevalmistamine…
+Preview	Eelvaade
+Preview migration	Migratsiooni eelvaade
+Previous migrations	Varasemad migratsioonid
+Priority	Prioriteet
+Problem	Probleem
+Profile	Profiil
+Profile saved.	Profiil salvestatud.
+Profiles still used by series or movies cannot be deleted.	Profiile, mida sarjad või filmid veel kasutavad, ei saa kustutada.
+Progress	Edenemine
+Propers and repacks	Proper- ja repack-väljalasked
+Proxy	Proksi
+Proxy saved.	Proksi salvestatud.
+Proxy type	Proksi tüüp
+Qualities	Kvaliteedid
+Quality	Kvaliteet
+Quality presets	Kvaliteedi eelseadistused
+Quality presets saved.	Kvaliteedi eelseadistused salvestatud.
+Quality profile	Kvaliteediprofiil
+Quality profiles	Kvaliteediprofiilid
+Quality profile…	Kvaliteediprofiil…
+RSS sync interval (minutes)	RSS-sünkroonimise intervall (minutites)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS-sünkroonimine ootab pärast väljalaske ilmumist nii kaua paremat; viivitatud väljalasked kuvatakse järjekorras. Rakendub esimene profiil, mille sildid sobivad sarjaga; viimane (siltideta) on vaikimisi profiil.
+Re-encode this series' files with the compression worker	Kodeeri selle sarja failid tihendustöötajaga ümber
+Read and add series	Loe ja lisa sarju
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Loetakse reaalajas allalaadimisklientidest iga paari sekundi järel. Kitsunarri haaratud lõpetatud allalaadimised imporditakse iga minuti järel sarja kausta (torrentid kopeeritakse või lingitakse püsiviitega, et neid saaks edasi jagada; Useneti allalaadimised teisaldatakse). Nurjunud allalaadimised lisatakse blokeerimisloendisse ja neid otsitakse uuesti.
+Read the library	Loe teeki
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Ainult lugemine: leiab puuduvad sarjakaustad, failikirjed väljaspool oma kausta või kaks korda salvestatud kirjed ning kettalt puuduvad failid.
+Reading the download clients…	Allalaadimisklientide lugemine…
+Reading the source	Allika lugemine
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Loeb kõike API kaudu. Allikas peidab teenusepakkujate paroolid ja API-võtmed, need tuleb hiljem uuesti sisestada.
+Recent activity	Hiljutised tegevused
+Recent priority	Uuemate prioriteet
+Recent runs	Hiljutised käivitused
+Recent searches	Hiljutised otsingud
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Soovitatav. Ava Sonarris/Tanukarris Süsteem → Varukoopia, loo varukoopia ja laadi alla .zip-fail (või kasuta faili sonarr.db). Sisaldab indekserite ja allalaadimisklientide paroole.
+Recycle bin	Prügikast
+Recycle bin cleanup (days)	Prügikasti tühjendamine (päevades)
+Recycled	Prügikastis
+Refresh metadata	Värskenda metaandmeid
+Refresh preview	Värskenda eelvaadet
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Värskendamist allikast {} veel ei toetata; imporditud metaandmed säilitatakse muutmata kujul
+Refreshing…	Värskendamine…
+Regenerate	Loo uuesti
+Regenerate API key	Loo API-võti uuesti
+Reject releases whose TheTVDB or IMDb id names another series	Lükka tagasi väljalasked, mille TheTVDB või IMDb ID viitab teisele sarjale
+Rejected: click twice to grab anyway	Tagasi lükatud: klõpsa kaks korda, et siiski haarata
+Release	Väljalase
+Release profile	Väljalaskeprofiil
+Release profile saved.	Väljalaskeprofiil salvestatud.
+Release profiles	Väljalaskeprofiilid
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Väljalaskeid võrreldakse sarja kvaliteediprofiili, kohandatud vormingute ja väljalaskeprofiilidega ning järjestatakse nagu Sonarris. Tagasi lükatud väljalasked nõuavad teist klõpsu.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Nurjunud või käsitsi blokeerimisloendisse lisatud väljalasked. Otsingud ja RSS-sünkroonimine ei haara neid enam kunagi; eemalda üks, et see lubada.
+Remote path	Kaugtee
+Remote path mapping	Kaugtee kaardistus
+Remote path mapping saved.	Kaugtee kaardistus salvestatud.
+Remote path mappings	Kaugtee kaardistused
+Remove	Eemalda
+Remove completed downloads	Eemalda lõpetatud allalaadimised
+Remove every release from the blocklist?	Kas eemaldada blokeerimisloendist kõik väljalasked?
+Remove failed downloads	Eemalda nurjunud allalaadimised
+Remove from library	Eemalda teegist
+Remove from queue	Eemalda järjekorrast
+Remove from the download client (deletes its files there)	Eemalda allalaadimiskliendist (kustutab seal selle failid)
+Remove movie	Eemalda film
+Remove series	Eemalda sari
+Remove tags automatically (from titles that stop matching)	Eemalda sildid automaatselt (pealkirjadelt, mis enam ei sobi)
+Remove “{title}” and its episode records from Kitsunarr?	Kas eemaldada „{title}“ ja selle episoodikirjed Kitsunarrist?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Kas eemaldada „{title}“ Kitsunarrist? Kettal olevaid faile ei kustutata.
+Removed	Eemaldatud
+Removed from the blocklist.	Eemaldatud blokeerimisloendist.
+Rename	Nimeta ümber
+Rename files	Nimeta failid ümber
+Rename files on import	Nimeta failid importimisel ümber
+Rename files to the naming settings	Nimeta failid nimetamise seadete järgi ümber
+Formats use Sonarr's tokens.	Vormingud kasutavad Sonarri märgendeid.
+Renaming…	Ümbernimetamine…
+Report	Aruanne
+Request one at omdbapi.com. Used for films by IMDb id.	Taotle see aadressil omdbapi.com. Kasutatakse filmide jaoks IMDb ID järgi.
+Required	Nõutav
+Resolution	Eraldusvõime
+Restore	Taasta
+Restore {}	Taasta {}
+Restore…	Taasta…
+Restoring…	Taastamine…
+Resume automation	Jätka automatiseerimist
+Retention (days)	Säilitamine (päevades)
+Retire	Kõrvalda kasutusest
+Revoke	Võta tagasi
+Root folder	Juurkaust
+Root folders	Juurkaustad
+Root folder…	Juurkaust…
+Run #{run.id}: {run.status}	Käivitus nr {run.id}: {run.status}
+Run now	Käivita kohe
+Running…	Töötab…
+Saturday	Laupäev
+Save	Salvesta
+Save criteria	Salvesta kriteeriumid
+Save factors	Salvesta tegurid
+Save keys	Salvesta võtmed
+Save metadata files	Salvesta metaandmete failid
+Save naming	Salvesta nimetamine
+Save options	Salvesta valikud
+Saved	Salvestatud
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Salvestatud võtmeid kuvatakse kujul {REDACTED}; nende säilitamiseks jäta need muutmata või eemaldamiseks tühjenda väli.
+Saved.	Salvestatud.
+Scan disk	Skaneeri ketast
+Scan folder	Skaneeri kausta
+Scanning…	Skaneerimine…
+Scheduled tasks	Ajastatud ülesanded
+Score	Skoor
+Search	Otsi
+Search again when a download fails	Otsi uuesti, kui allalaadimine nurjub
+Search all	Otsi kõiki
+Search all films	Otsi kõiki filme
+Search collection	Otsi kollektsiooni
+Search every episode of the list, one search per season	Otsi loendi kõiki episoode, üks otsing hooaja kohta
+Search every member's missing episodes (films: the film)	Otsi iga liikme puuduvaid episoode (filmide puhul filmi)
+Search indexers	Otsi indekseritest
+Search selected	Otsi valitud
+Search the indexers and choose a release	Otsi indekseritest ja vali väljalase
+Search the indexers and grab the best accepted release	Otsi indekseritest ja haara parim aktsepteeritud väljalase
+Search the indexers and grab the best releases for the monitored episodes	Otsi indekseritest ja haara jälgitavate episoodide parimad väljalasked
+Search your indexers	Otsi oma indekseritest
+Search {chosen} selected	Otsi valitud ({chosen})
+Search: {}	Otsing: {}
+Search: {} — complete series	Otsing: {} — terve sari
+Search: {} — season {season} packs	Otsing: {} — hooaja {season} pakid
+Search: {} — {label}	Otsing: {} — {label}
+Searching for {label}…	Otsimine: {label}…
+Searching indexers…	Indekseritest otsimine…
+Searching…	Otsimine…
+Season	Hooaeg
+Season folder format	Hooaja kausta vorming
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Hooajakaustade pealkirjad asendavad kataloogi omad märgendis {{Season Title}}. Kataloogi omade säilitamiseks jäta tühjaks.
+Season folders	Hooajakaustad
+Season images (Season ##.jpg)	Hooaegade pildid (Season ##.jpg)
+Season images (Season##/folder.jpg)	Hooaegade pildid (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Hooaegade pildid (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Hooajapakid: 1 kasutab allolevaid hooajapakkide eesmärke
+Season premieres only	Ainult hooaja esilinastused
+Season {n}	Hooaeg {n}
+Season {one}	Hooaeg {one}
+Season {se.season_number}	Hooaeg {se.season_number}
+Season {season_number}	Hooaeg {season_number}
+Season-pack seed ratio	Hooajapaki jagamissuhe
+Season-pack seed time, minutes	Hooajapaki jagamisaeg, minutites
+Seasons	Hooajad
+Seasons {first}-{last}	Hooajad {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Saladusi kuvatakse kujul {REDACTED}; salvestatud väärtuse säilitamiseks jäta need muutmata.
+Seed ratio (empty: the client's default)	Jagamissuhe (tühi: kliendi vaikeväärtus)
+Seed time, minutes (empty: the client's default)	Jagamisaeg, minutites (tühi: kliendi vaikeväärtus)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Saada päringud indekseritele, kataloogidele, loenditele, allalaadimisklientidele ja ühendustele proksi kaudu.
+Send to the download client	Saada allalaadimiskliendile
+Series	Sarjad
+Series .plexmatch file	Sarja .plexmatch-fail
+Series folder format	Sarja kausta vorming
+Series images (Series Title.jpg)	Sarja pildid (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Sarja pildid (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Sarja pildid (folder.jpg)
+Series metadata (tvshow.nfo)	Sarja metaandmed (tvshow.nfo)
+Series metadata URL	Sarja metaandmete URL
+Series metadata episode guide	Sarja metaandmete episoodijuht
+Series removed from Kitsunarr. Files on disk were not touched.	Sari eemaldati Kitsunarrist. Kettal olevaid faile ei puudutatud.
+Series removed, and its folder deleted.	Sari eemaldati ja selle kaust kustutati.
+Series type	Sarja tüüp
+Set quality profile…	Määra kvaliteediprofiil…
+Settings	Seaded
+Settings saved.	Seaded salvestatud.
+Settings → General → Security in Sonarr/Tanukarr.	Sonarris/Tanukarris: Seaded → Üldine → Turvalisus.
+Show	Näita
+Show as all-day events	Näita terve päeva sündmustena
+Show unmonitored	Näita jälgimata
+Shows	Sarjad
+Sign in	Logi sisse
+Signed in. Save the list to keep the token.	Sisse logitud. Tokeni säilitamiseks salvesta loend.
+Signing in…	Sisselogimine…
+Size	Suurus
+Size limits	Suuruspiirangud
+Size on disk	Suurus kettal
+Skip files smaller than (MB)	Jäta vahele failid, mis on väiksemad kui (MB)
+Skip the free-space check	Jäta vaba ruumi kontroll vahele
+Skip unmonitored episodes when importing packs	Jäta pakkide importimisel jälgimata episoodid vahele
+Source	Allikas
+Source code	Lähtekood
+Source path	Lähtetee
+Special	Eriepisood
+Specials	Eriepisoodid
+Specials are never monitored automatically.	Eriepisoode ei jälgita kunagi automaatselt.
+Specifications	Spetsifikatsioonid
+Specifications (JSON)	Spetsifikatsioonid (JSON)
+Specifications must be valid JSON: {e}	Spetsifikatsioonid peavad olema kehtiv JSON: {e}
+Stalled torrent timeout (minutes)	Seiskunud torrenti ajalõpp (minutites)
+Standard	Standardne
+Standard episode format	Episoodide tavavorming
+Start migration	Alusta migratsiooni
+Start over	Alusta otsast
+Start search for missing episodes	Alusta puuduvate episoodide otsingut
+Started	Käivitatud
+Started {format_datetime(&run.started_at)}	Käivitatud {format_datetime(&run.started_at)}
+Status	Olek
+Status & health	Olek ja seisund
+Still downloading	Laaditakse veel alla
+Storage outlook	Salvestusruumi prognoos
+Studio	Stuudio
+Subscribe	Telli
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Telli see aadress kalendrirakenduses. See sisaldab sinu API-võtit: hoia see privaatsena.
+Sunday	Pühapäev
+Sync	Sünkrooni
+Sync all lists now	Sünkrooni kõik loendid kohe
+Sync now	Sünkrooni kohe
+Syncing…	Sünkroonimine…
+System →	Süsteem →
+TMDB API key (v3)	TMDB API-võti (v3)
+TV Series	Telesarjad
+TV series	Telesarjad
+Table	Tabel
+Tag	Silt
+Tag them	Sildista need
+Tag titles already in the library	Sildista teegis juba olevad pealkirjad
+Tags	Sildid
+Tags (comma separated)	Sildid (komadega eraldatud)
+Tags (ids, comma separated)	Sildid (ID-d, komadega eraldatud)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Sildid lisatakse sarjadele ja filmidele, mis vastavad igale tingimuste liigile, kui neid lisatakse, muudetakse või värskendatakse.
+Task	Ülesanne
+Television	Televisioon
+Television (raw)	Televisioon (raw)
+Test	Testi
+Test failed: {message}	Test nurjus: {message}
+Testing…	Testimine…
+The blocklist is empty	Blokeerimisloend on tühi
+The catalogue new titles are added from when the list knows their id there.	Kataloog, millest uued pealkirjad lisatakse, kui loend teab nende ID-d selles.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Kuupäev, mille imporditud failid saavad: episoodi eetrikuupäev (kohalik või UTC) või täiendamisel asendatud faili kuupäev.
+The dry run completed without blocking problems. Nothing has been written yet.	Proovikäivitus lõppes ilma blokeerivate probleemideta. Midagi pole veel kirjutatud.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Fail teisaldatakse hooaja kausta (olemasolevat faili ei kirjutata kunagi üle) ja sari skaneeritakse uuesti.
+The folder must already exist; Kitsunarr never creates or removes it.	Kaust peab juba olemas olema; Kitsunarr ei loo ega eemalda seda kunagi.
+The indexers returned no releases for this search.	Indekserid ei tagastanud selle otsingu jaoks ühtegi väljalaset.
+The instance is on my local network (private or loopback address)	Eksemplar on minu kohalikus võrgus (privaatne või loopback-aadress)
+The list has not been read, or it is empty.	Loendit pole loetud või see on tühi.
+The migration did not complete; nothing was changed.	Migratsioon ei lõppenud; midagi ei muudetud.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Mälus hoitavad viimased kirjed. Täielikud logid lähevad protsessi väljundisse (konteineri logid või journal).
+The passwords do not match.	Paroolid ei kattu.
+The recycle bin has no media or subtitle files.	Prügikastis pole meedia- ega subtiitrifaile.
+The sign-in expired; try again.	Sisselogimine aegus; proovi uuesti.
+The upload failed (network error).	Üleslaadimine nurjus (võrguviga).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Töötaja on valikuline hosti komponent (Tanukarri tihendustöötaja), millega suheldakse sokli KITSUNARR_COMPRESSION_SOCKET kaudu.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarri kataloog), TMDB ja TVmaze hõlmavad telesarju; AniList ja MyAnimeList hõlmavad animesarju ja animefilme; TMDB ja OMDb hõlmavad filme. Pealkirja lisamine loob selle teegikirje ja episoodide loendi; failid leitakse hiljem impordiprotsessi käigus.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB pealkirju otsitakse ja lisatakse selles keeles; iga sarja keelt saab muuta selle redaktoris.
+TheTVDB titles in this language; changing it refreshes the series	TheTVDB pealkirjad selles keeles; muutmine värskendab sarja
+There is nothing at /{path}.	Aadressil /{path} pole midagi.
+They are created by migrating from Sonarr/Tanukarr.	Need luuakse Sonarrist/Tanukarrist migreerimisel.
+This series' renaming mode, season folder titles and kept versions	Selle sarja ümbernimetamise režiim, hooajakaustade pealkirjad ja säilitatud versioonid
+TiB	TiB
+Time	Aeg
+Time left	Aega jäänud
+Title	Pealkiri
+Title pattern	Pealkirja muster
+Titles import lists never add.	Pealkirjad, mida impordiloendid kunagi ei lisa.
+Titles on no list	Pealkirjad, mis pole üheski loendis
+Today	Täna
+Torrent	Torrent
+Torrent delay	Torrenti viivitus
+Torrent delay (minutes)	Torrenti viivitus (minutites)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznabi ja Newznabi indekserid. Ühe kontrollimiseks kasuta redaktoris nuppu Testi; iga otsing kasutab indeksereid, millel on see otsinguliik lubatud: RSS, automaatne või interaktiivne.
+Trigger	Käivitaja
+URL base	Baas-URL
+UTC air date	UTC eetrikuupäev
+Unchanged	Muutmata
+Unknown	Teadmata
+Unmonitor	Lõpeta jälgimine
+Unmonitor them	Lõpeta nende jälgimine
+Unmonitored	Ei jälgita
+Upcoming	Tulekul
+Upcoming 7 days	Järgmised 7 päeva
+Update	Uuenda
+Updated {} items.	Uuendatud kirjeid: {}.
+Upgrade until (cutoff)	Täienda kuni (lävend)
+Upgrade until format score	Täienda kuni vormingu skoorini
+Upgrades allowed	Täiendused lubatud
+Upload a backup	Laadi varukoopia üles
+Upload failed (HTTP {}).	Üleslaadimine nurjus (HTTP {}).
+Uploading…	Üleslaadimine…
+Use SSL	Kasuta SSL-i
+Use a proxy	Kasuta proksit
+Use hardlinks instead of copying	Kasuta kopeerimise asemel püsiviiteid (hardlinke)
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Kasuta seda teistes rakendustes X-Api-Key päisena (või ?apikey=). Ühilduv päisega, mida kasutab Sonarr.
+Use these episodes	Kasuta neid episoode
+Usenet	Usenet
+Usenet delay	Useneti viivitus
+Usenet delay (minutes)	Useneti viivitus (minutites)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Ainult Usenet: uuemad väljalasked lükatakse tagasi, et anda neile aega levida. 0 lülitab selle välja.
+Usenet only: older releases are rejected. 0 means unlimited.	Ainult Usenet: vanemad väljalasked lükatakse tagasi. 0 tähendab piiramatut.
+User name	Kasutajanimi
+Username	Kasutajanimi
+Validation	Valideerimine
+Version	Versioon
+Versions	Versioonid
+Waiting for the sign-in at	Sisselogimise ootamine aadressil
+Wanted	Soovitud
+Warnings	Hoiatused
+Warnings {warnings}	Hoiatused {warnings}
+Watched (Jellyfin watched sync)	Vaadatud (Jellyfini vaadatute sünkroonimine)
+Watched sync user	Vaadatute sünkroonimise kasutaja
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-post (SMTP), Mailgun, SendGrid, kohandatud skriptid (Sonarri keskkonnamuutujatega), Emby/Jellyfin, Plex ja Kodi saavad teavitusi: haaramised, importimised ja täiendused, ümbernimetamised, lisatud või kustutatud sarjad, kustutatud failid, seisundiprobleemid. Kasuta redaktoris nuppu Testi.
+Welcome	Tere tulemast
+What to import	Mida importida
+When	Millal
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Millal kontrollitakse indekserite, allalaadimisklientide ja teenuste HTTPS-sertifikaate (Sonarri seade). Sinu võrgu iseallkirjastatud sertifikaatide jaoks tuleb seda leevendada.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Kui allalaadimisklient teatab teedest, mida Kitsunarr näeb mujal (teises masinas või konteineris), kaardista kliendi host ja tee kohalikuks teeks.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Kas vigast väljalaset parandavaid väljalaskeid eelistatakse ja kas need täiendavad olemasolevaid faile (nagu Sonarris).
+Whole season	Terve hooaeg
+Working…	Töötlemine…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Kirjutatakse sarjade kaustadesse, kui sarju skaneeritakse, värskendatakse või imporditakse, nii nagu Sonarri metaandmete tarbijad neid kirjutavad.
+Year	Aasta
+Your library is empty.	Sinu teek on tühi.
+all checks passed	kõik kontrollid läbitud
+comma separated	komadega eraldatud
+cutoff: {}	lävend: {}
+has a file	fail olemas
+iCal link	iCal link
+in 2 days	2 päeva pärast
+in a moment	hetke pärast
+in file names	failinimedes
+in library	teegis
+in {text}	{text} pärast
+just now	just praegu
+may run out of space	ruum võib otsa saada
+name (e.g. phone)	nimi (nt telefon)
+never refreshed	pole kunagi värskendatud
+no media files are moved, renamed or deleted.	ühtegi meediafaili ei teisaldata, nimetata ümber ega kustutata.
+not accessible	pole ligipääsetav
+not added	pole lisatud
+not checked	kontrollimata
+not read yet	pole veel loetud
+on disk	kettal
+refreshed {}	värskendatud {}
+schema {s}	skeem {s}
+secrets included	saladused kaasatud
+secrets masked	saladused peidetud
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip või sonarr.db
+stored only	ainult salvestatud
+title (optional)	pealkiri (valikuline)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	lisatud {added}; {}
+{added} shows added.	Lisatud sarju: {added}.
+{c.name} (API key needed)	{c.name} (vaja on API-võtit)
+{c.series_count} series · {c.movie_count} movies	sarjad: {c.series_count} · filmid: {c.movie_count}
+{chosen().len()} chosen	valitud: {chosen().len()}
+{chosen().len()} chosen (at most 25)	valitud: {chosen().len()} (kuni 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} kettal · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% mahust {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · lisatud {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} / {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} faili · {job["percent"]}% · säästetud {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} käivitatud.
+{name} was added to the library.	{name} lisati teeki.
+{name}: shows	{name}: sarjad
+{ok} files imported.	Imporditud faile: {ok}.
+{ok} imported; {}	imporditud {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: väljalaskeid {r.releases.len()}, indeksereid {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Kontrollitud sarju {r.series_checked} ja faile {r.files_checked}: probleeme {r.issues.len()}.
+{selected.read().len()} selected	valitud: {selected.read().len()}
+{text} ago	{text} tagasi
+{} (not accessible)	{} (pole ligipääsetav)
+{} ({} free)	{} ({} vaba)
+{} added to every profile (not allowed yet).	{} lisati igasse profiili (veel mitte lubatud).
+{} day(s)	{} päev(a)
+{} failed: {}	{} nurjus: {}
+{} format scores	{} vormingu skoorid
+{} free of {}	{} vaba, kokku {}
+{} week(s)	{} nädal(at)
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Tagasi
+‹ Earlier	‹ Varasemad
+‹ Prev	‹ Eelm.
+○ offline	○ võrguühenduseta
+● live	● reaalajas
+✓ No issues detected.	✓ Probleeme ei tuvastatud.
+Activity	Tegevused
+Queue	Järjekord
+System	Süsteem
+Tasks	Ülesanded
+Retry	Proovi uuesti
+Sign out	Logi välja
+Search titles…  ( / )	Otsi pealkirju…  ( / )
+Loading…	Laadimine…
+Profiles	Profiilid
+scene {}	stseen {}
+Scene numbering from TheXEM	Stseeni nummerdus TheXEM-ist
+Scene numbering extrapolated from TheXEM (unverified)	TheXEM-ist ekstrapoleeritud stseeni nummerdus (kontrollimata)
+Season {} (scene seasons {})	Hooaeg {} (stseeni hooajad {})
+{} (scene {})	{} (stseen {})

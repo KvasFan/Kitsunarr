@@ -1,0 +1,968 @@
+# Turkish interface strings: English	Turkish. {…} marks a placeholder.
+custom	özel
+indeterminate	belirsiz
+mixed	karışık
+retired	kullanımdan kalktı
+· container	· konteyner
+· finished {format_datetime(f)}	· tamamlandı {format_datetime(f)}
+· missing	· eksik
+· on disk	· diskte
+· today	· bugün
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} bl
+— MiB per minute; empty uses Settings › Quality	— dakika başına MiB; boş bırakılırsa Ayarlar › Kalite kullanılır
+— a release's size is multiplied by its codec's factor before the size limits apply	— bir sürümün boyutu, boyut sınırları uygulanmadan önce codec'inin katsayısıyla çarpılır
+— all profiles at once	— tüm profiller için birden
+— codec and title criteria, custom qualities (Tanukarr)	— codec ve başlık ölçütleri, özel kaliteler (Tanukarr)
+— enter the code	— kodu girin
+(empty)	(boş)
++ Add mapping	+ Eşleme ekle
++ New format	+ Yeni format
++ New profile	+ Yeni profil
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (kapalı) veya 10 ile 120 arası. RSS senkronizasyonu Sistem › Görevler'den de çalıştırılabilir.
+3 hours ago	3 saat önce
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Bu süre boyunca ilerleme kaydetmeyen bir torrent başarısız sayılır, engellenenler listesine eklenir ve yeniden aranır. 0 bunu kapatır; ilerleme Kitsunarr'ın başlatılmasından itibaren izlenir.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	AniList veya MyAnimeList ilişkilerinden bulunan bir seri grubu. Aynı seriden sonradan eklenen yapımlar da gruba katılır.
+A new API key was generated. Update the applications that use it.	Yeni bir API anahtarı oluşturuldu. Onu kullanan uygulamaları güncelleyin.
+A regular expression, case-insensitive; empty matches every title.	Büyük/küçük harfe duyarsız bir düzenli ifade; boş bırakılırsa her başlıkla eşleşir.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Bir sürüm, dizisinin profilinde izin verilen ve kaynağı, çözünürlüğü, codec'i ve başlık kalıbıyla eşleştiği en özel ön ayarı alır. Codec veya kalıp verilmiş standart bir kalite, bunlara uymayan sürümleri Bilinmeyen yapar. Özel ön ayarlar her profile izin verilmemiş olarak eklenir.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Bir sürümün boyutu, boyut sınırları uygulanmadan önce codec'inin katsayısıyla çarpılır. "Karışık", profillerin farklı katsayılar kullandığı anlamına gelir; buraya girilen değer her profile yazılır.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Bir seriye veya manuel gruba katılan yapım, önceki grubundan ayrılır. Dosyalar ve klasörler taşınmaz.
+API key	API anahtarı
+API key needed	API anahtarı gerekli
+API keys and language	API anahtarları ve dil
+API path	API yolu
+About	Hakkında
+Absolute path; empty to delete permanently.	Mutlak yol; kalıcı olarak silmek için boş bırakın.
+Accepted	Kabul edilen
+Account lists	Hesap listeleri
+Actions	İşlemler
+Actual	Gerçek
+Add	Ekle
+Add a Newznab or Torznab indexer and enable interactive search for it.	Bir Newznab veya Torznab indeksleyici ekleyin ve etkileşimli aramayı etkinleştirin.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Şablonundan bir istemci ekleyin ve düzenleyicide Test Et'i kullanın; almalar, kuyruk ve içe aktarmalar etkin her istemciyi kullanır. Blackhole istemcisi almaları bir klasöre yazar ve izleme klasöründe beliren dosyaları içe aktarır. Her istemcinin "Tamamlanan/başarısız indirmeleri kaldır" seçenekleri, istemci işini bitirdiğinde indirmeleri (dosyalarıyla birlikte) kaldırır.
+Add a download client in Settings › Download clients and enable it.	Ayarlar › İndirme istemcileri bölümünden bir indirme istemcisi ekleyin ve etkinleştirin.
+Add a root folder first: it is where this title's folder will live.	Önce bir kök klasör ekleyin: bu yapımın klasörü orada yer alacak.
+Add a tag above first.	Önce yukarıdan bir etiket ekleyin.
+Add a title	Yapım ekle
+Add auto tag	Otomatik etiket ekle
+Add condition	Koşul ekle
+Add exclusion	Hariç tutma ekle
+Add media	Medya ekle
+Add one, or migrate them from Sonarr/Tanukarr.	Bir tane ekleyin veya Sonarr/Tanukarr'dan taşıyın.
+Add preset	Ön ayar ekle
+Add selected	Seçilenleri ekle
+Add series or movies below.	Aşağıdan dizi veya film ekleyin.
+Add tag	Etiket ekle
+Add the list's tags	Listenin etiketlerini ekle
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	TVmaze veya AniList'ten yapım ekleyin ya da mevcut bir Sonarr veya Tanukarr kütüphanesini getirin.
+Add to library	Kütüphaneye ekle
+Add {}	Ekle: {}
+Add {} ({y})	Ekle: {} ({y})
+Add — {}	Ekle — {}
+Add, and remove when they leave the list	Ekle ve listeden çıktıklarında kaldır
+Added	Eklendi
+Added to the titles this list adds.	Bu listenin eklediği yapımlara eklenir.
+Adding titles	Yapımlar ekleniyor
+Adding…	Ekleniyor…
+Address	Adres
+Age	Yaş
+Aired	Yayınlandı
+Aired monitored episodes without a file appear here.	Yayınlanmış, dosyası olmayan takip edilen bölümler burada görünür.
+All	Tümü
+All collections	Tüm koleksiyonlar
+All episodes	Tüm bölümler
+All episodes in the series folder	Dizi klasöründeki tüm bölümler
+All events	Tüm olaylar
+Allow zero size (the feed has no release sizes)	Sıfır boyuta izin ver (akış sürüm boyutlarını vermiyor)
+Also delete the series folder and its files (to the recycle bin when one is set)	Dizi klasörünü ve dosyalarını da sil (ayarlanmışsa geri dönüşüm kutusuna)
+Also for releases grabbed from interactive search	Etkileşimli aramadan alınan sürümler için de
+Also known as	Diğer adları
+Always, even when renaming is off	Her zaman, yeniden adlandırma kapalıyken bile
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Video dosyalarını analiz et (ffprobe ile çözünürlük, süre ve codec'ler)
+AniList and MyAnimeList titles are always added as anime.	AniList ve MyAnimeList yapımları her zaman anime olarak eklenir.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, başka bir Sonarr ve özel JSON listeleri birkaç saatte bir okunur; yeni yapımlar her listenin kök klasörü, profili ve takip ayarıyla eklenir. OAuth gerektiren servisler kendi uygulamanızın Client ID'sini ve yapıştırdığınız bir token'ı kullanır (Tanukarr'dan taşınan token'lar çalışmaya devam eder).
+Anime	Anime
+Anime / absolute numbering	Anime / mutlak numaralandırma
+Anime categories	Anime kategorileri
+Anime episode format	Anime bölüm formatı
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Anime filmleri AniList'ten eklenebilir ve Tanukarr taşımaları filmlerini de getirir. Canlı aksiyon filmler için TMDB kataloğu gerekir.
+Anime standard format search	Standart formatta anime araması
+Anime title, e.g. Frieren	Anime başlığı, ör. Frieren
+Any	Herhangi
+Any library	Herhangi bir kütüphane
+Applications using the current key will stop working until you give them the new one.	Mevcut anahtarı kullanan uygulamalar, onlara yenisini verene kadar çalışmayı durdurur.
+Applied after every list has been read successfully and some title left a list.	Her liste başarıyla okunduktan ve bir yapım bir listeden ayrıldıktan sonra uygulanır.
+Apply	Uygula
+Apply migration	Taşımayı uygula
+Apply profile	Profili uygula
+Applying migration	Taşıma uygulanıyor
+Applying…	Uygulanıyor…
+As Settings › Media management says	Ayarlar › Medya Yönetimi'nde belirtildiği gibi
+At least 10 characters.	En az 10 karakter.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	En az {MIN_PASSWORD_LENGTH} karakter. Bir parola cümlesi iyi bir seçimdir.
+Auto tag	Otomatik etiket
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Otomatik etiket kaydedildi. Yapımlar bir sonraki eklenişinde, düzenlenişinde veya yenilenişinde uygulanır.
+Auto tagging	Otomatik etiketleme
+Auto-refresh	Otomatik yenile
+Automatic	Otomatik
+Automatic search	Otomatik arama
+Automatic search for {label}: grabbed {}.	{label} için otomatik arama: {} alındı.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	{label} için otomatik arama: {} sürüm bulundu, {} onaylandı, hiçbiri alınmadı.
+Automatic search: grab the best release	Otomatik arama: en iyi sürümü al
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Otomasyon duraklatıldı: RSS senkronizasyonu, zamanlanmış liste senkronizasyonları ve otomatik aramalar atlanır. Manuel işlemler ve süren indirmeler devam eder.
+Automation resumed.	Otomasyon sürdürüldü.
+Available from	Şu tarihten itibaren mevcut
+Back to the dashboard	Panoya dön
+Back up now	Şimdi yedekle
+Backup {} created.	{} yedeği oluşturuldu.
+Backups	Yedeklemeler
+Blocking:	Engelleyen:
+Blocklist	Engellenenler Listesi
+Blocklist the release and search again	Sürümü engellenenler listesine ekle ve yeniden ara
+Blocklist the release: it is never grabbed again	Sürümü engellenenler listesine ekle: bir daha asla alınmaz
+Blocklist “{title}” and search for a replacement?	“{title}” engellenenler listesine eklensin ve yerine başka bir sürüm aransın mı?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Sonarr (v3/v4) veya Tanukarr kütüphanenizi ve ayarlarınızı Kitsunarr'a taşıyın. Kaynak yalnızca okunur, asla değiştirilmez ve
+Bypass the proxy for local addresses	Yerel adresler için proxy'yi atla
+Calendar	Takvim
+Calendar →	Takvim →
+Cancel	İptal
+Cancel compression	Sıkıştırmayı iptal et
+Cannot reach the server: {e}	Sunucuya ulaşılamıyor: {e}
+Catalogue	Katalog
+Category	Kategori
+Certificate validation	Sertifika doğrulaması
+Change password	Şifreyi değiştir
+Change series	Diziyi değiştir
+Changes	Değişiklikler
+Check	Denetle
+Check library	Kütüphaneyi denetle
+Check now	Şimdi denetle
+Check that the mapped series folders exist (read-only)	Eşlenen dizi klasörlerinin var olduğunu denetle (salt okunur)
+Checked: {summary}.	Denetlendi: {summary}.
+Checking…	Denetleniyor…
+Choose a backup file	Bir yedek dosyası seçin
+Choose a mode	Bir mod seçin
+Choose a root folder and a quality profile.	Bir kök klasör ve bir kalite profili seçin.
+Choose a season	Bir sezon seçin
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Bir dizi ve bir sezon ya da bölüm seçin. Sonuçlar, her sürümün Kitsunarr'ın ayrıştırıcısına göre ne olduğunu gösterir.
+Choose a series or movie…	Bir dizi veya film seçin…
+Choose source	Kaynağı seçin
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Bu sürümün bölümlerini elle seçin, sonra alın (seçim içe aktarma için saklanır)
+Choose…	Seç…
+Clean library	Kütüphaneyi temizle
+Clear	Temizle
+Clear blocklist	Engellenenler listesini temizle
+Cleared {n} releases from the blocklist.	Engellenenler listesinden kaldırılan sürüm: {n}.
+Client	İstemci
+Close	Kapat
+Codec	Codec
+Codec factors saved in every profile.	Codec katsayıları her profile kaydedildi.
+Codec size factors	Codec boyut katsayıları
+Codecs	Codec'ler
+Collection film folder format	Koleksiyon film klasörü formatı
+Collections	Koleksiyonlar
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Koleksiyonlar Tanukarr'dan taşındığında, sağlayıcı verilerinden oluşturulduğunda veya burada oluşturulduğunda görünür.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Sonarr veya Tanukarr'dan mı geliyorsunuz? Mevcut dizilerinizi, ayarlarınızı ve geçmişinizi birkaç adımda içe aktarın.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Virgülle ayrılmış; * joker karakterdir (*.lan) ve 192.168.1.0/24 gibi IP aralıkları da çalışır.
+Companion app keys	Yardımcı uygulama anahtarları
+Complete series	Tüm dizi
+Completed and failed download handling	Tamamlanan ve başarısız indirme işlemleri
+Component	Bileşen
+Compress series	Diziyi sıkıştır
+Compression	Sıkıştırma
+Compression queued.	Sıkıştırma kuyruğa alındı.
+Compression worker is not connected.	Sıkıştırma çalışanı bağlı değil.
+Condition	Koşul
+Conditions	Koşullar
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Aynı türdeki koşullar, herhangi biri eşleştiğinde eşleşir (zorunlu olanların tümü eşleşmelidir); her tür eşleşmelidir.
+Configure	Yapılandır
+Confirm password	Şifreyi onayla
+Connect	Bağlan
+Connect to a running instance	Çalışan bir örneğe bağlan
+Connecting…	Bağlanıyor…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Veritabanının tutarlı kopyaları. Zamanlanmış yedeklemeler haftalık çalışır (son sekizi saklanır); her taşıma da önce bir yedek oluşturur. Geri yüklemek için Kitsunarr'ı durdurun ve şunu çalıştırın:
+Continuing	Devam ediyor
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Çerez (akış isteğiyle gönderilir, ör. uid=1; pass=…)
+Copied.	Kopyalandı.
+Copy	Kopyala
+Copy (keep the originals)	Kopyala (orijinalleri sakla)
+Copy sizes from	Boyutları şuradan kopyala
+Copy the token now; it is not shown again:	Token'ı şimdi kopyalayın; bir daha gösterilmeyecek:
+Could not grab {}: {}	{} alınamadı: {}
+Covers	Kapsam
+Create	Oluştur
+Create account	Hesap oluştur
+Create group	Grup oluştur
+Create key	Anahtar oluştur
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	themoviedb.org › Settings › API adresinden oluşturun. TMDB dizileri ve filmleri için kullanılır.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Yönetici hesabını oluşturun. Kitsunarr'da oturum açmak için bunu kullanacaksınız.
+Created	Oluşturuldu
+Created when the first file is imported. Nothing is written to disk now.	İlk dosya içe aktarıldığında oluşturulur. Şu anda diske hiçbir şey yazılmaz.
+Creating…	Oluşturuluyor…
+Credit	Emeği geçenler
+Current file	Mevcut dosya
+Current password	Mevcut şifre
+Custom format saved.	Özel format kaydedildi.
+Custom format score	Özel format puanı
+Custom format scores	Özel format puanları
+Custom formats	Özel formatlar
+Cutoff unmet	Sınır karşılanmamış
+Daily	Günlük
+Daily episode format	Günlük bölüm formatı
+Dashboard	Pano
+Data directory	Veri dizini
+Database backup taken before the import: {b}	İçe aktarmadan önce alınan veritabanı yedeği: {b}
+Database schema	Veritabanı şeması
+Date	Tarih
+Date added	Eklenme tarihi
+Debug	Hata ayıklama
+Decision	Karar
+Default	Varsayılan
+Defaults	Varsayılanlar
+Delay profile	Gecikme profili
+Delay profile saved.	Gecikme profili kaydedildi.
+Delay profiles	Gecikme profilleri
+Delete	Sil
+Delete empty series folders	Boş dizi klasörlerini sil
+Delete file	Dosyayı sil
+Delete group	Grubu sil
+Delete profile	Profili sil
+Delete “{path}”? It goes to the recycle bin when one is set.	“{path}” silinsin mi? Ayarlanmışsa geri dönüşüm kutusuna gider.
+Delete “{}”?	“{}” silinsin mi?
+Delete “{}”? Its series and movies stay in the library.	“{}” silinsin mi? Dizileri ve filmleri kütüphanede kalır.
+Deleted	Silindi
+Directory	Dizin
+Disabled	Devre dışı
+Disabled for local addresses	Yerel adresler için devre dışı
+Disk scanned: {}	Disk tarandı: {}
+Disk scanned: {} Not matched: {}	Disk tarandı: {} Eşleşmeyen: {}
+Do not prefer	Tercih etme
+Do not search for a replacement	Yerine başka sürüm arama
+Do nothing	Hiçbir şey yapma
+Done	Bitti
+Download client options saved.	İndirme istemcisi seçenekleri kaydedildi.
+Download clients	İndirme istemcileri
+Download failed	İndirme başarısız
+Download queue	İndirme kuyruğu
+Downloads	İndirmeler
+Duration	Süre
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Her yapım, yenilemelerinin okuduğu tek bir kataloğa aittir; taşıdığı her tanımlayıcı (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) saklanır. Sonarr'dan taşınan yapımlar TheTVDB'ye aittir.
+Edit	Düzenle
+Edit “{name}”	“{name}” düzenle
+Edit “{}”	“{}” düzenle
+Enable RSS	RSS'i etkinleştir
+Enable automatic search	Otomatik aramayı etkinleştir
+Enable interactive search	Etkileşimli aramayı etkinleştir
+Enabled	Etkin
+Ended	Bitti
+English	English
+Entity	Varlık
+Episode	Bölüm
+Episode and movie naming	Bölüm ve film adlandırma
+Episode image thumbs in the NFO	NFO'da bölüm küçük resimleri
+Episode images (<filename>-thumb.jpg)	Bölüm görselleri (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Bölüm görselleri (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Bölüm görselleri (Season##/filename.metathumb)
+Episode mappings in .plexmatch	.plexmatch içinde bölüm eşlemeleri
+Episode metadata (<filename>.nfo)	Bölüm meta verileri (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Bölüm meta verileri (Season##/filename.xml)
+Episode order	Bölüm sırası
+Episode order changed: {} episodes updated, {} added.	Bölüm sırası değişti: {} bölüm güncellendi, {} eklendi.
+Episodes	Bölümler
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Bölümler seçilen sıraya göre yeniden numaralandırılır; dosyalar, takip durumu ve geçmiş bölümleriyle birlikte kalır. Ardından yeni numaralara uymaları için dosyaları yeniden adlandırın.
+Episodes of {title}	Bölümler: {title}
+Episodes on disk	Diskteki bölümler
+Episodes whose file is below the quality profile's cutoff appear here.	Dosyası kalite profilinin sınırının altında olan bölümler burada görünür.
+Episodes…	Bölümler…
+Errors	Hatalar
+Errors {errors}	Hatalar {errors}
+Event	Olay
+Every file already follows the naming settings.	Her dosya zaten adlandırma ayarlarına uyuyor.
+Every file meets its cutoff	Her dosya sınırını karşılıyor
+Exclude	Hariç tut
+Exclusions	Hariç tutulanlar
+Expected	Beklenen
+Expires	Sona erme
+Extra file extensions	Ek dosya uzantıları
+Factor	Katsayı
+Failed	Başarısız
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Sahte sürüm koruması: torrentleri almadan önce incele ve çalıştırılabilir dosyaları, şifreli tuzak arşivleri ve video içermeyen içerikleri reddet
+Feed address	Akış adresi
+Fetch the latest metadata from {}	{} kaynağından en güncel meta verileri getir
+File	Dosya
+File date	Dosya tarihi
+File deleted	Dosya silindi
+File deleted.	Dosya silindi.
+File management	Dosya yönetimi
+File management settings saved.	Dosya yönetimi ayarları kaydedildi.
+File renamed	Dosya yeniden adlandırıldı
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Bundan eski dosyalar her gün geri dönüşüm kutusundan silinir; 0 onları saklar.
+Files upgrades replaced, kept as versions	Yükseltmelerin yerini aldığı, sürüm olarak saklanan dosyalar
+Film	Film
+Film title or IMDb id, e.g. Arrival	Film başlığı veya IMDb kimliği, ör. Arrival
+Find a series in your library	Kütüphanenizde bir dizi bulun
+Find files added to or removed from the series folder	Dizi klasörüne eklenen veya klasörden kaldırılan dosyaları bul
+Find something to add	Eklenecek bir şey bulun
+First and last pieces first	Önce ilk ve son parçalar
+First day of the week	Haftanın ilk günü
+First season	İlk sezon
+Folder	Klasör
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formatlar Sonarr'ın belirtim türlerini kullanır (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Puanlar her kalite profili için ayrı atanır.
+Found	Bulunan
+Free	Boş
+Free space	Boş alan
+Future days	Gelecek günler
+Future episodes	Gelecek bölümler
+General	Genel
+GiB	GiB
+Grab	Al
+Grab a release from interactive search; downloads in the client's TV category show up here.	Etkileşimli aramadan bir sürüm alın; istemcinin TV kategorisindeki indirmeler burada görünür.
+Grab anyway?	Yine de alınsın mı?
+Grab with these episodes	Bu bölümlerle al
+Grabbed	Alındı
+Grabbed {}.	{} alındı.
+Grabbing…	Alınıyor…
+Grabs, imports and file changes appear here. Migrated history is included.	Almalar, içe aktarmalar ve dosya değişiklikleri burada görünür. Taşınan geçmiş de dahildir.
+Group film folder format	Grup film klasörü formatı
+Group folder format	Grup klasörü formatı
+Group season folder format	Grup sezon klasörü formatı
+Group story-arc folder format	Grup hikâye yayı klasörü formatı
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	İlişkili dizi ve film grupları: sağlayıcı koleksiyonları, anime serileri (öncül/devam grupları) ve Tanukarr'dan taşınanlar dahil manuel gruplar.
+Hardlink-only imports: never copy downloads that keep seeding	Yalnızca sabit bağlantılı içe aktarma: hâlâ seed edilen indirmeleri asla kopyalama
+Health	Sağlık
+Hide	Gizle
+History	Geçmiş
+History →	Geçmiş →
+Host	Ana makine
+Host (as in the download client's settings)	Ana makine (indirme istemcisinin ayarlarındaki gibi)
+Hostname	Ana makine adı
+How the catalogue numbers the episodes (it can be changed later on the series page).	Kataloğun bölümleri nasıl numaralandırdığı (daha sonra dizi sayfasından değiştirilebilir).
+Id	Kimlik
+Identities	Kimlikler
+Ids	Kimlikler
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Kitsunarr medyanızı kaynaktan farklı yollarda görüyorsa (örneğin farklı Docker birimleri), her kaynak klasörünü Kitsunarr'daki konumuyla eşleyin. Yollar yalnızca veritabanında yeniden yazılır.
+Ignored	Yok sayılan
+Ignored addresses	Yok sayılan adresler
+Implementation	Uygulama
+Import / Migration	İçe aktarma / Taşıma
+Import a Sonarr or Tanukarr library	Sonarr veya Tanukarr kütüphanesini içe aktar
+Import blocked	İçe aktarma engellendi
+Import completed downloads	Tamamlanan indirmeleri içe aktar
+Import extra files (subtitles…)	Ek dosyaları içe aktar (altyazılar…)
+Import from Sonarr/Tanukarr	Sonarr/Tanukarr'dan içe aktar
+Import history	Geçmişi içe aktar
+Import library	Kütüphaneyi içe aktar
+Import list options saved.	İçe aktarma listesi seçenekleri kaydedildi.
+Import lists	İçe aktarma listeleri
+Import pending	İçe aktarma bekliyor
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Sunucunun okuyabildiği herhangi bir klasörden video dosyalarını içe aktarın: her dosyanın hangi diziye ve bölümlere ait olduğunu kontrol edin, ardından onları kütüphaneye kopyalayın veya taşıyın (adlandırma ayarlarına göre yeniden adlandırılır).
+Import {chosen().len()} files	{chosen().len()} dosyayı içe aktar
+Imported	İçe aktarıldı
+Imported from series folder	Dizi klasöründen içe aktarıldı
+Importing	İçe aktarılıyor
+Importing…	İçe aktarılıyor…
+Imports need	İçe aktarmalar için gerekli:
+In library ›	Kütüphanede ›
+Include	Dahil et
+Include in file names ({{Custom Formats}} token)	Dosya adlarına ekle ({{Custom Formats}} token'ı)
+Include only titles on some lists, or leave out the titles of others.	Yalnızca bazı listelerdeki yapımları dahil edin veya diğerlerinin yapımlarını dışarıda bırakın.
+Include unmonitored	Takip edilmeyenleri dahil et
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	URL tabanı dahil, ör. http://192.168.1.10:8989 veya https://host/sonarr
+Indexer	İndeksleyici
+Indexer options saved.	İndeksleyici seçenekleri kaydedildi.
+Indexer settings	İndeksleyici ayarları
+Indexers	İndeksleyiciler
+Info	Bilgi
+Info {infos}	Bilgi {infos}
+Instance	Örnek
+Instance name	Örnek adı
+Instance: {name}	Örnek: {name}
+Interactive	Etkileşimli
+Interactive search	Etkileşimli arama
+Interactive search for full-season packs only	Yalnızca tam sezon paketleri için etkileşimli arama
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Torrent indeksleyicilerinde tüm dizinin (ve sezonlarının) paketleri için etkileşimli arama
+Interactive search: see every release and choose	Etkileşimli arama: tüm sürümleri gör ve seç
+Interface language	Arayüz dili
+Interval	Aralık
+Jellyfin library and user	Jellyfin kütüphanesi ve kullanıcısı
+Job	İş
+Keep / skip	Sakla / atla
+Keep files replaced by upgrades as versions (in "Plex Versions")	Yükseltmelerin yerini aldığı dosyaları sürüm olarak sakla ("Plex Versions" içinde)
+Keep me signed in	Oturumum açık kalsın
+Keep the replaced file's date (upgrades)	Değiştirilen dosyanın tarihini koru (yükseltmeler)
+Kept	Saklandı
+Kept versions	Saklanan sürümler
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Sonarr v3 API'sini kullanan yardımcı uygulamalar için anahtarlar: kütüphaneyi okurlar, "dizi ekle" anahtarları ayrıca dizi de ekleyebilir (bir kök klasöre, arama yapmadan). Başka hiçbir şeye izin verilmez.
+KiB	KiB
+Kind	Tür
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr özgür bir yazılımdır (GPL-3.0-or-later).
+Kitsunarr path	Kitsunarr yolu
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr kendi veritabanını yedekleyecek, önizlenen verileri tek bir işlemde içe aktaracak ve onaylamadan önce doğrulayacak. Kaynak ve medya dosyalarınız değiştirilmez.
+Label	Etiket
+Languages	Diller
+Larger releases are rejected. 0 means unlimited.	Daha büyük sürümler reddedilir. 0 sınırsız demektir.
+Last read	Son okuma
+Last run	Son çalıştırma
+Last search	Son arama
+Last searched	Son arama
+Last season	Son sezon
+Later ›	Sonraki ›
+Latest season	En yeni sezon
+Level	Seviye
+Library	Kütüphane
+Library check	Kütüphane denetimi
+Library tools	Kütüphane araçları
+Library tools saved.	Kütüphane araçları kaydedildi.
+List	Liste
+Listed best first. Grouped qualities rank equally.	En iyiden başlayarak sıralı. Gruplanmış kaliteler eşit sayılır.
+Live updates connected	Canlı güncellemeler bağlı
+Live updates disconnected	Canlı güncellemelerin bağlantısı kesildi
+Load	Yükle
+Load the account's lists	Hesabın listelerini yükle
+Load the libraries…	Kütüphaneleri yükle…
+Load the users…	Kullanıcıları yükle…
+Local air date	Yerel yayın tarihi
+Local path	Yerel yol
+Log them	Günlüğe kaydet
+Logs	Kayıtlar
+Main rejections	Başlıca ret nedenleri
+Make current	Geçerli yap
+Manual import	Manuel içe aktarma
+Mark as failed	Başarısız olarak işaretle
+Matches monitored titles.	Takip edilen yapımlarla eşleşir.
+Maximum	Maksimum
+Maximum size (MB)	Maksimum boyut (MB)
+Media management	Medya yönetimi
+Media management settings	Medya yönetimi ayarları
+Media paths	Medya yolları
+Mediums	Ortamlar
+Members	Üyeler
+Message	Mesaj
+Metadata	Meta veri
+Metadata files	Meta veri dosyaları
+Metadata keys saved.	Meta veri anahtarları kaydedildi.
+Metadata language	Meta veri dili
+Metadata refreshed.	Meta veriler yenilendi.
+Metadata refreshed: {} new episodes, {} updated.	Meta veriler yenilendi: {} yeni bölüm, {} güncellendi.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Meta veri ayarları kaydedildi. Dosyalar bir sonraki disk taramasında, yenilemede veya içe aktarmada yazılır.
+Metadata sources	Meta veri kaynakları
+MiB	MiB
+Migration completed.	Taşıma tamamlandı.
+Migration report #{}	Taşıma raporu #{}
+Minimum	Minimum
+Minimum age (minutes)	Minimum yaş (dakika)
+Minimum custom format score	Minimum özel format puanı
+Minimum format score	Minimum format puanı
+Minimum free space (MiB)	Minimum boş alan (MiB)
+Minimum seeders	Minimum seeder
+Missing	Eksik
+Missing (monitored)	Eksik (takip edilen)
+Missing films	Eksik filmler
+Mode	Mod
+Monday	Pazartesi
+Monitor	Takip et
+Monitored	Takip ediliyor
+More languages can be added to the string tables.	Metin tablolarına başka diller eklenebilir.
+Move	Taşı
+Movie	Film
+Movie file format	Film dosyası formatı
+Movie removed from Kitsunarr. Files on disk were not touched.	Film Kitsunarr'dan kaldırıldı. Diskteki dosyalara dokunulmadı.
+Movies	Filmler
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Çok sezonlu sürümler: birden fazla sezonu içeren paketleri kabul et (sezon araması, kendi sezonu için paketi alır)
+Must contain	İçermeli
+Must contain (comma separated; /regex/ allowed)	İçermeli (virgülle ayrılmış; /regex/ kullanılabilir)
+Must not contain	İçermemeli
+NOT	DEĞİL
+Name	Ad
+Naming	Adlandırma
+Naming options saved.	Adlandırma seçenekleri kaydedildi.
+Naming saved.	Adlandırma kaydedildi.
+Negate	Tersine çevir
+Network	Ağ
+Never: keep the release's names	Asla: sürümün adlarını koru
+New custom format	Yeni özel format
+New custom preset	Yeni özel ön ayar
+New group title	Yeni grup başlığı
+New password	Yeni şifre
+New quality profile	Yeni kalite profili
+Next airing	Sonraki yayın
+Next run	Sonraki çalıştırma
+Next ›	İleri ›
+No	Hayır
+No activity yet.	Henüz etkinlik yok.
+No auto tags.	Otomatik etiket yok.
+No backups yet	Henüz yedek yok
+No collections yet	Henüz koleksiyon yok
+No companion keys.	Yardımcı uygulama anahtarı yok.
+No custom formats	Özel format yok
+No custom formats defined.	Tanımlı özel format yok.
+No delay above the minimum custom format score	Minimum özel format puanının üzerinde gecikme yok
+No delay for the profile's best quality in the preferred protocol	Tercih edilen protokolde profilin en iyi kalitesi için gecikme yok
+No download client to read	Okunacak indirme istemcisi yok
+No exclusions.	Hariç tutulan yok.
+No history	Geçmiş yok
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Hiçbir indeksleyici bu diziyi otomatik olarak arayamıyor: hiçbirinde otomatik arama etkin değil ya da etkin olanların ya hiç etiketi yok ya da dizinin etiketlerinden biri yok.
+No indexers to search	Aranacak indeksleyici yok
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Saklanan sürüm yok. Adlandırma bölümünde "Yükseltmelerin yerini aldığı dosyaları sakla" seçeneğini açın.
+No log entries at this level	Bu seviyede kayıt yok
+No mappings.	Eşleme yok.
+No matches	Eşleşme yok
+No members	Üye yok
+No migrations have been run yet.	Henüz hiç taşıma çalıştırılmadı.
+No movies yet	Henüz film yok
+No notes.	Not yok.
+No recycle bin is set (Settings › Media management).	Geri dönüşüm kutusu ayarlanmamış (Ayarlar › Medya yönetimi).
+No release profiles.	Sürüm profili yok.
+No root folders yet.	Henüz kök klasör yok.
+No root folders.	Kök klasör yok.
+No runs yet	Henüz çalıştırma yok
+No searches yet.	Henüz arama yok.
+No series in your library match.	Kütüphanenizde eşleşen dizi yok.
+No tags	Etiket yok
+No {}	Yok: {}
+No {} yet	Henüz yok: {}
+None	Hiçbiri
+Not evaluated by Kitsunarr.	Kitsunarr tarafından değerlendirilmedi.
+Not imported	İçe aktarılmadı
+Not monitored	Takip edilmiyor
+Notes	Notlar
+Notes ({preview.warnings.len()})	Notlar ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Notlar ({report.warnings.len()})
+Nothing airs in the next seven days.	Önümüzdeki yedi gün içinde yayınlanan bir şey yok.
+Nothing downloading	İndirilen bir şey yok
+Nothing found	Hiçbir şey bulunamadı
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Bu katalogda aramayla eşleşen bir şey yok. Başka bir yazımı, orijinal başlığı veya diğer kataloğu deneyin.
+Nothing in this period	Bu dönemde bir şey yok
+Nothing missing	Eksik bir şey yok
+Notifications	Bildirimler
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Bölümleri kataloğun başka bir sırasına göre numaralandır (TMDB bölüm grupları, TheTVDB DVD veya mutlak sırası)
+OMDb API key	OMDb API anahtarı
+Older priority	Eski öğelerin önceliği
+One folder per season	Her sezon için bir klasör
+Only the 2000 newest files are listed.	Yalnızca en yeni 2000 dosya listelenir.
+Only when the proxy needs one.	Yalnızca proxy gerektiriyorsa.
+Open the library	Kütüphaneyi aç
+OpenAPI document	OpenAPI belgesi
+Opens the service to authorize Kitsunarr and fills in the token.	Kitsunarr'ı yetkilendirmek için servisi açar ve token'ı doldurur.
+Options	Seçenekler
+Organize	Düzenle
+Other	Diğer
+Overview	Genel bakış
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Kitsunarr'da zaten var olan kayıtların üzerine yaz (aksi halde saklanırlar)
+Packs	Paketler
+Page not found	Sayfa bulunamadı
+Page {page} / {pages}	Sayfa {page} / {pages}
+Password	Şifre
+Password changed. Other sessions were signed out.	Şifre değiştirildi. Diğer oturumlar kapatıldı.
+Past days	Geçmiş günler
+Path	Yol
+Path mappings	Yol eşlemeleri
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Otomasyonu duraklat (RSS senkronizasyonu, zamanlanmış liste senkronizasyonları, otomatik aramalar)
+Peers	Eşler
+Permission	İzin
+PiB	PiB
+Platform	Platform
+Port	Bağlantı noktası
+Position	Konum
+Post-import category	İçe aktarma sonrası kategori
+Posters	Posterler
+Prefer and upgrade	Tercih et ve yükselt
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Anime sezon paketlerini tercih et (Kitsunarr'ın anime sezon aramaları sezonu zaten bir kez arar)
+Prefer, do not upgrade	Tercih et, yükseltme
+Preferred	Tercih edilen
+Preferred metadata language	Tercih edilen meta veri dili
+Preferred protocol	Tercih edilen protokol
+Preparing preview…	Önizleme hazırlanıyor…
+Preview	Önizleme
+Preview migration	Taşımayı önizle
+Previous migrations	Önceki taşımalar
+Priority	Öncelik
+Problem	Sorun
+Profile	Profil
+Profile saved.	Profil kaydedildi.
+Profiles still used by series or movies cannot be deleted.	Hâlâ diziler veya filmler tarafından kullanılan profiller silinemez.
+Progress	İlerleme
+Propers and repacks	Proper ve repack'ler
+Proxy	Proxy
+Proxy saved.	Proxy kaydedildi.
+Proxy type	Proxy türü
+Qualities	Kaliteler
+Quality	Kalite
+Quality presets	Kalite ön ayarları
+Quality presets saved.	Kalite ön ayarları kaydedildi.
+Quality profile	Kalite profili
+Quality profiles	Kalite profilleri
+Quality profile…	Kalite profili…
+RSS sync interval (minutes)	RSS senkronizasyon aralığı (dakika)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS senkronizasyonu, bir sürüm göründükten sonra daha iyisi için bu kadar bekler; geciktirilen sürümler kuyrukta görünür. Etiketleri diziyle eşleşen ilk profil uygulanır; sonuncusu (etiketsiz) varsayılandır.
+Re-encode this series' files with the compression worker	Bu dizinin dosyalarını sıkıştırma çalışanıyla yeniden kodla
+Read and add series	Okuma ve dizi ekleme
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	İndirme istemcilerinden birkaç saniyede bir canlı okunur. Kitsunarr'ın aldığı tamamlanan indirmeler her dakika dizi klasörüne içe aktarılır (torrentler kopyalanır veya sabit bağlantıyla bağlanır, böylece seed edilmeye devam eder; Usenet indirmeleri taşınır). Başarısız indirmeler engellenenler listesine eklenir ve yeniden aranır.
+Read the library	Kütüphaneyi okuma
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Salt okunur: eksik dizi klasörlerini, klasörlerinin dışında ya da iki kez kaydedilmiş dosya kayıtlarını ve diskte eksik dosyaları bulur.
+Reading the download clients…	İndirme istemcileri okunuyor…
+Reading the source	Kaynak okunuyor
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Her şeyi API üzerinden okur. Sağlayıcıların şifreleri ve API anahtarları kaynak tarafından gizlenir ve sonradan yeniden girilmelidir.
+Recent activity	Son etkinlikler
+Recent priority	Yeni öğelerin önceliği
+Recent runs	Son çalıştırmalar
+Recent searches	Son aramalar
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Önerilir. Sonarr/Tanukarr'da Sistem → Yedekle'yi açın, bir yedek oluşturun ve .zip dosyasını indirin (veya sonarr.db'yi kullanın). İndeksleyici ve indirme istemcisi şifrelerini içerir.
+Recycle bin	Geri dönüşüm kutusu
+Recycle bin cleanup (days)	Geri dönüşüm kutusu temizliği (gün)
+Recycled	Geri dönüşüm kutusunda
+Refresh metadata	Meta verileri yenile
+Refresh preview	Önizlemeyi yenile
+Refreshing from {} is not supported yet; the imported metadata is kept as is	{} kaynağından yenileme henüz desteklenmiyor; içe aktarılan meta veriler olduğu gibi saklanır
+Refreshing…	Yenileniyor…
+Regenerate	Yeniden oluştur
+Regenerate API key	API anahtarını yeniden oluştur
+Reject releases whose TheTVDB or IMDb id names another series	TheTVDB veya IMDb kimliği başka bir diziyi gösteren sürümleri reddet
+Rejected: click twice to grab anyway	Reddedildi: yine de almak için iki kez tıklayın
+Release	Sürüm
+Release profile	Sürüm profili
+Release profile saved.	Sürüm profili kaydedildi.
+Release profiles	Sürüm profilleri
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Sürümler, Sonarr'ın yaptığı gibi dizinin kalite profili, özel formatları ve sürüm profilleriyle karşılaştırılır ve sıralanır. Reddedilen sürümler ikinci bir tıklama ister.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Başarısız olan veya elle engellenen sürümler. Aramalar ve RSS senkronizasyonu bunları bir daha asla almaz; izin vermek için birini kaldırın.
+Remote path	Uzak yol
+Remote path mapping	Uzak yol eşlemesi
+Remote path mapping saved.	Uzak yol eşlemesi kaydedildi.
+Remote path mappings	Uzak yol eşlemeleri
+Remove	Kaldır
+Remove completed downloads	Tamamlanan indirmeleri kaldır
+Remove every release from the blocklist?	Tüm sürümler engellenenler listesinden kaldırılsın mı?
+Remove failed downloads	Başarısız indirmeleri kaldır
+Remove from library	Kütüphaneden kaldır
+Remove from queue	Kuyruktan kaldır
+Remove from the download client (deletes its files there)	İndirme istemcisinden kaldır (oradaki dosyalarını siler)
+Remove movie	Filmi kaldır
+Remove series	Diziyi kaldır
+Remove tags automatically (from titles that stop matching)	Etiketleri otomatik olarak kaldır (artık eşleşmeyen yapımlardan)
+Remove “{title}” and its episode records from Kitsunarr?	“{title}” ve bölüm kayıtları Kitsunarr'dan kaldırılsın mı?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	“{title}” Kitsunarr'dan kaldırılsın mı? Diskteki dosyalar silinmez.
+Removed	Kaldırıldı
+Removed from the blocklist.	Engellenenler listesinden kaldırıldı.
+Rename	Yeniden adlandır
+Rename files	Dosyaları yeniden adlandır
+Rename files on import	İçe aktarırken dosyaları yeniden adlandır
+Rename files to the naming settings	Dosyaları adlandırma ayarlarına göre yeniden adlandır
+Formats use Sonarr's tokens.	Formatlar Sonarr'ın token'larını kullanır.
+Renaming…	Yeniden adlandırılıyor…
+Report	Rapor
+Request one at omdbapi.com. Used for films by IMDb id.	omdbapi.com adresinden isteyin. Filmler için IMDb kimliğiyle kullanılır.
+Required	Zorunlu
+Resolution	Çözünürlük
+Restore	Geri yükle
+Restore {}	Geri yükle: {}
+Restore…	Geri yükle…
+Restoring…	Geri yükleniyor…
+Resume automation	Otomasyonu sürdür
+Retention (days)	Saklama (gün)
+Retire	Kullanımdan kaldır
+Revoke	İptal et
+Root folder	Kök klasör
+Root folders	Kök klasörler
+Root folder…	Kök klasör…
+Run #{run.id}: {run.status}	Çalıştırma #{run.id}: {run.status}
+Run now	Şimdi çalıştır
+Running…	Çalışıyor…
+Saturday	Cumartesi
+Save	Kaydet
+Save criteria	Ölçütleri kaydet
+Save factors	Katsayıları kaydet
+Save keys	Anahtarları kaydet
+Save metadata files	Meta veri dosyalarını kaydet
+Save naming	Adlandırmayı kaydet
+Save options	Seçenekleri kaydet
+Saved	Kaydedildi
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Kaydedilen anahtarlar {REDACTED} olarak görünür; saklamak için değiştirmeden bırakın veya birini kaldırmak için alanı temizleyin.
+Saved.	Kaydedildi.
+Scan disk	Diski tara
+Scan folder	Klasörü tara
+Scanning…	Taranıyor…
+Scheduled tasks	Zamanlanmış görevler
+Score	Puan
+Search	Ara
+Search again when a download fails	Bir indirme başarısız olduğunda yeniden ara
+Search all	Tümünü ara
+Search all films	Tüm filmleri ara
+Search collection	Koleksiyonda ara
+Search every episode of the list, one search per season	Listenin her bölümünü ara, sezon başına bir arama
+Search every member's missing episodes (films: the film)	Her üyenin eksik bölümlerini ara (filmler için: filmin kendisi)
+Search indexers	İndeksleyicilerde ara
+Search selected	Seçilenleri ara
+Search the indexers and choose a release	İndeksleyicilerde ara ve bir sürüm seç
+Search the indexers and grab the best accepted release	İndeksleyicilerde ara ve kabul edilen en iyi sürümü al
+Search the indexers and grab the best releases for the monitored episodes	İndeksleyicilerde ara ve takip edilen bölümler için en iyi sürümleri al
+Search your indexers	İndeksleyicilerinizde arayın
+Search {chosen} selected	Seçilenleri ara ({chosen})
+Search: {}	Arama: {}
+Search: {} — complete series	Arama: {} — tüm dizi
+Search: {} — season {season} packs	Arama: {} — {season}. sezon paketleri
+Search: {} — {label}	Arama: {} — {label}
+Searching for {label}…	Aranıyor: {label}…
+Searching indexers…	İndeksleyicilerde aranıyor…
+Searching…	Aranıyor…
+Season	Sezon
+Season folder format	Sezon klasörü formatı
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Sezon klasörü başlıkları {{Season Title}} içinde kataloğunkilerin yerine geçer. Kataloğunkileri korumak için boş bırakın.
+Season folders	Sezon klasörleri
+Season images (Season ##.jpg)	Sezon görselleri (Season ##.jpg)
+Season images (Season##/folder.jpg)	Sezon görselleri (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Sezon görselleri (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Sezon paketleri: 1, aşağıdaki sezon paketi hedeflerini kullanır
+Season premieres only	Yalnızca sezon prömiyerleri
+Season {n}	Sezon {n}
+Season {one}	Sezon {one}
+Season {se.season_number}	Sezon {se.season_number}
+Season {season_number}	Sezon {season_number}
+Season-pack seed ratio	Sezon paketi seed oranı
+Season-pack seed time, minutes	Sezon paketi seed süresi, dakika
+Seasons	Sezonlar
+Seasons {first}-{last}	Sezonlar {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Gizli bilgiler {REDACTED} olarak görünür; kayıtlı değeri korumak için değiştirmeden bırakın.
+Seed ratio (empty: the client's default)	Seed oranı (boş: istemcinin varsayılanı)
+Seed time, minutes (empty: the client's default)	Seed süresi, dakika (boş: istemcinin varsayılanı)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	İndeksleyicilere, kataloglara, listelere, indirme istemcilerine ve bağlantılara giden istekleri bir proxy üzerinden gönder.
+Send to the download client	İndirme istemcisine gönder
+Series	Dizi
+Series .plexmatch file	Dizi .plexmatch dosyası
+Series folder format	Dizi klasörü formatı
+Series images (Series Title.jpg)	Dizi görselleri (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Dizi görselleri (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Dizi görselleri (folder.jpg)
+Series metadata (tvshow.nfo)	Dizi meta verileri (tvshow.nfo)
+Series metadata URL	Dizi meta veri URL'si
+Series metadata episode guide	Dizi meta verilerinde bölüm rehberi
+Series removed from Kitsunarr. Files on disk were not touched.	Dizi Kitsunarr'dan kaldırıldı. Diskteki dosyalara dokunulmadı.
+Series removed, and its folder deleted.	Dizi kaldırıldı ve klasörü silindi.
+Series type	Dizi türü
+Set quality profile…	Kalite profili ayarla…
+Settings	Ayarlar
+Settings saved.	Ayarlar kaydedildi.
+Settings → General → Security in Sonarr/Tanukarr.	Sonarr/Tanukarr'da Ayarlar → Genel → Güvenlik.
+Show	Göster
+Show as all-day events	Tüm gün süren etkinlikler olarak göster
+Show unmonitored	Takip edilmeyenleri göster
+Shows	Diziler
+Sign in	Oturum aç
+Signed in. Save the list to keep the token.	Oturum açıldı. Token'ı saklamak için listeyi kaydedin.
+Signing in…	Oturum açılıyor…
+Size	Boyut
+Size limits	Boyut sınırları
+Size on disk	Diskteki boyut
+Skip files smaller than (MB)	Şundan küçük dosyaları atla (MB)
+Skip the free-space check	Boş alan denetimini atla
+Skip unmonitored episodes when importing packs	Paketleri içe aktarırken takip edilmeyen bölümleri atla
+Source	Kaynak
+Source code	Kaynak kodu
+Source path	Kaynak yolu
+Special	Özel bölüm
+Specials	Özel bölümler
+Specials are never monitored automatically.	Özel bölümler hiçbir zaman otomatik olarak takip edilmez.
+Specifications	Belirtimler
+Specifications (JSON)	Belirtimler (JSON)
+Specifications must be valid JSON: {e}	Belirtimler geçerli JSON olmalıdır: {e}
+Stalled torrent timeout (minutes)	Takılan torrent zaman aşımı (dakika)
+Standard	Standart
+Standard episode format	Standart bölüm formatı
+Start migration	Taşımayı başlat
+Start over	Baştan başla
+Start search for missing episodes	Eksik bölümler için aramayı başlat
+Started	Başlatıldı
+Started {format_datetime(&run.started_at)}	Başlatıldı: {format_datetime(&run.started_at)}
+Status	Durum
+Status & health	Durum ve sağlık
+Still downloading	Hâlâ indiriliyor
+Storage outlook	Depolama öngörüsü
+Studio	Stüdyo
+Subscribe	Abone ol
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Bir takvim uygulamasında bu adrese abone olun. API anahtarınızı içerir: gizli tutun.
+Sunday	Pazar
+Sync	Senkronize et
+Sync all lists now	Tüm listeleri şimdi senkronize et
+Sync now	Şimdi senkronize et
+Syncing…	Senkronize ediliyor…
+System →	Sistem →
+TMDB API key (v3)	TMDB API anahtarı (v3)
+TV Series	TV Dizileri
+TV series	TV dizileri
+Table	Tablo
+Tag	Etiket
+Tag them	Etiketle
+Tag titles already in the library	Kütüphanede zaten bulunan yapımları etiketle
+Tags	Etiketler
+Tags (comma separated)	Etiketler (virgülle ayrılmış)
+Tags (ids, comma separated)	Etiketler (kimlikler, virgülle ayrılmış)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Etiketler, eklendiklerinde, düzenlendiklerinde veya yenilendiklerinde her koşul türüyle eşleşen dizi ve filmlere eklenir.
+Task	Görev
+Television	Televizyon
+Television (raw)	Televizyon (raw)
+Test	Test Et
+Test failed: {message}	Test başarısız: {message}
+Testing…	Test ediliyor…
+The blocklist is empty	Engellenenler listesi boş
+The catalogue new titles are added from when the list knows their id there.	Liste bir yapımın kimliğini orada biliyorsa, yeni yapımların ekleneceği katalog.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	İçe aktarılan dosyaların alacağı tarih: bölümün yayın tarihi (yerel veya UTC) ya da yükseltmede değiştirilen dosyanın tarihi.
+The dry run completed without blocking problems. Nothing has been written yet.	Deneme çalıştırması engelleyici sorun olmadan tamamlandı. Henüz hiçbir şey yazılmadı.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Dosya sezon klasörüne taşınır (mevcut bir dosyanın üzerine asla yazılmaz) ve dizi yeniden taranır.
+The folder must already exist; Kitsunarr never creates or removes it.	Klasör zaten var olmalıdır; Kitsunarr onu asla oluşturmaz veya kaldırmaz.
+The indexers returned no releases for this search.	İndeksleyiciler bu arama için hiçbir sürüm döndürmedi.
+The instance is on my local network (private or loopback address)	Örnek yerel ağımda (özel veya loopback adresi)
+The list has not been read, or it is empty.	Liste okunmadı veya boş.
+The migration did not complete; nothing was changed.	Taşıma tamamlanmadı; hiçbir şey değiştirilmedi.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Bellekte tutulan en son kayıtlar. Tam kayıtlar işlem çıktısına gider (konteyner kayıtları veya journal).
+The passwords do not match.	Şifreler eşleşmiyor.
+The recycle bin has no media or subtitle files.	Geri dönüşüm kutusunda medya veya altyazı dosyası yok.
+The sign-in expired; try again.	Oturum açma süresi doldu; yeniden deneyin.
+The upload failed (network error).	Yükleme başarısız oldu (ağ hatası).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Çalışan, KITSUNARR_COMPRESSION_SOCKET konumundaki soket üzerinden erişilen isteğe bağlı bir ana makine bileşenidir (Tanukarr'ın sıkıştırma çalışanı).
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarr'ın kataloğu), TMDB ve TVmaze TV dizilerini; AniList ve MyAnimeList anime dizilerini ve anime filmlerini; TMDB ve OMDb filmleri kapsar. Bir yapım eklemek kütüphane kaydını ve bölüm listesini oluşturur; dosyalar daha sonra içe aktarma işlem hattı tarafından alınır.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB yapımları bu dilde aranır ve eklenir; her dizi kendi düzenleyicisinde değiştirilebilir.
+TheTVDB titles in this language; changing it refreshes the series	Bu dildeki TheTVDB başlıkları; değiştirmek diziyi yeniler
+There is nothing at /{path}.	/{path} konumunda hiçbir şey yok.
+They are created by migrating from Sonarr/Tanukarr.	Sonarr/Tanukarr'dan taşıma yapılarak oluşturulurlar.
+This series' renaming mode, season folder titles and kept versions	Bu dizinin yeniden adlandırma modu, sezon klasörü başlıkları ve saklanan sürümleri
+TiB	TiB
+Time	Saat
+Time left	Kalan süre
+Title	Başlık
+Title pattern	Başlık kalıbı
+Titles import lists never add.	İçe aktarma listelerinin asla eklemediği yapımlar.
+Titles on no list	Hiçbir listede olmayan yapımlar
+Today	Bugün
+Torrent	Torrent
+Torrent delay	Torrent gecikmesi
+Torrent delay (minutes)	Torrent gecikmesi (dakika)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab ve Newznab indeksleyicileri. Birini denetlemek için düzenleyicide Test Et'i kullanın; her arama, o arama türü etkin olan indeksleyicileri kullanır: RSS, otomatik veya etkileşimli.
+Trigger	Tetikleyici
+URL base	URL tabanı
+UTC air date	UTC yayın tarihi
+Unchanged	Değişmedi
+Unknown	Bilinmeyen
+Unmonitor	Takibi bırak
+Unmonitor them	Takiplerini bırak
+Unmonitored	Takip edilmiyor
+Upcoming	Yaklaşan
+Upcoming 7 days	Önümüzdeki 7 gün
+Update	Güncelle
+Updated {} items.	Güncellenen öğe: {}.
+Upgrade until (cutoff)	Şu kaliteye kadar yükselt (sınır)
+Upgrade until format score	Şu format puanına kadar yükselt
+Upgrades allowed	Yükseltmelere izin verilir
+Upload a backup	Yedek yükle
+Upload failed (HTTP {}).	Yükleme başarısız oldu (HTTP {}).
+Uploading…	Yükleniyor…
+Use SSL	SSL kullan
+Use a proxy	Proxy kullan
+Use hardlinks instead of copying	Kopyalamak yerine sabit bağlantıları kullan
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Diğer uygulamalardan X-Api-Key başlığı (veya ?apikey=) olarak kullanın. Sonarr'ın kullandığı başlıkla uyumludur.
+Use these episodes	Bu bölümleri kullan
+Usenet	Usenet
+Usenet delay	Usenet gecikmesi
+Usenet delay (minutes)	Usenet gecikmesi (dakika)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Yalnızca Usenet: daha yeni sürümler reddedilerek yayılmaları için zaman tanınır. 0 bunu kapatır.
+Usenet only: older releases are rejected. 0 means unlimited.	Yalnızca Usenet: daha eski sürümler reddedilir. 0 sınırsız demektir.
+User name	Kullanıcı adı
+Username	Kullanıcı adı
+Validation	Doğrulama
+Version	Sürüm
+Versions	Sürümler
+Waiting for the sign-in at	Oturum açma bekleniyor:
+Wanted	Arananlar
+Warnings	Uyarılar
+Warnings {warnings}	Uyarılar {warnings}
+Watched (Jellyfin watched sync)	İzlendi (Jellyfin izlenme senkronizasyonu)
+Watched sync user	İzlenme senkronizasyonu kullanıcısı
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-posta (SMTP), Mailgun, SendGrid, özel betikler (Sonarr'ın ortam değişkenleriyle), Emby/Jellyfin, Plex ve Kodi bildirimleri gönderilir: almalar, içe aktarmalar ve yükseltmeler, yeniden adlandırmalar, eklenen veya silinen diziler, silinen dosyalar, sağlık sorunları. Düzenleyicide Test Et'i kullanın.
+Welcome	Hoş geldiniz
+What to import	Neler içe aktarılsın
+When	Ne zaman
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	İndeksleyicilerin, indirme istemcilerinin ve servislerin HTTPS sertifikalarının ne zaman denetleneceği (Sonarr'ın ayarı). Ağınızdaki kendinden imzalı sertifikalar için bunun gevşetilmesi gerekir.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Bir indirme istemcisi Kitsunarr'ın başka yerde gördüğü yolları bildirirse (başka bir makine veya konteyner), istemcinin ana makinesini ve yolunu yerel yolla eşleyin.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Hatalı bir sürümü düzelten sürümlerin tercih edilip edilmeyeceği ve mevcut dosyaları yükseltip yükseltmeyeceği (Sonarr'daki gibi).
+Whole season	Tüm sezon
+Working…	İşleniyor…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Diziler tarandığında, yenilendiğinde veya içe aktarıldığında, Sonarr'ın meta veri tüketicilerinin yazdığı şekilde dizi klasörlerine yazılır.
+Year	Yıl
+Your library is empty.	Kütüphaneniz boş.
+all checks passed	tüm denetimler başarılı
+comma separated	virgülle ayrılmış
+cutoff: {}	sınır: {}
+has a file	dosyası var
+iCal link	iCal bağlantısı
+in 2 days	2 gün içinde
+in a moment	birazdan
+in file names	dosya adlarında
+in library	kütüphanede
+in {text}	{text} içinde
+just now	az önce
+may run out of space	alan yetersiz kalabilir
+name (e.g. phone)	ad (ör. telefon)
+never refreshed	hiç yenilenmedi
+no media files are moved, renamed or deleted.	hiçbir medya dosyası taşınmaz, yeniden adlandırılmaz veya silinmez.
+not accessible	erişilemiyor
+not added	eklenmedi
+not checked	denetlenmedi
+not read yet	henüz okunmadı
+on disk	diskte
+refreshed {}	yenilendi: {}
+schema {s}	şema {s}
+secrets included	gizli bilgiler dahil
+secrets masked	gizli bilgiler maskelendi
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip veya sonarr.db
+stored only	yalnızca saklanır
+title (optional)	başlık (isteğe bağlı)
+{:.1} GiB/h	{:.1} GiB/sa
+{added} added; {}	eklenen: {added}; {}
+{added} shows added.	Eklenen dizi: {added}.
+{c.name} (API key needed)	{c.name} (API anahtarı gerekli)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} dizi · {c.movie_count} film
+{chosen().len()} chosen	Seçilen: {chosen().len()}
+{chosen().len()} chosen (at most 25)	Seçilen: {chosen().len()} (en fazla 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} diskte · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	%{done} / {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · eklendi {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} / {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} dosya · %{job["percent"]} · kazanılan {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} başlatıldı.
+{name} was added to the library.	{name} kütüphaneye eklendi.
+{name}: shows	{name}: diziler
+{ok} files imported.	İçe aktarılan dosya: {ok}.
+{ok} imported; {}	içe aktarılan: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.searched_indexers} indeksleyiciden {r.releases.len()} sürüm.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Denetlenen: {r.series_checked} dizi ve {r.files_checked} dosya; sorun: {r.issues.len()}.
+{selected.read().len()} selected	Seçilen: {selected.read().len()}
+{text} ago	{text} önce
+{} (not accessible)	{} (erişilemiyor)
+{} ({} free)	{} ({} boş)
+{} added to every profile (not allowed yet).	{} her profile eklendi (henüz izin verilmiyor).
+{} day(s)	{} gün
+{} failed: {}	{} başarısız: {}
+{} format scores	{} format puanı
+{} free of {}	{} / {} boş
+{} week(s)	{} hafta
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Geri
+‹ Earlier	‹ Önceki
+‹ Prev	‹ Önceki
+○ offline	○ çevrimdışı
+● live	● canlı
+✓ No issues detected.	✓ Sorun algılanmadı.
+Activity	Etkinlik
+Queue	Kuyruk
+System	Sistem
+Tasks	Görevler
+Retry	Yeniden dene
+Sign out	Oturumu kapat
+Search titles…  ( / )	Yapım ara…  ( / )
+Loading…	Yükleniyor…
+Profiles	Profiller
+scene {}	sahne {}
+Scene numbering from TheXEM	TheXEM'den sahne numaralandırması
+Scene numbering extrapolated from TheXEM (unverified)	TheXEM'den tahmin edilen sahne numaralandırması (doğrulanmamış)
+Season {} (scene seasons {})	Sezon {} (sahne sezonları {})
+{} (scene {})	{} (sahne {})

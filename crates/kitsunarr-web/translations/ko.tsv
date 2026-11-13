@@ -1,0 +1,968 @@
+# Korean interface strings: English<TAB>Korean. {…} marks a placeholder.
+custom	사용자 정의
+indeterminate	미정
+mixed	혼합
+retired	폐기됨
+· container	· 컨테이너
+· finished {format_datetime(f)}	· 완료 {format_datetime(f)}
+· missing	· 누락됨
+· on disk	· 디스크에 있음
+· today	· 오늘
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} 화
+— MiB per minute; empty uses Settings › Quality	— 분당 MiB, 비워 두면 설정 › 품질 값을 사용
+— a release's size is multiplied by its codec's factor before the size limits apply	— 크기 제한을 적용하기 전에 릴리스 크기에 코덱 계수를 곱합니다
+— all profiles at once	— 모든 프로필에 한 번에
+— codec and title criteria, custom qualities (Tanukarr)	— 코덱 및 제목 조건, 사용자 정의 품질 (Tanukarr)
+— enter the code	— 코드를 입력하세요
+(empty)	(비어 있음)
++ Add mapping	+ 매핑 추가
++ New format	+ 새 형식
++ New profile	+ 새 프로필
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0(끔) 또는 10~120. RSS 동기화는 시스템 › 작업에서도 실행됩니다.
+3 hours ago	3시간 전
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	이 시간 동안 진행이 없는 다운로드 중인 토렌트는 실패 처리되고 차단 목록에 추가된 뒤 다시 검색됩니다. 0이면 끕니다. 진행 상황은 Kitsunarr 시작 시점부터 추적됩니다.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	AniList 또는 MyAnimeList 관계에서 찾은 프랜차이즈 그룹입니다. 같은 프랜차이즈에서 나중에 추가된 작품도 이 그룹에 들어갑니다.
+A new API key was generated. Update the applications that use it.	새 API 키가 생성되었습니다. 이 키를 사용하는 애플리케이션을 업데이트하세요.
+A regular expression, case-insensitive; empty matches every title.	정규 표현식(대소문자 구분 안 함). 비워 두면 모든 제목과 일치합니다.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	릴리스는 시리즈 프로필에서 허용된 프리셋 중 소스, 해상도, 코덱, 제목 패턴이 일치하는 가장 구체적인 프리셋을 따릅니다. 코덱이나 패턴이 지정된 표준 품질은 이를 충족하지 못하는 릴리스를 알 수 없음으로 처리합니다. 사용자 정의 프리셋은 모든 프로필에 허용 안 함으로 추가됩니다.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	크기 제한을 적용하기 전에 릴리스 크기에 코덱 계수를 곱합니다. "혼합"은 프로필마다 다른 계수를 사용한다는 뜻이며, 여기에 입력한 값은 모든 프로필에 기록됩니다.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	프랜차이즈 또는 수동 그룹에 들어가는 작품은 기존 그룹에서 빠집니다. 파일과 폴더는 이동되지 않습니다.
+API key	API 키
+API key needed	API 키 필요
+API keys and language	API 키 및 언어
+API path	API 경로
+About	정보
+Absolute path; empty to delete permanently.	절대 경로. 비워 두면 영구 삭제합니다.
+Accepted	승인됨
+Account lists	계정 목록
+Actions	작업
+Actual	실제
+Add	추가
+Add a Newznab or Torznab indexer and enable interactive search for it.	Newznab 또는 Torznab 인덱서를 추가하고 대화형 검색을 활성화하세요.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	템플릿에서 클라이언트를 추가하고 편집기에서 테스트를 사용하세요. 잡기, 큐, 가져오기에는 활성화된 모든 클라이언트가 사용됩니다. 블랙홀은 잡은 항목을 폴더에 기록하고 감시 폴더에 나타나는 항목을 가져옵니다. 각 클라이언트의 "완료/실패한 다운로드 제거" 옵션은 클라이언트 처리가 끝난 다운로드를 파일과 함께 제거합니다.
+Add a download client in Settings › Download clients and enable it.	설정 › 다운로드 클라이언트에서 다운로드 클라이언트를 추가하고 활성화하세요.
+Add a root folder first: it is where this title's folder will live.	먼저 루트 폴더를 추가하세요. 이 작품의 폴더가 그 안에 만들어집니다.
+Add a tag above first.	먼저 위에서 태그를 추가하세요.
+Add a title	작품 추가
+Add auto tag	자동 태그 추가
+Add condition	조건 추가
+Add exclusion	제외 항목 추가
+Add media	미디어 추가
+Add one, or migrate them from Sonarr/Tanukarr.	하나를 추가하거나 Sonarr/Tanukarr에서 마이그레이션하세요.
+Add preset	프리셋 추가
+Add selected	선택 항목 추가
+Add series or movies below.	아래에서 시리즈나 영화를 추가하세요.
+Add tag	태그 추가
+Add the list's tags	목록의 태그 추가
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	TVmaze 또는 AniList에서 작품을 추가하거나 기존 Sonarr 또는 Tanukarr 라이브러리를 가져오세요.
+Add to library	라이브러리에 추가
+Add {}	{} 추가
+Add {} ({y})	{} ({y}) 추가
+Add — {}	추가 — {}
+Add, and remove when they leave the list	추가하고, 목록에서 빠지면 제거
+Added	추가됨
+Added to the titles this list adds.	이 목록이 추가하는 작품에 추가됩니다.
+Adding titles	작품 추가
+Adding…	추가 중…
+Address	주소
+Age	경과 시간
+Aired	방영됨
+Aired monitored episodes without a file appear here.	파일이 없는 방영된 모니터링 에피소드가 여기에 표시됩니다.
+All	전체
+All collections	모든 컬렉션
+All episodes	모든 에피소드
+All episodes in the series folder	시리즈 폴더의 모든 에피소드
+All events	모든 이벤트
+Allow zero size (the feed has no release sizes)	크기 0 허용 (피드에 릴리스 크기가 없음)
+Also delete the series folder and its files (to the recycle bin when one is set)	시리즈 폴더와 파일도 삭제 (휴지통이 설정되어 있으면 휴지통으로)
+Also for releases grabbed from interactive search	대화형 검색에서 잡은 릴리스에도 적용
+Also known as	다른 이름
+Always, even when renaming is off	항상 (이름 변경이 꺼져 있어도)
+Analyze video files (resolution, runtime and codecs, with ffprobe)	동영상 파일 분석 (ffprobe로 해상도, 재생 시간, 코덱 확인)
+AniList and MyAnimeList titles are always added as anime.	AniList 및 MyAnimeList 작품은 항상 애니메이션으로 추가됩니다.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, 다른 Sonarr 및 사용자 정의 JSON 목록은 몇 시간마다 읽힙니다. 새 작품은 각 목록의 루트 폴더, 프로필, 모니터링 설정으로 추가됩니다. OAuth가 필요한 서비스는 직접 만든 애플리케이션의 Client ID와 붙여 넣은 토큰을 사용합니다 (Tanukarr에서 마이그레이션한 토큰도 계속 작동합니다).
+Anime	애니메이션
+Anime / absolute numbering	애니메이션 / 절대 번호
+Anime categories	애니메이션 카테고리
+Anime episode format	애니메이션 에피소드 형식
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	애니메이션 영화는 AniList에서 추가할 수 있으며, Tanukarr 마이그레이션 시 영화도 함께 가져옵니다. 실사 영화는 TMDB 카탈로그가 필요합니다.
+Anime standard format search	애니메이션 표준 형식 검색
+Anime title, e.g. Frieren	애니메이션 제목, 예: Frieren
+Any	모두
+Any library	모든 라이브러리
+Applications using the current key will stop working until you give them the new one.	현재 키를 사용하는 애플리케이션은 새 키를 입력할 때까지 작동하지 않습니다.
+Applied after every list has been read successfully and some title left a list.	모든 목록을 성공적으로 읽었고 일부 작품이 목록에서 빠졌을 때 적용됩니다.
+Apply	적용
+Apply migration	마이그레이션 적용
+Apply profile	프로필 적용
+Applying migration	마이그레이션 적용 중
+Applying…	적용 중…
+As Settings › Media management says	설정 › 미디어 관리에 따름
+At least 10 characters.	최소 10자.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	최소 {MIN_PASSWORD_LENGTH}자. 암호 문구를 사용하면 좋습니다.
+Auto tag	자동 태그
+Auto tag saved. It applies when titles are next added, edited or refreshed.	자동 태그가 저장되었습니다. 다음에 작품을 추가, 편집 또는 새로고침할 때 적용됩니다.
+Auto tagging	자동 태그 지정
+Auto-refresh	자동 새로고침
+Automatic	자동
+Automatic search	자동 검색
+Automatic search for {label}: grabbed {}.	{label} 자동 검색: {}을(를) 잡았습니다.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	{label} 자동 검색: 릴리스 {}개 발견, {}개 승인, 잡은 항목 없음.
+Automatic search: grab the best release	자동 검색: 최적의 릴리스 잡기
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	자동화가 일시 중지되었습니다. RSS 동기화, 예약된 목록 동기화, 자동 검색을 건너뜁니다. 수동 작업과 진행 중인 다운로드는 계속됩니다.
+Automation resumed.	자동화가 재개되었습니다.
+Available from	이용 가능 시점
+Back to the dashboard	대시보드로 돌아가기
+Back up now	지금 백업
+Backup {} created.	백업 {}이(가) 생성되었습니다.
+Backups	백업
+Blocking:	차단 요인:
+Blocklist	차단 목록
+Blocklist the release and search again	릴리스를 차단 목록에 추가하고 다시 검색
+Blocklist the release: it is never grabbed again	릴리스를 차단 목록에 추가: 다시는 잡지 않음
+Blocklist “{title}” and search for a replacement?	“{title}”을(를) 차단 목록에 추가하고 대체 항목을 검색할까요?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Sonarr(v3/v4) 또는 Tanukarr 라이브러리와 설정을 Kitsunarr로 가져옵니다. 원본은 읽기만 하고 변경하지 않으며,
+Bypass the proxy for local addresses	로컬 주소는 프록시 우회
+Calendar	캘린더
+Calendar →	캘린더 →
+Cancel	취소
+Cancel compression	압축 취소
+Cannot reach the server: {e}	서버에 연결할 수 없습니다: {e}
+Catalogue	카탈로그
+Category	카테고리
+Certificate validation	인증서 검증
+Change password	비밀번호 변경
+Change series	시리즈 변경
+Changes	변경 사항
+Check	확인
+Check library	라이브러리 확인
+Check now	지금 확인
+Check that the mapped series folders exist (read-only)	매핑된 시리즈 폴더가 있는지 확인 (읽기 전용)
+Checked: {summary}.	확인 완료: {summary}.
+Checking…	확인 중…
+Choose a backup file	백업 파일 선택
+Choose a mode	모드 선택
+Choose a root folder and a quality profile.	루트 폴더와 품질 프로필을 선택하세요.
+Choose a season	시즌 선택
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	시리즈와 시즌 또는 에피소드를 선택하세요. 결과에는 Kitsunarr 파서가 해석한 각 릴리스의 정보가 표시됩니다.
+Choose a series or movie…	시리즈 또는 영화 선택…
+Choose source	소스 선택
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	이 릴리스의 에피소드를 직접 선택한 뒤 잡기 (선택 내용은 가져오기에 유지됨)
+Choose…	선택…
+Clean library	라이브러리 정리
+Clear	지우기
+Clear blocklist	차단 목록 지우기
+Cleared {n} releases from the blocklist.	차단 목록에서 릴리스 {n}개를 지웠습니다.
+Client	클라이언트
+Close	닫기
+Codec	코덱
+Codec factors saved in every profile.	코덱 계수가 모든 프로필에 저장되었습니다.
+Codec size factors	코덱 크기 계수
+Codecs	코덱
+Collection film folder format	컬렉션 영화 폴더 형식
+Collections	컬렉션
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	컬렉션은 Tanukarr에서 마이그레이션하거나, 제공자 데이터로 생성하거나, 여기서 직접 만들면 표시됩니다.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Sonarr 또는 Tanukarr에서 오셨나요? 몇 단계만으로 기존 시리즈, 설정, 내역을 가져오세요.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	쉼표로 구분. *는 와일드카드(*.lan)이며 192.168.1.0/24 같은 IP 범위도 사용할 수 있습니다.
+Companion app keys	연동 앱 키
+Complete series	시리즈 전체
+Completed and failed download handling	완료 및 실패한 다운로드 처리
+Component	구성 요소
+Compress series	시리즈 압축
+Compression	압축
+Compression queued.	압축이 대기열에 추가되었습니다.
+Compression worker is not connected.	압축 워커가 연결되어 있지 않습니다.
+Condition	조건
+Conditions	조건
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	같은 종류의 조건은 하나라도 일치하면 일치합니다 (필수 조건은 모두 일치해야 함). 모든 종류가 일치해야 합니다.
+Configure	구성
+Confirm password	비밀번호 확인
+Connect	연결
+Connect to a running instance	실행 중인 인스턴스에 연결
+Connecting…	연결 중…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	데이터베이스의 일관된 사본입니다. 예약 백업은 매주 실행되며 (최근 8개 보관), 모든 마이그레이션도 먼저 백업을 만듭니다. 복원하려면 Kitsunarr를 중지하고 다음을 실행하세요:
+Continuing	방영 중
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	쿠키 (피드 요청과 함께 전송, 예: uid=1; pass=…)
+Copied.	복사했습니다.
+Copy	복사
+Copy (keep the originals)	복사 (원본 유지)
+Copy sizes from	크기 복사 원본
+Copy the token now; it is not shown again:	지금 토큰을 복사하세요. 다시 표시되지 않습니다:
+Could not grab {}: {}	{}을(를) 잡을 수 없습니다: {}
+Covers	커버
+Create	만들기
+Create account	계정 만들기
+Create group	그룹 만들기
+Create key	키 만들기
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	themoviedb.org › Settings › API에서 생성하세요. TMDB TV 시리즈와 영화에 사용됩니다.
+Create the administrator account. You will use it to sign in to Kitsunarr.	관리자 계정을 만드세요. 이 계정으로 Kitsunarr에 로그인합니다.
+Created	생성됨
+Created when the first file is imported. Nothing is written to disk now.	첫 파일을 가져올 때 생성됩니다. 지금은 디스크에 아무것도 기록하지 않습니다.
+Creating…	생성 중…
+Credit	크레딧
+Current file	현재 파일
+Current password	현재 비밀번호
+Custom format saved.	사용자 정의 형식이 저장되었습니다.
+Custom format score	사용자 정의 형식 점수
+Custom format scores	사용자 정의 형식 점수
+Custom formats	사용자 정의 형식
+Cutoff unmet	중단점 미충족
+Daily	매일
+Daily episode format	일일 에피소드 형식
+Dashboard	대시보드
+Data directory	데이터 디렉터리
+Database backup taken before the import: {b}	가져오기 전에 생성된 데이터베이스 백업: {b}
+Database schema	데이터베이스 스키마
+Date	날짜
+Date added	추가된 날짜
+Debug	디버그
+Decision	판정
+Default	기본값
+Defaults	기본값
+Delay profile	지연 프로필
+Delay profile saved.	지연 프로필이 저장되었습니다.
+Delay profiles	지연 프로필
+Delete	삭제
+Delete empty series folders	빈 시리즈 폴더 삭제
+Delete file	파일 삭제
+Delete group	그룹 삭제
+Delete profile	프로필 삭제
+Delete “{path}”? It goes to the recycle bin when one is set.	“{path}”을(를) 삭제할까요? 휴지통이 설정되어 있으면 휴지통으로 이동합니다.
+Delete “{}”?	“{}”을(를) 삭제할까요?
+Delete “{}”? Its series and movies stay in the library.	“{}”을(를) 삭제할까요? 해당 시리즈와 영화는 라이브러리에 남습니다.
+Deleted	삭제됨
+Directory	디렉터리
+Disabled	비활성화됨
+Disabled for local addresses	로컬 주소에는 사용 안 함
+Disk scanned: {}	디스크 스캔 완료: {}
+Disk scanned: {} Not matched: {}	디스크 스캔 완료: {} 일치하지 않음: {}
+Do not prefer	선호하지 않음
+Do not search for a replacement	대체 항목을 검색하지 않음
+Do nothing	아무것도 하지 않음
+Done	완료
+Download client options saved.	다운로드 클라이언트 옵션이 저장되었습니다.
+Download clients	다운로드 클라이언트
+Download failed	다운로드 실패
+Download queue	다운로드 큐
+Downloads	다운로드
+Duration	기간
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	각 작품은 하나의 카탈로그에 속하며 새로고침 시 해당 카탈로그를 읽습니다. 작품이 가진 모든 식별자(TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList)는 유지됩니다. Sonarr에서 마이그레이션한 작품은 TheTVDB에 속합니다.
+Edit	편집
+Edit “{name}”	“{name}” 편집
+Edit “{}”	“{}” 편집
+Enable RSS	RSS 활성화
+Enable automatic search	자동 검색 활성화
+Enable interactive search	대화형 검색 활성화
+Enabled	활성화됨
+Ended	종영
+English	영어
+Entity	항목
+Episode	에피소드
+Episode and movie naming	에피소드 및 영화 이름 지정
+Episode image thumbs in the NFO	NFO에 에피소드 이미지 썸네일 포함
+Episode images (<filename>-thumb.jpg)	에피소드 이미지 (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	에피소드 이미지 (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	에피소드 이미지 (Season##/filename.metathumb)
+Episode mappings in .plexmatch	.plexmatch의 에피소드 매핑
+Episode metadata (<filename>.nfo)	에피소드 메타데이터 (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	에피소드 메타데이터 (Season##/filename.xml)
+Episode order	에피소드 순서
+Episode order changed: {} episodes updated, {} added.	에피소드 순서 변경: 에피소드 {}개 업데이트, {}개 추가.
+Episodes	에피소드
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	선택한 순서에 따라 에피소드 번호가 다시 매겨집니다. 파일, 모니터링, 내역은 해당 에피소드에 그대로 유지됩니다. 새 번호에 맞게 이후에 파일 이름을 변경하세요.
+Episodes of {title}	{title}의 에피소드
+Episodes on disk	디스크의 에피소드
+Episodes whose file is below the quality profile's cutoff appear here.	파일이 품질 프로필의 중단점보다 낮은 에피소드가 여기에 표시됩니다.
+Episodes…	에피소드…
+Errors	오류
+Errors {errors}	오류 {errors}
+Event	이벤트
+Every file already follows the naming settings.	모든 파일이 이미 이름 지정 설정을 따르고 있습니다.
+Every file meets its cutoff	모든 파일이 중단점을 충족합니다
+Exclude	제외
+Exclusions	제외 항목
+Expected	예상
+Expires	만료
+Extra file extensions	추가 파일 확장자
+Factor	계수
+Failed	실패
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	가짜 릴리스 보호: 잡기 전에 토렌트를 검사하여 실행 파일, 비밀번호 미끼 압축 파일, 동영상이 없는 콘텐츠를 거부
+Feed address	피드 주소
+Fetch the latest metadata from {}	{}에서 최신 메타데이터 가져오기
+File	파일
+File date	파일 날짜
+File deleted	파일 삭제됨
+File deleted.	파일이 삭제되었습니다.
+File management	파일 관리
+File management settings saved.	파일 관리 설정이 저장되었습니다.
+File renamed	파일 이름 변경됨
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	이보다 오래된 파일은 매일 휴지통에서 삭제됩니다. 0이면 보관합니다.
+Files upgrades replaced, kept as versions	업그레이드로 교체된 파일을 버전으로 보관
+Film	영화
+Film title or IMDb id, e.g. Arrival	영화 제목 또는 IMDb id, 예: Arrival
+Find a series in your library	라이브러리에서 시리즈 찾기
+Find files added to or removed from the series folder	시리즈 폴더에 추가되거나 제거된 파일 찾기
+Find something to add	추가할 항목 찾기
+First and last pieces first	첫 조각과 마지막 조각 먼저
+First day of the week	주의 첫째 날
+First season	첫 시즌
+Folder	폴더
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	형식은 Sonarr의 사양 유형(ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType)을 사용합니다. 점수는 품질 프로필별로 지정됩니다.
+Found	찾음
+Free	여유
+Free space	여유 공간
+Future days	이후 일수
+Future episodes	향후 에피소드
+General	일반
+GiB	GiB
+Grab	잡기
+Grab a release from interactive search; downloads in the client's TV category show up here.	대화형 검색에서 릴리스를 잡으세요. 클라이언트의 TV 카테고리에 있는 다운로드가 여기에 표시됩니다.
+Grab anyway?	그래도 잡을까요?
+Grab with these episodes	이 에피소드로 잡기
+Grabbed	잡음
+Grabbed {}.	{}을(를) 잡았습니다.
+Grabbing…	잡는 중…
+Grabs, imports and file changes appear here. Migrated history is included.	잡기, 가져오기, 파일 변경이 여기에 표시됩니다. 마이그레이션된 내역도 포함됩니다.
+Group film folder format	그룹 영화 폴더 형식
+Group folder format	그룹 폴더 형식
+Group season folder format	그룹 시즌 폴더 형식
+Group story-arc folder format	그룹 스토리 아크 폴더 형식
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	관련 시리즈와 영화의 그룹: 제공자 컬렉션, 애니메이션 프랜차이즈(전편/후속편 그룹), 수동 그룹이 있으며 Tanukarr에서 마이그레이션한 그룹도 포함됩니다.
+Hardlink-only imports: never copy downloads that keep seeding	하드 링크 전용 가져오기: 시딩 중인 다운로드는 절대 복사하지 않음
+Health	상태 점검
+Hide	숨기기
+History	내역
+History →	내역 →
+Host	호스트
+Host (as in the download client's settings)	호스트 (다운로드 클라이언트 설정과 동일)
+Hostname	호스트 이름
+How the catalogue numbers the episodes (it can be changed later on the series page).	카탈로그가 에피소드 번호를 매기는 방식 (나중에 시리즈 페이지에서 변경할 수 있음).
+Id	Id
+Identities	식별자
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Kitsunarr가 원본과 다른 경로로 미디어를 인식하는 경우 (예: 다른 Docker 볼륨) 각 원본 폴더를 Kitsunarr 위치에 매핑하세요. 경로는 데이터베이스에서만 다시 기록됩니다.
+Ignored	무시됨
+Ignored addresses	무시할 주소
+Implementation	구현
+Import / Migration	가져오기 / 마이그레이션
+Import a Sonarr or Tanukarr library	Sonarr 또는 Tanukarr 라이브러리 가져오기
+Import blocked	가져오기 차단됨
+Import completed downloads	완료된 다운로드 가져오기
+Import extra files (subtitles…)	추가 파일 가져오기 (자막…)
+Import from Sonarr/Tanukarr	Sonarr/Tanukarr에서 가져오기
+Import history	내역 가져오기
+Import library	라이브러리 가져오기
+Import list options saved.	가져오기 목록 옵션이 저장되었습니다.
+Import lists	가져오기 목록
+Import pending	가져오기 대기 중
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	서버가 읽을 수 있는 모든 폴더에서 동영상 파일을 가져옵니다. 각 파일의 시리즈와 에피소드를 확인한 뒤 라이브러리로 복사하거나 이동합니다 (이름 지정 설정에 따라 이름 변경).
+Import {chosen().len()} files	파일 {chosen().len()}개 가져오기
+Imported	가져옴
+Imported from series folder	시리즈 폴더에서 가져옴
+Importing	가져오는 중
+Importing…	가져오는 중…
+Imports need	가져오기에 필요한 항목:
+In library ›	라이브러리에 있음 ›
+Include	포함
+Include in file names ({{Custom Formats}} token)	파일 이름에 포함 ({{Custom Formats}} 토큰)
+Include only titles on some lists, or leave out the titles of others.	일부 목록에 있는 작품만 포함하거나 다른 목록의 작품을 제외합니다.
+Include unmonitored	모니터링 안 함 포함
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	URL 기본 경로 포함, 예: http://192.168.1.10:8989 또는 https://host/sonarr
+Indexer	인덱서
+Indexer options saved.	인덱서 옵션이 저장되었습니다.
+Indexer settings	인덱서 설정
+Indexers	인덱서
+Info	정보
+Info {infos}	정보 {infos}
+Instance	인스턴스
+Instance name	인스턴스 이름
+Instance: {name}	인스턴스: {name}
+Interactive	대화형
+Interactive search	대화형 검색
+Interactive search for full-season packs only	시즌 전체 팩만 대화형 검색
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	토렌트 인덱서에서 시리즈 전체 (및 시즌별) 팩을 대화형 검색
+Interactive search: see every release and choose	대화형 검색: 모든 릴리스를 보고 선택
+Interface language	인터페이스 언어
+Interval	간격
+Jellyfin library and user	Jellyfin 라이브러리 및 사용자
+Job	작업
+Keep / skip	유지 / 건너뛰기
+Keep files replaced by upgrades as versions (in "Plex Versions")	업그레이드로 교체된 파일을 버전으로 보관 ("Plex Versions"에)
+Keep me signed in	로그인 상태 유지
+Keep the replaced file's date (upgrades)	교체된 파일의 날짜 유지 (업그레이드)
+Kept	보관됨
+Kept versions	보관된 버전
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Sonarr v3 API를 사용하는 연동 앱용 키입니다. 라이브러리를 읽을 수 있으며, "시리즈 추가" 키는 시리즈를 추가할 수도 있습니다 (루트 폴더에, 검색 없이). 그 밖의 작업은 허용되지 않습니다.
+KiB	KiB
+Kind	종류
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr는 자유 소프트웨어입니다 (GPL-3.0-or-later).
+Kitsunarr path	Kitsunarr 경로
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr는 자체 데이터베이스를 백업하고, 미리 본 데이터를 하나의 트랜잭션으로 가져온 뒤 커밋 전에 검증합니다. 원본과 미디어 파일은 수정되지 않습니다.
+Label	레이블
+Languages	언어
+Larger releases are rejected. 0 means unlimited.	이보다 큰 릴리스는 거부됩니다. 0은 무제한입니다.
+Last read	마지막으로 읽음
+Last run	마지막 실행
+Last search	마지막 검색
+Last searched	마지막 검색 시각
+Last season	마지막 시즌
+Later ›	이후 ›
+Latest season	최신 시즌
+Level	수준
+Library	라이브러리
+Library check	라이브러리 확인
+Library tools	라이브러리 도구
+Library tools saved.	라이브러리 도구가 저장되었습니다.
+List	목록
+Listed best first. Grouped qualities rank equally.	우선순위가 높은 순으로 나열됩니다. 그룹으로 묶인 품질은 같은 순위입니다.
+Live updates connected	실시간 업데이트 연결됨
+Live updates disconnected	실시간 업데이트 연결 끊김
+Load	불러오기
+Load the account's lists	계정의 목록 불러오기
+Load the libraries…	라이브러리 불러오기…
+Load the users…	사용자 불러오기…
+Local air date	현지 방영일
+Local path	로컬 경로
+Log them	기록만 하기
+Logs	로그
+Main rejections	주요 거부 사유
+Make current	현재 파일로 지정
+Manual import	수동 가져오기
+Mark as failed	실패로 표시
+Matches monitored titles.	모니터링 중인 작품과 일치합니다.
+Maximum	최대
+Maximum size (MB)	최대 크기 (MB)
+Media management	미디어 관리
+Media management settings	미디어 관리 설정
+Media paths	미디어 경로
+Mediums	매체
+Members	구성원
+Message	메시지
+Metadata	메타데이터
+Metadata files	메타데이터 파일
+Metadata keys saved.	메타데이터 키가 저장되었습니다.
+Metadata language	메타데이터 언어
+Metadata refreshed.	메타데이터를 새로고침했습니다.
+Metadata refreshed: {} new episodes, {} updated.	메타데이터 새로고침: 새 에피소드 {}개, 업데이트 {}개.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	메타데이터 설정이 저장되었습니다. 다음 디스크 스캔, 새로고침 또는 가져오기 때 파일이 기록됩니다.
+Metadata sources	메타데이터 소스
+MiB	MiB
+Migration completed.	마이그레이션이 완료되었습니다.
+Migration report #{}	마이그레이션 보고서 #{}
+Minimum	최소
+Minimum age (minutes)	최소 경과 시간 (분)
+Minimum custom format score	최소 사용자 정의 형식 점수
+Minimum format score	최소 형식 점수
+Minimum free space (MiB)	최소 여유 공간 (MiB)
+Minimum seeders	최소 시더 수
+Missing	누락됨
+Missing (monitored)	누락됨 (모니터링 중)
+Missing films	누락된 영화
+Mode	모드
+Monday	월요일
+Monitor	모니터링
+Monitored	모니터링됨
+More languages can be added to the string tables.	문자열 테이블에 언어를 더 추가할 수 있습니다.
+Move	이동
+Movie	영화
+Movie file format	영화 파일 형식
+Movie removed from Kitsunarr. Files on disk were not touched.	Kitsunarr에서 영화를 제거했습니다. 디스크의 파일은 건드리지 않았습니다.
+Movies	영화
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	여러 시즌 릴리스: 여러 시즌을 담은 팩 허용 (시즌 검색은 해당 시즌의 팩을 받음)
+Must contain	포함해야 함
+Must contain (comma separated; /regex/ allowed)	포함해야 함 (쉼표로 구분, /regex/ 허용)
+Must not contain	포함하지 않아야 함
+NOT	NOT
+Name	이름
+Naming	이름 지정
+Naming options saved.	이름 지정 옵션이 저장되었습니다.
+Naming saved.	이름 지정이 저장되었습니다.
+Negate	부정
+Network	방송사
+Never: keep the release's names	안 함: 릴리스 이름 유지
+New custom format	새 사용자 정의 형식
+New custom preset	새 사용자 정의 프리셋
+New group title	새 그룹 제목
+New password	새 비밀번호
+New quality profile	새 품질 프로필
+Next airing	다음 방영
+Next run	다음 실행
+Next ›	다음 ›
+No	아니요
+No activity yet.	아직 활동이 없습니다.
+No auto tags.	자동 태그가 없습니다.
+No backups yet	아직 백업이 없습니다
+No collections yet	아직 컬렉션이 없습니다
+No companion keys.	연동 앱 키가 없습니다.
+No custom formats	사용자 정의 형식 없음
+No custom formats defined.	정의된 사용자 정의 형식이 없습니다.
+No delay above the minimum custom format score	최소 사용자 정의 형식 점수 이상이면 지연 없음
+No delay for the profile's best quality in the preferred protocol	선호 프로토콜에서 프로필의 최고 품질이면 지연 없음
+No download client to read	읽을 다운로드 클라이언트가 없습니다
+No exclusions.	제외 항목이 없습니다.
+No history	내역 없음
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	이 시리즈를 자동으로 검색할 수 있는 인덱서가 없습니다. 자동 검색이 활성화되어 있고 태그가 없거나 시리즈 태그 중 하나를 가진 인덱서가 없습니다.
+No indexers to search	검색할 인덱서가 없습니다
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	보관된 버전이 없습니다. 이름 지정에서 "업그레이드로 교체된 파일 보관"을 켜세요.
+No log entries at this level	이 수준의 로그 항목이 없습니다
+No mappings.	매핑이 없습니다.
+No matches	일치 항목 없음
+No members	구성원 없음
+No migrations have been run yet.	아직 실행된 마이그레이션이 없습니다.
+No movies yet	아직 영화가 없습니다
+No notes.	메모가 없습니다.
+No recycle bin is set (Settings › Media management).	휴지통이 설정되어 있지 않습니다 (설정 › 미디어 관리).
+No release profiles.	릴리스 프로필이 없습니다.
+No root folders yet.	아직 루트 폴더가 없습니다.
+No root folders.	루트 폴더가 없습니다.
+No runs yet	아직 실행 기록이 없습니다
+No searches yet.	아직 검색 기록이 없습니다.
+No series in your library match.	라이브러리에 일치하는 시리즈가 없습니다.
+No tags	태그 없음
+No {}	{} 없음
+No {} yet	아직 {} 없음
+None	없음
+Not evaluated by Kitsunarr.	Kitsunarr에서 평가하지 않았습니다.
+Not imported	가져오지 않음
+Not monitored	모니터링 안 함
+Notes	메모
+Notes ({preview.warnings.len()})	메모 ({preview.warnings.len()})
+Notes ({report.warnings.len()})	메모 ({report.warnings.len()})
+Nothing airs in the next seven days.	향후 7일 동안 방영 예정인 항목이 없습니다.
+Nothing downloading	다운로드 중인 항목 없음
+Nothing found	찾은 항목 없음
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	이 카탈로그에서 검색과 일치하는 항목이 없습니다. 다른 철자, 원제 또는 다른 카탈로그로 시도해 보세요.
+Nothing in this period	이 기간에는 항목이 없습니다
+Nothing missing	누락된 항목 없음
+Notifications	알림
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	카탈로그의 다른 순서로 에피소드 번호 매기기 (TMDB 에피소드 그룹, TheTVDB DVD 또는 절대 순서)
+OMDb API key	OMDb API 키
+Older priority	오래된 항목 우선순위
+One folder per season	시즌별 폴더
+Only the 2000 newest files are listed.	최신 파일 2000개만 표시됩니다.
+Only when the proxy needs one.	프록시에 필요한 경우에만.
+Open the library	라이브러리 열기
+OpenAPI document	OpenAPI 문서
+Opens the service to authorize Kitsunarr and fills in the token.	서비스를 열어 Kitsunarr를 승인하고 토큰을 입력합니다.
+Options	옵션
+Organize	정리
+Other	기타
+Overview	개요
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Kitsunarr에 이미 있는 레코드 덮어쓰기 (그렇지 않으면 유지)
+Packs	팩
+Page not found	페이지를 찾을 수 없음
+Page {page} / {pages}	페이지 {page} / {pages}
+Password	비밀번호
+Password changed. Other sessions were signed out.	비밀번호가 변경되었습니다. 다른 세션은 로그아웃되었습니다.
+Past days	지난 일수
+Path	경로
+Path mappings	경로 매핑
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	자동화 일시 중지 (RSS 동기화, 예약된 목록 동기화, 자동 검색)
+Peers	피어
+Permission	권한
+PiB	PiB
+Platform	플랫폼
+Port	포트
+Position	위치
+Post-import category	가져오기 후 카테고리
+Posters	포스터
+Prefer and upgrade	선호 및 업그레이드
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	애니메이션 시즌 팩 선호 (Kitsunarr의 애니메이션 시즌 검색은 이미 시즌을 한 번 검색함)
+Prefer, do not upgrade	선호, 업그레이드 안 함
+Preferred	선호
+Preferred metadata language	선호 메타데이터 언어
+Preferred protocol	선호 프로토콜
+Preparing preview…	미리보기 준비 중…
+Preview	미리보기
+Preview migration	마이그레이션 미리보기
+Previous migrations	이전 마이그레이션
+Priority	우선순위
+Problem	문제
+Profile	프로필
+Profile saved.	프로필이 저장되었습니다.
+Profiles still used by series or movies cannot be deleted.	시리즈나 영화가 사용 중인 프로필은 삭제할 수 없습니다.
+Progress	진행률
+Propers and repacks	Proper 및 Repack
+Proxy	프록시
+Proxy saved.	프록시가 저장되었습니다.
+Proxy type	프록시 유형
+Qualities	품질
+Quality	품질
+Quality presets	품질 프리셋
+Quality presets saved.	품질 프리셋이 저장되었습니다.
+Quality profile	품질 프로필
+Quality profiles	품질 프로필
+Quality profile…	품질 프로필…
+RSS sync interval (minutes)	RSS 동기화 간격 (분)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS 동기화는 릴리스가 나타난 뒤 더 나은 릴리스를 이 시간만큼 기다립니다. 지연된 릴리스는 큐에 표시됩니다. 태그가 시리즈와 일치하는 첫 번째 프로필이 적용되며, 마지막 프로필(태그 없음)이 기본값입니다.
+Re-encode this series' files with the compression worker	압축 워커로 이 시리즈의 파일 재인코딩
+Read and add series	시리즈 읽기 및 추가
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	몇 초마다 다운로드 클라이언트에서 실시간으로 읽습니다. Kitsunarr가 잡은 완료된 다운로드는 매분 시리즈 폴더로 가져옵니다 (토렌트는 복사 또는 하드 링크되어 시딩이 유지되고, Usenet 다운로드는 이동됩니다). 실패한 다운로드는 차단 목록에 추가되고 다시 검색됩니다.
+Read the library	라이브러리 읽기
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	읽기 전용: 누락된 시리즈 폴더, 폴더 밖에 있거나 중복 기록된 파일 레코드, 디스크에 없는 파일을 찾습니다.
+Reading the download clients…	다운로드 클라이언트 읽는 중…
+Reading the source	원본 읽는 중
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	API를 통해 모든 항목을 읽습니다. 제공자의 비밀번호와 API 키는 원본에서 숨겨지므로 나중에 다시 입력해야 합니다.
+Recent activity	최근 활동
+Recent priority	최근 항목 우선순위
+Recent runs	최근 실행
+Recent searches	최근 검색
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	권장. Sonarr/Tanukarr에서 시스템 → 백업을 열고 백업을 만든 뒤 .zip을 다운로드하세요 (또는 sonarr.db 사용). 인덱서와 다운로드 클라이언트 비밀번호가 포함됩니다.
+Recycle bin	휴지통
+Recycle bin cleanup (days)	휴지통 정리 (일)
+Recycled	휴지통으로 이동됨
+Refresh metadata	메타데이터 새로고침
+Refresh preview	미리보기 새로고침
+Refreshing from {} is not supported yet; the imported metadata is kept as is	{}에서의 새로고침은 아직 지원되지 않습니다. 가져온 메타데이터를 그대로 유지합니다
+Refreshing…	새로고침 중…
+Regenerate	다시 생성
+Regenerate API key	API 키 다시 생성
+Reject releases whose TheTVDB or IMDb id names another series	TheTVDB 또는 IMDb id가 다른 시리즈를 가리키는 릴리스 거부
+Rejected: click twice to grab anyway	거부됨: 두 번 클릭하면 그래도 잡음
+Release	릴리스
+Release profile	릴리스 프로필
+Release profile saved.	릴리스 프로필이 저장되었습니다.
+Release profiles	릴리스 프로필
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	릴리스는 Sonarr와 마찬가지로 시리즈의 품질 프로필, 사용자 정의 형식, 릴리스 프로필에 따라 검사되고 순위가 매겨집니다. 거부된 릴리스는 한 번 더 클릭해야 합니다.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	실패했거나 수동으로 차단 목록에 추가된 릴리스입니다. 검색과 RSS 동기화에서 다시 잡지 않습니다. 허용하려면 항목을 제거하세요.
+Remote path	원격 경로
+Remote path mapping	원격 경로 매핑
+Remote path mapping saved.	원격 경로 매핑이 저장되었습니다.
+Remote path mappings	원격 경로 매핑
+Remove	제거
+Remove completed downloads	완료된 다운로드 제거
+Remove every release from the blocklist?	차단 목록에서 모든 릴리스를 제거할까요?
+Remove failed downloads	실패한 다운로드 제거
+Remove from library	라이브러리에서 제거
+Remove from queue	큐에서 제거
+Remove from the download client (deletes its files there)	다운로드 클라이언트에서 제거 (클라이언트의 파일도 삭제)
+Remove movie	영화 제거
+Remove series	시리즈 제거
+Remove tags automatically (from titles that stop matching)	태그 자동 제거 (더 이상 일치하지 않는 작품에서)
+Remove “{title}” and its episode records from Kitsunarr?	Kitsunarr에서 “{title}”과(와) 에피소드 레코드를 제거할까요?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Kitsunarr에서 “{title}”을(를) 제거할까요? 디스크의 파일은 삭제되지 않습니다.
+Removed	제거됨
+Removed from the blocklist.	차단 목록에서 제거했습니다.
+Rename	이름 변경
+Rename files	파일 이름 변경
+Rename files on import	가져올 때 파일 이름 변경
+Rename files to the naming settings	이름 지정 설정에 맞게 파일 이름 변경
+Formats use Sonarr's tokens.	형식은 Sonarr의 토큰을 사용합니다.
+Renaming…	이름 변경 중…
+Report	보고서
+Request one at omdbapi.com. Used for films by IMDb id.	omdbapi.com에서 요청하세요. IMDb id로 영화를 찾는 데 사용됩니다.
+Required	필수
+Resolution	해상도
+Restore	복원
+Restore {}	{} 복원
+Restore…	복원…
+Restoring…	복원 중…
+Resume automation	자동화 재개
+Retention (days)	보존 기간 (일)
+Retire	폐기
+Revoke	해지
+Root folder	루트 폴더
+Root folders	루트 폴더
+Root folder…	루트 폴더…
+Run #{run.id}: {run.status}	실행 #{run.id}: {run.status}
+Run now	지금 실행
+Running…	실행 중…
+Saturday	토요일
+Save	저장
+Save criteria	조건 저장
+Save factors	계수 저장
+Save keys	키 저장
+Save metadata files	메타데이터 파일 저장
+Save naming	이름 지정 저장
+Save options	옵션 저장
+Saved	저장됨
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	저장된 키는 {REDACTED}로 표시됩니다. 유지하려면 그대로 두고, 제거하려면 필드를 비우세요.
+Saved.	저장되었습니다.
+Scan disk	디스크 스캔
+Scan folder	폴더 스캔
+Scanning…	스캔 중…
+Scheduled tasks	예약된 작업
+Score	점수
+Search	검색
+Search again when a download fails	다운로드 실패 시 다시 검색
+Search all	모두 검색
+Search all films	모든 영화 검색
+Search collection	컬렉션 검색
+Search every episode of the list, one search per season	목록의 모든 에피소드 검색 (시즌당 한 번 검색)
+Search every member's missing episodes (films: the film)	모든 구성원의 누락된 에피소드 검색 (영화는 해당 영화)
+Search indexers	인덱서 검색
+Search selected	선택 항목 검색
+Search the indexers and choose a release	인덱서를 검색하고 릴리스 선택
+Search the indexers and grab the best accepted release	인덱서를 검색하고 승인된 최적의 릴리스 잡기
+Search the indexers and grab the best releases for the monitored episodes	인덱서를 검색하고 모니터링 중인 에피소드에 대해 최적의 릴리스 잡기
+Search your indexers	인덱서 검색
+Search {chosen} selected	선택한 {chosen}개 검색
+Search: {}	검색: {}
+Search: {} — complete series	검색: {} — 시리즈 전체
+Search: {} — season {season} packs	검색: {} — 시즌 {season} 팩
+Search: {} — {label}	검색: {} — {label}
+Searching for {label}…	{label} 검색 중…
+Searching indexers…	인덱서 검색 중…
+Searching…	검색 중…
+Season	시즌
+Season folder format	시즌 폴더 형식
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	시즌 폴더 제목이 {{Season Title}}에서 카탈로그 제목을 대체합니다. 카탈로그 제목을 유지하려면 비워 두세요.
+Season folders	시즌 폴더
+Season images (Season ##.jpg)	시즌 이미지 (Season ##.jpg)
+Season images (Season##/folder.jpg)	시즌 이미지 (Season##/folder.jpg)
+Season images (season##-poster.jpg)	시즌 이미지 (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	시즌 팩: 1이면 아래의 시즌 팩 목표를 사용
+Season premieres only	시즌 첫 화만
+Season {n}	시즌 {n}
+Season {one}	시즌 {one}
+Season {se.season_number}	시즌 {se.season_number}
+Season {season_number}	시즌 {season_number}
+Season-pack seed ratio	시즌 팩 시드 비율
+Season-pack seed time, minutes	시즌 팩 시드 시간 (분)
+Seasons	시즌
+Seasons {first}-{last}	시즌 {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	비밀 값은 {REDACTED}로 표시됩니다. 저장된 값을 유지하려면 그대로 두세요.
+Seed ratio (empty: the client's default)	시드 비율 (비우면 클라이언트 기본값)
+Seed time, minutes (empty: the client's default)	시드 시간 (분, 비우면 클라이언트 기본값)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	인덱서, 카탈로그, 목록, 다운로드 클라이언트, 연결에 대한 요청을 프록시를 통해 보냅니다.
+Send to the download client	다운로드 클라이언트로 보내기
+Series	시리즈
+Series .plexmatch file	시리즈 .plexmatch 파일
+Series folder format	시리즈 폴더 형식
+Series images (Series Title.jpg)	시리즈 이미지 (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	시리즈 이미지 (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	시리즈 이미지 (folder.jpg)
+Series metadata (tvshow.nfo)	시리즈 메타데이터 (tvshow.nfo)
+Series metadata URL	시리즈 메타데이터 URL
+Series metadata episode guide	시리즈 메타데이터 에피소드 가이드
+Series removed from Kitsunarr. Files on disk were not touched.	Kitsunarr에서 시리즈를 제거했습니다. 디스크의 파일은 건드리지 않았습니다.
+Series removed, and its folder deleted.	시리즈를 제거하고 폴더를 삭제했습니다.
+Series type	시리즈 유형
+Set quality profile…	품질 프로필 설정…
+Settings	설정
+Settings saved.	설정이 저장되었습니다.
+Settings → General → Security in Sonarr/Tanukarr.	Sonarr/Tanukarr의 설정 → 일반 → 보안.
+Show	표시
+Show as all-day events	종일 일정으로 표시
+Show unmonitored	모니터링 안 함 표시
+Shows	시리즈
+Sign in	로그인
+Signed in. Save the list to keep the token.	로그인했습니다. 토큰을 유지하려면 목록을 저장하세요.
+Signing in…	로그인 중…
+Size	크기
+Size limits	크기 제한
+Size on disk	디스크 사용량
+Skip files smaller than (MB)	이보다 작은 파일 건너뛰기 (MB)
+Skip the free-space check	여유 공간 확인 건너뛰기
+Skip unmonitored episodes when importing packs	팩을 가져올 때 모니터링 안 함 에피소드 건너뛰기
+Source	소스
+Source code	소스 코드
+Source path	원본 경로
+Special	스페셜
+Specials	스페셜
+Specials are never monitored automatically.	스페셜은 자동으로 모니터링되지 않습니다.
+Specifications	사양
+Specifications (JSON)	사양 (JSON)
+Specifications must be valid JSON: {e}	사양은 올바른 JSON이어야 합니다: {e}
+Stalled torrent timeout (minutes)	정체된 토렌트 시간 제한 (분)
+Standard	표준
+Standard episode format	표준 에피소드 형식
+Start migration	마이그레이션 시작
+Start over	처음부터 다시
+Start search for missing episodes	누락된 에피소드 검색 시작
+Started	시작됨
+Started {format_datetime(&run.started_at)}	시작 {format_datetime(&run.started_at)}
+Status	상태
+Status & health	상태 및 점검
+Still downloading	아직 다운로드 중
+Storage outlook	저장 공간 전망
+Studio	스튜디오
+Subscribe	구독
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	캘린더 앱에서 이 주소를 구독하세요. API 키가 포함되어 있으니 비공개로 유지하세요.
+Sunday	일요일
+Sync	동기화
+Sync all lists now	지금 모든 목록 동기화
+Sync now	지금 동기화
+Syncing…	동기화 중…
+System →	시스템 →
+TMDB API key (v3)	TMDB API 키 (v3)
+TV Series	TV 시리즈
+TV series	TV 시리즈
+Table	표
+Tag	태그
+Tag them	태그 지정
+Tag titles already in the library	라이브러리에 이미 있는 작품에 태그 지정
+Tags	태그
+Tags (comma separated)	태그 (쉼표로 구분)
+Tags (ids, comma separated)	태그 (id, 쉼표로 구분)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	모든 종류의 조건과 일치하는 시리즈와 영화에 추가, 편집 또는 새로고침할 때 태그가 추가됩니다.
+Task	작업
+Television	TV
+Television (raw)	TV (raw)
+Test	테스트
+Test failed: {message}	테스트 실패: {message}
+Testing…	테스트 중…
+The blocklist is empty	차단 목록이 비어 있습니다
+The catalogue new titles are added from when the list knows their id there.	목록이 해당 카탈로그의 id를 알고 있을 때 새 작품을 추가할 카탈로그입니다.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	가져온 파일에 지정할 날짜: 에피소드 방영일(현지 또는 UTC), 또는 업그레이드 시 교체된 파일의 날짜.
+The dry run completed without blocking problems. Nothing has been written yet.	시험 실행이 차단 문제 없이 완료되었습니다. 아직 아무것도 기록되지 않았습니다.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	파일은 시즌 폴더로 이동되고 (기존 파일은 절대 덮어쓰지 않음) 시리즈를 다시 스캔합니다.
+The folder must already exist; Kitsunarr never creates or removes it.	폴더가 이미 존재해야 합니다. Kitsunarr는 폴더를 만들거나 제거하지 않습니다.
+The indexers returned no releases for this search.	인덱서가 이 검색에 대한 릴리스를 반환하지 않았습니다.
+The instance is on my local network (private or loopback address)	인스턴스가 로컬 네트워크에 있음 (사설 또는 루프백 주소)
+The list has not been read, or it is empty.	목록을 아직 읽지 않았거나 비어 있습니다.
+The migration did not complete; nothing was changed.	마이그레이션이 완료되지 않았습니다. 아무것도 변경되지 않았습니다.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	메모리에 보관된 최근 항목입니다. 전체 로그는 프로세스 출력(컨테이너 로그 또는 저널)으로 전송됩니다.
+The passwords do not match.	비밀번호가 일치하지 않습니다.
+The recycle bin has no media or subtitle files.	휴지통에 미디어나 자막 파일이 없습니다.
+The sign-in expired; try again.	로그인이 만료되었습니다. 다시 시도하세요.
+The upload failed (network error).	업로드에 실패했습니다 (네트워크 오류).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	워커는 선택적인 호스트 구성 요소(Tanukarr의 압축 워커)로, KITSUNARR_COMPRESSION_SOCKET 소켓을 통해 연결됩니다.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB(Sonarr의 카탈로그), TMDB, TVmaze는 TV 시리즈를, AniList와 MyAnimeList는 애니메이션 시리즈와 애니메이션 영화를, TMDB와 OMDb는 영화를 다룹니다. 작품을 추가하면 라이브러리 항목과 에피소드 목록이 생성되며, 파일은 나중에 가져오기 파이프라인이 처리합니다.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB 작품은 이 언어로 검색 및 추가됩니다. 각 시리즈는 편집기에서 변경할 수 있습니다.
+TheTVDB titles in this language; changing it refreshes the series	이 언어의 TheTVDB 제목. 변경하면 시리즈를 새로고침합니다
+There is nothing at /{path}.	/{path}에 아무것도 없습니다.
+They are created by migrating from Sonarr/Tanukarr.	Sonarr/Tanukarr에서 마이그레이션하면 생성됩니다.
+This series' renaming mode, season folder titles and kept versions	이 시리즈의 이름 변경 모드, 시즌 폴더 제목, 보관된 버전
+TiB	TiB
+Time	시간
+Time left	남은 시간
+Title	제목
+Title pattern	제목 패턴
+Titles import lists never add.	가져오기 목록이 절대 추가하지 않는 작품.
+Titles on no list	어느 목록에도 없는 작품
+Today	오늘
+Torrent	토렌트
+Torrent delay	토렌트 지연
+Torrent delay (minutes)	토렌트 지연 (분)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab 및 Newznab 인덱서. 편집기에서 테스트를 사용해 확인하세요. 각 검색은 해당 검색 유형(RSS, 자동, 대화형)이 활성화된 인덱서를 사용합니다.
+Trigger	트리거
+URL base	URL 기본 경로
+UTC air date	UTC 방영일
+Unchanged	변경 없음
+Unknown	알 수 없음
+Unmonitor	모니터링 해제
+Unmonitor them	모니터링 해제
+Unmonitored	모니터링 안 함
+Upcoming	예정
+Upcoming 7 days	향후 7일
+Update	업데이트
+Updated {} items.	항목 {}개를 업데이트했습니다.
+Upgrade until (cutoff)	업그레이드 한도 (중단점)
+Upgrade until format score	업그레이드 한도 형식 점수
+Upgrades allowed	업그레이드 허용
+Upload a backup	백업 업로드
+Upload failed (HTTP {}).	업로드 실패 (HTTP {}).
+Uploading…	업로드 중…
+Use SSL	SSL 사용
+Use a proxy	프록시 사용
+Use hardlinks instead of copying	복사 대신 하드 링크 사용
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	다른 애플리케이션에서 X-Api-Key 헤더(또는 ?apikey=)로 사용하세요. Sonarr가 사용하는 헤더와 호환됩니다.
+Use these episodes	이 에피소드 사용
+Usenet	Usenet
+Usenet delay	Usenet 지연
+Usenet delay (minutes)	Usenet 지연 (분)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Usenet 전용: 더 최근 릴리스는 전파될 시간을 주기 위해 거부됩니다. 0이면 끕니다.
+Usenet only: older releases are rejected. 0 means unlimited.	Usenet 전용: 더 오래된 릴리스는 거부됩니다. 0은 무제한입니다.
+User name	사용자 이름
+Username	사용자 이름
+Validation	검증
+Version	버전
+Versions	버전
+Waiting for the sign-in at	다음에서 로그인 대기 중:
+Wanted	원함
+Warnings	경고
+Warnings {warnings}	경고 {warnings}
+Watched (Jellyfin watched sync)	시청함 (Jellyfin 시청 동기화)
+Watched sync user	시청 동기화 사용자
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, 이메일(SMTP), Mailgun, SendGrid, 사용자 정의 스크립트(Sonarr의 환경 변수 포함), Emby/Jellyfin, Plex, Kodi로 전송되는 항목: 잡기, 가져오기 및 업그레이드, 이름 변경, 시리즈 추가 또는 삭제, 파일 삭제, 상태 문제. 편집기에서 테스트를 사용하세요.
+Welcome	환영합니다
+What to import	가져올 항목
+When	시점
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	인덱서, 다운로드 클라이언트, 서비스의 HTTPS 인증서를 검사하는 시점입니다 (Sonarr 설정). 네트워크의 자체 서명 인증서를 사용하려면 완화해야 합니다.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	다운로드 클라이언트가 보고하는 경로가 Kitsunarr에서는 다른 위치에 있는 경우 (다른 머신이나 컨테이너), 클라이언트의 호스트와 경로를 로컬 경로에 매핑하세요.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	잘못된 릴리스를 수정하는 릴리스를 선호할지, 기존 파일을 업그레이드할지 여부 (Sonarr와 동일).
+Whole season	시즌 전체
+Working…	작업 중…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	시리즈를 스캔, 새로고침 또는 가져올 때 Sonarr의 메타데이터 소비자와 같은 방식으로 시리즈 폴더에 기록됩니다.
+Year	연도
+Your library is empty.	라이브러리가 비어 있습니다.
+all checks passed	모든 확인 통과
+comma separated	쉼표로 구분
+cutoff: {}	중단점: {}
+has a file	파일 있음
+iCal link	iCal 링크
+in 2 days	2일 후
+in a moment	잠시 후
+in file names	파일 이름에
+in library	라이브러리에 있음
+in {text}	{text} 후
+just now	방금
+may run out of space	공간이 부족할 수 있음
+name (e.g. phone)	이름 (예: phone)
+never refreshed	새로고침한 적 없음
+no media files are moved, renamed or deleted.	미디어 파일은 이동, 이름 변경, 삭제되지 않습니다.
+not accessible	접근 불가
+not added	추가되지 않음
+not checked	확인되지 않음
+not read yet	아직 읽지 않음
+on disk	디스크에 있음
+refreshed {}	새로고침 {}
+schema {s}	스키마 {s}
+secrets included	비밀 값 포함
+secrets masked	비밀 값 숨김
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip 또는 sonarr.db
+stored only	저장만 됨
+title (optional)	제목 (선택 사항)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added}개 추가; {}
+{added} shows added.	시리즈 {added}개가 추가되었습니다.
+{c.name} (API key needed)	{c.name} (API 키 필요)
+{c.series_count} series · {c.movie_count} movies	시리즈 {c.series_count}개 · 영화 {c.movie_count}개
+{chosen().len()} chosen	{chosen().len()}개 선택됨
+{chosen().len()} chosen (at most 25)	{chosen().len()}개 선택됨 (최대 25개)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} 디스크에 있음 · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{format_bytes(item.size)} 중 {done}%
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · 추가됨 {format_date(&f.added_at)}
+{first}–{last} of {total}	{total}개 중 {first}–{last}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	파일 {job["completedFiles"]} / {job["totalFiles"]} · {job["percent"]}% · {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))} 절약
+{name} started.	{name} 시작됨.
+{name} was added to the library.	{name}이(가) 라이브러리에 추가되었습니다.
+{name}: shows	{name}: 시리즈
+{ok} files imported.	파일 {ok}개를 가져왔습니다.
+{ok} imported; {}	{ok}개 가져옴; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: 인덱서 {r.searched_indexers}개에서 릴리스 {r.releases.len()}개.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	시리즈 {r.series_checked}개, 파일 {r.files_checked}개 확인: 문제 {r.issues.len()}개.
+{selected.read().len()} selected	{selected.read().len()}개 선택됨
+{text} ago	{text} 전
+{} (not accessible)	{} (접근 불가)
+{} ({} free)	{} ({} 여유)
+{} added to every profile (not allowed yet).	{}이(가) 모든 프로필에 추가되었습니다 (아직 허용 안 됨).
+{} day(s)	{}일
+{} failed: {}	{} 실패: {}
+{} format scores	{} 형식 점수
+{} free of {}	{} 여유 / 전체 {}
+{} week(s)	{}주
+{}{year} — movie	{}{year} — 영화
+‹ Back	‹ 뒤로
+‹ Earlier	‹ 이전
+‹ Prev	‹ 이전
+○ offline	○ 오프라인
+● live	● 실시간
+✓ No issues detected.	✓ 문제가 발견되지 않았습니다.
+Activity	활동
+Queue	큐
+System	시스템
+Tasks	작업
+Retry	다시 시도
+Sign out	로그아웃
+Search titles…  ( / )	작품 검색…  ( / )
+Loading…	불러오는 중…
+Profiles	프로필
+scene {}	씬 {}
+Scene numbering from TheXEM	TheXEM의 씬 번호
+Scene numbering extrapolated from TheXEM (unverified)	TheXEM에서 추정한 씬 번호 (미확인)
+Season {} (scene seasons {})	시즌 {} (씬 시즌 {})
+{} (scene {})	{} (씬 {})

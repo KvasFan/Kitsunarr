@@ -1,0 +1,968 @@
+# Romanian interface strings: English<TAB>Romanian. {…} marks a placeholder.
+custom	personalizat
+indeterminate	nedeterminat
+mixed	mixt
+retired	retras
+· container	· container
+· finished {format_datetime(f)}	· finalizat {format_datetime(f)}
+· missing	· lipsă
+· on disk	· pe disc
+· today	· azi
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep
+— MiB per minute; empty uses Settings › Quality	— MiB pe minut; gol folosește Setări › Calitate
+— a release's size is multiplied by its codec's factor before the size limits apply	— dimensiunea unei lansări este înmulțită cu factorul codecului ei înainte de aplicarea limitelor de dimensiune
+— all profiles at once	— toate profilurile odată
+— codec and title criteria, custom qualities (Tanukarr)	— criterii de codec și titlu, calități personalizate (Tanukarr)
+— enter the code	— introduceți codul
+(empty)	(gol)
++ Add mapping	+ Adaugă mapare
++ New format	+ Format nou
++ New profile	+ Profil nou
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (dezactivat) sau între 10 și 120. Sincronizarea RSS rulează și din Sistem › Sarcini.
+3 hours ago	acum 3 ore
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Un torrent în descărcare fără progres atât timp este marcat ca eșuat, adăugat în lista neagră și căutat din nou. 0 dezactivează opțiunea; progresul este urmărit de la pornirea Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Un grup de francize găsit din relațiile AniList sau MyAnimeList. Titlurile adăugate ulterior din aceeași franciză se alătură și ele.
+A new API key was generated. Update the applications that use it.	A fost generată o nouă cheie API. Actualizați aplicațiile care o folosesc.
+A regular expression, case-insensitive; empty matches every title.	O expresie regulată, fără diferențiere între majuscule și minuscule; goală se potrivește cu orice titlu.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	O lansare primește presetarea cea mai specifică permisă în profilul serialului ei, ale cărei sursă, rezoluție, codec și model de titlu se potrivesc. O calitate standard căreia i se dă un codec sau un model transformă în Necunoscut lansările care nu le respectă. Presetările personalizate sunt adăugate în fiecare profil ca nepermise.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Dimensiunea unei lansări este înmulțită cu factorul codecului ei înainte de aplicarea limitelor de dimensiune. „Mixt” înseamnă că profilurile folosesc factori diferiți; o valoare introdusă aici este scrisă în fiecare profil.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Un titlu care se alătură unei francize sau unui grup manual părăsește grupul în care era. Fișierele și folderele nu sunt mutate.
+API key	Cheie API
+API key needed	Cheie API necesară
+API keys and language	Chei API și limbă
+API path	Cale API
+About	Despre
+Absolute path; empty to delete permanently.	Cale absolută; gol pentru ștergere definitivă.
+Accepted	Acceptat
+Account lists	Listele contului
+Actions	Acțiuni
+Actual	Real
+Add	Adaugă
+Add a Newznab or Torznab indexer and enable interactive search for it.	Adăugați un indexator Newznab sau Torznab și activați căutarea interactivă pentru el.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Adăugați un client din șablonul său și folosiți Testează în editor; preluările, coada și importurile folosesc toți clienții activați. Un blackhole scrie preluările într-un folder și importă ce apare în folderul său monitorizat. Opțiunile „Elimină descărcările finalizate/eșuate” ale fiecărui client elimină descărcările (cu fișierele lor) după ce clientul a terminat cu ele.
+Add a download client in Settings › Download clients and enable it.	Adăugați un client de descărcare în Setări › Clienți de descărcare și activați-l.
+Add a root folder first: it is where this title's folder will live.	Adăugați mai întâi un folder rădăcină: acolo va fi folderul acestui titlu.
+Add a tag above first.	Adăugați mai întâi o etichetă mai sus.
+Add a title	Adaugă un titlu
+Add auto tag	Adaugă etichetă automată
+Add condition	Adaugă condiție
+Add exclusion	Adaugă excludere
+Add media	Adaugă media
+Add one, or migrate them from Sonarr/Tanukarr.	Adăugați unul sau migrați-le din Sonarr/Tanukarr.
+Add preset	Adaugă presetare
+Add selected	Adaugă selecția
+Add series or movies below.	Adăugați seriale sau filme mai jos.
+Add tag	Adaugă etichetă
+Add the list's tags	Adaugă etichetele listei
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Adăugați titluri din TVmaze sau AniList, sau aduceți o bibliotecă Sonarr sau Tanukarr existentă.
+Add to library	Adaugă în bibliotecă
+Add {}	Adaugă {}
+Add {} ({y})	Adaugă {} ({y})
+Add — {}	Adaugă — {}
+Add, and remove when they leave the list	Adaugă și elimină când părăsesc lista
+Added	Adăugat
+Added to the titles this list adds.	Adăugate la titlurile pe care le adaugă această listă.
+Adding titles	Se adaugă titluri
+Adding…	Se adaugă…
+Address	Adresă
+Age	Vechime
+Aired	Difuzat
+Aired monitored episodes without a file appear here.	Episoadele monitorizate difuzate fără fișier apar aici.
+All	Toate
+All collections	Toate colecțiile
+All episodes	Toate episoadele
+All episodes in the series folder	Toate episoadele din folderul serialului
+All events	Toate evenimentele
+Allow zero size (the feed has no release sizes)	Permite dimensiune zero (fluxul nu are dimensiunile lansărilor)
+Also delete the series folder and its files (to the recycle bin when one is set)	Șterge și folderul serialului și fișierele lui (în coșul de reciclare, dacă este setat)
+Also for releases grabbed from interactive search	Și pentru lansările preluate din căutarea interactivă
+Also known as	Cunoscut și ca
+Always, even when renaming is off	Întotdeauna, chiar și când redenumirea este dezactivată
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analizează fișierele video (rezoluție, durată și codecuri, cu ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Titlurile AniList și MyAnimeList sunt adăugate întotdeauna ca anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Listele AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, alt Sonarr și listele JSON personalizate sunt citite la câteva ore; titlurile noi sunt adăugate cu folderul rădăcină, profilul și monitorizarea fiecărei liste. Serviciile care necesită OAuth folosesc Client ID-ul propriei aplicații și un token pe care îl lipiți (tokenurile migrate din Tanukarr continuă să funcționeze).
+Anime	Anime
+Anime / absolute numbering	Anime / numerotare absolută
+Anime categories	Categorii anime
+Anime episode format	Format episod anime
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Filmele anime pot fi adăugate din AniList, iar migrările din Tanukarr își aduc filmele. Filmele cu actori reali necesită catalogul TMDB.
+Anime standard format search	Căutare anime în format standard
+Anime title, e.g. Frieren	Titlu anime, de ex. Frieren
+Any	Oricare
+Any library	Orice bibliotecă
+Applications using the current key will stop working until you give them the new one.	Aplicațiile care folosesc cheia actuală nu vor mai funcționa până nu le dați cheia nouă.
+Applied after every list has been read successfully and some title left a list.	Aplicat după ce toate listele au fost citite cu succes și un titlu a părăsit o listă.
+Apply	Aplică
+Apply migration	Aplică migrarea
+Apply profile	Aplică profilul
+Applying migration	Se aplică migrarea
+Applying…	Se aplică…
+As Settings › Media management says	Conform Setări › Gestionare media
+At least 10 characters.	Cel puțin 10 caractere.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Cel puțin {MIN_PASSWORD_LENGTH} caractere. O frază de acces funcționează bine.
+Auto tag	Etichetă automată
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Eticheta automată a fost salvată. Se aplică la următoarea adăugare, editare sau reîmprospătare a titlurilor.
+Auto tagging	Etichetare automată
+Auto-refresh	Reîmprospătare automată
+Automatic	Automat
+Automatic search	Căutare automată
+Automatic search for {label}: grabbed {}.	Căutare automată pentru {label}: preluat {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Căutare automată pentru {label}: lansări găsite: {}, aprobate: {}, nimic preluat.
+Automatic search: grab the best release	Căutare automată: preia cea mai bună lansare
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatizarea este în pauză: sincronizarea RSS, sincronizările programate ale listelor și căutările automate sunt omise. Acțiunile manuale și descărcările în curs continuă.
+Automation resumed.	Automatizarea a fost reluată.
+Available from	Disponibil de la
+Back to the dashboard	Înapoi la panou
+Back up now	Fă o copie de rezervă acum
+Backup {} created.	Copia de rezervă {} a fost creată.
+Backups	Copii de rezervă
+Blocking:	Blocare:
+Blocklist	Listă neagră
+Blocklist the release and search again	Adaugă lansarea în lista neagră și caută din nou
+Blocklist the release: it is never grabbed again	Adaugă lansarea în lista neagră: nu va mai fi preluată niciodată
+Blocklist “{title}” and search for a replacement?	Adăugați „{title}” în lista neagră și căutați un înlocuitor?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Aduceți în Kitsunarr biblioteca și setările din Sonarr (v3/v4) sau Tanukarr. Sursa este doar citită, niciodată modificată, și
+Bypass the proxy for local addresses	Ocolește proxy-ul pentru adresele locale
+Calendar	Calendar
+Calendar →	Calendar →
+Cancel	Anulează
+Cancel compression	Anulează compresia
+Cannot reach the server: {e}	Serverul nu poate fi accesat: {e}
+Catalogue	Catalog
+Category	Categorie
+Certificate validation	Validarea certificatelor
+Change password	Schimbă parola
+Change series	Schimbă serialul
+Changes	Modificări
+Check	Verifică
+Check library	Verifică biblioteca
+Check now	Verifică acum
+Check that the mapped series folders exist (read-only)	Verifică existența folderelor de seriale mapate (doar citire)
+Checked: {summary}.	Verificat: {summary}.
+Checking…	Se verifică…
+Choose a backup file	Alegeți un fișier de rezervă
+Choose a mode	Alegeți un mod
+Choose a root folder and a quality profile.	Alegeți un folder rădăcină și un profil de calitate.
+Choose a season	Alegeți un sezon
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Alegeți un serial și un sezon sau episod. Rezultatele arată ce este fiecare lansare, așa cum o citește parserul Kitsunarr.
+Choose a series or movie…	Alegeți un serial sau un film…
+Choose source	Alege sursa
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Alegeți manual episoadele acestei lansări, apoi preluați-o (alegerea se păstrează pentru import)
+Choose…	Alege…
+Clean library	Curăță biblioteca
+Clear	Șterge
+Clear blocklist	Golește lista neagră
+Cleared {n} releases from the blocklist.	Lansări eliminate din lista neagră: {n}.
+Client	Client
+Close	Închide
+Codec	Codec
+Codec factors saved in every profile.	Factorii de codec au fost salvați în toate profilurile.
+Codec size factors	Factori de dimensiune pe codec
+Codecs	Codecuri
+Collection film folder format	Format folder film din colecție
+Collections	Colecții
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Colecțiile apar când sunt migrate din Tanukarr, create din datele furnizorului sau create aici.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Veniți din Sonarr sau Tanukarr? Importați serialele, setările și istoricul existente în câțiva pași.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Separate prin virgulă; * este un caracter wildcard (*.lan), iar intervalele IP precum 192.168.1.0/24 funcționează.
+Companion app keys	Chei pentru aplicații însoțitoare
+Complete series	Serial complet
+Completed and failed download handling	Gestionarea descărcărilor finalizate și eșuate
+Component	Componentă
+Compress series	Comprimă serialul
+Compression	Compresie
+Compression queued.	Compresia a fost pusă în coadă.
+Compression worker is not connected.	Procesul de compresie nu este conectat.
+Condition	Condiție
+Conditions	Condiții
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Condițiile de același tip se potrivesc când oricare dintre ele se potrivește (toate cele obligatorii trebuie să se potrivească); fiecare tip trebuie să se potrivească.
+Configure	Configurează
+Confirm password	Confirmă parola
+Connect	Conectare
+Connect to a running instance	Conectare la o instanță în funcțiune
+Connecting…	Se conectează…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Copii consistente ale bazei de date. Copiile de rezervă programate rulează săptămânal (se păstrează ultimele opt); fiecare migrare creează mai întâi una. Pentru restaurare, opriți Kitsunarr și rulați
+Continuing	În desfășurare
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (trimis cu cererea fluxului, de ex. uid=1; pass=…)
+Copied.	Copiat.
+Copy	Copiază
+Copy (keep the originals)	Copiază (păstrează originalele)
+Copy sizes from	Copiază dimensiunile din
+Copy the token now; it is not shown again:	Copiați tokenul acum; nu va mai fi afișat:
+Could not grab {}: {}	Nu s-a putut prelua {}: {}
+Covers	Coperți
+Create	Creează
+Create account	Creează cont
+Create group	Creează grup
+Create key	Creează cheie
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Creați una pe themoviedb.org › Settings › API. Folosită pentru serialele și filmele TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Creați contul de administrator. Îl veți folosi pentru autentificarea în Kitsunarr.
+Created	Creat
+Created when the first file is imported. Nothing is written to disk now.	Creat la importul primului fișier. Nimic nu este scris pe disc acum.
+Creating…	Se creează…
+Credit	Credit
+Current file	Fișier curent
+Current password	Parola curentă
+Custom format saved.	Formatul personalizat a fost salvat.
+Custom format score	Scorul formatului personalizat
+Custom format scores	Scoruri format personalizat
+Custom formats	Formate personalizate
+Cutoff unmet	Calitate maximă neatinsă
+Daily	Zilnic
+Daily episode format	Format episod zilnic
+Dashboard	Panou
+Data directory	Director de date
+Database backup taken before the import: {b}	Copie de rezervă a bazei de date făcută înainte de import: {b}
+Database schema	Schema bazei de date
+Date	Dată
+Date added	Data adăugării
+Debug	Depanare
+Decision	Decizie
+Default	Implicit
+Defaults	Valori implicite
+Delay profile	Profil de întârziere
+Delay profile saved.	Profilul de întârziere a fost salvat.
+Delay profiles	Profiluri de întârziere
+Delete	Șterge
+Delete empty series folders	Șterge folderele de seriale goale
+Delete file	Șterge fișierul
+Delete group	Șterge grupul
+Delete profile	Șterge profilul
+Delete “{path}”? It goes to the recycle bin when one is set.	Ștergeți „{path}”? Ajunge în coșul de reciclare, dacă este setat.
+Delete “{}”?	Ștergeți „{}”?
+Delete “{}”? Its series and movies stay in the library.	Ștergeți „{}”? Serialele și filmele sale rămân în bibliotecă.
+Deleted	Șters
+Directory	Director
+Disabled	Dezactivat
+Disabled for local addresses	Dezactivat pentru adresele locale
+Disk scanned: {}	Disc scanat: {}
+Disk scanned: {} Not matched: {}	Disc scanat: {} Nepotrivite: {}
+Do not prefer	Nu prefera
+Do not search for a replacement	Nu căuta un înlocuitor
+Do nothing	Nu face nimic
+Done	Gata
+Download client options saved.	Opțiunile clienților de descărcare au fost salvate.
+Download clients	Clienți de descărcare
+Download failed	Descărcare eșuată
+Download queue	Coadă de descărcare
+Downloads	Descărcări
+Duration	Durată
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Fiecare titlu aparține unui catalog, pe care îl citesc reîmprospătările sale; fiecare identificator pe care îl are (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) este păstrat. Titlurile migrate din Sonarr aparțin TheTVDB.
+Edit	Editează
+Edit “{name}”	Editează „{name}”
+Edit “{}”	Editează „{}”
+Enable RSS	Activează RSS
+Enable automatic search	Activează căutarea automată
+Enable interactive search	Activează căutarea interactivă
+Enabled	Activat
+Ended	Încheiat
+English	Engleză
+Entity	Entitate
+Episode	Episod
+Episode and movie naming	Denumirea episoadelor și filmelor
+Episode image thumbs in the NFO	Miniaturi de episod în NFO
+Episode images (<filename>-thumb.jpg)	Imagini episod (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Imagini episod (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Imagini episod (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Mapări de episoade în .plexmatch
+Episode metadata (<filename>.nfo)	Metadate episod (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Metadate episod (Season##/filename.xml)
+Episode order	Ordinea episoadelor
+Episode order changed: {} episodes updated, {} added.	Ordinea episoadelor a fost schimbată: episoade actualizate: {}, adăugate: {}.
+Episodes	Episoade
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Episoadele sunt renumerotate după ordinea aleasă; fișierele, monitorizarea și istoricul rămân la episoadele lor. Redenumiți apoi fișierele pentru a corespunde noilor numere.
+Episodes of {title}	Episoade din {title}
+Episodes on disk	Episoade pe disc
+Episodes whose file is below the quality profile's cutoff appear here.	Episoadele al căror fișier este sub limita profilului de calitate apar aici.
+Episodes…	Episoade…
+Errors	Erori
+Errors {errors}	Erori {errors}
+Event	Eveniment
+Every file already follows the naming settings.	Toate fișierele respectă deja setările de denumire.
+Every file meets its cutoff	Toate fișierele își ating limita
+Exclude	Exclude
+Exclusions	Excluderi
+Expected	Așteptat
+Expires	Expiră
+Extra file extensions	Extensii de fișiere suplimentare
+Factor	Factor
+Failed	Eșuat
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Protecție împotriva lansărilor false: inspectează torrentele înainte de preluare și respinge executabilele, arhivele-momeală cu parolă și conținutul fără video
+Feed address	Adresa fluxului
+Fetch the latest metadata from {}	Obține cele mai recente metadate de la {}
+File	Fișier
+File date	Data fișierului
+File deleted	Fișier șters
+File deleted.	Fișierul a fost șters.
+File management	Gestionarea fișierelor
+File management settings saved.	Setările de gestionare a fișierelor au fost salvate.
+File renamed	Fișier redenumit
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Fișierele mai vechi decât aceasta sunt șterse zilnic din coșul de reciclare; 0 le păstrează.
+Files upgrades replaced, kept as versions	Fișiere înlocuite de upgrade-uri, păstrate ca versiuni
+Film	Film
+Film title or IMDb id, e.g. Arrival	Titlul filmului sau ID IMDb, de ex. Arrival
+Find a series in your library	Găsește un serial în bibliotecă
+Find files added to or removed from the series folder	Găsește fișierele adăugate în sau eliminate din folderul serialului
+Find something to add	Găsește ceva de adăugat
+First and last pieces first	Prima și ultima bucată mai întâi
+First day of the week	Prima zi a săptămânii
+First season	Primul sezon
+Folder	Folder
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formatele folosesc tipurile de specificații ale Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scorurile se atribuie per profil de calitate.
+Found	Găsit
+Free	Liber
+Free space	Spațiu liber
+Future days	Zile viitoare
+Future episodes	Episoade viitoare
+General	General
+GiB	GiB
+Grab	Preia
+Grab a release from interactive search; downloads in the client's TV category show up here.	Preluați o lansare din căutarea interactivă; descărcările din categoria TV a clientului apar aici.
+Grab anyway?	Preluați oricum?
+Grab with these episodes	Preia cu aceste episoade
+Grabbed	Preluat
+Grabbed {}.	Preluat {}.
+Grabbing…	Se preia…
+Grabs, imports and file changes appear here. Migrated history is included.	Preluările, importurile și modificările de fișiere apar aici. Istoricul migrat este inclus.
+Group film folder format	Format folder film din grup
+Group folder format	Format folder grup
+Group season folder format	Format folder sezon din grup
+Group story-arc folder format	Format folder arc narativ din grup
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Grupuri de seriale și filme înrudite: colecții ale furnizorilor, francize anime (grupuri prequel/sequel) și grupuri manuale, inclusiv cele migrate din Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Importuri doar prin hardlink: nu copia niciodată descărcările care continuă să facă seed
+Health	Sănătate
+Hide	Ascunde
+History	Istoric
+History →	Istoric →
+Host	Gazdă
+Host (as in the download client's settings)	Gazdă (ca în setările clientului de descărcare)
+Hostname	Nume gazdă
+How the catalogue numbers the episodes (it can be changed later on the series page).	Cum numerotează catalogul episoadele (se poate schimba ulterior pe pagina serialului).
+Id	ID
+Identities	Identități
+Ids	ID-uri
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Dacă Kitsunarr vede media la alte căi decât sursa (de exemplu volume Docker diferite), mapați fiecare folder sursă la locația sa din Kitsunarr. Căile sunt rescrise doar în baza de date.
+Ignored	Ignorat
+Ignored addresses	Adrese ignorate
+Implementation	Implementare
+Import / Migration	Import / Migrare
+Import a Sonarr or Tanukarr library	Importă o bibliotecă Sonarr sau Tanukarr
+Import blocked	Import blocat
+Import completed downloads	Importă descărcările finalizate
+Import extra files (subtitles…)	Importă fișiere suplimentare (subtitrări…)
+Import from Sonarr/Tanukarr	Importă din Sonarr/Tanukarr
+Import history	Importă istoricul
+Import library	Importă biblioteca
+Import list options saved.	Opțiunile listelor de import au fost salvate.
+Import lists	Liste de import
+Import pending	Import în așteptare
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importați fișiere video din orice folder pe care serverul îl poate citi: verificați serialul și episoadele pentru fiecare fișier, apoi copiați-le sau mutați-le în bibliotecă (redenumite conform setărilor de denumire).
+Import {chosen().len()} files	Importă fișiere: {chosen().len()}
+Imported	Importat
+Imported from series folder	Importat din folderul serialului
+Importing	Importare
+Importing…	Se importă…
+Imports need	Importurile necesită
+In library ›	În bibliotecă ›
+Include	Include
+Include in file names ({{Custom Formats}} token)	Include în numele fișierelor (tokenul {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Includeți doar titlurile din anumite liste sau omiteți titlurile din altele.
+Include unmonitored	Include nemonitorizate
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Inclusiv baza URL, de ex. http://192.168.1.10:8989 sau https://host/sonarr
+Indexer	Indexator
+Indexer options saved.	Opțiunile indexatoarelor au fost salvate.
+Indexer settings	Setări indexator
+Indexers	Indexatoare
+Info	Info
+Info {infos}	Info {infos}
+Instance	Instanță
+Instance name	Numele instanței
+Instance: {name}	Instanță: {name}
+Interactive	Interactiv
+Interactive search	Căutare interactivă
+Interactive search for full-season packs only	Căutare interactivă doar pentru pachete de sezon complet
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Căutare interactivă pentru pachete ale întregului serial (și ale sezoanelor sale) pe indexatoarele de torrente
+Interactive search: see every release and choose	Căutare interactivă: vezi toate lansările și alege
+Interface language	Limba interfeței
+Interval	Interval
+Jellyfin library and user	Bibliotecă și utilizator Jellyfin
+Job	Sarcină
+Keep / skip	Păstrează / omite
+Keep files replaced by upgrades as versions (in "Plex Versions")	Păstrează fișierele înlocuite de upgrade-uri ca versiuni (în „Plex Versions”)
+Keep me signed in	Ține-mă autentificat
+Keep the replaced file's date (upgrades)	Păstrează data fișierului înlocuit (upgrade-uri)
+Kept	Păstrat
+Kept versions	Versiuni păstrate
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Chei pentru aplicațiile însoțitoare care folosesc API-ul Sonarr v3: citesc biblioteca, iar cheile „adăugare seriale” pot și adăuga seriale (într-un folder rădăcină, fără căutare). Nimic altceva nu este permis.
+KiB	KiB
+Kind	Tip
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr este software liber (GPL-3.0-or-later).
+Kitsunarr path	Cale Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr va face o copie de rezervă a propriei baze de date, va importa datele previzualizate într-o singură tranzacție și le va valida înainte de confirmare. Sursa și fișierele media nu sunt modificate.
+Label	Etichetă
+Languages	Limbi
+Larger releases are rejected. 0 means unlimited.	Lansările mai mari sunt respinse. 0 înseamnă nelimitat.
+Last read	Ultima citire
+Last run	Ultima rulare
+Last search	Ultima căutare
+Last searched	Căutat ultima dată
+Last season	Ultimul sezon
+Later ›	Următoarele ›
+Latest season	Cel mai recent sezon
+Level	Nivel
+Library	Bibliotecă
+Library check	Verificarea bibliotecii
+Library tools	Instrumente pentru bibliotecă
+Library tools saved.	Instrumentele pentru bibliotecă au fost salvate.
+List	Listă
+Listed best first. Grouped qualities rank equally.	Ordonate de la cea mai bună. Calitățile grupate au același rang.
+Live updates connected	Actualizări live conectate
+Live updates disconnected	Actualizări live deconectate
+Load	Încarcă
+Load the account's lists	Încarcă listele contului
+Load the libraries…	Încarcă bibliotecile…
+Load the users…	Încarcă utilizatorii…
+Local air date	Data difuzării locală
+Local path	Cale locală
+Log them	Înregistrează-le în jurnal
+Logs	Jurnale
+Main rejections	Principalele respingeri
+Make current	Fă-o curentă
+Manual import	Import manual
+Mark as failed	Marchează ca eșuat
+Matches monitored titles.	Se potrivește cu titlurile monitorizate.
+Maximum	Maxim
+Maximum size (MB)	Dimensiune maximă (MB)
+Media management	Gestionare media
+Media management settings	Setări gestionare media
+Media paths	Căi media
+Mediums	Suporturi
+Members	Membri
+Message	Mesaj
+Metadata	Metadate
+Metadata files	Fișiere de metadate
+Metadata keys saved.	Cheile de metadate au fost salvate.
+Metadata language	Limba metadatelor
+Metadata refreshed.	Metadatele au fost reîmprospătate.
+Metadata refreshed: {} new episodes, {} updated.	Metadate reîmprospătate: episoade noi: {}, actualizate: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Setările de metadate au fost salvate. Fișierele sunt scrise la următoarea scanare a discului, reîmprospătare sau import.
+Metadata sources	Surse de metadate
+MiB	MiB
+Migration completed.	Migrarea s-a încheiat.
+Migration report #{}	Raport de migrare #{}
+Minimum	Minim
+Minimum age (minutes)	Vechime minimă (minute)
+Minimum custom format score	Scor minim al formatului personalizat
+Minimum format score	Scor minim al formatului
+Minimum free space (MiB)	Spațiu liber minim (MiB)
+Minimum seeders	Seederi minimi
+Missing	Lipsă
+Missing (monitored)	Lipsă (monitorizate)
+Missing films	Filme lipsă
+Mode	Mod
+Monday	Luni
+Monitor	Monitorizează
+Monitored	Monitorizat
+More languages can be added to the string tables.	Mai multe limbi pot fi adăugate în tabelele de texte.
+Move	Mută
+Movie	Film
+Movie file format	Format fișier film
+Movie removed from Kitsunarr. Files on disk were not touched.	Filmul a fost eliminat din Kitsunarr. Fișierele de pe disc nu au fost atinse.
+Movies	Filme
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Lansări cu mai multe sezoane: acceptă pachete cu mai multe sezoane (o căutare de sezon ia pachetul pentru sezonul său)
+Must contain	Trebuie să conțină
+Must contain (comma separated; /regex/ allowed)	Trebuie să conțină (separate prin virgulă; /regex/ permis)
+Must not contain	Nu trebuie să conțină
+NOT	NU
+Name	Nume
+Naming	Denumire
+Naming options saved.	Opțiunile de denumire au fost salvate.
+Naming saved.	Denumirea a fost salvată.
+Negate	Neagă
+Network	Rețea
+Never: keep the release's names	Niciodată: păstrează numele lansării
+New custom format	Format personalizat nou
+New custom preset	Presetare personalizată nouă
+New group title	Titlul noului grup
+New password	Parolă nouă
+New quality profile	Profil de calitate nou
+Next airing	Următoarea difuzare
+Next run	Următoarea rulare
+Next ›	Următor ›
+No	Nu
+No activity yet.	Nicio activitate încă.
+No auto tags.	Nicio etichetă automată.
+No backups yet	Nicio copie de rezervă încă
+No collections yet	Nicio colecție încă
+No companion keys.	Nicio cheie pentru aplicații însoțitoare.
+No custom formats	Niciun format personalizat
+No custom formats defined.	Niciun format personalizat definit.
+No delay above the minimum custom format score	Fără întârziere peste scorul minim al formatului personalizat
+No delay for the profile's best quality in the preferred protocol	Fără întârziere pentru cea mai bună calitate a profilului în protocolul preferat
+No download client to read	Niciun client de descărcare de citit
+No exclusions.	Nicio excludere.
+No history	Niciun istoric
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Niciun indexator nu poate căuta automat acest serial: niciunul nu are căutarea automată activată și fie nicio etichetă, fie una dintre etichetele serialului.
+No indexers to search	Niciun indexator pentru căutare
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Nicio versiune păstrată. Activați „Păstrează fișierele înlocuite de upgrade-uri” în Denumire.
+No log entries at this level	Nicio intrare în jurnal la acest nivel
+No mappings.	Nicio mapare.
+No matches	Nicio potrivire
+No members	Niciun membru
+No migrations have been run yet.	Nicio migrare nu a fost rulată încă.
+No movies yet	Niciun film încă
+No notes.	Nicio notă.
+No recycle bin is set (Settings › Media management).	Niciun coș de reciclare setat (Setări › Gestionare media).
+No release profiles.	Niciun profil de lansare.
+No root folders yet.	Niciun folder rădăcină încă.
+No root folders.	Niciun folder rădăcină.
+No runs yet	Nicio rulare încă
+No searches yet.	Nicio căutare încă.
+No series in your library match.	Niciun serial din bibliotecă nu se potrivește.
+No tags	Nicio etichetă
+No {}	Fără {}
+No {} yet	Încă fără {}
+None	Niciunul
+Not evaluated by Kitsunarr.	Neevaluat de Kitsunarr.
+Not imported	Neimportat
+Not monitored	Nemonitorizat
+Notes	Note
+Notes ({preview.warnings.len()})	Note ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Note ({report.warnings.len()})
+Nothing airs in the next seven days.	Nimic nu se difuzează în următoarele șapte zile.
+Nothing downloading	Nimic în descărcare
+Nothing found	Nimic găsit
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Nimic din acest catalog nu se potrivește căutării. Încercați altă ortografie, titlul original sau celălalt catalog.
+Nothing in this period	Nimic în această perioadă
+Nothing missing	Nimic lipsă
+Notifications	Notificări
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Numerotează episoadele după altă ordine a catalogului (grupuri de episoade TMDB, ordinea DVD sau absolută TheTVDB)
+OMDb API key	Cheie API OMDb
+Older priority	Prioritate pentru cele vechi
+One folder per season	Un folder pe sezon
+Only the 2000 newest files are listed.	Sunt listate doar cele mai noi 2000 de fișiere.
+Only when the proxy needs one.	Doar când proxy-ul necesită unul.
+Open the library	Deschide biblioteca
+OpenAPI document	Document OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Deschide serviciul pentru a autoriza Kitsunarr și completează tokenul.
+Options	Opțiuni
+Organize	Organizează
+Other	Altele
+Overview	Prezentare generală
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Suprascrie înregistrările care există deja în Kitsunarr (altfel sunt păstrate)
+Packs	Pachete
+Page not found	Pagina nu a fost găsită
+Page {page} / {pages}	Pagina {page} / {pages}
+Password	Parolă
+Password changed. Other sessions were signed out.	Parola a fost schimbată. Celelalte sesiuni au fost deconectate.
+Past days	Zile trecute
+Path	Cale
+Path mappings	Mapări de căi
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Pune automatizarea în pauză (sincronizare RSS, sincronizări programate ale listelor, căutări automate)
+Peers	Peeri
+Permission	Permisiune
+PiB	PiB
+Platform	Platformă
+Port	Port
+Position	Poziție
+Post-import category	Categorie după import
+Posters	Postere
+Prefer and upgrade	Preferă și actualizează
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Preferă pachetele de sezon anime (căutările de sezon anime ale Kitsunarr caută deja sezonul o singură dată)
+Prefer, do not upgrade	Preferă, nu actualiza
+Preferred	Preferat
+Preferred metadata language	Limba preferată a metadatelor
+Preferred protocol	Protocol preferat
+Preparing preview…	Se pregătește previzualizarea…
+Preview	Previzualizare
+Preview migration	Previzualizează migrarea
+Previous migrations	Migrări anterioare
+Priority	Prioritate
+Problem	Problemă
+Profile	Profil
+Profile saved.	Profilul a fost salvat.
+Profiles still used by series or movies cannot be deleted.	Profilurile folosite încă de seriale sau filme nu pot fi șterse.
+Progress	Progres
+Propers and repacks	Proper și repack
+Proxy	Proxy
+Proxy saved.	Proxy-ul a fost salvat.
+Proxy type	Tip de proxy
+Qualities	Calități
+Quality	Calitate
+Quality presets	Presetări de calitate
+Quality presets saved.	Presetările de calitate au fost salvate.
+Quality profile	Profil de calitate
+Quality profiles	Profiluri de calitate
+Quality profile…	Profil de calitate…
+RSS sync interval (minutes)	Interval de sincronizare RSS (minute)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	Sincronizarea RSS așteaptă atât timp după apariția unei lansări pentru una mai bună; lansările amânate apar în coadă. Se aplică primul profil ale cărui etichete se potrivesc cu serialul; ultimul (fără etichete) este cel implicit.
+Re-encode this series' files with the compression worker	Recodifică fișierele acestui serial cu procesul de compresie
+Read and add series	Citește și adaugă seriale
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Citit live din clienții de descărcare la câteva secunde. Descărcările finalizate preluate de Kitsunarr sunt importate în folderul serialului în fiecare minut (torrentele sunt copiate sau legate prin hardlink, deci continuă să facă seed; descărcările Usenet sunt mutate). Descărcările eșuate sunt adăugate în lista neagră și căutate din nou.
+Read the library	Citește biblioteca
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Doar citire: găsește folderele de seriale lipsă, înregistrările de fișiere din afara folderului lor sau înregistrate de două ori și fișierele lipsă de pe disc.
+Reading the download clients…	Se citesc clienții de descărcare…
+Reading the source	Se citește sursa
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Citește totul prin API. Parolele și cheile API ale furnizorilor sunt ascunse de sursă și trebuie reintroduse ulterior.
+Recent activity	Activitate recentă
+Recent priority	Prioritate pentru cele recente
+Recent runs	Rulări recente
+Recent searches	Căutări recente
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Recomandat. În Sonarr/Tanukarr deschideți System → Backup, creați o copie de rezervă și descărcați fișierul .zip (sau folosiți sonarr.db). Include parolele indexatoarelor și ale clienților de descărcare.
+Recycle bin	Coș de reciclare
+Recycle bin cleanup (days)	Curățarea coșului de reciclare (zile)
+Recycled	În coșul de reciclare
+Refresh metadata	Reîmprospătează metadatele
+Refresh preview	Reîmprospătează previzualizarea
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Reîmprospătarea din {} nu este încă acceptată; metadatele importate sunt păstrate așa cum sunt
+Refreshing…	Se reîmprospătează…
+Regenerate	Regenerează
+Regenerate API key	Regenerează cheia API
+Reject releases whose TheTVDB or IMDb id names another series	Respinge lansările al căror ID TheTVDB sau IMDb indică alt serial
+Rejected: click twice to grab anyway	Respins: faceți clic de două ori pentru a prelua oricum
+Release	Lansare
+Release profile	Profil de lansare
+Release profile saved.	Profilul de lansare a fost salvat.
+Release profiles	Profiluri de lansare
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Lansările sunt verificate față de profilul de calitate, formatele personalizate și profilurile de lansare ale serialului și ordonate, așa cum face Sonarr. Lansările respinse necesită un al doilea clic.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Lansări care au eșuat sau au fost adăugate manual în lista neagră. Căutările și sincronizarea RSS nu le mai preiau niciodată; eliminați una pentru a o permite.
+Remote path	Cale la distanță
+Remote path mapping	Mapare cale la distanță
+Remote path mapping saved.	Maparea căii la distanță a fost salvată.
+Remote path mappings	Mapări căi la distanță
+Remove	Elimină
+Remove completed downloads	Elimină descărcările finalizate
+Remove every release from the blocklist?	Eliminați toate lansările din lista neagră?
+Remove failed downloads	Elimină descărcările eșuate
+Remove from library	Elimină din bibliotecă
+Remove from queue	Elimină din coadă
+Remove from the download client (deletes its files there)	Elimină din clientul de descărcare (îi șterge fișierele acolo)
+Remove movie	Elimină filmul
+Remove series	Elimină serialul
+Remove tags automatically (from titles that stop matching)	Elimină etichetele automat (de la titlurile care nu se mai potrivesc)
+Remove “{title}” and its episode records from Kitsunarr?	Eliminați „{title}” și înregistrările episoadelor sale din Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Eliminați „{title}” din Kitsunarr? Fișierele de pe disc nu sunt șterse.
+Removed	Eliminat
+Removed from the blocklist.	Eliminat din lista neagră.
+Rename	Redenumește
+Rename files	Redenumește fișierele
+Rename files on import	Redenumește fișierele la import
+Rename files to the naming settings	Redenumește fișierele conform setărilor de denumire
+Formats use Sonarr's tokens.	Formatele folosesc tokenurile Sonarr.
+Renaming…	Se redenumește…
+Report	Raport
+Request one at omdbapi.com. Used for films by IMDb id.	Solicitați una pe omdbapi.com. Folosită pentru filme după ID-ul IMDb.
+Required	Obligatoriu
+Resolution	Rezoluție
+Restore	Restaurează
+Restore {}	Restaurează {}
+Restore…	Restaurează…
+Restoring…	Se restaurează…
+Resume automation	Reia automatizarea
+Retention (days)	Păstrare (zile)
+Retire	Retrage
+Revoke	Revocă
+Root folder	Folder rădăcină
+Root folders	Foldere rădăcină
+Root folder…	Folder rădăcină…
+Run #{run.id}: {run.status}	Rularea #{run.id}: {run.status}
+Run now	Rulează acum
+Running…	Rulează…
+Saturday	Sâmbătă
+Save	Salvează
+Save criteria	Salvează criteriile
+Save factors	Salvează factorii
+Save keys	Salvează cheile
+Save metadata files	Salvează fișierele de metadate
+Save naming	Salvează denumirea
+Save options	Salvează opțiunile
+Saved	Salvat
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Cheile salvate apar ca {REDACTED}; lăsați-le neschimbate pentru a le păstra sau goliți câmpul pentru a elimina una.
+Saved.	Salvat.
+Scan disk	Scanează discul
+Scan folder	Scanează folderul
+Scanning…	Se scanează…
+Scheduled tasks	Sarcini programate
+Score	Scor
+Search	Caută
+Search again when a download fails	Caută din nou când o descărcare eșuează
+Search all	Caută tot
+Search all films	Caută toate filmele
+Search collection	Caută colecția
+Search every episode of the list, one search per season	Caută fiecare episod din listă, o căutare pe sezon
+Search every member's missing episodes (films: the film)	Caută episoadele lipsă ale fiecărui membru (filme: filmul)
+Search indexers	Caută în indexatoare
+Search selected	Caută selecția
+Search the indexers and choose a release	Caută în indexatoare și alege o lansare
+Search the indexers and grab the best accepted release	Caută în indexatoare și preia cea mai bună lansare acceptată
+Search the indexers and grab the best releases for the monitored episodes	Caută în indexatoare și preia cele mai bune lansări pentru episoadele monitorizate
+Search your indexers	Caută în indexatoarele tale
+Search {chosen} selected	Caută selecția ({chosen})
+Search: {}	Căutare: {}
+Search: {} — complete series	Căutare: {} — serial complet
+Search: {} — season {season} packs	Căutare: {} — pachete sezonul {season}
+Search: {} — {label}	Căutare: {} — {label}
+Searching for {label}…	Se caută {label}…
+Searching indexers…	Se caută în indexatoare…
+Searching…	Se caută…
+Season	Sezon
+Season folder format	Format folder sezon
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Titlurile folderelor de sezon înlocuiesc pe cele ale catalogului în {{Season Title}}. Lăsați gol pentru a le păstra pe cele ale catalogului.
+Season folders	Foldere de sezon
+Season images (Season ##.jpg)	Imagini sezon (Season ##.jpg)
+Season images (Season##/folder.jpg)	Imagini sezon (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Imagini sezon (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Pachete de sezon: 1 folosește obiectivele pentru pachete de sezon de mai jos
+Season premieres only	Doar premierele sezonului
+Season {n}	Sezonul {n}
+Season {one}	Sezonul {one}
+Season {se.season_number}	Sezonul {se.season_number}
+Season {season_number}	Sezonul {season_number}
+Season-pack seed ratio	Raport de seed pentru pachete de sezon
+Season-pack seed time, minutes	Timp de seed pentru pachete de sezon, minute
+Seasons	Sezoane
+Seasons {first}-{last}	Sezoanele {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Secretele apar ca {REDACTED}; lăsați-le neschimbate pentru a păstra valoarea stocată.
+Seed ratio (empty: the client's default)	Raport de seed (gol: valoarea implicită a clientului)
+Seed time, minutes (empty: the client's default)	Timp de seed, minute (gol: valoarea implicită a clientului)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Trimite cererile către indexatoare, cataloage, liste, clienți de descărcare și conexiuni printr-un proxy.
+Send to the download client	Trimite la clientul de descărcare
+Series	Seriale
+Series .plexmatch file	Fișier .plexmatch al serialului
+Series folder format	Format folder serial
+Series images (Series Title.jpg)	Imagini serial (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Imagini serial (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Imagini serial (folder.jpg)
+Series metadata (tvshow.nfo)	Metadate serial (tvshow.nfo)
+Series metadata URL	URL metadate serial
+Series metadata episode guide	Ghid de episoade în metadatele serialului
+Series removed from Kitsunarr. Files on disk were not touched.	Serialul a fost eliminat din Kitsunarr. Fișierele de pe disc nu au fost atinse.
+Series removed, and its folder deleted.	Serialul a fost eliminat, iar folderul său a fost șters.
+Series type	Tip serial
+Set quality profile…	Setează profilul de calitate…
+Settings	Setări
+Settings saved.	Setările au fost salvate.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security în Sonarr/Tanukarr.
+Show	Afișează
+Show as all-day events	Afișează ca evenimente de o zi întreagă
+Show unmonitored	Afișează nemonitorizate
+Shows	Seriale
+Sign in	Autentificare
+Signed in. Save the list to keep the token.	Autentificat. Salvați lista pentru a păstra tokenul.
+Signing in…	Se autentifică…
+Size	Dimensiune
+Size limits	Limite de dimensiune
+Size on disk	Dimensiune pe disc
+Skip files smaller than (MB)	Omite fișierele mai mici de (MB)
+Skip the free-space check	Omite verificarea spațiului liber
+Skip unmonitored episodes when importing packs	Omite episoadele nemonitorizate la importul pachetelor
+Source	Sursă
+Source code	Cod sursă
+Source path	Cale sursă
+Special	Special
+Specials	Episoade speciale
+Specials are never monitored automatically.	Episoadele speciale nu sunt niciodată monitorizate automat.
+Specifications	Specificații
+Specifications (JSON)	Specificații (JSON)
+Specifications must be valid JSON: {e}	Specificațiile trebuie să fie JSON valid: {e}
+Stalled torrent timeout (minutes)	Timp limită pentru torrent blocat (minute)
+Standard	Standard
+Standard episode format	Format episod standard
+Start migration	Pornește migrarea
+Start over	Ia-o de la capăt
+Start search for missing episodes	Pornește căutarea episoadelor lipsă
+Started	Pornit
+Started {format_datetime(&run.started_at)}	Pornit {format_datetime(&run.started_at)}
+Status	Stare
+Status & health	Stare și sănătate
+Still downloading	Încă se descarcă
+Storage outlook	Prognoză stocare
+Studio	Studio
+Subscribe	Abonează-te
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Abonați-vă la această adresă într-o aplicație de calendar. Conține cheia dvs. API: păstrați-o privată.
+Sunday	Duminică
+Sync	Sincronizare
+Sync all lists now	Sincronizează acum toate listele
+Sync now	Sincronizează acum
+Syncing…	Se sincronizează…
+System →	Sistem →
+TMDB API key (v3)	Cheie API TMDB (v3)
+TV Series	Seriale TV
+TV series	Seriale TV
+Table	Tabel
+Tag	Etichetă
+Tag them	Etichetează-le
+Tag titles already in the library	Etichetează titlurile aflate deja în bibliotecă
+Tags	Etichete
+Tags (comma separated)	Etichete (separate prin virgulă)
+Tags (ids, comma separated)	Etichete (ID-uri, separate prin virgulă)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Etichetele sunt adăugate serialelor și filmelor care se potrivesc cu fiecare tip de condiție când sunt adăugate, editate sau reîmprospătate.
+Task	Sarcină
+Television	Televiziune
+Television (raw)	Televiziune (raw)
+Test	Testează
+Test failed: {message}	Testul a eșuat: {message}
+Testing…	Se testează…
+The blocklist is empty	Lista neagră este goală
+The catalogue new titles are added from when the list knows their id there.	Catalogul din care sunt adăugate titlurile noi când lista le cunoaște ID-ul acolo.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Data pe care o primesc fișierele importate: data difuzării episodului (locală sau UTC) sau, la un upgrade, data fișierului înlocuit.
+The dry run completed without blocking problems. Nothing has been written yet.	Rularea de probă s-a încheiat fără probleme de blocare. Încă nu s-a scris nimic.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Fișierul este mutat în folderul sezonului (un fișier existent nu este niciodată suprascris) și serialul este rescanat.
+The folder must already exist; Kitsunarr never creates or removes it.	Folderul trebuie să existe deja; Kitsunarr nu îl creează și nu îl elimină niciodată.
+The indexers returned no releases for this search.	Indexatoarele nu au returnat nicio lansare pentru această căutare.
+The instance is on my local network (private or loopback address)	Instanța este în rețeaua mea locală (adresă privată sau loopback)
+The list has not been read, or it is empty.	Lista nu a fost citită sau este goală.
+The migration did not complete; nothing was changed.	Migrarea nu s-a încheiat; nu s-a modificat nimic.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Cele mai recente intrări păstrate în memorie. Jurnalele complete merg în ieșirea procesului (jurnalele containerului sau journal).
+The passwords do not match.	Parolele nu se potrivesc.
+The recycle bin has no media or subtitle files.	Coșul de reciclare nu conține fișiere media sau de subtitrare.
+The sign-in expired; try again.	Autentificarea a expirat; încercați din nou.
+The upload failed (network error).	Încărcarea a eșuat (eroare de rețea).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Procesul de compresie este o componentă opțională a gazdei (procesul de compresie al Tanukarr) accesată prin socketul de la KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (catalogul Sonarr), TMDB și TVmaze acoperă serialele TV; AniList și MyAnimeList acoperă serialele și filmele anime; TMDB și OMDb acoperă filmele. Adăugarea unui titlu creează intrarea sa în bibliotecă și lista de episoade; fișierele sunt preluate ulterior de procesul de import.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Titlurile TheTVDB sunt căutate și adăugate în această limbă; fiecare serial poate fi schimbat în editorul său.
+TheTVDB titles in this language; changing it refreshes the series	Titluri TheTVDB în această limbă; schimbarea ei reîmprospătează serialul
+There is nothing at /{path}.	Nu există nimic la /{path}.
+They are created by migrating from Sonarr/Tanukarr.	Sunt create prin migrarea din Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Modul de redenumire, titlurile folderelor de sezon și versiunile păstrate ale acestui serial
+TiB	TiB
+Time	Oră
+Time left	Timp rămas
+Title	Titlu
+Title pattern	Model de titlu
+Titles import lists never add.	Titluri pe care listele de import nu le adaugă niciodată.
+Titles on no list	Titluri care nu sunt în nicio listă
+Today	Azi
+Torrent	Torrent
+Torrent delay	Întârziere torrent
+Torrent delay (minutes)	Întârziere torrent (minute)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Indexatoare Torznab și Newznab. Folosiți Testează în editor pentru a verifica unul; fiecare căutare folosește indexatoarele cu acel tip de căutare activat: RSS, automată sau interactivă.
+Trigger	Declanșator
+URL base	Bază URL
+UTC air date	Data difuzării UTC
+Unchanged	Neschimbat
+Unknown	Necunoscut
+Unmonitor	Nu mai monitoriza
+Unmonitor them	Nu le mai monitoriza
+Unmonitored	Nemonitorizat
+Upcoming	Urmează
+Upcoming 7 days	Următoarele 7 zile
+Update	Actualizează
+Updated {} items.	Elemente actualizate: {}.
+Upgrade until (cutoff)	Upgrade până la (limită)
+Upgrade until format score	Upgrade până la scorul formatului
+Upgrades allowed	Upgrade-uri permise
+Upload a backup	Încarcă o copie de rezervă
+Upload failed (HTTP {}).	Încărcarea a eșuat (HTTP {}).
+Uploading…	Se încarcă…
+Use SSL	Folosește SSL
+Use a proxy	Folosește un proxy
+Use hardlinks instead of copying	Folosește hardlink-uri în loc de copiere
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Folosiți-o ca antet X-Api-Key (sau ?apikey=) din alte aplicații. Compatibil cu antetul folosit de Sonarr.
+Use these episodes	Folosește aceste episoade
+Usenet	Usenet
+Usenet delay	Întârziere Usenet
+Usenet delay (minutes)	Întârziere Usenet (minute)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Doar Usenet: lansările mai noi sunt respinse, lăsându-le timp să se propage. 0 dezactivează opțiunea.
+Usenet only: older releases are rejected. 0 means unlimited.	Doar Usenet: lansările mai vechi sunt respinse. 0 înseamnă nelimitat.
+User name	Nume utilizator
+Username	Nume utilizator
+Validation	Validare
+Version	Versiune
+Versions	Versiuni
+Waiting for the sign-in at	Se așteaptă autentificarea la
+Wanted	Dorite
+Warnings	Avertismente
+Warnings {warnings}	Avertismente {warnings}
+Watched (Jellyfin watched sync)	Vizionat (sincronizare vizionări Jellyfin)
+Watched sync user	Utilizator pentru sincronizarea vizionărilor
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Sunt trimise notificări prin Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, scripturi personalizate (cu variabilele de mediu ale Sonarr), Emby/Jellyfin, Plex și Kodi: preluări, importuri și upgrade-uri, redenumiri, seriale adăugate sau șterse, fișiere șterse, probleme de sănătate. Folosiți Testează în editor.
+Welcome	Bun venit
+What to import	Ce se importă
+When	Când
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Când sunt verificate certificatele HTTPS ale indexatoarelor, clienților de descărcare și serviciilor (setarea Sonarr). Certificatele autosemnate din rețeaua dvs. necesită relaxarea ei.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Când un client de descărcare raportează căi pe care Kitsunarr le vede în altă parte (altă mașină sau container), mapați gazda și calea clientului la calea locală.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Dacă lansările care corectează o lansare defectă sunt preferate și actualizează fișierele existente (ca în Sonarr).
+Whole season	Sezon întreg
+Working…	Se lucrează…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Scrise în folderele serialelor când serialele sunt scanate, reîmprospătate sau importate, așa cum le scriu consumatorii de metadate ai Sonarr.
+Year	An
+Your library is empty.	Biblioteca este goală.
+all checks passed	toate verificările au trecut
+comma separated	separate prin virgulă
+cutoff: {}	limită: {}
+has a file	are un fișier
+iCal link	link iCal
+in 2 days	în 2 zile
+in a moment	într-o clipă
+in file names	în numele fișierelor
+in library	în bibliotecă
+in {text}	în {text}
+just now	chiar acum
+may run out of space	poate rămâne fără spațiu
+name (e.g. phone)	nume (de ex. telefon)
+never refreshed	nereîmprospătat niciodată
+no media files are moved, renamed or deleted.	niciun fișier media nu este mutat, redenumit sau șters.
+not accessible	inaccesibil
+not added	neadăugat
+not checked	neverificat
+not read yet	necitită încă
+on disk	pe disc
+refreshed {}	reîmprospătat {}
+schema {s}	schemă {s}
+secrets included	secrete incluse
+secrets masked	secrete mascate
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip sau sonarr.db
+stored only	doar stocat
+title (optional)	titlu (opțional)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	adăugate: {added}; {}
+{added} shows added.	Seriale adăugate: {added}.
+{c.name} (API key needed)	{c.name} (cheie API necesară)
+{c.series_count} series · {c.movie_count} movies	seriale: {c.series_count} · filme: {c.movie_count}
+{chosen().len()} chosen	alese: {chosen().len()}
+{chosen().len()} chosen (at most 25)	alese: {chosen().len()} (cel mult 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} pe disc · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% din {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · adăugat {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} din {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} fișiere · {job["percent"]}% · economisit {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} a pornit.
+{name} was added to the library.	{name} a fost adăugat în bibliotecă.
+{name}: shows	{name}: seriale
+{ok} files imported.	Fișiere importate: {ok}.
+{ok} imported; {}	importate: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: lansări: {r.releases.len()}, din {r.searched_indexers} indexatoare.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Seriale verificate: {r.series_checked}, fișiere: {r.files_checked}; probleme: {r.issues.len()}.
+{selected.read().len()} selected	selectate: {selected.read().len()}
+{text} ago	acum {text}
+{} (not accessible)	{} (inaccesibil)
+{} ({} free)	{} ({} liber)
+{} added to every profile (not allowed yet).	{} adăugat în fiecare profil (încă nepermis).
+{} day(s)	{} zi(le)
+{} failed: {}	{} a eșuat: {}
+{} format scores	{} scoruri de format
+{} free of {}	{} liber din {}
+{} week(s)	{} săpt.
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Înapoi
+‹ Earlier	‹ Mai devreme
+‹ Prev	‹ Anterior
+○ offline	○ offline
+● live	● live
+✓ No issues detected.	✓ Nicio problemă detectată.
+Activity	Activitate
+Queue	Coadă
+System	Sistem
+Tasks	Sarcini
+Retry	Reîncearcă
+Sign out	Deconectare
+Search titles…  ( / )	Caută titluri…  ( / )
+Loading…	Se încarcă…
+Profiles	Profiluri
+scene {}	scenă {}
+Scene numbering from TheXEM	Numerotare de scenă din TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Numerotare de scenă extrapolată din TheXEM (neverificată)
+Season {} (scene seasons {})	Sezonul {} (sezoane de scenă {})
+{} (scene {})	{} (scenă {})

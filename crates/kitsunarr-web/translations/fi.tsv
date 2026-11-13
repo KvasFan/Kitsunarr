@@ -1,0 +1,968 @@
+# Finnish interface strings: English	Finnish. {…} marks a placeholder.
+custom	mukautettu
+indeterminate	määrittelemätön
+mixed	vaihteleva
+retired	poistettu käytöstä
+· container	· säiliö
+· finished {format_datetime(f)}	· valmistui {format_datetime(f)}
+· missing	· puuttuu
+· on disk	· levyllä
+· today	· tänään
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} jaksoa
+— MiB per minute; empty uses Settings › Quality	— MiB minuutissa; tyhjä käyttää kohtaa Asetukset › Laatu
+— a release's size is multiplied by its codec's factor before the size limits apply	— julkaisun koko kerrotaan sen koodekin kertoimella ennen kokorajojen soveltamista
+— all profiles at once	— kaikki profiilit kerralla
+— codec and title criteria, custom qualities (Tanukarr)	— koodekki- ja nimikeehdot, mukautetut laadut (Tanukarr)
+— enter the code	— syötä koodi
+(empty)	(tyhjä)
++ Add mapping	+ Lisää kohdistus
++ New format	+ Uusi muoto
++ New profile	+ Uusi profiili
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (pois) tai 10–120. RSS-synkronointi suoritetaan myös kohdasta Järjestelmä › Tehtävät.
+3 hours ago	3 tuntia sitten
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Lataava torrent, joka ei edisty näin pitkään aikaan, merkitään epäonnistuneeksi, lisätään estolistalle ja haetaan uudelleen. 0 poistaa tämän käytöstä; edistymistä seurataan Kitsunarrin käynnistyksestä alkaen.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	AniListin tai MyAnimeListin suhteista löydetty franchise-ryhmä. Myöhemmin lisätyt saman franchisen nimikkeet liittyvät siihen myös.
+A new API key was generated. Update the applications that use it.	Uusi rajapinnan avain luotiin. Päivitä sitä käyttävät sovellukset.
+A regular expression, case-insensitive; empty matches every title.	Säännöllinen lauseke, kirjainkoko ei merkitse; tyhjä vastaa kaikkia nimikkeitä.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Julkaisu saa tarkimman sarjansa profiilissa sallitun esiasetuksen, jonka lähteen, resoluution, koodekin ja nimikekaavan se täyttää. Jos vakiolaadulle annetaan koodekki tai kaava, sitä täyttämättömät julkaisut muuttuvat tuntemattomiksi (Unknown). Mukautetut esiasetukset lisätään jokaiseen profiiliin ei-sallittuina.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Julkaisun koko kerrotaan sen koodekin kertoimella ennen kokorajojen soveltamista. ”Vaihteleva” tarkoittaa, että profiilit käyttävät eri kertoimia; tähän syötetty arvo kirjoitetaan jokaiseen profiiliin.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Franchise- tai manuaaliseen ryhmään liittyvä nimike poistuu aiemmasta ryhmästään. Tiedostoja ja kansioita ei siirretä.
+API key	Rajapinnan avain
+API key needed	Rajapinnan avain tarvitaan
+API keys and language	Rajapinnan avaimet ja kieli
+API path	API-polku
+About	Tietoja
+Absolute path; empty to delete permanently.	Absoluuttinen polku; tyhjä poistaa pysyvästi.
+Accepted	Hyväksytty
+Account lists	Tilin listat
+Actions	Toiminnot
+Actual	Todellinen
+Add	Lisää
+Add a Newznab or Torznab indexer and enable interactive search for it.	Lisää Newznab- tai Torznab-hakupalvelu ja ota sen manuaalihaku käyttöön.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Lisää latauspalvelu mallista ja käytä muokkaimen Testaa-painiketta; kaappaukset, jono ja tuonnit käyttävät kaikkia käytössä olevia latauspalveluita. Blackhole kirjoittaa kaappaukset kansioon ja tuo sen valvontakansioon ilmestyvät tiedostot. Kunkin latauspalvelun ”Poista valmistuneet/epäonnistuneet lataukset” -asetukset poistavat lataukset (tiedostoineen), kun latauspalvelu on käsitellyt ne.
+Add a download client in Settings › Download clients and enable it.	Lisää latauspalvelu kohdassa Asetukset › Latauspalvelut ja ota se käyttöön.
+Add a root folder first: it is where this title's folder will live.	Lisää ensin juurikansio: siellä tämän nimikkeen kansio sijaitsee.
+Add a tag above first.	Lisää ensin tunniste yllä.
+Add a title	Lisää nimike
+Add auto tag	Lisää automaattinen tunniste
+Add condition	Lisää ehto
+Add exclusion	Lisää poikkeus
+Add media	Lisää mediaa
+Add one, or migrate them from Sonarr/Tanukarr.	Lisää yksi tai siirrä ne Sonarrista/Tanukarrista.
+Add preset	Lisää esiasetus
+Add selected	Lisää valitut
+Add series or movies below.	Lisää sarjoja tai elokuvia alla.
+Add tag	Lisää tunniste
+Add the list's tags	Lisää listan tunnisteet
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Lisää nimikkeitä TVmazesta tai AniLististä tai tuo olemassa oleva Sonarr- tai Tanukarr-kirjasto.
+Add to library	Lisää kirjastoon
+Add {}	Lisää {}
+Add {} ({y})	Lisää {} ({y})
+Add — {}	Lisää — {}
+Add, and remove when they leave the list	Lisää ja poista, kun ne poistuvat listalta
+Added	Lisätty
+Added to the titles this list adds.	Lisätään tämän listan lisäämille nimikkeille.
+Adding titles	Nimikkeiden lisäys
+Adding…	Lisätään…
+Address	Osoite
+Age	Ikä
+Aired	Esitetty
+Aired monitored episodes without a file appear here.	Esitetyt valvotut jaksot ilman tiedostoa näkyvät tässä.
+All	Kaikki
+All collections	Kaikki kokoelmat
+All episodes	Kaikki jaksot
+All episodes in the series folder	Kaikki jaksot sarjan kansiossa
+All events	Kaikki tapahtumat
+Allow zero size (the feed has no release sizes)	Salli nollakoko (syöte ei kerro julkaisujen kokoja)
+Also delete the series folder and its files (to the recycle bin when one is set)	Poista myös sarjan kansio ja sen tiedostot (roskakoriin, jos se on määritetty)
+Also for releases grabbed from interactive search	Myös manuaalihausta kaapatuille julkaisuille
+Also known as	Tunnetaan myös nimellä
+Always, even when renaming is off	Aina, myös kun uudelleennimeäminen ei ole käytössä
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analysoi videotiedostot (resoluutio, kesto ja koodekit ffprobella)
+AniList and MyAnimeList titles are always added as anime.	AniListin ja MyAnimeListin nimikkeet lisätään aina animena.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList-, MyAnimeList-, Trakt-, Simkl-, TMDB-, MDBList-, Plex-, toisen Sonarrin ja mukautetut JSON-listat luetaan muutaman tunnin välein; uudet nimikkeet lisätään kunkin listan juurikansiolla, profiililla ja valvonnalla. OAuthia vaativat palvelut käyttävät oman sovelluksesi Client ID:tä ja liittämääsi tunnusta (Tanukarrista siirretyt tunnukset toimivat edelleen).
+Anime	Anime
+Anime / absolute numbering	Anime / absoluuttinen numerointi
+Anime categories	Animekategoriat
+Anime episode format	Animejaksojen kaava
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Animeelokuvia voi lisätä AniLististä, ja Tanukarr-siirrot tuovat elokuvat mukanaan. Live action -elokuviin tarvitaan TMDB-katalogi.
+Anime standard format search	Animen vakiomuotoinen haku
+Anime title, e.g. Frieren	Animen nimi, esim. Frieren
+Any	Mikä tahansa
+Any library	Mikä tahansa kirjasto
+Applications using the current key will stop working until you give them the new one.	Nykyistä avainta käyttävät sovellukset lakkaavat toimimasta, kunnes annat niille uuden avaimen.
+Applied after every list has been read successfully and some title left a list.	Toteutetaan, kun kaikki listat on luettu onnistuneesti ja jokin nimike on poistunut listalta.
+Apply	Käytä
+Apply migration	Suorita siirto
+Apply profile	Käytä profiilia
+Applying migration	Suoritetaan siirtoa
+Applying…	Otetaan käyttöön…
+As Settings › Media management says	Kuten Asetukset › Median hallinta määrää
+At least 10 characters.	Vähintään 10 merkkiä.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Vähintään {MIN_PASSWORD_LENGTH} merkkiä. Salalause toimii hyvin.
+Auto tag	Automaattinen tunniste
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automaattinen tunniste tallennettiin. Se otetaan käyttöön, kun nimikkeitä seuraavan kerran lisätään, muokataan tai päivitetään.
+Auto tagging	Automaattinen tunnistemerkintä
+Auto-refresh	Automaattinen päivitys
+Automatic	Automaattinen
+Automatic search	Automaattihaku
+Automatic search for {label}: grabbed {}.	Automaattihaku kohteelle {label}: kaapattiin {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automaattihaku kohteelle {label}: julkaisuja löytyi {}, hyväksyttiin {}, mitään ei kaapattu.
+Automatic search: grab the best release	Automaattihaku: kaappaa paras julkaisu
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automaatio on keskeytetty: RSS-synkronointi, ajoitetut listasynkronoinnit ja automaattihaut ohitetaan. Manuaaliset toiminnot ja käynnissä olevat lataukset jatkuvat.
+Automation resumed.	Automaatio jatkuu.
+Available from	Saatavilla alkaen
+Back to the dashboard	Takaisin koontinäyttöön
+Back up now	Varmuuskopioi nyt
+Backup {} created.	Varmuuskopio {} luotiin.
+Backups	Varmuuskopiot
+Blocking:	Estää:
+Blocklist	Estolista
+Blocklist the release and search again	Lisää julkaisu estolistalle ja hae uudelleen
+Blocklist the release: it is never grabbed again	Lisää julkaisu estolistalle: sitä ei kaapata enää koskaan
+Blocklist “{title}” and search for a replacement?	Lisätäänkö ”{title}” estolistalle ja haetaanko korvaava?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raaka / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Tuo Sonarr (v3/v4)- tai Tanukarr-kirjastosi ja -asetuksesi Kitsunarriin. Lähdettä vain luetaan, sitä ei koskaan muuteta, ja
+Bypass the proxy for local addresses	Ohita välityspalvelin paikallisille osoitteille
+Calendar	Kalenteri
+Calendar →	Kalenteri →
+Cancel	Peruuta
+Cancel compression	Peruuta pakkaus
+Cannot reach the server: {e}	Palvelimeen ei saada yhteyttä: {e}
+Catalogue	Katalogi
+Category	Kategoria
+Certificate validation	Varmenteen vahvistus
+Change password	Vaihda salasana
+Change series	Vaihda sarja
+Changes	Muutokset
+Check	Tarkista
+Check library	Tarkista kirjasto
+Check now	Tarkista nyt
+Check that the mapped series folders exist (read-only)	Tarkista, että kohdistetut sarjakansiot ovat olemassa (vain luku)
+Checked: {summary}.	Tarkistettu: {summary}.
+Checking…	Tarkistetaan…
+Choose a backup file	Valitse varmuuskopiotiedosto
+Choose a mode	Valitse tila
+Choose a root folder and a quality profile.	Valitse juurikansio ja laatuprofiili.
+Choose a season	Valitse kausi
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Valitse sarja ja kausi tai jakso. Tulokset näyttävät, mikä kukin julkaisu on Kitsunarrin jäsentimen mukaan.
+Choose a series or movie…	Valitse sarja tai elokuva…
+Choose source	Valitse lähde
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Valitse tämän julkaisun jaksot käsin ja kaappaa se sitten (valinta säilytetään tuontia varten)
+Choose…	Valitse…
+Clean library	Siivoa kirjasto
+Clear	Tyhjennä
+Clear blocklist	Tyhjennä estolista
+Cleared {n} releases from the blocklist.	Estolistalta poistettiin {n} julkaisua.
+Client	Latauspalvelu
+Close	Sulje
+Codec	Koodekki
+Codec factors saved in every profile.	Koodekkikertoimet tallennettiin jokaiseen profiiliin.
+Codec size factors	Koodekkien kokokertoimet
+Codecs	Koodekit
+Collection film folder format	Kokoelmaelokuvan kansion kaava
+Collections	Kokoelmat
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Kokoelmat näkyvät, kun ne siirretään Tanukarrista, luodaan palveluntarjoajan tiedoista tai luodaan täällä.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Tuletko Sonarrista tai Tanukarrista? Tuo olemassa olevat sarjasi, asetuksesi ja historiasi muutamassa vaiheessa.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Pilkuilla erotettu; * on jokerimerkki (*.lan), ja IP-alueet kuten 192.168.1.0/24 toimivat.
+Companion app keys	Oheissovellusten avaimet
+Complete series	Koko sarja
+Completed and failed download handling	Valmistuneiden ja epäonnistuneiden latausten käsittely
+Component	Komponentti
+Compress series	Pakkaa sarja
+Compression	Pakkaus
+Compression queued.	Pakkaus lisättiin jonoon.
+Compression worker is not connected.	Pakkaustyöprosessi ei ole yhdistetty.
+Condition	Ehto
+Conditions	Ehdot
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Saman tyypin ehdot täyttyvät, kun mikä tahansa niistä täyttyy (kaikkien pakollisten on täytyttävä); jokaisen tyypin on täytyttävä.
+Configure	Määritä
+Confirm password	Vahvista salasana
+Connect	Yhdistä
+Connect to a running instance	Yhdistä käynnissä olevaan instanssiin
+Connecting…	Yhdistetään…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Tietokannan yhtenäiset kopiot. Ajoitetut varmuuskopiot tehdään viikoittain (kahdeksan viimeisintä säilytetään); jokainen siirto luo myös ensin yhden. Palauttaaksesi pysäytä Kitsunarr ja suorita
+Continuing	Jatkuu
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Eväste (lähetetään syötepyynnön mukana, esim. uid=1; pass=…)
+Copied.	Kopioitu.
+Copy	Kopioi
+Copy (keep the originals)	Kopioi (säilytä alkuperäiset)
+Copy sizes from	Kopioi koot kohteesta
+Copy the token now; it is not shown again:	Kopioi tunnus nyt; sitä ei näytetä uudelleen:
+Could not grab {}: {}	Kohdetta {} ei voitu kaapata: {}
+Covers	Kattavuus
+Create	Luo
+Create account	Luo tili
+Create group	Luo ryhmä
+Create key	Luo avain
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Luo se sivulla themoviedb.org › Settings › API. Käytetään TMDB:n TV-sarjoille ja elokuville.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Luo pääkäyttäjän tili. Kirjaudut sillä Kitsunarriin.
+Created	Luotu
+Created when the first file is imported. Nothing is written to disk now.	Luodaan, kun ensimmäinen tiedosto tuodaan. Levylle ei kirjoiteta nyt mitään.
+Creating…	Luodaan…
+Credit	Lähdemaininta
+Current file	Nykyinen tiedosto
+Current password	Nykyinen salasana
+Custom format saved.	Mukautettu muoto tallennettiin.
+Custom format score	Mukautetun muodon pisteytys
+Custom format scores	Mukautettujen muotojen pisteytykset
+Custom formats	Mukautetut muodot
+Cutoff unmet	Katkaisutasoa ei saavutettu
+Daily	Päivittäinen
+Daily episode format	Päivittäisjaksojen kaava
+Dashboard	Koontinäyttö
+Data directory	Datakansio
+Database backup taken before the import: {b}	Ennen tuontia otettu tietokannan varmuuskopio: {b}
+Database schema	Tietokannan skeema
+Date	Päivämäärä
+Date added	Lisäyspäivä
+Debug	Vianselvitys
+Decision	Päätös
+Default	Oletus
+Defaults	Oletukset
+Delay profile	Viiveprofiili
+Delay profile saved.	Viiveprofiili tallennettiin.
+Delay profiles	Viiveprofiilit
+Delete	Poista
+Delete empty series folders	Poista tyhjät sarjakansiot
+Delete file	Poista tiedosto
+Delete group	Poista ryhmä
+Delete profile	Poista profiili
+Delete “{path}”? It goes to the recycle bin when one is set.	Poistetaanko ”{path}”? Se siirtyy roskakoriin, jos sellainen on määritetty.
+Delete “{}”?	Poistetaanko ”{}”?
+Delete “{}”? Its series and movies stay in the library.	Poistetaanko ”{}”? Sen sarjat ja elokuvat jäävät kirjastoon.
+Deleted	Poistettu
+Directory	Kansio
+Disabled	Ei käytössä
+Disabled for local addresses	Ei käytössä paikallisille osoitteille
+Disk scanned: {}	Levy tarkistettu: {}
+Disk scanned: {} Not matched: {}	Levy tarkistettu: {} Ei vastaavuutta: {}
+Do not prefer	Älä suosi
+Do not search for a replacement	Älä hae korvaavaa
+Do nothing	Älä tee mitään
+Done	Valmis
+Download client options saved.	Latauspalveluiden asetukset tallennettiin.
+Download clients	Latauspalvelut
+Download failed	Lataus epäonnistui
+Download queue	Latausjono
+Downloads	Lataukset
+Duration	Kesto
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Jokainen nimike kuuluu yhteen katalogiin, josta sen päivitykset luetaan; kaikki sen tunnisteet (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) säilytetään. Sonarrista siirretyt nimikkeet kuuluvat TheTVDB:hen.
+Edit	Muokkaa
+Edit “{name}”	Muokkaa: ”{name}”
+Edit “{}”	Muokkaa: ”{}”
+Enable RSS	Käytä RSS-syötettä
+Enable automatic search	Käytä automaattihakua
+Enable interactive search	Käytä manuaalihakua
+Enabled	Käytössä
+Ended	Päättynyt
+English	englanti
+Entity	Kohde
+Episode	Jakso
+Episode and movie naming	Jaksojen ja elokuvien nimeäminen
+Episode image thumbs in the NFO	Jaksokuvien pienoiskuvat NFO-tiedostoon
+Episode images (<filename>-thumb.jpg)	Jaksokuvat (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Jaksokuvat (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Jaksokuvat (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Jaksokohdistukset .plexmatch-tiedostoon
+Episode metadata (<filename>.nfo)	Jakson metatiedot (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Jakson metatiedot (Season##/filename.xml)
+Episode order	Jaksojärjestys
+Episode order changed: {} episodes updated, {} added.	Jaksojärjestys vaihdettu: {} jaksoa päivitetty, {} lisätty.
+Episodes	Jaksot
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Jaksot numeroidaan uudelleen valitun järjestyksen mukaan; tiedostot, valvonta ja historia pysyvät jaksojensa mukana. Nimeä tiedostot jälkikäteen uudelleen uusien numeroiden mukaisiksi.
+Episodes of {title}	Sarjan {title} jaksot
+Episodes on disk	Jaksoja levyllä
+Episodes whose file is below the quality profile's cutoff appear here.	Jaksot, joiden tiedosto alittaa laatuprofiilin katkaisutason, näkyvät tässä.
+Episodes…	Jaksot…
+Errors	Virheet
+Errors {errors}	Virheet {errors}
+Event	Tapahtuma
+Every file already follows the naming settings.	Kaikki tiedostot noudattavat jo nimeämisasetuksia.
+Every file meets its cutoff	Kaikki tiedostot saavuttavat katkaisutasonsa
+Exclude	Jätä pois
+Exclusions	Poikkeukset
+Expected	Odotettu
+Expires	Vanhenee
+Extra file extensions	Oheistiedostojen päätteet
+Factor	Kerroin
+Failed	Epäonnistui
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Suojaus valejulkaisuja vastaan: tarkasta torrentit ennen kaappausta ja hylkää suoritettavat tiedostot, salasanasyöttinä toimivat arkistot ja sisällöt, joissa ei ole videota
+Feed address	Syötteen osoite
+Fetch the latest metadata from {}	Hae uusimmat metatiedot kohteesta {}
+File	Tiedosto
+File date	Tiedoston päivämäärä
+File deleted	Tiedosto poistettu
+File deleted.	Tiedosto poistettiin.
+File management	Tiedostojen hallinta
+File management settings saved.	Tiedostojen hallinnan asetukset tallennettiin.
+File renamed	Tiedosto nimetty uudelleen
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Tätä vanhemmat tiedostot poistetaan roskakorista päivittäin; 0 säilyttää ne.
+Files upgrades replaced, kept as versions	Päivitysten korvaamat tiedostot, säilytetty versioina
+Film	Elokuva
+Film title or IMDb id, e.g. Arrival	Elokuvan nimi tai IMDb-tunniste, esim. Arrival
+Find a series in your library	Etsi sarjaa kirjastostasi
+Find files added to or removed from the series folder	Etsi sarjan kansioon lisätyt tai siitä poistetut tiedostot
+Find something to add	Etsi lisättävää
+First and last pieces first	Ensimmäiset ja viimeiset palat ensin
+First day of the week	Viikon ensimmäinen päivä
+First season	Ensimmäinen kausi
+Folder	Kansio
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Muodot käyttävät Sonarrin määritystyyppejä (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Pisteet määritetään laatuprofiilikohtaisesti.
+Found	Löydetty
+Free	Vapaa
+Free space	Vapaa tila
+Future days	Tulevat päivät
+Future episodes	Tulevat jaksot
+General	Yleiset
+GiB	GiB
+Grab	Kaappaa
+Grab a release from interactive search; downloads in the client's TV category show up here.	Kaappaa julkaisu manuaalihausta; latauspalvelun TV-kategorian lataukset näkyvät tässä.
+Grab anyway?	Kaapataanko silti?
+Grab with these episodes	Kaappaa näillä jaksoilla
+Grabbed	Kaapattu
+Grabbed {}.	Kaapattiin {}.
+Grabbing…	Kaapataan…
+Grabs, imports and file changes appear here. Migrated history is included.	Kaappaukset, tuonnit ja tiedostomuutokset näkyvät tässä. Siirretty historia sisältyy.
+Group film folder format	Ryhmän elokuvakansion kaava
+Group folder format	Ryhmän kansion kaava
+Group season folder format	Ryhmän kausikansion kaava
+Group story-arc folder format	Ryhmän tarinakaarikansion kaava
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Toisiinsa liittyvien sarjojen ja elokuvien ryhmät: palveluntarjoajien kokoelmat, animefranchiset (esiosa- ja jatko-osaryhmät) ja manuaaliset ryhmät, mukaan lukien Tanukarrista siirretyt.
+Hardlink-only imports: never copy downloads that keep seeding	Vain hardlink-tuonnit: älä koskaan kopioi latauksia, joita jaetaan edelleen
+Health	Terveys
+Hide	Piilota
+History	Historia
+History →	Historia →
+Host	Osoite
+Host (as in the download client's settings)	Osoite (kuten latauspalvelun asetuksissa)
+Hostname	Isäntänimi
+How the catalogue numbers the episodes (it can be changed later on the series page).	Miten katalogi numeroi jaksot (voidaan muuttaa myöhemmin sarjan sivulla).
+Id	Tunniste
+Identities	Identiteetit
+Ids	Tunnisteet
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Jos Kitsunarr näkee mediasi eri poluissa kuin lähde (esimerkiksi eri Docker-taltioissa), kohdista jokainen lähdekansio sen Kitsunarr-sijaintiin. Polut kirjoitetaan uudelleen vain tietokannassa.
+Ignored	Ohitettu
+Ignored addresses	Ohitettavat osoitteet
+Implementation	Toteutus
+Import / Migration	Tuonti / siirto
+Import a Sonarr or Tanukarr library	Tuo Sonarr- tai Tanukarr-kirjasto
+Import blocked	Tuonti estetty
+Import completed downloads	Tuo valmistuneet lataukset
+Import extra files (subtitles…)	Tuo oheistiedostot (tekstitykset…)
+Import from Sonarr/Tanukarr	Tuo Sonarrista/Tanukarrista
+Import history	Tuo historia
+Import library	Tuo kirjasto
+Import list options saved.	Tuontilistojen asetukset tallennettiin.
+Import lists	Tuontilistat
+Import pending	Tuonti odottaa
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Tuo videotiedostoja mistä tahansa kansiosta, jota palvelin voi lukea: tarkista, mihin sarjaan ja jaksoihin kukin tiedosto kuuluu, ja kopioi tai siirrä ne sitten kirjastoon (nimettyinä nimeämisasetusten mukaan).
+Import {chosen().len()} files	Tuo tiedostoja: {chosen().len()}
+Imported	Tuotu
+Imported from series folder	Tuotu sarjan kansiosta
+Importing	Tuodaan
+Importing…	Tuodaan…
+Imports need	Tuonnit vaativat
+In library ›	Kirjastossa ›
+Include	Sisällytä
+Include in file names ({{Custom Formats}} token)	Sisällytä tiedostonimiin ({{Custom Formats}}-tunniste)
+Include only titles on some lists, or leave out the titles of others.	Sisällytä vain joillakin listoilla olevat nimikkeet tai jätä pois muiden listojen nimikkeet.
+Include unmonitored	Sisällytä valvomattomat
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Mukaan lukien URL-perusta, esim. http://192.168.1.10:8989 tai https://host/sonarr
+Indexer	Hakupalvelu
+Indexer options saved.	Hakupalveluiden asetukset tallennettiin.
+Indexer settings	Hakupalveluiden asetukset
+Indexers	Hakupalvelut
+Info	Informatiivinen
+Info {infos}	Informatiivinen {infos}
+Instance	Instanssi
+Instance name	Instanssin nimi
+Instance: {name}	Instanssi: {name}
+Interactive	Manuaalinen
+Interactive search	Manuaalihaku
+Interactive search for full-season packs only	Manuaalihaku vain kokonaisille kausikoosteille
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Manuaalihaku koko sarjan (ja sen kausien) koosteille torrent-hakupalveluista
+Interactive search: see every release and choose	Manuaalihaku: näe kaikki julkaisut ja valitse
+Interface language	Käyttöliittymän kieli
+Interval	Ajoitus
+Jellyfin library and user	Jellyfin-kirjasto ja -käyttäjä
+Job	Työ
+Keep / skip	Säilytä / ohita
+Keep files replaced by upgrades as versions (in "Plex Versions")	Säilytä päivitysten korvaamat tiedostot versioina (kansiossa ”Plex Versions”)
+Keep me signed in	Pidä minut kirjautuneena
+Keep the replaced file's date (upgrades)	Säilytä korvatun tiedoston päivämäärä (päivitykset)
+Kept	Säilytetty
+Kept versions	Säilytetyt versiot
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Avaimet Sonarr v3 -rajapintaa käyttäville oheissovelluksille: ne lukevat kirjastoa, ja ”lisää sarjoja” -avaimilla voi myös lisätä sarjoja (juurikansioon, ilman hakua). Mitään muuta ei sallita.
+KiB	KiB
+Kind	Tyyppi
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr on vapaa ohjelmisto (GPL-3.0-or-later).
+Kitsunarr path	Kitsunarr-polku
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr varmuuskopioi oman tietokantansa, tuo esikatsellut tiedot yhdessä transaktiossa ja vahvistaa ne ennen tallentamista. Lähdettä ja mediatiedostojasi ei muuteta.
+Label	Nimi
+Languages	Kielet
+Larger releases are rejected. 0 means unlimited.	Suuremmat julkaisut hylätään. 0 tarkoittaa rajoittamatonta.
+Last read	Viimeksi luettu
+Last run	Edellinen suoritus
+Last search	Edellinen haku
+Last searched	Viimeksi haettu
+Last season	Viimeinen kausi
+Later ›	Myöhemmät ›
+Latest season	Uusin kausi
+Level	Taso
+Library	Kirjasto
+Library check	Kirjaston tarkistus
+Library tools	Kirjaston työkalut
+Library tools saved.	Kirjaston työkalut tallennettiin.
+List	Lista
+Listed best first. Grouped qualities rank equally.	Parhaasta alkaen. Ryhmitellyt laadut ovat samanarvoisia.
+Live updates connected	Reaaliaikaiset päivitykset yhdistetty
+Live updates disconnected	Reaaliaikaiset päivitykset katkaistu
+Load	Lataa
+Load the account's lists	Lataa tilin listat
+Load the libraries…	Lataa kirjastot…
+Load the users…	Lataa käyttäjät…
+Local air date	Paikallinen esitysaika
+Local path	Paikallinen sijainti
+Log them	Kirjaa ne lokiin
+Logs	Lokitiedot
+Main rejections	Tärkeimmät hylkäykset
+Make current	Tee nykyiseksi
+Manual import	Manuaalinen tuonti
+Mark as failed	Merkitse epäonnistuneeksi
+Matches monitored titles.	Vastaa valvottuja nimikkeitä.
+Maximum	Enintään
+Maximum size (MB)	Enimmäiskoko (Mt)
+Media management	Median hallinta
+Media management settings	Median hallinnan asetukset
+Media paths	Mediapolut
+Mediums	Tallennusvälineet
+Members	Jäsenet
+Message	Viesti
+Metadata	Metatiedot
+Metadata files	Metatietotiedostot
+Metadata keys saved.	Metatietoavaimet tallennettiin.
+Metadata language	Metatietojen kieli
+Metadata refreshed.	Metatiedot päivitettiin.
+Metadata refreshed: {} new episodes, {} updated.	Metatiedot päivitettiin: {} uutta jaksoa, {} päivitetty.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Metatietoasetukset tallennettiin. Tiedostot kirjoitetaan seuraavan levyn tarkistuksen, päivityksen tai tuonnin yhteydessä.
+Metadata sources	Metatietolähteet
+MiB	MiB
+Migration completed.	Siirto valmis.
+Migration report #{}	Siirtoraportti #{}
+Minimum	Vähintään
+Minimum age (minutes)	Vähimmäisikä (minuuttia)
+Minimum custom format score	Mukautetun muodon vähimmäispisteytys
+Minimum format score	Muodon vähimmäispisteytys
+Minimum free space (MiB)	Vapaan tilan vähimmäismäärä (MiB)
+Minimum seeders	Jakajien vähimmäismäärä
+Missing	Puuttuu
+Missing (monitored)	Puuttuu (valvotut)
+Missing films	Puuttuvat elokuvat
+Mode	Tila
+Monday	maanantai
+Monitor	Valvo
+Monitored	Valvottu
+More languages can be added to the string tables.	Lisää kieliä voidaan lisätä merkkijonotaulukoihin.
+Move	Siirrä
+Movie	Elokuva
+Movie file format	Elokuvatiedoston kaava
+Movie removed from Kitsunarr. Files on disk were not touched.	Elokuva poistettiin Kitsunarrista. Levyllä oleviin tiedostoihin ei koskettu.
+Movies	Elokuvat
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Monen kauden julkaisut: hyväksy useiden kausien koosteet (kausihaku ottaa koosteen kaudelleen)
+Must contain	Täytyy sisältää
+Must contain (comma separated; /regex/ allowed)	Täytyy sisältää (pilkuilla erotettu; /regex/ sallittu)
+Must not contain	Ei voi sisältää
+NOT	EI
+Name	Nimi
+Naming	Nimeäminen
+Naming options saved.	Nimeämisasetukset tallennettiin.
+Naming saved.	Nimeäminen tallennettiin.
+Negate	Kiellä
+Network	Kanava/tuottaja
+Never: keep the release's names	Ei koskaan: säilytä julkaisun nimet
+New custom format	Uusi mukautettu muoto
+New custom preset	Uusi mukautettu esiasetus
+New group title	Uuden ryhmän nimi
+New password	Uusi salasana
+New quality profile	Uusi laatuprofiili
+Next airing	Seuraava esitys
+Next run	Seuraava suoritus
+Next ›	Seuraava ›
+No	Ei
+No activity yet.	Ei vielä toimintaa.
+No auto tags.	Ei automaattisia tunnisteita.
+No backups yet	Ei vielä varmuuskopioita
+No collections yet	Ei vielä kokoelmia
+No companion keys.	Ei oheissovellusten avaimia.
+No custom formats	Ei mukautettuja muotoja
+No custom formats defined.	Mukautettuja muotoja ei ole määritetty.
+No delay above the minimum custom format score	Ei viivettä mukautetun muodon vähimmäispisteytyksen yläpuolella
+No delay for the profile's best quality in the preferred protocol	Ei viivettä profiilin parhaalle laadulle ensisijaisella protokollalla
+No download client to read	Ei luettavaa latauspalvelua
+No exclusions.	Ei poikkeuksia.
+No history	Ei historiaa
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Mikään hakupalvelu ei voi hakea tätä sarjaa automaattisesti: missään ei ole automaattihakua käytössä yhdessä joko ei yhdenkään tunnisteen tai jonkin sarjan tunnisteen kanssa.
+No indexers to search	Ei haettavia hakupalveluita
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Ei säilytettyjä versioita. Ota käyttöön ”Säilytä päivitysten korvaamat tiedostot” kohdassa Nimeäminen.
+No log entries at this level	Ei lokimerkintöjä tällä tasolla
+No mappings.	Ei kohdistuksia.
+No matches	Ei osumia
+No members	Ei jäseniä
+No migrations have been run yet.	Siirtoja ei ole vielä suoritettu.
+No movies yet	Ei vielä elokuvia
+No notes.	Ei huomautuksia.
+No recycle bin is set (Settings › Media management).	Roskakoria ei ole määritetty (Asetukset › Median hallinta).
+No release profiles.	Ei julkaisuprofiileja.
+No root folders yet.	Ei vielä juurikansioita.
+No root folders.	Ei juurikansioita.
+No runs yet	Ei vielä suorituksia
+No searches yet.	Ei vielä hakuja.
+No series in your library match.	Mikään kirjastosi sarja ei vastaa hakua.
+No tags	Ei tunnisteita
+No {}	{}: ei mitään
+No {} yet	{}: ei vielä mitään
+None	Ei mitään
+Not evaluated by Kitsunarr.	Kitsunarr ei arvioi tätä.
+Not imported	Ei tuotu
+Not monitored	Ei valvottu
+Notes	Huomautukset
+Notes ({preview.warnings.len()})	Huomautukset ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Huomautukset ({report.warnings.len()})
+Nothing airs in the next seven days.	Seuraavan seitsemän päivän aikana ei esitetä mitään.
+Nothing downloading	Mitään ei ladata
+Nothing found	Mitään ei löytynyt
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Mikään tämän katalogin kohde ei vastaa hakua. Kokeile toista kirjoitusasua, alkuperäistä nimeä tai toista katalogia.
+Nothing in this period	Ei mitään tällä ajanjaksolla
+Nothing missing	Mitään ei puutu
+Notifications	Ilmoitukset
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Numeroi jaksot katalogin toisen järjestyksen mukaan (TMDB:n jaksoryhmät, TheTVDB:n DVD- tai absoluuttinen järjestys)
+OMDb API key	OMDb-rajapinnan avain
+Older priority	Vanhojen jaksojen painotus
+One folder per season	Kansio kullekin kaudelle
+Only the 2000 newest files are listed.	Vain 2000 uusinta tiedostoa näytetään.
+Only when the proxy needs one.	Vain jos välityspalvelin vaatii sellaisen.
+Open the library	Avaa kirjasto
+OpenAPI document	OpenAPI-dokumentti
+Opens the service to authorize Kitsunarr and fills in the token.	Avaa palvelun Kitsunarrin valtuuttamiseksi ja täyttää tunnuksen.
+Options	Asetukset
+Organize	Järjestä
+Other	Muu
+Overview	Tiivistelmä
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Korvaa Kitsunarrissa jo olevat tietueet (muuten ne säilytetään)
+Packs	Koosteet
+Page not found	Sivua ei löytynyt
+Page {page} / {pages}	Sivu {page} / {pages}
+Password	Salasana
+Password changed. Other sessions were signed out.	Salasana vaihdettu. Muut istunnot kirjattiin ulos.
+Past days	Menneet päivät
+Path	Polku
+Path mappings	Polkujen kohdistukset
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Keskeytä automaatio (RSS-synkronointi, ajoitetut listasynkronoinnit, automaattihaut)
+Peers	Vertaiset
+Permission	Käyttöoikeus
+PiB	PiB
+Platform	Alusta
+Port	Portti
+Position	Sijainti
+Post-import category	Tuonnin jälkeinen kategoria
+Posters	Julisteet
+Prefer and upgrade	Suosi ja päivitä
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Suosi animen kausikoosteita (Kitsunarrin animen kausihaut hakevat kautta jo kerran)
+Prefer, do not upgrade	Suosi, älä päivitä
+Preferred	Suosittu
+Preferred metadata language	Ensisijainen metatietojen kieli
+Preferred protocol	Ensisijainen protokolla
+Preparing preview…	Valmistellaan esikatselua…
+Preview	Esikatselu
+Preview migration	Esikatsele siirtoa
+Previous migrations	Aiemmat siirrot
+Priority	Painotus
+Problem	Ongelma
+Profile	Profiili
+Profile saved.	Profiili tallennettiin.
+Profiles still used by series or movies cannot be deleted.	Sarjojen tai elokuvien yhä käyttämiä profiileja ei voi poistaa.
+Progress	Edistyminen
+Propers and repacks	Proper- ja repack-julkaisut
+Proxy	Välityspalvelin
+Proxy saved.	Välityspalvelin tallennettiin.
+Proxy type	Välityspalvelimen tyyppi
+Qualities	Laadut
+Quality	Laatu
+Quality presets	Laatuesiasetukset
+Quality presets saved.	Laatuesiasetukset tallennettiin.
+Quality profile	Laatuprofiili
+Quality profiles	Laatuprofiilit
+Quality profile…	Laatuprofiili…
+RSS sync interval (minutes)	RSS-synkronoinnin ajoitus (minuuttia)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS-synkronointi odottaa näin kauan julkaisun ilmestymisen jälkeen paremman varalta; viivästetyt julkaisut näkyvät jonossa. Ensimmäinen profiili, jonka tunnisteet vastaavat sarjaa, otetaan käyttöön; viimeinen (ilman tunnisteita) on oletus.
+Re-encode this series' files with the compression worker	Pakkaa tämän sarjan tiedostot uudelleen pakkaustyöprosessilla
+Read and add series	Lue ja lisää sarjoja
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Luetaan suoraan latauspalveluista muutaman sekunnin välein. Kitsunarrin kaappaamat valmistuneet lataukset tuodaan sarjan kansioon minuutin välein (torrentit kopioidaan tai hardlinkataan, jotta niitä voidaan edelleen jakaa; Usenet-lataukset siirretään). Epäonnistuneet lataukset lisätään estolistalle ja haetaan uudelleen.
+Read the library	Lue kirjastoa
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Vain luku: löytää puuttuvat sarjakansiot, kansionsa ulkopuolella olevat tai kahdesti kirjatut tiedostotietueet sekä levyltä puuttuvat tiedostot.
+Reading the download clients…	Luetaan latauspalveluita…
+Reading the source	Luetaan lähdettä
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Lukee kaiken rajapinnan kautta. Lähde piilottaa palveluntarjoajien salasanat ja rajapinnan avaimet, joten ne on syötettävä uudelleen jälkikäteen.
+Recent activity	Viimeaikainen toiminta
+Recent priority	Uusien jaksojen painotus
+Recent runs	Viimeaikaiset suoritukset
+Recent searches	Viimeaikaiset haut
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Suositeltu. Avaa Sonarrissa/Tanukarrissa System → Backup, luo varmuuskopio ja lataa .zip-tiedosto (tai käytä sonarr.db-tiedostoa). Sisältää hakupalveluiden ja latauspalveluiden salasanat.
+Recycle bin	Roskakori
+Recycle bin cleanup (days)	Roskakorin tyhjennys (päivää)
+Recycled	Roskakorissa
+Refresh metadata	Päivitä metatiedot
+Refresh preview	Päivitä esikatselu
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Päivitystä kohteesta {} ei vielä tueta; tuodut metatiedot säilytetään sellaisenaan
+Refreshing…	Päivitetään…
+Regenerate	Luo uudelleen
+Regenerate API key	Luo uusi rajapinnan avain
+Reject releases whose TheTVDB or IMDb id names another series	Hylkää julkaisut, joiden TheTVDB- tai IMDb-tunniste viittaa toiseen sarjaan
+Rejected: click twice to grab anyway	Hylätty: kaappaa silti napsauttamalla kahdesti
+Release	Julkaisu
+Release profile	Julkaisuprofiili
+Release profile saved.	Julkaisuprofiili tallennettiin.
+Release profiles	Julkaisuprofiilit
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Julkaisut tarkistetaan sarjan laatuprofiilia, mukautettuja muotoja ja julkaisuprofiileja vasten ja asetetaan järjestykseen kuten Sonarrissa. Hylätyt julkaisut vaativat toisen napsautuksen.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Epäonnistuneet tai käsin estolistalle lisätyt julkaisut. Haut ja RSS-synkronointi eivät kaappaa niitä enää koskaan; poista julkaisu salliaksesi sen.
+Remote path	Etäsijainti
+Remote path mapping	Etäsijainnin kohdistus
+Remote path mapping saved.	Etäsijainnin kohdistus tallennettiin.
+Remote path mappings	Etäsijaintien kohdistukset
+Remove	Poista
+Remove completed downloads	Poista valmistuneet lataukset
+Remove every release from the blocklist?	Poistetaanko kaikki julkaisut estolistalta?
+Remove failed downloads	Poista epäonnistuneet lataukset
+Remove from library	Poista kirjastosta
+Remove from queue	Poista jonosta
+Remove from the download client (deletes its files there)	Poista latauspalvelusta (poistaa sen tiedostot siellä)
+Remove movie	Poista elokuva
+Remove series	Poista sarja
+Remove tags automatically (from titles that stop matching)	Poista tunnisteet automaattisesti (nimikkeistä, jotka lakkaavat vastaamasta)
+Remove “{title}” and its episode records from Kitsunarr?	Poistetaanko ”{title}” ja sen jaksotietueet Kitsunarrista?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Poistetaanko ”{title}” Kitsunarrista? Levyllä olevia tiedostoja ei poisteta.
+Removed	Poistettu
+Removed from the blocklist.	Poistettiin estolistalta.
+Rename	Nimeä uudelleen
+Rename files	Nimeä tiedostot uudelleen
+Rename files on import	Nimeä tiedostot uudelleen tuotaessa
+Rename files to the naming settings	Nimeä tiedostot uudelleen nimeämisasetusten mukaan
+Formats use Sonarr's tokens.	Kaavat käyttävät Sonarrin tunnisteita.
+Renaming…	Nimetään uudelleen…
+Report	Raportti
+Request one at omdbapi.com. Used for films by IMDb id.	Pyydä se sivulta omdbapi.com. Käytetään elokuville IMDb-tunnisteen perusteella.
+Required	Pakollinen
+Resolution	Resoluutio
+Restore	Palauta
+Restore {}	Palauta {}
+Restore…	Palauta…
+Restoring…	Palautetaan…
+Resume automation	Jatka automaatiota
+Retention (days)	Säilytys (päivää)
+Retire	Poista käytöstä
+Revoke	Peru
+Root folder	Juurikansio
+Root folders	Juurikansiot
+Root folder…	Juurikansio…
+Run #{run.id}: {run.status}	Suoritus #{run.id}: {run.status}
+Run now	Suorita nyt
+Running…	Suoritetaan…
+Saturday	lauantai
+Save	Tallenna
+Save criteria	Tallenna ehdot
+Save factors	Tallenna kertoimet
+Save keys	Tallenna avaimet
+Save metadata files	Tallenna metatietotiedostot
+Save naming	Tallenna nimeäminen
+Save options	Tallenna asetukset
+Saved	Tallennettu
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Tallennetut avaimet näkyvät muodossa {REDACTED}; jätä ne ennalleen säilyttääksesi ne tai tyhjennä kenttä poistaaksesi avaimen.
+Saved.	Tallennettu.
+Scan disk	Tarkista levy
+Scan folder	Tarkista kansio
+Scanning…	Tarkistetaan…
+Scheduled tasks	Ajoitetut tehtävät
+Score	Pisteytys
+Search	Haku
+Search again when a download fails	Hae uudelleen, kun lataus epäonnistuu
+Search all	Hae kaikkia
+Search all films	Hae kaikkia elokuvia
+Search collection	Hae kokoelmaa
+Search every episode of the list, one search per season	Hae kaikkia listan jaksoja, yksi haku kautta kohden
+Search every member's missing episodes (films: the film)	Hae kaikkien jäsenten puuttuvia jaksoja (elokuvat: elokuva)
+Search indexers	Hae hakupalveluista
+Search selected	Hae valittuja
+Search the indexers and choose a release	Hae hakupalveluista ja valitse julkaisu
+Search the indexers and grab the best accepted release	Hae hakupalveluista ja kaappaa paras hyväksytty julkaisu
+Search the indexers and grab the best releases for the monitored episodes	Hae hakupalveluista ja kaappaa parhaat julkaisut valvotuille jaksoille
+Search your indexers	Hae hakupalveluistasi
+Search {chosen} selected	Hae valittuja ({chosen})
+Search: {}	Haku: {}
+Search: {} — complete series	Haku: {} — koko sarja
+Search: {} — season {season} packs	Haku: {} — kauden {season} koosteet
+Search: {} — {label}	Haku: {} — {label}
+Searching for {label}…	Haetaan: {label}…
+Searching indexers…	Haetaan hakupalveluista…
+Searching…	Haetaan…
+Season	Kausi
+Season folder format	Kausikansioiden kaava
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Kausikansioiden nimet korvaavat katalogin nimet tunnisteessa {{Season Title}}. Jätä tyhjäksi säilyttääksesi katalogin nimet.
+Season folders	Kausikansiot
+Season images (Season ##.jpg)	Kausikuvat (Season ##.jpg)
+Season images (Season##/folder.jpg)	Kausikuvat (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Kausikuvat (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Kausikoosteet: 1 käyttää alla olevia kausikoosteiden tavoitteita
+Season premieres only	Vain kausien ensijaksot
+Season {n}	Kausi {n}
+Season {one}	Kausi {one}
+Season {se.season_number}	Kausi {se.season_number}
+Season {season_number}	Kausi {season_number}
+Season-pack seed ratio	Kausikoosteen jakosuhde
+Season-pack seed time, minutes	Kausikoosteen jakoaika, minuuttia
+Seasons	Kaudet
+Seasons {first}-{last}	Kaudet {first}–{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Salaisuudet näkyvät muodossa {REDACTED}; jätä ne ennalleen säilyttääksesi tallennetun arvon.
+Seed ratio (empty: the client's default)	Jakosuhde (tyhjä: latauspalvelun oletus)
+Seed time, minutes (empty: the client's default)	Jakoaika, minuuttia (tyhjä: latauspalvelun oletus)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Lähetä hakupalveluiden, katalogien, listojen, latauspalveluiden ja ilmoituspalveluiden pyynnöt välityspalvelimen kautta.
+Send to the download client	Lähetä latauspalveluun
+Series	Sarja
+Series .plexmatch file	Sarjan .plexmatch-tiedosto
+Series folder format	Sarjakansioiden kaava
+Series images (Series Title.jpg)	Sarjan kuvat (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Sarjan kuvat (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Sarjan kuvat (folder.jpg)
+Series metadata (tvshow.nfo)	Sarjan metatiedot (tvshow.nfo)
+Series metadata URL	Sarjan metatietojen URL
+Series metadata episode guide	Sarjan metatietojen jaksoopas
+Series removed from Kitsunarr. Files on disk were not touched.	Sarja poistettiin Kitsunarrista. Levyllä oleviin tiedostoihin ei koskettu.
+Series removed, and its folder deleted.	Sarja poistettiin ja sen kansio poistettiin.
+Series type	Sarjan tyyppi
+Set quality profile…	Aseta laatuprofiili…
+Settings	Asetukset
+Settings saved.	Asetukset tallennettiin.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security Sonarrissa/Tanukarrissa.
+Show	Näytä
+Show as all-day events	Näytä koko päivän tapahtumina
+Show unmonitored	Näytä valvomattomat
+Shows	Sarjat
+Sign in	Kirjaudu sisään
+Signed in. Save the list to keep the token.	Kirjauduttu sisään. Tallenna lista säilyttääksesi tunnuksen.
+Signing in…	Kirjaudutaan sisään…
+Size	Koko
+Size limits	Kokorajat
+Size on disk	Koko levyllä
+Skip files smaller than (MB)	Ohita tiedostot, jotka ovat pienempiä kuin (Mt)
+Skip the free-space check	Ohita vapaan tilan tarkistus
+Skip unmonitored episodes when importing packs	Ohita valvomattomat jaksot koosteita tuotaessa
+Source	Lähde
+Source code	Lähdekoodi
+Source path	Lähdepolku
+Special	Erikoisjakso
+Specials	Erikoisjaksot
+Specials are never monitored automatically.	Erikoisjaksoja ei koskaan valvota automaattisesti.
+Specifications	Määritykset
+Specifications (JSON)	Määritykset (JSON)
+Specifications must be valid JSON: {e}	Määritysten on oltava kelvollista JSONia: {e}
+Stalled torrent timeout (minutes)	Pysähtyneen torrentin aikakatkaisu (minuuttia)
+Standard	Vakio
+Standard episode format	Tavallisten jaksojen kaava
+Start migration	Aloita siirto
+Start over	Aloita alusta
+Start search for missing episodes	Aloita puuttuvien jaksojen haku
+Started	Alkoi
+Started {format_datetime(&run.started_at)}	Alkoi {format_datetime(&run.started_at)}
+Status	Tila
+Status & health	Tila ja terveys
+Still downloading	Ladataan yhä
+Storage outlook	Tallennustilan ennuste
+Studio	Studio
+Subscribe	Tilaa
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Tilaa tämä osoite kalenterisovelluksessa. Se sisältää rajapinnan avaimesi: pidä se yksityisenä.
+Sunday	sunnuntai
+Sync	Synkronoi
+Sync all lists now	Synkronoi kaikki listat nyt
+Sync now	Synkronoi nyt
+Syncing…	Synkronoidaan…
+System →	Järjestelmä →
+TMDB API key (v3)	TMDB-rajapinnan avain (v3)
+TV Series	TV-sarja
+TV series	TV-sarjat
+Table	Taulukko
+Tag	Tunniste
+Tag them	Merkitse ne tunnisteella
+Tag titles already in the library	Merkitse kirjastossa jo olevat nimikkeet tunnisteella
+Tags	Tunnisteet
+Tags (comma separated)	Tunnisteet (pilkuilla erotettu)
+Tags (ids, comma separated)	Tunnisteet (tunnisteiden ID:t, pilkuilla erotettu)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Tunnisteet lisätään sarjoihin ja elokuviin, jotka täyttävät jokaisen ehtotyypin, kun niitä lisätään, muokataan tai päivitetään.
+Task	Tehtävä
+Television	Televisio
+Television (raw)	Televisio (raaka)
+Test	Testaa
+Test failed: {message}	Testi epäonnistui: {message}
+Testing…	Testataan…
+The blocklist is empty	Estolista on tyhjä
+The catalogue new titles are added from when the list knows their id there.	Katalogi, josta uudet nimikkeet lisätään, kun lista tietää niiden tunnisteen siellä.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Tuotujen tiedostojen päivämäärä: jakson esitysaika (paikallinen tai UTC) tai päivityksessä korvatun tiedoston päivämäärä.
+The dry run completed without blocking problems. Nothing has been written yet.	Kuivaharjoitus valmistui ilman estäviä ongelmia. Mitään ei ole vielä kirjoitettu.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Tiedosto siirretään kausikansioon (olemassa olevaa tiedostoa ei koskaan korvata) ja sarja tarkistetaan uudelleen.
+The folder must already exist; Kitsunarr never creates or removes it.	Kansion on oltava jo olemassa; Kitsunarr ei koskaan luo tai poista sitä.
+The indexers returned no releases for this search.	Hakupalvelut eivät palauttaneet julkaisuja tälle haulle.
+The instance is on my local network (private or loopback address)	Instanssi on lähiverkossani (yksityinen tai loopback-osoite)
+The list has not been read, or it is empty.	Listaa ei ole luettu tai se on tyhjä.
+The migration did not complete; nothing was changed.	Siirto ei valmistunut; mitään ei muutettu.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Muistissa säilytetyt viimeisimmät merkinnät. Täydet lokit menevät prosessin tulosteeseen (säiliön lokit tai journal).
+The passwords do not match.	Salasanat eivät täsmää.
+The recycle bin has no media or subtitle files.	Roskakorissa ei ole media- tai tekstitystiedostoja.
+The sign-in expired; try again.	Kirjautuminen vanheni; yritä uudelleen.
+The upload failed (network error).	Lähetys epäonnistui (verkkovirhe).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Työprosessi on valinnainen isäntäkoneen komponentti (Tanukarrin pakkaustyöprosessi), johon yhdistetään socketin KITSUNARR_COMPRESSION_SOCKET kautta.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarrin katalogi), TMDB ja TVmaze kattavat TV-sarjat; AniList ja MyAnimeList kattavat animesarjat ja animeelokuvat; TMDB ja OMDb kattavat elokuvat. Nimikkeen lisääminen luo sen kirjastomerkinnän ja jaksoluettelon; tuontiketju poimii tiedostot myöhemmin.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB-nimikkeet haetaan ja lisätään tällä kielellä; kunkin sarjan kielen voi vaihtaa sen muokkaimessa.
+TheTVDB titles in this language; changing it refreshes the series	TheTVDB-nimikkeet tällä kielellä; vaihtaminen päivittää sarjan
+There is nothing at /{path}.	Polussa /{path} ei ole mitään.
+They are created by migrating from Sonarr/Tanukarr.	Ne luodaan siirtämällä Sonarrista/Tanukarrista.
+This series' renaming mode, season folder titles and kept versions	Tämän sarjan uudelleennimeämistila, kausikansioiden nimet ja säilytetyt versiot
+TiB	TiB
+Time	Aika
+Time left	Aikaa jäljellä
+Title	Nimike
+Title pattern	Nimikekaava
+Titles import lists never add.	Nimikkeet, joita tuontilistat eivät koskaan lisää.
+Titles on no list	Nimikkeet, jotka eivät ole millään listalla
+Today	Tänään
+Torrent	Torrent
+Torrent delay	Torrent-viive
+Torrent delay (minutes)	Torrent-viive (minuuttia)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab- ja Newznab-hakupalvelut. Tarkista hakupalvelu muokkaimen Testaa-painikkeella; kukin haku käyttää hakupalveluita, joissa kyseinen hakutyyppi on käytössä: RSS, automaattinen tai manuaalinen.
+Trigger	Laukaisin
+URL base	URL-perusta
+UTC air date	UTC-esitysaika
+Unchanged	Muuttumaton
+Unknown	Tuntematon
+Unmonitor	Lopeta valvonta
+Unmonitor them	Lopeta niiden valvonta
+Unmonitored	Valvomaton
+Upcoming	Tulossa
+Upcoming 7 days	Tulossa 7 päivän aikana
+Update	Päivitä
+Updated {} items.	Päivitettiin {} kohdetta.
+Upgrade until (cutoff)	Päivitä kunnes (katkaisutaso)
+Upgrade until format score	Päivitä kunnes muodon pisteytys on
+Upgrades allowed	Päivitykset sallitaan
+Upload a backup	Lähetä varmuuskopio
+Upload failed (HTTP {}).	Lähetys epäonnistui (HTTP {}).
+Uploading…	Lähetetään…
+Use SSL	Käytä SSL-salausta
+Use a proxy	Käytä välityspalvelinta
+Use hardlinks instead of copying	Käytä hardlinkkejä kopioinnin sijaan
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Käytä sitä X-Api-Key-otsakkeena (tai ?apikey=) muista sovelluksista. Yhteensopiva Sonarrin käyttämän otsakkeen kanssa.
+Use these episodes	Käytä näitä jaksoja
+Usenet	Usenet
+Usenet delay	Usenet-viive
+Usenet delay (minutes)	Usenet-viive (minuuttia)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Vain Usenet: uudemmat julkaisut hylätään, jotta ne ehtivät levitä. 0 poistaa tämän käytöstä.
+Usenet only: older releases are rejected. 0 means unlimited.	Vain Usenet: vanhemmat julkaisut hylätään. 0 tarkoittaa rajoittamatonta.
+User name	Käyttäjänimi
+Username	Käyttäjätunnus
+Validation	Vahvistus
+Version	Versio
+Versions	Versiot
+Waiting for the sign-in at	Odotetaan kirjautumista osoitteessa
+Wanted	Halutut
+Warnings	Varoitukset
+Warnings {warnings}	Varoitukset {warnings}
+Watched (Jellyfin watched sync)	Katsottu (Jellyfinin katselutilan synkronointi)
+Watched sync user	Katselutilan synkronoinnin käyttäjä
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, sähköposti (SMTP), Mailgun, SendGrid, mukautetut skriptit (Sonarrin ympäristömuuttujilla), Emby/Jellyfin, Plex ja Kodi saavat ilmoitukset: kaappaukset, tuonnit ja päivitykset, uudelleennimeämiset, lisätyt tai poistetut sarjat, poistetut tiedostot, terveysongelmat. Käytä muokkaimen Testaa-painiketta.
+Welcome	Tervetuloa
+What to import	Mitä tuodaan
+When	Milloin
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Milloin hakupalveluiden, latauspalveluiden ja muiden palveluiden HTTPS-varmenteet tarkistetaan (Sonarrin asetus). Verkkosi itse allekirjoitetut varmenteet edellyttävät sen lieventämistä.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Kun latauspalvelu ilmoittaa polkuja, jotka Kitsunarr näkee muualla (toisella koneella tai säiliössä), kohdista latauspalvelun isäntä ja polku paikalliseen polkuun.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Suositaanko virheellisiä julkaisuja korjaavia julkaisuja ja päivitetäänkö niillä olemassa olevia tiedostoja (kuten Sonarrissa).
+Whole season	Koko kausi
+Working…	Työskennellään…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Kirjoitetaan sarjakansioihin, kun sarjoja tarkistetaan, päivitetään tai tuodaan, samoin kuin Sonarrin metatietokuluttajat ne kirjoittavat.
+Year	Vuosi
+Your library is empty.	Kirjastosi on tyhjä.
+all checks passed	kaikki tarkistukset läpäisty
+comma separated	pilkuilla erotettu
+cutoff: {}	katkaisutaso: {}
+has a file	tiedosto on olemassa
+iCal link	iCal-linkki
+in 2 days	2 päivän kuluttua
+in a moment	hetken kuluttua
+in file names	tiedostonimissä
+in library	kirjastossa
+in {text}	{text} kuluttua
+just now	juuri nyt
+may run out of space	tila voi loppua
+name (e.g. phone)	nimi (esim. puhelin)
+never refreshed	ei koskaan päivitetty
+no media files are moved, renamed or deleted.	mediatiedostoja ei siirretä, nimetä uudelleen eikä poisteta.
+not accessible	ei käytettävissä
+not added	ei lisätty
+not checked	ei tarkistettu
+not read yet	ei vielä luettu
+on disk	levyllä
+refreshed {}	päivitetty {}
+schema {s}	skeema {s}
+secrets included	salaisuudet mukana
+secrets masked	salaisuudet piilotettu
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip tai sonarr.db
+stored only	vain tallennettu
+title (optional)	nimi (valinnainen)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} lisätty; {}
+{added} shows added.	{added} sarjaa lisätty.
+{c.name} (API key needed)	{c.name} (rajapinnan avain tarvitaan)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} sarjaa · {c.movie_count} elokuvaa
+{chosen().len()} chosen	{chosen().len()} valittu
+{chosen().len()} chosen (at most 25)	{chosen().len()} valittu (enintään 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} levyllä · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done} % / {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · lisätty {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} / {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} tiedostoa · {job["percent"]} % · säästetty {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} käynnistyi.
+{name} was added to the library.	{name} lisättiin kirjastoon.
+{name}: shows	{name}: sarjat
+{ok} files imported.	Tiedostoja tuotu: {ok}.
+{ok} imported; {}	{ok} tuotu; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} julkaisua {r.searched_indexers} hakupalvelusta.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} sarjaa ja {r.files_checked} tiedostoa tarkistettu: {r.issues.len()} ongelmaa.
+{selected.read().len()} selected	{selected.read().len()} valittu
+{text} ago	{text} sitten
+{} (not accessible)	{} (ei käytettävissä)
+{} ({} free)	{} ({} vapaana)
+{} added to every profile (not allowed yet).	{} lisätty jokaiseen profiiliin (ei vielä sallittu).
+{} day(s)	{} pv
+{} failed: {}	{} epäonnistui: {}
+{} format scores	{}: muotojen pisteytykset
+{} free of {}	{} vapaana / {}
+{} week(s)	{} vk
+{}{year} — movie	{}{year} — elokuva
+‹ Back	‹ Takaisin
+‹ Earlier	‹ Aiemmat
+‹ Prev	‹ Edellinen
+○ offline	○ ei yhteyttä
+● live	● reaaliaikainen
+✓ No issues detected.	✓ Ongelmia ei havaittu.
+Activity	Tapahtumat
+Queue	Jono
+System	Järjestelmä
+Tasks	Tehtävät
+Retry	Yritä uudelleen
+Sign out	Kirjaudu ulos
+Search titles…  ( / )	Hae nimikkeitä…  ( / )
+Loading…	Ladataan…
+Profiles	Profiilit
+scene {}	scene {}
+Scene numbering from TheXEM	Scene-numerointi TheXEMistä
+Scene numbering extrapolated from TheXEM (unverified)	TheXEMistä johdettu scene-numerointi (vahvistamaton)
+Season {} (scene seasons {})	Kausi {} (scene-kaudet {})
+{} (scene {})	{} (scene {})

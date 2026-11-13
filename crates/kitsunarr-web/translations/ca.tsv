@@ -1,0 +1,968 @@
+# Catalan interface strings: English	Catalan. {…} marks a placeholder.
+custom	personalitzada
+indeterminate	indeterminat
+mixed	mixt
+retired	retirada
+· container	· contenidor
+· finished {format_datetime(f)}	· acabat {format_datetime(f)}
+· missing	· absent
+· on disk	· al disc
+· today	· avui
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep
+— MiB per minute; empty uses Settings › Quality	— MiB per minut; si és buit, s'usa Configuració › Qualitat
+— a release's size is multiplied by its codec's factor before the size limits apply	— la mida d'un llançament es multiplica pel factor del seu còdec abans d'aplicar els límits de mida
+— all profiles at once	— tots els perfils alhora
+— codec and title criteria, custom qualities (Tanukarr)	— criteris de còdec i títol, qualitats personalitzades (Tanukarr)
+— enter the code	— introduïu el codi
+(empty)	(buit)
++ Add mapping	+ Afegeix un mapatge
++ New format	+ Format nou
++ New profile	+ Perfil nou
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (desactivat) o de 10 a 120. La sincronització RSS també s'executa des de Sistema › Tasques.
+3 hours ago	fa 3 hores
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Un torrent en baixada sense progrés durant aquest temps es considera fallit, s'afegeix a la llista de bloqueig i es torna a cercar. 0 ho desactiva; el progrés es compta des de l'inici de Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Un grup de franquícia trobat a partir de les relacions d'AniList o MyAnimeList. Els títols de la mateixa franquícia afegits més tard també s'hi uneixen.
+A new API key was generated. Update the applications that use it.	S'ha generat una clau API nova. Actualitzeu les aplicacions que la fan servir.
+A regular expression, case-insensitive; empty matches every title.	Una expressió regular, sense distingir majúscules i minúscules; si és buida, coincideix amb qualsevol títol.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Un llançament pren el preajust més específic permès al perfil de la seva sèrie amb què coincideixin la font, la resolució, el còdec i el patró de títol. Una qualitat estàndard amb un còdec o un patró converteix en Desconeguda els llançaments que no els compleixen. Els preajustos personalitzats s'afegeixen a tots els perfils com a no permesos.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	La mida d'un llançament es multiplica pel factor del seu còdec abans d'aplicar els límits de mida. "Mixt" vol dir que els perfils fan servir factors diferents; un valor introduït aquí s'escriu a tots els perfils.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Un títol que s'uneix a una franquícia o a un grup manual surt del grup on era. Els fitxers i les carpetes no es mouen.
+API key	Clau API
+API key needed	Cal una clau API
+API keys and language	Claus API i idioma
+API path	Ruta de l'API
+About	Quant a
+Absolute path; empty to delete permanently.	Ruta absoluta; buida per suprimir definitivament.
+Accepted	Acceptats
+Account lists	Llistes del compte
+Actions	Accions
+Actual	Real
+Add	Afegeix
+Add a Newznab or Torznab indexer and enable interactive search for it.	Afegiu un indexador Newznab o Torznab i activeu-hi la cerca interactiva.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Afegiu un client a partir de la seva plantilla i feu servir Prova a l'editor; les captures, la cua i les importacions utilitzen tots els clients habilitats. Un blackhole escriu les captures en una carpeta i importa el que apareix a la seva carpeta vigilada. Les opcions "Elimina les baixades completades/fallides" de cada client eliminen les baixades (amb els seus fitxers) quan el client n'ha acabat.
+Add a download client in Settings › Download clients and enable it.	Afegiu un client de baixada a Configuració › Clients de baixada i habiliteu-lo.
+Add a root folder first: it is where this title's folder will live.	Afegiu primer una carpeta arrel: és on es trobarà la carpeta d'aquest títol.
+Add a tag above first.	Afegiu primer una etiqueta aquí dalt.
+Add a title	Afegeix un títol
+Add auto tag	Afegeix una etiqueta automàtica
+Add condition	Afegeix una condició
+Add exclusion	Afegeix una exclusió
+Add media	Afegeix contingut
+Add one, or migrate them from Sonarr/Tanukarr.	Afegiu-ne un o migreu-los des de Sonarr/Tanukarr.
+Add preset	Afegeix un preajust
+Add selected	Afegeix els seleccionats
+Add series or movies below.	Afegiu sèries o pel·lícules a continuació.
+Add tag	Afegeix una etiqueta
+Add the list's tags	Afegeix les etiquetes de la llista
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Afegiu títols de TVmaze o AniList, o porteu-hi una biblioteca existent de Sonarr o Tanukarr.
+Add to library	Afegeix a la biblioteca
+Add {}	Afegeix {}
+Add {} ({y})	Afegeix {} ({y})
+Add — {}	Afegeix — {}
+Add, and remove when they leave the list	Afegeix, i elimina quan surtin de la llista
+Added	Afegit
+Added to the titles this list adds.	S'afegeix als títols que afegeix aquesta llista.
+Adding titles	Afegint títols
+Adding…	S'està afegint…
+Address	Adreça
+Age	Edat
+Aired	Emès
+Aired monitored episodes without a file appear here.	Aquí apareixen els episodis monitorats ja emesos sense fitxer.
+All	Tots
+All collections	Totes les col·leccions
+All episodes	Tots els episodis
+All episodes in the series folder	Tots els episodis de la carpeta de la sèrie
+All events	Tots els esdeveniments
+Allow zero size (the feed has no release sizes)	Permet mida zero (el canal no indica les mides)
+Also delete the series folder and its files (to the recycle bin when one is set)	Suprimeix també la carpeta de la sèrie i els seus fitxers (a la paperera de reciclatge, si n'hi ha una de configurada)
+Also for releases grabbed from interactive search	També per als llançaments capturats des de la cerca interactiva
+Also known as	També conegut com
+Always, even when renaming is off	Sempre, fins i tot amb el canvi de nom desactivat
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analitza els fitxers de vídeo (resolució, durada i còdecs, amb ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Els títols d'AniList i MyAnimeList sempre s'afegeixen com a anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Les llistes d'AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, d'un altre Sonarr i les llistes JSON personalitzades es llegeixen cada poques hores; els títols nous s'afegeixen amb la carpeta arrel, el perfil i el monitoratge de cada llista. Els serveis que requereixen OAuth fan servir el Client ID de la vostra pròpia aplicació i un testimoni que hi enganxeu (els testimonis migrats de Tanukarr continuen funcionant).
+Anime	Anime
+Anime / absolute numbering	Anime / numeració absoluta
+Anime categories	Categories d'anime
+Anime episode format	Format d'episodi d'anime
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Les pel·lícules d'anime es poden afegir des d'AniList, i les migracions de Tanukarr porten les seves pel·lícules. Les pel·lícules d'imatge real necessiten el catàleg de TMDB.
+Anime standard format search	Cerca d'anime en format estàndard
+Anime title, e.g. Frieren	Títol d'anime, p. ex. Frieren
+Any	Qualsevol
+Any library	Qualsevol biblioteca
+Applications using the current key will stop working until you give them the new one.	Les aplicacions que fan servir la clau actual deixaran de funcionar fins que els doneu la nova.
+Applied after every list has been read successfully and some title left a list.	S'aplica després que totes les llistes s'hagin llegit correctament i algun títol hagi sortit d'una llista.
+Apply	Aplica
+Apply migration	Aplica la migració
+Apply profile	Aplica el perfil
+Applying migration	Aplicant la migració
+Applying…	S'està aplicant…
+As Settings › Media management says	Tal com indica Configuració › Gestió multimèdia
+At least 10 characters.	Almenys 10 caràcters.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Almenys {MIN_PASSWORD_LENGTH} caràcters. Una frase de pas funciona bé.
+Auto tag	Etiqueta automàtica
+Auto tag saved. It applies when titles are next added, edited or refreshed.	S'ha desat l'etiqueta automàtica. S'aplica la propera vegada que els títols s'afegeixin, s'editin o s'actualitzin.
+Auto tagging	Etiquetatge automàtic
+Auto-refresh	Actualització automàtica
+Automatic	Automàtica
+Automatic search	Cerca automàtica
+Automatic search for {label}: grabbed {}.	Cerca automàtica per a {label}: s'ha capturat {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Cerca automàtica per a {label}: {} llançaments trobats, {} aprovats, no s'ha capturat res.
+Automatic search: grab the best release	Cerca automàtica: captura el millor llançament
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	L'automatització està en pausa: s'ometen la sincronització RSS, les sincronitzacions programades de llistes i les cerques automàtiques. Les accions manuals i les baixades en curs continuen.
+Automation resumed.	S'ha reprès l'automatització.
+Available from	Disponible des de
+Back to the dashboard	Torna al tauler
+Back up now	Fes una còpia ara
+Backup {} created.	S'ha creat la còpia de seguretat {}.
+Backups	Còpies de seguretat
+Blocking:	Bloqueig:
+Blocklist	Llista de bloqueig
+Blocklist the release and search again	Afegeix el llançament a la llista de bloqueig i torna a cercar
+Blocklist the release: it is never grabbed again	Afegeix el llançament a la llista de bloqueig: no es tornarà a capturar mai
+Blocklist “{title}” and search for a replacement?	Voleu afegir “{title}” a la llista de bloqueig i cercar-ne un substitut?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Porteu a Kitsunarr la biblioteca i la configuració de Sonarr (v3/v4) o Tanukarr. La font només es llegeix, mai no es modifica, i
+Bypass the proxy for local addresses	Omet el servidor intermediari per a les adreces locals
+Calendar	Calendari
+Calendar →	Calendari →
+Cancel	Cancel·la
+Cancel compression	Cancel·la la compressió
+Cannot reach the server: {e}	No es pot connectar amb el servidor: {e}
+Catalogue	Catàleg
+Category	Categoria
+Certificate validation	Validació del certificat
+Change password	Canvia la contrasenya
+Change series	Canvia la sèrie
+Changes	Canvis
+Check	Comprova
+Check library	Comprova la biblioteca
+Check now	Comprova ara
+Check that the mapped series folders exist (read-only)	Comprova que existeixin les carpetes de sèries mapades (només lectura)
+Checked: {summary}.	Comprovat: {summary}.
+Checking…	S'està comprovant…
+Choose a backup file	Trieu un fitxer de còpia de seguretat
+Choose a mode	Trieu un mode
+Choose a root folder and a quality profile.	Trieu una carpeta arrel i un perfil de qualitat.
+Choose a season	Trieu una temporada
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Trieu una sèrie i una temporada o un episodi. Els resultats mostren què és cada llançament, segons la lectura de l'analitzador de Kitsunarr.
+Choose a series or movie…	Trieu una sèrie o una pel·lícula…
+Choose source	Trieu la font
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Trieu a mà els episodis d'aquest llançament i després captureu-lo (l'elecció es conserva per a la importació)
+Choose…	Trieu…
+Clean library	Neteja la biblioteca
+Clear	Buida
+Clear blocklist	Buida la llista de bloqueig
+Cleared {n} releases from the blocklist.	S'han tret {n} llançaments de la llista de bloqueig.
+Client	Client
+Close	Tanca
+Codec	Còdec
+Codec factors saved in every profile.	S'han desat els factors de còdec a tots els perfils.
+Codec size factors	Factors de mida per còdec
+Codecs	Còdecs
+Collection film folder format	Format de carpeta de pel·lícula de la col·lecció
+Collections	Col·leccions
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Les col·leccions apareixen quan es migren de Tanukarr, es creen a partir de dades dels catàlegs o es creen aquí.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Veniu de Sonarr o Tanukarr? Importeu les vostres sèries, configuració i historial en pocs passos.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Separades per comes; * és un comodí (*.lan) i funcionen intervals d'IP com 192.168.1.0/24.
+Companion app keys	Claus per a aplicacions complementàries
+Complete series	Sèrie completa
+Completed and failed download handling	Gestió de baixades completades i fallides
+Component	Component
+Compress series	Comprimeix la sèrie
+Compression	Compressió
+Compression queued.	Compressió a la cua.
+Compression worker is not connected.	El procés de compressió no està connectat.
+Condition	Condició
+Conditions	Condicions
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Les condicions d'un mateix tipus coincideixen quan en coincideix qualsevol (totes les obligatòries han de coincidir); cada tipus ha de coincidir.
+Configure	Configura
+Confirm password	Confirmeu la contrasenya
+Connect	Connecta
+Connect to a running instance	Connecta a una instància en execució
+Connecting…	S'està connectant…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Còpies coherents de la base de dades. Les còpies programades s'executen setmanalment (es conserven les vuit darreres); cada migració també en crea una abans. Per restaurar, atureu Kitsunarr i executeu
+Continuing	Continua
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Galeta (s'envia amb la sol·licitud del canal, p. ex. uid=1; pass=…)
+Copied.	S'ha copiat.
+Copy	Copia
+Copy (keep the originals)	Copia (conserva els originals)
+Copy sizes from	Copia les mides de
+Copy the token now; it is not shown again:	Copieu ara el testimoni; no es tornarà a mostrar:
+Could not grab {}: {}	No s'ha pogut capturar {}: {}
+Covers	Cobreix
+Create	Crea
+Create account	Crea un compte
+Create group	Crea un grup
+Create key	Crea una clau
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Creeu-ne una a themoviedb.org › Settings › API. S'usa per a sèries de TV i pel·lícules de TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Creeu el compte d'administrador. El fareu servir per iniciar la sessió a Kitsunarr.
+Created	Creat
+Created when the first file is imported. Nothing is written to disk now.	Es crea quan s'importa el primer fitxer. Ara no s'escriu res al disc.
+Creating…	S'està creant…
+Credit	Crèdits
+Current file	Fitxer actual
+Current password	Contrasenya actual
+Custom format saved.	S'ha desat el format personalitzat.
+Custom format score	Puntuació del format personalitzat
+Custom format scores	Puntuacions dels formats personalitzats
+Custom formats	Formats personalitzats
+Cutoff unmet	Tall no assolit
+Daily	Diari
+Daily episode format	Format d'episodi diari
+Dashboard	Tauler
+Data directory	Directori de dades
+Database backup taken before the import: {b}	Còpia de seguretat de la base de dades feta abans de la importació: {b}
+Database schema	Esquema de la base de dades
+Date	Data
+Date added	Data d'addició
+Debug	Depuració
+Decision	Decisió
+Default	Per defecte
+Defaults	Valors per defecte
+Delay profile	Perfil de retard
+Delay profile saved.	S'ha desat el perfil de retard.
+Delay profiles	Perfils de retard
+Delete	Suprimeix
+Delete empty series folders	Suprimeix les carpetes de sèries buides
+Delete file	Suprimeix el fitxer
+Delete group	Suprimeix el grup
+Delete profile	Suprimeix el perfil
+Delete “{path}”? It goes to the recycle bin when one is set.	Voleu suprimir “{path}”? Va a la paperera de reciclatge, si n'hi ha una de configurada.
+Delete “{}”?	Voleu suprimir “{}”?
+Delete “{}”? Its series and movies stay in the library.	Voleu suprimir “{}”? Les seves sèries i pel·lícules es queden a la biblioteca.
+Deleted	Suprimit
+Directory	Directori
+Disabled	Desactivat
+Disabled for local addresses	Desactivat per a les adreces locals
+Disk scanned: {}	Disc analitzat: {}
+Disk scanned: {} Not matched: {}	Disc analitzat: {} Sense coincidència: {}
+Do not prefer	No prefereixis
+Do not search for a replacement	No cerquis cap substitut
+Do nothing	No facis res
+Done	Fet
+Download client options saved.	S'han desat les opcions dels clients de baixada.
+Download clients	Clients de baixada
+Download failed	La baixada ha fallat
+Download queue	Cua de baixades
+Downloads	Baixades
+Duration	Durada
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Cada títol pertany a un catàleg, que és el que llegeixen les seves actualitzacions; es conserven tots els identificadors que porta (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList). Els títols migrats de Sonarr pertanyen a TheTVDB.
+Edit	Edita
+Edit “{name}”	Edita “{name}”
+Edit “{}”	Edita “{}”
+Enable RSS	Habilita RSS
+Enable automatic search	Habilita la cerca automàtica
+Enable interactive search	Habilita la cerca interactiva
+Enabled	Habilitat
+Ended	Acabada
+English	English
+Entity	Entitat
+Episode	Episodi
+Episode and movie naming	Noms d'episodis i pel·lícules
+Episode image thumbs in the NFO	Miniatures dels episodis al NFO
+Episode images (<filename>-thumb.jpg)	Imatges dels episodis (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Imatges dels episodis (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Imatges dels episodis (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Mapatges d'episodis a .plexmatch
+Episode metadata (<filename>.nfo)	Metadades dels episodis (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Metadades dels episodis (Season##/filename.xml)
+Episode order	Ordre dels episodis
+Episode order changed: {} episodes updated, {} added.	S'ha canviat l'ordre dels episodis: {} episodis actualitzats, {} afegits.
+Episodes	Episodis
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Els episodis es tornen a numerar segons l'ordre triat; els fitxers, el monitoratge i l'historial es queden amb els seus episodis. Després, canvieu el nom dels fitxers perquè coincideixin amb els números nous.
+Episodes of {title}	Episodis de {title}
+Episodes on disk	Episodis al disc
+Episodes whose file is below the quality profile's cutoff appear here.	Aquí apareixen els episodis amb un fitxer per sota del tall del perfil de qualitat.
+Episodes…	Episodis…
+Errors	Errors
+Errors {errors}	Errors {errors}
+Event	Esdeveniment
+Every file already follows the naming settings.	Tots els fitxers ja segueixen la configuració de noms.
+Every file meets its cutoff	Tots els fitxers assoleixen el seu tall
+Exclude	Exclou
+Exclusions	Exclusions
+Expected	Esperats
+Expires	Caduca
+Extra file extensions	Extensions de fitxers addicionals
+Factor	Factor
+Failed	Fallit
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Protecció contra llançaments falsos: inspecciona els torrents abans de capturar-los i rebutja executables, arxius esquer amb contrasenya i continguts sense vídeo
+Feed address	Adreça del canal
+Fetch the latest metadata from {}	Obté les metadades més recents de {}
+File	Fitxer
+File date	Data del fitxer
+File deleted	Fitxer suprimit
+File deleted.	S'ha suprimit el fitxer.
+File management	Gestió de fitxers
+File management settings saved.	S'ha desat la configuració de gestió de fitxers.
+File renamed	Fitxer reanomenat
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Els fitxers més antics que això se suprimeixen diàriament de la paperera de reciclatge; 0 els conserva.
+Files upgrades replaced, kept as versions	Fitxers substituïts per actualitzacions, conservats com a versions
+Film	Pel·lícula
+Film title or IMDb id, e.g. Arrival	Títol de la pel·lícula o id d'IMDb, p. ex. Arrival
+Find a series in your library	Cerqueu una sèrie a la vostra biblioteca
+Find files added to or removed from the series folder	Troba els fitxers afegits o eliminats de la carpeta de la sèrie
+Find something to add	Cerqueu alguna cosa per afegir
+First and last pieces first	Primer la primera i la darrera peça
+First day of the week	Primer dia de la setmana
+First season	Primera temporada
+Folder	Carpeta
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Els formats fan servir els tipus d'especificació de Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Les puntuacions s'assignen per perfil de qualitat.
+Found	Trobats
+Free	Lliure
+Free space	Espai lliure
+Future days	Dies futurs
+Future episodes	Episodis futurs
+General	General
+GiB	GiB
+Grab	Captura
+Grab a release from interactive search; downloads in the client's TV category show up here.	Captureu un llançament des de la cerca interactiva; les baixades de la categoria de TV del client apareixen aquí.
+Grab anyway?	Voleu capturar-lo igualment?
+Grab with these episodes	Captura amb aquests episodis
+Grabbed	Capturat
+Grabbed {}.	S'ha capturat {}.
+Grabbing…	S'està capturant…
+Grabs, imports and file changes appear here. Migrated history is included.	Aquí apareixen les captures, les importacions i els canvis de fitxers. S'hi inclou l'historial migrat.
+Group film folder format	Format de carpeta de pel·lícula del grup
+Group folder format	Format de carpeta del grup
+Group season folder format	Format de carpeta de temporada del grup
+Group story-arc folder format	Format de carpeta d'arc argumental del grup
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Grups de sèries i pel·lícules relacionades: col·leccions dels catàlegs, franquícies d'anime (grups de preqüeles/seqüeles) i grups manuals, inclosos els migrats de Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Importacions només amb enllaços durs: no copiïs mai baixades que continuen en sembra
+Health	Salut
+Hide	Amaga
+History	Historial
+History →	Historial →
+Host	Amfitrió
+Host (as in the download client's settings)	Amfitrió (com a la configuració del client de baixada)
+Hostname	Nom d'amfitrió
+How the catalogue numbers the episodes (it can be changed later on the series page).	Com numera els episodis el catàleg (es pot canviar més endavant a la pàgina de la sèrie).
+Id	Id
+Identities	Identitats
+Ids	Ids
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Si Kitsunarr veu els vostres mitjans amb rutes diferents de la font (per exemple, volums de Docker diferents), mapeu cada carpeta de la font a la seva ubicació a Kitsunarr. Les rutes només es reescriuen a la base de dades.
+Ignored	Ignorats
+Ignored addresses	Adreces ignorades
+Implementation	Implementació
+Import / Migration	Importació / Migració
+Import a Sonarr or Tanukarr library	Importa una biblioteca de Sonarr o Tanukarr
+Import blocked	Importació bloquejada
+Import completed downloads	Importa les baixades completades
+Import extra files (subtitles…)	Importa fitxers addicionals (subtítols…)
+Import from Sonarr/Tanukarr	Importa des de Sonarr/Tanukarr
+Import history	Importa l'historial
+Import library	Importa la biblioteca
+Import list options saved.	S'han desat les opcions de les llistes d'importació.
+Import lists	Llistes d'importació
+Import pending	Importació pendent
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importeu fitxers de vídeo de qualsevol carpeta que el servidor pugui llegir: comproveu la sèrie i els episodis de cada fitxer i després copieu-los o moveu-los a la biblioteca (amb el nom segons la configuració de noms).
+Import {chosen().len()} files	Importa {chosen().len()} fitxers
+Imported	Importat
+Imported from series folder	Importat de la carpeta de la sèrie
+Importing	En importació
+Importing…	S'està important…
+Imports need	Les importacions necessiten
+In library ›	A la biblioteca ›
+Include	Inclou
+Include in file names ({{Custom Formats}} token)	Inclou als noms de fitxer (testimoni {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Incloeu només els títols d'algunes llistes, o deixeu fora els títols d'altres.
+Include unmonitored	Inclou els no monitorats
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Inclosa la base URL, p. ex. http://192.168.1.10:8989 o https://host/sonarr
+Indexer	Indexador
+Indexer options saved.	S'han desat les opcions dels indexadors.
+Indexer settings	Configuració de l'indexador
+Indexers	Indexadors
+Info	Informació
+Info {infos}	Informació {infos}
+Instance	Instància
+Instance name	Nom de la instància
+Instance: {name}	Instància: {name}
+Interactive	Interactiva
+Interactive search	Cerca interactiva
+Interactive search for full-season packs only	Cerca interactiva només de paquets de temporada completa
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Cerca interactiva de paquets de la sèrie sencera (i de les seves temporades) als indexadors de torrents
+Interactive search: see every release and choose	Cerca interactiva: vegeu tots els llançaments i trieu
+Interface language	Idioma de la interfície
+Interval	Interval
+Jellyfin library and user	Biblioteca i usuari de Jellyfin
+Job	Feina
+Keep / skip	Conserva / omet
+Keep files replaced by upgrades as versions (in "Plex Versions")	Conserva com a versions els fitxers substituïts per actualitzacions (a "Plex Versions")
+Keep me signed in	Mantén la sessió iniciada
+Keep the replaced file's date (upgrades)	Conserva la data del fitxer substituït (actualitzacions)
+Kept	Conservat
+Kept versions	Versions conservades
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Claus per a aplicacions complementàries que fan servir l'API v3 de Sonarr: llegeixen la biblioteca, i les claus "afegir sèries" també poden afegir sèries (a una carpeta arrel, sense cercar). No es permet res més.
+KiB	KiB
+Kind	Tipus
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr és programari lliure (GPL-3.0-or-later).
+Kitsunarr path	Ruta a Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr farà una còpia de seguretat de la seva pròpia base de dades, importarà les dades previsualitzades en una sola transacció i les validarà abans de confirmar-les. La font i els vostres fitxers multimèdia no es modifiquen.
+Label	Rètol
+Languages	Idiomes
+Larger releases are rejected. 0 means unlimited.	Els llançaments més grans es rebutgen. 0 vol dir sense límit.
+Last read	Darrera lectura
+Last run	Darrera execució
+Last search	Darrera cerca
+Last searched	Darrera cerca
+Last season	Darrera temporada
+Later ›	Posteriors ›
+Latest season	Temporada més recent
+Level	Nivell
+Library	Biblioteca
+Library check	Comprovació de la biblioteca
+Library tools	Eines de la biblioteca
+Library tools saved.	S'han desat les eines de la biblioteca.
+List	Llista
+Listed best first. Grouped qualities rank equally.	De millor a pitjor. Les qualitats agrupades tenen el mateix rang.
+Live updates connected	Actualitzacions en directe connectades
+Live updates disconnected	Actualitzacions en directe desconnectades
+Load	Carrega
+Load the account's lists	Carrega les llistes del compte
+Load the libraries…	Carrega les biblioteques…
+Load the users…	Carrega els usuaris…
+Local air date	Data d'emissió local
+Local path	Ruta local
+Log them	Registra'ls
+Logs	Registres
+Main rejections	Rebutjos principals
+Make current	Fes-la actual
+Manual import	Importació manual
+Mark as failed	Marca com a fallida
+Matches monitored titles.	Coincideix amb els títols monitorats.
+Maximum	Màxim
+Maximum size (MB)	Mida màxima (MB)
+Media management	Gestió multimèdia
+Media management settings	Configuració de gestió multimèdia
+Media paths	Rutes dels mitjans
+Mediums	Suports
+Members	Membres
+Message	Missatge
+Metadata	Metadades
+Metadata files	Fitxers de metadades
+Metadata keys saved.	S'han desat les claus de metadades.
+Metadata language	Idioma de les metadades
+Metadata refreshed.	S'han actualitzat les metadades.
+Metadata refreshed: {} new episodes, {} updated.	Metadades actualitzades: {} episodis nous, {} actualitzats.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	S'ha desat la configuració de metadades. Els fitxers s'escriuen en la propera anàlisi del disc, actualització o importació.
+Metadata sources	Fonts de metadades
+MiB	MiB
+Migration completed.	S'ha completat la migració.
+Migration report #{}	Informe de migració núm. {}
+Minimum	Mínim
+Minimum age (minutes)	Edat mínima (minuts)
+Minimum custom format score	Puntuació mínima dels formats personalitzats
+Minimum format score	Puntuació mínima del format
+Minimum free space (MiB)	Espai lliure mínim (MiB)
+Minimum seeders	Llavors mínimes
+Missing	Absents
+Missing (monitored)	Absents (monitorats)
+Missing films	Pel·lícules absents
+Mode	Mode
+Monday	Dilluns
+Monitor	Monitora
+Monitored	Monitorat
+More languages can be added to the string tables.	Es poden afegir més idiomes a les taules de textos.
+Move	Mou
+Movie	Pel·lícula
+Movie file format	Format del fitxer de pel·lícula
+Movie removed from Kitsunarr. Files on disk were not touched.	S'ha eliminat la pel·lícula de Kitsunarr. No s'han tocat els fitxers del disc.
+Movies	Pel·lícules
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Llançaments de diverses temporades: accepta paquets de diverses temporades (una cerca de temporada agafa el paquet per a la seva temporada)
+Must contain	Ha de contenir
+Must contain (comma separated; /regex/ allowed)	Ha de contenir (separat per comes; s'admet /regex/)
+Must not contain	No ha de contenir
+NOT	NO
+Name	Nom
+Naming	Noms
+Naming options saved.	S'han desat les opcions de noms.
+Naming saved.	S'han desat els noms.
+Negate	Nega
+Network	Cadena
+Never: keep the release's names	Mai: conserva els noms del llançament
+New custom format	Format personalitzat nou
+New custom preset	Preajust personalitzat nou
+New group title	Títol del grup nou
+New password	Contrasenya nova
+New quality profile	Perfil de qualitat nou
+Next airing	Propera emissió
+Next run	Propera execució
+Next ›	Següent ›
+No	No
+No activity yet.	Encara no hi ha activitat.
+No auto tags.	No hi ha etiquetes automàtiques.
+No backups yet	Encara no hi ha còpies de seguretat
+No collections yet	Encara no hi ha col·leccions
+No companion keys.	No hi ha claus complementàries.
+No custom formats	No hi ha formats personalitzats
+No custom formats defined.	No s'ha definit cap format personalitzat.
+No delay above the minimum custom format score	Sense retard per sobre de la puntuació mínima dels formats personalitzats
+No delay for the profile's best quality in the preferred protocol	Sense retard per a la millor qualitat del perfil en el protocol preferit
+No download client to read	Cap client de baixada per llegir
+No exclusions.	No hi ha exclusions.
+No history	No hi ha historial
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Cap indexador no pot cercar aquesta sèrie automàticament: cap no té la cerca automàtica habilitada juntament amb cap etiqueta o una de les etiquetes de la sèrie.
+No indexers to search	Cap indexador on cercar
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	No hi ha versions conservades. Activeu "Conserva els fitxers substituïts per actualitzacions" a Noms.
+No log entries at this level	No hi ha entrades de registre en aquest nivell
+No mappings.	No hi ha mapatges.
+No matches	Cap coincidència
+No members	Cap membre
+No migrations have been run yet.	Encara no s'ha executat cap migració.
+No movies yet	Encara no hi ha pel·lícules
+No notes.	No hi ha notes.
+No recycle bin is set (Settings › Media management).	No hi ha cap paperera de reciclatge configurada (Configuració › Gestió multimèdia).
+No release profiles.	No hi ha perfils de llançament.
+No root folders yet.	Encara no hi ha carpetes arrel.
+No root folders.	No hi ha carpetes arrel.
+No runs yet	Encara no hi ha execucions
+No searches yet.	Encara no hi ha cerques.
+No series in your library match.	Cap sèrie de la vostra biblioteca no coincideix.
+No tags	Sense etiquetes
+No {}	Sense {}
+No {} yet	Encara sense {}
+None	Cap
+Not evaluated by Kitsunarr.	No avaluat per Kitsunarr.
+Not imported	No importat
+Not monitored	No monitorat
+Notes	Notes
+Notes ({preview.warnings.len()})	Notes ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Notes ({report.warnings.len()})
+Nothing airs in the next seven days.	No s'emet res en els propers set dies.
+Nothing downloading	No s'està baixant res
+Nothing found	No s'ha trobat res
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Cap element d'aquest catàleg no coincideix amb la cerca. Proveu una altra grafia, el títol original o l'altre catàleg.
+Nothing in this period	No hi ha res en aquest període
+Nothing missing	No falta res
+Notifications	Notificacions
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Numera els episodis segons un altre ordre del catàleg (grups d'episodis de TMDB, ordre DVD o absolut de TheTVDB)
+OMDb API key	Clau API d'OMDb
+Older priority	Prioritat dels antics
+One folder per season	Una carpeta per temporada
+Only the 2000 newest files are listed.	Només es mostren els 2000 fitxers més recents.
+Only when the proxy needs one.	Només si el servidor intermediari en necessita.
+Open the library	Obre la biblioteca
+OpenAPI document	Document OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Obre el servei per autoritzar Kitsunarr i omple el testimoni.
+Options	Opcions
+Organize	Organitza
+Other	Altres
+Overview	Sinopsi
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Sobreescriu els registres que ja existeixen a Kitsunarr (altrament es conserven)
+Packs	Paquets
+Page not found	No s'ha trobat la pàgina
+Page {page} / {pages}	Pàgina {page} / {pages}
+Password	Contrasenya
+Password changed. Other sessions were signed out.	S'ha canviat la contrasenya. S'han tancat les altres sessions.
+Past days	Dies passats
+Path	Ruta
+Path mappings	Mapatges de rutes
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Posa en pausa l'automatització (sincronització RSS, sincronitzacions programades de llistes, cerques automàtiques)
+Peers	Parells
+Permission	Permís
+PiB	PiB
+Platform	Plataforma
+Port	Port
+Position	Posició
+Post-import category	Categoria després de la importació
+Posters	Pòsters
+Prefer and upgrade	Prefereix i actualitza
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Prefereix els paquets de temporada d'anime (les cerques de temporada d'anime de Kitsunarr ja cerquen la temporada una vegada)
+Prefer, do not upgrade	Prefereix, no actualitzis
+Preferred	Preferit
+Preferred metadata language	Idioma preferit de les metadades
+Preferred protocol	Protocol preferit
+Preparing preview…	S'està preparant la previsualització…
+Preview	Previsualització
+Preview migration	Previsualitza la migració
+Previous migrations	Migracions anteriors
+Priority	Prioritat
+Problem	Problema
+Profile	Perfil
+Profile saved.	S'ha desat el perfil.
+Profiles still used by series or movies cannot be deleted.	Els perfils que encara fan servir sèries o pel·lícules no es poden suprimir.
+Progress	Progrés
+Propers and repacks	Propers i repacks
+Proxy	Servidor intermediari
+Proxy saved.	S'ha desat el servidor intermediari.
+Proxy type	Tipus de proxy
+Qualities	Qualitats
+Quality	Qualitat
+Quality presets	Preajustos de qualitat
+Quality presets saved.	S'han desat els preajustos de qualitat.
+Quality profile	Perfil de qualitat
+Quality profiles	Perfils de qualitat
+Quality profile…	Perfil de qualitat…
+RSS sync interval (minutes)	Interval de sincronització RSS (minuts)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	La sincronització RSS espera aquest temps després que aparegui un llançament per si n'apareix un de millor; els llançaments retardats es mostren a la cua. S'aplica el primer perfil les etiquetes del qual coincideixen amb la sèrie; el darrer (sense etiquetes) és el predeterminat.
+Re-encode this series' files with the compression worker	Torna a codificar els fitxers d'aquesta sèrie amb el procés de compressió
+Read and add series	Llegir i afegir sèries
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Es llegeix en directe dels clients de baixada cada pocs segons. Les baixades completades que ha capturat Kitsunarr s'importen a la carpeta de la sèrie cada minut (els torrents es copien o s'enllacen amb enllaços durs, de manera que continuen en sembra; les baixades d'Usenet es mouen). Les baixades fallides s'afegeixen a la llista de bloqueig i es tornen a cercar.
+Read the library	Llegir la biblioteca
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Només lectura: troba carpetes de sèries absents, registres de fitxers fora de la seva carpeta o registrats dues vegades, i fitxers absents del disc.
+Reading the download clients…	S'estan llegint els clients de baixada…
+Reading the source	Lectura de la font
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Ho llegeix tot mitjançant l'API. La font amaga les contrasenyes i les claus API dels proveïdors, i s'han de tornar a introduir després.
+Recent activity	Activitat recent
+Recent priority	Prioritat dels recents
+Recent runs	Execucions recents
+Recent searches	Cerques recents
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Recomanat. A Sonarr/Tanukarr obriu Sistema → Còpia de seguretat, creeu una còpia de seguretat i baixeu el .zip (o feu servir sonarr.db). Inclou les contrasenyes dels indexadors i dels clients de baixada.
+Recycle bin	Paperera de reciclatge
+Recycle bin cleanup (days)	Neteja de la paperera de reciclatge (dies)
+Recycled	A la paperera
+Refresh metadata	Actualitza les metadades
+Refresh preview	Actualitza la previsualització
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Encara no s'admet l'actualització des de {}; les metadades importades es conserven tal com són
+Refreshing…	S'està actualitzant…
+Regenerate	Regenera
+Regenerate API key	Regenera la clau API
+Reject releases whose TheTVDB or IMDb id names another series	Rebutja els llançaments l'id de TheTVDB o IMDb dels quals indica una altra sèrie
+Rejected: click twice to grab anyway	Rebutjat: feu clic dues vegades per capturar-lo igualment
+Release	Llançament
+Release profile	Perfil de llançament
+Release profile saved.	S'ha desat el perfil de llançament.
+Release profiles	Perfils de llançament
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Els llançaments es comparen amb el perfil de qualitat, els formats personalitzats i els perfils de llançament de la sèrie, i s'ordenen, com fa Sonarr. Els llançaments rebutjats demanen un segon clic.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Llançaments que han fallat o que s'han afegit a mà a la llista de bloqueig. Les cerques i la sincronització RSS no els tornen a capturar mai; elimineu-ne un per permetre'l.
+Remote path	Ruta remota
+Remote path mapping	Mapatge de ruta remota
+Remote path mapping saved.	S'ha desat el mapatge de ruta remota.
+Remote path mappings	Mapatges de rutes remotes
+Remove	Elimina
+Remove completed downloads	Elimina les baixades completades
+Remove every release from the blocklist?	Voleu treure tots els llançaments de la llista de bloqueig?
+Remove failed downloads	Elimina les baixades fallides
+Remove from library	Elimina de la biblioteca
+Remove from queue	Elimina de la cua
+Remove from the download client (deletes its files there)	Elimina del client de baixada (n'hi suprimeix els fitxers)
+Remove movie	Elimina la pel·lícula
+Remove series	Elimina la sèrie
+Remove tags automatically (from titles that stop matching)	Elimina les etiquetes automàticament (dels títols que deixen de coincidir)
+Remove “{title}” and its episode records from Kitsunarr?	Voleu eliminar “{title}” i els registres dels seus episodis de Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Voleu eliminar “{title}” de Kitsunarr? Els fitxers del disc no se suprimeixen.
+Removed	Eliminat
+Removed from the blocklist.	S'ha tret de la llista de bloqueig.
+Rename	Canvia el nom
+Rename files	Canvia el nom dels fitxers
+Rename files on import	Canvia el nom dels fitxers en importar
+Rename files to the naming settings	Canvia el nom dels fitxers segons la configuració de noms
+Formats use Sonarr's tokens.	Els formats fan servir els testimonis de Sonarr.
+Renaming…	S'està canviant el nom…
+Report	Informe
+Request one at omdbapi.com. Used for films by IMDb id.	Sol·liciteu-ne una a omdbapi.com. S'usa per a pel·lícules per id d'IMDb.
+Required	Obligatori
+Resolution	Resolució
+Restore	Restaura
+Restore {}	Restaura {}
+Restore…	Restaura…
+Restoring…	S'està restaurant…
+Resume automation	Reprèn l'automatització
+Retention (days)	Retenció (dies)
+Retire	Retira
+Revoke	Revoca
+Root folder	Carpeta arrel
+Root folders	Carpetes arrel
+Root folder…	Carpeta arrel…
+Run #{run.id}: {run.status}	Execució núm. {run.id}: {run.status}
+Run now	Executa ara
+Running…	S'està executant…
+Saturday	Dissabte
+Save	Desa
+Save criteria	Desa els criteris
+Save factors	Desa els factors
+Save keys	Desa les claus
+Save metadata files	Desa els fitxers de metadades
+Save naming	Desa els noms
+Save options	Desa les opcions
+Saved	Desat
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Les claus desades es mostren com a {REDACTED}; deixeu-les sense canvis per conservar-les, o buideu el camp per eliminar-ne una.
+Saved.	S'ha desat.
+Scan disk	Analitza el disc
+Scan folder	Analitza la carpeta
+Scanning…	S'està analitzant…
+Scheduled tasks	Tasques programades
+Score	Puntuació
+Search	Cerca
+Search again when a download fails	Torna a cercar quan una baixada falla
+Search all	Cerca-ho tot
+Search all films	Cerca totes les pel·lícules
+Search collection	Cerca a la col·lecció
+Search every episode of the list, one search per season	Cerca tots els episodis de la llista, una cerca per temporada
+Search every member's missing episodes (films: the film)	Cerca els episodis absents de cada membre (pel·lícules: la pel·lícula)
+Search indexers	Cerca als indexadors
+Search selected	Cerca els seleccionats
+Search the indexers and choose a release	Cerca als indexadors i tria un llançament
+Search the indexers and grab the best accepted release	Cerca als indexadors i captura el millor llançament acceptat
+Search the indexers and grab the best releases for the monitored episodes	Cerca als indexadors i captura els millors llançaments per als episodis monitorats
+Search your indexers	Cerqueu als vostres indexadors
+Search {chosen} selected	Cerca {chosen} seleccionats
+Search: {}	Cerca: {}
+Search: {} — complete series	Cerca: {} — sèrie completa
+Search: {} — season {season} packs	Cerca: {} — paquets de la temporada {season}
+Search: {} — {label}	Cerca: {} — {label}
+Searching for {label}…	S'està cercant {label}…
+Searching indexers…	S'està cercant als indexadors…
+Searching…	S'està cercant…
+Season	Temporada
+Season folder format	Format de carpeta de temporada
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Els títols de les carpetes de temporada substitueixen els del catàleg a {{Season Title}}. Deixeu-ho buit per conservar els del catàleg.
+Season folders	Carpetes de temporada
+Season images (Season ##.jpg)	Imatges de temporada (Season ##.jpg)
+Season images (Season##/folder.jpg)	Imatges de temporada (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Imatges de temporada (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Paquets de temporada: 1 fa servir els objectius de paquet de temporada de més avall
+Season premieres only	Només les estrenes de temporada
+Season {n}	Temporada {n}
+Season {one}	Temporada {one}
+Season {se.season_number}	Temporada {se.season_number}
+Season {season_number}	Temporada {season_number}
+Season-pack seed ratio	Ràtio de sembra per a paquets de temporada
+Season-pack seed time, minutes	Temps de sembra per a paquets de temporada, minuts
+Seasons	Temporades
+Seasons {first}-{last}	Temporades {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Els secrets es mostren com a {REDACTED}; deixeu-los sense canvis per conservar el valor desat.
+Seed ratio (empty: the client's default)	Ràtio de sembra (buit: el valor per defecte del client)
+Seed time, minutes (empty: the client's default)	Temps de sembra, minuts (buit: el valor per defecte del client)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Envia a través d'un servidor intermediari les sol·licituds als indexadors, catàlegs, llistes, clients de baixada i connexions.
+Send to the download client	Envia al client de baixada
+Series	Sèries
+Series .plexmatch file	Fitxer .plexmatch de la sèrie
+Series folder format	Format de carpeta de la sèrie
+Series images (Series Title.jpg)	Imatges de la sèrie (Títol de la sèrie.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Imatges de la sèrie (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Imatges de la sèrie (folder.jpg)
+Series metadata (tvshow.nfo)	Metadades de la sèrie (tvshow.nfo)
+Series metadata URL	URL de metadades de la sèrie
+Series metadata episode guide	Guia d'episodis a les metadades de la sèrie
+Series removed from Kitsunarr. Files on disk were not touched.	S'ha eliminat la sèrie de Kitsunarr. No s'han tocat els fitxers del disc.
+Series removed, and its folder deleted.	S'ha eliminat la sèrie i se n'ha suprimit la carpeta.
+Series type	Tipus de sèrie
+Set quality profile…	Estableix el perfil de qualitat…
+Settings	Configuració
+Settings saved.	S'ha desat la configuració.
+Settings → General → Security in Sonarr/Tanukarr.	Configuració → General → Seguretat a Sonarr/Tanukarr.
+Show	Mostra
+Show as all-day events	Mostra com a esdeveniments de tot el dia
+Show unmonitored	Mostra els no monitorats
+Shows	Sèries
+Sign in	Inicia la sessió
+Signed in. Save the list to keep the token.	S'ha iniciat la sessió. Deseu la llista per conservar el testimoni.
+Signing in…	S'està iniciant la sessió…
+Size	Mida
+Size limits	Límits de mida
+Size on disk	Mida al disc
+Skip files smaller than (MB)	Omet els fitxers més petits de (MB)
+Skip the free-space check	Omet la comprovació de l'espai lliure
+Skip unmonitored episodes when importing packs	Omet els episodis no monitorats en importar paquets
+Source	Font
+Source code	Codi font
+Source path	Ruta d'origen
+Special	Especial
+Specials	Especials
+Specials are never monitored automatically.	Els especials no es monitoren mai automàticament.
+Specifications	Especificacions
+Specifications (JSON)	Especificacions (JSON)
+Specifications must be valid JSON: {e}	Les especificacions han de ser JSON vàlid: {e}
+Stalled torrent timeout (minutes)	Temps d'espera dels torrents encallats (minuts)
+Standard	Estàndard
+Standard episode format	Format d'episodi estàndard
+Start migration	Inicia la migració
+Start over	Torna a començar
+Start search for missing episodes	Inicia la cerca dels episodis absents
+Started	Iniciat
+Started {format_datetime(&run.started_at)}	Iniciat {format_datetime(&run.started_at)}
+Status	Estat
+Status & health	Estat i salut
+Still downloading	Encara s'està baixant
+Storage outlook	Previsió d'emmagatzematge
+Studio	Estudi
+Subscribe	Subscriu
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Subscriviu-vos a aquesta adreça en una aplicació de calendari. Conté la vostra clau API: mantingueu-la privada.
+Sunday	Diumenge
+Sync	Sincronitza
+Sync all lists now	Sincronitza ara totes les llistes
+Sync now	Sincronitza ara
+Syncing…	S'està sincronitzant…
+System →	Sistema →
+TMDB API key (v3)	Clau API de TMDB (v3)
+TV Series	Sèries de TV
+TV series	Sèries de TV
+Table	Taula
+Tag	Etiqueta
+Tag them	Etiqueta'ls
+Tag titles already in the library	Etiqueta els títols que ja són a la biblioteca
+Tags	Etiquetes
+Tags (comma separated)	Etiquetes (separades per comes)
+Tags (ids, comma separated)	Etiquetes (ids, separats per comes)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Les etiquetes s'afegeixen a les sèries i pel·lícules que coincideixen amb tots els tipus de condició quan s'afegeixen, s'editen o s'actualitzen.
+Task	Tasca
+Television	Televisió
+Television (raw)	Televisió (raw)
+Test	Prova
+Test failed: {message}	La prova ha fallat: {message}
+Testing…	S'està provant…
+The blocklist is empty	La llista de bloqueig és buida
+The catalogue new titles are added from when the list knows their id there.	El catàleg des del qual s'afegeixen els títols nous quan la llista en coneix l'id.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	La data que reben els fitxers importats: la data d'emissió de l'episodi (local o UTC) o, en una actualització, la data del fitxer substituït.
+The dry run completed without blocking problems. Nothing has been written yet.	La prova en sec s'ha completat sense problemes bloquejants. Encara no s'ha escrit res.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	El fitxer es mou a la carpeta de la temporada (mai no se sobreescriu un fitxer existent) i es torna a analitzar la sèrie.
+The folder must already exist; Kitsunarr never creates or removes it.	La carpeta ja ha d'existir; Kitsunarr mai no la crea ni l'elimina.
+The indexers returned no releases for this search.	Els indexadors no han retornat cap llançament per a aquesta cerca.
+The instance is on my local network (private or loopback address)	La instància és a la meva xarxa local (adreça privada o de loopback)
+The list has not been read, or it is empty.	La llista no s'ha llegit o és buida.
+The migration did not complete; nothing was changed.	La migració no s'ha completat; no s'ha canviat res.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Les entrades més recents conservades en memòria. Els registres complets van a la sortida del procés (registres del contenidor o journal).
+The passwords do not match.	Les contrasenyes no coincideixen.
+The recycle bin has no media or subtitle files.	La paperera de reciclatge no conté fitxers multimèdia ni de subtítols.
+The sign-in expired; try again.	L'inici de sessió ha caducat; torneu-ho a provar.
+The upload failed (network error).	La pujada ha fallat (error de xarxa).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	El procés de compressió és un component opcional de l'amfitrió (el worker de compressió de Tanukarr) al qual s'accedeix a través del sòcol KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (el catàleg de Sonarr), TMDB i TVmaze cobreixen les sèries de TV; AniList i MyAnimeList cobreixen les sèries i pel·lícules d'anime; TMDB i OMDb cobreixen les pel·lícules. Afegir un títol en crea l'entrada a la biblioteca i la llista d'episodis; els fitxers es detecten més tard durant la importació.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Els títols de TheTVDB es cerquen i s'afegeixen en aquest idioma; cada sèrie el pot canviar al seu editor.
+TheTVDB titles in this language; changing it refreshes the series	Títols de TheTVDB en aquest idioma; canviar-lo actualitza la sèrie
+There is nothing at /{path}.	No hi ha res a /{path}.
+They are created by migrating from Sonarr/Tanukarr.	Es creen en migrar des de Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Mode de canvi de nom, títols de les carpetes de temporada i versions conservades d'aquesta sèrie
+TiB	TiB
+Time	Hora
+Time left	Temps restant
+Title	Títol
+Title pattern	Patró de títol
+Titles import lists never add.	Títols que les llistes d'importació no afegeixen mai.
+Titles on no list	Títols que no són a cap llista
+Today	Avui
+Torrent	Torrent
+Torrent delay	Retard de torrent
+Torrent delay (minutes)	Retard de torrent (minuts)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Indexadors Torznab i Newznab. Feu servir Prova a l'editor per comprovar-ne un; cada cerca fa servir els indexadors amb aquest tipus de cerca habilitat: RSS, automàtica o interactiva.
+Trigger	Activador
+URL base	Base URL
+UTC air date	Data d'emissió UTC
+Unchanged	Sense canvis
+Unknown	Desconegut
+Unmonitor	Deixa de monitorar
+Unmonitor them	Deixa de monitorar-los
+Unmonitored	No monitorat
+Upcoming	Properament
+Upcoming 7 days	Propers 7 dies
+Update	Actualitza
+Updated {} items.	S'han actualitzat {} elements.
+Upgrade until (cutoff)	Actualitza fins a (tall)
+Upgrade until format score	Actualitza fins a la puntuació del format
+Upgrades allowed	Actualitzacions permeses
+Upload a backup	Puja una còpia de seguretat
+Upload failed (HTTP {}).	La pujada ha fallat (HTTP {}).
+Uploading…	S'està pujant…
+Use SSL	Utilitza SSL
+Use a proxy	Utilitza un servidor intermediari
+Use hardlinks instead of copying	Utilitza enllaços durs en lloc de copiar
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Feu-la servir com a capçalera X-Api-Key (o ?apikey=) des d'altres aplicacions. Compatible amb la capçalera que fa servir Sonarr.
+Use these episodes	Utilitza aquests episodis
+Usenet	Usenet
+Usenet delay	Retard d'Usenet
+Usenet delay (minutes)	Retard d'Usenet (minuts)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Només Usenet: es rebutgen els llançaments més nous, per donar-los temps a propagar-se. 0 ho desactiva.
+Usenet only: older releases are rejected. 0 means unlimited.	Només Usenet: es rebutgen els llançaments més antics. 0 vol dir sense límit.
+User name	Nom d'usuari
+Username	Nom d'usuari
+Validation	Validació
+Version	Versió
+Versions	Versions
+Waiting for the sign-in at	S'està esperant l'inici de sessió a
+Wanted	Demanat
+Warnings	Avisos
+Warnings {warnings}	Avisos {warnings}
+Watched (Jellyfin watched sync)	Vist (sincronització de vistos de Jellyfin)
+Watched sync user	Usuari per a la sincronització de vistos
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, correu electrònic (SMTP), Mailgun, SendGrid, scripts personalitzats (amb les variables d'entorn de Sonarr), Emby/Jellyfin, Plex i Kodi reben: captures, importacions i actualitzacions, canvis de nom, sèries afegides o suprimides, fitxers suprimits, problemes de salut. Feu servir Prova a l'editor.
+Welcome	Benvinguda
+What to import	Què cal importar
+When	Quan
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Quan es comproven els certificats HTTPS dels indexadors, clients de baixada i serveis (configuració de Sonarr). Els certificats autosignats de la vostra xarxa requereixen relaxar-la.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Quan un client de baixada informa de rutes que Kitsunarr veu en un altre lloc (una altra màquina o contenidor), mapeu l'amfitrió i la ruta del client a la ruta local.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Si es prefereixen els llançaments que corregeixen un llançament defectuós i si actualitzen els fitxers existents (com a Sonarr).
+Whole season	Temporada sencera
+Working…	S'està processant…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	S'escriuen a les carpetes de les sèries quan les sèries s'analitzen, s'actualitzen o s'importen, tal com els escriuen els consumidors de metadades de Sonarr.
+Year	Any
+Your library is empty.	La vostra biblioteca és buida.
+all checks passed	totes les comprovacions superades
+comma separated	separat per comes
+cutoff: {}	tall: {}
+has a file	té un fitxer
+iCal link	enllaç iCal
+in 2 days	d'aquí a 2 dies
+in a moment	d'aquí a un moment
+in file names	als noms de fitxer
+in library	a la biblioteca
+in {text}	d'aquí a {text}
+just now	ara mateix
+may run out of space	pot quedar-se sense espai
+name (e.g. phone)	nom (p. ex. telèfon)
+never refreshed	mai actualitzat
+no media files are moved, renamed or deleted.	no es mou, es canvia de nom ni se suprimeix cap fitxer multimèdia.
+not accessible	no accessible
+not added	no afegit
+not checked	no comprovat
+not read yet	encara no llegida
+on disk	al disc
+refreshed {}	actualitzat {}
+schema {s}	esquema {s}
+secrets included	secrets inclosos
+secrets masked	secrets emmascarats
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip o sonarr.db
+stored only	només desat
+title (optional)	títol (opcional)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} afegits; {}
+{added} shows added.	{added} sèries afegides.
+{c.name} (API key needed)	{c.name} (cal una clau API)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} sèries · {c.movie_count} pel·lícules
+{chosen().len()} chosen	{chosen().len()} triats
+{chosen().len()} chosen (at most 25)	{chosen().len()} triats (25 com a màxim)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} al disc · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% de {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · afegit {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} de {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} fitxers · {job["percent"]}% · estalviat {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	S'ha iniciat {name}.
+{name} was added to the library.	S'ha afegit {name} a la biblioteca.
+{name}: shows	{name}: sèries
+{ok} files imported.	{ok} fitxers importats.
+{ok} imported; {}	{ok} importats; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} llançaments de {r.searched_indexers} indexadors.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} sèries i {r.files_checked} fitxers comprovats: {r.issues.len()} problemes.
+{selected.read().len()} selected	{selected.read().len()} seleccionats
+{text} ago	fa {text}
+{} (not accessible)	{} (no accessible)
+{} ({} free)	{} ({} lliures)
+{} added to every profile (not allowed yet).	{} afegit a tots els perfils (encara no permès).
+{} day(s)	{} dia/dies
+{} failed: {}	{} ha fallat: {}
+{} format scores	{} puntuacions dels formats
+{} free of {}	{} lliures de {}
+{} week(s)	{} setmana/es
+{}{year} — movie	{}{year} — pel·lícula
+‹ Back	‹ Enrere
+‹ Earlier	‹ Anteriors
+‹ Prev	‹ Ant.
+○ offline	○ fora de línia
+● live	● en directe
+✓ No issues detected.	✓ No s'ha detectat cap problema.
+Activity	Activitat
+Queue	Cua
+System	Sistema
+Tasks	Tasques
+Retry	Torna-ho a provar
+Sign out	Tanca la sessió
+Search titles…  ( / )	Cerca títols…  ( / )
+Loading…	S'està carregant…
+Profiles	Perfils
+scene {}	escena {}
+Scene numbering from TheXEM	Numeració d'escena de TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Numeració d'escena extrapolada de TheXEM (no verificada)
+Season {} (scene seasons {})	Temporada {} (temporades d'escena {})
+{} (scene {})	{} (escena {})

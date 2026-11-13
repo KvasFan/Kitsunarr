@@ -1,0 +1,968 @@
+# Greek interface strings: English	Greek. {…} marks a placeholder.
+custom	προσαρμοσμένη
+indeterminate	απροσδιόριστο
+mixed	μικτό
+retired	αποσύρθηκε
+· container	· κοντέινερ
+· finished {format_datetime(f)}	· ολοκληρώθηκε {format_datetime(f)}
+· missing	· λείπει
+· on disk	· στον δίσκο
+· today	· σήμερα
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} επ.
+— MiB per minute; empty uses Settings › Quality	— MiB ανά λεπτό· κενό σημαίνει Ρυθμίσεις › Ποιότητα
+— a release's size is multiplied by its codec's factor before the size limits apply	— το μέγεθος μιας κυκλοφορίας πολλαπλασιάζεται με τον συντελεστή του codec της πριν εφαρμοστούν τα όρια μεγέθους
+— all profiles at once	— όλα τα προφίλ μαζί
+— codec and title criteria, custom qualities (Tanukarr)	— κριτήρια codec και τίτλου, προσαρμοσμένες ποιότητες (Tanukarr)
+— enter the code	— εισαγάγετε τον κωδικό
+(empty)	(κενό)
++ Add mapping	+ Προσθήκη αντιστοίχισης
++ New format	+ Νέα μορφή
++ New profile	+ Νέο προφίλ
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (ανενεργό) ή 10 έως 120. Ο συγχρονισμός RSS εκτελείται επίσης από Σύστημα › Εργασίες.
+3 hours ago	πριν από 3 ώρες
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Ένα torrent υπό λήψη χωρίς πρόοδο για τόσο διάστημα θεωρείται αποτυχημένο, μπαίνει στη λίστα αποκλεισμού και αναζητείται ξανά. Το 0 το απενεργοποιεί· η πρόοδος παρακολουθείται από την εκκίνηση του Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Μια ομάδα franchise που βρέθηκε από τις συσχετίσεις του AniList ή του MyAnimeList. Τίτλοι του ίδιου franchise που προστίθενται αργότερα εντάσσονται επίσης σε αυτήν.
+A new API key was generated. Update the applications that use it.	Δημιουργήθηκε νέο κλειδί API. Ενημερώστε τις εφαρμογές που το χρησιμοποιούν.
+A regular expression, case-insensitive; empty matches every title.	Κανονική έκφραση, χωρίς διάκριση πεζών-κεφαλαίων· κενή ταιριάζει με κάθε τίτλο.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Μια κυκλοφορία λαμβάνει την πιο συγκεκριμένη προρύθμιση που επιτρέπεται στο προφίλ της σειράς της και της οποίας ταιριάζουν η πηγή, η ανάλυση, το codec και το μοτίβο τίτλου. Μια τυπική ποιότητα με codec ή μοτίβο κάνει Άγνωστες τις κυκλοφορίες που δεν τα πληρούν. Οι προσαρμοσμένες προρυθμίσεις προστίθενται σε κάθε προφίλ ως μη επιτρεπόμενες.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Το μέγεθος μιας κυκλοφορίας πολλαπλασιάζεται με τον συντελεστή του codec της πριν εφαρμοστούν τα όρια μεγέθους. «Μικτό» σημαίνει ότι τα προφίλ χρησιμοποιούν διαφορετικούς συντελεστές· μια τιμή που εισάγεται εδώ γράφεται σε κάθε προφίλ.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Ένας τίτλος που εντάσσεται σε franchise ή χειροκίνητη ομάδα αποχωρεί από την ομάδα στην οποία ανήκε. Τα αρχεία και οι φάκελοι δεν μετακινούνται.
+API key	Κλειδί API
+API key needed	Απαιτείται κλειδί API
+API keys and language	Κλειδιά API και γλώσσα
+API path	Διαδρομή API
+About	Πληροφορίες
+Absolute path; empty to delete permanently.	Απόλυτη διαδρομή· κενό για οριστική διαγραφή.
+Accepted	Αποδεκτές
+Account lists	Λίστες λογαριασμού
+Actions	Ενέργειες
+Actual	Πραγματικό
+Add	Προσθήκη
+Add a Newznab or Torznab indexer and enable interactive search for it.	Προσθέστε ένα ευρετήριο Newznab ή Torznab και ενεργοποιήστε την αλληλεπιδραστική αναζήτηση για αυτό.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Προσθέστε ένα client από το πρότυπό του και χρησιμοποιήστε τη Δοκιμή στον επεξεργαστή· οι λήψεις, η ουρά και οι εισαγωγές χρησιμοποιούν κάθε ενεργό client. Ένα blackhole γράφει τις λήψεις σε έναν φάκελο και εισάγει ό,τι εμφανίζεται στον φάκελο παρακολούθησής του. Οι επιλογές «Αφαίρεση ολοκληρωμένων/αποτυχημένων λήψεων» κάθε client αφαιρούν τις λήψεις (μαζί με τα αρχεία τους) όταν το client τελειώσει με αυτές.
+Add a download client in Settings › Download clients and enable it.	Προσθέστε ένα client λήψεων στις Ρυθμίσεις › Client λήψεων και ενεργοποιήστε το.
+Add a root folder first: it is where this title's folder will live.	Προσθέστε πρώτα έναν ριζικό φάκελο: εκεί θα βρίσκεται ο φάκελος αυτού του τίτλου.
+Add a tag above first.	Προσθέστε πρώτα μια ετικέτα παραπάνω.
+Add a title	Προσθήκη τίτλου
+Add auto tag	Προσθήκη αυτόματης ετικέτας
+Add condition	Προσθήκη συνθήκης
+Add exclusion	Προσθήκη εξαίρεσης
+Add media	Προσθήκη περιεχομένου
+Add one, or migrate them from Sonarr/Tanukarr.	Προσθέστε ένα ή μεταφέρετέ τα από το Sonarr/Tanukarr.
+Add preset	Προσθήκη προρύθμισης
+Add selected	Προσθήκη επιλεγμένων
+Add series or movies below.	Προσθέστε σειρές ή ταινίες παρακάτω.
+Add tag	Προσθήκη ετικέτας
+Add the list's tags	Προσθήκη των ετικετών της λίστας
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Προσθέστε τίτλους από το TVmaze ή το AniList ή φέρτε μια υπάρχουσα βιβλιοθήκη Sonarr ή Tanukarr.
+Add to library	Προσθήκη στη βιβλιοθήκη
+Add {}	Προσθήκη {}
+Add {} ({y})	Προσθήκη {} ({y})
+Add — {}	Προσθήκη — {}
+Add, and remove when they leave the list	Προσθήκη και αφαίρεση όταν φεύγουν από τη λίστα
+Added	Προστέθηκε
+Added to the titles this list adds.	Προστίθεται στους τίτλους που προσθέτει αυτή η λίστα.
+Adding titles	Προσθήκη τίτλων
+Adding…	Προσθήκη…
+Address	Διεύθυνση
+Age	Ηλικία
+Aired	Προβλήθηκε
+Aired monitored episodes without a file appear here.	Εδώ εμφανίζονται τα επεισόδια σε παρακολούθηση που έχουν προβληθεί χωρίς αρχείο.
+All	Όλα
+All collections	Όλες οι συλλογές
+All episodes	Όλα τα επεισόδια
+All episodes in the series folder	Όλα τα επεισόδια στον φάκελο της σειράς
+All events	Όλα τα συμβάντα
+Allow zero size (the feed has no release sizes)	Να επιτρέπεται μηδενικό μέγεθος (η ροή δεν αναφέρει μεγέθη κυκλοφοριών)
+Also delete the series folder and its files (to the recycle bin when one is set)	Διαγραφή και του φακέλου της σειράς και των αρχείων του (στον κάδο ανακύκλωσης, αν έχει οριστεί)
+Also for releases grabbed from interactive search	Και για κυκλοφορίες που λήφθηκαν από αλληλεπιδραστική αναζήτηση
+Also known as	Γνωστό και ως
+Always, even when renaming is off	Πάντα, ακόμη και με απενεργοποιημένη τη μετονομασία
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Ανάλυση αρχείων βίντεο (ανάλυση, διάρκεια και codec, με ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Οι τίτλοι του AniList και του MyAnimeList προστίθενται πάντα ως anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Οι λίστες AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, άλλου Sonarr και προσαρμοσμένες λίστες JSON διαβάζονται κάθε λίγες ώρες· οι νέοι τίτλοι προστίθενται με τον ριζικό φάκελο, το προφίλ και την παρακολούθηση κάθε λίστας. Οι υπηρεσίες που απαιτούν OAuth χρησιμοποιούν το Client ID της δικής σας εφαρμογής και ένα token που επικολλάτε (τα token που μεταφέρθηκαν από το Tanukarr εξακολουθούν να λειτουργούν).
+Anime	Anime
+Anime / absolute numbering	Anime / απόλυτη αρίθμηση
+Anime categories	Κατηγορίες anime
+Anime episode format	Μορφή επεισοδίου anime
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Οι ταινίες anime μπορούν να προστεθούν από το AniList και οι μεταφορές από το Tanukarr φέρνουν μαζί και τις ταινίες τους. Οι ταινίες live-action απαιτούν τον κατάλογο TMDB.
+Anime standard format search	Αναζήτηση anime σε τυπική μορφή
+Anime title, e.g. Frieren	Τίτλος anime, π.χ. Frieren
+Any	Οποιοδήποτε
+Any library	Οποιαδήποτε βιβλιοθήκη
+Applications using the current key will stop working until you give them the new one.	Οι εφαρμογές που χρησιμοποιούν το τρέχον κλειδί θα σταματήσουν να λειτουργούν μέχρι να τους δώσετε το νέο.
+Applied after every list has been read successfully and some title left a list.	Εφαρμόζεται αφού διαβαστεί επιτυχώς κάθε λίστα και κάποιος τίτλος έχει φύγει από μια λίστα.
+Apply	Εφαρμογή
+Apply migration	Εφαρμογή μεταφοράς
+Apply profile	Εφαρμογή προφίλ
+Applying migration	Εφαρμογή της μεταφοράς
+Applying…	Εφαρμογή…
+As Settings › Media management says	Όπως ορίζουν οι Ρυθμίσεις › Διαχείριση πολυμέσων
+At least 10 characters.	Τουλάχιστον 10 χαρακτήρες.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Τουλάχιστον {MIN_PASSWORD_LENGTH} χαρακτήρες. Μια φράση πρόσβασης είναι καλή επιλογή.
+Auto tag	Αυτόματη ετικέτα
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Η αυτόματη ετικέτα αποθηκεύτηκε. Εφαρμόζεται την επόμενη φορά που οι τίτλοι προστίθενται, επεξεργάζονται ή ανανεώνονται.
+Auto tagging	Αυτόματες ετικέτες
+Auto-refresh	Αυτόματη ανανέωση
+Automatic	Αυτόματη
+Automatic search	Αυτόματη αναζήτηση
+Automatic search for {label}: grabbed {}.	Αυτόματη αναζήτηση για {label}: λήφθηκε {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Αυτόματη αναζήτηση για {label}: βρέθηκαν {} κυκλοφορίες, εγκρίθηκαν {}, δεν λήφθηκε τίποτα.
+Automatic search: grab the best release	Αυτόματη αναζήτηση: λήψη της καλύτερης κυκλοφορίας
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Ο αυτοματισμός είναι σε παύση: ο συγχρονισμός RSS, οι προγραμματισμένοι συγχρονισμοί λιστών και οι αυτόματες αναζητήσεις παραλείπονται. Οι χειροκίνητες ενέργειες και οι τρέχουσες λήψεις συνεχίζονται.
+Automation resumed.	Ο αυτοματισμός συνεχίστηκε.
+Available from	Διαθέσιμο από
+Back to the dashboard	Επιστροφή στον πίνακα ελέγχου
+Back up now	Αντίγραφο ασφαλείας τώρα
+Backup {} created.	Δημιουργήθηκε το αντίγραφο ασφαλείας {}.
+Backups	Αντίγραφα ασφαλείας
+Blocking:	Αποκλεισμός:
+Blocklist	Λίστα αποκλεισμού
+Blocklist the release and search again	Αποκλεισμός της κυκλοφορίας και νέα αναζήτηση
+Blocklist the release: it is never grabbed again	Αποκλεισμός της κυκλοφορίας: δεν θα ληφθεί ποτέ ξανά
+Blocklist “{title}” and search for a replacement?	Αποκλεισμός του «{title}» και αναζήτηση αντικαταστάτη;
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Φέρτε στο Kitsunarr τη βιβλιοθήκη και τις ρυθμίσεις σας από το Sonarr (v3/v4) ή το Tanukarr. Η πηγή μόνο διαβάζεται, δεν αλλάζει ποτέ, και
+Bypass the proxy for local addresses	Παράκαμψη του διακομιστή μεσολάβησης για τοπικές διευθύνσεις
+Calendar	Ημερολόγιο
+Calendar →	Ημερολόγιο →
+Cancel	Ακύρωση
+Cancel compression	Ακύρωση συμπίεσης
+Cannot reach the server: {e}	Δεν είναι δυνατή η σύνδεση με τον διακομιστή: {e}
+Catalogue	Κατάλογος
+Category	Κατηγορία
+Certificate validation	Επικύρωση πιστοποιητικών
+Change password	Αλλαγή κωδικού πρόσβασης
+Change series	Αλλαγή σειράς
+Changes	Αλλαγές
+Check	Έλεγχος
+Check library	Έλεγχος βιβλιοθήκης
+Check now	Έλεγχος τώρα
+Check that the mapped series folders exist (read-only)	Έλεγχος ότι υπάρχουν οι αντιστοιχισμένοι φάκελοι σειρών (μόνο ανάγνωση)
+Checked: {summary}.	Ελέγχθηκε: {summary}.
+Checking…	Έλεγχος…
+Choose a backup file	Επιλέξτε αρχείο αντιγράφου ασφαλείας
+Choose a mode	Επιλέξτε λειτουργία
+Choose a root folder and a quality profile.	Επιλέξτε ριζικό φάκελο και προφίλ ποιότητας.
+Choose a season	Επιλέξτε κύκλο
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Επιλέξτε μια σειρά και έναν κύκλο ή επεισόδιο. Τα αποτελέσματα δείχνουν τι είναι κάθε κυκλοφορία, όπως τη διαβάζει ο αναλυτής του Kitsunarr.
+Choose a series or movie…	Επιλέξτε σειρά ή ταινία…
+Choose source	Επιλογή πηγής
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Επιλέξτε χειροκίνητα τα επεισόδια αυτής της κυκλοφορίας και μετά κάντε λήψη (η επιλογή διατηρείται για την εισαγωγή)
+Choose…	Επιλογή…
+Clean library	Καθαρισμός βιβλιοθήκης
+Clear	Εκκαθάριση
+Clear blocklist	Εκκαθάριση λίστας αποκλεισμού
+Cleared {n} releases from the blocklist.	Αφαιρέθηκαν από τη λίστα αποκλεισμού κυκλοφορίες: {n}.
+Client	Client
+Close	Κλείσιμο
+Codec	Codec
+Codec factors saved in every profile.	Οι συντελεστές codec αποθηκεύτηκαν σε κάθε προφίλ.
+Codec size factors	Συντελεστές μεγέθους ανά codec
+Codecs	Codec
+Collection film folder format	Μορφή φακέλου ταινίας συλλογής
+Collections	Συλλογές
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Οι συλλογές εμφανίζονται όταν μεταφέρονται από το Tanukarr, δημιουργούνται από δεδομένα καταλόγων ή δημιουργούνται εδώ.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Έρχεστε από το Sonarr ή το Tanukarr; Εισαγάγετε τις υπάρχουσες σειρές, ρυθμίσεις και ιστορικό σας σε λίγα βήματα.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Διαχωρισμένα με κόμμα· το * είναι χαρακτήρας μπαλαντέρ (*.lan) και λειτουργούν εύρη IP όπως 192.168.1.0/24.
+Companion app keys	Κλειδιά συνοδευτικών εφαρμογών
+Complete series	Ολόκληρη σειρά
+Completed and failed download handling	Χειρισμός ολοκληρωμένων και αποτυχημένων λήψεων
+Component	Στοιχείο
+Compress series	Συμπίεση σειράς
+Compression	Συμπίεση
+Compression queued.	Η συμπίεση μπήκε στην ουρά.
+Compression worker is not connected.	Η υπηρεσία συμπίεσης δεν είναι συνδεδεμένη.
+Condition	Συνθήκη
+Conditions	Συνθήκες
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Οι συνθήκες του ίδιου είδους ταιριάζουν όταν ταιριάζει οποιαδήποτε από αυτές (και όλες οι υποχρεωτικές)· κάθε είδος πρέπει να ταιριάζει.
+Configure	Διαμόρφωση
+Confirm password	Επιβεβαίωση κωδικού πρόσβασης
+Connect	Σύνδεση
+Connect to a running instance	Σύνδεση σε εκτελούμενη εγκατάσταση
+Connecting…	Σύνδεση…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Συνεπή αντίγραφα της βάσης δεδομένων. Τα προγραμματισμένα αντίγραφα ασφαλείας εκτελούνται εβδομαδιαία (διατηρούνται τα τελευταία οκτώ)· κάθε μεταφορά δημιουργεί επίσης ένα πρώτα. Για επαναφορά, σταματήστε το Kitsunarr και εκτελέστε
+Continuing	Σε εξέλιξη
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (αποστέλλεται με το αίτημα της ροής, π.χ. uid=1; pass=…)
+Copied.	Αντιγράφηκε.
+Copy	Αντιγραφή
+Copy (keep the originals)	Αντιγραφή (διατήρηση των πρωτοτύπων)
+Copy sizes from	Αντιγραφή μεγεθών από
+Copy the token now; it is not shown again:	Αντιγράψτε το token τώρα· δεν θα εμφανιστεί ξανά:
+Could not grab {}: {}	Δεν ήταν δυνατή η λήψη του {}: {}
+Covers	Καλύπτει
+Create	Δημιουργία
+Create account	Δημιουργία λογαριασμού
+Create group	Δημιουργία ομάδας
+Create key	Δημιουργία κλειδιού
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Δημιουργήστε ένα στο themoviedb.org › Settings › API. Χρησιμοποιείται για τηλεοπτικές σειρές και ταινίες του TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Δημιουργήστε τον λογαριασμό διαχειριστή. Θα τον χρησιμοποιείτε για να συνδέεστε στο Kitsunarr.
+Created	Δημιουργήθηκε
+Created when the first file is imported. Nothing is written to disk now.	Δημιουργείται όταν εισαχθεί το πρώτο αρχείο. Τίποτα δεν γράφεται στον δίσκο τώρα.
+Creating…	Δημιουργία…
+Credit	Ευχαριστίες
+Current file	Τρέχον αρχείο
+Current password	Τρέχων κωδικός πρόσβασης
+Custom format saved.	Η προσαρμοσμένη μορφή αποθηκεύτηκε.
+Custom format score	Βαθμολογία προσαρμοσμένης μορφής
+Custom format scores	Βαθμολογίες προσαρμοσμένων μορφών
+Custom formats	Προσαρμοσμένες μορφές
+Cutoff unmet	Δεν επιτεύχθηκε το όριο
+Daily	Ημερήσια
+Daily episode format	Μορφή ημερήσιου επεισοδίου
+Dashboard	Πίνακας ελέγχου
+Data directory	Φάκελος δεδομένων
+Database backup taken before the import: {b}	Αντίγραφο ασφαλείας της βάσης δεδομένων πριν από την εισαγωγή: {b}
+Database schema	Σχήμα βάσης δεδομένων
+Date	Ημερομηνία
+Date added	Ημερομηνία προσθήκης
+Debug	Debug
+Decision	Απόφαση
+Default	Προεπιλογή
+Defaults	Προεπιλογές
+Delay profile	Προφίλ καθυστέρησης
+Delay profile saved.	Το προφίλ καθυστέρησης αποθηκεύτηκε.
+Delay profiles	Προφίλ καθυστέρησης
+Delete	Διαγραφή
+Delete empty series folders	Διαγραφή κενών φακέλων σειρών
+Delete file	Διαγραφή αρχείου
+Delete group	Διαγραφή ομάδας
+Delete profile	Διαγραφή προφίλ
+Delete “{path}”? It goes to the recycle bin when one is set.	Διαγραφή του «{path}»; Μεταφέρεται στον κάδο ανακύκλωσης, αν έχει οριστεί.
+Delete “{}”?	Διαγραφή του «{}»;
+Delete “{}”? Its series and movies stay in the library.	Διαγραφή του «{}»; Οι σειρές και οι ταινίες του παραμένουν στη βιβλιοθήκη.
+Deleted	Διαγράφηκε
+Directory	Φάκελος
+Disabled	Ανενεργή
+Disabled for local addresses	Ανενεργή για τοπικές διευθύνσεις
+Disk scanned: {}	Ο δίσκος σαρώθηκε: {}
+Disk scanned: {} Not matched: {}	Ο δίσκος σαρώθηκε: {} Χωρίς αντιστοίχιση: {}
+Do not prefer	Χωρίς προτίμηση
+Do not search for a replacement	Να μην γίνει αναζήτηση αντικαταστάτη
+Do nothing	Καμία ενέργεια
+Done	Ολοκληρώθηκε
+Download client options saved.	Οι επιλογές των client λήψεων αποθηκεύτηκαν.
+Download clients	Client λήψεων
+Download failed	Η λήψη απέτυχε
+Download queue	Ουρά λήψεων
+Downloads	Λήψεις
+Duration	Διάρκεια
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Κάθε τίτλος ανήκει σε έναν κατάλογο, από τον οποίο διαβάζουν οι ανανεώσεις του· κάθε αναγνωριστικό που φέρει (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) διατηρείται. Οι τίτλοι που μεταφέρθηκαν από το Sonarr ανήκουν στο TheTVDB.
+Edit	Επεξεργασία
+Edit “{name}”	Επεξεργασία «{name}»
+Edit “{}”	Επεξεργασία «{}»
+Enable RSS	Ενεργοποίηση RSS
+Enable automatic search	Ενεργοποίηση αυτόματης αναζήτησης
+Enable interactive search	Ενεργοποίηση αλληλεπιδραστικής αναζήτησης
+Enabled	Ενεργή
+Ended	Έληξε
+English	English
+Entity	Οντότητα
+Episode	Επεισόδιο
+Episode and movie naming	Ονομασία επεισοδίων και ταινιών
+Episode image thumbs in the NFO	Μικρογραφίες επεισοδίων στο NFO
+Episode images (<filename>-thumb.jpg)	Εικόνες επεισοδίων (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Εικόνες επεισοδίων (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Εικόνες επεισοδίων (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Αντιστοιχίσεις επεισοδίων στο .plexmatch
+Episode metadata (<filename>.nfo)	Μεταδεδομένα επεισοδίων (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Μεταδεδομένα επεισοδίων (Season##/filename.xml)
+Episode order	Διάταξη επεισοδίων
+Episode order changed: {} episodes updated, {} added.	Η διάταξη επεισοδίων άλλαξε: {} επεισόδια ενημερώθηκαν, {} προστέθηκαν.
+Episodes	Επεισόδια
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Τα επεισόδια αναριθμούνται σύμφωνα με την επιλεγμένη διάταξη· τα αρχεία, η παρακολούθηση και το ιστορικό μένουν με τα επεισόδιά τους. Μετονομάστε έπειτα τα αρχεία ώστε να ταιριάζουν με τους νέους αριθμούς.
+Episodes of {title}	Επεισόδια του {title}
+Episodes on disk	Επεισόδια στον δίσκο
+Episodes whose file is below the quality profile's cutoff appear here.	Εδώ εμφανίζονται τα επεισόδια των οποίων το αρχείο είναι κάτω από το όριο του προφίλ ποιότητας.
+Episodes…	Επεισόδια…
+Errors	Σφάλματα
+Errors {errors}	Σφάλματα {errors}
+Event	Συμβάν
+Every file already follows the naming settings.	Κάθε αρχείο ακολουθεί ήδη τις ρυθμίσεις ονομασίας.
+Every file meets its cutoff	Κάθε αρχείο φτάνει το όριό του
+Exclude	Εξαίρεση
+Exclusions	Εξαιρέσεις
+Expected	Αναμενόμενα
+Expires	Λήγει
+Extra file extensions	Επεκτάσεις πρόσθετων αρχείων
+Factor	Συντελεστής
+Failed	Απέτυχε
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Προστασία από ψεύτικες κυκλοφορίες: έλεγχος των torrent πριν από τη λήψη και απόρριψη εκτελέσιμων, αρχείων-δολωμάτων με κωδικό πρόσβασης και περιεχομένων χωρίς βίντεο
+Feed address	Διεύθυνση ροής
+Fetch the latest metadata from {}	Λήψη των πιο πρόσφατων μεταδεδομένων από {}
+File	Αρχείο
+File date	Ημερομηνία αρχείου
+File deleted	Το αρχείο διαγράφηκε
+File deleted.	Το αρχείο διαγράφηκε.
+File management	Διαχείριση αρχείων
+File management settings saved.	Οι ρυθμίσεις διαχείρισης αρχείων αποθηκεύτηκαν.
+File renamed	Το αρχείο μετονομάστηκε
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Τα αρχεία παλαιότερα από αυτό διαγράφονται καθημερινά από τον κάδο ανακύκλωσης· το 0 τα διατηρεί.
+Files upgrades replaced, kept as versions	Αρχεία που αντικαταστάθηκαν από αναβαθμίσεις, διατηρημένα ως εκδόσεις
+Film	Ταινία
+Film title or IMDb id, e.g. Arrival	Τίτλος ταινίας ή id IMDb, π.χ. Arrival
+Find a series in your library	Βρείτε μια σειρά στη βιβλιοθήκη σας
+Find files added to or removed from the series folder	Εύρεση αρχείων που προστέθηκαν ή αφαιρέθηκαν από τον φάκελο της σειράς
+Find something to add	Βρείτε κάτι για προσθήκη
+First and last pieces first	Πρώτα το πρώτο και το τελευταίο κομμάτι
+First day of the week	Πρώτη ημέρα της εβδομάδας
+First season	Πρώτος κύκλος
+Folder	Φάκελος
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Οι μορφές χρησιμοποιούν τους τύπους προδιαγραφών του Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Οι βαθμολογίες ορίζονται ανά προφίλ ποιότητας.
+Found	Βρέθηκαν
+Free	Ελεύθερο
+Free space	Ελεύθερος χώρος
+Future days	Μελλοντικές ημέρες
+Future episodes	Μελλοντικά επεισόδια
+General	Γενικά
+GiB	GiB
+Grab	Λήψη
+Grab a release from interactive search; downloads in the client's TV category show up here.	Κάντε λήψη μιας κυκλοφορίας από την αλληλεπιδραστική αναζήτηση· οι λήψεις στην κατηγορία TV του client εμφανίζονται εδώ.
+Grab anyway?	Λήψη παρ' όλα αυτά;
+Grab with these episodes	Λήψη με αυτά τα επεισόδια
+Grabbed	Λήφθηκε
+Grabbed {}.	Λήφθηκε {}.
+Grabbing…	Λήψη…
+Grabs, imports and file changes appear here. Migrated history is included.	Εδώ εμφανίζονται λήψεις, εισαγωγές και αλλαγές αρχείων. Περιλαμβάνεται το ιστορικό που μεταφέρθηκε.
+Group film folder format	Μορφή φακέλου ταινίας ομάδας
+Group folder format	Μορφή φακέλου ομάδας
+Group season folder format	Μορφή φακέλου κύκλου ομάδας
+Group story-arc folder format	Μορφή φακέλου αφηγηματικού τόξου ομάδας
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Ομάδες σχετικών σειρών και ταινιών: συλλογές καταλόγων, franchise anime (ομάδες prequel/sequel) και χειροκίνητες ομάδες, συμπεριλαμβανομένων όσων μεταφέρθηκαν από το Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Εισαγωγές μόνο με hardlink: ποτέ αντιγραφή λήψεων που συνεχίζουν το seeding
+Health	Υγεία
+Hide	Απόκρυψη
+History	Ιστορικό
+History →	Ιστορικό →
+Host	Host
+Host (as in the download client's settings)	Host (όπως στις ρυθμίσεις του client λήψεων)
+Hostname	Όνομα host
+How the catalogue numbers the episodes (it can be changed later on the series page).	Πώς αριθμεί ο κατάλογος τα επεισόδια (μπορεί να αλλάξει αργότερα στη σελίδα της σειράς).
+Id	Id
+Identities	Ταυτότητες
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Αν το Kitsunarr βλέπει τα πολυμέσα σας σε διαφορετικές διαδρομές από την πηγή (για παράδειγμα διαφορετικοί τόμοι Docker), αντιστοιχίστε κάθε φάκελο της πηγής στη θέση του στο Kitsunarr. Οι διαδρομές ξαναγράφονται μόνο στη βάση δεδομένων.
+Ignored	Αγνοήθηκαν
+Ignored addresses	Διευθύνσεις που αγνοούνται
+Implementation	Υλοποίηση
+Import / Migration	Εισαγωγή / Μεταφορά
+Import a Sonarr or Tanukarr library	Εισαγωγή βιβλιοθήκης Sonarr ή Tanukarr
+Import blocked	Η εισαγωγή αποκλείστηκε
+Import completed downloads	Εισαγωγή ολοκληρωμένων λήψεων
+Import extra files (subtitles…)	Εισαγωγή πρόσθετων αρχείων (υπότιτλοι…)
+Import from Sonarr/Tanukarr	Εισαγωγή από Sonarr/Tanukarr
+Import history	Εισαγωγή ιστορικού
+Import library	Εισαγωγή βιβλιοθήκης
+Import list options saved.	Οι επιλογές των λιστών εισαγωγής αποθηκεύτηκαν.
+Import lists	Λίστες εισαγωγής
+Import pending	Εισαγωγή σε αναμονή
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Εισαγάγετε αρχεία βίντεο από οποιονδήποτε φάκελο μπορεί να διαβάσει ο διακομιστής: ελέγξτε τη σειρά και τα επεισόδια κάθε αρχείου και μετά αντιγράψτε ή μετακινήστε τα στη βιβλιοθήκη (μετονομασμένα σύμφωνα με τις ρυθμίσεις ονομασίας).
+Import {chosen().len()} files	Εισαγωγή αρχείων: {chosen().len()}
+Imported	Εισήχθη
+Imported from series folder	Εισήχθη από τον φάκελο της σειράς
+Importing	Εισαγωγή
+Importing…	Εισαγωγή…
+Imports need	Οι εισαγωγές απαιτούν
+In library ›	Στη βιβλιοθήκη ›
+Include	Συμπερίληψη
+Include in file names ({{Custom Formats}} token)	Συμπερίληψη στα ονόματα αρχείων (token {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Συμπεριλάβετε μόνο τίτλους που υπάρχουν σε ορισμένες λίστες ή παραλείψτε τους τίτλους άλλων.
+Include unmonitored	Συμπερίληψη χωρίς παρακολούθηση
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Μαζί με τη βάση URL, π.χ. http://192.168.1.10:8989 ή https://host/sonarr
+Indexer	Ευρετήριο
+Indexer options saved.	Οι επιλογές ευρετηρίων αποθηκεύτηκαν.
+Indexer settings	Ρυθμίσεις ευρετηρίου
+Indexers	Ευρετήρια
+Info	Πληροφορίες
+Info {infos}	Πληροφορίες {infos}
+Instance	Εγκατάσταση
+Instance name	Όνομα εγκατάστασης
+Instance: {name}	Εγκατάσταση: {name}
+Interactive	Αλληλεπιδραστική
+Interactive search	Αλληλεπιδραστική αναζήτηση
+Interactive search for full-season packs only	Αλληλεπιδραστική αναζήτηση μόνο για πακέτα ολόκληρων κύκλων
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Αλληλεπιδραστική αναζήτηση για πακέτα ολόκληρης της σειράς (και των κύκλων της) σε ευρετήρια torrent
+Interactive search: see every release and choose	Αλληλεπιδραστική αναζήτηση: δείτε κάθε κυκλοφορία και επιλέξτε
+Interface language	Γλώσσα διεπαφής
+Interval	Διάστημα
+Jellyfin library and user	Βιβλιοθήκη και χρήστης Jellyfin
+Job	Εργασία
+Keep / skip	Διατήρηση / παράλειψη
+Keep files replaced by upgrades as versions (in "Plex Versions")	Διατήρηση ως εκδόσεων των αρχείων που αντικαθίστανται από αναβαθμίσεις (στο "Plex Versions")
+Keep me signed in	Να παραμείνω συνδεδεμένος
+Keep the replaced file's date (upgrades)	Διατήρηση της ημερομηνίας του αρχείου που αντικαταστάθηκε (αναβαθμίσεις)
+Kept	Διατηρήθηκε
+Kept versions	Διατηρημένες εκδόσεις
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Κλειδιά για συνοδευτικές εφαρμογές που χρησιμοποιούν το API v3 του Sonarr: διαβάζουν τη βιβλιοθήκη και τα κλειδιά «προσθήκη σειρών» μπορούν επίσης να προσθέτουν σειρές (σε ριζικό φάκελο, χωρίς αναζήτηση). Τίποτε άλλο δεν επιτρέπεται.
+KiB	KiB
+Kind	Είδος
+Kitsunarr is free software (GPL-3.0-or-later).	Το Kitsunarr είναι ελεύθερο λογισμικό (GPL-3.0-or-later).
+Kitsunarr path	Διαδρομή στο Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Το Kitsunarr θα δημιουργήσει αντίγραφο ασφαλείας της δικής του βάσης δεδομένων, θα εισαγάγει τα δεδομένα της προεπισκόπησης σε μία συναλλαγή και θα τα επικυρώσει πριν από την οριστικοποίηση. Η πηγή και τα αρχεία πολυμέσων σας δεν τροποποιούνται.
+Label	Ετικέτα
+Languages	Γλώσσες
+Larger releases are rejected. 0 means unlimited.	Μεγαλύτερες κυκλοφορίες απορρίπτονται. Το 0 σημαίνει χωρίς όριο.
+Last read	Τελευταία ανάγνωση
+Last run	Τελευταία εκτέλεση
+Last search	Τελευταία αναζήτηση
+Last searched	Τελευταία αναζήτηση
+Last season	Τελευταίος κύκλος
+Later ›	Επόμενα ›
+Latest season	Πιο πρόσφατος κύκλος
+Level	Επίπεδο
+Library	Βιβλιοθήκη
+Library check	Έλεγχος βιβλιοθήκης
+Library tools	Εργαλεία βιβλιοθήκης
+Library tools saved.	Τα εργαλεία βιβλιοθήκης αποθηκεύτηκαν.
+List	Λίστα
+Listed best first. Grouped qualities rank equally.	Πρώτα η καλύτερη. Οι ομαδοποιημένες ποιότητες είναι ισοδύναμες.
+Live updates connected	Ζωντανές ενημερώσεις συνδεδεμένες
+Live updates disconnected	Ζωντανές ενημερώσεις αποσυνδεδεμένες
+Load	Φόρτωση
+Load the account's lists	Φόρτωση των λιστών του λογαριασμού
+Load the libraries…	Φόρτωση των βιβλιοθηκών…
+Load the users…	Φόρτωση των χρηστών…
+Local air date	Τοπική ημερομηνία προβολής
+Local path	Τοπική διαδρομή
+Log them	Καταγραφή τους
+Logs	Αρχεία καταγραφής
+Main rejections	Κύριες απορρίψεις
+Make current	Ορισμός ως τρέχον
+Manual import	Χειροκίνητη εισαγωγή
+Mark as failed	Σήμανση ως αποτυχημένο
+Matches monitored titles.	Ταιριάζει με τίτλους σε παρακολούθηση.
+Maximum	Μέγιστο
+Maximum size (MB)	Μέγιστο μέγεθος (MB)
+Media management	Διαχείριση πολυμέσων
+Media management settings	Ρυθμίσεις διαχείρισης πολυμέσων
+Media paths	Διαδρομές πολυμέσων
+Mediums	Μέσα
+Members	Μέλη
+Message	Μήνυμα
+Metadata	Μεταδεδομένα
+Metadata files	Αρχεία μεταδεδομένων
+Metadata keys saved.	Τα κλειδιά μεταδεδομένων αποθηκεύτηκαν.
+Metadata language	Γλώσσα μεταδεδομένων
+Metadata refreshed.	Τα μεταδεδομένα ανανεώθηκαν.
+Metadata refreshed: {} new episodes, {} updated.	Τα μεταδεδομένα ανανεώθηκαν: {} νέα επεισόδια, {} ενημερώθηκαν.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Οι ρυθμίσεις μεταδεδομένων αποθηκεύτηκαν. Τα αρχεία γράφονται στην επόμενη σάρωση δίσκου, ανανέωση ή εισαγωγή.
+Metadata sources	Πηγές μεταδεδομένων
+MiB	MiB
+Migration completed.	Η μεταφορά ολοκληρώθηκε.
+Migration report #{}	Αναφορά μεταφοράς αρ. {}
+Minimum	Ελάχιστο
+Minimum age (minutes)	Ελάχιστη ηλικία (λεπτά)
+Minimum custom format score	Ελάχιστη βαθμολογία προσαρμοσμένων μορφών
+Minimum format score	Ελάχιστη βαθμολογία μορφής
+Minimum free space (MiB)	Ελάχιστος ελεύθερος χώρος (MiB)
+Minimum seeders	Ελάχιστοι seeders
+Missing	Λείπουν
+Missing (monitored)	Λείπουν (σε παρακολούθηση)
+Missing films	Ταινίες που λείπουν
+Mode	Λειτουργία
+Monday	Δευτέρα
+Monitor	Παρακολούθηση
+Monitored	Σε παρακολούθηση
+More languages can be added to the string tables.	Μπορούν να προστεθούν περισσότερες γλώσσες στους πίνακες κειμένων.
+Move	Μετακίνηση
+Movie	Ταινία
+Movie file format	Μορφή αρχείου ταινίας
+Movie removed from Kitsunarr. Files on disk were not touched.	Η ταινία αφαιρέθηκε από το Kitsunarr. Τα αρχεία στον δίσκο δεν επηρεάστηκαν.
+Movies	Ταινίες
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Κυκλοφορίες πολλών κύκλων: αποδοχή πακέτων με πολλούς κύκλους (μια αναζήτηση κύκλου παίρνει το πακέτο για τον κύκλο της)
+Must contain	Πρέπει να περιέχει
+Must contain (comma separated; /regex/ allowed)	Πρέπει να περιέχει (διαχωρισμένα με κόμμα· επιτρέπεται /regex/)
+Must not contain	Δεν πρέπει να περιέχει
+NOT	ΟΧΙ
+Name	Όνομα
+Naming	Ονομασία
+Naming options saved.	Οι επιλογές ονομασίας αποθηκεύτηκαν.
+Naming saved.	Η ονομασία αποθηκεύτηκε.
+Negate	Άρνηση
+Network	Δίκτυο
+Never: keep the release's names	Ποτέ: διατήρηση των ονομάτων της κυκλοφορίας
+New custom format	Νέα προσαρμοσμένη μορφή
+New custom preset	Νέα προσαρμοσμένη προρύθμιση
+New group title	Τίτλος νέας ομάδας
+New password	Νέος κωδικός πρόσβασης
+New quality profile	Νέο προφίλ ποιότητας
+Next airing	Επόμενη προβολή
+Next run	Επόμενη εκτέλεση
+Next ›	Επόμενο ›
+No	Όχι
+No activity yet.	Καμία δραστηριότητα ακόμη.
+No auto tags.	Καμία αυτόματη ετικέτα.
+No backups yet	Κανένα αντίγραφο ασφαλείας ακόμη
+No collections yet	Καμία συλλογή ακόμη
+No companion keys.	Κανένα συνοδευτικό κλειδί.
+No custom formats	Καμία προσαρμοσμένη μορφή
+No custom formats defined.	Δεν έχουν οριστεί προσαρμοσμένες μορφές.
+No delay above the minimum custom format score	Χωρίς καθυστέρηση πάνω από την ελάχιστη βαθμολογία προσαρμοσμένων μορφών
+No delay for the profile's best quality in the preferred protocol	Χωρίς καθυστέρηση για την καλύτερη ποιότητα του προφίλ στο προτιμώμενο πρωτόκολλο
+No download client to read	Κανένα client λήψεων για ανάγνωση
+No exclusions.	Καμία εξαίρεση.
+No history	Κανένα ιστορικό
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Κανένα ευρετήριο δεν μπορεί να αναζητήσει αυτόματα αυτή τη σειρά: κανένα δεν έχει ενεργή την αυτόματη αναζήτηση μαζί με καμία ετικέτα ή μία από τις ετικέτες της σειράς.
+No indexers to search	Κανένα ευρετήριο για αναζήτηση
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Καμία διατηρημένη έκδοση. Ενεργοποιήστε τη «Διατήρηση αρχείων που αντικαθίστανται από αναβαθμίσεις» στην Ονομασία.
+No log entries at this level	Καμία καταχώριση καταγραφής σε αυτό το επίπεδο
+No mappings.	Καμία αντιστοίχιση.
+No matches	Καμία αντιστοιχία
+No members	Κανένα μέλος
+No migrations have been run yet.	Δεν έχει εκτελεστεί ακόμη καμία μεταφορά.
+No movies yet	Καμία ταινία ακόμη
+No notes.	Καμία σημείωση.
+No recycle bin is set (Settings › Media management).	Δεν έχει οριστεί κάδος ανακύκλωσης (Ρυθμίσεις › Διαχείριση πολυμέσων).
+No release profiles.	Κανένα προφίλ κυκλοφορίας.
+No root folders yet.	Κανένας ριζικός φάκελος ακόμη.
+No root folders.	Κανένας ριζικός φάκελος.
+No runs yet	Καμία εκτέλεση ακόμη
+No searches yet.	Καμία αναζήτηση ακόμη.
+No series in your library match.	Καμία σειρά της βιβλιοθήκης σας δεν ταιριάζει.
+No tags	Χωρίς ετικέτες
+No {}	Χωρίς {}
+No {} yet	Ακόμη χωρίς {}
+None	Κανένα
+Not evaluated by Kitsunarr.	Δεν αξιολογήθηκε από το Kitsunarr.
+Not imported	Δεν εισήχθη
+Not monitored	Χωρίς παρακολούθηση
+Notes	Σημειώσεις
+Notes ({preview.warnings.len()})	Σημειώσεις ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Σημειώσεις ({report.warnings.len()})
+Nothing airs in the next seven days.	Τίποτα δεν προβάλλεται τις επόμενες επτά ημέρες.
+Nothing downloading	Καμία λήψη σε εξέλιξη
+Nothing found	Δεν βρέθηκε τίποτα
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Τίποτα σε αυτόν τον κατάλογο δεν ταιριάζει με την αναζήτηση. Δοκιμάστε άλλη ορθογραφία, τον αρχικό τίτλο ή τον άλλο κατάλογο.
+Nothing in this period	Τίποτα σε αυτό το διάστημα
+Nothing missing	Δεν λείπει τίποτα
+Notifications	Ειδοποιήσεις
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Αρίθμηση επεισοδίων με άλλη διάταξη του καταλόγου (ομάδες επεισοδίων TMDB, διάταξη DVD ή απόλυτη του TheTVDB)
+OMDb API key	Κλειδί API OMDb
+Older priority	Προτεραιότητα παλαιότερων
+One folder per season	Ένας φάκελος ανά κύκλο
+Only the 2000 newest files are listed.	Εμφανίζονται μόνο τα 2000 πιο πρόσφατα αρχεία.
+Only when the proxy needs one.	Μόνο αν τον απαιτεί ο διακομιστής μεσολάβησης.
+Open the library	Άνοιγμα της βιβλιοθήκης
+OpenAPI document	Έγγραφο OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Ανοίγει την υπηρεσία για να εξουσιοδοτήσετε το Kitsunarr και συμπληρώνει το token.
+Options	Επιλογές
+Organize	Οργάνωση
+Other	Άλλο
+Overview	Περίληψη
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Αντικατάσταση εγγραφών που υπάρχουν ήδη στο Kitsunarr (διαφορετικά διατηρούνται)
+Packs	Πακέτα
+Page not found	Η σελίδα δεν βρέθηκε
+Page {page} / {pages}	Σελίδα {page} / {pages}
+Password	Κωδικός πρόσβασης
+Password changed. Other sessions were signed out.	Ο κωδικός πρόσβασης άλλαξε. Οι άλλες συνεδρίες αποσυνδέθηκαν.
+Past days	Προηγούμενες ημέρες
+Path	Διαδρομή
+Path mappings	Αντιστοιχίσεις διαδρομών
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Παύση αυτοματισμού (συγχρονισμός RSS, προγραμματισμένοι συγχρονισμοί λιστών, αυτόματες αναζητήσεις)
+Peers	Peers
+Permission	Δικαίωμα
+PiB	PiB
+Platform	Πλατφόρμα
+Port	Θύρα
+Position	Θέση
+Post-import category	Κατηγορία μετά την εισαγωγή
+Posters	Αφίσες
+Prefer and upgrade	Προτίμηση και αναβάθμιση
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Προτίμηση πακέτων κύκλων anime (οι αναζητήσεις κύκλων anime του Kitsunarr αναζητούν ήδη τον κύκλο μία φορά)
+Prefer, do not upgrade	Προτίμηση, χωρίς αναβάθμιση
+Preferred	Προτιμώμενο
+Preferred metadata language	Προτιμώμενη γλώσσα μεταδεδομένων
+Preferred protocol	Προτιμώμενο πρωτόκολλο
+Preparing preview…	Προετοιμασία προεπισκόπησης…
+Preview	Προεπισκόπηση
+Preview migration	Προεπισκόπηση μεταφοράς
+Previous migrations	Προηγούμενες μεταφορές
+Priority	Προτεραιότητα
+Problem	Πρόβλημα
+Profile	Προφίλ
+Profile saved.	Το προφίλ αποθηκεύτηκε.
+Profiles still used by series or movies cannot be deleted.	Τα προφίλ που χρησιμοποιούνται ακόμη από σειρές ή ταινίες δεν μπορούν να διαγραφούν.
+Progress	Πρόοδος
+Propers and repacks	Propers και repacks
+Proxy	Διακομιστής μεσολάβησης
+Proxy saved.	Ο διακομιστής μεσολάβησης αποθηκεύτηκε.
+Proxy type	Τύπος διακομιστή μεσολάβησης
+Qualities	Ποιότητες
+Quality	Ποιότητα
+Quality presets	Προρυθμίσεις ποιότητας
+Quality presets saved.	Οι προρυθμίσεις ποιότητας αποθηκεύτηκαν.
+Quality profile	Προφίλ ποιότητας
+Quality profiles	Προφίλ ποιότητας
+Quality profile…	Προφίλ ποιότητας…
+RSS sync interval (minutes)	Διάστημα συγχρονισμού RSS (λεπτά)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	Ο συγχρονισμός RSS περιμένει τόσο χρόνο αφού εμφανιστεί μια κυκλοφορία για να βρει καλύτερη· οι κυκλοφορίες σε καθυστέρηση εμφανίζονται στην ουρά. Εφαρμόζεται το πρώτο προφίλ του οποίου οι ετικέτες ταιριάζουν με τη σειρά· το τελευταίο (χωρίς ετικέτες) είναι το προεπιλεγμένο.
+Re-encode this series' files with the compression worker	Επανακωδικοποίηση των αρχείων αυτής της σειράς με την υπηρεσία συμπίεσης
+Read and add series	Ανάγνωση και προσθήκη σειρών
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Διαβάζεται ζωντανά από τα client λήψεων κάθε λίγα δευτερόλεπτα. Οι ολοκληρωμένες λήψεις που έκανε το Kitsunarr εισάγονται στον φάκελο της σειράς κάθε λεπτό (τα torrent αντιγράφονται ή συνδέονται με hardlink, ώστε να συνεχίζουν το seeding· οι λήψεις Usenet μετακινούνται). Οι αποτυχημένες λήψεις μπαίνουν στη λίστα αποκλεισμού και αναζητούνται ξανά.
+Read the library	Ανάγνωση της βιβλιοθήκης
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Μόνο ανάγνωση: βρίσκει φακέλους σειρών που λείπουν, εγγραφές αρχείων εκτός του φακέλου τους ή καταγεγραμμένες δύο φορές και αρχεία που λείπουν από τον δίσκο.
+Reading the download clients…	Ανάγνωση των client λήψεων…
+Reading the source	Ανάγνωση της πηγής
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Διαβάζει τα πάντα μέσω του API. Οι κωδικοί πρόσβασης και τα κλειδιά API των παρόχων αποκρύπτονται από την πηγή και πρέπει να εισαχθούν ξανά μετά.
+Recent activity	Πρόσφατη δραστηριότητα
+Recent priority	Προτεραιότητα πρόσφατων
+Recent runs	Πρόσφατες εκτελέσεις
+Recent searches	Πρόσφατες αναζητήσεις
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Συνιστάται. Στο Sonarr/Tanukarr ανοίξτε Σύστημα → Αντίγραφα ασφαλείας, δημιουργήστε ένα αντίγραφο και κατεβάστε το .zip (ή χρησιμοποιήστε το sonarr.db). Περιλαμβάνει τους κωδικούς πρόσβασης ευρετηρίων και client λήψεων.
+Recycle bin	Κάδος ανακύκλωσης
+Recycle bin cleanup (days)	Καθαρισμός κάδου ανακύκλωσης (ημέρες)
+Recycled	Στον κάδο
+Refresh metadata	Ανανέωση μεταδεδομένων
+Refresh preview	Ανανέωση προεπισκόπησης
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Η ανανέωση από {} δεν υποστηρίζεται ακόμη· τα εισαγόμενα μεταδεδομένα διατηρούνται ως έχουν
+Refreshing…	Ανανέωση…
+Regenerate	Αναδημιουργία
+Regenerate API key	Αναδημιουργία κλειδιού API
+Reject releases whose TheTVDB or IMDb id names another series	Απόρριψη κυκλοφοριών των οποίων το id TheTVDB ή IMDb αντιστοιχεί σε άλλη σειρά
+Rejected: click twice to grab anyway	Απορρίφθηκε: κάντε κλικ δύο φορές για λήψη παρ' όλα αυτά
+Release	Κυκλοφορία
+Release profile	Προφίλ κυκλοφορίας
+Release profile saved.	Το προφίλ κυκλοφορίας αποθηκεύτηκε.
+Release profiles	Προφίλ κυκλοφορίας
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Οι κυκλοφορίες ελέγχονται με το προφίλ ποιότητας, τις προσαρμοσμένες μορφές και τα προφίλ κυκλοφορίας της σειράς και ταξινομούνται, όπως κάνει το Sonarr. Οι απορριφθείσες κυκλοφορίες ζητούν δεύτερο κλικ.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Κυκλοφορίες που απέτυχαν ή αποκλείστηκαν χειροκίνητα. Οι αναζητήσεις και ο συγχρονισμός RSS δεν τις λαμβάνουν ποτέ ξανά· αφαιρέστε μία για να την επιτρέψετε.
+Remote path	Απομακρυσμένη διαδρομή
+Remote path mapping	Αντιστοίχιση απομακρυσμένης διαδρομής
+Remote path mapping saved.	Η αντιστοίχιση απομακρυσμένης διαδρομής αποθηκεύτηκε.
+Remote path mappings	Αντιστοιχίσεις απομακρυσμένων διαδρομών
+Remove	Αφαίρεση
+Remove completed downloads	Αφαίρεση ολοκληρωμένων λήψεων
+Remove every release from the blocklist?	Αφαίρεση όλων των κυκλοφοριών από τη λίστα αποκλεισμού;
+Remove failed downloads	Αφαίρεση αποτυχημένων λήψεων
+Remove from library	Αφαίρεση από τη βιβλιοθήκη
+Remove from queue	Αφαίρεση από την ουρά
+Remove from the download client (deletes its files there)	Αφαίρεση από το client λήψεων (διαγράφει τα αρχεία της εκεί)
+Remove movie	Αφαίρεση ταινίας
+Remove series	Αφαίρεση σειράς
+Remove tags automatically (from titles that stop matching)	Αυτόματη αφαίρεση ετικετών (από τίτλους που παύουν να ταιριάζουν)
+Remove “{title}” and its episode records from Kitsunarr?	Αφαίρεση του «{title}» και των εγγραφών των επεισοδίων του από το Kitsunarr;
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Αφαίρεση του «{title}» από το Kitsunarr; Τα αρχεία στον δίσκο δεν διαγράφονται.
+Removed	Αφαιρέθηκε
+Removed from the blocklist.	Αφαιρέθηκε από τη λίστα αποκλεισμού.
+Rename	Μετονομασία
+Rename files	Μετονομασία αρχείων
+Rename files on import	Μετονομασία αρχείων κατά την εισαγωγή
+Rename files to the naming settings	Μετονομασία αρχείων σύμφωνα με τις ρυθμίσεις ονομασίας
+Formats use Sonarr's tokens.	Οι μορφές χρησιμοποιούν τα token του Sonarr.
+Renaming…	Μετονομασία…
+Report	Αναφορά
+Request one at omdbapi.com. Used for films by IMDb id.	Ζητήστε ένα στο omdbapi.com. Χρησιμοποιείται για ταινίες μέσω id IMDb.
+Required	Υποχρεωτική
+Resolution	Ανάλυση
+Restore	Επαναφορά
+Restore {}	Επαναφορά {}
+Restore…	Επαναφορά…
+Restoring…	Επαναφορά σε εξέλιξη…
+Resume automation	Συνέχιση αυτοματισμού
+Retention (days)	Διατήρηση (ημέρες)
+Retire	Απόσυρση
+Revoke	Ανάκληση
+Root folder	Ριζικός φάκελος
+Root folders	Ριζικοί φάκελοι
+Root folder…	Ριζικός φάκελος…
+Run #{run.id}: {run.status}	Εκτέλεση αρ. {run.id}: {run.status}
+Run now	Εκτέλεση τώρα
+Running…	Εκτελείται…
+Saturday	Σάββατο
+Save	Αποθήκευση
+Save criteria	Αποθήκευση κριτηρίων
+Save factors	Αποθήκευση συντελεστών
+Save keys	Αποθήκευση κλειδιών
+Save metadata files	Αποθήκευση αρχείων μεταδεδομένων
+Save naming	Αποθήκευση ονομασίας
+Save options	Αποθήκευση επιλογών
+Saved	Αποθηκεύτηκε
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Τα αποθηκευμένα κλειδιά εμφανίζονται ως {REDACTED}· αφήστε τα αμετάβλητα για να τα διατηρήσετε ή αδειάστε το πεδίο για να αφαιρέσετε ένα.
+Saved.	Αποθηκεύτηκε.
+Scan disk	Σάρωση δίσκου
+Scan folder	Σάρωση φακέλου
+Scanning…	Σάρωση…
+Scheduled tasks	Προγραμματισμένες εργασίες
+Score	Βαθμολογία
+Search	Αναζήτηση
+Search again when a download fails	Νέα αναζήτηση όταν αποτυγχάνει μια λήψη
+Search all	Αναζήτηση όλων
+Search all films	Αναζήτηση όλων των ταινιών
+Search collection	Αναζήτηση στη συλλογή
+Search every episode of the list, one search per season	Αναζήτηση κάθε επεισοδίου της λίστας, μία αναζήτηση ανά κύκλο
+Search every member's missing episodes (films: the film)	Αναζήτηση των επεισοδίων που λείπουν από κάθε μέλος (ταινίες: η ταινία)
+Search indexers	Αναζήτηση στα ευρετήρια
+Search selected	Αναζήτηση επιλεγμένων
+Search the indexers and choose a release	Αναζήτηση στα ευρετήρια και επιλογή κυκλοφορίας
+Search the indexers and grab the best accepted release	Αναζήτηση στα ευρετήρια και λήψη της καλύτερης αποδεκτής κυκλοφορίας
+Search the indexers and grab the best releases for the monitored episodes	Αναζήτηση στα ευρετήρια και λήψη των καλύτερων κυκλοφοριών για τα επεισόδια σε παρακολούθηση
+Search your indexers	Αναζήτηση στα ευρετήριά σας
+Search {chosen} selected	Αναζήτηση επιλεγμένων: {chosen}
+Search: {}	Αναζήτηση: {}
+Search: {} — complete series	Αναζήτηση: {} — ολόκληρη σειρά
+Search: {} — season {season} packs	Αναζήτηση: {} — πακέτα κύκλου {season}
+Search: {} — {label}	Αναζήτηση: {} — {label}
+Searching for {label}…	Αναζήτηση για {label}…
+Searching indexers…	Αναζήτηση στα ευρετήρια…
+Searching…	Αναζήτηση…
+Season	Κύκλος
+Season folder format	Μορφή φακέλου κύκλου
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Οι τίτλοι φακέλων κύκλων αντικαθιστούν αυτούς του καταλόγου στο {{Season Title}}. Αφήστε κενό για να διατηρηθούν αυτοί του καταλόγου.
+Season folders	Φάκελοι κύκλων
+Season images (Season ##.jpg)	Εικόνες κύκλων (Season ##.jpg)
+Season images (Season##/folder.jpg)	Εικόνες κύκλων (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Εικόνες κύκλων (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Πακέτα κύκλων: το 1 χρησιμοποιεί τους στόχους πακέτων κύκλων παρακάτω
+Season premieres only	Μόνο πρεμιέρες κύκλων
+Season {n}	Κύκλος {n}
+Season {one}	Κύκλος {one}
+Season {se.season_number}	Κύκλος {se.season_number}
+Season {season_number}	Κύκλος {season_number}
+Season-pack seed ratio	Αναλογία seed για πακέτα κύκλων
+Season-pack seed time, minutes	Χρόνος seed για πακέτα κύκλων, λεπτά
+Seasons	Κύκλοι
+Seasons {first}-{last}	Κύκλοι {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Τα μυστικά εμφανίζονται ως {REDACTED}· αφήστε τα αμετάβλητα για να διατηρηθεί η αποθηκευμένη τιμή.
+Seed ratio (empty: the client's default)	Αναλογία seed (κενό: προεπιλογή του client)
+Seed time, minutes (empty: the client's default)	Χρόνος seed, λεπτά (κενό: προεπιλογή του client)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Αποστολή των αιτημάτων προς ευρετήρια, καταλόγους, λίστες, client λήψεων και συνδέσεις μέσω διακομιστή μεσολάβησης.
+Send to the download client	Αποστολή στο client λήψεων
+Series	Σειρά
+Series .plexmatch file	Αρχείο .plexmatch της σειράς
+Series folder format	Μορφή φακέλου σειράς
+Series images (Series Title.jpg)	Εικόνες σειράς (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Εικόνες σειράς (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Εικόνες σειράς (folder.jpg)
+Series metadata (tvshow.nfo)	Μεταδεδομένα σειράς (tvshow.nfo)
+Series metadata URL	URL μεταδεδομένων σειράς
+Series metadata episode guide	Οδηγός επεισοδίων στα μεταδεδομένα σειράς
+Series removed from Kitsunarr. Files on disk were not touched.	Η σειρά αφαιρέθηκε από το Kitsunarr. Τα αρχεία στον δίσκο δεν επηρεάστηκαν.
+Series removed, and its folder deleted.	Η σειρά αφαιρέθηκε και ο φάκελός της διαγράφηκε.
+Series type	Τύπος σειράς
+Set quality profile…	Ορισμός προφίλ ποιότητας…
+Settings	Ρυθμίσεις
+Settings saved.	Οι ρυθμίσεις αποθηκεύτηκαν.
+Settings → General → Security in Sonarr/Tanukarr.	Ρυθμίσεις → Γενικά → Ασφάλεια στο Sonarr/Tanukarr.
+Show	Εμφάνιση
+Show as all-day events	Εμφάνιση ως ολοήμερα συμβάντα
+Show unmonitored	Εμφάνιση χωρίς παρακολούθηση
+Shows	Σειρές
+Sign in	Σύνδεση
+Signed in. Save the list to keep the token.	Συνδεθήκατε. Αποθηκεύστε τη λίστα για να διατηρηθεί το token.
+Signing in…	Σύνδεση…
+Size	Μέγεθος
+Size limits	Όρια μεγέθους
+Size on disk	Μέγεθος στον δίσκο
+Skip files smaller than (MB)	Παράλειψη αρχείων μικρότερων από (MB)
+Skip the free-space check	Παράλειψη του ελέγχου ελεύθερου χώρου
+Skip unmonitored episodes when importing packs	Παράλειψη επεισοδίων χωρίς παρακολούθηση κατά την εισαγωγή πακέτων
+Source	Πηγή
+Source code	Πηγαίος κώδικας
+Source path	Διαδρομή πηγής
+Special	Ειδικό
+Specials	Ειδικά
+Specials are never monitored automatically.	Τα ειδικά επεισόδια δεν τίθενται ποτέ αυτόματα σε παρακολούθηση.
+Specifications	Προδιαγραφές
+Specifications (JSON)	Προδιαγραφές (JSON)
+Specifications must be valid JSON: {e}	Οι προδιαγραφές πρέπει να είναι έγκυρο JSON: {e}
+Stalled torrent timeout (minutes)	Χρονικό όριο για κολλημένα torrent (λεπτά)
+Standard	Τυπική
+Standard episode format	Τυπική μορφή επεισοδίου
+Start migration	Έναρξη μεταφοράς
+Start over	Από την αρχή
+Start search for missing episodes	Έναρξη αναζήτησης επεισοδίων που λείπουν
+Started	Ξεκίνησε
+Started {format_datetime(&run.started_at)}	Ξεκίνησε {format_datetime(&run.started_at)}
+Status	Κατάσταση
+Status & health	Κατάσταση και υγεία
+Still downloading	Λήψη σε εξέλιξη
+Storage outlook	Πρόβλεψη χώρου
+Studio	Στούντιο
+Subscribe	Συνδρομή
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Εγγραφείτε σε αυτή τη διεύθυνση από μια εφαρμογή ημερολογίου. Περιέχει το κλειδί API σας: κρατήστε τη ιδιωτική.
+Sunday	Κυριακή
+Sync	Συγχρονισμός
+Sync all lists now	Συγχρονισμός όλων των λιστών τώρα
+Sync now	Συγχρονισμός τώρα
+Syncing…	Συγχρονισμός…
+System →	Σύστημα →
+TMDB API key (v3)	Κλειδί API TMDB (v3)
+TV Series	Τηλεοπτικές σειρές
+TV series	Τηλεοπτικές σειρές
+Table	Πίνακας
+Tag	Ετικέτα
+Tag them	Προσθήκη ετικέτας
+Tag titles already in the library	Προσθήκη ετικετών σε τίτλους που υπάρχουν ήδη στη βιβλιοθήκη
+Tags	Ετικέτες
+Tags (comma separated)	Ετικέτες (διαχωρισμένες με κόμμα)
+Tags (ids, comma separated)	Ετικέτες (id, διαχωρισμένα με κόμμα)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Οι ετικέτες προστίθενται σε σειρές και ταινίες που ταιριάζουν με κάθε είδος συνθήκης όταν προστίθενται, επεξεργάζονται ή ανανεώνονται.
+Task	Εργασία
+Television	Τηλεόραση
+Television (raw)	Τηλεόραση (raw)
+Test	Δοκιμή
+Test failed: {message}	Η δοκιμή απέτυχε: {message}
+Testing…	Δοκιμή…
+The blocklist is empty	Η λίστα αποκλεισμού είναι κενή
+The catalogue new titles are added from when the list knows their id there.	Ο κατάλογος από τον οποίο προστίθενται οι νέοι τίτλοι, όταν η λίστα γνωρίζει το id τους εκεί.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Η ημερομηνία που λαμβάνουν τα εισαγόμενα αρχεία: η ημερομηνία προβολής του επεισοδίου (τοπική ή UTC) ή, σε αναβάθμιση, η ημερομηνία του αρχείου που αντικαταστάθηκε.
+The dry run completed without blocking problems. Nothing has been written yet.	Η δοκιμαστική εκτέλεση ολοκληρώθηκε χωρίς προβλήματα που την εμποδίζουν. Δεν έχει γραφτεί τίποτα ακόμη.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Το αρχείο μετακινείται στον φάκελο του κύκλου (ένα υπάρχον αρχείο δεν αντικαθίσταται ποτέ) και η σειρά σαρώνεται ξανά.
+The folder must already exist; Kitsunarr never creates or removes it.	Ο φάκελος πρέπει να υπάρχει ήδη· το Kitsunarr δεν τον δημιουργεί ούτε τον αφαιρεί ποτέ.
+The indexers returned no releases for this search.	Τα ευρετήρια δεν επέστρεψαν κυκλοφορίες για αυτή την αναζήτηση.
+The instance is on my local network (private or loopback address)	Η εγκατάσταση βρίσκεται στο τοπικό μου δίκτυο (ιδιωτική διεύθυνση ή διεύθυνση loopback)
+The list has not been read, or it is empty.	Η λίστα δεν έχει διαβαστεί ή είναι κενή.
+The migration did not complete; nothing was changed.	Η μεταφορά δεν ολοκληρώθηκε· δεν άλλαξε τίποτα.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Οι πιο πρόσφατες καταχωρίσεις που διατηρούνται στη μνήμη. Τα πλήρη αρχεία καταγραφής πηγαίνουν στην έξοδο της διεργασίας (αρχεία καταγραφής του κοντέινερ ή journal).
+The passwords do not match.	Οι κωδικοί πρόσβασης δεν ταιριάζουν.
+The recycle bin has no media or subtitle files.	Ο κάδος ανακύκλωσης δεν περιέχει αρχεία πολυμέσων ή υποτίτλων.
+The sign-in expired; try again.	Η σύνδεση έληξε· δοκιμάστε ξανά.
+The upload failed (network error).	Η μεταφόρτωση απέτυχε (σφάλμα δικτύου).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Η υπηρεσία συμπίεσης είναι ένα προαιρετικό στοιχείο του host (η υπηρεσία συμπίεσης του Tanukarr), προσβάσιμο μέσω του socket στο KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	Το TheTVDB (ο κατάλογος του Sonarr), το TMDB και το TVmaze καλύπτουν τηλεοπτικές σειρές· το AniList και το MyAnimeList καλύπτουν σειρές και ταινίες anime· το TMDB και το OMDb καλύπτουν ταινίες. Η προσθήκη ενός τίτλου δημιουργεί την καταχώρισή του στη βιβλιοθήκη και τη λίστα επεισοδίων του· τα αρχεία εντοπίζονται αργότερα από τη διαδικασία εισαγωγής.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Οι τίτλοι του TheTVDB αναζητούνται και προστίθενται σε αυτή τη γλώσσα· κάθε σειρά μπορεί να την αλλάξει στον επεξεργαστή της.
+TheTVDB titles in this language; changing it refreshes the series	Τίτλοι του TheTVDB σε αυτή τη γλώσσα· η αλλαγή της ανανεώνει τη σειρά
+There is nothing at /{path}.	Δεν υπάρχει τίποτα στο /{path}.
+They are created by migrating from Sonarr/Tanukarr.	Δημιουργούνται με μεταφορά από το Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Λειτουργία μετονομασίας, τίτλοι φακέλων κύκλων και διατηρημένες εκδόσεις αυτής της σειράς
+TiB	TiB
+Time	Ώρα
+Time left	Υπολειπόμενος χρόνος
+Title	Τίτλος
+Title pattern	Μοτίβο τίτλου
+Titles import lists never add.	Τίτλοι που οι λίστες εισαγωγής δεν προσθέτουν ποτέ.
+Titles on no list	Τίτλοι σε καμία λίστα
+Today	Σήμερα
+Torrent	Torrent
+Torrent delay	Καθυστέρηση torrent
+Torrent delay (minutes)	Καθυστέρηση torrent (λεπτά)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Ευρετήρια Torznab και Newznab. Χρησιμοποιήστε τη Δοκιμή στον επεξεργαστή για να ελέγξετε ένα· κάθε αναζήτηση χρησιμοποιεί τα ευρετήρια που έχουν ενεργό αυτό το είδος αναζήτησης: RSS, αυτόματη ή αλληλεπιδραστική.
+Trigger	Ενεργοποίηση
+URL base	Βάση URL
+UTC air date	Ημερομηνία προβολής UTC
+Unchanged	Αμετάβλητο
+Unknown	Άγνωστο
+Unmonitor	Διακοπή παρακολούθησης
+Unmonitor them	Διακοπή της παρακολούθησής τους
+Unmonitored	Χωρίς παρακολούθηση
+Upcoming	Επερχόμενα
+Upcoming 7 days	Επόμενες 7 ημέρες
+Update	Ενημέρωση
+Updated {} items.	Ενημερώθηκαν στοιχεία: {}.
+Upgrade until (cutoff)	Αναβάθμιση έως (όριο)
+Upgrade until format score	Αναβάθμιση έως βαθμολογία μορφής
+Upgrades allowed	Επιτρέπονται αναβαθμίσεις
+Upload a backup	Μεταφόρτωση αντιγράφου ασφαλείας
+Upload failed (HTTP {}).	Η μεταφόρτωση απέτυχε (HTTP {}).
+Uploading…	Μεταφόρτωση…
+Use SSL	Χρήση SSL
+Use a proxy	Χρήση διακομιστή μεσολάβησης
+Use hardlinks instead of copying	Χρήση hardlink αντί για αντιγραφή
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Χρησιμοποιήστε το ως κεφαλίδα X-Api-Key (ή ?apikey=) από άλλες εφαρμογές. Συμβατό με την κεφαλίδα που χρησιμοποιεί το Sonarr.
+Use these episodes	Χρήση αυτών των επεισοδίων
+Usenet	Usenet
+Usenet delay	Καθυστέρηση Usenet
+Usenet delay (minutes)	Καθυστέρηση Usenet (λεπτά)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Μόνο Usenet: οι νεότερες κυκλοφορίες απορρίπτονται, ώστε να έχουν χρόνο να διαδοθούν. Το 0 το απενεργοποιεί.
+Usenet only: older releases are rejected. 0 means unlimited.	Μόνο Usenet: οι παλαιότερες κυκλοφορίες απορρίπτονται. Το 0 σημαίνει χωρίς όριο.
+User name	Όνομα χρήστη
+Username	Όνομα χρήστη
+Validation	Επικύρωση
+Version	Έκδοση
+Versions	Εκδόσεις
+Waiting for the sign-in at	Αναμονή για σύνδεση στο
+Wanted	Ζητούμενα
+Warnings	Προειδοποιήσεις
+Warnings {warnings}	Προειδοποιήσεις {warnings}
+Watched (Jellyfin watched sync)	Προβλήθηκε (συγχρονισμός προβολών Jellyfin)
+Watched sync user	Χρήστης για συγχρονισμό προβολών
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Αποστέλλονται ειδοποιήσεις Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, προσαρμοσμένων σεναρίων (με τις μεταβλητές περιβάλλοντος του Sonarr), Emby/Jellyfin, Plex και Kodi: λήψεις, εισαγωγές και αναβαθμίσεις, μετονομασίες, σειρές που προστέθηκαν ή διαγράφηκαν, αρχεία που διαγράφηκαν, προβλήματα υγείας. Χρησιμοποιήστε τη Δοκιμή στον επεξεργαστή.
+Welcome	Καλώς ορίσατε
+What to import	Τι θα εισαχθεί
+When	Πότε
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Πότε ελέγχονται τα πιστοποιητικά HTTPS ευρετηρίων, client λήψεων και υπηρεσιών (ρύθμιση του Sonarr). Τα αυτοϋπογεγραμμένα πιστοποιητικά στο δίκτυό σας απαιτούν πιο χαλαρή ρύθμιση.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Όταν ένα client λήψεων αναφέρει διαδρομές που το Kitsunarr βλέπει αλλού (σε άλλο μηχάνημα ή κοντέινερ), αντιστοιχίστε τον host και τη διαδρομή του client στην τοπική διαδρομή.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Αν προτιμώνται οι κυκλοφορίες που διορθώνουν μια ελαττωματική κυκλοφορία και αν αναβαθμίζουν τα υπάρχοντα αρχεία (όπως στο Sonarr).
+Whole season	Ολόκληρος κύκλος
+Working…	Επεξεργασία…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Γράφονται στους φακέλους των σειρών όταν οι σειρές σαρώνονται, ανανεώνονται ή εισάγονται, όπως τα γράφουν οι καταναλωτές μεταδεδομένων του Sonarr.
+Year	Έτος
+Your library is empty.	Η βιβλιοθήκη σας είναι κενή.
+all checks passed	όλοι οι έλεγχοι πέρασαν
+comma separated	διαχωρισμένα με κόμμα
+cutoff: {}	όριο: {}
+has a file	έχει αρχείο
+iCal link	σύνδεσμος iCal
+in 2 days	σε 2 ημέρες
+in a moment	σε λίγο
+in file names	στα ονόματα αρχείων
+in library	στη βιβλιοθήκη
+in {text}	σε {text}
+just now	μόλις τώρα
+may run out of space	ενδέχεται να εξαντληθεί ο χώρος
+name (e.g. phone)	όνομα (π.χ. κινητό)
+never refreshed	δεν έχει ανανεωθεί ποτέ
+no media files are moved, renamed or deleted.	κανένα αρχείο πολυμέσων δεν μετακινείται, μετονομάζεται ή διαγράφεται.
+not accessible	μη προσβάσιμο
+not added	δεν προστέθηκε
+not checked	δεν ελέγχθηκε
+not read yet	δεν έχει διαβαστεί ακόμη
+on disk	στον δίσκο
+refreshed {}	ανανεώθηκε {}
+schema {s}	σχήμα {s}
+secrets included	περιλαμβάνονται μυστικά
+secrets masked	μυστικά με απόκρυψη
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip ή sonarr.db
+stored only	μόνο αποθηκευμένο
+title (optional)	τίτλος (προαιρετικό)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} προστέθηκαν· {}
+{added} shows added.	Προστέθηκαν σειρές: {added}.
+{c.name} (API key needed)	{c.name} (απαιτείται κλειδί API)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} σειρές · {c.movie_count} ταινίες
+{chosen().len()} chosen	Επιλεγμένα: {chosen().len()}
+{chosen().len()} chosen (at most 25)	Επιλεγμένα: {chosen().len()} (έως 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} στον δίσκο · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% από {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · προστέθηκε {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} από {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} αρχεία · {job["percent"]}% · εξοικονομήθηκαν {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	Το {name} ξεκίνησε.
+{name} was added to the library.	Το {name} προστέθηκε στη βιβλιοθήκη.
+{name}: shows	{name}: σειρές
+{ok} files imported.	Εισήχθησαν αρχεία: {ok}.
+{ok} imported; {}	{ok} εισήχθησαν· {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} κυκλοφορίες από {r.searched_indexers} ευρετήρια.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Ελέγχθηκαν {r.series_checked} σειρές και {r.files_checked} αρχεία: {r.issues.len()} προβλήματα.
+{selected.read().len()} selected	Επιλεγμένα: {selected.read().len()}
+{text} ago	πριν από {text}
+{} (not accessible)	{} (μη προσβάσιμο)
+{} ({} free)	{} ({} ελεύθερα)
+{} added to every profile (not allowed yet).	Το {} προστέθηκε σε κάθε προφίλ (δεν επιτρέπεται ακόμη).
+{} day(s)	{} ημέρα/ες
+{} failed: {}	{} απέτυχε: {}
+{} format scores	{} βαθμολογίες μορφών
+{} free of {}	{} ελεύθερα από {}
+{} week(s)	{} εβδομάδα/ες
+{}{year} — movie	{}{year} — ταινία
+‹ Back	‹ Πίσω
+‹ Earlier	‹ Προηγούμενα
+‹ Prev	‹ Προηγ.
+○ offline	○ εκτός σύνδεσης
+● live	● ζωντανά
+✓ No issues detected.	✓ Δεν εντοπίστηκαν προβλήματα.
+Activity	Δραστηριότητα
+Queue	Ουρά
+System	Σύστημα
+Tasks	Εργασίες
+Retry	Επανάληψη
+Sign out	Αποσύνδεση
+Search titles…  ( / )	Αναζήτηση τίτλων…  ( / )
+Loading…	Φόρτωση…
+Profiles	Προφίλ
+scene {}	scene {}
+Scene numbering from TheXEM	Αρίθμηση scene από το TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Αρίθμηση scene κατ' εκτίμηση από το TheXEM (μη επαληθευμένη)
+Season {} (scene seasons {})	Κύκλος {} (κύκλοι scene {})
+{} (scene {})	{} (scene {})

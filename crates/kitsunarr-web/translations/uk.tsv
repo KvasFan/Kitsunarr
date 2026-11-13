@@ -1,0 +1,968 @@
+# Ukrainian interface strings: English<TAB>Ukrainian. {…} marks a placeholder.
+custom	власна
+indeterminate	невизначено
+mixed	змішано
+retired	виведена
+· container	· контейнер
+· finished {format_datetime(f)}	· завершено {format_datetime(f)}
+· missing	· відсутній
+· on disk	· на диску
+· today	· сьогодні
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} еп.
+— MiB per minute; empty uses Settings › Quality	— MiB за хвилину; порожнє — значення з Налаштування › Якість
+— a release's size is multiplied by its codec's factor before the size limits apply	— розмір релізу множиться на коефіцієнт його кодека перед застосуванням обмежень розміру
+— all profiles at once	— усі профілі одразу
+— codec and title criteria, custom qualities (Tanukarr)	— критерії кодека й назви, власні якості (Tanukarr)
+— enter the code	— введіть код
+(empty)	(порожньо)
++ Add mapping	+ Додати зіставлення
++ New format	+ Новий формат
++ New profile	+ Новий профіль
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (вимкнено) або від 10 до 120. Синхронізацію RSS також можна запустити з Система › Задачі.
+3 hours ago	3 години тому
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Торрент, що завантажується без прогресу стільки часу, вважається невдалим, додається до чорного списку й шукається знову. 0 вимикає це; прогрес відстежується від запуску Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Група франшизи, знайдена за зв'язками AniList або MyAnimeList. Назви з тієї самої франшизи, додані пізніше, теж до неї приєднуються.
+A new API key was generated. Update the applications that use it.	Згенеровано новий ключ API. Оновіть застосунки, які його використовують.
+A regular expression, case-insensitive; empty matches every title.	Регулярний вираз без урахування регістру; порожній відповідає будь-якій назві.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Реліз отримує найконкретніший пресет, дозволений у профілі його серіалу, джерелу, роздільності, кодеку й шаблону назви якого він відповідає. Стандартна якість із заданим кодеком або шаблоном робить релізи, що їм не відповідають, Невідомими. Власні пресети додаються до кожного профілю як недозволені.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Розмір релізу множиться на коефіцієнт його кодека перед застосуванням обмежень розміру. «Змішано» означає, що профілі використовують різні коефіцієнти; значення, введене тут, записується в кожен профіль.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Назва, що приєднується до франшизи або ручної групи, залишає групу, в якій була. Файли й теки не переміщуються.
+API key	Ключ API
+API key needed	Потрібен ключ API
+API keys and language	Ключі API та мова
+API path	Шлях API
+About	Про програму
+Absolute path; empty to delete permanently.	Абсолютний шлях; порожнє — видаляти остаточно.
+Accepted	Прийнято
+Account lists	Списки облікового запису
+Actions	Дії
+Actual	Фактично
+Add	Додати
+Add a Newznab or Torznab indexer and enable interactive search for it.	Додайте індексатор Newznab або Torznab і ввімкніть для нього інтерактивний пошук.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Додайте клієнт із його шаблону й скористайтеся «Тест» у редакторі; отримання, черга та імпорт використовують кожен увімкнений клієнт. Blackhole записує отримані релізи в теку й імпортує те, що з'являється в його теці спостереження. Параметри «Видаляти завершені/невдалі завантаження» кожного клієнта видаляють завантаження (разом із файлами), щойно клієнт закінчить із ними.
+Add a download client in Settings › Download clients and enable it.	Додайте клієнт завантаження в Налаштування › Клієнти завантаження й увімкніть його.
+Add a root folder first: it is where this title's folder will live.	Спершу додайте кореневу теку: у ній буде розташована тека цієї назви.
+Add a tag above first.	Спершу додайте тег вище.
+Add a title	Додати назву
+Add auto tag	Додати автотег
+Add condition	Додати умову
+Add exclusion	Додати виняток
+Add media	Додати медіа
+Add one, or migrate them from Sonarr/Tanukarr.	Додайте один або перенесіть їх із Sonarr/Tanukarr.
+Add preset	Додати пресет
+Add selected	Додати вибрані
+Add series or movies below.	Додайте серіали або фільми нижче.
+Add tag	Додати тег
+Add the list's tags	Додати теги списку
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Додавайте назви з TVmaze або AniList чи перенесіть наявну бібліотеку Sonarr або Tanukarr.
+Add to library	Додати до бібліотеки
+Add {}	Додати {}
+Add {} ({y})	Додати {} ({y})
+Add — {}	Додати — {}
+Add, and remove when they leave the list	Додавати й видаляти, коли вони зникають зі списку
+Added	Додано
+Added to the titles this list adds.	Додається до назв, які додає цей список.
+Adding titles	Додавання назв
+Adding…	Додавання…
+Address	Адреса
+Age	Вік
+Aired	Вийшло
+Aired monitored episodes without a file appear here.	Тут з'являються відстежувані епізоди, що вже вийшли, але не мають файлу.
+All	Усі
+All collections	Усі колекції
+All episodes	Усі епізоди
+All episodes in the series folder	Усі епізоди в теці серіалу
+All events	Усі події
+Allow zero size (the feed has no release sizes)	Дозволити нульовий розмір (стрічка не вказує розміри релізів)
+Also delete the series folder and its files (to the recycle bin when one is set)	Також видалити теку серіалу та її файли (у кошик, якщо його задано)
+Also for releases grabbed from interactive search	Також для релізів, отриманих з інтерактивного пошуку
+Also known as	Також відомий як
+Always, even when renaming is off	Завжди, навіть коли перейменування вимкнено
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Аналізувати відеофайли (роздільність, тривалість і кодеки, за допомогою ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Назви з AniList і MyAnimeList завжди додаються як аніме.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Списки AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, іншого Sonarr і власні JSON-списки читаються кожні кілька годин; нові назви додаються з кореневою текою, профілем і відстеженням кожного списку. Сервіси, яким потрібен OAuth, використовують Client ID вашого застосунку й токен, який ви вставляєте (токени, перенесені з Tanukarr, продовжують працювати).
+Anime	Аніме
+Anime / absolute numbering	Аніме / абсолютна нумерація
+Anime categories	Категорії аніме
+Anime episode format	Формат епізоду аніме
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Аніме-фільми можна додавати з AniList, а міграції з Tanukarr переносять і їхні фільми. Для ігрових фільмів потрібен каталог TMDB.
+Anime standard format search	Пошук аніме у стандартному форматі
+Anime title, e.g. Frieren	Назва аніме, напр. Frieren
+Any	Будь-який
+Any library	Будь-яка бібліотека
+Applications using the current key will stop working until you give them the new one.	Застосунки, що використовують поточний ключ, перестануть працювати, доки ви не дасте їм новий.
+Applied after every list has been read successfully and some title left a list.	Застосовується після того, як усі списки успішно прочитано і якась назва зникла зі списку.
+Apply	Застосувати
+Apply migration	Застосувати міграцію
+Apply profile	Застосувати профіль
+Applying migration	Застосування міграції
+Applying…	Застосування…
+As Settings › Media management says	Як указано в Налаштування › Керування медіа
+At least 10 characters.	Щонайменше 10 символів.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Щонайменше {MIN_PASSWORD_LENGTH} символів. Добре підходить парольна фраза.
+Auto tag	Автотег
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Автотег збережено. Він застосовується, коли назви наступного разу додаються, редагуються або оновлюються.
+Auto tagging	Автоматичні теги
+Auto-refresh	Автооновлення
+Automatic	Автоматично
+Automatic search	Автоматичний пошук
+Automatic search for {label}: grabbed {}.	Автоматичний пошук для {label}: отримано {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Автоматичний пошук для {label}: знайдено релізів: {}, схвалено: {}, нічого не отримано.
+Automatic search: grab the best release	Автоматичний пошук: отримати найкращий реліз
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Автоматизацію призупинено: синхронізація RSS, заплановані синхронізації списків і автоматичні пошуки пропускаються. Ручні дії та поточні завантаження тривають.
+Automation resumed.	Автоматизацію відновлено.
+Available from	Доступно з
+Back to the dashboard	Назад до панелі
+Back up now	Створити резервну копію зараз
+Backup {} created.	Резервну копію {} створено.
+Backups	Резервні копії
+Blocking:	Блокує:
+Blocklist	Чорний список
+Blocklist the release and search again	Додати реліз до чорного списку й шукати знову
+Blocklist the release: it is never grabbed again	Додати реліз до чорного списку: його більше ніколи не буде отримано
+Blocklist “{title}” and search for a replacement?	Додати «{title}» до чорного списку й шукати заміну?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Перенесіть у Kitsunarr свою бібліотеку та налаштування Sonarr (v3/v4) або Tanukarr. Джерело лише читається й ніколи не змінюється, і
+Bypass the proxy for local addresses	Обходити проксі для локальних адрес
+Calendar	Календар
+Calendar →	Календар →
+Cancel	Скасувати
+Cancel compression	Скасувати стиснення
+Cannot reach the server: {e}	Не вдається зв'язатися із сервером: {e}
+Catalogue	Каталог
+Category	Категорія
+Certificate validation	Перевірка сертифікатів
+Change password	Змінити пароль
+Change series	Змінити серіал
+Changes	Зміни
+Check	Перевірити
+Check library	Перевірити бібліотеку
+Check now	Перевірити зараз
+Check that the mapped series folders exist (read-only)	Перевірити, чи існують зіставлені теки серіалів (лише читання)
+Checked: {summary}.	Перевірено: {summary}.
+Checking…	Перевірка…
+Choose a backup file	Виберіть файл резервної копії
+Choose a mode	Виберіть режим
+Choose a root folder and a quality profile.	Виберіть кореневу теку й профіль якості.
+Choose a season	Виберіть сезон
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Виберіть серіал і сезон або епізод. Результати показують, чим є кожен реліз, як його розпізнає парсер Kitsunarr.
+Choose a series or movie…	Виберіть серіал або фільм…
+Choose source	Виберіть джерело
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Виберіть епізоди цього релізу вручну, а потім отримайте його (вибір зберігається для імпорту)
+Choose…	Вибрати…
+Clean library	Очистити бібліотеку
+Clear	Очистити
+Clear blocklist	Очистити чорний список
+Cleared {n} releases from the blocklist.	Видалено релізів із чорного списку: {n}.
+Client	Клієнт
+Close	Закрити
+Codec	Кодек
+Codec factors saved in every profile.	Коефіцієнти кодеків збережено в усіх профілях.
+Codec size factors	Коефіцієнти розміру для кодеків
+Codecs	Кодеки
+Collection film folder format	Формат теки фільму колекції
+Collections	Колекції
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Колекції з'являються, коли їх перенесено з Tanukarr, створено з даних каталогів або створено тут.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Переходите із Sonarr або Tanukarr? Імпортуйте наявні серіали, налаштування й історію за кілька кроків.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Через кому; * — шаблон підстановки (*.lan), також працюють діапазони IP на кшталт 192.168.1.0/24.
+Companion app keys	Ключі для супутніх застосунків
+Complete series	Увесь серіал
+Completed and failed download handling	Обробка завершених і невдалих завантажень
+Component	Компонент
+Compress series	Стиснути серіал
+Compression	Стиснення
+Compression queued.	Стиснення додано в чергу.
+Compression worker is not connected.	Обробник стиснення не під'єднано.
+Condition	Умова
+Conditions	Умови
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Умови одного типу збігаються, коли збігається хоча б одна з них (а всі обов'язкові — неодмінно); збігатися мають усі типи.
+Configure	Налаштувати
+Confirm password	Підтвердіть пароль
+Connect	Під'єднатися
+Connect to a running instance	Під'єднатися до запущеного екземпляра
+Connecting…	Під'єднання…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Узгоджені копії бази даних. Заплановані резервні копії створюються щотижня (зберігаються останні вісім); кожна міграція також спершу створює одну. Щоб відновити, зупиніть Kitsunarr і виконайте
+Continuing	Триває
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (надсилається із запитом стрічки, напр. uid=1; pass=…)
+Copied.	Скопійовано.
+Copy	Копіювати
+Copy (keep the originals)	Копіювати (зберегти оригінали)
+Copy sizes from	Копіювати розміри з
+Copy the token now; it is not shown again:	Скопіюйте токен зараз; його більше не буде показано:
+Could not grab {}: {}	Не вдалося отримати {}: {}
+Covers	Охоплює
+Create	Створити
+Create account	Створити обліковий запис
+Create group	Створити групу
+Create key	Створити ключ
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Створіть його на themoviedb.org › Settings › API. Використовується для серіалів і фільмів TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Створіть обліковий запис адміністратора. Ви використовуватимете його для входу в Kitsunarr.
+Created	Створено
+Created when the first file is imported. Nothing is written to disk now.	Створюється під час імпорту першого файлу. Зараз на диск нічого не записується.
+Creating…	Створення…
+Credit	Подяки
+Current file	Поточний файл
+Current password	Поточний пароль
+Custom format saved.	Власний формат збережено.
+Custom format score	Оцінка власного формату
+Custom format scores	Оцінки власних форматів
+Custom formats	Власні формати
+Cutoff unmet	Поріг не досягнуто
+Daily	Щоденний
+Daily episode format	Формат щоденного епізоду
+Dashboard	Панель
+Data directory	Тека даних
+Database backup taken before the import: {b}	Резервна копія бази даних перед імпортом: {b}
+Database schema	Схема бази даних
+Date	Дата
+Date added	Дата додавання
+Debug	Налагодження
+Decision	Рішення
+Default	Типово
+Defaults	Типові значення
+Delay profile	Профіль затримки
+Delay profile saved.	Профіль затримки збережено.
+Delay profiles	Профілі затримки
+Delete	Видалити
+Delete empty series folders	Видаляти порожні теки серіалів
+Delete file	Видалити файл
+Delete group	Видалити групу
+Delete profile	Видалити профіль
+Delete “{path}”? It goes to the recycle bin when one is set.	Видалити «{path}»? Файл потрапить у кошик, якщо його задано.
+Delete “{}”?	Видалити «{}»?
+Delete “{}”? Its series and movies stay in the library.	Видалити «{}»? Його серіали й фільми залишаться в бібліотеці.
+Deleted	Видалено
+Directory	Тека
+Disabled	Вимкнено
+Disabled for local addresses	Вимкнено для локальних адрес
+Disk scanned: {}	Диск проскановано: {}
+Disk scanned: {} Not matched: {}	Диск проскановано: {} Не зіставлено: {}
+Do not prefer	Не надавати переваги
+Do not search for a replacement	Не шукати заміну
+Do nothing	Нічого не робити
+Done	Готово
+Download client options saved.	Параметри клієнтів завантаження збережено.
+Download clients	Клієнти завантаження
+Download failed	Завантаження не вдалося
+Download queue	Черга завантажень
+Downloads	Завантаження
+Duration	Тривалість
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Кожна назва належить до одного каталогу, з якого читаються її оновлення; усі її ідентифікатори (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) зберігаються. Назви, перенесені із Sonarr, належать до TheTVDB.
+Edit	Редагувати
+Edit “{name}”	Редагувати «{name}»
+Edit “{}”	Редагувати «{}»
+Enable RSS	Увімкнути RSS
+Enable automatic search	Увімкнути автоматичний пошук
+Enable interactive search	Увімкнути інтерактивний пошук
+Enabled	Увімкнено
+Ended	Завершено
+English	English
+Entity	Сутність
+Episode	Епізод
+Episode and movie naming	Імена епізодів і фільмів
+Episode image thumbs in the NFO	Мініатюри епізодів у NFO
+Episode images (<filename>-thumb.jpg)	Зображення епізодів (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Зображення епізодів (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Зображення епізодів (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Зіставлення епізодів у .plexmatch
+Episode metadata (<filename>.nfo)	Метадані епізодів (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Метадані епізодів (Season##/filename.xml)
+Episode order	Порядок епізодів
+Episode order changed: {} episodes updated, {} added.	Порядок епізодів змінено: оновлено епізодів: {}, додано: {}.
+Episodes	Епізоди
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Епізоди перенумеровуються відповідно до вибраного порядку; файли, відстеження та історія залишаються з епізодами. Потім перейменуйте файли відповідно до нових номерів.
+Episodes of {title}	Епізоди {title}
+Episodes on disk	Епізоди на диску
+Episodes whose file is below the quality profile's cutoff appear here.	Тут з'являються епізоди, файл яких нижчий за поріг профілю якості.
+Episodes…	Епізоди…
+Errors	Помилки
+Errors {errors}	Помилки {errors}
+Event	Подія
+Every file already follows the naming settings.	Усі файли вже відповідають налаштуванням іменування.
+Every file meets its cutoff	Усі файли досягають свого порогу
+Exclude	Виключити
+Exclusions	Винятки
+Expected	Очікувано
+Expires	Спливає
+Extra file extensions	Розширення додаткових файлів
+Factor	Коефіцієнт
+Failed	Невдало
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Захист від фейкових релізів: перевіряти торренти перед отриманням і відхиляти виконувані файли, архіви-приманки з паролем і вміст без відео
+Feed address	Адреса стрічки
+Fetch the latest metadata from {}	Завантажити найновіші метадані з {}
+File	Файл
+File date	Дата файлу
+File deleted	Файл видалено
+File deleted.	Файл видалено.
+File management	Керування файлами
+File management settings saved.	Налаштування керування файлами збережено.
+File renamed	Файл перейменовано
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Файли, старші за цей термін, щодня видаляються з кошика; 0 зберігає їх.
+Files upgrades replaced, kept as versions	Файли, замінені оновленнями, збережені як версії
+Film	Фільм
+Film title or IMDb id, e.g. Arrival	Назва фільму або id IMDb, напр. Arrival
+Find a series in your library	Знайти серіал у бібліотеці
+Find files added to or removed from the series folder	Знайти файли, додані до теки серіалу або видалені з неї
+Find something to add	Знайдіть, що додати
+First and last pieces first	Спочатку перший і останній фрагменти
+First day of the week	Перший день тижня
+First season	Перший сезон
+Folder	Тека
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Формати використовують типи специфікацій Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Оцінки призначаються для кожного профілю якості.
+Found	Знайдено
+Free	Вільно
+Free space	Вільне місце
+Future days	Майбутні дні
+Future episodes	Майбутні епізоди
+General	Загальні
+GiB	GiB
+Grab	Отримати
+Grab a release from interactive search; downloads in the client's TV category show up here.	Отримайте реліз з інтерактивного пошуку; завантаження в категорії TV клієнта з'являються тут.
+Grab anyway?	Отримати все одно?
+Grab with these episodes	Отримати з цими епізодами
+Grabbed	Отримано
+Grabbed {}.	Отримано {}.
+Grabbing…	Отримання…
+Grabs, imports and file changes appear here. Migrated history is included.	Тут з'являються отримання, імпорти та зміни файлів. Перенесену історію включено.
+Group film folder format	Формат теки фільму групи
+Group folder format	Формат теки групи
+Group season folder format	Формат теки сезону групи
+Group story-arc folder format	Формат теки сюжетної арки групи
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Групи пов'язаних серіалів і фільмів: колекції каталогів, аніме-франшизи (групи приквелів/сиквелів) і ручні групи, зокрема перенесені з Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Імпорт лише жорсткими посиланнями: ніколи не копіювати завантаження, що ще роздаються
+Health	Стан системи
+Hide	Сховати
+History	Історія
+History →	Історія →
+Host	Хост
+Host (as in the download client's settings)	Хост (як у налаштуваннях клієнта завантаження)
+Hostname	Ім'я хоста
+How the catalogue numbers the episodes (it can be changed later on the series page).	Як каталог нумерує епізоди (це можна змінити пізніше на сторінці серіалу).
+Id	Id
+Identities	Ідентифікатори
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Якщо Kitsunarr бачить ваші медіа за іншими шляхами, ніж джерело (наприклад, інші томи Docker), зіставте кожну теку джерела з її розташуванням у Kitsunarr. Шляхи переписуються лише в базі даних.
+Ignored	Ігноровано
+Ignored addresses	Ігноровані адреси
+Implementation	Реалізація
+Import / Migration	Імпорт / Міграція
+Import a Sonarr or Tanukarr library	Імпортувати бібліотеку Sonarr або Tanukarr
+Import blocked	Імпорт заблоковано
+Import completed downloads	Імпортувати завершені завантаження
+Import extra files (subtitles…)	Імпортувати додаткові файли (субтитри…)
+Import from Sonarr/Tanukarr	Імпорт із Sonarr/Tanukarr
+Import history	Імпортувати історію
+Import library	Імпортувати бібліотеку
+Import list options saved.	Параметри списків імпорту збережено.
+Import lists	Списки імпорту
+Import pending	Імпорт очікує
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Імпортуйте відеофайли з будь-якої теки, яку може читати сервер: перевірте серіал та епізоди кожного файлу, потім скопіюйте або перемістіть їх у бібліотеку (з перейменуванням за налаштуваннями іменування).
+Import {chosen().len()} files	Імпортувати файли: {chosen().len()}
+Imported	Імпортовано
+Imported from series folder	Імпортовано з теки серіалу
+Importing	Імпорт
+Importing…	Імпортування…
+Imports need	Для імпорту потрібно
+In library ›	У бібліотеці ›
+Include	Включити
+Include in file names ({{Custom Formats}} token)	Включати в імена файлів (токен {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Включати лише назви з певних списків або виключати назви з інших.
+Include unmonitored	Включати невідстежувані
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Разом з базою URL, напр. http://192.168.1.10:8989 або https://host/sonarr
+Indexer	Індексатор
+Indexer options saved.	Параметри індексаторів збережено.
+Indexer settings	Налаштування індексатора
+Indexers	Індексатори
+Info	Інформація
+Info {infos}	Інформація {infos}
+Instance	Екземпляр
+Instance name	Назва екземпляра
+Instance: {name}	Екземпляр: {name}
+Interactive	Інтерактивний
+Interactive search	Інтерактивний пошук
+Interactive search for full-season packs only	Інтерактивний пошук лише пакетів повних сезонів
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Інтерактивний пошук пакетів усього серіалу (і його сезонів) на торрент-індексаторах
+Interactive search: see every release and choose	Інтерактивний пошук: переглянути всі релізи й вибрати
+Interface language	Мова інтерфейсу
+Interval	Інтервал
+Jellyfin library and user	Бібліотека й користувач Jellyfin
+Job	Завдання
+Keep / skip	Залишити / пропустити
+Keep files replaced by upgrades as versions (in "Plex Versions")	Зберігати файли, замінені оновленнями, як версії (у «Plex Versions»)
+Keep me signed in	Не виходити з системи
+Keep the replaced file's date (upgrades)	Зберігати дату заміненого файлу (оновлення)
+Kept	Збережено
+Kept versions	Збережені версії
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Ключі для супутніх застосунків, що використовують API v3 Sonarr: вони читають бібліотеку, а ключі «додавання серіалів» можуть також додавати серіали (у кореневу теку, без пошуку). Більше нічого не дозволено.
+KiB	KiB
+Kind	Тип
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr — вільне програмне забезпечення (GPL-3.0-or-later).
+Kitsunarr path	Шлях у Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr створить резервну копію власної бази даних, імпортує дані з попереднього перегляду однією транзакцією та перевірить їх перед фіксацією. Джерело та ваші медіафайли не змінюються.
+Label	Мітка
+Languages	Мови
+Larger releases are rejected. 0 means unlimited.	Більші релізи відхиляються. 0 означає без обмежень.
+Last read	Останнє читання
+Last run	Останній запуск
+Last search	Останній пошук
+Last searched	Останній пошук
+Last season	Останній сезон
+Later ›	Пізніше ›
+Latest season	Найновіший сезон
+Level	Рівень
+Library	Бібліотека
+Library check	Перевірка бібліотеки
+Library tools	Інструменти бібліотеки
+Library tools saved.	Інструменти бібліотеки збережено.
+List	Список
+Listed best first. Grouped qualities rank equally.	Від найкращої. Згруповані якості рівноцінні.
+Live updates connected	Оновлення в реальному часі під'єднано
+Live updates disconnected	Оновлення в реальному часі від'єднано
+Load	Завантажити
+Load the account's lists	Завантажити списки облікового запису
+Load the libraries…	Завантажити бібліотеки…
+Load the users…	Завантажити користувачів…
+Local air date	Локальна дата виходу
+Local path	Локальний шлях
+Log them	Записувати в журнал
+Logs	Журнали
+Main rejections	Основні причини відхилення
+Make current	Зробити поточним
+Manual import	Імпорт вручну
+Mark as failed	Позначити як невдале
+Matches monitored titles.	Відповідає відстежуваним назвам.
+Maximum	Максимум
+Maximum size (MB)	Максимальний розмір (МБ)
+Media management	Керування медіа
+Media management settings	Налаштування керування медіа
+Media paths	Шляхи до медіа
+Mediums	Носії
+Members	Учасники
+Message	Повідомлення
+Metadata	Метадані
+Metadata files	Файли метаданих
+Metadata keys saved.	Ключі метаданих збережено.
+Metadata language	Мова метаданих
+Metadata refreshed.	Метадані оновлено.
+Metadata refreshed: {} new episodes, {} updated.	Метадані оновлено: нових епізодів: {}, оновлено: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Налаштування метаданих збережено. Файли записуються під час наступного сканування диска, оновлення або імпорту.
+Metadata sources	Джерела метаданих
+MiB	MiB
+Migration completed.	Міграцію завершено.
+Migration report #{}	Звіт про міграцію №{}
+Minimum	Мінімум
+Minimum age (minutes)	Мінімальний вік (хвилини)
+Minimum custom format score	Мінімальна оцінка власних форматів
+Minimum format score	Мінімальна оцінка формату
+Minimum free space (MiB)	Мінімум вільного місця (MiB)
+Minimum seeders	Мінімум сідів
+Missing	Відсутні
+Missing (monitored)	Відсутні (відстежувані)
+Missing films	Відсутні фільми
+Mode	Режим
+Monday	Понеділок
+Monitor	Відстежувати
+Monitored	Відстежується
+More languages can be added to the string tables.	До таблиць рядків можна додати інші мови.
+Move	Перемістити
+Movie	Фільм
+Movie file format	Формат файлу фільму
+Movie removed from Kitsunarr. Files on disk were not touched.	Фільм видалено з Kitsunarr. Файли на диску не змінено.
+Movies	Фільми
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Багатосезонні релізи: приймати пакети з кількох сезонів (пошук сезону бере пакет для свого сезону)
+Must contain	Має містити
+Must contain (comma separated; /regex/ allowed)	Має містити (через кому; /regex/ дозволено)
+Must not contain	Не має містити
+NOT	НЕ
+Name	Назва
+Naming	Іменування
+Naming options saved.	Параметри іменування збережено.
+Naming saved.	Іменування збережено.
+Negate	Інвертувати
+Network	Мережа
+Never: keep the release's names	Ніколи: зберігати імена з релізу
+New custom format	Новий власний формат
+New custom preset	Новий власний пресет
+New group title	Назва нової групи
+New password	Новий пароль
+New quality profile	Новий профіль якості
+Next airing	Наступний вихід
+Next run	Наступний запуск
+Next ›	Далі ›
+No	Ні
+No activity yet.	Активності ще немає.
+No auto tags.	Немає автотегів.
+No backups yet	Резервних копій ще немає
+No collections yet	Колекцій ще немає
+No companion keys.	Немає ключів для супутніх застосунків.
+No custom formats	Немає власних форматів
+No custom formats defined.	Власні формати не визначено.
+No delay above the minimum custom format score	Без затримки, якщо оцінка вища за мінімальну оцінку власних форматів
+No delay for the profile's best quality in the preferred protocol	Без затримки для найкращої якості профілю в бажаному протоколі
+No download client to read	Немає клієнта завантаження для читання
+No exclusions.	Немає винятків.
+No history	Історії немає
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Жоден індексатор не може автоматично шукати цей серіал: немає індексатора з увімкненим автоматичним пошуком і водночас без тегів або з одним із тегів серіалу.
+No indexers to search	Немає індексаторів для пошуку
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Немає збережених версій. Увімкніть «Зберігати файли, замінені оновленнями» в розділі Іменування.
+No log entries at this level	Немає записів журналу на цьому рівні
+No mappings.	Немає зіставлень.
+No matches	Немає збігів
+No members	Немає учасників
+No migrations have been run yet.	Міграцій ще не виконувалося.
+No movies yet	Фільмів ще немає
+No notes.	Немає приміток.
+No recycle bin is set (Settings › Media management).	Кошик не задано (Налаштування › Керування медіа).
+No release profiles.	Немає профілів релізу.
+No root folders yet.	Кореневих тек ще немає.
+No root folders.	Немає кореневих тек.
+No runs yet	Запусків ще не було
+No searches yet.	Пошуків ще не було.
+No series in your library match.	Жоден серіал у вашій бібліотеці не відповідає.
+No tags	Немає тегів
+No {}	Немає {}
+No {} yet	Ще немає {}
+None	Немає
+Not evaluated by Kitsunarr.	Не оцінено Kitsunarr.
+Not imported	Не імпортовано
+Not monitored	Не відстежується
+Notes	Примітки
+Notes ({preview.warnings.len()})	Примітки ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Примітки ({report.warnings.len()})
+Nothing airs in the next seven days.	У найближчі сім днів нічого не виходить.
+Nothing downloading	Нічого не завантажується
+Nothing found	Нічого не знайдено
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	У цьому каталозі ніщо не відповідає пошуку. Спробуйте інше написання, оригінальну назву або інший каталог.
+Nothing in this period	Нічого за цей період
+Nothing missing	Нічого не бракує
+Notifications	Сповіщення
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Нумерувати епізоди за іншим порядком каталогу (групи епізодів TMDB, DVD або абсолютний порядок TheTVDB)
+OMDb API key	Ключ API OMDb
+Older priority	Пріоритет для старіших
+One folder per season	Окрема тека для кожного сезону
+Only the 2000 newest files are listed.	Показано лише 2000 найновіших файлів.
+Only when the proxy needs one.	Лише якщо проксі цього вимагає.
+Open the library	Відкрити бібліотеку
+OpenAPI document	Документ OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Відкриває сервіс, щоб авторизувати Kitsunarr, і заповнює токен.
+Options	Параметри
+Organize	Упорядкувати
+Other	Інше
+Overview	Огляд
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Перезаписувати записи, які вже є в Kitsunarr (інакше їх буде збережено)
+Packs	Пакети
+Page not found	Сторінку не знайдено
+Page {page} / {pages}	Сторінка {page} / {pages}
+Password	Пароль
+Password changed. Other sessions were signed out.	Пароль змінено. Інші сеанси завершено.
+Past days	Минулі дні
+Path	Шлях
+Path mappings	Зіставлення шляхів
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Призупинити автоматизацію (синхронізація RSS, заплановані синхронізації списків, автоматичні пошуки)
+Peers	Піри
+Permission	Дозвіл
+PiB	PiB
+Platform	Платформа
+Port	Порт
+Position	Позиція
+Post-import category	Категорія після імпорту
+Posters	Постери
+Prefer and upgrade	Надавати перевагу й оновлювати
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Надавати перевагу пакетам сезонів аніме (пошуки сезонів аніме в Kitsunarr уже шукають сезон один раз)
+Prefer, do not upgrade	Надавати перевагу, не оновлювати
+Preferred	Бажано
+Preferred metadata language	Бажана мова метаданих
+Preferred protocol	Бажаний протокол
+Preparing preview…	Підготовка попереднього перегляду…
+Preview	Попередній перегляд
+Preview migration	Попередній перегляд міграції
+Previous migrations	Попередні міграції
+Priority	Пріоритет
+Problem	Проблема
+Profile	Профіль
+Profile saved.	Профіль збережено.
+Profiles still used by series or movies cannot be deleted.	Профілі, які ще використовуються серіалами або фільмами, не можна видалити.
+Progress	Прогрес
+Propers and repacks	Proper і repack
+Proxy	Проксі
+Proxy saved.	Проксі збережено.
+Proxy type	Тип проксі
+Qualities	Якості
+Quality	Якість
+Quality presets	Пресети якості
+Quality presets saved.	Пресети якості збережено.
+Quality profile	Профіль якості
+Quality profiles	Профілі якості
+Quality profile…	Профіль якості…
+RSS sync interval (minutes)	Інтервал синхронізації RSS (хвилини)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	Синхронізація RSS чекає стільки часу після появи релізу на кращий; відкладені релізи показуються в черзі. Застосовується перший профіль, теги якого відповідають серіалу; останній (без тегів) — типовий.
+Re-encode this series' files with the compression worker	Перекодувати файли цього серіалу обробником стиснення
+Read and add series	Читання й додавання серіалів
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Читається з клієнтів завантаження наживо кожні кілька секунд. Завершені завантаження, отримані Kitsunarr, імпортуються в теку серіалу щохвилини (торренти копіюються або зв'язуються жорсткими посиланнями, тож продовжують роздаватися; завантаження Usenet переміщуються). Невдалі завантаження додаються до чорного списку й шукаються знову.
+Read the library	Читання бібліотеки
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Лише читання: знаходить відсутні теки серіалів, записи файлів поза їхньою текою або записані двічі, а також файли, відсутні на диску.
+Reading the download clients…	Читання клієнтів завантаження…
+Reading the source	Читання джерела
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Читає все через API. Паролі та ключі API провайдерів приховані джерелом, і їх потрібно ввести знову.
+Recent activity	Нещодавня активність
+Recent priority	Пріоритет для новіших
+Recent runs	Нещодавні запуски
+Recent searches	Нещодавні пошуки
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Рекомендовано. У Sonarr/Tanukarr відкрийте Система → Резервне копіювання, створіть резервну копію та завантажте .zip (або використайте sonarr.db). Містить паролі індексаторів і клієнтів завантаження.
+Recycle bin	Кошик
+Recycle bin cleanup (days)	Очищення кошика (дні)
+Recycled	У кошику
+Refresh metadata	Оновити метадані
+Refresh preview	Оновити попередній перегляд
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Оновлення з {} ще не підтримується; імпортовані метадані зберігаються як є
+Refreshing…	Оновлення…
+Regenerate	Згенерувати знову
+Regenerate API key	Згенерувати новий ключ API
+Reject releases whose TheTVDB or IMDb id names another series	Відхиляти релізи, id TheTVDB або IMDb яких вказує на інший серіал
+Rejected: click twice to grab anyway	Відхилено: клацніть двічі, щоб усе одно отримати
+Release	Реліз
+Release profile	Профіль релізу
+Release profile saved.	Профіль релізу збережено.
+Release profiles	Профілі релізу
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Релізи перевіряються за профілем якості, власними форматами й профілями релізу серіалу та впорядковуються, як це робить Sonarr. Відхилені релізи потребують другого клацання.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Релізи, що завершилися невдачею або були додані до чорного списку вручну. Пошуки й синхронізація RSS більше ніколи їх не отримують; видаліть реліз, щоб дозволити його.
+Remote path	Віддалений шлях
+Remote path mapping	Зіставлення віддаленого шляху
+Remote path mapping saved.	Зіставлення віддаленого шляху збережено.
+Remote path mappings	Зіставлення віддалених шляхів
+Remove	Видалити
+Remove completed downloads	Видаляти завершені завантаження
+Remove every release from the blocklist?	Видалити всі релізи з чорного списку?
+Remove failed downloads	Видаляти невдалі завантаження
+Remove from library	Видалити з бібліотеки
+Remove from queue	Видалити з черги
+Remove from the download client (deletes its files there)	Видалити з клієнта завантаження (видаляє там його файли)
+Remove movie	Видалити фільм
+Remove series	Видалити серіал
+Remove tags automatically (from titles that stop matching)	Видаляти теги автоматично (з назв, які перестали відповідати)
+Remove “{title}” and its episode records from Kitsunarr?	Видалити «{title}» і записи його епізодів із Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Видалити «{title}» із Kitsunarr? Файли на диску не видаляються.
+Removed	Видалено
+Removed from the blocklist.	Видалено з чорного списку.
+Rename	Перейменувати
+Rename files	Перейменувати файли
+Rename files on import	Перейменовувати файли під час імпорту
+Rename files to the naming settings	Перейменувати файли за налаштуваннями іменування
+Formats use Sonarr's tokens.	Формати використовують токени Sonarr.
+Renaming…	Перейменування…
+Report	Звіт
+Request one at omdbapi.com. Used for films by IMDb id.	Запросіть його на omdbapi.com. Використовується для фільмів за id IMDb.
+Required	Обов'язково
+Resolution	Роздільність
+Restore	Відновити
+Restore {}	Відновити {}
+Restore…	Відновити…
+Restoring…	Відновлення…
+Resume automation	Відновити автоматизацію
+Retention (days)	Утримання (дні)
+Retire	Вивести з ужитку
+Revoke	Відкликати
+Root folder	Коренева тека
+Root folders	Кореневі теки
+Root folder…	Коренева тека…
+Run #{run.id}: {run.status}	Запуск №{run.id}: {run.status}
+Run now	Запустити зараз
+Running…	Виконується…
+Saturday	Субота
+Save	Зберегти
+Save criteria	Зберегти критерії
+Save factors	Зберегти коефіцієнти
+Save keys	Зберегти ключі
+Save metadata files	Зберегти файли метаданих
+Save naming	Зберегти іменування
+Save options	Зберегти параметри
+Saved	Збережено
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Збережені ключі відображаються як {REDACTED}; залиште їх без змін, щоб зберегти, або очистьте поле, щоб видалити ключ.
+Saved.	Збережено.
+Scan disk	Сканувати диск
+Scan folder	Сканувати теку
+Scanning…	Сканування…
+Scheduled tasks	Заплановані задачі
+Score	Оцінка
+Search	Пошук
+Search again when a download fails	Шукати знову, коли завантаження не вдалося
+Search all	Шукати всі
+Search all films	Шукати всі фільми
+Search collection	Шукати в колекції
+Search every episode of the list, one search per season	Шукати кожен епізод зі списку, один пошук на сезон
+Search every member's missing episodes (films: the film)	Шукати відсутні епізоди кожного учасника (для фільмів — фільм)
+Search indexers	Шукати в індексаторах
+Search selected	Шукати вибрані
+Search the indexers and choose a release	Шукати в індексаторах і вибрати реліз
+Search the indexers and grab the best accepted release	Шукати в індексаторах і отримати найкращий прийнятий реліз
+Search the indexers and grab the best releases for the monitored episodes	Шукати в індексаторах і отримати найкращі релізи для відстежуваних епізодів
+Search your indexers	Шукати у своїх індексаторах
+Search {chosen} selected	Шукати вибрані: {chosen}
+Search: {}	Пошук: {}
+Search: {} — complete series	Пошук: {} — увесь серіал
+Search: {} — season {season} packs	Пошук: {} — пакети сезону {season}
+Search: {} — {label}	Пошук: {} — {label}
+Searching for {label}…	Пошук {label}…
+Searching indexers…	Пошук в індексаторах…
+Searching…	Пошук…
+Season	Сезон
+Season folder format	Формат теки сезону
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Назви тек сезонів замінюють назви з каталогу в {{Season Title}}. Залиште порожнім, щоб зберегти назви з каталогу.
+Season folders	Теки сезонів
+Season images (Season ##.jpg)	Зображення сезонів (Season ##.jpg)
+Season images (Season##/folder.jpg)	Зображення сезонів (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Зображення сезонів (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Пакети сезонів: 1 використовує цілі для пакетів сезонів нижче
+Season premieres only	Лише прем'єри сезонів
+Season {n}	Сезон {n}
+Season {one}	Сезон {one}
+Season {se.season_number}	Сезон {se.season_number}
+Season {season_number}	Сезон {season_number}
+Season-pack seed ratio	Коефіцієнт роздачі для пакетів сезонів
+Season-pack seed time, minutes	Час роздачі для пакетів сезонів, хвилини
+Seasons	Сезони
+Seasons {first}-{last}	Сезони {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Секрети відображаються як {REDACTED}; залиште їх без змін, щоб зберегти збережене значення.
+Seed ratio (empty: the client's default)	Коефіцієнт роздачі (порожньо: типове значення клієнта)
+Seed time, minutes (empty: the client's default)	Час роздачі, хвилини (порожньо: типове значення клієнта)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Надсилати запити до індексаторів, каталогів, списків, клієнтів завантаження та з'єднань через проксі.
+Send to the download client	Надіслати до клієнта завантаження
+Series	Серіали
+Series .plexmatch file	Файл .plexmatch серіалу
+Series folder format	Формат теки серіалу
+Series images (Series Title.jpg)	Зображення серіалу (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Зображення серіалу (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Зображення серіалу (folder.jpg)
+Series metadata (tvshow.nfo)	Метадані серіалу (tvshow.nfo)
+Series metadata URL	URL метаданих серіалу
+Series metadata episode guide	Гід епізодів у метаданих серіалу
+Series removed from Kitsunarr. Files on disk were not touched.	Серіал видалено з Kitsunarr. Файли на диску не змінено.
+Series removed, and its folder deleted.	Серіал видалено разом із його текою.
+Series type	Тип серіалу
+Set quality profile…	Встановити профіль якості…
+Settings	Налаштування
+Settings saved.	Налаштування збережено.
+Settings → General → Security in Sonarr/Tanukarr.	Налаштування → Загальні → Безпека в Sonarr/Tanukarr.
+Show	Показати
+Show as all-day events	Показувати як події на весь день
+Show unmonitored	Показувати невідстежувані
+Shows	Серіали
+Sign in	Увійти
+Signed in. Save the list to keep the token.	Вхід виконано. Збережіть список, щоб зберегти токен.
+Signing in…	Вхід…
+Size	Розмір
+Size limits	Обмеження розміру
+Size on disk	Розмір на диску
+Skip files smaller than (MB)	Пропускати файли, менші за (МБ)
+Skip the free-space check	Пропустити перевірку вільного місця
+Skip unmonitored episodes when importing packs	Пропускати невідстежувані епізоди під час імпорту пакетів
+Source	Джерело
+Source code	Вихідний код
+Source path	Шлях джерела
+Special	Спецепізод
+Specials	Спецепізоди
+Specials are never monitored automatically.	Спецепізоди ніколи не відстежуються автоматично.
+Specifications	Специфікації
+Specifications (JSON)	Специфікації (JSON)
+Specifications must be valid JSON: {e}	Специфікації мають бути коректним JSON: {e}
+Stalled torrent timeout (minutes)	Тайм-аут завислих торрентів (хвилини)
+Standard	Стандартний
+Standard episode format	Формат стандартного епізоду
+Start migration	Почати міграцію
+Start over	Почати спочатку
+Start search for missing episodes	Почати пошук відсутніх епізодів
+Started	Розпочато
+Started {format_datetime(&run.started_at)}	Розпочато {format_datetime(&run.started_at)}
+Status	Статус
+Status & health	Статус і стан системи
+Still downloading	Ще завантажується
+Storage outlook	Прогноз сховища
+Studio	Студія
+Subscribe	Підписатися
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Підпишіться на цю адресу в застосунку календаря. Вона містить ваш ключ API: тримайте її в таємниці.
+Sunday	Неділя
+Sync	Синхронізувати
+Sync all lists now	Синхронізувати всі списки зараз
+Sync now	Синхронізувати зараз
+Syncing…	Синхронізація…
+System →	Система →
+TMDB API key (v3)	Ключ API TMDB (v3)
+TV Series	Телесеріали
+TV series	Телесеріали
+Table	Таблиця
+Tag	Тег
+Tag them	Позначити тегом
+Tag titles already in the library	Позначити тегами назви, що вже є в бібліотеці
+Tags	Теги
+Tags (comma separated)	Теги (через кому)
+Tags (ids, comma separated)	Теги (id, через кому)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Теги додаються до серіалів і фільмів, що відповідають кожному типу умов, коли їх додають, редагують або оновлюють.
+Task	Задача
+Television	Телебачення
+Television (raw)	Телебачення (raw)
+Test	Тест
+Test failed: {message}	Тест не пройдено: {message}
+Testing…	Тестування…
+The blocklist is empty	Чорний список порожній
+The catalogue new titles are added from when the list knows their id there.	Каталог, з якого додаються нові назви, коли список знає їхній id у ньому.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Дата, яку отримують імпортовані файли: дата виходу епізоду (локальна або UTC) або, під час оновлення, дата заміненого файлу.
+The dry run completed without blocking problems. Nothing has been written yet.	Пробний запуск завершився без блокувальних проблем. Ще нічого не записано.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Файл переміщується в теку сезону (наявний файл ніколи не перезаписується), а серіал сканується повторно.
+The folder must already exist; Kitsunarr never creates or removes it.	Тека вже має існувати; Kitsunarr ніколи її не створює й не видаляє.
+The indexers returned no releases for this search.	Індексатори не повернули релізів для цього пошуку.
+The instance is on my local network (private or loopback address)	Екземпляр у моїй локальній мережі (приватна адреса або loopback)
+The list has not been read, or it is empty.	Список ще не прочитано, або він порожній.
+The migration did not complete; nothing was changed.	Міграцію не завершено; нічого не змінено.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Найновіші записи, що зберігаються в пам'яті. Повні журнали йдуть у вивід процесу (журнали контейнера або journal).
+The passwords do not match.	Паролі не збігаються.
+The recycle bin has no media or subtitle files.	У кошику немає медіафайлів або файлів субтитрів.
+The sign-in expired; try again.	Термін входу минув; спробуйте ще раз.
+The upload failed (network error).	Не вдалося вивантажити (помилка мережі).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Обробник — це необов'язковий компонент хоста (обробник стиснення Tanukarr), доступний через сокет у KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (каталог Sonarr), TMDB і TVmaze охоплюють телесеріали; AniList і MyAnimeList — аніме-серіали та аніме-фільми; TMDB і OMDb — фільми. Додавання назви створює її запис у бібліотеці та список епізодів; файли пізніше підхоплює конвеєр імпорту.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Назви TheTVDB шукаються й додаються цією мовою; для кожного серіалу її можна змінити в його редакторі.
+TheTVDB titles in this language; changing it refreshes the series	Назви TheTVDB цією мовою; її зміна оновлює серіал
+There is nothing at /{path}.	За адресою /{path} нічого немає.
+They are created by migrating from Sonarr/Tanukarr.	Вони створюються під час міграції із Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Режим перейменування, назви тек сезонів і збережені версії цього серіалу
+TiB	TiB
+Time	Час
+Time left	Залишилося часу
+Title	Назва
+Title pattern	Шаблон назви
+Titles import lists never add.	Назви, які списки імпорту ніколи не додають.
+Titles on no list	Назви, яких немає в жодному списку
+Today	Сьогодні
+Torrent	Торрент
+Torrent delay	Затримка торрентів
+Torrent delay (minutes)	Затримка торрентів (хвилини)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Індексатори Torznab і Newznab. Скористайтеся «Тест» у редакторі, щоб перевірити один із них; кожен пошук використовує індексатори з увімкненим відповідним типом пошуку: RSS, автоматичним або інтерактивним.
+Trigger	Тригер
+URL base	База URL
+UTC air date	Дата виходу в UTC
+Unchanged	Без змін
+Unknown	Невідомо
+Unmonitor	Не відстежувати
+Unmonitor them	Припинити відстеження
+Unmonitored	Не відстежується
+Upcoming	Найближчі
+Upcoming 7 days	Найближчі 7 днів
+Update	Оновити
+Updated {} items.	Оновлено елементів: {}.
+Upgrade until (cutoff)	Оновлювати до (поріг)
+Upgrade until format score	Оновлювати до оцінки формату
+Upgrades allowed	Оновлення дозволено
+Upload a backup	Вивантажити резервну копію
+Upload failed (HTTP {}).	Не вдалося вивантажити (HTTP {}).
+Uploading…	Вивантаження…
+Use SSL	Використовувати SSL
+Use a proxy	Використовувати проксі
+Use hardlinks instead of copying	Використовувати жорсткі посилання замість копіювання
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Використовуйте його як заголовок X-Api-Key (або ?apikey=) в інших застосунках. Сумісно із заголовком, який використовує Sonarr.
+Use these episodes	Використати ці епізоди
+Usenet	Usenet
+Usenet delay	Затримка Usenet
+Usenet delay (minutes)	Затримка Usenet (хвилини)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Лише Usenet: новіші релізи відхиляються, щоб дати їм час поширитися. 0 вимикає це.
+Usenet only: older releases are rejected. 0 means unlimited.	Лише Usenet: старіші релізи відхиляються. 0 означає без обмежень.
+User name	Ім'я користувача
+Username	Ім'я користувача
+Validation	Перевірка
+Version	Версія
+Versions	Версії
+Waiting for the sign-in at	Очікування входу на
+Wanted	Розшукується
+Warnings	Попередження
+Warnings {warnings}	Попередження {warnings}
+Watched (Jellyfin watched sync)	Переглянуте (синхронізація переглянутого з Jellyfin)
+Watched sync user	Користувач для синхронізації переглянутого
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Сповіщення надсилаються через Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, власні скрипти (зі змінними середовища Sonarr), Emby/Jellyfin, Plex і Kodi: отримання, імпорти й оновлення, перейменування, додані або видалені серіали, видалені файли, проблеми стану системи. Скористайтеся «Тест» у редакторі.
+Welcome	Ласкаво просимо
+What to import	Що імпортувати
+When	Коли
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Коли перевіряються сертифікати HTTPS індексаторів, клієнтів завантаження й сервісів (налаштування Sonarr). Для самопідписаних сертифікатів у вашій мережі перевірку потрібно послабити.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Коли клієнт завантаження повідомляє шляхи, які Kitsunarr бачить в іншому місці (інша машина або контейнер), зіставте хост і шлях клієнта з локальним шляхом.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Чи надається перевага релізам, що виправляють дефектний реліз, і чи оновлюють вони наявні файли (як у Sonarr).
+Whole season	Увесь сезон
+Working…	Обробка…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Записуються в теки серіалів, коли серіали скануються, оновлюються або імпортуються, так само як їх записують споживачі метаданих Sonarr.
+Year	Рік
+Your library is empty.	Ваша бібліотека порожня.
+all checks passed	усі перевірки пройдено
+comma separated	через кому
+cutoff: {}	поріг: {}
+has a file	має файл
+iCal link	посилання iCal
+in 2 days	через 2 дні
+in a moment	за мить
+in file names	в іменах файлів
+in library	у бібліотеці
+in {text}	через {text}
+just now	щойно
+may run out of space	може закінчитися місце
+name (e.g. phone)	назва (напр. телефон)
+never refreshed	ніколи не оновлювалося
+no media files are moved, renamed or deleted.	жоден медіафайл не переміщується, не перейменовується й не видаляється.
+not accessible	недоступно
+not added	не додано
+not checked	не перевірено
+not read yet	ще не прочитано
+on disk	на диску
+refreshed {}	оновлено {}
+schema {s}	схема {s}
+secrets included	секрети включено
+secrets masked	секрети приховано
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip або sonarr.db
+stored only	лише збережено
+title (optional)	назва (необов'язково)
+{:.1} GiB/h	{:.1} GiB/год
+{added} added; {}	додано: {added}; {}
+{added} shows added.	Додано серіалів: {added}.
+{c.name} (API key needed)	{c.name} (потрібен ключ API)
+{c.series_count} series · {c.movie_count} movies	серіалів: {c.series_count} · фільмів: {c.movie_count}
+{chosen().len()} chosen	вибрано: {chosen().len()}
+{chosen().len()} chosen (at most 25)	вибрано: {chosen().len()} (щонайбільше 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} на диску · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% з {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · додано {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} з {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} файлів · {job["percent"]}% · заощаджено {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name}: розпочато.
+{name} was added to the library.	{name} додано до бібліотеки.
+{name}: shows	{name}: серіали
+{ok} files imported.	Імпортовано файлів: {ok}.
+{ok} imported; {}	імпортовано: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: релізів: {r.releases.len()}, індексаторів: {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Перевірено серіалів: {r.series_checked}, файлів: {r.files_checked}; проблем: {r.issues.len()}.
+{selected.read().len()} selected	вибрано: {selected.read().len()}
+{text} ago	{text} тому
+{} (not accessible)	{} (недоступно)
+{} ({} free)	{} (вільно: {})
+{} added to every profile (not allowed yet).	{} додано до кожного профілю (поки не дозволено).
+{} day(s)	{} дн.
+{} failed: {}	{} не вдалося: {}
+{} format scores	Оцінки форматів: {}
+{} free of {}	вільно {} з {}
+{} week(s)	{} тиж.
+{}{year} — movie	{}{year} — фільм
+‹ Back	‹ Назад
+‹ Earlier	‹ Раніше
+‹ Prev	‹ Попер.
+○ offline	○ офлайн
+● live	● наживо
+✓ No issues detected.	✓ Проблем не виявлено.
+Activity	Активність
+Queue	Черга
+System	Система
+Tasks	Задачі
+Retry	Повторити
+Sign out	Вийти
+Search titles…  ( / )	Пошук назв…  ( / )
+Loading…	Завантаження…
+Profiles	Профілі
+scene {}	сцена {}
+Scene numbering from TheXEM	Нумерація сцен із TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Нумерація сцен, екстрапольована з TheXEM (не перевірено)
+Season {} (scene seasons {})	Сезон {} (сезони сцени {})
+{} (scene {})	{} (сцена {})

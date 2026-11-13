@@ -1,0 +1,968 @@
+# Swedish interface strings: English<TAB>Swedish. {…} marks a placeholder.
+custom	anpassad
+indeterminate	obestämd
+mixed	blandad
+retired	utfasad
+· container	· container
+· finished {format_datetime(f)}	· slutförd {format_datetime(f)}
+· missing	· saknas
+· on disk	· på disk
+· today	· i dag
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} avs.
+— MiB per minute; empty uses Settings › Quality	— MiB per minut; tomt använder Inställningar › Kvalitet
+— a release's size is multiplied by its codec's factor before the size limits apply	— en utgåvas storlek multipliceras med kodekens faktor innan storleksgränserna tillämpas
+— all profiles at once	— alla profiler på en gång
+— codec and title criteria, custom qualities (Tanukarr)	— kodek- och titelkriterier, anpassade kvaliteter (Tanukarr)
+— enter the code	— ange koden
+(empty)	(tom)
++ Add mapping	+ Lägg till mappning
++ New format	+ Nytt format
++ New profile	+ Ny profil
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (av) eller 10 till 120. RSS-synkronisering kan också köras från System › Uppgifter.
+3 hours ago	för 3 timmar sedan
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	En torrent som laddas ner utan förlopp så här länge markeras som misslyckad, läggs till i spärrlistan och söks igen. 0 stänger av detta; förloppet följs från att Kitsunarr startar.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	En franchisegrupp som hittats via relationer i AniList eller MyAnimeList. Titlar från samma franchise som läggs till senare ansluts också.
+A new API key was generated. Update the applications that use it.	En ny API-nyckel har genererats. Uppdatera de program som använder den.
+A regular expression, case-insensitive; empty matches every title.	Ett reguljärt uttryck, skiftlägesokänsligt; tomt matchar alla titlar.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	En utgåva får den mest specifika förinställning som tillåts i seriens profil och vars källa, upplösning, kodek och titelmönster den matchar. En standardkvalitet som får en kodek eller ett mönster gör utgåvor som inte uppfyller dem till Okänd. Anpassade förinställningar läggs till i alla profiler som ej tillåtna.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	En utgåvas storlek multipliceras med kodekens faktor innan storleksgränserna tillämpas. "Blandad" betyder att profilerna använder olika faktorer; ett värde som anges här skrivs in i alla profiler.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	En titel som ansluts till en franchise eller manuell grupp lämnar sin tidigare grupp. Filer och mappar flyttas inte.
+API key	API-nyckel
+API key needed	API-nyckel krävs
+API keys and language	API-nycklar och språk
+API path	API-sökväg
+About	Om
+Absolute path; empty to delete permanently.	Absolut sökväg; tom för att radera permanent.
+Accepted	Godkända
+Account lists	Kontots listor
+Actions	Åtgärder
+Actual	Faktisk
+Add	Lägg till
+Add a Newznab or Torznab indexer and enable interactive search for it.	Lägg till en Newznab- eller Torznab-indexerare och aktivera interaktiv sökning för den.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Lägg till en klient från dess mall och använd Testa i redigeraren; hämtningar, kön och importer använder alla aktiverade klienter. En blackhole skriver hämtningar till en mapp och importerar det som dyker upp i dess bevakade mapp. Varje klients alternativ "Ta bort slutförda/misslyckade nedladdningar" tar bort nedladdningar (med sina filer) när klienten är klar med dem.
+Add a download client in Settings › Download clients and enable it.	Lägg till en nedladdningsklient i Inställningar › Nedladdningsklienter och aktivera den.
+Add a root folder first: it is where this title's folder will live.	Lägg först till en rotmapp: det är där den här titelns mapp kommer att ligga.
+Add a tag above first.	Lägg först till en tagg ovan.
+Add a title	Lägg till en titel
+Add auto tag	Lägg till automatisk tagg
+Add condition	Lägg till villkor
+Add exclusion	Lägg till undantag
+Add media	Lägg till media
+Add one, or migrate them from Sonarr/Tanukarr.	Lägg till en, eller migrera dem från Sonarr/Tanukarr.
+Add preset	Lägg till förinställning
+Add selected	Lägg till markerade
+Add series or movies below.	Lägg till serier eller filmer nedan.
+Add tag	Lägg till tagg
+Add the list's tags	Lägg till listans taggar
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Lägg till titlar från TVmaze eller AniList, eller ta med ett befintligt Sonarr- eller Tanukarr-bibliotek.
+Add to library	Lägg till i biblioteket
+Add {}	Lägg till {}
+Add {} ({y})	Lägg till {} ({y})
+Add — {}	Lägg till — {}
+Add, and remove when they leave the list	Lägg till, och ta bort när de lämnar listan
+Added	Tillagd
+Added to the titles this list adds.	Läggs till på titlarna som den här listan lägger till.
+Adding titles	Lägger till titlar
+Adding…	Lägger till…
+Address	Adress
+Age	Ålder
+Aired	Sänd
+Aired monitored episodes without a file appear here.	Sända bevakade avsnitt utan fil visas här.
+All	Alla
+All collections	Alla samlingar
+All episodes	Alla avsnitt
+All episodes in the series folder	Alla avsnitt i seriemappen
+All events	Alla händelser
+Allow zero size (the feed has no release sizes)	Tillåt storlek noll (flödet anger inga storlekar)
+Also delete the series folder and its files (to the recycle bin when one is set)	Radera även seriemappen och dess filer (till papperskorgen om en är angiven)
+Also for releases grabbed from interactive search	Även för utgåvor som hämtats via interaktiv sökning
+Also known as	Även känd som
+Always, even when renaming is off	Alltid, även när namnbyte är avstängt
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analysera videofiler (upplösning, speltid och kodekar, med ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Titlar från AniList och MyAnimeList läggs alltid till som anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Listor från AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, en annan Sonarr och anpassade JSON-listor läses med några timmars mellanrum; nya titlar läggs till med varje listas rotmapp, profil och bevakning. Tjänster som kräver OAuth använder ditt eget programs Client ID och en token som du klistrar in (token som migrerats från Tanukarr fungerar fortfarande).
+Anime	Anime
+Anime / absolute numbering	Anime / absolut numrering
+Anime categories	Animekategorier
+Anime episode format	Avsnittsformat för anime
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Animefilmer kan läggas till från AniList, och migreringar från Tanukarr tar med sina filmer. Spelfilmer kräver TMDB-katalogen.
+Anime standard format search	Sökning efter anime i standardformat
+Anime title, e.g. Frieren	Animetitel, t.ex. Frieren
+Any	Valfri
+Any library	Valfritt bibliotek
+Applications using the current key will stop working until you give them the new one.	Program som använder den nuvarande nyckeln slutar fungera tills du ger dem den nya.
+Applied after every list has been read successfully and some title left a list.	Tillämpas när alla listor har lästs utan fel och någon titel har lämnat en lista.
+Apply	Tillämpa
+Apply migration	Tillämpa migrering
+Apply profile	Tillämpa profil
+Applying migration	Tillämpar migrering
+Applying…	Tillämpar…
+As Settings › Media management says	Enligt Inställningar › Mediehantering
+At least 10 characters.	Minst 10 tecken.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Minst {MIN_PASSWORD_LENGTH} tecken. En lösenfras fungerar bra.
+Auto tag	Automatisk tagg
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automatisk tagg sparad. Den tillämpas nästa gång titlar läggs till, redigeras eller uppdateras.
+Auto tagging	Automatisk taggning
+Auto-refresh	Automatisk uppdatering
+Automatic	Automatisk
+Automatic search	Automatisk sökning
+Automatic search for {label}: grabbed {}.	Automatisk sökning efter {label}: hämtade {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automatisk sökning efter {label}: {} utgåvor hittades, {} godkändes, inget hämtades.
+Automatic search: grab the best release	Automatisk sökning: hämta den bästa utgåvan
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatiseringen är pausad: RSS-synkronisering, schemalagda listsynkroniseringar och automatiska sökningar hoppas över. Manuella åtgärder och pågående nedladdningar fortsätter.
+Automation resumed.	Automatiseringen har återupptagits.
+Available from	Tillgänglig från
+Back to the dashboard	Tillbaka till översikten
+Back up now	Säkerhetskopiera nu
+Backup {} created.	Säkerhetskopian {} har skapats.
+Backups	Säkerhetskopior
+Blocking:	Blockerande:
+Blocklist	Spärrlista
+Blocklist the release and search again	Lägg till utgåvan i spärrlistan och sök igen
+Blocklist the release: it is never grabbed again	Lägg till utgåvan i spärrlistan: den hämtas aldrig igen
+Blocklist “{title}” and search for a replacement?	Lägga till ”{title}” i spärrlistan och söka efter en ersättare?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Ta med ditt bibliotek och dina inställningar från Sonarr (v3/v4) eller Tanukarr till Kitsunarr. Källan läses bara, ändras aldrig, och
+Bypass the proxy for local addresses	Använd inte proxyn för lokala adresser
+Calendar	Kalender
+Calendar →	Kalender →
+Cancel	Avbryt
+Cancel compression	Avbryt komprimering
+Cannot reach the server: {e}	Kan inte nå servern: {e}
+Catalogue	Katalog
+Category	Kategori
+Certificate validation	Certifikatvalidering
+Change password	Byt lösenord
+Change series	Byt serie
+Changes	Ändringar
+Check	Kontrollera
+Check library	Kontrollera biblioteket
+Check now	Kontrollera nu
+Check that the mapped series folders exist (read-only)	Kontrollera att de mappade seriemapparna finns (skrivskyddat)
+Checked: {summary}.	Kontrollerat: {summary}.
+Checking…	Kontrollerar…
+Choose a backup file	Välj en säkerhetskopia
+Choose a mode	Välj ett läge
+Choose a root folder and a quality profile.	Välj en rotmapp och en kvalitetsprofil.
+Choose a season	Välj en säsong
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Välj en serie och en säsong eller ett avsnitt. Resultaten visar vad varje utgåva är, så som Kitsunarrs tolkare läser den.
+Choose a series or movie…	Välj en serie eller film…
+Choose source	Välj källa
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Välj den här utgåvans avsnitt manuellt och hämta den sedan (valet behålls vid importen)
+Choose…	Välj…
+Clean library	Rensa bibliotek
+Clear	Rensa
+Clear blocklist	Rensa spärrlistan
+Cleared {n} releases from the blocklist.	Utgåvor borttagna från spärrlistan: {n}.
+Client	Klient
+Close	Stäng
+Codec	Kodek
+Codec factors saved in every profile.	Kodekfaktorerna har sparats i alla profiler.
+Codec size factors	Storleksfaktorer per kodek
+Codecs	Kodekar
+Collection film folder format	Mappformat för filmer i samlingar
+Collections	Samlingar
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Samlingar visas när de migreras från Tanukarr, skapas från katalogdata eller skapas här.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Kommer du från Sonarr eller Tanukarr? Importera dina befintliga serier, inställningar och historik i några steg.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Kommaseparerade; * är ett jokertecken (*.lan), och IP-intervall som 192.168.1.0/24 fungerar.
+Companion app keys	Nycklar för kompanjonsappar
+Complete series	Hela serien
+Completed and failed download handling	Hantering av slutförda och misslyckade nedladdningar
+Component	Komponent
+Compress series	Komprimera serie
+Compression	Komprimering
+Compression queued.	Komprimeringen har köats.
+Compression worker is not connected.	Komprimeringstjänsten är inte ansluten.
+Condition	Villkor
+Conditions	Villkor
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Villkor av samma typ matchar när något av dem matchar (alla obligatoriska måste matcha); varje typ måste matcha.
+Configure	Konfigurera
+Confirm password	Bekräfta lösenord
+Connect	Anslut
+Connect to a running instance	Anslut till en körande instans
+Connecting…	Ansluter…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Konsekventa kopior av databasen. Schemalagda säkerhetskopior körs varje vecka (de åtta senaste behålls); varje migrering skapar också en först. För att återställa, stoppa Kitsunarr och kör
+Continuing	Pågående
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (skickas med flödesbegäran, t.ex. uid=1; pass=…)
+Copied.	Kopierat.
+Copy	Kopiera
+Copy (keep the originals)	Kopiera (behåll originalen)
+Copy sizes from	Kopiera storlekar från
+Copy the token now; it is not shown again:	Kopiera token nu; den visas inte igen:
+Could not grab {}: {}	Kunde inte hämta {}: {}
+Covers	Täcker
+Create	Skapa
+Create account	Skapa konto
+Create group	Skapa grupp
+Create key	Skapa nyckel
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Skapa en på themoviedb.org › Inställningar › API. Används för TV-serier och filmer från TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Skapa administratörskontot. Du använder det för att logga in i Kitsunarr.
+Created	Skapad
+Created when the first file is imported. Nothing is written to disk now.	Skapas när den första filen importeras. Inget skrivs till disken nu.
+Creating…	Skapar…
+Credit	Erkännande
+Current file	Nuvarande fil
+Current password	Nuvarande lösenord
+Custom format saved.	Anpassat format sparat.
+Custom format score	Poäng för anpassat format
+Custom format scores	Poäng för anpassade format
+Custom formats	Anpassade format
+Cutoff unmet	Uppgraderingsgräns ej uppnådd
+Daily	Daglig
+Daily episode format	Avsnittsformat för dagliga serier
+Dashboard	Översikt
+Data directory	Datakatalog
+Database backup taken before the import: {b}	Säkerhetskopia av databasen tagen före importen: {b}
+Database schema	Databasschema
+Date	Datum
+Date added	Tilläggsdatum
+Debug	Felsökning
+Decision	Beslut
+Default	Standard
+Defaults	Standardvärden
+Delay profile	Fördröjningsprofil
+Delay profile saved.	Fördröjningsprofil sparad.
+Delay profiles	Fördröjningsprofiler
+Delete	Radera
+Delete empty series folders	Radera tomma seriemappar
+Delete file	Radera fil
+Delete group	Radera grupp
+Delete profile	Radera profil
+Delete “{path}”? It goes to the recycle bin when one is set.	Radera ”{path}”? Den flyttas till papperskorgen om en är angiven.
+Delete “{}”?	Radera ”{}”?
+Delete “{}”? Its series and movies stay in the library.	Radera ”{}”? Dess serier och filmer finns kvar i biblioteket.
+Deleted	Raderad
+Directory	Katalog
+Disabled	Inaktiverad
+Disabled for local addresses	Inaktiverad för lokala adresser
+Disk scanned: {}	Disken skannad: {}
+Disk scanned: {} Not matched: {}	Disken skannad: {} Ej matchade: {}
+Do not prefer	Föredra inte
+Do not search for a replacement	Sök inte efter en ersättare
+Do nothing	Gör ingenting
+Done	Klar
+Download client options saved.	Alternativ för nedladdningsklienter sparade.
+Download clients	Nedladdningsklienter
+Download failed	Nedladdningen misslyckades
+Download queue	Nedladdningskö
+Downloads	Nedladdningar
+Duration	Längd
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Varje titel tillhör en katalog, som dess uppdateringar läser från; alla identifierare den har (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) behålls. Titlar som migrerats från Sonarr tillhör TheTVDB.
+Edit	Redigera
+Edit “{name}”	Redigera ”{name}”
+Edit “{}”	Redigera ”{}”
+Enable RSS	Aktivera RSS
+Enable automatic search	Aktivera automatisk sökning
+Enable interactive search	Aktivera interaktiv sökning
+Enabled	Aktiverad
+Ended	Avslutad
+English	English
+Entity	Entitet
+Episode	Avsnitt
+Episode and movie naming	Namngivning av avsnitt och filmer
+Episode image thumbs in the NFO	Miniatyrbilder för avsnitt i NFO-filen
+Episode images (<filename>-thumb.jpg)	Avsnittsbilder (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Avsnittsbilder (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Avsnittsbilder (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Avsnittsmappningar i .plexmatch
+Episode metadata (<filename>.nfo)	Avsnittsmetadata (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Avsnittsmetadata (Season##/filename.xml)
+Episode order	Avsnittsordning
+Episode order changed: {} episodes updated, {} added.	Avsnittsordningen ändrad: {} avsnitt uppdaterade, {} tillagda.
+Episodes	Avsnitt
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Avsnitten numreras om enligt den valda ordningen; filer, bevakning och historik följer med sina avsnitt. Byt sedan namn på filerna så att de matchar de nya numren.
+Episodes of {title}	Avsnitt av {title}
+Episodes on disk	Avsnitt på disk
+Episodes whose file is below the quality profile's cutoff appear here.	Avsnitt vars fil ligger under kvalitetsprofilens uppgraderingsgräns visas här.
+Episodes…	Avsnitt…
+Errors	Fel
+Errors {errors}	Fel {errors}
+Event	Händelse
+Every file already follows the naming settings.	Alla filer följer redan namngivningsinställningarna.
+Every file meets its cutoff	Alla filer når sin uppgraderingsgräns
+Exclude	Exkludera
+Exclusions	Undantag
+Expected	Förväntade
+Expires	Upphör
+Extra file extensions	Filändelser för extrafiler
+Factor	Faktor
+Failed	Misslyckad
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Skydd mot falska utgåvor: inspektera torrenter innan de hämtas och avvisa körbara filer, lösenordsskyddade lockbetesarkiv och innehåll utan video
+Feed address	Flödesadress
+Fetch the latest metadata from {}	Läs in de senaste metadata från {}
+File	Fil
+File date	Fildatum
+File deleted	Fil raderad
+File deleted.	Filen har raderats.
+File management	Filhantering
+File management settings saved.	Inställningar för filhantering sparade.
+File renamed	Fil omdöpt
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Filer som är äldre än så raderas dagligen från papperskorgen; 0 behåller dem.
+Files upgrades replaced, kept as versions	Filer som ersatts av uppgraderingar, sparade som versioner
+Film	Film
+Film title or IMDb id, e.g. Arrival	Filmtitel eller IMDb-id, t.ex. Arrival
+Find a series in your library	Hitta en serie i ditt bibliotek
+Find files added to or removed from the series folder	Hitta filer som lagts till i eller tagits bort från seriemappen
+Find something to add	Hitta något att lägga till
+First and last pieces first	Första och sista delarna först
+First day of the week	Veckans första dag
+First season	Första säsongen
+Folder	Mapp
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formaten använder Sonarrs specifikationstyper (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Poäng tilldelas per kvalitetsprofil.
+Found	Hittade
+Free	Ledigt
+Free space	Ledigt utrymme
+Future days	Kommande dagar
+Future episodes	Kommande avsnitt
+General	Allmänt
+GiB	GiB
+Grab	Hämta
+Grab a release from interactive search; downloads in the client's TV category show up here.	Hämta en utgåva via interaktiv sökning; nedladdningar i klientens TV-kategori visas här.
+Grab anyway?	Hämta ändå?
+Grab with these episodes	Hämta med dessa avsnitt
+Grabbed	Hämtad
+Grabbed {}.	Hämtade {}.
+Grabbing…	Hämtar…
+Grabs, imports and file changes appear here. Migrated history is included.	Hämtningar, importer och filändringar visas här. Migrerad historik ingår.
+Group film folder format	Mappformat för filmer i grupper
+Group folder format	Mappformat för grupper
+Group season folder format	Mappformat för säsonger i grupper
+Group story-arc folder format	Mappformat för handlingsbågar i grupper
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Grupper av relaterade serier och filmer: katalogernas samlingar, animefranchiser (prequel-/uppföljargrupper) och manuella grupper, inklusive de som migrerats från Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Importer endast med hårdlänkar: kopiera aldrig nedladdningar som fortsätter att seedas
+Health	Systemstatus
+Hide	Dölj
+History	Historik
+History →	Historik →
+Host	Värd
+Host (as in the download client's settings)	Värd (som i nedladdningsklientens inställningar)
+Hostname	Värdnamn
+How the catalogue numbers the episodes (it can be changed later on the series page).	Hur katalogen numrerar avsnitten (kan ändras senare på seriesidan).
+Id	Id
+Identities	Identiteter
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Om Kitsunarr ser dina media under andra sökvägar än källan (till exempel andra Docker-volymer), mappa varje källmapp till dess plats i Kitsunarr. Sökvägarna skrivs bara om i databasen.
+Ignored	Ignorerade
+Ignored addresses	Ignorerade adresser
+Implementation	Implementering
+Import / Migration	Import / Migrering
+Import a Sonarr or Tanukarr library	Importera ett Sonarr- eller Tanukarr-bibliotek
+Import blocked	Import blockerad
+Import completed downloads	Importera slutförda nedladdningar
+Import extra files (subtitles…)	Importera extrafiler (undertexter…)
+Import from Sonarr/Tanukarr	Importera från Sonarr/Tanukarr
+Import history	Importera historik
+Import library	Importera bibliotek
+Import list options saved.	Alternativ för importlistor sparade.
+Import lists	Importlistor
+Import pending	Import väntar
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importera videofiler från valfri mapp som servern kan läsa: kontrollera vilken serie och vilka avsnitt varje fil hör till, och kopiera eller flytta dem sedan till biblioteket (namngivna enligt namngivningsinställningarna).
+Import {chosen().len()} files	Importera {chosen().len()} filer
+Imported	Importerad
+Imported from series folder	Importerad från seriemappen
+Importing	Importerar
+Importing…	Importerar…
+Imports need	Importer kräver
+In library ›	I biblioteket ›
+Include	Inkludera
+Include in file names ({{Custom Formats}} token)	Inkludera i filnamn (platshållaren {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Inkludera bara titlar från vissa listor, eller uteslut titlarna från andra.
+Include unmonitored	Inkludera obevakade
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Inklusive URL-basen, t.ex. http://192.168.1.10:8989 eller https://host/sonarr
+Indexer	Indexerare
+Indexer options saved.	Alternativ för indexerare sparade.
+Indexer settings	Inställningar för indexerare
+Indexers	Indexerare
+Info	Info
+Info {infos}	Info {infos}
+Instance	Instans
+Instance name	Instansnamn
+Instance: {name}	Instans: {name}
+Interactive	Interaktiv
+Interactive search	Interaktiv sökning
+Interactive search for full-season packs only	Interaktiv sökning efter endast hela säsongspaket
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interaktiv sökning efter paket med hela serien (och dess säsonger) hos torrentindexerare
+Interactive search: see every release and choose	Interaktiv sökning: se alla utgåvor och välj
+Interface language	Gränssnittsspråk
+Interval	Intervall
+Jellyfin library and user	Jellyfin-bibliotek och användare
+Job	Jobb
+Keep / skip	Behåll / hoppa över
+Keep files replaced by upgrades as versions (in "Plex Versions")	Behåll filer som ersatts av uppgraderingar som versioner (i "Plex Versions")
+Keep me signed in	Håll mig inloggad
+Keep the replaced file's date (upgrades)	Behåll den ersatta filens datum (uppgraderingar)
+Kept	Behållen
+Kept versions	Sparade versioner
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Nycklar för kompanjonsappar som använder Sonarrs v3-API: de läser biblioteket, och nycklar med "lägg till serier" kan även lägga till serier (i en rotmapp, utan att söka). Inget annat tillåts.
+KiB	KiB
+Kind	Typ
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr är fri programvara (GPL-3.0-or-later).
+Kitsunarr path	Sökväg i Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr säkerhetskopierar sin egen databas, importerar den förhandsgranskade datan i en enda transaktion och validerar den innan den sparas. Källan och dina mediefiler ändras inte.
+Label	Etikett
+Languages	Språk
+Larger releases are rejected. 0 means unlimited.	Större utgåvor avvisas. 0 betyder obegränsat.
+Last read	Senast läst
+Last run	Senaste körning
+Last search	Senaste sökning
+Last searched	Senast sökt
+Last season	Sista säsongen
+Later ›	Senare ›
+Latest season	Senaste säsongen
+Level	Nivå
+Library	Bibliotek
+Library check	Bibliotekskontroll
+Library tools	Biblioteksverktyg
+Library tools saved.	Biblioteksverktyg sparade.
+List	Lista
+Listed best first. Grouped qualities rank equally.	Bästa först. Grupperade kvaliteter rankas lika.
+Live updates connected	Liveuppdateringar anslutna
+Live updates disconnected	Liveuppdateringar frånkopplade
+Load	Läs in
+Load the account's lists	Läs in kontots listor
+Load the libraries…	Läs in biblioteken…
+Load the users…	Läs in användarna…
+Local air date	Lokalt sändningsdatum
+Local path	Lokal sökväg
+Log them	Logga dem
+Logs	Loggar
+Main rejections	Huvudsakliga avvisningar
+Make current	Gör aktuell
+Manual import	Manuell import
+Mark as failed	Markera som misslyckad
+Matches monitored titles.	Matchar bevakade titlar.
+Maximum	Maximum
+Maximum size (MB)	Maxstorlek (MB)
+Media management	Mediehantering
+Media management settings	Inställningar för mediehantering
+Media paths	Mediesökvägar
+Mediums	Medier
+Members	Medlemmar
+Message	Meddelande
+Metadata	Metadata
+Metadata files	Metadatafiler
+Metadata keys saved.	Metadatanycklar sparade.
+Metadata language	Metadataspråk
+Metadata refreshed.	Metadata uppdaterade.
+Metadata refreshed: {} new episodes, {} updated.	Metadata uppdaterade: {} nya avsnitt, {} uppdaterade.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Metadatainställningar sparade. Filerna skrivs vid nästa diskskanning, uppdatering eller import.
+Metadata sources	Metadatakällor
+MiB	MiB
+Migration completed.	Migreringen är slutförd.
+Migration report #{}	Migreringsrapport nr {}
+Minimum	Minimum
+Minimum age (minutes)	Minsta ålder (minuter)
+Minimum custom format score	Lägsta poäng för anpassade format
+Minimum format score	Lägsta formatpoäng
+Minimum free space (MiB)	Minsta lediga utrymme (MiB)
+Minimum seeders	Minsta antal seedare
+Missing	Saknade
+Missing (monitored)	Saknade (bevakade)
+Missing films	Saknade filmer
+Mode	Läge
+Monday	Måndag
+Monitor	Bevaka
+Monitored	Bevakad
+More languages can be added to the string tables.	Fler språk kan läggas till i strängtabellerna.
+Move	Flytta
+Movie	Film
+Movie file format	Filformat för filmer
+Movie removed from Kitsunarr. Files on disk were not touched.	Filmen har tagits bort från Kitsunarr. Filerna på disken rördes inte.
+Movies	Filmer
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Utgåvor med flera säsonger: acceptera paket med flera säsonger (en säsongssökning tar paketet för sin säsong)
+Must contain	Måste innehålla
+Must contain (comma separated; /regex/ allowed)	Måste innehålla (kommaseparerat; /regex/ tillåts)
+Must not contain	Får inte innehålla
+NOT	INTE
+Name	Namn
+Naming	Namngivning
+Naming options saved.	Namngivningsalternativ sparade.
+Naming saved.	Namngivning sparad.
+Negate	Negera
+Network	Kanal
+Never: keep the release's names	Aldrig: behåll utgåvans namn
+New custom format	Nytt anpassat format
+New custom preset	Ny anpassad förinställning
+New group title	Titel på ny grupp
+New password	Nytt lösenord
+New quality profile	Ny kvalitetsprofil
+Next airing	Nästa sändning
+Next run	Nästa körning
+Next ›	Nästa ›
+No	Nej
+No activity yet.	Ingen aktivitet än.
+No auto tags.	Inga automatiska taggar.
+No backups yet	Inga säkerhetskopior än
+No collections yet	Inga samlingar än
+No companion keys.	Inga kompanjonsnycklar.
+No custom formats	Inga anpassade format
+No custom formats defined.	Inga anpassade format har definierats.
+No delay above the minimum custom format score	Ingen fördröjning över lägsta poäng för anpassade format
+No delay for the profile's best quality in the preferred protocol	Ingen fördröjning för profilens bästa kvalitet i det föredragna protokollet
+No download client to read	Ingen nedladdningsklient att läsa
+No exclusions.	Inga undantag.
+No history	Ingen historik
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Ingen indexerare kan söka efter den här serien automatiskt: ingen har både automatisk sökning aktiverad och antingen inga taggar eller en av seriens taggar.
+No indexers to search	Inga indexerare att söka i
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Inga sparade versioner. Aktivera "Behåll filer som ersatts av uppgraderingar" under Namngivning.
+No log entries at this level	Inga loggposter på den här nivån
+No mappings.	Inga mappningar.
+No matches	Inga träffar
+No members	Inga medlemmar
+No migrations have been run yet.	Inga migreringar har körts än.
+No movies yet	Inga filmer än
+No notes.	Inga anteckningar.
+No recycle bin is set (Settings › Media management).	Ingen papperskorg är angiven (Inställningar › Mediehantering).
+No release profiles.	Inga utgivningsprofiler.
+No root folders yet.	Inga rotmappar än.
+No root folders.	Inga rotmappar.
+No runs yet	Inga körningar än
+No searches yet.	Inga sökningar än.
+No series in your library match.	Inga serier i ditt bibliotek matchar.
+No tags	Inga taggar
+No {}	Inga {}
+No {} yet	Inga {} än
+None	Ingen
+Not evaluated by Kitsunarr.	Inte utvärderad av Kitsunarr.
+Not imported	Inte importerad
+Not monitored	Inte bevakad
+Notes	Anteckningar
+Notes ({preview.warnings.len()})	Anteckningar ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Anteckningar ({report.warnings.len()})
+Nothing airs in the next seven days.	Inget sänds de kommande sju dagarna.
+Nothing downloading	Inget laddas ner
+Nothing found	Inget hittades
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Inget i den här katalogen matchar sökningen. Prova en annan stavning, originaltiteln eller den andra katalogen.
+Nothing in this period	Inget under den här perioden
+Nothing missing	Inget saknas
+Notifications	Aviseringar
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Numrera avsnitten enligt en annan ordning i katalogen (avsnittsgrupper i TMDB, DVD- eller absolut ordning i TheTVDB)
+OMDb API key	OMDb API-nyckel
+Older priority	Prioritet för äldre
+One folder per season	En mapp per säsong
+Only the 2000 newest files are listed.	Endast de 2000 nyaste filerna listas.
+Only when the proxy needs one.	Endast om proxyn kräver det.
+Open the library	Öppna biblioteket
+OpenAPI document	OpenAPI-dokument
+Opens the service to authorize Kitsunarr and fills in the token.	Öppnar tjänsten för att auktorisera Kitsunarr och fyller i token.
+Options	Alternativ
+Organize	Organisera
+Other	Annat
+Overview	Handling
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Skriv över poster som redan finns i Kitsunarr (annars behålls de)
+Packs	Paket
+Page not found	Sidan hittades inte
+Page {page} / {pages}	Sida {page} / {pages}
+Password	Lösenord
+Password changed. Other sessions were signed out.	Lösenordet har ändrats. Andra sessioner har loggats ut.
+Past days	Tidigare dagar
+Path	Sökväg
+Path mappings	Sökvägsmappningar
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Pausa automatiseringen (RSS-synkronisering, schemalagda listsynkroniseringar, automatiska sökningar)
+Peers	Deltagare
+Permission	Behörighet
+PiB	PiB
+Platform	Plattform
+Port	Port
+Position	Position
+Post-import category	Kategori efter import
+Posters	Affischer
+Prefer and upgrade	Föredra och uppgradera
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Föredra säsongspaket för anime (Kitsunarrs säsongssökningar för anime söker redan säsongen en gång)
+Prefer, do not upgrade	Föredra, uppgradera inte
+Preferred	Föredragen
+Preferred metadata language	Föredraget metadataspråk
+Preferred protocol	Föredraget protokoll
+Preparing preview…	Förbereder förhandsgranskning…
+Preview	Förhandsgranskning
+Preview migration	Förhandsgranska migrering
+Previous migrations	Tidigare migreringar
+Priority	Prioritet
+Problem	Problem
+Profile	Profil
+Profile saved.	Profil sparad.
+Profiles still used by series or movies cannot be deleted.	Profiler som fortfarande används av serier eller filmer kan inte raderas.
+Progress	Förlopp
+Propers and repacks	Propers och repacks
+Proxy	Proxy
+Proxy saved.	Proxy sparad.
+Proxy type	Proxytyp
+Qualities	Kvaliteter
+Quality	Kvalitet
+Quality presets	Kvalitetsförinställningar
+Quality presets saved.	Kvalitetsförinställningar sparade.
+Quality profile	Kvalitetsprofil
+Quality profiles	Kvalitetsprofiler
+Quality profile…	Kvalitetsprofil…
+RSS sync interval (minutes)	Intervall för RSS-synkronisering (minuter)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS-synkroniseringen väntar så här länge efter att en utgåva dykt upp på en bättre; fördröjda utgåvor visas i kön. Den första profilen vars taggar matchar serien tillämpas; den sista (utan taggar) är standard.
+Re-encode this series' files with the compression worker	Koda om seriens filer med komprimeringstjänsten
+Read and add series	Läsa och lägga till serier
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Läses direkt från nedladdningsklienterna med några sekunders mellanrum. Slutförda nedladdningar som Kitsunarr hämtat importeras till seriemappen varje minut (torrenter kopieras eller hårdlänkas så att de fortsätter seedas; Usenet-nedladdningar flyttas). Misslyckade nedladdningar läggs till i spärrlistan och söks igen.
+Read the library	Läsa biblioteket
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Skrivskyddat: hittar saknade seriemappar, filposter utanför sin mapp eller registrerade två gånger, och filer som saknas på disken.
+Reading the download clients…	Läser nedladdningsklienterna…
+Reading the source	Läser källan
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Läser allt via API:et. Lösenord och API-nycklar för tjänster döljs av källan och måste anges igen efteråt.
+Recent activity	Senaste aktivitet
+Recent priority	Prioritet för nyare
+Recent runs	Senaste körningar
+Recent searches	Senaste sökningar
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Rekommenderas. Öppna System → Backup i Sonarr/Tanukarr, skapa en säkerhetskopia och ladda ner .zip-filen (eller använd sonarr.db). Inkluderar lösenord för indexerare och nedladdningsklienter.
+Recycle bin	Papperskorg
+Recycle bin cleanup (days)	Rensning av papperskorgen (dagar)
+Recycled	I papperskorgen
+Refresh metadata	Uppdatera metadata
+Refresh preview	Uppdatera förhandsgranskning
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Uppdatering från {} stöds inte än; importerade metadata behålls som de är
+Refreshing…	Uppdaterar…
+Regenerate	Generera om
+Regenerate API key	Generera om API-nyckel
+Reject releases whose TheTVDB or IMDb id names another series	Avvisa utgåvor vars TheTVDB- eller IMDb-id anger en annan serie
+Rejected: click twice to grab anyway	Avvisad: klicka två gånger för att hämta ändå
+Release	Utgåva
+Release profile	Utgivningsprofil
+Release profile saved.	Utgivningsprofil sparad.
+Release profiles	Utgivningsprofiler
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Utgåvor kontrolleras mot seriens kvalitetsprofil, anpassade format och utgivningsprofiler och rangordnas, precis som i Sonarr. Avvisade utgåvor kräver ett andra klick.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Utgåvor som misslyckats eller lagts till i spärrlistan manuellt. Sökningar och RSS-synkronisering hämtar dem aldrig igen; ta bort en för att tillåta den.
+Remote path	Fjärrsökväg
+Remote path mapping	Mappning av fjärrsökväg
+Remote path mapping saved.	Mappning av fjärrsökväg sparad.
+Remote path mappings	Mappningar av fjärrsökvägar
+Remove	Ta bort
+Remove completed downloads	Ta bort slutförda nedladdningar
+Remove every release from the blocklist?	Ta bort alla utgåvor från spärrlistan?
+Remove failed downloads	Ta bort misslyckade nedladdningar
+Remove from library	Ta bort från biblioteket
+Remove from queue	Ta bort från kön
+Remove from the download client (deletes its files there)	Ta bort från nedladdningsklienten (raderar dess filer där)
+Remove movie	Ta bort film
+Remove series	Ta bort serie
+Remove tags automatically (from titles that stop matching)	Ta bort taggar automatiskt (från titlar som slutar matcha)
+Remove “{title}” and its episode records from Kitsunarr?	Ta bort ”{title}” och dess avsnittsposter från Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Ta bort ”{title}” från Kitsunarr? Filerna på disken raderas inte.
+Removed	Borttagen
+Removed from the blocklist.	Borttagen från spärrlistan.
+Rename	Byt namn
+Rename files	Byt namn på filer
+Rename files on import	Byt namn på filer vid import
+Rename files to the naming settings	Byt namn på filer enligt namngivningsinställningarna
+Formats use Sonarr's tokens.	Formaten använder Sonarrs platshållare.
+Renaming…	Byter namn…
+Report	Rapport
+Request one at omdbapi.com. Used for films by IMDb id.	Begär en på omdbapi.com. Används för filmer via IMDb-id.
+Required	Obligatorisk
+Resolution	Upplösning
+Restore	Återställ
+Restore {}	Återställ {}
+Restore…	Återställ…
+Restoring…	Återställer…
+Resume automation	Återuppta automatiseringen
+Retention (days)	Lagringstid (dagar)
+Retire	Fasa ut
+Revoke	Återkalla
+Root folder	Rotmapp
+Root folders	Rotmappar
+Root folder…	Rotmapp…
+Run #{run.id}: {run.status}	Körning nr {run.id}: {run.status}
+Run now	Kör nu
+Running…	Körs…
+Saturday	Lördag
+Save	Spara
+Save criteria	Spara kriterier
+Save factors	Spara faktorer
+Save keys	Spara nycklar
+Save metadata files	Spara metadatafiler
+Save naming	Spara namngivning
+Save options	Spara alternativ
+Saved	Sparad
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Sparade nycklar visas som {REDACTED}; lämna dem oförändrade för att behålla dem, eller töm fältet för att ta bort en.
+Saved.	Sparat.
+Scan disk	Skanna disk
+Scan folder	Skanna mapp
+Scanning…	Skannar…
+Scheduled tasks	Schemalagda uppgifter
+Score	Poäng
+Search	Sök
+Search again when a download fails	Sök igen när en nedladdning misslyckas
+Search all	Sök efter alla
+Search all films	Sök efter alla filmer
+Search collection	Sök efter samlingen
+Search every episode of the list, one search per season	Sök efter alla avsnitt i listan, en sökning per säsong
+Search every member's missing episodes (films: the film)	Sök efter varje medlems saknade avsnitt (filmer: filmen)
+Search indexers	Sök hos indexerare
+Search selected	Sök efter markerade
+Search the indexers and choose a release	Sök hos indexerarna och välj en utgåva
+Search the indexers and grab the best accepted release	Sök hos indexerarna och hämta den bästa godkända utgåvan
+Search the indexers and grab the best releases for the monitored episodes	Sök hos indexerarna och hämta de bästa utgåvorna för de bevakade avsnitten
+Search your indexers	Sök hos dina indexerare
+Search {chosen} selected	Sök efter {chosen} markerade
+Search: {}	Sökning: {}
+Search: {} — complete series	Sökning: {} — hela serien
+Search: {} — season {season} packs	Sökning: {} — paket för säsong {season}
+Search: {} — {label}	Sökning: {} — {label}
+Searching for {label}…	Söker efter {label}…
+Searching indexers…	Söker hos indexerare…
+Searching…	Söker…
+Season	Säsong
+Season folder format	Mappformat för säsonger
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Titlarna på säsongsmappar ersätter katalogens i {{Season Title}}. Lämna tomt för att behålla katalogens.
+Season folders	Säsongsmappar
+Season images (Season ##.jpg)	Säsongsbilder (Season ##.jpg)
+Season images (Season##/folder.jpg)	Säsongsbilder (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Säsongsbilder (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Säsongspaket: 1 använder målen för säsongspaket nedan
+Season premieres only	Endast säsongspremiärer
+Season {n}	Säsong {n}
+Season {one}	Säsong {one}
+Season {se.season_number}	Säsong {se.season_number}
+Season {season_number}	Säsong {season_number}
+Season-pack seed ratio	Seedkvot för säsongspaket
+Season-pack seed time, minutes	Seedtid för säsongspaket, minuter
+Seasons	Säsonger
+Seasons {first}-{last}	Säsonger {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Hemligheter visas som {REDACTED}; lämna dem oförändrade för att behålla det sparade värdet.
+Seed ratio (empty: the client's default)	Seedkvot (tomt: klientens standard)
+Seed time, minutes (empty: the client's default)	Seedtid, minuter (tomt: klientens standard)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Skicka förfrågningar till indexerare, kataloger, listor, nedladdningsklienter och anslutningar via en proxy.
+Send to the download client	Skicka till nedladdningsklienten
+Series	Serie
+Series .plexmatch file	Seriens .plexmatch-fil
+Series folder format	Mappformat för serier
+Series images (Series Title.jpg)	Seriebilder (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Seriebilder (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Seriebilder (folder.jpg)
+Series metadata (tvshow.nfo)	Seriemetadata (tvshow.nfo)
+Series metadata URL	URL för seriemetadata
+Series metadata episode guide	Avsnittsguide i seriemetadata
+Series removed from Kitsunarr. Files on disk were not touched.	Serien har tagits bort från Kitsunarr. Filerna på disken rördes inte.
+Series removed, and its folder deleted.	Serien har tagits bort och dess mapp raderats.
+Series type	Serietyp
+Set quality profile…	Ange kvalitetsprofil…
+Settings	Inställningar
+Settings saved.	Inställningar sparade.
+Settings → General → Security in Sonarr/Tanukarr.	Inställningar → Allmänt → Säkerhet i Sonarr/Tanukarr.
+Show	Visa
+Show as all-day events	Visa som heldagshändelser
+Show unmonitored	Visa obevakade
+Shows	Serier
+Sign in	Logga in
+Signed in. Save the list to keep the token.	Inloggad. Spara listan för att behålla token.
+Signing in…	Loggar in…
+Size	Storlek
+Size limits	Storleksgränser
+Size on disk	Storlek på disk
+Skip files smaller than (MB)	Hoppa över filer mindre än (MB)
+Skip the free-space check	Hoppa över kontrollen av ledigt utrymme
+Skip unmonitored episodes when importing packs	Hoppa över obevakade avsnitt vid import av paket
+Source	Källa
+Source code	Källkod
+Source path	Källsökväg
+Special	Specialavsnitt
+Specials	Specialavsnitt
+Specials are never monitored automatically.	Specialavsnitt bevakas aldrig automatiskt.
+Specifications	Specifikationer
+Specifications (JSON)	Specifikationer (JSON)
+Specifications must be valid JSON: {e}	Specifikationerna måste vara giltig JSON: {e}
+Stalled torrent timeout (minutes)	Tidsgräns för stillastående torrenter (minuter)
+Standard	Standard
+Standard episode format	Standardformat för avsnitt
+Start migration	Starta migrering
+Start over	Börja om
+Start search for missing episodes	Starta sökning efter saknade avsnitt
+Started	Startad
+Started {format_datetime(&run.started_at)}	Startad {format_datetime(&run.started_at)}
+Status	Status
+Status & health	Status och systemhälsa
+Still downloading	Laddas fortfarande ner
+Storage outlook	Lagringsprognos
+Studio	Studio
+Subscribe	Prenumerera
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Prenumerera på den här adressen i en kalenderapp. Den innehåller din API-nyckel: håll den privat.
+Sunday	Söndag
+Sync	Synkronisera
+Sync all lists now	Synkronisera alla listor nu
+Sync now	Synkronisera nu
+Syncing…	Synkroniserar…
+System →	System →
+TMDB API key (v3)	TMDB API-nyckel (v3)
+TV Series	TV-serier
+TV series	TV-serie
+Table	Tabell
+Tag	Tagg
+Tag them	Tagga dem
+Tag titles already in the library	Tagga titlar som redan finns i biblioteket
+Tags	Taggar
+Tags (comma separated)	Taggar (kommaseparerade)
+Tags (ids, comma separated)	Taggar (id, kommaseparerade)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Taggar läggs till på serier och filmer som matchar alla typer av villkor när de läggs till, redigeras eller uppdateras.
+Task	Uppgift
+Television	Tv
+Television (raw)	Tv (raw)
+Test	Testa
+Test failed: {message}	Testet misslyckades: {message}
+Testing…	Testar…
+The blocklist is empty	Spärrlistan är tom
+The catalogue new titles are added from when the list knows their id there.	Katalogen som nya titlar läggs till från när listan känner till deras id där.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Datumet som importerade filer får: avsnittets sändningsdatum (lokalt eller UTC), eller vid en uppgradering den ersatta filens datum.
+The dry run completed without blocking problems. Nothing has been written yet.	Testkörningen slutfördes utan blockerande problem. Inget har skrivits än.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Filen flyttas till säsongsmappen (en befintlig fil skrivs aldrig över) och serien skannas om.
+The folder must already exist; Kitsunarr never creates or removes it.	Mappen måste redan finnas; Kitsunarr skapar eller tar aldrig bort den.
+The indexers returned no releases for this search.	Indexerarna returnerade inga utgåvor för den här sökningen.
+The instance is on my local network (private or loopback address)	Instansen finns i mitt lokala nätverk (privat adress eller loopback-adress)
+The list has not been read, or it is empty.	Listan har inte lästs, eller så är den tom.
+The migration did not complete; nothing was changed.	Migreringen slutfördes inte; inget ändrades.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	De senaste posterna som hålls i minnet. Fullständiga loggar skrivs till processens utdata (containerloggar eller journal).
+The passwords do not match.	Lösenorden matchar inte.
+The recycle bin has no media or subtitle files.	Papperskorgen innehåller inga medie- eller undertextfiler.
+The sign-in expired; try again.	Inloggningen har gått ut; försök igen.
+The upload failed (network error).	Uppladdningen misslyckades (nätverksfel).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Tjänsten är en valfri komponent på värden (Tanukarrs komprimeringstjänst) som nås via socketen i KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarrs katalog), TMDB och TVmaze täcker TV-serier; AniList och MyAnimeList täcker animeserier och animefilmer; TMDB och OMDb täcker filmer. När en titel läggs till skapas dess bibliotekspost och avsnittslista; filer plockas upp senare av importen.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB-titlar söks och läggs till på det här språket; varje serie kan ändras i sin redigerare.
+TheTVDB titles in this language; changing it refreshes the series	TheTVDB-titlar på det här språket; en ändring uppdaterar serien
+There is nothing at /{path}.	Det finns inget på /{path}.
+They are created by migrating from Sonarr/Tanukarr.	De skapas genom migrering från Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Seriens namnbyteläge, titlar på säsongsmappar och sparade versioner
+TiB	TiB
+Time	Tid
+Time left	Tid kvar
+Title	Titel
+Title pattern	Titelmönster
+Titles import lists never add.	Titlar som importlistor aldrig lägger till.
+Titles on no list	Titlar som inte finns på någon lista
+Today	I dag
+Torrent	Torrent
+Torrent delay	Torrentfördröjning
+Torrent delay (minutes)	Torrentfördröjning (minuter)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab- och Newznab-indexerare. Använd Testa i redigeraren för att kontrollera en; varje sökning använder indexerarna som har den söktypen aktiverad: RSS, automatisk eller interaktiv.
+Trigger	Utlösare
+URL base	URL-bas
+UTC air date	Sändningsdatum (UTC)
+Unchanged	Oförändrad
+Unknown	Okänd
+Unmonitor	Sluta bevaka
+Unmonitor them	Sluta bevaka dem
+Unmonitored	Obevakad
+Upcoming	Kommande
+Upcoming 7 days	Kommande 7 dagar
+Update	Uppdatera
+Updated {} items.	Uppdaterade objekt: {}.
+Upgrade until (cutoff)	Uppgradera till (uppgraderingsgräns)
+Upgrade until format score	Uppgradera tills formatpoängen nås
+Upgrades allowed	Uppgraderingar tillåtna
+Upload a backup	Ladda upp en säkerhetskopia
+Upload failed (HTTP {}).	Uppladdningen misslyckades (HTTP {}).
+Uploading…	Laddar upp…
+Use SSL	Använd SSL
+Use a proxy	Använd en proxy
+Use hardlinks instead of copying	Använd hårdlänkar i stället för kopiering
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Använd den som X-Api-Key-huvud (eller ?apikey=) från andra program. Kompatibel med huvudet som Sonarr använder.
+Use these episodes	Använd dessa avsnitt
+Usenet	Usenet
+Usenet delay	Usenet-fördröjning
+Usenet delay (minutes)	Usenet-fördröjning (minuter)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Endast Usenet: nyare utgåvor avvisas så att de hinner spridas. 0 stänger av detta.
+Usenet only: older releases are rejected. 0 means unlimited.	Endast Usenet: äldre utgåvor avvisas. 0 betyder obegränsat.
+User name	Användarnamn
+Username	Användarnamn
+Validation	Validering
+Version	Version
+Versions	Versioner
+Waiting for the sign-in at	Väntar på inloggning på
+Wanted	Önskade
+Warnings	Varningar
+Warnings {warnings}	Varningar {warnings}
+Watched (Jellyfin watched sync)	Sedd (synkronisering av sedda i Jellyfin)
+Watched sync user	Användare för synkronisering av sedda
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Aviseringar skickas via Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-post (SMTP), Mailgun, SendGrid, anpassade skript (med Sonarrs miljövariabler), Emby/Jellyfin, Plex och Kodi: hämtningar, importer och uppgraderingar, namnbyten, tillagda eller raderade serier, raderade filer, problem med systemstatus. Använd Testa i redigeraren.
+Welcome	Välkommen
+What to import	Vad som ska importeras
+When	När
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	När HTTPS-certifikat för indexerare, nedladdningsklienter och tjänster kontrolleras (Sonarrs inställning). Självsignerade certifikat i ditt nätverk kräver en mildare inställning.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	När en nedladdningsklient rapporterar sökvägar som Kitsunarr ser på annat ställe (en annan dator eller container), mappa klientens värd och sökväg till den lokala sökvägen.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Om utgåvor som rättar en felaktig utgåva ska föredras och uppgradera befintliga filer (som i Sonarr).
+Whole season	Hela säsongen
+Working…	Arbetar…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Skrivs i seriemapparna när serier skannas, uppdateras eller importeras, så som Sonarrs metadatakonsumenter skriver dem.
+Year	År
+Your library is empty.	Ditt bibliotek är tomt.
+all checks passed	alla kontroller godkända
+comma separated	kommaseparerat
+cutoff: {}	uppgraderingsgräns: {}
+has a file	har en fil
+iCal link	iCal-länk
+in 2 days	om 2 dagar
+in a moment	om ett ögonblick
+in file names	i filnamn
+in library	i biblioteket
+in {text}	om {text}
+just now	just nu
+may run out of space	kan få slut på utrymme
+name (e.g. phone)	namn (t.ex. telefon)
+never refreshed	aldrig uppdaterad
+no media files are moved, renamed or deleted.	inga mediefiler flyttas, byter namn eller raderas.
+not accessible	inte åtkomlig
+not added	inte tillagd
+not checked	inte kontrollerad
+not read yet	inte läst än
+on disk	på disk
+refreshed {}	uppdaterad {}
+schema {s}	schema {s}
+secrets included	hemligheter inkluderade
+secrets masked	hemligheter maskerade
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip eller sonarr.db
+stored only	endast lagrad
+title (optional)	titel (valfritt)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} tillagda; {}
+{added} shows added.	{added} serier tillagda.
+{c.name} (API key needed)	{c.name} (API-nyckel krävs)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} serier · {c.movie_count} filmer
+{chosen().len()} chosen	{chosen().len()} valda
+{chosen().len()} chosen (at most 25)	{chosen().len()} valda (högst 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} på disk · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% av {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · tillagd {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} av {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} filer · {job["percent"]}% · sparat {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} startad.
+{name} was added to the library.	{name} har lagts till i biblioteket.
+{name}: shows	{name}: serier
+{ok} files imported.	{ok} filer importerade.
+{ok} imported; {}	{ok} importerade; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} utgåvor från {r.searched_indexers} indexerare.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} serier och {r.files_checked} filer kontrollerade: {r.issues.len()} problem.
+{selected.read().len()} selected	{selected.read().len()} markerade
+{text} ago	för {text} sedan
+{} (not accessible)	{} (inte åtkomlig)
+{} ({} free)	{} ({} ledigt)
+{} added to every profile (not allowed yet).	{} har lagts till i alla profiler (inte tillåten än).
+{} day(s)	{} dag(ar)
+{} failed: {}	{} misslyckades: {}
+{} format scores	{} formatpoäng
+{} free of {}	{} ledigt av {}
+{} week(s)	{} vecka/veckor
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Tillbaka
+‹ Earlier	‹ Tidigare
+‹ Prev	‹ Föreg.
+○ offline	○ offline
+● live	● live
+✓ No issues detected.	✓ Inga problem hittades.
+Activity	Aktivitet
+Queue	Kö
+System	System
+Tasks	Uppgifter
+Retry	Försök igen
+Sign out	Logga ut
+Search titles…  ( / )	Sök titlar…  ( / )
+Loading…	Läser in…
+Profiles	Profiler
+scene {}	scen {}
+Scene numbering from TheXEM	Scennumrering från TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Scennumrering extrapolerad från TheXEM (ej verifierad)
+Season {} (scene seasons {})	Säsong {} (scensäsonger {})
+{} (scene {})	{} (scen {})

@@ -1,0 +1,968 @@
+# Hebrew interface strings: English	Hebrew. {…} marks a placeholder.
+custom	מותאם אישית
+indeterminate	לא מוגדר
+mixed	מעורב
+retired	הוצא משימוש
+· container	· container
+· finished {format_datetime(f)}	· הסתיים {format_datetime(f)}
+· missing	· חסר
+· on disk	· בדיסק
+· today	· היום
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} פרקים
+— MiB per minute; empty uses Settings › Quality	— MiB לדקה; ריק משתמש בהגדרות › איכות
+— a release's size is multiplied by its codec's factor before the size limits apply	— גודל גרסת הפצה מוכפל במקדם של הקודק שלה לפני החלת מגבלות הגודל
+— all profiles at once	— כל הפרופילים בבת אחת
+— codec and title criteria, custom qualities (Tanukarr)	— קריטריוני קודק וכותרת, איכויות מותאמות אישית (Tanukarr)
+— enter the code	— הזן את הקוד
+(empty)	(ריק)
++ Add mapping	+ הוסף מיפוי
++ New format	+ פורמט חדש
++ New profile	+ פרופיל חדש
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (כבוי) או 10 עד 120. סנכרון RSS רץ גם ממערכת › משימות.
+3 hours ago	לפני 3 שעות
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	טורנט בהורדה ללא התקדמות במשך זמן זה ייחשב כנכשל, ייכנס לרשימת החסימה ויחופש מחדש. 0 מכבה זאת; ההתקדמות נמדדת מאז הפעלת Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	קבוצת זיכיון שנמצאה מקשרים ב-AniList או ב-MyAnimeList. כותרים מאותו זיכיון שיתווספו בהמשך יצטרפו אליה גם כן.
+A new API key was generated. Update the applications that use it.	נוצר מפתח API חדש. עדכן את היישומים שמשתמשים בו.
+A regular expression, case-insensitive; empty matches every title.	ביטוי רגולרי, ללא תלות ברישיות; ריק תואם כל כותרת.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	גרסת הפצה מקבלת את הקביעה המוגדרת המדויקת ביותר המותרת בפרופיל של הסדרה שלה, שהמקור, הרזולוציה, הקודק ותבנית הכותרת שלה תואמים לה. איכות סטנדרטית עם קודק או תבנית הופכת גרסאות שאינן עומדות בהם ללא ידוע. קביעות מותאמות אישית נוספות לכל פרופיל כלא מותרות.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	גודל גרסת הפצה מוכפל במקדם של הקודק שלה לפני החלת מגבלות הגודל. "מעורב" פירושו שהפרופילים משתמשים במקדמים שונים; ערך שיוזן כאן ייכתב לכל פרופיל.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	כותר שמצטרף לזיכיון או לקבוצה ידנית עוזב את הקבוצה שהיה בה. קבצים ותיקיות אינם מועברים.
+API key	מפתח API
+API key needed	נדרש מפתח API
+API keys and language	מפתחות API ושפה
+API path	נתיב API
+About	אודות
+Absolute path; empty to delete permanently.	נתיב מוחלט; ריק למחיקה לצמיתות.
+Accepted	התקבלו
+Account lists	רשימות החשבון
+Actions	פעולות
+Actual	בפועל
+Add	הוסף
+Add a Newznab or Torznab indexer and enable interactive search for it.	הוסף אינדקסר Newznab או Torznab והפעל עבורו חיפוש אינטראקטיבי.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	הוסף לקוח מהתבנית שלו והשתמש בבדיקה בעורך; תפיסות, התור והייבוא משתמשים בכל לקוח מופעל. Blackhole כותב תפיסות לתיקייה ומייבא את מה שמופיע בתיקיית המעקב שלו. אפשרויות "הסר הורדות שהושלמו/נכשלו" של כל לקוח מסירות הורדות (יחד עם הקבצים שלהן) כשהלקוח סיים איתן.
+Add a download client in Settings › Download clients and enable it.	הוסף לקוח הורדות בהגדרות › לקוחות הורדות והפעל אותו.
+Add a root folder first: it is where this title's folder will live.	הוסף קודם תיקיית שורש: בה תמוקם התיקייה של כותר זה.
+Add a tag above first.	הוסף קודם תגית למעלה.
+Add a title	הוסף כותר
+Add auto tag	הוסף תגית אוטומטית
+Add condition	הוסף תנאי
+Add exclusion	הוסף החרגה
+Add media	הוסף מדיה
+Add one, or migrate them from Sonarr/Tanukarr.	הוסף אחד, או העבר אותם מ-Sonarr/Tanukarr.
+Add preset	הוסף קביעה מוגדרת
+Add selected	הוסף את הנבחרים
+Add series or movies below.	הוסף סדרות או סרטים למטה.
+Add tag	הוסף תגית
+Add the list's tags	הוסף את התגיות של הרשימה
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	הוסף כותרים מ-TVmaze או מ-AniList, או הבא ספרייה קיימת של Sonarr או Tanukarr.
+Add to library	הוסף לספרייה
+Add {}	הוסף {}
+Add {} ({y})	הוסף {} ({y})
+Add — {}	הוסף — {}
+Add, and remove when they leave the list	הוסף, והסר כשהם עוזבים את הרשימה
+Added	נוסף
+Added to the titles this list adds.	נוסף לכותרים שרשימה זו מוסיפה.
+Adding titles	הוספת כותרים
+Adding…	מוסיף…
+Address	כתובת
+Age	גיל
+Aired	שודר
+Aired monitored episodes without a file appear here.	פרקים במעקב ששודרו וחסר להם קובץ מופיעים כאן.
+All	הכל
+All collections	כל האוספים
+All episodes	כל הפרקים
+All episodes in the series folder	כל הפרקים בתיקיית הסדרה
+All events	כל האירועים
+Allow zero size (the feed has no release sizes)	אפשר גודל אפס (הפיד אינו מציין גודל גרסאות)
+Also delete the series folder and its files (to the recycle bin when one is set)	מחק גם את תיקיית הסדרה ואת קבציה (לסל המחזור אם הוגדר)
+Also for releases grabbed from interactive search	גם עבור גרסאות שנתפסו מחיפוש אינטראקטיבי
+Also known as	ידוע גם בשם
+Always, even when renaming is off	תמיד, גם כששינוי השמות כבוי
+Analyze video files (resolution, runtime and codecs, with ffprobe)	נתח קובצי וידאו (רזולוציה, משך וקודקים, עם ffprobe)
+AniList and MyAnimeList titles are always added as anime.	כותרים מ-AniList ומ-MyAnimeList נוספים תמיד כאנימה.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	רשימות AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, Sonarr נוסף ורשימות JSON מותאמות נקראות כל כמה שעות; כותרים חדשים נוספים עם תיקיית השורש, הפרופיל והמעקב של כל רשימה. שירותים הדורשים OAuth משתמשים ב-Client ID של היישום שלך ובאסימון שאתה מדביק (אסימונים שהועברו מ-Tanukarr ממשיכים לעבוד).
+Anime	אנימה
+Anime / absolute numbering	אנימה / מספור מוחלט
+Anime categories	קטגוריות אנימה
+Anime episode format	פורמט פרק אנימה
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	ניתן להוסיף סרטי אנימה מ-AniList, והעברות מ-Tanukarr מביאות איתן את הסרטים שלהן. סרטים לייב-אקשן דורשים את קטלוג TMDB.
+Anime standard format search	חיפוש אנימה בפורמט סטנדרטי
+Anime title, e.g. Frieren	כותר אנימה, למשל Frieren
+Any	כלשהו
+Any library	כל ספרייה
+Applications using the current key will stop working until you give them the new one.	יישומים המשתמשים במפתח הנוכחי יפסיקו לעבוד עד שתספק להם את החדש.
+Applied after every list has been read successfully and some title left a list.	מוחל לאחר שכל רשימה נקראה בהצלחה וכותר כלשהו עזב רשימה.
+Apply	החל
+Apply migration	החל העברה
+Apply profile	החל פרופיל
+Applying migration	מחיל העברה
+Applying…	מחיל…
+As Settings › Media management says	כפי שמוגדר בהגדרות › ניהול מדיה
+At least 10 characters.	לפחות 10 תווים.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	לפחות {MIN_PASSWORD_LENGTH} תווים. משפט סיסמה עובד היטב.
+Auto tag	תגית אוטומטית
+Auto tag saved. It applies when titles are next added, edited or refreshed.	התגית האוטומטית נשמרה. היא תוחל בפעם הבאה שכותרים יתווספו, ייערכו או ירועננו.
+Auto tagging	תיוג אוטומטי
+Auto-refresh	רענון אוטומטי
+Automatic	אוטומטי
+Automatic search	חיפוש אוטומטי
+Automatic search for {label}: grabbed {}.	חיפוש אוטומטי עבור {label}: נתפס {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	חיפוש אוטומטי עבור {label}: נמצאו {} גרסאות, {} אושרו, דבר לא נתפס.
+Automatic search: grab the best release	חיפוש אוטומטי: תפוס את הגרסה הטובה ביותר
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	האוטומציה מושהית: סנכרון RSS, סנכרוני רשימות מתוזמנים וחיפושים אוטומטיים מדולגים. פעולות ידניות והורדות נוכחיות ממשיכות.
+Automation resumed.	האוטומציה חודשה.
+Available from	זמין מ-
+Back to the dashboard	חזרה ללוח הבקרה
+Back up now	גבה עכשיו
+Backup {} created.	הגיבוי {} נוצר.
+Backups	גיבויים
+Blocking:	חוסם:
+Blocklist	רשימת חסימה
+Blocklist the release and search again	הוסף את הגרסה לרשימת החסימה וחפש שוב
+Blocklist the release: it is never grabbed again	הוסף את הגרסה לרשימת החסימה: היא לא תיתפס שוב לעולם
+Blocklist “{title}” and search for a replacement?	להוסיף את “{title}” לרשימת החסימה ולחפש תחליף?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	הבא את הספרייה וההגדרות של Sonarr (v3/v4) או Tanukarr אל Kitsunarr. המקור רק נקרא, לעולם אינו משתנה, וגם
+Bypass the proxy for local addresses	עקוף את הפרוקסי עבור כתובות מקומיות
+Calendar	לוח שנה
+Calendar →	לוח שנה →
+Cancel	ביטול
+Cancel compression	בטל דחיסה
+Cannot reach the server: {e}	לא ניתן להתחבר לשרת: {e}
+Catalogue	קטלוג
+Category	קטגוריה
+Certificate validation	אימות תעודות
+Change password	שנה סיסמה
+Change series	החלף סדרה
+Changes	שינויים
+Check	בדוק
+Check library	בדוק ספרייה
+Check now	בדוק עכשיו
+Check that the mapped series folders exist (read-only)	ודא שתיקיות הסדרות הממופות קיימות (קריאה בלבד)
+Checked: {summary}.	נבדק: {summary}.
+Checking…	בודק…
+Choose a backup file	בחר קובץ גיבוי
+Choose a mode	בחר מצב
+Choose a root folder and a quality profile.	בחר תיקיית שורש ופרופיל איכות.
+Choose a season	בחר עונה
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	בחר סדרה ועונה או פרק. התוצאות מראות מהי כל גרסה, כפי שהמנתח של Kitsunarr קורא אותה.
+Choose a series or movie…	בחר סדרה או סרט…
+Choose source	בחר מקור
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	בחר ידנית את הפרקים של גרסה זו ואז תפוס אותה (הבחירה נשמרת לייבוא)
+Choose…	בחר…
+Clean library	נקה ספרייה
+Clear	נקה
+Clear blocklist	נקה רשימת חסימה
+Cleared {n} releases from the blocklist.	{n} גרסאות נוקו מרשימת החסימה.
+Client	לקוח
+Close	סגור
+Codec	קודק
+Codec factors saved in every profile.	מקדמי הקודק נשמרו בכל פרופיל.
+Codec size factors	מקדמי גודל לפי קודק
+Codecs	קודקים
+Collection film folder format	פורמט תיקיית סרט באוסף
+Collections	אוספים
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	אוספים מופיעים כשהם מועברים מ-Tanukarr, נוצרים מנתוני ספקים או נוצרים כאן.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	מגיע מ-Sonarr או מ-Tanukarr? ייבא את הסדרות, ההגדרות וההיסטוריה הקיימות שלך בכמה צעדים.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	מופרד בפסיקים; * הוא תו כללי (*.lan), וטווחי IP כמו 192.168.1.0/24 עובדים.
+Companion app keys	מפתחות ליישומים נלווים
+Complete series	סדרה שלמה
+Completed and failed download handling	טיפול בהורדות שהושלמו ונכשלו
+Component	רכיב
+Compress series	דחוס סדרה
+Compression	דחיסה
+Compression queued.	הדחיסה נכנסה לתור.
+Compression worker is not connected.	מעבד הדחיסה אינו מחובר.
+Condition	תנאי
+Conditions	תנאים
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	תנאים מאותו סוג תואמים כשאחד מהם תואם (וכל התנאים הנדרשים חייבים); כל סוג חייב להתאים.
+Configure	הגדר
+Confirm password	אשר סיסמה
+Connect	התחבר
+Connect to a running instance	התחבר למופע פועל
+Connecting…	מתחבר…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	עותקים עקביים של מסד הנתונים. גיבויים מתוזמנים רצים מדי שבוע (שמונת האחרונים נשמרים); כל העברה גם יוצרת אחד קודם. לשחזור, עצור את Kitsunarr והרץ
+Continuing	נמשכת
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (נשלח עם בקשת הפיד, למשל uid=1; pass=…)
+Copied.	הועתק.
+Copy	העתק
+Copy (keep the originals)	העתק (שמור את המקור)
+Copy sizes from	העתק גדלים מ-
+Copy the token now; it is not shown again:	העתק את האסימון עכשיו; הוא לא יוצג שוב:
+Could not grab {}: {}	לא ניתן לתפוס את {}: {}
+Covers	מכסה
+Create	צור
+Create account	צור חשבון
+Create group	צור קבוצה
+Create key	צור מפתח
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	צור אחד ב-themoviedb.org › Settings › API. משמש לסדרות טלוויזיה ולסרטים של TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	צור את חשבון המנהל. תשתמש בו כדי להתחבר ל-Kitsunarr.
+Created	נוצר
+Created when the first file is imported. Nothing is written to disk now.	נוצרת כאשר הקובץ הראשון מיובא. דבר אינו נכתב לדיסק כעת.
+Creating…	יוצר…
+Credit	קרדיט
+Current file	קובץ נוכחי
+Current password	סיסמה נוכחית
+Custom format saved.	הפורמט המותאם אישית נשמר.
+Custom format score	ניקוד פורמט מותאם אישית
+Custom format scores	ניקודי פורמטים מותאמים אישית
+Custom formats	פורמטים מותאמים אישית
+Cutoff unmet	לא עמד בסף היעד
+Daily	יומית
+Daily episode format	פורמט פרק יומי
+Dashboard	לוח בקרה
+Data directory	תיקיית נתונים
+Database backup taken before the import: {b}	גיבוי מסד הנתונים שבוצע לפני הייבוא: {b}
+Database schema	סכמת מסד הנתונים
+Date	תאריך
+Date added	תאריך הוספה
+Debug	ניפוי שגיאות
+Decision	החלטה
+Default	ברירת מחדל
+Defaults	ברירות מחדל
+Delay profile	פרופיל השהייה
+Delay profile saved.	פרופיל ההשהייה נשמר.
+Delay profiles	פרופילי השהייה
+Delete	מחק
+Delete empty series folders	מחק תיקיות סדרות ריקות
+Delete file	מחק קובץ
+Delete group	מחק קבוצה
+Delete profile	מחק פרופיל
+Delete “{path}”? It goes to the recycle bin when one is set.	למחוק את “{path}”? הוא יועבר לסל המחזור אם הוגדר.
+Delete “{}”?	למחוק את “{}”?
+Delete “{}”? Its series and movies stay in the library.	למחוק את “{}”? הסדרות והסרטים שלו נשארים בספרייה.
+Deleted	נמחק
+Directory	תיקייה
+Disabled	מושבת
+Disabled for local addresses	מושבת עבור כתובות מקומיות
+Disk scanned: {}	הדיסק נסרק: {}
+Disk scanned: {} Not matched: {}	הדיסק נסרק: {} לא הותאמו: {}
+Do not prefer	אל תעדיף
+Do not search for a replacement	אל תחפש תחליף
+Do nothing	אל תעשה דבר
+Done	בוצע
+Download client options saved.	אפשרויות לקוחות ההורדות נשמרו.
+Download clients	לקוחות הורדות
+Download failed	ההורדה נכשלה
+Download queue	תור הורדות
+Downloads	הורדות
+Duration	משך זמן
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	כל כותר שייך לקטלוג אחד, שממנו הוא מתרענן; כל מזהה שהוא נושא (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) נשמר. כותרים שהועברו מ-Sonarr שייכים ל-TheTVDB.
+Edit	ערוך
+Edit “{name}”	ערוך את “{name}”
+Edit “{}”	ערוך את “{}”
+Enable RSS	הפעל RSS
+Enable automatic search	הפעל חיפוש אוטומטי
+Enable interactive search	הפעל חיפוש אינטראקטיבי
+Enabled	מופעל
+Ended	הסתיימה
+English	English
+Entity	ישות
+Episode	פרק
+Episode and movie naming	שמות פרקים וסרטים
+Episode image thumbs in the NFO	תמונות ממוזערות של פרקים ב-NFO
+Episode images (<filename>-thumb.jpg)	תמונות פרקים (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	תמונות פרקים (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	תמונות פרקים (Season##/filename.metathumb)
+Episode mappings in .plexmatch	מיפויי פרקים ב-.plexmatch
+Episode metadata (<filename>.nfo)	מטא-דאטה של פרקים (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	מטא-דאטה של פרקים (Season##/filename.xml)
+Episode order	סדר פרקים
+Episode order changed: {} episodes updated, {} added.	סדר הפרקים שונה: {} פרקים עודכנו, {} נוספו.
+Episodes	פרקים
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	הפרקים ממוספרים מחדש לפי הסדר שנבחר; קבצים, מעקב והיסטוריה נשארים עם הפרקים שלהם. לאחר מכן שנה את שמות הקבצים כך שיתאימו למספרים החדשים.
+Episodes of {title}	פרקים של {title}
+Episodes on disk	פרקים בדיסק
+Episodes whose file is below the quality profile's cutoff appear here.	פרקים שהקובץ שלהם מתחת לסף היעד של פרופיל האיכות מופיעים כאן.
+Episodes…	פרקים…
+Errors	שגיאות
+Errors {errors}	שגיאות {errors}
+Event	אירוע
+Every file already follows the naming settings.	כל הקבצים כבר תואמים להגדרות מתן השמות.
+Every file meets its cutoff	כל קובץ עומד בסף היעד שלו
+Exclude	החרג
+Exclusions	החרגות
+Expected	צפוי
+Expires	פג תוקף
+Extra file extensions	סיומות של קבצים נוספים
+Factor	מקדם
+Failed	נכשל
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	הגנה מפני גרסאות מזויפות: בדוק טורנטים לפני תפיסתם ודחה קובצי הפעלה, ארכיונים מוגני סיסמה שמשמשים כפיתיון ותכנים ללא וידאו
+Feed address	כתובת הפיד
+Fetch the latest metadata from {}	משוך את המטא-דאטה העדכני ביותר מ-{}
+File	קובץ
+File date	תאריך הקובץ
+File deleted	הקובץ נמחק
+File deleted.	הקובץ נמחק.
+File management	ניהול קבצים
+File management settings saved.	הגדרות ניהול הקבצים נשמרו.
+File renamed	שם הקובץ שונה
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	קבצים ישנים יותר מזה נמחקים מסל המחזור מדי יום; 0 שומר אותם.
+Files upgrades replaced, kept as versions	קבצים שהוחלפו בשדרוגים, נשמרים כגרסאות
+Film	סרט
+Film title or IMDb id, e.g. Arrival	כותרת הסרט או מזהה IMDb, למשל Arrival
+Find a series in your library	מצא סדרה בספרייה שלך
+Find files added to or removed from the series folder	מצא קבצים שנוספו לתיקיית הסדרה או הוסרו ממנה
+Find something to add	מצא משהו להוסיף
+First and last pieces first	החלקים הראשון והאחרון תחילה
+First day of the week	היום הראשון בשבוע
+First season	עונה ראשונה
+Folder	תיקייה
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	הפורמטים משתמשים בסוגי המפרט של Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). הניקוד נקבע לכל פרופיל איכות.
+Found	נמצאו
+Free	פנוי
+Free space	שטח פנוי
+Future days	ימים עתידיים
+Future episodes	פרקים עתידיים
+General	כללי
+GiB	GiB
+Grab	תפוס
+Grab a release from interactive search; downloads in the client's TV category show up here.	תפוס גרסה מחיפוש אינטראקטיבי; הורדות בקטגוריית הטלוויזיה של הלקוח מופיעות כאן.
+Grab anyway?	לתפוס בכל זאת?
+Grab with these episodes	תפוס עם פרקים אלה
+Grabbed	נתפס
+Grabbed {}.	{} נתפס.
+Grabbing…	תופס…
+Grabs, imports and file changes appear here. Migrated history is included.	תפיסות, ייבואים ושינויי קבצים מופיעים כאן. ההיסטוריה שהועברה כלולה.
+Group film folder format	פורמט תיקיית סרט בקבוצה
+Group folder format	פורמט תיקיית קבוצה
+Group season folder format	פורמט תיקיית עונה בקבוצה
+Group story-arc folder format	פורמט תיקיית קשת עלילתית בקבוצה
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	קבוצות של סדרות וסרטים קשורים: אוספי ספקים, זיכיונות אנימה (קבוצות פריקוול/סיקוול) וקבוצות ידניות, כולל אלה שהועברו מ-Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	ייבוא בקישורים קשיחים בלבד: לעולם אל תעתיק הורדות שעדיין בזריעה
+Health	תקינות
+Hide	הסתר
+History	היסטוריה
+History →	היסטוריה →
+Host	מארח
+Host (as in the download client's settings)	מארח (כמו בהגדרות לקוח ההורדות)
+Hostname	שם מארח
+How the catalogue numbers the episodes (it can be changed later on the series page).	כיצד הקטלוג ממספר את הפרקים (ניתן לשנות זאת מאוחר יותר בדף הסדרה).
+Id	מזהה
+Identities	זהויות
+Ids	מזהים
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	אם Kitsunarr רואה את המדיה שלך בנתיבים שונים מאלה של המקור (למשל אמצעי אחסון שונים של Docker), מפה כל תיקיית מקור למיקום שלה ב-Kitsunarr. הנתיבים משוכתבים רק במסד הנתונים.
+Ignored	התעלמו
+Ignored addresses	כתובות שמתעלמים מהן
+Implementation	מימוש
+Import / Migration	ייבוא / העברה
+Import a Sonarr or Tanukarr library	ייבא ספרייה של Sonarr או Tanukarr
+Import blocked	הייבוא נחסם
+Import completed downloads	ייבא הורדות שהושלמו
+Import extra files (subtitles…)	ייבא קבצים נוספים (כתוביות…)
+Import from Sonarr/Tanukarr	ייבא מ-Sonarr/Tanukarr
+Import history	ייבא היסטוריה
+Import library	ייבא ספרייה
+Import list options saved.	אפשרויות רשימות הייבוא נשמרו.
+Import lists	רשימות ייבוא
+Import pending	ייבוא ממתין
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	ייבא קובצי וידאו מכל תיקייה שהשרת יכול לקרוא: בדוק לאיזו סדרה ולאילו פרקים שייך כל קובץ, ואז העתק או העבר אותם לספרייה (עם שמות לפי הגדרות מתן השמות).
+Import {chosen().len()} files	ייבא {chosen().len()} קבצים
+Imported	יובא
+Imported from series folder	יובא מתיקיית הסדרה
+Importing	מייבא
+Importing…	מייבא…
+Imports need	הייבוא דורש
+In library ›	בספרייה ›
+Include	כלול
+Include in file names ({{Custom Formats}} token)	כלול בשמות קבצים (אסימון {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	כלול רק כותרים שנמצאים ברשימות מסוימות, או השמט את הכותרים של אחרות.
+Include unmonitored	כלול לא במעקב
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	כולל בסיס ה-URL, למשל http://192.168.1.10:8989 או https://host/sonarr
+Indexer	אינדקסר
+Indexer options saved.	אפשרויות האינדקסרים נשמרו.
+Indexer settings	הגדרות אינדקסר
+Indexers	אינדקסרים
+Info	מידע
+Info {infos}	מידע {infos}
+Instance	מופע
+Instance name	שם המופע
+Instance: {name}	מופע: {name}
+Interactive	אינטראקטיבי
+Interactive search	חיפוש אינטראקטיבי
+Interactive search for full-season packs only	חיפוש אינטראקטיבי של חבילות עונה מלאה בלבד
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	חיפוש אינטראקטיבי של חבילות לסדרה כולה (ולעונותיה) באינדקסרים של טורנטים
+Interactive search: see every release and choose	חיפוש אינטראקטיבי: ראה כל גרסה ובחר
+Interface language	שפת הממשק
+Interval	מרווח
+Jellyfin library and user	ספרייה ומשתמש של Jellyfin
+Job	משימה
+Keep / skip	שמור / דלג
+Keep files replaced by upgrades as versions (in "Plex Versions")	שמור קבצים שהוחלפו בשדרוגים כגרסאות (ב-"Plex Versions")
+Keep me signed in	השאר אותי מחובר
+Keep the replaced file's date (upgrades)	שמור את תאריך הקובץ שהוחלף (שדרוגים)
+Kept	נשמר
+Kept versions	גרסאות שמורות
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	מפתחות ליישומים נלווים המשתמשים ב-API v3 של Sonarr: הם קוראים את הספרייה, ומפתחות "הוסף סדרה" יכולים גם להוסיף סדרות (לתיקיית שורש, ללא חיפוש). שום דבר אחר אינו מותר.
+KiB	KiB
+Kind	סוג
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr היא תוכנה חופשית (GPL-3.0-or-later).
+Kitsunarr path	נתיב ב-Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr יגבה את מסד הנתונים שלו, ייבא את הנתונים שבתצוגה המקדימה בטרנזקציה אחת ויאמת אותם לפני השמירה. המקור וקובצי המדיה שלך אינם משתנים.
+Label	תווית
+Languages	שפות
+Larger releases are rejected. 0 means unlimited.	גרסאות גדולות יותר נדחות. 0 פירושו ללא הגבלה.
+Last read	קריאה אחרונה
+Last run	הרצה אחרונה
+Last search	חיפוש אחרון
+Last searched	חופש לאחרונה
+Last season	עונה אחרונה
+Later ›	מאוחר יותר ›
+Latest season	העונה האחרונה
+Level	רמה
+Library	ספרייה
+Library check	בדיקת ספרייה
+Library tools	כלי ספרייה
+Library tools saved.	כלי הספרייה נשמרו.
+List	רשימה
+Listed best first. Grouped qualities rank equally.	מהטוב ביותר. איכויות מקובצות שוות בדירוגן.
+Live updates connected	עדכונים חיים מחוברים
+Live updates disconnected	עדכונים חיים מנותקים
+Load	טען
+Load the account's lists	טען את הרשימות של החשבון
+Load the libraries…	טען את הספריות…
+Load the users…	טען את המשתמשים…
+Local air date	תאריך שידור מקומי
+Local path	נתיב מקומי
+Log them	רשום אותם ביומן
+Logs	יומנים
+Main rejections	דחיות עיקריות
+Make current	הפוך לנוכחי
+Manual import	ייבוא ידני
+Mark as failed	סמן כנכשל
+Matches monitored titles.	תואם כותרים במעקב.
+Maximum	מקסימום
+Maximum size (MB)	גודל מרבי (MB)
+Media management	ניהול מדיה
+Media management settings	הגדרות ניהול מדיה
+Media paths	נתיבי מדיה
+Mediums	אמצעי מדיה
+Members	חברים
+Message	הודעה
+Metadata	מטא-דאטה
+Metadata files	קובצי מטא-דאטה
+Metadata keys saved.	מפתחות המטא-דאטה נשמרו.
+Metadata language	שפת המטא-דאטה
+Metadata refreshed.	המטא-דאטה רוענן.
+Metadata refreshed: {} new episodes, {} updated.	המטא-דאטה רוענן: {} פרקים חדשים, {} עודכנו.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	הגדרות המטא-דאטה נשמרו. הקבצים ייכתבו בסריקת הדיסק, ברענון או בייבוא הבאים.
+Metadata sources	מקורות מטא-דאטה
+MiB	MiB
+Migration completed.	ההעברה הושלמה.
+Migration report #{}	דוח העברה מס' {}
+Minimum	מינימום
+Minimum age (minutes)	גיל מינימלי (דקות)
+Minimum custom format score	ניקוד מינימלי של פורמטים מותאמים אישית
+Minimum format score	ניקוד פורמט מינימלי
+Minimum free space (MiB)	שטח פנוי מינימלי (MiB)
+Minimum seeders	מינימום זורעים
+Missing	חסרים
+Missing (monitored)	חסרים (במעקב)
+Missing films	סרטים חסרים
+Mode	מצב
+Monday	יום שני
+Monitor	מעקב
+Monitored	במעקב
+More languages can be added to the string tables.	ניתן להוסיף שפות נוספות לטבלאות המחרוזות.
+Move	העבר
+Movie	סרט
+Movie file format	פורמט קובץ סרט
+Movie removed from Kitsunarr. Files on disk were not touched.	הסרט הוסר מ-Kitsunarr. לא נגעו בקבצים שבדיסק.
+Movies	סרטים
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	גרסאות מרובות עונות: קבל חבילות של כמה עונות (חיפוש עונה לוקח את החבילה עבור העונה שלו)
+Must contain	חייב להכיל
+Must contain (comma separated; /regex/ allowed)	חייב להכיל (מופרד בפסיקים; מותר /regex/)
+Must not contain	אסור שיכיל
+NOT	לא
+Name	שם
+Naming	מתן שמות
+Naming options saved.	אפשרויות מתן השמות נשמרו.
+Naming saved.	מתן השמות נשמר.
+Negate	שלילה
+Network	רשת
+Never: keep the release's names	לעולם לא: שמור את השמות של הגרסה
+New custom format	פורמט מותאם אישית חדש
+New custom preset	קביעה מוגדרת מותאמת אישית חדשה
+New group title	כותרת הקבוצה החדשה
+New password	סיסמה חדשה
+New quality profile	פרופיל איכות חדש
+Next airing	השידור הבא
+Next run	ההרצה הבאה
+Next ›	הבא ›
+No	לא
+No activity yet.	אין פעילות עדיין.
+No auto tags.	אין תגיות אוטומטיות.
+No backups yet	אין גיבויים עדיין
+No collections yet	אין אוספים עדיין
+No companion keys.	אין מפתחות ליישומים נלווים.
+No custom formats	אין פורמטים מותאמים אישית
+No custom formats defined.	לא הוגדרו פורמטים מותאמים אישית.
+No delay above the minimum custom format score	ללא השהייה מעל ניקוד הפורמט המותאם המינימלי
+No delay for the profile's best quality in the preferred protocol	ללא השהייה עבור האיכות הטובה ביותר של הפרופיל בפרוטוקול המועדף
+No download client to read	אין לקוח הורדות לקריאה
+No exclusions.	אין החרגות.
+No history	אין היסטוריה
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	אף אינדקסר אינו יכול לחפש את הסדרה הזו אוטומטית: לאף אחד אין חיפוש אוטומטי מופעל יחד עם היעדר תגיות או אחת מתגיות הסדרה.
+No indexers to search	אין אינדקסרים לחיפוש
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	אין גרסאות שמורות. הפעל את "שמור קבצים שהוחלפו בשדרוגים" במתן שמות.
+No log entries at this level	אין רשומות יומן ברמה זו
+No mappings.	אין מיפויים.
+No matches	אין התאמות
+No members	אין חברים
+No migrations have been run yet.	עדיין לא הורצו העברות.
+No movies yet	אין סרטים עדיין
+No notes.	אין הערות.
+No recycle bin is set (Settings › Media management).	לא הוגדר סל מחזור (הגדרות › ניהול מדיה).
+No release profiles.	אין פרופילי גרסת הפצה.
+No root folders yet.	אין תיקיות שורש עדיין.
+No root folders.	אין תיקיות שורש.
+No runs yet	אין הרצות עדיין
+No searches yet.	אין חיפושים עדיין.
+No series in your library match.	אין סדרות בספרייה שלך שתואמות.
+No tags	אין תגיות
+No {}	אין {}
+No {} yet	אין {} עדיין
+None	ללא
+Not evaluated by Kitsunarr.	לא הוערך על ידי Kitsunarr.
+Not imported	לא יובא
+Not monitored	לא במעקב
+Notes	הערות
+Notes ({preview.warnings.len()})	הערות ({preview.warnings.len()})
+Notes ({report.warnings.len()})	הערות ({report.warnings.len()})
+Nothing airs in the next seven days.	שום דבר אינו משודר בשבעת הימים הקרובים.
+Nothing downloading	אין הורדות פעילות
+Nothing found	לא נמצא דבר
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	שום דבר בקטלוג הזה אינו תואם את החיפוש. נסה איות אחר, את הכותרת המקורית או את הקטלוג האחר.
+Nothing in this period	אין דבר בתקופה זו
+Nothing missing	שום דבר לא חסר
+Notifications	התראות
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	מספר את הפרקים לפי סדר אחר של הקטלוג (קבוצות פרקים של TMDB, סדר DVD או מוחלט של TheTVDB)
+OMDb API key	מפתח API של OMDb
+Older priority	עדיפות לישנים
+One folder per season	תיקייה אחת לכל עונה
+Only the 2000 newest files are listed.	רק 2000 הקבצים החדשים ביותר מוצגים.
+Only when the proxy needs one.	רק כשהפרוקסי דורש זאת.
+Open the library	פתח את הספרייה
+OpenAPI document	מסמך OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	פותח את השירות כדי לאשר את Kitsunarr וממלא את האסימון.
+Options	אפשרויות
+Organize	ארגן
+Other	אחר
+Overview	תקציר
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	דרוס רשומות שכבר קיימות ב-Kitsunarr (אחרת הן נשמרות)
+Packs	חבילות
+Page not found	הדף לא נמצא
+Page {page} / {pages}	עמוד {page} / {pages}
+Password	סיסמה
+Password changed. Other sessions were signed out.	הסיסמה שונתה. הפעלות אחרות נותקו.
+Past days	ימים קודמים
+Path	נתיב
+Path mappings	מיפויי נתיבים
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	השהה את האוטומציה (סנכרון RSS, סנכרוני רשימות מתוזמנים, חיפושים אוטומטיים)
+Peers	משתפים
+Permission	הרשאה
+PiB	PiB
+Platform	פלטפורמה
+Port	יציאה
+Position	מיקום
+Post-import category	קטגוריה לאחר הייבוא
+Posters	פוסטרים
+Prefer and upgrade	העדף ושדרג
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	העדף חבילות עונה של אנימה (חיפושי העונה של Kitsunarr לאנימה כבר מחפשים את העונה פעם אחת)
+Prefer, do not upgrade	העדף, אל תשדרג
+Preferred	מועדף
+Preferred metadata language	שפת מטא-דאטה מועדפת
+Preferred protocol	פרוטוקול מועדף
+Preparing preview…	מכין תצוגה מקדימה…
+Preview	תצוגה מקדימה
+Preview migration	תצוגה מקדימה של ההעברה
+Previous migrations	העברות קודמות
+Priority	עדיפות
+Problem	בעיה
+Profile	פרופיל
+Profile saved.	הפרופיל נשמר.
+Profiles still used by series or movies cannot be deleted.	לא ניתן למחוק פרופילים שעדיין בשימוש על ידי סדרות או סרטים.
+Progress	התקדמות
+Propers and repacks	Proper ו-Repack
+Proxy	פרוקסי
+Proxy saved.	הפרוקסי נשמר.
+Proxy type	סוג פרוקסי
+Qualities	איכויות
+Quality	איכות
+Quality presets	קביעות איכות מוגדרות
+Quality presets saved.	קביעות האיכות המוגדרות נשמרו.
+Quality profile	פרופיל איכות
+Quality profiles	פרופילי איכות
+Quality profile…	פרופיל איכות…
+RSS sync interval (minutes)	מרווח סנכרון RSS (דקות)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	סנכרון RSS ממתין זמן זה לאחר הופעת גרסה, בתקווה למצוא טובה יותר; גרסאות מושהות מופיעות בתור. הפרופיל הראשון שהתגיות שלו תואמות את הסדרה חל; האחרון (ללא תגיות) הוא ברירת המחדל.
+Re-encode this series' files with the compression worker	קודד מחדש את קובצי הסדרה הזו עם מעבד הדחיסה
+Read and add series	קריאה והוספת סדרות
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	נקרא בזמן אמת מלקוחות ההורדות כל כמה שניות. הורדות שהושלמו ש-Kitsunarr תפס מיובאות לתיקיית הסדרה כל דקה (טורנטים מועתקים או מקושרים בקישור קשיח, כך שהם ממשיכים בזריעה; הורדות Usenet מועברות). הורדות שנכשלו נכנסות לרשימת החסימה ומחופשות שוב.
+Read the library	קריאת הספרייה
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	קריאה בלבד: מוצא תיקיות סדרה חסרות, רשומות קבצים מחוץ לתיקייה שלהן או רשומות פעמיים, וקבצים שחסרים בדיסק.
+Reading the download clients…	קורא את לקוחות ההורדות…
+Reading the source	קורא את המקור
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	קורא הכל דרך ה-API. סיסמאות ומפתחות API של ספקים מוסתרים על ידי המקור ויש להזין אותם מחדש לאחר מכן.
+Recent activity	פעילות אחרונה
+Recent priority	עדיפות לחדשים
+Recent runs	הרצות אחרונות
+Recent searches	חיפושים אחרונים
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	מומלץ. ב-Sonarr/Tanukarr פתח מערכת → גיבוי, צור גיבוי והורד את קובץ ה-.zip (או השתמש ב-sonarr.db). כולל את הסיסמאות של האינדקסרים ולקוחות ההורדות.
+Recycle bin	סל מחזור
+Recycle bin cleanup (days)	ניקוי סל המחזור (ימים)
+Recycled	בסל המחזור
+Refresh metadata	רענן מטא-דאטה
+Refresh preview	רענן תצוגה מקדימה
+Refreshing from {} is not supported yet; the imported metadata is kept as is	רענון מ-{} עדיין אינו נתמך; המטא-דאטה המיובא נשמר כפי שהוא
+Refreshing…	מרענן…
+Regenerate	צור מחדש
+Regenerate API key	צור מחדש את מפתח ה-API
+Reject releases whose TheTVDB or IMDb id names another series	דחה גרסאות שמזהה ה-TheTVDB או ה-IMDb שלהן מציין סדרה אחרת
+Rejected: click twice to grab anyway	נדחתה: לחץ פעמיים כדי לתפוס בכל זאת
+Release	גרסת הפצה
+Release profile	פרופיל גרסת הפצה
+Release profile saved.	פרופיל גרסת ההפצה נשמר.
+Release profiles	פרופילי גרסת הפצה
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	גרסאות נבדקות מול פרופיל האיכות, הפורמטים המותאמים ופרופילי גרסת ההפצה של הסדרה, ומדורגות, כפי ש-Sonarr עושה. גרסאות שנדחו מבקשות לחיצה שנייה.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	גרסאות שנכשלו או נוספו לרשימת החסימה ידנית. חיפושים וסנכרון RSS לעולם לא יתפסו אותן שוב; הסר אחת כדי לאפשר אותה.
+Remote path	נתיב מרוחק
+Remote path mapping	מיפוי נתיב מרוחק
+Remote path mapping saved.	מיפוי הנתיב המרוחק נשמר.
+Remote path mappings	מיפויי נתיבים מרוחקים
+Remove	הסר
+Remove completed downloads	הסר הורדות שהושלמו
+Remove every release from the blocklist?	להסיר את כל הגרסאות מרשימת החסימה?
+Remove failed downloads	הסר הורדות שנכשלו
+Remove from library	הסר מהספרייה
+Remove from queue	הסר מהתור
+Remove from the download client (deletes its files there)	הסר מלקוח ההורדות (מוחק שם את הקבצים שלה)
+Remove movie	הסר סרט
+Remove series	הסר סדרה
+Remove tags automatically (from titles that stop matching)	הסר תגיות אוטומטית (מכותרים שמפסיקים להתאים)
+Remove “{title}” and its episode records from Kitsunarr?	להסיר את “{title}” ואת רשומות הפרקים שלה מ-Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	להסיר את “{title}” מ-Kitsunarr? הקבצים בדיסק אינם נמחקים.
+Removed	הוסר
+Removed from the blocklist.	הוסרה מרשימת החסימה.
+Rename	שנה שם
+Rename files	שנה שמות קבצים
+Rename files on import	שנה שמות קבצים בעת ייבוא
+Rename files to the naming settings	שנה שמות קבצים לפי הגדרות מתן השמות
+Formats use Sonarr's tokens.	הפורמטים משתמשים באסימונים של Sonarr.
+Renaming…	משנה שמות…
+Report	דוח
+Request one at omdbapi.com. Used for films by IMDb id.	בקש אחד ב-omdbapi.com. משמש לסרטים לפי מזהה IMDb.
+Required	נדרש
+Resolution	רזולוציה
+Restore	שחזר
+Restore {}	שחזר את {}
+Restore…	שחזר…
+Restoring…	משחזר…
+Resume automation	חדש את האוטומציה
+Retention (days)	זמן שמירה (ימים)
+Retire	הוצא משימוש
+Revoke	שלול
+Root folder	תיקיית שורש
+Root folders	תיקיות שורש
+Root folder…	תיקיית שורש…
+Run #{run.id}: {run.status}	הרצה מס' {run.id}: {run.status}
+Run now	הרץ עכשיו
+Running…	רץ…
+Saturday	יום שבת
+Save	שמור
+Save criteria	שמור קריטריונים
+Save factors	שמור מקדמים
+Save keys	שמור מפתחות
+Save metadata files	שמור קובצי מטא-דאטה
+Save naming	שמור מתן שמות
+Save options	שמור אפשרויות
+Saved	נשמר
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	מפתחות שמורים מוצגים כ-{REDACTED}; השאר אותם ללא שינוי כדי לשמור אותם, או נקה את השדה כדי להסיר אחד.
+Saved.	נשמר.
+Scan disk	סרוק דיסק
+Scan folder	סרוק תיקייה
+Scanning…	סורק…
+Scheduled tasks	משימות מתוזמנות
+Score	ניקוד
+Search	חיפוש
+Search again when a download fails	חפש שוב כשהורדה נכשלת
+Search all	חפש הכל
+Search all films	חפש את כל הסרטים
+Search collection	חפש באוסף
+Search every episode of the list, one search per season	חפש כל פרק ברשימה, חיפוש אחד לכל עונה
+Search every member's missing episodes (films: the film)	חפש את הפרקים החסרים של כל חבר (סרטים: הסרט)
+Search indexers	חפש באינדקסרים
+Search selected	חפש את הנבחרים
+Search the indexers and choose a release	חפש באינדקסרים ובחר גרסה
+Search the indexers and grab the best accepted release	חפש באינדקסרים ותפוס את הגרסה המאושרת הטובה ביותר
+Search the indexers and grab the best releases for the monitored episodes	חפש באינדקסרים ותפוס את הגרסאות הטובות ביותר עבור הפרקים שבמעקב
+Search your indexers	חפש באינדקסרים שלך
+Search {chosen} selected	חפש {chosen} נבחרים
+Search: {}	חיפוש: {}
+Search: {} — complete series	חיפוש: {} — סדרה שלמה
+Search: {} — season {season} packs	חיפוש: {} — חבילות עונה {season}
+Search: {} — {label}	חיפוש: {} — {label}
+Searching for {label}…	מחפש את {label}…
+Searching indexers…	מחפש באינדקסרים…
+Searching…	מחפש…
+Season	עונה
+Season folder format	פורמט תיקיית עונה
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	כותרות תיקיות העונה מחליפות את אלה של הקטלוג ב-{{Season Title}}. השאר ריק כדי לשמור את אלה של הקטלוג.
+Season folders	תיקיות עונה
+Season images (Season ##.jpg)	תמונות עונה (Season ##.jpg)
+Season images (Season##/folder.jpg)	תמונות עונה (Season##/folder.jpg)
+Season images (season##-poster.jpg)	תמונות עונה (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	חבילות עונה: 1 משתמש ביעדים לחבילות עונה שלמטה
+Season premieres only	בכורות עונה בלבד
+Season {n}	עונה {n}
+Season {one}	עונה {one}
+Season {se.season_number}	עונה {se.season_number}
+Season {season_number}	עונה {season_number}
+Season-pack seed ratio	יחס זריעה לחבילות עונה
+Season-pack seed time, minutes	זמן זריעה לחבילות עונה, דקות
+Seasons	עונות
+Seasons {first}-{last}	עונות {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	סודות מוצגים כ-{REDACTED}; השאר אותם ללא שינוי כדי לשמור את הערך המאוחסן.
+Seed ratio (empty: the client's default)	יחס זריעה (ריק: ברירת המחדל של הלקוח)
+Seed time, minutes (empty: the client's default)	זמן זריעה, דקות (ריק: ברירת המחדל של הלקוח)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	שלח בקשות לאינדקסרים, קטלוגים, רשימות, לקוחות הורדות וחיבורים דרך פרוקסי.
+Send to the download client	שלח ללקוח ההורדות
+Series	סדרות
+Series .plexmatch file	קובץ .plexmatch של הסדרה
+Series folder format	פורמט תיקיית סדרה
+Series images (Series Title.jpg)	תמונות סדרה (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	תמונות סדרה (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	תמונות סדרה (folder.jpg)
+Series metadata (tvshow.nfo)	מטא-דאטה של הסדרה (tvshow.nfo)
+Series metadata URL	URL של המטא-דאטה של הסדרה
+Series metadata episode guide	מדריך פרקים במטא-דאטה של הסדרה
+Series removed from Kitsunarr. Files on disk were not touched.	הסדרה הוסרה מ-Kitsunarr. לא נגעו בקבצים שבדיסק.
+Series removed, and its folder deleted.	הסדרה הוסרה והתיקייה שלה נמחקה.
+Series type	סוג סדרה
+Set quality profile…	הגדר פרופיל איכות…
+Settings	הגדרות
+Settings saved.	ההגדרות נשמרו.
+Settings → General → Security in Sonarr/Tanukarr.	הגדרות → כללי → אבטחה ב-Sonarr/Tanukarr.
+Show	הצג
+Show as all-day events	הצג כאירועים של יום שלם
+Show unmonitored	הצג לא במעקב
+Shows	סדרות
+Sign in	התחבר
+Signed in. Save the list to keep the token.	מחובר. שמור את הרשימה כדי לשמור את האסימון.
+Signing in…	מתחבר…
+Size	גודל
+Size limits	מגבלות גודל
+Size on disk	גודל בדיסק
+Skip files smaller than (MB)	דלג על קבצים קטנים מ-(MB)
+Skip the free-space check	דלג על בדיקת השטח הפנוי
+Skip unmonitored episodes when importing packs	דלג על פרקים שאינם במעקב בעת ייבוא חבילות
+Source	מקור
+Source code	קוד מקור
+Source path	נתיב מקור
+Special	ספיישל
+Specials	ספיישלים
+Specials are never monitored automatically.	ספיישלים לעולם אינם נכנסים למעקב אוטומטית.
+Specifications	מפרטים
+Specifications (JSON)	מפרטים (JSON)
+Specifications must be valid JSON: {e}	המפרטים חייבים להיות JSON תקין: {e}
+Stalled torrent timeout (minutes)	זמן קצוב לטורנטים תקועים (דקות)
+Standard	סטנדרטי
+Standard episode format	פורמט פרק סטנדרטי
+Start migration	התחל העברה
+Start over	התחל מחדש
+Start search for missing episodes	התחל חיפוש פרקים חסרים
+Started	הותחל
+Started {format_datetime(&run.started_at)}	הותחל {format_datetime(&run.started_at)}
+Status	סטטוס
+Status & health	סטטוס ותקינות
+Still downloading	עדיין בהורדה
+Storage outlook	תחזית אחסון
+Studio	אולפן
+Subscribe	הירשם
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	הירשם לכתובת זו ביישום לוח שנה. היא מכילה את מפתח ה-API שלך: שמור אותה בפרטיות.
+Sunday	יום ראשון
+Sync	סנכרן
+Sync all lists now	סנכרן את כל הרשימות עכשיו
+Sync now	סנכרן עכשיו
+Syncing…	מסנכרן…
+System →	מערכת →
+TMDB API key (v3)	מפתח API של TMDB (v3)
+TV Series	סדרות טלוויזיה
+TV series	סדרות טלוויזיה
+Table	טבלה
+Tag	תגית
+Tag them	תייג אותם
+Tag titles already in the library	תייג כותרים שכבר נמצאים בספרייה
+Tags	תגיות
+Tags (comma separated)	תגיות (מופרדות בפסיקים)
+Tags (ids, comma separated)	תגיות (מזהים, מופרדים בפסיקים)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	תגיות נוספות לסדרות ולסרטים שתואמים כל סוג של תנאי כאשר הם נוספים, נערכים או מתרעננים.
+Task	משימה
+Television	טלוויזיה
+Television (raw)	טלוויזיה (raw)
+Test	בדוק
+Test failed: {message}	הבדיקה נכשלה: {message}
+Testing…	בודק…
+The blocklist is empty	רשימת החסימה ריקה
+The catalogue new titles are added from when the list knows their id there.	הקטלוג שממנו יתווספו כותרים חדשים כאשר הרשימה מכירה את המזהה שלהם בו.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	התאריך שמקבלים קבצים מיובאים: תאריך השידור של הפרק (מקומי או UTC), או בשדרוג, התאריך של הקובץ שהוחלף.
+The dry run completed without blocking problems. Nothing has been written yet.	הרצת הניסיון הסתיימה ללא בעיות חוסמות. עדיין לא נכתב דבר.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	הקובץ מועבר לתיקיית העונה (קובץ קיים לעולם אינו נדרס) והסדרה נסרקת מחדש.
+The folder must already exist; Kitsunarr never creates or removes it.	התיקייה חייבת להיות קיימת כבר; Kitsunarr לעולם אינו יוצר או מסיר אותה.
+The indexers returned no releases for this search.	האינדקסרים לא החזירו גרסאות עבור חיפוש זה.
+The instance is on my local network (private or loopback address)	המופע נמצא ברשת המקומית שלי (כתובת פרטית או loopback)
+The list has not been read, or it is empty.	הרשימה לא נקראה, או שהיא ריקה.
+The migration did not complete; nothing was changed.	ההעברה לא הושלמה; דבר לא שונה.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	הרשומות האחרונות שנשמרות בזיכרון. היומנים המלאים נשלחים לפלט התהליך (יומני container או journal).
+The passwords do not match.	הסיסמאות אינן תואמות.
+The recycle bin has no media or subtitle files.	סל המחזור אינו מכיל קובצי מדיה או כתוביות.
+The sign-in expired; try again.	פג תוקף ההתחברות; נסה שוב.
+The upload failed (network error).	ההעלאה נכשלה (שגיאת רשת).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	המעבד הוא רכיב אופציונלי של המארח (מעבד הדחיסה של Tanukarr) שאליו מתחברים דרך ה-socket שב-KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (הקטלוג של Sonarr), TMDB ו-TVmaze מכסים סדרות טלוויזיה; AniList ו-MyAnimeList מכסים סדרות וסרטי אנימה; TMDB ו-OMDb מכסים סרטים. הוספת כותר יוצרת את הרשומה שלו בספרייה ואת רשימת הפרקים; הקבצים מאותרים מאוחר יותר על ידי תהליך הייבוא.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	כותרים מ-TheTVDB מחופשים ומתווספים בשפה זו; ניתן לשנות אותה לכל סדרה בעורך שלה.
+TheTVDB titles in this language; changing it refreshes the series	כותרים מ-TheTVDB בשפה זו; שינויה מרענן את הסדרה
+There is nothing at /{path}.	אין כלום ב-/{path}.
+They are created by migrating from Sonarr/Tanukarr.	הם נוצרים בהעברה מ-Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	מצב שינוי השמות, כותרות תיקיות העונה והגרסאות השמורות של סדרה זו
+TiB	TiB
+Time	שעה
+Time left	זמן נותר
+Title	כותרת
+Title pattern	תבנית כותרת
+Titles import lists never add.	כותרים שרשימות ייבוא לעולם לא יוסיפו.
+Titles on no list	כותרים שאינם באף רשימה
+Today	היום
+Torrent	טורנט
+Torrent delay	השהיית טורנט
+Torrent delay (minutes)	השהיית טורנט (דקות)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	אינדקסרים של Torznab ו-Newznab. השתמש בבדיקה בעורך כדי לבדוק אחד; כל חיפוש משתמש באינדקסרים שבהם סוג החיפוש הזה מופעל: RSS, אוטומטי או אינטראקטיבי.
+Trigger	טריגר
+URL base	בסיס URL
+UTC air date	תאריך שידור UTC
+Unchanged	ללא שינוי
+Unknown	לא ידוע
+Unmonitor	הסר ממעקב
+Unmonitor them	הסר אותם ממעקב
+Unmonitored	לא במעקב
+Upcoming	בקרוב
+Upcoming 7 days	7 הימים הקרובים
+Update	עדכן
+Updated {} items.	{} פריטים עודכנו.
+Upgrade until (cutoff)	שדרג עד (סף יעד)
+Upgrade until format score	שדרג עד ניקוד הפורמט
+Upgrades allowed	שדרוגים מותרים
+Upload a backup	העלה גיבוי
+Upload failed (HTTP {}).	ההעלאה נכשלה (HTTP {}).
+Uploading…	מעלה…
+Use SSL	השתמש ב-SSL
+Use a proxy	השתמש בפרוקסי
+Use hardlinks instead of copying	השתמש בקישורים קשיחים במקום העתקה
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	השתמש בו ככותרת X-Api-Key (או ?apikey=) מיישומים אחרים. תואם לכותרת שבה Sonarr משתמש.
+Use these episodes	השתמש בפרקים אלה
+Usenet	Usenet
+Usenet delay	השהיית Usenet
+Usenet delay (minutes)	השהיית Usenet (דקות)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Usenet בלבד: גרסאות חדשות יותר נדחות, כדי לתת להן זמן להתפשט. 0 מכבה זאת.
+Usenet only: older releases are rejected. 0 means unlimited.	Usenet בלבד: גרסאות ישנות יותר נדחות. 0 פירושו ללא הגבלה.
+User name	שם משתמש
+Username	שם משתמש
+Validation	אימות
+Version	גרסה
+Versions	גרסאות
+Waiting for the sign-in at	ממתין להתחברות בכתובת
+Wanted	מבוקש
+Warnings	אזהרות
+Warnings {warnings}	אזהרות {warnings}
+Watched (Jellyfin watched sync)	נצפה (סנכרון צפיות של Jellyfin)
+Watched sync user	משתמש לסנכרון צפיות
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	נשלחים Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, דוא"ל (SMTP), Mailgun, SendGrid, סקריפטים מותאמים אישית (עם משתני הסביבה של Sonarr), Emby/Jellyfin, Plex ו-Kodi: תפיסות, ייבואים ושדרוגים, שינויי שמות, סדרות שנוספו או נמחקו, קבצים שנמחקו, בעיות תקינות. השתמש בבדיקה בעורך.
+Welcome	ברוך הבא
+What to import	מה לייבא
+When	מתי
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	מתי נבדקות תעודות HTTPS של אינדקסרים, לקוחות הורדות ושירותים (ההגדרה של Sonarr). תעודות בחתימה עצמית ברשת שלך דורשות להקל בה.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	כאשר לקוח הורדות מדווח על נתיבים ש-Kitsunarr רואה במקום אחר (מכונה או container אחרים), מפה את המארח והנתיב של הלקוח לנתיב המקומי.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	האם גרסאות שמתקנות גרסה פגומה מועדפות, ומשדרגות קבצים קיימים (כמו ב-Sonarr).
+Whole season	עונה שלמה
+Working…	מעבד…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	נכתבים בתיקיות הסדרות כאשר סדרות נסרקות, מתרעננות או מיובאות, כפי שצרכני המטא-דאטה של Sonarr כותבים אותם.
+Year	שנה
+Your library is empty.	הספרייה שלך ריקה.
+all checks passed	כל הבדיקות עברו
+comma separated	מופרד בפסיקים
+cutoff: {}	סף יעד: {}
+has a file	יש קובץ
+iCal link	קישור iCal
+in 2 days	בעוד יומיים
+in a moment	בעוד רגע
+in file names	בשמות קבצים
+in library	בספרייה
+in {text}	בעוד {text}
+just now	זה עתה
+may run out of space	עלול להיגמר המקום
+name (e.g. phone)	שם (למשל טלפון)
+never refreshed	מעולם לא רוענן
+no media files are moved, renamed or deleted.	אף קובץ מדיה אינו מועבר, משנה שם או נמחק.
+not accessible	לא נגיש
+not added	לא נוסף
+not checked	לא נבדק
+not read yet	עדיין לא נקראה
+on disk	בדיסק
+refreshed {}	רוענן {}
+schema {s}	סכמה {s}
+secrets included	כולל סודות
+secrets masked	סודות מוסתרים
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip או sonarr.db
+stored only	מאוחסן בלבד
+title (optional)	כותרת (אופציונלי)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} נוספו; {}
+{added} shows added.	{added} סדרות נוספו.
+{c.name} (API key needed)	{c.name} (נדרש מפתח API)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} סדרות · {c.movie_count} סרטים
+{chosen().len()} chosen	{chosen().len()} נבחרו
+{chosen().len()} chosen (at most 25)	{chosen().len()} נבחרו (25 לכל היותר)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} בדיסק · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% מתוך {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · נוסף {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} מתוך {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} קבצים · {job["percent"]}% · נחסכו {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} הותחל.
+{name} was added to the library.	{name} נוסף לספרייה.
+{name}: shows	{name}: סדרות
+{ok} files imported.	{ok} קבצים יובאו.
+{ok} imported; {}	{ok} יובאו; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} גרסאות מ-{r.searched_indexers} אינדקסרים.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} סדרות ו-{r.files_checked} קבצים נבדקו: {r.issues.len()} בעיות.
+{selected.read().len()} selected	{selected.read().len()} נבחרו
+{text} ago	לפני {text}
+{} (not accessible)	{} (לא נגיש)
+{} ({} free)	{} ({} פנויים)
+{} added to every profile (not allowed yet).	{} נוסף לכל פרופיל (עדיין לא מותר).
+{} day(s)	ימים: {}
+{} failed: {}	{} נכשל: {}
+{} format scores	ניקודי פורמטים של {}
+{} free of {}	{} פנויים מתוך {}
+{} week(s)	שבועות: {}
+{}{year} — movie	{}{year} — סרט
+‹ Back	‹ חזרה
+‹ Earlier	‹ מוקדם יותר
+‹ Prev	‹ הקודם
+○ offline	○ לא מקוון
+● live	● חי
+✓ No issues detected.	✓ לא זוהו בעיות.
+Activity	פעילות
+Queue	תור
+System	מערכת
+Tasks	משימות מתוזמנות
+Retry	נסה שוב
+Sign out	התנתק
+Search titles…  ( / )	חפש כותרים…  ( / )
+Loading…	טוען…
+Profiles	פרופילים
+scene {}	סצנה {}
+Scene numbering from TheXEM	מספור סצנה מ-TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	מספור סצנה שנגזר מ-TheXEM (לא מאומת)
+Season {} (scene seasons {})	עונה {} (עונות סצנה {})
+{} (scene {})	{} (סצנה {})

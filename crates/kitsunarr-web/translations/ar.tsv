@@ -1,0 +1,968 @@
+# Arabic interface strings: English	Arabic. {…} marks a placeholder.
+custom	مخصصة
+indeterminate	غير محدد
+mixed	مختلط
+retired	متقاعدة
+· container	· الحاوية
+· finished {format_datetime(f)}	· اكتمل {format_datetime(f)}
+· missing	· مفقود
+· on disk	· على القرص
+· today	· اليوم
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} حلقة
+— MiB per minute; empty uses Settings › Quality	— MiB لكل دقيقة؛ الفارغ يستخدم الإعدادات › الجودة
+— a release's size is multiplied by its codec's factor before the size limits apply	— يُضرب حجم الإصدار في معامل الترميز الخاص به قبل تطبيق حدود الحجم
+— all profiles at once	— كل الملفات التعريفية دفعة واحدة
+— codec and title criteria, custom qualities (Tanukarr)	— معايير الترميز والعنوان، جودات مخصصة (Tanukarr)
+— enter the code	— أدخل الرمز
+(empty)	(فارغ)
++ Add mapping	+ إضافة تعيين
++ New format	+ تنسيق جديد
++ New profile	+ ملف تعريف جديد
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (معطّل) أو من 10 إلى 120. تعمل مزامنة RSS أيضًا من النظام › المهام.
+3 hours ago	منذ 3 ساعات
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	التورنت قيد التنزيل الذي لا يتقدم طوال هذه المدة يُعدّ فاشلًا ويُضاف إلى قائمة الحظر ويُبحث عنه مجددًا. القيمة 0 تعطّل ذلك؛ يُتتبّع التقدم منذ بدء تشغيل Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	مجموعة سلسلة مستخرجة من علاقات AniList أو MyAnimeList. العناوين المضافة لاحقًا من السلسلة نفسها تنضم إليها أيضًا.
+A new API key was generated. Update the applications that use it.	تم إنشاء مفتاح API جديد. حدّث التطبيقات التي تستخدمه.
+A regular expression, case-insensitive; empty matches every title.	تعبير نمطي لا يميّز حالة الأحرف؛ الفارغ يطابق كل العناوين.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	يأخذ الإصدار الإعداد المسبق الأكثر تحديدًا المسموح به في ملف تعريف مسلسله والذي يطابق مصدره ودقته وترميزه ونمط عنوانه. الجودة القياسية التي يُحدَّد لها ترميز أو نمط تجعل الإصدارات التي لا تستوفيه «غير معروفة». تُضاف الإعدادات المسبقة المخصصة إلى كل ملف تعريف على أنها غير مسموح بها.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	يُضرب حجم الإصدار في معامل الترميز الخاص به قبل تطبيق حدود الحجم. "مختلط" تعني أن الملفات التعريفية تستخدم معاملات مختلفة؛ والقيمة المُدخلة هنا تُكتب في كل ملف تعريف.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	العنوان الذي ينضم إلى سلسلة أو مجموعة يدوية يغادر المجموعة التي كان فيها. لا تُنقل الملفات والمجلدات.
+API key	مفتاح API
+API key needed	مفتاح API مطلوب
+API keys and language	مفاتيح API واللغة
+API path	مسار API
+About	حول
+Absolute path; empty to delete permanently.	مسار مطلق؛ اتركه فارغًا للحذف نهائيًا.
+Accepted	مقبولة
+Account lists	قوائم الحساب
+Actions	الإجراءات
+Actual	الفعلي
+Add	إضافة
+Add a Newznab or Torznab indexer and enable interactive search for it.	أضف مفهرس Newznab أو Torznab وفعّل البحث التفاعلي له.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	أضف عميلًا من قالبه واستخدم «اختبار» في المحرر؛ تستخدم عمليات الجلب وقائمة الانتظار والاستيراد كل العملاء المفعّلين. يكتب الثقب الأسود (blackhole) عمليات الجلب في مجلد ويستورد ما يظهر في مجلد المراقبة الخاص به. خيارات "إزالة التنزيلات المكتملة/الفاشلة" لكل عميل تزيل التنزيلات (مع ملفاتها) بعد أن ينتهي العميل منها.
+Add a download client in Settings › Download clients and enable it.	أضف عميل تنزيل في الإعدادات › عملاء التنزيل وفعّله.
+Add a root folder first: it is where this title's folder will live.	أضف مجلدًا جذرًا أولًا: فيه سيوجد مجلد هذا العنوان.
+Add a tag above first.	أضف وسمًا في الأعلى أولًا.
+Add a title	إضافة عنوان
+Add auto tag	إضافة وسم تلقائي
+Add condition	إضافة شرط
+Add exclusion	إضافة استثناء
+Add media	إضافة وسائط
+Add one, or migrate them from Sonarr/Tanukarr.	أضف واحدًا، أو رحّلها من Sonarr/Tanukarr.
+Add preset	إضافة إعداد مسبق
+Add selected	إضافة المحدد
+Add series or movies below.	أضف مسلسلات أو أفلامًا أدناه.
+Add tag	إضافة وسم
+Add the list's tags	إضافة وسوم القائمة
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	أضف عناوين من TVmaze أو AniList، أو انقل مكتبة Sonarr أو Tanukarr موجودة.
+Add to library	إضافة إلى المكتبة
+Add {}	إضافة {}
+Add {} ({y})	إضافة {} ({y})
+Add — {}	إضافة — {}
+Add, and remove when they leave the list	إضافة، والإزالة عند مغادرتها القائمة
+Added	تاريخ الإضافة
+Added to the titles this list adds.	يُضاف إلى العناوين التي تضيفها هذه القائمة.
+Adding titles	إضافة العناوين
+Adding…	جارٍ الإضافة…
+Address	العنوان
+Age	العمر
+Aired	تاريخ البث
+Aired monitored episodes without a file appear here.	تظهر هنا الحلقات المراقبة التي بُثّت وليس لها ملف.
+All	الكل
+All collections	كل المجموعات
+All episodes	كل الحلقات
+All episodes in the series folder	كل الحلقات في مجلد المسلسل
+All events	كل الأحداث
+Allow zero size (the feed has no release sizes)	السماح بالحجم صفر (الموجز لا يتضمن أحجام الإصدارات)
+Also delete the series folder and its files (to the recycle bin when one is set)	احذف أيضًا مجلد المسلسل وملفاته (إلى سلة المحذوفات إن كانت محددة)
+Also for releases grabbed from interactive search	أيضًا للإصدارات المجلوبة من البحث التفاعلي
+Also known as	يُعرف أيضًا باسم
+Always, even when renaming is off	دائمًا، حتى عند تعطيل إعادة التسمية
+Analyze video files (resolution, runtime and codecs, with ffprobe)	تحليل ملفات الفيديو (الدقة والمدة والترميزات، باستخدام ffprobe)
+AniList and MyAnimeList titles are always added as anime.	تُضاف عناوين AniList وMyAnimeList دائمًا كأنمي.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	تُقرأ قوائم AniList وMyAnimeList وTrakt وSimkl وTMDB وMDBList وPlex وSonarr آخر وقوائم JSON المخصصة كل بضع ساعات؛ تُضاف العناوين الجديدة بالمجلد الجذر وملف التعريف والمراقبة الخاصة بكل قائمة. الخدمات التي تتطلب OAuth تستخدم Client ID لتطبيقك الخاص ورمزًا تلصقه (تظل الرموز المرحّلة من Tanukarr صالحة).
+Anime	أنمي
+Anime / absolute numbering	أنمي / ترقيم مطلق
+Anime categories	فئات الأنمي
+Anime episode format	تنسيق حلقة الأنمي
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	يمكن إضافة أفلام الأنمي من AniList، وعمليات الترحيل من Tanukarr تجلب أفلامها معها. أفلام الحركة الحية تتطلب كتالوج TMDB.
+Anime standard format search	بحث الأنمي بالتنسيق القياسي
+Anime title, e.g. Frieren	عنوان الأنمي، مثل Frieren
+Any	أي
+Any library	أي مكتبة
+Applications using the current key will stop working until you give them the new one.	ستتوقف التطبيقات التي تستخدم المفتاح الحالي عن العمل حتى تزوّدها بالمفتاح الجديد.
+Applied after every list has been read successfully and some title left a list.	يُطبَّق بعد قراءة كل القوائم بنجاح ومغادرة عنوانٍ ما لإحدى القوائم.
+Apply	تطبيق
+Apply migration	تطبيق الترحيل
+Apply profile	تطبيق ملف التعريف
+Applying migration	جارٍ تطبيق الترحيل
+Applying…	جارٍ التطبيق…
+As Settings › Media management says	كما في الإعدادات › إدارة الوسائط
+At least 10 characters.	10 أحرف على الأقل.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	{MIN_PASSWORD_LENGTH} أحرف على الأقل. عبارة مرور خيار جيد.
+Auto tag	وسم تلقائي
+Auto tag saved. It applies when titles are next added, edited or refreshed.	تم حفظ الوسم التلقائي. يُطبَّق في المرة القادمة التي تُضاف فيها العناوين أو تُعدَّل أو تُحدَّث.
+Auto tagging	الوسم التلقائي
+Auto-refresh	تحديث تلقائي
+Automatic	تلقائي
+Automatic search	بحث تلقائي
+Automatic search for {label}: grabbed {}.	البحث التلقائي عن {label}: تم جلب {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	البحث التلقائي عن {label}: الإصدارات الموجودة: {}، المقبولة: {}، لم يُجلب شيء.
+Automatic search: grab the best release	البحث التلقائي: جلب أفضل إصدار
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	الأتمتة متوقفة مؤقتًا: يتم تخطي مزامنة RSS ومزامنات القوائم المجدولة وعمليات البحث التلقائي. تستمر الإجراءات اليدوية والتنزيلات الحالية.
+Automation resumed.	تم استئناف الأتمتة.
+Available from	متاح من
+Back to the dashboard	العودة إلى لوحة التحكم
+Back up now	نسخ احتياطي الآن
+Backup {} created.	تم إنشاء النسخة الاحتياطية {}.
+Backups	النسخ الاحتياطية
+Blocking:	حاجب:
+Blocklist	قائمة الحظر
+Blocklist the release and search again	أضف الإصدار إلى قائمة الحظر وابحث مجددًا
+Blocklist the release: it is never grabbed again	أضف الإصدار إلى قائمة الحظر: لن يُجلب مرة أخرى أبدًا
+Blocklist “{title}” and search for a replacement?	إضافة «{title}» إلى قائمة الحظر والبحث عن بديل؟
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	انقل مكتبة Sonarr (v3/v4) أو Tanukarr وإعداداتها إلى Kitsunarr. يُقرأ المصدر فقط ولا يُعدَّل أبدًا، و
+Bypass the proxy for local addresses	تجاوز الوكيل للعناوين المحلية
+Calendar	التقويم
+Calendar →	التقويم →
+Cancel	إلغاء
+Cancel compression	إلغاء الضغط
+Cannot reach the server: {e}	تعذّر الوصول إلى الخادم: {e}
+Catalogue	الكتالوج
+Category	الفئة
+Certificate validation	التحقق من الشهادات
+Change password	تغيير كلمة المرور
+Change series	تغيير المسلسل
+Changes	التغييرات
+Check	تحقق
+Check library	فحص المكتبة
+Check now	تحقق الآن
+Check that the mapped series folders exist (read-only)	التحقق من وجود مجلدات المسلسلات المعيّنة (قراءة فقط)
+Checked: {summary}.	تم التحقق: {summary}.
+Checking…	جارٍ التحقق…
+Choose a backup file	اختر ملف نسخة احتياطية
+Choose a mode	اختر وضعًا
+Choose a root folder and a quality profile.	اختر مجلدًا جذرًا وملف تعريف جودة.
+Choose a season	اختر موسمًا
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	اختر مسلسلًا وموسمًا أو حلقة. تُظهر النتائج ماهية كل إصدار كما يقرؤه محلل Kitsunarr.
+Choose a series or movie…	اختر مسلسلًا أو فيلمًا…
+Choose source	اختر المصدر
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	اختر حلقات هذا الإصدار يدويًا، ثم اجلبه (يُحتفظ بالاختيار للاستيراد)
+Choose…	اختر…
+Clean library	تنظيف المكتبة
+Clear	مسح
+Clear blocklist	مسح قائمة الحظر
+Cleared {n} releases from the blocklist.	تمت إزالة الإصدارات من قائمة الحظر: {n}.
+Client	العميل
+Close	إغلاق
+Codec	الترميز
+Codec factors saved in every profile.	تم حفظ معاملات الترميز في كل ملف تعريف.
+Codec size factors	معاملات الحجم حسب الترميز
+Codecs	الترميزات
+Collection film folder format	تنسيق مجلد أفلام المجموعة
+Collections	المجموعات
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	تظهر المجموعات عند ترحيلها من Tanukarr، أو إنشائها من بيانات المزوّدين، أو إنشائها هنا.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	قادم من Sonarr أو Tanukarr؟ استورد مسلسلاتك وإعداداتك وسجلّك الحالي في بضع خطوات.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	مفصولة بفواصل؛ * حرف بدل (*.lan)، ونطاقات IP مثل 192.168.1.0/24 مدعومة.
+Companion app keys	مفاتيح التطبيقات المرافقة
+Complete series	المسلسل كاملًا
+Completed and failed download handling	معالجة التنزيلات المكتملة والفاشلة
+Component	المكوّن
+Compress series	ضغط المسلسل
+Compression	الضغط
+Compression queued.	تمت إضافة الضغط إلى قائمة الانتظار.
+Compression worker is not connected.	عامل الضغط غير متصل.
+Condition	الشرط
+Conditions	الشروط
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	تتطابق شروط النوع الواحد عندما يتطابق أي منها (ويجب أن تتطابق كل الشروط المطلوبة)؛ ويجب أن يتطابق كل نوع.
+Configure	تهيئة
+Confirm password	تأكيد كلمة المرور
+Connect	اتصال
+Connect to a running instance	الاتصال بنسخة قيد التشغيل
+Connecting…	جارٍ الاتصال…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	نسخ متسقة من قاعدة البيانات. تعمل النسخ الاحتياطية المجدولة أسبوعيًا (يُحتفظ بآخر ثماني نسخ)؛ وكل عملية ترحيل تنشئ نسخة أولًا. للاستعادة، أوقف Kitsunarr وشغّل
+Continuing	مستمر
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	ملف تعريف الارتباط (يُرسل مع طلب الموجز، مثل uid=1; pass=…)
+Copied.	تم النسخ.
+Copy	نسخ
+Copy (keep the originals)	نسخ (الاحتفاظ بالأصول)
+Copy sizes from	نسخ الأحجام من
+Copy the token now; it is not shown again:	انسخ الرمز الآن؛ لن يُعرض مرة أخرى:
+Could not grab {}: {}	تعذّر جلب {}: {}
+Covers	يغطي
+Create	إنشاء
+Create account	إنشاء حساب
+Create group	إنشاء مجموعة
+Create key	إنشاء مفتاح
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	أنشئ واحدًا على themoviedb.org › Settings › API. يُستخدم لمسلسلات وأفلام TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	أنشئ حساب المسؤول. ستستخدمه لتسجيل الدخول إلى Kitsunarr.
+Created	تاريخ الإنشاء
+Created when the first file is imported. Nothing is written to disk now.	يُنشأ عند استيراد أول ملف. لا يُكتب شيء على القرص الآن.
+Creating…	جارٍ الإنشاء…
+Credit	شكر وتقدير
+Current file	الملف الحالي
+Current password	كلمة المرور الحالية
+Custom format saved.	تم حفظ التنسيق المخصص.
+Custom format score	نقاط التنسيق المخصص
+Custom format scores	نقاط التنسيقات المخصصة
+Custom formats	التنسيقات المخصصة
+Cutoff unmet	لم يبلغ حد القطع
+Daily	يومي
+Daily episode format	تنسيق الحلقة اليومية
+Dashboard	لوحة التحكم
+Data directory	مجلد البيانات
+Database backup taken before the import: {b}	نسخة احتياطية لقاعدة البيانات أُخذت قبل الاستيراد: {b}
+Database schema	مخطط قاعدة البيانات
+Date	التاريخ
+Date added	تاريخ الإضافة
+Debug	تصحيح الأخطاء
+Decision	القرار
+Default	افتراضي
+Defaults	القيم الافتراضية
+Delay profile	ملف تعريف التأخير
+Delay profile saved.	تم حفظ ملف تعريف التأخير.
+Delay profiles	ملفات تعريف التأخير
+Delete	حذف
+Delete empty series folders	حذف مجلدات المسلسلات الفارغة
+Delete file	حذف الملف
+Delete group	حذف المجموعة
+Delete profile	حذف ملف التعريف
+Delete “{path}”? It goes to the recycle bin when one is set.	حذف «{path}»؟ سينتقل إلى سلة المحذوفات إن كانت محددة.
+Delete “{}”?	حذف «{}»؟
+Delete “{}”? Its series and movies stay in the library.	حذف «{}»؟ تبقى مسلسلاتها وأفلامها في المكتبة.
+Deleted	محذوف
+Directory	المجلد
+Disabled	معطّل
+Disabled for local addresses	معطّل للعناوين المحلية
+Disk scanned: {}	تم فحص القرص: {}
+Disk scanned: {} Not matched: {}	تم فحص القرص: {} غير مطابق: {}
+Do not prefer	عدم التفضيل
+Do not search for a replacement	عدم البحث عن بديل
+Do nothing	لا تفعل شيئًا
+Done	تم
+Download client options saved.	تم حفظ خيارات عملاء التنزيل.
+Download clients	عملاء التنزيل
+Download failed	فشل التنزيل
+Download queue	قائمة انتظار التنزيل
+Downloads	التنزيلات
+Duration	المدة
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	ينتمي كل عنوان إلى كتالوج واحد تقرأ منه عمليات تحديثه؛ ويُحتفظ بكل معرّف يحمله (TheTVDB وTMDB وIMDb وTVmaze وAniList وMyAnimeList). العناوين المرحّلة من Sonarr تنتمي إلى TheTVDB.
+Edit	تعديل
+Edit “{name}”	تعديل «{name}»
+Edit “{}”	تعديل «{}»
+Enable RSS	تفعيل RSS
+Enable automatic search	تفعيل البحث التلقائي
+Enable interactive search	تفعيل البحث التفاعلي
+Enabled	مفعّل
+Ended	منتهٍ
+English	English
+Entity	الكيان
+Episode	الحلقة
+Episode and movie naming	تسمية الحلقات والأفلام
+Episode image thumbs in the NFO	صور الحلقات المصغّرة في NFO
+Episode images (<filename>-thumb.jpg)	صور الحلقات (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	صور الحلقات (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	صور الحلقات (Season##/filename.metathumb)
+Episode mappings in .plexmatch	تعيينات الحلقات في .plexmatch
+Episode metadata (<filename>.nfo)	البيانات الوصفية للحلقات (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	البيانات الوصفية للحلقات (Season##/filename.xml)
+Episode order	ترتيب الحلقات
+Episode order changed: {} episodes updated, {} added.	تغيّر ترتيب الحلقات: الحلقات المحدّثة: {}، المضافة: {}.
+Episodes	الحلقات
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	يُعاد ترقيم الحلقات حسب الترتيب المختار؛ وتبقى الملفات والمراقبة والسجل مع حلقاتها. أعد تسمية الملفات بعد ذلك لتطابق الأرقام الجديدة.
+Episodes of {title}	حلقات {title}
+Episodes on disk	الحلقات على القرص
+Episodes whose file is below the quality profile's cutoff appear here.	تظهر هنا الحلقات التي يقل ملفها عن حد القطع في ملف تعريف الجودة.
+Episodes…	الحلقات…
+Errors	الأخطاء
+Errors {errors}	الأخطاء {errors}
+Event	الحدث
+Every file already follows the naming settings.	كل الملفات تتبع إعدادات التسمية بالفعل.
+Every file meets its cutoff	كل الملفات تبلغ حد القطع الخاص بها
+Exclude	استبعاد
+Exclusions	الاستثناءات
+Expected	المتوقع
+Expires	ينتهي
+Extra file extensions	امتدادات الملفات الإضافية
+Factor	المعامل
+Failed	فشل
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	الحماية من الإصدارات المزيفة: فحص ملفات التورنت قبل جلبها ورفض الملفات التنفيذية والأرشيفات المحمية بكلمة مرور كطُعم والمحتويات الخالية من الفيديو
+Feed address	عنوان الموجز
+Fetch the latest metadata from {}	جلب أحدث البيانات الوصفية من {}
+File	الملف
+File date	تاريخ الملف
+File deleted	تم حذف الملف
+File deleted.	تم حذف الملف.
+File management	إدارة الملفات
+File management settings saved.	تم حفظ إعدادات إدارة الملفات.
+File renamed	تمت إعادة تسمية الملف
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	تُحذف الملفات الأقدم من ذلك من سلة المحذوفات يوميًا؛ القيمة 0 تحتفظ بها.
+Files upgrades replaced, kept as versions	الملفات التي استبدلتها الترقيات، محفوظة كإصدارات
+Film	فيلم
+Film title or IMDb id, e.g. Arrival	عنوان الفيلم أو معرّف IMDb، مثل Arrival
+Find a series in your library	ابحث عن مسلسل في مكتبتك
+Find files added to or removed from the series folder	العثور على الملفات المضافة إلى مجلد المسلسل أو المحذوفة منه
+Find something to add	ابحث عن شيء لإضافته
+First and last pieces first	القطعتان الأولى والأخيرة أولًا
+First day of the week	أول أيام الأسبوع
+First season	الموسم الأول
+Folder	المجلد
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	تستخدم التنسيقات أنواع مواصفات Sonarr (ReleaseTitle وReleaseGroup وSource وResolution وLanguage وSize وIndexerFlag وReleaseType). تُعيَّن النقاط لكل ملف تعريف جودة.
+Found	الموجودة
+Free	متاح
+Free space	المساحة المتاحة
+Future days	الأيام القادمة
+Future episodes	الحلقات القادمة
+General	عام
+GiB	GiB
+Grab	جلب
+Grab a release from interactive search; downloads in the client's TV category show up here.	اجلب إصدارًا من البحث التفاعلي؛ تظهر هنا التنزيلات الموجودة في فئة التلفزيون لدى العميل.
+Grab anyway?	الجلب على أي حال؟
+Grab with these episodes	الجلب مع هذه الحلقات
+Grabbed	تم الجلب
+Grabbed {}.	تم جلب {}.
+Grabbing…	جارٍ الجلب…
+Grabs, imports and file changes appear here. Migrated history is included.	تظهر هنا عمليات الجلب والاستيراد وتغييرات الملفات. يشمل ذلك السجل المرحّل.
+Group film folder format	تنسيق مجلد أفلام المجموعة
+Group folder format	تنسيق مجلد المجموعة
+Group season folder format	تنسيق مجلد مواسم المجموعة
+Group story-arc folder format	تنسيق مجلد الأقواس القصصية للمجموعة
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	مجموعات من المسلسلات والأفلام المترابطة: مجموعات المزوّدين، وسلاسل الأنمي (مجموعات الأجزاء السابقة/اللاحقة)، والمجموعات اليدوية، بما فيها المرحّلة من Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	استيراد بالروابط الصلبة فقط: عدم نسخ التنزيلات التي لا تزال قيد البذر أبدًا
+Health	السلامة
+Hide	إخفاء
+History	السجل
+History →	السجل →
+Host	المضيف
+Host (as in the download client's settings)	المضيف (كما في إعدادات عميل التنزيل)
+Hostname	اسم المضيف
+How the catalogue numbers the episodes (it can be changed later on the series page).	كيف يرقّم الكتالوج الحلقات (يمكن تغييره لاحقًا من صفحة المسلسل).
+Id	المعرّف
+Identities	الهويات
+Ids	المعرّفات
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	إذا كان Kitsunarr يرى وسائطك تحت مسارات مختلفة عن المصدر (مثل وحدات تخزين Docker مختلفة)، فعيّن كل مجلد في المصدر إلى موقعه في Kitsunarr. تُعاد كتابة المسارات في قاعدة البيانات فقط.
+Ignored	متجاهَلة
+Ignored addresses	العناوين المتجاهَلة
+Implementation	التنفيذ
+Import / Migration	الاستيراد / الترحيل
+Import a Sonarr or Tanukarr library	استيراد مكتبة Sonarr أو Tanukarr
+Import blocked	الاستيراد محظور
+Import completed downloads	استيراد التنزيلات المكتملة
+Import extra files (subtitles…)	استيراد الملفات الإضافية (الترجمات…)
+Import from Sonarr/Tanukarr	الاستيراد من Sonarr/Tanukarr
+Import history	استيراد السجل
+Import library	استيراد المكتبة
+Import list options saved.	تم حفظ خيارات قوائم الاستيراد.
+Import lists	قوائم الاستيراد
+Import pending	الاستيراد قيد الانتظار
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	استورد ملفات الفيديو من أي مجلد يمكن للخادم قراءته: تحقق من المسلسل والحلقات الخاصة بكل ملف، ثم انسخها أو انقلها إلى المكتبة (مع إعادة تسميتها حسب إعدادات التسمية).
+Import {chosen().len()} files	استيراد الملفات: {chosen().len()}
+Imported	تم الاستيراد
+Imported from series folder	تم الاستيراد من مجلد المسلسل
+Importing	جارٍ الاستيراد
+Importing…	جارٍ الاستيراد…
+Imports need	يتطلب الاستيراد
+In library ›	في المكتبة ›
+Include	تضمين
+Include in file names ({{Custom Formats}} token)	التضمين في أسماء الملفات (الرمز {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	ضمّن فقط العناوين الموجودة في بعض القوائم، أو استبعد عناوين قوائم أخرى.
+Include unmonitored	تضمين غير المراقبة
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	بما في ذلك أساس URL، مثل http://192.168.1.10:8989 أو https://host/sonarr
+Indexer	المفهرس
+Indexer options saved.	تم حفظ خيارات المفهرسات.
+Indexer settings	إعدادات المفهرس
+Indexers	المفهرسات
+Info	معلومات
+Info {infos}	معلومات {infos}
+Instance	النسخة
+Instance name	اسم النسخة
+Instance: {name}	النسخة: {name}
+Interactive	تفاعلي
+Interactive search	بحث تفاعلي
+Interactive search for full-season packs only	بحث تفاعلي عن حزم المواسم الكاملة فقط
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	بحث تفاعلي عن حزم المسلسل كاملًا (ومواسمه) في مفهرسات التورنت
+Interactive search: see every release and choose	البحث التفاعلي: اعرض كل الإصدارات واختر
+Interface language	لغة الواجهة
+Interval	الفاصل الزمني
+Jellyfin library and user	مكتبة Jellyfin والمستخدم
+Job	المهمة
+Keep / skip	احتفاظ / تخطٍّ
+Keep files replaced by upgrades as versions (in "Plex Versions")	الاحتفاظ بالملفات التي استبدلتها الترقيات كإصدارات (في "Plex Versions")
+Keep me signed in	إبقائي مسجّل الدخول
+Keep the replaced file's date (upgrades)	الاحتفاظ بتاريخ الملف المستبدَل (الترقيات)
+Kept	محتفظ به
+Kept versions	الإصدارات المحفوظة
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	مفاتيح للتطبيقات المرافقة التي تستخدم Sonarr v3 API: تقرأ المكتبة، ويمكن لمفاتيح "إضافة مسلسل" أيضًا إضافة مسلسلات (إلى مجلد جذر، دون بحث). لا يُسمح بأي شيء آخر.
+KiB	KiB
+Kind	النوع
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr برنامج حر (GPL-3.0-or-later).
+Kitsunarr path	المسار في Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	سيأخذ Kitsunarr نسخة احتياطية من قاعدة بياناته، ويستورد البيانات المعاينة في معاملة واحدة ويتحقق منها قبل الاعتماد. لا يُعدَّل المصدر ولا ملفات الوسائط الخاصة بك.
+Label	التسمية
+Languages	اللغات
+Larger releases are rejected. 0 means unlimited.	تُرفض الإصدارات الأكبر. القيمة 0 تعني بلا حد.
+Last read	آخر قراءة
+Last run	آخر تشغيل
+Last search	آخر بحث
+Last searched	آخر بحث
+Last season	الموسم الأخير
+Later ›	اللاحق ›
+Latest season	أحدث موسم
+Level	المستوى
+Library	المكتبة
+Library check	فحص المكتبة
+Library tools	أدوات المكتبة
+Library tools saved.	تم حفظ أدوات المكتبة.
+List	القائمة
+Listed best first. Grouped qualities rank equally.	مرتبة من الأفضل. الجودات المجمّعة متساوية في الترتيب.
+Live updates connected	التحديثات المباشرة متصلة
+Live updates disconnected	التحديثات المباشرة غير متصلة
+Load	تحميل
+Load the account's lists	تحميل قوائم الحساب
+Load the libraries…	تحميل المكتبات…
+Load the users…	تحميل المستخدمين…
+Local air date	تاريخ البث المحلي
+Local path	المسار المحلي
+Log them	تسجيلها
+Logs	السجلات
+Main rejections	أسباب الرفض الرئيسية
+Make current	جعله الحالي
+Manual import	استيراد يدوي
+Mark as failed	وضع علامة فاشل
+Matches monitored titles.	يطابق العناوين المراقبة.
+Maximum	الحد الأقصى
+Maximum size (MB)	الحجم الأقصى (MB)
+Media management	إدارة الوسائط
+Media management settings	إعدادات إدارة الوسائط
+Media paths	مسارات الوسائط
+Mediums	الوسائط
+Members	الأعضاء
+Message	الرسالة
+Metadata	البيانات الوصفية
+Metadata files	ملفات البيانات الوصفية
+Metadata keys saved.	تم حفظ مفاتيح البيانات الوصفية.
+Metadata language	لغة البيانات الوصفية
+Metadata refreshed.	تم تحديث البيانات الوصفية.
+Metadata refreshed: {} new episodes, {} updated.	تم تحديث البيانات الوصفية: الحلقات الجديدة: {}، المحدّثة: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	تم حفظ إعدادات البيانات الوصفية. تُكتب الملفات عند الفحص التالي للقرص أو التحديث أو الاستيراد.
+Metadata sources	مصادر البيانات الوصفية
+MiB	MiB
+Migration completed.	اكتمل الترحيل.
+Migration report #{}	تقرير الترحيل رقم {}
+Minimum	الحد الأدنى
+Minimum age (minutes)	العمر الأدنى (دقائق)
+Minimum custom format score	الحد الأدنى لنقاط التنسيق المخصص
+Minimum format score	الحد الأدنى لنقاط التنسيق
+Minimum free space (MiB)	الحد الأدنى للمساحة المتاحة (MiB)
+Minimum seeders	الحد الأدنى للباذرين
+Missing	مفقودة
+Missing (monitored)	مفقودة (مراقبة)
+Missing films	الأفلام المفقودة
+Mode	الوضع
+Monday	الاثنين
+Monitor	مراقبة
+Monitored	مراقب
+More languages can be added to the string tables.	يمكن إضافة المزيد من اللغات إلى جداول النصوص.
+Move	نقل
+Movie	فيلم
+Movie file format	تنسيق ملف الفيلم
+Movie removed from Kitsunarr. Files on disk were not touched.	تمت إزالة الفيلم من Kitsunarr. لم تُمسّ الملفات على القرص.
+Movies	الأفلام
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	الإصدارات متعددة المواسم: قبول حزم تضم عدة مواسم (بحث الموسم يأخذ الحزمة لموسمه)
+Must contain	يجب أن يحتوي
+Must contain (comma separated; /regex/ allowed)	يجب أن يحتوي (مفصولة بفواصل؛ يُسمح بـ /regex/)
+Must not contain	يجب ألا يحتوي
+NOT	ليس
+Name	الاسم
+Naming	التسمية
+Naming options saved.	تم حفظ خيارات التسمية.
+Naming saved.	تم حفظ التسمية.
+Negate	نفي
+Network	الشبكة
+Never: keep the release's names	أبدًا: الاحتفاظ بأسماء الإصدار
+New custom format	تنسيق مخصص جديد
+New custom preset	إعداد مسبق مخصص جديد
+New group title	عنوان المجموعة الجديدة
+New password	كلمة المرور الجديدة
+New quality profile	ملف تعريف جودة جديد
+Next airing	البث التالي
+Next run	التشغيل التالي
+Next ›	التالي ›
+No	لا
+No activity yet.	لا يوجد نشاط بعد.
+No auto tags.	لا توجد وسوم تلقائية.
+No backups yet	لا توجد نسخ احتياطية بعد
+No collections yet	لا توجد مجموعات بعد
+No companion keys.	لا توجد مفاتيح للتطبيقات المرافقة.
+No custom formats	لا توجد تنسيقات مخصصة
+No custom formats defined.	لم تُعرَّف أي تنسيقات مخصصة.
+No delay above the minimum custom format score	بلا تأخير فوق الحد الأدنى لنقاط التنسيق المخصص
+No delay for the profile's best quality in the preferred protocol	بلا تأخير لأفضل جودة في ملف التعريف ضمن البروتوكول المفضل
+No download client to read	لا يوجد عميل تنزيل للقراءة منه
+No exclusions.	لا توجد استثناءات.
+No history	لا يوجد سجل
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	لا يمكن لأي مفهرس البحث عن هذا المسلسل تلقائيًا: لا يوجد مفهرس مفعّل له البحث التلقائي وليس له وسوم أو له أحد وسوم المسلسل.
+No indexers to search	لا توجد مفهرسات للبحث فيها
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	لا توجد إصدارات محفوظة. فعّل "الاحتفاظ بالملفات التي استبدلتها الترقيات" في التسمية.
+No log entries at this level	لا توجد إدخالات سجل في هذا المستوى
+No mappings.	لا توجد تعيينات.
+No matches	لا توجد تطابقات
+No members	لا يوجد أعضاء
+No migrations have been run yet.	لم يتم تشغيل أي ترحيل بعد.
+No movies yet	لا توجد أفلام بعد
+No notes.	لا توجد ملاحظات.
+No recycle bin is set (Settings › Media management).	لم تُحدَّد سلة محذوفات (الإعدادات › إدارة الوسائط).
+No release profiles.	لا توجد ملفات تعريف إصدارات.
+No root folders yet.	لا توجد مجلدات جذر بعد.
+No root folders.	لا توجد مجلدات جذر.
+No runs yet	لا توجد عمليات تشغيل بعد
+No searches yet.	لا توجد عمليات بحث بعد.
+No series in your library match.	لا يوجد مسلسل مطابق في مكتبتك.
+No tags	لا توجد وسوم
+No {}	لا يوجد {}
+No {} yet	لا يوجد {} بعد
+None	لا شيء
+Not evaluated by Kitsunarr.	لم يقيّمه Kitsunarr.
+Not imported	لم يُستورد
+Not monitored	غير مراقب
+Notes	ملاحظات
+Notes ({preview.warnings.len()})	ملاحظات ({preview.warnings.len()})
+Notes ({report.warnings.len()})	ملاحظات ({report.warnings.len()})
+Nothing airs in the next seven days.	لا شيء يُبث في الأيام السبعة القادمة.
+Nothing downloading	لا شيء قيد التنزيل
+Nothing found	لم يُعثر على شيء
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	لا شيء في هذا الكتالوج يطابق البحث. جرّب تهجئة أخرى، أو العنوان الأصلي، أو الكتالوج الآخر.
+Nothing in this period	لا شيء في هذه الفترة
+Nothing missing	لا شيء مفقود
+Notifications	الإشعارات
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	ترقيم الحلقات حسب ترتيب آخر من الكتالوج (مجموعات حلقات TMDB، أو ترتيب DVD أو الترتيب المطلق في TheTVDB)
+OMDb API key	مفتاح OMDb API
+Older priority	أولوية الأقدم
+One folder per season	مجلد لكل موسم
+Only the 2000 newest files are listed.	تُعرض أحدث 2000 ملف فقط.
+Only when the proxy needs one.	فقط عندما يتطلب الوكيل ذلك.
+Open the library	فتح المكتبة
+OpenAPI document	مستند OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	يفتح الخدمة لتفويض Kitsunarr ويملأ الرمز.
+Options	الخيارات
+Organize	تنظيم
+Other	أخرى
+Overview	نبذة
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	استبدال السجلات الموجودة مسبقًا في Kitsunarr (وإلا يُحتفظ بها)
+Packs	الحزم
+Page not found	الصفحة غير موجودة
+Page {page} / {pages}	الصفحة {page} / {pages}
+Password	كلمة المرور
+Password changed. Other sessions were signed out.	تم تغيير كلمة المرور. تم تسجيل الخروج من الجلسات الأخرى.
+Past days	الأيام الماضية
+Path	المسار
+Path mappings	تعيينات المسارات
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	إيقاف الأتمتة مؤقتًا (مزامنة RSS، مزامنات القوائم المجدولة، عمليات البحث التلقائي)
+Peers	الأقران
+Permission	الصلاحية
+PiB	PiB
+Platform	المنصة
+Port	المنفذ
+Position	الموضع
+Post-import category	الفئة بعد الاستيراد
+Posters	الملصقات
+Prefer and upgrade	تفضيل وترقية
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	تفضيل حزم مواسم الأنمي (عمليات بحث مواسم الأنمي في Kitsunarr تبحث عن الموسم مرة واحدة أصلًا)
+Prefer, do not upgrade	تفضيل، دون ترقية
+Preferred	مفضّل
+Preferred metadata language	لغة البيانات الوصفية المفضلة
+Preferred protocol	البروتوكول المفضل
+Preparing preview…	جارٍ تحضير المعاينة…
+Preview	معاينة
+Preview migration	معاينة الترحيل
+Previous migrations	عمليات الترحيل السابقة
+Priority	الأولوية
+Problem	المشكلة
+Profile	ملف التعريف
+Profile saved.	تم حفظ ملف التعريف.
+Profiles still used by series or movies cannot be deleted.	لا يمكن حذف ملفات التعريف التي لا تزال تستخدمها مسلسلات أو أفلام.
+Progress	التقدم
+Propers and repacks	إصدارات Proper وRepack
+Proxy	الوكيل
+Proxy saved.	تم حفظ الوكيل.
+Proxy type	نوع الوكيل
+Qualities	الجودات
+Quality	الجودة
+Quality presets	إعدادات الجودة المسبقة
+Quality presets saved.	تم حفظ إعدادات الجودة المسبقة.
+Quality profile	ملف تعريف الجودة
+Quality profiles	ملفات تعريف الجودة
+Quality profile…	ملف تعريف الجودة…
+RSS sync interval (minutes)	الفاصل الزمني لمزامنة RSS (دقائق)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	تنتظر مزامنة RSS هذه المدة بعد ظهور إصدار بحثًا عن إصدار أفضل؛ وتظهر الإصدارات المؤجلة في قائمة الانتظار. يُطبَّق أول ملف تعريف تطابق وسومه المسلسل؛ والأخير (بلا وسوم) هو الافتراضي.
+Re-encode this series' files with the compression worker	إعادة ترميز ملفات هذا المسلسل باستخدام عامل الضغط
+Read and add series	قراءة وإضافة مسلسلات
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	تُقرأ مباشرة من عملاء التنزيل كل بضع ثوانٍ. تُستورد التنزيلات المكتملة التي جلبها Kitsunarr إلى مجلد المسلسل كل دقيقة (تُنسخ ملفات التورنت أو تُربط بروابط صلبة لتستمر في البذر؛ وتُنقل تنزيلات Usenet). تُضاف التنزيلات الفاشلة إلى قائمة الحظر ويُبحث عنها مجددًا.
+Read the library	قراءة المكتبة
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	للقراءة فقط: يعثر على مجلدات المسلسلات المفقودة، وسجلات الملفات الموجودة خارج مجلدها أو المسجلة مرتين، والملفات المفقودة من القرص.
+Reading the download clients…	جارٍ القراءة من عملاء التنزيل…
+Reading the source	جارٍ قراءة المصدر
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	يقرأ كل شيء عبر API. يخفي المصدر كلمات المرور ومفاتيح API الخاصة بالمزوّدين، ويجب إدخالها مجددًا بعد ذلك.
+Recent activity	النشاط الأخير
+Recent priority	أولوية الأحدث
+Recent runs	عمليات التشغيل الأخيرة
+Recent searches	عمليات البحث الأخيرة
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	موصى به. في Sonarr/Tanukarr افتح System → Backup، وأنشئ نسخة احتياطية ونزّل ملف .zip (أو استخدم sonarr.db). يتضمن كلمات مرور المفهرسات وعملاء التنزيل.
+Recycle bin	سلة المحذوفات
+Recycle bin cleanup (days)	تنظيف سلة المحذوفات (أيام)
+Recycled	في سلة المحذوفات
+Refresh metadata	تحديث البيانات الوصفية
+Refresh preview	تحديث المعاينة
+Refreshing from {} is not supported yet; the imported metadata is kept as is	التحديث من {} غير مدعوم بعد؛ يُحتفظ بالبيانات الوصفية المستوردة كما هي
+Refreshing…	جارٍ التحديث…
+Regenerate	إعادة إنشاء
+Regenerate API key	إعادة إنشاء مفتاح API
+Reject releases whose TheTVDB or IMDb id names another series	رفض الإصدارات التي يشير معرّف TheTVDB أو IMDb الخاص بها إلى مسلسل آخر
+Rejected: click twice to grab anyway	مرفوض: انقر مرتين للجلب على أي حال
+Release	الإصدار
+Release profile	ملف تعريف الإصدار
+Release profile saved.	تم حفظ ملف تعريف الإصدار.
+Release profiles	ملفات تعريف الإصدارات
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	تُفحص الإصدارات وفق ملف تعريف الجودة والتنسيقات المخصصة وملفات تعريف الإصدارات الخاصة بالمسلسل، وتُرتَّب كما يفعل Sonarr. تتطلب الإصدارات المرفوضة نقرة ثانية.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	إصدارات فشلت أو أُضيفت إلى قائمة الحظر يدويًا. لا تجلبها عمليات البحث ومزامنة RSS مجددًا أبدًا؛ أزل أحدها للسماح به.
+Remote path	المسار البعيد
+Remote path mapping	تعيين المسار البعيد
+Remote path mapping saved.	تم حفظ تعيين المسار البعيد.
+Remote path mappings	تعيينات المسارات البعيدة
+Remove	إزالة
+Remove completed downloads	إزالة التنزيلات المكتملة
+Remove every release from the blocklist?	إزالة كل الإصدارات من قائمة الحظر؟
+Remove failed downloads	إزالة التنزيلات الفاشلة
+Remove from library	إزالة من المكتبة
+Remove from queue	إزالة من قائمة الانتظار
+Remove from the download client (deletes its files there)	إزالة من عميل التنزيل (يحذف ملفاته هناك)
+Remove movie	إزالة الفيلم
+Remove series	إزالة المسلسل
+Remove tags automatically (from titles that stop matching)	إزالة الوسوم تلقائيًا (من العناوين التي لم تعد مطابقة)
+Remove “{title}” and its episode records from Kitsunarr?	إزالة «{title}» وسجلات حلقاته من Kitsunarr؟
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	إزالة «{title}» من Kitsunarr؟ لن تُحذف الملفات على القرص.
+Removed	تمت الإزالة
+Removed from the blocklist.	تمت الإزالة من قائمة الحظر.
+Rename	إعادة تسمية
+Rename files	إعادة تسمية الملفات
+Rename files on import	إعادة تسمية الملفات عند الاستيراد
+Rename files to the naming settings	إعادة تسمية الملفات وفق إعدادات التسمية
+Formats use Sonarr's tokens.	تستخدم التنسيقات رموز Sonarr.
+Renaming…	جارٍ إعادة التسمية…
+Report	التقرير
+Request one at omdbapi.com. Used for films by IMDb id.	اطلب واحدًا من omdbapi.com. يُستخدم للأفلام عبر معرّف IMDb.
+Required	مطلوب
+Resolution	الدقة
+Restore	استعادة
+Restore {}	استعادة {}
+Restore…	استعادة…
+Restoring…	جارٍ الاستعادة…
+Resume automation	استئناف الأتمتة
+Retention (days)	مدة الاحتفاظ (أيام)
+Retire	إيقاف
+Revoke	إلغاء
+Root folder	المجلد الجذر
+Root folders	المجلدات الجذر
+Root folder…	المجلد الجذر…
+Run #{run.id}: {run.status}	التشغيل رقم {run.id}: {run.status}
+Run now	تشغيل الآن
+Running…	قيد التشغيل…
+Saturday	السبت
+Save	حفظ
+Save criteria	حفظ المعايير
+Save factors	حفظ المعاملات
+Save keys	حفظ المفاتيح
+Save metadata files	حفظ ملفات البيانات الوصفية
+Save naming	حفظ التسمية
+Save options	حفظ الخيارات
+Saved	تم الحفظ
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	تظهر المفاتيح المحفوظة كـ {REDACTED}؛ اتركها دون تغيير للاحتفاظ بها، أو امسح الحقل لإزالة أحدها.
+Saved.	تم الحفظ.
+Scan disk	فحص القرص
+Scan folder	فحص المجلد
+Scanning…	جارٍ الفحص…
+Scheduled tasks	المهام المجدولة
+Score	النقاط
+Search	بحث
+Search again when a download fails	البحث مجددًا عند فشل التنزيل
+Search all	بحث عن الكل
+Search all films	بحث عن كل الأفلام
+Search collection	بحث في المجموعة
+Search every episode of the list, one search per season	البحث عن كل حلقات القائمة، بحث واحد لكل موسم
+Search every member's missing episodes (films: the film)	البحث عن الحلقات المفقودة لكل عضو (الأفلام: الفيلم)
+Search indexers	البحث في المفهرسات
+Search selected	بحث عن المحدد
+Search the indexers and choose a release	البحث في المفهرسات واختيار إصدار
+Search the indexers and grab the best accepted release	البحث في المفهرسات وجلب أفضل إصدار مقبول
+Search the indexers and grab the best releases for the monitored episodes	البحث في المفهرسات وجلب أفضل الإصدارات للحلقات المراقبة
+Search your indexers	ابحث في مفهرساتك
+Search {chosen} selected	البحث عن المحدد: {chosen}
+Search: {}	بحث: {}
+Search: {} — complete series	بحث: {} — المسلسل كاملًا
+Search: {} — season {season} packs	بحث: {} — حزم الموسم {season}
+Search: {} — {label}	بحث: {} — {label}
+Searching for {label}…	جارٍ البحث عن {label}…
+Searching indexers…	جارٍ البحث في المفهرسات…
+Searching…	جارٍ البحث…
+Season	الموسم
+Season folder format	تنسيق مجلد الموسم
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	تحل عناوين مجلدات المواسم محل عناوين الكتالوج في {{Season Title}}. اتركها فارغة للإبقاء على عناوين الكتالوج.
+Season folders	مجلدات المواسم
+Season images (Season ##.jpg)	صور المواسم (Season ##.jpg)
+Season images (Season##/folder.jpg)	صور المواسم (Season##/folder.jpg)
+Season images (season##-poster.jpg)	صور المواسم (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	حزم المواسم: 1 يستخدم أهداف حزم المواسم أدناه
+Season premieres only	العروض الأولى للمواسم فقط
+Season {n}	الموسم {n}
+Season {one}	الموسم {one}
+Season {se.season_number}	الموسم {se.season_number}
+Season {season_number}	الموسم {season_number}
+Season-pack seed ratio	نسبة البذر لحزم المواسم
+Season-pack seed time, minutes	مدة البذر لحزم المواسم، بالدقائق
+Seasons	المواسم
+Seasons {first}-{last}	المواسم {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	تظهر الأسرار كـ {REDACTED}؛ اتركها دون تغيير للإبقاء على القيمة المخزّنة.
+Seed ratio (empty: the client's default)	نسبة البذر (فارغ: القيمة الافتراضية للعميل)
+Seed time, minutes (empty: the client's default)	مدة البذر، بالدقائق (فارغ: القيمة الافتراضية للعميل)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	إرسال الطلبات إلى المفهرسات والكتالوجات والقوائم وعملاء التنزيل والاتصالات عبر وكيل.
+Send to the download client	إرسال إلى عميل التنزيل
+Series	المسلسلات
+Series .plexmatch file	ملف .plexmatch للمسلسل
+Series folder format	تنسيق مجلد المسلسل
+Series images (Series Title.jpg)	صور المسلسل (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	صور المسلسل (fanart.jpg، poster.jpg، banner.jpg)
+Series images (folder.jpg)	صور المسلسل (folder.jpg)
+Series metadata (tvshow.nfo)	البيانات الوصفية للمسلسل (tvshow.nfo)
+Series metadata URL	عنوان URL للبيانات الوصفية للمسلسل
+Series metadata episode guide	دليل الحلقات في البيانات الوصفية للمسلسل
+Series removed from Kitsunarr. Files on disk were not touched.	تمت إزالة المسلسل من Kitsunarr. لم تُمسّ الملفات على القرص.
+Series removed, and its folder deleted.	تمت إزالة المسلسل وحذف مجلده.
+Series type	نوع المسلسل
+Set quality profile…	تعيين ملف تعريف الجودة…
+Settings	الإعدادات
+Settings saved.	تم حفظ الإعدادات.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security في Sonarr/Tanukarr.
+Show	عرض
+Show as all-day events	العرض كأحداث طوال اليوم
+Show unmonitored	عرض غير المراقبة
+Shows	المسلسلات
+Sign in	تسجيل الدخول
+Signed in. Save the list to keep the token.	تم تسجيل الدخول. احفظ القائمة للاحتفاظ بالرمز.
+Signing in…	جارٍ تسجيل الدخول…
+Size	الحجم
+Size limits	حدود الحجم
+Size on disk	الحجم على القرص
+Skip files smaller than (MB)	تخطي الملفات الأصغر من (MB)
+Skip the free-space check	تخطي فحص المساحة المتاحة
+Skip unmonitored episodes when importing packs	تخطي الحلقات غير المراقبة عند استيراد الحزم
+Source	المصدر
+Source code	الشيفرة المصدرية
+Source path	مسار المصدر
+Special	خاصة
+Specials	الحلقات الخاصة
+Specials are never monitored automatically.	لا تُراقب الحلقات الخاصة تلقائيًا أبدًا.
+Specifications	المواصفات
+Specifications (JSON)	المواصفات (JSON)
+Specifications must be valid JSON: {e}	يجب أن تكون المواصفات JSON صالحًا: {e}
+Stalled torrent timeout (minutes)	مهلة التورنت المتوقف (دقائق)
+Standard	قياسي
+Standard episode format	تنسيق الحلقة القياسي
+Start migration	بدء الترحيل
+Start over	البدء من جديد
+Start search for missing episodes	بدء البحث عن الحلقات المفقودة
+Started	بدأ
+Started {format_datetime(&run.started_at)}	بدأ {format_datetime(&run.started_at)}
+Status	الحالة
+Status & health	الحالة والسلامة
+Still downloading	لا يزال قيد التنزيل
+Storage outlook	توقعات التخزين
+Studio	الاستوديو
+Subscribe	اشتراك
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	اشترك في هذا العنوان في تطبيق تقويم. يحتوي على مفتاح API الخاص بك: احتفظ به سرًا.
+Sunday	الأحد
+Sync	مزامنة
+Sync all lists now	مزامنة كل القوائم الآن
+Sync now	مزامنة الآن
+Syncing…	جارٍ المزامنة…
+System →	النظام →
+TMDB API key (v3)	مفتاح TMDB API (v3)
+TV Series	مسلسلات تلفزيونية
+TV series	مسلسلات تلفزيونية
+Table	جدول
+Tag	وسم
+Tag them	وسمها
+Tag titles already in the library	وسم العناوين الموجودة في المكتبة
+Tags	الوسوم
+Tags (comma separated)	الوسوم (مفصولة بفواصل)
+Tags (ids, comma separated)	الوسوم (معرّفات، مفصولة بفواصل)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	تُضاف الوسوم إلى المسلسلات والأفلام التي تطابق كل أنواع الشروط عند إضافتها أو تعديلها أو تحديثها.
+Task	المهمة
+Television	التلفزيون
+Television (raw)	التلفزيون (raw)
+Test	اختبار
+Test failed: {message}	فشل الاختبار: {message}
+Testing…	جارٍ الاختبار…
+The blocklist is empty	قائمة الحظر فارغة
+The catalogue new titles are added from when the list knows their id there.	الكتالوج الذي تُضاف منه العناوين الجديدة عندما تعرف القائمة معرّفها فيه.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	التاريخ الذي تحصل عليه الملفات المستوردة: تاريخ بث الحلقة (المحلي أو UTC)، أو عند الترقية تاريخ الملف المستبدَل.
+The dry run completed without blocking problems. Nothing has been written yet.	اكتمل التشغيل التجريبي دون مشكلات حاجبة. لم يُكتب أي شيء بعد.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	يُنقل الملف إلى مجلد الموسم (لا يُستبدل أي ملف موجود أبدًا) ويُعاد فحص المسلسل.
+The folder must already exist; Kitsunarr never creates or removes it.	يجب أن يكون المجلد موجودًا مسبقًا؛ لا ينشئه Kitsunarr ولا يزيله أبدًا.
+The indexers returned no releases for this search.	لم تُرجع المفهرسات أي إصدارات لهذا البحث.
+The instance is on my local network (private or loopback address)	النسخة موجودة على شبكتي المحلية (عنوان خاص أو loopback)
+The list has not been read, or it is empty.	لم تُقرأ القائمة، أو أنها فارغة.
+The migration did not complete; nothing was changed.	لم يكتمل الترحيل؛ لم يتغير شيء.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	أحدث الإدخالات المحفوظة في الذاكرة. تذهب السجلات الكاملة إلى مخرجات العملية (سجلات الحاوية أو journal).
+The passwords do not match.	كلمتا المرور غير متطابقتين.
+The recycle bin has no media or subtitle files.	لا تحتوي سلة المحذوفات على ملفات وسائط أو ترجمات.
+The sign-in expired; try again.	انتهت صلاحية تسجيل الدخول؛ حاول مجددًا.
+The upload failed (network error).	فشل الرفع (خطأ في الشبكة).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	العامل مكوّن اختياري على المضيف (عامل الضغط من Tanukarr) يُوصل إليه عبر المقبس في KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	تغطي TheTVDB (كتالوج Sonarr) وTMDB وTVmaze المسلسلات التلفزيونية؛ وتغطي AniList وMyAnimeList مسلسلات وأفلام الأنمي؛ وتغطي TMDB وOMDb الأفلام. إضافة عنوان تنشئ مدخله في المكتبة وقائمة حلقاته؛ وتُلتقط الملفات لاحقًا عبر مسار الاستيراد.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	يُبحث عن عناوين TheTVDB وتُضاف بهذه اللغة؛ ويمكن تغييرها لكل مسلسل في محرره.
+TheTVDB titles in this language; changing it refreshes the series	عناوين TheTVDB بهذه اللغة؛ تغييرها يحدّث المسلسل
+There is nothing at /{path}.	لا يوجد شيء في /{path}.
+They are created by migrating from Sonarr/Tanukarr.	تُنشأ بالترحيل من Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	وضع إعادة التسمية وعناوين مجلدات المواسم والإصدارات المحفوظة لهذا المسلسل
+TiB	TiB
+Time	الوقت
+Time left	الوقت المتبقي
+Title	العنوان
+Title pattern	نمط العنوان
+Titles import lists never add.	عناوين لا تضيفها قوائم الاستيراد أبدًا.
+Titles on no list	عناوين ليست في أي قائمة
+Today	اليوم
+Torrent	تورنت
+Torrent delay	تأخير التورنت
+Torrent delay (minutes)	تأخير التورنت (دقائق)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	مفهرسات Torznab وNewznab. استخدم «اختبار» في المحرر للتحقق من أحدها؛ يستخدم كل بحث المفهرسات المفعّل لها ذلك النوع من البحث: RSS أو التلقائي أو التفاعلي.
+Trigger	المُشغِّل
+URL base	أساس URL
+UTC air date	تاريخ البث UTC
+Unchanged	دون تغيير
+Unknown	غير معروف
+Unmonitor	إلغاء المراقبة
+Unmonitor them	إلغاء مراقبتها
+Unmonitored	غير مراقب
+Upcoming	القادمة
+Upcoming 7 days	الأيام السبعة القادمة
+Update	تحديث
+Updated {} items.	العناصر المحدّثة: {}.
+Upgrade until (cutoff)	الترقية حتى (حد القطع)
+Upgrade until format score	الترقية حتى نقاط التنسيق
+Upgrades allowed	الترقيات مسموح بها
+Upload a backup	رفع نسخة احتياطية
+Upload failed (HTTP {}).	فشل الرفع (HTTP {}).
+Uploading…	جارٍ الرفع…
+Use SSL	استخدام SSL
+Use a proxy	استخدام وكيل
+Use hardlinks instead of copying	استخدام الروابط الصلبة بدلًا من النسخ
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	استخدمه كترويسة X-Api-Key (أو ?apikey=) من التطبيقات الأخرى. متوافق مع الترويسة التي يستخدمها Sonarr.
+Use these episodes	استخدام هذه الحلقات
+Usenet	Usenet
+Usenet delay	تأخير Usenet
+Usenet delay (minutes)	تأخير Usenet (دقائق)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Usenet فقط: تُرفض الإصدارات الأحدث لمنحها وقتًا للانتشار. القيمة 0 تعطّل ذلك.
+Usenet only: older releases are rejected. 0 means unlimited.	Usenet فقط: تُرفض الإصدارات الأقدم. القيمة 0 تعني بلا حد.
+User name	اسم المستخدم
+Username	اسم المستخدم
+Validation	التحقق
+Version	الإصدار
+Versions	الإصدارات
+Waiting for the sign-in at	في انتظار تسجيل الدخول على
+Wanted	المطلوب
+Warnings	التحذيرات
+Warnings {warnings}	التحذيرات {warnings}
+Watched (Jellyfin watched sync)	تمت المشاهدة (مزامنة المشاهدة مع Jellyfin)
+Watched sync user	مستخدم مزامنة المشاهدة
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	تُرسل إلى Webhook وNotifiarr وDiscord وSlack وTelegram وGotify وntfy وPushover وPushbullet وJoin وProwl وSimplepush وSignal وApprise والبريد الإلكتروني (SMTP) وMailgun وSendGrid والنصوص البرمجية المخصصة (مع متغيرات بيئة Sonarr) وEmby/Jellyfin وPlex وKodi: عمليات الجلب والاستيراد والترقيات، وإعادة التسمية، والمسلسلات المضافة أو المحذوفة، والملفات المحذوفة، ومشكلات السلامة. استخدم «اختبار» في المحرر.
+Welcome	مرحبًا
+What to import	ما يجب استيراده
+When	متى
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	متى يتم التحقق من شهادات HTTPS للمفهرسات وعملاء التنزيل والخدمات (إعداد Sonarr). الشهادات الموقّعة ذاتيًا على شبكتك تتطلب تخفيفه.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	عندما يبلّغ عميل التنزيل عن مسارات يراها Kitsunarr في مكان آخر (جهاز أو حاوية أخرى)، عيّن مضيف العميل ومساره إلى المسار المحلي.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	ما إذا كانت الإصدارات التي تصلح إصدارًا معيبًا مفضّلة وتُرقّي الملفات الموجودة (كما في Sonarr).
+Whole season	الموسم كاملًا
+Working…	جارٍ العمل…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	تُكتب في مجلدات المسلسلات عند فحص المسلسلات أو تحديثها أو استيرادها، كما يكتبها مستهلكو البيانات الوصفية في Sonarr.
+Year	السنة
+Your library is empty.	مكتبتك فارغة.
+all checks passed	نجحت كل الفحوصات
+comma separated	مفصولة بفواصل
+cutoff: {}	حد القطع: {}
+has a file	له ملف
+iCal link	رابط iCal
+in 2 days	خلال يومين
+in a moment	بعد لحظة
+in file names	في أسماء الملفات
+in library	في المكتبة
+in {text}	خلال {text}
+just now	الآن
+may run out of space	قد تنفد المساحة
+name (e.g. phone)	الاسم (مثل الهاتف)
+never refreshed	لم يُحدَّث قط
+no media files are moved, renamed or deleted.	لا يُنقل أي ملف وسائط ولا يُعاد تسميته ولا يُحذف.
+not accessible	غير قابل للوصول
+not added	غير مضاف
+not checked	لم يُتحقق منه
+not read yet	لم تُقرأ بعد
+on disk	على القرص
+refreshed {}	تم التحديث {}
+schema {s}	المخطط {s}
+secrets included	الأسرار مضمّنة
+secrets masked	الأسرار مخفية
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip أو sonarr.db
+stored only	مخزّن فقط
+title (optional)	العنوان (اختياري)
+{:.1} GiB/h	{:.1} GiB/ساعة
+{added} added; {}	المضاف: {added}؛ {}
+{added} shows added.	المسلسلات المضافة: {added}.
+{c.name} (API key needed)	{c.name} (مفتاح API مطلوب)
+{c.series_count} series · {c.movie_count} movies	المسلسلات: {c.series_count} · الأفلام: {c.movie_count}
+{chosen().len()} chosen	المختار: {chosen().len()}
+{chosen().len()} chosen (at most 25)	المختار: {chosen().len()} (25 كحد أقصى)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} على القرص · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% من {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · أُضيف {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} من {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	الملفات: {job["completedFiles"]} / {job["totalFiles"]} · {job["percent"]}% · الموفَّر: {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	بدأ {name}.
+{name} was added to the library.	تمت إضافة {name} إلى المكتبة.
+{name}: shows	{name}: المسلسلات
+{ok} files imported.	الملفات المستوردة: {ok}.
+{ok} imported; {}	المستورد: {ok}؛ {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: الإصدارات: {r.releases.len()} من المفهرسات: {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	تم فحص المسلسلات: {r.series_checked} والملفات: {r.files_checked}؛ المشكلات: {r.issues.len()}.
+{selected.read().len()} selected	المحدد: {selected.read().len()}
+{text} ago	منذ {text}
+{} (not accessible)	{} (غير قابل للوصول)
+{} ({} free)	{} ({} متاح)
+{} added to every profile (not allowed yet).	تمت إضافة {} إلى كل ملف تعريف (غير مسموح به بعد).
+{} day(s)	{} يوم/أيام
+{} failed: {}	فشل {}: {}
+{} format scores	نقاط التنسيقات: {}
+{} free of {}	{} متاح من {}
+{} week(s)	{} أسبوع/أسابيع
+{}{year} — movie	{}{year} — فيلم
+‹ Back	‹ رجوع
+‹ Earlier	‹ السابق
+‹ Prev	‹ السابق
+○ offline	○ غير متصل
+● live	● مباشر
+✓ No issues detected.	✓ لم تُكتشف أي مشكلات.
+Activity	النشاط
+Queue	قائمة الانتظار
+System	النظام
+Tasks	المهام
+Retry	إعادة المحاولة
+Sign out	تسجيل الخروج
+Search titles…  ( / )	البحث في العناوين…  ( / )
+Loading…	جارٍ التحميل…
+Profiles	ملفات التعريف
+scene {}	المشهد {}
+Scene numbering from TheXEM	ترقيم المشهد من TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	ترقيم المشهد مستنتج من TheXEM (غير موثّق)
+Season {} (scene seasons {})	الموسم {} (مواسم المشهد {})
+{} (scene {})	{} (المشهد {})

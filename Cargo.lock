@@ -2815,12 +2815,15 @@ name = "kitsunarr-notifications"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "base64 0.23.1",
  "chrono",
+ "hex",
  "kitsunarr-domain",
  "lettre",
  "reqwest 0.13.5",
  "serde",
  "serde_json",
+ "sha1 0.10.7",
  "tempfile",
  "thiserror 2.0.21",
  "tokio",

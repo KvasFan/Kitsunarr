@@ -1,0 +1,968 @@
+# Norwegian Bokmål interface strings: English<TAB>Norwegian Bokmål. {…} marks a placeholder.
+custom	egendefinert
+indeterminate	ubestemt
+mixed	blandet
+retired	pensjonert
+· container	· container
+· finished {format_datetime(f)}	· fullført {format_datetime(f)}
+· missing	· mangler
+· on disk	· på disk
+· today	· i dag
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep
+— MiB per minute; empty uses Settings › Quality	— MiB per minutt; tomt bruker Innstillinger › Kvalitet
+— a release's size is multiplied by its codec's factor before the size limits apply	— størrelsen på en utgivelse ganges med kodekens faktor før størrelsesgrensene brukes
+— all profiles at once	— alle profiler samtidig
+— codec and title criteria, custom qualities (Tanukarr)	— kodek- og tittelkriterier, egendefinerte kvaliteter (Tanukarr)
+— enter the code	— skriv inn koden
+(empty)	(tom)
++ Add mapping	+ Legg til mapping
++ New format	+ Nytt format
++ New profile	+ Ny profil
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (av) eller 10 til 120. RSS-synkronisering kan også startes fra System › Oppgaver.
+3 hours ago	3 timer siden
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	En torrent som lastes ned uten fremdrift så lenge, regnes som mislykket, blokkeres og søkes etter på nytt. 0 slår dette av; fremdrift spores fra Kitsunarr startet.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	En franchisegruppe funnet via relasjoner i AniList eller MyAnimeList. Titler fra samme franchise som legges til senere, blir også med.
+A new API key was generated. Update the applications that use it.	En ny API-nøkkel ble generert. Oppdater programmene som bruker den.
+A regular expression, case-insensitive; empty matches every title.	Et regulært uttrykk, skiller ikke mellom store og små bokstaver; tomt samsvarer med alle titler.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	En utgivelse får den mest spesifikke forhåndsinnstillingen som er tillatt i seriens profil, og hvis kilde, oppløsning, kodek og tittelmønster den samsvarer med. En standardkvalitet med kodek eller mønster gjør utgivelser som ikke oppfyller dem til Ukjent. Egendefinerte forhåndsinnstillinger legges til i alle profiler som ikke tillatt.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Størrelsen på en utgivelse ganges med kodekens faktor før størrelsesgrensene brukes. «Blandet» betyr at profilene bruker ulike faktorer; en verdi angitt her skrives til alle profiler.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	En tittel som blir med i en franchise eller manuell gruppe, forlater gruppen den var i. Filer og mapper flyttes ikke.
+API key	API-nøkkel
+API key needed	API-nøkkel kreves
+API keys and language	API-nøkler og språk
+API path	API-sti
+About	Om
+Absolute path; empty to delete permanently.	Absolutt sti; tom for å slette permanent.
+Accepted	Godtatt
+Account lists	Kontolister
+Actions	Handlinger
+Actual	Faktisk
+Add	Legg til
+Add a Newznab or Torznab indexer and enable interactive search for it.	Legg til en Newznab- eller Torznab-indekser og aktiver interaktivt søk for den.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Legg til en klient fra malen og bruk Test i redigeringsvinduet; henting, kø og import bruker alle aktiverte klienter. Et blackhole skriver hentinger til en mappe og importerer det som dukker opp i overvåkingsmappen. Hver klients valg «Fjern fullførte/mislykkede nedlastinger» fjerner nedlastinger (med filene) når klienten er ferdig med dem.
+Add a download client in Settings › Download clients and enable it.	Legg til en nedlastingsklient under Innstillinger › Nedlastingsklienter og aktiver den.
+Add a root folder first: it is where this title's folder will live.	Legg til en rotmappe først: det er der denne tittelens mappe skal ligge.
+Add a tag above first.	Legg til et merke ovenfor først.
+Add a title	Legg til en tittel
+Add auto tag	Legg til automatisk merke
+Add condition	Legg til betingelse
+Add exclusion	Legg til unntak
+Add media	Legg til medier
+Add one, or migrate them from Sonarr/Tanukarr.	Legg til en, eller migrer dem fra Sonarr/Tanukarr.
+Add preset	Legg til forhåndsinnstilling
+Add selected	Legg til valgte
+Add series or movies below.	Legg til serier eller filmer nedenfor.
+Add tag	Legg til merke
+Add the list's tags	Legg til listens merker
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Legg til titler fra TVmaze eller AniList, eller ta med et eksisterende Sonarr- eller Tanukarr-bibliotek.
+Add to library	Legg til i biblioteket
+Add {}	Legg til {}
+Add {} ({y})	Legg til {} ({y})
+Add — {}	Legg til — {}
+Add, and remove when they leave the list	Legg til, og fjern når de forlater listen
+Added	Lagt til
+Added to the titles this list adds.	Legges til titlene denne listen legger til.
+Adding titles	Legger til titler
+Adding…	Legger til…
+Address	Adresse
+Age	Alder
+Aired	Sendt
+Aired monitored episodes without a file appear here.	Sendte, overvåkede episoder uten fil vises her.
+All	Alle
+All collections	Alle samlinger
+All episodes	Alle episoder
+All episodes in the series folder	Alle episoder i seriemappen
+All events	Alle hendelser
+Allow zero size (the feed has no release sizes)	Tillat null størrelse (feeden oppgir ikke størrelser)
+Also delete the series folder and its files (to the recycle bin when one is set)	Slett også seriemappen og filene i den (til papirkurven hvis en er angitt)
+Also for releases grabbed from interactive search	Også for utgivelser hentet fra interaktivt søk
+Also known as	Også kjent som
+Always, even when renaming is off	Alltid, også når omdøping er av
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analyser videofiler (oppløsning, spilletid og kodeker, med ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Titler fra AniList og MyAnimeList legges alltid til som anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Lister fra AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, en annen Sonarr og egendefinerte JSON-lister leses med noen timers mellomrom; nye titler legges til med hver listes rotmappe, profil og overvåking. Tjenester som krever OAuth bruker ditt eget programs Client ID og et token du limer inn (token migrert fra Tanukarr fortsetter å virke).
+Anime	Anime
+Anime / absolute numbering	Anime / absolutt nummerering
+Anime categories	Animekategorier
+Anime episode format	Anime episodeformat
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Animefilmer kan legges til fra AniList, og migreringer fra Tanukarr tar med filmene sine. Live-action-filmer krever TMDB-katalogen.
+Anime standard format search	Animesøk i standardformat
+Anime title, e.g. Frieren	Animetittel, f.eks. Frieren
+Any	Hvilken som helst
+Any library	Hvilket som helst bibliotek
+Applications using the current key will stop working until you give them the new one.	Programmer som bruker den nåværende nøkkelen, slutter å virke til du gir dem den nye.
+Applied after every list has been read successfully and some title left a list.	Brukes etter at alle lister er lest uten feil og en tittel har forlatt en liste.
+Apply	Bruk
+Apply migration	Utfør migrering
+Apply profile	Bruk profil
+Applying migration	Utfører migrering
+Applying…	Bruker…
+As Settings › Media management says	Som angitt i Innstillinger › Mediehåndtering
+At least 10 characters.	Minst 10 tegn.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Minst {MIN_PASSWORD_LENGTH} tegn. En passfrase fungerer godt.
+Auto tag	Automatisk merke
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automatisk merke lagret. Det brukes neste gang titler legges til, redigeres eller oppdateres.
+Auto tagging	Automatisk merking
+Auto-refresh	Automatisk oppdatering
+Automatic	Automatisk
+Automatic search	Automatisk søk
+Automatic search for {label}: grabbed {}.	Automatisk søk etter {label}: hentet {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automatisk søk etter {label}: utgivelser funnet: {}, godkjent: {}, ingenting hentet.
+Automatic search: grab the best release	Automatisk søk: hent den beste utgivelsen
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatisering er satt på pause: RSS-synkronisering, planlagte listesynkroniseringer og automatiske søk hoppes over. Manuelle handlinger og pågående nedlastinger fortsetter.
+Automation resumed.	Automatisering gjenopptatt.
+Available from	Tilgjengelig fra
+Back to the dashboard	Tilbake til oversikten
+Back up now	Ta sikkerhetskopi nå
+Backup {} created.	Sikkerhetskopi {} opprettet.
+Backups	Sikkerhetskopier
+Blocking:	Blokkerer:
+Blocklist	Blokkeringsliste
+Blocklist the release and search again	Blokker utgivelsen og søk på nytt
+Blocklist the release: it is never grabbed again	Blokker utgivelsen: den hentes aldri igjen
+Blocklist “{title}” and search for a replacement?	Blokkere «{title}» og søke etter en erstatning?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Ta med biblioteket og innstillingene fra Sonarr (v3/v4) eller Tanukarr til Kitsunarr. Kilden blir bare lest, aldri endret, og
+Bypass the proxy for local addresses	Omgå proxyen for lokale adresser
+Calendar	Kalender
+Calendar →	Kalender →
+Cancel	Avbryt
+Cancel compression	Avbryt komprimering
+Cannot reach the server: {e}	Får ikke kontakt med serveren: {e}
+Catalogue	Katalog
+Category	Kategori
+Certificate validation	Sertifikatvalidering
+Change password	Endre passord
+Change series	Bytt serie
+Changes	Endringer
+Check	Kontroller
+Check library	Kontroller biblioteket
+Check now	Kontroller nå
+Check that the mapped series folders exist (read-only)	Kontroller at de tilordnede seriemappene finnes (skrivebeskyttet)
+Checked: {summary}.	Kontrollert: {summary}.
+Checking…	Kontrollerer…
+Choose a backup file	Velg en sikkerhetskopifil
+Choose a mode	Velg en modus
+Choose a root folder and a quality profile.	Velg en rotmappe og en kvalitetsprofil.
+Choose a season	Velg en sesong
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Velg en serie og en sesong eller episode. Resultatene viser hva hver utgivelse er, slik Kitsunarrs parser leser den.
+Choose a series or movie…	Velg en serie eller film…
+Choose source	Velg kilde
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Velg episodene i denne utgivelsen manuelt, og hent den deretter (valget beholdes for importen)
+Choose…	Velg…
+Clean library	Rens biblioteket
+Clear	Tøm
+Clear blocklist	Tøm blokkeringslisten
+Cleared {n} releases from the blocklist.	Utgivelser fjernet fra blokkeringslisten: {n}.
+Client	Klient
+Close	Lukk
+Codec	Kodek
+Codec factors saved in every profile.	Kodekfaktorer lagret i alle profiler.
+Codec size factors	Størrelsesfaktorer per kodek
+Codecs	Kodeker
+Collection film folder format	Mappeformat for filmer i samlinger
+Collections	Samlinger
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Samlinger vises når de migreres fra Tanukarr, opprettes fra katalogdata eller opprettes her.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Kommer du fra Sonarr eller Tanukarr? Importer eksisterende serier, innstillinger og historikk i noen få trinn.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Kommaseparert; * er et jokertegn (*.lan), og IP-områder som 192.168.1.0/24 fungerer.
+Companion app keys	Nøkler for følgeapper
+Complete series	Hele serien
+Completed and failed download handling	Håndtering av fullførte og mislykkede nedlastinger
+Component	Komponent
+Compress series	Komprimer serie
+Compression	Komprimering
+Compression queued.	Komprimering lagt i kø.
+Compression worker is not connected.	Komprimeringsarbeideren er ikke tilkoblet.
+Condition	Betingelse
+Conditions	Betingelser
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Betingelser av samme type samsvarer når minst én av dem samsvarer (alle påkrevde må det); hver type må samsvare.
+Configure	Konfigurer
+Confirm password	Bekreft passord
+Connect	Koble til
+Connect to a running instance	Koble til en kjørende instans
+Connecting…	Kobler til…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Konsistente kopier av databasen. Planlagte sikkerhetskopier kjøres ukentlig (de åtte siste beholdes); hver migrering lager også en først. For å gjenopprette, stopp Kitsunarr og kjør
+Continuing	Pågående
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Informasjonskapsel (sendes med feedforespørselen, f.eks. uid=1; pass=…)
+Copied.	Kopiert.
+Copy	Kopier
+Copy (keep the originals)	Kopier (behold originalene)
+Copy sizes from	Kopier størrelser fra
+Copy the token now; it is not shown again:	Kopier tokenet nå; det vises ikke igjen:
+Could not grab {}: {}	Kunne ikke hente {}: {}
+Covers	Dekker
+Create	Opprett
+Create account	Opprett konto
+Create group	Opprett gruppe
+Create key	Opprett nøkkel
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Opprett en på themoviedb.org › Settings › API. Brukes for TV-serier og filmer fra TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Opprett administratorkontoen. Du bruker den til å logge inn i Kitsunarr.
+Created	Opprettet
+Created when the first file is imported. Nothing is written to disk now.	Opprettes når den første filen importeres. Ingenting skrives til disk nå.
+Creating…	Oppretter…
+Credit	Kreditering
+Current file	Nåværende fil
+Current password	Nåværende passord
+Custom format saved.	Egendefinert format lagret.
+Custom format score	Poengsum for egendefinert format
+Custom format scores	Poengsummer for egendefinerte formater
+Custom formats	Egendefinerte formater
+Cutoff unmet	Grense ikke nådd
+Daily	Daglig
+Daily episode format	Daglig episodeformat
+Dashboard	Oversikt
+Data directory	Datamappe
+Database backup taken before the import: {b}	Sikkerhetskopi av databasen tatt før importen: {b}
+Database schema	Databaseskjema
+Date	Dato
+Date added	Dato lagt til
+Debug	Feilsøking
+Decision	Beslutning
+Default	Standard
+Defaults	Standardverdier
+Delay profile	Forsinkelsesprofil
+Delay profile saved.	Forsinkelsesprofil lagret.
+Delay profiles	Forsinkelsesprofiler
+Delete	Slett
+Delete empty series folders	Slett tomme seriemapper
+Delete file	Slett fil
+Delete group	Slett gruppe
+Delete profile	Slett profil
+Delete “{path}”? It goes to the recycle bin when one is set.	Slette «{path}»? Den havner i papirkurven hvis en er angitt.
+Delete “{}”?	Slette «{}»?
+Delete “{}”? Its series and movies stay in the library.	Slette «{}»? Seriene og filmene blir værende i biblioteket.
+Deleted	Slettet
+Directory	Mappe
+Disabled	Deaktivert
+Disabled for local addresses	Deaktivert for lokale adresser
+Disk scanned: {}	Disk skannet: {}
+Disk scanned: {} Not matched: {}	Disk skannet: {} Ikke samsvarende: {}
+Do not prefer	Ikke foretrekk
+Do not search for a replacement	Ikke søk etter en erstatning
+Do nothing	Ikke gjør noe
+Done	Ferdig
+Download client options saved.	Valg for nedlastingsklienter lagret.
+Download clients	Nedlastingsklienter
+Download failed	Nedlasting mislyktes
+Download queue	Nedlastingskø
+Downloads	Nedlastinger
+Duration	Varighet
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Hver tittel tilhører én katalog, som oppdateringene leser fra; alle identifikatorer den har (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) beholdes. Titler migrert fra Sonarr tilhører TheTVDB.
+Edit	Rediger
+Edit “{name}”	Rediger «{name}»
+Edit “{}”	Rediger «{}»
+Enable RSS	Aktiver RSS
+Enable automatic search	Aktiver automatisk søk
+Enable interactive search	Aktiver interaktivt søk
+Enabled	Aktivert
+Ended	Avsluttet
+English	English
+Entity	Enhet
+Episode	Episode
+Episode and movie naming	Navngiving av episoder og filmer
+Episode image thumbs in the NFO	Episodeminiatyrer i NFO
+Episode images (<filename>-thumb.jpg)	Episodebilder (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Episodebilder (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Episodebilder (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Episodetilordninger i .plexmatch
+Episode metadata (<filename>.nfo)	Episodemetadata (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Episodemetadata (Season##/filename.xml)
+Episode order	Episoderekkefølge
+Episode order changed: {} episodes updated, {} added.	Episoderekkefølge endret: episoder oppdatert: {}, lagt til: {}.
+Episodes	Episoder
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Episodene nummereres om etter valgt rekkefølge; filer, overvåking og historikk følger episodene sine. Gi filene nye navn etterpå for å matche de nye numrene.
+Episodes of {title}	Episoder av {title}
+Episodes on disk	Episoder på disk
+Episodes whose file is below the quality profile's cutoff appear here.	Episoder med fil under kvalitetsprofilens grense vises her.
+Episodes…	Episoder…
+Errors	Feil
+Errors {errors}	Feil {errors}
+Event	Hendelse
+Every file already follows the naming settings.	Alle filer følger allerede navneinnstillingene.
+Every file meets its cutoff	Alle filer når sin grense
+Exclude	Ekskluder
+Exclusions	Unntak
+Expected	Forventet
+Expires	Utløper
+Extra file extensions	Filendelser for ekstrafiler
+Factor	Faktor
+Failed	Mislyktes
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Beskyttelse mot falske utgivelser: undersøk torrenter før henting og avvis kjørbare filer, passordbeskyttede lokkearkiver og innhold uten video
+Feed address	Feedadresse
+Fetch the latest metadata from {}	Hent de nyeste metadataene fra {}
+File	Fil
+File date	Fildato
+File deleted	Fil slettet
+File deleted.	Fil slettet.
+File management	Filbehandling
+File management settings saved.	Innstillinger for filbehandling lagret.
+File renamed	Fil omdøpt
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Filer eldre enn dette slettes daglig fra papirkurven; 0 beholder dem.
+Files upgrades replaced, kept as versions	Filer erstattet av oppgraderinger, beholdt som versjoner
+Film	Film
+Film title or IMDb id, e.g. Arrival	Filmtittel eller IMDb-id, f.eks. Arrival
+Find a series in your library	Finn en serie i biblioteket ditt
+Find files added to or removed from the series folder	Finn filer som er lagt til i eller fjernet fra seriemappen
+Find something to add	Finn noe å legge til
+First and last pieces first	Første og siste del først
+First day of the week	Første ukedag
+First season	Første sesong
+Folder	Mappe
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formatene bruker Sonarrs spesifikasjonstyper (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Poengsummer tildeles per kvalitetsprofil.
+Found	Funnet
+Free	Ledig
+Free space	Ledig plass
+Future days	Kommende dager
+Future episodes	Fremtidige episoder
+General	Generelt
+GiB	GiB
+Grab	Hent
+Grab a release from interactive search; downloads in the client's TV category show up here.	Hent en utgivelse fra interaktivt søk; nedlastinger i klientens TV-kategori vises her.
+Grab anyway?	Hente likevel?
+Grab with these episodes	Hent med disse episodene
+Grabbed	Hentet
+Grabbed {}.	Hentet {}.
+Grabbing…	Henter…
+Grabs, imports and file changes appear here. Migrated history is included.	Hentinger, importer og filendringer vises her. Migrert historikk er inkludert.
+Group film folder format	Mappeformat for filmer i grupper
+Group folder format	Mappeformat for grupper
+Group season folder format	Sesongmappeformat for grupper
+Group story-arc folder format	Mappeformat for historiebuer i grupper
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Grupper av relaterte serier og filmer: katalogsamlinger, animefranchiser (prequel/sequel-grupper) og manuelle grupper, inkludert de som er migrert fra Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Import kun med hardlenker: kopier aldri nedlastinger som fortsatt seedes
+Health	Helse
+Hide	Skjul
+History	Historikk
+History →	Historikk →
+Host	Vert
+Host (as in the download client's settings)	Vert (som i nedlastingsklientens innstillinger)
+Hostname	Vertsnavn
+How the catalogue numbers the episodes (it can be changed later on the series page).	Hvordan katalogen nummererer episodene (kan endres senere på seriesiden).
+Id	Id
+Identities	Identiteter
+Ids	Id-er
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Hvis Kitsunarr ser mediene dine under andre stier enn kilden (for eksempel andre Docker-volumer), tilordne hver kildemappe til plasseringen i Kitsunarr. Stiene skrives bare om i databasen.
+Ignored	Ignorert
+Ignored addresses	Ignorerte adresser
+Implementation	Implementasjon
+Import / Migration	Import / Migrering
+Import a Sonarr or Tanukarr library	Importer et Sonarr- eller Tanukarr-bibliotek
+Import blocked	Import blokkert
+Import completed downloads	Importer fullførte nedlastinger
+Import extra files (subtitles…)	Importer ekstrafiler (undertekster…)
+Import from Sonarr/Tanukarr	Importer fra Sonarr/Tanukarr
+Import history	Importer historikk
+Import library	Importer bibliotek
+Import list options saved.	Valg for importlister lagret.
+Import lists	Importlister
+Import pending	Import venter
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importer videofiler fra en hvilken som helst mappe serveren kan lese: kontroller serien og episodene for hver fil, og kopier eller flytt dem deretter inn i biblioteket (omdøpt etter navneinnstillingene).
+Import {chosen().len()} files	Importer filer: {chosen().len()}
+Imported	Importert
+Imported from series folder	Importert fra seriemappen
+Importing	Importerer
+Importing…	Importerer…
+Imports need	Import krever
+In library ›	I biblioteket ›
+Include	Inkluder
+Include in file names ({{Custom Formats}} token)	Ta med i filnavn ({{Custom Formats}}-token)
+Include only titles on some lists, or leave out the titles of others.	Ta bare med titler fra noen lister, eller utelat titlene fra andre.
+Include unmonitored	Inkluder ikke overvåkede
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Inkludert URL-base, f.eks. http://192.168.1.10:8989 eller https://host/sonarr
+Indexer	Indekser
+Indexer options saved.	Valg for indeksere lagret.
+Indexer settings	Indekserinnstillinger
+Indexers	Indeksere
+Info	Info
+Info {infos}	Info {infos}
+Instance	Instans
+Instance name	Instansnavn
+Instance: {name}	Instans: {name}
+Interactive	Interaktiv
+Interactive search	Interaktivt søk
+Interactive search for full-season packs only	Interaktivt søk kun etter hele sesongpakker
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interaktivt søk etter pakker med hele serien (og sesongene) på torrentindeksere
+Interactive search: see every release and choose	Interaktivt søk: se alle utgivelser og velg
+Interface language	Grensesnittspråk
+Interval	Intervall
+Jellyfin library and user	Jellyfin-bibliotek og -bruker
+Job	Jobb
+Keep / skip	Behold / hopp over
+Keep files replaced by upgrades as versions (in "Plex Versions")	Behold filer erstattet av oppgraderinger som versjoner (i "Plex Versions")
+Keep me signed in	Hold meg innlogget
+Keep the replaced file's date (upgrades)	Behold datoen til den erstattede filen (oppgraderinger)
+Kept	Beholdt
+Kept versions	Beholdte versjoner
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Nøkler for følgeapper som bruker Sonarr v3 API: de leser biblioteket, og «legg til serier»-nøkler kan også legge til serier (i en rotmappe, uten søk). Ingenting annet er tillatt.
+KiB	KiB
+Kind	Type
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr er fri programvare (GPL-3.0-or-later).
+Kitsunarr path	Sti i Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr tar sikkerhetskopi av sin egen database, importerer de forhåndsviste dataene i én transaksjon og validerer dem før de bekreftes. Kilden og mediefilene dine endres ikke.
+Label	Etikett
+Languages	Språk
+Larger releases are rejected. 0 means unlimited.	Større utgivelser avvises. 0 betyr ubegrenset.
+Last read	Sist lest
+Last run	Siste kjøring
+Last search	Siste søk
+Last searched	Sist søkt
+Last season	Siste sesong
+Later ›	Senere ›
+Latest season	Nyeste sesong
+Level	Nivå
+Library	Bibliotek
+Library check	Bibliotekkontroll
+Library tools	Biblioteksverktøy
+Library tools saved.	Biblioteksverktøy lagret.
+List	Liste
+Listed best first. Grouped qualities rank equally.	Beste først. Grupperte kvaliteter rangeres likt.
+Live updates connected	Sanntidsoppdateringer tilkoblet
+Live updates disconnected	Sanntidsoppdateringer frakoblet
+Load	Last inn
+Load the account's lists	Last inn kontoens lister
+Load the libraries…	Last inn bibliotekene…
+Load the users…	Last inn brukerne…
+Local air date	Lokal sendedato
+Local path	Lokal sti
+Log them	Logg dem
+Logs	Logger
+Main rejections	Viktigste avvisninger
+Make current	Gjør gjeldende
+Manual import	Manuell import
+Mark as failed	Merk som mislykket
+Matches monitored titles.	Samsvarer med overvåkede titler.
+Maximum	Maksimum
+Maximum size (MB)	Maksimal størrelse (MB)
+Media management	Mediehåndtering
+Media management settings	Innstillinger for mediehåndtering
+Media paths	Mediestier
+Mediums	Medier
+Members	Medlemmer
+Message	Melding
+Metadata	Metadata
+Metadata files	Metadatafiler
+Metadata keys saved.	Metadatanøkler lagret.
+Metadata language	Metadataspråk
+Metadata refreshed.	Metadata oppdatert.
+Metadata refreshed: {} new episodes, {} updated.	Metadata oppdatert: nye episoder: {}, oppdatert: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Metadatainnstillinger lagret. Filene skrives ved neste diskskanning, oppdatering eller import.
+Metadata sources	Metadatakilder
+MiB	MiB
+Migration completed.	Migrering fullført.
+Migration report #{}	Migreringsrapport nr. {}
+Minimum	Minimum
+Minimum age (minutes)	Minimumsalder (minutter)
+Minimum custom format score	Minste poengsum for egendefinerte formater
+Minimum format score	Minste formatpoengsum
+Minimum free space (MiB)	Minste ledige plass (MiB)
+Minimum seeders	Minste antall seedere
+Missing	Mangler
+Missing (monitored)	Mangler (overvåket)
+Missing films	Manglende filmer
+Mode	Modus
+Monday	Mandag
+Monitor	Overvåk
+Monitored	Overvåket
+More languages can be added to the string tables.	Flere språk kan legges til i teksttabellene.
+Move	Flytt
+Movie	Film
+Movie file format	Filformat for filmer
+Movie removed from Kitsunarr. Files on disk were not touched.	Filmen er fjernet fra Kitsunarr. Filene på disken ble ikke rørt.
+Movies	Filmer
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Utgivelser med flere sesonger: godta pakker med flere sesonger (et sesongsøk tar pakken for sin sesong)
+Must contain	Må inneholde
+Must contain (comma separated; /regex/ allowed)	Må inneholde (kommaseparert; /regex/ tillatt)
+Must not contain	Må ikke inneholde
+NOT	IKKE
+Name	Navn
+Naming	Navngiving
+Naming options saved.	Navnevalg lagret.
+Naming saved.	Navngiving lagret.
+Negate	Negér
+Network	Nettverk
+Never: keep the release's names	Aldri: behold utgivelsens navn
+New custom format	Nytt egendefinert format
+New custom preset	Ny egendefinert forhåndsinnstilling
+New group title	Tittel på ny gruppe
+New password	Nytt passord
+New quality profile	Ny kvalitetsprofil
+Next airing	Neste sending
+Next run	Neste kjøring
+Next ›	Neste ›
+No	Nei
+No activity yet.	Ingen aktivitet ennå.
+No auto tags.	Ingen automatiske merker.
+No backups yet	Ingen sikkerhetskopier ennå
+No collections yet	Ingen samlinger ennå
+No companion keys.	Ingen følgeappnøkler.
+No custom formats	Ingen egendefinerte formater
+No custom formats defined.	Ingen egendefinerte formater definert.
+No delay above the minimum custom format score	Ingen forsinkelse over minste poengsum for egendefinerte formater
+No delay for the profile's best quality in the preferred protocol	Ingen forsinkelse for profilens beste kvalitet i foretrukket protokoll
+No download client to read	Ingen nedlastingsklient å lese
+No exclusions.	Ingen unntak.
+No history	Ingen historikk
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Ingen indekser kan søke automatisk etter denne serien: ingen har automatisk søk aktivert og samtidig enten ingen merker eller et av seriens merker.
+No indexers to search	Ingen indeksere å søke i
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Ingen beholdte versjoner. Slå på «Behold filer erstattet av oppgraderinger» under Navngiving.
+No log entries at this level	Ingen loggoppføringer på dette nivået
+No mappings.	Ingen tilordninger.
+No matches	Ingen treff
+No members	Ingen medlemmer
+No migrations have been run yet.	Ingen migreringer er kjørt ennå.
+No movies yet	Ingen filmer ennå
+No notes.	Ingen merknader.
+No recycle bin is set (Settings › Media management).	Ingen papirkurv er angitt (Innstillinger › Mediehåndtering).
+No release profiles.	Ingen utgivelsesprofiler.
+No root folders yet.	Ingen rotmapper ennå.
+No root folders.	Ingen rotmapper.
+No runs yet	Ingen kjøringer ennå
+No searches yet.	Ingen søk ennå.
+No series in your library match.	Ingen serier i biblioteket ditt samsvarer.
+No tags	Ingen merker
+No {}	Ingen {}
+No {} yet	Ingen {} ennå
+None	Ingen
+Not evaluated by Kitsunarr.	Ikke vurdert av Kitsunarr.
+Not imported	Ikke importert
+Not monitored	Ikke overvåket
+Notes	Merknader
+Notes ({preview.warnings.len()})	Merknader ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Merknader ({report.warnings.len()})
+Nothing airs in the next seven days.	Ingenting sendes de neste sju dagene.
+Nothing downloading	Ingen nedlastinger pågår
+Nothing found	Ingenting funnet
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Ingenting i denne katalogen samsvarer med søket. Prøv en annen stavemåte, originaltittelen eller den andre katalogen.
+Nothing in this period	Ingenting i denne perioden
+Nothing missing	Ingenting mangler
+Notifications	Varslinger
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Nummerer episodene etter en annen rekkefølge i katalogen (TMDB-episodegrupper, DVD- eller absolutt rekkefølge fra TheTVDB)
+OMDb API key	OMDb API-nøkkel
+Older priority	Eldre prioritet
+One folder per season	Én mappe per sesong
+Only the 2000 newest files are listed.	Bare de 2000 nyeste filene vises.
+Only when the proxy needs one.	Bare hvis proxyen krever det.
+Open the library	Åpne biblioteket
+OpenAPI document	OpenAPI-dokument
+Opens the service to authorize Kitsunarr and fills in the token.	Åpner tjenesten for å autorisere Kitsunarr og fyller inn tokenet.
+Options	Valg
+Organize	Organiser
+Other	Annet
+Overview	Handling
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Overskriv oppføringer som allerede finnes i Kitsunarr (ellers beholdes de)
+Packs	Pakker
+Page not found	Siden ble ikke funnet
+Page {page} / {pages}	Side {page} / {pages}
+Password	Passord
+Password changed. Other sessions were signed out.	Passordet er endret. Andre økter ble logget ut.
+Past days	Tidligere dager
+Path	Sti
+Path mappings	Stitilordninger
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Sett automatisering på pause (RSS-synkronisering, planlagte listesynkroniseringer, automatiske søk)
+Peers	Peers
+Permission	Tillatelse
+PiB	PiB
+Platform	Plattform
+Port	Port
+Position	Posisjon
+Post-import category	Kategori etter import
+Posters	Plakater
+Prefer and upgrade	Foretrekk og oppgrader
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Foretrekk sesongpakker for anime (Kitsunarrs sesongsøk for anime søker allerede etter sesongen én gang)
+Prefer, do not upgrade	Foretrekk, ikke oppgrader
+Preferred	Foretrukket
+Preferred metadata language	Foretrukket metadataspråk
+Preferred protocol	Foretrukket protokoll
+Preparing preview…	Forbereder forhåndsvisning…
+Preview	Forhåndsvisning
+Preview migration	Forhåndsvis migrering
+Previous migrations	Tidligere migreringer
+Priority	Prioritet
+Problem	Problem
+Profile	Profil
+Profile saved.	Profil lagret.
+Profiles still used by series or movies cannot be deleted.	Profiler som fortsatt brukes av serier eller filmer, kan ikke slettes.
+Progress	Fremdrift
+Propers and repacks	Propers og repacks
+Proxy	Proxy
+Proxy saved.	Proxy lagret.
+Proxy type	Proxytype
+Qualities	Kvaliteter
+Quality	Kvalitet
+Quality presets	Kvalitetsforhåndsinnstillinger
+Quality presets saved.	Kvalitetsforhåndsinnstillinger lagret.
+Quality profile	Kvalitetsprofil
+Quality profiles	Kvalitetsprofiler
+Quality profile…	Kvalitetsprofil…
+RSS sync interval (minutes)	Intervall for RSS-synkronisering (minutter)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS-synkronisering venter så lenge etter at en utgivelse dukker opp, på en bedre en; forsinkede utgivelser vises i køen. Den første profilen med merker som samsvarer med serien, brukes; den siste (uten merker) er standard.
+Re-encode this series' files with the compression worker	Kod om filene i denne serien med komprimeringsarbeideren
+Read and add series	Lese og legge til serier
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Leses direkte fra nedlastingsklientene med noen sekunders mellomrom. Fullførte nedlastinger som Kitsunarr har hentet, importeres til seriemappen hvert minutt (torrenter kopieres eller hardlenkes, slik at de fortsatt seedes; Usenet-nedlastinger flyttes). Mislykkede nedlastinger blokkeres og søkes etter på nytt.
+Read the library	Lese biblioteket
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Skrivebeskyttet: finner manglende seriemapper, filoppføringer utenfor mappen sin eller registrert to ganger, og filer som mangler på disk.
+Reading the download clients…	Leser nedlastingsklientene…
+Reading the source	Leser kilden
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Leser alt via API-et. Passord og API-nøkler for leverandører skjules av kilden og må legges inn på nytt etterpå.
+Recent activity	Nylig aktivitet
+Recent priority	Nylig prioritet
+Recent runs	Nylige kjøringer
+Recent searches	Nylige søk
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Anbefalt. I Sonarr/Tanukarr åpner du System → Backup, lager en sikkerhetskopi og laster ned .zip-filen (eller bruker sonarr.db). Inkluderer passord for indeksere og nedlastingsklienter.
+Recycle bin	Papirkurv
+Recycle bin cleanup (days)	Tømming av papirkurv (dager)
+Recycled	I papirkurven
+Refresh metadata	Oppdater metadata
+Refresh preview	Oppdater forhåndsvisning
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Oppdatering fra {} støttes ikke ennå; de importerte metadataene beholdes som de er
+Refreshing…	Oppdaterer…
+Regenerate	Generer på nytt
+Regenerate API key	Generer ny API-nøkkel
+Reject releases whose TheTVDB or IMDb id names another series	Avvis utgivelser der TheTVDB- eller IMDb-id-en viser til en annen serie
+Rejected: click twice to grab anyway	Avvist: klikk to ganger for å hente likevel
+Release	Utgivelse
+Release profile	Utgivelsesprofil
+Release profile saved.	Utgivelsesprofil lagret.
+Release profiles	Utgivelsesprofiler
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Utgivelser kontrolleres mot seriens kvalitetsprofil, egendefinerte formater og utgivelsesprofiler, og rangeres slik Sonarr gjør. Avviste utgivelser krever et ekstra klikk.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Utgivelser som mislyktes eller ble blokkert manuelt. Søk og RSS-synkronisering henter dem aldri igjen; fjern en for å tillate den.
+Remote path	Ekstern sti
+Remote path mapping	Ekstern stimapping
+Remote path mapping saved.	Ekstern stimapping lagret.
+Remote path mappings	Eksterne stimappinger
+Remove	Fjern
+Remove completed downloads	Fjern fullførte nedlastinger
+Remove every release from the blocklist?	Fjerne alle utgivelser fra blokkeringslisten?
+Remove failed downloads	Fjern mislykkede nedlastinger
+Remove from library	Fjern fra biblioteket
+Remove from queue	Fjern fra køen
+Remove from the download client (deletes its files there)	Fjern fra nedlastingsklienten (sletter filene der)
+Remove movie	Fjern film
+Remove series	Fjern serie
+Remove tags automatically (from titles that stop matching)	Fjern merker automatisk (fra titler som ikke lenger samsvarer)
+Remove “{title}” and its episode records from Kitsunarr?	Fjerne «{title}» og episodeoppføringene fra Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Fjerne «{title}» fra Kitsunarr? Filene på disken slettes ikke.
+Removed	Fjernet
+Removed from the blocklist.	Fjernet fra blokkeringslisten.
+Rename	Gi nytt navn
+Rename files	Gi filer nytt navn
+Rename files on import	Gi filer nytt navn ved import
+Rename files to the naming settings	Gi filer nytt navn etter navneinnstillingene
+Formats use Sonarr's tokens.	Formatene bruker Sonarrs tokens.
+Renaming…	Omdøper…
+Report	Rapport
+Request one at omdbapi.com. Used for films by IMDb id.	Be om en på omdbapi.com. Brukes for filmer via IMDb-id.
+Required	Påkrevd
+Resolution	Oppløsning
+Restore	Gjenopprett
+Restore {}	Gjenopprett {}
+Restore…	Gjenopprett…
+Restoring…	Gjenoppretter…
+Resume automation	Gjenoppta automatisering
+Retention (days)	Oppbevaring (dager)
+Retire	Pensjoner
+Revoke	Tilbakekall
+Root folder	Rotmappe
+Root folders	Rotmapper
+Root folder…	Rotmappe…
+Run #{run.id}: {run.status}	Kjøring nr. {run.id}: {run.status}
+Run now	Kjør nå
+Running…	Kjører…
+Saturday	Lørdag
+Save	Lagre
+Save criteria	Lagre kriterier
+Save factors	Lagre faktorer
+Save keys	Lagre nøkler
+Save metadata files	Lagre metadatafiler
+Save naming	Lagre navngiving
+Save options	Lagre valg
+Saved	Lagret
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Lagrede nøkler vises som {REDACTED}; la dem stå uendret for å beholde dem, eller tøm feltet for å fjerne en.
+Saved.	Lagret.
+Scan disk	Skann disk
+Scan folder	Skann mappe
+Scanning…	Skanner…
+Scheduled tasks	Planlagte oppgaver
+Score	Poengsum
+Search	Søk
+Search again when a download fails	Søk på nytt når en nedlasting mislykkes
+Search all	Søk etter alle
+Search all films	Søk etter alle filmer
+Search collection	Søk i samlingen
+Search every episode of the list, one search per season	Søk etter alle episoder i listen, ett søk per sesong
+Search every member's missing episodes (films: the film)	Søk etter manglende episoder for hvert medlem (filmer: filmen)
+Search indexers	Søk i indeksere
+Search selected	Søk etter valgte
+Search the indexers and choose a release	Søk i indekserne og velg en utgivelse
+Search the indexers and grab the best accepted release	Søk i indekserne og hent den beste godtatte utgivelsen
+Search the indexers and grab the best releases for the monitored episodes	Søk i indekserne og hent de beste utgivelsene for de overvåkede episodene
+Search your indexers	Søk i indekserne dine
+Search {chosen} selected	Søk etter valgte: {chosen}
+Search: {}	Søk: {}
+Search: {} — complete series	Søk: {} — hele serien
+Search: {} — season {season} packs	Søk: {} — pakker for sesong {season}
+Search: {} — {label}	Søk: {} — {label}
+Searching for {label}…	Søker etter {label}…
+Searching indexers…	Søker i indeksere…
+Searching…	Søker…
+Season	Sesong
+Season folder format	Sesongmappeformat
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Titler på sesongmapper erstatter katalogens i {{Season Title}}. La stå tomt for å beholde katalogens.
+Season folders	Sesongmapper
+Season images (Season ##.jpg)	Sesongbilder (Season ##.jpg)
+Season images (Season##/folder.jpg)	Sesongbilder (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Sesongbilder (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Sesongpakker: 1 bruker målene for sesongpakker nedenfor
+Season premieres only	Bare sesongpremierer
+Season {n}	Sesong {n}
+Season {one}	Sesong {one}
+Season {se.season_number}	Sesong {se.season_number}
+Season {season_number}	Sesong {season_number}
+Season-pack seed ratio	Seed-forhold for sesongpakker
+Season-pack seed time, minutes	Seed-tid for sesongpakker, minutter
+Seasons	Sesonger
+Seasons {first}-{last}	Sesonger {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Hemmeligheter vises som {REDACTED}; la dem stå uendret for å beholde den lagrede verdien.
+Seed ratio (empty: the client's default)	Seed-forhold (tomt: klientens standard)
+Seed time, minutes (empty: the client's default)	Seed-tid, minutter (tomt: klientens standard)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Send forespørsler til indeksere, kataloger, lister, nedlastingsklienter og tilkoblinger gjennom en proxy.
+Send to the download client	Send til nedlastingsklienten
+Series	Serier
+Series .plexmatch file	.plexmatch-fil for serien
+Series folder format	Seriemappeformat
+Series images (Series Title.jpg)	Seriebilder (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Seriebilder (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Seriebilder (folder.jpg)
+Series metadata (tvshow.nfo)	Seriemetadata (tvshow.nfo)
+Series metadata URL	URL for seriemetadata
+Series metadata episode guide	Episodeguide i seriemetadata
+Series removed from Kitsunarr. Files on disk were not touched.	Serien er fjernet fra Kitsunarr. Filene på disken ble ikke rørt.
+Series removed, and its folder deleted.	Serien er fjernet, og mappen er slettet.
+Series type	Serietype
+Set quality profile…	Angi kvalitetsprofil…
+Settings	Innstillinger
+Settings saved.	Innstillinger lagret.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security i Sonarr/Tanukarr.
+Show	Vis
+Show as all-day events	Vis som heldagshendelser
+Show unmonitored	Vis ikke overvåkede
+Shows	Serier
+Sign in	Logg inn
+Signed in. Save the list to keep the token.	Logget inn. Lagre listen for å beholde tokenet.
+Signing in…	Logger inn…
+Size	Størrelse
+Size limits	Størrelsesgrenser
+Size on disk	Størrelse på disk
+Skip files smaller than (MB)	Hopp over filer mindre enn (MB)
+Skip the free-space check	Hopp over kontrollen av ledig plass
+Skip unmonitored episodes when importing packs	Hopp over ikke overvåkede episoder ved import av pakker
+Source	Kilde
+Source code	Kildekode
+Source path	Kildesti
+Special	Spesial
+Specials	Spesialepisoder
+Specials are never monitored automatically.	Spesialepisoder overvåkes aldri automatisk.
+Specifications	Spesifikasjoner
+Specifications (JSON)	Spesifikasjoner (JSON)
+Specifications must be valid JSON: {e}	Spesifikasjonene må være gyldig JSON: {e}
+Stalled torrent timeout (minutes)	Tidsavbrudd for stoppede torrenter (minutter)
+Standard	Standard
+Standard episode format	Standard episodeformat
+Start migration	Start migrering
+Start over	Start på nytt
+Start search for missing episodes	Start søk etter manglende episoder
+Started	Startet
+Started {format_datetime(&run.started_at)}	Startet {format_datetime(&run.started_at)}
+Status	Status
+Status & health	Status og helse
+Still downloading	Lastes fortsatt ned
+Storage outlook	Lagringsprognose
+Studio	Studio
+Subscribe	Abonner
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Abonner på denne adressen i en kalenderapp. Den inneholder API-nøkkelen din: hold den privat.
+Sunday	Søndag
+Sync	Synkroniser
+Sync all lists now	Synkroniser alle lister nå
+Sync now	Synkroniser nå
+Syncing…	Synkroniserer…
+System →	System →
+TMDB API key (v3)	TMDB API-nøkkel (v3)
+TV Series	TV-serier
+TV series	TV-serier
+Table	Tabell
+Tag	Merke
+Tag them	Merk dem
+Tag titles already in the library	Merk titler som allerede er i biblioteket
+Tags	Merker
+Tags (comma separated)	Merker (kommaseparert)
+Tags (ids, comma separated)	Merker (id-er, kommaseparert)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Merker legges til serier og filmer som samsvarer med alle typer betingelser når de legges til, redigeres eller oppdateres.
+Task	Oppgave
+Television	TV
+Television (raw)	TV (raw)
+Test	Test
+Test failed: {message}	Test mislyktes: {message}
+Testing…	Tester…
+The blocklist is empty	Blokkeringslisten er tom
+The catalogue new titles are added from when the list knows their id there.	Katalogen nye titler legges til fra når listen kjenner id-en deres der.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Datoen importerte filer får: episodens sendedato (lokal eller UTC), eller ved oppgradering datoen til den erstattede filen.
+The dry run completed without blocking problems. Nothing has been written yet.	Prøvekjøringen ble fullført uten blokkerende problemer. Ingenting er skrevet ennå.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Filen flyttes til sesongmappen (en eksisterende fil overskrives aldri), og serien skannes på nytt.
+The folder must already exist; Kitsunarr never creates or removes it.	Mappen må finnes fra før; Kitsunarr verken oppretter eller fjerner den.
+The indexers returned no releases for this search.	Indekserne returnerte ingen utgivelser for dette søket.
+The instance is on my local network (private or loopback address)	Instansen er på mitt lokale nettverk (privat adresse eller loopback-adresse)
+The list has not been read, or it is empty.	Listen er ikke lest, eller den er tom.
+The migration did not complete; nothing was changed.	Migreringen ble ikke fullført; ingenting ble endret.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	De nyeste oppføringene som holdes i minnet. Fullstendige logger går til prosessens utdata (containerlogger eller journal).
+The passwords do not match.	Passordene samsvarer ikke.
+The recycle bin has no media or subtitle files.	Papirkurven inneholder ingen medie- eller undertekstfiler.
+The sign-in expired; try again.	Innloggingen er utløpt; prøv igjen.
+The upload failed (network error).	Opplastingen mislyktes (nettverksfeil).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Arbeideren er en valgfri vertskomponent (Tanukarrs komprimeringsarbeider) som nås via socketen i KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarrs katalog), TMDB og TVmaze dekker TV-serier; AniList og MyAnimeList dekker animeserier og animefilmer; TMDB og OMDb dekker filmer. Å legge til en tittel oppretter bibliotekoppføringen og episodelisten; filer plukkes opp senere av importen.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB-titler søkes etter og legges til på dette språket; hver serie kan endres i sitt redigeringsvindu.
+TheTVDB titles in this language; changing it refreshes the series	TheTVDB-titler på dette språket; endring oppdaterer serien
+There is nothing at /{path}.	Det finnes ingenting på /{path}.
+They are created by migrating from Sonarr/Tanukarr.	De opprettes ved migrering fra Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Denne seriens omdøpingsmodus, titler på sesongmapper og beholdte versjoner
+TiB	TiB
+Time	Tid
+Time left	Tid igjen
+Title	Tittel
+Title pattern	Tittelmønster
+Titles import lists never add.	Titler som importlister aldri legger til.
+Titles on no list	Titler som ikke er på noen liste
+Today	I dag
+Torrent	Torrent
+Torrent delay	Torrentforsinkelse
+Torrent delay (minutes)	Torrentforsinkelse (minutter)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab- og Newznab-indeksere. Bruk Test i redigeringsvinduet for å kontrollere en; hvert søk bruker indekserne som har den typen søk aktivert: RSS, automatisk eller interaktivt.
+Trigger	Utløser
+URL base	URL-base
+UTC air date	Sendedato i UTC
+Unchanged	Uendret
+Unknown	Ukjent
+Unmonitor	Slutt å overvåke
+Unmonitor them	Slutt å overvåke dem
+Unmonitored	Ikke overvåket
+Upcoming	Kommende
+Upcoming 7 days	Kommende 7 dager
+Update	Oppdater
+Updated {} items.	Elementer oppdatert: {}.
+Upgrade until (cutoff)	Oppgrader til (grense)
+Upgrade until format score	Oppgrader til formatpoengsum
+Upgrades allowed	Oppgraderinger tillatt
+Upload a backup	Last opp en sikkerhetskopi
+Upload failed (HTTP {}).	Opplasting mislyktes (HTTP {}).
+Uploading…	Laster opp…
+Use SSL	Bruk SSL
+Use a proxy	Bruk en proxy
+Use hardlinks instead of copying	Bruk hardlenker i stedet for kopiering
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Bruk den som X-Api-Key-header (eller ?apikey=) fra andre programmer. Kompatibel med headeren Sonarr bruker.
+Use these episodes	Bruk disse episodene
+Usenet	Usenet
+Usenet delay	Usenet-forsinkelse
+Usenet delay (minutes)	Usenet-forsinkelse (minutter)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Kun Usenet: nyere utgivelser avvises, slik at de får tid til å spre seg. 0 slår dette av.
+Usenet only: older releases are rejected. 0 means unlimited.	Kun Usenet: eldre utgivelser avvises. 0 betyr ubegrenset.
+User name	Brukernavn
+Username	Brukernavn
+Validation	Validering
+Version	Versjon
+Versions	Versjoner
+Waiting for the sign-in at	Venter på innlogging på
+Wanted	Ønsket
+Warnings	Advarsler
+Warnings {warnings}	Advarsler {warnings}
+Watched (Jellyfin watched sync)	Sett (synkronisering av sett-status fra Jellyfin)
+Watched sync user	Bruker for synkronisering av sett-status
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-post (SMTP), Mailgun, SendGrid, egendefinerte skript (med Sonarrs miljøvariabler), Emby/Jellyfin, Plex og Kodi får varsler om: hentinger, importer og oppgraderinger, omdøpinger, serier lagt til eller slettet, slettede filer, helseproblemer. Bruk Test i redigeringsvinduet.
+Welcome	Velkommen
+What to import	Hva som skal importeres
+When	Når
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Når HTTPS-sertifikater for indeksere, nedlastingsklienter og tjenester kontrolleres (Sonarrs innstilling). Selvsignerte sertifikater i nettverket ditt krever at den lempes.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Når en nedlastingsklient rapporterer stier som Kitsunarr ser et annet sted (en annen maskin eller container), tilordne klientens vert og sti til den lokale stien.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Om utgivelser som retter en feilaktig utgivelse foretrekkes og oppgraderer eksisterende filer (som i Sonarr).
+Whole season	Hele sesongen
+Working…	Arbeider…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Skrives i seriemappene når serier skannes, oppdateres eller importeres, slik Sonarrs metadatakonsumenter skriver dem.
+Year	År
+Your library is empty.	Biblioteket ditt er tomt.
+all checks passed	alle kontroller bestått
+comma separated	kommaseparert
+cutoff: {}	grense: {}
+has a file	har en fil
+iCal link	iCal-lenke
+in 2 days	om 2 dager
+in a moment	om et øyeblikk
+in file names	i filnavn
+in library	i biblioteket
+in {text}	om {text}
+just now	akkurat nå
+may run out of space	kan gå tom for plass
+name (e.g. phone)	navn (f.eks. telefon)
+never refreshed	aldri oppdatert
+no media files are moved, renamed or deleted.	ingen mediefiler flyttes, omdøpes eller slettes.
+not accessible	ikke tilgjengelig
+not added	ikke lagt til
+not checked	ikke kontrollert
+not read yet	ikke lest ennå
+on disk	på disk
+refreshed {}	oppdatert {}
+schema {s}	skjema {s}
+secrets included	hemmeligheter inkludert
+secrets masked	hemmeligheter maskert
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip eller sonarr.db
+stored only	bare lagret
+title (optional)	tittel (valgfritt)
+{:.1} GiB/h	{:.1} GiB/t
+{added} added; {}	lagt til: {added}; {}
+{added} shows added.	Serier lagt til: {added}.
+{c.name} (API key needed)	{c.name} (API-nøkkel kreves)
+{c.series_count} series · {c.movie_count} movies	Serier: {c.series_count} · filmer: {c.movie_count}
+{chosen().len()} chosen	Valgt: {chosen().len()}
+{chosen().len()} chosen (at most 25)	Valgt: {chosen().len()} (maks. 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} på disk · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done} % av {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · lagt til {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} av {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} filer · {job["percent"]} % · spart {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} startet.
+{name} was added to the library.	{name} ble lagt til i biblioteket.
+{name}: shows	{name}: serier
+{ok} files imported.	Filer importert: {ok}.
+{ok} imported; {}	importert: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: utgivelser: {r.releases.len()}, indeksere: {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Kontrollert: serier: {r.series_checked}, filer: {r.files_checked}. Problemer: {r.issues.len()}.
+{selected.read().len()} selected	Valgt: {selected.read().len()}
+{text} ago	{text} siden
+{} (not accessible)	{} (ikke tilgjengelig)
+{} ({} free)	{} ({} ledig)
+{} added to every profile (not allowed yet).	{} lagt til i alle profiler (ikke tillatt ennå).
+{} day(s)	{} dag(er)
+{} failed: {}	{} mislyktes: {}
+{} format scores	{} formatpoengsummer
+{} free of {}	{} ledig av {}
+{} week(s)	{} uke(r)
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Tilbake
+‹ Earlier	‹ Tidligere
+‹ Prev	‹ Forrige
+○ offline	○ frakoblet
+● live	● direkte
+✓ No issues detected.	✓ Ingen problemer funnet.
+Activity	Aktivitet
+Queue	Kø
+System	System
+Tasks	Oppgaver
+Retry	Prøv igjen
+Sign out	Logg ut
+Search titles…  ( / )	Søk etter titler…  ( / )
+Loading…	Laster inn…
+Profiles	Profiler
+scene {}	scene {}
+Scene numbering from TheXEM	Scenenummerering fra TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Scenenummerering ekstrapolert fra TheXEM (ikke bekreftet)
+Season {} (scene seasons {})	Sesong {} (scenesesonger {})
+{} (scene {})	{} (scene {})

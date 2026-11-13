@@ -1,0 +1,968 @@
+# Hungarian interface strings: English<TAB>Hungarian. {…} marks a placeholder.
+custom	egyéni
+indeterminate	határozatlan
+mixed	vegyes
+retired	kivezetett
+· container	· konténer
+· finished {format_datetime(f)}	· befejezve: {format_datetime(f)}
+· missing	· hiányzik
+· on disk	· lemezen
+· today	· ma
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep.
+— MiB per minute; empty uses Settings › Quality	— MiB percenként; üresen a Beállítások › Minőség értéke érvényes
+— a release's size is multiplied by its codec's factor before the size limits apply	— a kiadás méretét a kodekje szorzójával szorozzuk meg a méretkorlátok alkalmazása előtt
+— all profiles at once	— minden profil egyszerre
+— codec and title criteria, custom qualities (Tanukarr)	— kodek- és címfeltételek, egyéni minőségek (Tanukarr)
+— enter the code	— add meg a kódot
+(empty)	(üres)
++ Add mapping	+ Leképezés hozzáadása
++ New format	+ Új formátum
++ New profile	+ Új profil
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (ki) vagy 10–120. Az RSS-szinkronizálás a Rendszer › Feladatok menüből is indítható.
+3 hours ago	3 órája
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Az a letöltés alatt álló torrent, amely ennyi ideig nem halad, sikertelennek minősül, tiltólistára kerül, és újrakeresés indul helyette. A 0 kikapcsolja; a haladás követése a Kitsunarr indulásától számít.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	AniList- vagy MyAnimeList-kapcsolatokból talált franchise-csoport. Az ugyanabból a franchise-ból később hozzáadott címek is bekerülnek.
+A new API key was generated. Update the applications that use it.	Új API-kulcs jött létre. Frissítsd az azt használó alkalmazásokat.
+A regular expression, case-insensitive; empty matches every title.	Reguláris kifejezés, kis- és nagybetűtől függetlenül; üresen minden címre illeszkedik.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	A kiadás azt a legspecifikusabb előbeállítást kapja, amely a sorozat profiljában engedélyezett, és amelynek forrására, felbontására, kodekjére és címmintájára illeszkedik. Ha egy szabványos minőséghez kodek vagy minta tartozik, az annak nem megfelelő kiadások Ismeretlen minőségűek lesznek. Az egyéni előbeállítások minden profilhoz nem engedélyezettként kerülnek hozzá.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	A kiadás méretét a kodekje szorzójával szorozzuk meg a méretkorlátok alkalmazása előtt. A „Vegyes” azt jelenti, hogy a profilok eltérő szorzókat használnak; az itt megadott érték minden profilba beíródik.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	A franchise-hoz vagy kézi csoporthoz csatlakozó cím kilép korábbi csoportjából. A fájlok és mappák nem kerülnek áthelyezésre.
+API key	API-kulcs
+API key needed	API-kulcs szükséges
+API keys and language	API-kulcsok és nyelv
+API path	API-útvonal
+About	Névjegy
+Absolute path; empty to delete permanently.	Abszolút útvonal; üresen a törlés végleges.
+Accepted	Elfogadva
+Account lists	Fiók listái
+Actions	Műveletek
+Actual	Tényleges
+Add	Hozzáadás
+Add a Newznab or Torznab indexer and enable interactive search for it.	Adj hozzá egy Newznab vagy Torznab indexelőt, és engedélyezd hozzá az interaktív keresést.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Adj hozzá egy klienst a sablonjából, és használd a Teszt gombot a szerkesztőben; a megragadások, a várakozási sor és az importálások minden engedélyezett klienst használnak. A blackhole a megragadásokat egy mappába írja, és importálja, ami a figyelt mappájában megjelenik. Az egyes kliensek „Befejezett/sikertelen letöltések eltávolítása” beállításai eltávolítják a letöltéseket (a fájljaikkal együtt), amint a kliens végzett velük.
+Add a download client in Settings › Download clients and enable it.	Adj hozzá egy letöltő klienst a Beállítások › Letöltő kliensek alatt, és engedélyezd.
+Add a root folder first: it is where this title's folder will live.	Előbb adj hozzá egy gyökérmappát: ebben lesz a cím mappája.
+Add a tag above first.	Előbb adj hozzá fent egy címkét.
+Add a title	Cím hozzáadása
+Add auto tag	Automatikus címke hozzáadása
+Add condition	Feltétel hozzáadása
+Add exclusion	Kizárás hozzáadása
+Add media	Média hozzáadása
+Add one, or migrate them from Sonarr/Tanukarr.	Adj hozzá egyet, vagy migráld őket a Sonarrból/Tanukarrból.
+Add preset	Előbeállítás hozzáadása
+Add selected	Kiválasztottak hozzáadása
+Add series or movies below.	Adj hozzá sorozatokat vagy filmeket alább.
+Add tag	Címke hozzáadása
+Add the list's tags	A lista címkéinek hozzáadása
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Adj hozzá címeket a TVmaze-ről vagy az AniListről, vagy hozz át egy meglévő Sonarr- vagy Tanukarr-könyvtárat.
+Add to library	Hozzáadás a könyvtárhoz
+Add {}	{} hozzáadása
+Add {} ({y})	{} ({y}) hozzáadása
+Add — {}	Hozzáadás — {}
+Add, and remove when they leave the list	Hozzáadás, és eltávolítás, ha lekerülnek a listáról
+Added	Hozzáadva
+Added to the titles this list adds.	A lista által hozzáadott címekre kerül.
+Adding titles	Címek hozzáadása
+Adding…	Hozzáadás…
+Address	Cím
+Age	Kor
+Aired	Adásba került
+Aired monitored episodes without a file appear here.	Itt jelennek meg a már adásba került, megfigyelt, fájl nélküli epizódok.
+All	Mind
+All collections	Minden gyűjtemény
+All episodes	Minden epizód
+All episodes in the series folder	Minden epizód a sorozat mappájában
+All events	Minden esemény
+Allow zero size (the feed has no release sizes)	Nulla méret engedélyezése (a feed nem ad meg kiadásméretet)
+Also delete the series folder and its files (to the recycle bin when one is set)	A sorozat mappájának és fájljainak törlése is (a lomtárba, ha be van állítva)
+Also for releases grabbed from interactive search	Az interaktív keresésből megragadott kiadásoknál is
+Also known as	Más néven
+Always, even when renaming is off	Mindig, akkor is, ha az átnevezés ki van kapcsolva
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Videófájlok elemzése (felbontás, játékidő és kodekek, ffprobe-bal)
+AniList and MyAnimeList titles are always added as anime.	Az AniList és MyAnimeList címei mindig animeként kerülnek a könyvtárba.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Az AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, egy másik Sonarr és az egyéni JSON-listák néhány óránként beolvasásra kerülnek; az új címek az egyes listák gyökérmappájával, profiljával és figyelési beállításával kerülnek a könyvtárba. Az OAuth-ot igénylő szolgáltatások a saját alkalmazásod Client ID-ját és egy beillesztett tokent használnak (a Tanukarrból migrált tokenek továbbra is működnek).
+Anime	Anime
+Anime / absolute numbering	Anime / abszolút számozás
+Anime categories	Anime kategóriák
+Anime episode format	Anime epizódformátum
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Az anime filmek az AniListről adhatók hozzá, a Tanukarr-migrációk pedig a filmjeiket is áthozzák. Az élőszereplős filmekhez a TMDB katalógus szükséges.
+Anime standard format search	Anime szabványos formátumú keresés
+Anime title, e.g. Frieren	Anime címe, pl. Frieren
+Any	Bármely
+Any library	Bármely könyvtár
+Applications using the current key will stop working until you give them the new one.	A jelenlegi kulcsot használó alkalmazások addig nem működnek, amíg meg nem adod nekik az újat.
+Applied after every list has been read successfully and some title left a list.	Akkor érvényesül, ha minden lista sikeresen beolvasásra került, és valamelyik cím lekerült egy listáról.
+Apply	Alkalmaz
+Apply migration	Migráció alkalmazása
+Apply profile	Profil alkalmazása
+Applying migration	Migráció alkalmazása folyamatban
+Applying…	Alkalmazás…
+As Settings › Media management says	A Beállítások › Médiakezelés szerint
+At least 10 characters.	Legalább 10 karakter.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Legalább {MIN_PASSWORD_LENGTH} karakter. Egy jelmondat jól működik.
+Auto tag	Automatikus címke
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automatikus címke mentve. A címek következő hozzáadásakor, szerkesztésekor vagy frissítésekor érvényesül.
+Auto tagging	Automatikus címkézés
+Auto-refresh	Automatikus frissítés
+Automatic	Automatikus
+Automatic search	Automatikus keresés
+Automatic search for {label}: grabbed {}.	Automatikus keresés – {label}: megragadva: {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automatikus keresés – {label}: {} talált kiadás, {} jóváhagyva, semmi sincs megragadva.
+Automatic search: grab the best release	Automatikus keresés: a legjobb kiadás megragadása
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Az automatizálás szünetel: az RSS-szinkronizálás, az ütemezett listaszinkronizálások és az automatikus keresések kimaradnak. A kézi műveletek és a folyamatban lévő letöltések folytatódnak.
+Automation resumed.	Az automatizálás folytatódik.
+Available from	Elérhető:
+Back to the dashboard	Vissza az irányítópultra
+Back up now	Biztonsági mentés most
+Backup {} created.	Biztonsági mentés létrehozva: {}.
+Backups	Biztonsági mentések
+Blocking:	Blokkoló:
+Blocklist	Tiltólista
+Blocklist the release and search again	Kiadás tiltólistára tétele és újrakeresés
+Blocklist the release: it is never grabbed again	Kiadás tiltólistára tétele: soha többé nem lesz megragadva
+Blocklist “{title}” and search for a replacement?	Tiltólistára teszed ezt: „{title}”, és pótlást keresel?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Hozd át Sonarr (v3/v4) vagy Tanukarr könyvtáradat és beállításaidat a Kitsunarrba. A forrást csak olvassa, sosem módosítja, és
+Bypass the proxy for local addresses	Proxy megkerülése helyi címeknél
+Calendar	Naptár
+Calendar →	Naptár →
+Cancel	Mégse
+Cancel compression	Tömörítés megszakítása
+Cannot reach the server: {e}	A szerver nem érhető el: {e}
+Catalogue	Katalógus
+Category	Kategória
+Certificate validation	Tanúsítvány-ellenőrzés
+Change password	Jelszó módosítása
+Change series	Sorozat módosítása
+Changes	Változások
+Check	Ellenőrzés
+Check library	Könyvtár ellenőrzése
+Check now	Ellenőrzés most
+Check that the mapped series folders exist (read-only)	A leképezett sorozatmappák létezésének ellenőrzése (csak olvasás)
+Checked: {summary}.	Ellenőrizve: {summary}.
+Checking…	Ellenőrzés…
+Choose a backup file	Válassz biztonsági mentés fájlt
+Choose a mode	Válassz módot
+Choose a root folder and a quality profile.	Válassz gyökérmappát és minőségi profilt.
+Choose a season	Válassz évadot
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Válassz sorozatot és évadot vagy epizódot. Az eredmények megmutatják, mi az egyes kiadás a Kitsunarr elemzője szerint.
+Choose a series or movie…	Válassz sorozatot vagy filmet…
+Choose source	Forrás kiválasztása
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Válaszd ki kézzel a kiadás epizódjait, majd ragadd meg (a választás az importáláshoz megmarad)
+Choose…	Válassz…
+Clean library	Könyvtár tisztítása
+Clear	Ürítés
+Clear blocklist	Tiltólista ürítése
+Cleared {n} releases from the blocklist.	Tiltólistáról eltávolított kiadások: {n}.
+Client	Kliens
+Close	Bezárás
+Codec	Kodek
+Codec factors saved in every profile.	Kodekszorzók mentve minden profilba.
+Codec size factors	Kodek méretszorzók
+Codecs	Kodekek
+Collection film folder format	Gyűjtemény filmmappa-formátuma
+Collections	Gyűjtemények
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	A gyűjtemények akkor jelennek meg, ha a Tanukarrból migrálod őket, a szolgáltatói adatokból jönnek létre, vagy itt hozod létre őket.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Sonarrból vagy Tanukarrból érkezel? Importáld meglévő sorozataidat, beállításaidat és előzményeidet néhány lépésben.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Vesszővel elválasztva; a * helyettesítő karakter (*.lan), és IP-tartományok is működnek, pl. 192.168.1.0/24.
+Companion app keys	Kísérőalkalmazás-kulcsok
+Complete series	Teljes sorozat
+Completed and failed download handling	Befejezett és sikertelen letöltések kezelése
+Component	Összetevő
+Compress series	Sorozat tömörítése
+Compression	Tömörítés
+Compression queued.	Tömörítés sorba állítva.
+Compression worker is not connected.	A tömörítő worker nincs csatlakoztatva.
+Condition	Feltétel
+Conditions	Feltételek
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Az azonos típusú feltételek akkor teljesülnek, ha bármelyikük teljesül (a kötelezőknek mind teljesülniük kell); minden típusnak teljesülnie kell.
+Configure	Beállítás
+Confirm password	Jelszó megerősítése
+Connect	Csatlakozás
+Connect to a running instance	Csatlakozás egy futó példányhoz
+Connecting…	Csatlakozás…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Az adatbázis konzisztens másolatai. Az ütemezett mentések hetente futnak (az utolsó nyolc marad meg); minden migráció előbb szintén készít egyet. A visszaállításhoz állítsd le a Kitsunarrt, és futtasd:
+Continuing	Folytatódik
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Süti (a feedkéréssel együtt küldve, pl. uid=1; pass=…)
+Copied.	Másolva.
+Copy	Másolás
+Copy (keep the originals)	Másolás (az eredetiek megtartásával)
+Copy sizes from	Méretek másolása innen:
+Copy the token now; it is not shown again:	Másold ki most a tokent; többé nem jelenik meg:
+Could not grab {}: {}	Nem sikerült megragadni: {}: {}
+Covers	Lefedi
+Create	Létrehozás
+Create account	Fiók létrehozása
+Create group	Csoport létrehozása
+Create key	Kulcs létrehozása
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Hozz létre egyet: themoviedb.org › Settings › API. A TMDB tévésorozataihoz és filmjeihez használatos.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Hozd létre a rendszergazdai fiókot. Ezzel fogsz bejelentkezni a Kitsunarrba.
+Created	Létrehozva
+Created when the first file is imported. Nothing is written to disk now.	Az első fájl importálásakor jön létre. Most semmi sem kerül a lemezre.
+Creating…	Létrehozás…
+Credit	Köszönet
+Current file	Jelenlegi fájl
+Current password	Jelenlegi jelszó
+Custom format saved.	Egyéni formátum mentve.
+Custom format score	Egyéni formátum pontszáma
+Custom format scores	Egyéni formátumok pontszámai
+Custom formats	Egyéni formátumok
+Cutoff unmet	Küszöbérték nem teljesült
+Daily	Napi
+Daily episode format	Napi epizódformátum
+Dashboard	Irányítópult
+Data directory	Adatmappa
+Database backup taken before the import: {b}	Importálás előtt készült adatbázismentés: {b}
+Database schema	Adatbázisséma
+Date	Dátum
+Date added	Hozzáadás dátuma
+Debug	Hibakeresés
+Decision	Döntés
+Default	Alapértelmezett
+Defaults	Alapértékek
+Delay profile	Késleltetési profil
+Delay profile saved.	Késleltetési profil mentve.
+Delay profiles	Késleltetési profilok
+Delete	Törlés
+Delete empty series folders	Üres sorozatmappák törlése
+Delete file	Fájl törlése
+Delete group	Csoport törlése
+Delete profile	Profil törlése
+Delete “{path}”? It goes to the recycle bin when one is set.	Törlöd: „{path}”? A lomtárba kerül, ha be van állítva.
+Delete “{}”?	Törlöd: „{}”?
+Delete “{}”? Its series and movies stay in the library.	Törlöd: „{}”? A sorozatai és filmjei a könyvtárban maradnak.
+Deleted	Törölve
+Directory	Mappa
+Disabled	Letiltva
+Disabled for local addresses	Helyi címeknél letiltva
+Disk scanned: {}	Lemez átvizsgálva: {}
+Disk scanned: {} Not matched: {}	Lemez átvizsgálva: {} Nem egyeztetett: {}
+Do not prefer	Ne preferálja
+Do not search for a replacement	Ne keressen pótlást
+Do nothing	Ne tegyen semmit
+Done	Kész
+Download client options saved.	Letöltő kliens beállításai mentve.
+Download clients	Letöltő kliensek
+Download failed	Sikertelen letöltés
+Download queue	Letöltési sor
+Downloads	Letöltések
+Duration	Időtartam
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Minden cím egy katalógushoz tartozik, ebből frissül; minden azonosítója (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) megmarad. A Sonarrból migrált címek a TheTVDB-hez tartoznak.
+Edit	Szerkesztés
+Edit “{name}”	Szerkesztés: „{name}”
+Edit “{}”	Szerkesztés: „{}”
+Enable RSS	RSS engedélyezése
+Enable automatic search	Automatikus keresés engedélyezése
+Enable interactive search	Interaktív keresés engedélyezése
+Enabled	Engedélyezve
+Ended	Véget ért
+English	English
+Entity	Entitás
+Episode	Epizód
+Episode and movie naming	Epizódok és filmek elnevezése
+Episode image thumbs in the NFO	Epizódképek bélyegképei az NFO-ban
+Episode images (<filename>-thumb.jpg)	Epizódképek (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Epizódképek (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Epizódképek (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Epizódleképezések a .plexmatch fájlban
+Episode metadata (<filename>.nfo)	Epizód-metaadatok (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Epizód-metaadatok (Season##/filename.xml)
+Episode order	Epizódsorrend
+Episode order changed: {} episodes updated, {} added.	Epizódsorrend módosítva: {} epizód frissítve, {} hozzáadva.
+Episodes	Epizódok
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Az epizódok a választott sorrend szerint újraszámozódnak; a fájlok, a figyelés és az előzmények az epizódjaiknál maradnak. Utána nevezd át a fájlokat az új számoknak megfelelően.
+Episodes of {title}	{title} epizódjai
+Episodes on disk	Epizódok a lemezen
+Episodes whose file is below the quality profile's cutoff appear here.	Itt jelennek meg azok az epizódok, amelyek fájlja a minőségi profil küszöbértéke alatt van.
+Episodes…	Epizódok…
+Errors	Hibák
+Errors {errors}	Hibák: {errors}
+Event	Esemény
+Every file already follows the naming settings.	Minden fájl már megfelel az elnevezési beállításoknak.
+Every file meets its cutoff	Minden fájl eléri a küszöbértékét
+Exclude	Kizárás
+Exclusions	Kizárások
+Expected	Várt
+Expires	Lejár
+Extra file extensions	Extra fájlkiterjesztések
+Factor	Szorzó
+Failed	Sikertelen
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Hamis kiadások elleni védelem: a torrentek ellenőrzése megragadás előtt, és a futtatható fájlok, jelszavas csalétek-archívumok és videó nélküli tartalmak elutasítása
+Feed address	Feed címe
+Fetch the latest metadata from {}	A legfrissebb metaadatok lekérése innen: {}
+File	Fájl
+File date	Fájldátum
+File deleted	Fájl törölve
+File deleted.	Fájl törölve.
+File management	Fájlkezelés
+File management settings saved.	Fájlkezelési beállítások mentve.
+File renamed	Fájl átnevezve
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Az ennél régebbi fájlok naponta törlődnek a lomtárból; 0 esetén megmaradnak.
+Files upgrades replaced, kept as versions	Minőségfrissítések által lecserélt, verzióként megőrzött fájlok
+Film	Film
+Film title or IMDb id, e.g. Arrival	Film címe vagy IMDb-azonosító, pl. Arrival
+Find a series in your library	Sorozat keresése a könyvtárban
+Find files added to or removed from the series folder	A sorozat mappájához hozzáadott vagy onnan eltávolított fájlok keresése
+Find something to add	Keress valamit, amit hozzáadhatsz
+First and last pieces first	Első és utolsó darabok elsőként
+First day of the week	A hét első napja
+First season	Első évad
+Folder	Mappa
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	A formátumok a Sonarr specifikációtípusait használják (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). A pontszámokat minőségi profilonként kell megadni.
+Found	Talált
+Free	Szabad
+Free space	Szabad hely
+Future days	Jövőbeli napok
+Future episodes	Jövőbeli epizódok
+General	Általános
+GiB	GiB
+Grab	Megragadás
+Grab a release from interactive search; downloads in the client's TV category show up here.	Ragadj meg egy kiadást az interaktív keresésből; a kliens TV-kategóriájában lévő letöltések itt jelennek meg.
+Grab anyway?	Megragadod mégis?
+Grab with these episodes	Megragadás ezekkel az epizódokkal
+Grabbed	Megragadva
+Grabbed {}.	Megragadva: {}.
+Grabbing…	Megragadás…
+Grabs, imports and file changes appear here. Migrated history is included.	Itt jelennek meg a megragadások, importálások és fájlváltozások. A migrált előzmények is benne vannak.
+Group film folder format	Csoport filmmappa-formátuma
+Group folder format	Csoportmappa-formátum
+Group season folder format	Csoport évadmappa-formátuma
+Group story-arc folder format	Csoport történetív-mappa formátuma
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Kapcsolódó sorozatok és filmek csoportjai: szolgáltatói gyűjtemények, anime franchise-ok (előzmény/folytatás csoportok) és kézi csoportok, a Tanukarrból migráltakat is beleértve.
+Hardlink-only imports: never copy downloads that keep seeding	Csak hardlinkes importálás: a még seedelt letöltéseket soha ne másolja
+Health	Egészség
+Hide	Elrejtés
+History	Előzmények
+History →	Előzmények →
+Host	Hoszt
+Host (as in the download client's settings)	Hoszt (ahogy a letöltő kliens beállításaiban)
+Hostname	Hosztnév
+How the catalogue numbers the episodes (it can be changed later on the series page).	Hogyan számozza a katalógus az epizódokat (később a sorozat oldalán módosítható).
+Id	Azonosító
+Identities	Identitások
+Ids	Azonosítók
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Ha a Kitsunarr más útvonalakon látja a médiát, mint a forrás (például eltérő Docker-kötetek miatt), képezd le a forrás minden mappáját a Kitsunarrbeli helyére. Az útvonalak csak az adatbázisban íródnak át.
+Ignored	Figyelmen kívül hagyva
+Ignored addresses	Kihagyott címek
+Implementation	Megvalósítás
+Import / Migration	Importálás / Migráció
+Import a Sonarr or Tanukarr library	Sonarr- vagy Tanukarr-könyvtár importálása
+Import blocked	Importálás blokkolva
+Import completed downloads	Befejezett letöltések importálása
+Import extra files (subtitles…)	Extra fájlok importálása (feliratok…)
+Import from Sonarr/Tanukarr	Importálás Sonarrból/Tanukarrból
+Import history	Előzmények importálása
+Import library	Könyvtár importálása
+Import list options saved.	Importálási lista beállításai mentve.
+Import lists	Importálási listák
+Import pending	Importálás függőben
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Videófájlok importálása bármely, a szerver által olvasható mappából: ellenőrizd az egyes fájlok sorozatát és epizódjait, majd másold vagy helyezd át őket a könyvtárba (az elnevezési beállítások szerint átnevezve).
+Import {chosen().len()} files	{chosen().len()} fájl importálása
+Imported	Importálva
+Imported from series folder	Importálva a sorozat mappájából
+Importing	Importálás
+Importing…	Importálás…
+Imports need	Az importáláshoz szükséges:
+In library ›	A könyvtárban ›
+Include	Belefoglalás
+Include in file names ({{Custom Formats}} token)	Szerepeljen a fájlnevekben ({{Custom Formats}} token)
+Include only titles on some lists, or leave out the titles of others.	Csak bizonyos listák címeinek felvétele, vagy más listák címeinek kihagyása.
+Include unmonitored	Nem figyeltek is
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Az URL-alappal együtt, pl. http://192.168.1.10:8989 vagy https://host/sonarr
+Indexer	Indexelő
+Indexer options saved.	Indexelőbeállítások mentve.
+Indexer settings	Indexelő beállításai
+Indexers	Indexelők
+Info	Infó
+Info {infos}	Infó: {infos}
+Instance	Példány
+Instance name	Példány neve
+Instance: {name}	Példány: {name}
+Interactive	Interaktív
+Interactive search	Interaktív keresés
+Interactive search for full-season packs only	Interaktív keresés csak teljes évadcsomagokra
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interaktív keresés a teljes sorozat (és évadjai) csomagjaira a torrent-indexelőkön
+Interactive search: see every release and choose	Interaktív keresés: minden kiadás megtekintése és kiválasztás
+Interface language	Felület nyelve
+Interval	Időköz
+Jellyfin library and user	Jellyfin-könyvtár és -felhasználó
+Job	Feladat
+Keep / skip	Megtartás / kihagyás
+Keep files replaced by upgrades as versions (in "Plex Versions")	A minőségfrissítések által lecserélt fájlok megőrzése verzióként (a "Plex Versions" mappában)
+Keep me signed in	Maradjak bejelentkezve
+Keep the replaced file's date (upgrades)	A lecserélt fájl dátumának megtartása (minőségfrissítések)
+Kept	Megtartva
+Kept versions	Megőrzött verziók
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Kulcsok a Sonarr v3 API-t használó kísérőalkalmazásokhoz: olvassák a könyvtárat, a „sorozat hozzáadása” kulcsok pedig sorozatokat is hozzáadhatnak (egy gyökérmappába, keresés nélkül). Más nem engedélyezett.
+KiB	KiB
+Kind	Típus
+Kitsunarr is free software (GPL-3.0-or-later).	A Kitsunarr szabad szoftver (GPL-3.0-or-later).
+Kitsunarr path	Kitsunarr-útvonal
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	A Kitsunarr biztonsági mentést készít a saját adatbázisáról, egyetlen tranzakcióban importálja az előnézetben látott adatokat, és véglegesítés előtt ellenőrzi őket. A forrás és a médiafájljaid nem módosulnak.
+Label	Megnevezés
+Languages	Nyelvek
+Larger releases are rejected. 0 means unlimited.	A nagyobb kiadások elutasításra kerülnek. A 0 korlátlant jelent.
+Last read	Utolsó olvasás
+Last run	Utolsó futás
+Last search	Utolsó keresés
+Last searched	Utoljára keresve
+Last season	Utolsó évad
+Later ›	Későbbiek ›
+Latest season	Legújabb évad
+Level	Szint
+Library	Könyvtár
+Library check	Könyvtár-ellenőrzés
+Library tools	Könyvtáreszközök
+Library tools saved.	Könyvtáreszközök mentve.
+List	Lista
+Listed best first. Grouped qualities rank equally.	A legjobbtól kezdve. A csoportosított minőségek egyenrangúak.
+Live updates connected	Élő frissítések csatlakoztatva
+Live updates disconnected	Élő frissítések leválasztva
+Load	Betöltés
+Load the account's lists	A fiók listáinak betöltése
+Load the libraries…	Könyvtárak betöltése…
+Load the users…	Felhasználók betöltése…
+Local air date	Helyi adásdátum
+Local path	Helyi útvonal
+Log them	Naplózás
+Logs	Naplók
+Main rejections	Fő elutasítási okok
+Make current	Legyen az aktuális
+Manual import	Kézi importálás
+Mark as failed	Megjelölés sikertelenként
+Matches monitored titles.	Megfigyelt címekre illeszkedik.
+Maximum	Maximum
+Maximum size (MB)	Maximális méret (MB)
+Media management	Médiakezelés
+Media management settings	Médiakezelési beállítások
+Media paths	Médiaútvonalak
+Mediums	Hordozók
+Members	Tagok
+Message	Üzenet
+Metadata	Metaadatok
+Metadata files	Metaadatfájlok
+Metadata keys saved.	Metaadat-kulcsok mentve.
+Metadata language	Metaadatok nyelve
+Metadata refreshed.	Metaadatok frissítve.
+Metadata refreshed: {} new episodes, {} updated.	Metaadatok frissítve: {} új epizód, {} frissítve.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Metaadat-beállítások mentve. A fájlok a következő lemezvizsgálatkor, frissítéskor vagy importáláskor íródnak ki.
+Metadata sources	Metaadatforrások
+MiB	MiB
+Migration completed.	Migráció befejezve.
+Migration report #{}	Migrációs jelentés #{}
+Minimum	Minimum
+Minimum age (minutes)	Minimális kor (perc)
+Minimum custom format score	Minimális egyéni formátum pontszám
+Minimum format score	Minimális formátumpontszám
+Minimum free space (MiB)	Minimális szabad hely (MiB)
+Minimum seeders	Minimális seederszám
+Missing	Hiányzó
+Missing (monitored)	Hiányzó (megfigyelt)
+Missing films	Hiányzó filmek
+Mode	Mód
+Monday	Hétfő
+Monitor	Figyelés
+Monitored	Megfigyelt
+More languages can be added to the string tables.	További nyelvek adhatók a szövegtáblákhoz.
+Move	Áthelyezés
+Movie	Film
+Movie file format	Filmfájl-formátum
+Movie removed from Kitsunarr. Files on disk were not touched.	Film eltávolítva a Kitsunarrból. A lemezen lévő fájlokhoz nem nyúlt.
+Movies	Filmek
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Többévados kiadások: több évadot tartalmazó csomagok elfogadása (az évadkeresés a saját évadához veszi a csomagot)
+Must contain	Tartalmaznia kell
+Must contain (comma separated; /regex/ allowed)	Tartalmaznia kell (vesszővel elválasztva; /regex/ megengedett)
+Must not contain	Nem tartalmazhatja
+NOT	NEM
+Name	Név
+Naming	Elnevezés
+Naming options saved.	Elnevezési beállítások mentve.
+Naming saved.	Elnevezés mentve.
+Negate	Tagadás
+Network	Hálózat
+Never: keep the release's names	Soha: a kiadás neveinek megtartása
+New custom format	Új egyéni formátum
+New custom preset	Új egyéni előbeállítás
+New group title	Új csoport címe
+New password	Új jelszó
+New quality profile	Új minőségi profil
+Next airing	Következő adás
+Next run	Következő futás
+Next ›	Tovább ›
+No	Nem
+No activity yet.	Még nincs aktivitás.
+No auto tags.	Nincsenek automatikus címkék.
+No backups yet	Még nincs biztonsági mentés
+No collections yet	Még nincs gyűjtemény
+No companion keys.	Nincsenek kísérőalkalmazás-kulcsok.
+No custom formats	Nincsenek egyéni formátumok
+No custom formats defined.	Nincs megadott egyéni formátum.
+No delay above the minimum custom format score	Nincs késleltetés a minimális egyéni formátum pontszám felett
+No delay for the profile's best quality in the preferred protocol	Nincs késleltetés a profil legjobb minőségére a preferált protokollban
+No download client to read	Nincs olvasható letöltő kliens
+No exclusions.	Nincsenek kizárások.
+No history	Nincsenek előzmények
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Egyetlen indexelő sem kereshet automatikusan ehhez a sorozathoz: egyiken sincs bekapcsolva az automatikus keresés úgy, hogy címke nélküli lenne, vagy a sorozat valamelyik címkéjével rendelkezne.
+No indexers to search	Nincs indexelő a kereséshez
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Nincsenek megőrzött verziók. Kapcsold be az Elnevezés alatt „A minőségfrissítések által lecserélt fájlok megőrzése” beállítást.
+No log entries at this level	Nincs naplóbejegyzés ezen a szinten
+No mappings.	Nincsenek leképezések.
+No matches	Nincs találat
+No members	Nincsenek tagok
+No migrations have been run yet.	Még nem futott migráció.
+No movies yet	Még nincsenek filmek
+No notes.	Nincsenek megjegyzések.
+No recycle bin is set (Settings › Media management).	Nincs beállítva lomtár (Beállítások › Médiakezelés).
+No release profiles.	Nincsenek kiadási profilok.
+No root folders yet.	Még nincsenek gyökérmappák.
+No root folders.	Nincsenek gyökérmappák.
+No runs yet	Még nem volt futás
+No searches yet.	Még nem volt keresés.
+No series in your library match.	A könyvtárban egyetlen sorozat sem illeszkedik.
+No tags	Nincsenek címkék
+No {}	Nincs: {}
+No {} yet	Még nincs: {}
+None	Nincs
+Not evaluated by Kitsunarr.	A Kitsunarr nem értékelte.
+Not imported	Nincs importálva
+Not monitored	Nincs figyelve
+Notes	Megjegyzések
+Notes ({preview.warnings.len()})	Megjegyzések ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Megjegyzések ({report.warnings.len()})
+Nothing airs in the next seven days.	A következő hét napban nincs adás.
+Nothing downloading	Nincs folyamatban lévő letöltés
+Nothing found	Nincs találat
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Ebben a katalógusban semmi sem felel meg a keresésnek. Próbálj más írásmódot, az eredeti címet vagy a másik katalógust.
+Nothing in this period	Ebben az időszakban nincs semmi
+Nothing missing	Nincs hiányzó elem
+Notifications	Értesítések
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Epizódok számozása a katalógus egy másik sorrendje szerint (TMDB epizódcsoportok, TheTVDB DVD- vagy abszolút sorrend)
+OMDb API key	OMDb API-kulcs
+Older priority	Régebbiek prioritása
+One folder per season	Évadonként egy mappa
+Only the 2000 newest files are listed.	Csak a 2000 legújabb fájl jelenik meg.
+Only when the proxy needs one.	Csak ha a proxy igényli.
+Open the library	Könyvtár megnyitása
+OpenAPI document	OpenAPI-dokumentum
+Opens the service to authorize Kitsunarr and fills in the token.	Megnyitja a szolgáltatást a Kitsunarr engedélyezéséhez, és kitölti a tokent.
+Options	Beállítások
+Organize	Rendezés
+Other	Egyéb
+Overview	Ismertető
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	A Kitsunarrban már meglévő rekordok felülírása (különben megmaradnak)
+Packs	Csomagok
+Page not found	Az oldal nem található
+Page {page} / {pages}	Oldal: {page} / {pages}
+Password	Jelszó
+Password changed. Other sessions were signed out.	Jelszó módosítva. A többi munkamenet kijelentkeztetve.
+Past days	Elmúlt napok
+Path	Útvonal
+Path mappings	Útvonal-leképezések
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Automatizálás szüneteltetése (RSS-szinkronizálás, ütemezett listaszinkronizálások, automatikus keresések)
+Peers	Peerek
+Permission	Jogosultság
+PiB	PiB
+Platform	Platform
+Port	Port
+Position	Pozíció
+Post-import category	Importálás utáni kategória
+Posters	Poszterek
+Prefer and upgrade	Preferálás és frissítés
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Anime évadcsomagok preferálása (a Kitsunarr anime évadkeresései már egyszer keresnek az évadra)
+Prefer, do not upgrade	Preferálás, frissítés nélkül
+Preferred	Preferált
+Preferred metadata language	Preferált metaadatnyelv
+Preferred protocol	Preferált protokoll
+Preparing preview…	Előnézet előkészítése…
+Preview	Előnézet
+Preview migration	Migráció előnézete
+Previous migrations	Korábbi migrációk
+Priority	Prioritás
+Problem	Probléma
+Profile	Profil
+Profile saved.	Profil mentve.
+Profiles still used by series or movies cannot be deleted.	Sorozatok vagy filmek által még használt profilok nem törölhetők.
+Progress	Haladás
+Propers and repacks	Proper és repack kiadások
+Proxy	Proxy
+Proxy saved.	Proxy mentve.
+Proxy type	Proxytípus
+Qualities	Minőségek
+Quality	Minőség
+Quality presets	Minőségi előbeállítások
+Quality presets saved.	Minőségi előbeállítások mentve.
+Quality profile	Minőségi profil
+Quality profiles	Minőségi profilok
+Quality profile…	Minőségi profil…
+RSS sync interval (minutes)	RSS-szinkronizálás időköze (perc)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	Az RSS-szinkronizálás egy kiadás megjelenése után ennyit vár egy jobbra; a késleltetett kiadások a várakozási sorban látszanak. Az első olyan profil érvényes, amelynek címkéi illeszkednek a sorozatra; az utolsó (címkék nélküli) az alapértelmezett.
+Re-encode this series' files with the compression worker	A sorozat fájljainak újrakódolása a tömörítő workerrel
+Read and add series	Olvasás és sorozatok hozzáadása
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Élőben olvasva a letöltő kliensekből néhány másodpercenként. A Kitsunarr által megragadott befejezett letöltések percenként importálódnak a sorozat mappájába (a torrentek másolva vagy hardlinkelve, így tovább seedelnek; a Usenet-letöltések áthelyezve). A sikertelen letöltések tiltólistára kerülnek, és újrakeresés indul.
+Read the library	Könyvtár olvasása
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Csak olvasás: megkeresi a hiányzó sorozatmappákat, a mappájukon kívüli vagy kétszer rögzített fájlrekordokat és a lemezről hiányzó fájlokat.
+Reading the download clients…	Letöltő kliensek olvasása…
+Reading the source	Forrás olvasása
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Mindent az API-n keresztül olvas. A szolgáltatók jelszavait és API-kulcsait a forrás elrejti, ezeket utána újra meg kell adni.
+Recent activity	Legutóbbi aktivitás
+Recent priority	Újabbak prioritása
+Recent runs	Legutóbbi futások
+Recent searches	Legutóbbi keresések
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Ajánlott. A Sonarrban/Tanukarrban nyisd meg a Rendszer → Biztonsági mentés menüt, készíts mentést, és töltsd le a .zip fájlt (vagy használd a sonarr.db-t). Tartalmazza az indexelők és letöltő kliensek jelszavait.
+Recycle bin	Lomtár
+Recycle bin cleanup (days)	Lomtár ürítése (nap)
+Recycled	Lomtárban
+Refresh metadata	Metaadatok frissítése
+Refresh preview	Előnézet frissítése
+Refreshing from {} is not supported yet; the imported metadata is kept as is	A frissítés innen még nem támogatott: {}; az importált metaadatok változatlanul megmaradnak
+Refreshing…	Frissítés…
+Regenerate	Újragenerálás
+Regenerate API key	API-kulcs újragenerálása
+Reject releases whose TheTVDB or IMDb id names another series	Azon kiadások elutasítása, amelyek TheTVDB- vagy IMDb-azonosítója másik sorozatot jelöl
+Rejected: click twice to grab anyway	Elutasítva: kattints kétszer a mégis megragadáshoz
+Release	Kiadás
+Release profile	Kiadási profil
+Release profile saved.	Kiadási profil mentve.
+Release profiles	Kiadási profilok
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	A kiadásokat a sorozat minőségi profiljával, egyéni formátumaival és kiadási profiljaival veti össze, és rangsorolja, ahogy a Sonarr. Az elutasított kiadásokhoz második kattintás kell.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Sikertelen vagy kézzel tiltólistára tett kiadások. A keresések és az RSS-szinkronizálás soha többé nem ragadják meg őket; távolíts el egyet az engedélyezéséhez.
+Remote path	Távoli útvonal
+Remote path mapping	Távoli útvonal-leképezés
+Remote path mapping saved.	Távoli útvonal-leképezés mentve.
+Remote path mappings	Távoli útvonal-leképezések
+Remove	Eltávolítás
+Remove completed downloads	Befejezett letöltések eltávolítása
+Remove every release from the blocklist?	Eltávolítod az összes kiadást a tiltólistáról?
+Remove failed downloads	Sikertelen letöltések eltávolítása
+Remove from library	Eltávolítás a könyvtárból
+Remove from queue	Eltávolítás a sorból
+Remove from the download client (deletes its files there)	Eltávolítás a letöltő kliensből (ott törli a fájljait)
+Remove movie	Film eltávolítása
+Remove series	Sorozat eltávolítása
+Remove tags automatically (from titles that stop matching)	Címkék automatikus eltávolítása (a már nem illeszkedő címekről)
+Remove “{title}” and its episode records from Kitsunarr?	Eltávolítod a Kitsunarrból ezt: „{title}”, az epizódrekordjaival együtt?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Eltávolítod a Kitsunarrból ezt: „{title}”? A lemezen lévő fájlok nem törlődnek.
+Removed	Eltávolítva
+Removed from the blocklist.	Eltávolítva a tiltólistáról.
+Rename	Átnevezés
+Rename files	Fájlok átnevezése
+Rename files on import	Fájlok átnevezése importáláskor
+Rename files to the naming settings	Fájlok átnevezése az elnevezési beállítások szerint
+Formats use Sonarr's tokens.	A formátumok a Sonarr tokenjeit használják.
+Renaming…	Átnevezés…
+Report	Jelentés
+Request one at omdbapi.com. Used for films by IMDb id.	Igényelj egyet az omdbapi.com oldalon. Filmekhez használatos IMDb-azonosító alapján.
+Required	Kötelező
+Resolution	Felbontás
+Restore	Visszaállítás
+Restore {}	Visszaállítás: {}
+Restore…	Visszaállítás…
+Restoring…	Visszaállítás folyamatban…
+Resume automation	Automatizálás folytatása
+Retention (days)	Megőrzési idő (nap)
+Retire	Kivezetés
+Revoke	Visszavonás
+Root folder	Gyökérmappa
+Root folders	Gyökérmappák
+Root folder…	Gyökérmappa…
+Run #{run.id}: {run.status}	Futás #{run.id}: {run.status}
+Run now	Futtatás most
+Running…	Fut…
+Saturday	Szombat
+Save	Mentés
+Save criteria	Feltételek mentése
+Save factors	Szorzók mentése
+Save keys	Kulcsok mentése
+Save metadata files	Metaadatfájlok mentése
+Save naming	Elnevezés mentése
+Save options	Beállítások mentése
+Saved	Mentve
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	A mentett kulcsok {REDACTED} formában jelennek meg; hagyd őket változatlanul a megtartáshoz, vagy ürítsd a mezőt az eltávolításhoz.
+Saved.	Mentve.
+Scan disk	Lemez átvizsgálása
+Scan folder	Mappa átvizsgálása
+Scanning…	Átvizsgálás…
+Scheduled tasks	Ütemezett feladatok
+Score	Pontszám
+Search	Keresés
+Search again when a download fails	Újrakeresés sikertelen letöltés esetén
+Search all	Összes keresése
+Search all films	Összes film keresése
+Search collection	Gyűjtemény keresése
+Search every episode of the list, one search per season	A lista minden epizódjának keresése, évadonként egy kereséssel
+Search every member's missing episodes (films: the film)	Minden tag hiányzó epizódjainak keresése (filmeknél: a film)
+Search indexers	Keresés az indexelőkben
+Search selected	Kiválasztottak keresése
+Search the indexers and choose a release	Keresés az indexelőkben és kiadás kiválasztása
+Search the indexers and grab the best accepted release	Keresés az indexelőkben és a legjobb elfogadott kiadás megragadása
+Search the indexers and grab the best releases for the monitored episodes	Keresés az indexelőkben és a legjobb kiadások megragadása a megfigyelt epizódokhoz
+Search your indexers	Keresés az indexelőidben
+Search {chosen} selected	{chosen} kiválasztott keresése
+Search: {}	Keresés: {}
+Search: {} — complete series	Keresés: {} — teljes sorozat
+Search: {} — season {season} packs	Keresés: {} — {season}. évad csomagjai
+Search: {} — {label}	Keresés: {} — {label}
+Searching for {label}…	Keresés: {label}…
+Searching indexers…	Keresés az indexelőkben…
+Searching…	Keresés…
+Season	Évad
+Season folder format	Évadmappa-formátum
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Az évadmappák címei felváltják a katalógusét a {{Season Title}} tokenben. Hagyd üresen a katalógus címeinek megtartásához.
+Season folders	Évadmappák
+Season images (Season ##.jpg)	Évadképek (Season ##.jpg)
+Season images (Season##/folder.jpg)	Évadképek (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Évadképek (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Évadcsomagok: az 1 az alábbi évadcsomag-célokat használja
+Season premieres only	Csak évadpremierek
+Season {n}	{n}. évad
+Season {one}	{one}. évad
+Season {se.season_number}	{se.season_number}. évad
+Season {season_number}	{season_number}. évad
+Season-pack seed ratio	Évadcsomag seedarány
+Season-pack seed time, minutes	Évadcsomag seedidő, perc
+Seasons	Évadok
+Seasons {first}-{last}	Évadok: {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	A titkos adatok {REDACTED} formában jelennek meg; hagyd őket változatlanul a tárolt érték megtartásához.
+Seed ratio (empty: the client's default)	Seedarány (üres: a kliens alapértéke)
+Seed time, minutes (empty: the client's default)	Seedidő, perc (üres: a kliens alapértéke)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Az indexelőknek, katalógusoknak, listáknak, letöltő klienseknek és kapcsolatoknak szóló kérések küldése proxyn keresztül.
+Send to the download client	Küldés a letöltő kliensnek
+Series	Sorozat
+Series .plexmatch file	Sorozat .plexmatch fájlja
+Series folder format	Sorozatmappa-formátum
+Series images (Series Title.jpg)	Sorozatképek (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Sorozatképek (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Sorozatképek (folder.jpg)
+Series metadata (tvshow.nfo)	Sorozat-metaadatok (tvshow.nfo)
+Series metadata URL	Sorozat-metaadatok URL-je
+Series metadata episode guide	Epizódkalauz a sorozat-metaadatokban
+Series removed from Kitsunarr. Files on disk were not touched.	Sorozat eltávolítva a Kitsunarrból. A lemezen lévő fájlokhoz nem nyúlt.
+Series removed, and its folder deleted.	Sorozat eltávolítva, a mappája törölve.
+Series type	Sorozattípus
+Set quality profile…	Minőségi profil beállítása…
+Settings	Beállítások
+Settings saved.	Beállítások mentve.
+Settings → General → Security in Sonarr/Tanukarr.	Beállítások → Általános → Biztonság a Sonarrban/Tanukarrban.
+Show	Megjelenítés
+Show as all-day events	Megjelenítés egész napos eseményként
+Show unmonitored	Nem figyeltek megjelenítése
+Shows	Sorozatok
+Sign in	Bejelentkezés
+Signed in. Save the list to keep the token.	Bejelentkezve. Mentsd a listát a token megtartásához.
+Signing in…	Bejelentkezés…
+Size	Méret
+Size limits	Méretkorlátok
+Size on disk	Méret a lemezen
+Skip files smaller than (MB)	Ennél kisebb fájlok kihagyása (MB)
+Skip the free-space check	Szabadhely-ellenőrzés kihagyása
+Skip unmonitored episodes when importing packs	Nem figyelt epizódok kihagyása csomagok importálásakor
+Source	Forrás
+Source code	Forráskód
+Source path	Forrásútvonal
+Special	Különkiadás
+Specials	Különkiadások
+Specials are never monitored automatically.	A különkiadásokat soha nem figyeli automatikusan.
+Specifications	Specifikációk
+Specifications (JSON)	Specifikációk (JSON)
+Specifications must be valid JSON: {e}	A specifikációknak érvényes JSON-nak kell lenniük: {e}
+Stalled torrent timeout (minutes)	Elakadt torrentek időkorlátja (perc)
+Standard	Szabványos
+Standard episode format	Szabványos epizódformátum
+Start migration	Migráció indítása
+Start over	Újrakezdés
+Start search for missing episodes	Hiányzó epizódok keresésének indítása
+Started	Elindítva
+Started {format_datetime(&run.started_at)}	Elindítva: {format_datetime(&run.started_at)}
+Status	Állapot
+Status & health	Állapot és egészség
+Still downloading	Még töltődik
+Storage outlook	Tárhely-előrejelzés
+Studio	Stúdió
+Subscribe	Feliratkozás
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Iratkozz fel erre a címre egy naptáralkalmazásban. Tartalmazza az API-kulcsodat: tartsd titokban.
+Sunday	Vasárnap
+Sync	Szinkronizálás
+Sync all lists now	Minden lista szinkronizálása most
+Sync now	Szinkronizálás most
+Syncing…	Szinkronizálás…
+System →	Rendszer →
+TMDB API key (v3)	TMDB API-kulcs (v3)
+TV Series	Tévésorozat
+TV series	Tévésorozatok
+Table	Táblázat
+Tag	Címke
+Tag them	Címkézés
+Tag titles already in the library	A könyvtárban már meglévő címek címkézése
+Tags	Címkék
+Tags (comma separated)	Címkék (vesszővel elválasztva)
+Tags (ids, comma separated)	Címkék (azonosítók, vesszővel elválasztva)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	A címkék azokra a sorozatokra és filmekre kerülnek, amelyek minden feltételtípusnak megfelelnek hozzáadáskor, szerkesztéskor vagy frissítéskor.
+Task	Feladat
+Television	Televízió
+Television (raw)	Televízió (raw)
+Test	Teszt
+Test failed: {message}	Sikertelen teszt: {message}
+Testing…	Tesztelés…
+The blocklist is empty	A tiltólista üres
+The catalogue new titles are added from when the list knows their id there.	Az a katalógus, amelyből az új címek hozzáadódnak, ha a lista ismeri ott az azonosítójukat.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Az importált fájlok dátuma: az epizód adásba kerülésének dátuma (helyi vagy UTC), illetve minőségfrissítéskor a lecserélt fájl dátuma.
+The dry run completed without blocking problems. Nothing has been written yet.	A próbafuttatás blokkoló problémák nélkül lezajlott. Még semmi sem lett kiírva.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	A fájl az évadmappába kerül (meglévő fájl sosem íródik felül), és a sorozatot újra átvizsgálja.
+The folder must already exist; Kitsunarr never creates or removes it.	A mappának már léteznie kell; a Kitsunarr sosem hozza létre és sosem távolítja el.
+The indexers returned no releases for this search.	Az indexelők nem adtak vissza kiadást erre a keresésre.
+The instance is on my local network (private or loopback address)	A példány a helyi hálózatomon van (privát vagy loopback cím)
+The list has not been read, or it is empty.	A lista még nincs beolvasva, vagy üres.
+The migration did not complete; nothing was changed.	A migráció nem fejeződött be; semmi sem változott.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	A memóriában tartott legutóbbi bejegyzések. A teljes napló a folyamat kimenetére kerül (konténernapló vagy journal).
+The passwords do not match.	A jelszavak nem egyeznek.
+The recycle bin has no media or subtitle files.	A lomtárban nincsenek média- vagy feliratfájlok.
+The sign-in expired; try again.	A bejelentkezés lejárt; próbáld újra.
+The upload failed (network error).	A feltöltés sikertelen (hálózati hiba).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	A worker egy opcionális gazdagép-összetevő (a Tanukarr tömörítő workere), amely a KITSUNARR_COMPRESSION_SOCKET socketen keresztül érhető el.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	A TheTVDB (a Sonarr katalógusa), a TMDB és a TVmaze a tévésorozatokat fedi le; az AniList és a MyAnimeList az anime sorozatokat és filmeket; a TMDB és az OMDb a filmeket. Egy cím hozzáadása létrehozza a könyvtárbeli bejegyzését és epizódlistáját; a fájlokat később az importálási folyamat veszi fel.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	A TheTVDB-címek keresése és hozzáadása ezen a nyelven történik; minden sorozatnál módosítható a szerkesztőjében.
+TheTVDB titles in this language; changing it refreshes the series	TheTVDB-címek ezen a nyelven; módosítása frissíti a sorozatot
+There is nothing at /{path}.	Itt nincs semmi: /{path}.
+They are created by migrating from Sonarr/Tanukarr.	A Sonarrból/Tanukarrból való migrálással jönnek létre.
+This series' renaming mode, season folder titles and kept versions	A sorozat átnevezési módja, évadmappa-címei és megőrzött verziói
+TiB	TiB
+Time	Idő
+Time left	Hátralévő idő
+Title	Cím
+Title pattern	Címminta
+Titles import lists never add.	Címek, amelyeket az importálási listák sosem adnak hozzá.
+Titles on no list	Egyik listán sem szereplő címek
+Today	Ma
+Torrent	Torrent
+Torrent delay	Torrent-késleltetés
+Torrent delay (minutes)	Torrent-késleltetés (perc)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab és Newznab indexelők. Egy indexelő ellenőrzéséhez használd a Teszt gombot a szerkesztőben; minden keresés azokat az indexelőket használja, amelyeken az adott keresési típus engedélyezve van: RSS, automatikus vagy interaktív.
+Trigger	Kiváltó esemény
+URL base	URL-alap
+UTC air date	UTC adásdátum
+Unchanged	Változatlan
+Unknown	Ismeretlen
+Unmonitor	Figyelés kikapcsolása
+Unmonitor them	Figyelésük kikapcsolása
+Unmonitored	Nem figyelt
+Upcoming	Közelgő
+Upcoming 7 days	Következő 7 nap
+Update	Frissítés
+Updated {} items.	Frissített elemek: {}.
+Upgrade until (cutoff)	Frissítés eddig (küszöbérték)
+Upgrade until format score	Frissítés eddig a formátumpontszámig
+Upgrades allowed	Minőségfrissítések engedélyezve
+Upload a backup	Biztonsági mentés feltöltése
+Upload failed (HTTP {}).	Sikertelen feltöltés (HTTP {}).
+Uploading…	Feltöltés…
+Use SSL	SSL használata
+Use a proxy	Proxy használata
+Use hardlinks instead of copying	Hardlinkek használata másolás helyett
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Más alkalmazásokból X-Api-Key fejlécként (vagy ?apikey= paraméterként) használd. Kompatibilis a Sonarr által használt fejléccel.
+Use these episodes	Ezen epizódok használata
+Usenet	Usenet
+Usenet delay	Usenet-késleltetés
+Usenet delay (minutes)	Usenet-késleltetés (perc)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Csak Usenet: az újabb kiadások elutasításra kerülnek, hogy legyen idejük elterjedni. A 0 kikapcsolja.
+Usenet only: older releases are rejected. 0 means unlimited.	Csak Usenet: a régebbi kiadások elutasításra kerülnek. A 0 korlátlant jelent.
+User name	Felhasználónév
+Username	Felhasználónév
+Validation	Érvényesítés
+Version	Verzió
+Versions	Verziók
+Waiting for the sign-in at	Bejelentkezésre várakozás itt:
+Wanted	Keresett
+Warnings	Figyelmeztetések
+Warnings {warnings}	Figyelmeztetések: {warnings}
+Watched (Jellyfin watched sync)	Megnézett (Jellyfin megnézettség-szinkronizálás)
+Watched sync user	Megnézettség-szinkronizálás felhasználója
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Értesítések küldhetők ide: Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, egyéni szkriptek (a Sonarr környezeti változóival), Emby/Jellyfin, Plex és Kodi; események: megragadások, importálások és minőségfrissítések, átnevezések, hozzáadott vagy törölt sorozatok, törölt fájlok, állapotproblémák. Használd a Teszt gombot a szerkesztőben.
+Welcome	Üdvözlünk
+What to import	Mit importáljunk
+When	Mikor
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Mikor ellenőrizze a rendszer az indexelők, letöltő kliensek és szolgáltatások HTTPS-tanúsítványait (a Sonarr beállítása). A hálózatodon lévő önaláírt tanúsítványokhoz enyhíteni kell rajta.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Ha egy letöltő kliens olyan útvonalakat jelent, amelyeket a Kitsunarr máshol lát (másik gépen vagy konténerben), képezd le a kliens hosztját és útvonalát a helyi útvonalra.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Preferáltak-e a hibás kiadást javító kiadások, és frissítik-e a meglévő fájlokat (mint a Sonarrban).
+Whole season	Teljes évad
+Working…	Feldolgozás…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	A sorozatmappákba íródnak a sorozatok átvizsgálásakor, frissítésekor vagy importálásakor, ahogy a Sonarr metaadat-fogyasztói írják őket.
+Year	Év
+Your library is empty.	A könyvtárad üres.
+all checks passed	minden ellenőrzés sikeres
+comma separated	vesszővel elválasztva
+cutoff: {}	küszöbérték: {}
+has a file	van fájlja
+iCal link	iCal-hivatkozás
+in 2 days	2 nap múlva
+in a moment	egy pillanat múlva
+in file names	a fájlnevekben
+in library	a könyvtárban
+in {text}	{text} múlva
+just now	épp most
+may run out of space	elfogyhat a hely
+name (e.g. phone)	név (pl. telefon)
+never refreshed	sosem frissítve
+no media files are moved, renamed or deleted.	egyetlen médiafájlt sem helyez át, nevez át vagy töröl.
+not accessible	nem elérhető
+not added	nincs hozzáadva
+not checked	nincs ellenőrizve
+not read yet	még nincs beolvasva
+on disk	lemezen
+refreshed {}	frissítve: {}
+schema {s}	séma: {s}
+secrets included	titkos adatokkal
+secrets masked	titkos adatok elrejtve
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip vagy sonarr.db
+stored only	csak tárolva
+title (optional)	cím (nem kötelező)
+{:.1} GiB/h	{:.1} GiB/óra
+{added} added; {}	{added} hozzáadva; {}
+{added} shows added.	{added} sorozat hozzáadva.
+{c.name} (API key needed)	{c.name} (API-kulcs szükséges)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} sorozat · {c.movie_count} film
+{chosen().len()} chosen	{chosen().len()} kiválasztva
+{chosen().len()} chosen (at most 25)	{chosen().len()} kiválasztva (legfeljebb 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} lemezen · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% / {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · hozzáadva: {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} / {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} fájl · {job["percent"]}% · megtakarítva: {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} elindult.
+{name} was added to the library.	{name} hozzáadva a könyvtárhoz.
+{name}: shows	{name}: sorozatok
+{ok} files imported.	{ok} fájl importálva.
+{ok} imported; {}	{ok} importálva; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} kiadás {r.searched_indexers} indexelőből.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} sorozat és {r.files_checked} fájl ellenőrizve: {r.issues.len()} probléma.
+{selected.read().len()} selected	{selected.read().len()} kiválasztva
+{text} ago	{text} ezelőtt
+{} (not accessible)	{} (nem elérhető)
+{} ({} free)	{} ({} szabad)
+{} added to every profile (not allowed yet).	{} hozzáadva minden profilhoz (még nem engedélyezett).
+{} day(s)	{} nap
+{} failed: {}	{} sikertelen: {}
+{} format scores	{}: formátumpontszámok
+{} free of {}	{} szabad / {}
+{} week(s)	{} hét
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Vissza
+‹ Earlier	‹ Korábbiak
+‹ Prev	‹ Előző
+○ offline	○ offline
+● live	● élő
+✓ No issues detected.	✓ Nem található probléma.
+Activity	Aktivitás
+Queue	Várakozási sor
+System	Rendszer
+Tasks	Feladatok
+Retry	Újra
+Sign out	Kijelentkezés
+Search titles…  ( / )	Címek keresése…  ( / )
+Loading…	Betöltés…
+Profiles	Profilok
+scene {}	scene: {}
+Scene numbering from TheXEM	Scene-számozás a TheXEM-ből
+Scene numbering extrapolated from TheXEM (unverified)	A TheXEM-ből extrapolált scene-számozás (nem ellenőrzött)
+Season {} (scene seasons {})	{}. évad (scene évadok: {})
+{} (scene {})	{} (scene: {})
