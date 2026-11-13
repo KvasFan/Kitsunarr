@@ -25,6 +25,7 @@ web-sys = { workspace = true, features = [
     "Blob", "CssStyleDeclaration", "Document", "Element", "EventSource", "EventTarget", "File", "Headers", "HtmlElement",
     "HtmlInputElement", "KeyboardEvent", "Location", "MediaQueryList", "MessageEvent", "Navigator", "Clipboard",
     "Request", "RequestCredentials", "RequestInit", "Response", "Storage", "Window",
+    "MutationObserver", "MutationObserverInit", "MutationRecord", "Node", "NodeList",
 ] }
 
 [lints]

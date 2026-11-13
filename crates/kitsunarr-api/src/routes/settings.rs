@@ -778,6 +778,15 @@ pub async fn put_general(
             "Instance name must be 1-64 characters.",
         ));
     }
+    if !kitsunarr_domain::api::settings::UI_LANGUAGES
+        .iter()
+        .any(|(code, _)| *code == body.ui_language)
+    {
+        return Err(ApiError::field(
+            "uiLanguage",
+            "This interface language is not available.",
+        ));
+    }
     if body.first_day_of_week > 6 {
         return Err(ApiError::field(
             "firstDayOfWeek",

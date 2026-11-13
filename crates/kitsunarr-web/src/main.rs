@@ -9,6 +9,7 @@ mod i18n;
 mod pages;
 mod route;
 mod state;
+mod translate;
 mod util;
 
 use std::rc::Rc;
@@ -19,6 +20,8 @@ const MAIN_CSS: Asset = asset!("/assets/main.css");
 pub const FAVICON: Asset = asset!("/assets/favicon.svg");
 
 fn main() {
+    // The interface language chosen in Settings › General (English needs nothing).
+    translate::install();
     let prefix = util::url_base();
     let history = dioxus::web::WebHistory::new(
         if prefix.is_empty() {

@@ -21,7 +21,14 @@ pub fn AppShell() -> Element {
         let client = client.clone();
         async move {
             match client.auth_status().await {
-                Ok(s) => app.auth.set(Some(s)),
+                Ok(s) => {
+                    let signed_in = s.authenticated;
+                    app.auth.set(Some(s));
+                    // Follow the server's interface language (set from another browser too).
+                    if signed_in && let Ok(g) = client.general().await {
+                        crate::translate::set_language(&g.ui_language);
+                    }
+                }
                 Err(e) => app.toast(
                     crate::state::ToastLevel::Error,
                     format!("Cannot reach the server: {e}"),

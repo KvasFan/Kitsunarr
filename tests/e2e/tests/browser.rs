@@ -944,6 +944,36 @@ async fn first_run_setup_migration_and_library() {
         }
         assert!(overflowing.is_empty(), "pages scroll sideways: {overflowing:#?}");
 
+        // The interface in Italian (Sonarr's UI languages), then back to English.
+        client
+            .goto(&format!("{base}/settings"))
+            .await
+            .unwrap();
+        client
+            .wait()
+            .at_most(Duration::from_secs(20))
+            .for_element(Locator::Css("select[aria-label='Interface language']"))
+            .await
+            .unwrap()
+            .select_by_value("it")
+            .await
+            .unwrap();
+        click_button(&client, "Save").await;
+        wait_text(&client, "Calendario").await;
+        wait_text(&client, "Lingua dell'interfaccia").await;
+        screenshot(&client, "12-italian").await;
+        client
+            .wait()
+            .at_most(Duration::from_secs(20))
+            .for_element(Locator::Css("select[aria-label='Interface language']"))
+            .await
+            .unwrap()
+            .select_by_value("en")
+            .await
+            .unwrap();
+        click_button(&client, "Salva").await;
+        wait_text(&client, "Interface language").await;
+
         // Sign out returns to the login page.
         click_button(&client, "Sign out").await;
         wait_text(&client, "Keep me signed in").await;

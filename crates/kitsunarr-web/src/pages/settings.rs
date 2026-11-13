@@ -49,7 +49,11 @@ pub fn SettingsGeneral() -> Element {
         let c = c1.clone();
         spawn(async move {
             match c.put_general(&g).await {
-                Ok(_) => app.success("Settings saved."),
+                Ok(saved) => {
+                    app.success("Settings saved.");
+                    // A new interface language reloads the page in that language.
+                    crate::translate::set_language(&saved.ui_language);
+                }
                 Err(e) => app.error(&e),
             }
         });
@@ -113,8 +117,13 @@ pub fn SettingsGeneral() -> Element {
                                 option { value: "1", "Monday" } option { value: "0", "Sunday" } option { value: "6", "Saturday" }
                             }
                         }
-                        Field { label: "Interface language", help: "More languages can be added to the string tables.".to_string(),
-                            select { class: "select", disabled: true, option { "English" } }
+                        Field { label: "Interface language",
+                            select { class: "select", "aria-label": "Interface language",
+                                onchange: move |e: FormEvent| { if let Some(f) = form.write().as_mut() { f.ui_language = e.value(); } },
+                                for (code, name) in crate::translate::LANGUAGES.iter() {
+                                    option { key: "{code}", value: "{code}", selected: *code == g.ui_language, "{name}" }
+                                }
+                            }
                         }
                         Field { label: "Certificate validation", help: "When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.".to_string(),
                             select { class: "select", "aria-label": "Certificate validation",

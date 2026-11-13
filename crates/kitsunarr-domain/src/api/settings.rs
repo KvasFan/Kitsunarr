@@ -843,6 +843,9 @@ pub struct GeneralSettings {
     pub certificate_validation: CertificateValidation,
 }
 
+/// Interface languages: (code, name in that language).
+pub const UI_LANGUAGES: &[(&str, &str)] = &[("en", "English"), ("it", "Italiano")];
+
 /// Sonarr's `CertificateValidationType`: when HTTPS certificates are checked.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
