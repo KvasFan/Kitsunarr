@@ -233,6 +233,26 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             ),
             template(
                 kind,
+                "Aria2",
+                "Aria2",
+                client_options.clone(),
+                json!({
+                    "host": "localhost", "port": 6800, "rpcPath": "/rpc", "useSsl": false,
+                    "secretToken": "", "directory": ""
+                }),
+            ),
+            template(
+                kind,
+                "Hadouken",
+                "Hadouken",
+                client_options.clone(),
+                json!({
+                    "host": "localhost", "port": 7070, "useSsl": false, "urlBase": "",
+                    "username": "", "password": "", "category": "kitsunarr-tv"
+                }),
+            ),
+            template(
+                kind,
                 "Flood",
                 "Flood",
                 client_options.clone(),
@@ -258,6 +278,13 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
                 "UsenetBlackhole",
                 client_options.clone(),
                 json!({"nzbFolder": "", "watchFolder": ""}),
+            ),
+            template(
+                kind,
+                "Pneumatic",
+                "Pneumatic",
+                client_options.clone(),
+                json!({"nzbFolder": "", "strmFolder": ""}),
             ),
             template(
                 kind,
@@ -390,7 +417,7 @@ mod tests {
             let mut settings = t.settings.clone();
             // SABnzbd needs credentials, blackholes their folders.
             settings.insert("apiKey".into(), "k".into());
-            for folder in ["torrentFolder", "nzbFolder", "watchFolder"] {
+            for folder in ["torrentFolder", "nzbFolder", "watchFolder", "strmFolder"] {
                 if settings.contains_key(folder) {
                     settings.insert(folder.into(), "/downloads".into());
                 }

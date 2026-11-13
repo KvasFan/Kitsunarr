@@ -268,8 +268,11 @@ pub const DOWNLOAD_CLIENT_IMPLEMENTATIONS: &[&str] = &[
     "RTorrent",
     "Flood",
     "UTorrent",
+    "Aria2",
+    "Hadouken",
     "TorrentBlackhole",
     "UsenetBlackhole",
+    "Pneumatic",
 ];
 
 pub const NOTIFICATION_IMPLEMENTATIONS: &[&str] = &[

@@ -13,6 +13,7 @@ pub enum Arg<'a> {
     Bool(bool),
     Bytes(&'a [u8]),
     List(Vec<Arg<'a>>),
+    Struct(Vec<(&'a str, Arg<'a>)>),
 }
 
 fn escape(s: &str) -> String {
@@ -33,6 +34,13 @@ fn value(a: &Arg<'_>) -> String {
         Arg::List(items) => format!(
             "<value><array><data>{}</data></array></value>",
             items.iter().map(value).collect::<String>()
+        ),
+        Arg::Struct(members) => format!(
+            "<value><struct>{}</struct></value>",
+            members
+                .iter()
+                .map(|(k, v)| format!("<member><name>{}</name>{}</member>", escape(k), value(v)))
+                .collect::<String>()
         ),
     }
 }

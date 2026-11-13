@@ -5,12 +5,15 @@
 //! implementation names. The torrent helpers compute the info hash
 //! Sonarr tracks downloads by.
 
+pub mod aria2;
 pub mod blackhole;
 pub mod deluge;
 pub mod error;
 pub mod fake;
 pub mod flood;
+pub mod hadouken;
 pub mod nzbget;
+pub mod pneumatic;
 pub mod qbittorrent;
 pub mod rtorrent;
 pub mod sabnzbd;
@@ -22,10 +25,12 @@ pub mod xmlrpc;
 
 use serde_json::{Map, Value};
 
+pub use aria2::Aria2;
 pub use blackhole::Blackhole;
 pub use deluge::Deluge;
 pub use error::DownloadError;
 pub use flood::Flood;
+pub use hadouken::Hadouken;
 pub use nzbget::Nzbget;
 pub use qbittorrent::{AddRequest, QBittorrent, SeedConfig, Source};
 pub use rtorrent::RTorrent;
@@ -109,6 +114,9 @@ pub enum ClientSettings {
     RTorrent(rtorrent::Settings),
     Flood(flood::Settings),
     UTorrent(utorrent::Settings),
+    Aria2(aria2::Settings),
+    Hadouken(hadouken::Settings),
+    Pneumatic(pneumatic::Settings),
     TorrentBlackhole(blackhole::TorrentSettings),
     UsenetBlackhole(blackhole::UsenetSettings),
 }
@@ -127,6 +135,9 @@ impl ClientSettings {
             "RTorrent" => rtorrent::Settings::from_map(map).map(Self::RTorrent),
             "Flood" => flood::Settings::from_map(map).map(Self::Flood),
             "UTorrent" => utorrent::Settings::from_map(map).map(Self::UTorrent),
+            "Aria2" => aria2::Settings::from_map(map).map(Self::Aria2),
+            "Hadouken" => hadouken::Settings::from_map(map).map(Self::Hadouken),
+            "Pneumatic" => pneumatic::Settings::from_map(map).map(Self::Pneumatic),
             "TorrentBlackhole" => {
                 blackhole::TorrentSettings::from_map(map).map(Self::TorrentBlackhole)
             }
@@ -148,8 +159,12 @@ impl ClientSettings {
             Self::RTorrent(s) => &s.host,
             Self::Flood(s) => &s.host,
             Self::UTorrent(s) => &s.host,
-            // Blackholes are local folders (`IsLocalhost`).
-            Self::TorrentBlackhole(_) | Self::UsenetBlackhole(_) => "localhost",
+            Self::Aria2(s) => &s.host,
+            Self::Hadouken(s) => &s.host,
+            // Blackholes and Pneumatic are local folders (`IsLocalhost`).
+            Self::TorrentBlackhole(_) | Self::UsenetBlackhole(_) | Self::Pneumatic(_) => {
+                "localhost"
+            }
         }
     }
 
@@ -157,7 +172,7 @@ impl ClientSettings {
     pub fn is_usenet(&self) -> bool {
         matches!(
             self,
-            Self::Sabnzbd(_) | Self::Nzbget(_) | Self::UsenetBlackhole(_)
+            Self::Sabnzbd(_) | Self::Nzbget(_) | Self::UsenetBlackhole(_) | Self::Pneumatic(_)
         )
     }
 
@@ -202,6 +217,8 @@ pub struct Clients {
     pub rtorrent: RTorrent,
     pub flood: Flood,
     pub utorrent: UTorrent,
+    pub aria2: Aria2,
+    pub hadouken: Hadouken,
 }
 
 impl Clients {
@@ -215,7 +232,9 @@ impl Clients {
             blackhole: Blackhole::default(),
             rtorrent: RTorrent::new(http.clone()),
             flood: Flood::new(http.clone()),
-            utorrent: UTorrent::new(http),
+            utorrent: UTorrent::new(http.clone()),
+            aria2: Aria2::new(http.clone()),
+            hadouken: Hadouken::new(http),
         }
     }
 
@@ -260,6 +279,22 @@ impl Clients {
                     warnings: r.warnings,
                 }
             }
+            ClientSettings::Pneumatic(s) => {
+                Blackhole::test_folder(&s.nzb_folder, "NZB folder")?;
+                Blackhole::test_folder(&s.strm_folder, "STRM folder")?;
+                Tested {
+                    message: "Both folders can be written to.".into(),
+                    warnings: Vec::new(),
+                }
+            }
+            ClientSettings::Hadouken(s) => Tested {
+                message: format!("Connected to Hadouken {}.", self.hadouken.test(s).await?),
+                warnings: Vec::new(),
+            },
+            ClientSettings::Aria2(s) => Tested {
+                message: format!("Connected to Aria2 {}.", self.aria2.test(s).await?),
+                warnings: Vec::new(),
+            },
             ClientSettings::UTorrent(s) => Tested {
                 message: format!(
                     "Connected to uTorrent (build {}).",
@@ -323,6 +358,8 @@ impl Clients {
                     .add(s, &req.source, req.hash, req.recent, req.seed)
                     .await
             }
+            ClientSettings::Aria2(s) => self.aria2.add(s, &req.source, req.hash).await,
+            ClientSettings::Hadouken(s) => self.hadouken.add(s, &req.source, req.hash).await,
             ClientSettings::Flood(s) => {
                 let info = req.release.cloned().unwrap_or_default();
                 self.flood.add(s, &req.source, req.hash, &info).await
@@ -332,7 +369,8 @@ impl Clients {
             }
             ClientSettings::Sabnzbd(_)
             | ClientSettings::Nzbget(_)
-            | ClientSettings::UsenetBlackhole(_) => Err(DownloadError::Unsupported(
+            | ClientSettings::UsenetBlackhole(_)
+            | ClientSettings::Pneumatic(_) => Err(DownloadError::Unsupported(
                 "Usenet clients cannot take torrents".into(),
             )),
         }
@@ -352,6 +390,7 @@ impl Clients {
             ClientSettings::Sabnzbd(s) => self.sabnzbd.add(s, name, content, recent).await,
             ClientSettings::Nzbget(s) => self.nzbget.add(s, name, content, recent).await,
             ClientSettings::UsenetBlackhole(s) => self.blackhole.add_nzb(s, name, content),
+            ClientSettings::Pneumatic(s) => pneumatic::add(s, name, content),
             _ => Err(DownloadError::Unsupported(
                 "torrent clients cannot take NZBs".into(),
             )),
@@ -405,6 +444,21 @@ impl Clients {
                     .remove(s, &item.download_id, delete_data)
                     .await
             }
+            ClientSettings::Hadouken(s) => {
+                self.hadouken
+                    .remove(s, &item.download_id, delete_data)
+                    .await
+            }
+            ClientSettings::Pneumatic(_) => Err(DownloadError::Unsupported(
+                "Pneumatic downloads cannot be removed".into(),
+            )),
+            ClientSettings::Aria2(s) => {
+                self.aria2.remove(s, &item.download_id).await?;
+                if delete_data {
+                    delete_item_data(item)?;
+                }
+                Ok(())
+            }
         }
     }
 
@@ -418,6 +472,9 @@ impl Clients {
             ClientSettings::RTorrent(s) => self.rtorrent.items(s).await,
             ClientSettings::Flood(s) => self.flood.items(s).await,
             ClientSettings::UTorrent(s) => self.utorrent.items(s).await,
+            ClientSettings::Aria2(s) => self.aria2.items(s).await,
+            ClientSettings::Hadouken(s) => self.hadouken.items(s).await,
+            ClientSettings::Pneumatic(s) => Ok(pneumatic::items(s)),
             ClientSettings::TorrentBlackhole(s) => {
                 Ok(self
                     .blackhole
@@ -439,8 +496,11 @@ impl Clients {
             ClientSettings::RTorrent(s) => self.rtorrent.mark_imported(s, id).await,
             ClientSettings::Flood(s) => self.flood.mark_imported(s, id).await,
             ClientSettings::UTorrent(s) => self.utorrent.mark_imported(s, id).await,
-            // Usenet clients and blackholes have no post-import category.
-            ClientSettings::Sabnzbd(_)
+            // Usenet clients, blackholes and Aria2 have no post-import category.
+            ClientSettings::Aria2(_)
+            | ClientSettings::Hadouken(_)
+            | ClientSettings::Pneumatic(_)
+            | ClientSettings::Sabnzbd(_)
             | ClientSettings::Nzbget(_)
             | ClientSettings::TorrentBlackhole(_)
             | ClientSettings::UsenetBlackhole(_) => Ok(()),
