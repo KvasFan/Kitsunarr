@@ -116,7 +116,7 @@ pub fn ReleaseSearch(
             }
         } else {
             p { class: "help small faint",
-                "Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Grab sends a torrent to qBittorrent; rejected releases ask for a second click."
+                "Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click."
             }
             div { class: "table-wrap",
                 table { class: "table releases",

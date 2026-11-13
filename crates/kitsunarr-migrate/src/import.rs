@@ -44,6 +44,7 @@ use crate::{LoadedSource, MigrateError};
 
 /// Media-management keys (lower-case source names) that Kitsunarr maps.
 pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
+    "uilanguage",
     "copyusinghardlinks",
     "recyclebin",
     "recyclebincleanupdays",
@@ -1419,6 +1420,38 @@ impl<'a> Importer<'a> {
             {
                 let next = kitsunarr_domain::api::settings::GeneralSettings {
                     certificate_validation: mode,
+                    ..current
+                };
+                settings::set(&mut *conn, settings::KEY_GENERAL, &next).await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
+        // Interface language: Sonarr's `UILanguage` (a language id), when Kitsunarr has it.
+        if let Some(code) = self
+            .snap
+            .media_management
+            .as_ref()
+            .and_then(|r| r.raw("uilanguage"))
+            .and_then(|v| v.as_i64().or_else(|| v.as_str()?.trim().parse().ok()))
+            .and_then(|id| match id {
+                1 => Some("en"),
+                2 => Some("fr"),
+                3 => Some("es"),
+                4 => Some("de"),
+                5 => Some("it"),
+                33 => Some("pt_BR"),
+                _ => None,
+            })
+        {
+            let current: kitsunarr_domain::api::settings::GeneralSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_GENERAL).await?;
+            if current.ui_language == code {
+                self.count("settings", Act::Skip);
+            } else if current.ui_language == "en" || self.update_existing() {
+                let next = kitsunarr_domain::api::settings::GeneralSettings {
+                    ui_language: code.into(),
                     ..current
                 };
                 settings::set(&mut *conn, settings::KEY_GENERAL, &next).await?;

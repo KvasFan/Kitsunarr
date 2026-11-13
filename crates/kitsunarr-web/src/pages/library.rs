@@ -258,7 +258,7 @@ pub fn MoviesLibrary() -> Element {
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
             Some(Ok(p)) if p.records.is_empty() => rsx! {
                 Empty { title: "No movies yet",
-                    p { "Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB provider, which is not implemented yet." }
+                    p { "Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue." }
                     div { class: "row", style: "justify-content: center",
                         Link { to: Route::AddMedia {}, class: "btn primary", "Add media" }
                         Link { to: Route::ImportWizard {}, class: "btn", "Import library" }

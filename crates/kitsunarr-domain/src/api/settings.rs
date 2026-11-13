@@ -844,7 +844,14 @@ pub struct GeneralSettings {
 }
 
 /// Interface languages: (code, name in that language).
-pub const UI_LANGUAGES: &[(&str, &str)] = &[("en", "English"), ("it", "Italiano")];
+pub const UI_LANGUAGES: &[(&str, &str)] = &[
+    ("en", "English"),
+    ("de", "Deutsch"),
+    ("es", "Español"),
+    ("fr", "Français"),
+    ("it", "Italiano"),
+    ("pt_BR", "Português (Brasil)"),
+];
 
 /// Sonarr's `CertificateValidationType`: when HTTPS certificates are checked.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]

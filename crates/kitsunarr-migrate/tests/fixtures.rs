@@ -796,7 +796,7 @@ async fn auto_tagging_and_original_country_are_imported() {
         .execute(&source)
         .await
         .unwrap();
-    sqlx::query("INSERT INTO Config (Key, Value) VALUES ('certificatevalidation', 'DisabledForLocalAddresses')")
+    sqlx::query("INSERT INTO Config (Key, Value) VALUES ('certificatevalidation', 'DisabledForLocalAddresses'), ('uilanguage', '4')")
         .execute(&source)
         .await
         .unwrap();
@@ -868,6 +868,8 @@ async fn auto_tagging_and_original_country_are_imported() {
         general.certificate_validation,
         kitsunarr_domain::api::settings::CertificateValidation::DisabledForLocalAddresses
     );
+    // Sonarr's interface language (4 = German).
+    assert_eq!(general.ui_language, "de");
 
     // Tanukarr's `OriginalCountry` is kept, from SkyHook ("usa") and AniList ("JP").
     let countries: Vec<(String, Option<String>)> =

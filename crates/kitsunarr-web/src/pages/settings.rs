@@ -371,7 +371,7 @@ pub fn SettingsMedia() -> Element {
                 None => rsx! { Loading {} },
                 Some(n) => rsx! {
                     Switch { checked: n.rename_episodes, label: "Rename files on import", onchange: move |v| { if let Some(x) = naming.write().as_mut() { x.rename_episodes = v; } } }
-                    p { class: "help small faint", "Renaming takes effect once the import pipeline is implemented; formats use Sonarr's tokens." }
+                    p { class: "help small faint", "Formats use Sonarr's tokens." }
                     div { class: "form-grid",
                         NamingInput { label: "Standard episode format", value: n.standard_episode_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.standard_episode_format = v; } } }
                         NamingInput { label: "Daily episode format", value: n.daily_episode_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.daily_episode_format = v; } } }
@@ -1179,7 +1179,7 @@ pub fn SettingsFormats() -> Element {
             h1 { class: "grow", "Custom formats" }
             button { class: "btn primary", onclick: move |_| { editor_error.set(None); editing.set(Some((0, String::new(), false, example.to_string()))) }, "+ New format" }
         }
-        p { class: "muted small", "Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile. Release matching uses them once indexer search is implemented." }
+        p { class: "muted small", "Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile." }
         match &*formats.read() {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },

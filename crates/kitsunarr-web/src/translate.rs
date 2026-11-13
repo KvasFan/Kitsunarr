@@ -22,7 +22,11 @@ const STORAGE_KEY: &str = "kitsunarr.language";
 
 fn dictionary_source(lang: &str) -> Option<&'static str> {
     match lang {
+        "de" => Some(include_str!("../translations/de.tsv")),
+        "es" => Some(include_str!("../translations/es.tsv")),
+        "fr" => Some(include_str!("../translations/fr.tsv")),
         "it" => Some(include_str!("../translations/it.tsv")),
+        "pt_BR" => Some(include_str!("../translations/pt_BR.tsv")),
         _ => None,
     }
 }
@@ -258,7 +262,7 @@ pub fn install() {
         .and_then(|w| w.document())
         .and_then(|d| d.document_element())
     {
-        let _ = html.set_attribute("lang", &lang);
+        let _ = html.set_attribute("lang", &lang.replace('_', "-"));
     }
     let Some(body) = web_sys::window()
         .and_then(|w| w.document())
@@ -359,5 +363,34 @@ mod tests {
             d.translate("3 GiB free of 9 GiB").as_deref(),
             Some("3 GiB liberi su 9 GiB")
         );
+    }
+
+    #[test]
+    fn every_language_has_a_complete_dictionary() {
+        let english: Vec<String> = dictionary_source("it")
+            .unwrap()
+            .lines()
+            .filter(|l| !l.starts_with('#'))
+            .filter_map(|l| l.split_once('\t').map(|(en, _)| en.to_string()))
+            .collect();
+        for (code, _) in LANGUAGES.iter().filter(|(c, _)| *c != "en") {
+            let source = dictionary_source(code).unwrap_or_else(|| panic!("{code}"));
+            let keys: Vec<String> = source
+                .lines()
+                .filter(|l| !l.starts_with('#'))
+                .filter_map(|l| l.split_once('\t').map(|(en, _)| en.to_string()))
+                .collect();
+            assert_eq!(keys, english, "{code}: same English entries as Italian");
+            let d = Dictionary::parse(source);
+            assert_ne!(
+                d.translate("Calendar").as_deref(),
+                Some("Calendar"),
+                "{code}"
+            );
+            assert!(
+                d.translate("Season 3").is_some_and(|t| t.contains('3')),
+                "{code}"
+            );
+        }
     }
 }

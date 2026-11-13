@@ -1,0 +1,968 @@
+# Brazilian Portuguese interface strings: English	Portuguese. {…} marks a placeholder.
+custom	personalizada
+indeterminate	indeterminado
+mixed	misto
+retired	retirada
+· container	· contêiner
+· finished {format_datetime(f)}	· concluído {format_datetime(f)}
+· missing	· ausente
+· on disk	· no disco
+· today	· hoje
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep
+— MiB per minute; empty uses Settings › Quality	— MiB por minuto; vazio usa Configurações › Qualidade
+— a release's size is multiplied by its codec's factor before the size limits apply	— o tamanho de um lançamento é multiplicado pelo fator do seu codec antes de aplicar os limites de tamanho
+— all profiles at once	— todos os perfis de uma vez
+— codec and title criteria, custom qualities (Tanukarr)	— critérios de codec e título, qualidades personalizadas (Tanukarr)
+— enter the code	— insira o código
+(empty)	(vazio)
++ Add mapping	+ Adicionar mapeamento
++ New format	+ Novo formato
++ New profile	+ Novo perfil
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (desligado) ou de 10 a 120. A sincronização RSS também pode ser executada em Sistema › Tarefas.
+3 hours ago	há 3 horas
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Um torrent baixando sem progresso por esse tempo é marcado como falha, adicionado à lista de bloqueio e pesquisado novamente. 0 desativa; o progresso é acompanhado desde a inicialização do Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Um grupo de franquia encontrado pelas relações do AniList ou MyAnimeList. Títulos da mesma franquia adicionados depois também entram nele.
+A new API key was generated. Update the applications that use it.	Uma nova chave da API foi gerada. Atualize os aplicativos que a usam.
+A regular expression, case-insensitive; empty matches every title.	Uma expressão regular, sem diferenciar maiúsculas e minúsculas; vazio corresponde a todos os títulos.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Um lançamento recebe a predefinição mais específica permitida no perfil da sua série cuja origem, resolução, codec e padrão de título ele atende. Uma qualidade padrão com codec ou padrão definido torna Desconhecido todo lançamento que não os atende. Predefinições personalizadas são adicionadas a todos os perfis como não permitidas.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	O tamanho de um lançamento é multiplicado pelo fator do seu codec antes de aplicar os limites de tamanho. "Misto" significa que os perfis usam fatores diferentes; um valor inserido aqui é gravado em todos os perfis.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Um título que entra em uma franquia ou grupo manual sai do grupo em que estava. Arquivos e pastas não são movidos.
+API key	Chave da API
+API key needed	Chave da API necessária
+API keys and language	Chaves da API e idioma
+API path	Caminho da API
+About	Sobre
+Absolute path; empty to delete permanently.	Caminho absoluto; vazio para excluir permanentemente.
+Accepted	Aceitos
+Account lists	Listas da conta
+Actions	Ações
+Actual	Real
+Add	Adicionar
+Add a Newznab or Torznab indexer and enable interactive search for it.	Adicione um indexador Newznab ou Torznab e ative a pesquisa interativa nele.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Adicione um cliente a partir do seu modelo e use Testar no editor; obtenções, fila e importações usam todos os clientes habilitados. Um blackhole grava as obtenções em uma pasta e importa o que aparece na pasta monitorada. As opções "Remover downloads concluídos/com falha" de cada cliente removem os downloads (com seus arquivos) quando o cliente termina com eles.
+Add a download client in Settings › Download clients and enable it.	Adicione um cliente de download em Configurações › Clientes de download e habilite-o.
+Add a root folder first: it is where this title's folder will live.	Adicione uma pasta raiz primeiro: é onde ficará a pasta deste título.
+Add a tag above first.	Adicione uma tag acima primeiro.
+Add a title	Adicionar um título
+Add auto tag	Adicionar etiqueta automática
+Add condition	Adicionar condição
+Add exclusion	Adicionar exclusão
+Add media	Adicionar mídia
+Add one, or migrate them from Sonarr/Tanukarr.	Adicione um ou migre-os do Sonarr/Tanukarr.
+Add preset	Adicionar predefinição
+Add selected	Adicionar selecionados
+Add series or movies below.	Adicione séries ou filmes abaixo.
+Add tag	Adicionar tag
+Add the list's tags	Adicionar as tags da lista
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Adicione títulos do TVmaze ou AniList, ou traga uma biblioteca existente do Sonarr ou Tanukarr.
+Add to library	Adicionar à biblioteca
+Add {}	Adicionar {}
+Add {} ({y})	Adicionar {} ({y})
+Add — {}	Adicionar — {}
+Add, and remove when they leave the list	Adicionar e remover quando saírem da lista
+Added	Adicionado
+Added to the titles this list adds.	Adicionadas aos títulos que esta lista adiciona.
+Adding titles	Adicionando títulos
+Adding…	Adicionando…
+Address	Endereço
+Age	Tempo de vida
+Aired	Exibido
+Aired monitored episodes without a file appear here.	Episódios monitorados já exibidos sem arquivo aparecem aqui.
+All	Todos
+All collections	Todas as coleções
+All episodes	Todos os episódios
+All episodes in the series folder	Todos os episódios na pasta da série
+All events	Todos os eventos
+Allow zero size (the feed has no release sizes)	Permitir tamanho zero (o feed não informa tamanhos)
+Also delete the series folder and its files (to the recycle bin when one is set)	Excluir também a pasta da série e seus arquivos (para a lixeira, se houver uma)
+Also for releases grabbed from interactive search	Também para lançamentos obtidos pela pesquisa interativa
+Also known as	Também conhecido como
+Always, even when renaming is off	Sempre, mesmo com a renomeação desativada
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analisar arquivos de vídeo (resolução, duração e codecs, com ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Títulos do AniList e MyAnimeList são sempre adicionados como anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Listas do AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, de outro Sonarr e JSON personalizadas são lidas a cada poucas horas; novos títulos são adicionados com a pasta raiz, o perfil e o monitoramento de cada lista. Serviços que exigem OAuth usam o Client ID do seu próprio aplicativo e um token que você cola (tokens migrados do Tanukarr continuam funcionando).
+Anime	Anime
+Anime / absolute numbering	Anime / numeração absoluta
+Anime categories	Categorias de anime
+Anime episode format	Formato do episódio de anime
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Filmes de anime podem ser adicionados pelo AniList, e as migrações do Tanukarr trazem seus filmes. Filmes live-action precisam do catálogo TMDB.
+Anime standard format search	Pesquisa de anime em formato padrão
+Anime title, e.g. Frieren	Título do anime, ex.: Frieren
+Any	Qualquer
+Any library	Qualquer biblioteca
+Applications using the current key will stop working until you give them the new one.	Os aplicativos que usam a chave atual deixarão de funcionar até você fornecer a nova.
+Applied after every list has been read successfully and some title left a list.	Aplicado depois que todas as listas forem lidas com sucesso e algum título tiver saído de uma lista.
+Apply	Aplicar
+Apply migration	Aplicar migração
+Apply profile	Aplicar perfil
+Applying migration	Aplicando migração
+Applying…	Aplicando…
+As Settings › Media management says	Conforme Configurações › Gerenciamento de mídia
+At least 10 characters.	Pelo menos 10 caracteres.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Pelo menos {MIN_PASSWORD_LENGTH} caracteres. Uma frase-senha funciona bem.
+Auto tag	Etiqueta automática
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Etiqueta automática salva. Ela se aplica na próxima vez que títulos forem adicionados, editados ou atualizados.
+Auto tagging	Etiquetas automáticas
+Auto-refresh	Atualização automática
+Automatic	Automática
+Automatic search	Pesquisa automática
+Automatic search for {label}: grabbed {}.	Pesquisa automática para {label}: obtido {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Pesquisa automática para {label}: {} lançamentos encontrados, {} aprovados, nada obtido.
+Automatic search: grab the best release	Pesquisa automática: obter o melhor lançamento
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	A automação está pausada: sincronização RSS, sincronizações agendadas de listas e pesquisas automáticas são ignoradas. Ações manuais e downloads em andamento continuam.
+Automation resumed.	Automação retomada.
+Available from	Disponível a partir de
+Back to the dashboard	Voltar ao painel
+Back up now	Fazer backup agora
+Backup {} created.	Backup {} criado.
+Backups	Backups
+Blocking:	Bloqueante:
+Blocklist	Lista de bloqueio
+Blocklist the release and search again	Adicionar o lançamento à lista de bloqueio e pesquisar novamente
+Blocklist the release: it is never grabbed again	Adicionar o lançamento à lista de bloqueio: ele nunca mais será obtido
+Blocklist “{title}” and search for a replacement?	Adicionar “{title}” à lista de bloqueio e pesquisar um substituto?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Traga sua biblioteca e configurações do Sonarr (v3/v4) ou Tanukarr para o Kitsunarr. A origem é apenas lida, nunca alterada, e
+Bypass the proxy for local addresses	Ignorar o proxy para endereços locais
+Calendar	Calendário
+Calendar →	Calendário →
+Cancel	Cancelar
+Cancel compression	Cancelar compressão
+Cannot reach the server: {e}	Não foi possível acessar o servidor: {e}
+Catalogue	Catálogo
+Category	Categoria
+Certificate validation	Validação de certificado
+Change password	Alterar senha
+Change series	Alterar série
+Changes	Alterações
+Check	Verificar
+Check library	Verificar biblioteca
+Check now	Verificar agora
+Check that the mapped series folders exist (read-only)	Verificar se as pastas das séries mapeadas existem (somente leitura)
+Checked: {summary}.	Verificado: {summary}.
+Checking…	Verificando…
+Choose a backup file	Escolha um arquivo de backup
+Choose a mode	Escolha um modo
+Choose a root folder and a quality profile.	Escolha uma pasta raiz e um perfil de qualidade.
+Choose a season	Escolha uma temporada
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Escolha uma série e uma temporada ou episódio. Os resultados mostram o que é cada lançamento, conforme o analisador do Kitsunarr o interpreta.
+Choose a series or movie…	Escolha uma série ou filme…
+Choose source	Escolher origem
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Escolha manualmente os episódios deste lançamento e depois obtenha-o (a escolha é mantida para a importação)
+Choose…	Escolher…
+Clean library	Limpar biblioteca
+Clear	Limpar
+Clear blocklist	Limpar lista de bloqueio
+Cleared {n} releases from the blocklist.	{n} lançamentos removidos da lista de bloqueio.
+Client	Cliente
+Close	Fechar
+Codec	Codec
+Codec factors saved in every profile.	Fatores de codec salvos em todos os perfis.
+Codec size factors	Fatores de tamanho por codec
+Codecs	Codecs
+Collection film folder format	Formato da pasta de filme da coleção
+Collections	Coleções
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	As coleções aparecem quando são migradas do Tanukarr, criadas a partir dos dados dos catálogos ou criadas aqui.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Vindo do Sonarr ou Tanukarr? Importe suas séries, configurações e histórico existentes em poucos passos.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Separados por vírgula; * é curinga (*.lan) e intervalos de IP como 192.168.1.0/24 funcionam.
+Companion app keys	Chaves de apps complementares
+Complete series	Série completa
+Completed and failed download handling	Gerenciamento de downloads concluídos e com falha
+Component	Componente
+Compress series	Comprimir série
+Compression	Compressão
+Compression queued.	Compressão na fila.
+Compression worker is not connected.	O worker de compressão não está conectado.
+Condition	Condição
+Conditions	Condições
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Condições do mesmo tipo correspondem quando qualquer uma corresponde (todas as obrigatórias devem corresponder); todos os tipos devem corresponder.
+Configure	Configurar
+Confirm password	Confirmar senha
+Connect	Conectar
+Connect to a running instance	Conectar a uma instância em execução
+Connecting…	Conectando…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Cópias consistentes do banco de dados. Backups agendados são semanais (os últimos oito são mantidos); toda migração também cria um antes. Para restaurar, pare o Kitsunarr e execute
+Continuing	Continuando
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (enviado com a requisição do feed, ex.: uid=1; pass=…)
+Copied.	Copiado.
+Copy	Copiar
+Copy (keep the originals)	Copiar (manter os originais)
+Copy sizes from	Copiar tamanhos de
+Copy the token now; it is not shown again:	Copie o token agora; ele não será mostrado novamente:
+Could not grab {}: {}	Não foi possível obter {}: {}
+Covers	Abrange
+Create	Criar
+Create account	Criar conta
+Create group	Criar grupo
+Create key	Criar chave
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Crie uma em themoviedb.org › Settings › API. Usada para séries de TV e filmes do TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Crie a conta de administrador. Você a usará para entrar no Kitsunarr.
+Created	Criado
+Created when the first file is imported. Nothing is written to disk now.	Criada quando o primeiro arquivo for importado. Nada é gravado no disco agora.
+Creating…	Criando…
+Credit	Créditos
+Current file	Arquivo atual
+Current password	Senha atual
+Custom format saved.	Formato personalizado salvo.
+Custom format score	Pontuação de formato personalizado
+Custom format scores	Pontuações de formatos personalizados
+Custom formats	Formatos personalizados
+Cutoff unmet	Corte não atingido
+Daily	Diário
+Daily episode format	Formato do episódio diário
+Dashboard	Painel
+Data directory	Diretório de dados
+Database backup taken before the import: {b}	Backup do banco de dados feito antes da importação: {b}
+Database schema	Esquema do banco de dados
+Date	Data
+Date added	Data de adição
+Debug	Depuração
+Decision	Decisão
+Default	Padrão
+Defaults	Padrões
+Delay profile	Perfil de atraso
+Delay profile saved.	Perfil de atraso salvo.
+Delay profiles	Perfis de atraso
+Delete	Excluir
+Delete empty series folders	Excluir pastas de séries vazias
+Delete file	Excluir arquivo
+Delete group	Excluir grupo
+Delete profile	Excluir perfil
+Delete “{path}”? It goes to the recycle bin when one is set.	Excluir “{path}”? Ele vai para a lixeira, se houver uma.
+Delete “{}”?	Excluir “{}”?
+Delete “{}”? Its series and movies stay in the library.	Excluir “{}”? Suas séries e filmes permanecem na biblioteca.
+Deleted	Excluído
+Directory	Diretório
+Disabled	Desabilitado
+Disabled for local addresses	Desabilitado para endereços locais
+Disk scanned: {}	Disco verificado: {}
+Disk scanned: {} Not matched: {}	Disco verificado: {} Sem correspondência: {}
+Do not prefer	Não preferir
+Do not search for a replacement	Não pesquisar um substituto
+Do nothing	Não fazer nada
+Done	Concluído
+Download client options saved.	Opções dos clientes de download salvas.
+Download clients	Clientes de download
+Download failed	Falha no download
+Download queue	Fila de download
+Downloads	Downloads
+Duration	Duração
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Cada título pertence a um catálogo, que suas atualizações leem; todos os identificadores que ele possui (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) são mantidos. Títulos migrados do Sonarr pertencem ao TheTVDB.
+Edit	Editar
+Edit “{name}”	Editar “{name}”
+Edit “{}”	Editar “{}”
+Enable RSS	Habilitar RSS
+Enable automatic search	Habilitar pesquisa automática
+Enable interactive search	Habilitar pesquisa interativa
+Enabled	Habilitado
+Ended	Finalizada
+English	English
+Entity	Entidade
+Episode	Episódio
+Episode and movie naming	Nomenclatura de episódios e filmes
+Episode image thumbs in the NFO	Miniaturas dos episódios no NFO
+Episode images (<filename>-thumb.jpg)	Imagens dos episódios (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Imagens dos episódios (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Imagens dos episódios (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Mapeamentos de episódios no .plexmatch
+Episode metadata (<filename>.nfo)	Metadados dos episódios (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Metadados dos episódios (Season##/filename.xml)
+Episode order	Ordem dos episódios
+Episode order changed: {} episodes updated, {} added.	Ordem dos episódios alterada: {} episódios atualizados, {} adicionados.
+Episodes	Episódios
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Os episódios são renumerados pela ordem escolhida; arquivos, monitoramento e histórico permanecem com seus episódios. Depois, renomeie os arquivos para corresponder aos novos números.
+Episodes of {title}	Episódios de {title}
+Episodes on disk	Episódios no disco
+Episodes whose file is below the quality profile's cutoff appear here.	Episódios cujo arquivo está abaixo do corte do perfil de qualidade aparecem aqui.
+Episodes…	Episódios…
+Errors	Erros
+Errors {errors}	Erros {errors}
+Event	Evento
+Every file already follows the naming settings.	Todos os arquivos já seguem as configurações de nomenclatura.
+Every file meets its cutoff	Todos os arquivos atingem o corte
+Exclude	Deixar de fora
+Exclusions	Exclusões
+Expected	Esperados
+Expires	Expira
+Extra file extensions	Extensões de arquivos adicionais
+Factor	Fator
+Failed	Falhou
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Proteção contra lançamentos falsos: inspecionar torrents antes de obtê-los e rejeitar executáveis, arquivos-isca com senha e conteúdos sem vídeo
+Feed address	Endereço do feed
+Fetch the latest metadata from {}	Buscar os metadados mais recentes de {}
+File	Arquivo
+File date	Data do arquivo
+File deleted	Arquivo excluído
+File deleted.	Arquivo excluído.
+File management	Gerenciamento de arquivos
+File management settings saved.	Configurações de gerenciamento de arquivos salvas.
+File renamed	Arquivo renomeado
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Arquivos mais antigos que isso são excluídos da lixeira diariamente; 0 os mantém.
+Files upgrades replaced, kept as versions	Arquivos substituídos por atualizações, mantidos como versões
+Film	Filme
+Film title or IMDb id, e.g. Arrival	Título do filme ou id do IMDb, ex.: Arrival
+Find a series in your library	Encontrar uma série na sua biblioteca
+Find files added to or removed from the series folder	Encontrar arquivos adicionados ou removidos da pasta da série
+Find something to add	Encontre algo para adicionar
+First and last pieces first	Primeira e última partes primeiro
+First day of the week	Primeiro dia da semana
+First season	Primeira temporada
+Folder	Pasta
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Os formatos usam os tipos de especificação do Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). As pontuações são atribuídas por perfil de qualidade.
+Found	Encontrados
+Free	Livre
+Free space	Espaço livre
+Future days	Dias futuros
+Future episodes	Episódios futuros
+General	Geral
+GiB	GiB
+Grab	Obter
+Grab a release from interactive search; downloads in the client's TV category show up here.	Obtenha um lançamento pela pesquisa interativa; downloads na categoria de TV do cliente aparecem aqui.
+Grab anyway?	Obter mesmo assim?
+Grab with these episodes	Obter com estes episódios
+Grabbed	Obtido
+Grabbed {}.	Obtido {}.
+Grabbing…	Obtendo…
+Grabs, imports and file changes appear here. Migrated history is included.	Obtenções, importações e alterações de arquivos aparecem aqui. O histórico migrado está incluído.
+Group film folder format	Formato da pasta de filme do grupo
+Group folder format	Formato da pasta do grupo
+Group season folder format	Formato da pasta de temporada do grupo
+Group story-arc folder format	Formato da pasta de arco narrativo do grupo
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Grupos de séries e filmes relacionados: coleções dos catálogos, franquias de anime (grupos prequel/sequel) e grupos manuais, incluindo os migrados do Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Importações somente por hardlink: nunca copiar downloads que continuam semeando
+Health	Integridade
+Hide	Ocultar
+History	Histórico
+History →	Histórico →
+Host	Host
+Host (as in the download client's settings)	Host (como nas configurações do cliente de download)
+Hostname	Nome do host
+How the catalogue numbers the episodes (it can be changed later on the series page).	Como o catálogo numera os episódios (pode ser alterado depois na página da série).
+Id	Id
+Identities	Identidades
+Ids	Ids
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Se o Kitsunarr vê sua mídia em caminhos diferentes da origem (por exemplo, volumes Docker diferentes), mapeie cada pasta da origem para sua localização no Kitsunarr. Os caminhos são reescritos apenas no banco de dados.
+Ignored	Ignorados
+Ignored addresses	Endereços ignorados
+Implementation	Implementação
+Import / Migration	Importação / Migração
+Import a Sonarr or Tanukarr library	Importar uma biblioteca do Sonarr ou Tanukarr
+Import blocked	Importação bloqueada
+Import completed downloads	Importar downloads concluídos
+Import extra files (subtitles…)	Importar arquivos adicionais (legendas…)
+Import from Sonarr/Tanukarr	Importar do Sonarr/Tanukarr
+Import history	Importar histórico
+Import library	Importar biblioteca
+Import list options saved.	Opções das listas de importação salvas.
+Import lists	Listas de importação
+Import pending	Importação pendente
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importe arquivos de vídeo de qualquer pasta que o servidor possa ler: confira a série e os episódios de cada arquivo e depois copie-os ou mova-os para a biblioteca (renomeados pelas configurações de nomenclatura).
+Import {chosen().len()} files	Importar {chosen().len()} arquivos
+Imported	Importado
+Imported from series folder	Importado da pasta da série
+Importing	Importando
+Importing…	Importando…
+Imports need	As importações precisam de
+In library ›	Na biblioteca ›
+Include	Incluir
+Include in file names ({{Custom Formats}} token)	Incluir nos nomes de arquivos (token {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Incluir apenas títulos de algumas listas, ou deixar de fora os títulos de outras.
+Include unmonitored	Incluir não monitorados
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Incluindo a URL base, ex.: http://192.168.1.10:8989 ou https://host/sonarr
+Indexer	Indexador
+Indexer options saved.	Opções dos indexadores salvas.
+Indexer settings	Configurações do indexador
+Indexers	Indexadores
+Info	Informações
+Info {infos}	Informações {infos}
+Instance	Instância
+Instance name	Nome da instância
+Instance: {name}	Instância: {name}
+Interactive	Interativa
+Interactive search	Pesquisa interativa
+Interactive search for full-season packs only	Pesquisa interativa apenas de pacotes de temporada completa
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Pesquisa interativa de pacotes da série inteira (e de suas temporadas) em indexadores de torrent
+Interactive search: see every release and choose	Pesquisa interativa: ver todos os lançamentos e escolher
+Interface language	Idioma da interface
+Interval	Intervalo
+Jellyfin library and user	Biblioteca e usuário do Jellyfin
+Job	Trabalho
+Keep / skip	Manter / pular
+Keep files replaced by upgrades as versions (in "Plex Versions")	Manter como versões os arquivos substituídos por atualizações (em "Plex Versions")
+Keep me signed in	Manter conectado
+Keep the replaced file's date (upgrades)	Manter a data do arquivo substituído (atualizações)
+Kept	Mantido
+Kept versions	Versões mantidas
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Chaves para apps complementares que usam a API v3 do Sonarr: elas leem a biblioteca, e as chaves "adicionar séries" também podem adicionar séries (em uma pasta raiz, sem pesquisar). Nada mais é permitido.
+KiB	KiB
+Kind	Tipo
+Kitsunarr is free software (GPL-3.0-or-later).	O Kitsunarr é software livre (GPL-3.0-or-later).
+Kitsunarr path	Caminho no Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	O Kitsunarr fará backup do próprio banco de dados, importará os dados pré-visualizados em uma única transação e os validará antes de confirmar. A origem e seus arquivos de mídia não são modificados.
+Label	Rótulo
+Languages	Idiomas
+Larger releases are rejected. 0 means unlimited.	Lançamentos maiores são rejeitados. 0 significa ilimitado.
+Last read	Última leitura
+Last run	Última execução
+Last search	Última pesquisa
+Last searched	Última pesquisa
+Last season	Última temporada
+Later ›	Posteriores ›
+Latest season	Temporada mais recente
+Level	Nível
+Library	Biblioteca
+Library check	Verificação da biblioteca
+Library tools	Ferramentas da biblioteca
+Library tools saved.	Ferramentas da biblioteca salvas.
+List	Lista
+Listed best first. Grouped qualities rank equally.	Da melhor para a pior. Qualidades agrupadas têm a mesma classificação.
+Live updates connected	Atualizações em tempo real conectadas
+Live updates disconnected	Atualizações em tempo real desconectadas
+Load	Carregar
+Load the account's lists	Carregar as listas da conta
+Load the libraries…	Carregar as bibliotecas…
+Load the users…	Carregar os usuários…
+Local air date	Data de exibição local
+Local path	Caminho local
+Log them	Registrá-los
+Logs	Logs
+Main rejections	Principais rejeições
+Make current	Tornar atual
+Manual import	Importação manual
+Mark as failed	Marcar como falha
+Matches monitored titles.	Corresponde aos títulos monitorados.
+Maximum	Máximo
+Maximum size (MB)	Tamanho máximo (MB)
+Media management	Gerenciamento de mídia
+Media management settings	Configurações de gerenciamento de mídia
+Media paths	Caminhos de mídia
+Mediums	Mídias
+Members	Membros
+Message	Mensagem
+Metadata	Metadados
+Metadata files	Arquivos de metadados
+Metadata keys saved.	Chaves de metadados salvas.
+Metadata language	Idioma dos metadados
+Metadata refreshed.	Metadados atualizados.
+Metadata refreshed: {} new episodes, {} updated.	Metadados atualizados: {} episódios novos, {} atualizados.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Configurações de metadados salvas. Os arquivos são gravados na próxima verificação do disco, atualização ou importação.
+Metadata sources	Fontes de metadados
+MiB	MiB
+Migration completed.	Migração concluída.
+Migration report #{}	Relatório de migração nº {}
+Minimum	Mínimo
+Minimum age (minutes)	Tempo de vida mínimo (minutos)
+Minimum custom format score	Pontuação mínima do formato personalizado
+Minimum format score	Pontuação mínima do formato
+Minimum free space (MiB)	Mínimo de espaço livre (MiB)
+Minimum seeders	Mínimo de sementes
+Missing	Ausentes
+Missing (monitored)	Ausentes (monitorados)
+Missing films	Filmes ausentes
+Mode	Modo
+Monday	Segunda-feira
+Monitor	Monitorar
+Monitored	Monitorado
+More languages can be added to the string tables.	Mais idiomas podem ser adicionados às tabelas de textos.
+Move	Mover
+Movie	Filme
+Movie file format	Formato do arquivo de filme
+Movie removed from Kitsunarr. Files on disk were not touched.	Filme removido do Kitsunarr. Os arquivos no disco não foram alterados.
+Movies	Filmes
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Lançamentos de várias temporadas: aceitar pacotes de várias temporadas (uma pesquisa de temporada usa o pacote para sua temporada)
+Must contain	Deve conter
+Must contain (comma separated; /regex/ allowed)	Deve conter (separados por vírgula; /regex/ permitido)
+Must not contain	Não deve conter
+NOT	NÃO
+Name	Nome
+Naming	Nomenclatura
+Naming options saved.	Opções de nomenclatura salvas.
+Naming saved.	Nomenclatura salva.
+Negate	Negar
+Network	Rede
+Never: keep the release's names	Nunca: manter os nomes do lançamento
+New custom format	Novo formato personalizado
+New custom preset	Nova predefinição personalizada
+New group title	Título do novo grupo
+New password	Nova senha
+New quality profile	Novo perfil de qualidade
+Next airing	Próxima exibição
+Next run	Próxima execução
+Next ›	Próximo ›
+No	Não
+No activity yet.	Nenhuma atividade ainda.
+No auto tags.	Nenhuma etiqueta automática.
+No backups yet	Nenhum backup ainda
+No collections yet	Nenhuma coleção ainda
+No companion keys.	Nenhuma chave de app complementar.
+No custom formats	Nenhum formato personalizado
+No custom formats defined.	Nenhum formato personalizado definido.
+No delay above the minimum custom format score	Sem atraso acima da pontuação mínima do formato personalizado
+No delay for the profile's best quality in the preferred protocol	Sem atraso para a melhor qualidade do perfil no protocolo preferido
+No download client to read	Nenhum cliente de download para ler
+No exclusions.	Nenhuma exclusão.
+No history	Nenhum histórico
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Nenhum indexador pode pesquisar esta série automaticamente: nenhum tem a pesquisa automática habilitada e, ao mesmo tempo, nenhuma tag ou uma das tags da série.
+No indexers to search	Nenhum indexador para pesquisar
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Nenhuma versão mantida. Ative "Manter os arquivos substituídos por atualizações" em Nomenclatura.
+No log entries at this level	Nenhuma entrada de log neste nível
+No mappings.	Nenhum mapeamento.
+No matches	Nenhuma correspondência
+No members	Nenhum membro
+No migrations have been run yet.	Nenhuma migração foi executada ainda.
+No movies yet	Nenhum filme ainda
+No notes.	Nenhuma observação.
+No recycle bin is set (Settings › Media management).	Nenhuma lixeira definida (Configurações › Gerenciamento de mídia).
+No release profiles.	Nenhum perfil de lançamento.
+No root folders yet.	Nenhuma pasta raiz ainda.
+No root folders.	Nenhuma pasta raiz.
+No runs yet	Nenhuma execução ainda
+No searches yet.	Nenhuma pesquisa ainda.
+No series in your library match.	Nenhuma série da sua biblioteca corresponde.
+No tags	Sem tags
+No {}	Sem {}
+No {} yet	Nenhum {} ainda
+None	Nenhum
+Not evaluated by Kitsunarr.	Não avaliado pelo Kitsunarr.
+Not imported	Não importado
+Not monitored	Não monitorado
+Notes	Observações
+Notes ({preview.warnings.len()})	Observações ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Observações ({report.warnings.len()})
+Nothing airs in the next seven days.	Nada será exibido nos próximos sete dias.
+Nothing downloading	Nada sendo baixado
+Nothing found	Nada encontrado
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Nada neste catálogo corresponde à pesquisa. Tente outra grafia, o título original ou o outro catálogo.
+Nothing in this period	Nada neste período
+Nothing missing	Nada ausente
+Notifications	Notificações
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Numerar episódios por outra ordem do catálogo (grupos de episódios do TMDB, ordem DVD ou absoluta do TheTVDB)
+OMDb API key	Chave da API do OMDb
+Older priority	Prioridade para mais antigos
+One folder per season	Uma pasta por temporada
+Only the 2000 newest files are listed.	Apenas os 2000 arquivos mais recentes são listados.
+Only when the proxy needs one.	Apenas quando o proxy exigir.
+Open the library	Abrir a biblioteca
+OpenAPI document	Documento OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Abre o serviço para autorizar o Kitsunarr e preenche o token.
+Options	Opções
+Organize	Organizar
+Other	Outro
+Overview	Sinopse
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Sobrescrever registros que já existem no Kitsunarr (caso contrário, são mantidos)
+Packs	Pacotes
+Page not found	Página não encontrada
+Page {page} / {pages}	Página {page} / {pages}
+Password	Senha
+Password changed. Other sessions were signed out.	Senha alterada. As outras sessões foram desconectadas.
+Past days	Dias passados
+Path	Caminho
+Path mappings	Mapeamentos de caminho
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Pausar automação (sincronização RSS, sincronizações agendadas de listas, pesquisas automáticas)
+Peers	Pares
+Permission	Permissão
+PiB	PiB
+Platform	Plataforma
+Port	Porta
+Position	Posição
+Post-import category	Categoria pós-importação
+Posters	Pôsteres
+Prefer and upgrade	Preferir e atualizar
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Preferir pacotes de temporada de anime (as pesquisas de temporada de anime do Kitsunarr já pesquisam a temporada uma vez)
+Prefer, do not upgrade	Preferir, não atualizar
+Preferred	Preferido
+Preferred metadata language	Idioma preferido dos metadados
+Preferred protocol	Protocolo preferido
+Preparing preview…	Preparando pré-visualização…
+Preview	Pré-visualização
+Preview migration	Pré-visualizar migração
+Previous migrations	Migrações anteriores
+Priority	Prioridade
+Problem	Problema
+Profile	Perfil
+Profile saved.	Perfil salvo.
+Profiles still used by series or movies cannot be deleted.	Perfis ainda usados por séries ou filmes não podem ser excluídos.
+Progress	Progresso
+Propers and repacks	Propers e repacks
+Proxy	Proxy
+Proxy saved.	Proxy salvo.
+Proxy type	Tipo de proxy
+Qualities	Qualidades
+Quality	Qualidade
+Quality presets	Predefinições de qualidade
+Quality presets saved.	Predefinições de qualidade salvas.
+Quality profile	Perfil de qualidade
+Quality profiles	Perfis de qualidade
+Quality profile…	Perfil de qualidade…
+RSS sync interval (minutes)	Intervalo de sincronização RSS (minutos)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	A sincronização RSS aguarda esse tempo após um lançamento aparecer, esperando por um melhor; lançamentos atrasados aparecem na fila. Aplica-se o primeiro perfil cujas tags correspondem à série; o último (sem tags) é o padrão.
+Re-encode this series' files with the compression worker	Recodificar os arquivos desta série com o worker de compressão
+Read and add series	Ler e adicionar séries
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Lida em tempo real dos clientes de download a cada poucos segundos. Downloads concluídos obtidos pelo Kitsunarr são importados para a pasta da série a cada minuto (torrents são copiados ou vinculados por hardlink, para continuarem semeando; downloads da Usenet são movidos). Downloads com falha são adicionados à lista de bloqueio e pesquisados novamente.
+Read the library	Ler a biblioteca
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Somente leitura: encontra pastas de séries ausentes, registros de arquivos fora da sua pasta ou registrados duas vezes e arquivos ausentes no disco.
+Reading the download clients…	Lendo os clientes de download…
+Reading the source	Lendo a origem
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Lê tudo pela API. Senhas e chaves da API dos provedores são ocultadas pela origem e precisam ser inseridas novamente depois.
+Recent activity	Atividade recente
+Recent priority	Prioridade para mais recentes
+Recent runs	Execuções recentes
+Recent searches	Pesquisas recentes
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Recomendado. No Sonarr/Tanukarr, abra Sistema → Backup, crie um backup e baixe o .zip (ou use sonarr.db). Inclui as senhas de indexadores e clientes de download.
+Recycle bin	Lixeira
+Recycle bin cleanup (days)	Limpeza da lixeira (dias)
+Recycled	Na lixeira
+Refresh metadata	Atualizar metadados
+Refresh preview	Atualizar pré-visualização
+Refreshing from {} is not supported yet; the imported metadata is kept as is	A atualização a partir de {} ainda não é compatível; os metadados importados são mantidos como estão
+Refreshing…	Atualizando…
+Regenerate	Gerar novamente
+Regenerate API key	Gerar nova chave da API
+Reject releases whose TheTVDB or IMDb id names another series	Rejeitar lançamentos cujo id do TheTVDB ou IMDb indica outra série
+Rejected: click twice to grab anyway	Rejeitado: clique duas vezes para obter mesmo assim
+Release	Lançamento
+Release profile	Perfil de lançamento
+Release profile saved.	Perfil de lançamento salvo.
+Release profiles	Perfis de lançamento
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Os lançamentos são verificados em relação ao perfil de qualidade, aos formatos personalizados e aos perfis de lançamento da série, e classificados, como faz o Sonarr. Lançamentos rejeitados pedem um segundo clique.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Lançamentos que falharam ou foram adicionados manualmente à lista de bloqueio. Pesquisas e sincronização RSS nunca os obtêm novamente; remova um para permiti-lo.
+Remote path	Caminho remoto
+Remote path mapping	Mapeamento de caminho remoto
+Remote path mapping saved.	Mapeamento de caminho remoto salvo.
+Remote path mappings	Mapeamentos de caminho remoto
+Remove	Remover
+Remove completed downloads	Remover downloads concluídos
+Remove every release from the blocklist?	Remover todos os lançamentos da lista de bloqueio?
+Remove failed downloads	Remover downloads com falha
+Remove from library	Remover da biblioteca
+Remove from queue	Remover da fila
+Remove from the download client (deletes its files there)	Remover do cliente de download (exclui os arquivos dele lá)
+Remove movie	Remover filme
+Remove series	Remover série
+Remove tags automatically (from titles that stop matching)	Remover tags automaticamente (dos títulos que deixarem de corresponder)
+Remove “{title}” and its episode records from Kitsunarr?	Remover “{title}” e os registros dos seus episódios do Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Remover “{title}” do Kitsunarr? Os arquivos no disco não são excluídos.
+Removed	Removido
+Removed from the blocklist.	Removido da lista de bloqueio.
+Rename	Renomear
+Rename files	Renomear arquivos
+Rename files on import	Renomear arquivos ao importar
+Rename files to the naming settings	Renomear arquivos conforme as configurações de nomenclatura
+Formats use Sonarr's tokens.	Os formatos usam os tokens do Sonarr.
+Renaming…	Renomeando…
+Report	Relatório
+Request one at omdbapi.com. Used for films by IMDb id.	Solicite uma em omdbapi.com. Usada para filmes pelo id do IMDb.
+Required	Obrigatório
+Resolution	Resolução
+Restore	Restaurar
+Restore {}	Restaurar {}
+Restore…	Restaurar…
+Restoring…	Restaurando…
+Resume automation	Retomar automação
+Retention (days)	Retenção (dias)
+Retire	Retirar
+Revoke	Revogar
+Root folder	Pasta raiz
+Root folders	Pastas raiz
+Root folder…	Pasta raiz…
+Run #{run.id}: {run.status}	Execução nº {run.id}: {run.status}
+Run now	Executar agora
+Running…	Executando…
+Saturday	Sábado
+Save	Salvar
+Save criteria	Salvar critérios
+Save factors	Salvar fatores
+Save keys	Salvar chaves
+Save metadata files	Salvar arquivos de metadados
+Save naming	Salvar nomenclatura
+Save options	Salvar opções
+Saved	Salvo
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Chaves salvas aparecem como {REDACTED}; deixe-as inalteradas para mantê-las ou limpe o campo para remover uma.
+Saved.	Salvo.
+Scan disk	Verificar disco
+Scan folder	Verificar pasta
+Scanning…	Verificando…
+Scheduled tasks	Tarefas agendadas
+Score	Pontuação
+Search	Pesquisar
+Search again when a download fails	Pesquisar novamente quando um download falhar
+Search all	Pesquisar todos
+Search all films	Pesquisar todos os filmes
+Search collection	Pesquisar coleção
+Search every episode of the list, one search per season	Pesquisar todos os episódios da lista, uma pesquisa por temporada
+Search every member's missing episodes (films: the film)	Pesquisar os episódios ausentes de cada membro (filmes: o filme)
+Search indexers	Pesquisar nos indexadores
+Search selected	Pesquisar selecionados
+Search the indexers and choose a release	Pesquisar nos indexadores e escolher um lançamento
+Search the indexers and grab the best accepted release	Pesquisar nos indexadores e obter o melhor lançamento aceito
+Search the indexers and grab the best releases for the monitored episodes	Pesquisar nos indexadores e obter os melhores lançamentos para os episódios monitorados
+Search your indexers	Pesquisar nos seus indexadores
+Search {chosen} selected	Pesquisar {chosen} selecionados
+Search: {}	Pesquisa: {}
+Search: {} — complete series	Pesquisa: {} — série completa
+Search: {} — season {season} packs	Pesquisa: {} — pacotes da temporada {season}
+Search: {} — {label}	Pesquisa: {} — {label}
+Searching for {label}…	Pesquisando {label}…
+Searching indexers…	Pesquisando nos indexadores…
+Searching…	Pesquisando…
+Season	Temporada
+Season folder format	Formato da pasta da temporada
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Os títulos das pastas de temporada substituem os do catálogo em {{Season Title}}. Deixe vazio para manter os do catálogo.
+Season folders	Pastas de temporada
+Season images (Season ##.jpg)	Imagens das temporadas (Season ##.jpg)
+Season images (Season##/folder.jpg)	Imagens das temporadas (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Imagens das temporadas (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Pacotes de temporada: 1 usa as metas de pacote de temporada abaixo
+Season premieres only	Apenas estreias de temporada
+Season {n}	Temporada {n}
+Season {one}	Temporada {one}
+Season {se.season_number}	Temporada {se.season_number}
+Season {season_number}	Temporada {season_number}
+Season-pack seed ratio	Proporção de semeadura de pacotes de temporada
+Season-pack seed time, minutes	Tempo de semeadura de pacotes de temporada, minutos
+Seasons	Temporadas
+Seasons {first}-{last}	Temporadas {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Segredos aparecem como {REDACTED}; deixe-os inalterados para manter o valor armazenado.
+Seed ratio (empty: the client's default)	Proporção de semeadura (vazio: padrão do cliente)
+Seed time, minutes (empty: the client's default)	Tempo de semeadura, minutos (vazio: padrão do cliente)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Enviar por um proxy as requisições a indexadores, catálogos, listas, clientes de download e conexões.
+Send to the download client	Enviar ao cliente de download
+Series	Séries
+Series .plexmatch file	Arquivo .plexmatch da série
+Series folder format	Formato da pasta da série
+Series images (Series Title.jpg)	Imagens da série (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Imagens da série (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Imagens da série (folder.jpg)
+Series metadata (tvshow.nfo)	Metadados da série (tvshow.nfo)
+Series metadata URL	URL dos metadados da série
+Series metadata episode guide	Guia de episódios nos metadados da série
+Series removed from Kitsunarr. Files on disk were not touched.	Série removida do Kitsunarr. Os arquivos no disco não foram alterados.
+Series removed, and its folder deleted.	Série removida e pasta excluída.
+Series type	Tipo de série
+Set quality profile…	Definir perfil de qualidade…
+Settings	Configurações
+Settings saved.	Configurações salvas.
+Settings → General → Security in Sonarr/Tanukarr.	Configurações → Geral → Segurança no Sonarr/Tanukarr.
+Show	Mostrar
+Show as all-day events	Mostrar como eventos de dia inteiro
+Show unmonitored	Mostrar não monitorados
+Shows	Séries
+Sign in	Entrar
+Signed in. Save the list to keep the token.	Conectado. Salve a lista para manter o token.
+Signing in…	Entrando…
+Size	Tamanho
+Size limits	Limites de tamanho
+Size on disk	Tamanho no disco
+Skip files smaller than (MB)	Ignorar arquivos menores que (MB)
+Skip the free-space check	Ignorar a verificação de espaço livre
+Skip unmonitored episodes when importing packs	Ignorar episódios não monitorados ao importar pacotes
+Source	Origem
+Source code	Código-fonte
+Source path	Caminho de origem
+Special	Especial
+Specials	Especiais
+Specials are never monitored automatically.	Especiais nunca são monitorados automaticamente.
+Specifications	Especificações
+Specifications (JSON)	Especificações (JSON)
+Specifications must be valid JSON: {e}	As especificações devem ser um JSON válido: {e}
+Stalled torrent timeout (minutes)	Tempo limite de torrents parados (minutos)
+Standard	Padrão
+Standard episode format	Formato do episódio padrão
+Start migration	Iniciar migração
+Start over	Recomeçar
+Start search for missing episodes	Iniciar pesquisa por episódios ausentes
+Started	Iniciado
+Started {format_datetime(&run.started_at)}	Iniciado {format_datetime(&run.started_at)}
+Status	Status
+Status & health	Status e integridade
+Still downloading	Ainda baixando
+Storage outlook	Previsão de armazenamento
+Studio	Estúdio
+Subscribe	Assinar
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Assine este endereço em um app de calendário. Ele contém sua chave da API: mantenha-o privado.
+Sunday	Domingo
+Sync	Sincronizar
+Sync all lists now	Sincronizar todas as listas agora
+Sync now	Sincronizar agora
+Syncing…	Sincronizando…
+System →	Sistema →
+TMDB API key (v3)	Chave da API do TMDB (v3)
+TV Series	Séries de TV
+TV series	Séries de TV
+Table	Tabela
+Tag	Tag
+Tag them	Aplicar uma tag
+Tag titles already in the library	Aplicar tags aos títulos que já estão na biblioteca
+Tags	Tags
+Tags (comma separated)	Tags (separadas por vírgula)
+Tags (ids, comma separated)	Tags (ids, separados por vírgula)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	As tags são adicionadas a séries e filmes que atendem a todos os tipos de condição quando são adicionados, editados ou atualizados.
+Task	Tarefa
+Television	Televisão
+Television (raw)	Televisão (raw)
+Test	Testar
+Test failed: {message}	Teste falhou: {message}
+Testing…	Testando…
+The blocklist is empty	A lista de bloqueio está vazia
+The catalogue new titles are added from when the list knows their id there.	O catálogo de onde novos títulos são adicionados quando a lista conhece o id deles nele.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	A data que os arquivos importados recebem: a data de exibição do episódio (local ou UTC) ou, em uma atualização, a data do arquivo substituído.
+The dry run completed without blocking problems. Nothing has been written yet.	O teste foi concluído sem problemas bloqueantes. Nada foi gravado ainda.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	O arquivo é movido para a pasta da temporada (um arquivo existente nunca é sobrescrito) e a série é verificada novamente.
+The folder must already exist; Kitsunarr never creates or removes it.	A pasta já deve existir; o Kitsunarr nunca a cria nem a remove.
+The indexers returned no releases for this search.	Os indexadores não retornaram lançamentos para esta pesquisa.
+The instance is on my local network (private or loopback address)	A instância está na minha rede local (endereço privado ou de loopback)
+The list has not been read, or it is empty.	A lista não foi lida ou está vazia.
+The migration did not complete; nothing was changed.	A migração não foi concluída; nada foi alterado.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	As entradas mais recentes mantidas na memória. Os logs completos vão para a saída do processo (logs do contêiner ou journal).
+The passwords do not match.	As senhas não coincidem.
+The recycle bin has no media or subtitle files.	A lixeira não tem arquivos de mídia ou legendas.
+The sign-in expired; try again.	O login expirou; tente novamente.
+The upload failed (network error).	O envio falhou (erro de rede).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	O worker é um componente opcional do host (o worker de compressão do Tanukarr) acessado pelo socket em KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (o catálogo do Sonarr), TMDB e TVmaze abrangem séries de TV; AniList e MyAnimeList abrangem séries e filmes de anime; TMDB e OMDb abrangem filmes. Adicionar um título cria sua entrada na biblioteca e a lista de episódios; os arquivos são detectados depois pela importação.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Títulos do TheTVDB são pesquisados e adicionados neste idioma; cada série pode alterá-lo no seu editor.
+TheTVDB titles in this language; changing it refreshes the series	Títulos do TheTVDB neste idioma; alterá-lo atualiza a série
+There is nothing at /{path}.	Não há nada em /{path}.
+They are created by migrating from Sonarr/Tanukarr.	Eles são criados ao migrar do Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Modo de renomeação, títulos das pastas de temporada e versões mantidas desta série
+TiB	TiB
+Time	Hora
+Time left	Tempo restante
+Title	Título
+Title pattern	Padrão de título
+Titles import lists never add.	Títulos que as listas de importação nunca adicionam.
+Titles on no list	Títulos em nenhuma lista
+Today	Hoje
+Torrent	Torrent
+Torrent delay	Atraso do torrent
+Torrent delay (minutes)	Atraso do torrent (minutos)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Indexadores Torznab e Newznab. Use Testar no editor para verificar um; cada pesquisa usa os indexadores com aquele tipo de pesquisa habilitado: RSS, automática ou interativa.
+Trigger	Gatilho
+URL base	URL base
+UTC air date	Data de exibição UTC
+Unchanged	Inalterado
+Unknown	Desconhecido
+Unmonitor	Não monitorar
+Unmonitor them	Deixar de monitorá-los
+Unmonitored	Não monitorado
+Upcoming	Por vir
+Upcoming 7 days	Próximos 7 dias
+Update	Atualizar
+Updated {} items.	{} itens atualizados.
+Upgrade until (cutoff)	Atualizar até (corte)
+Upgrade until format score	Atualizar até a pontuação do formato
+Upgrades allowed	Atualizações permitidas
+Upload a backup	Enviar um backup
+Upload failed (HTTP {}).	Falha no envio (HTTP {}).
+Uploading…	Enviando…
+Use SSL	Usar SSL
+Use a proxy	Usar um proxy
+Use hardlinks instead of copying	Usar hardlinks em vez de copiar
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Use-a como cabeçalho X-Api-Key (ou ?apikey=) em outros aplicativos. Compatível com o cabeçalho usado pelo Sonarr.
+Use these episodes	Usar estes episódios
+Usenet	Usenet
+Usenet delay	Atraso da Usenet
+Usenet delay (minutes)	Atraso da Usenet (minutos)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Somente Usenet: lançamentos mais recentes são rejeitados, dando-lhes tempo para se propagar. 0 desativa.
+Usenet only: older releases are rejected. 0 means unlimited.	Somente Usenet: lançamentos mais antigos são rejeitados. 0 significa ilimitado.
+User name	Nome de usuário
+Username	Nome de usuário
+Validation	Validação
+Version	Versão
+Versions	Versões
+Waiting for the sign-in at	Aguardando o login em
+Wanted	Procurado
+Warnings	Avisos
+Warnings {warnings}	Avisos {warnings}
+Watched (Jellyfin watched sync)	Assistido (sincronização de assistidos do Jellyfin)
+Watched sync user	Usuário da sincronização de assistidos
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, scripts personalizados (com as variáveis de ambiente do Sonarr), Emby/Jellyfin, Plex e Kodi recebem: obtenções, importações e atualizações, renomeações, séries adicionadas ou excluídas, arquivos excluídos, problemas de integridade. Use Testar no editor.
+Welcome	Bem-vindo
+What to import	O que importar
+When	Quando
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Quando os certificados HTTPS de indexadores, clientes de download e serviços são verificados (configuração do Sonarr). Certificados autoassinados na sua rede exigem que ela seja flexibilizada.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Quando um cliente de download informa caminhos que o Kitsunarr vê em outro lugar (outra máquina ou contêiner), mapeie o host e o caminho do cliente para o caminho local.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Se lançamentos que corrigem um lançamento defeituoso são preferidos e atualizam arquivos existentes (como no Sonarr).
+Whole season	Temporada inteira
+Working…	Processando…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Gravados nas pastas das séries quando as séries são verificadas, atualizadas ou importadas, como os consumidores de metadados do Sonarr os gravam.
+Year	Ano
+Your library is empty.	Sua biblioteca está vazia.
+all checks passed	todas as verificações aprovadas
+comma separated	separados por vírgula
+cutoff: {}	corte: {}
+has a file	tem arquivo
+iCal link	link do iCal
+in 2 days	em 2 dias
+in a moment	em instantes
+in file names	nos nomes de arquivos
+in library	na biblioteca
+in {text}	em {text}
+just now	agora mesmo
+may run out of space	pode ficar sem espaço
+name (e.g. phone)	nome (ex.: celular)
+never refreshed	nunca atualizado
+no media files are moved, renamed or deleted.	nenhum arquivo de mídia é movido, renomeado ou excluído.
+not accessible	inacessível
+not added	não adicionado
+not checked	não verificado
+not read yet	ainda não lida
+on disk	no disco
+refreshed {}	atualizado {}
+schema {s}	esquema {s}
+secrets included	segredos incluídos
+secrets masked	segredos ocultos
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip ou sonarr.db
+stored only	apenas armazenado
+title (optional)	título (opcional)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} adicionados; {}
+{added} shows added.	{added} séries adicionadas.
+{c.name} (API key needed)	{c.name} (chave da API necessária)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} séries · {c.movie_count} filmes
+{chosen().len()} chosen	{chosen().len()} escolhidos
+{chosen().len()} chosen (at most 25)	{chosen().len()} escolhidos (no máximo 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} no disco · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% de {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · adicionado {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} de {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} arquivos · {job["percent"]}% · economizados {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} iniciado.
+{name} was added to the library.	{name} foi adicionado à biblioteca.
+{name}: shows	{name}: séries
+{ok} files imported.	{ok} arquivos importados.
+{ok} imported; {}	{ok} importados; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} lançamentos de {r.searched_indexers} indexador(es).
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} séries e {r.files_checked} arquivos verificados: {r.issues.len()} problemas.
+{selected.read().len()} selected	{selected.read().len()} selecionados
+{text} ago	há {text}
+{} (not accessible)	{} (inacessível)
+{} ({} free)	{} ({} livres)
+{} added to every profile (not allowed yet).	{} adicionado a todos os perfis (ainda não permitido).
+{} day(s)	{} dia(s)
+{} failed: {}	{} falhou: {}
+{} format scores	{} pontuações de formato
+{} free of {}	{} livres de {}
+{} week(s)	{} semana(s)
+{}{year} — movie	{}{year} — filme
+‹ Back	‹ Voltar
+‹ Earlier	‹ Anteriores
+‹ Prev	‹ Anterior
+○ offline	○ offline
+● live	● ao vivo
+✓ No issues detected.	✓ Nenhum problema detectado.
+Activity	Atividade
+Queue	Fila
+System	Sistema
+Tasks	Tarefas
+Retry	Tentar novamente
+Sign out	Sair
+Search titles…  ( / )	Pesquisar títulos…  ( / )
+Loading…	Carregando…
+Profiles	Perfis
+scene {}	cena {}
+Scene numbering from TheXEM	Numeração de cena do TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Numeração de cena extrapolada do TheXEM (não verificada)
+Season {} (scene seasons {})	Temporada {} (temporadas de cena {})
+{} (scene {})	{} (cena {})

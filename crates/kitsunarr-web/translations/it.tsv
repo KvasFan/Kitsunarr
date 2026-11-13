@@ -85,7 +85,7 @@ Anime	Anime
 Anime / absolute numbering	Anime / numerazione assoluta
 Anime categories	Categorie anime
 Anime episode format	Formato episodio anime
-Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB provider, which is not implemented yet.	I film anime si possono aggiungere da AniList e le migrazioni da Tanukarr portano con sé i loro film. I film live-action richiedono il catalogo TMDB.
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	I film anime si possono aggiungere da AniList e le migrazioni da Tanukarr portano con sé i loro film. I film live-action richiedono il catalogo TMDB.
 Anime standard format search	Ricerca anime in formato standard
 Anime title, e.g. Frieren	Titolo anime, es. Frieren
 Any	Qualsiasi
@@ -309,7 +309,7 @@ First and last pieces first	Prima il primo e l'ultimo pezzo
 First day of the week	Primo giorno della settimana
 First season	Prima stagione
 Folder	Cartella
-Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile. Release matching uses them once indexer search is implemented.	I formati usano i tipi di specifica di Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). I punteggi si assegnano per profilo di qualità.
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	I formati usano i tipi di specifica di Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). I punteggi si assegnano per profilo di qualità.
 Found	Trovate
 Free	Libero
 Free space	Spazio libero
@@ -625,7 +625,7 @@ Release	Release
 Release profile	Profilo di release
 Release profile saved.	Profilo di release salvato.
 Release profiles	Profili di release
-Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Grab sends a torrent to qBittorrent; rejected releases ask for a second click.	Le release vengono confrontate con il profilo di qualità, i formati personalizzati e i profili di release della serie, e ordinate, come fa Sonarr. Le release rifiutate chiedono un secondo clic.
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Le release vengono confrontate con il profilo di qualità, i formati personalizzati e i profili di release della serie, e ordinate, come fa Sonarr. Le release rifiutate chiedono un secondo clic.
 Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Release fallite o messe in blocklist a mano. Ricerche e sincronizzazione RSS non le acquisiscono mai più; rimuovine una per consentirla.
 Remote path	Percorso remoto
 Remote path mapping	Mappatura del percorso remoto
@@ -649,7 +649,7 @@ Rename	Rinomina
 Rename files	Rinomina i file
 Rename files on import	Rinomina i file all'importazione
 Rename files to the naming settings	Rinomina i file secondo le impostazioni di denominazione
-Renaming takes effect once the import pipeline is implemented; formats use Sonarr's tokens.	I formati usano i token di Sonarr.
+Formats use Sonarr's tokens.	I formati usano i token di Sonarr.
 Renaming…	Rinomina…
 Report	Rapporto
 Request one at omdbapi.com. Used for films by IMDb id.	Richiedine una su omdbapi.com. Usata per i film tramite id IMDb.
