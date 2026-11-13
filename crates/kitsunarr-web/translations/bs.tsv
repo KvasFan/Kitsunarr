@@ -1,0 +1,968 @@
+# Bosnian interface strings: English<TAB>Bosnian. {…} marks a placeholder.
+custom	prilagođeno
+indeterminate	neodređeno
+mixed	mješovito
+retired	povučeno
+· container	· kontejner
+· finished {format_datetime(f)}	· završeno {format_datetime(f)}
+· missing	· nedostaje
+· on disk	· na disku
+· today	· danas
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep
+— MiB per minute; empty uses Settings › Quality	— MiB po minuti; prazno koristi Postavke › Kvalitet
+— a release's size is multiplied by its codec's factor before the size limits apply	— veličina izdanja množi se faktorom njegovog kodeka prije primjene ograničenja veličine
+— all profiles at once	— svi profili odjednom
+— codec and title criteria, custom qualities (Tanukarr)	— kriteriji kodeka i naslova, prilagođeni kvaliteti (Tanukarr)
+— enter the code	— unesite kod
+(empty)	(prazno)
++ Add mapping	+ Dodaj mapiranje
++ New format	+ Novi format
++ New profile	+ Novi profil
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (isključeno) ili od 10 do 120. RSS sinhronizacija se pokreće i iz Sistem › Zadaci.
+3 hours ago	prije 3 sata
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Torrent koji se preuzima bez napretka ovoliko dugo smatra se neuspjelim, blokira se i ponovo traži. 0 ovo isključuje; napredak se prati od pokretanja Kitsunarra.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Grupa franšize pronađena iz veza na AniListu ili MyAnimeListu. Naslovi iz iste franšize dodani kasnije također joj se pridružuju.
+A new API key was generated. Update the applications that use it.	Generisan je novi API ključ. Ažurirajte aplikacije koje ga koriste.
+A regular expression, case-insensitive; empty matches every title.	Regularni izraz, bez razlikovanja velikih i malih slova; prazno odgovara svakom naslovu.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Izdanje dobija najspecifičniji predložak dozvoljen u profilu svoje serije čijem izvoru, rezoluciji, kodeku i uzorku naslova odgovara. Standardni kvalitet kojem je dodan kodek ili uzorak pretvara izdanja koja ih ne zadovoljavaju u Nepoznato. Prilagođeni predlošci dodaju se svakom profilu kao nedozvoljeni.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Veličina izdanja množi se faktorom njegovog kodeka prije primjene ograničenja veličine. "Mješovito" znači da profili koriste različite faktore; vrijednost unesena ovdje upisuje se u svaki profil.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Naslov koji se pridružuje franšizi ili ručnoj grupi napušta grupu u kojoj je bio. Datoteke i folderi se ne premještaju.
+API key	API ključ
+API key needed	Potreban je API ključ
+API keys and language	API ključevi i jezik
+API path	API putanja
+About	O programu
+Absolute path; empty to delete permanently.	Apsolutna putanja; prazno za trajno brisanje.
+Accepted	Prihvaćeno
+Account lists	Liste računa
+Actions	Akcije
+Actual	Stvarno
+Add	Dodaj
+Add a Newznab or Torznab indexer and enable interactive search for it.	Dodajte Newznab ili Torznab indekser i omogućite mu interaktivnu pretragu.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Dodajte klijent iz njegovog šablona i koristite Test u uređivaču; zgrabljivanja, red čekanja i uvozi koriste svaki omogućeni klijent. Blackhole upisuje zgrabljena izdanja u folder i uvozi ono što se pojavi u njegovom nadziranom folderu. Opcije "Ukloni završena/neuspjela preuzimanja" svakog klijenta uklanjaju preuzimanja (s njihovim datotekama) kada klijent završi s njima.
+Add a download client in Settings › Download clients and enable it.	Dodajte klijent za preuzimanje u Postavke › Klijenti za preuzimanje i omogućite ga.
+Add a root folder first: it is where this title's folder will live.	Prvo dodajte korijenski folder: u njemu će se nalaziti folder ovog naslova.
+Add a tag above first.	Prvo dodajte oznaku iznad.
+Add a title	Dodaj naslov
+Add auto tag	Dodaj automatsku oznaku
+Add condition	Dodaj uslov
+Add exclusion	Dodaj izuzetak
+Add media	Dodaj medije
+Add one, or migrate them from Sonarr/Tanukarr.	Dodajte jedan ili ih migrirajte iz Sonarra/Tanukarra.
+Add preset	Dodaj predložak
+Add selected	Dodaj odabrano
+Add series or movies below.	Dodajte serije ili filmove ispod.
+Add tag	Dodaj oznaku
+Add the list's tags	Dodaj oznake liste
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Dodajte naslove s TVmazea ili AniLista, ili prenesite postojeću Sonarr ili Tanukarr biblioteku.
+Add to library	Dodaj u biblioteku
+Add {}	Dodaj {}
+Add {} ({y})	Dodaj {} ({y})
+Add — {}	Dodaj — {}
+Add, and remove when they leave the list	Dodaj i ukloni kada napuste listu
+Added	Dodano
+Added to the titles this list adds.	Dodaje se naslovima koje ova lista dodaje.
+Adding titles	Dodavanje naslova
+Adding…	Dodavanje…
+Address	Adresa
+Age	Starost
+Aired	Emitovano
+Aired monitored episodes without a file appear here.	Ovdje se pojavljuju emitovane praćene epizode bez datoteke.
+All	Sve
+All collections	Sve kolekcije
+All episodes	Sve epizode
+All episodes in the series folder	Sve epizode u folderu serije
+All events	Svi događaji
+Allow zero size (the feed has no release sizes)	Dozvoli nultu veličinu (feed ne navodi veličine izdanja)
+Also delete the series folder and its files (to the recycle bin when one is set)	Obriši i folder serije i njegove datoteke (u korpu za otpatke, ako je postavljena)
+Also for releases grabbed from interactive search	Također za izdanja zgrabljena iz interaktivne pretrage
+Also known as	Poznato i kao
+Always, even when renaming is off	Uvijek, čak i kada je preimenovanje isključeno
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analiziraj video datoteke (rezolucija, trajanje i kodeci, pomoću ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Naslovi s AniLista i MyAnimeLista uvijek se dodaju kao anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Liste s AniLista, MyAnimeLista, Trakta, Simkla, TMDB-a, MDBLista, Plexa, drugog Sonarra i prilagođene JSON liste čitaju se svakih nekoliko sati; novi naslovi dodaju se s korijenskim folderom, profilom i praćenjem svake liste. Servisi koji zahtijevaju OAuth koriste Client ID vaše vlastite aplikacije i token koji zalijepite (tokeni migrirani iz Tanukarra i dalje rade).
+Anime	Anime
+Anime / absolute numbering	Anime / apsolutno numerisanje
+Anime categories	Anime kategorije
+Anime episode format	Format anime epizode
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Anime filmovi mogu se dodati s AniLista, a migracije iz Tanukarra donose i njegove filmove. Igrani filmovi zahtijevaju TMDB katalog.
+Anime standard format search	Pretraga animea u standardnom formatu
+Anime title, e.g. Frieren	Naslov animea, npr. Frieren
+Any	Bilo koji
+Any library	Bilo koja biblioteka
+Applications using the current key will stop working until you give them the new one.	Aplikacije koje koriste trenutni ključ prestat će raditi dok im ne date novi.
+Applied after every list has been read successfully and some title left a list.	Primjenjuje se nakon što su sve liste uspješno pročitane, a neki naslov je napustio listu.
+Apply	Primijeni
+Apply migration	Primijeni migraciju
+Apply profile	Primijeni profil
+Applying migration	Primjena migracije
+Applying…	Primjena…
+As Settings › Media management says	Kako navode Postavke › Upravljanje medijima
+At least 10 characters.	Najmanje 10 znakova.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Najmanje {MIN_PASSWORD_LENGTH} znakova. Fraza od više riječi dobro funkcioniše.
+Auto tag	Automatska oznaka
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automatska oznaka sačuvana. Primjenjuje se kada se naslovi sljedeći put dodaju, uređuju ili osvježavaju.
+Auto tagging	Automatsko označavanje
+Auto-refresh	Automatsko osvježavanje
+Automatic	Automatska
+Automatic search	Automatska pretraga
+Automatic search for {label}: grabbed {}.	Automatska pretraga za {label}: zgrabljeno {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automatska pretraga za {label}: pronađeno izdanja: {}, odobreno: {}, ništa nije zgrabljeno.
+Automatic search: grab the best release	Automatska pretraga: zgrabi najbolje izdanje
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatizacija je pauzirana: RSS sinhronizacija, planirane sinhronizacije lista i automatske pretrage se preskaču. Ručne akcije i trenutna preuzimanja se nastavljaju.
+Automation resumed.	Automatizacija je nastavljena.
+Available from	Dostupno od
+Back to the dashboard	Nazad na kontrolnu ploču
+Back up now	Napravi sigurnosnu kopiju sada
+Backup {} created.	Sigurnosna kopija {} je kreirana.
+Backups	Sigurnosne kopije
+Blocking:	Blokira:
+Blocklist	Lista blokiranih
+Blocklist the release and search again	Blokiraj izdanje i ponovo traži
+Blocklist the release: it is never grabbed again	Blokiraj izdanje: nikada više neće biti zgrabljeno
+Blocklist “{title}” and search for a replacement?	Blokirati “{title}” i tražiti zamjenu?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Prenesite svoju Sonarr (v3/v4) ili Tanukarr biblioteku i postavke u Kitsunarr. Izvor se samo čita, nikada ne mijenja, i
+Bypass the proxy for local addresses	Zaobiđi proxy za lokalne adrese
+Calendar	Kalendar
+Calendar →	Kalendar →
+Cancel	Otkaži
+Cancel compression	Otkaži kompresiju
+Cannot reach the server: {e}	Server nije dostupan: {e}
+Catalogue	Katalog
+Category	Kategorija
+Certificate validation	Provjera certifikata
+Change password	Promijeni lozinku
+Change series	Promijeni seriju
+Changes	Promjene
+Check	Provjeri
+Check library	Provjeri biblioteku
+Check now	Provjeri sada
+Check that the mapped series folders exist (read-only)	Provjeri postoje li mapirani folderi serija (samo čitanje)
+Checked: {summary}.	Provjereno: {summary}.
+Checking…	Provjera…
+Choose a backup file	Odaberite datoteku sigurnosne kopije
+Choose a mode	Odaberite način
+Choose a root folder and a quality profile.	Odaberite korijenski folder i profil kvaliteta.
+Choose a season	Odaberite sezonu
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Odaberite seriju i sezonu ili epizodu. Rezultati prikazuju šta je svako izdanje, onako kako ga čita Kitsunarrov parser.
+Choose a series or movie…	Odaberite seriju ili film…
+Choose source	Odaberite izvor
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Ručno odaberite epizode ovog izdanja, a zatim ga zgrabite (izbor se čuva za uvoz)
+Choose…	Odaberi…
+Clean library	Očisti biblioteku
+Clear	Očisti
+Clear blocklist	Očisti listu blokiranih
+Cleared {n} releases from the blocklist.	Uklonjeno izdanja s liste blokiranih: {n}.
+Client	Klijent
+Close	Zatvori
+Codec	Kodek
+Codec factors saved in every profile.	Faktori kodeka sačuvani u svakom profilu.
+Codec size factors	Faktori veličine po kodeku
+Codecs	Kodeci
+Collection film folder format	Format foldera filma u kolekciji
+Collections	Kolekcije
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Kolekcije se pojavljuju kada se migriraju iz Tanukarra, kreiraju iz podataka kataloga ili kreiraju ovdje.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Dolazite iz Sonarra ili Tanukarra? Uvezite postojeće serije, postavke i historiju u nekoliko koraka.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Odvojeno zarezima; * je džoker znak (*.lan), a rade i IP rasponi poput 192.168.1.0/24.
+Companion app keys	Ključevi za prateće aplikacije
+Complete series	Kompletna serija
+Completed and failed download handling	Obrada završenih i neuspjelih preuzimanja
+Component	Komponenta
+Compress series	Komprimiraj seriju
+Compression	Kompresija
+Compression queued.	Kompresija je u redu čekanja.
+Compression worker is not connected.	Radni proces kompresije nije povezan.
+Condition	Uslov
+Conditions	Uslovi
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Uslovi iste vrste se podudaraju kada se podudara bilo koji od njih (moraju svi obavezni); svaka vrsta se mora podudarati.
+Configure	Konfiguriši
+Confirm password	Potvrdi lozinku
+Connect	Poveži
+Connect to a running instance	Poveži se s pokrenutom instancom
+Connecting…	Povezivanje…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Konzistentne kopije baze podataka. Planirane sigurnosne kopije prave se sedmično (čuva se posljednjih osam); svaka migracija prvo napravi jednu. Za vraćanje zaustavite Kitsunarr i pokrenite
+Continuing	U toku
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Kolačić (šalje se uz zahtjev za feed, npr. uid=1; pass=…)
+Copied.	Kopirano.
+Copy	Kopiraj
+Copy (keep the originals)	Kopiraj (zadrži originale)
+Copy sizes from	Kopiraj veličine iz
+Copy the token now; it is not shown again:	Kopirajte token sada; više se neće prikazati:
+Could not grab {}: {}	Nije moguće zgrabiti {}: {}
+Covers	Pokriva
+Create	Kreiraj
+Create account	Kreiraj račun
+Create group	Kreiraj grupu
+Create key	Kreiraj ključ
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Kreirajte ga na themoviedb.org › Settings › API. Koristi se za TMDB TV serije i filmove.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Kreirajte administratorski račun. Koristit ćete ga za prijavu u Kitsunarr.
+Created	Kreirano
+Created when the first file is imported. Nothing is written to disk now.	Kreira se kada se uveze prva datoteka. Sada se ništa ne upisuje na disk.
+Creating…	Kreiranje…
+Credit	Zasluge
+Current file	Trenutna datoteka
+Current password	Trenutna lozinka
+Custom format saved.	Prilagođeni format sačuvan.
+Custom format score	Rezultat prilagođenog formata
+Custom format scores	Rezultati prilagođenih formata
+Custom formats	Prilagođeni formati
+Cutoff unmet	Granica nije dostignuta
+Daily	Dnevna
+Daily episode format	Format dnevne epizode
+Dashboard	Kontrolna ploča
+Data directory	Folder podataka
+Database backup taken before the import: {b}	Sigurnosna kopija baze podataka napravljena prije uvoza: {b}
+Database schema	Šema baze podataka
+Date	Datum
+Date added	Datum dodavanja
+Debug	Otklanjanje grešaka
+Decision	Odluka
+Default	Zadano
+Defaults	Zadane vrijednosti
+Delay profile	Profil odgode
+Delay profile saved.	Profil odgode sačuvan.
+Delay profiles	Profili odgode
+Delete	Obriši
+Delete empty series folders	Obriši prazne foldere serija
+Delete file	Obriši datoteku
+Delete group	Obriši grupu
+Delete profile	Obriši profil
+Delete “{path}”? It goes to the recycle bin when one is set.	Obrisati “{path}”? Ide u korpu za otpatke, ako je postavljena.
+Delete “{}”?	Obrisati “{}”?
+Delete “{}”? Its series and movies stay in the library.	Obrisati “{}”? Njene serije i filmovi ostaju u biblioteci.
+Deleted	Obrisano
+Directory	Direktorij
+Disabled	Onemogućeno
+Disabled for local addresses	Onemogućeno za lokalne adrese
+Disk scanned: {}	Disk skeniran: {}
+Disk scanned: {} Not matched: {}	Disk skeniran: {} Nepodudarno: {}
+Do not prefer	Ne preferiraj
+Do not search for a replacement	Ne traži zamjenu
+Do nothing	Ne radi ništa
+Done	Gotovo
+Download client options saved.	Opcije klijenata za preuzimanje sačuvane.
+Download clients	Klijenti za preuzimanje
+Download failed	Preuzimanje nije uspjelo
+Download queue	Red čekanja preuzimanja
+Downloads	Preuzimanja
+Duration	Trajanje
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Svaki naslov pripada jednom katalogu, iz kojeg čitaju njegova osvježavanja; svaki identifikator koji nosi (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) se čuva. Naslovi migrirani iz Sonarra pripadaju TheTVDB-u.
+Edit	Uredi
+Edit “{name}”	Uredi “{name}”
+Edit “{}”	Uredi “{}”
+Enable RSS	Omogući RSS
+Enable automatic search	Omogući automatsku pretragu
+Enable interactive search	Omogući interaktivnu pretragu
+Enabled	Omogućeno
+Ended	Završena
+English	English
+Entity	Entitet
+Episode	Epizoda
+Episode and movie naming	Imenovanje epizoda i filmova
+Episode image thumbs in the NFO	Sličice epizoda u NFO-u
+Episode images (<filename>-thumb.jpg)	Slike epizoda (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Slike epizoda (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Slike epizoda (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Mapiranja epizoda u .plexmatch
+Episode metadata (<filename>.nfo)	Metapodaci epizoda (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Metapodaci epizoda (Season##/filename.xml)
+Episode order	Redoslijed epizoda
+Episode order changed: {} episodes updated, {} added.	Redoslijed epizoda promijenjen: ažurirano epizoda: {}, dodano: {}.
+Episodes	Epizode
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Epizode se prenumerišu prema odabranom redoslijedu; datoteke, praćenje i historija ostaju uz svoje epizode. Nakon toga preimenujte datoteke da odgovaraju novim brojevima.
+Episodes of {title}	Epizode serije {title}
+Episodes on disk	Epizode na disku
+Episodes whose file is below the quality profile's cutoff appear here.	Ovdje se pojavljuju epizode čija je datoteka ispod granice profila kvaliteta.
+Episodes…	Epizode…
+Errors	Greške
+Errors {errors}	Greške {errors}
+Event	Događaj
+Every file already follows the naming settings.	Svaka datoteka već prati postavke imenovanja.
+Every file meets its cutoff	Svaka datoteka dostiže svoju granicu
+Exclude	Isključi
+Exclusions	Izuzeci
+Expected	Očekivano
+Expires	Ističe
+Extra file extensions	Ekstenzije dodatnih datoteka
+Factor	Faktor
+Failed	Neuspjelo
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Zaštita od lažnih izdanja: pregledaj torrente prije zgrabljivanja i odbij izvršne datoteke, arhive-mamce s lozinkom i sadržaj bez videa
+Feed address	Adresa feeda
+Fetch the latest metadata from {}	Preuzmi najnovije metapodatke s {}
+File	Datoteka
+File date	Datum datoteke
+File deleted	Datoteka obrisana
+File deleted.	Datoteka obrisana.
+File management	Upravljanje datotekama
+File management settings saved.	Postavke upravljanja datotekama sačuvane.
+File renamed	Datoteka preimenovana
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Datoteke starije od ovoga svakodnevno se brišu iz korpe za otpatke; 0 ih čuva.
+Files upgrades replaced, kept as versions	Datoteke zamijenjene nadogradnjama, sačuvane kao verzije
+Film	Film
+Film title or IMDb id, e.g. Arrival	Naslov filma ili IMDb id, npr. Arrival
+Find a series in your library	Pronađi seriju u svojoj biblioteci
+Find files added to or removed from the series folder	Pronađi datoteke dodane u folder serije ili uklonjene iz njega
+Find something to add	Pronađi nešto za dodavanje
+First and last pieces first	Prvo prvi i posljednji dijelovi
+First day of the week	Prvi dan sedmice
+First season	Prva sezona
+Folder	Folder
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formati koriste Sonarrove tipove specifikacija (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Rezultati se dodjeljuju po profilu kvaliteta.
+Found	Pronađeno
+Free	Slobodno
+Free space	Slobodan prostor
+Future days	Budući dani
+Future episodes	Buduće epizode
+General	Opće
+GiB	GiB
+Grab	Zgrabi
+Grab a release from interactive search; downloads in the client's TV category show up here.	Zgrabite izdanje iz interaktivne pretrage; preuzimanja u TV kategoriji klijenta pojavljuju se ovdje.
+Grab anyway?	Ipak zgrabiti?
+Grab with these episodes	Zgrabi s ovim epizodama
+Grabbed	Zgrabljeno
+Grabbed {}.	Zgrabljeno {}.
+Grabbing…	Zgrabljivanje…
+Grabs, imports and file changes appear here. Migrated history is included.	Ovdje se pojavljuju zgrabljivanja, uvozi i promjene datoteka. Migrirana historija je uključena.
+Group film folder format	Format foldera filma u grupi
+Group folder format	Format foldera grupe
+Group season folder format	Format foldera sezone u grupi
+Group story-arc folder format	Format foldera priče (arc) u grupi
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Grupe povezanih serija i filmova: kolekcije kataloga, anime franšize (grupe prequela/sequela) i ručne grupe, uključujući one migrirane iz Tanukarra.
+Hardlink-only imports: never copy downloads that keep seeding	Uvozi samo putem hardlinkova: nikada ne kopiraj preuzimanja koja se i dalje seedaju
+Health	Zdravlje
+Hide	Sakrij
+History	Historija
+History →	Historija →
+Host	Host
+Host (as in the download client's settings)	Host (kao u postavkama klijenta za preuzimanje)
+Hostname	Ime hosta
+How the catalogue numbers the episodes (it can be changed later on the series page).	Kako katalog numeriše epizode (može se kasnije promijeniti na stranici serije).
+Id	Id
+Identities	Identiteti
+Ids	Id-ovi
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Ako Kitsunarr vidi vaše medije pod drugim putanjama nego izvor (na primjer različiti Docker volumeni), mapirajte svaki folder izvora na njegovu lokaciju u Kitsunarru. Putanje se prepisuju samo u bazi podataka.
+Ignored	Zanemareno
+Ignored addresses	Zanemarene adrese
+Implementation	Implementacija
+Import / Migration	Uvoz / Migracija
+Import a Sonarr or Tanukarr library	Uvezi Sonarr ili Tanukarr biblioteku
+Import blocked	Uvoz blokiran
+Import completed downloads	Uvezi završena preuzimanja
+Import extra files (subtitles…)	Uvezi dodatne datoteke (titlovi…)
+Import from Sonarr/Tanukarr	Uvoz iz Sonarra/Tanukarra
+Import history	Uvezi historiju
+Import library	Uvezi biblioteku
+Import list options saved.	Opcije lista za uvoz sačuvane.
+Import lists	Liste za uvoz
+Import pending	Uvoz na čekanju
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Uvezite video datoteke iz bilo kojeg foldera koji server može čitati: provjerite seriju i epizode za svaku datoteku, a zatim ih kopirajte ili premjestite u biblioteku (preimenovane prema postavkama imenovanja).
+Import {chosen().len()} files	Uvezi datoteke ({chosen().len()})
+Imported	Uvezeno
+Imported from series folder	Uvezeno iz foldera serije
+Importing	Uvoz
+Importing…	Uvoz…
+Imports need	Uvozi zahtijevaju
+In library ›	U biblioteci ›
+Include	Uključi
+Include in file names ({{Custom Formats}} token)	Uključi u nazive datoteka (token {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Uključite samo naslove s nekih lista ili izostavite naslove s drugih.
+Include unmonitored	Uključi nepraćeno
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Uključujući URL bazu, npr. http://192.168.1.10:8989 ili https://host/sonarr
+Indexer	Indekser
+Indexer options saved.	Opcije indeksera sačuvane.
+Indexer settings	Postavke indeksera
+Indexers	Indekseri
+Info	Info
+Info {infos}	Info {infos}
+Instance	Instanca
+Instance name	Naziv instance
+Instance: {name}	Instanca: {name}
+Interactive	Interaktivna
+Interactive search	Interaktivna pretraga
+Interactive search for full-season packs only	Interaktivna pretraga samo paketa cijelih sezona
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interaktivna pretraga paketa cijele serije (i njenih sezona) na torrent indekserima
+Interactive search: see every release and choose	Interaktivna pretraga: pogledaj svako izdanje i odaberi
+Interface language	Jezik interfejsa
+Interval	Interval
+Jellyfin library and user	Jellyfin biblioteka i korisnik
+Job	Posao
+Keep / skip	Zadrži / preskoči
+Keep files replaced by upgrades as versions (in "Plex Versions")	Čuvaj datoteke zamijenjene nadogradnjama kao verzije (u "Plex Versions")
+Keep me signed in	Ostavi me prijavljenog
+Keep the replaced file's date (upgrades)	Zadrži datum zamijenjene datoteke (nadogradnje)
+Kept	Zadržano
+Kept versions	Sačuvane verzije
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Ključevi za prateće aplikacije koje koriste Sonarr v3 API: čitaju biblioteku, a ključevi "dodaj serije" mogu i dodavati serije (u korijenski folder, bez pretrage). Ništa drugo nije dozvoljeno.
+KiB	KiB
+Kind	Vrsta
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr je slobodan softver (GPL-3.0-or-later).
+Kitsunarr path	Putanja u Kitsunarru
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr će napraviti sigurnosnu kopiju vlastite baze podataka, uvesti pregledane podatke u jednoj transakciji i provjeriti ih prije potvrđivanja. Izvor i vaše medijske datoteke se ne mijenjaju.
+Label	Oznaka
+Languages	Jezici
+Larger releases are rejected. 0 means unlimited.	Veća izdanja se odbijaju. 0 znači bez ograničenja.
+Last read	Posljednje čitanje
+Last run	Posljednje pokretanje
+Last search	Posljednja pretraga
+Last searched	Posljednji put traženo
+Last season	Posljednja sezona
+Later ›	Kasnije ›
+Latest season	Najnovija sezona
+Level	Nivo
+Library	Biblioteka
+Library check	Provjera biblioteke
+Library tools	Alati biblioteke
+Library tools saved.	Alati biblioteke sačuvani.
+List	Lista
+Listed best first. Grouped qualities rank equally.	Poredano od najboljeg. Grupisani kvaliteti su jednako rangirani.
+Live updates connected	Ažuriranja uživo povezana
+Live updates disconnected	Ažuriranja uživo prekinuta
+Load	Učitaj
+Load the account's lists	Učitaj liste računa
+Load the libraries…	Učitaj biblioteke…
+Load the users…	Učitaj korisnike…
+Local air date	Lokalni datum emitovanja
+Local path	Lokalna putanja
+Log them	Zabilježi ih
+Logs	Zapisnici
+Main rejections	Glavna odbijanja
+Make current	Postavi kao trenutno
+Manual import	Ručni uvoz
+Mark as failed	Označi kao neuspjelo
+Matches monitored titles.	Podudara se s praćenim naslovima.
+Maximum	Maksimum
+Maximum size (MB)	Maksimalna veličina (MB)
+Media management	Upravljanje medijima
+Media management settings	Postavke upravljanja medijima
+Media paths	Putanje medija
+Mediums	Mediji
+Members	Članovi
+Message	Poruka
+Metadata	Metapodaci
+Metadata files	Datoteke metapodataka
+Metadata keys saved.	Ključevi metapodataka sačuvani.
+Metadata language	Jezik metapodataka
+Metadata refreshed.	Metapodaci osvježeni.
+Metadata refreshed: {} new episodes, {} updated.	Metapodaci osvježeni: novih epizoda: {}, ažurirano: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Postavke metapodataka sačuvane. Datoteke se upisuju pri sljedećem skeniranju diska, osvježavanju ili uvozu.
+Metadata sources	Izvori metapodataka
+MiB	MiB
+Migration completed.	Migracija završena.
+Migration report #{}	Izvještaj o migraciji br. {}
+Minimum	Minimum
+Minimum age (minutes)	Minimalna starost (minute)
+Minimum custom format score	Minimalni rezultat prilagođenog formata
+Minimum format score	Minimalni rezultat formata
+Minimum free space (MiB)	Minimalni slobodni prostor (MiB)
+Minimum seeders	Minimalno seedera
+Missing	Nedostaje
+Missing (monitored)	Nedostaje (praćeno)
+Missing films	Filmovi koji nedostaju
+Mode	Način
+Monday	Ponedjeljak
+Monitor	Prati
+Monitored	Praćeno
+More languages can be added to the string tables.	Više jezika može se dodati u tabele tekstova.
+Move	Premjesti
+Movie	Film
+Movie file format	Format datoteke filma
+Movie removed from Kitsunarr. Files on disk were not touched.	Film je uklonjen iz Kitsunarra. Datoteke na disku nisu dirane.
+Movies	Filmovi
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Izdanja s više sezona: prihvati pakete više sezona (pretraga sezone uzima paket za svoju sezonu)
+Must contain	Mora sadržavati
+Must contain (comma separated; /regex/ allowed)	Mora sadržavati (odvojeno zarezima; /regex/ dozvoljen)
+Must not contain	Ne smije sadržavati
+NOT	NE
+Name	Naziv
+Naming	Imenovanje
+Naming options saved.	Opcije imenovanja sačuvane.
+Naming saved.	Imenovanje sačuvano.
+Negate	Negiraj
+Network	Mreža
+Never: keep the release's names	Nikada: zadrži nazive iz izdanja
+New custom format	Novi prilagođeni format
+New custom preset	Novi prilagođeni predložak
+New group title	Naslov nove grupe
+New password	Nova lozinka
+New quality profile	Novi profil kvaliteta
+Next airing	Sljedeće emitovanje
+Next run	Sljedeće pokretanje
+Next ›	Dalje ›
+No	Ne
+No activity yet.	Još nema aktivnosti.
+No auto tags.	Nema automatskih oznaka.
+No backups yet	Još nema sigurnosnih kopija
+No collections yet	Još nema kolekcija
+No companion keys.	Nema ključeva za prateće aplikacije.
+No custom formats	Nema prilagođenih formata
+No custom formats defined.	Nema definisanih prilagođenih formata.
+No delay above the minimum custom format score	Bez odgode iznad minimalnog rezultata prilagođenog formata
+No delay for the profile's best quality in the preferred protocol	Bez odgode za najbolji kvalitet profila u preferiranom protokolu
+No download client to read	Nema klijenta za preuzimanje za čitanje
+No exclusions.	Nema izuzetaka.
+No history	Nema historije
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Nijedan indekser ne može automatski tražiti ovu seriju: nijedan nema omogućenu automatsku pretragu uz to da nema oznaka ili ima jednu od oznaka serije.
+No indexers to search	Nema indeksera za pretragu
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Nema sačuvanih verzija. Uključite "Čuvaj datoteke zamijenjene nadogradnjama" u Imenovanju.
+No log entries at this level	Nema zapisa na ovom nivou
+No mappings.	Nema mapiranja.
+No matches	Nema podudaranja
+No members	Nema članova
+No migrations have been run yet.	Još nije pokrenuta nijedna migracija.
+No movies yet	Još nema filmova
+No notes.	Nema napomena.
+No recycle bin is set (Settings › Media management).	Korpa za otpatke nije postavljena (Postavke › Upravljanje medijima).
+No release profiles.	Nema profila izdanja.
+No root folders yet.	Još nema korijenskih foldera.
+No root folders.	Nema korijenskih foldera.
+No runs yet	Još nema pokretanja
+No searches yet.	Još nema pretraga.
+No series in your library match.	Nijedna serija u vašoj biblioteci se ne podudara.
+No tags	Nema oznaka
+No {}	Nema: {}
+No {} yet	Još nema: {}
+None	Ništa
+Not evaluated by Kitsunarr.	Kitsunarr ovo ne procjenjuje.
+Not imported	Nije uvezeno
+Not monitored	Nije praćeno
+Notes	Napomene
+Notes ({preview.warnings.len()})	Napomene ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Napomene ({report.warnings.len()})
+Nothing airs in the next seven days.	Ništa se ne emituje u narednih sedam dana.
+Nothing downloading	Ništa se ne preuzima
+Nothing found	Ništa nije pronađeno
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Ništa u ovom katalogu ne odgovara pretrazi. Pokušajte drugačije pisanje, originalni naslov ili drugi katalog.
+Nothing in this period	Ništa u ovom periodu
+Nothing missing	Ništa ne nedostaje
+Notifications	Obavještenja
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Numeriši epizode prema drugom redoslijedu kataloga (TMDB grupe epizoda, TheTVDB DVD ili apsolutni redoslijed)
+OMDb API key	OMDb API ključ
+Older priority	Starije prvo
+One folder per season	Jedan folder po sezoni
+Only the 2000 newest files are listed.	Prikazuje se samo 2000 najnovijih datoteka.
+Only when the proxy needs one.	Samo ako je proxy zahtijeva.
+Open the library	Otvori biblioteku
+OpenAPI document	OpenAPI dokument
+Opens the service to authorize Kitsunarr and fills in the token.	Otvara servis radi autorizacije Kitsunarra i popunjava token.
+Options	Opcije
+Organize	Organizuj
+Other	Ostalo
+Overview	Pregled
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Prepiši zapise koji već postoje u Kitsunarru (u suprotnom se zadržavaju)
+Packs	Paketi
+Page not found	Stranica nije pronađena
+Page {page} / {pages}	Stranica {page} / {pages}
+Password	Lozinka
+Password changed. Other sessions were signed out.	Lozinka promijenjena. Ostale sesije su odjavljene.
+Past days	Prošli dani
+Path	Putanja
+Path mappings	Mapiranja putanja
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Pauziraj automatizaciju (RSS sinhronizacija, planirane sinhronizacije lista, automatske pretrage)
+Peers	Peerovi
+Permission	Dozvola
+PiB	PiB
+Platform	Platforma
+Port	Port
+Position	Pozicija
+Post-import category	Kategorija nakon uvoza
+Posters	Posteri
+Prefer and upgrade	Preferiraj i nadogradi
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Preferiraj anime pakete sezona (Kitsunarrove pretrage anime sezona već jednom traže sezonu)
+Prefer, do not upgrade	Preferiraj, ne nadograđuj
+Preferred	Preferirano
+Preferred metadata language	Preferirani jezik metapodataka
+Preferred protocol	Preferirani protokol
+Preparing preview…	Priprema pregleda…
+Preview	Pregled
+Preview migration	Pregled migracije
+Previous migrations	Prethodne migracije
+Priority	Prioritet
+Problem	Problem
+Profile	Profil
+Profile saved.	Profil sačuvan.
+Profiles still used by series or movies cannot be deleted.	Profili koje još koriste serije ili filmovi ne mogu se obrisati.
+Progress	Napredak
+Propers and repacks	Properi i repackovi
+Proxy	Proxy
+Proxy saved.	Proxy sačuvan.
+Proxy type	Tip proxyja
+Qualities	Kvaliteti
+Quality	Kvalitet
+Quality presets	Predlošci kvaliteta
+Quality presets saved.	Predlošci kvaliteta sačuvani.
+Quality profile	Profil kvaliteta
+Quality profiles	Profili kvaliteta
+Quality profile…	Profil kvaliteta…
+RSS sync interval (minutes)	Interval RSS sinhronizacije (minute)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS sinhronizacija nakon pojave izdanja čeka ovoliko dugo na bolje; odgođena izdanja se prikazuju u redu čekanja. Primjenjuje se prvi profil čije se oznake podudaraju sa serijom; posljednji (bez oznaka) je zadani.
+Re-encode this series' files with the compression worker	Ponovo kodiraj datoteke ove serije radnim procesom kompresije
+Read and add series	Čitanje i dodavanje serija
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Čita se uživo s klijenata za preuzimanje svakih nekoliko sekundi. Završena preuzimanja koja je Kitsunarr zgrabio uvoze se u folder serije svake minute (torrenti se kopiraju ili povezuju hardlinkom, tako da se nastavljaju seedati; Usenet preuzimanja se premještaju). Neuspjela preuzimanja se blokiraju i ponovo traže.
+Read the library	Čitanje biblioteke
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Samo čitanje: pronalazi foldere serija koji nedostaju, zapise datoteka izvan njihovog foldera ili zabilježene dvaput i datoteke koje nedostaju na disku.
+Reading the download clients…	Čitanje klijenata za preuzimanje…
+Reading the source	Čitanje izvora
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Čita sve putem API-ja. Lozinke i API ključeve provajdera izvor skriva i moraju se nakon toga ponovo unijeti.
+Recent activity	Nedavna aktivnost
+Recent priority	Novije prvo
+Recent runs	Nedavna pokretanja
+Recent searches	Nedavne pretrage
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Preporučeno. U Sonarru/Tanukarru otvorite System → Backup, napravite sigurnosnu kopiju i preuzmite .zip (ili koristite sonarr.db). Uključuje lozinke indeksera i klijenata za preuzimanje.
+Recycle bin	Korpa za otpatke
+Recycle bin cleanup (days)	Čišćenje korpe za otpatke (dani)
+Recycled	U korpi za otpatke
+Refresh metadata	Osvježi metapodatke
+Refresh preview	Osvježi pregled
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Osvježavanje iz {} još nije podržano; uvezeni metapodaci se zadržavaju kakvi jesu
+Refreshing…	Osvježavanje…
+Regenerate	Ponovo generiši
+Regenerate API key	Ponovo generiši API ključ
+Reject releases whose TheTVDB or IMDb id names another series	Odbij izdanja čiji TheTVDB ili IMDb id označava drugu seriju
+Rejected: click twice to grab anyway	Odbijeno: kliknite dvaput da ipak zgrabite
+Release	Izdanje
+Release profile	Profil izdanja
+Release profile saved.	Profil izdanja sačuvan.
+Release profiles	Profili izdanja
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Izdanja se provjeravaju prema profilu kvaliteta, prilagođenim formatima i profilima izdanja serije i rangiraju se, kao u Sonarru. Odbijena izdanja traže drugi klik.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Izdanja koja nisu uspjela ili su ručno blokirana. Pretrage i RSS sinhronizacija ih više nikada ne grabe; uklonite jedno da ga dozvolite.
+Remote path	Udaljena putanja
+Remote path mapping	Mapiranje udaljene putanje
+Remote path mapping saved.	Mapiranje udaljene putanje sačuvano.
+Remote path mappings	Mapiranja udaljenih putanja
+Remove	Ukloni
+Remove completed downloads	Ukloni završena preuzimanja
+Remove every release from the blocklist?	Ukloniti sva izdanja s liste blokiranih?
+Remove failed downloads	Ukloni neuspjela preuzimanja
+Remove from library	Ukloni iz biblioteke
+Remove from queue	Ukloni iz reda čekanja
+Remove from the download client (deletes its files there)	Ukloni iz klijenta za preuzimanje (tamo briše njegove datoteke)
+Remove movie	Ukloni film
+Remove series	Ukloni seriju
+Remove tags automatically (from titles that stop matching)	Automatski uklanjaj oznake (s naslova koji se prestanu podudarati)
+Remove “{title}” and its episode records from Kitsunarr?	Ukloniti “{title}” i zapise njegovih epizoda iz Kitsunarra?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Ukloniti “{title}” iz Kitsunarra? Datoteke na disku se ne brišu.
+Removed	Uklonjeno
+Removed from the blocklist.	Uklonjeno s liste blokiranih.
+Rename	Preimenuj
+Rename files	Preimenuj datoteke
+Rename files on import	Preimenuj datoteke pri uvozu
+Rename files to the naming settings	Preimenuj datoteke prema postavkama imenovanja
+Formats use Sonarr's tokens.	Formati koriste Sonarrove tokene.
+Renaming…	Preimenovanje…
+Report	Izvještaj
+Request one at omdbapi.com. Used for films by IMDb id.	Zatražite ga na omdbapi.com. Koristi se za filmove putem IMDb id-a.
+Required	Obavezno
+Resolution	Rezolucija
+Restore	Vrati
+Restore {}	Vrati {}
+Restore…	Vrati…
+Restoring…	Vraćanje…
+Resume automation	Nastavi automatizaciju
+Retention (days)	Zadržavanje (dani)
+Retire	Povuci
+Revoke	Opozovi
+Root folder	Korijenski folder
+Root folders	Korijenski folderi
+Root folder…	Korijenski folder…
+Run #{run.id}: {run.status}	Pokretanje br. {run.id}: {run.status}
+Run now	Pokreni sada
+Running…	Pokrenuto…
+Saturday	Subota
+Save	Sačuvaj
+Save criteria	Sačuvaj kriterije
+Save factors	Sačuvaj faktore
+Save keys	Sačuvaj ključeve
+Save metadata files	Sačuvaj datoteke metapodataka
+Save naming	Sačuvaj imenovanje
+Save options	Sačuvaj opcije
+Saved	Sačuvano
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Sačuvani ključevi prikazuju se kao {REDACTED}; ostavite ih nepromijenjene da ih zadržite ili ispraznite polje da uklonite jedan.
+Saved.	Sačuvano.
+Scan disk	Skeniraj disk
+Scan folder	Skeniraj folder
+Scanning…	Skeniranje…
+Scheduled tasks	Planirani zadaci
+Score	Rezultat
+Search	Traži
+Search again when a download fails	Ponovo traži kada preuzimanje ne uspije
+Search all	Traži sve
+Search all films	Traži sve filmove
+Search collection	Traži u kolekciji
+Search every episode of the list, one search per season	Traži svaku epizodu liste, jedna pretraga po sezoni
+Search every member's missing episodes (films: the film)	Traži epizode koje nedostaju svakom članu (filmovi: film)
+Search indexers	Traži na indekserima
+Search selected	Traži odabrano
+Search the indexers and choose a release	Pretraži indeksere i odaberi izdanje
+Search the indexers and grab the best accepted release	Pretraži indeksere i zgrabi najbolje prihvaćeno izdanje
+Search the indexers and grab the best releases for the monitored episodes	Pretraži indeksere i zgrabi najbolja izdanja za praćene epizode
+Search your indexers	Pretražite svoje indeksere
+Search {chosen} selected	Traži odabrano ({chosen})
+Search: {}	Pretraga: {}
+Search: {} — complete series	Pretraga: {} — kompletna serija
+Search: {} — season {season} packs	Pretraga: {} — paketi sezone {season}
+Search: {} — {label}	Pretraga: {} — {label}
+Searching for {label}…	Traženje {label}…
+Searching indexers…	Pretraživanje indeksera…
+Searching…	Traženje…
+Season	Sezona
+Season folder format	Format foldera sezone
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Naslovi foldera sezona zamjenjuju naslove kataloga u {{Season Title}}. Ostavite prazno da zadržite naslove kataloga.
+Season folders	Folderi sezona
+Season images (Season ##.jpg)	Slike sezona (Season ##.jpg)
+Season images (Season##/folder.jpg)	Slike sezona (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Slike sezona (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Paketi sezona: 1 koristi ciljeve za pakete sezona ispod
+Season premieres only	Samo premijere sezona
+Season {n}	Sezona {n}
+Season {one}	Sezona {one}
+Season {se.season_number}	Sezona {se.season_number}
+Season {season_number}	Sezona {season_number}
+Season-pack seed ratio	Omjer seedanja za pakete sezona
+Season-pack seed time, minutes	Vrijeme seedanja za pakete sezona, minute
+Seasons	Sezone
+Seasons {first}-{last}	Sezone {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Tajni podaci prikazuju se kao {REDACTED}; ostavite ih nepromijenjene da zadržite sačuvanu vrijednost.
+Seed ratio (empty: the client's default)	Omjer seedanja (prazno: zadano u klijentu)
+Seed time, minutes (empty: the client's default)	Vrijeme seedanja, minute (prazno: zadano u klijentu)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Šalji zahtjeve indekserima, katalozima, listama, klijentima za preuzimanje i vezama putem proxyja.
+Send to the download client	Pošalji klijentu za preuzimanje
+Series	Serije
+Series .plexmatch file	.plexmatch datoteka serije
+Series folder format	Format foldera serije
+Series images (Series Title.jpg)	Slike serije (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Slike serije (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Slike serije (folder.jpg)
+Series metadata (tvshow.nfo)	Metapodaci serije (tvshow.nfo)
+Series metadata URL	URL metapodataka serije
+Series metadata episode guide	Vodič kroz epizode u metapodacima serije
+Series removed from Kitsunarr. Files on disk were not touched.	Serija je uklonjena iz Kitsunarra. Datoteke na disku nisu dirane.
+Series removed, and its folder deleted.	Serija je uklonjena, a njen folder obrisan.
+Series type	Tip serije
+Set quality profile…	Postavi profil kvaliteta…
+Settings	Postavke
+Settings saved.	Postavke sačuvane.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security u Sonarru/Tanukarru.
+Show	Prikaži
+Show as all-day events	Prikaži kao cjelodnevne događaje
+Show unmonitored	Prikaži nepraćeno
+Shows	Serije
+Sign in	Prijava
+Signed in. Save the list to keep the token.	Prijavljeni ste. Sačuvajte listu da zadržite token.
+Signing in…	Prijavljivanje…
+Size	Veličina
+Size limits	Ograničenja veličine
+Size on disk	Veličina na disku
+Skip files smaller than (MB)	Preskoči datoteke manje od (MB)
+Skip the free-space check	Preskoči provjeru slobodnog prostora
+Skip unmonitored episodes when importing packs	Preskoči nepraćene epizode pri uvozu paketa
+Source	Izvor
+Source code	Izvorni kod
+Source path	Izvorna putanja
+Special	Specijal
+Specials	Specijali
+Specials are never monitored automatically.	Specijali se nikada ne prate automatski.
+Specifications	Specifikacije
+Specifications (JSON)	Specifikacije (JSON)
+Specifications must be valid JSON: {e}	Specifikacije moraju biti ispravan JSON: {e}
+Stalled torrent timeout (minutes)	Istek zaglavljenog torrenta (minute)
+Standard	Standardno
+Standard episode format	Format standardne epizode
+Start migration	Pokreni migraciju
+Start over	Počni ispočetka
+Start search for missing episodes	Pokreni pretragu epizoda koje nedostaju
+Started	Pokrenuto
+Started {format_datetime(&run.started_at)}	Pokrenuto {format_datetime(&run.started_at)}
+Status	Status
+Status & health	Status i zdravlje
+Still downloading	Još se preuzima
+Storage outlook	Prognoza prostora
+Studio	Studio
+Subscribe	Pretplati se
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Pretplatite se na ovu adresu u aplikaciji za kalendar. Sadrži vaš API ključ: čuvajte je privatnom.
+Sunday	Nedjelja
+Sync	Sinhronizuj
+Sync all lists now	Sinhronizuj sve liste sada
+Sync now	Sinhronizuj sada
+Syncing…	Sinhronizacija…
+System →	Sistem →
+TMDB API key (v3)	TMDB API ključ (v3)
+TV Series	TV serije
+TV series	TV serije
+Table	Tabela
+Tag	Oznaka
+Tag them	Označi ih
+Tag titles already in the library	Označi naslove koji su već u biblioteci
+Tags	Oznake
+Tags (comma separated)	Oznake (odvojene zarezima)
+Tags (ids, comma separated)	Oznake (id-ovi, odvojeni zarezima)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Oznake se dodaju serijama i filmovima koji zadovoljavaju svaku vrstu uslova kada se dodaju, uređuju ili osvježavaju.
+Task	Zadatak
+Television	Televizija
+Television (raw)	Televizija (raw)
+Test	Test
+Test failed: {message}	Test nije uspio: {message}
+Testing…	Testiranje…
+The blocklist is empty	Lista blokiranih je prazna
+The catalogue new titles are added from when the list knows their id there.	Katalog iz kojeg se dodaju novi naslovi kada lista zna njihov id u njemu.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Datum koji dobijaju uvezene datoteke: datum emitovanja epizode (lokalni ili UTC) ili, pri nadogradnji, datum zamijenjene datoteke.
+The dry run completed without blocking problems. Nothing has been written yet.	Probno pokretanje završeno je bez blokirajućih problema. Još ništa nije upisano.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Datoteka se premješta u folder sezone (postojeća datoteka se nikada ne prepisuje) i serija se ponovo skenira.
+The folder must already exist; Kitsunarr never creates or removes it.	Folder već mora postojati; Kitsunarr ga nikada ne kreira niti uklanja.
+The indexers returned no releases for this search.	Indekseri nisu vratili nijedno izdanje za ovu pretragu.
+The instance is on my local network (private or loopback address)	Instanca je na mojoj lokalnoj mreži (privatna ili loopback adresa)
+The list has not been read, or it is empty.	Lista nije pročitana ili je prazna.
+The migration did not complete; nothing was changed.	Migracija nije završena; ništa nije promijenjeno.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Najnoviji zapisi čuvani u memoriji. Potpuni zapisnici idu u izlaz procesa (zapisnici kontejnera ili journal).
+The passwords do not match.	Lozinke se ne podudaraju.
+The recycle bin has no media or subtitle files.	Korpa za otpatke ne sadrži medijske datoteke ni titlove.
+The sign-in expired; try again.	Prijava je istekla; pokušajte ponovo.
+The upload failed (network error).	Otpremanje nije uspjelo (greška mreže).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Radni proces je opcionalna komponenta hosta (Tanukarrov radni proces kompresije) dostupna putem socketa na KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarrov katalog), TMDB i TVmaze pokrivaju TV serije; AniList i MyAnimeList pokrivaju anime serije i anime filmove; TMDB i OMDb pokrivaju filmove. Dodavanje naslova kreira njegov unos u biblioteci i listu epizoda; datoteke kasnije preuzima proces uvoza.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Naslovi s TheTVDB-a traže se i dodaju na ovom jeziku; svaka serija ga može promijeniti u svom uređivaču.
+TheTVDB titles in this language; changing it refreshes the series	Naslovi s TheTVDB-a na ovom jeziku; promjena osvježava seriju
+There is nothing at /{path}.	Na /{path} nema ničega.
+They are created by migrating from Sonarr/Tanukarr.	Kreiraju se migracijom iz Sonarra/Tanukarra.
+This series' renaming mode, season folder titles and kept versions	Način preimenovanja, naslovi foldera sezona i sačuvane verzije ove serije
+TiB	TiB
+Time	Vrijeme
+Time left	Preostalo vrijeme
+Title	Naslov
+Title pattern	Uzorak naslova
+Titles import lists never add.	Naslovi koje liste za uvoz nikada ne dodaju.
+Titles on no list	Naslovi koji nisu ni na jednoj listi
+Today	Danas
+Torrent	Torrent
+Torrent delay	Odgoda za torrente
+Torrent delay (minutes)	Odgoda za torrente (minute)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab i Newznab indekseri. Koristite Test u uređivaču da provjerite jedan; svaka pretraga koristi indeksere s omogućenom tom vrstom pretrage: RSS, automatska ili interaktivna.
+Trigger	Okidač
+URL base	URL baza
+UTC air date	UTC datum emitovanja
+Unchanged	Nepromijenjeno
+Unknown	Nepoznato
+Unmonitor	Ne prati
+Unmonitor them	Prestani ih pratiti
+Unmonitored	Nepraćeno
+Upcoming	Uskoro
+Upcoming 7 days	Narednih 7 dana
+Update	Ažuriraj
+Updated {} items.	Ažurirano stavki: {}.
+Upgrade until (cutoff)	Nadograđuj do (granica)
+Upgrade until format score	Nadograđuj do rezultata formata
+Upgrades allowed	Nadogradnje dozvoljene
+Upload a backup	Otpremi sigurnosnu kopiju
+Upload failed (HTTP {}).	Otpremanje nije uspjelo (HTTP {}).
+Uploading…	Otpremanje…
+Use SSL	Koristi SSL
+Use a proxy	Koristi proxy
+Use hardlinks instead of copying	Koristi hardlinkove umjesto kopiranja
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Koristite ga kao zaglavlje X-Api-Key (ili ?apikey=) iz drugih aplikacija. Kompatibilno sa zaglavljem koje koristi Sonarr.
+Use these episodes	Koristi ove epizode
+Usenet	Usenet
+Usenet delay	Odgoda za Usenet
+Usenet delay (minutes)	Odgoda za Usenet (minute)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Samo Usenet: novija izdanja se odbijaju, čime im se daje vremena da se prošire. 0 ovo isključuje.
+Usenet only: older releases are rejected. 0 means unlimited.	Samo Usenet: starija izdanja se odbijaju. 0 znači bez ograničenja.
+User name	Korisničko ime
+Username	Korisničko ime
+Validation	Provjera
+Version	Verzija
+Versions	Verzije
+Waiting for the sign-in at	Čeka se prijava na
+Wanted	Traženo
+Warnings	Upozorenja
+Warnings {warnings}	Upozorenja {warnings}
+Watched (Jellyfin watched sync)	Pogledano (Jellyfin sinhronizacija pogledanog)
+Watched sync user	Korisnik za sinhronizaciju pogledanog
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-pošta (SMTP), Mailgun, SendGrid, prilagođene skripte (sa Sonarrovim varijablama okruženja), Emby/Jellyfin, Plex i Kodi dobijaju obavještenja: zgrabljivanja, uvozi i nadogradnje, preimenovanja, dodane ili obrisane serije, obrisane datoteke, problemi sa zdravljem. Koristite Test u uređivaču.
+Welcome	Dobro došli
+What to import	Šta uvesti
+When	Kada
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Kada se provjeravaju HTTPS certifikati indeksera, klijenata za preuzimanje i servisa (Sonarrova postavka). Samopotpisani certifikati na vašoj mreži zahtijevaju ublažavanje.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Kada klijent za preuzimanje prijavljuje putanje koje Kitsunarr vidi negdje drugdje (druga mašina ili kontejner), mapirajte host i putanju klijenta na lokalnu putanju.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Da li se izdanja koja ispravljaju loše izdanje preferiraju i nadograđuju postojeće datoteke (kao u Sonarru).
+Whole season	Cijela sezona
+Working…	Obrada…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Upisuju se u foldere serija kada se serije skeniraju, osvježavaju ili uvoze, onako kako ih upisuju Sonarrovi potrošači metapodataka.
+Year	Godina
+Your library is empty.	Vaša biblioteka je prazna.
+all checks passed	sve provjere prošle
+comma separated	odvojeno zarezima
+cutoff: {}	granica: {}
+has a file	ima datoteku
+iCal link	iCal link
+in 2 days	za 2 dana
+in a moment	za trenutak
+in file names	u nazivima datoteka
+in library	u biblioteci
+in {text}	za {text}
+just now	upravo sada
+may run out of space	može ostati bez prostora
+name (e.g. phone)	naziv (npr. telefon)
+never refreshed	nikada osvježeno
+no media files are moved, renamed or deleted.	nijedna medijska datoteka se ne premješta, preimenuje niti briše.
+not accessible	nije dostupno
+not added	nije dodano
+not checked	nije provjereno
+not read yet	još nije pročitano
+on disk	na disku
+refreshed {}	osvježeno {}
+schema {s}	šema {s}
+secrets included	tajni podaci uključeni
+secrets masked	tajni podaci maskirani
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip ili sonarr.db
+stored only	samo sačuvano
+title (optional)	naslov (opcionalno)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	dodano: {added}; {}
+{added} shows added.	Dodano serija: {added}.
+{c.name} (API key needed)	{c.name} (potreban je API ključ)
+{c.series_count} series · {c.movie_count} movies	serije: {c.series_count} · filmovi: {c.movie_count}
+{chosen().len()} chosen	odabrano: {chosen().len()}
+{chosen().len()} chosen (at most 25)	odabrano: {chosen().len()} (najviše 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} na disku · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% od {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · dodano {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} od {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} datoteka · {job["percent"]}% · ušteđeno {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} pokrenuto.
+{name} was added to the library.	{name} je dodano u biblioteku.
+{name}: shows	{name}: serije
+{ok} files imported.	Uvezeno datoteka: {ok}.
+{ok} imported; {}	uvezeno: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: izdanja: {r.releases.len()}, indeksera: {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Provjereno serija: {r.series_checked}, datoteka: {r.files_checked}; problema: {r.issues.len()}.
+{selected.read().len()} selected	odabrano: {selected.read().len()}
+{text} ago	prije {text}
+{} (not accessible)	{} (nije dostupno)
+{} ({} free)	{} (slobodno: {})
+{} added to every profile (not allowed yet).	{} dodano u svaki profil (još nije dozvoljeno).
+{} day(s)	{} dan(a)
+{} failed: {}	{} neuspjelo: {}
+{} format scores	Rezultati formata: {}
+{} free of {}	slobodno {} od {}
+{} week(s)	{} sedmica/e
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Nazad
+‹ Earlier	‹ Ranije
+‹ Prev	‹ Preth.
+○ offline	○ van mreže
+● live	● uživo
+✓ No issues detected.	✓ Nisu otkriveni problemi.
+Activity	Aktivnost
+Queue	Red čekanja
+System	Sistem
+Tasks	Zadaci
+Retry	Pokušaj ponovo
+Sign out	Odjava
+Search titles…  ( / )	Traži naslove…  ( / )
+Loading…	Učitavanje…
+Profiles	Profili
+scene {}	scena {}
+Scene numbering from TheXEM	Scenska numeracija s TheXEM-a
+Scene numbering extrapolated from TheXEM (unverified)	Scenska numeracija ekstrapolirana s TheXEM-a (neprovjereno)
+Season {} (scene seasons {})	Sezona {} (scenske sezone {})
+{} (scene {})	{} (scena {})

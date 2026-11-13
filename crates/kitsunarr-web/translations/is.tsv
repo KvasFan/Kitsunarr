@@ -1,0 +1,968 @@
+# Icelandic interface strings: English	Icelandic. {…} marks a placeholder.
+custom	sérsniðin
+indeterminate	óákveðið
+mixed	blandað
+retired	úrelt
+· container	· gámur
+· finished {format_datetime(f)}	· lokið {format_datetime(f)}
+· missing	· vantar
+· on disk	· á diski
+· today	· í dag
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} þ.
+— MiB per minute; empty uses Settings › Quality	— MiB á mínútu; autt notar Stillingar › Gæði
+— a release's size is multiplied by its codec's factor before the size limits apply	— stærð útgáfu er margfölduð með stuðli kóðans áður en stærðarmörk gilda
+— all profiles at once	— öll snið í einu
+— codec and title criteria, custom qualities (Tanukarr)	— skilyrði fyrir kóða og titil, sérsniðin gæði (Tanukarr)
+— enter the code	— sláðu inn kóðann
+(empty)	(autt)
++ Add mapping	+ Bæta við vörpun
++ New format	+ Nýtt sérsnið
++ New profile	+ Nýtt snið
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (slökkt) eða 10 til 120. RSS-samstilling keyrir einnig úr Kerfi › Verk.
+3 hours ago	fyrir 3 klukkustundum
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Torrent í niðurhali sem sýnir engar framfarir svona lengi telst misheppnað, fer á bannlista og er leitað aftur. 0 slekkur á þessu; framvinda er rakin frá ræsingu Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Hópur sérleyfis fundinn út frá tengslum í AniList eða MyAnimeList. Titlar úr sama sérleyfi sem bætt er við síðar bætast samt í hann.
+A new API key was generated. Update the applications that use it.	Nýr API-lykill var búinn til. Uppfærðu forritin sem nota hann.
+A regular expression, case-insensitive; empty matches every title.	Regluleg segð, óháð há- og lágstöfum; autt passar við alla titla.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Útgáfa fær nákvæmustu forstillinguna sem leyfð er í sniði þáttaraðarinnar og hún passar við að uppruna, upplausn, kóða og titilmynstri. Stöðluð gæði með kóða eða mynstri gera útgáfur sem uppfylla þau ekki að Óþekkt. Sérsniðnum forstillingum er bætt við öll snið sem óleyfilegum.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Stærð útgáfu er margfölduð með stuðli kóðans áður en stærðarmörk gilda. "Blandað" þýðir að sniðin nota mismunandi stuðla; gildi sem slegið er inn hér er skrifað í öll snið.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Titill sem gengur í sérleyfi eða handvirkan hóp yfirgefur hópinn sem hann var í. Skrár og möppur eru ekki færðar.
+API key	API-lykill
+API key needed	API-lykil vantar
+API keys and language	API-lyklar og tungumál
+API path	API-slóð
+About	Um
+Absolute path; empty to delete permanently.	Algild slóð; autt til að eyða endanlega.
+Accepted	Samþykktar
+Account lists	Listar aðgangs
+Actions	Aðgerðir
+Actual	Raunverulegt
+Add	Bæta við
+Add a Newznab or Torznab indexer and enable interactive search for it.	Bættu við Newznab- eða Torznab-leitarþjóni og virkjaðu gagnvirka leit fyrir hann.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Bættu við niðurhalsforriti út frá sniðmáti þess og notaðu Prófa í ritlinum; sóttar útgáfur, biðröðin og innflutningur nota öll virk niðurhalsforrit. Blackhole skrifar sóttar útgáfur í möppu og flytur inn það sem birtist í vöktuðu möppunni. Valkostirnir "Fjarlægja lokið/misheppnað niðurhal" hjá hverju forriti fjarlægja niðurhal (ásamt skrám þess) þegar forritið er búið með það.
+Add a download client in Settings › Download clients and enable it.	Bættu við niðurhalsforriti í Stillingar › Niðurhalsforrit og virkjaðu það.
+Add a root folder first: it is where this title's folder will live.	Bættu fyrst við rótarmöppu: þar mun mappa þessa titils vera.
+Add a tag above first.	Bættu fyrst við merki hér fyrir ofan.
+Add a title	Bæta við titli
+Add auto tag	Bæta við sjálfvirku merki
+Add condition	Bæta við skilyrði
+Add exclusion	Bæta við útilokun
+Add media	Bæta við efni
+Add one, or migrate them from Sonarr/Tanukarr.	Bættu einum við eða fluttu þá yfir frá Sonarr/Tanukarr.
+Add preset	Bæta við forstillingu
+Add selected	Bæta við völdum
+Add series or movies below.	Bættu við þáttaröðum eða kvikmyndum hér fyrir neðan.
+Add tag	Bæta við merki
+Add the list's tags	Bæta við merkjum listans
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Bættu við titlum frá TVmaze eða AniList, eða fluttu inn fyrirliggjandi Sonarr- eða Tanukarr-safn.
+Add to library	Bæta í safn
+Add {}	Bæta við {}
+Add {} ({y})	Bæta við {} ({y})
+Add — {}	Bæta við — {}
+Add, and remove when they leave the list	Bæta við, og fjarlægja þegar þeir fara af listanum
+Added	Bætt við
+Added to the titles this list adds.	Bætt við titlana sem þessi listi bætir við.
+Adding titles	Bæti við titlum
+Adding…	Bæti við…
+Address	Vistfang
+Age	Aldur
+Aired	Sýnt
+Aired monitored episodes without a file appear here.	Vaktaðir þættir sem hafa verið sýndir en vantar skrá birtast hér.
+All	Allt
+All collections	Öll samsöfn
+All episodes	Allir þættir
+All episodes in the series folder	Allir þættir í möppu þáttaraðarinnar
+All events	Allir atburðir
+Allow zero size (the feed has no release sizes)	Leyfa núllstærð (straumurinn gefur ekki upp stærð útgáfa)
+Also delete the series folder and its files (to the recycle bin when one is set)	Eyða einnig möppu þáttaraðarinnar og skrám hennar (í ruslafötuna ef hún er stillt)
+Also for releases grabbed from interactive search	Einnig fyrir útgáfur sóttar úr gagnvirkri leit
+Also known as	Einnig þekkt sem
+Always, even when renaming is off	Alltaf, jafnvel þegar slökkt er á endurnefningu
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Greina myndskrár (upplausn, lengd og kóðar, með ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Titlum frá AniList og MyAnimeList er alltaf bætt við sem anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Listar frá AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, öðru Sonarr og sérsniðnir JSON-listar eru lesnir á nokkurra klukkustunda fresti; nýjum titlum er bætt við með rótarmöppu, sniði og vöktun hvers lista. Þjónustur sem krefjast OAuth nota Client ID þíns eigin forrits og tóka sem þú límir inn (tókar fluttir frá Tanukarr virka áfram).
+Anime	Anime
+Anime / absolute numbering	Anime / samfelld númering
+Anime categories	Anime-flokkar
+Anime episode format	Snið anime-þátta
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Anime-kvikmyndum má bæta við frá AniList og yfirfærslur frá Tanukarr taka kvikmyndir sínar með. Leiknar kvikmyndir þurfa gagnaveitu TMDB.
+Anime standard format search	Leit að anime á stöðluðu sniði
+Anime title, e.g. Frieren	Anime-titill, t.d. Frieren
+Any	Hvaða sem er
+Any library	Hvaða safn sem er
+Applications using the current key will stop working until you give them the new one.	Forrit sem nota núverandi lykil hætta að virka þar til þú gefur þeim nýja lykilinn.
+Applied after every list has been read successfully and some title left a list.	Beitt eftir að allir listar hafa verið lesnir án villu og einhver titill hefur farið af lista.
+Apply	Nota
+Apply migration	Framkvæma yfirfærslu
+Apply profile	Nota snið
+Applying migration	Framkvæmi yfirfærslu
+Applying…	Framkvæmi…
+As Settings › Media management says	Eins og Stillingar › Miðlastjórnun segja til um
+At least 10 characters.	Að minnsta kosti 10 stafir.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Að minnsta kosti {MIN_PASSWORD_LENGTH} stafir. Lykilsetning hentar vel.
+Auto tag	Sjálfvirkt merki
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Sjálfvirkt merki vistað. Það gildir næst þegar titlum er bætt við, þeim breytt eða þeir endurnýjaðir.
+Auto tagging	Sjálfvirk merking
+Auto-refresh	Sjálfvirk endurnýjun
+Automatic	Sjálfvirkt
+Automatic search	Sjálfvirk leit
+Automatic search for {label}: grabbed {}.	Sjálfvirk leit að {label}: sótti {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Sjálfvirk leit að {label}: {} útgáfur fundust, {} samþykktar, ekkert sótt.
+Automatic search: grab the best release	Sjálfvirk leit: sækja bestu útgáfuna
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Sjálfvirkni er í biðstöðu: RSS-samstillingu, áætlaðri samstillingu lista og sjálfvirkum leitum er sleppt. Handvirkar aðgerðir og yfirstandandi niðurhal halda áfram.
+Automation resumed.	Sjálfvirkni hafin aftur.
+Available from	Fáanlegt frá
+Back to the dashboard	Aftur á stjórnborðið
+Back up now	Taka afrit núna
+Backup {} created.	Afrit {} búið til.
+Backups	Afrit
+Blocking:	Hindrun:
+Blocklist	Bannlisti
+Blocklist the release and search again	Setja útgáfuna á bannlista og leita aftur
+Blocklist the release: it is never grabbed again	Setja útgáfuna á bannlista: hún verður aldrei sótt aftur
+Blocklist “{title}” and search for a replacement?	Setja „{title}“ á bannlista og leita að staðgengli?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (hrátt / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Fluttu safn og stillingar úr Sonarr (v3/v4) eða Tanukarr inn í Kitsunarr. Uppruninn er aðeins lesinn, aldrei breytt, og
+Bypass the proxy for local addresses	Fara fram hjá proxy fyrir staðbundin vistföng
+Calendar	Dagatal
+Calendar →	Dagatal →
+Cancel	Hætta við
+Cancel compression	Hætta við þjöppun
+Cannot reach the server: {e}	Næ ekki sambandi við þjóninn: {e}
+Catalogue	Gagnaveita
+Category	Flokkur
+Certificate validation	Staðfesting skilríkja
+Change password	Breyta lykilorði
+Change series	Skipta um þáttaröð
+Changes	Breytingar
+Check	Athuga
+Check library	Athuga safn
+Check now	Athuga núna
+Check that the mapped series folders exist (read-only)	Athuga hvort varpaðar möppur þáttaraða séu til (aðeins lestur)
+Checked: {summary}.	Athugað: {summary}.
+Checking…	Athuga…
+Choose a backup file	Veldu afritsskrá
+Choose a mode	Veldu ham
+Choose a root folder and a quality profile.	Veldu rótarmöppu og gæðasnið.
+Choose a season	Veldu seríu
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Veldu þáttaröð og seríu eða þátt. Niðurstöðurnar sýna hvað hver útgáfa er, eins og þáttari Kitsunarr les hana.
+Choose a series or movie…	Veldu þáttaröð eða kvikmynd…
+Choose source	Veldu uppruna
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Veldu þætti þessarar útgáfu handvirkt og sæktu hana svo (valið er geymt fyrir innflutninginn)
+Choose…	Veldu…
+Clean library	Hreinsa safn
+Clear	Hreinsa
+Clear blocklist	Hreinsa bannlista
+Cleared {n} releases from the blocklist.	{n} útgáfur fjarlægðar af bannlistanum.
+Client	Forrit
+Close	Loka
+Codec	Kóði
+Codec factors saved in every profile.	Kóðastuðlar vistaðir í öllum sniðum.
+Codec size factors	Stærðarstuðlar kóða
+Codecs	Kóðar
+Collection film folder format	Snið kvikmyndamöppu í samsafni
+Collections	Samsöfn
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Samsöfn birtast þegar þau eru flutt yfir frá Tanukarr, búin til úr gögnum gagnaveitna eða búin til hér.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Kemurðu frá Sonarr eða Tanukarr? Fluttu inn fyrirliggjandi þáttaraðir, stillingar og sögu í fáeinum skrefum.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Aðskilið með kommum; * er algildisstafur (*.lan) og IP-bil eins og 192.168.1.0/24 virka.
+Companion app keys	Lyklar fyrir fylgiforrit
+Complete series	Heil þáttaröð
+Completed and failed download handling	Meðhöndlun lokins og misheppnaðs niðurhals
+Component	Íhlutur
+Compress series	Þjappa þáttaröð
+Compression	Þjöppun
+Compression queued.	Þjöppun sett í biðröð.
+Compression worker is not connected.	Þjöppunarvinnsla er ekki tengd.
+Condition	Skilyrði
+Conditions	Skilyrði
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Skilyrði af sömu gerð passa þegar eitthvert þeirra passar (öll áskilin verða að passa); hver gerð verður að passa.
+Configure	Stilla
+Confirm password	Staðfesta lykilorð
+Connect	Tengjast
+Connect to a running instance	Tengjast keyrandi tilviki
+Connecting…	Tengist…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Samræmd afrit af gagnagrunninum. Áætluð afrit eru tekin vikulega (síðustu átta eru geymd); hver yfirfærsla tekur líka eitt fyrst. Til að endurheimta skaltu stöðva Kitsunarr og keyra
+Continuing	Í gangi
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Vafrakaka (send með beiðni um strauminn, t.d. uid=1; pass=…)
+Copied.	Afritað.
+Copy	Afrita
+Copy (keep the originals)	Afrita (halda upprunalegum)
+Copy sizes from	Afrita stærðir frá
+Copy the token now; it is not shown again:	Afritaðu tókann núna; hann verður ekki sýndur aftur:
+Could not grab {}: {}	Gat ekki sótt {}: {}
+Covers	Nær yfir
+Create	Búa til
+Create account	Stofna aðgang
+Create group	Búa til hóp
+Create key	Búa til lykil
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Búðu einn til á themoviedb.org › Settings › API. Notaður fyrir sjónvarpsþáttaraðir og kvikmyndir frá TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Stofnaðu stjórnandaaðganginn. Þú notar hann til að skrá þig inn í Kitsunarr.
+Created	Búið til
+Created when the first file is imported. Nothing is written to disk now.	Búin til þegar fyrsta skráin er flutt inn. Ekkert er skrifað á disk núna.
+Creating…	Bý til…
+Credit	Kreditlisti
+Current file	Núverandi skrá
+Current password	Núverandi lykilorð
+Custom format saved.	Sérsnið vistað.
+Custom format score	Stig sérsniðs
+Custom format scores	Stig sérsniða
+Custom formats	Sérsnið
+Cutoff unmet	Gæðaþaki ekki náð
+Daily	Daglegt
+Daily episode format	Snið daglegra þátta
+Dashboard	Stjórnborð
+Data directory	Gagnamappa
+Database backup taken before the import: {b}	Öryggisafrit gagnagrunns tekið fyrir innflutninginn: {b}
+Database schema	Gagnagrunnsskema
+Date	Dagsetning
+Date added	Dagsetning viðbótar
+Debug	Villuleit
+Decision	Ákvörðun
+Default	Sjálfgefið
+Defaults	Sjálfgefin gildi
+Delay profile	Töfasnið
+Delay profile saved.	Töfasnið vistað.
+Delay profiles	Töfasnið
+Delete	Eyða
+Delete empty series folders	Eyða tómum möppum þáttaraða
+Delete file	Eyða skrá
+Delete group	Eyða hópi
+Delete profile	Eyða sniði
+Delete “{path}”? It goes to the recycle bin when one is set.	Eyða „{path}“? Hún fer í ruslafötuna ef hún er stillt.
+Delete “{}”?	Eyða „{}“?
+Delete “{}”? Its series and movies stay in the library.	Eyða „{}“? Þáttaraðir þess og kvikmyndir verða áfram í safninu.
+Deleted	Eytt
+Directory	Mappa
+Disabled	Óvirkt
+Disabled for local addresses	Óvirkt fyrir staðbundin vistföng
+Disk scanned: {}	Diskur skannaður: {}
+Disk scanned: {} Not matched: {}	Diskur skannaður: {} Ekki parað: {}
+Do not prefer	Ekki taka fram yfir
+Do not search for a replacement	Ekki leita að staðgengli
+Do nothing	Gera ekkert
+Done	Lokið
+Download client options saved.	Valkostir niðurhalsforrita vistaðir.
+Download clients	Niðurhalsforrit
+Download failed	Niðurhal mistókst
+Download queue	Niðurhalsbiðröð
+Downloads	Niðurhal
+Duration	Tímalengd
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Hver titill tilheyrir einni gagnaveitu, sem endurnýjanir hans lesa úr; öll auðkenni sem hann ber (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) eru geymd. Titlar fluttir frá Sonarr tilheyra TheTVDB.
+Edit	Breyta
+Edit “{name}”	Breyta „{name}“
+Edit “{}”	Breyta „{}“
+Enable RSS	Virkja RSS
+Enable automatic search	Virkja sjálfvirka leit
+Enable interactive search	Virkja gagnvirka leit
+Enabled	Virkt
+Ended	Lokið
+English	English
+Entity	Eining
+Episode	Þáttur
+Episode and movie naming	Nöfn þátta og kvikmynda
+Episode image thumbs in the NFO	Smámyndir þátta í NFO
+Episode images (<filename>-thumb.jpg)	Myndir þátta (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Myndir þátta (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Myndir þátta (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Vörpun þátta í .plexmatch
+Episode metadata (<filename>.nfo)	Lýsigögn þátta (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Lýsigögn þátta (Season##/filename.xml)
+Episode order	Röð þátta
+Episode order changed: {} episodes updated, {} added.	Röð þátta breytt: {} þættir uppfærðir, {} bætt við.
+Episodes	Þættir
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Þættir eru endurnúmeraðir eftir valinni röð; skrár, vöktun og saga fylgja sínum þáttum. Endurnefndu skrárnar síðan til að samræmast nýju númerunum.
+Episodes of {title}	Þættir úr {title}
+Episodes on disk	Þættir á diski
+Episodes whose file is below the quality profile's cutoff appear here.	Þættir þar sem skráin er undir gæðaþaki gæðasniðsins birtast hér.
+Episodes…	Þættir…
+Errors	Villur
+Errors {errors}	Villur {errors}
+Event	Atburður
+Every file already follows the naming settings.	Allar skrár fylgja nú þegar stillingum um nafngiftir.
+Every file meets its cutoff	Allar skrár ná gæðaþaki sínu
+Exclude	Útiloka
+Exclusions	Útilokanir
+Expected	Áætlað
+Expires	Rennur út
+Extra file extensions	Viðbótarskráarendingar
+Factor	Stuðull
+Failed	Mistókst
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Vörn gegn fölskum útgáfum: skoða torrent áður en þau eru sótt og hafna keyrsluskrám, lykilorðsvörðum tálbeituskjalasöfnum og efni án myndbands
+Feed address	Vistfang straums
+Fetch the latest metadata from {}	Sækja nýjustu lýsigögnin frá {}
+File	Skrá
+File date	Dagsetning skráar
+File deleted	Skrá eytt
+File deleted.	Skrá eytt.
+File management	Skráastjórnun
+File management settings saved.	Stillingar skráastjórnunar vistaðar.
+File renamed	Skrá endurnefnd
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Skrám eldri en þetta er eytt úr ruslafötunni daglega; 0 geymir þær.
+Files upgrades replaced, kept as versions	Skrár sem uppfærslur komu í stað fyrir, geymdar sem útgáfur
+Film	Kvikmynd
+Film title or IMDb id, e.g. Arrival	Titill kvikmyndar eða IMDb-auðkenni, t.d. Arrival
+Find a series in your library	Finna þáttaröð í safninu þínu
+Find files added to or removed from the series folder	Finna skrár sem bætt var í eða fjarlægðar úr möppu þáttaraðarinnar
+Find something to add	Finndu eitthvað til að bæta við
+First and last pieces first	Fyrsti og síðasti hluti fyrst
+First day of the week	Fyrsti dagur vikunnar
+First season	Fyrsta sería
+Folder	Mappa
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Snið nota tegundir skilgreininga úr Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Stig eru gefin fyrir hvert gæðasnið.
+Found	Fundið
+Free	Laust
+Free space	Laust pláss
+Future days	Komandi dagar
+Future episodes	Komandi þættir
+General	Almennt
+GiB	GiB
+Grab	Sækja
+Grab a release from interactive search; downloads in the client's TV category show up here.	Sæktu útgáfu úr gagnvirkri leit; niðurhal í sjónvarpsflokki niðurhalsforritsins birtist hér.
+Grab anyway?	Sækja samt?
+Grab with these episodes	Sækja með þessum þáttum
+Grabbed	Sótt
+Grabbed {}.	Sótti {}.
+Grabbing…	Sæki…
+Grabs, imports and file changes appear here. Migrated history is included.	Sóttar útgáfur, innflutningur og breytingar á skrám birtast hér. Saga sem var flutt yfir er meðtalin.
+Group film folder format	Snið kvikmyndamöppu í hópi
+Group folder format	Snið hópmöppu
+Group season folder format	Snið seríumöppu í hópi
+Group story-arc folder format	Snið möppu söguþráðar í hópi
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Hópar tengdra þáttaraða og kvikmynda: samsöfn gagnaveitna, anime-sérleyfi (hópar forsagna/framhalda) og handvirkir hópar, þar á meðal þeir sem fluttir voru frá Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Innflutningur eingöngu með hörðum tenglum: aldrei afrita niðurhal sem er enn deilt
+Health	Heilbrigði
+Hide	Fela
+History	Saga
+History →	Saga →
+Host	Hýsill
+Host (as in the download client's settings)	Hýsill (eins og í stillingum niðurhalsforritsins)
+Hostname	Hýsilnafn
+How the catalogue numbers the episodes (it can be changed later on the series page).	Hvernig gagnaveitan númerar þættina (má breyta síðar á síðu þáttaraðarinnar).
+Id	Auðkenni
+Identities	Auðkenni
+Ids	Auðkenni
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Ef Kitsunarr sér miðlana þína undir öðrum slóðum en uppruninn (til dæmis önnur Docker-bindi), varpaðu hverri upprunamöppu á staðsetningu hennar í Kitsunarr. Slóðir eru aðeins endurskrifaðar í gagnagrunninum.
+Ignored	Hunsað
+Ignored addresses	Hunsuð vistföng
+Implementation	Útfærsla
+Import / Migration	Innflutningur / Yfirfærsla
+Import a Sonarr or Tanukarr library	Flytja inn Sonarr- eða Tanukarr-safn
+Import blocked	Innflutningur hindraður
+Import completed downloads	Flytja inn lokið niðurhal
+Import extra files (subtitles…)	Flytja inn aukaskrár (skjátexta…)
+Import from Sonarr/Tanukarr	Flytja inn frá Sonarr/Tanukarr
+Import history	Flytja inn sögu
+Import library	Flytja inn safn
+Import list options saved.	Valkostir innflutningslista vistaðir.
+Import lists	Innflutningslistar
+Import pending	Innflutningur í bið
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Flyttu inn myndskrár úr hvaða möppu sem þjónninn getur lesið: athugaðu þáttaröðina og þættina sem hver skrá á við, og afritaðu eða færðu þær síðan í safnið (endurnefndar samkvæmt stillingum um nafngiftir).
+Import {chosen().len()} files	Flytja inn {chosen().len()} skrár
+Imported	Flutt inn
+Imported from series folder	Flutt inn úr möppu þáttaraðarinnar
+Importing	Flyt inn
+Importing…	Flyt inn…
+Imports need	Innflutningur þarf
+In library ›	Í safni ›
+Include	Hafa með
+Include in file names ({{Custom Formats}} token)	Hafa með í skráarnöfnum ({{Custom Formats}} tóki)
+Include only titles on some lists, or leave out the titles of others.	Hafa aðeins með titla á tilteknum listum, eða sleppa titlum annarra.
+Include unmonitored	Hafa óvaktaða með
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Að meðtöldum grunni slóðar, t.d. http://192.168.1.10:8989 eða https://host/sonarr
+Indexer	Leitarþjónn
+Indexer options saved.	Valkostir leitarþjóna vistaðir.
+Indexer settings	Stillingar leitarþjóns
+Indexers	Leitarþjónar
+Info	Upplýsingar
+Info {infos}	Upplýsingar {infos}
+Instance	Tilvik
+Instance name	Heiti tilviks
+Instance: {name}	Tilvik: {name}
+Interactive	Gagnvirkt
+Interactive search	Gagnvirk leit
+Interactive search for full-season packs only	Gagnvirk leit eingöngu að pökkum heilla sería
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Gagnvirk leit að pökkum allrar þáttaraðarinnar (og sería hennar) hjá torrent-leitarþjónum
+Interactive search: see every release and choose	Gagnvirk leit: sjá allar útgáfur og velja
+Interface language	Tungumál viðmóts
+Interval	Tímabil
+Jellyfin library and user	Jellyfin-safn og notandi
+Job	Verk
+Keep / skip	Halda / sleppa
+Keep files replaced by upgrades as versions (in "Plex Versions")	Geyma skrár sem uppfærslur komu í stað fyrir sem útgáfur (í "Plex Versions")
+Keep me signed in	Halda mér innskráðum
+Keep the replaced file's date (upgrades)	Halda dagsetningu skrárinnar sem skipt var út (uppfærslur)
+Kept	Haldið
+Kept versions	Geymdar útgáfur
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Lyklar fyrir fylgiforrit sem nota Sonarr v3 API: þeir lesa safnið, og lyklar með "bæta við þáttaröð" geta einnig bætt við þáttaröðum (í rótarmöppu, án leitar). Ekkert annað er leyft.
+KiB	KiB
+Kind	Tegund
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr er frjáls hugbúnaður (GPL-3.0-or-later).
+Kitsunarr path	Slóð í Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr tekur öryggisafrit af eigin gagnagrunni, flytur inn forskoðuðu gögnin í einni færslu og staðfestir þau áður en þau eru skuldbundin. Uppruninn og miðlaskrárnar þínar breytast ekki.
+Label	Merkimiði
+Languages	Tungumál
+Larger releases are rejected. 0 means unlimited.	Stærri útgáfum er hafnað. 0 þýðir ótakmarkað.
+Last read	Síðast lesið
+Last run	Síðast keyrt
+Last search	Síðasta leit
+Last searched	Síðast leitað
+Last season	Síðasta sería
+Later ›	Síðar ›
+Latest season	Nýjasta sería
+Level	Stig
+Library	Safn
+Library check	Athugun safns
+Library tools	Verkfæri safns
+Library tools saved.	Verkfæri safns vistuð.
+List	Listi
+Listed best first. Grouped qualities rank equally.	Best fyrst. Flokkuð gæði eru jafnsett.
+Live updates connected	Lifandi uppfærslur tengdar
+Live updates disconnected	Lifandi uppfærslur aftengdar
+Load	Hlaða
+Load the account's lists	Hlaða listum aðgangsins
+Load the libraries…	Hlaða söfnunum…
+Load the users…	Hlaða notendunum…
+Local air date	Staðbundin sýningardagsetning
+Local path	Staðbundin slóð
+Log them	Skrá þá í annál
+Logs	Annálar
+Main rejections	Helstu höfnunarástæður
+Make current	Gera að núverandi
+Manual import	Handvirkur innflutningur
+Mark as failed	Merkja sem misheppnað
+Matches monitored titles.	Passar við vaktaða titla.
+Maximum	Hámark
+Maximum size (MB)	Hámarksstærð (MB)
+Media management	Miðlastjórnun
+Media management settings	Stillingar miðlastjórnunar
+Media paths	Slóðir miðla
+Mediums	Miðlar
+Members	Meðlimir
+Message	Skilaboð
+Metadata	Lýsigögn
+Metadata files	Lýsigagnaskrár
+Metadata keys saved.	Lýsigagnalyklar vistaðir.
+Metadata language	Tungumál lýsigagna
+Metadata refreshed.	Lýsigögn endurnýjuð.
+Metadata refreshed: {} new episodes, {} updated.	Lýsigögn endurnýjuð: {} nýir þættir, {} uppfærðir.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Stillingar lýsigagna vistaðar. Skrárnar eru skrifaðar við næstu skönnun disks, endurnýjun eða innflutning.
+Metadata sources	Uppsprettur lýsigagna
+MiB	MiB
+Migration completed.	Yfirfærslu lokið.
+Migration report #{}	Yfirfærsluskýrsla nr. {}
+Minimum	Lágmark
+Minimum age (minutes)	Lágmarksaldur (mínútur)
+Minimum custom format score	Lágmarksstig sérsniða
+Minimum format score	Lágmarksstig sniðs
+Minimum free space (MiB)	Lágmarks laust pláss (MiB)
+Minimum seeders	Lágmarksfjöldi deilenda
+Missing	Vantar
+Missing (monitored)	Vantar (vaktað)
+Missing films	Kvikmyndir sem vantar
+Mode	Hamur
+Monday	Mánudagur
+Monitor	Vakta
+Monitored	Vaktað
+More languages can be added to the string tables.	Hægt er að bæta fleiri tungumálum við textatöflurnar.
+Move	Færa
+Movie	Kvikmynd
+Movie file format	Snið kvikmyndaskrár
+Movie removed from Kitsunarr. Files on disk were not touched.	Kvikmynd fjarlægð úr Kitsunarr. Ekki var hreyft við skrám á diski.
+Movies	Kvikmyndir
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Útgáfur með mörgum seríum: samþykkja pakka með nokkrum seríum (seríuleit tekur pakkann fyrir sína seríu)
+Must contain	Verður að innihalda
+Must contain (comma separated; /regex/ allowed)	Verður að innihalda (aðskilið með kommum; /regex/ leyft)
+Must not contain	Má ekki innihalda
+NOT	EKKI
+Name	Heiti
+Naming	Nafngiftir
+Naming options saved.	Valkostir nafngifta vistaðir.
+Naming saved.	Nafngiftir vistaðar.
+Negate	Neita
+Network	Net
+Never: keep the release's names	Aldrei: halda nöfnum útgáfunnar
+New custom format	Nýtt sérsnið
+New custom preset	Ný sérsniðin forstilling
+New group title	Heiti nýs hóps
+New password	Nýtt lykilorð
+New quality profile	Nýtt gæðasnið
+Next airing	Næsta sýning
+Next run	Næsta keyrsla
+Next ›	Áfram ›
+No	Nei
+No activity yet.	Engin virkni enn.
+No auto tags.	Engin sjálfvirk merki.
+No backups yet	Engin afrit enn
+No collections yet	Engin samsöfn enn
+No companion keys.	Engir lyklar fyrir fylgiforrit.
+No custom formats	Engin sérsnið
+No custom formats defined.	Engin sérsnið skilgreind.
+No delay above the minimum custom format score	Engin töf yfir lágmarksstigi sérsniða
+No delay for the profile's best quality in the preferred protocol	Engin töf fyrir bestu gæði sniðsins í valinni samskiptareglu
+No download client to read	Ekkert niðurhalsforrit til að lesa
+No exclusions.	Engar útilokanir.
+No history	Engin saga
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Enginn leitarþjónn getur leitað sjálfvirkt að þessari þáttaröð: enginn er með sjálfvirka leit virka og annaðhvort engin merki eða eitt af merkjum þáttaraðarinnar.
+No indexers to search	Engir leitarþjónar til að leita í
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Engar geymdar útgáfur. Kveiktu á "Geyma skrár sem uppfærslur komu í stað fyrir" í Nafngiftum.
+No log entries at this level	Engar annálsfærslur á þessu stigi
+No mappings.	Engar varpanir.
+No matches	Engar samsvaranir
+No members	Engir meðlimir
+No migrations have been run yet.	Engar yfirfærslur hafa verið keyrðar enn.
+No movies yet	Engar kvikmyndir enn
+No notes.	Engar athugasemdir.
+No recycle bin is set (Settings › Media management).	Engin ruslafata er stillt (Stillingar › Miðlastjórnun).
+No release profiles.	Engin útgáfusnið.
+No root folders yet.	Engar rótarmöppur enn.
+No root folders.	Engar rótarmöppur.
+No runs yet	Engar keyrslur enn
+No searches yet.	Engar leitir enn.
+No series in your library match.	Engar þáttaraðir í safninu þínu passa.
+No tags	Engin merki
+No {}	Ekkert: {}
+No {} yet	Ekkert enn: {}
+None	Ekkert
+Not evaluated by Kitsunarr.	Ekki metið af Kitsunarr.
+Not imported	Ekki flutt inn
+Not monitored	Ekki vaktað
+Notes	Athugasemdir
+Notes ({preview.warnings.len()})	Athugasemdir ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Athugasemdir ({report.warnings.len()})
+Nothing airs in the next seven days.	Ekkert er sýnt næstu sjö daga.
+Nothing downloading	Ekkert í niðurhali
+Nothing found	Ekkert fannst
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Ekkert í þessari gagnaveitu passar við leitina. Prófaðu aðra stafsetningu, upprunalega titilinn eða hina gagnaveituna.
+Nothing in this period	Ekkert á þessu tímabili
+Nothing missing	Ekkert vantar
+Notifications	Tilkynningar
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Númera þætti eftir annarri röð gagnaveitunnar (þáttahópar TMDB, DVD-röð eða samfelld röð TheTVDB)
+OMDb API key	OMDb API-lykill
+Older priority	Eldri forgangur
+One folder per season	Ein mappa fyrir hverja seríu
+Only the 2000 newest files are listed.	Aðeins 2000 nýjustu skrárnar eru sýndar.
+Only when the proxy needs one.	Aðeins ef proxy-þjónninn krefst þess.
+Open the library	Opna safnið
+OpenAPI document	OpenAPI-skjal
+Opens the service to authorize Kitsunarr and fills in the token.	Opnar þjónustuna til að heimila Kitsunarr og fyllir inn tókann.
+Options	Valkostir
+Organize	Skipuleggja
+Other	Annað
+Overview	Yfirlit
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Skrifa yfir færslur sem eru þegar til í Kitsunarr (annars er þeim haldið)
+Packs	Pakkar
+Page not found	Síða fannst ekki
+Page {page} / {pages}	Síða {page} / {pages}
+Password	Lykilorð
+Password changed. Other sessions were signed out.	Lykilorði breytt. Aðrar lotur voru skráðar út.
+Past days	Liðnir dagar
+Path	Slóð
+Path mappings	Varpanir slóða
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Gera hlé á sjálfvirkni (RSS-samstilling, áætluð samstilling lista, sjálfvirkar leitir)
+Peers	Jafningjar
+Permission	Heimild
+PiB	PiB
+Platform	Stýrikerfi
+Port	Gátt
+Position	Staða
+Post-import category	Flokkur eftir innflutning
+Posters	Veggspjöld
+Prefer and upgrade	Taka fram yfir og uppfæra
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Taka anime-seríupakka fram yfir (seríuleitir Kitsunarr fyrir anime leita nú þegar einu sinni að seríunni)
+Prefer, do not upgrade	Taka fram yfir, ekki uppfæra
+Preferred	Æskilegt
+Preferred metadata language	Æskilegt tungumál lýsigagna
+Preferred protocol	Æskileg samskiptaregla
+Preparing preview…	Undirbý forskoðun…
+Preview	Forskoðun
+Preview migration	Forskoða yfirfærslu
+Previous migrations	Fyrri yfirfærslur
+Priority	Forgangur
+Problem	Vandamál
+Profile	Snið
+Profile saved.	Snið vistað.
+Profiles still used by series or movies cannot be deleted.	Ekki er hægt að eyða sniðum sem þáttaraðir eða kvikmyndir nota enn.
+Progress	Framvinda
+Propers and repacks	Propers og repacks
+Proxy	Proxy
+Proxy saved.	Proxy vistað.
+Proxy type	Tegund proxy
+Qualities	Gæði
+Quality	Gæði
+Quality presets	Gæðaforstillingar
+Quality presets saved.	Gæðaforstillingar vistaðar.
+Quality profile	Gæðasnið
+Quality profiles	Gæðasnið
+Quality profile…	Gæðasnið…
+RSS sync interval (minutes)	Tímabil RSS-samstillingar (mínútur)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS-samstilling bíður svona lengi eftir að útgáfa birtist eftir betri útgáfu; útgáfur í töf birtast í biðröðinni. Fyrsta sniðið sem hefur merki sem passa við þáttaröðina gildir; það síðasta (án merkja) er sjálfgefið.
+Re-encode this series' files with the compression worker	Endurkóða skrár þessarar þáttaraðar með þjöppunarvinnslunni
+Read and add series	Lesa og bæta við þáttaröðum
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Lesið beint úr niðurhalsforritunum á nokkurra sekúndna fresti. Lokið niðurhal sem Kitsunarr sótti er flutt inn í möppu þáttaraðarinnar á hverri mínútu (torrent eru afrituð eða tengd með hörðum tenglum svo þeim sé áfram deilt; Usenet-niðurhal er fært). Misheppnað niðurhal fer á bannlista og er leitað aftur.
+Read the library	Lesa safnið
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Aðeins lestur: finnur möppur þáttaraða sem vantar, skráarfærslur utan möppu sinnar eða skráðar tvisvar, og skrár sem vantar á disk.
+Reading the download clients…	Les niðurhalsforritin…
+Reading the source	Les upprunann
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Les allt í gegnum API. Lykilorð og API-lyklar veitna eru falin af upprunanum og þarf að slá inn aftur á eftir.
+Recent activity	Nýleg virkni
+Recent priority	Nýlegur forgangur
+Recent runs	Nýlegar keyrslur
+Recent searches	Nýlegar leitir
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Mælt með. Í Sonarr/Tanukarr skaltu opna System → Backup, búa til afrit og sækja .zip-skrána (eða nota sonarr.db). Inniheldur lykilorð leitarþjóna og niðurhalsforrita.
+Recycle bin	Ruslafata
+Recycle bin cleanup (days)	Hreinsun ruslafötu (dagar)
+Recycled	Í ruslafötu
+Refresh metadata	Endurnýja lýsigögn
+Refresh preview	Endurnýja forskoðun
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Endurnýjun frá {} er ekki studd enn; innfluttu lýsigögnunum er haldið óbreyttum
+Refreshing…	Endurnýja…
+Regenerate	Endurgera
+Regenerate API key	Endurgera API-lykil
+Reject releases whose TheTVDB or IMDb id names another series	Hafna útgáfum þar sem TheTVDB- eða IMDb-auðkenni vísar á aðra þáttaröð
+Rejected: click twice to grab anyway	Hafnað: smelltu tvisvar til að sækja samt
+Release	Útgáfa
+Release profile	Útgáfusnið
+Release profile saved.	Útgáfusnið vistað.
+Release profiles	Útgáfusnið
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Útgáfur eru bornar saman við gæðasnið, sérsnið og útgáfusnið þáttaraðarinnar og raðað, eins og Sonarr gerir. Hafnaðar útgáfur þurfa annan smell.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Útgáfur sem mistókust eða voru settar handvirkt á bannlista. Leitir og RSS-samstilling sækja þær aldrei aftur; fjarlægðu eina til að leyfa hana.
+Remote path	Fjarlæg slóð
+Remote path mapping	Vörpun fjarlægrar slóðar
+Remote path mapping saved.	Vörpun fjarlægrar slóðar vistuð.
+Remote path mappings	Varpanir fjarlægra slóða
+Remove	Fjarlægja
+Remove completed downloads	Fjarlægja lokið niðurhal
+Remove every release from the blocklist?	Fjarlægja allar útgáfur af bannlistanum?
+Remove failed downloads	Fjarlægja misheppnað niðurhal
+Remove from library	Fjarlægja úr safni
+Remove from queue	Fjarlægja úr biðröð
+Remove from the download client (deletes its files there)	Fjarlægja úr niðurhalsforritinu (eyðir skrám þess þar)
+Remove movie	Fjarlægja kvikmynd
+Remove series	Fjarlægja þáttaröð
+Remove tags automatically (from titles that stop matching)	Fjarlægja merki sjálfvirkt (af titlum sem hætta að passa)
+Remove “{title}” and its episode records from Kitsunarr?	Fjarlægja „{title}“ og þáttafærslur hennar úr Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Fjarlægja „{title}“ úr Kitsunarr? Skrám á diski er ekki eytt.
+Removed	Fjarlægt
+Removed from the blocklist.	Fjarlægt af bannlistanum.
+Rename	Endurnefna
+Rename files	Endurnefna skrár
+Rename files on import	Endurnefna skrár við innflutning
+Rename files to the naming settings	Endurnefna skrár samkvæmt stillingum um nafngiftir
+Formats use Sonarr's tokens.	Sniðin nota tóka Sonarr.
+Renaming…	Endurnefni…
+Report	Skýrsla
+Request one at omdbapi.com. Used for films by IMDb id.	Sæktu um einn á omdbapi.com. Notaður fyrir kvikmyndir eftir IMDb-auðkenni.
+Required	Áskilið
+Resolution	Upplausn
+Restore	Endurheimta
+Restore {}	Endurheimta {}
+Restore…	Endurheimta…
+Restoring…	Endurheimti…
+Resume automation	Halda sjálfvirkni áfram
+Retention (days)	Varðveisla (dagar)
+Retire	Úrelda
+Revoke	Afturkalla
+Root folder	Rótarmappa
+Root folders	Rótarmöppur
+Root folder…	Rótarmappa…
+Run #{run.id}: {run.status}	Keyrsla nr. {run.id}: {run.status}
+Run now	Keyra núna
+Running…	Í keyrslu…
+Saturday	Laugardagur
+Save	Vista
+Save criteria	Vista skilyrði
+Save factors	Vista stuðla
+Save keys	Vista lykla
+Save metadata files	Vista lýsigagnaskrár
+Save naming	Vista nafngiftir
+Save options	Vista valkosti
+Saved	Vistað
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Vistaðir lyklar birtast sem {REDACTED}; láttu þá óbreytta til að halda þeim, eða hreinsaðu reitinn til að fjarlægja lykil.
+Saved.	Vistað.
+Scan disk	Skanna disk
+Scan folder	Skanna möppu
+Scanning…	Skanna…
+Scheduled tasks	Áætluð verk
+Score	Stig
+Search	Leita
+Search again when a download fails	Leita aftur þegar niðurhal mistekst
+Search all	Leita að öllu
+Search all films	Leita að öllum kvikmyndum
+Search collection	Leita í samsafni
+Search every episode of the list, one search per season	Leita að öllum þáttum listans, ein leit fyrir hverja seríu
+Search every member's missing episodes (films: the film)	Leita að þáttum sem vantar hjá hverjum meðlim (kvikmyndir: kvikmyndin)
+Search indexers	Leita hjá leitarþjónum
+Search selected	Leita að völdum
+Search the indexers and choose a release	Leita hjá leitarþjónum og velja útgáfu
+Search the indexers and grab the best accepted release	Leita hjá leitarþjónum og sækja bestu samþykktu útgáfuna
+Search the indexers and grab the best releases for the monitored episodes	Leita hjá leitarþjónum og sækja bestu útgáfurnar fyrir vaktaða þætti
+Search your indexers	Leita hjá leitarþjónunum þínum
+Search {chosen} selected	Leita að {chosen} völdum
+Search: {}	Leit: {}
+Search: {} — complete series	Leit: {} — heil þáttaröð
+Search: {} — season {season} packs	Leit: {} — pakkar seríu {season}
+Search: {} — {label}	Leit: {} — {label}
+Searching for {label}…	Leita að {label}…
+Searching indexers…	Leita hjá leitarþjónum…
+Searching…	Leita…
+Season	Sería
+Season folder format	Snið seríumöppu
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Titlar seríumappa koma í stað titla gagnaveitunnar í {{Season Title}}. Hafðu autt til að halda titlum gagnaveitunnar.
+Season folders	Seríumöppur
+Season images (Season ##.jpg)	Myndir sería (Season ##.jpg)
+Season images (Season##/folder.jpg)	Myndir sería (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Myndir sería (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Seríupakkar: 1 notar markmiðin fyrir seríupakka hér fyrir neðan
+Season premieres only	Aðeins frumsýningar sería
+Season {n}	Sería {n}
+Season {one}	Sería {one}
+Season {se.season_number}	Sería {se.season_number}
+Season {season_number}	Sería {season_number}
+Season-pack seed ratio	Deilihlutfall seríupakka
+Season-pack seed time, minutes	Deilitími seríupakka, mínútur
+Seasons	Seríur
+Seasons {first}-{last}	Seríur {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Leyndarmál birtast sem {REDACTED}; láttu þau óbreytt til að halda vistaða gildinu.
+Seed ratio (empty: the client's default)	Deilihlutfall (autt: sjálfgefið gildi forritsins)
+Seed time, minutes (empty: the client's default)	Deilitími, mínútur (autt: sjálfgefið gildi forritsins)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Senda beiðnir til leitarþjóna, gagnaveitna, lista, niðurhalsforrita og tenginga í gegnum proxy.
+Send to the download client	Senda í niðurhalsforritið
+Series	Þáttaraðir
+Series .plexmatch file	.plexmatch-skrá þáttaraðar
+Series folder format	Snið möppu þáttaraðar
+Series images (Series Title.jpg)	Myndir þáttaraðar (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Myndir þáttaraðar (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Myndir þáttaraðar (folder.jpg)
+Series metadata (tvshow.nfo)	Lýsigögn þáttaraðar (tvshow.nfo)
+Series metadata URL	Slóð lýsigagna þáttaraðar
+Series metadata episode guide	Þáttaleiðarvísir í lýsigögnum þáttaraðar
+Series removed from Kitsunarr. Files on disk were not touched.	Þáttaröð fjarlægð úr Kitsunarr. Ekki var hreyft við skrám á diski.
+Series removed, and its folder deleted.	Þáttaröð fjarlægð og möppu hennar eytt.
+Series type	Tegund þáttaraðar
+Set quality profile…	Stilla gæðasnið…
+Settings	Stillingar
+Settings saved.	Stillingar vistaðar.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security í Sonarr/Tanukarr.
+Show	Sýna
+Show as all-day events	Sýna sem heilsdagsatburði
+Show unmonitored	Sýna óvaktað
+Shows	Þáttaraðir
+Sign in	Skrá inn
+Signed in. Save the list to keep the token.	Innskráning tókst. Vistaðu listann til að halda tókanum.
+Signing in…	Skrái inn…
+Size	Stærð
+Size limits	Stærðarmörk
+Size on disk	Stærð á diski
+Skip files smaller than (MB)	Sleppa skrám minni en (MB)
+Skip the free-space check	Sleppa athugun á lausu plássi
+Skip unmonitored episodes when importing packs	Sleppa óvöktuðum þáttum við innflutning pakka
+Source	Uppruni
+Source code	Frumkóði
+Source path	Upprunaslóð
+Special	Sérþáttur
+Specials	Sérþættir
+Specials are never monitored automatically.	Sérþættir eru aldrei vaktaðir sjálfvirkt.
+Specifications	Skilgreiningar
+Specifications (JSON)	Skilgreiningar (JSON)
+Specifications must be valid JSON: {e}	Skilgreiningar verða að vera gilt JSON: {e}
+Stalled torrent timeout (minutes)	Tímamörk stöðvaðra torrenta (mínútur)
+Standard	Staðlað
+Standard episode format	Snið staðlaðra þátta
+Start migration	Hefja yfirfærslu
+Start over	Byrja upp á nýtt
+Start search for missing episodes	Hefja leit að þáttum sem vantar
+Started	Hafið
+Started {format_datetime(&run.started_at)}	Hafið {format_datetime(&run.started_at)}
+Status	Staða
+Status & health	Staða og heilbrigði
+Still downloading	Enn í niðurhali
+Storage outlook	Horfur á plássi
+Studio	Kvikmyndaver
+Subscribe	Gerast áskrifandi
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Gerstu áskrifandi að þessu vistfangi í dagatalsforriti. Það inniheldur API-lykilinn þinn: haltu því leyndu.
+Sunday	Sunnudagur
+Sync	Samstilla
+Sync all lists now	Samstilla alla lista núna
+Sync now	Samstilla núna
+Syncing…	Samstilli…
+System →	Kerfi →
+TMDB API key (v3)	TMDB API-lykill (v3)
+TV Series	Sjónvarpsþáttaraðir
+TV series	Sjónvarpsþáttaraðir
+Table	Tafla
+Tag	Merki
+Tag them	Merkja þá
+Tag titles already in the library	Merkja titla sem eru þegar í safninu
+Tags	Merki
+Tags (comma separated)	Merki (aðskilin með kommum)
+Tags (ids, comma separated)	Merki (auðkenni, aðskilin með kommum)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Merkjum er bætt við þáttaraðir og kvikmyndir sem passa við allar gerðir skilyrða þegar þeim er bætt við, þeim breytt eða þær endurnýjaðar.
+Task	Verk
+Television	Sjónvarp
+Television (raw)	Sjónvarp (hrátt)
+Test	Prófa
+Test failed: {message}	Prófun mistókst: {message}
+Testing…	Prófa…
+The blocklist is empty	Bannlistinn er tómur
+The catalogue new titles are added from when the list knows their id there.	Gagnaveitan sem nýjum titlum er bætt við úr þegar listinn þekkir auðkenni þeirra þar.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Dagsetningin sem innfluttar skrár fá: sýningardagsetning þáttarins (staðbundin eða UTC), eða við uppfærslu dagsetning skrárinnar sem skipt var út.
+The dry run completed without blocking problems. Nothing has been written yet.	Prufukeyrslunni lauk án hindrandi vandamála. Ekkert hefur verið skrifað enn.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Skráin er færð í seríumöppuna (fyrirliggjandi skrá er aldrei skrifað yfir) og þáttaröðin skönnuð aftur.
+The folder must already exist; Kitsunarr never creates or removes it.	Mappan verður að vera til nú þegar; Kitsunarr býr hana aldrei til né fjarlægir.
+The indexers returned no releases for this search.	Leitarþjónarnir skiluðu engum útgáfum fyrir þessa leit.
+The instance is on my local network (private or loopback address)	Tilvikið er á staðarnetinu mínu (einka- eða loopback-vistfang)
+The list has not been read, or it is empty.	Listinn hefur ekki verið lesinn eða hann er tómur.
+The migration did not complete; nothing was changed.	Yfirfærslunni lauk ekki; engu var breytt.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Nýjustu færslurnar sem geymdar eru í minni. Fullir annálar fara í úttak ferlisins (annálar gáms eða journal).
+The passwords do not match.	Lykilorðin stemma ekki.
+The recycle bin has no media or subtitle files.	Ruslafatan inniheldur engar miðla- eða skjátextaskrár.
+The sign-in expired; try again.	Innskráningin rann út; reyndu aftur.
+The upload failed (network error).	Upphleðsla mistókst (netvilla).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Vinnslan er valfrjáls íhlutur á hýsli (þjöppunarvinnsla Tanukarr) sem náð er í gegnum sökkulinn í KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (gagnaveita Sonarr), TMDB og TVmaze ná yfir sjónvarpsþáttaraðir; AniList og MyAnimeList ná yfir anime-þáttaraðir og anime-kvikmyndir; TMDB og OMDb ná yfir kvikmyndir. Þegar titli er bætt við verður til færsla hans í safninu og þáttalisti; skrár eru teknar upp síðar af innflutningnum.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Leitað er að titlum TheTVDB og þeim bætt við á þessu tungumáli; hverri þáttaröð má breyta í ritli hennar.
+TheTVDB titles in this language; changing it refreshes the series	Titlar TheTVDB á þessu tungumáli; breyting endurnýjar þáttaröðina
+There is nothing at /{path}.	Það er ekkert á /{path}.
+They are created by migrating from Sonarr/Tanukarr.	Þau verða til við yfirfærslu frá Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Endurnefningarhamur þessarar þáttaraðar, titlar seríumappa og geymdar útgáfur
+TiB	TiB
+Time	Tími
+Time left	Tími eftir
+Title	Titill
+Title pattern	Titilmynstur
+Titles import lists never add.	Titlar sem innflutningslistar bæta aldrei við.
+Titles on no list	Titlar á engum lista
+Today	Í dag
+Torrent	Torrent
+Torrent delay	Töf torrenta
+Torrent delay (minutes)	Töf torrenta (mínútur)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab- og Newznab-leitarþjónar. Notaðu Prófa í ritlinum til að athuga einn; hver leit notar leitarþjónana sem hafa þá gerð leitar virka: RSS, sjálfvirka eða gagnvirka.
+Trigger	Kveikja
+URL base	Grunnur slóðar
+UTC air date	Sýningardagsetning í UTC
+Unchanged	Óbreytt
+Unknown	Óþekkt
+Unmonitor	Hætta að vakta
+Unmonitor them	Hætta að vakta þá
+Unmonitored	Óvaktað
+Upcoming	Væntanlegt
+Upcoming 7 days	Næstu 7 dagar
+Update	Uppfæra
+Updated {} items.	{} atriði uppfærð.
+Upgrade until (cutoff)	Uppfæra upp að (gæðaþaki)
+Upgrade until format score	Uppfæra upp að stigum sniðs
+Upgrades allowed	Uppfærslur leyfðar
+Upload a backup	Hlaða upp afriti
+Upload failed (HTTP {}).	Upphleðsla mistókst (HTTP {}).
+Uploading…	Hleð upp…
+Use SSL	Nota SSL
+Use a proxy	Nota proxy
+Use hardlinks instead of copying	Nota harða tengla í stað afritunar
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Notaðu hann sem X-Api-Key-haus (eða ?apikey=) úr öðrum forritum. Samhæft við hausinn sem Sonarr notar.
+Use these episodes	Nota þessa þætti
+Usenet	Usenet
+Usenet delay	Töf Usenet
+Usenet delay (minutes)	Töf Usenet (mínútur)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Aðeins Usenet: nýrri útgáfum er hafnað svo þær fái tíma til að dreifast. 0 slekkur á þessu.
+Usenet only: older releases are rejected. 0 means unlimited.	Aðeins Usenet: eldri útgáfum er hafnað. 0 þýðir ótakmarkað.
+User name	Notandanafn
+Username	Notandanafn
+Validation	Staðfesting
+Version	Útgáfa
+Versions	Útgáfur
+Waiting for the sign-in at	Bíð eftir innskráningu á
+Wanted	Eftirsótt
+Warnings	Viðvaranir
+Warnings {warnings}	Viðvaranir {warnings}
+Watched (Jellyfin watched sync)	Áhorft (samstilling áhorfs við Jellyfin)
+Watched sync user	Notandi fyrir samstillingu áhorfs
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, tölvupóstur (SMTP), Mailgun, SendGrid, sérsniðnar skriftur (með umhverfisbreytum Sonarr), Emby/Jellyfin, Plex og Kodi fá tilkynningar: sóttar útgáfur, innflutning og uppfærslur, endurnefningar, þáttaraðir sem bætt er við eða eytt, eyddar skrár, heilbrigðisvandamál. Notaðu Prófa í ritlinum.
+Welcome	Velkomin(n)
+What to import	Hvað á að flytja inn
+When	Hvenær
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Hvenær HTTPS-skilríki leitarþjóna, niðurhalsforrita og þjónusta eru staðfest (stilling Sonarr). Sjálfundirrituð skilríki á netinu þínu krefjast þess að slakað sé á henni.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Þegar niðurhalsforrit gefur upp slóðir sem Kitsunarr sér annars staðar (á annarri vél eða í öðrum gámi), varpaðu hýsli og slóð forritsins á staðbundnu slóðina.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Hvort útgáfur sem lagfæra gallaða útgáfu eru teknar fram yfir og uppfæra fyrirliggjandi skrár (eins og í Sonarr).
+Whole season	Heil sería
+Working…	Vinn…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Skrifað í möppur þáttaraða þegar þáttaraðir eru skannaðar, endurnýjaðar eða fluttar inn, eins og lýsigagnanotendur Sonarr skrifa þau.
+Year	Ár
+Your library is empty.	Safnið þitt er tómt.
+all checks passed	allar athuganir stóðust
+comma separated	aðskilið með kommum
+cutoff: {}	gæðaþak: {}
+has a file	er með skrá
+iCal link	iCal-tengill
+in 2 days	eftir 2 daga
+in a moment	eftir augnablik
+in file names	í skráarnöfnum
+in library	í safni
+in {text}	eftir {text}
+just now	rétt í þessu
+may run out of space	gæti orðið uppiskroppa með pláss
+name (e.g. phone)	heiti (t.d. sími)
+never refreshed	aldrei endurnýjað
+no media files are moved, renamed or deleted.	engar miðlaskrár eru færðar, endurnefndar eða þeim eytt.
+not accessible	ekki aðgengilegt
+not added	ekki bætt við
+not checked	ekki athugað
+not read yet	ekki lesið enn
+on disk	á diski
+refreshed {}	endurnýjað {}
+schema {s}	skema {s}
+secrets included	leyndarmál meðtalin
+secrets masked	leyndarmál falin
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip eða sonarr.db
+stored only	aðeins geymt
+title (optional)	titill (valfrjálst)
+{:.1} GiB/h	{:.1} GiB/klst.
+{added} added; {}	{added} bætt við; {}
+{added} shows added.	Þáttaröðum bætt við: {added}.
+{c.name} (API key needed)	{c.name} (API-lykil vantar)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} þáttaraðir · {c.movie_count} kvikmyndir
+{chosen().len()} chosen	{chosen().len()} valin
+{chosen().len()} chosen (at most 25)	{chosen().len()} valin (að hámarki 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} á diski · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% af {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · bætt við {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} af {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} skrár · {job["percent"]}% · sparað {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} hafið.
+{name} was added to the library.	{name} var bætt í safnið.
+{name}: shows	{name}: þáttaraðir
+{ok} files imported.	{ok} skrár fluttar inn.
+{ok} imported; {}	{ok} flutt inn; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} útgáfur frá {r.searched_indexers} leitarþjónum.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} þáttaraðir og {r.files_checked} skrár athugaðar: {r.issues.len()} vandamál.
+{selected.read().len()} selected	{selected.read().len()} valin
+{text} ago	fyrir {text}
+{} (not accessible)	{} (ekki aðgengilegt)
+{} ({} free)	{} ({} laust)
+{} added to every profile (not allowed yet).	{} bætt við öll snið (ekki leyft enn).
+{} day(s)	{} dag(ar)
+{} failed: {}	{} mistókst: {}
+{} format scores	{} stig sniða
+{} free of {}	{} laust af {}
+{} week(s)	{} vika/vikur
+{}{year} — movie	{}{year} — kvikmynd
+‹ Back	‹ Til baka
+‹ Earlier	‹ Fyrr
+‹ Prev	‹ Fyrri
+○ offline	○ ótengt
+● live	● í beinni
+✓ No issues detected.	✓ Engin vandamál fundust.
+Activity	Virkni
+Queue	Biðröð
+System	Kerfi
+Tasks	Verk
+Retry	Reyna aftur
+Sign out	Skrá út
+Search titles…  ( / )	Leita að titlum…  ( / )
+Loading…	Hleð…
+Profiles	Snið
+scene {}	sena {}
+Scene numbering from TheXEM	Senunúmering frá TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Senunúmering framreiknuð frá TheXEM (óstaðfest)
+Season {} (scene seasons {})	Sería {} (senuseríur {})
+{} (scene {})	{} (sena {})

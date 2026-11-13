@@ -1,0 +1,968 @@
+# Tamil interface strings: English	Tamil. {…} marks a placeholder.
+custom	தனிப்பயன்
+indeterminate	தீர்மானிக்கப்படாதது
+mixed	கலப்பு
+retired	ஓய்வுபெற்றது
+· container	· கொள்கலன்
+· finished {format_datetime(f)}	· முடிந்தது {format_datetime(f)}
+· missing	· காணவில்லை
+· on disk	· வட்டில் உள்ளது
+· today	· இன்று
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} அத்.
+— MiB per minute; empty uses Settings › Quality	— நிமிடத்திற்கு MiB; காலியாக இருந்தால் அமைப்புகள் › தரம் பயன்படும்
+— a release's size is multiplied by its codec's factor before the size limits apply	— அளவு வரம்புகள் பொருந்தும் முன் வெளியீட்டின் அளவு அதன் கோடெக் காரணியால் பெருக்கப்படும்
+— all profiles at once	— அனைத்து சுயவிவரங்களும் ஒரே நேரத்தில்
+— codec and title criteria, custom qualities (Tanukarr)	— கோடெக் மற்றும் தலைப்பு நிபந்தனைகள், தனிப்பயன் தரங்கள் (Tanukarr)
+— enter the code	— குறியீட்டை உள்ளிடவும்
+(empty)	(காலி)
++ Add mapping	+ வரைபடம் சேர்
++ New format	+ புதிய வடிவம்
++ New profile	+ புதிய சுயவிவரம்
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (அணைப்பு) அல்லது 10 முதல் 120. RSS ஒத்திசைவு அமைப்பு › பணிகள் இலிருந்தும் இயங்கும்.
+3 hours ago	3 மணிநேரம் முன்பு
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	இவ்வளவு நேரம் முன்னேற்றம் இல்லாமல் பதிவிறக்கும் டோரன்ட் தோல்வியாகக் குறிக்கப்பட்டு, தடுப்புப்பட்டியலில் சேர்க்கப்பட்டு, மீண்டும் தேடப்படும். 0 இதை அணைக்கும்; முன்னேற்றம் Kitsunarr தொடங்கியதிலிருந்து கண்காணிக்கப்படுகிறது.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	AniList அல்லது MyAnimeList தொடர்புகளிலிருந்து கண்டறியப்பட்ட உரிமைக் குழு. அதே உரிமையிலிருந்து பின்னர் சேர்க்கப்படும் தலைப்புகளும் இதில் சேரும்.
+A new API key was generated. Update the applications that use it.	புதிய API விசை உருவாக்கப்பட்டது. அதைப் பயன்படுத்தும் பயன்பாடுகளைப் புதுப்பிக்கவும்.
+A regular expression, case-insensitive; empty matches every title.	ஒரு ரெகுலர் எக்ஸ்பிரஷன், எழுத்து வடிவம் பொருட்படுத்தப்படாது; காலியாக இருந்தால் எல்லாத் தலைப்புகளும் பொருந்தும்.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	ஒரு வெளியீடு அதன் தொடரின் சுயவிவரத்தில் அனுமதிக்கப்பட்ட, அதன் மூலம், தெளிவுத்திறன், கோடெக் மற்றும் தலைப்பு வடிவத்துடன் பொருந்தும் மிகக் குறிப்பிட்ட முன்னமைவைப் பெறும். கோடெக் அல்லது வடிவம் கொடுக்கப்பட்ட நிலையான தரம், அதில் தோல்வியடையும் வெளியீடுகளை Unknown ஆக மாற்றும். தனிப்பயன் முன்னமைவுகள் ஒவ்வொரு சுயவிவரத்திலும் அனுமதிக்கப்படாதவையாகச் சேர்க்கப்படும்.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	அளவு வரம்புகள் பொருந்தும் முன் வெளியீட்டின் அளவு அதன் கோடெக் காரணியால் பெருக்கப்படும். "கலப்பு" என்றால் சுயவிவரங்கள் வெவ்வேறு காரணிகளைப் பயன்படுத்துகின்றன; இங்கு உள்ளிடும் மதிப்பு ஒவ்வொரு சுயவிவரத்திலும் எழுதப்படும்.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	உரிமைக் குழு அல்லது கைமுறைக் குழுவில் சேரும் தலைப்பு, முன்பு இருந்த குழுவை விட்டு வெளியேறும். கோப்புகளும் கோப்புறைகளும் நகர்த்தப்படாது.
+API key	API விசை
+API key needed	API விசை தேவை
+API keys and language	API விசைகள் மற்றும் மொழி
+API path	API பாதை
+About	பற்றி
+Absolute path; empty to delete permanently.	முழுமையான பாதை; நிரந்தரமாக நீக்க காலியாக விடவும்.
+Accepted	ஏற்கப்பட்டது
+Account lists	கணக்குப் பட்டியல்கள்
+Actions	செயல்கள்
+Actual	உண்மையானது
+Add	சேர்
+Add a Newznab or Torznab indexer and enable interactive search for it.	ஒரு Newznab அல்லது Torznab குறியீட்டாளரைச் சேர்த்து அதற்கு ஊடாடும் தேடலை இயக்கவும்.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	வார்ப்புருவிலிருந்து ஒரு கிளையன்டைச் சேர்த்து, திருத்தியில் சோதனையைப் பயன்படுத்தவும்; பெறுதல்கள், வரிசை மற்றும் இறக்குமதிகள் இயக்கப்பட்ட ஒவ்வொரு கிளையன்டையும் பயன்படுத்தும். Blackhole பெறுதல்களை ஒரு கோப்புறையில் எழுதி, அதன் கண்காணிப்புக் கோப்புறையில் தோன்றுவதை இறக்குமதி செய்யும். ஒவ்வொரு கிளையன்டின் "முடிந்த/தோல்வியடைந்த பதிவிறக்கங்களை அகற்று" விருப்பங்கள், கிளையன்ட் முடித்ததும் பதிவிறக்கங்களை (அவற்றின் கோப்புகளுடன்) அகற்றும்.
+Add a download client in Settings › Download clients and enable it.	அமைப்புகள் › பதிவிறக்க கிளையன்ட்கள் இல் ஒரு பதிவிறக்க கிளையன்டைச் சேர்த்து இயக்கவும்.
+Add a root folder first: it is where this title's folder will live.	முதலில் ஒரு மூல கோப்புறையைச் சேர்க்கவும்: இந்தத் தலைப்பின் கோப்புறை அங்குதான் இருக்கும்.
+Add a tag above first.	முதலில் மேலே ஒரு குறிச்சொல்லைச் சேர்க்கவும்.
+Add a title	தலைப்பைச் சேர்
+Add auto tag	தானியங்கு குறிச்சொல் சேர்
+Add condition	நிபந்தனை சேர்
+Add exclusion	விலக்கு சேர்
+Add media	ஊடகம் சேர்
+Add one, or migrate them from Sonarr/Tanukarr.	ஒன்றைச் சேர்க்கவும், அல்லது Sonarr/Tanukarr இலிருந்து இடம்பெயர்க்கவும்.
+Add preset	முன்னமைவு சேர்
+Add selected	தேர்ந்தவற்றைச் சேர்
+Add series or movies below.	கீழே தொடர்கள் அல்லது திரைப்படங்களைச் சேர்க்கவும்.
+Add tag	குறிச்சொல் சேர்
+Add the list's tags	பட்டியலின் குறிச்சொற்களைச் சேர்
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	TVmaze அல்லது AniList இலிருந்து தலைப்புகளைச் சேர்க்கவும், அல்லது ஏற்கனவே உள்ள Sonarr அல்லது Tanukarr நூலகத்தைக் கொண்டு வரவும்.
+Add to library	நூலகத்தில் சேர்
+Add {}	{} சேர்
+Add {} ({y})	{} ({y}) சேர்
+Add — {}	சேர் — {}
+Add, and remove when they leave the list	சேர், பட்டியலை விட்டு வெளியேறும்போது அகற்று
+Added	சேர்க்கப்பட்டது
+Added to the titles this list adds.	இந்தப் பட்டியல் சேர்க்கும் தலைப்புகளில் சேர்க்கப்படும்.
+Adding titles	தலைப்புகளைச் சேர்த்தல்
+Adding…	சேர்க்கிறது…
+Address	முகவரி
+Age	வயது
+Aired	ஒளிபரப்பானது
+Aired monitored episodes without a file appear here.	கோப்பு இல்லாத, ஒளிபரப்பான கண்காணிக்கப்படும் அத்தியாயங்கள் இங்கே தோன்றும்.
+All	அனைத்தும்
+All collections	அனைத்துத் தொகுப்புகளும்
+All episodes	அனைத்து அத்தியாயங்களும்
+All episodes in the series folder	தொடர் கோப்புறையில் உள்ள அனைத்து அத்தியாயங்களும்
+All events	அனைத்து நிகழ்வுகளும்
+Allow zero size (the feed has no release sizes)	பூஜ்ஜிய அளவை அனுமதி (ஊட்டத்தில் வெளியீட்டு அளவுகள் இல்லை)
+Also delete the series folder and its files (to the recycle bin when one is set)	தொடர் கோப்புறையையும் அதன் கோப்புகளையும் நீக்கு (மறுசுழற்சித் தொட்டி அமைக்கப்பட்டிருந்தால் அங்கு)
+Also for releases grabbed from interactive search	ஊடாடும் தேடலில் பெறப்பட்ட வெளியீடுகளுக்கும்
+Also known as	வேறு பெயர்கள்
+Always, even when renaming is off	எப்போதும், மறுபெயரிடல் அணைக்கப்பட்டிருந்தாலும்
+Analyze video files (resolution, runtime and codecs, with ffprobe)	வீடியோ கோப்புகளைப் பகுப்பாய்வு செய் (தெளிவுத்திறன், இயக்க நேரம் மற்றும் கோடெக்குகள், ffprobe மூலம்)
+AniList and MyAnimeList titles are always added as anime.	AniList மற்றும் MyAnimeList தலைப்புகள் எப்போதும் அனிமேவாகச் சேர்க்கப்படும்.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, மற்றொரு Sonarr மற்றும் தனிப்பயன் JSON பட்டியல்கள் சில மணிநேரங்களுக்கு ஒருமுறை படிக்கப்படும்; புதிய தலைப்புகள் ஒவ்வொரு பட்டியலின் மூல கோப்புறை, சுயவிவரம் மற்றும் கண்காணிப்புடன் சேர்க்கப்படும். OAuth தேவைப்படும் சேவைகள் உங்கள் சொந்தப் பயன்பாட்டின் Client ID மற்றும் நீங்கள் ஒட்டும் டோக்கனைப் பயன்படுத்தும் (Tanukarr இலிருந்து இடம்பெயர்க்கப்பட்ட டோக்கன்கள் தொடர்ந்து வேலை செய்யும்).
+Anime	அனிமே
+Anime / absolute numbering	அனிமே / முழுமையான எண்ணிடல்
+Anime categories	அனிமே வகைகள்
+Anime episode format	அனிமே அத்தியாய வடிவம்
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	அனிமே திரைப்படங்களை AniList இலிருந்து சேர்க்கலாம், Tanukarr இடம்பெயர்வுகள் அவற்றின் திரைப்படங்களையும் கொண்டு வரும். நேரடி நடிப்புத் திரைப்படங்களுக்கு TMDB பட்டியல் தேவை.
+Anime standard format search	அனிமே நிலையான வடிவத் தேடல்
+Anime title, e.g. Frieren	அனிமே தலைப்பு, எ.கா. Frieren
+Any	ஏதேனும்
+Any library	ஏதேனும் நூலகம்
+Applications using the current key will stop working until you give them the new one.	தற்போதைய விசையைப் பயன்படுத்தும் பயன்பாடுகளுக்கு புதியதைக் கொடுக்கும் வரை அவை வேலை செய்யாது.
+Applied after every list has been read successfully and some title left a list.	ஒவ்வொரு பட்டியலும் வெற்றிகரமாகப் படிக்கப்பட்டு, ஏதேனும் தலைப்பு ஒரு பட்டியலை விட்டு வெளியேறிய பின் பயன்படுத்தப்படும்.
+Apply	பயன்படுத்து
+Apply migration	இடம்பெயர்வைப் பயன்படுத்து
+Apply profile	சுயவிவரத்தைப் பயன்படுத்து
+Applying migration	இடம்பெயர்வு பயன்படுத்தப்படுகிறது
+Applying…	பயன்படுத்துகிறது…
+As Settings › Media management says	அமைப்புகள் › ஊடக மேலாண்மை கூறுவது போல்
+At least 10 characters.	குறைந்தது 10 எழுத்துகள்.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	குறைந்தது {MIN_PASSWORD_LENGTH} எழுத்துகள். கடவுச்சொற்றொடர் நன்றாக வேலை செய்யும்.
+Auto tag	தானியங்கு குறிச்சொல்
+Auto tag saved. It applies when titles are next added, edited or refreshed.	தானியங்கு குறிச்சொல் சேமிக்கப்பட்டது. தலைப்புகள் அடுத்து சேர்க்கப்படும், திருத்தப்படும் அல்லது புதுப்பிக்கப்படும்போது இது பொருந்தும்.
+Auto tagging	தானியங்கு குறிச்சொல்லிடல்
+Auto-refresh	தானியங்கு புதுப்பிப்பு
+Automatic	தானியங்கு
+Automatic search	தானியங்கு தேடல்
+Automatic search for {label}: grabbed {}.	{label} க்கான தானியங்கு தேடல்: {} பெறப்பட்டது.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	{label} க்கான தானியங்கு தேடல்: {} வெளியீடுகள் கண்டறியப்பட்டன, {} ஏற்கப்பட்டன, எதுவும் பெறப்படவில்லை.
+Automatic search: grab the best release	தானியங்கு தேடல்: சிறந்த வெளியீட்டைப் பெறு
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	தன்னியக்கம் இடைநிறுத்தப்பட்டுள்ளது: RSS ஒத்திசைவு, திட்டமிட்ட பட்டியல் ஒத்திசைவுகள் மற்றும் தானியங்கு தேடல்கள் தவிர்க்கப்படுகின்றன. கைமுறைச் செயல்களும் தற்போதைய பதிவிறக்கங்களும் தொடரும்.
+Automation resumed.	தன்னியக்கம் மீண்டும் தொடங்கியது.
+Available from	கிடைக்கும் இடம்
+Back to the dashboard	டாஷ்போர்டுக்குத் திரும்பு
+Back up now	இப்போது காப்புப்பிரதி எடு
+Backup {} created.	காப்புப்பிரதி {} உருவாக்கப்பட்டது.
+Backups	காப்புப்பிரதிகள்
+Blocking:	தடுப்பது:
+Blocklist	தடுப்புப்பட்டியல்
+Blocklist the release and search again	வெளியீட்டைத் தடுப்புப்பட்டியலில் சேர்த்து மீண்டும் தேடு
+Blocklist the release: it is never grabbed again	வெளியீட்டைத் தடுப்புப்பட்டியலில் சேர்: அது மீண்டும் ஒருபோதும் பெறப்படாது
+Blocklist “{title}” and search for a replacement?	“{title}” ஐத் தடுப்புப்பட்டியலில் சேர்த்து மாற்றீட்டைத் தேடவா?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	உங்கள் Sonarr (v3/v4) அல்லது Tanukarr நூலகத்தையும் அமைப்புகளையும் Kitsunarr க்குக் கொண்டு வாருங்கள். மூலம் படிக்கப்படுகிறது மட்டுமே, ஒருபோதும் மாற்றப்படாது, மேலும்
+Bypass the proxy for local addresses	உள்ளூர் முகவரிகளுக்கு ப்ராக்ஸியைத் தவிர்
+Calendar	நாள்காட்டி
+Calendar →	நாள்காட்டி →
+Cancel	ரத்துசெய்
+Cancel compression	சுருக்கத்தை ரத்துசெய்
+Cannot reach the server: {e}	சேவையகத்தை அடைய முடியவில்லை: {e}
+Catalogue	பட்டியல்
+Category	வகை
+Certificate validation	சான்றிதழ் சரிபார்ப்பு
+Change password	கடவுச்சொல்லை மாற்று
+Change series	தொடரை மாற்று
+Changes	மாற்றங்கள்
+Check	சரிபார்
+Check library	நூலகத்தைச் சரிபார்
+Check now	இப்போது சரிபார்
+Check that the mapped series folders exist (read-only)	வரைபடமிடப்பட்ட தொடர் கோப்புறைகள் உள்ளனவா எனச் சரிபார் (படிக்க மட்டும்)
+Checked: {summary}.	சரிபார்க்கப்பட்டது: {summary}.
+Checking…	சரிபார்க்கிறது…
+Choose a backup file	காப்புப்பிரதிக் கோப்பைத் தேர்ந்தெடு
+Choose a mode	ஒரு பயன்முறையைத் தேர்ந்தெடு
+Choose a root folder and a quality profile.	ஒரு மூல கோப்புறையையும் தர சுயவிவரத்தையும் தேர்ந்தெடுக்கவும்.
+Choose a season	ஒரு சீசனைத் தேர்ந்தெடு
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	ஒரு தொடரையும் ஒரு சீசன் அல்லது அத்தியாயத்தையும் தேர்ந்தெடுக்கவும். Kitsunarr இன் பாகுபடுத்தி படிப்பது போல, ஒவ்வொரு வெளியீடும் என்ன என்பதை முடிவுகள் காட்டும்.
+Choose a series or movie…	ஒரு தொடர் அல்லது திரைப்படத்தைத் தேர்ந்தெடு…
+Choose source	மூலத்தைத் தேர்ந்தெடு
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	இந்த வெளியீட்டின் அத்தியாயங்களைக் கைமுறையாகத் தேர்ந்தெடுத்துப் பின் பெறவும் (தேர்வு இறக்குமதிக்காக வைக்கப்படும்)
+Choose…	தேர்ந்தெடு…
+Clean library	நூலகத்தைச் சுத்தம் செய்
+Clear	அழி
+Clear blocklist	தடுப்புப்பட்டியலை அழி
+Cleared {n} releases from the blocklist.	தடுப்புப்பட்டியலிலிருந்து {n} வெளியீடுகள் அழிக்கப்பட்டன.
+Client	கிளையன்ட்
+Close	மூடு
+Codec	கோடெக்
+Codec factors saved in every profile.	கோடெக் காரணிகள் ஒவ்வொரு சுயவிவரத்திலும் சேமிக்கப்பட்டன.
+Codec size factors	கோடெக் அளவுக் காரணிகள்
+Codecs	கோடெக்குகள்
+Collection film folder format	தொகுப்புத் திரைப்படக் கோப்புறை வடிவம்
+Collections	தொகுப்புகள்
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	தொகுப்புகள் Tanukarr இலிருந்து இடம்பெயர்க்கப்படும்போது, வழங்குநர் தரவிலிருந்து உருவாக்கப்படும்போது அல்லது இங்கே உருவாக்கப்படும்போது தோன்றும்.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Sonarr அல்லது Tanukarr இலிருந்து வருகிறீர்களா? உங்கள் தற்போதைய தொடர்கள், அமைப்புகள் மற்றும் வரலாற்றைச் சில படிகளில் இறக்குமதி செய்யுங்கள்.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	காற்புள்ளியால் பிரிக்கப்பட்டவை; * ஒரு வைல்டுகார்டு (*.lan), 192.168.1.0/24 போன்ற IP வரம்புகளும் வேலை செய்யும்.
+Companion app keys	துணைப் பயன்பாட்டு விசைகள்
+Complete series	முழுத் தொடர்
+Completed and failed download handling	முடிந்த மற்றும் தோல்வியடைந்த பதிவிறக்கக் கையாளுதல்
+Component	கூறு
+Compress series	தொடரைச் சுருக்கு
+Compression	சுருக்கம்
+Compression queued.	சுருக்கம் வரிசையில் சேர்க்கப்பட்டது.
+Compression worker is not connected.	சுருக்கப் பணியாளர் இணைக்கப்படவில்லை.
+Condition	நிபந்தனை
+Conditions	நிபந்தனைகள்
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	ஒரே வகை நிபந்தனைகளில் ஏதேனும் ஒன்று பொருந்தினால் அவை பொருந்தும் (தேவையானவை அனைத்தும் பொருந்த வேண்டும்); ஒவ்வொரு வகையும் பொருந்த வேண்டும்.
+Configure	உள்ளமை
+Confirm password	கடவுச்சொல்லை உறுதிப்படுத்து
+Connect	இணை
+Connect to a running instance	இயங்கும் நிகழ்வுடன் இணை
+Connecting…	இணைக்கிறது…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	தரவுத்தளத்தின் சீரான நகல்கள். திட்டமிட்ட காப்புப்பிரதிகள் வாரந்தோறும் இயங்கும் (கடைசி எட்டு வைக்கப்படும்); ஒவ்வொரு இடம்பெயர்வும் முதலில் ஒன்றை உருவாக்கும். மீட்டெடுக்க, Kitsunarr ஐ நிறுத்தி இயக்கவும்
+Continuing	தொடர்கிறது
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	குக்கீ (ஊட்டக் கோரிக்கையுடன் அனுப்பப்படும், எ.கா. uid=1; pass=…)
+Copied.	நகலெடுக்கப்பட்டது.
+Copy	நகலெடு
+Copy (keep the originals)	நகலெடு (மூலங்களை வைத்திரு)
+Copy sizes from	இதிலிருந்து அளவுகளை நகலெடு
+Copy the token now; it is not shown again:	டோக்கனை இப்போதே நகலெடுக்கவும்; அது மீண்டும் காட்டப்படாது:
+Could not grab {}: {}	{} ஐப் பெற முடியவில்லை: {}
+Covers	அட்டைப்படங்கள்
+Create	உருவாக்கு
+Create account	கணக்கை உருவாக்கு
+Create group	குழுவை உருவாக்கு
+Create key	விசையை உருவாக்கு
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	themoviedb.org › Settings › API இல் ஒன்றை உருவாக்கவும். TMDB தொலைக்காட்சித் தொடர்கள் மற்றும் திரைப்படங்களுக்குப் பயன்படுகிறது.
+Create the administrator account. You will use it to sign in to Kitsunarr.	நிர்வாகி கணக்கை உருவாக்கவும். Kitsunarr இல் உள்நுழைய இதைப் பயன்படுத்துவீர்கள்.
+Created	உருவாக்கப்பட்டது
+Created when the first file is imported. Nothing is written to disk now.	முதல் கோப்பு இறக்குமதி செய்யப்படும்போது உருவாக்கப்படும். இப்போது வட்டில் எதுவும் எழுதப்படாது.
+Creating…	உருவாக்குகிறது…
+Credit	நன்றி
+Current file	தற்போதைய கோப்பு
+Current password	தற்போதைய கடவுச்சொல்
+Custom format saved.	தனிப்பயன் வடிவம் சேமிக்கப்பட்டது.
+Custom format score	தனிப்பயன் வடிவ மதிப்பெண்
+Custom format scores	தனிப்பயன் வடிவ மதிப்பெண்கள்
+Custom formats	தனிப்பயன் வடிவங்கள்
+Cutoff unmet	வரம்பு எட்டப்படவில்லை
+Daily	தினசரி
+Daily episode format	தினசரி அத்தியாய வடிவம்
+Dashboard	டாஷ்போர்டு
+Data directory	தரவுக் கோப்பகம்
+Database backup taken before the import: {b}	இறக்குமதிக்கு முன் எடுக்கப்பட்ட தரவுத்தளக் காப்புப்பிரதி: {b}
+Database schema	தரவுத்தள ஸ்கீமா
+Date	தேதி
+Date added	சேர்க்கப்பட்ட தேதி
+Debug	பிழைத்திருத்தம்
+Decision	முடிவு
+Default	இயல்புநிலை
+Defaults	இயல்புநிலைகள்
+Delay profile	தாமத சுயவிவரம்
+Delay profile saved.	தாமத சுயவிவரம் சேமிக்கப்பட்டது.
+Delay profiles	தாமத சுயவிவரங்கள்
+Delete	நீக்கு
+Delete empty series folders	காலியான தொடர் கோப்புறைகளை நீக்கு
+Delete file	கோப்பை நீக்கு
+Delete group	குழுவை நீக்கு
+Delete profile	சுயவிவரத்தை நீக்கு
+Delete “{path}”? It goes to the recycle bin when one is set.	“{path}” ஐ நீக்கவா? மறுசுழற்சித் தொட்டி அமைக்கப்பட்டிருந்தால் அது அங்கு செல்லும்.
+Delete “{}”?	“{}” ஐ நீக்கவா?
+Delete “{}”? Its series and movies stay in the library.	“{}” ஐ நீக்கவா? அதன் தொடர்களும் திரைப்படங்களும் நூலகத்தில் இருக்கும்.
+Deleted	நீக்கப்பட்டது
+Directory	கோப்பகம்
+Disabled	முடக்கப்பட்டது
+Disabled for local addresses	உள்ளூர் முகவரிகளுக்கு முடக்கப்பட்டது
+Disk scanned: {}	வட்டு ஸ்கேன் செய்யப்பட்டது: {}
+Disk scanned: {} Not matched: {}	வட்டு ஸ்கேன் செய்யப்பட்டது: {} பொருந்தாதவை: {}
+Do not prefer	முன்னுரிமை அளிக்காதே
+Do not search for a replacement	மாற்றீட்டைத் தேடாதே
+Do nothing	எதுவும் செய்யாதே
+Done	முடிந்தது
+Download client options saved.	பதிவிறக்க கிளையன்ட் விருப்பங்கள் சேமிக்கப்பட்டன.
+Download clients	பதிவிறக்க கிளையன்ட்கள்
+Download failed	பதிவிறக்கம் தோல்வியடைந்தது
+Download queue	பதிவிறக்க வரிசை
+Downloads	பதிவிறக்கங்கள்
+Duration	கால அளவு
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	ஒவ்வொரு தலைப்பும் ஒரு பட்டியலைச் சேர்ந்தது, அதன் புதுப்பிப்புகள் அதையே படிக்கும்; அது கொண்டுள்ள ஒவ்வொரு அடையாளங்காட்டியும் (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) வைக்கப்படும். Sonarr இலிருந்து இடம்பெயர்க்கப்பட்ட தலைப்புகள் TheTVDB ஐச் சேர்ந்தவை.
+Edit	திருத்து
+Edit “{name}”	“{name}” ஐத் திருத்து
+Edit “{}”	“{}” ஐத் திருத்து
+Enable RSS	RSS ஐ இயக்கு
+Enable automatic search	தானியங்கு தேடலை இயக்கு
+Enable interactive search	ஊடாடும் தேடலை இயக்கு
+Enabled	இயக்கப்பட்டது
+Ended	முடிவடைந்தது
+English	ஆங்கிலம்
+Entity	பொருள்
+Episode	அத்தியாயம்
+Episode and movie naming	அத்தியாயம் மற்றும் திரைப்படப் பெயரிடல்
+Episode image thumbs in the NFO	NFO இல் அத்தியாயப் படச் சிறுபடங்கள்
+Episode images (<filename>-thumb.jpg)	அத்தியாயப் படங்கள் (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	அத்தியாயப் படங்கள் (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	அத்தியாயப் படங்கள் (Season##/filename.metathumb)
+Episode mappings in .plexmatch	.plexmatch இல் அத்தியாய வரைபடங்கள்
+Episode metadata (<filename>.nfo)	அத்தியாய மெட்டாடேட்டா (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	அத்தியாய மெட்டாடேட்டா (Season##/filename.xml)
+Episode order	அத்தியாய வரிசை
+Episode order changed: {} episodes updated, {} added.	அத்தியாய வரிசை மாற்றப்பட்டது: {} அத்தியாயங்கள் புதுப்பிக்கப்பட்டன, {} சேர்க்கப்பட்டன.
+Episodes	அத்தியாயங்கள்
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	தேர்ந்தெடுத்த வரிசைப்படி அத்தியாயங்கள் மறுஎண்ணிடப்படும்; கோப்புகள், கண்காணிப்பு மற்றும் வரலாறு அவற்றின் அத்தியாயங்களுடனே இருக்கும். புதிய எண்களுடன் பொருந்தப் பின்னர் கோப்புகளை மறுபெயரிடவும்.
+Episodes of {title}	{title} இன் அத்தியாயங்கள்
+Episodes on disk	வட்டில் உள்ள அத்தியாயங்கள்
+Episodes whose file is below the quality profile's cutoff appear here.	தர சுயவிவரத்தின் வரம்புக்குக் கீழே கோப்பு உள்ள அத்தியாயங்கள் இங்கே தோன்றும்.
+Episodes…	அத்தியாயங்கள்…
+Errors	பிழைகள்
+Errors {errors}	பிழைகள் {errors}
+Event	நிகழ்வு
+Every file already follows the naming settings.	ஒவ்வொரு கோப்பும் ஏற்கனவே பெயரிடல் அமைப்புகளைப் பின்பற்றுகிறது.
+Every file meets its cutoff	ஒவ்வொரு கோப்பும் அதன் வரம்பை எட்டியுள்ளது
+Exclude	விலக்கு
+Exclusions	விலக்குகள்
+Expected	எதிர்பார்க்கப்பட்டது
+Expires	காலாவதியாகும்
+Extra file extensions	கூடுதல் கோப்பு நீட்டிப்புகள்
+Factor	காரணி
+Failed	தோல்வியடைந்தது
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	போலி வெளியீட்டுப் பாதுகாப்பு: பெறுவதற்கு முன் டோரன்ட்களை ஆய்வு செய்து, இயக்கக்கூடிய கோப்புகள், கடவுச்சொல் தூண்டில் காப்பகங்கள் மற்றும் வீடியோ இல்லாத உள்ளடக்கங்களை நிராகரி
+Feed address	ஊட்ட முகவரி
+Fetch the latest metadata from {}	{} இலிருந்து சமீபத்திய மெட்டாடேட்டாவைப் பெறு
+File	கோப்பு
+File date	கோப்புத் தேதி
+File deleted	கோப்பு நீக்கப்பட்டது
+File deleted.	கோப்பு நீக்கப்பட்டது.
+File management	கோப்பு மேலாண்மை
+File management settings saved.	கோப்பு மேலாண்மை அமைப்புகள் சேமிக்கப்பட்டன.
+File renamed	கோப்பு மறுபெயரிடப்பட்டது
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	இதைவிடப் பழைய கோப்புகள் மறுசுழற்சித் தொட்டியிலிருந்து தினமும் நீக்கப்படும்; 0 அவற்றை வைத்திருக்கும்.
+Files upgrades replaced, kept as versions	மேம்படுத்தல்களால் மாற்றப்பட்ட கோப்புகள், பதிப்புகளாக வைக்கப்பட்டவை
+Film	திரைப்படம்
+Film title or IMDb id, e.g. Arrival	திரைப்படத் தலைப்பு அல்லது IMDb id, எ.கா. Arrival
+Find a series in your library	உங்கள் நூலகத்தில் ஒரு தொடரைக் கண்டறி
+Find files added to or removed from the series folder	தொடர் கோப்புறையில் சேர்க்கப்பட்ட அல்லது அகற்றப்பட்ட கோப்புகளைக் கண்டறி
+Find something to add	சேர்க்க ஏதாவது கண்டறியவும்
+First and last pieces first	முதல் மற்றும் கடைசித் துண்டுகள் முதலில்
+First day of the week	வாரத்தின் முதல் நாள்
+First season	முதல் சீசன்
+Folder	கோப்புறை
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	வடிவங்கள் Sonarr இன் விவரக்குறிப்பு வகைகளைப் பயன்படுத்துகின்றன (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). மதிப்பெண்கள் ஒவ்வொரு தர சுயவிவரத்திற்கும் ஒதுக்கப்படும்.
+Found	கண்டறியப்பட்டது
+Free	இலவசம்
+Free space	காலி இடம்
+Future days	எதிர்கால நாட்கள்
+Future episodes	எதிர்கால அத்தியாயங்கள்
+General	பொது
+GiB	GiB
+Grab	பெறு
+Grab a release from interactive search; downloads in the client's TV category show up here.	ஊடாடும் தேடலிலிருந்து ஒரு வெளியீட்டைப் பெறவும்; கிளையன்டின் TV வகையில் உள்ள பதிவிறக்கங்கள் இங்கே தோன்றும்.
+Grab anyway?	இருந்தாலும் பெறவா?
+Grab with these episodes	இந்த அத்தியாயங்களுடன் பெறு
+Grabbed	பெறப்பட்டது
+Grabbed {}.	{} பெறப்பட்டது.
+Grabbing…	பெறுகிறது…
+Grabs, imports and file changes appear here. Migrated history is included.	பெறுதல்கள், இறக்குமதிகள் மற்றும் கோப்பு மாற்றங்கள் இங்கே தோன்றும். இடம்பெயர்க்கப்பட்ட வரலாறும் சேர்க்கப்பட்டுள்ளது.
+Group film folder format	குழுத் திரைப்படக் கோப்புறை வடிவம்
+Group folder format	குழுக் கோப்புறை வடிவம்
+Group season folder format	குழு சீசன் கோப்புறை வடிவம்
+Group story-arc folder format	குழுக் கதைத் தொடர் கோப்புறை வடிவம்
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	தொடர்புடைய தொடர்கள் மற்றும் திரைப்படங்களின் குழுக்கள்: வழங்குநர் தொகுப்புகள், அனிமே உரிமைகள் (முன்கதை/தொடர்ச்சி குழுக்கள்) மற்றும் கைமுறைக் குழுக்கள், Tanukarr இலிருந்து இடம்பெயர்க்கப்பட்டவை உட்பட.
+Hardlink-only imports: never copy downloads that keep seeding	ஹார்ட்லிங்க் மட்டும் இறக்குமதிகள்: தொடர்ந்து சீட் செய்யும் பதிவிறக்கங்களை ஒருபோதும் நகலெடுக்காதே
+Health	நலம்
+Hide	மறை
+History	வரலாறு
+History →	வரலாறு →
+Host	ஹோஸ்ட்
+Host (as in the download client's settings)	ஹோஸ்ட் (பதிவிறக்க கிளையன்டின் அமைப்புகளில் உள்ளபடி)
+Hostname	ஹோஸ்ட்பெயர்
+How the catalogue numbers the episodes (it can be changed later on the series page).	பட்டியல் அத்தியாயங்களை எவ்வாறு எண்ணிடுகிறது (பின்னர் தொடர் பக்கத்தில் மாற்றலாம்).
+Id	Id
+Identities	அடையாளங்கள்
+Ids	Ids
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Kitsunarr உங்கள் ஊடகத்தை மூலத்தை விட வேறு பாதைகளில் பார்த்தால் (எடுத்துக்காட்டாக வெவ்வேறு Docker தொகுதிகள்), ஒவ்வொரு மூலக் கோப்புறையையும் அதன் Kitsunarr இருப்பிடத்துடன் வரைபடமிடவும். பாதைகள் தரவுத்தளத்தில் மட்டுமே மாற்றி எழுதப்படும்.
+Ignored	புறக்கணிக்கப்பட்டது
+Ignored addresses	புறக்கணிக்கப்பட்ட முகவரிகள்
+Implementation	செயலாக்கம்
+Import / Migration	இறக்குமதி / இடம்பெயர்வு
+Import a Sonarr or Tanukarr library	Sonarr அல்லது Tanukarr நூலகத்தை இறக்குமதி செய்
+Import blocked	இறக்குமதி தடுக்கப்பட்டது
+Import completed downloads	முடிந்த பதிவிறக்கங்களை இறக்குமதி செய்
+Import extra files (subtitles…)	கூடுதல் கோப்புகளை இறக்குமதி செய் (வசனங்கள்…)
+Import from Sonarr/Tanukarr	Sonarr/Tanukarr இலிருந்து இறக்குமதி செய்
+Import history	இறக்குமதி வரலாறு
+Import library	நூலகத்தை இறக்குமதி செய்
+Import list options saved.	இறக்குமதிப் பட்டியல் விருப்பங்கள் சேமிக்கப்பட்டன.
+Import lists	இறக்குமதிப் பட்டியல்கள்
+Import pending	இறக்குமதி நிலுவையில் உள்ளது
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	சேவையகம் படிக்கக்கூடிய எந்தக் கோப்புறையிலிருந்தும் வீடியோ கோப்புகளை இறக்குமதி செய்யவும்: ஒவ்வொரு கோப்பும் எந்தத் தொடர் மற்றும் அத்தியாயங்களுக்கானது எனச் சரிபார்த்து, பின் அவற்றை நூலகத்தில் நகலெடுக்கவும் அல்லது நகர்த்தவும் (பெயரிடல் அமைப்புகளின்படி மறுபெயரிடப்படும்).
+Import {chosen().len()} files	{chosen().len()} கோப்புகளை இறக்குமதி செய்
+Imported	இறக்குமதி செய்யப்பட்டது
+Imported from series folder	தொடர் கோப்புறையிலிருந்து இறக்குமதி செய்யப்பட்டது
+Importing	இறக்குமதி செய்கிறது
+Importing…	இறக்குமதி செய்கிறது…
+Imports need	இறக்குமதிகளுக்குத் தேவை
+In library ›	நூலகத்தில் ›
+Include	சேர்த்துக்கொள்
+Include in file names ({{Custom Formats}} token)	கோப்புப் பெயர்களில் சேர் ({{Custom Formats}} டோக்கன்)
+Include only titles on some lists, or leave out the titles of others.	சில பட்டியல்களில் உள்ள தலைப்புகளை மட்டும் சேர்க்கவும், அல்லது மற்றவற்றின் தலைப்புகளை விலக்கவும்.
+Include unmonitored	கண்காணிக்கப்படாதவற்றைச் சேர்
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	URL அடிப்படை உட்பட, எ.கா. http://192.168.1.10:8989 அல்லது https://host/sonarr
+Indexer	குறியீட்டாளர்
+Indexer options saved.	குறியீட்டாளர் விருப்பங்கள் சேமிக்கப்பட்டன.
+Indexer settings	குறியீட்டாளர் அமைப்புகள்
+Indexers	குறியீட்டாளர்கள்
+Info	தகவல்
+Info {infos}	தகவல் {infos}
+Instance	நிகழ்வு
+Instance name	நிகழ்வுப் பெயர்
+Instance: {name}	நிகழ்வு: {name}
+Interactive	ஊடாடும்
+Interactive search	ஊடாடும் தேடல்
+Interactive search for full-season packs only	முழு சீசன் தொகுப்புகளுக்கு மட்டும் ஊடாடும் தேடல்
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	டோரன்ட் குறியீட்டாளர்களில் முழுத் தொடரின் (மற்றும் அதன் சீசன்களின்) தொகுப்புகளுக்கான ஊடாடும் தேடல்
+Interactive search: see every release and choose	ஊடாடும் தேடல்: ஒவ்வொரு வெளியீட்டையும் பார்த்துத் தேர்ந்தெடு
+Interface language	இடைமுக மொழி
+Interval	இடைவெளி
+Jellyfin library and user	Jellyfin நூலகம் மற்றும் பயனர்
+Job	பணி
+Keep / skip	வை / தவிர்
+Keep files replaced by upgrades as versions (in "Plex Versions")	மேம்படுத்தல்களால் மாற்றப்பட்ட கோப்புகளைப் பதிப்புகளாக வை ("Plex Versions" இல்)
+Keep me signed in	என்னை உள்நுழைந்தபடியே வை
+Keep the replaced file's date (upgrades)	மாற்றப்பட்ட கோப்பின் தேதியை வை (மேம்படுத்தல்கள்)
+Kept	வைக்கப்பட்டது
+Kept versions	வைக்கப்பட்ட பதிப்புகள்
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Sonarr v3 API ஐப் பயன்படுத்தும் துணைப் பயன்பாடுகளுக்கான விசைகள்: அவை நூலகத்தைப் படிக்கும், "தொடர் சேர்" விசைகள் தொடர்களையும் சேர்க்கலாம் (ஒரு மூல கோப்புறையில், தேடாமல்). வேறு எதுவும் அனுமதிக்கப்படாது.
+KiB	KiB
+Kind	வகை
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr ஒரு கட்டற்ற மென்பொருள் (GPL-3.0-or-later).
+Kitsunarr path	Kitsunarr பாதை
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr தனது சொந்தத் தரவுத்தளத்தைக் காப்புப்பிரதி எடுத்து, முன்னோட்டமிட்ட தரவை ஒரே பரிவர்த்தனையில் இறக்குமதி செய்து, உறுதிசெய்யும் முன் சரிபார்க்கும். மூலமும் உங்கள் ஊடகக் கோப்புகளும் மாற்றப்படாது.
+Label	லேபிள்
+Languages	மொழிகள்
+Larger releases are rejected. 0 means unlimited.	பெரிய வெளியீடுகள் நிராகரிக்கப்படும். 0 என்றால் வரம்பற்றது.
+Last read	கடைசியாகப் படித்தது
+Last run	கடைசி இயக்கம்
+Last search	கடைசித் தேடல்
+Last searched	கடைசியாகத் தேடியது
+Last season	கடைசி சீசன்
+Later ›	பின்னர் ›
+Latest season	சமீபத்திய சீசன்
+Level	நிலை
+Library	நூலகம்
+Library check	நூலகச் சரிபார்ப்பு
+Library tools	நூலகக் கருவிகள்
+Library tools saved.	நூலகக் கருவிகள் சேமிக்கப்பட்டன.
+List	பட்டியல்
+Listed best first. Grouped qualities rank equally.	சிறந்தது முதலில் பட்டியலிடப்பட்டுள்ளது. குழுவாக்கப்பட்ட தரங்கள் சமமாக மதிப்பிடப்படும்.
+Live updates connected	நேரடிப் புதுப்பிப்புகள் இணைக்கப்பட்டன
+Live updates disconnected	நேரடிப் புதுப்பிப்புகள் துண்டிக்கப்பட்டன
+Load	ஏற்று
+Load the account's lists	கணக்கின் பட்டியல்களை ஏற்று
+Load the libraries…	நூலகங்களை ஏற்று…
+Load the users…	பயனர்களை ஏற்று…
+Local air date	உள்ளூர் ஒளிபரப்புத் தேதி
+Local path	உள்ளூர் பாதை
+Log them	அவற்றைப் பதிவுசெய்
+Logs	பதிவுகள்
+Main rejections	முக்கிய நிராகரிப்புகள்
+Make current	தற்போதையதாக்கு
+Manual import	கைமுறை இறக்குமதி
+Mark as failed	தோல்வியடைந்ததாகக் குறி
+Matches monitored titles.	கண்காணிக்கப்படும் தலைப்புகளுடன் பொருந்துகிறது.
+Maximum	அதிகபட்சம்
+Maximum size (MB)	அதிகபட்ச அளவு (MB)
+Media management	ஊடக மேலாண்மை
+Media management settings	ஊடக மேலாண்மை அமைப்புகள்
+Media paths	ஊடகப் பாதைகள்
+Mediums	ஊடகங்கள்
+Members	உறுப்பினர்கள்
+Message	செய்தி
+Metadata	மெட்டாடேட்டா
+Metadata files	மெட்டாடேட்டா கோப்புகள்
+Metadata keys saved.	மெட்டாடேட்டா விசைகள் சேமிக்கப்பட்டன.
+Metadata language	மெட்டாடேட்டா மொழி
+Metadata refreshed.	மெட்டாடேட்டா புதுப்பிக்கப்பட்டது.
+Metadata refreshed: {} new episodes, {} updated.	மெட்டாடேட்டா புதுப்பிக்கப்பட்டது: {} புதிய அத்தியாயங்கள், {} புதுப்பிக்கப்பட்டன.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	மெட்டாடேட்டா அமைப்புகள் சேமிக்கப்பட்டன. அடுத்த வட்டு ஸ்கேன், புதுப்பிப்பு அல்லது இறக்குமதியின்போது கோப்புகள் எழுதப்படும்.
+Metadata sources	மெட்டாடேட்டா மூலங்கள்
+MiB	MiB
+Migration completed.	இடம்பெயர்வு முடிந்தது.
+Migration report #{}	இடம்பெயர்வு அறிக்கை #{}
+Minimum	குறைந்தபட்சம்
+Minimum age (minutes)	குறைந்தபட்ச வயது (நிமிடங்கள்)
+Minimum custom format score	குறைந்தபட்ச தனிப்பயன் வடிவ மதிப்பெண்
+Minimum format score	குறைந்தபட்ச வடிவ மதிப்பெண்
+Minimum free space (MiB)	குறைந்தபட்ச காலி இடம் (MiB)
+Minimum seeders	குறைந்தபட்ச சீடர்கள்
+Missing	காணவில்லை
+Missing (monitored)	காணவில்லை (கண்காணிக்கப்படுபவை)
+Missing films	காணாமல் போன திரைப்படங்கள்
+Mode	பயன்முறை
+Monday	திங்கள்
+Monitor	கண்காணி
+Monitored	கண்காணிக்கப்படுகிறது
+More languages can be added to the string tables.	சரம் அட்டவணைகளில் மேலும் மொழிகளைச் சேர்க்கலாம்.
+Move	நகர்த்து
+Movie	திரைப்படம்
+Movie file format	திரைப்படக் கோப்பு வடிவம்
+Movie removed from Kitsunarr. Files on disk were not touched.	திரைப்படம் Kitsunarr இலிருந்து அகற்றப்பட்டது. வட்டில் உள்ள கோப்புகள் தொடப்படவில்லை.
+Movies	திரைப்படங்கள்
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	பல சீசன் வெளியீடுகள்: பல சீசன்களின் தொகுப்புகளை ஏற்கவும் (சீசன் தேடல் அதன் சீசனுக்கான தொகுப்பை எடுக்கும்)
+Must contain	கொண்டிருக்க வேண்டும்
+Must contain (comma separated; /regex/ allowed)	கொண்டிருக்க வேண்டும் (காற்புள்ளியால் பிரிக்கப்பட்டவை; /regex/ அனுமதிக்கப்படும்)
+Must not contain	கொண்டிருக்கக் கூடாது
+NOT	இல்லை
+Name	பெயர்
+Naming	பெயரிடல்
+Naming options saved.	பெயரிடல் விருப்பங்கள் சேமிக்கப்பட்டன.
+Naming saved.	பெயரிடல் சேமிக்கப்பட்டது.
+Negate	எதிர்மறையாக்கு
+Network	நெட்வொர்க்
+Never: keep the release's names	ஒருபோதும் இல்லை: வெளியீட்டின் பெயர்களை வை
+New custom format	புதிய தனிப்பயன் வடிவம்
+New custom preset	புதிய தனிப்பயன் முன்னமைவு
+New group title	புதிய குழுத் தலைப்பு
+New password	புதிய கடவுச்சொல்
+New quality profile	புதிய தர சுயவிவரம்
+Next airing	அடுத்த ஒளிபரப்பு
+Next run	அடுத்த இயக்கம்
+Next ›	அடுத்து ›
+No	இல்லை
+No activity yet.	இதுவரை செயல்பாடு இல்லை.
+No auto tags.	தானியங்கு குறிச்சொற்கள் இல்லை.
+No backups yet	இதுவரை காப்புப்பிரதிகள் இல்லை
+No collections yet	இதுவரை தொகுப்புகள் இல்லை
+No companion keys.	துணை விசைகள் இல்லை.
+No custom formats	தனிப்பயன் வடிவங்கள் இல்லை
+No custom formats defined.	தனிப்பயன் வடிவங்கள் எதுவும் வரையறுக்கப்படவில்லை.
+No delay above the minimum custom format score	குறைந்தபட்ச தனிப்பயன் வடிவ மதிப்பெண்ணுக்கு மேல் தாமதம் இல்லை
+No delay for the profile's best quality in the preferred protocol	விருப்ப நெறிமுறையில் சுயவிவரத்தின் சிறந்த தரத்திற்குத் தாமதம் இல்லை
+No download client to read	படிக்க பதிவிறக்க கிளையன்ட் இல்லை
+No exclusions.	விலக்குகள் இல்லை.
+No history	வரலாறு இல்லை
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	எந்தக் குறியீட்டாளராலும் இந்தத் தொடரைத் தானாகத் தேட முடியாது: எதிலும் தானியங்கு தேடல் இயக்கப்படவில்லை அல்லது குறிச்சொற்கள் இல்லாதது அல்லது தொடரின் குறிச்சொற்களில் ஒன்றைக் கொண்டது இல்லை.
+No indexers to search	தேட குறியீட்டாளர்கள் இல்லை
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	வைக்கப்பட்ட பதிப்புகள் இல்லை. பெயரிடல் இல் "மேம்படுத்தல்களால் மாற்றப்பட்ட கோப்புகளை வை" என்பதை இயக்கவும்.
+No log entries at this level	இந்த நிலையில் பதிவு உள்ளீடுகள் இல்லை
+No mappings.	வரைபடங்கள் இல்லை.
+No matches	பொருத்தங்கள் இல்லை
+No members	உறுப்பினர்கள் இல்லை
+No migrations have been run yet.	இதுவரை எந்த இடம்பெயர்வும் இயக்கப்படவில்லை.
+No movies yet	இதுவரை திரைப்படங்கள் இல்லை
+No notes.	குறிப்புகள் இல்லை.
+No recycle bin is set (Settings › Media management).	மறுசுழற்சித் தொட்டி அமைக்கப்படவில்லை (அமைப்புகள் › ஊடக மேலாண்மை).
+No release profiles.	வெளியீட்டுச் சுயவிவரங்கள் இல்லை.
+No root folders yet.	இதுவரை மூல கோப்புறைகள் இல்லை.
+No root folders.	மூல கோப்புறைகள் இல்லை.
+No runs yet	இதுவரை இயக்கங்கள் இல்லை
+No searches yet.	இதுவரை தேடல்கள் இல்லை.
+No series in your library match.	உங்கள் நூலகத்தில் எந்தத் தொடரும் பொருந்தவில்லை.
+No tags	குறிச்சொற்கள் இல்லை
+No {}	{} இல்லை
+No {} yet	இதுவரை {} இல்லை
+None	எதுவுமில்லை
+Not evaluated by Kitsunarr.	Kitsunarr ஆல் மதிப்பிடப்படவில்லை.
+Not imported	இறக்குமதி செய்யப்படவில்லை
+Not monitored	கண்காணிக்கப்படவில்லை
+Notes	குறிப்புகள்
+Notes ({preview.warnings.len()})	குறிப்புகள் ({preview.warnings.len()})
+Notes ({report.warnings.len()})	குறிப்புகள் ({report.warnings.len()})
+Nothing airs in the next seven days.	அடுத்த ஏழு நாட்களில் எதுவும் ஒளிபரப்பாகவில்லை.
+Nothing downloading	எதுவும் பதிவிறக்கப்படவில்லை
+Nothing found	எதுவும் கிடைக்கவில்லை
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	இந்தப் பட்டியலில் தேடலுடன் எதுவும் பொருந்தவில்லை. வேறு எழுத்துக்கூட்டல், மூலத் தலைப்பு அல்லது மற்றொரு பட்டியலை முயலவும்.
+Nothing in this period	இந்தக் காலத்தில் எதுவும் இல்லை
+Nothing missing	எதுவும் காணாமல் இல்லை
+Notifications	அறிவிப்புகள்
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	பட்டியலின் மற்றொரு வரிசைப்படி அத்தியாயங்களை எண்ணிடு (TMDB அத்தியாயக் குழுக்கள், TheTVDB DVD அல்லது முழுமையான வரிசை)
+OMDb API key	OMDb API விசை
+Older priority	பழையவற்றுக்கு முன்னுரிமை
+One folder per season	ஒவ்வொரு சீசனுக்கும் ஒரு கோப்புறை
+Only the 2000 newest files are listed.	புதிய 2000 கோப்புகள் மட்டுமே பட்டியலிடப்பட்டுள்ளன.
+Only when the proxy needs one.	ப்ராக்ஸிக்குத் தேவைப்படும்போது மட்டும்.
+Open the library	நூலகத்தைத் திற
+OpenAPI document	OpenAPI ஆவணம்
+Opens the service to authorize Kitsunarr and fills in the token.	Kitsunarr ஐ அங்கீகரிக்கச் சேவையைத் திறந்து டோக்கனை நிரப்பும்.
+Options	விருப்பங்கள்
+Organize	ஒழுங்கமை
+Other	மற்றவை
+Overview	மேலோட்டம்
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Kitsunarr இல் ஏற்கனவே உள்ள பதிவுகளை மேலெழுது (இல்லையெனில் அவை வைக்கப்படும்)
+Packs	தொகுப்புகள்
+Page not found	பக்கம் கிடைக்கவில்லை
+Page {page} / {pages}	பக்கம் {page} / {pages}
+Password	கடவுச்சொல்
+Password changed. Other sessions were signed out.	கடவுச்சொல் மாற்றப்பட்டது. மற்ற அமர்வுகள் வெளியேற்றப்பட்டன.
+Past days	கடந்த நாட்கள்
+Path	பாதை
+Path mappings	பாதை வரைபடங்கள்
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	தன்னியக்கத்தை இடைநிறுத்து (RSS ஒத்திசைவு, திட்டமிட்ட பட்டியல் ஒத்திசைவுகள், தானியங்கு தேடல்கள்)
+Peers	பியர்கள்
+Permission	அனுமதி
+PiB	PiB
+Platform	தளம்
+Port	போர்ட்
+Position	நிலை
+Post-import category	இறக்குமதிக்குப் பிந்தைய வகை
+Posters	சுவரொட்டிகள்
+Prefer and upgrade	முன்னுரிமை அளித்து மேம்படுத்து
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	அனிமே சீசன் தொகுப்புகளுக்கு முன்னுரிமை அளி (Kitsunarr இன் அனிமே சீசன் தேடல்கள் ஏற்கனவே சீசனை ஒருமுறை தேடுகின்றன)
+Prefer, do not upgrade	முன்னுரிமை அளி, மேம்படுத்தாதே
+Preferred	விரும்பப்பட்டது
+Preferred metadata language	விருப்ப மெட்டாடேட்டா மொழி
+Preferred protocol	விருப்ப நெறிமுறை
+Preparing preview…	முன்னோட்டம் தயாராகிறது…
+Preview	முன்னோட்டம்
+Preview migration	இடம்பெயர்வை முன்னோட்டமிடு
+Previous migrations	முந்தைய இடம்பெயர்வுகள்
+Priority	முன்னுரிமை
+Problem	சிக்கல்
+Profile	சுயவிவரம்
+Profile saved.	சுயவிவரம் சேமிக்கப்பட்டது.
+Profiles still used by series or movies cannot be deleted.	தொடர்கள் அல்லது திரைப்படங்கள் இன்னும் பயன்படுத்தும் சுயவிவரங்களை நீக்க முடியாது.
+Progress	முன்னேற்றம்
+Propers and repacks	Propers மற்றும் repacks
+Proxy	ப்ராக்ஸி
+Proxy saved.	ப்ராக்ஸி சேமிக்கப்பட்டது.
+Proxy type	ப்ராக்ஸி வகை
+Qualities	தரங்கள்
+Quality	தரம்
+Quality presets	தர முன்னமைவுகள்
+Quality presets saved.	தர முன்னமைவுகள் சேமிக்கப்பட்டன.
+Quality profile	தர சுயவிவரம்
+Quality profiles	தர சுயவிவரங்கள்
+Quality profile…	தர சுயவிவரம்…
+RSS sync interval (minutes)	RSS ஒத்திசைவு இடைவெளி (நிமிடங்கள்)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	ஒரு வெளியீடு தோன்றிய பின் சிறந்த ஒன்றுக்காக RSS ஒத்திசைவு இவ்வளவு நேரம் காத்திருக்கும்; தாமதமான வெளியீடுகள் வரிசையில் காட்டப்படும். தொடருடன் குறிச்சொற்கள் பொருந்தும் முதல் சுயவிவரம் பொருந்தும்; கடைசியானது (குறிச்சொற்கள் இல்லாதது) இயல்புநிலை.
+Re-encode this series' files with the compression worker	இந்தத் தொடரின் கோப்புகளைச் சுருக்கப் பணியாளர் மூலம் மறுகுறியாக்கம் செய்
+Read and add series	தொடர்களைப் படித்துச் சேர்
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	சில வினாடிகளுக்கு ஒருமுறை பதிவிறக்க கிளையன்ட்களிலிருந்து நேரடியாகப் படிக்கப்படுகிறது. Kitsunarr பெற்ற முடிந்த பதிவிறக்கங்கள் ஒவ்வொரு நிமிடமும் தொடர் கோப்புறையில் இறக்குமதி செய்யப்படும் (டோரன்ட்கள் நகலெடுக்கப்படும் அல்லது ஹார்ட்லிங்க் செய்யப்படும், அதனால் அவை தொடர்ந்து சீட் செய்யும்; Usenet பதிவிறக்கங்கள் நகர்த்தப்படும்). தோல்வியடைந்த பதிவிறக்கங்கள் தடுப்புப்பட்டியலில் சேர்க்கப்பட்டு மீண்டும் தேடப்படும்.
+Read the library	நூலகத்தைப் படி
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	படிக்க மட்டும்: காணாமல் போன தொடர் கோப்புறைகள், அவற்றின் கோப்புறைக்கு வெளியே உள்ள அல்லது இருமுறை பதிவுசெய்யப்பட்ட கோப்புப் பதிவுகள் மற்றும் வட்டில் காணாமல் போன கோப்புகளைக் கண்டறியும்.
+Reading the download clients…	பதிவிறக்க கிளையன்ட்களைப் படிக்கிறது…
+Reading the source	மூலத்தைப் படிக்கிறது
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	எல்லாவற்றையும் API மூலம் படிக்கிறது. வழங்குநர்களின் கடவுச்சொற்களும் API விசைகளும் மூலத்தால் மறைக்கப்படுகின்றன, அவற்றைப் பின்னர் மீண்டும் உள்ளிட வேண்டும்.
+Recent activity	சமீபத்திய செயல்பாடு
+Recent priority	சமீபத்தியவற்றுக்கு முன்னுரிமை
+Recent runs	சமீபத்திய இயக்கங்கள்
+Recent searches	சமீபத்திய தேடல்கள்
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	பரிந்துரைக்கப்படுகிறது. Sonarr/Tanukarr இல் System → Backup ஐத் திறந்து, காப்புப்பிரதியை உருவாக்கி .zip ஐப் பதிவிறக்கவும் (அல்லது sonarr.db ஐப் பயன்படுத்தவும்). குறியீட்டாளர் மற்றும் பதிவிறக்க கிளையன்ட் கடவுச்சொற்களை உள்ளடக்கியது.
+Recycle bin	மறுசுழற்சித் தொட்டி
+Recycle bin cleanup (days)	மறுசுழற்சித் தொட்டி சுத்தம் (நாட்கள்)
+Recycled	மறுசுழற்சி செய்யப்பட்டது
+Refresh metadata	மெட்டாடேட்டாவைப் புதுப்பி
+Refresh preview	முன்னோட்டத்தைப் புதுப்பி
+Refreshing from {} is not supported yet; the imported metadata is kept as is	{} இலிருந்து புதுப்பிப்பது இன்னும் ஆதரிக்கப்படவில்லை; இறக்குமதி செய்யப்பட்ட மெட்டாடேட்டா அப்படியே வைக்கப்படும்
+Refreshing…	புதுப்பிக்கிறது…
+Regenerate	மீண்டும் உருவாக்கு
+Regenerate API key	API விசையை மீண்டும் உருவாக்கு
+Reject releases whose TheTVDB or IMDb id names another series	TheTVDB அல்லது IMDb id வேறு தொடரைக் குறிக்கும் வெளியீடுகளை நிராகரி
+Rejected: click twice to grab anyway	நிராகரிக்கப்பட்டது: இருந்தாலும் பெற இருமுறை கிளிக் செய்யவும்
+Release	வெளியீடு
+Release profile	வெளியீட்டுச் சுயவிவரம்
+Release profile saved.	வெளியீட்டுச் சுயவிவரம் சேமிக்கப்பட்டது.
+Release profiles	வெளியீட்டுச் சுயவிவரங்கள்
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Sonarr செய்வது போல, வெளியீடுகள் தொடரின் தர சுயவிவரம், தனிப்பயன் வடிவங்கள் மற்றும் வெளியீட்டுச் சுயவிவரங்களுக்கு எதிராகச் சரிபார்க்கப்பட்டுத் தரவரிசைப்படுத்தப்படும். நிராகரிக்கப்பட்ட வெளியீடுகளுக்கு இரண்டாவது கிளிக் தேவை.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	தோல்வியடைந்த அல்லது கைமுறையாகத் தடுப்புப்பட்டியலில் சேர்க்கப்பட்ட வெளியீடுகள். தேடல்களும் RSS ஒத்திசைவும் அவற்றை மீண்டும் ஒருபோதும் பெறாது; அனுமதிக்க ஒன்றை அகற்றவும்.
+Remote path	தொலைநிலைப் பாதை
+Remote path mapping	தொலைநிலைப் பாதை வரைபடம்
+Remote path mapping saved.	தொலைநிலைப் பாதை வரைபடம் சேமிக்கப்பட்டது.
+Remote path mappings	தொலைநிலைப் பாதை வரைபடங்கள்
+Remove	அகற்று
+Remove completed downloads	முடிந்த பதிவிறக்கங்களை அகற்று
+Remove every release from the blocklist?	தடுப்புப்பட்டியலிலிருந்து ஒவ்வொரு வெளியீட்டையும் அகற்றவா?
+Remove failed downloads	தோல்வியடைந்த பதிவிறக்கங்களை அகற்று
+Remove from library	நூலகத்திலிருந்து அகற்று
+Remove from queue	வரிசையிலிருந்து அகற்று
+Remove from the download client (deletes its files there)	பதிவிறக்க கிளையன்டிலிருந்து அகற்று (அங்குள்ள அதன் கோப்புகளை நீக்கும்)
+Remove movie	திரைப்படத்தை அகற்று
+Remove series	தொடரை அகற்று
+Remove tags automatically (from titles that stop matching)	குறிச்சொற்களைத் தானாக அகற்று (பொருந்துவதை நிறுத்தும் தலைப்புகளிலிருந்து)
+Remove “{title}” and its episode records from Kitsunarr?	“{title}” ஐயும் அதன் அத்தியாயப் பதிவுகளையும் Kitsunarr இலிருந்து அகற்றவா?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	“{title}” ஐ Kitsunarr இலிருந்து அகற்றவா? வட்டில் உள்ள கோப்புகள் நீக்கப்படாது.
+Removed	அகற்றப்பட்டது
+Removed from the blocklist.	தடுப்புப்பட்டியலிலிருந்து அகற்றப்பட்டது.
+Rename	மறுபெயரிடு
+Rename files	கோப்புகளை மறுபெயரிடு
+Rename files on import	இறக்குமதியின்போது கோப்புகளை மறுபெயரிடு
+Rename files to the naming settings	பெயரிடல் அமைப்புகளின்படி கோப்புகளை மறுபெயரிடு
+Formats use Sonarr's tokens.	வடிவங்கள் Sonarr இன் டோக்கன்களைப் பயன்படுத்துகின்றன.
+Renaming…	மறுபெயரிடுகிறது…
+Report	அறிக்கை
+Request one at omdbapi.com. Used for films by IMDb id.	omdbapi.com இல் ஒன்றைக் கோரவும். IMDb id மூலம் திரைப்படங்களுக்குப் பயன்படுகிறது.
+Required	தேவை
+Resolution	தெளிவுத்திறன்
+Restore	மீட்டெடு
+Restore {}	{} ஐ மீட்டெடு
+Restore…	மீட்டெடு…
+Restoring…	மீட்டெடுக்கிறது…
+Resume automation	தன்னியக்கத்தை மீண்டும் தொடங்கு
+Retention (days)	தக்கவைப்பு (நாட்கள்)
+Retire	ஓய்வுபெறச் செய்
+Revoke	திரும்பப்பெறு
+Root folder	மூல கோப்புறை
+Root folders	மூல கோப்புறைகள்
+Root folder…	மூல கோப்புறை…
+Run #{run.id}: {run.status}	இயக்கம் #{run.id}: {run.status}
+Run now	இப்போது இயக்கு
+Running…	இயங்குகிறது…
+Saturday	சனி
+Save	சேமி
+Save criteria	நிபந்தனைகளைச் சேமி
+Save factors	காரணிகளைச் சேமி
+Save keys	விசைகளைச் சேமி
+Save metadata files	மெட்டாடேட்டா கோப்புகளைச் சேமி
+Save naming	பெயரிடலைச் சேமி
+Save options	விருப்பங்களைச் சேமி
+Saved	சேமிக்கப்பட்டது
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	சேமிக்கப்பட்ட விசைகள் {REDACTED} ஆகக் காட்டப்படும்; அவற்றை வைத்திருக்க மாற்றாமல் விடவும், அல்லது ஒன்றை அகற்ற புலத்தை அழிக்கவும்.
+Saved.	சேமிக்கப்பட்டது.
+Scan disk	வட்டை ஸ்கேன் செய்
+Scan folder	கோப்புறையை ஸ்கேன் செய்
+Scanning…	ஸ்கேன் செய்கிறது…
+Scheduled tasks	திட்டமிட்ட பணிகள்
+Score	மதிப்பெண்
+Search	தேடு
+Search again when a download fails	பதிவிறக்கம் தோல்வியடையும்போது மீண்டும் தேடு
+Search all	அனைத்தையும் தேடு
+Search all films	அனைத்துத் திரைப்படங்களையும் தேடு
+Search collection	தொகுப்பைத் தேடு
+Search every episode of the list, one search per season	பட்டியலின் ஒவ்வொரு அத்தியாயத்தையும் தேடு, ஒரு சீசனுக்கு ஒரு தேடல்
+Search every member's missing episodes (films: the film)	ஒவ்வொரு உறுப்பினரின் காணாமல் போன அத்தியாயங்களையும் தேடு (திரைப்படங்கள்: திரைப்படம்)
+Search indexers	குறியீட்டாளர்களைத் தேடு
+Search selected	தேர்ந்தவற்றைத் தேடு
+Search the indexers and choose a release	குறியீட்டாளர்களைத் தேடி ஒரு வெளியீட்டைத் தேர்ந்தெடு
+Search the indexers and grab the best accepted release	குறியீட்டாளர்களைத் தேடி ஏற்கப்பட்ட சிறந்த வெளியீட்டைப் பெறு
+Search the indexers and grab the best releases for the monitored episodes	குறியீட்டாளர்களைத் தேடி கண்காணிக்கப்படும் அத்தியாயங்களுக்குச் சிறந்த வெளியீடுகளைப் பெறு
+Search your indexers	உங்கள் குறியீட்டாளர்களைத் தேடு
+Search {chosen} selected	தேர்ந்த {chosen} ஐத் தேடு
+Search: {}	தேடல்: {}
+Search: {} — complete series	தேடல்: {} — முழுத் தொடர்
+Search: {} — season {season} packs	தேடல்: {} — சீசன் {season} தொகுப்புகள்
+Search: {} — {label}	தேடல்: {} — {label}
+Searching for {label}…	{label} ஐத் தேடுகிறது…
+Searching indexers…	குறியீட்டாளர்களைத் தேடுகிறது…
+Searching…	தேடுகிறது…
+Season	சீசன்
+Season folder format	சீசன் கோப்புறை வடிவம்
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	சீசன் கோப்புறைத் தலைப்புகள் {{Season Title}} இல் பட்டியலின் தலைப்புகளை மாற்றும். பட்டியலினுடையதை வைத்திருக்கக் காலியாக விடவும்.
+Season folders	சீசன் கோப்புறைகள்
+Season images (Season ##.jpg)	சீசன் படங்கள் (Season ##.jpg)
+Season images (Season##/folder.jpg)	சீசன் படங்கள் (Season##/folder.jpg)
+Season images (season##-poster.jpg)	சீசன் படங்கள் (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	சீசன் தொகுப்புகள்: 1 கீழே உள்ள சீசன் தொகுப்பு இலக்குகளைப் பயன்படுத்தும்
+Season premieres only	சீசன் தொடக்கங்கள் மட்டும்
+Season {n}	சீசன் {n}
+Season {one}	சீசன் {one}
+Season {se.season_number}	சீசன் {se.season_number}
+Season {season_number}	சீசன் {season_number}
+Season-pack seed ratio	சீசன் தொகுப்பு சீட் விகிதம்
+Season-pack seed time, minutes	சீசன் தொகுப்பு சீட் நேரம், நிமிடங்கள்
+Seasons	சீசன்கள்
+Seasons {first}-{last}	சீசன்கள் {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	ரகசியங்கள் {REDACTED} ஆகக் காட்டப்படும்; சேமிக்கப்பட்ட மதிப்பை வைத்திருக்க மாற்றாமல் விடவும்.
+Seed ratio (empty: the client's default)	சீட் விகிதம் (காலி: கிளையன்டின் இயல்புநிலை)
+Seed time, minutes (empty: the client's default)	சீட் நேரம், நிமிடங்கள் (காலி: கிளையன்டின் இயல்புநிலை)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	குறியீட்டாளர்கள், பட்டியல்கள், இறக்குமதிப் பட்டியல்கள், பதிவிறக்க கிளையன்ட்கள் மற்றும் இணைப்புகளுக்கான கோரிக்கைகளை ஒரு ப்ராக்ஸி மூலம் அனுப்பு.
+Send to the download client	பதிவிறக்க கிளையன்டுக்கு அனுப்பு
+Series	தொடர்
+Series .plexmatch file	தொடர் .plexmatch கோப்பு
+Series folder format	தொடர் கோப்புறை வடிவம்
+Series images (Series Title.jpg)	தொடர் படங்கள் (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	தொடர் படங்கள் (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	தொடர் படங்கள் (folder.jpg)
+Series metadata (tvshow.nfo)	தொடர் மெட்டாடேட்டா (tvshow.nfo)
+Series metadata URL	தொடர் மெட்டாடேட்டா URL
+Series metadata episode guide	தொடர் மெட்டாடேட்டா அத்தியாய வழிகாட்டி
+Series removed from Kitsunarr. Files on disk were not touched.	தொடர் Kitsunarr இலிருந்து அகற்றப்பட்டது. வட்டில் உள்ள கோப்புகள் தொடப்படவில்லை.
+Series removed, and its folder deleted.	தொடர் அகற்றப்பட்டது, அதன் கோப்புறை நீக்கப்பட்டது.
+Series type	தொடர் வகை
+Set quality profile…	தர சுயவிவரத்தை அமை…
+Settings	அமைப்புகள்
+Settings saved.	அமைப்புகள் சேமிக்கப்பட்டன.
+Settings → General → Security in Sonarr/Tanukarr.	Sonarr/Tanukarr இல் Settings → General → Security.
+Show	காட்டு
+Show as all-day events	நாள் முழுவதுமான நிகழ்வுகளாகக் காட்டு
+Show unmonitored	கண்காணிக்கப்படாதவற்றைக் காட்டு
+Shows	நிகழ்ச்சிகள்
+Sign in	உள்நுழை
+Signed in. Save the list to keep the token.	உள்நுழைந்தது. டோக்கனை வைத்திருக்கப் பட்டியலைச் சேமிக்கவும்.
+Signing in…	உள்நுழைகிறது…
+Size	அளவு
+Size limits	அளவு வரம்புகள்
+Size on disk	வட்டில் உள்ள அளவு
+Skip files smaller than (MB)	இதைவிடச் சிறிய கோப்புகளைத் தவிர் (MB)
+Skip the free-space check	காலி இடச் சரிபார்ப்பைத் தவிர்
+Skip unmonitored episodes when importing packs	தொகுப்புகளை இறக்குமதி செய்யும்போது கண்காணிக்கப்படாத அத்தியாயங்களைத் தவிர்
+Source	மூலம்
+Source code	மூலக் குறியீடு
+Source path	மூலப் பாதை
+Special	சிறப்பு
+Specials	சிறப்புகள்
+Specials are never monitored automatically.	சிறப்புகள் ஒருபோதும் தானாகக் கண்காணிக்கப்படாது.
+Specifications	விவரக்குறிப்புகள்
+Specifications (JSON)	விவரக்குறிப்புகள் (JSON)
+Specifications must be valid JSON: {e}	விவரக்குறிப்புகள் சரியான JSON ஆக இருக்க வேண்டும்: {e}
+Stalled torrent timeout (minutes)	தேங்கிய டோரன்ட் காலவரம்பு (நிமிடங்கள்)
+Standard	நிலையானது
+Standard episode format	நிலையான அத்தியாய வடிவம்
+Start migration	இடம்பெயர்வைத் தொடங்கு
+Start over	மீண்டும் தொடங்கு
+Start search for missing episodes	காணாமல் போன அத்தியாயங்களுக்கான தேடலைத் தொடங்கு
+Started	தொடங்கியது
+Started {format_datetime(&run.started_at)}	தொடங்கியது {format_datetime(&run.started_at)}
+Status	நிலை
+Status & health	நிலை & நலம்
+Still downloading	இன்னும் பதிவிறக்குகிறது
+Storage outlook	சேமிப்பக முன்னோக்கு
+Studio	ஸ்டுடியோ
+Subscribe	சந்தா செலுத்து
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	நாள்காட்டிப் பயன்பாட்டில் இந்த முகவரிக்குச் சந்தா செலுத்தவும். இதில் உங்கள் API விசை உள்ளது: அதைத் தனிப்பட்டதாக வைத்திருங்கள்.
+Sunday	ஞாயிறு
+Sync	ஒத்திசை
+Sync all lists now	அனைத்துப் பட்டியல்களையும் இப்போது ஒத்திசை
+Sync now	இப்போது ஒத்திசை
+Syncing…	ஒத்திசைக்கிறது…
+System →	அமைப்பு →
+TMDB API key (v3)	TMDB API விசை (v3)
+TV Series	தொலைக்காட்சித் தொடர்கள்
+TV series	தொலைக்காட்சித் தொடர்கள்
+Table	அட்டவணை
+Tag	குறிச்சொல்
+Tag them	அவற்றுக்குக் குறிச்சொல்லிடு
+Tag titles already in the library	ஏற்கனவே நூலகத்தில் உள்ள தலைப்புகளுக்குக் குறிச்சொல்லிடு
+Tags	குறிச்சொற்கள்
+Tags (comma separated)	குறிச்சொற்கள் (காற்புள்ளியால் பிரிக்கப்பட்டவை)
+Tags (ids, comma separated)	குறிச்சொற்கள் (ids, காற்புள்ளியால் பிரிக்கப்பட்டவை)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	ஒவ்வொரு வகை நிபந்தனையுடனும் பொருந்தும் தொடர்கள் மற்றும் திரைப்படங்கள் சேர்க்கப்படும்போது, திருத்தப்படும்போது அல்லது புதுப்பிக்கப்படும்போது அவற்றில் குறிச்சொற்கள் சேர்க்கப்படும்.
+Task	பணி
+Television	தொலைக்காட்சி
+Television (raw)	தொலைக்காட்சி (raw)
+Test	சோதி
+Test failed: {message}	சோதனை தோல்வியடைந்தது: {message}
+Testing…	சோதிக்கிறது…
+The blocklist is empty	தடுப்புப்பட்டியல் காலியாக உள்ளது
+The catalogue new titles are added from when the list knows their id there.	பட்டியலுக்கு அங்கு அவற்றின் id தெரிந்திருக்கும்போது புதிய தலைப்புகள் சேர்க்கப்படும் பட்டியல்.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	இறக்குமதி செய்யப்பட்ட கோப்புகள் பெறும் தேதி: அத்தியாயத்தின் ஒளிபரப்புத் தேதி (உள்ளூர் அல்லது UTC), அல்லது மேம்படுத்தலில் மாற்றப்பட்ட கோப்பின் தேதி.
+The dry run completed without blocking problems. Nothing has been written yet.	ஒத்திகை இயக்கம் தடுக்கும் சிக்கல்கள் இல்லாமல் முடிந்தது. இதுவரை எதுவும் எழுதப்படவில்லை.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	கோப்பு சீசன் கோப்புறைக்கு நகர்த்தப்படும் (ஏற்கனவே உள்ள கோப்பு ஒருபோதும் மேலெழுதப்படாது), தொடர் மீண்டும் ஸ்கேன் செய்யப்படும்.
+The folder must already exist; Kitsunarr never creates or removes it.	கோப்புறை ஏற்கனவே இருக்க வேண்டும்; Kitsunarr அதை ஒருபோதும் உருவாக்கவோ அகற்றவோ செய்யாது.
+The indexers returned no releases for this search.	இந்தத் தேடலுக்குக் குறியீட்டாளர்கள் எந்த வெளியீடுகளையும் திருப்பவில்லை.
+The instance is on my local network (private or loopback address)	நிகழ்வு எனது உள்ளூர் நெட்வொர்க்கில் உள்ளது (தனிப்பட்ட அல்லது loopback முகவரி)
+The list has not been read, or it is empty.	பட்டியல் படிக்கப்படவில்லை, அல்லது அது காலியாக உள்ளது.
+The migration did not complete; nothing was changed.	இடம்பெயர்வு முடியவில்லை; எதுவும் மாற்றப்படவில்லை.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	நினைவகத்தில் வைக்கப்பட்ட மிகச் சமீபத்திய உள்ளீடுகள். முழுப் பதிவுகள் செயல்முறை வெளியீட்டுக்குச் செல்லும் (கொள்கலன் பதிவுகள் அல்லது journal).
+The passwords do not match.	கடவுச்சொற்கள் பொருந்தவில்லை.
+The recycle bin has no media or subtitle files.	மறுசுழற்சித் தொட்டியில் ஊடக அல்லது வசனக் கோப்புகள் இல்லை.
+The sign-in expired; try again.	உள்நுழைவு காலாவதியானது; மீண்டும் முயலவும்.
+The upload failed (network error).	பதிவேற்றம் தோல்வியடைந்தது (நெட்வொர்க் பிழை).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	பணியாளர் என்பது KITSUNARR_COMPRESSION_SOCKET இல் உள்ள சாக்கெட் மூலம் அணுகப்படும் விருப்ப ஹோஸ்ட் கூறு (Tanukarr இன் சுருக்கப் பணியாளர்).
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarr இன் பட்டியல்), TMDB மற்றும் TVmaze தொலைக்காட்சித் தொடர்களை உள்ளடக்கும்; AniList மற்றும் MyAnimeList அனிமே தொடர்கள் மற்றும் அனிமே திரைப்படங்களை உள்ளடக்கும்; TMDB மற்றும் OMDb திரைப்படங்களை உள்ளடக்கும். ஒரு தலைப்பைச் சேர்ப்பது அதன் நூலகப் பதிவையும் அத்தியாயப் பட்டியலையும் உருவாக்கும்; கோப்புகள் பின்னர் இறக்குமதிச் செயல்முறையால் எடுக்கப்படும்.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB தலைப்புகள் இந்த மொழியில் தேடப்பட்டுச் சேர்க்கப்படும்; ஒவ்வொரு தொடரையும் அதன் திருத்தியில் மாற்றலாம்.
+TheTVDB titles in this language; changing it refreshes the series	இந்த மொழியில் TheTVDB தலைப்புகள்; இதை மாற்றினால் தொடர் புதுப்பிக்கப்படும்
+There is nothing at /{path}.	/{path} இல் எதுவும் இல்லை.
+They are created by migrating from Sonarr/Tanukarr.	அவை Sonarr/Tanukarr இலிருந்து இடம்பெயர்வதன் மூலம் உருவாக்கப்படுகின்றன.
+This series' renaming mode, season folder titles and kept versions	இந்தத் தொடரின் மறுபெயரிடல் பயன்முறை, சீசன் கோப்புறைத் தலைப்புகள் மற்றும் வைக்கப்பட்ட பதிப்புகள்
+TiB	TiB
+Time	நேரம்
+Time left	மீதமுள்ள நேரம்
+Title	தலைப்பு
+Title pattern	தலைப்பு வடிவம்
+Titles import lists never add.	இறக்குமதிப் பட்டியல்கள் ஒருபோதும் சேர்க்காத தலைப்புகள்.
+Titles on no list	எந்தப் பட்டியலிலும் இல்லாத தலைப்புகள்
+Today	இன்று
+Torrent	டோரன்ட்
+Torrent delay	டோரன்ட் தாமதம்
+Torrent delay (minutes)	டோரன்ட் தாமதம் (நிமிடங்கள்)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab மற்றும் Newznab குறியீட்டாளர்கள். ஒன்றைச் சரிபார்க்கத் திருத்தியில் சோதனையைப் பயன்படுத்தவும்; ஒவ்வொரு தேடலும் அந்த வகைத் தேடல் இயக்கப்பட்ட குறியீட்டாளர்களைப் பயன்படுத்தும்: RSS, தானியங்கு அல்லது ஊடாடும்.
+Trigger	தூண்டி
+URL base	URL அடிப்படை
+UTC air date	UTC ஒளிபரப்புத் தேதி
+Unchanged	மாற்றப்படவில்லை
+Unknown	தெரியாதது
+Unmonitor	கண்காணிப்பை நிறுத்து
+Unmonitor them	அவற்றின் கண்காணிப்பை நிறுத்து
+Unmonitored	கண்காணிக்கப்படவில்லை
+Upcoming	வரவிருப்பவை
+Upcoming 7 days	வரும் 7 நாட்கள்
+Update	புதுப்பி
+Updated {} items.	{} உருப்படிகள் புதுப்பிக்கப்பட்டன.
+Upgrade until (cutoff)	இதுவரை மேம்படுத்து (வரம்பு)
+Upgrade until format score	இந்த வடிவ மதிப்பெண் வரை மேம்படுத்து
+Upgrades allowed	மேம்படுத்தல்கள் அனுமதிக்கப்படுகின்றன
+Upload a backup	காப்புப்பிரதியைப் பதிவேற்று
+Upload failed (HTTP {}).	பதிவேற்றம் தோல்வியடைந்தது (HTTP {}).
+Uploading…	பதிவேற்றுகிறது…
+Use SSL	SSL பயன்படுத்து
+Use a proxy	ப்ராக்ஸியைப் பயன்படுத்து
+Use hardlinks instead of copying	நகலெடுப்பதற்குப் பதிலாக ஹார்ட்லிங்க்குகளைப் பயன்படுத்து
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	பிற பயன்பாடுகளிலிருந்து X-Api-Key header ஆக (அல்லது ?apikey=) பயன்படுத்தவும். Sonarr பயன்படுத்தும் header உடன் இணக்கமானது.
+Use these episodes	இந்த அத்தியாயங்களைப் பயன்படுத்து
+Usenet	Usenet
+Usenet delay	Usenet தாமதம்
+Usenet delay (minutes)	Usenet தாமதம் (நிமிடங்கள்)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Usenet மட்டும்: புதிய வெளியீடுகள் நிராகரிக்கப்படும், அவை பரவ நேரம் கொடுக்கப்படும். 0 இதை அணைக்கும்.
+Usenet only: older releases are rejected. 0 means unlimited.	Usenet மட்டும்: பழைய வெளியீடுகள் நிராகரிக்கப்படும். 0 என்றால் வரம்பற்றது.
+User name	பயனர் பெயர்
+Username	பயனர்பெயர்
+Validation	சரிபார்ப்பு
+Version	பதிப்பு
+Versions	பதிப்புகள்
+Waiting for the sign-in at	இங்கே உள்நுழைவுக்காகக் காத்திருக்கிறது
+Wanted	தேவைப்படுபவை
+Warnings	எச்சரிக்கைகள்
+Warnings {warnings}	எச்சரிக்கைகள் {warnings}
+Watched (Jellyfin watched sync)	பார்த்தவை (Jellyfin பார்த்தவை ஒத்திசைவு)
+Watched sync user	பார்த்தவை ஒத்திசைவுப் பயனர்
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, மின்னஞ்சல் (SMTP), Mailgun, SendGrid, தனிப்பயன் ஸ்கிரிப்டுகள் (Sonarr இன் சூழல் மாறிகளுடன்), Emby/Jellyfin, Plex மற்றும் Kodi அனுப்பப்படும்: பெறுதல்கள், இறக்குமதிகள் மற்றும் மேம்படுத்தல்கள், மறுபெயரிடல்கள், சேர்க்கப்பட்ட அல்லது நீக்கப்பட்ட தொடர்கள், நீக்கப்பட்ட கோப்புகள், நலச் சிக்கல்கள். திருத்தியில் சோதனையைப் பயன்படுத்தவும்.
+Welcome	வரவேற்கிறோம்
+What to import	எதை இறக்குமதி செய்வது
+When	எப்போது
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	குறியீட்டாளர்கள், பதிவிறக்க கிளையன்ட்கள் மற்றும் சேவைகளின் HTTPS சான்றிதழ்கள் எப்போது சரிபார்க்கப்படும் (Sonarr இன் அமைப்பு). உங்கள் நெட்வொர்க்கில் உள்ள சுய-கையொப்பமிட்ட சான்றிதழ்களுக்கு இது தளர்த்தப்பட வேண்டும்.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Kitsunarr வேறு இடத்தில் பார்க்கும் பாதைகளைப் பதிவிறக்க கிளையன்ட் தெரிவிக்கும்போது (வேறு கணினி அல்லது கொள்கலன்), கிளையன்டின் ஹோஸ்ட் மற்றும் பாதையை உள்ளூர் பாதையுடன் வரைபடமிடவும்.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	மோசமான வெளியீட்டைச் சரிசெய்யும் வெளியீடுகளுக்கு முன்னுரிமை அளிக்கப்பட்டு, ஏற்கனவே உள்ள கோப்புகளை மேம்படுத்துமா என்பது (Sonarr இல் உள்ளது போல).
+Whole season	முழு சீசன்
+Working…	செயல்படுகிறது…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	தொடர்கள் ஸ்கேன் செய்யப்படும்போது, புதுப்பிக்கப்படும்போது அல்லது இறக்குமதி செய்யப்படும்போது, Sonarr இன் மெட்டாடேட்டா நுகர்வோர் எழுதுவது போலத் தொடர் கோப்புறைகளில் எழுதப்படும்.
+Year	ஆண்டு
+Your library is empty.	உங்கள் நூலகம் காலியாக உள்ளது.
+all checks passed	அனைத்துச் சரிபார்ப்புகளும் வெற்றி
+comma separated	காற்புள்ளியால் பிரிக்கப்பட்டவை
+cutoff: {}	வரம்பு: {}
+has a file	கோப்பு உள்ளது
+iCal link	iCal இணைப்பு
+in 2 days	2 நாட்களில்
+in a moment	சிறிது நேரத்தில்
+in file names	கோப்புப் பெயர்களில்
+in library	நூலகத்தில்
+in {text}	{text} இல்
+just now	இப்போதுதான்
+may run out of space	இடம் தீர்ந்துவிடலாம்
+name (e.g. phone)	பெயர் (எ.கா. தொலைபேசி)
+never refreshed	ஒருபோதும் புதுப்பிக்கப்படவில்லை
+no media files are moved, renamed or deleted.	எந்த ஊடகக் கோப்புகளும் நகர்த்தப்படவோ, மறுபெயரிடப்படவோ, நீக்கப்படவோ மாட்டாது.
+not accessible	அணுக முடியாது
+not added	சேர்க்கப்படவில்லை
+not checked	சரிபார்க்கப்படவில்லை
+not read yet	இன்னும் படிக்கப்படவில்லை
+on disk	வட்டில் உள்ளது
+refreshed {}	புதுப்பிக்கப்பட்டது {}
+schema {s}	ஸ்கீமா {s}
+secrets included	ரகசியங்கள் சேர்க்கப்பட்டுள்ளன
+secrets masked	ரகசியங்கள் மறைக்கப்பட்டுள்ளன
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip அல்லது sonarr.db
+stored only	சேமிக்கப்பட்டது மட்டும்
+title (optional)	தலைப்பு (விருப்பத்தேர்வு)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} சேர்க்கப்பட்டன; {}
+{added} shows added.	{added} நிகழ்ச்சிகள் சேர்க்கப்பட்டன.
+{c.name} (API key needed)	{c.name} (API விசை தேவை)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} தொடர்கள் · {c.movie_count} திரைப்படங்கள்
+{chosen().len()} chosen	{chosen().len()} தேர்ந்தெடுக்கப்பட்டன
+{chosen().len()} chosen (at most 25)	{chosen().len()} தேர்ந்தெடுக்கப்பட்டன (அதிகபட்சம் 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} வட்டில் · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{format_bytes(item.size)} இல் {done}%
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · சேர்க்கப்பட்டது {format_date(&f.added_at)}
+{first}–{last} of {total}	{total} இல் {first}–{last}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} கோப்புகள் · {job["percent"]}% · சேமிக்கப்பட்டது {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} தொடங்கியது.
+{name} was added to the library.	{name} நூலகத்தில் சேர்க்கப்பட்டது.
+{name}: shows	{name}: நிகழ்ச்சிகள்
+{ok} files imported.	{ok} கோப்புகள் இறக்குமதி செய்யப்பட்டன.
+{ok} imported; {}	{ok} இறக்குமதி செய்யப்பட்டன; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.searched_indexers} குறியீட்டாளர்(கள்) இலிருந்து {r.releases.len()} வெளியீடுகள்.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} தொடர்கள் மற்றும் {r.files_checked} கோப்புகள் சரிபார்க்கப்பட்டன: {r.issues.len()} சிக்கல்கள்.
+{selected.read().len()} selected	{selected.read().len()} தேர்ந்தெடுக்கப்பட்டன
+{text} ago	{text} முன்பு
+{} (not accessible)	{} (அணுக முடியாது)
+{} ({} free)	{} ({} காலி)
+{} added to every profile (not allowed yet).	{} ஒவ்வொரு சுயவிவரத்திலும் சேர்க்கப்பட்டது (இன்னும் அனுமதிக்கப்படவில்லை).
+{} day(s)	{} நாள்(கள்)
+{} failed: {}	{} தோல்வியடைந்தது: {}
+{} format scores	{} வடிவ மதிப்பெண்கள்
+{} free of {}	{} காலி, மொத்தம் {}
+{} week(s)	{} வாரம்(கள்)
+{}{year} — movie	{}{year} — திரைப்படம்
+‹ Back	‹ பின்செல்
+‹ Earlier	‹ முந்தையவை
+‹ Prev	‹ முந்தைய
+○ offline	○ இணைப்பில் இல்லை
+● live	● நேரலை
+✓ No issues detected.	✓ சிக்கல்கள் எதுவும் கண்டறியப்படவில்லை.
+Activity	செயல்பாடு
+Queue	வரிசை
+System	அமைப்பு
+Tasks	பணிகள்
+Retry	மீண்டும் முயல்
+Sign out	வெளியேறு
+Search titles…  ( / )	தலைப்புகளைத் தேடு…  ( / )
+Loading…	ஏற்றுகிறது…
+Profiles	சுயவிவரங்கள்
+scene {}	scene {}
+Scene numbering from TheXEM	TheXEM இலிருந்து scene எண்ணிடல்
+Scene numbering extrapolated from TheXEM (unverified)	TheXEM இலிருந்து ஊகிக்கப்பட்ட scene எண்ணிடல் (சரிபார்க்கப்படவில்லை)
+Season {} (scene seasons {})	சீசன் {} (scene சீசன்கள் {})
+{} (scene {})	{} (scene {})

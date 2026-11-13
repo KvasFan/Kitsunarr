@@ -1,0 +1,968 @@
+# Indonesian interface strings: English<TAB>Indonesian. {…} marks a placeholder.
+custom	khusus
+indeterminate	tidak tentu
+mixed	campuran
+retired	dipensiunkan
+· container	· container
+· finished {format_datetime(f)}	· selesai {format_datetime(f)}
+· missing	· hilang
+· on disk	· di disk
+· today	· hari ini
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep
+— MiB per minute; empty uses Settings › Quality	— MiB per menit; kosong memakai Pengaturan › Kualitas
+— a release's size is multiplied by its codec's factor before the size limits apply	— ukuran rilis dikalikan dengan faktor codec-nya sebelum batas ukuran diterapkan
+— all profiles at once	— semua profil sekaligus
+— codec and title criteria, custom qualities (Tanukarr)	— kriteria codec dan judul, kualitas khusus (Tanukarr)
+— enter the code	— masukkan kodenya
+(empty)	(kosong)
++ Add mapping	+ Tambah pemetaan
++ New format	+ Format baru
++ New profile	+ Profil baru
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (mati) atau 10 hingga 120. Sinkronisasi RSS juga berjalan dari Sistem › Tugas.
+3 hours ago	3 jam lalu
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Torrent yang sedang diunduh tanpa kemajuan selama ini dianggap gagal, dimasukkan ke blocklist, dan dicari lagi. 0 menonaktifkannya; kemajuan dipantau sejak Kitsunarr dimulai.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Grup franchise yang ditemukan dari relasi AniList atau MyAnimeList. Judul dari franchise yang sama yang ditambahkan kemudian tetap bergabung.
+A new API key was generated. Update the applications that use it.	Kunci API baru telah dibuat. Perbarui aplikasi yang menggunakannya.
+A regular expression, case-insensitive; empty matches every title.	Ekspresi reguler, tidak peka huruf besar/kecil; kosong cocok dengan semua judul.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Rilis mengambil preset paling spesifik yang diizinkan di profil serialnya yang cocok dengan sumber, resolusi, codec, dan pola judulnya. Kualitas standar yang diberi codec atau pola menjadikan rilis yang tidak memenuhinya Tidak Diketahui. Preset khusus ditambahkan ke setiap profil sebagai tidak diizinkan.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Ukuran rilis dikalikan dengan faktor codec-nya sebelum batas ukuran diterapkan. "Campuran" berarti profil memakai faktor yang berbeda; nilai yang dimasukkan di sini ditulis ke setiap profil.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Judul yang bergabung ke franchise atau grup manual keluar dari grup sebelumnya. File dan folder tidak dipindahkan.
+API key	Kunci API
+API key needed	Kunci API diperlukan
+API keys and language	Kunci API dan bahasa
+API path	Path API
+About	Tentang
+Absolute path; empty to delete permanently.	Path absolut; kosong untuk menghapus permanen.
+Accepted	Diterima
+Account lists	Daftar akun
+Actions	Tindakan
+Actual	Aktual
+Add	Tambah
+Add a Newznab or Torznab indexer and enable interactive search for it.	Tambahkan indexer Newznab atau Torznab dan aktifkan penelusuran interaktif untuknya.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Tambahkan klien dari templatnya dan gunakan Uji di editor; pengambilan, antrean, dan impor memakai semua klien yang aktif. Blackhole menulis pengambilan ke sebuah folder dan mengimpor apa yang muncul di folder pantauannya. Opsi "Hapus unduhan selesai/gagal" setiap klien menghapus unduhan (beserta filenya) setelah klien selesai dengannya.
+Add a download client in Settings › Download clients and enable it.	Tambahkan download client di Pengaturan › Download client dan aktifkan.
+Add a root folder first: it is where this title's folder will live.	Tambahkan folder root terlebih dahulu: di sanalah folder judul ini akan berada.
+Add a tag above first.	Tambahkan tag di atas terlebih dahulu.
+Add a title	Tambah judul
+Add auto tag	Tambah tag otomatis
+Add condition	Tambah kondisi
+Add exclusion	Tambah pengecualian
+Add media	Tambah media
+Add one, or migrate them from Sonarr/Tanukarr.	Tambahkan satu, atau migrasikan dari Sonarr/Tanukarr.
+Add preset	Tambah preset
+Add selected	Tambah yang dipilih
+Add series or movies below.	Tambahkan serial atau film di bawah.
+Add tag	Tambah tag
+Add the list's tags	Tambahkan tag daftar
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Tambahkan judul dari TVmaze atau AniList, atau bawa pustaka Sonarr atau Tanukarr yang sudah ada.
+Add to library	Tambahkan ke pustaka
+Add {}	Tambah {}
+Add {} ({y})	Tambah {} ({y})
+Add — {}	Tambah — {}
+Add, and remove when they leave the list	Tambahkan, dan hapus saat keluar dari daftar
+Added	Ditambahkan
+Added to the titles this list adds.	Ditambahkan ke judul yang ditambahkan daftar ini.
+Adding titles	Menambahkan judul
+Adding…	Menambahkan…
+Address	Alamat
+Age	Usia
+Aired	Tayang
+Aired monitored episodes without a file appear here.	Episode dimonitor yang sudah tayang tanpa file muncul di sini.
+All	Semua
+All collections	Semua koleksi
+All episodes	Semua episode
+All episodes in the series folder	Semua episode di folder serial
+All events	Semua peristiwa
+Allow zero size (the feed has no release sizes)	Izinkan ukuran nol (feed tidak menyertakan ukuran rilis)
+Also delete the series folder and its files (to the recycle bin when one is set)	Hapus juga folder serial dan filenya (ke tempat sampah jika sudah diatur)
+Also for releases grabbed from interactive search	Juga untuk rilis yang diambil dari penelusuran interaktif
+Also known as	Juga dikenal sebagai
+Always, even when renaming is off	Selalu, meskipun penggantian nama nonaktif
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analisis file video (resolusi, durasi, dan codec, dengan ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Judul AniList dan MyAnimeList selalu ditambahkan sebagai anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Daftar AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, Sonarr lain, dan JSON khusus dibaca setiap beberapa jam; judul baru ditambahkan dengan folder root, profil, dan pemantauan dari masing-masing daftar. Layanan yang memerlukan OAuth memakai Client ID aplikasimu sendiri dan token yang kamu tempel (token yang dimigrasikan dari Tanukarr tetap berfungsi).
+Anime	Anime
+Anime / absolute numbering	Anime / penomoran absolut
+Anime categories	Kategori anime
+Anime episode format	Format episode anime
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Film anime dapat ditambahkan dari AniList, dan migrasi Tanukarr ikut membawa filmnya. Film live-action memerlukan katalog TMDB.
+Anime standard format search	Penelusuran anime format standar
+Anime title, e.g. Frieren	Judul anime, mis. Frieren
+Any	Apa saja
+Any library	Pustaka mana saja
+Applications using the current key will stop working until you give them the new one.	Aplikasi yang memakai kunci saat ini akan berhenti berfungsi sampai kamu memberikan kunci baru.
+Applied after every list has been read successfully and some title left a list.	Diterapkan setelah semua daftar berhasil dibaca dan ada judul yang keluar dari daftar.
+Apply	Terapkan
+Apply migration	Terapkan migrasi
+Apply profile	Terapkan profil
+Applying migration	Menerapkan migrasi
+Applying…	Menerapkan…
+As Settings › Media management says	Sesuai Pengaturan › Pengelolaan media
+At least 10 characters.	Minimal 10 karakter.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Minimal {MIN_PASSWORD_LENGTH} karakter. Frasa sandi cocok dipakai.
+Auto tag	Tag otomatis
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Tag otomatis disimpan. Berlaku saat judul berikutnya ditambahkan, diedit, atau dimuat ulang.
+Auto tagging	Pemberian tag otomatis
+Auto-refresh	Muat ulang otomatis
+Automatic	Otomatis
+Automatic search	Penelusuran otomatis
+Automatic search for {label}: grabbed {}.	Penelusuran otomatis untuk {label}: mengambil {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Penelusuran otomatis untuk {label}: {} rilis ditemukan, {} disetujui, tidak ada yang diambil.
+Automatic search: grab the best release	Penelusuran otomatis: ambil rilis terbaik
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Otomatisasi dijeda: sinkronisasi RSS, sinkronisasi daftar terjadwal, dan penelusuran otomatis dilewati. Tindakan manual dan unduhan yang sedang berjalan tetap berlanjut.
+Automation resumed.	Otomatisasi dilanjutkan.
+Available from	Tersedia sejak
+Back to the dashboard	Kembali ke dasbor
+Back up now	Cadangkan Sekarang
+Backup {} created.	Cadangan {} dibuat.
+Backups	Cadangan
+Blocking:	Memblokir:
+Blocklist	Blocklist
+Blocklist the release and search again	Masukkan rilis ke blocklist dan cari lagi
+Blocklist the release: it is never grabbed again	Masukkan rilis ke blocklist: rilis ini tidak akan pernah diambil lagi
+Blocklist “{title}” and search for a replacement?	Masukkan “{title}” ke blocklist dan cari penggantinya?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Bawa pustaka dan pengaturan Sonarr (v3/v4) atau Tanukarr ke Kitsunarr. Sumber hanya dibaca, tidak pernah diubah, dan
+Bypass the proxy for local addresses	Lewati proxy untuk alamat lokal
+Calendar	Kalender
+Calendar →	Kalender →
+Cancel	Batal
+Cancel compression	Batalkan kompresi
+Cannot reach the server: {e}	Tidak dapat menjangkau server: {e}
+Catalogue	Katalog
+Category	Kategori
+Certificate validation	Validasi sertifikat
+Change password	Ubah sandi
+Change series	Ubah serial
+Changes	Perubahan
+Check	Periksa
+Check library	Periksa pustaka
+Check now	Periksa sekarang
+Check that the mapped series folders exist (read-only)	Periksa apakah folder serial yang dipetakan ada (hanya baca)
+Checked: {summary}.	Diperiksa: {summary}.
+Checking…	Memeriksa…
+Choose a backup file	Pilih file cadangan
+Choose a mode	Pilih mode
+Choose a root folder and a quality profile.	Pilih folder root dan profil kualitas.
+Choose a season	Pilih musim
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Pilih serial dan musim atau episode. Hasil menunjukkan isi setiap rilis, seperti yang dibaca parser Kitsunarr.
+Choose a series or movie…	Pilih serial atau film…
+Choose source	Pilih sumber
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Pilih episode rilis ini secara manual, lalu ambil (pilihan disimpan untuk impor)
+Choose…	Pilih…
+Clean library	Bersihkan pustaka
+Clear	Kosongkan
+Clear blocklist	Kosongkan blocklist
+Cleared {n} releases from the blocklist.	{n} rilis dihapus dari blocklist.
+Client	Klien
+Close	Tutup
+Codec	Codec
+Codec factors saved in every profile.	Faktor codec disimpan di setiap profil.
+Codec size factors	Faktor ukuran codec
+Codecs	Codec
+Collection film folder format	Format folder film koleksi
+Collections	Koleksi
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Koleksi muncul saat dimigrasikan dari Tanukarr, dibuat dari data katalog, atau dibuat di sini.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Datang dari Sonarr atau Tanukarr? Impor serial, pengaturan, dan riwayat yang sudah ada dalam beberapa langkah.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Dipisahkan koma; * adalah wildcard (*.lan), dan rentang IP seperti 192.168.1.0/24 dapat dipakai.
+Companion app keys	Kunci aplikasi pendamping
+Complete series	Serial lengkap
+Completed and failed download handling	Penanganan unduhan selesai dan gagal
+Component	Komponen
+Compress series	Kompres serial
+Compression	Kompresi
+Compression queued.	Kompresi masuk antrean.
+Compression worker is not connected.	Worker kompresi tidak terhubung.
+Condition	Kondisi
+Conditions	Kondisi
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Kondisi dari satu jenis cocok jika salah satunya cocok (semua yang wajib harus cocok); setiap jenis harus cocok.
+Configure	Konfigurasi
+Confirm password	Konfirmasi sandi
+Connect	Hubungkan
+Connect to a running instance	Hubungkan ke instans yang sedang berjalan
+Connecting…	Menghubungkan…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Salinan basis data yang konsisten. Cadangan terjadwal berjalan setiap minggu (delapan terakhir disimpan); setiap migrasi juga membuat satu cadangan terlebih dahulu. Untuk memulihkan, hentikan Kitsunarr dan jalankan
+Continuing	Berlanjut
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (dikirim bersama permintaan feed, mis. uid=1; pass=…)
+Copied.	Disalin.
+Copy	Salin
+Copy (keep the originals)	Salin (simpan yang asli)
+Copy sizes from	Salin ukuran dari
+Copy the token now; it is not shown again:	Salin token sekarang; token tidak akan ditampilkan lagi:
+Could not grab {}: {}	Tidak dapat mengambil {}: {}
+Covers	Mencakup
+Create	Buat
+Create account	Buat akun
+Create group	Buat grup
+Create key	Buat kunci
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Buat di themoviedb.org › Settings › API. Dipakai untuk serial TV dan film TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Buat akun administrator. Kamu akan memakainya untuk masuk ke Kitsunarr.
+Created	Dibuat
+Created when the first file is imported. Nothing is written to disk now.	Dibuat saat file pertama diimpor. Tidak ada yang ditulis ke disk sekarang.
+Creating…	Membuat…
+Credit	Kredit
+Current file	File saat ini
+Current password	Sandi saat ini
+Custom format saved.	Format khusus disimpan.
+Custom format score	Skor format khusus
+Custom format scores	Skor format khusus
+Custom formats	Format khusus
+Cutoff unmet	Cutoff belum terpenuhi
+Daily	Harian
+Daily episode format	Format episode harian
+Dashboard	Dasbor
+Data directory	Direktori data
+Database backup taken before the import: {b}	Cadangan basis data dibuat sebelum impor: {b}
+Database schema	Skema basis data
+Date	Tanggal
+Date added	Tanggal ditambahkan
+Debug	Debug
+Decision	Keputusan
+Default	Bawaan
+Defaults	Nilai bawaan
+Delay profile	Delay Profile
+Delay profile saved.	Delay Profile disimpan.
+Delay profiles	Delay Profile
+Delete	Hapus
+Delete empty series folders	Hapus folder serial yang kosong
+Delete file	Hapus file
+Delete group	Hapus grup
+Delete profile	Hapus profil
+Delete “{path}”? It goes to the recycle bin when one is set.	Hapus “{path}”? File akan masuk ke tempat sampah jika sudah diatur.
+Delete “{}”?	Hapus “{}”?
+Delete “{}”? Its series and movies stay in the library.	Hapus “{}”? Serial dan filmnya tetap ada di pustaka.
+Deleted	Dihapus
+Directory	Direktori
+Disabled	Nonaktif
+Disabled for local addresses	Nonaktif untuk alamat lokal
+Disk scanned: {}	Disk dipindai: {}
+Disk scanned: {} Not matched: {}	Disk dipindai: {} Tidak cocok: {}
+Do not prefer	Jangan utamakan
+Do not search for a replacement	Jangan cari pengganti
+Do nothing	Jangan lakukan apa pun
+Done	Selesai
+Download client options saved.	Opsi download client disimpan.
+Download clients	Download client
+Download failed	Unduhan gagal
+Download queue	Antrean unduhan
+Downloads	Unduhan
+Duration	Durasi
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Setiap judul termasuk dalam satu katalog, yang dibaca saat dimuat ulang; setiap pengenal yang dimilikinya (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) tetap disimpan. Judul yang dimigrasikan dari Sonarr termasuk dalam TheTVDB.
+Edit	Edit
+Edit “{name}”	Edit “{name}”
+Edit “{}”	Edit “{}”
+Enable RSS	Aktifkan RSS
+Enable automatic search	Aktifkan Penelusuran Otomatis
+Enable interactive search	Aktifkan Penelusuran Interaktif
+Enabled	Aktif
+Ended	Berakhir
+English	English
+Entity	Entitas
+Episode	Episode
+Episode and movie naming	Penamaan episode dan film
+Episode image thumbs in the NFO	Thumbnail gambar episode di NFO
+Episode images (<filename>-thumb.jpg)	Gambar episode (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Gambar episode (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Gambar episode (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Pemetaan episode di .plexmatch
+Episode metadata (<filename>.nfo)	Metadata episode (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Metadata episode (Season##/filename.xml)
+Episode order	Urutan episode
+Episode order changed: {} episodes updated, {} added.	Urutan episode diubah: {} episode diperbarui, {} ditambahkan.
+Episodes	Episode
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Episode dinomori ulang sesuai urutan yang dipilih; file, pemantauan, dan riwayat tetap bersama episodenya. Ganti nama file setelahnya agar sesuai dengan nomor baru.
+Episodes of {title}	Episode {title}
+Episodes on disk	Episode di disk
+Episodes whose file is below the quality profile's cutoff appear here.	Episode yang filenya di bawah cutoff profil kualitas muncul di sini.
+Episodes…	Episode…
+Errors	Kesalahan
+Errors {errors}	Kesalahan {errors}
+Event	Peristiwa
+Every file already follows the naming settings.	Semua file sudah mengikuti pengaturan penamaan.
+Every file meets its cutoff	Semua file memenuhi cutoff-nya
+Exclude	Kecualikan
+Exclusions	Pengecualian
+Expected	Diharapkan
+Expires	Kedaluwarsa
+Extra file extensions	Ekstensi file tambahan
+Factor	Faktor
+Failed	Gagal
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Perlindungan rilis palsu: periksa torrent sebelum diambil dan tolak file eksekusi, arsip umpan bersandi, dan konten tanpa video
+Feed address	Alamat feed
+Fetch the latest metadata from {}	Ambil metadata terbaru dari {}
+File	File
+File date	Tanggal file
+File deleted	File dihapus
+File deleted.	File dihapus.
+File management	Pengelolaan file
+File management settings saved.	Pengaturan pengelolaan file disimpan.
+File renamed	File diganti namanya
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	File yang lebih lama dari ini dihapus dari tempat sampah setiap hari; 0 menyimpannya.
+Files upgrades replaced, kept as versions	File yang digantikan peningkatan, disimpan sebagai versi
+Film	Film
+Film title or IMDb id, e.g. Arrival	Judul film atau id IMDb, mis. Arrival
+Find a series in your library	Cari serial di pustakamu
+Find files added to or removed from the series folder	Temukan file yang ditambahkan ke atau dihapus dari folder serial
+Find something to add	Temukan sesuatu untuk ditambahkan
+First and last pieces first	Potongan pertama dan terakhir lebih dulu
+First day of the week	Hari pertama dalam minggu
+First season	Musim pertama
+Folder	Folder
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Format memakai jenis spesifikasi Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Skor diberikan per profil kualitas.
+Found	Ditemukan
+Free	Bebas
+Free space	Ruang kosong
+Future days	Hari mendatang
+Future episodes	Episode mendatang
+General	Umum
+GiB	GiB
+Grab	Ambil
+Grab a release from interactive search; downloads in the client's TV category show up here.	Ambil rilis dari penelusuran interaktif; unduhan di kategori TV klien muncul di sini.
+Grab anyway?	Tetap ambil?
+Grab with these episodes	Ambil dengan episode ini
+Grabbed	Diambil
+Grabbed {}.	{} diambil.
+Grabbing…	Mengambil…
+Grabs, imports and file changes appear here. Migrated history is included.	Pengambilan, impor, dan perubahan file muncul di sini. Riwayat yang dimigrasikan disertakan.
+Group film folder format	Format folder film grup
+Group folder format	Format folder grup
+Group season folder format	Format folder musim grup
+Group story-arc folder format	Format folder alur cerita grup
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Grup serial dan film terkait: koleksi dari katalog, franchise anime (grup prekuel/sekuel), dan grup manual, termasuk yang dimigrasikan dari Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Impor hanya dengan hardlink: jangan pernah menyalin unduhan yang masih di-seed
+Health	Kesehatan
+Hide	Sembunyikan
+History	Riwayat
+History →	Riwayat →
+Host	Host
+Host (as in the download client's settings)	Host (seperti di pengaturan download client)
+Hostname	Nama host
+How the catalogue numbers the episodes (it can be changed later on the series page).	Cara katalog menomori episode (dapat diubah nanti di halaman serial).
+Id	Id
+Identities	Identitas
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Jika Kitsunarr melihat media kamu di path yang berbeda dari sumber (misalnya volume Docker yang berbeda), petakan setiap folder sumber ke lokasinya di Kitsunarr. Path hanya ditulis ulang di basis data.
+Ignored	Diabaikan
+Ignored addresses	Alamat yang diabaikan
+Implementation	Implementasi
+Import / Migration	Impor / Migrasi
+Import a Sonarr or Tanukarr library	Impor pustaka Sonarr atau Tanukarr
+Import blocked	Impor diblokir
+Import completed downloads	Impor unduhan yang selesai
+Import extra files (subtitles…)	Impor file tambahan (subtitle…)
+Import from Sonarr/Tanukarr	Impor dari Sonarr/Tanukarr
+Import history	Impor riwayat
+Import library	Impor pustaka
+Import list options saved.	Opsi daftar impor disimpan.
+Import lists	Daftar impor
+Import pending	Impor tertunda
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Impor file video dari folder mana pun yang dapat dibaca server: periksa serial dan episode untuk setiap file, lalu salin atau pindahkan ke pustaka (diganti nama sesuai pengaturan penamaan).
+Import {chosen().len()} files	Impor {chosen().len()} file
+Imported	Diimpor
+Imported from series folder	Diimpor dari folder serial
+Importing	Mengimpor
+Importing…	Mengimpor…
+Imports need	Impor memerlukan
+In library ›	Di pustaka ›
+Include	Sertakan
+Include in file names ({{Custom Formats}} token)	Sertakan dalam nama file (token {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Sertakan hanya judul yang ada di beberapa daftar, atau abaikan judul dari daftar lain.
+Include unmonitored	Sertakan yang tidak dimonitor
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Termasuk URL base, mis. http://192.168.1.10:8989 atau https://host/sonarr
+Indexer	Indexer
+Indexer options saved.	Opsi indexer disimpan.
+Indexer settings	Pengaturan indexer
+Indexers	Indexer
+Info	Info
+Info {infos}	Info {infos}
+Instance	Instans
+Instance name	Nama instans
+Instance: {name}	Instans: {name}
+Interactive	Interaktif
+Interactive search	Penelusuran interaktif
+Interactive search for full-season packs only	Penelusuran interaktif hanya untuk paket musim penuh
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Penelusuran interaktif untuk paket seluruh serial (dan musim-musimnya) di indexer torrent
+Interactive search: see every release and choose	Penelusuran interaktif: lihat setiap rilis dan pilih
+Interface language	Bahasa antarmuka
+Interval	Interval
+Jellyfin library and user	Pustaka dan pengguna Jellyfin
+Job	Pekerjaan
+Keep / skip	Simpan / lewati
+Keep files replaced by upgrades as versions (in "Plex Versions")	Simpan file yang digantikan peningkatan sebagai versi (di "Plex Versions")
+Keep me signed in	Biarkan saya tetap masuk
+Keep the replaced file's date (upgrades)	Pertahankan tanggal file yang digantikan (peningkatan)
+Kept	Disimpan
+Kept versions	Versi yang disimpan
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Kunci untuk aplikasi pendamping yang memakai API Sonarr v3: kunci ini membaca pustaka, dan kunci "tambah serial" juga dapat menambahkan serial (ke folder root, tanpa penelusuran). Selain itu tidak diizinkan.
+KiB	KiB
+Kind	Jenis
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr adalah perangkat lunak bebas (GPL-3.0-or-later).
+Kitsunarr path	Path Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr akan mencadangkan basis datanya sendiri, mengimpor data pratinjau dalam satu transaksi, dan memvalidasinya sebelum menyimpan. Sumber dan file media kamu tidak diubah.
+Label	Label
+Languages	Bahasa
+Larger releases are rejected. 0 means unlimited.	Rilis yang lebih besar ditolak. 0 berarti tanpa batas.
+Last read	Terakhir dibaca
+Last run	Proses terakhir
+Last search	Penelusuran terakhir
+Last searched	Terakhir dicari
+Last season	Musim terakhir
+Later ›	Berikutnya ›
+Latest season	Musim terbaru
+Level	Level
+Library	Pustaka
+Library check	Pemeriksaan pustaka
+Library tools	Alat pustaka
+Library tools saved.	Alat pustaka disimpan.
+List	Daftar
+Listed best first. Grouped qualities rank equally.	Diurutkan dari yang terbaik. Kualitas yang dikelompokkan setara.
+Live updates connected	Pembaruan langsung terhubung
+Live updates disconnected	Pembaruan langsung terputus
+Load	Muat
+Load the account's lists	Muat daftar akun
+Load the libraries…	Muat pustaka…
+Load the users…	Muat pengguna…
+Local air date	Tanggal tayang lokal
+Local path	Path lokal
+Log them	Catat di log
+Logs	Log
+Main rejections	Penolakan utama
+Make current	Jadikan saat ini
+Manual import	Impor manual
+Mark as failed	Tandai gagal
+Matches monitored titles.	Cocok dengan judul yang dimonitor.
+Maximum	Maksimum
+Maximum size (MB)	Ukuran maksimum (MB)
+Media management	Pengelolaan media
+Media management settings	Pengaturan pengelolaan media
+Media paths	Path media
+Mediums	Medium
+Members	Anggota
+Message	Pesan
+Metadata	Metadata
+Metadata files	File metadata
+Metadata keys saved.	Kunci metadata disimpan.
+Metadata language	Bahasa metadata
+Metadata refreshed.	Metadata dimuat ulang.
+Metadata refreshed: {} new episodes, {} updated.	Metadata dimuat ulang: {} episode baru, {} diperbarui.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Pengaturan metadata disimpan. File ditulis pada pemindaian disk, muat ulang, atau impor berikutnya.
+Metadata sources	Sumber metadata
+MiB	MiB
+Migration completed.	Migrasi selesai.
+Migration report #{}	Laporan migrasi #{}
+Minimum	Minimum
+Minimum age (minutes)	Usia minimum (menit)
+Minimum custom format score	Skor format khusus minimum
+Minimum format score	Skor format minimum
+Minimum free space (MiB)	Ruang kosong minimum (MiB)
+Minimum seeders	Seeder minimum
+Missing	Hilang
+Missing (monitored)	Hilang (dimonitor)
+Missing films	Film yang hilang
+Mode	Mode
+Monday	Senin
+Monitor	Monitor
+Monitored	Dimonitor
+More languages can be added to the string tables.	Bahasa lain dapat ditambahkan ke tabel teks.
+Move	Pindahkan
+Movie	Film
+Movie file format	Format file film
+Movie removed from Kitsunarr. Files on disk were not touched.	Film dihapus dari Kitsunarr. File di disk tidak disentuh.
+Movies	Film
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Rilis multi-musim: terima paket beberapa musim (penelusuran musim mengambil paket untuk musimnya)
+Must contain	Harus mengandung
+Must contain (comma separated; /regex/ allowed)	Harus mengandung (dipisahkan koma; /regex/ diizinkan)
+Must not contain	Tidak boleh mengandung
+NOT	BUKAN
+Name	Nama
+Naming	Penamaan
+Naming options saved.	Opsi penamaan disimpan.
+Naming saved.	Penamaan disimpan.
+Negate	Negasikan
+Network	Jaringan
+Never: keep the release's names	Tidak pernah: pertahankan nama rilis
+New custom format	Format khusus baru
+New custom preset	Preset khusus baru
+New group title	Judul grup baru
+New password	Sandi baru
+New quality profile	Profil kualitas baru
+Next airing	Tayang selanjutnya
+Next run	Proses berikutnya
+Next ›	Berikutnya ›
+No	Tidak
+No activity yet.	Belum ada aktivitas.
+No auto tags.	Tidak ada tag otomatis.
+No backups yet	Belum ada cadangan
+No collections yet	Belum ada koleksi
+No companion keys.	Tidak ada kunci pendamping.
+No custom formats	Tidak ada format khusus
+No custom formats defined.	Belum ada format khusus yang ditentukan.
+No delay above the minimum custom format score	Tanpa penundaan di atas skor format khusus minimum
+No delay for the profile's best quality in the preferred protocol	Tanpa penundaan untuk kualitas terbaik profil pada protokol yang diutamakan
+No download client to read	Tidak ada download client untuk dibaca
+No exclusions.	Tidak ada pengecualian.
+No history	Tidak ada riwayat
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Tidak ada indexer yang dapat menelusuri serial ini secara otomatis: tidak ada yang mengaktifkan penelusuran otomatis sekaligus tidak memiliki tag atau memiliki salah satu tag serial.
+No indexers to search	Tidak ada indexer untuk ditelusuri
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Tidak ada versi yang disimpan. Aktifkan "Simpan file yang digantikan peningkatan" di Penamaan.
+No log entries at this level	Tidak ada entri log pada level ini
+No mappings.	Tidak ada pemetaan.
+No matches	Tidak ada yang cocok
+No members	Tidak ada anggota
+No migrations have been run yet.	Belum ada migrasi yang dijalankan.
+No movies yet	Belum ada film
+No notes.	Tidak ada catatan.
+No recycle bin is set (Settings › Media management).	Tempat sampah belum diatur (Pengaturan › Pengelolaan media).
+No release profiles.	Tidak ada profil rilis.
+No root folders yet.	Belum ada folder root.
+No root folders.	Tidak ada folder root.
+No runs yet	Belum ada proses
+No searches yet.	Belum ada penelusuran.
+No series in your library match.	Tidak ada serial di pustakamu yang cocok.
+No tags	Tidak ada tag
+No {}	Tidak ada {}
+No {} yet	Belum ada {}
+None	Tidak ada
+Not evaluated by Kitsunarr.	Tidak dievaluasi oleh Kitsunarr.
+Not imported	Tidak diimpor
+Not monitored	Tidak dimonitor
+Notes	Catatan
+Notes ({preview.warnings.len()})	Catatan ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Catatan ({report.warnings.len()})
+Nothing airs in the next seven days.	Tidak ada yang tayang dalam tujuh hari ke depan.
+Nothing downloading	Tidak ada yang sedang diunduh
+Nothing found	Tidak ditemukan apa pun
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Tidak ada yang cocok dengan pencarian di katalog ini. Coba ejaan lain, judul asli, atau katalog lainnya.
+Nothing in this period	Tidak ada apa pun pada periode ini
+Nothing missing	Tidak ada yang hilang
+Notifications	Notifikasi
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Nomori episode menurut urutan lain dari katalog (grup episode TMDB, urutan DVD atau absolut TheTVDB)
+OMDb API key	Kunci API OMDb
+Older priority	Prioritas lama
+One folder per season	Satu folder per musim
+Only the 2000 newest files are listed.	Hanya 2000 file terbaru yang ditampilkan.
+Only when the proxy needs one.	Hanya jika proxy memerlukannya.
+Open the library	Buka pustaka
+OpenAPI document	Dokumen OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Membuka layanan untuk mengotorisasi Kitsunarr dan mengisi token.
+Options	Opsi
+Organize	Atur
+Other	Lainnya
+Overview	Ringkasan
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Timpa data yang sudah ada di Kitsunarr (jika tidak, data tersebut dipertahankan)
+Packs	Paket
+Page not found	Halaman tidak ditemukan
+Page {page} / {pages}	Halaman {page} / {pages}
+Password	Sandi
+Password changed. Other sessions were signed out.	Sandi diubah. Sesi lain telah dikeluarkan.
+Past days	Hari sebelumnya
+Path	Path
+Path mappings	Pemetaan path
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Jeda otomatisasi (sinkronisasi RSS, sinkronisasi daftar terjadwal, penelusuran otomatis)
+Peers	Peer
+Permission	Izin
+PiB	PiB
+Platform	Platform
+Port	Port
+Position	Posisi
+Post-import category	Kategori setelah impor
+Posters	Poster
+Prefer and upgrade	Utamakan dan tingkatkan
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Utamakan paket musim anime (penelusuran musim anime Kitsunarr sudah menelusuri musim sekali)
+Prefer, do not upgrade	Utamakan, jangan tingkatkan
+Preferred	Diutamakan
+Preferred metadata language	Bahasa metadata yang diutamakan
+Preferred protocol	Protokol yang diutamakan
+Preparing preview…	Menyiapkan pratinjau…
+Preview	Pratinjau
+Preview migration	Pratinjau migrasi
+Previous migrations	Migrasi sebelumnya
+Priority	Prioritas
+Problem	Masalah
+Profile	Profil
+Profile saved.	Profil disimpan.
+Profiles still used by series or movies cannot be deleted.	Profil yang masih dipakai serial atau film tidak dapat dihapus.
+Progress	Kemajuan
+Propers and repacks	Proper dan repack
+Proxy	Proxy
+Proxy saved.	Proxy disimpan.
+Proxy type	Jenis proxy
+Qualities	Kualitas
+Quality	Kualitas
+Quality presets	Preset kualitas
+Quality presets saved.	Preset kualitas disimpan.
+Quality profile	Profil kualitas
+Quality profiles	Profil kualitas
+Quality profile…	Profil kualitas…
+RSS sync interval (minutes)	Interval sinkronisasi RSS (menit)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	Sinkronisasi RSS menunggu selama ini setelah rilis muncul untuk mencari yang lebih baik; rilis yang ditunda tampil di antrean. Profil pertama yang tag-nya cocok dengan serial akan berlaku; yang terakhir (tanpa tag) adalah bawaan.
+Re-encode this series' files with the compression worker	Enkode ulang file serial ini dengan worker kompresi
+Read and add series	Membaca dan menambahkan serial
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Dibaca langsung dari download client setiap beberapa detik. Unduhan selesai yang diambil Kitsunarr diimpor ke folder serial setiap menit (torrent disalin atau di-hardlink sehingga tetap di-seed; unduhan Usenet dipindahkan). Unduhan yang gagal dimasukkan ke blocklist dan dicari lagi.
+Read the library	Membaca pustaka
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Hanya baca: menemukan folder serial yang hilang, data file di luar foldernya atau tercatat dua kali, dan file yang hilang di disk.
+Reading the download clients…	Membaca download client…
+Reading the source	Membaca sumber
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Membaca semuanya melalui API. Sandi dan kunci API penyedia disembunyikan oleh sumber dan harus dimasukkan ulang setelahnya.
+Recent activity	Aktivitas terbaru
+Recent priority	Prioritas terbaru
+Recent runs	Proses terbaru
+Recent searches	Penelusuran terbaru
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Disarankan. Di Sonarr/Tanukarr buka System → Backup, buat cadangan, dan unduh .zip-nya (atau gunakan sonarr.db). Termasuk sandi indexer dan download client.
+Recycle bin	Tempat sampah
+Recycle bin cleanup (days)	Pembersihan tempat sampah (hari)
+Recycled	Di tempat sampah
+Refresh metadata	Muat ulang metadata
+Refresh preview	Muat ulang pratinjau
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Memuat ulang dari {} belum didukung; metadata yang diimpor dipertahankan apa adanya
+Refreshing…	Memuat ulang…
+Regenerate	Buat ulang
+Regenerate API key	Buat ulang kunci API
+Reject releases whose TheTVDB or IMDb id names another series	Tolak rilis yang id TheTVDB atau IMDb-nya menunjuk serial lain
+Rejected: click twice to grab anyway	Ditolak: klik dua kali untuk tetap mengambil
+Release	Rilis
+Release profile	Profil rilis
+Release profile saved.	Profil rilis disimpan.
+Release profiles	Profil rilis
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Rilis diperiksa terhadap profil kualitas, format khusus, dan profil rilis serial, lalu diurutkan, seperti yang dilakukan Sonarr. Rilis yang ditolak memerlukan klik kedua.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Rilis yang gagal atau dimasukkan ke blocklist secara manual. Penelusuran dan sinkronisasi RSS tidak akan pernah mengambilnya lagi; hapus salah satunya untuk mengizinkannya.
+Remote path	Path remote
+Remote path mapping	Pemetaan path remote
+Remote path mapping saved.	Pemetaan path remote disimpan.
+Remote path mappings	Pemetaan path remote
+Remove	Hapus
+Remove completed downloads	Hapus unduhan yang selesai
+Remove every release from the blocklist?	Hapus semua rilis dari blocklist?
+Remove failed downloads	Hapus unduhan yang gagal
+Remove from library	Hapus dari pustaka
+Remove from queue	Hapus dari antrean
+Remove from the download client (deletes its files there)	Hapus dari download client (menghapus filenya di sana)
+Remove movie	Hapus film
+Remove series	Hapus serial
+Remove tags automatically (from titles that stop matching)	Hapus tag secara otomatis (dari judul yang tidak lagi cocok)
+Remove “{title}” and its episode records from Kitsunarr?	Hapus “{title}” dan data episodenya dari Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Hapus “{title}” dari Kitsunarr? File di disk tidak dihapus.
+Removed	Dihapus
+Removed from the blocklist.	Dihapus dari blocklist.
+Rename	Ganti nama
+Rename files	Ganti nama file
+Rename files on import	Ganti nama file saat impor
+Rename files to the naming settings	Ganti nama file sesuai pengaturan penamaan
+Formats use Sonarr's tokens.	Format memakai token Sonarr.
+Renaming…	Mengganti nama…
+Report	Laporan
+Request one at omdbapi.com. Used for films by IMDb id.	Minta di omdbapi.com. Dipakai untuk film berdasarkan id IMDb.
+Required	Wajib
+Resolution	Resolusi
+Restore	Pulihkan
+Restore {}	Pulihkan {}
+Restore…	Pulihkan…
+Restoring…	Memulihkan…
+Resume automation	Lanjutkan otomatisasi
+Retention (days)	Retensi (hari)
+Retire	Pensiunkan
+Revoke	Cabut
+Root folder	Folder root
+Root folders	Folder root
+Root folder…	Folder root…
+Run #{run.id}: {run.status}	Proses #{run.id}: {run.status}
+Run now	Jalankan sekarang
+Running…	Berjalan…
+Saturday	Sabtu
+Save	Simpan
+Save criteria	Simpan kriteria
+Save factors	Simpan faktor
+Save keys	Simpan kunci
+Save metadata files	Simpan file metadata
+Save naming	Simpan penamaan
+Save options	Simpan opsi
+Saved	Disimpan
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Kunci yang tersimpan ditampilkan sebagai {REDACTED}; biarkan tanpa perubahan untuk mempertahankannya, atau kosongkan kolom untuk menghapusnya.
+Saved.	Disimpan.
+Scan disk	Pindai disk
+Scan folder	Pindai folder
+Scanning…	Memindai…
+Scheduled tasks	Tugas terjadwal
+Score	Skor
+Search	Cari
+Search again when a download fails	Cari lagi saat unduhan gagal
+Search all	Cari semua
+Search all films	Cari semua film
+Search collection	Cari koleksi
+Search every episode of the list, one search per season	Cari setiap episode dalam daftar, satu penelusuran per musim
+Search every member's missing episodes (films: the film)	Cari episode yang hilang dari setiap anggota (film: filmnya)
+Search indexers	Cari di indexer
+Search selected	Cari yang dipilih
+Search the indexers and choose a release	Cari di indexer dan pilih rilis
+Search the indexers and grab the best accepted release	Cari di indexer dan ambil rilis terbaik yang diterima
+Search the indexers and grab the best releases for the monitored episodes	Cari di indexer dan ambil rilis terbaik untuk episode yang dimonitor
+Search your indexers	Cari di indexer kamu
+Search {chosen} selected	Cari {chosen} yang dipilih
+Search: {}	Penelusuran: {}
+Search: {} — complete series	Penelusuran: {} — serial lengkap
+Search: {} — season {season} packs	Penelusuran: {} — paket musim {season}
+Search: {} — {label}	Penelusuran: {} — {label}
+Searching for {label}…	Mencari {label}…
+Searching indexers…	Mencari di indexer…
+Searching…	Mencari…
+Season	Musim
+Season folder format	Format folder musim
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Judul folder musim menggantikan judul dari katalog di {{Season Title}}. Biarkan kosong untuk mempertahankan judul katalog.
+Season folders	Folder musim
+Season images (Season ##.jpg)	Gambar musim (Season ##.jpg)
+Season images (Season##/folder.jpg)	Gambar musim (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Gambar musim (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Paket musim: 1 memakai target paket musim di bawah
+Season premieres only	Hanya pembuka musim
+Season {n}	Musim {n}
+Season {one}	Musim {one}
+Season {se.season_number}	Musim {se.season_number}
+Season {season_number}	Musim {season_number}
+Season-pack seed ratio	Rasio seed paket musim
+Season-pack seed time, minutes	Waktu seed paket musim, menit
+Seasons	Musim
+Seasons {first}-{last}	Musim {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Rahasia ditampilkan sebagai {REDACTED}; biarkan tanpa perubahan untuk mempertahankan nilai yang tersimpan.
+Seed ratio (empty: the client's default)	Rasio seed (kosong: bawaan klien)
+Seed time, minutes (empty: the client's default)	Waktu seed, menit (kosong: bawaan klien)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Kirim permintaan ke indexer, katalog, daftar, download client, dan koneksi melalui proxy.
+Send to the download client	Kirim ke download client
+Series	Serial
+Series .plexmatch file	File .plexmatch serial
+Series folder format	Format folder serial
+Series images (Series Title.jpg)	Gambar serial (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Gambar serial (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Gambar serial (folder.jpg)
+Series metadata (tvshow.nfo)	Metadata serial (tvshow.nfo)
+Series metadata URL	URL metadata serial
+Series metadata episode guide	Panduan episode di metadata serial
+Series removed from Kitsunarr. Files on disk were not touched.	Serial dihapus dari Kitsunarr. File di disk tidak disentuh.
+Series removed, and its folder deleted.	Serial dihapus, dan foldernya dihapus.
+Series type	Jenis serial
+Set quality profile…	Atur profil kualitas…
+Settings	Pengaturan
+Settings saved.	Pengaturan disimpan.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security di Sonarr/Tanukarr.
+Show	Tampilkan
+Show as all-day events	Tampilkan sebagai acara sehari penuh
+Show unmonitored	Tampilkan yang tidak dimonitor
+Shows	Serial
+Sign in	Masuk
+Signed in. Save the list to keep the token.	Berhasil masuk. Simpan daftar untuk mempertahankan token.
+Signing in…	Sedang masuk…
+Size	Ukuran
+Size limits	Batas ukuran
+Size on disk	Ukuran di disk
+Skip files smaller than (MB)	Lewati file yang lebih kecil dari (MB)
+Skip the free-space check	Lewati pemeriksaan ruang kosong
+Skip unmonitored episodes when importing packs	Lewati episode yang tidak dimonitor saat mengimpor paket
+Source	Sumber
+Source code	Kode sumber
+Source path	Path sumber
+Special	Spesial
+Specials	Spesial
+Specials are never monitored automatically.	Spesial tidak pernah dimonitor secara otomatis.
+Specifications	Spesifikasi
+Specifications (JSON)	Spesifikasi (JSON)
+Specifications must be valid JSON: {e}	Spesifikasi harus berupa JSON yang valid: {e}
+Stalled torrent timeout (minutes)	Batas waktu torrent macet (menit)
+Standard	Standar
+Standard episode format	Format episode standar
+Start migration	Mulai migrasi
+Start over	Mulai dari awal
+Start search for missing episodes	Mulai penelusuran episode yang hilang
+Started	Dimulai
+Started {format_datetime(&run.started_at)}	Dimulai {format_datetime(&run.started_at)}
+Status	Status
+Status & health	Status & kesehatan
+Still downloading	Masih diunduh
+Storage outlook	Proyeksi penyimpanan
+Studio	Studio
+Subscribe	Berlangganan
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Berlangganan alamat ini di aplikasi kalender. Alamat ini berisi kunci API kamu: jaga kerahasiaannya.
+Sunday	Minggu
+Sync	Sinkronkan
+Sync all lists now	Sinkronkan semua daftar sekarang
+Sync now	Sinkronkan sekarang
+Syncing…	Menyinkronkan…
+System →	Sistem →
+TMDB API key (v3)	Kunci API TMDB (v3)
+TV Series	Serial TV
+TV series	Serial TV
+Table	Tabel
+Tag	Tag
+Tag them	Beri tag
+Tag titles already in the library	Beri tag pada judul yang sudah ada di pustaka
+Tags	Tag
+Tags (comma separated)	Tag (dipisahkan koma)
+Tags (ids, comma separated)	Tag (id, dipisahkan koma)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Tag ditambahkan ke serial dan film yang cocok dengan setiap jenis kondisi saat ditambahkan, diedit, atau dimuat ulang.
+Task	Tugas
+Television	Televisi
+Television (raw)	Televisi (raw)
+Test	Uji
+Test failed: {message}	Uji gagal: {message}
+Testing…	Menguji…
+The blocklist is empty	Blocklist kosong
+The catalogue new titles are added from when the list knows their id there.	Katalog asal penambahan judul baru saat daftar mengetahui id-nya di sana.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Tanggal yang diberikan pada file yang diimpor: tanggal tayang episode (lokal atau UTC), atau saat peningkatan, tanggal file yang digantikan.
+The dry run completed without blocking problems. Nothing has been written yet.	Uji coba selesai tanpa masalah yang menghambat. Belum ada yang ditulis.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	File dipindahkan ke folder musim (file yang sudah ada tidak pernah ditimpa) dan serial dipindai ulang.
+The folder must already exist; Kitsunarr never creates or removes it.	Folder harus sudah ada; Kitsunarr tidak pernah membuat atau menghapusnya.
+The indexers returned no releases for this search.	Indexer tidak mengembalikan rilis untuk penelusuran ini.
+The instance is on my local network (private or loopback address)	Instans berada di jaringan lokal saya (alamat privat atau loopback)
+The list has not been read, or it is empty.	Daftar belum dibaca, atau kosong.
+The migration did not complete; nothing was changed.	Migrasi tidak selesai; tidak ada yang diubah.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Entri terbaru yang disimpan di memori. Log lengkap dikirim ke output proses (log container atau journal).
+The passwords do not match.	Sandi tidak cocok.
+The recycle bin has no media or subtitle files.	Tempat sampah tidak berisi file media atau subtitle.
+The sign-in expired; try again.	Sesi masuk kedaluwarsa; coba lagi.
+The upload failed (network error).	Unggahan gagal (kesalahan jaringan).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Worker adalah komponen host opsional (worker kompresi Tanukarr) yang dijangkau melalui socket di KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (katalog Sonarr), TMDB, dan TVmaze mencakup serial TV; AniList dan MyAnimeList mencakup serial dan film anime; TMDB dan OMDb mencakup film. Menambahkan judul membuat entri pustaka dan daftar episodenya; file dideteksi kemudian oleh proses impor.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Judul TheTVDB dicari dan ditambahkan dalam bahasa ini; setiap serial dapat diubah di editornya.
+TheTVDB titles in this language; changing it refreshes the series	Judul TheTVDB dalam bahasa ini; mengubahnya akan memuat ulang serial
+There is nothing at /{path}.	Tidak ada apa pun di /{path}.
+They are created by migrating from Sonarr/Tanukarr.	Dibuat dengan bermigrasi dari Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Mode penggantian nama, judul folder musim, dan versi yang disimpan untuk serial ini
+TiB	TiB
+Time	Waktu
+Time left	Sisa waktu
+Title	Judul
+Title pattern	Pola judul
+Titles import lists never add.	Judul yang tidak pernah ditambahkan oleh daftar impor.
+Titles on no list	Judul yang tidak ada di daftar mana pun
+Today	Hari Ini
+Torrent	Torrent
+Torrent delay	Penundaan torrent
+Torrent delay (minutes)	Penundaan torrent (menit)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Indexer Torznab dan Newznab. Gunakan Uji di editor untuk memeriksanya; setiap penelusuran memakai indexer yang mengaktifkan jenis penelusuran tersebut: RSS, otomatis, atau interaktif.
+Trigger	Pemicu
+URL base	URL base
+UTC air date	Tanggal tayang UTC
+Unchanged	Tidak berubah
+Unknown	Tidak diketahui
+Unmonitor	Berhenti monitor
+Unmonitor them	Berhenti memonitornya
+Unmonitored	Tidak Dimonitor
+Upcoming	Akan datang
+Upcoming 7 days	7 hari ke depan
+Update	Perbarui
+Updated {} items.	{} item diperbarui.
+Upgrade until (cutoff)	Tingkatkan hingga (cutoff)
+Upgrade until format score	Tingkatkan hingga skor format
+Upgrades allowed	Peningkatan diizinkan
+Upload a backup	Unggah cadangan
+Upload failed (HTTP {}).	Unggahan gagal (HTTP {}).
+Uploading…	Mengunggah…
+Use SSL	Gunakan SSL
+Use a proxy	Gunakan proxy
+Use hardlinks instead of copying	Gunakan hardlink alih-alih menyalin
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Gunakan sebagai header X-Api-Key (atau ?apikey=) dari aplikasi lain. Kompatibel dengan header yang dipakai Sonarr.
+Use these episodes	Gunakan episode ini
+Usenet	Usenet
+Usenet delay	Penundaan Usenet
+Usenet delay (minutes)	Penundaan Usenet (menit)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Hanya Usenet: rilis yang lebih baru ditolak, memberi waktu untuk tersebar. 0 menonaktifkannya.
+Usenet only: older releases are rejected. 0 means unlimited.	Hanya Usenet: rilis yang lebih lama ditolak. 0 berarti tanpa batas.
+User name	Nama pengguna
+Username	Nama pengguna
+Validation	Validasi
+Version	Versi
+Versions	Versi
+Waiting for the sign-in at	Menunggu proses masuk di
+Wanted	Dicari
+Warnings	Peringatan
+Warnings {warnings}	Peringatan {warnings}
+Watched (Jellyfin watched sync)	Ditonton (sinkronisasi tontonan Jellyfin)
+Watched sync user	Pengguna sinkronisasi tontonan
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, script khusus (dengan variabel lingkungan Sonarr), Emby/Jellyfin, Plex, dan Kodi dikirimi: pengambilan, impor dan peningkatan, penggantian nama, serial yang ditambahkan atau dihapus, file yang dihapus, masalah kesehatan. Gunakan Uji di editor.
+Welcome	Selamat datang
+What to import	Yang akan diimpor
+When	Kapan
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Kapan sertifikat HTTPS indexer, download client, dan layanan diperiksa (pengaturan Sonarr). Sertifikat self-signed di jaringanmu memerlukan pemeriksaan yang lebih longgar.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Saat download client melaporkan path yang dilihat Kitsunarr di tempat lain (mesin atau container lain), petakan host dan path klien ke path lokal.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Apakah rilis yang memperbaiki rilis bermasalah diutamakan, dan meningkatkan file yang ada (seperti di Sonarr).
+Whole season	Seluruh musim
+Working…	Memproses…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Ditulis di folder serial saat serial dipindai, dimuat ulang, atau diimpor, seperti yang ditulis oleh konsumen metadata Sonarr.
+Year	Tahun
+Your library is empty.	Pustakamu kosong.
+all checks passed	semua pemeriksaan lolos
+comma separated	dipisahkan koma
+cutoff: {}	cutoff: {}
+has a file	memiliki file
+iCal link	tautan iCal
+in 2 days	dalam 2 hari
+in a moment	sebentar lagi
+in file names	di nama file
+in library	di pustaka
+in {text}	dalam {text}
+just now	baru saja
+may run out of space	mungkin kehabisan ruang
+name (e.g. phone)	nama (mis. ponsel)
+never refreshed	belum pernah dimuat ulang
+no media files are moved, renamed or deleted.	tidak ada file media yang dipindahkan, diganti nama, atau dihapus.
+not accessible	tidak dapat diakses
+not added	tidak ditambahkan
+not checked	tidak diperiksa
+not read yet	belum dibaca
+on disk	di disk
+refreshed {}	dimuat ulang {}
+schema {s}	skema {s}
+secrets included	termasuk rahasia
+secrets masked	rahasia disamarkan
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip atau sonarr.db
+stored only	hanya disimpan
+title (optional)	judul (opsional)
+{:.1} GiB/h	{:.1} GiB/j
+{added} added; {}	{added} ditambahkan; {}
+{added} shows added.	{added} serial ditambahkan.
+{c.name} (API key needed)	{c.name} (kunci API diperlukan)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} serial · {c.movie_count} film
+{chosen().len()} chosen	{chosen().len()} dipilih
+{chosen().len()} chosen (at most 25)	{chosen().len()} dipilih (maksimal 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} di disk · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% dari {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · ditambahkan {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} dari {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} file · {job["percent"]}% · hemat {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} dimulai.
+{name} was added to the library.	{name} telah ditambahkan ke pustaka.
+{name}: shows	{name}: serial
+{ok} files imported.	{ok} file diimpor.
+{ok} imported; {}	{ok} diimpor; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} rilis dari {r.searched_indexers} indexer.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} serial dan {r.files_checked} file diperiksa: {r.issues.len()} masalah.
+{selected.read().len()} selected	{selected.read().len()} dipilih
+{text} ago	{text} lalu
+{} (not accessible)	{} (tidak dapat diakses)
+{} ({} free)	{} ({} kosong)
+{} added to every profile (not allowed yet).	{} ditambahkan ke setiap profil (belum diizinkan).
+{} day(s)	{} hari
+{} failed: {}	{} gagal: {}
+{} format scores	{} skor format
+{} free of {}	{} kosong dari {}
+{} week(s)	{} minggu
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Kembali
+‹ Earlier	‹ Sebelumnya
+‹ Prev	‹ Seb.
+○ offline	○ offline
+● live	● langsung
+✓ No issues detected.	✓ Tidak ada masalah terdeteksi.
+Activity	Aktivitas
+Queue	Antrean
+System	Sistem
+Tasks	Tugas
+Retry	Coba lagi
+Sign out	Keluar
+Search titles…  ( / )	Cari judul…  ( / )
+Loading…	Memuat…
+Profiles	Profil
+scene {}	scene {}
+Scene numbering from TheXEM	Penomoran scene dari TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Penomoran scene diekstrapolasi dari TheXEM (belum diverifikasi)
+Season {} (scene seasons {})	Musim {} (musim scene {})
+{} (scene {})	{} (scene {})

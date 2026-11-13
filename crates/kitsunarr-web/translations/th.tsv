@@ -1,0 +1,968 @@
+# Thai interface strings: English<TAB>Thai. {…} marks a placeholder.
+custom	กำหนดเอง
+indeterminate	ไม่แน่นอน
+mixed	ผสม
+retired	เลิกใช้
+· container	· คอนเทนเนอร์
+· finished {format_datetime(f)}	· เสร็จสิ้น {format_datetime(f)}
+· missing	· ขาดหาย
+· on disk	· อยู่บนดิสก์
+· today	· วันนี้
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ตอน
+— MiB per minute; empty uses Settings › Quality	— MiB ต่อนาที; เว้นว่างเพื่อใช้ การตั้งค่า › คุณภาพ
+— a release's size is multiplied by its codec's factor before the size limits apply	— ขนาดของรีลีสจะถูกคูณด้วยตัวคูณของโคเดกก่อนใช้ขีดจำกัดขนาด
+— all profiles at once	— ทุกโปรไฟล์พร้อมกัน
+— codec and title criteria, custom qualities (Tanukarr)	— เกณฑ์โคเดกและชื่อเรื่อง, คุณภาพกำหนดเอง (Tanukarr)
+— enter the code	— ป้อนรหัส
+(empty)	(ว่าง)
++ Add mapping	+ เพิ่มการแมป
++ New format	+ รูปแบบใหม่
++ New profile	+ โปรไฟล์ใหม่
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (ปิด) หรือ 10 ถึง 120 การซิงค์ RSS สั่งได้จาก ระบบ › งาน ด้วย
+3 hours ago	3 ชั่วโมงที่แล้ว
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	ทอร์เรนต์ที่กำลังดาวน์โหลดแต่ไม่มีความคืบหน้านานเท่านี้จะถือว่าล้มเหลว ถูกใส่ในรายการบล็อก และค้นหาใหม่ 0 คือปิด; ความคืบหน้านับตั้งแต่ Kitsunarr เริ่มทำงาน
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	กลุ่มแฟรนไชส์ที่พบจากความสัมพันธ์ใน AniList หรือ MyAnimeList ชื่อเรื่องจากแฟรนไชส์เดียวกันที่เพิ่มภายหลังจะเข้าร่วมกลุ่มด้วย
+A new API key was generated. Update the applications that use it.	สร้างคีย์ API ใหม่แล้ว โปรดอัปเดตแอปพลิเคชันที่ใช้คีย์นี้
+A regular expression, case-insensitive; empty matches every title.	นิพจน์ปกติ (regex) ไม่แยกตัวพิมพ์เล็กใหญ่; เว้นว่างจะตรงกับทุกชื่อเรื่อง
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	รีลีสจะได้รับพรีเซ็ตที่เจาะจงที่สุดซึ่งได้รับอนุญาตในโปรไฟล์ของซีรีส์และตรงกับแหล่งที่มา ความละเอียด โคเดก และรูปแบบชื่อเรื่องของรีลีส คุณภาพมาตรฐานที่กำหนดโคเดกหรือรูปแบบไว้จะทำให้รีลีสที่ไม่ผ่านกลายเป็น Unknown พรีเซ็ตกำหนดเองจะถูกเพิ่มในทุกโปรไฟล์โดยยังไม่อนุญาต
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	ขนาดของรีลีสจะถูกคูณด้วยตัวคูณของโคเดกก่อนใช้ขีดจำกัดขนาด "ผสม" หมายความว่าโปรไฟล์ใช้ตัวคูณต่างกัน; ค่าที่ป้อนที่นี่จะถูกเขียนลงในทุกโปรไฟล์
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	ชื่อเรื่องที่เข้าร่วมแฟรนไชส์หรือกลุ่มที่สร้างเองจะออกจากกลุ่มเดิม ไฟล์และโฟลเดอร์จะไม่ถูกย้าย
+API key	คีย์ API
+API key needed	ต้องใช้คีย์ API
+API keys and language	คีย์ API และภาษา
+API path	พาธ API
+About	เกี่ยวกับ
+Absolute path; empty to delete permanently.	พาธแบบเต็ม; เว้นว่างเพื่อลบถาวร
+Accepted	ยอมรับ
+Account lists	รายการของบัญชี
+Actions	การดำเนินการ
+Actual	จริง
+Add	เพิ่ม
+Add a Newznab or Torznab indexer and enable interactive search for it.	เพิ่มอินเด็กเซอร์ Newznab หรือ Torznab และเปิดใช้การค้นหาแบบโต้ตอบ
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	เพิ่มไคลเอนต์จากเทมเพลตและใช้ ทดสอบ ในตัวแก้ไข; การคว้า คิว และการนำเข้าใช้ไคลเอนต์ที่เปิดใช้งานทั้งหมด Blackhole จะเขียนรีลีสที่คว้าลงโฟลเดอร์และนำเข้าสิ่งที่ปรากฏในโฟลเดอร์เฝ้าดู ตัวเลือก "ลบการดาวน์โหลดที่เสร็จสิ้น/ล้มเหลว" ของแต่ละไคลเอนต์จะลบการดาวน์โหลด (พร้อมไฟล์) เมื่อไคลเอนต์ทำงานกับรายการนั้นเสร็จ
+Add a download client in Settings › Download clients and enable it.	เพิ่มไคลเอนต์ดาวน์โหลดใน การตั้งค่า › ไคลเอนต์ดาวน์โหลด แล้วเปิดใช้งาน
+Add a root folder first: it is where this title's folder will live.	เพิ่มโฟลเดอร์หลักก่อน: เป็นที่ตั้งของโฟลเดอร์ชื่อเรื่องนี้
+Add a tag above first.	เพิ่มแท็กด้านบนก่อน
+Add a title	เพิ่มชื่อเรื่อง
+Add auto tag	เพิ่มแท็กอัตโนมัติ
+Add condition	เพิ่มเงื่อนไข
+Add exclusion	เพิ่มรายการยกเว้น
+Add media	เพิ่มสื่อ
+Add one, or migrate them from Sonarr/Tanukarr.	เพิ่มใหม่ หรือย้ายมาจาก Sonarr/Tanukarr
+Add preset	เพิ่มพรีเซ็ต
+Add selected	เพิ่มที่เลือก
+Add series or movies below.	เพิ่มซีรีส์หรือภาพยนตร์ด้านล่าง
+Add tag	เพิ่มแท็ก
+Add the list's tags	เพิ่มแท็กของรายการ
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	เพิ่มชื่อเรื่องจาก TVmaze หรือ AniList หรือนำคลังของ Sonarr หรือ Tanukarr ที่มีอยู่เข้ามา
+Add to library	เพิ่มลงคลัง
+Add {}	เพิ่ม {}
+Add {} ({y})	เพิ่ม {} ({y})
+Add — {}	เพิ่ม — {}
+Add, and remove when they leave the list	เพิ่ม และลบออกเมื่อออกจากรายการ
+Added	เพิ่มแล้ว
+Added to the titles this list adds.	เพิ่มให้กับชื่อเรื่องที่รายการนี้เพิ่ม
+Adding titles	การเพิ่มชื่อเรื่อง
+Adding…	กำลังเพิ่ม…
+Address	ที่อยู่
+Age	อายุ
+Aired	ออกอากาศ
+Aired monitored episodes without a file appear here.	ตอนที่ติดตามซึ่งออกอากาศแล้วแต่ยังไม่มีไฟล์จะแสดงที่นี่
+All	ทั้งหมด
+All collections	คอลเลกชันทั้งหมด
+All episodes	ทุกตอน
+All episodes in the series folder	ทุกตอนในโฟลเดอร์ซีรีส์
+All events	ทุกเหตุการณ์
+Allow zero size (the feed has no release sizes)	อนุญาตขนาดศูนย์ (ฟีดไม่มีขนาดรีลีส)
+Also delete the series folder and its files (to the recycle bin when one is set)	ลบโฟลเดอร์ซีรีส์และไฟล์ในนั้นด้วย (ไปยังถังรีไซเคิลหากตั้งค่าไว้)
+Also for releases grabbed from interactive search	รวมถึงรีลีสที่คว้าจากการค้นหาแบบโต้ตอบ
+Also known as	หรือที่รู้จักในชื่อ
+Always, even when renaming is off	เสมอ แม้ปิดการเปลี่ยนชื่ออยู่
+Analyze video files (resolution, runtime and codecs, with ffprobe)	วิเคราะห์ไฟล์วิดีโอ (ความละเอียด ความยาว และโคเดก ด้วย ffprobe)
+AniList and MyAnimeList titles are always added as anime.	ชื่อเรื่องจาก AniList และ MyAnimeList จะถูกเพิ่มเป็นอนิเมะเสมอ
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	รายการ AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, Sonarr อื่น และรายการ JSON กำหนดเองจะถูกอ่านทุกไม่กี่ชั่วโมง; ชื่อเรื่องใหม่จะถูกเพิ่มด้วยโฟลเดอร์หลัก โปรไฟล์ และการติดตามของแต่ละรายการ บริการที่ต้องใช้ OAuth จะใช้ Client ID ของแอปพลิเคชันของคุณเองและโทเค็นที่คุณวาง (โทเค็นที่ย้ายมาจาก Tanukarr ยังใช้งานได้)
+Anime	อนิเมะ
+Anime / absolute numbering	อนิเมะ / ลำดับเลขแบบสัมบูรณ์
+Anime categories	หมวดหมู่อนิเมะ
+Anime episode format	รูปแบบชื่อตอนอนิเมะ
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	ภาพยนตร์อนิเมะเพิ่มได้จาก AniList และการย้ายจาก Tanukarr จะนำภาพยนตร์มาด้วย ภาพยนตร์คนแสดงต้องใช้แคตตาล็อก TMDB
+Anime standard format search	ค้นหาอนิเมะด้วยรูปแบบมาตรฐาน
+Anime title, e.g. Frieren	ชื่ออนิเมะ เช่น Frieren
+Any	ใดก็ได้
+Any library	คลังใดก็ได้
+Applications using the current key will stop working until you give them the new one.	แอปพลิเคชันที่ใช้คีย์ปัจจุบันจะหยุดทำงานจนกว่าคุณจะให้คีย์ใหม่
+Applied after every list has been read successfully and some title left a list.	ใช้หลังจากอ่านทุกรายการสำเร็จและมีชื่อเรื่องออกจากรายการ
+Apply	ใช้
+Apply migration	ดำเนินการย้ายข้อมูล
+Apply profile	ใช้โปรไฟล์
+Applying migration	กำลังดำเนินการย้ายข้อมูล
+Applying…	กำลังใช้…
+As Settings › Media management says	ตามที่ การตั้งค่า › การจัดการสื่อ กำหนด
+At least 10 characters.	อย่างน้อย 10 ตัวอักษร
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	อย่างน้อย {MIN_PASSWORD_LENGTH} ตัวอักษร ใช้วลีรหัสผ่านก็ได้ดี
+Auto tag	แท็กอัตโนมัติ
+Auto tag saved. It applies when titles are next added, edited or refreshed.	บันทึกแท็กอัตโนมัติแล้ว จะมีผลเมื่อมีการเพิ่ม แก้ไข หรือรีเฟรชชื่อเรื่องครั้งถัดไป
+Auto tagging	การแท็กอัตโนมัติ
+Auto-refresh	รีเฟรชอัตโนมัติ
+Automatic	อัตโนมัติ
+Automatic search	การค้นหาอัตโนมัติ
+Automatic search for {label}: grabbed {}.	ค้นหาอัตโนมัติสำหรับ {label}: คว้า {} แล้ว
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	ค้นหาอัตโนมัติสำหรับ {label}: พบรีลีส {} รายการ อนุมัติ {} รายการ ไม่ได้คว้าอะไร
+Automatic search: grab the best release	การค้นหาอัตโนมัติ: คว้ารีลีสที่ดีที่สุด
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	การทำงานอัตโนมัติหยุดชั่วคราว: ข้ามการซิงค์ RSS การซิงค์รายการตามกำหนดเวลา และการค้นหาอัตโนมัติ การดำเนินการด้วยตนเองและการดาวน์โหลดปัจจุบันยังทำงานต่อ
+Automation resumed.	กลับมาทำงานอัตโนมัติแล้ว
+Available from	มีให้ตั้งแต่
+Back to the dashboard	กลับไปที่แดชบอร์ด
+Back up now	สำรองข้อมูลตอนนี้
+Backup {} created.	สร้างข้อมูลสำรอง {} แล้ว
+Backups	ข้อมูลสำรอง
+Blocking:	ปัญหาที่ขัดขวาง:
+Blocklist	รายการบล็อก
+Blocklist the release and search again	บล็อกรีลีสและค้นหาใหม่
+Blocklist the release: it is never grabbed again	บล็อกรีลีส: จะไม่ถูกคว้าอีก
+Blocklist “{title}” and search for a replacement?	บล็อก “{title}” และค้นหารีลีสทดแทน?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	นำคลังและการตั้งค่าของ Sonarr (v3/v4) หรือ Tanukarr เข้าสู่ Kitsunarr แหล่งที่มาจะถูกอ่านเท่านั้น ไม่มีการเปลี่ยนแปลง และ
+Bypass the proxy for local addresses	ข้ามพร็อกซีสำหรับที่อยู่ภายในเครือข่าย
+Calendar	ปฏิทิน
+Calendar →	ปฏิทิน →
+Cancel	ยกเลิก
+Cancel compression	ยกเลิกการบีบอัด
+Cannot reach the server: {e}	ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์: {e}
+Catalogue	แคตตาล็อก
+Category	หมวดหมู่
+Certificate validation	การตรวจสอบใบรับรอง
+Change password	เปลี่ยนรหัสผ่าน
+Change series	เปลี่ยนซีรีส์
+Changes	การเปลี่ยนแปลง
+Check	ตรวจสอบ
+Check library	ตรวจสอบคลัง
+Check now	ตรวจสอบตอนนี้
+Check that the mapped series folders exist (read-only)	ตรวจสอบว่าโฟลเดอร์ซีรีส์ที่แมปไว้มีอยู่จริง (อ่านอย่างเดียว)
+Checked: {summary}.	ตรวจสอบแล้ว: {summary}
+Checking…	กำลังตรวจสอบ…
+Choose a backup file	เลือกไฟล์สำรองข้อมูล
+Choose a mode	เลือกโหมด
+Choose a root folder and a quality profile.	เลือกโฟลเดอร์หลักและโปรไฟล์คุณภาพ
+Choose a season	เลือกซีซัน
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	เลือกซีรีส์และซีซันหรือตอน ผลลัพธ์จะแสดงว่าแต่ละรีลีสคืออะไรตามที่ตัวแยกวิเคราะห์ของ Kitsunarr อ่านได้
+Choose a series or movie…	เลือกซีรีส์หรือภาพยนตร์…
+Choose source	เลือกแหล่งที่มา
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	เลือกตอนของรีลีสนี้ด้วยตนเอง แล้วคว้า (ตัวเลือกจะถูกเก็บไว้สำหรับการนำเข้า)
+Choose…	เลือก…
+Clean library	ล้างคลัง
+Clear	ล้าง
+Clear blocklist	ล้างรายการบล็อก
+Cleared {n} releases from the blocklist.	ล้างรีลีสออกจากรายการบล็อกแล้ว: {n}
+Client	ไคลเอนต์
+Close	ปิด
+Codec	โคเดก
+Codec factors saved in every profile.	บันทึกตัวคูณโคเดกในทุกโปรไฟล์แล้ว
+Codec size factors	ตัวคูณขนาดตามโคเดก
+Codecs	โคเดก
+Collection film folder format	รูปแบบโฟลเดอร์ภาพยนตร์ในคอลเลกชัน
+Collections	คอลเลกชัน
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	คอลเลกชันจะปรากฏเมื่อย้ายมาจาก Tanukarr สร้างจากข้อมูลผู้ให้บริการ หรือสร้างที่นี่
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	มาจาก Sonarr หรือ Tanukarr? นำเข้าซีรีส์ การตั้งค่า และประวัติที่มีอยู่ได้ในไม่กี่ขั้นตอน
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	คั่นด้วยจุลภาค; * คือไวลด์การ์ด (*.lan) และใช้ช่วง IP เช่น 192.168.1.0/24 ได้
+Companion app keys	คีย์แอปคู่หู
+Complete series	ทั้งซีรีส์
+Completed and failed download handling	การจัดการการดาวน์โหลดที่เสร็จสิ้นและล้มเหลว
+Component	ส่วนประกอบ
+Compress series	บีบอัดซีรีส์
+Compression	การบีบอัด
+Compression queued.	เพิ่มการบีบอัดเข้าคิวแล้ว
+Compression worker is not connected.	ตัวประมวลผลการบีบอัดไม่ได้เชื่อมต่อ
+Condition	เงื่อนไข
+Conditions	เงื่อนไข
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	เงื่อนไขประเภทเดียวกันจะตรงเมื่อมีข้อใดข้อหนึ่งตรง (ข้อที่จำเป็นต้องตรงทั้งหมด); ทุกประเภทต้องตรง
+Configure	กำหนดค่า
+Confirm password	ยืนยันรหัสผ่าน
+Connect	เชื่อมต่อ
+Connect to a running instance	เชื่อมต่อกับอินสแตนซ์ที่กำลังทำงาน
+Connecting…	กำลังเชื่อมต่อ…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	สำเนาฐานข้อมูลที่สอดคล้องกัน การสำรองข้อมูลตามกำหนดเวลาทำงานทุกสัปดาห์ (เก็บแปดชุดล่าสุด); การย้ายข้อมูลทุกครั้งจะสร้างข้อมูลสำรองก่อนด้วย หากต้องการกู้คืน ให้หยุด Kitsunarr แล้วรัน
+Continuing	ยังไม่จบ
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	คุกกี้ (ส่งพร้อมคำขอฟีด เช่น uid=1; pass=…)
+Copied.	คัดลอกแล้ว
+Copy	คัดลอก
+Copy (keep the originals)	คัดลอก (เก็บต้นฉบับไว้)
+Copy sizes from	คัดลอกขนาดจาก
+Copy the token now; it is not shown again:	คัดลอกโทเค็นตอนนี้ เพราะจะไม่แสดงอีก:
+Could not grab {}: {}	คว้า {} ไม่สำเร็จ: {}
+Covers	ครอบคลุม
+Create	สร้าง
+Create account	สร้างบัญชี
+Create group	สร้างกลุ่ม
+Create key	สร้างคีย์
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	สร้างได้ที่ themoviedb.org › Settings › API ใช้สำหรับซีรีส์และภาพยนตร์จาก TMDB
+Create the administrator account. You will use it to sign in to Kitsunarr.	สร้างบัญชีผู้ดูแลระบบ คุณจะใช้บัญชีนี้ลงชื่อเข้าใช้ Kitsunarr
+Created	สร้างเมื่อ
+Created when the first file is imported. Nothing is written to disk now.	จะถูกสร้างเมื่อนำเข้าไฟล์แรก ตอนนี้ยังไม่มีการเขียนลงดิสก์
+Creating…	กำลังสร้าง…
+Credit	เครดิต
+Current file	ไฟล์ปัจจุบัน
+Current password	รหัสผ่านปัจจุบัน
+Custom format saved.	บันทึกรูปแบบกำหนดเองแล้ว
+Custom format score	คะแนนรูปแบบกำหนดเอง
+Custom format scores	คะแนนรูปแบบกำหนดเอง
+Custom formats	รูปแบบกำหนดเอง
+Cutoff unmet	ยังไม่ถึงจุดตัด
+Daily	รายวัน
+Daily episode format	รูปแบบชื่อตอนรายวัน
+Dashboard	แดชบอร์ด
+Data directory	ไดเรกทอรีข้อมูล
+Database backup taken before the import: {b}	ข้อมูลสำรองฐานข้อมูลที่สร้างก่อนการนำเข้า: {b}
+Database schema	สคีมาฐานข้อมูล
+Date	วันที่
+Date added	วันที่เพิ่ม
+Debug	ดีบัก
+Decision	การตัดสิน
+Default	ค่าเริ่มต้น
+Defaults	ค่าเริ่มต้น
+Delay profile	โปรไฟล์หน่วงเวลา
+Delay profile saved.	บันทึกโปรไฟล์หน่วงเวลาแล้ว
+Delay profiles	โปรไฟล์หน่วงเวลา
+Delete	ลบ
+Delete empty series folders	ลบโฟลเดอร์ซีรีส์ที่ว่างเปล่า
+Delete file	ลบไฟล์
+Delete group	ลบกลุ่ม
+Delete profile	ลบโปรไฟล์
+Delete “{path}”? It goes to the recycle bin when one is set.	ลบ “{path}”? ไฟล์จะไปยังถังรีไซเคิลหากตั้งค่าไว้
+Delete “{}”?	ลบ “{}”?
+Delete “{}”? Its series and movies stay in the library.	ลบ “{}”? ซีรีส์และภาพยนตร์ในนั้นยังคงอยู่ในคลัง
+Deleted	ลบแล้ว
+Directory	ไดเรกทอรี
+Disabled	ปิดใช้งาน
+Disabled for local addresses	ปิดสำหรับที่อยู่ภายในเครือข่าย
+Disk scanned: {}	สแกนดิสก์แล้ว: {}
+Disk scanned: {} Not matched: {}	สแกนดิสก์แล้ว: {} ไม่ตรงกัน: {}
+Do not prefer	ไม่ให้ความสำคัญ
+Do not search for a replacement	ไม่ต้องค้นหารีลีสทดแทน
+Do nothing	ไม่ต้องทำอะไร
+Done	เสร็จสิ้น
+Download client options saved.	บันทึกตัวเลือกไคลเอนต์ดาวน์โหลดแล้ว
+Download clients	ไคลเอนต์ดาวน์โหลด
+Download failed	ดาวน์โหลดล้มเหลว
+Download queue	คิวดาวน์โหลด
+Downloads	การดาวน์โหลด
+Duration	ระยะเวลา
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	แต่ละชื่อเรื่องอยู่ในแคตตาล็อกเดียว ซึ่งใช้อ่านข้อมูลเมื่อรีเฟรช; ตัวระบุทั้งหมดที่มี (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) จะถูกเก็บไว้ ชื่อเรื่องที่ย้ายมาจาก Sonarr อยู่ใน TheTVDB
+Edit	แก้ไข
+Edit “{name}”	แก้ไข “{name}”
+Edit “{}”	แก้ไข “{}”
+Enable RSS	เปิดใช้ RSS
+Enable automatic search	เปิดใช้การค้นหาอัตโนมัติ
+Enable interactive search	เปิดใช้การค้นหาแบบโต้ตอบ
+Enabled	เปิดใช้งาน
+Ended	จบแล้ว
+English	ภาษาอังกฤษ
+Entity	เอนทิตี
+Episode	ตอน
+Episode and movie naming	การตั้งชื่อตอนและภาพยนตร์
+Episode image thumbs in the NFO	ภาพย่อของตอนใน NFO
+Episode images (<filename>-thumb.jpg)	ภาพตอน (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	ภาพตอน (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	ภาพตอน (Season##/filename.metathumb)
+Episode mappings in .plexmatch	การแมปตอนใน .plexmatch
+Episode metadata (<filename>.nfo)	ข้อมูลเมตาของตอน (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	ข้อมูลเมตาของตอน (Season##/filename.xml)
+Episode order	ลำดับตอน
+Episode order changed: {} episodes updated, {} added.	เปลี่ยนลำดับตอนแล้ว: อัปเดต {} ตอน เพิ่ม {} ตอน
+Episodes	ตอน
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	ตอนจะถูกกำหนดหมายเลขใหม่ตามลำดับที่เลือก; ไฟล์ การติดตาม และประวัติจะยังอยู่กับตอนของตน เปลี่ยนชื่อไฟล์ภายหลังให้ตรงกับหมายเลขใหม่
+Episodes of {title}	ตอนของ {title}
+Episodes on disk	ตอนบนดิสก์
+Episodes whose file is below the quality profile's cutoff appear here.	ตอนที่ไฟล์มีคุณภาพต่ำกว่าจุดตัดของโปรไฟล์คุณภาพจะแสดงที่นี่
+Episodes…	ตอน…
+Errors	ข้อผิดพลาด
+Errors {errors}	ข้อผิดพลาด {errors}
+Event	เหตุการณ์
+Every file already follows the naming settings.	ทุกไฟล์เป็นไปตามการตั้งค่าการตั้งชื่ออยู่แล้ว
+Every file meets its cutoff	ทุกไฟล์ถึงจุดตัดแล้ว
+Exclude	ยกเว้น
+Exclusions	รายการยกเว้น
+Expected	คาดไว้
+Expires	หมดอายุ
+Extra file extensions	นามสกุลไฟล์เพิ่มเติม
+Factor	ตัวคูณ
+Failed	ล้มเหลว
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	ป้องกันรีลีสปลอม: ตรวจสอบทอร์เรนต์ก่อนคว้า และปฏิเสธไฟล์ปฏิบัติการ ไฟล์บีบอัดล่อให้ใส่รหัสผ่าน และเนื้อหาที่ไม่มีวิดีโอ
+Feed address	ที่อยู่ฟีด
+Fetch the latest metadata from {}	ดึงข้อมูลเมตาล่าสุดจาก {}
+File	ไฟล์
+File date	วันที่ไฟล์
+File deleted	ลบไฟล์แล้ว
+File deleted.	ลบไฟล์แล้ว
+File management	การจัดการไฟล์
+File management settings saved.	บันทึกการตั้งค่าการจัดการไฟล์แล้ว
+File renamed	เปลี่ยนชื่อไฟล์แล้ว
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	ไฟล์ที่เก่ากว่านี้จะถูกลบออกจากถังรีไซเคิลทุกวัน; 0 คือเก็บไว้
+Files upgrades replaced, kept as versions	ไฟล์ที่ถูกแทนที่จากการอัปเกรด เก็บไว้เป็นเวอร์ชัน
+Film	ภาพยนตร์
+Film title or IMDb id, e.g. Arrival	ชื่อภาพยนตร์หรือ id ของ IMDb เช่น Arrival
+Find a series in your library	ค้นหาซีรีส์ในคลังของคุณ
+Find files added to or removed from the series folder	ค้นหาไฟล์ที่ถูกเพิ่มหรือลบออกจากโฟลเดอร์ซีรีส์
+Find something to add	ค้นหาสิ่งที่จะเพิ่ม
+First and last pieces first	ดาวน์โหลดชิ้นแรกและชิ้นสุดท้ายก่อน
+First day of the week	วันแรกของสัปดาห์
+First season	ซีซันแรก
+Folder	โฟลเดอร์
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	รูปแบบใช้ประเภทข้อกำหนดของ Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType) คะแนนกำหนดแยกตามโปรไฟล์คุณภาพ
+Found	พบ
+Free	ว่าง
+Free space	พื้นที่ว่าง
+Future days	วันข้างหน้า
+Future episodes	ตอนในอนาคต
+General	ทั่วไป
+GiB	GiB
+Grab	คว้า
+Grab a release from interactive search; downloads in the client's TV category show up here.	คว้ารีลีสจากการค้นหาแบบโต้ตอบ; การดาวน์โหลดในหมวดหมู่ TV ของไคลเอนต์จะแสดงที่นี่
+Grab anyway?	คว้าต่อไปหรือไม่?
+Grab with these episodes	คว้าพร้อมตอนเหล่านี้
+Grabbed	คว้าแล้ว
+Grabbed {}.	คว้า {} แล้ว
+Grabbing…	กำลังคว้า…
+Grabs, imports and file changes appear here. Migrated history is included.	การคว้า การนำเข้า และการเปลี่ยนแปลงไฟล์จะแสดงที่นี่ รวมถึงประวัติที่ย้ายมาด้วย
+Group film folder format	รูปแบบโฟลเดอร์ภาพยนตร์ของกลุ่ม
+Group folder format	รูปแบบโฟลเดอร์กลุ่ม
+Group season folder format	รูปแบบโฟลเดอร์ซีซันของกลุ่ม
+Group story-arc folder format	รูปแบบโฟลเดอร์เนื้อเรื่องของกลุ่ม
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	กลุ่มของซีรีส์และภาพยนตร์ที่เกี่ยวข้องกัน: คอลเลกชันจากผู้ให้บริการ แฟรนไชส์อนิเมะ (กลุ่มภาคก่อน/ภาคต่อ) และกลุ่มที่สร้างเอง รวมถึงกลุ่มที่ย้ายมาจาก Tanukarr
+Hardlink-only imports: never copy downloads that keep seeding	นำเข้าด้วยฮาร์ดลิงก์เท่านั้น: ไม่คัดลอกการดาวน์โหลดที่ยังซีดอยู่
+Health	สถานะระบบ
+Hide	ซ่อน
+History	ประวัติ
+History →	ประวัติ →
+Host	โฮสต์
+Host (as in the download client's settings)	โฮสต์ (ตามการตั้งค่าของไคลเอนต์ดาวน์โหลด)
+Hostname	ชื่อโฮสต์
+How the catalogue numbers the episodes (it can be changed later on the series page).	วิธีที่แคตตาล็อกกำหนดหมายเลขตอน (เปลี่ยนภายหลังได้ในหน้าซีรีส์)
+Id	Id
+Identities	ตัวตน
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	หาก Kitsunarr เห็นสื่อของคุณในพาธที่ต่างจากแหล่งที่มา (เช่น วอลุ่ม Docker ต่างกัน) ให้แมปโฟลเดอร์ต้นทางแต่ละโฟลเดอร์ไปยังตำแหน่งใน Kitsunarr พาธจะถูกเขียนใหม่ในฐานข้อมูลเท่านั้น
+Ignored	ละเว้น
+Ignored addresses	ที่อยู่ที่ละเว้น
+Implementation	การใช้งาน
+Import / Migration	นำเข้า / ย้ายข้อมูล
+Import a Sonarr or Tanukarr library	นำเข้าคลังจาก Sonarr หรือ Tanukarr
+Import blocked	การนำเข้าถูกบล็อก
+Import completed downloads	นำเข้าการดาวน์โหลดที่เสร็จสิ้น
+Import extra files (subtitles…)	นำเข้าไฟล์เพิ่มเติม (คำบรรยาย…)
+Import from Sonarr/Tanukarr	นำเข้าจาก Sonarr/Tanukarr
+Import history	ประวัติการนำเข้า
+Import library	นำเข้าคลัง
+Import list options saved.	บันทึกตัวเลือกรายการนำเข้าแล้ว
+Import lists	รายการนำเข้า
+Import pending	รอการนำเข้า
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	นำเข้าไฟล์วิดีโอจากโฟลเดอร์ใดก็ได้ที่เซิร์ฟเวอร์อ่านได้: ตรวจสอบซีรีส์และตอนของแต่ละไฟล์ แล้วคัดลอกหรือย้ายเข้าคลัง (เปลี่ยนชื่อตามการตั้งค่าการตั้งชื่อ)
+Import {chosen().len()} files	นำเข้า {chosen().len()} ไฟล์
+Imported	นำเข้าแล้ว
+Imported from series folder	นำเข้าจากโฟลเดอร์ซีรีส์
+Importing	กำลังนำเข้า
+Importing…	กำลังนำเข้า…
+Imports need	การนำเข้าต้องการ
+In library ›	ในคลัง ›
+Include	รวม
+Include in file names ({{Custom Formats}} token)	รวมในชื่อไฟล์ (โทเค็น {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	รวมเฉพาะชื่อเรื่องในบางรายการ หรือไม่รวมชื่อเรื่องของรายการอื่น
+Include unmonitored	รวมที่ไม่ได้ติดตาม
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	รวม URL base ด้วย เช่น http://192.168.1.10:8989 หรือ https://host/sonarr
+Indexer	อินเด็กเซอร์
+Indexer options saved.	บันทึกตัวเลือกอินเด็กเซอร์แล้ว
+Indexer settings	การตั้งค่าอินเด็กเซอร์
+Indexers	อินเด็กเซอร์
+Info	ข้อมูล
+Info {infos}	ข้อมูล {infos}
+Instance	อินสแตนซ์
+Instance name	ชื่ออินสแตนซ์
+Instance: {name}	อินสแตนซ์: {name}
+Interactive	แบบโต้ตอบ
+Interactive search	การค้นหาแบบโต้ตอบ
+Interactive search for full-season packs only	ค้นหาแบบโต้ตอบเฉพาะแพ็กทั้งซีซัน
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	ค้นหาแบบโต้ตอบสำหรับแพ็กทั้งซีรีส์ (และซีซันต่างๆ) บนอินเด็กเซอร์ทอร์เรนต์
+Interactive search: see every release and choose	การค้นหาแบบโต้ตอบ: ดูทุกรีลีสแล้วเลือกเอง
+Interface language	ภาษาของอินเทอร์เฟซ
+Interval	ช่วงเวลา
+Jellyfin library and user	คลังและผู้ใช้ Jellyfin
+Job	งาน
+Keep / skip	เก็บ / ข้าม
+Keep files replaced by upgrades as versions (in "Plex Versions")	เก็บไฟล์ที่ถูกแทนที่จากการอัปเกรดเป็นเวอร์ชัน (ใน "Plex Versions")
+Keep me signed in	จดจำการลงชื่อเข้าใช้
+Keep the replaced file's date (upgrades)	คงวันที่ของไฟล์ที่ถูกแทนที่ (การอัปเกรด)
+Kept	เก็บไว้
+Kept versions	เวอร์ชันที่เก็บไว้
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	คีย์สำหรับแอปคู่หูที่ใช้ Sonarr v3 API: อ่านคลังได้ และคีย์ "เพิ่มซีรีส์" ยังเพิ่มซีรีส์ได้ด้วย (ลงในโฟลเดอร์หลัก โดยไม่ค้นหา) ไม่อนุญาตอย่างอื่น
+KiB	KiB
+Kind	ประเภท
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr เป็นซอฟต์แวร์เสรี (GPL-3.0-or-later)
+Kitsunarr path	พาธใน Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr จะสำรองฐานข้อมูลของตัวเอง นำเข้าข้อมูลที่แสดงตัวอย่างไว้ในทรานแซกชันเดียว และตรวจสอบความถูกต้องก่อนยืนยัน แหล่งที่มาและไฟล์สื่อของคุณจะไม่ถูกแก้ไข
+Label	ป้ายกำกับ
+Languages	ภาษา
+Larger releases are rejected. 0 means unlimited.	รีลีสที่ใหญ่กว่านี้จะถูกปฏิเสธ 0 หมายถึงไม่จำกัด
+Last read	อ่านล่าสุด
+Last run	ทำงานล่าสุด
+Last search	ค้นหาล่าสุด
+Last searched	ค้นหาล่าสุดเมื่อ
+Last season	ซีซันสุดท้าย
+Later ›	ภายหลัง ›
+Latest season	ซีซันล่าสุด
+Level	ระดับ
+Library	คลัง
+Library check	ตรวจสอบคลัง
+Library tools	เครื่องมือคลัง
+Library tools saved.	บันทึกเครื่องมือคลังแล้ว
+List	รายการ
+Listed best first. Grouped qualities rank equally.	เรียงจากดีที่สุด คุณภาพที่จัดกลุ่มไว้มีอันดับเท่ากัน
+Live updates connected	เชื่อมต่อการอัปเดตสดแล้ว
+Live updates disconnected	การอัปเดตสดถูกตัดการเชื่อมต่อ
+Load	โหลด
+Load the account's lists	โหลดรายการของบัญชี
+Load the libraries…	โหลดคลัง…
+Load the users…	โหลดผู้ใช้…
+Local air date	วันออกอากาศตามเวลาท้องถิ่น
+Local path	พาธในเครื่อง
+Log them	บันทึกไว้ในล็อก
+Logs	ล็อก
+Main rejections	เหตุผลหลักที่ถูกปฏิเสธ
+Make current	ตั้งเป็นปัจจุบัน
+Manual import	นำเข้าด้วยตนเอง
+Mark as failed	ทำเครื่องหมายว่าล้มเหลว
+Matches monitored titles.	ตรงกับชื่อเรื่องที่ติดตาม
+Maximum	สูงสุด
+Maximum size (MB)	ขนาดสูงสุด (MB)
+Media management	การจัดการสื่อ
+Media management settings	การตั้งค่าการจัดการสื่อ
+Media paths	พาธสื่อ
+Mediums	สื่อบันทึก
+Members	สมาชิก
+Message	ข้อความ
+Metadata	ข้อมูลเมตา
+Metadata files	ไฟล์ข้อมูลเมตา
+Metadata keys saved.	บันทึกคีย์ข้อมูลเมตาแล้ว
+Metadata language	ภาษาของข้อมูลเมตา
+Metadata refreshed.	รีเฟรชข้อมูลเมตาแล้ว
+Metadata refreshed: {} new episodes, {} updated.	รีเฟรชข้อมูลเมตาแล้ว: ตอนใหม่ {} ตอน อัปเดต {} ตอน
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	บันทึกการตั้งค่าข้อมูลเมตาแล้ว ไฟล์จะถูกเขียนในการสแกนดิสก์ การรีเฟรช หรือการนำเข้าครั้งถัดไป
+Metadata sources	แหล่งข้อมูลเมตา
+MiB	MiB
+Migration completed.	ย้ายข้อมูลเสร็จสิ้น
+Migration report #{}	รายงานการย้ายข้อมูล #{}
+Minimum	ต่ำสุด
+Minimum age (minutes)	อายุขั้นต่ำ (นาที)
+Minimum custom format score	คะแนนรูปแบบกำหนดเองขั้นต่ำ
+Minimum format score	คะแนนรูปแบบขั้นต่ำ
+Minimum free space (MiB)	พื้นที่ว่างขั้นต่ำ (MiB)
+Minimum seeders	จำนวนซีดเดอร์ขั้นต่ำ
+Missing	ขาดหาย
+Missing (monitored)	ขาดหาย (ติดตาม)
+Missing films	ภาพยนตร์ที่ขาดหาย
+Mode	โหมด
+Monday	วันจันทร์
+Monitor	ติดตาม
+Monitored	ติดตาม
+More languages can be added to the string tables.	สามารถเพิ่มภาษาอื่นในตารางข้อความได้
+Move	ย้าย
+Movie	ภาพยนตร์
+Movie file format	รูปแบบไฟล์ภาพยนตร์
+Movie removed from Kitsunarr. Files on disk were not touched.	ลบภาพยนตร์ออกจาก Kitsunarr แล้ว ไฟล์บนดิสก์ไม่ได้ถูกแตะต้อง
+Movies	ภาพยนตร์
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	รีลีสหลายซีซัน: ยอมรับแพ็กหลายซีซัน (การค้นหาซีซันจะรับแพ็กสำหรับซีซันนั้น)
+Must contain	ต้องมี
+Must contain (comma separated; /regex/ allowed)	ต้องมี (คั่นด้วยจุลภาค; ใช้ /regex/ ได้)
+Must not contain	ต้องไม่มี
+NOT	NOT
+Name	ชื่อ
+Naming	การตั้งชื่อ
+Naming options saved.	บันทึกตัวเลือกการตั้งชื่อแล้ว
+Naming saved.	บันทึกการตั้งชื่อแล้ว
+Negate	กลับเงื่อนไข
+Network	เครือข่าย
+Never: keep the release's names	ไม่เลย: คงชื่อของรีลีสไว้
+New custom format	รูปแบบกำหนดเองใหม่
+New custom preset	พรีเซ็ตกำหนดเองใหม่
+New group title	ชื่อกลุ่มใหม่
+New password	รหัสผ่านใหม่
+New quality profile	โปรไฟล์คุณภาพใหม่
+Next airing	ออกอากาศถัดไป
+Next run	ทำงานครั้งถัดไป
+Next ›	ถัดไป ›
+No	ไม่
+No activity yet.	ยังไม่มีกิจกรรม
+No auto tags.	ไม่มีแท็กอัตโนมัติ
+No backups yet	ยังไม่มีข้อมูลสำรอง
+No collections yet	ยังไม่มีคอลเลกชัน
+No companion keys.	ไม่มีคีย์แอปคู่หู
+No custom formats	ไม่มีรูปแบบกำหนดเอง
+No custom formats defined.	ยังไม่ได้กำหนดรูปแบบกำหนดเอง
+No delay above the minimum custom format score	ไม่หน่วงเวลาเมื่อเกินคะแนนรูปแบบกำหนดเองขั้นต่ำ
+No delay for the profile's best quality in the preferred protocol	ไม่หน่วงเวลาสำหรับคุณภาพที่ดีที่สุดของโปรไฟล์ในโปรโตคอลที่ต้องการ
+No download client to read	ไม่มีไคลเอนต์ดาวน์โหลดให้อ่าน
+No exclusions.	ไม่มีรายการยกเว้น
+No history	ไม่มีประวัติ
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	ไม่มีอินเด็กเซอร์ใดค้นหาซีรีส์นี้อัตโนมัติได้: ไม่มีอินเด็กเซอร์ที่เปิดใช้การค้นหาอัตโนมัติและไม่มีแท็กหรือมีแท็กใดแท็กหนึ่งของซีรีส์
+No indexers to search	ไม่มีอินเด็กเซอร์ให้ค้นหา
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	ไม่มีเวอร์ชันที่เก็บไว้ เปิด "เก็บไฟล์ที่ถูกแทนที่จากการอัปเกรด" ใน การตั้งชื่อ
+No log entries at this level	ไม่มีรายการล็อกในระดับนี้
+No mappings.	ไม่มีการแมป
+No matches	ไม่มีผลที่ตรงกัน
+No members	ไม่มีสมาชิก
+No migrations have been run yet.	ยังไม่เคยย้ายข้อมูล
+No movies yet	ยังไม่มีภาพยนตร์
+No notes.	ไม่มีหมายเหตุ
+No recycle bin is set (Settings › Media management).	ยังไม่ได้ตั้งถังรีไซเคิล (การตั้งค่า › การจัดการสื่อ)
+No release profiles.	ไม่มีโปรไฟล์รีลีส
+No root folders yet.	ยังไม่มีโฟลเดอร์หลัก
+No root folders.	ไม่มีโฟลเดอร์หลัก
+No runs yet	ยังไม่เคยทำงาน
+No searches yet.	ยังไม่มีการค้นหา
+No series in your library match.	ไม่มีซีรีส์ในคลังที่ตรงกัน
+No tags	ไม่มีแท็ก
+No {}	ไม่มี {}
+No {} yet	ยังไม่มี {}
+None	ไม่มี
+Not evaluated by Kitsunarr.	Kitsunarr ไม่ได้ประเมิน
+Not imported	ไม่ได้นำเข้า
+Not monitored	ไม่ได้ติดตาม
+Notes	หมายเหตุ
+Notes ({preview.warnings.len()})	หมายเหตุ ({preview.warnings.len()})
+Notes ({report.warnings.len()})	หมายเหตุ ({report.warnings.len()})
+Nothing airs in the next seven days.	ไม่มีรายการออกอากาศในเจ็ดวันข้างหน้า
+Nothing downloading	ไม่มีการดาวน์โหลด
+Nothing found	ไม่พบสิ่งใด
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	ไม่มีสิ่งใดในแคตตาล็อกนี้ที่ตรงกับการค้นหา ลองสะกดแบบอื่น ใช้ชื่อต้นฉบับ หรือใช้แคตตาล็อกอื่น
+Nothing in this period	ไม่มีรายการในช่วงเวลานี้
+Nothing missing	ไม่มีรายการที่ขาดหาย
+Notifications	การแจ้งเตือน
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	กำหนดหมายเลขตอนตามลำดับอื่นของแคตตาล็อก (กลุ่มตอนของ TMDB, ลำดับ DVD หรือลำดับสัมบูรณ์ของ TheTVDB)
+OMDb API key	คีย์ API ของ OMDb
+Older priority	ให้ความสำคัญกับรายการเก่า
+One folder per season	หนึ่งโฟลเดอร์ต่อซีซัน
+Only the 2000 newest files are listed.	แสดงเฉพาะ 2000 ไฟล์ล่าสุด
+Only when the proxy needs one.	เฉพาะเมื่อพร็อกซีต้องการ
+Open the library	เปิดคลัง
+OpenAPI document	เอกสาร OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	เปิดบริการเพื่ออนุญาต Kitsunarr และกรอกโทเค็นให้
+Options	ตัวเลือก
+Organize	จัดระเบียบ
+Other	อื่นๆ
+Overview	ภาพรวม
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	เขียนทับระเบียนที่มีอยู่แล้วใน Kitsunarr (มิฉะนั้นจะเก็บไว้)
+Packs	แพ็ก
+Page not found	ไม่พบหน้า
+Page {page} / {pages}	หน้า {page} / {pages}
+Password	รหัสผ่าน
+Password changed. Other sessions were signed out.	เปลี่ยนรหัสผ่านแล้ว เซสชันอื่นถูกออกจากระบบ
+Past days	วันที่ผ่านมา
+Path	พาธ
+Path mappings	การแมปพาธ
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	หยุดการทำงานอัตโนมัติชั่วคราว (การซิงค์ RSS, การซิงค์รายการตามกำหนดเวลา, การค้นหาอัตโนมัติ)
+Peers	พีร์
+Permission	สิทธิ์
+PiB	PiB
+Platform	แพลตฟอร์ม
+Port	พอร์ต
+Position	ตำแหน่ง
+Post-import category	หมวดหมู่หลังนำเข้า
+Posters	โปสเตอร์
+Prefer and upgrade	ให้ความสำคัญและอัปเกรด
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	ให้ความสำคัญกับแพ็กซีซันอนิเมะ (การค้นหาซีซันอนิเมะของ Kitsunarr ค้นหาซีซันครั้งเดียวอยู่แล้ว)
+Prefer, do not upgrade	ให้ความสำคัญ แต่ไม่อัปเกรด
+Preferred	ที่ต้องการ
+Preferred metadata language	ภาษาข้อมูลเมตาที่ต้องการ
+Preferred protocol	โปรโตคอลที่ต้องการ
+Preparing preview…	กำลังเตรียมตัวอย่าง…
+Preview	ตัวอย่าง
+Preview migration	แสดงตัวอย่างการย้ายข้อมูล
+Previous migrations	การย้ายข้อมูลก่อนหน้า
+Priority	ลำดับความสำคัญ
+Problem	ปัญหา
+Profile	โปรไฟล์
+Profile saved.	บันทึกโปรไฟล์แล้ว
+Profiles still used by series or movies cannot be deleted.	ไม่สามารถลบโปรไฟล์ที่ซีรีส์หรือภาพยนตร์ยังใช้อยู่
+Progress	ความคืบหน้า
+Propers and repacks	Proper และ Repack
+Proxy	พร็อกซี
+Proxy saved.	บันทึกพร็อกซีแล้ว
+Proxy type	ประเภทพร็อกซี
+Qualities	คุณภาพ
+Quality	คุณภาพ
+Quality presets	พรีเซ็ตคุณภาพ
+Quality presets saved.	บันทึกพรีเซ็ตคุณภาพแล้ว
+Quality profile	โปรไฟล์คุณภาพ
+Quality profiles	โปรไฟล์คุณภาพ
+Quality profile…	โปรไฟล์คุณภาพ…
+RSS sync interval (minutes)	ช่วงเวลาซิงค์ RSS (นาที)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	การซิงค์ RSS จะรอเท่านี้หลังจากรีลีสปรากฏเพื่อหารีลีสที่ดีกว่า; รีลีสที่ถูกหน่วงจะแสดงในคิว โปรไฟล์แรกที่แท็กตรงกับซีรีส์จะถูกใช้; โปรไฟล์สุดท้าย (ไม่มีแท็ก) คือค่าเริ่มต้น
+Re-encode this series' files with the compression worker	เข้ารหัสไฟล์ของซีรีส์นี้ใหม่ด้วยตัวประมวลผลการบีบอัด
+Read and add series	อ่านและเพิ่มซีรีส์
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	อ่านสดจากไคลเอนต์ดาวน์โหลดทุกไม่กี่วินาที การดาวน์โหลดที่เสร็จสิ้นซึ่ง Kitsunarr คว้าไว้จะถูกนำเข้าโฟลเดอร์ซีรีส์ทุกนาที (ทอร์เรนต์จะถูกคัดลอกหรือฮาร์ดลิงก์เพื่อให้ยังซีดต่อได้; การดาวน์โหลด Usenet จะถูกย้าย) การดาวน์โหลดที่ล้มเหลวจะถูกบล็อกและค้นหาใหม่
+Read the library	อ่านคลัง
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	อ่านอย่างเดียว: ค้นหาโฟลเดอร์ซีรีส์ที่ขาดหาย ระเบียนไฟล์ที่อยู่นอกโฟลเดอร์หรือบันทึกซ้ำ และไฟล์ที่ไม่มีบนดิสก์
+Reading the download clients…	กำลังอ่านไคลเอนต์ดาวน์โหลด…
+Reading the source	กำลังอ่านแหล่งที่มา
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	อ่านทุกอย่างผ่าน API รหัสผ่านและคีย์ API ของผู้ให้บริการถูกซ่อนโดยแหล่งที่มาและต้องป้อนใหม่ภายหลัง
+Recent activity	กิจกรรมล่าสุด
+Recent priority	ให้ความสำคัญกับรายการใหม่
+Recent runs	การทำงานล่าสุด
+Recent searches	การค้นหาล่าสุด
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	แนะนำ ใน Sonarr/Tanukarr เปิด System → Backup สร้างข้อมูลสำรองแล้วดาวน์โหลดไฟล์ .zip (หรือใช้ sonarr.db) รวมรหัสผ่านของอินเด็กเซอร์และไคลเอนต์ดาวน์โหลดด้วย
+Recycle bin	ถังรีไซเคิล
+Recycle bin cleanup (days)	การล้างถังรีไซเคิล (วัน)
+Recycled	อยู่ในถังรีไซเคิล
+Refresh metadata	รีเฟรชข้อมูลเมตา
+Refresh preview	รีเฟรชตัวอย่าง
+Refreshing from {} is not supported yet; the imported metadata is kept as is	ยังไม่รองรับการรีเฟรชจาก {}; ข้อมูลเมตาที่นำเข้าจะคงไว้ตามเดิม
+Refreshing…	กำลังรีเฟรช…
+Regenerate	สร้างใหม่
+Regenerate API key	สร้างคีย์ API ใหม่
+Reject releases whose TheTVDB or IMDb id names another series	ปฏิเสธรีลีสที่ id ของ TheTVDB หรือ IMDb ระบุถึงซีรีส์อื่น
+Rejected: click twice to grab anyway	ถูกปฏิเสธ: คลิกสองครั้งเพื่อคว้าต่อไป
+Release	รีลีส
+Release profile	โปรไฟล์รีลีส
+Release profile saved.	บันทึกโปรไฟล์รีลีสแล้ว
+Release profiles	โปรไฟล์รีลีส
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	รีลีสจะถูกตรวจสอบกับโปรไฟล์คุณภาพ รูปแบบกำหนดเอง และโปรไฟล์รีลีสของซีรีส์ แล้วจัดอันดับแบบเดียวกับ Sonarr รีลีสที่ถูกปฏิเสธต้องคลิกครั้งที่สอง
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	รีลีสที่ล้มเหลวหรือถูกบล็อกด้วยตนเอง การค้นหาและการซิงค์ RSS จะไม่คว้ารีลีสเหล่านี้อีก ลบออกเพื่ออนุญาต
+Remote path	พาธระยะไกล
+Remote path mapping	การแมปพาธระยะไกล
+Remote path mapping saved.	บันทึกการแมปพาธระยะไกลแล้ว
+Remote path mappings	การแมปพาธระยะไกล
+Remove	ลบ
+Remove completed downloads	ลบการดาวน์โหลดที่เสร็จสิ้น
+Remove every release from the blocklist?	ลบทุกรีลีสออกจากรายการบล็อก?
+Remove failed downloads	ลบการดาวน์โหลดที่ล้มเหลว
+Remove from library	ลบออกจากคลัง
+Remove from queue	ลบออกจากคิว
+Remove from the download client (deletes its files there)	ลบออกจากไคลเอนต์ดาวน์โหลด (ลบไฟล์ในนั้นด้วย)
+Remove movie	ลบภาพยนตร์
+Remove series	ลบซีรีส์
+Remove tags automatically (from titles that stop matching)	ลบแท็กอัตโนมัติ (จากชื่อเรื่องที่ไม่ตรงเงื่อนไขอีกต่อไป)
+Remove “{title}” and its episode records from Kitsunarr?	ลบ “{title}” และระเบียนตอนออกจาก Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	ลบ “{title}” ออกจาก Kitsunarr? ไฟล์บนดิสก์จะไม่ถูกลบ
+Removed	ลบแล้ว
+Removed from the blocklist.	ลบออกจากรายการบล็อกแล้ว
+Rename	เปลี่ยนชื่อ
+Rename files	เปลี่ยนชื่อไฟล์
+Rename files on import	เปลี่ยนชื่อไฟล์เมื่อนำเข้า
+Rename files to the naming settings	เปลี่ยนชื่อไฟล์ตามการตั้งค่าการตั้งชื่อ
+Formats use Sonarr's tokens.	รูปแบบใช้โทเค็นของ Sonarr
+Renaming…	กำลังเปลี่ยนชื่อ…
+Report	รายงาน
+Request one at omdbapi.com. Used for films by IMDb id.	ขอได้ที่ omdbapi.com ใช้สำหรับภาพยนตร์ตาม id ของ IMDb
+Required	จำเป็น
+Resolution	ความละเอียด
+Restore	กู้คืน
+Restore {}	กู้คืน {}
+Restore…	กู้คืน…
+Restoring…	กำลังกู้คืน…
+Resume automation	ทำงานอัตโนมัติต่อ
+Retention (days)	ระยะเวลาเก็บรักษา (วัน)
+Retire	เลิกใช้
+Revoke	เพิกถอน
+Root folder	โฟลเดอร์หลัก
+Root folders	โฟลเดอร์หลัก
+Root folder…	โฟลเดอร์หลัก…
+Run #{run.id}: {run.status}	การทำงาน #{run.id}: {run.status}
+Run now	รันตอนนี้
+Running…	กำลังทำงาน…
+Saturday	วันเสาร์
+Save	บันทึก
+Save criteria	บันทึกเกณฑ์
+Save factors	บันทึกตัวคูณ
+Save keys	บันทึกคีย์
+Save metadata files	บันทึกไฟล์ข้อมูลเมตา
+Save naming	บันทึกการตั้งชื่อ
+Save options	บันทึกตัวเลือก
+Saved	บันทึกแล้ว
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	คีย์ที่บันทึกไว้จะแสดงเป็น {REDACTED}; ปล่อยไว้ตามเดิมเพื่อเก็บไว้ หรือล้างช่องเพื่อลบออก
+Saved.	บันทึกแล้ว
+Scan disk	สแกนดิสก์
+Scan folder	สแกนโฟลเดอร์
+Scanning…	กำลังสแกน…
+Scheduled tasks	งานตามกำหนดเวลา
+Score	คะแนน
+Search	ค้นหา
+Search again when a download fails	ค้นหาใหม่เมื่อการดาวน์โหลดล้มเหลว
+Search all	ค้นหาทั้งหมด
+Search all films	ค้นหาภาพยนตร์ทั้งหมด
+Search collection	ค้นหาคอลเลกชัน
+Search every episode of the list, one search per season	ค้นหาทุกตอนในรายการ ค้นหาครั้งเดียวต่อซีซัน
+Search every member's missing episodes (films: the film)	ค้นหาตอนที่ขาดหายของสมาชิกทุกรายการ (ภาพยนตร์: ตัวภาพยนตร์)
+Search indexers	ค้นหาในอินเด็กเซอร์
+Search selected	ค้นหาที่เลือก
+Search the indexers and choose a release	ค้นหาในอินเด็กเซอร์แล้วเลือกรีลีส
+Search the indexers and grab the best accepted release	ค้นหาในอินเด็กเซอร์แล้วคว้ารีลีสที่ยอมรับได้ดีที่สุด
+Search the indexers and grab the best releases for the monitored episodes	ค้นหาในอินเด็กเซอร์แล้วคว้ารีลีสที่ดีที่สุดสำหรับตอนที่ติดตาม
+Search your indexers	ค้นหาในอินเด็กเซอร์ของคุณ
+Search {chosen} selected	ค้นหาที่เลือก {chosen} รายการ
+Search: {}	ค้นหา: {}
+Search: {} — complete series	ค้นหา: {} — ทั้งซีรีส์
+Search: {} — season {season} packs	ค้นหา: {} — แพ็กซีซัน {season}
+Search: {} — {label}	ค้นหา: {} — {label}
+Searching for {label}…	กำลังค้นหา {label}…
+Searching indexers…	กำลังค้นหาในอินเด็กเซอร์…
+Searching…	กำลังค้นหา…
+Season	ซีซัน
+Season folder format	รูปแบบโฟลเดอร์ซีซัน
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	ชื่อโฟลเดอร์ซีซันจะแทนที่ชื่อจากแคตตาล็อกใน {{Season Title}} เว้นว่างเพื่อใช้ชื่อจากแคตตาล็อก
+Season folders	โฟลเดอร์ซีซัน
+Season images (Season ##.jpg)	ภาพซีซัน (Season ##.jpg)
+Season images (Season##/folder.jpg)	ภาพซีซัน (Season##/folder.jpg)
+Season images (season##-poster.jpg)	ภาพซีซัน (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	แพ็กซีซัน: 1 ใช้เป้าหมายแพ็กซีซันด้านล่าง
+Season premieres only	เฉพาะตอนแรกของซีซัน
+Season {n}	ซีซัน {n}
+Season {one}	ซีซัน {one}
+Season {se.season_number}	ซีซัน {se.season_number}
+Season {season_number}	ซีซัน {season_number}
+Season-pack seed ratio	อัตราส่วนการซีดของแพ็กซีซัน
+Season-pack seed time, minutes	เวลาซีดของแพ็กซีซัน (นาที)
+Seasons	ซีซัน
+Seasons {first}-{last}	ซีซัน {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	ข้อมูลลับจะแสดงเป็น {REDACTED}; ปล่อยไว้ตามเดิมเพื่อเก็บค่าที่บันทึกไว้
+Seed ratio (empty: the client's default)	อัตราส่วนการซีด (เว้นว่าง: ค่าเริ่มต้นของไคลเอนต์)
+Seed time, minutes (empty: the client's default)	เวลาซีด นาที (เว้นว่าง: ค่าเริ่มต้นของไคลเอนต์)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	ส่งคำขอไปยังอินเด็กเซอร์ แคตตาล็อก รายการ ไคลเอนต์ดาวน์โหลด และการเชื่อมต่อผ่านพร็อกซี
+Send to the download client	ส่งไปยังไคลเอนต์ดาวน์โหลด
+Series	ซีรีส์
+Series .plexmatch file	ไฟล์ .plexmatch ของซีรีส์
+Series folder format	รูปแบบโฟลเดอร์ซีรีส์
+Series images (Series Title.jpg)	ภาพซีรีส์ (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	ภาพซีรีส์ (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	ภาพซีรีส์ (folder.jpg)
+Series metadata (tvshow.nfo)	ข้อมูลเมตาของซีรีส์ (tvshow.nfo)
+Series metadata URL	URL ข้อมูลเมตาของซีรีส์
+Series metadata episode guide	คู่มือตอนในข้อมูลเมตาของซีรีส์
+Series removed from Kitsunarr. Files on disk were not touched.	ลบซีรีส์ออกจาก Kitsunarr แล้ว ไฟล์บนดิสก์ไม่ได้ถูกแตะต้อง
+Series removed, and its folder deleted.	ลบซีรีส์และโฟลเดอร์แล้ว
+Series type	ประเภทซีรีส์
+Set quality profile…	ตั้งโปรไฟล์คุณภาพ…
+Settings	การตั้งค่า
+Settings saved.	บันทึกการตั้งค่าแล้ว
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security ใน Sonarr/Tanukarr
+Show	แสดง
+Show as all-day events	แสดงเป็นกิจกรรมตลอดวัน
+Show unmonitored	แสดงที่ไม่ได้ติดตาม
+Shows	ซีรีส์
+Sign in	ลงชื่อเข้าใช้
+Signed in. Save the list to keep the token.	ลงชื่อเข้าใช้แล้ว บันทึกรายการเพื่อเก็บโทเค็น
+Signing in…	กำลังลงชื่อเข้าใช้…
+Size	ขนาด
+Size limits	ขีดจำกัดขนาด
+Size on disk	ขนาดบนดิสก์
+Skip files smaller than (MB)	ข้ามไฟล์ที่เล็กกว่า (MB)
+Skip the free-space check	ข้ามการตรวจสอบพื้นที่ว่าง
+Skip unmonitored episodes when importing packs	ข้ามตอนที่ไม่ได้ติดตามเมื่อนำเข้าแพ็ก
+Source	แหล่งที่มา
+Source code	ซอร์สโค้ด
+Source path	พาธต้นทาง
+Special	พิเศษ
+Specials	ตอนพิเศษ
+Specials are never monitored automatically.	ตอนพิเศษจะไม่ถูกติดตามโดยอัตโนมัติ
+Specifications	ข้อกำหนด
+Specifications (JSON)	ข้อกำหนด (JSON)
+Specifications must be valid JSON: {e}	ข้อกำหนดต้องเป็น JSON ที่ถูกต้อง: {e}
+Stalled torrent timeout (minutes)	หมดเวลาทอร์เรนต์ที่ค้าง (นาที)
+Standard	มาตรฐาน
+Standard episode format	รูปแบบชื่อตอนมาตรฐาน
+Start migration	เริ่มย้ายข้อมูล
+Start over	เริ่มใหม่
+Start search for missing episodes	เริ่มค้นหาตอนที่ขาดหาย
+Started	เริ่มเมื่อ
+Started {format_datetime(&run.started_at)}	เริ่มเมื่อ {format_datetime(&run.started_at)}
+Status	สถานะ
+Status & health	สถานะและความสมบูรณ์
+Still downloading	ยังดาวน์โหลดอยู่
+Storage outlook	แนวโน้มพื้นที่จัดเก็บ
+Studio	สตูดิโอ
+Subscribe	สมัครรับ
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	สมัครรับที่อยู่นี้ในแอปปฏิทิน ที่อยู่นี้มีคีย์ API ของคุณ: โปรดเก็บเป็นความลับ
+Sunday	วันอาทิตย์
+Sync	ซิงค์
+Sync all lists now	ซิงค์ทุกรายการตอนนี้
+Sync now	ซิงค์ตอนนี้
+Syncing…	กำลังซิงค์…
+System →	ระบบ →
+TMDB API key (v3)	คีย์ API ของ TMDB (v3)
+TV Series	ซีรีส์ทีวี
+TV series	ซีรีส์ทีวี
+Table	ตาราง
+Tag	แท็ก
+Tag them	ติดแท็ก
+Tag titles already in the library	ติดแท็กชื่อเรื่องที่อยู่ในคลังแล้ว
+Tags	แท็ก
+Tags (comma separated)	แท็ก (คั่นด้วยจุลภาค)
+Tags (ids, comma separated)	แท็ก (id คั่นด้วยจุลภาค)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	แท็กจะถูกเพิ่มให้ซีรีส์และภาพยนตร์ที่ตรงกับเงื่อนไขทุกประเภทเมื่อมีการเพิ่ม แก้ไข หรือรีเฟรช
+Task	งาน
+Television	โทรทัศน์
+Television (raw)	โทรทัศน์ (raw)
+Test	ทดสอบ
+Test failed: {message}	ทดสอบล้มเหลว: {message}
+Testing…	กำลังทดสอบ…
+The blocklist is empty	รายการบล็อกว่างเปล่า
+The catalogue new titles are added from when the list knows their id there.	แคตตาล็อกที่ใช้เพิ่มชื่อเรื่องใหม่ เมื่อรายการรู้ id ของชื่อเรื่องในแคตตาล็อกนั้น
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	วันที่ที่ไฟล์นำเข้าจะได้รับ: วันออกอากาศของตอน (เวลาท้องถิ่นหรือ UTC) หรือวันที่ของไฟล์ที่ถูกแทนที่เมื่ออัปเกรด
+The dry run completed without blocking problems. Nothing has been written yet.	การทดลองทำงานเสร็จสิ้นโดยไม่มีปัญหาที่ขัดขวาง ยังไม่มีการเขียนข้อมูลใดๆ
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	ไฟล์จะถูกย้ายเข้าโฟลเดอร์ซีซัน (ไม่เขียนทับไฟล์ที่มีอยู่) และซีรีส์จะถูกสแกนใหม่
+The folder must already exist; Kitsunarr never creates or removes it.	โฟลเดอร์ต้องมีอยู่แล้ว; Kitsunarr ไม่สร้างหรือลบโฟลเดอร์นี้
+The indexers returned no releases for this search.	อินเด็กเซอร์ไม่พบรีลีสสำหรับการค้นหานี้
+The instance is on my local network (private or loopback address)	อินสแตนซ์อยู่ในเครือข่ายภายในของฉัน (ที่อยู่ส่วนตัวหรือ loopback)
+The list has not been read, or it is empty.	รายการยังไม่ถูกอ่าน หรือว่างเปล่า
+The migration did not complete; nothing was changed.	การย้ายข้อมูลไม่เสร็จสมบูรณ์; ไม่มีการเปลี่ยนแปลงใดๆ
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	รายการล่าสุดที่เก็บไว้ในหน่วยความจำ ล็อกฉบับเต็มอยู่ในเอาต์พุตของโปรเซส (ล็อกคอนเทนเนอร์หรือ journal)
+The passwords do not match.	รหัสผ่านไม่ตรงกัน
+The recycle bin has no media or subtitle files.	ถังรีไซเคิลไม่มีไฟล์สื่อหรือไฟล์คำบรรยาย
+The sign-in expired; try again.	การลงชื่อเข้าใช้หมดอายุ โปรดลองอีกครั้ง
+The upload failed (network error).	อัปโหลดล้มเหลว (ข้อผิดพลาดเครือข่าย)
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	ตัวประมวลผลเป็นส่วนประกอบเสริมบนโฮสต์ (ตัวประมวลผลการบีบอัดของ Tanukarr) ที่เข้าถึงผ่านซ็อกเก็ตที่ KITSUNARR_COMPRESSION_SOCKET
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (แคตตาล็อกของ Sonarr), TMDB และ TVmaze ครอบคลุมซีรีส์ทีวี; AniList และ MyAnimeList ครอบคลุมซีรีส์อนิเมะและภาพยนตร์อนิเมะ; TMDB และ OMDb ครอบคลุมภาพยนตร์ การเพิ่มชื่อเรื่องจะสร้างรายการในคลังและรายชื่อตอน; ไฟล์จะถูกรับเข้าภายหลังโดยกระบวนการนำเข้า
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	ชื่อเรื่องจาก TheTVDB จะถูกค้นหาและเพิ่มในภาษานี้; แต่ละซีรีส์เปลี่ยนได้ในตัวแก้ไขของซีรีส์
+TheTVDB titles in this language; changing it refreshes the series	ชื่อเรื่องจาก TheTVDB ในภาษานี้; การเปลี่ยนจะรีเฟรชซีรีส์
+There is nothing at /{path}.	ไม่มีสิ่งใดที่ /{path}
+They are created by migrating from Sonarr/Tanukarr.	สร้างขึ้นจากการย้ายข้อมูลจาก Sonarr/Tanukarr
+This series' renaming mode, season folder titles and kept versions	โหมดการเปลี่ยนชื่อ ชื่อโฟลเดอร์ซีซัน และเวอร์ชันที่เก็บไว้ของซีรีส์นี้
+TiB	TiB
+Time	เวลา
+Time left	เวลาที่เหลือ
+Title	ชื่อเรื่อง
+Title pattern	รูปแบบชื่อเรื่อง
+Titles import lists never add.	ชื่อเรื่องที่รายการนำเข้าจะไม่เพิ่มเลย
+Titles on no list	ชื่อเรื่องที่ไม่อยู่ในรายการใด
+Today	วันนี้
+Torrent	ทอร์เรนต์
+Torrent delay	หน่วงเวลาทอร์เรนต์
+Torrent delay (minutes)	หน่วงเวลาทอร์เรนต์ (นาที)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	อินเด็กเซอร์ Torznab และ Newznab ใช้ ทดสอบ ในตัวแก้ไขเพื่อตรวจสอบ; การค้นหาแต่ละแบบใช้อินเด็กเซอร์ที่เปิดใช้การค้นหาแบบนั้น: RSS อัตโนมัติ หรือแบบโต้ตอบ
+Trigger	ทริกเกอร์
+URL base	URL base
+UTC air date	วันออกอากาศ UTC
+Unchanged	ไม่เปลี่ยนแปลง
+Unknown	ไม่ทราบ
+Unmonitor	เลิกติดตาม
+Unmonitor them	เลิกติดตาม
+Unmonitored	ไม่ได้ติดตาม
+Upcoming	กำลังจะมาถึง
+Upcoming 7 days	7 วันข้างหน้า
+Update	อัปเดต
+Updated {} items.	อัปเดตแล้ว {} รายการ
+Upgrade until (cutoff)	อัปเกรดจนถึง (จุดตัด)
+Upgrade until format score	อัปเกรดจนถึงคะแนนรูปแบบ
+Upgrades allowed	อนุญาตการอัปเกรด
+Upload a backup	อัปโหลดข้อมูลสำรอง
+Upload failed (HTTP {}).	อัปโหลดล้มเหลว (HTTP {})
+Uploading…	กำลังอัปโหลด…
+Use SSL	ใช้ SSL
+Use a proxy	ใช้พร็อกซี
+Use hardlinks instead of copying	ใช้ฮาร์ดลิงก์แทนการคัดลอก
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	ใช้เป็นเฮดเดอร์ X-Api-Key (หรือ ?apikey=) จากแอปพลิเคชันอื่น เข้ากันได้กับเฮดเดอร์ที่ Sonarr ใช้
+Use these episodes	ใช้ตอนเหล่านี้
+Usenet	Usenet
+Usenet delay	หน่วงเวลา Usenet
+Usenet delay (minutes)	หน่วงเวลา Usenet (นาที)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Usenet เท่านั้น: รีลีสที่ใหม่กว่านี้จะถูกปฏิเสธ เพื่อให้มีเวลากระจาย 0 คือปิด
+Usenet only: older releases are rejected. 0 means unlimited.	Usenet เท่านั้น: รีลีสที่เก่ากว่านี้จะถูกปฏิเสธ 0 หมายถึงไม่จำกัด
+User name	ชื่อผู้ใช้
+Username	ชื่อผู้ใช้
+Validation	การตรวจสอบความถูกต้อง
+Version	เวอร์ชัน
+Versions	เวอร์ชัน
+Waiting for the sign-in at	กำลังรอการลงชื่อเข้าใช้ที่
+Wanted	ต้องการ
+Warnings	คำเตือน
+Warnings {warnings}	คำเตือน {warnings}
+Watched (Jellyfin watched sync)	ดูแล้ว (ซิงค์สถานะดูแล้วของ Jellyfin)
+Watched sync user	ผู้ใช้สำหรับซิงค์สถานะดูแล้ว
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	ส่งการแจ้งเตือนผ่าน Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, อีเมล (SMTP), Mailgun, SendGrid, สคริปต์กำหนดเอง (พร้อมตัวแปรสภาพแวดล้อมของ Sonarr), Emby/Jellyfin, Plex และ Kodi: การคว้า การนำเข้าและการอัปเกรด การเปลี่ยนชื่อ ซีรีส์ที่เพิ่มหรือลบ ไฟล์ที่ถูกลบ ปัญหาสถานะระบบ ใช้ ทดสอบ ในตัวแก้ไข
+Welcome	ยินดีต้อนรับ
+What to import	สิ่งที่จะนำเข้า
+When	เมื่อ
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	เมื่อใดที่จะตรวจสอบใบรับรอง HTTPS ของอินเด็กเซอร์ ไคลเอนต์ดาวน์โหลด และบริการ (การตั้งค่าของ Sonarr) ใบรับรองแบบ self-signed ในเครือข่ายของคุณต้องผ่อนปรนการตั้งค่านี้
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	เมื่อไคลเอนต์ดาวน์โหลดรายงานพาธที่ Kitsunarr เห็นในที่อื่น (เครื่องหรือคอนเทนเนอร์อื่น) ให้แมปโฮสต์และพาธของไคลเอนต์ไปยังพาธในเครื่อง
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	ให้ความสำคัญกับรีลีสที่แก้ไขรีลีสที่มีปัญหาหรือไม่ และอัปเกรดไฟล์ที่มีอยู่หรือไม่ (เหมือนใน Sonarr)
+Whole season	ทั้งซีซัน
+Working…	กำลังดำเนินการ…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	เขียนลงในโฟลเดอร์ซีรีส์เมื่อสแกน รีเฟรช หรือนำเข้าซีรีส์ ในแบบเดียวกับที่ตัวใช้ข้อมูลเมตาของ Sonarr เขียน
+Year	ปี
+Your library is empty.	คลังของคุณว่างเปล่า
+all checks passed	ผ่านการตรวจสอบทั้งหมด
+comma separated	คั่นด้วยจุลภาค
+cutoff: {}	จุดตัด: {}
+has a file	มีไฟล์
+iCal link	ลิงก์ iCal
+in 2 days	ในอีก 2 วัน
+in a moment	อีกสักครู่
+in file names	ในชื่อไฟล์
+in library	อยู่ในคลัง
+in {text}	ในอีก {text}
+just now	เมื่อสักครู่
+may run out of space	อาจพื้นที่ไม่พอ
+name (e.g. phone)	ชื่อ (เช่น โทรศัพท์)
+never refreshed	ยังไม่เคยรีเฟรช
+no media files are moved, renamed or deleted.	ไม่มีไฟล์สื่อใดถูกย้าย เปลี่ยนชื่อ หรือลบ
+not accessible	เข้าถึงไม่ได้
+not added	ยังไม่ได้เพิ่ม
+not checked	ยังไม่ได้ตรวจสอบ
+not read yet	ยังไม่ได้อ่าน
+on disk	บนดิสก์
+refreshed {}	รีเฟรชเมื่อ {}
+schema {s}	สคีมา {s}
+secrets included	รวมข้อมูลลับ
+secrets masked	ปิดบังข้อมูลลับ
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip หรือ sonarr.db
+stored only	จัดเก็บเท่านั้น
+title (optional)	ชื่อเรื่อง (ไม่บังคับ)
+{:.1} GiB/h	{:.1} GiB/ชม.
+{added} added; {}	เพิ่ม {added}; {}
+{added} shows added.	เพิ่มรายการแล้ว {added} เรื่อง
+{c.name} (API key needed)	{c.name} (ต้องใช้คีย์ API)
+{c.series_count} series · {c.movie_count} movies	ซีรีส์ {c.series_count} · ภาพยนตร์ {c.movie_count}
+{chosen().len()} chosen	เลือกแล้ว {chosen().len()}
+{chosen().len()} chosen (at most 25)	เลือกแล้ว {chosen().len()} (สูงสุด 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} บนดิสก์ · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% ของ {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · เพิ่มเมื่อ {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} จาก {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} ไฟล์ · {job["percent"]}% · ประหยัด {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} เริ่มแล้ว
+{name} was added to the library.	เพิ่ม {name} ลงในคลังแล้ว
+{name}: shows	{name}: ซีรีส์
+{ok} files imported.	นำเข้า {ok} ไฟล์แล้ว
+{ok} imported; {}	นำเข้าแล้ว {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: รีลีส {r.releases.len()} รายการจากอินเด็กเซอร์ {r.searched_indexers} ตัว
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	ตรวจสอบซีรีส์ {r.series_checked} เรื่องและไฟล์ {r.files_checked} ไฟล์: พบปัญหา {r.issues.len()} รายการ
+{selected.read().len()} selected	เลือกแล้ว {selected.read().len()}
+{text} ago	{text} ที่แล้ว
+{} (not accessible)	{} (เข้าถึงไม่ได้)
+{} ({} free)	{} (ว่าง {})
+{} added to every profile (not allowed yet).	เพิ่ม {} ในทุกโปรไฟล์แล้ว (ยังไม่อนุญาต)
+{} day(s)	{} วัน
+{} failed: {}	{} ล้มเหลว: {}
+{} format scores	คะแนนรูปแบบ {}
+{} free of {}	ว่าง {} จาก {}
+{} week(s)	{} สัปดาห์
+{}{year} — movie	{}{year} — ภาพยนตร์
+‹ Back	‹ กลับ
+‹ Earlier	‹ ก่อนหน้านี้
+‹ Prev	‹ ก่อนหน้า
+○ offline	○ ออฟไลน์
+● live	● สด
+✓ No issues detected.	✓ ไม่พบปัญหา
+Activity	กิจกรรม
+Queue	คิว
+System	ระบบ
+Tasks	งาน
+Retry	ลองใหม่
+Sign out	ออกจากระบบ
+Search titles…  ( / )	ค้นหาชื่อเรื่อง…  ( / )
+Loading…	กำลังโหลด…
+Profiles	โปรไฟล์
+scene {}	ซีน {}
+Scene numbering from TheXEM	ลำดับเลขซีนจาก TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	ลำดับเลขซีนที่อนุมานจาก TheXEM (ยังไม่ยืนยัน)
+Season {} (scene seasons {})	ซีซัน {} (ซีซันซีน {})
+{} (scene {})	{} (ซีน {})

@@ -1,0 +1,968 @@
+# Latvian interface strings: English<TAB>Latvian. {…} marks a placeholder.
+custom	pielāgota
+indeterminate	nenoteikts
+mixed	jaukts
+retired	izņemta
+· container	· konteiners
+· finished {format_datetime(f)}	· pabeigts {format_datetime(f)}
+· missing	· trūkst
+· on disk	· diskā
+· today	· šodien
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep.
+— MiB per minute; empty uses Settings › Quality	— MiB minūtē; tukšs izmanto Iestatījumi › Kvalitāte
+— a release's size is multiplied by its codec's factor before the size limits apply	— izlaiduma izmērs tiek reizināts ar tā kodeka koeficientu, pirms tiek piemēroti izmēra ierobežojumi
+— all profiles at once	— visi profili uzreiz
+— codec and title criteria, custom qualities (Tanukarr)	— kodeka un nosaukuma kritēriji, pielāgotas kvalitātes (Tanukarr)
+— enter the code	— ievadiet kodu
+(empty)	(tukšs)
++ Add mapping	+ Pievienot kartējumu
++ New format	+ Jauns formāts
++ New profile	+ Jauns profils
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (izslēgts) vai no 10 līdz 120. RSS sinhronizāciju var palaist arī no Sistēma › Uzdevumi.
+3 hours ago	pirms 3 stundām
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Torrents, kas lejupielādējas bez progresa tik ilgi, tiek atzīmēts kā neizdevies, pievienots bloķēšanas sarakstam un meklēts atkārtoti. 0 to izslēdz; progress tiek sekots kopš Kitsunarr palaišanas.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Franšīzes grupa, atrasta pēc AniList vai MyAnimeList saistībām. Vēlāk pievienoti tās pašas franšīzes nosaukumi arī pievienojas tai.
+A new API key was generated. Update the applications that use it.	Ir ģenerēta jauna API atslēga. Atjauniniet lietotnes, kas to izmanto.
+A regular expression, case-insensitive; empty matches every title.	Regulārā izteiksme, reģistrnejutīga; tukša atbilst jebkuram nosaukumam.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Izlaidums saņem visspecifiskāko sava seriāla profilā atļauto sagatavi, kuras avotam, izšķirtspējai, kodekam un nosaukuma šablonam tas atbilst. Standarta kvalitāte ar norādītu kodeku vai šablonu padara izlaidumus, kas tam neatbilst, par Nezināmiem. Pielāgotās sagataves tiek pievienotas katram profilam kā neatļautas.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Izlaiduma izmērs tiek reizināts ar tā kodeka koeficientu, pirms tiek piemēroti izmēra ierobežojumi. "Jaukts" nozīmē, ka profili izmanto dažādus koeficientus; šeit ievadītā vērtība tiek ierakstīta katrā profilā.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Nosaukums, kas pievienojas franšīzei vai manuālai grupai, pamet iepriekšējo grupu. Faili un mapes netiek pārvietoti.
+API key	API atslēga
+API key needed	Nepieciešama API atslēga
+API keys and language	API atslēgas un valoda
+API path	API ceļš
+About	Par
+Absolute path; empty to delete permanently.	Absolūtais ceļš; tukšs, lai dzēstu neatgriezeniski.
+Accepted	Pieņemts
+Account lists	Konta saraksti
+Actions	Darbības
+Actual	Faktiskais
+Add	Pievienot
+Add a Newznab or Torznab indexer and enable interactive search for it.	Pievienojiet Newznab vai Torznab indeksētāju un iespējojiet tam interaktīvo meklēšanu.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Pievienojiet klientu no tā veidnes un redaktorā izmantojiet Pārbaudīt; paņemšana, rinda un importēšana izmanto visus iespējotos klientus. Blackhole ieraksta paņemtos izlaidumus mapē un importē to, kas parādās tā novērošanas mapē. Katra klienta opcijas "Noņemt pabeigtās/neizdevušās lejupielādes" noņem lejupielādes (kopā ar to failiem), kad klients ar tām ir beidzis.
+Add a download client in Settings › Download clients and enable it.	Pievienojiet lejupielādes klientu sadaļā Iestatījumi › Lejupielādes klienti un iespējojiet to.
+Add a root folder first: it is where this title's folder will live.	Vispirms pievienojiet saknes mapi: tajā atradīsies šī nosaukuma mape.
+Add a tag above first.	Vispirms augstāk pievienojiet tagu.
+Add a title	Pievienot nosaukumu
+Add auto tag	Pievienot automātisko tagu
+Add condition	Pievienot nosacījumu
+Add exclusion	Pievienot izslēgšanu
+Add media	Pievienot multividi
+Add one, or migrate them from Sonarr/Tanukarr.	Pievienojiet vienu vai migrējiet tos no Sonarr/Tanukarr.
+Add preset	Pievienot sagatavi
+Add selected	Pievienot atlasītos
+Add series or movies below.	Pievienojiet seriālus vai filmas zemāk.
+Add tag	Pievienot tagu
+Add the list's tags	Pievienot saraksta tagus
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Pievienojiet nosaukumus no TVmaze vai AniList vai pārnesiet esošu Sonarr vai Tanukarr bibliotēku.
+Add to library	Pievienot bibliotēkai
+Add {}	Pievienot {}
+Add {} ({y})	Pievienot {} ({y})
+Add — {}	Pievienot — {}
+Add, and remove when they leave the list	Pievienot un noņemt, kad tie pamet sarakstu
+Added	Pievienots
+Added to the titles this list adds.	Pievienoti nosaukumiem, ko pievieno šis saraksts.
+Adding titles	Nosaukumu pievienošana
+Adding…	Pievieno…
+Address	Adrese
+Age	Vecums
+Aired	Pārraidīts
+Aired monitored episodes without a file appear here.	Šeit parādās pārraidītās uzraudzītās epizodes bez faila.
+All	Visi
+All collections	Visas kolekcijas
+All episodes	Visas epizodes
+All episodes in the series folder	Visas epizodes seriāla mapē
+All events	Visi notikumi
+Allow zero size (the feed has no release sizes)	Atļaut nulles izmēru (plūsmā nav izlaidumu izmēru)
+Also delete the series folder and its files (to the recycle bin when one is set)	Dzēst arī seriāla mapi un tās failus (uz atkritni, ja tā ir iestatīta)
+Also for releases grabbed from interactive search	Arī izlaidumiem, kas paņemti no interaktīvās meklēšanas
+Also known as	Zināms arī kā
+Always, even when renaming is off	Vienmēr, pat ja pārdēvēšana ir izslēgta
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analizēt video failus (izšķirtspēja, ilgums un kodeki, ar ffprobe)
+AniList and MyAnimeList titles are always added as anime.	AniList un MyAnimeList nosaukumi vienmēr tiek pievienoti kā anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, cita Sonarr instance un pielāgoti JSON saraksti tiek nolasīti ik pēc dažām stundām; jauni nosaukumi tiek pievienoti ar katra saraksta saknes mapi, profilu un uzraudzību. Pakalpojumi, kam nepieciešams OAuth, izmanto jūsu lietotnes Client ID un ielīmētu marķieri (no Tanukarr migrētie marķieri turpina darboties).
+Anime	Anime
+Anime / absolute numbering	Anime / absolūtā numerācija
+Anime categories	Anime kategorijas
+Anime episode format	Anime epizodes formāts
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Anime filmas var pievienot no AniList, un Tanukarr migrācijas pārnes arī to filmas. Spēlfilmām nepieciešams TMDB katalogs.
+Anime standard format search	Anime meklēšana standarta formātā
+Anime title, e.g. Frieren	Anime nosaukums, piem., Frieren
+Any	Jebkurš
+Any library	Jebkura bibliotēka
+Applications using the current key will stop working until you give them the new one.	Lietotnes, kas izmanto pašreizējo atslēgu, pārstās darboties, līdz tām norādīsiet jauno.
+Applied after every list has been read successfully and some title left a list.	Tiek piemērots pēc tam, kad visi saraksti ir veiksmīgi nolasīti un kāds nosaukums ir pametis sarakstu.
+Apply	Lietot
+Apply migration	Lietot migrāciju
+Apply profile	Lietot profilu
+Applying migration	Migrācijas lietošana
+Applying…	Lieto…
+As Settings › Media management says	Kā norādīts Iestatījumi › Multivides pārvaldība
+At least 10 characters.	Vismaz 10 rakstzīmes.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Vismaz {MIN_PASSWORD_LENGTH} rakstzīmes. Labi der ieejas frāze.
+Auto tag	Automātiskais tags
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automātiskais tags saglabāts. Tas tiks piemērots, kad nosaukumi nākamreiz tiks pievienoti, rediģēti vai atsvaidzināti.
+Auto tagging	Automātiskā tagošana
+Auto-refresh	Automātiska atsvaidzināšana
+Automatic	Automātiski
+Automatic search	Automātiskā meklēšana
+Automatic search for {label}: grabbed {}.	Automātiskā meklēšana {label}: paņemts {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automātiskā meklēšana {label}: atrasti izlaidumi: {}, apstiprināti: {}, nekas nav paņemts.
+Automatic search: grab the best release	Automātiskā meklēšana: paņemt labāko izlaidumu
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatizācija ir apturēta: RSS sinhronizācija, ieplānotās sarakstu sinhronizācijas un automātiskās meklēšanas tiek izlaistas. Manuālās darbības un pašreizējās lejupielādes turpinās.
+Automation resumed.	Automatizācija atsākta.
+Available from	Pieejams no
+Back to the dashboard	Atpakaļ uz informācijas paneli
+Back up now	Dublēt tagad
+Backup {} created.	Dublējums {} izveidots.
+Backups	Dublējumi
+Blocking:	Bloķē:
+Blocklist	Bloķēšanas saraksts
+Blocklist the release and search again	Pievienot izlaidumu bloķēšanas sarakstam un meklēt vēlreiz
+Blocklist the release: it is never grabbed again	Pievienot izlaidumu bloķēšanas sarakstam: tas vairs netiks paņemts
+Blocklist “{title}” and search for a replacement?	Pievienot “{title}” bloķēšanas sarakstam un meklēt aizstājēju?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Pārnesiet savu Sonarr (v3/v4) vai Tanukarr bibliotēku un iestatījumus uz Kitsunarr. Avots tiek tikai nolasīts, nekad mainīts, un
+Bypass the proxy for local addresses	Apiet starpniekserveri lokālajām adresēm
+Calendar	Kalendārs
+Calendar →	Kalendārs →
+Cancel	Atcelt
+Cancel compression	Atcelt saspiešanu
+Cannot reach the server: {e}	Nevar sasniegt serveri: {e}
+Catalogue	Katalogs
+Category	Kategorija
+Certificate validation	Sertifikātu validācija
+Change password	Mainīt paroli
+Change series	Mainīt seriālu
+Changes	Izmaiņas
+Check	Pārbaudīt
+Check library	Pārbaudīt bibliotēku
+Check now	Pārbaudīt tagad
+Check that the mapped series folders exist (read-only)	Pārbaudīt, vai kartētās seriālu mapes pastāv (tikai lasīšana)
+Checked: {summary}.	Pārbaudīts: {summary}.
+Checking…	Pārbauda…
+Choose a backup file	Izvēlieties dublējuma failu
+Choose a mode	Izvēlieties režīmu
+Choose a root folder and a quality profile.	Izvēlieties saknes mapi un kvalitātes profilu.
+Choose a season	Izvēlieties sezonu
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Izvēlieties seriālu un sezonu vai epizodi. Rezultāti rāda, kas ir katrs izlaidums, kā to nolasa Kitsunarr parsētājs.
+Choose a series or movie…	Izvēlieties seriālu vai filmu…
+Choose source	Izvēlieties avotu
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Izvēlieties šī izlaiduma epizodes manuāli, tad paņemiet to (izvēle tiek saglabāta importēšanai)
+Choose…	Izvēlieties…
+Clean library	Tīrīt bibliotēku
+Clear	Notīrīt
+Clear blocklist	Notīrīt bloķēšanas sarakstu
+Cleared {n} releases from the blocklist.	No bloķēšanas saraksta notīrīti izlaidumi: {n}.
+Client	Klients
+Close	Aizvērt
+Codec	Kodeks
+Codec factors saved in every profile.	Kodeku koeficienti saglabāti katrā profilā.
+Codec size factors	Kodeku izmēra koeficienti
+Codecs	Kodeki
+Collection film folder format	Kolekcijas filmas mapes formāts
+Collections	Kolekcijas
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Kolekcijas parādās, kad tās tiek migrētas no Tanukarr, izveidotas no nodrošinātāja datiem vai izveidotas šeit.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Pārejat no Sonarr vai Tanukarr? Importējiet esošos seriālus, iestatījumus un vēsturi dažos soļos.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Atdalīti ar komatu; * ir aizstājējzīme (*.lan), un darbojas IP diapazoni, piemēram, 192.168.1.0/24.
+Companion app keys	Pavadlietotņu atslēgas
+Complete series	Viss seriāls
+Completed and failed download handling	Pabeigto un neizdevušos lejupielāžu apstrāde
+Component	Komponents
+Compress series	Saspiest seriālu
+Compression	Saspiešana
+Compression queued.	Saspiešana ievietota rindā.
+Compression worker is not connected.	Saspiešanas apstrādātājs nav pievienots.
+Condition	Nosacījums
+Conditions	Nosacījumi
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Viena veida nosacījumi atbilst, ja atbilst jebkurš no tiem (obligātajiem jāatbilst visiem); jāatbilst katram veidam.
+Configure	Konfigurēt
+Confirm password	Apstipriniet paroli
+Connect	Savienot
+Connect to a running instance	Savienoties ar darbojošos instanci
+Connecting…	Savienojas…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Konsekventas datubāzes kopijas. Ieplānotie dublējumi notiek reizi nedēļā (tiek saglabāti pēdējie astoņi); katra migrācija arī vispirms izveido vienu. Lai atjaunotu, apturiet Kitsunarr un palaidiet
+Continuing	Turpinās
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Sīkfails (tiek nosūtīts ar plūsmas pieprasījumu, piem., uid=1; pass=…)
+Copied.	Nokopēts.
+Copy	Kopēt
+Copy (keep the originals)	Kopēt (saglabāt oriģinālus)
+Copy sizes from	Kopēt izmērus no
+Copy the token now; it is not shown again:	Nokopējiet marķieri tagad; tas vairs netiks parādīts:
+Could not grab {}: {}	Neizdevās paņemt {}: {}
+Covers	Aptver
+Create	Izveidot
+Create account	Izveidot kontu
+Create group	Izveidot grupu
+Create key	Izveidot atslēgu
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Izveidojiet to vietnē themoviedb.org › Settings › API. Tiek izmantota TMDB TV seriāliem un filmām.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Izveidojiet administratora kontu. Jūs to izmantosiet, lai pieteiktos Kitsunarr.
+Created	Izveidots
+Created when the first file is imported. Nothing is written to disk now.	Tiek izveidota, kad tiek importēts pirmais fails. Pašlaik diskā nekas netiek ierakstīts.
+Creating…	Izveido…
+Credit	Autori
+Current file	Pašreizējais fails
+Current password	Pašreizējā parole
+Custom format saved.	Pielāgotais formāts saglabāts.
+Custom format score	Pielāgotā formāta vērtējums
+Custom format scores	Pielāgoto formātu vērtējumi
+Custom formats	Pielāgotie formāti
+Cutoff unmet	Robeža nav sasniegta
+Daily	Ikdienas
+Daily episode format	Ikdienas epizodes formāts
+Dashboard	Informācijas panelis
+Data directory	Datu direktorijs
+Database backup taken before the import: {b}	Pirms importēšanas izveidotais datubāzes dublējums: {b}
+Database schema	Datubāzes shēma
+Date	Datums
+Date added	Pievienošanas datums
+Debug	Atkļūdošana
+Decision	Lēmums
+Default	Noklusējums
+Defaults	Noklusējuma vērtības
+Delay profile	Aizkaves profils
+Delay profile saved.	Aizkaves profils saglabāts.
+Delay profiles	Aizkaves profili
+Delete	Dzēst
+Delete empty series folders	Dzēst tukšās seriālu mapes
+Delete file	Dzēst failu
+Delete group	Dzēst grupu
+Delete profile	Dzēst profilu
+Delete “{path}”? It goes to the recycle bin when one is set.	Dzēst “{path}”? Tas tiks pārvietots uz atkritni, ja tā ir iestatīta.
+Delete “{}”?	Dzēst “{}”?
+Delete “{}”? Its series and movies stay in the library.	Dzēst “{}”? Tās seriāli un filmas paliek bibliotēkā.
+Deleted	Dzēsts
+Directory	Direktorijs
+Disabled	Atspējots
+Disabled for local addresses	Atspējots lokālajām adresēm
+Disk scanned: {}	Disks skenēts: {}
+Disk scanned: {} Not matched: {}	Disks skenēts: {} Nav atbilstības: {}
+Do not prefer	Nedot priekšroku
+Do not search for a replacement	Nemeklēt aizstājēju
+Do nothing	Nedarīt neko
+Done	Gatavs
+Download client options saved.	Lejupielādes klientu opcijas saglabātas.
+Download clients	Lejupielādes klienti
+Download failed	Lejupielāde neizdevās
+Download queue	Lejupielāžu rinda
+Downloads	Lejupielādes
+Duration	Ilgums
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Katrs nosaukums pieder vienam katalogam, no kura tiek nolasīta tā atsvaidzināšana; visi tā identifikatori (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) tiek saglabāti. No Sonarr migrētie nosaukumi pieder TheTVDB.
+Edit	Rediģēt
+Edit “{name}”	Rediģēt “{name}”
+Edit “{}”	Rediģēt “{}”
+Enable RSS	Iespējot RSS
+Enable automatic search	Iespējot automātisko meklēšanu
+Enable interactive search	Iespējot interaktīvo meklēšanu
+Enabled	Iespējots
+Ended	Beidzies
+English	Angļu
+Entity	Entītija
+Episode	Epizode
+Episode and movie naming	Epizožu un filmu nosaukumu veidošana
+Episode image thumbs in the NFO	Epizožu attēlu sīktēli NFO
+Episode images (<filename>-thumb.jpg)	Epizožu attēli (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Epizožu attēli (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Epizožu attēli (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Epizožu kartējumi .plexmatch
+Episode metadata (<filename>.nfo)	Epizožu metadati (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Epizožu metadati (Season##/filename.xml)
+Episode order	Epizožu secība
+Episode order changed: {} episodes updated, {} added.	Epizožu secība mainīta: atjauninātas epizodes: {}, pievienotas: {}.
+Episodes	Epizodes
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Epizodes tiek pārnumurētas pēc izvēlētās secības; faili, uzraudzība un vēsture paliek pie savām epizodēm. Pēc tam pārdēvējiet failus atbilstoši jaunajiem numuriem.
+Episodes of {title}	{title} epizodes
+Episodes on disk	Epizodes diskā
+Episodes whose file is below the quality profile's cutoff appear here.	Šeit parādās epizodes, kuru fails ir zem kvalitātes profila robežas.
+Episodes…	Epizodes…
+Errors	Kļūdas
+Errors {errors}	Kļūdas {errors}
+Event	Notikums
+Every file already follows the naming settings.	Visi faili jau atbilst nosaukumu iestatījumiem.
+Every file meets its cutoff	Visi faili sasniedz savu robežu
+Exclude	Izslēgt
+Exclusions	Izslēgšanas
+Expected	Sagaidāmais
+Expires	Derīgs līdz
+Extra file extensions	Papildu failu paplašinājumi
+Factor	Koeficients
+Failed	Neizdevās
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Aizsardzība pret viltotiem izlaidumiem: pārbaudīt torrentus pirms paņemšanas un noraidīt izpildāmos failus, ar paroli aizsargātus ēsmas arhīvus un saturu bez video
+Feed address	Plūsmas adrese
+Fetch the latest metadata from {}	Iegūt jaunākos metadatus no {}
+File	Fails
+File date	Faila datums
+File deleted	Fails dzēsts
+File deleted.	Fails dzēsts.
+File management	Failu pārvaldība
+File management settings saved.	Failu pārvaldības iestatījumi saglabāti.
+File renamed	Fails pārdēvēts
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Faili, kas vecāki par šo, katru dienu tiek dzēsti no atkritnes; 0 tos saglabā.
+Files upgrades replaced, kept as versions	Jauninājumu aizstātie faili, saglabāti kā versijas
+Film	Filma
+Film title or IMDb id, e.g. Arrival	Filmas nosaukums vai IMDb ID, piem., Arrival
+Find a series in your library	Atrast seriālu bibliotēkā
+Find files added to or removed from the series folder	Atrast failus, kas pievienoti seriāla mapei vai noņemti no tās
+Find something to add	Atrodiet ko pievienot
+First and last pieces first	Vispirms pirmās un pēdējās daļas
+First day of the week	Nedēļas pirmā diena
+First season	Pirmā sezona
+Folder	Mape
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formāti izmanto Sonarr specifikāciju tipus (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Vērtējumi tiek piešķirti katram kvalitātes profilam.
+Found	Atrasts
+Free	Brīvs
+Free space	Brīvā vieta
+Future days	Nākamās dienas
+Future episodes	Nākotnes epizodes
+General	Vispārīgi
+GiB	GiB
+Grab	Paņemt
+Grab a release from interactive search; downloads in the client's TV category show up here.	Paņemiet izlaidumu no interaktīvās meklēšanas; lejupielādes klienta TV kategorijā parādās šeit.
+Grab anyway?	Tomēr paņemt?
+Grab with these episodes	Paņemt ar šīm epizodēm
+Grabbed	Paņemts
+Grabbed {}.	Paņemts {}.
+Grabbing…	Paņem…
+Grabs, imports and file changes appear here. Migrated history is included.	Šeit parādās paņemšanas, importēšanas un failu izmaiņas. Iekļauta arī migrētā vēsture.
+Group film folder format	Grupas filmas mapes formāts
+Group folder format	Grupas mapes formāts
+Group season folder format	Grupas sezonas mapes formāts
+Group story-arc folder format	Grupas sižeta loka mapes formāts
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Saistītu seriālu un filmu grupas: nodrošinātāju kolekcijas, anime franšīzes (priekšvēstures/turpinājumu grupas) un manuālas grupas, ieskaitot no Tanukarr migrētās.
+Hardlink-only imports: never copy downloads that keep seeding	Importēšana tikai ar cietajām saitēm: nekad nekopēt lejupielādes, kas turpina dalīties
+Health	Stāvoklis
+Hide	Slēpt
+History	Vēsture
+History →	Vēsture →
+Host	Resursdators
+Host (as in the download client's settings)	Resursdators (kā lejupielādes klienta iestatījumos)
+Hostname	Resursdatora nosaukums
+How the catalogue numbers the episodes (it can be changed later on the series page).	Kā katalogs numurē epizodes (to var mainīt vēlāk seriāla lapā).
+Id	ID
+Identities	Identitātes
+Ids	ID
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Ja Kitsunarr redz jūsu multividi citos ceļos nekā avots (piemēram, citos Docker sējumos), kartējiet katru avota mapi uz tās atrašanās vietu Kitsunarr. Ceļi tiek pārrakstīti tikai datubāzē.
+Ignored	Ignorēts
+Ignored addresses	Ignorētās adreses
+Implementation	Implementācija
+Import / Migration	Importēšana / migrācija
+Import a Sonarr or Tanukarr library	Importēt Sonarr vai Tanukarr bibliotēku
+Import blocked	Importēšana bloķēta
+Import completed downloads	Importēt pabeigtās lejupielādes
+Import extra files (subtitles…)	Importēt papildu failus (subtitrus…)
+Import from Sonarr/Tanukarr	Importēt no Sonarr/Tanukarr
+Import history	Importēšanas vēsture
+Import library	Importēt bibliotēku
+Import list options saved.	Importēšanas sarakstu opcijas saglabātas.
+Import lists	Importēšanas saraksti
+Import pending	Gaida importēšanu
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importējiet video failus no jebkuras mapes, ko serveris var nolasīt: pārbaudiet, kuram seriālam un epizodēm katrs fails paredzēts, tad kopējiet vai pārvietojiet tos uz bibliotēku (pārdēvētus pēc nosaukumu iestatījumiem).
+Import {chosen().len()} files	Importēt failus: {chosen().len()}
+Imported	Importēts
+Imported from series folder	Importēts no seriāla mapes
+Importing	Importē
+Importing…	Importē…
+Imports need	Importēšanai nepieciešams
+In library ›	Bibliotēkā ›
+Include	Iekļaut
+Include in file names ({{Custom Formats}} token)	Iekļaut failu nosaukumos (marķieris {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Iekļaut tikai dažu sarakstu nosaukumus vai izlaist citu sarakstu nosaukumus.
+Include unmonitored	Iekļaut neuzraudzītos
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Ieskaitot URL bāzi, piem., http://192.168.1.10:8989 vai https://host/sonarr
+Indexer	Indeksētājs
+Indexer options saved.	Indeksētāju opcijas saglabātas.
+Indexer settings	Indeksētāju iestatījumi
+Indexers	Indeksētāji
+Info	Informācija
+Info {infos}	Informācija {infos}
+Instance	Instance
+Instance name	Instances nosaukums
+Instance: {name}	Instance: {name}
+Interactive	Interaktīvā
+Interactive search	Interaktīvā meklēšana
+Interactive search for full-season packs only	Interaktīvā meklēšana tikai pilnu sezonu pakām
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interaktīvā meklēšana visa seriāla (un tā sezonu) pakām torrentu indeksētājos
+Interactive search: see every release and choose	Interaktīvā meklēšana: skatīt visus izlaidumus un izvēlēties
+Interface language	Saskarnes valoda
+Interval	Intervāls
+Jellyfin library and user	Jellyfin bibliotēka un lietotājs
+Job	Darbs
+Keep / skip	Saglabāt / izlaist
+Keep files replaced by upgrades as versions (in "Plex Versions")	Saglabāt jauninājumu aizstātos failus kā versijas (mapē "Plex Versions")
+Keep me signed in	Atcerēties mani
+Keep the replaced file's date (upgrades)	Saglabāt aizstātā faila datumu (jauninājumi)
+Kept	Saglabāts
+Kept versions	Saglabātās versijas
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Atslēgas pavadlietotnēm, kas izmanto Sonarr v3 API: tās nolasa bibliotēku, un "pievienot seriālus" atslēgas var arī pievienot seriālus (saknes mapē, bez meklēšanas). Nekas cits nav atļauts.
+KiB	KiB
+Kind	Veids
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr ir brīvā programmatūra (GPL-3.0-or-later).
+Kitsunarr path	Kitsunarr ceļš
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr dublēs savu datubāzi, importēs priekšskatītos datus vienā transakcijā un pirms apstiprināšanas tos validēs. Avots un jūsu multivides faili netiek mainīti.
+Label	Etiķete
+Languages	Valodas
+Larger releases are rejected. 0 means unlimited.	Lielāki izlaidumi tiek noraidīti. 0 nozīmē neierobežotu.
+Last read	Pēdējoreiz nolasīts
+Last run	Pēdējā palaišana
+Last search	Pēdējā meklēšana
+Last searched	Pēdējoreiz meklēts
+Last season	Pēdējā sezona
+Later ›	Vēlāk ›
+Latest season	Jaunākā sezona
+Level	Līmenis
+Library	Bibliotēka
+Library check	Bibliotēkas pārbaude
+Library tools	Bibliotēkas rīki
+Library tools saved.	Bibliotēkas rīki saglabāti.
+List	Saraksts
+Listed best first. Grouped qualities rank equally.	Sakārtots no labākā. Grupētām kvalitātēm ir vienāds rangs.
+Live updates connected	Tiešraides atjauninājumi savienoti
+Live updates disconnected	Tiešraides atjauninājumi atvienoti
+Load	Ielādēt
+Load the account's lists	Ielādēt konta sarakstus
+Load the libraries…	Ielādēt bibliotēkas…
+Load the users…	Ielādēt lietotājus…
+Local air date	Vietējais pārraides datums
+Local path	Lokālais ceļš
+Log them	Reģistrēt žurnālā
+Logs	Žurnāli
+Main rejections	Galvenie noraidījumi
+Make current	Padarīt pašreizējo
+Manual import	Manuāla importēšana
+Mark as failed	Atzīmēt kā neizdevušos
+Matches monitored titles.	Atbilst uzraudzītajiem nosaukumiem.
+Maximum	Maksimums
+Maximum size (MB)	Maksimālais izmērs (MB)
+Media management	Multivides pārvaldība
+Media management settings	Multivides pārvaldības iestatījumi
+Media paths	Multivides ceļi
+Mediums	Datu nesēji
+Members	Dalībnieki
+Message	Ziņojums
+Metadata	Metadati
+Metadata files	Metadatu faili
+Metadata keys saved.	Metadatu atslēgas saglabātas.
+Metadata language	Metadatu valoda
+Metadata refreshed.	Metadati atsvaidzināti.
+Metadata refreshed: {} new episodes, {} updated.	Metadati atsvaidzināti: jaunas epizodes: {}, atjauninātas: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Metadatu iestatījumi saglabāti. Faili tiks ierakstīti nākamajā diska skenēšanā, atsvaidzināšanā vai importēšanā.
+Metadata sources	Metadatu avoti
+MiB	MiB
+Migration completed.	Migrācija pabeigta.
+Migration report #{}	Migrācijas atskaite #{}
+Minimum	Minimums
+Minimum age (minutes)	Minimālais vecums (minūtes)
+Minimum custom format score	Minimālais pielāgotā formāta vērtējums
+Minimum format score	Minimālais formāta vērtējums
+Minimum free space (MiB)	Minimālā brīvā vieta (MiB)
+Minimum seeders	Minimālais devēju skaits
+Missing	Trūkst
+Missing (monitored)	Trūkst (uzraudzītie)
+Missing films	Trūkstošās filmas
+Mode	Režīms
+Monday	Pirmdiena
+Monitor	Uzraudzīt
+Monitored	Uzraudzīts
+More languages can be added to the string tables.	Virkņu tabulām var pievienot vairāk valodu.
+Move	Pārvietot
+Movie	Filma
+Movie file format	Filmas faila formāts
+Movie removed from Kitsunarr. Files on disk were not touched.	Filma noņemta no Kitsunarr. Faili diskā netika skarti.
+Movies	Filmas
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Vairāku sezonu izlaidumi: pieņemt vairāku sezonu pakas (sezonas meklēšana paņem paku savai sezonai)
+Must contain	Jāsatur
+Must contain (comma separated; /regex/ allowed)	Jāsatur (atdalīti ar komatu; atļauts /regex/)
+Must not contain	Nedrīkst saturēt
+NOT	NE
+Name	Nosaukums
+Naming	Nosaukumu veidošana
+Naming options saved.	Nosaukumu veidošanas opcijas saglabātas.
+Naming saved.	Nosaukumu veidošana saglabāta.
+Negate	Noliegt
+Network	Tīkls
+Never: keep the release's names	Nekad: saglabāt izlaiduma nosaukumus
+New custom format	Jauns pielāgotais formāts
+New custom preset	Jauna pielāgotā sagatave
+New group title	Jaunas grupas nosaukums
+New password	Jaunā parole
+New quality profile	Jauns kvalitātes profils
+Next airing	Nākamā pārraide
+Next run	Nākamā palaišana
+Next ›	Nākamā ›
+No	Nē
+No activity yet.	Vēl nav aktivitātes.
+No auto tags.	Nav automātisko tagu.
+No backups yet	Vēl nav dublējumu
+No collections yet	Vēl nav kolekciju
+No companion keys.	Nav pavadlietotņu atslēgu.
+No custom formats	Nav pielāgoto formātu
+No custom formats defined.	Nav definētu pielāgoto formātu.
+No delay above the minimum custom format score	Bez aizkaves virs minimālā pielāgotā formāta vērtējuma
+No delay for the profile's best quality in the preferred protocol	Bez aizkaves profila labākajai kvalitātei vēlamajā protokolā
+No download client to read	Nav lejupielādes klienta, ko nolasīt
+No exclusions.	Nav izslēgšanu.
+No history	Nav vēstures
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Neviens indeksētājs nevar automātiski meklēt šo seriālu: nevienam nav iespējota automātiskā meklēšana un vienlaikus nav tagu vai ir kāds no seriāla tagiem.
+No indexers to search	Nav indeksētāju, kuros meklēt
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Nav saglabātu versiju. Ieslēdziet "Saglabāt jauninājumu aizstātos failus" sadaļā Nosaukumu veidošana.
+No log entries at this level	Šajā līmenī nav žurnāla ierakstu
+No mappings.	Nav kartējumu.
+No matches	Nav atbilstību
+No members	Nav dalībnieku
+No migrations have been run yet.	Vēl nav veikta neviena migrācija.
+No movies yet	Vēl nav filmu
+No notes.	Nav piezīmju.
+No recycle bin is set (Settings › Media management).	Atkritne nav iestatīta (Iestatījumi › Multivides pārvaldība).
+No release profiles.	Nav izlaidumu profilu.
+No root folders yet.	Vēl nav saknes mapju.
+No root folders.	Nav saknes mapju.
+No runs yet	Vēl nav palaišanu
+No searches yet.	Vēl nav meklēšanu.
+No series in your library match.	Neviens seriāls bibliotēkā neatbilst.
+No tags	Nav tagu
+No {}	Nav: {}
+No {} yet	Vēl nav: {}
+None	Nav
+Not evaluated by Kitsunarr.	Kitsunarr nav novērtējis.
+Not imported	Nav importēts
+Not monitored	Netiek uzraudzīts
+Notes	Piezīmes
+Notes ({preview.warnings.len()})	Piezīmes ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Piezīmes ({report.warnings.len()})
+Nothing airs in the next seven days.	Nākamajās septiņās dienās nekas netiek pārraidīts.
+Nothing downloading	Nekas netiek lejupielādēts
+Nothing found	Nekas nav atrasts
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Šajā katalogā nekas neatbilst meklēšanai. Mēģiniet citu rakstību, oriģinālo nosaukumu vai otru katalogu.
+Nothing in this period	Šajā periodā nekā nav
+Nothing missing	Nekā netrūkst
+Notifications	Paziņojumi
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Numurēt epizodes pēc citas kataloga secības (TMDB epizožu grupas, TheTVDB DVD vai absolūtā secība)
+OMDb API key	OMDb API atslēga
+Older priority	Prioritāte vecākajiem
+One folder per season	Viena mape katrai sezonai
+Only the 2000 newest files are listed.	Uzskaitīti tikai 2000 jaunākie faili.
+Only when the proxy needs one.	Tikai tad, ja starpniekserverim tas nepieciešams.
+Open the library	Atvērt bibliotēku
+OpenAPI document	OpenAPI dokuments
+Opens the service to authorize Kitsunarr and fills in the token.	Atver pakalpojumu, lai autorizētu Kitsunarr, un aizpilda marķieri.
+Options	Opcijas
+Organize	Kārtot
+Other	Cits
+Overview	Pārskats
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Pārrakstīt ierakstus, kas jau pastāv Kitsunarr (pretējā gadījumā tie tiek saglabāti)
+Packs	Pakas
+Page not found	Lapa nav atrasta
+Page {page} / {pages}	Lapa {page} / {pages}
+Password	Parole
+Password changed. Other sessions were signed out.	Parole nomainīta. Pārējās sesijas tika izrakstītas.
+Past days	Pagājušās dienas
+Path	Ceļš
+Path mappings	Ceļu kartējumi
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Apturēt automatizāciju (RSS sinhronizācija, ieplānotās sarakstu sinhronizācijas, automātiskās meklēšanas)
+Peers	Vienaudži
+Permission	Atļauja
+PiB	PiB
+Platform	Platforma
+Port	Ports
+Position	Pozīcija
+Post-import category	Kategorija pēc importēšanas
+Posters	Plakāti
+Prefer and upgrade	Dot priekšroku un jaunināt
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Dot priekšroku anime sezonu pakām (Kitsunarr anime sezonu meklēšanas jau vienreiz meklē sezonu)
+Prefer, do not upgrade	Dot priekšroku, nejaunināt
+Preferred	Vēlamais
+Preferred metadata language	Vēlamā metadatu valoda
+Preferred protocol	Vēlamais protokols
+Preparing preview…	Sagatavo priekšskatījumu…
+Preview	Priekšskatījums
+Preview migration	Priekšskatīt migrāciju
+Previous migrations	Iepriekšējās migrācijas
+Priority	Prioritāte
+Problem	Problēma
+Profile	Profils
+Profile saved.	Profils saglabāts.
+Profiles still used by series or movies cannot be deleted.	Profilus, kurus joprojām izmanto seriāli vai filmas, nevar dzēst.
+Progress	Progress
+Propers and repacks	Propers un repacks
+Proxy	Starpniekserveris
+Proxy saved.	Starpniekserveris saglabāts.
+Proxy type	Starpniekservera tips
+Qualities	Kvalitātes
+Quality	Kvalitāte
+Quality presets	Kvalitātes sagataves
+Quality presets saved.	Kvalitātes sagataves saglabātas.
+Quality profile	Kvalitātes profils
+Quality profiles	Kvalitātes profili
+Quality profile…	Kvalitātes profils…
+RSS sync interval (minutes)	RSS sinhronizācijas intervāls (minūtes)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS sinhronizācija pēc izlaiduma parādīšanās tik ilgi gaida labāku; aizkavētie izlaidumi redzami rindā. Tiek piemērots pirmais profils, kura tagi atbilst seriālam; pēdējais (bez tagiem) ir noklusējuma.
+Re-encode this series' files with the compression worker	Pārkodēt šī seriāla failus ar saspiešanas apstrādātāju
+Read and add series	Lasīt un pievienot seriālus
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Tiešraidē nolasīts no lejupielādes klientiem ik pēc dažām sekundēm. Kitsunarr paņemtās pabeigtās lejupielādes katru minūti tiek importētas seriāla mapē (torrenti tiek kopēti vai saistīti ar cietajām saitēm, lai tie turpinātu dalīties; Usenet lejupielādes tiek pārvietotas). Neizdevušās lejupielādes tiek pievienotas bloķēšanas sarakstam un meklētas atkārtoti.
+Read the library	Lasīt bibliotēku
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Tikai lasīšana: atrod trūkstošas seriālu mapes, failu ierakstus ārpus to mapes vai reģistrētus divreiz un diskā trūkstošus failus.
+Reading the download clients…	Nolasa lejupielādes klientus…
+Reading the source	Avota nolasīšana
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Nolasa visu caur API. Avots slēpj nodrošinātāju paroles un API atslēgas, tāpēc pēc tam tās jāievada atkārtoti.
+Recent activity	Nesenā aktivitāte
+Recent priority	Prioritāte jaunākajiem
+Recent runs	Nesenās palaišanas
+Recent searches	Nesenās meklēšanas
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Ieteicams. Sonarr/Tanukarr atveriet System → Backup, izveidojiet dublējumu un lejupielādējiet .zip (vai izmantojiet sonarr.db). Ietver indeksētāju un lejupielādes klientu paroles.
+Recycle bin	Atkritne
+Recycle bin cleanup (days)	Atkritnes tīrīšana (dienas)
+Recycled	Atkritnē
+Refresh metadata	Atsvaidzināt metadatus
+Refresh preview	Atsvaidzināt priekšskatījumu
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Atsvaidzināšana no {} vēl netiek atbalstīta; importētie metadati tiek saglabāti nemainīti
+Refreshing…	Atsvaidzina…
+Regenerate	Ģenerēt no jauna
+Regenerate API key	Ģenerēt jaunu API atslēgu
+Reject releases whose TheTVDB or IMDb id names another series	Noraidīt izlaidumus, kuru TheTVDB vai IMDb ID norāda uz citu seriālu
+Rejected: click twice to grab anyway	Noraidīts: noklikšķiniet divreiz, lai tomēr paņemtu
+Release	Izlaidums
+Release profile	Izlaiduma profils
+Release profile saved.	Izlaiduma profils saglabāts.
+Release profiles	Izlaidumu profili
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Izlaidumi tiek pārbaudīti pret seriāla kvalitātes profilu, pielāgotajiem formātiem un izlaidumu profiliem un sarindoti, kā to dara Sonarr. Noraidītiem izlaidumiem nepieciešams otrs klikšķis.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Izlaidumi, kas neizdevās vai tika manuāli pievienoti bloķēšanas sarakstam. Meklēšanas un RSS sinhronizācija tos vairs nepaņem; noņemiet kādu, lai to atļautu.
+Remote path	Attālais ceļš
+Remote path mapping	Attālā ceļa kartējums
+Remote path mapping saved.	Attālā ceļa kartējums saglabāts.
+Remote path mappings	Attālo ceļu kartējumi
+Remove	Noņemt
+Remove completed downloads	Noņemt pabeigtās lejupielādes
+Remove every release from the blocklist?	Noņemt visus izlaidumus no bloķēšanas saraksta?
+Remove failed downloads	Noņemt neizdevušās lejupielādes
+Remove from library	Noņemt no bibliotēkas
+Remove from queue	Noņemt no rindas
+Remove from the download client (deletes its files there)	Noņemt no lejupielādes klienta (tur dzēš tās failus)
+Remove movie	Noņemt filmu
+Remove series	Noņemt seriālu
+Remove tags automatically (from titles that stop matching)	Noņemt tagus automātiski (no nosaukumiem, kas vairs neatbilst)
+Remove “{title}” and its episode records from Kitsunarr?	Noņemt “{title}” un tā epizožu ierakstus no Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Noņemt “{title}” no Kitsunarr? Faili diskā netiek dzēsti.
+Removed	Noņemts
+Removed from the blocklist.	Noņemts no bloķēšanas saraksta.
+Rename	Pārdēvēt
+Rename files	Pārdēvēt failus
+Rename files on import	Pārdēvēt failus importējot
+Rename files to the naming settings	Pārdēvēt failus atbilstoši nosaukumu iestatījumiem
+Formats use Sonarr's tokens.	Formāti izmanto Sonarr marķierus.
+Renaming…	Pārdēvē…
+Report	Atskaite
+Request one at omdbapi.com. Used for films by IMDb id.	Pieprasiet to vietnē omdbapi.com. Tiek izmantota filmām pēc IMDb ID.
+Required	Obligāts
+Resolution	Izšķirtspēja
+Restore	Atjaunot
+Restore {}	Atjaunot {}
+Restore…	Atjaunot…
+Restoring…	Atjauno…
+Resume automation	Atsākt automatizāciju
+Retention (days)	Saglabāšana (dienas)
+Retire	Izņemt
+Revoke	Atsaukt
+Root folder	Saknes mape
+Root folders	Saknes mapes
+Root folder…	Saknes mape…
+Run #{run.id}: {run.status}	Palaišana #{run.id}: {run.status}
+Run now	Palaist tagad
+Running…	Darbojas…
+Saturday	Sestdiena
+Save	Saglabāt
+Save criteria	Saglabāt kritērijus
+Save factors	Saglabāt koeficientus
+Save keys	Saglabāt atslēgas
+Save metadata files	Saglabāt metadatu failus
+Save naming	Saglabāt nosaukumu veidošanu
+Save options	Saglabāt opcijas
+Saved	Saglabāts
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Saglabātās atslēgas tiek rādītas kā {REDACTED}; atstājiet tās nemainītas, lai tās saglabātu, vai notīriet lauku, lai to noņemtu.
+Saved.	Saglabāts.
+Scan disk	Skenēt disku
+Scan folder	Skenēt mapi
+Scanning…	Skenē…
+Scheduled tasks	Ieplānotie uzdevumi
+Score	Vērtējums
+Search	Meklēt
+Search again when a download fails	Meklēt vēlreiz, ja lejupielāde neizdodas
+Search all	Meklēt visus
+Search all films	Meklēt visas filmas
+Search collection	Meklēt kolekciju
+Search every episode of the list, one search per season	Meklēt katru saraksta epizodi, viena meklēšana katrai sezonai
+Search every member's missing episodes (films: the film)	Meklēt katra dalībnieka trūkstošās epizodes (filmām: filmu)
+Search indexers	Meklēt indeksētājos
+Search selected	Meklēt atlasītos
+Search the indexers and choose a release	Meklēt indeksētājos un izvēlēties izlaidumu
+Search the indexers and grab the best accepted release	Meklēt indeksētājos un paņemt labāko pieņemto izlaidumu
+Search the indexers and grab the best releases for the monitored episodes	Meklēt indeksētājos un paņemt labākos izlaidumus uzraudzītajām epizodēm
+Search your indexers	Meklēt savos indeksētājos
+Search {chosen} selected	Meklēt atlasītos: {chosen}
+Search: {}	Meklēšana: {}
+Search: {} — complete series	Meklēšana: {} — viss seriāls
+Search: {} — season {season} packs	Meklēšana: {} — {season}. sezonas pakas
+Search: {} — {label}	Meklēšana: {} — {label}
+Searching for {label}…	Meklē {label}…
+Searching indexers…	Meklē indeksētājos…
+Searching…	Meklē…
+Season	Sezona
+Season folder format	Sezonas mapes formāts
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Sezonu mapju nosaukumi aizstāj kataloga nosaukumus {{Season Title}}. Atstājiet tukšu, lai saglabātu kataloga nosaukumus.
+Season folders	Sezonu mapes
+Season images (Season ##.jpg)	Sezonu attēli (Season ##.jpg)
+Season images (Season##/folder.jpg)	Sezonu attēli (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Sezonu attēli (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Sezonu pakas: 1 izmanto zemāk norādītos sezonu paku mērķus
+Season premieres only	Tikai sezonu pirmizrādes
+Season {n}	{n}. sezona
+Season {one}	{one}. sezona
+Season {se.season_number}	{se.season_number}. sezona
+Season {season_number}	{season_number}. sezona
+Season-pack seed ratio	Sezonas pakas dalīšanās attiecība
+Season-pack seed time, minutes	Sezonas pakas dalīšanās laiks, minūtes
+Seasons	Sezonas
+Seasons {first}-{last}	Sezonas {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Noslēpumi tiek rādīti kā {REDACTED}; atstājiet tos nemainītus, lai saglabātu saglabāto vērtību.
+Seed ratio (empty: the client's default)	Dalīšanās attiecība (tukšs: klienta noklusējums)
+Seed time, minutes (empty: the client's default)	Dalīšanās laiks, minūtes (tukšs: klienta noklusējums)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Sūtīt pieprasījumus indeksētājiem, katalogiem, sarakstiem, lejupielādes klientiem un savienojumiem caur starpniekserveri.
+Send to the download client	Sūtīt uz lejupielādes klientu
+Series	Seriāli
+Series .plexmatch file	Seriāla .plexmatch fails
+Series folder format	Seriāla mapes formāts
+Series images (Series Title.jpg)	Seriāla attēli (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Seriāla attēli (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Seriāla attēli (folder.jpg)
+Series metadata (tvshow.nfo)	Seriāla metadati (tvshow.nfo)
+Series metadata URL	Seriāla metadatu URL
+Series metadata episode guide	Seriāla metadatu epizožu ceļvedis
+Series removed from Kitsunarr. Files on disk were not touched.	Seriāls noņemts no Kitsunarr. Faili diskā netika skarti.
+Series removed, and its folder deleted.	Seriāls noņemts, un tā mape dzēsta.
+Series type	Seriāla tips
+Set quality profile…	Iestatīt kvalitātes profilu…
+Settings	Iestatījumi
+Settings saved.	Iestatījumi saglabāti.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security programmā Sonarr/Tanukarr.
+Show	Rādīt
+Show as all-day events	Rādīt kā visas dienas notikumus
+Show unmonitored	Rādīt neuzraudzītos
+Shows	Seriāli
+Sign in	Pieteikties
+Signed in. Save the list to keep the token.	Pieteicies. Saglabājiet sarakstu, lai saglabātu marķieri.
+Signing in…	Piesakās…
+Size	Izmērs
+Size limits	Izmēra ierobežojumi
+Size on disk	Izmērs diskā
+Skip files smaller than (MB)	Izlaist failus, kas mazāki par (MB)
+Skip the free-space check	Izlaist brīvās vietas pārbaudi
+Skip unmonitored episodes when importing packs	Izlaist neuzraudzītās epizodes, importējot pakas
+Source	Avots
+Source code	Pirmkods
+Source path	Avota ceļš
+Special	Speciālā
+Specials	Speciālās epizodes
+Specials are never monitored automatically.	Speciālās epizodes nekad netiek uzraudzītas automātiski.
+Specifications	Specifikācijas
+Specifications (JSON)	Specifikācijas (JSON)
+Specifications must be valid JSON: {e}	Specifikācijām jābūt derīgam JSON: {e}
+Stalled torrent timeout (minutes)	Iestrēguša torrenta noildze (minūtes)
+Standard	Standarta
+Standard episode format	Standarta epizodes formāts
+Start migration	Sākt migrāciju
+Start over	Sākt no jauna
+Start search for missing episodes	Sākt trūkstošo epizožu meklēšanu
+Started	Sākts
+Started {format_datetime(&run.started_at)}	Sākts {format_datetime(&run.started_at)}
+Status	Statuss
+Status & health	Statuss un stāvoklis
+Still downloading	Joprojām lejupielādē
+Storage outlook	Krātuves prognoze
+Studio	Studija
+Subscribe	Abonēt
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Abonējiet šo adresi kalendāra lietotnē. Tā satur jūsu API atslēgu: neizpaudiet to.
+Sunday	Svētdiena
+Sync	Sinhronizēt
+Sync all lists now	Sinhronizēt visus sarakstus tagad
+Sync now	Sinhronizēt tagad
+Syncing…	Sinhronizē…
+System →	Sistēma →
+TMDB API key (v3)	TMDB API atslēga (v3)
+TV Series	TV seriāli
+TV series	TV seriāli
+Table	Tabula
+Tag	Tags
+Tag them	Pievienot tagu
+Tag titles already in the library	Pievienot tagu nosaukumiem, kas jau ir bibliotēkā
+Tags	Tagi
+Tags (comma separated)	Tagi (atdalīti ar komatu)
+Tags (ids, comma separated)	Tagi (ID, atdalīti ar komatu)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Tagi tiek pievienoti seriāliem un filmām, kas atbilst katram nosacījumu veidam, kad tie tiek pievienoti, rediģēti vai atsvaidzināti.
+Task	Uzdevums
+Television	Televīzija
+Television (raw)	Televīzija (raw)
+Test	Pārbaudīt
+Test failed: {message}	Pārbaude neizdevās: {message}
+Testing…	Pārbauda…
+The blocklist is empty	Bloķēšanas saraksts ir tukšs
+The catalogue new titles are added from when the list knows their id there.	Katalogs, no kura tiek pievienoti jauni nosaukumi, ja sarakstam ir zināms to ID tajā.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Datums, ko saņem importētie faili: epizodes pārraides datums (vietējais vai UTC) vai, jauninot, aizstātā faila datums.
+The dry run completed without blocking problems. Nothing has been written yet.	Izmēģinājuma palaišana pabeigta bez bloķējošām problēmām. Vēl nekas nav ierakstīts.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Fails tiek pārvietots sezonas mapē (esošs fails nekad netiek pārrakstīts), un seriāls tiek skenēts atkārtoti.
+The folder must already exist; Kitsunarr never creates or removes it.	Mapei jau jāpastāv; Kitsunarr to nekad neizveido un nenoņem.
+The indexers returned no releases for this search.	Indeksētāji šai meklēšanai neatgrieza nevienu izlaidumu.
+The instance is on my local network (private or loopback address)	Instance atrodas manā lokālajā tīklā (privāta vai atgriezeniskās cilpas adrese)
+The list has not been read, or it is empty.	Saraksts nav nolasīts, vai tas ir tukšs.
+The migration did not complete; nothing was changed.	Migrācija netika pabeigta; nekas netika mainīts.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Jaunākie atmiņā saglabātie ieraksti. Pilnie žurnāli tiek izvadīti procesa izvadē (konteinera žurnālos vai journal).
+The passwords do not match.	Paroles nesakrīt.
+The recycle bin has no media or subtitle files.	Atkritnē nav multivides vai subtitru failu.
+The sign-in expired; try again.	Pieteikšanās beidzās; mēģiniet vēlreiz.
+The upload failed (network error).	Augšupielāde neizdevās (tīkla kļūda).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Apstrādātājs ir neobligāts resursdatora komponents (Tanukarr saspiešanas apstrādātājs), kas sasniedzams caur ligzdu KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarr katalogs), TMDB un TVmaze aptver TV seriālus; AniList un MyAnimeList aptver anime seriālus un anime filmas; TMDB un OMDb aptver filmas. Pievienojot nosaukumu, tiek izveidots tā bibliotēkas ieraksts un epizožu saraksts; failus vēlāk uztver importēšanas process.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB nosaukumi tiek meklēti un pievienoti šajā valodā; katru seriālu var mainīt tā redaktorā.
+TheTVDB titles in this language; changing it refreshes the series	TheTVDB nosaukumi šajā valodā; tās maiņa atsvaidzina seriālu
+There is nothing at /{path}.	Adresē /{path} nekā nav.
+They are created by migrating from Sonarr/Tanukarr.	Tie tiek izveidoti, migrējot no Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Šī seriāla pārdēvēšanas režīms, sezonu mapju nosaukumi un saglabātās versijas
+TiB	TiB
+Time	Laiks
+Time left	Atlikušais laiks
+Title	Nosaukums
+Title pattern	Nosaukuma šablons
+Titles import lists never add.	Nosaukumi, kurus importēšanas saraksti nekad nepievieno.
+Titles on no list	Nosaukumi, kas nav nevienā sarakstā
+Today	Šodien
+Torrent	Torrents
+Torrent delay	Torrentu aizkave
+Torrent delay (minutes)	Torrentu aizkave (minūtes)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab un Newznab indeksētāji. Lai pārbaudītu kādu, redaktorā izmantojiet Pārbaudīt; katra meklēšana izmanto indeksētājus, kuriem iespējots attiecīgais meklēšanas veids: RSS, automātiskā vai interaktīvā.
+Trigger	Aktivizētājs
+URL base	URL bāze
+UTC air date	UTC pārraides datums
+Unchanged	Nemainīts
+Unknown	Nezināms
+Unmonitor	Pārtraukt uzraudzību
+Unmonitor them	Pārtraukt to uzraudzību
+Unmonitored	Neuzraudzīts
+Upcoming	Gaidāmie
+Upcoming 7 days	Nākamās 7 dienas
+Update	Atjaunināt
+Updated {} items.	Atjaunināti vienumi: {}.
+Upgrade until (cutoff)	Jaunināt līdz (robeža)
+Upgrade until format score	Jaunināt līdz formāta vērtējumam
+Upgrades allowed	Jauninājumi atļauti
+Upload a backup	Augšupielādēt dublējumu
+Upload failed (HTTP {}).	Augšupielāde neizdevās (HTTP {}).
+Uploading…	Augšupielādē…
+Use SSL	Izmantot SSL
+Use a proxy	Izmantot starpniekserveri
+Use hardlinks instead of copying	Izmantot cietās saites kopēšanas vietā
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Izmantojiet to kā X-Api-Key galveni (vai ?apikey=) no citām lietotnēm. Saderīga ar galveni, ko izmanto Sonarr.
+Use these episodes	Izmantot šīs epizodes
+Usenet	Usenet
+Usenet delay	Usenet aizkave
+Usenet delay (minutes)	Usenet aizkave (minūtes)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Tikai Usenet: jaunāki izlaidumi tiek noraidīti, dodot tiem laiku izplatīties. 0 to izslēdz.
+Usenet only: older releases are rejected. 0 means unlimited.	Tikai Usenet: vecāki izlaidumi tiek noraidīti. 0 nozīmē neierobežotu.
+User name	Lietotājvārds
+Username	Lietotājvārds
+Validation	Validācija
+Version	Versija
+Versions	Versijas
+Waiting for the sign-in at	Gaida pieteikšanos vietnē
+Wanted	Vēlamie
+Warnings	Brīdinājumi
+Warnings {warnings}	Brīdinājumi {warnings}
+Watched (Jellyfin watched sync)	Noskatīts (Jellyfin noskatīto sinhronizācija)
+Watched sync user	Noskatīto sinhronizācijas lietotājs
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Uz Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-pastu (SMTP), Mailgun, SendGrid, pielāgotiem skriptiem (ar Sonarr vides mainīgajiem), Emby/Jellyfin, Plex un Kodi tiek sūtīts: paņemšanas, importēšanas un jauninājumi, pārdēvēšanas, pievienoti vai dzēsti seriāli, dzēsti faili, stāvokļa problēmas. Redaktorā izmantojiet Pārbaudīt.
+Welcome	Laipni lūdzam
+What to import	Ko importēt
+When	Kad
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Kad tiek pārbaudīti indeksētāju, lejupielādes klientu un pakalpojumu HTTPS sertifikāti (Sonarr iestatījums). Pašparakstītiem sertifikātiem jūsu tīklā tas jāatvieglo.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Ja lejupielādes klients ziņo ceļus, ko Kitsunarr redz citur (citā datorā vai konteinerā), kartējiet klienta resursdatoru un ceļu uz lokālo ceļu.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Vai izlaidumiem, kas labo sliktu izlaidumu, tiek dota priekšroka un vai tie jaunina esošos failus (kā Sonarr).
+Whole season	Visa sezona
+Working…	Strādā…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Tiek ierakstīti seriālu mapēs, kad seriāli tiek skenēti, atsvaidzināti vai importēti, tāpat kā tos raksta Sonarr metadatu patērētāji.
+Year	Gads
+Your library is empty.	Jūsu bibliotēka ir tukša.
+all checks passed	visas pārbaudes izturētas
+comma separated	atdalīti ar komatu
+cutoff: {}	robeža: {}
+has a file	ir fails
+iCal link	iCal saite
+in 2 days	pēc 2 dienām
+in a moment	pēc brīža
+in file names	failu nosaukumos
+in library	bibliotēkā
+in {text}	pēc {text}
+just now	tikko
+may run out of space	var pietrūkt vietas
+name (e.g. phone)	nosaukums (piem., tālrunis)
+never refreshed	nekad nav atsvaidzināts
+no media files are moved, renamed or deleted.	neviens multivides fails netiek pārvietots, pārdēvēts vai dzēsts.
+not accessible	nav pieejams
+not added	nav pievienots
+not checked	nav pārbaudīts
+not read yet	vēl nav nolasīts
+on disk	diskā
+refreshed {}	atsvaidzināts {}
+schema {s}	shēma {s}
+secrets included	noslēpumi iekļauti
+secrets masked	noslēpumi maskēti
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip vai sonarr.db
+stored only	tikai saglabāts
+title (optional)	nosaukums (neobligāts)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	pievienoti: {added}; {}
+{added} shows added.	Pievienoti seriāli: {added}.
+{c.name} (API key needed)	{c.name} (nepieciešama API atslēga)
+{c.series_count} series · {c.movie_count} movies	seriāli: {c.series_count} · filmas: {c.movie_count}
+{chosen().len()} chosen	izvēlēti: {chosen().len()}
+{chosen().len()} chosen (at most 25)	izvēlēti: {chosen().len()} (ne vairāk kā 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} diskā · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% no {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · pievienots {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} no {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} faili · {job["percent"]}% · ietaupīts {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} sākts.
+{name} was added to the library.	{name} pievienots bibliotēkai.
+{name}: shows	{name}: seriāli
+{ok} files imported.	Importēti faili: {ok}.
+{ok} imported; {}	importēti: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: izlaidumi: {r.releases.len()}, indeksētāji: {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Pārbaudīti seriāli: {r.series_checked}, faili: {r.files_checked}; problēmas: {r.issues.len()}.
+{selected.read().len()} selected	atlasīti: {selected.read().len()}
+{text} ago	pirms {text}
+{} (not accessible)	{} (nav pieejams)
+{} ({} free)	{} ({} brīvs)
+{} added to every profile (not allowed yet).	{} pievienots katram profilam (vēl nav atļauts).
+{} day(s)	dienas: {}
+{} failed: {}	{} neizdevās: {}
+{} format scores	{} formātu vērtējumi
+{} free of {}	brīvs {} no {}
+{} week(s)	nedēļas: {}
+{}{year} — movie	{}{year} — filma
+‹ Back	‹ Atpakaļ
+‹ Earlier	‹ Agrāk
+‹ Prev	‹ Iepriekšējā
+○ offline	○ bezsaistē
+● live	● tiešraidē
+✓ No issues detected.	✓ Problēmas nav atrastas.
+Activity	Aktivitāte
+Queue	Rinda
+System	Sistēma
+Tasks	Uzdevumi
+Retry	Mēģināt vēlreiz
+Sign out	Izrakstīties
+Search titles…  ( / )	Meklēt nosaukumus…  ( / )
+Loading…	Ielādē…
+Profiles	Profili
+scene {}	scene {}
+Scene numbering from TheXEM	Scene numerācija no TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Scene numerācija, ekstrapolēta no TheXEM (nepārbaudīta)
+Season {} (scene seasons {})	{}. sezona (scene sezonas {})
+{} (scene {})	{} (scene {})

@@ -1,0 +1,968 @@
+# Bengali interface strings: English	Bengali. {…} marks a placeholder.
+custom	কাস্টম
+indeterminate	অনির্ধারিত
+mixed	মিশ্র
+retired	অবসরপ্রাপ্ত
+· container	· কন্টেইনার
+· finished {format_datetime(f)}	· সম্পন্ন {format_datetime(f)}
+· missing	· অনুপস্থিত
+· on disk	· ডিস্কে
+· today	· আজ
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} পর্ব
+— MiB per minute; empty uses Settings › Quality	— প্রতি মিনিটে MiB; খালি রাখলে সেটিংস › কোয়ালিটি ব্যবহৃত হয়
+— a release's size is multiplied by its codec's factor before the size limits apply	— সাইজ সীমা প্রয়োগের আগে রিলিজের সাইজ তার কোডেকের গুণক দিয়ে গুণ করা হয়
+— all profiles at once	— সব প্রোফাইল একসাথে
+— codec and title criteria, custom qualities (Tanukarr)	— কোডেক ও শিরোনামের শর্ত, কাস্টম কোয়ালিটি (Tanukarr)
+— enter the code	— কোডটি লিখুন
+(empty)	(খালি)
++ Add mapping	+ ম্যাপিং যোগ করুন
++ New format	+ নতুন ফরম্যাট
++ New profile	+ নতুন প্রোফাইল
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (বন্ধ) অথবা 10 থেকে 120। RSS সিঙ্ক সিস্টেম › টাস্ক থেকেও চলে।
+3 hours ago	৩ ঘণ্টা আগে
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	এতক্ষণ কোনো অগ্রগতি না থাকলে ডাউনলোড হতে থাকা টরেন্টটি ব্যর্থ ধরা হয়, ব্লকলিস্টে যোগ হয় এবং আবার অনুসন্ধান করা হয়। 0 দিলে এটি বন্ধ থাকে; অগ্রগতি Kitsunarr চালু হওয়ার সময় থেকে হিসাব করা হয়।
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	AniList বা MyAnimeList সম্পর্ক থেকে পাওয়া একটি ফ্র্যাঞ্চাইজ গ্রুপ। একই ফ্র্যাঞ্চাইজের পরে যোগ করা শিরোনামগুলোও এতে যুক্ত হয়।
+A new API key was generated. Update the applications that use it.	একটি নতুন API কী তৈরি হয়েছে। যে অ্যাপ্লিকেশনগুলো এটি ব্যবহার করে সেগুলো হালনাগাদ করুন।
+A regular expression, case-insensitive; empty matches every title.	একটি রেগুলার এক্সপ্রেশন, বড়-ছোট হাতের অক্ষর নির্বিশেষে; খালি থাকলে প্রতিটি শিরোনামের সাথে মেলে।
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	একটি রিলিজ তার সিরিজের প্রোফাইলে অনুমোদিত সবচেয়ে নির্দিষ্ট প্রিসেটটি নেয়, যার সোর্স, রেজোলিউশন, কোডেক ও শিরোনাম প্যাটার্নের সাথে এটি মেলে। কোনো স্ট্যান্ডার্ড কোয়ালিটিতে কোডেক বা প্যাটার্ন দিলে যে রিলিজগুলো তা পূরণ করে না সেগুলো Unknown হয়ে যায়। কাস্টম প্রিসেটগুলো প্রতিটি প্রোফাইলে অননুমোদিত হিসেবে যোগ হয়।
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	সাইজ সীমা প্রয়োগের আগে রিলিজের সাইজ তার কোডেকের গুণক দিয়ে গুণ করা হয়। "মিশ্র" মানে প্রোফাইলগুলো ভিন্ন ভিন্ন গুণক ব্যবহার করে; এখানে দেওয়া মান প্রতিটি প্রোফাইলে লেখা হয়।
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	কোনো ফ্র্যাঞ্চাইজ বা ম্যানুয়াল গ্রুপে যোগ দেওয়া শিরোনাম তার আগের গ্রুপ ছেড়ে যায়। ফাইল ও ফোল্ডার সরানো হয় না।
+API key	API কী
+API key needed	API কী প্রয়োজন
+API keys and language	API কী ও ভাষা
+API path	API পাথ
+About	সম্পর্কে
+Absolute path; empty to delete permanently.	সম্পূর্ণ পাথ; খালি রাখলে স্থায়ীভাবে মুছে ফেলা হয়।
+Accepted	গৃহীত
+Account lists	অ্যাকাউন্টের তালিকা
+Actions	কার্যক্রম
+Actual	প্রকৃত
+Add	যোগ করুন
+Add a Newznab or Torznab indexer and enable interactive search for it.	একটি Newznab বা Torznab ইনডেক্সার যোগ করুন এবং এর জন্য ইন্টারঅ্যাক্টিভ অনুসন্ধান চালু করুন।
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	টেমপ্লেট থেকে একটি ক্লায়েন্ট যোগ করুন এবং এডিটরে টেস্ট ব্যবহার করুন; গ্র্যাব, সারি ও ইমপোর্ট প্রতিটি সক্রিয় ক্লায়েন্ট ব্যবহার করে। একটি ব্ল্যাকহোল গ্র্যাবগুলো একটি ফোল্ডারে লেখে এবং তার ওয়াচ ফোল্ডারে যা আসে তা ইমপোর্ট করে। প্রতিটি ক্লায়েন্টের "সম্পন্ন/ব্যর্থ ডাউনলোড সরান" অপশন ক্লায়েন্টের কাজ শেষ হলে ডাউনলোডগুলো (তাদের ফাইলসহ) সরিয়ে দেয়।
+Add a download client in Settings › Download clients and enable it.	সেটিংস › ডাউনলোড ক্লায়েন্ট-এ একটি ডাউনলোড ক্লায়েন্ট যোগ করে সেটি চালু করুন।
+Add a root folder first: it is where this title's folder will live.	আগে একটি রুট ফোল্ডার যোগ করুন: এই শিরোনামের ফোল্ডার সেখানেই থাকবে।
+Add a tag above first.	আগে উপরে একটি ট্যাগ যোগ করুন।
+Add a title	একটি শিরোনাম যোগ করুন
+Add auto tag	অটো ট্যাগ যোগ করুন
+Add condition	শর্ত যোগ করুন
+Add exclusion	বাদ তালিকায় যোগ করুন
+Add media	মিডিয়া যোগ করুন
+Add one, or migrate them from Sonarr/Tanukarr.	একটি যোগ করুন, অথবা Sonarr/Tanukarr থেকে মাইগ্রেট করুন।
+Add preset	প্রিসেট যোগ করুন
+Add selected	নির্বাচিতগুলো যোগ করুন
+Add series or movies below.	নিচে সিরিজ বা মুভি যোগ করুন।
+Add tag	ট্যাগ যোগ করুন
+Add the list's tags	তালিকার ট্যাগ যোগ করুন
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	TVmaze বা AniList থেকে শিরোনাম যোগ করুন, অথবা বিদ্যমান Sonarr বা Tanukarr লাইব্রেরি নিয়ে আসুন।
+Add to library	লাইব্রেরিতে যোগ করুন
+Add {}	{} যোগ করুন
+Add {} ({y})	{} ({y}) যোগ করুন
+Add — {}	যোগ করুন — {}
+Add, and remove when they leave the list	যোগ করুন, এবং তালিকা থেকে বাদ পড়লে সরান
+Added	যোগ করা হয়েছে
+Added to the titles this list adds.	এই তালিকা যে শিরোনামগুলো যোগ করে সেগুলোতে যুক্ত হয়।
+Adding titles	শিরোনাম যোগ করা হচ্ছে
+Adding…	যোগ করা হচ্ছে…
+Address	ঠিকানা
+Age	বয়স
+Aired	সম্প্রচারিত
+Aired monitored episodes without a file appear here.	সম্প্রচারিত, মনিটর করা যে পর্বগুলোর ফাইল নেই সেগুলো এখানে দেখা যায়।
+All	সব
+All collections	সব সংগ্রহ
+All episodes	সব পর্ব
+All episodes in the series folder	সিরিজ ফোল্ডারের সব পর্ব
+All events	সব ইভেন্ট
+Allow zero size (the feed has no release sizes)	শূন্য সাইজ অনুমোদন করুন (ফিডে রিলিজের সাইজ নেই)
+Also delete the series folder and its files (to the recycle bin when one is set)	সিরিজ ফোল্ডার ও তার ফাইলগুলোও মুছুন (রিসাইকেল বিন সেট থাকলে সেখানে)
+Also for releases grabbed from interactive search	ইন্টারঅ্যাক্টিভ অনুসন্ধান থেকে গ্র্যাব করা রিলিজের জন্যও
+Also known as	অন্য নামে পরিচিত
+Always, even when renaming is off	সবসময়, নাম পরিবর্তন বন্ধ থাকলেও
+Analyze video files (resolution, runtime and codecs, with ffprobe)	ভিডিও ফাইল বিশ্লেষণ করুন (রেজোলিউশন, দৈর্ঘ্য ও কোডেক, ffprobe দিয়ে)
+AniList and MyAnimeList titles are always added as anime.	AniList ও MyAnimeList শিরোনাম সবসময় অ্যানিমে হিসেবে যোগ হয়।
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, অন্য একটি Sonarr ও কাস্টম JSON তালিকা কয়েক ঘণ্টা পরপর পড়া হয়; নতুন শিরোনামগুলো প্রতিটি তালিকার রুট ফোল্ডার, প্রোফাইল ও মনিটরিং সহ যোগ হয়। যেসব সার্ভিসে OAuth লাগে সেগুলো আপনার নিজের অ্যাপ্লিকেশনের Client ID এবং আপনার পেস্ট করা একটি টোকেন ব্যবহার করে (Tanukarr থেকে মাইগ্রেট করা টোকেনগুলো কাজ করতে থাকে)।
+Anime	অ্যানিমে
+Anime / absolute numbering	অ্যানিমে / অ্যাবসলিউট নম্বরিং
+Anime categories	অ্যানিমে ক্যাটাগরি
+Anime episode format	অ্যানিমে পর্বের ফরম্যাট
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	অ্যানিমে ফিল্ম AniList থেকে যোগ করা যায়, এবং Tanukarr মাইগ্রেশন তাদের মুভিগুলোও নিয়ে আসে। লাইভ-অ্যাকশন ফিল্মের জন্য TMDB ক্যাটালগ প্রয়োজন।
+Anime standard format search	অ্যানিমে স্ট্যান্ডার্ড ফরম্যাটে অনুসন্ধান
+Anime title, e.g. Frieren	অ্যানিমের শিরোনাম, যেমন Frieren
+Any	যেকোনো
+Any library	যেকোনো লাইব্রেরি
+Applications using the current key will stop working until you give them the new one.	বর্তমান কী ব্যবহারকারী অ্যাপ্লিকেশনগুলো নতুন কী না দেওয়া পর্যন্ত কাজ করবে না।
+Applied after every list has been read successfully and some title left a list.	প্রতিটি তালিকা সফলভাবে পড়া হওয়ার পর এবং কোনো শিরোনাম তালিকা থেকে বাদ পড়লে প্রয়োগ হয়।
+Apply	প্রয়োগ করুন
+Apply migration	মাইগ্রেশন প্রয়োগ করুন
+Apply profile	প্রোফাইল প্রয়োগ করুন
+Applying migration	মাইগ্রেশন প্রয়োগ করা হচ্ছে
+Applying…	প্রয়োগ করা হচ্ছে…
+As Settings › Media management says	সেটিংস › মিডিয়া ম্যানেজমেন্ট অনুযায়ী
+At least 10 characters.	অন্তত ১০টি অক্ষর।
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	অন্তত {MIN_PASSWORD_LENGTH}টি অক্ষর। একটি পাসফ্রেজ ভালো কাজ করে।
+Auto tag	অটো ট্যাগ
+Auto tag saved. It applies when titles are next added, edited or refreshed.	অটো ট্যাগ সংরক্ষিত হয়েছে। পরের বার শিরোনাম যোগ, সম্পাদনা বা রিফ্রেশ হলে এটি প্রয়োগ হবে।
+Auto tagging	অটো ট্যাগিং
+Auto-refresh	স্বয়ংক্রিয় রিফ্রেশ
+Automatic	স্বয়ংক্রিয়
+Automatic search	স্বয়ংক্রিয় অনুসন্ধান
+Automatic search for {label}: grabbed {}.	{label}-এর স্বয়ংক্রিয় অনুসন্ধান: {} গ্র্যাব করা হয়েছে।
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	{label}-এর স্বয়ংক্রিয় অনুসন্ধান: {}টি রিলিজ পাওয়া গেছে, {}টি অনুমোদিত, কিছুই গ্র্যাব করা হয়নি।
+Automatic search: grab the best release	স্বয়ংক্রিয় অনুসন্ধান: সেরা রিলিজটি গ্র্যাব করুন
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	অটোমেশন বিরতিতে আছে: RSS সিঙ্ক, নির্ধারিত তালিকা সিঙ্ক ও স্বয়ংক্রিয় অনুসন্ধান বাদ দেওয়া হচ্ছে। ম্যানুয়াল কাজ ও চলমান ডাউনলোড চলতে থাকবে।
+Automation resumed.	অটোমেশন আবার চালু হয়েছে।
+Available from	যেখান থেকে পাওয়া যায়
+Back to the dashboard	ড্যাশবোর্ডে ফিরে যান
+Back up now	এখনই ব্যাকআপ নিন
+Backup {} created.	ব্যাকআপ {} তৈরি হয়েছে।
+Backups	ব্যাকআপ
+Blocking:	বাধা:
+Blocklist	ব্লকলিস্ট
+Blocklist the release and search again	রিলিজটি ব্লকলিস্টে দিন এবং আবার অনুসন্ধান করুন
+Blocklist the release: it is never grabbed again	রিলিজটি ব্লকলিস্টে দিন: এটি আর কখনো গ্র্যাব করা হবে না
+Blocklist “{title}” and search for a replacement?	“{title}” ব্লকলিস্টে দিয়ে বিকল্প অনুসন্ধান করবেন?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	আপনার Sonarr (v3/v4) বা Tanukarr লাইব্রেরি ও সেটিংস Kitsunarr-এ নিয়ে আসুন। সোর্স শুধু পড়া হয়, কখনো পরিবর্তন করা হয় না, এবং
+Bypass the proxy for local addresses	লোকাল ঠিকানার জন্য প্রক্সি এড়িয়ে যান
+Calendar	ক্যালেন্ডার
+Calendar →	ক্যালেন্ডার →
+Cancel	বাতিল
+Cancel compression	কম্প্রেশন বাতিল করুন
+Cannot reach the server: {e}	সার্ভারে পৌঁছানো যাচ্ছে না: {e}
+Catalogue	ক্যাটালগ
+Category	ক্যাটাগরি
+Certificate validation	সার্টিফিকেট যাচাই
+Change password	পাসওয়ার্ড পরিবর্তন করুন
+Change series	সিরিজ পরিবর্তন করুন
+Changes	পরিবর্তনসমূহ
+Check	যাচাই করুন
+Check library	লাইব্রেরি পরীক্ষা করুন
+Check now	এখনই পরীক্ষা করুন
+Check that the mapped series folders exist (read-only)	ম্যাপ করা সিরিজ ফোল্ডারগুলো আছে কিনা যাচাই করুন (শুধু পড়া)
+Checked: {summary}.	পরীক্ষিত: {summary}।
+Checking…	পরীক্ষা করা হচ্ছে…
+Choose a backup file	একটি ব্যাকআপ ফাইল বেছে নিন
+Choose a mode	একটি মোড বেছে নিন
+Choose a root folder and a quality profile.	একটি রুট ফোল্ডার ও একটি কোয়ালিটি প্রোফাইল বেছে নিন।
+Choose a season	একটি সিজন বেছে নিন
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	একটি সিরিজ এবং একটি সিজন বা পর্ব বেছে নিন। ফলাফলে দেখায় প্রতিটি রিলিজ কী, Kitsunarr-এর পার্সার যেভাবে পড়ে।
+Choose a series or movie…	একটি সিরিজ বা মুভি বেছে নিন…
+Choose source	সোর্স বেছে নিন
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	এই রিলিজের পর্বগুলো নিজে বেছে নিন, তারপর গ্র্যাব করুন (পছন্দটি ইমপোর্টের জন্য রাখা হয়)
+Choose…	বেছে নিন…
+Clean library	লাইব্রেরি পরিষ্কার করুন
+Clear	খালি করুন
+Clear blocklist	ব্লকলিস্ট খালি করুন
+Cleared {n} releases from the blocklist.	ব্লকলিস্ট থেকে {n}টি রিলিজ সরানো হয়েছে।
+Client	ক্লায়েন্ট
+Close	বন্ধ করুন
+Codec	কোডেক
+Codec factors saved in every profile.	কোডেক গুণক প্রতিটি প্রোফাইলে সংরক্ষিত হয়েছে।
+Codec size factors	কোডেক সাইজ গুণক
+Codecs	কোডেক
+Collection film folder format	সংগ্রহের ফিল্ম ফোল্ডারের ফরম্যাট
+Collections	সংগ্রহ
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	সংগ্রহগুলো দেখা যায় যখন সেগুলো Tanukarr থেকে মাইগ্রেট করা হয়, প্রোভাইডারের ডেটা থেকে তৈরি হয়, অথবা এখানে তৈরি করা হয়।
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Sonarr বা Tanukarr থেকে আসছেন? কয়েকটি ধাপে আপনার বিদ্যমান সিরিজ, সেটিংস ও ইতিহাস ইমপোর্ট করুন।
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	কমা দিয়ে আলাদা; * একটি ওয়াইল্ডকার্ড (*.lan), এবং 192.168.1.0/24-এর মতো IP রেঞ্জ কাজ করে।
+Companion app keys	কম্প্যানিয়ন অ্যাপ কী
+Complete series	সম্পূর্ণ সিরিজ
+Completed and failed download handling	সম্পন্ন ও ব্যর্থ ডাউনলোড ব্যবস্থাপনা
+Component	উপাদান
+Compress series	সিরিজ কম্প্রেস করুন
+Compression	কম্প্রেশন
+Compression queued.	কম্প্রেশন সারিতে যোগ হয়েছে।
+Compression worker is not connected.	কম্প্রেশন ওয়ার্কার সংযুক্ত নেই।
+Condition	শর্ত
+Conditions	শর্তসমূহ
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	একই ধরনের শর্তগুলোর যেকোনো একটি মিললেই মেলে (সব আবশ্যিকগুলো মিলতে হবে); প্রতিটি ধরন মিলতে হবে।
+Configure	কনফিগার করুন
+Confirm password	পাসওয়ার্ড নিশ্চিত করুন
+Connect	সংযোগ করুন
+Connect to a running instance	চলমান একটি ইনস্ট্যান্সে সংযোগ করুন
+Connecting…	সংযোগ করা হচ্ছে…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	ডেটাবেসের সামঞ্জস্যপূর্ণ কপি। নির্ধারিত ব্যাকআপ সাপ্তাহিক চলে (শেষ আটটি রাখা হয়); প্রতিটি মাইগ্রেশনও আগে একটি তৈরি করে। রিস্টোর করতে Kitsunarr বন্ধ করে চালান
+Continuing	চলমান
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	কুকি (ফিড অনুরোধের সাথে পাঠানো হয়, যেমন uid=1; pass=…)
+Copied.	কপি করা হয়েছে।
+Copy	কপি
+Copy (keep the originals)	কপি (মূল ফাইলগুলো রাখুন)
+Copy sizes from	যেখান থেকে সাইজ কপি করবেন
+Copy the token now; it is not shown again:	টোকেনটি এখনই কপি করুন; এটি আর দেখানো হবে না:
+Could not grab {}: {}	{} গ্র্যাব করা যায়নি: {}
+Covers	অন্তর্ভুক্ত
+Create	তৈরি করুন
+Create account	অ্যাকাউন্ট তৈরি করুন
+Create group	গ্রুপ তৈরি করুন
+Create key	কী তৈরি করুন
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	themoviedb.org › Settings › API-তে একটি তৈরি করুন। TMDB টিভি সিরিজ ও ফিল্মের জন্য ব্যবহৃত হয়।
+Create the administrator account. You will use it to sign in to Kitsunarr.	অ্যাডমিনিস্ট্রেটর অ্যাকাউন্ট তৈরি করুন। Kitsunarr-এ সাইন ইন করতে আপনি এটি ব্যবহার করবেন।
+Created	তৈরি হয়েছে
+Created when the first file is imported. Nothing is written to disk now.	প্রথম ফাইল ইমপোর্ট হলে তৈরি হবে। এখন ডিস্কে কিছু লেখা হচ্ছে না।
+Creating…	তৈরি করা হচ্ছে…
+Credit	ক্রেডিট
+Current file	বর্তমান ফাইল
+Current password	বর্তমান পাসওয়ার্ড
+Custom format saved.	কাস্টম ফরম্যাট সংরক্ষিত হয়েছে।
+Custom format score	কাস্টম ফরম্যাট স্কোর
+Custom format scores	কাস্টম ফরম্যাট স্কোর
+Custom formats	কাস্টম ফরম্যাট
+Cutoff unmet	কাটঅফ পূরণ হয়নি
+Daily	দৈনিক
+Daily episode format	দৈনিক পর্বের ফরম্যাট
+Dashboard	ড্যাশবোর্ড
+Data directory	ডেটা ডিরেক্টরি
+Database backup taken before the import: {b}	ইমপোর্টের আগে নেওয়া ডেটাবেস ব্যাকআপ: {b}
+Database schema	ডেটাবেস স্কিমা
+Date	তারিখ
+Date added	যোগ করার তারিখ
+Debug	ডিবাগ
+Decision	সিদ্ধান্ত
+Default	ডিফল্ট
+Defaults	ডিফল্ট মান
+Delay profile	বিলম্ব প্রোফাইল
+Delay profile saved.	বিলম্ব প্রোফাইল সংরক্ষিত হয়েছে।
+Delay profiles	বিলম্ব প্রোফাইল
+Delete	মুছুন
+Delete empty series folders	খালি সিরিজ ফোল্ডার মুছুন
+Delete file	ফাইল মুছুন
+Delete group	গ্রুপ মুছুন
+Delete profile	প্রোফাইল মুছুন
+Delete “{path}”? It goes to the recycle bin when one is set.	“{path}” মুছবেন? রিসাইকেল বিন সেট থাকলে এটি সেখানে যাবে।
+Delete “{}”?	“{}” মুছবেন?
+Delete “{}”? Its series and movies stay in the library.	“{}” মুছবেন? এর সিরিজ ও মুভিগুলো লাইব্রেরিতে থাকবে।
+Deleted	মুছে ফেলা হয়েছে
+Directory	ডিরেক্টরি
+Disabled	নিষ্ক্রিয়
+Disabled for local addresses	লোকাল ঠিকানার জন্য নিষ্ক্রিয়
+Disk scanned: {}	ডিস্ক স্ক্যান করা হয়েছে: {}
+Disk scanned: {} Not matched: {}	ডিস্ক স্ক্যান করা হয়েছে: {} মেলেনি: {}
+Do not prefer	পছন্দ করবেন না
+Do not search for a replacement	বিকল্প অনুসন্ধান করবেন না
+Do nothing	কিছু করবেন না
+Done	সম্পন্ন
+Download client options saved.	ডাউনলোড ক্লায়েন্ট অপশন সংরক্ষিত হয়েছে।
+Download clients	ডাউনলোড ক্লায়েন্ট
+Download failed	ডাউনলোড ব্যর্থ
+Download queue	ডাউনলোড সারি
+Downloads	ডাউনলোড
+Duration	সময়কাল
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	প্রতিটি শিরোনাম একটি ক্যাটালগের অন্তর্গত, যা এর রিফ্রেশে পড়া হয়; এর বহন করা প্রতিটি আইডেন্টিফায়ার (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) রাখা হয়। Sonarr থেকে মাইগ্রেট করা শিরোনামগুলো TheTVDB-এর অন্তর্গত।
+Edit	সম্পাদনা
+Edit “{name}”	“{name}” সম্পাদনা করুন
+Edit “{}”	“{}” সম্পাদনা করুন
+Enable RSS	RSS চালু করুন
+Enable automatic search	স্বয়ংক্রিয় অনুসন্ধান চালু করুন
+Enable interactive search	ইন্টারঅ্যাক্টিভ অনুসন্ধান চালু করুন
+Enabled	সক্রিয়
+Ended	সমাপ্ত
+English	English
+Entity	সত্তা
+Episode	পর্ব
+Episode and movie naming	পর্ব ও মুভির নামকরণ
+Episode image thumbs in the NFO	NFO-তে পর্বের ছবির থাম্বনেইল
+Episode images (<filename>-thumb.jpg)	পর্বের ছবি (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	পর্বের ছবি (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	পর্বের ছবি (Season##/filename.metathumb)
+Episode mappings in .plexmatch	.plexmatch-এ পর্বের ম্যাপিং
+Episode metadata (<filename>.nfo)	পর্বের মেটাডেটা (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	পর্বের মেটাডেটা (Season##/filename.xml)
+Episode order	পর্বের ক্রম
+Episode order changed: {} episodes updated, {} added.	পর্বের ক্রম পরিবর্তিত হয়েছে: {}টি পর্ব হালনাগাদ, {}টি যোগ হয়েছে।
+Episodes	পর্বসমূহ
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	নির্বাচিত ক্রম অনুযায়ী পর্বগুলোর নম্বর নতুন করে দেওয়া হয়; ফাইল, মনিটরিং ও ইতিহাস তাদের পর্বের সাথেই থাকে। নতুন নম্বরের সাথে মেলাতে পরে ফাইলগুলোর নাম পরিবর্তন করুন।
+Episodes of {title}	{title}-এর পর্বসমূহ
+Episodes on disk	ডিস্কে থাকা পর্ব
+Episodes whose file is below the quality profile's cutoff appear here.	যেসব পর্বের ফাইল কোয়ালিটি প্রোফাইলের কাটঅফের নিচে সেগুলো এখানে দেখা যায়।
+Episodes…	পর্ব…
+Errors	ত্রুটি
+Errors {errors}	ত্রুটি {errors}
+Event	ইভেন্ট
+Every file already follows the naming settings.	প্রতিটি ফাইল ইতিমধ্যে নামকরণ সেটিংস মেনে চলে।
+Every file meets its cutoff	প্রতিটি ফাইল তার কাটঅফ পূরণ করে
+Exclude	বাদ দিন
+Exclusions	বাদ তালিকা
+Expected	প্রত্যাশিত
+Expires	মেয়াদ শেষ
+Extra file extensions	অতিরিক্ত ফাইলের এক্সটেনশন
+Factor	গুণক
+Failed	ব্যর্থ
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	ভুয়া রিলিজ সুরক্ষা: গ্র্যাব করার আগে টরেন্ট পরীক্ষা করুন এবং এক্সিকিউটেবল, পাসওয়ার্ড-ফাঁদ আর্কাইভ ও ভিডিওবিহীন কনটেন্ট বাতিল করুন
+Feed address	ফিডের ঠিকানা
+Fetch the latest metadata from {}	{} থেকে সর্বশেষ মেটাডেটা আনুন
+File	ফাইল
+File date	ফাইলের তারিখ
+File deleted	ফাইল মুছে ফেলা হয়েছে
+File deleted.	ফাইল মুছে ফেলা হয়েছে।
+File management	ফাইল ব্যবস্থাপনা
+File management settings saved.	ফাইল ব্যবস্থাপনা সেটিংস সংরক্ষিত হয়েছে।
+File renamed	ফাইলের নাম পরিবর্তিত হয়েছে
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	এর চেয়ে পুরোনো ফাইলগুলো প্রতিদিন রিসাইকেল বিন থেকে মুছে ফেলা হয়; 0 দিলে সেগুলো রাখা হয়।
+Files upgrades replaced, kept as versions	আপগ্রেডে প্রতিস্থাপিত ফাইল, ভার্সন হিসেবে রাখা
+Film	ফিল্ম
+Film title or IMDb id, e.g. Arrival	ফিল্মের শিরোনাম বা IMDb id, যেমন Arrival
+Find a series in your library	আপনার লাইব্রেরিতে একটি সিরিজ খুঁজুন
+Find files added to or removed from the series folder	সিরিজ ফোল্ডারে যোগ বা সরানো ফাইল খুঁজুন
+Find something to add	যোগ করার মতো কিছু খুঁজুন
+First and last pieces first	প্রথম ও শেষ অংশ আগে
+First day of the week	সপ্তাহের প্রথম দিন
+First season	প্রথম সিজন
+Folder	ফোল্ডার
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	ফরম্যাটগুলো Sonarr-এর স্পেসিফিকেশন টাইপ ব্যবহার করে (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType)। স্কোর প্রতিটি কোয়ালিটি প্রোফাইল অনুযায়ী দেওয়া হয়।
+Found	পাওয়া গেছে
+Free	ফাঁকা
+Free space	ফাঁকা জায়গা
+Future days	ভবিষ্যতের দিন
+Future episodes	ভবিষ্যতের পর্ব
+General	সাধারণ
+GiB	GiB
+Grab	গ্র্যাব
+Grab a release from interactive search; downloads in the client's TV category show up here.	ইন্টারঅ্যাক্টিভ অনুসন্ধান থেকে একটি রিলিজ গ্র্যাব করুন; ক্লায়েন্টের TV ক্যাটাগরির ডাউনলোডগুলো এখানে দেখা যায়।
+Grab anyway?	তবুও গ্র্যাব করবেন?
+Grab with these episodes	এই পর্বগুলোসহ গ্র্যাব করুন
+Grabbed	গ্র্যাব করা হয়েছে
+Grabbed {}.	{} গ্র্যাব করা হয়েছে।
+Grabbing…	গ্র্যাব করা হচ্ছে…
+Grabs, imports and file changes appear here. Migrated history is included.	গ্র্যাব, ইমপোর্ট ও ফাইলের পরিবর্তন এখানে দেখা যায়। মাইগ্রেট করা ইতিহাসও অন্তর্ভুক্ত।
+Group film folder format	গ্রুপের ফিল্ম ফোল্ডারের ফরম্যাট
+Group folder format	গ্রুপ ফোল্ডারের ফরম্যাট
+Group season folder format	গ্রুপের সিজন ফোল্ডারের ফরম্যাট
+Group story-arc folder format	গ্রুপের স্টোরি-আর্ক ফোল্ডারের ফরম্যাট
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	সম্পর্কিত সিরিজ ও মুভির গ্রুপ: প্রোভাইডারের সংগ্রহ, অ্যানিমে ফ্র্যাঞ্চাইজ (প্রিকুয়েল/সিকুয়েল গ্রুপ) ও ম্যানুয়াল গ্রুপ, Tanukarr থেকে মাইগ্রেট করাগুলোসহ।
+Hardlink-only imports: never copy downloads that keep seeding	শুধু হার্ডলিংক ইমপোর্ট: সিডিং চলতে থাকা ডাউনলোড কখনো কপি করবেন না
+Health	স্বাস্থ্য
+Hide	লুকান
+History	ইতিহাস
+History →	ইতিহাস →
+Host	হোস্ট
+Host (as in the download client's settings)	হোস্ট (ডাউনলোড ক্লায়েন্টের সেটিংসে যেমন আছে)
+Hostname	হোস্টনেম
+How the catalogue numbers the episodes (it can be changed later on the series page).	ক্যাটালগ কীভাবে পর্বগুলোর নম্বর দেয় (পরে সিরিজের পেজে পরিবর্তন করা যায়)।
+Id	Id
+Identities	পরিচয়সমূহ
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	যদি Kitsunarr আপনার মিডিয়া সোর্সের চেয়ে ভিন্ন পাথে দেখে (যেমন ভিন্ন Docker ভলিউম), তাহলে প্রতিটি সোর্স ফোল্ডারকে তার Kitsunarr অবস্থানে ম্যাপ করুন। পাথগুলো শুধু ডেটাবেসে পুনর্লিখিত হয়।
+Ignored	উপেক্ষিত
+Ignored addresses	উপেক্ষিত ঠিকানা
+Implementation	ইমপ্লিমেন্টেশন
+Import / Migration	ইমপোর্ট / মাইগ্রেশন
+Import a Sonarr or Tanukarr library	একটি Sonarr বা Tanukarr লাইব্রেরি ইমপোর্ট করুন
+Import blocked	ইমপোর্ট আটকে আছে
+Import completed downloads	সম্পন্ন ডাউনলোড ইমপোর্ট করুন
+Import extra files (subtitles…)	অতিরিক্ত ফাইল ইমপোর্ট করুন (সাবটাইটেল…)
+Import from Sonarr/Tanukarr	Sonarr/Tanukarr থেকে ইমপোর্ট করুন
+Import history	ইতিহাস ইমপোর্ট করুন
+Import library	লাইব্রেরি ইমপোর্ট করুন
+Import list options saved.	ইমপোর্ট তালিকার অপশন সংরক্ষিত হয়েছে।
+Import lists	ইমপোর্ট তালিকা
+Import pending	ইমপোর্ট অপেক্ষমাণ
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	সার্ভার পড়তে পারে এমন যেকোনো ফোল্ডার থেকে ভিডিও ফাইল ইমপোর্ট করুন: প্রতিটি ফাইল কোন সিরিজ ও পর্বের তা যাচাই করুন, তারপর সেগুলো লাইব্রেরিতে কপি বা সরান (নামকরণ সেটিংস অনুযায়ী নাম পরিবর্তিত হয়)।
+Import {chosen().len()} files	{chosen().len()}টি ফাইল ইমপোর্ট করুন
+Imported	ইমপোর্ট করা হয়েছে
+Imported from series folder	সিরিজ ফোল্ডার থেকে ইমপোর্ট করা হয়েছে
+Importing	ইমপোর্ট হচ্ছে
+Importing…	ইমপোর্ট করা হচ্ছে…
+Imports need	ইমপোর্টের জন্য প্রয়োজন
+In library ›	লাইব্রেরিতে ›
+Include	অন্তর্ভুক্ত করুন
+Include in file names ({{Custom Formats}} token)	ফাইলের নামে অন্তর্ভুক্ত করুন ({{Custom Formats}} টোকেন)
+Include only titles on some lists, or leave out the titles of others.	শুধু কিছু তালিকার শিরোনাম অন্তর্ভুক্ত করুন, অথবা অন্যগুলোর শিরোনাম বাদ দিন।
+Include unmonitored	মনিটর না করাগুলোও অন্তর্ভুক্ত করুন
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	URL বেস সহ, যেমন http://192.168.1.10:8989 বা https://host/sonarr
+Indexer	ইনডেক্সার
+Indexer options saved.	ইনডেক্সার অপশন সংরক্ষিত হয়েছে।
+Indexer settings	ইনডেক্সার সেটিংস
+Indexers	ইনডেক্সার
+Info	তথ্য
+Info {infos}	তথ্য {infos}
+Instance	ইনস্ট্যান্স
+Instance name	ইনস্ট্যান্সের নাম
+Instance: {name}	ইনস্ট্যান্স: {name}
+Interactive	ইন্টারঅ্যাক্টিভ
+Interactive search	ইন্টারঅ্যাক্টিভ অনুসন্ধান
+Interactive search for full-season packs only	শুধু পূর্ণ-সিজন প্যাকের জন্য ইন্টারঅ্যাক্টিভ অনুসন্ধান
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	টরেন্ট ইনডেক্সারে পুরো সিরিজের (ও এর সিজনগুলোর) প্যাকের জন্য ইন্টারঅ্যাক্টিভ অনুসন্ধান
+Interactive search: see every release and choose	ইন্টারঅ্যাক্টিভ অনুসন্ধান: প্রতিটি রিলিজ দেখুন ও বেছে নিন
+Interface language	ইন্টারফেসের ভাষা
+Interval	ব্যবধান
+Jellyfin library and user	Jellyfin লাইব্রেরি ও ব্যবহারকারী
+Job	কাজ
+Keep / skip	রাখুন / এড়িয়ে যান
+Keep files replaced by upgrades as versions (in "Plex Versions")	আপগ্রেডে প্রতিস্থাপিত ফাইলগুলো ভার্সন হিসেবে রাখুন ("Plex Versions"-এ)
+Keep me signed in	আমাকে সাইন ইন রাখুন
+Keep the replaced file's date (upgrades)	প্রতিস্থাপিত ফাইলের তারিখ রাখুন (আপগ্রেড)
+Kept	রাখা হয়েছে
+Kept versions	রাখা ভার্সন
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Sonarr v3 API ব্যবহারকারী কম্প্যানিয়ন অ্যাপের কী: এগুলো লাইব্রেরি পড়ে, এবং "সিরিজ যোগ" কী সিরিজও যোগ করতে পারে (একটি রুট ফোল্ডারে, অনুসন্ধান ছাড়া)। আর কিছু অনুমোদিত নয়।
+KiB	KiB
+Kind	ধরন
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr একটি ফ্রি সফটওয়্যার (GPL-3.0-or-later)।
+Kitsunarr path	Kitsunarr পাথ
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr তার নিজের ডেটাবেসের ব্যাকআপ নেবে, প্রিভিউ করা ডেটা একটি ট্রানজ্যাকশনে ইমপোর্ট করবে এবং কমিট করার আগে তা যাচাই করবে। সোর্স ও আপনার মিডিয়া ফাইল পরিবর্তন করা হয় না।
+Label	লেবেল
+Languages	ভাষা
+Larger releases are rejected. 0 means unlimited.	এর চেয়ে বড় রিলিজ বাতিল করা হয়। 0 মানে সীমাহীন।
+Last read	শেষ পড়া
+Last run	শেষ চালানো
+Last search	শেষ অনুসন্ধান
+Last searched	শেষ অনুসন্ধান
+Last season	শেষ সিজন
+Later ›	পরবর্তী ›
+Latest season	সর্বশেষ সিজন
+Level	স্তর
+Library	লাইব্রেরি
+Library check	লাইব্রেরি পরীক্ষা
+Library tools	লাইব্রেরি টুল
+Library tools saved.	লাইব্রেরি টুল সংরক্ষিত হয়েছে।
+List	তালিকা
+Listed best first. Grouped qualities rank equally.	সেরাটি প্রথমে তালিকাভুক্ত। গ্রুপ করা কোয়ালিটিগুলো সমান র‍্যাংকের।
+Live updates connected	লাইভ আপডেট সংযুক্ত
+Live updates disconnected	লাইভ আপডেট বিচ্ছিন্ন
+Load	লোড করুন
+Load the account's lists	অ্যাকাউন্টের তালিকা লোড করুন
+Load the libraries…	লাইব্রেরিগুলো লোড করুন…
+Load the users…	ব্যবহারকারীদের লোড করুন…
+Local air date	স্থানীয় সম্প্রচারের তারিখ
+Local path	লোকাল পাথ
+Log them	লগ করুন
+Logs	লগ
+Main rejections	প্রধান প্রত্যাখ্যানের কারণ
+Make current	বর্তমান করুন
+Manual import	ম্যানুয়াল ইমপোর্ট
+Mark as failed	ব্যর্থ হিসেবে চিহ্নিত করুন
+Matches monitored titles.	মনিটর করা শিরোনামগুলোর সাথে মেলে।
+Maximum	সর্বোচ্চ
+Maximum size (MB)	সর্বোচ্চ সাইজ (MB)
+Media management	মিডিয়া ম্যানেজমেন্ট
+Media management settings	মিডিয়া ম্যানেজমেন্ট সেটিংস
+Media paths	মিডিয়া পাথ
+Mediums	মাধ্যম
+Members	সদস্য
+Message	বার্তা
+Metadata	মেটাডেটা
+Metadata files	মেটাডেটা ফাইল
+Metadata keys saved.	মেটাডেটা কী সংরক্ষিত হয়েছে।
+Metadata language	মেটাডেটার ভাষা
+Metadata refreshed.	মেটাডেটা রিফ্রেশ হয়েছে।
+Metadata refreshed: {} new episodes, {} updated.	মেটাডেটা রিফ্রেশ হয়েছে: {}টি নতুন পর্ব, {}টি হালনাগাদ।
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	মেটাডেটা সেটিংস সংরক্ষিত হয়েছে। পরবর্তী ডিস্ক স্ক্যান, রিফ্রেশ বা ইমপোর্টের সময় ফাইলগুলো লেখা হবে।
+Metadata sources	মেটাডেটার উৎস
+MiB	MiB
+Migration completed.	মাইগ্রেশন সম্পন্ন হয়েছে।
+Migration report #{}	মাইগ্রেশন রিপোর্ট #{}
+Minimum	সর্বনিম্ন
+Minimum age (minutes)	সর্বনিম্ন বয়স (মিনিট)
+Minimum custom format score	সর্বনিম্ন কাস্টম ফরম্যাট স্কোর
+Minimum format score	সর্বনিম্ন ফরম্যাট স্কোর
+Minimum free space (MiB)	সর্বনিম্ন ফাঁকা জায়গা (MiB)
+Minimum seeders	সর্বনিম্ন সিডার
+Missing	অনুপস্থিত
+Missing (monitored)	অনুপস্থিত (মনিটর করা)
+Missing films	অনুপস্থিত ফিল্ম
+Mode	মোড
+Monday	সোমবার
+Monitor	মনিটর করুন
+Monitored	মনিটর করা
+More languages can be added to the string tables.	স্ট্রিং টেবিলে আরও ভাষা যোগ করা যায়।
+Move	সরান
+Movie	মুভি
+Movie file format	মুভি ফাইলের ফরম্যাট
+Movie removed from Kitsunarr. Files on disk were not touched.	Kitsunarr থেকে মুভিটি সরানো হয়েছে। ডিস্কের ফাইলগুলো স্পর্শ করা হয়নি।
+Movies	মুভি
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	মাল্টি-সিজন রিলিজ: একাধিক সিজনের প্যাক গ্রহণ করুন (সিজন অনুসন্ধান তার সিজনের জন্য প্যাকটি নেয়)
+Must contain	অবশ্যই থাকতে হবে
+Must contain (comma separated; /regex/ allowed)	অবশ্যই থাকতে হবে (কমা দিয়ে আলাদা; /regex/ অনুমোদিত)
+Must not contain	থাকা যাবে না
+NOT	নয়
+Name	নাম
+Naming	নামকরণ
+Naming options saved.	নামকরণ অপশন সংরক্ষিত হয়েছে।
+Naming saved.	নামকরণ সংরক্ষিত হয়েছে।
+Negate	উল্টান
+Network	নেটওয়ার্ক
+Never: keep the release's names	কখনো না: রিলিজের নামগুলো রাখুন
+New custom format	নতুন কাস্টম ফরম্যাট
+New custom preset	নতুন কাস্টম প্রিসেট
+New group title	নতুন গ্রুপের শিরোনাম
+New password	নতুন পাসওয়ার্ড
+New quality profile	নতুন কোয়ালিটি প্রোফাইল
+Next airing	পরবর্তী সম্প্রচার
+Next run	পরবর্তী চালানো
+Next ›	পরবর্তী ›
+No	না
+No activity yet.	এখনো কোনো কার্যকলাপ নেই।
+No auto tags.	কোনো অটো ট্যাগ নেই।
+No backups yet	এখনো কোনো ব্যাকআপ নেই
+No collections yet	এখনো কোনো সংগ্রহ নেই
+No companion keys.	কোনো কম্প্যানিয়ন কী নেই।
+No custom formats	কোনো কাস্টম ফরম্যাট নেই
+No custom formats defined.	কোনো কাস্টম ফরম্যাট নির্ধারিত নেই।
+No delay above the minimum custom format score	সর্বনিম্ন কাস্টম ফরম্যাট স্কোরের উপরে কোনো বিলম্ব নয়
+No delay for the profile's best quality in the preferred protocol	পছন্দের প্রোটোকলে প্রোফাইলের সেরা কোয়ালিটির জন্য কোনো বিলম্ব নয়
+No download client to read	পড়ার মতো কোনো ডাউনলোড ক্লায়েন্ট নেই
+No exclusions.	কোনো বাদ তালিকা নেই।
+No history	কোনো ইতিহাস নেই
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	কোনো ইনডেক্সার এই সিরিজটি স্বয়ংক্রিয়ভাবে অনুসন্ধান করতে পারে না: কোনোটিতেই স্বয়ংক্রিয় অনুসন্ধান চালু নেই এবং সাথে কোনো ট্যাগ নেই বা সিরিজের একটি ট্যাগ নেই।
+No indexers to search	অনুসন্ধানের জন্য কোনো ইনডেক্সার নেই
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	কোনো রাখা ভার্সন নেই। নামকরণ-এ "আপগ্রেডে প্রতিস্থাপিত ফাইলগুলো রাখুন" চালু করুন।
+No log entries at this level	এই স্তরে কোনো লগ এন্ট্রি নেই
+No mappings.	কোনো ম্যাপিং নেই।
+No matches	কোনো মিল নেই
+No members	কোনো সদস্য নেই
+No migrations have been run yet.	এখনো কোনো মাইগ্রেশন চালানো হয়নি।
+No movies yet	এখনো কোনো মুভি নেই
+No notes.	কোনো নোট নেই।
+No recycle bin is set (Settings › Media management).	কোনো রিসাইকেল বিন সেট করা নেই (সেটিংস › মিডিয়া ম্যানেজমেন্ট)।
+No release profiles.	কোনো রিলিজ প্রোফাইল নেই।
+No root folders yet.	এখনো কোনো রুট ফোল্ডার নেই।
+No root folders.	কোনো রুট ফোল্ডার নেই।
+No runs yet	এখনো কিছু চালানো হয়নি
+No searches yet.	এখনো কোনো অনুসন্ধান নেই।
+No series in your library match.	আপনার লাইব্রেরির কোনো সিরিজ মেলেনি।
+No tags	কোনো ট্যাগ নেই
+No {}	কোনো {} নেই
+No {} yet	এখনো কোনো {} নেই
+None	কিছুই না
+Not evaluated by Kitsunarr.	Kitsunarr দ্বারা মূল্যায়ন করা হয়নি।
+Not imported	ইমপোর্ট করা হয়নি
+Not monitored	মনিটর করা নয়
+Notes	নোট
+Notes ({preview.warnings.len()})	নোট ({preview.warnings.len()})
+Notes ({report.warnings.len()})	নোট ({report.warnings.len()})
+Nothing airs in the next seven days.	আগামী সাত দিনে কিছুই সম্প্রচারিত হবে না।
+Nothing downloading	কিছুই ডাউনলোড হচ্ছে না
+Nothing found	কিছুই পাওয়া যায়নি
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	এই ক্যাটালগে অনুসন্ধানের সাথে কিছুই মেলেনি। অন্য বানান, মূল শিরোনাম বা অন্য ক্যাটালগটি চেষ্টা করুন।
+Nothing in this period	এই সময়ে কিছু নেই
+Nothing missing	কিছুই অনুপস্থিত নেই
+Notifications	নোটিফিকেশন
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	ক্যাটালগের অন্য একটি ক্রম অনুযায়ী পর্বের নম্বর দিন (TMDB পর্ব গ্রুপ, TheTVDB DVD বা অ্যাবসলিউট ক্রম)
+OMDb API key	OMDb API কী
+Older priority	পুরোনোগুলোর অগ্রাধিকার
+One folder per season	প্রতি সিজনে একটি ফোল্ডার
+Only the 2000 newest files are listed.	শুধু সবচেয়ে নতুন 2000টি ফাইল তালিকাভুক্ত।
+Only when the proxy needs one.	শুধু প্রক্সির প্রয়োজন হলে।
+Open the library	লাইব্রেরি খুলুন
+OpenAPI document	OpenAPI ডকুমেন্ট
+Opens the service to authorize Kitsunarr and fills in the token.	Kitsunarr-কে অনুমোদন দিতে সার্ভিসটি খোলে এবং টোকেনটি পূরণ করে।
+Options	অপশন
+Organize	সংগঠিত করুন
+Other	অন্যান্য
+Overview	সারসংক্ষেপ
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Kitsunarr-এ আগে থেকে থাকা রেকর্ডগুলো ওভাররাইট করুন (অন্যথায় সেগুলো রাখা হয়)
+Packs	প্যাক
+Page not found	পেজ পাওয়া যায়নি
+Page {page} / {pages}	পেজ {page} / {pages}
+Password	পাসওয়ার্ড
+Password changed. Other sessions were signed out.	পাসওয়ার্ড পরিবর্তিত হয়েছে। অন্য সেশনগুলো সাইন আউট করা হয়েছে।
+Past days	বিগত দিন
+Path	পাথ
+Path mappings	পাথ ম্যাপিং
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	অটোমেশন বিরতি দিন (RSS সিঙ্ক, নির্ধারিত তালিকা সিঙ্ক, স্বয়ংক্রিয় অনুসন্ধান)
+Peers	পিয়ার
+Permission	অনুমতি
+PiB	PiB
+Platform	প্ল্যাটফর্ম
+Port	পোর্ট
+Position	অবস্থান
+Post-import category	ইমপোর্টের পরের ক্যাটাগরি
+Posters	পোস্টার
+Prefer and upgrade	পছন্দ করুন ও আপগ্রেড করুন
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	অ্যানিমে সিজন প্যাক পছন্দ করুন (Kitsunarr-এর অ্যানিমে সিজন অনুসন্ধান ইতিমধ্যে সিজনটি একবার অনুসন্ধান করে)
+Prefer, do not upgrade	পছন্দ করুন, আপগ্রেড করবেন না
+Preferred	পছন্দের
+Preferred metadata language	পছন্দের মেটাডেটা ভাষা
+Preferred protocol	পছন্দের প্রোটোকল
+Preparing preview…	প্রিভিউ তৈরি করা হচ্ছে…
+Preview	প্রিভিউ
+Preview migration	মাইগ্রেশনের প্রিভিউ
+Previous migrations	পূর্ববর্তী মাইগ্রেশন
+Priority	অগ্রাধিকার
+Problem	সমস্যা
+Profile	প্রোফাইল
+Profile saved.	প্রোফাইল সংরক্ষিত হয়েছে।
+Profiles still used by series or movies cannot be deleted.	যেসব প্রোফাইল এখনো সিরিজ বা মুভিতে ব্যবহৃত হচ্ছে সেগুলো মোছা যায় না।
+Progress	অগ্রগতি
+Propers and repacks	Proper ও repack
+Proxy	প্রক্সি
+Proxy saved.	প্রক্সি সংরক্ষিত হয়েছে।
+Proxy type	প্রক্সির ধরন
+Qualities	কোয়ালিটি
+Quality	কোয়ালিটি
+Quality presets	কোয়ালিটি প্রিসেট
+Quality presets saved.	কোয়ালিটি প্রিসেট সংরক্ষিত হয়েছে।
+Quality profile	কোয়ালিটি প্রোফাইল
+Quality profiles	কোয়ালিটি প্রোফাইল
+Quality profile…	কোয়ালিটি প্রোফাইল…
+RSS sync interval (minutes)	RSS সিঙ্কের ব্যবধান (মিনিট)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	একটি রিলিজ আসার পর আরও ভালো একটির জন্য RSS সিঙ্ক এতক্ষণ অপেক্ষা করে; বিলম্বিত রিলিজগুলো সারিতে দেখা যায়। যে প্রথম প্রোফাইলের ট্যাগ সিরিজের সাথে মেলে সেটি প্রয়োগ হয়; শেষেরটি (ট্যাগ ছাড়া) ডিফল্ট।
+Re-encode this series' files with the compression worker	কম্প্রেশন ওয়ার্কার দিয়ে এই সিরিজের ফাইলগুলো রি-এনকোড করুন
+Read and add series	পড়া ও সিরিজ যোগ করা
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	প্রতি কয়েক সেকেন্ডে ডাউনলোড ক্লায়েন্ট থেকে সরাসরি পড়া হয়। Kitsunarr-এর গ্র্যাব করা সম্পন্ন ডাউনলোডগুলো প্রতি মিনিটে সিরিজ ফোল্ডারে ইমপোর্ট হয় (টরেন্ট কপি বা হার্ড-লিংক করা হয়, তাই সেগুলো সিডিং চালিয়ে যায়; Usenet ডাউনলোড সরানো হয়)। ব্যর্থ ডাউনলোড ব্লকলিস্টে যায় এবং আবার অনুসন্ধান করা হয়।
+Read the library	লাইব্রেরি পড়া
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	শুধু পড়া: অনুপস্থিত সিরিজ ফোল্ডার, নিজের ফোল্ডারের বাইরে থাকা বা দুবার রেকর্ড করা ফাইল রেকর্ড, এবং ডিস্কে অনুপস্থিত ফাইল খুঁজে বের করে।
+Reading the download clients…	ডাউনলোড ক্লায়েন্টগুলো পড়া হচ্ছে…
+Reading the source	সোর্স পড়া হচ্ছে
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	সবকিছু API-এর মাধ্যমে পড়ে। প্রোভাইডারদের পাসওয়ার্ড ও API কী সোর্স লুকিয়ে রাখে এবং পরে আবার দিতে হবে।
+Recent activity	সাম্প্রতিক কার্যকলাপ
+Recent priority	সাম্প্রতিকগুলোর অগ্রাধিকার
+Recent runs	সাম্প্রতিক চালানো
+Recent searches	সাম্প্রতিক অনুসন্ধান
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	প্রস্তাবিত। Sonarr/Tanukarr-এ সিস্টেম → ব্যাকআপ খুলুন, একটি ব্যাকআপ তৈরি করুন এবং .zip ডাউনলোড করুন (অথবা sonarr.db ব্যবহার করুন)। ইনডেক্সার ও ডাউনলোড ক্লায়েন্টের পাসওয়ার্ড অন্তর্ভুক্ত থাকে।
+Recycle bin	রিসাইকেল বিন
+Recycle bin cleanup (days)	রিসাইকেল বিন পরিষ্কার (দিন)
+Recycled	রিসাইকেল বিনে
+Refresh metadata	মেটাডেটা রিফ্রেশ করুন
+Refresh preview	প্রিভিউ রিফ্রেশ করুন
+Refreshing from {} is not supported yet; the imported metadata is kept as is	{} থেকে রিফ্রেশ এখনো সমর্থিত নয়; ইমপোর্ট করা মেটাডেটা যেমন আছে তেমনই রাখা হয়
+Refreshing…	রিফ্রেশ করা হচ্ছে…
+Regenerate	পুনরায় তৈরি করুন
+Regenerate API key	API কী পুনরায় তৈরি করুন
+Reject releases whose TheTVDB or IMDb id names another series	যেসব রিলিজের TheTVDB বা IMDb id অন্য সিরিজ নির্দেশ করে সেগুলো বাতিল করুন
+Rejected: click twice to grab anyway	প্রত্যাখ্যাত: তবুও গ্র্যাব করতে দুবার ক্লিক করুন
+Release	রিলিজ
+Release profile	রিলিজ প্রোফাইল
+Release profile saved.	রিলিজ প্রোফাইল সংরক্ষিত হয়েছে।
+Release profiles	রিলিজ প্রোফাইল
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	রিলিজগুলো সিরিজের কোয়ালিটি প্রোফাইল, কাস্টম ফরম্যাট ও রিলিজ প্রোফাইলের সাথে যাচাই করা হয় এবং র‍্যাংক করা হয়, যেমন Sonarr করে। প্রত্যাখ্যাত রিলিজের জন্য দ্বিতীয় ক্লিক লাগে।
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	ব্যর্থ বা নিজে ব্লকলিস্টে দেওয়া রিলিজ। অনুসন্ধান ও RSS সিঙ্ক এগুলো আর কখনো গ্র্যাব করে না; অনুমতি দিতে একটি সরান।
+Remote path	রিমোট পাথ
+Remote path mapping	রিমোট পাথ ম্যাপিং
+Remote path mapping saved.	রিমোট পাথ ম্যাপিং সংরক্ষিত হয়েছে।
+Remote path mappings	রিমোট পাথ ম্যাপিং
+Remove	সরান
+Remove completed downloads	সম্পন্ন ডাউনলোড সরান
+Remove every release from the blocklist?	ব্লকলিস্ট থেকে প্রতিটি রিলিজ সরাবেন?
+Remove failed downloads	ব্যর্থ ডাউনলোড সরান
+Remove from library	লাইব্রেরি থেকে সরান
+Remove from queue	সারি থেকে সরান
+Remove from the download client (deletes its files there)	ডাউনলোড ক্লায়েন্ট থেকে সরান (সেখানে এর ফাইলগুলো মুছে ফেলে)
+Remove movie	মুভি সরান
+Remove series	সিরিজ সরান
+Remove tags automatically (from titles that stop matching)	স্বয়ংক্রিয়ভাবে ট্যাগ সরান (যে শিরোনামগুলো আর মেলে না সেগুলো থেকে)
+Remove “{title}” and its episode records from Kitsunarr?	Kitsunarr থেকে “{title}” ও এর পর্বের রেকর্ডগুলো সরাবেন?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Kitsunarr থেকে “{title}” সরাবেন? ডিস্কের ফাইলগুলো মোছা হবে না।
+Removed	সরানো হয়েছে
+Removed from the blocklist.	ব্লকলিস্ট থেকে সরানো হয়েছে।
+Rename	নাম পরিবর্তন
+Rename files	ফাইলের নাম পরিবর্তন করুন
+Rename files on import	ইমপোর্টের সময় ফাইলের নাম পরিবর্তন করুন
+Rename files to the naming settings	নামকরণ সেটিংস অনুযায়ী ফাইলের নাম পরিবর্তন করুন
+Formats use Sonarr's tokens.	ফরম্যাটগুলো Sonarr-এর টোকেন ব্যবহার করে।
+Renaming…	নাম পরিবর্তন করা হচ্ছে…
+Report	রিপোর্ট
+Request one at omdbapi.com. Used for films by IMDb id.	omdbapi.com-এ একটির অনুরোধ করুন। IMDb id দিয়ে ফিল্মের জন্য ব্যবহৃত হয়।
+Required	আবশ্যিক
+Resolution	রেজোলিউশন
+Restore	রিস্টোর করুন
+Restore {}	{} রিস্টোর করুন
+Restore…	রিস্টোর…
+Restoring…	রিস্টোর করা হচ্ছে…
+Resume automation	অটোমেশন আবার চালু করুন
+Retention (days)	সংরক্ষণকাল (দিন)
+Retire	অবসরে পাঠান
+Revoke	প্রত্যাহার করুন
+Root folder	রুট ফোল্ডার
+Root folders	রুট ফোল্ডার
+Root folder…	রুট ফোল্ডার…
+Run #{run.id}: {run.status}	চালানো #{run.id}: {run.status}
+Run now	এখনই চালান
+Running…	চলছে…
+Saturday	শনিবার
+Save	সংরক্ষণ করুন
+Save criteria	শর্ত সংরক্ষণ করুন
+Save factors	গুণক সংরক্ষণ করুন
+Save keys	কী সংরক্ষণ করুন
+Save metadata files	মেটাডেটা ফাইল সংরক্ষণ করুন
+Save naming	নামকরণ সংরক্ষণ করুন
+Save options	অপশন সংরক্ষণ করুন
+Saved	সংরক্ষিত
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	সংরক্ষিত কী {REDACTED} হিসেবে দেখায়; রাখতে চাইলে অপরিবর্তিত রাখুন, অথবা কোনোটি সরাতে ফিল্ডটি খালি করুন।
+Saved.	সংরক্ষিত হয়েছে।
+Scan disk	ডিস্ক স্ক্যান করুন
+Scan folder	ফোল্ডার স্ক্যান করুন
+Scanning…	স্ক্যান করা হচ্ছে…
+Scheduled tasks	নির্ধারিত টাস্ক
+Score	স্কোর
+Search	অনুসন্ধান
+Search again when a download fails	ডাউনলোড ব্যর্থ হলে আবার অনুসন্ধান করুন
+Search all	সব অনুসন্ধান করুন
+Search all films	সব ফিল্ম অনুসন্ধান করুন
+Search collection	সংগ্রহ অনুসন্ধান করুন
+Search every episode of the list, one search per season	তালিকার প্রতিটি পর্ব অনুসন্ধান করুন, প্রতি সিজনে একটি অনুসন্ধান
+Search every member's missing episodes (films: the film)	প্রতিটি সদস্যের অনুপস্থিত পর্ব অনুসন্ধান করুন (ফিল্ম: ফিল্মটি)
+Search indexers	ইনডেক্সারে অনুসন্ধান করুন
+Search selected	নির্বাচিতগুলো অনুসন্ধান করুন
+Search the indexers and choose a release	ইনডেক্সারে অনুসন্ধান করে একটি রিলিজ বেছে নিন
+Search the indexers and grab the best accepted release	ইনডেক্সারে অনুসন্ধান করে সেরা গৃহীত রিলিজটি গ্র্যাব করুন
+Search the indexers and grab the best releases for the monitored episodes	ইনডেক্সারে অনুসন্ধান করে মনিটর করা পর্বগুলোর জন্য সেরা রিলিজ গ্র্যাব করুন
+Search your indexers	আপনার ইনডেক্সারে অনুসন্ধান করুন
+Search {chosen} selected	নির্বাচিত {chosen}টি অনুসন্ধান করুন
+Search: {}	অনুসন্ধান: {}
+Search: {} — complete series	অনুসন্ধান: {} — সম্পূর্ণ সিরিজ
+Search: {} — season {season} packs	অনুসন্ধান: {} — সিজন {season}-এর প্যাক
+Search: {} — {label}	অনুসন্ধান: {} — {label}
+Searching for {label}…	{label} অনুসন্ধান করা হচ্ছে…
+Searching indexers…	ইনডেক্সারে অনুসন্ধান করা হচ্ছে…
+Searching…	অনুসন্ধান করা হচ্ছে…
+Season	সিজন
+Season folder format	সিজন ফোল্ডারের ফরম্যাট
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	{{Season Title}}-এ সিজন ফোল্ডারের শিরোনাম ক্যাটালগেরটির জায়গা নেয়। ক্যাটালগেরটি রাখতে খালি রাখুন।
+Season folders	সিজন ফোল্ডার
+Season images (Season ##.jpg)	সিজনের ছবি (Season ##.jpg)
+Season images (Season##/folder.jpg)	সিজনের ছবি (Season##/folder.jpg)
+Season images (season##-poster.jpg)	সিজনের ছবি (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	সিজন প্যাক: 1 দিলে নিচের সিজন-প্যাক লক্ষ্যগুলো ব্যবহৃত হয়
+Season premieres only	শুধু সিজন প্রিমিয়ার
+Season {n}	সিজন {n}
+Season {one}	সিজন {one}
+Season {se.season_number}	সিজন {se.season_number}
+Season {season_number}	সিজন {season_number}
+Season-pack seed ratio	সিজন-প্যাকের সিড অনুপাত
+Season-pack seed time, minutes	সিজন-প্যাকের সিড সময়, মিনিট
+Seasons	সিজন
+Seasons {first}-{last}	সিজন {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	গোপন তথ্য {REDACTED} হিসেবে দেখায়; সংরক্ষিত মান রাখতে অপরিবর্তিত রাখুন।
+Seed ratio (empty: the client's default)	সিড অনুপাত (খালি: ক্লায়েন্টের ডিফল্ট)
+Seed time, minutes (empty: the client's default)	সিড সময়, মিনিট (খালি: ক্লায়েন্টের ডিফল্ট)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	ইনডেক্সার, ক্যাটালগ, তালিকা, ডাউনলোড ক্লায়েন্ট ও সংযোগে অনুরোধগুলো একটি প্রক্সির মাধ্যমে পাঠান।
+Send to the download client	ডাউনলোড ক্লায়েন্টে পাঠান
+Series	সিরিজ
+Series .plexmatch file	সিরিজের .plexmatch ফাইল
+Series folder format	সিরিজ ফোল্ডারের ফরম্যাট
+Series images (Series Title.jpg)	সিরিজের ছবি (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	সিরিজের ছবি (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	সিরিজের ছবি (folder.jpg)
+Series metadata (tvshow.nfo)	সিরিজের মেটাডেটা (tvshow.nfo)
+Series metadata URL	সিরিজের মেটাডেটা URL
+Series metadata episode guide	সিরিজের মেটাডেটায় পর্ব নির্দেশিকা
+Series removed from Kitsunarr. Files on disk were not touched.	Kitsunarr থেকে সিরিজটি সরানো হয়েছে। ডিস্কের ফাইলগুলো স্পর্শ করা হয়নি।
+Series removed, and its folder deleted.	সিরিজটি সরানো হয়েছে, এবং এর ফোল্ডার মুছে ফেলা হয়েছে।
+Series type	সিরিজের ধরন
+Set quality profile…	কোয়ালিটি প্রোফাইল সেট করুন…
+Settings	সেটিংস
+Settings saved.	সেটিংস সংরক্ষিত হয়েছে।
+Settings → General → Security in Sonarr/Tanukarr.	Sonarr/Tanukarr-এ সেটিংস → সাধারণ → নিরাপত্তা।
+Show	দেখান
+Show as all-day events	সারাদিনের ইভেন্ট হিসেবে দেখান
+Show unmonitored	মনিটর না করাগুলো দেখান
+Shows	শো
+Sign in	সাইন ইন
+Signed in. Save the list to keep the token.	সাইন ইন হয়েছে। টোকেনটি রাখতে তালিকাটি সংরক্ষণ করুন।
+Signing in…	সাইন ইন করা হচ্ছে…
+Size	সাইজ
+Size limits	সাইজ সীমা
+Size on disk	ডিস্কে সাইজ
+Skip files smaller than (MB)	এর চেয়ে ছোট ফাইল এড়িয়ে যান (MB)
+Skip the free-space check	ফাঁকা জায়গার পরীক্ষা এড়িয়ে যান
+Skip unmonitored episodes when importing packs	প্যাক ইমপোর্ট করার সময় মনিটর না করা পর্বগুলো এড়িয়ে যান
+Source	সোর্স
+Source code	সোর্স কোড
+Source path	সোর্স পাথ
+Special	বিশেষ
+Specials	বিশেষ পর্ব
+Specials are never monitored automatically.	বিশেষ পর্বগুলো কখনো স্বয়ংক্রিয়ভাবে মনিটর করা হয় না।
+Specifications	স্পেসিফিকেশন
+Specifications (JSON)	স্পেসিফিকেশন (JSON)
+Specifications must be valid JSON: {e}	স্পেসিফিকেশন অবশ্যই বৈধ JSON হতে হবে: {e}
+Stalled torrent timeout (minutes)	আটকে থাকা টরেন্টের টাইমআউট (মিনিট)
+Standard	স্ট্যান্ডার্ড
+Standard episode format	স্ট্যান্ডার্ড পর্বের ফরম্যাট
+Start migration	মাইগ্রেশন শুরু করুন
+Start over	আবার শুরু করুন
+Start search for missing episodes	অনুপস্থিত পর্বগুলোর অনুসন্ধান শুরু করুন
+Started	শুরু হয়েছে
+Started {format_datetime(&run.started_at)}	শুরু হয়েছে {format_datetime(&run.started_at)}
+Status	অবস্থা
+Status & health	অবস্থা ও স্বাস্থ্য
+Still downloading	এখনো ডাউনলোড হচ্ছে
+Storage outlook	স্টোরেজের পূর্বাভাস
+Studio	স্টুডিও
+Subscribe	সাবস্ক্রাইব করুন
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	একটি ক্যালেন্ডার অ্যাপে এই ঠিকানায় সাবস্ক্রাইব করুন। এতে আপনার API কী আছে: এটি গোপন রাখুন।
+Sunday	রবিবার
+Sync	সিঙ্ক
+Sync all lists now	এখনই সব তালিকা সিঙ্ক করুন
+Sync now	এখনই সিঙ্ক করুন
+Syncing…	সিঙ্ক করা হচ্ছে…
+System →	সিস্টেম →
+TMDB API key (v3)	TMDB API কী (v3)
+TV Series	টিভি সিরিজ
+TV series	টিভি সিরিজ
+Table	টেবিল
+Tag	ট্যাগ
+Tag them	ট্যাগ দিন
+Tag titles already in the library	লাইব্রেরিতে আগে থেকে থাকা শিরোনামে ট্যাগ দিন
+Tags	ট্যাগ
+Tags (comma separated)	ট্যাগ (কমা দিয়ে আলাদা)
+Tags (ids, comma separated)	ট্যাগ (id, কমা দিয়ে আলাদা)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	যেসব সিরিজ ও ফিল্ম প্রতিটি ধরনের শর্তের সাথে মেলে, সেগুলো যোগ, সম্পাদনা বা রিফ্রেশ হওয়ার সময় তাদের সাথে ট্যাগ যোগ করা হয়।
+Task	টাস্ক
+Television	টেলিভিশন
+Television (raw)	টেলিভিশন (raw)
+Test	টেস্ট
+Test failed: {message}	টেস্ট ব্যর্থ: {message}
+Testing…	টেস্ট করা হচ্ছে…
+The blocklist is empty	ব্লকলিস্ট খালি
+The catalogue new titles are added from when the list knows their id there.	তালিকা যখন সেখানে শিরোনামের id জানে, তখন যে ক্যাটালগ থেকে নতুন শিরোনাম যোগ করা হয়।
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	ইমপোর্ট করা ফাইলগুলো যে তারিখ পায়: পর্বের সম্প্রচারের তারিখ (স্থানীয় বা UTC), অথবা আপগ্রেডের ক্ষেত্রে প্রতিস্থাপিত ফাইলের তারিখ।
+The dry run completed without blocking problems. Nothing has been written yet.	ট্রায়াল রান কোনো বাধাদানকারী সমস্যা ছাড়াই সম্পন্ন হয়েছে। এখনো কিছু লেখা হয়নি।
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	ফাইলটি সিজন ফোল্ডারে সরানো হয় (বিদ্যমান ফাইল কখনো ওভাররাইট করা হয় না) এবং সিরিজটি আবার স্ক্যান করা হয়।
+The folder must already exist; Kitsunarr never creates or removes it.	ফোল্ডারটি আগে থেকেই থাকতে হবে; Kitsunarr কখনো এটি তৈরি বা সরায় না।
+The indexers returned no releases for this search.	এই অনুসন্ধানে ইনডেক্সারগুলো কোনো রিলিজ ফেরত দেয়নি।
+The instance is on my local network (private or loopback address)	ইনস্ট্যান্সটি আমার লোকাল নেটওয়ার্কে আছে (প্রাইভেট বা লুপব্যাক ঠিকানা)
+The list has not been read, or it is empty.	তালিকাটি পড়া হয়নি, অথবা এটি খালি।
+The migration did not complete; nothing was changed.	মাইগ্রেশন সম্পন্ন হয়নি; কিছুই পরিবর্তন করা হয়নি।
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	মেমোরিতে রাখা সবচেয়ে সাম্প্রতিক এন্ট্রি। সম্পূর্ণ লগ প্রসেসের আউটপুটে যায় (কন্টেইনার লগ বা journal)।
+The passwords do not match.	পাসওয়ার্ড মিলছে না।
+The recycle bin has no media or subtitle files.	রিসাইকেল বিনে কোনো মিডিয়া বা সাবটাইটেল ফাইল নেই।
+The sign-in expired; try again.	সাইন ইনের মেয়াদ শেষ হয়েছে; আবার চেষ্টা করুন।
+The upload failed (network error).	আপলোড ব্যর্থ হয়েছে (নেটওয়ার্ক ত্রুটি)।
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	ওয়ার্কারটি একটি ঐচ্ছিক হোস্ট উপাদান (Tanukarr-এর কম্প্রেশন ওয়ার্কার), যা KITSUNARR_COMPRESSION_SOCKET-এর সকেটের মাধ্যমে সংযুক্ত হয়।
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarr-এর ক্যাটালগ), TMDB ও TVmaze টিভি সিরিজ কভার করে; AniList ও MyAnimeList অ্যানিমে সিরিজ ও অ্যানিমে ফিল্ম কভার করে; TMDB ও OMDb ফিল্ম কভার করে। একটি শিরোনাম যোগ করলে তার লাইব্রেরি এন্ট্রি ও পর্বের তালিকা তৈরি হয়; ফাইলগুলো পরে ইমপোর্ট পাইপলাইন খুঁজে নেয়।
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB শিরোনামগুলো এই ভাষায় অনুসন্ধান ও যোগ করা হয়; প্রতিটি সিরিজের জন্য এর এডিটরে এটি পরিবর্তন করা যায়।
+TheTVDB titles in this language; changing it refreshes the series	এই ভাষায় TheTVDB শিরোনাম; এটি পরিবর্তন করলে সিরিজটি রিফ্রেশ হয়
+There is nothing at /{path}.	/{path}-এ কিছু নেই।
+They are created by migrating from Sonarr/Tanukarr.	এগুলো Sonarr/Tanukarr থেকে মাইগ্রেট করে তৈরি হয়।
+This series' renaming mode, season folder titles and kept versions	এই সিরিজের নাম পরিবর্তনের মোড, সিজন ফোল্ডারের শিরোনাম ও রাখা ভার্সন
+TiB	TiB
+Time	সময়
+Time left	বাকি সময়
+Title	শিরোনাম
+Title pattern	শিরোনামের প্যাটার্ন
+Titles import lists never add.	যে শিরোনামগুলো ইমপোর্ট তালিকা কখনো যোগ করে না।
+Titles on no list	কোনো তালিকায় নেই এমন শিরোনাম
+Today	আজ
+Torrent	Torrent
+Torrent delay	টরেন্ট বিলম্ব
+Torrent delay (minutes)	টরেন্ট বিলম্ব (মিনিট)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab ও Newznab ইনডেক্সার। একটি যাচাই করতে এডিটরে টেস্ট ব্যবহার করুন; প্রতিটি অনুসন্ধান সেই ধরনের অনুসন্ধান চালু থাকা ইনডেক্সারগুলো ব্যবহার করে: RSS, স্বয়ংক্রিয় বা ইন্টারঅ্যাক্টিভ।
+Trigger	ট্রিগার
+URL base	URL বেস
+UTC air date	UTC সম্প্রচারের তারিখ
+Unchanged	অপরিবর্তিত
+Unknown	অজানা
+Unmonitor	মনিটর বন্ধ করুন
+Unmonitor them	এগুলোর মনিটর বন্ধ করুন
+Unmonitored	মনিটর করা নয়
+Upcoming	আসন্ন
+Upcoming 7 days	আগামী ৭ দিন
+Update	হালনাগাদ করুন
+Updated {} items.	{}টি আইটেম হালনাগাদ হয়েছে।
+Upgrade until (cutoff)	এই পর্যন্ত আপগ্রেড করুন (কাটঅফ)
+Upgrade until format score	এই ফরম্যাট স্কোর পর্যন্ত আপগ্রেড করুন
+Upgrades allowed	আপগ্রেড অনুমোদিত
+Upload a backup	একটি ব্যাকআপ আপলোড করুন
+Upload failed (HTTP {}).	আপলোড ব্যর্থ (HTTP {})।
+Uploading…	আপলোড করা হচ্ছে…
+Use SSL	SSL ব্যবহার করুন
+Use a proxy	একটি প্রক্সি ব্যবহার করুন
+Use hardlinks instead of copying	কপি করার বদলে হার্ডলিংক ব্যবহার করুন
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	অন্য অ্যাপ্লিকেশন থেকে এটি X-Api-Key হেডার (বা ?apikey=) হিসেবে ব্যবহার করুন। Sonarr যে হেডার ব্যবহার করে তার সাথে সামঞ্জস্যপূর্ণ।
+Use these episodes	এই পর্বগুলো ব্যবহার করুন
+Usenet	Usenet
+Usenet delay	Usenet বিলম্ব
+Usenet delay (minutes)	Usenet বিলম্ব (মিনিট)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	শুধু Usenet: নতুন রিলিজগুলো বাতিল করা হয়, যাতে সেগুলো ছড়িয়ে পড়ার সময় পায়। 0 দিলে এটি বন্ধ থাকে।
+Usenet only: older releases are rejected. 0 means unlimited.	শুধু Usenet: পুরোনো রিলিজগুলো বাতিল করা হয়। 0 মানে সীমাহীন।
+User name	ব্যবহারকারীর নাম
+Username	ইউজারনেম
+Validation	যাচাই
+Version	ভার্সন
+Versions	ভার্সন
+Waiting for the sign-in at	সাইন ইনের জন্য অপেক্ষা করা হচ্ছে:
+Wanted	কাঙ্ক্ষিত
+Warnings	সতর্কতা
+Warnings {warnings}	সতর্কতা {warnings}
+Watched (Jellyfin watched sync)	দেখা হয়েছে (Jellyfin দেখা সিঙ্ক)
+Watched sync user	দেখা সিঙ্কের ব্যবহারকারী
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, ই-মেইল (SMTP), Mailgun, SendGrid, কাস্টম স্ক্রিপ্ট (Sonarr-এর এনভায়রনমেন্ট ভেরিয়েবলসহ), Emby/Jellyfin, Plex ও Kodi-তে পাঠানো হয়: গ্র্যাব, ইমপোর্ট ও আপগ্রেড, নাম পরিবর্তন, যোগ বা মোছা সিরিজ, মোছা ফাইল, স্বাস্থ্য সমস্যা। এডিটরে টেস্ট ব্যবহার করুন।
+Welcome	স্বাগতম
+What to import	কী ইমপোর্ট করবেন
+When	কখন
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	ইনডেক্সার, ডাউনলোড ক্লায়েন্ট ও সার্ভিসের HTTPS সার্টিফিকেট কখন যাচাই করা হবে (Sonarr-এর সেটিং)। আপনার নেটওয়ার্কের সেলফ-সাইনড সার্টিফিকেটের জন্য এটি শিথিল করতে হয়।
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	যখন কোনো ডাউনলোড ক্লায়েন্ট এমন পাথ জানায় যা Kitsunarr অন্য জায়গায় দেখে (অন্য মেশিন বা কন্টেইনার), তখন ক্লায়েন্টের হোস্ট ও পাথ লোকাল পাথে ম্যাপ করুন।
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	খারাপ রিলিজ সংশোধনকারী রিলিজগুলো পছন্দ করা হবে কিনা, এবং বিদ্যমান ফাইল আপগ্রেড করবে কিনা (Sonarr-এর মতো)।
+Whole season	পুরো সিজন
+Working…	কাজ চলছে…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	সিরিজ স্ক্যান, রিফ্রেশ বা ইমপোর্ট হলে সিরিজ ফোল্ডারে লেখা হয়, যেভাবে Sonarr-এর মেটাডেটা কনজিউমার সেগুলো লেখে।
+Year	বছর
+Your library is empty.	আপনার লাইব্রেরি খালি।
+all checks passed	সব পরীক্ষা সফল
+comma separated	কমা দিয়ে আলাদা
+cutoff: {}	কাটঅফ: {}
+has a file	একটি ফাইল আছে
+iCal link	iCal লিংক
+in 2 days	২ দিনের মধ্যে
+in a moment	এক মুহূর্তের মধ্যে
+in file names	ফাইলের নামে
+in library	লাইব্রেরিতে
+in {text}	{text}-এর মধ্যে
+just now	এইমাত্র
+may run out of space	জায়গা ফুরিয়ে যেতে পারে
+name (e.g. phone)	নাম (যেমন ফোন)
+never refreshed	কখনো রিফ্রেশ হয়নি
+no media files are moved, renamed or deleted.	কোনো মিডিয়া ফাইল সরানো, নাম পরিবর্তন বা মোছা হয় না।
+not accessible	অ্যাক্সেসযোগ্য নয়
+not added	যোগ করা হয়নি
+not checked	পরীক্ষা করা হয়নি
+not read yet	এখনো পড়া হয়নি
+on disk	ডিস্কে
+refreshed {}	রিফ্রেশ হয়েছে {}
+schema {s}	স্কিমা {s}
+secrets included	গোপন তথ্য অন্তর্ভুক্ত
+secrets masked	গোপন তথ্য আড়াল করা
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip বা sonarr.db
+stored only	শুধু সংরক্ষিত
+title (optional)	শিরোনাম (ঐচ্ছিক)
+{:.1} GiB/h	{:.1} GiB/ঘণ্টা
+{added} added; {}	{added}টি যোগ হয়েছে; {}
+{added} shows added.	{added}টি শো যোগ হয়েছে।
+{c.name} (API key needed)	{c.name} (API কী প্রয়োজন)
+{c.series_count} series · {c.movie_count} movies	{c.series_count}টি সিরিজ · {c.movie_count}টি মুভি
+{chosen().len()} chosen	{chosen().len()}টি বেছে নেওয়া হয়েছে
+{chosen().len()} chosen (at most 25)	{chosen().len()}টি বেছে নেওয়া হয়েছে (সর্বোচ্চ 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} ডিস্কে · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{format_bytes(item.size)}-এর {done}%
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · যোগ হয়েছে {format_date(&f.added_at)}
+{first}–{last} of {total}	{total}-এর মধ্যে {first}–{last}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]}টি ফাইল · {job["percent"]}% · সাশ্রয় {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} শুরু হয়েছে।
+{name} was added to the library.	{name} লাইব্রেরিতে যোগ করা হয়েছে।
+{name}: shows	{name}: শো
+{ok} files imported.	{ok}টি ফাইল ইমপোর্ট হয়েছে।
+{ok} imported; {}	{ok}টি ইমপোর্ট হয়েছে; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.searched_indexers}টি ইনডেক্সার থেকে {r.releases.len()}টি রিলিজ।
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked}টি সিরিজ ও {r.files_checked}টি ফাইল পরীক্ষা করা হয়েছে: {r.issues.len()}টি সমস্যা।
+{selected.read().len()} selected	{selected.read().len()}টি নির্বাচিত
+{text} ago	{text} আগে
+{} (not accessible)	{} (অ্যাক্সেসযোগ্য নয়)
+{} ({} free)	{} ({} ফাঁকা)
+{} added to every profile (not allowed yet).	{} প্রতিটি প্রোফাইলে যোগ হয়েছে (এখনো অনুমোদিত নয়)।
+{} day(s)	{} দিন
+{} failed: {}	{} ব্যর্থ: {}
+{} format scores	{} ফরম্যাট স্কোর
+{} free of {}	{} ফাঁকা, মোট {}
+{} week(s)	{} সপ্তাহ
+{}{year} — movie	{}{year} — মুভি
+‹ Back	‹ ফিরে যান
+‹ Earlier	‹ আগের
+‹ Prev	‹ পূর্ববর্তী
+○ offline	○ অফলাইন
+● live	● লাইভ
+✓ No issues detected.	✓ কোনো সমস্যা পাওয়া যায়নি।
+Activity	কার্যকলাপ
+Queue	সারি
+System	সিস্টেম
+Tasks	টাস্ক
+Retry	আবার চেষ্টা করুন
+Sign out	সাইন আউট
+Search titles…  ( / )	শিরোনাম অনুসন্ধান…  ( / )
+Loading…	লোড হচ্ছে…
+Profiles	প্রোফাইল
+scene {}	সিন {}
+Scene numbering from TheXEM	TheXEM থেকে সিন নম্বরিং
+Scene numbering extrapolated from TheXEM (unverified)	TheXEM থেকে অনুমান করা সিন নম্বরিং (যাচাই করা হয়নি)
+Season {} (scene seasons {})	সিজন {} (সিন সিজন {})
+{} (scene {})	{} (সিন {})

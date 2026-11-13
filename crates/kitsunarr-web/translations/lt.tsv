@@ -1,0 +1,968 @@
+# Lithuanian interface strings: English<TAB>Lithuanian. {…} marks a placeholder.
+custom	pasirinktinis
+indeterminate	neapibrėžtas
+mixed	mišrus
+retired	nebenaudojamas
+· container	· konteineris
+· finished {format_datetime(f)}	· baigta {format_datetime(f)}
+· missing	· trūksta
+· on disk	· diske
+· today	· šiandien
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep.
+— MiB per minute; empty uses Settings › Quality	— MiB per minutę; tuščia naudoja Nustatymai › Kokybė
+— a release's size is multiplied by its codec's factor before the size limits apply	— leidimo dydis padauginamas iš jo kodeko koeficiento prieš taikant dydžio ribas
+— all profiles at once	— visi profiliai iš karto
+— codec and title criteria, custom qualities (Tanukarr)	— kodeko ir pavadinimo kriterijai, pasirinktinės kokybės (Tanukarr)
+— enter the code	— įveskite kodą
+(empty)	(tuščia)
++ Add mapping	+ Pridėti susiejimą
++ New format	+ Naujas formatas
++ New profile	+ Naujas profilis
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (išjungta) arba nuo 10 iki 120. RSS sinchronizacija taip pat vykdoma iš Sistema › Užduotys.
+3 hours ago	prieš 3 valandas
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Atsiunčiamas torentas, kurio progresas tiek laiko nesikeičia, laikomas nepavykusiu, įtraukiamas į blokuojamųjų sąrašą ir ieškomas iš naujo. 0 tai išjungia; progresas sekamas nuo Kitsunarr paleidimo.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Franšizės grupė, rasta pagal AniList arba MyAnimeList ryšius. Vėliau pridėti tos pačios franšizės kūriniai taip pat prie jos prisijungia.
+A new API key was generated. Update the applications that use it.	Sugeneruotas naujas API raktas. Atnaujinkite jį naudojančias programas.
+A regular expression, case-insensitive; empty matches every title.	Reguliarioji išraiška, neskirianti didžiųjų ir mažųjų raidžių; tuščia atitinka bet kurį pavadinimą.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Leidimui priskiriamas konkrečiausias jo serialo profilyje leidžiamas šablonas, kurio šaltinį, raišką, kodeką ir pavadinimo šabloną jis atitinka. Standartinė kokybė su nurodytu kodeku ar šablonu jų neatitinkančius leidimus paverčia Nežinoma. Pasirinktiniai šablonai pridedami prie kiekvieno profilio kaip neleidžiami.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Leidimo dydis padauginamas iš jo kodeko koeficiento prieš taikant dydžio ribas. „Mišrus“ reiškia, kad profiliai naudoja skirtingus koeficientus; čia įvesta reikšmė įrašoma į kiekvieną profilį.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Kūrinys, prisijungiantis prie franšizės ar rankinės grupės, palieka buvusią grupę. Failai ir aplankai neperkeliami.
+API key	API raktas
+API key needed	Reikia API rakto
+API keys and language	API raktai ir kalba
+API path	API kelias
+About	Apie
+Absolute path; empty to delete permanently.	Absoliutus kelias; tuščia – ištrinti visam laikui.
+Accepted	Priimta
+Account lists	Paskyros sąrašai
+Actions	Veiksmai
+Actual	Faktinis
+Add	Pridėti
+Add a Newznab or Torznab indexer and enable interactive search for it.	Pridėkite Newznab arba Torznab indeksuotoją ir įjunkite jam interaktyvią paiešką.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Pridėkite klientą iš jo šablono ir redaktoriuje naudokite Testuoti; paėmimai, eilė ir importai naudoja kiekvieną įjungtą klientą. Blackhole įrašo paėmimus į aplanką ir importuoja tai, kas atsiranda jo stebimame aplanke. Kiekvieno kliento parinktys „Šalinti baigtus / nepavykusius atsisiuntimus“ pašalina atsisiuntimus (su jų failais), kai klientas su jais baigia.
+Add a download client in Settings › Download clients and enable it.	Pridėkite atsisiuntimo klientą skiltyje Nustatymai › Atsisiuntimo klientai ir jį įjunkite.
+Add a root folder first: it is where this title's folder will live.	Pirmiausia pridėkite šakninį aplanką: jame bus šio kūrinio aplankas.
+Add a tag above first.	Pirmiausia pridėkite žymą aukščiau.
+Add a title	Pridėti kūrinį
+Add auto tag	Pridėti automatinę žymą
+Add condition	Pridėti sąlygą
+Add exclusion	Pridėti išimtį
+Add media	Pridėti mediją
+Add one, or migrate them from Sonarr/Tanukarr.	Pridėkite vieną arba perkelkite juos iš Sonarr/Tanukarr.
+Add preset	Pridėti šabloną
+Add selected	Pridėti pasirinktus
+Add series or movies below.	Pridėkite serialus ar filmus žemiau.
+Add tag	Pridėti žymą
+Add the list's tags	Pridėti sąrašo žymas
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Pridėkite kūrinius iš TVmaze ar AniList arba perkelkite esamą Sonarr ar Tanukarr biblioteką.
+Add to library	Pridėti į biblioteką
+Add {}	Pridėti {}
+Add {} ({y})	Pridėti {} ({y})
+Add — {}	Pridėti — {}
+Add, and remove when they leave the list	Pridėti ir pašalinti, kai jie dingsta iš sąrašo
+Added	Pridėta
+Added to the titles this list adds.	Pridedama prie kūrinių, kuriuos prideda šis sąrašas.
+Adding titles	Kūrinių pridėjimas
+Adding…	Pridedama…
+Address	Adresas
+Age	Amžius
+Aired	Transliuota
+Aired monitored episodes without a file appear here.	Čia rodomi transliuoti stebimi epizodai be failo.
+All	Visi
+All collections	Visos kolekcijos
+All episodes	Visi epizodai
+All episodes in the series folder	Visi epizodai serialo aplanke
+All events	Visi įvykiai
+Allow zero size (the feed has no release sizes)	Leisti nulinį dydį (sraute nėra leidimų dydžių)
+Also delete the series folder and its files (to the recycle bin when one is set)	Taip pat ištrinti serialo aplanką ir jo failus (į šiukšlinę, jei ji nustatyta)
+Also for releases grabbed from interactive search	Taip pat leidimams, paimtiems iš interaktyvios paieškos
+Also known as	Taip pat žinomas kaip
+Always, even when renaming is off	Visada, net kai pervadinimas išjungtas
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analizuoti vaizdo failus (raišką, trukmę ir kodekus, naudojant ffprobe)
+AniList and MyAnimeList titles are always added as anime.	AniList ir MyAnimeList kūriniai visada pridedami kaip anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, kito Sonarr ir pasirinktiniai JSON sąrašai nuskaitomi kas kelias valandas; nauji kūriniai pridedami su kiekvieno sąrašo šakniniu aplanku, profiliu ir stebėjimu. Paslaugos, kurioms reikia OAuth, naudoja jūsų programos Client ID ir įklijuotą prieigos raktą (iš Tanukarr perkelti prieigos raktai toliau veikia).
+Anime	Anime
+Anime / absolute numbering	Anime / absoliuti numeracija
+Anime categories	Anime kategorijos
+Anime episode format	Anime epizodo formatas
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Anime filmus galima pridėti iš AniList, o perkėlimai iš Tanukarr atsineša ir jų filmus. Vaidybiniams filmams reikia TMDB katalogo.
+Anime standard format search	Anime standartinio formato paieška
+Anime title, e.g. Frieren	Anime pavadinimas, pvz., Frieren
+Any	Bet koks
+Any library	Bet kuri biblioteka
+Applications using the current key will stop working until you give them the new one.	Programos, naudojančios dabartinį raktą, nustos veikti, kol joms nepateiksite naujojo.
+Applied after every list has been read successfully and some title left a list.	Taikoma, kai visi sąrašai sėkmingai nuskaityti ir kuris nors kūrinys paliko sąrašą.
+Apply	Taikyti
+Apply migration	Taikyti perkėlimą
+Apply profile	Taikyti profilį
+Applying migration	Taikomas perkėlimas
+Applying…	Taikoma…
+As Settings › Media management says	Kaip nurodyta Nustatymai › Medijos valdymas
+At least 10 characters.	Bent 10 simbolių.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Bent {MIN_PASSWORD_LENGTH} simbolių. Gerai tinka slaptafrazė.
+Auto tag	Automatinė žyma
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automatinė žyma išsaugota. Ji taikoma, kai kūriniai bus kitą kartą pridėti, redaguoti ar atnaujinti.
+Auto tagging	Automatinis žymėjimas
+Auto-refresh	Automatinis atnaujinimas
+Automatic	Automatinis
+Automatic search	Automatinė paieška
+Automatic search for {label}: grabbed {}.	Automatinė paieška {label}: paimta {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automatinė paieška {label}: rasta leidimų: {}, patvirtinta: {}, nieko nepaimta.
+Automatic search: grab the best release	Automatinė paieška: paimti geriausią leidimą
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatizavimas pristabdytas: RSS sinchronizacija, suplanuotos sąrašų sinchronizacijos ir automatinės paieškos praleidžiamos. Rankiniai veiksmai ir vykstantys atsisiuntimai tęsiami.
+Automation resumed.	Automatizavimas atnaujintas.
+Available from	Prieinama nuo
+Back to the dashboard	Atgal į skydelį
+Back up now	Kurti atsarginę kopiją dabar
+Backup {} created.	Atsarginė kopija {} sukurta.
+Backups	Atsarginės kopijos
+Blocking:	Blokuoja:
+Blocklist	Blokuojamųjų sąrašas
+Blocklist the release and search again	Įtraukti leidimą į blokuojamųjų sąrašą ir ieškoti iš naujo
+Blocklist the release: it is never grabbed again	Įtraukti leidimą į blokuojamųjų sąrašą: jis daugiau niekada nebus paimtas
+Blocklist “{title}” and search for a replacement?	Įtraukti „{title}“ į blokuojamųjų sąrašą ir ieškoti pakaitalo?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (neapdorotas / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Perkelkite savo Sonarr (v3/v4) ar Tanukarr biblioteką ir nustatymus į Kitsunarr. Šaltinis tik skaitomas, niekada nekeičiamas, ir
+Bypass the proxy for local addresses	Nenaudoti tarpinio serverio vietiniams adresams
+Calendar	Kalendorius
+Calendar →	Kalendorius →
+Cancel	Atšaukti
+Cancel compression	Atšaukti glaudinimą
+Cannot reach the server: {e}	Nepavyksta pasiekti serverio: {e}
+Catalogue	Katalogas
+Category	Kategorija
+Certificate validation	Sertifikato tikrinimas
+Change password	Keisti slaptažodį
+Change series	Keisti serialą
+Changes	Pakeitimai
+Check	Tikrinti
+Check library	Tikrinti biblioteką
+Check now	Tikrinti dabar
+Check that the mapped series folders exist (read-only)	Patikrinti, ar susieti serialų aplankai egzistuoja (tik skaitymas)
+Checked: {summary}.	Patikrinta: {summary}.
+Checking…	Tikrinama…
+Choose a backup file	Pasirinkite atsarginės kopijos failą
+Choose a mode	Pasirinkite režimą
+Choose a root folder and a quality profile.	Pasirinkite šakninį aplanką ir kokybės profilį.
+Choose a season	Pasirinkite sezoną
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Pasirinkite serialą ir sezoną ar epizodą. Rezultatai rodo, kas yra kiekvienas leidimas, kaip jį nuskaito Kitsunarr analizatorius.
+Choose a series or movie…	Pasirinkite serialą ar filmą…
+Choose source	Pasirinkti šaltinį
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Rankiniu būdu pasirinkite šio leidimo epizodus, tada jį paimkite (pasirinkimas išsaugomas importui)
+Choose…	Pasirinkti…
+Clean library	Valyti biblioteką
+Clear	Išvalyti
+Clear blocklist	Išvalyti blokuojamųjų sąrašą
+Cleared {n} releases from the blocklist.	Iš blokuojamųjų sąrašo pašalinta leidimų: {n}.
+Client	Klientas
+Close	Uždaryti
+Codec	Kodekas
+Codec factors saved in every profile.	Kodekų koeficientai išsaugoti kiekviename profilyje.
+Codec size factors	Kodekų dydžio koeficientai
+Codecs	Kodekai
+Collection film folder format	Kolekcijos filmo aplanko formatas
+Collections	Kolekcijos
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Kolekcijos atsiranda, kai jos perkeliamos iš Tanukarr, sukuriamos iš teikėjo duomenų arba sukuriamos čia.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Pereinate iš Sonarr ar Tanukarr? Importuokite esamus serialus, nustatymus ir istoriją keliais žingsniais.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Atskirta kableliais; * yra pakaitos simbolis (*.lan), veikia ir IP intervalai, pvz., 192.168.1.0/24.
+Companion app keys	Papildomų programų raktai
+Complete series	Visas serialas
+Completed and failed download handling	Baigtų ir nepavykusių atsisiuntimų tvarkymas
+Component	Komponentas
+Compress series	Glaudinti serialą
+Compression	Glaudinimas
+Compression queued.	Glaudinimas įtrauktas į eilę.
+Compression worker is not connected.	Glaudinimo procesas neprijungtas.
+Condition	Sąlyga
+Conditions	Sąlygos
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Vienos rūšies sąlygos atitinka, kai atitinka bet kuri iš jų (visos privalomos turi atitikti); turi atitikti kiekviena rūšis.
+Configure	Konfigūruoti
+Confirm password	Patvirtinkite slaptažodį
+Connect	Prisijungti
+Connect to a running instance	Prisijungti prie veikiančio egzemplioriaus
+Connecting…	Jungiamasi…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Nuoseklios duomenų bazės kopijos. Suplanuotos atsarginės kopijos daromos kas savaitę (saugomos paskutinės aštuonios); kiekvienas perkėlimas taip pat pirmiausia sukuria vieną. Norėdami atkurti, sustabdykite Kitsunarr ir paleiskite
+Continuing	Tęsiamas
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Slapukas (siunčiamas su srauto užklausa, pvz., uid=1; pass=…)
+Copied.	Nukopijuota.
+Copy	Kopijuoti
+Copy (keep the originals)	Kopijuoti (palikti originalus)
+Copy sizes from	Kopijuoti dydžius iš
+Copy the token now; it is not shown again:	Nukopijuokite prieigos raktą dabar; jis daugiau nebus rodomas:
+Could not grab {}: {}	Nepavyko paimti {}: {}
+Covers	Viršeliai
+Create	Sukurti
+Create account	Sukurti paskyrą
+Create group	Sukurti grupę
+Create key	Sukurti raktą
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Sukurkite jį svetainėje themoviedb.org › Settings › API. Naudojamas TMDB serialams ir filmams.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Sukurkite administratoriaus paskyrą. Ja jungsitės prie Kitsunarr.
+Created	Sukurta
+Created when the first file is imported. Nothing is written to disk now.	Sukuriamas, kai importuojamas pirmasis failas. Dabar į diską nieko neįrašoma.
+Creating…	Kuriama…
+Credit	Titrai
+Current file	Dabartinis failas
+Current password	Dabartinis slaptažodis
+Custom format saved.	Pasirinktinis formatas išsaugotas.
+Custom format score	Pasirinktinio formato balas
+Custom format scores	Pasirinktinių formatų balai
+Custom formats	Pasirinktiniai formatai
+Cutoff unmet	Nepasiekta riba
+Daily	Kasdieniai
+Daily episode format	Kasdienio epizodo formatas
+Dashboard	Skydelis
+Data directory	Duomenų katalogas
+Database backup taken before the import: {b}	Duomenų bazės atsarginė kopija, padaryta prieš importą: {b}
+Database schema	Duomenų bazės schema
+Date	Data
+Date added	Pridėjimo data
+Debug	Derinimas
+Decision	Sprendimas
+Default	Numatytasis
+Defaults	Numatytieji
+Delay profile	Delsos profilis
+Delay profile saved.	Delsos profilis išsaugotas.
+Delay profiles	Delsos profiliai
+Delete	Ištrinti
+Delete empty series folders	Ištrinti tuščius serialų aplankus
+Delete file	Ištrinti failą
+Delete group	Ištrinti grupę
+Delete profile	Ištrinti profilį
+Delete “{path}”? It goes to the recycle bin when one is set.	Ištrinti „{path}“? Jis keliauja į šiukšlinę, jei ji nustatyta.
+Delete “{}”?	Ištrinti „{}“?
+Delete “{}”? Its series and movies stay in the library.	Ištrinti „{}“? Jos serialai ir filmai lieka bibliotekoje.
+Deleted	Ištrinta
+Directory	Katalogas
+Disabled	Išjungta
+Disabled for local addresses	Išjungta vietiniams adresams
+Disk scanned: {}	Diskas nuskaitytas: {}
+Disk scanned: {} Not matched: {}	Diskas nuskaitytas: {} Nesusieta: {}
+Do not prefer	Neteikti pirmenybės
+Do not search for a replacement	Neieškoti pakaitalo
+Do nothing	Nieko nedaryti
+Done	Atlikta
+Download client options saved.	Atsisiuntimo klientų parinktys išsaugotos.
+Download clients	Atsisiuntimo klientai
+Download failed	Atsisiuntimas nepavyko
+Download queue	Atsisiuntimų eilė
+Downloads	Atsisiuntimai
+Duration	Trukmė
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Kiekvienas kūrinys priklauso vienam katalogui, kurį skaito jo atnaujinimai; išsaugomi visi jo identifikatoriai (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList). Iš Sonarr perkelti kūriniai priklauso TheTVDB.
+Edit	Redaguoti
+Edit “{name}”	Redaguoti „{name}“
+Edit “{}”	Redaguoti „{}“
+Enable RSS	Įjungti RSS
+Enable automatic search	Įjungti automatinę paiešką
+Enable interactive search	Įjungti interaktyvią paiešką
+Enabled	Įjungta
+Ended	Baigtas
+English	Anglų
+Entity	Objektas
+Episode	Epizodas
+Episode and movie naming	Epizodų ir filmų pavadinimai
+Episode image thumbs in the NFO	Epizodų miniatiūros NFO faile
+Episode images (<filename>-thumb.jpg)	Epizodų vaizdai (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Epizodų vaizdai (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Epizodų vaizdai (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Epizodų susiejimai .plexmatch faile
+Episode metadata (<filename>.nfo)	Epizodų metaduomenys (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Epizodų metaduomenys (Season##/filename.xml)
+Episode order	Epizodų tvarka
+Episode order changed: {} episodes updated, {} added.	Epizodų tvarka pakeista: atnaujinta epizodų: {}, pridėta: {}.
+Episodes	Epizodai
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Epizodai pernumeruojami pagal pasirinktą tvarką; failai, stebėjimas ir istorija lieka su savo epizodais. Po to pervadinkite failus, kad atitiktų naujus numerius.
+Episodes of {title}	{title} epizodai
+Episodes on disk	Epizodai diske
+Episodes whose file is below the quality profile's cutoff appear here.	Čia rodomi epizodai, kurių failas nesiekia kokybės profilio ribos.
+Episodes…	Epizodai…
+Errors	Klaidos
+Errors {errors}	Klaidos {errors}
+Event	Įvykis
+Every file already follows the naming settings.	Visi failai jau atitinka pavadinimų nustatymus.
+Every file meets its cutoff	Visi failai pasiekia savo ribą
+Exclude	Neįtraukti
+Exclusions	Išimtys
+Expected	Tikėtinas
+Expires	Galioja iki
+Extra file extensions	Papildomi failų plėtiniai
+Factor	Koeficientas
+Failed	Nepavyko
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Apsauga nuo netikrų leidimų: tikrinti torentus prieš paimant ir atmesti vykdomuosius failus, slaptažodžiu apsaugotus jaukų archyvus ir turinį be vaizdo
+Feed address	Srauto adresas
+Fetch the latest metadata from {}	Gauti naujausius metaduomenis iš {}
+File	Failas
+File date	Failo data
+File deleted	Failas ištrintas
+File deleted.	Failas ištrintas.
+File management	Failų valdymas
+File management settings saved.	Failų valdymo nustatymai išsaugoti.
+File renamed	Failas pervadintas
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Failai, senesni nei šis laikas, kasdien ištrinami iš šiukšlinės; 0 juos palieka.
+Files upgrades replaced, kept as versions	Atnaujinimų pakeisti failai, saugomi kaip versijos
+Film	Filmas
+Film title or IMDb id, e.g. Arrival	Filmo pavadinimas arba IMDb ID, pvz., Arrival
+Find a series in your library	Raskite serialą savo bibliotekoje
+Find files added to or removed from the series folder	Rasti į serialo aplanką įtrauktus ar iš jo pašalintus failus
+Find something to add	Raskite ką pridėti
+First and last pieces first	Pirma ir paskutinė dalys pirmiausia
+First day of the week	Pirmoji savaitės diena
+First season	Pirmasis sezonas
+Folder	Aplankas
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formatai naudoja Sonarr specifikacijų tipus (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Balai priskiriami kiekvienam kokybės profiliui.
+Found	Rasta
+Free	Laisva
+Free space	Laisva vieta
+Future days	Ateities dienos
+Future episodes	Būsimi epizodai
+General	Bendra
+GiB	GiB
+Grab	Paimti
+Grab a release from interactive search; downloads in the client's TV category show up here.	Paimkite leidimą iš interaktyvios paieškos; atsisiuntimai kliento TV kategorijoje rodomi čia.
+Grab anyway?	Vis tiek paimti?
+Grab with these episodes	Paimti su šiais epizodais
+Grabbed	Paimta
+Grabbed {}.	Paimta: {}.
+Grabbing…	Imama…
+Grabs, imports and file changes appear here. Migrated history is included.	Čia rodomi paėmimai, importai ir failų pakeitimai. Įtraukta ir perkelta istorija.
+Group film folder format	Grupės filmo aplanko formatas
+Group folder format	Grupės aplanko formatas
+Group season folder format	Grupės sezono aplanko formatas
+Group story-arc folder format	Grupės siužeto arkos aplanko formatas
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Susijusių serialų ir filmų grupės: teikėjų kolekcijos, anime franšizės (priešistorių / tęsinių grupės) ir rankinės grupės, įskaitant perkeltas iš Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Importai tik su kietosiomis nuorodomis: niekada nekopijuoti atsisiuntimų, kurie toliau platinami
+Health	Būsena
+Hide	Slėpti
+History	Istorija
+History →	Istorija →
+Host	Serveris
+Host (as in the download client's settings)	Serveris (kaip atsisiuntimo kliento nustatymuose)
+Hostname	Serverio vardas
+How the catalogue numbers the episodes (it can be changed later on the series page).	Kaip katalogas numeruoja epizodus (vėliau galima pakeisti serialo puslapyje).
+Id	ID
+Identities	Tapatybės
+Ids	ID
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Jei Kitsunarr mato jūsų mediją kitais keliais nei šaltinis (pavyzdžiui, kiti Docker tomai), susiekite kiekvieną šaltinio aplanką su jo vieta Kitsunarr. Keliai perrašomi tik duomenų bazėje.
+Ignored	Ignoruojama
+Ignored addresses	Ignoruojami adresai
+Implementation	Realizacija
+Import / Migration	Importas / perkėlimas
+Import a Sonarr or Tanukarr library	Importuoti Sonarr ar Tanukarr biblioteką
+Import blocked	Importas užblokuotas
+Import completed downloads	Importuoti baigtus atsisiuntimus
+Import extra files (subtitles…)	Importuoti papildomus failus (subtitrus…)
+Import from Sonarr/Tanukarr	Importuoti iš Sonarr/Tanukarr
+Import history	Importavimo istorija
+Import library	Importuoti biblioteką
+Import list options saved.	Importavimo sąrašų parinktys išsaugotos.
+Import lists	Importavimo sąrašai
+Import pending	Laukia importo
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importuokite vaizdo failus iš bet kurio aplanko, kurį serveris gali skaityti: patikrinkite, kuriam serialui ir epizodams skirtas kiekvienas failas, tada nukopijuokite arba perkelkite juos į biblioteką (pervadintus pagal pavadinimų nustatymus).
+Import {chosen().len()} files	Importuoti failus: {chosen().len()}
+Imported	Importuota
+Imported from series folder	Importuota iš serialo aplanko
+Importing	Importuojama
+Importing…	Importuojama…
+Imports need	Importams reikia
+In library ›	Bibliotekoje ›
+Include	Įtraukti
+Include in file names ({{Custom Formats}} token)	Įtraukti į failų pavadinimus (žetonas {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Įtraukti tik kai kurių sąrašų kūrinius arba praleisti kitų sąrašų kūrinius.
+Include unmonitored	Įtraukti nestebimus
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Įskaitant URL bazę, pvz., http://192.168.1.10:8989 arba https://host/sonarr
+Indexer	Indeksuotojas
+Indexer options saved.	Indeksuotojų parinktys išsaugotos.
+Indexer settings	Indeksuotojų nustatymai
+Indexers	Indeksuotojai
+Info	Informacija
+Info {infos}	Informacija {infos}
+Instance	Egzempliorius
+Instance name	Egzemplioriaus pavadinimas
+Instance: {name}	Egzempliorius: {name}
+Interactive	Interaktyvi
+Interactive search	Interaktyvi paieška
+Interactive search for full-season packs only	Interaktyvi paieška tik pilnų sezonų paketams
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interaktyvi viso serialo (ir jo sezonų) paketų paieška torentų indeksuotojuose
+Interactive search: see every release and choose	Interaktyvi paieška: matyti kiekvieną leidimą ir pasirinkti
+Interface language	Sąsajos kalba
+Interval	Intervalas
+Jellyfin library and user	Jellyfin biblioteka ir naudotojas
+Job	Užduotis
+Keep / skip	Palikti / praleisti
+Keep files replaced by upgrades as versions (in "Plex Versions")	Saugoti atnaujinimų pakeistus failus kaip versijas (aplanke „Plex Versions“)
+Keep me signed in	Likti prisijungus
+Keep the replaced file's date (upgrades)	Išlaikyti pakeisto failo datą (atnaujinimai)
+Kept	Palikta
+Kept versions	Saugomos versijos
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Raktai papildomoms programoms, naudojančioms Sonarr v3 API: jos skaito biblioteką, o „pridėti serialus“ raktai taip pat gali pridėti serialus (į šakninį aplanką, be paieškos). Daugiau nieko neleidžiama.
+KiB	KiB
+Kind	Rūšis
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr yra laisva programinė įranga (GPL-3.0-or-later).
+Kitsunarr path	Kitsunarr kelias
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr padarys savo duomenų bazės atsarginę kopiją, importuos peržiūrėtus duomenis vienoje transakcijoje ir juos patikrins prieš įrašydama. Šaltinis ir jūsų medijos failai nekeičiami.
+Label	Etiketė
+Languages	Kalbos
+Larger releases are rejected. 0 means unlimited.	Didesni leidimai atmetami. 0 reiškia neribota.
+Last read	Paskutinį kartą nuskaityta
+Last run	Paskutinis vykdymas
+Last search	Paskutinė paieška
+Last searched	Paskutinį kartą ieškota
+Last season	Paskutinis sezonas
+Later ›	Vėliau ›
+Latest season	Naujausias sezonas
+Level	Lygis
+Library	Biblioteka
+Library check	Bibliotekos patikra
+Library tools	Bibliotekos įrankiai
+Library tools saved.	Bibliotekos įrankiai išsaugoti.
+List	Sąrašas
+Listed best first. Grouped qualities rank equally.	Išdėstyta nuo geriausios. Sugrupuotos kokybės vertinamos vienodai.
+Live updates connected	Tiesioginiai atnaujinimai prijungti
+Live updates disconnected	Tiesioginiai atnaujinimai atjungti
+Load	Įkelti
+Load the account's lists	Įkelti paskyros sąrašus
+Load the libraries…	Įkelti bibliotekas…
+Load the users…	Įkelti naudotojus…
+Local air date	Vietinė transliacijos data
+Local path	Vietinis kelias
+Log them	Registruoti žurnale
+Logs	Žurnalai
+Main rejections	Pagrindiniai atmetimai
+Make current	Padaryti dabartine
+Manual import	Rankinis importas
+Mark as failed	Pažymėti kaip nepavykusį
+Matches monitored titles.	Atitinka stebimus kūrinius.
+Maximum	Didžiausias
+Maximum size (MB)	Didžiausias dydis (MB)
+Media management	Medijos valdymas
+Media management settings	Medijos valdymo nustatymai
+Media paths	Medijos keliai
+Mediums	Laikmenos
+Members	Nariai
+Message	Pranešimas
+Metadata	Metaduomenys
+Metadata files	Metaduomenų failai
+Metadata keys saved.	Metaduomenų raktai išsaugoti.
+Metadata language	Metaduomenų kalba
+Metadata refreshed.	Metaduomenys atnaujinti.
+Metadata refreshed: {} new episodes, {} updated.	Metaduomenys atnaujinti: naujų epizodų: {}, atnaujinta: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Metaduomenų nustatymai išsaugoti. Failai įrašomi kito disko nuskaitymo, atnaujinimo ar importo metu.
+Metadata sources	Metaduomenų šaltiniai
+MiB	MiB
+Migration completed.	Perkėlimas baigtas.
+Migration report #{}	Perkėlimo ataskaita Nr. {}
+Minimum	Mažiausias
+Minimum age (minutes)	Mažiausias amžius (minutėmis)
+Minimum custom format score	Mažiausias pasirinktinio formato balas
+Minimum format score	Mažiausias formato balas
+Minimum free space (MiB)	Mažiausia laisva vieta (MiB)
+Minimum seeders	Mažiausias skleidėjų skaičius
+Missing	Trūksta
+Missing (monitored)	Trūksta (stebimi)
+Missing films	Trūkstami filmai
+Mode	Režimas
+Monday	Pirmadienis
+Monitor	Stebėti
+Monitored	Stebimas
+More languages can be added to the string tables.	Į eilučių lenteles galima įtraukti daugiau kalbų.
+Move	Perkelti
+Movie	Filmas
+Movie file format	Filmo failo formatas
+Movie removed from Kitsunarr. Files on disk were not touched.	Filmas pašalintas iš Kitsunarr. Diske esantys failai nepaliesti.
+Movies	Filmai
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Kelių sezonų leidimai: priimti kelių sezonų paketus (sezono paieška paima paketą savo sezonui)
+Must contain	Turi turėti
+Must contain (comma separated; /regex/ allowed)	Turi turėti (atskirta kableliais; leidžiama /regex/)
+Must not contain	Neturi turėti
+NOT	NE
+Name	Pavadinimas
+Naming	Pavadinimai
+Naming options saved.	Pavadinimų parinktys išsaugotos.
+Naming saved.	Pavadinimai išsaugoti.
+Negate	Neigti
+Network	Tinklas
+Never: keep the release's names	Niekada: palikti leidimo pavadinimus
+New custom format	Naujas pasirinktinis formatas
+New custom preset	Naujas pasirinktinis šablonas
+New group title	Naujas grupės pavadinimas
+New password	Naujas slaptažodis
+New quality profile	Naujas kokybės profilis
+Next airing	Kita transliacija
+Next run	Kitas vykdymas
+Next ›	Kitas ›
+No	Ne
+No activity yet.	Veiklos dar nėra.
+No auto tags.	Automatinių žymų nėra.
+No backups yet	Atsarginių kopijų dar nėra
+No collections yet	Kolekcijų dar nėra
+No companion keys.	Papildomų programų raktų nėra.
+No custom formats	Pasirinktinių formatų nėra
+No custom formats defined.	Pasirinktinių formatų neapibrėžta.
+No delay above the minimum custom format score	Jokios delsos, kai viršijamas mažiausias pasirinktinio formato balas
+No delay for the profile's best quality in the preferred protocol	Jokios delsos geriausiai profilio kokybei pageidaujamu protokolu
+No download client to read	Nėra atsisiuntimo kliento, kurį būtų galima skaityti
+No exclusions.	Išimčių nėra.
+No history	Istorijos nėra
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Joks indeksuotojas negali automatiškai ieškoti šio serialo: nė vienas neturi įjungtos automatinės paieškos ir kartu jokių žymų arba vienos iš serialo žymų.
+No indexers to search	Nėra indeksuotojų, kuriuose būtų galima ieškoti
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Saugomų versijų nėra. Įjunkite „Saugoti atnaujinimų pakeistus failus“ skiltyje Pavadinimai.
+No log entries at this level	Šio lygio žurnalo įrašų nėra
+No mappings.	Susiejimų nėra.
+No matches	Atitikmenų nėra
+No members	Narių nėra
+No migrations have been run yet.	Perkėlimų dar nevykdyta.
+No movies yet	Filmų dar nėra
+No notes.	Pastabų nėra.
+No recycle bin is set (Settings › Media management).	Šiukšlinė nenustatyta (Nustatymai › Medijos valdymas).
+No release profiles.	Leidimų profilių nėra.
+No root folders yet.	Šakninių aplankų dar nėra.
+No root folders.	Šakninių aplankų nėra.
+No runs yet	Vykdymų dar nėra
+No searches yet.	Paieškų dar nėra.
+No series in your library match.	Jūsų bibliotekoje nėra atitinkančių serialų.
+No tags	Žymų nėra
+No {}	Nėra: {}
+No {} yet	Dar nėra: {}
+None	Nėra
+Not evaluated by Kitsunarr.	Kitsunarr neįvertino.
+Not imported	Neimportuota
+Not monitored	Nestebimas
+Notes	Pastabos
+Notes ({preview.warnings.len()})	Pastabos ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Pastabos ({report.warnings.len()})
+Nothing airs in the next seven days.	Per artimiausias septynias dienas nieko netransliuojama.
+Nothing downloading	Niekas nesiunčiama
+Nothing found	Nieko nerasta
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Šiame kataloge niekas neatitinka paieškos. Pabandykite kitą rašybą, originalų pavadinimą arba kitą katalogą.
+Nothing in this period	Šiuo laikotarpiu nieko nėra
+Nothing missing	Nieko netrūksta
+Notifications	Pranešimai
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Numeruoti epizodus pagal kitą katalogo tvarką (TMDB epizodų grupės, TheTVDB DVD arba absoliuti tvarka)
+OMDb API key	OMDb API raktas
+Older priority	Senesnių prioritetas
+One folder per season	Atskiras aplankas kiekvienam sezonui
+Only the 2000 newest files are listed.	Rodomi tik 2000 naujausių failų.
+Only when the proxy needs one.	Tik jei tarpiniam serveriui jo reikia.
+Open the library	Atverti biblioteką
+OpenAPI document	OpenAPI dokumentas
+Opens the service to authorize Kitsunarr and fills in the token.	Atveria paslaugą, kad suteiktumėte Kitsunarr prieigą, ir užpildo prieigos raktą.
+Options	Parinktys
+Organize	Tvarkyti
+Other	Kita
+Overview	Apžvalga
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Perrašyti įrašus, kurie jau yra Kitsunarr (kitaip jie paliekami)
+Packs	Paketai
+Page not found	Puslapis nerastas
+Page {page} / {pages}	Puslapis {page} / {pages}
+Password	Slaptažodis
+Password changed. Other sessions were signed out.	Slaptažodis pakeistas. Kiti seansai atjungti.
+Past days	Praėjusios dienos
+Path	Kelias
+Path mappings	Kelių susiejimai
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Pristabdyti automatizavimą (RSS sinchronizaciją, suplanuotas sąrašų sinchronizacijas, automatines paieškas)
+Peers	Siuntėjai
+Permission	Teisė
+PiB	PiB
+Platform	Platforma
+Port	Prievadas
+Position	Pozicija
+Post-import category	Kategorija po importo
+Posters	Plakatai
+Prefer and upgrade	Teikti pirmenybę ir atnaujinti
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Teikti pirmenybę anime sezonų paketams (Kitsunarr anime sezonų paieškos jau ieško sezono vieną kartą)
+Prefer, do not upgrade	Teikti pirmenybę, neatnaujinti
+Preferred	Pageidaujamas
+Preferred metadata language	Pageidaujama metaduomenų kalba
+Preferred protocol	Pageidaujamas protokolas
+Preparing preview…	Ruošiama peržiūra…
+Preview	Peržiūra
+Preview migration	Peržiūrėti perkėlimą
+Previous migrations	Ankstesni perkėlimai
+Priority	Prioritetas
+Problem	Problema
+Profile	Profilis
+Profile saved.	Profilis išsaugotas.
+Profiles still used by series or movies cannot be deleted.	Profilių, kuriuos vis dar naudoja serialai ar filmai, ištrinti negalima.
+Progress	Progresas
+Propers and repacks	Proper ir repack leidimai
+Proxy	Tarpinis serveris
+Proxy saved.	Tarpinis serveris išsaugotas.
+Proxy type	Tarpinio serverio tipas
+Qualities	Kokybės
+Quality	Kokybė
+Quality presets	Kokybės šablonai
+Quality presets saved.	Kokybės šablonai išsaugoti.
+Quality profile	Kokybės profilis
+Quality profiles	Kokybės profiliai
+Quality profile…	Kokybės profilis…
+RSS sync interval (minutes)	RSS sinchronizacijos intervalas (minutėmis)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS sinchronizacija tiek laiko po leidimo pasirodymo laukia geresnio; atidėti leidimai rodomi eilėje. Taikomas pirmasis profilis, kurio žymos atitinka serialą; paskutinis (be žymų) yra numatytasis.
+Re-encode this series' files with the compression worker	Perkoduoti šio serialo failus glaudinimo procesu
+Read and add series	Skaityti ir pridėti serialus
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Kas kelias sekundes skaitoma tiesiogiai iš atsisiuntimo klientų. Kitsunarr paimti baigti atsisiuntimai kas minutę importuojami į serialo aplanką (torentai nukopijuojami arba susiejami kietosiomis nuorodomis, kad toliau būtų platinami; Usenet atsisiuntimai perkeliami). Nepavykę atsisiuntimai įtraukiami į blokuojamųjų sąrašą ir ieškomi iš naujo.
+Read the library	Skaityti biblioteką
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Tik skaitymas: randa trūkstamus serialų aplankus, failų įrašus už jų aplanko ribų arba įrašytus dukart ir diske trūkstamus failus.
+Reading the download clients…	Skaitomi atsisiuntimo klientai…
+Reading the source	Skaitomas šaltinis
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Viską skaito per API. Teikėjų slaptažodžius ir API raktus šaltinis slepia, todėl vėliau juos reikia įvesti iš naujo.
+Recent activity	Naujausia veikla
+Recent priority	Naujesnių prioritetas
+Recent runs	Naujausi vykdymai
+Recent searches	Naujausios paieškos
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Rekomenduojama. Sonarr/Tanukarr atverkite System → Backup, sukurkite atsarginę kopiją ir atsisiųskite .zip (arba naudokite sonarr.db). Įtraukiami indeksuotojų ir atsisiuntimo klientų slaptažodžiai.
+Recycle bin	Šiukšlinė
+Recycle bin cleanup (days)	Šiukšlinės valymas (dienomis)
+Recycled	Perkelta į šiukšlinę
+Refresh metadata	Atnaujinti metaduomenis
+Refresh preview	Atnaujinti peržiūrą
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Atnaujinimas iš {} dar nepalaikomas; importuoti metaduomenys paliekami kaip yra
+Refreshing…	Atnaujinama…
+Regenerate	Generuoti iš naujo
+Regenerate API key	Generuoti API raktą iš naujo
+Reject releases whose TheTVDB or IMDb id names another series	Atmesti leidimus, kurių TheTVDB ar IMDb ID nurodo kitą serialą
+Rejected: click twice to grab anyway	Atmesta: spustelėkite dukart, kad vis tiek paimtumėte
+Release	Leidimas
+Release profile	Leidimo profilis
+Release profile saved.	Leidimo profilis išsaugotas.
+Release profiles	Leidimų profiliai
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Leidimai tikrinami pagal serialo kokybės profilį, pasirinktinius formatus ir leidimų profilius bei reitinguojami, kaip tai daro Sonarr. Atmestiems leidimams reikia antro spustelėjimo.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Leidimai, kurie nepavyko arba buvo rankiniu būdu įtraukti į blokuojamųjų sąrašą. Paieškos ir RSS sinchronizacija jų daugiau niekada nepaims; pašalinkite vieną, kad jį leistumėte.
+Remote path	Nuotolinis kelias
+Remote path mapping	Nuotolinio kelio susiejimas
+Remote path mapping saved.	Nuotolinio kelio susiejimas išsaugotas.
+Remote path mappings	Nuotolinių kelių susiejimai
+Remove	Pašalinti
+Remove completed downloads	Šalinti baigtus atsisiuntimus
+Remove every release from the blocklist?	Pašalinti visus leidimus iš blokuojamųjų sąrašo?
+Remove failed downloads	Šalinti nepavykusius atsisiuntimus
+Remove from library	Pašalinti iš bibliotekos
+Remove from queue	Pašalinti iš eilės
+Remove from the download client (deletes its files there)	Pašalinti iš atsisiuntimo kliento (ištrina ten esančius failus)
+Remove movie	Pašalinti filmą
+Remove series	Pašalinti serialą
+Remove tags automatically (from titles that stop matching)	Automatiškai šalinti žymas (iš kūrinių, kurie nebeatitinka)
+Remove “{title}” and its episode records from Kitsunarr?	Pašalinti „{title}“ ir jo epizodų įrašus iš Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Pašalinti „{title}“ iš Kitsunarr? Diske esantys failai neištrinami.
+Removed	Pašalinta
+Removed from the blocklist.	Pašalinta iš blokuojamųjų sąrašo.
+Rename	Pervadinti
+Rename files	Pervadinti failus
+Rename files on import	Pervadinti failus importuojant
+Rename files to the naming settings	Pervadinti failus pagal pavadinimų nustatymus
+Formats use Sonarr's tokens.	Formatai naudoja Sonarr žetonus.
+Renaming…	Pervadinama…
+Report	Ataskaita
+Request one at omdbapi.com. Used for films by IMDb id.	Paprašykite jo svetainėje omdbapi.com. Naudojamas filmams pagal IMDb ID.
+Required	Privaloma
+Resolution	Raiška
+Restore	Atkurti
+Restore {}	Atkurti {}
+Restore…	Atkurti…
+Restoring…	Atkuriama…
+Resume automation	Tęsti automatizavimą
+Retention (days)	Saugojimo laikas (dienomis)
+Retire	Nebenaudoti
+Revoke	Atšaukti prieigą
+Root folder	Šakninis aplankas
+Root folders	Šakniniai aplankai
+Root folder…	Šakninis aplankas…
+Run #{run.id}: {run.status}	Vykdymas Nr. {run.id}: {run.status}
+Run now	Vykdyti dabar
+Running…	Vykdoma…
+Saturday	Šeštadienis
+Save	Išsaugoti
+Save criteria	Išsaugoti kriterijus
+Save factors	Išsaugoti koeficientus
+Save keys	Išsaugoti raktus
+Save metadata files	Išsaugoti metaduomenų failus
+Save naming	Išsaugoti pavadinimus
+Save options	Išsaugoti parinktis
+Saved	Išsaugota
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Išsaugoti raktai rodomi kaip {REDACTED}; palikite juos nepakeistus, kad išliktų, arba išvalykite lauką, kad pašalintumėte.
+Saved.	Išsaugota.
+Scan disk	Nuskaityti diską
+Scan folder	Nuskaityti aplanką
+Scanning…	Nuskaitoma…
+Scheduled tasks	Suplanuotos užduotys
+Score	Balas
+Search	Ieškoti
+Search again when a download fails	Ieškoti iš naujo, kai atsisiuntimas nepavyksta
+Search all	Ieškoti visų
+Search all films	Ieškoti visų filmų
+Search collection	Ieškoti kolekcijos
+Search every episode of the list, one search per season	Ieškoti kiekvieno sąrašo epizodo, po vieną paiešką kiekvienam sezonui
+Search every member's missing episodes (films: the film)	Ieškoti kiekvieno nario trūkstamų epizodų (filmų atveju – filmo)
+Search indexers	Ieškoti indeksuotojuose
+Search selected	Ieškoti pasirinktų
+Search the indexers and choose a release	Ieškoti indeksuotojuose ir pasirinkti leidimą
+Search the indexers and grab the best accepted release	Ieškoti indeksuotojuose ir paimti geriausią priimtą leidimą
+Search the indexers and grab the best releases for the monitored episodes	Ieškoti indeksuotojuose ir paimti geriausius leidimus stebimiems epizodams
+Search your indexers	Ieškokite savo indeksuotojuose
+Search {chosen} selected	Ieškoti pasirinktų: {chosen}
+Search: {}	Paieška: {}
+Search: {} — complete series	Paieška: {} — visas serialas
+Search: {} — season {season} packs	Paieška: {} — {season} sezono paketai
+Search: {} — {label}	Paieška: {} — {label}
+Searching for {label}…	Ieškoma {label}…
+Searching indexers…	Ieškoma indeksuotojuose…
+Searching…	Ieškoma…
+Season	Sezonas
+Season folder format	Sezono aplanko formatas
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Sezonų aplankų pavadinimai pakeičia katalogo pavadinimus žetone {{Season Title}}. Palikite tuščią, kad liktų katalogo.
+Season folders	Sezonų aplankai
+Season images (Season ##.jpg)	Sezonų vaizdai (Season ##.jpg)
+Season images (Season##/folder.jpg)	Sezonų vaizdai (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Sezonų vaizdai (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Sezonų paketai: 1 naudoja toliau nurodytus sezonų paketų tikslus
+Season premieres only	Tik sezonų premjeros
+Season {n}	{n} sezonas
+Season {one}	{one} sezonas
+Season {se.season_number}	{se.season_number} sezonas
+Season {season_number}	{season_number} sezonas
+Season-pack seed ratio	Sezono paketo dalijimosi santykis
+Season-pack seed time, minutes	Sezono paketo dalijimosi laikas, minutėmis
+Seasons	Sezonai
+Seasons {first}-{last}	Sezonai {first}–{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Slapti duomenys rodomi kaip {REDACTED}; palikite juos nepakeistus, kad išliktų išsaugota reikšmė.
+Seed ratio (empty: the client's default)	Dalijimosi santykis (tuščia: kliento numatytasis)
+Seed time, minutes (empty: the client's default)	Dalijimosi laikas, minutėmis (tuščia: kliento numatytasis)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Siųsti užklausas indeksuotojams, katalogams, sąrašams, atsisiuntimo klientams ir ryšiams per tarpinį serverį.
+Send to the download client	Siųsti į atsisiuntimo klientą
+Series	Serialas
+Series .plexmatch file	Serialo .plexmatch failas
+Series folder format	Serialo aplanko formatas
+Series images (Series Title.jpg)	Serialo vaizdai (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Serialo vaizdai (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Serialo vaizdai (folder.jpg)
+Series metadata (tvshow.nfo)	Serialo metaduomenys (tvshow.nfo)
+Series metadata URL	Serialo metaduomenų URL
+Series metadata episode guide	Serialo metaduomenų epizodų gidas
+Series removed from Kitsunarr. Files on disk were not touched.	Serialas pašalintas iš Kitsunarr. Diske esantys failai nepaliesti.
+Series removed, and its folder deleted.	Serialas pašalintas, o jo aplankas ištrintas.
+Series type	Serialo tipas
+Set quality profile…	Nustatyti kokybės profilį…
+Settings	Nustatymai
+Settings saved.	Nustatymai išsaugoti.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security Sonarr/Tanukarr programoje.
+Show	Rodyti
+Show as all-day events	Rodyti kaip visos dienos įvykius
+Show unmonitored	Rodyti nestebimus
+Shows	Serialai
+Sign in	Prisijungti
+Signed in. Save the list to keep the token.	Prisijungta. Išsaugokite sąrašą, kad išliktų prieigos raktas.
+Signing in…	Jungiamasi…
+Size	Dydis
+Size limits	Dydžio ribos
+Size on disk	Dydis diske
+Skip files smaller than (MB)	Praleisti failus, mažesnius nei (MB)
+Skip the free-space check	Praleisti laisvos vietos patikrą
+Skip unmonitored episodes when importing packs	Importuojant paketus praleisti nestebimus epizodus
+Source	Šaltinis
+Source code	Pirminis kodas
+Source path	Šaltinio kelias
+Special	Specialusis
+Specials	Specialieji epizodai
+Specials are never monitored automatically.	Specialieji epizodai niekada nestebimi automatiškai.
+Specifications	Specifikacijos
+Specifications (JSON)	Specifikacijos (JSON)
+Specifications must be valid JSON: {e}	Specifikacijos turi būti galiojantis JSON: {e}
+Stalled torrent timeout (minutes)	Įstrigusio torento skirtasis laikas (minutėmis)
+Standard	Standartinis
+Standard episode format	Standartinio epizodo formatas
+Start migration	Pradėti perkėlimą
+Start over	Pradėti iš naujo
+Start search for missing episodes	Pradėti trūkstamų epizodų paiešką
+Started	Pradėta
+Started {format_datetime(&run.started_at)}	Pradėta {format_datetime(&run.started_at)}
+Status	Būsena
+Status & health	Būsena ir sveikata
+Still downloading	Vis dar siunčiama
+Storage outlook	Saugyklos perspektyva
+Studio	Studija
+Subscribe	Prenumeruoti
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Užsiprenumeruokite šį adresą kalendoriaus programoje. Jame yra jūsų API raktas: laikykite jį privačiu.
+Sunday	Sekmadienis
+Sync	Sinchronizuoti
+Sync all lists now	Sinchronizuoti visus sąrašus dabar
+Sync now	Sinchronizuoti dabar
+Syncing…	Sinchronizuojama…
+System →	Sistema →
+TMDB API key (v3)	TMDB API raktas (v3)
+TV Series	TV serialai
+TV series	TV serialai
+Table	Lentelė
+Tag	Žyma
+Tag them	Pažymėti juos žyma
+Tag titles already in the library	Pažymėti žyma kūrinius, jau esančius bibliotekoje
+Tags	Žymos
+Tags (comma separated)	Žymos (atskirta kableliais)
+Tags (ids, comma separated)	Žymos (ID, atskirta kableliais)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Žymos pridedamos prie serialų ir filmų, atitinkančių kiekvienos rūšies sąlygą, kai jie pridedami, redaguojami ar atnaujinami.
+Task	Užduotis
+Television	Televizija
+Television (raw)	Televizija (neapdorota)
+Test	Testuoti
+Test failed: {message}	Testas nepavyko: {message}
+Testing…	Testuojama…
+The blocklist is empty	Blokuojamųjų sąrašas tuščias
+The catalogue new titles are added from when the list knows their id there.	Katalogas, iš kurio pridedami nauji kūriniai, kai sąrašas žino jų ID jame.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Data, kurią gauna importuoti failai: epizodo transliacijos data (vietinė arba UTC) arba, atnaujinant, pakeisto failo data.
+The dry run completed without blocking problems. Nothing has been written yet.	Bandomasis vykdymas baigtas be blokuojančių problemų. Dar niekas neįrašyta.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Failas perkeliamas į sezono aplanką (esamas failas niekada neperrašomas), o serialas nuskaitomas iš naujo.
+The folder must already exist; Kitsunarr never creates or removes it.	Aplankas jau turi egzistuoti; Kitsunarr niekada jo nesukuria ir nepašalina.
+The indexers returned no releases for this search.	Indeksuotojai šiai paieškai negrąžino jokių leidimų.
+The instance is on my local network (private or loopback address)	Egzempliorius yra mano vietiniame tinkle (privatus arba atgalinio ryšio adresas)
+The list has not been read, or it is empty.	Sąrašas nenuskaitytas arba jis tuščias.
+The migration did not complete; nothing was changed.	Perkėlimas nebaigtas; niekas nepakeista.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Naujausi atmintyje saugomi įrašai. Visi žurnalai siunčiami į proceso išvestį (konteinerio žurnalus arba journal).
+The passwords do not match.	Slaptažodžiai nesutampa.
+The recycle bin has no media or subtitle files.	Šiukšlinėje nėra medijos ar subtitrų failų.
+The sign-in expired; try again.	Prisijungimas baigė galioti; bandykite dar kartą.
+The upload failed (network error).	Įkėlimas nepavyko (tinklo klaida).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Procesas yra pasirenkamas serverio komponentas (Tanukarr glaudinimo procesas), pasiekiamas per lizdą KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (Sonarr katalogas), TMDB ir TVmaze apima TV serialus; AniList ir MyAnimeList apima anime serialus ir anime filmus; TMDB ir OMDb apima filmus. Pridėjus kūrinį sukuriamas jo bibliotekos įrašas ir epizodų sąrašas; failus vėliau paima importavimo procesas.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	TheTVDB kūrinių ieškoma ir jie pridedami šia kalba; kiekvieną serialą galima pakeisti jo redaktoriuje.
+TheTVDB titles in this language; changing it refreshes the series	TheTVDB kūriniai šia kalba; ją pakeitus serialas atnaujinamas
+There is nothing at /{path}.	Adresu /{path} nieko nėra.
+They are created by migrating from Sonarr/Tanukarr.	Jie sukuriami perkeliant iš Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Šio serialo pervadinimo režimas, sezonų aplankų pavadinimai ir saugomos versijos
+TiB	TiB
+Time	Laikas
+Time left	Liko laiko
+Title	Pavadinimas
+Title pattern	Pavadinimo šablonas
+Titles import lists never add.	Kūriniai, kurių importavimo sąrašai niekada neprideda.
+Titles on no list	Kūriniai, nesantys jokiame sąraše
+Today	Šiandien
+Torrent	Torentas
+Torrent delay	Torentų delsa
+Torrent delay (minutes)	Torentų delsa (minutėmis)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab ir Newznab indeksuotojai. Redaktoriuje naudokite Testuoti, kad patikrintumėte; kiekviena paieška naudoja indeksuotojus, kuriuose įjungta tos rūšies paieška: RSS, automatinė arba interaktyvi.
+Trigger	Paleidiklis
+URL base	URL bazė
+UTC air date	UTC transliacijos data
+Unchanged	Nepakeista
+Unknown	Nežinoma
+Unmonitor	Nestebėti
+Unmonitor them	Nebestebėti jų
+Unmonitored	Nestebimas
+Upcoming	Artėjantys
+Upcoming 7 days	Artimiausios 7 dienos
+Update	Atnaujinti
+Updated {} items.	Atnaujinta elementų: {}.
+Upgrade until (cutoff)	Atnaujinti iki (riba)
+Upgrade until format score	Atnaujinti iki formato balo
+Upgrades allowed	Atnaujinimai leidžiami
+Upload a backup	Įkelti atsarginę kopiją
+Upload failed (HTTP {}).	Įkėlimas nepavyko (HTTP {}).
+Uploading…	Įkeliama…
+Use SSL	Naudoti SSL
+Use a proxy	Naudoti tarpinį serverį
+Use hardlinks instead of copying	Naudoti kietąsias nuorodas vietoj kopijavimo
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Kitose programose naudokite jį kaip X-Api-Key antraštę (arba ?apikey=). Suderinama su Sonarr naudojama antrašte.
+Use these episodes	Naudoti šiuos epizodus
+Usenet	Usenet
+Usenet delay	Usenet delsa
+Usenet delay (minutes)	Usenet delsa (minutėmis)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Tik Usenet: naujesni leidimai atmetami, suteikiant jiems laiko išplisti. 0 tai išjungia.
+Usenet only: older releases are rejected. 0 means unlimited.	Tik Usenet: senesni leidimai atmetami. 0 reiškia neribota.
+User name	Naudotojo vardas
+Username	Naudotojo vardas
+Validation	Tikrinimas
+Version	Versija
+Versions	Versijos
+Waiting for the sign-in at	Laukiama prisijungimo adresu
+Wanted	Pageidaujami
+Warnings	Įspėjimai
+Warnings {warnings}	Įspėjimai {warnings}
+Watched (Jellyfin watched sync)	Peržiūrėta (Jellyfin peržiūrų sinchronizacija)
+Watched sync user	Peržiūrų sinchronizacijos naudotojas
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Siunčiami Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, el. pašto (SMTP), Mailgun, SendGrid, pasirinktinių scenarijų (su Sonarr aplinkos kintamaisiais), Emby/Jellyfin, Plex ir Kodi pranešimai: paėmimai, importai ir atnaujinimai, pervadinimai, pridėti ar ištrinti serialai, ištrinti failai, sveikatos problemos. Redaktoriuje naudokite Testuoti.
+Welcome	Sveiki
+What to import	Ką importuoti
+When	Kada
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Kada tikrinami indeksuotojų, atsisiuntimo klientų ir paslaugų HTTPS sertifikatai (Sonarr nustatymas). Savo tinkle esantiems savarankiškai pasirašytiems sertifikatams jį reikia sušvelninti.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Kai atsisiuntimo klientas praneša kelius, kuriuos Kitsunarr mato kitur (kitame kompiuteryje ar konteineryje), susiekite kliento serverį ir kelią su vietiniu keliu.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Ar teikti pirmenybę leidimams, taisantiems blogą leidimą, ir ar jais atnaujinti esamus failus (kaip Sonarr).
+Whole season	Visas sezonas
+Working…	Vykdoma…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Įrašoma į serialų aplankus, kai serialai nuskaitomi, atnaujinami ar importuojami, taip, kaip juos įrašo Sonarr metaduomenų vartotojai.
+Year	Metai
+Your library is empty.	Jūsų biblioteka tuščia.
+all checks passed	visi patikrinimai sėkmingi
+comma separated	atskirta kableliais
+cutoff: {}	riba: {}
+has a file	turi failą
+iCal link	iCal nuoroda
+in 2 days	po 2 dienų
+in a moment	netrukus
+in file names	failų pavadinimuose
+in library	bibliotekoje
+in {text}	po {text}
+just now	ką tik
+may run out of space	gali pritrūkti vietos
+name (e.g. phone)	pavadinimas (pvz., telefonas)
+never refreshed	niekada neatnaujinta
+no media files are moved, renamed or deleted.	jokie medijos failai neperkeliami, nepervadinami ir netrinami.
+not accessible	nepasiekiama
+not added	nepridėta
+not checked	netikrinta
+not read yet	dar nenuskaityta
+on disk	diske
+refreshed {}	atnaujinta {}
+schema {s}	schema {s}
+secrets included	su slaptais duomenimis
+secrets masked	slapti duomenys paslėpti
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip arba sonarr.db
+stored only	tik saugoma
+title (optional)	pavadinimas (neprivalomas)
+{:.1} GiB/h	{:.1} GiB/val.
+{added} added; {}	pridėta: {added}; {}
+{added} shows added.	Pridėta serialų: {added}.
+{c.name} (API key needed)	{c.name} (reikia API rakto)
+{c.series_count} series · {c.movie_count} movies	Serialai: {c.series_count} · filmai: {c.movie_count}
+{chosen().len()} chosen	Pasirinkta: {chosen().len()}
+{chosen().len()} chosen (at most 25)	Pasirinkta: {chosen().len()} (daugiausia 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} diske · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% iš {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · pridėta {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} iš {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} failų · {job["percent"]}% · sutaupyta {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} pradėta.
+{name} was added to the library.	{name} pridėtas į biblioteką.
+{name}: shows	{name}: serialai
+{ok} files imported.	Importuota failų: {ok}.
+{ok} imported; {}	importuota: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: leidimų: {r.releases.len()}, indeksuotojų: {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Patikrinta serialų: {r.series_checked}, failų: {r.files_checked}; problemų: {r.issues.len()}.
+{selected.read().len()} selected	Pasirinkta: {selected.read().len()}
+{text} ago	prieš {text}
+{} (not accessible)	{} (nepasiekiama)
+{} ({} free)	{} (laisva {})
+{} added to every profile (not allowed yet).	{} pridėta prie kiekvieno profilio (kol kas neleidžiama).
+{} day(s)	Dienų: {}
+{} failed: {}	{} nepavyko: {}
+{} format scores	{} formatų balai
+{} free of {}	Laisva {} iš {}
+{} week(s)	Savaičių: {}
+{}{year} — movie	{}{year} — filmas
+‹ Back	‹ Atgal
+‹ Earlier	‹ Ankstesni
+‹ Prev	‹ Ankst.
+○ offline	○ neprisijungta
+● live	● tiesiogiai
+✓ No issues detected.	✓ Problemų neaptikta.
+Activity	Veikla
+Queue	Eilė
+System	Sistema
+Tasks	Užduotys
+Retry	Bandyti dar kartą
+Sign out	Atsijungti
+Search titles…  ( / )	Ieškoti kūrinių…  ( / )
+Loading…	Įkeliama…
+Profiles	Profiliai
+scene {}	scenos {}
+Scene numbering from TheXEM	Scenos numeracija iš TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Scenos numeracija, išvesta iš TheXEM (nepatikrinta)
+Season {} (scene seasons {})	{} sezonas (scenos sezonai {})
+{} (scene {})	{} (scena {})

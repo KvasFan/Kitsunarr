@@ -1,0 +1,968 @@
+# Slovak interface strings: English<TAB>Slovak. {…} marks a placeholder.
+custom	vlastné
+indeterminate	neurčité
+mixed	zmiešané
+retired	vyradené
+· container	· kontajner
+· finished {format_datetime(f)}	· dokončené {format_datetime(f)}
+· missing	· chýba
+· on disk	· na disku
+· today	· dnes
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} ep.
+— MiB per minute; empty uses Settings › Quality	— MiB za minútu; prázdne použije Nastavenia › Kvalita
+— a release's size is multiplied by its codec's factor before the size limits apply	— veľkosť vydania sa pred uplatnením limitov veľkosti vynásobí faktorom jeho kodeku
+— all profiles at once	— všetky profily naraz
+— codec and title criteria, custom qualities (Tanukarr)	— kritériá kodeku a názvu, vlastné kvality (Tanukarr)
+— enter the code	— zadajte kód
+(empty)	(prázdne)
++ Add mapping	+ Pridať mapovanie
++ New format	+ Nový formát
++ New profile	+ Nový profil
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (vypnuté) alebo 10 až 120. RSS synchronizáciu možno spustiť aj zo Systém › Úlohy.
+3 hours ago	pred 3 hodinami
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Sťahovaný torrent, ktorý takto dlho nepostupuje, sa označí ako zlyhaný, pridá do blocklistu a hľadá sa znova. 0 to vypne; postup sa sleduje od spustenia Kitsunarr.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Skupina franšízy zistená zo vzťahov v AniList alebo MyAnimeList. Tituly z tej istej franšízy pridané neskôr sa k nej tiež pripoja.
+A new API key was generated. Update the applications that use it.	Bol vygenerovaný nový API kľúč. Aktualizujte aplikácie, ktoré ho používajú.
+A regular expression, case-insensitive; empty matches every title.	Regulárny výraz bez ohľadu na veľkosť písmen; prázdny vyhovuje každému názvu.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Vydanie dostane najšpecifickejšiu predvoľbu povolenú v profile svojej série, ktorej zdroju, rozlíšeniu, kodeku a vzoru názvu zodpovedá. Ak má štandardná kvalita zadaný kodek alebo vzor, vydania, ktoré mu nevyhovujú, dostanú kvalitu Unknown. Vlastné predvoľby sa pridajú do každého profilu ako nepovolené.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Veľkosť vydania sa pred uplatnením limitov veľkosti vynásobí faktorom jeho kodeku. „Zmiešané“ znamená, že profily používajú rôzne faktory; hodnota zadaná tu sa zapíše do každého profilu.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Titul, ktorý sa pripojí k franšíze alebo ručnej skupine, opustí svoju doterajšiu skupinu. Súbory a priečinky sa nepresúvajú.
+API key	API kľúč
+API key needed	Vyžaduje sa API kľúč
+API keys and language	API kľúče a jazyk
+API path	Cesta API
+About	O aplikácii
+Absolute path; empty to delete permanently.	Absolútna cesta; prázdne = trvalé zmazanie.
+Accepted	Prijaté
+Account lists	Zoznamy účtu
+Actions	Akcie
+Actual	Skutočné
+Add	Pridať
+Add a Newznab or Torznab indexer and enable interactive search for it.	Pridajte indexer Newznab alebo Torznab a povoľte preň interaktívne vyhľadávanie.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Pridajte klienta z jeho šablóny a v editore použite Test; stiahnutia, fronta aj importy používajú každého povoleného klienta. Blackhole zapisuje stiahnutia do priečinka a importuje, čo sa objaví v jeho sledovanom priečinku. Možnosti „Odstrániť dokončené/zlyhané sťahovania“ každého klienta odstránia sťahovania (aj s ich súbormi), keď s nimi klient skončí.
+Add a download client in Settings › Download clients and enable it.	Pridajte klienta na sťahovanie v Nastavenia › Klienti na sťahovanie a povoľte ho.
+Add a root folder first: it is where this title's folder will live.	Najprv pridajte koreňový priečinok: v ňom bude priečinok tohto titulu.
+Add a tag above first.	Najprv vyššie pridajte značku.
+Add a title	Pridať titul
+Add auto tag	Pridať automatickú značku
+Add condition	Pridať podmienku
+Add exclusion	Pridať výnimku
+Add media	Pridať médiá
+Add one, or migrate them from Sonarr/Tanukarr.	Pridajte nejaký alebo ich migrujte zo Sonarr/Tanukarr.
+Add preset	Pridať predvoľbu
+Add selected	Pridať vybrané
+Add series or movies below.	Nižšie pridajte série alebo filmy.
+Add tag	Pridať značku
+Add the list's tags	Pridať značky zoznamu
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Pridajte tituly z TVmaze alebo AniList, alebo prenesite existujúcu knižnicu Sonarr či Tanukarr.
+Add to library	Pridať do knižnice
+Add {}	Pridať {}
+Add {} ({y})	Pridať {} ({y})
+Add — {}	Pridať — {}
+Add, and remove when they leave the list	Pridať a odstrániť, keď opustia zoznam
+Added	Pridané
+Added to the titles this list adds.	Pridávajú sa k titulom, ktoré pridáva tento zoznam.
+Adding titles	Pridávanie titulov
+Adding…	Pridáva sa…
+Address	Adresa
+Age	Vek
+Aired	Odvysielané
+Aired monitored episodes without a file appear here.	Zobrazujú sa tu odvysielané sledované epizódy bez súboru.
+All	Všetko
+All collections	Všetky kolekcie
+All episodes	Všetky epizódy
+All episodes in the series folder	Všetky epizódy v priečinku série
+All events	Všetky udalosti
+Allow zero size (the feed has no release sizes)	Povoliť nulovú veľkosť (kanál neuvádza veľkosti vydaní)
+Also delete the series folder and its files (to the recycle bin when one is set)	Zmazať aj priečinok série a jeho súbory (do koša, ak je nastavený)
+Also for releases grabbed from interactive search	Aj pre vydania stiahnuté z interaktívneho vyhľadávania
+Also known as	Známe aj ako
+Always, even when renaming is off	Vždy, aj keď je premenovanie vypnuté
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Analyzovať video súbory (rozlíšenie, dĺžka a kodeky, pomocou ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Tituly z AniList a MyAnimeList sa vždy pridávajú ako anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, iný Sonarr a vlastné JSON zoznamy sa načítavajú každých pár hodín; nové tituly sa pridávajú s koreňovým priečinkom, profilom a sledovaním daného zoznamu. Služby vyžadujúce OAuth používajú Client ID vašej vlastnej aplikácie a token, ktorý vložíte (tokeny migrované z Tanukarr naďalej fungujú).
+Anime	Anime
+Anime / absolute numbering	Anime / absolútne číslovanie
+Anime categories	Kategórie anime
+Anime episode format	Formát epizódy anime
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Anime filmy možno pridať z AniList a migrácie z Tanukarr prenesú aj svoje filmy. Hrané filmy potrebujú katalóg TMDB.
+Anime standard format search	Vyhľadávanie anime v štandardnom formáte
+Anime title, e.g. Frieren	Názov anime, napr. Frieren
+Any	Akékoľvek
+Any library	Akákoľvek knižnica
+Applications using the current key will stop working until you give them the new one.	Aplikácie používajúce aktuálny kľúč prestanú fungovať, kým im nezadáte nový.
+Applied after every list has been read successfully and some title left a list.	Uplatní sa, keď sa všetky zoznamy úspešne načítajú a niektorý titul zo zoznamu vypadol.
+Apply	Použiť
+Apply migration	Použiť migráciu
+Apply profile	Použiť profil
+Applying migration	Prebieha migrácia
+Applying…	Používa sa…
+As Settings › Media management says	Podľa Nastavenia › Správa médií
+At least 10 characters.	Aspoň 10 znakov.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Aspoň {MIN_PASSWORD_LENGTH} znakov. Dobre poslúži prístupová fráza.
+Auto tag	Automatická značka
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Automatická značka uložená. Uplatní sa pri ďalšom pridaní, úprave alebo obnovení titulov.
+Auto tagging	Automatické označovanie
+Auto-refresh	Automatické obnovovanie
+Automatic	Automaticky
+Automatic search	Automatické vyhľadávanie
+Automatic search for {label}: grabbed {}.	Automatické vyhľadávanie pre {label}: stiahnuté {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Automatické vyhľadávanie pre {label}: nájdené vydania: {}, schválené: {}, nič nestiahnuté.
+Automatic search: grab the best release	Automatické vyhľadávanie: stiahnuť najlepšie vydanie
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Automatizácia je pozastavená: RSS synchronizácia, plánované synchronizácie zoznamov a automatické vyhľadávania sa preskakujú. Ručné akcie a prebiehajúce sťahovania pokračujú.
+Automation resumed.	Automatizácia obnovená.
+Available from	Dostupné od
+Back to the dashboard	Späť na prehľad
+Back up now	Zálohovať teraz
+Backup {} created.	Záloha {} vytvorená.
+Backups	Zálohy
+Blocking:	Blokujúce:
+Blocklist	Blocklist
+Blocklist the release and search again	Pridať vydanie do blocklistu a hľadať znova
+Blocklist the release: it is never grabbed again	Pridať vydanie do blocklistu: už sa nikdy nestiahne
+Blocklist “{title}” and search for a replacement?	Pridať „{title}“ do blocklistu a hľadať náhradu?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Preneste svoju knižnicu a nastavenia zo Sonarr (v3/v4) alebo Tanukarr do Kitsunarr. Zdroj sa iba číta, nikdy sa nemení, a
+Bypass the proxy for local addresses	Obísť proxy pre lokálne adresy
+Calendar	Kalendár
+Calendar →	Kalendár →
+Cancel	Zrušiť
+Cancel compression	Zrušiť kompresiu
+Cannot reach the server: {e}	Server je nedostupný: {e}
+Catalogue	Katalóg
+Category	Kategória
+Certificate validation	Overenie certifikátu
+Change password	Zmeniť heslo
+Change series	Zmeniť sériu
+Changes	Zmeny
+Check	Skontrolovať
+Check library	Skontrolovať knižnicu
+Check now	Skontrolovať teraz
+Check that the mapped series folders exist (read-only)	Overiť, že namapované priečinky sérií existujú (iba čítanie)
+Checked: {summary}.	Skontrolované: {summary}.
+Checking…	Kontroluje sa…
+Choose a backup file	Vyberte súbor zálohy
+Choose a mode	Vyberte režim
+Choose a root folder and a quality profile.	Vyberte koreňový priečinok a profil kvality.
+Choose a season	Vyberte sezónu
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Vyberte sériu a sezónu alebo epizódu. Výsledky ukazujú, čím je každé vydanie podľa parsera Kitsunarr.
+Choose a series or movie…	Vyberte sériu alebo film…
+Choose source	Vybrať zdroj
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Ručne vyberte epizódy tohto vydania a potom ho stiahnite (výber sa zachová pre import)
+Choose…	Vybrať…
+Clean library	Vyčistiť knižnicu
+Clear	Vymazať
+Clear blocklist	Vyčistiť blocklist
+Cleared {n} releases from the blocklist.	Z blocklistu odstránené vydania: {n}.
+Client	Klient
+Close	Zavrieť
+Codec	Kodek
+Codec factors saved in every profile.	Faktory kodekov uložené v každom profile.
+Codec size factors	Faktory veľkosti kodekov
+Codecs	Kodeky
+Collection film folder format	Formát priečinka filmu v kolekcii
+Collections	Kolekcie
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Kolekcie sa objavia, keď sa migrujú z Tanukarr, vytvoria z údajov poskytovateľa alebo vytvoria tu.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Prichádzate zo Sonarr alebo Tanukarr? Importujte svoje existujúce série, nastavenia a históriu v niekoľkých krokoch.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Oddelené čiarkami; * je zástupný znak (*.lan) a fungujú aj rozsahy IP ako 192.168.1.0/24.
+Companion app keys	Kľúče sprievodných aplikácií
+Complete series	Celá séria
+Completed and failed download handling	Spracovanie dokončených a zlyhaných sťahovaní
+Component	Komponent
+Compress series	Komprimovať sériu
+Compression	Kompresia
+Compression queued.	Kompresia zaradená do fronty.
+Compression worker is not connected.	Kompresný worker nie je pripojený.
+Condition	Podmienka
+Conditions	Podmienky
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Podmienky jedného druhu vyhovujú, keď vyhovuje ktorákoľvek z nich (povinné musia všetky); vyhovieť musí každý druh.
+Configure	Konfigurovať
+Confirm password	Potvrdiť heslo
+Connect	Pripojiť
+Connect to a running instance	Pripojiť sa k bežiacej inštancii
+Connecting…	Pripája sa…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Konzistentné kópie databázy. Plánované zálohy bežia týždenne (uchováva sa posledných osem); každá migrácia tiež najprv jednu vytvorí. Na obnovenie zastavte Kitsunarr a spustite
+Continuing	Pokračuje
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (posiela sa s požiadavkou na kanál, napr. uid=1; pass=…)
+Copied.	Skopírované.
+Copy	Kopírovať
+Copy (keep the originals)	Kopírovať (ponechať originály)
+Copy sizes from	Kopírovať veľkosti z
+Copy the token now; it is not shown again:	Skopírujte token teraz; znova sa nezobrazí:
+Could not grab {}: {}	Nepodarilo sa stiahnuť {}: {}
+Covers	Obaly
+Create	Vytvoriť
+Create account	Vytvoriť účet
+Create group	Vytvoriť skupinu
+Create key	Vytvoriť kľúč
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Vytvorte ho na themoviedb.org › Settings › API. Používa sa pre TV série a filmy z TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Vytvorte účet správcu. Budete sa ním prihlasovať do Kitsunarr.
+Created	Vytvorené
+Created when the first file is imported. Nothing is written to disk now.	Vytvorí sa pri importe prvého súboru. Teraz sa na disk nič nezapisuje.
+Creating…	Vytvára sa…
+Credit	Poďakovanie
+Current file	Aktuálny súbor
+Current password	Aktuálne heslo
+Custom format saved.	Vlastný formát uložený.
+Custom format score	Skóre vlastného formátu
+Custom format scores	Skóre vlastných formátov
+Custom formats	Vlastné formáty
+Cutoff unmet	Nedosiahnutá hranica
+Daily	Denné
+Daily episode format	Formát dennej epizódy
+Dashboard	Prehľad
+Data directory	Adresár údajov
+Database backup taken before the import: {b}	Záloha databázy vytvorená pred importom: {b}
+Database schema	Schéma databázy
+Date	Dátum
+Date added	Dátum pridania
+Debug	Ladenie
+Decision	Rozhodnutie
+Default	Predvolené
+Defaults	Predvolené hodnoty
+Delay profile	Profil oneskorenia
+Delay profile saved.	Profil oneskorenia uložený.
+Delay profiles	Profily oneskorenia
+Delete	Zmazať
+Delete empty series folders	Zmazať prázdne priečinky sérií
+Delete file	Zmazať súbor
+Delete group	Zmazať skupinu
+Delete profile	Zmazať profil
+Delete “{path}”? It goes to the recycle bin when one is set.	Zmazať „{path}“? Ak je nastavený kôš, presunie sa doň.
+Delete “{}”?	Zmazať „{}“?
+Delete “{}”? Its series and movies stay in the library.	Zmazať „{}“? Jej série a filmy zostanú v knižnici.
+Deleted	Zmazané
+Directory	Adresár
+Disabled	Zakázané
+Disabled for local addresses	Zakázané pre lokálne adresy
+Disk scanned: {}	Disk prehľadaný: {}
+Disk scanned: {} Not matched: {}	Disk prehľadaný: {} Nepriradené: {}
+Do not prefer	Neuprednostňovať
+Do not search for a replacement	Nehľadať náhradu
+Do nothing	Nerobiť nič
+Done	Hotovo
+Download client options saved.	Možnosti klientov na sťahovanie uložené.
+Download clients	Klienti na sťahovanie
+Download failed	Sťahovanie zlyhalo
+Download queue	Fronta sťahovania
+Downloads	Sťahovania
+Duration	Trvanie
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Každý titul patrí do jedného katalógu, z ktorého čítajú jeho obnovenia; všetky identifikátory, ktoré nesie (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList), sa zachovajú. Tituly migrované zo Sonarr patria do TheTVDB.
+Edit	Upraviť
+Edit “{name}”	Upraviť „{name}“
+Edit “{}”	Upraviť „{}“
+Enable RSS	Povoliť RSS
+Enable automatic search	Povoliť automatické vyhľadávanie
+Enable interactive search	Povoliť interaktívne vyhľadávanie
+Enabled	Povolené
+Ended	Skončené
+English	Angličtina
+Entity	Entita
+Episode	Epizóda
+Episode and movie naming	Pomenovanie epizód a filmov
+Episode image thumbs in the NFO	Miniatúry obrázkov epizód v NFO
+Episode images (<filename>-thumb.jpg)	Obrázky epizód (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Obrázky epizód (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Obrázky epizód (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Mapovania epizód v .plexmatch
+Episode metadata (<filename>.nfo)	Metadáta epizód (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Metadáta epizód (Season##/filename.xml)
+Episode order	Poradie epizód
+Episode order changed: {} episodes updated, {} added.	Poradie epizód zmenené: aktualizované epizódy: {}, pridané: {}.
+Episodes	Epizódy
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Epizódy sa prečíslujú podľa zvoleného poradia; súbory, sledovanie a história zostávajú pri svojich epizódach. Potom premenujte súbory, aby zodpovedali novým číslam.
+Episodes of {title}	Epizódy {title}
+Episodes on disk	Epizódy na disku
+Episodes whose file is below the quality profile's cutoff appear here.	Zobrazujú sa tu epizódy, ktorých súbor je pod hranicou profilu kvality.
+Episodes…	Epizódy…
+Errors	Chyby
+Errors {errors}	Chyby {errors}
+Event	Udalosť
+Every file already follows the naming settings.	Všetky súbory už zodpovedajú nastaveniam pomenovania.
+Every file meets its cutoff	Každý súbor dosahuje svoju hranicu
+Exclude	Vylúčiť
+Exclusions	Výnimky
+Expected	Očakávané
+Expires	Platnosť do
+Extra file extensions	Prípony doplnkových súborov
+Factor	Faktor
+Failed	Zlyhané
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Ochrana pred falošnými vydaniami: pred stiahnutím skontrolovať torrenty a odmietnuť spustiteľné súbory, archívy lákajúce na heslo a obsah bez videa
+Feed address	Adresa kanála
+Fetch the latest metadata from {}	Načítať najnovšie metadáta z {}
+File	Súbor
+File date	Dátum súboru
+File deleted	Súbor zmazaný
+File deleted.	Súbor zmazaný.
+File management	Správa súborov
+File management settings saved.	Nastavenia správy súborov uložené.
+File renamed	Súbor premenovaný
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Súbory staršie ako toto sa denne mažú z koša; 0 ich ponechá.
+Files upgrades replaced, kept as versions	Súbory nahradené vylepšeniami, uchované ako verzie
+Film	Film
+Film title or IMDb id, e.g. Arrival	Názov filmu alebo IMDb id, napr. Arrival
+Find a series in your library	Nájsť sériu vo svojej knižnici
+Find files added to or removed from the series folder	Nájsť súbory pridané do priečinka série alebo z neho odstránené
+Find something to add	Nájdite niečo na pridanie
+First and last pieces first	Najprv prvé a posledné časti
+First day of the week	Prvý deň týždňa
+First season	Prvá sezóna
+Folder	Priečinok
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Formáty používajú typy špecifikácií zo Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Skóre sa priraďuje pre každý profil kvality.
+Found	Nájdené
+Free	Voľné
+Free space	Voľné miesto
+Future days	Budúce dni
+Future episodes	Budúce epizódy
+General	Všeobecné
+GiB	GiB
+Grab	Stiahnuť
+Grab a release from interactive search; downloads in the client's TV category show up here.	Stiahnite vydanie z interaktívneho vyhľadávania; sťahovania v TV kategórii klienta sa zobrazia tu.
+Grab anyway?	Napriek tomu stiahnuť?
+Grab with these episodes	Stiahnuť s týmito epizódami
+Grabbed	Stiahnuté
+Grabbed {}.	Stiahnuté: {}.
+Grabbing…	Sťahuje sa…
+Grabs, imports and file changes appear here. Migrated history is included.	Zobrazujú sa tu stiahnutia, importy a zmeny súborov. Vrátane migrovanej histórie.
+Group film folder format	Formát priečinka filmu v skupine
+Group folder format	Formát priečinka skupiny
+Group season folder format	Formát priečinka sezóny v skupine
+Group story-arc folder format	Formát priečinka dejového oblúka v skupine
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Skupiny súvisiacich sérií a filmov: kolekcie poskytovateľov, anime franšízy (skupiny prequelov/sequelov) a ručné skupiny vrátane tých migrovaných z Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Importy iba cez pevné odkazy: nikdy nekopírovať sťahovania, ktoré sa naďalej seedujú
+Health	Zdravie
+Hide	Skryť
+History	História
+History →	História →
+Host	Hostiteľ
+Host (as in the download client's settings)	Hostiteľ (ako v nastaveniach klienta na sťahovanie)
+Hostname	Názov hostiteľa
+How the catalogue numbers the episodes (it can be changed later on the series page).	Ako katalóg čísluje epizódy (dá sa neskôr zmeniť na stránke série).
+Id	Id
+Identities	Identity
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Ak Kitsunarr vidí vaše médiá pod inými cestami ako zdroj (napríklad iné zväzky Dockeru), namapujte každý zdrojový priečinok na jeho umiestnenie v Kitsunarr. Cesty sa prepíšu iba v databáze.
+Ignored	Ignorované
+Ignored addresses	Ignorované adresy
+Implementation	Implementácia
+Import / Migration	Import / Migrácia
+Import a Sonarr or Tanukarr library	Importovať knižnicu Sonarr alebo Tanukarr
+Import blocked	Import zablokovaný
+Import completed downloads	Importovať dokončené sťahovania
+Import extra files (subtitles…)	Importovať doplnkové súbory (titulky…)
+Import from Sonarr/Tanukarr	Import zo Sonarr/Tanukarr
+Import history	História importov
+Import library	Importovať knižnicu
+Import list options saved.	Možnosti importných zoznamov uložené.
+Import lists	Importné zoznamy
+Import pending	Čaká na import
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Importujte video súbory z ľubovoľného priečinka, ktorý server dokáže čítať: skontrolujte sériu a epizódy pre každý súbor, potom ich skopírujte alebo presuňte do knižnice (premenované podľa nastavení pomenovania).
+Import {chosen().len()} files	Importovať súbory: {chosen().len()}
+Imported	Importované
+Imported from series folder	Importované z priečinka série
+Importing	Importuje sa
+Importing…	Importuje sa…
+Imports need	Importy vyžadujú
+In library ›	V knižnici ›
+Include	Zahrnúť
+Include in file names ({{Custom Formats}} token)	Zahrnúť do názvov súborov (token {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Zahrnúť iba tituly z niektorých zoznamov alebo vynechať tituly iných.
+Include unmonitored	Zahrnúť nesledované
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Vrátane základu URL, napr. http://192.168.1.10:8989 alebo https://host/sonarr
+Indexer	Indexer
+Indexer options saved.	Možnosti indexerov uložené.
+Indexer settings	Nastavenia indexera
+Indexers	Indexery
+Info	Info
+Info {infos}	Info {infos}
+Instance	Inštancia
+Instance name	Názov inštancie
+Instance: {name}	Inštancia: {name}
+Interactive	Interaktívne
+Interactive search	Interaktívne vyhľadávanie
+Interactive search for full-season packs only	Interaktívne vyhľadávanie iba balíkov celých sezón
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Interaktívne vyhľadávanie balíkov celej série (a jej sezón) na torrentových indexeroch
+Interactive search: see every release and choose	Interaktívne vyhľadávanie: zobraziť všetky vydania a vybrať
+Interface language	Jazyk rozhrania
+Interval	Interval
+Jellyfin library and user	Knižnica a používateľ Jellyfin
+Job	Úloha
+Keep / skip	Ponechať / preskočiť
+Keep files replaced by upgrades as versions (in "Plex Versions")	Uchovávať súbory nahradené vylepšeniami ako verzie (v „Plex Versions“)
+Keep me signed in	Zostať prihlásený
+Keep the replaced file's date (upgrades)	Zachovať dátum nahradeného súboru (vylepšenia)
+Kept	Ponechané
+Kept versions	Uchované verzie
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Kľúče pre sprievodné aplikácie používajúce Sonarr v3 API: čítajú knižnicu a kľúče „pridávanie sérií“ môžu aj pridávať série (do koreňového priečinka, bez vyhľadávania). Nič iné nie je povolené.
+KiB	KiB
+Kind	Druh
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr je slobodný softvér (GPL-3.0-or-later).
+Kitsunarr path	Cesta v Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr zálohuje vlastnú databázu, importuje zobrazené údaje v jednej transakcii a pred potvrdením ich overí. Zdroj ani vaše mediálne súbory sa nemenia.
+Label	Označenie
+Languages	Jazyky
+Larger releases are rejected. 0 means unlimited.	Väčšie vydania sa odmietnu. 0 znamená bez obmedzenia.
+Last read	Naposledy načítané
+Last run	Posledné spustenie
+Last search	Posledné vyhľadávanie
+Last searched	Naposledy hľadané
+Last season	Posledná sezóna
+Later ›	Neskôr ›
+Latest season	Najnovšia sezóna
+Level	Úroveň
+Library	Knižnica
+Library check	Kontrola knižnice
+Library tools	Nástroje knižnice
+Library tools saved.	Nástroje knižnice uložené.
+List	Zoznam
+Listed best first. Grouped qualities rank equally.	Zoradené od najlepšej. Zoskupené kvality majú rovnaké poradie.
+Live updates connected	Živé aktualizácie pripojené
+Live updates disconnected	Živé aktualizácie odpojené
+Load	Načítať
+Load the account's lists	Načítať zoznamy účtu
+Load the libraries…	Načítať knižnice…
+Load the users…	Načítať používateľov…
+Local air date	Miestny dátum vysielania
+Local path	Lokálna cesta
+Log them	Zaznamenať ich
+Logs	Logy
+Main rejections	Hlavné odmietnutia
+Make current	Nastaviť ako aktuálne
+Manual import	Manuálny import
+Mark as failed	Označiť ako zlyhané
+Matches monitored titles.	Vyhovuje sledovaným titulom.
+Maximum	Maximum
+Maximum size (MB)	Maximálna veľkosť (MB)
+Media management	Správa médií
+Media management settings	Nastavenia správy médií
+Media paths	Cesty k médiám
+Mediums	Nosiče
+Members	Členovia
+Message	Správa
+Metadata	Metadáta
+Metadata files	Súbory metadát
+Metadata keys saved.	Kľúče metadát uložené.
+Metadata language	Jazyk metadát
+Metadata refreshed.	Metadáta obnovené.
+Metadata refreshed: {} new episodes, {} updated.	Metadáta obnovené: nové epizódy: {}, aktualizované: {}.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Nastavenia metadát uložené. Súbory sa zapíšu pri ďalšom prehľadaní disku, obnovení alebo importe.
+Metadata sources	Zdroje metadát
+MiB	MiB
+Migration completed.	Migrácia dokončená.
+Migration report #{}	Správa o migrácii č. {}
+Minimum	Minimum
+Minimum age (minutes)	Minimálny vek (minúty)
+Minimum custom format score	Minimálne skóre vlastného formátu
+Minimum format score	Minimálne skóre formátu
+Minimum free space (MiB)	Minimálne voľné miesto (MiB)
+Minimum seeders	Minimum seederov
+Missing	Chýbajúce
+Missing (monitored)	Chýbajúce (sledované)
+Missing films	Chýbajúce filmy
+Mode	Režim
+Monday	Pondelok
+Monitor	Sledovať
+Monitored	Sledované
+More languages can be added to the string tables.	Ďalšie jazyky možno pridať do tabuliek reťazcov.
+Move	Presunúť
+Movie	Film
+Movie file format	Formát súboru filmu
+Movie removed from Kitsunarr. Files on disk were not touched.	Film odstránený z Kitsunarr. Súbory na disku zostali nedotknuté.
+Movies	Filmy
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Vydania s viacerými sezónami: prijímať balíky niekoľkých sezón (vyhľadávanie sezóny vezme balík pre svoju sezónu)
+Must contain	Musí obsahovať
+Must contain (comma separated; /regex/ allowed)	Musí obsahovať (oddelené čiarkami; /regex/ povolené)
+Must not contain	Nesmie obsahovať
+NOT	NIE
+Name	Názov
+Naming	Pomenovanie
+Naming options saved.	Možnosti pomenovania uložené.
+Naming saved.	Pomenovanie uložené.
+Negate	Negovať
+Network	Sieť
+Never: keep the release's names	Nikdy: ponechať názvy z vydania
+New custom format	Nový vlastný formát
+New custom preset	Nová vlastná predvoľba
+New group title	Názov novej skupiny
+New password	Nové heslo
+New quality profile	Nový profil kvality
+Next airing	Najbližšie vysielanie
+Next run	Ďalšie spustenie
+Next ›	Ďalej ›
+No	Nie
+No activity yet.	Zatiaľ žiadna aktivita.
+No auto tags.	Žiadne automatické značky.
+No backups yet	Zatiaľ žiadne zálohy
+No collections yet	Zatiaľ žiadne kolekcie
+No companion keys.	Žiadne kľúče sprievodných aplikácií.
+No custom formats	Žiadne vlastné formáty
+No custom formats defined.	Nie sú definované žiadne vlastné formáty.
+No delay above the minimum custom format score	Bez oneskorenia nad minimálnym skóre vlastného formátu
+No delay for the profile's best quality in the preferred protocol	Bez oneskorenia pre najlepšiu kvalitu profilu v preferovanom protokole
+No download client to read	Žiadny klient na sťahovanie na čítanie
+No exclusions.	Žiadne výnimky.
+No history	Žiadna história
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Žiadny indexer nemôže túto sériu automaticky vyhľadať: žiadny nemá povolené automatické vyhľadávanie a zároveň buď žiadne značky, alebo jednu zo značiek série.
+No indexers to search	Žiadne indexery na vyhľadávanie
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Žiadne uchované verzie. Zapnite „Uchovávať súbory nahradené vylepšeniami“ v Pomenovaní.
+No log entries at this level	Žiadne záznamy logu na tejto úrovni
+No mappings.	Žiadne mapovania.
+No matches	Žiadne zhody
+No members	Žiadni členovia
+No migrations have been run yet.	Zatiaľ neprebehla žiadna migrácia.
+No movies yet	Zatiaľ žiadne filmy
+No notes.	Žiadne poznámky.
+No recycle bin is set (Settings › Media management).	Nie je nastavený kôš (Nastavenia › Správa médií).
+No release profiles.	Žiadne profily vydania.
+No root folders yet.	Zatiaľ žiadne koreňové priečinky.
+No root folders.	Žiadne koreňové priečinky.
+No runs yet	Zatiaľ žiadne spustenia
+No searches yet.	Zatiaľ žiadne vyhľadávania.
+No series in your library match.	Žiadna séria vo vašej knižnici nevyhovuje.
+No tags	Žiadne značky
+No {}	Žiadne {}
+No {} yet	Zatiaľ žiadne {}
+None	Žiadne
+Not evaluated by Kitsunarr.	Kitsunarr nehodnotil.
+Not imported	Neimportované
+Not monitored	Nesledované
+Notes	Poznámky
+Notes ({preview.warnings.len()})	Poznámky ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Poznámky ({report.warnings.len()})
+Nothing airs in the next seven days.	V nasledujúcich siedmich dňoch sa nič nevysiela.
+Nothing downloading	Nič sa nesťahuje
+Nothing found	Nič sa nenašlo
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	V tomto katalógu nič nevyhovuje vyhľadávaniu. Skúste iný pravopis, pôvodný názov alebo druhý katalóg.
+Nothing in this period	V tomto období nič
+Nothing missing	Nič nechýba
+Notifications	Notifikácie
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Číslovať epizódy podľa iného poradia katalógu (skupiny epizód TMDB, DVD alebo absolútne poradie TheTVDB)
+OMDb API key	OMDb API kľúč
+Older priority	Priorita starších
+One folder per season	Jeden priečinok na sezónu
+Only the 2000 newest files are listed.	Zobrazuje sa iba 2000 najnovších súborov.
+Only when the proxy needs one.	Iba ak ho proxy vyžaduje.
+Open the library	Otvoriť knižnicu
+OpenAPI document	Dokument OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Otvorí službu na autorizáciu Kitsunarr a vyplní token.
+Options	Možnosti
+Organize	Usporiadať
+Other	Ostatné
+Overview	Prehľad
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Prepísať záznamy, ktoré už v Kitsunarr existujú (inak sa ponechajú)
+Packs	Balíky
+Page not found	Stránka sa nenašla
+Page {page} / {pages}	Strana {page} / {pages}
+Password	Heslo
+Password changed. Other sessions were signed out.	Heslo zmenené. Ostatné relácie boli odhlásené.
+Past days	Uplynulé dni
+Path	Cesta
+Path mappings	Mapovania ciest
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Pozastaviť automatizáciu (RSS synchronizácia, plánované synchronizácie zoznamov, automatické vyhľadávania)
+Peers	Peeri
+Permission	Oprávnenie
+PiB	PiB
+Platform	Platforma
+Port	Port
+Position	Pozícia
+Post-import category	Kategória po importe
+Posters	Plagáty
+Prefer and upgrade	Uprednostniť a vylepšiť
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Uprednostniť balíky sezón anime (vyhľadávania sezón anime v Kitsunarr už sezónu raz hľadajú)
+Prefer, do not upgrade	Uprednostniť, nevylepšovať
+Preferred	Preferované
+Preferred metadata language	Preferovaný jazyk metadát
+Preferred protocol	Preferovaný protokol
+Preparing preview…	Pripravuje sa náhľad…
+Preview	Náhľad
+Preview migration	Náhľad migrácie
+Previous migrations	Predchádzajúce migrácie
+Priority	Priorita
+Problem	Problém
+Profile	Profil
+Profile saved.	Profil uložený.
+Profiles still used by series or movies cannot be deleted.	Profily, ktoré ešte používajú série alebo filmy, nemožno zmazať.
+Progress	Priebeh
+Propers and repacks	Propery a repacky
+Proxy	Proxy
+Proxy saved.	Proxy uložené.
+Proxy type	Typ proxy
+Qualities	Kvality
+Quality	Kvalita
+Quality presets	Predvoľby kvality
+Quality presets saved.	Predvoľby kvality uložené.
+Quality profile	Profil kvality
+Quality profiles	Profily kvality
+Quality profile…	Profil kvality…
+RSS sync interval (minutes)	Interval synchronizácie RSS (minúty)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	RSS synchronizácia po objavení vydania čaká takto dlho na lepšie; oneskorené vydania sa zobrazujú vo fronte. Uplatní sa prvý profil, ktorého značky zodpovedajú sérii; posledný (bez značiek) je predvolený.
+Re-encode this series' files with the compression worker	Prekódovať súbory tejto série kompresným workerom
+Read and add series	Čítať a pridávať série
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Načítava sa naživo z klientov na sťahovanie každých pár sekúnd. Dokončené sťahovania, ktoré Kitsunarr stiahol, sa každú minútu importujú do priečinka série (torrenty sa kopírujú alebo pevne linkujú, aby sa naďalej seedovali; sťahovania z Usenet sa presúvajú). Zlyhané sťahovania sa pridajú do blocklistu a hľadajú sa znova.
+Read the library	Čítať knižnicu
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Iba čítanie: nájde chýbajúce priečinky sérií, záznamy súborov mimo ich priečinka alebo zaznamenané dvakrát a súbory chýbajúce na disku.
+Reading the download clients…	Čítajú sa klienti na sťahovanie…
+Reading the source	Čítanie zdroja
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Číta všetko cez API. Heslá a API kľúče poskytovateľov zdroj skrýva a treba ich potom zadať znova.
+Recent activity	Nedávna aktivita
+Recent priority	Priorita nedávnych
+Recent runs	Nedávne spustenia
+Recent searches	Nedávne vyhľadávania
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Odporúčané. V Sonarr/Tanukarr otvorte System → Backup, vytvorte zálohu a stiahnite .zip (alebo použite sonarr.db). Obsahuje heslá indexerov a klientov na sťahovanie.
+Recycle bin	Kôš
+Recycle bin cleanup (days)	Čistenie koša (dni)
+Recycled	V koši
+Refresh metadata	Obnoviť metadáta
+Refresh preview	Obnoviť náhľad
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Obnovovanie z {} zatiaľ nie je podporované; importované metadáta sa ponechajú bez zmeny
+Refreshing…	Obnovuje sa…
+Regenerate	Znova vygenerovať
+Regenerate API key	Znova vygenerovať API kľúč
+Reject releases whose TheTVDB or IMDb id names another series	Odmietať vydania, ktorých id TheTVDB alebo IMDb označuje inú sériu
+Rejected: click twice to grab anyway	Odmietnuté: kliknite dvakrát a stiahne sa napriek tomu
+Release	Vydanie
+Release profile	Profil vydania
+Release profile saved.	Profil vydania uložený.
+Release profiles	Profily vydania
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Vydania sa porovnajú s profilom kvality série, vlastnými formátmi a profilmi vydania a zoradia sa ako v Sonarr. Odmietnuté vydania vyžadujú druhé kliknutie.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Vydania, ktoré zlyhali alebo boli ručne pridané do blocklistu. Vyhľadávania ani RSS synchronizácia ich už nikdy nestiahnu; odstránením vydanie znova povolíte.
+Remote path	Vzdialená cesta
+Remote path mapping	Mapovanie vzdialenej cesty
+Remote path mapping saved.	Mapovanie vzdialenej cesty uložené.
+Remote path mappings	Mapovania vzdialených ciest
+Remove	Odstrániť
+Remove completed downloads	Odstrániť dokončené sťahovania
+Remove every release from the blocklist?	Odstrániť všetky vydania z blocklistu?
+Remove failed downloads	Odstrániť zlyhané sťahovania
+Remove from library	Odstrániť z knižnice
+Remove from queue	Odstrániť z fronty
+Remove from the download client (deletes its files there)	Odstrániť z klienta na sťahovanie (zmaže tam jeho súbory)
+Remove movie	Odstrániť film
+Remove series	Odstrániť sériu
+Remove tags automatically (from titles that stop matching)	Odstraňovať značky automaticky (z titulov, ktoré prestanú vyhovovať)
+Remove “{title}” and its episode records from Kitsunarr?	Odstrániť „{title}“ a jeho záznamy epizód z Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Odstrániť „{title}“ z Kitsunarr? Súbory na disku sa nezmažú.
+Removed	Odstránené
+Removed from the blocklist.	Odstránené z blocklistu.
+Rename	Premenovať
+Rename files	Premenovať súbory
+Rename files on import	Premenovať súbory pri importe
+Rename files to the naming settings	Premenovať súbory podľa nastavení pomenovania
+Formats use Sonarr's tokens.	Formáty používajú tokeny zo Sonarr.
+Renaming…	Premenováva sa…
+Report	Správa
+Request one at omdbapi.com. Used for films by IMDb id.	Vyžiadajte si ho na omdbapi.com. Používa sa pre filmy podľa IMDb id.
+Required	Povinné
+Resolution	Rozlíšenie
+Restore	Obnoviť
+Restore {}	Obnoviť {}
+Restore…	Obnoviť…
+Restoring…	Obnovuje sa…
+Resume automation	Obnoviť automatizáciu
+Retention (days)	Zachovanie (dni)
+Retire	Vyradiť
+Revoke	Odvolať
+Root folder	Koreňový priečinok
+Root folders	Koreňové priečinky
+Root folder…	Koreňový priečinok…
+Run #{run.id}: {run.status}	Spustenie č. {run.id}: {run.status}
+Run now	Spustiť teraz
+Running…	Prebieha…
+Saturday	Sobota
+Save	Uložiť
+Save criteria	Uložiť kritériá
+Save factors	Uložiť faktory
+Save keys	Uložiť kľúče
+Save metadata files	Ukladať súbory metadát
+Save naming	Uložiť pomenovanie
+Save options	Uložiť možnosti
+Saved	Uložené
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Uložené kľúče sa zobrazujú ako {REDACTED}; ak ich chcete zachovať, nemeňte ich, alebo pole vymažte, ak chcete kľúč odstrániť.
+Saved.	Uložené.
+Scan disk	Prehľadať disk
+Scan folder	Prehľadať priečinok
+Scanning…	Prehľadáva sa…
+Scheduled tasks	Plánované úlohy
+Score	Skóre
+Search	Hľadať
+Search again when a download fails	Hľadať znova, keď sťahovanie zlyhá
+Search all	Hľadať všetko
+Search all films	Hľadať všetky filmy
+Search collection	Hľadať kolekciu
+Search every episode of the list, one search per season	Hľadať každú epizódu zoznamu, jedno vyhľadávanie na sezónu
+Search every member's missing episodes (films: the film)	Hľadať chýbajúce epizódy každého člena (filmy: film)
+Search indexers	Hľadať v indexeroch
+Search selected	Hľadať vybrané
+Search the indexers and choose a release	Hľadať v indexeroch a vybrať vydanie
+Search the indexers and grab the best accepted release	Hľadať v indexeroch a stiahnuť najlepšie prijaté vydanie
+Search the indexers and grab the best releases for the monitored episodes	Hľadať v indexeroch a stiahnuť najlepšie vydania pre sledované epizódy
+Search your indexers	Hľadať vo vašich indexeroch
+Search {chosen} selected	Hľadať vybrané: {chosen}
+Search: {}	Hľadanie: {}
+Search: {} — complete series	Hľadanie: {} — celá séria
+Search: {} — season {season} packs	Hľadanie: {} — balíky sezóny {season}
+Search: {} — {label}	Hľadanie: {} — {label}
+Searching for {label}…	Hľadá sa {label}…
+Searching indexers…	Prehľadávajú sa indexery…
+Searching…	Hľadá sa…
+Season	Sezóna
+Season folder format	Formát priečinka sezóny
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Názvy priečinkov sezón nahrádzajú v {{Season Title}} názvy z katalógu. Ak chcete ponechať názvy z katalógu, nechajte prázdne.
+Season folders	Priečinky sezón
+Season images (Season ##.jpg)	Obrázky sezón (Season ##.jpg)
+Season images (Season##/folder.jpg)	Obrázky sezón (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Obrázky sezón (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Balíky sezón: 1 použije nižšie uvedené ciele pre balíky sezón
+Season premieres only	Iba premiéry sezón
+Season {n}	Sezóna {n}
+Season {one}	Sezóna {one}
+Season {se.season_number}	Sezóna {se.season_number}
+Season {season_number}	Sezóna {season_number}
+Season-pack seed ratio	Pomer seedovania balíka sezóny
+Season-pack seed time, minutes	Čas seedovania balíka sezóny, minúty
+Seasons	Sezóny
+Seasons {first}-{last}	Sezóny {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Tajné údaje sa zobrazujú ako {REDACTED}; ak chcete zachovať uloženú hodnotu, nemeňte ich.
+Seed ratio (empty: the client's default)	Pomer seedovania (prázdne: predvolené klientom)
+Seed time, minutes (empty: the client's default)	Čas seedovania, minúty (prázdne: predvolené klientom)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Posielať požiadavky na indexery, katalógy, zoznamy, klientov na sťahovanie a pripojenia cez proxy.
+Send to the download client	Odoslať klientovi na sťahovanie
+Series	Série
+Series .plexmatch file	Súbor .plexmatch série
+Series folder format	Formát priečinka série
+Series images (Series Title.jpg)	Obrázky sérií (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Obrázky sérií (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Obrázky sérií (folder.jpg)
+Series metadata (tvshow.nfo)	Metadáta sérií (tvshow.nfo)
+Series metadata URL	URL metadát série
+Series metadata episode guide	Sprievodca epizódami v metadátach série
+Series removed from Kitsunarr. Files on disk were not touched.	Séria odstránená z Kitsunarr. Súbory na disku zostali nedotknuté.
+Series removed, and its folder deleted.	Séria odstránená a jej priečinok zmazaný.
+Series type	Typ série
+Set quality profile…	Nastaviť profil kvality…
+Settings	Nastavenia
+Settings saved.	Nastavenia uložené.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security v Sonarr/Tanukarr.
+Show	Zobraziť
+Show as all-day events	Zobrazovať ako celodenné udalosti
+Show unmonitored	Zobraziť nesledované
+Shows	Série
+Sign in	Prihlásiť sa
+Signed in. Save the list to keep the token.	Prihlásené. Uložte zoznam, aby sa token zachoval.
+Signing in…	Prihlasuje sa…
+Size	Veľkosť
+Size limits	Limity veľkosti
+Size on disk	Veľkosť na disku
+Skip files smaller than (MB)	Preskočiť súbory menšie ako (MB)
+Skip the free-space check	Preskočiť kontrolu voľného miesta
+Skip unmonitored episodes when importing packs	Pri importe balíkov preskočiť nesledované epizódy
+Source	Zdroj
+Source code	Zdrojový kód
+Source path	Zdrojová cesta
+Special	Špeciál
+Specials	Špeciály
+Specials are never monitored automatically.	Špeciály sa nikdy nesledujú automaticky.
+Specifications	Špecifikácie
+Specifications (JSON)	Špecifikácie (JSON)
+Specifications must be valid JSON: {e}	Špecifikácie musia byť platný JSON: {e}
+Stalled torrent timeout (minutes)	Časový limit zaseknutého torrentu (minúty)
+Standard	Štandardné
+Standard episode format	Štandardný formát epizódy
+Start migration	Spustiť migráciu
+Start over	Začať odznova
+Start search for missing episodes	Spustiť vyhľadávanie chýbajúcich epizód
+Started	Spustené
+Started {format_datetime(&run.started_at)}	Spustené {format_datetime(&run.started_at)}
+Status	Stav
+Status & health	Stav a zdravie
+Still downloading	Stále sa sťahuje
+Storage outlook	Výhľad úložiska
+Studio	Štúdio
+Subscribe	Prihlásiť odber
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Prihláste odber tejto adresy v kalendárovej aplikácii. Obsahuje váš API kľúč: nezverejňujte ju.
+Sunday	Nedeľa
+Sync	Synchronizovať
+Sync all lists now	Synchronizovať všetky zoznamy teraz
+Sync now	Synchronizovať teraz
+Syncing…	Synchronizuje sa…
+System →	Systém →
+TMDB API key (v3)	TMDB API kľúč (v3)
+TV Series	TV série
+TV series	TV série
+Table	Tabuľka
+Tag	Značka
+Tag them	Označiť ich značkou
+Tag titles already in the library	Označiť značkou tituly, ktoré už sú v knižnici
+Tags	Značky
+Tags (comma separated)	Značky (oddelené čiarkami)
+Tags (ids, comma separated)	Značky (id, oddelené čiarkami)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Značky sa pridávajú sériám a filmom, ktoré vyhovujú každému druhu podmienky, keď sa pridajú, upravia alebo obnovia.
+Task	Úloha
+Television	Televízia
+Television (raw)	Televízia (raw)
+Test	Test
+Test failed: {message}	Test zlyhal: {message}
+Testing…	Testuje sa…
+The blocklist is empty	Blocklist je prázdny
+The catalogue new titles are added from when the list knows their id there.	Katalóg, z ktorého sa pridávajú nové tituly, ak zoznam pozná ich id v ňom.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Dátum, ktorý dostanú importované súbory: dátum vysielania epizódy (miestny alebo UTC), alebo pri vylepšení dátum nahradeného súboru.
+The dry run completed without blocking problems. Nothing has been written yet.	Skúšobný beh skončil bez blokujúcich problémov. Zatiaľ sa nič nezapísalo.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Súbor sa presunie do priečinka sezóny (existujúci súbor sa nikdy neprepíše) a séria sa znova prehľadá.
+The folder must already exist; Kitsunarr never creates or removes it.	Priečinok už musí existovať; Kitsunarr ho nikdy nevytvára ani neodstraňuje.
+The indexers returned no releases for this search.	Indexery pre toto vyhľadávanie nevrátili žiadne vydania.
+The instance is on my local network (private or loopback address)	Inštancia je v mojej lokálnej sieti (súkromná alebo loopback adresa)
+The list has not been read, or it is empty.	Zoznam ešte nebol načítaný alebo je prázdny.
+The migration did not complete; nothing was changed.	Migrácia sa nedokončila; nič sa nezmenilo.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Najnovšie záznamy uchovávané v pamäti. Úplné logy idú na výstup procesu (logy kontajnera alebo journal).
+The passwords do not match.	Heslá sa nezhodujú.
+The recycle bin has no media or subtitle files.	V koši nie sú žiadne mediálne súbory ani titulky.
+The sign-in expired; try again.	Prihlásenie vypršalo; skúste to znova.
+The upload failed (network error).	Nahrávanie zlyhalo (chyba siete).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Worker je voliteľný komponent hostiteľa (kompresný worker z Tanukarr), dostupný cez socket v KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (katalóg Sonarr), TMDB a TVmaze pokrývajú TV série; AniList a MyAnimeList pokrývajú anime série a anime filmy; TMDB a OMDb pokrývajú filmy. Pridanie titulu vytvorí jeho záznam v knižnici a zoznam epizód; súbory neskôr zachytí proces importu.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Tituly z TheTVDB sa vyhľadávajú a pridávajú v tomto jazyku; každú sériu možno zmeniť v jej editore.
+TheTVDB titles in this language; changing it refreshes the series	Názvy z TheTVDB v tomto jazyku; jeho zmena obnoví sériu
+There is nothing at /{path}.	Na /{path} nič nie je.
+They are created by migrating from Sonarr/Tanukarr.	Vytvárajú sa migráciou zo Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Režim premenovania, názvy priečinkov sezón a uchované verzie tejto série
+TiB	TiB
+Time	Čas
+Time left	Zostávajúci čas
+Title	Názov
+Title pattern	Vzor názvu
+Titles import lists never add.	Tituly, ktoré importné zoznamy nikdy nepridajú.
+Titles on no list	Tituly v žiadnom zozname
+Today	Dnes
+Torrent	Torrent
+Torrent delay	Oneskorenie torrentov
+Torrent delay (minutes)	Oneskorenie torrentov (minúty)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Indexery Torznab a Newznab. Na kontrolu použite Test v editore; každé vyhľadávanie používa indexery s povoleným daným druhom vyhľadávania: RSS, automatické alebo interaktívne.
+Trigger	Spúšťač
+URL base	Základ URL
+UTC air date	Dátum vysielania v UTC
+Unchanged	Nezmenené
+Unknown	Neznáme
+Unmonitor	Nesledovať
+Unmonitor them	Prestať ich sledovať
+Unmonitored	Nesledované
+Upcoming	Nadchádzajúce
+Upcoming 7 days	Nasledujúcich 7 dní
+Update	Aktualizovať
+Updated {} items.	Aktualizované položky: {}.
+Upgrade until (cutoff)	Vylepšovať až do (hranica)
+Upgrade until format score	Vylepšovať až do skóre formátu
+Upgrades allowed	Povolené vylepšenia
+Upload a backup	Nahrať zálohu
+Upload failed (HTTP {}).	Nahrávanie zlyhalo (HTTP {}).
+Uploading…	Nahráva sa…
+Use SSL	Použiť SSL
+Use a proxy	Použiť proxy
+Use hardlinks instead of copying	Používať pevné odkazy namiesto kopírovania
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Použite ho z iných aplikácií ako hlavičku X-Api-Key (alebo ?apikey=). Kompatibilné s hlavičkou, ktorú používa Sonarr.
+Use these episodes	Použiť tieto epizódy
+Usenet	Usenet
+Usenet delay	Oneskorenie Usenet
+Usenet delay (minutes)	Oneskorenie Usenet (minúty)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Iba Usenet: novšie vydania sa odmietnu, aby mali čas sa rozšíriť. 0 to vypne.
+Usenet only: older releases are rejected. 0 means unlimited.	Iba Usenet: staršie vydania sa odmietnu. 0 znamená bez obmedzenia.
+User name	Meno používateľa
+Username	Používateľské meno
+Validation	Overenie
+Version	Verzia
+Versions	Verzie
+Waiting for the sign-in at	Čaká sa na prihlásenie na
+Wanted	Hľadané
+Warnings	Upozornenia
+Warnings {warnings}	Upozornenia {warnings}
+Watched (Jellyfin watched sync)	Pozreté (synchronizácia pozretých s Jellyfin)
+Watched sync user	Používateľ synchronizácie pozretých
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, vlastné skripty (s premennými prostredia zo Sonarr), Emby/Jellyfin, Plex a Kodi dostávajú: stiahnutia, importy a vylepšenia, premenovania, pridané alebo zmazané série, zmazané súbory, problémy so zdravím. Použite Test v editore.
+Welcome	Vitajte
+What to import	Čo importovať
+When	Kedy
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Kedy sa kontrolujú HTTPS certifikáty indexerov, klientov na sťahovanie a služieb (nastavenie zo Sonarr). Certifikáty podpísané samým sebou vo vašej sieti vyžadujú miernejšie nastavenie.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Keď klient na sťahovanie hlási cesty, ktoré Kitsunarr vidí inde (iný počítač alebo kontajner), namapujte hostiteľa a cestu klienta na lokálnu cestu.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Či sa uprednostňujú vydania opravujúce chybné vydanie a či vylepšujú existujúce súbory (ako v Sonarr).
+Whole season	Celá sezóna
+Working…	Pracuje sa…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Zapisujú sa do priečinkov sérií pri prehľadaní, obnovení alebo importe sérií, tak ako ich zapisujú konzumenti metadát v Sonarr.
+Year	Rok
+Your library is empty.	Vaša knižnica je prázdna.
+all checks passed	všetky kontroly prešli
+comma separated	oddelené čiarkami
+cutoff: {}	hranica: {}
+has a file	má súbor
+iCal link	Odkaz iCal
+in 2 days	o 2 dni
+in a moment	o chvíľu
+in file names	v názvoch súborov
+in library	v knižnici
+in {text}	o {text}
+just now	práve teraz
+may run out of space	môže dôjsť miesto
+name (e.g. phone)	názov (napr. telefón)
+never refreshed	nikdy neobnovené
+no media files are moved, renamed or deleted.	žiadne mediálne súbory sa nepresúvajú, nepremenúvajú ani nemažú.
+not accessible	nedostupné
+not added	nepridané
+not checked	nekontrolované
+not read yet	ešte nenačítané
+on disk	na disku
+refreshed {}	obnovené {}
+schema {s}	schéma {s}
+secrets included	vrátane tajných údajov
+secrets masked	tajné údaje skryté
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip alebo sonarr.db
+stored only	iba uložené
+title (optional)	názov (voliteľné)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	pridané: {added}; {}
+{added} shows added.	Pridané série: {added}.
+{c.name} (API key needed)	{c.name} (vyžaduje sa API kľúč)
+{c.series_count} series · {c.movie_count} movies	série: {c.series_count} · filmy: {c.movie_count}
+{chosen().len()} chosen	vybrané: {chosen().len()}
+{chosen().len()} chosen (at most 25)	vybrané: {chosen().len()} (najviac 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} na disku · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done} % z {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · pridané {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} z {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} súborov · {job["percent"]} % · ušetrené {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} – spustené.
+{name} was added to the library.	Titul {name} bol pridaný do knižnice.
+{name}: shows	{name}: série
+{ok} files imported.	Importované súbory: {ok}.
+{ok} imported; {}	importované: {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: vydania: {r.releases.len()}, prehľadané indexery: {r.searched_indexers}.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Skontrolované série: {r.series_checked}, súbory: {r.files_checked}; problémy: {r.issues.len()}.
+{selected.read().len()} selected	vybrané: {selected.read().len()}
+{text} ago	pred {text}
+{} (not accessible)	{} (nedostupné)
+{} ({} free)	{} ({} voľné)
+{} added to every profile (not allowed yet).	{} pridané do každého profilu (zatiaľ nepovolené).
+{} day(s)	{} d.
+{} failed: {}	{} zlyhalo: {}
+{} format scores	Skóre formátov: {}
+{} free of {}	{} voľné z {}
+{} week(s)	{} týž.
+{}{year} — movie	{}{year} — film
+‹ Back	‹ Späť
+‹ Earlier	‹ Skôr
+‹ Prev	‹ Predch.
+○ offline	○ offline
+● live	● naživo
+✓ No issues detected.	✓ Nezistené žiadne problémy.
+Activity	Aktivita
+Queue	Fronta
+System	Systém
+Tasks	Úlohy
+Retry	Skúsiť znova
+Sign out	Odhlásiť sa
+Search titles…  ( / )	Hľadať tituly…  ( / )
+Loading…	Načítava sa…
+Profiles	Profily
+scene {}	scéna {}
+Scene numbering from TheXEM	Číslovanie scény z TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Číslovanie scény odvodené z TheXEM (neoverené)
+Season {} (scene seasons {})	Sezóna {} (sezóny scény {})
+{} (scene {})	{} (scéna {})

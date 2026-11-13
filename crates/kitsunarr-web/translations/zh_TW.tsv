@@ -1,0 +1,968 @@
+# Traditional Chinese (Taiwan) interface strings: English	Traditional Chinese (Taiwan). {…} marks a placeholder.
+custom	自訂
+indeterminate	不確定
+mixed	混合
+retired	已停用
+· container	· 容器
+· finished {format_datetime(f)}	· 完成於 {format_datetime(f)}
+· missing	· 缺少
+· on disk	· 在磁碟上
+· today	· 今天
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} 集
+— MiB per minute; empty uses Settings › Quality	— 每分鐘 MiB；留空則使用 設定 › 品質
+— a release's size is multiplied by its codec's factor before the size limits apply	— 發布版本的大小會先乘以其編解碼器係數，再套用大小限制
+— all profiles at once	— 一次套用至所有設定檔
+— codec and title criteria, custom qualities (Tanukarr)	— 編解碼器與標題條件、自訂品質 (Tanukarr)
+— enter the code	— 輸入代碼
+(empty)	（空）
++ Add mapping	+ 新增對應
++ New format	+ 新增格式
++ New profile	+ 新增設定檔
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0（關閉）或 10 至 120。RSS 同步也可從 系統 › 工作 執行。
+3 hours ago	3 小時前
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	下載中的 torrent 若在此時間內毫無進度，即視為失敗、加入封鎖清單並重新搜尋。0 表示關閉；進度自 Kitsunarr 啟動時開始追蹤。
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	從 AniList 或 MyAnimeList 關聯找到的系列作品群組。之後新增的同系列標題仍會加入其中。
+A new API key was generated. Update the applications that use it.	已產生新的 API 金鑰。請更新使用它的應用程式。
+A regular expression, case-insensitive; empty matches every title.	正規表示式，不區分大小寫；留空則符合所有標題。
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	發布版本會採用其影集設定檔中允許、且其來源、解析度、編解碼器與標題模式皆符合的最具體預設集。為標準品質指定編解碼器或模式後，不符合的發布版本會變成「未知」。自訂預設集會以「不允許」加入每個設定檔。
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	發布版本的大小會先乘以其編解碼器係數，再套用大小限制。「混合」表示各設定檔使用不同係數；在此輸入的值會寫入每個設定檔。
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	加入系列作品或手動群組的標題會離開原本所屬的群組。檔案與資料夾不會移動。
+API key	API 金鑰
+API key needed	需要 API 金鑰
+API keys and language	API 金鑰與語言
+API path	API 路徑
+About	關於
+Absolute path; empty to delete permanently.	絕對路徑；留空則永久刪除。
+Accepted	已接受
+Account lists	帳號清單
+Actions	動作
+Actual	實際
+Add	新增
+Add a Newznab or Torznab indexer and enable interactive search for it.	新增 Newznab 或 Torznab 索引器，並為其啟用互動式搜尋。
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	從範本新增用戶端，並在編輯器中使用「測試」；抓取、佇列與匯入會使用每個已啟用的用戶端。Blackhole 會將抓取的項目寫入資料夾，並匯入出現在其監看資料夾中的內容。各用戶端的「移除已完成/失敗的下載」選項會在用戶端處理完畢後移除下載（連同其檔案）。
+Add a download client in Settings › Download clients and enable it.	請在 設定 › 下載用戶端 中新增並啟用下載用戶端。
+Add a root folder first: it is where this title's folder will live.	請先新增根目錄：此標題的資料夾將位於其中。
+Add a tag above first.	請先在上方新增標籤。
+Add a title	新增標題
+Add auto tag	新增自動標籤
+Add condition	新增條件
+Add exclusion	新增排除
+Add media	新增媒體
+Add one, or migrate them from Sonarr/Tanukarr.	新增一個，或從 Sonarr/Tanukarr 遷移。
+Add preset	新增預設集
+Add selected	新增所選項目
+Add series or movies below.	請在下方新增影集或電影。
+Add tag	新增標籤
+Add the list's tags	加入清單的標籤
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	從 TVmaze 或 AniList 新增標題，或匯入現有的 Sonarr 或 Tanukarr 媒體庫。
+Add to library	加入媒體庫
+Add {}	新增 {}
+Add {} ({y})	新增 {} ({y})
+Add — {}	新增 — {}
+Add, and remove when they leave the list	新增，並在離開清單時移除
+Added	已新增
+Added to the titles this list adds.	加至此清單新增的標題。
+Adding titles	正在新增標題
+Adding…	新增中…
+Address	位址
+Age	時間長度
+Aired	已播出
+Aired monitored episodes without a file appear here.	已播出但沒有檔案的已監控集數會顯示在此。
+All	全部
+All collections	所有合集
+All episodes	所有集數
+All episodes in the series folder	影集資料夾中的所有集數
+All events	所有事件
+Allow zero size (the feed has no release sizes)	允許大小為零（訂閱源未提供發布版本大小）
+Also delete the series folder and its files (to the recycle bin when one is set)	同時刪除影集資料夾及其檔案（若有設定資源回收筒則移至其中）
+Also for releases grabbed from interactive search	也適用於從互動式搜尋抓取的發布版本
+Also known as	又名
+Always, even when renaming is off	一律，即使已關閉重新命名
+Analyze video files (resolution, runtime and codecs, with ffprobe)	分析影片檔案（解析度、片長與編解碼器，使用 ffprobe）
+AniList and MyAnimeList titles are always added as anime.	AniList 與 MyAnimeList 的標題一律以動畫新增。
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	AniList、MyAnimeList、Trakt、Simkl、TMDB、MDBList、Plex、其他 Sonarr 及自訂 JSON 清單每隔數小時讀取一次；新標題會以各清單的根目錄、設定檔與監控方式新增。需要 OAuth 的服務會使用您自己應用程式的 Client ID 與您貼上的權杖（從 Tanukarr 遷移的權杖仍可使用）。
+Anime	動畫
+Anime / absolute numbering	動畫 / 絕對編號
+Anime categories	動畫分類
+Anime episode format	動畫集數格式
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	動畫電影可從 AniList 新增，Tanukarr 遷移也會一併帶入其電影。真人電影需要 TMDB 影視目錄。
+Anime standard format search	以標準格式搜尋動畫
+Anime title, e.g. Frieren	動畫標題，例如 Frieren
+Any	任何
+Any library	任何媒體庫
+Applications using the current key will stop working until you give them the new one.	使用目前金鑰的應用程式將停止運作，直到您提供新金鑰為止。
+Applied after every list has been read successfully and some title left a list.	於所有清單皆成功讀取且有標題離開清單後套用。
+Apply	套用
+Apply migration	套用遷移
+Apply profile	套用設定檔
+Applying migration	正在套用遷移
+Applying…	套用中…
+As Settings › Media management says	依照 設定 › 媒體管理
+At least 10 characters.	至少 10 個字元。
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	至少 {MIN_PASSWORD_LENGTH} 個字元。使用密語是不錯的選擇。
+Auto tag	自動標籤
+Auto tag saved. It applies when titles are next added, edited or refreshed.	自動標籤已儲存。將在下次新增、編輯或重新整理標題時套用。
+Auto tagging	自動標記
+Auto-refresh	自動重新整理
+Automatic	自動
+Automatic search	自動搜尋
+Automatic search for {label}: grabbed {}.	{label} 的自動搜尋：已抓取 {}。
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	{label} 的自動搜尋：找到 {} 個發布版本，核准 {} 個，未抓取任何項目。
+Automatic search: grab the best release	自動搜尋：抓取最佳發布版本
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	自動化已暫停：將略過 RSS 同步、排程的清單同步與自動搜尋。手動操作與進行中的下載會繼續。
+Automation resumed.	自動化已恢復。
+Available from	可用起始時間
+Back to the dashboard	返回儀表板
+Back up now	立即備份
+Backup {} created.	已建立備份 {}。
+Backups	備份
+Blocking:	封鎖原因：
+Blocklist	封鎖清單
+Blocklist the release and search again	將發布版本加入封鎖清單並重新搜尋
+Blocklist the release: it is never grabbed again	將發布版本加入封鎖清單：永遠不再抓取
+Blocklist “{title}” and search for a replacement?	將「{title}」加入封鎖清單並搜尋替代版本？
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray（raw / remux）
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	將您的 Sonarr (v3/v4) 或 Tanukarr 媒體庫與設定帶入 Kitsunarr。來源只會被讀取，絕不會被修改，且
+Bypass the proxy for local addresses	本機位址略過代理伺服器
+Calendar	行事曆
+Calendar →	行事曆 →
+Cancel	取消
+Cancel compression	取消壓縮
+Cannot reach the server: {e}	無法連線至伺服器：{e}
+Catalogue	影視目錄
+Category	分類
+Certificate validation	憑證驗證
+Change password	變更密碼
+Change series	變更影集
+Changes	變更
+Check	檢查
+Check library	檢查媒體庫
+Check now	立即檢查
+Check that the mapped series folders exist (read-only)	檢查對應的影集資料夾是否存在（唯讀）
+Checked: {summary}.	已檢查：{summary}。
+Checking…	檢查中…
+Choose a backup file	選擇備份檔案
+Choose a mode	選擇模式
+Choose a root folder and a quality profile.	請選擇根目錄與品質設定檔。
+Choose a season	選擇一季
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	請選擇影集以及一季或一集。結果會依 Kitsunarr 解析器的判讀顯示每個發布版本的內容。
+Choose a series or movie…	選擇影集或電影…
+Choose source	選擇來源
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	手動選擇此發布版本的集數後再抓取（選擇會保留至匯入時）
+Choose…	選擇…
+Clean library	清理媒體庫
+Clear	清除
+Clear blocklist	清除封鎖清單
+Cleared {n} releases from the blocklist.	已從封鎖清單清除 {n} 個發布版本。
+Client	用戶端
+Close	關閉
+Codec	編解碼器
+Codec factors saved in every profile.	編解碼器係數已儲存至每個設定檔。
+Codec size factors	編解碼器大小係數
+Codecs	編解碼器
+Collection film folder format	合集電影資料夾格式
+Collections	合集
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	合集會在從 Tanukarr 遷移、由資料提供者資料建立或在此建立時出現。
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	從 Sonarr 或 Tanukarr 轉移過來？只需幾個步驟即可匯入您現有的影集、設定與歷史記錄。
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	以逗號分隔；* 為萬用字元 (*.lan)，也可使用 192.168.1.0/24 這類 IP 範圍。
+Companion app keys	輔助應用程式金鑰
+Complete series	完整影集
+Completed and failed download handling	已完成與失敗下載的處理
+Component	元件
+Compress series	壓縮影集
+Compression	壓縮
+Compression queued.	已將壓縮加入佇列。
+Compression worker is not connected.	壓縮工作程序未連線。
+Condition	條件
+Conditions	條件
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	同類條件中只要任一符合即算符合（所有必要條件都須符合）；每一類都必須符合。
+Configure	設定
+Confirm password	確認密碼
+Connect	連線
+Connect to a running instance	連線至執行中的執行個體
+Connecting…	連線中…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	資料庫的一致性副本。排程備份每週執行（保留最近八份）；每次遷移前也會先建立一份。若要還原，請停止 Kitsunarr 並執行
+Continuing	連載中
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie（隨訂閱源請求傳送，例如 uid=1; pass=…）
+Copied.	已複製。
+Copy	複製
+Copy (keep the originals)	複製（保留原始檔案）
+Copy sizes from	大小複製自
+Copy the token now; it is not shown again:	請立即複製權杖；之後將不再顯示：
+Could not grab {}: {}	無法抓取 {}：{}
+Covers	涵蓋
+Create	建立
+Create account	建立帳號
+Create group	建立群組
+Create key	建立金鑰
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	請在 themoviedb.org › Settings › API 建立。用於 TMDB 的電視影集與電影。
+Create the administrator account. You will use it to sign in to Kitsunarr.	建立管理員帳號。您將用它來登入 Kitsunarr。
+Created	已建立
+Created when the first file is imported. Nothing is written to disk now.	於匯入第一個檔案時建立。目前不會寫入任何內容到磁碟。
+Creating…	建立中…
+Credit	演職人員
+Current file	目前檔案
+Current password	目前密碼
+Custom format saved.	自訂格式已儲存。
+Custom format score	自訂格式分數
+Custom format scores	自訂格式分數
+Custom formats	自訂格式
+Cutoff unmet	未達門檻
+Daily	每日
+Daily episode format	每日集數格式
+Dashboard	儀表板
+Data directory	資料目錄
+Database backup taken before the import: {b}	匯入前已建立資料庫備份：{b}
+Database schema	資料庫結構描述
+Date	日期
+Date added	新增日期
+Debug	偵錯
+Decision	決策
+Default	預設
+Defaults	預設值
+Delay profile	延遲設定檔
+Delay profile saved.	延遲設定檔已儲存。
+Delay profiles	延遲設定檔
+Delete	刪除
+Delete empty series folders	刪除空的影集資料夾
+Delete file	刪除檔案
+Delete group	刪除群組
+Delete profile	刪除設定檔
+Delete “{path}”? It goes to the recycle bin when one is set.	刪除「{path}」？若有設定資源回收筒，將移至其中。
+Delete “{}”?	刪除「{}」？
+Delete “{}”? Its series and movies stay in the library.	刪除「{}」？其影集與電影會保留在媒體庫中。
+Deleted	已刪除
+Directory	目錄
+Disabled	已停用
+Disabled for local addresses	本機位址停用
+Disk scanned: {}	已掃描磁碟：{}
+Disk scanned: {} Not matched: {}	已掃描磁碟：{} 未比對：{}
+Do not prefer	不優先
+Do not search for a replacement	不搜尋替代版本
+Do nothing	不執行任何動作
+Done	完成
+Download client options saved.	下載用戶端選項已儲存。
+Download clients	下載用戶端
+Download failed	下載失敗
+Download queue	下載佇列
+Downloads	下載
+Duration	時長
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	每個標題屬於一個影視目錄，重新整理時會從中讀取；它帶有的所有識別碼（TheTVDB、TMDB、IMDb、TVmaze、AniList、MyAnimeList）都會保留。從 Sonarr 遷移的標題屬於 TheTVDB。
+Edit	編輯
+Edit “{name}”	編輯「{name}」
+Edit “{}”	編輯「{}」
+Enable RSS	啟用 RSS
+Enable automatic search	啟用自動搜尋
+Enable interactive search	啟用互動式搜尋
+Enabled	已啟用
+Ended	已完結
+English	English
+Entity	實體
+Episode	集
+Episode and movie naming	集數與電影命名
+Episode image thumbs in the NFO	NFO 中的集數縮圖
+Episode images (<filename>-thumb.jpg)	集數圖片（<filename>-thumb.jpg）
+Episode images (Season##/filename.jpg)	集數圖片（Season##/filename.jpg）
+Episode images (Season##/filename.metathumb)	集數圖片（Season##/filename.metathumb）
+Episode mappings in .plexmatch	.plexmatch 中的集數對應
+Episode metadata (<filename>.nfo)	集數中繼資料（<filename>.nfo）
+Episode metadata (Season##/filename.xml)	集數中繼資料（Season##/filename.xml）
+Episode order	集數順序
+Episode order changed: {} episodes updated, {} added.	集數順序已變更：更新 {} 集，新增 {} 集。
+Episodes	集數
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	集數會依所選順序重新編號；檔案、監控狀態與歷史記錄會跟隨各自的集數。之後請重新命名檔案以符合新編號。
+Episodes of {title}	{title} 的集數
+Episodes on disk	磁碟上的集數
+Episodes whose file is below the quality profile's cutoff appear here.	檔案低於品質設定檔門檻的集數會顯示在此。
+Episodes…	集數…
+Errors	錯誤
+Errors {errors}	錯誤 {errors}
+Event	事件
+Every file already follows the naming settings.	所有檔案皆已符合命名設定。
+Every file meets its cutoff	所有檔案皆已達到門檻
+Exclude	排除
+Exclusions	排除項目
+Expected	預期
+Expires	到期
+Extra file extensions	額外檔案副檔名
+Factor	係數
+Failed	失敗
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	假發布版本防護：抓取前先檢查 torrent，拒絕執行檔、誘騙密碼的壓縮檔以及不含影片的內容
+Feed address	訂閱源位址
+Fetch the latest metadata from {}	從 {} 取得最新中繼資料
+File	檔案
+File date	檔案日期
+File deleted	檔案已刪除
+File deleted.	檔案已刪除。
+File management	檔案管理
+File management settings saved.	檔案管理設定已儲存。
+File renamed	檔案已重新命名
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	早於此時間的檔案每天會從資源回收筒刪除；0 表示保留。
+Files upgrades replaced, kept as versions	被升級取代的檔案，保留為版本
+Film	電影
+Film title or IMDb id, e.g. Arrival	電影標題或 IMDb id，例如 Arrival
+Find a series in your library	在媒體庫中尋找影集
+Find files added to or removed from the series folder	尋找影集資料夾中新增或移除的檔案
+Find something to add	尋找要新增的內容
+First and last pieces first	優先下載首尾片段
+First day of the week	每週第一天
+First season	第一季
+Folder	資料夾
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	格式使用 Sonarr 的規格類型（ReleaseTitle、ReleaseGroup、Source、Resolution、Language、Size、IndexerFlag、ReleaseType）。分數依品質設定檔指定。
+Found	已找到
+Free	可用
+Free space	可用空間
+Future days	未來天數
+Future episodes	未來集數
+General	一般
+GiB	GiB
+Grab	抓取
+Grab a release from interactive search; downloads in the client's TV category show up here.	從互動式搜尋抓取發布版本；用戶端電視分類中的下載會顯示在此。
+Grab anyway?	仍要抓取？
+Grab with these episodes	以這些集數抓取
+Grabbed	已抓取
+Grabbed {}.	已抓取 {}。
+Grabbing…	抓取中…
+Grabs, imports and file changes appear here. Migrated history is included.	抓取、匯入與檔案變更會顯示在此。包含遷移的歷史記錄。
+Group film folder format	群組電影資料夾格式
+Group folder format	群組資料夾格式
+Group season folder format	群組季資料夾格式
+Group story-arc folder format	群組故事篇章資料夾格式
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	相關影集與電影的群組：資料提供者合集、動畫系列作品（前傳/續集群組）以及手動群組，包括從 Tanukarr 遷移的群組。
+Hardlink-only imports: never copy downloads that keep seeding	僅以硬連結匯入：絕不複製仍在做種的下載
+Health	健康狀態
+Hide	隱藏
+History	歷史記錄
+History →	歷史記錄 →
+Host	主機
+Host (as in the download client's settings)	主機（與下載用戶端設定中相同）
+Hostname	主機名稱
+How the catalogue numbers the episodes (it can be changed later on the series page).	影視目錄為集數編號的方式（之後可在影集頁面變更）。
+Id	Id
+Identities	身分
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	若 Kitsunarr 看到的媒體路徑與來源不同（例如不同的 Docker 磁碟區），請將每個來源資料夾對應至其在 Kitsunarr 中的位置。路徑只會在資料庫中改寫。
+Ignored	已忽略
+Ignored addresses	略過的位址
+Implementation	實作
+Import / Migration	匯入 / 遷移
+Import a Sonarr or Tanukarr library	匯入 Sonarr 或 Tanukarr 媒體庫
+Import blocked	匯入受阻
+Import completed downloads	匯入已完成的下載
+Import extra files (subtitles…)	匯入額外檔案（字幕…）
+Import from Sonarr/Tanukarr	從 Sonarr/Tanukarr 匯入
+Import history	匯入歷史記錄
+Import library	匯入媒體庫
+Import list options saved.	匯入清單選項已儲存。
+Import lists	匯入清單
+Import pending	等待匯入
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	從伺服器可讀取的任何資料夾匯入影片檔案：確認每個檔案對應的影集與集數，然後將其複製或移動至媒體庫（依命名設定重新命名）。
+Import {chosen().len()} files	匯入 {chosen().len()} 個檔案
+Imported	已匯入
+Imported from series folder	已從影集資料夾匯入
+Importing	匯入中
+Importing…	匯入中…
+Imports need	匯入需要
+In library ›	媒體庫中 ›
+Include	包含
+Include in file names ({{Custom Formats}} token)	包含於檔案名稱中（{{Custom Formats}} 標記）
+Include only titles on some lists, or leave out the titles of others.	只包含某些清單上的標題，或排除其他清單的標題。
+Include unmonitored	包含未監控
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	包含 URL 基底，例如 http://192.168.1.10:8989 或 https://host/sonarr
+Indexer	索引器
+Indexer options saved.	索引器選項已儲存。
+Indexer settings	索引器設定
+Indexers	索引器
+Info	資訊
+Info {infos}	資訊 {infos}
+Instance	執行個體
+Instance name	執行個體名稱
+Instance: {name}	執行個體：{name}
+Interactive	互動式
+Interactive search	互動式搜尋
+Interactive search for full-season packs only	僅互動式搜尋整季包
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	在 torrent 索引器上互動式搜尋整部影集（及其各季）的合輯包
+Interactive search: see every release and choose	互動式搜尋：查看所有發布版本並自行選擇
+Interface language	介面語言
+Interval	間隔
+Jellyfin library and user	Jellyfin 媒體庫與使用者
+Job	工作
+Keep / skip	保留 / 略過
+Keep files replaced by upgrades as versions (in "Plex Versions")	將被升級取代的檔案保留為版本（位於「Plex Versions」）
+Keep me signed in	保持登入
+Keep the replaced file's date (upgrades)	保留被取代檔案的日期（升級）
+Kept	已保留
+Kept versions	保留的版本
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	供使用 Sonarr v3 API 之輔助應用程式的金鑰：可讀取媒體庫，「新增影集」金鑰還能新增影集（至根目錄，不執行搜尋）。其他操作一概不允許。
+KiB	KiB
+Kind	類型
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr 是自由軟體（GPL-3.0-or-later）。
+Kitsunarr path	Kitsunarr 路徑
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr 會備份自己的資料庫，在單一交易中匯入預覽的資料，並在提交前加以驗證。來源與您的媒體檔案不會被修改。
+Label	標示
+Languages	語言
+Larger releases are rejected. 0 means unlimited.	較大的發布版本會被拒絕。0 表示無限制。
+Last read	上次讀取
+Last run	上次執行
+Last search	上次搜尋
+Last searched	上次搜尋
+Last season	最後一季
+Later ›	較晚 ›
+Latest season	最新一季
+Level	等級
+Library	媒體庫
+Library check	媒體庫檢查
+Library tools	媒體庫工具
+Library tools saved.	媒體庫工具已儲存。
+List	清單
+Listed best first. Grouped qualities rank equally.	由最佳排起。同一群組的品質視為同等。
+Live updates connected	即時更新已連線
+Live updates disconnected	即時更新已中斷
+Load	載入
+Load the account's lists	載入帳號的清單
+Load the libraries…	載入媒體庫…
+Load the users…	載入使用者…
+Local air date	當地播出日期
+Local path	本機路徑
+Log them	記錄下來
+Logs	日誌
+Main rejections	主要拒絕原因
+Make current	設為目前
+Manual import	手動匯入
+Mark as failed	標記為失敗
+Matches monitored titles.	符合已監控的標題。
+Maximum	最大值
+Maximum size (MB)	最大大小 (MB)
+Media management	媒體管理
+Media management settings	媒體管理設定
+Media paths	媒體路徑
+Mediums	媒介
+Members	成員
+Message	訊息
+Metadata	中繼資料
+Metadata files	中繼資料檔案
+Metadata keys saved.	中繼資料金鑰已儲存。
+Metadata language	中繼資料語言
+Metadata refreshed.	中繼資料已重新整理。
+Metadata refreshed: {} new episodes, {} updated.	中繼資料已重新整理：新增 {} 集，更新 {} 集。
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	中繼資料設定已儲存。檔案會在下次磁碟掃描、重新整理或匯入時寫入。
+Metadata sources	中繼資料來源
+MiB	MiB
+Migration completed.	遷移已完成。
+Migration report #{}	遷移報告 #{}
+Minimum	最小值
+Minimum age (minutes)	最短時間長度（分鐘）
+Minimum custom format score	最低自訂格式分數
+Minimum format score	最低格式分數
+Minimum free space (MiB)	最低可用空間 (MiB)
+Minimum seeders	最少做種者
+Missing	缺少
+Missing (monitored)	缺少（已監控）
+Missing films	缺少的電影
+Mode	模式
+Monday	星期一
+Monitor	監控
+Monitored	已監控
+More languages can be added to the string tables.	可在字串表中加入更多語言。
+Move	移動
+Movie	電影
+Movie file format	電影檔案格式
+Movie removed from Kitsunarr. Files on disk were not touched.	電影已從 Kitsunarr 移除。磁碟上的檔案未被變動。
+Movies	電影
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	多季發布版本：接受多季合輯包（季搜尋會取得該季的合輯包）
+Must contain	必須包含
+Must contain (comma separated; /regex/ allowed)	必須包含（以逗號分隔；可使用 /regex/）
+Must not contain	不得包含
+NOT	NOT
+Name	名稱
+Naming	命名
+Naming options saved.	命名選項已儲存。
+Naming saved.	命名已儲存。
+Negate	反向
+Network	網路
+Never: keep the release's names	永不：保留發布版本的名稱
+New custom format	新增自訂格式
+New custom preset	新增自訂預設集
+New group title	新群組標題
+New password	新密碼
+New quality profile	新增品質設定檔
+Next airing	下次播出
+Next run	下次執行
+Next ›	下一步 ›
+No	否
+No activity yet.	尚無活動。
+No auto tags.	沒有自動標籤。
+No backups yet	尚無備份
+No collections yet	尚無合集
+No companion keys.	沒有輔助應用程式金鑰。
+No custom formats	沒有自訂格式
+No custom formats defined.	未定義自訂格式。
+No delay above the minimum custom format score	高於最低自訂格式分數時不延遲
+No delay for the profile's best quality in the preferred protocol	偏好協定中達到設定檔最佳品質時不延遲
+No download client to read	沒有可讀取的下載用戶端
+No exclusions.	沒有排除項目。
+No history	沒有歷史記錄
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	沒有索引器能自動搜尋此影集：沒有任何索引器同時啟用自動搜尋，且沒有標籤或帶有此影集的其中一個標籤。
+No indexers to search	沒有可搜尋的索引器
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	沒有保留的版本。請在「命名」中開啟「將被升級取代的檔案保留為版本」。
+No log entries at this level	此等級沒有日誌項目
+No mappings.	沒有對應。
+No matches	沒有符合項目
+No members	沒有成員
+No migrations have been run yet.	尚未執行任何遷移。
+No movies yet	尚無電影
+No notes.	沒有備註。
+No recycle bin is set (Settings › Media management).	未設定資源回收筒（設定 › 媒體管理）。
+No release profiles.	沒有發布設定檔。
+No root folders yet.	尚無根目錄。
+No root folders.	沒有根目錄。
+No runs yet	尚無執行記錄
+No searches yet.	尚無搜尋。
+No series in your library match.	媒體庫中沒有符合的影集。
+No tags	沒有標籤
+No {}	沒有 {}
+No {} yet	尚無 {}
+None	無
+Not evaluated by Kitsunarr.	未經 Kitsunarr 評估。
+Not imported	未匯入
+Not monitored	未監控
+Notes	備註
+Notes ({preview.warnings.len()})	備註 ({preview.warnings.len()})
+Notes ({report.warnings.len()})	備註 ({report.warnings.len()})
+Nothing airs in the next seven days.	未來七天沒有任何播出。
+Nothing downloading	沒有下載中的項目
+Nothing found	找不到任何內容
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	此影視目錄中沒有符合搜尋的項目。請嘗試其他拼寫、原始標題或另一個影視目錄。
+Nothing in this period	此期間沒有任何項目
+Nothing missing	沒有缺少的項目
+Notifications	通知
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	依影視目錄的其他順序為集數編號（TMDB 集數群組、TheTVDB 的 DVD 或絕對順序）
+OMDb API key	OMDb API 金鑰
+Older priority	較舊優先
+One folder per season	每季一個資料夾
+Only the 2000 newest files are listed.	只列出最新的 2000 個檔案。
+Only when the proxy needs one.	僅在代理伺服器需要時填寫。
+Open the library	開啟媒體庫
+OpenAPI document	OpenAPI 文件
+Opens the service to authorize Kitsunarr and fills in the token.	開啟該服務以授權 Kitsunarr，並自動填入權杖。
+Options	選項
+Organize	整理
+Other	其他
+Overview	概要
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	覆寫 Kitsunarr 中已存在的記錄（否則保留原記錄）
+Packs	合輯包
+Page not found	找不到頁面
+Page {page} / {pages}	第 {page} / {pages} 頁
+Password	密碼
+Password changed. Other sessions were signed out.	密碼已變更。其他工作階段已登出。
+Past days	過去天數
+Path	路徑
+Path mappings	路徑對應
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	暫停自動化（RSS 同步、排程的清單同步、自動搜尋）
+Peers	對等節點
+Permission	權限
+PiB	PiB
+Platform	平台
+Port	連接埠
+Position	位置
+Post-import category	匯入後分類
+Posters	海報
+Prefer and upgrade	優先並升級
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	優先選擇動畫整季包（Kitsunarr 的動畫季搜尋已會搜尋該季一次）
+Prefer, do not upgrade	優先，但不升級
+Preferred	偏好
+Preferred metadata language	偏好的中繼資料語言
+Preferred protocol	偏好的協定
+Preparing preview…	正在準備預覽…
+Preview	預覽
+Preview migration	預覽遷移
+Previous migrations	先前的遷移
+Priority	優先順序
+Problem	問題
+Profile	設定檔
+Profile saved.	設定檔已儲存。
+Profiles still used by series or movies cannot be deleted.	仍被影集或電影使用的設定檔無法刪除。
+Progress	進度
+Propers and repacks	Proper 與 Repack
+Proxy	代理伺服器
+Proxy saved.	代理伺服器已儲存。
+Proxy type	代理伺服器類型
+Qualities	品質
+Quality	品質
+Quality presets	品質預設集
+Quality presets saved.	品質預設集已儲存。
+Quality profile	品質設定檔
+Quality profiles	品質設定檔
+Quality profile…	品質設定檔…
+RSS sync interval (minutes)	RSS 同步間隔（分鐘）
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	發布版本出現後，RSS 同步會等待這段時間以尋找更好的版本；延遲中的發布版本會顯示在佇列中。套用第一個標籤符合影集的設定檔；最後一個（無標籤）為預設。
+Re-encode this series' files with the compression worker	使用壓縮工作程序重新編碼此影集的檔案
+Read and add series	讀取並新增影集
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	每隔幾秒即時從下載用戶端讀取。Kitsunarr 抓取的已完成下載每分鐘會匯入影集資料夾（torrent 以複製或硬連結方式處理，因此可繼續做種；Usenet 下載則會移動）。失敗的下載會加入封鎖清單並重新搜尋。
+Read the library	讀取媒體庫
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	唯讀：找出缺少的影集資料夾、位於所屬資料夾之外或重複記錄的檔案記錄，以及磁碟上缺少的檔案。
+Reading the download clients…	正在讀取下載用戶端…
+Reading the source	正在讀取來源
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	透過 API 讀取所有內容。資料提供者的密碼與 API 金鑰會被來源隱藏，之後必須重新輸入。
+Recent activity	最近活動
+Recent priority	較新優先
+Recent runs	最近執行
+Recent searches	最近搜尋
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	建議使用。在 Sonarr/Tanukarr 中開啟 系統 → 備份，建立備份並下載 .zip（或使用 sonarr.db）。包含索引器與下載用戶端的密碼。
+Recycle bin	資源回收筒
+Recycle bin cleanup (days)	資源回收筒清理（天）
+Recycled	已移至回收筒
+Refresh metadata	重新整理中繼資料
+Refresh preview	重新整理預覽
+Refreshing from {} is not supported yet; the imported metadata is kept as is	尚不支援從 {} 重新整理；匯入的中繼資料將維持原樣
+Refreshing…	重新整理中…
+Regenerate	重新產生
+Regenerate API key	重新產生 API 金鑰
+Reject releases whose TheTVDB or IMDb id names another series	拒絕 TheTVDB 或 IMDb id 指向其他影集的發布版本
+Rejected: click twice to grab anyway	已拒絕：點擊兩次仍要抓取
+Release	發布版本
+Release profile	發布設定檔
+Release profile saved.	發布設定檔已儲存。
+Release profiles	發布設定檔
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	發布版本會依影集的品質設定檔、自訂格式與發布設定檔進行檢查並排序，與 Sonarr 相同。被拒絕的發布版本需要再點擊一次。
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	失敗或手動加入封鎖清單的發布版本。搜尋與 RSS 同步永遠不會再抓取它們；移除其中一個即可重新允許。
+Remote path	遠端路徑
+Remote path mapping	遠端路徑對應
+Remote path mapping saved.	遠端路徑對應已儲存。
+Remote path mappings	遠端路徑對應
+Remove	移除
+Remove completed downloads	移除已完成的下載
+Remove every release from the blocklist?	要從封鎖清單移除所有發布版本嗎？
+Remove failed downloads	移除失敗的下載
+Remove from library	從媒體庫移除
+Remove from queue	從佇列移除
+Remove from the download client (deletes its files there)	從下載用戶端移除（會刪除其中的檔案）
+Remove movie	移除電影
+Remove series	移除影集
+Remove tags automatically (from titles that stop matching)	自動移除標籤（從不再符合的標題）
+Remove “{title}” and its episode records from Kitsunarr?	要從 Kitsunarr 移除「{title}」及其集數記錄嗎？
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	要從 Kitsunarr 移除「{title}」嗎？磁碟上的檔案不會被刪除。
+Removed	已移除
+Removed from the blocklist.	已從封鎖清單移除。
+Rename	重新命名
+Rename files	重新命名檔案
+Rename files on import	匯入時重新命名檔案
+Rename files to the naming settings	依命名設定重新命名檔案
+Formats use Sonarr's tokens.	格式使用 Sonarr 的標記。
+Renaming…	重新命名中…
+Report	報告
+Request one at omdbapi.com. Used for films by IMDb id.	請至 omdbapi.com 申請。用於以 IMDb id 查詢電影。
+Required	必要
+Resolution	解析度
+Restore	還原
+Restore {}	還原 {}
+Restore…	還原…
+Restoring…	還原中…
+Resume automation	恢復自動化
+Retention (days)	保留期限（天）
+Retire	停用
+Revoke	撤銷
+Root folder	根目錄
+Root folders	根目錄
+Root folder…	根目錄…
+Run #{run.id}: {run.status}	執行 #{run.id}：{run.status}
+Run now	立即執行
+Running…	執行中…
+Saturday	星期六
+Save	儲存
+Save criteria	儲存條件
+Save factors	儲存係數
+Save keys	儲存金鑰
+Save metadata files	儲存中繼資料檔案
+Save naming	儲存命名
+Save options	儲存選項
+Saved	已儲存
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	已儲存的金鑰顯示為 {REDACTED}；保持不變即可保留，或清空欄位以移除。
+Saved.	已儲存。
+Scan disk	掃描磁碟
+Scan folder	掃描資料夾
+Scanning…	掃描中…
+Scheduled tasks	排程工作
+Score	分數
+Search	搜尋
+Search again when a download fails	下載失敗時重新搜尋
+Search all	全部搜尋
+Search all films	搜尋所有電影
+Search collection	搜尋合集
+Search every episode of the list, one search per season	搜尋清單中的每一集，每季搜尋一次
+Search every member's missing episodes (films: the film)	搜尋每個成員缺少的集數（電影：搜尋該電影）
+Search indexers	搜尋索引器
+Search selected	搜尋所選項目
+Search the indexers and choose a release	搜尋索引器並選擇發布版本
+Search the indexers and grab the best accepted release	搜尋索引器並抓取最佳的已接受發布版本
+Search the indexers and grab the best releases for the monitored episodes	搜尋索引器並為已監控的集數抓取最佳發布版本
+Search your indexers	搜尋您的索引器
+Search {chosen} selected	搜尋 {chosen} 個所選項目
+Search: {}	搜尋：{}
+Search: {} — complete series	搜尋：{} — 完整影集
+Search: {} — season {season} packs	搜尋：{} — 第 {season} 季合輯包
+Search: {} — {label}	搜尋：{} — {label}
+Searching for {label}…	正在搜尋 {label}…
+Searching indexers…	正在搜尋索引器…
+Searching…	搜尋中…
+Season	季
+Season folder format	季資料夾格式
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	季資料夾標題會取代 {{Season Title}} 中影視目錄的標題。留空則保留影視目錄的標題。
+Season folders	季資料夾
+Season images (Season ##.jpg)	季圖片（Season ##.jpg）
+Season images (Season##/folder.jpg)	季圖片（Season##/folder.jpg）
+Season images (season##-poster.jpg)	季圖片（season##-poster.jpg）
+Season packs: 1 uses the season-pack goals below	整季包：1 表示使用下方的整季包目標
+Season premieres only	僅季首播
+Season {n}	第 {n} 季
+Season {one}	第 {one} 季
+Season {se.season_number}	第 {se.season_number} 季
+Season {season_number}	第 {season_number} 季
+Season-pack seed ratio	整季包做種比率
+Season-pack seed time, minutes	整季包做種時間（分鐘）
+Seasons	季
+Seasons {first}-{last}	第 {first}-{last} 季
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	機密資料顯示為 {REDACTED}；保持不變即可保留已儲存的值。
+Seed ratio (empty: the client's default)	做種比率（留空：用戶端預設值）
+Seed time, minutes (empty: the client's default)	做種時間，分鐘（留空：用戶端預設值）
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	透過代理伺服器傳送對索引器、影視目錄、清單、下載用戶端與連線的請求。
+Send to the download client	傳送至下載用戶端
+Series	影集
+Series .plexmatch file	影集 .plexmatch 檔案
+Series folder format	影集資料夾格式
+Series images (Series Title.jpg)	影集圖片（Series Title.jpg）
+Series images (fanart.jpg, poster.jpg, banner.jpg)	影集圖片（fanart.jpg、poster.jpg、banner.jpg）
+Series images (folder.jpg)	影集圖片（folder.jpg）
+Series metadata (tvshow.nfo)	影集中繼資料（tvshow.nfo）
+Series metadata URL	影集中繼資料 URL
+Series metadata episode guide	影集中繼資料集數指南
+Series removed from Kitsunarr. Files on disk were not touched.	影集已從 Kitsunarr 移除。磁碟上的檔案未被變動。
+Series removed, and its folder deleted.	影集已移除，其資料夾也已刪除。
+Series type	影集類型
+Set quality profile…	設定品質設定檔…
+Settings	設定
+Settings saved.	設定已儲存。
+Settings → General → Security in Sonarr/Tanukarr.	在 Sonarr/Tanukarr 的 設定 → 一般 → 安全性。
+Show	顯示
+Show as all-day events	顯示為全天事件
+Show unmonitored	顯示未監控
+Shows	影集
+Sign in	登入
+Signed in. Save the list to keep the token.	已登入。請儲存清單以保留權杖。
+Signing in…	登入中…
+Size	大小
+Size limits	大小限制
+Size on disk	磁碟上的大小
+Skip files smaller than (MB)	略過小於此大小的檔案 (MB)
+Skip the free-space check	略過可用空間檢查
+Skip unmonitored episodes when importing packs	匯入合輯包時略過未監控的集數
+Source	來源
+Source code	原始碼
+Source path	來源路徑
+Special	特別篇
+Specials	特別篇
+Specials are never monitored automatically.	特別篇永遠不會自動監控。
+Specifications	規格
+Specifications (JSON)	規格 (JSON)
+Specifications must be valid JSON: {e}	規格必須是有效的 JSON：{e}
+Stalled torrent timeout (minutes)	停滯 torrent 逾時（分鐘）
+Standard	標準
+Standard episode format	標準集數格式
+Start migration	開始遷移
+Start over	重新開始
+Start search for missing episodes	開始搜尋缺少的集數
+Started	已開始
+Started {format_datetime(&run.started_at)}	開始於 {format_datetime(&run.started_at)}
+Status	狀態
+Status & health	狀態與健康
+Still downloading	仍在下載
+Storage outlook	儲存空間預估
+Studio	製作公司
+Subscribe	訂閱
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	在行事曆應用程式中訂閱此位址。其中包含您的 API 金鑰：請妥善保密。
+Sunday	星期日
+Sync	同步
+Sync all lists now	立即同步所有清單
+Sync now	立即同步
+Syncing…	同步中…
+System →	系統 →
+TMDB API key (v3)	TMDB API 金鑰 (v3)
+TV Series	電視影集
+TV series	電視影集
+Table	表格
+Tag	標籤
+Tag them	為其加上標籤
+Tag titles already in the library	為已在媒體庫中的標題加上標籤
+Tags	標籤
+Tags (comma separated)	標籤（以逗號分隔）
+Tags (ids, comma separated)	標籤（id，以逗號分隔）
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	在新增、編輯或重新整理時，符合每一類條件的影集與電影會被加上標籤。
+Task	工作
+Television	電視
+Television (raw)	電視 (raw)
+Test	測試
+Test failed: {message}	測試失敗：{message}
+Testing…	測試中…
+The blocklist is empty	封鎖清單是空的
+The catalogue new titles are added from when the list knows their id there.	當清單知道標題在該影視目錄中的 id 時，新標題要從哪個影視目錄新增。
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	匯入檔案取得的日期：集數的播出日期（當地或 UTC），或在升級時沿用被取代檔案的日期。
+The dry run completed without blocking problems. Nothing has been written yet.	試執行已完成，沒有阻礙性問題。目前尚未寫入任何內容。
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	檔案會移至季資料夾（絕不覆寫現有檔案），並重新掃描影集。
+The folder must already exist; Kitsunarr never creates or removes it.	資料夾必須已存在；Kitsunarr 絕不會建立或移除它。
+The indexers returned no releases for this search.	索引器未針對此搜尋傳回任何發布版本。
+The instance is on my local network (private or loopback address)	此執行個體位於我的區域網路中（私有或迴路位址）
+The list has not been read, or it is empty.	此清單尚未讀取，或為空。
+The migration did not complete; nothing was changed.	遷移未完成；未變更任何內容。
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	保存在記憶體中的最新項目。完整日誌會輸出至處理程序輸出（容器日誌或 journal）。
+The passwords do not match.	密碼不相符。
+The recycle bin has no media or subtitle files.	資源回收筒中沒有媒體或字幕檔案。
+The sign-in expired; try again.	登入已逾時；請再試一次。
+The upload failed (network error).	上傳失敗（網路錯誤）。
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	工作程序是選用的主機元件（Tanukarr 的壓縮工作程序），透過 KITSUNARR_COMPRESSION_SOCKET 的通訊端連線。
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB（Sonarr 的影視目錄）、TMDB 與 TVmaze 涵蓋電視影集；AniList 與 MyAnimeList 涵蓋動畫影集與動畫電影；TMDB 與 OMDb 涵蓋電影。新增標題會建立其媒體庫項目與集數清單；檔案稍後由匯入流程取得。
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	以此語言搜尋並新增 TheTVDB 標題；每部影集可在其編輯器中變更。
+TheTVDB titles in this language; changing it refreshes the series	以此語言顯示 TheTVDB 標題；變更後會重新整理影集
+There is nothing at /{path}.	/{path} 沒有任何內容。
+They are created by migrating from Sonarr/Tanukarr.	它們會在從 Sonarr/Tanukarr 遷移時建立。
+This series' renaming mode, season folder titles and kept versions	此影集的重新命名模式、季資料夾標題與保留的版本
+TiB	TiB
+Time	時間
+Time left	剩餘時間
+Title	標題
+Title pattern	標題模式
+Titles import lists never add.	匯入清單永遠不會新增的標題。
+Titles on no list	不在任何清單上的標題
+Today	今天
+Torrent	Torrent
+Torrent delay	Torrent 延遲
+Torrent delay (minutes)	Torrent 延遲（分鐘）
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Torznab 與 Newznab 索引器。在編輯器中使用「測試」來檢查；每種搜尋都會使用已啟用該類搜尋的索引器：RSS、自動或互動式。
+Trigger	觸發
+URL base	URL 基底
+UTC air date	UTC 播出日期
+Unchanged	未變更
+Unknown	未知
+Unmonitor	取消監控
+Unmonitor them	取消監控
+Unmonitored	未監控
+Upcoming	即將播出
+Upcoming 7 days	未來 7 天
+Update	更新
+Updated {} items.	已更新 {} 個項目。
+Upgrade until (cutoff)	升級直到（門檻）
+Upgrade until format score	升級直到格式分數
+Upgrades allowed	允許升級
+Upload a backup	上傳備份
+Upload failed (HTTP {}).	上傳失敗（HTTP {}）。
+Uploading…	上傳中…
+Use SSL	使用 SSL
+Use a proxy	使用代理伺服器
+Use hardlinks instead of copying	使用硬連結而非複製
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	在其他應用程式中將其作為 X-Api-Key 標頭（或 ?apikey=）使用。與 Sonarr 使用的標頭相容。
+Use these episodes	使用這些集數
+Usenet	Usenet
+Usenet delay	Usenet 延遲
+Usenet delay (minutes)	Usenet 延遲（分鐘）
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	僅限 Usenet：較新的發布版本會被拒絕，讓其有時間傳播。0 表示關閉。
+Usenet only: older releases are rejected. 0 means unlimited.	僅限 Usenet：較舊的發布版本會被拒絕。0 表示無限制。
+User name	使用者名稱
+Username	使用者名稱
+Validation	驗證
+Version	版本
+Versions	版本
+Waiting for the sign-in at	正在等待登入：
+Wanted	待尋
+Warnings	警告
+Warnings {warnings}	警告 {warnings}
+Watched (Jellyfin watched sync)	已觀看（Jellyfin 觀看狀態同步）
+Watched sync user	觀看狀態同步使用者
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	會傳送至 Webhook、Notifiarr、Discord、Slack、Telegram、Gotify、ntfy、Pushover、Pushbullet、Join、Prowl、Simplepush、Signal、Apprise、電子郵件 (SMTP)、Mailgun、SendGrid、自訂指令碼（含 Sonarr 的環境變數）、Emby/Jellyfin、Plex 與 Kodi：抓取、匯入與升級、重新命名、影集新增或刪除、已刪除的檔案、健康問題。請在編輯器中使用「測試」。
+Welcome	歡迎
+What to import	要匯入的內容
+When	時機
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	何時檢查索引器、下載用戶端與服務的 HTTPS 憑證（Sonarr 的設定）。網路中的自我簽署憑證需要放寬此設定。
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	當下載用戶端回報的路徑在 Kitsunarr 中位於其他位置（另一台機器或容器）時，請將用戶端的主機與路徑對應至本機路徑。
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	是否優先選擇修正有問題發布版本的發布版本，並升級現有檔案（與 Sonarr 相同）。
+Whole season	整季
+Working…	處理中…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	在掃描、重新整理或匯入影集時寫入影集資料夾，寫法與 Sonarr 的中繼資料消費者相同。
+Year	年份
+Your library is empty.	您的媒體庫是空的。
+all checks passed	所有檢查皆通過
+comma separated	以逗號分隔
+cutoff: {}	門檻：{}
+has a file	有檔案
+iCal link	iCal 連結
+in 2 days	2 天後
+in a moment	稍後
+in file names	於檔案名稱中
+in library	在媒體庫中
+in {text}	{text}後
+just now	剛剛
+may run out of space	可能空間不足
+name (e.g. phone)	名稱（例如 手機）
+never refreshed	從未重新整理
+no media files are moved, renamed or deleted.	不會移動、重新命名或刪除任何媒體檔案。
+not accessible	無法存取
+not added	未新增
+not checked	未檢查
+not read yet	尚未讀取
+on disk	在磁碟上
+refreshed {}	已重新整理 {}
+schema {s}	結構描述 {s}
+secrets included	包含機密資料
+secrets masked	已遮蔽機密資料
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip 或 sonarr.db
+stored only	僅儲存
+title (optional)	標題（選填）
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	已新增 {added} 個；{}
+{added} shows added.	已新增 {added} 部影集。
+{c.name} (API key needed)	{c.name}（需要 API 金鑰）
+{c.series_count} series · {c.movie_count} movies	{c.series_count} 部影集 · {c.movie_count} 部電影
+{chosen().len()} chosen	已選擇 {chosen().len()} 個
+{chosen().len()} chosen (at most 25)	已選擇 {chosen().len()} 個（最多 25 個）
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} 在磁碟上 · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{format_bytes(item.size)} 的 {done}%
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · 新增於 {format_date(&f.added_at)}
+{first}–{last} of {total}	第 {first}–{last} 項，共 {total} 項
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} 個檔案 · {job["percent"]}% · 已節省 {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} 已開始。
+{name} was added to the library.	{name} 已加入媒體庫。
+{name}: shows	{name}：影集
+{ok} files imported.	已匯入 {ok} 個檔案。
+{ok} imported; {}	已匯入 {ok} 個；{}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}：從 {r.searched_indexers} 個索引器取得 {r.releases.len()} 個發布版本。
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	已檢查 {r.series_checked} 部影集與 {r.files_checked} 個檔案：{r.issues.len()} 個問題。
+{selected.read().len()} selected	已選擇 {selected.read().len()} 個
+{text} ago	{text}前
+{} (not accessible)	{}（無法存取）
+{} ({} free)	{}（可用 {}）
+{} added to every profile (not allowed yet).	已將 {} 加入每個設定檔（尚未允許）。
+{} day(s)	{} 天
+{} failed: {}	{} 失敗：{}
+{} format scores	{} 的格式分數
+{} free of {}	{} 可用，共 {}
+{} week(s)	{} 週
+{}{year} — movie	{}{year} — 電影
+‹ Back	‹ 返回
+‹ Earlier	‹ 較早
+‹ Prev	‹ 上一頁
+○ offline	○ 離線
+● live	● 即時
+✓ No issues detected.	✓ 未偵測到任何問題。
+Activity	活動
+Queue	佇列
+System	系統
+Tasks	工作
+Retry	重試
+Sign out	登出
+Search titles…  ( / )	搜尋標題…  ( / )
+Loading…	載入中…
+Profiles	設定檔
+scene {}	場景 {}
+Scene numbering from TheXEM	來自 TheXEM 的場景編號
+Scene numbering extrapolated from TheXEM (unverified)	從 TheXEM 推算的場景編號（未驗證）
+Season {} (scene seasons {})	第 {} 季（場景季 {}）
+{} (scene {})	{}（場景 {}）

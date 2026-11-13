@@ -1,0 +1,968 @@
+# Persian interface strings: English<TAB>Persian. {…} marks a placeholder.
+custom	سفارشی
+indeterminate	نامشخص
+mixed	مختلط
+retired	بازنشسته
+· container	· کانتینر
+· finished {format_datetime(f)}	· پایان‌یافته {format_datetime(f)}
+· missing	· ناموجود
+· on disk	· روی دیسک
+· today	· امروز
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} قسمت
+— MiB per minute; empty uses Settings › Quality	— MiB در دقیقه؛ خالی از تنظیمات › کیفیت استفاده می‌کند
+— a release's size is multiplied by its codec's factor before the size limits apply	— حجم یک ریلیز پیش از اعمال محدودیت‌های حجم در ضریب کدک آن ضرب می‌شود
+— all profiles at once	— همه پروفایل‌ها با هم
+— codec and title criteria, custom qualities (Tanukarr)	— معیارهای کدک و عنوان، کیفیت‌های سفارشی (Tanukarr)
+— enter the code	— کد را وارد کنید
+(empty)	(خالی)
++ Add mapping	+ افزودن نگاشت
++ New format	+ قالب جدید
++ New profile	+ پروفایل جدید
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (خاموش) یا 10 تا 120. همگام‌سازی RSS از سیستم › وظایف هم اجرا می‌شود.
+3 hours ago	3 ساعت پیش
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	تورنتی که در حال دانلود است و این مدت هیچ پیشرفتی نداشته باشد، ناموفق شمرده می‌شود، به فهرست مسدود می‌رود و دوباره جستجو می‌شود. 0 این را خاموش می‌کند؛ پیشرفت از زمان شروع Kitsunarr دنبال می‌شود.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	یک گروه فرنچایز که از روابط AniList یا MyAnimeList یافت شده است. عنوان‌هایی که بعداً از همان فرنچایز اضافه شوند نیز به آن می‌پیوندند.
+A new API key was generated. Update the applications that use it.	یک کلید API جدید ساخته شد. برنامه‌هایی را که از آن استفاده می‌کنند به‌روزرسانی کنید.
+A regular expression, case-insensitive; empty matches every title.	یک عبارت باقاعده، بدون حساسیت به حروف بزرگ و کوچک؛ خالی با هر عنوانی منطبق می‌شود.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	یک ریلیز دقیق‌ترین پیش‌تنظیمِ مجاز در پروفایل سریالش را می‌گیرد که منبع، وضوح، کدک و الگوی عنوانش با آن منطبق باشد. یک کیفیت استاندارد که کدک یا الگو برایش تعیین شده باشد، ریلیزهای ناسازگار را «ناشناخته» می‌کند. پیش‌تنظیم‌های سفارشی به‌صورت غیرمجاز به همه پروفایل‌ها اضافه می‌شوند.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	حجم یک ریلیز پیش از اعمال محدودیت‌های حجم در ضریب کدک آن ضرب می‌شود. «مختلط» یعنی پروفایل‌ها ضرایب متفاوتی دارند؛ مقداری که اینجا وارد شود در همه پروفایل‌ها نوشته می‌شود.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	عنوانی که به یک فرنچایز یا گروه دستی بپیوندد، گروه قبلی خود را ترک می‌کند. فایل‌ها و پوشه‌ها جابه‌جا نمی‌شوند.
+API key	کلید API
+API key needed	کلید API لازم است
+API keys and language	کلیدهای API و زبان
+API path	مسیر API
+About	درباره
+Absolute path; empty to delete permanently.	مسیر مطلق؛ برای حذف دائمی خالی بگذارید.
+Accepted	پذیرفته‌شده
+Account lists	فهرست‌های حساب
+Actions	اقدامات
+Actual	واقعی
+Add	افزودن
+Add a Newznab or Torznab indexer and enable interactive search for it.	یک ایندکسر Newznab یا Torznab اضافه کنید و جستجوی تعاملی را برای آن فعال کنید.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	یک کلاینت را از روی الگوی آن اضافه کنید و در ویرایشگر از «آزمایش» استفاده کنید؛ دریافت‌ها، صف و وارد کردن‌ها از همه کلاینت‌های فعال استفاده می‌کنند. یک بلک‌هول دریافت‌ها را در یک پوشه می‌نویسد و هر چه در پوشه تحت نظرش ظاهر شود را وارد می‌کند. گزینه‌های «حذف دانلودهای کامل‌شده/ناموفق» هر کلاینت، دانلودها (همراه با فایل‌هایشان) را پس از پایان کار کلاینت حذف می‌کنند.
+Add a download client in Settings › Download clients and enable it.	یک کلاینت دانلود در تنظیمات › کلاینت‌های دانلود اضافه و فعال کنید.
+Add a root folder first: it is where this title's folder will live.	ابتدا یک پوشه ریشه اضافه کنید: پوشه این عنوان در آنجا قرار می‌گیرد.
+Add a tag above first.	ابتدا یک برچسب در بالا اضافه کنید.
+Add a title	افزودن عنوان
+Add auto tag	افزودن برچسب خودکار
+Add condition	افزودن شرط
+Add exclusion	افزودن استثنا
+Add media	افزودن رسانه
+Add one, or migrate them from Sonarr/Tanukarr.	یکی اضافه کنید، یا آن‌ها را از Sonarr/Tanukarr مهاجرت دهید.
+Add preset	افزودن پیش‌تنظیم
+Add selected	افزودن انتخاب‌شده‌ها
+Add series or movies below.	سریال یا فیلم را در پایین اضافه کنید.
+Add tag	افزودن برچسب
+Add the list's tags	افزودن برچسب‌های فهرست
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	عنوان‌ها را از TVmaze یا AniList اضافه کنید، یا یک کتابخانه موجود Sonarr یا Tanukarr را بیاورید.
+Add to library	افزودن به کتابخانه
+Add {}	افزودن {}
+Add {} ({y})	افزودن {} ({y})
+Add — {}	افزودن — {}
+Add, and remove when they leave the list	افزودن، و حذف وقتی از فهرست خارج شوند
+Added	افزوده‌شده
+Added to the titles this list adds.	به عنوان‌هایی که این فهرست اضافه می‌کند افزوده می‌شود.
+Adding titles	افزودن عنوان‌ها
+Adding…	در حال افزودن…
+Address	نشانی
+Age	سن
+Aired	پخش‌شده
+Aired monitored episodes without a file appear here.	قسمت‌های پایش‌شده‌ای که پخش شده‌اند و فایل ندارند اینجا نمایش داده می‌شوند.
+All	همه
+All collections	همه مجموعه‌ها
+All episodes	همه قسمت‌ها
+All episodes in the series folder	همه قسمت‌های موجود در پوشه سریال
+All events	همه رویدادها
+Allow zero size (the feed has no release sizes)	اجازه حجم صفر (فید حجم ریلیزها را ندارد)
+Also delete the series folder and its files (to the recycle bin when one is set)	پوشه سریال و فایل‌هایش نیز حذف شوند (اگر سطل بازیافت تنظیم شده باشد، به آن منتقل می‌شوند)
+Also for releases grabbed from interactive search	همچنین برای ریلیزهایی که از جستجوی تعاملی دریافت شده‌اند
+Also known as	با نام دیگر
+Always, even when renaming is off	همیشه، حتی وقتی تغییر نام خاموش است
+Analyze video files (resolution, runtime and codecs, with ffprobe)	تحلیل فایل‌های ویدیویی (وضوح، مدت و کدک‌ها، با ffprobe)
+AniList and MyAnimeList titles are always added as anime.	عنوان‌های AniList و MyAnimeList همیشه به‌عنوان انیمه اضافه می‌شوند.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	فهرست‌های AniList، MyAnimeList، Trakt، Simkl، TMDB، MDBList، Plex، یک Sonarr دیگر و فهرست‌های JSON سفارشی هر چند ساعت یک بار خوانده می‌شوند؛ عنوان‌های جدید با پوشه ریشه، پروفایل و پایش هر فهرست اضافه می‌شوند. سرویس‌هایی که به OAuth نیاز دارند از Client ID برنامه خودتان و توکنی که جای‌گذاری می‌کنید استفاده می‌کنند (توکن‌های مهاجرت‌داده‌شده از Tanukarr همچنان کار می‌کنند).
+Anime	انیمه
+Anime / absolute numbering	انیمه / شماره‌گذاری مطلق
+Anime categories	دسته‌های انیمه
+Anime episode format	قالب قسمت انیمه
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	فیلم‌های انیمه را می‌توان از AniList اضافه کرد و مهاجرت‌های Tanukarr فیلم‌هایشان را نیز همراه می‌آورند. فیلم‌های لایو-اکشن به کاتالوگ TMDB نیاز دارند.
+Anime standard format search	جستجوی انیمه با قالب استاندارد
+Anime title, e.g. Frieren	عنوان انیمه، مثلاً Frieren
+Any	هر
+Any library	هر کتابخانه‌ای
+Applications using the current key will stop working until you give them the new one.	برنامه‌هایی که از کلید فعلی استفاده می‌کنند تا وقتی کلید جدید را به آن‌ها ندهید از کار می‌افتند.
+Applied after every list has been read successfully and some title left a list.	پس از آنکه همه فهرست‌ها با موفقیت خوانده شدند و عنوانی از یک فهرست خارج شد، اعمال می‌شود.
+Apply	اعمال
+Apply migration	اعمال مهاجرت
+Apply profile	اعمال پروفایل
+Applying migration	در حال اعمال مهاجرت
+Applying…	در حال اعمال…
+As Settings › Media management says	مطابق تنظیمات › مدیریت رسانه
+At least 10 characters.	دست‌کم 10 نویسه.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	دست‌کم {MIN_PASSWORD_LENGTH} نویسه. یک عبارت عبور گزینه خوبی است.
+Auto tag	برچسب خودکار
+Auto tag saved. It applies when titles are next added, edited or refreshed.	برچسب خودکار ذخیره شد. دفعه بعد که عنوان‌ها اضافه، ویرایش یا تازه‌سازی شوند اعمال می‌شود.
+Auto tagging	برچسب‌گذاری خودکار
+Auto-refresh	تازه‌سازی خودکار
+Automatic	خودکار
+Automatic search	جستجوی خودکار
+Automatic search for {label}: grabbed {}.	جستجوی خودکار برای {label}: {} دریافت شد.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	جستجوی خودکار برای {label}: {} ریلیز یافت شد، {} تأیید شد، چیزی دریافت نشد.
+Automatic search: grab the best release	جستجوی خودکار: دریافت بهترین ریلیز
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	خودکارسازی متوقف است: همگام‌سازی RSS، همگام‌سازی‌های زمان‌بندی‌شده فهرست‌ها و جستجوهای خودکار انجام نمی‌شوند. اقدامات دستی و دانلودهای جاری ادامه می‌یابند.
+Automation resumed.	خودکارسازی از سر گرفته شد.
+Available from	در دسترس از
+Back to the dashboard	بازگشت به داشبورد
+Back up now	پشتیبان‌گیری اکنون
+Backup {} created.	پشتیبان {} ساخته شد.
+Backups	پشتیبان‌ها
+Blocking:	مسدودکننده:
+Blocklist	فهرست مسدود
+Blocklist the release and search again	افزودن ریلیز به فهرست مسدود و جستجوی دوباره
+Blocklist the release: it is never grabbed again	افزودن ریلیز به فهرست مسدود: دیگر هرگز دریافت نمی‌شود
+Blocklist “{title}” and search for a replacement?	«{title}» به فهرست مسدود افزوده شود و جایگزینی برایش جستجو شود؟
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	کتابخانه و تنظیمات Sonarr (v3/v4) یا Tanukarr خود را به Kitsunarr بیاورید. منبع فقط خوانده می‌شود، هرگز تغییر نمی‌کند، و
+Bypass the proxy for local addresses	عدم استفاده از پروکسی برای نشانی‌های محلی
+Calendar	تقویم
+Calendar →	تقویم →
+Cancel	لغو
+Cancel compression	لغو فشرده‌سازی
+Cannot reach the server: {e}	دسترسی به سرور ممکن نیست: {e}
+Catalogue	کاتالوگ
+Category	دسته
+Certificate validation	اعتبارسنجی گواهی
+Change password	تغییر گذرواژه
+Change series	تغییر سریال
+Changes	تغییرات
+Check	بررسی
+Check library	بررسی کتابخانه
+Check now	بررسی اکنون
+Check that the mapped series folders exist (read-only)	بررسی وجود پوشه‌های سریال نگاشت‌شده (فقط خواندنی)
+Checked: {summary}.	بررسی شد: {summary}.
+Checking…	در حال بررسی…
+Choose a backup file	انتخاب فایل پشتیبان
+Choose a mode	انتخاب حالت
+Choose a root folder and a quality profile.	یک پوشه ریشه و یک پروفایل کیفیت انتخاب کنید.
+Choose a season	انتخاب فصل
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	یک سریال و یک فصل یا قسمت انتخاب کنید. نتایج نشان می‌دهند هر ریلیز چیست، آن‌طور که تجزیه‌گر Kitsunarr آن را می‌خواند.
+Choose a series or movie…	انتخاب سریال یا فیلم…
+Choose source	انتخاب منبع
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	قسمت‌های این ریلیز را دستی انتخاب کنید، سپس آن را دریافت کنید (این انتخاب برای وارد کردن حفظ می‌شود)
+Choose…	انتخاب…
+Clean library	پاک‌سازی کتابخانه
+Clear	پاک کردن
+Clear blocklist	پاک کردن فهرست مسدود
+Cleared {n} releases from the blocklist.	{n} ریلیز از فهرست مسدود پاک شد.
+Client	کلاینت
+Close	بستن
+Codec	کدک
+Codec factors saved in every profile.	ضرایب کدک در همه پروفایل‌ها ذخیره شد.
+Codec size factors	ضرایب حجم کدک
+Codecs	کدک‌ها
+Collection film folder format	قالب پوشه فیلم مجموعه
+Collections	مجموعه‌ها
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	مجموعه‌ها وقتی ظاهر می‌شوند که از Tanukarr مهاجرت داده شوند، از داده‌های ارائه‌دهنده ساخته شوند یا اینجا ایجاد شوند.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	از Sonarr یا Tanukarr می‌آیید؟ سریال‌ها، تنظیمات و تاریخچه موجود خود را در چند گام وارد کنید.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	جداشده با کاما؛ * نویسه عام است (*.lan) و بازه‌های IP مانند 192.168.1.0/24 کار می‌کنند.
+Companion app keys	کلیدهای برنامه‌های همراه
+Complete series	سریال کامل
+Completed and failed download handling	مدیریت دانلودهای کامل‌شده و ناموفق
+Component	مؤلفه
+Compress series	فشرده‌سازی سریال
+Compression	فشرده‌سازی
+Compression queued.	فشرده‌سازی در صف قرار گرفت.
+Compression worker is not connected.	کارگر فشرده‌سازی متصل نیست.
+Condition	شرط
+Conditions	شرط‌ها
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	شرط‌های یک نوع وقتی منطبق‌اند که یکی از آن‌ها منطبق باشد (همه شرط‌های الزامی باید منطبق باشند)؛ هر نوع باید منطبق باشد.
+Configure	پیکربندی
+Confirm password	تأیید گذرواژه
+Connect	اتصال
+Connect to a running instance	اتصال به یک نمونه در حال اجرا
+Connecting…	در حال اتصال…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	نسخه‌های سازگار از پایگاه داده. پشتیبان‌های زمان‌بندی‌شده هفتگی اجرا می‌شوند (هشت مورد آخر نگه داشته می‌شوند)؛ هر مهاجرت نیز ابتدا یکی می‌سازد. برای بازیابی، Kitsunarr را متوقف کنید و این را اجرا کنید:
+Continuing	در حال ادامه
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	کوکی (همراه درخواست فید ارسال می‌شود، مثلاً uid=1; pass=…)
+Copied.	کپی شد.
+Copy	کپی
+Copy (keep the originals)	کپی (نگه‌داشتن اصل فایل‌ها)
+Copy sizes from	کپی حجم‌ها از
+Copy the token now; it is not shown again:	اکنون توکن را کپی کنید؛ دیگر نمایش داده نمی‌شود:
+Could not grab {}: {}	دریافت {} ممکن نشد: {}
+Covers	پوشش
+Create	ایجاد
+Create account	ایجاد حساب
+Create group	ایجاد گروه
+Create key	ایجاد کلید
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	یکی در themoviedb.org › Settings › API بسازید. برای سریال‌ها و فیلم‌های TMDB استفاده می‌شود.
+Create the administrator account. You will use it to sign in to Kitsunarr.	حساب مدیر را ایجاد کنید. از آن برای ورود به Kitsunarr استفاده خواهید کرد.
+Created	ایجادشده
+Created when the first file is imported. Nothing is written to disk now.	هنگام وارد شدن نخستین فایل ایجاد می‌شود. اکنون چیزی روی دیسک نوشته نمی‌شود.
+Creating…	در حال ایجاد…
+Credit	اعتبارات
+Current file	فایل فعلی
+Current password	گذرواژه فعلی
+Custom format saved.	قالب سفارشی ذخیره شد.
+Custom format score	امتیاز قالب سفارشی
+Custom format scores	امتیازهای قالب‌های سفارشی
+Custom formats	قالب‌های سفارشی
+Cutoff unmet	حد نهایی برآورده نشده
+Daily	روزانه
+Daily episode format	قالب قسمت روزانه
+Dashboard	داشبورد
+Data directory	پوشه داده‌ها
+Database backup taken before the import: {b}	پشتیبان پایگاه داده پیش از وارد کردن گرفته شد: {b}
+Database schema	طرح‌واره پایگاه داده
+Date	تاریخ
+Date added	تاریخ افزودن
+Debug	اشکال‌زدایی
+Decision	تصمیم
+Default	پیش‌فرض
+Defaults	پیش‌فرض‌ها
+Delay profile	پروفایل تأخیر
+Delay profile saved.	پروفایل تأخیر ذخیره شد.
+Delay profiles	پروفایل‌های تأخیر
+Delete	حذف
+Delete empty series folders	حذف پوشه‌های خالی سریال
+Delete file	حذف فایل
+Delete group	حذف گروه
+Delete profile	حذف پروفایل
+Delete “{path}”? It goes to the recycle bin when one is set.	«{path}» حذف شود؟ اگر سطل بازیافت تنظیم شده باشد، به آن منتقل می‌شود.
+Delete “{}”?	«{}» حذف شود؟
+Delete “{}”? Its series and movies stay in the library.	«{}» حذف شود؟ سریال‌ها و فیلم‌های آن در کتابخانه می‌مانند.
+Deleted	حذف‌شده
+Directory	پوشه
+Disabled	غیرفعال
+Disabled for local addresses	غیرفعال برای نشانی‌های محلی
+Disk scanned: {}	دیسک اسکن شد: {}
+Disk scanned: {} Not matched: {}	دیسک اسکن شد: {} منطبق‌نشده: {}
+Do not prefer	ترجیح نده
+Do not search for a replacement	جایگزینی جستجو نشود
+Do nothing	هیچ کاری نکن
+Done	انجام شد
+Download client options saved.	گزینه‌های کلاینت دانلود ذخیره شد.
+Download clients	کلاینت‌های دانلود
+Download failed	دانلود ناموفق
+Download queue	صف دانلود
+Downloads	دانلودها
+Duration	مدت
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	هر عنوان به یک کاتالوگ تعلق دارد که تازه‌سازی‌هایش از آن خوانده می‌شود؛ همه شناسه‌هایی که دارد (TheTVDB، TMDB، IMDb، TVmaze، AniList، MyAnimeList) حفظ می‌شوند. عنوان‌های مهاجرت‌داده‌شده از Sonarr به TheTVDB تعلق دارند.
+Edit	ویرایش
+Edit “{name}”	ویرایش «{name}»
+Edit “{}”	ویرایش «{}»
+Enable RSS	فعال‌سازی RSS
+Enable automatic search	فعال‌سازی جستجوی خودکار
+Enable interactive search	فعال‌سازی جستجوی تعاملی
+Enabled	فعال
+Ended	پایان‌یافته
+English	English
+Entity	موجودیت
+Episode	قسمت
+Episode and movie naming	نام‌گذاری قسمت‌ها و فیلم‌ها
+Episode image thumbs in the NFO	تصاویر کوچک قسمت‌ها در NFO
+Episode images (<filename>-thumb.jpg)	تصاویر قسمت‌ها (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	تصاویر قسمت‌ها (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	تصاویر قسمت‌ها (Season##/filename.metathumb)
+Episode mappings in .plexmatch	نگاشت قسمت‌ها در .plexmatch
+Episode metadata (<filename>.nfo)	فراداده قسمت‌ها (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	فراداده قسمت‌ها (Season##/filename.xml)
+Episode order	ترتیب قسمت‌ها
+Episode order changed: {} episodes updated, {} added.	ترتیب قسمت‌ها تغییر کرد: {} قسمت به‌روزرسانی شد، {} قسمت اضافه شد.
+Episodes	قسمت‌ها
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	قسمت‌ها بر اساس ترتیب انتخاب‌شده دوباره شماره‌گذاری می‌شوند؛ فایل‌ها، پایش و تاریخچه همراه قسمت‌هایشان می‌مانند. سپس فایل‌ها را تغییر نام دهید تا با شماره‌های جدید مطابقت داشته باشند.
+Episodes of {title}	قسمت‌های {title}
+Episodes on disk	قسمت‌های روی دیسک
+Episodes whose file is below the quality profile's cutoff appear here.	قسمت‌هایی که فایلشان زیر حد نهایی پروفایل کیفیت است اینجا نمایش داده می‌شوند.
+Episodes…	قسمت‌ها…
+Errors	خطاها
+Errors {errors}	خطاها {errors}
+Event	رویداد
+Every file already follows the naming settings.	همه فایل‌ها از قبل با تنظیمات نام‌گذاری مطابقت دارند.
+Every file meets its cutoff	همه فایل‌ها به حد نهایی خود رسیده‌اند
+Exclude	مستثنا کردن
+Exclusions	استثناها
+Expected	مورد انتظار
+Expires	انقضا
+Extra file extensions	پسوندهای فایل‌های اضافی
+Factor	ضریب
+Failed	ناموفق
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	محافظت از ریلیزهای جعلی: بررسی تورنت‌ها پیش از دریافت و رد فایل‌های اجرایی، آرشیوهای طعمه با گذرواژه و محتوای بدون ویدیو
+Feed address	نشانی فید
+Fetch the latest metadata from {}	واکشی جدیدترین فراداده از {}
+File	فایل
+File date	تاریخ فایل
+File deleted	فایل حذف شد
+File deleted.	فایل حذف شد.
+File management	مدیریت فایل
+File management settings saved.	تنظیمات مدیریت فایل ذخیره شد.
+File renamed	فایل تغییر نام یافت
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	فایل‌های قدیمی‌تر از این مدت هر روز از سطل بازیافت حذف می‌شوند؛ 0 آن‌ها را نگه می‌دارد.
+Files upgrades replaced, kept as versions	فایل‌هایی که ارتقاها جایگزینشان کردند، نگه‌داشته‌شده به‌صورت نسخه
+Film	فیلم
+Film title or IMDb id, e.g. Arrival	عنوان فیلم یا شناسه IMDb، مثلاً Arrival
+Find a series in your library	یافتن سریال در کتابخانه شما
+Find files added to or removed from the series folder	یافتن فایل‌های افزوده‌شده یا حذف‌شده از پوشه سریال
+Find something to add	چیزی برای افزودن پیدا کنید
+First and last pieces first	ابتدا اولین و آخرین قطعه‌ها
+First day of the week	نخستین روز هفته
+First season	فصل اول
+Folder	پوشه
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	قالب‌ها از انواع مشخصه Sonarr استفاده می‌کنند (ReleaseTitle، ReleaseGroup، Source، Resolution، Language، Size، IndexerFlag، ReleaseType). امتیازها برای هر پروفایل کیفیت تعیین می‌شوند.
+Found	یافت‌شده
+Free	آزاد
+Free space	فضای آزاد
+Future days	روزهای آینده
+Future episodes	قسمت‌های آینده
+General	عمومی
+GiB	GiB
+Grab	دریافت
+Grab a release from interactive search; downloads in the client's TV category show up here.	یک ریلیز را از جستجوی تعاملی دریافت کنید؛ دانلودهای دسته TV کلاینت اینجا نمایش داده می‌شوند.
+Grab anyway?	با این حال دریافت شود؟
+Grab with these episodes	دریافت با این قسمت‌ها
+Grabbed	دریافت‌شده
+Grabbed {}.	{} دریافت شد.
+Grabbing…	در حال دریافت…
+Grabs, imports and file changes appear here. Migrated history is included.	دریافت‌ها، وارد کردن‌ها و تغییرات فایل اینجا نمایش داده می‌شوند. تاریخچه مهاجرت‌داده‌شده نیز شامل است.
+Group film folder format	قالب پوشه فیلم گروه
+Group folder format	قالب پوشه گروه
+Group season folder format	قالب پوشه فصل گروه
+Group story-arc folder format	قالب پوشه آرک داستانی گروه
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	گروه‌هایی از سریال‌ها و فیلم‌های مرتبط: مجموعه‌های ارائه‌دهندگان، فرنچایزهای انیمه (گروه‌های پیش‌درآمد/دنباله) و گروه‌های دستی، از جمله آن‌هایی که از Tanukarr مهاجرت داده شده‌اند.
+Hardlink-only imports: never copy downloads that keep seeding	وارد کردن فقط با هاردلینک: دانلودهایی که هنوز سید می‌شوند هرگز کپی نشوند
+Health	سلامت
+Hide	پنهان کردن
+History	تاریخچه
+History →	تاریخچه →
+Host	میزبان
+Host (as in the download client's settings)	میزبان (مطابق تنظیمات کلاینت دانلود)
+Hostname	نام میزبان
+How the catalogue numbers the episodes (it can be changed later on the series page).	اینکه کاتالوگ قسمت‌ها را چگونه شماره‌گذاری می‌کند (بعداً در صفحه سریال قابل تغییر است).
+Id	شناسه
+Identities	هویت‌ها
+Ids	شناسه‌ها
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	اگر Kitsunarr رسانه‌های شما را در مسیرهایی متفاوت از منبع می‌بیند (مثلاً ولوم‌های متفاوت Docker)، هر پوشه منبع را به مکان آن در Kitsunarr نگاشت کنید. مسیرها فقط در پایگاه داده بازنویسی می‌شوند.
+Ignored	نادیده‌گرفته‌شده
+Ignored addresses	نشانی‌های نادیده‌گرفته‌شده
+Implementation	پیاده‌سازی
+Import / Migration	وارد کردن / مهاجرت
+Import a Sonarr or Tanukarr library	وارد کردن کتابخانه Sonarr یا Tanukarr
+Import blocked	وارد کردن مسدود شد
+Import completed downloads	وارد کردن دانلودهای کامل‌شده
+Import extra files (subtitles…)	وارد کردن فایل‌های اضافی (زیرنویس‌ها…)
+Import from Sonarr/Tanukarr	وارد کردن از Sonarr/Tanukarr
+Import history	وارد کردن تاریخچه
+Import library	وارد کردن کتابخانه
+Import list options saved.	گزینه‌های فهرست‌های واردات ذخیره شد.
+Import lists	فهرست‌های واردات
+Import pending	در انتظار وارد کردن
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	فایل‌های ویدیویی را از هر پوشه‌ای که سرور می‌تواند بخواند وارد کنید: سریال و قسمت‌های هر فایل را بررسی کنید، سپس آن‌ها را در کتابخانه کپی یا جابه‌جا کنید (با تغییر نام طبق تنظیمات نام‌گذاری).
+Import {chosen().len()} files	وارد کردن {chosen().len()} فایل
+Imported	واردشده
+Imported from series folder	واردشده از پوشه سریال
+Importing	در حال وارد کردن
+Importing…	در حال وارد کردن…
+Imports need	وارد کردن نیازمند
+In library ›	در کتابخانه ›
+Include	شامل کردن
+Include in file names ({{Custom Formats}} token)	درج در نام فایل‌ها (توکن {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	فقط عنوان‌های موجود در برخی فهرست‌ها را شامل کنید، یا عنوان‌های فهرست‌های دیگر را کنار بگذارید.
+Include unmonitored	شامل پایش‌نشده‌ها
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	همراه با پایه URL، مثلاً http://192.168.1.10:8989 یا https://host/sonarr
+Indexer	ایندکسر
+Indexer options saved.	گزینه‌های ایندکسر ذخیره شد.
+Indexer settings	تنظیمات ایندکسر
+Indexers	ایندکسرها
+Info	اطلاعات
+Info {infos}	اطلاعات {infos}
+Instance	نمونه
+Instance name	نام نمونه
+Instance: {name}	نمونه: {name}
+Interactive	تعاملی
+Interactive search	جستجوی تعاملی
+Interactive search for full-season packs only	جستجوی تعاملی فقط برای بسته‌های فصل کامل
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	جستجوی تعاملی برای بسته‌های کل سریال (و فصل‌های آن) در ایندکسرهای تورنت
+Interactive search: see every release and choose	جستجوی تعاملی: همه ریلیزها را ببینید و انتخاب کنید
+Interface language	زبان رابط کاربری
+Interval	فاصله زمانی
+Jellyfin library and user	کتابخانه و کاربر Jellyfin
+Job	کار
+Keep / skip	نگه‌داشتن / رد شدن
+Keep files replaced by upgrades as versions (in "Plex Versions")	فایل‌هایی که ارتقاها جایگزینشان می‌کنند به‌صورت نسخه نگه داشته شوند (در "Plex Versions")
+Keep me signed in	مرا وارد سیستم نگه دار
+Keep the replaced file's date (upgrades)	حفظ تاریخ فایل جایگزین‌شده (ارتقاها)
+Kept	نگه‌داشته‌شده
+Kept versions	نسخه‌های نگه‌داشته‌شده
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	کلیدهایی برای برنامه‌های همراه که از API نسخه 3 Sonarr استفاده می‌کنند: کتابخانه را می‌خوانند، و کلیدهای «افزودن سریال» می‌توانند سریال هم اضافه کنند (در یک پوشه ریشه، بدون جستجو). هیچ کار دیگری مجاز نیست.
+KiB	KiB
+Kind	نوع
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr نرم‌افزار آزاد است (GPL-3.0-or-later).
+Kitsunarr path	مسیر در Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr از پایگاه داده خود پشتیبان می‌گیرد، داده‌های پیش‌نمایش را در یک تراکنش وارد می‌کند و پیش از ثبت، آن‌ها را اعتبارسنجی می‌کند. منبع و فایل‌های رسانه‌ای شما تغییر نمی‌کنند.
+Label	لیبل
+Languages	زبان‌ها
+Larger releases are rejected. 0 means unlimited.	ریلیزهای بزرگ‌تر رد می‌شوند. 0 یعنی نامحدود.
+Last read	آخرین خواندن
+Last run	آخرین اجرا
+Last search	آخرین جستجو
+Last searched	آخرین جستجو
+Last season	فصل آخر
+Later ›	بعدی‌ها ›
+Latest season	جدیدترین فصل
+Level	سطح
+Library	کتابخانه
+Library check	بررسی کتابخانه
+Library tools	ابزارهای کتابخانه
+Library tools saved.	ابزارهای کتابخانه ذخیره شد.
+List	فهرست
+Listed best first. Grouped qualities rank equally.	به ترتیب از بهترین. کیفیت‌های گروه‌بندی‌شده هم‌رتبه‌اند.
+Live updates connected	به‌روزرسانی زنده متصل است
+Live updates disconnected	به‌روزرسانی زنده قطع است
+Load	بارگیری
+Load the account's lists	بارگیری فهرست‌های حساب
+Load the libraries…	بارگیری کتابخانه‌ها…
+Load the users…	بارگیری کاربران…
+Local air date	تاریخ پخش محلی
+Local path	مسیر محلی
+Log them	ثبت در گزارش
+Logs	گزارش‌ها
+Main rejections	دلایل اصلی رد
+Make current	تبدیل به فعلی
+Manual import	وارد کردن دستی
+Mark as failed	علامت‌گذاری به‌عنوان ناموفق
+Matches monitored titles.	با عنوان‌های پایش‌شده منطبق است.
+Maximum	بیشینه
+Maximum size (MB)	حداکثر حجم (MB)
+Media management	مدیریت رسانه
+Media management settings	تنظیمات مدیریت رسانه
+Media paths	مسیرهای رسانه
+Mediums	رسانه‌های فیزیکی
+Members	اعضا
+Message	پیام
+Metadata	فراداده
+Metadata files	فایل‌های فراداده
+Metadata keys saved.	کلیدهای فراداده ذخیره شد.
+Metadata language	زبان فراداده
+Metadata refreshed.	فراداده تازه‌سازی شد.
+Metadata refreshed: {} new episodes, {} updated.	فراداده تازه‌سازی شد: {} قسمت جدید، {} به‌روزرسانی‌شده.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	تنظیمات فراداده ذخیره شد. فایل‌ها در اسکن بعدی دیسک، تازه‌سازی یا وارد کردن نوشته می‌شوند.
+Metadata sources	منابع فراداده
+MiB	MiB
+Migration completed.	مهاجرت کامل شد.
+Migration report #{}	گزارش مهاجرت شماره {}
+Minimum	کمینه
+Minimum age (minutes)	حداقل سن (دقیقه)
+Minimum custom format score	حداقل امتیاز قالب سفارشی
+Minimum format score	حداقل امتیاز قالب
+Minimum free space (MiB)	حداقل فضای آزاد (MiB)
+Minimum seeders	حداقل سیدرها
+Missing	ناموجود
+Missing (monitored)	ناموجود (پایش‌شده)
+Missing films	فیلم‌های ناموجود
+Mode	حالت
+Monday	دوشنبه
+Monitor	پایش
+Monitored	پایش‌شده
+More languages can be added to the string tables.	زبان‌های بیشتری را می‌توان به جدول‌های رشته‌ها اضافه کرد.
+Move	جابه‌جایی
+Movie	فیلم
+Movie file format	قالب فایل فیلم
+Movie removed from Kitsunarr. Files on disk were not touched.	فیلم از Kitsunarr حذف شد. به فایل‌های روی دیسک دست زده نشد.
+Movies	فیلم‌ها
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	ریلیزهای چندفصلی: پذیرش بسته‌های چند فصل (جستجوی یک فصل بسته را برای همان فصل می‌گیرد)
+Must contain	باید شامل باشد
+Must contain (comma separated; /regex/ allowed)	باید شامل باشد (جداشده با کاما؛ /regex/ مجاز است)
+Must not contain	نباید شامل باشد
+NOT	نه
+Name	نام
+Naming	نام‌گذاری
+Naming options saved.	گزینه‌های نام‌گذاری ذخیره شد.
+Naming saved.	نام‌گذاری ذخیره شد.
+Negate	نقیض
+Network	شبکه
+Never: keep the release's names	هرگز: نام‌های ریلیز حفظ شوند
+New custom format	قالب سفارشی جدید
+New custom preset	پیش‌تنظیم سفارشی جدید
+New group title	عنوان گروه جدید
+New password	گذرواژه جدید
+New quality profile	پروفایل کیفیت جدید
+Next airing	پخش بعدی
+Next run	اجرای بعدی
+Next ›	بعدی ›
+No	خیر
+No activity yet.	هنوز فعالیتی نیست.
+No auto tags.	برچسب خودکاری وجود ندارد.
+No backups yet	هنوز نسخه پشتیبانی وجود ندارد
+No collections yet	هنوز مجموعه‌ای وجود ندارد
+No companion keys.	هیچ کلید برنامه همراهی وجود ندارد.
+No custom formats	قالب سفارشی وجود ندارد
+No custom formats defined.	هیچ قالب سفارشی تعریف نشده است.
+No delay above the minimum custom format score	بدون تأخیر بالاتر از حداقل امتیاز قالب سفارشی
+No delay for the profile's best quality in the preferred protocol	بدون تأخیر برای بهترین کیفیت پروفایل در پروتکل ترجیحی
+No download client to read	کلاینت دانلودی برای خواندن وجود ندارد
+No exclusions.	استثنایی وجود ندارد.
+No history	تاریخچه‌ای وجود ندارد
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	هیچ ایندکسری نمی‌تواند این سریال را به‌طور خودکار جستجو کند: هیچ ایندکسری نیست که جستجوی خودکارش فعال باشد و یا برچسبی نداشته باشد یا یکی از برچسب‌های سریال را داشته باشد.
+No indexers to search	ایندکسری برای جستجو وجود ندارد
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	نسخه نگه‌داشته‌شده‌ای وجود ندارد. «نگه‌داشتن فایل‌های جایگزین‌شده با ارتقاها» را در نام‌گذاری روشن کنید.
+No log entries at this level	هیچ ورودی گزارشی در این سطح وجود ندارد
+No mappings.	نگاشتی وجود ندارد.
+No matches	موردی منطبق نیست
+No members	عضوی وجود ندارد
+No migrations have been run yet.	هنوز هیچ مهاجرتی اجرا نشده است.
+No movies yet	هنوز فیلمی وجود ندارد
+No notes.	یادداشتی وجود ندارد.
+No recycle bin is set (Settings › Media management).	سطل بازیافت تنظیم نشده است (تنظیمات › مدیریت رسانه).
+No release profiles.	پروفایل ریلیزی وجود ندارد.
+No root folders yet.	هنوز پوشه ریشه‌ای وجود ندارد.
+No root folders.	پوشه ریشه‌ای وجود ندارد.
+No runs yet	هنوز اجرایی انجام نشده
+No searches yet.	هنوز جستجویی انجام نشده.
+No series in your library match.	هیچ سریالی در کتابخانه شما منطبق نیست.
+No tags	بدون برچسب
+No {}	بدون {}
+No {} yet	هنوز {} وجود ندارد
+None	هیچ
+Not evaluated by Kitsunarr.	توسط Kitsunarr ارزیابی نشده است.
+Not imported	وارد نشده
+Not monitored	پایش نمی‌شود
+Notes	یادداشت‌ها
+Notes ({preview.warnings.len()})	یادداشت‌ها ({preview.warnings.len()})
+Notes ({report.warnings.len()})	یادداشت‌ها ({report.warnings.len()})
+Nothing airs in the next seven days.	در هفت روز آینده چیزی پخش نمی‌شود.
+Nothing downloading	چیزی در حال دانلود نیست
+Nothing found	چیزی یافت نشد
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	چیزی در این کاتالوگ با جستجو منطبق نیست. املای دیگری، عنوان اصلی یا کاتالوگ دیگر را امتحان کنید.
+Nothing in this period	چیزی در این بازه نیست
+Nothing missing	چیزی ناموجود نیست
+Notifications	اعلان‌ها
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	شماره‌گذاری قسمت‌ها بر اساس ترتیب دیگری از کاتالوگ (گروه‌های قسمت TMDB، ترتیب DVD یا مطلق TheTVDB)
+OMDb API key	کلید API برای OMDb
+Older priority	اولویت قدیمی‌ترها
+One folder per season	یک پوشه برای هر فصل
+Only the 2000 newest files are listed.	فقط 2000 فایل جدیدتر فهرست می‌شوند.
+Only when the proxy needs one.	فقط وقتی پروکسی به آن نیاز دارد.
+Open the library	باز کردن کتابخانه
+OpenAPI document	سند OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	سرویس را برای مجوز دادن به Kitsunarr باز می‌کند و توکن را پر می‌کند.
+Options	گزینه‌ها
+Organize	سازمان‌دهی
+Other	دیگر
+Overview	خلاصه داستان
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	بازنویسی رکوردهایی که از قبل در Kitsunarr وجود دارند (در غیر این صورت حفظ می‌شوند)
+Packs	بسته‌ها
+Page not found	صفحه یافت نشد
+Page {page} / {pages}	صفحه {page} / {pages}
+Password	گذرواژه
+Password changed. Other sessions were signed out.	گذرواژه تغییر کرد. نشست‌های دیگر خارج شدند.
+Past days	روزهای گذشته
+Path	مسیر
+Path mappings	نگاشت‌های مسیر
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	توقف خودکارسازی (همگام‌سازی RSS، همگام‌سازی‌های زمان‌بندی‌شده فهرست‌ها، جستجوهای خودکار)
+Peers	همتاها
+Permission	مجوز
+PiB	PiB
+Platform	سکو
+Port	پورت
+Position	موقعیت
+Post-import category	دسته پس از وارد کردن
+Posters	پوسترها
+Prefer and upgrade	ترجیح و ارتقا
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	ترجیح بسته‌های فصل انیمه (جستجوهای فصل انیمه Kitsunarr از قبل فصل را یک بار جستجو می‌کنند)
+Prefer, do not upgrade	ترجیح، بدون ارتقا
+Preferred	ترجیحی
+Preferred metadata language	زبان ترجیحی فراداده
+Preferred protocol	پروتکل ترجیحی
+Preparing preview…	در حال آماده‌سازی پیش‌نمایش…
+Preview	پیش‌نمایش
+Preview migration	پیش‌نمایش مهاجرت
+Previous migrations	مهاجرت‌های قبلی
+Priority	اولویت
+Problem	مشکل
+Profile	پروفایل
+Profile saved.	پروفایل ذخیره شد.
+Profiles still used by series or movies cannot be deleted.	پروفایل‌هایی که هنوز سریال‌ها یا فیلم‌ها از آن‌ها استفاده می‌کنند قابل حذف نیستند.
+Progress	پیشرفت
+Propers and repacks	Proper و Repack
+Proxy	پروکسی
+Proxy saved.	پروکسی ذخیره شد.
+Proxy type	نوع پروکسی
+Qualities	کیفیت‌ها
+Quality	کیفیت
+Quality presets	پیش‌تنظیم‌های کیفیت
+Quality presets saved.	پیش‌تنظیم‌های کیفیت ذخیره شد.
+Quality profile	پروفایل کیفیت
+Quality profiles	پروفایل‌های کیفیت
+Quality profile…	پروفایل کیفیت…
+RSS sync interval (minutes)	فاصله همگام‌سازی RSS (دقیقه)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	همگام‌سازی RSS پس از ظاهر شدن یک ریلیز این مدت برای ریلیزی بهتر صبر می‌کند؛ ریلیزهای به تأخیر افتاده در صف نمایش داده می‌شوند. نخستین پروفایلی که برچسب‌هایش با سریال منطبق باشد اعمال می‌شود؛ آخرین پروفایل (بدون برچسب) پیش‌فرض است.
+Re-encode this series' files with the compression worker	رمزگذاری دوباره فایل‌های این سریال با کارگر فشرده‌سازی
+Read and add series	خواندن و افزودن سریال
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	هر چند ثانیه یک بار به‌طور زنده از کلاینت‌های دانلود خوانده می‌شود. دانلودهای کامل‌شده‌ای که Kitsunarr دریافت کرده هر دقیقه به پوشه سریال وارد می‌شوند (تورنت‌ها کپی یا هاردلینک می‌شوند تا سید ادامه یابد؛ دانلودهای Usenet جابه‌جا می‌شوند). دانلودهای ناموفق به فهرست مسدود می‌روند و دوباره جستجو می‌شوند.
+Read the library	خواندن کتابخانه
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	فقط خواندنی: پوشه‌های ناموجود سریال، رکوردهای فایل بیرون از پوشه خود یا ثبت‌شده دو بار، و فایل‌های ناموجود روی دیسک را پیدا می‌کند.
+Reading the download clients…	در حال خواندن کلاینت‌های دانلود…
+Reading the source	در حال خواندن منبع
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	همه چیز را از طریق API می‌خواند. گذرواژه‌ها و کلیدهای API ارائه‌دهندگان توسط منبع پنهان می‌شوند و باید بعداً دوباره وارد شوند.
+Recent activity	فعالیت‌های اخیر
+Recent priority	اولویت جدیدترها
+Recent runs	اجراهای اخیر
+Recent searches	جستجوهای اخیر
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	توصیه‌شده. در Sonarr/Tanukarr به System → Backup بروید، یک پشتیبان بسازید و فایل .zip را دانلود کنید (یا از sonarr.db استفاده کنید). شامل گذرواژه‌های ایندکسرها و کلاینت‌های دانلود است.
+Recycle bin	سطل بازیافت
+Recycle bin cleanup (days)	پاک‌سازی سطل بازیافت (روز)
+Recycled	در سطل بازیافت
+Refresh metadata	تازه‌سازی فراداده
+Refresh preview	تازه‌سازی پیش‌نمایش
+Refreshing from {} is not supported yet; the imported metadata is kept as is	تازه‌سازی از {} هنوز پشتیبانی نمی‌شود؛ فراداده واردشده همان‌طور که هست حفظ می‌شود
+Refreshing…	در حال تازه‌سازی…
+Regenerate	بازسازی
+Regenerate API key	بازسازی کلید API
+Reject releases whose TheTVDB or IMDb id names another series	رد ریلیزهایی که شناسه TheTVDB یا IMDb آن‌ها به سریال دیگری اشاره دارد
+Rejected: click twice to grab anyway	ردشده: برای دریافت با این حال، دو بار کلیک کنید
+Release	ریلیز
+Release profile	پروفایل ریلیز
+Release profile saved.	پروفایل ریلیز ذخیره شد.
+Release profiles	پروفایل‌های ریلیز
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	ریلیزها با پروفایل کیفیت، قالب‌های سفارشی و پروفایل‌های ریلیز سریال سنجیده و رتبه‌بندی می‌شوند، همان‌طور که Sonarr انجام می‌دهد. ریلیزهای ردشده کلیک دوم می‌خواهند.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	ریلیزهایی که ناموفق بودند یا دستی به فهرست مسدود اضافه شدند. جستجوها و همگام‌سازی RSS هرگز دوباره آن‌ها را دریافت نمی‌کنند؛ برای مجاز کردن یکی، آن را حذف کنید.
+Remote path	مسیر راه دور
+Remote path mapping	نگاشت مسیر راه دور
+Remote path mapping saved.	نگاشت مسیر راه دور ذخیره شد.
+Remote path mappings	نگاشت‌های مسیر راه دور
+Remove	حذف
+Remove completed downloads	حذف دانلودهای کامل‌شده
+Remove every release from the blocklist?	همه ریلیزها از فهرست مسدود حذف شوند؟
+Remove failed downloads	حذف دانلودهای ناموفق
+Remove from library	حذف از کتابخانه
+Remove from queue	حذف از صف
+Remove from the download client (deletes its files there)	حذف از کلاینت دانلود (فایل‌هایش را در آنجا حذف می‌کند)
+Remove movie	حذف فیلم
+Remove series	حذف سریال
+Remove tags automatically (from titles that stop matching)	حذف خودکار برچسب‌ها (از عنوان‌هایی که دیگر منطبق نیستند)
+Remove “{title}” and its episode records from Kitsunarr?	«{title}» و رکوردهای قسمت‌هایش از Kitsunarr حذف شوند؟
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	«{title}» از Kitsunarr حذف شود؟ فایل‌های روی دیسک حذف نمی‌شوند.
+Removed	حذف‌شده
+Removed from the blocklist.	از فهرست مسدود حذف شد.
+Rename	تغییر نام
+Rename files	تغییر نام فایل‌ها
+Rename files on import	تغییر نام فایل‌ها هنگام وارد کردن
+Rename files to the naming settings	تغییر نام فایل‌ها طبق تنظیمات نام‌گذاری
+Formats use Sonarr's tokens.	قالب‌ها از توکن‌های Sonarr استفاده می‌کنند.
+Renaming…	در حال تغییر نام…
+Report	گزارش
+Request one at omdbapi.com. Used for films by IMDb id.	یکی از omdbapi.com درخواست کنید. برای فیلم‌ها از طریق شناسه IMDb استفاده می‌شود.
+Required	الزامی
+Resolution	وضوح
+Restore	بازیابی
+Restore {}	بازیابی {}
+Restore…	بازیابی…
+Restoring…	در حال بازیابی…
+Resume automation	ازسرگیری خودکارسازی
+Retention (days)	نگه‌داری (روز)
+Retire	بازنشسته کردن
+Revoke	ابطال
+Root folder	پوشه ریشه
+Root folders	پوشه‌های ریشه
+Root folder…	پوشه ریشه…
+Run #{run.id}: {run.status}	اجرای شماره {run.id}: {run.status}
+Run now	اجرا اکنون
+Running…	در حال اجرا…
+Saturday	شنبه
+Save	ذخیره
+Save criteria	ذخیره معیارها
+Save factors	ذخیره ضرایب
+Save keys	ذخیره کلیدها
+Save metadata files	ذخیره فایل‌های فراداده
+Save naming	ذخیره نام‌گذاری
+Save options	ذخیره گزینه‌ها
+Saved	ذخیره‌شده
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	کلیدهای ذخیره‌شده به‌صورت {REDACTED} نمایش داده می‌شوند؛ برای حفظ آن‌ها تغییرشان ندهید، یا برای حذف یکی، فیلد را خالی کنید.
+Saved.	ذخیره شد.
+Scan disk	اسکن دیسک
+Scan folder	اسکن پوشه
+Scanning…	در حال اسکن…
+Scheduled tasks	وظایف زمان‌بندی‌شده
+Score	امتیاز
+Search	جستجو
+Search again when a download fails	جستجوی دوباره وقتی دانلودی ناموفق شود
+Search all	جستجوی همه
+Search all films	جستجوی همه فیلم‌ها
+Search collection	جستجوی مجموعه
+Search every episode of the list, one search per season	جستجوی همه قسمت‌های فهرست، یک جستجو برای هر فصل
+Search every member's missing episodes (films: the film)	جستجوی قسمت‌های ناموجود همه اعضا (فیلم‌ها: خود فیلم)
+Search indexers	جستجو در ایندکسرها
+Search selected	جستجوی انتخاب‌شده‌ها
+Search the indexers and choose a release	جستجو در ایندکسرها و انتخاب یک ریلیز
+Search the indexers and grab the best accepted release	جستجو در ایندکسرها و دریافت بهترین ریلیز پذیرفته‌شده
+Search the indexers and grab the best releases for the monitored episodes	جستجو در ایندکسرها و دریافت بهترین ریلیزها برای قسمت‌های پایش‌شده
+Search your indexers	جستجو در ایندکسرهای شما
+Search {chosen} selected	جستجوی {chosen} مورد انتخاب‌شده
+Search: {}	جستجو: {}
+Search: {} — complete series	جستجو: {} — سریال کامل
+Search: {} — season {season} packs	جستجو: {} — بسته‌های فصل {season}
+Search: {} — {label}	جستجو: {} — {label}
+Searching for {label}…	در حال جستجوی {label}…
+Searching indexers…	در حال جستجو در ایندکسرها…
+Searching…	در حال جستجو…
+Season	فصل
+Season folder format	قالب پوشه فصل
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	عنوان‌های پوشه فصل جایگزین عنوان‌های کاتالوگ در {{Season Title}} می‌شوند. برای حفظ عنوان‌های کاتالوگ خالی بگذارید.
+Season folders	پوشه‌های فصل
+Season images (Season ##.jpg)	تصاویر فصل‌ها (Season ##.jpg)
+Season images (Season##/folder.jpg)	تصاویر فصل‌ها (Season##/folder.jpg)
+Season images (season##-poster.jpg)	تصاویر فصل‌ها (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	بسته‌های فصل: 1 از اهداف بسته فصل در پایین استفاده می‌کند
+Season premieres only	فقط قسمت‌های آغازین فصل
+Season {n}	فصل {n}
+Season {one}	فصل {one}
+Season {se.season_number}	فصل {se.season_number}
+Season {season_number}	فصل {season_number}
+Season-pack seed ratio	نسبت سید بسته فصل
+Season-pack seed time, minutes	زمان سید بسته فصل، دقیقه
+Seasons	فصل‌ها
+Seasons {first}-{last}	فصل‌های {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	اطلاعات محرمانه به‌صورت {REDACTED} نمایش داده می‌شوند؛ برای حفظ مقدار ذخیره‌شده تغییرشان ندهید.
+Seed ratio (empty: the client's default)	نسبت سید (خالی: پیش‌فرض کلاینت)
+Seed time, minutes (empty: the client's default)	زمان سید، دقیقه (خالی: پیش‌فرض کلاینت)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	ارسال درخواست‌ها به ایندکسرها، کاتالوگ‌ها، فهرست‌ها، کلاینت‌های دانلود و اتصال‌ها از طریق یک پروکسی.
+Send to the download client	ارسال به کلاینت دانلود
+Series	سریال
+Series .plexmatch file	فایل .plexmatch سریال
+Series folder format	قالب پوشه سریال
+Series images (Series Title.jpg)	تصاویر سریال (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	تصاویر سریال (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	تصاویر سریال (folder.jpg)
+Series metadata (tvshow.nfo)	فراداده سریال (tvshow.nfo)
+Series metadata URL	URL فراداده سریال
+Series metadata episode guide	راهنمای قسمت‌ها در فراداده سریال
+Series removed from Kitsunarr. Files on disk were not touched.	سریال از Kitsunarr حذف شد. به فایل‌های روی دیسک دست زده نشد.
+Series removed, and its folder deleted.	سریال حذف شد و پوشه آن پاک شد.
+Series type	نوع سریال
+Set quality profile…	تنظیم پروفایل کیفیت…
+Settings	تنظیمات
+Settings saved.	تنظیمات ذخیره شد.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security در Sonarr/Tanukarr.
+Show	نمایش
+Show as all-day events	نمایش به‌صورت رویدادهای تمام‌روز
+Show unmonitored	نمایش پایش‌نشده‌ها
+Shows	سریال‌ها
+Sign in	ورود
+Signed in. Save the list to keep the token.	وارد شدید. برای حفظ توکن، فهرست را ذخیره کنید.
+Signing in…	در حال ورود…
+Size	حجم
+Size limits	محدودیت‌های حجم
+Size on disk	حجم روی دیسک
+Skip files smaller than (MB)	رد شدن از فایل‌های کوچک‌تر از (MB)
+Skip the free-space check	رد شدن از بررسی فضای آزاد
+Skip unmonitored episodes when importing packs	رد شدن از قسمت‌های پایش‌نشده هنگام وارد کردن بسته‌ها
+Source	منبع
+Source code	کد منبع
+Source path	مسیر منبع
+Special	ویژه
+Specials	ویژه‌ها
+Specials are never monitored automatically.	قسمت‌های ویژه هرگز به‌طور خودکار پایش نمی‌شوند.
+Specifications	مشخصه‌ها
+Specifications (JSON)	مشخصه‌ها (JSON)
+Specifications must be valid JSON: {e}	مشخصه‌ها باید JSON معتبر باشند: {e}
+Stalled torrent timeout (minutes)	مهلت تورنت‌های متوقف‌شده (دقیقه)
+Standard	استاندارد
+Standard episode format	قالب قسمت استاندارد
+Start migration	شروع مهاجرت
+Start over	شروع دوباره
+Start search for missing episodes	شروع جستجوی قسمت‌های ناموجود
+Started	آغاز شد
+Started {format_datetime(&run.started_at)}	آغاز شد {format_datetime(&run.started_at)}
+Status	وضعیت
+Status & health	وضعیت و سلامت
+Still downloading	هنوز در حال دانلود
+Storage outlook	چشم‌انداز فضای ذخیره‌سازی
+Studio	استودیو
+Subscribe	اشتراک
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	این نشانی را در یک برنامه تقویم مشترک شوید. حاوی کلید API شماست: آن را خصوصی نگه دارید.
+Sunday	یکشنبه
+Sync	همگام‌سازی
+Sync all lists now	همگام‌سازی همه فهرست‌ها اکنون
+Sync now	همگام‌سازی اکنون
+Syncing…	در حال همگام‌سازی…
+System →	سیستم →
+TMDB API key (v3)	کلید API برای TMDB (v3)
+TV Series	سریال تلویزیونی
+TV series	سریال تلویزیونی
+Table	جدول
+Tag	برچسب
+Tag them	برچسب‌گذاری آن‌ها
+Tag titles already in the library	برچسب‌گذاری عنوان‌هایی که از قبل در کتابخانه هستند
+Tags	برچسب‌ها
+Tags (comma separated)	برچسب‌ها (جداشده با کاما)
+Tags (ids, comma separated)	برچسب‌ها (شناسه‌ها، جداشده با کاما)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	برچسب‌ها به سریال‌ها و فیلم‌هایی اضافه می‌شوند که هنگام افزودن، ویرایش یا تازه‌سازی با همه انواع شرط منطبق باشند.
+Task	وظیفه
+Television	تلویزیون
+Television (raw)	تلویزیون (raw)
+Test	آزمایش
+Test failed: {message}	آزمایش ناموفق: {message}
+Testing…	در حال آزمایش…
+The blocklist is empty	فهرست مسدود خالی است
+The catalogue new titles are added from when the list knows their id there.	کاتالوگی که عنوان‌های جدید از آن اضافه می‌شوند، وقتی فهرست شناسه آن‌ها را در آنجا بداند.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	تاریخی که فایل‌های واردشده می‌گیرند: تاریخ پخش قسمت (محلی یا UTC)، یا در ارتقا، تاریخ فایل جایگزین‌شده.
+The dry run completed without blocking problems. Nothing has been written yet.	اجرای آزمایشی بدون مشکل مسدودکننده تمام شد. هنوز چیزی نوشته نشده است.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	فایل به پوشه فصل منتقل می‌شود (فایل موجود هرگز بازنویسی نمی‌شود) و سریال دوباره اسکن می‌شود.
+The folder must already exist; Kitsunarr never creates or removes it.	پوشه باید از قبل وجود داشته باشد؛ Kitsunarr هرگز آن را ایجاد یا حذف نمی‌کند.
+The indexers returned no releases for this search.	ایندکسرها برای این جستجو هیچ ریلیزی برنگرداندند.
+The instance is on my local network (private or loopback address)	نمونه در شبکه محلی من است (نشانی خصوصی یا loopback)
+The list has not been read, or it is empty.	فهرست خوانده نشده یا خالی است.
+The migration did not complete; nothing was changed.	مهاجرت کامل نشد؛ چیزی تغییر نکرد.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	جدیدترین ورودی‌های نگه‌داشته‌شده در حافظه. گزارش‌های کامل به خروجی فرایند می‌روند (گزارش‌های کانتینر یا journal).
+The passwords do not match.	گذرواژه‌ها مطابقت ندارند.
+The recycle bin has no media or subtitle files.	سطل بازیافت هیچ فایل رسانه یا زیرنویسی ندارد.
+The sign-in expired; try again.	مهلت ورود به پایان رسید؛ دوباره تلاش کنید.
+The upload failed (network error).	بارگذاری ناموفق بود (خطای شبکه).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	کارگر یک مؤلفه اختیاری میزبان است (کارگر فشرده‌سازی Tanukarr) که از طریق سوکت KITSUNARR_COMPRESSION_SOCKET به آن دسترسی پیدا می‌شود.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (کاتالوگ Sonarr)، TMDB و TVmaze سریال‌های تلویزیونی را پوشش می‌دهند؛ AniList و MyAnimeList سریال‌ها و فیلم‌های انیمه را پوشش می‌دهند؛ TMDB و OMDb فیلم‌ها را پوشش می‌دهند. افزودن یک عنوان، ورودی کتابخانه و فهرست قسمت‌های آن را ایجاد می‌کند؛ فایل‌ها بعداً در فرایند وارد کردن شناسایی می‌شوند.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	عنوان‌های TheTVDB به این زبان جستجو و اضافه می‌شوند؛ زبان هر سریال در ویرایشگرش قابل تغییر است.
+TheTVDB titles in this language; changing it refreshes the series	عنوان‌های TheTVDB به این زبان؛ تغییر آن سریال را تازه‌سازی می‌کند
+There is nothing at /{path}.	در /{path} چیزی وجود ندارد.
+They are created by migrating from Sonarr/Tanukarr.	با مهاجرت از Sonarr/Tanukarr ایجاد می‌شوند.
+This series' renaming mode, season folder titles and kept versions	حالت تغییر نام، عنوان‌های پوشه فصل و نسخه‌های نگه‌داشته‌شده این سریال
+TiB	TiB
+Time	زمان
+Time left	زمان باقی‌مانده
+Title	عنوان
+Title pattern	الگوی عنوان
+Titles import lists never add.	عنوان‌هایی که فهرست‌های واردات هرگز اضافه نمی‌کنند.
+Titles on no list	عنوان‌هایی که در هیچ فهرستی نیستند
+Today	امروز
+Torrent	تورنت
+Torrent delay	تأخیر تورنت
+Torrent delay (minutes)	تأخیر تورنت (دقیقه)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	ایندکسرهای Torznab و Newznab. برای بررسی هرکدام از «آزمایش» در ویرایشگر استفاده کنید؛ هر جستجو از ایندکسرهایی استفاده می‌کند که آن نوع جستجو در آن‌ها فعال است: RSS، خودکار یا تعاملی.
+Trigger	محرک
+URL base	پایه URL
+UTC air date	تاریخ پخش UTC
+Unchanged	بدون تغییر
+Unknown	ناشناخته
+Unmonitor	توقف پایش
+Unmonitor them	توقف پایش آن‌ها
+Unmonitored	پایش‌نشده
+Upcoming	پیش رو
+Upcoming 7 days	7 روز آینده
+Update	به‌روزرسانی
+Updated {} items.	{} مورد به‌روزرسانی شد.
+Upgrade until (cutoff)	ارتقا تا (حد نهایی)
+Upgrade until format score	ارتقا تا امتیاز قالب
+Upgrades allowed	ارتقا مجاز است
+Upload a backup	بارگذاری یک پشتیبان
+Upload failed (HTTP {}).	بارگذاری ناموفق بود (HTTP {}).
+Uploading…	در حال بارگذاری…
+Use SSL	استفاده از SSL
+Use a proxy	استفاده از پروکسی
+Use hardlinks instead of copying	استفاده از هاردلینک به‌جای کپی
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	از آن به‌عنوان سرآیند X-Api-Key (یا ?apikey=) در برنامه‌های دیگر استفاده کنید. با سرآیندی که Sonarr استفاده می‌کند سازگار است.
+Use these episodes	استفاده از این قسمت‌ها
+Usenet	Usenet
+Usenet delay	تأخیر Usenet
+Usenet delay (minutes)	تأخیر Usenet (دقیقه)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	فقط Usenet: ریلیزهای جدیدتر رد می‌شوند تا برای انتشار در شبکه زمان داشته باشند. 0 این را خاموش می‌کند.
+Usenet only: older releases are rejected. 0 means unlimited.	فقط Usenet: ریلیزهای قدیمی‌تر رد می‌شوند. 0 یعنی نامحدود.
+User name	نام کاربری
+Username	نام کاربری
+Validation	اعتبارسنجی
+Version	نسخه
+Versions	نسخه‌ها
+Waiting for the sign-in at	در انتظار ورود در
+Wanted	موردنیاز
+Warnings	هشدارها
+Warnings {warnings}	هشدارها {warnings}
+Watched (Jellyfin watched sync)	دیده‌شده (همگام‌سازی دیده‌شده‌های Jellyfin)
+Watched sync user	کاربر همگام‌سازی دیده‌شده‌ها
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook، Notifiarr، Discord، Slack، Telegram، Gotify، ntfy، Pushover، Pushbullet، Join، Prowl، Simplepush، Signal، Apprise، ایمیل (SMTP)، Mailgun، SendGrid، اسکریپت‌های سفارشی (با متغیرهای محیطی Sonarr)، Emby/Jellyfin، Plex و Kodi ارسال می‌شوند: دریافت‌ها، وارد کردن‌ها و ارتقاها، تغییر نام‌ها، سریال‌های افزوده یا حذف‌شده، فایل‌های حذف‌شده، مشکلات سلامت. از «آزمایش» در ویرایشگر استفاده کنید.
+Welcome	خوش آمدید
+What to import	چه چیزی وارد شود
+When	هنگام
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	زمانی که گواهی‌های HTTPS ایندکسرها، کلاینت‌های دانلود و سرویس‌ها بررسی می‌شوند (تنظیم Sonarr). برای گواهی‌های خودامضا در شبکه شما باید این تنظیم سهل‌گیرانه‌تر شود.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	وقتی یک کلاینت دانلود مسیرهایی گزارش می‌دهد که Kitsunarr آن‌ها را جای دیگری می‌بیند (ماشین یا کانتینر دیگر)، میزبان و مسیر کلاینت را به مسیر محلی نگاشت کنید.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	اینکه آیا ریلیزهایی که یک ریلیز معیوب را اصلاح می‌کنند ترجیح داده شوند و فایل‌های موجود را ارتقا دهند (مانند Sonarr).
+Whole season	کل فصل
+Working…	در حال کار…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	هنگام اسکن، تازه‌سازی یا وارد کردن سریال‌ها در پوشه‌های سریال نوشته می‌شوند، همان‌طور که مصرف‌کننده‌های فراداده Sonarr آن‌ها را می‌نویسند.
+Year	سال
+Your library is empty.	کتابخانه شما خالی است.
+all checks passed	همه بررسی‌ها موفق بود
+comma separated	جداشده با کاما
+cutoff: {}	حد نهایی: {}
+has a file	فایل دارد
+iCal link	پیوند iCal
+in 2 days	2 روز دیگر
+in a moment	تا لحظاتی دیگر
+in file names	در نام فایل‌ها
+in library	در کتابخانه
+in {text}	{text} دیگر
+just now	همین الان
+may run out of space	ممکن است فضا تمام شود
+name (e.g. phone)	نام (مثلاً تلفن)
+never refreshed	هرگز تازه‌سازی نشده
+no media files are moved, renamed or deleted.	هیچ فایل رسانه‌ای جابه‌جا، تغییر نام یا حذف نمی‌شود.
+not accessible	در دسترس نیست
+not added	اضافه نشده
+not checked	بررسی نشده
+not read yet	هنوز خوانده نشده
+on disk	روی دیسک
+refreshed {}	تازه‌سازی‌شده {}
+schema {s}	طرح‌واره {s}
+secrets included	شامل اطلاعات محرمانه
+secrets masked	اطلاعات محرمانه پوشانده شده
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip یا sonarr.db
+stored only	فقط ذخیره‌شده
+title (optional)	عنوان (اختیاری)
+{:.1} GiB/h	{:.1} GiB/h
+{added} added; {}	{added} اضافه شد؛ {}
+{added} shows added.	{added} سریال اضافه شد.
+{c.name} (API key needed)	{c.name} (کلید API لازم است)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} سریال · {c.movie_count} فیلم
+{chosen().len()} chosen	{chosen().len()} انتخاب‌شده
+{chosen().len()} chosen (at most 25)	{chosen().len()} انتخاب‌شده (حداکثر 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} روی دیسک · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% از {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · افزوده‌شده {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} از {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} فایل · {job["percent"]}% · صرفه‌جویی {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	{name} آغاز شد.
+{name} was added to the library.	{name} به کتابخانه اضافه شد.
+{name}: shows	{name}: سریال‌ها
+{ok} files imported.	{ok} فایل وارد شد.
+{ok} imported; {}	{ok} وارد شد؛ {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} ریلیز از {r.searched_indexers} ایندکسر.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	{r.series_checked} سریال و {r.files_checked} فایل بررسی شد: {r.issues.len()} مشکل.
+{selected.read().len()} selected	{selected.read().len()} انتخاب‌شده
+{text} ago	{text} پیش
+{} (not accessible)	{} (در دسترس نیست)
+{} ({} free)	{} ({} آزاد)
+{} added to every profile (not allowed yet).	{} به همه پروفایل‌ها اضافه شد (هنوز مجاز نیست).
+{} day(s)	{} روز
+{} failed: {}	{} ناموفق بود: {}
+{} format scores	{} امتیاز قالب
+{} free of {}	{} آزاد از {}
+{} week(s)	{} هفته
+{}{year} — movie	{}{year} — فیلم
+‹ Back	‹ بازگشت
+‹ Earlier	‹ قبلی‌ها
+‹ Prev	‹ قبلی
+○ offline	○ آفلاین
+● live	● زنده
+✓ No issues detected.	✓ هیچ مشکلی یافت نشد.
+Activity	فعالیت
+Queue	صف
+System	سیستم
+Tasks	وظایف
+Retry	تلاش دوباره
+Sign out	خروج
+Search titles…  ( / )	جستجوی عنوان‌ها…  ( / )
+Loading…	در حال بارگیری…
+Profiles	پروفایل‌ها
+scene {}	سین {}
+Scene numbering from TheXEM	شماره‌گذاری سین از TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	شماره‌گذاری سین برون‌یابی‌شده از TheXEM (تأییدنشده)
+Season {} (scene seasons {})	فصل {} (فصل‌های سین {})
+{} (scene {})	{} (سین {})

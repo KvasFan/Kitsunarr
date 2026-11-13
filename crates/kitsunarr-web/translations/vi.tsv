@@ -1,0 +1,968 @@
+# Vietnamese interface strings: English<TAB>Vietnamese. {…} marks a placeholder.
+custom	tùy chỉnh
+indeterminate	không xác định
+mixed	hỗn hợp
+retired	đã ngừng dùng
+· container	· container
+· finished {format_datetime(f)}	· hoàn tất {format_datetime(f)}
+· missing	· thiếu
+· on disk	· trên ổ đĩa
+· today	· hôm nay
+· {item.episode_file_count}/{item.episode_count} ep	· {item.episode_file_count}/{item.episode_count} tập
+— MiB per minute; empty uses Settings › Quality	— MiB mỗi phút; để trống sẽ dùng Cài đặt › Chất lượng
+— a release's size is multiplied by its codec's factor before the size limits apply	— kích thước của bản phát hành được nhân với hệ số codec trước khi áp dụng giới hạn kích thước
+— all profiles at once	— tất cả hồ sơ cùng lúc
+— codec and title criteria, custom qualities (Tanukarr)	— tiêu chí codec và tiêu đề, chất lượng tùy chỉnh (Tanukarr)
+— enter the code	— nhập mã
+(empty)	(trống)
++ Add mapping	+ Thêm ánh xạ
++ New format	+ Định dạng mới
++ New profile	+ Hồ sơ mới
+0 (off) or 10 to 120. RSS sync also runs from System › Tasks.	0 (tắt) hoặc từ 10 đến 120. Đồng bộ RSS cũng chạy từ Hệ thống › Tác vụ.
+3 hours ago	3 giờ trước
+A downloading torrent with no progress for this long is failed, blocklisted and searched again. 0 turns this off; progress is tracked from Kitsunarr's start.	Torrent đang tải không có tiến triển trong khoảng thời gian này sẽ bị coi là thất bại, đưa vào danh sách chặn và tìm lại. 0 sẽ tắt tính năng này; tiến trình được theo dõi từ khi Kitsunarr khởi động.
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it.	Một nhóm franchise tìm thấy từ quan hệ trên AniList hoặc MyAnimeList. Các tựa được thêm sau thuộc cùng franchise vẫn được đưa vào nhóm.
+A new API key was generated. Update the applications that use it.	Đã tạo khóa API mới. Hãy cập nhật các ứng dụng đang sử dụng nó.
+A regular expression, case-insensitive; empty matches every title.	Biểu thức chính quy, không phân biệt chữ hoa chữ thường; để trống sẽ khớp mọi tiêu đề.
+A release takes the most specific preset allowed in its series' profile whose source, resolution, codec and title pattern it matches. A standard quality given a codec or pattern turns releases that fail it into Unknown. Custom presets are added to every profile as not allowed.	Một bản phát hành nhận thiết lập sẵn cụ thể nhất được cho phép trong hồ sơ của phim bộ mà nó khớp về nguồn, độ phân giải, codec và mẫu tiêu đề. Một chất lượng tiêu chuẩn có codec hoặc mẫu sẽ biến các bản phát hành không đạt thành Không rõ. Các thiết lập sẵn tùy chỉnh được thêm vào mọi hồ sơ ở trạng thái không cho phép.
+A release's size is multiplied by its codec's factor before the size limits apply. "Mixed" means profiles use different factors; a value entered here is written into every profile.	Kích thước của bản phát hành được nhân với hệ số codec trước khi áp dụng giới hạn kích thước. "Hỗn hợp" nghĩa là các hồ sơ dùng hệ số khác nhau; giá trị nhập ở đây sẽ được ghi vào mọi hồ sơ.
+A title joining a franchise or manual group leaves the group it was in. Files and folders are not moved.	Tựa tham gia một franchise hoặc nhóm thủ công sẽ rời khỏi nhóm cũ. Tệp và thư mục không bị di chuyển.
+API key	Khóa API
+API key needed	Cần khóa API
+API keys and language	Khóa API và ngôn ngữ
+API path	Đường dẫn API
+About	Giới thiệu
+Absolute path; empty to delete permanently.	Đường dẫn tuyệt đối; để trống để xóa vĩnh viễn.
+Accepted	Được chấp nhận
+Account lists	Danh sách của tài khoản
+Actions	Hành động
+Actual	Thực tế
+Add	Thêm
+Add a Newznab or Torznab indexer and enable interactive search for it.	Thêm một trình lập chỉ mục Newznab hoặc Torznab và bật tìm kiếm tương tác cho nó.
+Add a client from its template and use Test in the editor; grabs, the queue and imports use every enabled client. A blackhole writes grabs to a folder and imports what appears in its watch folder. Each client's "Remove completed/failed downloads" options remove downloads (with their files) once the client is done with them.	Thêm trình tải xuống từ mẫu của nó và dùng Kiểm tra trong trình chỉnh sửa; việc lấy bản phát hành, hàng đợi và nhập đều dùng mọi trình tải xuống đang bật. Blackhole ghi các bản đã lấy vào một thư mục và nhập những gì xuất hiện trong thư mục theo dõi của nó. Tùy chọn "Gỡ bỏ bản tải đã hoàn tất/thất bại" của mỗi trình tải xuống sẽ gỡ bỏ bản tải (kèm tệp) khi trình tải xuống đã xử lý xong.
+Add a download client in Settings › Download clients and enable it.	Thêm một trình tải xuống trong Cài đặt › Trình tải xuống và bật nó.
+Add a root folder first: it is where this title's folder will live.	Hãy thêm thư mục gốc trước: đó là nơi chứa thư mục của tựa này.
+Add a tag above first.	Hãy thêm thẻ ở trên trước.
+Add a title	Thêm tựa
+Add auto tag	Thêm thẻ tự động
+Add condition	Thêm điều kiện
+Add exclusion	Thêm loại trừ
+Add media	Thêm nội dung
+Add one, or migrate them from Sonarr/Tanukarr.	Thêm mới, hoặc di chuyển từ Sonarr/Tanukarr.
+Add preset	Thêm thiết lập sẵn
+Add selected	Thêm mục đã chọn
+Add series or movies below.	Thêm phim bộ hoặc phim lẻ bên dưới.
+Add tag	Thêm thẻ
+Add the list's tags	Thêm thẻ của danh sách
+Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library.	Thêm tựa từ TVmaze hoặc AniList, hoặc chuyển thư viện Sonarr hoặc Tanukarr hiện có sang.
+Add to library	Thêm vào thư viện
+Add {}	Thêm {}
+Add {} ({y})	Thêm {} ({y})
+Add — {}	Thêm — {}
+Add, and remove when they leave the list	Thêm, và gỡ bỏ khi chúng rời khỏi danh sách
+Added	Đã thêm
+Added to the titles this list adds.	Được thêm vào các tựa mà danh sách này thêm.
+Adding titles	Đang thêm tựa
+Adding…	Đang thêm…
+Address	Địa chỉ
+Age	Tuổi
+Aired	Đã phát sóng
+Aired monitored episodes without a file appear here.	Các tập đang theo dõi đã phát sóng nhưng chưa có tệp sẽ hiển thị ở đây.
+All	Tất cả
+All collections	Tất cả bộ sưu tập
+All episodes	Tất cả các tập
+All episodes in the series folder	Tất cả các tập trong thư mục phim bộ
+All events	Tất cả sự kiện
+Allow zero size (the feed has no release sizes)	Cho phép kích thước bằng 0 (nguồn cấp không có kích thước bản phát hành)
+Also delete the series folder and its files (to the recycle bin when one is set)	Đồng thời xóa thư mục phim bộ và các tệp của nó (vào thùng rác nếu đã thiết lập)
+Also for releases grabbed from interactive search	Cũng áp dụng cho bản phát hành lấy từ tìm kiếm tương tác
+Also known as	Còn được biết đến là
+Always, even when renaming is off	Luôn luôn, kể cả khi tắt đổi tên
+Analyze video files (resolution, runtime and codecs, with ffprobe)	Phân tích tệp video (độ phân giải, thời lượng và codec, bằng ffprobe)
+AniList and MyAnimeList titles are always added as anime.	Tựa từ AniList và MyAnimeList luôn được thêm dưới dạng anime.
+AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, another Sonarr and custom JSON lists are read every few hours; new titles are added with each list's root folder, profile and monitoring. Services that need OAuth use your own application's Client ID and a token you paste (tokens migrated from Tanukarr keep working).	Danh sách AniList, MyAnimeList, Trakt, Simkl, TMDB, MDBList, Plex, một Sonarr khác và danh sách JSON tùy chỉnh được đọc vài giờ một lần; tựa mới được thêm với thư mục gốc, hồ sơ và chế độ theo dõi của từng danh sách. Các dịch vụ cần OAuth dùng Client ID của ứng dụng của bạn và token bạn dán vào (token di chuyển từ Tanukarr vẫn hoạt động).
+Anime	Anime
+Anime / absolute numbering	Anime / đánh số tuyệt đối
+Anime categories	Danh mục anime
+Anime episode format	Định dạng tập anime
+Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue.	Phim anime có thể được thêm từ AniList, và việc di chuyển từ Tanukarr sẽ mang theo phim của chúng. Phim người đóng cần kho dữ liệu TMDB.
+Anime standard format search	Tìm kiếm anime theo định dạng tiêu chuẩn
+Anime title, e.g. Frieren	Tên anime, ví dụ Frieren
+Any	Bất kỳ
+Any library	Bất kỳ thư viện nào
+Applications using the current key will stop working until you give them the new one.	Các ứng dụng đang dùng khóa hiện tại sẽ ngừng hoạt động cho đến khi bạn cung cấp khóa mới.
+Applied after every list has been read successfully and some title left a list.	Áp dụng sau khi mọi danh sách đều được đọc thành công và có tựa đã rời khỏi một danh sách.
+Apply	Áp dụng
+Apply migration	Áp dụng di chuyển
+Apply profile	Áp dụng hồ sơ
+Applying migration	Đang áp dụng di chuyển
+Applying…	Đang áp dụng…
+As Settings › Media management says	Theo Cài đặt › Quản lý phương tiện
+At least 10 characters.	Ít nhất 10 ký tự.
+At least {MIN_PASSWORD_LENGTH} characters. A passphrase works well.	Ít nhất {MIN_PASSWORD_LENGTH} ký tự. Một cụm mật khẩu là lựa chọn tốt.
+Auto tag	Thẻ tự động
+Auto tag saved. It applies when titles are next added, edited or refreshed.	Đã lưu thẻ tự động. Thẻ được áp dụng khi các tựa được thêm, chỉnh sửa hoặc làm mới lần tới.
+Auto tagging	Gắn thẻ tự động
+Auto-refresh	Tự động làm mới
+Automatic	Tự động
+Automatic search	Tìm kiếm tự động
+Automatic search for {label}: grabbed {}.	Tìm kiếm tự động cho {label}: đã lấy {}.
+Automatic search for {label}: {} releases found, {} approved, nothing grabbed.	Tìm kiếm tự động cho {label}: tìm thấy {} bản phát hành, {} được chấp thuận, không lấy bản nào.
+Automatic search: grab the best release	Tìm kiếm tự động: lấy bản phát hành tốt nhất
+Automation is paused: RSS sync, scheduled list syncs and automatic searches are skipped. Manual actions and current downloads continue.	Tự động hóa đang tạm dừng: đồng bộ RSS, đồng bộ danh sách theo lịch và tìm kiếm tự động bị bỏ qua. Các thao tác thủ công và bản tải đang chạy vẫn tiếp tục.
+Automation resumed.	Đã tiếp tục tự động hóa.
+Available from	Có từ
+Back to the dashboard	Quay lại bảng điều khiển
+Back up now	Sao lưu ngay
+Backup {} created.	Đã tạo bản sao lưu {}.
+Backups	Sao lưu
+Blocking:	Chặn:
+Blocklist	Danh sách chặn
+Blocklist the release and search again	Đưa bản phát hành vào danh sách chặn và tìm lại
+Blocklist the release: it is never grabbed again	Đưa bản phát hành vào danh sách chặn: nó sẽ không bao giờ được lấy lại
+Blocklist “{title}” and search for a replacement?	Đưa “{title}” vào danh sách chặn và tìm bản thay thế?
+Blu-ray	Blu-ray
+Blu-ray (raw / remux)	Blu-ray (raw / remux)
+Bring your Sonarr (v3/v4) or Tanukarr library and settings into Kitsunarr. The source is only read, never changed, and	Chuyển thư viện và cài đặt Sonarr (v3/v4) hoặc Tanukarr của bạn vào Kitsunarr. Nguồn chỉ được đọc, không bao giờ bị thay đổi, và
+Bypass the proxy for local addresses	Bỏ qua proxy cho địa chỉ cục bộ
+Calendar	Lịch
+Calendar →	Lịch →
+Cancel	Hủy
+Cancel compression	Hủy nén
+Cannot reach the server: {e}	Không thể kết nối máy chủ: {e}
+Catalogue	Kho dữ liệu
+Category	Danh mục
+Certificate validation	Xác thực chứng chỉ
+Change password	Đổi mật khẩu
+Change series	Đổi phim bộ
+Changes	Thay đổi
+Check	Kiểm tra
+Check library	Kiểm tra thư viện
+Check now	Kiểm tra ngay
+Check that the mapped series folders exist (read-only)	Kiểm tra các thư mục phim bộ đã ánh xạ có tồn tại không (chỉ đọc)
+Checked: {summary}.	Đã kiểm tra: {summary}.
+Checking…	Đang kiểm tra…
+Choose a backup file	Chọn tệp sao lưu
+Choose a mode	Chọn chế độ
+Choose a root folder and a quality profile.	Chọn thư mục gốc và hồ sơ chất lượng.
+Choose a season	Chọn mùa
+Choose a series and a season or episode. Results show what each release is, as Kitsunarr's parser reads it.	Chọn phim bộ và một mùa hoặc tập. Kết quả cho thấy mỗi bản phát hành là gì, theo cách trình phân tích của Kitsunarr đọc nó.
+Choose a series or movie…	Chọn phim bộ hoặc phim lẻ…
+Choose source	Chọn nguồn
+Choose the episodes of this release by hand, then grab it (the choice is kept for the import)	Tự chọn các tập của bản phát hành này rồi lấy nó (lựa chọn được giữ lại khi nhập)
+Choose…	Chọn…
+Clean library	Dọn dẹp thư viện
+Clear	Xóa sạch
+Clear blocklist	Xóa sạch danh sách chặn
+Cleared {n} releases from the blocklist.	Đã xóa {n} bản phát hành khỏi danh sách chặn.
+Client	Client
+Close	Đóng
+Codec	Codec
+Codec factors saved in every profile.	Đã lưu hệ số codec vào mọi hồ sơ.
+Codec size factors	Hệ số kích thước theo codec
+Codecs	Codec
+Collection film folder format	Định dạng thư mục phim của bộ sưu tập
+Collections	Bộ sưu tập
+Collections appear when they are migrated from Tanukarr, created from provider data, or created here.	Bộ sưu tập xuất hiện khi được di chuyển từ Tanukarr, tạo từ dữ liệu của nhà cung cấp, hoặc tạo tại đây.
+Coming from Sonarr or Tanukarr? Import your existing series, settings and history in a few steps.	Chuyển từ Sonarr hoặc Tanukarr? Nhập phim bộ, cài đặt và lịch sử hiện có chỉ trong vài bước.
+Comma-separated; * is a wildcard (*.lan), and IP ranges like 192.168.1.0/24 work.	Phân tách bằng dấu phẩy; * là ký tự đại diện (*.lan), và có thể dùng dải IP như 192.168.1.0/24.
+Companion app keys	Khóa cho ứng dụng đồng hành
+Complete series	Trọn bộ
+Completed and failed download handling	Xử lý bản tải đã hoàn tất và thất bại
+Component	Thành phần
+Compress series	Nén phim bộ
+Compression	Nén
+Compression queued.	Đã đưa tác vụ nén vào hàng đợi.
+Compression worker is not connected.	Trình xử lý nén chưa được kết nối.
+Condition	Điều kiện
+Conditions	Điều kiện
+Conditions of one kind match when any of them matches (all the required ones must); every kind must match.	Các điều kiện cùng loại khớp khi bất kỳ điều kiện nào khớp (mọi điều kiện bắt buộc đều phải khớp); mọi loại đều phải khớp.
+Configure	Cấu hình
+Confirm password	Xác nhận mật khẩu
+Connect	Kết nối
+Connect to a running instance	Kết nối với bản cài đặt đang chạy
+Connecting…	Đang kết nối…
+Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run	Các bản sao nhất quán của cơ sở dữ liệu. Sao lưu theo lịch chạy hằng tuần (giữ lại tám bản gần nhất); mỗi lần di chuyển cũng tạo một bản trước. Để khôi phục, hãy dừng Kitsunarr và chạy
+Continuing	Đang tiếp diễn
+Cookie (sent with the feed request, e.g. uid=1; pass=…)	Cookie (gửi kèm yêu cầu nguồn cấp, ví dụ uid=1; pass=…)
+Copied.	Đã sao chép.
+Copy	Sao chép
+Copy (keep the originals)	Sao chép (giữ bản gốc)
+Copy sizes from	Sao chép kích thước từ
+Copy the token now; it is not shown again:	Hãy sao chép token ngay; nó sẽ không được hiển thị lại:
+Could not grab {}: {}	Không thể lấy {}: {}
+Covers	Bao gồm
+Create	Tạo
+Create account	Tạo tài khoản
+Create group	Tạo nhóm
+Create key	Tạo khóa
+Create one at themoviedb.org › Settings › API. Used for TMDB TV series and films.	Tạo một khóa tại themoviedb.org › Settings › API. Dùng cho phim bộ và phim TMDB.
+Create the administrator account. You will use it to sign in to Kitsunarr.	Tạo tài khoản quản trị viên. Bạn sẽ dùng nó để đăng nhập vào Kitsunarr.
+Created	Đã tạo
+Created when the first file is imported. Nothing is written to disk now.	Được tạo khi tệp đầu tiên được nhập. Hiện chưa ghi gì vào ổ đĩa.
+Creating…	Đang tạo…
+Credit	Ghi công
+Current file	Tệp hiện tại
+Current password	Mật khẩu hiện tại
+Custom format saved.	Đã lưu định dạng tùy chỉnh.
+Custom format score	Điểm định dạng tùy chỉnh
+Custom format scores	Điểm định dạng tùy chỉnh
+Custom formats	Định dạng tùy chỉnh
+Cutoff unmet	Chưa đạt ngưỡng
+Daily	Hằng ngày
+Daily episode format	Định dạng tập hằng ngày
+Dashboard	Bảng điều khiển
+Data directory	Thư mục dữ liệu
+Database backup taken before the import: {b}	Bản sao lưu cơ sở dữ liệu được tạo trước khi nhập: {b}
+Database schema	Lược đồ cơ sở dữ liệu
+Date	Ngày
+Date added	Ngày thêm
+Debug	Gỡ lỗi
+Decision	Quyết định
+Default	Mặc định
+Defaults	Giá trị mặc định
+Delay profile	Hồ sơ trì hoãn
+Delay profile saved.	Đã lưu hồ sơ trì hoãn.
+Delay profiles	Hồ sơ trì hoãn
+Delete	Xóa
+Delete empty series folders	Xóa các thư mục phim bộ trống
+Delete file	Xóa tệp
+Delete group	Xóa nhóm
+Delete profile	Xóa hồ sơ
+Delete “{path}”? It goes to the recycle bin when one is set.	Xóa “{path}”? Tệp sẽ vào thùng rác nếu đã thiết lập.
+Delete “{}”?	Xóa “{}”?
+Delete “{}”? Its series and movies stay in the library.	Xóa “{}”? Các phim bộ và phim lẻ của nó vẫn ở lại thư viện.
+Deleted	Đã xóa
+Directory	Thư mục
+Disabled	Đã tắt
+Disabled for local addresses	Tắt cho địa chỉ cục bộ
+Disk scanned: {}	Đã quét ổ đĩa: {}
+Disk scanned: {} Not matched: {}	Đã quét ổ đĩa: {} Không khớp: {}
+Do not prefer	Không ưu tiên
+Do not search for a replacement	Không tìm bản thay thế
+Do nothing	Không làm gì
+Done	Xong
+Download client options saved.	Đã lưu tùy chọn trình tải xuống.
+Download clients	Trình tải xuống
+Download failed	Tải xuống thất bại
+Download queue	Hàng đợi tải xuống
+Downloads	Tải xuống
+Duration	Thời lượng
+Each title belongs to one catalogue, which its refreshes read; every identifier it carries (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) is kept. Titles migrated from Sonarr belong to TheTVDB.	Mỗi tựa thuộc về một kho dữ liệu, nơi các lần làm mới của nó đọc dữ liệu; mọi mã định danh mà nó mang (TheTVDB, TMDB, IMDb, TVmaze, AniList, MyAnimeList) đều được giữ lại. Các tựa di chuyển từ Sonarr thuộc về TheTVDB.
+Edit	Chỉnh sửa
+Edit “{name}”	Chỉnh sửa “{name}”
+Edit “{}”	Chỉnh sửa “{}”
+Enable RSS	Bật RSS
+Enable automatic search	Bật tìm kiếm tự động
+Enable interactive search	Bật tìm kiếm tương tác
+Enabled	Đã bật
+Ended	Đã kết thúc
+English	English
+Entity	Thực thể
+Episode	Tập
+Episode and movie naming	Đặt tên tập và phim
+Episode image thumbs in the NFO	Ảnh thu nhỏ của tập trong NFO
+Episode images (<filename>-thumb.jpg)	Ảnh tập (<filename>-thumb.jpg)
+Episode images (Season##/filename.jpg)	Ảnh tập (Season##/filename.jpg)
+Episode images (Season##/filename.metathumb)	Ảnh tập (Season##/filename.metathumb)
+Episode mappings in .plexmatch	Ánh xạ tập trong .plexmatch
+Episode metadata (<filename>.nfo)	Siêu dữ liệu tập (<filename>.nfo)
+Episode metadata (Season##/filename.xml)	Siêu dữ liệu tập (Season##/filename.xml)
+Episode order	Thứ tự tập
+Episode order changed: {} episodes updated, {} added.	Đã đổi thứ tự tập: {} tập được cập nhật, {} tập được thêm.
+Episodes	Tập
+Episodes are renumbered by the chosen order; files, monitoring and history stay with their episodes. Rename files afterwards to match the new numbers.	Các tập được đánh số lại theo thứ tự đã chọn; tệp, trạng thái theo dõi và lịch sử vẫn đi theo tập của chúng. Sau đó hãy đổi tên tệp để khớp với số mới.
+Episodes of {title}	Các tập của {title}
+Episodes on disk	Tập trên ổ đĩa
+Episodes whose file is below the quality profile's cutoff appear here.	Các tập có tệp dưới ngưỡng của hồ sơ chất lượng sẽ hiển thị ở đây.
+Episodes…	Tập…
+Errors	Lỗi
+Errors {errors}	Lỗi {errors}
+Event	Sự kiện
+Every file already follows the naming settings.	Mọi tệp đều đã tuân theo cài đặt đặt tên.
+Every file meets its cutoff	Mọi tệp đều đạt ngưỡng
+Exclude	Loại trừ
+Exclusions	Loại trừ
+Expected	Dự kiến
+Expires	Hết hạn
+Extra file extensions	Phần mở rộng của tệp bổ sung
+Factor	Hệ số
+Failed	Thất bại
+Fake release protection: inspect torrents before grabbing them and reject executables, password-bait archives and contents with no video	Bảo vệ khỏi bản phát hành giả: kiểm tra torrent trước khi lấy và từ chối tệp thực thi, tệp nén mồi mật khẩu và nội dung không có video
+Feed address	Địa chỉ nguồn cấp
+Fetch the latest metadata from {}	Tải siêu dữ liệu mới nhất từ {}
+File	Tệp
+File date	Ngày của tệp
+File deleted	Đã xóa tệp
+File deleted.	Đã xóa tệp.
+File management	Quản lý tệp
+File management settings saved.	Đã lưu cài đặt quản lý tệp.
+File renamed	Đã đổi tên tệp
+Files older than this are deleted from the recycle bin daily; 0 keeps them.	Các tệp cũ hơn thời hạn này sẽ bị xóa khỏi thùng rác hằng ngày; 0 sẽ giữ lại chúng.
+Files upgrades replaced, kept as versions	Các tệp bị thay thế khi nâng cấp, được giữ lại dưới dạng phiên bản
+Film	Phim
+Film title or IMDb id, e.g. Arrival	Tên phim hoặc id IMDb, ví dụ Arrival
+Find a series in your library	Tìm phim bộ trong thư viện của bạn
+Find files added to or removed from the series folder	Tìm các tệp được thêm vào hoặc xóa khỏi thư mục phim bộ
+Find something to add	Tìm nội dung để thêm
+First and last pieces first	Ưu tiên mảnh đầu và mảnh cuối
+First day of the week	Ngày đầu tuần
+First season	Mùa đầu tiên
+Folder	Thư mục
+Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile.	Định dạng dùng các loại đặc tả của Sonarr (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Điểm được gán theo từng hồ sơ chất lượng.
+Found	Tìm thấy
+Free	Còn trống
+Free space	Dung lượng trống
+Future days	Số ngày tới
+Future episodes	Tập sắp tới
+General	Chung
+GiB	GiB
+Grab	Lấy
+Grab a release from interactive search; downloads in the client's TV category show up here.	Lấy một bản phát hành từ tìm kiếm tương tác; các bản tải trong danh mục TV của trình tải xuống sẽ hiển thị ở đây.
+Grab anyway?	Vẫn lấy?
+Grab with these episodes	Lấy với các tập này
+Grabbed	Đã lấy
+Grabbed {}.	Đã lấy {}.
+Grabbing…	Đang lấy…
+Grabs, imports and file changes appear here. Migrated history is included.	Các lượt lấy, nhập và thay đổi tệp sẽ hiển thị ở đây. Bao gồm cả lịch sử đã di chuyển.
+Group film folder format	Định dạng thư mục phim của nhóm
+Group folder format	Định dạng thư mục nhóm
+Group season folder format	Định dạng thư mục mùa của nhóm
+Group story-arc folder format	Định dạng thư mục mạch truyện của nhóm
+Groups of related series and movies: provider collections, anime franchises (prequel/sequel groups) and manual groups, including those migrated from Tanukarr.	Nhóm các phim bộ và phim lẻ liên quan: bộ sưu tập của nhà cung cấp, franchise anime (nhóm tiền truyện/hậu truyện) và nhóm thủ công, kể cả những nhóm di chuyển từ Tanukarr.
+Hardlink-only imports: never copy downloads that keep seeding	Chỉ nhập bằng hardlink: không bao giờ sao chép bản tải còn đang seed
+Health	Tình trạng
+Hide	Ẩn
+History	Lịch sử
+History →	Lịch sử →
+Host	Máy chủ
+Host (as in the download client's settings)	Máy chủ (như trong cài đặt của trình tải xuống)
+Hostname	Tên máy chủ
+How the catalogue numbers the episodes (it can be changed later on the series page).	Cách kho dữ liệu đánh số các tập (có thể thay đổi sau trên trang phim bộ).
+Id	Id
+Identities	Mã định danh
+Ids	Id
+If Kitsunarr sees your media under different paths than the source (for example different Docker volumes), map each source folder to its Kitsunarr location. Paths are only rewritten in the database.	Nếu Kitsunarr thấy media của bạn dưới các đường dẫn khác với nguồn (ví dụ volume Docker khác nhau), hãy ánh xạ từng thư mục nguồn tới vị trí của nó trong Kitsunarr. Đường dẫn chỉ được ghi lại trong cơ sở dữ liệu.
+Ignored	Bị bỏ qua
+Ignored addresses	Địa chỉ bỏ qua
+Implementation	Triển khai
+Import / Migration	Nhập / Di chuyển
+Import a Sonarr or Tanukarr library	Nhập thư viện Sonarr hoặc Tanukarr
+Import blocked	Nhập bị chặn
+Import completed downloads	Nhập bản tải đã hoàn tất
+Import extra files (subtitles…)	Nhập tệp bổ sung (phụ đề…)
+Import from Sonarr/Tanukarr	Nhập từ Sonarr/Tanukarr
+Import history	Nhập lịch sử
+Import library	Nhập thư viện
+Import list options saved.	Đã lưu tùy chọn danh sách nhập.
+Import lists	Danh sách nhập
+Import pending	Chờ nhập
+Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings).	Nhập tệp video từ bất kỳ thư mục nào máy chủ đọc được: kiểm tra phim bộ và các tập của từng tệp, sau đó sao chép hoặc di chuyển chúng vào thư viện (đổi tên theo cài đặt đặt tên).
+Import {chosen().len()} files	Nhập {chosen().len()} tệp
+Imported	Đã nhập
+Imported from series folder	Đã nhập từ thư mục phim bộ
+Importing	Đang nhập
+Importing…	Đang nhập…
+Imports need	Việc nhập cần
+In library ›	Trong thư viện ›
+Include	Bao gồm
+Include in file names ({{Custom Formats}} token)	Đưa vào tên tệp (token {{Custom Formats}})
+Include only titles on some lists, or leave out the titles of others.	Chỉ bao gồm các tựa có trong một số danh sách, hoặc loại bỏ các tựa của danh sách khác.
+Include unmonitored	Bao gồm mục không theo dõi
+Including the URL base, e.g. http://192.168.1.10:8989 or https://host/sonarr	Bao gồm URL gốc, ví dụ http://192.168.1.10:8989 hoặc https://host/sonarr
+Indexer	Trình lập chỉ mục
+Indexer options saved.	Đã lưu tùy chọn trình lập chỉ mục.
+Indexer settings	Cài đặt trình lập chỉ mục
+Indexers	Trình lập chỉ mục
+Info	Thông tin
+Info {infos}	Thông tin {infos}
+Instance	Bản cài đặt
+Instance name	Tên bản cài đặt
+Instance: {name}	Bản cài đặt: {name}
+Interactive	Tương tác
+Interactive search	Tìm kiếm tương tác
+Interactive search for full-season packs only	Tìm kiếm tương tác chỉ các gói trọn mùa
+Interactive search for packs of the whole series (and of its seasons) on torrent indexers	Tìm kiếm tương tác các gói của toàn bộ phim bộ (và của các mùa) trên trình lập chỉ mục torrent
+Interactive search: see every release and choose	Tìm kiếm tương tác: xem mọi bản phát hành và tự chọn
+Interface language	Ngôn ngữ giao diện
+Interval	Khoảng thời gian
+Jellyfin library and user	Thư viện và người dùng Jellyfin
+Job	Công việc
+Keep / skip	Giữ / bỏ qua
+Keep files replaced by upgrades as versions (in "Plex Versions")	Giữ các tệp bị thay thế khi nâng cấp dưới dạng phiên bản (trong "Plex Versions")
+Keep me signed in	Duy trì đăng nhập
+Keep the replaced file's date (upgrades)	Giữ ngày của tệp bị thay thế (nâng cấp)
+Kept	Đã giữ
+Kept versions	Phiên bản đã giữ
+Keys for companion apps using the Sonarr v3 API: they read the library, and "add series" keys can also add series (into a root folder, without searching). Nothing else is allowed.	Khóa cho ứng dụng đồng hành dùng API v3 của Sonarr: chúng đọc thư viện, và khóa "thêm phim bộ" còn có thể thêm phim bộ (vào thư mục gốc, không tìm kiếm). Không được phép làm gì khác.
+KiB	KiB
+Kind	Loại
+Kitsunarr is free software (GPL-3.0-or-later).	Kitsunarr là phần mềm tự do (GPL-3.0-or-later).
+Kitsunarr path	Đường dẫn trong Kitsunarr
+Kitsunarr will back up its own database, import the previewed data in one transaction and validate it before committing. The source and your media files are not modified.	Kitsunarr sẽ sao lưu cơ sở dữ liệu của chính nó, nhập dữ liệu đã xem trước trong một giao dịch duy nhất và xác thực trước khi lưu. Nguồn và tệp media của bạn không bị thay đổi.
+Label	Nhãn
+Languages	Ngôn ngữ
+Larger releases are rejected. 0 means unlimited.	Bản phát hành lớn hơn sẽ bị từ chối. 0 nghĩa là không giới hạn.
+Last read	Lần đọc cuối
+Last run	Lần chạy cuối
+Last search	Lần tìm cuối
+Last searched	Tìm lần cuối
+Last season	Mùa cuối
+Later ›	Sau ›
+Latest season	Mùa mới nhất
+Level	Mức
+Library	Thư viện
+Library check	Kiểm tra thư viện
+Library tools	Công cụ thư viện
+Library tools saved.	Đã lưu công cụ thư viện.
+List	Danh sách
+Listed best first. Grouped qualities rank equally.	Sắp xếp từ tốt nhất. Các chất lượng được nhóm có thứ hạng ngang nhau.
+Live updates connected	Đã kết nối cập nhật trực tiếp
+Live updates disconnected	Đã ngắt kết nối cập nhật trực tiếp
+Load	Tải
+Load the account's lists	Tải danh sách của tài khoản
+Load the libraries…	Tải các thư viện…
+Load the users…	Tải người dùng…
+Local air date	Ngày phát sóng địa phương
+Local path	Đường dẫn cục bộ
+Log them	Ghi nhật ký
+Logs	Nhật ký
+Main rejections	Lý do từ chối chính
+Make current	Đặt làm hiện tại
+Manual import	Nhập thủ công
+Mark as failed	Đánh dấu thất bại
+Matches monitored titles.	Khớp với các tựa đang theo dõi.
+Maximum	Tối đa
+Maximum size (MB)	Kích thước tối đa (MB)
+Media management	Quản lý phương tiện
+Media management settings	Cài đặt quản lý phương tiện
+Media paths	Đường dẫn media
+Mediums	Loại phương tiện
+Members	Thành viên
+Message	Nội dung
+Metadata	Siêu dữ liệu
+Metadata files	Tệp siêu dữ liệu
+Metadata keys saved.	Đã lưu khóa siêu dữ liệu.
+Metadata language	Ngôn ngữ siêu dữ liệu
+Metadata refreshed.	Đã làm mới siêu dữ liệu.
+Metadata refreshed: {} new episodes, {} updated.	Đã làm mới siêu dữ liệu: {} tập mới, {} được cập nhật.
+Metadata settings saved. Files are written at the next disk scan, refresh or import.	Đã lưu cài đặt siêu dữ liệu. Tệp sẽ được ghi ở lần quét ổ đĩa, làm mới hoặc nhập tiếp theo.
+Metadata sources	Nguồn siêu dữ liệu
+MiB	MiB
+Migration completed.	Đã hoàn tất di chuyển.
+Migration report #{}	Báo cáo di chuyển #{}
+Minimum	Tối thiểu
+Minimum age (minutes)	Tuổi tối thiểu (phút)
+Minimum custom format score	Điểm định dạng tùy chỉnh tối thiểu
+Minimum format score	Điểm định dạng tối thiểu
+Minimum free space (MiB)	Dung lượng trống tối thiểu (MiB)
+Minimum seeders	Số seeder tối thiểu
+Missing	Thiếu
+Missing (monitored)	Thiếu (đang theo dõi)
+Missing films	Phim còn thiếu
+Mode	Chế độ
+Monday	Thứ Hai
+Monitor	Theo dõi
+Monitored	Đang theo dõi
+More languages can be added to the string tables.	Có thể thêm ngôn ngữ khác vào bảng chuỗi văn bản.
+Move	Di chuyển
+Movie	Phim lẻ
+Movie file format	Định dạng tệp phim
+Movie removed from Kitsunarr. Files on disk were not touched.	Đã gỡ phim khỏi Kitsunarr. Tệp trên ổ đĩa không bị động đến.
+Movies	Phim lẻ
+Multi-season releases: accept packs of several seasons (a season search takes the pack for its season)	Bản phát hành nhiều mùa: chấp nhận gói gồm nhiều mùa (tìm kiếm theo mùa sẽ lấy gói cho mùa đó)
+Must contain	Phải chứa
+Must contain (comma separated; /regex/ allowed)	Phải chứa (phân tách bằng dấu phẩy; cho phép /regex/)
+Must not contain	Không được chứa
+NOT	KHÔNG
+Name	Tên
+Naming	Đặt tên
+Naming options saved.	Đã lưu tùy chọn đặt tên.
+Naming saved.	Đã lưu cách đặt tên.
+Negate	Phủ định
+Network	Kênh
+Never: keep the release's names	Không bao giờ: giữ tên của bản phát hành
+New custom format	Định dạng tùy chỉnh mới
+New custom preset	Thiết lập sẵn tùy chỉnh mới
+New group title	Tên nhóm mới
+New password	Mật khẩu mới
+New quality profile	Hồ sơ chất lượng mới
+Next airing	Lần phát sóng tới
+Next run	Lần chạy tới
+Next ›	Tiếp ›
+No	Không
+No activity yet.	Chưa có hoạt động nào.
+No auto tags.	Không có thẻ tự động.
+No backups yet	Chưa có bản sao lưu
+No collections yet	Chưa có bộ sưu tập
+No companion keys.	Không có khóa ứng dụng đồng hành.
+No custom formats	Không có định dạng tùy chỉnh
+No custom formats defined.	Chưa định nghĩa định dạng tùy chỉnh nào.
+No delay above the minimum custom format score	Không trì hoãn khi vượt điểm định dạng tùy chỉnh tối thiểu
+No delay for the profile's best quality in the preferred protocol	Không trì hoãn với chất lượng tốt nhất của hồ sơ trong giao thức ưu tiên
+No download client to read	Không có trình tải xuống nào để đọc
+No exclusions.	Không có loại trừ.
+No history	Không có lịch sử
+No indexer can search this series automatically: none has automatic search enabled and either no tags or one of the series' tags.	Không trình lập chỉ mục nào có thể tự động tìm kiếm phim bộ này: không có trình nào vừa bật tìm kiếm tự động vừa không có thẻ hoặc có một trong các thẻ của phim bộ.
+No indexers to search	Không có trình lập chỉ mục để tìm kiếm
+No kept versions. Turn on "Keep files replaced by upgrades" in Naming.	Không có phiên bản đã giữ. Bật "Giữ các tệp bị thay thế khi nâng cấp" trong Đặt tên.
+No log entries at this level	Không có mục nhật ký ở mức này
+No mappings.	Không có ánh xạ.
+No matches	Không có kết quả khớp
+No members	Không có thành viên
+No migrations have been run yet.	Chưa chạy lần di chuyển nào.
+No movies yet	Chưa có phim lẻ
+No notes.	Không có ghi chú.
+No recycle bin is set (Settings › Media management).	Chưa thiết lập thùng rác (Cài đặt › Quản lý phương tiện).
+No release profiles.	Không có hồ sơ phát hành.
+No root folders yet.	Chưa có thư mục gốc.
+No root folders.	Không có thư mục gốc.
+No runs yet	Chưa có lần chạy nào
+No searches yet.	Chưa có lượt tìm kiếm nào.
+No series in your library match.	Không có phim bộ nào trong thư viện khớp.
+No tags	Không có thẻ
+No {}	Không có {}
+No {} yet	Chưa có {}
+None	Không có
+Not evaluated by Kitsunarr.	Kitsunarr không đánh giá.
+Not imported	Chưa nhập
+Not monitored	Không theo dõi
+Notes	Ghi chú
+Notes ({preview.warnings.len()})	Ghi chú ({preview.warnings.len()})
+Notes ({report.warnings.len()})	Ghi chú ({report.warnings.len()})
+Nothing airs in the next seven days.	Không có gì phát sóng trong bảy ngày tới.
+Nothing downloading	Không có gì đang tải xuống
+Nothing found	Không tìm thấy gì
+Nothing in this catalogue matches the search. Try another spelling, the original title, or the other catalogue.	Không có gì trong kho dữ liệu này khớp với tìm kiếm. Hãy thử cách viết khác, tên gốc hoặc kho dữ liệu còn lại.
+Nothing in this period	Không có gì trong khoảng thời gian này
+Nothing missing	Không thiếu gì
+Notifications	Thông báo
+Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)	Đánh số tập theo thứ tự khác của kho dữ liệu (nhóm tập TMDB, thứ tự DVD hoặc tuyệt đối của TheTVDB)
+OMDb API key	Khóa API OMDb
+Older priority	Ưu tiên cho mục cũ
+One folder per season	Mỗi mùa một thư mục
+Only the 2000 newest files are listed.	Chỉ liệt kê 2000 tệp mới nhất.
+Only when the proxy needs one.	Chỉ khi proxy yêu cầu.
+Open the library	Mở thư viện
+OpenAPI document	Tài liệu OpenAPI
+Opens the service to authorize Kitsunarr and fills in the token.	Mở dịch vụ để cấp quyền cho Kitsunarr và điền token.
+Options	Tùy chọn
+Organize	Sắp xếp
+Other	Khác
+Overview	Tóm tắt
+Overwrite records that already exist in Kitsunarr (otherwise they are kept)	Ghi đè các bản ghi đã tồn tại trong Kitsunarr (nếu không chúng sẽ được giữ nguyên)
+Packs	Gói
+Page not found	Không tìm thấy trang
+Page {page} / {pages}	Trang {page} / {pages}
+Password	Mật khẩu
+Password changed. Other sessions were signed out.	Đã đổi mật khẩu. Các phiên khác đã bị đăng xuất.
+Past days	Số ngày trước
+Path	Đường dẫn
+Path mappings	Ánh xạ đường dẫn
+Pause automation (RSS sync, scheduled list syncs, automatic searches)	Tạm dừng tự động hóa (đồng bộ RSS, đồng bộ danh sách theo lịch, tìm kiếm tự động)
+Peers	Peer
+Permission	Quyền
+PiB	PiB
+Platform	Nền tảng
+Port	Cổng
+Position	Vị trí
+Post-import category	Danh mục sau khi nhập
+Posters	Áp phích
+Prefer and upgrade	Ưu tiên và nâng cấp
+Prefer anime season packs (Kitsunarr's anime season searches already search the season once)	Ưu tiên gói mùa anime (tìm kiếm theo mùa cho anime của Kitsunarr đã tìm cả mùa một lần)
+Prefer, do not upgrade	Ưu tiên, không nâng cấp
+Preferred	Được ưu tiên
+Preferred metadata language	Ngôn ngữ siêu dữ liệu ưu tiên
+Preferred protocol	Giao thức ưu tiên
+Preparing preview…	Đang chuẩn bị xem trước…
+Preview	Xem trước
+Preview migration	Xem trước di chuyển
+Previous migrations	Các lần di chuyển trước
+Priority	Độ ưu tiên
+Problem	Vấn đề
+Profile	Hồ sơ
+Profile saved.	Đã lưu hồ sơ.
+Profiles still used by series or movies cannot be deleted.	Không thể xóa các hồ sơ vẫn đang được phim bộ hoặc phim lẻ sử dụng.
+Progress	Tiến độ
+Propers and repacks	Proper và repack
+Proxy	Proxy
+Proxy saved.	Đã lưu proxy.
+Proxy type	Loại proxy
+Qualities	Chất lượng
+Quality	Chất lượng
+Quality presets	Thiết lập sẵn chất lượng
+Quality presets saved.	Đã lưu thiết lập sẵn chất lượng.
+Quality profile	Hồ sơ chất lượng
+Quality profiles	Hồ sơ chất lượng
+Quality profile…	Hồ sơ chất lượng…
+RSS sync interval (minutes)	Chu kỳ đồng bộ RSS (phút)
+RSS sync waits this long after a release appears for a better one; delayed releases show in the queue. The first profile whose tags match the series applies; the last one (no tags) is the default.	Đồng bộ RSS sẽ chờ khoảng thời gian này sau khi một bản phát hành xuất hiện để tìm bản tốt hơn; các bản phát hành bị trì hoãn hiển thị trong hàng đợi. Hồ sơ đầu tiên có thẻ khớp với phim bộ sẽ được áp dụng; hồ sơ cuối cùng (không có thẻ) là mặc định.
+Re-encode this series' files with the compression worker	Mã hóa lại các tệp của phim bộ này bằng trình xử lý nén
+Read and add series	Đọc và thêm phim bộ
+Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again.	Được đọc trực tiếp từ trình tải xuống mỗi vài giây. Các bản tải đã hoàn tất do Kitsunarr lấy sẽ được nhập vào thư mục phim bộ mỗi phút (torrent được sao chép hoặc tạo hardlink để tiếp tục seed; bản tải Usenet được di chuyển). Các bản tải thất bại được đưa vào danh sách chặn và tìm lại.
+Read the library	Đọc thư viện
+Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk.	Chỉ đọc: tìm các thư mục phim bộ bị thiếu, bản ghi tệp nằm ngoài thư mục hoặc bị ghi hai lần, và các tệp bị thiếu trên ổ đĩa.
+Reading the download clients…	Đang đọc trình tải xuống…
+Reading the source	Đang đọc nguồn
+Reads everything through the API. Passwords and API keys of providers are hidden by the source and must be re-entered afterwards.	Đọc mọi thứ qua API. Mật khẩu và khóa API của nhà cung cấp bị nguồn ẩn đi và phải nhập lại sau đó.
+Recent activity	Hoạt động gần đây
+Recent priority	Ưu tiên cho mục gần đây
+Recent runs	Các lần chạy gần đây
+Recent searches	Các lượt tìm kiếm gần đây
+Recommended. In Sonarr/Tanukarr open System → Backup, create a backup and download the .zip (or use sonarr.db). Includes indexer and download-client passwords.	Khuyên dùng. Trong Sonarr/Tanukarr, mở System → Backup, tạo bản sao lưu và tải tệp .zip về (hoặc dùng sonarr.db). Bao gồm mật khẩu của trình lập chỉ mục và trình tải xuống.
+Recycle bin	Thùng rác
+Recycle bin cleanup (days)	Dọn thùng rác (ngày)
+Recycled	Đã vào thùng rác
+Refresh metadata	Làm mới siêu dữ liệu
+Refresh preview	Làm mới bản xem trước
+Refreshing from {} is not supported yet; the imported metadata is kept as is	Chưa hỗ trợ làm mới từ {}; siêu dữ liệu đã nhập được giữ nguyên
+Refreshing…	Đang làm mới…
+Regenerate	Tạo lại
+Regenerate API key	Tạo lại khóa API
+Reject releases whose TheTVDB or IMDb id names another series	Từ chối bản phát hành có id TheTVDB hoặc IMDb chỉ tới phim bộ khác
+Rejected: click twice to grab anyway	Bị từ chối: nhấp hai lần để vẫn lấy
+Release	Bản phát hành
+Release profile	Hồ sơ phát hành
+Release profile saved.	Đã lưu hồ sơ phát hành.
+Release profiles	Hồ sơ phát hành
+Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click.	Các bản phát hành được đối chiếu với hồ sơ chất lượng, định dạng tùy chỉnh và hồ sơ phát hành của phim bộ, rồi xếp hạng như Sonarr. Bản phát hành bị từ chối cần nhấp lần thứ hai.
+Releases that failed or were blocklisted by hand. Searches and RSS sync never grab them again; remove one to allow it.	Các bản phát hành đã thất bại hoặc bị đưa vào danh sách chặn thủ công. Tìm kiếm và đồng bộ RSS sẽ không bao giờ lấy lại chúng; gỡ bỏ một mục để cho phép lại.
+Remote path	Đường dẫn từ xa
+Remote path mapping	Ánh xạ đường dẫn từ xa
+Remote path mapping saved.	Đã lưu ánh xạ đường dẫn từ xa.
+Remote path mappings	Ánh xạ đường dẫn từ xa
+Remove	Gỡ bỏ
+Remove completed downloads	Gỡ bỏ bản tải đã hoàn tất
+Remove every release from the blocklist?	Gỡ bỏ mọi bản phát hành khỏi danh sách chặn?
+Remove failed downloads	Gỡ bỏ bản tải thất bại
+Remove from library	Gỡ khỏi thư viện
+Remove from queue	Gỡ khỏi hàng đợi
+Remove from the download client (deletes its files there)	Gỡ khỏi trình tải xuống (xóa các tệp của nó tại đó)
+Remove movie	Gỡ phim lẻ
+Remove series	Gỡ phim bộ
+Remove tags automatically (from titles that stop matching)	Tự động gỡ thẻ (khỏi các tựa không còn khớp)
+Remove “{title}” and its episode records from Kitsunarr?	Gỡ “{title}” và các bản ghi tập của nó khỏi Kitsunarr?
+Remove “{title}” from Kitsunarr? Files on disk are not deleted.	Gỡ “{title}” khỏi Kitsunarr? Tệp trên ổ đĩa không bị xóa.
+Removed	Đã gỡ
+Removed from the blocklist.	Đã gỡ khỏi danh sách chặn.
+Rename	Đổi tên
+Rename files	Đổi tên tệp
+Rename files on import	Đổi tên tệp khi nhập
+Rename files to the naming settings	Đổi tên tệp theo cài đặt đặt tên
+Formats use Sonarr's tokens.	Định dạng dùng token của Sonarr.
+Renaming…	Đang đổi tên…
+Report	Báo cáo
+Request one at omdbapi.com. Used for films by IMDb id.	Yêu cầu một khóa tại omdbapi.com. Dùng cho phim theo id IMDb.
+Required	Bắt buộc
+Resolution	Độ phân giải
+Restore	Khôi phục
+Restore {}	Khôi phục {}
+Restore…	Khôi phục…
+Restoring…	Đang khôi phục…
+Resume automation	Tiếp tục tự động hóa
+Retention (days)	Thời gian lưu giữ (ngày)
+Retire	Ngừng dùng
+Revoke	Thu hồi
+Root folder	Thư mục gốc
+Root folders	Thư mục gốc
+Root folder…	Thư mục gốc…
+Run #{run.id}: {run.status}	Lần chạy #{run.id}: {run.status}
+Run now	Chạy ngay
+Running…	Đang chạy…
+Saturday	Thứ Bảy
+Save	Lưu
+Save criteria	Lưu tiêu chí
+Save factors	Lưu hệ số
+Save keys	Lưu khóa
+Save metadata files	Lưu tệp siêu dữ liệu
+Save naming	Lưu cách đặt tên
+Save options	Lưu tùy chọn
+Saved	Đã lưu
+Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one.	Khóa đã lưu hiển thị dưới dạng {REDACTED}; giữ nguyên để giữ lại, hoặc xóa trống trường để xóa khóa.
+Saved.	Đã lưu.
+Scan disk	Quét ổ đĩa
+Scan folder	Quét thư mục
+Scanning…	Đang quét…
+Scheduled tasks	Tác vụ theo lịch
+Score	Điểm
+Search	Tìm kiếm
+Search again when a download fails	Tìm lại khi bản tải thất bại
+Search all	Tìm tất cả
+Search all films	Tìm tất cả phim
+Search collection	Tìm kiếm bộ sưu tập
+Search every episode of the list, one search per season	Tìm mọi tập trong danh sách, mỗi mùa một lượt tìm
+Search every member's missing episodes (films: the film)	Tìm các tập còn thiếu của mọi thành viên (phim: chính bộ phim)
+Search indexers	Tìm trên trình lập chỉ mục
+Search selected	Tìm mục đã chọn
+Search the indexers and choose a release	Tìm trên trình lập chỉ mục và chọn một bản phát hành
+Search the indexers and grab the best accepted release	Tìm trên trình lập chỉ mục và lấy bản phát hành được chấp nhận tốt nhất
+Search the indexers and grab the best releases for the monitored episodes	Tìm trên trình lập chỉ mục và lấy các bản phát hành tốt nhất cho những tập đang theo dõi
+Search your indexers	Tìm trên trình lập chỉ mục của bạn
+Search {chosen} selected	Tìm {chosen} mục đã chọn
+Search: {}	Tìm kiếm: {}
+Search: {} — complete series	Tìm kiếm: {} — trọn bộ
+Search: {} — season {season} packs	Tìm kiếm: {} — gói mùa {season}
+Search: {} — {label}	Tìm kiếm: {} — {label}
+Searching for {label}…	Đang tìm {label}…
+Searching indexers…	Đang tìm trên trình lập chỉ mục…
+Searching…	Đang tìm…
+Season	Mùa
+Season folder format	Định dạng thư mục mùa
+Season folder titles replace the catalogue's in {{Season Title}}. Leave empty to keep the catalogue's.	Tiêu đề thư mục mùa thay thế tiêu đề của kho dữ liệu trong {{Season Title}}. Để trống để giữ tiêu đề của kho dữ liệu.
+Season folders	Thư mục mùa
+Season images (Season ##.jpg)	Ảnh mùa (Season ##.jpg)
+Season images (Season##/folder.jpg)	Ảnh mùa (Season##/folder.jpg)
+Season images (season##-poster.jpg)	Ảnh mùa (season##-poster.jpg)
+Season packs: 1 uses the season-pack goals below	Gói mùa: 1 dùng các mục tiêu cho gói mùa bên dưới
+Season premieres only	Chỉ tập mở đầu mùa
+Season {n}	Mùa {n}
+Season {one}	Mùa {one}
+Season {se.season_number}	Mùa {se.season_number}
+Season {season_number}	Mùa {season_number}
+Season-pack seed ratio	Tỷ lệ seed của gói mùa
+Season-pack seed time, minutes	Thời gian seed của gói mùa, phút
+Seasons	Mùa
+Seasons {first}-{last}	Mùa {first}-{last}
+Secrets show as {REDACTED}; leave them unchanged to keep the stored value.	Thông tin bí mật hiển thị dưới dạng {REDACTED}; giữ nguyên để giữ giá trị đã lưu.
+Seed ratio (empty: the client's default)	Tỷ lệ seed (trống: mặc định của trình tải xuống)
+Seed time, minutes (empty: the client's default)	Thời gian seed, phút (trống: mặc định của trình tải xuống)
+Send requests to indexers, catalogues, lists, download clients and connections through a proxy.	Gửi yêu cầu tới trình lập chỉ mục, kho dữ liệu, danh sách, trình tải xuống và kết nối qua proxy.
+Send to the download client	Gửi tới trình tải xuống
+Series	Phim bộ
+Series .plexmatch file	Tệp .plexmatch của phim bộ
+Series folder format	Định dạng thư mục phim bộ
+Series images (Series Title.jpg)	Ảnh phim bộ (Series Title.jpg)
+Series images (fanart.jpg, poster.jpg, banner.jpg)	Ảnh phim bộ (fanart.jpg, poster.jpg, banner.jpg)
+Series images (folder.jpg)	Ảnh phim bộ (folder.jpg)
+Series metadata (tvshow.nfo)	Siêu dữ liệu phim bộ (tvshow.nfo)
+Series metadata URL	URL siêu dữ liệu phim bộ
+Series metadata episode guide	Hướng dẫn tập trong siêu dữ liệu phim bộ
+Series removed from Kitsunarr. Files on disk were not touched.	Đã gỡ phim bộ khỏi Kitsunarr. Tệp trên ổ đĩa không bị động đến.
+Series removed, and its folder deleted.	Đã gỡ phim bộ và xóa thư mục của nó.
+Series type	Loại phim bộ
+Set quality profile…	Đặt hồ sơ chất lượng…
+Settings	Cài đặt
+Settings saved.	Đã lưu cài đặt.
+Settings → General → Security in Sonarr/Tanukarr.	Settings → General → Security trong Sonarr/Tanukarr.
+Show	Hiện
+Show as all-day events	Hiển thị dưới dạng sự kiện cả ngày
+Show unmonitored	Hiện mục không theo dõi
+Shows	Phim bộ
+Sign in	Đăng nhập
+Signed in. Save the list to keep the token.	Đã đăng nhập. Lưu danh sách để giữ token.
+Signing in…	Đang đăng nhập…
+Size	Kích thước
+Size limits	Giới hạn kích thước
+Size on disk	Dung lượng trên ổ đĩa
+Skip files smaller than (MB)	Bỏ qua tệp nhỏ hơn (MB)
+Skip the free-space check	Bỏ qua kiểm tra dung lượng trống
+Skip unmonitored episodes when importing packs	Bỏ qua các tập không theo dõi khi nhập gói
+Source	Nguồn
+Source code	Mã nguồn
+Source path	Đường dẫn nguồn
+Special	Đặc biệt
+Specials	Tập đặc biệt
+Specials are never monitored automatically.	Tập đặc biệt không bao giờ được theo dõi tự động.
+Specifications	Đặc tả
+Specifications (JSON)	Đặc tả (JSON)
+Specifications must be valid JSON: {e}	Đặc tả phải là JSON hợp lệ: {e}
+Stalled torrent timeout (minutes)	Thời gian chờ torrent bị đứng (phút)
+Standard	Tiêu chuẩn
+Standard episode format	Định dạng tập tiêu chuẩn
+Start migration	Bắt đầu di chuyển
+Start over	Bắt đầu lại
+Start search for missing episodes	Bắt đầu tìm các tập còn thiếu
+Started	Đã bắt đầu
+Started {format_datetime(&run.started_at)}	Bắt đầu lúc {format_datetime(&run.started_at)}
+Status	Trạng thái
+Status & health	Trạng thái & tình trạng
+Still downloading	Vẫn đang tải xuống
+Storage outlook	Dự báo dung lượng
+Studio	Hãng sản xuất
+Subscribe	Đăng ký
+Subscribe to this address in a calendar app. It contains your API key: keep it private.	Đăng ký địa chỉ này trong ứng dụng lịch. Nó chứa khóa API của bạn: hãy giữ bí mật.
+Sunday	Chủ Nhật
+Sync	Đồng bộ
+Sync all lists now	Đồng bộ tất cả danh sách ngay
+Sync now	Đồng bộ ngay
+Syncing…	Đang đồng bộ…
+System →	Hệ thống →
+TMDB API key (v3)	Khóa API TMDB (v3)
+TV Series	Phim truyền hình
+TV series	Phim truyền hình
+Table	Bảng
+Tag	Thẻ
+Tag them	Gắn thẻ chúng
+Tag titles already in the library	Gắn thẻ cho các tựa đã có trong thư viện
+Tags	Thẻ
+Tags (comma separated)	Thẻ (phân tách bằng dấu phẩy)
+Tags (ids, comma separated)	Thẻ (id, phân tách bằng dấu phẩy)
+Tags are added to series and films that match every kind of condition when they are added, edited or refreshed.	Thẻ được thêm vào phim bộ và phim thỏa mọi loại điều kiện khi chúng được thêm, chỉnh sửa hoặc làm mới.
+Task	Tác vụ
+Television	Truyền hình
+Television (raw)	Truyền hình (raw)
+Test	Kiểm tra
+Test failed: {message}	Kiểm tra thất bại: {message}
+Testing…	Đang kiểm tra…
+The blocklist is empty	Danh sách chặn trống
+The catalogue new titles are added from when the list knows their id there.	Kho dữ liệu dùng để thêm tựa mới khi danh sách biết id của chúng ở đó.
+The date imported files get: the episode's air date (local or UTC), or on an upgrade the replaced file's date.	Ngày gán cho tệp được nhập: ngày phát sóng của tập (địa phương hoặc UTC), hoặc khi nâng cấp là ngày của tệp bị thay thế.
+The dry run completed without blocking problems. Nothing has been written yet.	Chạy thử đã hoàn tất mà không có vấn đề chặn nào. Chưa có gì được ghi.
+The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned.	Tệp được di chuyển vào thư mục mùa (tệp hiện có không bao giờ bị ghi đè) và phim bộ được quét lại.
+The folder must already exist; Kitsunarr never creates or removes it.	Thư mục phải tồn tại sẵn; Kitsunarr không bao giờ tạo hay xóa nó.
+The indexers returned no releases for this search.	Các trình lập chỉ mục không trả về bản phát hành nào cho lượt tìm kiếm này.
+The instance is on my local network (private or loopback address)	Bản cài đặt nằm trong mạng cục bộ của tôi (địa chỉ riêng hoặc loopback)
+The list has not been read, or it is empty.	Danh sách chưa được đọc hoặc đang trống.
+The migration did not complete; nothing was changed.	Di chuyển chưa hoàn tất; không có gì bị thay đổi.
+The most recent entries kept in memory. Full logs go to the process output (container logs or journal).	Các mục gần nhất được giữ trong bộ nhớ. Nhật ký đầy đủ được ghi ra đầu ra của tiến trình (nhật ký container hoặc journal).
+The passwords do not match.	Mật khẩu không khớp.
+The recycle bin has no media or subtitle files.	Thùng rác không có tệp media hoặc phụ đề nào.
+The sign-in expired; try again.	Phiên đăng nhập đã hết hạn; hãy thử lại.
+The upload failed (network error).	Tải lên thất bại (lỗi mạng).
+The worker is an optional host component (Tanukarr's compression worker) reached through the socket at KITSUNARR_COMPRESSION_SOCKET.	Trình xử lý là một thành phần tùy chọn trên máy chủ (trình xử lý nén của Tanukarr), được kết nối qua socket tại KITSUNARR_COMPRESSION_SOCKET.
+TheTVDB (Sonarr's catalogue), TMDB and TVmaze cover TV series; AniList and MyAnimeList cover anime series and anime films; TMDB and OMDb cover films. Adding a title creates its library entry and episode list; files are picked up later by the import pipeline.	TheTVDB (kho dữ liệu của Sonarr), TMDB và TVmaze bao gồm phim truyền hình; AniList và MyAnimeList bao gồm phim bộ anime và phim anime; TMDB và OMDb bao gồm phim lẻ. Thêm một tựa sẽ tạo mục thư viện và danh sách tập của nó; tệp sẽ được quy trình nhập phát hiện sau.
+TheTVDB titles are searched and added in this language; each series can be changed in its editor.	Tựa TheTVDB được tìm và thêm bằng ngôn ngữ này; có thể thay đổi cho từng phim bộ trong trình chỉnh sửa của nó.
+TheTVDB titles in this language; changing it refreshes the series	Tựa TheTVDB bằng ngôn ngữ này; thay đổi sẽ làm mới phim bộ
+There is nothing at /{path}.	Không có gì tại /{path}.
+They are created by migrating from Sonarr/Tanukarr.	Chúng được tạo khi di chuyển từ Sonarr/Tanukarr.
+This series' renaming mode, season folder titles and kept versions	Chế độ đổi tên, tiêu đề thư mục mùa và phiên bản đã giữ của phim bộ này
+TiB	TiB
+Time	Thời gian
+Time left	Thời gian còn lại
+Title	Tiêu đề
+Title pattern	Mẫu tiêu đề
+Titles import lists never add.	Các tựa mà danh sách nhập không bao giờ thêm.
+Titles on no list	Tựa không thuộc danh sách nào
+Today	Hôm nay
+Torrent	Torrent
+Torrent delay	Trì hoãn torrent
+Torrent delay (minutes)	Trì hoãn torrent (phút)
+Torznab and Newznab indexers. Use Test in the editor to check one; each search uses the indexers with that kind of search enabled: RSS, automatic or interactive.	Trình lập chỉ mục Torznab và Newznab. Dùng Kiểm tra trong trình chỉnh sửa để kiểm tra từng cái; mỗi lượt tìm dùng các trình lập chỉ mục đã bật loại tìm kiếm đó: RSS, tự động hoặc tương tác.
+Trigger	Kích hoạt
+URL base	URL gốc
+UTC air date	Ngày phát sóng UTC
+Unchanged	Không đổi
+Unknown	Không rõ
+Unmonitor	Bỏ theo dõi
+Unmonitor them	Bỏ theo dõi chúng
+Unmonitored	Không theo dõi
+Upcoming	Sắp tới
+Upcoming 7 days	7 ngày tới
+Update	Cập nhật
+Updated {} items.	Đã cập nhật {} mục.
+Upgrade until (cutoff)	Nâng cấp đến (ngưỡng)
+Upgrade until format score	Nâng cấp đến điểm định dạng
+Upgrades allowed	Cho phép nâng cấp
+Upload a backup	Tải lên bản sao lưu
+Upload failed (HTTP {}).	Tải lên thất bại (HTTP {}).
+Uploading…	Đang tải lên…
+Use SSL	Dùng SSL
+Use a proxy	Dùng proxy
+Use hardlinks instead of copying	Dùng hardlink thay vì sao chép
+Use it as the X-Api-Key header (or ?apikey=) from other applications. Compatible with the header Sonarr uses.	Dùng nó làm header X-Api-Key (hoặc ?apikey=) từ các ứng dụng khác. Tương thích với header mà Sonarr dùng.
+Use these episodes	Dùng các tập này
+Usenet	Usenet
+Usenet delay	Trì hoãn Usenet
+Usenet delay (minutes)	Trì hoãn Usenet (phút)
+Usenet only: newer releases are rejected, giving them time to propagate. 0 turns this off.	Chỉ Usenet: bản phát hành mới hơn sẽ bị từ chối để chúng có thời gian lan truyền. 0 sẽ tắt tính năng này.
+Usenet only: older releases are rejected. 0 means unlimited.	Chỉ Usenet: bản phát hành cũ hơn sẽ bị từ chối. 0 nghĩa là không giới hạn.
+User name	Tên người dùng
+Username	Tên người dùng
+Validation	Xác thực
+Version	Phiên bản
+Versions	Phiên bản
+Waiting for the sign-in at	Đang chờ đăng nhập tại
+Wanted	Cần tìm
+Warnings	Cảnh báo
+Warnings {warnings}	Cảnh báo {warnings}
+Watched (Jellyfin watched sync)	Đã xem (đồng bộ trạng thái đã xem của Jellyfin)
+Watched sync user	Người dùng đồng bộ trạng thái đã xem
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, script tùy chỉnh (với biến môi trường của Sonarr), Emby/Jellyfin, Plex và Kodi đều được gửi: lượt lấy, nhập và nâng cấp, đổi tên, phim bộ được thêm hoặc xóa, tệp bị xóa, sự cố về tình trạng. Dùng Kiểm tra trong trình chỉnh sửa.
+Welcome	Chào mừng
+What to import	Nội dung cần nhập
+When	Khi nào
+When HTTPS certificates of indexers, download clients and services are checked (Sonarr's setting). Self-signed certificates on your network need it relaxed.	Thời điểm kiểm tra chứng chỉ HTTPS của trình lập chỉ mục, trình tải xuống và dịch vụ (cài đặt của Sonarr). Chứng chỉ tự ký trong mạng của bạn cần nới lỏng cài đặt này.
+When a download client reports paths Kitsunarr sees elsewhere (another machine or container), map the client's host and path to the local path.	Khi trình tải xuống báo cáo đường dẫn mà Kitsunarr thấy ở nơi khác (máy hoặc container khác), hãy ánh xạ máy chủ và đường dẫn của trình tải xuống tới đường dẫn cục bộ.
+Whether releases fixing a bad release are preferred, and upgrade existing files (as in Sonarr).	Có ưu tiên các bản phát hành sửa lỗi cho bản phát hành hỏng và nâng cấp tệp hiện có hay không (như trong Sonarr).
+Whole season	Cả mùa
+Working…	Đang xử lý…
+Written in the series folders when series are scanned, refreshed or imported, as Sonarr's metadata consumers write them.	Được ghi vào thư mục phim bộ khi phim bộ được quét, làm mới hoặc nhập, giống như cách các trình sử dụng siêu dữ liệu của Sonarr ghi.
+Year	Năm
+Your library is empty.	Thư viện của bạn đang trống.
+all checks passed	tất cả kiểm tra đều đạt
+comma separated	phân tách bằng dấu phẩy
+cutoff: {}	ngưỡng: {}
+has a file	có tệp
+iCal link	liên kết iCal
+in 2 days	trong 2 ngày nữa
+in a moment	trong giây lát
+in file names	trong tên tệp
+in library	trong thư viện
+in {text}	trong {text} nữa
+just now	vừa xong
+may run out of space	có thể hết dung lượng
+name (e.g. phone)	tên (ví dụ điện thoại)
+never refreshed	chưa từng làm mới
+no media files are moved, renamed or deleted.	không tệp media nào bị di chuyển, đổi tên hoặc xóa.
+not accessible	không truy cập được
+not added	chưa thêm
+not checked	chưa kiểm tra
+not read yet	chưa đọc
+on disk	trên ổ đĩa
+refreshed {}	đã làm mới {}
+schema {s}	lược đồ {s}
+secrets included	bao gồm thông tin bí mật
+secrets masked	đã ẩn thông tin bí mật
+sonarr_backup_*.zip or sonarr.db	sonarr_backup_*.zip hoặc sonarr.db
+stored only	chỉ lưu trữ
+title (optional)	tiêu đề (tùy chọn)
+{:.1} GiB/h	{:.1} GiB/giờ
+{added} added; {}	đã thêm {added}; {}
+{added} shows added.	Đã thêm {added} phim bộ.
+{c.name} (API key needed)	{c.name} (cần khóa API)
+{c.series_count} series · {c.movie_count} movies	{c.series_count} phim bộ · {c.movie_count} phim lẻ
+{chosen().len()} chosen	Đã chọn {chosen().len()}
+{chosen().len()} chosen (at most 25)	Đã chọn {chosen().len()} (tối đa 25)
+{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}	{d.item.episode_file_count} / {d.item.episode_count} trên ổ đĩa · {format_bytes(d.item.size_on_disk)}
+{done}% of {format_bytes(item.size)}	{done}% của {format_bytes(item.size)}
+{f.quality_name} · {format_bytes(f.size)} · added {format_date(&f.added_at)}	{f.quality_name} · {format_bytes(f.size)} · thêm ngày {format_date(&f.added_at)}
+{first}–{last} of {total}	{first}–{last} trên {total}
+{job["completedFiles"]} / {job["totalFiles"]} files · {job["percent"]}% · saved {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}	{job["completedFiles"]} / {job["totalFiles"]} tệp · {job["percent"]}% · tiết kiệm {crate::util::format_bytes(job["savedBytes"].as_i64().unwrap_or(0))}
+{name} started.	Đã bắt đầu {name}.
+{name} was added to the library.	Đã thêm {name} vào thư viện.
+{name}: shows	{name}: phim bộ
+{ok} files imported.	Đã nhập {ok} tệp.
+{ok} imported; {}	Đã nhập {ok}; {}
+{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s).	{r.description}: {r.releases.len()} bản phát hành từ {r.searched_indexers} trình lập chỉ mục.
+{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues.	Đã kiểm tra {r.series_checked} phim bộ và {r.files_checked} tệp: {r.issues.len()} vấn đề.
+{selected.read().len()} selected	Đã chọn {selected.read().len()}
+{text} ago	{text} trước
+{} (not accessible)	{} (không truy cập được)
+{} ({} free)	{} (còn trống {})
+{} added to every profile (not allowed yet).	Đã thêm {} vào mọi hồ sơ (chưa được cho phép).
+{} day(s)	{} ngày
+{} failed: {}	{} thất bại: {}
+{} format scores	{} điểm định dạng
+{} free of {}	Còn trống {} trên {}
+{} week(s)	{} tuần
+{}{year} — movie	{}{year} — phim lẻ
+‹ Back	‹ Quay lại
+‹ Earlier	‹ Trước đó
+‹ Prev	‹ Trước
+○ offline	○ ngoại tuyến
+● live	● trực tiếp
+✓ No issues detected.	✓ Không phát hiện vấn đề nào.
+Activity	Hoạt động
+Queue	Hàng đợi
+System	Hệ thống
+Tasks	Tác vụ
+Retry	Thử lại
+Sign out	Đăng xuất
+Search titles…  ( / )	Tìm tựa…  ( / )
+Loading…	Đang tải…
+Profiles	Hồ sơ
+scene {}	scene {}
+Scene numbering from TheXEM	Đánh số scene từ TheXEM
+Scene numbering extrapolated from TheXEM (unverified)	Đánh số scene ngoại suy từ TheXEM (chưa xác minh)
+Season {} (scene seasons {})	Mùa {} (mùa scene {})
+{} (scene {})	{} (scene {})
