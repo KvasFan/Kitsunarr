@@ -93,6 +93,7 @@ pub fn protocol_for(implementation: &str) -> DownloadProtocol {
         | "downloadstation"
         | "torrentblackhole"
         | "freeboxdownload"
+        | "torrentfreeboxdownload"
         | "rqbit"
         | "tribler"
         | "triblerdownloadclient"

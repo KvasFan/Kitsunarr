@@ -8,9 +8,11 @@
 pub mod aria2;
 pub mod blackhole;
 pub mod deluge;
+pub mod downloadstation;
 pub mod error;
 pub mod fake;
 pub mod flood;
+pub mod freebox;
 pub mod hadouken;
 pub mod nzbget;
 pub mod nzbvortex;
@@ -31,8 +33,10 @@ use serde_json::{Map, Value};
 pub use aria2::Aria2;
 pub use blackhole::Blackhole;
 pub use deluge::Deluge;
+pub use downloadstation::DownloadStation;
 pub use error::DownloadError;
 pub use flood::Flood;
+pub use freebox::Freebox;
 pub use hadouken::Hadouken;
 pub use nzbget::Nzbget;
 pub use nzbvortex::NzbVortex;
@@ -126,6 +130,9 @@ pub enum ClientSettings {
     NzbVortex(nzbvortex::Settings),
     RQBit(rqbit::Settings),
     Tribler(tribler::Settings),
+    Freebox(freebox::Settings),
+    /// Torrent or Usenet Download Station.
+    DownloadStation(downloadstation::Settings),
     TorrentBlackhole(blackhole::TorrentSettings),
     UsenetBlackhole(blackhole::UsenetSettings),
 }
@@ -149,6 +156,13 @@ impl ClientSettings {
             "Pneumatic" => pneumatic::Settings::from_map(map).map(Self::Pneumatic),
             "NzbVortex" => nzbvortex::Settings::from_map(map).map(Self::NzbVortex),
             "RQBit" => rqbit::Settings::from_map(map).map(Self::RQBit),
+            "TorrentFreeboxDownload" => freebox::Settings::from_map(map).map(Self::Freebox),
+            "TorrentDownloadStation" => {
+                downloadstation::Settings::from_map(map, false).map(Self::DownloadStation)
+            }
+            "UsenetDownloadStation" => {
+                downloadstation::Settings::from_map(map, true).map(Self::DownloadStation)
+            }
             "TriblerDownloadClient" | "Tribler" => {
                 tribler::Settings::from_map(map).map(Self::Tribler)
             }
@@ -178,6 +192,8 @@ impl ClientSettings {
             Self::NzbVortex(s) => &s.host,
             Self::RQBit(s) => &s.host,
             Self::Tribler(s) => &s.host,
+            Self::Freebox(s) => &s.host,
+            Self::DownloadStation(s) => &s.host,
             // Blackholes and Pneumatic are local folders (`IsLocalhost`).
             Self::TorrentBlackhole(_) | Self::UsenetBlackhole(_) | Self::Pneumatic(_) => {
                 "localhost"
@@ -187,6 +203,9 @@ impl ClientSettings {
 
     /// Whether the client downloads from Usenet (its files may be moved on import).
     pub fn is_usenet(&self) -> bool {
+        if let Self::DownloadStation(s) = self {
+            return s.usenet;
+        }
         matches!(
             self,
             Self::Sabnzbd(_)
@@ -243,6 +262,8 @@ pub struct Clients {
     pub nzbvortex: NzbVortex,
     pub rqbit: RQBit,
     pub tribler: Tribler,
+    pub freebox: Freebox,
+    pub downloadstation: DownloadStation,
 }
 
 impl Clients {
@@ -261,7 +282,9 @@ impl Clients {
             hadouken: Hadouken::new(http.clone()),
             nzbvortex: NzbVortex::new(http.clone()),
             rqbit: RQBit::new(http.clone()),
-            tribler: Tribler::new(http),
+            tribler: Tribler::new(http.clone()),
+            freebox: Freebox::new(http.clone()),
+            downloadstation: DownloadStation::new(http),
         }
     }
 
@@ -304,6 +327,20 @@ impl Clients {
                 Tested {
                     message: format!("Connected to NZBGet {}.", r.version),
                     warnings: r.warnings,
+                }
+            }
+            ClientSettings::DownloadStation(s) => {
+                self.downloadstation.test(s).await?;
+                Tested {
+                    message: "Connected to Download Station.".into(),
+                    warnings: Vec::new(),
+                }
+            }
+            ClientSettings::Freebox(s) => {
+                self.freebox.test(s).await?;
+                Tested {
+                    message: "Connected to the Freebox.".into(),
+                    warnings: Vec::new(),
                 }
             }
             ClientSettings::Tribler(s) => {
@@ -407,6 +444,14 @@ impl Clients {
             ClientSettings::Hadouken(s) => self.hadouken.add(s, &req.source, req.hash).await,
             ClientSettings::RQBit(s) => self.rqbit.add(s, &req.source, req.hash).await,
             ClientSettings::Tribler(s) => self.tribler.add(s, &req.source).await,
+            ClientSettings::DownloadStation(s) if !s.usenet => {
+                self.downloadstation.add(s, &req.source).await
+            }
+            ClientSettings::Freebox(s) => {
+                self.freebox
+                    .add(s, &req.source, req.title, req.recent, req.seed)
+                    .await
+            }
             ClientSettings::Flood(s) => {
                 let info = req.release.cloned().unwrap_or_default();
                 self.flood.add(s, &req.source, req.hash, &info).await
@@ -418,7 +463,8 @@ impl Clients {
             | ClientSettings::Nzbget(_)
             | ClientSettings::UsenetBlackhole(_)
             | ClientSettings::Pneumatic(_)
-            | ClientSettings::NzbVortex(_) => Err(DownloadError::Unsupported(
+            | ClientSettings::NzbVortex(_)
+            | ClientSettings::DownloadStation(_) => Err(DownloadError::Unsupported(
                 "Usenet clients cannot take torrents".into(),
             )),
         }
@@ -440,6 +486,11 @@ impl Clients {
             ClientSettings::UsenetBlackhole(s) => self.blackhole.add_nzb(s, name, content),
             ClientSettings::Pneumatic(s) => pneumatic::add(s, name, content),
             ClientSettings::NzbVortex(s) => self.nzbvortex.add(s, name, content, recent).await,
+            ClientSettings::DownloadStation(s) if s.usenet => {
+                self.downloadstation
+                    .add(s, &Source::File { name, content })
+                    .await
+            }
             _ => Err(DownloadError::Unsupported(
                 "torrent clients cannot take NZBs".into(),
             )),
@@ -507,6 +558,15 @@ impl Clients {
                     .await
             }
             ClientSettings::RQBit(s) => self.rqbit.remove(s, &item.download_id, delete_data).await,
+            ClientSettings::Freebox(s) => {
+                self.freebox.remove(s, &item.download_id, delete_data).await
+            }
+            ClientSettings::DownloadStation(s) => {
+                if delete_data {
+                    delete_item_data(item)?;
+                }
+                self.downloadstation.remove(s, &item.download_id).await
+            }
             ClientSettings::Tribler(s) => {
                 self.tribler.remove(s, &item.download_id, delete_data).await
             }
@@ -536,6 +596,8 @@ impl Clients {
             ClientSettings::NzbVortex(s) => self.nzbvortex.items(s).await,
             ClientSettings::RQBit(s) => self.rqbit.items(s).await,
             ClientSettings::Tribler(s) => self.tribler.items(s).await,
+            ClientSettings::Freebox(s) => self.freebox.items(s).await,
+            ClientSettings::DownloadStation(s) => self.downloadstation.items(s).await,
             ClientSettings::TorrentBlackhole(s) => {
                 Ok(self
                     .blackhole
@@ -564,6 +626,8 @@ impl Clients {
             | ClientSettings::NzbVortex(_)
             | ClientSettings::RQBit(_)
             | ClientSettings::Tribler(_)
+            | ClientSettings::Freebox(_)
+            | ClientSettings::DownloadStation(_)
             | ClientSettings::Sabnzbd(_)
             | ClientSettings::Nzbget(_)
             | ClientSettings::TorrentBlackhole(_)

@@ -253,6 +253,37 @@ pub fn templates(kind: ProviderKind) -> Vec<ProviderItem> {
             ),
             template(
                 kind,
+                "Download Station (torrents)",
+                "TorrentDownloadStation",
+                client_options.clone(),
+                json!({
+                    "host": "127.0.0.1", "port": 5000, "useSsl": false, "username": "", "password": "",
+                    "tvCategory": "", "tvDirectory": ""
+                }),
+            ),
+            template(
+                kind,
+                "Download Station (Usenet)",
+                "UsenetDownloadStation",
+                client_options.clone(),
+                json!({
+                    "host": "127.0.0.1", "port": 5000, "useSsl": false, "username": "", "password": "",
+                    "tvCategory": "", "tvDirectory": ""
+                }),
+            ),
+            template(
+                kind,
+                "Freebox Download",
+                "TorrentFreeboxDownload",
+                client_options.clone(),
+                json!({
+                    "host": "mafreebox.freebox.fr", "port": 443, "useSsl": true, "apiUrl": "/api/v1/",
+                    "appId": "", "appToken": "", "destinationDirectory": "", "category": "",
+                    "recentPriority": 0, "olderPriority": 0, "addPaused": false
+                }),
+            ),
+            template(
+                kind,
                 "Tribler",
                 "TriblerDownloadClient",
                 client_options.clone(),
@@ -444,6 +475,10 @@ mod tests {
             let mut settings = t.settings.clone();
             // SABnzbd needs credentials, blackholes their folders.
             settings.insert("apiKey".into(), "k".into());
+            if settings.contains_key("appId") {
+                settings.insert("appId".into(), "fr.kitsunarr".into());
+                settings.insert("appToken".into(), "token".into());
+            }
             for folder in ["torrentFolder", "nzbFolder", "watchFolder", "strmFolder"] {
                 if settings.contains_key(folder) {
                     settings.insert(folder.into(), "/downloads".into());
