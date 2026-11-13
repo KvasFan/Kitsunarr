@@ -2725,6 +2725,9 @@ fn ProviderEditor(
             if item.kind == ProviderKind::Notification && item.implementation.eq_ignore_ascii_case("Jellyfin") {
                 JellyfinPickers { draft }
             }
+            if item.kind == ProviderKind::Notification && item.implementation.eq_ignore_ascii_case("Twitter") {
+                SignInButton { draft }
+            }
             if item.kind == ProviderKind::ImportList
                 && matches!(item.implementation.as_str(), "SimklUserImport" | "TraktListImport" | "TraktUserImport" | "TraktPopularImport" | "TraktSmartListImport" | "PlexImport" | "MyAnimeListImport")
             {

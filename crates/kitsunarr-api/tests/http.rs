@@ -5874,3 +5874,72 @@ async fn sonarr_v3_download_clients_and_notifications_are_written() {
     .unwrap();
     assert_eq!(unsupported.status(), 422);
 }
+
+/// Sonarr's "Connect to Twitter": a request token with Kitsunarr's callback, X's authorize page,
+/// the callback's verifier, then the account's access token filled in.
+#[tokio::test]
+async fn twitter_connections_sign_in_with_oauth1() {
+    use axum::routing::post;
+    use kitsunarr_domain::api::settings::SignInRequest;
+    let seen: Arc<std::sync::Mutex<Vec<String>>> = Arc::default();
+    let (s1, s2) = (seen.clone(), seen.clone());
+    let app = axum::Router::new()
+        .route(
+            "/oauth/request_token",
+            post(move |h: axum::http::HeaderMap| async move {
+                s1.lock()
+                    .unwrap()
+                    .push(h["authorization"].to_str().unwrap().to_string());
+                "oauth_token=rt&oauth_token_secret=rs&oauth_callback_confirmed=true"
+            }),
+        )
+        .route(
+            "/oauth/access_token",
+            post(move |h: axum::http::HeaderMap| async move {
+                s2.lock()
+                    .unwrap()
+                    .push(h["authorization"].to_str().unwrap().to_string());
+                "oauth_token=at&oauth_token_secret=as&screen_name=me"
+            }),
+        );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let api = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let settings: serde_json::Map<String, serde_json::Value> = serde_json::from_value(
+        serde_json::json!({"apiUrl": api, "consumerKey": "ck", "consumerSecret": "cs"}),
+    )
+    .unwrap();
+    let mut req = SignInRequest {
+        id: None,
+        implementation: "Twitter".into(),
+        settings,
+        callback: Some(format!("{}/api/v1/importlists/oauth/callback", server.base)),
+        state: None,
+    };
+    let started = client.sign_in_start(&req).await.unwrap();
+    assert_eq!(started.url, format!("{api}/oauth/authorize?oauth_token=rt"));
+    assert!(seen.lock().unwrap()[0].contains("oauth_callback=\""));
+    req.state = Some(started.state.clone());
+    req.callback = None;
+    // Not authorized yet.
+    assert!(!client.sign_in_poll(&req).await.unwrap().done);
+    let page = reqwest::get(format!(
+        "{}/api/v1/importlists/oauth/callback?oauth_token=rt&oauth_verifier=v123",
+        server.base
+    ))
+    .await
+    .unwrap();
+    assert_eq!(page.status(), 200);
+    let polled = client.sign_in_poll(&req).await.unwrap();
+    assert!(polled.done);
+    assert_eq!(polled.settings["accessToken"], "at");
+    assert_eq!(polled.settings["accessTokenSecret"], "as");
+    let exchange = seen.lock().unwrap()[1].clone();
+    assert!(
+        exchange.contains("oauth_verifier=\"v123\"") && exchange.contains("oauth_token=\"rt\""),
+        "{exchange}"
+    );
+}

@@ -59,6 +59,9 @@ pub async fn sign_in_start(
     State(state): State<AppState>,
     Json(mut req): Json<kitsunarr_domain::api::settings::SignInRequest>,
 ) -> ApiResult<Json<kitsunarr_domain::api::settings::SignInStarted>> {
+    if req.implementation.eq_ignore_ascii_case("Twitter") {
+        return twitter_start(&state, req).await.map(Json);
+    }
     if !kitsunarr_importlists::oauth::supported(&req.implementation) {
         return Err(ApiError::field(
             "implementation",
@@ -111,6 +114,9 @@ pub async fn sign_in_poll(
         .state
         .clone()
         .ok_or_else(|| ApiError::field("state", "Start signing in first."))?;
+    if req.implementation.eq_ignore_ascii_case("Twitter") {
+        return twitter_poll(&state, req, &sign_in).await.map(Json);
+    }
     if let Some(id) = req.id {
         let stored = providers::get(state.db.pool(), ProviderKind::ImportList, id).await?;
         crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
@@ -147,12 +153,129 @@ pub async fn sign_in_poll(
     }))
 }
 
+/// Sonarr's "Connect to Twitter" (OAuth 1.0a): a request token with Kitsunarr's callback, the
+/// authorize page for the account; its secret stays on the server until the callback.
+async fn twitter_start(
+    state: &AppState,
+    mut req: kitsunarr_domain::api::settings::SignInRequest,
+) -> ApiResult<kitsunarr_domain::api::settings::SignInStarted> {
+    if let Some(id) = req.id {
+        let stored = providers::get(state.db.pool(), ProviderKind::Notification, id).await?;
+        crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
+    }
+    let text = |k: &str| {
+        req.settings
+            .get(k)
+            .and_then(|v| v.as_str())
+            .map(str::trim)
+            .filter(|v| !v.is_empty())
+            .map(str::to_string)
+    };
+    let (Some(key), Some(secret)) = (text("consumerKey"), text("consumerSecret")) else {
+        return Err(ApiError::field(
+            "settings",
+            "Enter the app's consumer key and secret first.",
+        ));
+    };
+    let callback = req
+        .callback
+        .clone()
+        .filter(|c| {
+            (c.starts_with("http://") || c.starts_with("https://")) && c.ends_with(SIGN_IN_CALLBACK)
+        })
+        .ok_or_else(|| ApiError::field("callback", "X needs Kitsunarr's callback address."))?;
+    let api = text("apiUrl").unwrap_or_else(|| "https://api.x.com".into());
+    let (url, token, token_secret) = kitsunarr_notifications::extra::twitter_request_token(
+        &state.http,
+        &api,
+        &key,
+        &secret,
+        &callback,
+    )
+    .await
+    .map_err(|e| ApiError::field("settings", e.to_string()))?;
+    state
+        .oauth_codes
+        .lock()
+        .unwrap_or_else(|e| e.into_inner())
+        .insert(format!("twsecret:{token}"), token_secret);
+    Ok(kitsunarr_domain::api::settings::SignInStarted {
+        url,
+        code: None,
+        state: format!("tw:{token}"),
+        interval: 2,
+        expires_in: 600,
+    })
+}
+
+/// The access token once X sent the account back with its verifier.
+async fn twitter_poll(
+    state: &AppState,
+    mut req: kitsunarr_domain::api::settings::SignInRequest,
+    sign_in: &str,
+) -> ApiResult<kitsunarr_domain::api::settings::SignInPolled> {
+    if let Some(id) = req.id {
+        let stored = providers::get(state.db.pool(), ProviderKind::Notification, id).await?;
+        crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
+    }
+    let token = sign_in
+        .strip_prefix("tw:")
+        .ok_or_else(|| ApiError::field("state", "Start signing in first."))?;
+    let (verifier, token_secret) = {
+        let mut codes = state.oauth_codes.lock().unwrap_or_else(|e| e.into_inner());
+        let Some(verifier) = codes.remove(sign_in) else {
+            return Ok(kitsunarr_domain::api::settings::SignInPolled {
+                done: false,
+                settings: Default::default(),
+            });
+        };
+        (
+            verifier,
+            codes
+                .remove(&format!("twsecret:{token}"))
+                .unwrap_or_default(),
+        )
+    };
+    let text = |k: &str| {
+        req.settings
+            .get(k)
+            .and_then(|v| v.as_str())
+            .map(str::trim)
+            .unwrap_or_default()
+            .to_string()
+    };
+    let api = Some(text("apiUrl"))
+        .filter(|a| !a.is_empty())
+        .unwrap_or_else(|| "https://api.x.com".into());
+    let (access, access_secret) = kitsunarr_notifications::extra::twitter_access_token(
+        &state.http,
+        &api,
+        &text("consumerKey"),
+        &text("consumerSecret"),
+        token,
+        &token_secret,
+        &verifier,
+    )
+    .await
+    .map_err(|e| ApiError::field("settings", e.to_string()))?;
+    let mut settings = serde_json::Map::new();
+    settings.insert("accessToken".into(), access.into());
+    settings.insert("accessTokenSecret".into(), access_secret.into());
+    Ok(kitsunarr_domain::api::settings::SignInPolled {
+        done: true,
+        settings,
+    })
+}
+
 #[derive(Debug, Deserialize, Default, utoipa::IntoParams)]
 #[into_params(parameter_in = Query)]
 #[serde(default)]
 pub struct SignInCallback {
     pub code: String,
     pub state: String,
+    /// X's OAuth 1.0a answer (Twitter connections).
+    pub oauth_token: String,
+    pub oauth_verifier: String,
 }
 
 /// MyAnimeList's redirect after signing in: the code waits for the editor's next poll.
@@ -162,6 +285,17 @@ pub async fn sign_in_callback(
     State(state): State<AppState>,
     axum::extract::Query(q): axum::extract::Query<SignInCallback>,
 ) -> axum::response::Html<&'static str> {
+    if !q.oauth_token.is_empty()
+        && !q.oauth_verifier.is_empty()
+        && q.oauth_token.len() <= 128
+        && q.oauth_verifier.len() <= 256
+    {
+        let mut codes = state.oauth_codes.lock().unwrap_or_else(|e| e.into_inner());
+        if codes.len() >= 100 {
+            codes.clear();
+        }
+        codes.insert(format!("tw:{}", q.oauth_token), q.oauth_verifier.clone());
+    }
     if !q.code.is_empty() && !q.state.is_empty() && q.state.len() <= 64 && q.code.len() <= 4096 {
         let mut codes = state.oauth_codes.lock().unwrap_or_else(|e| e.into_inner());
         // Unclaimed codes are few; old ones are dropped.

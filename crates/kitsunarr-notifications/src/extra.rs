@@ -280,15 +280,13 @@ struct OAuth1 {
 }
 
 impl OAuth1 {
+    fn header_extra(&self, method: &str, url: &str, extra: &[(&str, &str)]) -> String {
+        let (nonce, timestamp) = nonce_and_time();
+        self.header_full(method, url, &[], extra, &nonce, &timestamp)
+    }
+
     fn header(&self, method: &str, url: &str) -> String {
-        let nonce = hex::encode(
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .map(|d| d.as_nanos())
-                .unwrap_or_default()
-                .to_le_bytes(),
-        );
-        let timestamp = chrono::Utc::now().timestamp().to_string();
+        let (nonce, timestamp) = nonce_and_time();
         self.header_with(method, url, &[], &nonce, &timestamp)
     }
 
@@ -301,15 +299,33 @@ impl OAuth1 {
         nonce: &str,
         timestamp: &str,
     ) -> String {
+        self.header_full(method, url, form, &[], nonce, timestamp)
+    }
+
+    /// `extra`: further `oauth_` parameters (`oauth_callback`, `oauth_verifier`); without a
+    /// token (`request_token`) no `oauth_token` is sent.
+    fn header_full(
+        &self,
+        method: &str,
+        url: &str,
+        form: &[(&str, &str)],
+        extra: &[(&str, &str)],
+        nonce: &str,
+        timestamp: &str,
+    ) -> String {
         let (base_url, query) = url.split_once('?').unwrap_or((url, ""));
         let mut params: Vec<(String, String)> = vec![
             ("oauth_consumer_key".into(), self.consumer_key.clone()),
             ("oauth_nonce".into(), nonce.into()),
             ("oauth_signature_method".into(), "HMAC-SHA1".into()),
             ("oauth_timestamp".into(), timestamp.into()),
-            ("oauth_token".into(), self.token.clone()),
-            ("oauth_version".into(), "1.0".into()),
         ];
+        if !self.token.is_empty() {
+            params.push(("oauth_token".into(), self.token.clone()));
+        }
+        params.push(("oauth_version".into(), "1.0".into()));
+        params.extend(extra.iter().map(|(k, v)| (k.to_string(), v.to_string())));
+        params.sort();
         let oauth: Vec<(String, String)> = params.clone();
         for pair in query.split('&').filter(|p| !p.is_empty()) {
             let (k, v) = pair.split_once('=').unwrap_or((pair, ""));
@@ -340,6 +356,104 @@ impl OAuth1 {
         parts.push(format!("oauth_signature=\"{}\"", encode(&signature)));
         format!("OAuth {}", parts.join(", "))
     }
+}
+
+fn nonce_and_time() -> (String, String) {
+    let nonce = hex::encode(
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_nanos())
+            .unwrap_or_default()
+            .to_le_bytes(),
+    );
+    (nonce, chrono::Utc::now().timestamp().to_string())
+}
+
+/// `TwitterProxy.GetOAuthRedirect` (OAuth 1.0a, step 1): a request token for the app, and the
+/// page where the account authorizes it. Returns (authorize URL, token, token secret).
+pub async fn twitter_request_token(
+    http: &reqwest::Client,
+    api_url: &str,
+    consumer_key: &str,
+    consumer_secret: &str,
+    callback: &str,
+) -> NotifyResult<(String, String, String)> {
+    let keys = OAuth1 {
+        consumer_key: consumer_key.into(),
+        consumer_secret: consumer_secret.into(),
+        token: String::new(),
+        token_secret: String::new(),
+    };
+    let base = api_url.trim_end_matches('/');
+    let url = format!("{base}/oauth/request_token");
+    let resp = http
+        .post(&url)
+        .header(
+            "Authorization",
+            keys.header_extra("POST", &url, &[("oauth_callback", callback)]),
+        )
+        .timeout(std::time::Duration::from_secs(30))
+        .send()
+        .await
+        .map_err(crate::connection_error)?;
+    let body = crate::check(resp).await?;
+    let token = form_value(&body, "oauth_token")
+        .ok_or_else(|| NotifyError::Service("X sent no request token".into()))?;
+    let secret = form_value(&body, "oauth_token_secret").unwrap_or_default();
+    Ok((
+        format!("{base}/oauth/authorize?oauth_token={}", encode(&token)),
+        token,
+        secret,
+    ))
+}
+
+/// `TwitterProxy.GetOAuthToken` (step 3): the account's access token and secret.
+pub async fn twitter_access_token(
+    http: &reqwest::Client,
+    api_url: &str,
+    consumer_key: &str,
+    consumer_secret: &str,
+    request_token: &str,
+    request_secret: &str,
+    verifier: &str,
+) -> NotifyResult<(String, String)> {
+    let keys = OAuth1 {
+        consumer_key: consumer_key.into(),
+        consumer_secret: consumer_secret.into(),
+        token: request_token.into(),
+        token_secret: request_secret.into(),
+    };
+    let url = format!("{}/oauth/access_token", api_url.trim_end_matches('/'));
+    let resp = http
+        .post(&url)
+        .header(
+            "Authorization",
+            keys.header_extra("POST", &url, &[("oauth_verifier", verifier)]),
+        )
+        .timeout(std::time::Duration::from_secs(30))
+        .send()
+        .await
+        .map_err(crate::connection_error)?;
+    let body = crate::check(resp).await?;
+    match (
+        form_value(&body, "oauth_token"),
+        form_value(&body, "oauth_token_secret"),
+    ) {
+        (Some(t), Some(s)) => Ok((t, s)),
+        _ => Err(NotifyError::Service("X sent no access token".into())),
+    }
+}
+
+/// A value of a form-encoded answer.
+fn form_value(body: &str, key: &str) -> Option<String> {
+    body.trim().split('&').find_map(|pair| {
+        let (k, v) = pair.split_once('=')?;
+        (k == key).then(|| {
+            v.replace("%2F", "/")
+                .replace("%3D", "=")
+                .replace("%2B", "+")
+        })
+    })
 }
 
 /// HMAC-SHA1 (RFC 2104).
