@@ -677,6 +677,7 @@ pub async fn refresh_series(
     // Sonarr rescans after a refresh (`MediaCoversUpdatedEvent`, `SeriesScannedEvent`): the
     // metadata consumers write with the new information.
     metadata_files::after_series_scan(db, id).await;
+    refresh_grouping(db, metadata, grouping::Member::Series(id)).await;
     Ok(result)
 }
 
@@ -884,7 +885,18 @@ pub async fn refresh_movie(db: &Database, metadata: &Metadata, id: i64) -> Libra
     kitsunarr_db::auto_tags::apply_movie(&mut conn, id).await?;
     conn.commit().await?;
     metadata_files::after_movie_change(db, id).await;
+    refresh_grouping(db, metadata, grouping::Member::Movie(id)).await;
     Ok(())
+}
+
+/// Retry optional grouping on refresh for titles which still have no membership.
+/// Keep a failed or slow provider from preventing the metadata refresh itself.
+async fn refresh_grouping(db: &Database, metadata: &Metadata, member: grouping::Member) {
+    let _ = tokio::time::timeout(
+        std::time::Duration::from_secs(20),
+        grouping::group_new_title(db, metadata, member),
+    )
+    .await;
 }
 
 /// Ids of series and movies that are due for a metadata refresh, least recently refreshed first.

@@ -371,6 +371,16 @@ pub async fn join_resolved(db: &Database, source: MetadataProvider, g: &Group, m
 /// Puts a newly added AniList-owned title into its franchise group (creating the collection on
 /// first use). Titles already in an anime group are left alone; failures only log.
 pub async fn group_new_title(db: &Database, metadata: &Metadata, member: Member) {
+    let Ok(mut conn) = db.pool().acquire().await else {
+        return;
+    };
+    if collections::automatic_grouping_blocked(&mut conn, member)
+        .await
+        .unwrap_or(true)
+    {
+        return;
+    }
+    drop(conn);
     let (id, lookup, membership) = match member {
         Member::Series(id) => (
             id,
@@ -464,7 +474,17 @@ async fn join_tmdb_collection(
         return Ok(());
     };
     let err = |e: kitsunarr_db::DbError| e.to_string();
-    let mut tx = db.pool().begin().await.map_err(|e| e.to_string())?;
+    let mut tx = db
+        .pool()
+        .begin_with("BEGIN IMMEDIATE")
+        .await
+        .map_err(|e| e.to_string())?;
+    if collections::automatic_grouping_blocked(&mut tx, Member::Movie(movie))
+        .await
+        .map_err(|e| e.to_string())?
+    {
+        return Ok(());
+    }
     let existing: Option<i64> = sqlx::query_scalar(
         "SELECT id FROM collections WHERE metadata_provider = ? AND metadata_id = ?",
     )
@@ -509,7 +529,10 @@ async fn join(
     g: &Group,
     member: Member,
 ) -> kitsunarr_db::DbResult<()> {
-    let mut tx = db.pool().begin().await?;
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    if collections::automatic_grouping_blocked(&mut tx, member).await? {
+        return Ok(());
+    }
     let existing: Option<i64> = sqlx::query_scalar(
         "SELECT id FROM collections WHERE kind = 'animeGroup' AND metadata_provider = ? AND metadata_id = ?",
     )

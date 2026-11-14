@@ -104,6 +104,72 @@ async fn an_added_sequel_joins_its_franchise_group() {
             .unwrap();
     assert_eq!(path, "/media/anime/Franchise part 1/Season 02");
     assert!(!season_folder);
+    use kitsunarr_db::library::collections;
+    use kitsunarr_domain::api::library::{CollectionEdit, CollectionMemberEdit};
+    // A legacy ungrouped title is retried during its next metadata refresh.
+    sqlx::query("DELETE FROM collection_members WHERE series_id = ?")
+        .bind(added.id)
+        .execute(db.pool())
+        .await
+        .unwrap();
+    kitsunarr_library::refresh_series(&db, &metadata, added.id)
+        .await
+        .unwrap();
+    let group = collections::group_of_series(&db, added.id)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(group.0, "Franchise part 1");
+    // Refresh preserves manual placement and custom labels.
+    let manual = collections::create_manual(
+        &db,
+        &CollectionEdit {
+            title: "My edit".into(),
+            overview: None,
+        },
+    )
+    .await
+    .unwrap();
+    let mid = collections::add_member_manually(
+        &db,
+        manual,
+        &CollectionMemberEdit {
+            series_id: Some(added.id),
+            role: Some("season".into()),
+            label: Some("Season 8".into()),
+            ..Default::default()
+        },
+    )
+    .await
+    .unwrap();
+    kitsunarr_library::refresh_series(&db, &metadata, added.id)
+        .await
+        .unwrap();
+    assert_eq!(
+        collections::group_of_series(&db, added.id)
+            .await
+            .unwrap()
+            .unwrap()
+            .0,
+        "My edit"
+    );
+    assert_eq!(
+        collections::detail(&db, manual).await.unwrap().members[0]
+            .label
+            .as_deref(),
+        Some("Season 8")
+    );
+    // An explicit removal persists through refresh.
+    collections::remove_member(&db, manual, mid).await.unwrap();
+    kitsunarr_library::refresh_series(&db, &metadata, added.id)
+        .await
+        .unwrap();
+    assert!(
+        collections::group_of_series(&db, added.id)
+            .await
+            .unwrap()
+            .is_none()
+    );
 }
 
 async fn tmdb_movie(axum::extract::Path(id): axum::extract::Path<i64>) -> Json<Value> {
@@ -196,6 +262,29 @@ async fn an_added_tmdb_film_joins_its_collection_in_release_order() {
         .await
         .unwrap();
     assert_eq!(path, "/media/movies/The Saga Collection/Film 03");
+    use kitsunarr_db::library::collections;
+    sqlx::query("DELETE FROM collection_members WHERE movie_id = ?")
+        .bind(added.id)
+        .execute(db.pool())
+        .await
+        .unwrap();
+    kitsunarr_library::refresh_movie(&db, &metadata, added.id)
+        .await
+        .unwrap();
+    let all = collections::list(&db).await.unwrap();
+    let group = all.iter().find(|c| c.kind == "provider").unwrap();
+    assert_eq!(
+        collections::detail(&db, group.id).await.unwrap().entries[0].display_number,
+        3
+    );
+    collections::delete(&db, group.id).await.unwrap();
+    kitsunarr_library::refresh_movie(&db, &metadata, added.id)
+        .await
+        .unwrap();
+    assert!(
+        collections::list(&db).await.unwrap().is_empty(),
+        "deleting a collection must survive refresh"
+    );
 }
 
 /// Jikan's `/anime/{id}/full`: TV 20 → film 21 → TV 22, with an OVA side story of 22.

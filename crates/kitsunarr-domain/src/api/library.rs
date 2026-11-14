@@ -244,6 +244,11 @@ pub struct CollectionDetail {
     pub kind: String,
     pub overview: Option<String>,
     pub members: Vec<CollectionMember>,
+    #[serde(default)]
+    pub poster_url: Option<String>,
+    /// Native seasons and features, presented in collection order (Tanukarr CollectionPage).
+    #[serde(default)]
+    pub entries: Vec<CollectionEntry>,
 }
 
 /// A series or movie in a collection, in position order.
@@ -261,6 +266,29 @@ pub struct CollectionMember {
     /// `season`, `movie` or `special` (Tanukarr's member kinds), else empty.
     pub role: Option<String>,
     pub label: Option<String>,
+}
+
+/// One native season or movie shown within a collection. Display numbering never replaces
+/// the native season number used by searches, monitoring and episode links.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CollectionEntry {
+    pub member_id: i64,
+    pub series_id: Option<i64>,
+    pub movie_id: Option<i64>,
+    pub season_number: Option<i32>,
+    pub display_number: i32,
+    /// `seasons`, `movies` or `specials`.
+    pub section: String,
+    pub title: String,
+    pub series_title: String,
+    pub year: Option<i32>,
+    pub overview: Option<String>,
+    pub poster_url: Option<String>,
+    pub monitored: bool,
+    pub episode_count: i64,
+    pub episode_file_count: i64,
 }
 
 /// Creates a manual collection, or renames one.

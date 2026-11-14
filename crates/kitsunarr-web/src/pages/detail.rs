@@ -21,7 +21,7 @@ use crate::util::{format_bytes, format_date, relative};
 const ROW_HEIGHT_REM: f64 = 2.625;
 
 /// The toast for an automatic search's outcome.
-fn automatic_summary(
+pub(super) fn automatic_summary(
     label: &str,
     r: &kitsunarr_domain::api::search::AutomaticSearchResult,
 ) -> (ToastLevel, String) {

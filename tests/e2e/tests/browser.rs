@@ -605,9 +605,20 @@ async fn first_run_setup_migration_and_library() {
         client.goto(&format!("{base}/collections")).await.unwrap();
         fill(&client, "input[aria-label='New group title']", "E2E Group").await;
         click_button(&client, "Create group").await;
+        client.wait().for_element(Locator::Css("details summary")).await.unwrap().click().await.unwrap();
         wait_text(&client, "Add a title").await;
         wait_text(&client, "Delete group").await;
+        let value = client.execute("return document.querySelector(\"select[aria-label='Title to add'] option[value^='s']\").value", vec![]).await.unwrap();
+        client.find(Locator::Css("select[aria-label='Title to add']")).await.unwrap().select_by_value(value.as_str().unwrap()).await.unwrap();
+        click_button(&client, "Add").await;
+        client.wait().for_element(Locator::Css("section[aria-label='Seasons'] article.media-card")).await.unwrap();
+        wait_text(&client, "Season 1").await;
+        // Monitoring acts on the native season, and the refreshed card reflects it.
+        client.find(Locator::Css("article.media-card label.check")).await.unwrap().click().await.unwrap();
+        client.wait().for_element(Locator::Css("article.media-card .unmonitored")).await.unwrap();
         screenshot(&client, "11g-collection-editor").await;
+        client.find(Locator::Css("article.media-card label.check")).await.unwrap().click().await.unwrap();
+        client.wait().for_element(Locator::Css("article.media-card:first-child .poster:not(:has(.unmonitored))")).await.unwrap();
         // Metadata files (Sonarr's Settings › Metadata): migrated consumers, all off.
         client
             .goto(&format!("{base}/settings/metadata"))

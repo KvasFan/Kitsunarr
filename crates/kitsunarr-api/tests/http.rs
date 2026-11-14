@@ -4771,6 +4771,15 @@ async fn collections_can_be_edited_by_hand() {
         .collect();
     assert_eq!(labels, vec!["Season 1", "Season 2"]);
     assert_eq!(d.members[0].title, "Part One");
+    assert_eq!(d.entries.len(), 2);
+    assert_eq!(
+        (
+            d.entries[0].series_id,
+            d.entries[0].display_number,
+            d.entries[0].section.as_str()
+        ),
+        (Some(1), 1, "seasons")
+    );
     // Tanukarr's "Search collection": every member is searched.
     let started = client.search_collection(cid).await.unwrap();
     assert_eq!(started.searches, 2);

@@ -2,13 +2,17 @@
 
 use dioxus::prelude::*;
 use kitsunarr_domain::api::library::{
-    CollectionDetail, CollectionEdit, CollectionMember, CollectionMemberEdit, LibraryQuery,
+    CollectionDetail, CollectionEdit, CollectionEntry, CollectionMember, CollectionMemberEdit,
+    LibraryQuery, SeasonMonitoring, SeriesUpdate,
 };
 
-use crate::components::common::{Badge, Confirm, Empty, ErrorBox, Field, Loading};
+use crate::components::common::{
+    Badge, Confirm, Empty, ErrorBox, Field, Loading, Progress, Switch,
+};
 use crate::components::media::Poster;
 use crate::route::Route;
 use crate::state::{use_app, use_client};
+use crate::util::percent;
 
 fn kind_label(kind: &str) -> String {
     match kind {
@@ -85,7 +89,9 @@ pub fn Collections() -> Element {
 pub fn CollectionDetailPage(id: i64) -> Element {
     let client = use_client();
     let c0 = client.clone();
+    let app = use_app();
     let mut data = use_resource(move || {
+        let _ = (app.library_rev)();
         let c = c0.clone();
         async move { c.collection(id).await }
     });
@@ -164,7 +170,27 @@ fn CollectionEditor(detail: CollectionDetail, on_change: EventHandler<()>) -> El
             }
             button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Delete group" }
         }
-        div { class: "card stack",
+        div { class: "hero",
+            Poster { url: detail.poster_url.clone(), title: detail.title.clone(), monitored: true }
+            div {
+                if let Some(text) = &detail.overview { p { class: "muted", "{text}" } }
+                p { class: "small muted", "{detail.members.len()} titles" }
+            }
+        }
+        for (section, heading) in [("seasons", "Seasons"), ("movies", "Movies"), ("specials", "Specials")] {
+            if detail.entries.iter().any(|e| e.section == section) {
+                section { "aria-label": heading,
+                    h2 { "{heading}" }
+                    div { class: "media-grid",
+                        for entry in detail.entries.iter().filter(|e| e.section == section) {
+                            EntryCard { key: "{entry.member_id}-{entry.season_number:?}", entry: entry.clone(), on_change }
+                        }
+                    }
+                }
+            }
+        }
+        details { class: "card stack",
+            summary { "Edit group" }
             div { class: "form-grid",
                 Field { label: "Title",
                     input { class: "input", value: "{title}", oninput: move |e| title.set(e.value()) }
@@ -175,9 +201,8 @@ fn CollectionEditor(detail: CollectionDetail, on_change: EventHandler<()>) -> El
             }
             div { class: "row", button { class: "btn primary", disabled: title().trim().is_empty(), onclick: save, "Save" } }
             if detail.kind == "animeGroup" {
-                p { class: "help small faint", "A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it." }
+                p { class: "help small faint", "A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed." }
             }
-        }
         h2 { "Members" }
         if detail.members.is_empty() {
             Empty { title: "No members", p { "Add series or movies below." } }
@@ -194,14 +219,131 @@ fn CollectionEditor(detail: CollectionDetail, on_change: EventHandler<()>) -> El
             }
         }
         AddMember { collection_id: id, on_change }
+        }
         if confirm_delete() {
             Confirm {
                 title: "Delete group",
-                message: format!("Delete “{}”? Its series and movies stay in the library.", detail.title),
+                message: format!("Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.", detail.title),
                 confirm_label: "Delete",
                 danger: true,
                 on_confirm: delete,
                 on_cancel: move |_| confirm_delete.set(false),
+            }
+        }
+    }
+}
+
+/// Collection display numbers label cards; actions always use catalogue season numbers.
+#[component]
+fn EntryCard(entry: CollectionEntry, on_change: EventHandler<()>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut busy = use_signal(|| false);
+    let series_id = entry.series_id;
+    let movie_id = entry.movie_id;
+    let season_number = entry.season_number;
+    let monitored = entry.monitored;
+    let label = if season_number == Some(0) {
+        "Specials".to_string()
+    } else {
+        let kind = match entry.section.as_str() {
+            "movies" => "Movie",
+            "specials" => "Special",
+            _ => "Season",
+        };
+        format!("{kind} {}", entry.display_number)
+    };
+    let route = if let Some(id) = movie_id {
+        Route::MovieDetailPage { id }
+    } else {
+        Route::SeriesDetailPage {
+            id: series_id.unwrap_or_default(),
+        }
+    };
+    let c1 = client.clone();
+    let monitor = move |value| {
+        let c = c1.clone();
+        busy.set(true);
+        spawn(async move {
+            let result = if let Some(id) = movie_id {
+                c.set_movie_monitored(id, value).await.map(|_| ())
+            } else if let Some(id) = series_id {
+                let edit = if let Some(n) = season_number {
+                    SeriesUpdate {
+                        seasons: Some(vec![SeasonMonitoring {
+                            season_number: n,
+                            monitored: value,
+                        }]),
+                        ..Default::default()
+                    }
+                } else {
+                    SeriesUpdate {
+                        monitored: Some(value),
+                        ..Default::default()
+                    }
+                };
+                c.update_series(id, &edit).await.map(|_| ())
+            } else {
+                busy.set(false);
+                return;
+            };
+            match result {
+                Ok(()) => on_change.call(()),
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    let search = move |_| {
+        let c = client.clone();
+        busy.set(true);
+        spawn(async move {
+            let result = if let Some(id) = movie_id {
+                c.automatic_movie_search(id).await
+            } else if let Some(id) = series_id {
+                c.automatic_search(&kitsunarr_domain::api::search::ReleaseQuery {
+                    series_id: id,
+                    season_number,
+                    episode_id: None,
+                    complete_series: false,
+                    season_packs_only: false,
+                })
+                .await
+            } else {
+                busy.set(false);
+                return;
+            };
+            match result {
+                Ok(r) => {
+                    let (level, message) = super::detail::automatic_summary("Search", &r);
+                    app.toast(level, message);
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    rsx! {
+        article { class: "media-card",
+            Link { to: route.clone(),
+                Poster { url: entry.poster_url, title: entry.title.clone(), monitored }
+            }
+            div { class: "meta",
+                span { class: "t", "{label}" }
+                Link { to: route, class: "t ellipsis", title: "{entry.title}", "{entry.title}" }
+                if entry.series_title != entry.title {
+                    span { class: "xs muted ellipsis", title: "{entry.series_title}", "{entry.series_title}" }
+                }
+                if movie_id.is_some() {
+                    span { class: "xs muted", if entry.episode_file_count > 0 { "on disk" } else { "missing" } }
+                } else {
+                    span { class: "xs muted", "{entry.episode_file_count}/{entry.episode_count} ep" }
+                    Progress { percent: percent(entry.episode_file_count, entry.episode_count) }
+                }
+                div { class: "row tight",
+                    Switch { checked: monitored, label: "Monitored", disabled: busy(), onchange: monitor }
+                    button { class: "btn sm", disabled: busy(), onclick: search, "Search" }
+                }
             }
         }
     }
@@ -219,7 +361,7 @@ fn MemberRow(collection_id: i64, member: CollectionMember, on_change: EventHandl
     let save = move |_| {
         let c = c1.clone();
         let edit = CollectionMemberEdit {
-            role: Some(role()).filter(|r| !r.is_empty()),
+            role: Some(role()),
             label: Some(label()),
             position: position().trim().parse().ok(),
             ..Default::default()
@@ -261,7 +403,7 @@ fn MemberRow(collection_id: i64, member: CollectionMember, on_change: EventHandl
                 }
             }
             td { input { class: "input", "aria-label": "Label of {member.title}", value: "{label}", oninput: move |e| label.set(e.value()) } }
-            td { class: "num", input { class: "input", style: "width: 6rem", r#type: "number", "aria-label": "Position of {member.title}", value: "{position}", oninput: move |e| position.set(e.value()) } }
+            td { class: "num", input { class: "input", style: "width: 6rem", r#type: "number", min: "1", "aria-label": "Position of {member.title}", value: "{position}", oninput: move |e| position.set(e.value()) } }
             td { class: "actions",
                 div { class: "row tight",
                     button { class: "btn sm", onclick: save, "Save" }
