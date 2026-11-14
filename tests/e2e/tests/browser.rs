@@ -75,6 +75,57 @@ async fn screenshot(client: &Client, name: &str) {
     }
 }
 
+/// Change Chromium's real browser zoom. Resizing alone misses zoom-dependent viewport and
+/// device-pixel-ratio behavior. The settings API is available on Chromium's own settings page.
+async fn browser_zoom(client: &Client, percent: u16) {
+    client.goto("chrome://settings/appearance").await.unwrap();
+    let answer = client.execute_async(
+        "const done = arguments[arguments.length - 1]; \
+         chrome.settingsPrivate.setDefaultZoom(arguments[0], () => done(chrome.runtime.lastError?.message || 'ok'));",
+        vec![serde_json::json!(f64::from(percent) / 100.0)],
+    ).await.unwrap();
+    assert_eq!(answer, "ok", "could not set browser zoom to {percent}%");
+}
+
+async fn horizontal_layout(client: &Client) -> serde_json::Value {
+    client
+        .execute(
+            r#"
+        const width = document.documentElement.clientWidth;
+        const offenders = [...document.querySelectorAll('main *, .content *, [role=dialog] *')]
+          .filter(e => {
+            const r = e.getBoundingClientRect();
+            return r.width && (r.right > width + 1 || r.left < -1)
+              && !e.closest('.table-wrap, .vlist, .sidebar');
+          }).slice(0, 8).map(e => ({tag: e.tagName, class: e.className,
+            text: e.textContent.slice(0, 70), width: e.getBoundingClientRect().width}));
+        return {scroll: document.documentElement.scrollWidth, inner: width,
+          dpr: devicePixelRatio, offenders,
+          mobile: matchMedia('(max-width: 900px)').matches,
+          navVisible: getComputedStyle(document.querySelector('[aria-label="Open navigation"]')).display !== 'none'};
+    "#,
+            vec![],
+        )
+        .await
+        .unwrap()
+}
+
+async fn modal_layout(client: &Client) -> serde_json::Value {
+    client.execute(r#"
+        const m = document.querySelector('[role=dialog]');
+        const rect = m.getBoundingClientRect();
+        const fit = e => { const r = e.getBoundingClientRect();
+          return r.left >= -1 && r.right <= innerWidth + 1 && r.top >= -1 && r.bottom <= innerHeight + 1; };
+        const body = m.querySelector('.modal-body');
+        const style = getComputedStyle(body);
+        const readableHeight = body.clientHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);
+        return {fits: fit(m), bodyFits: body.scrollWidth <= body.clientWidth + 1,
+          bodyReadable: readableHeight >= 2 * parseFloat(style.lineHeight), bodyHeight: readableHeight,
+          footerFits: [...m.querySelectorAll('.modal-foot button')].every(fit),
+          top: rect.top, bottom: rect.bottom, width: rect.width, viewport: [innerWidth, innerHeight]};
+    "#, vec![]).await.unwrap()
+}
+
 async fn wait_text(client: &Client, text: &str) {
     step(&format!("waiting for {text:?}"));
     let xpath = format!("//*[contains(normalize-space(.), {})]", xpath_literal(text));
@@ -517,6 +568,17 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Aired order (TheTVDB default)").await;
         wait_text(&client, "Absolute order").await;
         click_button(&client, "Cancel").await;
+        // The catalogue dialog fetches a read-only preview and shows episode matches.
+        click_button(&client, "Change catalogue").await;
+        client.wait().for_element(Locator::Css("select[aria-label='Target catalogue'] option[value='tvMaze']")).await.unwrap();
+        client.wait().for_element(Locator::Css("select[aria-label='Target catalogue']")).await.unwrap()
+            .select_by_value("tvMaze").await.unwrap();
+        fill(&client,"input[aria-label='Target catalogue ID']","169").await;
+        click_button(&client,"Preview").await;
+        wait_text(&client,"The catalogues share an external identity.").await;
+        wait_text(&client,"Episode matches").await;
+        screenshot(&client,"11i-catalogue-preview").await;
+        click_button(&client,"Cancel").await;
         // Profiles carry Tanukarr's codec factors (migrated) and per-quality size limits.
         client
             .goto(&format!("{base}/settings/profiles"))
@@ -877,51 +939,52 @@ async fn first_run_setup_migration_and_library() {
             .unwrap();
         wait_text(&client, "Cutoff unmet").await;
 
-        // Browser zoom: 1366x768 at 50% to 200% zoom is a CSS viewport of 2732 to 683 pixels.
-        // No page may scroll sideways at any of these sizes.
+        // Real browser zoom, including dezoom and the narrow viewports of 300-400%.
         let mut overflowing = Vec::new();
-        for (zoom, w, h) in [
-            (50, 2732, 1536),
-            (67, 2039, 1146),
-            (125, 1093, 614),
-            (150, 911, 512),
-            (200, 683, 384),
-        ] {
-            client.set_window_size(w, h).await.unwrap();
+        client.set_window_size(1366, 900).await.unwrap();
+        let mut zoom_results = Vec::new();
+        for zoom in [50, 67, 80, 100, 125, 150, 200, 250, 300, 400] {
+            step(&format!("browser zoom {zoom}%"));
+            browser_zoom(&client, zoom).await;
             for path in [
-                "/",
-                "/series",
-                "/series/1",
-                "/wanted/missing",
-                "/activity/queue",
-                "/activity/history",
-                "/calendar",
-                "/add",
-                "/settings/indexers",
-                "/settings/profiles",
-                "/system/tasks",
-                "/system/library",
-                "/activity/manualimport",
+                "/", "/series", "/series/1", "/movies", "/wanted/missing", "/activity/queue",
+                "/activity/history", "/calendar", "/add", "/settings/indexers", "/settings/profiles",
+                "/settings/notifications", "/system/tasks", "/system/library", "/activity/manualimport",
             ] {
                 client.goto(&format!("{base}{path}")).await.unwrap();
                 tokio::time::sleep(Duration::from_millis(700)).await;
-                let wide = client
-                    .execute(
-                        "return [document.documentElement.scrollWidth, window.innerWidth]",
-                        vec![],
-                    )
-                    .await
-                    .unwrap();
-                let (scroll, inner) = (wide[0].as_i64().unwrap(), wide[1].as_i64().unwrap());
-                if scroll > inner {
-                    overflowing.push(format!("{path} at {zoom}%: {scroll} > {inner}"));
+                let wide = horizontal_layout(&client).await;
+                if wide["scroll"].as_i64().unwrap() > wide["inner"].as_i64().unwrap() + 1 {
+                    overflowing.push(format!("{path} at {zoom}%: {wide}"));
                 }
+                assert!((wide["dpr"].as_f64().unwrap() - f64::from(zoom)/100.0).abs() < 0.04,
+                    "browser zoom was not applied: {wide}");
+                assert_eq!(wide["navVisible"], wide["mobile"], "navigation toggle at {zoom}% on {path}: {wide}");
+                zoom_results.push(serde_json::json!({"zoom":zoom,"path":path,"layout":wide}));
                 if std::env::var("KITSUNARR_E2E_ZOOM_TOUR").is_ok() {
-                    let name = format!("zoom-{zoom}{}", path.replace('/', "-"));
-                    screenshot(&client, &name).await;
+                    screenshot(&client, &format!("zoom-{zoom}{}", path.replace('/', "-"))).await;
                 }
             }
+            // Check controls inside the catalogue dialog at every zoom, including its footer.
+            client.goto(&format!("{base}/series/1")).await.unwrap();
+            click_button(&client,"Change catalogue").await;
+            client.wait().for_element(Locator::Css("select[aria-label='Target catalogue'] option[value='tvMaze']")).await.unwrap();
+            client.find(Locator::Css("select[aria-label='Target catalogue']")).await.unwrap().select_by_value("tvMaze").await.unwrap();
+            fill(&client,"input[aria-label='Target catalogue ID']","169").await;
+            click_button(&client,"Preview").await;
+            wait_text(&client,"Episode matches").await;
+            let modal=modal_layout(&client).await;
+            if modal["fits"] != true || modal["bodyFits"] != true || modal["footerFits"] != true || modal["bodyReadable"] != true {
+                overflowing.push(format!("catalogue dialog at {zoom}%: {modal}"));
+            }
+            zoom_results.push(serde_json::json!({"zoom":zoom,"dialog":modal}));
+            screenshot(&client,&format!("zoom-{zoom}-catalogue-dialog")).await;
+            click_button(&client,"Cancel").await;
         }
+        if let Ok(dir) = std::env::var("KITSUNARR_E2E_SCREENSHOTS") {
+            std::fs::write(Path::new(&dir).join("zoom-results.json"),serde_json::to_vec_pretty(&zoom_results).unwrap()).unwrap();
+        }
+        browser_zoom(&client,100).await;
         client.set_window_size(1366, 900).await.unwrap();
         // A larger default text size (20 px instead of 16) enlarges every control with it.
         for path in ["/series/1", "/wanted/missing", "/settings/indexers", "/system/tasks"] {

@@ -22,6 +22,8 @@ struct Mock {
     label_plugin: bool,
     labels: Vec<String>,
     torrents: Vec<(String, Value)>,
+    incomplete_lists: usize,
+    invalid_torrent: bool,
 }
 
 type Shared = Arc<Mutex<Mock>>;
@@ -112,6 +114,19 @@ async fn json_rpc(State(m): State<Shared>, headers: HeaderMap, body: String) -> 
             rpc(id, json!("aa11bb22cc33dd44ee55ff66aa11bb22cc33dd44"))
         }
         "web.update_ui" => {
+            if m.invalid_torrent {
+                return rpc(
+                    id,
+                    json!({"torrents":{"broken":{"hash":"broken","name":"Show","total_size":"invalid"}}}),
+                );
+            }
+            if m.incomplete_lists > 0 {
+                m.incomplete_lists -= 1;
+                return rpc(
+                    id,
+                    json!({"connected":true,"torrents":{"abc":{"hash":"abc"}}}),
+                );
+            }
             let label = params[1]["label"].as_str().map(str::to_string);
             let torrents: Map<String, Value> = m
                 .torrents
@@ -356,4 +371,63 @@ fn settings_follow_sonarr_defaults_and_label_rules() {
     assert_eq!(s.rpc_url(), "http://localhost:8112/json");
     let bad = Settings::from_map(json!({ "tvCategory": "TV Shows" }).as_object().unwrap());
     assert!(bad.unwrap_err().contains("a-z, 0-9 and -"));
+}
+
+#[tokio::test]
+async fn incomplete_torrent_lists_reconnect_once_and_retry() {
+    let (s, mock) = mock_deluge().await;
+    let deluge = Deluge::new(reqwest::Client::new());
+    deluge.version(&s).await.unwrap();
+    {
+        let mut m = mock.lock().unwrap();
+        m.incomplete_lists = 1;
+        m.torrents.push((
+            "tv-kitsunarr".into(),
+            json!({"hash":"abc","name":"Show.S01E01","state":"Downloading"}),
+        ));
+    }
+    let items = deluge.items(&s).await.unwrap();
+    assert_eq!(items.len(), 1);
+    {
+        let m = mock.lock().unwrap();
+        assert_eq!(
+            m.calls
+                .iter()
+                .filter(|c| c.starts_with("web.connect "))
+                .count(),
+            2,
+            "one initial connection and one recovery"
+        );
+        assert_eq!(
+            m.calls
+                .iter()
+                .filter(|c| c.starts_with("web.update_ui "))
+                .count(),
+            2,
+            "retry once"
+        );
+    }
+    mock.lock().unwrap().incomplete_lists = usize::MAX;
+    assert!(
+        deluge.items(&s).await.unwrap().is_empty(),
+        "persistent incomplete records are skipped after one retry"
+    );
+    let m = mock.lock().unwrap();
+    assert_eq!(
+        m.calls
+            .iter()
+            .filter(|c| c.starts_with("web.update_ui "))
+            .count(),
+        4,
+        "bounded retries"
+    );
+}
+
+#[tokio::test]
+async fn malformed_torrent_records_are_reported_instead_of_disappearing() {
+    let (s, mock) = mock_deluge().await;
+    mock.lock().unwrap().invalid_torrent = true;
+    let deluge = Deluge::new(reqwest::Client::new());
+    let error = deluge.items(&s).await.unwrap_err();
+    assert!(error.to_string().contains("invalid torrent record"));
 }

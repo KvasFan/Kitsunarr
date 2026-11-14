@@ -18,6 +18,7 @@ pub mod list_progress;
 pub mod manual_import;
 pub mod media_info;
 pub mod metadata_files;
+pub mod metadata_source;
 pub mod movie_import;
 pub mod notify;
 pub mod tools;
@@ -507,12 +508,14 @@ pub async fn set_episode_ordering(
     let ordering = ordering
         .map(|o| o.trim().to_string())
         .filter(|o| !o.is_empty());
-    let (provider, metadata_id): (String, String) =
-        sqlx::query_as("SELECT metadata_provider, metadata_id FROM series WHERE id = ?")
-            .bind(id)
-            .fetch_optional(db.pool())
-            .await?
-            .ok_or(LibraryError::Db(DbError::NotFound))?;
+    let (provider, metadata_id, previous_ordering): (String, String, Option<String>) =
+        sqlx::query_as(
+            "SELECT metadata_provider, metadata_id, episode_ordering FROM series WHERE id = ?",
+        )
+        .bind(id)
+        .fetch_optional(db.pool())
+        .await?
+        .ok_or(LibraryError::Db(DbError::NotFound))?;
     let provider: MetadataProvider = provider
         .parse()
         .map_err(|_| LibraryError::invalid("metadataProvider", "Unknown metadata provider."))?;
@@ -524,9 +527,10 @@ pub async fn set_episode_ordering(
     }
     // Read the new ordering first: a failure leaves the series untouched.
     let language = series_language_code(db, id).await?;
-    let info = metadata
+    let mut info = metadata
         .series_fresh_in(provider, &metadata_id, ordering.as_deref(), Some(&language))
         .await?;
+    preserve_presentation(db, metadata, id, &mut info).await?;
     let by_provider_id: HashMap<&str, (i32, i32)> = info
         .episodes
         .iter()
@@ -538,6 +542,14 @@ pub async fn set_episode_ordering(
         })
         .collect();
     let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    ensure_series_owner(
+        &mut tx,
+        id,
+        provider,
+        &metadata_id,
+        previous_ordering.as_deref(),
+    )
+    .await?;
     // (id, season, episode, catalogue episode id, linked file)
     type Row = (i64, i64, i64, Option<String>, Option<i64>);
     let existing: Vec<Row> = sqlx::query_as(
@@ -576,6 +588,11 @@ pub async fn set_episode_ordering(
                 .bind(eid)
                 .execute(&mut *tx)
                 .await?;
+        } else if file.is_some() {
+            return Err(LibraryError::invalid(
+                "ordering",
+                "An episode with a file cannot keep its number in this ordering. The ordering was not changed.",
+            ));
         } else {
             sqlx::query("DELETE FROM episodes WHERE id = ?")
                 .bind(eid)
@@ -599,6 +616,13 @@ pub async fn set_episode_ordering(
         .bind(id)
         .execute(&mut *tx)
         .await?;
+    let monitor_new: bool = sqlx::query_scalar(
+        "SELECT monitored AND monitor_new_items = 'all' FROM series WHERE id = ?",
+    )
+    .bind(id)
+    .fetch_one(&mut *tx)
+    .await?;
+    let result = merge_series_info(&mut tx, id, &info, monitor_new).await?;
     tx.commit().await?;
     if removed > 0 {
         tracing::info!(
@@ -607,7 +631,9 @@ pub async fn set_episode_ordering(
             "episodes not in the new ordering were removed"
         );
     }
-    refresh_series(db, metadata, id).await
+    xem::update_series(db, metadata, id).await;
+    metadata_files::after_series_scan(db, id).await;
+    Ok(result)
 }
 
 /// Refreshes a series from its owning catalogue.
@@ -616,19 +642,13 @@ pub async fn refresh_series(
     metadata: &Metadata,
     id: i64,
 ) -> LibraryResult<RefreshResult> {
-    let (provider, metadata_id, monitored, monitor_new, ordering): (
-        String,
-        String,
-        bool,
-        String,
-        Option<String>,
-    ) = sqlx::query_as(
-        "SELECT metadata_provider, metadata_id, monitored, monitor_new_items, episode_ordering FROM series WHERE id = ?",
+    let (provider, metadata_id, ordering): (String, String, Option<String>) = sqlx::query_as(
+        "SELECT metadata_provider, metadata_id, episode_ordering FROM series WHERE id = ?",
     )
-            .bind(id)
-            .fetch_optional(db.pool())
-            .await?
-            .ok_or(LibraryError::Db(DbError::NotFound))?;
+    .bind(id)
+    .fetch_optional(db.pool())
+    .await?
+    .ok_or(LibraryError::Db(DbError::NotFound))?;
     let provider: MetadataProvider = provider
         .parse()
         .map_err(|_| LibraryError::invalid("metadataProvider", "Unknown metadata provider."))?;
@@ -639,6 +659,53 @@ pub async fn refresh_series(
     let mut info = metadata
         .series_fresh_in(provider, &metadata_id, ordering.as_deref(), Some(&language))
         .await?;
+    preserve_presentation(db, metadata, id, &mut info).await?;
+    // Immediate: it reads before writing, and a write committed in between (TheXEM after an
+    // add, a scan) would otherwise fail the upgrade instead of waiting.
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    ensure_series_owner(&mut tx, id, provider, &metadata_id, ordering.as_deref()).await?;
+    let monitor_new: bool = sqlx::query_scalar(
+        "SELECT monitored AND monitor_new_items = 'all' FROM series WHERE id = ?",
+    )
+    .bind(id)
+    .fetch_one(&mut *tx)
+    .await?;
+    let result = merge_series_info(&mut tx, id, &info, monitor_new).await?;
+    tx.commit().await?;
+    // `XemService` handles `SeriesUpdatedEvent`: TheXEM's scene numbering and names.
+    xem::update_series(db, metadata, id).await;
+    // Sonarr rescans after a refresh (`MediaCoversUpdatedEvent`, `SeriesScannedEvent`): the
+    // metadata consumers write with the new information.
+    metadata_files::after_series_scan(db, id).await;
+    Ok(result)
+}
+
+/// Reject a refresh fetched before another request changed catalogue ownership or ordering.
+async fn ensure_series_owner(
+    conn: &mut sqlx::SqliteConnection,
+    id: i64,
+    provider: MetadataProvider,
+    metadata_id: &str,
+    ordering: Option<&str>,
+) -> LibraryResult<()> {
+    let matches: bool = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM series WHERE id = ? AND metadata_provider = ? AND metadata_id = ? AND episode_ordering IS ?)")
+        .bind(id).bind(provider.as_str()).bind(metadata_id).bind(ordering).fetch_one(conn).await?;
+    if !matches {
+        return Err(LibraryError::invalid(
+            "provider",
+            "The catalogue or ordering changed during the refresh. Try again.",
+        ));
+    }
+    Ok(())
+}
+
+/// Keeps existing presentation when a catalogue omits it.
+async fn preserve_presentation(
+    db: &Database,
+    metadata: &Metadata,
+    id: i64,
+    info: &mut SeriesInfo,
+) -> LibraryResult<()> {
     // An empty answer keeps the overview and artwork the title had (Tanukarr), then the
     // presentation enrichment fills what is still missing.
     let (old_overview, old_images): (Option<String>, String) =
@@ -652,17 +719,33 @@ pub async fn refresh_series(
     if info.images.is_empty() {
         info.images = serde_json::from_str(&old_images).unwrap_or_default();
     }
-    metadata.enrich(&mut info).await;
-    let monitor_new = monitored && monitor_new == "all";
-    // Immediate: it reads before writing, and a write committed in between (TheXEM after an
-    // add, a scan) would otherwise fail the upgrade instead of waiting.
-    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    metadata.enrich(info).await;
+    Ok(())
+}
+
+/// Merges one already fetched snapshot inside the caller's transaction.
+async fn merge_series_info(
+    conn: &mut sqlx::SqliteConnection,
+    id: i64,
+    info: &SeriesInfo,
+    monitor_new: bool,
+) -> LibraryResult<RefreshResult> {
+    for e in &info.episodes {
+        let retained: bool = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM retained_metadata_episodes r JOIN episodes e ON e.id = r.episode_id WHERE e.series_id = ? AND e.season_number = ? AND e.episode_number = ?)")
+            .bind(id).bind(e.season_number).bind(e.episode_number).fetch_one(&mut *conn).await?;
+        if retained {
+            return Err(LibraryError::invalid(
+                "provider",
+                "A new catalogue episode uses a number kept by an unmatched episode. Use Change catalogue to review its episode matches.",
+            ));
+        }
+    }
     // Like Sonarr, a newly discovered episode is monitored only when new items are monitored
     // and its season is monitored; seasons created now get the default (specials excluded).
     let season_flags: HashMap<i64, bool> =
         sqlx::query_as("SELECT season_number, monitored FROM seasons WHERE series_id = ?")
             .bind(id)
-            .fetch_all(&mut *tx)
+            .fetch_all(&mut *conn)
             .await?
             .into_iter()
             .collect();
@@ -673,7 +756,7 @@ pub async fn refresh_series(
             .unwrap_or(monitor_new && n > 0)
     };
     series::update_metadata(
-        &mut tx,
+        conn,
         id,
         &series::SeriesMetadata {
             title: info.title.clone(),
@@ -686,7 +769,7 @@ pub async fn refresh_series(
             original_language: info.original_language,
             genres: info.genres.clone(),
             images: info.images.clone(),
-            ratings: ratings(&info),
+            ratings: ratings(info),
             first_aired: info.first_aired.clone(),
             last_aired: info.last_aired.clone(),
             external_ids: info.external_ids.clone(),
@@ -696,19 +779,19 @@ pub async fn refresh_series(
     .await?;
     for s in &info.seasons {
         series::ensure_season(
-            &mut tx,
+            conn,
             id,
             s.season_number,
             monitor_new && s.season_number > 0,
             s.title.as_deref(),
         )
         .await?;
-        series::set_season_images(&mut tx, id, s.season_number, &s.images).await?;
+        series::set_season_images(conn, id, s.season_number, &s.images).await?;
     }
     let (mut added, mut updated) = (0u64, 0u64);
     for e in &info.episodes {
         series::ensure_season(
-            &mut tx,
+            conn,
             id,
             e.season_number,
             monitor_new && e.season_number > 0,
@@ -716,7 +799,7 @@ pub async fn refresh_series(
         )
         .await?;
         let inserted = series::merge_episode(
-            &mut tx,
+            conn,
             &series::NewEpisode {
                 series_id: id,
                 season_number: e.season_number,
@@ -739,7 +822,7 @@ pub async fn refresh_series(
         )
         .await?;
         series::set_episode_screenshot(
-            &mut tx,
+            conn,
             id,
             e.season_number,
             e.episode_number,
@@ -748,15 +831,9 @@ pub async fn refresh_series(
         .await?;
         if inserted { added += 1 } else { updated += 1 }
     }
-    series::set_original_country(&mut tx, id, info.original_country.as_deref()).await?;
+    series::set_original_country(conn, id, info.original_country.as_deref()).await?;
     // Sonarr's refresh re-applies auto tagging (`RefreshSeriesService`).
-    kitsunarr_db::auto_tags::apply_series(&mut tx, id).await?;
-    tx.commit().await?;
-    // `XemService` handles `SeriesUpdatedEvent`: TheXEM's scene numbering and names.
-    xem::update_series(db, metadata, id).await;
-    // Sonarr rescans after a refresh (`MediaCoversUpdatedEvent`, `SeriesScannedEvent`): the
-    // metadata consumers write with the new information.
-    metadata_files::after_series_scan(db, id).await;
+    kitsunarr_db::auto_tags::apply_series(conn, id).await?;
     Ok(RefreshResult {
         added_episodes: added,
         updated_episodes: updated,
@@ -778,7 +855,15 @@ pub async fn refresh_movie(db: &Database, metadata: &Metadata, id: i64) -> Libra
         return Err(LibraryError::Metadata(MetadataError::Unsupported(provider)));
     }
     let info = metadata.series_fresh(provider, &metadata_id, None).await?;
-    let mut conn = db.pool().acquire().await?;
+    let mut conn = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    let matches: bool = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM movies WHERE id = ? AND metadata_provider = ? AND metadata_id = ?)")
+        .bind(id).bind(provider.as_str()).bind(&metadata_id).fetch_one(&mut *conn).await?;
+    if !matches {
+        return Err(LibraryError::invalid(
+            "provider",
+            "The catalogue changed during the refresh. Try again.",
+        ));
+    }
     movies::update_metadata(
         &mut conn,
         id,
@@ -797,7 +882,7 @@ pub async fn refresh_movie(db: &Database, metadata: &Metadata, id: i64) -> Libra
     .await?;
     movies::set_original_country(&mut conn, id, info.original_country.as_deref()).await?;
     kitsunarr_db::auto_tags::apply_movie(&mut conn, id).await?;
-    drop(conn);
+    conn.commit().await?;
     metadata_files::after_movie_change(db, id).await;
     Ok(())
 }

@@ -877,7 +877,7 @@ Warnings	אזהרות
 Warnings {warnings}	אזהרות {warnings}
 Watched (Jellyfin watched sync)	נצפה (סנכרון צפיות של Jellyfin)
 Watched sync user	משתמש לסנכרון צפיות
-Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	נשלחים Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, דוא"ל (SMTP), Mailgun, SendGrid, סקריפטים מותאמים אישית (עם משתני הסביבה של Sonarr), Emby/Jellyfin, Plex ו-Kodi: תפיסות, ייבואים ושדרוגים, שינויי שמות, סדרות שנוספו או נמחקו, קבצים שנמחקו, בעיות תקינות. השתמש בבדיקה בעורך.
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, Twitter, Pushcut, Synology Indexer, Trakt, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	נשלחים Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, Twitter, Pushcut, Synology Indexer, Trakt, דוא"ל (SMTP), Mailgun, SendGrid, סקריפטים מותאמים אישית (עם משתני הסביבה של Sonarr), Emby/Jellyfin, Plex ו-Kodi: תפיסות, ייבואים ושדרוגים, שינויי שמות, סדרות שנוספו או נמחקו, קבצים שנמחקו, בעיות תקינות. השתמש בבדיקה בעורך.
 Welcome	ברוך הבא
 What to import	מה לייבא
 When	מתי

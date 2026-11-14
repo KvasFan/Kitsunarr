@@ -45,6 +45,12 @@ async fn switching_to_an_episode_group_keeps_files_with_their_episodes() {
         .route("/tv/{id}", get(show))
         .route("/tv/{id}/season/{n}", get(season))
         .route("/tv/{id}/episode_groups", get(groups))
+        .route(
+            "/tv/episode_group/collision",
+            get(|| async {
+                Json(json!({"groups":[{"order":1,"episodes":[{"id":1001,"order":0},{"id":1002,"order":1},{"id":1004,"order":2},{"id":1003,"order":3}]}]}))
+            }),
+        )
         .route("/tv/episode_group/{gid}", get(group));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let addr = listener.local_addr().unwrap();
@@ -147,6 +153,51 @@ async fn switching_to_an_episode_group_keeps_files_with_their_episodes() {
     .await
     .unwrap();
     assert_eq!(files, vec![(1, 3, Some(1)), (1, 4, Some(2))]);
+    // A linked episode excluded from the group must not lose its file when its old number
+    // is taken by another episode in the new group.
+    sqlx::query(
+        "UPDATE episodes SET provider_episode_id = NULL WHERE series_id = ? AND episode_number = 4",
+    )
+    .bind(added.id)
+    .execute(db.pool())
+    .await
+    .unwrap();
+    let conflict =
+        kitsunarr_library::set_episode_ordering(&db, &metadata, added.id, Some("collision".into()))
+            .await
+            .unwrap_err();
+    assert!(conflict.to_string().contains("episode with a file"));
+    let still_linked: i64 = sqlx::query_scalar(
+        "SELECT COUNT(*) FROM episodes WHERE series_id = ? AND episode_file_id IS NOT NULL",
+    )
+    .bind(added.id)
+    .fetch_one(db.pool())
+    .await
+    .unwrap();
+    assert_eq!(still_linked, 2);
+    sqlx::query("UPDATE episodes SET provider_episode_id = '1004' WHERE series_id = ? AND episode_number = 4").bind(added.id).execute(db.pool()).await.unwrap();
+
+    // A failure during metadata merge must roll back the ordering and renumbering together.
+    sqlx::query("CREATE TRIGGER fail_refresh BEFORE UPDATE OF title ON series BEGIN SELECT RAISE(ABORT, 'simulated refresh failure'); END")
+        .execute(db.pool()).await.unwrap();
+    assert!(
+        kitsunarr_library::set_episode_ordering(&db, &metadata, added.id, Some("grp1".into()))
+            .await
+            .is_err()
+    );
+    let unchanged: Vec<(i64,i64,Option<i64>)> = sqlx::query_as("SELECT season_number, episode_number, episode_file_id FROM episodes WHERE series_id = ? AND episode_file_id IS NOT NULL ORDER BY episode_number")
+        .bind(added.id).fetch_all(db.pool()).await.unwrap();
+    assert_eq!(unchanged, files);
+    let ordering: Option<String> =
+        sqlx::query_scalar("SELECT episode_ordering FROM series WHERE id = ?")
+            .bind(added.id)
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert!(
+        ordering.is_none(),
+        "failed refresh must not commit the requested ordering"
+    );
 }
 
 /// Tanukarr's ordering choice when adding: the series is numbered by the group from the start.

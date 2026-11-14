@@ -1658,7 +1658,7 @@ fn DownloadClientOptions() -> Element {
 
 #[component]
 pub fn SettingsNotifications() -> Element {
-    rsx! { ProvidersPage { kind: "notifications", title: "Notifications", note: "Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor." } }
+    rsx! { ProvidersPage { kind: "notifications", title: "Notifications", note: "Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, Twitter, Pushcut, Synology Indexer, Trakt, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor." } }
 }
 
 #[component]

@@ -877,7 +877,7 @@ Warnings	경고
 Warnings {warnings}	경고 {warnings}
 Watched (Jellyfin watched sync)	시청함 (Jellyfin 시청 동기화)
 Watched sync user	시청 동기화 사용자
-Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, 이메일(SMTP), Mailgun, SendGrid, 사용자 정의 스크립트(Sonarr의 환경 변수 포함), Emby/Jellyfin, Plex, Kodi로 전송되는 항목: 잡기, 가져오기 및 업그레이드, 이름 변경, 시리즈 추가 또는 삭제, 파일 삭제, 상태 문제. 편집기에서 테스트를 사용하세요.
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, Twitter, Pushcut, Synology Indexer, Trakt, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, Twitter, Pushcut, Synology Indexer, Trakt, 이메일(SMTP), Mailgun, SendGrid, 사용자 정의 스크립트(Sonarr의 환경 변수 포함), Emby/Jellyfin, Plex, Kodi로 전송되는 항목: 잡기, 가져오기 및 업그레이드, 이름 변경, 시리즈 추가 또는 삭제, 파일 삭제, 상태 문제. 편집기에서 테스트를 사용하세요.
 Welcome	환영합니다
 What to import	가져올 항목
 When	시점

@@ -261,3 +261,61 @@ pub async fn set_series_ordering(
     changed(&state, "series", id);
     Ok(Json(result))
 }
+
+#[utoipa::path(post, path = "/series/{id}/metadata-source/preview", tag = "metadata", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::metadata::MetadataSourceRequest,
+    responses((status = 200, body = kitsunarr_domain::api::metadata::MetadataSourcePreview), (status = 404, body = ApiErrorBody), (status = 422, body = ApiErrorBody), (status = 502, body = ApiErrorBody)))]
+pub async fn preview_series_source(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<kitsunarr_domain::api::metadata::MetadataSourceRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::metadata::MetadataSourcePreview>> {
+    Ok(Json(
+        kitsunarr_library::metadata_source::preview(&state.db, &state.metadata, false, id, &req)
+            .await?,
+    ))
+}
+
+#[utoipa::path(put, path = "/series/{id}/metadata-source", tag = "metadata", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::metadata::MetadataSourceRequest,
+    responses((status = 200, body = RefreshResult), (status = 404, body = ApiErrorBody), (status = 422, body = ApiErrorBody), (status = 502, body = ApiErrorBody)))]
+pub async fn set_series_source(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<kitsunarr_domain::api::metadata::MetadataSourceRequest>,
+) -> ApiResult<Json<RefreshResult>> {
+    let result =
+        kitsunarr_library::metadata_source::apply(&state.db, &state.metadata, false, id, &req)
+            .await?;
+    changed(&state, "series", id);
+    Ok(Json(result))
+}
+
+#[utoipa::path(post, path = "/movies/{id}/metadata-source/preview", tag = "metadata", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::metadata::MetadataSourceRequest,
+    responses((status = 200, body = kitsunarr_domain::api::metadata::MetadataSourcePreview), (status = 404, body = ApiErrorBody), (status = 422, body = ApiErrorBody), (status = 502, body = ApiErrorBody)))]
+pub async fn preview_movie_source(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<kitsunarr_domain::api::metadata::MetadataSourceRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::metadata::MetadataSourcePreview>> {
+    Ok(Json(
+        kitsunarr_library::metadata_source::preview(&state.db, &state.metadata, true, id, &req)
+            .await?,
+    ))
+}
+
+#[utoipa::path(put, path = "/movies/{id}/metadata-source", tag = "metadata", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::metadata::MetadataSourceRequest,
+    responses((status = 200, body = RefreshResult), (status = 404, body = ApiErrorBody), (status = 422, body = ApiErrorBody), (status = 502, body = ApiErrorBody)))]
+pub async fn set_movie_source(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<kitsunarr_domain::api::metadata::MetadataSourceRequest>,
+) -> ApiResult<Json<RefreshResult>> {
+    let result =
+        kitsunarr_library::metadata_source::apply(&state.db, &state.metadata, true, id, &req)
+            .await?;
+    changed(&state, "movie", id);
+    Ok(Json(result))
+}

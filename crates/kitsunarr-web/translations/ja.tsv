@@ -877,7 +877,7 @@ Warnings	警告
 Warnings {warnings}	警告 {warnings}
 Watched (Jellyfin watched sync)	視聴済み (Jellyfin の視聴済み同期)
 Watched sync user	視聴済み同期のユーザー
-Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook、Notifiarr、Discord、Slack、Telegram、Gotify、ntfy、Pushover、Pushbullet、Join、Prowl、Simplepush、Signal、Apprise、メール (SMTP)、Mailgun、SendGrid、カスタムスクリプト (Sonarr の環境変数付き)、Emby/Jellyfin、Plex、Kodi に送信されます: 取得、インポートとアップグレード、リネーム、シリーズの追加・削除、ファイルの削除、ヘルスの問題。エディターでテストを使用してください。
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, Twitter, Pushcut, Synology Indexer, Trakt, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	Webhook、Notifiarr、Discord、Slack、Telegram、Gotify、ntfy、Pushover、Pushbullet、Join、Prowl、Simplepush、Signal、Apprise, Twitter, Pushcut, Synology Indexer, Trakt、メール (SMTP)、Mailgun、SendGrid、カスタムスクリプト (Sonarr の環境変数付き)、Emby/Jellyfin、Plex、Kodi に送信されます: 取得、インポートとアップグレード、リネーム、シリーズの追加・削除、ファイルの削除、ヘルスの問題。エディターでテストを使用してください。
 Welcome	ようこそ
 What to import	インポートする内容
 When	日時

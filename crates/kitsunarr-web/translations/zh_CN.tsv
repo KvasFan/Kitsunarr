@@ -877,7 +877,7 @@ Warnings	警告
 Warnings {warnings}	警告 {warnings}
 Watched (Jellyfin watched sync)	已观看（Jellyfin 观看状态同步）
 Watched sync user	观看状态同步用户
-Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	发送 Webhook、Notifiarr、Discord、Slack、Telegram、Gotify、ntfy、Pushover、Pushbullet、Join、Prowl、Simplepush、Signal、Apprise、电子邮件（SMTP）、Mailgun、SendGrid、自定义脚本（使用 Sonarr 的环境变量）、Emby/Jellyfin、Plex 和 Kodi 通知：抓取、导入和升级、重命名、节目添加或删除、文件删除、健康问题。在编辑器中使用“测试”。
+Webhook, Notifiarr, Discord, Slack, Telegram, Gotify, ntfy, Pushover, Pushbullet, Join, Prowl, Simplepush, Signal, Apprise, Twitter, Pushcut, Synology Indexer, Trakt, e-mail (SMTP), Mailgun, SendGrid, custom scripts (with Sonarr's environment variables), Emby/Jellyfin, Plex and Kodi are sent: grabs, imports and upgrades, renames, series added or deleted, deleted files, health issues. Use Test in the editor.	发送 Webhook、Notifiarr、Discord、Slack、Telegram、Gotify、ntfy、Pushover、Pushbullet、Join、Prowl、Simplepush、Signal、Apprise, Twitter, Pushcut, Synology Indexer, Trakt、电子邮件（SMTP）、Mailgun、SendGrid、自定义脚本（使用 Sonarr 的环境变量）、Emby/Jellyfin、Plex 和 Kodi 通知：抓取、导入和升级、重命名、节目添加或删除、文件删除、健康问题。在编辑器中使用“测试”。
 Welcome	欢迎
 What to import	导入内容
 When	时间

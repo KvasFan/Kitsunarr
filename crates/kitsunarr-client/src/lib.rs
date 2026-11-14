@@ -15,7 +15,8 @@ use kitsunarr_domain::api::library::{
     LibraryStats, MovieDetail, MovieListItem, SeriesDetail, SeriesListItem, SeriesUpdate,
 };
 use kitsunarr_domain::api::metadata::{
-    AddTitleRequest, CatalogueInfo, LibraryRef, RefreshResult, SearchItem, SearchQuery,
+    AddTitleRequest, CatalogueInfo, LibraryRef, MetadataSourcePreview, MetadataSourceRequest,
+    RefreshResult, SearchItem, SearchQuery,
 };
 use kitsunarr_domain::api::migration::{
     ApiSourceRequest, MigrationOptions, MigrationPreview, MigrationReport, MigrationRunItem,
@@ -261,6 +262,29 @@ impl Client {
     pub async fn series_detail(&self, id: i64) -> ClientResult<SeriesDetail> {
         self.get(&format!("/series/{id}")).await
     }
+    /// Build a reviewable preview of a catalogue ownership change.
+    pub async fn preview_metadata_source(
+        &self,
+        movie: bool,
+        id: i64,
+        req: &MetadataSourceRequest,
+    ) -> ClientResult<MetadataSourcePreview> {
+        let section = if movie { "movies" } else { "series" };
+        self.post(&format!("/{section}/{id}/metadata-source/preview"), req)
+            .await
+    }
+
+    pub async fn set_metadata_source(
+        &self,
+        movie: bool,
+        id: i64,
+        req: &MetadataSourceRequest,
+    ) -> ClientResult<RefreshResult> {
+        let section = if movie { "movies" } else { "series" };
+        self.put(&format!("/{section}/{id}/metadata-source"), req)
+            .await
+    }
+
     pub async fn update_series(&self, id: i64, u: &SeriesUpdate) -> ClientResult<SeriesDetail> {
         self.patch(&format!("/series/{id}"), u).await
     }

@@ -385,6 +385,15 @@ impl Deluge {
         if connected.as_bool() == Some(true) {
             return Ok(());
         }
+        self.reconnect_daemon(s, cookie).await
+    }
+
+    async fn reconnect_daemon(&self, s: &Settings, cookie: &str) -> Result<(), DownloadError> {
+        let ok = |call: Call| match call {
+            Call::Ok(v) => Ok(v),
+            Call::Unauthorised => Err(DownloadError::Authentication),
+            Call::Failed(m) => Err(DownloadError::Client(m)),
+        };
         let hosts = ok(self
             .execute(s, Some(cookie), "web.get_hosts", json!([]))
             .await?
@@ -392,7 +401,12 @@ impl Deluge {
         let local = hosts.as_array().and_then(|hosts| {
             hosts
                 .iter()
-                .find(|h| h.get(1).and_then(Value::as_str) == Some("127.0.0.1"))
+                .find(|h| h.get(3).and_then(Value::as_str) == Some("Connected"))
+                .or_else(|| {
+                    hosts
+                        .iter()
+                        .find(|h| h.get(1).and_then(Value::as_str) == Some("127.0.0.1"))
+                })
         });
         if let Some(id) = local.and_then(|h| h.get(0)).cloned() {
             ok(self
@@ -469,22 +483,33 @@ impl Deluge {
         let Some(map) = result.get("torrents").and_then(Value::as_object) else {
             return Ok(Vec::new());
         };
-        Ok(map
-            .iter()
+        map.iter()
             .map(|(hash, t)| {
-                let mut torrent: Torrent = serde_json::from_value(t.clone()).unwrap_or_default();
+                let mut torrent: Torrent = serde_json::from_value(t.clone()).map_err(|e| {
+                    DownloadError::Client(format!("Deluge sent an invalid torrent record ({e})"))
+                })?;
                 if torrent.hash.as_deref().is_none_or(str::is_empty) {
                     torrent.hash = Some(hash.clone());
                 }
-                torrent
+                Ok(torrent)
             })
-            .collect())
+            .collect::<Result<Vec<_>, DownloadError>>()
     }
 
     /// `GetItems`. Torrents without a hash or name are skipped (upstream reconnects the daemon
     /// once and warns).
     pub async fn items(&self, s: &Settings) -> Result<Vec<DownloadItem>, DownloadError> {
-        let torrents = self.torrents(s).await?;
+        let mut torrents = self.torrents(s).await?;
+        if torrents
+            .iter()
+            .any(|t| t.to_item(s.category.as_deref()).is_none())
+        {
+            // Sonarr's GetItems reconnects once for incomplete records. A successful RPC
+            // response alone does not guarantee that the daemon connection is healthy.
+            let cookie = self.login(s).await?;
+            self.reconnect_daemon(s, &cookie).await?;
+            torrents = self.torrents(s).await?;
+        }
         let items: Vec<DownloadItem> = torrents
             .iter()
             .filter_map(|t| t.to_item(s.category.as_deref()))

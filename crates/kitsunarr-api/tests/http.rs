@@ -5943,3 +5943,114 @@ async fn twitter_connections_sign_in_with_oauth1() {
         "{exchange}"
     );
 }
+
+/// The same typed calls as the catalogue dialog, through the authenticated real router.
+#[tokio::test]
+async fn metadata_source_previews_and_changes_work_over_http() {
+    use kitsunarr_domain::api::metadata::MetadataSourceRequest;
+    let base = tvmaze_mock().await;
+    let movie_router=axum::Router::new().route("/",axum::routing::get(|| async {
+        axum::Json(serde_json::json!({"Title":"A Film","Type":"movie","imdbID":"tt0000060","Year":"2020","Response":"True"}))
+    }));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let movie_base = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, movie_router).await.unwrap() });
+    let metadata = Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: base,
+            omdb: movie_base,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    );
+    let server = start_with(metadata).await;
+    let client = signed_in(&server).await;
+    // AppState loads keys from settings; set the mock key after initialization.
+    server
+        .state
+        .metadata
+        .set_api_keys(None, Some("test-key".into()));
+    sqlx::query("INSERT INTO series (id,media_kind,title,sort_title,clean_title,title_slug,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (1,'series','Breaking Bad','breakingbad','breakingbad','breaking-bad','tvdb','81189',1,'/media','/media/bb','2026-01-01')").execute(server.state.db.pool()).await.unwrap();
+    sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (1,'A Film','film','film','film','tmdbMovie','60',1,'/media','/media/film','2026-01-01')").execute(server.state.db.pool()).await.unwrap();
+    sqlx::query(
+        "INSERT INTO movie_external_ids (movie_id,kind,external_id) VALUES (1,'imdb','tt0000060')",
+    )
+    .execute(server.state.db.pool())
+    .await
+    .unwrap();
+    for movie in [false, true] {
+        let mut req = MetadataSourceRequest {
+            provider: if movie {
+                MetadataProvider::Omdb
+            } else {
+                MetadataProvider::TvMaze
+            },
+            id: if movie { "tt0000060" } else { "169" }.into(),
+            confirm_identity: false,
+            mappings: vec![],
+            revision: None,
+        };
+        let section = if movie { "movies" } else { "series" };
+        let unauth = reqwest::Client::new()
+            .post(format!(
+                "{}/api/v1/{section}/1/metadata-source/preview",
+                server.base
+            ))
+            .json(&req)
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(unauth.status(), 401);
+        assert_eq!(
+            status(
+                client
+                    .set_metadata_source(movie, 1, &req)
+                    .await
+                    .unwrap_err()
+            ),
+            422
+        );
+        assert_eq!(
+            status(
+                client
+                    .preview_metadata_source(movie, 999, &req)
+                    .await
+                    .unwrap_err()
+            ),
+            404
+        );
+        let p = client
+            .preview_metadata_source(movie, 1, &req)
+            .await
+            .unwrap();
+        assert!(p.identity_verified);
+        assert!(p.blockers.is_empty(), "{:?}", p.blockers);
+        req.revision = Some(p.revision);
+        client.set_metadata_source(movie, 1, &req).await.unwrap();
+        // The cached identity is now the current owner; trying the same entry is refused.
+        assert_eq!(
+            status(
+                client
+                    .preview_metadata_source(movie, 1, &req)
+                    .await
+                    .unwrap_err()
+            ),
+            422
+        );
+    }
+    assert_eq!(
+        client
+            .series_detail(1)
+            .await
+            .unwrap()
+            .item
+            .metadata_provider,
+        MetadataProvider::TvMaze
+    );
+    assert_eq!(
+        client.movie_detail(1).await.unwrap().item.metadata_provider,
+        MetadataProvider::Omdb
+    );
+    let openapi: serde_json::Value = client.get("/openapi.json").await.unwrap();
+    assert!(openapi["paths"]["/api/v1/series/{id}/metadata-source/preview"]["post"].is_object());
+}

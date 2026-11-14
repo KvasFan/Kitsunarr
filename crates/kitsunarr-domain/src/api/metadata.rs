@@ -147,3 +147,67 @@ pub struct RefreshResult {
     pub added_episodes: u64,
     pub updated_episodes: u64,
 }
+
+/// Preview a catalogue change first, then send its revision when applying it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MetadataSourceRequest {
+    pub provider: MetadataProvider,
+    pub id: String,
+    #[serde(default)]
+    pub confirm_identity: bool,
+    #[serde(default)]
+    pub mappings: Vec<SourceEpisodeMapping>,
+    #[serde(default)]
+    pub revision: Option<String>,
+}
+
+/// An explicit episode association, used when catalogue numbering differs.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct SourceEpisodeMapping {
+    pub episode_id: i64,
+    pub season_number: i32,
+    pub episode_number: i32,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct SourceEpisodePreview {
+    pub episode_id: i64,
+    pub season_number: i32,
+    pub episode_number: i32,
+    pub title: Option<String>,
+    pub target: Option<SourceEpisodeMapping>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MetadataSourcePreview {
+    pub provider: MetadataProvider,
+    pub id: String,
+    pub title: String,
+    pub year: Option<i32>,
+    pub identity_verified: bool,
+    pub revision: String,
+    pub blockers: Vec<String>,
+    pub matched_episodes: usize,
+    pub retained_episodes: usize,
+    pub new_episodes: usize,
+    pub episodes: Vec<SourceEpisodePreview>,
+    pub target_episodes: Vec<SourceTargetEpisode>,
+}
+
+/// One target episode shown when manually associating episodes across catalogues.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct SourceTargetEpisode {
+    pub season_number: i32,
+    pub episode_number: i32,
+    pub title: Option<String>,
+}

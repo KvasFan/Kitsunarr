@@ -99,6 +99,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut delete_folder = use_signal(|| false);
     let mut renaming = use_signal(|| false);
     let mut ordering = use_signal(|| false);
+    let mut source_open = use_signal(|| false);
     let mut naming_open = use_signal(|| false);
     let mut versions_open = use_signal(|| false);
     let mut compression_open = use_signal(|| false);
@@ -316,6 +317,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     }
                     div { class: "spacer" }
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
+                    button { class: "btn", onclick: move |_| source_open.set(true), "Change catalogue" }
                     button { class: "btn", disabled: scanning(), title: "Find files added to or removed from the series folder", onclick: rescan,
                         if scanning() { "Scanning…" } else { "Scan disk" }
                     }
@@ -383,6 +385,9 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 seasons: d.seasons.iter().map(|s| (s.season_number, s.title.clone().unwrap_or_default())).collect::<Vec<_>>(),
                 on_close: move |_| naming_open.set(false),
             }
+        }
+        if source_open() {
+            MetadataSourceDialog { id, movie: false, current_provider: d.item.metadata_provider, current_id: d.metadata_id.clone(), on_close: move |_| source_open.set(false) }
         }
         if ordering() {
             OrderingDialog { series_id: id, on_close: move |_| ordering.set(false) }
@@ -609,6 +614,7 @@ pub fn MovieDetailPage(id: i64) -> Element {
     let nav = navigator();
     let mut confirm_delete = use_signal(|| false);
     let mut searching = use_signal(|| false);
+    let mut source_open = use_signal(|| false);
     let mut auto_busy = use_signal(|| false);
     let c5 = client.clone();
     let auto_search = move |_| {
@@ -723,6 +729,7 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     Switch { checked: d.item.monitored, label: if d.item.monitored { "Monitored".to_string() } else { "Unmonitored".to_string() }, onchange: set_monitored }
                     div { class: "spacer" }
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
+                    button { class: "btn", onclick: move |_| source_open.set(true), "Change catalogue" }
                     button { class: "btn", title: "Search the indexers and choose a release", onclick: move |_| searching.set(true), "Search" }
                     button { class: "btn", disabled: auto_busy(), title: "Search the indexers and grab the best accepted release", onclick: auto_search,
                         if auto_busy() { "Searching…" } else { "Automatic search" }
@@ -730,6 +737,9 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Remove from library" }
                 }
             }
+        }
+        if source_open() {
+            MetadataSourceDialog { id, movie: true, current_provider: d.item.metadata_provider, current_id: d.metadata_id.clone(), on_close: move |_| source_open.set(false) }
         }
         if searching() {
             Modal {
@@ -1140,6 +1150,186 @@ fn VersionsDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
                         }
                     }
                 },
+            }
+        }
+    }
+}
+
+/// Preview catalogue ownership and resolve ambiguous episode associations before applying.
+#[component]
+fn MetadataSourceDialog(
+    id: i64,
+    movie: bool,
+    current_provider: MetadataProvider,
+    current_id: String,
+    on_close: EventHandler<()>,
+) -> Element {
+    use kitsunarr_domain::api::metadata::{
+        EntryKind, MetadataSourcePreview, MetadataSourceRequest, SearchItem, SearchQuery,
+        SourceEpisodeMapping,
+    };
+    let mut app = use_app();
+    let client = use_client();
+    let mut request = use_signal(move || MetadataSourceRequest {
+        provider: current_provider,
+        id: String::new(),
+        confirm_identity: false,
+        mappings: vec![],
+        revision: None,
+    });
+    let mut term = use_signal(String::new);
+    let mut results = use_signal(Vec::<SearchItem>::new);
+    let mut preview = use_signal(|| None::<MetadataSourcePreview>);
+    let mut busy = use_signal(|| false);
+    let mut error = use_signal(|| None::<String>);
+    let mut editing_episode = use_signal(|| None::<i64>);
+    let mut page = use_signal(|| 0usize);
+    let c0 = client.clone();
+    let providers = use_resource(move || {
+        let c = c0.clone();
+        async move { c.metadata_providers().await }
+    });
+    let c1 = client.clone();
+    let search = move |_| {
+        let c = c1.clone();
+        let q = SearchQuery {
+            provider: request().provider,
+            term: term(),
+        };
+        busy.set(true);
+        error.set(None);
+        results.set(vec![]);
+        spawn(async move {
+            match c.metadata_search(&q).await {
+                Ok(items) => results.set(
+                    items
+                        .into_iter()
+                        .filter(|r| (r.kind == EntryKind::Movie) == movie)
+                        .collect(),
+                ),
+                Err(e) => error.set(Some(e.to_string())),
+            }
+            busy.set(false);
+        });
+    };
+    let c2 = client.clone();
+    let review = move |_| {
+        let c = c2.clone();
+        let req = request();
+        busy.set(true);
+        error.set(None);
+        request.write().revision = None;
+        spawn(async move {
+            match c.preview_metadata_source(movie, id, &req).await {
+                Ok(p) => {
+                    request.write().revision = Some(p.revision.clone());
+                    preview.set(Some(p));
+                }
+                Err(e) => error.set(Some(e.to_string())),
+            }
+            busy.set(false);
+        });
+    };
+    let apply = move |_| {
+        let c = client.clone();
+        let req = request();
+        busy.set(true);
+        error.set(None);
+        spawn(async move {
+            match c.set_metadata_source(movie, id, &req).await {
+                Ok(_) => {
+                    app.library_rev += 1;
+                    app.success("Catalogue changed.");
+                    on_close.call(());
+                }
+                Err(e) => {
+                    request.write().revision = None;
+                    error.set(Some(e.to_string()));
+                }
+            }
+            busy.set(false);
+        });
+    };
+    let can_apply =
+        request().revision.is_some() && preview().is_some_and(|p| p.blockers.is_empty());
+    rsx! {
+        Modal {
+            title: "Change catalogue", wide: true,
+            on_close: move |_| {if !busy() {on_close.call(());}},
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", disabled: busy(), onclick: move |_| on_close.call(()), "Cancel" }
+                button { class: "btn", disabled: busy() || request().id.trim().is_empty(), onclick: review, "Preview" }
+                button { class: "btn primary", disabled: busy() || !can_apply, onclick: apply, if busy() { "Applying…" } else { "Change catalogue" } }
+            },
+            p { class: "help", "Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue." }
+            p { class: "small muted", "{current_provider.display_name()} · {current_id}" }
+            if let Some(e)=error() { ErrorBox {message:e} }
+            Field { label: "Catalogue",
+                select { class: "select", "aria-label":"Target catalogue", disabled:busy(), value: "{request().provider}",
+                    onchange: move |e:FormEvent| {if let Ok(p)=e.value().parse() {request.set(MetadataSourceRequest{provider:p,id:String::new(),confirm_identity:false,mappings:vec![],revision:None});preview.set(None);results.set(vec![]);}},
+                    if let Some(Ok(list))=&*providers.read() {
+                        for p in list.iter().filter(|p| if movie {p.kinds.contains(&EntryKind::Movie)} else {p.kinds.iter().any(|k| *k!=EntryKind::Movie)}) {
+                            option { value:"{p.provider}", disabled:!p.available, "{p.name}" }
+                        }
+                    }
+                }
+            }
+            div {class:"row",
+                input {class:"input", "aria-label":"Find target title",placeholder:"Search titles…",value:"{term}",disabled:busy(),oninput:move |e|term.set(e.value())}
+                button {class:"btn",disabled:busy() || term().trim().is_empty(),onclick:search,"Search"}
+            }
+            if !results().is_empty() {
+                div {class:"stack",style:"max-height: 12rem; overflow: auto",
+                    for r in results() {
+                        button {class:"btn",disabled:busy(),onclick:move |_| {request.write().id=r.id.clone();request.write().mappings.clear();request.write().revision=None;request.write().confirm_identity=false;preview.set(None);},"{r.title} · {r.id}"}
+                    }
+                }
+            }
+            Field {label:"Catalogue ID",
+                input {class:"input", "aria-label":"Target catalogue ID",value:"{request().id}",disabled:busy(),oninput:move |e| {request.write().id=e.value();request.write().revision=None;request.write().mappings.clear();request.write().confirm_identity=false;preview.set(None);}}
+            }
+            label {class:"check",
+                input {r#type:"checkbox",checked:request().confirm_identity,disabled:busy(),onchange:move |e| {request.write().confirm_identity=e.checked();request.write().revision=None;}}
+                "I confirm that the target catalogue entry is the same title."
+            }
+            if let Some(p)=preview() {
+                h3 {"{p.title}" if let Some(y)=p.year {" ({y})"}}
+                if p.identity_verified {p {class:"small muted","The catalogues share an external identity."}}
+                for b in &p.blockers {p {class:"help warning","{b}"}}
+                if !movie {
+                    p {"{p.matched_episodes} matched · {p.retained_episodes} kept at current numbers · {p.new_episodes} new episodes"}
+                    details {
+                        summary {"Episode matches"}
+                        div {class:"stack",style:"max-height: 24rem; overflow: auto",
+                            for e in p.episodes.iter().skip(page() * 50).take(50) {
+                                div {class:"row", key:"{e.episode_id}",
+                                    span {"S{e.season_number:02}E{e.episode_number:02} · {e.title.clone().unwrap_or_default()}"}
+                                    if editing_episode() == Some(e.episode_id) {
+                                    select {class:"select","aria-label":format!("Match episode {}",e.episode_id),disabled:busy(),
+                                        value:e.target.as_ref().map(|t|format!("{}:{}",t.season_number,t.episode_number)).unwrap_or_default(),
+                                        onchange:{let eid=e.episode_id;move |event:FormEvent| {
+                                            let mut req=request.write();req.mappings.retain(|m|m.episode_id!=eid);req.revision=None;
+                                            if let Some((s,n))=event.value().split_once(':') && let (Ok(s),Ok(n))=(s.parse(),n.parse()) {req.mappings.push(SourceEpisodeMapping{episode_id:eid,season_number:s,episode_number:n});}
+                                        }},
+                                        option {value:"","Automatic match / keep current number"}
+                                        for t in &p.target_episodes {option {value:format!("{}:{}",t.season_number,t.episode_number),"S{t.season_number:02}E{t.episode_number:02} · {t.title.clone().unwrap_or_default()}"}}
+                                    }
+                                    } else {
+                                        span {class:"small muted",{e.target.as_ref().map(|t|format!("→ S{:02}E{:02}",t.season_number,t.episode_number)).unwrap_or_else(||"→ current number".into())}}
+                                        button {class:"btn",disabled:busy(),onclick:{let eid=e.episode_id;move |_| editing_episode.set(Some(eid))},"Match"}
+                                    }
+                                }
+                            }
+                        }
+                        div {class:"row",
+                            button {class:"btn",disabled:page()==0,onclick:move |_| page -= 1,"Previous"}
+                            span {"{page() + 1}"}
+                            button {class:"btn",disabled:(page()+1)*50>=p.episodes.len(),onclick:move |_| page += 1,"Next"}
+                        }
+                    }
+                }
+                if request().revision.is_none() {p {class:"help","Preview again to review your changes."}}
             }
         }
     }
