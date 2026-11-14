@@ -19,6 +19,7 @@ pub mod manual_import;
 pub mod media_info;
 pub mod metadata_files;
 pub mod metadata_source;
+pub mod movie_files;
 pub mod movie_import;
 pub mod notify;
 pub mod tools;

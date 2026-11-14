@@ -11,7 +11,7 @@ use kitsunarr_domain::api::library::{
     BulkEdit, BulkEditResult, CalendarEntry, CalendarQuery, CollectionDetail, CollectionEdit,
     CollectionItem, CollectionMemberEdit, EpisodeItem, EpisodesMonitoredUpdate,
     FileOperationResult, HistoryItem, LibraryQuery, LibraryStats, MovieDetail, MovieListItem,
-    RenamePreview, RenameRequest, SeriesDetail, SeriesListItem, SeriesUpdate,
+    MovieRenamePreview, RenamePreview, RenameRequest, SeriesDetail, SeriesListItem, SeriesUpdate,
 };
 use kitsunarr_domain::{Page, PageRequest};
 use serde::Deserialize;
@@ -233,13 +233,30 @@ pub async fn update_movie(
     Ok(Json(movies::get_detail(&state.db, id).await?))
 }
 
-#[utoipa::path(delete, path = "/movies/{id}", tag = "library", params(("id" = i64, Path)),
-    responses((status = 204, description = "Database records removed; files on disk are never deleted by this call")))]
+#[utoipa::path(delete, path = "/movies/{id}", tag = "library", params(("id" = i64, Path), DeleteSeriesQuery),
+    responses((status = 204, description = "Removed; the folder is deleted only with deleteFiles")))]
 pub async fn delete_movie(
     State(state): State<AppState>,
     Path(id): Path<i64>,
+    Query(q): Query<DeleteSeriesQuery>,
 ) -> ApiResult<StatusCode> {
+    let notification = kitsunarr_library::notify::movie_refs(&state.db, id).await;
+    if q.delete_files {
+        kitsunarr_library::movie_files::delete_folder(&state.db, id)
+            .await
+            .map_err(|m| ApiError::field("deleteFiles", m))?;
+    }
     movies::delete(&state.db, id).await?;
+    if let Some((series, _)) = notification {
+        kitsunarr_library::notify::spawn(
+            &state.db,
+            &state.downloads.notifier,
+            kitsunarr_notifications::Event::SeriesDelete {
+                series: Box::new(series),
+                deleted_files: q.delete_files,
+            },
+        );
+    }
     changed(&state, "movie", vec![id], true);
     Ok(StatusCode::NO_CONTENT)
 }
@@ -574,5 +591,86 @@ pub async fn delete_episode_file(
         deleted: true,
     });
     changed(&state, "series", vec![id], false);
+    Ok(StatusCode::NO_CONTENT)
+}
+
+#[utoipa::path(post, path = "/movies/{id}/rescan", tag = "library", params(("id" = i64, Path)),
+    responses((status = 200, body = FileOperationResult), (status = 404), (status = 422, body = ApiErrorBody)))]
+pub async fn rescan_movie(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<FileOperationResult>> {
+    movies::get_detail(&state.db, id).await?;
+    let summary = kitsunarr_library::movie_files::scan(&state.db, id)
+        .await
+        .map_err(|m| ApiError::field("id", m))?;
+    changed(&state, "movie", vec![id], false);
+    Ok(Json(FileOperationResult {
+        message: format!("{}.", summary.describe()),
+        problems: summary.skipped,
+    }))
+}
+
+#[utoipa::path(get, path = "/movies/{id}/rename", tag = "library", params(("id" = i64, Path)),
+    responses((status = 200, body = Option<MovieRenamePreview>), (status = 404), (status = 422, body = ApiErrorBody)))]
+pub async fn movie_rename_preview(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Option<MovieRenamePreview>>> {
+    movies::get_detail(&state.db, id).await?;
+    Ok(Json(
+        kitsunarr_library::movie_files::rename_preview(&state.db, id)
+            .await
+            .map_err(|m| ApiError::field("id", m))?,
+    ))
+}
+
+#[utoipa::path(post, path = "/movies/{id}/rename", tag = "library", params(("id" = i64, Path)), request_body = MovieRenamePreview,
+    responses((status = 200, body = FileOperationResult), (status = 404), (status = 422, body = ApiErrorBody)))]
+pub async fn rename_movie_file(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(preview): Json<MovieRenamePreview>,
+) -> ApiResult<Json<FileOperationResult>> {
+    movies::get_detail(&state.db, id).await?;
+    kitsunarr_library::movie_files::rename(&state.db, id, &preview)
+        .await
+        .map_err(|m| ApiError::field("preview", m))?;
+    changed(&state, "movie", vec![id], false);
+    if let Some((series, _)) = kitsunarr_library::notify::movie_refs(&state.db, id).await {
+        let base = std::path::Path::new(&series.path);
+        let file = kitsunarr_notifications::RenamedFile {
+            id: preview.movie_file_id,
+            previous_relative_path: preview.existing_path.clone(),
+            previous_path: base.join(&preview.existing_path).display().to_string(),
+            relative_path: preview.new_path.clone(),
+            path: base.join(&preview.new_path).display().to_string(),
+        };
+        kitsunarr_library::notify::spawn(
+            &state.db,
+            &state.downloads.notifier,
+            kitsunarr_notifications::Event::Rename {
+                series: Box::new(series),
+                files: vec![file],
+            },
+        );
+    }
+    Ok(Json(FileOperationResult {
+        message: "1 file renamed.".into(),
+        problems: vec![],
+    }))
+}
+
+#[utoipa::path(delete, path = "/movies/{id}/files/{file_id}", tag = "library", params(("id" = i64, Path),("file_id" = i64, Path)),
+    responses((status = 204), (status = 404), (status = 422, body = ApiErrorBody)))]
+pub async fn delete_movie_file(
+    State(state): State<AppState>,
+    Path((id, file_id)): Path<(i64, i64)>,
+) -> ApiResult<StatusCode> {
+    movies::get_detail(&state.db, id).await?;
+    kitsunarr_library::movie_files::delete_file(&state.db, id, file_id)
+        .await
+        .map_err(|m| ApiError::field("fileId", m))?;
+    changed(&state, "movie", vec![id], false);
     Ok(StatusCode::NO_CONTENT)
 }

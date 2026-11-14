@@ -189,6 +189,16 @@ pub struct MovieFileItem {
     pub added_at: String,
 }
 
+/// A reviewed rename for the movie's one feature. Echo the preview when applying it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieRenamePreview {
+    pub movie_file_id: i64,
+    pub existing_path: String,
+    pub new_path: String,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]

@@ -2688,6 +2688,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "fantoccini",
+ "kitsunarr-db",
  "reqwest 0.13.5",
  "serde_json",
  "tempfile",

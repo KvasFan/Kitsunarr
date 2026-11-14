@@ -74,6 +74,12 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             library::delete_movie
         ))
         .routes(routes!(library::bulk_edit_movies))
+        .routes(routes!(library::rescan_movie))
+        .routes(routes!(
+            library::movie_rename_preview,
+            library::rename_movie_file
+        ))
+        .routes(routes!(library::delete_movie_file))
         .routes(routes!(movie_search::search_movie_releases))
         .routes(routes!(movie_search::automatic_movie_search))
         .routes(routes!(movie_search::missing_movies))

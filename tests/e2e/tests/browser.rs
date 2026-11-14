@@ -619,6 +619,51 @@ async fn first_run_setup_migration_and_library() {
         screenshot(&client, "11g-collection-editor").await;
         client.find(Locator::Css("article.media-card label.check")).await.unwrap().click().await.unwrap();
         client.wait().for_element(Locator::Css("article.media-card:first-child .poster:not(:has(.unmonitored))")).await.unwrap();
+        // A local film fixture exercises real file operations through the web UI.
+        // Opening the server's disposable SQLite database only prepares the fixture.
+        let film_root = media.join("movies");
+        let film_folder = film_root.join("E2E Film");
+        std::fs::create_dir_all(&film_folder).unwrap();
+        let original = film_folder.join("source.1080p.WEB-DL-GRP.mkv");
+        std::fs::write(&original,b"feature").unwrap();
+        std::fs::write(original.with_extension("it.srt"),b"subtitle").unwrap();
+        let fixture_db = kitsunarr_db::Database::open(&tmp.path().join("data/kitsunarr.db")).await.unwrap();
+        kitsunarr_db::root_folders::create(fixture_db.pool(),film_root.to_str().unwrap(),None).await.unwrap();
+        let mut film_media: serde_json::Value = kitsunarr_db::settings::get_or_default(fixture_db.pool(),kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT).await.unwrap();
+        film_media["enableMediaInfo"] = false.into();
+        film_media["recycleBin"] = tmp.path().join("recycled").display().to_string().into();
+        kitsunarr_db::settings::set(fixture_db.pool(),kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,&film_media).await.unwrap();
+        kitsunarr_db::sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,year,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (900,'E2E Film','e2e film','e2efilm','e2e-film',2020,'tmdbMovie','900',(SELECT MIN(id) FROM quality_profiles),?,?,'2026-11-14T00:00:00Z')")
+            .bind(film_root.to_str().unwrap()).bind(film_folder.to_str().unwrap()).execute(fixture_db.pool()).await.unwrap();
+        fixture_db.close().await;
+        client.goto(&format!("{base}/movies/900")).await.unwrap();
+        wait_text(&client,"E2E Film").await;
+        click_button(&client,"Rescan disk").await;
+        wait_text(&client,"1 files added").await;
+        wait_text(&client,"source.1080p.WEB-DL-GRP.mkv").await;
+        click_button(&client,"Rename file").await;
+        client.wait().for_element(Locator::Css(".modal .mono")).await.unwrap();
+        screenshot(&client,"11j-movie-rename-preview").await;
+        client.find(Locator::XPath("//div[@class='modal-foot']//button[normalize-space(.)='Rename']")).await.unwrap().click().await.unwrap();
+        wait_text(&client,"1 file renamed.").await;
+        assert!(!original.exists());
+        let renamed: Vec<_> = std::fs::read_dir(&film_folder).unwrap().flatten().map(|e|e.path()).filter(|p|p.extension().is_some_and(|e|e=="mkv")).collect();
+        assert_eq!(renamed.len(),1);
+        assert!(renamed[0].with_extension("it.srt").is_file());
+        click_button(&client,"Delete file").await;
+        client.find(Locator::XPath("//div[@class='modal-foot']//button[normalize-space(.)='Delete']")).await.unwrap().click().await.unwrap();
+        wait_text(&client,"File deleted.").await;
+        assert!(!renamed[0].exists());
+        assert!(tmp.path().join("recycled/E2E Film").join(renamed[0].file_name().unwrap()).is_file());
+        click_button(&client,"Remove from library").await;
+        let delete_option = client.find(Locator::Css(".modal input[type='checkbox']")).await.unwrap();
+        assert_eq!(delete_option.prop("checked").await.unwrap().as_deref(),Some("false"));
+        client.find(Locator::Css(".modal label.check")).await.unwrap().click().await.unwrap();
+        screenshot(&client,"11k-movie-remove-options").await;
+        click_button(&client,"Cancel").await;
+        click_button(&client,"Remove from library").await;
+        assert_eq!(client.find(Locator::Css(".modal input[type='checkbox']")).await.unwrap().prop("checked").await.unwrap().as_deref(),Some("false"));
+        click_button(&client,"Cancel").await;
         // Metadata files (Sonarr's Settings › Metadata): migrated consumers, all off.
         client
             .goto(&format!("{base}/settings/metadata"))
@@ -958,7 +1003,7 @@ async fn first_run_setup_migration_and_library() {
             step(&format!("browser zoom {zoom}%"));
             browser_zoom(&client, zoom).await;
             for path in [
-                "/", "/series", "/series/1", "/movies", "/wanted/missing", "/activity/queue",
+                "/", "/series", "/series/1", "/movies", "/movies/900", "/wanted/missing", "/activity/queue",
                 "/activity/history", "/calendar", "/add", "/settings/indexers", "/settings/profiles",
                 "/settings/notifications", "/system/tasks", "/system/library", "/activity/manualimport",
             ] {

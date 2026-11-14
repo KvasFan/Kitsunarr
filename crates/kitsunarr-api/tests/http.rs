@@ -6063,3 +6063,81 @@ async fn metadata_source_previews_and_changes_work_over_http() {
     let openapi: serde_json::Value = client.get("/openapi.json").await.unwrap();
     assert!(openapi["paths"]["/api/v1/series/{id}/metadata-source/preview"]["post"].is_object());
 }
+
+/// Film file operations use the same authenticated client as the UI, against real temporary
+/// folders. No catalogue or download client is contacted.
+#[tokio::test]
+async fn movie_files_scan_preview_rename_recycle_and_optional_folder_removal() {
+    use kitsunarr_domain::api::settings::MediaManagementSettings;
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let root = server._dir.path().join("film-library");
+    let bin = server._dir.path().join("film-recycle");
+    std::fs::create_dir_all(&root).unwrap();
+    kitsunarr_db::root_folders::create(server.state.db.pool(), root.to_str().unwrap(), None)
+        .await
+        .unwrap();
+    kitsunarr_db::settings::set(
+        server.state.db.pool(),
+        kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+        &MediaManagementSettings {
+            enable_media_info: false,
+            recycle_bin: Some(bin.display().to_string()),
+            ..Default::default()
+        },
+    )
+    .await
+    .unwrap();
+    for id in 1..=3 {
+        let folder = root.join(format!("Film {id}"));
+        std::fs::create_dir(&folder).unwrap();
+        std::fs::write(folder.join("source.1080p.WEB-DL-GRP.mkv"), b"feature").unwrap();
+        sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,year,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (?,?,'film','film',?,2020,'tmdbMovie',?,1,?,?,'2026-11-14T00:00:00Z')")
+            .bind(id).bind(format!("Film {id}")).bind(format!("film-{id}")).bind(id.to_string()).bind(root.to_str().unwrap()).bind(folder.to_str().unwrap()).execute(server.state.db.pool()).await.unwrap();
+    }
+    let raw = reqwest::Client::new();
+    assert_eq!(
+        raw.post(format!("{}/api/v1/movies/1/rescan", server.base))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        401
+    );
+    assert!(client.movie_rename_preview(1).await.unwrap().is_none());
+    client.rescan_movie(1).await.unwrap();
+    let preview = client.movie_rename_preview(1).await.unwrap().unwrap();
+    assert!(root.join("Film 1").join(&preview.existing_path).is_file());
+    assert!(!root.join("Film 1").join(&preview.new_path).exists());
+    let mut tampered = preview.clone();
+    tampered.new_path = "../forbidden.mkv".into();
+    assert!(client.rename_movie_file(1, &tampered).await.is_err());
+    client.rename_movie_file(1, &preview).await.unwrap();
+    assert!(root.join("Film 1").join(&preview.new_path).is_file());
+    assert!(!root.join("Film 1").join(&preview.existing_path).exists());
+    assert!(client.movie_rename_preview(1).await.unwrap().is_none());
+    assert!(
+        client
+            .delete_movie_file(1, preview.movie_file_id + 1000)
+            .await
+            .is_err()
+    );
+    client
+        .delete_movie_file(1, preview.movie_file_id)
+        .await
+        .unwrap();
+    assert!(client.movie_detail(1).await.unwrap().file.is_none());
+    assert!(bin.join("Film 1").join(&preview.new_path).is_file());
+    // Removing only the record remains the default, including when the folder has a video.
+    client.rescan_movie(2).await.unwrap();
+    client.delete_movie(2).await.unwrap();
+    assert!(root.join("Film 2/source.1080p.WEB-DL-GRP.mkv").is_file());
+    client.rescan_movie(3).await.unwrap();
+    client.delete_movie_with_files(3).await.unwrap();
+    assert!(!root.join("Film 3").exists());
+    assert!(bin.join("Film 3/source.1080p.WEB-DL-GRP.mkv").is_file());
+    assert!(client.movie_detail(3).await.is_err());
+    assert!(client.rescan_movie(9999).await.is_err());
+    let schema: serde_json::Value = client.get("/openapi.json").await.unwrap();
+    assert!(schema["paths"]["/api/v1/movies/{id}/rename"]["post"].is_object());
+}

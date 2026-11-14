@@ -613,6 +613,11 @@ pub fn MovieDetailPage(id: i64) -> Element {
     let client = use_client();
     let nav = navigator();
     let mut confirm_delete = use_signal(|| false);
+    let mut delete_folder = use_signal(|| false);
+    let mut removing = use_signal(|| false);
+    let mut scanning = use_signal(|| false);
+    let mut renaming = use_signal(|| false);
+    let mut deleting_file = use_signal(|| None::<(i64, String)>);
     let mut searching = use_signal(|| false);
     let mut source_open = use_signal(|| false);
     let mut auto_busy = use_signal(|| false);
@@ -672,11 +677,60 @@ pub fn MovieDetailPage(id: i64) -> Element {
     let c3 = client.clone();
     let delete = move |_| {
         let c = c3.clone();
+        let with_files = delete_folder();
+        removing.set(true);
         spawn(async move {
-            match c.delete_movie(id).await {
+            let result = if with_files {
+                c.delete_movie_with_files(id).await
+            } else {
+                c.delete_movie(id).await
+            };
+            match result {
                 Ok(()) => {
-                    app.success("Movie removed from Kitsunarr. Files on disk were not touched.");
+                    app.success(if with_files {
+                        "Movie removed, and its folder deleted or recycled."
+                    } else {
+                        "Movie removed from Kitsunarr. Files on disk were not touched."
+                    });
                     nav.push(Route::MoviesLibrary {});
+                }
+                Err(e) => app.error(&e),
+            }
+            removing.set(false);
+            confirm_delete.set(false);
+        });
+    };
+    let c6 = client.clone();
+    let rescan = move |_| {
+        let c = c6.clone();
+        scanning.set(true);
+        spawn(async move {
+            match c.rescan_movie(id).await {
+                Ok(r) if r.problems.is_empty() => {
+                    app.success(format!("Disk scanned: {}", r.message))
+                }
+                Ok(r) => app.toast(
+                    ToastLevel::Warning,
+                    format!("Disk scanned: {} {}", r.message, r.problems.join("; ")),
+                ),
+                Err(e) => app.error(&e),
+            }
+            detail.restart();
+            scanning.set(false);
+        });
+    };
+    let c7 = client.clone();
+    let remove_file = move |_| {
+        let Some((file_id, _)) = deleting_file() else {
+            return;
+        };
+        deleting_file.set(None);
+        let c = c7.clone();
+        spawn(async move {
+            match c.delete_movie_file(id, file_id).await {
+                Ok(()) => {
+                    app.success("File deleted.");
+                    detail.restart();
                 }
                 Err(e) => app.error(&e),
             }
@@ -734,7 +788,12 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     button { class: "btn", disabled: auto_busy(), title: "Search the indexers and grab the best accepted release", onclick: auto_search,
                         if auto_busy() { "Searching…" } else { "Automatic search" }
                     }
-                    button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Remove from library" }
+                    button { class: "btn", disabled: scanning(), onclick: rescan, if scanning() { "Scanning…" } else { "Rescan disk" } }
+                    button { class: "btn", disabled: d.file.is_none(), onclick: move |_| renaming.set(true), "Rename file" }
+                    if let Some(file) = &d.file {
+                        button { class: "btn danger", onclick: { let file = file.clone(); move |_| deleting_file.set(Some((file.id,file.relative_path.clone()))) }, "Delete file" }
+                    }
+                    button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true); }, "Remove from library" }
                 }
             }
         }
@@ -749,14 +808,77 @@ pub fn MovieDetailPage(id: i64) -> Element {
                 ReleaseSearch { series_id: 0, movie_id: Some(id) }
             }
         }
+        if renaming() {
+            MovieRenameDialog { movie_id: id, on_close: move |_| { renaming.set(false); detail.restart(); } }
+        }
+        if let Some((_,path)) = deleting_file() {
+            Confirm { title: "Delete file", message: format!("Delete “{path}” and its matching subtitles? They go to the recycle bin when one is set."), confirm_label: "Delete", danger: true,
+                on_confirm: remove_file, on_cancel: move |_| deleting_file.set(None) }
+        }
         if confirm_delete() {
-            Confirm {
-                title: "Remove movie",
-                message: format!("Remove “{title}” from Kitsunarr? Files on disk are not deleted."),
-                confirm_label: "Remove",
-                danger: true,
-                on_confirm: delete,
-                on_cancel: move |_| confirm_delete.set(false),
+            Modal {
+                title: "Remove movie", on_close: move |_| { if !removing() { confirm_delete.set(false); } },
+                footer: rsx! {
+                    button { class: "btn", disabled: removing(), onclick: move |_| confirm_delete.set(false), "Cancel" }
+                    button { class: "btn danger solid", disabled: removing(), onclick: delete, if removing() { "Removing…" } else { "Remove" } }
+                },
+                p { "Remove “{title}” from Kitsunarr?" }
+                Switch { checked: delete_folder(), disabled: removing(), label: "Delete the movie folder and its files", onchange: move |v| delete_folder.set(v) }
+                p { class: "help small", "With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set." }
+            }
+        }
+    }
+}
+
+#[component]
+fn MovieRenameDialog(movie_id: i64, on_close: EventHandler<()>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let preview = use_resource(move || {
+        let c = c0.clone();
+        async move { c.movie_rename_preview(movie_id).await }
+    });
+    let mut busy = use_signal(|| false);
+    let mut failure = use_signal(|| None::<String>);
+    let apply = move |_| {
+        let Some(Ok(Some(p))) = &*preview.read() else {
+            return;
+        };
+        let p = p.clone();
+        let c = client.clone();
+        busy.set(true);
+        failure.set(None);
+        spawn(async move {
+            match c.rename_movie_file(movie_id, &p).await {
+                Ok(r) => {
+                    app.success(r.message);
+                    on_close.call(());
+                }
+                Err(e) => failure.set(Some(e.to_string())),
+            }
+            busy.set(false);
+        });
+    };
+    rsx! {
+        Modal { title: "Rename file", wide: true, on_close: move |_| { if !busy() { on_close.call(()); } },
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", disabled: busy(), onclick: move |_| on_close.call(()), "Cancel" }
+                button { class: "btn primary", disabled: busy() || !matches!(&*preview.read(),Some(Ok(Some(_)))), onclick: apply, if busy() { "Renaming…" } else { "Rename" } }
+            },
+            if let Some(error)=failure() {ErrorBox {message:error}}
+            match &*preview.read() {
+                None=>rsx!{Loading{}},
+                Some(Err(e))=>rsx!{ErrorBox{message:e.to_string()}},
+                Some(Ok(None))=>rsx!{p{class:"muted","Every file already follows the naming settings."}},
+                Some(Ok(Some(p)))=>rsx!{
+                    div {class:"stack",
+                        div {class:"mono small muted","{p.existing_path}"}
+                        div {class:"mono small","→ {p.new_path}"}
+                        p {class:"help small","Matching subtitles follow the file's new name."}
+                    }
+                },
             }
         }
     }

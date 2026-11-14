@@ -407,6 +407,31 @@ impl Client {
     pub async fn delete_movie(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/movies/{id}")).await
     }
+    pub async fn rescan_movie(
+        &self,
+        id: i64,
+    ) -> ClientResult<kitsunarr_domain::api::library::FileOperationResult> {
+        self.post(&format!("/movies/{id}/rescan"), &Empty {}).await
+    }
+    pub async fn movie_rename_preview(
+        &self,
+        id: i64,
+    ) -> ClientResult<Option<kitsunarr_domain::api::library::MovieRenamePreview>> {
+        self.get(&format!("/movies/{id}/rename")).await
+    }
+    pub async fn rename_movie_file(
+        &self,
+        id: i64,
+        preview: &kitsunarr_domain::api::library::MovieRenamePreview,
+    ) -> ClientResult<kitsunarr_domain::api::library::FileOperationResult> {
+        self.post(&format!("/movies/{id}/rename"), preview).await
+    }
+    pub async fn delete_movie_file(&self, id: i64, file_id: i64) -> ClientResult<()> {
+        self.delete(&format!("/movies/{id}/files/{file_id}")).await
+    }
+    pub async fn delete_movie_with_files(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/movies/{id}?deleteFiles=true")).await
+    }
     pub async fn bulk_edit_movies(&self, edit: &BulkEdit) -> ClientResult<BulkEditResult> {
         self.post("/movies/bulk", edit).await
     }

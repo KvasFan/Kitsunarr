@@ -13,6 +13,7 @@ publish = false
 path = "src/lib.rs"
 
 [dev-dependencies]
+kitsunarr-db = { workspace = true }
 fantoccini = { version = "0.22", default-features = false, features = ["rustls-tls"] }
 tokio = { workspace = true }
 serde_json = { workspace = true }
