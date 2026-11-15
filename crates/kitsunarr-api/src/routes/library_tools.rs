@@ -46,49 +46,24 @@ pub async fn storage(
         .await?
         .0;
     let series_paths: Vec<(i64, String)> = kitsunarr_db::library::series::paths(&state.db).await?;
-    let roots = kitsunarr_db::root_folders::list(state.db.pool()).await?;
-    let mut out = Vec::new();
-    for root in roots {
-        let root_path = std::path::Path::new(&root.path);
-        let mut seen = std::collections::HashSet::new();
-        let (mut count, mut remaining, mut total) = (0i64, 0u64, 0u64);
-        for item in &queue.items {
-            let in_root = item.series_id.is_some_and(|id| {
-                series_paths
-                    .iter()
-                    .any(|(sid, p)| *sid == id && std::path::Path::new(p).starts_with(root_path))
-            });
-            if !in_root
-                || matches!(
-                    item.tracked_state.as_str(),
-                    "imported" | "ignored" | "failed"
-                )
-                || !seen.insert((item.download_client.clone(), item.download_id.clone()))
-            {
-                continue;
-            }
-            count += 1;
-            remaining += item.size_left.max(0) as u64;
-            total += item.size.max(0) as u64;
-        }
-        let estimate = if tools.hardlink_only { 0 } else { total };
-        let free = fs4::available_space(root_path).ok();
-        out.push(StorageOutlook {
-            root_folder: root.path.clone(),
-            free_space: free,
-            queued_downloads: count,
-            download_remaining: remaining,
-            import_space_estimate: estimate,
-            may_run_out_of_space: free.is_some_and(|f| estimate > f),
-            import_mode: if tools.hardlink_only {
-                "Hardlink-only: imports take no extra space".into()
-            } else if media.use_hardlinks {
-                "Hard link when possible, else copy: the estimate assumes copies".into()
-            } else {
-                "Copy: imports take the downloads' size again".into()
-            },
-        });
-    }
+    let movie_paths: Vec<(i64, String)> =
+        kitsunarr_db::sqlx::query_as("SELECT id,path FROM movies")
+            .fetch_all(state.db.pool())
+            .await
+            .map_err(kitsunarr_db::DbError::from)?;
+    let roots = kitsunarr_db::root_folders::list(state.db.pool())
+        .await?
+        .into_iter()
+        .map(|r| r.path)
+        .collect::<Vec<_>>();
+    let out: Vec<StorageOutlook> = kitsunarr_library::tools::storage_outlook(
+        &roots,
+        &series_paths,
+        &movie_paths,
+        &queue.items,
+        tools.hardlink_only,
+        media.use_hardlinks,
+    );
     Ok(Json(out))
 }
 
@@ -386,4 +361,94 @@ pub async fn manual_import(
             })
             .collect(),
     ))
+}
+
+#[utoipa::path(post, path="/librarytools/recycle/restore-movie",tag="system",
+    request_body=kitsunarr_domain::api::library_tools::MovieRecycleRestoreRequest,
+    responses((status=200,body=String),(status=404),(status=422,body=kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn restore_movie(
+    State(state): State<AppState>,
+    Json(body): Json<kitsunarr_domain::api::library_tools::MovieRecycleRestoreRequest>,
+) -> ApiResult<Json<String>> {
+    kitsunarr_db::library::movies::get_detail(&state.db, body.movie_id).await?;
+    let message = kitsunarr_library::tools::restore_movie(&state.db, &body.token, body.movie_id)
+        .await
+        .map_err(|m| crate::error::ApiError::field("token", m))?;
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+            media_type: "movie".into(),
+            ids: vec![body.movie_id],
+            deleted: false,
+        });
+    Ok(Json(message))
+}
+
+#[derive(serde::Deserialize, utoipa::IntoParams)]
+#[serde(rename_all = "camelCase")]
+pub struct MovieImportQuery {
+    pub folder: String,
+    pub movie_id: Option<i64>,
+}
+
+#[utoipa::path(get,path="/manualimport/movies",tag="library",params(MovieImportQuery),
+    responses((status=200,body=Vec<kitsunarr_domain::api::library_tools::MovieImportItem>),(status=422,body=kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn movie_import_scan(
+    State(state): State<AppState>,
+    axum::extract::Query(query): axum::extract::Query<MovieImportQuery>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library_tools::MovieImportItem>>> {
+    Ok(Json(
+        kitsunarr_library::movie_manual_import::scan(
+            &state.db,
+            std::path::Path::new(query.folder.trim()),
+            query.movie_id,
+        )
+        .await
+        .map_err(|m| crate::error::ApiError::field("folder", m))?,
+    ))
+}
+
+#[utoipa::path(post,path="/manualimport/movies",tag="library",request_body=kitsunarr_domain::api::library_tools::MovieImportRequest,
+    responses((status=200,body=Vec<kitsunarr_domain::api::library_tools::ManualImportResult>),(status=422,body=kitsunarr_domain::api::error::ApiErrorBody)))]
+pub async fn movie_import(
+    State(state): State<AppState>,
+    Json(body): Json<kitsunarr_domain::api::library_tools::MovieImportRequest>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library_tools::ManualImportResult>>> {
+    if body.files.is_empty() || body.files.len() > 200 {
+        return Err(crate::error::ApiError::field(
+            "files",
+            "Choose between 1 and 200 movie files.",
+        ));
+    }
+    if !matches!(body.import_mode.as_str(), "" | "copy" | "move") {
+        return Err(crate::error::ApiError::field(
+            "importMode",
+            "Choose copy or move.",
+        ));
+    }
+    let results = kitsunarr_library::movie_manual_import::import(
+        &state.db,
+        &body.files,
+        body.import_mode == "move",
+    )
+    .await;
+    let mut ids = body
+        .files
+        .iter()
+        .zip(&results)
+        .filter(|(_, r)| r.imported)
+        .map(|(f, _)| f.movie_id)
+        .collect::<Vec<_>>();
+    ids.sort_unstable();
+    ids.dedup();
+    if !ids.is_empty() {
+        state
+            .events
+            .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+                media_type: "movie".into(),
+                ids,
+                deleted: false,
+            });
+    }
+    Ok(Json(results))
 }

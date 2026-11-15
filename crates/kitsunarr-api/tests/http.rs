@@ -6141,3 +6141,120 @@ async fn movie_files_scan_preview_rename_recycle_and_optional_folder_removal() {
     let schema: serde_json::Value = client.get("/openapi.json").await.unwrap();
     assert!(schema["paths"]["/api/v1/movies/{id}/rename"]["post"].is_object());
 }
+
+#[tokio::test]
+async fn movie_library_tools_import_audit_and_recycle_restore_over_http() {
+    use kitsunarr_domain::api::library_tools::{
+        MovieImportFile, MovieImportRequest, MovieRecycleRestoreRequest,
+    };
+    use kitsunarr_domain::api::settings::MediaManagementSettings;
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let root = server._dir.path().join("films");
+    let folder = root.join("Film");
+    let source = server
+        ._dir
+        .path()
+        .join("downloads/Film.2020.WEB-DL.1080p.mkv");
+    std::fs::create_dir_all(&folder).unwrap();
+    std::fs::create_dir_all(source.parent().unwrap()).unwrap();
+    std::fs::write(&source, b"feature").unwrap();
+    std::fs::write(source.with_extension("it.srt"), b"subtitle").unwrap();
+    kitsunarr_db::root_folders::create(server.state.db.pool(), root.to_str().unwrap(), None)
+        .await
+        .unwrap();
+    kitsunarr_db::settings::set(
+        server.state.db.pool(),
+        kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+        &MediaManagementSettings {
+            enable_media_info: false,
+            recycle_bin: Some(server._dir.path().join("recycled").display().to_string()),
+            ..Default::default()
+        },
+    )
+    .await
+    .unwrap();
+    sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,year,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (1,'Film','film','film','film',2020,'tmdbMovie','1',1,?,?,'2026-11-14T00:00:00Z')")
+        .bind(root.to_str().unwrap()).bind(folder.to_str().unwrap()).execute(server.state.db.pool()).await.unwrap();
+    assert_eq!(
+        reqwest::Client::new()
+            .get(format!(
+                "{}/api/v1/manualimport/movies?folder=/",
+                server.base
+            ))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        401
+    );
+    let scan = client
+        .movie_import_scan(source.parent().unwrap().to_str().unwrap(), None)
+        .await
+        .unwrap();
+    assert_eq!(scan[0].movie_id, Some(1));
+    assert!(scan[0].rejections.is_empty());
+    assert!(source.is_file());
+    assert!(client.movie_detail(1).await.unwrap().file.is_none());
+    let mut request = MovieImportRequest {
+        files: vec![MovieImportFile {
+            path: source.display().to_string(),
+            movie_id: 1,
+        }],
+        import_mode: "invalid".into(),
+    };
+    assert!(client.movie_import(&request).await.is_err());
+    assert!(source.is_file());
+    request.import_mode = "copy".into();
+    let results = client.movie_import(&request).await.unwrap();
+    assert!(results[0].imported, "{:?}", results[0].messages);
+    assert!(source.is_file());
+    let file = client.movie_detail(1).await.unwrap().file.unwrap();
+    assert!(folder.join(&file.relative_path).is_file());
+    assert!(
+        folder
+            .join(&file.relative_path)
+            .with_extension("it.srt")
+            .is_file()
+    );
+    let audit = client.check_library().await.unwrap();
+    assert_eq!(audit.movies_checked, 1);
+    assert!(audit.issues.is_empty());
+    client.delete_movie_file(1, file.id).await.unwrap();
+    let recycled = client.recycle_bin().await.unwrap();
+    let token = recycled
+        .files
+        .iter()
+        .find(|f| f.name.ends_with(".mkv"))
+        .unwrap()
+        .token
+        .clone();
+    client
+        .restore_recycled_movie(&MovieRecycleRestoreRequest {
+            token: token.clone(),
+            movie_id: 1,
+        })
+        .await
+        .unwrap();
+    assert!(client.movie_detail(1).await.unwrap().file.is_some());
+    assert!(
+        folder
+            .join(&file.relative_path)
+            .with_extension("it.srt")
+            .is_file()
+    );
+    assert!(
+        client
+            .restore_recycled_movie(&MovieRecycleRestoreRequest { token, movie_id: 1 })
+            .await
+            .is_err()
+    );
+    std::fs::remove_file(folder.join(&file.relative_path)).unwrap();
+    let audit = client.check_library().await.unwrap();
+    assert_eq!(audit.issues[0].movie_id, Some(1));
+    assert_eq!(audit.issues[0].series_id, 0);
+    assert_eq!(audit.issues[0].problem, "Missing on disk");
+    let schema: serde_json::Value = client.get("/openapi.json").await.unwrap();
+    assert!(schema["paths"]["/api/v1/manualimport/movies"]["post"].is_object());
+    assert!(schema["paths"]["/api/v1/librarytools/recycle/restore-movie"]["post"].is_object());
+}

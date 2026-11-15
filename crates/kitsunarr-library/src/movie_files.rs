@@ -20,7 +20,7 @@ fn err(e: impl std::fmt::Display) -> String {
 
 /// Resolve only normal components below a trusted directory. Missing suffixes are allowed,
 /// but existing symlinks (including dangling links) and parent traversal are never followed.
-fn child(base: &Path, relative: &Path) -> Result<PathBuf, String> {
+pub(crate) fn child(base: &Path, relative: &Path) -> Result<PathBuf, String> {
     if relative.as_os_str().is_empty() {
         return Err("An empty relative path is not allowed.".into());
     }
@@ -42,7 +42,7 @@ fn child(base: &Path, relative: &Path) -> Result<PathBuf, String> {
     Ok(path)
 }
 
-async fn location(db: &Database, d: &MovieDetail) -> Result<(PathBuf, PathBuf), String> {
+pub(crate) async fn location(db: &Database, d: &MovieDetail) -> Result<(PathBuf, PathBuf), String> {
     let root = PathBuf::from(&d.root_folder_path);
     let folder = PathBuf::from(&d.item.path);
     if !root.is_absolute() || !folder.is_absolute() || !root.is_dir() {
@@ -74,7 +74,7 @@ async fn location(db: &Database, d: &MovieDetail) -> Result<(PathBuf, PathBuf), 
     Ok((root, folder))
 }
 
-async fn unchanged(conn: &mut SqliteConnection, d: &MovieDetail) -> Result<(), String> {
+pub(crate) async fn unchanged(conn: &mut SqliteConnection, d: &MovieDetail) -> Result<(), String> {
     let matches: bool = sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM movies WHERE id = ? AND path = ? AND root_folder_path = ?) AND ((SELECT id FROM movie_files WHERE movie_id = ?) IS ?) AND ((SELECT relative_path FROM movie_files WHERE movie_id = ?) IS ?)")
         .bind(d.item.id).bind(&d.item.path).bind(&d.root_folder_path)
         .bind(d.item.id).bind(d.file.as_ref().map(|f|f.id))
@@ -86,7 +86,7 @@ async fn unchanged(conn: &mut SqliteConnection, d: &MovieDetail) -> Result<(), S
     Ok(())
 }
 
-async fn record(
+pub(crate) async fn record(
     conn: &mut SqliteConnection,
     d: &MovieDetail,
     event: &str,
@@ -351,7 +351,7 @@ pub async fn rename_preview(db: &Database, id: i64) -> Result<Option<MovieRename
 
 /// Matching sidecars only: `Feature.en.forced.srt`, `Feature.nfo`, etc. Artwork and files
 /// naming another feature stay in place. No directory or symbolic link is followed.
-fn sidecars(video: &Path) -> Result<Vec<PathBuf>, String> {
+pub(crate) fn sidecars(video: &Path) -> Result<Vec<PathBuf>, String> {
     let Some(parent) = video.parent() else {
         return Ok(Vec::new());
     };
@@ -385,7 +385,7 @@ fn sidecars(video: &Path) -> Result<Vec<PathBuf>, String> {
 
 /// Hard links give a no-overwrite move within a film's filesystem and retain timestamps.
 /// A failed unlink removes only the link just created, leaving the source untouched.
-fn move_file(source: &Path, target: &Path) -> Result<(), String> {
+pub(crate) fn move_file(source: &Path, target: &Path) -> Result<(), String> {
     match std::fs::hard_link(source, target) {
         Ok(()) => {}
         Err(e) if e.kind() == std::io::ErrorKind::CrossesDevices => {
@@ -418,7 +418,7 @@ fn move_file(source: &Path, target: &Path) -> Result<(), String> {
     Ok(())
 }
 
-fn recycle_directory(bin: &Path, folder: &Path) -> Result<PathBuf, String> {
+pub(crate) fn recycle_directory(bin: &Path, folder: &Path) -> Result<PathBuf, String> {
     if !bin.is_absolute() || bin.starts_with(folder) {
         return Err("The recycle bin must be outside the movie folder.".into());
     }
@@ -430,7 +430,7 @@ fn recycle_directory(bin: &Path, folder: &Path) -> Result<PathBuf, String> {
     Ok(canonical)
 }
 
-fn unused_target(dir: &Path, source: &Path) -> Result<PathBuf, String> {
+pub(crate) fn unused_target(dir: &Path, source: &Path) -> Result<PathBuf, String> {
     let mut candidate = dir.join(source.file_name().ok_or("Invalid movie file name")?);
     let mut number = 2;
     loop {
@@ -445,7 +445,7 @@ fn unused_target(dir: &Path, source: &Path) -> Result<PathBuf, String> {
     }
 }
 
-fn rollback(moved: &[(PathBuf, PathBuf)]) -> String {
+pub(crate) fn rollback(moved: &[(PathBuf, PathBuf)]) -> String {
     let mut problems = Vec::new();
     for (source, target) in moved.iter().rev() {
         if let Err(e) = move_file(target, source) {

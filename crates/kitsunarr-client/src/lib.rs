@@ -698,6 +698,29 @@ impl Client {
         self.delete(&format!("/series/{id}/versions/{version}"))
             .await
     }
+    pub async fn restore_recycled_movie(
+        &self,
+        body: &kitsunarr_domain::api::library_tools::MovieRecycleRestoreRequest,
+    ) -> ClientResult<String> {
+        self.post("/librarytools/recycle/restore-movie", body).await
+    }
+    pub async fn movie_import_scan(
+        &self,
+        folder: &str,
+        movie_id: Option<i64>,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library_tools::MovieImportItem>> {
+        let mut q = vec![("folder", folder.to_string())];
+        if let Some(id) = movie_id {
+            q.push(("movieId", id.to_string()));
+        }
+        self.get_query("/manualimport/movies", &q).await
+    }
+    pub async fn movie_import(
+        &self,
+        body: &kitsunarr_domain::api::library_tools::MovieImportRequest,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library_tools::ManualImportResult>> {
+        self.post("/manualimport/movies", body).await
+    }
     pub async fn manual_import_scan(
         &self,
         folder: &str,

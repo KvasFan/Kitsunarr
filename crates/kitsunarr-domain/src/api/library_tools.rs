@@ -7,6 +7,9 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct LibraryIssue {
+    /// Film issues keep the legacy series id as 0 and provide the film's identity here.
+    #[serde(default)]
+    pub movie_id: Option<i64>,
     pub series_id: i64,
     pub series_title: String,
     pub path: String,
@@ -21,6 +24,8 @@ pub struct LibraryIssue {
 pub struct LibraryCheck {
     pub checked_at: String,
     pub series_checked: i64,
+    #[serde(default)]
+    pub movies_checked: i64,
     pub files_checked: i64,
     pub issues: Vec<LibraryIssue>,
 }
@@ -187,4 +192,44 @@ pub struct ManualImportResult {
     pub path: String,
     pub imported: bool,
     pub messages: Vec<String>,
+}
+
+/// Restore a recycled movie feature together with its matching subtitles.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieRecycleRestoreRequest {
+    pub token: String,
+    pub movie_id: i64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieImportItem {
+    pub path: String,
+    pub name: String,
+    pub size: i64,
+    pub movie_id: Option<i64>,
+    pub movie_title: Option<String>,
+    pub quality: String,
+    pub rejections: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieImportFile {
+    pub path: String,
+    pub movie_id: i64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieImportRequest {
+    pub files: Vec<MovieImportFile>,
+    /// `copy` (default) or `move`; other values are refused.
+    #[serde(default)]
+    pub import_mode: String,
 }

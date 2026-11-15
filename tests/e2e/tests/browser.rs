@@ -664,6 +664,41 @@ async fn first_run_setup_migration_and_library() {
         click_button(&client,"Remove from library").await;
         assert_eq!(client.find(Locator::Css(".modal input[type='checkbox']")).await.unwrap().prop("checked").await.unwrap().as_deref(),Some("false"));
         click_button(&client,"Cancel").await;
+        // Restore the recycled feature and its subtitle to the movie from Library tools.
+        client.goto(&format!("{base}/system/library")).await.unwrap();
+        let recycled_name=renamed[0].file_name().unwrap().to_string_lossy();
+        let restore_row=format!("//tr[td[contains(., {})]]//button[contains(., 'Restore')]",xpath_literal(&recycled_name));
+        client.wait().for_element(Locator::XPath(&restore_row)).await.unwrap().click().await.unwrap();
+        client.wait().for_element(Locator::Css("select[aria-label='Restore media type']")).await.unwrap().select_by_value("movie").await.unwrap();
+        client.wait().for_element(Locator::Css(".modal select[aria-label='Movie']")).await.unwrap().select_by_value("900").await.unwrap();
+        screenshot(&client,"11l-movie-restore").await;
+        client.find(Locator::Css(".modal-foot button.primary")).await.unwrap().click().await.unwrap();
+        wait_text(&client,"files restored").await;
+        assert_eq!(std::fs::read(&renamed[0]).unwrap(),b"feature");assert!(renamed[0].with_extension("it.srt").is_file());
+        // Audit issues link to the film without changing its record or moving its files.
+        let holding=renamed[0].with_extension("hold");std::fs::rename(&renamed[0],&holding).unwrap();
+        click_button(&client,"Check library").await;
+        client.wait().for_element(Locator::Css("a[href='/movies/900']")).await.unwrap();
+        screenshot(&client,"11m-movie-audit").await;
+        std::fs::rename(&holding,&renamed[0]).unwrap();
+        // Manual film import selects one feature and copies its named subtitle.
+        let download=tmp.path().join("manual-films");std::fs::create_dir(&download).unwrap();
+        let upgrade=download.join("E2E.Film.2020.1080p.BluRay-GRP.mkv");std::fs::write(&upgrade,b"upgraded").unwrap();std::fs::write(upgrade.with_extension("ja.forced.srt"),b"sub").unwrap();
+        client.goto(&format!("{base}/activity/manualimport")).await.unwrap();click_button(&client,"Movies").await;
+        fill(&client,"input[aria-label='Movie source folder']",download.to_str().unwrap()).await;
+        click_button(&client,"Scan folder").await;
+        client.wait().for_element(Locator::Css("select[aria-label^='Movie for']")).await.unwrap().select_by_value("900").await.unwrap();
+        let choice=client.wait().for_element(Locator::Css("input[type='checkbox'][aria-label^='Import ']")).await.unwrap();
+        if choice.prop("checked").await.unwrap().as_deref()!=Some("true") {choice.click().await.unwrap();}
+        click_button(&client,"Import 1 files").await;wait_text(&client,"1 files imported.").await;
+        assert!(upgrade.is_file());assert!(upgrade.with_extension("ja.forced.srt").is_file());
+        let current:Vec<_>=std::fs::read_dir(&film_folder).unwrap().flatten().map(|e|e.path()).filter(|p|p.extension().is_some_and(|e|e=="mkv")).collect();assert_eq!(current.len(),1);assert_eq!(std::fs::read(&current[0]).unwrap(),b"upgraded");assert!(current[0].with_extension("ja.forced.srt").is_file());
+        assert!(tmp.path().join("recycled/E2E Film").join(renamed[0].file_name().unwrap()).is_file());
+        screenshot(&client,"11n-manual-movie-import").await;
+        // A second import of the same quality is refused and displayed as a warning.
+        client.find(Locator::Css("input[type='checkbox'][aria-label^='Import ']")).await.unwrap().click().await.unwrap();
+        click_button(&client,"Import 1 files").await;wait_text(&client,"Not imported").await;wait_text(&client,"Review the results below").await;
+        assert_eq!(std::fs::read(&current[0]).unwrap(),b"upgraded");assert!(upgrade.is_file());
         // Metadata files (Sonarr's Settings › Metadata): migrated consumers, all off.
         client
             .goto(&format!("{base}/settings/metadata"))

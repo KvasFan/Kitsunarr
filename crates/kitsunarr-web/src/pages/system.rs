@@ -4,6 +4,7 @@ use dioxus::prelude::*;
 use kitsunarr_domain::api::system::{HealthLevel, LogEntry};
 
 use crate::components::common::{Badge, Empty, ErrorBox, Loading};
+use crate::route::Route;
 use crate::state::{use_app, use_client};
 use crate::util::{format_bytes, format_datetime, relative};
 
@@ -433,17 +434,20 @@ fn StorageAndCheck() -> Element {
                 h3 { class: "grow", "Library check" }
                 button { class: "btn", disabled: checking(), onclick: run_check, if checking() { "Checking…" } else { "Check library" } }
             }
-            p { class: "muted small", "Read-only: finds missing series folders, file records outside their folder or recorded twice, and files missing on disk." }
+            p { class: "muted small", "Read-only: checks series and movie folders, unsafe file records and files missing on disk." }
             if let Some(r) = check() {
-                p { class: "small", "{r.series_checked} series and {r.files_checked} files checked: {r.issues.len()} issues." }
+                p { class: "small", "{r.series_checked} series and {r.movies_checked} movies, {r.files_checked} files checked: {r.issues.len()} issues." }
                 if !r.issues.is_empty() {
                     div { class: "table-wrap",
                         table { class: "table",
-                            thead { tr { th { "Series" } th { "Problem" } th { "Path" } } }
+                            thead { tr { th { "Title" } th { "Problem" } th { "Path" } } }
                             tbody {
                                 for (i, issue) in r.issues.iter().enumerate() {
                                     tr { key: "{i}",
-                                        td { "{issue.series_title}" }
+                                        td {
+                                            if let Some(id)=issue.movie_id { Link { to:Route::MovieDetailPage{id}, "{issue.series_title}" } }
+                                            else { Link { to:Route::SeriesDetailPage{id:issue.series_id}, "{issue.series_title}" } }
+                                        }
                                         td { Badge { text: issue.problem.clone(), tone: "warning" } }
                                         td { class: "mono small", "{issue.path}" }
                                     }
@@ -509,35 +513,55 @@ fn RestoreDialog(
     let app = use_app();
     let client = use_client();
     let c0 = client.clone();
-    let series = use_resource(move || {
+    let titles = use_resource(move || {
         let c = c0.clone();
         async move {
-            c.series(&kitsunarr_domain::api::library::LibraryQuery {
+            let query = kitsunarr_domain::api::library::LibraryQuery {
                 page_size: Some(5000),
                 ..Default::default()
-            })
-            .await
-            .map(|p| p.records)
+            };
+            let series = c.series(&query).await?;
+            let movies = c.movies(&query).await?;
+            Ok::<_, kitsunarr_client::ClientError>((series.records, movies.records))
         }
     });
+    let mut kind = use_signal(|| "series".to_string());
     let mut series_id = use_signal(|| None::<i64>);
+    let mut movie_id = use_signal(|| None::<i64>);
     let mut season = use_signal(|| 1i32);
     let mut busy = use_signal(|| false);
     let token = file.token.clone();
     let restore = move |_| {
-        let Some(sid) = series_id() else { return };
+        let movie = kind() == "movie";
+        let Some(id) = (if movie { movie_id() } else { series_id() }) else {
+            return;
+        };
         let c = client.clone();
         let token = token.clone();
+        let n = season();
         busy.set(true);
         spawn(async move {
-            let req = kitsunarr_domain::api::library_tools::RecycleRestoreRequest {
-                token,
-                series_id: sid,
-                season_number: season(),
+            let result = if movie {
+                c.restore_recycled_movie(
+                    &kitsunarr_domain::api::library_tools::MovieRecycleRestoreRequest {
+                        token,
+                        movie_id: id,
+                    },
+                )
+                .await
+            } else {
+                c.restore_recycled(
+                    &kitsunarr_domain::api::library_tools::RecycleRestoreRequest {
+                        token,
+                        series_id: id,
+                        season_number: n,
+                    },
+                )
+                .await
             };
-            match c.restore_recycled(&req).await {
-                Ok(m) => {
-                    app.success(m);
+            match result {
+                Ok(message) => {
+                    app.success(message);
                     on_close.call(true);
                 }
                 Err(e) => {
@@ -548,25 +572,36 @@ fn RestoreDialog(
         });
     };
     rsx! {
-        crate::components::common::Modal { title: format!("Restore {}", file.name), on_close: move |_| on_close.call(false),
-            footer: rsx! {
-                div { class: "spacer" }
-                button { class: "btn", onclick: move |_| on_close.call(false), "Cancel" }
-                button { class: "btn primary", disabled: busy() || series_id().is_none(), onclick: restore, if busy() { "Restoring…" } else { "Restore" } }
+        crate::components::common::Modal {title:format!("Restore {}",file.name),on_close:move |_|{if !busy(){on_close.call(false);}},
+            footer:rsx! {
+                div{class:"spacer"}
+                button{class:"btn",disabled:busy(),onclick:move |_|on_close.call(false),"Cancel"}
+                button{class:"btn primary",disabled:busy() || if kind()=="movie" {movie_id().is_none()}else{series_id().is_none()},onclick:restore,if busy(){"Restoring…"}else{"Restore"}}
             },
-            p { class: "help small", "The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned." }
-            div { class: "form-grid",
-                crate::components::common::Field { label: "Series",
-                    select { class: "select", "aria-label": "Series", onchange: move |e| series_id.set(e.value().parse().ok()),
-                        option { value: "", "Choose…" }
-                        if let Some(Ok(list)) = &*series.read() {
-                            for s in list.iter() { option { key: "{s.id}", value: "{s.id}", "{s.title}" } }
+            p{class:"help small",if kind()=="movie" {"The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten."}else{"The file is moved into the season folder (an existing file is never overwritten) and the series is rescanned."}}
+            select{class:"select","aria-label":"Restore media type",disabled:busy(),value:kind(),onchange:move |e|kind.set(e.value()),option{value:"series","Series"}option{value:"movie","Movie"}}
+            match &*titles.read() {
+                None=>rsx!{Loading{}},Some(Err(e))=>rsx!{ErrorBox{message:e.to_string()}},
+                Some(Ok((series,movies)))=>rsx!{
+                    div{class:"form-grid",
+                        if kind()=="movie" {
+                            crate::components::common::Field{label:"Movie",
+                                select{class:"select","aria-label":"Movie",disabled:busy(),value:movie_id().map(|id|id.to_string()).unwrap_or_default(),onchange:move |e|movie_id.set(e.value().parse().ok()),
+                                    option{value:"","Choose…"}
+                                    for movie in movies {option{key:"{movie.id}",value:"{movie.id}","{movie.title}"}}
+                                }
+                            }
+                        }else{
+                            crate::components::common::Field{label:"Series",
+                                select{class:"select","aria-label":"Series",disabled:busy(),onchange:move |e|series_id.set(e.value().parse().ok()),
+                                    option{value:"","Choose…"}
+                                    for series in series {option{key:"{series.id}",value:"{series.id}","{series.title}"}}
+                                }
+                            }
+                            crate::components::common::Field{label:"Season",input{class:"input",r#type:"number",min:"0",disabled:busy(),value:"{season}",oninput:move |e|season.set(e.value().parse().unwrap_or(1))}}
                         }
                     }
-                }
-                crate::components::common::Field { label: "Season",
-                    input { class: "input", r#type: "number", min: "0", value: "{season}", oninput: move |e| season.set(e.value().parse().unwrap_or(1)) }
-                }
+                },
             }
         }
     }

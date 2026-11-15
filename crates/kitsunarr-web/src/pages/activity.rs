@@ -439,6 +439,143 @@ pub fn Blocklist() -> Element {
 /// with the user's choices.
 #[component]
 pub fn ManualImport() -> Element {
+    let mut movies = use_signal(|| false);
+    let busy = use_signal(|| false);
+    rsx! {
+        div{class:"page-head",h1{"Manual import"}
+            button{class:if !movies(){"btn primary"}else{"btn"},disabled:busy(),onclick:move |_|movies.set(false),"Series"}
+            button{class:if movies(){"btn primary"}else{"btn"},disabled:busy(),onclick:move |_|movies.set(true),"Movies"}
+        }
+        if movies(){MovieManualImport{busy}}else{SeriesManualImport{busy}}
+    }
+}
+
+#[component]
+fn MovieManualImport(mut busy: Signal<bool>) -> Element {
+    use kitsunarr_domain::api::library_tools::{
+        ManualImportResult, MovieImportFile, MovieImportItem, MovieImportRequest,
+    };
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let movies = use_resource(move || {
+        let c = c0.clone();
+        async move {
+            c.movies(&kitsunarr_domain::api::library::LibraryQuery {
+                page_size: Some(5000),
+                ..Default::default()
+            })
+            .await
+        }
+    });
+    let mut folder = use_signal(String::new);
+    let mut items = use_signal(Vec::<MovieImportItem>::new);
+    let mut chosen = use_signal(Vec::<usize>::new);
+    let mut mode = use_signal(|| "copy".to_string());
+    let mut results = use_signal(Vec::<ManualImportResult>::new);
+    let c1 = client.clone();
+    let scan = move |_| {
+        let c = c1.clone();
+        let path = folder();
+        busy.set(true);
+        results.set(Vec::new());
+        spawn(async move {
+            match c.movie_import_scan(&path, None).await {
+                Ok(list) => {
+                    chosen.set(
+                        (0..list.len())
+                            .filter(|i| list[*i].rejections.is_empty())
+                            .collect(),
+                    );
+                    items.set(list);
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    let c2 = client.clone();
+    let import = move |_| {
+        let list = items();
+        let files = chosen()
+            .into_iter()
+            .filter_map(|i| list.get(i))
+            .filter_map(|item| {
+                Some(MovieImportFile {
+                    path: item.path.clone(),
+                    movie_id: item.movie_id?,
+                })
+            })
+            .collect();
+        let body = MovieImportRequest {
+            files,
+            import_mode: mode(),
+        };
+        let c = c2.clone();
+        busy.set(true);
+        spawn(async move {
+            match c.movie_import(&body).await {
+                Ok(out) => {
+                    let count = out.iter().filter(|r| r.imported).count();
+                    if out.iter().any(|r| !r.imported || !r.messages.is_empty()) {
+                        app.toast(
+                            crate::state::ToastLevel::Warning,
+                            format!("{count} files imported. Review the results below."),
+                        );
+                    } else {
+                        app.success(format!("{count} files imported."));
+                    }
+                    results.set(out);
+                    chosen.set(Vec::new());
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    let ready = !chosen().is_empty()
+        && chosen()
+            .iter()
+            .all(|i| items().get(*i).is_some_and(|item| item.movie_id.is_some()));
+    rsx! {
+        p{class:"muted small","Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades."}
+        div{class:"row wrap",
+            input{class:"input grow","aria-label":"Movie source folder",placeholder:"/downloads/complete",disabled:busy(),value:"{folder}",oninput:move |e|folder.set(e.value())}
+            button{class:"btn",disabled:busy() || folder().trim().is_empty(),onclick:scan,"Scan folder"}
+        }
+        match &*movies.read(){Some(Err(e))=>rsx!{ErrorBox{message:e.to_string()}},_=>rsx!{}}
+        if !items().is_empty(){
+            div{class:"table-wrap",table{class:"table",
+                thead{tr{th{""}th{"File"}th{"Movie"}th{"Quality"}th{"Review"}}}
+                tbody{for (i,item) in items().iter().enumerate(){tr{key:"{item.path}",
+                    td{input{r#type:"checkbox","aria-label":"Import {item.name}",disabled:busy(),checked:chosen().contains(&i),onchange:move |e:FormEvent|{if e.checked(){chosen.write().push(i);}else{chosen.write().retain(|n|*n!=i);}}}}
+                    td{class:"mono small","{item.name}"}
+                    td{select{class:"select","aria-label":"Movie for {item.name}",disabled:busy(),value:item.movie_id.map(|id|id.to_string()).unwrap_or_default(),
+                        onchange:{let c=client.clone();let path=item.path.clone();move |e:FormEvent| {
+                            let id=e.value().parse().ok();let c=c.clone();let path=path.clone();busy.set(true);
+                            spawn(async move{match c.movie_import_scan(&path,id).await{Ok(list)=>{if let Some(row)=list.into_iter().next() && let Some(slot)=items.write().get_mut(i){*slot=row;}},Err(e)=>app.error(&e)}busy.set(false);});
+                        }},
+                        option{value:"","Choose a movie…"}
+                        if let Some(Ok(list))=&*movies.read(){for movie in &list.records{option{key:"{movie.id}",value:"{movie.id}","{movie.title}"}}}
+                    }}
+                    td{"{item.quality}"}
+                    td{class:"small muted",{item.rejections.join("; ")}}
+                }}}
+            }}
+            div{class:"row",style:"margin-top:var(--sp-3)",
+                select{class:"select","aria-label":"Movie import mode",disabled:busy(),value:mode(),onchange:move |e|mode.set(e.value()),option{value:"copy","Copy (keep the source)"}option{value:"move","Move"}}
+                button{class:"btn primary",disabled:busy() || !ready,onclick:import,if busy(){"Importing…"}else{"Import {chosen().len()} files"}}
+            }
+        }
+        for result in results(){div{class:"card small",
+            strong{if result.imported{"Imported"}else{"Not imported"}}" · {result.path}"
+            for message in result.messages{p{"{message}"}}
+        }}
+    }
+}
+
+#[component]
+fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
     use kitsunarr_domain::api::library_tools::{
         ManualImportFile, ManualImportItem, ManualImportRequest,
     };
@@ -448,7 +585,6 @@ pub fn ManualImport() -> Element {
     let mut items = use_signal(Vec::<ManualImportItem>::new);
     let mut chosen = use_signal(Vec::<usize>::new);
     let mut mode = use_signal(|| "copy".to_string());
-    let mut busy = use_signal(|| false);
     let mut picking = use_signal(|| None::<usize>);
     let c0 = client.clone();
     let series = use_resource(move || {
@@ -535,7 +671,6 @@ pub fn ManualImport() -> Element {
                 .is_some_and(|it| it.series_id.is_some() && !it.episode_ids.is_empty())
         });
     rsx! {
-        div { class: "page-head", h1 { "Manual import" } }
         p { class: "muted small", "Import video files from any folder the server can read: check the series and episodes each file is for, then copy or move them into the library (renamed by the naming settings)." }
         div { class: "row wrap",
             input { class: "input grow", "aria-label": "Folder", placeholder: "/downloads/complete/Show", value: "{folder}", oninput: move |e| folder.set(e.value()) }

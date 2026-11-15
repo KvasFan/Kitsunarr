@@ -212,6 +212,11 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(library_tools::audit))
         .routes(routes!(library_tools::recycle))
         .routes(routes!(library_tools::restore))
+        .routes(routes!(library_tools::restore_movie))
+        .routes(routes!(
+            library_tools::movie_import_scan,
+            library_tools::movie_import
+        ))
         .routes(routes!(library_tools::list_keys, library_tools::create_key))
         .routes(routes!(rules::list_delay, rules::create_delay))
         .routes(routes!(rules::update_delay, rules::delete_delay))

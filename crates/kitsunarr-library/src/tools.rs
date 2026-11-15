@@ -39,6 +39,7 @@ pub async fn check_library(db: &Database) -> Result<LibraryCheck, String> {
     for (id, title, path) in &all {
         let folder = Path::new(path);
         let issue = |path: String, problem: &str| LibraryIssue {
+            movie_id: None,
             series_id: *id,
             series_title: title.clone(),
             path,
@@ -62,9 +63,51 @@ pub async fn check_library(db: &Database) -> Result<LibraryCheck, String> {
             }
         }
     }
+    let movies: Vec<(i64, String, String)> =
+        sqlx::query_as("SELECT id,title,path FROM movies ORDER BY sort_title")
+            .fetch_all(db.pool())
+            .await
+            .map_err(err)?;
+    for (id, title, path) in &movies {
+        let issue = |path: String, problem: &str| LibraryIssue {
+            movie_id: Some(*id),
+            series_id: 0,
+            series_title: title.clone(),
+            path,
+            problem: problem.into(),
+        };
+        let d = kitsunarr_db::library::movies::get_detail(db, *id)
+            .await
+            .map_err(err)?;
+        let folder = match crate::movie_files::location(db, &d).await {
+            Ok((_, folder)) => folder,
+            Err(message) => {
+                issues.push(issue(path.clone(), &message));
+                continue;
+            }
+        };
+        if !folder.is_dir() {
+            issues.push(issue(path.clone(), "Movie folder missing"));
+            continue;
+        }
+        if let Some(file) = &d.file {
+            files_checked += 1;
+            match crate::movie_files::child(
+                &folder,
+                Path::new(&file.relative_path.replace('\\', "/")),
+            ) {
+                Err(message) => issues.push(issue(file.relative_path.clone(), &message)),
+                Ok(full) if !full.is_file() => {
+                    issues.push(issue(full.display().to_string(), "Missing on disk"))
+                }
+                Ok(_) => {}
+            }
+        }
+    }
     Ok(LibraryCheck {
         checked_at: kitsunarr_db::now(),
         series_checked: all.len() as i64,
+        movies_checked: movies.len() as i64,
         files_checked,
         issues,
     })
@@ -311,6 +354,180 @@ pub async fn restore_recycled(
         target.display(),
         scan.added
     ))
+}
+
+/// Movie restore uses the same path and rollback guards as manual movie renames. A feature
+/// brings its named sidecars; a subtitle alone must belong to the movie's current feature.
+pub async fn restore_movie(db: &Database, token: &str, movie_id: i64) -> Result<String, String> {
+    use crate::movie_files as files;
+    use kitsunarr_db::library::movies;
+    if token.is_empty() || token.len() > 4096 {
+        return Err("Unknown recycled file.".into());
+    }
+    let bin = recycle_root(db)
+        .await?
+        .ok_or("No recycle bin is configured.")?;
+    if !bin.is_absolute() {
+        return Err("The recycle bin must have an absolute path.".into());
+    }
+    let bin = bin.canonicalize().map_err(err)?;
+    let source = resolve(&bin, token)?;
+    if !source.is_file() || !restorable(&source) {
+        return Err("Only media and subtitle files are restored.".into());
+    }
+    let d = movies::get_detail(db, movie_id).await.map_err(err)?;
+    let (_, folder) = files::location(db, &d).await?;
+    let video =
+        crate::import::VIDEO_EXTENSIONS.contains(&crate::import::extension(&source).as_str());
+    if video && (d.file.is_some() || !crate::import::video_files(&folder).is_empty()) {
+        return Err(
+            "The movie already has a feature. Remove it explicitly before restoring another."
+                .into(),
+        );
+    }
+    if !video {
+        let f = d
+            .file
+            .as_ref()
+            .ok_or("Restore the movie feature before its subtitles.")?;
+        let base = crate::import::stem(Path::new(&f.relative_path));
+        let subtitle = crate::import::stem(&source);
+        if subtitle != base
+            && !subtitle
+                .strip_prefix(&base)
+                .is_some_and(|s| s.starts_with('.'))
+        {
+            return Err("The subtitle does not name the movie's current feature.".into());
+        }
+    }
+    let mut sources = vec![source.clone()];
+    if video {
+        sources.extend(files::sidecars(&source)?);
+    }
+    let mut plan = Vec::new();
+    for path in sources {
+        let target = files::child(
+            &folder,
+            Path::new(path.file_name().ok_or("Invalid recycled file")?),
+        )?;
+        if target.try_exists().map_err(err)? {
+            return Err(format!(
+                "{} exists and will not be overwritten.",
+                target.display()
+            ));
+        }
+        plan.push((path, target));
+    }
+    let target = plan[0].1.clone();
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await.map_err(err)?;
+    files::unchanged(&mut tx, &d).await?;
+    std::fs::create_dir_all(&folder).map_err(err)?;
+    let mut moved = Vec::new();
+    for (source, target) in plan {
+        if let Err(e) = files::move_file(&source, &target) {
+            return Err(format!("{e}{}", files::rollback(&moved)));
+        }
+        moved.push((source, target));
+    }
+    let result=async {
+        if video {
+            let relative=target.file_name().ok_or("Invalid restored path")?.to_string_lossy().into_owned();
+            let f=crate::movie_manual_import::file_record(movie_id,&target,&relative,None)?;
+            movies::upsert_file(&mut tx,&f).await.map_err(err)?;
+        }
+        files::record(&mut tx,&d,"movieFileRestored",&source.display().to_string(),serde_json::json!({"relativePath":target.file_name().map(|p|p.to_string_lossy()),"withSubtitles":video})).await?;
+        tx.commit().await.map_err(err)
+    }.await;
+    if let Err(e) = result {
+        return Err(format!("{e}{}", files::rollback(&moved)));
+    }
+    crate::metadata_files::after_movie_change(db, movie_id).await;
+    Ok(format!(
+        "Restored to {} ({} files restored).",
+        target.display(),
+        moved.len()
+    ))
+}
+
+/// Tanukarr's storage outlook extended to native film rows. Each download belongs to the
+/// most specific registered root, and duplicate client/hash rows count only once per root.
+pub fn storage_outlook(
+    roots: &[String],
+    series: &[(i64, String)],
+    movies: &[(i64, String)],
+    queue: &[kitsunarr_domain::api::queue::QueueItem],
+    hardlink_only: bool,
+    use_hardlinks: bool,
+) -> Vec<kitsunarr_domain::api::library_tools::StorageOutlook> {
+    use kitsunarr_domain::api::library_tools::StorageOutlook;
+    let mut downloads =
+        vec![std::collections::HashMap::<(String, String), (u64, u64)>::new(); roots.len()];
+    for item in queue {
+        if matches!(
+            item.tracked_state.as_str(),
+            "imported" | "ignored" | "failed" | "pending"
+        ) {
+            continue;
+        }
+        let path = item
+            .movie_id
+            .and_then(|id| movies.iter().find(|(mid, _)| *mid == id))
+            .or_else(|| {
+                item.series_id
+                    .and_then(|id| series.iter().find(|(sid, _)| *sid == id))
+            })
+            .map(|(_, path)| Path::new(path));
+        let Some(path) = path else {
+            continue;
+        };
+        let Some(index) = roots
+            .iter()
+            .enumerate()
+            .filter(|(_, root)| path.starts_with(root))
+            .max_by_key(|(_, root)| Path::new(root).components().count())
+            .map(|(index, _)| index)
+        else {
+            continue;
+        };
+        let entry = downloads[index]
+            .entry((
+                item.download_client.to_lowercase(),
+                item.download_id.to_ascii_lowercase(),
+            ))
+            .or_default();
+        entry.0 = entry.0.max(item.size_left.max(0) as u64);
+        entry.1 = entry.1.max(item.size.max(0) as u64);
+    }
+    roots
+        .iter()
+        .zip(downloads)
+        .map(|(root, downloads)| {
+            let (remaining, total) =
+                downloads
+                    .values()
+                    .fold((0u64, 0u64), |(remaining, total), (left, size)| {
+                        (remaining.saturating_add(*left), total.saturating_add(*size))
+                    });
+            let estimate = if hardlink_only { 0 } else { total };
+            let free = fs4::available_space(root).ok();
+            StorageOutlook {
+                root_folder: root.clone(),
+                free_space: free,
+                queued_downloads: downloads.len() as i64,
+                download_remaining: remaining,
+                import_space_estimate: estimate,
+                may_run_out_of_space: free.is_some_and(|f| estimate > f),
+                import_mode: if hardlink_only {
+                    "Hardlink-only: imports take no extra space"
+                } else if use_hardlinks {
+                    "Hard link when possible, else copy: the estimate assumes copies"
+                } else {
+                    "Copy: imports take the downloads' size again"
+                }
+                .into(),
+            }
+        })
+        .collect()
 }
 
 #[cfg(test)]
