@@ -55,3 +55,10 @@ so a valid empty feed, partial failure and total source failure produce distinct
 Retry controls issue fresh requests; configured source back-off and rate limits still apply.
 
 Verification and implementation notes: [milestones 51–54](milestones-2026-11-15-54.md).
+
+## Prowlarr integration follow-up
+
+A real local Prowlarr 2.7.0.5723 container exposed a missing compatibility response header.
+The fix was verified with Prowlarr's application test, full indexer sync, forced resync,
+invalid-key rejection and a live series search through its Nyaa indexer. The original remote
+Prowlarr remains unreachable. See the [integration verification](prowlarr-verification-2026-11-15.md).

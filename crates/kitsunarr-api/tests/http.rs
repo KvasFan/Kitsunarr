@@ -6829,3 +6829,58 @@ async fn direct_nyaa_season_searches_survive_other_source_failures_and_can_be_re
             .is_object()
     );
 }
+
+/// Real Prowlarr's SonarrV3Proxy.TestConnection requires this response header on the probe.
+#[tokio::test]
+async fn sonarr_v3_indexer_probe_exposes_compatible_version_header() {
+    let server = start().await;
+    let (source, _) = newznab_mock().await;
+    let http = reqwest::Client::new();
+    let probe = serde_json::json!({"name":"Prowlarr probe","implementation":"Newznab","configContract":"NewznabSettings",
+        "fields":[{"name":"baseUrl","value":source},{"name":"apiPath","value":"/api"},{"name":"apiKey","value":"test-source-key"},{"name":"categories","value":[5000]}]});
+    let path = format!("{}/api/v3/indexer/test", server.base);
+    let response = http
+        .post(&path)
+        .header("X-Api-Key", &server.api_key)
+        .json(&probe)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 200);
+    assert_eq!(
+        response.headers().get("X-Application-Version").unwrap(),
+        "4.0.0.0"
+    );
+    let mut failed = probe.clone();
+    failed["fields"][0]["value"] = "http://127.0.0.1:9".into();
+    let response = http
+        .post(&path)
+        .header("X-Api-Key", &server.api_key)
+        .json(&failed)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 400);
+    assert_eq!(
+        response.headers().get("X-Application-Version").unwrap(),
+        "4.0.0.0"
+    );
+    let unauthorized = http.post(&path).json(&probe).send().await.unwrap();
+    assert_eq!(unauthorized.status(), 401);
+    assert_eq!(
+        unauthorized.headers().get("X-Application-Version").unwrap(),
+        "4.0.0.0"
+    );
+    let native = http
+        .get(format!("{}/api/v1/system/status", server.base))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(native.status(), 200);
+    assert!(!native.headers().contains_key("X-Application-Version"));
+    assert_eq!(
+        native.json::<serde_json::Value>().await.unwrap()["appName"],
+        "Kitsunarr"
+    );
+}

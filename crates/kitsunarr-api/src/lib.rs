@@ -259,6 +259,12 @@ pub fn app(state: AppState) -> Router {
         .route_layer(axum::middleware::from_fn_with_state(
             state.clone(),
             auth::require_auth_v3,
+        ))
+        // Prowlarr's SonarrV3Proxy.TestConnection reads this header from /indexer/test,
+        // rather than the version in /system/status. Keep it scoped to compatibility routes.
+        .layer(SetResponseHeaderLayer::if_not_present(
+            HeaderName::from_static("x-application-version"),
+            HeaderValue::from_static(v3::SONARR_VERSION),
         ));
     // The few v5 routes the optional compression worker calls back on.
     let v5 = v3::worker_router().route_layer(axum::middleware::from_fn_with_state(

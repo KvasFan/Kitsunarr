@@ -29,7 +29,7 @@ use crate::AppState;
 use crate::error::{ApiError, ApiResult};
 
 /// The Sonarr version reported to tools.
-const SONARR_VERSION: &str = "4.0.0.0";
+pub(crate) const SONARR_VERSION: &str = "4.0.0.0";
 
 /// The Sonarr v5 routes Tanukarr's compression worker calls back on (`series/{id}`,
 /// `episodefile`, `command` with `RescanSeries`), answered as v3 answers them: the fields the

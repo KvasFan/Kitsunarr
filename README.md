@@ -124,6 +124,7 @@ Further reading:
 - [technical decisions](docs/architecture/technical-decisions.md)
 - [feature matrix](docs/architecture/feature-matrix.md)
 - [development roadmap](docs/roadmap.md)
+- [real Prowlarr integration verification](docs/prowlarr-verification-2026-11-15.md)
 
 ## License and attribution
 
