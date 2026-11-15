@@ -122,8 +122,34 @@ pub(crate) async fn record(
 /// Scan in place. A missing or empty root never clears a feature record. Existing features
 /// take precedence over every other file; an ambiguous folder needs explicit housekeeping.
 pub async fn scan(db: &Database, id: i64) -> Result<ScanSummary, String> {
+    scan_inner(db, id, None).await
+}
+
+pub async fn scan_notifying(
+    db: &Database,
+    id: i64,
+    notifier: &kitsunarr_notifications::Notifier,
+) -> Result<ScanSummary, String> {
+    scan_inner(db, id, Some(notifier)).await
+}
+
+async fn scan_inner(
+    db: &Database,
+    id: i64,
+    notifier: Option<&kitsunarr_notifications::Notifier>,
+) -> Result<ScanSummary, String> {
     let d = movies::get_detail(db, id).await.map_err(err)?;
     let (root, folder) = location(db, &d).await?;
+    let notification = if notifier.is_some() {
+        if let Some(f) = &d.file {
+            crate::notify::movie_file_event(db, id, f.id, "MissingFromDisk").await
+        } else {
+            None
+        }
+    } else {
+        None
+    };
+
     if std::fs::read_dir(&root).map_err(err)?.next().is_none() {
         return Err("The movie root folder is empty; its file record was kept.".into());
     }
@@ -293,6 +319,11 @@ pub async fn scan(db: &Database, id: i64) -> Result<ScanSummary, String> {
         }
     }
     tx.commit().await.map_err(err)?;
+    if summary.removed > 0
+        && let (Some(notifier), Some(event)) = (notifier, notification)
+    {
+        crate::notify::spawn(db, notifier, event);
+    }
     if summary.added > 0 || summary.updated > 0 {
         crate::metadata_files::after_movie_change(db, id).await;
     }
@@ -512,12 +543,35 @@ pub async fn rename(db: &Database, id: i64, preview: &MovieRenamePreview) -> Res
 /// Explicit removal retains the film. Files are moved together with rollback on an I/O or
 /// database error. Without a recycle bin, a private staging folder is purged after commit.
 pub async fn delete_file(db: &Database, id: i64, file_id: i64) -> Result<(), String> {
+    delete_file_inner(db, id, file_id, None).await
+}
+
+pub async fn delete_file_notifying(
+    db: &Database,
+    id: i64,
+    file_id: i64,
+    notifier: &kitsunarr_notifications::Notifier,
+) -> Result<(), String> {
+    delete_file_inner(db, id, file_id, Some(notifier)).await
+}
+
+async fn delete_file_inner(
+    db: &Database,
+    id: i64,
+    file_id: i64,
+    notifier: Option<&kitsunarr_notifications::Notifier>,
+) -> Result<(), String> {
     let d = movies::get_detail(db, id).await.map_err(err)?;
     let f = d
         .file
         .as_ref()
         .filter(|f| f.id == file_id)
         .ok_or("The file is not in this movie.")?;
+    let mut notification = if notifier.is_some() {
+        crate::notify::movie_file_event(db, id, file_id, "Manual").await
+    } else {
+        None
+    };
     let (root, folder) = location(db, &d).await?;
     let path = child(&folder, Path::new(&f.relative_path.replace('\\', "/")))?;
     let media: MediaManagementSettings =
@@ -588,6 +642,17 @@ pub async fn delete_file(db: &Database, id: i64, file_id: i64) -> Result<(), Str
             let _ = std::fs::remove_dir(stage);
         }
         return Err(format!("{e}{recovery}"));
+    }
+    if let Some(kitsunarr_notifications::Event::EpisodeFileDelete { file, .. }) = &mut notification
+        && bin.is_some()
+    {
+        file.recycle_bin_path = moved
+            .iter()
+            .find(|(source, _)| source == &path)
+            .map(|(_, target)| target.display().to_string());
+    }
+    if let (Some(notifier), Some(event)) = (notifier, notification) {
+        crate::notify::spawn(db, notifier, event);
     }
     if let Some(stage) = stage {
         std::fs::remove_dir_all(stage).map_err(err)?;

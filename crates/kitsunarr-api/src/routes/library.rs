@@ -455,6 +455,10 @@ pub struct HistoryQuery {
     pub page_size: Option<u32>,
     pub sort_direction: Option<kitsunarr_domain::SortDirection>,
     pub event_type: Option<String>,
+    pub series_id: Option<i64>,
+    pub episode_id: Option<i64>,
+    pub movie_id: Option<i64>,
+    pub download_id: Option<String>,
 }
 
 #[utoipa::path(get, path = "/history", tag = "library", params(HistoryQuery), responses((status = 200, body = Page<HistoryItem>)))]
@@ -468,13 +472,40 @@ pub async fn history(
         sort_direction: q.sort_direction,
         ..Default::default()
     };
+    for (field, id) in [
+        ("seriesId", q.series_id),
+        ("episodeId", q.episode_id),
+        ("movieId", q.movie_id),
+    ] {
+        if id.is_some_and(|id| id <= 0) {
+            return Err(ApiError::field(field, "Choose a positive library id."));
+        }
+    }
+    if q.movie_id.is_some() && (q.series_id.is_some() || q.episode_id.is_some()) {
+        return Err(ApiError::field(
+            "movieId",
+            "Choose either a movie or a series/episode filter.",
+        ));
+    }
+    let download_id = q
+        .download_id
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty());
+    if download_id.as_ref().is_some_and(|s| s.len() > 256) {
+        return Err(ApiError::field(
+            "downloadId",
+            "Use a download id of at most 256 bytes.",
+        ));
+    }
+    let filter = kitsunarr_domain::api::library::HistoryFilter {
+        event_type: q.event_type.filter(|s| !s.is_empty()),
+        series_id: q.series_id,
+        episode_id: q.episode_id,
+        movie_id: q.movie_id,
+        download_id,
+    };
     Ok(Json(
-        history::list(
-            &state.db,
-            &paging,
-            q.event_type.as_deref().filter(|s| !s.is_empty()),
-        )
-        .await?,
+        history::list_filtered(&state.db, &paging, &filter).await?,
     ))
 }
 
@@ -601,9 +632,10 @@ pub async fn rescan_movie(
     Path(id): Path<i64>,
 ) -> ApiResult<Json<FileOperationResult>> {
     movies::get_detail(&state.db, id).await?;
-    let summary = kitsunarr_library::movie_files::scan(&state.db, id)
-        .await
-        .map_err(|m| ApiError::field("id", m))?;
+    let summary =
+        kitsunarr_library::movie_files::scan_notifying(&state.db, id, &state.downloads.notifier)
+            .await
+            .map_err(|m| ApiError::field("id", m))?;
     changed(&state, "movie", vec![id], false);
     Ok(Json(FileOperationResult {
         message: format!("{}.", summary.describe()),
@@ -668,9 +700,14 @@ pub async fn delete_movie_file(
     Path((id, file_id)): Path<(i64, i64)>,
 ) -> ApiResult<StatusCode> {
     movies::get_detail(&state.db, id).await?;
-    kitsunarr_library::movie_files::delete_file(&state.db, id, file_id)
-        .await
-        .map_err(|m| ApiError::field("fileId", m))?;
+    kitsunarr_library::movie_files::delete_file_notifying(
+        &state.db,
+        id,
+        file_id,
+        &state.downloads.notifier,
+    )
+    .await
+    .map_err(|m| ApiError::field("fileId", m))?;
     changed(&state, "movie", vec![id], false);
     Ok(StatusCode::NO_CONTENT)
 }

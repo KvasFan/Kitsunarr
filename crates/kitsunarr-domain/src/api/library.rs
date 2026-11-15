@@ -439,6 +439,19 @@ pub struct CalendarQuery {
     pub unmonitored: bool,
 }
 
+/// Optional history filters are combined with AND. Download ids are case-insensitive,
+/// matching download tracking. An episode can be scoped further to its parent series.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct HistoryFilter {
+    pub event_type: Option<String>,
+    pub series_id: Option<i64>,
+    pub episode_id: Option<i64>,
+    pub movie_id: Option<i64>,
+    pub download_id: Option<String>,
+}
+
 /// One entry of the history/activity log.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]

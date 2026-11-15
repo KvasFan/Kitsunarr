@@ -100,6 +100,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut renaming = use_signal(|| false);
     let mut ordering = use_signal(|| false);
     let mut source_open = use_signal(|| false);
+    let mut history_open = use_signal(|| false);
     let mut naming_open = use_signal(|| false);
     let mut versions_open = use_signal(|| false);
     let mut compression_open = use_signal(|| false);
@@ -318,6 +319,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     div { class: "spacer" }
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
                     button { class: "btn", onclick: move |_| source_open.set(true), "Change catalogue" }
+                    button { class: "btn", onclick: move |_| history_open.set(true), "History" }
                     button { class: "btn", disabled: scanning(), title: "Find files added to or removed from the series folder", onclick: rescan,
                         if scanning() { "Scanning…" } else { "Scan disk" }
                     }
@@ -384,6 +386,11 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 series_id: id,
                 seasons: d.seasons.iter().map(|s| (s.season_number, s.title.clone().unwrap_or_default())).collect::<Vec<_>>(),
                 on_close: move |_| naming_open.set(false),
+            }
+        }
+        if history_open() {
+            Modal { title: "Series history", wide: true, on_close: move |_| history_open.set(false),
+                super::activity::HistoryTable { series_id: id }
             }
         }
         if source_open() {
@@ -620,6 +627,7 @@ pub fn MovieDetailPage(id: i64) -> Element {
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
     let mut searching = use_signal(|| false);
     let mut source_open = use_signal(|| false);
+    let mut history_open = use_signal(|| false);
     let mut auto_busy = use_signal(|| false);
     let c5 = client.clone();
     let auto_search = move |_| {
@@ -803,6 +811,7 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     button {class:"btn",disabled:watching(),title:"Jellyfin watched sync can update this status.",onclick:move |_|set_watched(!d.item.watched),if d.item.watched {"Mark unwatched"}else{"Mark watched"}}
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
                     button { class: "btn", onclick: move |_| source_open.set(true), "Change catalogue" }
+                    button { class: "btn", onclick: move |_| history_open.set(true), "History" }
                     button { class: "btn", title: "Search the indexers and choose a release", onclick: move |_| searching.set(true), "Search" }
                     button { class: "btn", disabled: auto_busy(), title: "Search the indexers and grab the best accepted release", onclick: auto_search,
                         if auto_busy() { "Searching…" } else { "Automatic search" }
@@ -814,6 +823,11 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     }
                     button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true); }, "Remove from library" }
                 }
+            }
+        }
+        if history_open() {
+            Modal { title: "Movie history", wide: true, on_close: move |_| history_open.set(false),
+                super::activity::HistoryTable { movie_id: id }
             }
         }
         if source_open() {

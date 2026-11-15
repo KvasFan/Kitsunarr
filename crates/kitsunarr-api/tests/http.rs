@@ -6342,3 +6342,371 @@ async fn movies_can_be_marked_watched_individually_or_in_bulk_and_filtered() {
     assert!(schema["paths"]["/api/v1/movies/{id}/watched"]["put"].is_object());
     assert!(schema["paths"]["/api/v1/movies/watched"]["put"].is_object());
 }
+
+/// Native movie lifecycle events keep Sonarr's one-episode webhook shape.
+#[tokio::test]
+async fn native_movie_notifications_cover_add_import_upgrade_delete_and_missing_files() {
+    use kitsunarr_domain::api::library_tools::{MovieImportFile, MovieImportRequest};
+    use kitsunarr_domain::api::settings::MediaManagementSettings;
+    let router = axum::Router::new().route("/", axum::routing::get(|| async {
+        axum::Json(serde_json::json!({"Title":"Film","Type":"movie","imdbID":"tt0000060","Year":"2020","Response":"True"}))
+    }));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            omdb: base,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    server
+        .state
+        .metadata
+        .set_api_keys(None, Some("mock-key".into()));
+    let root = server._dir.path().join("films");
+    std::fs::create_dir_all(&root).unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    kitsunarr_db::settings::set(
+        server.state.db.pool(),
+        kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+        &MediaManagementSettings {
+            enable_media_info: false,
+            recycle_bin: Some(server._dir.path().join("bin").display().to_string()),
+            ..Default::default()
+        },
+    )
+    .await
+    .unwrap();
+    let (url, log) = webhook_mock().await;
+    let (excluded_url, excluded) = webhook_mock().await;
+    for (name, target, triggers, tags) in [
+        (
+            "Lifecycle",
+            url,
+            serde_json::json!({"onSeriesAdd":true,"onDownload":true,"onUpgrade":true,"onEpisodeFileDelete":true}),
+            "[]",
+        ),
+        (
+            "Wrong tag",
+            excluded_url.clone(),
+            serde_json::json!({"onSeriesAdd":true,"onDownload":true,"onUpgrade":true,"onEpisodeFileDelete":true}),
+            "[999]",
+        ),
+        (
+            "Disabled triggers",
+            excluded_url,
+            serde_json::json!({}),
+            "[]",
+        ),
+    ] {
+        sqlx::query("INSERT INTO notifications (name, implementation, settings, triggers, tags, created_at) VALUES (?, 'Webhook', ?, ?, ?, '2026-11-15')")
+            .bind(name).bind(serde_json::json!({"url": target, "method":1}).to_string()).bind(triggers.to_string()).bind(tags).execute(server.state.db.pool()).await.unwrap();
+    }
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::Omdb,
+            id: "tt0000060".into(),
+            root_folder_path: root.display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: false,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+        })
+        .await
+        .unwrap();
+    assert_eq!(added.media_type, "movie");
+    wait_for(&log, 1).await;
+    assert_eq!(log.lock().unwrap()[0]["eventType"], "SeriesAdd");
+    assert_eq!(log.lock().unwrap()[0]["series"]["imdbId"], "tt0000060");
+    let downloads = server._dir.path().join("downloads");
+    std::fs::create_dir_all(&downloads).unwrap();
+    let mut request = MovieImportRequest {
+        files: vec![MovieImportFile {
+            movie_id: added.id,
+            path: String::new(),
+        }],
+        import_mode: "copy".into(),
+    };
+    for (i, name) in [
+        "Film.2020.1080p.WEB-DL.JPN-GRP.mkv",
+        "Film.2020.1080p.BluRay.PROPER.JPN-GRP.mkv",
+    ]
+    .iter()
+    .enumerate()
+    {
+        let path = downloads.join(name);
+        std::fs::write(&path, b"feature").unwrap();
+        request.files[0].path = path.display().to_string();
+        if i == 0 {
+            sqlx::query("CREATE TRIGGER reject_import BEFORE INSERT ON history WHEN NEW.event_type = 'downloadFolderImported' BEGIN SELECT RAISE(FAIL,'test failure'); END").execute(server.state.db.pool()).await.unwrap();
+            assert!(!client.movie_import(&request).await.unwrap()[0].imported);
+            assert!(client.movie_detail(added.id).await.unwrap().file.is_none());
+            assert!(path.is_file());
+            sqlx::query("DROP TRIGGER reject_import")
+                .execute(server.state.db.pool())
+                .await
+                .unwrap();
+        }
+        let result = client.movie_import(&request).await.unwrap();
+        assert!(result[0].imported, "{:?}", result[0].messages);
+        wait_for(&log, i + 2).await;
+        let event = log.lock().unwrap()[i + 1].clone();
+        assert_eq!(event["eventType"], "Download");
+        assert_eq!(event["isUpgrade"], i > 0);
+        assert_eq!(event["episodes"][0]["seasonNumber"], 1);
+        assert_eq!(event["episodes"][0]["episodeNumber"], 1);
+        assert_eq!(event["episodeFile"]["languages"][0]["name"], "Japanese");
+        assert_eq!(
+            event["episodeFile"]["sourcePath"],
+            path.display().to_string()
+        );
+        assert_eq!(
+            event["episodeFile"]["qualityVersion"],
+            if i == 0 { 1 } else { 2 }
+        );
+        assert!(event["downloadClient"].is_null());
+        assert!(event["downloadId"].is_null());
+        if i > 0 {
+            let old = &event["deletedFiles"][0];
+            assert_eq!(old["quality"], "WEBDL-1080p");
+            assert!(std::path::Path::new(old["recycleBinPath"].as_str().unwrap()).is_file());
+        }
+    }
+    // A rejected repeat and a failing database write must produce no success notification.
+    assert!(!client.movie_import(&request).await.unwrap()[0].imported);
+    let d = client.movie_detail(added.id).await.unwrap();
+    let file = d.file.unwrap();
+    sqlx::query("CREATE TRIGGER reject_movie_history BEFORE INSERT ON history WHEN NEW.event_type = 'movieFileDeleted' BEGIN SELECT RAISE(FAIL,'test failure'); END").execute(server.state.db.pool()).await.unwrap();
+    assert!(client.delete_movie_file(added.id, file.id).await.is_err());
+    assert!(
+        std::path::Path::new(&d.item.path)
+            .join(&file.relative_path)
+            .is_file()
+    );
+    sqlx::query("DROP TRIGGER reject_movie_history")
+        .execute(server.state.db.pool())
+        .await
+        .unwrap();
+    client.delete_movie_file(added.id, file.id).await.unwrap();
+    wait_for(&log, 4).await;
+    let deleted = log.lock().unwrap()[3].clone();
+    assert_eq!(deleted["deleteReason"], "Manual");
+    assert_eq!(deleted["episodeFile"]["id"], file.id);
+    assert!(
+        std::path::Path::new(deleted["episodeFile"]["recycleBinPath"].as_str().unwrap()).is_file()
+    );
+    let folder = std::path::Path::new(&d.item.path);
+    std::fs::write(folder.join("Film.2020.1080p.WEB-DL.mkv"), b"feature").unwrap();
+    client.rescan_movie(added.id).await.unwrap();
+    std::fs::remove_file(folder.join("Film.2020.1080p.WEB-DL.mkv")).unwrap();
+    sqlx::query("CREATE TRIGGER reject_missing BEFORE INSERT ON history WHEN NEW.event_type = 'movieFileDeleted' BEGIN SELECT RAISE(FAIL,'test failure'); END").execute(server.state.db.pool()).await.unwrap();
+    assert!(client.rescan_movie(added.id).await.is_err());
+    assert!(client.movie_detail(added.id).await.unwrap().file.is_some());
+    sqlx::query("DROP TRIGGER reject_missing")
+        .execute(server.state.db.pool())
+        .await
+        .unwrap();
+    client.rescan_movie(added.id).await.unwrap();
+    wait_for(&log, 5).await;
+    assert_eq!(log.lock().unwrap()[4]["deleteReason"], "MissingFromDisk");
+    assert!(
+        log.lock().unwrap()[4]["episodeFile"]
+            .get("recycleBinPath")
+            .is_none()
+    );
+    tokio::time::sleep(std::time::Duration::from_millis(150)).await;
+    assert_eq!(log.lock().unwrap().len(), 5);
+    assert!(excluded.lock().unwrap().is_empty());
+    let history = client
+        .history_filtered(
+            1,
+            50,
+            &kitsunarr_domain::api::library::HistoryFilter {
+                movie_id: Some(added.id),
+                event_type: Some("downloadFolderImported".into()),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(history.total_records, 2);
+    assert_eq!(
+        history.records[0].quality_name.as_deref(),
+        Some("Bluray-1080p")
+    );
+}
+
+#[tokio::test]
+async fn history_filters_are_combined_paged_validated_and_documented() {
+    use kitsunarr_domain::api::library::HistoryFilter;
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let pool = server.state.db.pool();
+    for id in 1..=2 {
+        sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (?,?,'film','film',?,'tmdbMovie',?,1,'/films',?,'2026-11-15')")
+            .bind(id).bind(format!("Film {id}")).bind(format!("film-{id}")).bind(id.to_string()).bind(format!("/films/{id}")).execute(pool).await.unwrap();
+        sqlx::query("INSERT INTO series (id,media_kind,title,sort_title,clean_title,title_slug,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (?,'series',?,'show','show',?,'tvmaze',?,1,'/tv',?,'2026-11-15')")
+            .bind(id).bind(format!("Show {id}")).bind(format!("show-{id}")).bind(id.to_string()).bind(format!("/tv/{id}")).execute(pool).await.unwrap();
+    }
+    for (id, parent, ep) in [(1, 1, 1), (2, 1, 2), (3, 2, 1)] {
+        sqlx::query(
+            "INSERT INTO episodes (id,series_id,season_number,episode_number) VALUES (?,?,1,?)",
+        )
+        .bind(id)
+        .bind(parent)
+        .bind(ep)
+        .execute(pool)
+        .await
+        .unwrap();
+    }
+    for (id, movie, series, episode, event, download) in [
+        (1, Some(1), None, None, "grabbed", "Hash1"),
+        (2, Some(1), None, None, "downloadFolderImported", "HASH1"),
+        (3, Some(2), None, None, "grabbed", "hash2"),
+        (4, None, Some(1), Some(1), "grabbed", "Hash1"),
+        (5, None, Some(1), Some(2), "downloadFolderImported", "hash2"),
+        (6, None, Some(2), Some(3), "grabbed", "Hash3"),
+        (7, None, None, None, "downloadFailed", "quote'_%"),
+    ] {
+        sqlx::query("INSERT INTO history (id,event_type,date,source_title,movie_id,series_id,episode_id,download_id) VALUES (?,?,'2026-11-15T00:00:00Z',?,?,?,?,?)")
+            .bind(id).bind(event).bind(format!("Release {id}")).bind(movie).bind(series).bind(episode).bind(download).execute(pool).await.unwrap();
+    }
+    let all = client.history(1, 50, None).await.unwrap();
+    assert_eq!(all.total_records, 7);
+    assert_eq!(
+        all.records.iter().map(|r| r.id).collect::<Vec<_>>(),
+        vec![7, 6, 5, 4, 3, 2, 1]
+    );
+    let filter = HistoryFilter {
+        movie_id: Some(1),
+        ..Default::default()
+    };
+    let first = client.history_filtered(1, 1, &filter).await.unwrap();
+    let second = client.history_filtered(2, 1, &filter).await.unwrap();
+    assert_eq!((first.total_records, second.total_records), (2, 2));
+    assert_eq!((first.records[0].id, second.records[0].id), (2, 1));
+    assert_eq!(first.records[0].movie_title.as_deref(), Some("Film 1"));
+    for (filter, expected) in [
+        (
+            HistoryFilter {
+                download_id: Some("hash1".into()),
+                ..Default::default()
+            },
+            vec![4, 2, 1],
+        ),
+        (
+            HistoryFilter {
+                movie_id: Some(1),
+                event_type: Some("grabbed".into()),
+                download_id: Some("hash1".into()),
+                ..Default::default()
+            },
+            vec![1],
+        ),
+        (
+            HistoryFilter {
+                series_id: Some(1),
+                episode_id: Some(2),
+                ..Default::default()
+            },
+            vec![5],
+        ),
+        (
+            HistoryFilter {
+                episode_id: Some(3),
+                ..Default::default()
+            },
+            vec![6],
+        ),
+        (
+            HistoryFilter {
+                series_id: Some(2),
+                episode_id: Some(1),
+                ..Default::default()
+            },
+            vec![],
+        ),
+        (
+            HistoryFilter {
+                download_id: Some("quote'_%".into()),
+                ..Default::default()
+            },
+            vec![7],
+        ),
+        (
+            HistoryFilter {
+                movie_id: Some(999),
+                ..Default::default()
+            },
+            vec![],
+        ),
+    ] {
+        let result = client.history_filtered(1, 50, &filter).await.unwrap();
+        assert_eq!(result.total_records as usize, expected.len());
+        assert_eq!(
+            result.records.iter().map(|r| r.id).collect::<Vec<_>>(),
+            expected
+        );
+    }
+    let asc: kitsunarr_domain::Page<kitsunarr_domain::api::library::HistoryItem> = client
+        .get("/history?movieId=1&sortDirection=asc")
+        .await
+        .unwrap();
+    assert_eq!(
+        asc.records.iter().map(|r| r.id).collect::<Vec<_>>(),
+        vec![1, 2]
+    );
+    for q in [
+        "movieId=0",
+        "seriesId=-1",
+        "episodeId=0",
+        "movieId=1&seriesId=1",
+        "movieId=1&episodeId=1",
+    ] {
+        let error = client
+            .get::<serde_json::Value>(&format!("/history?{q}"))
+            .await
+            .unwrap_err();
+        assert_eq!(status(error), 422, "{q}");
+    }
+    assert_eq!(
+        status(
+            client
+                .history_filtered(
+                    1,
+                    50,
+                    &HistoryFilter {
+                        download_id: Some("x".repeat(257)),
+                        ..Default::default()
+                    }
+                )
+                .await
+                .unwrap_err()
+        ),
+        422
+    );
+    let public = reqwest::get(format!("{}/api/v1/history?movieId=1", server.base))
+        .await
+        .unwrap();
+    assert_eq!(public.status(), 401);
+    let spec: serde_json::Value = client.get("/openapi.json").await.unwrap();
+    let params = spec["paths"]["/api/v1/history"]["get"]["parameters"]
+        .as_array()
+        .unwrap();
+    for name in ["movieId", "seriesId", "episodeId", "downloadId"] {
+        assert!(params.iter().any(|p| p["name"] == name), "{name}");
+    }
+}

@@ -160,13 +160,22 @@ async fn click_button(client: &Client, label: &str) {
         "//button[contains(normalize-space(.), {})]",
         xpath_literal(label)
     );
-    let el = client
-        .wait()
-        .at_most(Duration::from_secs(20))
-        .for_element(Locator::XPath(&xpath))
-        .await
-        .unwrap_or_else(|e| panic!("button {label:?} not found: {e}"));
-    el.click().await.unwrap();
+    let mut stale_retries = 0;
+    loop {
+        let el = client
+            .wait()
+            .at_most(Duration::from_secs(20))
+            .for_element(Locator::XPath(&xpath))
+            .await
+            .unwrap_or_else(|e| panic!("button {label:?} not found: {e}"));
+        match el.click().await {
+            Ok(()) => return,
+            // Live library updates can replace a button between finding it and clicking it.
+            // WebDriver rejected the stale target, so no action was dispatched to retry.
+            Err(e) if e.is_stale_element_reference() && stale_retries < 3 => stale_retries += 1,
+            Err(e) => panic!("button {label:?} could not be clicked: {e}"),
+        }
+    }
 }
 
 async fn fill(client: &Client, css: &str, value: &str) {
@@ -440,6 +449,12 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Season 1").await;
         wait_text(&client, "Bluray-1080p").await;
         screenshot(&client, "08-series-detail").await;
+        client.find(Locator::XPath("//div[contains(@class,'hero')]//button[normalize-space(.)='History']")).await.unwrap().click().await.unwrap();
+        client.wait().for_element(Locator::Css(".modal select[aria-label='Event type']")).await.unwrap();
+        wait_text(&client,"Series history").await;
+        screenshot(&client,"08a-series-history").await;
+        client.find(Locator::Css(".modal button[aria-label='Close']")).await.unwrap().click().await.unwrap();
+
 
         // Add media: the migrated (TheTVDB-owned) Breaking Bad is recognised in TVmaze results
         // through its shared TheTVDB id; a new show is added with an exact folder preview.
@@ -635,6 +650,11 @@ async fn first_run_setup_migration_and_library() {
         kitsunarr_db::settings::set(fixture_db.pool(),kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,&film_media).await.unwrap();
         kitsunarr_db::sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,year,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (900,'E2E Film','e2e film','e2efilm','e2e-film',2020,'tmdbMovie','900',(SELECT MIN(id) FROM quality_profiles),?,?,'2026-11-14T00:00:00Z')")
             .bind(film_root.to_str().unwrap()).bind(film_folder.to_str().unwrap()).execute(fixture_db.pool()).await.unwrap();
+        // More than one page of movie history verifies server-side paging and filter resets.
+        for n in 0..51 {
+            kitsunarr_db::sqlx::query("INSERT INTO history (event_type,date,source_title,movie_id) VALUES ('grabbed','2026-11-14T00:00:00Z',?,900)")
+                .bind(format!("E2E release {n}")).execute(fixture_db.pool()).await.unwrap();
+        }
         fixture_db.close().await;
         client.goto(&format!("{base}/movies/900")).await.unwrap();
         wait_text(&client,"E2E Film").await;
@@ -646,6 +666,25 @@ async fn first_run_setup_migration_and_library() {
         screenshot(&client,"11j-movie-rename-preview").await;
         client.find(Locator::XPath("//div[@class='modal-foot']//button[normalize-space(.)='Rename']")).await.unwrap().click().await.unwrap();
         wait_text(&client,"1 file renamed.").await;
+        client.find(Locator::XPath("//div[contains(@class,'hero')]//button[normalize-space(.)='History']")).await.unwrap().click().await.unwrap();
+        wait_text(&client,"Movie history").await;
+        wait_text(&client,"1–50 of 53").await;
+        client.find(Locator::XPath("//div[contains(@class,'modal')]//button[normalize-space(.)='Next ›']")).await.unwrap().click().await.unwrap();
+        wait_text(&client,"51–53 of 53").await;
+
+        let history_filter = client.wait().for_element(Locator::Css(".modal select[aria-label='Event type']")).await.unwrap();
+        history_filter.select_by_value("movieFileRenamed").await.unwrap();
+        client.wait().for_element(Locator::XPath("//div[contains(@class,'modal')]//tbody[count(tr)=1]/tr[td[contains(.,'movieFileRenamed')]]")).await.unwrap();
+        wait_text(&client,"1–1 of 1").await;
+        let rows = client.find_all(Locator::Css(".modal table tbody tr")).await.unwrap();
+        assert_eq!(rows.len(),1);
+        assert!(rows[0].text().await.unwrap().contains("movieFileRenamed"));
+        assert!(rows[0].text().await.unwrap().contains("E2E Film"));
+        screenshot(&client,"11q-movie-history").await;
+        client.find(Locator::Css(".modal select[aria-label='Event type']")).await.unwrap().select_by_value("movieFileDeleted").await.unwrap();
+        client.wait().for_element(Locator::XPath("//div[contains(@class,'modal')]//*[normalize-space(.)='No history']")).await.unwrap();
+        client.find(Locator::Css(".modal button[aria-label='Close']")).await.unwrap().click().await.unwrap();
+
         // Watched state is independent of monitoring and available in both library views.
         click_button(&client,"Mark watched").await;
         client.wait().for_element(Locator::XPath("//button[normalize-space(.)='Mark unwatched']")).await.unwrap();

@@ -983,12 +983,41 @@ impl Client {
         page_size: u32,
         event_type: Option<&str>,
     ) -> ClientResult<Page<HistoryItem>> {
+        self.history_filtered(
+            page,
+            page_size,
+            &kitsunarr_domain::api::library::HistoryFilter {
+                event_type: event_type.map(str::to_string),
+                ..Default::default()
+            },
+        )
+        .await
+    }
+
+    pub async fn history_filtered(
+        &self,
+        page: u32,
+        page_size: u32,
+        filter: &kitsunarr_domain::api::library::HistoryFilter,
+    ) -> ClientResult<Page<HistoryItem>> {
         let mut q = vec![
             ("page", page.to_string()),
             ("pageSize", page_size.to_string()),
         ];
-        if let Some(e) = event_type {
-            q.push(("eventType", e.to_string()));
+        if let Some(e) = &filter.event_type {
+            q.push(("eventType", e.clone()));
+        }
+        if let Some(id) = filter.series_id {
+            q.push(("seriesId", id.to_string()));
+        }
+        if let Some(id) = filter.episode_id {
+            q.push(("episodeId", id.to_string()));
+        }
+        if let Some(id) = filter.movie_id {
+            q.push(("movieId", id.to_string()));
+        }
+        if let Some(id) = &filter.download_id {
+            q.push(("downloadId", id.clone()));
         }
         self.get_query("/history", &q).await
     }

@@ -379,47 +379,15 @@ impl Monitor {
         client: &providers::ProviderRecord,
         grabs: &[kitsunarr_db::history::GrabRecord],
     ) {
-        type Row = (
-            String,
-            i64,
-            i64,
-            Option<String>,
-            Option<String>,
-            i64,
-            String,
-        );
-        let row: Option<Row> =
-            sqlx::query_as(
-                "SELECT relative_path, quality_id, revision_version, release_group, scene_name, size, added_at \
-                 FROM movie_files WHERE id = ?",
-            )
-            .bind(f.file_id)
-            .fetch_optional(db.pool())
-            .await
-            .ok()
-            .flatten();
-        let Some((relative, quality, version, group, scene, size, added)) = row else {
+        let Some(mut file) = crate::notify::movie_file_ref(db, &series, f.file_id).await else {
             return;
         };
+        file.source_path = Some(f.source_path.clone());
         let grab = grabs.first();
         let data: serde_json::Value = grab
             .and_then(|g| serde_json::from_str(&g.data).ok())
             .unwrap_or_default();
         let text = |k: &str| data.get(k).and_then(|v| v.as_str()).map(str::to_string);
-        let file = kitsunarr_notifications::FileRef {
-            id: f.file_id,
-            path: format!("{}/{relative}", series.path.trim_end_matches('/')),
-            relative_path: relative,
-            quality: crate::notify::quality_name(quality),
-            quality_version: version as i32,
-            release_group: group,
-            scene_name: scene,
-            size,
-            date_added: added,
-            languages: Vec::new(),
-            source_path: Some(f.source_path.clone()),
-            recycle_bin_path: None,
-        };
         let deleted_files = f
             .replaced
             .iter()

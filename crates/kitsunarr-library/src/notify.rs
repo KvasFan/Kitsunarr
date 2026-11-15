@@ -362,3 +362,78 @@ pub async fn movie_refs(db: &Database, id: i64) -> Option<(SeriesRef, EpisodeRef
     };
     Some((series, episode))
 }
+
+/// Snapshot a movie file while it is still present (including before deletion/upgrade).
+pub async fn movie_file_ref(db: &Database, series: &SeriesRef, id: i64) -> Option<FileRef> {
+    #[derive(sqlx::FromRow)]
+    struct Row {
+        relative_path: String,
+        quality_id: i64,
+        revision_version: i32,
+        release_group: Option<String>,
+        scene_name: Option<String>,
+        size: i64,
+        added_at: String,
+        languages: String,
+        original_path: Option<String>,
+    }
+    let f: Row = sqlx::query_as("SELECT relative_path, quality_id, revision_version, release_group, scene_name, size, added_at, languages, original_path FROM movie_files WHERE id = ? AND movie_id = ?")
+        .bind(id).bind(series.id).fetch_optional(db.pool()).await.ok()??;
+    Some(FileRef {
+        id,
+        path: format!("{}/{}", series.path.trim_end_matches('/'), f.relative_path),
+        relative_path: f.relative_path,
+        quality: quality_name(f.quality_id),
+        quality_version: f.revision_version,
+        release_group: f.release_group,
+        scene_name: f.scene_name,
+        size: f.size,
+        date_added: f.added_at,
+        languages: serde_json::from_str::<Vec<i32>>(&f.languages)
+            .unwrap_or_default()
+            .into_iter()
+            .filter_map(language)
+            .collect(),
+        source_path: f.original_path,
+        recycle_bin_path: None,
+    })
+}
+
+/// The just-written import record, without re-reading a potentially newer feature.
+pub(crate) fn imported_movie_file(
+    series: &SeriesRef,
+    id: i64,
+    f: &kitsunarr_db::library::movies::NewMovieFile,
+) -> FileRef {
+    FileRef {
+        id,
+        path: format!("{}/{}", series.path.trim_end_matches('/'), f.relative_path),
+        relative_path: f.relative_path.clone(),
+        quality: quality_name(i64::from(f.quality_id)),
+        quality_version: f.revision_version,
+        release_group: f.release_group.clone(),
+        scene_name: f.scene_name.clone(),
+        size: f.size,
+        date_added: f.added_at.clone(),
+        languages: f.languages.iter().copied().filter_map(language).collect(),
+        source_path: f.original_path.clone(),
+        recycle_bin_path: None,
+    }
+}
+
+/// Capture the same pre-operation identity for a movie file event.
+pub(crate) async fn movie_file_event(
+    db: &Database,
+    movie_id: i64,
+    file_id: i64,
+    reason: &str,
+) -> Option<Event> {
+    let (series, feature) = movie_refs(db, movie_id).await?;
+    let file = movie_file_ref(db, &series, file_id).await?;
+    Some(Event::EpisodeFileDelete {
+        series: Box::new(series),
+        episodes: vec![feature],
+        file,
+        reason: reason.into(),
+    })
+}

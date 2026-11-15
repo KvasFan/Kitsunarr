@@ -200,13 +200,32 @@ pub async fn import(
     selected: &[MovieImportFile],
     move_files: bool,
 ) -> Vec<ManualImportResult> {
+    import_inner(db, selected, move_files, None).await
+}
+
+/// Same reviewed import, with post-commit notification delivery.
+pub async fn import_notifying(
+    db: &Database,
+    selected: &[MovieImportFile],
+    move_files: bool,
+    notifier: &kitsunarr_notifications::Notifier,
+) -> Vec<ManualImportResult> {
+    import_inner(db, selected, move_files, Some(notifier)).await
+}
+
+async fn import_inner(
+    db: &Database,
+    selected: &[MovieImportFile],
+    move_files: bool,
+    notifier: Option<&kitsunarr_notifications::Notifier>,
+) -> Vec<ManualImportResult> {
     let mut out = Vec::new();
     let mut seen = std::collections::HashSet::new();
     for file in selected {
         let result = if !seen.insert(file.movie_id) {
             Err("Choose only one feature per movie in an import.".into())
         } else {
-            import_one(db, file, move_files).await
+            import_one(db, file, move_files, notifier).await
         };
         match result {
             Ok(messages) => out.push(ManualImportResult {
@@ -228,6 +247,7 @@ async fn import_one(
     db: &Database,
     selected: &MovieImportFile,
     move_files: bool,
+    notifier: Option<&kitsunarr_notifications::Notifier>,
 ) -> Result<Vec<String>, String> {
     let source = source_path(Path::new(&selected.path))?;
     if !source.is_file() || !crate::import::VIDEO_EXTENSIONS.contains(&extension(&source).as_str())
@@ -244,6 +264,20 @@ async fn import_one(
         .await
         .map_err(err)?;
     let (root, folder) = files::location(db, &d).await?;
+    let notification = if notifier.is_some() {
+        crate::notify::movie_refs(db, d.item.id).await
+    } else {
+        None
+    };
+    let mut replaced = if let (Some((title, _)), Some(f)) = (&notification, &d.file) {
+        crate::notify::movie_file_ref(db, title, f.id)
+            .await
+            .into_iter()
+            .collect::<Vec<_>>()
+    } else {
+        Vec::new()
+    };
+
     let library_paths: Vec<String> =
         sqlx::query_scalar("SELECT path FROM movies UNION SELECT path FROM series")
             .fetch_all(db.pool())
@@ -278,6 +312,7 @@ async fn import_one(
         .await
         .map_err(err)?;
     if let Some(existing) = &d.file {
+        file.added_at = existing.added_at.clone();
         let order = kitsunarr_decision::ProfileView(&profile)
             .compare_qualities(file.quality_id, existing.quality_id);
         let (v, r, p): (i32, i32, bool) = sqlx::query_as(
@@ -384,18 +419,25 @@ async fn import_one(
                 let backup=stage.join(format!("old-{index}"));files::move_file(old,&backup)?;moved.push((old.clone(),backup));
             }
             for (tmp,dest) in &staged {files::move_file(tmp,dest)?;moved.push((tmp.clone(),dest.clone()));}
-            movies::upsert_file(&mut tx,&file).await.map_err(err)?;
-            files::record(&mut tx,&d,"downloadFolderImported",&stem(&source),serde_json::json!({"releaseSource":"ManualImport","droppedPath":source,"importedPath":target})).await?;
-            tx.commit().await.map_err(err)
+            let file_id = movies::upsert_file(&mut tx,&file).await.map_err(err)?;
+            kitsunarr_db::history::insert(&mut tx, &kitsunarr_db::history::NewHistory {
+                event_type: "downloadFolderImported".into(), date: kitsunarr_db::now(), source_title: stem(&source),
+                series_id: None, episode_id: None, movie_id: Some(d.item.id), quality_id: Some(file.quality_id),
+                revision: Some(serde_json::json!({"version":file.revision_version,"real":file.revision_real,"isRepack":file.is_repack})),
+                languages: file.languages.clone(), custom_format_score: None, download_id: None,
+                data: serde_json::json!({"releaseSource":"ManualImport","droppedPath":source,"importedPath":target}),
+            }).await.map_err(err)?;
+            tx.commit().await.map_err(err)?;
+            Ok(file_id)
         }.await;
         if let Err(message)=publication {
             let recovery=files::rollback(&moved);
             if !recovery.is_empty() {return Err(format!("{message}{recovery} Previous files remain in {}.",stage.display()));}
             return Err(message);
         }
-        Ok(())
+        publication
     }.await;
-    if let Err(message) = staging {
+    if let Err(message) = &staging {
         // After rollback, backups have returned to their original names. Any remaining old
         // backup is retained for recovery, never purged with the disposable new copies.
         let has_backup = std::fs::read_dir(&stage).is_ok_and(|mut entries| {
@@ -404,8 +446,9 @@ async fn import_one(
         if !has_backup {
             let _ = std::fs::remove_dir_all(&stage);
         }
-        return Err(message);
+        return Err(message.clone());
     }
+    let file_id = staging?;
     let mut messages = Vec::new();
     for (index, original) in old.iter().enumerate() {
         let backup = stage.join(format!("old-{index}"));
@@ -426,6 +469,10 @@ async fn import_one(
                 let target = files::unused_target(&dir, original)?;
                 files::move_file(&backup, &target)?;
                 crate::tools::touch(&target);
+                if let Some(previous) = replaced.iter_mut().find(|f| Path::new(&f.path) == original)
+                {
+                    previous.recycle_bin_path = Some(target.display().to_string());
+                }
                 Ok(())
             })()
         } else {
@@ -449,6 +496,26 @@ async fn import_one(
         }
     }
     let _ = std::fs::remove_dir(&stage);
+    if let (Some(notifier), Some((series, feature))) = (notifier, notification) {
+        let file = crate::notify::imported_movie_file(&series, file_id, &file);
+        crate::notify::spawn(
+            db,
+            notifier,
+            kitsunarr_notifications::Event::Download(Box::new(kitsunarr_notifications::Download {
+                series,
+                episodes: vec![feature],
+                file,
+                release: kitsunarr_notifications::GrabbedRef {
+                    release_title: Some(stem(&source)),
+                    ..Default::default()
+                },
+                deleted_files: replaced,
+                download_client: None,
+                download_client_type: None,
+                download_id: None,
+            })),
+        );
+    }
     crate::metadata_files::after_movie_change(db, d.item.id).await;
     Ok(messages)
 }

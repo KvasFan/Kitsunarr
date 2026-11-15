@@ -225,27 +225,40 @@ const EVENT_TYPES: &[(&str, &str)] = &[
     ("downloadFailed", "Download failed"),
     ("episodeFileDeleted", "File deleted"),
     ("episodeFileRenamed", "File renamed"),
+    ("movieFileImported", "Imported from movie folder"),
+    ("movieFileDeleted", "Movie file deleted"),
+    ("movieFileRenamed", "Movie file renamed"),
+    ("movieFileRestored", "Movie file restored"),
     ("downloadIgnored", "Ignored"),
 ];
 
 fn tone(event: &str) -> Option<&'static str> {
     match event {
         "grabbed" => Some("info"),
-        "downloadFolderImported" | "seriesFolderImported" => Some("success"),
+        "downloadFolderImported"
+        | "seriesFolderImported"
+        | "movieFileImported"
+        | "movieFileRestored" => Some("success"),
         "downloadFailed" => Some("danger"),
-        "episodeFileDeleted" => Some("warning"),
+        "episodeFileDeleted" | "movieFileDeleted" => Some("warning"),
         _ => None,
     }
 }
 
 #[component]
 pub fn Activity() -> Element {
+    rsx! { HistoryTable {} }
+}
+
+/// One history view shared by Activity and title detail dialogs. Filtering stays server-side.
+#[component]
+pub fn HistoryTable(series_id: Option<i64>, movie_id: Option<i64>) -> Element {
     let app = use_app();
     let client = use_client();
     let mut page = use_signal(|| 1u32);
     let mut event = use_signal(String::new);
     use_effect(move || {
-        let _ = event();
+        let _ = (event(), series_id, movie_id);
         if *page.peek() != 1 {
             page.set(1);
         }
@@ -271,14 +284,23 @@ pub fn Activity() -> Element {
         let (p, e) = (page(), event());
         let c = client.clone();
         async move {
-            c.history(p, 50, Some(e.as_str()).filter(|s| !s.is_empty()))
-                .await
+            c.history_filtered(
+                p,
+                50,
+                &kitsunarr_domain::api::library::HistoryFilter {
+                    event_type: Some(e).filter(|s| !s.is_empty()),
+                    series_id,
+                    movie_id,
+                    ..Default::default()
+                },
+            )
+            .await
         }
     });
     rsx! {
         div { class: "page-head",
-            h1 { class: "grow", "History" }
-            select { class: "select", "aria-label": "Event type", onchange: move |e: FormEvent| event.set(e.value()),
+            if series_id.is_none() && movie_id.is_none() { h1 { class: "grow", "History" } }
+            select { class: "select", "aria-label": "Event type", value: event(), onchange: move |e: FormEvent| event.set(e.value()),
                 for (value, label) in EVENT_TYPES { option { value: "{value}", "{label}" } }
             }
         }

@@ -125,13 +125,18 @@ pub async fn add(
     ensure_supported("provider", req.provider)?;
     let added = kitsunarr_library::add_title(&state.db, &state.metadata, &req).await?;
     changed(&state, &added.media_type, added.id);
-    if added.media_type == "series"
-        && let Some(series) = kitsunarr_library::notify::series_ref(&state.db, added.id).await
-    {
+    let notification_title = match added.media_type.as_str() {
+        "series" => kitsunarr_library::notify::series_ref(&state.db, added.id).await,
+        "movie" => kitsunarr_library::notify::movie_refs(&state.db, added.id)
+            .await
+            .map(|(title, _)| title),
+        _ => None,
+    };
+    if let Some(title) = notification_title {
         kitsunarr_library::notify::spawn(
             &state.db,
             &state.downloads.notifier,
-            kitsunarr_notifications::Event::SeriesAdd(Box::new(series)),
+            kitsunarr_notifications::Event::SeriesAdd(Box::new(title)),
         );
     }
     if req.search_for_missing && added.media_type == "series" {

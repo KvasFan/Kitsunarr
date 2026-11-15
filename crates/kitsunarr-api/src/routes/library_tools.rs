@@ -426,10 +426,11 @@ pub async fn movie_import(
             "Choose copy or move.",
         ));
     }
-    let results = kitsunarr_library::movie_manual_import::import(
+    let results = kitsunarr_library::movie_manual_import::import_notifying(
         &state.db,
         &body.files,
         body.import_mode == "move",
+        &state.downloads.notifier,
     )
     .await;
     let mut ids = body

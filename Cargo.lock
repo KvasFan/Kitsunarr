@@ -2880,6 +2880,7 @@ dependencies = [
  "kitsunarr-library",
  "kitsunarr-metadata",
  "kitsunarr-migrate",
+ "kitsunarr-notifications",
  "kitsunarr-scheduler",
  "reqwest 0.13.5",
  "rust-embed",

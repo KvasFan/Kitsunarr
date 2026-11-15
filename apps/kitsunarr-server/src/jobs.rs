@@ -25,6 +25,7 @@ pub fn all(
     let api_for_health = api.clone();
     let api_for_watched = api.clone();
     let api_for_lists = api.clone();
+    let scan_notifier = downloads.notifier.clone();
     vec![
         job(
             kitsunarr_api::rss::TASK,
@@ -125,10 +126,13 @@ pub fn all(
         ),
         job(
             "RescanFolders",
-            "Scans every series folder: forgets files that are gone and adds files found there",
+            "Scans series and movie folders: forgets files that are gone and adds files found there",
             12 * 60,
             Duration::from_secs(6 * 3600),
-            |ctx| async move { rescan_folders(&ctx).await },
+            move |ctx| {
+                let notifier = scan_notifier.clone();
+                async move { rescan_folders(&ctx, &notifier).await }
+            },
         ),
         job(
             "RefreshMetadata",
@@ -321,55 +325,168 @@ fn prune_scheduled_backups(dir: &std::path::Path, keep: usize) -> usize {
         .count()
 }
 
-/// `RescanSeries` for every series. A series whose root folder is missing or empty is skipped
-/// (a disconnected drive must not empty the library); the run fails only when every scan did.
-async fn rescan_folders(ctx: &JobContext) -> JobResult {
-    let ids: Vec<i64> =
-        kitsunarr_db::sqlx::query_scalar("SELECT id FROM series ORDER BY sort_title")
-            .fetch_all(ctx.db.pool())
-            .await
-            .map_err(|e| e.to_string())?;
-    let (mut added, mut removed, mut failed) = (0usize, 0usize, 0usize);
-    let mut changed_series: Vec<i64> = Vec::new();
-    for (done, id) in ids.iter().enumerate() {
-        match kitsunarr_library::files::scan_series(&ctx.db, *id).await {
+/// Scan both native libraries, isolating unavailable roots and individual title failures.
+/// Stop between titles on cancellation; committed changes are published immediately.
+async fn rescan_folders(
+    ctx: &JobContext,
+    notifier: &kitsunarr_notifications::Notifier,
+) -> JobResult {
+    let titles: Vec<(String, i64)> = kitsunarr_db::sqlx::query_as(
+        "SELECT 'series', id FROM series UNION ALL SELECT 'movie', id FROM movies ORDER BY 1, 2",
+    )
+    .fetch_all(ctx.db.pool())
+    .await
+    .map_err(|e| e.to_string())?;
+    let movies = titles.iter().filter(|(kind, _)| kind == "movie").count();
+    let (mut added, mut removed, mut updated, mut failed) = (0usize, 0usize, 0usize, 0usize);
+    for (done, (kind, id)) in titles.iter().enumerate() {
+        if ctx.cancel.is_cancelled() {
+            return Err("Folder scan cancelled".into());
+        }
+        let result = if kind == "movie" {
+            kitsunarr_library::movie_files::scan_notifying(&ctx.db, *id, notifier).await
+        } else {
+            kitsunarr_library::files::scan_series(&ctx.db, *id).await
+        };
+        match result {
             Ok(s) => {
                 added += s.added;
                 removed += s.removed;
-                if s.added + s.removed > 0 {
-                    changed_series.push(*id);
+                updated += s.updated;
+                if s.added + s.removed + s.updated > 0 {
+                    ctx.events.publish(ServerEvent::LibraryChanged {
+                        media_type: kind.clone(),
+                        ids: vec![*id],
+                        deleted: false,
+                    });
                 }
             }
             Err(e) => {
-                tracing::warn!(series_id = id, error = %e, "folder scan skipped");
+                tracing::warn!(media_type = kind, title_id = id, error = %e, "folder scan skipped");
                 failed += 1;
             }
         }
         ctx.progress(
-            (done + 1) as f64 / ids.len().max(1) as f64,
-            &format!("Scanned {} of {} series", done + 1, ids.len()),
+            (done + 1) as f64 / titles.len().max(1) as f64,
+            &format!("Scanned {} of {} titles", done + 1, titles.len()),
         )
         .await;
     }
-    if failed > 0 && failed == ids.len() {
+    if failed > 0 && failed == titles.len() {
         return Err(format!("every folder scan failed ({failed})"));
     }
-    if !changed_series.is_empty() {
-        ctx.events.publish(ServerEvent::LibraryChanged {
-            media_type: "series".into(),
-            ids: changed_series,
-            deleted: false,
-        });
-    }
     Ok(Some(format!(
-        "Scanned {} series: {added} files added, {removed} missing files removed, {failed} skipped",
-        ids.len()
+        "Scanned {} series and {movies} movies: {added} files added, {removed} missing files removed, {updated} updated, {failed} skipped",
+        titles.len() - movies
     )))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    async fn scan_context(dir: &std::path::Path) -> JobContext {
+        let db = kitsunarr_db::Database::open(&dir.join("scan.db"))
+            .await
+            .unwrap();
+        kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+        kitsunarr_db::settings::set(
+            db.pool(),
+            kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+            &kitsunarr_domain::api::settings::MediaManagementSettings {
+                enable_media_info: false,
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+        JobContext {
+            run_id: 0,
+            task_name: "RescanFolders",
+            db,
+            events: kitsunarr_events::EventBus::default(),
+            cancel: tokio_util::sync::CancellationToken::new(),
+        }
+    }
+
+    async fn scan_movie(ctx: &JobContext, id: i64, root: &std::path::Path) -> std::path::PathBuf {
+        let folder = root.join(format!("Film {id}"));
+        kitsunarr_db::sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (?,?,'film','film',?,'tmdbMovie',?,1,?,?,'2026-11-15')")
+            .bind(id).bind(format!("Film {id}")).bind(format!("film-{id}")).bind(id.to_string()).bind(root.display().to_string()).bind(folder.display().to_string()).execute(ctx.db.pool()).await.unwrap();
+        folder
+    }
+
+    #[tokio::test]
+    async fn scheduled_scan_includes_both_libraries_and_isolates_unavailable_roots() {
+        let dir = tempfile::tempdir().unwrap();
+        let ctx = scan_context(dir.path()).await;
+        let root = dir.path().join("movies");
+        std::fs::create_dir(&root).unwrap();
+        kitsunarr_db::root_folders::create(ctx.db.pool(), root.to_str().unwrap(), None)
+            .await
+            .unwrap();
+        scan_movie(&ctx, 1, &dir.path().join("offline")).await;
+        let movie = scan_movie(&ctx, 2, &root).await;
+        std::fs::create_dir(&movie).unwrap();
+        let file = movie.join("Film.2.1080p.WEB-DL.mkv");
+        std::fs::write(&file, b"feature").unwrap();
+        let tv = dir.path().join("tv");
+        std::fs::create_dir(&tv).unwrap();
+        kitsunarr_db::sqlx::query("INSERT INTO series (id,media_kind,title,sort_title,clean_title,title_slug,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (1,'series','Show','show','show','show','tvmaze','1',1,?,?,'2026-11-15')")
+            .bind(dir.path().display().to_string()).bind(tv.display().to_string()).execute(ctx.db.pool()).await.unwrap();
+        let notifier = kitsunarr_notifications::Notifier::new(reqwest::Client::new());
+        let mut events = ctx.events.subscribe();
+        let result = rescan_folders(&ctx, &notifier).await.unwrap().unwrap();
+        assert!(result.contains("1 series and 2 movies"), "{result}");
+        assert!(
+            result.contains("1 files added") && result.contains("1 skipped"),
+            "{result}"
+        );
+        assert!(
+            kitsunarr_db::library::movies::get_detail(&ctx.db, 2)
+                .await
+                .unwrap()
+                .file
+                .is_some()
+        );
+        assert!(std::iter::from_fn(||events.try_recv().ok()).any(|e|matches!(e,ServerEvent::LibraryChanged {media_type,ids,..} if media_type=="movie" && ids==vec![2])));
+        std::fs::remove_file(file).unwrap();
+        let result = rescan_folders(&ctx, &notifier).await.unwrap().unwrap();
+        assert!(result.contains("1 missing files removed"), "{result}");
+    }
+
+    #[tokio::test]
+    async fn scheduled_scan_handles_empty_library_failure_and_cancellation() {
+        let dir = tempfile::tempdir().unwrap();
+        let ctx = scan_context(dir.path()).await;
+        let notifier = kitsunarr_notifications::Notifier::new(reqwest::Client::new());
+        assert!(
+            rescan_folders(&ctx, &notifier)
+                .await
+                .unwrap()
+                .unwrap()
+                .contains("0 series and 0 movies")
+        );
+        scan_movie(&ctx, 1, &dir.path().join("offline")).await;
+        assert!(
+            rescan_folders(&ctx, &notifier)
+                .await
+                .unwrap_err()
+                .contains("every folder scan failed")
+        );
+        ctx.cancel.cancel();
+        assert!(
+            rescan_folders(&ctx, &notifier)
+                .await
+                .unwrap_err()
+                .contains("cancelled")
+        );
+        assert!(
+            kitsunarr_db::library::movies::get_detail(&ctx.db, 1)
+                .await
+                .is_ok()
+        );
+    }
 
     #[test]
     fn pruning_only_touches_scheduled_backups() {

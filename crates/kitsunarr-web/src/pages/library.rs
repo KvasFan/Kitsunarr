@@ -35,7 +35,8 @@ fn use_debounced(source: Signal<String>, ms: u32) -> Signal<String> {
         generation.set(ticket);
         spawn(async move {
             gloo_timers::future::TimeoutFuture::new(ms).await;
-            if *generation.peek() == ticket {
+            // An unchanged initial value must not reset paging/selection 300 ms after mount.
+            if *generation.peek() == ticket && *out.peek() != value {
                 out.set(value);
             }
         });
@@ -224,7 +225,7 @@ pub fn MoviesLibrary() -> Element {
     let mut selected = use_signal(HashSet::<i64>::new);
     let mut busy = use_signal(|| false);
     use_effect(move || {
-        let _ = (search(), sort_key(), watched());
+        let _ = search();
         if *page.peek() != 1 {
             page.set(1);
         }
@@ -279,10 +280,10 @@ pub fn MoviesLibrary() -> Element {
     rsx! {
         div{class:"page-head",h1{class:"grow","Movies"}}
         div{class:"toolbar",
-            select{class:"select","aria-label":"Sort by",value:sort_key(),onchange:move |e:FormEvent|sort_key.set(e.value()),
+            select{class:"select","aria-label":"Sort by",value:sort_key(),onchange:move |e:FormEvent|{selected.write().clear();page.set(1);sort_key.set(e.value());},
                 option{value:"title","Title"}option{value:"added","Date added"}option{value:"year","Year"}option{value:"size","Size on disk"}option{value:"watchedAt","Watched date"}
             }
-            select{class:"select","aria-label":"Filter by watched state",onchange:move |e:FormEvent|watched.set(match e.value().as_str(){"yes"=>Some(true),"no"=>Some(false),_=>None}),
+            select{class:"select","aria-label":"Filter by watched state",onchange:move |e:FormEvent|{selected.write().clear();page.set(1);watched.set(match e.value().as_str(){"yes"=>Some(true),"no"=>Some(false),_=>None});},
                 option{value:"all","All"}option{value:"yes","Watched"}option{value:"no","Unwatched"}
             }
             div{class:"spacer"}ViewToggle{grid}

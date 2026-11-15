@@ -24,6 +24,7 @@ kitsunarr-migrate = { workspace = true }
 kitsunarr-scheduler = { workspace = true }
 kitsunarr-metadata = { workspace = true }
 kitsunarr-library = { workspace = true }
+kitsunarr-notifications = { workspace = true }
 tokio = { workspace = true }
 tokio-util = { workspace = true }
 axum = { workspace = true }

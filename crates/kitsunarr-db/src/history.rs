@@ -1,6 +1,6 @@
 //! History (grabs, imports, deletions, renames, failures).
 
-use kitsunarr_domain::api::library::HistoryItem;
+use kitsunarr_domain::api::library::{HistoryFilter, HistoryItem};
 use kitsunarr_domain::{Page, PageRequest, Quality, SortDirection};
 use sqlx::{FromRow, SqliteConnection};
 
@@ -187,29 +187,65 @@ pub async fn list(
     paging: &PageRequest,
     event_type: Option<&str>,
 ) -> DbResult<Page<HistoryItem>> {
-    let total: i64 =
-        sqlx::query_scalar("SELECT COUNT(*) FROM history WHERE (?1 IS NULL OR event_type = ?1)")
-            .bind(event_type)
-            .fetch_one(db.pool())
-            .await?;
-    // Newest first unless the caller explicitly asks for ascending order.
+    list_filtered(
+        db,
+        paging,
+        &HistoryFilter {
+            event_type: event_type.map(str::to_string),
+            ..Default::default()
+        },
+    )
+    .await
+}
+
+fn conditions(query: &mut sqlx::QueryBuilder<sqlx::Sqlite>, filter: &HistoryFilter) {
+    query.push(" WHERE 1 = 1");
+    if let Some(event) = &filter.event_type {
+        query.push(" AND h.event_type = ").push_bind(event.clone());
+    }
+    if let Some(id) = filter.series_id {
+        query.push(" AND h.series_id = ").push_bind(id);
+    }
+    if let Some(id) = filter.episode_id {
+        query.push(" AND h.episode_id = ").push_bind(id);
+    }
+    if let Some(id) = filter.movie_id {
+        query.push(" AND h.movie_id = ").push_bind(id);
+    }
+    if let Some(id) = &filter.download_id {
+        query
+            .push(" AND h.download_id = ")
+            .push_bind(id.clone())
+            .push(" COLLATE NOCASE");
+    }
+}
+
+pub async fn list_filtered(
+    db: &Database,
+    paging: &PageRequest,
+    filter: &HistoryFilter,
+) -> DbResult<Page<HistoryItem>> {
+    // Count and rows belong to one SQLite snapshot, even while new history is being written.
+    let mut tx = db.pool().begin().await?;
+    let mut count = sqlx::QueryBuilder::new("SELECT COUNT(*) FROM history h");
+    conditions(&mut count, filter);
+    let total: i64 = count.build_query_scalar().fetch_one(&mut *tx).await?;
     let order = if paging.sort_direction == Some(SortDirection::Asc) {
         "ASC"
     } else {
         "DESC"
     };
-    let sql = format!(
-        "SELECT h.id, h.event_type, h.date, h.source_title, h.series_id, s.title AS series_title, h.episode_id, h.movie_id, \
-         m.title AS movie_title, h.quality_id, h.download_id, h.data FROM history h \
-         LEFT JOIN series s ON s.id = h.series_id LEFT JOIN movies m ON m.id = h.movie_id \
-         WHERE (?1 IS NULL OR h.event_type = ?1) ORDER BY h.date {order}, h.id {order} LIMIT ?2 OFFSET ?3"
+    let mut query = sqlx::QueryBuilder::new(
+        "SELECT h.id, h.event_type, h.date, h.source_title, h.series_id, s.title AS series_title, h.episode_id, h.movie_id, m.title AS movie_title, h.quality_id, h.download_id, h.data FROM history h LEFT JOIN series s ON s.id = h.series_id LEFT JOIN movies m ON m.id = h.movie_id",
     );
-    let rows: Vec<Row> = sqlx::query_as(sqlx::AssertSqlSafe(sql))
-        .bind(event_type)
-        .bind(i64::from(paging.page_size()))
-        .bind(paging.offset() as i64)
-        .fetch_all(db.pool())
-        .await?;
+    conditions(&mut query, filter);
+    query
+        .push(format!(" ORDER BY h.date {order}, h.id {order} LIMIT "))
+        .push_bind(i64::from(paging.page_size()))
+        .push(" OFFSET ")
+        .push_bind(paging.offset() as i64);
+    let rows: Vec<Row> = query.build_query_as().fetch_all(&mut *tx).await?;
+    tx.commit().await?;
     Ok(Page {
         page: paging.page(),
         page_size: paging.page_size(),
