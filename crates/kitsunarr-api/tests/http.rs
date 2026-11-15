@@ -6258,3 +6258,87 @@ async fn movie_library_tools_import_audit_and_recycle_restore_over_http() {
     assert!(schema["paths"]["/api/v1/manualimport/movies"]["post"].is_object());
     assert!(schema["paths"]["/api/v1/librarytools/recycle/restore-movie"]["post"].is_object());
 }
+
+#[tokio::test]
+async fn movies_can_be_marked_watched_individually_or_in_bulk_and_filtered() {
+    let server = start().await;
+    let client = signed_in(&server).await;
+    for id in 1..=2 {
+        sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (?,?,'film','film',?,'tmdbMovie',?,1,'/m',?,'2026-11-15T00:00:00Z')")
+            .bind(id).bind(format!("Film {id}")).bind(format!("film-{id}")).bind(id.to_string()).bind(format!("/m/film-{id}")).execute(server.state.db.pool()).await.unwrap();
+    }
+    assert_eq!(
+        reqwest::Client::new()
+            .put(format!("{}/api/v1/movies/1/watched", server.base))
+            .json(&serde_json::json!({"watched":true}))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        401
+    );
+    let before = client.movie_detail(1).await.unwrap();
+    assert!(!before.item.watched);
+    let changed = client.set_movie_watched(1, true).await.unwrap();
+    assert!(changed.item.watched);
+    assert!(changed.item.watched_at.is_some());
+    assert_eq!(before.item.monitored, changed.item.monitored);
+    assert_eq!(
+        client
+            .set_movie_watched(1, true)
+            .await
+            .unwrap()
+            .item
+            .watched_at,
+        changed.item.watched_at
+    );
+    assert_eq!(
+        client
+            .set_movies_watched(&[1, 1, 2, 999], true)
+            .await
+            .unwrap()
+            .updated,
+        2
+    );
+    let watched = client
+        .movies(&LibraryQuery {
+            watched: Some(true),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert_eq!(watched.total_records, 2);
+    assert!(client.set_movies_watched(&[], false).await.is_err());
+    assert!(client.set_movies_watched(&[0], false).await.is_err());
+    assert!(
+        client
+            .set_movies_watched(&vec![1; 10_001], false)
+            .await
+            .is_err()
+    );
+    assert!(client.set_movie_watched(9999, true).await.is_err());
+    client.set_movies_watched(&[1, 2], false).await.unwrap();
+    assert_eq!(
+        client
+            .movies(&LibraryQuery {
+                watched: Some(true),
+                ..Default::default()
+            })
+            .await
+            .unwrap()
+            .total_records,
+        0
+    );
+    let unseen = client
+        .movies(&LibraryQuery {
+            watched: Some(false),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert_eq!(unseen.total_records, 2);
+    assert!(unseen.records.iter().all(|m| m.watched_at.is_none()));
+    let schema: serde_json::Value = client.get("/openapi.json").await.unwrap();
+    assert!(schema["paths"]["/api/v1/movies/{id}/watched"]["put"].is_object());
+    assert!(schema["paths"]["/api/v1/movies/watched"]["put"].is_object());
+}

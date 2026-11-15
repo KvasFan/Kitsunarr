@@ -674,3 +674,35 @@ pub async fn delete_movie_file(
     changed(&state, "movie", vec![id], false);
     Ok(StatusCode::NO_CONTENT)
 }
+
+/// Marks a movie watched or unwatched without changing its monitoring choice. When enabled,
+/// the next Jellyfin watched sync follows Jellyfin's current state.
+#[utoipa::path(put,path="/movies/{id}/watched",tag="library",params(("id"=i64,Path)),
+    request_body=kitsunarr_domain::api::library::MovieWatchedUpdate,responses((status=200,body=MovieDetail),(status=404)))]
+pub async fn set_movie_watched(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(body): Json<kitsunarr_domain::api::library::MovieWatchedUpdate>,
+) -> ApiResult<Json<MovieDetail>> {
+    movies::get_detail(&state.db, id).await?;
+    movies::set_watched(&state.db, &[id], body.watched).await?;
+    changed(&state, "movie", vec![id], false);
+    Ok(Json(movies::get_detail(&state.db, id).await?))
+}
+
+#[utoipa::path(put,path="/movies/watched",tag="library",request_body=kitsunarr_domain::api::library::MoviesWatchedUpdate,
+    responses((status=200,body=BulkEditResult),(status=422,body=ApiErrorBody)))]
+pub async fn set_movies_watched(
+    State(state): State<AppState>,
+    Json(body): Json<kitsunarr_domain::api::library::MoviesWatchedUpdate>,
+) -> ApiResult<Json<BulkEditResult>> {
+    if body.ids.is_empty() || body.ids.len() > 10_000 || body.ids.iter().any(|id| *id < 1) {
+        return Err(ApiError::field(
+            "ids",
+            "Choose 1 to 10000 positive movie ids.",
+        ));
+    }
+    let updated = movies::set_watched(&state.db, &body.ids, body.watched).await?;
+    changed(&state, "movie", body.ids, false);
+    Ok(Json(BulkEditResult { updated }))
+}

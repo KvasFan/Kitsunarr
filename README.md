@@ -18,6 +18,7 @@ Kitsunarr is an independent, self-hosted media automation platform built with Ru
   - Add titles from seven catalogues, with scheduled metadata refresh that keeps your monitoring choices, and a choice of episode order (TMDB episode groups, TheTVDB orders).
   - Collections of series and movies, with anime franchises and TMDB film collections grouped automatically.
   - Film folder scans, previewed renames with subtitles, explicit file removal and restore through the recycle bin, and reviewed manual movie imports in copy or move mode.
+  - Movie watched status with manual and bulk controls, watched filters, and Jellyfin watched sync for feature films.
 - **Migration from Sonarr (v3/v4) and Tanukarr**, through the source API or a backup file.
   - A dry-run preview that is identical to the real run.
   - Path mapping for Docker layouts.

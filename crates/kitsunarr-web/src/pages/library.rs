@@ -219,61 +219,106 @@ pub fn MoviesLibrary() -> Element {
     let search = use_debounced(app.search, 300);
     let mut page = use_signal(|| 1u32);
     let mut sort_key = use_signal(|| "title".to_string());
+    let mut watched = use_signal(|| None::<bool>);
     let grid = use_signal(|| crate::util::load_pref("kitsunarr-view").as_deref() != Some("table"));
+    let mut selected = use_signal(HashSet::<i64>::new);
+    let mut busy = use_signal(|| false);
     use_effect(move || {
-        let _ = (search(), sort_key());
+        let _ = (search(), sort_key(), watched());
         if *page.peek() != 1 {
             page.set(1);
         }
+        selected.write().clear();
     });
-    let data = use_resource(move || {
+    use_effect(move || {
+        crate::util::save_pref("kitsunarr-view", if grid() { "grid" } else { "table" })
+    });
+    let c0 = client.clone();
+    let mut data = use_resource(move || {
         let _ = (app.library_rev)();
         let q = LibraryQuery {
             page: Some(page()),
             page_size: Some(PAGE_SIZE),
             sort_key: Some(sort_key()),
             search: Some(search()).filter(|s| !s.trim().is_empty()),
+            watched: watched(),
             ..Default::default()
         };
-        let c = client.clone();
+        let c = c0.clone();
         async move { c.movies(&q).await }
     });
-    rsx! {
-        div { class: "page-head", h1 { class: "grow", "Movies" } }
-        div { class: "toolbar",
-            select {
-                class: "select",
-                "aria-label": "Sort by",
-                onchange: move |e: FormEvent| sort_key.set(e.value()),
-                option { value: "title", "Title" }
-                option { value: "added", "Date added" }
-                option { value: "year", "Year" }
-                option { value: "size", "Size on disk" }
-            }
-            div { class: "spacer" }
-            ViewToggle { grid }
+    let bulk = use_callback(move |(watch, monitor): (Option<bool>, Option<bool>)| {
+        let ids = selected.read().iter().copied().collect::<Vec<_>>();
+        if ids.is_empty() {
+            return;
         }
-        match &*data.read() {
-            None => rsx! { Loading {} },
-            Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
-            Some(Ok(p)) if p.records.is_empty() => rsx! {
-                Empty { title: "No movies yet",
-                    p { "Anime films can be added from AniList, and Tanukarr migrations bring their movies along. Live-action films need the TMDB catalogue." }
-                    div { class: "row", style: "justify-content: center",
-                        Link { to: Route::AddMedia {}, class: "btn primary", "Add media" }
-                        Link { to: Route::ImportWizard {}, class: "btn", "Import library" }
-                    }
+        let c = client.clone();
+        busy.set(true);
+        spawn(async move {
+            let result = if let Some(watched) = watch {
+                c.set_movies_watched(&ids, watched).await
+            } else {
+                c.bulk_edit_movies(&BulkEdit {
+                    ids,
+                    monitored: monitor,
+                    ..Default::default()
+                })
+                .await
+            };
+            match result {
+                Ok(r) => {
+                    app.success(format!("Updated {} items.", r.updated));
+                    selected.write().clear();
+                    data.restart();
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    });
+    rsx! {
+        div{class:"page-head",h1{class:"grow","Movies"}}
+        div{class:"toolbar",
+            select{class:"select","aria-label":"Sort by",value:sort_key(),onchange:move |e:FormEvent|sort_key.set(e.value()),
+                option{value:"title","Title"}option{value:"added","Date added"}option{value:"year","Year"}option{value:"size","Size on disk"}option{value:"watchedAt","Watched date"}
+            }
+            select{class:"select","aria-label":"Filter by watched state",onchange:move |e:FormEvent|watched.set(match e.value().as_str(){"yes"=>Some(true),"no"=>Some(false),_=>None}),
+                option{value:"all","All"}option{value:"yes","Watched"}option{value:"no","Unwatched"}
+            }
+            div{class:"spacer"}ViewToggle{grid}
+        }
+        if !selected.read().is_empty(){div{class:"alert info",role:"region","aria-label":"Movie bulk actions",
+            div{class:"row grow",
+                strong{"{selected.read().len()} selected"}
+                button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((Some(true),None)),"Mark watched"}
+                button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((Some(false),None)),"Mark unwatched"}
+                button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((None,Some(true))),"Monitor"}
+                button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((None,Some(false))),"Unmonitor"}
+                button{class:"btn ghost sm",disabled:busy(),onclick:move |_|selected.write().clear(),"Clear"}
+            }
+        }}
+        match &*data.read(){
+            None=>rsx!{Loading{}},Some(Err(e))=>rsx!{ErrorBox{message:e.to_string()}},
+            Some(Ok(p)) if p.records.is_empty()=>rsx!{
+                Empty{title:if search().trim().is_empty() && watched().is_none(){"No movies yet"}else{"No matches"},
+                    p{"Add a movie, or change the search and watched filter."}
+                    div{class:"row",style:"justify-content:center",Link{to:Route::AddMedia{},class:"btn primary","Add media"}Link{to:Route::ImportWizard{},class:"btn","Import library"}}
                 }
             },
-            Some(Ok(p)) => rsx! {
-                if grid() {
-                    div { class: "media-grid",
-                        for item in p.records.iter() { MovieCard { key: "{item.id}", item: item.clone() } }
+            Some(Ok(p))=>rsx!{
+                if grid(){
+                    div{class:"media-grid",
+                        for item in &p.records{
+                            div{key:"{item.id}",style:"position:relative;min-width:0",
+                                MovieCard{item:item.clone(),selected:selected.read().contains(&item.id)}
+                                label{style:"position:absolute;top:.5rem;inset-inline-end:.5rem;padding:.3rem;background:var(--bg-elev);border-radius:var(--r-sm)",
+                                    input{r#type:"checkbox","aria-label":"Select {item.title}",disabled:busy(),checked:selected.read().contains(&item.id),onchange:{let id=item.id;move |e:FormEvent|{if e.checked(){selected.write().insert(id);}else{selected.write().remove(&id);}}}}
+                                }
+                            }
+                        }
                     }
-                } else {
-                    MovieTable { items: p.records.clone() }
-                }
-                Pagination { page: p.page, page_size: p.page_size, total: p.total_records, on_page: move |n| page.set(n) }
+                }else{MovieTable{items:p.records.clone(),selected,disabled:busy()}}
+                Pagination{page:p.page,page_size:p.page_size,total:p.total_records,on_page:move |n|page.set(n)}
             },
         }
     }

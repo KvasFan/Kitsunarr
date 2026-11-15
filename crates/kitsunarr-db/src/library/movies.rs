@@ -259,6 +259,8 @@ struct ListRow {
     studio: Option<String>,
     images: String,
     monitored: bool,
+    watched: bool,
+    watched_at: Option<String>,
     minimum_availability: String,
     quality_profile_id: i64,
     quality_profile_name: String,
@@ -281,6 +283,8 @@ impl ListRow {
             studio: self.studio,
             poster_url: poster_url(&self.images),
             monitored: self.monitored,
+            watched: self.watched,
+            watched_at: self.watched_at,
             minimum_availability: self
                 .minimum_availability
                 .parse()
@@ -300,7 +304,7 @@ impl ListRow {
     }
 }
 
-const LIST_COLUMNS: &str = "m.id, m.title, m.sort_title, m.year, m.status, m.studio, m.images, m.monitored, m.minimum_availability, \
+const LIST_COLUMNS: &str = "m.id, m.title, m.sort_title, m.year, m.status, m.studio, m.images, m.monitored, m.watched, m.watched_at, m.minimum_availability, \
     m.quality_profile_id, qp.name AS quality_profile_name, m.metadata_provider, m.path, m.added_at, \
     EXISTS (SELECT 1 FROM movie_files f WHERE f.movie_id = m.id) AS has_file, \
     (SELECT COALESCE(SUM(f.size), 0) FROM movie_files f WHERE f.movie_id = m.id) AS size_on_disk, \
@@ -311,6 +315,8 @@ fn sort_expression(key: Option<&str>) -> &'static str {
         "added" | "addedAt" => "m.added_at",
         "year" => "m.year",
         "status" => "m.status",
+        "watched" => "m.watched",
+        "watchedAt" => "m.watched_at",
         "size" | "sizeOnDisk" => {
             "(SELECT COALESCE(SUM(f.size), 0) FROM movie_files f WHERE f.movie_id = m.id)"
         }
@@ -323,6 +329,9 @@ fn push_filters(qb: &mut QueryBuilder<Sqlite>, q: &LibraryQuery) {
     qb.push(" WHERE 1 = 1");
     if let Some(m) = q.monitored {
         qb.push(" AND m.monitored = ").push_bind(m);
+    }
+    if let Some(watched) = q.watched {
+        qb.push(" AND m.watched = ").push_bind(watched);
     }
     if let Some(status) = q.status.as_deref().filter(|s| !s.is_empty()) {
         qb.push(" AND m.status = ").push_bind(status.to_string());
@@ -483,17 +492,35 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<MovieDetail> {
 
 pub async fn set_monitored(db: &Database, id: i64, monitored: bool) -> DbResult<()> {
     let mut conn = db.pool().acquire().await?;
-    let r = sqlx::query("UPDATE movies SET monitored = ? WHERE id = ?")
-        .bind(monitored)
-        .bind(id)
-        .execute(&mut *conn)
-        .await?;
+    let r = sqlx::query(
+        "UPDATE movies SET monitored = ?, jellyfin_unmonitor_owner = NULL WHERE id = ?",
+    )
+    .bind(monitored)
+    .bind(id)
+    .execute(&mut *conn)
+    .await?;
     if r.rows_affected() == 0 {
         return Err(DbError::NotFound);
     }
     // A Tanukarr film is a series: editing it re-applies auto tagging.
     crate::auto_tags::apply_movie(&mut conn, id).await?;
     Ok(())
+}
+
+/// Manual watched changes preserve monitoring choices and the ownership of automatic
+/// unmonitoring; only an explicit monitoring edit revokes that ownership.
+pub async fn set_watched(db: &Database, ids: &[i64], watched: bool) -> DbResult<u64> {
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    let mut seen = std::collections::HashSet::new();
+    let mut updated = 0;
+    let at = crate::now();
+    for id in ids.iter().filter(|id| seen.insert(**id)) {
+        let result=sqlx::query("UPDATE movies SET watched = ?1, watched_at = CASE WHEN ?1 THEN CASE WHEN watched THEN COALESCE(watched_at,?2) ELSE ?2 END ELSE NULL END, watched_source = 'manual' WHERE id = ?3")
+            .bind(watched).bind(&at).bind(id).execute(&mut *tx).await?;
+        updated += result.rows_affected();
+    }
+    tx.commit().await?;
+    Ok(updated)
 }
 
 pub async fn bulk_edit(db: &Database, edit: &BulkEdit) -> DbResult<u64> {
@@ -508,11 +535,13 @@ pub async fn bulk_edit(db: &Database, edit: &BulkEdit) -> DbResult<u64> {
             continue;
         }
         if let Some(m) = edit.monitored {
-            sqlx::query("UPDATE movies SET monitored = ? WHERE id = ?")
-                .bind(m)
-                .bind(id)
-                .execute(&mut *tx)
-                .await?;
+            sqlx::query(
+                "UPDATE movies SET monitored = ?, jellyfin_unmonitor_owner = NULL WHERE id = ?",
+            )
+            .bind(m)
+            .bind(id)
+            .execute(&mut *tx)
+            .await?;
         }
         if let Some(p) = edit.quality_profile_id {
             sqlx::query("UPDATE movies SET quality_profile_id = ? WHERE id = ?")

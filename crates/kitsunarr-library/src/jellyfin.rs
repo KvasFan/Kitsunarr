@@ -290,11 +290,34 @@ struct EpisodeState {
     season_monitored: Option<bool>,
 }
 
+#[derive(sqlx::FromRow)]
+struct MovieState {
+    monitored: bool,
+    watched: bool,
+    watched_source: Option<String>,
+    jellyfin_unmonitor_owner: Option<String>,
+}
+
+enum LocalFile {
+    Series {
+        file_id: i64,
+        series_id: i64,
+    },
+    Movie {
+        file_id: i64,
+        movie_id: i64,
+        folder: String,
+        relative: String,
+    },
+}
+
 /// What a sync changed.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct SyncSummary {
     pub matched_files: usize,
     pub updated_episodes: usize,
+    pub updated_movies: usize,
+    pub matched_movies: std::collections::BTreeSet<i64>,
     /// Every series with a matched file (list progress is checked for each).
     pub matched_series: std::collections::BTreeSet<i64>,
 }
@@ -342,7 +365,7 @@ pub async fn apply(
         .into_iter()
         .collect()
     };
-    let mut local: HashMap<String, Option<(i64, i64)>> = HashMap::new();
+    let mut local: HashMap<String, Option<LocalFile>> = HashMap::new();
     for (file_id, series_id, series_path, relative) in files {
         if !s.tags.is_empty() && !tagged.contains(&series_id) {
             continue;
@@ -358,14 +381,84 @@ pub async fn apply(
         local
             .entry(p)
             .and_modify(|v| *v = None)
-            .or_insert(Some((file_id, series_id)));
+            .or_insert(Some(LocalFile::Series { file_id, series_id }));
+    }
+    let movie_files:Vec<(i64,i64,String,String)>=sqlx::query_as("SELECT f.id,f.movie_id,m.path,f.relative_path FROM movie_files f JOIN movies m ON m.id=f.movie_id").fetch_all(db.pool()).await.map_err(err)?;
+    let movie_tags: HashSet<i64> = if s.tags.is_empty() {
+        HashSet::new()
+    } else {
+        sqlx::query_scalar("SELECT DISTINCT movie_id FROM movie_tags WHERE tag_id IN (SELECT value FROM json_each(?))")
+            .bind(serde_json::to_string(&s.tags).unwrap_or_default()).fetch_all(db.pool()).await.map_err(err)?.into_iter().collect()
+    };
+    for (file_id, movie_id, folder, relative) in movie_files {
+        if !s.tags.is_empty() && !movie_tags.contains(&movie_id) {
+            continue;
+        }
+        let Some(path) = normalize(&format!(
+            "{}/{}",
+            folder.trim_end_matches(['/', '\\']),
+            relative.replace('\\', "/")
+        )) else {
+            continue;
+        };
+        local
+            .entry(path)
+            .and_modify(|v| *v = None)
+            .or_insert(Some(LocalFile::Movie {
+                file_id,
+                movie_id,
+                folder,
+                relative,
+            }));
     }
     let fp = s.fingerprint();
     let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
     let mut summary = SyncSummary::default();
-    let mut tx = db.pool().begin().await.map_err(err)?;
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await.map_err(err)?;
     for (path, item) in &remote {
-        let Some(Some((file_id, series_id))) = local.get(path) else {
+        let Some(Some(target)) = local.get(path) else {
+            continue;
+        };
+        if let LocalFile::Movie {
+            file_id,
+            movie_id,
+            folder,
+            relative,
+        } = target
+        {
+            let state:Option<MovieState>=sqlx::query_as(
+                "SELECT m.monitored,m.watched,m.watched_source,m.jellyfin_unmonitor_owner FROM movies m JOIN movie_files f ON f.movie_id=m.id \
+                 WHERE m.id=? AND f.id=? AND m.path=? AND f.relative_path=? \
+                 AND (? OR EXISTS(SELECT 1 FROM movie_tags t WHERE t.movie_id=m.id AND t.tag_id IN(SELECT value FROM json_each(?))))"
+            ).bind(movie_id).bind(file_id).bind(folder).bind(relative).bind(s.tags.is_empty()).bind(serde_json::to_string(&s.tags).unwrap_or_default()).fetch_optional(&mut *tx).await.map_err(err)?;
+            let Some(state) = state else {
+                continue;
+            };
+            summary.matched_files += 1;
+            summary.matched_movies.insert(*movie_id);
+            let same_source = state.watched_source.as_deref() == Some(fp.as_str());
+            let owned = state.jellyfin_unmonitor_owner.as_deref() == Some(fp.as_str());
+            let unmonitor =
+                s.unmonitor_watched && (apply_initial_unmonitor || !state.watched || !same_source);
+            if state.watched == item.played
+                && same_source
+                && !(item.played && unmonitor && state.monitored)
+                && !(!item.played && owned)
+            {
+                continue;
+            }
+            let at = item.last_played.clone().unwrap_or_else(|| now.clone());
+            let changed=sqlx::query(
+                "UPDATE movies SET watched=?1, watched_source=?2, \
+                 watched_at=CASE WHEN ?1 THEN CASE WHEN watched_source=?2 THEN COALESCE(watched_at,?3) ELSE ?3 END ELSE NULL END, \
+                 monitored=CASE WHEN ?1 AND ?4 AND monitored THEN 0 WHEN NOT ?1 AND ?5 AND jellyfin_unmonitor_owner=?2 THEN 1 ELSE monitored END, \
+                 jellyfin_unmonitor_owner=CASE WHEN ?1 AND ?4 AND monitored THEN ?2 WHEN NOT ?1 AND jellyfin_unmonitor_owner=?2 THEN NULL ELSE jellyfin_unmonitor_owner END \
+                 WHERE id=?6 AND EXISTS(SELECT 1 FROM movie_files f WHERE f.movie_id=movies.id AND f.id=?7 AND f.relative_path=?8) AND path=?9"
+            ).bind(item.played).bind(&fp).bind(at).bind(unmonitor).bind(s.remonitor_unwatched).bind(movie_id).bind(file_id).bind(relative).bind(folder).execute(&mut *tx).await.map_err(err)?;
+            summary.updated_movies += changed.rows_affected() as usize;
+            continue;
+        }
+        let LocalFile::Series { file_id, series_id } = target else {
             continue;
         };
         summary.matched_files += 1;
@@ -503,10 +596,11 @@ pub async fn sync(db: &Database, http: &reqwest::Client, force: bool) -> Result<
         String::new()
     };
     Ok(format!(
-        "{} items read, {} files matched, {} episodes updated{progress}",
+        "{} items read, {} files matched, {} episodes updated, {} movies updated{progress}",
         items.len(),
         summary.matched_files,
-        summary.updated_episodes
+        summary.updated_episodes,
+        summary.updated_movies
     ))
 }
 

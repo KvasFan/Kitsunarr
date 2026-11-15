@@ -1120,3 +1120,87 @@ async fn live_source_dry_run() {
     );
     println!("{:#?}", out.summary);
 }
+
+#[tokio::test]
+async fn a_tanukarr_films_watched_feature_is_imported_without_overriding_a_local_choice() {
+    let tmp = tempfile::tempdir().unwrap();
+    let media = tmp.path().join("media");
+    make_media(
+        &media,
+        &[
+            "/tv/Breaking Bad",
+            "/tv/Chernobyl",
+            "/anime/Cowboy Bebop",
+            "/tv/Cowboy Bebop",
+            "/movies/Cowboy Bebop - The Movie - Knockin' on Heaven's Door",
+        ],
+    );
+    let before = tree(&media);
+    let mut source = load_from_backup(&fixture("tanukarr-0.1.5/backup.zip"), tmp.path())
+        .await
+        .unwrap();
+    let film_id = source
+        .snapshot
+        .series
+        .iter()
+        .find(|s| s.media_type == kitsunarr_migrate::model::SrcMediaType::Movie)
+        .unwrap()
+        .id;
+    let episode = source
+        .snapshot
+        .episodes
+        .iter_mut()
+        .find(|e| e.series_id == film_id && e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    episode
+        .unmapped
+        .insert("watched".into(), serde_json::json!(true));
+    episode.unmapped.insert(
+        "watchedatutc".into(),
+        serde_json::json!("2026-11-14T21:00:00Z"),
+    );
+    let db = fresh_db(tmp.path()).await;
+    let mut opts = options(&media);
+    run(
+        &db,
+        &source,
+        &opts,
+        Mode::Apply {
+            backup_dir: tmp.path().join("b"),
+        },
+        &noop,
+    )
+    .await
+    .unwrap();
+    let (id, watched, at, owner): (i64, bool, Option<String>, Option<String>) =
+        sqlx::query_as("SELECT id,watched,watched_at,watched_source FROM movies")
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert!(watched);
+    assert_eq!(at.as_deref(), Some("2026-11-14T21:00:00Z"));
+    assert_eq!(owner.as_deref(), Some("migrated"));
+    kitsunarr_db::library::movies::set_watched(&db, &[id], false)
+        .await
+        .unwrap();
+    opts.conflict_policy = ConflictPolicy::Update;
+    run(
+        &db,
+        &source,
+        &opts,
+        Mode::Apply {
+            backup_dir: tmp.path().join("b"),
+        },
+        &noop,
+    )
+    .await
+    .unwrap();
+    assert!(
+        !kitsunarr_db::library::movies::get_detail(&db, id)
+            .await
+            .unwrap()
+            .item
+            .watched
+    );
+    assert_eq!(tree(&media), before);
+}

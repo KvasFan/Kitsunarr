@@ -20,6 +20,8 @@ pub struct LibraryQuery {
     pub search: Option<String>,
     pub kind: Option<MediaKind>,
     pub monitored: Option<bool>,
+    /// Movie watched filter; independent of monitoring.
+    pub watched: Option<bool>,
     pub status: Option<String>,
     pub tag_id: Option<i64>,
     pub quality_profile_id: Option<i64>,
@@ -164,6 +166,10 @@ pub struct MovieListItem {
     pub studio: Option<String>,
     pub poster_url: Option<String>,
     pub monitored: bool,
+    #[serde(default)]
+    pub watched: bool,
+    #[serde(default)]
+    pub watched_at: Option<String>,
     pub minimum_availability: MinimumAvailability,
     pub quality_profile_id: i64,
     pub quality_profile_name: String,
@@ -502,4 +508,19 @@ pub struct EpisodeOrderingItem {
 pub struct EpisodeOrderingUpdate {
     /// `None` or empty: the catalogue's default order.
     pub ordering: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieWatchedUpdate {
+    pub watched: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MoviesWatchedUpdate {
+    pub ids: Vec<i64>,
+    pub watched: bool,
 }

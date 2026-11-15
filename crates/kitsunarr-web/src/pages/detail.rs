@@ -736,6 +736,19 @@ pub fn MovieDetailPage(id: i64) -> Element {
             }
         });
     };
+    let mut watching = use_signal(|| false);
+    let c8 = client.clone();
+    let mut set_watched = move |watched: bool| {
+        let c = c8.clone();
+        watching.set(true);
+        spawn(async move {
+            match c.set_movie_watched(id, watched).await {
+                Ok(_) => detail.restart(),
+                Err(e) => app.error(&e),
+            }
+            watching.set(false);
+        });
+    };
     let read = detail.read();
     let d = match &*read {
         None => return rsx! { Loading {} },
@@ -776,12 +789,18 @@ pub fn MovieDetailPage(id: i64) -> Element {
                         dt { "Identities" }
                         dd { {d.external_ids.iter().map(|x| format!("{}:{}", x.kind, x.value)).collect::<Vec<_>>().join("  ")} }
                     }
+                    dt { "Watched" }
+                    dd {
+                        Badge { text: if d.item.watched {"watched"} else {"unwatched"}, tone: if d.item.watched {Some("success")} else {None} }
+                        if let Some(at)=&d.item.watched_at {span {class:"small muted"," · ",{crate::util::format_datetime(at)}}}
+                    }
                     dt { "Metadata" }
                     dd { {d.last_refreshed_at.as_deref().map(|t| format!("refreshed {}", relative(t))).unwrap_or_else(|| "never refreshed".into())} }
                 }
                 div { class: "row", style: "margin-top: var(--sp-4)",
                     Switch { checked: d.item.monitored, label: if d.item.monitored { "Monitored".to_string() } else { "Unmonitored".to_string() }, onchange: set_monitored }
                     div { class: "spacer" }
+                    button {class:"btn",disabled:watching(),title:"Jellyfin watched sync can update this status.",onclick:move |_|set_watched(!d.item.watched),if d.item.watched {"Mark unwatched"}else{"Mark watched"}}
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
                     button { class: "btn", onclick: move |_| source_open.set(true), "Change catalogue" }
                     button { class: "btn", title: "Search the indexers and choose a release", onclick: move |_| searching.set(true), "Search" }

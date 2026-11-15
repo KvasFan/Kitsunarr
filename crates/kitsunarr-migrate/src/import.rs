@@ -2400,6 +2400,22 @@ impl<'a> Importer<'a> {
                 movies::set_original_country(conn, target, s.original_country.as_deref()).await?;
             }
             if write {
+                // Tanukarr's film is the S01E01 feature; import its migration-248 watched
+                // state without overriding a choice already owned by Kitsunarr or Jellyfin.
+                if let Some(feature) = self.snap.episodes.iter().find(|e| {
+                    e.series_id == s.id
+                        && e.season_number == 1
+                        && e.episode_number == 1
+                        && e.unmapped.contains_key("watched")
+                }) {
+                    let at = feature
+                        .unmapped
+                        .get("watchedatutc")
+                        .and_then(|v| v.as_str())
+                        .map(str::to_string);
+                    sqlx::query("UPDATE movies SET watched=1, watched_at=COALESCE(watched_at,?), watched_source='migrated' WHERE id=? AND (watched_source IS NULL OR watched_source='migrated')")
+                        .bind(at).bind(target).execute(&mut *conn).await?;
+                }
                 self.movies_written.push(target);
                 let files: Vec<&SrcEpisodeFile> = self
                     .snap

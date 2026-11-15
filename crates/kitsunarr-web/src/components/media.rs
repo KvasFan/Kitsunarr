@@ -48,10 +48,10 @@ pub fn SeriesCard(item: SeriesListItem, selected: bool) -> Element {
 }
 
 #[component]
-pub fn MovieCard(item: MovieListItem) -> Element {
+pub fn MovieCard(item: MovieListItem, #[props(default)] selected: bool) -> Element {
     let id = item.id;
     rsx! {
-        Link { to: Route::MovieDetailPage { id }, class: "media-card",
+        Link { to: Route::MovieDetailPage { id }, class: if selected {"media-card selected"}else{"media-card"},
             Poster { url: item.poster_url.clone(), title: item.title.clone(), monitored: item.monitored }
             div { class: "meta",
                 span { class: "t ellipsis", title: "{item.title}", "{item.title}" }
@@ -59,6 +59,7 @@ pub fn MovieCard(item: MovieListItem) -> Element {
                     {item.year.map(|y| y.to_string()).unwrap_or_default()}
                     if item.has_file { " · on disk" } else { " · missing" }
                 }
+                if item.watched {Badge {text:"watched",tone:"success"}}
             }
         }
     }
@@ -164,14 +165,21 @@ fn SeriesRow(item: SeriesListItem, selected: Signal<HashSet<i64>>) -> Element {
 }
 
 #[component]
-pub fn MovieTable(items: Vec<MovieListItem>) -> Element {
+pub fn MovieTable(
+    items: Vec<MovieListItem>,
+    mut selected: Signal<HashSet<i64>>,
+    #[props(default)] disabled: bool,
+) -> Element {
+    let ids: Vec<i64> = items.iter().map(|i| i.id).collect();
+    let all = !ids.is_empty() && ids.iter().all(|id| selected.read().contains(id));
     rsx! {
         div { class: "table-wrap",
             table { class: "table",
-                thead { tr { th { "Title" } th { "Year" } th { class: "hide-mobile", "Profile" } th { "File" } th { class: "num", "Size" } th { "Added" } } }
+                thead { tr { th { input {r#type:"checkbox",disabled,"aria-label":"Select all movies on this page",checked:all,onchange:move |e:FormEvent|{if e.checked(){selected.write().extend(ids.iter().copied());}else{for id in &ids{selected.write().remove(id);}}}} } th { "Title" } th { "Year" } th { class: "hide-mobile", "Profile" } th { "File" } th { "Watched" } th { class: "num", "Size" } th { "Added" } } }
                 tbody {
                     for item in items {
                         tr { key: "{item.id}",
+                            td {input {r#type:"checkbox",disabled,"aria-label":"Select {item.title}",checked:selected.read().contains(&item.id),onchange:move |e:FormEvent|{if e.checked(){selected.write().insert(item.id);}else{selected.write().remove(&item.id);}}}}
                             td {
                                 div { class: "row tight",
                                     if !item.monitored { Badge { text: "unmonitored" } }
@@ -181,6 +189,7 @@ pub fn MovieTable(items: Vec<MovieListItem>) -> Element {
                             td { {item.year.map(|y| y.to_string()).unwrap_or_default()} }
                             td { class: "hide-mobile", "{item.quality_profile_name}" }
                             td { if item.has_file { Badge { text: "on disk", tone: "success" } } else { Badge { text: "missing", tone: "warning" } } }
+                            td {span {title:item.watched_at.as_deref().map(crate::util::format_datetime).unwrap_or_default(),if item.watched {"watched"}else{"unwatched"}}}
                             td { class: "num", {format_bytes(item.size_on_disk)} }
                             td { class: "muted", {format_date(&item.added_at)} }
                         }

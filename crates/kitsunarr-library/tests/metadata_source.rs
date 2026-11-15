@@ -359,6 +359,12 @@ async fn movies_keep_their_file_path_and_settings_and_reject_duplicates() {
         .execute(db.pool())
         .await
         .unwrap();
+    kitsunarr_db::library::movies::set_watched(&db, &[id], true)
+        .await
+        .unwrap();
+    kitsunarr_library::refresh_movie(&db, &metadata, id)
+        .await
+        .unwrap();
     let before = kitsunarr_db::library::movies::get_detail(&db, id)
         .await
         .unwrap();
@@ -371,6 +377,8 @@ async fn movies_keep_their_file_path_and_settings_and_reject_duplicates() {
     let after = kitsunarr_db::library::movies::get_detail(&db, id)
         .await
         .unwrap();
+    assert!(after.item.watched);
+    assert_eq!(before.item.watched_at, after.item.watched_at);
     assert_eq!(before.file, after.file);
     assert_eq!(before.item.path, after.item.path);
     assert_eq!(before.item.monitored, after.item.monitored);

@@ -646,6 +646,24 @@ async fn first_run_setup_migration_and_library() {
         screenshot(&client,"11j-movie-rename-preview").await;
         client.find(Locator::XPath("//div[@class='modal-foot']//button[normalize-space(.)='Rename']")).await.unwrap().click().await.unwrap();
         wait_text(&client,"1 file renamed.").await;
+        // Watched state is independent of monitoring and available in both library views.
+        click_button(&client,"Mark watched").await;
+        client.wait().for_element(Locator::XPath("//button[normalize-space(.)='Mark unwatched']")).await.unwrap();
+        screenshot(&client,"11o-movie-watched").await;
+        client.goto(&format!("{base}/movies")).await.unwrap();click_button(&client,"Table").await;
+        client.wait().for_element(Locator::Css("select[aria-label='Filter by watched state']")).await.unwrap().select_by_value("yes").await.unwrap();
+        client.wait().for_element(Locator::Css("input[aria-label='Select E2E Film']")).await.unwrap().click().await.unwrap();
+        click_button(&client,"Mark unwatched").await;wait_text(&client,"No matches").await;
+        client.find(Locator::Css("select[aria-label='Filter by watched state']")).await.unwrap().select_by_value("all").await.unwrap();
+        client.wait().for_element(Locator::Css("a[href='/movies/900']")).await.unwrap();
+        click_button(&client,"Posters").await;
+        client.wait().for_element(Locator::Css("input[aria-label='Select E2E Film']")).await.unwrap().click().await.unwrap();
+        click_button(&client,"Mark watched").await;
+        client.wait().for_element(Locator::Css("a.media-card .badge.success")).await.unwrap();
+        screenshot(&client,"11p-movie-bulk-watched").await;
+        client.find(Locator::Css("a.media-card[href='/movies/900']")).await.unwrap().click().await.unwrap();
+        click_button(&client,"Mark unwatched").await;
+        client.wait().for_element(Locator::XPath("//button[normalize-space(.)='Mark watched']")).await.unwrap();
         assert!(!original.exists());
         let renamed: Vec<_> = std::fs::read_dir(&film_folder).unwrap().flatten().map(|e|e.path()).filter(|p|p.extension().is_some_and(|e|e=="mkv")).collect();
         assert_eq!(renamed.len(),1);

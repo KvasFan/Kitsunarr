@@ -404,6 +404,27 @@ impl Client {
         )
         .await
     }
+    pub async fn set_movie_watched(&self, id: i64, watched: bool) -> ClientResult<MovieDetail> {
+        self.put(
+            &format!("/movies/{id}/watched"),
+            &kitsunarr_domain::api::library::MovieWatchedUpdate { watched },
+        )
+        .await
+    }
+    pub async fn set_movies_watched(
+        &self,
+        ids: &[i64],
+        watched: bool,
+    ) -> ClientResult<BulkEditResult> {
+        self.put(
+            "/movies/watched",
+            &kitsunarr_domain::api::library::MoviesWatchedUpdate {
+                ids: ids.to_vec(),
+                watched,
+            },
+        )
+        .await
+    }
     pub async fn delete_movie(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/movies/{id}")).await
     }
