@@ -763,6 +763,22 @@ mod codec_normalized_size_fixture {
             max_size: Some(OrderedF64(5.0)),
         }];
         assert!(!c.accepted(specs::acceptable_size));
+        c.release.size = 500 * MB;
+        c.series.profile.size_limits[0].max_size = None;
+        assert!(
+            c.accepted(specs::acceptable_size),
+            "null override is unlimited"
+        );
+        c.series.profile.size_limits[0].max_size = Some(OrderedF64(0.0));
+        assert!(
+            c.accepted(specs::acceptable_size),
+            "zero maximum is unlimited"
+        );
+        c.series.profile.size_limits.clear();
+        assert!(
+            !c.accepted(specs::acceptable_size),
+            "no override uses the global maximum"
+        );
     }
 }
 

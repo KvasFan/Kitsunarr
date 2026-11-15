@@ -3,8 +3,8 @@
 //! Given the releases a search found, it maps each to the searched series and its episodes,
 //! evaluates custom formats and the decision specifications, and ranks the results with Sonarr's
 //! comparer chain. The behaviour follows Sonarr at revision `c018578e4` (the parser port's
-//! revision), except where Kitsunarr's data model is Sonarr v4's: size limits come from the
-//! quality definitions.
+//! revision), with Tanukarr's profile size limits and codec normalization. Qualities without
+//! a profile size override fall back to the global quality definitions.
 //!
 //! Scene numbering comes from TheXEM (episodes' scene numbers and the series' scene-season
 //! names); Tanukarr's numbering resolver decides between scene and aired numbers. Sonarr's

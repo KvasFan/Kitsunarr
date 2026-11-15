@@ -70,3 +70,12 @@ containers passed connection, credential rejection, paused queue/removal and loc
 data-transfer checks. Native queue handling and v3 connection probes also passed. A Transmission
 paused-state classification bug was fixed and deployed locally. See the
 [verification report](download-client-verification-2026-11-15.md) for scope and repeatable tests.
+
+## Quality-profile verification follow-up
+
+Kitsunarr matches 5,376 scenarios executed from Tanukarr's original C# profile and upgrade
+algorithms. This audit adds stricter profile validation, Tanukarr size/codec fields in the
+v3 profile API, preference-order controls and the minimum upgrade increment in the browser.
+Null size overrides are explicitly unlimited; a separate control restores global sizes.
+The local Seasonal profile's minimum of 500 is reachable and was preserved. See the
+[verification report](quality-profile-verification-2026-11-15.md) for tests and remaining scope.

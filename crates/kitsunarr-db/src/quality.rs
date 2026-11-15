@@ -360,6 +360,15 @@ pub async fn set_codec_factors(
 /// Tanukarr's profile guards for presets: retired qualities cannot be allowed, and custom
 /// presets a profile omits are kept in it (not allowed).
 pub async fn prepare_profile(db: &crate::Database, p: &mut QualityProfile) -> DbResult<()> {
+    let formats = list_custom_formats(db.pool()).await?;
+    for item in &p.format_items {
+        if !formats.iter().any(|f| f.id == item.format_id) {
+            return Err(DbError::Invalid(format!(
+                "custom format {} does not exist",
+                item.format_id
+            )));
+        }
+    }
     let defs = list_definitions(db.pool()).await?;
     let ids_of = |i: &QualityProfileItem| -> Vec<i32> {
         match (&i.quality_id, &i.group) {
@@ -457,7 +466,31 @@ pub fn validate_profile(p: &QualityProfile) -> Result<(), DbError> {
     if p.name.trim().is_empty() {
         return Err(DbError::Invalid("profile name is required".into()));
     }
+    // Tanukarr's QualityProfileController: reject impossible minimums and increments < 1.
+    // Native profiles store sparse scores; unmatched formats always contribute zero.
+    if p.min_upgrade_format_score < 1 {
+        return Err(DbError::Invalid(
+            "minimum custom format score increment must be at least 1".into(),
+        ));
+    }
+    let mut formats = std::collections::HashSet::new();
+    let mut attainable = 0_i64;
+    for f in &p.format_items {
+        if !formats.insert(f.format_id) {
+            return Err(DbError::Invalid(format!(
+                "custom format {} appears twice",
+                f.format_id
+            )));
+        }
+        attainable += i64::from(f.score.max(0));
+    }
+    if i64::from(p.min_format_score) > attainable {
+        return Err(DbError::Invalid(
+            "minimum custom format score can never be satisfied".into(),
+        ));
+    }
     let mut seen = std::collections::HashSet::new();
+    let mut group_ids = std::collections::HashSet::new();
     let mut cutoff_found = false;
     let mut any_allowed = false;
     for item in &p.items {
@@ -472,8 +505,15 @@ pub fn validate_profile(p: &QualityProfile) -> Result<(), DbError> {
                 cutoff_found |= *q == p.cutoff && item.allowed;
             }
             (None, Some(g)) => {
-                if g.quality_ids.is_empty() {
-                    return Err(DbError::Invalid(format!("group `{}` is empty", g.name)));
+                if g.id <= 0 || Quality::by_id(g.id).is_some() || !group_ids.insert(g.id) {
+                    return Err(DbError::Invalid(
+                        "groups need a unique id distinct from quality ids".into(),
+                    ));
+                }
+                if g.name.trim().is_empty() || g.quality_ids.len() < 2 {
+                    return Err(DbError::Invalid(
+                        "groups need a name and at least two qualities".into(),
+                    ));
                 }
                 for q in &g.quality_ids {
                     if Quality::by_id(*q).is_none() || !seen.insert(*q) {
@@ -492,6 +532,13 @@ pub fn validate_profile(p: &QualityProfile) -> Result<(), DbError> {
             }
         }
         any_allowed |= item.allowed;
+    }
+    // GetIndex intentionally mirrors Tanukarr's index-zero fallback. Its API requires
+    // every standard quality, preventing an omitted quality inheriting the first item's flag.
+    if QUALITIES.iter().any(|q| !seen.contains(&q.id)) {
+        return Err(DbError::Invalid(
+            "profile must contain all standard qualities".into(),
+        ));
     }
     for (codec, factor) in &p.codec_multipliers {
         if !kitsunarr_domain::codec::FAMILIES.contains(&codec.as_str()) {
@@ -857,6 +904,52 @@ mod tests {
         let mut p = default_profiles().remove(3);
         p.cutoff = 21; // not allowed in HD-1080p
         assert!(validate_profile(&p).is_err());
+    }
+
+    #[test]
+    fn profile_scores_must_be_reachable_and_upgrades_must_improve() {
+        let mut p = default_profiles().remove(0);
+        p.min_upgrade_format_score = 0;
+        assert!(validate_profile(&p).is_err());
+        p.min_upgrade_format_score = 1;
+        p.min_format_score = 500;
+        assert!(validate_profile(&p).is_err());
+        p.format_items = vec![
+            FormatScore {
+                format_id: 1,
+                score: 250,
+            },
+            FormatScore {
+                format_id: 2,
+                score: -1000,
+            },
+            FormatScore {
+                format_id: 3,
+                score: 250,
+            },
+        ];
+        assert!(validate_profile(&p).is_ok());
+        p.min_format_score = 501;
+        assert!(validate_profile(&p).is_err());
+        // With only penalties, a release matching no formats still scores zero.
+        p.min_format_score = 0;
+        p.format_items.retain(|f| f.score < 0);
+        assert!(validate_profile(&p).is_ok());
+        p.format_items.push(p.format_items[0]);
+        assert!(validate_profile(&p).is_err());
+    }
+
+    #[test]
+    fn profiles_cannot_omit_qualities_or_reuse_group_ids() {
+        let p = default_profiles().remove(0);
+        let mut missing = p.clone();
+        missing.items.remove(0);
+        assert!(validate_profile(&missing).is_err());
+        let mut duplicate = p.clone();
+        let mut groups = duplicate.items.iter_mut().filter_map(|i| i.group.as_mut());
+        let id = groups.next().unwrap().id;
+        groups.next().unwrap().id = id;
+        assert!(validate_profile(&duplicate).is_err());
     }
 
     #[tokio::test]

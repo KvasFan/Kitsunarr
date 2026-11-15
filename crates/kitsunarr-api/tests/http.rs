@@ -6884,3 +6884,147 @@ async fn sonarr_v3_indexer_probe_exposes_compatible_version_header() {
         "Kitsunarr"
     );
 }
+
+/// Real HTTP persistence: Tanukarr's profile fields survive both native and v3 APIs.
+#[tokio::test]
+async fn quality_profile_validation_and_tanukarr_fields_round_trip() {
+    use serde_json::{Value, json};
+    let server = start().await;
+    let http = reqwest::Client::new();
+    let request = |method, path: &str| {
+        http.request(method, format!("{}{path}", server.base))
+            .header("X-Api-Key", &server.api_key)
+    };
+    use reqwest::Method as M;
+    let mut native: Value = request(M::GET, "/api/v1/qualityprofiles")
+        .send()
+        .await
+        .unwrap()
+        .json::<Vec<Value>>()
+        .await
+        .unwrap()
+        .remove(0);
+    native["id"] = json!(0);
+    native["name"] = json!("Quality verification");
+    let response = request(M::POST, "/api/v1/qualityprofiles")
+        .json(&native)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 201);
+    let original: Value = response.json().await.unwrap();
+    let id = original["id"].as_i64().unwrap();
+    let native_path = format!("/api/v1/qualityprofiles/{id}");
+    let v3_path = format!("/api/v3/qualityprofile/{id}");
+    let mut profile: Value = request(M::GET, &v3_path)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let group = profile["items"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|i| i["id"] == 1002)
+        .unwrap();
+    let leaf = group["items"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|i| i["quality"]["id"] == 3)
+        .unwrap();
+    leaf["minSize"] = json!(10.0);
+    leaf["preferredSize"] = json!(20.0);
+    leaf["maxSize"] = json!(30.0);
+    profile["codecMultipliers"] = json!({"HEVC": 1.7});
+    profile["minUpgradeFormatScore"] = json!(75);
+    let response = request(M::PUT, &v3_path)
+        .json(&profile)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 202);
+    let saved: Value = response.json().await.unwrap();
+    assert_eq!(saved["codecMultipliers"]["HEVC"], 1.7);
+    let stored: Value = request(M::GET, &native_path)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(
+        stored["sizeLimits"],
+        json!([{"qualityId":3,"minSize":10.0,"preferredSize":20.0,"maxSize":30.0}])
+    );
+    assert_eq!(stored["minUpgradeFormatScore"], 75);
+    assert_eq!(stored["items"], original["items"]);
+
+    // Partial updates preserve per-quality sizes and codec overrides when omitted.
+    let response = request(M::PUT, &v3_path)
+        .json(&json!({"name":"Renamed profile"}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 202);
+    let mut saved: Value = response.json().await.unwrap();
+    assert_eq!(saved["codecMultipliers"]["HEVC"], 1.7);
+    let group = saved["items"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|i| i["id"] == 1002)
+        .unwrap();
+    let leaf = group["items"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|i| i["quality"]["id"] == 3)
+        .unwrap();
+    assert_eq!(leaf["maxSize"], 30.0);
+    leaf["maxSize"] = Value::Null; // explicit null is unlimited, not global fallback.
+    let response = request(M::PUT, &v3_path).json(&saved).send().await.unwrap();
+    assert_eq!(response.status(), 202);
+    let valid: Value = request(M::GET, &native_path)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(valid["sizeLimits"][0]["maxSize"], Value::Null);
+    assert_eq!(valid["sizeLimits"][0]["minSize"], 10.0);
+
+    // Rejected writes must leave the previously saved profile intact.
+    for (field, value) in [
+        ("minFormatScore", json!(500)),
+        ("minUpgradeFormatScore", json!(0)),
+        ("formatItems", json!([{"formatId":999999,"score":100}])),
+        ("codecMultipliers", json!({"HEVC":0.0})),
+    ] {
+        let mut invalid = valid.clone();
+        invalid[field] = value;
+        let response = request(M::PUT, &native_path)
+            .json(&invalid)
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(response.status(), 400, "{field}");
+        let unchanged: Value = request(M::GET, &native_path)
+            .send()
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
+        assert_eq!(unchanged, valid);
+    }
+    let response = request(M::PUT, &v3_path)
+        .json(&json!({"minFormatScore":500}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 400);
+}

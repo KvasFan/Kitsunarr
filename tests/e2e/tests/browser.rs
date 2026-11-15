@@ -652,6 +652,39 @@ async fn first_run_setup_migration_and_library() {
         click_button(&client, "Kitsunarr Fixture 1080p").await;
         wait_text(&client, "Codec size factors").await;
         wait_text(&client, "Size limits").await;
+        fill(&client, "input[aria-label='Minimum score increment for upgrades']", "75").await;
+        let quality_rows = "return [...document.querySelectorAll('[role=dialog] table:first-of-type tr')].filter(e => e.querySelector('input[type=checkbox]')).map(e => e.querySelector('td:nth-child(2)').textContent)";
+        let before = client.execute(quality_rows, vec![]).await.unwrap();
+        client.find(Locator::Css("button[aria-label='Prefer WEB 1080p more']")).await.unwrap().click().await.unwrap();
+        let reordered = client.execute(quality_rows, vec![]).await.unwrap();
+        assert_ne!(before, reordered, "quality preference changed in the editor");
+        client.find(Locator::XPath("//div[@role='dialog']//summary[strong[normalize-space(.)='Size limits']]")).await.unwrap().click().await.unwrap();
+        fill(&client, "input[aria-label='Minimum size of 3']", "1").await;
+        fill(&client, "input[aria-label='Preferred size of 3']", "10").await;
+        fill(&client, "input[aria-label='Maximum size of 3']", "20").await;
+        // WebDriver's clear() alone does not dispatch the input event used by Dioxus.
+        // Select/delete through the keyboard to exercise the real empty-field action.
+        for field in ["Minimum", "Preferred", "Maximum"] {
+            let selector = format!("input[aria-label='{field} size of 3']");
+            client.find(Locator::Css(&selector)).await.unwrap()
+                .send_keys("\u{e009}a\u{e000}\u{e003}").await.unwrap();
+        }
+        click_button(&client, "Save").await;
+        wait_text(&client, "Profile saved.").await;
+        click_button(&client, "Kitsunarr Fixture 1080p").await;
+        assert_eq!(client.find(Locator::Css("input[aria-label='Minimum score increment for upgrades']")).await.unwrap().prop("value").await.unwrap().as_deref(), Some("75"));
+        assert_eq!(client.execute(quality_rows, vec![]).await.unwrap(), reordered, "quality order survives saving and reopening");
+        client.find(Locator::XPath("//div[@role='dialog']//summary[strong[normalize-space(.)='Size limits']]")).await.unwrap().click().await.unwrap();
+        let maximum = client.find(Locator::Css("input[aria-label='Maximum size of 3']")).await.unwrap();
+        assert_eq!(maximum.prop("value").await.unwrap().as_deref(), Some(""));
+        assert_eq!(maximum.attr("placeholder").await.unwrap().as_deref(), Some("unlimited"));
+        assert_eq!(client.find(Locator::Css("input[aria-label='Minimum size of 3']")).await.unwrap().prop("value").await.unwrap().as_deref(), Some(""));
+        screenshot(&client, "11j-quality-profile").await;
+        client.find(Locator::Css("button[aria-label='Use global sizes for 3']")).await.unwrap().click().await.unwrap();
+        click_button(&client, "Save").await;
+        wait_text(&client, "Profile saved.").await;
+        click_button(&client, "Kitsunarr Fixture 1080p").await;
+        assert_eq!(client.find(Locator::Css("input[aria-label='Maximum size of 3']")).await.unwrap().attr("placeholder").await.unwrap().as_deref(), Some("global"));
         click_button(&client, "Cancel").await;
         wait_text(&client, "Delay profiles").await;
         wait_text(&client, "Release profiles").await;

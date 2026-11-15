@@ -156,6 +156,73 @@ fn reasons<'a>(decided: &'a [Outcome], title: &str) -> &'a [String] {
 }
 
 #[test]
+fn profile_order_groups_and_minimum_scores_drive_release_decisions() {
+    use kitsunarr_domain::api::settings::{QualityGroup, QualityProfileItem};
+    let mut series = breaking_bad();
+    let criteria = SearchCriteria {
+        monitored_episodes_only: false,
+        user_invoked: true,
+        kind: SearchKind::SingleEpisode {
+            season: 1,
+            episode: 1,
+        },
+        episode_ids: vec![101],
+    };
+    let releases = [
+        release("Breaking.Bad.S01E01.1080p.BluRay.x264-GRP"),
+        release("Breaking.Bad.S01E01.1080p.WEB-DL.x265-GRP"),
+    ];
+    let ranked = decide(&series, criteria.clone(), &releases);
+    assert_eq!(ranked[0].0, releases[0].title);
+    let web = series
+        .profile
+        .items
+        .iter()
+        .position(|i| i.quality_id == Some(WEBDL1080P))
+        .unwrap();
+    let bluray = series
+        .profile
+        .items
+        .iter()
+        .position(|i| i.quality_id == Some(BLURAY1080P))
+        .unwrap();
+    series.profile.items.swap(web, bluray);
+    let ranked = decide(&series, criteria.clone(), &releases);
+    assert_eq!(
+        ranked[0].0, releases[1].title,
+        "profile order outranks the source's usual order"
+    );
+
+    series
+        .profile
+        .items
+        .retain(|i| !matches!(i.quality_id, Some(WEBDL1080P | BLURAY1080P)));
+    series.profile.items.push(QualityProfileItem {
+        quality_id: None,
+        group: Some(QualityGroup {
+            id: 1000,
+            name: "1080p".into(),
+            quality_ids: vec![BLURAY1080P, WEBDL1080P],
+        }),
+        allowed: true,
+    });
+    series.profile.cutoff = 1000;
+    series.profile.min_format_score = 50;
+    let ranked = decide(&series, criteria, &releases);
+    assert_eq!(
+        ranked[0].0, releases[1].title,
+        "custom formats break equal-quality group ties"
+    );
+    assert!(ranked[0].1, "matching x265 scores 50 and meets the minimum");
+    assert_eq!(ranked[0].4, 50);
+    assert!(
+        !ranked[1].1,
+        "the unscored release is below the profile minimum"
+    );
+    assert_eq!(ranked[1].4, 0);
+}
+
+#[test]
 fn single_episode_search() {
     let series = breaking_bad();
     let titles = [

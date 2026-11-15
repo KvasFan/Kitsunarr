@@ -10,7 +10,7 @@ use axum::routing::{get, put};
 use kitsunarr_db::quality;
 use kitsunarr_domain::api::settings::{
     CustomFormat, CustomFormatSpecification, FormatScore, OrderedF64, QualityDefinition,
-    QualityGroup, QualityProfile, QualityProfileItem, ReleaseProfile,
+    QualityGroup, QualityProfile, QualityProfileItem, QualitySizeLimit, ReleaseProfile,
 };
 use kitsunarr_domain::language::Language;
 use serde_json::{Map, Value, json};
@@ -372,14 +372,24 @@ async fn update_definitions(
 
 /// Sonarr's `QualityProfileResource`, every custom format listed in `formatItems`.
 pub(crate) fn profile_json(p: &QualityProfile, formats: &[CustomFormat]) -> Value {
+    // Tanukarr's QualityProfileResource stores size limits on individual quality leaves.
+    let leaf = |q: i32, allowed: bool| {
+        let mut v = json!({"quality": quality_json(q), "items": [], "allowed": allowed});
+        if let Some(l) = p.size_limits.iter().find(|l| l.quality_id == q) {
+            v["minSize"] = json!(l.min_size);
+            v["preferredSize"] = json!(l.preferred_size);
+            v["maxSize"] = json!(l.max_size);
+        }
+        v
+    };
     let items: Vec<Value> = p
         .items
         .iter()
         .map(|i| match (&i.quality_id, &i.group) {
-            (Some(q), _) => json!({"quality": quality_json(*q), "items": [], "allowed": i.allowed}),
+            (Some(q), _) => leaf(*q, i.allowed),
             (None, Some(g)) => json!({
                 "id": g.id, "name": g.name, "allowed": i.allowed,
-                "items": g.quality_ids.iter().map(|q| json!({"quality": quality_json(*q), "items": [], "allowed": i.allowed})).collect::<Vec<_>>(),
+                "items": g.quality_ids.iter().map(|q| leaf(*q, i.allowed)).collect::<Vec<_>>(),
             }),
             _ => json!({}),
         })
@@ -405,13 +415,21 @@ pub(crate) fn profile_json(p: &QualityProfile, formats: &[CustomFormat]) -> Valu
         "cutoffFormatScore": p.cutoff_format_score,
         "minUpgradeFormatScore": p.min_upgrade_format_score,
         "formatItems": format_items,
+        "codecMultipliers": p.codec_multipliers,
         "language": {"id": 1, "name": "English"},
     })
 }
 
-/// A `QualityProfileResource` over `base` (sizes and codec factors are Kitsunarr's own and
-/// kept).
+/// A Sonarr/Tanukarr `QualityProfileResource` over `base`. Omitted fields are preserved.
 fn profile_from(v: &Value, mut base: QualityProfile) -> ApiResult<QualityProfile> {
+    if let Some(value) = v.get("codecMultipliers") {
+        base.codec_multipliers = if value.is_null() {
+            Default::default()
+        } else {
+            serde_json::from_value(value.clone())
+                .map_err(|_| ApiError::field("codecMultipliers", "Expected codec factors."))?
+        };
+    }
     if let Some(name) = v["name"].as_str() {
         base.name = name.trim().to_string();
     }
@@ -437,12 +455,18 @@ fn profile_from(v: &Value, mut base: QualityProfile) -> ApiResult<QualityProfile
             let allowed = i["allowed"].as_bool().unwrap_or(false);
             let children = i["items"].as_array().cloned().unwrap_or_default();
             if let Some(q) = i["quality"]["id"].as_i64() {
+                apply_profile_sizes(&mut base, q as i32, i)?;
                 out.push(QualityProfileItem {
                     quality_id: Some(q as i32),
                     group: None,
                     allowed,
                 });
             } else if !children.is_empty() {
+                for child in &children {
+                    if let Some(q) = child["quality"]["id"].as_i64() {
+                        apply_profile_sizes(&mut base, q as i32, child)?;
+                    }
+                }
                 let quality_ids: Vec<i32> = children
                     .iter()
                     .filter_map(|c| c["quality"]["id"].as_i64().map(|q| q as i32))
@@ -483,6 +507,42 @@ fn profile_from(v: &Value, mut base: QualityProfile) -> ApiResult<QualityProfile
         return Err(ApiError::field("name", "The profile needs a name."));
     }
     Ok(base)
+}
+
+fn apply_profile_sizes(p: &mut QualityProfile, quality_id: i32, v: &Value) -> ApiResult<()> {
+    let fields = ["minSize", "preferredSize", "maxSize"];
+    if !fields.iter().any(|f| v.get(*f).is_some()) {
+        return Ok(());
+    }
+    let mut limit = p
+        .size_limits
+        .iter()
+        .find(|l| l.quality_id == quality_id)
+        .cloned()
+        .unwrap_or(QualitySizeLimit {
+            quality_id,
+            min_size: None,
+            preferred_size: None,
+            max_size: None,
+        });
+    for (field, slot) in fields.into_iter().zip([
+        &mut limit.min_size,
+        &mut limit.preferred_size,
+        &mut limit.max_size,
+    ]) {
+        if let Some(value) = v.get(field) {
+            *slot = if value.is_null() {
+                None
+            } else {
+                Some(OrderedF64(value.as_f64().ok_or_else(|| {
+                    ApiError::field(field, "Expected a size in MiB per minute or null.")
+                })?))
+            };
+        }
+    }
+    p.size_limits.retain(|l| l.quality_id != quality_id);
+    p.size_limits.push(limit);
+    Ok(())
 }
 
 async fn get_profile(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
