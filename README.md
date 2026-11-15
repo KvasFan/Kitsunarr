@@ -125,6 +125,7 @@ Further reading:
 - [feature matrix](docs/architecture/feature-matrix.md)
 - [development roadmap](docs/roadmap.md)
 - [real Prowlarr integration verification](docs/prowlarr-verification-2026-11-15.md)
+- [real download-client verification](docs/download-client-verification-2026-11-15.md)
 
 ## License and attribution
 

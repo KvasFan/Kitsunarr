@@ -223,3 +223,28 @@ async fn bad_credentials_and_old_versions_are_reported() {
     s.password = Some("wrong".into());
     assert_eq!(t.test(&s).await.unwrap_err(), DownloadError::Authentication);
 }
+
+#[tokio::test]
+async fn stopped_incomplete_torrents_are_paused_while_stopped_complete_ones_stay_completed() {
+    let (s, mock) = mock("4.1.4").await;
+    mock.lock().unwrap().torrents = vec![
+        torrent("a1", "/downloads", &["tv-kitsunarr"], 0, 100),
+        torrent("b2", "/downloads", &["tv-kitsunarr"], 0, 0),
+        torrent("c3", "/downloads", &["tv-kitsunarr"], 4, 50),
+    ];
+    let items = Transmission::new(reqwest::Client::new())
+        .items(&s)
+        .await
+        .unwrap();
+    assert_eq!(
+        items
+            .iter()
+            .map(|i| (i.download_id.as_str(), i.status))
+            .collect::<Vec<_>>(),
+        vec![
+            ("A1", ItemStatus::Paused),
+            ("B2", ItemStatus::Completed),
+            ("C3", ItemStatus::Downloading),
+        ]
+    );
+}

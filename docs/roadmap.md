@@ -62,3 +62,11 @@ A real local Prowlarr 2.7.0.5723 container exposed a missing compatibility respo
 The fix was verified with Prowlarr's application test, full indexer sync, forced resync,
 invalid-key rejection and a live series search through its Nyaa indexer. The original remote
 Prowlarr remains unreachable. See the [integration verification](prowlarr-verification-2026-11-15.md).
+
+## Download-client integration follow-up
+
+Real qBittorrent 5.3.0, Transmission 4.1.4, Deluge 2.2.0, SABnzbd 5.1.3 and NZBGet 26.3
+containers passed connection, credential rejection, paused queue/removal and local generated
+data-transfer checks. Native queue handling and v3 connection probes also passed. A Transmission
+paused-state classification bug was fixed and deployed locally. See the
+[verification report](download-client-verification-2026-11-15.md) for scope and repeatable tests.

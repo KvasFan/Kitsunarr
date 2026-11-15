@@ -244,6 +244,8 @@ impl Torrent {
             || (self.is_finished && !matches!(self.status, status::CHECK | status::CHECK_WAIT))
         {
             (ItemStatus::Completed, None)
+        } else if self.status == status::STOPPED {
+            (ItemStatus::Paused, None)
         } else if self.status == status::QUEUED {
             (ItemStatus::Queued, None)
         } else {
