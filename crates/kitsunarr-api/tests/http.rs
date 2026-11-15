@@ -7095,3 +7095,102 @@ async fn regex_custom_formats_rename_movies_through_http() {
     let detail = client.movie_detail(1).await.unwrap();
     assert_eq!(detail.file.unwrap().relative_path, preview.new_path);
 }
+
+#[tokio::test]
+async fn quality_group_edits_persist_through_native_and_v3_profiles() {
+    use kitsunarr_domain::api::settings::{OrderedF64, QualitySizeLimit};
+    use kitsunarr_domain::quality_profile::{
+        QualityDestination as To, QualityEdit as Edit, QualityNode as Node,
+    };
+    use serde_json::Value;
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let mut p = client.quality_profiles().await.unwrap().remove(0);
+    p.id = 0;
+    p.name = "Editable groups".into();
+    p.cutoff = 7;
+    p.size_limits = vec![QualitySizeLimit {
+        quality_id: 7,
+        min_size: Some(OrderedF64(1.0)),
+        preferred_size: Some(OrderedF64(2.0)),
+        max_size: Some(OrderedF64(3.0)),
+    }];
+    p.codec_multipliers.insert("HEVC".into(), OrderedF64(1.8));
+    p.edit_qualities(Edit::CreateGroup(7)).unwrap();
+    let group_id = p.cutoff;
+    assert_eq!(
+        status(client.create_quality_profile(&p).await.unwrap_err()),
+        400,
+        "one-member drafts cannot be persisted"
+    );
+    p.edit_qualities(Edit::RenameGroup(group_id, "HD equals".into()))
+        .unwrap();
+    p.edit_qualities(Edit::Move(Node::Quality(3), To::IntoGroup(group_id)))
+        .unwrap();
+    p.edit_qualities(Edit::Step(Node::Quality(7), true))
+        .unwrap();
+    p.edit_qualities(Edit::Step(Node::Group(group_id), true))
+        .unwrap();
+    let mut saved = client.create_quality_profile(&p).await.unwrap();
+    p.id = saved.id;
+    assert_eq!(saved, p);
+    let http = reqwest::Client::new();
+    let v3_path = format!("{}/api/v3/qualityprofile/{}", server.base, saved.id);
+    let mut v3: Value = http
+        .get(&v3_path)
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(v3["cutoff"], group_id);
+    let group = v3["items"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|i| i["id"] == group_id)
+        .unwrap();
+    assert_eq!(
+        group["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|i| i["quality"]["id"].as_i64().unwrap())
+            .collect::<Vec<_>>(),
+        [3, 7]
+    );
+    assert_eq!(group["items"][1]["maxSize"], 3.0);
+    group["name"] = "Renamed via v3".into();
+    let response = http
+        .put(&v3_path)
+        .header("X-Api-Key", &server.api_key)
+        .json(&v3)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 202);
+    saved = client
+        .quality_profiles()
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|p| p.id == saved.id)
+        .unwrap();
+    assert_eq!(
+        saved
+            .items
+            .iter()
+            .find_map(|i| i.group.as_ref().filter(|g| g.id == group_id))
+            .unwrap()
+            .name,
+        "Renamed via v3"
+    );
+    saved.edit_qualities(Edit::Ungroup(group_id)).unwrap();
+    assert_eq!(saved.cutoff, 7);
+    let ungrouped = client.update_quality_profile(&saved).await.unwrap();
+    assert_eq!(ungrouped, saved);
+    assert_eq!(ungrouped.size_limits, p.size_limits);
+    assert_eq!(ungrouped.codec_multipliers, p.codec_multipliers);
+}

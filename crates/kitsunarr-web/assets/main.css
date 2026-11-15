@@ -301,3 +301,31 @@ kbd { font-family: var(--mono); font-size: var(--fs-xs); padding: 1px 6px; borde
 
 /* Right-to-left languages: the mobile drawer slides in from the right. */
 @media (max-width: 900px) { [dir="rtl"] .sidebar { left: auto; right: 0; transform: translateX(102%); } }
+
+/* Quality profile ordering and equally ranked groups. */
+.quality-editor { margin-top: var(--sp-4); }
+.quality-editor h3 { margin: 0; }
+.quality-list { min-width: 0; }
+.quality-insert-target { height: 8px; border-radius: var(--r-sm); }
+.quality-editor[data-dragging=true] .quality-insert-target { background: var(--accent-soft); }
+.quality-card { border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--bg-elev); }
+.quality-group { border-inline-start: 3px solid var(--accent); }
+.quality-row { display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2); min-width: 0; }
+.quality-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.quality-controls { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-1); margin-inline-start: auto; }
+.quality-drag { cursor: grab; font-size: 1.1rem; flex: 0 0 auto; }
+.quality-drag:active { cursor: grabbing; }
+.quality-group-name { flex: 1; min-width: 6rem; width: 12rem; }
+.quality-group-select { width: 10rem; max-width: 100%; font-size: var(--fs-xs); }
+.quality-members { margin-inline-start: var(--sp-4); border-top: 1px solid var(--border); }
+.quality-members .quality-row + .quality-row { border-top: 1px solid var(--border); }
+.quality-summary { padding: 0 var(--sp-3) var(--sp-2); overflow-wrap: anywhere; }
+.quality-group-drop { border: 1px dashed var(--border-strong); border-radius: var(--r-sm); padding: var(--sp-2); margin: var(--sp-2); text-align: center; color: var(--text-muted); font-size: var(--fs-xs); }
+.quality-editor[data-dragging=true] .quality-group-drop { background: var(--accent-soft); border-color: var(--accent); }
+.quality-edit-error { color: var(--danger); font-size: var(--fs-sm); }
+@media (max-width: 640px) {
+  .quality-row { flex-wrap: wrap; }
+  .quality-row .quality-controls { flex-basis: 100%; }
+  .quality-group-name { max-width: calc(100% - 5rem); }
+  .quality-members { margin-inline-start: var(--sp-2); }
+}

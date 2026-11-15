@@ -89,3 +89,11 @@ formats. Naming validation accepts literal ellipses while rejecting parent path 
 See the [verification report](media-rename-verification-2026-11-15.md) for filesystem and API
 checks. Naming formats remain token templates; arbitrary regex search/replacement is not a
 Tanukarr naming setting.
+
+## Quality-group editor follow-up
+
+Quality profiles now support browser drag/drop ordering of qualities and groups, group
+creation/renaming, moving members between groups, extracting members and ungrouping.
+Arrows and selectors remain available as alternatives to dragging. Shared domain operations
+preserve the quality catalogue and settings, repair cutoff references and block invalid drafts.
+See the [editor verification](quality-group-editor-2026-11-15.md) for behavior and tests.

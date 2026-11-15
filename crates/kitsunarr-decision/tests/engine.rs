@@ -157,7 +157,9 @@ fn reasons<'a>(decided: &'a [Outcome], title: &str) -> &'a [String] {
 
 #[test]
 fn profile_order_groups_and_minimum_scores_drive_release_decisions() {
-    use kitsunarr_domain::api::settings::{QualityGroup, QualityProfileItem};
+    use kitsunarr_domain::quality_profile::{
+        QualityDestination as To, QualityEdit as Edit, QualityNode as Node,
+    };
     let mut series = breaking_bad();
     let criteria = SearchCriteria {
         monitored_episodes_only: false,
@@ -174,19 +176,13 @@ fn profile_order_groups_and_minimum_scores_drive_release_decisions() {
     ];
     let ranked = decide(&series, criteria.clone(), &releases);
     assert_eq!(ranked[0].0, releases[0].title);
-    let web = series
+    series
         .profile
-        .items
-        .iter()
-        .position(|i| i.quality_id == Some(WEBDL1080P))
+        .edit_qualities(Edit::Move(
+            Node::Quality(WEBDL1080P),
+            To::After(Node::Quality(BLURAY1080P)),
+        ))
         .unwrap();
-    let bluray = series
-        .profile
-        .items
-        .iter()
-        .position(|i| i.quality_id == Some(BLURAY1080P))
-        .unwrap();
-    series.profile.items.swap(web, bluray);
     let ranked = decide(&series, criteria.clone(), &releases);
     assert_eq!(
         ranked[0].0, releases[1].title,
@@ -195,18 +191,17 @@ fn profile_order_groups_and_minimum_scores_drive_release_decisions() {
 
     series
         .profile
-        .items
-        .retain(|i| !matches!(i.quality_id, Some(WEBDL1080P | BLURAY1080P)));
-    series.profile.items.push(QualityProfileItem {
-        quality_id: None,
-        group: Some(QualityGroup {
-            id: 1000,
-            name: "1080p".into(),
-            quality_ids: vec![BLURAY1080P, WEBDL1080P],
-        }),
-        allowed: true,
-    });
-    series.profile.cutoff = 1000;
+        .edit_qualities(Edit::CreateGroup(BLURAY1080P))
+        .unwrap();
+    let group = series.profile.cutoff;
+    series
+        .profile
+        .edit_qualities(Edit::RenameGroup(group, "1080p".into()))
+        .unwrap();
+    series
+        .profile
+        .edit_qualities(Edit::Move(Node::Quality(WEBDL1080P), To::IntoGroup(group)))
+        .unwrap();
     series.profile.min_format_score = 50;
     let ranked = decide(&series, criteria, &releases);
     assert_eq!(

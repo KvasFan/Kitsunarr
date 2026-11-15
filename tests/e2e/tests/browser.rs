@@ -189,6 +189,270 @@ async fn fill(client: &Client, css: &str, value: &str) {
     el.send_keys(value).await.unwrap();
 }
 
+/// Real WebDriver pointer actions, exercising native browser drag/drop (no synthetic events).
+async fn drag_quality(client: &Client, source: &str, target: &str) {
+    use fantoccini::actions::{InputSource, MOUSE_BUTTON_LEFT, MouseActions, PointerAction};
+    step(&format!("dragging {source} to {target}"));
+    let positions = client.execute(r#"
+        const s = document.querySelector(arguments[0]), t = document.querySelector(arguments[1]);
+        const box = s.closest('.modal-body');
+        const a = s.getBoundingClientRect(), b = t.getBoundingClientRect(), v = box.getBoundingClientRect();
+        box.scrollTop += (Math.min(a.top,b.top)+Math.max(a.bottom,b.bottom))/2 - (v.top+v.bottom)/2;
+        const center = e => { const r=e.getBoundingClientRect(); return [r.x+r.width/2,r.y+r.height/2]; };
+        return [center(s),center(t)];
+    "#,vec![serde_json::json!(source),serde_json::json!(target)]).await.unwrap();
+    let point = |i: usize, axis: usize| positions[i][axis].as_f64().unwrap();
+    client
+        .perform_actions(
+            MouseActions::new("quality-drag".into())
+                .then(PointerAction::MoveTo {
+                    duration: None,
+                    x: point(0, 0),
+                    y: point(0, 1),
+                })
+                .then(PointerAction::Down {
+                    button: MOUSE_BUTTON_LEFT,
+                })
+                .pause(Duration::from_millis(100))
+                .then(PointerAction::MoveBy {
+                    duration: Some(Duration::from_millis(150)),
+                    x: 5.0,
+                    y: 3.0,
+                })
+                .then(PointerAction::MoveTo {
+                    duration: Some(Duration::from_millis(500)),
+                    x: point(1, 0),
+                    y: point(1, 1),
+                })
+                .pause(Duration::from_millis(200))
+                .then(PointerAction::MoveBy {
+                    duration: Some(Duration::from_millis(100)),
+                    x: 0.0,
+                    y: 2.0,
+                })
+                .pause(Duration::from_millis(100))
+                .then(PointerAction::Up {
+                    button: MOUSE_BUTTON_LEFT,
+                }),
+        )
+        .await
+        .unwrap();
+    client.release_actions().await.unwrap();
+}
+
+/// Leaves the saved fixture profile open, ready for the surrounding settings scenario.
+async fn edit_quality_groups(client: &Client) {
+    client
+        .find(Locator::Css("select[aria-label='Quality cutoff']"))
+        .await
+        .unwrap()
+        .select_by_value("7")
+        .await
+        .unwrap();
+    click_button(client, "Edit groups").await;
+    client
+        .find(Locator::Css("button[aria-label='Group Bluray-1080p']"))
+        .await
+        .unwrap()
+        .click()
+        .await
+        .unwrap();
+    wait_text(client, "Groups need at least two qualities").await;
+    assert!(
+        !client
+            .find(Locator::XPath(
+                "//div[@class='modal-foot']//button[normalize-space(.)='Save']"
+            ))
+            .await
+            .unwrap()
+            .is_enabled()
+            .await
+            .unwrap()
+    );
+    fill(
+        client,
+        "[data-quality-root='g-1004'] input[aria-label='Group name']",
+        "E2E 1080p",
+    )
+    .await;
+    client
+        .find(Locator::Css("select[aria-label='Group for HDTV-1080p']"))
+        .await
+        .unwrap()
+        .select_by_value("1004")
+        .await
+        .unwrap();
+    drag_quality(
+        client,
+        "button[aria-label='Drag Bluray-720p']",
+        "[data-quality-root='g-1004'] .quality-group-drop",
+    )
+    .await;
+    client
+        .wait()
+        .for_element(Locator::Css(
+            "[data-quality-root='g-1004'] [data-quality-key='q-6']",
+        ))
+        .await
+        .unwrap();
+    client
+        .find(Locator::Css(
+            "button[aria-label='Prefer Bluray-1080p more']",
+        ))
+        .await
+        .unwrap()
+        .click()
+        .await
+        .unwrap();
+    drag_quality(
+        client,
+        "button[aria-label='Drag E2E 1080p']",
+        "[data-quality-key='g-1002']",
+    )
+    .await;
+    let root_order = "return [...document.querySelectorAll('[data-quality-root]')].map(e=>e.dataset.qualityRoot)";
+    let member_order = "return [...document.querySelectorAll(\"[data-quality-root='g-1004'] .quality-members > .quality-row\")].map(e=>e.dataset.qualityKey)";
+    let roots = client.execute(root_order, vec![]).await.unwrap();
+    let members = client.execute(member_order, vec![]).await.unwrap();
+    assert_eq!(members, serde_json::json!(["q-6", "q-7", "q-9"]));
+    let roots_list = roots.as_array().unwrap();
+    assert!(
+        roots_list.iter().position(|x| x == "g-1004").unwrap()
+            < roots_list.iter().position(|x| x == "g-1002").unwrap(),
+        "dragging a group reorders it without nesting"
+    );
+    assert_eq!(
+        client
+            .find(Locator::Css("select[aria-label='Quality cutoff']"))
+            .await
+            .unwrap()
+            .prop("value")
+            .await
+            .unwrap()
+            .as_deref(),
+        Some("1004")
+    );
+    screenshot(client, "11k-quality-groups").await;
+    click_button(client, "Save").await;
+    wait_text(client, "Profile saved.").await;
+    click_button(client, "Kitsunarr Fixture 1080p").await;
+    assert_eq!(client.execute(root_order, vec![]).await.unwrap(), roots);
+    assert_eq!(
+        client
+            .find(Locator::Css("select[aria-label='Quality cutoff']"))
+            .await
+            .unwrap()
+            .prop("value")
+            .await
+            .unwrap()
+            .as_deref(),
+        Some("1004")
+    );
+    click_button(client, "Edit groups").await;
+    assert_eq!(client.execute(member_order, vec![]).await.unwrap(), members);
+    fill(
+        client,
+        "[data-quality-root='g-1004'] input[aria-label='Group name']",
+        "E2E HD",
+    )
+    .await;
+    client
+        .find(Locator::Css("select[aria-label='Group for HDTV-1080p']"))
+        .await
+        .unwrap()
+        .select_by_value("")
+        .await
+        .unwrap();
+    client
+        .find(Locator::Css("[data-quality-root='q-9']"))
+        .await
+        .unwrap();
+    client
+        .find(Locator::Css("select[aria-label='Group for WEBDL-1080p']"))
+        .await
+        .unwrap()
+        .select_by_value("1004")
+        .await
+        .unwrap();
+    // Moving one of two members dissolves the old singleton and preserves its other quality.
+    assert!(
+        client
+            .find(Locator::Css("[data-quality-root='g-1002']"))
+            .await
+            .is_err()
+    );
+    client
+        .find(Locator::Css("[data-quality-root='q-15']"))
+        .await
+        .unwrap();
+    client
+        .find(Locator::Css("button[aria-label='Ungroup E2E HD']"))
+        .await
+        .unwrap()
+        .click()
+        .await
+        .unwrap();
+    assert!(
+        client
+            .find(Locator::Css("[data-quality-root='g-1004']"))
+            .await
+            .is_err()
+    );
+    for id in [3, 6, 7, 9, 15] {
+        client
+            .find(Locator::Css(&format!("[data-quality-root='q-{id}']")))
+            .await
+            .unwrap();
+    }
+    let before_individual = client.execute(root_order, vec![]).await.unwrap();
+    drag_quality(
+        client,
+        "button[aria-label='Drag HDTV-1080p']",
+        "[data-quality-key='q-7']",
+    )
+    .await;
+    let individual_order = client.execute(root_order, vec![]).await.unwrap();
+    assert_ne!(
+        before_individual, individual_order,
+        "individual qualities can also be reordered by dragging"
+    );
+    assert_eq!(
+        client
+            .find(Locator::Css("select[aria-label='Quality cutoff']"))
+            .await
+            .unwrap()
+            .prop("value")
+            .await
+            .unwrap()
+            .as_deref(),
+        Some("3")
+    );
+    click_button(client, "Save").await;
+    wait_text(client, "Profile saved.").await;
+    click_button(client, "Kitsunarr Fixture 1080p").await;
+    assert_eq!(
+        client.execute(root_order, vec![]).await.unwrap(),
+        individual_order
+    );
+    assert!(
+        client
+            .find(Locator::Css("[data-quality-root='g-1004']"))
+            .await
+            .is_err()
+    );
+    assert_eq!(
+        client
+            .find(Locator::Css("select[aria-label='Quality cutoff']"))
+            .await
+            .unwrap()
+            .prop("value")
+            .await
+            .unwrap()
+            .as_deref(),
+        Some("3")
+    );
+}
+
 /// Serves recorded TVmaze responses: search, Breaking Bad (169) and Talking Bad (1003).
 async fn tvmaze_mock(fixtures: PathBuf) -> String {
     use axum::extract::{Path as UrlPath, State};
@@ -653,7 +917,7 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Codec size factors").await;
         wait_text(&client, "Size limits").await;
         fill(&client, "input[aria-label='Minimum score increment for upgrades']", "75").await;
-        let quality_rows = "return [...document.querySelectorAll('[role=dialog] table:first-of-type tr')].filter(e => e.querySelector('input[type=checkbox]')).map(e => e.querySelector('td:nth-child(2)').textContent)";
+        let quality_rows = "return [...document.querySelectorAll('[data-quality-root] > .quality-card > .quality-row')].map(e => e.dataset.qualityLabel)";
         let before = client.execute(quality_rows, vec![]).await.unwrap();
         client.find(Locator::Css("button[aria-label='Prefer WEB 1080p more']")).await.unwrap().click().await.unwrap();
         let reordered = client.execute(quality_rows, vec![]).await.unwrap();
@@ -685,6 +949,7 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Profile saved.").await;
         click_button(&client, "Kitsunarr Fixture 1080p").await;
         assert_eq!(client.find(Locator::Css("input[aria-label='Maximum size of 3']")).await.unwrap().attr("placeholder").await.unwrap().as_deref(), Some("global"));
+        edit_quality_groups(&client).await;
         click_button(&client, "Cancel").await;
         wait_text(&client, "Delay profiles").await;
         wait_text(&client, "Release profiles").await;

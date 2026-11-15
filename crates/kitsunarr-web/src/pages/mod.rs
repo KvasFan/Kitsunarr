@@ -8,6 +8,7 @@ pub mod detail;
 pub mod import;
 pub mod library;
 pub mod placeholders;
+mod quality_profile_items;
 pub mod search;
 pub mod settings;
 pub mod system;

@@ -1,5 +1,9 @@
 # Quality profile verification — 15 November 2026
 
+Subsequent browser ordering/group-composition work is recorded in the
+[quality-group editor report](quality-group-editor-2026-11-15.md). The checks and limitations
+below describe this earlier checkpoint.
+
 Compared Kitsunarr with the local Tanukarr checkout at
 `24382f1f7f23ca13d991e5416d257f631f606529`. The reference checkout was clean and
 was mounted read-only. No source application or user profile was modified.

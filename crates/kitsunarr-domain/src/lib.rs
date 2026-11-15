@@ -15,6 +15,7 @@ pub mod media;
 pub mod naming;
 pub mod paging;
 pub mod quality;
+pub mod quality_profile;
 pub mod text;
 
 pub use language::Language;

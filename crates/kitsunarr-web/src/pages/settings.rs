@@ -916,51 +916,18 @@ fn ProfileEditor(
                 if id != 0 { button { class: "btn danger", onclick: move |_| confirm.set(true), "Delete" } }
                 div { class: "spacer" }
                 button { class: "btn", onclick: move |_| on_close.call(()), "Cancel" }
-                button { class: "btn primary", onclick: move |_| on_save.call(p()), "Save" }
+                button { class: "btn primary", disabled: current.quality_edit_issue().is_some(), onclick: move |_| on_save.call(p()), "Save" }
             },
             div { class: "form-grid",
                 Field { label: "Name", input { class: "input", value: "{current.name}", oninput: move |e| p.write().name = e.value() } }
                 Field { label: "Upgrade until (cutoff)",
-                    select { class: "select", value: "{current.cutoff}", onchange: move |e: FormEvent| p.write().cutoff = e.value().parse().unwrap_or(0),
-                        for (qid, name) in allowed_ids.iter() { option { value: "{qid}", "{name}" } }
+                    select { class: "select", "aria-label": "Quality cutoff", value: "{current.cutoff}", onchange: move |e: FormEvent| p.write().cutoff = e.value().parse().unwrap_or(0),
+                        for (qid, name) in allowed_ids.iter() { option { key: "{qid}", value: "{qid}", selected: *qid == current.cutoff, "{name}" } }
                     }
                 }
             }
             Switch { checked: current.upgrade_allowed, label: "Upgrades allowed", onchange: move |v| p.write().upgrade_allowed = v }
-            h3 { style: "margin-top: var(--sp-4)", "Qualities" }
-            p { class: "help small faint", "Listed best first. Grouped qualities rank equally." }
-            div { class: "table-wrap",
-                table { class: "table",
-                    tbody {
-                        for (idx, item) in current.items.iter().enumerate().rev() {
-                            tr { key: "{idx}",
-                                td { class: "shrink",
-                                    input {
-                                        r#type: "checkbox",
-                                        "aria-label": "Allow {item_name(item)}",
-                                        checked: item.allowed,
-                                        onchange: move |e: FormEvent| p.write().items[idx].allowed = e.checked(),
-                                    }
-                                }
-                                td {
-                                    "{item_name(item)}"
-                                    if let Some(g) = &item.group {
-                                        span { class: "xs muted", " ({g.quality_ids.iter().filter_map(|q| Quality::by_id(*q)).map(|q| q.name).collect::<Vec<_>>().join(\", \")})" }
-                                    }
-                                }
-                                td { class: "actions",
-                                    button { class: "btn sm ghost", disabled: idx + 1 == current.items.len(),
-                                        "aria-label": "Prefer {item_name(item)} more",
-                                        onclick: move |_| p.write().items.swap(idx, idx + 1), "↑" }
-                                    button { class: "btn sm ghost", disabled: idx == 0,
-                                        "aria-label": "Prefer {item_name(item)} less",
-                                        onclick: move |_| p.write().items.swap(idx, idx - 1), "↓" }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            super::quality_profile_items::QualityProfileItems { profile: p }
             h3 { style: "margin-top: var(--sp-4)", "Custom format scores" }
             if formats.is_empty() { p { class: "muted small", "No custom formats defined." } }
             div { class: "form-grid",
