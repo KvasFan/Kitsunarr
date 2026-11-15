@@ -554,10 +554,15 @@ pub async fn put_naming(
         if value.trim().is_empty() {
             return Err(ApiError::field(field, "Format must not be empty."));
         }
-        if value.contains("..") || value.starts_with('/') || value.starts_with('\\') {
+        // Tanukarr's naming engine preserves literal ellipses. Reject parent components,
+        // not a harmless `...` in a token template or a title fragment.
+        if value.split(['/', '\\']).any(|part| part == "..")
+            || value.starts_with('/')
+            || value.starts_with('\\')
+        {
             return Err(ApiError::field(
                 field,
-                "Formats must not contain `..` or start with a path separator.",
+                "Formats must not contain parent path components or start with a path separator.",
             ));
         }
     }

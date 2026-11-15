@@ -1,0 +1,3235 @@
+{
+  "image": "ghcr.io/kvasfan/tanukarr:0.1.5",
+  "assemblyVersion": "10.0.0.42912",
+  "cases": [
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01 - City Sushi [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01-02 - The Story [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01 - City Sushi [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01 - S01E02 - The Story [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01 - City Sushi [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01E02 - The Story [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01 - City Sushi [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01-E02 - The Story [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01 - City Sushi [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01-02 - The Story [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01 - City Sushi [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} - S{season:00}E{episode:00} - {Episode Title} [{Quality Full}]-{Release Group}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01-E02 - The Story [HDTV-720p]-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.City.Sushi.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01-02.The.Story.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.City.Sushi.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.S01E02.The.Story.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.City.Sushi.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01E02.The.Story.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.City.Sushi.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01-E02.The.Story.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.City.Sushi.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01-02.The.Story.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.City.Sushi.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series.Title}.S{season:00}E{episode:00}.{Episode.Title}.{Quality.Full}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01-E02.The.Story.HDTV-720p.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01-02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01 1x02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01x02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01-x02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01-02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{SERIES TITLE} {season}x{episode:00}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "SOUTH PARK 1x01-x02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1-2.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1 01x2.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1x2.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1-x2.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1-2.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{series_title} {season:00}x{episode}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "south_park 01x1-x2.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 S01E02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01E02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {S00E00}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01-02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01 - S01E02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01E02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01-E02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01-02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "S{season:00}E{episode:00} - {Episode CleanTitle}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "S01E01-E02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01-02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01 - S01E02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01E02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01-E02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01-02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01 - City Sushi.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}/S{season:00}E{episode:00} - {Episode Title}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park/S01E01-E02 - The Story.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01_City Sushi....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01-02_The Story....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01_City Sushi....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01_S01E02_The Story....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01_City Sushi....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01E02_The Story....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01_City Sushi....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01-E02_The Story....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01_City Sushi....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01-02_The Story....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01_City Sushi....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} -- S{season:00}E{episode:00}__{Episode Title}...",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park - S01E01-E02_The Story....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01-02 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01 S01E02 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01E02 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01-E02 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01-02 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}} S{season:00}E{episode:00} {[Quality Proper]} {[-Release Group]}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "{South Park} S01E01-E02 [-GRP].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Title}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Original Filename}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "original.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 S01E02 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01E02 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats]}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 S01E02 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01E02 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Formats:-INTERNAL,NAME WITH SPACES]}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 [AMZN].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 S01E02 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01E02 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {[Custom Format:INTERNAL]}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 [INTERNAL].mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 S01E02 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01E02 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 {Custom Formats:}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 S01E02 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01E02 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-02 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title} S{season:00}E{episode:00} {Custom Formats:-}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02 {Custom Formats:-}.mkv"
+    },
+    {
+      "kind": "daily",
+      "pattern": "{Series Title} {Air-Date} - {Episode Title}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park 2010-01-02 - City Sushi.mkv"
+    },
+    {
+      "kind": "daily",
+      "pattern": "{Series Title} {Air-Date} - {Episode Title}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park 2010-01-02 - The Story.mkv"
+    },
+    {
+      "kind": "daily",
+      "pattern": "{Series.Title}.{air_date}.{Quality.Full}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.2010_01_02.HDTV-720p.mkv"
+    },
+    {
+      "kind": "daily",
+      "pattern": "{Series.Title}.{air_date}.{Quality.Full}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South.Park.2010_01_02.HDTV-720p.mkv"
+    },
+    {
+      "kind": "daily",
+      "pattern": "{Series Title} {Air Date} {[Custom Formats]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park 2010 01 02 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "daily",
+      "pattern": "{Series Title} {Air Date} {[Custom Formats]}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park 2010 01 02 [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "daily",
+      "pattern": "{Series Title} S{season:00}E{episode:00}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01.mkv"
+    },
+    {
+      "kind": "daily",
+      "pattern": "{Series Title} S{season:00}E{episode:00}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 1,
+      "expected": "South Park S01E01-E02.mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101 - City Sushi [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101-102 - The Story [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101 - City Sushi [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101 - 102 - The Story [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101 - City Sushi [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101-102 - The Story [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101 - City Sushi [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101-102 - The Story [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101 - City Sushi [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101-102 - The Story [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101 - City Sushi [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} - {absolute:000} - {Episode Title} [{Quality Full}]",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park - 101-102 - The Story [HDTV-720p v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101-102 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101-102 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101-102 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101-102 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101-102 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "[{Release Group}] {Series.Title} {absolute:000} {[Quality Proper]}",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "[GRP] South.Park 101-102 [v2].mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 0,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01 (101).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 0,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01-02 (101-102).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 1,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01 (101).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 1,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01 S01E02 (101-102).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 2,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01 (101).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 2,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01E02 (101-102).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 3,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01 (101).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 3,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01-E02 (101-102).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 4,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01 (101).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 4,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01-02 (101-102).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01 (101).mkv"
+    },
+    {
+      "kind": "anime",
+      "pattern": "{Series Title} S{season:00}E{episode:00} ({absolute:000})",
+      "style": 5,
+      "count": 2,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park S01E01-E02 (101-102).mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}",
+      "style": 5,
+      "count": 1,
+      "title": "The Show (2010)",
+      "version": 1,
+      "expected": "The Show (2010).mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleThe}",
+      "style": 5,
+      "count": 1,
+      "title": "The Show (2010)",
+      "version": 1,
+      "expected": "Show, The (2010).mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "The Show (2010)",
+      "version": 1,
+      "expected": "The Show 2010.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitleTheYear}",
+      "style": 5,
+      "count": 1,
+      "title": "The Show (2010)",
+      "version": 1,
+      "expected": "Show, The 2010.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleWithoutYear}",
+      "style": 5,
+      "count": 1,
+      "title": "The Show (2010)",
+      "version": 1,
+      "expected": "The Show.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:12}",
+      "style": 5,
+      "count": 1,
+      "title": "The Show (2010)",
+      "version": 1,
+      "expected": "The Show....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:-12}",
+      "style": 5,
+      "count": 1,
+      "title": "The Show (2010)",
+      "version": 1,
+      "expected": "...ow (2010).mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}}",
+      "style": 5,
+      "count": 1,
+      "title": "The Show (2010)",
+      "version": 1,
+      "expected": "{The Show (2010)}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}",
+      "style": 5,
+      "count": 1,
+      "title": "An Adventure",
+      "version": 1,
+      "expected": "An Adventure.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleThe}",
+      "style": 5,
+      "count": 1,
+      "title": "An Adventure",
+      "version": 1,
+      "expected": "Adventure, An.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "An Adventure",
+      "version": 1,
+      "expected": "An Adventure.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitleTheYear}",
+      "style": 5,
+      "count": 1,
+      "title": "An Adventure",
+      "version": 1,
+      "expected": "Adventure, An 2010.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleWithoutYear}",
+      "style": 5,
+      "count": 1,
+      "title": "An Adventure",
+      "version": 1,
+      "expected": "An Adventure.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:12}",
+      "style": 5,
+      "count": 1,
+      "title": "An Adventure",
+      "version": 1,
+      "expected": "An Adventure.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:-12}",
+      "style": 5,
+      "count": 1,
+      "title": "An Adventure",
+      "version": 1,
+      "expected": "An Adventure.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}}",
+      "style": 5,
+      "count": 1,
+      "title": "An Adventure",
+      "version": 1,
+      "expected": "{An Adventure}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}",
+      "style": 5,
+      "count": 1,
+      "title": "A Test",
+      "version": 1,
+      "expected": "A Test.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleThe}",
+      "style": 5,
+      "count": 1,
+      "title": "A Test",
+      "version": 1,
+      "expected": "Test, A.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "A Test",
+      "version": 1,
+      "expected": "A Test.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitleTheYear}",
+      "style": 5,
+      "count": 1,
+      "title": "A Test",
+      "version": 1,
+      "expected": "Test, A 2010.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleWithoutYear}",
+      "style": 5,
+      "count": 1,
+      "title": "A Test",
+      "version": 1,
+      "expected": "A Test.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:12}",
+      "style": 5,
+      "count": 1,
+      "title": "A Test",
+      "version": 1,
+      "expected": "A Test.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:-12}",
+      "style": 5,
+      "count": 1,
+      "title": "A Test",
+      "version": 1,
+      "expected": "A Test.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}}",
+      "style": 5,
+      "count": 1,
+      "title": "A Test",
+      "version": 1,
+      "expected": "{A Test}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}",
+      "style": 5,
+      "count": 1,
+      "title": "A/B: C & D's Show",
+      "version": 1,
+      "expected": "A+B - C & D's Show.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleThe}",
+      "style": 5,
+      "count": 1,
+      "title": "A/B: C & D's Show",
+      "version": 1,
+      "expected": "A+B - C & D's Show.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "A/B: C & D's Show",
+      "version": 1,
+      "expected": "A B C and Ds Show.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitleTheYear}",
+      "style": 5,
+      "count": 1,
+      "title": "A/B: C & D's Show",
+      "version": 1,
+      "expected": "A B C and Ds Show 2010.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleWithoutYear}",
+      "style": 5,
+      "count": 1,
+      "title": "A/B: C & D's Show",
+      "version": 1,
+      "expected": "A+B - C & D's Show.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:12}",
+      "style": 5,
+      "count": 1,
+      "title": "A/B: C & D's Show",
+      "version": 1,
+      "expected": "A+B - C &....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:-12}",
+      "style": 5,
+      "count": 1,
+      "title": "A/B: C & D's Show",
+      "version": 1,
+      "expected": "...D's Show.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}}",
+      "style": 5,
+      "count": 1,
+      "title": "A/B: C & D's Show",
+      "version": 1,
+      "expected": "{A+B - C & D's Show}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}",
+      "style": 5,
+      "count": 1,
+      "title": "My {Quality Full} Title",
+      "version": 1,
+      "expected": "My {Quality Full} Title.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleThe}",
+      "style": 5,
+      "count": 1,
+      "title": "My {Quality Full} Title",
+      "version": 1,
+      "expected": "My {Quality Full} Title.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "My {Quality Full} Title",
+      "version": 1,
+      "expected": "My Quality Full Title.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitleTheYear}",
+      "style": 5,
+      "count": 1,
+      "title": "My {Quality Full} Title",
+      "version": 1,
+      "expected": "My Quality Full Title 2010.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleWithoutYear}",
+      "style": 5,
+      "count": 1,
+      "title": "My {Quality Full} Title",
+      "version": 1,
+      "expected": "My {Quality Full} Title.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:12}",
+      "style": 5,
+      "count": 1,
+      "title": "My {Quality Full} Title",
+      "version": 1,
+      "expected": "My {Quali....mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:-12}",
+      "style": 5,
+      "count": 1,
+      "title": "My {Quality Full} Title",
+      "version": 1,
+      "expected": "...ll} Title.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}}",
+      "style": 5,
+      "count": 1,
+      "title": "My {Quality Full} Title",
+      "version": 1,
+      "expected": "{My {Quality Full} Title}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}",
+      "style": 5,
+      "count": 1,
+      "title": "探偵の物語",
+      "version": 1,
+      "expected": "探偵の物語.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleThe}",
+      "style": 5,
+      "count": 1,
+      "title": "探偵の物語",
+      "version": 1,
+      "expected": "探偵の物語.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "探偵の物語",
+      "version": 1,
+      "expected": "探偵の物語.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitleTheYear}",
+      "style": 5,
+      "count": 1,
+      "title": "探偵の物語",
+      "version": 1,
+      "expected": "探偵の物語 2010.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleWithoutYear}",
+      "style": 5,
+      "count": 1,
+      "title": "探偵の物語",
+      "version": 1,
+      "expected": "探偵の物語.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:12}",
+      "style": 5,
+      "count": 1,
+      "title": "探偵の物語",
+      "version": 1,
+      "expected": "探偵の物語.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:-12}",
+      "style": 5,
+      "count": 1,
+      "title": "探偵の物語",
+      "version": 1,
+      "expected": "探偵の物語.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}}",
+      "style": 5,
+      "count": 1,
+      "title": "探偵の物語",
+      "version": 1,
+      "expected": "{探偵の物語}.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title}",
+      "style": 5,
+      "count": 1,
+      "title": "¿Qué tal?",
+      "version": 1,
+      "expected": "¿Qué tal!.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleThe}",
+      "style": 5,
+      "count": 1,
+      "title": "¿Qué tal?",
+      "version": 1,
+      "expected": "¿Qué tal!.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "¿Qué tal?",
+      "version": 1,
+      "expected": "¿Que tal.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series CleanTitleTheYear}",
+      "style": 5,
+      "count": 1,
+      "title": "¿Qué tal?",
+      "version": 1,
+      "expected": "¿Que tal 2010.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series TitleWithoutYear}",
+      "style": 5,
+      "count": 1,
+      "title": "¿Qué tal?",
+      "version": 1,
+      "expected": "¿Qué tal!.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:12}",
+      "style": 5,
+      "count": 1,
+      "title": "¿Qué tal?",
+      "version": 1,
+      "expected": "¿Qué tal!.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{Series Title:-12}",
+      "style": 5,
+      "count": 1,
+      "title": "¿Qué tal?",
+      "version": 1,
+      "expected": "¿Qué tal!.mkv"
+    },
+    {
+      "kind": "standard",
+      "pattern": "{{{Series Title}}}",
+      "style": 5,
+      "count": 1,
+      "title": "¿Qué tal?",
+      "version": 1,
+      "expected": "{¿Qué tal!}.mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Series Title} ({Series Year}) [{Quality Full}]-{Release Group}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park (2010) [HDTV-720p Proper]-GRP.mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Series.TitleYear}.{Quality.Title}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South.Park.(2010).HDTV-720p.mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{SERIES TITLE} ({Series Year})",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "SOUTH PARK (2010).mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Series TitleTheYear}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park (2010).mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Series CleanTitle}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park.mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Original Title}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South.Park.S01E01.720p.HDTV.x264-GRP.mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Series Title} {[Custom Formats]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park [INTERNAL AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Series Title} {[Custom Formats:-INTERNAL]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park [AMZN NAME WITH SPACES].mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Series Title} {[Quality Proper]}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park [Proper].mkv"
+    },
+    {
+      "kind": "movie",
+      "pattern": "{Series Title} {Custom Format:AMZN}",
+      "style": 5,
+      "count": 1,
+      "title": "South Park",
+      "version": 2,
+      "expected": "South Park AMZN.mkv"
+    }
+  ],
+  "regexCases": [
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<=\\.)x26[45](?=\\.)",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<codec>x265|hevc)\\b",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "(?i:hevc)",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "\\b(?<word>dual)[ ._-]+\\k<word>\\b",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "(?<!not[ ._-])hevc",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "Show.S01E01.x265.GRP",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "not-HEVC",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": true
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "dual dual",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": false,
+      "matched": true
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "multi_multi",
+      "filename": "unchanged.mkv",
+      "negate": true,
+      "matched": false
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": false,
+      "matched": false
+    },
+    {
+      "pattern": "(?:(?<word>dual)|(?<word>multi))[ ._-]+\\k<word>",
+      "title": "none",
+      "filename": "Show.HEVC.mkv",
+      "negate": true,
+      "matched": true
+    }
+  ],
+  "imageId": "b9950dc73911334d34b153c7326e12dbda8674ee7af9f66b97ce185cd0807211",
+  "assemblySha256": {
+    "Sonarr.Core.dll": "e835a42ec39ce69e57af986c23976b2cf43d973ceb999085a24a6f59f84c6a0c",
+    "Sonarr.Common.dll": "85880fbf9c812f4cf050a9298361f25d5e5ffa16da62371ec73fc7885c682e64"
+  }
+}

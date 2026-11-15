@@ -66,7 +66,9 @@ pub fn folder_name(
     }
 }
 
-/// Renders a film file name (without extension) from the movie file format: Tanukarr's
+/// Basic film formatter for callers without file metadata. Production import and rename
+/// operations use `kitsunarr-library::file_names` for the full Tanukarr token pipeline.
+/// Renders a film file name (without extension) from the movie file format:
 /// `MovieFormat` tokens `{Movie Title}`, `{Movie TitleYear}`, `{Movie CleanTitle}`,
 /// `{Release Year}`, `{Year}`, `{Quality Full}`, `{Quality Title}`, `{Release Group}`.
 pub fn movie_file_name(

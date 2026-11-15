@@ -79,3 +79,13 @@ v3 profile API, preference-order controls and the minimum upgrade increment in t
 Null size overrides are explicitly unlimited; a separate control restores global sizes.
 The local Seasonal profile's minimum of 500 is reachable and was preserved. See the
 [verification report](quality-profile-verification-2026-11-15.md) for tests and remaining scope.
+
+## Media-renaming verification follow-up
+
+The compiled Tanukarr naming engine agrees on 302 filename cases and 72 custom-format regex
+cases after fixing the reduced movie renderer. Movie imports, manual imports and explicit
+renames now use the same token engine as episode naming, including regex-matched custom
+formats. Naming validation accepts literal ellipses while rejecting parent path components.
+See the [verification report](media-rename-verification-2026-11-15.md) for filesystem and API
+checks. Naming formats remain token templates; arbitrary regex search/replacement is not a
+Tanukarr naming setting.

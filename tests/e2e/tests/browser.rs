@@ -731,6 +731,14 @@ async fn first_run_setup_migration_and_library() {
         film_media["enableMediaInfo"] = false.into();
         film_media["recycleBin"] = tmp.path().join("recycled").display().to_string().into();
         kitsunarr_db::settings::set(fixture_db.pool(),kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,&film_media).await.unwrap();
+        kitsunarr_db::quality::create_custom_format(fixture_db.pool(), &serde_json::from_value(serde_json::json!({
+            "id":0,"name":"E2E WEB","includeWhenRenaming":true,"specifications":[{
+                "name":"WEB","implementation":"ReleaseTitleSpecification","negate":false,"required":true,
+                "fields":{"value":"(?<=\\.)WEB-DL(?=-)"}}]
+        })).unwrap()).await.unwrap();
+        let mut film_naming: serde_json::Value = kitsunarr_db::settings::get_or_default(fixture_db.pool(),kitsunarr_db::settings::KEY_NAMING).await.unwrap();
+        film_naming["movieFileFormat"] = "{SERIES TITLE}...({Series Year}){[Custom Format:E2E WEB]}".into();
+        kitsunarr_db::settings::set(fixture_db.pool(),kitsunarr_db::settings::KEY_NAMING,&film_naming).await.unwrap();
         kitsunarr_db::sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,year,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (900,'E2E Film','e2e film','e2efilm','e2e-film',2020,'tmdbMovie','900',(SELECT MIN(id) FROM quality_profiles),?,?,'2026-11-14T00:00:00Z')")
             .bind(film_root.to_str().unwrap()).bind(film_folder.to_str().unwrap()).execute(fixture_db.pool()).await.unwrap();
         // More than one page of movie history verifies server-side paging and filter resets.
@@ -746,6 +754,7 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client,"source.1080p.WEB-DL-GRP.mkv").await;
         click_button(&client,"Rename file").await;
         client.wait().for_element(Locator::Css(".modal .mono")).await.unwrap();
+        wait_text(&client,"E2E FILM...(2020)[E2E WEB].mkv").await;
         screenshot(&client,"11j-movie-rename-preview").await;
         client.find(Locator::XPath("//div[@class='modal-foot']//button[normalize-space(.)='Rename']")).await.unwrap().click().await.unwrap();
         wait_text(&client,"1 file renamed.").await;

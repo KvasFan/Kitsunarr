@@ -343,32 +343,9 @@ pub async fn rename_preview(db: &Database, id: i64) -> Result<Option<MovieRename
     let naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING)
         .await
         .map_err(err)?;
-    let (version, real): (i64, i64) =
-        sqlx::query_as("SELECT revision_version, revision_real FROM movie_files WHERE id = ?")
-            .bind(f.id)
-            .fetch_one(db.pool())
-            .await
-            .map_err(err)?;
-    let mut quality = f.quality_name.clone();
-    if version > 1 {
-        quality.push_str(" Proper");
-    }
-    if real > 0 {
-        quality.push_str(" REAL");
-    }
-    let name = kitsunarr_domain::naming::movie_file_name(
-        &naming.movie_file_format,
-        &d.item.title,
-        d.item.year,
-        &quality,
-        f.release_group.as_deref(),
-        naming.colon_replacement_format,
-        &naming.custom_colon_replacement_format,
-    );
-    if name.is_empty() {
-        return Err("The movie naming format produced an empty name.".into());
-    }
-    let new_path = format!("{name}{}", extension(&source));
+    let input = crate::movie_naming::stored_file(db, &d).await?;
+    let new_path =
+        crate::movie_naming::file_name(db, &d, &input, &extension(&source), &naming).await?;
     child(&folder, Path::new(&new_path))?;
     if new_path == f.relative_path.replace('\\', "/") {
         return Ok(None);

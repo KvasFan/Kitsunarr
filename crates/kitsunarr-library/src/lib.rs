@@ -22,6 +22,7 @@ pub mod metadata_source;
 pub mod movie_files;
 pub mod movie_import;
 pub mod movie_manual_import;
+mod movie_naming;
 pub mod notify;
 pub mod tools;
 pub mod versions;

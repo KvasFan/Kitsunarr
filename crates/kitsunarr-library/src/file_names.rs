@@ -4,8 +4,8 @@
 //!
 //! Differences from upstream:
 //! - an empty release group renders as `Kitsunarr` (upstream: `Sonarr`);
-//! - media info tokens render empty: Kitsunarr does not read media info yet (upstream does the
-//!   same for files without media info).
+//! - movie templates also accept Kitsunarr's `Movie …`, `Year` and `Release Year` aliases;
+//! - media info tokens render empty when the file has no stored media information.
 
 use std::collections::HashMap;
 use std::sync::LazyLock;
@@ -484,77 +484,84 @@ fn replace_tokens(
 }
 
 fn add_series_tokens<'a>(h: &mut Handlers<'a>, series: &'a Series, title: &'a str) {
+    add_title_tokens(h, series, title, "Series");
+}
+
+fn add_title_tokens<'a>(h: &mut Handlers<'a>, series: &'a Series, title: &'a str, prefix: &str) {
     let year = series.year;
-    h.set("{Series Title}", move |m| {
+    h.set(&format!("{{{prefix} Title}}"), move |m| {
         Some(truncate(title, m.custom_format.as_deref()))
     });
-    h.set("{Series CleanTitle}", move |m| {
+    h.set(&format!("{{{prefix} CleanTitle}}"), move |m| {
         Some(truncate(&clean_title(title), m.custom_format.as_deref()))
     });
-    h.set("{Series TitleYear}", move |m| {
+    h.set(&format!("{{{prefix} TitleYear}}"), move |m| {
         Some(truncate(
             &title_year(title, year),
             m.custom_format.as_deref(),
         ))
     });
-    h.set("{Series CleanTitleYear}", move |m| {
+    h.set(&format!("{{{prefix} CleanTitleYear}}"), move |m| {
         Some(truncate(
             &clean_title(&title_year(title, year)),
             m.custom_format.as_deref(),
         ))
     });
-    h.set("{Series TitleWithoutYear}", move |m| {
+    h.set(&format!("{{{prefix} TitleWithoutYear}}"), move |m| {
         Some(truncate(
             &title_without_year(title),
             m.custom_format.as_deref(),
         ))
     });
-    h.set("{Series CleanTitleWithoutYear}", move |m| {
+    h.set(&format!("{{{prefix} CleanTitleWithoutYear}}"), move |m| {
         Some(truncate(
             &clean_title(&title_without_year(title)),
             m.custom_format.as_deref(),
         ))
     });
-    h.set("{Series TitleThe}", move |m| {
+    h.set(&format!("{{{prefix} TitleThe}}"), move |m| {
         Some(truncate(&title_the(title), m.custom_format.as_deref()))
     });
-    h.set("{Series CleanTitleThe}", move |m| {
+    h.set(&format!("{{{prefix} CleanTitleThe}}"), move |m| {
         Some(truncate(
             &clean_title_the(title),
             m.custom_format.as_deref(),
         ))
     });
-    h.set("{Series TitleTheYear}", move |m| {
+    h.set(&format!("{{{prefix} TitleTheYear}}"), move |m| {
         Some(truncate(
             &title_year(&title_the(title), year),
             m.custom_format.as_deref(),
         ))
     });
-    h.set("{Series CleanTitleTheYear}", move |m| {
+    h.set(&format!("{{{prefix} CleanTitleTheYear}}"), move |m| {
         Some(truncate(
             &clean_title_the_year(title, year),
             m.custom_format.as_deref(),
         ))
     });
-    h.set("{Series TitleTheWithoutYear}", move |m| {
+    h.set(&format!("{{{prefix} TitleTheWithoutYear}}"), move |m| {
         Some(truncate(
             &title_without_year(&title_the(title)),
             m.custom_format.as_deref(),
         ))
     });
-    h.set("{Series CleanTitleTheWithoutYear}", move |m| {
-        Some(truncate(
-            &clean_title_the(&title_without_year(title)),
-            m.custom_format.as_deref(),
-        ))
-    });
-    h.set("{Series TitleFirstCharacter}", move |m| {
+    h.set(
+        &format!("{{{prefix} CleanTitleTheWithoutYear}}"),
+        move |m| {
+            Some(truncate(
+                &clean_title_the(&title_without_year(title)),
+                m.custom_format.as_deref(),
+            ))
+        },
+    );
+    h.set(&format!("{{{prefix} TitleFirstCharacter}}"), move |m| {
         Some(truncate(
             &title_first_character(&title_the(title)),
             m.custom_format.as_deref(),
         ))
     });
-    h.text("{Series Year}", year.to_string());
+    h.text(&format!("{{{prefix} Year}}"), year.to_string());
 }
 
 /// Tanukarr's group tokens; empty for an ungrouped series or another kind of member.
@@ -1208,6 +1215,38 @@ pub fn build_file_name(
         extension,
         naming,
         MAX_FILE_PATH_LENGTH,
+        false,
+    )
+}
+
+/// Tanukarr's movie branch of FileNameBuilder uses the same regex/token pipeline as
+/// episodes. Kitsunarr additionally accepts its existing Movie/Release Year token aliases.
+/// Explicit renames always apply the configured format, independent of automatic renaming.
+pub fn build_movie_file_name(
+    series: &Series,
+    file: &File,
+    extension: &str,
+    naming: &NamingSettings,
+) -> Result<String, NamingError> {
+    let naming = NamingSettings {
+        rename_episodes: true,
+        ..naming.clone()
+    };
+    let episode = Episode {
+        season_number: 1,
+        episode_number: 1,
+        absolute_episode_number: Some(1),
+        title: series.title.clone(),
+        ..Default::default()
+    };
+    build_file_name_within(
+        &[episode],
+        series,
+        file,
+        extension,
+        &naming,
+        MAX_FILE_PATH_LENGTH,
+        true,
     )
 }
 
@@ -1218,6 +1257,7 @@ fn build_file_name_within(
     extension: &str,
     naming: &NamingSettings,
     max_path: usize,
+    movie: bool,
 ) -> Result<String, NamingError> {
     if !naming.rename_episodes {
         return Ok(format!("{}{extension}", original_title(file, true)));
@@ -1231,7 +1271,7 @@ fn build_file_name_within(
         (&naming.daily_episode_format, SeriesType::Daily, "Daily"),
         (&naming.anime_episode_format, SeriesType::Anime, "Anime"),
     ] {
-        if is_blank(format) && series.series_type == kind {
+        if !movie && is_blank(format) && series.series_type == kind {
             return Err(NamingError(format!(
                 "{name} episode format cannot be empty"
             )));
@@ -1252,6 +1292,12 @@ fn build_file_name_within(
     {
         pattern = &naming.anime_episode_format;
     }
+    if movie {
+        pattern = &naming.movie_file_format;
+        if is_blank(pattern) {
+            return Err(NamingError("Movie format cannot be empty".into()));
+        }
+    }
     let parts: Vec<&str> = pattern
         .split(['\\', '/'])
         .filter(|p| !p.is_empty())
@@ -1265,6 +1311,25 @@ fn build_file_name_within(
         split = add_absolute_numbering_tokens(split, &mut h, series, &sorted, naming);
         split = split.replace("...", "{{ellipsis}}");
         add_series_tokens(&mut h, series, &series.title);
+        if movie {
+            add_title_tokens(&mut h, series, &series.title, "Movie");
+            h.text(
+                "{Year}",
+                if series.year == 0 {
+                    String::new()
+                } else {
+                    series.year.to_string()
+                },
+            );
+            h.text(
+                "{Release Year}",
+                if series.year == 0 {
+                    String::new()
+                } else {
+                    series.year.to_string()
+                },
+            );
+        }
         add_group_tokens(&mut h, series);
         add_id_tokens(&mut h, series);
         add_episode_tokens(&mut h, &sorted);
@@ -1385,7 +1450,7 @@ pub fn build_relative_path(
         None => series_path.trim_end_matches('/').to_string(),
     };
     let remaining = MAX_FILE_PATH_LENGTH.saturating_sub(bytes(&season_dir) + 1);
-    let name = build_file_name_within(episodes, series, file, extension, naming, remaining)?;
+    let name = build_file_name_within(episodes, series, file, extension, naming, remaining, false)?;
     Ok(match folder {
         Some(f) => format!("{f}/{name}"),
         None => name,

@@ -13,7 +13,6 @@ use kitsunarr_db::history::{self, GrabRecord, NewHistory};
 use kitsunarr_db::library::movies;
 use kitsunarr_decision::ProfileView;
 use kitsunarr_domain::api::settings::{MediaManagementSettings, NamingSettings};
-use kitsunarr_domain::naming;
 use kitsunarr_domain::quality::Revision;
 use kitsunarr_parser::{ParsedQuality, parse_languages, parse_quality, parse_release_group};
 
@@ -291,26 +290,42 @@ pub async fn import_movie_download(
     let release_group = parse_release_group(&grab_title)
         .or_else(|| parse_release_group(d.title))
         .or_else(|| parse_release_group(&name));
-    let quality_name = crate::notify::quality_name(i64::from(quality.quality_id));
-    let quality_full = if quality.revision.version > 1 {
-        format!("{quality_name} Proper")
-    } else {
-        quality_name.clone()
+    let languages: Vec<i32> = parse_languages(&grab_title)
+        .iter()
+        .chain(parse_languages(&name).iter())
+        .map(|l| l.id)
+        .take(1)
+        .collect();
+    let now = kitsunarr_db::now();
+    let mut record = movies::NewMovieFile {
+        movie_id: d.movie_id,
+        relative_path: name.clone(),
+        size: std::fs::metadata(&source).map_err(err)?.len() as i64,
+        added_at: now.clone(),
+        scene_name: Some(crate::import::clean_file_name(d.title)).filter(|t| !t.is_empty()),
+        release_group,
+        quality_id: quality.quality_id,
+        revision_version: quality.revision.version,
+        revision_real: quality.revision.real,
+        is_repack: quality.revision.is_repack,
+        languages: if languages.is_empty() {
+            vec![1]
+        } else {
+            languages.clone()
+        },
+        media_info: media_info
+            .as_ref()
+            .and_then(|m| serde_json::to_value(m).ok()),
+        original_path: Some(source.display().to_string()),
+        edition: None,
     };
-    let base = if naming_settings.rename_episodes {
-        naming::movie_file_name(
-            &naming_settings.movie_file_format,
-            &detail.item.title,
-            detail.item.year,
-            &quality_full,
-            release_group.as_deref(),
-            naming_settings.colon_replacement_format,
-            &naming_settings.custom_colon_replacement_format,
-        )
+    let relative = if naming_settings.rename_episodes {
+        crate::movie_naming::file_name(db, &detail, &record, &extension(&source), &naming_settings)
+            .await?
     } else {
-        stem(&source)
+        format!("{}{}", stem(&source), extension(&source))
     };
-    let relative = format!("{base}{}", extension(&source));
+    record.relative_path = relative.clone();
     let dest = movie_path.join(&relative);
     if !is_within(&dest, &movie_path) {
         result
@@ -331,7 +346,7 @@ pub async fn import_movie_download(
             blocked: None,
         });
     }
-    std::fs::create_dir_all(&movie_path).map_err(err)?;
+    std::fs::create_dir_all(dest.parent().ok_or("Invalid movie destination")?).map_err(err)?;
     // The new file goes in next to the old one first, so a failed transfer loses nothing.
     let staging = movie_path.join(format!(
         ".kitsunarr-import-{}",
@@ -368,41 +383,9 @@ pub async fn import_movie_download(
     let size = std::fs::metadata(&dest)
         .map(|m| m.len() as i64)
         .unwrap_or(0);
-    let languages: Vec<i32> = parse_languages(&grab_title)
-        .iter()
-        .chain(parse_languages(&name).iter())
-        .map(|l| l.id)
-        .take(1)
-        .collect();
-    let now = kitsunarr_db::now();
+    record.size = size;
     let mut conn = db.pool().acquire().await.map_err(err)?;
-    let file_id = movies::upsert_file(
-        &mut conn,
-        &movies::NewMovieFile {
-            movie_id: d.movie_id,
-            relative_path: relative.clone(),
-            size,
-            added_at: now.clone(),
-            scene_name: Some(crate::import::clean_file_name(d.title)).filter(|t| !t.is_empty()),
-            release_group,
-            quality_id: quality.quality_id,
-            revision_version: quality.revision.version,
-            revision_real: quality.revision.real,
-            is_repack: quality.revision.is_repack,
-            languages: if languages.is_empty() {
-                vec![1]
-            } else {
-                languages.clone()
-            },
-            media_info: media_info
-                .as_ref()
-                .and_then(|m| serde_json::to_value(m).ok()),
-            original_path: Some(source.display().to_string()),
-            edition: None,
-        },
-    )
-    .await
-    .map_err(err)?;
+    let file_id = movies::upsert_file(&mut conn, &record).await.map_err(err)?;
     let data = serde_json::json!({
         "fileId": file_id,
         "droppedPath": source.display().to_string(),

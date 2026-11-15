@@ -7028,3 +7028,70 @@ async fn quality_profile_validation_and_tanukarr_fields_round_trip() {
         .unwrap();
     assert_eq!(response.status(), 400);
 }
+
+#[tokio::test]
+async fn regex_custom_formats_rename_movies_through_http() {
+    use serde_json::json;
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let root = server._dir.path().join("rename-proof");
+    let folder = root.join("Proof Film");
+    std::fs::create_dir_all(&folder).unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,year,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (1,'Proof Film','proof film','prooffilm','proof-film',2020,'tmdbMovie','1',1,?,?,'2026-11-15T00:00:00Z')")
+        .bind(root.to_str().unwrap()).bind(folder.to_str().unwrap()).execute(server.state.db.pool()).await.unwrap();
+    let source = folder.join("Proof.Film.2020.WEB-DL.1080p-GRP.mkv");
+    std::fs::write(&source, b"video proof").unwrap();
+    std::fs::write(source.with_extension("it.srt"), b"subtitle proof").unwrap();
+    std::fs::write(folder.join("unrelated.srt"), b"unrelated").unwrap();
+    let http = reqwest::Client::new();
+    let post_format = |pattern: &str| {
+        http.post(format!("{}/api/v1/customformats", server.base))
+        .header("X-Api-Key", &server.api_key).json(&json!({"id":0,"name":"WEB","includeWhenRenaming":true,"specifications":[{
+            "name":"WEB","implementation":"ReleaseTitleSpecification","required":true,"negate":false,
+            "fields":{"value":pattern}}]})).send()
+    };
+    assert_eq!(post_format("(unclosed").await.unwrap().status(), 400);
+    assert_eq!(
+        post_format(r"(?<=\.)WEB-DL(?=\.)").await.unwrap().status(),
+        201
+    );
+    let mut naming = client.naming().await.unwrap();
+    assert!(
+        !naming.rename_episodes,
+        "manual renames also work when automatic renaming is off"
+    );
+    naming.movie_file_format =
+        "{SERIES TITLE}...({Series Year}){[Custom Formats]}-{Release Group}".into();
+    client.put_naming(&naming).await.unwrap(); // literal ellipses are supported by Tanukarr.
+    let mut invalid = naming.clone();
+    invalid.movie_file_format = "../{Movie Title}".into();
+    assert_eq!(status(client.put_naming(&invalid).await.unwrap_err()), 422);
+    assert_eq!(client.naming().await.unwrap(), naming);
+    client.rescan_movie(1).await.unwrap();
+    let preview = client.movie_rename_preview(1).await.unwrap().unwrap();
+    assert_eq!(preview.new_path, "PROOF FILM...(2020)[WEB]-GRP.mkv");
+    assert!(source.is_file());
+    assert!(!folder.join(&preview.new_path).exists());
+    client.rename_movie_file(1, &preview).await.unwrap();
+    let target = folder.join(&preview.new_path);
+    assert_eq!(std::fs::read(&target).unwrap(), b"video proof");
+    assert_eq!(
+        std::fs::read(target.with_extension("it.srt")).unwrap(),
+        b"subtitle proof"
+    );
+    assert_eq!(
+        std::fs::read(folder.join("unrelated.srt")).unwrap(),
+        b"unrelated"
+    );
+    assert!(!source.exists());
+    assert!(client.movie_rename_preview(1).await.unwrap().is_none());
+    let detail = client.movie_detail(1).await.unwrap();
+    assert_eq!(detail.file.unwrap().relative_path, preview.new_path);
+}

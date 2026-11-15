@@ -342,30 +342,20 @@ async fn import_one(
     let naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING)
         .await
         .map_err(err)?;
-    let mut quality = crate::notify::quality_name(i64::from(file.quality_id));
-    if file.revision_version > 1 {
-        quality.push_str(" Proper");
-    }
-    if file.revision_real > 0 {
-        quality.push_str(" REAL");
-    }
-    let base = if naming.rename_episodes {
-        kitsunarr_domain::naming::movie_file_name(
-            &naming.movie_file_format,
-            &d.item.title,
-            d.item.year,
-            &quality,
-            file.release_group.as_deref(),
-            naming.colon_replacement_format,
-            &naming.custom_colon_replacement_format,
-        )
+    let extension = extension(&source);
+    let relative = if naming.rename_episodes {
+        crate::movie_naming::file_name(db, &d, &file, &extension, &naming).await?
     } else {
-        stem(&source)
+        format!("{}{extension}", stem(&source))
     };
+    let base = relative
+        .strip_suffix(&extension)
+        .unwrap_or(&relative)
+        .to_string();
     if base.is_empty() {
         return Err("The movie naming format produced an empty name.".into());
     }
-    file.relative_path = format!("{base}{}", extension(&source));
+    file.relative_path = relative;
     file.original_path = Some(source.display().to_string());
     let target = files::child(&folder, Path::new(&file.relative_path))?;
     let mut incoming = vec![(source.clone(), target.clone())];

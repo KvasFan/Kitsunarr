@@ -427,3 +427,118 @@ async fn ambiguous_film_names_require_a_choice_and_existing_destinations_are_nev
     assert!(path.is_file());
     assert!(movies::get_detail(&db, 1).await.unwrap().file.is_none());
 }
+
+#[tokio::test]
+async fn regex_custom_formats_drive_movie_import_and_real_rename() {
+    use kitsunarr_domain::api::settings::{
+        CustomFormat, CustomFormatSpecification, NamingSettings,
+    };
+    let dir = tempfile::tempdir().unwrap();
+    let (db, _, folder) = library(dir.path()).await;
+    for (name, pattern, include) in [
+        ("WEB", r"(?<=\.)WEB-DL(?=\.)", true),
+        ("Hidden", r"1080p", false),
+    ] {
+        kitsunarr_db::quality::create_custom_format(
+            db.pool(),
+            &CustomFormat {
+                id: 0,
+                name: name.into(),
+                include_when_renaming: include,
+                specifications: vec![CustomFormatSpecification {
+                    name: name.into(),
+                    implementation: "ReleaseTitleSpecification".into(),
+                    negate: false,
+                    required: true,
+                    fields: serde_json::json!({"value":pattern})
+                        .as_object()
+                        .unwrap()
+                        .clone(),
+                }],
+            },
+        )
+        .await
+        .unwrap();
+    }
+    let mut naming = NamingSettings {
+        rename_episodes: true,
+        movie_file_format: "{MOVIE TITLE} ({Series Year}) {[Custom Formats]}".into(),
+        ..Default::default()
+    };
+    settings::set(db.pool(), settings::KEY_NAMING, &naming)
+        .await
+        .unwrap();
+    let original = source(dir.path(), "Film.2020.WEB-DL.1080p-GRP.mkv");
+    let imported = run(&db, &original, false).await;
+    assert!(imported.imported, "{:?}", imported.messages);
+    let old = folder.join("FILM (2020) [WEB].mkv");
+    assert_eq!(std::fs::read(&old).unwrap(), b"feature");
+    assert_eq!(
+        std::fs::read(old.with_extension("it.forced.srt")).unwrap(),
+        b"subtitle"
+    );
+    assert!(original.is_file(), "copy import preserves the source");
+    assert!(movie_files::rename_preview(&db, 1).await.unwrap().is_none());
+
+    // Completed-download imports share the exact renderer and regex format inputs.
+    sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,year,runtime,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) SELECT 2,'Auto Film','auto film','autofilm','auto-film',2020,100,'tmdbMovie','2',quality_profile_id,root_folder_path,?,'2026-11-15T00:00:00Z' FROM movies WHERE id=1")
+        .bind(folder.parent().unwrap().join("Auto Film").to_str().unwrap()).execute(db.pool()).await.unwrap();
+    let incoming = source(dir.path(), "Auto.Film.2020.WEB-DL.1080p-GRP.mkv");
+    let automatic = kitsunarr_library::movie_import::import_movie_download(
+        &db,
+        &kitsunarr_library::movie_import::MovieDownload {
+            movie_id: 2,
+            download_id: "REGEX-PROOF",
+            title: "Auto.Film.2020.WEB-DL.1080p-GRP",
+            output_path: &incoming,
+            source: Some(&incoming),
+            grabs: &[],
+            client_name: "Fixture",
+            client_implementation: "QBittorrent",
+            move_files: false,
+        },
+    )
+    .await
+    .unwrap();
+    assert!(
+        automatic.results.iter().any(|r| r.imported),
+        "{automatic:?}"
+    );
+    assert_eq!(
+        std::fs::read(
+            folder
+                .parent()
+                .unwrap()
+                .join("Auto Film/AUTO FILM (2020) [WEB].mkv")
+        )
+        .unwrap(),
+        b"feature"
+    );
+    assert!(movie_files::rename_preview(&db, 2).await.unwrap().is_none());
+
+    naming.movie_file_format =
+        "{Series.Title}...({Series.Year}){[Custom Format:WEB]}-{Release Group}".into();
+    settings::set(db.pool(), settings::KEY_NAMING, &naming)
+        .await
+        .unwrap();
+    let preview = movie_files::rename_preview(&db, 1).await.unwrap().unwrap();
+    assert_eq!(preview.new_path, "Film...(2020)[WEB]-GRP.mkv");
+    let new = folder.join(&preview.new_path);
+    assert!(
+        old.is_file() && !new.exists(),
+        "preview has no filesystem effects"
+    );
+    std::fs::write(&new, b"occupied").unwrap();
+    assert!(movie_files::rename(&db, 1, &preview).await.is_err());
+    assert_eq!(std::fs::read(&new).unwrap(), b"occupied");
+    assert!(old.is_file());
+    std::fs::remove_file(&new).unwrap();
+    movie_files::rename(&db, 1, &preview).await.unwrap();
+    assert_eq!(std::fs::read(&new).unwrap(), b"feature");
+    assert_eq!(
+        std::fs::read(new.with_extension("it.forced.srt")).unwrap(),
+        b"subtitle"
+    );
+    assert!(!old.exists() && !old.with_extension("it.forced.srt").exists());
+    assert!(movie_files::rename_preview(&db, 1).await.unwrap().is_none());
+}
