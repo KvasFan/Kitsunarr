@@ -282,6 +282,56 @@ async fn newznab_mock(fixtures: PathBuf) -> String {
     format!("http://{addr}")
 }
 
+/// A controllable Nyaa RSS stand-in; mode 0 returns releases, 1 an empty feed, 2 HTTP 503.
+async fn nyaa_mock(
+    fixtures: PathBuf,
+) -> (
+    String,
+    std::sync::Arc<std::sync::atomic::AtomicU8>,
+    std::sync::Arc<std::sync::atomic::AtomicUsize>,
+) {
+    use axum::extract::{Query, State};
+    use axum::response::IntoResponse;
+    use std::sync::{
+        Arc,
+        atomic::{AtomicU8, AtomicUsize, Ordering},
+    };
+    type Control = (Arc<AtomicU8>, Arc<AtomicUsize>, String);
+    let mode = Arc::new(AtomicU8::new(0));
+    let hits = Arc::new(AtomicUsize::new(0));
+    let feed = std::fs::read_to_string(fixtures.join("nyaa_2021.xml")).unwrap();
+    let app = axum::Router::new()
+        .route(
+            "/",
+            axum::routing::get(
+                |State((mode, hits, feed)): State<Control>,
+                 Query(q): Query<std::collections::HashMap<String, String>>| async move {
+                    assert_eq!(q.get("page").map(String::as_str), Some("rss"));
+                    assert_eq!(q.get("term").map(String::as_str), Some("Nyaa Test Show"));
+                    hits.fetch_add(1, Ordering::SeqCst);
+                    match mode.load(Ordering::SeqCst) {
+                        2 => axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response(),
+                        1 => (
+                            [("content-type", "application/rss+xml")],
+                            "<rss><channel/></rss>",
+                        )
+                            .into_response(),
+                        _ => ([("content-type", "application/rss+xml")], feed).into_response(),
+                    }
+                },
+            ),
+        )
+        .route(
+            "/fail/",
+            axum::routing::get(|| async { axum::http::StatusCode::SERVICE_UNAVAILABLE }),
+        )
+        .with_state((mode.clone(), hits.clone(), feed));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    (base, mode, hits)
+}
+
 #[tokio::test]
 #[ignore = "needs chromedriver, Chromium and a server build that includes the web UI"]
 async fn first_run_setup_migration_and_library() {
@@ -1086,6 +1136,50 @@ async fn first_run_setup_migration_and_library() {
             .await
             .unwrap();
         wait_text(&client, "Cutoff unmet").await;
+
+        // Direct native Nyaa season searches, explicit repeated requests and truthful failures.
+        let (nyaa,nyaa_mode,nyaa_hits)=nyaa_mock(root.join("tests/fixtures/indexers/sonarr")).await;
+        let search_db=kitsunarr_db::Database::open(&tmp.path().join("data/kitsunarr.db")).await.unwrap();
+        let saved_indexers:Vec<(i64,bool)>=kitsunarr_db::sqlx::query_as("SELECT id,enable_interactive_search FROM indexers").fetch_all(search_db.pool()).await.unwrap();
+        kitsunarr_db::sqlx::query("UPDATE indexers SET enable_interactive_search=0").execute(search_db.pool()).await.unwrap();
+        kitsunarr_db::sqlx::query("INSERT INTO series (id,media_kind,title,sort_title,clean_title,title_slug,series_type,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (990,'anime','Nyaa Test Show','nyaatest','nyaatest','nyaa-test','anime','myAnimeList','990',1,?,?,'2026-11-15')")
+            .bind(media.display().to_string()).bind(media.join("Nyaa Test Show").display().to_string()).execute(search_db.pool()).await.unwrap();
+        kitsunarr_db::sqlx::query("INSERT INTO seasons (series_id,season_number) VALUES (990,1)").execute(search_db.pool()).await.unwrap();
+        for id in 1..=2 {kitsunarr_db::sqlx::query("INSERT INTO episodes (id,series_id,season_number,episode_number,absolute_episode_number) VALUES (?,990,1,?,?)").bind(9900+id).bind(id).bind(id).execute(search_db.pool()).await.unwrap();}
+        kitsunarr_db::sqlx::query("INSERT INTO indexers (id,name,implementation,protocol,settings,enable_rss,enable_automatic_search,enable_interactive_search,created_at) VALUES (990,'Direct Nyaa','Nyaa','torrent',?,0,0,1,'2026-11-15')")
+            .bind(serde_json::json!({"baseUrl":nyaa,"additionalParameters":"&c=1_0&f=0","animeStandardFormatSearch":false}).to_string()).execute(search_db.pool()).await.unwrap();
+        client.goto(&format!("{base}/search")).await.unwrap();
+        fill(&client,"input[aria-label='Series']","Nyaa Test").await;
+        click_button(&client,"Nyaa Test Show").await;
+        client.wait().for_element(Locator::Css("select[aria-label='Season']")).await.unwrap().select_by_value("1").await.unwrap();
+        click_button(&client,"Search indexers").await;
+        wait_text(&client,"Season 1: 3 releases from 1 indexer(s). 1 responding.").await;
+        assert_eq!(nyaa_hits.load(std::sync::atomic::Ordering::SeqCst),1);
+        click_button(&client,"Search indexers").await;
+        for _ in 0..60 {if nyaa_hits.load(std::sync::atomic::Ordering::SeqCst)>=2 {break;}tokio::time::sleep(Duration::from_millis(100)).await;}
+        assert_eq!(nyaa_hits.load(std::sync::atomic::Ordering::SeqCst),2,"same-target Search button makes a new request");
+        wait_text(&client,"Season 1: 3 releases from 1 indexer(s). 1 responding.").await;
+        screenshot(&client,"18a-direct-nyaa").await;
+        nyaa_mode.store(2,std::sync::atomic::Ordering::SeqCst);
+        click_button(&client,"Search again").await;
+        wait_text(&client,"Search sources unavailable").await;
+        screenshot(&client,"18b-nyaa-unavailable").await;
+        assert!(!client.source().await.unwrap().contains("The indexers returned no releases for this search."));
+        nyaa_mode.store(1,std::sync::atomic::Ordering::SeqCst);
+        kitsunarr_db::sqlx::query("DELETE FROM indexer_status WHERE indexer_id=990").execute(search_db.pool()).await.unwrap();
+        click_button(&client,"Search again").await;
+        wait_text(&client,"Nothing found").await;
+        wait_text(&client,"1 responding.").await;
+        kitsunarr_db::sqlx::query("INSERT INTO indexers (id,name,implementation,protocol,settings,enable_rss,enable_automatic_search,enable_interactive_search,created_at) VALUES (991,'Unavailable Nyaa','Nyaa','torrent',?,0,0,1,'2026-11-15')")
+            .bind(serde_json::json!({"baseUrl":format!("{nyaa}/fail"),"animeStandardFormatSearch":false}).to_string()).execute(search_db.pool()).await.unwrap();
+        click_button(&client,"Search again").await;
+        wait_text(&client,"Search incomplete").await;
+        screenshot(&client,"18c-nyaa-partial").await;
+        client.goto(&base).await.unwrap();
+        kitsunarr_db::sqlx::query("DELETE FROM indexers WHERE id IN (990,991)").execute(search_db.pool()).await.unwrap();
+        kitsunarr_db::sqlx::query("DELETE FROM series WHERE id=990").execute(search_db.pool()).await.unwrap();
+        for (id,enabled) in saved_indexers {kitsunarr_db::sqlx::query("UPDATE indexers SET enable_interactive_search=? WHERE id=?").bind(enabled).bind(id).execute(search_db.pool()).await.unwrap();}
+        search_db.close().await;
 
         // Real browser zoom, including dezoom and the narrow viewports of 300-400%.
         let mut overflowing = Vec::new();

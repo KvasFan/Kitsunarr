@@ -123,6 +123,7 @@ Further reading:
 - [source audit](docs/architecture/source-audit.md)
 - [technical decisions](docs/architecture/technical-decisions.md)
 - [feature matrix](docs/architecture/feature-matrix.md)
+- [development roadmap](docs/roadmap.md)
 
 ## License and attribution
 

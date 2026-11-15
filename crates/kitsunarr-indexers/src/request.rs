@@ -706,13 +706,13 @@ impl Generator<'_> {
         let mut titles: Vec<String> = Vec::new();
         match search {
             Search::SingleEpisode { season, episode }
-                if standard && *season > 0 && *episode > 0 =>
+                if (standard || !c.anime) && *season > 0 && *episode > 0 =>
             {
                 for t in &c.scene_titles {
                     titles.push(format!("{}+s{season:02}e{episode:02}", q(t)));
                 }
             }
-            Search::Season { season } if standard && *season > 0 => {
+            Search::Season { season } if (standard || !c.anime) && *season > 0 => {
                 for t in &c.scene_titles {
                     titles.push(format!("{}+s{season:02}", q(t)));
                 }
@@ -731,6 +731,9 @@ impl Generator<'_> {
                     }
                     if standard && *season > 0 && *episode > 0 {
                         titles.push(format!("{}+s{season:02}e{episode:02}", q(t)));
+                    } else if *absolute <= 0 {
+                        // Missing absolute metadata must not silently turn a search into no request.
+                        titles.push(q(t));
                     }
                 }
             }
@@ -747,9 +750,21 @@ impl Generator<'_> {
                         titles.push(q(t));
                     } else if standard && *season > 0 {
                         titles.push(format!("{}+s{season:02}", q(t)));
-                    } else if *pack_search_only {
+                    } else if *pack_search_only || season_scene_titles.is_empty() {
+                        // Sonarr's NyaaRequestGenerator only handled aliases/pack searches here.
+                        // Ordinary seasons need the bare title too; decisions retain episode scope.
                         titles.push(q(t));
                     }
+                }
+            }
+            Search::DailyEpisode { date, .. } => {
+                for t in &c.scene_titles {
+                    titles.push(format!("{}+{}", q(t), date.format("%Y.%m.%d")));
+                }
+            }
+            Search::DailySeason { year, .. } => {
+                for t in &c.scene_titles {
+                    titles.push(format!("{}+{year}", q(t)));
                 }
             }
             Search::Special {

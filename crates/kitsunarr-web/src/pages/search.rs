@@ -17,6 +17,7 @@ pub fn InteractiveSearch() -> Element {
     let mut episode = use_signal(|| None::<i64>);
     // What the results below show; set by the Search button.
     let mut target = use_signal(|| None::<(i64, Option<i32>, Option<i64>)>);
+    let mut search_revision = use_signal(|| 0u64);
 
     let c1 = client.clone();
     let matches = use_resource(move || {
@@ -153,6 +154,7 @@ pub fn InteractiveSearch() -> Element {
                         onclick: move |_| {
                             if let Some(id) = series_id() {
                                 let ep = episode();
+                                search_revision += 1;
                                 target.set(Some((id, if ep.is_some() { None } else { season() }, ep)));
                             }
                         },
@@ -164,7 +166,7 @@ pub fn InteractiveSearch() -> Element {
         match target() {
             Some((id, s, e)) => rsx! {
                 div { class: "card",
-                    ReleaseSearch { key: "{id}-{s:?}-{e:?}", series_id: id, season: s, episode_id: e }
+                    ReleaseSearch { key: "{id}-{s:?}-{e:?}", series_id: id, season: s, episode_id: e, search_revision: search_revision() }
                 }
             },
             None if detail.read().is_none() && series_id().is_some() => rsx! { Loading {} },

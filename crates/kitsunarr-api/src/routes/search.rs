@@ -558,6 +558,7 @@ pub(crate) struct SearchRun {
     pub releases: Vec<IndexerRelease>,
     pub failures: Vec<IndexerFailure>,
     pub searched_indexers: usize,
+    pub successful_indexers: usize,
     pub description: String,
     pub warnings: Vec<String>,
     pub series: decision::Series,
@@ -585,6 +586,7 @@ pub async fn search_releases(
         releases,
         failures: run.failures,
         searched_indexers: run.searched_indexers,
+        successful_indexers: run.successful_indexers,
         description: run.description,
         warnings: run.warnings,
     }))
@@ -958,6 +960,7 @@ pub(crate) async fn run_search(
     }))
     .await;
 
+    let successful_indexers = outcomes.iter().filter(|r| r.is_ok()).count();
     // Each search's releases, in arrival order.
     let mut found: Vec<Vec<IndexerRelease>> = vec![Vec::new(); searches.len()];
     for (indexer, outcome) in indexers.iter().zip(outcomes) {
@@ -1031,6 +1034,7 @@ pub(crate) async fn run_search(
         releases: all_meta,
         failures,
         searched_indexers: indexers.len(),
+        successful_indexers,
         description,
         warnings: inputs.warnings,
         series: inputs.series,

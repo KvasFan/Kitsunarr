@@ -349,10 +349,16 @@ fn nyaa_feed_and_anime_searches() {
         ]
     );
     assert_eq!(chain.all().next().unwrap().pages().len(), 1);
-    // Standard numbering is searched only with "anime standard format search".
+    // The anime option must not disable searches for standard TV episodes.
+    assert!(
+        first_urls(&nyaa(&s, &caps).search(&criteria(&["Monkey+Island"]), &SINGLE))[0]
+            .ends_with("term=Monkey+Island+s01e02")
+    );
+    let mut anime_criteria = criteria(&["Monkey+Island"]);
+    anime_criteria.anime = true;
     assert!(
         nyaa(&s, &caps)
-            .search(&criteria(&["Monkey+Island"]), &SINGLE)
+            .search(&anime_criteria, &SINGLE)
             .all()
             .next()
             .is_none()
@@ -400,11 +406,56 @@ fn nyaa_feed_and_anime_searches() {
         season_scene_titles: vec![],
         pack_search_only: false,
     };
-    assert!(
-        nyaa(&s, &caps)
-            .search(&criteria(&["Monkey+Island"]), &not_packs)
-            .all()
-            .next()
-            .is_none()
+    assert_eq!(
+        first_urls(&nyaa(&s, &caps).search(&criteria(&["Monkey+Island"]), &not_packs)),
+        vec!["https://nyaa.si/?page=rss&cats=1_0&filter=1&term=Monkey+Island".to_string()]
+    );
+}
+
+#[test]
+fn nyaa_queries_cover_standard_daily_and_missing_absolute_metadata() {
+    let caps = Capabilities::default();
+    let s = nyaa_settings(false);
+    for (search, suffix) in [
+        (Search::Season { season: 3 }, "Monkey+Island+s03"),
+        (
+            Search::DailyEpisode {
+                date: chrono::NaiveDate::from_ymd_opt(2026, 11, 15).unwrap(),
+                episodes: vec![],
+            },
+            "Monkey+Island+2026.11.15",
+        ),
+        (
+            Search::DailySeason {
+                year: 2026,
+                episodes: vec![],
+            },
+            "Monkey+Island+2026",
+        ),
+        (
+            Search::AnimeEpisode {
+                absolute: 0,
+                season: 1,
+                episode: 5,
+            },
+            "Monkey+Island",
+        ),
+    ] {
+        let urls = first_urls(&nyaa(&s, &caps).search(&criteria(&["Monkey+Island"]), &search));
+        assert_eq!(urls.len(), 1, "{search:?}");
+        assert!(urls[0].ends_with(suffix), "{urls:?}");
+    }
+    let search = Search::AnimeSeason {
+        season: 1,
+        season_scene_titles: vec![],
+        pack_search_only: false,
+    };
+    let urls =
+        first_urls(&nyaa(&s, &caps).search(&criteria(&["Fate+&+魔法", "FATE+&+魔法"]), &search));
+    assert_eq!(urls.len(), 1);
+    let url = url::Url::parse(&urls[0]).unwrap();
+    assert_eq!(
+        url.query_pairs().find(|(k, _)| k == "term").unwrap().1,
+        "Fate & 魔法"
     );
 }

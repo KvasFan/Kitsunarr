@@ -155,6 +155,7 @@ async fn run_movie_search_as(
         }
     }))
     .await;
+    let successful_indexers = outcomes.iter().filter(|r| r.is_ok()).count();
     let mut found: Vec<IndexerRelease> = Vec::new();
     for (indexer, outcome) in indexers.iter().zip(outcomes) {
         record_outcome(state, indexer.id, &outcome).await;
@@ -210,6 +211,7 @@ async fn run_movie_search_as(
         releases: found,
         failures,
         searched_indexers: indexers.len(),
+        successful_indexers,
         description: if year > 0 {
             format!("{} ({year})", detail.item.title)
         } else {
@@ -250,6 +252,7 @@ pub async fn search_movie_releases(
         releases,
         failures: run.failures,
         searched_indexers: run.searched_indexers,
+        successful_indexers: run.successful_indexers,
         description: run.description,
         warnings: run.warnings,
     }))

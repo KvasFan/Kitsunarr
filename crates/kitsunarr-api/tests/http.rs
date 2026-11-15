@@ -6710,3 +6710,122 @@ async fn history_filters_are_combined_paged_validated_and_documented() {
         assert!(params.iter().any(|p| p["name"] == name), "{name}");
     }
 }
+
+#[tokio::test]
+async fn direct_nyaa_season_searches_survive_other_source_failures_and_can_be_repeated() {
+    use axum::extract::{Query, State};
+    use axum::response::IntoResponse;
+    use kitsunarr_domain::api::search::ReleaseQuery;
+    use std::collections::HashMap;
+    use std::sync::atomic::{AtomicU8, Ordering};
+    type Log = Arc<std::sync::Mutex<Vec<HashMap<String, String>>>>;
+    let mode = Arc::new(AtomicU8::new(0));
+    let log: Log = Arc::default();
+    let router = axum::Router::new()
+        .route(
+            "/",
+            axum::routing::get(
+                |State((mode, log)): State<(Arc<AtomicU8>, Log)>,
+                 Query(query): Query<HashMap<String, String>>| async move {
+                    log.lock().unwrap().push(query);
+                    if mode.load(Ordering::SeqCst) == 2 {
+                        return axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response();
+                    }
+                    let body = if mode.load(Ordering::SeqCst) == 1 {
+                        "<rss><channel/></rss>".into()
+                    } else {
+                        std::fs::read_to_string(concat!(
+                            env!("CARGO_MANIFEST_DIR"),
+                            "/../../tests/fixtures/indexers/sonarr/nyaa_2021.xml"
+                        ))
+                        .unwrap()
+                    };
+                    ([("content-type", "application/rss+xml")], body).into_response()
+                },
+            ),
+        )
+        .route(
+            "/api",
+            axum::routing::get(|| async { axum::http::StatusCode::SERVICE_UNAVAILABLE }),
+        )
+        .with_state((mode.clone(), log.clone()));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let pool = server.state.db.pool();
+    sqlx::query("INSERT INTO series (id,media_kind,title,sort_title,clean_title,title_slug,series_type,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (1,'anime','Nyaa Show','nyaashow','nyaashow','nyaa-show','anime','myAnimeList','1',1,'/library','/library/show','2026-11-15')").execute(pool).await.unwrap();
+    for id in 1..=2 {
+        sqlx::query("INSERT INTO episodes (id,series_id,season_number,episode_number,absolute_episode_number) VALUES (?,1,1,?,?)").bind(id).bind(id).bind(id).execute(pool).await.unwrap();
+    }
+    for (name, implementation) in [("Direct Nyaa", "Nyaa"), ("Unavailable Prowlarr", "Torznab")] {
+        let _:serde_json::Value=client.post("/providers/indexers",&serde_json::json!({
+            "name":name,"implementation":implementation,"enabled":true,
+            "options":{"enableInteractiveSearch":true,"enableRss":false,"enableAutomaticSearch":false},
+            "settings":{"baseUrl":base,"apiPath":"/api","animeStandardFormatSearch":false,"additionalParameters":"&c=1_0&f=0","categories":[5000],"animeCategories":[5070]}
+        })).await.unwrap();
+    }
+    let q = ReleaseQuery {
+        series_id: 1,
+        season_number: Some(1),
+        episode_id: None,
+        complete_series: false,
+        season_packs_only: false,
+    };
+    let first = client.search_releases(&q).await.unwrap();
+    assert_eq!(first.releases.len(), 3);
+    assert_eq!(first.successful_indexers, 1);
+    assert_eq!(first.failures.len(), 1);
+    assert_eq!(first.failures[0].indexer, "Unavailable Prowlarr");
+    assert!(first.releases.iter().all(|r| r.indexer == "Direct Nyaa"));
+    let request = log.lock().unwrap()[0].clone();
+    assert_eq!(request.get("term").map(String::as_str), Some("Nyaa Show"));
+    assert_eq!(request.get("page").map(String::as_str), Some("rss"));
+    assert_eq!(request.get("c").map(String::as_str), Some("1_0"));
+    assert_eq!(client.search_releases(&q).await.unwrap().releases.len(), 3);
+    assert_eq!(
+        log.lock().unwrap().len(),
+        2,
+        "repeat searches actually query Nyaa again"
+    );
+    let before = log.lock().unwrap().len();
+    assert_eq!(
+        client.automatic_search(&q).await.unwrap().searched_indexers,
+        0
+    );
+    assert_eq!(
+        log.lock().unwrap().len(),
+        before,
+        "interactive-only Nyaa is not used automatically"
+    );
+    // A valid empty source with another failing source is a partial response.
+    mode.store(1, Ordering::SeqCst);
+    let partial = client.search_releases(&q).await.unwrap();
+    assert!(partial.releases.is_empty());
+    assert_eq!(partial.successful_indexers, 1);
+    assert_eq!(partial.failures.len(), 1);
+    sqlx::query("UPDATE indexers SET enable_interactive_search=0 WHERE implementation='Torznab'")
+        .execute(pool)
+        .await
+        .unwrap();
+    let empty = client.search_releases(&q).await.unwrap();
+    assert!(empty.releases.is_empty() && empty.failures.is_empty());
+    assert_eq!(empty.successful_indexers, 1);
+    mode.store(2, Ordering::SeqCst);
+    let failed = client.search_releases(&q).await.unwrap();
+    assert!(failed.releases.is_empty());
+    assert_eq!(failed.successful_indexers, 0);
+    assert_eq!(failed.failures.len(), 1);
+    let mut legacy = serde_json::to_value(&first).unwrap();
+    legacy.as_object_mut().unwrap().remove("successfulIndexers");
+    let legacy: kitsunarr_domain::api::search::ReleaseSearchResult =
+        serde_json::from_value(legacy).unwrap();
+    assert_eq!(legacy.successful_indexers, 0);
+    // Field is part of the public schema and old captured responses still deserialize.
+    let spec: serde_json::Value = client.get("/openapi.json").await.unwrap();
+    assert!(
+        spec["components"]["schemas"]["ReleaseSearchResult"]["properties"]["successfulIndexers"]
+            .is_object()
+    );
+}

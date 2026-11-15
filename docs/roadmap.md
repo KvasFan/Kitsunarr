@@ -1,0 +1,57 @@
+# Development roadmap
+
+Milestones 1–50 are recorded in the dated milestone reports. The current priority is the
+reported series-search failure in the local instance.
+
+| Milestone | Scope | Status |
+|---|---|---|
+| 51 | Native Nyaa season searches without season aliases; standard and daily query coverage | Done: generator and HTTP tests |
+| 52 | Distinguish unavailable sources from empty results; retry the same search explicitly | Done: HTTP and Chromium checks |
+| 53 | HTTP and browser regressions for direct Nyaa, partial failures and repeated searches | Done: 817 workspace tests and Chromium passed |
+| 54 | Verify live Nyaa searches and deploy the fixes to the existing local instance | Done: live search and local health verified |
+| 55 | Let an interactive search select individual enabled indexers | Planned |
+| 56 | Show useful per-source query diagnostics without exposing credentials | Planned |
+| 57 | Cancel superseded searches and bound total multi-query search duration | Planned |
+| 58 | Investigate bounded older-result retrieval beyond Nyaa's first RSS page | Planned |
+| 59 | Improve alternate-title/season-name diagnostics when releases do not map | Planned |
+| 60 | Verify the next search improvements across TV, anime and movie workflows | Planned |
+
+## Current diagnosis
+
+The local instance's imported Torznab indexers point at an unavailable Prowlarr service.
+Connection-refused errors must remain visible as source failures, rather than appearing as
+an ordinary search with no matches. A native Nyaa connection was added to the local instance
+for interactive searches; its RSS and automatic-search switches are off. Existing imported
+indexer configurations are preserved.
+
+Live requests to Nyaa return RSS successfully. Nyaa accepts both current `q/c/f` parameters
+and legacy `term/cats/filter` aliases; the legacy parameter names are not the cause of this
+failure. This is also documented by Nyaa's own
+[`views/main.py`](https://github.com/nyaadevs/nyaa/blob/master/nyaa/views/main.py).
+
+The native adapter also silently generated no request for an ordinary anime season without
+season-specific aliases unless standard-format search was enabled. Milestone 51 adds a
+bare-title fallback; the decision engine still maps/rejects each returned release. It also
+keeps standard TV numbering independent of the anime-format option.
+
+Live verification is limited to searches and indexer connectivity. It does not grab releases
+or send work to download clients. RSS only exposes a limited recent result set; retrieving
+older results is tracked separately in milestone 58.
+
+## Live local check, 15 November 2026
+
+The reported title, **Attack on Titan Season 3 Part 2**, returned **291 releases** from the
+direct Nyaa source, including **27 matching releases**, in one 26.66-second search across
+its aliases. Three Prowlarr-backed sources still reported connection-refused errors. Library
+counts stayed at 80 series and 14 movies. Searches did not invoke a download/grab action.
+
+All matching releases were rejected by the existing custom-format minimum: score 0 versus
+minimum 500. Search retrieval and automatic acceptance are separate; that profile setting
+was preserved. See the per-release rejection messages before choosing a release or changing
+a profile.
+
+The interactive search API now reports `successfulIndexers` alongside attempted sources,
+so a valid empty feed, partial failure and total source failure produce distinct UI states.
+Retry controls issue fresh requests; configured source back-off and rate limits still apply.
+
+Verification and implementation notes: [milestones 51–54](milestones-2026-11-15-54.md).

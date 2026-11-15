@@ -59,6 +59,9 @@ pub fn ReleaseSearch(
     /// A film's search (Tanukarr's movies); `series_id` is then ignored.
     #[props(default)]
     movie_id: Option<i64>,
+    /// Explicitly repeat the same search from the search page.
+    #[props(default)]
+    search_revision: u64,
 ) -> Element {
     let client = use_client();
     let app = use_app();
@@ -68,22 +71,35 @@ pub fn ReleaseSearch(
     // A release whose episodes are being chosen by hand: (indexer id, guid, title).
     let mut choosing = use_signal(|| None::<(i64, String, String)>);
     let c0 = client.clone();
-    let results = use_resource(move || {
-        let c = c0.clone();
-        let q = ReleaseQuery {
-            series_id,
-            season_number: season,
-            episode_id,
-            complete_series,
-            season_packs_only,
-        };
-        async move {
-            match movie_id {
-                Some(m) => c.search_movie_releases(m).await,
-                None => c.search_releases(&q).await,
+    // Resource dependencies must track ordinary props too: changing a component key alone
+    // does not reliably remount a static child in this Dioxus tree.
+    let mut results = use_resource(use_reactive!(
+        |series_id,
+         season,
+         episode_id,
+         complete_series,
+         season_packs_only,
+         movie_id,
+         search_revision| {
+            let _ = search_revision;
+            confirm.set(None);
+            choosing.set(None);
+            let c = c0.clone();
+            let q = ReleaseQuery {
+                series_id,
+                season_number: season,
+                episode_id,
+                complete_series,
+                season_packs_only,
+            };
+            async move {
+                match movie_id {
+                    Some(m) => c.search_movie_releases(m).await,
+                    None => c.search_releases(&q).await,
+                }
             }
         }
-    });
+    ));
     let read = results.read();
     let Some(outcome) = &*read else {
         return rsx! { Loading { label: "Searching indexers…" } };
@@ -94,8 +110,11 @@ pub fn ReleaseSearch(
     };
     drop(read);
     rsx! {
-        p { class: "small muted",
-            "{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s)."
+        div { class: "row",
+            p { class: "small muted grow",
+                "{r.description}: {r.releases.len()} releases from {r.searched_indexers} indexer(s). {r.successful_indexers} responding."
+            }
+            button { class: "btn sm", disabled: grabbing().is_some(), onclick: move |_| { confirm.set(None); results.restart(); }, "Search again" }
         }
         for f in r.failures.iter() {
             div { key: "{f.indexer_id}", class: "alert warning", role: "status",
@@ -105,9 +124,20 @@ pub fn ReleaseSearch(
         for (i, w) in r.warnings.iter().enumerate() {
             div { key: "w{i}", class: "alert warning", role: "status", div { class: "grow", "{w}" } }
         }
-        if r.searched_indexers == 0 {
+        if r.releases.is_empty() && !r.failures.is_empty() {
+            if r.successful_indexers == 0 {
+                Empty { title: "Search sources unavailable",
+                    p { "No indexer responded successfully. Check the source errors above, then try again." }
+                    Link { to: Route::SettingsIndexers {}, class: "btn", "Indexer settings" }
+                }
+            } else {
+                Empty { title: "Search incomplete",
+                    p { "The responding indexers returned no releases. Other sources failed; check the errors above and try again." }
+                }
+            }
+        } else if r.searched_indexers == 0 {
             Empty { title: "No indexers to search",
-                p { "Add a Newznab or Torznab indexer and enable interactive search for it." }
+                p { "Add a Nyaa, Newznab or Torznab indexer and enable interactive search for it." }
                 Link { to: Route::SettingsIndexers {}, class: "btn", "Indexer settings" }
             }
         } else if r.releases.is_empty() {

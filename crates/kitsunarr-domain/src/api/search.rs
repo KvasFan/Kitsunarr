@@ -87,6 +87,9 @@ pub struct ReleaseSearchResult {
     pub failures: Vec<IndexerFailure>,
     /// Indexers queried (enabled for interactive search).
     pub searched_indexers: usize,
+    /// Sources that returned a valid response, including a valid empty feed.
+    #[serde(default)]
+    pub successful_indexers: usize,
     /// Human-readable description of the search (e.g. "S01E05").
     pub description: String,
     /// Problems that affect every decision, e.g. a custom format that cannot be evaluated.
