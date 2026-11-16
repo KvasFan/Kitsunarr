@@ -216,7 +216,7 @@ fn Sidebar() -> Element {
     rsx! {
         nav { class: "sidebar", "aria-label": "Main navigation",
             Link { to: Route::Dashboard {}, class: "brand",
-                img { src: "{crate::util::url_base()}{crate::FAVICON}", alt: "" }
+                img { src: "{crate::util::url_base()}{crate::LOGO}", alt: "" }
                 span { "{s.app_name}" }
             }
             NavLink { to: Route::Dashboard {}, icon: "◧", label: s.dashboard }

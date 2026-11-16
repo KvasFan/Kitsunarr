@@ -13,7 +13,7 @@ use crate::state::{use_app, use_client};
 fn Brand() -> Element {
     rsx! {
         div { class: "brand",
-            img { src: "{crate::util::url_base()}{crate::FAVICON}", alt: "", width: "36", height: "36" }
+            img { src: "{crate::util::url_base()}{crate::LOGO}", alt: "", width: "36", height: "36" }
             span { "Kitsunarr" }
         }
     }

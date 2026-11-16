@@ -17,7 +17,10 @@ use std::rc::Rc;
 use dioxus::prelude::*;
 
 const MAIN_CSS: Asset = asset!("/assets/main.css");
-pub const FAVICON: Asset = asset!("/assets/favicon.svg");
+pub const LOGO: Asset = asset!("/assets/favicon.svg");
+const FAVICON_PNG: Asset = asset!("/assets/favicon-32.png");
+const FAVICON_ICO: Asset = asset!("/assets/favicon.ico");
+const TOUCH_ICON: Asset = asset!("/assets/apple-touch-icon.png");
 
 fn main() {
     // The interface language chosen in Settings › General (English needs nothing).
@@ -42,7 +45,10 @@ fn App() -> Element {
     let base = util::url_base();
     rsx! {
         document::Title { "Kitsunarr" }
-        document::Link { rel: "icon", r#type: "image/svg+xml", href: "{base}{FAVICON}" }
+        document::Link { rel: "icon", r#type: "image/x-icon", href: "{base}{FAVICON_ICO}" }
+        document::Link { rel: "icon", r#type: "image/png", sizes: "32x32", href: "{base}{FAVICON_PNG}" }
+        document::Link { rel: "icon", r#type: "image/svg+xml", sizes: "any", href: "{base}{LOGO}" }
+        document::Link { rel: "apple-touch-icon", sizes: "180x180", href: "{base}{TOUCH_ICON}" }
         document::Stylesheet { href: "{base}{MAIN_CSS}" }
         Router::<route::Route> {}
     }

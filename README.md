@@ -1,6 +1,11 @@
-# Kitsunarr
-
-*A modern Rust-powered media manager for TV, anime and movies.*
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/kitsunarr-wordmark-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="branding/kitsunarr-wordmark-light.svg">
+    <img src="branding/kitsunarr-wordmark-light.svg" alt="Kitsunarr" width="448" height="102">
+  </picture>
+</h1>
+<p align="center"><em>A modern Rust-powered media manager for TV, anime and movies.</em></p>
 
 Kitsunarr is an independent, self-hosted media automation platform built with Rust, Dioxus and Axum. It manages TV shows, anime, movies, metadata, downloads, libraries and automated workflows, and it can migrate existing Sonarr and Tanukarr installations.
 
@@ -124,6 +129,7 @@ Further reading:
 - [technical decisions](docs/architecture/technical-decisions.md)
 - [feature matrix](docs/architecture/feature-matrix.md)
 - [development roadmap](docs/roadmap.md)
+- [logo and brand assets](branding/README.md)
 - [real Prowlarr integration verification](docs/prowlarr-verification-2026-11-15.md)
 - [real download-client verification](docs/download-client-verification-2026-11-15.md)
 
