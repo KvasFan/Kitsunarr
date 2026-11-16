@@ -7,6 +7,7 @@ pub mod dashboard;
 pub mod detail;
 pub mod import;
 pub mod library;
+pub mod library_import;
 pub mod placeholders;
 mod quality_profile_items;
 pub mod search;

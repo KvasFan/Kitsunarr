@@ -126,6 +126,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             settings::create_root_folder
         ))
         .routes(routes!(settings::delete_root_folder))
+        .routes(routes!(settings::unmapped_folders))
         .routes(routes!(
             settings::list_quality_definitions,
             settings::update_quality_definitions,

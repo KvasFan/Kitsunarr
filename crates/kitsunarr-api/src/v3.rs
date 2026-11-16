@@ -55,6 +55,7 @@ pub fn router() -> Router<AppState> {
             get(list_series).post(add_series).put(update_series_body),
         )
         .route("/series/lookup", get(lookup))
+        .route("/series/import", post(import_series))
         .route(
             "/series/{id}",
             get(get_series).put(update_series).delete(delete_series),
@@ -62,6 +63,7 @@ pub fn router() -> Router<AppState> {
         .route("/episode", get(list_episodes))
         .route("/episode/{id}", get(get_episode))
         .route("/episode/monitor", put(monitor_episodes))
+        .route("/seasonpass", post(season_pass))
         .route("/episodefile", get(list_episode_files))
         .route("/episodefile/{id}", get(get_episode_file))
         .route("/command", post(command))
@@ -327,14 +329,27 @@ async fn language_profiles() -> Json<Vec<Value>> {
 }
 
 async fn root_folders(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
-    let list = crate::routes::settings::list_root_folders(State(state))
+    let list = crate::routes::settings::list_root_folders(State(state.clone()))
         .await?
         .0;
-    Ok(Json(
-        list.into_iter()
-            .map(|r| json!({"id": r.id, "path": r.path, "accessible": r.accessible, "freeSpace": r.free_space, "totalSpace": r.total_space, "unmappedFolders": []}))
-            .collect(),
-    ))
+    let mut out = Vec::with_capacity(list.len());
+    for r in list {
+        // As Sonarr's `GetDetails`: at most 5 seconds for a slow disk, then none listed.
+        let unmapped = tokio::time::timeout(
+            std::time::Duration::from_secs(5),
+            kitsunarr_library::library_import::unmapped_folders(&state.db, r.id),
+        )
+        .await
+        .ok()
+        .and_then(Result::ok)
+        .unwrap_or_default();
+        let unmapped: Vec<Value> = unmapped
+            .iter()
+            .map(|u| json!({"name": u.name, "path": u.path, "relativePath": u.relative_path}))
+            .collect();
+        out.push(json!({"id": r.id, "path": r.path, "accessible": r.accessible, "freeSpace": r.free_space, "totalSpace": r.total_space, "unmappedFolders": unmapped}));
+    }
+    Ok(Json(out))
 }
 
 async fn tags(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
@@ -538,7 +553,51 @@ fn series_type(s: Option<&str>) -> Option<SeriesType> {
 async fn add_series(
     State(state): State<AppState>,
     principal: Option<axum::Extension<crate::auth::Principal>>,
-    Json(mut body): Json<SeriesBody>,
+    Json(body): Json<SeriesBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    add_one(state, principal, body, false).await
+}
+
+/// Sonarr's `SeriesImportController` (`POST /api/v3/series/import`): series added with their
+/// existing folders, which are scanned before the monitoring choice applies. Stops at the
+/// first failure; the series added before it stay.
+async fn import_series(
+    State(state): State<AppState>,
+    principal: Option<axum::Extension<crate::auth::Principal>>,
+    Json(list): Json<Vec<SeriesBody>>,
+) -> ApiResult<(StatusCode, Json<Vec<Value>>)> {
+    if principal
+        .as_ref()
+        .is_some_and(|p| matches!(p.0, crate::auth::Principal::Companion { .. }))
+    {
+        return Err(ApiError::Forbidden(
+            "Companion keys cannot import folders.".into(),
+        ));
+    }
+    if list.len() > 500 {
+        return Err(ApiError::BadRequest(
+            "At most 500 series can be imported at once.".into(),
+        ));
+    }
+    let mut added = Vec::with_capacity(list.len());
+    for body in list {
+        if body.path.as_deref().is_none_or(|p| p.trim().is_empty()) {
+            return Err(ApiError::field(
+                "path",
+                "Each imported series needs its folder.",
+            ));
+        }
+        let (_, Json(series)) = add_one(state.clone(), None, body, true).await?;
+        added.push(series);
+    }
+    Ok((StatusCode::CREATED, Json(added)))
+}
+
+async fn add_one(
+    state: AppState,
+    principal: Option<axum::Extension<crate::auth::Principal>>,
+    mut body: SeriesBody,
+    import: bool,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     // Tanukarr's `CompanionAddSeriesPolicy`: companion keys add into a registered root folder,
     // never at a chosen path, and never start searches.
@@ -582,13 +641,30 @@ async fn add_series(
         .filter(|r| !r.trim().is_empty())
         .ok_or_else(|| ApiError::field("rootFolderPath", "A root folder is required."))?;
     let options = body.add_options.take().unwrap_or_default();
-    let monitor = match options.monitor.as_deref() {
-        Some("future") => MonitorOption::Future,
-        Some("firstSeason") => MonitorOption::FirstSeason,
-        Some("latestSeason") | Some("lastSeason") => MonitorOption::LatestSeason,
-        Some("none") => MonitorOption::None,
-        _ => MonitorOption::All,
+    // Sonarr's `SeriesScannedHandler`: an explicit choice (other than "skip") decides the
+    // seasons; without one the request's seasons do, specials left unmonitored.
+    let explicit = options
+        .monitor
+        .as_deref()
+        .and_then(MonitorOption::from_sonarr);
+    let monitor = match explicit {
+        Some(m) => m,
+        None if body.seasons.is_some() => MonitorOption::Skip,
+        None => MonitorOption::All,
     };
+    if explicit.is_some_and(|m| m != MonitorOption::Skip) {
+        body.seasons = None;
+    }
+    // `AddSeriesService`: "none" leaves the series unmonitored whatever the request says.
+    if explicit == Some(MonitorOption::None) {
+        body.monitored = None;
+    } else if explicit.is_none()
+        && let Some(seasons) = body.seasons.as_mut()
+    {
+        for s in seasons.iter_mut().filter(|s| s.season_number == 0) {
+            s.monitored = false;
+        }
+    }
     let req = AddTitleRequest {
         provider: MetadataProvider::Tvdb,
         id: body.tvdb_id.to_string(),
@@ -600,6 +676,12 @@ async fn add_series(
         tags: body.tags.clone().unwrap_or_default(),
         search_for_missing: false,
         episode_ordering: None,
+        // An existing folder is used in place (library import); a folder still to be made is
+        // planned from the naming format, as before.
+        path: body
+            .path
+            .clone()
+            .filter(|p| import || std::path::Path::new(p.trim()).is_dir()),
     };
     let (_, Json(added)) = crate::routes::metadata::add(State(state.clone()), Json(req)).await?;
     // The request's season choices (Overseerr monitors the requested seasons only).
@@ -753,6 +835,85 @@ async fn monitor_episodes(
 ) -> ApiResult<StatusCode> {
     series::set_episodes_monitored(&state.db, &body.episode_ids, body.monitored).await?;
     Ok(StatusCode::ACCEPTED)
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct SeasonPassSeries {
+    id: i64,
+    monitored: Option<bool>,
+    #[serde(default)]
+    seasons: Vec<SeasonBody>,
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct MonitoringOptionsBody {
+    /// A `MonitorTypes` name or number.
+    monitor: Option<Value>,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct SeasonPassBody {
+    series: Vec<SeasonPassSeries>,
+    monitoring_options: Option<MonitoringOptionsBody>,
+}
+
+/// Sonarr's `SeasonPassController.UpdateAll` (`POST /api/v3/seasonpass`).
+async fn season_pass(
+    State(state): State<AppState>,
+    Json(body): Json<SeasonPassBody>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    if body.series.len() > 10_000 {
+        return Err(ApiError::BadRequest(
+            "At most 10000 series can be edited at once.".into(),
+        ));
+    }
+    let option = match body.monitoring_options.and_then(|o| o.monitor) {
+        None | Some(Value::Null) => None,
+        Some(v) => {
+            let text = match &v {
+                Value::String(s) => s.clone(),
+                other => other.to_string(),
+            };
+            match MonitorOption::from_sonarr(&text) {
+                Some(o) => Some(o),
+                // `unknown`: Sonarr's legacy path keeps the seasons as sent.
+                None if text.eq_ignore_ascii_case("unknown") || text == "0" => None,
+                None => {
+                    return Err(ApiError::field(
+                        "monitoringOptions.monitor",
+                        "Unknown monitoring option.",
+                    ));
+                }
+            }
+        }
+    };
+    let mut ids = Vec::with_capacity(body.series.len());
+    for s in &body.series {
+        series::get_list_item(&state.db, s.id).await?;
+        ids.push(s.id);
+    }
+    for s in &body.series {
+        let seasons: Vec<SeasonMonitoring> = s
+            .seasons
+            .iter()
+            .map(|x| SeasonMonitoring {
+                season_number: x.season_number,
+                monitored: x.monitored,
+            })
+            .collect();
+        series::season_pass(&state.db, s.id, s.monitored, &seasons, option).await?;
+    }
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids,
+            deleted: false,
+        });
+    Ok((StatusCode::ACCEPTED, Json(json!({}))))
 }
 
 #[derive(Deserialize)]

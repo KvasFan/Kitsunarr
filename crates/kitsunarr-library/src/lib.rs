@@ -14,6 +14,7 @@ pub mod grouping;
 pub mod import;
 pub mod jellyfin;
 pub mod jellyfin_refresh;
+pub mod library_import;
 pub mod list_progress;
 pub mod manual_import;
 pub mod media_info;
@@ -151,7 +152,15 @@ fn episode_monitored(option: MonitorOption, season: i32, latest: i32, aired: Opt
         MonitorOption::Future => aired != Some(true),
         MonitorOption::FirstSeason => season == 1,
         MonitorOption::LatestSeason => season == latest,
-        MonitorOption::None => false,
+        MonitorOption::None | MonitorOption::Existing => false,
+        // A new series has no files; the rest is settled by `apply_monitoring` once the
+        // episodes are stored, and "skip" keeps these defaults.
+        MonitorOption::Missing
+        | MonitorOption::Pilot
+        | MonitorOption::Recent
+        | MonitorOption::MonitorSpecials
+        | MonitorOption::UnmonitorSpecials
+        | MonitorOption::Skip => true,
     }
 }
 
@@ -216,6 +225,10 @@ pub async fn add_title(
             "Choose one of the configured root folders.",
         ));
     }
+    let existing_path = match req.path.as_deref().map(str::trim).filter(|p| !p.is_empty()) {
+        Some(p) => Some(library_import::validate_existing_folder(db, &root, p).await?),
+        None => None,
+    };
     kitsunarr_db::quality::get_profile(db.pool(), req.quality_profile_id)
         .await
         .map_err(|_| {
@@ -295,7 +308,10 @@ pub async fn add_title(
                 minimum_availability: MinimumAvailability::Released,
                 quality_profile_id: req.quality_profile_id,
                 root_folder_path: root.clone(),
-                path: planned.unwrap_or_else(|| naming::join(&root, &folder)),
+                path: existing_path
+                    .clone()
+                    .or(planned)
+                    .unwrap_or_else(|| naming::join(&root, &folder)),
                 added_at: now,
                 last_refreshed_at: Some(kitsunarr_db::now()),
                 tags: req.tags.clone(),
@@ -306,6 +322,12 @@ pub async fn add_title(
         movies::set_original_country(&mut conn, id, info.original_country.as_deref()).await?;
         kitsunarr_db::auto_tags::apply_movie(&mut conn, id).await?;
         tracing::info!(title = %info.title, provider = %info.provider, "movie added");
+        drop(conn);
+        if existing_path.is_some()
+            && let Err(e) = movie_files::scan(db, id).await
+        {
+            tracing::warn!(movie_id = id, error = %e, "the imported film folder could not be scanned");
+        }
         spawn_grouping(db, metadata, req.provider, grouping::Member::Movie(id));
         return Ok(LibraryRef {
             media_type: "movie".into(),
@@ -379,9 +401,11 @@ pub async fn add_title(
             use_scene_numbering: false,
             quality_profile_id: req.quality_profile_id,
             root_folder_path: root.clone(),
-            path: planned
-                .as_ref()
-                .map_or_else(|| naming::join(&root, &folder), |(p, _)| p.clone()),
+            path: existing_path.clone().unwrap_or_else(|| {
+                planned
+                    .as_ref()
+                    .map_or_else(|| naming::join(&root, &folder), |(p, _)| p.clone())
+            }),
             added_at: now.clone(),
             last_refreshed_at: Some(now.clone()),
             tags: req.tags.clone(),
@@ -460,9 +484,27 @@ pub async fn add_title(
         .await?;
     }
     series::set_original_country(&mut tx, id, info.original_country.as_deref()).await?;
+    // Sonarr's `EpisodeMonitoredService` with the add options, once every episode exists.
+    series::apply_monitoring(&mut tx, id, req.monitor, chrono::Utc::now()).await?;
     kitsunarr_db::auto_tags::apply_series(&mut tx, id).await?;
     tx.commit().await?;
     tracing::info!(title = %info.title, provider = %info.provider, episodes = info.episodes.len(), "series added");
+    // Sonarr's library import: the folder's files first, then the monitoring choice
+    // (`SeriesScannedHandler`), so "existing" and "missing" see them.
+    if existing_path.is_some() {
+        match files::scan_series(db, id).await {
+            Ok(summary) => tracing::info!(
+                series_id = id,
+                files = summary.added,
+                "imported series folder scanned"
+            ),
+            Err(e) => {
+                tracing::warn!(series_id = id, error = %e, "the imported series folder could not be scanned")
+            }
+        }
+        let mut conn = db.pool().acquire().await?;
+        series::apply_monitoring(&mut conn, id, req.monitor, chrono::Utc::now()).await?;
+    }
     if let Some((_, g)) = &planned {
         grouping::join_resolved(db, info.provider, g, grouping::Member::Series(id)).await;
     }

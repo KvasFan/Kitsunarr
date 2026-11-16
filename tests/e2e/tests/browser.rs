@@ -472,6 +472,8 @@ async fn tvmaze_mock(fixtures: PathBuf) -> String {
         match id.as_str() {
             "169" => Ok(axum::Json(load(&dir, "tvmaze-show-169.json"))),
             "1003" => Ok(axum::Json(load(&dir, "tvmaze-show-1003.json"))),
+            // Synthetic: a small show for the library import.
+            "27845" => Ok(axum::Json(load(&dir, "tvmaze-show-27845.json"))),
             _ => Err(StatusCode::NOT_FOUND),
         }
     }
@@ -484,6 +486,7 @@ async fn tvmaze_mock(fixtures: PathBuf) -> String {
                 load(&dir, "tvmaze-show-169.json")["_embedded"]["episodes"].clone(),
             )),
             "1003" => Ok(axum::Json(load(&dir, "tvmaze-episodes-1003.json"))),
+            "27845" => Ok(axum::Json(load(&dir, "tvmaze-episodes-27845.json"))),
             _ => Err(StatusCode::NOT_FOUND),
         }
     }
@@ -843,6 +846,135 @@ async fn first_run_setup_migration_and_library() {
                 .all(|e| e.unwrap().file_name() != "Talking Bad"),
             "adding a title never creates folders"
         );
+
+        // Sonarr's monitoring options dialog: the pilot alone.
+        click_button(&client, "Monitoring").await;
+        wait_text(&client, "Monitor new seasons").await;
+        client
+            .find(Locator::Css(".modal select[aria-label='Monitor']"))
+            .await
+            .unwrap()
+            .select_by_value("pilot")
+            .await
+            .unwrap();
+        screenshot(&client, "11k-monitoring-dialog").await;
+        click_button(&client, "Save").await;
+        wait_text(&client, "Monitoring updated for 1 series.").await;
+        let monitored_boxes = || async {
+            client
+                .execute(
+                    "return [...document.querySelectorAll('input[aria-label^=\"Monitor episode\"]')].map(i => i.checked)",
+                    vec![],
+                )
+                .await
+                .unwrap()
+        };
+        let mut checked = serde_json::Value::Null;
+        for _ in 0..50 {
+            checked = monitored_boxes().await;
+            if checked.as_array().is_some_and(|a| a.iter().filter(|v| v.as_bool() == Some(true)).count() == 1) {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        assert_eq!(
+            checked.as_array().map(|a| a.iter().filter(|v| v.as_bool() == Some(true)).count()),
+            Some(1),
+            "only the pilot stays monitored: {checked}"
+        );
+
+        // Library import: an unmapped folder is matched by its name and year, imported in
+        // place and scanned before "existing" monitoring applies.
+        let minisodes = media.join("tv/Breaking Bad Original Minisodes (2009)");
+        std::fs::create_dir_all(minisodes.join("Season 01")).unwrap();
+        std::fs::write(
+            minisodes.join("Season 01/Breaking.Bad.Original.Minisodes.S01E02.720p.WEB.x264-GRP.mkv"),
+            b"video",
+        )
+        .unwrap();
+        client.goto(&format!("{base}/add")).await.unwrap();
+        client
+            .wait()
+            .for_element(Locator::LinkText("Import existing folders"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, "Library import").await;
+        client
+            .wait()
+            .for_element(Locator::Css("select[aria-label='Root folder']"))
+            .await
+            .unwrap()
+            .select_by_label(&tv_root)
+            .await
+            .unwrap();
+        client
+            .find(Locator::Css("select[aria-label='Catalogue']"))
+            .await
+            .unwrap()
+            .select_by_value("tvMaze")
+            .await
+            .unwrap();
+        client
+            .find(Locator::Css("select[aria-label='Monitor']"))
+            .await
+            .unwrap()
+            .select_by_value("existing")
+            .await
+            .unwrap();
+        wait_text(&client, "Breaking Bad Original Minisodes (2009)").await;
+        let matched = client
+            .wait()
+            .for_element(Locator::Css(
+                "select[aria-label='Match for Breaking Bad Original Minisodes (2009)']",
+            ))
+            .await
+            .unwrap();
+        for _ in 0..50 {
+            if matched.prop("value").await.unwrap().as_deref() == Some("27845") {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        if matched.prop("value").await.unwrap().as_deref() != Some("27845") {
+            screenshot(&client, "11l-library-import-failed").await;
+        }
+        assert_eq!(
+            matched.prop("value").await.unwrap().as_deref(),
+            Some("27845"),
+            "the year picks the match"
+        );
+        let source = client.source().await.unwrap();
+        assert!(source.contains("Talking Bad (2013) — in library"), "titles in the library are not offered");
+        screenshot(&client, "11l-library-import").await;
+        click_button(&client, "Import 1 title").await;
+        wait_text(&client, "1 title imported.").await;
+        wait_text(&client, "Imported").await;
+        client.goto(&format!("{base}/series")).await.unwrap();
+        client
+            .wait()
+            .for_element(Locator::XPath(
+                "//a[contains(@class,'media-card')][contains(., 'Original Minisodes')]",
+            ))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, &minisodes.display().to_string()).await;
+        wait_text(&client, "1 / 3 on disk").await;
+        let mut checked = serde_json::Value::Null;
+        for _ in 0..50 {
+            checked = monitored_boxes().await;
+            if checked.as_array().is_some_and(|a| a.len() == 3) {
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+        assert_eq!(checked, serde_json::json!([false, true, false]), "the existing episode only");
+        screenshot(&client, "11m-imported-series").await;
 
         // The migrated (TheTVDB-owned) series refreshes through SkyHook.
         client.goto(&format!("{base}/series")).await.unwrap();
@@ -1604,7 +1736,7 @@ async fn first_run_setup_migration_and_library() {
             browser_zoom(&client, zoom).await;
             for path in [
                 "/", "/series", "/series/1", "/movies", "/movies/900", "/wanted/missing", "/activity/queue",
-                "/activity/history", "/calendar", "/add", "/settings/indexers", "/settings/profiles",
+                "/activity/history", "/calendar", "/add", "/add/import", "/settings/indexers", "/settings/profiles",
                 "/settings/customformats", "/settings/notifications", "/system/tasks", "/system/library", "/activity/manualimport",
             ] {
                 client.goto(&format!("{base}{path}")).await.unwrap();

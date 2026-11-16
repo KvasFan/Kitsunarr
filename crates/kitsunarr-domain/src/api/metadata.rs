@@ -96,17 +96,108 @@ pub struct SearchItem {
     pub in_library: Option<LibraryRef>,
 }
 
-/// Which episodes to monitor when adding a series.
+/// Which episodes to monitor (Sonarr's `MonitorTypes`), when adding a series or applied to an
+/// existing one. Specials are only changed by `monitorSpecials`/`unmonitorSpecials` (and
+/// unmonitored by every other choice except `skip`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub enum MonitorOption {
     #[default]
     All,
+    /// Episodes airing from now on, and those without an air date.
     Future,
+    /// Episodes without a file.
+    Missing,
+    /// Episodes with a file.
+    Existing,
     FirstSeason,
+    #[serde(alias = "lastSeason")]
     LatestSeason,
+    /// The first episode of the first season.
+    Pilot,
+    /// Episodes aired in the last 90 days, future ones and those without an air date.
+    Recent,
+    /// Monitors the specials and leaves the other episodes as they are.
+    MonitorSpecials,
+    /// Unmonitors the specials and leaves the other episodes as they are.
+    UnmonitorSpecials,
     None,
+    /// Leaves the episodes' monitoring as it is.
+    Skip,
+}
+
+impl MonitorOption {
+    /// Every choice in Sonarr's order, with its API value.
+    pub const ALL: [(MonitorOption, &'static str); 12] = [
+        (MonitorOption::All, "all"),
+        (MonitorOption::Future, "future"),
+        (MonitorOption::Missing, "missing"),
+        (MonitorOption::Existing, "existing"),
+        (MonitorOption::FirstSeason, "firstSeason"),
+        (MonitorOption::LatestSeason, "latestSeason"),
+        (MonitorOption::Pilot, "pilot"),
+        (MonitorOption::Recent, "recent"),
+        (MonitorOption::MonitorSpecials, "monitorSpecials"),
+        (MonitorOption::UnmonitorSpecials, "unmonitorSpecials"),
+        (MonitorOption::None, "none"),
+        (MonitorOption::Skip, "skip"),
+    ];
+
+    pub fn as_str(self) -> &'static str {
+        Self::ALL
+            .iter()
+            .find(|(o, _)| *o == self)
+            .map_or("all", |(_, s)| s)
+    }
+
+    /// Parses Sonarr's value (`MonitorTypes` names, case-insensitive, or their numbers);
+    /// `unknown` and unrecognised values give `None`.
+    pub fn from_sonarr(value: &str) -> Option<Self> {
+        let v = value.trim();
+        if let Ok(n) = v.parse::<i64>() {
+            return match n {
+                1 => Some(Self::All),
+                2 => Some(Self::Future),
+                3 => Some(Self::Missing),
+                4 => Some(Self::Existing),
+                5 => Some(Self::FirstSeason),
+                6 | 7 => Some(Self::LatestSeason),
+                8 => Some(Self::Pilot),
+                9 => Some(Self::Recent),
+                10 => Some(Self::MonitorSpecials),
+                11 => Some(Self::UnmonitorSpecials),
+                12 => Some(Self::None),
+                13 => Some(Self::Skip),
+                _ => None,
+            };
+        }
+        if v.eq_ignore_ascii_case("lastSeason") {
+            return Some(Self::LatestSeason);
+        }
+        Self::ALL
+            .iter()
+            .find(|(_, s)| s.eq_ignore_ascii_case(v))
+            .map(|(o, _)| *o)
+    }
+
+    /// An English label for pickers.
+    pub fn label(self) -> &'static str {
+        match self {
+            Self::All => "All episodes",
+            Self::Future => "Future episodes",
+            Self::Missing => "Missing episodes",
+            Self::Existing => "Existing episodes",
+            Self::FirstSeason => "First season",
+            Self::LatestSeason => "Last season",
+            Self::Pilot => "Pilot episode",
+            Self::Recent => "Recent episodes",
+            Self::MonitorSpecials => "Monitor specials",
+            Self::UnmonitorSpecials => "Unmonitor specials",
+            Self::None => "None",
+            Self::Skip => "Don't change",
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -134,6 +225,11 @@ pub struct AddTitleRequest {
     /// `None` for the catalogue's default.
     #[serde(default)]
     pub episode_ordering: Option<String>,
+    /// An existing folder inside the root folder to use as the title's folder (Sonarr's
+    /// library import). Its files are scanned in place before the monitoring choice applies,
+    /// so "existing" and "missing" see them. `None` plans the folder from the naming format.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
 }
 
 fn default_true() -> bool {

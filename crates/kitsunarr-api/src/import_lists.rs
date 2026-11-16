@@ -98,13 +98,7 @@ impl ListOptions {
                 .get("searchForMissingEpisodes")
                 .and_then(Value::as_bool)
                 .unwrap_or(true),
-            monitor: match monitor {
-                "future" => MonitorOption::Future,
-                "firstSeason" => MonitorOption::FirstSeason,
-                "lastSeason" | "latestSeason" => MonitorOption::LatestSeason,
-                "none" => MonitorOption::None,
-                _ => MonitorOption::All,
-            },
+            monitor: MonitorOption::from_sonarr(monitor).unwrap_or(MonitorOption::All),
             monitor_none: monitor == "none",
             root_folder_path: o
                 .get("rootFolderPath")
@@ -566,6 +560,7 @@ async fn process_items(
             tags: list.tags.clone(),
             search_for_missing: list.search_for_missing,
             episode_ordering: None,
+            path: None,
         };
         match kitsunarr_library::add_title(&state.db, &state.metadata, &req).await {
             Ok(r) => {
@@ -898,6 +893,7 @@ pub async fn add_selected(
             tags: list.tags.clone(),
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         };
         match crate::routes::metadata::add(axum::extract::State(state.clone()), axum::Json(add))
             .await

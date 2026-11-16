@@ -117,8 +117,16 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
         });
     });
     let selected_ids = move || selected.read().iter().copied().collect::<Vec<_>>();
+    let mut monitoring_open = use_signal(|| false);
 
     rsx! {
+        if monitoring_open() {
+            super::detail::MonitoringDialog {
+                series_ids: selected_ids(),
+                monitor_new_items: None,
+                on_close: move |_| monitoring_open.set(false),
+            }
+        }
         div { class: "page-head",
             h1 { class: "grow", "{title}" }
             Link { to: Route::ImportWizard {}, class: "btn", "Import from Sonarr/Tanukarr" }
@@ -154,6 +162,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     strong { "{selected.read().len()} selected" }
                     button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(true), ..Default::default() }), "Monitor" }
                     button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(false), ..Default::default() }), "Unmonitor" }
+                    button { class: "btn sm", title: "Choose which episodes of the selected series are monitored", onclick: move |_| monitoring_open.set(true), "Monitoring…" }
                     select {
                         class: "select",
                         "aria-label": "Quality profile",

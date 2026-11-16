@@ -1,0 +1,70 @@
+{
+ "id": 27845,
+ "url": "https://www.tvmaze.com/shows/27845/breaking-bad-original-minisodes",
+ "name": "Breaking Bad: Original Minisodes",
+ "type": "Scripted",
+ "language": "English",
+ "genres": [
+  "Drama"
+ ],
+ "status": "Ended",
+ "runtime": 5,
+ "averageRuntime": 5,
+ "premiered": "2009-02-17",
+ "ended": "2011-07-10",
+ "officialSite": null,
+ "schedule": {
+  "time": "23:05",
+  "days": [
+   "Sunday"
+  ]
+ },
+ "rating": {
+  "average": null
+ },
+ "weight": 85,
+ "network": {
+  "id": 20,
+  "name": "AMC",
+  "country": {
+   "name": "United States",
+   "code": "US",
+   "timezone": "America/New_York"
+  },
+  "officialSite": null
+ },
+ "webChannel": null,
+ "dvdCountry": null,
+ "externals": {
+  "tvrage": null,
+  "thetvdb": null,
+  "imdb": null
+ },
+ "image": null,
+ "updated": 1574619853,
+ "_embedded": {
+  "seasons": [
+   {
+    "id": 278450,
+    "url": "https://www.tvmaze.com/seasons/278450",
+    "number": 1,
+    "name": "",
+    "episodeOrder": 3,
+    "premiereDate": "2009-02-17",
+    "endDate": "2009-02-19",
+    "network": {
+     "id": 20,
+     "name": "AMC",
+     "country": {
+      "name": "United States",
+      "code": "US",
+      "timezone": "America/New_York"
+     },
+     "officialSite": null
+    },
+    "webChannel": null,
+    "image": null
+   }
+  ]
+ }
+}

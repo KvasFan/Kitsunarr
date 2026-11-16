@@ -139,6 +139,19 @@ pub async fn delete_root_folder(
     Ok(StatusCode::NO_CONTENT)
 }
 
+/// The root folder's folders that no title uses, for library import (Sonarr's unmapped
+/// folders), with the catalogue search each suggests.
+#[utoipa::path(get, path = "/rootfolders/{id}/unmapped", tag = "settings", params(("id" = i64, Path)),
+    responses((status = 200, body = Vec<kitsunarr_domain::api::library::UnmappedFolder>), (status = 404)))]
+pub async fn unmapped_folders(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Vec<kitsunarr_domain::api::library::UnmappedFolder>>> {
+    Ok(Json(
+        kitsunarr_library::library_import::unmapped_folders(&state.db, id).await?,
+    ))
+}
+
 // ---------------------------------------------------------------------------------------------
 // Qualities and custom formats
 // ---------------------------------------------------------------------------------------------

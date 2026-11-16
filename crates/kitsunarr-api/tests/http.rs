@@ -746,6 +746,7 @@ async fn catalogue_search_add_and_refresh() {
         tags: vec![],
         search_for_missing: false,
         episode_ordering: None,
+        path: None,
     };
     match client.add_title(&add).await.unwrap_err() {
         ClientError::Api { status, body } => {
@@ -955,6 +956,7 @@ async fn indexer_test_and_interactive_search() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -1428,6 +1430,7 @@ async fn torrent_blackhole_writes_grabs_and_imports_the_watch_folder() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -1579,6 +1582,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -2173,6 +2177,7 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -2320,6 +2325,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -2567,6 +2573,7 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -2826,6 +2833,7 @@ async fn notifications_follow_series_grabs_and_imports() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -2926,6 +2934,7 @@ async fn disk_scan_rename_and_file_deletion() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -3103,6 +3112,7 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -3307,6 +3317,7 @@ async fn complete_series_search_reads_packs_of_the_series() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -3510,6 +3521,7 @@ async fn fake_torrents_are_rejected_before_grabbing() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -3797,6 +3809,7 @@ async fn series_naming_options_round_trip_and_validate() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -4458,6 +4471,7 @@ async fn ical_feed_lists_episodes_for_calendar_apps() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -4611,6 +4625,7 @@ async fn auto_tagging_applies_on_add_edit_and_refresh() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -5350,6 +5365,7 @@ async fn thexem_scene_numbering_is_applied_and_searched() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -5522,6 +5538,7 @@ async fn sonarr_v3_release_parse_diskspace_and_removals() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -6496,6 +6513,7 @@ async fn native_movie_notifications_cover_add_import_upgrade_delete_and_missing_
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         })
         .await
         .unwrap();
@@ -7557,4 +7575,398 @@ async fn custom_format_preview_covers_conditions_anime_and_invalid_drafts_withou
         before,
         "testing must never save a draft"
     );
+}
+
+/// Sonarr's monitoring choices: on add, from the bulk editor and through `/api/v3/seasonpass`.
+#[tokio::test]
+async fn monitoring_choices_apply_on_add_bulk_edit_and_season_pass() {
+    use serde_json::{Value, json};
+    let base = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: base,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    // The option names are Sonarr's, including the obsolete `lastSeason`.
+    let parsed: AddTitleRequest = serde_json::from_value(json!({
+        "provider": "tvMaze", "id": "169", "rootFolderPath": root, "qualityProfileId": 1,
+        "monitor": "lastSeason"
+    }))
+    .unwrap();
+    assert_eq!(parsed.monitor, MonitorOption::LatestSeason);
+    let added = client
+        .add_title(&AddTitleRequest {
+            monitor: MonitorOption::Pilot,
+            ..parsed
+        })
+        .await
+        .unwrap();
+    let episodes = client.episodes(added.id).await.unwrap();
+    let monitored: Vec<(i32, i32)> = episodes
+        .iter()
+        .filter(|e| e.monitored)
+        .map(|e| (e.season_number, e.episode_number))
+        .collect();
+    assert_eq!(monitored, vec![(1, 1)], "the pilot alone");
+    let detail = client.series_detail(added.id).await.unwrap();
+    assert!(detail.item.monitored);
+    assert!(
+        detail.seasons.iter().all(|s| !s.monitored),
+        "no season is monitored for the pilot alone: {:?}",
+        detail.seasons
+    );
+
+    // Bulk editor: every episode is missing, then "monitor new items" off.
+    let edited = client
+        .bulk_edit_series(&BulkEdit {
+            ids: vec![added.id],
+            monitor: Some(MonitorOption::Missing),
+            monitor_new_items: Some(kitsunarr_domain::MonitorNewItems::None),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert_eq!(edited.updated, 1);
+    let episodes = client.episodes(added.id).await.unwrap();
+    assert!(
+        episodes
+            .iter()
+            .all(|e| e.monitored == (e.season_number > 0))
+    );
+    let detail = client.series_detail(added.id).await.unwrap();
+    assert_eq!(
+        detail.monitor_new_items,
+        kitsunarr_domain::MonitorNewItems::None
+    );
+    assert!(
+        detail
+            .seasons
+            .iter()
+            .all(|s| s.monitored == (s.season_number > 0))
+    );
+    // Films have no episodes to choose from.
+    match client
+        .bulk_edit_movies(&BulkEdit {
+            ids: vec![1],
+            monitor: Some(MonitorOption::All),
+            ..Default::default()
+        })
+        .await
+        .unwrap_err()
+    {
+        ClientError::Api { status, body } => {
+            assert_eq!(status, 422);
+            assert_eq!(body.fields[0].field, "monitor");
+        }
+        other => panic!("unexpected {other:?}"),
+    }
+
+    // Season pass: the first season by Sonarr's number (5 = firstSeason).
+    let http = reqwest::Client::new();
+    let url = format!("{}/api/v3/seasonpass", server.base);
+    let response = http
+        .post(&url)
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!({"series": [{"id": added.id, "monitored": true}], "monitoringOptions": {"monitor": 5}}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 202);
+    let episodes = client.episodes(added.id).await.unwrap();
+    assert!(
+        episodes
+            .iter()
+            .all(|e| e.monitored == (e.season_number == 1))
+    );
+    // Seasons alone change only the seasons' flags; "none" also unmonitors the series.
+    let response = http
+        .post(&url)
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!({"series": [{"id": added.id, "seasons": [{"seasonNumber": 2, "monitored": true}]}]}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 202);
+    let detail = client.series_detail(added.id).await.unwrap();
+    let season = |n: i32| {
+        detail
+            .seasons
+            .iter()
+            .find(|s| s.season_number == n)
+            .unwrap()
+            .monitored
+    };
+    assert!(season(1) && season(2) && !season(3));
+    let response = http
+        .post(&url)
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!({"series": [{"id": added.id}], "monitoringOptions": {"monitor": "none"}}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 202);
+    let detail = client.series_detail(added.id).await.unwrap();
+    assert!(!detail.item.monitored);
+    assert!(
+        client
+            .episodes(added.id)
+            .await
+            .unwrap()
+            .iter()
+            .all(|e| !e.monitored)
+    );
+    // Unknown options and series are refused; nothing changes.
+    for (body, expected) in [
+        (
+            json!({"series": [{"id": added.id}], "monitoringOptions": {"monitor": "everything"}}),
+            422,
+        ),
+        (
+            json!({"series": [{"id": 9999}], "monitoringOptions": {"monitor": "all"}}),
+            404,
+        ),
+    ] {
+        let response = http
+            .post(&url)
+            .header("X-Api-Key", &server.api_key)
+            .json(&body)
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(response.status().as_u16(), expected, "{body}");
+    }
+    let v3: Value = http
+        .get(format!("{}/api/v3/series/{}", server.base, added.id))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(v3["monitored"], false);
+}
+
+/// Sonarr's library import: unmapped folders of a root folder, titles added with their
+/// existing folders (scanned before "existing"/"missing" monitoring applies), and the v3
+/// `rootfolder` and `series/import` routes.
+#[tokio::test]
+async fn library_import_adds_titles_with_their_existing_folders() {
+    use serde_json::{Value, json};
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    let created = client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let show = dir.path().join("Breaking Bad (2008) [tvdbid-81189]");
+    std::fs::create_dir_all(show.join("Season 01")).unwrap();
+    for name in [
+        "Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv",
+        "Season 01/Breaking.Bad.S01E02.720p.HDTV.x264-GRP.mkv",
+    ] {
+        std::fs::write(show.join(name), b"video").unwrap();
+    }
+    std::fs::create_dir_all(dir.path().join("The.Expanse")).unwrap();
+    std::fs::create_dir_all(dir.path().join("lost+found")).unwrap();
+    std::fs::write(dir.path().join("loose-file.mkv"), b"x").unwrap();
+
+    let unmapped = client.unmapped_folders(created.id).await.unwrap();
+    let names: Vec<(&str, &str, Option<i32>)> = unmapped
+        .iter()
+        .map(|u| (u.name.as_str(), u.search_term.as_str(), u.year))
+        .collect();
+    assert_eq!(
+        names,
+        vec![
+            (
+                "Breaking Bad (2008) [tvdbid-81189]",
+                "tvdb:81189",
+                Some(2008)
+            ),
+            ("The.Expanse", "The Expanse", None),
+        ]
+    );
+    assert_eq!(
+        unmapped[0].relative_path,
+        "Breaking Bad (2008) [tvdbid-81189]"
+    );
+    assert_eq!(
+        status(client.unmapped_folders(9999).await.unwrap_err()),
+        404
+    );
+
+    let request = |path: Option<String>| AddTitleRequest {
+        provider: MetadataProvider::TvMaze,
+        id: "169".into(),
+        root_folder_path: root.clone(),
+        quality_profile_id: 1,
+        monitor: MonitorOption::Missing,
+        series_type: None,
+        season_folder: true,
+        tags: vec![],
+        search_for_missing: false,
+        episode_ordering: None,
+        path,
+    };
+    // Folders outside the root folder, missing ones and `..` are refused.
+    for bad in [
+        "/etc".to_string(),
+        format!("{root}/Nope"),
+        format!("{root}/The.Expanse/../Breaking Bad (2008) [tvdbid-81189]"),
+        root.clone(),
+    ] {
+        match client
+            .add_title(&request(Some(bad.clone())))
+            .await
+            .unwrap_err()
+        {
+            ClientError::Api { status, body } => {
+                assert_eq!(status, 422, "{bad}");
+                assert_eq!(body.fields[0].field, "path", "{bad}");
+            }
+            other => panic!("unexpected {other:?}"),
+        }
+    }
+    let added = client
+        .add_title(&request(Some(unmapped[0].path.clone())))
+        .await
+        .unwrap();
+    let detail = client.series_detail(added.id).await.unwrap();
+    assert_eq!(detail.item.path, show.display().to_string());
+    assert_eq!(
+        detail.item.episode_file_count, 2,
+        "the folder was scanned in place"
+    );
+    let episodes = client.episodes(added.id).await.unwrap();
+    assert!(
+        episodes
+            .iter()
+            .all(|e| e.monitored == (e.season_number > 0 && e.file.is_none())),
+        "missing episodes only"
+    );
+    assert!(
+        show.join("Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv")
+            .exists()
+    );
+    // The folder is no longer offered, and cannot be used twice.
+    let unmapped = client.unmapped_folders(created.id).await.unwrap();
+    assert_eq!(unmapped.len(), 1);
+    match client
+        .add_title(&request(Some(show.display().to_string())))
+        .await
+        .unwrap_err()
+    {
+        ClientError::Api { status, .. } => assert!(status == 409 || status == 422),
+        other => panic!("unexpected {other:?}"),
+    }
+
+    // v3: the root folder lists the remaining folder; an import needs a path.
+    let http = reqwest::Client::new();
+    let v3 = |p: &str| format!("{}/api/v3{p}", server.base);
+    let roots: Value = http
+        .get(v3("/rootfolder"))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(roots[0]["unmappedFolders"][0]["name"], "The.Expanse");
+    assert_eq!(
+        roots[0]["unmappedFolders"][0]["relativePath"],
+        "The.Expanse"
+    );
+    let response = http
+        .post(v3("/series/import"))
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!([{"tvdbId": 81189, "rootFolderPath": root, "qualityProfileId": 1}]))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 422);
+}
+
+/// `POST /api/v3/series/import` adds TheTVDB series with their existing folders and the
+/// monitoring choice by Sonarr's name.
+#[tokio::test]
+async fn sonarr_v3_series_import_uses_the_existing_folder() {
+    use serde_json::{Value, json};
+    let (skyhook, _log) = skyhook_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let folder = dir.path().join("BB");
+    std::fs::create_dir_all(folder.join("Season 02")).unwrap();
+    std::fs::write(
+        folder.join("Season 02/Breaking.Bad.S02E03.720p.HDTV.x264-GRP.mkv"),
+        b"video",
+    )
+    .unwrap();
+    let response = reqwest::Client::new()
+        .post(format!("{}/api/v3/series/import", server.base))
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!([{
+            "tvdbId": 81189, "rootFolderPath": root, "path": folder.display().to_string(),
+            "qualityProfileId": 1, "seasonFolder": true, "monitored": true,
+            "addOptions": {"monitor": "existing", "searchForMissingEpisodes": false}
+        }]))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 201);
+    let added: Value = response.json().await.unwrap();
+    assert_eq!(added[0]["path"], folder.display().to_string());
+    let id = added[0]["id"].as_i64().unwrap();
+    let monitored: Vec<(i32, i32)> = client
+        .episodes(id)
+        .await
+        .unwrap()
+        .iter()
+        .filter(|e| e.monitored)
+        .map(|e| (e.season_number, e.episode_number))
+        .collect();
+    assert_eq!(monitored, vec![(2, 3)], "the existing episode only");
 }

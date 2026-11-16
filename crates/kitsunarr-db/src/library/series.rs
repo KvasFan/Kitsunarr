@@ -861,6 +861,16 @@ pub async fn bulk_edit(db: &Database, edit: &BulkEdit) -> DbResult<u64> {
                 .await
                 .map_err(|e| DbError::from_write(e, "quality profile"))?;
         }
+        if let Some(m) = edit.monitor_new_items {
+            sqlx::query("UPDATE series SET monitor_new_items = ? WHERE id = ?")
+                .bind(m.as_str())
+                .bind(id)
+                .execute(&mut *tx)
+                .await?;
+        }
+        if let Some(option) = edit.monitor {
+            apply_monitoring(&mut tx, *id, option, chrono::Utc::now()).await?;
+        }
         for tag in &edit.add_tags {
             sqlx::query("INSERT OR IGNORE INTO series_tags (series_id, tag_id) VALUES (?, ?)")
                 .bind(id)
@@ -899,6 +909,183 @@ pub async fn set_episodes_monitored(db: &Database, ids: &[i64], monitored: bool)
     }
     tx.commit().await?;
     Ok(n)
+}
+
+/// Applies a monitoring choice to a series' episodes and seasons, as Sonarr's
+/// `EpisodeMonitoredService.SetEpisodeMonitoredStatus` with `EpisodeRepository.SetMonitored`:
+/// every episode is set from the choice (specials only by the two specials choices), Jellyfin's
+/// unmonitor ownership is cleared as for any explicit edit, then each season is monitored when it
+/// holds a monitored episode — the last season also for "all", and for "future" while the series
+/// continues or is upcoming; the first season is left unmonitored for "pilot". "None" also
+/// unmonitors the series (as Sonarr's add and season pass do); "skip" changes nothing.
+///
+/// An episode without an air date counts as aired before a time when a later episode of its
+/// season aired before it (as Kitsunarr infers it on add), so catalogues without dates for old
+/// episodes do not make them "future" or "recent".
+pub async fn apply_monitoring(
+    conn: &mut SqliteConnection,
+    series_id: i64,
+    option: kitsunarr_domain::api::metadata::MonitorOption,
+    now: chrono::DateTime<chrono::Utc>,
+) -> DbResult<()> {
+    use kitsunarr_domain::api::metadata::MonitorOption as M;
+    if option == M::Skip {
+        return Ok(());
+    }
+    let status: String = sqlx::query_scalar("SELECT status FROM series WHERE id = ?")
+        .bind(series_id)
+        .fetch_optional(&mut *conn)
+        .await?
+        .ok_or(DbError::NotFound)?;
+    let seasons: Vec<i32> = sqlx::query_scalar(
+        "SELECT season_number FROM seasons WHERE series_id = ?1 \
+         UNION SELECT season_number FROM episodes WHERE series_id = ?1",
+    )
+    .bind(series_id)
+    .fetch_all(&mut *conn)
+    .await?;
+    let first = seasons
+        .iter()
+        .copied()
+        .filter(|s| *s > 0)
+        .min()
+        .unwrap_or(0);
+    let last = seasons.iter().copied().max().unwrap_or(0);
+    let stamp =
+        |t: chrono::DateTime<chrono::Utc>| t.to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
+    // Not aired before ?2: no air date and no later episode of the season aired before ?2.
+    const NOT_AIRED_BEFORE: &str = "(air_date_utc >= ?2 OR (air_date_utc IS NULL AND NOT EXISTS (\
+        SELECT 1 FROM episodes l WHERE l.series_id = episodes.series_id \
+        AND l.season_number = episodes.season_number AND l.episode_number > episodes.episode_number \
+        AND l.air_date_utc IS NOT NULL AND l.air_date_utc < ?2)))";
+    let (predicate, bound): (String, Option<String>) = match option {
+        M::MonitorSpecials | M::UnmonitorSpecials => {
+            sqlx::query(
+                "UPDATE episodes SET monitored = ?2, jellyfin_unmonitor_owner = NULL \
+                 WHERE series_id = ?1 AND season_number = 0",
+            )
+            .bind(series_id)
+            .bind(option == M::MonitorSpecials)
+            .execute(&mut *conn)
+            .await?;
+            (String::new(), None)
+        }
+        M::None => ("0".into(), None),
+        M::All => ("season_number > 0".into(), None),
+        M::Future => (
+            format!("season_number > 0 AND {NOT_AIRED_BEFORE}"),
+            Some(stamp(now)),
+        ),
+        M::Recent => (
+            format!("season_number > 0 AND {NOT_AIRED_BEFORE}"),
+            Some(stamp(now - chrono::Duration::days(90))),
+        ),
+        M::Missing => ("season_number > 0 AND episode_file_id IS NULL".into(), None),
+        M::Existing => (
+            "season_number > 0 AND episode_file_id IS NOT NULL".into(),
+            None,
+        ),
+        M::Pilot => (
+            format!("season_number > 0 AND season_number = {first} AND episode_number = 1"),
+            None,
+        ),
+        M::FirstSeason => (
+            format!("season_number > 0 AND season_number = {first}"),
+            None,
+        ),
+        M::LatestSeason => (
+            format!("season_number > 0 AND season_number = {last}"),
+            None,
+        ),
+        M::Skip => unreachable!(),
+    };
+    if !predicate.is_empty() {
+        let sql = format!(
+            "UPDATE episodes SET monitored = CASE WHEN ({predicate}) THEN 1 ELSE 0 END, \
+             jellyfin_unmonitor_owner = NULL WHERE series_id = ?1"
+        );
+        // Only constants and season numbers are formatted into the statement.
+        let query = sqlx::query(sqlx::AssertSqlSafe(sql)).bind(series_id);
+        match bound {
+            Some(t) => query.bind(t).execute(&mut *conn).await?,
+            None => query.execute(&mut *conn).await?,
+        };
+    }
+    if option == M::None {
+        sqlx::query("UPDATE series SET monitored = 0 WHERE id = ?")
+            .bind(series_id)
+            .execute(&mut *conn)
+            .await?;
+    }
+    let monitored_seasons: Vec<i32> = sqlx::query_scalar(
+        "SELECT DISTINCT season_number FROM episodes WHERE series_id = ? AND monitored = 1",
+    )
+    .bind(series_id)
+    .fetch_all(&mut *conn)
+    .await?;
+    let continuing = matches!(status.as_str(), "continuing" | "upcoming");
+    for season in seasons {
+        let monitored = if season > 0
+            && season == last
+            && (option == M::All || (option == M::Future && continuing))
+        {
+            true
+        } else if season == first && option == M::Pilot {
+            false
+        } else {
+            monitored_seasons.contains(&season)
+        };
+        sqlx::query(
+            "INSERT INTO seasons (series_id, season_number, monitored) VALUES (?, ?, ?) \
+             ON CONFLICT(series_id, season_number) DO UPDATE SET monitored = excluded.monitored",
+        )
+        .bind(series_id)
+        .bind(season)
+        .bind(monitored)
+        .execute(&mut *conn)
+        .await?;
+    }
+    Ok(())
+}
+
+/// Sonarr's season pass for one series (`SeasonPassController.UpdateAll`): the series flag,
+/// the listed seasons' flags (their episodes are left to the monitoring choice), then the
+/// monitoring choice, if any. Unknown seasons are ignored.
+pub async fn season_pass(
+    db: &Database,
+    series_id: i64,
+    monitored: Option<bool>,
+    seasons: &[kitsunarr_domain::api::library::SeasonMonitoring],
+    option: Option<kitsunarr_domain::api::metadata::MonitorOption>,
+) -> DbResult<()> {
+    let mut tx = db.pool().begin().await?;
+    let exists: Option<i64> = sqlx::query_scalar("SELECT id FROM series WHERE id = ?")
+        .bind(series_id)
+        .fetch_optional(&mut *tx)
+        .await?;
+    if exists.is_none() {
+        return Err(DbError::NotFound);
+    }
+    if let Some(m) = monitored {
+        sqlx::query("UPDATE series SET monitored = ? WHERE id = ?")
+            .bind(m)
+            .bind(series_id)
+            .execute(&mut *tx)
+            .await?;
+    }
+    for s in seasons {
+        sqlx::query("UPDATE seasons SET monitored = ? WHERE series_id = ? AND season_number = ?")
+            .bind(s.monitored)
+            .bind(series_id)
+            .bind(s.season_number)
+            .execute(&mut *tx)
+            .await?;
+    }
+    if let Some(option) = option {
+        apply_monitoring(&mut tx, series_id, option, chrono::Utc::now()).await?;
+    }
+    tx.commit().await?;
+    Ok(())
 }
 
 /// Removes the series and its records. Files on disk are never touched here.
@@ -1684,4 +1871,301 @@ pub async fn ensure_season(
         .execute(&mut *conn)
         .await?;
     Ok(r.rows_affected() == 1)
+}
+
+/// Sonarr's `SetEpisodeMonitoredBySeriesFixture` and `SetEpisodeMontitoredFixture`, on the
+/// real schema.
+#[cfg(test)]
+mod monitoring_tests {
+    use super::tests::sample;
+    use super::*;
+    use chrono::{Duration, Utc};
+    use kitsunarr_domain::api::metadata::MonitorOption as M;
+
+    struct Fixture {
+        db: Database,
+        series: i64,
+        files: i32,
+    }
+
+    impl Fixture {
+        async fn new(status: SeriesStatus, seasons: &[i32]) -> Self {
+            let db = crate::test_support::db().await;
+            let mut conn = db.pool().acquire().await.unwrap();
+            let mut s = sample("Monitored", "81189");
+            s.status = status;
+            let series = insert(&mut conn, &s).await.unwrap();
+            for n in seasons {
+                upsert_season(
+                    &mut conn,
+                    series,
+                    &NewSeason {
+                        season_number: *n,
+                        monitored: true,
+                        title: None,
+                        images: vec![],
+                    },
+                )
+                .await
+                .unwrap();
+            }
+            drop(conn);
+            Self {
+                db,
+                series,
+                files: 0,
+            }
+        }
+
+        async fn episode(
+            &mut self,
+            season: i32,
+            number: i32,
+            has_file: bool,
+            air_days: Option<i64>,
+            monitored: bool,
+        ) -> i64 {
+            let mut conn = self.db.pool().acquire().await.unwrap();
+            let file = if has_file {
+                self.files += 1;
+                Some(
+                    upsert_episode_file(
+                        &mut conn,
+                        &NewEpisodeFile {
+                            series_id: self.series,
+                            season_number: season,
+                            relative_path: format!("f{}.mkv", self.files),
+                            size: 1,
+                            added_at: "2026-01-02T00:00:00Z".into(),
+                            scene_name: None,
+                            release_group: None,
+                            quality_id: 7,
+                            revision_version: 1,
+                            revision_real: 0,
+                            is_repack: false,
+                            languages: vec![],
+                            media_info: None,
+                            original_path: None,
+                            indexer_flags: 0,
+                            release_type: 0,
+                        },
+                    )
+                    .await
+                    .unwrap(),
+                )
+            } else {
+                None
+            };
+            let id = upsert_episode(
+                &mut conn,
+                &NewEpisode {
+                    series_id: self.series,
+                    season_number: season,
+                    episode_number: number,
+                    absolute_episode_number: None,
+                    scene_season_number: None,
+                    scene_episode_number: None,
+                    scene_absolute_episode_number: None,
+                    unverified_scene_numbering: false,
+                    title: None,
+                    overview: None,
+                    air_date: None,
+                    air_date_utc: air_days.map(|d| {
+                        (Utc::now() + Duration::days(d))
+                            .to_rfc3339_opts(chrono::SecondsFormat::Secs, true)
+                    }),
+                    runtime: None,
+                    monitored,
+                    episode_file_id: file,
+                    provider_episode_id: None,
+                    last_search_at: None,
+                },
+            )
+            .await
+            .unwrap();
+            sqlx::query("UPDATE episodes SET jellyfin_unmonitor_owner = 'jf' WHERE id = ?")
+                .bind(id)
+                .execute(&mut *conn)
+                .await
+                .unwrap();
+            id
+        }
+
+        async fn apply(&self, option: M) {
+            let mut conn = self.db.pool().acquire().await.unwrap();
+            apply_monitoring(&mut conn, self.series, option, Utc::now())
+                .await
+                .unwrap();
+        }
+
+        async fn monitored(&self, id: i64) -> bool {
+            sqlx::query_scalar("SELECT monitored FROM episodes WHERE id = ?")
+                .bind(id)
+                .fetch_one(self.db.pool())
+                .await
+                .unwrap()
+        }
+
+        async fn season(&self, n: i32) -> bool {
+            sqlx::query_scalar(
+                "SELECT monitored FROM seasons WHERE series_id = ? AND season_number = ?",
+            )
+            .bind(self.series)
+            .bind(n)
+            .fetch_one(self.db.pool())
+            .await
+            .unwrap()
+        }
+    }
+
+    #[tokio::test]
+    async fn all_monitors_regular_episodes_and_unmonitors_specials() {
+        let mut f = Fixture::new(SeriesStatus::Continuing, &[0, 1, 2]).await;
+        let special = f.episode(0, 1, false, Some(-1), true).await;
+        let aired = f.episode(1, 1, false, Some(-1), false).await;
+        let with_file = f.episode(2, 1, true, Some(-1), false).await;
+        f.apply(M::All).await;
+        assert!(!f.monitored(special).await);
+        assert!(f.monitored(aired).await);
+        assert!(f.monitored(with_file).await);
+        assert!(!f.season(0).await && f.season(1).await && f.season(2).await);
+        let owners: i64 = sqlx::query_scalar(
+            "SELECT count(*) FROM episodes WHERE jellyfin_unmonitor_owner IS NOT NULL",
+        )
+        .fetch_one(f.db.pool())
+        .await
+        .unwrap();
+        assert_eq!(
+            owners, 0,
+            "an explicit choice takes ownership from Jellyfin"
+        );
+    }
+
+    #[tokio::test]
+    async fn none_unmonitors_everything_and_the_series() {
+        let mut f = Fixture::new(SeriesStatus::Continuing, &[0, 1, 2]).await;
+        let special = f.episode(0, 1, false, Some(-1), true).await;
+        let regular = f.episode(1, 1, true, Some(-1), true).await;
+        f.apply(M::None).await;
+        assert!(!f.monitored(special).await && !f.monitored(regular).await);
+        for s in [0, 1, 2] {
+            assert!(!f.season(s).await);
+        }
+        let series: bool = sqlx::query_scalar("SELECT monitored FROM series WHERE id = ?")
+            .bind(f.series)
+            .fetch_one(f.db.pool())
+            .await
+            .unwrap();
+        assert!(!series);
+    }
+
+    #[tokio::test]
+    async fn missing_and_existing_follow_files() {
+        let mut f = Fixture::new(SeriesStatus::Ended, &[1, 2, 3]).await;
+        let missing = f.episode(1, 1, false, Some(-1), false).await;
+        let existing = f.episode(1, 2, true, Some(-1), true).await;
+        f.episode(2, 1, false, Some(-1), false).await;
+        f.episode(3, 1, true, Some(-1), false).await;
+        f.apply(M::Missing).await;
+        assert!(f.monitored(missing).await && !f.monitored(existing).await);
+        // `should_return_distinct_season_numbers_with_monitored_episodes`
+        assert!(f.season(1).await && f.season(2).await && !f.season(3).await);
+        f.apply(M::Existing).await;
+        assert!(!f.monitored(missing).await && f.monitored(existing).await);
+        assert!(f.season(1).await && !f.season(2).await && f.season(3).await);
+    }
+
+    #[tokio::test]
+    async fn future_takes_future_and_undated_episodes() {
+        let mut f = Fixture::new(SeriesStatus::Continuing, &[1]).await;
+        let aired = f.episode(1, 1, false, Some(-1), true).await;
+        let future = f.episode(1, 2, false, Some(7), false).await;
+        let tba = f.episode(1, 3, false, None, false).await;
+        f.apply(M::Future).await;
+        assert!(!f.monitored(aired).await);
+        assert!(f.monitored(future).await && f.monitored(tba).await);
+    }
+
+    #[tokio::test]
+    async fn undated_episodes_before_an_aired_one_are_not_future() {
+        let mut f = Fixture::new(SeriesStatus::Continuing, &[1]).await;
+        let undated = f.episode(1, 1, false, None, true).await;
+        let aired = f.episode(1, 2, false, Some(-30), true).await;
+        let next = f.episode(1, 3, false, None, false).await;
+        f.apply(M::Future).await;
+        assert!(!f.monitored(undated).await && !f.monitored(aired).await);
+        assert!(f.monitored(next).await);
+    }
+
+    #[tokio::test]
+    async fn recent_takes_the_last_90_days_and_later() {
+        let mut f = Fixture::new(SeriesStatus::Continuing, &[1]).await;
+        let old = f.episode(1, 1, false, Some(-200), true).await;
+        let recent = f.episode(1, 2, false, Some(-5), false).await;
+        let future = f.episode(1, 3, false, Some(30), false).await;
+        let tba = f.episode(1, 4, false, None, false).await;
+        f.apply(M::Recent).await;
+        assert!(!f.monitored(old).await);
+        assert!(f.monitored(recent).await && f.monitored(future).await && f.monitored(tba).await);
+    }
+
+    #[tokio::test]
+    async fn pilot_first_and_last_season() {
+        let mut f = Fixture::new(SeriesStatus::Continuing, &[0, 1, 2]).await;
+        let pilot = f.episode(1, 1, false, Some(-10), false).await;
+        let other = f.episode(1, 2, false, Some(-9), true).await;
+        let later = f.episode(2, 1, false, Some(-1), true).await;
+        f.apply(M::Pilot).await;
+        assert!(f.monitored(pilot).await);
+        assert!(!f.monitored(other).await && !f.monitored(later).await);
+        assert!(
+            !f.season(1).await,
+            "season 1 is not monitored for the pilot alone"
+        );
+        f.apply(M::FirstSeason).await;
+        assert!(f.monitored(pilot).await && f.monitored(other).await && !f.monitored(later).await);
+        assert!(f.season(1).await && !f.season(2).await);
+        f.apply(M::LatestSeason).await;
+        assert!(!f.monitored(pilot).await && f.monitored(later).await);
+        assert!(!f.season(1).await && f.season(2).await);
+    }
+
+    #[tokio::test]
+    async fn specials_choices_only_change_specials() {
+        let mut f = Fixture::new(SeriesStatus::Continuing, &[0, 1]).await;
+        let special = f.episode(0, 1, false, Some(-1), false).await;
+        let on = f.episode(1, 1, false, Some(-1), true).await;
+        let off = f.episode(1, 2, false, Some(-1), false).await;
+        f.apply(M::MonitorSpecials).await;
+        assert!(f.monitored(special).await && f.season(0).await);
+        assert!(f.monitored(on).await && !f.monitored(off).await);
+        f.apply(M::UnmonitorSpecials).await;
+        assert!(!f.monitored(special).await && !f.season(0).await);
+        assert!(f.monitored(on).await && !f.monitored(off).await);
+    }
+
+    #[tokio::test]
+    async fn future_monitors_the_last_season_only_while_continuing() {
+        for (status, expected) in [
+            (SeriesStatus::Continuing, true),
+            (SeriesStatus::Upcoming, true),
+            (SeriesStatus::Ended, false),
+        ] {
+            let mut f = Fixture::new(status, &[1, 2]).await;
+            f.episode(1, 1, false, Some(-20), true).await;
+            f.episode(2, 1, false, Some(-10), true).await;
+            f.apply(M::Future).await;
+            assert_eq!(f.season(2).await, expected, "{status:?}");
+        }
+    }
+
+    #[tokio::test]
+    async fn skip_changes_nothing() {
+        let mut f = Fixture::new(SeriesStatus::Continuing, &[0, 1]).await;
+        let special = f.episode(0, 1, false, Some(-1), true).await;
+        let regular = f.episode(1, 1, false, Some(-1), false).await;
+        f.apply(M::Skip).await;
+        assert!(f.monitored(special).await && !f.monitored(regular).await);
+        assert!(f.season(0).await && f.season(1).await);
+    }
 }

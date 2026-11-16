@@ -104,6 +104,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut naming_open = use_signal(|| false);
     let mut versions_open = use_signal(|| false);
     let mut compression_open = use_signal(|| false);
+    let mut monitoring_open = use_signal(|| false);
     let mut scanning = use_signal(|| false);
     // An episode file to delete: (file id, relative path).
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
@@ -318,6 +319,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                         label: if monitored { "Monitored".to_string() } else { "Unmonitored".to_string() },
                         onchange: move |v: bool| update_monitored(SeriesUpdate { monitored: Some(v), ..Default::default() }),
                     }
+                    button { class: "btn", title: "Choose which episodes are monitored, as when adding the series", onclick: move |_| monitoring_open.set(true), "Monitoring" }
                     div { class: "spacer" }
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
                     button { class: "btn", onclick: move |_| source_open.set(true), "Change catalogue" }
@@ -379,6 +381,13 @@ pub fn SeriesDetailPage(id: i64) -> Element {
         }
         if compression_open() {
             CompressionDialog { series_id: id, on_close: move |_| compression_open.set(false) }
+        }
+        if monitoring_open() {
+            MonitoringDialog {
+                series_ids: vec![id],
+                monitor_new_items: Some(d.monitor_new_items),
+                on_close: move |_| monitoring_open.set(false),
+            }
         }
         if versions_open() {
             VersionsDialog { series_id: id, on_close: move |_| versions_open.set(false) }
@@ -1002,6 +1011,82 @@ fn RenameDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
 
 /// Chooses the episode ordering (Tanukarr's episode groups): the series is renumbered and
 /// refreshed; episodes keep their files.
+/// Sonarr's monitoring options dialog (its season pass): applies a monitoring choice to the
+/// episodes and seasons of one or more series, and sets "monitor new items".
+#[component]
+pub fn MonitoringDialog(
+    series_ids: Vec<i64>,
+    /// The current setting when one series is edited; `None` keeps each series' own.
+    monitor_new_items: Option<kitsunarr_domain::MonitorNewItems>,
+    on_close: EventHandler<()>,
+) -> Element {
+    use kitsunarr_domain::MonitorNewItems;
+    use kitsunarr_domain::api::library::BulkEdit;
+    use kitsunarr_domain::api::metadata::MonitorOption;
+    let app = use_app();
+    let client = use_client();
+    let mut monitor = use_signal(|| MonitorOption::Skip);
+    let mut new_items = use_signal(move || monitor_new_items);
+    let mut busy = use_signal(|| false);
+    let count = series_ids.len();
+    let ids = series_ids.clone();
+    let apply = move |_| {
+        let c = client.clone();
+        let edit = BulkEdit {
+            ids: ids.clone(),
+            monitor: Some(monitor()).filter(|m| *m != MonitorOption::Skip),
+            monitor_new_items: new_items(),
+            ..Default::default()
+        };
+        busy.set(true);
+        spawn(async move {
+            match c.bulk_edit_series(&edit).await {
+                Ok(r) => app.success(format!("Monitoring updated for {} series.", r.updated)),
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+            on_close.call(());
+        });
+    };
+    let choices = std::iter::once(MonitorOption::Skip)
+        .chain(super::add::SERIES_MONITOR.iter().copied())
+        .collect::<Vec<_>>();
+    let unchanged = monitor() == MonitorOption::Skip && new_items() == monitor_new_items;
+    rsx! {
+        Modal {
+            title: if count == 1 { "Monitoring".to_string() } else { format!("Monitoring — {count} series") },
+            on_close: move |_| on_close.call(()),
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", onclick: move |_| on_close.call(()), "Cancel" }
+                button { class: "btn primary", disabled: busy() || unchanged, onclick: apply,
+                    if busy() { "Saving…" } else { "Save" }
+                }
+            },
+            p { class: "help small", "The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. \"None\" also unmonitors the series." }
+            Field { label: "Monitor",
+                select { class: "select", "aria-label": "Monitor", value: monitor().as_str(),
+                    onchange: move |e: FormEvent| {
+                        if let Some(m) = MonitorOption::from_sonarr(&e.value()) {
+                            monitor.set(m);
+                        }
+                    },
+                    for m in choices.iter() { option { key: "{m.as_str()}", value: m.as_str(), "{m.label()}" } }
+                }
+            }
+            Field { label: "Monitor new seasons",
+                select { class: "select", "aria-label": "Monitor new seasons",
+                    value: new_items().map(|n| n.as_str()).unwrap_or(""),
+                    onchange: move |e: FormEvent| new_items.set(e.value().parse::<MonitorNewItems>().ok()),
+                    if monitor_new_items.is_none() { option { value: "", "Don't change" } }
+                    option { value: "all", "All seasons" }
+                    option { value: "none", "None" }
+                }
+            }
+        }
+    }
+}
+
 #[component]
 fn OrderingDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
     let app = use_app();

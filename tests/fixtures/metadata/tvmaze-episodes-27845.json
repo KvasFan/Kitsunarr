@@ -1,0 +1,50 @@
+[
+ {
+  "id": 2784501,
+  "url": "https://www.tvmaze.com/episodes/2784501",
+  "name": "Minisode 1",
+  "season": 1,
+  "number": 1,
+  "type": "regular",
+  "airdate": "2009-02-17",
+  "airtime": "23:00",
+  "airstamp": "2009-02-17T02:00:00+00:00",
+  "runtime": 5,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 2784502,
+  "url": "https://www.tvmaze.com/episodes/2784502",
+  "name": "Minisode 2",
+  "season": 1,
+  "number": 2,
+  "type": "regular",
+  "airdate": "2009-02-18",
+  "airtime": "23:05",
+  "airstamp": "2009-02-18T02:00:00+00:00",
+  "runtime": 5,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ },
+ {
+  "id": 2784503,
+  "url": "https://www.tvmaze.com/episodes/2784503",
+  "name": "Minisode 3",
+  "season": 1,
+  "number": 3,
+  "type": "regular",
+  "airdate": "2009-02-19",
+  "airtime": "23:05",
+  "airstamp": "2009-02-19T02:00:00+00:00",
+  "runtime": 5,
+  "rating": {
+   "average": null
+  },
+  "image": null
+ }
+]

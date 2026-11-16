@@ -375,6 +375,13 @@ pub struct BulkEdit {
     pub add_tags: Vec<i64>,
     #[serde(default)]
     pub remove_tags: Vec<i64>,
+    /// Series only: applies a monitoring choice to the episodes and seasons (Sonarr's season
+    /// pass `monitoringOptions`), after `monitored`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub monitor: Option<crate::api::metadata::MonitorOption>,
+    /// Series only: whether seasons a refresh discovers are monitored.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub monitor_new_items: Option<MonitorNewItems>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
@@ -536,4 +543,113 @@ pub struct MovieWatchedUpdate {
 pub struct MoviesWatchedUpdate {
     pub ids: Vec<i64>,
     pub watched: bool,
+}
+
+/// A folder of a root folder that no title uses (Sonarr's `UnmappedFolder`), offered for
+/// library import.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct UnmappedFolder {
+    pub name: String,
+    pub path: String,
+    /// The path below the root folder.
+    pub relative_path: String,
+    /// What to search the catalogues for: an identity (`tvdb:…`, `tmdb:…`, `tt…`) named in the
+    /// folder, else its title without year and tags.
+    pub search_term: String,
+    /// A year named in the folder, `(2008)`.
+    pub year: Option<i32>,
+}
+
+/// The catalogue search for a folder name, and the year it names: Sonarr's and Radarr's id
+/// tags (`[tvdbid-81189]`, `{tvdb-81189}`, `[tmdbid-1396]`, `{imdb-tt0903747}`) give an exact
+/// lookup; otherwise bracketed tags and a trailing `(year)` are dropped, and dots or
+/// underscores become spaces when the name has no spaces.
+pub fn folder_search_term(name: &str) -> (String, Option<i32>) {
+    let lower = name.to_ascii_lowercase();
+    for (tag, prefix) in [
+        ("tvdbid-", "tvdb:"),
+        ("tvdb-", "tvdb:"),
+        ("tmdbid-", "tmdb:"),
+        ("tmdb-", "tmdb:"),
+        ("imdbid-", ""),
+        ("imdb-", ""),
+    ] {
+        if let Some(at) = lower.find(tag) {
+            let rest = &lower[at + tag.len()..];
+            let id: String = rest
+                .chars()
+                .take_while(|c| c.is_ascii_alphanumeric())
+                .collect();
+            let valid = if prefix.is_empty() {
+                id.len() > 2 && id.starts_with("tt") && id[2..].chars().all(|c| c.is_ascii_digit())
+            } else {
+                !id.is_empty() && id.chars().all(|c| c.is_ascii_digit())
+            };
+            if valid {
+                return (format!("{prefix}{id}"), folder_year(name));
+            }
+        }
+    }
+    let mut title = String::with_capacity(name.len());
+    let mut depth = 0i32;
+    for c in name.chars() {
+        match c {
+            '[' | '{' => depth += 1,
+            ']' | '}' => depth = (depth - 1).max(0),
+            _ if depth == 0 => title.push(c),
+            _ => {}
+        }
+    }
+    let year = folder_year(&title);
+    let spaced = title.trim().contains(' ');
+    if let Some(y) = year {
+        title = title.replace(&format!("({y})"), " ");
+    }
+    if !spaced {
+        title = title.replace(['.', '_'], " ");
+    }
+    let term = title.split_whitespace().collect::<Vec<_>>().join(" ");
+    (term, year)
+}
+
+/// The last `(yyyy)` in a name, 1900–2199.
+fn folder_year(name: &str) -> Option<i32> {
+    let bytes = name.as_bytes();
+    (0..bytes.len().saturating_sub(5)).rev().find_map(|i| {
+        (bytes[i] == b'(' && bytes[i + 5] == b')')
+            .then(|| name.get(i + 1..i + 5)?.parse::<i32>().ok())
+            .flatten()
+            .filter(|y| (1900..2200).contains(y))
+    })
+}
+
+#[cfg(test)]
+mod folder_term_tests {
+    use super::folder_search_term;
+
+    #[test]
+    fn folder_names_become_catalogue_searches() {
+        let cases = [
+            ("Breaking Bad (2008)", "Breaking Bad", Some(2008)),
+            (
+                "Breaking Bad (2008) [tvdbid-81189]",
+                "tvdb:81189",
+                Some(2008),
+            ),
+            ("Breaking Bad {tvdb-81189}", "tvdb:81189", None),
+            ("Spirited Away (2001) {tmdb-129}", "tmdb:129", Some(2001)),
+            ("Fargo [imdbid-tt2802850]", "tt2802850", None),
+            ("Fargo [imdbid-nope]", "Fargo", None),
+            ("The.Expanse", "The Expanse", None),
+            ("Mr. Robot", "Mr. Robot", None),
+            ("Cowboy_Bebop_(1998)", "Cowboy Bebop", Some(1998)),
+            ("Show (1080p) [Group]", "Show (1080p)", None),
+            ("Doctor Who (2005) (2005)", "Doctor Who", Some(2005)),
+        ];
+        for (name, term, year) in cases {
+            assert_eq!(folder_search_term(name), (term.to_string(), year), "{name}");
+        }
+    }
 }

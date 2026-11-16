@@ -19,6 +19,18 @@ The development follow-up covers reliability, guided configuration and anime sea
 
 Implementation and verification: [milestones 61–66](milestones-2026-11-16-66.md).
 
+Monitoring choices and library import, after comparing the remaining gaps with Sonarr:
+
+| Milestone | Scope | Status |
+|---|---|---|
+| 67 | All of Sonarr's monitoring choices when adding, with `EpisodeMonitoredService` season rules | Done: 10 ported fixture cases, HTTP |
+| 68 | Apply monitoring choices to existing series: series dialog, bulk editor, v3 season pass | Done: HTTP and Chromium |
+| 69 | Unmapped root-folder folders and adding titles with their existing folders (native and v3) | Done: HTTP |
+| 70 | Library import page with catalogue matching by name, year or id tag | Done: Chromium |
+| 71 | Verify the workflow, zoomed layouts and the clean-clone CI jobs | Done: 864 Rust tests, Chromium |
+
+Implementation and verification: [milestones 67–71](milestones-2026-11-16-71.md).
+
 | Milestone | Scope | Status |
 |---|---|---|
 | 51 | Native Nyaa season searches without season aliases; standard and daily query coverage | Done: generator and HTTP tests |

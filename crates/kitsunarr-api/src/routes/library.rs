@@ -225,6 +225,7 @@ pub async fn update_movie(
                 quality_profile_id: update.quality_profile_id,
                 add_tags: add,
                 remove_tags: remove,
+                ..Default::default()
             },
         )
         .await?;
@@ -269,6 +270,12 @@ pub async fn bulk_edit_movies(
     if edit.ids.len() > 10_000 {
         return Err(ApiError::BadRequest(
             "At most 10000 items can be edited at once.".into(),
+        ));
+    }
+    if edit.monitor.is_some() || edit.monitor_new_items.is_some() {
+        return Err(ApiError::field(
+            "monitor",
+            "Episode monitoring choices apply to series only.",
         ));
     }
     let updated = movies::bulk_edit(&state.db, &edit).await?;

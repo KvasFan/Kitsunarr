@@ -83,6 +83,7 @@ async fn switching_to_an_episode_group_keeps_files_with_their_episodes() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         },
     )
     .await
@@ -239,6 +240,7 @@ async fn a_series_can_be_added_in_an_episode_group() {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: Some("grp1".into()),
+            path: None,
         },
     )
     .await

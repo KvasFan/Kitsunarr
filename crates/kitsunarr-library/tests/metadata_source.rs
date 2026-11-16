@@ -109,6 +109,7 @@ async fn add(db: &Database, metadata: &Metadata, movie: bool) -> i64 {
             tags: vec![],
             search_for_missing: false,
             episode_ordering: None,
+            path: None,
         },
     )
     .await

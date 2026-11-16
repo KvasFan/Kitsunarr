@@ -12,6 +12,7 @@ use crate::pages::dashboard::Dashboard;
 use crate::pages::detail::{MovieDetailPage, SeriesDetailPage};
 use crate::pages::import::ImportWizard;
 use crate::pages::library::{AnimeLibrary, MoviesLibrary, SeriesLibrary};
+use crate::pages::library_import::LibraryImport;
 use crate::pages::placeholders::NotFound;
 use crate::pages::search::InteractiveSearch;
 use crate::pages::settings::{
@@ -66,6 +67,8 @@ pub enum Route {
         InteractiveSearch {},
         #[route("/add")]
         AddMedia {},
+        #[route("/add/import")]
+        LibraryImport {},
         #[route("/import")]
         ImportWizard {},
         #[route("/settings")]

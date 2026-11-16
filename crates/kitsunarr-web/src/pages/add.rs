@@ -17,12 +17,19 @@ use crate::util::{format_bytes, load_pref, save_pref};
 
 const PROVIDER_PREF: &str = "add.provider";
 
-const SERIES_MONITOR: &[(MonitorOption, &str, &str)] = &[
-    (MonitorOption::All, "all", "All episodes"),
-    (MonitorOption::Future, "future", "Future episodes"),
-    (MonitorOption::FirstSeason, "firstSeason", "First season"),
-    (MonitorOption::LatestSeason, "latestSeason", "Latest season"),
-    (MonitorOption::None, "none", "None"),
+/// Sonarr's choices when adding a series ("skip" belongs to the editors).
+pub const SERIES_MONITOR: &[MonitorOption] = &[
+    MonitorOption::All,
+    MonitorOption::Future,
+    MonitorOption::Missing,
+    MonitorOption::Existing,
+    MonitorOption::Recent,
+    MonitorOption::Pilot,
+    MonitorOption::FirstSeason,
+    MonitorOption::LatestSeason,
+    MonitorOption::MonitorSpecials,
+    MonitorOption::UnmonitorSpecials,
+    MonitorOption::None,
 ];
 
 const SERIES_TYPES: &[(SeriesType, &str)] = &[
@@ -131,6 +138,7 @@ pub fn AddMedia() -> Element {
         div { class: "page-head",
             h1 { "Add media" }
             div { class: "spacer" }
+            Link { to: Route::LibraryImport {}, class: "btn", "Import existing folders" }
             Link { to: Route::ImportWizard {}, class: "btn", "Import a Sonarr or Tanukarr library" }
         }
         form { class: "toolbar", role: "search", onsubmit: search,
@@ -338,6 +346,7 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
             tags: tags(),
             search_for_missing: !is_movie && search_missing(),
             episode_ordering: Some(ordering()).filter(|o| !o.is_empty()),
+            path: None,
         };
         let c = client.clone();
         let name = request_item.title.clone();
@@ -416,13 +425,13 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
                             Field { label: "Monitor", help: "Specials are never monitored automatically.".to_string(),
                                 select {
                                     class: "select",
-                                    value: SERIES_MONITOR.iter().find(|(m, _, _)| *m == monitor()).map(|(_, v, _)| *v).unwrap_or("all"),
+                                    value: monitor().as_str(),
                                     onchange: move |e: FormEvent| {
-                                        if let Some((m, _, _)) = SERIES_MONITOR.iter().find(|(_, v, _)| *v == e.value()) {
-                                            monitor.set(*m);
+                                        if let Some(m) = MonitorOption::from_sonarr(&e.value()) {
+                                            monitor.set(m);
                                         }
                                     },
-                                    for (_, value, label) in SERIES_MONITOR.iter() { option { key: "{value}", value: "{value}", "{label}" } }
+                                    for m in SERIES_MONITOR.iter() { option { key: "{m.as_str()}", value: m.as_str(), "{m.label()}" } }
                                 }
                             }
                             Field { label: "Series type",

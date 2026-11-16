@@ -1057,6 +1057,13 @@ impl Client {
     pub async fn delete_root_folder(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/rootfolders/{id}")).await
     }
+    pub async fn unmapped_folders(
+        &self,
+        root_folder_id: i64,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library::UnmappedFolder>> {
+        self.get(&format!("/rootfolders/{root_folder_id}/unmapped"))
+            .await
+    }
     pub async fn quality_definitions(&self) -> ClientResult<Vec<QualityDefinition>> {
         self.get("/qualitydefinitions").await
     }

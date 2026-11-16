@@ -109,6 +109,7 @@ textarea.input { height: auto; min-height: 120px; padding: var(--sp-2) var(--sp-
 .field > label, .label { font-size: var(--fs-sm); font-weight: 600; color: var(--text-muted); }
 .field .help { font-size: var(--fs-xs); color: var(--text-faint); }
 .field .error-text { font-size: var(--fs-xs); color: var(--danger); }
+.error-text { color: var(--danger); }
 .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0 var(--sp-5); }
 .format-condition .form-grid, .format-test-details .form-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
 .check { display: inline-flex; align-items: center; gap: var(--sp-2); cursor: pointer; user-select: none; }

@@ -90,6 +90,7 @@ fn request(provider: MetadataProvider, id: &str, monitor: MonitorOption) -> AddT
         tags: vec![],
         search_for_missing: false,
         episode_ordering: None,
+        path: None,
     }
 }
 
