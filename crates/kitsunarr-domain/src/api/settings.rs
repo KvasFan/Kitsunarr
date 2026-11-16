@@ -824,6 +824,11 @@ pub struct MediaManagementSettings {
     /// and codecs from files already in the library. New downloads are always read.
     #[serde(default = "default_true")]
     pub enable_media_info: bool,
+    /// Sonarr's "Unmonitor deleted episodes" (`AutoUnmonitorPreviouslyDownloadedEpisodes`):
+    /// episodes whose file is deleted by hand, or goes missing from disk, are unmonitored.
+    /// Upgrades never unmonitor.
+    #[serde(default)]
+    pub auto_unmonitor_previously_downloaded_episodes: bool,
 }
 
 fn default_true() -> bool {
@@ -876,6 +881,7 @@ impl Default for MediaManagementSettings {
             skip_unmonitored_episodes_from_packs: false,
             file_date: FileDate::None,
             enable_media_info: true,
+            auto_unmonitor_previously_downloaded_episodes: false,
         }
     }
 }

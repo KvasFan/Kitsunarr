@@ -97,7 +97,10 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
     let mut summary = ScanSummary::default();
     let mut conn = db.pool().acquire().await.map_err(err)?;
 
-    // `MediaFileTableCleanupService.Clean`.
+    // `MediaFileTableCleanupService.Clean`. Episodes losing a missing file are kept to be
+    // unmonitored at the end unless the scan finds them a file again (Sonarr's
+    // `EpisodeService` cache with `AutoUnmonitorPreviouslyDownloadedEpisodes`).
+    let mut missing_episodes: Vec<i64> = Vec::new();
     let records = series::file_records(db, series_id).await.map_err(err)?;
     let episodes = series::list_episodes(db, series_id, None)
         .await
@@ -120,6 +123,7 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
             "MissingFromDisk",
         )
         .await?;
+        missing_episodes.extend(&linked);
         // The file's extras and metadata go with it (`ExtraFileService`).
         let media: MediaManagementSettings =
             settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
@@ -276,6 +280,15 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
                 .map_err(err)?;
             taken.extend(ids);
             summary.added += 1;
+        }
+    }
+    if !missing_episodes.is_empty() {
+        let media: MediaManagementSettings =
+            settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
+                .await
+                .map_err(err)?;
+        if media.auto_unmonitor_previously_downloaded_episodes {
+            unmonitor_without_file(&mut conn, &missing_episodes).await?;
         }
     }
     sqlx::query("UPDATE series SET last_disk_scan_at = ? WHERE id = ?")
@@ -633,6 +646,10 @@ pub async fn delete_file(db: &Database, series_id: i64, file_id: i64) -> Result<
     series::delete_episode_file(&mut conn, file_id)
         .await
         .map_err(err)?;
+    // Sonarr's `AutoUnmonitorPreviouslyDownloadedEpisodes` for a manual deletion.
+    if media.auto_unmonitor_previously_downloaded_episodes {
+        unmonitor_without_file(&mut conn, &linked).await?;
+    }
     Ok(())
 }
 
@@ -659,10 +676,17 @@ pub async fn delete_series_folder(db: &Database, series_id: i64) -> Result<(), S
         .as_deref()
         .filter(|b| !b.trim().is_empty())
     {
-        None => std::fs::remove_dir_all(&path).map_err(err),
+        None => std::fs::remove_dir_all(&path).map_err(|e| {
+            format!(
+                "The series folder {} could not be deleted: {e}",
+                path.display()
+            )
+        }),
         Some(bin) => {
             let name = path.file_name().map(|n| n.to_owned()).unwrap_or_default();
-            std::fs::create_dir_all(bin).map_err(err)?;
+            std::fs::create_dir_all(bin).map_err(|e| {
+                format!("The recycle bin ({bin}) cannot be used: {e}. Change it in Settings › Media management.")
+            })?;
             let mut target = Path::new(bin).join(&name);
             let mut n = 2;
             while target.exists() {
@@ -677,6 +701,25 @@ pub async fn delete_series_folder(db: &Database, series_id: i64) -> Result<(), S
             Ok(())
         }
     }
+}
+
+/// Unmonitors those of the episodes that have no file, clearing Jellyfin's ownership as any
+/// explicit change does.
+async fn unmonitor_without_file(
+    conn: &mut sqlx::SqliteConnection,
+    episodes: &[i64],
+) -> Result<(), String> {
+    for id in episodes {
+        sqlx::query(
+            "UPDATE episodes SET monitored = 0, jellyfin_unmonitor_owner = NULL \
+             WHERE id = ? AND episode_file_id IS NULL",
+        )
+        .bind(id)
+        .execute(&mut *conn)
+        .await
+        .map_err(err)?;
+    }
+    Ok(())
 }
 
 pub(crate) fn copy_dir(from: &Path, to: &Path) -> std::io::Result<()> {

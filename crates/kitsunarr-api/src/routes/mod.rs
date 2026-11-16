@@ -62,6 +62,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(library::bulk_edit_series))
         .routes(routes!(library::move_series))
         .routes(routes!(library::bulk_move_series))
+        .routes(routes!(library::bulk_delete_series))
         .routes(routes!(library::move_movie))
         .routes(routes!(library::rescan_series))
         .routes(routes!(

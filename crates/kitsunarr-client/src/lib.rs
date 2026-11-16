@@ -1071,6 +1071,23 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::library::MoveResult> {
         self.put(&format!("/movies/{id}/path"), req).await
     }
+    pub async fn bulk_delete_series(
+        &self,
+        req: &kitsunarr_domain::api::library::BulkDeleteRequest,
+    ) -> ClientResult<kitsunarr_domain::api::library::BulkDeleteResult> {
+        self.post("/series/delete", req).await
+    }
+    pub async fn delete_series_with(
+        &self,
+        id: i64,
+        delete_files: bool,
+        add_import_list_exclusion: bool,
+    ) -> ClientResult<()> {
+        self.delete(&format!(
+            "/series/{id}?deleteFiles={delete_files}&addImportListExclusion={add_import_list_exclusion}"
+        ))
+        .await
+    }
     pub async fn bulk_move_series(
         &self,
         req: &kitsunarr_domain::api::library::BulkMoveRequest,

@@ -93,6 +93,55 @@ pub async fn update_series(
 pub struct DeleteSeriesQuery {
     /// Also delete the series folder (to the recycle bin when one is set).
     pub delete_files: bool,
+    /// Series only: keep import lists from adding the series again (Sonarr's
+    /// `addImportListExclusion`).
+    pub add_import_list_exclusion: bool,
+}
+
+/// Excludes a series from import lists by the identity lists match: its own catalogue's id
+/// when lists know that catalogue, else its TheTVDB, TMDB, AniList or MyAnimeList id.
+pub(crate) async fn exclude_from_import_lists(state: &AppState, id: i64) -> ApiResult<()> {
+    use kitsunarr_domain::{ExternalIdKind, MetadataProvider};
+    let d = series::get_detail(&state.db, id).await?;
+    let own = match d.item.metadata_provider {
+        MetadataProvider::Tvdb => Some("tvdb"),
+        MetadataProvider::TmdbTv => Some("tmdb"),
+        MetadataProvider::AniList => Some("aniList"),
+        MetadataProvider::MyAnimeList => Some("myAnimeList"),
+        _ => None,
+    }
+    .map(|p| (p.to_string(), d.metadata_id.clone()));
+    let identity = own.or_else(|| {
+        [
+            ExternalIdKind::Tvdb,
+            ExternalIdKind::Tmdb,
+            ExternalIdKind::AniList,
+            ExternalIdKind::MyAnimeList,
+        ]
+        .iter()
+        .find_map(|k| {
+            d.external_ids
+                .iter()
+                .find(|x| x.kind == *k)
+                .map(|x| (k.as_str().to_string(), x.value.clone()))
+        })
+    });
+    let Some((provider, external_id)) = identity else {
+        tracing::warn!(
+            series_id = id,
+            "no identity import lists know; no exclusion added"
+        );
+        return Ok(());
+    };
+    let mut conn = state
+        .db
+        .pool()
+        .acquire()
+        .await
+        .map_err(kitsunarr_db::DbError::from)?;
+    kitsunarr_db::rules::upsert_exclusion(&mut conn, &provider, &external_id, Some(&d.item.title))
+        .await?;
+    Ok(())
 }
 
 #[utoipa::path(delete, path = "/series/{id}", tag = "library", params(("id" = i64, Path), DeleteSeriesQuery),
@@ -103,6 +152,9 @@ pub async fn delete_series(
     Query(q): Query<DeleteSeriesQuery>,
 ) -> ApiResult<StatusCode> {
     let notification = kitsunarr_library::notify::series_ref(&state.db, id).await;
+    if q.add_import_list_exclusion {
+        exclude_from_import_lists(&state, id).await?;
+    }
     if q.delete_files {
         kitsunarr_library::files::delete_series_folder(&state.db, id)
             .await
@@ -121,6 +173,43 @@ pub async fn delete_series(
         );
     }
     Ok(StatusCode::NO_CONTENT)
+}
+
+/// Removes several series, each as `DELETE /series/{id}` does; a failure keeps that series and
+/// does not stop the others.
+#[utoipa::path(post, path = "/series/delete", tag = "library",
+    request_body = kitsunarr_domain::api::library::BulkDeleteRequest,
+    responses((status = 200, body = kitsunarr_domain::api::library::BulkDeleteResult)))]
+pub async fn bulk_delete_series(
+    State(state): State<AppState>,
+    Json(req): Json<kitsunarr_domain::api::library::BulkDeleteRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::library::BulkDeleteResult>> {
+    if req.ids.len() > 10_000 {
+        return Err(ApiError::BadRequest(
+            "At most 10000 series can be removed at once.".into(),
+        ));
+    }
+    let mut out = kitsunarr_domain::api::library::BulkDeleteResult::default();
+    for id in &req.ids {
+        let title = series::get_list_item(&state.db, *id)
+            .await
+            .map(|s| s.title)
+            .unwrap_or_else(|_| format!("Series {id}"));
+        match delete_series(
+            State(state.clone()),
+            Path(*id),
+            Query(DeleteSeriesQuery {
+                delete_files: req.delete_files,
+                add_import_list_exclusion: req.add_import_list_exclusion,
+            }),
+        )
+        .await
+        {
+            Ok(_) => out.deleted += 1,
+            Err(e) => out.failures.push(format!("{title}: {e}")),
+        }
+    }
+    Ok(Json(out))
 }
 
 #[utoipa::path(post, path = "/series/bulk", tag = "library", request_body = BulkEdit, responses((status = 200, body = BulkEditResult)))]

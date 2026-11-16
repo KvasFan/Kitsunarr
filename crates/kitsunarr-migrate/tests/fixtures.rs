@@ -410,6 +410,7 @@ async fn sonarr_proxy_settings_are_imported() {
         ("proxybypassfilter", "*.lan,192.168.0.0/16"),
         ("proxybypasslocaladdresses", "False"),
         ("preferredmetadatalanguage", "2"),
+        ("autounmonitorpreviouslydownloadedepisodes", "True"),
     ] {
         config.insert(k.into(), v.into());
     }
@@ -451,6 +452,14 @@ async fn sonarr_proxy_settings_are_imported() {
         .await
         .unwrap();
     assert_eq!(sources.preferred_metadata_language, Some(2));
+    let media: kitsunarr_domain::api::settings::MediaManagementSettings =
+        kitsunarr_db::settings::get_or_default(
+            db.pool(),
+            kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+        )
+        .await
+        .unwrap();
+    assert!(media.auto_unmonitor_previously_downloaded_episodes);
 }
 
 #[tokio::test]

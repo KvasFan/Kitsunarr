@@ -57,6 +57,7 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "skipfreespacecheckwhenimporting",
     "importextrafiles",
     "enablemediainfo",
+    "autounmonitorpreviouslydownloadedepisodes",
     "extrafileextensions",
     "downloadpropersandrepacks",
     // Indexer options (database `Config` keys; the API serves them separately).
@@ -1326,6 +1327,10 @@ impl<'a> Importer<'a> {
             );
             next.import_extra_files = mm.bool_or("importextrafiles", next.import_extra_files);
             next.enable_media_info = mm.bool_or("enablemediainfo", next.enable_media_info);
+            next.auto_unmonitor_previously_downloaded_episodes = mm.bool_or(
+                "autounmonitorpreviouslydownloadedepisodes",
+                next.auto_unmonitor_previously_downloaded_episodes,
+            );
             if let Some(v) = mm.str("filedate")
                 && let Some(d) = kitsunarr_domain::api::settings::FileDate::from_sonarr(&v)
             {

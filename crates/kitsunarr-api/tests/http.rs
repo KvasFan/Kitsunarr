@@ -8153,3 +8153,189 @@ async fn series_folders_move_with_their_files() {
     assert_eq!(body[0]["tags"], json!([tag["id"]]));
     assert!(a.join("BB").join(episode).is_file());
 }
+
+/// Sonarr's "Unmonitor deleted episodes": a manual deletion unmonitors at once; a file missing
+/// from disk unmonitors at the end of the scan unless the scan finds the episode a file again.
+#[tokio::test]
+async fn deleted_episodes_are_unmonitored_when_configured() {
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let id = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap()
+        .id;
+    let season = dir.path().join("Breaking Bad/Season 01");
+    std::fs::create_dir_all(&season).unwrap();
+    let name = |n: i32| format!("Breaking.Bad.S01E{n:02}.720p.HDTV.x264-GRP.mkv");
+    for n in 1..=4 {
+        std::fs::write(season.join(name(n)), b"video").unwrap();
+    }
+    client.rescan_series(id).await.unwrap();
+    let state = || async {
+        client
+            .episodes(id)
+            .await
+            .unwrap()
+            .into_iter()
+            .filter(|e| e.season_number == 1 && e.episode_number <= 4)
+            .map(|e| (e.episode_number, e.monitored, e.file.map(|f| f.id)))
+            .collect::<Vec<_>>()
+    };
+    let file_of = |s: &[(i32, bool, Option<i64>)], n: i32| s[(n - 1) as usize].2.unwrap();
+
+    // Off (the default): a deletion keeps the episode monitored.
+    let before = state().await;
+    client
+        .delete_episode_file(id, file_of(&before, 4))
+        .await
+        .unwrap();
+    assert!(state().await[3].1, "unchanged while the option is off");
+
+    let mut media = client.media_management().await.unwrap();
+    assert!(!media.auto_unmonitor_previously_downloaded_episodes);
+    media.auto_unmonitor_previously_downloaded_episodes = true;
+    client.put_media_management(&media).await.unwrap();
+    client
+        .delete_episode_file(id, file_of(&before, 1))
+        .await
+        .unwrap();
+    // E02 disappears; E03 is renamed, so the scan finds it a file again.
+    std::fs::remove_file(season.join(name(2))).unwrap();
+    std::fs::rename(
+        season.join(name(3)),
+        season.join("Breaking.Bad.S01E03.REPACK.720p.HDTV.x264-GRP.mkv"),
+    )
+    .unwrap();
+    client.rescan_series(id).await.unwrap();
+    let after = state().await;
+    assert_eq!(
+        after
+            .iter()
+            .map(|(n, m, f)| (*n, *m, f.is_some()))
+            .collect::<Vec<_>>(),
+        vec![
+            (1, false, false),
+            (2, false, false),
+            (3, true, true),
+            (4, true, false)
+        ]
+    );
+}
+
+/// Removing series with Sonarr's `addImportListExclusion`, from the bulk editor and the v3
+/// series editor.
+#[tokio::test]
+async fn removed_series_can_be_excluded_from_import_lists() {
+    use kitsunarr_domain::api::library::BulkDeleteRequest;
+    use serde_json::json;
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let add = || async {
+        client
+            .add_title(&AddTitleRequest {
+                provider: MetadataProvider::TvMaze,
+                id: "169".into(),
+                root_folder_path: root.clone(),
+                quality_profile_id: 1,
+                monitor: MonitorOption::All,
+                series_type: None,
+                season_folder: true,
+                tags: vec![],
+                search_for_missing: false,
+                episode_ordering: None,
+                path: None,
+            })
+            .await
+            .unwrap()
+            .id
+    };
+    // A TVmaze-owned series is excluded by the TheTVDB id lists know.
+    let id = add().await;
+    client.delete_series_with(id, false, true).await.unwrap();
+    let exclusions = client.import_list_exclusions().await.unwrap();
+    assert_eq!(exclusions.len(), 1);
+    assert_eq!(
+        (
+            exclusions[0].provider.as_str(),
+            exclusions[0].external_id.as_str()
+        ),
+        ("tvdb", "81189")
+    );
+    assert_eq!(exclusions[0].title.as_deref(), Some("Breaking Bad"));
+
+    // Bulk: an unknown id is reported, the folder goes with deleteFiles; excluding again
+    // keeps one row.
+    let id = add().await;
+    let folder = dir.path().join("Breaking Bad");
+    std::fs::create_dir_all(&folder).unwrap();
+    let result = client
+        .bulk_delete_series(&BulkDeleteRequest {
+            ids: vec![id, 9999],
+            delete_files: true,
+            add_import_list_exclusion: true,
+        })
+        .await
+        .unwrap();
+    assert_eq!(result.deleted, 1);
+    assert_eq!(result.failures.len(), 1, "{:?}", result.failures);
+    assert!(!folder.exists());
+    assert_eq!(client.import_list_exclusions().await.unwrap().len(), 1);
+
+    // v3 series editor delete.
+    let id = add().await;
+    let response = reqwest::Client::new()
+        .delete(format!("{}/api/v3/series/editor", server.base))
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!({"seriesIds": [id], "deleteFiles": false}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 200);
+    assert_eq!(status(client.series_detail(id).await.unwrap_err()), 404);
+}

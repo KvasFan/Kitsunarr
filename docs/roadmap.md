@@ -43,6 +43,17 @@ Moving title folders, the next Sonarr gap:
 
 Implementation and verification: [milestones 72–76](milestones-2026-11-16-76.md).
 
+Removal and deletion behaviour:
+
+| Milestone | Scope | Status |
+|---|---|---|
+| 77 | "Unmonitor deleted episodes" for manual deletions and files missing from disk | Done: HTTP, migration |
+| 78 | Import list exclusions when removing a series | Done: HTTP |
+| 79 | Bulk removal (native, v3 series editor, library bar) | Done: HTTP and Chromium |
+| 80 | Verify the workflow and the clean-clone CI jobs | Done: 870 Rust tests, Chromium |
+
+Implementation and verification: [milestones 77–80](milestones-2026-11-16-80.md).
+
 | Milestone | Scope | Status |
 |---|---|---|
 | 51 | Native Nyaa season searches without season aliases; standard and daily query coverage | Done: generator and HTTP tests |

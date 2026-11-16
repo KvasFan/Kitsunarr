@@ -1000,6 +1000,39 @@ async fn first_run_setup_migration_and_library() {
         );
         wait_text(&client, "1 / 3 on disk").await;
 
+        // Remove it, asking import lists to leave it out. The migrated recycle bin
+        // (/media/recycle) is not writable here, so deleting the folder is refused with a clear
+        // reason first; then the series is removed and its folder kept.
+        click_button(&client, "Remove from library").await;
+        wait_text(&client, "Prevent import lists from adding it again").await;
+        let check = |label: &'static str| {
+            let client = client.clone();
+            async move {
+                client
+                    .find(Locator::XPath(&format!(
+                        "//label[contains(@class,'check')][contains(., {})]/input",
+                        xpath_literal(label)
+                    )))
+                    .await
+                    .unwrap()
+                    .click()
+                    .await
+                    .unwrap();
+            }
+        };
+        check("Also delete the series folder").await;
+        check("Prevent import lists from adding it again").await;
+        screenshot(&client, "11o-remove-dialog").await;
+        let remove = "//div[contains(@class,'modal')]//button[normalize-space(.)='Remove']";
+        client.find(Locator::XPath(remove)).await.unwrap().click().await.unwrap();
+        wait_text(&client, "The recycle bin (/media/recycle) cannot be used").await;
+        assert!(moved_to.is_dir(), "a refused deletion keeps the folder");
+        click_button(&client, "Remove from library").await;
+        check("Prevent import lists from adding it again").await;
+        client.find(Locator::XPath(remove)).await.unwrap().click().await.unwrap();
+        wait_text(&client, "Series removed from Kitsunarr. Files on disk were not touched.").await;
+        assert!(moved_to.is_dir(), "the folder stays");
+
         // The migrated (TheTVDB-owned) series refreshes through SkyHook.
         client.goto(&format!("{base}/series")).await.unwrap();
         client

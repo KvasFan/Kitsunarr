@@ -96,6 +96,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let client = use_client();
     let nav = navigator();
     let mut confirm_delete = use_signal(|| false);
+    let mut exclude_from_lists = use_signal(|| false);
     let mut delete_folder = use_signal(|| false);
     let mut renaming = use_signal(|| false);
     let mut ordering = use_signal(|| false);
@@ -178,13 +179,10 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let delete = move |_| {
         let c = c4.clone();
         let with_files = delete_folder();
+        let exclude = exclude_from_lists();
         confirm_delete.set(false);
         spawn(async move {
-            let done = if with_files {
-                c.delete_series_with_files(id).await
-            } else {
-                c.delete_series(id).await
-            };
+            let done = c.delete_series_with(id, with_files, exclude).await;
             match done {
                 Ok(()) => {
                     app.success(if with_files {
@@ -337,7 +335,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     }
                     button { class: "btn", title: "Interactive search for packs of the whole series (and of its seasons) on torrent indexers", onclick: move |_| searching_complete.set(true), "Complete series" }
                     button { class: "btn", title: "Move the series folder, or point the series at another folder", onclick: move |_| move_open.set(true), "Move folder" }
-                    button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true) }, "Remove from library" }
+                    button { class: "btn danger", onclick: move |_| { delete_folder.set(false); exclude_from_lists.set(false); confirm_delete.set(true) }, "Remove from library" }
                 }
             }
         }
@@ -378,6 +376,10 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 label { class: "check",
                     input { r#type: "checkbox", checked: delete_folder(), onchange: move |e: FormEvent| delete_folder.set(e.checked()) }
                     "Also delete the series folder and its files (to the recycle bin when one is set)"
+                }
+                label { class: "check",
+                    input { r#type: "checkbox", checked: exclude_from_lists(), onchange: move |e: FormEvent| exclude_from_lists.set(e.checked()) }
+                    "Prevent import lists from adding it again"
                 }
             }
         }

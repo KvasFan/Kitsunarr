@@ -119,8 +119,20 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let selected_ids = move || selected.read().iter().copied().collect::<Vec<_>>();
     let mut monitoring_open = use_signal(|| false);
     let mut move_open = use_signal(|| false);
+    let mut remove_open = use_signal(|| false);
 
     rsx! {
+        if remove_open() {
+            BulkRemoveDialog {
+                series_ids: selected_ids(),
+                on_close: move |removed: bool| {
+                    remove_open.set(false);
+                    if removed {
+                        selected.write().clear();
+                    }
+                },
+            }
+        }
         if move_open() {
             BulkMoveDialog {
                 series_ids: selected_ids(),
@@ -171,6 +183,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(false), ..Default::default() }), "Unmonitor" }
                     button { class: "btn sm", title: "Choose which episodes of the selected series are monitored", onclick: move |_| monitoring_open.set(true), "Monitoring…" }
                     button { class: "btn sm", title: "Move the selected series into another root folder", onclick: move |_| move_open.set(true), "Move to root folder…" }
+                    button { class: "btn sm danger", title: "Remove the selected series from Kitsunarr", onclick: move |_| remove_open.set(true), "Remove…" }
                     select {
                         class: "select",
                         "aria-label": "Quality profile",
@@ -411,6 +424,63 @@ fn BulkMoveDialog(series_ids: Vec<i64>, on_close: EventHandler<()>) -> Element {
             }
             Switch { checked: move_files(), disabled: busy(), label: "Move the files", onchange: move |v| move_files.set(v) }
             p { class: "help small", "Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder." }
+        }
+    }
+}
+
+/// Removes the selected series (Sonarr's series editor delete), optionally with their folders and
+/// an import list exclusion.
+#[component]
+fn BulkRemoveDialog(series_ids: Vec<i64>, on_close: EventHandler<bool>) -> Element {
+    use crate::components::common::{Modal, Switch};
+    use kitsunarr_domain::api::library::BulkDeleteRequest;
+    let app = use_app();
+    let client = use_client();
+    let mut delete_files = use_signal(|| false);
+    let mut exclude = use_signal(|| false);
+    let mut busy = use_signal(|| false);
+    let count = series_ids.len();
+    let apply = move |_| {
+        let c = client.clone();
+        let req = BulkDeleteRequest {
+            ids: series_ids.clone(),
+            delete_files: delete_files(),
+            add_import_list_exclusion: exclude(),
+        };
+        busy.set(true);
+        spawn(async move {
+            match c.bulk_delete_series(&req).await {
+                Ok(r) if r.failures.is_empty() => {
+                    app.success(format!("{} series removed.", r.deleted));
+                }
+                Ok(r) => app.toast(
+                    crate::state::ToastLevel::Warning,
+                    format!(
+                        "{} series removed; kept: {}",
+                        r.deleted,
+                        r.failures.join("; ")
+                    ),
+                ),
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+            on_close.call(true);
+        });
+    };
+    rsx! {
+        Modal {
+            title: format!("Remove {count} series"),
+            on_close: move |_| { if !busy() { on_close.call(false) } },
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", disabled: busy(), onclick: move |_| on_close.call(false), "Cancel" }
+                button { class: "btn danger solid", disabled: busy(), onclick: apply,
+                    if busy() { "Removing…" } else { "Remove" }
+                }
+            },
+            p { "Remove the {count} selected series and their episode records from Kitsunarr?" }
+            Switch { checked: delete_files(), disabled: busy(), label: "Also delete their folders and files (to the recycle bin when one is set)", onchange: move |v| delete_files.set(v) }
+            Switch { checked: exclude(), disabled: busy(), label: "Prevent import lists from adding them again", onchange: move |v| exclude.set(v) }
         }
     }
 }

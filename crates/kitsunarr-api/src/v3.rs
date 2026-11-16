@@ -56,7 +56,10 @@ pub fn router() -> Router<AppState> {
         )
         .route("/series/lookup", get(lookup))
         .route("/series/import", post(import_series))
-        .route("/series/editor", put(series_editor))
+        .route(
+            "/series/editor",
+            put(series_editor).delete(series_editor_delete),
+        )
         .route(
             "/series/{id}",
             get(get_series).put(update_series).delete(delete_series),
@@ -894,6 +897,7 @@ async fn series_editor(
 #[serde(rename_all = "camelCase", default)]
 struct DeleteQuery {
     delete_files: bool,
+    add_import_list_exclusion: bool,
 }
 
 async fn delete_series(
@@ -906,10 +910,43 @@ async fn delete_series(
         Path(id),
         Query(crate::routes::library::DeleteSeriesQuery {
             delete_files: q.delete_files,
+            add_import_list_exclusion: q.add_import_list_exclusion,
         }),
     )
     .await?;
     Ok(StatusCode::OK)
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct EditorDeleteBody {
+    series_ids: Vec<i64>,
+    delete_files: bool,
+    add_import_list_exclusion: bool,
+}
+
+/// Sonarr's `SeriesEditorController.DeleteSeries` (`DELETE /api/v3/series/editor`).
+async fn series_editor_delete(
+    State(state): State<AppState>,
+    Json(body): Json<EditorDeleteBody>,
+) -> ApiResult<Json<Value>> {
+    let result = crate::routes::library::bulk_delete_series(
+        State(state),
+        Json(kitsunarr_domain::api::library::BulkDeleteRequest {
+            ids: body.series_ids,
+            delete_files: body.delete_files,
+            add_import_list_exclusion: body.add_import_list_exclusion,
+        }),
+    )
+    .await?
+    .0;
+    if !result.failures.is_empty() {
+        return Err(ApiError::field(
+            "seriesIds",
+            format!("Some series were kept: {}", result.failures.join("; ")),
+        ));
+    }
+    Ok(Json(json!({})))
 }
 
 // ---- episodes and files -------------------------------------------------------------------

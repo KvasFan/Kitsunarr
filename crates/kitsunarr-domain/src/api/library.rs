@@ -703,3 +703,26 @@ pub struct BulkMoveResult {
     /// `Title: reason` for each series that kept its folder.
     pub failures: Vec<String>,
 }
+
+/// Removes several series (Sonarr's series editor delete).
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct BulkDeleteRequest {
+    pub ids: Vec<i64>,
+    /// Also delete each series folder (to the recycle bin when one is set).
+    #[serde(default)]
+    pub delete_files: bool,
+    /// Keep import lists from adding them again.
+    #[serde(default)]
+    pub add_import_list_exclusion: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct BulkDeleteResult {
+    pub deleted: u64,
+    /// `Title: reason` for each series that was kept.
+    pub failures: Vec<String>,
+}
