@@ -738,12 +738,29 @@ pub async fn rename_series_files(
     Path(id): Path<i64>,
     Json(req): Json<RenameRequest>,
 ) -> ApiResult<Json<FileOperationResult>> {
+    let (renamed, problems) = rename_and_notify(&state, id, &req.episode_file_ids).await?;
+    Ok(Json(FileOperationResult {
+        message: format!("{renamed} files renamed."),
+        problems,
+    }))
+}
+
+/// Renames a series' chosen files (all when none is chosen) and sends Sonarr's `OnRename`;
+/// returns how many were renamed and the problems.
+async fn rename_and_notify(
+    state: &AppState,
+    id: i64,
+    file_ids: &[i64],
+) -> ApiResult<(usize, Vec<String>)> {
+    let req = RenameRequest {
+        episode_file_ids: file_ids.to_vec(),
+    };
     series::get_list_item(&state.db, id).await?;
     let (renamed, problems) =
         kitsunarr_library::files::rename_files(&state.db, id, &req.episode_file_ids)
             .await
             .map_err(ApiError::Internal)?;
-    changed(&state, "series", vec![id], false);
+    changed(state, "series", vec![id], false);
     // Sonarr's `OnRename`.
     if !renamed.is_empty()
         && let Some(series) = kitsunarr_library::notify::series_ref(&state.db, id).await
@@ -768,8 +785,39 @@ pub async fn rename_series_files(
             },
         );
     }
+    Ok((renamed.len(), problems))
+}
+
+/// Renames every file of several series to the naming settings (Sonarr's series editor
+/// "Organize"), each as `POST /series/{id}/rename` with no file chosen.
+#[utoipa::path(post, path = "/series/rename", tag = "library",
+    request_body = kitsunarr_domain::api::library::BulkRenameRequest,
+    responses((status = 200, body = FileOperationResult)))]
+pub async fn bulk_rename_series(
+    State(state): State<AppState>,
+    Json(req): Json<kitsunarr_domain::api::library::BulkRenameRequest>,
+) -> ApiResult<Json<FileOperationResult>> {
+    if req.ids.len() > 1_000 {
+        return Err(ApiError::BadRequest(
+            "At most 1000 series can be renamed at once.".into(),
+        ));
+    }
+    let (mut renamed, mut problems) = (0usize, Vec::new());
+    for id in &req.ids {
+        match rename_and_notify(&state, *id, &[]).await {
+            Ok((n, found)) => {
+                renamed += n;
+                let title = series::get_list_item(&state.db, *id)
+                    .await
+                    .map(|s| s.title)
+                    .unwrap_or_default();
+                problems.extend(found.into_iter().map(|p| format!("{title}: {p}")));
+            }
+            Err(e) => problems.push(format!("Series {id}: {}", e.message())),
+        }
+    }
     Ok(Json(FileOperationResult {
-        message: format!("{} files renamed.", renamed.len()),
+        message: format!("{renamed} files renamed in {} series.", req.ids.len()),
         problems,
     }))
 }

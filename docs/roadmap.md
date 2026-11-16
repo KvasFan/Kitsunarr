@@ -56,6 +56,16 @@ Implementation and verification: [milestones 77–80](milestones-2026-11-16-80.m
 
 | Milestone | Scope | Status |
 |---|---|---|
+| 81 | Organize several series at once (native bulk rename, library action with confirmation) | Done: HTTP |
+| 82 | v3 `RenameFiles`/`RenameSeries` commands and multi-series refresh/rescan | Done: HTTP |
+
+Both reuse the single-series rename, its previews' naming engine and its `OnRename`
+notification. A failing series is reported and does not stop the others. The library's
+Organize button asks for confirmation first; it was checked by compilation and lint only.
+The HTTP test covers the routes.
+
+| Milestone | Scope | Status |
+|---|---|---|
 | 51 | Native Nyaa season searches without season aliases; standard and daily query coverage | Done: generator and HTTP tests |
 | 52 | Distinguish unavailable sources from empty results; retry the same search explicitly | Done: HTTP and Chromium checks |
 | 53 | HTTP and browser regressions for direct Nyaa, partial failures and repeated searches | Done: 817 workspace tests and Chromium passed |

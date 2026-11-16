@@ -8339,3 +8339,137 @@ async fn removed_series_can_be_excluded_from_import_lists() {
     assert_eq!(response.status(), 200);
     assert_eq!(status(client.series_detail(id).await.unwrap_err()), 404);
 }
+
+/// Sonarr's "Organize" for several series (`POST /series/rename`) and the v3 `RenameFiles`
+/// and `RenameSeries` commands.
+#[tokio::test]
+async fn several_series_are_organized_at_once() {
+    use kitsunarr_domain::api::library::BulkRenameRequest;
+    use serde_json::json;
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let id = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: root.clone(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap()
+        .id;
+    let season = dir.path().join("Breaking Bad/Season 01");
+    std::fs::create_dir_all(&season).unwrap();
+    for n in 1..=3 {
+        std::fs::write(
+            season.join(format!("Breaking.Bad.S01E{n:02}.720p.HDTV.x264-GRP.mkv")),
+            b"video",
+        )
+        .unwrap();
+    }
+    client.rescan_series(id).await.unwrap();
+    let mut naming = client.naming().await.unwrap();
+    naming.rename_episodes = true;
+    naming.season_folder_format = "Season {season:00}".into();
+    client.put_naming(&naming).await.unwrap();
+    let file_of = |n: i32| {
+        let client = &client;
+        async move {
+            client
+                .episodes(id)
+                .await
+                .unwrap()
+                .into_iter()
+                .find(|e| e.season_number == 1 && e.episode_number == n)
+                .and_then(|e| e.file)
+                .unwrap()
+        }
+    };
+
+    // v3 RenameFiles: the chosen file only.
+    let http = reqwest::Client::new();
+    let command = |body: serde_json::Value| {
+        http.post(format!("{}/api/v3/command", server.base))
+            .header("X-Api-Key", &server.api_key)
+            .json(&body)
+            .send()
+    };
+    let first = file_of(1).await.id;
+    let response = command(json!({"name": "RenameFiles", "seriesId": id, "files": [first]}))
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 201);
+    for _ in 0..50 {
+        if season
+            .join("Breaking Bad - S01E01 - Pilot HDTV-720p.mkv")
+            .is_file()
+        {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert!(
+        season
+            .join("Breaking Bad - S01E01 - Pilot HDTV-720p.mkv")
+            .is_file()
+    );
+    assert!(
+        season
+            .join("Breaking.Bad.S01E02.720p.HDTV.x264-GRP.mkv")
+            .is_file(),
+        "others wait"
+    );
+    assert_eq!(
+        command(json!({"name": "RenameSeries"}))
+            .await
+            .unwrap()
+            .status(),
+        422,
+        "a series list is required"
+    );
+
+    // Native bulk organize renames the rest; an unknown series is reported.
+    let result = client
+        .bulk_rename_series(&BulkRenameRequest {
+            ids: vec![id, 9999],
+        })
+        .await
+        .unwrap();
+    assert_eq!(result.message, "2 files renamed in 2 series.");
+    assert_eq!(result.problems.len(), 1, "{:?}", result.problems);
+    assert!(
+        !season
+            .join("Breaking.Bad.S01E03.720p.HDTV.x264-GRP.mkv")
+            .exists()
+    );
+    assert!(
+        file_of(3)
+            .await
+            .relative_path
+            .starts_with("Season 01/Breaking Bad - S01E03")
+    );
+}

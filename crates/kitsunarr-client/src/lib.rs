@@ -1071,6 +1071,12 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::library::MoveResult> {
         self.put(&format!("/movies/{id}/path"), req).await
     }
+    pub async fn bulk_rename_series(
+        &self,
+        req: &kitsunarr_domain::api::library::BulkRenameRequest,
+    ) -> ClientResult<kitsunarr_domain::api::library::FileOperationResult> {
+        self.post("/series/rename", req).await
+    }
     pub async fn bulk_delete_series(
         &self,
         req: &kitsunarr_domain::api::library::BulkDeleteRequest,

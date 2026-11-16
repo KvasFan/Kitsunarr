@@ -1161,8 +1161,12 @@ async fn get_episode_file(
 struct CommandBody {
     name: String,
     series_id: Option<i64>,
+    /// Sonarr v4's multi-series commands (`RefreshSeries`, `RescanSeries`, `RenameSeries`).
+    series_ids: Vec<i64>,
     season_number: Option<i32>,
     episode_ids: Vec<i64>,
+    /// `RenameFiles`: episode file ids.
+    files: Vec<i64>,
 }
 
 fn command_json(id: i64, name: &str, status: &str, message: &str) -> Value {
@@ -1231,6 +1235,7 @@ async fn command(
         "RefreshSeries" | "RescanSeries" => {
             let targets: Vec<i64> = match body.series_id {
                 Some(s) => vec![s],
+                None if !body.series_ids.is_empty() => body.series_ids.clone(),
                 None => all_series(&state)
                     .await?
                     .iter()
@@ -1273,6 +1278,42 @@ async fn command(
             )
             .await?;
             "Searching wanted episodes"
+        }
+        "RenameSeries" | "RenameFiles" => {
+            let jobs: Vec<(i64, Vec<i64>)> = if name == "RenameFiles" {
+                let sid = body
+                    .series_id
+                    .ok_or_else(|| ApiError::field("seriesId", "A series id is required."))?;
+                if body.files.is_empty() {
+                    return Err(ApiError::field("files", "Choose the files to rename."));
+                }
+                vec![(sid, body.files.clone())]
+            } else {
+                if body.series_ids.is_empty() {
+                    return Err(ApiError::field("seriesIds", "Choose the series to rename."));
+                }
+                body.series_ids.iter().map(|s| (*s, Vec::new())).collect()
+            };
+            for (sid, _) in &jobs {
+                detail(&state, *sid).await?;
+            }
+            let st = state.clone();
+            tokio::spawn(async move {
+                for (sid, files) in jobs {
+                    if let Err(e) = crate::routes::library::rename_series_files(
+                        State(st.clone()),
+                        Path(sid),
+                        Json(kitsunarr_domain::api::library::RenameRequest {
+                            episode_file_ids: files,
+                        }),
+                    )
+                    .await
+                    {
+                        tracing::warn!(series = sid, error = %e.message(), "v3 rename failed");
+                    }
+                }
+            });
+            "Renaming files"
         }
         "RssSync" => {
             let st = state.clone();

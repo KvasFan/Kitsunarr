@@ -726,3 +726,11 @@ pub struct BulkDeleteResult {
     /// `Title: reason` for each series that was kept.
     pub failures: Vec<String>,
 }
+
+/// Renames every file of several series (Sonarr's series editor "Organize").
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct BulkRenameRequest {
+    pub ids: Vec<i64>,
+}

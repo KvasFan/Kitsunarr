@@ -120,8 +120,43 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let mut monitoring_open = use_signal(|| false);
     let mut move_open = use_signal(|| false);
     let mut remove_open = use_signal(|| false);
+    let mut organizing = use_signal(|| false);
+    let mut confirm_organize = use_signal(|| false);
+    let organize_client = use_client();
+    let organize = move |_| {
+        confirm_organize.set(false);
+        let c = organize_client.clone();
+        let ids = selected_ids();
+        organizing.set(true);
+        spawn(async move {
+            match c
+                .bulk_rename_series(&kitsunarr_domain::api::library::BulkRenameRequest { ids })
+                .await
+            {
+                Ok(r) if r.problems.is_empty() => app.success(r.message),
+                Ok(r) => app.toast(
+                    crate::state::ToastLevel::Warning,
+                    format!("{} Not renamed: {}", r.message, r.problems.join("; ")),
+                ),
+                Err(e) => app.error(&e),
+            }
+            organizing.set(false);
+        });
+    };
 
     rsx! {
+        if confirm_organize() {
+            crate::components::common::Confirm {
+                title: "Organize files".to_string(),
+                message: format!(
+                    "Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.",
+                    selected.read().len()
+                ),
+                confirm_label: "Organize".to_string(),
+                on_confirm: organize,
+                on_cancel: move |_| confirm_organize.set(false),
+            }
+        }
         if remove_open() {
             BulkRemoveDialog {
                 series_ids: selected_ids(),
@@ -183,6 +218,9 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(false), ..Default::default() }), "Unmonitor" }
                     button { class: "btn sm", title: "Choose which episodes of the selected series are monitored", onclick: move |_| monitoring_open.set(true), "Monitoring…" }
                     button { class: "btn sm", title: "Move the selected series into another root folder", onclick: move |_| move_open.set(true), "Move to root folder…" }
+                    button { class: "btn sm", disabled: organizing(), title: "Rename every file of the selected series to the naming settings", onclick: move |_| confirm_organize.set(true),
+                        if organizing() { "Organizing…" } else { "Organize" }
+                    }
                     button { class: "btn sm danger", title: "Remove the selected series from Kitsunarr", onclick: move |_| remove_open.set(true), "Remove…" }
                     select {
                         class: "select",
