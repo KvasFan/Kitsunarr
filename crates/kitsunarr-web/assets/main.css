@@ -329,3 +329,11 @@ kbd { font-family: var(--mono); font-size: var(--fs-xs); padding: 1px 6px; borde
   .quality-group-name { max-width: calc(100% - 5rem); }
   .quality-members { margin-inline-start: var(--sp-2); }
 }
+
+/* Interactive source selection and safe query diagnostics. */
+.search-sources, .search-diagnostics { padding: var(--sp-3); margin-block: var(--sp-3); overflow-wrap: anywhere; }
+.search-sources summary, .search-diagnostics summary { cursor: pointer; font-weight: 600; }
+.search-sources > .row { flex-wrap: wrap; margin-top: var(--sp-3); }
+.search-sources label { max-width: 100%; }
+.search-diagnostics > div { margin-top: var(--sp-3); }
+.search-diagnostics ul { padding-inline-start: var(--sp-5); }

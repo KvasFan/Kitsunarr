@@ -307,6 +307,8 @@ fn EntryCard(entry: CollectionEntry, on_change: EventHandler<()>) -> Element {
                     episode_id: None,
                     complete_series: false,
                     season_packs_only: false,
+                    indexer_ids: None,
+                    search_session: None,
                 })
                 .await
             } else {

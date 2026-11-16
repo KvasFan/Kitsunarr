@@ -2,7 +2,7 @@
 
 use dioxus::prelude::*;
 use kitsunarr_domain::DownloadProtocol;
-use kitsunarr_domain::api::search::{GrabRequest, ReleaseItem, ReleaseQuery};
+use kitsunarr_domain::api::search::{GrabRequest, MovieReleaseQuery, ReleaseItem, ReleaseQuery};
 
 use crate::components::common::{Empty, ErrorBox, Loading};
 use crate::route::Route;
@@ -64,6 +64,59 @@ pub fn ReleaseSearch(
     search_revision: u64,
 ) -> Element {
     let client = use_client();
+    let session = use_signal(|| uuid::Uuid::new_v4().to_string());
+    let mut draft = use_signal(|| None::<Vec<i64>>);
+    let mut selected = use_signal(|| None::<String>);
+    let sources = use_resource(move || {
+        let c = client.clone();
+        async move { c.providers("indexers").await }
+    });
+    rsx! {
+        details { class: "card search-sources", open: true,
+            summary { "Search sources" }
+            match &*sources.read() {
+                Some(Ok(items)) => rsx! {
+                    div { class: "row wrap",
+                        for source in items.iter().filter(|p| p.enabled && p.supported && p.options.get("enableInteractiveSearch").and_then(|v| v.as_bool()).unwrap_or(true)) {
+                            {
+                                let id=source.id;
+                                let all:Vec<i64>=items.iter().filter(|p| p.enabled && p.supported && p.options.get("enableInteractiveSearch").and_then(|v|v.as_bool()).unwrap_or(true)).map(|p|p.id).collect();
+                                rsx! { label { class: "row tight",
+                                    input { r#type: "checkbox", "aria-label": "Search {source.name}",
+                                        checked: draft.read().as_ref().is_none_or(|ids|ids.contains(&id)),
+                                        onchange: move |evt| { let mut ids=draft().unwrap_or_else(||all.clone()); if evt.checked() { if !ids.contains(&id) {ids.push(id);} } else { ids.retain(|v|*v!=id); } draft.set(Some(ids)); }
+                                    }
+                                    "{source.name}"
+                                } }
+                            }
+                        }
+                    }
+                    div { class: "row",
+                        button { class: "btn sm", onclick: move |_| selected.set(draft().map(|ids|ids.iter().map(ToString::to_string).collect::<Vec<_>>().join(","))), "Apply sources" }
+                        button { class: "btn sm ghost", onclick: move |_| { draft.set(None); selected.set(None); }, "All sources" }
+                    }
+                },
+                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                None => rsx! { p { "Loading sources…" } },
+            }
+        }
+        ReleaseResults { series_id, season, episode_id, complete_series, season_packs_only, movie_id, search_revision, indexer_ids: selected(), search_session: session() }
+    }
+}
+
+#[component]
+fn ReleaseResults(
+    series_id: i64,
+    season: Option<i32>,
+    episode_id: Option<i64>,
+    complete_series: bool,
+    season_packs_only: bool,
+    movie_id: Option<i64>,
+    search_revision: u64,
+    indexer_ids: Option<String>,
+    search_session: String,
+) -> Element {
+    let client = use_client();
     let app = use_app();
     let mut grabbing = use_signal(|| None::<String>);
     let mut confirm = use_signal(|| None::<String>);
@@ -73,6 +126,7 @@ pub fn ReleaseSearch(
     let c0 = client.clone();
     // Resource dependencies must track ordinary props too: changing a component key alone
     // does not reliably remount a static child in this Dioxus tree.
+    let source_scope = (indexer_ids, search_session);
     let mut results = use_resource(use_reactive!(
         |series_id,
          season,
@@ -80,7 +134,9 @@ pub fn ReleaseSearch(
          complete_series,
          season_packs_only,
          movie_id,
-         search_revision| {
+         search_revision,
+         source_scope| {
+            let (indexer_ids, search_session) = source_scope;
             let _ = search_revision;
             confirm.set(None);
             choosing.set(None);
@@ -91,22 +147,38 @@ pub fn ReleaseSearch(
                 episode_id,
                 complete_series,
                 season_packs_only,
+                indexer_ids: indexer_ids.clone(),
+                search_session: Some(search_session.clone()),
             };
             async move {
                 match movie_id {
-                    Some(m) => c.search_movie_releases(m).await,
+                    Some(m) => {
+                        c.search_movie_releases_selected(
+                            m,
+                            &MovieReleaseQuery {
+                                indexer_ids,
+                                search_session: Some(search_session),
+                            },
+                        )
+                        .await
+                    }
                     None => c.search_releases(&q).await,
                 }
             }
         }
     ));
+    if *results.state().read() == UseResourceState::Pending {
+        return rsx! { Loading { label: "Searching indexers…" } };
+    }
     let read = results.read();
     let Some(outcome) = &*read else {
         return rsx! { Loading { label: "Searching indexers…" } };
     };
     let r = match outcome {
         Ok(r) => r.clone(),
-        Err(e) => return rsx! { ErrorBox { message: e.to_string() } },
+        Err(e) => {
+            return rsx! { ErrorBox { message: e.to_string() } button { class: "btn sm", onclick: move |_| results.restart(), "Search again" } };
+        }
     };
     drop(read);
     rsx! {
@@ -124,6 +196,23 @@ pub fn ReleaseSearch(
         for (i, w) in r.warnings.iter().enumerate() {
             div { key: "w{i}", class: "alert warning", role: "status", div { class: "grow", "{w}" } }
         }
+        details { class: "card search-diagnostics",
+            summary { "Search diagnostics" }
+            p { class: "small", "Titles considered: " {r.considered_titles.join(", ")} }
+            p { class: "small muted", "Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget." }
+            for diagnostic in r.diagnostics.iter() {
+                div { key: "d{diagnostic.indexer_id}",
+                    strong { "{diagnostic.indexer}: {diagnostic.status}" }
+                    span { class: "small", " · {diagnostic.duration_ms} ms · {diagnostic.releases} releases" }
+                    for (i,note) in diagnostic.notes.iter().enumerate() { p { key: "n{i}", class: "small muted", "{note}" } }
+                    ul { class: "small mono",
+                        for (i,plan) in diagnostic.planned_queries.iter().enumerate() { li { key: "{i}", "{plan}" } }
+                    }
+                }
+            }
+            p { class: "small", "Parsed: {r.releases.iter().filter(|v|v.parsed).count()}; title/identifier matched: {r.releases.iter().filter(|v|v.matches_series).count()}; approved: {r.releases.iter().filter(|v|v.approved).count()}." }
+            p { class: "small muted", "For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed." }
+        }
         if r.releases.is_empty() && !r.failures.is_empty() {
             if r.successful_indexers == 0 {
                 Empty { title: "Search sources unavailable",
@@ -137,7 +226,7 @@ pub fn ReleaseSearch(
             }
         } else if r.searched_indexers == 0 {
             Empty { title: "No indexers to search",
-                p { "Add a Nyaa, Newznab or Torznab indexer and enable interactive search for it." }
+                p { "Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched." }
                 Link { to: Route::SettingsIndexers {}, class: "btn", "Indexer settings" }
             }
         } else if r.releases.is_empty() {
@@ -184,6 +273,9 @@ pub fn ReleaseSearch(
                                 td { class: "small age", title: "{rel.publish_date}", {relative(&rel.publish_date)} }
                                 td { class: "release-title",
                                     span { class: "mono small", "{rel.title}" }
+                                    if rel.parsed && !rel.matches_series {
+                                        p { class: "small muted", "Parsed title: " {rel.series_title.as_deref().unwrap_or("unknown")} }
+                                    }
                                     for flag in rel.indexer_flags.iter() {
                                         span { key: "{flag}", class: "badge", " {flag}" }
                                     }

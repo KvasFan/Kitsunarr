@@ -160,6 +160,8 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                 episode_id,
                 complete_series: false,
                 season_packs_only: false,
+                indexer_ids: None,
+                search_session: None,
             };
             match c.automatic_search(&q).await {
                 Ok(r) => {

@@ -573,6 +573,9 @@ async fn nyaa_mock(
                     assert_eq!(q.get("page").map(String::as_str), Some("rss"));
                     assert_eq!(q.get("term").map(String::as_str), Some("Nyaa Test Show"));
                     hits.fetch_add(1, Ordering::SeqCst);
+                    if mode.load(Ordering::SeqCst) == 3 {
+                        tokio::time::sleep(Duration::from_secs(2)).await;
+                    }
                     match mode.load(Ordering::SeqCst) {
                         2 => axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response(),
                         1 => (
@@ -1467,6 +1470,32 @@ async fn first_run_setup_migration_and_library() {
         assert_eq!(nyaa_hits.load(std::sync::atomic::Ordering::SeqCst),2,"same-target Search button makes a new request");
         wait_text(&client,"Season 1: 3 releases from 1 indexer(s). 1 responding.").await;
         screenshot(&client,"18a-direct-nyaa").await;
+        client.find(Locator::Css(".search-diagnostics summary")).await.unwrap().click().await.unwrap();
+        wait_text(&client,"Titles considered: Nyaa Test Show").await;
+        wait_text(&client,"Tier 1: term=Nyaa Test Show").await;
+        wait_text(&client,"Nyaa RSS returns only the first page").await;
+        screenshot(&client,"18d-search-diagnostics").await;
+        client.find(Locator::Css("input[aria-label='Search Direct Nyaa']")).await.unwrap().click().await.unwrap();
+        let before=nyaa_hits.load(std::sync::atomic::Ordering::SeqCst);
+        click_button(&client,"Apply sources").await;
+        wait_text(&client,"No indexers to search").await;
+        assert_eq!(nyaa_hits.load(std::sync::atomic::Ordering::SeqCst),before,"unselected source receives no request");
+        click_button(&client,"All sources").await;
+        wait_text(&client,"Season 1: 3 releases from 1 indexer(s). 1 responding.").await;
+        assert_eq!(nyaa_hits.load(std::sync::atomic::Ordering::SeqCst),before+1);
+
+        nyaa_mode.store(3,std::sync::atomic::Ordering::SeqCst);
+        click_button(&client,"Search again").await;
+        wait_text(&client,"Searching indexers…").await;
+        client.find(Locator::Css("input[aria-label='Search Direct Nyaa']")).await.unwrap().click().await.unwrap();
+        click_button(&client,"Apply sources").await;
+        wait_text(&client,"No indexers to search").await;
+        tokio::time::sleep(Duration::from_millis(2200)).await;
+        assert!(client.source().await.unwrap().contains("No indexers to search"),"superseded results must not replace the current search");
+        screenshot(&client,"18e-superseded-search").await;
+        nyaa_mode.store(0,std::sync::atomic::Ordering::SeqCst);
+        click_button(&client,"All sources").await;
+        wait_text(&client,"Season 1: 3 releases from 1 indexer(s). 1 responding.").await;
         nyaa_mode.store(2,std::sync::atomic::Ordering::SeqCst);
         click_button(&client,"Search again").await;
         wait_text(&client,"Search sources unavailable").await;

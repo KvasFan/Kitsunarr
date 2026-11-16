@@ -967,6 +967,8 @@ async fn indexer_test_and_interactive_search() {
             episode_id: None,
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -1044,6 +1046,8 @@ async fn indexer_test_and_interactive_search() {
             episode_id: None,
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -1088,6 +1092,8 @@ async fn indexer_test_and_interactive_search() {
             episode_id: Some(pilot.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -1121,6 +1127,8 @@ async fn indexer_test_and_interactive_search() {
                     episode_id: None,
                     complete_series: false,
                     season_packs_only: false,
+                    indexer_ids: None,
+                    search_session: None,
                 })
                 .await
                 .unwrap_err()
@@ -1149,6 +1157,8 @@ async fn indexer_test_and_interactive_search() {
             episode_id: Some(pilot.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -1433,6 +1443,8 @@ async fn torrent_blackhole_writes_grabs_and_imports_the_watch_folder() {
             episode_id: Some(pilot.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -1594,6 +1606,8 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             episode_id: Some(pilot.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -1666,6 +1680,8 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             episode_id: Some(pilot.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -1780,6 +1796,8 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         episode_id: None,
         complete_series: false,
         season_packs_only: false,
+        indexer_ids: None,
+        search_session: None,
     };
     let auto = client.automatic_search(&season).await.unwrap();
     assert_eq!((auto.found, auto.approved), (2, 1), "{auto:?}");
@@ -2172,6 +2190,8 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
             episode_id: Some(pilot.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -2316,6 +2336,8 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
         episode_id: Some(pilot.id),
         complete_series: false,
         season_packs_only: false,
+        indexer_ids: None,
+        search_session: None,
     };
     let search = || async {
         client
@@ -2828,6 +2850,8 @@ async fn notifications_follow_series_grabs_and_imports() {
             episode_id: Some(pilot.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -3088,6 +3112,8 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
         episode_id: None,
         complete_series: false,
         season_packs_only: false,
+        indexer_ids: None,
+        search_session: None,
     };
     let found = client.search_releases(&season_1).await.unwrap();
     let pack = found.releases.iter().find(|r| r.guid == "nzb-77").unwrap();
@@ -3290,6 +3316,8 @@ async fn complete_series_search_reads_packs_of_the_series() {
         episode_id: None,
         complete_series: true,
         season_packs_only: false,
+        indexer_ids: None,
+        search_session: None,
     };
     // Torrent indexers only.
     let none = client.search_releases(&query).await.unwrap_err();
@@ -3333,6 +3361,8 @@ async fn complete_series_search_reads_packs_of_the_series() {
             episode_id: None,
             complete_series: false,
             season_packs_only: true,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -3347,6 +3377,8 @@ async fn complete_series_search_reads_packs_of_the_series() {
             episode_id: None,
             complete_series: false,
             season_packs_only: true,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap_err();
@@ -3495,6 +3527,8 @@ async fn fake_torrents_are_rejected_before_grabbing() {
             episode_id: Some(pilot.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -5085,6 +5119,40 @@ async fn movies_are_searched_and_grabbed() {
     let missing = client.missing_movies().await.unwrap();
     assert_eq!(missing.iter().map(|m| m.id).collect::<Vec<_>>(), vec![7]);
     let found = client.search_movie_releases(7).await.unwrap();
+    assert!(found.considered_titles.contains(&"The Matrix 1999".into()));
+    assert_eq!(found.diagnostics.len(), 1);
+    assert!(
+        found.diagnostics[0]
+            .planned_queries
+            .iter()
+            .any(|p| p.contains("The Matrix 1999"))
+    );
+    let source = client.providers("indexers").await.unwrap()[0].id;
+    let before = searches.lock().unwrap().len();
+    let no_sources = client
+        .search_movie_releases_selected(
+            7,
+            &kitsunarr_domain::api::search::MovieReleaseQuery {
+                indexer_ids: Some(String::new()),
+                search_session: Some("movie-search".into()),
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(no_sources.searched_indexers, 0);
+    assert_eq!(searches.lock().unwrap().len(), before);
+    let one = client
+        .search_movie_releases_selected(
+            7,
+            &kitsunarr_domain::api::search::MovieReleaseQuery {
+                indexer_ids: Some(source.to_string()),
+                search_session: Some("movie-search".into()),
+            },
+        )
+        .await
+        .unwrap();
+    assert_eq!(one.releases.len(), found.releases.len());
+    assert_eq!(one.diagnostics[0].status, "success");
     assert_eq!(found.description, "The Matrix (1999)");
     assert_eq!(found.searched_indexers, 1);
     let seen = searches.lock().unwrap().clone();
@@ -5344,6 +5412,8 @@ async fn thexem_scene_numbering_is_applied_and_searched() {
             episode_id: Some(e7.id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -5372,6 +5442,8 @@ async fn thexem_scene_numbering_is_applied_and_searched() {
             episode_id: None,
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         })
         .await
         .unwrap();
@@ -6728,6 +6800,9 @@ async fn direct_nyaa_season_searches_survive_other_source_failures_and_can_be_re
                 |State((mode, log)): State<(Arc<AtomicU8>, Log)>,
                  Query(query): Query<HashMap<String, String>>| async move {
                     log.lock().unwrap().push(query);
+                    if mode.load(Ordering::SeqCst) == 3 {
+                        std::future::pending::<()>().await;
+                    }
                     if mode.load(Ordering::SeqCst) == 2 {
                         return axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response();
                     }
@@ -6772,6 +6847,8 @@ async fn direct_nyaa_season_searches_survive_other_source_failures_and_can_be_re
         episode_id: None,
         complete_series: false,
         season_packs_only: false,
+        indexer_ids: None,
+        search_session: None,
     };
     let first = client.search_releases(&q).await.unwrap();
     assert_eq!(first.releases.len(), 3);
@@ -6799,6 +6876,139 @@ async fn direct_nyaa_season_searches_survive_other_source_failures_and_can_be_re
         before,
         "interactive-only Nyaa is not used automatically"
     );
+    let providers = client.providers("indexers").await.unwrap();
+    let nyaa = providers
+        .iter()
+        .find(|p| p.name == "Direct Nyaa")
+        .unwrap()
+        .id;
+    let unavailable = providers
+        .iter()
+        .find(|p| p.name == "Unavailable Prowlarr")
+        .unwrap()
+        .id;
+    let mut selected = q.clone();
+    selected.indexer_ids = Some(nyaa.to_string());
+    let only = client.search_releases(&selected).await.unwrap();
+    assert_eq!((only.searched_indexers, only.successful_indexers), (1, 1));
+    assert!(only.failures.is_empty());
+    assert_eq!(only.diagnostics.len(), 1);
+    assert_eq!(only.diagnostics[0].indexer_id, nyaa);
+    assert_eq!(only.diagnostics[0].status, "success");
+    assert!(
+        only.diagnostics[0]
+            .planned_queries
+            .iter()
+            .any(|p| p.contains("Nyaa Show"))
+    );
+    assert!(only.considered_titles.contains(&"Nyaa Show".into()));
+    let before = log.lock().unwrap().len();
+    selected.indexer_ids = Some(String::new());
+    let none = client.search_releases(&selected).await.unwrap();
+    assert_eq!(none.searched_indexers, 0);
+    assert!(none.failures.is_empty() && none.diagnostics.is_empty());
+    assert_eq!(log.lock().unwrap().len(), before);
+    for invalid in ["-1".into(), "unknown".into(), "999999".into()] {
+        selected.indexer_ids = Some(invalid);
+        assert_eq!(
+            status(client.search_releases(&selected).await.unwrap_err()),
+            422
+        );
+    }
+    // Selection and diagnostics also follow TV numbering and daily air dates.
+    selected.indexer_ids = Some(nyaa.to_string());
+    selected.season_number = None;
+    selected.episode_id = Some(1);
+    sqlx::query("INSERT INTO series_alternate_titles (series_id,title,clean_title,season_number,source) VALUES (1,'Season One Alias','seasononealias',1,'user'),(1,'Other Season Alias','otherseasonalias',2,'user')").execute(pool).await.unwrap();
+    for (kind, needle) in [("standard", "s01e01"), ("daily", "2026.11.14")] {
+        sqlx::query("UPDATE series SET series_type=? WHERE id=1")
+            .bind(kind)
+            .execute(pool)
+            .await
+            .unwrap();
+        sqlx::query("UPDATE episodes SET air_date='2026-11-14',air_date_utc='2026-11-14T00:00:00Z' WHERE id=1")
+            .execute(pool)
+            .await
+            .unwrap();
+        let result = client.search_releases(&selected).await.unwrap();
+        assert_eq!(result.successful_indexers, 1);
+        assert!(
+            result.diagnostics[0]
+                .planned_queries
+                .iter()
+                .any(|p| p.contains(needle)),
+            "{:?}",
+            result.diagnostics
+        );
+        assert!(
+            result
+                .considered_titles
+                .contains(&"Season One Alias".into())
+        );
+        assert!(
+            !result
+                .considered_titles
+                .contains(&"Other Season Alias".into())
+        );
+    }
+    sqlx::query("UPDATE series SET series_type='anime' WHERE id=1")
+        .execute(pool)
+        .await
+        .unwrap();
+    // A newer request with the same session drops the outstanding server search.
+    mode.store(3, Ordering::SeqCst);
+    let mut slow = q.clone();
+    slow.indexer_ids = Some(nyaa.to_string());
+    slow.search_session = Some("http-superseded".into());
+    let before = log.lock().unwrap().len();
+    let c = client.clone();
+    let old = tokio::spawn(async move { c.search_releases(&slow).await });
+    for _ in 0..100 {
+        if log.lock().unwrap().len() > before {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert!(log.lock().unwrap().len() > before, "old request started");
+    let mut replacement = q.clone();
+    replacement.indexer_ids = Some(String::new());
+    replacement.search_session = Some("http-superseded".into());
+    assert_eq!(
+        client
+            .search_releases(&replacement)
+            .await
+            .unwrap()
+            .searched_indexers,
+        0
+    );
+    let error = tokio::time::timeout(std::time::Duration::from_secs(2), old)
+        .await
+        .unwrap()
+        .unwrap()
+        .unwrap_err();
+    assert_eq!(status(error), 409);
+    replacement.search_session = Some("bad session".into());
+    assert_eq!(
+        status(client.search_releases(&replacement).await.unwrap_err()),
+        422
+    );
+    // Explicitly selecting a source disabled for interactive search is rejected.
+    sqlx::query("UPDATE indexers SET enable_interactive_search=0 WHERE id=?")
+        .bind(unavailable)
+        .execute(pool)
+        .await
+        .unwrap();
+    selected = q.clone();
+    selected.indexer_ids = Some(unavailable.to_string());
+    assert_eq!(
+        status(client.search_releases(&selected).await.unwrap_err()),
+        422
+    );
+    sqlx::query("UPDATE indexers SET enable_interactive_search=1 WHERE id=?")
+        .bind(unavailable)
+        .execute(pool)
+        .await
+        .unwrap();
     // A valid empty source with another failing source is a partial response.
     mode.store(1, Ordering::SeqCst);
     let partial = client.search_releases(&q).await.unwrap();

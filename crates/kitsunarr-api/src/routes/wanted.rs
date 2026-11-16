@@ -173,6 +173,8 @@ pub(crate) async fn bulk_search(
             episode_id: (!season).then_some(first.episode_id),
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         };
         let options = SearchOptions {
             automatic: true,
@@ -251,6 +253,8 @@ async fn complete_series_step(
             episode_id: None,
             complete_series: true,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         };
         let options = SearchOptions {
             automatic: true,

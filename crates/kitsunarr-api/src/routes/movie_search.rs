@@ -3,7 +3,7 @@
 //! releases are decided as the film's one feature episode and grabbed into the film's history.
 
 use axum::Json;
-use axum::extract::{Path, State};
+use axum::extract::{Path, Query, State};
 use kitsunarr_db::library::movies;
 use kitsunarr_decision::{self as decision, Engine, SearchKind};
 use kitsunarr_domain::api::error::ApiErrorBody;
@@ -16,7 +16,7 @@ use crate::AppState;
 use crate::error::ApiResult;
 use crate::routes::search::{
     DecisionInputs, Owner, SearchRun, cached_release, decision_release, describe, record_outcome,
-    to_item, usable_indexers,
+    to_item, usable_indexers_selected,
 };
 
 /// Searches the indexers for a film and decides on every release (a search the user started:
@@ -26,13 +26,13 @@ pub(crate) async fn run_movie_search(
     movie_id: i64,
     automatic: bool,
 ) -> ApiResult<SearchRun> {
-    run_movie_search_as(state, movie_id, automatic, true).await
+    run_movie_search_as(state, movie_id, automatic, true, None).await
 }
 
 /// A film search the server starts (a failed download's redownload, add and search): delay
 /// profiles apply, and the releases they hold become pending for the RSS sync.
 pub(crate) async fn server_search(state: &AppState, movie_id: i64) {
-    match run_movie_search_as(state, movie_id, true, false).await {
+    match run_movie_search_as(state, movie_id, true, false, None).await {
         Ok(run) => {
             let r = grab_best(state, &run, movie_id, "Search").await;
             keep_pending(state, movie_id, &run, !r.grabbed.is_empty()).await;
@@ -80,6 +80,7 @@ async fn run_movie_search_as(
     movie_id: i64,
     automatic: bool,
     user_invoked: bool,
+    selection: Option<&str>,
 ) -> ApiResult<SearchRun> {
     let detail = movies::get_detail(&state.db, movie_id).await?;
     let id_of = |kind: ExternalIdKind| {
@@ -133,41 +134,47 @@ async fn run_movie_search_as(
         search_mode: search_mode::DEFAULT,
         anime,
     };
-    let search = Search::Movie { query_titles };
+    let search = Search::Movie {
+        query_titles: query_titles.clone(),
+    };
     let option = if automatic {
         "enableAutomaticSearch"
     } else {
         "enableInteractiveSearch"
     };
-    let (mut indexers, extras, mut failures) = usable_indexers(state, option).await?;
+    let (mut indexers, extras, mut failures) =
+        usable_indexers_selected(state, option, selection).await?;
     indexers.retain(|i| {
         extras.get(&i.id).is_none_or(|x| {
             x.tags.is_empty() || x.tags.iter().any(|t| detail.item.tags.contains(t))
         })
     });
-    let client = &state.indexers;
+    let planned = [search];
     let outcomes = futures::future::join_all(indexers.iter().map(|indexer| {
-        let (criteria, search) = (&criteria, &search);
-        async move {
-            let caps = client.capabilities(indexer).await?;
-            let chain = client.generator(indexer, &caps).search(criteria, search);
-            client.fetch(indexer, &chain, false).await
-        }
+        super::search_sources::query_source(
+            &state.indexers,
+            indexer,
+            &criteria,
+            &planned,
+            crate::search_control::SOURCE_BUDGET,
+        )
     }))
     .await;
-    let successful_indexers = outcomes.iter().filter(|r| r.is_ok()).count();
+    let diagnostics = outcomes.iter().map(|o| o.diagnostic.clone()).collect();
+    let successful_indexers = outcomes.iter().filter(|r| r.result.is_ok()).count();
     let mut found: Vec<IndexerRelease> = Vec::new();
     for (indexer, outcome) in indexers.iter().zip(outcomes) {
+        let outcome = outcome.result;
         record_outcome(state, indexer.id, &outcome).await;
         match outcome {
-            Ok(list) => found.extend(list),
+            Ok(list) => found.extend(list.into_iter().map(|(_, r)| r)),
             Err(e) => {
                 let e: IndexerError = e;
-                tracing::warn!(indexer = %indexer.name, error = %e, "movie search failed");
+                tracing::warn!(indexer = %indexer.name, error = %super::search_sources::redact(indexer,&e.to_string()), "movie search failed");
                 failures.push(IndexerFailure {
                     indexer_id: indexer.id,
                     indexer: indexer.name.clone(),
-                    message: describe(&e),
+                    message: super::search_sources::redact(indexer, &describe(&e)),
                 });
             }
         }
@@ -218,6 +225,8 @@ async fn run_movie_search_as(
             detail.item.title.clone()
         },
         warnings: inputs.warnings,
+        diagnostics,
+        considered_titles: query_titles,
         series: inputs.series,
     })
 }
@@ -235,13 +244,20 @@ fn cache(state: &AppState, run: &SearchRun, movie_id: i64, source: &'static str)
 
 /// Searches every indexer enabled for interactive search for a film.
 #[utoipa::path(get, path = "/movies/{id}/releases", tag = "search",
-    params(("id" = i64, Path)),
+    params(("id" = i64, Path), kitsunarr_domain::api::search::MovieReleaseQuery),
     responses((status = 200, body = ReleaseSearchResult), (status = 404, body = ApiErrorBody)))]
 pub async fn search_movie_releases(
     State(state): State<AppState>,
     Path(id): Path<i64>,
+    Query(q): Query<kitsunarr_domain::api::search::MovieReleaseQuery>,
 ) -> ApiResult<Json<ReleaseSearchResult>> {
-    let run = run_movie_search(&state, id, false).await?;
+    let run = state
+        .searches
+        .run(
+            q.search_session.as_deref(),
+            run_movie_search_as(&state, id, false, true, q.indexer_ids.as_deref()),
+        )
+        .await?;
     cache(&state, &run, id, "InteractiveSearch");
     let releases = run
         .decisions
@@ -255,6 +271,8 @@ pub async fn search_movie_releases(
         successful_indexers: run.successful_indexers,
         description: run.description,
         warnings: run.warnings,
+        diagnostics: run.diagnostics,
+        considered_titles: run.considered_titles,
     }))
 }
 

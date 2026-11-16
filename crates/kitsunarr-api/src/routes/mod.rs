@@ -14,6 +14,7 @@ pub mod queue;
 pub mod rules;
 pub mod schema;
 pub mod search;
+pub(crate) mod search_sources;
 pub mod settings;
 pub mod system;
 pub mod wanted;

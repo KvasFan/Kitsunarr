@@ -859,6 +859,8 @@ async fn command(
                     episode_id: None,
                     complete_series: false,
                     season_packs_only: false,
+                    indexer_ids: None,
+                    search_session: None,
                 }]
             } else {
                 let mut q = Vec::new();
@@ -869,6 +871,8 @@ async fn command(
                         episode_id: Some(*e),
                         complete_series: false,
                         season_packs_only: false,
+                        indexer_ids: None,
+                        search_session: None,
                     });
                 }
                 q

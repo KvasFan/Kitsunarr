@@ -23,6 +23,65 @@ pub struct ReleaseQuery {
     /// Tanukarr's season-pack search: a season search that lists only full-season releases.
     #[serde(default)]
     pub season_packs_only: bool,
+    /// Optional comma-separated source IDs. Omitted: all eligible sources; empty: none.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub indexer_ids: Option<String>,
+    /// A client-generated identifier used to supersede its previous interactive request.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub search_session: Option<String>,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::IntoParams, utoipa::ToSchema))]
+#[cfg_attr(feature = "openapi", into_params(parameter_in = Query))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieReleaseQuery {
+    pub indexer_ids: Option<String>,
+    pub search_session: Option<String>,
+}
+
+/// Bounded selection shared by series and movie searches.
+pub fn selected_indexers(value: Option<&str>) -> Result<Option<Vec<i64>>, &'static str> {
+    let Some(value) = value else { return Ok(None) };
+    if value.len() > 2048 {
+        return Err("Too many selected indexers.");
+    }
+    if value.trim().is_empty() {
+        return Ok(Some(Vec::new()));
+    }
+    let mut ids = Vec::new();
+    for part in value.split(',') {
+        let id = part
+            .trim()
+            .parse::<i64>()
+            .ok()
+            .filter(|id| *id > 0)
+            .ok_or("Indexer IDs must be positive integers separated by commas.")?;
+        if !ids.contains(&id) {
+            ids.push(id);
+        }
+        if ids.len() > 64 {
+            return Err("Select at most 64 indexers.");
+        }
+    }
+    Ok(Some(ids))
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct IndexerSearchDiagnostic {
+    pub indexer_id: i64,
+    pub indexer: String,
+    /// success, failed, or timedOut.
+    pub status: String,
+    pub duration_ms: u64,
+    pub releases: usize,
+    /// Generated first-page query plans, including fallback tiers which may not run.
+    /// Credentials, request URLs, headers and raw POST bodies are never included.
+    pub planned_queries: Vec<String>,
+    #[serde(default)]
+    pub notes: Vec<String>,
 }
 
 /// A release found on an indexer, with what the parser reads from its name. Download URLs are
@@ -95,6 +154,25 @@ pub struct ReleaseSearchResult {
     /// Problems that affect every decision, e.g. a custom format that cannot be evaluated.
     #[serde(default)]
     pub warnings: Vec<String>,
+    #[serde(default)]
+    pub diagnostics: Vec<IndexerSearchDiagnostic>,
+    /// Titles/aliases considered by the planner, rather than a claim that every source used them.
+    #[serde(default)]
+    pub considered_titles: Vec<String>,
+}
+
+#[cfg(test)]
+mod selection_tests {
+    use super::selected_indexers;
+    #[test]
+    fn selection_distinguishes_all_none_and_invalid_sources() {
+        assert_eq!(selected_indexers(None), Ok(None));
+        assert_eq!(selected_indexers(Some("")), Ok(Some(vec![])));
+        assert_eq!(selected_indexers(Some("1, 2,1")), Ok(Some(vec![1, 2])));
+        for value in ["0", "-1", "1,,2", "NaN", "9223372036854775808"] {
+            assert!(selected_indexers(Some(value)).is_err());
+        }
+    }
 }
 
 /// `POST /providers/indexers/test`: unsaved settings, or a saved indexer's id whose stored

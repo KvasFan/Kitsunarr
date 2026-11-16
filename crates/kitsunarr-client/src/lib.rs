@@ -880,6 +880,15 @@ impl Client {
     pub async fn search_movie_releases(&self, movie_id: i64) -> ClientResult<ReleaseSearchResult> {
         self.get(&format!("/movies/{movie_id}/releases")).await
     }
+    /// Interactive film search with source selection and supersession.
+    pub async fn search_movie_releases_selected(
+        &self,
+        movie_id: i64,
+        q: &kitsunarr_domain::api::search::MovieReleaseQuery,
+    ) -> ClientResult<ReleaseSearchResult> {
+        self.get_query(&format!("/movies/{movie_id}/releases"), q)
+            .await
+    }
     /// Automatic search for a film (grabs the best approved release).
     pub async fn automatic_movie_search(
         &self,

@@ -26,6 +26,8 @@ pub enum ApiError {
     PayloadTooLarge(String),
     #[error("{0}")]
     BadGateway(String),
+    #[error("{0}")]
+    GatewayTimeout(String),
     /// A companion service is not connected (503).
     #[error("{0}")]
     Unavailable(String),
@@ -75,6 +77,7 @@ impl ApiError {
             ApiError::TooManyRequests(_) => (StatusCode::TOO_MANY_REQUESTS, "too_many_requests"),
             ApiError::PayloadTooLarge(_) => (StatusCode::PAYLOAD_TOO_LARGE, "payload_too_large"),
             ApiError::BadGateway(_) => (StatusCode::BAD_GATEWAY, "upstream_error"),
+            ApiError::GatewayTimeout(_) => (StatusCode::GATEWAY_TIMEOUT, "search_timeout"),
             ApiError::Unavailable(_) => (StatusCode::SERVICE_UNAVAILABLE, "unavailable"),
             ApiError::Internal(_) => (StatusCode::INTERNAL_SERVER_ERROR, "internal_error"),
         }

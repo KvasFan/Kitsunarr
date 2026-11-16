@@ -50,6 +50,7 @@ use utoipa_axum::router::OpenApiRouter;
 
 pub use assets::{AssetSource, EmbeddedAsset, NoAssets};
 pub use logs::LogBuffer;
+mod search_control;
 pub use routes::migration::MigrationSessions;
 pub use routes::system::{NoTasks, TaskControl};
 
@@ -84,6 +85,7 @@ pub struct AppStateInner {
     pub oauth_codes: std::sync::Mutex<std::collections::HashMap<String, String>>,
     pub metadata: kitsunarr_metadata::Metadata,
     pub indexers: kitsunarr_indexers::IndexerClient,
+    pub searches: search_control::SearchRegistry,
     /// Download clients and completed-download handling (shared with the background job).
     pub downloads: kitsunarr_library::downloads::Monitor,
     /// Recent search results, for grabbing.
@@ -133,6 +135,7 @@ impl AppState {
             tasks,
             migrations: MigrationSessions::default(),
             indexers: kitsunarr_indexers::IndexerClient::new(http.clone()),
+            searches: Default::default(),
             downloads: kitsunarr_library::downloads::Monitor::new(http.clone()),
             releases: Default::default(),
             last_download_client: Default::default(),

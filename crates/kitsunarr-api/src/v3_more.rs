@@ -92,6 +92,8 @@ async fn search(
             episode_id,
             complete_series: false,
             season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
         }),
     )
     .await?

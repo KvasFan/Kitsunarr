@@ -126,7 +126,7 @@ pub async fn test_indexer(
         },
         Err(e) => IndexerTestResult {
             ok: false,
-            message: describe(&e),
+            message: super::search_sources::redact(&indexer, &describe(&e)),
             releases_found: 0,
             warnings: Vec::new(),
         },
@@ -497,13 +497,44 @@ pub(crate) async fn usable_indexers(
     state: &AppState,
     option: &str,
 ) -> ApiResult<(Vec<Indexer>, Extras, Vec<IndexerFailure>)> {
+    usable_indexers_selected(state, option, None).await
+}
+
+pub(crate) async fn usable_indexers_selected(
+    state: &AppState,
+    option: &str,
+    selection: Option<&str>,
+) -> ApiResult<(Vec<Indexer>, Extras, Vec<IndexerFailure>)> {
+    let selection = kitsunarr_domain::api::search::selected_indexers(selection)
+        .map_err(|m| ApiError::field("indexerIds", m))?;
+    let providers = providers::list(state.db.pool(), ProviderKind::Indexer).await?;
+    if selection.as_ref().is_some_and(|ids| {
+        ids.iter().any(|id| {
+            !providers.iter().any(|p| {
+                p.id == *id
+                    && p.enabled
+                    && p.options
+                        .get(option)
+                        .and_then(|v| v.as_bool())
+                        .unwrap_or(true)
+            })
+        })
+    }) {
+        return Err(ApiError::field(
+            "indexerIds",
+            "A selected source is missing or is not enabled for this search mode.",
+        ));
+    }
     let mut indexers = Vec::new();
     let mut extras = Extras::new();
     let mut failures = Vec::new();
     // `FilterBlockedIndexers`: indexers backing off after failures are skipped.
     let blocked =
         kitsunarr_db::indexer_status::blocked(state.db.pool(), chrono::Utc::now()).await?;
-    for p in providers::list(state.db.pool(), ProviderKind::Indexer).await? {
+    for p in providers {
+        if selection.as_ref().is_some_and(|ids| !ids.contains(&p.id)) {
+            continue;
+        }
         let enabled = p
             .options
             .get(option)
@@ -561,6 +592,8 @@ pub(crate) struct SearchRun {
     pub successful_indexers: usize,
     pub description: String,
     pub warnings: Vec<String>,
+    pub diagnostics: Vec<kitsunarr_domain::api::search::IndexerSearchDiagnostic>,
+    pub considered_titles: Vec<String>,
     pub series: decision::Series,
 }
 
@@ -575,7 +608,13 @@ pub async fn search_releases(
     State(state): State<AppState>,
     Query(q): Query<ReleaseQuery>,
 ) -> ApiResult<Json<ReleaseSearchResult>> {
-    let run = run_search(&state, &q, SearchOptions::INTERACTIVE).await?;
+    let run = state
+        .searches
+        .run(
+            q.search_session.as_deref(),
+            run_search(&state, &q, SearchOptions::INTERACTIVE),
+        )
+        .await?;
     cache(&state, &run, q.series_id);
     let releases = run
         .decisions
@@ -589,6 +628,8 @@ pub async fn search_releases(
         successful_indexers: run.successful_indexers,
         description: run.description,
         warnings: run.warnings,
+        diagnostics: run.diagnostics,
+        considered_titles: run.considered_titles,
     }))
 }
 
@@ -920,7 +961,8 @@ pub(crate) async fn run_search(
     } else {
         "enableInteractiveSearch"
     };
-    let (mut indexers, extras, mut failures) = usable_indexers(state, option).await?;
+    let (mut indexers, extras, mut failures) =
+        usable_indexers_selected(state, option, q.indexer_ids.as_deref()).await?;
     indexers.retain(|i| {
         extras.get(&i.id).is_none_or(|x| {
             x.tags.is_empty() || x.tags.iter().any(|t| detail.item.tags.contains(t))
@@ -938,32 +980,23 @@ pub(crate) async fn run_search(
     }
 
     let client = &state.indexers;
+    let planned: Vec<Search> = searches.iter().map(|(search, _)| search.clone()).collect();
     let outcomes = futures::future::join_all(indexers.iter().map(|indexer| {
-        let searches = &searches;
-        let criteria = &criteria;
-        async move {
-            let caps = client.capabilities(indexer).await?;
-            let generator = client.generator(indexer, &caps);
-            let mut found = Vec::new();
-            for (k, (search, _)) in searches.iter().enumerate() {
-                let chain = generator.search(criteria, search);
-                found.extend(
-                    client
-                        .fetch(indexer, &chain, false)
-                        .await?
-                        .into_iter()
-                        .map(|r| (k, r)),
-                );
-            }
-            Ok::<_, IndexerError>(found)
-        }
+        super::search_sources::query_source(
+            client,
+            indexer,
+            &criteria,
+            &planned,
+            crate::search_control::SOURCE_BUDGET,
+        )
     }))
     .await;
-
-    let successful_indexers = outcomes.iter().filter(|r| r.is_ok()).count();
+    let diagnostics = outcomes.iter().map(|o| o.diagnostic.clone()).collect();
+    let successful_indexers = outcomes.iter().filter(|r| r.result.is_ok()).count();
     // Each search's releases, in arrival order.
     let mut found: Vec<Vec<IndexerRelease>> = vec![Vec::new(); searches.len()];
     for (indexer, outcome) in indexers.iter().zip(outcomes) {
+        let outcome = outcome.result;
         record_outcome(state, indexer.id, &outcome).await;
         match outcome {
             Ok(list) => {
@@ -972,11 +1005,11 @@ pub(crate) async fn run_search(
                 }
             }
             Err(e) => {
-                tracing::warn!(indexer = %indexer.name, error = %e, "search failed");
+                tracing::warn!(indexer = %indexer.name, error = %super::search_sources::redact(indexer,&e.to_string()), "search failed");
                 failures.push(IndexerFailure {
                     indexer_id: indexer.id,
                     indexer: indexer.name.clone(),
-                    message: describe(&e),
+                    message: super::search_sources::redact(indexer, &describe(&e)),
                 });
             }
         }
@@ -1037,6 +1070,8 @@ pub(crate) async fn run_search(
         successful_indexers,
         description,
         warnings: inputs.warnings,
+        diagnostics,
+        considered_titles: criteria.scene_titles.clone(),
         series: inputs.series,
     };
     crate::library_tools::record_search(state, &run, q.series_id, automatic).await;

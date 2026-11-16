@@ -1,7 +1,7 @@
 # Development roadmap
 
-Milestones 1–50 are recorded in the dated milestone reports. The current priority is the
-reported series-search failure in the local instance.
+Milestones 1–50 are recorded in the dated milestone reports. The current search follow-up
+closes milestones 55–60; verification is recorded in the [checkpoint report](milestones-2026-11-16-60.md).
 
 | Milestone | Scope | Status |
 |---|---|---|
@@ -9,14 +9,14 @@ reported series-search failure in the local instance.
 | 52 | Distinguish unavailable sources from empty results; retry the same search explicitly | Done: HTTP and Chromium checks |
 | 53 | HTTP and browser regressions for direct Nyaa, partial failures and repeated searches | Done: 817 workspace tests and Chromium passed |
 | 54 | Verify live Nyaa searches and deploy the fixes to the existing local instance | Done: live search and local health verified |
-| 55 | Let an interactive search select individual enabled indexers | Planned |
-| 56 | Show useful per-source query diagnostics without exposing credentials | Planned |
-| 57 | Cancel superseded searches and bound total multi-query search duration | Planned |
-| 58 | Investigate bounded older-result retrieval beyond Nyaa's first RSS page | Planned |
-| 59 | Improve alternate-title/season-name diagnostics when releases do not map | Planned |
-| 60 | Verify the next search improvements across TV, anime and movie workflows | Planned |
+| 55 | Let an interactive search select individual enabled indexers | Done: native series/movie APIs and browser source controls |
+| 56 | Show useful per-source query diagnostics without exposing credentials | Done: bounded, redacted plans and per-source outcomes |
+| 57 | Cancel superseded searches and bound total multi-query search duration | Done: source/request budgets, session supersession and stale-result protection |
+| 58 | Investigate bounded older-result retrieval beyond Nyaa's first RSS page | Done: upstream RSS limit verified; visible diagnostic documents the result |
+| 59 | Improve alternate-title/season-name diagnostics when releases do not map | Done: considered titles, season alias filtering and unmatched parsed titles |
+| 60 | Verify the next search improvements across TV, anime and movie workflows | Done: 840 Rust tests, full Chromium workflow, release container and local verification |
 
-## Current diagnosis
+## Diagnosis at milestone 54
 
 The local instance's imported Torznab indexers point at an unavailable Prowlarr service.
 Connection-refused errors must remain visible as source failures, rather than appearing as
@@ -36,7 +36,8 @@ keeps standard TV numbering independent of the anime-format option.
 
 Live verification is limited to searches and indexer connectivity. It does not grab releases
 or send work to download clients. RSS only exposes a limited recent result set; retrieving
-older results is tracked separately in milestone 58.
+older results was investigated in milestone 58; Nyaa ignores RSS pagination, so the limitation
+is now explained in source diagnostics. See the [investigation](milestones-2026-11-16-60.md#nyaa-older-result-investigation).
 
 ## Live local check, 15 November 2026
 
