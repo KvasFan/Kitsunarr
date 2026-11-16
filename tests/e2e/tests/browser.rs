@@ -1447,6 +1447,70 @@ async fn first_run_setup_migration_and_library() {
             .unwrap();
         wait_text(&client, "Cutoff unmet").await;
 
+        // Guided custom formats: shared-engine previews, invalid negation, JSON round trips.
+        client.goto(&format!("{base}/settings/customformats")).await.unwrap();
+        click_button(&client, "+ New format").await;
+        fill(&client, "input[aria-label='Custom format name']", "Anime subgroup preference").await;
+        client.find(Locator::Css("select[aria-label='New condition type']")).await.unwrap()
+            .select_by_value("ReleaseGroupSpecification").await.unwrap();
+        click_button(&client, "Add condition").await;
+        fill(&client, "input[aria-label='Condition regular expression 1']", "^SubsPlease$").await;
+        fill(&client, "input[aria-label='Test release title']", "[SubsPlease] Nyaa Test Show - 01 (1080p) [ABCDEF12]").await;
+        click_button(&client, "Test format").await;
+        wait_text(&client, "Format matches").await;
+        let preview_in_view = client.execute("const r=document.querySelector('.format-preview').getBoundingClientRect(), b=document.querySelector('.modal-body').getBoundingClientRect(); return r.top >= b.top-1 && r.bottom <= b.bottom+1;",vec![]).await.unwrap();
+        assert_eq!(preview_in_view,true,"the preview result must scroll into view inside the dialog");
+        screenshot(&client, "18f-format-preview").await;
+        click_button(&client, "Edit JSON").await;
+        let mut specs = client.execute("return JSON.parse(document.querySelector('textarea[aria-label=\"Specifications JSON\"]').value)",vec![]).await.unwrap();
+        specs[0]["fields"] = serde_json::json!({"Value":"^SubsPlease$", "futureField":{"keep":true}});
+        fill(&client,"textarea[aria-label='Specifications JSON']", &serde_json::to_string_pretty(&specs).unwrap()).await;
+        click_button(&client, "Guided editor").await;
+        assert_eq!(client.find(Locator::Css("input[aria-label='Condition regular expression 1']")).await.unwrap().prop("value").await.unwrap().as_deref(), Some("^SubsPlease$"));
+        // Add an invalid required negated condition: it must never be reported as satisfied.
+        client.find(Locator::Css("select[aria-label='New condition type']")).await.unwrap()
+            .select_by_value("ReleaseTitleSpecification").await.unwrap();
+        click_button(&client, "Add condition").await;
+        fill(&client, "input[aria-label='Condition regular expression 2']", "[unclosed").await;
+        for label in ["Negate condition 2", "Required condition 2"] {
+            client.find(Locator::Css(&format!("input[aria-label='{label}']"))).await.unwrap().click().await.unwrap();
+        }
+        click_button(&client, "Test format").await;
+        wait_text(&client, "Format does not match").await;
+        wait_text(&client, "is not valid").await;
+        client.find(Locator::Css("button[aria-label='Remove condition 2']")).await.unwrap().click().await.unwrap();
+        fill(&client, "input[aria-label='Condition regular expression 1']", "^OtherGroup$").await;
+        assert!(client.find_all(Locator::Css(".format-preview")).await.unwrap().is_empty(), "editing invalidates the displayed preview");
+        click_button(&client, "Test format").await;
+        wait_text(&client, "Format does not match").await;
+        fill(&client, "input[aria-label='Condition regular expression 1']", "^SubsPlease$").await;
+        click_button(&client, "Test format").await;
+        wait_text(&client, "Format matches").await;
+        // Invalid JSON must stay editable and must not silently replace the guided draft.
+        click_button(&client, "Edit JSON").await;
+        let restored = client.find(Locator::Css("textarea[aria-label='Specifications JSON']")).await.unwrap().prop("value").await.unwrap().unwrap();
+        fill(&client, "textarea[aria-label='Specifications JSON']", "[").await;
+        click_button(&client, "Guided editor").await;
+        wait_text(&client, "Specifications must be valid JSON").await;
+        fill(&client, "textarea[aria-label='Specifications JSON']", &restored).await;
+        click_button(&client, "Guided editor").await;
+        click_button(&client, "Save").await;
+        wait_text(&client, "Custom format saved.").await;
+        let saved_formats = client.execute_async("const done=arguments[arguments.length-1]; fetch('/api/v1/customformats').then(r=>r.json()).then(done);",vec![]).await.unwrap();
+        let saved = saved_formats.as_array().unwrap().iter().find(|f| f["name"] == "Anime subgroup preference").unwrap();
+        assert_eq!(saved["specifications"][0]["fields"]["value"], "^SubsPlease$");
+        assert_eq!(saved["specifications"][0]["fields"]["futureField"]["keep"], true);
+        assert!(saved["specifications"][0]["fields"].get("Value").is_none());
+        // Every supported type can be added to the guided editor and removed again.
+        client.find(Locator::XPath("//tr[contains(.,'Anime subgroup preference')]//button[normalize-space(.)='Edit']")).await.unwrap().click().await.unwrap();
+        for kind in ["LanguageSpecification", "SourceSpecification", "ResolutionSpecification", "SizeSpecification", "IndexerFlagSpecification", "ReleaseTypeSpecification"] {
+            client.find(Locator::Css("select[aria-label='New condition type']")).await.unwrap().select_by_value(kind).await.unwrap();
+            click_button(&client, "Add condition").await;
+        }
+        assert_eq!(client.find_all(Locator::Css(".format-condition")).await.unwrap().len(), 7);
+        screenshot(&client, "18g-format-editor").await;
+        click_button(&client, "Cancel").await;
+
         // Direct native Nyaa season searches, explicit repeated requests and truthful failures.
         let (nyaa,nyaa_mode,nyaa_hits)=nyaa_mock(root.join("tests/fixtures/indexers/sonarr")).await;
         let search_db=kitsunarr_db::Database::open(&tmp.path().join("data/kitsunarr.db")).await.unwrap();
@@ -1470,6 +1534,20 @@ async fn first_run_setup_migration_and_library() {
         assert_eq!(nyaa_hits.load(std::sync::atomic::Ordering::SeqCst),2,"same-target Search button makes a new request");
         wait_text(&client,"Season 1: 3 releases from 1 indexer(s). 1 responding.").await;
         screenshot(&client,"18a-direct-nyaa").await;
+        let filter_hits=nyaa_hits.load(std::sync::atomic::Ordering::SeqCst);
+        fill(&client,"input[aria-label='Filter releases']","no-such-subgroup").await;
+        wait_text(&client,"No releases match these filters").await;
+        assert_eq!(client.find_all(Locator::Css("table.releases tbody tr")).await.unwrap().len(),0);
+        assert_eq!(nyaa_hits.load(std::sync::atomic::Ordering::SeqCst),filter_hits,"local filtering must not query Nyaa");
+        click_button(&client,"Clear filters").await;
+        wait_text(&client,"Showing 3 of 3 releases").await;
+        client.find(Locator::Css("select[aria-label='Filter release decisions']")).await.unwrap().select_by_value("unmatched").await.unwrap();
+        let unmatched_rows=client.find_all(Locator::Css("table.releases tbody tr")).await.unwrap().len();
+        assert!(unmatched_rows>0,"the fixture includes unmatched anime names");
+        screenshot(&client,"18h-release-filters").await;
+        click_button(&client,"Clear filters").await;
+        assert_eq!(client.find_all(Locator::Css("table.releases tbody tr")).await.unwrap().len(),3);
+
         client.find(Locator::Css(".search-diagnostics summary")).await.unwrap().click().await.unwrap();
         wait_text(&client,"Titles considered: Nyaa Test Show").await;
         wait_text(&client,"Tier 1: term=Nyaa Test Show").await;
@@ -1527,7 +1605,7 @@ async fn first_run_setup_migration_and_library() {
             for path in [
                 "/", "/series", "/series/1", "/movies", "/movies/900", "/wanted/missing", "/activity/queue",
                 "/activity/history", "/calendar", "/add", "/settings/indexers", "/settings/profiles",
-                "/settings/notifications", "/system/tasks", "/system/library", "/activity/manualimport",
+                "/settings/customformats", "/settings/notifications", "/system/tasks", "/system/library", "/activity/manualimport",
             ] {
                 client.goto(&format!("{base}{path}")).await.unwrap();
                 tokio::time::sleep(Duration::from_millis(700)).await;
@@ -1557,6 +1635,16 @@ async fn first_run_setup_migration_and_library() {
             }
             zoom_results.push(serde_json::json!({"zoom":zoom,"dialog":modal}));
             screenshot(&client,&format!("zoom-{zoom}-catalogue-dialog")).await;
+            click_button(&client,"Cancel").await;
+            client.goto(&format!("{base}/settings/customformats")).await.unwrap();
+            click_button(&client,"+ New format").await;
+            click_button(&client,"Add condition").await;
+            let format_modal=modal_layout(&client).await;
+            if format_modal["fits"] != true || format_modal["bodyFits"] != true || format_modal["footerFits"] != true || format_modal["bodyReadable"] != true {
+                overflowing.push(format!("custom-format dialog at {zoom}%: {format_modal}"));
+            }
+            zoom_results.push(serde_json::json!({"zoom":zoom,"formatDialog":format_modal}));
+            screenshot(&client,&format!("zoom-{zoom}-format-dialog")).await;
             click_button(&client,"Cancel").await;
         }
         if let Ok(dir) = std::env::var("KITSUNARR_E2E_SCREENSHOTS") {

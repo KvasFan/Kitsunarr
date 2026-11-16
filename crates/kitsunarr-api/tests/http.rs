@@ -7404,3 +7404,157 @@ async fn quality_group_edits_persist_through_native_and_v3_profiles() {
     assert_eq!(ungrouped.size_limits, p.size_limits);
     assert_eq!(ungrouped.codec_multipliers, p.codec_multipliers);
 }
+
+/// The guided editor tests unsaved formats through the exact evaluator used by search/naming.
+#[tokio::test]
+async fn custom_format_preview_covers_conditions_anime_and_invalid_drafts_without_saving() {
+    use kitsunarr_domain::api::settings::CustomFormatTestRequest;
+    let server = start().await;
+    let client = Client::new(&server.base).with_api_key(&server.api_key);
+    let before = client.custom_formats().await.unwrap();
+    let mut request: CustomFormatTestRequest = serde_json::from_value(serde_json::json!({
+        "format": {"id": 0, "name": "Preview", "includeWhenRenaming": true,
+            "specifications": [
+                {"name":"Title", "implementation":"ReleaseTitleSpecification", "negate":false, "required":true, "fields":{"value":"(?<=Example\\.)Show"}},
+                {"name":"Group", "implementation":"ReleaseGroupSpecification", "negate":false, "required":false, "fields":{"value":"^GRP$"}},
+                {"name":"Language", "implementation":"LanguageSpecification", "negate":false, "required":false, "fields":{"value":-2}},
+                {"name":"Source", "implementation":"SourceSpecification", "negate":false, "required":false, "fields":{"value":3}},
+                {"name":"Resolution", "implementation":"ResolutionSpecification", "negate":false, "required":false, "fields":{"value":1080}},
+                {"name":"Size", "implementation":"SizeSpecification", "negate":false, "required":false, "fields":{"min":4,"max":5}},
+                {"name":"Flags", "implementation":"IndexerFlagSpecification", "negate":false, "required":false, "fields":{"value":17}},
+                {"name":"Pack", "implementation":"ReleaseTypeSpecification", "negate":false, "required":false, "fields":{"value":3}}
+            ]},
+        "releaseTitle":"Example.Show.S01.1080p.WEB-DL.JAPANESE-GRP",
+        "size": 5368709120i64, "indexerFlags":17, "originalLanguage":8
+    })).unwrap();
+    let result = client.test_custom_format(&request).await.unwrap();
+    assert!(result.matches, "{result:?}");
+    assert!(result.warnings.is_empty());
+    assert_eq!(result.specifications.len(), 8);
+    assert!(result.specifications.iter().all(|s| s.matches));
+    assert_eq!(result.quality, "WEBDL-1080p");
+    assert_eq!(result.release_group.as_deref(), Some("GRP"));
+    assert_eq!(result.release_type, "Season pack");
+
+    // A single failed required condition blocks the format, even alongside an alternative.
+    let valid_title = request.format.specifications[0].clone();
+    request.format.specifications[0].set_field("value", serde_json::json!("[unclosed"));
+    request.format.specifications[0].negate = true;
+    request.format.specifications.push(valid_title);
+    let result = client.test_custom_format(&request).await.unwrap();
+    assert!(!result.matches);
+    assert!(!result.specifications[0].matches);
+    assert_eq!(result.warnings.len(), 1);
+    request.format.specifications[0].required = false;
+    assert!(client.test_custom_format(&request).await.unwrap().matches);
+
+    // Test file names and native anime subgroup names without hitting a real indexer.
+    request.format.specifications.truncate(1);
+    request.format.specifications[0].implementation = "ReleaseGroupSpecification".into();
+    request.format.specifications[0].set_field("value", serde_json::json!("^SubsPlease$"));
+    request.format.specifications[0].negate = false;
+    request.release_title = "[SubsPlease] Nyaa Test Show - 01 (1080p) [ABCDEF12]".into();
+    let anime = client.test_custom_format(&request).await.unwrap();
+    assert!(anime.matches, "{anime:?}");
+    assert_eq!(anime.release_group.as_deref(), Some("SubsPlease"));
+    assert_eq!(anime.release_type, "Single episode");
+    assert_eq!(anime.languages, ["Japanese"]);
+    request.format.specifications[0].implementation = "LanguageSpecification".into();
+    request.format.specifications[0].set_field("value", serde_json::json!(-2));
+    request.release_title = "Example.Show.S01E01.German.DL.1080p.WEB-DL-GRP".into();
+    let dual = client.test_custom_format(&request).await.unwrap();
+    assert!(dual.matches, "{dual:?}");
+    assert_eq!(dual.languages, ["German", "Japanese"]);
+    request.format.specifications[0].implementation = "ReleaseTitleSpecification".into();
+    request.format.specifications[0].set_field("value", serde_json::json!("FileOnly"));
+    assert!(!client.test_custom_format(&request).await.unwrap().matches);
+    request.file_name = Some("FileOnly.mkv".into());
+    assert!(client.test_custom_format(&request).await.unwrap().matches);
+    request.file_name = None;
+    request.release_title = "Example.Movie.2024.1080p.WEB-DL-GRP".into();
+    request.format.specifications[0].set_field("value", serde_json::json!("Movie.*2024"));
+    assert!(client.test_custom_format(&request).await.unwrap().matches);
+    request.format.specifications[0].implementation = "ReleaseTypeSpecification".into();
+    request.format.specifications[0].set_field("value", serde_json::json!(1));
+    request.release_type = Some(1);
+    let feature = client.test_custom_format(&request).await.unwrap();
+    assert!(feature.matches);
+    assert_eq!(feature.release_type, "Single episode");
+    request.release_type = None;
+
+    // An unsupported specification is preserved and explained, including when negated.
+    request.format.specifications[0].implementation = "FutureSpecification".into();
+    request.format.specifications[0].negate = true;
+    let unknown = client.test_custom_format(&request).await.unwrap();
+    assert!(!unknown.matches);
+    assert!(unknown.warnings[0].contains("FutureSpecification"));
+
+    // Overrides make quality, language and size tests reproducible, without stored profiles.
+    request.format.specifications[0].implementation = "LanguageSpecification".into();
+    request.format.specifications[0].set_field("value", serde_json::json!(5));
+    request.format.specifications[0].negate = false;
+    request.languages = Some(vec![5]);
+    request.quality_id = Some(7);
+    let result = client.test_custom_format(&request).await.unwrap();
+    assert!(result.matches);
+    assert_eq!(result.quality, "Bluray-1080p");
+    assert_eq!(result.languages, ["Italian"]);
+    let http = reqwest::Client::new();
+    for invalid in [
+        serde_json::json!({"releaseTitle":""}),
+        serde_json::json!({"releaseTitle":"x".repeat(2049)}),
+        serde_json::json!({"size":-1}),
+        serde_json::json!({"qualityId":9999}),
+        serde_json::json!({"releaseType":5}),
+        serde_json::json!({"languages":[9999]}),
+        serde_json::json!({"originalLanguage":-2}),
+    ] {
+        let mut body = serde_json::to_value(&request).unwrap();
+        body.as_object_mut()
+            .unwrap()
+            .extend(invalid.as_object().unwrap().clone());
+        let response = http
+            .post(format!("{}/api/v1/customformats/test", server.base))
+            .header("X-Api-Key", &server.api_key)
+            .json(&body)
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(response.status(), 422, "{body}");
+    }
+    request.format.specifications.clear();
+    assert!(matches!(
+        client.test_custom_format(&request).await,
+        Err(ClientError::Api { status: 422, .. })
+    ));
+    request.format.specifications =
+        vec![
+            kitsunarr_domain::custom_formats::new_specification("SourceSpecification").unwrap();
+            33
+        ];
+    assert!(client.test_custom_format(&request).await.is_err());
+    request.format.specifications.truncate(1);
+    request.format.specifications[0].set_field("value", serde_json::json!("x".repeat(8193)));
+    assert!(client.test_custom_format(&request).await.is_err());
+    let unauthorized = http
+        .post(format!("{}/api/v1/customformats/test", server.base))
+        .json(&request)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(unauthorized.status(), 401);
+    let openapi: serde_json::Value = http
+        .get(format!("{}/api/v1/openapi.json", server.base))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert!(openapi["paths"]["/api/v1/customformats/test"]["post"].is_object());
+    assert_eq!(
+        client.custom_formats().await.unwrap(),
+        before,
+        "testing must never save a draft"
+    );
+}

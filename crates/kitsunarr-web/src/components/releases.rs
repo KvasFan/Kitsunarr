@@ -2,7 +2,9 @@
 
 use dioxus::prelude::*;
 use kitsunarr_domain::DownloadProtocol;
-use kitsunarr_domain::api::search::{GrabRequest, MovieReleaseQuery, ReleaseItem, ReleaseQuery};
+use kitsunarr_domain::api::search::{
+    GrabRequest, MovieReleaseQuery, ReleaseFilter, ReleaseItem, ReleaseQuery,
+};
 
 use crate::components::common::{Empty, ErrorBox, Loading};
 use crate::route::Route;
@@ -121,6 +123,8 @@ fn ReleaseResults(
     let mut grabbing = use_signal(|| None::<String>);
     let mut confirm = use_signal(|| None::<String>);
     let mut grabbed = use_signal(Vec::<String>::new);
+    let mut filter_text = use_signal(String::new);
+    let mut filter_status = use_signal(|| ReleaseFilter::All);
     // A release whose episodes are being chosen by hand: (indexer id, guid, title).
     let mut choosing = use_signal(|| None::<(i64, String, String)>);
     let c0 = client.clone();
@@ -181,6 +185,11 @@ fn ReleaseResults(
         }
     };
     drop(read);
+    let visible = r
+        .releases
+        .iter()
+        .filter(|rel| filter_status().matches(rel, &filter_text()))
+        .collect::<Vec<_>>();
     rsx! {
         div { class: "row",
             p { class: "small muted grow",
@@ -234,10 +243,29 @@ fn ReleaseResults(
                 p { "The indexers returned no releases for this search." }
             }
         } else {
+            div { class: "card release-filters",
+                div { class: "row wrap",
+                    input { class: "input grow", r#type: "search", "aria-label": "Filter releases",
+                        placeholder: "Title, group, quality or rejection reason…", value: "{filter_text}",
+                        oninput: move |e| { filter_text.set(e.value()); confirm.set(None); }
+                    }
+                    select { class: "select", "aria-label": "Filter release decisions",
+                        onchange: move |e| { filter_status.set(match e.value().as_str() { "approved" => ReleaseFilter::Approved, "rejected" => ReleaseFilter::Rejected, "unmatched" => ReleaseFilter::Unmatched, _ => ReleaseFilter::All }); confirm.set(None); },
+                        option { value: "all", selected: filter_status() == ReleaseFilter::All, "All decisions" }
+                        option { value: "approved", selected: filter_status() == ReleaseFilter::Approved, "Accepted" }
+                        option { value: "rejected", selected: filter_status() == ReleaseFilter::Rejected, "Rejected" }
+                        option { value: "unmatched", selected: filter_status() == ReleaseFilter::Unmatched, "Unmatched titles" }
+                    }
+                    button { class: "btn sm", onclick: move |_| { filter_text.set(String::new()); filter_status.set(ReleaseFilter::All); confirm.set(None); }, "Clear filters" }
+                }
+                p { class: "small muted", role: "status", "Showing {visible.len()} of {r.releases.len()} releases. Filters apply to these results without searching again." }
+            }
             p { class: "help small faint",
                 "Releases are checked against the series' quality profile, custom formats and release profiles, and ranked, as Sonarr does. Rejected releases ask for a second click."
             }
-            div { class: "table-wrap",
+            if visible.is_empty() {
+                Empty { title: "No releases match these filters", p { "Clear or adjust the filters to see more results." } }
+            } else { div { class: "table-wrap",
                 table { class: "table releases",
                     thead {
                         tr {
@@ -256,7 +284,7 @@ fn ReleaseResults(
                         }
                     }
                     tbody {
-                        for rel in r.releases.iter() {
+                        for rel in visible {
                             tr { key: "{rel.indexer_id}-{rel.guid}", class: if rel.approved { "" } else { "rejected" },
                                 td {
                                     if rel.approved {
@@ -364,7 +392,7 @@ fn ReleaseResults(
                         }
                     }
                 }
-            }
+            } }
         }
         if let Some((indexer_id, guid, title)) = choosing() {
             ChooseEpisodes { series_id, indexer_id, guid, title, on_close: move |done: bool| {

@@ -27,9 +27,10 @@ use kitsunarr_domain::api::search::{
     ReleaseQuery, ReleaseSearchResult,
 };
 use kitsunarr_domain::api::settings::{
-    CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
-    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProviderItem, ProxySettings,
-    QualityDefinition, QualityProfile, RootFolderCreate, RootFolderItem, TagCreate, TagItem,
+    CustomFormat, CustomFormatTestRequest, CustomFormatTestResult, DownloadClientOptionsSettings,
+    GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, MetadataSourcesSettings,
+    NamingSettings, ProviderItem, ProxySettings, QualityDefinition, QualityProfile,
+    RootFolderCreate, RootFolderItem, TagCreate, TagItem,
 };
 use kitsunarr_domain::api::system::{
     BackupItem, HealthCheck, ScheduledTaskItem, SystemStatus, TaskRunItem,
@@ -1110,6 +1111,12 @@ impl Client {
     }
     pub async fn custom_formats(&self) -> ClientResult<Vec<CustomFormat>> {
         self.get("/customformats").await
+    }
+    pub async fn test_custom_format(
+        &self,
+        request: &CustomFormatTestRequest,
+    ) -> ClientResult<CustomFormatTestResult> {
+        self.post("/customformats/test", request).await
     }
     pub async fn delete_custom_format(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/customformats/{id}")).await

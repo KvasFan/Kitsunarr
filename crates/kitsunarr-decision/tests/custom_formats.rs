@@ -225,6 +225,69 @@ fn unusable_specifications_are_reported_and_never_match() {
 }
 
 #[test]
+fn invalid_regexes_never_match_even_when_negated() {
+    for implementation in ["ReleaseTitleSpecification", "ReleaseGroupSpecification"] {
+        for negate in [false, true] {
+            for required in [false, true] {
+                let mut invalid = spec(implementation, json!({"value": "(unclosed"}));
+                invalid.negate = negate;
+                invalid.required = required;
+                let (formats, problems) = compile_formats(&[format(1, "Broken", vec![invalid])]);
+                assert_eq!(problems.len(), 1, "{problems:?}");
+                assert!(problems[0].contains("not valid"));
+                assert!(
+                    !formats[0].matches(&CustomFormatInput {
+                        release_title: "Series.Title.S01E01.1080p.WEB-DL-GRP",
+                        release_group: Some("GRP"),
+                        ..input(&[])
+                    }),
+                    "{implementation}, negate={negate}, required={required}"
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn invalid_required_regex_cannot_be_bypassed_by_a_valid_alternative() {
+    for implementation in ["ReleaseTitleSpecification", "ReleaseGroupSpecification"] {
+        let mut invalid = spec(implementation, json!({"value": "[unclosed"}));
+        invalid.negate = true;
+        invalid.required = true;
+        let valid = spec(implementation, json!({"value": "GRP"}));
+        let (formats, problems) =
+            compile_formats(&[format(1, "Broken", vec![invalid.clone(), valid.clone()])]);
+        assert_eq!(problems.len(), 1);
+        let input = CustomFormatInput {
+            release_title: "Series.Title.S01E01.1080p.WEB-DL-GRP",
+            release_group: Some("GRP"),
+            ..input(&[])
+        };
+        assert!(!formats[0].matches(&input), "{implementation}");
+
+        // An optional invalid member must still allow a valid member of its group to match.
+        invalid.required = false;
+        let (formats, _) = compile_formats(&[format(1, "Alternative", vec![invalid, valid])]);
+        assert!(formats[0].matches(&input), "{implementation}");
+    }
+}
+
+#[test]
+fn blank_regexes_keep_their_existing_negation_semantics() {
+    for implementation in ["ReleaseTitleSpecification", "ReleaseGroupSpecification"] {
+        for pattern in ["", "  "] {
+            for negate in [false, true] {
+                let mut blank = spec(implementation, json!({"value": pattern}));
+                blank.negate = negate;
+                let (formats, problems) = compile_formats(&[format(1, "Blank", vec![blank])]);
+                assert!(problems.is_empty(), "{problems:?}");
+                assert_eq!(formats[0].matches(&input(&[])), negate);
+            }
+        }
+    }
+}
+
+#[test]
 fn source_resolution_flags_and_size_use_sonarr_values() {
     let bluray1080 = Quality::by_name("Bluray-1080p").unwrap();
     let check = |s| {

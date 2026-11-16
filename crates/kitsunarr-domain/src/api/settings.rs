@@ -202,6 +202,58 @@ pub struct CustomFormat {
     pub specifications: Vec<CustomFormatSpecification>,
 }
 
+/// Evaluates an unsaved format without changing settings or contacting indexers.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CustomFormatTestRequest {
+    pub format: CustomFormat,
+    pub release_title: String,
+    #[serde(default)]
+    pub file_name: Option<String>,
+    #[serde(default)]
+    pub size: i64,
+    #[serde(default)]
+    pub indexer_flags: u32,
+    /// Omit to detect languages from the title; an explicit list overrides detection.
+    #[serde(default)]
+    pub languages: Option<Vec<i32>>,
+    #[serde(default)]
+    pub original_language: Option<i32>,
+    /// Omit to detect quality from the title.
+    #[serde(default)]
+    pub quality_id: Option<i32>,
+    /// Omit to parse the title. Override for mapped anime batches or native movie features:
+    /// 0 unknown, 1 single episode, 2 multiple episodes, 3 season, 4 multiple seasons.
+    #[serde(default)]
+    pub release_type: Option<i64>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CustomFormatSpecificationTestResult {
+    pub name: String,
+    pub implementation: String,
+    pub negate: bool,
+    pub required: bool,
+    /// The individual condition's result after negation, before grouping.
+    pub matches: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CustomFormatTestResult {
+    pub matches: bool,
+    pub specifications: Vec<CustomFormatSpecificationTestResult>,
+    pub warnings: Vec<String>,
+    pub quality: String,
+    pub release_group: Option<String>,
+    pub languages: Vec<String>,
+    pub release_type: String,
+}
+
 /// A Sonarr auto-tagging rule (`AutoTag`): when every condition group matches a title, its
 /// tags are added; otherwise, with `remove_tags_automatically`, they are removed.
 ///

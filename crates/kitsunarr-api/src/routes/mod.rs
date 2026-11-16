@@ -150,6 +150,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             settings::list_custom_formats,
             settings::create_custom_format
         ))
+        .routes(routes!(settings::test_custom_format))
         .routes(routes!(
             settings::update_custom_format,
             settings::delete_custom_format

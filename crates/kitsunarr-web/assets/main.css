@@ -110,6 +110,7 @@ textarea.input { height: auto; min-height: 120px; padding: var(--sp-2) var(--sp-
 .field .help { font-size: var(--fs-xs); color: var(--text-faint); }
 .field .error-text { font-size: var(--fs-xs); color: var(--danger); }
 .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0 var(--sp-5); }
+.format-condition .form-grid, .format-test-details .form-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
 .check { display: inline-flex; align-items: center; gap: var(--sp-2); cursor: pointer; user-select: none; }
 .check input { width: 16px; height: 16px; accent-color: var(--accent); }
 .switch { position: relative; display: inline-block; width: 38px; height: 22px; flex: none; }

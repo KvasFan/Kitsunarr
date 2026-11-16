@@ -218,6 +218,53 @@ fn profile_order_groups_and_minimum_scores_drive_release_decisions() {
 }
 
 #[test]
+fn invalid_negated_formats_cannot_change_release_acceptance() {
+    for implementation in ["ReleaseTitleSpecification", "ReleaseGroupSpecification"] {
+        let mut invalid = spec(implementation, json!({"value": "(unclosed"}));
+        invalid.negate = true;
+        let (formats, problems) = compile_formats(&[format(1, "Broken", vec![invalid])]);
+        assert_eq!(problems.len(), 1);
+        for (score, minimum, approved) in [(500, 500, false), (-500, 0, true)] {
+            let mut series = breaking_bad();
+            series.profile.format_items = scores(&[(1, score)]);
+            series.profile.min_format_score = minimum;
+            let library = library();
+            let settings = settings();
+            let engine = Engine {
+                series: &series,
+                library: &library,
+                formats: &formats,
+                settings: &settings,
+            };
+            let decided = engine.decide(
+                &[release("Breaking.Bad.S01E01.720p.HDTV.x264-GRP")],
+                &SearchCriteria {
+                    monitored_episodes_only: false,
+                    user_invoked: true,
+                    kind: SearchKind::SingleEpisode {
+                        season: 1,
+                        episode: 1,
+                    },
+                    episode_ids: vec![101],
+                },
+            );
+            assert_eq!(decided.len(), 1);
+            let decision = &decided[0];
+            assert!(decision.custom_formats.is_empty(), "{implementation}");
+            assert_eq!(decision.custom_format_score, 0, "{implementation}");
+            assert_eq!(decision.approved(), approved, "{decision:?}");
+            assert_eq!(
+                decision
+                    .rejections
+                    .iter()
+                    .any(|r| r.reason == RejectionReason::CustomFormatMinimumScore),
+                !approved
+            );
+        }
+    }
+}
+
+#[test]
 fn single_episode_search() {
     let series = breaking_bad();
     let titles = [

@@ -8,10 +8,10 @@ use kitsunarr_db::providers::{self, ProviderRecord};
 use kitsunarr_db::{quality, root_folders, settings as kv, tags};
 use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::settings::{
-    CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
-    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProviderItem, ProviderKind,
-    ProxySettings, QualityDefinition, QualityProfile, REDACTED, RootFolderCreate, RootFolderItem,
-    TagCreate, TagItem,
+    CustomFormat, CustomFormatTestRequest, CustomFormatTestResult, DownloadClientOptionsSettings,
+    GeneralSettings, IndexerOptionsSettings, MediaManagementSettings, MetadataSourcesSettings,
+    NamingSettings, ProviderItem, ProviderKind, ProxySettings, QualityDefinition, QualityProfile,
+    REDACTED, RootFolderCreate, RootFolderItem, TagCreate, TagItem,
 };
 use kitsunarr_domain::{Language, MediaKind, Quality};
 use serde::{Deserialize, Serialize};
@@ -320,6 +320,20 @@ pub async fn update_custom_format(
     quality::update_custom_format(state.db.pool(), &cf).await?;
     settings_changed(&state, "customFormats");
     Ok(Json(cf))
+}
+
+#[utoipa::path(post, path = "/customformats/test", tag = "settings", request_body = CustomFormatTestRequest,
+    responses((status = 200, body = CustomFormatTestResult), (status = 422, description = "Invalid test input")))]
+pub async fn test_custom_format(
+    Json(request): Json<CustomFormatTestRequest>,
+) -> ApiResult<Json<CustomFormatTestResult>> {
+    let result = tokio::task::spawn_blocking(move || {
+        kitsunarr_decision::custom_format::test_format(&request)
+    })
+    .await
+    .map_err(|e| ApiError::internal(e.to_string()))?
+    .map_err(|e| ApiError::field("test", e))?;
+    Ok(Json(result))
 }
 
 #[utoipa::path(delete, path = "/customformats/{id}", tag = "settings", params(("id" = i64, Path)), responses((status = 204)))]

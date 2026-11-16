@@ -129,6 +129,47 @@ pub struct ReleaseItem {
     pub mapped_episodes: Vec<String>,
 }
 
+/// Local result filters never change the search, ranking or grab decision.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum ReleaseFilter {
+    #[default]
+    All,
+    Approved,
+    Rejected,
+    Unmatched,
+}
+
+impl ReleaseFilter {
+    pub fn matches(self, release: &ReleaseItem, query: &str) -> bool {
+        let status_matches = match self {
+            Self::All => true,
+            Self::Approved => release.approved,
+            Self::Rejected => !release.approved,
+            Self::Unmatched => !release.matches_series,
+        };
+        if !status_matches {
+            return false;
+        }
+        if query.trim().is_empty() {
+            return true;
+        }
+        let fields = std::iter::once(release.title.as_str())
+            .chain([release.indexer.as_str(), release.quality.as_str()])
+            .chain(release.release_group.as_deref())
+            .chain(release.series_title.as_deref())
+            .chain(release.custom_formats.iter().map(String::as_str))
+            .chain(release.rejections.iter().map(String::as_str))
+            .chain(release.languages.iter().map(String::as_str))
+            .chain(release.mapped_episodes.iter().map(String::as_str))
+            .map(str::to_lowercase)
+            .collect::<Vec<_>>();
+        query
+            .to_lowercase()
+            .split_whitespace()
+            .all(|term| fields.iter().any(|field| field.contains(term)))
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
@@ -163,7 +204,7 @@ pub struct ReleaseSearchResult {
 
 #[cfg(test)]
 mod selection_tests {
-    use super::selected_indexers;
+    use super::{ReleaseFilter, ReleaseItem, selected_indexers};
     #[test]
     fn selection_distinguishes_all_none_and_invalid_sources() {
         assert_eq!(selected_indexers(None), Ok(None));
@@ -172,6 +213,36 @@ mod selection_tests {
         for value in ["0", "-1", "1,,2", "NaN", "9223372036854775808"] {
             assert!(selected_indexers(Some(value)).is_err());
         }
+    }
+
+    #[test]
+    fn result_filters_combine_decisions_and_words_across_anime_release_fields() {
+        let mut release: ReleaseItem = serde_json::from_value(serde_json::json!({
+            "guid": "test", "title": "[SubsPlease] Anime Title - 01 [1080p]", "indexerId": 1,
+            "indexer": "Nyaa", "protocol": "torrent", "size": 1073741824i64,
+            "publishDate": "2026-11-16T00:00:00Z", "infoUrl": null, "seeders": 20,
+            "peers": 25, "indexerFlags": [], "quality": "HDTV-1080p", "qualityWeight": 8,
+            "languages": ["Japanese"], "releaseGroup": "SubsPlease", "parsed": true,
+            "seriesTitle": "Anime Title", "seasonNumbers": [1], "episodeNumbers": [],
+            "absoluteEpisodeNumbers": [1], "fullSeason": false, "special": false,
+            "matchesSeries": true, "approved": false,
+            "rejections": ["Custom format score 0 is below minimum 500"],
+            "customFormats": ["Préféré"], "customFormatScore": 0, "mappedEpisodes": ["S01E01"]
+        }))
+        .unwrap();
+        assert!(ReleaseFilter::All.matches(&release, "  "));
+        assert!(ReleaseFilter::Rejected.matches(&release, "SUBSPLEASE minimum 500"));
+        assert!(!ReleaseFilter::All.matches(&release, "NYAA japonais"));
+        assert!(ReleaseFilter::All.matches(&release, "JAPANESE PRÉFÉRÉ S01E01"));
+        assert!(!ReleaseFilter::Approved.matches(&release, ""));
+        assert!(!ReleaseFilter::Unmatched.matches(&release, ""));
+        assert!(!ReleaseFilter::Rejected.matches(&release, "HEVC"));
+        release.approved = true;
+        release.rejections.clear();
+        assert!(ReleaseFilter::Approved.matches(&release, "1080p"));
+        assert!(!ReleaseFilter::Rejected.matches(&release, ""));
+        release.matches_series = false;
+        assert!(ReleaseFilter::Unmatched.matches(&release, "anime"));
     }
 }
 

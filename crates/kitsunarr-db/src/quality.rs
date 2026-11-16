@@ -782,8 +782,7 @@ pub fn validate_custom_format(cf: &CustomFormat) -> Result<(), DbError> {
             || spec.implementation == "ReleaseGroupSpecification"
         {
             let pattern = spec
-                .fields
-                .get("value")
+                .field("value")
                 .and_then(|v| v.as_str())
                 .unwrap_or_default();
             regex_syntax_check(pattern)
@@ -998,5 +997,40 @@ mod tests {
             .fields
             .insert("value".into(), serde_json::json!("(unclosed"));
         assert!(create_custom_format(db.pool(), &broken).await.is_err());
+    }
+
+    #[tokio::test]
+    async fn migrated_custom_format_field_case_survives_create_and_update() {
+        let db = crate::test_support::db().await;
+        let mut cf = CustomFormat {
+            id: 0,
+            name: "Migrated group".into(),
+            include_when_renaming: false,
+            specifications: vec![CustomFormatSpecification {
+                name: "Subgroup".into(),
+                implementation: "ReleaseGroupSpecification".into(),
+                negate: false,
+                required: true,
+                fields: serde_json::json!({"Value":"^SubsPlease$","futureField":7})
+                    .as_object()
+                    .unwrap()
+                    .clone(),
+            }],
+        };
+        cf.id = create_custom_format(db.pool(), &cf).await.unwrap();
+        cf.name = "Renamed migrated group".into();
+        update_custom_format(db.pool(), &cf).await.unwrap();
+        assert_eq!(
+            list_custom_formats(db.pool()).await.unwrap(),
+            vec![cf.clone()]
+        );
+        cf.specifications[0]
+            .fields
+            .insert("Value".into(), serde_json::json!("(unclosed"));
+        assert!(update_custom_format(db.pool(), &cf).await.is_err());
+        assert_eq!(
+            list_custom_formats(db.pool()).await.unwrap()[0].specifications[0].field("value"),
+            Some(&serde_json::json!("^SubsPlease$"))
+        );
     }
 }

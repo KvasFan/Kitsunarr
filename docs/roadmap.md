@@ -3,6 +3,22 @@
 Milestones 1–50 are recorded in the dated milestone reports. The current search follow-up
 closes milestones 55–60; verification is recorded in the [checkpoint report](milestones-2026-11-16-60.md).
 
+A maintenance follow-up fixes invalid negated custom-format regexes affecting release
+scores and naming. See the [regression report](custom-format-regex-2026-11-16.md).
+
+The development follow-up covers reliability, guided configuration and anime search usability:
+
+| Milestone | Scope | Status |
+|---|---|---|
+| 61 | Invalid negated regexes cannot grant format scores or alter filenames | Done: matching, decision and filesystem regressions |
+| 62 | Preserve migrated condition fields when switching editors and editing their values | Done: db and Chromium editor checks |
+| 63 | Guided editing of all eight custom-format condition types, retaining JSON mode | Done: Chromium editor flow |
+| 64 | Test unsaved custom formats against TV, anime and movie release names | Done: HTTP and Chromium preview |
+| 65 | Filter interactive release results by subgroup, text and acceptance/mapping status | Done: Chromium filter flow |
+| 66 | Verify the full workflow, narrow/zoomed layouts and packaged runtime | Done: 848 Rust tests, Chromium at 50–400% zoom, release container |
+
+Implementation and verification: [milestones 61–66](milestones-2026-11-16-66.md).
+
 | Milestone | Scope | Status |
 |---|---|---|
 | 51 | Native Nyaa season searches without season aliases; standard and daily query coverage | Done: generator and HTTP tests |

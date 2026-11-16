@@ -435,9 +435,35 @@ async fn regex_custom_formats_drive_movie_import_and_real_rename() {
     };
     let dir = tempfile::tempdir().unwrap();
     let (db, _, folder) = library(dir.path()).await;
-    for (name, pattern, include) in [
-        ("WEB", r"(?<=\.)WEB-DL(?=\.)", true),
-        ("Hidden", r"1080p", false),
+    for (name, pattern, include, implementation, negate) in [
+        (
+            "WEB",
+            r"(?<=\.)WEB-DL(?=\.)",
+            true,
+            "ReleaseTitleSpecification",
+            false,
+        ),
+        (
+            "Hidden",
+            r"1080p",
+            false,
+            "ReleaseTitleSpecification",
+            false,
+        ),
+        (
+            "Broken title",
+            "[unclosed",
+            true,
+            "ReleaseTitleSpecification",
+            true,
+        ),
+        (
+            "Broken group",
+            "\\",
+            true,
+            "ReleaseGroupSpecification",
+            true,
+        ),
     ] {
         kitsunarr_db::quality::create_custom_format(
             db.pool(),
@@ -447,8 +473,8 @@ async fn regex_custom_formats_drive_movie_import_and_real_rename() {
                 include_when_renaming: include,
                 specifications: vec![CustomFormatSpecification {
                     name: name.into(),
-                    implementation: "ReleaseTitleSpecification".into(),
-                    negate: false,
+                    implementation: implementation.into(),
+                    negate,
                     required: true,
                     fields: serde_json::json!({"value":pattern})
                         .as_object()

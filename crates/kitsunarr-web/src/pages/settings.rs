@@ -1089,50 +1089,13 @@ fn set_size_limit(p: &mut QualityProfile, quality_id: i32, field: u8, value: Opt
 pub fn SettingsFormats() -> Element {
     let app = use_app();
     let client = use_client();
-    let mut editing = use_signal(|| None::<(i64, String, bool, String)>);
-    let mut editor_error = use_signal(|| None::<String>);
+    let mut editing = use_signal(|| None::<CustomFormat>);
     let c0 = client.clone();
     let mut formats = use_resource(move || {
         let _ = (app.settings_rev)();
         let c = c0.clone();
         async move { c.custom_formats().await }
     });
-    let c1 = client.clone();
-    let save = move |_| {
-        let Some((id, name, renaming, json)) = editing() else {
-            return;
-        };
-        let specs = match serde_json::from_str(&json) {
-            Ok(s) => s,
-            Err(e) => {
-                editor_error.set(Some(format!("Specifications must be valid JSON: {e}")));
-                return;
-            }
-        };
-        let cf = CustomFormat {
-            id,
-            name,
-            include_when_renaming: renaming,
-            specifications: specs,
-        };
-        let c = c1.clone();
-        spawn(async move {
-            let result = if id == 0 {
-                c.post::<CustomFormat, _>("/customformats", &cf).await
-            } else {
-                c.put::<CustomFormat, _>(&format!("/customformats/{id}"), &cf)
-                    .await
-            };
-            match result {
-                Ok(_) => {
-                    editing.set(None);
-                    formats.restart();
-                    app.success("Custom format saved.");
-                }
-                Err(e) => editor_error.set(Some(e.to_string())),
-            }
-        });
-    };
     let c2 = client.clone();
     let delete = move |id: i64| {
         let c = c2.clone();
@@ -1143,19 +1106,10 @@ pub fn SettingsFormats() -> Element {
             }
         });
     };
-    let example = r#"[
-  {
-    "name": "x265",
-    "implementation": "ReleaseTitleSpecification",
-    "negate": false,
-    "required": true,
-    "fields": { "value": "[xh][ ._-]?265|\\bHEVC\\b" }
-  }
-]"#;
     rsx! {
         div { class: "page-head",
             h1 { class: "grow", "Custom formats" }
-            button { class: "btn primary", onclick: move |_| { editor_error.set(None); editing.set(Some((0, String::new(), false, example.to_string()))) }, "+ New format" }
+            button { class: "btn primary", onclick: move |_| { editing.set(Some(CustomFormat { id: 0, name: String::new(), include_when_renaming: false, specifications: Vec::new() })) }, "+ New format" }
         }
         p { class: "muted small", "Formats use Sonarr's specification types (ReleaseTitle, ReleaseGroup, Source, Resolution, Language, Size, IndexerFlag, ReleaseType). Scores are assigned per quality profile." }
         match &*formats.read() {
@@ -1180,7 +1134,7 @@ pub fn SettingsFormats() -> Element {
                                     }
                                     td { class: "shrink",
                                         div { class: "row tight",
-                                            button { class: "btn sm", onclick: { let f = f.clone(); move |_| { editor_error.set(None); editing.set(Some((f.id, f.name.clone(), f.include_when_renaming, serde_json::to_string_pretty(&f.specifications).unwrap_or_default()))) } }, "Edit" }
+                                            button { class: "btn sm", onclick: { let f = f.clone(); move |_| { editing.set(Some(f.clone())) } }, "Edit" }
                                             button { class: "btn sm danger", onclick: { let id = f.id; let d = delete.clone(); move |_| d(id) }, "Delete" }
                                         }
                                     }
@@ -1191,24 +1145,10 @@ pub fn SettingsFormats() -> Element {
                 }
             },
         }
-        if let Some((id, name, renaming, json)) = editing() {
-            Modal {
-                title: if id == 0 { "New custom format".to_string() } else { format!("Edit “{name}”") },
-                wide: true,
+        if let Some(format) = editing() {
+            crate::components::format_editor::FormatEditor { format,
                 on_close: move |_| editing.set(None),
-                footer: rsx! {
-                    button { class: "btn", onclick: move |_| editing.set(None), "Cancel" }
-                    button { class: "btn primary", onclick: save, "Save" }
-                },
-                if let Some(msg) = editor_error() { div { class: "alert danger", "{msg}" } }
-                Field { label: "Name", input { class: "input", value: "{name}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.1 = e.value(); } } } }
-                label { class: "check small", style: "margin-bottom: var(--sp-3)",
-                    input { r#type: "checkbox", checked: renaming, onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.2 = e.checked(); } } }
-                    "Include in file names ({{Custom Formats}} token)"
-                }
-                Field { label: "Specifications (JSON)",
-                    textarea { class: "input", rows: "14", spellcheck: false, value: "{json}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.3 = e.value(); } } }
-                }
+                on_saved: move |_| { editing.set(None); formats.restart(); app.success("Custom format saved."); },
             }
         }
     }

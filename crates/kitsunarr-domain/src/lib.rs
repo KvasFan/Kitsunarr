@@ -10,6 +10,7 @@
 pub mod api;
 pub mod auto_tagging;
 pub mod codec;
+pub mod custom_formats;
 pub mod language;
 pub mod media;
 pub mod naming;

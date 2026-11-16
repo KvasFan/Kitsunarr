@@ -2,7 +2,10 @@
 //! Sonarr's `CustomFormats/Specifications`.
 
 use kitsunarr_domain::Language;
-use kitsunarr_domain::api::settings::{CustomFormat, CustomFormatSpecification};
+use kitsunarr_domain::api::settings::{
+    CustomFormat, CustomFormatSpecification, CustomFormatSpecificationTestResult,
+    CustomFormatTestRequest, CustomFormatTestResult,
+};
 use kitsunarr_domain::quality::Quality;
 use kitsunarr_parser::ReleaseType;
 use kitsunarr_parser::netregex::NetRegex;
@@ -52,7 +55,8 @@ enum Spec {
         max: f64,
     },
     ReleaseType(i64),
-    /// An implementation Kitsunarr cannot evaluate: never satisfied (reported when compiled).
+    /// A specification Kitsunarr cannot evaluate: never satisfied, even when negated
+    /// (reported when compiled).
     Unsupported,
 }
 
@@ -78,10 +82,7 @@ const GIB: f64 = 1024.0 * 1024.0 * 1024.0;
 
 /// Reads a field case-insensitively (API `fields` use camelCase; database bodies may not).
 fn field<'a>(s: &'a CustomFormatSpecification, name: &str) -> Option<&'a Value> {
-    s.fields
-        .iter()
-        .find(|(k, _)| k.eq_ignore_ascii_case(name))
-        .map(|(_, v)| v)
+    s.field(name)
 }
 
 fn int_field(s: &CustomFormatSpecification, name: &str) -> i64 {
@@ -118,22 +119,22 @@ fn regex(
     format: &CustomFormat,
     s: &CustomFormatSpecification,
     problems: &mut Vec<String>,
-) -> Option<NetRegex> {
+) -> Result<Option<NetRegex>, ()> {
     let value = match field(s, "value") {
         Some(Value::String(v)) => v.as_str(),
         _ => "",
     };
     if value.trim().is_empty() {
-        return None;
+        return Ok(None);
     }
     match NetRegex::new(value, true) {
-        Ok(r) => Some(r),
+        Ok(r) => Ok(Some(r)),
         Err(e) => {
             problems.push(format!(
                 "Custom format \"{}\": the pattern of \"{}\" is not valid ({e}); it never matches.",
                 format.name, s.name
             ));
-            None
+            Err(())
         }
     }
 }
@@ -153,12 +154,12 @@ pub fn compile_formats(formats: &[CustomFormat]) -> (Vec<CompiledFormat>, Vec<St
                 .iter()
                 .map(|s| {
                     let spec = match s.implementation.as_str() {
-                        "ReleaseTitleSpecification" => {
-                            Spec::ReleaseTitle(regex(f, s, &mut problems))
-                        }
-                        "ReleaseGroupSpecification" => {
-                            Spec::ReleaseGroup(regex(f, s, &mut problems))
-                        }
+                        "ReleaseTitleSpecification" => regex(f, s, &mut problems)
+                            .map(Spec::ReleaseTitle)
+                            .unwrap_or(Spec::Unsupported),
+                        "ReleaseGroupSpecification" => regex(f, s, &mut problems)
+                            .map(Spec::ReleaseGroup)
+                            .unwrap_or(Spec::Unsupported),
                         "LanguageSpecification" => Spec::Language {
                             value: int_field(s, "value"),
                             except: bool_field(s, "exceptLanguage"),
@@ -288,4 +289,124 @@ pub fn evaluate<'f>(
             .then_with(|| a.name.cmp(&b.name))
     });
     found
+}
+
+/// Preview uses the same compiled conditions and grouping as searches and file naming.
+/// The caller may run this CPU-bound operation on a blocking worker.
+pub fn test_format(request: &CustomFormatTestRequest) -> Result<CustomFormatTestResult, String> {
+    if request.release_title.trim().is_empty() {
+        return Err("A release title is required.".into());
+    }
+    if request.release_title.chars().count() > 2048
+        || request
+            .file_name
+            .as_ref()
+            .is_some_and(|s| s.chars().count() > 2048)
+    {
+        return Err("Test titles and file names must be at most 2048 characters.".into());
+    }
+    if request.format.specifications.is_empty() || request.format.specifications.len() > 32 {
+        return Err("Test a format with between 1 and 32 conditions.".into());
+    }
+    if request
+        .format
+        .specifications
+        .iter()
+        .any(|s| serde_json::to_vec(&s.fields).map_or(true, |v| v.len() > 8192))
+    {
+        return Err("Condition fields must be at most 8192 bytes.".into());
+    }
+    if request.size < 0 {
+        return Err("Size must not be negative.".into());
+    }
+    let original = request
+        .original_language
+        .map(|id| {
+            Language::by_id(id)
+                .filter(|l| l.id >= 0)
+                .ok_or("Unknown original language.")
+        })
+        .transpose()?;
+    let parsed = kitsunarr_parser::parse_title(&request.release_title);
+    let quality = match request.quality_id {
+        Some(id) => Quality::by_id(id).ok_or("Unknown quality.")?,
+        None => kitsunarr_parser::parse_quality(&request.release_title).quality,
+    };
+    let group = kitsunarr_parser::parse_release_group(&request.release_title);
+    let release_type = match request.release_type {
+        None => parsed
+            .as_ref()
+            .map_or(ReleaseType::Unknown, |p| p.release_type()),
+        Some(0) => ReleaseType::Unknown,
+        Some(1) => ReleaseType::SingleEpisode,
+        Some(2) => ReleaseType::MultiEpisode,
+        Some(3) => ReleaseType::SeasonPack,
+        Some(4) => ReleaseType::MultiSeasonPack,
+        _ => return Err("Unknown release type.".into()),
+    };
+    let mut languages = match &request.languages {
+        Some(ids) => ids
+            .iter()
+            .map(|id| {
+                Language::by_id(*id)
+                    .filter(|l| l.id >= 0)
+                    .ok_or("Unknown test language.")
+            })
+            .collect::<Result<Vec<_>, _>>()?,
+        None => kitsunarr_parser::parse_languages(&request.release_title),
+    };
+    if request.languages.is_none()
+        && languages.iter().all(|l| l.id == 0)
+        && let Some(original) = original.filter(|l| l.id != 0)
+    {
+        languages = vec![original];
+    }
+    // The parser uses Original for dual-language releases, as AggregateLanguages does.
+    if let Some(position) = languages.iter().position(|l| l.id == -2) {
+        languages.remove(position);
+        let unknown = Language::by_id(0).expect("Unknown language");
+        let original = original.unwrap_or(unknown);
+        languages.push(if languages.iter().any(|l| l.id == original.id) {
+            unknown
+        } else {
+            original
+        });
+    }
+    let input = CustomFormatInput {
+        release_title: &request.release_title,
+        file_name: request.file_name.as_deref(),
+        release_group: group.as_deref(),
+        quality,
+        size: request.size,
+        indexer_flags: request.indexer_flags,
+        languages: &languages,
+        release_type,
+        original_language: original,
+    };
+    let (formats, warnings) = compile_formats(std::slice::from_ref(&request.format));
+    let format = &formats[0];
+    Ok(CustomFormatTestResult {
+        matches: format.matches(&input),
+        specifications: format
+            .specs
+            .iter()
+            .zip(&request.format.specifications)
+            .map(|(s, original)| CustomFormatSpecificationTestResult {
+                name: original.name.clone(),
+                implementation: s.implementation.clone(),
+                negate: s.negate,
+                required: s.required,
+                matches: s.satisfied(&input),
+            })
+            .collect(),
+        warnings,
+        quality: quality.name.into(),
+        release_group: group,
+        languages: languages.iter().map(|l| l.name.into()).collect(),
+        release_type: kitsunarr_domain::custom_formats::RELEASE_TYPES
+            .iter()
+            .find(|(id, _)| *id == release_type_id(release_type))
+            .map_or("Unknown", |(_, name)| *name)
+            .into(),
+    })
 }
