@@ -976,6 +976,30 @@ async fn first_run_setup_migration_and_library() {
         assert_eq!(checked, serde_json::json!([false, true, false]), "the existing episode only");
         screenshot(&client, "11m-imported-series").await;
 
+        // Move folder: the imported series' folder is renamed with its file.
+        click_button(&client, "Move folder").await;
+        wait_text(&client, "Move the files to the new folder").await;
+        fill(&client, ".modal input[aria-label='Folder']", "Minisodes").await;
+        let moved_to = media.join("tv/Minisodes");
+        wait_text(&client, &moved_to.display().to_string()).await;
+        screenshot(&client, "11n-move-folder").await;
+        client
+            .find(Locator::XPath("//div[contains(@class,'modal')]//button[normalize-space(.)='Move']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, &format!("Breaking Bad: Original Minisodes moved to {}.", moved_to.display())).await;
+        assert!(
+            moved_to
+                .join("Season 01/Breaking.Bad.Original.Minisodes.S01E02.720p.WEB.x264-GRP.mkv")
+                .is_file()
+                && !minisodes.exists(),
+            "the folder moved with its file"
+        );
+        wait_text(&client, "1 / 3 on disk").await;
+
         // The migrated (TheTVDB-owned) series refreshes through SkyHook.
         client.goto(&format!("{base}/series")).await.unwrap();
         client

@@ -118,8 +118,15 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     });
     let selected_ids = move || selected.read().iter().copied().collect::<Vec<_>>();
     let mut monitoring_open = use_signal(|| false);
+    let mut move_open = use_signal(|| false);
 
     rsx! {
+        if move_open() {
+            BulkMoveDialog {
+                series_ids: selected_ids(),
+                on_close: move |_| move_open.set(false),
+            }
+        }
         if monitoring_open() {
             super::detail::MonitoringDialog {
                 series_ids: selected_ids(),
@@ -163,6 +170,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(true), ..Default::default() }), "Monitor" }
                     button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(false), ..Default::default() }), "Unmonitor" }
                     button { class: "btn sm", title: "Choose which episodes of the selected series are monitored", onclick: move |_| monitoring_open.set(true), "Monitoring…" }
+                    button { class: "btn sm", title: "Move the selected series into another root folder", onclick: move |_| move_open.set(true), "Move to root folder…" }
                     select {
                         class: "select",
                         "aria-label": "Quality profile",
@@ -330,6 +338,79 @@ pub fn MoviesLibrary() -> Element {
                 }else{MovieTable{items:p.records.clone(),selected,disabled:busy()}}
                 Pagination{page:p.page,page_size:p.page_size,total:p.total_records,on_page:move |n|page.set(n)}
             },
+        }
+    }
+}
+
+/// Moves the selected series into another root folder (Sonarr's series editor root folder with
+/// "move files"); each keeps its folder below the root folder.
+#[component]
+fn BulkMoveDialog(series_ids: Vec<i64>, on_close: EventHandler<()>) -> Element {
+    use crate::components::common::{Field, Modal, Switch};
+    use kitsunarr_domain::api::library::BulkMoveRequest;
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let roots = use_resource(move || {
+        let c = c0.clone();
+        async move { c.root_folders().await }
+    });
+    let mut root = use_signal(String::new);
+    let mut move_files = use_signal(|| true);
+    let mut busy = use_signal(|| false);
+    let count = series_ids.len();
+    let apply = move |_| {
+        let c = client.clone();
+        let req = BulkMoveRequest {
+            ids: series_ids.clone(),
+            root_folder_path: root(),
+            move_files: move_files(),
+        };
+        busy.set(true);
+        spawn(async move {
+            match c.bulk_move_series(&req).await {
+                Ok(r) if r.failures.is_empty() => {
+                    app.success(format!("{} series moved.", r.moved.len()));
+                    on_close.call(());
+                }
+                Ok(r) => {
+                    app.toast(
+                        crate::state::ToastLevel::Warning,
+                        format!(
+                            "{} series moved; not moved: {}",
+                            r.moved.len(),
+                            r.failures.join("; ")
+                        ),
+                    );
+                    on_close.call(());
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    rsx! {
+        Modal {
+            title: format!("Move {count} series"),
+            on_close: move |_| { if !busy() { on_close.call(()) } },
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", disabled: busy(), onclick: move |_| on_close.call(()), "Cancel" }
+                button { class: "btn primary", disabled: busy() || root().is_empty(), onclick: apply,
+                    if busy() { "Moving…" } else { "Move" }
+                }
+            },
+            Field { label: "Root folder",
+                select { class: "select", "aria-label": "Root folder", disabled: busy(),
+                    onchange: move |e: FormEvent| root.set(e.value()),
+                    option { value: "", selected: root().is_empty(), "Choose a root folder…" }
+                    if let Some(Ok(list)) = &*roots.read() {
+                        for r in list.iter() { option { key: "{r.id}", value: "{r.path}", "{r.path}" } }
+                    }
+                }
+            }
+            Switch { checked: move_files(), disabled: busy(), label: "Move the files", onchange: move |v| move_files.set(v) }
+            p { class: "help small", "Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder." }
         }
     }
 }

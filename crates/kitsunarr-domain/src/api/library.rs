@@ -653,3 +653,53 @@ mod folder_term_tests {
         }
     }
 }
+
+fn default_move_files() -> bool {
+    true
+}
+
+/// Changes a title's folder (Sonarr's series path edit with `moveFiles`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MoveTitleRequest {
+    /// The new folder: absolute, inside a root folder.
+    pub path: String,
+    /// Move the folder's contents there; otherwise only the recorded folder changes (the files
+    /// are expected there already).
+    #[serde(default = "default_move_files")]
+    pub move_files: bool,
+}
+
+/// Moves series to another root folder (Sonarr's series editor root folder with `moveFiles`).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct BulkMoveRequest {
+    pub ids: Vec<i64>,
+    pub root_folder_path: String,
+    #[serde(default = "default_move_files")]
+    pub move_files: bool,
+}
+
+/// The outcome of a folder change.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MoveResult {
+    pub id: i64,
+    pub path: String,
+    pub root_folder_path: String,
+    /// Whether files were moved (false when only the recorded folder changed).
+    pub moved: bool,
+    pub message: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct BulkMoveResult {
+    pub moved: Vec<MoveResult>,
+    /// `Title: reason` for each series that kept its folder.
+    pub failures: Vec<String>,
+}

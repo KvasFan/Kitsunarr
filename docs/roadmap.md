@@ -31,6 +31,18 @@ Monitoring choices and library import, after comparing the remaining gaps with S
 
 Implementation and verification: [milestones 67–71](milestones-2026-11-16-71.md).
 
+Moving title folders, the next Sonarr gap:
+
+| Milestone | Scope | Status |
+|---|---|---|
+| 72 | Move a series or film folder, or record a folder moved by hand (`MoveSeriesService`) | Done: HTTP and library tests |
+| 73 | Bulk moves to another root folder, keeping group layouts | Done: HTTP |
+| 74 | v3 path edit with `moveFiles` and Sonarr's series editor | Done: HTTP |
+| 75 | Move folder dialogs and the bulk "Move to root folder…" action | Done: Chromium |
+| 76 | Verify moves across file systems, refusals and the clean-clone CI jobs | Done |
+
+Implementation and verification: [milestones 72–76](milestones-2026-11-16-76.md).
+
 | Milestone | Scope | Status |
 |---|---|---|
 | 51 | Native Nyaa season searches without season aliases; standard and daily query coverage | Done: generator and HTTP tests |

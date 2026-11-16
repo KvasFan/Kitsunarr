@@ -1057,6 +1057,26 @@ impl Client {
     pub async fn delete_root_folder(&self, id: i64) -> ClientResult<()> {
         self.delete(&format!("/rootfolders/{id}")).await
     }
+    pub async fn move_series(
+        &self,
+        id: i64,
+        req: &kitsunarr_domain::api::library::MoveTitleRequest,
+    ) -> ClientResult<kitsunarr_domain::api::library::MoveResult> {
+        self.put(&format!("/series/{id}/path"), req).await
+    }
+    pub async fn move_movie(
+        &self,
+        id: i64,
+        req: &kitsunarr_domain::api::library::MoveTitleRequest,
+    ) -> ClientResult<kitsunarr_domain::api::library::MoveResult> {
+        self.put(&format!("/movies/{id}/path"), req).await
+    }
+    pub async fn bulk_move_series(
+        &self,
+        req: &kitsunarr_domain::api::library::BulkMoveRequest,
+    ) -> ClientResult<kitsunarr_domain::api::library::BulkMoveResult> {
+        self.post("/series/move", req).await
+    }
     pub async fn unmapped_folders(
         &self,
         root_folder_id: i64,

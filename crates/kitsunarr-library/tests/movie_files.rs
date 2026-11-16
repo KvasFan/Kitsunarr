@@ -444,3 +444,76 @@ async fn feature_recycling_across_filesystems_keeps_bytes_and_folder_moves_fail_
     assert!(path.is_file());
     assert!(movies::get_detail(&db, 1).await.unwrap().file.is_some());
 }
+
+#[tokio::test]
+async fn film_folders_move_with_their_feature_and_refuse_unsafe_targets() {
+    use kitsunarr_library::move_title::{Title, move_title};
+    let dir = tempfile::tempdir().unwrap();
+    let (db, root, folder) = library(dir.path()).await;
+    let video = feature(&db, &folder).await;
+    std::fs::write(folder.join("source.1080p.WEB-DL-GRP.en.srt"), b"sub").unwrap();
+    // Unsafe or occupied targets change nothing.
+    std::fs::create_dir_all(root.join("Taken")).unwrap();
+    std::fs::write(root.join("Taken/x"), b"x").unwrap();
+    for bad in [
+        root.join("Taken").display().to_string(),
+        folder.join("Inner").display().to_string(),
+        dir.path().join("elsewhere/Film").display().to_string(),
+    ] {
+        assert!(
+            move_title(&db, Title::Movie(1), &bad, true).await.is_err(),
+            "{bad}"
+        );
+    }
+    assert!(video.is_file());
+    let target = root.join("Films/Film (2020)");
+    let moved = move_title(&db, Title::Movie(1), target.to_str().unwrap(), true)
+        .await
+        .unwrap();
+    assert!(moved.moved);
+    assert!(!folder.exists());
+    assert!(target.join("source.1080p.WEB-DL-GRP.mkv").is_file());
+    assert!(
+        target.join("source.1080p.WEB-DL-GRP.en.srt").is_file(),
+        "sidecars move too"
+    );
+    let detail = movies::get_detail(&db, 1).await.unwrap();
+    assert_eq!(detail.item.path, target.display().to_string());
+    assert!(
+        detail.file.is_some(),
+        "the feature record follows its folder"
+    );
+    let rescan = movie_files::scan(&db, 1).await.unwrap();
+    assert_eq!((rescan.added, rescan.removed), (0, 0));
+}
+
+#[tokio::test]
+async fn film_folders_move_across_filesystems_by_copying() {
+    use kitsunarr_library::move_title::{Title, move_title};
+    use std::os::unix::fs::MetadataExt;
+    let dir = tempfile::tempdir().unwrap();
+    let (db, _, folder) = library(dir.path()).await;
+    let Ok(other) = tempfile::tempdir_in("/dev/shm") else {
+        eprintln!("No second filesystem for the move fixture");
+        return;
+    };
+    if std::fs::metadata(&folder).unwrap().dev() == std::fs::metadata(other.path()).unwrap().dev() {
+        eprintln!("Move fixture directories share a filesystem");
+        return;
+    }
+    kitsunarr_db::root_folders::create(db.pool(), other.path().to_str().unwrap(), None)
+        .await
+        .unwrap();
+    feature(&db, &folder).await;
+    let target = other.path().join("Film");
+    let moved = move_title(&db, Title::Movie(1), target.to_str().unwrap(), true)
+        .await
+        .unwrap();
+    assert!(moved.moved);
+    assert_eq!(moved.root_folder_path, other.path().display().to_string());
+    assert!(!folder.exists(), "the source is removed after the copy");
+    assert_eq!(
+        std::fs::read(target.join("source.1080p.WEB-DL-GRP.mkv")).unwrap(),
+        b"feature"
+    );
+}

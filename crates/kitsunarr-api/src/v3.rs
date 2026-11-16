@@ -56,6 +56,7 @@ pub fn router() -> Router<AppState> {
         )
         .route("/series/lookup", get(lookup))
         .route("/series/import", post(import_series))
+        .route("/series/editor", put(series_editor))
         .route(
             "/series/{id}",
             get(get_series).put(update_series).delete(delete_series),
@@ -725,13 +726,37 @@ async fn apply(state: &AppState, id: i64, body: &SeriesBody) -> ApiResult<()> {
     Ok(())
 }
 
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct MoveFilesQuery {
+    move_files: bool,
+}
+
 async fn update_series(
     State(state): State<AppState>,
     Path(id): Path<i64>,
+    Query(q): Query<MoveFilesQuery>,
     Json(body): Json<SeriesBody>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
-    detail(&state, id).await?;
+    let before = detail(&state, id).await?;
     apply(&state, id, &body).await?;
+    // Sonarr: a new path is recorded, its folder moved with `moveFiles=true`.
+    if let Some(path) = body
+        .path
+        .as_deref()
+        .map(str::trim)
+        .filter(|p| !p.is_empty())
+        && kitsunarr_db::root_folders::normalize_path(path)
+            != kitsunarr_db::root_folders::normalize_path(&before.item.path)
+    {
+        kitsunarr_library::move_title::move_title(
+            &state.db,
+            kitsunarr_library::move_title::Title::Series(id),
+            path,
+            q.move_files,
+        )
+        .await?;
+    }
     Ok((
         StatusCode::ACCEPTED,
         Json(series_json(&detail(&state, id).await?)),
@@ -746,7 +771,123 @@ async fn update_series_body(
     let id = body
         .id
         .ok_or_else(|| ApiError::field("id", "The series id is required."))?;
-    update_series(State(state), Path(id), Json(body)).await
+    update_series(
+        State(state),
+        Path(id),
+        Query(MoveFilesQuery::default()),
+        Json(body),
+    )
+    .await
+}
+
+#[derive(Deserialize, Default)]
+#[serde(rename_all = "camelCase", default)]
+struct SeriesEditorBody {
+    series_ids: Vec<i64>,
+    monitored: Option<bool>,
+    monitor_new_items: Option<String>,
+    quality_profile_id: Option<i64>,
+    series_type: Option<String>,
+    season_folder: Option<bool>,
+    root_folder_path: Option<String>,
+    tags: Option<Vec<i64>>,
+    /// `add`, `remove` or `replace` (Sonarr's `ApplyTags`, by name or number).
+    apply_tags: Option<Value>,
+    move_files: bool,
+}
+
+/// Sonarr's `SeriesEditorController.SaveAll` (`PUT /api/v3/series/editor`).
+async fn series_editor(
+    State(state): State<AppState>,
+    Json(body): Json<SeriesEditorBody>,
+) -> ApiResult<(StatusCode, Json<Vec<Value>>)> {
+    if body.series_ids.len() > 10_000 {
+        return Err(ApiError::BadRequest(
+            "At most 10000 series can be edited at once.".into(),
+        ));
+    }
+    let monitor_new_items = match body.monitor_new_items.as_deref() {
+        None => None,
+        Some(v) => Some(
+            v.parse::<kitsunarr_domain::MonitorNewItems>()
+                .map_err(|_| ApiError::field("monitorNewItems", "Use all or none."))?,
+        ),
+    };
+    let apply_tags = match &body.apply_tags {
+        None | Some(Value::Null) => "add".to_string(),
+        Some(Value::Number(n)) => match n.as_i64() {
+            Some(1) => "remove".into(),
+            Some(2) => "replace".into(),
+            _ => "add".into(),
+        },
+        Some(v) => v.as_str().unwrap_or("add").to_ascii_lowercase(),
+    };
+    for id in &body.series_ids {
+        detail(&state, *id).await?;
+    }
+    if let Some(root) = body
+        .root_folder_path
+        .as_deref()
+        .filter(|r| !r.trim().is_empty())
+    {
+        let moved = crate::routes::library::bulk_move_series(
+            State(state.clone()),
+            Json(kitsunarr_domain::api::library::BulkMoveRequest {
+                ids: body.series_ids.clone(),
+                root_folder_path: root.to_string(),
+                move_files: body.move_files,
+            }),
+        )
+        .await?
+        .0;
+        if !moved.failures.is_empty() {
+            return Err(ApiError::field(
+                "rootFolderPath",
+                format!(
+                    "Some series could not be moved: {}",
+                    moved.failures.join("; ")
+                ),
+            ));
+        }
+    }
+    let mut out = Vec::with_capacity(body.series_ids.len());
+    for id in &body.series_ids {
+        let current = detail(&state, *id).await?;
+        let tags = body.tags.as_ref().map(|t| match apply_tags.as_str() {
+            "replace" => t.clone(),
+            "remove" => current
+                .item
+                .tags
+                .iter()
+                .copied()
+                .filter(|x| !t.contains(x))
+                .collect(),
+            _ => {
+                let mut all = current.item.tags.clone();
+                all.extend(t.iter().copied().filter(|x| !current.item.tags.contains(x)));
+                all
+            }
+        });
+        let update = SeriesUpdate {
+            monitored: body.monitored,
+            quality_profile_id: body.quality_profile_id,
+            series_type: series_type(body.series_type.as_deref()),
+            season_folder: body.season_folder,
+            monitor_new_items,
+            tags,
+            ..Default::default()
+        };
+        series::apply_update(&state.db, *id, &update).await?;
+        out.push(series_json(&detail(&state, *id).await?));
+    }
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
+            media_type: "series".into(),
+            ids: body.series_ids.clone(),
+            deleted: false,
+        });
+    Ok((StatusCode::ACCEPTED, Json(out)))
 }
 
 #[derive(Deserialize, Default)]

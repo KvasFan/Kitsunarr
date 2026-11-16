@@ -145,6 +145,86 @@ pub struct EpisodeQuery {
     pub season_number: Option<i32>,
 }
 
+/// Changes a series' folder, moving its contents there unless `moveFiles` is false (Sonarr's
+/// path edit with `MoveSeriesService`).
+#[utoipa::path(put, path = "/series/{id}/path", tag = "library", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::library::MoveTitleRequest,
+    responses((status = 200, body = kitsunarr_domain::api::library::MoveResult), (status = 404), (status = 422, body = ApiErrorBody)))]
+pub async fn move_series(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<kitsunarr_domain::api::library::MoveTitleRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::library::MoveResult>> {
+    use kitsunarr_library::move_title::{Title, move_title};
+    let result = move_title(&state.db, Title::Series(id), &req.path, req.move_files).await?;
+    changed(&state, "series", vec![id], false);
+    Ok(Json(result))
+}
+
+/// Moves series into another root folder, each keeping its folder below the root folder
+/// (Sonarr's series editor root folder change with `moveFiles`). Failures keep their folder and
+/// do not stop the others.
+#[utoipa::path(post, path = "/series/move", tag = "library",
+    request_body = kitsunarr_domain::api::library::BulkMoveRequest,
+    responses((status = 200, body = kitsunarr_domain::api::library::BulkMoveResult), (status = 422, body = ApiErrorBody)))]
+pub async fn bulk_move_series(
+    State(state): State<AppState>,
+    Json(req): Json<kitsunarr_domain::api::library::BulkMoveRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::library::BulkMoveResult>> {
+    use kitsunarr_library::move_title::{Title, destination_in_root, move_title};
+    if req.ids.len() > 1_000 {
+        return Err(ApiError::BadRequest(
+            "At most 1000 series can be moved at once.".into(),
+        ));
+    }
+    let root = kitsunarr_db::root_folders::normalize_path(&req.root_folder_path);
+    let roots = kitsunarr_db::root_folders::list(state.db.pool()).await?;
+    if !roots
+        .iter()
+        .any(|r| kitsunarr_db::root_folders::normalize_path(&r.path) == root)
+    {
+        return Err(ApiError::field(
+            "rootFolderPath",
+            "Choose one of the configured root folders.",
+        ));
+    }
+    let mut out = kitsunarr_domain::api::library::BulkMoveResult::default();
+    for id in &req.ids {
+        let title = Title::Series(*id);
+        let outcome = match destination_in_root(&state.db, title, &root).await {
+            Ok(path) => move_title(&state.db, title, &path, req.move_files).await,
+            Err(e) => Err(e),
+        };
+        match outcome {
+            Ok(r) => out.moved.push(r),
+            Err(e) => {
+                let name = series::get_list_item(&state.db, *id)
+                    .await
+                    .map(|s| s.title)
+                    .unwrap_or_else(|_| format!("Series {id}"));
+                out.failures.push(format!("{name}: {e}"));
+            }
+        }
+    }
+    changed(&state, "series", req.ids.clone(), false);
+    Ok(Json(out))
+}
+
+/// Changes a film's folder, as for series.
+#[utoipa::path(put, path = "/movies/{id}/path", tag = "library", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::library::MoveTitleRequest,
+    responses((status = 200, body = kitsunarr_domain::api::library::MoveResult), (status = 404), (status = 422, body = ApiErrorBody)))]
+pub async fn move_movie(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<kitsunarr_domain::api::library::MoveTitleRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::library::MoveResult>> {
+    use kitsunarr_library::move_title::{Title, move_title};
+    let result = move_title(&state.db, Title::Movie(id), &req.path, req.move_files).await?;
+    changed(&state, "movie", vec![id], false);
+    Ok(Json(result))
+}
+
 #[utoipa::path(get, path = "/series/{id}/episodes", tag = "library", params(("id" = i64, Path), EpisodeQuery),
     responses((status = 200, body = Vec<EpisodeItem>)))]
 pub async fn list_episodes(

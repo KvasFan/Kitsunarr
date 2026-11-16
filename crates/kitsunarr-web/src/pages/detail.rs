@@ -105,6 +105,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut versions_open = use_signal(|| false);
     let mut compression_open = use_signal(|| false);
     let mut monitoring_open = use_signal(|| false);
+    let mut move_open = use_signal(|| false);
     let mut scanning = use_signal(|| false);
     // An episode file to delete: (file id, relative path).
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
@@ -335,6 +336,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                         button { class: "btn", title: "Number episodes by another order of the catalogue (TMDB episode groups, TheTVDB DVD or absolute order)", onclick: move |_| ordering.set(true), "Episode order" }
                     }
                     button { class: "btn", title: "Interactive search for packs of the whole series (and of its seasons) on torrent indexers", onclick: move |_| searching_complete.set(true), "Complete series" }
+                    button { class: "btn", title: "Move the series folder, or point the series at another folder", onclick: move |_| move_open.set(true), "Move folder" }
                     button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true) }, "Remove from library" }
                 }
             }
@@ -381,6 +383,14 @@ pub fn SeriesDetailPage(id: i64) -> Element {
         }
         if compression_open() {
             CompressionDialog { series_id: id, on_close: move |_| compression_open.set(false) }
+        }
+        if move_open() {
+            MoveFolderDialog {
+                movie: false, id,
+                current_path: d.item.path.clone(),
+                current_root: d.root_folder_path.clone(),
+                on_close: move |_| move_open.set(false),
+            }
         }
         if monitoring_open() {
             MonitoringDialog {
@@ -756,6 +766,7 @@ pub fn MovieDetailPage(id: i64) -> Element {
         });
     };
     let mut watching = use_signal(|| false);
+    let mut move_open = use_signal(|| false);
     let c8 = client.clone();
     let mut set_watched = move |watched: bool| {
         let c = c8.clone();
@@ -832,8 +843,17 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     if let Some(file) = &d.file {
                         button { class: "btn danger", onclick: { let file = file.clone(); move |_| deleting_file.set(Some((file.id,file.relative_path.clone()))) }, "Delete file" }
                     }
+                    button { class: "btn", title: "Move the movie folder, or point the movie at another folder", onclick: move |_| move_open.set(true), "Move folder" }
                     button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true); }, "Remove from library" }
                 }
+            }
+        }
+        if move_open() {
+            MoveFolderDialog {
+                movie: true, id,
+                current_path: d.item.path.clone(),
+                current_root: d.root_folder_path.clone(),
+                on_close: move |_| move_open.set(false),
             }
         }
         if history_open() {
@@ -1011,6 +1031,110 @@ fn RenameDialog(series_id: i64, on_close: EventHandler<()>) -> Element {
 
 /// Chooses the episode ordering (Tanukarr's episode groups): the series is renumbered and
 /// refreshed; episodes keep their files.
+/// Changes a series' or film's folder (Sonarr's path edit): a root folder and the folder below
+/// it, with or without moving the files.
+#[component]
+pub fn MoveFolderDialog(
+    movie: bool,
+    id: i64,
+    current_path: String,
+    current_root: String,
+    on_close: EventHandler<()>,
+) -> Element {
+    use kitsunarr_domain::api::library::MoveTitleRequest;
+    let app = use_app();
+    let client = use_client();
+    let c0 = client.clone();
+    let roots = use_resource(move || {
+        let c = c0.clone();
+        async move { c.root_folders().await }
+    });
+    let relative = current_path
+        .strip_prefix(&format!("{current_root}/"))
+        .map(str::to_string)
+        .unwrap_or_else(|| {
+            current_path
+                .rsplit(['/', '\\'])
+                .next()
+                .unwrap_or_default()
+                .to_string()
+        });
+    let mut root = use_signal(|| current_root.clone());
+    let mut folder = use_signal(move || relative.clone());
+    let mut move_files = use_signal(|| true);
+    let mut busy = use_signal(|| false);
+    let mut failure = use_signal(|| None::<String>);
+    let target = format!(
+        "{}/{}",
+        root().trim_end_matches('/'),
+        folder().trim_matches('/')
+    );
+    let unchanged = target == current_path || folder().trim().is_empty();
+    let save_target = target.clone();
+    let apply = move |_| {
+        let c = client.clone();
+        let req = MoveTitleRequest {
+            path: save_target.clone(),
+            move_files: move_files(),
+        };
+        busy.set(true);
+        failure.set(None);
+        spawn(async move {
+            let result = if movie {
+                c.move_movie(id, &req).await
+            } else {
+                c.move_series(id, &req).await
+            };
+            match result {
+                Ok(r) => {
+                    app.success(r.message);
+                    on_close.call(());
+                }
+                Err(e) => failure.set(Some(e.to_string())),
+            }
+            busy.set(false);
+        });
+    };
+    rsx! {
+        Modal {
+            title: "Move folder".to_string(),
+            on_close: move |_| { if !busy() { on_close.call(()) } },
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", disabled: busy(), onclick: move |_| on_close.call(()), "Cancel" }
+                button { class: "btn primary", disabled: busy() || unchanged, onclick: apply,
+                    if busy() { "Moving…" } else if move_files() { "Move" } else { "Save path" }
+                }
+            },
+            p { class: "help small", "Current folder: " span { class: "mono", "{current_path}" } }
+            Field { label: "Root folder",
+                select { class: "select", "aria-label": "Root folder", disabled: busy(),
+                    onchange: move |e: FormEvent| root.set(e.value()),
+                    if let Some(Ok(list)) = &*roots.read() {
+                        for r in list.iter() {
+                            option { key: "{r.id}", value: "{r.path}", selected: r.path == root(), "{r.path}" }
+                        }
+                    }
+                }
+            }
+            Field { label: "Folder", help: "Below the root folder; use / for sub-folders.".to_string(),
+                input { class: "input", "aria-label": "Folder", value: "{folder}", disabled: busy(),
+                    oninput: move |e| folder.set(e.value()) }
+            }
+            p { class: "path-preview mono", "{target}" }
+            Switch { checked: move_files(), disabled: busy(), label: "Move the files to the new folder", onchange: move |v| move_files.set(v) }
+            p { class: "help small",
+                if move_files() {
+                    "The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty."
+                } else {
+                    "Only the recorded folder changes; use this when the files are already there, then scan the disk."
+                }
+            }
+            if let Some(f) = failure() { div { class: "alert danger", role: "alert", "{f}" } }
+        }
+    }
+}
+
 /// Sonarr's monitoring options dialog (its season pass): applies a monitoring choice to the
 /// episodes and seasons of one or more series, and sets "monitor new items".
 #[component]

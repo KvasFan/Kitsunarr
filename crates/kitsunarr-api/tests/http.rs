@@ -7970,3 +7970,186 @@ async fn sonarr_v3_series_import_uses_the_existing_folder() {
         .collect();
     assert_eq!(monitored, vec![(2, 3)], "the existing episode only");
 }
+
+/// Sonarr's series move: a new folder with its contents moved (or only recorded), bulk moves
+/// to another root folder, and the v3 path edit and series editor.
+#[tokio::test]
+async fn series_folders_move_with_their_files() {
+    use kitsunarr_domain::api::library::{BulkMoveRequest, MoveTitleRequest};
+    use serde_json::{Value, json};
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let (a, b) = (dir.path().join("a"), dir.path().join("b"));
+    for root in [&a, &b] {
+        std::fs::create_dir_all(root).unwrap();
+        client
+            .create_root_folder(&RootFolderCreate {
+                path: root.display().to_string(),
+                media_kind: None,
+            })
+            .await
+            .unwrap();
+    }
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: a.display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let id = added.id;
+    let old = a.join("Breaking Bad");
+    std::fs::create_dir_all(old.join("Season 01")).unwrap();
+    let episode = "Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv";
+    std::fs::write(old.join(episode), b"video").unwrap();
+    client.rescan_series(id).await.unwrap();
+    let files = |d: &kitsunarr_domain::api::library::SeriesDetail| d.item.episode_file_count;
+    assert_eq!(files(&client.series_detail(id).await.unwrap()), 1);
+
+    let refuse = |path: String| MoveTitleRequest {
+        path,
+        move_files: true,
+    };
+    // Outside the root folders, `..`, another title's folder and a non-empty folder are refused.
+    std::fs::create_dir_all(b.join("Busy")).unwrap();
+    std::fs::write(b.join("Busy/x"), b"x").unwrap();
+    for bad in [
+        "/tmp".to_string(),
+        format!("{}/../b/BB", a.display()),
+        b.join("Busy").display().to_string(),
+        old.join("Season 01").display().to_string(),
+    ] {
+        match client
+            .move_series(id, &refuse(bad.clone()))
+            .await
+            .unwrap_err()
+        {
+            ClientError::Api { status, body } => {
+                assert_eq!(status, 422, "{bad}");
+                assert_eq!(body.fields[0].field, "path", "{bad}: {}", body.message);
+            }
+            other => panic!("unexpected {other:?}"),
+        }
+    }
+    assert!(old.join(episode).is_file(), "refusals move nothing");
+
+    // Moved into the other root folder, below a new parent folder.
+    let new = b.join("Drama/Breaking Bad");
+    let moved = client
+        .move_series(id, &refuse(new.display().to_string()))
+        .await
+        .unwrap();
+    assert!(moved.moved, "{moved:?}");
+    assert_eq!(moved.root_folder_path, b.display().to_string());
+    assert!(!old.exists() && new.join(episode).is_file());
+    let detail = client.series_detail(id).await.unwrap();
+    assert_eq!(detail.item.path, new.display().to_string());
+    assert_eq!(detail.root_folder_path, b.display().to_string());
+    assert_eq!(files(&detail), 1, "file records follow the folder");
+    assert_eq!(
+        client.rescan_series(id).await.unwrap().message,
+        "0 files added, 0 missing files removed, 0 sizes updated."
+    );
+
+    // Bulk: back to the first root folder, keeping the folder below the root.
+    let bulk = client
+        .bulk_move_series(&BulkMoveRequest {
+            ids: vec![id, 9999],
+            root_folder_path: a.display().to_string(),
+            move_files: true,
+        })
+        .await
+        .unwrap();
+    assert_eq!(bulk.moved.len(), 1);
+    assert_eq!(bulk.failures.len(), 1, "{:?}", bulk.failures);
+    let back = a.join("Drama/Breaking Bad");
+    assert!(back.join(episode).is_file());
+    assert_eq!(
+        client.series_detail(id).await.unwrap().item.path,
+        back.display().to_string()
+    );
+
+    // Recording only: nothing moves.
+    let recorded = client
+        .move_series(
+            id,
+            &MoveTitleRequest {
+                path: a.join("Elsewhere").display().to_string(),
+                move_files: false,
+            },
+        )
+        .await
+        .unwrap();
+    assert!(!recorded.moved);
+    assert!(back.join(episode).is_file() && !a.join("Elsewhere").exists());
+
+    // v3: the path edit moves with `moveFiles=true`; the editor moves and edits tags.
+    let http = reqwest::Client::new();
+    let v3 = |p: &str| format!("{}/api/v3{p}", server.base);
+    client
+        .move_series(
+            id,
+            &MoveTitleRequest {
+                path: back.display().to_string(),
+                move_files: false,
+            },
+        )
+        .await
+        .unwrap();
+    let target = b.join("BB");
+    let response = http
+        .put(v3(&format!("/series/{id}?moveFiles=true")))
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!({"id": id, "path": target.display().to_string()}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 202);
+    let body: Value = response.json().await.unwrap();
+    assert_eq!(body["path"], target.display().to_string());
+    assert!(target.join(episode).is_file() && !back.exists());
+    let tag: Value = http
+        .post(v3("/tag"))
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!({"label": "moved"}))
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let response = http
+        .put(v3("/series/editor"))
+        .header("X-Api-Key", &server.api_key)
+        .json(&json!({
+            "seriesIds": [id], "rootFolderPath": a.display().to_string(), "moveFiles": true,
+            "monitored": false, "tags": [tag["id"]], "applyTags": "replace", "monitorNewItems": "none"
+        }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), 202);
+    let body: Value = response.json().await.unwrap();
+    assert_eq!(body[0]["path"], a.join("BB").display().to_string());
+    assert_eq!(body[0]["monitored"], false);
+    assert_eq!(body[0]["tags"], json!([tag["id"]]));
+    assert!(a.join("BB").join(episode).is_file());
+}
