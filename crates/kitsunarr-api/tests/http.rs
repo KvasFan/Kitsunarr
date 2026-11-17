@@ -3921,7 +3921,8 @@ async fn sonarr_v3_api_serves_overseerr_and_prowlarr_flows() {
     );
     let status: Value = get("/system/status").await.unwrap().json().await.unwrap();
     assert_eq!(status["version"], "4.0.0.0");
-    assert_eq!(status["appName"], "Kitsunarr");
+    assert_eq!(status["appName"], "Sonarr");
+    assert_eq!(status["productName"], "Kitsunarr");
     let profiles: Value = get("/qualityprofile").await.unwrap().json().await.unwrap();
     assert!(
         profiles
@@ -5755,6 +5756,27 @@ async fn sonarr_v3_settings_serve_recyclarr_sync() {
     assert_eq!(status, 202);
     assert_eq!(saved[0]["minSize"], 10.5);
     assert_eq!(saved[0]["maxSize"], 100.0);
+    // Recyclarr leaves out null sizes (TRaSH's unlimited maximum): as in Sonarr, they are no
+    // limit, so its next sync finds nothing to change (seen with a real Recyclarr 7 sync).
+    let (status, saved) = json_of(
+        send(
+            M::PUT,
+            "/qualitydefinition/update",
+            Some(json!([{"id": hdtv["id"], "quality": hdtv["quality"], "title": "HDTV-720p", "weight": hdtv["weight"], "minSize": 10}])),
+        )
+        .await
+        .unwrap(),
+    )
+    .await;
+    assert_eq!(status, 202);
+    assert_eq!(
+        (
+            &saved[0]["minSize"],
+            &saved[0]["maxSize"],
+            &saved[0]["preferredSize"]
+        ),
+        (&json!(10.0), &Value::Null, &Value::Null)
+    );
 
     // A profile from the schema, with the format scored.
     let mut profile = json_of(send(M::GET, "/qualityprofile/schema", None).await.unwrap())

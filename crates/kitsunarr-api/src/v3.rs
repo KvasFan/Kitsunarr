@@ -278,7 +278,11 @@ async fn all_series(state: &AppState) -> ApiResult<Vec<SeriesDetail>> {
 async fn system_status(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let native = crate::routes::system::status(State(state)).await?.0;
     Ok(Json(json!({
-        "appName": native.app_name,
+        // Sync tools check that they talk to Sonarr (Recyclarr 8 refuses any other name);
+        // Kitsunarr names itself in `productName`, as Tanukarr does.
+        "appName": "Sonarr",
+        "productName": native.app_name,
+        "productVersion": native.version,
         "instanceName": native.instance_name,
         "version": SONARR_VERSION,
         "kitsunarrVersion": native.version,

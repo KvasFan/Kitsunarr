@@ -299,21 +299,17 @@ async fn get_definition(
         .ok_or_else(|| ApiError::NotFound("The quality definition does not exist.".into()))
 }
 
-/// Applies a `QualityDefinitionResource` (title and sizes) to the stored definition.
+/// Applies a `QualityDefinitionResource` (title and sizes) to the stored definition. As in
+/// Sonarr, the resource replaces all three sizes: a size that is missing or null is no limit
+/// (Recyclarr leaves out the null ones, e.g. TRaSH's unlimited maximums).
 fn apply_definition(d: &mut QualityDefinition, v: &Value) {
     let num = |key: &str| v[key].as_f64().map(OrderedF64);
     if let Some(t) = v["title"].as_str().filter(|t| !t.trim().is_empty()) {
         d.title = t.to_string();
     }
-    if !v["minSize"].is_null() || v.get("minSize").is_some() {
-        d.min_size = num("minSize");
-    }
-    if v.get("maxSize").is_some() {
-        d.max_size = num("maxSize");
-    }
-    if v.get("preferredSize").is_some() {
-        d.preferred_size = num("preferredSize");
-    }
+    d.min_size = num("minSize");
+    d.max_size = num("maxSize");
+    d.preferred_size = num("preferredSize");
 }
 
 fn definition_id(v: &Value) -> Option<i32> {

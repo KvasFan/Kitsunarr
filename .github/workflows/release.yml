@@ -15,11 +15,25 @@ env:
 
 jobs:
   binary:
-    name: Linux binary
+    name: Linux binary (${{ matrix.target }})
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        target: [x86_64-unknown-linux-gnu, aarch64-unknown-linux-gnu]
     steps:
       - uses: actions/checkout@v7
       - run: rustup show
+      - name: Cross toolchain
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc-aarch64-linux-gnu libc6-dev-arm64-cross
+          rustup target add aarch64-unknown-linux-gnu
+          {
+            echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc"
+            echo "CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc"
+            echo "AR_aarch64_unknown_linux_gnu=aarch64-linux-gnu-ar"
+          } >> "$GITHUB_ENV"
       - name: Install dx
         run: |
           curl -fsSL -o dx.tar.gz "https://github.com/DioxusLabs/dioxus/releases/download/v${DX_VERSION}/dx-x86_64-unknown-linux-gnu.tar.gz"
@@ -27,14 +41,14 @@ jobs:
           mkdir -p "$HOME/.local/bin" && tar -xzf dx.tar.gz -C "$HOME/.local/bin" dx
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - run: dx build -p kitsunarr-web --release --profile web-release
-      - run: cargo build --release --locked -p kitsunarr-server
+      - run: cargo build --release --locked -p kitsunarr-server --target ${{ matrix.target }}
         env:
           KITSUNARR_GIT_REVISION: ${{ github.sha }}
       - name: Package
         run: |
-          name="kitsunarr-${GITHUB_REF_NAME}-x86_64-unknown-linux-gnu"
+          name="kitsunarr-${GITHUB_REF_NAME}-${{ matrix.target }}"
           mkdir "$name"
-          cp target/release/kitsunarr LICENSE COPYRIGHT.md README.md deployment/kitsunarr.service "$name/"
+          cp target/${{ matrix.target }}/release/kitsunarr LICENSE COPYRIGHT.md README.md deployment/kitsunarr.service "$name/"
           tar -czf "$name.tar.gz" "$name"
           sha256sum "$name.tar.gz" > "$name.tar.gz.sha256"
       - uses: softprops/action-gh-release@v3
@@ -49,6 +63,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+      # The arm64 image's runtime stage (package installation) runs under QEMU; the server is
+      # cross-compiled natively (see deployment/Dockerfile).
+      - uses: docker/setup-qemu-action@v4
       - uses: docker/setup-buildx-action@v4
       - uses: docker/login-action@v4
         with:
@@ -67,6 +84,7 @@ jobs:
         with:
           context: .
           file: deployment/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

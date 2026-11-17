@@ -240,6 +240,16 @@ pub fn detect(status: &Value) -> Result<RemoteStatus, MigrateError> {
     let r = Rec::from_value(status.clone());
     let app_name = r.str("appname").unwrap_or_default();
     let product = r.str("productname");
+    // Kitsunarr's own compatibility API answers as Sonarr (for sync tools) and names itself in
+    // `productName`, as Tanukarr does; it is not a migration source.
+    if product
+        .as_deref()
+        .is_some_and(|p| p.eq_ignore_ascii_case("kitsunarr"))
+    {
+        return Err(MigrateError::InvalidSource(
+            "this is a Kitsunarr instance; restore its backup instead of migrating from it".into(),
+        ));
+    }
     let app = if product
         .as_deref()
         .is_some_and(|p| p.eq_ignore_ascii_case("tanukarr"))
@@ -467,6 +477,10 @@ mod tests {
         assert_eq!(tanukarr.app, SourceApp::Tanukarr);
         assert_eq!(tanukarr.product_version.as_deref(), Some("0.1.5"));
         assert!(detect(&json!({"appName": "Radarr", "version": "5.0"})).is_err());
+        assert!(
+            detect(&json!({"appName": "Sonarr", "productName": "Kitsunarr", "version": "4.0.0.0"}))
+                .is_err()
+        );
         assert!(detect(&json!({"appName": "Sonarr", "version": "2.0.0.5000"})).is_err());
     }
 
