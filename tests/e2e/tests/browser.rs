@@ -2076,6 +2076,7 @@ async fn first_run_setup_migration_and_library() {
             screenshot(&client, "12-italian-untranslated").await;
         }
         assert!(english.is_empty(), "untranslated text in Italian: {english:#?}");
+        client.goto(&format!("{base}/settings")).await.unwrap();
         client
             .wait()
             .at_most(Duration::from_secs(20))
