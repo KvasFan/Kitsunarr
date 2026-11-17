@@ -247,7 +247,7 @@ The rest follows Sonarr:
 Two choices differ from Sonarr:
 
 - **Grabs are rejected rather than mapped by hand.** A release that could not be matched to episodes cannot be grabbed until manual episode selection exists; Sonarr would ask the user to pick them.
-- **"Implemented" means implemented.** qBittorrent, Deluge, Transmission, SABnzbd and NZBGet are marked as implemented download clients, and no notification type is. Other providers are stored with all their settings, and the health check and migration report say they are not implemented yet.
+- **"Implemented" means implemented.** qBittorrent, Deluge, Transmission, SABnzbd and NZBGet are the implemented download clients, and all 26 of Sonarr's and Tanukarr's connection types are implemented. Any other provider is stored with all its settings, and the health check and the migration report say it is not implemented.
 
 ## 17. Importing completed downloads, safer than upstream where files are at stake
 
@@ -287,7 +287,7 @@ Differences:
 
 Differences:
 
-- **Runs while the request waits:** Sonarr queues a command and reports through its command list. Kitsunarr answers with the outcome (releases found and approved, grabs, failures), shown as a notification. Scheduled searches (missing, cutoff unmet, RSS) are not implemented yet.
+- **Runs while the request waits:** Sonarr queues a command and reports through its command list. Kitsunarr answers with the outcome (releases found and approved, grabs, failures), shown as a notification. RSS sync runs as a scheduled task (`rss.rs`); as upstream, missing and cutoff-unmet searches are started by hand or by commands, not on a schedule.
 - **Not covered yet:** pending releases (delay profiles hold nothing back: delays are not evaluated).
 
 ## 20. RSS sync: library-wide mapping, then per-series decisions
@@ -305,7 +305,7 @@ The RSS-only rules are ported with Sonarr's fixtures:
 
 Differences:
 
-- **No pending releases:** upstream keeps delayed releases and grabs them when the delay ends. Kitsunarr grabs a delayed release only if a later sync still finds it in the feed.
+- **Pending releases:** as upstream, delayed releases are kept (`kitsunarr-db::pending`), shown in the queue as pending and grabbed when the delay ends; "Send now" grabs one at once.
 - **Decisions are made series by series:** releases of different series are ranked separately, and a series that cannot be loaded is skipped and logged.
 
 ## 21. Wanted lists and bulk searches
@@ -368,7 +368,7 @@ Tanukarr's presentation enrichment (a missing overview or artwork from up to two
   - Kodi: `VideoLibrary.Scan` of the folder, plus `GUI.ShowNotification` and an optional clean.
 - **Health notifications** compare each evaluation with the previous one, and send issues that appeared and issues that cleared. The first evaluation after start-up only records the baseline, so restarts do not repeat known issues; upstream notifies on start-up after a grace period.
 
-Not ported yet: the rename, episode-file-deleted, manual-interaction and application-update events; the Email, Custom Script, Twitter, Trakt, Synology, Mailgun, SendGrid and Pushcut services; Tanukarr's Jellyfin watched-state sync. Migrated connections of those types stay stored and are reported as not implemented.
+The rename, episode-file-deleted, manual-interaction and application-update events, every connection service (Email, Custom Script, Twitter, Trakt, Synology, Mailgun, SendGrid, Pushcut and the others) and Tanukarr's Jellyfin watched-state sync are implemented.
 
 ## 25. Library file operations: disk scans, renames, deletions
 
@@ -393,7 +393,7 @@ Kitsunarr follows Tanukarr here, not upstream Sonarr. Upstream rejects multi-sea
 - **RSS** does not upgrade complete seasons (`CompleteSeasonUpgradeSpecification`): a feed release whose seasons have no monitored, aired episode without a file is rejected. Searches keep the upgrade rules.
 - **Import** takes only the grabbed episodes; files of other seasons are refused one by one. The pack is copied, never moved (Usenet included), and it is never removed from the client, so its other seasons stay intact.
 
-The parser keeps upstream's season-range rule (`S01 S04` → seasons 1–4), which passes Sonarr's parser fixtures; Tanukarr's narrower rule (`S01 S04` → 1 and 4) is not ported.
+The parser follows Tanukarr's season-list rule: two seasons are a range only with a dash (`S01-S04`) or "Complete Series", so `S01 S04` names seasons 1 and 4 (`parser/src/title.rs`, `tests/tanukarr_title.rs`).
 
 ### Complete-series search
 
@@ -409,7 +409,7 @@ The series page's "Complete series" button runs Tanukarr's complete-series searc
 
   Other releases are left out, and releases whose ids name another series are rejected. Automatic searches need the whole series; interactive ones also list packs of some of its seasons.
 
-Not ported: collection titles (anime groups do not exist yet), and the automatic complete-series attempt that Tanukarr makes before series and missing searches.
+Collection titles and the automatic complete-series attempt that Tanukarr makes before series and missing searches are implemented (feature matrix, Tanukarr-specific features).
 
 ## 27. Fake release protection and pack trimming (Tanukarr)
 
@@ -457,7 +457,8 @@ The scheduled task `SyncJellyfinWatched` runs every minute and syncs when the co
   rotating it keeps pending work; any other target change resets the state. Before refreshing,
   the library must be listed once with locations Jellyfin has scanned as folders; the refresh
   must answer 204. A process-wide in-flight guard keeps one refresh loop per connection.
-- **Not ported:** list progress sync. The editor's library and user pickers read Jellyfin with
+- **List progress sync** (`kitsunarr-library::list_progress`) writes watched progress back to
+  the import lists, as Tanukarr. The editor's library and user pickers read Jellyfin with
   the editor's (or the stored) host and API key.
 
 ## 29. Import lists
@@ -493,7 +494,7 @@ a search.
   and renews a token with its refresh token, storing the renewed token before reading. Trakt and
   Simkl need the user's own application Client ID (`clientId`, `clientIdV2`) and, for private
   data, a token of that application; Plex needs the account token; TMDB lists use the API Read
-  Access Token. Sign-in flows (OAuth pages) are not implemented: tokens are pasted or migrated.
+  Access Token. Sign-in from the list editor (`kitsunarr-importlists::oauth`) uses the services' own flows with the user's application, never the Servarr relay: Simkl and Plex PINs, Trakt's device code, MyAnimeList's authorization code with PKCE; tokens can also be pasted or migrated.
 
 ## 30. Codec size factors and per-profile size limits (Tanukarr)
 
