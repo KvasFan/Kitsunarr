@@ -394,7 +394,7 @@ pub struct MovieUpdate {
 }
 
 /// Re-runs automatic grouping for a title in the background (its group or collection).
-fn regroup(state: &AppState, member: kitsunarr_library::grouping::Member) {
+pub(crate) fn regroup(state: &AppState, member: kitsunarr_library::grouping::Member) {
     let state = state.clone();
     tokio::spawn(async move {
         kitsunarr_library::grouping::group_new_title(&state.db, &state.metadata, member).await;

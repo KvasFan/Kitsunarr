@@ -200,6 +200,24 @@ pub(crate) fn series_json(detail: &SeriesDetail) -> Value {
         "added": item.added_at,
         "alternateTitles": detail.alternate_titles.iter().map(|t| json!({"title": t, "seasonNumber": -1})).collect::<Vec<_>>(),
         "ratings": {"votes": 0, "value": 0},
+        // Tanukarr's identity and grouping fields.
+        "metadataSource": item.metadata_provider.as_str(),
+        "foreignId": detail.metadata_id,
+        "orderingId": detail.episode_ordering,
+        "mediaType": "series",
+        "collectionTitle": detail.group_membership.as_ref().map(|g| g.title.clone()),
+        "animeGroupingMode": anime_grouping_mode(detail),
+        "animeGroupId": detail.group_membership.as_ref().map(anime_group_id),
+        "animeGroupTitle": detail.group_membership.as_ref().map(|g| g.title.clone()),
+        "animeGroupSeasonNumber": detail.group_membership.as_ref().filter(|g| g.role.as_deref().unwrap_or("season") == "season").map(group_number),
+        "animeGroupMemberKind": detail.group_membership.as_ref().map(|g| match g.role.as_deref() {
+            Some("movie" | "film") => "movie",
+            Some("special") => "special",
+            _ => "season",
+        }),
+        "animeGroupKind": detail.group_membership.as_ref().map(|_| "series"),
+        "animeGroupMovieNumber": detail.group_membership.as_ref().filter(|g| matches!(g.role.as_deref(), Some("movie" | "film"))).map(group_number),
+        "animeGroupSpecialNumber": detail.group_membership.as_ref().filter(|g| g.role.as_deref() == Some("special")).map(group_number),
         "statistics": {
             "seasonCount": item.season_count,
             "episodeFileCount": item.episode_file_count,
@@ -209,6 +227,42 @@ pub(crate) fn series_json(detail: &SeriesDetail) -> Value {
             "percentOfEpisodes": percent(item.episode_file_count, item.episode_count),
         },
     })
+}
+
+/// Tanukarr's `AnimeGroupingMode`: disabled when the title is kept out of automatic grouping,
+/// manual in a hand-made group, automatic otherwise.
+fn anime_grouping_mode(detail: &SeriesDetail) -> &'static str {
+    if !detail.automatic_grouping {
+        "disabled"
+    } else if detail
+        .group_membership
+        .as_ref()
+        .is_some_and(|g| g.kind == "manual")
+    {
+        "manual"
+    } else {
+        "automatic"
+    }
+}
+
+/// Tanukarr's group id: `anilist:{root}` or `mal:{root}` for franchise groups, else the group's
+/// own id.
+fn anime_group_id(g: &kitsunarr_domain::api::library::GroupMembershipRef) -> String {
+    match g.group_key.as_deref().and_then(|k| k.split_once(':')) {
+        Some(("aniList", id)) => format!("anilist:{id}"),
+        Some(("myAnimeList", id)) => format!("mal:{id}"),
+        Some((p, id)) => format!("{}:{id}", p.to_ascii_lowercase()),
+        None => format!("manual:{}", g.collection_id),
+    }
+}
+
+/// The member's number in its group: from its label ("Season 2", "Movie 3"), else its position.
+fn group_number(g: &kitsunarr_domain::api::library::GroupMembershipRef) -> i64 {
+    g.label
+        .as_deref()
+        .and_then(|l| l.split_whitespace().last())
+        .and_then(|n| n.parse().ok())
+        .unwrap_or(g.position)
 }
 
 pub(crate) fn episode_json(e: &EpisodeItem) -> Value {
@@ -253,6 +307,8 @@ pub(crate) fn episode_file_json(
             "revision": {"version": f.revision_version, "real": f.revision_real, "isRepack": f.is_repack},
         },
         "qualityCutoffNotMet": false,
+        "customFormats": [],
+        "customFormatScore": 0,
     })
 }
 
@@ -429,13 +485,20 @@ pub(crate) async fn get_series(
 }
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub(crate) struct LookupQuery {
     term: String,
+    /// Tanukarr's `metadataSource` (a `MetadataSourceType` name or number; TheTVDB by default).
+    metadata_source: Option<String>,
+    /// Tanukarr's `allSources`: search every enabled catalogue.
+    #[serde(default)]
+    all_sources: bool,
 }
 
 /// `GET /series/lookup?term=`: `tvdb:ID` reads that series (with its seasons); other terms
-/// search TheTVDB. Titles already in the library come back as their library resource (with
-/// an id), as in Sonarr.
+/// search TheTVDB, or Tanukarr's `metadataSource` catalogue, or every enabled catalogue with
+/// `allSources`. Titles already in the library come back as their library resource (with an
+/// id), as in Sonarr.
 pub(crate) async fn lookup(
     State(state): State<AppState>,
     Query(q): Query<LookupQuery>,
@@ -491,17 +554,46 @@ pub(crate) async fn lookup(
             "ratings": {"votes": 0, "value": 0},
         })]));
     }
-    let found = state
-        .metadata
-        .search(MetadataProvider::Tvdb, term)
-        .await
-        .map_err(kitsunarr_library::LibraryError::from)?;
+    let source = match q.metadata_source.as_deref().map(str::trim) {
+        None | Some("") => MetadataProvider::Tvdb,
+        Some(s) => s
+            .parse::<i32>()
+            .ok()
+            .and_then(kitsunarr_domain::api::metadata::from_tanukarr_source_id)
+            .or_else(|| s.parse().ok())
+            .ok_or_else(|| {
+                ApiError::BadRequest("The selected metadata source is disabled or unknown.".into())
+            })?,
+    };
+    let found =
+        crate::routes::metadata::search_catalogues(&state, Some(source), q.all_sources, term)
+            .await
+            .map_err(|e| match e {
+                // Tanukarr answers 400 for a disabled catalogue.
+                ApiError::Validation(_) => ApiError::BadRequest(
+                    "The selected metadata source is disabled or unknown.".into(),
+                ),
+                other => other,
+            })?;
+    let owned_by = |r: &kitsunarr_metadata::SearchResult| {
+        library
+            .iter()
+            .find(|d| d.item.metadata_provider == r.provider && d.metadata_id == r.id)
+    };
     Ok(Json(
         found
             .iter()
             .map(|r| {
-                let tvdb: i64 = r.id.parse().unwrap_or(0);
-                match in_library(tvdb) {
+                let tvdb: i64 = if r.provider == MetadataProvider::Tvdb {
+                    r.id.parse().unwrap_or(0)
+                } else {
+                    r.external_ids
+                        .iter()
+                        .find(|e| e.kind == ExternalIdKind::Tvdb)
+                        .and_then(|e| e.value.parse().ok())
+                        .unwrap_or(0)
+                };
+                match owned_by(r).or_else(|| in_library(tvdb)) {
                     Some(d) => series_json(d),
                     None => json!({
                         "title": r.title,
@@ -514,9 +606,13 @@ pub(crate) async fn lookup(
                         "seasons": [],
                         "year": r.year.unwrap_or(0),
                         "tvdbId": tvdb,
+                        "metadataSource": r.provider.as_str(),
+                        "foreignId": r.id,
+                        "mediaType": if r.provider == MetadataProvider::TmdbMovie || r.provider == MetadataProvider::Omdb { "movie" } else { "series" },
+                        "alternateTitles": r.alternate_titles.iter().map(|t| json!({"title": t, "seasonNumber": -1})).collect::<Vec<_>>(),
+                        "ratings": {"votes": r.votes, "value": 0},
                         "monitored": false,
                         "added": "0001-01-01T00:00:00Z",
-                        "ratings": {"votes": 0, "value": 0},
                     }),
                 }
             })
@@ -553,6 +649,8 @@ pub(crate) struct SeriesBody {
     tags: Option<Vec<i64>>,
     seasons: Option<Vec<SeasonBody>>,
     add_options: Option<AddOptions>,
+    /// Tanukarr's `AnimeGroupingMode`: `disabled` keeps the title out of automatic grouping.
+    anime_grouping_mode: Option<String>,
 }
 
 pub(crate) fn series_type(s: Option<&str>) -> Option<SeriesType> {
@@ -726,9 +824,17 @@ pub(crate) async fn apply(state: &AppState, id: i64, body: &SeriesBody) -> ApiRe
                 })
                 .collect()
         }),
+        automatic_grouping: body
+            .anime_grouping_mode
+            .as_deref()
+            .map(|m| !m.eq_ignore_ascii_case("disabled")),
         ..Default::default()
     };
+    let was_grouping = series::get_detail(&state.db, id).await?.automatic_grouping;
     series::apply_update(&state.db, id, &update).await?;
+    if update.automatic_grouping == Some(true) && !was_grouping {
+        crate::routes::library::regroup(state, kitsunarr_library::grouping::Member::Series(id));
+    }
     state
         .events
         .publish(kitsunarr_domain::api::events::ServerEvent::LibraryChanged {
@@ -1116,6 +1222,10 @@ pub(crate) struct FileFilter {
 pub(crate) async fn files_of(state: &AppState, series_id: i64) -> ApiResult<Vec<Value>> {
     let d = detail(state, series_id).await?;
     let episodes = series::list_episodes(&state.db, series_id, None).await?;
+    // A failure to score the files leaves their formats empty rather than failing the read.
+    let formats = kitsunarr_library::files::file_custom_formats(&state.db, series_id)
+        .await
+        .unwrap_or_default();
     Ok(series::file_records(&state.db, series_id)
         .await?
         .iter()
@@ -1130,6 +1240,15 @@ pub(crate) async fn files_of(state: &AppState, series_id: i64) -> ApiResult<Vec<
                 })
                 .unwrap_or_default();
             let mut v = episode_file_json(&d, f, &languages);
+            if let Some((matched, score)) = formats.get(&f.id) {
+                v["customFormats"] = json!(
+                    matched
+                        .iter()
+                        .map(|(id, name)| json!({"id": id, "name": name}))
+                        .collect::<Vec<_>>()
+                );
+                v["customFormatScore"] = json!(score);
+            }
             if let Some(season) = episodes
                 .iter()
                 .find(|e| e.file.as_ref().is_some_and(|x| x.id == f.id))
@@ -2350,6 +2469,18 @@ pub(crate) fn provider_json(p: &ProviderRecord) -> Value {
     {
         for (k, t) in &p.options {
             o.insert(k.clone(), t.clone());
+        }
+    }
+    // Sonarr's `SupportsOn…` flags, and each trigger (off unless set).
+    if p.kind == ProviderKind::Notification
+        && let Some(o) = v.as_object_mut()
+    {
+        let supported = kitsunarr_notifications::supported_events(&p.implementation);
+        for e in kitsunarr_notifications::EVENTS {
+            o.insert(format!("supportsOn{e}"), json!(supported.contains(e)));
+            // A missing "delete for upgrade" switch is on (Sonarr's migration default).
+            let default = *e == "EpisodeFileDeleteForUpgrade";
+            o.entry(format!("on{e}")).or_insert(json!(default));
         }
     }
     v

@@ -398,41 +398,7 @@ pub async fn rename_previews(
                 is_repack: r.is_repack,
             },
         };
-        let file_name = Path::new(&r.relative_path)
-            .file_name()
-            .map(|n| n.to_string_lossy().into_owned())
-            .unwrap_or_default();
-        let languages: Vec<&'static Language> = r
-            .language_ids()
-            .into_iter()
-            .filter_map(Language::by_id)
-            .collect();
-        // `ParseCustomFormat(EpisodeFile)`: the grabbed release first (Tanukarr).
-        let release_title = r
-            .source_release_title
-            .clone()
-            .filter(|t| !t.trim().is_empty())
-            .or_else(|| r.scene_name.clone())
-            .unwrap_or_else(|| stem(Path::new(&r.relative_path)));
-        let matched = decision::custom_format::evaluate(
-            &formats,
-            &decision::CustomFormatInput {
-                release_title: &release_title,
-                file_name: Some(&file_name),
-                release_group: r.release_group.as_deref(),
-                quality: quality.quality(),
-                size: r.source_release_size.unwrap_or(r.size),
-                indexer_flags: r.indexer_flags as u32,
-                languages: &languages,
-                release_type: kitsunarr_parser::ReleaseType::Unknown,
-                original_language: model.original_language,
-                episode_titles: &linked
-                    .iter()
-                    .filter_map(|e| e.title.clone())
-                    .filter(|t| !t.trim().is_empty())
-                    .collect::<Vec<_>>(),
-            },
-        );
+        let matched = file_formats(&formats, &model, &r, &quality, &linked);
         let file = file_names::File {
             id: r.id,
             scene_name: r.scene_name.clone(),
@@ -503,6 +469,96 @@ pub async fn rename_previews(
 
 /// `RenameEpisodeFileService.RenameFiles`: renames the chosen files (all previewed files when
 /// `file_ids` is empty). Returns how many were renamed and the problems.
+/// `ParseCustomFormat(EpisodeFile)`: the custom formats an existing file matches. The grabbed
+/// release's title and size come first (Tanukarr), then the scene name and the file name.
+fn file_formats<'f>(
+    formats: &'f [decision::CompiledFormat],
+    model: &decision::Series,
+    r: &series::FileRecord,
+    quality: &QualityModel,
+    linked: &[&decision::Episode],
+) -> Vec<&'f decision::CompiledFormat> {
+    let file_name = Path::new(&r.relative_path)
+        .file_name()
+        .map(|n| n.to_string_lossy().into_owned())
+        .unwrap_or_default();
+    let languages: Vec<&'static Language> = r
+        .language_ids()
+        .into_iter()
+        .filter_map(Language::by_id)
+        .collect();
+    let release_title = r
+        .source_release_title
+        .clone()
+        .filter(|t| !t.trim().is_empty())
+        .or_else(|| r.scene_name.clone())
+        .unwrap_or_else(|| stem(Path::new(&r.relative_path)));
+    decision::custom_format::evaluate(
+        formats,
+        &decision::CustomFormatInput {
+            release_title: &release_title,
+            file_name: Some(&file_name),
+            release_group: r.release_group.as_deref(),
+            quality: quality.quality(),
+            size: r.source_release_size.unwrap_or(r.size),
+            indexer_flags: r.indexer_flags as u32,
+            languages: &languages,
+            release_type: kitsunarr_parser::ReleaseType::Unknown,
+            original_language: model.original_language,
+            episode_titles: &linked
+                .iter()
+                .filter_map(|e| e.title.clone())
+                .filter(|t| !t.trim().is_empty())
+                .collect::<Vec<_>>(),
+        },
+    )
+}
+
+/// The custom formats (id, name) each file of a series matches, with their score in the series'
+/// quality profile (Sonarr's `EpisodeFileResource.customFormats` and `customFormatScore`).
+pub async fn file_custom_formats(
+    db: &Database,
+    series_id: i64,
+) -> Result<std::collections::HashMap<i64, (Vec<(i64, String)>, i32)>, String> {
+    let detail = series::get_detail(db, series_id).await.map_err(err)?;
+    let episodes = series::list_episodes(db, series_id, None)
+        .await
+        .map_err(err)?;
+    let model = crate::decision_input::series_model(db, &detail, &episodes)
+        .await
+        .map_err(err)?;
+    let (formats, _) =
+        decision::compile_formats(&quality::list_custom_formats(db.pool()).await.map_err(err)?);
+    let mut out = std::collections::HashMap::new();
+    for r in series::file_records(db, series_id).await.map_err(err)? {
+        let mut linked: Vec<&decision::Episode> = model
+            .episodes
+            .iter()
+            .filter(|e| e.file.as_ref().is_some_and(|f| f.id == r.id))
+            .collect();
+        linked.sort_by_key(|e| (e.season_number, e.episode_number));
+        let quality = QualityModel {
+            quality_id: r.quality_id as i32,
+            revision: Revision {
+                version: r.revision_version as i32,
+                real: r.revision_real as i32,
+                is_repack: r.is_repack,
+            },
+        };
+        let matched = file_formats(&formats, &model, &r, &quality, &linked);
+        let ids: Vec<i64> = matched.iter().map(|f| f.id).collect();
+        let score = decision::profile::ProfileView(&model.profile).format_score(&ids);
+        out.insert(
+            r.id,
+            (
+                matched.iter().map(|f| (f.id, f.name.clone())).collect(),
+                score,
+            ),
+        );
+    }
+    Ok(out)
+}
+
 pub async fn rename_files(
     db: &Database,
     series_id: i64,

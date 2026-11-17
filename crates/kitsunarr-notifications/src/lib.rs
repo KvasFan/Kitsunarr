@@ -67,6 +67,100 @@ pub const SUPPORTED: &[&str] = &[
     "Twitter",
 ];
 
+/// Sonarr's notification events, as the `On…`/`SupportsOn…` resource keys name them.
+pub const EVENTS: &[&str] = &[
+    "Grab",
+    "Download",
+    "Upgrade",
+    "ImportComplete",
+    "Rename",
+    "SeriesAdd",
+    "SeriesDelete",
+    "EpisodeFileDelete",
+    "EpisodeFileDeleteForUpgrade",
+    "HealthIssue",
+    "HealthRestored",
+    "ApplicationUpdate",
+    "ManualInteractionRequired",
+];
+
+/// The events a connection type handles (Sonarr's `SupportsOn…`: the `On…` methods the
+/// connection overrides; `Upgrade` follows `Download` and `EpisodeFileDeleteForUpgrade`
+/// follows `EpisodeFileDelete`).
+pub fn supported_events(implementation: &str) -> Vec<&'static str> {
+    const ALL: &[&str] = &[
+        "Grab",
+        "Download",
+        "ImportComplete",
+        "Rename",
+        "SeriesAdd",
+        "SeriesDelete",
+        "EpisodeFileDelete",
+        "HealthIssue",
+        "HealthRestored",
+        "ApplicationUpdate",
+        "ManualInteractionRequired",
+    ];
+    const NO_RENAME: &[&str] = &[
+        "Grab",
+        "Download",
+        "ImportComplete",
+        "SeriesAdd",
+        "SeriesDelete",
+        "EpisodeFileDelete",
+        "HealthIssue",
+        "HealthRestored",
+        "ApplicationUpdate",
+        "ManualInteractionRequired",
+    ];
+    const LIBRARY: &[&str] = &[
+        "Download",
+        "Rename",
+        "ImportComplete",
+        "SeriesAdd",
+        "SeriesDelete",
+        "EpisodeFileDelete",
+    ];
+    let base: &[&str] = match implementation.to_ascii_lowercase().as_str() {
+        "customscript" | "discord" | "slack" | "xbmc" | "webhook" | "notifiarr" => ALL,
+        "mediabrowser" => &[
+            "Grab",
+            "Download",
+            "Rename",
+            "ImportComplete",
+            "SeriesAdd",
+            "SeriesDelete",
+            "EpisodeFileDelete",
+            "HealthIssue",
+            "HealthRestored",
+            "ApplicationUpdate",
+        ],
+        "plexserver" | "synologyindexer" => LIBRARY,
+        "trakt" => &[
+            "Download",
+            "ImportComplete",
+            "SeriesAdd",
+            "SeriesDelete",
+            "EpisodeFileDelete",
+        ],
+        "jellyfin" => &["Download"],
+        _ if supported(implementation) => NO_RENAME,
+        _ => &[],
+    };
+    let mut out: Vec<&'static str> = Vec::new();
+    for e in EVENTS {
+        let on = match *e {
+            "Upgrade" => base.contains(&"Download"),
+            "EpisodeFileDeleteForUpgrade" => base.contains(&"EpisodeFileDelete"),
+            other => base.contains(&other),
+        };
+        if on {
+            out.push(e);
+        }
+    }
+    out
+}
+
 pub fn supported(implementation: &str) -> bool {
     SUPPORTED
         .iter()
@@ -767,6 +861,21 @@ pub(crate) fn base_url(s: &Map<String, Value>, default_port: i64) -> NotifyResul
 pub(crate) mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn supported_events_follow_sonarrs_overrides() {
+        let discord = supported_events("Discord");
+        assert!(discord.contains(&"Rename") && discord.contains(&"Upgrade"));
+        let telegram = supported_events("Telegram");
+        assert!(!telegram.contains(&"Rename") && telegram.contains(&"ManualInteractionRequired"));
+        assert_eq!(supported_events("Jellyfin"), ["Download", "Upgrade"]);
+        let plex = supported_events("PlexServer");
+        assert!(plex.contains(&"EpisodeFileDeleteForUpgrade") && !plex.contains(&"Grab"));
+        assert!(supported_events("Unknown").is_empty());
+        for imp in SUPPORTED {
+            assert!(!supported_events(imp).is_empty(), "{imp}");
+        }
+    }
 
     pub fn series() -> SeriesRef {
         SeriesRef {

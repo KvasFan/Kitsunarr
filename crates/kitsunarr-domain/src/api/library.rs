@@ -141,6 +141,26 @@ pub struct SeriesDetail {
     /// automatic anime groups.
     #[serde(default = "crate::api::library::yes")]
     pub automatic_grouping: bool,
+    /// The franchise group (`animeGroup`) or manual group the series belongs to, if any.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub group_membership: Option<GroupMembershipRef>,
+}
+
+/// A series' place in an anime group or a manual group (Tanukarr's `AnimeGroup*` fields).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct GroupMembershipRef {
+    pub collection_id: i64,
+    /// `animeGroup` (found from catalogue relations) or `manual`.
+    pub kind: String,
+    /// The group's catalogue key (`anilist:{root id}`, `mal:{root id}`) for automatic groups.
+    pub group_key: Option<String>,
+    pub title: String,
+    /// `season`, `movie` or `special`.
+    pub role: Option<String>,
+    pub label: Option<String>,
+    pub position: i64,
 }
 
 pub(crate) fn yes() -> bool {

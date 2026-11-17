@@ -1049,8 +1049,10 @@ pub(crate) async fn files_v5(state: &AppState, series_id: i64) -> ApiResult<Vec<
             f["indexerFlags"] = json!(r.indexer_flags);
             f["releaseType"] = json!(release_type_name(r.release_type));
         }
-        f["customFormats"] = json!([]);
-        f["customFormatScore"] = json!(0);
+        if f.get("customFormats").is_none() {
+            f["customFormats"] = json!([]);
+            f["customFormatScore"] = json!(0);
+        }
     }
     Ok(list)
 }
@@ -1468,6 +1470,19 @@ pub(crate) async fn queue_v5(
         .flat_map(|(_, e)| e.iter().copied())
         .collect();
     let facts = episode_facts(state, &all).await?;
+    // The import state of each download (Tanukarr's `ImportProgressResource`), from the native
+    // queue, which tracks it while a download is imported.
+    let progress: std::collections::HashMap<String, Value> =
+        crate::routes::queue::get_queue(State(state.clone()))
+            .await?
+            .0
+            .items
+            .into_iter()
+            .filter_map(|i| {
+                let p = serde_json::to_value(i.import_progress?).ok()?;
+                Some((i.download_id.to_ascii_lowercase(), p))
+            })
+            .collect();
     let mut out = Vec::new();
     for (mut r, mut eps) in grouped {
         eps.sort_unstable();
@@ -1514,7 +1529,10 @@ pub(crate) async fn queue_v5(
         r["episodeIdsWithFiles"] = json!(with_files);
         r["episodesWithFilesCount"] = json!(with_files.len());
         r["isFullSeason"] = json!(parsed.as_ref().is_some_and(|p| p.full_season));
-        r["importProgress"] = Value::Null;
+        r["importProgress"] = r["downloadId"]
+            .as_str()
+            .and_then(|d| progress.get(&d.to_ascii_lowercase()).cloned())
+            .unwrap_or(Value::Null);
         r["languages"] = json!(
             parsed
                 .as_ref()

@@ -11788,6 +11788,37 @@ async fn catalogue_order_disabled_catalogues_and_all_sources_search() {
     assert_eq!(status(refused), 422);
     let merged = client.metadata_search(&all("breaking bad")).await.unwrap();
     assert_eq!(providers_of(&merged), [MetadataProvider::Tvdb]);
+    // Tanukarr's `series/lookup`: `metadataSource` and `allSources`; a disabled catalogue is a 400.
+    let lookup = |q: &str| {
+        let url = format!(
+            "{}/api/v3/series/lookup?term=breaking%20bad{q}",
+            server.base
+        );
+        let key = server.api_key.clone();
+        async move {
+            let r = reqwest::Client::new()
+                .get(url)
+                .header("X-Api-Key", key)
+                .send()
+                .await
+                .unwrap();
+            (
+                r.status().as_u16(),
+                r.json::<serde_json::Value>().await.unwrap_or_default(),
+            )
+        }
+    };
+    let (code, body) = lookup("&metadataSource=tvMaze").await;
+    assert_eq!(code, 400, "{body}");
+    let (code, body) = lookup("&allSources=true").await;
+    assert_eq!(code, 200, "{body}");
+    assert!(
+        body.as_array()
+            .unwrap()
+            .iter()
+            .all(|s| s["metadataSource"] == "tvdb")
+    );
+    assert!(body[0]["foreignId"].is_string());
 
     // `MetadataSourcePolicy.Save` validation.
     for bad in [
@@ -11969,4 +12000,133 @@ async fn quality_definitions_update_and_reset() {
     let d = reset.iter().find(|d| d.quality_id == 7).unwrap();
     assert_eq!(d.title, "Bluray-1080p");
     assert_ne!(d.max_size, Some(OrderedF64(150.0)));
+}
+
+/// Tanukarr's identity and grouping fields on Sonarr series resources, `animeGroupingMode` on
+/// updates, custom formats of existing files, and the connections' `supportsOn…` flags.
+#[tokio::test]
+async fn sonarr_series_identity_file_formats_and_connection_capabilities() {
+    use reqwest::Method as M;
+    use serde_json::json;
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: root,
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let sid = added.id;
+
+    let (status, s) = sonarr(&server, M::GET, &format!("/api/v3/series/{sid}"), None).await;
+    assert_eq!(status, 200);
+    assert_eq!(s["metadataSource"], "tvMaze");
+    assert_eq!(s["foreignId"], "169");
+    assert_eq!(s["mediaType"], "series");
+    assert_eq!(s["animeGroupingMode"], "automatic");
+    assert!(s["animeGroupId"].is_null());
+    let mut body = s.clone();
+    body["animeGroupingMode"] = json!("disabled");
+    let (status, _) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v3/series/{sid}"),
+        Some(body),
+    )
+    .await;
+    assert_eq!(status, 202);
+    let (_, s) = sonarr(&server, M::GET, &format!("/api/v5/series/{sid}"), None).await;
+    assert_eq!(s["animeGroupingMode"], "disabled");
+    assert!(!client.series_detail(sid).await.unwrap().automatic_grouping);
+
+    // A file whose release name matches a custom format reports it.
+    let (status, _) = sonarr(
+        &server,
+        M::POST,
+        "/api/v3/customformat",
+        Some(json!({
+            "name": "x264",
+            "specifications": [{
+                "name": "x264", "implementation": "ReleaseTitleSpecification",
+                "negate": false, "required": true,
+                "fields": [{"name": "value", "value": "x264"}]
+            }]
+        })),
+    )
+    .await;
+    assert_eq!(status, 201);
+    let folder = std::path::PathBuf::from(client.series_detail(sid).await.unwrap().item.path);
+    std::fs::create_dir_all(folder.join("Season 01")).unwrap();
+    std::fs::write(
+        folder.join("Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv"),
+        vec![0u8; 4096],
+    )
+    .unwrap();
+    client.rescan_series(sid).await.unwrap();
+    for v in ["v3", "v5"] {
+        let (status, files) = sonarr(
+            &server,
+            M::GET,
+            &format!("/api/{v}/episodefile?seriesId={sid}"),
+            None,
+        )
+        .await;
+        assert_eq!(status, 200);
+        assert_eq!(files[0]["customFormats"][0]["name"], "x264", "{v}: {files}");
+        assert_eq!(files[0]["customFormatScore"], 0, "{v}");
+    }
+
+    // `SupportsOn…` follows the connection's events; missing triggers are off, except
+    // "delete for upgrade".
+    let (status, hook) = sonarr(
+        &server,
+        M::POST,
+        "/api/v3/notification",
+        Some(json!({
+            "name": "Hook", "implementation": "Webhook", "onGrab": true,
+            "fields": [{"name": "url", "value": "http://127.0.0.1:9/hook"}]
+        })),
+    )
+    .await;
+    assert_eq!(status, 201, "{hook}");
+    assert_eq!(hook["supportsOnRename"], true);
+    assert_eq!(hook["supportsOnImportComplete"], true);
+    assert_eq!(hook["onGrab"], true);
+    assert_eq!(hook["onRename"], false);
+    let (_, schema) = sonarr(&server, M::GET, "/api/v3/notification/schema", None).await;
+    let telegram = schema
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|n| n["implementation"] == "Telegram")
+        .unwrap();
+    assert_eq!(telegram["supportsOnRename"], false);
+    assert_eq!(telegram["supportsOnManualInteractionRequired"], true);
 }

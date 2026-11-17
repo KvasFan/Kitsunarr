@@ -1,8 +1,8 @@
 //! Series (TV and anime), seasons, episodes and episode files.
 
 use kitsunarr_domain::api::library::{
-    BulkEdit, CalendarEntry, CollectionRef, EpisodeFileItem, EpisodeItem, LibraryQuery, SeasonItem,
-    SeriesDetail, SeriesListItem, SeriesUpdate,
+    BulkEdit, CalendarEntry, CollectionRef, EpisodeFileItem, EpisodeItem, GroupMembershipRef,
+    LibraryQuery, SeasonItem, SeriesDetail, SeriesListItem, SeriesUpdate,
 };
 use kitsunarr_domain::{
     ExternalId, ExternalIdKind, MediaImage, MediaKind, MetadataProvider, MonitorNewItems, Page,
@@ -713,7 +713,30 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
         )
         .await?
     };
+    let membership: Option<MembershipRow> =
+        sqlx::query_as(
+            "SELECT c.id, c.kind, c.metadata_provider, c.metadata_id, c.title, m.role, m.label, m.position \
+             FROM collection_members m JOIN collections c ON c.id = m.collection_id \
+             WHERE m.series_id = ? AND c.kind IN ('animeGroup', 'manual') \
+             ORDER BY c.kind = 'animeGroup' DESC, c.id LIMIT 1",
+        )
+        .bind(id)
+        .fetch_optional(db.pool())
+        .await?;
     Ok(SeriesDetail {
+        group_membership: membership.map(
+            |(collection_id, kind, provider, key, title, role, label, position)| {
+                GroupMembershipRef {
+                    collection_id,
+                    group_key: provider.zip(key).map(|(p, k)| format!("{p}:{k}")),
+                    kind,
+                    title,
+                    role,
+                    label,
+                    position,
+                }
+            },
+        ),
         automatic_grouping: !grouping_disabled,
         item,
         overview: d.overview,
@@ -753,6 +776,18 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
             .collect(),
     })
 }
+
+/// (collection id, kind, catalogue, catalogue id, title, role, label, position).
+type MembershipRow = (
+    i64,
+    String,
+    Option<String>,
+    Option<String>,
+    String,
+    Option<String>,
+    Option<String>,
+    i64,
+);
 
 pub async fn get_list_item(db: &Database, id: i64) -> DbResult<SeriesListItem> {
     let sql = format!(
