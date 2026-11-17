@@ -182,7 +182,9 @@ pub fn AddMedia() -> Element {
         }
         if let Some(c) = current.as_ref() {
             p { class: "attribution",
-                "{c.description}. "
+                // Separate text nodes, so the description is translated as one entry.
+                span { "{c.description}" }
+                ". "
                 a { href: "{c.url}", target: "_blank", rel: "noopener", "{c.attribution}" }
                 "."
             }
