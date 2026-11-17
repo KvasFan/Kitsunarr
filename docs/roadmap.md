@@ -77,6 +77,7 @@ Sonarr API completeness and transient-state migration:
 | 89 | Anime season searches also search each episode (Sonarr's `SearchAnimeSeason`); Tanukarr's "Prefer anime season packs" skips the episodes an approved pack covers | Done: HTTP |
 | 90 | Real Recyclarr 7.5.2 and 8.8.1 syncs; fixes: null quality sizes are no limit, v3 status answers as Sonarr | Done: real containers, HTTP |
 | 91 | Browser timings with 1,000 series (issue #12) | Done: Chromium benchmark |
+| 92 | linux/arm64 image and aarch64 binary (issue #12): cross-compiled server, multi-architecture release | Done: Podman build, QEMU smoke test |
 
 Details: [milestones 83–89](milestones-2026-11-17-89.md), the [Recyclarr verification](recyclarr-verification-2026-11-17.md) (90) and the [browser timings](performance.md#browser-at-1000-series) (91).
 

@@ -46,5 +46,7 @@
 | Platform | Status |
 |---|---|
 | Linux x86_64 (glibc), native binary | Built and tested locally (Rust 1.99.1) |
-| Docker image (`ghcr.io/kvasfan/kitsunarr`), linux/amd64 | Dockerfile provided |
+| Linux aarch64 (glibc), native binary | Cross-compiled (`aarch64-linux-gnu-gcc`); run under QEMU user emulation in the arm64 image; released by `release.yml` |
+| Docker image (`ghcr.io/kvasfan/kitsunarr`), linux/amd64 | Built and smoke-tested by the CI docker job (reproduced locally with Podman) |
+| Docker image, linux/arm64 | Built locally with Podman (`--platform linux/arm64`: the server cross-compiled natively, the runtime stage under QEMU) and checked on 2026-11-17 under QEMU user emulation: start, ping and database, first-run setup and sign-in (a wrong password refused), API key, v3 status, default profiles, tag creation, backup, health, `healthcheck`, `--version`, ffprobe 7.1.5 and a clean stop. Not run on real arm64 hardware. `release.yml` publishes both architectures. |
 | Browsers | Chromium and Firefox-based browsers with WebAssembly. Built-in features only; no JavaScript framework. |

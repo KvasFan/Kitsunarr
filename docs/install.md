@@ -1,14 +1,16 @@
 # Installing Kitsunarr
 
-> Kitsunarr is in early development and cannot download media yet. Run it next to your existing Sonarr/Tanukarr, not instead of them. Migration only reads from the source and never touches your media files.
+> Kitsunarr is in early development. Run it next to your existing Sonarr/Tanukarr, not instead of them, until you have checked it with your own indexers and download clients. Migration only reads from the source and never touches your media files.
 
 ## Docker / Podman
 
-The image `ghcr.io/kvasfan/kitsunarr` is published by the release workflow. Until the first release, build it locally from the repository root:
+The image `ghcr.io/kvasfan/kitsunarr` is published by the release workflow for `linux/amd64` and `linux/arm64`. Until the first release, build it locally from the repository root:
 
 ```sh
 docker build -t kitsunarr:local -f deployment/Dockerfile .
 ```
+
+For another architecture, pass `--platform linux/arm64` (Podman, or Docker with Buildx). The server is cross-compiled on the build machine, so only the final package installation runs under emulation (QEMU user mode, e.g. `qemu-user-static` with its binfmt registration).
 
 `deployment/docker-compose.yml` contains a complete example. Notes:
 
