@@ -264,6 +264,41 @@ impl Client {
     pub async fn create_backup(&self) -> ClientResult<BackupItem> {
         self.post("/system/backups", &Empty {}).await
     }
+    /// Where a backup file downloads from (the browser sends its session cookie).
+    pub fn backup_download_url(&self, name: &str) -> String {
+        self.url(&format!("/system/backups/{name}"))
+    }
+    pub async fn delete_backup(&self, name: &str) -> ClientResult<()> {
+        self.delete(&format!("/system/backups/{name}")).await
+    }
+    /// Stages a backup and restarts Kitsunarr to apply it.
+    pub async fn restore_backup(&self, name: &str) -> ClientResult<()> {
+        self.send::<serde_json::Value>(
+            self.request(
+                reqwest::Method::POST,
+                &format!("/system/backups/{name}/restore"),
+            )
+            .json(&Empty {}),
+        )
+        .await
+        .map(|_| ())
+    }
+    pub async fn restart(&self) -> ClientResult<()> {
+        self.send::<serde_json::Value>(
+            self.request(reqwest::Method::POST, "/system/restart")
+                .json(&Empty {}),
+        )
+        .await
+        .map(|_| ())
+    }
+    pub async fn shutdown(&self) -> ClientResult<()> {
+        self.send::<serde_json::Value>(
+            self.request(reqwest::Method::POST, "/system/shutdown")
+                .json(&Empty {}),
+        )
+        .await
+        .map(|_| ())
+    }
 
     // --- library ------------------------------------------------------------------------------
     pub async fn library_stats(&self) -> ClientResult<LibraryStats> {

@@ -3,7 +3,7 @@
 use dioxus::prelude::*;
 use kitsunarr_domain::api::system::{HealthLevel, LogEntry};
 
-use crate::components::common::{Badge, Empty, ErrorBox, Loading};
+use crate::components::common::{Badge, Confirm, Empty, ErrorBox, Loading};
 use crate::route::Route;
 use crate::state::{use_app, use_client};
 use crate::util::{format_bytes, format_datetime, relative};
@@ -12,6 +12,8 @@ use crate::util::{format_bytes, format_datetime, relative};
 pub fn SystemStatusPage() -> Element {
     let app = use_app();
     let client = use_client();
+    let mut lifecycle = use_signal(|| None::<bool>);
+    let lc = client.clone();
     let c0 = client.clone();
     let status = use_resource(move || {
         let c = c0.clone();
@@ -24,7 +26,36 @@ pub fn SystemStatusPage() -> Element {
         async move { c.health().await }
     });
     rsx! {
-        div { class: "page-head", h1 { "Status & health" } }
+        div { class: "page-head",
+            h1 { class: "grow", "Status & health" }
+            button { class: "btn", onclick: move |_| lifecycle.set(Some(true)), "Restart" }
+            button { class: "btn danger", onclick: move |_| lifecycle.set(Some(false)), "Shut down" }
+        }
+        if let Some(restart) = lifecycle() {
+            Confirm {
+                title: if restart { "Restart Kitsunarr".to_string() } else { "Shut down Kitsunarr".to_string() },
+                message: if restart {
+                    "Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.".to_string()
+                } else {
+                    "Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).".to_string()
+                },
+                confirm_label: if restart { "Restart".to_string() } else { "Shut down".to_string() },
+                danger: !restart,
+                on_confirm: move |_| {
+                    lifecycle.set(None);
+                    let c = lc.clone();
+                    spawn(async move {
+                        let r = if restart { c.restart().await } else { c.shutdown().await };
+                        match r {
+                            Ok(()) if restart => app.success("Kitsunarr is restarting."),
+                            Ok(()) => app.success("Kitsunarr is shutting down."),
+                            Err(e) => app.error(&e),
+                        }
+                    });
+                },
+                on_cancel: move |_| lifecycle.set(None),
+            }
+        }
         div { class: "two-col",
             div { class: "card",
                 h3 { "Health" }
@@ -179,8 +210,11 @@ pub fn SystemBackups() -> Element {
         async move { c.backups().await }
     });
     let mut busy = use_signal(|| false);
+    // (backup name, restore?) awaiting confirmation.
+    let mut pending = use_signal(|| None::<(String, bool)>);
+    let c1 = client.clone();
     let create = move |_| {
-        let c = client.clone();
+        let c = c1.clone();
         busy.set(true);
         spawn(async move {
             match c.create_backup().await {
@@ -193,15 +227,43 @@ pub fn SystemBackups() -> Element {
             busy.set(false);
         });
     };
+    let c2 = client.clone();
+    let confirm = move |_| {
+        let Some((name, restore)) = pending() else {
+            return;
+        };
+        pending.set(None);
+        let c = c2.clone();
+        busy.set(true);
+        spawn(async move {
+            if restore {
+                match c.restore_backup(&name).await {
+                    Ok(()) => app.success(format!(
+                        "Backup {name} staged. Kitsunarr is restarting to restore it; reload the page in a moment."
+                    )),
+                    Err(e) => app.error(&e),
+                }
+            } else {
+                match c.delete_backup(&name).await {
+                    Ok(()) => {
+                        app.success(format!("Backup {name} deleted."));
+                        backups.restart();
+                    }
+                    Err(e) => app.error(&e),
+                }
+            }
+            busy.set(false);
+        });
+    };
     rsx! {
         div { class: "page-head",
             h1 { class: "grow", "Backups" }
-            button { class: "btn primary", disabled: busy(), onclick: create, if busy() { "Creating…" } else { "Back up now" } }
+            button { class: "btn primary", disabled: busy(), onclick: create, if busy() { "Working…" } else { "Back up now" } }
         }
         p { class: "muted small",
-            "Consistent copies of the database. Scheduled backups run weekly (the last eight are kept); every migration also creates one first. To restore, stop Kitsunarr and run "
+            "Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped, "
             code { "kitsunarr restore <file>" }
-            "."
+            " does the same."
         }
         match &*backups.read() {
             None => rsx! { Loading {} },
@@ -210,19 +272,49 @@ pub fn SystemBackups() -> Element {
             Some(Ok(list)) => rsx! {
                 div { class: "table-wrap",
                     table { class: "table",
-                        thead { tr { th { "File" } th { class: "num", "Size" } th { "Created" } } }
+                        thead { tr { th { "File" } th { class: "num", "Size" } th { "Created" } th { "" } } }
                         tbody {
                             for b in list.iter() {
                                 tr { key: "{b.name}",
                                     td { class: "mono small", "{b.name}" }
                                     td { class: "num", {format_bytes(b.size as i64)} }
                                     td { {format_datetime(&b.created_at)} }
+                                    td { class: "row tight end",
+                                        a { class: "btn sm", href: client.backup_download_url(&b.name), download: "{b.name}", "Download" }
+                                        button { class: "btn sm", disabled: busy(),
+                                            onclick: { let n = b.name.clone(); move |_| pending.set(Some((n.clone(), true))) },
+                                            "Restore" }
+                                        button { class: "btn sm danger", disabled: busy(),
+                                            onclick: { let n = b.name.clone(); move |_| pending.set(Some((n.clone(), false))) },
+                                            "Delete" }
+                                    }
                                 }
                             }
                         }
                     }
                 }
             },
+        }
+        if let Some((name, restore)) = pending() {
+            if restore {
+                Confirm {
+                    title: "Restore backup".to_string(),
+                    message: format!("Restore {name}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it."),
+                    confirm_label: "Restore and restart".to_string(),
+                    danger: true,
+                    on_confirm: confirm,
+                    on_cancel: move |_| pending.set(None),
+                }
+            } else {
+                Confirm {
+                    title: "Delete backup".to_string(),
+                    message: format!("Delete {name}?"),
+                    confirm_label: "Delete".to_string(),
+                    danger: true,
+                    on_confirm: confirm,
+                    on_cancel: move |_| pending.set(None),
+                }
+            }
         }
     }
 }

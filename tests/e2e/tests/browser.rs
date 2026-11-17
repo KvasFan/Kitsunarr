@@ -185,8 +185,18 @@ async fn fill(client: &Client, css: &str, value: &str) {
         .for_element(Locator::Css(css))
         .await
         .unwrap();
-    el.clear().await.unwrap();
-    el.send_keys(value).await.unwrap();
+    // A dialog can fill a field from a request after it opens: retype until the field holds
+    // exactly the value (a clear that ran before the field was filled would append to it).
+    for _ in 0..5 {
+        el.clear().await.unwrap();
+        el.send_keys(value).await.unwrap();
+        let now = el.prop("value").await.unwrap().unwrap_or_default();
+        if now == value {
+            return;
+        }
+        tokio::time::sleep(Duration::from_millis(200)).await;
+    }
+    panic!("{css} does not keep the value {value:?}");
 }
 
 /// Real WebDriver pointer actions, exercising native browser drag/drop (no synthetic events).

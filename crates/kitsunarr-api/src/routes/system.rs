@@ -453,3 +453,80 @@ pub async fn logs(
     let level = crate::logs::parse_level(q.level.as_deref());
     Json(state.logs.snapshot(level, q.limit.unwrap_or(500).min(2000)))
 }
+
+/// A backup of the backup folder by its file name (never a path).
+fn backup_file(state: &AppState, name: &str) -> ApiResult<std::path::PathBuf> {
+    let list = maintenance::list_backups(&state.config.backup_dir()).map_err(ApiError::internal)?;
+    list.into_iter()
+        .find(|(n, _, _)| n == name)
+        .map(|(n, _, _)| state.config.backup_dir().join(n))
+        .ok_or_else(|| ApiError::NotFound("The backup does not exist.".into()))
+}
+
+/// Downloads a backup file.
+#[utoipa::path(get, path = "/system/backups/{name}", tag = "system", params(("name" = String, Path)),
+    responses((status = 200, content_type = "application/octet-stream", body = Vec<u8>), (status = 404)))]
+pub async fn download_backup(
+    State(state): State<AppState>,
+    UrlPath(name): UrlPath<String>,
+) -> ApiResult<axum::response::Response> {
+    use axum::response::IntoResponse;
+    let path = backup_file(&state, &name)?;
+    let bytes = tokio::fs::read(&path).await.map_err(ApiError::internal)?;
+    Ok((
+        [
+            (
+                axum::http::header::CONTENT_TYPE,
+                "application/octet-stream".to_string(),
+            ),
+            (
+                axum::http::header::CONTENT_DISPOSITION,
+                format!("attachment; filename=\"{name}\""),
+            ),
+        ],
+        bytes,
+    )
+        .into_response())
+}
+
+/// Deletes a backup file.
+#[utoipa::path(delete, path = "/system/backups/{name}", tag = "system", params(("name" = String, Path)),
+    responses((status = 204), (status = 404)))]
+pub async fn delete_backup(
+    State(state): State<AppState>,
+    UrlPath(name): UrlPath<String>,
+) -> ApiResult<StatusCode> {
+    let path = backup_file(&state, &name)?;
+    tokio::fs::remove_file(&path)
+        .await
+        .map_err(|_| ApiError::NotFound("The backup does not exist.".into()))?;
+    Ok(StatusCode::NO_CONTENT)
+}
+
+/// Restores a backup: it is checked, staged, and Kitsunarr restarts to apply it (Sonarr's
+/// "Restore" in System › Backup).
+#[utoipa::path(post, path = "/system/backups/{name}/restore", tag = "system", params(("name" = String, Path)),
+    responses((status = 202), (status = 400, body = kitsunarr_domain::api::error::ApiErrorBody), (status = 404)))]
+pub async fn restore_backup(
+    State(state): State<AppState>,
+    UrlPath(name): UrlPath<String>,
+) -> ApiResult<StatusCode> {
+    let path = backup_file(&state, &name)?;
+    crate::v3_system::stage_restore(&state, &path).await?;
+    state.lifecycle.restart();
+    Ok(StatusCode::ACCEPTED)
+}
+
+/// Restarts Kitsunarr (a graceful stop, then the binary starts again).
+#[utoipa::path(post, path = "/system/restart", tag = "system", responses((status = 202)))]
+pub async fn restart(State(state): State<AppState>) -> StatusCode {
+    state.lifecycle.restart();
+    StatusCode::ACCEPTED
+}
+
+/// Stops Kitsunarr.
+#[utoipa::path(post, path = "/system/shutdown", tag = "system", responses((status = 202)))]
+pub async fn shutdown(State(state): State<AppState>) -> StatusCode {
+    state.lifecycle.shutdown();
+    StatusCode::ACCEPTED
+}

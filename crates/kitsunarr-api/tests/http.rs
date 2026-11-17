@@ -12130,3 +12130,51 @@ async fn sonarr_series_identity_file_formats_and_connection_capabilities() {
     assert_eq!(telegram["supportsOnRename"], false);
     assert_eq!(telegram["supportsOnManualInteractionRequired"], true);
 }
+
+/// System › Backups: download, restore (staged, then a restart) and delete one backup, and the
+/// restart and shutdown requests.
+#[tokio::test]
+async fn backups_download_restore_delete_and_lifecycle() {
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let b = client.create_backup().await.unwrap();
+    let http = reqwest::Client::new();
+    let get = http
+        .get(client.backup_download_url(&b.name))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(get.status().as_u16(), 200);
+    assert!(
+        get.headers()["content-disposition"]
+            .to_str()
+            .unwrap()
+            .contains(&b.name)
+    );
+    assert_eq!(get.bytes().await.unwrap().len() as u64, b.size);
+    // Only names from the backup folder are accepted.
+    let traversal = http
+        .get(client.url("/system/backups/..%2Fkitsunarr.db"))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(traversal.status().as_u16(), 404);
+
+    assert!(!server.state.lifecycle.restart_requested());
+    client.restore_backup(&b.name).await.unwrap();
+    assert!(server.state.lifecycle.restart_requested());
+    assert!(kitsunarr_db::maintenance::staged_restore_path(&server.state.config.data_dir).exists());
+
+    client.delete_backup(&b.name).await.unwrap();
+    assert!(client.backups().await.unwrap().is_empty());
+    let gone = client.delete_backup(&b.name).await.unwrap_err();
+    assert!(matches!(
+        gone,
+        kitsunarr_client::ClientError::Api { status: 404, .. }
+    ));
+
+    client.shutdown().await.unwrap();
+    client.restart().await.unwrap();
+}
