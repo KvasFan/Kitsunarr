@@ -899,6 +899,21 @@ pub struct GeneralSettings {
     /// Sonarr's Settings › General › Security › Certificate Validation.
     #[serde(default)]
     pub certificate_validation: CertificateValidation,
+    /// Sonarr's `BackupInterval`: days between scheduled backups (1-7). A manual backup
+    /// restarts the interval (Tanukarr 1.0.4).
+    #[serde(default = "default_backup_interval")]
+    pub backup_interval: i32,
+    /// Sonarr's `BackupRetention`: days scheduled backups are kept (1-90).
+    #[serde(default = "default_backup_retention")]
+    pub backup_retention: i32,
+}
+
+fn default_backup_interval() -> i32 {
+    7
+}
+
+fn default_backup_retention() -> i32 {
+    28
 }
 
 /// Interface languages: (code, name in that language).
@@ -981,6 +996,8 @@ impl Default for GeneralSettings {
             ui_language: "en".into(),
             first_day_of_week: 1,
             certificate_validation: CertificateValidation::Enabled,
+            backup_interval: default_backup_interval(),
+            backup_retention: default_backup_retention(),
         }
     }
 }

@@ -285,6 +285,13 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
     let mut series_type = use_signal(|| initial_type);
     let mut season_folder = use_signal(|| true);
     let mut search_missing = use_signal(|| false);
+    let mut automatic_grouping = use_signal(|| true);
+    let groupable = matches!(
+        item.provider,
+        kitsunarr_domain::MetadataProvider::AniList
+            | kitsunarr_domain::MetadataProvider::MyAnimeList
+            | kitsunarr_domain::MetadataProvider::TmdbMovie
+    );
     let mut tags = use_signal(Vec::<i64>::new);
     let mut busy = use_signal(|| false);
     let mut error = use_signal(|| None::<String>);
@@ -352,8 +359,12 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
         let name = request_item.title.clone();
         busy.set(true);
         error.set(None);
+        let req = kitsunarr_domain::api::metadata::AddTitle {
+            title: req,
+            automatic_grouping: !groupable || automatic_grouping(),
+        };
         spawn(async move {
-            match c.add_title(&req).await {
+            match c.add_title_with(&req).await {
                 Ok(added) => {
                     app.success(format!("{name} was added to the library."));
                     nav.push(detail_route(&added.media_type, added.id));
@@ -409,6 +420,20 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
                                 value: profile().map(|p| p.to_string()).unwrap_or_default(),
                                 onchange: move |e: FormEvent| profile.set(e.value().parse().ok()),
                                 for p in profiles.iter() { option { key: "{p.id}", value: "{p.id}", "{p.name}" } }
+                            }
+                        }
+                        // Tanukarr's anime grouping mode (AniList and MyAnimeList franchises, TMDB
+                        // film collections).
+                        if groupable {
+                            Field { label: "Grouping", help: "Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.".to_string(),
+                                select {
+                                    class: "select",
+                                    "aria-label": "Grouping",
+                                    value: if automatic_grouping() { "automatic" } else { "disabled" },
+                                    onchange: move |e: FormEvent| automatic_grouping.set(e.value() != "disabled"),
+                                    option { value: "automatic", "Automatic (official relations)" }
+                                    option { value: "disabled", "Disabled" }
+                                }
                             }
                         }
                         if is_movie {

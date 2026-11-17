@@ -9,8 +9,6 @@ use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_metadata::Metadata;
 use kitsunarr_scheduler::{Job, JobContext, JobResult, job};
 
-/// Scheduled backups kept on disk (manual and pre-migration backups are never pruned).
-const KEEP_SCHEDULED_BACKUPS: usize = 8;
 const KEEP_TASK_RUNS: i64 = 2000;
 
 pub fn all(
@@ -190,21 +188,35 @@ pub fn all(
             },
         ),
         job(
-            "Backup",
-            "Creates a consistent database backup and keeps the most recent ones",
-            7 * 24 * 60,
+            maintenance::BACKUP_TASK,
+            "Creates a consistent database backup and removes scheduled backups older than the retention",
+            // Settings › General › Backups sets the interval (Sonarr's `BackupInterval`).
+            maintenance::backup_interval_minutes(7),
             Duration::from_secs(1800),
             move |ctx| {
                 let dir = backup_dir_for_job.clone();
                 async move {
+                    let general: kitsunarr_domain::api::settings::GeneralSettings =
+                        kitsunarr_db::settings::get_or_default(
+                            ctx.db.pool(),
+                            kitsunarr_db::settings::KEY_GENERAL,
+                        )
+                        .await
+                        .map_err(|e| e.to_string())?;
                     let dest = maintenance::unique_backup_path(&dir, "scheduled");
                     maintenance::backup_to(&ctx.db, &dest)
                         .await
                         .map_err(|e| e.to_string())?;
-                    let pruned = prune_scheduled_backups(&dir, KEEP_SCHEDULED_BACKUPS);
+                    // `CleanupOldBackups` (Sonarr's `BackupRetention`).
+                    let pruned = maintenance::prune_scheduled_backups(
+                        &dir,
+                        general.backup_retention,
+                        std::time::SystemTime::now(),
+                    );
                     Ok(Some(format!(
-                        "{} written, {pruned} old scheduled backups removed",
-                        dest.display()
+                        "{} written, {pruned} scheduled backups older than {} days removed",
+                        dest.display(),
+                        general.backup_retention
                     )))
                 }
             },
@@ -331,18 +343,6 @@ fn remove_stale_files(dir: &std::path::Path, age: Duration) -> usize {
         }
     }
     removed
-}
-
-/// Deletes the oldest `*_scheduled.db` backups beyond `keep`. Other backups are untouched.
-fn prune_scheduled_backups(dir: &std::path::Path, keep: usize) -> usize {
-    let Ok(list) = maintenance::list_backups(dir) else {
-        return 0;
-    };
-    list.into_iter()
-        .filter(|(name, _, _)| name.ends_with("_scheduled.db") || name.contains("_scheduled-"))
-        .skip(keep)
-        .filter(|(name, _, _)| std::fs::remove_file(dir.join(name)).is_ok())
-        .count()
 }
 
 /// Scan both native libraries, isolating unavailable roots and individual title failures.
@@ -508,8 +508,10 @@ mod tests {
         );
     }
 
+    /// `CleanupOldBackups`: scheduled backups older than the retention go; manual and
+    /// pre-migration backups stay.
     #[test]
-    fn pruning_only_touches_scheduled_backups() {
+    fn pruning_only_touches_old_scheduled_backups() {
         let dir = tempfile::tempdir().unwrap();
         for i in 0..5 {
             std::fs::write(
@@ -520,24 +522,34 @@ mod tests {
                 b"x",
             )
             .unwrap();
-            std::thread::sleep(Duration::from_millis(15));
         }
-        std::fs::write(
-            dir.path()
-                .join("kitsunarr_2026-01-01_00-00-00-000_pre-migration.db"),
-            b"x",
-        )
-        .unwrap();
-        assert_eq!(prune_scheduled_backups(dir.path(), 2), 3);
-        let left: Vec<_> = std::fs::read_dir(dir.path())
+        for name in [
+            "kitsunarr_2026-01-01_00-00-00-000_pre-migration.db",
+            "kitsunarr_2026-01-01_00-00-00-000_manual.db",
+        ] {
+            std::fs::write(dir.path().join(name), b"x").unwrap();
+        }
+        let in_30_days = std::time::SystemTime::now() + Duration::from_secs(30 * 86_400);
+        // Written just now: within a 31-day retention 30 days from now.
+        assert_eq!(
+            maintenance::prune_scheduled_backups(dir.path(), 31, in_30_days),
+            0
+        );
+        assert_eq!(
+            maintenance::prune_scheduled_backups(dir.path(), 28, in_30_days),
+            5
+        );
+        let mut left: Vec<_> = std::fs::read_dir(dir.path())
             .unwrap()
-            .map(|e| e.unwrap().file_name())
+            .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
             .collect();
-        assert_eq!(left.len(), 3);
-        assert!(
-            dir.path()
-                .join("kitsunarr_2026-01-01_00-00-00-000_pre-migration.db")
-                .exists()
+        left.sort();
+        assert_eq!(
+            left,
+            [
+                "kitsunarr_2026-01-01_00-00-00-000_manual.db",
+                "kitsunarr_2026-01-01_00-00-00-000_pre-migration.db"
+            ]
         );
     }
 }

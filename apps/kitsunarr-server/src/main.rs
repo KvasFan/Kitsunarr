@@ -309,7 +309,15 @@ async fn serve(config: Config) -> Result<()> {
     )
     .await
     {
-        Ok(g) => certificates.set(g.certificate_validation),
+        Ok(g) => {
+            certificates.set(g.certificate_validation);
+            // The Backup task runs at Settings › General › Backups' interval.
+            if let Err(e) =
+                kitsunarr_db::maintenance::set_backup_interval(&db, g.backup_interval).await
+            {
+                tracing::warn!(error = %e, "could not apply the backup interval");
+            }
+        }
         Err(e) => tracing::warn!(error = %e, "could not load the general settings"),
     }
     let mut http = reqwest::Client::builder();

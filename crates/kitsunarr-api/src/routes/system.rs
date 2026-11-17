@@ -401,9 +401,27 @@ pub async fn create_backup(
     State(state): State<AppState>,
     _p: Principal,
 ) -> ApiResult<(StatusCode, Json<BackupItem>)> {
+    let started = std::time::Instant::now();
     let dest = maintenance::unique_backup_path(&state.config.backup_dir(), "manual");
     let path = maintenance::backup_to(&state.db, &dest).await?;
     let size = std::fs::metadata(&path).map(|m| m.len()).unwrap_or(0);
+    // Tanukarr 1.0.4: the scheduled interval restarts from a successful manual backup.
+    let message = format!("{} written", path.display());
+    let run = maintenance::record_manual_backup(
+        &state.db,
+        &message,
+        started.elapsed().as_millis() as i64,
+    )
+    .await?;
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::Task {
+            run_id: run,
+            task_name: maintenance::BACKUP_TASK.into(),
+            status: "completed".into(),
+            progress: None,
+            message: Some(message),
+        });
     Ok((
         StatusCode::CREATED,
         Json(BackupItem {

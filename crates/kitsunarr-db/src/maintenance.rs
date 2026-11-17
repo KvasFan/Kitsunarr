@@ -47,6 +47,58 @@ pub fn unique_backup_path(dir: &Path, reason: &str) -> PathBuf {
     candidate
 }
 
+/// The scheduled backup task's name.
+pub const BACKUP_TASK: &str = "Backup";
+
+/// `GetBackupInterval`: Sonarr's `BackupInterval` (days, clamped to 1-7) as the Backup task's
+/// interval in minutes.
+pub fn backup_interval_minutes(days: i32) -> i64 {
+    i64::from(days.clamp(1, 7)) * 24 * 60
+}
+
+/// Applies the backup interval to the Backup task (registering it when it is not yet).
+pub async fn set_backup_interval(db: &Database, days: i32) -> DbResult<()> {
+    sqlx::query(
+        "INSERT INTO scheduled_tasks (name, interval_minutes, last_run_at) VALUES (?, ?, ?) \
+         ON CONFLICT (name) DO UPDATE SET interval_minutes = excluded.interval_minutes",
+    )
+    .bind(BACKUP_TASK)
+    .bind(backup_interval_minutes(days))
+    .bind(crate::now())
+    .execute(db.pool())
+    .await?;
+    Ok(())
+}
+
+/// Tanukarr 1.0.4: a successful manual backup is recorded as a Backup task run, so the next
+/// scheduled backup is one interval after it (`TaskManager.Handle(CommandExecutedEvent)`).
+/// Returns the run id.
+pub async fn record_manual_backup(db: &Database, message: &str, duration_ms: i64) -> DbResult<i64> {
+    let run = crate::tasks::start_run(db.pool(), BACKUP_TASK, "manual").await?;
+    crate::tasks::finish_run(db, run, "completed", Some(message), None, duration_ms).await?;
+    Ok(run)
+}
+
+/// `CleanupOldBackups`: deletes `*_scheduled` backups in `dir` last written more than
+/// `retention_days` ago (Sonarr's `BackupRetention`); manual and pre-migration backups are
+/// kept. Returns how many were deleted.
+pub fn prune_scheduled_backups(
+    dir: &Path,
+    retention_days: i32,
+    now: std::time::SystemTime,
+) -> usize {
+    let Ok(list) = list_backups(dir) else {
+        return 0;
+    };
+    let keep =
+        std::time::Duration::from_secs(u64::from(retention_days.max(1).unsigned_abs()) * 86_400);
+    list.into_iter()
+        .filter(|(name, _, _)| name.ends_with("_scheduled.db") || name.contains("_scheduled-"))
+        .filter(|(_, _, modified)| now.duration_since(*modified).is_ok_and(|age| age > keep))
+        .filter(|(name, _, _)| std::fs::remove_file(dir.join(name)).is_ok())
+        .count()
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct IntegrityReport {
     pub integrity: Vec<String>,
