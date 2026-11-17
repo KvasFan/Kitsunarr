@@ -78,8 +78,14 @@ Sonarr API completeness and transient-state migration:
 | 90 | Real Recyclarr 7.5.2 and 8.8.1 syncs; fixes: null quality sizes are no limit, v3 status answers as Sonarr | Done: real containers, HTTP |
 | 91 | Browser timings with 1,000 series (issue #12) | Done: Chromium benchmark |
 | 92 | linux/arm64 image and aarch64 binary (issue #12): cross-compiled server, multi-architecture release | Done: Podman build, QEMU smoke test |
+| 93 | The complete Sonarr `/api/v3` (250 operations) and `/api/v5` (274) of Tanukarr 0.1.5, Sonarr's root routes, restart/shutdown, staged restores, rolling log files | Done: HTTP, unit |
+| 94 | Interface translations completed in 43 languages (interface strings, health messages, task names) | Done: unit, browser e2e |
+| 95 | Tanukarr parity, backend: search after refresh, list retries, shared AniList pacing, "Disabled" grouping, Import Complete and notification back-off, source release size, search ranking, `{Season Year}`, backup interval and retention, database integrity check | Done: HTTP, unit, migrate fixtures |
+| 96 | Tanukarr parity, authentication: External and OIDC sign-in, local-address exemptions, Allowed Hosts, password reset; custom-format alternative groups and episode-title exclusion | Done: HTTP (mock OIDC provider), unit |
+| 97 | Native sign-in for AniList lists and the Trakt and Plex Media Server connections (no Servarr relay) | Done: mocked flows |
+| 98 | Tanukarr parity, web: catalogue order and all-catalogue search, Settings › Quality, import progress, library filters and saved filters, calendar views, "Test all" | Done: HTTP, browser e2e |
 
-Details: [milestones 83–89](milestones-2026-11-17-89.md), the [Recyclarr verification](recyclarr-verification-2026-11-17.md) (90) and the [browser timings](performance.md#browser-at-1000-series) (91).
+Details: [milestones 83–89](milestones-2026-11-17-89.md), [milestones 93–98](milestones-2026-11-17-98.md), the [Recyclarr verification](recyclarr-verification-2026-11-17.md) (90) and the [browser timings](performance.md#browser-at-1000-series) (91).
 
 | Milestone | Scope | Status |
 |---|---|---|
