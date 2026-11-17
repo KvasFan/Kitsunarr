@@ -271,7 +271,7 @@ pub async fn more_checks(state: &AppState, out: &mut Vec<HealthCheck>) -> ApiRes
         .filter(|p| {
             p.enabled
                 && p.options.iter().any(|(k, v)| {
-                    k.starts_with("on") && !k.eq("onEpisodeFileDeleteForUpgrade") && v == &true
+                    k.starts_with("on") && !k.eq("onEpisodeFileDeleteForUpgrade") && v == true
                 })
         })
         .collect();

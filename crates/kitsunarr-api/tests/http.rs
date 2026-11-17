@@ -2978,15 +2978,16 @@ async fn notifications_follow_series_grabs_and_imports() {
         "storage": video.display().to_string()}]);
     client.refresh_queue().await.unwrap();
     wait_for(&hook, 4).await;
-    let seen = hook.lock().unwrap();
-    assert_eq!(seen[3]["eventType"], "Download");
-    assert_eq!(seen[3]["isUpgrade"], false);
-    assert_eq!(seen[3]["episodeFile"]["quality"], "HDTV-720p");
-    assert_eq!(
-        seen[3]["release"]["releaseTitle"],
-        "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
-    );
-    drop(seen);
+    {
+        let seen = hook.lock().unwrap();
+        assert_eq!(seen[3]["eventType"], "Download");
+        assert_eq!(seen[3]["isUpgrade"], false);
+        assert_eq!(seen[3]["episodeFile"]["quality"], "HDTV-720p");
+        assert_eq!(
+            seen[3]["release"]["releaseTitle"],
+            "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
+        );
+    }
     wait_for(&complete, 1).await;
     let seen = complete.lock().unwrap();
     assert_eq!(seen.len(), 1, "{seen:#?}");
