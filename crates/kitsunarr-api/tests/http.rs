@@ -9359,3 +9359,1608 @@ async fn anime_season_searches_search_each_episode_unless_a_pack_covers_it() {
     client.search_releases(&packs).await.unwrap();
     assert_eq!(terms(&log), ["Pack Show"]);
 }
+
+/// A Sonarr API call with the server's API key: (status, JSON body or `Null`).
+async fn sonarr(
+    server: &Server,
+    method: reqwest::Method,
+    path: &str,
+    body: Option<serde_json::Value>,
+) -> (u16, serde_json::Value) {
+    let mut r = reqwest::Client::new()
+        .request(method, format!("{}{path}", server.base))
+        .header("X-Api-Key", &server.api_key);
+    if let Some(b) = body {
+        r = r.json(&b);
+    }
+    let r = r.send().await.unwrap();
+    let status = r.status().as_u16();
+    let text = r.text().await.unwrap();
+    (
+        status,
+        serde_json::from_str(&text).unwrap_or(serde_json::Value::Null),
+    )
+}
+
+/// Sonarr's anonymous and system-level endpoints: ping, API info, file browser, logs, interface
+/// strings, routes, updates, backups with restore staging, shutdown and restart.
+#[tokio::test]
+async fn sonarr_system_files_logs_backups_and_lifecycle() {
+    use reqwest::Method as M;
+    use serde_json::json;
+    let server = start().await;
+    let http = reqwest::Client::new();
+
+    // `/ping` is anonymous, `/api` is not.
+    let ping = http
+        .get(format!("{}/ping", server.base))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(ping.status().as_u16(), 200);
+    assert_eq!(
+        ping.json::<serde_json::Value>().await.unwrap(),
+        json!({"status": "OK"})
+    );
+    let head = http
+        .head(format!("{}/ping", server.base))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(head.status().as_u16(), 200);
+    let anon = http
+        .get(format!("{}/api", server.base))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(anon.status().as_u16(), 401);
+    let (status, info) = sonarr(&server, M::GET, "/api", None).await;
+    assert_eq!(
+        (status, info),
+        (200, json!({"current": "v3", "deprecated": []}))
+    );
+    let content = http
+        .get(format!("{}/content/nothing.js", server.base))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(content.status().as_u16(), 404);
+
+    for v in ["v3", "v5"] {
+        // File browser.
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(dir.path().join("Show/Season 1")).unwrap();
+        std::fs::write(dir.path().join("Show/Season 1/a.mkv"), b"x").unwrap();
+        std::fs::write(dir.path().join("Show/readme.txt"), b"x").unwrap();
+        let base = format!("{}/", dir.path().display());
+        let (status, fs) = sonarr(
+            &server,
+            M::GET,
+            &format!("/api/{v}/filesystem?path={base}&includeFiles=true"),
+            None,
+        )
+        .await;
+        assert_eq!(status, 200);
+        assert_eq!(fs["directories"][0]["name"], "Show", "{fs}");
+        assert_eq!(fs["directories"][0]["type"], "folder");
+        assert_eq!(fs["files"], json!([]));
+        let (_, kind) = sonarr(
+            &server,
+            M::GET,
+            &format!("/api/{v}/filesystem/type?path={base}Show/readme.txt"),
+            None,
+        )
+        .await;
+        assert_eq!(kind["type"], "file");
+        let (_, media) = sonarr(
+            &server,
+            M::GET,
+            &format!("/api/{v}/filesystem/mediafiles?path={base}Show"),
+            None,
+        )
+        .await;
+        assert_eq!(media.as_array().unwrap().len(), 1, "{media}");
+        assert_eq!(media[0]["relativePath"], "Season 1/a.mkv");
+
+        // Interface strings in the configured language.
+        let (status, strings) =
+            sonarr(&server, M::GET, &format!("/api/{v}/localization"), None).await;
+        assert_eq!(status, 200);
+        assert_eq!(strings["strings"]["Add"], "Add");
+        let (_, language) = sonarr(
+            &server,
+            M::GET,
+            &format!("/api/{v}/localization/language"),
+            None,
+        )
+        .await;
+        assert_eq!(language, json!({"identifier": "en"}));
+        assert_eq!(
+            sonarr(&server, M::GET, &format!("/api/{v}/localization/1"), None)
+                .await
+                .0,
+            200
+        );
+
+        // Routes and updates.
+        let routes = http
+            .get(format!("{}/api/{v}/system/routes", server.base))
+            .header("X-Api-Key", &server.api_key)
+            .send()
+            .await
+            .unwrap()
+            .text()
+            .await
+            .unwrap();
+        assert!(routes.contains("GET /api/v3/series/{id}"), "{routes}");
+        assert!(routes.contains("GET /api/v5/settings/naming"));
+        assert!(routes.contains("GET /api/v1/system/status"));
+        assert!(!routes.contains(" /a\n"));
+        assert_eq!(
+            sonarr(
+                &server,
+                M::GET,
+                &format!("/api/{v}/system/routes/duplicate"),
+                None
+            )
+            .await
+            .1,
+            json!({})
+        );
+        let (_, updates) = sonarr(&server, M::GET, &format!("/api/{v}/update"), None).await;
+        assert_eq!(updates[0]["installed"], true);
+        assert_eq!(updates[0]["installable"], false);
+        assert_eq!(updates[0]["version"], "test");
+        assert_eq!(
+            sonarr(&server, M::GET, &format!("/api/{v}/log/file/update"), None)
+                .await
+                .1,
+            json!([])
+        );
+        assert_eq!(
+            sonarr(
+                &server,
+                M::GET,
+                &format!("/api/{v}/mediacover/999/poster.jpg"),
+                None
+            )
+            .await
+            .0,
+            404
+        );
+    }
+
+    // Log files written under the data directory.
+    let logs = kitsunarr_api::log_files::folder(&server.state.config.data_dir);
+    let mut writer = kitsunarr_api::log_files::RollingFile::new(logs.clone());
+    std::io::Write::write_all(&mut writer, b"2026-11-17 INFO started\n").unwrap();
+    std::io::Write::flush(&mut writer).unwrap();
+    let (_, files) = sonarr(&server, M::GET, "/api/v3/log/file", None).await;
+    assert_eq!(files[0]["filename"], "kitsunarr.txt", "{files}");
+    assert_eq!(files[0]["contentsUrl"], "/api/v3/log/file/kitsunarr.txt");
+    let text = http
+        .get(format!("{}/api/v5/log/file/kitsunarr.txt", server.base))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+    assert!(text.contains("INFO started"));
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v3/log/file/other.txt", None)
+            .await
+            .0,
+        404
+    );
+
+    // Backups: ids as Sonarr derives them; restore stages the backup for the next start.
+    let client = signed_in(&server).await;
+    client.create_backup().await.unwrap();
+    let (_, backups) = sonarr(&server, M::GET, "/api/v3/system/backup", None).await;
+    let id = backups[0]["id"].as_i64().unwrap();
+    assert_eq!(backups[0]["type"], "manual");
+    let (_, v5_backups) = sonarr(&server, M::GET, "/api/v5/system/backup", None).await;
+    assert_eq!(v5_backups[0]["id"], id);
+    let (status, restored) = sonarr(
+        &server,
+        M::POST,
+        &format!("/api/v3/system/backup/restore/{id}"),
+        None,
+    )
+    .await;
+    assert_eq!((status, restored), (200, json!({"restartRequired": true})));
+    let staged = kitsunarr_db::maintenance::staged_restore_path(&server.state.config.data_dir);
+    assert!(staged.is_file());
+    assert_eq!(
+        sonarr(&server, M::POST, "/api/v3/system/backup/restore/1", None)
+            .await
+            .0,
+        404
+    );
+    let upload = |name: &'static str, data: Vec<u8>, v: &'static str| {
+        let mut body = format!(
+            "--XBOUNDARY\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{name}\"\r\nContent-Type: application/octet-stream\r\n\r\n"
+        )
+        .into_bytes();
+        body.extend_from_slice(&data);
+        body.extend_from_slice(b"\r\n--XBOUNDARY--\r\n");
+        http.post(format!(
+            "{}/api/{v}/system/backup/restore/upload",
+            server.base
+        ))
+        .header("X-Api-Key", &server.api_key)
+        .header("Content-Type", "multipart/form-data; boundary=XBOUNDARY")
+        .body(body)
+        .send()
+    };
+    let bytes = std::fs::read(&staged).unwrap();
+    assert_eq!(
+        upload("backup.txt", b"x".to_vec(), "v3")
+            .await
+            .unwrap()
+            .status()
+            .as_u16(),
+        415
+    );
+    let bad = upload("backup.txt", b"x".to_vec(), "v5").await.unwrap();
+    assert_eq!(bad.status().as_u16(), 400);
+    assert!(
+        bad.json::<serde_json::Value>().await.unwrap()["error"]
+            .as_str()
+            .unwrap()
+            .contains(".db")
+    );
+    assert_eq!(
+        upload("broken.db", b"not a database".to_vec(), "v3")
+            .await
+            .unwrap()
+            .status()
+            .as_u16(),
+        400
+    );
+    let ok = upload("kitsunarr.db", bytes, "v5").await.unwrap();
+    assert_eq!(ok.status().as_u16(), 200);
+    let (status, _) = sonarr(
+        &server,
+        M::DELETE,
+        &format!("/api/v5/system/backup/{id}"),
+        None,
+    )
+    .await;
+    assert_eq!(status, 204);
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v3/system/backup", None)
+            .await
+            .1,
+        json!([])
+    );
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!("/api/v3/system/backup/{id}"),
+            None
+        )
+        .await
+        .0,
+        404
+    );
+
+    // Shutdown and restart only answer; the lifecycle handle does the rest.
+    let (_, r) = sonarr(&server, M::POST, "/api/v3/system/restart", None).await;
+    assert_eq!(r, json!({"restarting": true}));
+    assert!(server.state.lifecycle.restart_requested());
+    let (_, s) = sonarr(&server, M::POST, "/api/v5/system/shutdown", None).await;
+    assert_eq!(s, json!({"shuttingDown": true}));
+    tokio::time::sleep(std::time::Duration::from_millis(400)).await;
+    assert!(server.state.lifecycle.stopping());
+}
+
+/// Sonarr's settings-like resources Kitsunarr added: auto tagging, custom filters, custom
+/// format and quality definition extras, delay profile order, languages, metadata sources and
+/// naming examples, under v3 and v5.
+#[tokio::test]
+async fn sonarr_rules_filters_qualities_and_metadata_sources() {
+    use reqwest::Method as M;
+    use serde_json::json;
+    let server = start().await;
+    let (_, tag) = sonarr(
+        &server,
+        M::POST,
+        "/api/v3/tag",
+        Some(json!({"label": "anime"})),
+    )
+    .await;
+    let tag_id = tag["id"].as_i64().unwrap();
+
+    // Auto tagging.
+    let (status, schema) = sonarr(&server, M::GET, "/api/v3/autotagging/schema", None).await;
+    assert_eq!(status, 200);
+    let genre = schema
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["implementation"] == "GenreSpecification")
+        .unwrap();
+    assert_eq!(genre["fields"][0]["name"], "value");
+    let rule = json!({
+        "name": "Anime", "removeTagsAutomatically": true, "tags": [tag_id],
+        "specifications": [{"name": "Genre", "implementation": "GenreSpecification", "negate": false,
+                            "required": true, "fields": [{"name": "value", "value": ["Anime"]}]}],
+    });
+    let (status, created) =
+        sonarr(&server, M::POST, "/api/v3/autotagging", Some(rule.clone())).await;
+    assert_eq!(status, 201, "{created}");
+    let id = created["id"].as_i64().unwrap();
+    assert_eq!(
+        created["specifications"][0]["fields"][0]["value"],
+        json!(["Anime"])
+    );
+    assert_eq!(
+        sonarr(&server, M::POST, "/api/v5/autotagging", Some(rule.clone()))
+            .await
+            .0,
+        422,
+        "names are unique"
+    );
+    let mut renamed = created.clone();
+    renamed["name"] = json!("Anime shows");
+    let (status, updated) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v5/autotagging/{id}"),
+        Some(renamed),
+    )
+    .await;
+    assert_eq!(
+        (status, updated["name"].as_str()),
+        (202, Some("Anime shows"))
+    );
+    let bad = json!({"name": "x", "tags": [tag_id], "specifications": [{"name": "x", "implementation": "Nope"}]});
+    assert_eq!(
+        sonarr(&server, M::POST, "/api/v3/autotagging", Some(bad))
+            .await
+            .0,
+        400
+    );
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!("/api/v5/autotagging/{id}"),
+            None
+        )
+        .await
+        .0,
+        204
+    );
+    assert_eq!(
+        sonarr(&server, M::GET, &format!("/api/v3/autotagging/{id}"), None)
+            .await
+            .0,
+        404
+    );
+
+    // Custom filters, shared with the native API.
+    let filter = json!({"type": "series", "label": "Anime",
+                        "filters": [{"key": "seriesType", "value": ["anime"], "type": "equal"}]});
+    let (status, created) = sonarr(&server, M::POST, "/api/v3/customfilter", Some(filter)).await;
+    assert_eq!(status, 201);
+    let fid = created["id"].as_i64().unwrap();
+    let (_, native) = sonarr(&server, M::GET, "/api/v1/customfilters", None).await;
+    assert_eq!(native[0]["filters"][0]["key"], "seriesType");
+    let (status, updated) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v5/customfilter/{fid}"),
+        Some(json!({"id": fid, "type": "series", "label": "Cartoons", "filters": []})),
+    )
+    .await;
+    assert_eq!((status, updated["label"].as_str()), (202, Some("Cartoons")));
+    assert_eq!(
+        sonarr(
+            &server,
+            M::POST,
+            "/api/v1/customfilters",
+            Some(json!({"type": "", "label": "x"}))
+        )
+        .await
+        .0,
+        400
+    );
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!("/api/v3/customfilter/{fid}"),
+            None
+        )
+        .await
+        .0,
+        200
+    );
+    assert_eq!(
+        sonarr(
+            &server,
+            M::GET,
+            &format!("/api/v5/customfilter/{fid}"),
+            None
+        )
+        .await
+        .0,
+        404
+    );
+
+    // Custom format bulk edits.
+    let (_, cf) = sonarr(
+        &server,
+        M::POST,
+        "/api/v3/customformat",
+        Some(json!({"name": "x265", "specifications": [{"name": "x265", "implementation": "ReleaseTitleSpecification",
+            "fields": [{"name": "value", "value": "x265"}]}]})),
+    )
+    .await;
+    let cf_id = cf["id"].as_i64().unwrap();
+    let (status, bulk) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v3/customformat/bulk",
+        Some(json!({"ids": [cf_id], "includeCustomFormatWhenRenaming": true})),
+    )
+    .await;
+    assert_eq!(status, 202);
+    assert_eq!(bulk[0]["includeCustomFormatWhenRenaming"], true);
+    assert_eq!(
+        sonarr(
+            &server,
+            M::PUT,
+            "/api/v3/customformat/bulk",
+            Some(json!({"ids": []}))
+        )
+        .await
+        .0,
+        400
+    );
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            "/api/v5/customformat/bulk",
+            Some(json!({"ids": [cf_id]}))
+        )
+        .await
+        .0,
+        204
+    );
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v3/customformat", None)
+            .await
+            .1,
+        json!([])
+    );
+
+    // Delay profiles move in Sonarr's order; the default profile stays last.
+    let mut ids = Vec::new();
+    for delay in [10, 20] {
+        let (_, d) = sonarr(
+            &server,
+            M::POST,
+            "/api/v3/delayprofile",
+            Some(json!({"usenetDelay": delay, "tags": [tag_id]})),
+        )
+        .await;
+        ids.push(d["id"].as_i64().unwrap());
+    }
+    let order_of = |list: &serde_json::Value, id: i64| {
+        list.as_array()
+            .unwrap()
+            .iter()
+            .find(|d| d["id"] == id)
+            .unwrap()["order"]
+            .as_i64()
+            .unwrap()
+    };
+    let (status, list) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v5/delayprofile/reorder/{}", ids[1]),
+        None,
+    )
+    .await;
+    assert_eq!(status, 200, "{list}");
+    assert!(order_of(&list, ids[1]) < order_of(&list, ids[0]), "{list}");
+    let (_, list) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v3/delayprofile/reorder/{}?after={}", ids[1], ids[0]),
+        None,
+    )
+    .await;
+    assert!(order_of(&list, ids[0]) < order_of(&list, ids[1]), "{list}");
+    assert_eq!(
+        sonarr(&server, M::PUT, "/api/v3/delayprofile/reorder/999", None)
+            .await
+            .0,
+        404
+    );
+
+    // Indexer flags, languages and the deprecated language profile.
+    let (_, flags) = sonarr(&server, M::GET, "/api/v5/indexerflag", None).await;
+    assert_eq!(
+        flags[0],
+        json!({"id": 1, "name": "Freeleech", "nameLower": "freeleech"})
+    );
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v3/language/1", None).await.1,
+        json!({"id": 1, "name": "English"})
+    );
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/language/99999", None)
+            .await
+            .0,
+        404
+    );
+    let (_, profiles) = sonarr(&server, M::GET, "/api/v3/languageprofile", None).await;
+    assert_eq!(profiles[0]["name"], "Deprecated");
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v3/languageprofile/schema", None)
+            .await
+            .1["cutoff"]["name"],
+        "English"
+    );
+    assert_eq!(
+        sonarr(
+            &server,
+            M::PUT,
+            "/api/v3/languageprofile/1",
+            Some(profiles[0].clone())
+        )
+        .await
+        .0,
+        202
+    );
+    assert_eq!(
+        sonarr(&server, M::DELETE, "/api/v3/languageprofile/1", None)
+            .await
+            .0,
+        200
+    );
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/languageprofile", None)
+            .await
+            .0,
+        404,
+        "v5 has no language profiles"
+    );
+
+    // Quality presets and the codec catalogue (Tanukarr).
+    let (_, defs) = sonarr(&server, M::GET, "/api/v3/qualitydefinition", None).await;
+    let hdtv = defs
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|d| d["quality"]["name"] == "HDTV-720p")
+        .unwrap();
+    assert_eq!(hdtv["isCustom"], false);
+    assert_eq!(hdtv["source"], "television");
+    assert_eq!(hdtv["minSizeIsMixed"], false);
+    let (_, codecs) = sonarr(&server, M::GET, "/api/v3/qualitydefinition/codecs", None).await;
+    assert_eq!(codecs["H.265 / HEVC / x265"], 1.67);
+    assert_eq!(codecs.as_object().unwrap().len(), 15);
+    let (_, defaults) = sonarr(
+        &server,
+        M::GET,
+        "/api/v5/qualitydefinition/codecdefaults",
+        None,
+    )
+    .await;
+    assert_eq!(defaults["AV1"], 2.22);
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v3/qualitydefinition/limits", None)
+            .await
+            .1,
+        json!({"min": 0, "max": 1000})
+    );
+    let (status, custom) = sonarr(
+        &server,
+        M::POST,
+        "/api/v3/qualitydefinition",
+        Some(
+            json!({"title": "WEB-1080p AV1", "source": "web", "resolution": 1080, "codec": "AV1"}),
+        ),
+    )
+    .await;
+    assert_eq!(status, 201, "{custom}");
+    assert_eq!(custom["isCustom"], true);
+    assert_eq!(custom["codec"], "AV1");
+    let qid = custom["id"].as_i64().unwrap();
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!("/api/v5/qualitydefinition/{qid}"),
+            None
+        )
+        .await
+        .0,
+        204
+    );
+    let (_, retired) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v3/qualitydefinition/{qid}"),
+        None,
+    )
+    .await;
+    assert_eq!(retired["isRetired"], true);
+    let (status, restored) = sonarr(
+        &server,
+        M::POST,
+        &format!("/api/v3/qualitydefinition/{qid}/restore"),
+        None,
+    )
+    .await;
+    assert_eq!(
+        (status, restored["isRetired"].as_bool()),
+        (200, Some(false))
+    );
+    let (status, bulk) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v5/qualitydefinition",
+        Some(json!([{"quality": {"id": 4}, "title": "HDTV-720p", "minSize": 2.0, "maxSize": 50.0, "preferredSize": 20.0}])),
+    )
+    .await;
+    assert_eq!((status, bulk[0]["minSize"].as_f64()), (200, Some(2.0)));
+
+    // Metadata sources: order and disabled catalogues, keys redacted.
+    let (_, sources) = sonarr(&server, M::GET, "/api/v3/config/metadatasource", None).await;
+    assert_eq!(sources["metadataSourceOrder"].as_array().unwrap().len(), 7);
+    assert_eq!(sources["tmdbApiKey"], "");
+    let (status, saved) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v3/config/metadatasource/1",
+        Some(json!({"metadataSourceOrder": ["aniList", "tvdb"], "disabledMetadataSources": ["omdb"], "tmdbApiKey": "secret"})),
+    )
+    .await;
+    assert_eq!(status, 202, "{saved}");
+    assert_eq!(saved["metadataSourceOrder"][0], "aniList");
+    assert_eq!(saved["tmdbApiKey"], "********");
+    assert_eq!(saved["tmdbApiKeyConfigured"], true);
+    let native: kitsunarr_domain::api::settings::MetadataSourcesSettings =
+        kitsunarr_db::settings::get_or_default(
+            server.state.db.pool(),
+            kitsunarr_db::settings::KEY_METADATA_SOURCES,
+        )
+        .await
+        .unwrap();
+    assert_eq!(native.source_order[0], MetadataProvider::AniList);
+    assert_eq!(native.source_order.len(), 7);
+    assert_eq!(native.disabled_sources, [MetadataProvider::Omdb]);
+    assert_eq!(native.tmdb_api_key.as_deref(), Some("secret"));
+    let (_, v5) = sonarr(&server, M::GET, "/api/v5/settings/metadatasource", None).await;
+    assert_eq!(v5["preferredMetadataLanguage"], 1);
+    assert_eq!(v5["disabledMetadataSources"], json!(["omdb"]));
+    let (status, _) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v5/settings/metadata/1",
+        Some(json!({"disabledMetadataSources": ["tvdb", "tmdb", "aniList", "myAnimeList", "tvMaze", "tmdbMovie", "omdb"]})),
+    )
+    .await;
+    assert_eq!(status, 422, "one catalogue must stay enabled");
+
+    // Naming examples of the stored settings, or of the settings in the query.
+    let (status, examples) = sonarr(&server, M::GET, "/api/v3/config/naming/examples", None).await;
+    assert_eq!(status, 200);
+    assert!(
+        examples["seriesFolderExample"]
+            .as_str()
+            .unwrap()
+            .contains("The Series Title")
+    );
+    let (_, custom) = sonarr(
+        &server,
+        M::GET,
+        "/api/v5/settings/naming/examples?id=1&renameEpisodes=true&standardEpisodeFormat=%7BSeries%20Title%7D%20-%20S%7Bseason%3A00%7DE%7Bepisode%3A00%7D",
+        None,
+    )
+    .await;
+    assert_eq!(
+        custom["singleEpisodeExample"], "The Series Title's! - S01E01",
+        "{custom}"
+    );
+    assert!(
+        custom["multiEpisodeExample"]
+            .as_str()
+            .unwrap()
+            .starts_with("The Series Title's! - S01E01")
+    );
+
+    // Commands start at once, so none can be cancelled.
+    assert_eq!(
+        sonarr(&server, M::DELETE, "/api/v3/command/1", None)
+            .await
+            .0,
+        409
+    );
+    // Native "test all" with no providers.
+    assert_eq!(
+        sonarr(&server, M::POST, "/api/v1/providers/indexers/testall", None)
+            .await
+            .1,
+        json!([])
+    );
+}
+
+/// Sonarr's library resources over one series with files, in v3 and v5 shapes: episode and
+/// episode file edits, single-episode reads, folders, renames, statistics, history, manual
+/// import re-evaluation, parsing, artwork and companion keys on v5.
+#[tokio::test]
+async fn sonarr_v3_and_v5_library_resources_over_one_series() {
+    use reqwest::Method as M;
+    use serde_json::json;
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let sid = added.id;
+    let detail = client.series_detail(sid).await.unwrap();
+    let folder = std::path::PathBuf::from(&detail.item.path);
+    std::fs::create_dir_all(folder.join("Season 01")).unwrap();
+    for name in [
+        "Season 01/Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv",
+        "Season 01/Breaking.Bad.S01E02.1080p.BluRay.x264-GRP.mkv",
+    ] {
+        std::fs::write(folder.join(name), b"video").unwrap();
+    }
+    client.rescan_series(sid).await.unwrap();
+    let episodes = client.episodes(sid).await.unwrap();
+    let ep = |s: i32, e: i32| {
+        episodes
+            .iter()
+            .find(|x| x.season_number == s && x.episode_number == e)
+            .unwrap()
+    };
+    let (e1, e3) = (ep(1, 1).id, ep(1, 3).id);
+    let file_id = ep(1, 1).file.as_ref().unwrap().id;
+
+    // Episode monitoring (v3 answers 202, v5 200 with v5's fields).
+    let (status, e) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v3/episode/{e3}"),
+        Some(json!({"monitored": false})),
+    )
+    .await;
+    assert_eq!((status, e["monitored"].as_bool()), (202, Some(false)));
+    assert!(e.get("endTime").is_none());
+    let (status, e) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v5/episode/{e3}"),
+        Some(json!({"monitored": true})),
+    )
+    .await;
+    assert_eq!((status, e["monitored"].as_bool()), (200, Some(true)));
+    assert!(e.get("endTime").is_some() && e["grabDate"].is_null());
+
+    // One episode of the calendar or wanted lists, with its series and file.
+    let (status, c) = sonarr(&server, M::GET, &format!("/api/v3/calendar/{e1}"), None).await;
+    assert_eq!(status, 200);
+    assert_eq!(c["series"]["id"], sid);
+    assert_eq!(c["episodeFile"]["id"], file_id);
+    let (_, w) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/wanted/missing/{e3}"),
+        None,
+    )
+    .await;
+    assert!(w["series"].get("languageProfileId").is_none(), "{w}");
+    assert!(w["series"].get("originalCountry").is_some());
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v3/wanted/cutoff/999999", None)
+            .await
+            .0,
+        404
+    );
+
+    // Episode file edits: quality, release group, languages, release type.
+    let (status, f) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v3/episodefile/{file_id}"),
+        Some(json!({"id": file_id, "releaseGroup": "NEW", "sceneName": "not a scene name",
+                    "quality": {"quality": {"id": 6}, "revision": {"version": 2, "real": 0, "isRepack": false}}})),
+    )
+    .await;
+    assert_eq!(status, 202, "{f}");
+    assert_eq!(f["releaseGroup"], "NEW");
+    assert_eq!(f["quality"]["quality"]["id"], 6);
+    assert_eq!(f["quality"]["revision"]["version"], 2);
+    let (status, list) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v5/episodefile/bulk",
+        Some(json!([{"id": file_id, "languages": [{"id": 2}], "releaseType": "singleEpisode"}])),
+    )
+    .await;
+    assert_eq!(status, 200, "{list}");
+    assert_eq!(list[0]["releaseType"], "singleEpisode");
+    assert!(list[0].get("mediaInfo").is_some());
+    let (status, list) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v3/episodefile/editor",
+        Some(json!({"episodeFileIds": [file_id], "releaseGroup": "ED"})),
+    )
+    .await;
+    assert_eq!(
+        (status, list[0]["releaseGroup"].as_str()),
+        (202, Some("ED"))
+    );
+    let stored = kitsunarr_db::library::series::file_records(&server.state.db, sid)
+        .await
+        .unwrap();
+    let stored = stored.iter().find(|r| r.id == file_id).unwrap();
+    assert_eq!(stored.language_ids(), [2]);
+    assert_eq!(stored.release_type, 1);
+    assert_eq!(stored.quality_id, 6);
+    assert_eq!(
+        sonarr(
+            &server,
+            M::PUT,
+            "/api/v3/episodefile/999999",
+            Some(json!({"releaseGroup": "x"}))
+        )
+        .await
+        .0,
+        404
+    );
+
+    // v5 episode and file reads with subresources.
+    let (_, files) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/episodefile?seriesId={sid}"),
+        None,
+    )
+    .await;
+    assert_eq!(files.as_array().unwrap().len(), 2);
+    assert_eq!(files[0]["customFormats"], json!([]));
+    let (_, one) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/episodefile?episodeFileIds={file_id}"),
+        None,
+    )
+    .await;
+    assert_eq!(one[0]["id"], file_id);
+    let (_, eps) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/episode?seriesId={sid}&seasonNumber=1&includeSubresources=series&includeSubresources=episodeFile"),
+        None,
+    )
+    .await;
+    let first = eps
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|e| e["id"] == e1)
+        .unwrap();
+    assert_eq!(first["series"]["id"], sid);
+    assert_eq!(first["episodeFile"]["id"], file_id);
+    let (_, plain) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/episode?seriesId={sid}"),
+        None,
+    )
+    .await;
+    assert!(plain[0].get("series").is_none() && plain[0].get("endTime").is_some());
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/episode", None).await.0,
+        400
+    );
+    let (_, by_file) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/episode?episodeFileId={file_id}"),
+        None,
+    )
+    .await;
+    assert_eq!(by_file.as_array().unwrap().len(), 1);
+    let (status, monitored) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v5/episode/monitor",
+        Some(json!({"episodeIds": [e3], "monitored": false})),
+    )
+    .await;
+    assert_eq!(
+        (status, monitored[0]["monitored"].as_bool()),
+        (200, Some(false))
+    );
+
+    // v5 series: statistics per season, season images on request, season monitoring.
+    let (_, all) = sonarr(&server, M::GET, "/api/v5/series", None).await;
+    let s = &all[0];
+    assert!(s.get("languageProfileId").is_none());
+    let season1 = s["seasons"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|x| x["seasonNumber"] == 1)
+        .unwrap();
+    assert!(
+        season1["statistics"]["monitoredEpisodeCount"]
+            .as_i64()
+            .unwrap()
+            > 0
+    );
+    assert_eq!(season1["statistics"]["releaseGroups"], json!(["ED", "GRP"]));
+    assert!(
+        season1["statistics"]["episodeFileQualities"]
+            .as_array()
+            .unwrap()
+            .len()
+            == 2
+    );
+    assert!(season1.get("images").is_none());
+    let (_, with_images) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/series/{sid}?includeSubresources=seasonImages"),
+        None,
+    )
+    .await;
+    assert!(with_images["seasons"][0]["images"].is_array());
+    let (status, season) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v5/series/{sid}/season"),
+        Some(json!({"seasonNumber": 1, "monitored": false})),
+    )
+    .await;
+    assert_eq!((status, season["monitored"].as_bool()), (200, Some(false)));
+    assert_eq!(
+        sonarr(
+            &server,
+            M::PUT,
+            &format!("/api/v5/series/{sid}/season"),
+            Some(json!({"seasonNumber": 99, "monitored": false}))
+        )
+        .await
+        .0,
+        404
+    );
+    let (_, f3) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v3/series/{sid}/folder"),
+        None,
+    )
+    .await;
+    assert_eq!(f3["folder"], "Breaking Bad");
+    let (_, f5) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/series/{sid}/folder"),
+        None,
+    )
+    .await;
+    assert_eq!(f5, f3);
+
+    // Renames of several series.
+    let (status, renames) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v3/rename/bulk?seriesIds={sid}"),
+        None,
+    )
+    .await;
+    assert_eq!(status, 200);
+    assert!(renames.is_array());
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/rename/bulk", None).await.0,
+        400
+    );
+
+    // Library statistics with Sonarr's filters.
+    let (_, stats) = sonarr(&server, M::GET, "/api/v5/statistics", None).await;
+    assert_eq!(stats["seriesCount"], 1, "{stats}");
+    assert_eq!(stats["episodeFileCount"], 2);
+    assert_eq!(stats["qualityStatistics"].as_array().unwrap().len(), 2);
+    assert_eq!(
+        stats["qualityProfileStatistics"][0]["seriesCount"]
+            .as_i64()
+            .unwrap()
+            + stats["qualityProfileStatistics"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .skip(1)
+                .map(|p| p["seriesCount"].as_i64().unwrap())
+                .sum::<i64>(),
+        1
+    );
+    let (_, none) = sonarr(&server, M::GET, "/api/v5/statistics?monitored=false", None).await;
+    assert_eq!(none["seriesCount"], 0);
+    let (_, anime) = sonarr(
+        &server,
+        M::GET,
+        "/api/v5/statistics?seriesTypes=anime&seriesTypesNot=true",
+        None,
+    )
+    .await;
+    assert_eq!(anime["seriesCount"], 1);
+    let root = dir.path().display().to_string();
+    let (_, in_root) = sonarr(
+        &server,
+        M::GET,
+        &format!("/api/v5/statistics?rootFolderPaths={root}"),
+        None,
+    )
+    .await;
+    assert_eq!(in_root["seriesCount"], 1);
+
+    // History (v5 lists), and grabs that cannot be marked failed.
+    let (status, history) =
+        sonarr(&server, M::GET, "/api/v5/history?page=1&pageSize=5", None).await;
+    assert_eq!(status, 200);
+    assert!(history["records"].is_array());
+    for path in [
+        format!("/api/v5/history/season?seriesId={sid}&seasonNumber=1"),
+        format!("/api/v5/history/episode?episodeId={e1}&includeSubresources=episode"),
+        format!("/api/v5/history/series?seriesId={sid}"),
+        "/api/v5/history/since?date=2000-01-01T00:00:00Z".to_string(),
+    ] {
+        let (status, list) = sonarr(&server, M::GET, &path, None).await;
+        assert_eq!(status, 200, "{path}: {list}");
+        assert!(list.is_array());
+    }
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/history/season?seriesId=1", None)
+            .await
+            .0,
+        422
+    );
+    assert_eq!(
+        sonarr(&server, M::POST, "/api/v5/history/failed/999999", None)
+            .await
+            .0,
+        404
+    );
+
+    // Calendar and queue in v5 shapes.
+    let (status, cal) = sonarr(
+        &server,
+        M::GET,
+        "/api/v5/calendar?start=2008-01-01&end=2008-12-31&includeUnmonitored=true&includeSubresources=series",
+        None,
+    )
+    .await;
+    assert_eq!(status, 200);
+    if let Some(first) = cal.as_array().and_then(|c| c.first()) {
+        assert_eq!(first["series"]["id"], sid);
+        assert!(first.get("endTime").is_some());
+    }
+    let (_, queue) = sonarr(
+        &server,
+        M::GET,
+        "/api/v5/queue?includeSubresources=episodes",
+        None,
+    )
+    .await;
+    assert_eq!(queue["totalRecords"], 0);
+    assert_eq!(
+        sonarr(
+            &server,
+            M::GET,
+            &format!("/api/v5/queue/details?seriesId={sid}"),
+            None
+        )
+        .await
+        .1,
+        json!([])
+    );
+
+    // Manual import re-evaluation of a chosen file.
+    let path = folder
+        .join("Season 01/Breaking.Bad.S01E02.1080p.BluRay.x264-GRP.mkv")
+        .display()
+        .to_string();
+    let (status, items) = sonarr(
+        &server,
+        M::POST,
+        "/api/v3/manualimport",
+        Some(json!([{"path": path, "seriesId": sid, "episodeIds": [e1],
+                      "quality": {"quality": {"id": 0}}, "languages": []}])),
+    )
+    .await;
+    assert_eq!(status, 200, "{items}");
+    assert_eq!(items[0]["episodes"][0]["id"], e1);
+    assert_eq!(items[0]["seasonNumber"], 1);
+    assert!(items[0]["episodeIds"].is_null());
+    assert_eq!(items[0]["quality"]["quality"]["name"], "Bluray-1080p");
+    assert_eq!(
+        sonarr(&server, M::POST, "/api/v5/manualimport", Some(json!([])))
+            .await
+            .0,
+        400
+    );
+
+    // Parsing in v5 shape.
+    let (_, parsed) = sonarr(
+        &server,
+        M::GET,
+        "/api/v5/parse?title=Breaking.Bad.S01E01.720p.HDTV.x264-GRP",
+        None,
+    )
+    .await;
+    assert_eq!(parsed["parsedEpisodeInfo"]["releaseType"], "singleEpisode");
+    assert_eq!(parsed["parsedEpisodeInfo"]["seasonNumber"], 1);
+    assert_eq!(parsed["series"]["id"], sid);
+    assert!(parsed["series"].get("languageProfileId").is_none());
+
+    // Artwork redirects to the catalogue's image.
+    let no_redirect = reqwest::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()
+        .unwrap();
+    let cover = no_redirect
+        .get(format!(
+            "{}/api/v3/mediacover/{sid}/poster-500.jpg",
+            server.base
+        ))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap();
+    match detail.images.iter().find(|i| i.cover_type == "poster") {
+        Some(p) => {
+            assert_eq!(cover.status().as_u16(), 307);
+            assert_eq!(cover.headers()["location"].to_str().unwrap(), p.remote_url);
+        }
+        None => assert_eq!(cover.status().as_u16(), 404),
+    }
+
+    // Tanukarr's grouping preview and collection presentation inputs.
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v3/series/grouping", None)
+            .await
+            .0,
+        400
+    );
+    let (_, g) = sonarr(
+        &server,
+        M::GET,
+        "/api/v5/series/grouping?metadataSource=tvdb&foreignId=81189",
+        None,
+    )
+    .await;
+    assert_eq!(g["status"], "unsupported");
+    assert_eq!(
+        sonarr(
+            &server,
+            M::GET,
+            "/api/v3/collection/presentation?groupId=a%20b",
+            None
+        )
+        .await
+        .0,
+        400
+    );
+    assert_eq!(
+        sonarr(
+            &server,
+            M::GET,
+            "/api/v5/collection/presentation?groupId=anilist:1",
+            None
+        )
+        .await
+        .0,
+        404
+    );
+
+    // Companion keys work on v5 exactly as on v3.
+    use kitsunarr_domain::api::library_tools::CompanionKeyCreate;
+    let key = client
+        .create_companion_key(&CompanionKeyCreate {
+            name: "Phone".into(),
+            permission: "read-library".into(),
+            days: 30,
+        })
+        .await
+        .unwrap()
+        .token;
+    let http = reqwest::Client::new();
+    let call = |m: reqwest::Method, p: String| {
+        http.request(m, format!("{}{p}", server.base))
+            .header("X-Api-Key", &key)
+            .json(&json!({}))
+            .send()
+    };
+    for p in [
+        "/api/v5/series".to_string(),
+        format!("/api/v5/series/{sid}"),
+        format!("/api/v5/episode/{e1}"),
+        "/api/v5/calendar".to_string(),
+        "/api/v5/qualityprofile".to_string(),
+    ] {
+        assert_eq!(
+            call(M::GET, p.clone()).await.unwrap().status().as_u16(),
+            200,
+            "{p}"
+        );
+    }
+    for (m, p) in [
+        (M::GET, "/api/v5/settings/general".to_string()),
+        (M::GET, "/api/v5/series/lookup".to_string()),
+        (M::GET, "/api/v5/librarytools/keys".to_string()),
+        (M::POST, "/api/v5/series".to_string()),
+        (M::PUT, format!("/api/v5/series/{sid}")),
+        (M::GET, "/api".to_string()),
+    ] {
+        assert_eq!(
+            call(m.clone(), p.clone()).await.unwrap().status().as_u16(),
+            401,
+            "{m} {p}"
+        );
+    }
+}
+
+/// Sonarr v5's settings, providers (connections), library tools and other resources renamed
+/// or reshaped from v3.
+#[tokio::test]
+async fn sonarr_v5_settings_providers_and_library_tools() {
+    use reqwest::Method as M;
+    use serde_json::json;
+    let server = start().await;
+
+    // Settings resources carry exactly v5's fields.
+    let (status, naming) = sonarr(&server, M::GET, "/api/v5/settings/naming", None).await;
+    assert_eq!(status, 200);
+    assert!(naming.get("standardEpisodeFormat").is_some());
+    assert!(naming.get("movieFolderFormat").is_none());
+    let (status, saved) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v5/settings/naming/1",
+        Some(json!({"renameEpisodes": true})),
+    )
+    .await;
+    assert_eq!(
+        (status, saved["renameEpisodes"].as_bool()),
+        (202, Some(true))
+    );
+    let (status, ui) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v5/settings/ui/1",
+        Some(json!({"firstDayOfWeek": 1})),
+    )
+    .await;
+    assert_eq!((status, ui["firstDayOfWeek"].as_i64()), (202, Some(1)));
+    assert!(ui.get("kitsunarrUiLanguage").is_none());
+    for (path, field) in [
+        ("general", "instanceName"),
+        ("update", "branch"),
+        ("mediamanagement", "recycleBin"),
+        ("indexer", "rssSyncInterval"),
+        ("downloadclient", "enableCompletedDownloadHandling"),
+        ("importlist", "listSyncLevel"),
+        ("metadata", "metadataSourceOrder"),
+    ] {
+        for p in [
+            format!("/api/v5/settings/{path}"),
+            format!("/api/v5/settings/{path}/1"),
+        ] {
+            let (status, v) = sonarr(&server, M::GET, &p, None).await;
+            assert_eq!(status, 200, "{p}");
+            assert!(v.get(field).is_some(), "{p}: {v}");
+            assert_eq!(v["id"], 1);
+        }
+    }
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/config/naming", None)
+            .await
+            .0,
+        404,
+        "v5 has settings, not config"
+    );
+
+    // System resources.
+    let (_, status_v5) = sonarr(&server, M::GET, "/api/v5/system/status", None).await;
+    assert_eq!(status_v5["appName"], "Sonarr");
+    assert!(status_v5.get("isContainerized").is_none());
+    let (_, health) = sonarr(&server, M::GET, "/api/v5/health", None).await;
+    for h in health.as_array().unwrap() {
+        assert!(h["reason"].is_string(), "{h}");
+    }
+    let (_, tasks) = sonarr(&server, M::GET, "/api/v5/system/task", None).await;
+    assert!(!tasks.as_array().unwrap().is_empty());
+    let (_, log) = sonarr(&server, M::GET, "/api/v5/log?page=1&pageSize=5", None).await;
+    assert!(log["records"].is_array());
+
+    // Root folders report whether they are empty.
+    let dir = tempfile::tempdir().unwrap();
+    let (status, root) = sonarr(
+        &server,
+        M::POST,
+        "/api/v5/rootfolder",
+        Some(json!({"path": dir.path().display().to_string()})),
+    )
+    .await;
+    assert_eq!(status, 201, "{root}");
+    assert_eq!(root["isEmpty"], true);
+    std::fs::create_dir(dir.path().join("Show")).unwrap();
+    let (_, roots) = sonarr(&server, M::GET, "/api/v5/rootfolder", None).await;
+    assert_eq!(roots[0]["isEmpty"], false);
+    let rid = root["id"].as_i64().unwrap();
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!("/api/v5/rootfolder/{rid}"),
+            None
+        )
+        .await
+        .0,
+        204
+    );
+
+    // Connections are v3's notifications.
+    let (_, schema) = sonarr(&server, M::GET, "/api/v5/connection/schema", None).await;
+    let webhook = schema
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["implementation"] == "Webhook")
+        .cloned()
+        .unwrap();
+    let mut hook = webhook.clone();
+    hook["name"] = json!("Hook");
+    for f in hook["fields"].as_array_mut().unwrap() {
+        if f["name"] == "url" {
+            f["value"] = json!("http://127.0.0.1:9/hook");
+        }
+    }
+    hook["onGrab"] = json!(true);
+    let (status, created) = sonarr(
+        &server,
+        M::POST,
+        "/api/v5/connection?skipTesting=true",
+        Some(hook),
+    )
+    .await;
+    assert_eq!(status, 201, "{created}");
+    let cid = created["id"].as_i64().unwrap();
+    let (_, list) = sonarr(&server, M::GET, "/api/v5/connection", None).await;
+    assert_eq!(list[0]["id"], cid);
+    assert_eq!(
+        sonarr(&server, M::GET, &format!("/api/v5/connection/{cid}"), None)
+            .await
+            .1["name"],
+        "Hook"
+    );
+    let (status, results) = sonarr(&server, M::POST, "/api/v5/connection/testall", None).await;
+    assert_eq!(status, 400, "the hook cannot be reached");
+    assert_eq!(results[0]["isValid"], false);
+    let (_, native) = sonarr(
+        &server,
+        M::POST,
+        "/api/v1/providers/notifications/testall",
+        None,
+    )
+    .await;
+    assert_eq!(native[0]["id"], cid);
+    assert_eq!(native[0]["ok"], false);
+    assert!(native[0]["message"].is_string());
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!("/api/v5/connection/{cid}"),
+            None
+        )
+        .await
+        .0,
+        204
+    );
+
+    // Release profiles take several indexers.
+    let (status, rp) = sonarr(
+        &server,
+        M::POST,
+        "/api/v5/releaseprofile",
+        Some(json!({"name": "Required", "required": ["x265"], "ignored": [], "indexerIds": [], "tags": []})),
+    )
+    .await;
+    assert_eq!(status, 201, "{rp}");
+    assert_eq!(rp["indexerIds"], json!([]));
+    assert!(rp.get("indexerId").is_none());
+    let rid = rp["id"].as_i64().unwrap();
+    let (status, rp) = sonarr(
+        &server,
+        M::PUT,
+        &format!("/api/v5/releaseprofile/{rid}"),
+        Some(json!({"name": "Required", "required": ["x265", "hevc"], "ignored": [], "indexerIds": []})),
+    )
+    .await;
+    assert_eq!((status, rp["required"].as_array().unwrap().len()), (202, 2));
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!("/api/v5/releaseprofile/{rid}"),
+            None
+        )
+        .await
+        .0,
+        204
+    );
+
+    // Paged import list exclusions, tags and other v3 resources under v5.
+    let (_, exclusions) = sonarr(&server, M::GET, "/api/v5/importlistexclusion", None).await;
+    assert_eq!(exclusions["totalRecords"], 0);
+    let (_, tag) = sonarr(&server, M::POST, "/api/v5/tag", Some(json!({"label": "x"}))).await;
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!("/api/v5/tag/{}", tag["id"]),
+            None
+        )
+        .await
+        .0,
+        204
+    );
+    assert!(
+        !sonarr(&server, M::GET, "/api/v5/qualityprofile", None)
+            .await
+            .1
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/release/push/1", None)
+            .await
+            .0,
+        404
+    );
+    let (_, qs) = sonarr(&server, M::GET, "/api/v5/queue/status", None).await;
+    assert_eq!(qs["totalCount"], 0);
+    let (_, orderings) = sonarr(&server, M::GET, "/api/v5/series/ordering?tmdbId=1", None).await;
+    assert_eq!(orderings[0]["isDefault"], true);
+    assert_eq!(
+        sonarr(
+            &server,
+            M::GET,
+            "/api/v5/series/compression/capabilities",
+            None
+        )
+        .await
+        .0,
+        sonarr(
+            &server,
+            M::GET,
+            "/api/v1/series/compression/capabilities",
+            None
+        )
+        .await
+        .0
+    );
+
+    // Tanukarr's library tools.
+    let (_, options) = sonarr(&server, M::GET, "/api/v5/librarytools", None).await;
+    assert_eq!(options["automationPaused"], false);
+    assert_eq!(options["series"], json!({}));
+    let (_, options) = sonarr(
+        &server,
+        M::PUT,
+        "/api/v5/librarytools",
+        Some(json!({"automationPaused": true, "hardlinkOnly": false, "matchExternalIds": true, "preferAnimeSeasonPacks": false})),
+    )
+    .await;
+    assert_eq!(options["automationPaused"], true);
+    let (status, created) = sonarr(
+        &server,
+        M::POST,
+        "/api/v5/librarytools/keys",
+        Some(json!({"name": "Phone", "permission": "read-library", "days": 30})),
+    )
+    .await;
+    assert_eq!(status, 200, "{created}");
+    assert!(created["token"].as_str().unwrap().starts_with("spr_"));
+    let (status, refused) = sonarr(
+        &server,
+        M::POST,
+        "/api/v5/librarytools/keys",
+        Some(json!({"name": "Phone", "permission": "admin", "days": 30})),
+    )
+    .await;
+    assert_eq!(status, 400);
+    assert!(refused["message"].is_string());
+    let (_, keys) = sonarr(&server, M::GET, "/api/v5/librarytools/keys", None).await;
+    assert_eq!(keys[0]["name"], "Phone");
+    assert_eq!(
+        sonarr(
+            &server,
+            M::DELETE,
+            &format!(
+                "/api/v5/librarytools/keys/{}",
+                created["key"]["id"].as_str().unwrap()
+            ),
+            None
+        )
+        .await
+        .0,
+        204
+    );
+    let (_, audit) = sonarr(&server, M::POST, "/api/v5/librarytools/audit", None).await;
+    assert_eq!(audit["seriesChecked"], 0);
+    assert!(audit["issues"].is_array());
+    let (_, recycle) = sonarr(&server, M::GET, "/api/v5/librarytools/recycle", None).await;
+    assert_eq!(recycle["configured"], false);
+    assert!(
+        sonarr(&server, M::GET, "/api/v5/librarytools/searches", None)
+            .await
+            .1
+            .is_array()
+    );
+    assert!(
+        sonarr(&server, M::GET, "/api/v5/librarytools/storage", None)
+            .await
+            .1
+            .is_array()
+    );
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/librarytools/lists/999", None)
+            .await
+            .0,
+        404
+    );
+    assert_eq!(
+        sonarr(&server, M::GET, "/api/v5/librarytools/series/999", None)
+            .await
+            .0,
+        404
+    );
+}

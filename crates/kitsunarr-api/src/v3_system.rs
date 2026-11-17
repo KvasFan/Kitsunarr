@@ -217,10 +217,9 @@ fn video_files(dir: &FsPath, out: &mut Vec<PathBuf>) {
         let p = e.path();
         if p.is_dir() {
             video_files(&p, out);
-        } else if p
-            .extension()
-            .is_some_and(|x| kitsunarr_parser::extensions::is_video_extension(&x.to_string_lossy()))
-        {
+        } else if p.extension().is_some_and(|x| {
+            kitsunarr_parser::extensions::is_video_extension(&format!(".{}", x.to_string_lossy()))
+        }) {
             out.push(p);
         }
     }
@@ -724,7 +723,7 @@ async fn routes(State(state): State<AppState>) -> Response {
             ("PATCH", item.patch.is_some()),
         ] {
             if op {
-                lines.push(format!("{m} /api/v1{path}"));
+                lines.push(format!("{m} {path}"));
             }
         }
     }

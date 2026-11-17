@@ -101,8 +101,7 @@ pub fn router() -> Router<AppState> {
             "/tag/{id}",
             get(v3_admin::get_tag)
                 .put(v3_admin::update_tag)
-                .delete(v3_admin::delete_tag)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_admin::delete_tag),
         )
         // Root folders.
         .route(
@@ -115,8 +114,7 @@ pub fn router() -> Router<AppState> {
             "/rootfolder/{id}",
             get(v3_admin::get_root_folder)
                 .delete(v3_admin::delete_root_folder)
-                .layer(out!(root_folder_out))
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .layer(out!(root_folder_out)),
         )
         // Series.
         .route("/series", get(list_series).post(add_series))
@@ -222,8 +220,7 @@ pub fn router() -> Router<AppState> {
             "/qualityprofile/{id}",
             get(v3_settings::get_profile)
                 .put(v3_settings::update_profile)
-                .delete(v3_settings::delete_profile)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_settings::delete_profile),
         )
         .route(
             "/qualitydefinition",
@@ -244,8 +241,7 @@ pub fn router() -> Router<AppState> {
             "/customformat/{id}",
             get(v3_settings::get_format)
                 .put(v3_settings::update_format)
-                .delete(v3_settings::delete_format)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_settings::delete_format),
         )
         .route(
             "/releaseprofile",
@@ -266,8 +262,7 @@ pub fn router() -> Router<AppState> {
             "/delayprofile/{id}",
             get(v3_admin::get_delay)
                 .put(v3_admin::update_delay)
-                .delete(v3_admin::delete_delay)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_admin::delete_delay),
         )
         .route("/language", get(v3_settings::languages))
         .route(
@@ -278,8 +273,7 @@ pub fn router() -> Router<AppState> {
             "/remotepathmapping/{id}",
             get(v3_admin::get_mapping)
                 .put(v3_admin::update_mapping.layer(axum::middleware::map_response(ok_status)))
-                .delete(v3_admin::delete_mapping)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_admin::delete_mapping),
         )
         .route(
             "/importlistexclusion",
@@ -293,8 +287,7 @@ pub fn router() -> Router<AppState> {
             "/importlistexclusion/{id}",
             get(v3_admin::get_exclusion)
                 .put(v3_admin::update_exclusion)
-                .delete(v3_admin::delete_exclusion)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_admin::delete_exclusion),
         )
         // Providers (connections are v3's notifications).
         .route("/indexer", get(v3::list_indexers).post(v3::create_indexer))
@@ -304,8 +297,7 @@ pub fn router() -> Router<AppState> {
             "/indexer/{id}",
             get(v3::get_indexer)
                 .put(v3::update_indexer)
-                .delete(v3::delete_indexer)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3::delete_indexer),
         )
         .route(
             "/downloadclient",
@@ -317,8 +309,7 @@ pub fn router() -> Router<AppState> {
             "/downloadclient/{id}",
             get(v3::download_client)
                 .put(v3_providers::update_client)
-                .delete(v3_providers::delete_client)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_providers::delete_client),
         )
         .route(
             "/importlist",
@@ -330,8 +321,7 @@ pub fn router() -> Router<AppState> {
             "/importlist/{id}",
             get(v3_providers::get_import_list)
                 .put(v3_providers::update_list)
-                .delete(v3_providers::delete_list)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_providers::delete_list),
         )
         .route(
             "/connection",
@@ -343,8 +333,7 @@ pub fn router() -> Router<AppState> {
             "/connection/{id}",
             get(v3::notification)
                 .put(v3_providers::update_notification)
-                .delete(v3_providers::delete_notification)
-                .layer(axum::middleware::map_response(delete_no_content)),
+                .delete(v3_providers::delete_notification),
         )
         // Tanukarr's library tools.
         .route(
@@ -376,18 +365,14 @@ pub fn router() -> Router<AppState> {
         .merge(crate::v3_ext::router("connection"))
         .merge(v3_extra::shared::<true>())
         .merge(v3_system::shared::<true>())
+        .layer(axum::middleware::from_fn(deletes_no_content))
 }
 
-/// v5 deletes answer `204 No Content`.
-async fn delete_no_content(res: Response) -> Response {
-    // Only deletes answer `200` with an empty object in v3; other methods keep their status.
-    if res.status() == StatusCode::OK
-        && res
-            .headers()
-            .get(header::CONTENT_LENGTH)
-            .and_then(|v| v.to_str().ok())
-            .is_some_and(|l| l == "0" || l == "2")
-    {
+/// Sonarr v5 answers every successful delete with `204 No Content` (v3 with `200`).
+async fn deletes_no_content(req: axum::extract::Request, next: axum::middleware::Next) -> Response {
+    let delete = req.method() == axum::http::Method::DELETE;
+    let res = next.run(req).await;
+    if delete && res.status() == StatusCode::OK {
         return StatusCode::NO_CONTENT.into_response();
     }
     res
