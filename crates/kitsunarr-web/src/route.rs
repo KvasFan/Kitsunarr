@@ -5,7 +5,7 @@ use dioxus::prelude::*;
 use crate::components::shell::AppShell;
 use crate::pages::activity::{Activity, Blocklist, ManualImport, Queue};
 use crate::pages::add::AddMedia;
-use crate::pages::auth::{Login, Setup};
+use crate::pages::auth::{LoggedOut, Login, Setup};
 use crate::pages::calendar::Calendar;
 use crate::pages::collections::{CollectionDetailPage, Collections};
 use crate::pages::dashboard::Dashboard;
@@ -30,6 +30,8 @@ use crate::pages::wanted::{WantedCutoff, WantedMissing};
 pub enum Route {
     #[route("/login")]
     Login {},
+    #[route("/loggedout")]
+    LoggedOut {},
     #[route("/setup")]
     Setup {},
     #[layout(AppShell)]

@@ -148,6 +148,7 @@ pub fn SettingsGeneral() -> Element {
                 button { class: "btn danger", onclick: move |_| confirm_regen.set(true), "Regenerate" }
             }
         }
+        crate::pages::security::SecurityCard {}
         ProxyCard {}
         if confirm_regen() {
             Confirm {
