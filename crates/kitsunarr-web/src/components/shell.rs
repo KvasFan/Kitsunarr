@@ -239,6 +239,7 @@ fn Sidebar() -> Element {
             NavLink { to: Route::SettingsGeneral {}, icon: "⚙", label: s.general }
             NavLink { to: Route::SettingsMedia {}, icon: "▣", label: s.media_management }
             NavLink { to: Route::SettingsProfiles {}, icon: "★", label: s.profiles }
+            NavLink { to: Route::SettingsQuality {}, icon: "◫", label: "Quality" }
             NavLink { to: Route::SettingsFormats {}, icon: "≡", label: s.custom_formats }
             NavLink { to: Route::SettingsIndexers {}, icon: "⌗", label: s.indexers }
             NavLink { to: Route::SettingsDownloadClients {}, icon: "⇩", label: s.download_clients }

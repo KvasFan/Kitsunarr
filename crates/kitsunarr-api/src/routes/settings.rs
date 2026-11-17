@@ -183,6 +183,37 @@ pub async fn update_quality_definitions(
     Ok(Json(quality::list_definitions(state.db.pool()).await?))
 }
 
+/// Tanukarr's `QualityDefinitionUpdateService`: titles and flagged sizes of several
+/// definitions; a flagged size also replaces every profile's own limit for that quality.
+#[utoipa::path(put, path = "/qualitydefinitions/update", tag = "settings",
+    request_body = Vec<kitsunarr_domain::api::settings::QualityDefinitionUpdate>,
+    responses((status = 200, body = Vec<QualityDefinition>), (status = 422)))]
+pub async fn update_quality_definition_sizes(
+    State(state): State<AppState>,
+    Json(updates): Json<Vec<kitsunarr_domain::api::settings::QualityDefinitionUpdate>>,
+) -> ApiResult<Json<Vec<QualityDefinition>>> {
+    quality::update_definitions(&state.db, &updates).await?;
+    settings_changed(&state, "qualityDefinitions");
+    if updates
+        .iter()
+        .any(|u| u.update_min_size || u.update_preferred_size || u.update_max_size)
+    {
+        settings_changed(&state, "qualityProfiles");
+    }
+    Ok(Json(quality::list_definitions(state.db.pool()).await?))
+}
+
+/// Sonarr's `ResetQualityDefinitions`: default titles and sizes for the standard qualities.
+#[utoipa::path(post, path = "/qualitydefinitions/reset", tag = "settings",
+    responses((status = 200, body = Vec<QualityDefinition>)))]
+pub async fn reset_quality_definitions(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<QualityDefinition>>> {
+    quality::reset_definitions(&state.db).await?;
+    settings_changed(&state, "qualityDefinitions");
+    Ok(Json(quality::list_definitions(state.db.pool()).await?))
+}
+
 /// Creates a custom quality preset (Tanukarr), added to every profile as not allowed.
 #[utoipa::path(post, path = "/qualitydefinitions", tag = "settings",
     request_body = kitsunarr_domain::api::settings::CustomQualityCreate,

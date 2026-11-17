@@ -9672,3 +9672,50 @@ async fn library_index_filters() {
         [root]
     );
 }
+
+/// Settings › Quality: titles and sizes saved through `PUT /qualitydefinitions/update` (sizes
+/// also replace profiles' own limits), refused updates, and the reset.
+#[tokio::test]
+async fn quality_definitions_update_and_reset() {
+    use kitsunarr_domain::api::settings::{OrderedF64, QualityDefinitionUpdate, QualitySizeLimit};
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let mut profile = client.quality_profiles().await.unwrap()[0].clone();
+    profile.size_limits = vec![QualitySizeLimit {
+        quality_id: 7,
+        min_size: None,
+        preferred_size: None,
+        max_size: Some(OrderedF64(300.0)),
+    }];
+    client.update_quality_profile(&profile).await.unwrap();
+    let saved = client
+        .update_quality_definition_sizes(&[QualityDefinitionUpdate {
+            quality_id: 7,
+            title: Some("Blu-ray 1080p".into()),
+            max_size: Some(OrderedF64(150.0)),
+            update_max_size: true,
+            ..Default::default()
+        }])
+        .await
+        .unwrap();
+    let d = saved.iter().find(|d| d.quality_id == 7).unwrap();
+    assert_eq!(
+        (d.title.as_str(), d.max_size),
+        ("Blu-ray 1080p", Some(OrderedF64(150.0)))
+    );
+    let profile = client.quality_profiles().await.unwrap()[0].clone();
+    assert_eq!(profile.size_limits[0].max_size, Some(OrderedF64(150.0)));
+    let blank = client
+        .update_quality_definition_sizes(&[QualityDefinitionUpdate {
+            quality_id: 7,
+            title: Some(" ".into()),
+            ..Default::default()
+        }])
+        .await
+        .unwrap_err();
+    assert_eq!(status(blank), 400);
+    let reset = client.reset_quality_definitions().await.unwrap();
+    let d = reset.iter().find(|d| d.quality_id == 7).unwrap();
+    assert_eq!(d.title, "Bluray-1080p");
+    assert_ne!(d.max_size, Some(OrderedF64(150.0)));
+}

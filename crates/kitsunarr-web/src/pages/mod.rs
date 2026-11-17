@@ -13,5 +13,6 @@ pub mod placeholders;
 mod quality_profile_items;
 pub mod search;
 pub mod settings;
+pub mod settings_quality;
 pub mod system;
 pub mod wanted;

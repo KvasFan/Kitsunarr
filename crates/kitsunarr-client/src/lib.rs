@@ -1129,6 +1129,17 @@ impl Client {
     ) -> ClientResult<Vec<QualityDefinition>> {
         self.put("/qualitydefinitions", defs).await
     }
+    /// Titles and flagged sizes, sizes also written into every profile's own limit.
+    pub async fn update_quality_definition_sizes(
+        &self,
+        updates: &[kitsunarr_domain::api::settings::QualityDefinitionUpdate],
+    ) -> ClientResult<Vec<QualityDefinition>> {
+        self.put("/qualitydefinitions/update", updates).await
+    }
+    /// Default titles and sizes for the standard qualities.
+    pub async fn reset_quality_definitions(&self) -> ClientResult<Vec<QualityDefinition>> {
+        self.post("/qualitydefinitions/reset", &Empty {}).await
+    }
     pub async fn create_custom_quality(
         &self,
         c: &kitsunarr_domain::api::settings::CustomQualityCreate,

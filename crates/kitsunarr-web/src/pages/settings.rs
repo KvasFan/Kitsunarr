@@ -958,7 +958,7 @@ fn ProfileEditor(
             }
             details { style: "margin-top: var(--sp-4)",
                 summary { strong { "Size limits" } span { class: "muted small", " — MiB per minute" } }
-                p { class: "help small faint", "A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited." }
+                p { class: "help small faint", "A quality without an override uses the global sizes of " Link { to: crate::route::Route::SettingsQuality {}, "Settings › Quality" } ". Within an override, empty means unlimited; a maximum of zero also means unlimited." }
                 div { class: "table-wrap",
                     table { class: "table",
                         thead { tr { th { "Quality" } th { "Minimum" } th { "Preferred" } th { "Maximum" } } }

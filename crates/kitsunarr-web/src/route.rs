@@ -20,6 +20,7 @@ use crate::pages::settings::{
     SettingsIndexers, SettingsMedia, SettingsMetadata, SettingsNotifications, SettingsProfiles,
     SettingsTags,
 };
+use crate::pages::settings_quality::SettingsQuality;
 use crate::pages::system::{
     SystemBackups, SystemLibraryTools, SystemLogs, SystemStatusPage, SystemTasks,
 };
@@ -77,6 +78,8 @@ pub enum Route {
         SettingsMedia {},
         #[route("/settings/profiles")]
         SettingsProfiles {},
+        #[route("/settings/quality")]
+        SettingsQuality {},
         #[route("/settings/customformats")]
         SettingsFormats {},
         #[route("/settings/indexers")]
