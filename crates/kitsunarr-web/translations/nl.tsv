@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ huidig nummer
 or	of
 1 title	1 titel
+Episode titles (one per line)	Afleveringstitels (één per regel)
+For conditions that ignore episode titles.	Voor voorwaarden die afleveringstitels negeren.
+Test episode titles	Afleveringstitels testen
+· group {}	· groep {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Bekende afleveringstitels uitsluiten bij het controleren van releasenamen, zodat woorden in de afleveringstitel niet als dienst of releasegroep tellen.
+Ignore episode titles {}	Afleveringstitels negeren {}
+Ignore episode titles	Afleveringstitels negeren
+Alternative group	Alternatieve groep
+Alternative group {}	Alternatieve groep {}
+Group anime seasons	Animeseizoenen groeperen
+Anime group {}	Animegroep {}
+Group of {} · {}	Groep van {} · {}
+Import progress	Importvoortgang
+Waiting to import	Wacht op import
+Import progress of {}	Importvoortgang van {}
+Import details of {}	Importdetails van {}
+{} / {} episodes imported	{} / {} afleveringen geïmporteerd
+· {} not imported	· {} niet geïmporteerd
+Series, anime or film title, e.g. Severance	Titel van serie, anime of film, bijv. Severance
+All enabled catalogues	Alle ingeschakelde catalogi
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Geen ingeschakelde catalogus kan worden doorzocht: schakel er een in of voer de API-sleutel in bij Instellingen › Metadatabronnen.
+Searches every enabled catalogue, results in your order:	Doorzoekt elke ingeschakelde catalogus, resultaten in jouw volgorde:
+Grouping	Groepering
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Automatisch groepeert de titel met zijn franchise of collectie op basis van officiële relaties. Uitgeschakeld houdt hem apart.
+Automatic (official relations)	Automatisch (officiële relaties)
+Too many failed sign in attempts. Please try again in {} minute(s).	Te veel mislukte aanmeldpogingen. Probeer het over {} minuut/minuten opnieuw.
+Reset your password	Je wachtwoord herstellen
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr schrijft een eenmalig hersteltoken naar zijn log. Kopieer het uit de
+line in the latest log (System › Logs, or the container's output).	regel in het meest recente log (Systeem › Logs, of de uitvoer van de container).
+Write a reset token to the log	Een hersteltoken naar het log schrijven
+I already have a reset token	Ik heb al een hersteltoken
+Back to sign in	Terug naar aanmelden
+Your password has been reset, sign in with your new password.	Je wachtwoord is hersteld, meld je aan met je nieuwe wachtwoord.
+Unable to sign in with your identity provider.	Aanmelden via je identiteitsprovider is mislukt.
+Incorrect username or password.	Onjuiste gebruikersnaam of onjuist wachtwoord.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC-authenticatie is ingeschakeld, maar niet correct geconfigureerd. Meld je aan met je wachtwoord en werk de OIDC-instellingen bij (Instellingen › Algemeen › Beveiliging, of het configuratiebestand).
+Sign in with SSO	Aanmelden met SSO
+You will be sent to your identity provider.	Je wordt doorgestuurd naar je identiteitsprovider.
+Forgot your password?	Wachtwoord vergeten?
+Invalid or expired reset token.	Ongeldig of verlopen hersteltoken.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Gebruikersnaam en wachtwoord zijn verplicht, de wachtwoorden moeten overeenkomen en het wachtwoord moet minstens {} tekens bevatten.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Er is geen nieuw hersteltoken naar het log geschreven. Mogelijk is er al een actief, dus controleer eerst het log. Door Kitsunarr opnieuw te starten wordt het gewist en kun je een nieuw aanvragen.
+Enter the token from the	Voer het token in uit de
+line in the log. It's valid for 15 minutes and can only be used once. If you set	regel in het log. Het is 15 minuten geldig en kan maar één keer worden gebruikt. Bij gebruik van
+Reset token	Hersteltoken
+Confirm new password	Nieuw wachtwoord bevestigen
+Reset password	Wachtwoord herstellen
+Signed out	Afgemeld
+You have been signed out of Kitsunarr.	Je bent afgemeld bij Kitsunarr.
+Sign in again	Opnieuw aanmelden
+Search for missing	Ontbrekende zoeken
+Month	Maand
+Week	Week
+Forecast	Vooruitblik
+Day	Dag
+Agenda	Agenda
+On disk	Op schijf
+Not aired yet	Nog niet uitgezonden
+Search for the episodes shown that aired and have no file	De getoonde afleveringen zoeken die zijn uitgezonden en geen bestand hebben
+Previous period	Vorige periode
+Next period	Volgende periode
+Calendar view	Kalenderweergave
+Nothing airs in this period.	Er wordt niets uitgezonden in deze periode.
+Legend	Legenda
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Uitgeschakeld haalt de serie uit haar animegroep en houdt haar buiten automatische groepering
+Disabled removes the film from its collection and keeps it out of automatic grouping	Uitgeschakeld haalt de film uit zijn collectie en houdt hem buiten automatische groepering
+Filter	Filter
+Filter by path	Filteren op pad
+All paths	Alle paden
+Combine filters	Filters combineren
+Show series matching every selected filter	Series tonen die aan elk geselecteerd filter voldoen
+Clear combined filters	Gecombineerde filters wissen
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Elke animegroep (de animegroepering van Tanukarr) één keer tonen, via het eerste seizoen
+Save the current filters as a filter of your own	De huidige filters opslaan als een eigen filter
+Save filter…	Filter opslaan…
+Shown series	Getoonde series
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr kan deze voorwaarden van het opgeslagen filter niet toepassen, dus worden ze weggelaten:
+The selected filters contradict each other, so no series can match all of them.	De geselecteerde filters spreken elkaar tegen, dus geen enkele serie kan aan alle voldoen.
+No series match the selected filters.	Geen series voldoen aan de geselecteerde filters.
+Filter "{}" saved.	Filter “{}” opgeslagen.
+Save filter	Filter opslaan
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Het filter bewaart het geselecteerde filter, de gecombineerde filters en het pad; het wordt bij de ingebouwde filters vermeld.
+Filter label	Filternaam
+Delete saved filter	Opgeslagen filter verwijderen
+Delete this saved filter? The series are not changed.	Dit opgeslagen filter verwijderen? De series worden niet gewijzigd.
+Monitored only	Alleen gemonitord
+Unmonitored only	Alleen niet gemonitord
+Continuing only	Alleen lopend
+Ended only	Alleen beëindigd
+Missing episodes	Ontbrekende afleveringen
+Security settings saved.	Beveiligingsinstellingen opgeslagen.
+Security	Beveiliging
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Om toegang op afstand zonder authenticatie te voorkomen, vereist Kitsunarr authenticatie. Je kunt deze optioneel uitschakelen voor lokale adressen.
+Authentication	Authenticatie
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Hoe gebruikers zich aanmelden: de aanmeldpagina van Kitsunarr, of je OpenID Connect-identiteitsprovider.
+Forms (sign-in page)	Formulier (aanmeldpagina)
+OIDC (identity provider)	OIDC (identiteitsprovider)
+External (reverse proxy)	Extern (reverse proxy)
+Authentication required	Authenticatie vereist
+Require authentication for every request, or not for requests from local addresses or this machine.	Authenticatie vereisen voor elk verzoek, of niet voor verzoeken vanaf lokale adressen of deze machine.
+Disabled for localhost	Uitgeschakeld voor localhost
+Allowed hosts	Toegestane hosts
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kommagescheiden lijst van hostnamen en IP-adressen waarop Kitsunarr bereikbaar moet zijn, inclusief de hostnaam van het systeem of de containernaam. Laat leeg om alle hosts toe te staan. Verplicht wanneer authenticatie niet altijd vereist is. Bijvoorbeeld: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	CGNAT-adressen vertrouwen
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	CGNAT-adressen (100.64.0.0/10, bijv. Tailscale) als lokaal behandelen
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Extern: Kitsunarr vraagt niet om aanmelden en vertrouwt op de reverse proxy ervoor. Gebruik dit alleen achter een proxy die elk verzoek authenticeert.
+Register Kitsunarr with your provider using the redirect URI	Registreer Kitsunarr bij je provider met de redirect-URI
+. Saving signs out password sessions; you then sign in through the provider.	. Bij opslaan worden wachtwoordsessies afgemeld; daarna meld je je aan via de provider.
+OIDC Authority	OIDC-autoriteit
+The URL of the OIDC provider (https://).	De URL van de OIDC-provider (https://).
+OIDC Client ID	OIDC-client-ID
+The Client ID registered with the OIDC provider.	De client-ID die bij de OIDC-provider is geregistreerd.
+OIDC Client Secret	OIDC-clientgeheim
+The Client Secret registered with the OIDC provider.	Het clientgeheim dat bij de OIDC-provider is geregistreerd.
+OIDC User	OIDC-gebruiker
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Het geverifieerde e-mailadres of de subject-identificatie (sub) bij de OIDC-provider die zich mag aanmelden bij Kitsunarr.
+OIDC Scopes	OIDC-scopes
+The scopes to request from the OIDC provider; must include openid.	De scopes die bij de OIDC-provider worden aangevraagd; moet openid bevatten.
+Set in config.toml or the environment, which take precedence: {}.	Ingesteld in config.toml of de omgeving, die voorrang hebben: {}.
+Backup settings saved.	Back-upinstellingen opgeslagen.
+Interval (days)	Interval (dagen)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Hoe vaak er automatisch een back-up wordt gemaakt (1-7 dagen). Een handmatige back-up start het interval opnieuw.
+Backup interval in days	Back-upinterval in dagen
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Automatische back-ups die ouder zijn dan dit worden verwijderd (1-90 dagen). Handmatige back-ups worden bewaard.
+Backup retention in days	Bewaartermijn van back-ups in dagen
+A quality without an override uses the global sizes of	Een kwaliteit zonder eigen waarden gebruikt de globale groottes van
+Settings › Quality	Instellingen › Kwaliteit
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Binnen eigen waarden betekent leeg onbeperkt; een maximum van nul betekent ook onbeperkt.
+Signed in. Save to keep the token.	Aangemeld. Sla op om het token te behouden.
+Redirect URL to register with your API client:	Redirect-URL om bij je API-client te registreren:
+Test all	Alles testen
+All {} passed their test.	Alle {} zijn geslaagd voor hun test.
+{} of {} failed their test.	{} van {} zijn gezakt voor hun test.
+Test every {} entry	Alle {} testen
+Test results	Testresultaten
+passed with warnings	geslaagd met waarschuwingen
+Warning:	Waarschuwing:
+Dismiss test results	Testresultaten sluiten
+Delete for upgrade	Verwijderen voor upgrade
+Metadata sources saved.	Metadatabronnen opgeslagen.
+Order	Volgorde
+Enable {}	{} inschakelen
+Move {} up	{} omhoog verplaatsen
+Move {} down	{} omlaag verplaatsen
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Media toevoegen toont de ingeschakelde catalogi in deze volgorde, en “Alle ingeschakelde catalogi” voegt hun resultaten in deze volgorde samen. Uitgeschakelde catalogi worden niet aangeboden of doorzocht; titels die er al bij horen, worden er nog steeds vanuit vernieuwd. Sla hieronder op om toe te passen.
+Enable at least one metadata source.	Schakel minstens één metadatabron in.
+Mixed	Gemengd
+Unlimited	Onbeperkt
+0 GiB/h	0 GiB/u
+{} min: {}	{} min: {}
+No limit	Geen limiet
+Quality definitions saved.	Kwaliteitsdefinities opgeslagen.
+Quality definitions reset to the defaults.	Kwaliteitsdefinities teruggezet naar de standaardwaarden.
+Reset definitions	Definities terugzetten
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Groottes zijn in MiB per minuut speelduur; de grootte per uur staat onder elke waarde. Een release buiten de limieten van een kwaliteit wordt geweigerd; de voorkeursgrootte bepaalt de rangorde van releases. Profielen kunnen eigen limieten hebben (
+Settings › Quality profiles	Instellingen › Kwaliteitsprofielen
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): “Gemengd” betekent dat profielen verschillende limieten gebruiken, en een hier ingevoerde waarde wordt in elk profiel geschreven.
+Title of {}	Titel van {}
+{} size of {} (MiB per minute)	{}-grootte van {} (MiB per minuut)
+Profiles use different limits	Profielen gebruiken verschillende limieten
+No minimum	Geen minimum
+Hide retired qualities	Uitgefaseerde kwaliteiten verbergen
+Show retired qualities	Uitgefaseerde kwaliteiten tonen
+Reset quality definitions	Kwaliteitsdefinities terugzetten
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Elke standaardkwaliteit haar standaardtitel en -groottelimieten geven? Aangepaste presets en de eigen limieten van profielen blijven behouden.
+Reset	Terugzetten
+RefreshMonitoredDownloads	Gemonitorde downloads vernieuwen
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Leest de downloadclients en importeert voltooide downloads die Kitsunarr heeft opgehaald
+ProcessPendingJellyfinRefresh	Openstaande Jellyfin-vernieuwingen verwerken
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Vernieuwt de Jellyfin-bibliotheken met openstaande imports (volgens de vernieuwingsmodus van elke integratie)
+SyncJellyfinWatched	Jellyfin-bekeken synchroniseren
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Leest welke afleveringen een Jellyfin-gebruiker heeft bekeken (met het eigen interval van de integratie)
+CleanUpRecycleBin	Prullenbak opschonen
+Deletes files kept in the recycle bin longer than the media management setting allows	Verwijdert bestanden die langer in de prullenbak staan dan de instelling voor mediabeheer toestaat
+RescanFolders	Mappen opnieuw scannen
+Scans series and movie folders: forgets files that are gone and adds files found there	Scant serie- en filmmappen: vergeet bestanden die verdwenen zijn en voegt bestanden toe die er gevonden worden
+RefreshMetadata	Metadata vernieuwen
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Vernieuwt titels vanuit hun metadatacatalogi (lopende elke 6 uur, beëindigde maandelijks)
+Housekeeping	Onderhoud
+Purges expired sessions, prunes task history and checks database integrity	Wist verlopen sessies, schoont de taakgeschiedenis op en controleert de integriteit van de database
+CleanupSessions	Sessies opschonen
+Removes expired login sessions	Verwijdert verlopen aanmeldsessies
+HealthCheck	Statuscontrole
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Evalueert de statuscontroles opnieuw, informeert verbonden browsers en verstuurt statusmeldingen
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Integriteitscontrole van de SQLite-database mislukt: {}. Herstel vanaf een betrouwbare back-up.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Integriteitscontrole van de SQLite-database gaf geen resultaat. Herstel vanaf een betrouwbare back-up als er databasefouten optreden.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Integriteitscontrole van de SQLite-database mislukt: {} schendingen van refererende sleutels. Herstel vanaf een betrouwbare back-up.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Geen indexeerders beschikbaar met RSS-synchronisatie ingeschakeld, Kitsunarr zal nieuwe releases niet automatisch ophalen
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Alle RSS-geschikte indexeerders zijn tijdelijk niet beschikbaar door recente indexeerderfouten
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Geen indexeerders beschikbaar met Automatisch zoeken ingeschakeld, Kitsunarr zal geen automatische zoekresultaten geven
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Geen indexeerders beschikbaar met Interactief zoeken ingeschakeld, Kitsunarr zal geen interactieve zoekresultaten geven
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Alle indexeerders die kunnen zoeken zijn tijdelijk niet beschikbaar door recente indexeerderfouten
+All indexers are unavailable due to failures for more than 6 hours	Alle indexeerders zijn al meer dan 6 uur niet beschikbaar door storingen
+Indexers unavailable due to failures for more than 6 hours: {}	Indexeerders al meer dan 6 uur niet beschikbaar door storingen: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indexeerders die het niet-ondersteunde Jackett-eindpunt 'all' gebruiken: {}
+Indexers with invalid download clients: {}.	Indexeerders met ongeldige downloadclients: {}.
+Enable Completed Download Handling	Afhandeling van voltooide downloads inschakelen
+All notifications are unavailable due to failures	Alle meldingen zijn niet beschikbaar door storingen
+Notifications unavailable due to failures: {}	Meldingen niet beschikbaar door storingen: {}
+All lists are unavailable due to failures	Alle lijsten zijn niet beschikbaar door storingen
+Lists unavailable due to failures: {}	Lijsten niet beschikbaar door storingen: {}
+Missing root folder for import list(s): {}	Ontbrekende hoofdmap voor importlijst(en): {}
+Multiple root folders are missing for import lists: {}	Meerdere hoofdmappen voor importlijsten ontbreken: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Kan niet schrijven naar de geconfigureerde prullenbakmap: {}. Zorg dat dit pad bestaat en beschrijfbaar is voor de gebruiker die Kitsunarr uitvoert
+Unable to write to the backup folder {}; scheduled backups will fail.	Kan niet schrijven naar de back-upmap {}; geplande back-ups zullen mislukken.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Werk je API-sleutel bij zodat deze minstens 20 tekens lang is. Dit kan via de instellingen of het configuratiebestand
+Series {} was removed from {}	Serie {} is verwijderd uit {}
+Series {} were removed from {}	Series {} zijn verwijderd uit {}
+Mount containing a series path is mounted read-only: {}	Koppelpunt met een seriepad is alleen-lezen gekoppeld: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Downloadclient {} is ingesteld om voltooide downloads te verwijderen. Daardoor kunnen downloads uit je client verdwijnen voordat Kitsunarr ze kan importeren.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Downloadclient {} heeft sortering via {} ingeschakeld voor de categorie van Kitsunarr. Schakel sorteren uit in je downloadclient om importproblemen te voorkomen.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Downloadclient {} plaatst downloads in de hoofdmap {}. Download niet naar een hoofdmap.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Externe downloadclient {} plaatst downloads in {}, maar dit is geen geldig {}-pad. Controleer je externe padtoewijzingen en downloadclientinstellingen.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Je gebruikt docker; downloadclient {} plaatst downloads in {}, maar dit is geen geldig {}-pad. Controleer je externe padtoewijzingen en downloadclientinstellingen.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Lokale downloadclient {} plaatst downloads in {}, maar dit is geen geldig {}-pad. Controleer je downloadclientinstellingen.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Je gebruikt docker; downloadclient {} plaatst downloads in {}, maar deze map lijkt niet te bestaan in de container. Controleer je externe padtoewijzingen en de volume-instellingen van de container.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Externe downloadclient {} plaatst downloads in {}, maar deze map lijkt niet te bestaan. Waarschijnlijk ontbreekt er een externe padtoewijzing of is deze onjuist.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Downloadclient {} plaatst downloads in {}, maar Kitsunarr kan deze map niet zien. Mogelijk moet je de rechten van de map aanpassen.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr kan gedownloade aflevering {} zien maar niet openen. Waarschijnlijk een rechtenprobleem.
+File {} was removed part way through processing.	Bestand {} is halverwege de verwerking verwijderd.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr kon (een) aflevering(en) niet importeren. Bekijk je logs voor details.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Externe downloadclient {} meldde bestanden in {}, maar dit is geen geldig {}-pad. Controleer je externe padtoewijzingen en downloadclientinstellingen.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Je gebruikt docker; downloadclient {} meldde bestanden in {}, maar dit is geen geldig {}-pad. Controleer je externe padtoewijzingen en downloadclientinstellingen.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Lokale downloadclient {} meldde bestanden in {}, maar dit is geen geldig {}-pad. Controleer je downloadclientinstellingen.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr kan downloadmap {} zien maar niet openen. Waarschijnlijk een rechtenprobleem.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Externe downloadclient {} meldde bestanden in {}, maar deze map lijkt niet te bestaan. Waarschijnlijk ontbreekt er een externe padtoewijzing.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Downloadclient {} meldde bestanden in {}, maar Kitsunarr kan deze map niet zien. Mogelijk moet je de rechten van de map aanpassen.
+The configured password reset token is shorter than {} characters and is being ignored	Het geconfigureerde hersteltoken voor het wachtwoord is korter dan {} tekens en wordt genegeerd
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Er is een hersteltoken voor het wachtwoord geconfigureerd. Verwijder de omgevingsvariabele KITSUNARR_AUTH_RESET_TOKEN (of reset_token in config.toml) zodra je die niet meer nodig hebt
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC-authenticatie is ingeschakeld, maar Autoriteit, Client-ID, Clientgeheim, Gebruiker en Scopes zijn niet allemaal geconfigureerd
+The OIDC Authority must start with 'https://'	De OIDC-autoriteit moet beginnen met 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Kan de OIDC-configuratie niet ophalen van {}; aanmelden via je identiteitsprovider mislukt totdat deze bereikbaar is
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Er zijn nog geen hoofdmappen geconfigureerd. Voeg er een toe in Instellingen → Mediabeheer of importeer een bestaande installatie.
+Root folder {} is missing or not accessible.	Hoofdmap {} ontbreekt of is niet toegankelijk.
+Root folder {} has only {} MiB free.	Hoofdmap {} heeft nog maar {} MiB vrij.
+No enabled {} is configured; automatic downloads are not possible.	Geen ingeschakelde {} geconfigureerd; automatische downloads zijn niet mogelijk.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Deze items van het type {} zijn behouden uit je vorige installatie, maar worden nog niet native ondersteund: {}.
+All download clients are unavailable due to failures	Alle downloadclients zijn niet beschikbaar door storingen
+Download clients are unavailable due to failures: {}	Downloadclients niet beschikbaar door storingen: {}
+All indexers are unavailable due to failures	Alle indexeerders zijn niet beschikbaar door storingen
+Indexers unavailable due to failures: {}	Indexeerders niet beschikbaar door storingen: {}
+Failed to resolve the IP address of the configured proxy host {}	Kan het IP-adres van de geconfigureerde proxyhost {} niet omzetten
+The data directory has only {} MiB free; the database may fail to write.	De datamap heeft nog maar {} MiB vrij; het schrijven naar de database kan mislukken.

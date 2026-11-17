@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ numărul curent
 or	sau
 1 title	1 titlu
+Episode titles (one per line)	Titluri de episoade (câte unul pe linie)
+For conditions that ignore episode titles.	Pentru condițiile care ignoră titlurile episoadelor.
+Test episode titles	Titluri de episoade de test
+· group {}	· grup {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Exclude titlurile cunoscute ale episoadelor la verificarea numelor lansărilor, astfel încât cuvintele din titlul episodului să nu fie considerate serviciu sau grup de lansare.
+Ignore episode titles {}	Ignoră titlurile episoadelor {}
+Ignore episode titles	Ignoră titlurile episoadelor
+Alternative group	Grup alternativ
+Alternative group {}	Grup alternativ {}
+Group anime seasons	Grupează sezoanele anime
+Anime group {}	Grup anime {}
+Group of {} · {}	Grupul {} · {}
+Import progress	Progresul importului
+Waiting to import	Se așteaptă importul
+Import progress of {}	Progresul importului pentru {}
+Import details of {}	Detaliile importului pentru {}
+{} / {} episodes imported	{} / {} episoade importate
+· {} not imported	· {} neimportate
+Series, anime or film title, e.g. Severance	Titlu de serial, anime sau film, de ex. Severance
+All enabled catalogues	Toate cataloagele activate
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Niciun catalog activat nu poate fi căutat: activați unul sau introduceți cheia lui API în Setări › Surse de metadate.
+Searches every enabled catalogue, results in your order:	Caută în toate cataloagele activate, rezultatele în ordinea dvs.:
+Grouping	Grupare
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Automat grupează titlul cu franciza sau colecția sa pe baza relațiilor oficiale. Dezactivat îl păstrează separat.
+Automatic (official relations)	Automat (relații oficiale)
+Too many failed sign in attempts. Please try again in {} minute(s).	Prea multe încercări de autentificare eșuate. Încercați din nou peste {} minut(e).
+Reset your password	Resetați parola
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr va scrie în jurnalul său un token de resetare de unică folosință. Copiați-l din
+line in the latest log (System › Logs, or the container's output).	linia din cel mai recent jurnal (Sistem › Jurnale sau ieșirea containerului).
+Write a reset token to the log	Scrie un token de resetare în jurnal
+I already have a reset token	Am deja un token de resetare
+Back to sign in	Înapoi la autentificare
+Your password has been reset, sign in with your new password.	Parola a fost resetată, autentificați-vă cu noua parolă.
+Unable to sign in with your identity provider.	Autentificarea prin furnizorul de identitate nu a reușit.
+Incorrect username or password.	Nume de utilizator sau parolă incorecte.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	Autentificarea OIDC este activată, dar nu este configurată corect. Autentificați-vă cu parola și actualizați setările OIDC (Setări › General › Securitate sau fișierul de configurare).
+Sign in with SSO	Autentificare cu SSO
+You will be sent to your identity provider.	Veți fi redirecționat către furnizorul de identitate.
+Forgot your password?	Ați uitat parola?
+Invalid or expired reset token.	Token de resetare nevalid sau expirat.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Numele de utilizator și parola sunt obligatorii, parolele trebuie să coincidă, iar parola trebuie să aibă cel puțin {} caractere.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Nu a fost scris un nou token de resetare în jurnal. Este posibil ca unul să fie deja activ, așa că verificați mai întâi jurnalul. Repornirea Kitsunarr îl șterge și vă permite să solicitați altul.
+Enter the token from the	Introduceți tokenul din
+line in the log. It's valid for 15 minutes and can only be used once. If you set	linia din jurnal. Este valabil 15 minute și poate fi folosit o singură dată. Dacă setați
+Reset token	Token de resetare
+Confirm new password	Confirmați noua parolă
+Reset password	Resetează parola
+Signed out	Deconectat
+You have been signed out of Kitsunarr.	Ați fost deconectat de la Kitsunarr.
+Sign in again	Autentificați-vă din nou
+Search for missing	Caută lipsă
+Month	Lună
+Week	Săptămână
+Forecast	Prognoză
+Day	Zi
+Agenda	Agendă
+On disk	Pe disc
+Not aired yet	Încă nedifuzat
+Search for the episodes shown that aired and have no file	Caută episoadele afișate care au fost difuzate și nu au fișier
+Previous period	Perioada anterioară
+Next period	Perioada următoare
+Calendar view	Vizualizare calendar
+Nothing airs in this period.	Nu se difuzează nimic în această perioadă.
+Legend	Legendă
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Dezactivat elimină serialul din grupul său anime și îl exclude din gruparea automată
+Disabled removes the film from its collection and keeps it out of automatic grouping	Dezactivat elimină filmul din colecția sa și îl exclude din gruparea automată
+Filter	Filtru
+Filter by path	Filtrează după cale
+All paths	Toate căile
+Combine filters	Combină filtrele
+Show series matching every selected filter	Afișează serialele care corespund tuturor filtrelor selectate
+Clear combined filters	Șterge filtrele combinate
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Afișează fiecare grup anime (gruparea anime din Tanukarr) o singură dată, după primul său sezon
+Save the current filters as a filter of your own	Salvează filtrele curente ca filtru propriu
+Save filter…	Salvează filtrul…
+Shown series	Seriale afișate
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr nu poate aplica aceste condiții ale filtrului salvat, așa că sunt omise:
+The selected filters contradict each other, so no series can match all of them.	Filtrele selectate se contrazic, așa că niciun serial nu le poate îndeplini pe toate.
+No series match the selected filters.	Niciun serial nu corespunde filtrelor selectate.
+Filter "{}" saved.	Filtrul „{}” a fost salvat.
+Save filter	Salvează filtrul
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Filtrul păstrează filtrul selectat, filtrele combinate și calea; este listat împreună cu filtrele predefinite.
+Filter label	Eticheta filtrului
+Delete saved filter	Șterge filtrul salvat
+Delete this saved filter? The series are not changed.	Ștergeți acest filtru salvat? Serialele nu sunt modificate.
+Monitored only	Doar monitorizate
+Unmonitored only	Doar nemonitorizate
+Continuing only	Doar în desfășurare
+Ended only	Doar încheiate
+Missing episodes	Episoade lipsă
+Security settings saved.	Setările de securitate au fost salvate.
+Security	Securitate
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Pentru a preveni accesul de la distanță fără autentificare, Kitsunarr necesită autentificare. Opțional, o puteți dezactiva pentru adresele locale.
+Authentication	Autentificare
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Cum se autentifică utilizatorii: pagina de autentificare Kitsunarr sau furnizorul dvs. de identitate OpenID Connect.
+Forms (sign-in page)	Formulare (pagina de autentificare)
+OIDC (identity provider)	OIDC (furnizor de identitate)
+External (reverse proxy)	Extern (reverse proxy)
+Authentication required	Autentificare necesară
+Require authentication for every request, or not for requests from local addresses or this machine.	Solicită autentificare pentru fiecare cerere sau nu pentru cererile de la adrese locale sau de pe acest computer.
+Disabled for localhost	Dezactivat pentru localhost
+Allowed hosts	Gazde permise
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Listă separată prin virgule a numelor de gazdă și adreselor IP prin care Kitsunarr trebuie să fie accesibil, inclusiv numele de gazdă al sistemului sau numele containerului. Lăsați gol pentru a permite toate gazdele. Obligatoriu atunci când autentificarea nu este necesară întotdeauna. De exemplu: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Consideră de încredere adresele CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Tratează adresele CGNAT (100.64.0.0/10, de ex. Tailscale) ca locale
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Extern: Kitsunarr nu cere autentificare și se bazează pe reverse proxy-ul din fața sa. Folosiți această opțiune doar în spatele unui proxy care autentifică fiecare cerere.
+Register Kitsunarr with your provider using the redirect URI	Înregistrați Kitsunarr la furnizorul dvs. folosind URI-ul de redirecționare
+. Saving signs out password sessions; you then sign in through the provider.	. Salvarea deconectează sesiunile cu parolă; apoi vă autentificați prin furnizor.
+OIDC Authority	OIDC Authority
+The URL of the OIDC provider (https://).	URL-ul furnizorului OIDC (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID-ul înregistrat la furnizorul OIDC.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret-ul înregistrat la furnizorul OIDC.
+OIDC User	Utilizator OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Adresa de e-mail verificată sau identificatorul subiectului (sub) la furnizorul OIDC care se poate autentifica în Kitsunarr.
+OIDC Scopes	Domenii OIDC
+The scopes to request from the OIDC provider; must include openid.	Domeniile (scopes) solicitate de la furnizorul OIDC; trebuie să includă openid.
+Set in config.toml or the environment, which take precedence: {}.	Setat în config.toml sau în mediu, care au prioritate: {}.
+Backup settings saved.	Setările copiilor de rezervă au fost salvate.
+Interval (days)	Interval (zile)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Cât de des se face automat o copie de rezervă (1-7 zile). O copie de rezervă manuală repornește intervalul.
+Backup interval in days	Intervalul copiilor de rezervă în zile
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Copiile de rezervă automate mai vechi decât aceasta sunt șterse (1-90 de zile). Copiile de rezervă manuale sunt păstrate.
+Backup retention in days	Păstrarea copiilor de rezervă în zile
+A quality without an override uses the global sizes of	O calitate fără suprascriere folosește dimensiunile globale din
+Settings › Quality	Setări › Calitate
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Într-o suprascriere, gol înseamnă nelimitat; un maxim de zero înseamnă tot nelimitat.
+Signed in. Save to keep the token.	Autentificat. Salvați pentru a păstra tokenul.
+Redirect URL to register with your API client:	URL de redirecționare de înregistrat la clientul API:
+Test all	Testează tot
+All {} passed their test.	Toate ({}) au trecut testul.
+{} of {} failed their test.	{} din {} nu au trecut testul.
+Test every {} entry	Testează fiecare intrare {}
+Test results	Rezultatele testelor
+passed with warnings	trecut cu avertismente
+Warning:	Avertisment:
+Dismiss test results	Închide rezultatele testelor
+Delete for upgrade	Ștergere pentru upgrade
+Metadata sources saved.	Sursele de metadate au fost salvate.
+Order	Ordine
+Enable {}	Activează {}
+Move {} up	Mută {} în sus
+Move {} down	Mută {} în jos
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Adăugare media listează cataloagele activate în această ordine, iar „Toate cataloagele activate” le combină rezultatele în această ordine. Cataloagele dezactivate nu sunt oferite și nu se caută în ele; titlurile care aparțin deja unuia continuă să se reîmprospăteze din el. Salvați mai jos pentru a aplica.
+Enable at least one metadata source.	Activați cel puțin o sursă de metadate.
+Mixed	Mixt
+Unlimited	Nelimitat
+0 GiB/h	0 GiB/h
+{} min: {}	{} min: {}
+No limit	Fără limită
+Quality definitions saved.	Definițiile de calitate au fost salvate.
+Quality definitions reset to the defaults.	Definițiile de calitate au fost resetate la valorile implicite.
+Reset definitions	Resetează definițiile
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Dimensiunile sunt în MiB pe minut de durată; dimensiunea pe oră este afișată sub fiecare. O lansare în afara limitelor unei calități este respinsă; dimensiunea preferată ordonează lansările. Profilurile își pot păstra propriile limite (
+Settings › Quality profiles	Setări › Profiluri de calitate
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): „Mixt” înseamnă că profilurile folosesc limite diferite, iar o valoare introdusă aici este scrisă în fiecare profil.
+Title of {}	Titlul pentru {}
+{} size of {} (MiB per minute)	Dimensiunea {} pentru {} (MiB pe minut)
+Profiles use different limits	Profilurile folosesc limite diferite
+No minimum	Fără minim
+Hide retired qualities	Ascunde calitățile retrase
+Show retired qualities	Afișează calitățile retrase
+Reset quality definitions	Resetează definițiile de calitate
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Dați fiecărei calități standard titlul și limitele de dimensiune implicite? Presetările personalizate și limitele proprii ale profilurilor sunt păstrate.
+Reset	Resetează
+RefreshMonitoredDownloads	Reîmprospătează descărcările monitorizate
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Citește clienții de descărcare și importă descărcările finalizate preluate de Kitsunarr
+ProcessPendingJellyfinRefresh	Procesează reîmprospătările Jellyfin în așteptare
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Reîmprospătează bibliotecile Jellyfin care au importuri în așteptare (conform modului de reîmprospătare al fiecărei conexiuni)
+SyncJellyfinWatched	Sincronizează vizionările din Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Citește ce episoade a vizionat un utilizator Jellyfin (la intervalul propriu al conexiunii)
+CleanUpRecycleBin	Golește coșul de reciclare
+Deletes files kept in the recycle bin longer than the media management setting allows	Șterge fișierele păstrate în coșul de reciclare mai mult decât permite setarea de gestionare media
+RescanFolders	Rescanează folderele
+Scans series and movie folders: forgets files that are gone and adds files found there	Scanează folderele serialelor și filmelor: uită fișierele care au dispărut și adaugă fișierele găsite acolo
+RefreshMetadata	Reîmprospătează metadatele
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Reîmprospătează titlurile din cataloagele lor de metadate (cele în desfășurare la fiecare 6 ore, cele încheiate lunar)
+Housekeeping	Întreținere
+Purges expired sessions, prunes task history and checks database integrity	Elimină sesiunile expirate, curăță istoricul sarcinilor și verifică integritatea bazei de date
+CleanupSessions	Curăță sesiunile
+Removes expired login sessions	Elimină sesiunile de autentificare expirate
+HealthCheck	Verificare de sănătate
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Reevaluează verificările de sănătate, notifică browserele conectate și trimite notificări de sănătate
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Verificarea integrității bazei de date SQLite a eșuat: {}. Restaurați dintr-o copie de rezervă sigură.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Verificarea integrității bazei de date SQLite nu a returnat niciun rezultat. Restaurați dintr-o copie de rezervă sigură dacă apar erori ale bazei de date.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Verificarea integrității bazei de date SQLite a eșuat: {} încălcări ale cheilor externe. Restaurați dintr-o copie de rezervă sigură.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Nu există indexatoare disponibile cu sincronizarea RSS activată, Kitsunarr nu va prelua automat lansări noi
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Toate indexatoarele compatibile RSS sunt temporar indisponibile din cauza erorilor recente ale indexatoarelor
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Nu există indexatoare disponibile cu Căutarea automată activată, Kitsunarr nu va oferi niciun rezultat al căutării automate
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Nu există indexatoare disponibile cu Căutarea interactivă activată, Kitsunarr nu va oferi niciun rezultat al căutării interactive
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Toate indexatoarele compatibile cu căutarea sunt temporar indisponibile din cauza erorilor recente ale indexatoarelor
+All indexers are unavailable due to failures for more than 6 hours	Toate indexatoarele sunt indisponibile din cauza eșecurilor de peste 6 ore
+Indexers unavailable due to failures for more than 6 hours: {}	Indexatoare indisponibile din cauza eșecurilor de peste 6 ore: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indexatoare care folosesc endpointul Jackett 'all' neacceptat: {}
+Indexers with invalid download clients: {}.	Indexatoare cu clienți de descărcare nevalizi: {}.
+Enable Completed Download Handling	Activează gestionarea descărcărilor finalizate
+All notifications are unavailable due to failures	Toate notificările sunt indisponibile din cauza eșecurilor
+Notifications unavailable due to failures: {}	Notificări indisponibile din cauza eșecurilor: {}
+All lists are unavailable due to failures	Toate listele sunt indisponibile din cauza eșecurilor
+Lists unavailable due to failures: {}	Liste indisponibile din cauza eșecurilor: {}
+Missing root folder for import list(s): {}	Lipsește folderul rădăcină pentru lista (listele) de import: {}
+Multiple root folders are missing for import lists: {}	Lipsesc mai multe foldere rădăcină pentru listele de import: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Nu se poate scrie în folderul coșului de reciclare configurat: {}. Asigurați-vă că această cale există și că utilizatorul care rulează Kitsunarr are drept de scriere în ea
+Unable to write to the backup folder {}; scheduled backups will fail.	Nu se poate scrie în folderul copiilor de rezervă {}; copiile de rezervă programate vor eșua.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Actualizați cheia API astfel încât să aibă cel puțin 20 de caractere. Puteți face acest lucru din setări sau din fișierul de configurare
+Series {} was removed from {}	Serialul {} a fost eliminat din {}
+Series {} were removed from {}	Serialele {} au fost eliminate din {}
+Mount containing a series path is mounted read-only: {}	Montarea care conține o cale de serial este montată doar pentru citire: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Clientul de descărcare {} este setat să elimine descărcările finalizate. Astfel, descărcările pot fi eliminate din client înainte ca Kitsunarr să le poată importa.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Clientul de descărcare {} are sortarea {} activată pentru categoria Kitsunarr. Ar trebui să dezactivați sortarea în clientul de descărcare pentru a evita problemele de import.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Clientul de descărcare {} plasează descărcările în folderul rădăcină {}. Nu ar trebui să descărcați într-un folder rădăcină.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Clientul de descărcare la distanță {} plasează descărcările în {}, dar aceasta nu este o cale {} validă. Verificați mapările căilor la distanță și setările clientului de descărcare.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Folosiți docker; clientul de descărcare {} plasează descărcările în {}, dar aceasta nu este o cale {} validă. Verificați mapările căilor la distanță și setările clientului de descărcare.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Clientul de descărcare local {} plasează descărcările în {}, dar aceasta nu este o cale {} validă. Verificați setările clientului de descărcare.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Folosiți docker; clientul de descărcare {} plasează descărcările în {}, dar acest director nu pare să existe în container. Verificați mapările căilor la distanță și setările volumelor containerului.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Clientul de descărcare la distanță {} plasează descărcările în {}, dar acest director nu pare să existe. Probabil lipsește maparea căii la distanță sau este incorectă.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Clientul de descărcare {} plasează descărcările în {}, dar Kitsunarr nu poate vedea acest director. Poate fi necesar să ajustați permisiunile folderului.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr poate vedea, dar nu poate accesa episodul descărcat {}. Probabil o eroare de permisiuni.
+File {} was removed part way through processing.	Fișierul {} a fost eliminat în timpul procesării.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr nu a reușit să importe episodul (episoadele). Verificați jurnalele pentru detalii.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Clientul de descărcare la distanță {} a raportat fișiere în {}, dar aceasta nu este o cale {} validă. Verificați mapările căilor la distanță și setările clientului de descărcare.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Folosiți docker; clientul de descărcare {} a raportat fișiere în {}, dar aceasta nu este o cale {} validă. Verificați mapările căilor la distanță și setările clientului de descărcare.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Clientul de descărcare local {} a raportat fișiere în {}, dar aceasta nu este o cale {} validă. Verificați setările clientului de descărcare.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr poate vedea, dar nu poate accesa directorul de descărcare {}. Probabil o eroare de permisiuni.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Clientul de descărcare la distanță {} a raportat fișiere în {}, dar acest director nu pare să existe. Probabil lipsește maparea căii la distanță.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Clientul de descărcare {} a raportat fișiere în {}, dar Kitsunarr nu poate vedea acest director. Poate fi necesar să ajustați permisiunile folderului.
+The configured password reset token is shorter than {} characters and is being ignored	Tokenul de resetare a parolei configurat are mai puțin de {} caractere și este ignorat
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Este configurat un token de resetare a parolei. Eliminați variabila de mediu KITSUNARR_AUTH_RESET_TOKEN (sau reset_token din config.toml) când nu mai aveți nevoie de el
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	Autentificarea OIDC este activată, dar Authority, Client ID, Client Secret, Utilizator și Domenii nu sunt toate configurate
+The OIDC Authority must start with 'https://'	OIDC Authority trebuie să înceapă cu 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Nu se poate obține configurația OIDC de la {}, autentificarea prin furnizorul de identitate va eșua până când acesta va fi accesibil
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Încă nu sunt configurate foldere rădăcină. Adăugați unul în Setări → Gestionare media sau importați o instalare existentă.
+Root folder {} is missing or not accessible.	Folderul rădăcină {} lipsește sau nu este accesibil.
+Root folder {} has only {} MiB free.	Folderul rădăcină {} are doar {} MiB liberi.
+No enabled {} is configured; automatic downloads are not possible.	Nu este configurat niciun element {} activat; descărcările automate nu sunt posibile.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Aceste elemente {} au fost păstrate din instalarea dvs. anterioară, dar nu sunt încă implementate nativ: {}.
+All download clients are unavailable due to failures	Toți clienții de descărcare sunt indisponibili din cauza eșecurilor
+Download clients are unavailable due to failures: {}	Clienți de descărcare indisponibili din cauza eșecurilor: {}
+All indexers are unavailable due to failures	Toate indexatoarele sunt indisponibile din cauza eșecurilor
+Indexers unavailable due to failures: {}	Indexatoare indisponibile din cauza eșecurilor: {}
+Failed to resolve the IP address of the configured proxy host {}	Nu s-a putut rezolva adresa IP a gazdei proxy configurate {}
+The data directory has only {} MiB free; the database may fail to write.	Directorul de date are doar {} MiB liberi; scrierea în baza de date poate eșua.

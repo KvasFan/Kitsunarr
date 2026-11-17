@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ jelenlegi szám
 or	vagy
 1 title	1 cím
+Episode titles (one per line)	Epizódcímek (soronként egy)
+For conditions that ignore episode titles.	Az epizódcímeket figyelmen kívül hagyó feltételekhez.
+Test episode titles	Teszt epizódcímek
+· group {}	· {} csoport
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Az ismert epizódcímek kizárása a kiadásnevek ellenőrzésekor, hogy az epizódcím szavai ne számítsanak szolgáltatásnak vagy kiadócsoportnak.
+Ignore episode titles {}	Epizódcímek figyelmen kívül hagyása: {}
+Ignore episode titles	Epizódcímek figyelmen kívül hagyása
+Alternative group	Alternatív csoport
+Alternative group {}	Alternatív csoport: {}
+Group anime seasons	Anime évadok csoportosítása
+Anime group {}	Anime csoport: {}
+Group of {} · {}	{} csoportja · {}
+Import progress	Importálás haladása
+Waiting to import	Importálásra vár
+Import progress of {}	{} importálásának haladása
+Import details of {}	{} importálásának részletei
+{} / {} episodes imported	{} / {} epizód importálva
+· {} not imported	· {} nincs importálva
+Series, anime or film title, e.g. Severance	Sorozat, anime vagy film címe, pl. Severance
+All enabled catalogues	Minden engedélyezett katalógus
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Egyik engedélyezett katalógusban sem lehet keresni: engedélyezz egyet, vagy add meg az API-kulcsát a Beállítások › Metaadatforrások részben.
+Searches every enabled catalogue, results in your order:	Minden engedélyezett katalógusban keres, az eredmények a te sorrendedben:
+Grouping	Csoportosítás
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Az Automatikus a hivatalos kapcsolatok alapján a franchise-ával vagy gyűjteményével csoportosítja a címet. A Letiltva önállóan hagyja.
+Automatic (official relations)	Automatikus (hivatalos kapcsolatok)
+Too many failed sign in attempts. Please try again in {} minute(s).	Túl sok sikertelen bejelentkezési kísérlet. Próbáld újra {} perc múlva.
+Reset your password	Jelszó visszaállítása
+Kitsunarr will write a single-use reset token to its log. Copy it from the	A Kitsunarr egyszer használatos visszaállítási tokent ír a naplójába. Másold ki a
+line in the latest log (System › Logs, or the container's output).	sorból a legutóbbi naplóban (Rendszer › Naplók, vagy a konténer kimenete).
+Write a reset token to the log	Visszaállítási token írása a naplóba
+I already have a reset token	Már van visszaállítási tokenem
+Back to sign in	Vissza a bejelentkezéshez
+Your password has been reset, sign in with your new password.	A jelszavad visszaállítva, jelentkezz be az új jelszavaddal.
+Unable to sign in with your identity provider.	Nem sikerült bejelentkezni az identitásszolgáltatóval.
+Incorrect username or password.	Helytelen felhasználónév vagy jelszó.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	Az OIDC-hitelesítés engedélyezve van, de nincs megfelelően beállítva. Jelentkezz be a jelszavaddal, és frissítsd az OIDC-beállításokat (Beállítások › Általános › Biztonság, vagy a konfigurációs fájl).
+Sign in with SSO	Bejelentkezés SSO-val
+You will be sent to your identity provider.	Átirányítunk az identitásszolgáltatódhoz.
+Forgot your password?	Elfelejtetted a jelszavad?
+Invalid or expired reset token.	Érvénytelen vagy lejárt visszaállítási token.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	A felhasználónév és a jelszó kötelező, a jelszavaknak egyezniük kell, és a jelszónak legalább {} karakterből kell állnia.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Nem került új visszaállítási token a naplóba. Lehet, hogy már van egy aktív, ezért előbb nézd meg a naplót. A Kitsunarr újraindítása törli, és újat kérhetsz.
+Enter the token from the	Add meg a tokent a naplóban lévő
+line in the log. It's valid for 15 minutes and can only be used once. If you set	sorból. 15 percig érvényes, és csak egyszer használható. Ha beállítod a(z)
+Reset token	Visszaállítási token
+Confirm new password	Új jelszó megerősítése
+Reset password	Jelszó visszaállítása
+Signed out	Kijelentkezve
+You have been signed out of Kitsunarr.	Kijelentkeztél a Kitsunarrból.
+Sign in again	Bejelentkezés újra
+Search for missing	Hiányzók keresése
+Month	Hónap
+Week	Hét
+Forecast	Előrejelzés
+Day	Nap
+Agenda	Napirend
+On disk	Lemezen
+Not aired yet	Még nem került adásba
+Search for the episodes shown that aired and have no file	A megjelenített, már adásba került, fájl nélküli epizódok keresése
+Previous period	Előző időszak
+Next period	Következő időszak
+Calendar view	Naptárnézet
+Nothing airs in this period.	Ebben az időszakban semmi sem kerül adásba.
+Legend	Jelmagyarázat
+Disabled removes the series from its anime group and keeps it out of automatic grouping	A Letiltva eltávolítja a sorozatot az anime csoportjából, és kizárja az automatikus csoportosításból
+Disabled removes the film from its collection and keeps it out of automatic grouping	A Letiltva eltávolítja a filmet a gyűjteményéből, és kizárja az automatikus csoportosításból
+Filter	Szűrő
+Filter by path	Szűrés útvonal szerint
+All paths	Minden útvonal
+Combine filters	Szűrők kombinálása
+Show series matching every selected filter	Az összes kiválasztott szűrőnek megfelelő sorozatok megjelenítése
+Clear combined filters	Kombinált szűrők törlése
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Minden anime csoport (a Tanukarr anime-csoportosítása) megjelenítése egyszer, az első évada alapján
+Save the current filters as a filter of your own	A jelenlegi szűrők mentése saját szűrőként
+Save filter…	Szűrő mentése…
+Shown series	Megjelenített sorozatok
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	A Kitsunarr nem tudja alkalmazni a mentett szűrő alábbi feltételeit, ezért kimaradnak:
+The selected filters contradict each other, so no series can match all of them.	A kiválasztott szűrők ellentmondanak egymásnak, így egyetlen sorozat sem felelhet meg mindegyiknek.
+No series match the selected filters.	Egyetlen sorozat sem felel meg a kiválasztott szűrőknek.
+Filter "{}" saved.	„{}” szűrő mentve.
+Save filter	Szűrő mentése
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	A szűrő megőrzi a kiválasztott szűrőt, a kombinált szűrőket és az útvonalat; a beépített szűrők között jelenik meg.
+Filter label	Szűrő címkéje
+Delete saved filter	Mentett szűrő törlése
+Delete this saved filter? The series are not changed.	Törlöd ezt a mentett szűrőt? A sorozatok nem változnak.
+Monitored only	Csak megfigyeltek
+Unmonitored only	Csak nem figyeltek
+Continuing only	Csak folytatódók
+Ended only	Csak véget értek
+Missing episodes	Hiányzó epizódok
+Security settings saved.	Biztonsági beállítások mentve.
+Security	Biztonság
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	A hitelesítés nélküli távoli hozzáférés megakadályozására a Kitsunarr hitelesítést követel meg. Helyi címeknél ezt opcionálisan letilthatod.
+Authentication	Hitelesítés
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Hogyan jelentkeznek be a felhasználók: a Kitsunarr bejelentkezési oldalán, vagy az OpenID Connect identitásszolgáltatódon keresztül.
+Forms (sign-in page)	Űrlapok (bejelentkezési oldal)
+OIDC (identity provider)	OIDC (identitásszolgáltató)
+External (reverse proxy)	Külső (fordított proxy)
+Authentication required	Hitelesítés szükséges
+Require authentication for every request, or not for requests from local addresses or this machine.	Hitelesítés megkövetelése minden kérésnél, vagy a helyi címekről, illetve erről a gépről érkező kérések kivételével.
+Disabled for localhost	Letiltva localhost esetén
+Allowed hosts	Engedélyezett gazdagépek
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Vesszővel elválasztott lista azokról a gazdagépnevekről és IP-címekről, amelyeken a Kitsunarr elérhető legyen, beleértve a rendszer gazdagépnevét vagy a konténer nevét. Hagyd üresen az összes gazdagép engedélyezéséhez. Kötelező, ha a hitelesítés nem mindig szükséges. Például: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	CGNAT-címek megbízhatónak tekintése
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	A CGNAT-címek (100.64.0.0/10, pl. Tailscale) kezelése helyiként
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Külső: a Kitsunarr nem kér bejelentkezést, és az előtte álló fordított proxyra támaszkodik. Csak olyan proxy mögött használd, amely minden kérést hitelesít.
+Register Kitsunarr with your provider using the redirect URI	Regisztráld a Kitsunarrt a szolgáltatódnál ezzel az átirányítási URI-val:
+. Saving signs out password sessions; you then sign in through the provider.	. A mentés kijelentkezteti a jelszavas munkameneteket; ezután a szolgáltatón keresztül jelentkezel be.
+OIDC Authority	OIDC Authority
+The URL of the OIDC provider (https://).	Az OIDC-szolgáltató URL-je (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Az OIDC-szolgáltatónál regisztrált Client ID.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Az OIDC-szolgáltatónál regisztrált Client Secret.
+OIDC User	OIDC-felhasználó
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Az OIDC-szolgáltatónál ellenőrzött e-mail-cím vagy alanyazonosító (sub), amely bejelentkezhet a Kitsunarrba.
+OIDC Scopes	OIDC-hatókörök
+The scopes to request from the OIDC provider; must include openid.	Az OIDC-szolgáltatótól kért hatókörök; tartalmaznia kell az openid-t.
+Set in config.toml or the environment, which take precedence: {}.	A config.toml fájlban vagy a környezetben beállítva, amelyek elsőbbséget élveznek: {}.
+Backup settings saved.	Biztonsági mentési beállítások mentve.
+Interval (days)	Időköz (nap)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Milyen gyakran készüljön automatikusan biztonsági mentés (1-7 nap). A kézi mentés újraindítja az időközt.
+Backup interval in days	Biztonsági mentés időköze napokban
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Az ennél régebbi automatikus biztonsági mentések törlődnek (1-90 nap). A kézi mentések megmaradnak.
+Backup retention in days	Biztonsági mentések megőrzése napokban
+A quality without an override uses the global sizes of	A felülbírálás nélküli minőség a globális méreteket használja innen:
+Settings › Quality	Beállítások › Minőség
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Felülbíráláson belül az üres mező korlátlant jelent; a nulla maximum szintén korlátlant jelent.
+Signed in. Save to keep the token.	Bejelentkezve. Mentsd a token megtartásához.
+Redirect URL to register with your API client:	Az API-kliensnél regisztrálandó átirányítási URL:
+Test all	Összes tesztelése
+All {} passed their test.	Mind átment a teszten ({}).
+{} of {} failed their test.	{} / {} nem ment át a teszten.
+Test every {} entry	Minden {} bejegyzés tesztelése
+Test results	Teszteredmények
+passed with warnings	figyelmeztetésekkel átment
+Warning:	Figyelmeztetés:
+Dismiss test results	Teszteredmények elvetése
+Delete for upgrade	Törlés minőségfrissítéskor
+Metadata sources saved.	Metaadatforrások mentve.
+Order	Sorrend
+Enable {}	{} engedélyezése
+Move {} up	{} mozgatása feljebb
+Move {} down	{} mozgatása lejjebb
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	A Média hozzáadása ebben a sorrendben kínálja az engedélyezett katalógusokat, a „Minden engedélyezett katalógus” pedig ebben a sorrendben egyesíti az eredményeiket. A letiltott katalógusokat nem kínálja és nem keresi; az azokhoz már tartozó címek továbbra is onnan frissülnek. Az alkalmazáshoz ments lent.
+Enable at least one metadata source.	Engedélyezz legalább egy metaadatforrást.
+Mixed	Vegyes
+Unlimited	Korlátlan
+0 GiB/h	0 GiB/h
+{} min: {}	{} perc: {}
+No limit	Nincs korlát
+Quality definitions saved.	Minőségdefiníciók mentve.
+Quality definitions reset to the defaults.	Minőségdefiníciók visszaállítva az alapértelmezettekre.
+Reset definitions	Definíciók visszaállítása
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	A méretek MiB-ben értendők a játékidő percenként; az óránkénti méret mindegyik alatt látható. A minőség korlátain kívül eső kiadás elutasításra kerül; a preferált méret rangsorolja a kiadásokat. A profilok saját korlátokat tarthatnak meg (
+Settings › Quality profiles	Beállítások › Minőségi profilok
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): a „Vegyes” azt jelenti, hogy a profilok eltérő korlátokat használnak, és az itt megadott érték minden profilba beíródik.
+Title of {}	{} címe
+{} size of {} (MiB per minute)	{} méret: {} (MiB percenként)
+Profiles use different limits	A profilok eltérő korlátokat használnak
+No minimum	Nincs minimum
+Hide retired qualities	Kivezetett minőségek elrejtése
+Show retired qualities	Kivezetett minőségek megjelenítése
+Reset quality definitions	Minőségdefiníciók visszaállítása
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Visszaállítod minden szabványos minőség alapértelmezett címét és méretkorlátait? Az egyéni előbeállítások és a profilok saját korlátai megmaradnak.
+Reset	Visszaállítás
+RefreshMonitoredDownloads	Megfigyelt letöltések frissítése
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Beolvassa a letöltő klienseket, és importálja a Kitsunarr által megragadott befejezett letöltéseket
+ProcessPendingJellyfinRefresh	Függő Jellyfin-frissítések feldolgozása
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Frissíti azokat a Jellyfin-könyvtárakat, amelyekhez függő importálások tartoznak (az egyes kapcsolatok frissítési módja szerint)
+SyncJellyfinWatched	Jellyfin megnézettség szinkronizálása
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Beolvassa, mely epizódokat nézte meg egy Jellyfin-felhasználó (a kapcsolat saját időközén)
+CleanUpRecycleBin	Lomtár ürítése
+Deletes files kept in the recycle bin longer than the media management setting allows	Törli a lomtárban a médiakezelési beállításban engedettnél tovább tárolt fájlokat
+RescanFolders	Mappák újraolvasása
+Scans series and movie folders: forgets files that are gone and adds files found there	Átvizsgálja a sorozat- és filmmappákat: elfelejti az eltűnt fájlokat, és hozzáadja az ott talált fájlokat
+RefreshMetadata	Metaadatok frissítése
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Frissíti a címeket a metaadat-katalógusaikból (a folytatódókat 6 óránként, a véget érteket havonta)
+Housekeeping	Karbantartás
+Purges expired sessions, prunes task history and checks database integrity	Törli a lejárt munkameneteket, ritkítja a feladatelőzményeket, és ellenőrzi az adatbázis integritását
+CleanupSessions	Munkamenetek takarítása
+Removes expired login sessions	Eltávolítja a lejárt bejelentkezési munkameneteket
+HealthCheck	Egészség-ellenőrzés
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Újraértékeli az egészség-ellenőrzéseket, értesíti a csatlakozott böngészőket, és egészségügyi értesítéseket küld
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Az SQLite-adatbázis integritás-ellenőrzése sikertelen: {}. Állítsd vissza egy ismert jó biztonsági mentésből.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Az SQLite-adatbázis integritás-ellenőrzése nem adott eredményt. Ha adatbázishibák jelentkeznek, állítsd vissza egy ismert jó biztonsági mentésből.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Az SQLite-adatbázis integritás-ellenőrzése sikertelen: {} idegenkulcs-sértés. Állítsd vissza egy ismert jó biztonsági mentésből.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Nincs elérhető indexelő engedélyezett RSS-szinkronizálással, a Kitsunarr nem fog automatikusan új kiadásokat megragadni
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Az összes RSS-képes indexelő átmenetileg nem érhető el a közelmúltbeli indexelőhibák miatt
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Nincs elérhető indexelő engedélyezett automatikus kereséssel, a Kitsunarr nem fog automatikus keresési eredményeket adni
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Nincs elérhető indexelő engedélyezett interaktív kereséssel, a Kitsunarr nem fog interaktív keresési eredményeket adni
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Az összes keresésre képes indexelő átmenetileg nem érhető el a közelmúltbeli indexelőhibák miatt
+All indexers are unavailable due to failures for more than 6 hours	Az összes indexelő elérhetetlen a több mint 6 órája tartó hibák miatt
+Indexers unavailable due to failures for more than 6 hours: {}	Több mint 6 órája tartó hibák miatt elérhetetlen indexelők: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	A nem támogatott Jackett 'all' végpontot használó indexelők: {}
+Indexers with invalid download clients: {}.	Érvénytelen letöltő klienssel rendelkező indexelők: {}.
+Enable Completed Download Handling	Befejezett letöltések kezelésének engedélyezése
+All notifications are unavailable due to failures	Az összes értesítés elérhetetlen hibák miatt
+Notifications unavailable due to failures: {}	Hibák miatt elérhetetlen értesítések: {}
+All lists are unavailable due to failures	Az összes lista elérhetetlen hibák miatt
+Lists unavailable due to failures: {}	Hibák miatt elérhetetlen listák: {}
+Missing root folder for import list(s): {}	Hiányzó gyökérmappa az importálási list(ák)hoz: {}
+Multiple root folders are missing for import lists: {}	Több gyökérmappa hiányzik az importálási listákhoz: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Nem lehet írni a beállított lomtármappába: {}. Győződj meg róla, hogy ez az útvonal létezik, és a Kitsunarrt futtató felhasználó írhatja
+Unable to write to the backup folder {}; scheduled backups will fail.	Nem lehet írni a biztonsági mentési mappába ({}); az ütemezett mentések sikertelenek lesznek.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Frissítsd az API-kulcsot, hogy legalább 20 karakter hosszú legyen. Ezt a beállításokban vagy a konfigurációs fájlban teheted meg
+Series {} was removed from {}	{} sorozat eltávolítva innen: {}
+Series {} were removed from {}	{} sorozatok eltávolítva innen: {}
+Mount containing a series path is mounted read-only: {}	Egy sorozatútvonalat tartalmazó csatolási pont csak olvasható módban van csatolva: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	A(z) {} letöltő kliens a befejezett letöltések eltávolítására van beállítva. Emiatt a letöltések eltávolításra kerülhetnek a kliensből, mielőtt a Kitsunarr importálni tudná őket.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	A(z) {} letöltő kliensben {} rendezés van engedélyezve a Kitsunarr kategóriájához. Az importálási problémák elkerülése érdekében tiltsd le a rendezést a letöltő kliensben.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	A(z) {} letöltő kliens a(z) {} gyökérmappába helyezi a letöltéseket. Ne tölts le gyökérmappába.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	A(z) {} távoli letöltő kliens ide helyezi a letöltéseket: {}, de ez nem érvényes {} útvonal. Ellenőrizd a távoli útvonal-leképezéseket és a letöltő kliens beállításait.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Dockert használsz; a(z) {} letöltő kliens ide helyezi a letöltéseket: {}, de ez nem érvényes {} útvonal. Ellenőrizd a távoli útvonal-leképezéseket és a letöltő kliens beállításait.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	A(z) {} helyi letöltő kliens ide helyezi a letöltéseket: {}, de ez nem érvényes {} útvonal. Ellenőrizd a letöltő kliens beállításait.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Dockert használsz; a(z) {} letöltő kliens ide helyezi a letöltéseket: {}, de úgy tűnik, ez a könyvtár nem létezik a konténerben. Ellenőrizd a távoli útvonal-leképezéseket és a konténer kötetbeállításait.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	A(z) {} távoli letöltő kliens ide helyezi a letöltéseket: {}, de úgy tűnik, ez a könyvtár nem létezik. Valószínűleg hiányzik vagy hibás a távoli útvonal-leképezés.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	A(z) {} letöltő kliens ide helyezi a letöltéseket: {}, de a Kitsunarr nem látja ezt a könyvtárat. Lehet, hogy módosítanod kell a mappa jogosultságait.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	A Kitsunarr látja, de nem éri el a letöltött epizódot: {}. Valószínűleg jogosultsági hiba.
+File {} was removed part way through processing.	A(z) {} fájlt a feldolgozás közben eltávolították.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	A Kitsunarr nem tudott importálni egy vagy több epizódot. A részletekért nézd meg a naplókat.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	A(z) {} távoli letöltő kliens fájlokat jelentett itt: {}, de ez nem érvényes {} útvonal. Ellenőrizd a távoli útvonal-leképezéseket és a letöltő kliens beállításait.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Dockert használsz; a(z) {} letöltő kliens fájlokat jelentett itt: {}, de ez nem érvényes {} útvonal. Ellenőrizd a távoli útvonal-leképezéseket és a letöltő kliens beállításait.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	A(z) {} helyi letöltő kliens fájlokat jelentett itt: {}, de ez nem érvényes {} útvonal. Ellenőrizd a letöltő kliens beállításait.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	A Kitsunarr látja, de nem éri el a letöltési könyvtárat: {}. Valószínűleg jogosultsági hiba.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	A(z) {} távoli letöltő kliens fájlokat jelentett itt: {}, de úgy tűnik, ez a könyvtár nem létezik. Valószínűleg hiányzik a távoli útvonal-leképezés.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	A(z) {} letöltő kliens fájlokat jelentett itt: {}, de a Kitsunarr nem látja ezt a könyvtárat. Lehet, hogy módosítanod kell a mappa jogosultságait.
+The configured password reset token is shorter than {} characters and is being ignored	A beállított jelszó-visszaállítási token rövidebb {} karakternél, ezért figyelmen kívül marad
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Jelszó-visszaállítási token van beállítva. Ha már nincs rá szükséged, távolítsd el a KITSUNARR_AUTH_RESET_TOKEN környezeti változót (vagy a reset_token értéket a config.toml fájlból)
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	Az OIDC-hitelesítés engedélyezve van, de az Authority, a Client ID, a Client Secret, a felhasználó és a hatókörök nincsenek mind beállítva
+The OIDC Authority must start with 'https://'	Az OIDC Authority értékének 'https://' előtaggal kell kezdődnie
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Nem sikerült lekérni az OIDC-konfigurációt innen: {}; az identitásszolgáltatóval való bejelentkezés sikertelen lesz, amíg el nem érhető
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Még nincs beállítva gyökérmappa. Adj hozzá egyet a Beállítások → Médiakezelés részben, vagy importálj egy meglévő telepítést.
+Root folder {} is missing or not accessible.	A(z) {} gyökérmappa hiányzik vagy nem érhető el.
+Root folder {} has only {} MiB free.	A(z) {} gyökérmappában csak {} MiB szabad hely van.
+No enabled {} is configured; automatic downloads are not possible.	Nincs beállítva engedélyezett {}; automatikus letöltés nem lehetséges.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Ezek a(z) {} elemek az előző telepítésből maradtak meg, de natívan még nincsenek megvalósítva: {}.
+All download clients are unavailable due to failures	Az összes letöltő kliens elérhetetlen hibák miatt
+Download clients are unavailable due to failures: {}	Hibák miatt elérhetetlen letöltő kliensek: {}
+All indexers are unavailable due to failures	Az összes indexelő elérhetetlen hibák miatt
+Indexers unavailable due to failures: {}	Hibák miatt elérhetetlen indexelők: {}
+Failed to resolve the IP address of the configured proxy host {}	Nem sikerült feloldani a beállított proxy gazdagép IP-címét: {}
+The data directory has only {} MiB free; the database may fail to write.	Az adatkönyvtárban csak {} MiB szabad hely van; az adatbázis írása meghiúsulhat.

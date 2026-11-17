@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ текущий номер
 or	или
 1 title	1 тайтл
+Episode titles (one per line)	Названия эпизодов (по одному на строку)
+For conditions that ignore episode titles.	Для условий, игнорирующих названия эпизодов.
+Test episode titles	Тестовые названия эпизодов
+· group {}	· группа {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Исключать известные названия эпизодов при проверке названий релизов, чтобы слова из названия эпизода не считались сервисом или релиз-группой.
+Ignore episode titles {}	Игнорировать названия эпизодов {}
+Ignore episode titles	Игнорировать названия эпизодов
+Alternative group	Альтернативная группа
+Alternative group {}	Альтернативная группа {}
+Group anime seasons	Группировать сезоны аниме
+Anime group {}	Аниме-группа {}
+Group of {} · {}	Группа из {} · {}
+Import progress	Ход импорта
+Waiting to import	Ожидает импорта
+Import progress of {}	Ход импорта: {}
+Import details of {}	Подробности импорта: {}
+{} / {} episodes imported	Импортировано эпизодов: {} / {}
+· {} not imported	· не импортировано: {}
+Series, anime or film title, e.g. Severance	Название сериала, аниме или фильма, например Severance
+All enabled catalogues	Все включённые каталоги
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Ни в одном включённом каталоге нельзя выполнить поиск: включите каталог или введите его API-ключ в Настройки › Источники метаданных.
+Searches every enabled catalogue, results in your order:	Поиск во всех включённых каталогах, результаты в вашем порядке:
+Grouping	Группировка
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	«Автоматически» объединяет тайтл с его франшизой или коллекцией по официальным связям. «Выключено» оставляет его отдельно.
+Automatic (official relations)	Автоматически (официальные связи)
+Too many failed sign in attempts. Please try again in {} minute(s).	Слишком много неудачных попыток входа. Повторите попытку через {} мин.
+Reset your password	Сброс пароля
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr запишет одноразовый токен сброса в журнал. Скопируйте его из строки
+line in the latest log (System › Logs, or the container's output).	в последнем журнале (Система › Журналы или вывод контейнера).
+Write a reset token to the log	Записать токен сброса в журнал
+I already have a reset token	У меня уже есть токен сброса
+Back to sign in	Вернуться ко входу
+Your password has been reset, sign in with your new password.	Пароль сброшен, войдите с новым паролем.
+Unable to sign in with your identity provider.	Не удалось войти через поставщика удостоверений.
+Incorrect username or password.	Неверное имя пользователя или пароль.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	Аутентификация OIDC включена, но настроена неправильно. Войдите с паролем и обновите настройки OIDC (Настройки › Общие › Безопасность или файл конфигурации).
+Sign in with SSO	Войти через SSO
+You will be sent to your identity provider.	Вы будете перенаправлены к поставщику удостоверений.
+Forgot your password?	Забыли пароль?
+Invalid or expired reset token.	Недействительный или просроченный токен сброса.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Требуются имя пользователя и пароль, пароли должны совпадать, а пароль должен содержать не менее {} символов.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Новый токен сброса не был записан в журнал. Возможно, токен уже активен, поэтому сначала проверьте журнал. Перезапуск Kitsunarr сбрасывает его и позволяет запросить новый.
+Enter the token from the	Введите токен из строки
+line in the log. It's valid for 15 minutes and can only be used once. If you set	в журнале. Он действителен 15 минут и может быть использован только один раз. Если вы задали
+Reset token	Токен сброса
+Confirm new password	Подтвердите новый пароль
+Reset password	Сбросить пароль
+Signed out	Выход выполнен
+You have been signed out of Kitsunarr.	Вы вышли из Kitsunarr.
+Sign in again	Войти снова
+Search for missing	Искать отсутствующие
+Month	Месяц
+Week	Неделя
+Forecast	Прогноз
+Day	День
+Agenda	Повестка
+On disk	На диске
+Not aired yet	Ещё не вышел
+Search for the episodes shown that aired and have no file	Искать показанные эпизоды, которые уже вышли и не имеют файла
+Previous period	Предыдущий период
+Next period	Следующий период
+Calendar view	Вид календаря
+Nothing airs in this period.	В этот период ничего не выходит.
+Legend	Легенда
+Disabled removes the series from its anime group and keeps it out of automatic grouping	«Выключено» удаляет сериал из его аниме-группы и исключает его из автоматической группировки
+Disabled removes the film from its collection and keeps it out of automatic grouping	«Выключено» удаляет фильм из его коллекции и исключает его из автоматической группировки
+Filter	Фильтр
+Filter by path	Фильтр по пути
+All paths	Все пути
+Combine filters	Объединить фильтры
+Show series matching every selected filter	Показывать сериалы, соответствующие всем выбранным фильтрам
+Clear combined filters	Сбросить объединённые фильтры
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Показывать каждую аниме-группу (группировка аниме Tanukarr) один раз, по её первому сезону
+Save the current filters as a filter of your own	Сохранить текущие фильтры как собственный фильтр
+Save filter…	Сохранить фильтр…
+Shown series	Показанные сериалы
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr не может применить эти условия сохранённого фильтра, поэтому они пропущены:
+The selected filters contradict each other, so no series can match all of them.	Выбранные фильтры противоречат друг другу, поэтому ни один сериал не может соответствовать им всем.
+No series match the selected filters.	Нет сериалов, соответствующих выбранным фильтрам.
+Filter "{}" saved.	Фильтр «{}» сохранён.
+Save filter	Сохранить фильтр
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Фильтр сохраняет выбранный фильтр, объединённые фильтры и путь; он отображается вместе со встроенными фильтрами.
+Filter label	Название фильтра
+Delete saved filter	Удалить сохранённый фильтр
+Delete this saved filter? The series are not changed.	Удалить этот сохранённый фильтр? Сериалы не изменятся.
+Monitored only	Только отслеживаемые
+Unmonitored only	Только неотслеживаемые
+Continuing only	Только продолжающиеся
+Ended only	Только завершённые
+Missing episodes	Отсутствующие эпизоды
+Security settings saved.	Настройки безопасности сохранены.
+Security	Безопасность
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Чтобы предотвратить удалённый доступ без аутентификации, Kitsunarr требует аутентификацию. При желании её можно отключить для локальных адресов.
+Authentication	Аутентификация
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Как входят пользователи: через страницу входа Kitsunarr или через ваш поставщик удостоверений OpenID Connect.
+Forms (sign-in page)	Формы (страница входа)
+OIDC (identity provider)	OIDC (поставщик удостоверений)
+External (reverse proxy)	Внешняя (обратный прокси)
+Authentication required	Требуется аутентификация
+Require authentication for every request, or not for requests from local addresses or this machine.	Требовать аутентификацию для каждого запроса или не требовать её для запросов с локальных адресов или с этой машины.
+Disabled for localhost	Отключено для localhost
+Allowed hosts	Разрешённые хосты
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Список имён хостов и IP-адресов через запятую, по которым должен быть доступен Kitsunarr, включая имя хоста системы или имя контейнера. Оставьте пустым, чтобы разрешить все хосты. Обязательно, если аутентификация требуется не всегда. Например: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Доверять адресам CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Считать адреса CGNAT (100.64.0.0/10, например Tailscale) локальными
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Внешняя: Kitsunarr не запрашивает вход и полагается на обратный прокси перед ним. Используйте это только за прокси, который аутентифицирует каждый запрос.
+Register Kitsunarr with your provider using the redirect URI	Зарегистрируйте Kitsunarr у своего поставщика с URI перенаправления
+. Saving signs out password sessions; you then sign in through the provider.	. Сохранение завершает сеансы с входом по паролю; после этого вход выполняется через поставщика.
+OIDC Authority	OIDC Authority
+The URL of the OIDC provider (https://).	URL поставщика OIDC (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID, зарегистрированный у поставщика OIDC.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret, зарегистрированный у поставщика OIDC.
+OIDC User	Пользователь OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Подтверждённый адрес e-mail или идентификатор субъекта (sub) у поставщика OIDC, которому разрешено входить в Kitsunarr.
+OIDC Scopes	Области (scopes) OIDC
+The scopes to request from the OIDC provider; must include openid.	Области, запрашиваемые у поставщика OIDC; должны включать openid.
+Set in config.toml or the environment, which take precedence: {}.	Задано в config.toml или в окружении, которые имеют приоритет: {}.
+Backup settings saved.	Настройки резервного копирования сохранены.
+Interval (days)	Интервал (дни)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Как часто автоматически создаётся резервная копия (1–7 дней). Ручное резервное копирование перезапускает интервал.
+Backup interval in days	Интервал резервного копирования в днях
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Автоматические резервные копии старше этого срока удаляются (1–90 дней). Ручные резервные копии сохраняются.
+Backup retention in days	Срок хранения резервных копий в днях
+A quality without an override uses the global sizes of	Качество без переопределения использует глобальные размеры из
+Settings › Quality	Настройки › Качество
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Внутри переопределения пустое значение означает «без ограничений»; максимум, равный нулю, тоже означает «без ограничений».
+Signed in. Save to keep the token.	Вход выполнен. Сохраните, чтобы оставить токен.
+Redirect URL to register with your API client:	URL перенаправления для регистрации в вашем API-клиенте:
+Test all	Тестировать все
+All {} passed their test.	Все {} прошли тест.
+{} of {} failed their test.	{} из {} не прошли тест.
+Test every {} entry	Протестировать все записи: {}
+Test results	Результаты теста
+passed with warnings	пройден с предупреждениями
+Warning:	Предупреждение:
+Dismiss test results	Закрыть результаты теста
+Delete for upgrade	Удалять при улучшении
+Metadata sources saved.	Источники метаданных сохранены.
+Order	Порядок
+Enable {}	Включить {}
+Move {} up	Переместить {} вверх
+Move {} down	Переместить {} вниз
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	«Добавить медиа» показывает включённые каталоги в этом порядке, а «Все включённые каталоги» объединяет их результаты в этом порядке. Выключенные каталоги не предлагаются, и поиск в них не выполняется; тайтлы, которые уже принадлежат одному из них, по-прежнему обновляются из него. Нажмите «Сохранить» ниже, чтобы применить.
+Enable at least one metadata source.	Включите хотя бы один источник метаданных.
+Mixed	Смешанные
+Unlimited	Без ограничений
+0 GiB/h	0 ГиБ/ч
+{} min: {}	{} мин: {}
+No limit	Без ограничения
+Quality definitions saved.	Определения качества сохранены.
+Quality definitions reset to the defaults.	Определения качества сброшены к значениям по умолчанию.
+Reset definitions	Сбросить определения
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Размеры указаны в МиБ на минуту длительности; под каждым показан размер за час. Релиз вне пределов качества отклоняется; предпочтительный размер влияет на ранжирование релизов. Профили могут иметь собственные пределы (
+Settings › Quality profiles	Настройки › Профили качества
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): «Смешанные» означает, что профили используют разные пределы, а введённое здесь значение записывается в каждый профиль.
+Title of {}	Название для {}
+{} size of {} (MiB per minute)	{}: размер для {} (МиБ в минуту)
+Profiles use different limits	Профили используют разные пределы
+No minimum	Без минимума
+Hide retired qualities	Скрыть устаревшие качества
+Show retired qualities	Показать устаревшие качества
+Reset quality definitions	Сбросить определения качества
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Вернуть каждому стандартному качеству название и пределы размера по умолчанию? Свои пресеты и собственные пределы профилей сохраняются.
+Reset	Сбросить
+RefreshMonitoredDownloads	Обновить отслеживаемые загрузки
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Читает клиенты загрузки и импортирует завершённые загрузки, захваченные Kitsunarr
+ProcessPendingJellyfinRefresh	Обработать ожидающие обновления Jellyfin
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Обновляет библиотеки Jellyfin, в которых есть ожидающие импорты (в режиме обновления каждого подключения)
+SyncJellyfinWatched	Синхронизировать просмотренное в Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Считывает, какие эпизоды посмотрел пользователь Jellyfin (с собственным интервалом подключения)
+CleanUpRecycleBin	Очистить корзину
+Deletes files kept in the recycle bin longer than the media management setting allows	Удаляет файлы, которые хранятся в корзине дольше, чем позволяет настройка управления медиа
+RescanFolders	Пересканировать папки
+Scans series and movie folders: forgets files that are gone and adds files found there	Сканирует папки сериалов и фильмов: забывает исчезнувшие файлы и добавляет найденные там
+RefreshMetadata	Обновить метаданные
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Обновляет тайтлы из их каталогов метаданных (продолжающиеся — каждые 6 часов, завершённые — ежемесячно)
+Housekeeping	Обслуживание
+Purges expired sessions, prunes task history and checks database integrity	Удаляет истёкшие сеансы, сокращает историю задач и проверяет целостность базы данных
+CleanupSessions	Очистить сеансы
+Removes expired login sessions	Удаляет истёкшие сеансы входа
+HealthCheck	Проверка состояния
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Заново выполняет проверки состояния, уведомляет подключённые браузеры и отправляет уведомления о состоянии
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Проверка целостности базы данных SQLite не пройдена: {}. Восстановите базу из заведомо исправной резервной копии.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Проверка целостности базы данных SQLite не вернула результат. Если возникают ошибки базы данных, восстановите её из заведомо исправной резервной копии.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Проверка целостности базы данных SQLite не пройдена, нарушений внешних ключей: {}. Восстановите базу из заведомо исправной резервной копии.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Нет индексаторов с включённой синхронизацией RSS, Kitsunarr не будет автоматически захватывать новые релизы
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Все индексаторы с поддержкой RSS временно недоступны из-за недавних ошибок индексаторов
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Нет индексаторов с включённым автоматическим поиском, Kitsunarr не будет выдавать результаты автоматического поиска
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Нет индексаторов с включённым интерактивным поиском, Kitsunarr не будет выдавать результаты интерактивного поиска
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Все индексаторы с поддержкой поиска временно недоступны из-за недавних ошибок индексаторов
+All indexers are unavailable due to failures for more than 6 hours	Все индексаторы недоступны из-за сбоев более 6 часов
+Indexers unavailable due to failures for more than 6 hours: {}	Индексаторы, недоступные из-за сбоев более 6 часов: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Индексаторы, использующие неподдерживаемую конечную точку Jackett 'all': {}
+Indexers with invalid download clients: {}.	Индексаторы с недопустимыми клиентами загрузки: {}.
+Enable Completed Download Handling	Включите обработку завершённых загрузок
+All notifications are unavailable due to failures	Все уведомления недоступны из-за сбоев
+Notifications unavailable due to failures: {}	Уведомления, недоступные из-за сбоев: {}
+All lists are unavailable due to failures	Все списки недоступны из-за сбоев
+Lists unavailable due to failures: {}	Списки, недоступные из-за сбоев: {}
+Missing root folder for import list(s): {}	Отсутствует корневая папка для списков импорта: {}
+Multiple root folders are missing for import lists: {}	Отсутствуют несколько корневых папок для списков импорта: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Не удаётся записать в настроенную папку корзины: {}. Убедитесь, что этот путь существует и доступен для записи пользователю, от имени которого запущен Kitsunarr
+Unable to write to the backup folder {}; scheduled backups will fail.	Не удаётся записать в папку резервных копий {}; плановое резервное копирование будет завершаться ошибкой.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Обновите API-ключ, чтобы он содержал не менее 20 символов. Это можно сделать в настройках или в файле конфигурации
+Series {} was removed from {}	Сериал {} удалён из {}
+Series {} were removed from {}	Сериалы {} удалены из {}
+Mount containing a series path is mounted read-only: {}	Точка монтирования, содержащая путь сериала, смонтирована только для чтения: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Клиент загрузки {} настроен на удаление завершённых загрузок. Из-за этого загрузки могут быть удалены из клиента до того, как Kitsunarr сможет их импортировать.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	В клиенте загрузки {} включена сортировка {} для категории Kitsunarr. Отключите сортировку в клиенте загрузки, чтобы избежать проблем с импортом.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Клиент загрузки {} помещает загрузки в корневую папку {}. Не следует загружать в корневую папку.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Удалённый клиент загрузки {} помещает загрузки в {}, но это недопустимый путь {}. Проверьте сопоставления удалённых путей и настройки клиента загрузки.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Вы используете Docker; клиент загрузки {} помещает загрузки в {}, но это недопустимый путь {}. Проверьте сопоставления удалённых путей и настройки клиента загрузки.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Локальный клиент загрузки {} помещает загрузки в {}, но это недопустимый путь {}. Проверьте настройки клиента загрузки.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Вы используете Docker; клиент загрузки {} помещает загрузки в {}, но эта папка, похоже, не существует внутри контейнера. Проверьте сопоставления удалённых путей и настройки томов контейнера.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Удалённый клиент загрузки {} помещает загрузки в {}, но эта папка, похоже, не существует. Вероятно, сопоставление удалённого пути отсутствует или неверно.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Клиент загрузки {} помещает загрузки в {}, но Kitsunarr не видит эту папку. Возможно, нужно изменить права доступа к папке.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr видит загруженный эпизод {}, но не может получить к нему доступ. Вероятно, ошибка прав доступа.
+File {} was removed part way through processing.	Файл {} был удалён в процессе обработки.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr не удалось импортировать эпизод(ы). Подробности смотрите в журналах.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Удалённый клиент загрузки {} сообщил о файлах в {}, но это недопустимый путь {}. Проверьте сопоставления удалённых путей и настройки клиента загрузки.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Вы используете Docker; клиент загрузки {} сообщил о файлах в {}, но это недопустимый путь {}. Проверьте сопоставления удалённых путей и настройки клиента загрузки.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Локальный клиент загрузки {} сообщил о файлах в {}, но это недопустимый путь {}. Проверьте настройки клиента загрузки.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr видит папку загрузок {}, но не может получить к ней доступ. Вероятно, ошибка прав доступа.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Удалённый клиент загрузки {} сообщил о файлах в {}, но эта папка, похоже, не существует. Вероятно, отсутствует сопоставление удалённого пути.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Клиент загрузки {} сообщил о файлах в {}, но Kitsunarr не видит эту папку. Возможно, нужно изменить права доступа к папке.
+The configured password reset token is shorter than {} characters and is being ignored	Настроенный токен сброса пароля короче {} символов и игнорируется
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Настроен токен сброса пароля. Удалите переменную окружения KITSUNARR_AUTH_RESET_TOKEN (или reset_token в config.toml), когда он больше не нужен
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	Аутентификация OIDC включена, но не все параметры (Authority, Client ID, Client Secret, пользователь и области) настроены
+The OIDC Authority must start with 'https://'	OIDC Authority должен начинаться с 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Не удаётся получить конфигурацию OIDC из {}, вход через поставщика удостоверений не будет работать, пока он не станет доступен
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Корневые папки ещё не настроены. Добавьте папку в Настройки → Управление медиа или импортируйте существующую установку.
+Root folder {} is missing or not accessible.	Корневая папка {} отсутствует или недоступна.
+Root folder {} has only {} MiB free.	В корневой папке {} свободно только {} МиБ.
+No enabled {} is configured; automatic downloads are not possible.	Нет ни одного включённого элемента типа «{}»; автоматические загрузки невозможны.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Эти элементы типа «{}» сохранены из предыдущей установки, но пока не реализованы нативно: {}.
+All download clients are unavailable due to failures	Все клиенты загрузки недоступны из-за сбоев
+Download clients are unavailable due to failures: {}	Клиенты загрузки недоступны из-за сбоев: {}
+All indexers are unavailable due to failures	Все индексаторы недоступны из-за сбоев
+Indexers unavailable due to failures: {}	Индексаторы, недоступные из-за сбоев: {}
+Failed to resolve the IP address of the configured proxy host {}	Не удалось определить IP-адрес настроенного хоста прокси {}
+The data directory has only {} MiB free; the database may fail to write.	В папке данных свободно только {} МиБ; база данных может не суметь выполнить запись.

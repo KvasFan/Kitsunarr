@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ मौजूदा नंबर
 or	या
 1 title	1 शीर्षक
+Episode titles (one per line)	एपिसोड शीर्षक (हर पंक्ति में एक)
+For conditions that ignore episode titles.	उन शर्तों के लिए जो एपिसोड शीर्षकों को अनदेखा करती हैं।
+Test episode titles	टेस्ट एपिसोड शीर्षक
+· group {}	· समूह {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	रिलीज़ नाम जाँचते समय ज्ञात एपिसोड शीर्षकों को बाहर रखें, ताकि एपिसोड शीर्षक के शब्द किसी सेवा या रिलीज़ समूह के रूप में न गिने जाएँ।
+Ignore episode titles {}	एपिसोड शीर्षक अनदेखा करें {}
+Ignore episode titles	एपिसोड शीर्षक अनदेखा करें
+Alternative group	वैकल्पिक समूह
+Alternative group {}	वैकल्पिक समूह {}
+Group anime seasons	एनीमे सीज़न समूहित करें
+Anime group {}	एनीमे समूह {}
+Group of {} · {}	{} का समूह · {}
+Import progress	आयात प्रगति
+Waiting to import	आयात की प्रतीक्षा में
+Import progress of {}	{} की आयात प्रगति
+Import details of {}	{} का आयात विवरण
+{} / {} episodes imported	{} / {} एपिसोड आयात किए गए
+· {} not imported	· {} आयात नहीं किए गए
+Series, anime or film title, e.g. Severance	सीरीज़, एनीमे या फ़िल्म का शीर्षक, जैसे Severance
+All enabled catalogues	सभी सक्षम कैटलॉग
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	कोई सक्षम कैटलॉग खोजा नहीं जा सकता: किसी एक को सक्षम करें या सेटिंग्स › मेटाडेटा स्रोत में उसकी API कुंजी दर्ज करें।
+Searches every enabled catalogue, results in your order:	सभी सक्षम कैटलॉग खोजता है, परिणाम आपके क्रम में:
+Grouping	समूहीकरण
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	स्वचालित, आधिकारिक संबंधों के आधार पर शीर्षक को उसकी फ़्रैंचाइज़ी या संग्रह के साथ समूहित करता है। अक्षम उसे अलग रखता है।
+Automatic (official relations)	स्वचालित (आधिकारिक संबंध)
+Too many failed sign in attempts. Please try again in {} minute(s).	साइन इन के बहुत अधिक विफल प्रयास। कृपया {} मिनट बाद फिर से कोशिश करें।
+Reset your password	अपना पासवर्ड रीसेट करें
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr अपने लॉग में एक बार इस्तेमाल होने वाला रीसेट टोकन लिखेगा। इसे नवीनतम लॉग की
+line in the latest log (System › Logs, or the container's output).	पंक्ति से कॉपी करें (सिस्टम › लॉग, या कंटेनर का आउटपुट)।
+Write a reset token to the log	लॉग में रीसेट टोकन लिखें
+I already have a reset token	मेरे पास पहले से रीसेट टोकन है
+Back to sign in	साइन इन पर वापस जाएँ
+Your password has been reset, sign in with your new password.	आपका पासवर्ड रीसेट हो गया है, अपने नए पासवर्ड से साइन इन करें।
+Unable to sign in with your identity provider.	आपके पहचान प्रदाता से साइन इन नहीं किया जा सका।
+Incorrect username or password.	उपयोगकर्ता नाम या पासवर्ड गलत है।
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC प्रमाणीकरण सक्षम है, लेकिन सही तरह से कॉन्फ़िगर नहीं है। अपने पासवर्ड से साइन इन करें और OIDC सेटिंग्स अपडेट करें (सेटिंग्स › सामान्य › सुरक्षा, या कॉन्फ़िगरेशन फ़ाइल)।
+Sign in with SSO	SSO से साइन इन करें
+You will be sent to your identity provider.	आपको आपके पहचान प्रदाता के पास भेजा जाएगा।
+Forgot your password?	पासवर्ड भूल गए?
+Invalid or expired reset token.	अमान्य या समाप्त रीसेट टोकन।
+Username and password are required, the passwords must match, and the password needs at least {} characters.	उपयोगकर्ता नाम और पासवर्ड आवश्यक हैं, पासवर्ड मेल खाने चाहिए, और पासवर्ड में कम से कम {} अक्षर होने चाहिए।
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	लॉग में नया रीसेट टोकन नहीं लिखा गया। हो सकता है कोई पहले से सक्रिय हो, इसलिए पहले लॉग जाँचें। Kitsunarr को पुनः आरंभ करने से वह साफ़ हो जाता है और आप दूसरा टोकन माँग सकते हैं।
+Enter the token from the	लॉग की
+line in the log. It's valid for 15 minutes and can only be used once. If you set	पंक्ति से टोकन दर्ज करें। यह 15 मिनट तक मान्य है और केवल एक बार इस्तेमाल किया जा सकता है। अगर आपने
+Reset token	रीसेट टोकन
+Confirm new password	नए पासवर्ड की पुष्टि करें
+Reset password	पासवर्ड रीसेट करें
+Signed out	साइन आउट हो गया
+You have been signed out of Kitsunarr.	आप Kitsunarr से साइन आउट हो गए हैं।
+Sign in again	फिर से साइन इन करें
+Search for missing	अनुपलब्ध खोजें
+Month	महीना
+Week	सप्ताह
+Forecast	पूर्वानुमान
+Day	दिन
+Agenda	एजेंडा
+On disk	डिस्क पर
+Not aired yet	अभी प्रसारित नहीं
+Search for the episodes shown that aired and have no file	दिखाए गए उन एपिसोड को खोजें जो प्रसारित हो चुके हैं और जिनकी कोई फ़ाइल नहीं है
+Previous period	पिछली अवधि
+Next period	अगली अवधि
+Calendar view	कैलेंडर दृश्य
+Nothing airs in this period.	इस अवधि में कुछ भी प्रसारित नहीं होता।
+Legend	संकेत-सूची
+Disabled removes the series from its anime group and keeps it out of automatic grouping	अक्षम करने पर सीरीज़ अपने एनीमे समूह से हट जाती है और स्वचालित समूहीकरण से बाहर रहती है
+Disabled removes the film from its collection and keeps it out of automatic grouping	अक्षम करने पर फ़िल्म अपने संग्रह से हट जाती है और स्वचालित समूहीकरण से बाहर रहती है
+Filter	फ़िल्टर
+Filter by path	पथ के अनुसार फ़िल्टर करें
+All paths	सभी पथ
+Combine filters	फ़िल्टर संयोजित करें
+Show series matching every selected filter	हर चुने गए फ़िल्टर से मेल खाने वाली सीरीज़ दिखाएँ
+Clear combined filters	संयोजित फ़िल्टर साफ़ करें
+Show each anime group (Tanukarr's anime grouping) once, by its first season	हर एनीमे समूह (Tanukarr का एनीमे समूहीकरण) को उसके पहले सीज़न के रूप में एक बार दिखाएँ
+Save the current filters as a filter of your own	मौजूदा फ़िल्टरों को अपने फ़िल्टर के रूप में सहेजें
+Save filter…	फ़िल्टर सहेजें…
+Shown series	दिखाई गई सीरीज़
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr सहेजे गए फ़िल्टर की ये शर्तें लागू नहीं कर सकता, इसलिए इन्हें छोड़ दिया गया है:
+The selected filters contradict each other, so no series can match all of them.	चुने गए फ़िल्टर एक-दूसरे के विरोधी हैं, इसलिए कोई भी सीरीज़ इन सभी से मेल नहीं खा सकती।
+No series match the selected filters.	चुने गए फ़िल्टरों से कोई सीरीज़ मेल नहीं खाती।
+Filter "{}" saved.	फ़िल्टर "{}" सहेजा गया।
+Save filter	फ़िल्टर सहेजें
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	फ़िल्टर चुने गए फ़िल्टर, संयोजित फ़िल्टरों और पथ को सहेजता है; यह बिल्ट-इन फ़िल्टरों के साथ सूचीबद्ध होता है।
+Filter label	फ़िल्टर लेबल
+Delete saved filter	सहेजा गया फ़िल्टर हटाएँ
+Delete this saved filter? The series are not changed.	यह सहेजा गया फ़िल्टर हटाएँ? सीरीज़ में कोई बदलाव नहीं होगा।
+Monitored only	केवल निगरानी में
+Unmonitored only	केवल निगरानी में नहीं
+Continuing only	केवल जारी
+Ended only	केवल समाप्त
+Missing episodes	अनुपलब्ध एपिसोड
+Security settings saved.	सुरक्षा सेटिंग्स सहेजी गईं।
+Security	सुरक्षा
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	बिना प्रमाणीकरण के रिमोट एक्सेस रोकने के लिए Kitsunarr को प्रमाणीकरण की आवश्यकता होती है। आप चाहें तो इसे स्थानीय पतों के लिए अक्षम कर सकते हैं।
+Authentication	प्रमाणीकरण
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	उपयोगकर्ता कैसे साइन इन करते हैं: Kitsunarr का साइन-इन पेज, या आपका OpenID Connect पहचान प्रदाता।
+Forms (sign-in page)	फ़ॉर्म (साइन-इन पेज)
+OIDC (identity provider)	OIDC (पहचान प्रदाता)
+External (reverse proxy)	बाहरी (रिवर्स प्रॉक्सी)
+Authentication required	प्रमाणीकरण आवश्यक
+Require authentication for every request, or not for requests from local addresses or this machine.	हर अनुरोध के लिए प्रमाणीकरण आवश्यक करें, या स्थानीय पतों या इस मशीन से आने वाले अनुरोधों के लिए नहीं।
+Disabled for localhost	localhost के लिए अक्षम
+Allowed hosts	अनुमत होस्ट
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	उन होस्ट नामों और IP पतों की अल्पविराम से अलग सूची जिनसे Kitsunarr तक पहुँचा जा सके, जिसमें सिस्टम का होस्ट नाम या कंटेनर का नाम शामिल है। सभी होस्ट की अनुमति देने के लिए खाली छोड़ें। जब प्रमाणीकरण हमेशा आवश्यक न हो तब यह ज़रूरी है। उदाहरण: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	CGNAT पतों पर भरोसा करें
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	CGNAT पतों (100.64.0.0/10, जैसे Tailscale) को स्थानीय मानें
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	बाहरी: Kitsunarr साइन इन नहीं माँगता और अपने आगे लगे रिवर्स प्रॉक्सी पर निर्भर रहता है। इसे केवल ऐसे प्रॉक्सी के पीछे उपयोग करें जो हर अनुरोध को प्रमाणित करता हो।
+Register Kitsunarr with your provider using the redirect URI	इस रीडायरेक्ट URI के साथ Kitsunarr को अपने प्रदाता में पंजीकृत करें:
+. Saving signs out password sessions; you then sign in through the provider.	। सहेजने से पासवर्ड वाले सत्र साइन आउट हो जाते हैं; इसके बाद आप प्रदाता के माध्यम से साइन इन करते हैं।
+OIDC Authority	OIDC अथॉरिटी
+The URL of the OIDC provider (https://).	OIDC प्रदाता का URL (https://)।
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	OIDC प्रदाता में पंजीकृत Client ID।
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	OIDC प्रदाता में पंजीकृत Client Secret।
+OIDC User	OIDC उपयोगकर्ता
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	OIDC प्रदाता पर सत्यापित ईमेल पता या सब्जेक्ट पहचानकर्ता (sub) जो Kitsunarr में साइन इन कर सकता है।
+OIDC Scopes	OIDC स्कोप
+The scopes to request from the OIDC provider; must include openid.	OIDC प्रदाता से माँगे जाने वाले स्कोप; इनमें openid शामिल होना चाहिए।
+Set in config.toml or the environment, which take precedence: {}.	config.toml या एनवायरनमेंट में सेट, जिन्हें प्राथमिकता मिलती है: {}।
+Backup settings saved.	बैकअप सेटिंग्स सहेजी गईं।
+Interval (days)	अंतराल (दिन)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	बैकअप कितनी बार अपने-आप बनाया जाता है (1-7 दिन)। मैन्युअल बैकअप अंतराल को फिर से शुरू करता है।
+Backup interval in days	दिनों में बैकअप अंतराल
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	इससे पुराने स्वचालित बैकअप हटा दिए जाते हैं (1-90 दिन)। मैन्युअल बैकअप रखे जाते हैं।
+Backup retention in days	दिनों में बैकअप प्रतिधारण
+A quality without an override uses the global sizes of	बिना ओवरराइड वाली गुणवत्ता यहाँ के वैश्विक आकारों का उपयोग करती है:
+Settings › Quality	सेटिंग्स › गुणवत्ता
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	। ओवरराइड के भीतर, खाली का अर्थ है असीमित; शून्य अधिकतम का अर्थ भी असीमित है।
+Signed in. Save to keep the token.	साइन इन हो गया। टोकन रखने के लिए सहेजें।
+Redirect URL to register with your API client:	अपने API क्लाइंट में पंजीकृत करने के लिए रीडायरेक्ट URL:
+Test all	सभी टेस्ट करें
+All {} passed their test.	सभी {} टेस्ट में पास हुए।
+{} of {} failed their test.	{} (कुल {} में से) टेस्ट में विफल रहे।
+Test every {} entry	हर {} प्रविष्टि टेस्ट करें
+Test results	टेस्ट परिणाम
+passed with warnings	चेतावनियों के साथ पास
+Warning:	चेतावनी:
+Dismiss test results	टेस्ट परिणाम बंद करें
+Delete for upgrade	अपग्रेड के लिए हटाएँ
+Metadata sources saved.	मेटाडेटा स्रोत सहेजे गए।
+Order	क्रम
+Enable {}	{} सक्षम करें
+Move {} up	{} को ऊपर ले जाएँ
+Move {} down	{} को नीचे ले जाएँ
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	"मीडिया जोड़ें" सक्षम कैटलॉग को इसी क्रम में सूचीबद्ध करता है, और "सभी सक्षम कैटलॉग" उनके परिणामों को इसी क्रम में मिलाता है। अक्षम कैटलॉग न तो पेश किए जाते हैं न खोजे जाते हैं; जो शीर्षक पहले से उनमें से किसी के हैं, वे फिर भी उसी से रीफ़्रेश होते हैं। लागू करने के लिए नीचे सहेजें।
+Enable at least one metadata source.	कम से कम एक मेटाडेटा स्रोत सक्षम करें।
+Mixed	मिश्रित
+Unlimited	असीमित
+0 GiB/h	0 GiB/h
+{} min: {}	{} मिनट: {}
+No limit	कोई सीमा नहीं
+Quality definitions saved.	गुणवत्ता परिभाषाएँ सहेजी गईं।
+Quality definitions reset to the defaults.	गुणवत्ता परिभाषाएँ डिफ़ॉल्ट पर रीसेट की गईं।
+Reset definitions	परिभाषाएँ रीसेट करें
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	आकार रनटाइम के प्रति मिनट MiB में हैं; हर एक के नीचे प्रति घंटा आकार दिखाया जाता है। किसी गुणवत्ता की सीमाओं से बाहर की रिलीज़ अस्वीकार की जाती है; पसंदीदा आकार रिलीज़ की रैंकिंग तय करता है। प्रोफ़ाइलें अपनी सीमाएँ रख सकती हैं (
+Settings › Quality profiles	सेटिंग्स › गुणवत्ता प्रोफ़ाइलें
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): "मिश्रित" का अर्थ है कि प्रोफ़ाइलें अलग-अलग सीमाएँ उपयोग करती हैं, और यहाँ दर्ज किया गया मान हर प्रोफ़ाइल में लिखा जाता है।
+Title of {}	{} का शीर्षक
+{} size of {} (MiB per minute)	{} आकार, {} (MiB प्रति मिनट)
+Profiles use different limits	प्रोफ़ाइलें अलग-अलग सीमाएँ उपयोग करती हैं
+No minimum	कोई न्यूनतम नहीं
+Hide retired qualities	रिटायर्ड गुणवत्ताएँ छिपाएँ
+Show retired qualities	रिटायर्ड गुणवत्ताएँ दिखाएँ
+Reset quality definitions	गुणवत्ता परिभाषाएँ रीसेट करें
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	हर मानक गुणवत्ता को उसका डिफ़ॉल्ट शीर्षक और आकार सीमाएँ दें? कस्टम प्रीसेट और प्रोफ़ाइलों की अपनी सीमाएँ बनी रहती हैं।
+Reset	रीसेट करें
+RefreshMonitoredDownloads	निगरानी वाले डाउनलोड रीफ़्रेश करें
+Reads the download clients and imports completed downloads Kitsunarr grabbed	डाउनलोड क्लाइंट पढ़ता है और Kitsunarr द्वारा ग्रैब किए गए पूर्ण डाउनलोड आयात करता है
+ProcessPendingJellyfinRefresh	लंबित Jellyfin रीफ़्रेश प्रोसेस करें
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	उन Jellyfin लाइब्रेरी को रीफ़्रेश करता है जिनमें आयात लंबित हैं (हर कनेक्शन के रीफ़्रेश मोड के अनुसार)
+SyncJellyfinWatched	Jellyfin देखे गए सिंक करें
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	पढ़ता है कि किसी Jellyfin उपयोगकर्ता ने कौन-से एपिसोड देखे हैं (कनेक्शन के अपने अंतराल पर)
+CleanUpRecycleBin	रीसायकल बिन साफ़ करें
+Deletes files kept in the recycle bin longer than the media management setting allows	रीसायकल बिन में मीडिया प्रबंधन सेटिंग की अनुमति से अधिक समय तक रखी गई फ़ाइलें हटाता है
+RescanFolders	फ़ोल्डर फिर से स्कैन करें
+Scans series and movie folders: forgets files that are gone and adds files found there	सीरीज़ और फ़िल्म फ़ोल्डर स्कैन करता है: गायब फ़ाइलों को भूल जाता है और वहाँ मिली फ़ाइलें जोड़ता है
+RefreshMetadata	मेटाडेटा रीफ़्रेश करें
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	शीर्षकों को उनके मेटाडेटा कैटलॉग से रीफ़्रेश करता है (जारी वाले हर 6 घंटे में, समाप्त वाले हर महीने)
+Housekeeping	रखरखाव
+Purges expired sessions, prunes task history and checks database integrity	समाप्त सत्र हटाता है, कार्य इतिहास छाँटता है और डेटाबेस की अखंडता जाँचता है
+CleanupSessions	सत्र साफ़ करें
+Removes expired login sessions	समाप्त लॉगिन सत्र हटाता है
+HealthCheck	स्वास्थ्य जाँच
+Re-evaluates health checks, notifies connected browsers and sends health notifications	स्वास्थ्य जाँचों का फिर से मूल्यांकन करता है, जुड़े ब्राउज़रों को सूचित करता है और स्वास्थ्य सूचनाएँ भेजता है
+SQLite database integrity check failed: {}. Restore from a known-good backup.	SQLite डेटाबेस अखंडता जाँच विफल रही: {}। किसी ज्ञात सही बैकअप से पुनर्स्थापित करें।
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	SQLite डेटाबेस अखंडता जाँच ने कोई परिणाम नहीं लौटाया। अगर डेटाबेस त्रुटियाँ हो रही हैं तो किसी ज्ञात सही बैकअप से पुनर्स्थापित करें।
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	SQLite डेटाबेस अखंडता जाँच विफल रही: {} फ़ॉरेन की उल्लंघन। किसी ज्ञात सही बैकअप से पुनर्स्थापित करें।
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	RSS सिंक सक्षम वाला कोई इंडेक्सर उपलब्ध नहीं है, Kitsunarr नई रिलीज़ अपने-आप ग्रैब नहीं करेगा
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	हाल की इंडेक्सर त्रुटियों के कारण RSS-सक्षम सभी इंडेक्सर अस्थायी रूप से अनुपलब्ध हैं
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	स्वचालित खोज सक्षम वाला कोई इंडेक्सर उपलब्ध नहीं है, Kitsunarr कोई स्वचालित खोज परिणाम नहीं देगा
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	इंटरैक्टिव खोज सक्षम वाला कोई इंडेक्सर उपलब्ध नहीं है, Kitsunarr कोई इंटरैक्टिव खोज परिणाम नहीं देगा
+All search-capable indexers are temporarily unavailable due to recent indexer errors	हाल की इंडेक्सर त्रुटियों के कारण खोज-सक्षम सभी इंडेक्सर अस्थायी रूप से अनुपलब्ध हैं
+All indexers are unavailable due to failures for more than 6 hours	6 घंटे से अधिक समय से विफलताओं के कारण सभी इंडेक्सर अनुपलब्ध हैं
+Indexers unavailable due to failures for more than 6 hours: {}	6 घंटे से अधिक समय से विफलताओं के कारण अनुपलब्ध इंडेक्सर: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	असमर्थित Jackett 'all' एंडपॉइंट का उपयोग करने वाले इंडेक्सर: {}
+Indexers with invalid download clients: {}.	अमान्य डाउनलोड क्लाइंट वाले इंडेक्सर: {}।
+Enable Completed Download Handling	पूर्ण डाउनलोड हैंडलिंग सक्षम करें
+All notifications are unavailable due to failures	विफलताओं के कारण सभी सूचनाएँ अनुपलब्ध हैं
+Notifications unavailable due to failures: {}	विफलताओं के कारण अनुपलब्ध सूचनाएँ: {}
+All lists are unavailable due to failures	विफलताओं के कारण सभी सूचियाँ अनुपलब्ध हैं
+Lists unavailable due to failures: {}	विफलताओं के कारण अनुपलब्ध सूचियाँ: {}
+Missing root folder for import list(s): {}	आयात सूची(यों) के लिए रूट फ़ोल्डर अनुपलब्ध: {}
+Multiple root folders are missing for import lists: {}	आयात सूचियों के लिए कई रूट फ़ोल्डर अनुपलब्ध हैं: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	कॉन्फ़िगर किए गए रीसायकल बिन फ़ोल्डर में लिखा नहीं जा सका: {}। सुनिश्चित करें कि यह पथ मौजूद है और Kitsunarr चलाने वाला उपयोगकर्ता इसमें लिख सकता है
+Unable to write to the backup folder {}; scheduled backups will fail.	बैकअप फ़ोल्डर {} में लिखा नहीं जा सका; निर्धारित बैकअप विफल होंगे।
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	कृपया अपनी API कुंजी को कम से कम 20 अक्षर लंबी करने के लिए अपडेट करें। आप यह सेटिंग्स या कॉन्फ़िग फ़ाइल से कर सकते हैं
+Series {} was removed from {}	सीरीज़ {} को {} से हटा दिया गया
+Series {} were removed from {}	सीरीज़ {} को {} से हटा दिया गया
+Mount containing a series path is mounted read-only: {}	सीरीज़ पथ वाला माउंट केवल-पढ़ने के लिए माउंट है: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	डाउनलोड क्लाइंट {} पूर्ण डाउनलोड हटाने के लिए सेट है। इससे Kitsunarr के आयात करने से पहले ही डाउनलोड आपके क्लाइंट से हट सकते हैं।
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	डाउनलोड क्लाइंट {} में Kitsunarr की श्रेणी के लिए {} सॉर्टिंग सक्षम है। आयात समस्याओं से बचने के लिए अपने डाउनलोड क्लाइंट में सॉर्टिंग अक्षम करें।
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	डाउनलोड क्लाइंट {} डाउनलोड को रूट फ़ोल्डर {} में रखता है। आपको रूट फ़ोल्डर में डाउनलोड नहीं करना चाहिए।
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	रिमोट डाउनलोड क्लाइंट {} डाउनलोड को {} में रखता है, लेकिन यह मान्य {} पथ नहीं है। अपनी रिमोट पथ मैपिंग और डाउनलोड क्लाइंट सेटिंग्स की समीक्षा करें।
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	आप docker का उपयोग कर रहे हैं; डाउनलोड क्लाइंट {} डाउनलोड को {} में रखता है, लेकिन यह मान्य {} पथ नहीं है। अपनी रिमोट पथ मैपिंग और डाउनलोड क्लाइंट सेटिंग्स की समीक्षा करें।
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	स्थानीय डाउनलोड क्लाइंट {} डाउनलोड को {} में रखता है, लेकिन यह मान्य {} पथ नहीं है। अपनी डाउनलोड क्लाइंट सेटिंग्स की समीक्षा करें।
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	आप docker का उपयोग कर रहे हैं; डाउनलोड क्लाइंट {} डाउनलोड को {} में रखता है, लेकिन यह डायरेक्टरी कंटेनर के अंदर मौजूद नहीं लगती। अपनी रिमोट पथ मैपिंग और कंटेनर वॉल्यूम सेटिंग्स की समीक्षा करें।
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	रिमोट डाउनलोड क्लाइंट {} डाउनलोड को {} में रखता है, लेकिन यह डायरेक्टरी मौजूद नहीं लगती। संभवतः रिमोट पथ मैपिंग अनुपलब्ध या गलत है।
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	डाउनलोड क्लाइंट {} डाउनलोड को {} में रखता है, लेकिन Kitsunarr यह डायरेक्टरी नहीं देख सकता। आपको फ़ोल्डर की अनुमतियाँ बदलनी पड़ सकती हैं।
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr डाउनलोड किए गए एपिसोड {} को देख सकता है लेकिन एक्सेस नहीं कर सकता। संभवतः अनुमति त्रुटि।
+File {} was removed part way through processing.	फ़ाइल {} को प्रोसेसिंग के बीच में ही हटा दिया गया।
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr एक या अधिक एपिसोड आयात करने में विफल रहा। विवरण के लिए अपने लॉग देखें।
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	रिमोट डाउनलोड क्लाइंट {} ने {} में फ़ाइलें रिपोर्ट कीं, लेकिन यह मान्य {} पथ नहीं है। अपनी रिमोट पथ मैपिंग और डाउनलोड क्लाइंट सेटिंग्स की समीक्षा करें।
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	आप docker का उपयोग कर रहे हैं; डाउनलोड क्लाइंट {} ने {} में फ़ाइलें रिपोर्ट कीं, लेकिन यह मान्य {} पथ नहीं है। अपनी रिमोट पथ मैपिंग और डाउनलोड क्लाइंट सेटिंग्स की समीक्षा करें।
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	स्थानीय डाउनलोड क्लाइंट {} ने {} में फ़ाइलें रिपोर्ट कीं, लेकिन यह मान्य {} पथ नहीं है। अपनी डाउनलोड क्लाइंट सेटिंग्स की समीक्षा करें।
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr डाउनलोड डायरेक्टरी {} को देख सकता है लेकिन एक्सेस नहीं कर सकता। संभवतः अनुमति त्रुटि।
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	रिमोट डाउनलोड क्लाइंट {} ने {} में फ़ाइलें रिपोर्ट कीं, लेकिन यह डायरेक्टरी मौजूद नहीं लगती। संभवतः रिमोट पथ मैपिंग अनुपलब्ध है।
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	डाउनलोड क्लाइंट {} ने {} में फ़ाइलें रिपोर्ट कीं, लेकिन Kitsunarr यह डायरेक्टरी नहीं देख सकता। आपको फ़ोल्डर की अनुमतियाँ बदलनी पड़ सकती हैं।
+The configured password reset token is shorter than {} characters and is being ignored	कॉन्फ़िगर किया गया पासवर्ड रीसेट टोकन {} अक्षरों से छोटा है और अनदेखा किया जा रहा है
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	एक पासवर्ड रीसेट टोकन कॉन्फ़िगर है। ज़रूरत न रहने पर KITSUNARR_AUTH_RESET_TOKEN एनवायरनमेंट वेरिएबल (या config.toml में reset_token) हटा दें
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC प्रमाणीकरण सक्षम है, लेकिन अथॉरिटी, Client ID, Client Secret, उपयोगकर्ता और स्कोप सभी कॉन्फ़िगर नहीं हैं
+The OIDC Authority must start with 'https://'	OIDC अथॉरिटी 'https://' से शुरू होनी चाहिए
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	{} से OIDC कॉन्फ़िगरेशन प्राप्त नहीं किया जा सका; जब तक यह पहुँच में नहीं आता, आपके पहचान प्रदाता से साइन इन विफल रहेगा
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	अभी तक कोई रूट फ़ोल्डर कॉन्फ़िगर नहीं है। सेटिंग्स → मीडिया प्रबंधन में एक जोड़ें या किसी मौजूदा इंस्टॉलेशन को आयात करें।
+Root folder {} is missing or not accessible.	रूट फ़ोल्डर {} अनुपलब्ध है या उस तक पहुँचा नहीं जा सकता।
+Root folder {} has only {} MiB free.	रूट फ़ोल्डर {} में केवल {} MiB खाली है।
+No enabled {} is configured; automatic downloads are not possible.	कोई सक्षम {} कॉन्फ़िगर नहीं है; स्वचालित डाउनलोड संभव नहीं हैं।
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	ये {} आपके पिछले इंस्टॉलेशन से रखे गए थे, लेकिन अभी तक मूल रूप से लागू नहीं हैं: {}।
+All download clients are unavailable due to failures	विफलताओं के कारण सभी डाउनलोड क्लाइंट अनुपलब्ध हैं
+Download clients are unavailable due to failures: {}	विफलताओं के कारण अनुपलब्ध डाउनलोड क्लाइंट: {}
+All indexers are unavailable due to failures	विफलताओं के कारण सभी इंडेक्सर अनुपलब्ध हैं
+Indexers unavailable due to failures: {}	विफलताओं के कारण अनुपलब्ध इंडेक्सर: {}
+Failed to resolve the IP address of the configured proxy host {}	कॉन्फ़िगर किए गए प्रॉक्सी होस्ट {} का IP पता रिज़ॉल्व नहीं हो सका
+The data directory has only {} MiB free; the database may fail to write.	डेटा डायरेक्टरी में केवल {} MiB खाली है; डेटाबेस लिखने में विफल हो सकता है।

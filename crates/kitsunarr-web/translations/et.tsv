@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ praegune number
 or	või
 1 title	1 pealkiri
+Episode titles (one per line)	Episoodide pealkirjad (üks rea kohta)
+For conditions that ignore episode titles.	Tingimustele, mis eiravad episoodide pealkirju.
+Test episode titles	Testi episoodide pealkirju
+· group {}	· rühm {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Jäta väljalasete nimede kontrollimisel teadaolevad episoodide pealkirjad välja, et episoodi pealkirjas olevaid sõnu ei loetaks teenuseks ega väljalaskerühmaks.
+Ignore episode titles {}	Eira episoodide pealkirju {}
+Ignore episode titles	Eira episoodide pealkirju
+Alternative group	Alternatiivne rühm
+Alternative group {}	Alternatiivne rühm {}
+Group anime seasons	Rühmita anime hooajad
+Anime group {}	Anime rühm {}
+Group of {} · {}	Rühm: {} · {}
+Import progress	Impordi edenemine
+Waiting to import	Ootab importimist
+Import progress of {}	Impordi edenemine: {}
+Import details of {}	Impordi üksikasjad: {}
+{} / {} episodes imported	{} / {} episoodi imporditud
+· {} not imported	· {} importimata
+Series, anime or film title, e.g. Severance	Sarja, anime või filmi pealkiri, nt Severance
+All enabled catalogues	Kõik lubatud kataloogid
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Ühestki lubatud kataloogist ei saa otsida: luba mõni või sisesta selle API-võti jaotises Seaded › Metaandmete allikad.
+Searches every enabled catalogue, results in your order:	Otsib kõigist lubatud kataloogidest, tulemused sinu järjestuses:
+Grouping	Rühmitamine
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Automaatne rühmitab pealkirja ametlike seoste põhjal selle frantsiisi või kollektsiooniga. Välja lülitatud hoiab selle eraldi.
+Automatic (official relations)	Automaatne (ametlikud seosed)
+Too many failed sign in attempts. Please try again in {} minute(s).	Liiga palju ebaõnnestunud sisselogimiskatseid. Proovi uuesti {} minuti pärast.
+Reset your password	Lähtesta oma parool
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr kirjutab oma logisse ühekordse lähtestamistokeni. Kopeeri see realt
+line in the latest log (System › Logs, or the container's output).	uusimast logist (Süsteem › Logid või konteineri väljund).
+Write a reset token to the log	Kirjuta lähtestamistoken logisse
+I already have a reset token	Mul on juba lähtestamistoken
+Back to sign in	Tagasi sisselogimisse
+Your password has been reset, sign in with your new password.	Sinu parool on lähtestatud, logi sisse uue parooliga.
+Unable to sign in with your identity provider.	Identiteedipakkujaga sisselogimine ebaõnnestus.
+Incorrect username or password.	Vale kasutajanimi või parool.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC-autentimine on lubatud, kuid pole õigesti seadistatud. Logi sisse oma parooliga ja uuenda OIDC seadeid (Seaded › Üldine › Turvalisus või konfiguratsioonifail).
+Sign in with SSO	Logi sisse SSO-ga
+You will be sent to your identity provider.	Sind suunatakse sinu identiteedipakkuja juurde.
+Forgot your password?	Unustasid parooli?
+Invalid or expired reset token.	Vigane või aegunud lähtestamistoken.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Kasutajanimi ja parool on kohustuslikud, paroolid peavad ühtima ja paroolis peab olema vähemalt {} märki.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Uut lähtestamistokenit logisse ei kirjutatud. Üks võib juba aktiivne olla, seega kontrolli esmalt logi. Kitsunarri taaskäivitamine kustutab selle ja lubab uue taotleda.
+Enter the token from the	Sisesta token realt
+line in the log. It's valid for 15 minutes and can only be used once. If you set	logist. See kehtib 15 minutit ja seda saab kasutada vaid üks kord. Kui oled määranud
+Reset token	Lähtestamistoken
+Confirm new password	Kinnita uus parool
+Reset password	Lähtesta parool
+Signed out	Välja logitud
+You have been signed out of Kitsunarr.	Oled Kitsunarrist välja logitud.
+Sign in again	Logi uuesti sisse
+Search for missing	Otsi puuduvaid
+Month	Kuu
+Week	Nädal
+Forecast	Prognoos
+Day	Päev
+Agenda	Päevakava
+On disk	Kettal
+Not aired yet	Pole veel eetris olnud
+Search for the episodes shown that aired and have no file	Otsi kuvatud episoode, mis on eetris olnud ja millel pole faili
+Previous period	Eelmine periood
+Next period	Järgmine periood
+Calendar view	Kalendrivaade
+Nothing airs in this period.	Sel perioodil ei ole midagi eetris.
+Legend	Legend
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Välja lülitatud eemaldab sarja selle anime rühmast ja hoiab selle automaatsest rühmitamisest väljas
+Disabled removes the film from its collection and keeps it out of automatic grouping	Välja lülitatud eemaldab filmi selle kollektsioonist ja hoiab selle automaatsest rühmitamisest väljas
+Filter	Filter
+Filter by path	Filtreeri tee järgi
+All paths	Kõik teed
+Combine filters	Kombineeri filtreid
+Show series matching every selected filter	Näita sarju, mis vastavad igale valitud filtrile
+Clear combined filters	Tühjenda kombineeritud filtrid
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Näita iga anime rühma (Tanukarri anime rühmitamine) üks kord, selle esimese hooaja järgi
+Save the current filters as a filter of your own	Salvesta praegused filtrid oma filtrina
+Save filter…	Salvesta filter…
+Shown series	Kuvatud sarjad
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr ei saa salvestatud filtri neid tingimusi rakendada, seega jäetakse need välja:
+The selected filters contradict each other, so no series can match all of them.	Valitud filtrid on omavahel vastuolus, seega ei saa ükski sari neile kõigile vastata.
+No series match the selected filters.	Ükski sari ei vasta valitud filtritele.
+Filter "{}" saved.	Filter „{}“ salvestatud.
+Save filter	Salvesta filter
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Filter säilitab valitud filtri, kombineeritud filtrid ja tee; see kuvatakse koos sisseehitatud filtritega.
+Filter label	Filtri nimi
+Delete saved filter	Kustuta salvestatud filter
+Delete this saved filter? The series are not changed.	Kas kustutada see salvestatud filter? Sarju ei muudeta.
+Monitored only	Ainult jälgitavad
+Unmonitored only	Ainult jälgimata
+Continuing only	Ainult jätkuvad
+Ended only	Ainult lõppenud
+Missing episodes	Puuduvad episoodid
+Security settings saved.	Turvaseaded salvestatud.
+Security	Turvalisus
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Autentimiseta kaugjuurdepääsu vältimiseks nõuab Kitsunarr autentimist. Soovi korral saad selle kohalike aadresside jaoks välja lülitada.
+Authentication	Autentimine
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Kuidas kasutajad sisse logivad: Kitsunarri sisselogimisleht või sinu OpenID Connecti identiteedipakkuja.
+Forms (sign-in page)	Vormid (sisselogimisleht)
+OIDC (identity provider)	OIDC (identiteedipakkuja)
+External (reverse proxy)	Väline (pöördproksi)
+Authentication required	Autentimine nõutud
+Require authentication for every request, or not for requests from local addresses or this machine.	Nõua autentimist iga päringu puhul või mitte kohalikelt aadressidelt või sellest masinast tulevate päringute puhul.
+Disabled for localhost	Localhosti jaoks välja lülitatud
+Allowed hosts	Lubatud hostid
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Komadega eraldatud loend hostinimedest ja IP-aadressidest, mille kaudu Kitsunarr peaks olema kättesaadav, sh süsteemi hostinimi või konteineri nimi. Kõigi hostide lubamiseks jäta tühjaks. Kohustuslik, kui autentimine ei ole alati nõutud. Näiteks: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Usalda CGNAT-aadresse
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Käsitle CGNAT-aadresse (100.64.0.0/10, nt Tailscale) kohalikena
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Väline: Kitsunarr ei küsi sisselogimist ja tugineb selle ees olevale pöördproksile. Kasuta seda ainult proksi taga, mis autendib iga päringu.
+Register Kitsunarr with your provider using the redirect URI	Registreeri Kitsunarr oma teenusepakkuja juures ümbersuunamis-URI-ga
+. Saving signs out password sessions; you then sign in through the provider.	. Salvestamine logib paroolisessioonid välja; seejärel logid sisse teenusepakkuja kaudu.
+OIDC Authority	OIDC autoriteet
+The URL of the OIDC provider (https://).	OIDC teenusepakkuja URL (https://).
+OIDC Client ID	OIDC kliendi ID
+The Client ID registered with the OIDC provider.	OIDC teenusepakkuja juures registreeritud kliendi ID.
+OIDC Client Secret	OIDC kliendi saladus
+The Client Secret registered with the OIDC provider.	OIDC teenusepakkuja juures registreeritud kliendi saladus.
+OIDC User	OIDC kasutaja
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Kinnitatud e-posti aadress või subjekti identifikaator (sub) OIDC teenusepakkuja juures, kes tohib Kitsunarri sisse logida.
+OIDC Scopes	OIDC ulatused
+The scopes to request from the OIDC provider; must include openid.	OIDC teenusepakkujalt taotletavad ulatused; peavad sisaldama openid.
+Set in config.toml or the environment, which take precedence: {}.	Määratud failis config.toml või keskkonnas, millel on eelis: {}.
+Backup settings saved.	Varundusseaded salvestatud.
+Interval (days)	Intervall (päevades)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Kui sageli varukoopia automaatselt tehakse (1–7 päeva). Käsitsi tehtud varukoopia alustab intervalli uuesti.
+Backup interval in days	Varundusintervall päevades
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Sellest vanemad automaatsed varukoopiad kustutatakse (1–90 päeva). Käsitsi tehtud varukoopiad säilitatakse.
+Backup retention in days	Varukoopiate säilitamine päevades
+A quality without an override uses the global sizes of	Ilma omaväärtusteta kvaliteet kasutab üldisi suurusi jaotisest
+Settings › Quality	Seaded › Kvaliteet
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Omaväärtuste puhul tähendab tühi piiramatut; ka maksimum null tähendab piiramatut.
+Signed in. Save to keep the token.	Sisse logitud. Tokeni säilitamiseks salvesta.
+Redirect URL to register with your API client:	Ümbersuunamise URL, mis tuleb sinu API-kliendis registreerida:
+Test all	Testi kõiki
+All {} passed their test.	Kõik {} läbisid testi.
+{} of {} failed their test.	{}/{} ei läbinud testi.
+Test every {} entry	Testi kõiki: {}
+Test results	Testitulemused
+passed with warnings	läbitud hoiatustega
+Warning:	Hoiatus:
+Dismiss test results	Sulge testitulemused
+Delete for upgrade	Kustuta täienduseks
+Metadata sources saved.	Metaandmete allikad salvestatud.
+Order	Järjestus
+Enable {}	Luba {}
+Move {} up	Liiguta üles: {}
+Move {} down	Liiguta alla: {}
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Meedia lisamine loetleb lubatud kataloogid selles järjestuses ja „Kõik lubatud kataloogid“ ühendab nende tulemused selles järjestuses. Keelatud kataloogid ei ole valikus ega otsingus; pealkirju, mis juba kuuluvad mõnda neist, värskendatakse sealt endiselt. Rakendamiseks salvesta allpool.
+Enable at least one metadata source.	Luba vähemalt üks metaandmete allikas.
+Mixed	Segatud
+Unlimited	Piiramatu
+0 GiB/h	0 GiB/h
+{} min: {}	{} min: {}
+No limit	Piirang puudub
+Quality definitions saved.	Kvaliteedimääratlused salvestatud.
+Quality definitions reset to the defaults.	Kvaliteedimääratlused lähtestatud vaikeväärtustele.
+Reset definitions	Lähtesta määratlused
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Suurused on MiB-des esitusaja minuti kohta; tunnisuurus on näidatud igaühe all. Kvaliteedi piirangutest väljapoole jääv väljalase lükatakse tagasi; eelistatud suurus järjestab väljalaskeid. Profiilidel võivad olla oma piirangud (
+Settings › Quality profiles	Seaded › Kvaliteediprofiilid
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): „Segatud“ tähendab, et profiilid kasutavad erinevaid piiranguid, ja siia sisestatud väärtus kirjutatakse igasse profiili.
+Title of {}	Pealkiri: {}
+{} size of {} (MiB per minute)	{} suurus – {} (MiB minuti kohta)
+Profiles use different limits	Profiilid kasutavad erinevaid piiranguid
+No minimum	Miinimum puudub
+Hide retired qualities	Peida kasutusest kõrvaldatud kvaliteedid
+Show retired qualities	Näita kasutusest kõrvaldatud kvaliteete
+Reset quality definitions	Lähtesta kvaliteedimääratlused
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Kas anda igale standardkvaliteedile selle vaikepealkiri ja -suuruspiirangud? Kohandatud eelseadistused ja profiilide omad piirangud säilitatakse.
+Reset	Lähtesta
+RefreshMonitoredDownloads	Värskenda jälgitavaid allalaadimisi
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Loeb allalaadimiskliente ja impordib lõpetatud allalaadimised, mille Kitsunarr haaras
+ProcessPendingJellyfinRefresh	Töötle ootel Jellyfini värskendusi
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Värskendab Jellyfini teeke, millel on ootel importe (iga ühenduse värskendusrežiimi järgi)
+SyncJellyfinWatched	Sünkrooni Jellyfini vaadatud
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Loeb, milliseid episoode on Jellyfini kasutaja vaadanud (ühenduse enda intervalliga)
+CleanUpRecycleBin	Tühjenda prügikast
+Deletes files kept in the recycle bin longer than the media management setting allows	Kustutab failid, mis on olnud prügikastis kauem, kui meediahalduse seade lubab
+RescanFolders	Skanni kaustad uuesti
+Scans series and movie folders: forgets files that are gone and adds files found there	Skannib sarjade ja filmide kaustu: unustab kadunud failid ja lisab sealt leitud failid
+RefreshMetadata	Värskenda metaandmeid
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Värskendab pealkirju nende metaandmete kataloogidest (jätkuvaid iga 6 tunni järel, lõppenuid kord kuus)
+Housekeeping	Hooldus
+Purges expired sessions, prunes task history and checks database integrity	Eemaldab aegunud seansid, kärbib ülesannete ajalugu ja kontrollib andmebaasi terviklikkust
+CleanupSessions	Puhasta seansid
+Removes expired login sessions	Eemaldab aegunud sisselogimisseansid
+HealthCheck	Seisundi kontroll
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Hindab seisundikontrolle uuesti, teavitab ühendatud brausereid ja saadab seisunditeavitusi
+SQLite database integrity check failed: {}. Restore from a known-good backup.	SQLite'i andmebaasi terviklikkuse kontroll nurjus: {}. Taasta teadaolevalt korras varukoopiast.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	SQLite'i andmebaasi terviklikkuse kontroll ei andnud tulemust. Kui esineb andmebaasivigu, taasta teadaolevalt korras varukoopiast.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	SQLite'i andmebaasi terviklikkuse kontroll nurjus: {} võõrvõtme rikkumist. Taasta teadaolevalt korras varukoopiast.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	RSS-sünkroonimisega indekserid pole saadaval, Kitsunarr ei haara uusi väljalaskeid automaatselt
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Kõik RSS-i toetavad indekserid on hiljutiste indekserivigade tõttu ajutiselt kättesaamatud
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Automaatse otsinguga indekserid pole saadaval, Kitsunarr ei anna automaatseid otsingutulemusi
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Interaktiivse otsinguga indekserid pole saadaval, Kitsunarr ei anna interaktiivseid otsingutulemusi
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Kõik otsingut toetavad indekserid on hiljutiste indekserivigade tõttu ajutiselt kättesaamatud
+All indexers are unavailable due to failures for more than 6 hours	Kõik indekserid on tõrgete tõttu olnud kättesaamatud üle 6 tunni
+Indexers unavailable due to failures for more than 6 hours: {}	Indekserid, mis on tõrgete tõttu olnud kättesaamatud üle 6 tunni: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indekserid, mis kasutavad Jacketti toetamata 'all' lõpp-punkti: {}
+Indexers with invalid download clients: {}.	Kehtetute allalaadimisklientidega indekserid: {}.
+Enable Completed Download Handling	Luba lõpetatud allalaadimiste käsitlemine
+All notifications are unavailable due to failures	Kõik teavitused on tõrgete tõttu kättesaamatud
+Notifications unavailable due to failures: {}	Tõrgete tõttu kättesaamatud teavitused: {}
+All lists are unavailable due to failures	Kõik loendid on tõrgete tõttu kättesaamatud
+Lists unavailable due to failures: {}	Tõrgete tõttu kättesaamatud loendid: {}
+Missing root folder for import list(s): {}	Impordiloendi(te) juurkaust puudub: {}
+Multiple root folders are missing for import lists: {}	Impordiloenditel puuduvad mitu juurkausta: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Seadistatud prügikasti kausta ei saa kirjutada: {}. Veendu, et see tee on olemas ja Kitsunarri käitav kasutaja saab sinna kirjutada
+Unable to write to the backup folder {}; scheduled backups will fail.	Varunduskausta {} ei saa kirjutada; ajastatud varundused nurjuvad.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Uuenda oma API-võtit nii, et see oleks vähemalt 20 märki pikk. Seda saab teha seadetes või konfiguratsioonifailis
+Series {} was removed from {}	Sari {} eemaldati kataloogist {}
+Series {} were removed from {}	Sarjad {} eemaldati kataloogist {}
+Mount containing a series path is mounted read-only: {}	Sarja teed sisaldav haakepunkt on haagitud kirjutuskaitstuna: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Allalaadimisklient {} on seadistatud lõpetatud allalaadimisi eemaldama. Selle tõttu võidakse allalaadimised kliendist eemaldada enne, kui Kitsunarr jõuab need importida.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Allalaadimiskliendil {} on Kitsunarri kategooria jaoks lubatud {}-sortimine. Importimisprobleemide vältimiseks peaksid sortimise allalaadimiskliendis välja lülitama.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Allalaadimisklient {} paigutab allalaadimised juurkausta {}. Juurkausta ei tohiks alla laadida.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Kaugallalaadimisklient {} paigutab allalaadimised asukohta {}, kuid see pole kehtiv {}-tee. Vaata üle kaugtee kaardistused ja allalaadimiskliendi seaded.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Kasutad dockerit; allalaadimisklient {} paigutab allalaadimised asukohta {}, kuid see pole kehtiv {}-tee. Vaata üle kaugtee kaardistused ja allalaadimiskliendi seaded.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Kohalik allalaadimisklient {} paigutab allalaadimised asukohta {}, kuid see pole kehtiv {}-tee. Vaata üle allalaadimiskliendi seaded.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Kasutad dockerit; allalaadimisklient {} paigutab allalaadimised asukohta {}, kuid seda kausta ei paista konteineris olevat. Vaata üle kaugtee kaardistused ja konteineri köiteseaded.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Kaugallalaadimisklient {} paigutab allalaadimised asukohta {}, kuid seda kausta ei paista olevat. Tõenäoliselt puudub kaugtee kaardistus või on see vale.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Allalaadimisklient {} paigutab allalaadimised asukohta {}, kuid Kitsunarr ei näe seda kausta. Võib-olla pead kausta õigusi muutma.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr näeb allalaaditud episoodi {}, kuid ei pääse sellele ligi. Tõenäoliselt õiguste viga.
+File {} was removed part way through processing.	Fail {} eemaldati töötlemise ajal.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr ei suutnud episoodi(de) importida. Üksikasjad leiad logidest.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Kaugallalaadimisklient {} teatas failidest asukohas {}, kuid see pole kehtiv {}-tee. Vaata üle kaugtee kaardistused ja allalaadimiskliendi seaded.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Kasutad dockerit; allalaadimisklient {} teatas failidest asukohas {}, kuid see pole kehtiv {}-tee. Vaata üle kaugtee kaardistused ja allalaadimiskliendi seaded.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Kohalik allalaadimisklient {} teatas failidest asukohas {}, kuid see pole kehtiv {}-tee. Vaata üle allalaadimiskliendi seaded.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr näeb allalaadimiskausta {}, kuid ei pääse sellele ligi. Tõenäoliselt õiguste viga.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Kaugallalaadimisklient {} teatas failidest asukohas {}, kuid seda kausta ei paista olevat. Tõenäoliselt puudub kaugtee kaardistus.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Allalaadimisklient {} teatas failidest asukohas {}, kuid Kitsunarr ei näe seda kausta. Võib-olla pead kausta õigusi muutma.
+The configured password reset token is shorter than {} characters and is being ignored	Seadistatud parooli lähtestamistoken on lühem kui {} märki ja seda eiratakse
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Parooli lähtestamistoken on seadistatud. Eemalda keskkonnamuutuja KITSUNARR_AUTH_RESET_TOKEN (või reset_token failis config.toml), kui sul seda enam vaja pole
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC-autentimine on lubatud, kuid autoriteet, kliendi ID, kliendi saladus, kasutaja ja ulatused pole kõik seadistatud
+The OIDC Authority must start with 'https://'	OIDC autoriteet peab algama 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	OIDC konfiguratsiooni ei õnnestunud hankida aadressilt {}; identiteedipakkujaga sisselogimine nurjub, kuni see on kättesaadav
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Juurkaustu pole veel seadistatud. Lisa üks jaotises Seaded → Meediahaldus või impordi olemasolev paigaldus.
+Root folder {} is missing or not accessible.	Juurkaust {} puudub või pole juurdepääsetav.
+Root folder {} has only {} MiB free.	Juurkaustas {} on vaba ainult {} MiB.
+No enabled {} is configured; automatic downloads are not possible.	Ühtegi lubatud üksust (tüüp {}) pole seadistatud; automaatsed allalaadimised pole võimalikud.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Need üksused (tüüp {}) säilitati sinu eelmisest paigaldusest, kuid neid pole veel natiivselt teostatud: {}.
+All download clients are unavailable due to failures	Kõik allalaadimiskliendid on tõrgete tõttu kättesaamatud
+Download clients are unavailable due to failures: {}	Allalaadimiskliendid on tõrgete tõttu kättesaamatud: {}
+All indexers are unavailable due to failures	Kõik indekserid on tõrgete tõttu kättesaamatud
+Indexers unavailable due to failures: {}	Tõrgete tõttu kättesaamatud indekserid: {}
+Failed to resolve the IP address of the configured proxy host {}	Seadistatud proksihosti {} IP-aadressi ei õnnestunud lahendada
+The data directory has only {} MiB free; the database may fail to write.	Andmekaustas on vaba ainult {} MiB; andmebaasi kirjutamine võib nurjuda.

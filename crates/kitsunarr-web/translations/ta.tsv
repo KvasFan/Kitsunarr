@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ தற்போதைய எண்
 or	அல்லது
 1 title	1 தலைப்பு
+Episode titles (one per line)	அத்தியாயத் தலைப்புகள் (ஒரு வரிக்கு ஒன்று)
+For conditions that ignore episode titles.	அத்தியாயத் தலைப்புகளைப் புறக்கணிக்கும் நிபந்தனைகளுக்கு.
+Test episode titles	சோதனை அத்தியாயத் தலைப்புகள்
+· group {}	· குழு {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	வெளியீட்டுப் பெயர்களைச் சரிபார்க்கும்போது அறியப்பட்ட அத்தியாயத் தலைப்புகளை விலக்கு, இதனால் அத்தியாயத் தலைப்பில் உள்ள சொற்கள் சேவையாகவோ வெளியீட்டுக் குழுவாகவோ கணக்கிடப்படாது.
+Ignore episode titles {}	அத்தியாயத் தலைப்புகளைப் புறக்கணி {}
+Ignore episode titles	அத்தியாயத் தலைப்புகளைப் புறக்கணி
+Alternative group	மாற்றுக் குழு
+Alternative group {}	மாற்றுக் குழு {}
+Group anime seasons	அனிமே சீசன்களைக் குழுவாக்கு
+Anime group {}	அனிமே குழு {}
+Group of {} · {}	{} தலைப்புகளின் குழு · {}
+Import progress	இறக்குமதி முன்னேற்றம்
+Waiting to import	இறக்குமதிக்குக் காத்திருக்கிறது
+Import progress of {}	{} இன் இறக்குமதி முன்னேற்றம்
+Import details of {}	{} இன் இறக்குமதி விவரங்கள்
+{} / {} episodes imported	{} / {} அத்தியாயங்கள் இறக்குமதி செய்யப்பட்டன
+· {} not imported	· {} இறக்குமதி செய்யப்படவில்லை
+Series, anime or film title, e.g. Severance	தொடர், அனிமே அல்லது திரைப்படத் தலைப்பு, எ.கா. Severance
+All enabled catalogues	இயக்கப்பட்ட அனைத்துப் பட்டியல்களும்
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	தேடக்கூடிய இயக்கப்பட்ட பட்டியல் எதுவும் இல்லை: ஒன்றை இயக்கவும் அல்லது அமைப்புகள் › மெட்டாடேட்டா மூலங்கள் இல் அதன் API விசையை உள்ளிடவும்.
+Searches every enabled catalogue, results in your order:	இயக்கப்பட்ட ஒவ்வொரு பட்டியலிலும் தேடும், முடிவுகள் உங்கள் வரிசையில்:
+Grouping	குழுவாக்கம்
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	தானியங்கு, அதிகாரப்பூர்வத் தொடர்புகளின்படி தலைப்பை அதன் உரிமை அல்லது தொகுப்புடன் குழுவாக்கும். முடக்கப்பட்டது அதைத் தனியாக வைக்கும்.
+Automatic (official relations)	தானியங்கு (அதிகாரப்பூர்வத் தொடர்புகள்)
+Too many failed sign in attempts. Please try again in {} minute(s).	தோல்வியடைந்த உள்நுழைவு முயற்சிகள் மிக அதிகம். {} நிமிடம் கழித்து மீண்டும் முயலவும்.
+Reset your password	உங்கள் கடவுச்சொல்லை மீட்டமைக்கவும்
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr தனது பதிவில் ஒருமுறை மட்டும் பயன்படுத்தக்கூடிய மீட்டமைப்பு டோக்கனை எழுதும். சமீபத்திய பதிவில் உள்ள
+line in the latest log (System › Logs, or the container's output).	வரியிலிருந்து அதை நகலெடுக்கவும் (அமைப்பு › பதிவுகள், அல்லது கொள்கலனின் வெளியீடு).
+Write a reset token to the log	பதிவில் மீட்டமைப்பு டோக்கனை எழுது
+I already have a reset token	என்னிடம் ஏற்கனவே மீட்டமைப்பு டோக்கன் உள்ளது
+Back to sign in	உள்நுழைவுக்குத் திரும்பு
+Your password has been reset, sign in with your new password.	உங்கள் கடவுச்சொல் மீட்டமைக்கப்பட்டது, புதிய கடவுச்சொல்லுடன் உள்நுழையவும்.
+Unable to sign in with your identity provider.	உங்கள் அடையாள வழங்குநர் மூலம் உள்நுழைய முடியவில்லை.
+Incorrect username or password.	பயனர்பெயர் அல்லது கடவுச்சொல் தவறானது.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC அங்கீகாரம் இயக்கப்பட்டுள்ளது, ஆனால் சரியாக உள்ளமைக்கப்படவில்லை. உங்கள் கடவுச்சொல்லுடன் உள்நுழைந்து OIDC அமைப்புகளைப் புதுப்பிக்கவும் (அமைப்புகள் › பொது › பாதுகாப்பு, அல்லது உள்ளமைவுக் கோப்பு).
+Sign in with SSO	SSO மூலம் உள்நுழை
+You will be sent to your identity provider.	நீங்கள் உங்கள் அடையாள வழங்குநருக்கு அனுப்பப்படுவீர்கள்.
+Forgot your password?	கடவுச்சொல்லை மறந்துவிட்டீர்களா?
+Invalid or expired reset token.	தவறான அல்லது காலாவதியான மீட்டமைப்பு டோக்கன்.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	பயனர்பெயரும் கடவுச்சொல்லும் தேவை, கடவுச்சொற்கள் பொருந்த வேண்டும், கடவுச்சொல்லில் குறைந்தது {} எழுத்துகள் இருக்க வேண்டும்.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	புதிய மீட்டமைப்பு டோக்கன் பதிவில் எழுதப்படவில்லை. ஏற்கனவே ஒன்று செயலில் இருக்கலாம், எனவே முதலில் பதிவைச் சரிபார்க்கவும். Kitsunarr ஐ மறுதொடக்கம் செய்தால் அது அழிக்கப்பட்டு, இன்னொன்றைக் கோர முடியும்.
+Enter the token from the	பதிவில் உள்ள
+line in the log. It's valid for 15 minutes and can only be used once. If you set	வரியிலிருந்து டோக்கனை உள்ளிடவும். இது 15 நிமிடங்கள் செல்லுபடியாகும், ஒருமுறை மட்டுமே பயன்படுத்த முடியும். நீங்கள்
+Reset token	மீட்டமைப்பு டோக்கன்
+Confirm new password	புதிய கடவுச்சொல்லை உறுதிப்படுத்து
+Reset password	கடவுச்சொல்லை மீட்டமை
+Signed out	வெளியேறியது
+You have been signed out of Kitsunarr.	நீங்கள் Kitsunarr இலிருந்து வெளியேற்றப்பட்டீர்கள்.
+Sign in again	மீண்டும் உள்நுழை
+Search for missing	காணாதவற்றைத் தேடு
+Month	மாதம்
+Week	வாரம்
+Forecast	முன்னறிவிப்பு
+Day	நாள்
+Agenda	நிகழ்ச்சி நிரல்
+On disk	வட்டில் உள்ளது
+Not aired yet	இன்னும் ஒளிபரப்பாகவில்லை
+Search for the episodes shown that aired and have no file	காட்டப்படும், ஒளிபரப்பான மற்றும் கோப்பு இல்லாத அத்தியாயங்களைத் தேடு
+Previous period	முந்தைய காலம்
+Next period	அடுத்த காலம்
+Calendar view	நாள்காட்டிக் காட்சி
+Nothing airs in this period.	இந்தக் காலத்தில் எதுவும் ஒளிபரப்பாகவில்லை.
+Legend	குறிவிளக்கம்
+Disabled removes the series from its anime group and keeps it out of automatic grouping	முடக்கப்பட்டது தொடரை அதன் அனிமே குழுவிலிருந்து அகற்றி, தானியங்கு குழுவாக்கத்திலிருந்து விலக்கி வைக்கும்
+Disabled removes the film from its collection and keeps it out of automatic grouping	முடக்கப்பட்டது திரைப்படத்தை அதன் தொகுப்பிலிருந்து அகற்றி, தானியங்கு குழுவாக்கத்திலிருந்து விலக்கி வைக்கும்
+Filter	வடிகட்டி
+Filter by path	பாதையின்படி வடிகட்டு
+All paths	அனைத்துப் பாதைகளும்
+Combine filters	வடிகட்டிகளை இணை
+Show series matching every selected filter	தேர்ந்தெடுத்த ஒவ்வொரு வடிகட்டியுடனும் பொருந்தும் தொடர்களைக் காட்டு
+Clear combined filters	இணைந்த வடிகட்டிகளை அழி
+Show each anime group (Tanukarr's anime grouping) once, by its first season	ஒவ்வொரு அனிமே குழுவையும் (Tanukarr இன் அனிமே குழுவாக்கம்) அதன் முதல் சீசன் மூலம் ஒருமுறை காட்டு
+Save the current filters as a filter of your own	தற்போதைய வடிகட்டிகளை உங்கள் சொந்த வடிகட்டியாகச் சேமி
+Save filter…	வடிகட்டியைச் சேமி…
+Shown series	காட்டப்படும் தொடர்கள்
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	சேமித்த வடிகட்டியின் இந்த நிபந்தனைகளை Kitsunarr ஆல் பயன்படுத்த முடியாது, எனவே அவை விடப்பட்டன:
+The selected filters contradict each other, so no series can match all of them.	தேர்ந்தெடுத்த வடிகட்டிகள் ஒன்றுக்கொன்று முரண்படுகின்றன, எனவே எந்தத் தொடரும் அனைத்துடனும் பொருந்த முடியாது.
+No series match the selected filters.	தேர்ந்தெடுத்த வடிகட்டிகளுடன் எந்தத் தொடரும் பொருந்தவில்லை.
+Filter "{}" saved.	"{}" வடிகட்டி சேமிக்கப்பட்டது.
+Save filter	வடிகட்டியைச் சேமி
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	வடிகட்டி தேர்ந்தெடுத்த வடிகட்டி, இணைந்த வடிகட்டிகள் மற்றும் பாதையை வைத்திருக்கும்; இது உள்ளமைந்த வடிகட்டிகளுடன் பட்டியலிடப்படும்.
+Filter label	வடிகட்டி லேபிள்
+Delete saved filter	சேமித்த வடிகட்டியை நீக்கு
+Delete this saved filter? The series are not changed.	இந்தச் சேமித்த வடிகட்டியை நீக்கவா? தொடர்கள் மாற்றப்படாது.
+Monitored only	கண்காணிக்கப்படுபவை மட்டும்
+Unmonitored only	கண்காணிக்கப்படாதவை மட்டும்
+Continuing only	தொடர்பவை மட்டும்
+Ended only	முடிவடைந்தவை மட்டும்
+Missing episodes	காணாத அத்தியாயங்கள்
+Security settings saved.	பாதுகாப்பு அமைப்புகள் சேமிக்கப்பட்டன.
+Security	பாதுகாப்பு
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	அங்கீகாரம் இல்லாத தொலைநிலை அணுகலைத் தடுக்க Kitsunarr அங்கீகாரத்தைக் கோருகிறது. விரும்பினால் உள்ளூர் முகவரிகளுக்கு இதை முடக்கலாம்.
+Authentication	அங்கீகாரம்
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	பயனர்கள் எப்படி உள்நுழைகிறார்கள்: Kitsunarr இன் உள்நுழைவுப் பக்கம், அல்லது உங்கள் OpenID Connect அடையாள வழங்குநர்.
+Forms (sign-in page)	படிவங்கள் (உள்நுழைவுப் பக்கம்)
+OIDC (identity provider)	OIDC (அடையாள வழங்குநர்)
+External (reverse proxy)	வெளிப்புறம் (தலைகீழ் ப்ராக்ஸி)
+Authentication required	அங்கீகாரம் தேவை
+Require authentication for every request, or not for requests from local addresses or this machine.	ஒவ்வொரு கோரிக்கைக்கும் அங்கீகாரம் கோரு, அல்லது உள்ளூர் முகவரிகள் அல்லது இந்த இயந்திரத்திலிருந்து வரும் கோரிக்கைகளுக்குக் கோர வேண்டாம்.
+Disabled for localhost	localhost க்கு முடக்கப்பட்டது
+Allowed hosts	அனுமதிக்கப்பட்ட ஹோஸ்ட்கள்
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kitsunarr ஐ அணுகக்கூடிய ஹோஸ்ட் பெயர்கள் மற்றும் IP முகவரிகளின் காற்புள்ளியால் பிரிக்கப்பட்ட பட்டியல், அமைப்பின் ஹோஸ்ட் பெயர் அல்லது கொள்கலன் பெயர் உட்பட. அனைத்து ஹோஸ்ட்களையும் அனுமதிக்கக் காலியாக விடவும். அங்கீகாரம் எப்போதும் தேவைப்படாதபோது இது அவசியம். எடுத்துக்காட்டு: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	CGNAT முகவரிகளை நம்பு
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	CGNAT முகவரிகளை (100.64.0.0/10, எ.கா. Tailscale) உள்ளூராகக் கருது
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	வெளிப்புறம்: Kitsunarr உள்நுழைவு கேட்காது, அதன் முன் உள்ள தலைகீழ் ப்ராக்ஸியைச் சார்ந்திருக்கும். ஒவ்வொரு கோரிக்கையையும் அங்கீகரிக்கும் ப்ராக்ஸிக்குப் பின்னால் மட்டுமே இதைப் பயன்படுத்தவும்.
+Register Kitsunarr with your provider using the redirect URI	இந்த வழிமாற்று URI ஐப் பயன்படுத்தி உங்கள் வழங்குநரிடம் Kitsunarr ஐப் பதிவுசெய்யவும்:
+. Saving signs out password sessions; you then sign in through the provider.	. சேமிப்பது கடவுச்சொல் அமர்வுகளை வெளியேற்றும்; பின்னர் நீங்கள் வழங்குநர் மூலம் உள்நுழைவீர்கள்.
+OIDC Authority	OIDC அதிகார அமைப்பு
+The URL of the OIDC provider (https://).	OIDC வழங்குநரின் URL (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	OIDC வழங்குநரிடம் பதிவுசெய்யப்பட்ட Client ID.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	OIDC வழங்குநரிடம் பதிவுசெய்யப்பட்ட Client Secret.
+OIDC User	OIDC பயனர்
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Kitsunarr இல் உள்நுழையக்கூடிய, OIDC வழங்குநரில் உள்ள சரிபார்க்கப்பட்ட மின்னஞ்சல் முகவரி அல்லது பொருள் அடையாளங்காட்டி (sub).
+OIDC Scopes	OIDC வரம்புகள்
+The scopes to request from the OIDC provider; must include openid.	OIDC வழங்குநரிடம் கோர வேண்டிய வரம்புகள்; openid ஐ உள்ளடக்கியிருக்க வேண்டும்.
+Set in config.toml or the environment, which take precedence: {}.	config.toml அல்லது சூழலில் அமைக்கப்பட்டது, அவை முன்னுரிமை பெறும்: {}.
+Backup settings saved.	காப்புப்பிரதி அமைப்புகள் சேமிக்கப்பட்டன.
+Interval (days)	இடைவெளி (நாட்கள்)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	தானியங்கு காப்புப்பிரதி எவ்வளவு அடிக்கடி எடுக்கப்படும் (1-7 நாட்கள்). கைமுறைக் காப்புப்பிரதி இடைவெளியை மீண்டும் தொடங்கும்.
+Backup interval in days	நாட்களில் காப்புப்பிரதி இடைவெளி
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	இதைவிடப் பழைய தானியங்கு காப்புப்பிரதிகள் நீக்கப்படும் (1-90 நாட்கள்). கைமுறைக் காப்புப்பிரதிகள் வைக்கப்படும்.
+Backup retention in days	நாட்களில் காப்புப்பிரதித் தக்கவைப்பு
+A quality without an override uses the global sizes of	மேலெழுதல் இல்லாத தரம் இங்குள்ள பொது அளவுகளைப் பயன்படுத்தும்:
+Settings › Quality	அமைப்புகள் › தரம்
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. மேலெழுதலில், காலியாக இருந்தால் வரம்பற்றது; அதிகபட்சம் பூஜ்ஜியம் என்றாலும் வரம்பற்றது.
+Signed in. Save to keep the token.	உள்நுழைந்தது. டோக்கனை வைத்திருக்கச் சேமிக்கவும்.
+Redirect URL to register with your API client:	உங்கள் API கிளையன்டில் பதிவுசெய்ய வேண்டிய வழிமாற்று URL:
+Test all	அனைத்தையும் சோதி
+All {} passed their test.	அனைத்து {} உம் சோதனையில் தேர்ச்சி பெற்றன.
+{} of {} failed their test.	{} (மொத்தம் {} இல்) சோதனையில் தோல்வியடைந்தன.
+Test every {} entry	ஒவ்வொரு {} உள்ளீட்டையும் சோதி
+Test results	சோதனை முடிவுகள்
+passed with warnings	எச்சரிக்கைகளுடன் தேர்ச்சி
+Warning:	எச்சரிக்கை:
+Dismiss test results	சோதனை முடிவுகளை மூடு
+Delete for upgrade	மேம்படுத்தலுக்காக நீக்கு
+Metadata sources saved.	மெட்டாடேட்டா மூலங்கள் சேமிக்கப்பட்டன.
+Order	வரிசை
+Enable {}	{} ஐ இயக்கு
+Move {} up	{} ஐ மேலே நகர்த்து
+Move {} down	{} ஐ கீழே நகர்த்து
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	"ஊடகம் சேர்" இயக்கப்பட்ட பட்டியல்களை இந்த வரிசையில் காட்டும், "இயக்கப்பட்ட அனைத்துப் பட்டியல்களும்" அவற்றின் முடிவுகளை இந்த வரிசையில் இணைக்கும். முடக்கப்பட்ட பட்டியல்கள் வழங்கப்படுவதில்லை, தேடப்படுவதில்லை; ஏற்கனவே அவற்றில் ஒன்றைச் சேர்ந்த தலைப்புகள் அதிலிருந்தே தொடர்ந்து புதுப்பிக்கப்படும். பயன்படுத்தக் கீழே சேமிக்கவும்.
+Enable at least one metadata source.	குறைந்தது ஒரு மெட்டாடேட்டா மூலத்தை இயக்கவும்.
+Mixed	கலப்பு
+Unlimited	வரம்பற்றது
+0 GiB/h	0 GiB/h
+{} min: {}	{} நிமி: {}
+No limit	வரம்பு இல்லை
+Quality definitions saved.	தர வரையறைகள் சேமிக்கப்பட்டன.
+Quality definitions reset to the defaults.	தர வரையறைகள் இயல்புநிலைக்கு மீட்டமைக்கப்பட்டன.
+Reset definitions	வரையறைகளை மீட்டமை
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	அளவுகள் இயக்க நேரத்தின் ஒரு நிமிடத்துக்கு MiB இல் உள்ளன; ஒவ்வொன்றின் கீழும் மணிநேர அளவு காட்டப்படும். ஒரு தரத்தின் வரம்புகளுக்கு வெளியே உள்ள வெளியீடு நிராகரிக்கப்படும்; விருப்ப அளவு வெளியீடுகளைத் தரவரிசைப்படுத்தும். சுயவிவரங்கள் தங்கள் சொந்த வரம்புகளை வைத்திருக்கலாம் (
+Settings › Quality profiles	அமைப்புகள் › தர சுயவிவரங்கள்
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): "கலப்பு" என்றால் சுயவிவரங்கள் வெவ்வேறு வரம்புகளைப் பயன்படுத்துகின்றன, இங்கே உள்ளிடும் மதிப்பு ஒவ்வொரு சுயவிவரத்திலும் எழுதப்படும்.
+Title of {}	{} இன் தலைப்பு
+{} size of {} (MiB per minute)	{} அளவு, {} (நிமிடத்துக்கு MiB)
+Profiles use different limits	சுயவிவரங்கள் வெவ்வேறு வரம்புகளைப் பயன்படுத்துகின்றன
+No minimum	குறைந்தபட்சம் இல்லை
+Hide retired qualities	ஓய்வுபெற்ற தரங்களை மறை
+Show retired qualities	ஓய்வுபெற்ற தரங்களைக் காட்டு
+Reset quality definitions	தர வரையறைகளை மீட்டமை
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	ஒவ்வொரு நிலையான தரத்துக்கும் அதன் இயல்புநிலைத் தலைப்பையும் அளவு வரம்புகளையும் கொடுக்கவா? தனிப்பயன் முன்னமைவுகளும் சுயவிவரங்களின் சொந்த வரம்புகளும் வைக்கப்படும்.
+Reset	மீட்டமை
+RefreshMonitoredDownloads	கண்காணிக்கப்படும் பதிவிறக்கங்களைப் புதுப்பி
+Reads the download clients and imports completed downloads Kitsunarr grabbed	பதிவிறக்க கிளையன்ட்களைப் படித்து, Kitsunarr பெற்ற முடிந்த பதிவிறக்கங்களை இறக்குமதி செய்யும்
+ProcessPendingJellyfinRefresh	நிலுவையிலுள்ள Jellyfin புதுப்பிப்புகளைச் செயலாக்கு
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	இறக்குமதிகள் நிலுவையிலுள்ள Jellyfin நூலகங்களைப் புதுப்பிக்கும் (ஒவ்வொரு இணைப்பின் புதுப்பிப்பு முறைப்படி)
+SyncJellyfinWatched	Jellyfin பார்த்தவற்றை ஒத்திசை
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	ஒரு Jellyfin பயனர் எந்த அத்தியாயங்களைப் பார்த்துள்ளார் என்பதைப் படிக்கும் (இணைப்பின் சொந்த இடைவெளியில்)
+CleanUpRecycleBin	மறுசுழற்சித் தொட்டியைச் சுத்தம் செய்
+Deletes files kept in the recycle bin longer than the media management setting allows	ஊடக மேலாண்மை அமைப்பு அனுமதிப்பதைவிட நீண்ட காலம் மறுசுழற்சித் தொட்டியில் உள்ள கோப்புகளை நீக்கும்
+RescanFolders	கோப்புறைகளை மீண்டும் வருடு
+Scans series and movie folders: forgets files that are gone and adds files found there	தொடர் மற்றும் திரைப்படக் கோப்புறைகளை வருடும்: இல்லாமல் போன கோப்புகளை மறந்து, அங்கே கண்டறிந்த கோப்புகளைச் சேர்க்கும்
+RefreshMetadata	மெட்டாடேட்டாவைப் புதுப்பி
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	தலைப்புகளை அவற்றின் மெட்டாடேட்டா பட்டியல்களிலிருந்து புதுப்பிக்கும் (தொடர்பவை 6 மணிநேரத்துக்கு ஒருமுறை, முடிவடைந்தவை மாதந்தோறும்)
+Housekeeping	பராமரிப்பு
+Purges expired sessions, prunes task history and checks database integrity	காலாவதியான அமர்வுகளை அழித்து, பணி வரலாற்றைக் குறைத்து, தரவுத்தள ஒருமைப்பாட்டைச் சரிபார்க்கும்
+CleanupSessions	அமர்வுகளைச் சுத்தம் செய்
+Removes expired login sessions	காலாவதியான உள்நுழைவு அமர்வுகளை அகற்றும்
+HealthCheck	நலச் சோதனை
+Re-evaluates health checks, notifies connected browsers and sends health notifications	நலச் சோதனைகளை மீண்டும் மதிப்பிட்டு, இணைந்த உலாவிகளுக்குத் தெரிவித்து, நல அறிவிப்புகளை அனுப்பும்
+SQLite database integrity check failed: {}. Restore from a known-good backup.	SQLite தரவுத்தள ஒருமைப்பாட்டுச் சோதனை தோல்வியடைந்தது: {}. நல்லதென அறியப்பட்ட காப்புப்பிரதியிலிருந்து மீட்டெடுக்கவும்.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	SQLite தரவுத்தள ஒருமைப்பாட்டுச் சோதனை எந்த முடிவையும் தரவில்லை. தரவுத்தளப் பிழைகள் ஏற்பட்டால் நல்லதென அறியப்பட்ட காப்புப்பிரதியிலிருந்து மீட்டெடுக்கவும்.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	SQLite தரவுத்தள ஒருமைப்பாட்டுச் சோதனை தோல்வியடைந்தது: {} அயல் விசை மீறல்கள். நல்லதென அறியப்பட்ட காப்புப்பிரதியிலிருந்து மீட்டெடுக்கவும்.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	RSS ஒத்திசைவு இயக்கப்பட்ட குறியீட்டாளர் எதுவும் கிடைக்கவில்லை, Kitsunarr புதிய வெளியீடுகளைத் தானாகப் பெறாது
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	சமீபத்திய குறியீட்டாளர் பிழைகளால் RSS திறன் கொண்ட அனைத்துக் குறியீட்டாளர்களும் தற்காலிகமாகக் கிடைக்கவில்லை
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	தானியங்கு தேடல் இயக்கப்பட்ட குறியீட்டாளர் எதுவும் கிடைக்கவில்லை, Kitsunarr எந்தத் தானியங்கு தேடல் முடிவுகளையும் வழங்காது
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	ஊடாடும் தேடல் இயக்கப்பட்ட குறியீட்டாளர் எதுவும் கிடைக்கவில்லை, Kitsunarr எந்த ஊடாடும் தேடல் முடிவுகளையும் வழங்காது
+All search-capable indexers are temporarily unavailable due to recent indexer errors	சமீபத்திய குறியீட்டாளர் பிழைகளால் தேடல் திறன் கொண்ட அனைத்துக் குறியீட்டாளர்களும் தற்காலிகமாகக் கிடைக்கவில்லை
+All indexers are unavailable due to failures for more than 6 hours	6 மணிநேரத்துக்கும் மேலான தோல்விகளால் அனைத்துக் குறியீட்டாளர்களும் கிடைக்கவில்லை
+Indexers unavailable due to failures for more than 6 hours: {}	6 மணிநேரத்துக்கும் மேலான தோல்விகளால் கிடைக்காத குறியீட்டாளர்கள்: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	ஆதரிக்கப்படாத Jackett 'all' முனையைப் பயன்படுத்தும் குறியீட்டாளர்கள்: {}
+Indexers with invalid download clients: {}.	தவறான பதிவிறக்க கிளையன்ட்களைக் கொண்ட குறியீட்டாளர்கள்: {}.
+Enable Completed Download Handling	முடிந்த பதிவிறக்கக் கையாளுதலை இயக்கவும்
+All notifications are unavailable due to failures	தோல்விகளால் அனைத்து அறிவிப்புகளும் கிடைக்கவில்லை
+Notifications unavailable due to failures: {}	தோல்விகளால் கிடைக்காத அறிவிப்புகள்: {}
+All lists are unavailable due to failures	தோல்விகளால் அனைத்துப் பட்டியல்களும் கிடைக்கவில்லை
+Lists unavailable due to failures: {}	தோல்விகளால் கிடைக்காத பட்டியல்கள்: {}
+Missing root folder for import list(s): {}	இறக்குமதிப் பட்டியல்(களு)க்கான மூல கோப்புறை காணவில்லை: {}
+Multiple root folders are missing for import lists: {}	இறக்குமதிப் பட்டியல்களுக்குப் பல மூல கோப்புறைகள் காணவில்லை: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	உள்ளமைக்கப்பட்ட மறுசுழற்சித் தொட்டிக் கோப்புறையில் எழுத முடியவில்லை: {}. இந்தப் பாதை இருப்பதையும் Kitsunarr ஐ இயக்கும் பயனர் இதில் எழுத முடியும் என்பதையும் உறுதிசெய்யவும்
+Unable to write to the backup folder {}; scheduled backups will fail.	காப்புப்பிரதிக் கோப்புறை {} இல் எழுத முடியவில்லை; திட்டமிட்ட காப்புப்பிரதிகள் தோல்வியடையும்.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	உங்கள் API விசையைக் குறைந்தது 20 எழுத்துகள் நீளமாகப் புதுப்பிக்கவும். இதை அமைப்புகள் அல்லது உள்ளமைவுக் கோப்பு மூலம் செய்யலாம்
+Series {} was removed from {}	தொடர் {} {} இலிருந்து அகற்றப்பட்டது
+Series {} were removed from {}	தொடர்கள் {} {} இலிருந்து அகற்றப்பட்டன
+Mount containing a series path is mounted read-only: {}	தொடர் பாதையைக் கொண்ட ஏற்றம் படிக்க மட்டும் என ஏற்றப்பட்டுள்ளது: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	பதிவிறக்க கிளையன்ட் {} முடிந்த பதிவிறக்கங்களை அகற்றும்படி அமைக்கப்பட்டுள்ளது. இதனால் Kitsunarr இறக்குமதி செய்யும் முன்பே பதிவிறக்கங்கள் உங்கள் கிளையன்டிலிருந்து அகற்றப்படலாம்.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	பதிவிறக்க கிளையன்ட் {} இல் Kitsunarr இன் வகைக்கு {} வரிசைப்படுத்தல் இயக்கப்பட்டுள்ளது. இறக்குமதிச் சிக்கல்களைத் தவிர்க்க உங்கள் பதிவிறக்க கிளையன்டில் வரிசைப்படுத்தலை முடக்க வேண்டும்.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	பதிவிறக்க கிளையன்ட் {} பதிவிறக்கங்களை மூல கோப்புறை {} இல் வைக்கிறது. மூல கோப்புறையில் பதிவிறக்கக் கூடாது.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	தொலைநிலைப் பதிவிறக்க கிளையன்ட் {} பதிவிறக்கங்களை {} இல் வைக்கிறது, ஆனால் இது சரியான {} பாதை அல்ல. உங்கள் தொலைநிலைப் பாதை வரைபடங்களையும் பதிவிறக்க கிளையன்ட் அமைப்புகளையும் மதிப்பாய்வு செய்யவும்.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	நீங்கள் Docker ஐப் பயன்படுத்துகிறீர்கள்; பதிவிறக்க கிளையன்ட் {} பதிவிறக்கங்களை {} இல் வைக்கிறது, ஆனால் இது சரியான {} பாதை அல்ல. உங்கள் தொலைநிலைப் பாதை வரைபடங்களையும் பதிவிறக்க கிளையன்ட் அமைப்புகளையும் மதிப்பாய்வு செய்யவும்.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	உள்ளூர் பதிவிறக்க கிளையன்ட் {} பதிவிறக்கங்களை {} இல் வைக்கிறது, ஆனால் இது சரியான {} பாதை அல்ல. உங்கள் பதிவிறக்க கிளையன்ட் அமைப்புகளை மதிப்பாய்வு செய்யவும்.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	நீங்கள் Docker ஐப் பயன்படுத்துகிறீர்கள்; பதிவிறக்க கிளையன்ட் {} பதிவிறக்கங்களை {} இல் வைக்கிறது, ஆனால் இந்தக் கோப்பகம் கொள்கலனுக்குள் இருப்பதாகத் தெரியவில்லை. உங்கள் தொலைநிலைப் பாதை வரைபடங்களையும் கொள்கலன் தொகுதி அமைப்புகளையும் மதிப்பாய்வு செய்யவும்.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	தொலைநிலைப் பதிவிறக்க கிளையன்ட் {} பதிவிறக்கங்களை {} இல் வைக்கிறது, ஆனால் இந்தக் கோப்பகம் இருப்பதாகத் தெரியவில்லை. தொலைநிலைப் பாதை வரைபடம் விடுபட்டிருக்கலாம் அல்லது தவறாக இருக்கலாம்.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	பதிவிறக்க கிளையன்ட் {} பதிவிறக்கங்களை {} இல் வைக்கிறது, ஆனால் Kitsunarr ஆல் இந்தக் கோப்பகத்தைப் பார்க்க முடியவில்லை. கோப்புறையின் அனுமதிகளை மாற்ற வேண்டியிருக்கலாம்.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	பதிவிறக்கிய அத்தியாயம் {} ஐ Kitsunarr ஆல் பார்க்க முடிகிறது, ஆனால் அணுக முடியவில்லை. அனுமதிப் பிழையாக இருக்கலாம்.
+File {} was removed part way through processing.	கோப்பு {} செயலாக்கத்தின் நடுவில் அகற்றப்பட்டது.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr ஒன்று அல்லது அதற்கு மேற்பட்ட அத்தியாயங்களை இறக்குமதி செய்யத் தவறியது. விவரங்களுக்கு உங்கள் பதிவுகளைச் சரிபார்க்கவும்.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	தொலைநிலைப் பதிவிறக்க கிளையன்ட் {} கோப்புகள் {} இல் இருப்பதாகத் தெரிவித்தது, ஆனால் இது சரியான {} பாதை அல்ல. உங்கள் தொலைநிலைப் பாதை வரைபடங்களையும் பதிவிறக்க கிளையன்ட் அமைப்புகளையும் மதிப்பாய்வு செய்யவும்.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	நீங்கள் Docker ஐப் பயன்படுத்துகிறீர்கள்; பதிவிறக்க கிளையன்ட் {} கோப்புகள் {} இல் இருப்பதாகத் தெரிவித்தது, ஆனால் இது சரியான {} பாதை அல்ல. உங்கள் தொலைநிலைப் பாதை வரைபடங்களையும் பதிவிறக்க கிளையன்ட் அமைப்புகளையும் மதிப்பாய்வு செய்யவும்.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	உள்ளூர் பதிவிறக்க கிளையன்ட் {} கோப்புகள் {} இல் இருப்பதாகத் தெரிவித்தது, ஆனால் இது சரியான {} பாதை அல்ல. உங்கள் பதிவிறக்க கிளையன்ட் அமைப்புகளை மதிப்பாய்வு செய்யவும்.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	பதிவிறக்கக் கோப்பகம் {} ஐ Kitsunarr ஆல் பார்க்க முடிகிறது, ஆனால் அணுக முடியவில்லை. அனுமதிப் பிழையாக இருக்கலாம்.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	தொலைநிலைப் பதிவிறக்க கிளையன்ட் {} கோப்புகள் {} இல் இருப்பதாகத் தெரிவித்தது, ஆனால் இந்தக் கோப்பகம் இருப்பதாகத் தெரியவில்லை. தொலைநிலைப் பாதை வரைபடம் விடுபட்டிருக்கலாம்.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	பதிவிறக்க கிளையன்ட் {} கோப்புகள் {} இல் இருப்பதாகத் தெரிவித்தது, ஆனால் Kitsunarr ஆல் இந்தக் கோப்பகத்தைப் பார்க்க முடியவில்லை. கோப்புறையின் அனுமதிகளை மாற்ற வேண்டியிருக்கலாம்.
+The configured password reset token is shorter than {} characters and is being ignored	உள்ளமைக்கப்பட்ட கடவுச்சொல் மீட்டமைப்பு டோக்கன் {} எழுத்துகளைவிடக் குறைவானது, எனவே புறக்கணிக்கப்படுகிறது
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	கடவுச்சொல் மீட்டமைப்பு டோக்கன் உள்ளமைக்கப்பட்டுள்ளது. இனி தேவையில்லாதபோது KITSUNARR_AUTH_RESET_TOKEN சூழல் மாறியை (அல்லது config.toml இல் உள்ள reset_token ஐ) அகற்றவும்
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC அங்கீகாரம் இயக்கப்பட்டுள்ளது, ஆனால் அதிகார அமைப்பு, Client ID, Client Secret, பயனர், வரம்புகள் அனைத்தும் உள்ளமைக்கப்படவில்லை
+The OIDC Authority must start with 'https://'	OIDC அதிகார அமைப்பு 'https://' உடன் தொடங்க வேண்டும்
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	{} இலிருந்து OIDC உள்ளமைவைப் பெற முடியவில்லை; அதை அணுக முடியும் வரை உங்கள் அடையாள வழங்குநர் மூலம் உள்நுழைவது தோல்வியடையும்
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	இன்னும் மூல கோப்புறைகள் எதுவும் உள்ளமைக்கப்படவில்லை. அமைப்புகள் → ஊடக மேலாண்மை இல் ஒன்றைச் சேர்க்கவும் அல்லது ஏற்கனவே உள்ள நிறுவலை இறக்குமதி செய்யவும்.
+Root folder {} is missing or not accessible.	மூல கோப்புறை {} காணவில்லை அல்லது அணுக முடியவில்லை.
+Root folder {} has only {} MiB free.	மூல கோப்புறை {} இல் {} MiB மட்டுமே காலியாக உள்ளது.
+No enabled {} is configured; automatic downloads are not possible.	இயக்கப்பட்ட {} எதுவும் உள்ளமைக்கப்படவில்லை; தானியங்கு பதிவிறக்கங்கள் சாத்தியமில்லை.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	இந்த {} வகைகள் உங்கள் முந்தைய நிறுவலில் இருந்து வைக்கப்பட்டன, ஆனால் இன்னும் நேரடியாகச் செயல்படுத்தப்படவில்லை: {}.
+All download clients are unavailable due to failures	தோல்விகளால் அனைத்துப் பதிவிறக்க கிளையன்ட்களும் கிடைக்கவில்லை
+Download clients are unavailable due to failures: {}	தோல்விகளால் கிடைக்காத பதிவிறக்க கிளையன்ட்கள்: {}
+All indexers are unavailable due to failures	தோல்விகளால் அனைத்துக் குறியீட்டாளர்களும் கிடைக்கவில்லை
+Indexers unavailable due to failures: {}	தோல்விகளால் கிடைக்காத குறியீட்டாளர்கள்: {}
+Failed to resolve the IP address of the configured proxy host {}	உள்ளமைக்கப்பட்ட ப்ராக்ஸி ஹோஸ்ட் {} இன் IP முகவரியைத் தீர்க்க முடியவில்லை
+The data directory has only {} MiB free; the database may fail to write.	தரவுக் கோப்பகத்தில் {} MiB மட்டுமே காலியாக உள்ளது; தரவுத்தளம் எழுதத் தவறலாம்.

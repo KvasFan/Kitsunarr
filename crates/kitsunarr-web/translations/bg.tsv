@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ текущ номер
 or	или
 1 title	1 заглавие
+Episode titles (one per line)	Заглавия на епизоди (по едно на ред)
+For conditions that ignore episode titles.	За условия, които пренебрегват заглавията на епизодите.
+Test episode titles	Тестови заглавия на епизоди
+· group {}	· група {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Изключване на известните заглавия на епизоди при проверка на имената на изданията, така че думите от заглавието на епизода да не се броят за услуга или група на изданието.
+Ignore episode titles {}	Пренебрегване на заглавията на епизоди {}
+Ignore episode titles	Пренебрегване на заглавията на епизоди
+Alternative group	Алтернативна група
+Alternative group {}	Алтернативна група {}
+Group anime seasons	Групиране на сезоните на аниме
+Anime group {}	Аниме група {}
+Group of {} · {}	Група: {} · {}
+Import progress	Напредък на импортирането
+Waiting to import	Изчаква импортиране
+Import progress of {}	Напредък на импортирането: {}
+Import details of {}	Подробности за импортирането: {}
+{} / {} episodes imported	{} / {} епизода импортирани
+· {} not imported	· неимпортирани: {}
+Series, anime or film title, e.g. Severance	Заглавие на сериал, аниме или филм, напр. Severance
+All enabled catalogues	Всички активирани каталози
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Няма активиран каталог, в който да се търси: активирайте някой или въведете неговия API ключ в Настройки › Източници на метаданни.
+Searches every enabled catalogue, results in your order:	Търси във всички активирани каталози, резултатите са във вашия ред:
+Grouping	Групиране
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Автоматично групира заглавието с неговия франчайз или колекция по официалните връзки. Деактивирано го оставя самостоятелно.
+Automatic (official relations)	Автоматично (официални връзки)
+Too many failed sign in attempts. Please try again in {} minute(s).	Твърде много неуспешни опити за вход. Опитайте отново след {} мин.
+Reset your password	Нулиране на паролата
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr ще запише еднократен токен за нулиране в лога си. Копирайте го от реда
+line in the latest log (System › Logs, or the container's output).	в последния лог (Система › Логове или изходът на контейнера).
+Write a reset token to the log	Записване на токен за нулиране в лога
+I already have a reset token	Вече имам токен за нулиране
+Back to sign in	Обратно към входа
+Your password has been reset, sign in with your new password.	Паролата ви е нулирана, влезте с новата си парола.
+Unable to sign in with your identity provider.	Неуспешен вход чрез доставчика на самоличност.
+Incorrect username or password.	Грешно потребителско име или парола.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC удостоверяването е активирано, но не е конфигурирано правилно. Влезте с паролата си и обновете настройките на OIDC (Настройки › Общи › Сигурност или конфигурационния файл).
+Sign in with SSO	Вход чрез SSO
+You will be sent to your identity provider.	Ще бъдете пренасочени към доставчика на самоличност.
+Forgot your password?	Забравена парола?
+Invalid or expired reset token.	Невалиден или изтекъл токен за нулиране.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Потребителското име и паролата са задължителни, паролите трябва да съвпадат, а паролата трябва да е поне {} знака.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Не е записан нов токен за нулиране в лога. Възможно е вече да има активен, затова първо проверете лога. Рестартирането на Kitsunarr го изчиства и ви позволява да поискате нов.
+Enter the token from the	Въведете токена от реда
+line in the log. It's valid for 15 minutes and can only be used once. If you set	в лога. Валиден е 15 минути и може да се използва само веднъж. Ако зададете
+Reset token	Токен за нулиране
+Confirm new password	Потвърждаване на новата парола
+Reset password	Нулиране на паролата
+Signed out	Излязохте
+You have been signed out of Kitsunarr.	Излязохте от Kitsunarr.
+Sign in again	Нов вход
+Search for missing	Търсене на липсващи
+Month	Месец
+Week	Седмица
+Forecast	Прогноза
+Day	Ден
+Agenda	Програма
+On disk	На диска
+Not aired yet	Още не е излъчен
+Search for the episodes shown that aired and have no file	Търсене на показаните епизоди, които са излъчени и нямат файл
+Previous period	Предишен период
+Next period	Следващ период
+Calendar view	Изглед на календара
+Nothing airs in this period.	В този период нищо не се излъчва.
+Legend	Легенда
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Деактивирано премахва сериала от аниме групата му и го изключва от автоматичното групиране
+Disabled removes the film from its collection and keeps it out of automatic grouping	Деактивирано премахва филма от колекцията му и го изключва от автоматичното групиране
+Filter	Филтър
+Filter by path	Филтриране по път
+All paths	Всички пътища
+Combine filters	Комбиниране на филтри
+Show series matching every selected filter	Показване на сериалите, отговарящи на всеки избран филтър
+Clear combined filters	Изчистване на комбинираните филтри
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Показване на всяка аниме група (аниме групирането на Tanukarr) само веднъж, чрез първия ѝ сезон
+Save the current filters as a filter of your own	Запазване на текущите филтри като собствен филтър
+Save filter…	Запазване на филтър…
+Shown series	Показани сериали
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr не може да приложи тези условия на запазения филтър, затова са пропуснати:
+The selected filters contradict each other, so no series can match all of them.	Избраните филтри си противоречат, така че никой сериал не може да отговаря на всички.
+No series match the selected filters.	Няма сериали, отговарящи на избраните филтри.
+Filter "{}" saved.	Филтърът „{}“ е запазен.
+Save filter	Запазване на филтъра
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Филтърът запазва избрания филтър, комбинираните филтри и пътя; показва се заедно с вградените филтри.
+Filter label	Етикет на филтъра
+Delete saved filter	Изтриване на запазения филтър
+Delete this saved filter? The series are not changed.	Да се изтрие ли този запазен филтър? Сериалите не се променят.
+Monitored only	Само наблюдавани
+Unmonitored only	Само ненаблюдавани
+Continuing only	Само продължаващи
+Ended only	Само приключили
+Missing episodes	Липсващи епизоди
+Security settings saved.	Настройките за сигурност са запазени.
+Security	Сигурност
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	За да предотврати отдалечен достъп без удостоверяване, Kitsunarr изисква удостоверяване. По желание можете да го деактивирате за локални адреси.
+Authentication	Удостоверяване
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Как влизат потребителите: страницата за вход на Kitsunarr или вашият OpenID Connect доставчик на самоличност.
+Forms (sign-in page)	Формуляри (страница за вход)
+OIDC (identity provider)	OIDC (доставчик на самоличност)
+External (reverse proxy)	Външно (обратно прокси)
+Authentication required	Изисква се удостоверяване
+Require authentication for every request, or not for requests from local addresses or this machine.	Изискване на удостоверяване за всяка заявка или не за заявки от локални адреси или от тази машина.
+Disabled for localhost	Деактивирано за localhost
+Allowed hosts	Разрешени хостове
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Списък, разделен със запетаи, на имената на хостове и IP адресите, на които Kitsunarr трябва да е достъпен, включително името на хоста на системата или името на контейнера. Оставете празно, за да разрешите всички хостове. Задължително, когато удостоверяването не се изисква винаги. Например: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Доверяване на CGNAT адреси
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Третиране на CGNAT адресите (100.64.0.0/10, напр. Tailscale) като локални
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Външно: Kitsunarr не изисква вход и разчита на обратното прокси пред него. Използвайте това само зад прокси, което удостоверява всяка заявка.
+Register Kitsunarr with your provider using the redirect URI	Регистрирайте Kitsunarr при вашия доставчик с URI за пренасочване
+. Saving signs out password sessions; you then sign in through the provider.	. Запазването прекратява сесиите, влезли с парола; след това влизате чрез доставчика.
+OIDC Authority	OIDC Authority
+The URL of the OIDC provider (https://).	URL адресът на OIDC доставчика (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID, регистриран при OIDC доставчика.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret, регистриран при OIDC доставчика.
+OIDC User	OIDC потребител
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Потвърденият имейл адрес или идентификатор на субекта (sub) при OIDC доставчика, който може да влиза в Kitsunarr.
+OIDC Scopes	OIDC обхвати
+The scopes to request from the OIDC provider; must include openid.	Обхватите, които се искат от OIDC доставчика; трябва да включват openid.
+Set in config.toml or the environment, which take precedence: {}.	Зададено в config.toml или в средата, които имат предимство: {}.
+Backup settings saved.	Настройките за архивиране са запазени.
+Interval (days)	Интервал (дни)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Колко често автоматично се прави архив (1-7 дни). Ръчен архив рестартира интервала.
+Backup interval in days	Интервал на архивиране в дни
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Автоматичните архиви, по-стари от това, се изтриват (1-90 дни). Ръчните архиви се запазват.
+Backup retention in days	Съхранение на архивите в дни
+A quality without an override uses the global sizes of	Качество без замяна използва глобалните размери от
+Settings › Quality	Настройки › Качество
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. В замяната празно означава без ограничение; максимум нула също означава без ограничение.
+Signed in. Save to keep the token.	Влязохте. Запазете, за да се съхрани токенът.
+Redirect URL to register with your API client:	URL за пренасочване, който да регистрирате в API клиента:
+Test all	Тестване на всички
+All {} passed their test.	Всички ({}) преминаха теста.
+{} of {} failed their test.	{} от {} не преминаха теста.
+Test every {} entry	Тестване на всеки запис: {}
+Test results	Резултати от тестовете
+passed with warnings	преминал с предупреждения
+Warning:	Предупреждение:
+Dismiss test results	Затваряне на резултатите от тестовете
+Delete for upgrade	Изтриване при надграждане
+Metadata sources saved.	Източниците на метаданни са запазени.
+Order	Ред
+Enable {}	Активиране на {}
+Move {} up	Преместване на {} нагоре
+Move {} down	Преместване на {} надолу
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Добавянето на медии показва активираните каталози в този ред, а „Всички активирани каталози“ обединява резултатите им в този ред. Деактивираните каталози не се предлагат и в тях не се търси; заглавията, които вече принадлежат на някой от тях, продължават да се опресняват от него. Запазете по-долу, за да приложите.
+Enable at least one metadata source.	Активирайте поне един източник на метаданни.
+Mixed	Смесено
+Unlimited	Без ограничение
+0 GiB/h	0 GiB/h
+{} min: {}	{} мин: {}
+No limit	Без лимит
+Quality definitions saved.	Дефинициите на качеството са запазени.
+Quality definitions reset to the defaults.	Дефинициите на качеството са върнати към стандартните.
+Reset definitions	Нулиране на дефинициите
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Размерите са в MiB на минута продължителност; размерът на час е показан под всеки. Издание извън ограниченията на дадено качество се отхвърля; предпочитаният размер определя класирането на изданията. Профилите могат да имат собствени ограничения (
+Settings › Quality profiles	Настройки › Профили за качество
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): „Смесено“ означава, че профилите използват различни ограничения, а стойност, въведена тук, се записва във всеки профил.
+Title of {}	Заглавие: {}
+{} size of {} (MiB per minute)	{} – размер за {} (MiB на минута)
+Profiles use different limits	Профилите използват различни ограничения
+No minimum	Без минимум
+Hide retired qualities	Скриване на оттеглените качества
+Show retired qualities	Показване на оттеглените качества
+Reset quality definitions	Нулиране на дефинициите на качеството
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Да се върнат ли стандартното заглавие и ограниченията за размер на всяко стандартно качество? Персонализираните предварителни настройки и собствените ограничения на профилите се запазват.
+Reset	Нулиране
+RefreshMonitoredDownloads	Опресняване на наблюдаваните изтегляния
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Чете клиентите за изтегляне и импортира завършените изтегляния, грабнати от Kitsunarr
+ProcessPendingJellyfinRefresh	Обработка на чакащите опреснявания на Jellyfin
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Опреснява библиотеките на Jellyfin, които имат чакащи импортирания (според режима на опресняване на всяка връзка)
+SyncJellyfinWatched	Синхронизиране на гледаното от Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Чете кои епизоди е гледал потребител на Jellyfin (на собствения интервал на връзката)
+CleanUpRecycleBin	Почистване на кошчето
+Deletes files kept in the recycle bin longer than the media management setting allows	Изтрива файловете, стоящи в кошчето по-дълго, отколкото позволява настройката за управление на медии
+RescanFolders	Повторно сканиране на папките
+Scans series and movie folders: forgets files that are gone and adds files found there	Сканира папките на сериали и филми: забравя изчезналите файлове и добавя намерените там файлове
+RefreshMetadata	Опресняване на метаданните
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Опреснява заглавията от техните каталози с метаданни (продължаващите на всеки 6 часа, приключилите ежемесечно)
+Housekeeping	Поддръжка
+Purges expired sessions, prunes task history and checks database integrity	Изчиства изтеклите сесии, съкращава историята на задачите и проверява целостта на базата данни
+CleanupSessions	Почистване на сесиите
+Removes expired login sessions	Премахва изтеклите сесии за вход
+HealthCheck	Проверка на състоянието
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Преоценява проверките на състоянието, уведомява свързаните браузъри и изпраща известия за състоянието
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Проверката за цялост на базата данни SQLite е неуспешна: {}. Възстановете от надежден архив.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Проверката за цялост на базата данни SQLite не върна резултат. Възстановете от надежден архив, ако възникват грешки в базата данни.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Проверката за цялост на базата данни SQLite е неуспешна, нарушения на външни ключове: {}. Възстановете от надежден архив.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Няма налични индексатори с активирана RSS синхронизация, Kitsunarr няма да грабва нови издания автоматично
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Всички индексатори с поддръжка на RSS са временно недостъпни поради скорошни грешки на индексаторите
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Няма налични индексатори с активирано автоматично търсене, Kitsunarr няма да предоставя резултати от автоматично търсене
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Няма налични индексатори с активирано интерактивно търсене, Kitsunarr няма да предоставя резултати от интерактивно търсене
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Всички индексатори с поддръжка на търсене са временно недостъпни поради скорошни грешки на индексаторите
+All indexers are unavailable due to failures for more than 6 hours	Всички индексатори са недостъпни поради неуспехи за повече от 6 часа
+Indexers unavailable due to failures for more than 6 hours: {}	Индексатори, недостъпни поради неуспехи за повече от 6 часа: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Индексатори, използващи неподдържаната крайна точка 'all' на Jackett: {}
+Indexers with invalid download clients: {}.	Индексатори с невалидни клиенти за изтегляне: {}.
+Enable Completed Download Handling	Активиране на обработката на завършени изтегляния
+All notifications are unavailable due to failures	Всички известия са недостъпни поради неуспехи
+Notifications unavailable due to failures: {}	Известия, недостъпни поради неуспехи: {}
+All lists are unavailable due to failures	Всички списъци са недостъпни поради неуспехи
+Lists unavailable due to failures: {}	Списъци, недостъпни поради неуспехи: {}
+Missing root folder for import list(s): {}	Липсва основна папка за списъци за импортиране: {}
+Multiple root folders are missing for import lists: {}	Липсват няколко основни папки за списъци за импортиране: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Не може да се записва в конфигурираната папка на кошчето: {}. Уверете се, че този път съществува и потребителят, който изпълнява Kitsunarr, може да записва в него
+Unable to write to the backup folder {}; scheduled backups will fail.	Не може да се записва в папката за архиви {}; планираните архиви ще бъдат неуспешни.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Обновете API ключа си, така че да е поне 20 знака. Можете да направите това от настройките или от конфигурационния файл
+Series {} was removed from {}	Сериалът {} е премахнат от {}
+Series {} were removed from {}	Сериалите {} са премахнати от {}
+Mount containing a series path is mounted read-only: {}	Монтираното устройство, съдържащо път на сериал, е монтирано само за четене: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Клиентът за изтегляне {} е настроен да премахва завършените изтегляния. Това може да доведе до премахване на изтеглянията от клиента, преди Kitsunarr да успее да ги импортира.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Клиентът за изтегляне {} има активирано сортиране {} за категорията на Kitsunarr. Деактивирайте сортирането в клиента за изтегляне, за да избегнете проблеми с импортирането.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Клиентът за изтегляне {} поставя изтеглянията в основната папка {}. Не бива да изтегляте в основна папка.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Отдалеченият клиент за изтегляне {} поставя изтеглянията в {}, но това не е валиден път за {}. Прегледайте мапирането на отдалечени пътища и настройките на клиента за изтегляне.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Използвате docker; клиентът за изтегляне {} поставя изтеглянията в {}, но това не е валиден път за {}. Прегледайте мапирането на отдалечени пътища и настройките на клиента за изтегляне.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Локалният клиент за изтегляне {} поставя изтеглянията в {}, но това не е валиден път за {}. Прегледайте настройките на клиента за изтегляне.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Използвате docker; клиентът за изтегляне {} поставя изтеглянията в {}, но тази директория изглежда не съществува в контейнера. Прегледайте мапирането на отдалечени пътища и настройките за томове на контейнера.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Отдалеченият клиент за изтегляне {} поставя изтеглянията в {}, но тази директория изглежда не съществува. Вероятно липсва или е грешно мапирането на отдалечения път.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Клиентът за изтегляне {} поставя изтеглянията в {}, но Kitsunarr не вижда тази директория. Може да се наложи да промените правата на папката.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr вижда изтегления епизод {}, но няма достъп до него. Вероятно грешка в правата.
+File {} was removed part way through processing.	Файлът {} беше премахнат по време на обработката.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr не успя да импортира епизод(и). Проверете логовете за подробности.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Отдалеченият клиент за изтегляне {} отчете файлове в {}, но това не е валиден път за {}. Прегледайте мапирането на отдалечени пътища и настройките на клиента за изтегляне.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Използвате docker; клиентът за изтегляне {} отчете файлове в {}, но това не е валиден път за {}. Прегледайте мапирането на отдалечени пътища и настройките на клиента за изтегляне.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Локалният клиент за изтегляне {} отчете файлове в {}, но това не е валиден път за {}. Прегледайте настройките на клиента за изтегляне.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr вижда директорията за изтегляне {}, но няма достъп до нея. Вероятно грешка в правата.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Отдалеченият клиент за изтегляне {} отчете файлове в {}, но тази директория изглежда не съществува. Вероятно липсва мапиране на отдалечения път.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Клиентът за изтегляне {} отчете файлове в {}, но Kitsunarr не вижда тази директория. Може да се наложи да промените правата на папката.
+The configured password reset token is shorter than {} characters and is being ignored	Конфигурираният токен за нулиране на паролата е по-кратък от {} знака и се пренебрегва
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Конфигуриран е токен за нулиране на паролата. Премахнете променливата на средата KITSUNARR_AUTH_RESET_TOKEN (или reset_token в config.toml), когато вече не ви е нужен
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC удостоверяването е активирано, но Authority, Client ID, Client Secret, потребител и обхвати не са конфигурирани всички
+The OIDC Authority must start with 'https://'	OIDC Authority трябва да започва с 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Конфигурацията на OIDC не може да бъде извлечена от {}, входът чрез доставчика на самоличност няма да работи, докато той не стане достъпен
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Все още няма конфигурирани основни папки. Добавете такава в Настройки → Управление на медии или импортирайте съществуваща инсталация.
+Root folder {} is missing or not accessible.	Основната папка {} липсва или е недостъпна.
+Root folder {} has only {} MiB free.	Основната папка {} има само {} MiB свободно място.
+No enabled {} is configured; automatic downloads are not possible.	Няма конфигуриран активиран елемент от тип {}; автоматичните изтегляния не са възможни.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Тези елементи от тип {} са запазени от предишната ви инсталация, но все още не са внедрени нативно: {}.
+All download clients are unavailable due to failures	Всички клиенти за изтегляне са недостъпни поради неуспехи
+Download clients are unavailable due to failures: {}	Клиенти за изтегляне, недостъпни поради неуспехи: {}
+All indexers are unavailable due to failures	Всички индексатори са недостъпни поради неуспехи
+Indexers unavailable due to failures: {}	Индексатори, недостъпни поради неуспехи: {}
+Failed to resolve the IP address of the configured proxy host {}	Неуспешно разрешаване на IP адреса на конфигурирания прокси хост {}
+The data directory has only {} MiB free; the database may fail to write.	Директорията с данни има само {} MiB свободно място; записът в базата данни може да е неуспешен.

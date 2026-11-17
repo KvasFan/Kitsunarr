@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ شماره فعلی
 or	یا
 1 title	۱ عنوان
+Episode titles (one per line)	عنوان‌های قسمت (هر کدام در یک خط)
+For conditions that ignore episode titles.	برای شرط‌هایی که عنوان‌های قسمت را نادیده می‌گیرند.
+Test episode titles	عنوان‌های قسمت آزمایشی
+· group {}	· گروه {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	عنوان‌های شناخته‌شده قسمت‌ها را هنگام بررسی نام ریلیزها کنار بگذار تا واژه‌های عنوان قسمت به‌عنوان سرویس یا گروه ریلیز حساب نشوند.
+Ignore episode titles {}	نادیده گرفتن عنوان‌های قسمت {}
+Ignore episode titles	نادیده گرفتن عنوان‌های قسمت
+Alternative group	گروه جایگزین
+Alternative group {}	گروه جایگزین {}
+Group anime seasons	گروه‌بندی فصل‌های انیمه
+Anime group {}	گروه انیمه {}
+Group of {} · {}	گروهی از {} · {}
+Import progress	پیشرفت واردات
+Waiting to import	در انتظار واردات
+Import progress of {}	پیشرفت واردات {}
+Import details of {}	جزئیات واردات {}
+{} / {} episodes imported	{} / {} قسمت وارد شد
+· {} not imported	· {} وارد نشد
+Series, anime or film title, e.g. Severance	عنوان سریال، انیمه یا فیلم، مثلاً Severance
+All enabled catalogues	همه کاتالوگ‌های فعال
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	هیچ کاتالوگ فعالی قابل جستجو نیست: یکی را فعال کنید یا کلید API آن را در تنظیمات › منابع فراداده وارد کنید.
+Searches every enabled catalogue, results in your order:	در همه کاتالوگ‌های فعال جستجو می‌کند، نتایج به ترتیب شما:
+Grouping	گروه‌بندی
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	«خودکار» عنوان را بر اساس روابط رسمی با فرنچایز یا مجموعه‌اش گروه‌بندی می‌کند. «غیرفعال» آن را جدا نگه می‌دارد.
+Automatic (official relations)	خودکار (روابط رسمی)
+Too many failed sign in attempts. Please try again in {} minute(s).	تلاش‌های ناموفق ورود بیش از حد است. لطفاً {} دقیقه دیگر دوباره تلاش کنید.
+Reset your password	بازنشانی گذرواژه
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr یک توکن بازنشانی یک‌بارمصرف در گزارش خود می‌نویسد. آن را از خط
+line in the latest log (System › Logs, or the container's output).	در آخرین گزارش کپی کنید (سیستم › گزارش‌ها، یا خروجی کانتینر).
+Write a reset token to the log	نوشتن توکن بازنشانی در گزارش
+I already have a reset token	از قبل توکن بازنشانی دارم
+Back to sign in	بازگشت به ورود
+Your password has been reset, sign in with your new password.	گذرواژه شما بازنشانی شد، با گذرواژه جدید وارد شوید.
+Unable to sign in with your identity provider.	ورود از طریق ارائه‌دهنده هویت شما ممکن نشد.
+Incorrect username or password.	نام کاربری یا گذرواژه نادرست است.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	احراز هویت OIDC فعال است اما به‌درستی پیکربندی نشده است. با گذرواژه خود وارد شوید و تنظیمات OIDC را به‌روز کنید (تنظیمات › عمومی › امنیت، یا فایل پیکربندی).
+Sign in with SSO	ورود با SSO
+You will be sent to your identity provider.	به ارائه‌دهنده هویت خود هدایت می‌شوید.
+Forgot your password?	گذرواژه خود را فراموش کرده‌اید؟
+Invalid or expired reset token.	توکن بازنشانی نامعتبر یا منقضی است.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	نام کاربری و گذرواژه الزامی است، گذرواژه‌ها باید یکسان باشند و گذرواژه باید دست‌کم {} نویسه داشته باشد.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	توکن بازنشانی جدیدی در گزارش نوشته نشد. ممکن است یکی از قبل فعال باشد، پس ابتدا گزارش را بررسی کنید. راه‌اندازی دوباره Kitsunarr آن را پاک می‌کند و امکان درخواست توکن دیگری را می‌دهد.
+Enter the token from the	توکن را از خط
+line in the log. It's valid for 15 minutes and can only be used once. If you set	در گزارش وارد کنید. این توکن 15 دقیقه معتبر است و فقط یک بار قابل استفاده است. اگر
+Reset token	توکن بازنشانی
+Confirm new password	تأیید گذرواژه جدید
+Reset password	بازنشانی گذرواژه
+Signed out	خارج شدید
+You have been signed out of Kitsunarr.	از Kitsunarr خارج شدید.
+Sign in again	ورود دوباره
+Search for missing	جستجوی موارد ناموجود
+Month	ماه
+Week	هفته
+Forecast	پیش‌بینی
+Day	روز
+Agenda	برنامه
+On disk	روی دیسک
+Not aired yet	هنوز پخش نشده
+Search for the episodes shown that aired and have no file	جستجوی قسمت‌های نمایش‌داده‌شده‌ای که پخش شده‌اند و فایل ندارند
+Previous period	دوره قبلی
+Next period	دوره بعدی
+Calendar view	نمای تقویم
+Nothing airs in this period.	در این دوره چیزی پخش نمی‌شود.
+Legend	راهنما
+Disabled removes the series from its anime group and keeps it out of automatic grouping	«غیرفعال» سریال را از گروه انیمه‌اش حذف می‌کند و آن را از گروه‌بندی خودکار بیرون نگه می‌دارد
+Disabled removes the film from its collection and keeps it out of automatic grouping	«غیرفعال» فیلم را از مجموعه‌اش حذف می‌کند و آن را از گروه‌بندی خودکار بیرون نگه می‌دارد
+Filter	فیلتر
+Filter by path	فیلتر بر اساس مسیر
+All paths	همه مسیرها
+Combine filters	ترکیب فیلترها
+Show series matching every selected filter	نمایش سریال‌هایی که با همه فیلترهای انتخاب‌شده مطابقت دارند
+Clear combined filters	پاک کردن فیلترهای ترکیبی
+Show each anime group (Tanukarr's anime grouping) once, by its first season	نمایش هر گروه انیمه (گروه‌بندی انیمه Tanukarr) یک بار، با فصل اولش
+Save the current filters as a filter of your own	ذخیره فیلترهای فعلی به‌عنوان فیلتر شخصی
+Save filter…	ذخیره فیلتر…
+Shown series	سریال‌های نمایش‌داده‌شده
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr نمی‌تواند این شرط‌های فیلتر ذخیره‌شده را اعمال کند، بنابراین کنار گذاشته شدند:
+The selected filters contradict each other, so no series can match all of them.	فیلترهای انتخاب‌شده با هم تناقض دارند، بنابراین هیچ سریالی نمی‌تواند با همه آن‌ها مطابقت داشته باشد.
+No series match the selected filters.	هیچ سریالی با فیلترهای انتخاب‌شده مطابقت ندارد.
+Filter "{}" saved.	فیلتر «{}» ذخیره شد.
+Save filter	ذخیره فیلتر
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	فیلتر، فیلتر انتخاب‌شده، فیلترهای ترکیبی و مسیر را نگه می‌دارد و همراه فیلترهای داخلی فهرست می‌شود.
+Filter label	برچسب فیلتر
+Delete saved filter	حذف فیلتر ذخیره‌شده
+Delete this saved filter? The series are not changed.	این فیلتر ذخیره‌شده حذف شود؟ سریال‌ها تغییری نمی‌کنند.
+Monitored only	فقط پایش‌شده
+Unmonitored only	فقط پایش‌نشده
+Continuing only	فقط در حال ادامه
+Ended only	فقط پایان‌یافته
+Missing episodes	قسمت‌های ناموجود
+Security settings saved.	تنظیمات امنیتی ذخیره شد.
+Security	امنیت
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	برای جلوگیری از دسترسی از راه دور بدون احراز هویت، Kitsunarr احراز هویت را الزامی می‌کند. در صورت تمایل می‌توانید آن را برای نشانی‌های محلی غیرفعال کنید.
+Authentication	احراز هویت
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	نحوه ورود کاربران: صفحه ورود Kitsunarr، یا ارائه‌دهنده هویت OpenID Connect شما.
+Forms (sign-in page)	فرم‌ها (صفحه ورود)
+OIDC (identity provider)	OIDC (ارائه‌دهنده هویت)
+External (reverse proxy)	خارجی (پروکسی معکوس)
+Authentication required	احراز هویت الزامی
+Require authentication for every request, or not for requests from local addresses or this machine.	الزام احراز هویت برای هر درخواست، یا عدم الزام برای درخواست‌های نشانی‌های محلی یا همین دستگاه.
+Disabled for localhost	غیرفعال برای localhost
+Allowed hosts	میزبان‌های مجاز
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	فهرست جداشده با ویرگول از نام‌های میزبان و نشانی‌های IP که Kitsunarr باید با آن‌ها در دسترس باشد، از جمله نام میزبان سیستم یا نام کانتینر. برای مجاز کردن همه میزبان‌ها خالی بگذارید. وقتی احراز هویت همیشه الزامی نیست، لازم است. برای مثال: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	اعتماد به نشانی‌های CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	نشانی‌های CGNAT (100.64.0.0/10، مثلاً Tailscale) محلی در نظر گرفته شوند
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	خارجی: Kitsunarr ورودی درخواست نمی‌کند و به پروکسی معکوسی که جلوی آن است تکیه می‌کند. فقط پشت پروکسی‌ای از این استفاده کنید که هر درخواست را احراز هویت می‌کند.
+Register Kitsunarr with your provider using the redirect URI	Kitsunarr را با این نشانی URI بازگشت نزد ارائه‌دهنده خود ثبت کنید:
+. Saving signs out password sessions; you then sign in through the provider.	. ذخیره کردن، نشست‌های ورود با گذرواژه را خارج می‌کند؛ سپس از طریق ارائه‌دهنده وارد می‌شوید.
+OIDC Authority	مرجع OIDC
+The URL of the OIDC provider (https://).	نشانی URL ارائه‌دهنده OIDC ‏(https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID ثبت‌شده نزد ارائه‌دهنده OIDC.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret ثبت‌شده نزد ارائه‌دهنده OIDC.
+OIDC User	کاربر OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	نشانی ایمیل تأییدشده یا شناسه موضوع (sub) در ارائه‌دهنده OIDC که مجاز به ورود به Kitsunarr است.
+OIDC Scopes	دامنه‌های OIDC
+The scopes to request from the OIDC provider; must include openid.	دامنه‌هایی که از ارائه‌دهنده OIDC درخواست می‌شوند؛ باید شامل openid باشد.
+Set in config.toml or the environment, which take precedence: {}.	در config.toml یا محیط تنظیم شده که اولویت دارند: {}.
+Backup settings saved.	تنظیمات پشتیبان‌گیری ذخیره شد.
+Interval (days)	فاصله زمانی (روز)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	هر چند وقت یک بار پشتیبان به‌صورت خودکار گرفته شود (1 تا 7 روز). پشتیبان‌گیری دستی فاصله زمانی را از نو آغاز می‌کند.
+Backup interval in days	فاصله زمانی پشتیبان‌گیری به روز
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	پشتیبان‌های خودکار قدیمی‌تر از این حذف می‌شوند (1 تا 90 روز). پشتیبان‌های دستی نگه داشته می‌شوند.
+Backup retention in days	نگه‌داری پشتیبان به روز
+A quality without an override uses the global sizes of	کیفیتی که بازنویسی ندارد از اندازه‌های سراسری این بخش استفاده می‌کند:
+Settings › Quality	تنظیمات › کیفیت
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. در یک بازنویسی، خالی یعنی نامحدود؛ حداکثر صفر نیز یعنی نامحدود.
+Signed in. Save to keep the token.	وارد شدید. برای حفظ توکن ذخیره کنید.
+Redirect URL to register with your API client:	نشانی URL بازگشت برای ثبت در کلاینت API شما:
+Test all	آزمایش همه
+All {} passed their test.	همه {} آزمایش را با موفقیت گذراندند.
+{} of {} failed their test.	{} از {} در آزمایش ناموفق بودند.
+Test every {} entry	آزمایش همه ورودی‌های {}
+Test results	نتایج آزمایش
+passed with warnings	با هشدار قبول شد
+Warning:	هشدار:
+Dismiss test results	بستن نتایج آزمایش
+Delete for upgrade	حذف برای ارتقا
+Metadata sources saved.	منابع فراداده ذخیره شد.
+Order	ترتیب
+Enable {}	فعال‌سازی {}
+Move {} up	انتقال {} به بالا
+Move {} down	انتقال {} به پایین
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	«افزودن رسانه» کاتالوگ‌های فعال را به همین ترتیب فهرست می‌کند و «همه کاتالوگ‌های فعال» نتایج آن‌ها را به همین ترتیب ادغام می‌کند. کاتالوگ‌های غیرفعال پیشنهاد یا جستجو نمی‌شوند؛ عنوان‌هایی که از قبل به یکی از آن‌ها تعلق دارند همچنان از آن تازه‌سازی می‌شوند. برای اعمال، پایین ذخیره کنید.
+Enable at least one metadata source.	دست‌کم یک منبع فراداده را فعال کنید.
+Mixed	مختلط
+Unlimited	نامحدود
+0 GiB/h	0 GiB/h
+{} min: {}	{} دقیقه: {}
+No limit	بدون محدودیت
+Quality definitions saved.	تعاریف کیفیت ذخیره شد.
+Quality definitions reset to the defaults.	تعاریف کیفیت به پیش‌فرض بازنشانی شد.
+Reset definitions	بازنشانی تعاریف
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	اندازه‌ها بر حسب MiB به ازای هر دقیقه مدت پخش است؛ اندازه ساعتی زیر هر کدام نشان داده می‌شود. ریلیزی که خارج از محدوده‌های یک کیفیت باشد رد می‌شود؛ اندازه ترجیحی ریلیزها را رتبه‌بندی می‌کند. پروفایل‌ها می‌توانند محدوده‌های خود را نگه دارند (
+Settings › Quality profiles	تنظیمات › پروفایل‌های کیفیت
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): «مختلط» یعنی پروفایل‌ها از محدوده‌های متفاوت استفاده می‌کنند، و مقداری که اینجا وارد شود در همه پروفایل‌ها نوشته می‌شود.
+Title of {}	عنوان {}
+{} size of {} (MiB per minute)	اندازه {} برای {} (MiB در دقیقه)
+Profiles use different limits	پروفایل‌ها از محدوده‌های متفاوت استفاده می‌کنند
+No minimum	بدون کمینه
+Hide retired qualities	پنهان کردن کیفیت‌های بازنشسته
+Show retired qualities	نمایش کیفیت‌های بازنشسته
+Reset quality definitions	بازنشانی تعاریف کیفیت
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	عنوان و محدوده‌های اندازه پیش‌فرض به هر کیفیت استاندارد داده شود؟ پیش‌تنظیم‌های سفارشی و محدوده‌های خود پروفایل‌ها حفظ می‌شوند.
+Reset	بازنشانی
+RefreshMonitoredDownloads	تازه‌سازی دانلودهای پایش‌شده
+Reads the download clients and imports completed downloads Kitsunarr grabbed	کلاینت‌های دانلود را می‌خواند و دانلودهای کامل‌شده‌ای را که Kitsunarr دریافت کرده وارد می‌کند
+ProcessPendingJellyfinRefresh	پردازش تازه‌سازی‌های معلق Jellyfin
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	کتابخانه‌های Jellyfin را که واردات معلق دارند تازه‌سازی می‌کند (طبق حالت تازه‌سازی هر اتصال)
+SyncJellyfinWatched	همگام‌سازی تماشاشده‌های Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	می‌خواند که کاربر Jellyfin کدام قسمت‌ها را تماشا کرده است (با فاصله زمانی خود اتصال)
+CleanUpRecycleBin	پاک‌سازی سطل بازیافت
+Deletes files kept in the recycle bin longer than the media management setting allows	فایل‌هایی را که بیش از مدت مجاز تنظیم مدیریت رسانه در سطل بازیافت مانده‌اند حذف می‌کند
+RescanFolders	پویش دوباره پوشه‌ها
+Scans series and movie folders: forgets files that are gone and adds files found there	پوشه‌های سریال و فیلم را پویش می‌کند: فایل‌های ازبین‌رفته را فراموش می‌کند و فایل‌های یافت‌شده را اضافه می‌کند
+RefreshMetadata	تازه‌سازی فراداده
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	عنوان‌ها را از کاتالوگ‌های فراداده‌شان تازه‌سازی می‌کند (در حال ادامه‌ها هر 6 ساعت، پایان‌یافته‌ها ماهانه)
+Housekeeping	نگه‌داری
+Purges expired sessions, prunes task history and checks database integrity	نشست‌های منقضی را پاک می‌کند، تاریخچه وظایف را هرس می‌کند و یکپارچگی پایگاه داده را بررسی می‌کند
+CleanupSessions	پاک‌سازی نشست‌ها
+Removes expired login sessions	نشست‌های ورود منقضی را حذف می‌کند
+HealthCheck	بررسی سلامت
+Re-evaluates health checks, notifies connected browsers and sends health notifications	بررسی‌های سلامت را دوباره ارزیابی می‌کند، به مرورگرهای متصل اطلاع می‌دهد و اعلان‌های سلامت می‌فرستد
+SQLite database integrity check failed: {}. Restore from a known-good backup.	بررسی یکپارچگی پایگاه داده SQLite ناموفق بود: {}. از یک پشتیبان سالم شناخته‌شده بازیابی کنید.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	بررسی یکپارچگی پایگاه داده SQLite نتیجه‌ای برنگرداند. اگر خطاهای پایگاه داده رخ می‌دهد، از یک پشتیبان سالم شناخته‌شده بازیابی کنید.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	بررسی یکپارچگی پایگاه داده SQLite ناموفق بود: {} نقض کلید خارجی. از یک پشتیبان سالم شناخته‌شده بازیابی کنید.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	هیچ ایندکسری با همگام‌سازی RSS فعال در دسترس نیست، Kitsunarr ریلیزهای جدید را خودکار دریافت نخواهد کرد
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	همه ایندکسرهای دارای RSS به دلیل خطاهای اخیر ایندکسر موقتاً در دسترس نیستند
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	هیچ ایندکسری با جستجوی خودکار فعال در دسترس نیست، Kitsunarr هیچ نتیجه جستجوی خودکاری ارائه نخواهد کرد
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	هیچ ایندکسری با جستجوی تعاملی فعال در دسترس نیست، Kitsunarr هیچ نتیجه جستجوی تعاملی ارائه نخواهد کرد
+All search-capable indexers are temporarily unavailable due to recent indexer errors	همه ایندکسرهای دارای قابلیت جستجو به دلیل خطاهای اخیر ایندکسر موقتاً در دسترس نیستند
+All indexers are unavailable due to failures for more than 6 hours	همه ایندکسرها به دلیل خرابی بیش از 6 ساعت در دسترس نیستند
+Indexers unavailable due to failures for more than 6 hours: {}	ایندکسرهایی که به دلیل خرابی بیش از 6 ساعت در دسترس نیستند: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	ایندکسرهایی که از نقطه پایانی پشتیبانی‌نشده 'all' در Jackett استفاده می‌کنند: {}
+Indexers with invalid download clients: {}.	ایندکسرهای دارای کلاینت دانلود نامعتبر: {}.
+Enable Completed Download Handling	مدیریت دانلودهای کامل‌شده را فعال کنید
+All notifications are unavailable due to failures	همه اعلان‌ها به دلیل خرابی در دسترس نیستند
+Notifications unavailable due to failures: {}	اعلان‌هایی که به دلیل خرابی در دسترس نیستند: {}
+All lists are unavailable due to failures	همه فهرست‌ها به دلیل خرابی در دسترس نیستند
+Lists unavailable due to failures: {}	فهرست‌هایی که به دلیل خرابی در دسترس نیستند: {}
+Missing root folder for import list(s): {}	پوشه ریشه برای فهرست(های) واردات موجود نیست: {}
+Multiple root folders are missing for import lists: {}	چند پوشه ریشه برای فهرست‌های واردات موجود نیستند: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	نوشتن در پوشه سطل بازیافت پیکربندی‌شده ممکن نیست: {}. مطمئن شوید این مسیر وجود دارد و کاربری که Kitsunarr را اجرا می‌کند اجازه نوشتن در آن را دارد
+Unable to write to the backup folder {}; scheduled backups will fail.	نوشتن در پوشه پشتیبان {} ممکن نیست؛ پشتیبان‌گیری‌های زمان‌بندی‌شده ناموفق خواهند بود.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	لطفاً کلید API خود را به‌روز کنید تا دست‌کم 20 نویسه باشد. می‌توانید این کار را از تنظیمات یا فایل پیکربندی انجام دهید
+Series {} was removed from {}	سریال {} از {} حذف شد
+Series {} were removed from {}	سریال‌های {} از {} حذف شدند
+Mount containing a series path is mounted read-only: {}	نقطه اتصالی که مسیر یک سریال را در بر دارد فقط‌خواندنی سوار شده است: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	کلاینت دانلود {} برای حذف دانلودهای کامل‌شده تنظیم شده است. این می‌تواند باعث شود دانلودها پیش از آنکه Kitsunarr بتواند واردشان کند از کلاینت شما حذف شوند.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	کلاینت دانلود {} مرتب‌سازی {} را برای دسته Kitsunarr فعال کرده است. برای جلوگیری از مشکلات واردات باید مرتب‌سازی را در کلاینت دانلود خود غیرفعال کنید.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	کلاینت دانلود {} دانلودها را در پوشه ریشه {} قرار می‌دهد. نباید در پوشه ریشه دانلود کنید.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	کلاینت دانلود راه دور {} دانلودها را در {} قرار می‌دهد اما این یک مسیر معتبر {} نیست. نگاشت‌های مسیر راه دور و تنظیمات کلاینت دانلود را بازبینی کنید.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	شما از Docker استفاده می‌کنید؛ کلاینت دانلود {} دانلودها را در {} قرار می‌دهد اما این یک مسیر معتبر {} نیست. نگاشت‌های مسیر راه دور و تنظیمات کلاینت دانلود را بازبینی کنید.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	کلاینت دانلود محلی {} دانلودها را در {} قرار می‌دهد اما این یک مسیر معتبر {} نیست. تنظیمات کلاینت دانلود را بازبینی کنید.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	شما از Docker استفاده می‌کنید؛ کلاینت دانلود {} دانلودها را در {} قرار می‌دهد اما به نظر می‌رسد این پوشه داخل کانتینر وجود ندارد. نگاشت‌های مسیر راه دور و تنظیمات ولوم کانتینر را بازبینی کنید.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	کلاینت دانلود راه دور {} دانلودها را در {} قرار می‌دهد اما به نظر می‌رسد این پوشه وجود ندارد. احتمالاً نگاشت مسیر راه دور وجود ندارد یا نادرست است.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	کلاینت دانلود {} دانلودها را در {} قرار می‌دهد اما Kitsunarr نمی‌تواند این پوشه را ببیند. شاید لازم باشد مجوزهای پوشه را تنظیم کنید.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr قسمت دانلودشده {} را می‌بیند اما به آن دسترسی ندارد. احتمالاً خطای مجوز است.
+File {} was removed part way through processing.	فایل {} در میانه پردازش حذف شد.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr نتوانست یک یا چند قسمت را وارد کند. برای جزئیات گزارش‌ها را بررسی کنید.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	کلاینت دانلود راه دور {} فایل‌هایی را در {} گزارش کرد اما این یک مسیر معتبر {} نیست. نگاشت‌های مسیر راه دور و تنظیمات کلاینت دانلود را بازبینی کنید.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	شما از Docker استفاده می‌کنید؛ کلاینت دانلود {} فایل‌هایی را در {} گزارش کرد اما این یک مسیر معتبر {} نیست. نگاشت‌های مسیر راه دور و تنظیمات کلاینت دانلود را بازبینی کنید.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	کلاینت دانلود محلی {} فایل‌هایی را در {} گزارش کرد اما این یک مسیر معتبر {} نیست. تنظیمات کلاینت دانلود را بازبینی کنید.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr پوشه دانلود {} را می‌بیند اما به آن دسترسی ندارد. احتمالاً خطای مجوز است.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	کلاینت دانلود راه دور {} فایل‌هایی را در {} گزارش کرد اما به نظر می‌رسد این پوشه وجود ندارد. احتمالاً نگاشت مسیر راه دور وجود ندارد.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	کلاینت دانلود {} فایل‌هایی را در {} گزارش کرد اما Kitsunarr نمی‌تواند این پوشه را ببیند. شاید لازم باشد مجوزهای پوشه را تنظیم کنید.
+The configured password reset token is shorter than {} characters and is being ignored	توکن بازنشانی گذرواژه پیکربندی‌شده کوتاه‌تر از {} نویسه است و نادیده گرفته می‌شود
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	یک توکن بازنشانی گذرواژه پیکربندی شده است. وقتی دیگر به آن نیاز ندارید، متغیر محیطی KITSUNARR_AUTH_RESET_TOKEN (یا reset_token در config.toml) را حذف کنید
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	احراز هویت OIDC فعال است، اما مرجع، Client ID، Client Secret، کاربر و دامنه‌ها همگی پیکربندی نشده‌اند
+The OIDC Authority must start with 'https://'	مرجع OIDC باید با 'https://' آغاز شود
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	دریافت پیکربندی OIDC از {} ممکن نیست؛ تا زمانی که در دسترس شود، ورود با ارائه‌دهنده هویت ناموفق خواهد بود
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	هنوز هیچ پوشه ریشه‌ای پیکربندی نشده است. یکی را در تنظیمات → مدیریت رسانه اضافه کنید یا یک نصب موجود را وارد کنید.
+Root folder {} is missing or not accessible.	پوشه ریشه {} وجود ندارد یا در دسترس نیست.
+Root folder {} has only {} MiB free.	پوشه ریشه {} فقط {} MiB فضای خالی دارد.
+No enabled {} is configured; automatic downloads are not possible.	هیچ {} فعالی پیکربندی نشده است؛ دانلود خودکار ممکن نیست.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	این {}ها از نصب قبلی شما حفظ شده‌اند اما هنوز به‌صورت بومی پیاده‌سازی نشده‌اند: {}.
+All download clients are unavailable due to failures	همه کلاینت‌های دانلود به دلیل خرابی در دسترس نیستند
+Download clients are unavailable due to failures: {}	کلاینت‌های دانلودی که به دلیل خرابی در دسترس نیستند: {}
+All indexers are unavailable due to failures	همه ایندکسرها به دلیل خرابی در دسترس نیستند
+Indexers unavailable due to failures: {}	ایندکسرهایی که به دلیل خرابی در دسترس نیستند: {}
+Failed to resolve the IP address of the configured proxy host {}	تفکیک نشانی IP میزبان پروکسی پیکربندی‌شده {} ناموفق بود
+The data directory has only {} MiB free; the database may fail to write.	پوشه داده فقط {} MiB فضای خالی دارد؛ ممکن است نوشتن در پایگاه داده ناموفق باشد.

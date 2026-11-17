@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ 현재 번호
 or	또는
 1 title	타이틀 1개
+Episode titles (one per line)	에피소드 제목 (한 줄에 하나씩)
+For conditions that ignore episode titles.	에피소드 제목을 무시하는 조건에 사용됩니다.
+Test episode titles	테스트용 에피소드 제목
+· group {}	· 그룹 {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	릴리스 이름을 확인할 때 알려진 에피소드 제목을 제외하여, 에피소드 제목의 단어가 서비스나 릴리스 그룹으로 간주되지 않도록 합니다.
+Ignore episode titles {}	에피소드 제목 무시 {}
+Ignore episode titles	에피소드 제목 무시
+Alternative group	대체 그룹
+Alternative group {}	대체 그룹 {}
+Group anime seasons	애니메이션 시즌 그룹화
+Anime group {}	애니메이션 그룹 {}
+Group of {} · {}	{}의 그룹 · {}
+Import progress	가져오기 진행 상황
+Waiting to import	가져오기 대기 중
+Import progress of {}	{} 가져오기 진행 상황
+Import details of {}	{} 가져오기 세부 정보
+{} / {} episodes imported	{} / {} 에피소드 가져옴
+· {} not imported	· {}개 가져오지 않음
+Series, anime or film title, e.g. Severance	시리즈, 애니메이션 또는 영화 제목 (예: Severance)
+All enabled catalogues	활성화된 모든 카탈로그
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	검색할 수 있는 활성화된 카탈로그가 없습니다. 설정 › 메타데이터 소스에서 카탈로그를 활성화하거나 API 키를 입력하세요.
+Searches every enabled catalogue, results in your order:	활성화된 모든 카탈로그를 검색하며, 결과는 설정한 순서대로 표시됩니다:
+Grouping	그룹화
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	자동은 공식 관계 정보를 바탕으로 작품을 프랜차이즈나 컬렉션으로 묶습니다. 비활성화하면 단독으로 유지됩니다.
+Automatic (official relations)	자동 (공식 관계)
+Too many failed sign in attempts. Please try again in {} minute(s).	로그인 실패 횟수가 너무 많습니다. {}분 후에 다시 시도하세요.
+Reset your password	비밀번호 재설정
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr가 일회용 재설정 토큰을 로그에 기록합니다. 최신 로그(시스템 › 로그 또는 컨테이너 출력)의
+line in the latest log (System › Logs, or the container's output).	줄에서 토큰을 복사하세요.
+Write a reset token to the log	재설정 토큰을 로그에 기록
+I already have a reset token	이미 재설정 토큰이 있습니다
+Back to sign in	로그인으로 돌아가기
+Your password has been reset, sign in with your new password.	비밀번호가 재설정되었습니다. 새 비밀번호로 로그인하세요.
+Unable to sign in with your identity provider.	ID 공급자로 로그인할 수 없습니다.
+Incorrect username or password.	사용자 이름 또는 비밀번호가 올바르지 않습니다.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC 인증이 활성화되어 있지만 올바르게 구성되지 않았습니다. 비밀번호로 로그인한 후 OIDC 설정을 업데이트하세요 (설정 › 일반 › 보안 또는 구성 파일).
+Sign in with SSO	SSO로 로그인
+You will be sent to your identity provider.	ID 공급자로 이동합니다.
+Forgot your password?	비밀번호를 잊으셨나요?
+Invalid or expired reset token.	재설정 토큰이 잘못되었거나 만료되었습니다.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	사용자 이름과 비밀번호는 필수이며, 비밀번호가 서로 일치해야 하고 최소 {}자 이상이어야 합니다.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	새 재설정 토큰이 로그에 기록되지 않았습니다. 이미 활성화된 토큰이 있을 수 있으니 먼저 로그를 확인하세요. Kitsunarr를 다시 시작하면 토큰이 지워지고 새로 요청할 수 있습니다.
+Enter the token from the	로그의
+line in the log. It's valid for 15 minutes and can only be used once. If you set	줄에 있는 토큰을 입력하세요. 15분 동안 유효하며 한 번만 사용할 수 있습니다. 다음을 설정한 경우:
+Reset token	재설정 토큰
+Confirm new password	새 비밀번호 확인
+Reset password	비밀번호 재설정
+Signed out	로그아웃됨
+You have been signed out of Kitsunarr.	Kitsunarr에서 로그아웃되었습니다.
+Sign in again	다시 로그인
+Search for missing	누락된 항목 검색
+Month	월
+Week	주
+Forecast	예측
+Day	일
+Agenda	일정
+On disk	디스크에 있음
+Not aired yet	아직 방영되지 않음
+Search for the episodes shown that aired and have no file	표시된 에피소드 중 방영되었지만 파일이 없는 에피소드 검색
+Previous period	이전 기간
+Next period	다음 기간
+Calendar view	캘린더 보기
+Nothing airs in this period.	이 기간에는 방영 예정이 없습니다.
+Legend	범례
+Disabled removes the series from its anime group and keeps it out of automatic grouping	비활성화하면 시리즈를 애니메이션 그룹에서 제거하고 자동 그룹화에서 제외합니다
+Disabled removes the film from its collection and keeps it out of automatic grouping	비활성화하면 영화를 컬렉션에서 제거하고 자동 그룹화에서 제외합니다
+Filter	필터
+Filter by path	경로로 필터
+All paths	모든 경로
+Combine filters	필터 결합
+Show series matching every selected filter	선택한 모든 필터와 일치하는 시리즈 표시
+Clear combined filters	결합된 필터 지우기
+Show each anime group (Tanukarr's anime grouping) once, by its first season	각 애니메이션 그룹(Tanukarr의 애니메이션 그룹화)을 첫 시즌 기준으로 한 번만 표시
+Save the current filters as a filter of your own	현재 필터를 사용자 필터로 저장
+Save filter…	필터 저장…
+Shown series	표시된 시리즈
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr가 저장된 필터의 다음 조건을 적용할 수 없어 제외되었습니다:
+The selected filters contradict each other, so no series can match all of them.	선택한 필터가 서로 모순되어 모든 필터와 일치하는 시리즈가 없습니다.
+No series match the selected filters.	선택한 필터와 일치하는 시리즈가 없습니다.
+Filter "{}" saved.	필터 "{}"을(를) 저장했습니다.
+Save filter	필터 저장
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	필터에는 선택한 필터, 결합된 필터, 경로가 저장되며 기본 제공 필터와 함께 표시됩니다.
+Filter label	필터 이름
+Delete saved filter	저장된 필터 삭제
+Delete this saved filter? The series are not changed.	이 저장된 필터를 삭제할까요? 시리즈는 변경되지 않습니다.
+Monitored only	모니터링됨만
+Unmonitored only	모니터링 안 함만
+Continuing only	방영 중만
+Ended only	종영만
+Missing episodes	누락된 에피소드
+Security settings saved.	보안 설정을 저장했습니다.
+Security	보안
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	인증 없는 원격 접근을 막기 위해 Kitsunarr는 인증을 요구합니다. 필요하면 로컬 주소에 대해서는 비활성화할 수 있습니다.
+Authentication	인증
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	사용자의 로그인 방법: Kitsunarr 로그인 페이지 또는 OpenID Connect ID 공급자.
+Forms (sign-in page)	양식 (로그인 페이지)
+OIDC (identity provider)	OIDC (ID 공급자)
+External (reverse proxy)	외부 (리버스 프록시)
+Authentication required	인증 필요
+Require authentication for every request, or not for requests from local addresses or this machine.	모든 요청에 인증을 요구하거나, 로컬 주소 또는 이 컴퓨터에서 온 요청에는 요구하지 않습니다.
+Disabled for localhost	로컬호스트에서는 사용 안 함
+Allowed hosts	허용된 호스트
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kitsunarr에 접근할 때 사용할 호스트 이름과 IP 주소의 쉼표로 구분된 목록이며, 시스템의 호스트 이름이나 컨테이너 이름도 포함합니다. 모든 호스트를 허용하려면 비워 두세요. 인증이 항상 필요하지 않은 경우에는 필수입니다. 예: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	CGNAT 주소 신뢰
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	CGNAT 주소(100.64.0.0/10, 예: Tailscale)를 로컬로 취급
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	외부: Kitsunarr는 로그인을 요구하지 않고 앞단의 리버스 프록시에 맡깁니다. 모든 요청을 인증하는 프록시 뒤에서만 사용하세요.
+Register Kitsunarr with your provider using the redirect URI	다음 리디렉션 URI로 공급자에 Kitsunarr를 등록하세요:
+. Saving signs out password sessions; you then sign in through the provider.	. 저장하면 비밀번호 세션이 로그아웃되며, 이후에는 공급자를 통해 로그인합니다.
+OIDC Authority	OIDC 인증 기관 (Authority)
+The URL of the OIDC provider (https://).	OIDC 공급자의 URL (https://).
+OIDC Client ID	OIDC 클라이언트 ID
+The Client ID registered with the OIDC provider.	OIDC 공급자에 등록된 클라이언트 ID.
+OIDC Client Secret	OIDC 클라이언트 시크릿
+The Client Secret registered with the OIDC provider.	OIDC 공급자에 등록된 클라이언트 시크릿.
+OIDC User	OIDC 사용자
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Kitsunarr에 로그인할 수 있는 OIDC 공급자의 확인된 이메일 주소 또는 주체 식별자(sub).
+OIDC Scopes	OIDC 범위
+The scopes to request from the OIDC provider; must include openid.	OIDC 공급자에 요청할 범위이며, openid를 포함해야 합니다.
+Set in config.toml or the environment, which take precedence: {}.	config.toml 또는 환경 변수에 설정되어 있으며 이 값이 우선합니다: {}.
+Backup settings saved.	백업 설정을 저장했습니다.
+Interval (days)	간격 (일)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	자동 백업을 만드는 빈도(1~7일). 수동 백업을 하면 간격이 다시 시작됩니다.
+Backup interval in days	백업 간격(일)
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	이보다 오래된 자동 백업은 삭제됩니다(1~90일). 수동 백업은 보관됩니다.
+Backup retention in days	백업 보존 기간(일)
+A quality without an override uses the global sizes of	재정의가 없는 품질은 다음의 전역 크기를 사용합니다:
+Settings › Quality	설정 › 품질
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. 재정의에서 비워 두면 무제한이며, 최대값 0도 무제한입니다.
+Signed in. Save to keep the token.	로그인했습니다. 토큰을 유지하려면 저장하세요.
+Redirect URL to register with your API client:	API 클라이언트에 등록할 리디렉션 URL:
+Test all	모두 테스트
+All {} passed their test.	{}개 모두 테스트를 통과했습니다.
+{} of {} failed their test.	{}개가 테스트에 실패했습니다(전체 {}개 중).
+Test every {} entry	모든 {} 항목 테스트
+Test results	테스트 결과
+passed with warnings	경고와 함께 통과
+Warning:	경고:
+Dismiss test results	테스트 결과 닫기
+Delete for upgrade	업그레이드 시 삭제
+Metadata sources saved.	메타데이터 소스를 저장했습니다.
+Order	순서
+Enable {}	{} 활성화
+Move {} up	{} 위로 이동
+Move {} down	{} 아래로 이동
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	미디어 추가에서는 활성화된 카탈로그가 이 순서로 표시되며, "활성화된 모든 카탈로그"는 결과를 이 순서로 병합합니다. 비활성화된 카탈로그는 표시되거나 검색되지 않지만, 이미 해당 카탈로그에 속한 작품은 계속 그곳에서 새로고침됩니다. 적용하려면 아래에서 저장하세요.
+Enable at least one metadata source.	메타데이터 소스를 하나 이상 활성화하세요.
+Mixed	혼합
+Unlimited	무제한
+0 GiB/h	0 GiB/h
+{} min: {}	{}분: {}
+No limit	제한 없음
+Quality definitions saved.	품질 정의를 저장했습니다.
+Quality definitions reset to the defaults.	품질 정의를 기본값으로 재설정했습니다.
+Reset definitions	정의 재설정
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	크기는 재생 시간 1분당 MiB이며, 시간당 크기가 각 값 아래에 표시됩니다. 품질 제한을 벗어난 릴리스는 거부되며, 선호 크기는 릴리스 순위를 정합니다. 프로필은 자체 제한을 유지할 수 있습니다 (
+Settings › Quality profiles	설정 › 품질 프로필
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): "혼합"은 프로필마다 제한이 다르다는 뜻이며, 여기에 입력한 값은 모든 프로필에 기록됩니다.
+Title of {}	{} 제목
+{} size of {} (MiB per minute)	{} 크기 - {} (분당 MiB)
+Profiles use different limits	프로필마다 제한이 다름
+No minimum	최소값 없음
+Hide retired qualities	폐기된 품질 숨기기
+Show retired qualities	폐기된 품질 표시
+Reset quality definitions	품질 정의 재설정
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	모든 표준 품질을 기본 제목과 크기 제한으로 되돌릴까요? 사용자 정의 프리셋과 프로필의 자체 제한은 유지됩니다.
+Reset	재설정
+RefreshMonitoredDownloads	모니터링 중인 다운로드 새로고침
+Reads the download clients and imports completed downloads Kitsunarr grabbed	다운로드 클라이언트를 읽고 Kitsunarr가 잡은 완료된 다운로드를 가져옵니다
+ProcessPendingJellyfinRefresh	대기 중인 Jellyfin 새로고침 처리
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	가져오기가 대기 중인 Jellyfin 라이브러리를 새로고침합니다(각 연결의 새로고침 모드에 따라)
+SyncJellyfinWatched	Jellyfin 시청 기록 동기화
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Jellyfin 사용자가 시청한 에피소드를 읽습니다(연결별 간격에 따라)
+CleanUpRecycleBin	휴지통 정리
+Deletes files kept in the recycle bin longer than the media management setting allows	미디어 관리 설정에서 허용한 기간보다 오래 휴지통에 보관된 파일을 삭제합니다
+RescanFolders	폴더 다시 스캔
+Scans series and movie folders: forgets files that are gone and adds files found there	시리즈와 영화 폴더를 스캔하여 사라진 파일은 잊고 새로 발견된 파일은 추가합니다
+RefreshMetadata	메타데이터 새로고침
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	메타데이터 카탈로그에서 작품을 새로고침합니다(방영 중인 작품은 6시간마다, 종영된 작품은 매월)
+Housekeeping	유지 관리
+Purges expired sessions, prunes task history and checks database integrity	만료된 세션을 제거하고, 작업 기록을 정리하며, 데이터베이스 무결성을 검사합니다
+CleanupSessions	세션 정리
+Removes expired login sessions	만료된 로그인 세션을 제거합니다
+HealthCheck	상태 점검
+Re-evaluates health checks, notifies connected browsers and sends health notifications	상태 점검을 다시 평가하고, 연결된 브라우저에 알리며, 상태 알림을 보냅니다
+SQLite database integrity check failed: {}. Restore from a known-good backup.	SQLite 데이터베이스 무결성 검사에 실패했습니다: {}. 정상적인 백업에서 복원하세요.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	SQLite 데이터베이스 무결성 검사가 결과를 반환하지 않았습니다. 데이터베이스 오류가 발생하고 있다면 정상적인 백업에서 복원하세요.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	SQLite 데이터베이스 무결성 검사에 실패했습니다: 외래 키 위반 {}건. 정상적인 백업에서 복원하세요.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	RSS 동기화가 활성화된 인덱서가 없어 Kitsunarr가 새 릴리스를 자동으로 잡지 않습니다
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	최근 인덱서 오류로 인해 RSS를 지원하는 모든 인덱서를 일시적으로 사용할 수 없습니다
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	자동 검색이 활성화된 인덱서가 없어 Kitsunarr가 자동 검색 결과를 제공하지 않습니다
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	대화형 검색이 활성화된 인덱서가 없어 Kitsunarr가 대화형 검색 결과를 제공하지 않습니다
+All search-capable indexers are temporarily unavailable due to recent indexer errors	최근 인덱서 오류로 인해 검색을 지원하는 모든 인덱서를 일시적으로 사용할 수 없습니다
+All indexers are unavailable due to failures for more than 6 hours	6시간 넘게 계속된 오류로 인해 모든 인덱서를 사용할 수 없습니다
+Indexers unavailable due to failures for more than 6 hours: {}	6시간 넘게 계속된 오류로 사용할 수 없는 인덱서: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	지원되지 않는 Jackett 'all' 엔드포인트를 사용하는 인덱서: {}
+Indexers with invalid download clients: {}.	잘못된 다운로드 클라이언트가 지정된 인덱서: {}.
+Enable Completed Download Handling	완료된 다운로드 처리 활성화
+All notifications are unavailable due to failures	오류로 인해 모든 알림을 사용할 수 없습니다
+Notifications unavailable due to failures: {}	오류로 사용할 수 없는 알림: {}
+All lists are unavailable due to failures	오류로 인해 모든 목록을 사용할 수 없습니다
+Lists unavailable due to failures: {}	오류로 사용할 수 없는 목록: {}
+Missing root folder for import list(s): {}	가져오기 목록의 루트 폴더가 없습니다: {}
+Multiple root folders are missing for import lists: {}	가져오기 목록의 여러 루트 폴더가 없습니다: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	설정된 휴지통 폴더에 쓸 수 없습니다: {}. 이 경로가 존재하고 Kitsunarr를 실행하는 사용자가 쓸 수 있는지 확인하세요
+Unable to write to the backup folder {}; scheduled backups will fail.	백업 폴더 {}에 쓸 수 없습니다. 예약된 백업이 실패합니다.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	API 키를 20자 이상으로 변경하세요. 설정이나 구성 파일에서 변경할 수 있습니다
+Series {} was removed from {}	시리즈 {}이(가) {}에서 제거되었습니다
+Series {} were removed from {}	시리즈 {}이(가) {}에서 제거되었습니다
+Mount containing a series path is mounted read-only: {}	시리즈 경로를 포함한 마운트가 읽기 전용으로 마운트되어 있습니다: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	다운로드 클라이언트 {}이(가) 완료된 다운로드를 제거하도록 설정되어 있습니다. Kitsunarr가 가져오기 전에 다운로드가 클라이언트에서 제거될 수 있습니다.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	다운로드 클라이언트 {}에서 Kitsunarr 카테고리에 {} 정렬이 활성화되어 있습니다. 가져오기 문제를 피하려면 다운로드 클라이언트에서 정렬을 비활성화하세요.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	다운로드 클라이언트 {}이(가) 루트 폴더 {}에 다운로드를 저장합니다. 루트 폴더에 다운로드하지 마세요.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	원격 다운로드 클라이언트 {}이(가) {}에 다운로드를 저장하지만, 이는 유효한 {} 경로가 아닙니다. 원격 경로 매핑과 다운로드 클라이언트 설정을 확인하세요.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	docker를 사용 중입니다. 다운로드 클라이언트 {}이(가) {}에 다운로드를 저장하지만, 이는 유효한 {} 경로가 아닙니다. 원격 경로 매핑과 다운로드 클라이언트 설정을 확인하세요.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	로컬 다운로드 클라이언트 {}이(가) {}에 다운로드를 저장하지만, 이는 유효한 {} 경로가 아닙니다. 다운로드 클라이언트 설정을 확인하세요.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	docker를 사용 중입니다. 다운로드 클라이언트 {}이(가) {}에 다운로드를 저장하지만, 이 디렉터리가 컨테이너 안에 없는 것 같습니다. 원격 경로 매핑과 컨테이너 볼륨 설정을 확인하세요.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	원격 다운로드 클라이언트 {}이(가) {}에 다운로드를 저장하지만, 이 디렉터리가 없는 것 같습니다. 원격 경로 매핑이 없거나 잘못되었을 수 있습니다.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	다운로드 클라이언트 {}이(가) {}에 다운로드를 저장하지만, Kitsunarr에서 이 디렉터리를 볼 수 없습니다. 폴더 권한을 조정해야 할 수 있습니다.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr가 다운로드한 에피소드 {}을(를) 볼 수 있지만 접근할 수 없습니다. 권한 오류일 가능성이 높습니다.
+File {} was removed part way through processing.	파일 {}이(가) 처리 도중에 제거되었습니다.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr가 에피소드를 가져오지 못했습니다. 자세한 내용은 로그를 확인하세요.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	원격 다운로드 클라이언트 {}이(가) {}의 파일을 보고했지만, 이는 유효한 {} 경로가 아닙니다. 원격 경로 매핑과 다운로드 클라이언트 설정을 확인하세요.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	docker를 사용 중입니다. 다운로드 클라이언트 {}이(가) {}의 파일을 보고했지만, 이는 유효한 {} 경로가 아닙니다. 원격 경로 매핑과 다운로드 클라이언트 설정을 확인하세요.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	로컬 다운로드 클라이언트 {}이(가) {}의 파일을 보고했지만, 이는 유효한 {} 경로가 아닙니다. 다운로드 클라이언트 설정을 확인하세요.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr가 다운로드 디렉터리 {}을(를) 볼 수 있지만 접근할 수 없습니다. 권한 오류일 가능성이 높습니다.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	원격 다운로드 클라이언트 {}이(가) {}의 파일을 보고했지만, 이 디렉터리가 없는 것 같습니다. 원격 경로 매핑이 없을 가능성이 높습니다.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	다운로드 클라이언트 {}이(가) {}의 파일을 보고했지만, Kitsunarr에서 이 디렉터리를 볼 수 없습니다. 폴더 권한을 조정해야 할 수 있습니다.
+The configured password reset token is shorter than {} characters and is being ignored	설정된 비밀번호 재설정 토큰이 {}자보다 짧아 무시됩니다
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	비밀번호 재설정 토큰이 설정되어 있습니다. 더 이상 필요하지 않으면 KITSUNARR_AUTH_RESET_TOKEN 환경 변수(또는 config.toml의 reset_token)를 제거하세요
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC 인증이 활성화되어 있지만 Authority, Client ID, Client Secret, User, Scopes가 모두 설정되지는 않았습니다
+The OIDC Authority must start with 'https://'	OIDC Authority는 'https://'로 시작해야 합니다
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	{}에서 OIDC 구성을 가져올 수 없습니다. 연결될 때까지 ID 공급자로 로그인할 수 없습니다
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	아직 구성된 루트 폴더가 없습니다. 설정 → 미디어 관리에서 추가하거나 기존 설치를 가져오세요.
+Root folder {} is missing or not accessible.	루트 폴더 {}이(가) 없거나 접근할 수 없습니다.
+Root folder {} has only {} MiB free.	루트 폴더 {}의 여유 공간이 {} MiB밖에 없습니다.
+No enabled {} is configured; automatic downloads are not possible.	활성화된 {}이(가) 구성되지 않아 자동 다운로드를 할 수 없습니다.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	다음 {}은(는) 이전 설치에서 유지되었지만 아직 기본적으로 구현되지 않았습니다: {}.
+All download clients are unavailable due to failures	오류로 인해 모든 다운로드 클라이언트를 사용할 수 없습니다
+Download clients are unavailable due to failures: {}	오류로 사용할 수 없는 다운로드 클라이언트: {}
+All indexers are unavailable due to failures	오류로 인해 모든 인덱서를 사용할 수 없습니다
+Indexers unavailable due to failures: {}	오류로 사용할 수 없는 인덱서: {}
+Failed to resolve the IP address of the configured proxy host {}	설정된 프록시 호스트 {}의 IP 주소를 확인하지 못했습니다
+The data directory has only {} MiB free; the database may fail to write.	데이터 디렉터리의 여유 공간이 {} MiB밖에 없습니다. 데이터베이스 쓰기가 실패할 수 있습니다.

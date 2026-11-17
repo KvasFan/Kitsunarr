@@ -156,18 +156,38 @@ fn xpath_literal(s: &str) -> String {
 
 async fn click_button(client: &Client, label: &str) {
     step(&format!("clicking {label:?}"));
-    let xpath = format!(
-        "//button[contains(normalize-space(.), {})]",
-        xpath_literal(label)
-    );
+    let lit = xpath_literal(label);
+    // An open dialog's buttons first, and an exact label before a longer one ("Test" before
+    // "Test all").
+    let candidates = [
+        format!("//div[contains(@class,'modal')]//button[normalize-space(.)={lit}]"),
+        format!("//div[contains(@class,'modal')]//button[contains(normalize-space(.), {lit})]"),
+        format!("//button[normalize-space(.)={lit}]"),
+        format!("//button[contains(normalize-space(.), {lit})]"),
+    ];
     let mut stale_retries = 0;
+    let deadline = std::time::Instant::now() + Duration::from_secs(20);
     loop {
-        let el = client
-            .wait()
-            .at_most(Duration::from_secs(20))
-            .for_element(Locator::XPath(&xpath))
-            .await
-            .unwrap_or_else(|e| panic!("button {label:?} not found: {e}"));
+        let mut found = None;
+        for xpath in &candidates {
+            if let Some(el) = client
+                .find_all(Locator::XPath(xpath))
+                .await
+                .unwrap_or_default()
+                .into_iter()
+                .next()
+            {
+                found = Some(el);
+                break;
+            }
+        }
+        let Some(el) = found else {
+            if std::time::Instant::now() > deadline {
+                panic!("button {label:?} not found");
+            }
+            tokio::time::sleep(Duration::from_millis(100)).await;
+            continue;
+        };
         match el.click().await {
             Ok(()) => return,
             // Live library updates can replace a button between finding it and clicking it.
@@ -195,6 +215,26 @@ async fn fill(client: &Client, css: &str, value: &str) {
             return;
         }
         tokio::time::sleep(Duration::from_millis(200)).await;
+    }
+    panic!("{css} does not keep the value {value:?}");
+}
+
+/// Selects an option and checks it stays selected: a dialog that finishes loading after it
+/// opens can reset its selects, so the choice is made again until it holds.
+async fn select_value(client: &Client, css: &str, value: &str) {
+    for _ in 0..10 {
+        let el = client
+            .wait()
+            .at_most(Duration::from_secs(20))
+            .for_element(Locator::Css(css))
+            .await
+            .unwrap();
+        el.select_by_value(value).await.unwrap();
+        tokio::time::sleep(Duration::from_millis(300)).await;
+        let el = client.find(Locator::Css(css)).await.unwrap();
+        if el.prop("value").await.unwrap().as_deref() == Some(value) {
+            return;
+        }
     }
     panic!("{css} does not keep the value {value:?}");
 }
@@ -1917,7 +1957,7 @@ async fn first_run_setup_migration_and_library() {
             client.goto(&format!("{base}/series/1")).await.unwrap();
             click_button(&client,"Change catalogue").await;
             client.wait().for_element(Locator::Css("select[aria-label='Target catalogue'] option[value='tvMaze']")).await.unwrap();
-            client.find(Locator::Css("select[aria-label='Target catalogue']")).await.unwrap().select_by_value("tvMaze").await.unwrap();
+            select_value(&client, "select[aria-label='Target catalogue']", "tvMaze").await;
             fill(&client,"input[aria-label='Target catalogue ID']","169").await;
             click_button(&client,"Preview").await;
             wait_text(&client,"Episode matches").await;
@@ -1983,6 +2023,58 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Calendario").await;
         wait_text(&client, "Lingua dell'interfaccia").await;
         screenshot(&client, "12-italian").await;
+        // Every page reads in Italian: no visible text, placeholder or tooltip keeps an English
+        // sentence. Catalogue data (overviews, titles, release names), paths and log lines are
+        // not interface text and are skipped.
+        let mut english = std::collections::BTreeSet::new();
+        for path in [
+            "/", "/series", "/series/1", "/movies", "/movies/900", "/collections", "/calendar",
+            "/activity/queue", "/activity/history", "/activity/blocklist", "/activity/manualimport",
+            "/wanted/missing", "/wanted/cutoffunmet", "/search", "/add", "/add/import", "/import",
+            "/settings", "/settings/media", "/settings/profiles", "/settings/quality",
+            "/settings/customformats", "/settings/indexers", "/settings/downloadclients",
+            "/settings/notifications", "/settings/importlists", "/settings/metadata", "/settings/tags",
+            "/system", "/system/tasks", "/system/library", "/system/backups",
+        ] {
+            client.goto(&format!("{base}{path}")).await.unwrap();
+            tokio::time::sleep(Duration::from_millis(900)).await;
+            let found = client
+                .execute(
+                    r#"
+                    const en = /^(the|and|of|is|are|for|with|from|this|that|your|when|each|every|any|will|can|has|have|been|which|their|its|into|than|only|not|be|was|were|it|by|at|an|or)$/i;
+                    const skip = 'code,pre,.mono,script,style,textarea,.muted p,p.muted,.overview,.release-title,.ellipsis,td.small,.log,[data-content]';
+                    const out = new Set();
+                    const english = s => {
+                        const words = (s.match(/[A-Za-z']+/g) || []);
+                        return words.length >= 3 && words.filter(w => en.test(w)).length >= 2;
+                    };
+                    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+                    while (w.nextNode()) {
+                        const n = w.currentNode, p = n.parentElement;
+                        if (!p || p.closest(skip) || !p.offsetParent) continue;
+                        const s = n.nodeValue.trim();
+                        if (english(s)) out.add(s);
+                    }
+                    for (const e of document.querySelectorAll('[placeholder],[title]')) {
+                        for (const a of ['placeholder', 'title']) {
+                            const s = (e.getAttribute(a) || '').trim();
+                            if (english(s)) out.add(s);
+                        }
+                    }
+                    return [...out];
+                    "#,
+                    vec![],
+                )
+                .await
+                .unwrap();
+            for s in found.as_array().unwrap() {
+                english.insert(format!("{path}: {}", s.as_str().unwrap()));
+            }
+        }
+        if !english.is_empty() {
+            screenshot(&client, "12-italian-untranslated").await;
+        }
+        assert!(english.is_empty(), "untranslated text in Italian: {english:#?}");
         client
             .wait()
             .at_most(Duration::from_secs(20))

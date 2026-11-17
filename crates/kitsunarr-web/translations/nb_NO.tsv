@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ nåværende nummer
 or	eller
 1 title	1 tittel
+Episode titles (one per line)	Episodetitler (én per linje)
+For conditions that ignore episode titles.	For betingelser som ignorerer episodetitler.
+Test episode titles	Test episodetitler
+· group {}	· gruppe {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Utelat kjente episodetitler når utgivelsesnavn kontrolleres, slik at ord i episodetittelen ikke regnes som tjeneste eller utgivelsesgruppe.
+Ignore episode titles {}	Ignorer episodetitler {}
+Ignore episode titles	Ignorer episodetitler
+Alternative group	Alternativ gruppe
+Alternative group {}	Alternativ gruppe {}
+Group anime seasons	Grupper animesesonger
+Anime group {}	Animegruppe {}
+Group of {} · {}	Gruppe for {} · {}
+Import progress	Importfremdrift
+Waiting to import	Venter på import
+Import progress of {}	Importfremdrift for {}
+Import details of {}	Importdetaljer for {}
+{} / {} episodes imported	{} / {} episoder importert
+· {} not imported	· {} ikke importert
+Series, anime or film title, e.g. Severance	Tittel på serie, anime eller film, f.eks. Severance
+All enabled catalogues	Alle aktiverte kataloger
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Ingen aktivert katalog kan søkes i: aktiver en, eller skriv inn API-nøkkelen i Innstillinger › Metadatakilder.
+Searches every enabled catalogue, results in your order:	Søker i alle aktiverte kataloger, resultater i din rekkefølge:
+Grouping	Gruppering
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Automatisk grupperer tittelen med franchisen eller samlingen sin ut fra offisielle relasjoner. Deaktivert holder den for seg selv.
+Automatic (official relations)	Automatisk (offisielle relasjoner)
+Too many failed sign in attempts. Please try again in {} minute(s).	For mange mislykkede innloggingsforsøk. Prøv igjen om {} minutt(er).
+Reset your password	Tilbakestill passordet ditt
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr skriver et engangstoken for tilbakestilling til loggen. Kopier det fra linjen
+line in the latest log (System › Logs, or the container's output).	i den nyeste loggen (System › Logger, eller utdataene fra containeren).
+Write a reset token to the log	Skriv et tilbakestillingstoken til loggen
+I already have a reset token	Jeg har allerede et tilbakestillingstoken
+Back to sign in	Tilbake til innlogging
+Your password has been reset, sign in with your new password.	Passordet ditt er tilbakestilt, logg inn med det nye passordet.
+Unable to sign in with your identity provider.	Kunne ikke logge inn med identitetsleverandøren din.
+Incorrect username or password.	Feil brukernavn eller passord.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC-autentisering er aktivert, men er ikke riktig konfigurert. Logg inn med passordet ditt og oppdater OIDC-innstillingene (Innstillinger › Generelt › Sikkerhet, eller konfigurasjonsfilen).
+Sign in with SSO	Logg inn med SSO
+You will be sent to your identity provider.	Du blir sendt til identitetsleverandøren din.
+Forgot your password?	Glemt passordet?
+Invalid or expired reset token.	Ugyldig eller utløpt tilbakestillingstoken.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Brukernavn og passord er påkrevd, passordene må være like, og passordet må ha minst {} tegn.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Et nytt tilbakestillingstoken ble ikke skrevet til loggen. Det kan allerede finnes et aktivt, så sjekk loggen først. Omstart av Kitsunarr fjerner det og lar deg be om et nytt.
+Enter the token from the	Skriv inn tokenet fra linjen
+line in the log. It's valid for 15 minutes and can only be used once. If you set	i loggen. Det er gyldig i 15 minutter og kan bare brukes én gang. Hvis du har satt
+Reset token	Tilbakestillingstoken
+Confirm new password	Bekreft nytt passord
+Reset password	Tilbakestill passord
+Signed out	Logget ut
+You have been signed out of Kitsunarr.	Du er logget ut av Kitsunarr.
+Sign in again	Logg inn igjen
+Search for missing	Søk etter manglende
+Month	Måned
+Week	Uke
+Forecast	Prognose
+Day	Dag
+Agenda	Agenda
+On disk	På disk
+Not aired yet	Ikke sendt ennå
+Search for the episodes shown that aired and have no file	Søk etter de viste episodene som er sendt og ikke har noen fil
+Previous period	Forrige periode
+Next period	Neste periode
+Calendar view	Kalendervisning
+Nothing airs in this period.	Ingenting sendes i denne perioden.
+Legend	Tegnforklaring
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Deaktivert fjerner serien fra animegruppen og holder den utenfor automatisk gruppering
+Disabled removes the film from its collection and keeps it out of automatic grouping	Deaktivert fjerner filmen fra samlingen og holder den utenfor automatisk gruppering
+Filter	Filter
+Filter by path	Filtrer etter sti
+All paths	Alle stier
+Combine filters	Kombiner filtre
+Show series matching every selected filter	Vis serier som samsvarer med alle valgte filtre
+Clear combined filters	Tøm kombinerte filtre
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Vis hver animegruppe (Tanukarrs animegruppering) én gang, etter første sesong
+Save the current filters as a filter of your own	Lagre de gjeldende filtrene som et eget filter
+Save filter…	Lagre filter…
+Shown series	Viste serier
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr kan ikke bruke disse betingelsene i det lagrede filteret, så de utelates:
+The selected filters contradict each other, so no series can match all of them.	De valgte filtrene motsier hverandre, så ingen serier kan samsvare med alle.
+No series match the selected filters.	Ingen serier samsvarer med de valgte filtrene.
+Filter "{}" saved.	Filteret «{}» er lagret.
+Save filter	Lagre filter
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Filteret beholder det valgte filteret, de kombinerte filtrene og stien; det vises sammen med de innebygde filtrene.
+Filter label	Filternavn
+Delete saved filter	Slett lagret filter
+Delete this saved filter? The series are not changed.	Slette dette lagrede filteret? Seriene endres ikke.
+Monitored only	Bare overvåkede
+Unmonitored only	Bare ikke overvåkede
+Continuing only	Bare pågående
+Ended only	Bare avsluttede
+Missing episodes	Manglende episoder
+Security settings saved.	Sikkerhetsinnstillinger lagret.
+Security	Sikkerhet
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	For å hindre ekstern tilgang uten autentisering krever Kitsunarr autentisering. Du kan eventuelt deaktivere den for lokale adresser.
+Authentication	Autentisering
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Hvordan brukere logger inn: Kitsunarrs innloggingsside, eller OpenID Connect-identitetsleverandøren din.
+Forms (sign-in page)	Skjema (innloggingsside)
+OIDC (identity provider)	OIDC (identitetsleverandør)
+External (reverse proxy)	Ekstern (omvendt proxy)
+Authentication required	Autentisering påkrevd
+Require authentication for every request, or not for requests from local addresses or this machine.	Krev autentisering for hver forespørsel, eller ikke for forespørsler fra lokale adresser eller denne maskinen.
+Disabled for localhost	Deaktivert for localhost
+Allowed hosts	Tillatte verter
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kommaseparert liste over vertsnavn og IP-adresser Kitsunarr skal være tilgjengelig som, inkludert systemets vertsnavn eller containernavnet. La stå tomt for å tillate alle verter. Påkrevd når autentisering ikke alltid kreves. For eksempel: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Stol på CGNAT-adresser
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Behandle CGNAT-adresser (100.64.0.0/10, f.eks. Tailscale) som lokale
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Ekstern: Kitsunarr ber ikke om innlogging og stoler på den omvendte proxyen foran seg. Bruk dette bare bak en proxy som autentiserer hver forespørsel.
+Register Kitsunarr with your provider using the redirect URI	Registrer Kitsunarr hos leverandøren din med omdirigerings-URI-en
+. Saving signs out password sessions; you then sign in through the provider.	. Lagring logger ut passordøkter; deretter logger du inn via leverandøren.
+OIDC Authority	OIDC-autoritet
+The URL of the OIDC provider (https://).	URL-en til OIDC-leverandøren (https://).
+OIDC Client ID	OIDC-klient-ID
+The Client ID registered with the OIDC provider.	Klient-ID-en som er registrert hos OIDC-leverandøren.
+OIDC Client Secret	OIDC-klienthemmelighet
+The Client Secret registered with the OIDC provider.	Klienthemmeligheten som er registrert hos OIDC-leverandøren.
+OIDC User	OIDC-bruker
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Den bekreftede e-postadressen eller subjektidentifikatoren (sub) hos OIDC-leverandøren som kan logge inn i Kitsunarr.
+OIDC Scopes	OIDC-omfang
+The scopes to request from the OIDC provider; must include openid.	Omfangene som skal forespørres fra OIDC-leverandøren; må inkludere openid.
+Set in config.toml or the environment, which take precedence: {}.	Satt i config.toml eller miljøet, som har forrang: {}.
+Backup settings saved.	Innstillinger for sikkerhetskopi lagret.
+Interval (days)	Intervall (dager)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Hvor ofte en sikkerhetskopi tas automatisk (1–7 dager). En manuell sikkerhetskopi starter intervallet på nytt.
+Backup interval in days	Intervall for sikkerhetskopi i dager
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Automatiske sikkerhetskopier eldre enn dette slettes (1–90 dager). Manuelle sikkerhetskopier beholdes.
+Backup retention in days	Oppbevaring av sikkerhetskopier i dager
+A quality without an override uses the global sizes of	En kvalitet uten egne verdier bruker de globale størrelsene fra
+Settings › Quality	Innstillinger › Kvalitet
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Innenfor egne verdier betyr tomt ubegrenset; et maksimum på null betyr også ubegrenset.
+Signed in. Save to keep the token.	Logget inn. Lagre for å beholde tokenet.
+Redirect URL to register with your API client:	Omdirigerings-URL som skal registreres hos API-klienten din:
+Test all	Test alle
+All {} passed their test.	Alle {} besto testen.
+{} of {} failed their test.	{} av {} mislyktes i testen.
+Test every {} entry	Test alle {}
+Test results	Testresultater
+passed with warnings	bestått med advarsler
+Warning:	Advarsel:
+Dismiss test results	Lukk testresultatene
+Delete for upgrade	Slett for oppgradering
+Metadata sources saved.	Metadatakilder lagret.
+Order	Rekkefølge
+Enable {}	Aktiver {}
+Move {} up	Flytt {} opp
+Move {} down	Flytt {} ned
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Legg til medier viser de aktiverte katalogene i denne rekkefølgen, og «Alle aktiverte kataloger» slår sammen resultatene deres i denne rekkefølgen. Deaktiverte kataloger tilbys ikke og søkes ikke i; titler som allerede tilhører en, oppdateres fortsatt fra den. Lagre nedenfor for å ta i bruk.
+Enable at least one metadata source.	Aktiver minst én metadatakilde.
+Mixed	Blandet
+Unlimited	Ubegrenset
+0 GiB/h	0 GiB/t
+{} min: {}	{} min: {}
+No limit	Ingen grense
+Quality definitions saved.	Kvalitetsdefinisjoner lagret.
+Quality definitions reset to the defaults.	Kvalitetsdefinisjoner tilbakestilt til standard.
+Reset definitions	Tilbakestill definisjoner
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Størrelser er i MiB per minutt spilletid; størrelsen per time vises under hver. En utgivelse utenfor grensene for en kvalitet avvises; den foretrukne størrelsen rangerer utgivelser. Profiler kan ha egne grenser (
+Settings › Quality profiles	Innstillinger › Kvalitetsprofiler
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): «Blandet» betyr at profilene bruker ulike grenser, og en verdi som skrives inn her, skrives til alle profiler.
+Title of {}	Tittel for {}
+{} size of {} (MiB per minute)	{} størrelse for {} (MiB per minutt)
+Profiles use different limits	Profilene bruker ulike grenser
+No minimum	Ingen minimum
+Hide retired qualities	Skjul pensjonerte kvaliteter
+Show retired qualities	Vis pensjonerte kvaliteter
+Reset quality definitions	Tilbakestill kvalitetsdefinisjoner
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Gi hver standardkvalitet standardtittelen og standard størrelsesgrenser? Egendefinerte forhåndsinnstillinger og profilenes egne grenser beholdes.
+Reset	Tilbakestill
+RefreshMonitoredDownloads	Oppdater overvåkede nedlastinger
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Leser nedlastingsklientene og importerer fullførte nedlastinger som Kitsunarr har hentet
+ProcessPendingJellyfinRefresh	Behandle ventende Jellyfin-oppdateringer
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Oppdaterer Jellyfin-bibliotekene som har ventende importer (etter hver tilkoblings oppdateringsmodus)
+SyncJellyfinWatched	Synkroniser sett-status fra Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Leser hvilke episoder en Jellyfin-bruker har sett (med tilkoblingens eget intervall)
+CleanUpRecycleBin	Rydd papirkurven
+Deletes files kept in the recycle bin longer than the media management setting allows	Sletter filer som har ligget i papirkurven lenger enn innstillingen for mediehåndtering tillater
+RescanFolders	Skann mapper på nytt
+Scans series and movie folders: forgets files that are gone and adds files found there	Skanner serie- og filmmapper: glemmer filer som er borte og legger til filer som finnes der
+RefreshMetadata	Oppdater metadata
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Oppdaterer titler fra metadatakatalogene deres (pågående hver 6. time, avsluttede månedlig)
+Housekeeping	Vedlikehold
+Purges expired sessions, prunes task history and checks database integrity	Fjerner utløpte økter, rydder oppgavehistorikken og kontrollerer databasens integritet
+CleanupSessions	Rydd opp økter
+Removes expired login sessions	Fjerner utløpte innloggingsøkter
+HealthCheck	Helsesjekk
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Vurderer helsesjekkene på nytt, varsler tilkoblede nettlesere og sender helsevarsler
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Integritetskontrollen av SQLite-databasen mislyktes: {}. Gjenopprett fra en kjent god sikkerhetskopi.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Integritetskontrollen av SQLite-databasen ga ikke noe resultat. Gjenopprett fra en kjent god sikkerhetskopi hvis det oppstår databasefeil.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Integritetskontrollen av SQLite-databasen mislyktes: {} brudd på fremmednøkler. Gjenopprett fra en kjent god sikkerhetskopi.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Ingen indeksere tilgjengelig med RSS-synkronisering aktivert, Kitsunarr vil ikke hente nye utgivelser automatisk
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Alle RSS-kompatible indeksere er midlertidig utilgjengelige på grunn av nylige indekseringsfeil
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Ingen indeksere tilgjengelig med automatisk søk aktivert, Kitsunarr vil ikke gi noen automatiske søkeresultater
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Ingen indeksere tilgjengelig med interaktivt søk aktivert, Kitsunarr vil ikke gi noen interaktive søkeresultater
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Alle søkekompatible indeksere er midlertidig utilgjengelige på grunn av nylige indekseringsfeil
+All indexers are unavailable due to failures for more than 6 hours	Alle indeksere har vært utilgjengelige på grunn av feil i mer enn 6 timer
+Indexers unavailable due to failures for more than 6 hours: {}	Indeksere utilgjengelige på grunn av feil i mer enn 6 timer: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indeksere som bruker det ikke-støttede Jackett-endepunktet 'all': {}
+Indexers with invalid download clients: {}.	Indeksere med ugyldige nedlastingsklienter: {}.
+Enable Completed Download Handling	Aktiver håndtering av fullførte nedlastinger
+All notifications are unavailable due to failures	Alle varslinger er utilgjengelige på grunn av feil
+Notifications unavailable due to failures: {}	Varslinger utilgjengelige på grunn av feil: {}
+All lists are unavailable due to failures	Alle lister er utilgjengelige på grunn av feil
+Lists unavailable due to failures: {}	Lister utilgjengelige på grunn av feil: {}
+Missing root folder for import list(s): {}	Rotmappe mangler for importliste(r): {}
+Multiple root folders are missing for import lists: {}	Flere rotmapper mangler for importlister: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Kan ikke skrive til den konfigurerte papirkurvmappen: {}. Sørg for at stien finnes og er skrivbar for brukeren som kjører Kitsunarr
+Unable to write to the backup folder {}; scheduled backups will fail.	Kan ikke skrive til sikkerhetskopimappen {}; planlagte sikkerhetskopier vil mislykkes.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Oppdater API-nøkkelen din slik at den er minst 20 tegn lang. Du kan gjøre dette i innstillingene eller i konfigurasjonsfilen
+Series {} was removed from {}	Serien {} ble fjernet fra {}
+Series {} were removed from {}	Seriene {} ble fjernet fra {}
+Mount containing a series path is mounted read-only: {}	Monteringspunkt som inneholder en seriesti er montert skrivebeskyttet: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Nedlastingsklienten {} er satt til å fjerne fullførte nedlastinger. Dette kan føre til at nedlastinger fjernes fra klienten før Kitsunarr kan importere dem.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Nedlastingsklienten {} har {}-sortering aktivert for Kitsunarrs kategori. Du bør deaktivere sortering i nedlastingsklienten for å unngå importproblemer.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Nedlastingsklienten {} legger nedlastinger i rotmappen {}. Du bør ikke laste ned til en rotmappe.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Den eksterne nedlastingsklienten {} legger nedlastinger i {}, men dette er ikke en gyldig {}-sti. Se over de eksterne stimappingene og innstillingene for nedlastingsklienten.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Du bruker docker; nedlastingsklienten {} legger nedlastinger i {}, men dette er ikke en gyldig {}-sti. Se over de eksterne stimappingene og innstillingene for nedlastingsklienten.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Den lokale nedlastingsklienten {} legger nedlastinger i {}, men dette er ikke en gyldig {}-sti. Se over innstillingene for nedlastingsklienten.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Du bruker docker; nedlastingsklienten {} legger nedlastinger i {}, men denne mappen ser ikke ut til å finnes i containeren. Se over de eksterne stimappingene og volum-innstillingene for containeren.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Den eksterne nedlastingsklienten {} legger nedlastinger i {}, men denne mappen ser ikke ut til å finnes. Sannsynligvis mangler eller er feil ekstern stimapping.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Nedlastingsklienten {} legger nedlastinger i {}, men Kitsunarr kan ikke se denne mappen. Du må kanskje justere tillatelsene for mappen.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr kan se, men ikke få tilgang til den nedlastede episoden {}. Sannsynligvis en tillatelsesfeil.
+File {} was removed part way through processing.	Filen {} ble fjernet midt under behandlingen.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr kunne ikke importere episode(r). Sjekk loggene for detaljer.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Den eksterne nedlastingsklienten {} rapporterte filer i {}, men dette er ikke en gyldig {}-sti. Se over de eksterne stimappingene og innstillingene for nedlastingsklienten.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Du bruker docker; nedlastingsklienten {} rapporterte filer i {}, men dette er ikke en gyldig {}-sti. Se over de eksterne stimappingene og innstillingene for nedlastingsklienten.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Den lokale nedlastingsklienten {} rapporterte filer i {}, men dette er ikke en gyldig {}-sti. Se over innstillingene for nedlastingsklienten.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr kan se, men ikke få tilgang til nedlastingsmappen {}. Sannsynligvis en tillatelsesfeil.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Den eksterne nedlastingsklienten {} rapporterte filer i {}, men denne mappen ser ikke ut til å finnes. Sannsynligvis mangler ekstern stimapping.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Nedlastingsklienten {} rapporterte filer i {}, men Kitsunarr kan ikke se denne mappen. Du må kanskje justere tillatelsene for mappen.
+The configured password reset token is shorter than {} characters and is being ignored	Det konfigurerte tokenet for tilbakestilling av passord er kortere enn {} tegn og ignoreres
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Et token for tilbakestilling av passord er konfigurert. Fjern miljøvariabelen KITSUNARR_AUTH_RESET_TOKEN (eller reset_token i config.toml) når du ikke lenger trenger den
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC-autentisering er aktivert, men Autoritet, Klient-ID, Klienthemmelighet, Bruker og Omfang er ikke alle konfigurert
+The OIDC Authority must start with 'https://'	OIDC-autoriteten må begynne med 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Kan ikke hente OIDC-konfigurasjonen fra {}; innlogging med identitetsleverandøren din vil mislykkes til den kan nås
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Ingen rotmapper er konfigurert ennå. Legg til en i Innstillinger → Mediehåndtering eller importer en eksisterende installasjon.
+Root folder {} is missing or not accessible.	Rotmappen {} mangler eller er ikke tilgjengelig.
+Root folder {} has only {} MiB free.	Rotmappen {} har bare {} MiB ledig.
+No enabled {} is configured; automatic downloads are not possible.	Ingen aktivert {} er konfigurert; automatiske nedlastinger er ikke mulig.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Disse elementene av typen {} ble beholdt fra den forrige installasjonen din, men er ikke implementert innebygd ennå: {}.
+All download clients are unavailable due to failures	Alle nedlastingsklienter er utilgjengelige på grunn av feil
+Download clients are unavailable due to failures: {}	Nedlastingsklienter er utilgjengelige på grunn av feil: {}
+All indexers are unavailable due to failures	Alle indeksere er utilgjengelige på grunn av feil
+Indexers unavailable due to failures: {}	Indeksere utilgjengelige på grunn av feil: {}
+Failed to resolve the IP address of the configured proxy host {}	Kunne ikke slå opp IP-adressen til den konfigurerte proxyverten {}
+The data directory has only {} MiB free; the database may fail to write.	Datamappen har bare {} MiB ledig; databasen kan mislykkes med å skrive.

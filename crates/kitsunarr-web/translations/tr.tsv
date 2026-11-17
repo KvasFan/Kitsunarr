@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ mevcut numara
 or	veya
 1 title	1 başlık
+Episode titles (one per line)	Bölüm başlıkları (her satıra bir tane)
+For conditions that ignore episode titles.	Bölüm başlıklarını yok sayan koşullar için.
+Test episode titles	Test bölüm başlıkları
+· group {}	· grup {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Sürüm adlarını denetlerken bilinen bölüm başlıklarını hariç tut; böylece bölüm başlığındaki kelimeler servis veya sürüm grubu sayılmaz.
+Ignore episode titles {}	Bölüm başlıklarını yok say {}
+Ignore episode titles	Bölüm başlıklarını yok say
+Alternative group	Alternatif grup
+Alternative group {}	Alternatif grup {}
+Group anime seasons	Anime sezonlarını grupla
+Anime group {}	Anime grubu {}
+Group of {} · {}	{} yapımlık grup · {}
+Import progress	İçe aktarma ilerlemesi
+Waiting to import	İçe aktarma bekleniyor
+Import progress of {}	İçe aktarma ilerlemesi: {}
+Import details of {}	İçe aktarma ayrıntıları: {}
+{} / {} episodes imported	{} / {} bölüm içe aktarıldı
+· {} not imported	· {} içe aktarılmadı
+Series, anime or film title, e.g. Severance	Dizi, anime veya film başlığı, ör. Severance
+All enabled catalogues	Tüm etkin kataloglar
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Aranabilecek etkin katalog yok: Ayarlar › Meta veri kaynakları bölümünde birini etkinleştirin veya API anahtarını girin.
+Searches every enabled catalogue, results in your order:	Tüm etkin kataloglarda arar, sonuçlar sizin sıranızla:
+Grouping	Gruplama
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Otomatik, yapımı resmi ilişkilere göre serisi veya koleksiyonuyla gruplar. Devre dışı, onu tek başına tutar.
+Automatic (official relations)	Otomatik (resmi ilişkiler)
+Too many failed sign in attempts. Please try again in {} minute(s).	Çok fazla başarısız oturum açma denemesi. Lütfen {} dakika sonra yeniden deneyin.
+Reset your password	Şifrenizi sıfırlayın
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr kayıtlarına tek kullanımlık bir sıfırlama token'ı yazacak. Token'ı en son kayıttaki
+line in the latest log (System › Logs, or the container's output).	satırından kopyalayın (Sistem › Kayıtlar veya konteynerin çıktısı).
+Write a reset token to the log	Kayda bir sıfırlama token'ı yaz
+I already have a reset token	Zaten bir sıfırlama token'ım var
+Back to sign in	Oturum açmaya dön
+Your password has been reset, sign in with your new password.	Şifreniz sıfırlandı, yeni şifrenizle oturum açın.
+Unable to sign in with your identity provider.	Kimlik sağlayıcınızla oturum açılamadı.
+Incorrect username or password.	Kullanıcı adı veya şifre hatalı.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC kimlik doğrulaması etkin ancak doğru yapılandırılmamış. Şifrenizle oturum açın ve OIDC ayarlarını güncelleyin (Ayarlar › Genel › Güvenlik veya yapılandırma dosyası).
+Sign in with SSO	SSO ile oturum aç
+You will be sent to your identity provider.	Kimlik sağlayıcınıza yönlendirileceksiniz.
+Forgot your password?	Şifrenizi mi unuttunuz?
+Invalid or expired reset token.	Geçersiz veya süresi dolmuş sıfırlama token'ı.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Kullanıcı adı ve şifre gereklidir, şifreler eşleşmelidir ve şifre en az {} karakter olmalıdır.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Kayda yeni bir sıfırlama token'ı yazılmadı. Zaten etkin bir token olabilir, önce kayıtları kontrol edin. Kitsunarr'ı yeniden başlatmak onu temizler ve yenisini istemenizi sağlar.
+Enter the token from the	Kayıttaki
+line in the log. It's valid for 15 minutes and can only be used once. If you set	satırında bulunan token'ı girin. 15 dakika geçerlidir ve yalnızca bir kez kullanılabilir. Şunu ayarladıysanız:
+Reset token	Sıfırlama token'ı
+Confirm new password	Yeni şifreyi onayla
+Reset password	Şifreyi sıfırla
+Signed out	Oturum kapatıldı
+You have been signed out of Kitsunarr.	Kitsunarr'daki oturumunuz kapatıldı.
+Sign in again	Yeniden oturum aç
+Search for missing	Eksikleri ara
+Month	Ay
+Week	Hafta
+Forecast	Tahmin
+Day	Gün
+Agenda	Ajanda
+On disk	Diskte
+Not aired yet	Henüz yayınlanmadı
+Search for the episodes shown that aired and have no file	Gösterilen, yayınlanmış ve dosyası olmayan bölümleri ara
+Previous period	Önceki dönem
+Next period	Sonraki dönem
+Calendar view	Takvim görünümü
+Nothing airs in this period.	Bu dönemde yayınlanan bir şey yok.
+Legend	Açıklama
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Devre dışı, diziyi anime grubundan çıkarır ve otomatik gruplamanın dışında tutar
+Disabled removes the film from its collection and keeps it out of automatic grouping	Devre dışı, filmi koleksiyonundan çıkarır ve otomatik gruplamanın dışında tutar
+Filter	Filtre
+Filter by path	Yola göre filtrele
+All paths	Tüm yollar
+Combine filters	Filtreleri birleştir
+Show series matching every selected filter	Seçilen tüm filtrelerle eşleşen dizileri göster
+Clear combined filters	Birleşik filtreleri temizle
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Her anime grubunu (Tanukarr'ın anime gruplaması) ilk sezonuyla bir kez göster
+Save the current filters as a filter of your own	Geçerli filtreleri kendi filtreniz olarak kaydedin
+Save filter…	Filtreyi kaydet…
+Shown series	Gösterilen diziler
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr kayıtlı filtrenin şu koşullarını uygulayamıyor, bu yüzden dışarıda bırakıldılar:
+The selected filters contradict each other, so no series can match all of them.	Seçilen filtreler birbiriyle çelişiyor, bu yüzden hiçbir dizi hepsiyle eşleşemez.
+No series match the selected filters.	Seçilen filtrelerle eşleşen dizi yok.
+Filter "{}" saved.	"{}" filtresi kaydedildi.
+Save filter	Filtreyi kaydet
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Filtre; seçili filtreyi, birleşik filtreleri ve yolu saklar; yerleşik filtrelerle birlikte listelenir.
+Filter label	Filtre etiketi
+Delete saved filter	Kayıtlı filtreyi sil
+Delete this saved filter? The series are not changed.	Bu kayıtlı filtre silinsin mi? Diziler değiştirilmez.
+Monitored only	Yalnızca takip edilenler
+Unmonitored only	Yalnızca takip edilmeyenler
+Continuing only	Yalnızca devam edenler
+Ended only	Yalnızca bitenler
+Missing episodes	Eksik bölümler
+Security settings saved.	Güvenlik ayarları kaydedildi.
+Security	Güvenlik
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Kimlik doğrulaması olmadan uzaktan erişimi önlemek için Kitsunarr kimlik doğrulaması gerektirir. İsterseniz yerel adresler için devre dışı bırakabilirsiniz.
+Authentication	Kimlik doğrulama
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Kullanıcıların nasıl oturum açacağı: Kitsunarr'ın oturum açma sayfası veya OpenID Connect kimlik sağlayıcınız.
+Forms (sign-in page)	Form (oturum açma sayfası)
+OIDC (identity provider)	OIDC (kimlik sağlayıcı)
+External (reverse proxy)	Harici (ters proxy)
+Authentication required	Kimlik doğrulama gerekli
+Require authentication for every request, or not for requests from local addresses or this machine.	Her istek için kimlik doğrulaması iste ya da yerel adreslerden veya bu makineden gelen istekler için isteme.
+Disabled for localhost	Localhost için devre dışı
+Allowed hosts	İzin verilen ana makineler
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kitsunarr'a erişilebilecek ana makine adlarının ve IP adreslerinin virgülle ayrılmış listesi; sistemin ana makine adı veya konteyner adı dahil. Tüm ana makinelere izin vermek için boş bırakın. Kimlik doğrulama her zaman gerekli değilse zorunludur. Örneğin: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	CGNAT adreslerine güven
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	CGNAT adreslerini (100.64.0.0/10, ör. Tailscale) yerel say
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Harici: Kitsunarr oturum açma istemez ve önündeki ters proxy'ye güvenir. Bunu yalnızca her isteği doğrulayan bir proxy'nin arkasında kullanın.
+Register Kitsunarr with your provider using the redirect URI	Kitsunarr'ı sağlayıcınıza şu yönlendirme URI'siyle kaydedin:
+. Saving signs out password sessions; you then sign in through the provider.	. Kaydetmek, şifreyle açılmış oturumları kapatır; ardından sağlayıcı üzerinden oturum açarsınız.
+OIDC Authority	OIDC yetkili sunucusu
+The URL of the OIDC provider (https://).	OIDC sağlayıcısının URL'si (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	OIDC sağlayıcısına kayıtlı Client ID.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	OIDC sağlayıcısına kayıtlı Client Secret.
+OIDC User	OIDC kullanıcısı
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	OIDC sağlayıcısında Kitsunarr'da oturum açabilecek doğrulanmış e-posta adresi veya konu tanımlayıcısı (sub).
+OIDC Scopes	OIDC kapsamları
+The scopes to request from the OIDC provider; must include openid.	OIDC sağlayıcısından istenecek kapsamlar; openid içermelidir.
+Set in config.toml or the environment, which take precedence: {}.	config.toml'da veya ortamda ayarlanmış; bunlar önceliklidir: {}.
+Backup settings saved.	Yedekleme ayarları kaydedildi.
+Interval (days)	Aralık (gün)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Otomatik yedeklemenin ne sıklıkla alınacağı (1-7 gün). Manuel bir yedekleme aralığı yeniden başlatır.
+Backup interval in days	Gün cinsinden yedekleme aralığı
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Bundan eski otomatik yedekler silinir (1-90 gün). Manuel yedekler saklanır.
+Backup retention in days	Gün cinsinden yedek saklama süresi
+A quality without an override uses the global sizes of	Geçersiz kılması olmayan bir kalite şuradaki genel boyutları kullanır:
+Settings › Quality	Ayarlar › Kalite
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Bir geçersiz kılmada boş, sınırsız demektir; sıfır maksimum da sınırsız demektir.
+Signed in. Save to keep the token.	Oturum açıldı. Token'ı saklamak için kaydedin.
+Redirect URL to register with your API client:	API istemcinize kaydedilecek yönlendirme URL'si:
+Test all	Tümünü test et
+All {} passed their test.	Tüm {} testi geçti.
+{} of {} failed their test.	{} / {} testte başarısız oldu.
+Test every {} entry	Her {} kaydını test et
+Test results	Test sonuçları
+passed with warnings	uyarılarla geçti
+Warning:	Uyarı:
+Dismiss test results	Test sonuçlarını kapat
+Delete for upgrade	Yükseltme için sil
+Metadata sources saved.	Meta veri kaynakları kaydedildi.
+Order	Sıra
+Enable {}	Etkinleştir: {}
+Move {} up	Yukarı taşı: {}
+Move {} down	Aşağı taşı: {}
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Medya ekle, etkin katalogları bu sırayla listeler ve "Tüm etkin kataloglar" sonuçlarını bu sırayla birleştirir. Devre dışı kataloglar sunulmaz ve aranmaz; zaten bunlardan birine ait yapımlar yine ondan yenilenir. Uygulamak için aşağıdan kaydedin.
+Enable at least one metadata source.	En az bir meta veri kaynağını etkinleştirin.
+Mixed	Karışık
+Unlimited	Sınırsız
+0 GiB/h	0 GiB/sa
+{} min: {}	{} dk: {}
+No limit	Sınır yok
+Quality definitions saved.	Kalite tanımları kaydedildi.
+Quality definitions reset to the defaults.	Kalite tanımları varsayılanlara sıfırlandı.
+Reset definitions	Tanımları sıfırla
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Boyutlar, çalışma süresinin dakikası başına MiB cinsindendir; saatlik boyut her birinin altında gösterilir. Bir kalitenin sınırları dışındaki sürüm reddedilir; tercih edilen boyut sürümleri sıralar. Profiller kendi sınırlarını tutabilir (
+Settings › Quality profiles	Ayarlar › Kalite profilleri
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): "Karışık", profillerin farklı sınırlar kullandığı anlamına gelir; buraya girilen bir değer her profile yazılır.
+Title of {}	Başlık: {}
+{} size of {} (MiB per minute)	{} boyut, {} (dakika başına MiB)
+Profiles use different limits	Profiller farklı sınırlar kullanıyor
+No minimum	Minimum yok
+Hide retired qualities	Kullanımdan kalkan kaliteleri gizle
+Show retired qualities	Kullanımdan kalkan kaliteleri göster
+Reset quality definitions	Kalite tanımlarını sıfırla
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Her standart kaliteye varsayılan başlığı ve boyut sınırları verilsin mi? Özel ön ayarlar ve profillerin kendi sınırları korunur.
+Reset	Sıfırla
+RefreshMonitoredDownloads	Takip edilen indirmeleri yenile
+Reads the download clients and imports completed downloads Kitsunarr grabbed	İndirme istemcilerini okur ve Kitsunarr'ın aldığı tamamlanan indirmeleri içe aktarır
+ProcessPendingJellyfinRefresh	Bekleyen Jellyfin yenilemelerini işle
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Bekleyen içe aktarmaları olan Jellyfin kütüphanelerini yeniler (her bağlantının yenileme moduna göre)
+SyncJellyfinWatched	Jellyfin izlenme durumunu senkronize et
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Bir Jellyfin kullanıcısının hangi bölümleri izlediğini okur (bağlantının kendi aralığında)
+CleanUpRecycleBin	Geri dönüşüm kutusunu temizle
+Deletes files kept in the recycle bin longer than the media management setting allows	Geri dönüşüm kutusunda medya yönetimi ayarının izin verdiğinden uzun süre tutulan dosyaları siler
+RescanFolders	Klasörleri yeniden tara
+Scans series and movie folders: forgets files that are gone and adds files found there	Dizi ve film klasörlerini tarar: artık olmayan dosyaları unutur ve orada bulunan dosyaları ekler
+RefreshMetadata	Meta verileri yenile
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Yapımları meta veri kataloglarından yeniler (devam edenleri 6 saatte bir, bitenleri ayda bir)
+Housekeeping	Bakım
+Purges expired sessions, prunes task history and checks database integrity	Süresi dolmuş oturumları temizler, görev geçmişini budar ve veritabanı bütünlüğünü denetler
+CleanupSessions	Oturumları temizle
+Removes expired login sessions	Süresi dolmuş oturumları kaldırır
+HealthCheck	Sağlık denetimi
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Sağlık denetimlerini yeniden değerlendirir, bağlı tarayıcıları bilgilendirir ve sağlık bildirimleri gönderir
+SQLite database integrity check failed: {}. Restore from a known-good backup.	SQLite veritabanı bütünlük denetimi başarısız oldu: {}. Sağlam olduğu bilinen bir yedekten geri yükleyin.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	SQLite veritabanı bütünlük denetimi bir sonuç döndürmedi. Veritabanı hataları oluşuyorsa sağlam olduğu bilinen bir yedekten geri yükleyin.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	SQLite veritabanı bütünlük denetimi başarısız oldu: {} yabancı anahtar ihlali. Sağlam olduğu bilinen bir yedekten geri yükleyin.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	RSS senkronizasyonu etkin indeksleyici yok, Kitsunarr yeni sürümleri otomatik olarak almayacak
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	RSS destekleyen tüm indeksleyiciler son indeksleyici hataları nedeniyle geçici olarak kullanılamıyor
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Otomatik arama etkin indeksleyici yok, Kitsunarr hiçbir otomatik arama sonucu sağlamayacak
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Etkileşimli arama etkin indeksleyici yok, Kitsunarr hiçbir etkileşimli arama sonucu sağlamayacak
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Arama destekleyen tüm indeksleyiciler son indeksleyici hataları nedeniyle geçici olarak kullanılamıyor
+All indexers are unavailable due to failures for more than 6 hours	Tüm indeksleyiciler 6 saatten uzun süredir hatalar nedeniyle kullanılamıyor
+Indexers unavailable due to failures for more than 6 hours: {}	6 saatten uzun süredir hatalar nedeniyle kullanılamayan indeksleyiciler: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Desteklenmeyen Jackett 'all' uç noktasını kullanan indeksleyiciler: {}
+Indexers with invalid download clients: {}.	Geçersiz indirme istemcisine sahip indeksleyiciler: {}.
+Enable Completed Download Handling	Tamamlanan indirme işlemeyi etkinleştirin
+All notifications are unavailable due to failures	Tüm bildirimler hatalar nedeniyle kullanılamıyor
+Notifications unavailable due to failures: {}	Hatalar nedeniyle kullanılamayan bildirimler: {}
+All lists are unavailable due to failures	Tüm listeler hatalar nedeniyle kullanılamıyor
+Lists unavailable due to failures: {}	Hatalar nedeniyle kullanılamayan listeler: {}
+Missing root folder for import list(s): {}	İçe aktarma listeleri için eksik kök klasör: {}
+Multiple root folders are missing for import lists: {}	İçe aktarma listeleri için birden fazla kök klasör eksik: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Yapılandırılan geri dönüşüm kutusu klasörüne yazılamıyor: {}. Bu yolun var olduğundan ve Kitsunarr'ı çalıştıran kullanıcı tarafından yazılabilir olduğundan emin olun
+Unable to write to the backup folder {}; scheduled backups will fail.	{} yedek klasörüne yazılamıyor; zamanlanmış yedeklemeler başarısız olacak.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Lütfen API anahtarınızı en az 20 karakter olacak şekilde güncelleyin. Bunu ayarlardan veya yapılandırma dosyasından yapabilirsiniz
+Series {} was removed from {}	{} dizisi {} kataloğundan kaldırıldı
+Series {} were removed from {}	{} dizileri {} kataloğundan kaldırıldı
+Mount containing a series path is mounted read-only: {}	Bir dizi yolunu içeren bağlama noktası salt okunur bağlanmış: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	{} indirme istemcisi tamamlanan indirmeleri kaldıracak şekilde ayarlanmış. Bu, indirmelerin Kitsunarr onları içe aktaramadan istemcinizden kaldırılmasına yol açabilir.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	{} indirme istemcisinde Kitsunarr'ın kategorisi için {} sıralaması etkin. İçe aktarma sorunlarını önlemek için indirme istemcinizde sıralamayı devre dışı bırakmalısınız.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	{} indirme istemcisi indirmeleri {} kök klasörüne yerleştiriyor. Bir kök klasöre indirme yapmamalısınız.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Uzak indirme istemcisi {} indirmeleri {} konumuna yerleştiriyor ancak bu geçerli bir {} yolu değil. Uzak yol eşlemelerinizi ve indirme istemcisi ayarlarınızı gözden geçirin.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Docker kullanıyorsunuz; {} indirme istemcisi indirmeleri {} konumuna yerleştiriyor ancak bu geçerli bir {} yolu değil. Uzak yol eşlemelerinizi ve indirme istemcisi ayarlarınızı gözden geçirin.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Yerel indirme istemcisi {} indirmeleri {} konumuna yerleştiriyor ancak bu geçerli bir {} yolu değil. İndirme istemcisi ayarlarınızı gözden geçirin.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Docker kullanıyorsunuz; {} indirme istemcisi indirmeleri {} konumuna yerleştiriyor ancak bu dizin konteyner içinde mevcut görünmüyor. Uzak yol eşlemelerinizi ve konteyner birim ayarlarınızı gözden geçirin.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Uzak indirme istemcisi {} indirmeleri {} konumuna yerleştiriyor ancak bu dizin mevcut görünmüyor. Muhtemelen eksik veya yanlış bir uzak yol eşlemesi var.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	{} indirme istemcisi indirmeleri {} konumuna yerleştiriyor ancak Kitsunarr bu dizini göremiyor. Klasörün izinlerini ayarlamanız gerekebilir.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr indirilen {} bölümünü görebiliyor ancak erişemiyor. Muhtemelen bir izin hatası.
+File {} was removed part way through processing.	{} dosyası işlenirken yarıda kaldırıldı.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr bir veya daha fazla bölümü içe aktaramadı. Ayrıntılar için kayıtlarınızı kontrol edin.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Uzak indirme istemcisi {} dosyaların {} konumunda olduğunu bildirdi ancak bu geçerli bir {} yolu değil. Uzak yol eşlemelerinizi ve indirme istemcisi ayarlarınızı gözden geçirin.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Docker kullanıyorsunuz; {} indirme istemcisi dosyaların {} konumunda olduğunu bildirdi ancak bu geçerli bir {} yolu değil. Uzak yol eşlemelerinizi ve indirme istemcisi ayarlarınızı gözden geçirin.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Yerel indirme istemcisi {} dosyaların {} konumunda olduğunu bildirdi ancak bu geçerli bir {} yolu değil. İndirme istemcisi ayarlarınızı gözden geçirin.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr {} indirme dizinini görebiliyor ancak erişemiyor. Muhtemelen bir izin hatası.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Uzak indirme istemcisi {} dosyaların {} konumunda olduğunu bildirdi ancak bu dizin mevcut görünmüyor. Muhtemelen eksik bir uzak yol eşlemesi var.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	{} indirme istemcisi dosyaların {} konumunda olduğunu bildirdi ancak Kitsunarr bu dizini göremiyor. Klasörün izinlerini ayarlamanız gerekebilir.
+The configured password reset token is shorter than {} characters and is being ignored	Yapılandırılan şifre sıfırlama token'ı {} karakterden kısa ve yok sayılıyor
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Bir şifre sıfırlama token'ı yapılandırılmış. Artık gerekmediğinde KITSUNARR_AUTH_RESET_TOKEN ortam değişkenini (veya config.toml içindeki reset_token'ı) kaldırın
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC kimlik doğrulaması etkin ancak yetkili sunucu, Client ID, Client Secret, kullanıcı ve kapsamların hepsi yapılandırılmamış
+The OIDC Authority must start with 'https://'	OIDC yetkili sunucusu 'https://' ile başlamalıdır
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	OIDC yapılandırması {} adresinden alınamıyor; erişilebilir olana kadar kimlik sağlayıcınızla oturum açma başarısız olacak
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Henüz kök klasör yapılandırılmamış. Ayarlar → Medya yönetimi bölümünden bir tane ekleyin veya mevcut bir kurulumu içe aktarın.
+Root folder {} is missing or not accessible.	{} kök klasörü eksik veya erişilemiyor.
+Root folder {} has only {} MiB free.	{} kök klasöründe yalnızca {} MiB boş alan var.
+No enabled {} is configured; automatic downloads are not possible.	Yapılandırılmış etkin {} yok; otomatik indirmeler mümkün değil.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Önceki kurulumunuzdan korunan şu {} öğeleri henüz yerel olarak uygulanmadı: {}.
+All download clients are unavailable due to failures	Tüm indirme istemcileri hatalar nedeniyle kullanılamıyor
+Download clients are unavailable due to failures: {}	Hatalar nedeniyle kullanılamayan indirme istemcileri: {}
+All indexers are unavailable due to failures	Tüm indeksleyiciler hatalar nedeniyle kullanılamıyor
+Indexers unavailable due to failures: {}	Hatalar nedeniyle kullanılamayan indeksleyiciler: {}
+Failed to resolve the IP address of the configured proxy host {}	Yapılandırılan proxy ana makinesi {} için IP adresi çözümlenemedi
+The data directory has only {} MiB free; the database may fail to write.	Veri dizininde yalnızca {} MiB boş alan var; veritabanı yazamayabilir.

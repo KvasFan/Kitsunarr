@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ המספר הנוכחי
 or	או
 1 title	כותר אחד
+Episode titles (one per line)	כותרות פרקים (אחת בכל שורה)
+For conditions that ignore episode titles.	עבור תנאים שמתעלמים מכותרות פרקים.
+Test episode titles	כותרות פרקים לבדיקה
+· group {}	· קבוצה {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	החרג כותרות פרקים ידועות בעת בדיקת שמות גרסאות, כך שמילים בכותרת הפרק לא ייחשבו כשירות או כקבוצת הפצה.
+Ignore episode titles {}	התעלם מכותרות פרקים {}
+Ignore episode titles	התעלם מכותרות פרקים
+Alternative group	קבוצה חלופית
+Alternative group {}	קבוצה חלופית {}
+Group anime seasons	קבץ עונות אנימה
+Anime group {}	קבוצת אנימה {}
+Group of {} · {}	קבוצה של {} · {}
+Import progress	התקדמות הייבוא
+Waiting to import	ממתין לייבוא
+Import progress of {}	התקדמות הייבוא של {}
+Import details of {}	פרטי הייבוא של {}
+{} / {} episodes imported	{} / {} פרקים יובאו
+· {} not imported	· {} לא יובאו
+Series, anime or film title, e.g. Severance	כותר סדרה, אנימה או סרט, למשל Severance
+All enabled catalogues	כל הקטלוגים המופעלים
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	אין קטלוג מופעל שניתן לחפש בו: הפעל אחד או הזן את מפתח ה-API שלו בהגדרות › מקורות מטא-דאטה.
+Searches every enabled catalogue, results in your order:	מחפש בכל הקטלוגים המופעלים, התוצאות לפי הסדר שלך:
+Grouping	קיבוץ
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	"אוטומטי" מקבץ את הכותר עם הזיכיון או האוסף שלו לפי קשרים רשמיים. "מושבת" משאיר אותו לבדו.
+Automatic (official relations)	אוטומטי (קשרים רשמיים)
+Too many failed sign in attempts. Please try again in {} minute(s).	יותר מדי ניסיונות התחברות כושלים. נסה שוב בעוד {} דקות.
+Reset your password	אפס את הסיסמה שלך
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr יכתוב אסימון איפוס חד-פעמי ליומן שלו. העתק אותו מהשורה
+line in the latest log (System › Logs, or the container's output).	ביומן האחרון (מערכת › יומנים, או הפלט של הקונטיינר).
+Write a reset token to the log	כתוב אסימון איפוס ליומן
+I already have a reset token	כבר יש לי אסימון איפוס
+Back to sign in	חזרה להתחברות
+Your password has been reset, sign in with your new password.	הסיסמה שלך אופסה, התחבר עם הסיסמה החדשה.
+Unable to sign in with your identity provider.	לא ניתן להתחבר דרך ספק הזהות שלך.
+Incorrect username or password.	שם משתמש או סיסמה שגויים.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	אימות OIDC מופעל, אך אינו מוגדר כראוי. התחבר עם הסיסמה שלך ועדכן את הגדרות OIDC (הגדרות › כללי › אבטחה, או קובץ התצורה).
+Sign in with SSO	התחבר עם SSO
+You will be sent to your identity provider.	תועבר לספק הזהות שלך.
+Forgot your password?	שכחת את הסיסמה?
+Invalid or expired reset token.	אסימון איפוס לא חוקי או שפג תוקפו.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	נדרשים שם משתמש וסיסמה, הסיסמאות חייבות להיות זהות, והסיסמה צריכה לכלול לפחות {} תווים.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	אסימון איפוס חדש לא נכתב ליומן. ייתכן שכבר יש אחד פעיל, לכן בדוק קודם את היומן. הפעלה מחדש של Kitsunarr מנקה אותו ומאפשרת לבקש אחר.
+Enter the token from the	הזן את האסימון מהשורה
+line in the log. It's valid for 15 minutes and can only be used once. If you set	ביומן. הוא תקף ל-15 דקות וניתן להשתמש בו פעם אחת בלבד. אם הגדרת
+Reset token	אסימון איפוס
+Confirm new password	אשר סיסמה חדשה
+Reset password	אפס סיסמה
+Signed out	נותקת
+You have been signed out of Kitsunarr.	נותקת מ-Kitsunarr.
+Sign in again	התחבר שוב
+Search for missing	חפש חסרים
+Month	חודש
+Week	שבוע
+Forecast	תחזית
+Day	יום
+Agenda	סדר יום
+On disk	בדיסק
+Not aired yet	טרם שודר
+Search for the episodes shown that aired and have no file	חפש את הפרקים המוצגים ששודרו ואין להם קובץ
+Previous period	התקופה הקודמת
+Next period	התקופה הבאה
+Calendar view	תצוגת לוח שנה
+Nothing airs in this period.	שום דבר לא משודר בתקופה זו.
+Legend	מקרא
+Disabled removes the series from its anime group and keeps it out of automatic grouping	"מושבת" מסיר את הסדרה מקבוצת האנימה שלה ומשאיר אותה מחוץ לקיבוץ האוטומטי
+Disabled removes the film from its collection and keeps it out of automatic grouping	"מושבת" מסיר את הסרט מהאוסף שלו ומשאיר אותו מחוץ לקיבוץ האוטומטי
+Filter	סינון
+Filter by path	סנן לפי נתיב
+All paths	כל הנתיבים
+Combine filters	שלב מסננים
+Show series matching every selected filter	הצג סדרות התואמות לכל המסננים שנבחרו
+Clear combined filters	נקה מסננים משולבים
+Show each anime group (Tanukarr's anime grouping) once, by its first season	הצג כל קבוצת אנימה (הקיבוץ של Tanukarr) פעם אחת, לפי העונה הראשונה שלה
+Save the current filters as a filter of your own	שמור את המסננים הנוכחיים כמסנן משלך
+Save filter…	שמור מסנן…
+Shown series	סדרות מוצגות
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr לא יכול להחיל את התנאים האלה של המסנן השמור, ולכן הם הושמטו:
+The selected filters contradict each other, so no series can match all of them.	המסננים שנבחרו סותרים זה את זה, ולכן אף סדרה לא יכולה להתאים לכולם.
+No series match the selected filters.	אין סדרות התואמות למסננים שנבחרו.
+Filter "{}" saved.	המסנן "{}" נשמר.
+Save filter	שמור מסנן
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	המסנן שומר את המסנן הנבחר, את המסננים המשולבים ואת הנתיב; הוא מופיע ברשימה לצד המסננים המובנים.
+Filter label	תווית המסנן
+Delete saved filter	מחק מסנן שמור
+Delete this saved filter? The series are not changed.	למחוק את המסנן השמור הזה? הסדרות לא ישתנו.
+Monitored only	במעקב בלבד
+Unmonitored only	לא במעקב בלבד
+Continuing only	נמשכות בלבד
+Ended only	שהסתיימו בלבד
+Missing episodes	פרקים חסרים
+Security settings saved.	הגדרות האבטחה נשמרו.
+Security	אבטחה
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	כדי למנוע גישה מרחוק ללא אימות, Kitsunarr דורש אימות. ניתן לבחור להשבית אותו עבור כתובות מקומיות.
+Authentication	אימות
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	איך משתמשים מתחברים: דף ההתחברות של Kitsunarr, או ספק הזהות OpenID Connect שלך.
+Forms (sign-in page)	טפסים (דף התחברות)
+OIDC (identity provider)	OIDC (ספק זהות)
+External (reverse proxy)	חיצוני (פרוקסי הפוך)
+Authentication required	נדרש אימות
+Require authentication for every request, or not for requests from local addresses or this machine.	דרוש אימות לכל בקשה, או לא עבור בקשות מכתובות מקומיות או מהמחשב הזה.
+Disabled for localhost	מושבת עבור localhost
+Allowed hosts	מארחים מורשים
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	רשימה מופרדת בפסיקים של שמות מארחים וכתובות IP שדרכם Kitsunarr אמור להיות נגיש, כולל שם המארח של המערכת או שם הקונטיינר. השאר ריק כדי לאפשר את כל המארחים. נדרש כאשר האימות אינו נדרש תמיד. לדוגמה: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	סמוך על כתובות CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	התייחס לכתובות CGNAT ‏(100.64.0.0/10, למשל Tailscale) כמקומיות
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	חיצוני: Kitsunarr אינו מבקש התחברות ומסתמך על הפרוקסי ההפוך שלפניו. השתמש בזה רק מאחורי פרוקסי שמאמת כל בקשה.
+Register Kitsunarr with your provider using the redirect URI	רשום את Kitsunarr אצל הספק שלך עם כתובת ה-URI להפניה
+. Saving signs out password sessions; you then sign in through the provider.	. השמירה מנתקת הפעלות שהתחברו בסיסמה; לאחר מכן מתחברים דרך הספק.
+OIDC Authority	רשות OIDC
+The URL of the OIDC provider (https://).	כתובת ה-URL של ספק ה-OIDC ‏(https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	ה-Client ID הרשום אצל ספק ה-OIDC.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	ה-Client Secret הרשום אצל ספק ה-OIDC.
+OIDC User	משתמש OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	כתובת הדוא"ל המאומתת או מזהה הנושא (sub) אצל ספק ה-OIDC שרשאי להתחבר ל-Kitsunarr.
+OIDC Scopes	היקפי OIDC
+The scopes to request from the OIDC provider; must include openid.	ההיקפים שיש לבקש מספק ה-OIDC; חייב לכלול openid.
+Set in config.toml or the environment, which take precedence: {}.	מוגדר ב-config.toml או בסביבה, שגוברים: {}.
+Backup settings saved.	הגדרות הגיבוי נשמרו.
+Interval (days)	מרווח (ימים)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	באיזו תדירות נוצר גיבוי אוטומטי (1-7 ימים). גיבוי ידני מתחיל את המרווח מחדש.
+Backup interval in days	מרווח הגיבוי בימים
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	גיבויים אוטומטיים ישנים מזה נמחקים (1-90 ימים). גיבויים ידניים נשמרים.
+Backup retention in days	זמן שמירת הגיבויים בימים
+A quality without an override uses the global sizes of	איכות ללא דריסה משתמשת בגדלים הגלובליים של
+Settings › Quality	הגדרות › איכות
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. בתוך דריסה, ריק פירושו ללא הגבלה; מקסימום של אפס פירושו גם ללא הגבלה.
+Signed in. Save to keep the token.	מחובר. שמור כדי לשמור את האסימון.
+Redirect URL to register with your API client:	כתובת URL להפניה לרישום בלקוח ה-API שלך:
+Test all	בדוק הכל
+All {} passed their test.	כל ה{} עברו את הבדיקה.
+{} of {} failed their test.	{} מתוך {} נכשלו בבדיקה.
+Test every {} entry	בדוק כל רשומת {}
+Test results	תוצאות הבדיקה
+passed with warnings	עבר עם אזהרות
+Warning:	אזהרה:
+Dismiss test results	סגור את תוצאות הבדיקה
+Delete for upgrade	מחק לצורך שדרוג
+Metadata sources saved.	מקורות המטא-דאטה נשמרו.
+Order	סדר
+Enable {}	הפעל את {}
+Move {} up	הזז את {} למעלה
+Move {} down	הזז את {} למטה
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	"הוסף מדיה" מציג את הקטלוגים המופעלים בסדר הזה, ו"כל הקטלוגים המופעלים" ממזג את התוצאות שלהם בסדר הזה. קטלוגים מושבתים אינם מוצעים ואין מחפשים בהם; כותרים שכבר שייכים לאחד מהם עדיין מתרעננים ממנו. שמור למטה כדי להחיל.
+Enable at least one metadata source.	הפעל לפחות מקור מטא-דאטה אחד.
+Mixed	מעורב
+Unlimited	ללא הגבלה
+0 GiB/h	0 GiB/h
+{} min: {}	{} דק': {}
+No limit	אין הגבלה
+Quality definitions saved.	הגדרות האיכות נשמרו.
+Quality definitions reset to the defaults.	הגדרות האיכות אופסו לברירות המחדל.
+Reset definitions	אפס הגדרות
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	הגדלים הם ב-MiB לכל דקת זמן ריצה; הגודל לשעה מוצג מתחת לכל אחד. גרסה מחוץ למגבלות של איכות נדחית; הגודל המועדף מדרג גרסאות. פרופילים יכולים לשמור מגבלות משלהם (
+Settings › Quality profiles	הגדרות › פרופילי איכות
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): "מעורב" פירושו שהפרופילים משתמשים במגבלות שונות, וערך שמוזן כאן נכתב לכל פרופיל.
+Title of {}	כותרת של {}
+{} size of {} (MiB per minute)	גודל {} של {} (MiB לדקה)
+Profiles use different limits	הפרופילים משתמשים במגבלות שונות
+No minimum	ללא מינימום
+Hide retired qualities	הסתר איכויות שהוצאו משימוש
+Show retired qualities	הצג איכויות שהוצאו משימוש
+Reset quality definitions	אפס הגדרות איכות
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	לתת לכל איכות סטנדרטית את הכותרת ומגבלות הגודל המוגדרות כברירת מחדל? קביעות מוגדרות מותאמות והמגבלות של הפרופילים נשמרות.
+Reset	אפס
+RefreshMonitoredDownloads	רענן הורדות במעקב
+Reads the download clients and imports completed downloads Kitsunarr grabbed	קורא את לקוחות ההורדות ומייבא הורדות שהושלמו ש-Kitsunarr תפס
+ProcessPendingJellyfinRefresh	עבד רענוני Jellyfin ממתינים
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	מרענן ספריות Jellyfin שיש להן ייבואים ממתינים (לפי מצב הרענון של כל חיבור)
+SyncJellyfinWatched	סנכרן צפיות Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	קורא באילו פרקים צפה משתמש Jellyfin (במרווח של החיבור עצמו)
+CleanUpRecycleBin	נקה את סל המחזור
+Deletes files kept in the recycle bin longer than the media management setting allows	מוחק קבצים שנשמרו בסל המחזור יותר זמן ממה שהגדרת ניהול המדיה מתירה
+RescanFolders	סרוק תיקיות מחדש
+Scans series and movie folders: forgets files that are gone and adds files found there	סורק תיקיות של סדרות וסרטים: שוכח קבצים שנעלמו ומוסיף קבצים שנמצאו בהן
+RefreshMetadata	רענן מטא-דאטה
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	מרענן כותרים מקטלוגי המטא-דאטה שלהם (נמשכים כל 6 שעות, שהסתיימו מדי חודש)
+Housekeeping	תחזוקה
+Purges expired sessions, prunes task history and checks database integrity	מנקה הפעלות שפג תוקפן, גוזם את היסטוריית המשימות ובודק את שלמות מסד הנתונים
+CleanupSessions	נקה הפעלות
+Removes expired login sessions	מסיר הפעלות התחברות שפג תוקפן
+HealthCheck	בדיקת תקינות
+Re-evaluates health checks, notifies connected browsers and sends health notifications	מעריך מחדש את בדיקות התקינות, מודיע לדפדפנים המחוברים ושולח התראות תקינות
+SQLite database integrity check failed: {}. Restore from a known-good backup.	בדיקת השלמות של מסד הנתונים SQLite נכשלה: {}. שחזר מגיבוי תקין ידוע.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	בדיקת השלמות של מסד הנתונים SQLite לא החזירה תוצאה. שחזר מגיבוי תקין ידוע אם מתרחשות שגיאות במסד הנתונים.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	בדיקת השלמות של מסד הנתונים SQLite נכשלה: {} הפרות של מפתח זר. שחזר מגיבוי תקין ידוע.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	אין אינדקסרים זמינים עם סנכרון RSS מופעל, Kitsunarr לא יתפוס גרסאות חדשות באופן אוטומטי
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	כל האינדקסרים התומכים ב-RSS אינם זמינים באופן זמני עקב שגיאות אינדקסר אחרונות
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	אין אינדקסרים זמינים עם חיפוש אוטומטי מופעל, Kitsunarr לא יספק תוצאות חיפוש אוטומטי
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	אין אינדקסרים זמינים עם חיפוש אינטראקטיבי מופעל, Kitsunarr לא יספק תוצאות חיפוש אינטראקטיבי
+All search-capable indexers are temporarily unavailable due to recent indexer errors	כל האינדקסרים התומכים בחיפוש אינם זמינים באופן זמני עקב שגיאות אינדקסר אחרונות
+All indexers are unavailable due to failures for more than 6 hours	כל האינדקסרים אינם זמינים עקב כשלים במשך יותר מ-6 שעות
+Indexers unavailable due to failures for more than 6 hours: {}	אינדקסרים שאינם זמינים עקב כשלים במשך יותר מ-6 שעות: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	אינדקסרים המשתמשים בנקודת הקצה 'all' של Jackett שאינה נתמכת: {}
+Indexers with invalid download clients: {}.	אינדקסרים עם לקוחות הורדות לא חוקיים: {}.
+Enable Completed Download Handling	הפעל טיפול בהורדות שהושלמו
+All notifications are unavailable due to failures	כל ההתראות אינן זמינות עקב כשלים
+Notifications unavailable due to failures: {}	התראות שאינן זמינות עקב כשלים: {}
+All lists are unavailable due to failures	כל הרשימות אינן זמינות עקב כשלים
+Lists unavailable due to failures: {}	רשימות שאינן זמינות עקב כשלים: {}
+Missing root folder for import list(s): {}	חסרה תיקיית שורש עבור רשימות ייבוא: {}
+Multiple root folders are missing for import lists: {}	חסרות מספר תיקיות שורש עבור רשימות ייבוא: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	לא ניתן לכתוב לתיקיית סל המחזור שהוגדרה: {}. ודא שהנתיב קיים ושהמשתמש שמריץ את Kitsunarr יכול לכתוב אליו
+Unable to write to the backup folder {}; scheduled backups will fail.	לא ניתן לכתוב לתיקיית הגיבוי {}; גיבויים מתוזמנים ייכשלו.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	עדכן את מפתח ה-API כך שיכלול לפחות 20 תווים. ניתן לעשות זאת דרך ההגדרות או קובץ התצורה
+Series {} was removed from {}	הסדרה {} הוסרה מ-{}
+Series {} were removed from {}	הסדרות {} הוסרו מ-{}
+Mount containing a series path is mounted read-only: {}	נקודת עגינה שמכילה נתיב של סדרה מעוגנת לקריאה בלבד: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	לקוח ההורדות {} מוגדר להסיר הורדות שהושלמו. הדבר עלול לגרום להסרת הורדות מהלקוח לפני ש-Kitsunarr יוכל לייבא אותן.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	בלקוח ההורדות {} מופעל מיון {} עבור הקטגוריה של Kitsunarr. כדאי להשבית את המיון בלקוח ההורדות כדי להימנע מבעיות ייבוא.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	לקוח ההורדות {} שומר הורדות בתיקיית השורש {}. אין להוריד לתיקיית שורש.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	לקוח ההורדות המרוחק {} שומר הורדות ב-{} אך זה אינו נתיב {} חוקי. בדוק את מיפויי הנתיבים המרוחקים ואת הגדרות לקוח ההורדות.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	אתה משתמש ב-Docker; לקוח ההורדות {} שומר הורדות ב-{} אך זה אינו נתיב {} חוקי. בדוק את מיפויי הנתיבים המרוחקים ואת הגדרות לקוח ההורדות.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	לקוח ההורדות המקומי {} שומר הורדות ב-{} אך זה אינו נתיב {} חוקי. בדוק את הגדרות לקוח ההורדות.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	אתה משתמש ב-Docker; לקוח ההורדות {} שומר הורדות ב-{} אך נראה שהתיקייה הזו אינה קיימת בתוך הקונטיינר. בדוק את מיפויי הנתיבים המרוחקים ואת הגדרות אמצעי האחסון של הקונטיינר.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	לקוח ההורדות המרוחק {} שומר הורדות ב-{} אך נראה שהתיקייה הזו אינה קיימת. כנראה מיפוי נתיב מרוחק חסר או שגוי.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	לקוח ההורדות {} שומר הורדות ב-{} אך Kitsunarr אינו יכול לראות את התיקייה הזו. ייתכן שתצטרך לשנות את ההרשאות של התיקייה.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr יכול לראות את הפרק שהורד {} אך אינו יכול לגשת אליו. כנראה שגיאת הרשאות.
+File {} was removed part way through processing.	הקובץ {} הוסר באמצע העיבוד.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr נכשל בייבוא פרק אחד או יותר. בדוק את היומנים לפרטים.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	לקוח ההורדות המרוחק {} דיווח על קבצים ב-{} אך זה אינו נתיב {} חוקי. בדוק את מיפויי הנתיבים המרוחקים ואת הגדרות לקוח ההורדות.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	אתה משתמש ב-Docker; לקוח ההורדות {} דיווח על קבצים ב-{} אך זה אינו נתיב {} חוקי. בדוק את מיפויי הנתיבים המרוחקים ואת הגדרות לקוח ההורדות.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	לקוח ההורדות המקומי {} דיווח על קבצים ב-{} אך זה אינו נתיב {} חוקי. בדוק את הגדרות לקוח ההורדות.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr יכול לראות את תיקיית ההורדה {} אך אינו יכול לגשת אליה. כנראה שגיאת הרשאות.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	לקוח ההורדות המרוחק {} דיווח על קבצים ב-{} אך נראה שהתיקייה הזו אינה קיימת. כנראה חסר מיפוי נתיב מרוחק.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	לקוח ההורדות {} דיווח על קבצים ב-{} אך Kitsunarr אינו יכול לראות את התיקייה הזו. ייתכן שתצטרך לשנות את ההרשאות של התיקייה.
+The configured password reset token is shorter than {} characters and is being ignored	אסימון איפוס הסיסמה שהוגדר קצר מ-{} תווים והמערכת מתעלמת ממנו
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	מוגדר אסימון לאיפוס סיסמה. הסר את משתנה הסביבה KITSUNARR_AUTH_RESET_TOKEN (או את reset_token ב-config.toml) כשלא תזדקק לו עוד
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	אימות OIDC מופעל, אך לא כל השדות רשות, Client ID, Client Secret, משתמש והיקפים מוגדרים
+The OIDC Authority must start with 'https://'	רשות ה-OIDC חייבת להתחיל ב-'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	לא ניתן לאחזר את תצורת ה-OIDC מ-{}; ההתחברות דרך ספק הזהות תיכשל עד שיהיה ניתן להגיע אליו
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	עדיין לא הוגדרו תיקיות שורש. הוסף אחת בהגדרות → ניהול מדיה או ייבא התקנה קיימת.
+Root folder {} is missing or not accessible.	תיקיית השורש {} חסרה או שאינה נגישה.
+Root folder {} has only {} MiB free.	בתיקיית השורש {} נותרו רק {} MiB פנויים.
+No enabled {} is configured; automatic downloads are not possible.	לא הוגדר {} מופעל; הורדות אוטומטיות אינן אפשריות.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	ה{} האלה נשמרו מההתקנה הקודמת שלך אך עדיין אינם ממומשים באופן מקורי: {}.
+All download clients are unavailable due to failures	כל לקוחות ההורדות אינם זמינים עקב כשלים
+Download clients are unavailable due to failures: {}	לקוחות הורדות שאינם זמינים עקב כשלים: {}
+All indexers are unavailable due to failures	כל האינדקסרים אינם זמינים עקב כשלים
+Indexers unavailable due to failures: {}	אינדקסרים שאינם זמינים עקב כשלים: {}
+Failed to resolve the IP address of the configured proxy host {}	נכשל פענוח כתובת ה-IP של מארח הפרוקסי שהוגדר {}
+The data directory has only {} MiB free; the database may fail to write.	בתיקיית הנתונים נותרו רק {} MiB פנויים; ייתכן שמסד הנתונים לא יצליח לכתוב.

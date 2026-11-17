@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ dabartinis numeris
 or	arba
 1 title	1 kūrinys
+Episode titles (one per line)	Epizodų pavadinimai (po vieną eilutėje)
+For conditions that ignore episode titles.	Sąlygoms, kurios ignoruoja epizodų pavadinimus.
+Test episode titles	Bandomieji epizodų pavadinimai
+· group {}	· grupė {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Tikrinant leidimų pavadinimus neįtraukti žinomų epizodų pavadinimų, kad epizodo pavadinimo žodžiai nebūtų laikomi paslauga ar leidimo grupe.
+Ignore episode titles {}	Ignoruoti epizodų pavadinimus {}
+Ignore episode titles	Ignoruoti epizodų pavadinimus
+Alternative group	Alternatyvi grupė
+Alternative group {}	Alternatyvi grupė {}
+Group anime seasons	Grupuoti anime sezonus
+Anime group {}	Anime grupė {}
+Group of {} · {}	Grupėje: {} · {}
+Import progress	Importavimo eiga
+Waiting to import	Laukiama importavimo
+Import progress of {}	Importavimo eiga: {}
+Import details of {}	Importavimo informacija: {}
+{} / {} episodes imported	Importuota epizodų: {} / {}
+· {} not imported	· neimportuota: {}
+Series, anime or film title, e.g. Severance	Serialo, anime ar filmo pavadinimas, pvz., Severance
+All enabled catalogues	Visi įjungti katalogai
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Nėra įjungto katalogo, kuriame būtų galima ieškoti: įjunkite vieną arba įveskite jo API raktą skiltyje Nustatymai › Metaduomenų šaltiniai.
+Searches every enabled catalogue, results in your order:	Ieško visuose įjungtuose kataloguose, rezultatai pateikiami jūsų tvarka:
+Grouping	Grupavimas
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Automatinis grupuoja kūrinį su jo franšize ar kolekcija pagal oficialius ryšius. Išjungtas palieka jį atskirai.
+Automatic (official relations)	Automatinis (oficialūs ryšiai)
+Too many failed sign in attempts. Please try again in {} minute(s).	Per daug nepavykusių bandymų prisijungti. Bandykite dar kartą po {} min.
+Reset your password	Atkurkite slaptažodį
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr įrašys vienkartinį atkūrimo raktą į savo žurnalą. Nukopijuokite jį iš eilutės
+line in the latest log (System › Logs, or the container's output).	naujausiame žurnale (Sistema › Žurnalai arba konteinerio išvestis).
+Write a reset token to the log	Įrašyti atkūrimo raktą į žurnalą
+I already have a reset token	Jau turiu atkūrimo raktą
+Back to sign in	Grįžti į prisijungimą
+Your password has been reset, sign in with your new password.	Jūsų slaptažodis atkurtas, prisijunkite nauju slaptažodžiu.
+Unable to sign in with your identity provider.	Nepavyko prisijungti per tapatybės teikėją.
+Incorrect username or password.	Neteisingas naudotojo vardas arba slaptažodis.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC autentifikavimas įjungtas, bet netinkamai sukonfigūruotas. Prisijunkite slaptažodžiu ir atnaujinkite OIDC nustatymus (Nustatymai › Bendra › Sauga arba konfigūracijos failas).
+Sign in with SSO	Prisijungti per SSO
+You will be sent to your identity provider.	Būsite nukreipti į savo tapatybės teikėją.
+Forgot your password?	Pamiršote slaptažodį?
+Invalid or expired reset token.	Neteisingas arba nebegaliojantis atkūrimo raktas.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Naudotojo vardas ir slaptažodis privalomi, slaptažodžiai turi sutapti, o slaptažodį turi sudaryti bent tiek simbolių: {}.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Naujas atkūrimo raktas į žurnalą neįrašytas. Gali būti, kad vienas jau galioja, todėl pirmiausia patikrinkite žurnalą. Paleidus Kitsunarr iš naujo jis išvalomas ir galima paprašyti kito.
+Enter the token from the	Įveskite raktą iš eilutės
+line in the log. It's valid for 15 minutes and can only be used once. If you set	žurnale. Jis galioja 15 minučių ir gali būti panaudotas tik kartą. Jei nustatėte
+Reset token	Atkūrimo raktas
+Confirm new password	Patvirtinkite naują slaptažodį
+Reset password	Atkurti slaptažodį
+Signed out	Atsijungta
+You have been signed out of Kitsunarr.	Jūs atsijungėte nuo Kitsunarr.
+Sign in again	Prisijungti dar kartą
+Search for missing	Ieškoti trūkstamų
+Month	Mėnuo
+Week	Savaitė
+Forecast	Prognozė
+Day	Diena
+Agenda	Darbotvarkė
+On disk	Diske
+Not aired yet	Dar netransliuota
+Search for the episodes shown that aired and have no file	Ieškoti rodomų epizodų, kurie jau transliuoti ir neturi failo
+Previous period	Ankstesnis laikotarpis
+Next period	Kitas laikotarpis
+Calendar view	Kalendoriaus rodinys
+Nothing airs in this period.	Šiuo laikotarpiu nieko netransliuojama.
+Legend	Legenda
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Išjungta pašalina serialą iš jo anime grupės ir neleidžia jo grupuoti automatiškai
+Disabled removes the film from its collection and keeps it out of automatic grouping	Išjungta pašalina filmą iš jo kolekcijos ir neleidžia jo grupuoti automatiškai
+Filter	Filtras
+Filter by path	Filtruoti pagal kelią
+All paths	Visi keliai
+Combine filters	Derinti filtrus
+Show series matching every selected filter	Rodyti serialus, atitinkančius visus pasirinktus filtrus
+Clear combined filters	Išvalyti derinamus filtrus
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Kiekvieną anime grupę (Tanukarr anime grupavimas) rodyti vieną kartą, pagal pirmąjį jos sezoną
+Save the current filters as a filter of your own	Išsaugoti dabartinius filtrus kaip savo filtrą
+Save filter…	Išsaugoti filtrą…
+Shown series	Rodomi serialai
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr negali pritaikyti šių išsaugoto filtro sąlygų, todėl jos praleidžiamos:
+The selected filters contradict each other, so no series can match all of them.	Pasirinkti filtrai prieštarauja vienas kitam, todėl joks serialas negali atitikti jų visų.
+No series match the selected filters.	Pasirinktus filtrus atitinkančių serialų nėra.
+Filter "{}" saved.	Filtras „{}“ išsaugotas.
+Save filter	Išsaugoti filtrą
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Filtras išsaugo pasirinktą filtrą, derinamus filtrus ir kelią; jis rodomas kartu su įtaisytaisiais filtrais.
+Filter label	Filtro pavadinimas
+Delete saved filter	Ištrinti išsaugotą filtrą
+Delete this saved filter? The series are not changed.	Ištrinti šį išsaugotą filtrą? Serialai nekeičiami.
+Monitored only	Tik stebimi
+Unmonitored only	Tik nestebimi
+Continuing only	Tik tęsiami
+Ended only	Tik baigti
+Missing episodes	Trūkstami epizodai
+Security settings saved.	Saugos nustatymai išsaugoti.
+Security	Sauga
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Kad būtų išvengta nuotolinės prieigos be autentifikavimo, Kitsunarr reikalauja autentifikavimo. Pasirinktinai galite jį išjungti vietiniams adresams.
+Authentication	Autentifikavimas
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Kaip naudotojai prisijungia: per Kitsunarr prisijungimo puslapį arba per jūsų OpenID Connect tapatybės teikėją.
+Forms (sign-in page)	Formos (prisijungimo puslapis)
+OIDC (identity provider)	OIDC (tapatybės teikėjas)
+External (reverse proxy)	Išorinis (atvirkštinis tarpinis serveris)
+Authentication required	Autentifikavimas privalomas
+Require authentication for every request, or not for requests from local addresses or this machine.	Reikalauti autentifikavimo kiekvienai užklausai arba ne užklausoms iš vietinių adresų ar šio kompiuterio.
+Disabled for localhost	Išjungta vietiniam kompiuteriui
+Allowed hosts	Leidžiami serveriai
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kableliais atskirtas serverių vardų ir IP adresų, kuriais Kitsunarr turi būti pasiekiama, sąrašas, įskaitant sistemos serverio vardą arba konteinerio pavadinimą. Palikite tuščią, kad būtų leidžiami visi serveriai. Privaloma, kai autentifikavimas reikalaujamas ne visada. Pavyzdžiui: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Pasitikėti CGNAT adresais
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Laikyti CGNAT adresus (100.64.0.0/10, pvz., Tailscale) vietiniais
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Išorinis: Kitsunarr neprašo prisijungti ir pasikliauja priešais ją esančiu atvirkštiniu tarpiniu serveriu. Naudokite tai tik už tarpinio serverio, kuris autentifikuoja kiekvieną užklausą.
+Register Kitsunarr with your provider using the redirect URI	Užregistruokite Kitsunarr pas savo teikėją naudodami peradresavimo URI
+. Saving signs out password sessions; you then sign in through the provider.	. Išsaugojus atjungiami slaptažodžiu prisijungę seansai; tada prisijungiate per teikėją.
+OIDC Authority	OIDC Authority
+The URL of the OIDC provider (https://).	OIDC teikėjo URL (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID, užregistruotas OIDC teikėjo sistemoje.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret, užregistruotas OIDC teikėjo sistemoje.
+OIDC User	OIDC naudotojas
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Patvirtintas el. pašto adresas arba subjekto identifikatorius (sub) OIDC teikėjo sistemoje, kuriam leidžiama prisijungti prie Kitsunarr.
+OIDC Scopes	OIDC sritys
+The scopes to request from the OIDC provider; must include openid.	Iš OIDC teikėjo prašomos sritys (scopes); turi apimti openid.
+Set in config.toml or the environment, which take precedence: {}.	Nustatyta config.toml arba aplinkoje, kurie turi pirmenybę: {}.
+Backup settings saved.	Atsarginių kopijų nustatymai išsaugoti.
+Interval (days)	Intervalas (dienomis)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Kaip dažnai automatiškai daroma atsarginė kopija (1–7 dienos). Rankinė atsarginė kopija intervalą pradeda iš naujo.
+Backup interval in days	Atsarginių kopijų intervalas dienomis
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Senesnės automatinės atsarginės kopijos ištrinamos (1–90 dienų). Rankinės atsarginės kopijos išsaugomos.
+Backup retention in days	Atsarginių kopijų saugojimo laikas dienomis
+A quality without an override uses the global sizes of	Kokybė be perrašymo naudoja bendruosius dydžius iš
+Settings › Quality	Nustatymai › Kokybė
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Perrašyme tuščia reikšmė reiškia „be ribos“; didžiausia reikšmė nulis taip pat reiškia „be ribos“.
+Signed in. Save to keep the token.	Prisijungta. Išsaugokite, kad išliktų prieigos raktas.
+Redirect URL to register with your API client:	Peradresavimo URL, kurį reikia užregistruoti jūsų API kliente:
+Test all	Testuoti visus
+All {} passed their test.	Visi ({}) sėkmingai praėjo testą.
+{} of {} failed their test.	Testo nepraėjo: {} iš {}.
+Test every {} entry	Testuoti kiekvieną įrašą ({})
+Test results	Testų rezultatai
+passed with warnings	sėkmingai, su įspėjimais
+Warning:	Įspėjimas:
+Dismiss test results	Atmesti testų rezultatus
+Delete for upgrade	Ištrinant dėl atnaujinimo
+Metadata sources saved.	Metaduomenų šaltiniai išsaugoti.
+Order	Tvarka
+Enable {}	Įjungti {}
+Move {} up	Perkelti {} aukštyn
+Move {} down	Perkelti {} žemyn
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Medijos pridėjimas pateikia įjungtus katalogus šia tvarka, o „Visi įjungti katalogai“ sujungia jų rezultatus šia tvarka. Išjungtuose kataloguose neieškoma ir jie nesiūlomi; kūriniai, kurie jau priklauso vienam iš jų, iš jo toliau atnaujinami. Norėdami pritaikyti, išsaugokite žemiau.
+Enable at least one metadata source.	Įjunkite bent vieną metaduomenų šaltinį.
+Mixed	Mišrus
+Unlimited	Neribota
+0 GiB/h	0 GiB/val.
+{} min: {}	{} min.: {}
+No limit	Be ribos
+Quality definitions saved.	Kokybės apibrėžtys išsaugotos.
+Quality definitions reset to the defaults.	Kokybės apibrėžtys atkurtos į numatytąsias.
+Reset definitions	Atkurti apibrėžtis
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Dydžiai nurodomi MiB per trukmės minutę; valandinis dydis rodomas po kiekvienu. Leidimas, neatitinkantis kokybės ribų, atmetamas; pageidaujamas dydis lemia leidimų reitingą. Profiliai gali turėti savo ribas (
+Settings › Quality profiles	Nustatymai › Kokybės profiliai
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): „Mišrus“ reiškia, kad profiliai naudoja skirtingas ribas, o čia įvesta reikšmė įrašoma į kiekvieną profilį.
+Title of {}	Pavadinimas: {}
+{} size of {} (MiB per minute)	{} dydis, {} (MiB per minutę)
+Profiles use different limits	Profiliai naudoja skirtingas ribas
+No minimum	Be minimumo
+Hide retired qualities	Slėpti nebenaudojamas kokybes
+Show retired qualities	Rodyti nebenaudojamas kokybes
+Reset quality definitions	Atkurti kokybės apibrėžtis
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Grąžinti kiekvienai standartinei kokybei numatytąjį pavadinimą ir dydžio ribas? Pasirinktiniai šablonai ir profilių ribos išsaugomi.
+Reset	Atkurti
+RefreshMonitoredDownloads	Atnaujinti stebimus atsisiuntimus
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Nuskaito atsisiuntimo klientus ir importuoja Kitsunarr paimtus baigtus atsisiuntimus
+ProcessPendingJellyfinRefresh	Apdoroti laukiančius Jellyfin atnaujinimus
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Atnaujina Jellyfin bibliotekas, kuriose laukia importai (pagal kiekvieno ryšio atnaujinimo režimą)
+SyncJellyfinWatched	Sinchronizuoti Jellyfin peržiūras
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Nuskaito, kuriuos epizodus Jellyfin naudotojas peržiūrėjo (pagal paties ryšio intervalą)
+CleanUpRecycleBin	Išvalyti šiukšlinę
+Deletes files kept in the recycle bin longer than the media management setting allows	Ištrina šiukšlinėje laikomus failus, kurie ten išbuvo ilgiau, nei leidžia medijos valdymo nustatymas
+RescanFolders	Iš naujo nuskaityti aplankus
+Scans series and movie folders: forgets files that are gone and adds files found there	Nuskaito serialų ir filmų aplankus: pamiršta dingusius failus ir prideda ten rastus failus
+RefreshMetadata	Atnaujinti metaduomenis
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Atnaujina kūrinius iš jų metaduomenų katalogų (tęsiamus kas 6 valandas, baigtus kas mėnesį)
+Housekeeping	Priežiūra
+Purges expired sessions, prunes task history and checks database integrity	Išvalo nebegaliojančius seansus, apkarpo užduočių istoriją ir tikrina duomenų bazės vientisumą
+CleanupSessions	Išvalyti seansus
+Removes expired login sessions	Pašalina nebegaliojančius prisijungimo seansus
+HealthCheck	Būsenos patikra
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Iš naujo įvertina būsenos patikras, praneša prijungtoms naršyklėms ir siunčia būsenos pranešimus
+SQLite database integrity check failed: {}. Restore from a known-good backup.	SQLite duomenų bazės vientisumo patikra nepavyko: {}. Atkurkite iš patikimos atsarginės kopijos.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	SQLite duomenų bazės vientisumo patikra negrąžino rezultato. Jei pasitaiko duomenų bazės klaidų, atkurkite iš patikimos atsarginės kopijos.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	SQLite duomenų bazės vientisumo patikra nepavyko: išorinio rakto pažeidimų: {}. Atkurkite iš patikimos atsarginės kopijos.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Nėra indeksuotojų su įjungta RSS sinchronizacija, Kitsunarr automatiškai nepaims naujų leidimų
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Visi RSS palaikantys indeksuotojai laikinai nepasiekiami dėl neseniai įvykusių indeksuotojų klaidų
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Nėra indeksuotojų su įjungta automatine paieška, Kitsunarr nepateiks jokių automatinės paieškos rezultatų
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Nėra indeksuotojų su įjungta interaktyvia paieška, Kitsunarr nepateiks jokių interaktyvios paieškos rezultatų
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Visi paiešką palaikantys indeksuotojai laikinai nepasiekiami dėl neseniai įvykusių indeksuotojų klaidų
+All indexers are unavailable due to failures for more than 6 hours	Visi indeksuotojai nepasiekiami dėl klaidų ilgiau nei 6 valandas
+Indexers unavailable due to failures for more than 6 hours: {}	Indeksuotojai, nepasiekiami dėl klaidų ilgiau nei 6 valandas: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indeksuotojai, naudojantys nepalaikomą Jackett 'all' galinį tašką: {}
+Indexers with invalid download clients: {}.	Indeksuotojai su netinkamais atsisiuntimo klientais: {}.
+Enable Completed Download Handling	Įjunkite baigtų atsisiuntimų tvarkymą
+All notifications are unavailable due to failures	Visi pranešimai nepasiekiami dėl klaidų
+Notifications unavailable due to failures: {}	Pranešimai, nepasiekiami dėl klaidų: {}
+All lists are unavailable due to failures	Visi sąrašai nepasiekiami dėl klaidų
+Lists unavailable due to failures: {}	Sąrašai, nepasiekiami dėl klaidų: {}
+Missing root folder for import list(s): {}	Trūksta importavimo sąrašo (-ų) šakninio aplanko: {}
+Multiple root folders are missing for import lists: {}	Trūksta kelių importavimo sąrašų šakninių aplankų: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Nepavyksta rašyti į sukonfigūruotą šiukšlinės aplanką: {}. Įsitikinkite, kad šis kelias egzistuoja ir naudotojas, kuriuo paleista Kitsunarr, gali į jį rašyti
+Unable to write to the backup folder {}; scheduled backups will fail.	Nepavyksta rašyti į atsarginių kopijų aplanką {}; suplanuotos atsarginės kopijos nepavyks.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Atnaujinkite API raktą, kad jį sudarytų bent 20 simbolių. Tai galite padaryti nustatymuose arba konfigūracijos faile
+Series {} was removed from {}	Serialas {} buvo pašalintas iš {}
+Series {} were removed from {}	Serialai {} buvo pašalinti iš {}
+Mount containing a series path is mounted read-only: {}	Prijungtas skaidinys su serialo keliu prijungtas tik skaitymui: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Atsisiuntimo klientas {} nustatytas šalinti baigtus atsisiuntimus. Dėl to atsisiuntimai gali būti pašalinti iš kliento, kol Kitsunarr dar nespėjo jų importuoti.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Atsisiuntimo kliente {} Kitsunarr kategorijai įjungtas {} rūšiavimas. Kad išvengtumėte importavimo problemų, išjunkite rūšiavimą atsisiuntimo kliente.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Atsisiuntimo klientas {} deda atsisiuntimus į šakninį aplanką {}. Neturėtumėte atsisiųsti į šakninį aplanką.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Nuotolinis atsisiuntimo klientas {} deda atsisiuntimus į {}, bet tai nėra tinkamas {} kelias. Peržiūrėkite nuotolinių kelių susiejimus ir atsisiuntimo kliento nustatymus.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Naudojate docker; atsisiuntimo klientas {} deda atsisiuntimus į {}, bet tai nėra tinkamas {} kelias. Peržiūrėkite nuotolinių kelių susiejimus ir atsisiuntimo kliento nustatymus.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Vietinis atsisiuntimo klientas {} deda atsisiuntimus į {}, bet tai nėra tinkamas {} kelias. Peržiūrėkite atsisiuntimo kliento nustatymus.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Naudojate docker; atsisiuntimo klientas {} deda atsisiuntimus į {}, bet atrodo, kad šio katalogo konteineryje nėra. Peržiūrėkite nuotolinių kelių susiejimus ir konteinerio tomų nustatymus.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Nuotolinis atsisiuntimo klientas {} deda atsisiuntimus į {}, bet atrodo, kad šio katalogo nėra. Tikriausiai trūksta nuotolinio kelio susiejimo arba jis neteisingas.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Atsisiuntimo klientas {} deda atsisiuntimus į {}, bet Kitsunarr nemato šio katalogo. Gali tekti pakoreguoti aplanko teises.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr mato atsisiųstą epizodą {}, bet negali jo pasiekti. Tikriausiai teisių klaida.
+File {} was removed part way through processing.	Failas {} buvo pašalintas apdorojimo metu.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr nepavyko importuoti epizodo (-ų). Išsamesnės informacijos ieškokite žurnaluose.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Nuotolinis atsisiuntimo klientas {} pranešė apie failus {}, bet tai nėra tinkamas {} kelias. Peržiūrėkite nuotolinių kelių susiejimus ir atsisiuntimo kliento nustatymus.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Naudojate docker; atsisiuntimo klientas {} pranešė apie failus {}, bet tai nėra tinkamas {} kelias. Peržiūrėkite nuotolinių kelių susiejimus ir atsisiuntimo kliento nustatymus.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Vietinis atsisiuntimo klientas {} pranešė apie failus {}, bet tai nėra tinkamas {} kelias. Peržiūrėkite atsisiuntimo kliento nustatymus.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr mato atsisiuntimų katalogą {}, bet negali jo pasiekti. Tikriausiai teisių klaida.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Nuotolinis atsisiuntimo klientas {} pranešė apie failus {}, bet atrodo, kad šio katalogo nėra. Tikriausiai trūksta nuotolinio kelio susiejimo.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Atsisiuntimo klientas {} pranešė apie failus {}, bet Kitsunarr nemato šio katalogo. Gali tekti pakoreguoti aplanko teises.
+The configured password reset token is shorter than {} characters and is being ignored	Sukonfigūruotas slaptažodžio atkūrimo raktas trumpesnis nei {} simbolių, todėl ignoruojamas
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Sukonfigūruotas slaptažodžio atkūrimo raktas. Kai jo nebereikės, pašalinkite aplinkos kintamąjį KITSUNARR_AUTH_RESET_TOKEN (arba reset_token faile config.toml)
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC autentifikavimas įjungtas, bet sukonfigūruoti ne visi laukai: Authority, Client ID, Client Secret, naudotojas ir sritys
+The OIDC Authority must start with 'https://'	OIDC Authority turi prasidėti 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Nepavyksta gauti OIDC konfigūracijos iš {}, prisijungti per tapatybės teikėją nepavyks, kol jis nebus pasiekiamas
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Šakninių aplankų dar nesukonfigūruota. Pridėkite vieną skiltyje Nustatymai → Medijos valdymas arba importuokite esamą diegimą.
+Root folder {} is missing or not accessible.	Šakninio aplanko {} nėra arba jis nepasiekiamas.
+Root folder {} has only {} MiB free.	Šakniniame aplanke {} laisvos vietos liko tik {} MiB.
+No enabled {} is configured; automatic downloads are not possible.	Nesukonfigūruota jokio įjungto elemento ({}); automatiniai atsisiuntimai negalimi.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Šie elementai ({}) išsaugoti iš ankstesnio diegimo, bet dar nėra įgyvendinti savarankiškai: {}.
+All download clients are unavailable due to failures	Visi atsisiuntimo klientai nepasiekiami dėl klaidų
+Download clients are unavailable due to failures: {}	Atsisiuntimo klientai, nepasiekiami dėl klaidų: {}
+All indexers are unavailable due to failures	Visi indeksuotojai nepasiekiami dėl klaidų
+Indexers unavailable due to failures: {}	Indeksuotojai, nepasiekiami dėl klaidų: {}
+Failed to resolve the IP address of the configured proxy host {}	Nepavyko nustatyti sukonfigūruoto tarpinio serverio {} IP adreso
+The data directory has only {} MiB free; the database may fail to write.	Duomenų kataloge laisvos vietos liko tik {} MiB; duomenų bazei gali nepavykti įrašyti.

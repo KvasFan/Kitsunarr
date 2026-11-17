@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ الرقم الحالي
 or	أو
 1 title	عنوان واحد
+Episode titles (one per line)	عناوين الحلقات (عنوان في كل سطر)
+For conditions that ignore episode titles.	للشروط التي تتجاهل عناوين الحلقات.
+Test episode titles	عناوين حلقات الاختبار
+· group {}	· المجموعة {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	استبعاد عناوين الحلقات المعروفة عند فحص أسماء الإصدارات، حتى لا تُحتسب كلمات عنوان الحلقة خدمةً أو مجموعة إصدار.
+Ignore episode titles {}	تجاهل عناوين الحلقات {}
+Ignore episode titles	تجاهل عناوين الحلقات
+Alternative group	مجموعة بديلة
+Alternative group {}	مجموعة بديلة {}
+Group anime seasons	تجميع مواسم الأنمي
+Anime group {}	مجموعة الأنمي {}
+Group of {} · {}	مجموعة من {} · {}
+Import progress	تقدم الاستيراد
+Waiting to import	بانتظار الاستيراد
+Import progress of {}	تقدم استيراد {}
+Import details of {}	تفاصيل استيراد {}
+{} / {} episodes imported	تم استيراد {} / {} حلقة
+· {} not imported	· {} لم يُستورد
+Series, anime or film title, e.g. Severance	عنوان مسلسل أو أنمي أو فيلم، مثل Severance
+All enabled catalogues	كل الكتالوجات المفعّلة
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	لا يوجد كتالوج مفعّل يمكن البحث فيه: فعّل واحدًا أو أدخل مفتاح API الخاص به في الإعدادات › مصادر البيانات الوصفية.
+Searches every enabled catalogue, results in your order:	يبحث في كل الكتالوجات المفعّلة، والنتائج بترتيبك:
+Grouping	التجميع
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	«تلقائي» يجمع العنوان مع سلسلته أو مجموعته وفق العلاقات الرسمية. «معطّل» يُبقيه منفردًا.
+Automatic (official relations)	تلقائي (العلاقات الرسمية)
+Too many failed sign in attempts. Please try again in {} minute(s).	محاولات تسجيل دخول فاشلة كثيرة جدًا. يُرجى المحاولة مجددًا بعد {} دقيقة.
+Reset your password	إعادة تعيين كلمة المرور
+Kitsunarr will write a single-use reset token to its log. Copy it from the	سيكتب Kitsunarr رمز إعادة تعيين صالحًا لمرة واحدة في سجله. انسخه من السطر
+line in the latest log (System › Logs, or the container's output).	في أحدث سجل (النظام › السجلات، أو مخرجات الحاوية).
+Write a reset token to the log	كتابة رمز إعادة تعيين في السجل
+I already have a reset token	لديّ رمز إعادة تعيين بالفعل
+Back to sign in	العودة إلى تسجيل الدخول
+Your password has been reset, sign in with your new password.	تمت إعادة تعيين كلمة المرور، سجّل الدخول بكلمة المرور الجديدة.
+Unable to sign in with your identity provider.	تعذّر تسجيل الدخول عبر موفّر الهوية.
+Incorrect username or password.	اسم المستخدم أو كلمة المرور غير صحيحة.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	مصادقة OIDC مفعّلة لكنها غير مهيأة بشكل صحيح. سجّل الدخول بكلمة المرور وحدّث إعدادات OIDC (الإعدادات › عام › الأمان، أو ملف الإعدادات).
+Sign in with SSO	تسجيل الدخول عبر SSO
+You will be sent to your identity provider.	ستُحوَّل إلى موفّر الهوية الخاص بك.
+Forgot your password?	هل نسيت كلمة المرور؟
+Invalid or expired reset token.	رمز إعادة التعيين غير صالح أو منتهي الصلاحية.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	اسم المستخدم وكلمة المرور مطلوبان، ويجب أن تتطابق كلمتا المرور، ويجب ألا تقل كلمة المرور عن {} أحرف.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	لم يُكتب رمز إعادة تعيين جديد في السجل. قد يكون هناك رمز نشط بالفعل، لذا تحقق من السجل أولًا. إعادة تشغيل Kitsunarr تمسحه وتتيح لك طلب رمز آخر.
+Enter the token from the	أدخل الرمز من السطر
+line in the log. It's valid for 15 minutes and can only be used once. If you set	في السجل. الرمز صالح لمدة 15 دقيقة ولا يمكن استخدامه إلا مرة واحدة. إذا عيّنت
+Reset token	رمز إعادة التعيين
+Confirm new password	تأكيد كلمة المرور الجديدة
+Reset password	إعادة تعيين كلمة المرور
+Signed out	تم تسجيل الخروج
+You have been signed out of Kitsunarr.	تم تسجيل خروجك من Kitsunarr.
+Sign in again	تسجيل الدخول مجددًا
+Search for missing	البحث عن المفقود
+Month	شهر
+Week	أسبوع
+Forecast	التوقعات
+Day	يوم
+Agenda	جدول الأعمال
+On disk	على القرص
+Not aired yet	لم يُبث بعد
+Search for the episodes shown that aired and have no file	البحث عن الحلقات المعروضة التي بُثّت وليس لها ملف
+Previous period	الفترة السابقة
+Next period	الفترة التالية
+Calendar view	عرض التقويم
+Nothing airs in this period.	لا شيء يُبث في هذه الفترة.
+Legend	وسيلة الإيضاح
+Disabled removes the series from its anime group and keeps it out of automatic grouping	«معطّل» يزيل المسلسل من مجموعة الأنمي الخاصة به ويُبقيه خارج التجميع التلقائي
+Disabled removes the film from its collection and keeps it out of automatic grouping	«معطّل» يزيل الفيلم من مجموعته ويُبقيه خارج التجميع التلقائي
+Filter	تصفية
+Filter by path	التصفية حسب المسار
+All paths	كل المسارات
+Combine filters	دمج المرشحات
+Show series matching every selected filter	إظهار المسلسلات المطابقة لكل المرشحات المحددة
+Clear combined filters	مسح المرشحات المدمجة
+Show each anime group (Tanukarr's anime grouping) once, by its first season	إظهار كل مجموعة أنمي (تجميع الأنمي في Tanukarr) مرة واحدة، حسب موسمها الأول
+Save the current filters as a filter of your own	حفظ المرشحات الحالية كمرشح خاص بك
+Save filter…	حفظ المرشح…
+Shown series	المسلسلات المعروضة
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	لا يستطيع Kitsunarr تطبيق شروط المرشح المحفوظ هذه، لذا تم استبعادها:
+The selected filters contradict each other, so no series can match all of them.	المرشحات المحددة تتعارض مع بعضها، لذا لا يمكن لأي مسلسل أن يطابقها جميعًا.
+No series match the selected filters.	لا توجد مسلسلات تطابق المرشحات المحددة.
+Filter "{}" saved.	تم حفظ المرشح "{}".
+Save filter	حفظ المرشح
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	يحتفظ المرشح بالمرشح المحدد والمرشحات المدمجة والمسار؛ ويُدرج مع المرشحات المضمّنة.
+Filter label	تسمية المرشح
+Delete saved filter	حذف المرشح المحفوظ
+Delete this saved filter? The series are not changed.	حذف هذا المرشح المحفوظ؟ لن تتغير المسلسلات.
+Monitored only	المراقبة فقط
+Unmonitored only	غير المراقبة فقط
+Continuing only	المستمرة فقط
+Ended only	المنتهية فقط
+Missing episodes	الحلقات المفقودة
+Security settings saved.	تم حفظ إعدادات الأمان.
+Security	الأمان
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	لمنع الوصول عن بُعد دون مصادقة، يتطلب Kitsunarr المصادقة. يمكنك اختياريًا تعطيلها للعناوين المحلية.
+Authentication	المصادقة
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	طريقة تسجيل دخول المستخدمين: صفحة تسجيل الدخول في Kitsunarr، أو موفّر هوية OpenID Connect الخاص بك.
+Forms (sign-in page)	النماذج (صفحة تسجيل الدخول)
+OIDC (identity provider)	OIDC (موفّر الهوية)
+External (reverse proxy)	خارجي (وكيل عكسي)
+Authentication required	المصادقة مطلوبة
+Require authentication for every request, or not for requests from local addresses or this machine.	طلب المصادقة لكل طلب، أو عدم طلبها للطلبات الواردة من العناوين المحلية أو من هذا الجهاز.
+Disabled for localhost	معطّلة لـ localhost
+Allowed hosts	المضيفون المسموح بهم
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	قائمة مفصولة بفواصل بأسماء المضيفين وعناوين IP التي يمكن الوصول إلى Kitsunarr عبرها، بما في ذلك اسم مضيف النظام أو اسم الحاوية. اتركها فارغة للسماح بكل المضيفين. مطلوبة عندما لا تكون المصادقة مطلوبة دائمًا. مثال: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	الوثوق بعناوين CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	معاملة عناوين CGNAT ‏(100.64.0.0/10، مثل Tailscale) كعناوين محلية
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	خارجي: لا يطلب Kitsunarr أي تسجيل دخول ويعتمد على الوكيل العكسي الموجود أمامه. لا تستخدم هذا إلا خلف وكيل يصادق على كل طلب.
+Register Kitsunarr with your provider using the redirect URI	سجّل Kitsunarr لدى موفّرك باستخدام عنوان URI لإعادة التوجيه
+. Saving signs out password sessions; you then sign in through the provider.	. يؤدي الحفظ إلى تسجيل الخروج من جلسات كلمة المرور؛ ثم تسجّل الدخول عبر الموفّر.
+OIDC Authority	مرجع OIDC
+The URL of the OIDC provider (https://).	عنوان URL لموفّر OIDC ‏(https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID المسجّل لدى موفّر OIDC.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret المسجّل لدى موفّر OIDC.
+OIDC User	مستخدم OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	عنوان البريد الإلكتروني الموثّق أو معرّف الموضوع (sub) لدى موفّر OIDC الذي يُسمح له بتسجيل الدخول إلى Kitsunarr.
+OIDC Scopes	نطاقات OIDC
+The scopes to request from the OIDC provider; must include openid.	النطاقات المطلوبة من موفّر OIDC؛ يجب أن تتضمن openid.
+Set in config.toml or the environment, which take precedence: {}.	مُعيَّن في config.toml أو في البيئة، ولهما الأولوية: {}.
+Backup settings saved.	تم حفظ إعدادات النسخ الاحتياطي.
+Interval (days)	الفاصل الزمني (أيام)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	عدد مرات إنشاء نسخة احتياطية تلقائيًا (1-7 أيام). النسخ الاحتياطي اليدوي يعيد بدء الفاصل الزمني.
+Backup interval in days	الفاصل الزمني للنسخ الاحتياطي بالأيام
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	تُحذف النسخ الاحتياطية التلقائية الأقدم من هذه المدة (1-90 يومًا). تُحفظ النسخ الاحتياطية اليدوية.
+Backup retention in days	مدة الاحتفاظ بالنسخ الاحتياطية بالأيام
+A quality without an override uses the global sizes of	الجودة التي ليس لها تجاوز تستخدم الأحجام العامة في
+Settings › Quality	الإعدادات › الجودة
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. داخل التجاوز، الفارغ يعني بلا حد؛ والحد الأقصى صفر يعني أيضًا بلا حد.
+Signed in. Save to keep the token.	تم تسجيل الدخول. احفظ للاحتفاظ بالرمز.
+Redirect URL to register with your API client:	عنوان URL لإعادة التوجيه لتسجيله في عميل API الخاص بك:
+Test all	اختبار الكل
+All {} passed their test.	نجح الاختبار لجميع {}.
+{} of {} failed their test.	فشل الاختبار لـ {} من {}.
+Test every {} entry	اختبار كل إدخالات {}
+Test results	نتائج الاختبار
+passed with warnings	نجح مع تحذيرات
+Warning:	تحذير:
+Dismiss test results	إغلاق نتائج الاختبار
+Delete for upgrade	حذف للترقية
+Metadata sources saved.	تم حفظ مصادر البيانات الوصفية.
+Order	الترتيب
+Enable {}	تفعيل {}
+Move {} up	نقل {} لأعلى
+Move {} down	نقل {} لأسفل
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	تعرض «إضافة وسائط» الكتالوجات المفعّلة بهذا الترتيب، ويدمج "كل الكتالوجات المفعّلة" نتائجها بهذا الترتيب. لا تُعرض الكتالوجات المعطّلة ولا يُبحث فيها؛ أما العناوين التي تنتمي إلى أحدها فتظل تُحدَّث منه. احفظ أدناه للتطبيق.
+Enable at least one metadata source.	فعّل مصدرًا واحدًا على الأقل للبيانات الوصفية.
+Mixed	مختلط
+Unlimited	بلا حد
+0 GiB/h	0 GiB/ساعة
+{} min: {}	{} دقيقة: {}
+No limit	لا يوجد حد
+Quality definitions saved.	تم حفظ تعريفات الجودة.
+Quality definitions reset to the defaults.	تمت إعادة تعيين تعريفات الجودة إلى الإعدادات الافتراضية.
+Reset definitions	إعادة تعيين التعريفات
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	الأحجام بوحدة MiB لكل دقيقة من مدة التشغيل؛ ويظهر الحجم لكل ساعة أسفل كل منها. يُرفض الإصدار الذي يقع خارج حدود الجودة؛ ويُستخدم الحجم المفضل لترتيب الإصدارات. يمكن لملفات التعريف الاحتفاظ بحدودها الخاصة (
+Settings › Quality profiles	الإعدادات › ملفات تعريف الجودة
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): "مختلط" يعني أن ملفات التعريف تستخدم حدودًا مختلفة، وأي قيمة تُدخل هنا تُكتب في كل ملف تعريف.
+Title of {}	عنوان {}
+{} size of {} (MiB per minute)	الحجم {} لـ {} (MiB لكل دقيقة)
+Profiles use different limits	ملفات التعريف تستخدم حدودًا مختلفة
+No minimum	بلا حد أدنى
+Hide retired qualities	إخفاء الجودات المتقاعدة
+Show retired qualities	إظهار الجودات المتقاعدة
+Reset quality definitions	إعادة تعيين تعريفات الجودة
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	منح كل جودة قياسية عنوانها وحدود حجمها الافتراضية؟ تُحفظ الإعدادات المسبقة المخصصة وحدود ملفات التعريف الخاصة.
+Reset	إعادة تعيين
+RefreshMonitoredDownloads	تحديث التنزيلات المراقبة
+Reads the download clients and imports completed downloads Kitsunarr grabbed	يقرأ عملاء التنزيل ويستورد التنزيلات المكتملة التي جلبها Kitsunarr
+ProcessPendingJellyfinRefresh	معالجة تحديثات Jellyfin المعلّقة
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	يحدّث مكتبات Jellyfin التي لديها عمليات استيراد معلّقة (وفق وضع التحديث لكل اتصال)
+SyncJellyfinWatched	مزامنة مشاهدات Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	يقرأ الحلقات التي شاهدها مستخدم Jellyfin (وفق الفاصل الزمني الخاص بالاتصال)
+CleanUpRecycleBin	تنظيف سلة المحذوفات
+Deletes files kept in the recycle bin longer than the media management setting allows	يحذف الملفات المحفوظة في سلة المحذوفات لمدة أطول مما يسمح به إعداد إدارة الوسائط
+RescanFolders	إعادة فحص المجلدات
+Scans series and movie folders: forgets files that are gone and adds files found there	يفحص مجلدات المسلسلات والأفلام: ينسى الملفات المختفية ويضيف الملفات الموجودة فيها
+RefreshMetadata	تحديث البيانات الوصفية
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	يحدّث العناوين من كتالوجات بياناتها الوصفية (المستمرة كل 6 ساعات، والمنتهية شهريًا)
+Housekeeping	الصيانة
+Purges expired sessions, prunes task history and checks database integrity	يزيل الجلسات المنتهية، ويقلّص سجل المهام، ويفحص سلامة قاعدة البيانات
+CleanupSessions	تنظيف الجلسات
+Removes expired login sessions	يزيل جلسات تسجيل الدخول المنتهية
+HealthCheck	فحص السلامة
+Re-evaluates health checks, notifies connected browsers and sends health notifications	يعيد تقييم فحوصات السلامة، ويُخطر المتصفحات المتصلة، ويرسل إشعارات السلامة
+SQLite database integrity check failed: {}. Restore from a known-good backup.	فشل فحص سلامة قاعدة بيانات SQLite: {}. استعد من نسخة احتياطية معروفة بسلامتها.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	لم يُرجع فحص سلامة قاعدة بيانات SQLite أي نتيجة. استعد من نسخة احتياطية معروفة بسلامتها إذا كانت تحدث أخطاء في قاعدة البيانات.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	فشل فحص سلامة قاعدة بيانات SQLite: {} انتهاكات للمفاتيح الأجنبية. استعد من نسخة احتياطية معروفة بسلامتها.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	لا توجد مفهرسات متاحة مع تفعيل مزامنة RSS، ولن يجلب Kitsunarr الإصدارات الجديدة تلقائيًا
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	كل المفهرسات الداعمة لـ RSS غير متاحة مؤقتًا بسبب أخطاء حديثة في المفهرسات
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	لا توجد مفهرسات متاحة مع تفعيل البحث التلقائي، ولن يقدم Kitsunarr أي نتائج بحث تلقائي
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	لا توجد مفهرسات متاحة مع تفعيل البحث التفاعلي، ولن يقدم Kitsunarr أي نتائج بحث تفاعلي
+All search-capable indexers are temporarily unavailable due to recent indexer errors	كل المفهرسات الداعمة للبحث غير متاحة مؤقتًا بسبب أخطاء حديثة في المفهرسات
+All indexers are unavailable due to failures for more than 6 hours	كل المفهرسات غير متاحة بسبب أعطال لأكثر من 6 ساعات
+Indexers unavailable due to failures for more than 6 hours: {}	المفهرسات غير المتاحة بسبب أعطال لأكثر من 6 ساعات: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	المفهرسات التي تستخدم نقطة النهاية 'all' غير المدعومة في Jackett: {}
+Indexers with invalid download clients: {}.	المفهرسات ذات عملاء التنزيل غير الصالحين: {}.
+Enable Completed Download Handling	فعّل معالجة التنزيلات المكتملة
+All notifications are unavailable due to failures	كل الإشعارات غير متاحة بسبب أعطال
+Notifications unavailable due to failures: {}	الإشعارات غير المتاحة بسبب أعطال: {}
+All lists are unavailable due to failures	كل القوائم غير متاحة بسبب أعطال
+Lists unavailable due to failures: {}	القوائم غير المتاحة بسبب أعطال: {}
+Missing root folder for import list(s): {}	المجلد الجذر مفقود لقائمة (قوائم) الاستيراد: {}
+Multiple root folders are missing for import lists: {}	عدة مجلدات جذر مفقودة لقوائم الاستيراد: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	تعذّرت الكتابة إلى مجلد سلة المحذوفات المهيأ: {}. تأكد من وجود هذا المسار وأن المستخدم الذي يشغّل Kitsunarr يمكنه الكتابة فيه
+Unable to write to the backup folder {}; scheduled backups will fail.	تعذّرت الكتابة إلى مجلد النسخ الاحتياطي {}؛ ستفشل النسخ الاحتياطية المجدولة.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	يُرجى تحديث مفتاح API ليكون طوله 20 حرفًا على الأقل. يمكنك فعل ذلك من الإعدادات أو من ملف الإعدادات
+Series {} was removed from {}	أُزيل المسلسل {} من {}
+Series {} were removed from {}	أُزيلت المسلسلات {} من {}
+Mount containing a series path is mounted read-only: {}	نقطة التحميل التي تحتوي على مسار مسلسل محمّلة للقراءة فقط: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	عميل التنزيل {} مضبوط على إزالة التنزيلات المكتملة. قد يؤدي ذلك إلى إزالة التنزيلات من عميلك قبل أن يتمكن Kitsunarr من استيرادها.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	عميل التنزيل {} مفعّل فيه فرز {} لفئة Kitsunarr. يجب تعطيل الفرز في عميل التنزيل لتجنب مشكلات الاستيراد.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	عميل التنزيل {} يضع التنزيلات في المجلد الجذر {}. لا ينبغي التنزيل إلى مجلد جذر.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	عميل التنزيل البعيد {} يضع التنزيلات في {} لكن هذا ليس مسار {} صالحًا. راجع تعيينات المسارات البعيدة وإعدادات عميل التنزيل.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	أنت تستخدم Docker؛ عميل التنزيل {} يضع التنزيلات في {} لكن هذا ليس مسار {} صالحًا. راجع تعيينات المسارات البعيدة وإعدادات عميل التنزيل.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	عميل التنزيل المحلي {} يضع التنزيلات في {} لكن هذا ليس مسار {} صالحًا. راجع إعدادات عميل التنزيل.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	أنت تستخدم Docker؛ عميل التنزيل {} يضع التنزيلات في {} لكن يبدو أن هذا المجلد غير موجود داخل الحاوية. راجع تعيينات المسارات البعيدة وإعدادات وحدات تخزين الحاوية.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	عميل التنزيل البعيد {} يضع التنزيلات في {} لكن يبدو أن هذا المجلد غير موجود. على الأرجح أن تعيين المسار البعيد مفقود أو غير صحيح.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	عميل التنزيل {} يضع التنزيلات في {} لكن Kitsunarr لا يستطيع رؤية هذا المجلد. قد تحتاج إلى تعديل أذونات المجلد.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	يستطيع Kitsunarr رؤية الحلقة المنزّلة {} لكنه لا يستطيع الوصول إليها. على الأرجح خطأ في الأذونات.
+File {} was removed part way through processing.	أُزيل الملف {} أثناء معالجته.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	فشل Kitsunarr في استيراد حلقة أو أكثر. راجع السجلات للاطلاع على التفاصيل.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	عميل التنزيل البعيد {} أبلغ عن ملفات في {} لكن هذا ليس مسار {} صالحًا. راجع تعيينات المسارات البعيدة وإعدادات عميل التنزيل.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	أنت تستخدم Docker؛ عميل التنزيل {} أبلغ عن ملفات في {} لكن هذا ليس مسار {} صالحًا. راجع تعيينات المسارات البعيدة وإعدادات عميل التنزيل.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	عميل التنزيل المحلي {} أبلغ عن ملفات في {} لكن هذا ليس مسار {} صالحًا. راجع إعدادات عميل التنزيل.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	يستطيع Kitsunarr رؤية مجلد التنزيل {} لكنه لا يستطيع الوصول إليه. على الأرجح خطأ في الأذونات.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	عميل التنزيل البعيد {} أبلغ عن ملفات في {} لكن يبدو أن هذا المجلد غير موجود. على الأرجح أن تعيين المسار البعيد مفقود.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	عميل التنزيل {} أبلغ عن ملفات في {} لكن Kitsunarr لا يستطيع رؤية هذا المجلد. قد تحتاج إلى تعديل أذونات المجلد.
+The configured password reset token is shorter than {} characters and is being ignored	رمز إعادة تعيين كلمة المرور المهيأ أقصر من {} حرفًا ويتم تجاهله
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	تمت تهيئة رمز لإعادة تعيين كلمة المرور. أزل متغير البيئة KITSUNARR_AUTH_RESET_TOKEN (أو reset_token في config.toml) عندما لا تعود بحاجة إليه
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	مصادقة OIDC مفعّلة، لكن لم تُهيّأ كلٌّ من المرجع وClient ID وClient Secret والمستخدم والنطاقات
+The OIDC Authority must start with 'https://'	يجب أن يبدأ مرجع OIDC بـ 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	تعذّر جلب إعدادات OIDC من {}، وسيفشل تسجيل الدخول عبر موفّر الهوية حتى يصبح الوصول إليه ممكنًا
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	لم تُهيّأ أي مجلدات جذر بعد. أضف واحدًا في الإعدادات → إدارة الوسائط أو استورد تثبيتًا موجودًا.
+Root folder {} is missing or not accessible.	المجلد الجذر {} مفقود أو لا يمكن الوصول إليه.
+Root folder {} has only {} MiB free.	المجلد الجذر {} لا يحتوي إلا على {} MiB من المساحة الحرة.
+No enabled {} is configured; automatic downloads are not possible.	لم يُهيّأ أي {} مفعّل؛ التنزيلات التلقائية غير ممكنة.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	أنواع {} هذه احتُفظ بها من تثبيتك السابق لكنها غير مطبقة أصليًا بعد: {}.
+All download clients are unavailable due to failures	كل عملاء التنزيل غير متاحين بسبب أعطال
+Download clients are unavailable due to failures: {}	عملاء التنزيل غير المتاحين بسبب أعطال: {}
+All indexers are unavailable due to failures	كل المفهرسات غير متاحة بسبب أعطال
+Indexers unavailable due to failures: {}	المفهرسات غير المتاحة بسبب أعطال: {}
+Failed to resolve the IP address of the configured proxy host {}	تعذّر تحليل عنوان IP لمضيف الوكيل المهيأ {}
+The data directory has only {} MiB free; the database may fail to write.	دليل البيانات لا يحتوي إلا على {} MiB من المساحة الحرة؛ قد تفشل الكتابة في قاعدة البيانات.

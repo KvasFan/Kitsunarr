@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ současné číslo
 or	nebo
 1 title	1 titul
+Episode titles (one per line)	Názvy epizod (jeden na řádek)
+For conditions that ignore episode titles.	Pro podmínky, které ignorují názvy epizod.
+Test episode titles	Testovací názvy epizod
+· group {}	· skupina {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Při kontrole názvů vydání vyloučit známé názvy epizod, aby se slova z názvu epizody nepočítala jako služba nebo skupina vydání.
+Ignore episode titles {}	Ignorovat názvy epizod {}
+Ignore episode titles	Ignorovat názvy epizod
+Alternative group	Alternativní skupina
+Alternative group {}	Alternativní skupina {}
+Group anime seasons	Seskupit řady anime
+Anime group {}	Skupina anime {}
+Group of {} · {}	Skupina: {} · {}
+Import progress	Průběh importu
+Waiting to import	Čeká na import
+Import progress of {}	Průběh importu: {}
+Import details of {}	Podrobnosti importu: {}
+{} / {} episodes imported	{} / {} epizod importováno
+· {} not imported	· neimportováno: {}
+Series, anime or film title, e.g. Severance	Název seriálu, anime nebo filmu, např. Severance
+All enabled catalogues	Všechny povolené katalogy
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Nelze prohledat žádný povolený katalog: povolte některý nebo zadejte jeho klíč API v Nastavení › Zdroje metadat.
+Searches every enabled catalogue, results in your order:	Prohledá všechny povolené katalogy, výsledky ve vašem pořadí:
+Grouping	Seskupování
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Automaticky seskupí titul s jeho franšízou nebo kolekcí podle oficiálních vztahů. Zakázáno jej ponechá samostatně.
+Automatic (official relations)	Automaticky (oficiální vztahy)
+Too many failed sign in attempts. Please try again in {} minute(s).	Příliš mnoho neúspěšných pokusů o přihlášení. Zkuste to znovu za {} min.
+Reset your password	Obnovit heslo
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr zapíše do svého logu jednorázový token pro obnovení. Zkopírujte jej z řádku
+line in the latest log (System › Logs, or the container's output).	v nejnovějším logu (Systém › Logy nebo výstup kontejneru).
+Write a reset token to the log	Zapsat token pro obnovení do logu
+I already have a reset token	Token pro obnovení již mám
+Back to sign in	Zpět na přihlášení
+Your password has been reset, sign in with your new password.	Vaše heslo bylo obnoveno, přihlaste se novým heslem.
+Unable to sign in with your identity provider.	Nelze se přihlásit přes poskytovatele identity.
+Incorrect username or password.	Nesprávné uživatelské jméno nebo heslo.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	Ověřování OIDC je povoleno, ale není správně nastaveno. Přihlaste se heslem a aktualizujte nastavení OIDC (Nastavení › Obecné › Zabezpečení nebo konfigurační soubor).
+Sign in with SSO	Přihlásit se přes SSO
+You will be sent to your identity provider.	Budete přesměrováni k poskytovateli identity.
+Forgot your password?	Zapomněli jste heslo?
+Invalid or expired reset token.	Neplatný nebo vypršelý token pro obnovení.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Uživatelské jméno a heslo jsou povinné, hesla se musí shodovat a heslo musí mít alespoň {} znaků.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Nový token pro obnovení nebyl zapsán do logu. Jeden už může být aktivní, proto nejprve zkontrolujte log. Restart Kitsunarr jej zruší a umožní vyžádat si nový.
+Enter the token from the	Zadejte token z řádku
+line in the log. It's valid for 15 minutes and can only be used once. If you set	v logu. Je platný 15 minut a lze jej použít jen jednou. Pokud nastavíte
+Reset token	Token pro obnovení
+Confirm new password	Potvrďte nové heslo
+Reset password	Obnovit heslo
+Signed out	Odhlášeno
+You have been signed out of Kitsunarr.	Byli jste odhlášeni z Kitsunarr.
+Sign in again	Znovu se přihlásit
+Search for missing	Hledat chybějící
+Month	Měsíc
+Week	Týden
+Forecast	Výhled
+Day	Den
+Agenda	Agenda
+On disk	Na disku
+Not aired yet	Zatím neodvysíláno
+Search for the episodes shown that aired and have no file	Hledat zobrazené epizody, které byly odvysílány a nemají soubor
+Previous period	Předchozí období
+Next period	Další období
+Calendar view	Zobrazení kalendáře
+Nothing airs in this period.	V tomto období se nic nevysílá.
+Legend	Legenda
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Zakázáno odebere seriál z jeho skupiny anime a vyřadí jej z automatického seskupování
+Disabled removes the film from its collection and keeps it out of automatic grouping	Zakázáno odebere film z jeho kolekce a vyřadí jej z automatického seskupování
+Filter	Filtr
+Filter by path	Filtrovat podle cesty
+All paths	Všechny cesty
+Combine filters	Kombinovat filtry
+Show series matching every selected filter	Zobrazit seriály odpovídající všem vybraným filtrům
+Clear combined filters	Vymazat kombinované filtry
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Zobrazit každou skupinu anime (seskupování anime z Tanukarr) jen jednou, podle její první řady
+Save the current filters as a filter of your own	Uložit aktuální filtry jako vlastní filtr
+Save filter…	Uložit filtr…
+Shown series	Zobrazené seriály
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr nemůže použít tyto podmínky uloženého filtru, proto jsou vynechány:
+The selected filters contradict each other, so no series can match all of them.	Vybrané filtry si navzájem odporují, takže žádný seriál nemůže odpovídat všem.
+No series match the selected filters.	Vybraným filtrům neodpovídá žádný seriál.
+Filter "{}" saved.	Filtr „{}“ uložen.
+Save filter	Uložit filtr
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Filtr uchovává vybraný filtr, kombinované filtry a cestu; zobrazuje se mezi vestavěnými filtry.
+Filter label	Popisek filtru
+Delete saved filter	Smazat uložený filtr
+Delete this saved filter? The series are not changed.	Smazat tento uložený filtr? Seriály se nezmění.
+Monitored only	Jen monitorované
+Unmonitored only	Jen nemonitorované
+Continuing only	Jen pokračující
+Ended only	Jen ukončené
+Missing episodes	Chybějící epizody
+Security settings saved.	Nastavení zabezpečení uloženo.
+Security	Zabezpečení
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Aby se zabránilo vzdálenému přístupu bez ověření, Kitsunarr vyžaduje ověřování. Volitelně jej můžete pro místní adresy zakázat.
+Authentication	Ověřování
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Jak se uživatelé přihlašují: přihlašovací stránka Kitsunarr, nebo váš poskytovatel identity OpenID Connect.
+Forms (sign-in page)	Formuláře (přihlašovací stránka)
+OIDC (identity provider)	OIDC (poskytovatel identity)
+External (reverse proxy)	Externí (reverzní proxy)
+Authentication required	Vyžadováno ověřování
+Require authentication for every request, or not for requests from local addresses or this machine.	Vyžadovat ověření u každého požadavku, nebo ne u požadavků z místních adres či z tohoto počítače.
+Disabled for localhost	Zakázáno pro localhost
+Allowed hosts	Povolení hostitelé
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Čárkami oddělený seznam názvů hostitelů a IP adres, pod kterými má být Kitsunarr dostupný, včetně názvu hostitele systému nebo názvu kontejneru. Ponechte prázdné pro povolení všech hostitelů. Povinné, pokud ověřování není vyžadováno vždy. Například: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Důvěřovat adresám CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Považovat adresy CGNAT (100.64.0.0/10, např. Tailscale) za místní
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Externí: Kitsunarr nevyžaduje přihlášení a spoléhá na reverzní proxy před ním. Používejte jen za proxy, která ověřuje každý požadavek.
+Register Kitsunarr with your provider using the redirect URI	Zaregistrujte Kitsunarr u svého poskytovatele s URI přesměrování
+. Saving signs out password sessions; you then sign in through the provider.	. Uložení odhlásí relace přihlášené heslem; poté se přihlásíte přes poskytovatele.
+OIDC Authority	OIDC Authority
+The URL of the OIDC provider (https://).	URL poskytovatele OIDC (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID registrované u poskytovatele OIDC.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret registrovaný u poskytovatele OIDC.
+OIDC User	Uživatel OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Ověřená e-mailová adresa nebo identifikátor subjektu (sub) u poskytovatele OIDC, který se smí přihlásit do Kitsunarr.
+OIDC Scopes	Rozsahy OIDC
+The scopes to request from the OIDC provider; must include openid.	Rozsahy požadované od poskytovatele OIDC; musí obsahovat openid.
+Set in config.toml or the environment, which take precedence: {}.	Nastaveno v config.toml nebo v prostředí, které mají přednost: {}.
+Backup settings saved.	Nastavení zálohování uloženo.
+Interval (days)	Interval (dny)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Jak často se automaticky vytváří záloha (1-7 dní). Ruční záloha interval spustí znovu.
+Backup interval in days	Interval zálohování ve dnech
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Automatické zálohy starší než tato doba se mažou (1-90 dní). Ruční zálohy se ponechávají.
+Backup retention in days	Uchovávání záloh ve dnech
+A quality without an override uses the global sizes of	Kvalita bez přepsání používá globální velikosti z
+Settings › Quality	Nastavení › Kvalita
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. V přepsání znamená prázdné pole bez omezení; maximum nula také znamená bez omezení.
+Signed in. Save to keep the token.	Přihlášeno. Uložte, aby se token zachoval.
+Redirect URL to register with your API client:	URL přesměrování k registraci u vašeho klienta API:
+Test all	Otestovat vše
+All {} passed their test.	Všechny ({}) prošly testem.
+{} of {} failed their test.	{} z {} neprošlo testem.
+Test every {} entry	Otestovat každou položku: {}
+Test results	Výsledky testů
+passed with warnings	prošlo s varováními
+Warning:	Varování:
+Dismiss test results	Zavřít výsledky testů
+Delete for upgrade	Smazání kvůli upgradu
+Metadata sources saved.	Zdroje metadat uloženy.
+Order	Pořadí
+Enable {}	Povolit {}
+Move {} up	Posunout {} nahoru
+Move {} down	Posunout {} dolů
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Přidat média nabízí povolené katalogy v tomto pořadí a „Všechny povolené katalogy“ slučuje jejich výsledky v tomto pořadí. Zakázané katalogy se nenabízejí ani neprohledávají; tituly, které k nim již patří, se z nich stále obnovují. Pro použití uložte níže.
+Enable at least one metadata source.	Povolte alespoň jeden zdroj metadat.
+Mixed	Smíšené
+Unlimited	Bez omezení
+0 GiB/h	0 GiB/h
+{} min: {}	{} min: {}
+No limit	Bez limitu
+Quality definitions saved.	Definice kvalit uloženy.
+Quality definitions reset to the defaults.	Definice kvalit obnoveny na výchozí.
+Reset definitions	Obnovit definice
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Velikosti jsou v MiB za minutu délky; hodinová velikost je zobrazena pod každou. Vydání mimo limity kvality je odmítnuto; preferovaná velikost určuje pořadí vydání. Profily mohou mít vlastní limity (
+Settings › Quality profiles	Nastavení › Profily kvality
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): „Smíšené“ znamená, že profily používají různé limity, a hodnota zadaná zde se zapíše do každého profilu.
+Title of {}	Název: {}
+{} size of {} (MiB per minute)	{} – velikost pro {} (MiB za minutu)
+Profiles use different limits	Profily používají různé limity
+No minimum	Bez minima
+Hide retired qualities	Skrýt vyřazené kvality
+Show retired qualities	Zobrazit vyřazené kvality
+Reset quality definitions	Obnovit definice kvalit
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Vrátit každé standardní kvalitě výchozí název a limity velikosti? Vlastní předvolby a vlastní limity profilů zůstanou zachovány.
+Reset	Obnovit
+RefreshMonitoredDownloads	Obnovit monitorovaná stahování
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Načte klienty pro stahování a importuje dokončená stahování, která Kitsunarr získal
+ProcessPendingJellyfinRefresh	Zpracovat čekající obnovení Jellyfin
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Obnoví knihovny Jellyfin, které mají čekající importy (podle režimu obnovení každého připojení)
+SyncJellyfinWatched	Synchronizovat zhlédnuté z Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Načte, které epizody uživatel Jellyfin zhlédl (ve vlastním intervalu připojení)
+CleanUpRecycleBin	Vyčistit koš
+Deletes files kept in the recycle bin longer than the media management setting allows	Smaže soubory uchovávané v koši déle, než povoluje nastavení správy médií
+RescanFolders	Znovu prohledat složky
+Scans series and movie folders: forgets files that are gone and adds files found there	Prohledá složky seriálů a filmů: zapomene soubory, které zmizely, a přidá nalezené soubory
+RefreshMetadata	Obnovit metadata
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Obnoví tituly z jejich katalogů metadat (pokračující každých 6 hodin, ukončené měsíčně)
+Housekeeping	Údržba
+Purges expired sessions, prunes task history and checks database integrity	Odstraní vypršelé relace, pročistí historii úloh a zkontroluje integritu databáze
+CleanupSessions	Vyčistit relace
+Removes expired login sessions	Odstraní vypršelé přihlašovací relace
+HealthCheck	Kontrola stavu
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Znovu vyhodnotí kontroly stavu, upozorní připojené prohlížeče a odešle oznámení o stavu
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Kontrola integrity databáze SQLite selhala: {}. Obnovte ze spolehlivé zálohy.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Kontrola integrity databáze SQLite nevrátila výsledek. Pokud dochází k chybám databáze, obnovte ze spolehlivé zálohy.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Kontrola integrity databáze SQLite selhala, porušení cizích klíčů: {}. Obnovte ze spolehlivé zálohy.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Nejsou k dispozici žádné indexery s povolenou synchronizací RSS, Kitsunarr nebude automaticky získávat nová vydání
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Všechny indexery podporující RSS jsou dočasně nedostupné kvůli nedávným chybám indexerů
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Nejsou k dispozici žádné indexery s povoleným automatickým vyhledáváním, Kitsunarr neposkytne žádné výsledky automatického vyhledávání
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Nejsou k dispozici žádné indexery s povoleným interaktivním vyhledáváním, Kitsunarr neposkytne žádné výsledky interaktivního vyhledávání
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Všechny indexery podporující vyhledávání jsou dočasně nedostupné kvůli nedávným chybám indexerů
+All indexers are unavailable due to failures for more than 6 hours	Všechny indexery jsou nedostupné kvůli selháním trvajícím déle než 6 hodin
+Indexers unavailable due to failures for more than 6 hours: {}	Indexery nedostupné kvůli selháním trvajícím déle než 6 hodin: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indexery používající nepodporovaný koncový bod Jackett 'all': {}
+Indexers with invalid download clients: {}.	Indexery s neplatnými klienty pro stahování: {}.
+Enable Completed Download Handling	Povolit zpracování dokončených stahování
+All notifications are unavailable due to failures	Všechna oznámení jsou nedostupná kvůli selháním
+Notifications unavailable due to failures: {}	Oznámení nedostupná kvůli selháním: {}
+All lists are unavailable due to failures	Všechny seznamy jsou nedostupné kvůli selháním
+Lists unavailable due to failures: {}	Seznamy nedostupné kvůli selháním: {}
+Missing root folder for import list(s): {}	Chybí kořenová složka pro seznamy k importu: {}
+Multiple root folders are missing for import lists: {}	Chybí více kořenových složek pro seznamy k importu: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Nelze zapisovat do nastavené složky koše: {}. Ujistěte se, že tato cesta existuje a uživatel, pod kterým běží Kitsunarr, do ní může zapisovat
+Unable to write to the backup folder {}; scheduled backups will fail.	Nelze zapisovat do složky záloh {}; plánované zálohy selžou.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Aktualizujte prosím klíč API, aby měl alespoň 20 znaků. Můžete to provést v nastavení nebo v konfiguračním souboru
+Series {} was removed from {}	Seriál {} byl odebrán z {}
+Series {} were removed from {}	Seriály {} byly odebrány z {}
+Mount containing a series path is mounted read-only: {}	Připojení obsahující cestu seriálu je připojeno jen pro čtení: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Klient pro stahování {} je nastaven na odebírání dokončených stahování. To může vést k odebrání stahování z klienta dříve, než je Kitsunarr stihne importovat.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Klient pro stahování {} má pro kategorii Kitsunarr povoleno řazení {}. Zakažte řazení v klientovi pro stahování, abyste předešli problémům s importem.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Klient pro stahování {} ukládá stahování do kořenové složky {}. Do kořenové složky byste neměli stahovat.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Vzdálený klient pro stahování {} ukládá stahování do {}, ale to není platná cesta {}. Zkontrolujte mapování vzdálených cest a nastavení klienta pro stahování.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Používáte docker; klient pro stahování {} ukládá stahování do {}, ale to není platná cesta {}. Zkontrolujte mapování vzdálených cest a nastavení klienta pro stahování.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Místní klient pro stahování {} ukládá stahování do {}, ale to není platná cesta {}. Zkontrolujte nastavení klienta pro stahování.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Používáte docker; klient pro stahování {} ukládá stahování do {}, ale tento adresář uvnitř kontejneru zřejmě neexistuje. Zkontrolujte mapování vzdálených cest a nastavení svazků kontejneru.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Vzdálený klient pro stahování {} ukládá stahování do {}, ale tento adresář zřejmě neexistuje. Pravděpodobně chybí nebo je nesprávné mapování vzdálené cesty.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Klient pro stahování {} ukládá stahování do {}, ale Kitsunarr tento adresář nevidí. Možná bude třeba upravit oprávnění složky.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr vidí staženou epizodu {}, ale nemá k ní přístup. Pravděpodobně chyba oprávnění.
+File {} was removed part way through processing.	Soubor {} byl odstraněn během zpracování.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr nedokázal importovat epizodu (epizody). Podrobnosti najdete v logech.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Vzdálený klient pro stahování {} nahlásil soubory v {}, ale to není platná cesta {}. Zkontrolujte mapování vzdálených cest a nastavení klienta pro stahování.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Používáte docker; klient pro stahování {} nahlásil soubory v {}, ale to není platná cesta {}. Zkontrolujte mapování vzdálených cest a nastavení klienta pro stahování.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Místní klient pro stahování {} nahlásil soubory v {}, ale to není platná cesta {}. Zkontrolujte nastavení klienta pro stahování.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr vidí adresář stahování {}, ale nemá k němu přístup. Pravděpodobně chyba oprávnění.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Vzdálený klient pro stahování {} nahlásil soubory v {}, ale tento adresář zřejmě neexistuje. Pravděpodobně chybí mapování vzdálené cesty.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Klient pro stahování {} nahlásil soubory v {}, ale Kitsunarr tento adresář nevidí. Možná bude třeba upravit oprávnění složky.
+The configured password reset token is shorter than {} characters and is being ignored	Nastavený token pro obnovení hesla je kratší než {} znaků a ignoruje se
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Je nastaven token pro obnovení hesla. Jakmile jej již nebudete potřebovat, odstraňte proměnnou prostředí KITSUNARR_AUTH_RESET_TOKEN (nebo reset_token v config.toml)
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	Ověřování OIDC je povoleno, ale Authority, Client ID, Client Secret, Uživatel a Rozsahy nejsou všechny nastaveny
+The OIDC Authority must start with 'https://'	OIDC Authority musí začínat na 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Nelze načíst konfiguraci OIDC z {}, přihlášení přes poskytovatele identity nebude fungovat, dokud nebude dostupný
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Zatím nejsou nastaveny žádné kořenové složky. Přidejte jednu v Nastavení → Správa médií nebo importujte existující instalaci.
+Root folder {} is missing or not accessible.	Kořenová složka {} chybí nebo není přístupná.
+Root folder {} has only {} MiB free.	Kořenová složka {} má volných jen {} MiB.
+No enabled {} is configured; automatic downloads are not possible.	Není nastaven žádný povolený prvek typu {}; automatické stahování není možné.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Tyto prvky typu {} byly zachovány z vaší předchozí instalace, ale zatím nejsou nativně implementovány: {}.
+All download clients are unavailable due to failures	Všichni klienti pro stahování jsou nedostupní kvůli selháním
+Download clients are unavailable due to failures: {}	Klienti pro stahování jsou nedostupní kvůli selháním: {}
+All indexers are unavailable due to failures	Všechny indexery jsou nedostupné kvůli selháním
+Indexers unavailable due to failures: {}	Indexery nedostupné kvůli selháním: {}
+Failed to resolve the IP address of the configured proxy host {}	Nepodařilo se přeložit IP adresu nastaveného hostitele proxy {}
+The data directory has only {} MiB free; the database may fail to write.	Datový adresář má volných jen {} MiB; zápis do databáze může selhat.

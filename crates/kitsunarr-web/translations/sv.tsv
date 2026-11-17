@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ nuvarande nummer
 or	eller
 1 title	1 titel
+Episode titles (one per line)	Avsnittstitlar (en per rad)
+For conditions that ignore episode titles.	För villkor som ignorerar avsnittstitlar.
+Test episode titles	Testa avsnittstitlar
+· group {}	· grupp {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Uteslut kända avsnittstitlar vid kontroll av utgåvenamn, så att ord i avsnittstiteln inte räknas som en tjänst eller utgivningsgrupp.
+Ignore episode titles {}	Ignorera avsnittstitlar {}
+Ignore episode titles	Ignorera avsnittstitlar
+Alternative group	Alternativ grupp
+Alternative group {}	Alternativ grupp {}
+Group anime seasons	Gruppera animesäsonger
+Anime group {}	Animegrupp {}
+Group of {} · {}	Grupp för {} · {}
+Import progress	Importförlopp
+Waiting to import	Väntar på import
+Import progress of {}	Importförlopp för {}
+Import details of {}	Importdetaljer för {}
+{} / {} episodes imported	{} / {} avsnitt importerade
+· {} not imported	· {} inte importerade
+Series, anime or film title, e.g. Severance	Titel på serie, anime eller film, t.ex. Severance
+All enabled catalogues	Alla aktiverade kataloger
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Ingen aktiverad katalog kan genomsökas: aktivera en eller ange dess API-nyckel i Inställningar › Metadatakällor.
+Searches every enabled catalogue, results in your order:	Söker i alla aktiverade kataloger, resultat i din ordning:
+Grouping	Gruppering
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Automatisk grupperar titeln med dess franchise eller samling utifrån officiella relationer. Inaktiverad låter den stå för sig själv.
+Automatic (official relations)	Automatisk (officiella relationer)
+Too many failed sign in attempts. Please try again in {} minute(s).	För många misslyckade inloggningsförsök. Försök igen om {} minut(er).
+Reset your password	Återställ ditt lösenord
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr skriver en återställningstoken för engångsbruk till sin logg. Kopiera den från raden
+line in the latest log (System › Logs, or the container's output).	i den senaste loggen (System › Loggar, eller containerns utdata).
+Write a reset token to the log	Skriv en återställningstoken till loggen
+I already have a reset token	Jag har redan en återställningstoken
+Back to sign in	Tillbaka till inloggningen
+Your password has been reset, sign in with your new password.	Ditt lösenord har återställts, logga in med ditt nya lösenord.
+Unable to sign in with your identity provider.	Det gick inte att logga in med din identitetsleverantör.
+Incorrect username or password.	Felaktigt användarnamn eller lösenord.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC-autentisering är aktiverad men är inte korrekt konfigurerad. Logga in med ditt lösenord och uppdatera OIDC-inställningarna (Inställningar › Allmänt › Säkerhet, eller konfigurationsfilen).
+Sign in with SSO	Logga in med SSO
+You will be sent to your identity provider.	Du skickas vidare till din identitetsleverantör.
+Forgot your password?	Glömt ditt lösenord?
+Invalid or expired reset token.	Ogiltig eller utgången återställningstoken.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Användarnamn och lösenord krävs, lösenorden måste matcha och lösenordet måste ha minst {} tecken.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	En ny återställningstoken skrevs inte till loggen. En kan redan vara aktiv, så kontrollera loggen först. En omstart av Kitsunarr rensar den och låter dig begära en ny.
+Enter the token from the	Ange token från raden
+line in the log. It's valid for 15 minutes and can only be used once. If you set	i loggen. Den är giltig i 15 minuter och kan bara användas en gång. Om du har angett
+Reset token	Återställningstoken
+Confirm new password	Bekräfta nytt lösenord
+Reset password	Återställ lösenord
+Signed out	Utloggad
+You have been signed out of Kitsunarr.	Du har loggats ut från Kitsunarr.
+Sign in again	Logga in igen
+Search for missing	Sök efter saknade
+Month	Månad
+Week	Vecka
+Forecast	Prognos
+Day	Dag
+Agenda	Agenda
+On disk	På disk
+Not aired yet	Inte sänt än
+Search for the episodes shown that aired and have no file	Sök efter de visade avsnitten som har sänts och saknar fil
+Previous period	Föregående period
+Next period	Nästa period
+Calendar view	Kalendervy
+Nothing airs in this period.	Inget sänds under den här perioden.
+Legend	Teckenförklaring
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Inaktiverad tar bort serien från dess animegrupp och håller den utanför automatisk gruppering
+Disabled removes the film from its collection and keeps it out of automatic grouping	Inaktiverad tar bort filmen från dess samling och håller den utanför automatisk gruppering
+Filter	Filter
+Filter by path	Filtrera efter sökväg
+All paths	Alla sökvägar
+Combine filters	Kombinera filter
+Show series matching every selected filter	Visa serier som matchar alla valda filter
+Clear combined filters	Rensa kombinerade filter
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Visa varje animegrupp (Tanukarrs animegruppering) en gång, via dess första säsong
+Save the current filters as a filter of your own	Spara de aktuella filtren som ett eget filter
+Save filter…	Spara filter…
+Shown series	Visade serier
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr kan inte tillämpa dessa villkor i det sparade filtret, så de utelämnas:
+The selected filters contradict each other, so no series can match all of them.	De valda filtren motsäger varandra, så ingen serie kan matcha alla.
+No series match the selected filters.	Inga serier matchar de valda filtren.
+Filter "{}" saved.	Filtret ”{}” har sparats.
+Save filter	Spara filter
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Filtret behåller det valda filtret, de kombinerade filtren och sökvägen; det listas tillsammans med de inbyggda filtren.
+Filter label	Filteretikett
+Delete saved filter	Radera sparat filter
+Delete this saved filter? The series are not changed.	Radera det här sparade filtret? Serierna ändras inte.
+Monitored only	Endast bevakade
+Unmonitored only	Endast obevakade
+Continuing only	Endast pågående
+Ended only	Endast avslutade
+Missing episodes	Saknade avsnitt
+Security settings saved.	Säkerhetsinställningar sparade.
+Security	Säkerhet
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	För att förhindra fjärråtkomst utan autentisering kräver Kitsunarr autentisering. Du kan välja att inaktivera den för lokala adresser.
+Authentication	Autentisering
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Hur användare loggar in: Kitsunarrs inloggningssida eller din OpenID Connect-identitetsleverantör.
+Forms (sign-in page)	Formulär (inloggningssida)
+OIDC (identity provider)	OIDC (identitetsleverantör)
+External (reverse proxy)	Extern (omvänd proxy)
+Authentication required	Autentisering krävs
+Require authentication for every request, or not for requests from local addresses or this machine.	Kräv autentisering för varje förfrågan, eller inte för förfrågningar från lokala adresser eller den här datorn.
+Disabled for localhost	Inaktiverad för localhost
+Allowed hosts	Tillåtna värdar
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kommaseparerad lista med värdnamn och IP-adresser som Kitsunarr ska vara åtkomligt som, inklusive systemets värdnamn eller containerns namn. Lämna tomt för att tillåta alla värdar. Krävs när autentisering inte alltid krävs. Till exempel: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Lita på CGNAT-adresser
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Behandla CGNAT-adresser (100.64.0.0/10, t.ex. Tailscale) som lokala
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Extern: Kitsunarr begär ingen inloggning och förlitar sig på den omvända proxyn framför det. Använd detta endast bakom en proxy som autentiserar varje förfrågan.
+Register Kitsunarr with your provider using the redirect URI	Registrera Kitsunarr hos din leverantör med omdirigerings-URI:n
+. Saving signs out password sessions; you then sign in through the provider.	. När du sparar loggas lösenordssessioner ut; du loggar sedan in via leverantören.
+OIDC Authority	OIDC-auktoritet
+The URL of the OIDC provider (https://).	URL:en till OIDC-leverantören (https://).
+OIDC Client ID	OIDC-klient-id
+The Client ID registered with the OIDC provider.	Klient-id som har registrerats hos OIDC-leverantören.
+OIDC Client Secret	OIDC-klienthemlighet
+The Client Secret registered with the OIDC provider.	Klienthemligheten som har registrerats hos OIDC-leverantören.
+OIDC User	OIDC-användare
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Den verifierade e-postadressen eller ämnesidentifieraren (sub) hos OIDC-leverantören som får logga in i Kitsunarr.
+OIDC Scopes	OIDC-omfång
+The scopes to request from the OIDC provider; must include openid.	Omfången som begärs från OIDC-leverantören; måste innehålla openid.
+Set in config.toml or the environment, which take precedence: {}.	Angivet i config.toml eller miljön, som har företräde: {}.
+Backup settings saved.	Inställningar för säkerhetskopiering sparade.
+Interval (days)	Intervall (dagar)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Hur ofta en säkerhetskopia görs automatiskt (1-7 dagar). En manuell säkerhetskopia startar om intervallet.
+Backup interval in days	Intervall för säkerhetskopiering i dagar
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Automatiska säkerhetskopior som är äldre än detta raderas (1-90 dagar). Manuella säkerhetskopior behålls.
+Backup retention in days	Lagringstid för säkerhetskopior i dagar
+A quality without an override uses the global sizes of	En kvalitet utan åsidosättning använder de globala storlekarna i
+Settings › Quality	Inställningar › Kvalitet
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Inom en åsidosättning betyder tomt obegränsat; ett maximum på noll betyder också obegränsat.
+Signed in. Save to keep the token.	Inloggad. Spara för att behålla token.
+Redirect URL to register with your API client:	Omdirigerings-URL att registrera hos din API-klient:
+Test all	Testa alla
+All {} passed their test.	Alla {} klarade testet.
+{} of {} failed their test.	{} av {} misslyckades med testet.
+Test every {} entry	Testa varje post: {}
+Test results	Testresultat
+passed with warnings	godkänd med varningar
+Warning:	Varning:
+Dismiss test results	Avfärda testresultat
+Delete for upgrade	Radera vid uppgradering
+Metadata sources saved.	Metadatakällor sparade.
+Order	Ordning
+Enable {}	Aktivera {}
+Move {} up	Flytta upp {}
+Move {} down	Flytta ned {}
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Lägg till media listar de aktiverade katalogerna i den här ordningen, och ”Alla aktiverade kataloger” sammanfogar deras resultat i den här ordningen. Inaktiverade kataloger erbjuds inte och genomsöks inte; titlar som redan tillhör en uppdateras fortfarande från den. Spara nedan för att tillämpa.
+Enable at least one metadata source.	Aktivera minst en metadatakälla.
+Mixed	Blandad
+Unlimited	Obegränsad
+0 GiB/h	0 GiB/h
+{} min: {}	{} min: {}
+No limit	Ingen gräns
+Quality definitions saved.	Kvalitetsdefinitioner sparade.
+Quality definitions reset to the defaults.	Kvalitetsdefinitionerna har återställts till standardvärdena.
+Reset definitions	Återställ definitioner
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Storlekar anges i MiB per minut speltid; storleken per timme visas under varje. En utgåva utanför en kvalitets gränser avvisas; den föredragna storleken rangordnar utgåvor. Profiler kan behålla egna gränser (
+Settings › Quality profiles	Inställningar › Kvalitetsprofiler
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): ”Blandad” betyder att profilerna använder olika gränser, och ett värde som anges här skrivs in i varje profil.
+Title of {}	Titel för {}
+{} size of {} (MiB per minute)	{} storlek för {} (MiB per minut)
+Profiles use different limits	Profilerna använder olika gränser
+No minimum	Inget minimum
+Hide retired qualities	Dölj utfasade kvaliteter
+Show retired qualities	Visa utfasade kvaliteter
+Reset quality definitions	Återställ kvalitetsdefinitioner
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Ge varje standardkvalitet dess standardtitel och storleksgränser? Anpassade förinställningar och profilernas egna gränser behålls.
+Reset	Återställ
+RefreshMonitoredDownloads	Uppdatera bevakade nedladdningar
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Läser nedladdningsklienterna och importerar slutförda nedladdningar som Kitsunarr har hämtat
+ProcessPendingJellyfinRefresh	Bearbeta väntande Jellyfin-uppdateringar
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Uppdaterar Jellyfin-bibliotek som har väntande importer (enligt varje anslutnings uppdateringsläge)
+SyncJellyfinWatched	Synkronisera sedda i Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Läser vilka avsnitt en Jellyfin-användare har sett (med anslutningens eget intervall)
+CleanUpRecycleBin	Rensa papperskorgen
+Deletes files kept in the recycle bin longer than the media management setting allows	Raderar filer som har legat i papperskorgen längre än inställningen för mediehantering tillåter
+RescanFolders	Skanna om mappar
+Scans series and movie folders: forgets files that are gone and adds files found there	Skannar serie- och filmmappar: glömmer filer som har försvunnit och lägger till filer som hittas där
+RefreshMetadata	Uppdatera metadata
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Uppdaterar titlar från deras metadatakataloger (pågående var 6:e timme, avslutade varje månad)
+Housekeeping	Underhåll
+Purges expired sessions, prunes task history and checks database integrity	Rensar utgångna sessioner, gallrar uppgiftshistoriken och kontrollerar databasens integritet
+CleanupSessions	Rensa sessioner
+Removes expired login sessions	Tar bort utgångna inloggningssessioner
+HealthCheck	Statuskontroll
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Utvärderar statuskontrollerna på nytt, meddelar anslutna webbläsare och skickar statusaviseringar
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Integritetskontrollen av SQLite-databasen misslyckades: {}. Återställ från en säkerhetskopia som du vet fungerar.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Integritetskontrollen av SQLite-databasen gav inget resultat. Återställ från en säkerhetskopia som du vet fungerar om databasfel uppstår.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Integritetskontrollen av SQLite-databasen misslyckades: {} brott mot främmande nycklar. Återställ från en säkerhetskopia som du vet fungerar.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Inga indexerare med RSS-synkronisering aktiverad är tillgängliga, Kitsunarr kommer inte att hämta nya utgåvor automatiskt
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Alla indexerare med RSS-stöd är tillfälligt otillgängliga på grund av nyliga indexerarfel
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Inga indexerare med automatisk sökning aktiverad är tillgängliga, Kitsunarr kommer inte att ge några automatiska sökresultat
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Inga indexerare med interaktiv sökning aktiverad är tillgängliga, Kitsunarr kommer inte att ge några interaktiva sökresultat
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Alla indexerare med sökstöd är tillfälligt otillgängliga på grund av nyliga indexerarfel
+All indexers are unavailable due to failures for more than 6 hours	Alla indexerare är otillgängliga på grund av fel i mer än 6 timmar
+Indexers unavailable due to failures for more than 6 hours: {}	Indexerare otillgängliga på grund av fel i mer än 6 timmar: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indexerare som använder Jacketts slutpunkt 'all', som inte stöds: {}
+Indexers with invalid download clients: {}.	Indexerare med ogiltiga nedladdningsklienter: {}.
+Enable Completed Download Handling	Aktivera hantering av slutförda nedladdningar
+All notifications are unavailable due to failures	Alla aviseringar är otillgängliga på grund av fel
+Notifications unavailable due to failures: {}	Aviseringar otillgängliga på grund av fel: {}
+All lists are unavailable due to failures	Alla listor är otillgängliga på grund av fel
+Lists unavailable due to failures: {}	Listor otillgängliga på grund av fel: {}
+Missing root folder for import list(s): {}	Rotmapp saknas för importlista/importlistor: {}
+Multiple root folders are missing for import lists: {}	Flera rotmappar saknas för importlistor: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Kan inte skriva till den konfigurerade papperskorgsmappen: {}. Se till att sökvägen finns och är skrivbar för användaren som kör Kitsunarr
+Unable to write to the backup folder {}; scheduled backups will fail.	Kan inte skriva till mappen för säkerhetskopior {}; schemalagda säkerhetskopior kommer att misslyckas.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Uppdatera din API-nyckel så att den är minst 20 tecken lång. Du kan göra det via inställningarna eller konfigurationsfilen
+Series {} was removed from {}	Serien {} har tagits bort från {}
+Series {} were removed from {}	Serierna {} har tagits bort från {}
+Mount containing a series path is mounted read-only: {}	En montering som innehåller en seriesökväg är skrivskyddad: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Nedladdningsklienten {} är inställd på att ta bort slutförda nedladdningar. Det kan leda till att nedladdningar tas bort från klienten innan Kitsunarr kan importera dem.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Nedladdningsklienten {} har {}-sortering aktiverad för Kitsunarrs kategori. Du bör inaktivera sortering i nedladdningsklienten för att undvika importproblem.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Nedladdningsklienten {} placerar nedladdningar i rotmappen {}. Du bör inte ladda ned till en rotmapp.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Fjärrnedladdningsklienten {} placerar nedladdningar i {} men detta är inte en giltig {}-sökväg. Granska dina mappningar av fjärrsökvägar och inställningarna för nedladdningsklienten.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Du använder Docker; nedladdningsklienten {} placerar nedladdningar i {} men detta är inte en giltig {}-sökväg. Granska dina mappningar av fjärrsökvägar och inställningarna för nedladdningsklienten.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Den lokala nedladdningsklienten {} placerar nedladdningar i {} men detta är inte en giltig {}-sökväg. Granska inställningarna för nedladdningsklienten.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Du använder Docker; nedladdningsklienten {} placerar nedladdningar i {} men den här katalogen verkar inte finnas i containern. Granska dina mappningar av fjärrsökvägar och containerns volyminställningar.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Fjärrnedladdningsklienten {} placerar nedladdningar i {} men den här katalogen verkar inte finnas. Troligen saknad eller felaktig mappning av fjärrsökväg.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Nedladdningsklienten {} placerar nedladdningar i {} men Kitsunarr kan inte se den här katalogen. Du kan behöva justera mappens behörigheter.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr kan se men inte komma åt det nedladdade avsnittet {}. Troligen ett behörighetsfel.
+File {} was removed part way through processing.	Filen {} togs bort mitt under bearbetningen.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr kunde inte importera ett eller flera avsnitt. Kontrollera loggarna för detaljer.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Fjärrnedladdningsklienten {} rapporterade filer i {} men detta är inte en giltig {}-sökväg. Granska dina mappningar av fjärrsökvägar och inställningarna för nedladdningsklienten.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Du använder Docker; nedladdningsklienten {} rapporterade filer i {} men detta är inte en giltig {}-sökväg. Granska dina mappningar av fjärrsökvägar och inställningarna för nedladdningsklienten.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Den lokala nedladdningsklienten {} rapporterade filer i {} men detta är inte en giltig {}-sökväg. Granska inställningarna för nedladdningsklienten.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr kan se men inte komma åt nedladdningskatalogen {}. Troligen ett behörighetsfel.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Fjärrnedladdningsklienten {} rapporterade filer i {} men den här katalogen verkar inte finnas. Troligen saknas en mappning av fjärrsökväg.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Nedladdningsklienten {} rapporterade filer i {} men Kitsunarr kan inte se den här katalogen. Du kan behöva justera mappens behörigheter.
+The configured password reset token is shorter than {} characters and is being ignored	Den konfigurerade token för lösenordsåterställning är kortare än {} tecken och ignoreras
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	En token för lösenordsåterställning är konfigurerad. Ta bort miljövariabeln KITSUNARR_AUTH_RESET_TOKEN (eller reset_token i config.toml) när du inte längre behöver den
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC-autentisering är aktiverad, men auktoritet, klient-id, klienthemlighet, användare och omfång är inte alla konfigurerade
+The OIDC Authority must start with 'https://'	OIDC-auktoriteten måste börja med 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Det gick inte att hämta OIDC-konfigurationen från {}, inloggning med din identitetsleverantör misslyckas tills den kan nås
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Inga rotmappar har konfigurerats än. Lägg till en i Inställningar → Mediehantering eller importera en befintlig installation.
+Root folder {} is missing or not accessible.	Rotmappen {} saknas eller är inte åtkomlig.
+Root folder {} has only {} MiB free.	Rotmappen {} har bara {} MiB ledigt.
+No enabled {} is configured; automatic downloads are not possible.	Ingen aktiverad {} är konfigurerad; automatiska nedladdningar är inte möjliga.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Dessa {} behölls från din tidigare installation men är ännu inte implementerade inbyggt: {}.
+All download clients are unavailable due to failures	Alla nedladdningsklienter är otillgängliga på grund av fel
+Download clients are unavailable due to failures: {}	Nedladdningsklienter är otillgängliga på grund av fel: {}
+All indexers are unavailable due to failures	Alla indexerare är otillgängliga på grund av fel
+Indexers unavailable due to failures: {}	Indexerare otillgängliga på grund av fel: {}
+Failed to resolve the IP address of the configured proxy host {}	Det gick inte att slå upp IP-adressen för den konfigurerade proxyvärden {}
+The data directory has only {} MiB free; the database may fail to write.	Datakatalogen har bara {} MiB ledigt; databasen kan misslyckas med att skriva.

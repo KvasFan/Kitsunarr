@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ nomor saat ini
 or	atau
 1 title	1 judul
+Episode titles (one per line)	Judul episode (satu per baris)
+For conditions that ignore episode titles.	Untuk kondisi yang mengabaikan judul episode.
+Test episode titles	Uji judul episode
+· group {}	· grup {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Kecualikan judul episode yang dikenal saat memeriksa nama rilis, agar kata-kata dalam judul episode tidak dihitung sebagai layanan atau grup rilis.
+Ignore episode titles {}	Abaikan judul episode {}
+Ignore episode titles	Abaikan judul episode
+Alternative group	Grup alternatif
+Alternative group {}	Grup alternatif {}
+Group anime seasons	Kelompokkan musim anime
+Anime group {}	Grup anime {}
+Group of {} · {}	Grup dari {} · {}
+Import progress	Progres impor
+Waiting to import	Menunggu impor
+Import progress of {}	Progres impor {}
+Import details of {}	Detail impor {}
+{} / {} episodes imported	{} / {} episode diimpor
+· {} not imported	· {} tidak diimpor
+Series, anime or film title, e.g. Severance	Judul serial, anime, atau film, mis. Severance
+All enabled catalogues	Semua katalog aktif
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Tidak ada katalog aktif yang dapat dicari: aktifkan satu atau masukkan kunci API-nya di Pengaturan › Sumber metadata.
+Searches every enabled catalogue, results in your order:	Mencari di setiap katalog aktif, hasil sesuai urutan Anda:
+Grouping	Pengelompokan
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Otomatis mengelompokkan judul dengan franchise atau koleksinya berdasarkan relasi resmi. Nonaktif membiarkannya berdiri sendiri.
+Automatic (official relations)	Otomatis (relasi resmi)
+Too many failed sign in attempts. Please try again in {} minute(s).	Terlalu banyak upaya masuk yang gagal. Coba lagi dalam {} menit.
+Reset your password	Atur ulang sandi Anda
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr akan menulis token atur ulang sekali pakai ke log-nya. Salin dari baris
+line in the latest log (System › Logs, or the container's output).	di log terbaru (Sistem › Log, atau output kontainer).
+Write a reset token to the log	Tulis token atur ulang ke log
+I already have a reset token	Saya sudah punya token atur ulang
+Back to sign in	Kembali ke halaman masuk
+Your password has been reset, sign in with your new password.	Sandi Anda telah diatur ulang, masuk dengan sandi baru Anda.
+Unable to sign in with your identity provider.	Tidak dapat masuk dengan penyedia identitas Anda.
+Incorrect username or password.	Nama pengguna atau sandi salah.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	Autentikasi OIDC aktif, tetapi tidak dikonfigurasi dengan benar. Masuk dengan sandi Anda lalu perbarui pengaturan OIDC (Pengaturan › Umum › Keamanan, atau file konfigurasi).
+Sign in with SSO	Masuk dengan SSO
+You will be sent to your identity provider.	Anda akan diarahkan ke penyedia identitas Anda.
+Forgot your password?	Lupa sandi?
+Invalid or expired reset token.	Token atur ulang tidak valid atau kedaluwarsa.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Nama pengguna dan sandi wajib diisi, kedua sandi harus cocok, dan sandi minimal {} karakter.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Token atur ulang baru tidak ditulis ke log. Mungkin sudah ada token yang aktif, jadi periksa log terlebih dahulu. Memulai ulang Kitsunarr akan menghapusnya dan memungkinkan Anda meminta token lain.
+Enter the token from the	Masukkan token dari baris
+line in the log. It's valid for 15 minutes and can only be used once. If you set	di log. Token berlaku selama 15 menit dan hanya dapat dipakai sekali. Jika Anda mengatur
+Reset token	Token atur ulang
+Confirm new password	Konfirmasi sandi baru
+Reset password	Atur ulang sandi
+Signed out	Telah keluar
+You have been signed out of Kitsunarr.	Anda telah keluar dari Kitsunarr.
+Sign in again	Masuk lagi
+Search for missing	Cari yang hilang
+Month	Bulan
+Week	Minggu
+Forecast	Prakiraan
+Day	Hari
+Agenda	Agenda
+On disk	Ada di disk
+Not aired yet	Belum tayang
+Search for the episodes shown that aired and have no file	Cari episode yang ditampilkan yang sudah tayang dan belum memiliki file
+Previous period	Periode sebelumnya
+Next period	Periode berikutnya
+Calendar view	Tampilan kalender
+Nothing airs in this period.	Tidak ada yang tayang pada periode ini.
+Legend	Keterangan
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Nonaktif mengeluarkan serial dari grup animenya dan mengecualikannya dari pengelompokan otomatis
+Disabled removes the film from its collection and keeps it out of automatic grouping	Nonaktif mengeluarkan film dari koleksinya dan mengecualikannya dari pengelompokan otomatis
+Filter	Filter
+Filter by path	Filter menurut path
+All paths	Semua path
+Combine filters	Gabungkan filter
+Show series matching every selected filter	Tampilkan serial yang cocok dengan semua filter yang dipilih
+Clear combined filters	Kosongkan filter gabungan
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Tampilkan setiap grup anime (pengelompokan anime Tanukarr) sekali, berdasarkan musim pertamanya
+Save the current filters as a filter of your own	Simpan filter saat ini sebagai filter Anda sendiri
+Save filter…	Simpan filter…
+Shown series	Serial yang ditampilkan
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr tidak dapat menerapkan kondisi berikut dari filter tersimpan, sehingga diabaikan:
+The selected filters contradict each other, so no series can match all of them.	Filter yang dipilih saling bertentangan, sehingga tidak ada serial yang cocok dengan semuanya.
+No series match the selected filters.	Tidak ada serial yang cocok dengan filter yang dipilih.
+Filter "{}" saved.	Filter "{}" disimpan.
+Save filter	Simpan filter
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Filter menyimpan filter yang dipilih, filter gabungan, dan path; filter ini dicantumkan bersama filter bawaan.
+Filter label	Label filter
+Delete saved filter	Hapus filter tersimpan
+Delete this saved filter? The series are not changed.	Hapus filter tersimpan ini? Serial tidak diubah.
+Monitored only	Hanya yang dimonitor
+Unmonitored only	Hanya yang tidak dimonitor
+Continuing only	Hanya yang berlanjut
+Ended only	Hanya yang berakhir
+Missing episodes	Episode yang hilang
+Security settings saved.	Pengaturan keamanan disimpan.
+Security	Keamanan
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Untuk mencegah akses jarak jauh tanpa autentikasi, Kitsunarr memerlukan autentikasi. Anda dapat menonaktifkannya untuk alamat lokal jika mau.
+Authentication	Autentikasi
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Cara pengguna masuk: halaman masuk Kitsunarr, atau penyedia identitas OpenID Connect Anda.
+Forms (sign-in page)	Formulir (halaman masuk)
+OIDC (identity provider)	OIDC (penyedia identitas)
+External (reverse proxy)	Eksternal (reverse proxy)
+Authentication required	Autentikasi diperlukan
+Require authentication for every request, or not for requests from local addresses or this machine.	Wajibkan autentikasi untuk setiap permintaan, atau tidak untuk permintaan dari alamat lokal atau mesin ini.
+Disabled for localhost	Nonaktif untuk localhost
+Allowed hosts	Host yang diizinkan
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Daftar nama host dan alamat IP yang dipisahkan koma untuk mengakses Kitsunarr, termasuk nama host sistem atau nama kontainer. Biarkan kosong untuk mengizinkan semua host. Wajib diisi jika autentikasi tidak selalu diperlukan. Contoh: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Percayai alamat CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Perlakukan alamat CGNAT (100.64.0.0/10, mis. Tailscale) sebagai lokal
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Eksternal: Kitsunarr tidak meminta masuk dan mengandalkan reverse proxy di depannya. Gunakan hanya di belakang proxy yang mengautentikasi setiap permintaan.
+Register Kitsunarr with your provider using the redirect URI	Daftarkan Kitsunarr ke penyedia Anda menggunakan redirect URI
+. Saving signs out password sessions; you then sign in through the provider.	. Menyimpan akan mengeluarkan sesi sandi; setelah itu Anda masuk melalui penyedia.
+OIDC Authority	OIDC Authority
+The URL of the OIDC provider (https://).	URL penyedia OIDC (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID yang terdaftar di penyedia OIDC.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret yang terdaftar di penyedia OIDC.
+OIDC User	Pengguna OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Alamat e-mail terverifikasi atau pengenal subjek (sub) di penyedia OIDC yang boleh masuk ke Kitsunarr.
+OIDC Scopes	Scope OIDC
+The scopes to request from the OIDC provider; must include openid.	Scope yang diminta dari penyedia OIDC; harus menyertakan openid.
+Set in config.toml or the environment, which take precedence: {}.	Diatur di config.toml atau environment, yang lebih diutamakan: {}.
+Backup settings saved.	Pengaturan cadangan disimpan.
+Interval (days)	Interval (hari)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Seberapa sering cadangan dibuat otomatis (1-7 hari). Cadangan manual memulai ulang interval.
+Backup interval in days	Interval cadangan dalam hari
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Cadangan otomatis yang lebih lama dari ini dihapus (1-90 hari). Cadangan manual tetap disimpan.
+Backup retention in days	Retensi cadangan dalam hari
+A quality without an override uses the global sizes of	Kualitas tanpa penimpaan memakai ukuran global dari
+Settings › Quality	Pengaturan › Kualitas
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Dalam penimpaan, kosong berarti tanpa batas; maksimum nol juga berarti tanpa batas.
+Signed in. Save to keep the token.	Berhasil masuk. Simpan untuk mempertahankan token.
+Redirect URL to register with your API client:	URL redirect untuk didaftarkan ke klien API Anda:
+Test all	Uji semua
+All {} passed their test.	Semua {} lulus pengujian.
+{} of {} failed their test.	{} dari {} gagal dalam pengujian.
+Test every {} entry	Uji setiap entri {}
+Test results	Hasil pengujian
+passed with warnings	lulus dengan peringatan
+Warning:	Peringatan:
+Dismiss test results	Tutup hasil pengujian
+Delete for upgrade	Hapus untuk upgrade
+Metadata sources saved.	Sumber metadata disimpan.
+Order	Urutan
+Enable {}	Aktifkan {}
+Move {} up	Pindahkan {} ke atas
+Move {} down	Pindahkan {} ke bawah
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Tambah media mencantumkan katalog aktif dalam urutan ini, dan "Semua katalog aktif" menggabungkan hasilnya dalam urutan ini. Katalog nonaktif tidak ditawarkan atau dicari; judul yang sudah termasuk dalam salah satunya tetap dimuat ulang dari katalog tersebut. Simpan di bawah untuk menerapkan.
+Enable at least one metadata source.	Aktifkan setidaknya satu sumber metadata.
+Mixed	Campuran
+Unlimited	Tanpa batas
+0 GiB/h	0 GiB/j
+{} min: {}	{} mnt: {}
+No limit	Tanpa batas
+Quality definitions saved.	Definisi kualitas disimpan.
+Quality definitions reset to the defaults.	Definisi kualitas diatur ulang ke bawaan.
+Reset definitions	Atur ulang definisi
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Ukuran dalam MiB per menit durasi; ukuran per jam ditampilkan di bawah masing-masing. Rilis di luar batas suatu kualitas ditolak; ukuran yang diutamakan menentukan peringkat rilis. Profil dapat menyimpan batasnya sendiri (
+Settings › Quality profiles	Pengaturan › Profil kualitas
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): "Campuran" berarti profil memakai batas yang berbeda, dan nilai yang dimasukkan di sini ditulis ke setiap profil.
+Title of {}	Judul {}
+{} size of {} (MiB per minute)	Ukuran {} untuk {} (MiB per menit)
+Profiles use different limits	Profil memakai batas yang berbeda
+No minimum	Tanpa minimum
+Hide retired qualities	Sembunyikan kualitas yang dipensiunkan
+Show retired qualities	Tampilkan kualitas yang dipensiunkan
+Reset quality definitions	Atur ulang definisi kualitas
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Kembalikan judul dan batas ukuran bawaan untuk setiap kualitas standar? Preset khusus dan batas milik profil tetap dipertahankan.
+Reset	Atur ulang
+RefreshMonitoredDownloads	Muat ulang unduhan yang dimonitor
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Membaca download client dan mengimpor unduhan selesai yang diambil Kitsunarr
+ProcessPendingJellyfinRefresh	Proses muat ulang Jellyfin yang tertunda
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Memuat ulang pustaka Jellyfin yang memiliki impor tertunda (sesuai mode muat ulang tiap koneksi)
+SyncJellyfinWatched	Sinkronkan tontonan Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Membaca episode yang sudah ditonton pengguna Jellyfin (sesuai interval koneksi masing-masing)
+CleanUpRecycleBin	Bersihkan tempat sampah
+Deletes files kept in the recycle bin longer than the media management setting allows	Menghapus file yang disimpan di tempat sampah lebih lama dari yang diizinkan pengaturan pengelolaan media
+RescanFolders	Pindai ulang folder
+Scans series and movie folders: forgets files that are gone and adds files found there	Memindai folder serial dan film: melupakan file yang sudah tidak ada dan menambahkan file yang ditemukan
+RefreshMetadata	Muat ulang metadata
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Memuat ulang judul dari katalog metadatanya (yang berlanjut setiap 6 jam, yang berakhir setiap bulan)
+Housekeeping	Pemeliharaan
+Purges expired sessions, prunes task history and checks database integrity	Menghapus sesi kedaluwarsa, memangkas riwayat tugas, dan memeriksa integritas basis data
+CleanupSessions	Bersihkan sesi
+Removes expired login sessions	Menghapus sesi masuk yang kedaluwarsa
+HealthCheck	Pemeriksaan kesehatan
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Mengevaluasi ulang pemeriksaan kesehatan, memberi tahu browser yang terhubung, dan mengirim notifikasi kesehatan
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Pemeriksaan integritas basis data SQLite gagal: {}. Pulihkan dari cadangan yang diketahui baik.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Pemeriksaan integritas basis data SQLite tidak mengembalikan hasil. Pulihkan dari cadangan yang diketahui baik jika terjadi kesalahan basis data.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Pemeriksaan integritas basis data SQLite gagal: {} pelanggaran foreign key. Pulihkan dari cadangan yang diketahui baik.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Tidak ada indexer dengan sinkronisasi RSS aktif, Kitsunarr tidak akan mengambil rilis baru secara otomatis
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Semua indexer yang mendukung RSS untuk sementara tidak tersedia karena kesalahan indexer baru-baru ini
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Tidak ada indexer dengan Penelusuran Otomatis aktif, Kitsunarr tidak akan memberikan hasil penelusuran otomatis
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Tidak ada indexer dengan Penelusuran Interaktif aktif, Kitsunarr tidak akan memberikan hasil penelusuran interaktif
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Semua indexer yang mendukung penelusuran untuk sementara tidak tersedia karena kesalahan indexer baru-baru ini
+All indexers are unavailable due to failures for more than 6 hours	Semua indexer tidak tersedia karena gagal lebih dari 6 jam
+Indexers unavailable due to failures for more than 6 hours: {}	Indexer tidak tersedia karena gagal lebih dari 6 jam: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indexer yang memakai endpoint 'all' Jackett yang tidak didukung: {}
+Indexers with invalid download clients: {}.	Indexer dengan download client yang tidak valid: {}.
+Enable Completed Download Handling	Aktifkan Penanganan Unduhan Selesai
+All notifications are unavailable due to failures	Semua notifikasi tidak tersedia karena kegagalan
+Notifications unavailable due to failures: {}	Notifikasi tidak tersedia karena kegagalan: {}
+All lists are unavailable due to failures	Semua daftar tidak tersedia karena kegagalan
+Lists unavailable due to failures: {}	Daftar tidak tersedia karena kegagalan: {}
+Missing root folder for import list(s): {}	Folder root untuk daftar impor tidak ada: {}
+Multiple root folders are missing for import lists: {}	Beberapa folder root untuk daftar impor tidak ada: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Tidak dapat menulis ke folder tempat sampah yang dikonfigurasi: {}. Pastikan path ini ada dan dapat ditulis oleh pengguna yang menjalankan Kitsunarr
+Unable to write to the backup folder {}; scheduled backups will fail.	Tidak dapat menulis ke folder cadangan {}; cadangan terjadwal akan gagal.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Perbarui kunci API Anda agar panjangnya minimal 20 karakter. Anda dapat melakukannya melalui pengaturan atau file konfigurasi
+Series {} was removed from {}	Serial {} telah dihapus dari {}
+Series {} were removed from {}	Serial {} telah dihapus dari {}
+Mount containing a series path is mounted read-only: {}	Mount yang berisi path serial di-mount sebagai baca saja: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Download client {} diatur untuk menghapus unduhan yang selesai. Akibatnya unduhan bisa dihapus dari klien sebelum Kitsunarr sempat mengimpornya.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Download client {} mengaktifkan pengurutan {} untuk kategori Kitsunarr. Sebaiknya nonaktifkan pengurutan di download client untuk menghindari masalah impor.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Download client {} menempatkan unduhan di folder root {}. Sebaiknya jangan mengunduh ke folder root.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Download client remote {} menempatkan unduhan di {} tetapi ini bukan path {} yang valid. Tinjau pemetaan path remote dan pengaturan download client Anda.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Anda memakai docker; download client {} menempatkan unduhan di {} tetapi ini bukan path {} yang valid. Tinjau pemetaan path remote dan pengaturan download client Anda.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Download client lokal {} menempatkan unduhan di {} tetapi ini bukan path {} yang valid. Tinjau pengaturan download client Anda.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Anda memakai docker; download client {} menempatkan unduhan di {} tetapi direktori ini tampaknya tidak ada di dalam kontainer. Tinjau pemetaan path remote dan pengaturan volume kontainer Anda.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Download client remote {} menempatkan unduhan di {} tetapi direktori ini tampaknya tidak ada. Kemungkinan pemetaan path remote tidak ada atau salah.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Download client {} menempatkan unduhan di {} tetapi Kitsunarr tidak dapat melihat direktori ini. Anda mungkin perlu menyesuaikan izin folder tersebut.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr dapat melihat tetapi tidak dapat mengakses episode yang diunduh {}. Kemungkinan kesalahan izin.
+File {} was removed part way through processing.	File {} dihapus di tengah pemrosesan.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr gagal mengimpor episode. Periksa log Anda untuk detailnya.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Download client remote {} melaporkan file di {} tetapi ini bukan path {} yang valid. Tinjau pemetaan path remote dan pengaturan download client Anda.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Anda memakai docker; download client {} melaporkan file di {} tetapi ini bukan path {} yang valid. Tinjau pemetaan path remote dan pengaturan download client Anda.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Download client lokal {} melaporkan file di {} tetapi ini bukan path {} yang valid. Tinjau pengaturan download client Anda.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr dapat melihat tetapi tidak dapat mengakses direktori unduhan {}. Kemungkinan kesalahan izin.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Download client remote {} melaporkan file di {} tetapi direktori ini tampaknya tidak ada. Kemungkinan pemetaan path remote tidak ada.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Download client {} melaporkan file di {} tetapi Kitsunarr tidak dapat melihat direktori ini. Anda mungkin perlu menyesuaikan izin folder tersebut.
+The configured password reset token is shorter than {} characters and is being ignored	Token atur ulang sandi yang dikonfigurasi lebih pendek dari {} karakter dan diabaikan
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Token atur ulang sandi dikonfigurasi. Hapus variabel environment KITSUNARR_AUTH_RESET_TOKEN (atau reset_token di config.toml) setelah tidak diperlukan lagi
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	Autentikasi OIDC aktif, tetapi Authority, Client ID, Client Secret, User, dan Scopes belum semuanya dikonfigurasi
+The OIDC Authority must start with 'https://'	OIDC Authority harus diawali dengan 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Tidak dapat mengambil konfigurasi OIDC dari {}, masuk dengan penyedia identitas akan gagal hingga dapat dijangkau
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Belum ada folder root yang dikonfigurasi. Tambahkan di Pengaturan → Pengelolaan media atau impor instalasi yang sudah ada.
+Root folder {} is missing or not accessible.	Folder root {} tidak ada atau tidak dapat diakses.
+Root folder {} has only {} MiB free.	Folder root {} hanya memiliki {} MiB ruang kosong.
+No enabled {} is configured; automatic downloads are not possible.	Tidak ada {} aktif yang dikonfigurasi; unduhan otomatis tidak dapat dilakukan.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	{} berikut dipertahankan dari instalasi Anda sebelumnya tetapi belum diimplementasikan secara native: {}.
+All download clients are unavailable due to failures	Semua download client tidak tersedia karena kegagalan
+Download clients are unavailable due to failures: {}	Download client tidak tersedia karena kegagalan: {}
+All indexers are unavailable due to failures	Semua indexer tidak tersedia karena kegagalan
+Indexers unavailable due to failures: {}	Indexer tidak tersedia karena kegagalan: {}
+Failed to resolve the IP address of the configured proxy host {}	Gagal me-resolve alamat IP host proxy yang dikonfigurasi {}
+The data directory has only {} MiB free; the database may fail to write.	Direktori data hanya memiliki {} MiB ruang kosong; basis data mungkin gagal menulis.

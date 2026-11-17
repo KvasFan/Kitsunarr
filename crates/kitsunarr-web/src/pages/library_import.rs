@@ -260,7 +260,7 @@ pub fn LibraryImport() -> Element {
                     Field { label: "Root folder",
                         select { class: "select", "aria-label": "Root folder", value: "{root_id().unwrap_or_default()}",
                             onchange: move |e: FormEvent| root_id.set(e.value().parse().ok()),
-                            for r in roots.iter() { option { key: "{r.id}", value: "{r.id}", "{r.path}" } }
+                            for r in roots.iter() { option { key: "{r.id}", value: "{r.id}", selected: root_id() == Some(r.id), "{r.path}" } }
                         }
                     }
                     Field { label: "Catalogue",
@@ -271,7 +271,7 @@ pub fn LibraryImport() -> Element {
                                 }
                             },
                             for c in catalogues.iter() {
-                                option { key: "{c.provider}", value: c.provider.as_str(), disabled: !c.available,
+                                option { key: "{c.provider}", value: c.provider.as_str(), disabled: !c.available, selected: provider() == c.provider,
                                     if c.available { "{c.name}" } else { "{c.name} (API key needed)" }
                                 }
                             }

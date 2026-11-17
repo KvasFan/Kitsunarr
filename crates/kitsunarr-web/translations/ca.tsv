@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ número actual
 or	o
 1 title	1 títol
+Episode titles (one per line)	Títols d'episodi (un per línia)
+For conditions that ignore episode titles.	Per a condicions que ignoren els títols d'episodi.
+Test episode titles	Títols d'episodi de prova
+· group {}	· grup {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Exclou els títols d'episodi coneguts en comprovar els noms dels llançaments, perquè les paraules del títol de l'episodi no comptin com a servei o grup de llançament.
+Ignore episode titles {}	Ignora els títols d'episodi {}
+Ignore episode titles	Ignora els títols d'episodi
+Alternative group	Grup alternatiu
+Alternative group {}	Grup alternatiu {}
+Group anime seasons	Agrupa les temporades d'anime
+Anime group {}	Grup d'anime {}
+Group of {} · {}	Grup de {} · {}
+Import progress	Progrés de la importació
+Waiting to import	Pendent d'importar
+Import progress of {}	Progrés de la importació de {}
+Import details of {}	Detalls de la importació de {}
+{} / {} episodes imported	{} / {} episodis importats
+· {} not imported	· {} sense importar
+Series, anime or film title, e.g. Severance	Títol de sèrie, anime o pel·lícula, p. ex. Severance
+All enabled catalogues	Tots els catàlegs habilitats
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	No es pot cercar a cap catàleg habilitat: habiliteu-ne un o introduïu-ne la clau API a Configuració › Fonts de metadades.
+Searches every enabled catalogue, results in your order:	Cerca a tots els catàlegs habilitats, amb els resultats en el vostre ordre:
+Grouping	Agrupació
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Automàtica agrupa el títol amb la seva franquícia o col·lecció segons les relacions oficials. Desactivada el manté sol.
+Automatic (official relations)	Automàtica (relacions oficials)
+Too many failed sign in attempts. Please try again in {} minute(s).	Massa intents fallits d'inici de sessió. Torneu-ho a provar d'aquí a {} minut(s).
+Reset your password	Restabliment de la contrasenya
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr escriurà un testimoni de restabliment d'un sol ús al registre. Copieu-lo de la línia
+line in the latest log (System › Logs, or the container's output).	del registre més recent (Sistema › Registres, o la sortida del contenidor).
+Write a reset token to the log	Escriu un testimoni de restabliment al registre
+I already have a reset token	Ja tinc un testimoni de restabliment
+Back to sign in	Torna a l'inici de sessió
+Your password has been reset, sign in with your new password.	S'ha restablert la contrasenya; inicieu la sessió amb la contrasenya nova.
+Unable to sign in with your identity provider.	No s'ha pogut iniciar la sessió amb el proveïdor d'identitat.
+Incorrect username or password.	El nom d'usuari o la contrasenya no són correctes.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	L'autenticació OIDC està habilitada, però no està configurada correctament. Inicieu la sessió amb la contrasenya i actualitzeu la configuració d'OIDC (Configuració › General › Seguretat, o el fitxer de configuració).
+Sign in with SSO	Inicia la sessió amb SSO
+You will be sent to your identity provider.	Se us enviarà al vostre proveïdor d'identitat.
+Forgot your password?	Heu oblidat la contrasenya?
+Invalid or expired reset token.	El testimoni de restabliment no és vàlid o ha caducat.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Cal el nom d'usuari i la contrasenya, les contrasenyes han de coincidir i la contrasenya ha de tenir com a mínim {} caràcters.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	No s'ha escrit cap testimoni de restabliment nou al registre. Potser ja n'hi ha un d'actiu, així que comproveu primer el registre. Si reinicieu Kitsunarr, s'esborra i en podeu sol·licitar un altre.
+Enter the token from the	Introduïu el testimoni de la línia
+line in the log. It's valid for 15 minutes and can only be used once. If you set	del registre. És vàlid durant 15 minuts i només es pot fer servir una vegada. Si heu definit
+Reset token	Testimoni de restabliment
+Confirm new password	Confirmeu la contrasenya nova
+Reset password	Restableix la contrasenya
+Signed out	Sessió tancada
+You have been signed out of Kitsunarr.	Heu tancat la sessió de Kitsunarr.
+Sign in again	Torna a iniciar la sessió
+Search for missing	Cerca els absents
+Month	Mes
+Week	Setmana
+Forecast	Previsió
+Day	Dia
+Agenda	Agenda
+On disk	Al disc
+Not aired yet	Encara no emès
+Search for the episodes shown that aired and have no file	Cerca els episodis mostrats que ja s'han emès i no tenen fitxer
+Previous period	Període anterior
+Next period	Període següent
+Calendar view	Vista del calendari
+Nothing airs in this period.	No s'emet res en aquest període.
+Legend	Llegenda
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Desactivada treu la sèrie del seu grup d'anime i la manté fora de l'agrupació automàtica
+Disabled removes the film from its collection and keeps it out of automatic grouping	Desactivada treu la pel·lícula de la seva col·lecció i la manté fora de l'agrupació automàtica
+Filter	Filtre
+Filter by path	Filtra per ruta
+All paths	Totes les rutes
+Combine filters	Combina filtres
+Show series matching every selected filter	Mostra les sèries que coincideixen amb tots els filtres seleccionats
+Clear combined filters	Esborra els filtres combinats
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Mostra cada grup d'anime (l'agrupació d'anime de Tanukarr) una sola vegada, per la seva primera temporada
+Save the current filters as a filter of your own	Desa els filtres actuals com a filtre propi
+Save filter…	Desa el filtre…
+Shown series	Sèries mostrades
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr no pot aplicar aquestes condicions del filtre desat, de manera que s'ometen:
+The selected filters contradict each other, so no series can match all of them.	Els filtres seleccionats es contradiuen, de manera que cap sèrie no pot coincidir amb tots.
+No series match the selected filters.	Cap sèrie no coincideix amb els filtres seleccionats.
+Filter "{}" saved.	S'ha desat el filtre «{}».
+Save filter	Desa el filtre
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	El filtre conserva el filtre seleccionat, els filtres combinats i la ruta; apareix amb els filtres integrats.
+Filter label	Etiqueta del filtre
+Delete saved filter	Suprimeix el filtre desat
+Delete this saved filter? The series are not changed.	Voleu suprimir aquest filtre desat? Les sèries no canvien.
+Monitored only	Només monitorades
+Unmonitored only	Només no monitorades
+Continuing only	Només en emissió
+Ended only	Només acabades
+Missing episodes	Episodis absents
+Security settings saved.	S'ha desat la configuració de seguretat.
+Security	Seguretat
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Per evitar l'accés remot sense autenticació, Kitsunarr requereix autenticació. Opcionalment, podeu desactivar-la per a les adreces locals.
+Authentication	Autenticació
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Com inicien la sessió els usuaris: la pàgina d'inici de sessió de Kitsunarr o el vostre proveïdor d'identitat OpenID Connect.
+Forms (sign-in page)	Formulari (pàgina d'inici de sessió)
+OIDC (identity provider)	OIDC (proveïdor d'identitat)
+External (reverse proxy)	Extern (servidor intermediari invers)
+Authentication required	Autenticació requerida
+Require authentication for every request, or not for requests from local addresses or this machine.	Requereix autenticació per a cada sol·licitud, o no per a les sol·licituds d'adreces locals o d'aquesta màquina.
+Disabled for localhost	Desactivada per a localhost
+Allowed hosts	Amfitrions permesos
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Llista separada per comes de noms d'amfitrió i adreces IP amb què s'ha de poder accedir a Kitsunarr, inclosos el nom d'amfitrió del sistema o el nom del contenidor. Deixeu-ho buit per permetre tots els amfitrions. És obligatori quan l'autenticació no sempre és requerida. Per exemple: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Confia en les adreces CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Tracta les adreces CGNAT (100.64.0.0/10, p. ex. Tailscale) com a locals
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Extern: Kitsunarr no demana iniciar la sessió i confia en el servidor intermediari invers que té al davant. Feu-ho servir només darrere d'un servidor intermediari que autentiqui cada sol·licitud.
+Register Kitsunarr with your provider using the redirect URI	Registreu Kitsunarr al vostre proveïdor amb l'URI de redirecció
+. Saving signs out password sessions; you then sign in through the provider.	. En desar, es tanquen les sessions amb contrasenya; després inicieu la sessió a través del proveïdor.
+OIDC Authority	Autoritat OIDC
+The URL of the OIDC provider (https://).	L'URL del proveïdor OIDC (https://).
+OIDC Client ID	ID de client OIDC
+The Client ID registered with the OIDC provider.	L'ID de client registrat al proveïdor OIDC.
+OIDC Client Secret	Secret de client OIDC
+The Client Secret registered with the OIDC provider.	El secret de client registrat al proveïdor OIDC.
+OIDC User	Usuari OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	L'adreça electrònica verificada o l'identificador de subjecte (sub) del proveïdor OIDC que pot iniciar la sessió a Kitsunarr.
+OIDC Scopes	Àmbits OIDC
+The scopes to request from the OIDC provider; must include openid.	Els àmbits que cal sol·licitar al proveïdor OIDC; ha d'incloure openid.
+Set in config.toml or the environment, which take precedence: {}.	Definit a config.toml o a l'entorn, que tenen prioritat: {}.
+Backup settings saved.	S'ha desat la configuració de les còpies de seguretat.
+Interval (days)	Interval (dies)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Cada quant es fa automàticament una còpia de seguretat (1-7 dies). Una còpia manual reinicia l'interval.
+Backup interval in days	Interval de còpia de seguretat en dies
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Les còpies automàtiques més antigues que això se suprimeixen (1-90 dies). Les còpies manuals es conserven.
+Backup retention in days	Retenció de les còpies de seguretat en dies
+A quality without an override uses the global sizes of	Una qualitat sense substitució fa servir les mides globals de
+Settings › Quality	Configuració › Qualitat
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Dins d'una substitució, buit vol dir sense límit; un màxim de zero també vol dir sense límit.
+Signed in. Save to keep the token.	S'ha iniciat la sessió. Deseu per conservar el testimoni.
+Redirect URL to register with your API client:	URL de redirecció per registrar al vostre client de l'API:
+Test all	Prova-ho tot
+All {} passed their test.	Tots {} han superat la prova.
+{} of {} failed their test.	{} de {} no han superat la prova.
+Test every {} entry	Prova cada entrada de {}
+Test results	Resultats de la prova
+passed with warnings	superada amb avisos
+Warning:	Avís:
+Dismiss test results	Descarta els resultats de la prova
+Delete for upgrade	Suprimeix per actualitzar
+Metadata sources saved.	S'han desat les fonts de metadades.
+Order	Ordre
+Enable {}	Habilita {}
+Move {} up	Mou {} amunt
+Move {} down	Mou {} avall
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Afegeix contingut mostra els catàlegs habilitats en aquest ordre, i «Tots els catàlegs habilitats» combina els seus resultats en aquest ordre. Els catàlegs desactivats no s'ofereixen ni s'hi cerca; els títols que ja hi pertanyen se segueixen actualitzant des d'ells. Deseu a sota per aplicar-ho.
+Enable at least one metadata source.	Habiliteu almenys una font de metadades.
+Mixed	Mixt
+Unlimited	Sense límit
+0 GiB/h	0 GiB/h
+{} min: {}	{} min: {}
+No limit	Sense límit
+Quality definitions saved.	S'han desat les definicions de qualitat.
+Quality definitions reset to the defaults.	S'han restablert les definicions de qualitat als valors per defecte.
+Reset definitions	Restableix les definicions
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Les mides són en MiB per minut de durada; la mida per hora es mostra a sota de cadascuna. Un llançament fora dels límits d'una qualitat es rebutja; la mida preferida ordena els llançaments. Els perfils poden conservar els seus propis límits (
+Settings › Quality profiles	Configuració › Perfils de qualitat
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): «Mixt» vol dir que els perfils fan servir límits diferents, i un valor introduït aquí s'escriu a tots els perfils.
+Title of {}	Títol de {}
+{} size of {} (MiB per minute)	Mida {} de {} (MiB per minut)
+Profiles use different limits	Els perfils fan servir límits diferents
+No minimum	Sense mínim
+Hide retired qualities	Amaga les qualitats retirades
+Show retired qualities	Mostra les qualitats retirades
+Reset quality definitions	Restableix les definicions de qualitat
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Voleu tornar a donar a cada qualitat estàndard el títol i els límits de mida per defecte? Els preajustos personalitzats i els límits propis dels perfils es conserven.
+Reset	Restableix
+RefreshMonitoredDownloads	Actualitza les baixades monitorades
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Llegeix els clients de baixada i importa les baixades completades que Kitsunarr ha capturat
+ProcessPendingJellyfinRefresh	Processa les actualitzacions pendents de Jellyfin
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Actualitza les biblioteques de Jellyfin que tenen importacions pendents (segons el mode d'actualització de cada connexió)
+SyncJellyfinWatched	Sincronitza els vistos de Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Llegeix quins episodis ha vist un usuari de Jellyfin (segons l'interval propi de la connexió)
+CleanUpRecycleBin	Neteja la paperera de reciclatge
+Deletes files kept in the recycle bin longer than the media management setting allows	Suprimeix els fitxers que fa més temps del que permet la configuració de gestió multimèdia que són a la paperera de reciclatge
+RescanFolders	Torna a escanejar les carpetes
+Scans series and movie folders: forgets files that are gone and adds files found there	Escaneja les carpetes de sèries i pel·lícules: oblida els fitxers que ja no hi són i afegeix els que s'hi troben
+RefreshMetadata	Actualitza les metadades
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Actualitza els títols des dels seus catàlegs de metadades (els que continuen cada 6 hores, els acabats mensualment)
+Housekeeping	Manteniment
+Purges expired sessions, prunes task history and checks database integrity	Elimina les sessions caducades, retalla l'historial de tasques i comprova la integritat de la base de dades
+CleanupSessions	Neteja les sessions
+Removes expired login sessions	Elimina les sessions d'inici de sessió caducades
+HealthCheck	Comprovació de salut
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Torna a avaluar les comprovacions de salut, avisa els navegadors connectats i envia notificacions de salut
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Ha fallat la comprovació d'integritat de la base de dades SQLite: {}. Restaureu-la des d'una còpia de seguretat en bon estat.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	La comprovació d'integritat de la base de dades SQLite no ha retornat cap resultat. Restaureu-la des d'una còpia de seguretat en bon estat si es produeixen errors de base de dades.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Ha fallat la comprovació d'integritat de la base de dades SQLite: {} infraccions de clau forana. Restaureu-la des d'una còpia de seguretat en bon estat.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	No hi ha cap indexador amb la sincronització RSS habilitada; Kitsunarr no capturarà nous llançaments automàticament
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Tots els indexadors compatibles amb RSS no estan disponibles temporalment a causa d'errors recents dels indexadors
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	No hi ha cap indexador amb la cerca automàtica habilitada; Kitsunarr no oferirà cap resultat de cerca automàtica
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	No hi ha cap indexador amb la cerca interactiva habilitada; Kitsunarr no oferirà cap resultat de cerca interactiva
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Tots els indexadors compatibles amb la cerca no estan disponibles temporalment a causa d'errors recents dels indexadors
+All indexers are unavailable due to failures for more than 6 hours	Cap indexador no està disponible a causa d'errors durant més de 6 hores
+Indexers unavailable due to failures for more than 6 hours: {}	Indexadors no disponibles a causa d'errors durant més de 6 hores: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indexadors que fan servir el punt final 'all' de Jackett, que no és compatible: {}
+Indexers with invalid download clients: {}.	Indexadors amb clients de baixada no vàlids: {}.
+Enable Completed Download Handling	Habilita la gestió de baixades completades
+All notifications are unavailable due to failures	Cap notificació no està disponible a causa d'errors
+Notifications unavailable due to failures: {}	Notificacions no disponibles a causa d'errors: {}
+All lists are unavailable due to failures	Cap llista no està disponible a causa d'errors
+Lists unavailable due to failures: {}	Llistes no disponibles a causa d'errors: {}
+Missing root folder for import list(s): {}	Falta la carpeta arrel per a les llistes d'importació: {}
+Multiple root folders are missing for import lists: {}	Falten diverses carpetes arrel per a les llistes d'importació: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	No es pot escriure a la carpeta de la paperera de reciclatge configurada: {}. Assegureu-vos que aquesta ruta existeix i que l'usuari que executa Kitsunarr hi pot escriure
+Unable to write to the backup folder {}; scheduled backups will fail.	No es pot escriure a la carpeta de còpies de seguretat {}; les còpies programades fallaran.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Actualitzeu la clau API perquè tingui com a mínim 20 caràcters. Podeu fer-ho a la configuració o al fitxer de configuració
+Series {} was removed from {}	La sèrie {} s'ha eliminat de {}
+Series {} were removed from {}	Les sèries {} s'han eliminat de {}
+Mount containing a series path is mounted read-only: {}	El punt de muntatge que conté una ruta de sèrie està muntat només de lectura: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	El client de baixada {} està configurat per eliminar les baixades completades. Això pot fer que les baixades s'eliminin del client abans que Kitsunarr les pugui importar.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	El client de baixada {} té l'ordenació {} habilitada per a la categoria de Kitsunarr. Hauríeu de desactivar l'ordenació al client de baixada per evitar problemes d'importació.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	El client de baixada {} desa les baixades a la carpeta arrel {}. No hauríeu de baixar a una carpeta arrel.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	El client de baixada remot {} desa les baixades a {}, però aquesta no és una ruta de {} vàlida. Reviseu els mapatges de rutes remotes i la configuració del client de baixada.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Esteu fent servir docker; el client de baixada {} desa les baixades a {}, però aquesta no és una ruta de {} vàlida. Reviseu els mapatges de rutes remotes i la configuració del client de baixada.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	El client de baixada local {} desa les baixades a {}, però aquesta no és una ruta de {} vàlida. Reviseu la configuració del client de baixada.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Esteu fent servir docker; el client de baixada {} desa les baixades a {}, però sembla que aquest directori no existeix dins del contenidor. Reviseu els mapatges de rutes remotes i la configuració dels volums del contenidor.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	El client de baixada remot {} desa les baixades a {}, però sembla que aquest directori no existeix. Probablement falta un mapatge de ruta remota o és incorrecte.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	El client de baixada {} desa les baixades a {}, però Kitsunarr no veu aquest directori. Potser cal ajustar els permisos de la carpeta.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr veu però no pot accedir a l'episodi baixat {}. Probablement és un error de permisos.
+File {} was removed part way through processing.	El fitxer {} s'ha eliminat a mig processament.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr no ha pogut importar un o més episodis. Consulteu els registres per obtenir-ne els detalls.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	El client de baixada remot {} ha informat de fitxers a {}, però aquesta no és una ruta de {} vàlida. Reviseu els mapatges de rutes remotes i la configuració del client de baixada.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Esteu fent servir docker; el client de baixada {} ha informat de fitxers a {}, però aquesta no és una ruta de {} vàlida. Reviseu els mapatges de rutes remotes i la configuració del client de baixada.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	El client de baixada local {} ha informat de fitxers a {}, però aquesta no és una ruta de {} vàlida. Reviseu la configuració del client de baixada.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr veu però no pot accedir al directori de baixades {}. Probablement és un error de permisos.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	El client de baixada remot {} ha informat de fitxers a {}, però sembla que aquest directori no existeix. Probablement falta un mapatge de ruta remota.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	El client de baixada {} ha informat de fitxers a {}, però Kitsunarr no veu aquest directori. Potser cal ajustar els permisos de la carpeta.
+The configured password reset token is shorter than {} characters and is being ignored	El testimoni de restabliment de contrasenya configurat té menys de {} caràcters i s'ignora
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Hi ha un testimoni de restabliment de contrasenya configurat. Elimineu la variable d'entorn KITSUNARR_AUTH_RESET_TOKEN (o reset_token a config.toml) quan ja no la necessiteu
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	L'autenticació OIDC està habilitada, però no s'han configurat tots els camps Authority, Client ID, Client Secret, User i Scopes
+The OIDC Authority must start with 'https://'	L'Authority d'OIDC ha de començar per 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	No s'ha pogut obtenir la configuració d'OIDC de {}; l'inici de sessió amb el proveïdor d'identitat fallarà fins que sigui accessible
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Encara no hi ha cap carpeta arrel configurada. Afegiu-ne una a Configuració → Gestió multimèdia o importeu una instal·lació existent.
+Root folder {} is missing or not accessible.	La carpeta arrel {} falta o no és accessible.
+Root folder {} has only {} MiB free.	La carpeta arrel {} només té {} MiB lliures.
+No enabled {} is configured; automatic downloads are not possible.	No hi ha cap {} habilitat configurat; les baixades automàtiques no són possibles.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Aquests elements ({}) s'han conservat de la vostra instal·lació anterior, però encara no s'han implementat de manera nativa: {}.
+All download clients are unavailable due to failures	Cap client de baixada no està disponible a causa d'errors
+Download clients are unavailable due to failures: {}	Clients de baixada no disponibles a causa d'errors: {}
+All indexers are unavailable due to failures	Cap indexador no està disponible a causa d'errors
+Indexers unavailable due to failures: {}	Indexadors no disponibles a causa d'errors: {}
+Failed to resolve the IP address of the configured proxy host {}	No s'ha pogut resoldre l'adreça IP de l'amfitrió del servidor intermediari configurat {}
+The data directory has only {} MiB free; the database may fail to write.	El directori de dades només té {} MiB lliures; pot fallar l'escriptura a la base de dades.

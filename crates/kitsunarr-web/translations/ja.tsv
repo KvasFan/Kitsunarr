@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ 現在の番号
 or	または
 1 title	1 件のタイトル
+Episode titles (one per line)	エピソードタイトル (1行に1つ)
+For conditions that ignore episode titles.	エピソードタイトルを無視する条件に使用します。
+Test episode titles	テスト用のエピソードタイトル
+· group {}	· グループ {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	リリース名をチェックするときに既知のエピソードタイトルを除外し、エピソードタイトル内の単語がサービスやリリースグループとして扱われないようにします。
+Ignore episode titles {}	エピソードタイトルを無視 {}
+Ignore episode titles	エピソードタイトルを無視
+Alternative group	代替グループ
+Alternative group {}	代替グループ {}
+Group anime seasons	アニメのシーズンをグループ化
+Anime group {}	アニメグループ {}
+Group of {} · {}	{} のグループ · {}
+Import progress	インポートの進行状況
+Waiting to import	インポート待ち
+Import progress of {}	{} のインポートの進行状況
+Import details of {}	{} のインポートの詳細
+{} / {} episodes imported	{} / {} エピソードをインポート済み
+· {} not imported	· {} 件は未インポート
+Series, anime or film title, e.g. Severance	シリーズ、アニメ、映画のタイトル (例: Severance)
+All enabled catalogues	有効なすべてのカタログ
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	検索できる有効なカタログがありません。設定 › メタデータのソース でカタログを有効にするか、API キーを入力してください。
+Searches every enabled catalogue, results in your order:	有効なすべてのカタログを検索し、設定した順序で結果を表示します:
+Grouping	グループ化
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	自動では、公式の関連情報に基づいてタイトルをフランチャイズまたはコレクションにまとめます。無効では単独のままにします。
+Automatic (official relations)	自動 (公式の関連情報)
+Too many failed sign in attempts. Please try again in {} minute(s).	サインインの失敗回数が多すぎます。{} 分後にもう一度お試しください。
+Reset your password	パスワードのリセット
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr は1回限り有効なリセットトークンをログに書き込みます。最新のログ (システム › ログ、またはコンテナーの出力) の
+line in the latest log (System › Logs, or the container's output).	の行からコピーしてください。
+Write a reset token to the log	リセットトークンをログに書き込む
+I already have a reset token	リセットトークンを既に持っています
+Back to sign in	サインインに戻る
+Your password has been reset, sign in with your new password.	パスワードをリセットしました。新しいパスワードでサインインしてください。
+Unable to sign in with your identity provider.	ID プロバイダーでサインインできません。
+Incorrect username or password.	ユーザー名またはパスワードが正しくありません。
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC 認証が有効ですが、正しく設定されていません。パスワードでサインインし、OIDC の設定を更新してください (設定 › 一般 › セキュリティ、または設定ファイル)。
+Sign in with SSO	SSO でサインイン
+You will be sent to your identity provider.	ID プロバイダーに移動します。
+Forgot your password?	パスワードをお忘れですか?
+Invalid or expired reset token.	リセットトークンが無効か、有効期限が切れています。
+Username and password are required, the passwords must match, and the password needs at least {} characters.	ユーザー名とパスワードは必須です。パスワードは一致している必要があり、{} 文字以上でなければなりません。
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	新しいリセットトークンはログに書き込まれませんでした。既に有効なトークンがある可能性があるため、まずログを確認してください。Kitsunarr を再起動するとトークンがクリアされ、新たに要求できます。
+Enter the token from the	ログ内の
+line in the log. It's valid for 15 minutes and can only be used once. If you set	の行にあるトークンを入力してください。有効期間は15分で、1回だけ使用できます。次を設定している場合:
+Reset token	リセットトークン
+Confirm new password	新しいパスワードの確認
+Reset password	パスワードをリセット
+Signed out	サインアウトしました
+You have been signed out of Kitsunarr.	Kitsunarr からサインアウトしました。
+Sign in again	もう一度サインイン
+Search for missing	欠落を検索
+Month	月
+Week	週
+Forecast	予定
+Day	日
+Agenda	アジェンダ
+On disk	ディスク上にあり
+Not aired yet	未放送
+Search for the episodes shown that aired and have no file	表示中のエピソードのうち、放送済みでファイルがないものを検索
+Previous period	前の期間
+Next period	次の期間
+Calendar view	カレンダーの表示
+Nothing airs in this period.	この期間に放送予定はありません。
+Legend	凡例
+Disabled removes the series from its anime group and keeps it out of automatic grouping	無効にすると、シリーズをアニメグループから外し、自動グループ化の対象外にします
+Disabled removes the film from its collection and keeps it out of automatic grouping	無効にすると、映画をコレクションから外し、自動グループ化の対象外にします
+Filter	フィルター
+Filter by path	パスで絞り込み
+All paths	すべてのパス
+Combine filters	フィルターを組み合わせる
+Show series matching every selected filter	選択したすべてのフィルターに一致するシリーズを表示
+Clear combined filters	組み合わせたフィルターをクリア
+Show each anime group (Tanukarr's anime grouping) once, by its first season	各アニメグループ (Tanukarr のアニメのグループ化) を最初のシーズンで1回だけ表示
+Save the current filters as a filter of your own	現在のフィルターを独自のフィルターとして保存
+Save filter…	フィルターを保存…
+Shown series	表示中のシリーズ
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	保存したフィルターの次の条件は Kitsunarr で適用できないため、除外されています:
+The selected filters contradict each other, so no series can match all of them.	選択したフィルターが互いに矛盾しているため、すべてに一致するシリーズはありません。
+No series match the selected filters.	選択したフィルターに一致するシリーズはありません。
+Filter "{}" saved.	フィルター「{}」を保存しました。
+Save filter	フィルターを保存
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	フィルターには選択中のフィルター、組み合わせたフィルター、パスが保存され、組み込みのフィルターと一緒に一覧表示されます。
+Filter label	フィルター名
+Delete saved filter	保存したフィルターを削除
+Delete this saved filter? The series are not changed.	この保存したフィルターを削除しますか? シリーズは変更されません。
+Monitored only	監視中のみ
+Unmonitored only	未監視のみ
+Continuing only	継続中のみ
+Ended only	終了のみ
+Missing episodes	欠落エピソード
+Security settings saved.	セキュリティの設定を保存しました。
+Security	セキュリティ
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	認証なしのリモートアクセスを防ぐため、Kitsunarr では認証が必要です。必要に応じてローカルアドレスでは無効にできます。
+Authentication	認証
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	ユーザーのサインイン方法: Kitsunarr のサインインページ、または OpenID Connect の ID プロバイダー。
+Forms (sign-in page)	フォーム (サインインページ)
+OIDC (identity provider)	OIDC (ID プロバイダー)
+External (reverse proxy)	外部 (リバースプロキシ)
+Authentication required	認証が必要
+Require authentication for every request, or not for requests from local addresses or this machine.	すべてのリクエストで認証を必須にするか、ローカルアドレスやこのマシンからのリクエストでは不要にします。
+Disabled for localhost	ローカルホストでは無効
+Allowed hosts	許可するホスト
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kitsunarr へのアクセスに使用するホスト名と IP アドレスのカンマ区切りリスト。システムのホスト名やコンテナー名も含めてください。空欄にするとすべてのホストを許可します。認証が常に必須ではない場合は必須です。例: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	CGNAT アドレスを信頼
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	CGNAT アドレス (100.64.0.0/10、例: Tailscale) をローカルとして扱う
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	外部: Kitsunarr はサインインを求めず、前段のリバースプロキシに任せます。すべてのリクエストを認証するプロキシの背後でのみ使用してください。
+Register Kitsunarr with your provider using the redirect URI	プロバイダーに Kitsunarr を登録する際のリダイレクト URI:
+. Saving signs out password sessions; you then sign in through the provider.	。保存するとパスワードのセッションはサインアウトされ、以降はプロバイダー経由でサインインします。
+OIDC Authority	OIDC 認証局 (Authority)
+The URL of the OIDC provider (https://).	OIDC プロバイダーの URL (https://)。
+OIDC Client ID	OIDC クライアント ID
+The Client ID registered with the OIDC provider.	OIDC プロバイダーに登録したクライアント ID。
+OIDC Client Secret	OIDC クライアントシークレット
+The Client Secret registered with the OIDC provider.	OIDC プロバイダーに登録したクライアントシークレット。
+OIDC User	OIDC ユーザー
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Kitsunarr にサインインできる、OIDC プロバイダー上の確認済みメールアドレスまたはサブジェクト識別子 (sub)。
+OIDC Scopes	OIDC スコープ
+The scopes to request from the OIDC provider; must include openid.	OIDC プロバイダーに要求するスコープ。openid を含める必要があります。
+Set in config.toml or the environment, which take precedence: {}.	config.toml または環境変数で設定されており、そちらが優先されます: {}。
+Backup settings saved.	バックアップの設定を保存しました。
+Interval (days)	間隔 (日)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	自動バックアップを作成する頻度 (1～7日)。手動バックアップを作成すると間隔がリセットされます。
+Backup interval in days	バックアップの間隔 (日)
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	これより古い自動バックアップは削除されます (1～90日)。手動バックアップは保持されます。
+Backup retention in days	バックアップの保持期間 (日)
+A quality without an override uses the global sizes of	上書きのない品質は次のグローバルなサイズを使用します:
+Settings › Quality	設定 › 品質
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	。上書き内では空欄は無制限を意味し、最大値 0 も無制限を意味します。
+Signed in. Save to keep the token.	サインインしました。トークンを保持するには保存してください。
+Redirect URL to register with your API client:	API クライアントに登録するリダイレクト URL:
+Test all	すべてテスト
+All {} passed their test.	{} 件すべてがテストに合格しました。
+{} of {} failed their test.	{} 件がテストに失敗しました (全 {} 件中)。
+Test every {} entry	すべての{}をテスト
+Test results	テスト結果
+passed with warnings	警告付きで合格
+Warning:	警告:
+Dismiss test results	テスト結果を閉じる
+Delete for upgrade	アップグレード時に削除
+Metadata sources saved.	メタデータのソースを保存しました。
+Order	順序
+Enable {}	{} を有効化
+Move {} up	{} を上へ移動
+Move {} down	{} を下へ移動
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	メディアの追加では有効なカタログがこの順序で表示され、「有効なすべてのカタログ」はこの順序で結果を統合します。無効なカタログは表示も検索もされませんが、既にそのカタログに属するタイトルは引き続きそこから更新されます。適用するには下で保存してください。
+Enable at least one metadata source.	少なくとも1つのメタデータのソースを有効にしてください。
+Mixed	混在
+Unlimited	無制限
+0 GiB/h	0 GiB/h
+{} min: {}	{} 分: {}
+No limit	制限なし
+Quality definitions saved.	品質の定義を保存しました。
+Quality definitions reset to the defaults.	品質の定義を既定値にリセットしました。
+Reset definitions	定義をリセット
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	サイズは再生時間1分あたりの MiB で、1時間あたりのサイズが各値の下に表示されます。品質の制限外のリリースは拒否され、優先サイズはリリースの順位付けに使われます。プロファイルは独自の制限を持てます (
+Settings › Quality profiles	設定 › 品質プロファイル
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): 「混在」はプロファイルごとに制限が異なることを意味し、ここに入力した値はすべてのプロファイルに書き込まれます。
+Title of {}	{} のタイトル
+{} size of {} (MiB per minute)	{}サイズ ({}、1分あたりの MiB)
+Profiles use different limits	プロファイルごとに制限が異なります
+No minimum	最小値なし
+Hide retired qualities	廃止された品質を隠す
+Show retired qualities	廃止された品質を表示
+Reset quality definitions	品質の定義をリセット
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	すべての標準品質を既定のタイトルとサイズ制限に戻しますか? カスタムプリセットとプロファイル独自の制限は保持されます。
+Reset	リセット
+RefreshMonitoredDownloads	監視中のダウンロードを更新
+Reads the download clients and imports completed downloads Kitsunarr grabbed	ダウンロードクライアントを読み取り、Kitsunarr が取得した完了済みのダウンロードをインポートします
+ProcessPendingJellyfinRefresh	保留中の Jellyfin 更新を処理
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	インポート待ちのある Jellyfin ライブラリを更新します (各接続の更新モードに従う)
+SyncJellyfinWatched	Jellyfin の視聴状況を同期
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Jellyfin ユーザーが視聴したエピソードを読み取ります (接続ごとの間隔で)
+CleanUpRecycleBin	ごみ箱をクリーンアップ
+Deletes files kept in the recycle bin longer than the media management setting allows	メディア管理の設定で許可された期間を超えてごみ箱に残っているファイルを削除します
+RescanFolders	フォルダーを再スキャン
+Scans series and movie folders: forgets files that are gone and adds files found there	シリーズと映画のフォルダーをスキャンし、なくなったファイルを削除し、見つかったファイルを追加します
+RefreshMetadata	メタデータを更新
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	メタデータのカタログからタイトルを更新します (継続中のものは6時間ごと、終了したものは毎月)
+Housekeeping	ハウスキーピング
+Purges expired sessions, prunes task history and checks database integrity	期限切れのセッションを削除し、タスク履歴を整理し、データベースの整合性をチェックします
+CleanupSessions	セッションをクリーンアップ
+Removes expired login sessions	期限切れのログインセッションを削除します
+HealthCheck	ヘルスチェック
+Re-evaluates health checks, notifies connected browsers and sends health notifications	ヘルスチェックを再評価し、接続中のブラウザーに通知し、ヘルス通知を送信します
+SQLite database integrity check failed: {}. Restore from a known-good backup.	SQLite データベースの整合性チェックに失敗しました: {}。正常なバックアップから復元してください。
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	SQLite データベースの整合性チェックが結果を返しませんでした。データベースのエラーが発生している場合は、正常なバックアップから復元してください。
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	SQLite データベースの整合性チェックに失敗しました: 外部キー違反が {} 件あります。正常なバックアップから復元してください。
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	RSS 同期が有効なインデクサーがないため、Kitsunarr は新しいリリースを自動で取得しません
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	最近のインデクサーのエラーにより、RSS 対応のすべてのインデクサーが一時的に利用できません
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	自動検索が有効なインデクサーがないため、Kitsunarr は自動検索の結果を提供しません
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	インタラクティブ検索が有効なインデクサーがないため、Kitsunarr はインタラクティブ検索の結果を提供しません
+All search-capable indexers are temporarily unavailable due to recent indexer errors	最近のインデクサーのエラーにより、検索対応のすべてのインデクサーが一時的に利用できません
+All indexers are unavailable due to failures for more than 6 hours	6時間以上の障害により、すべてのインデクサーが利用できません
+Indexers unavailable due to failures for more than 6 hours: {}	6時間以上の障害により利用できないインデクサー: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	サポートされていない Jackett の 'all' エンドポイントを使用しているインデクサー: {}
+Indexers with invalid download clients: {}.	無効なダウンロードクライアントが設定されたインデクサー: {}。
+Enable Completed Download Handling	完了したダウンロードの処理を有効化
+All notifications are unavailable due to failures	障害により、すべての通知が利用できません
+Notifications unavailable due to failures: {}	障害により利用できない通知: {}
+All lists are unavailable due to failures	障害により、すべてのリストが利用できません
+Lists unavailable due to failures: {}	障害により利用できないリスト: {}
+Missing root folder for import list(s): {}	インポートリストのルートフォルダーが見つかりません: {}
+Multiple root folders are missing for import lists: {}	インポートリストの複数のルートフォルダーが見つかりません: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	設定されたごみ箱フォルダーに書き込めません: {}。このパスが存在し、Kitsunarr を実行しているユーザーが書き込めることを確認してください
+Unable to write to the backup folder {}; scheduled backups will fail.	バックアップフォルダー {} に書き込めません。スケジュールされたバックアップは失敗します。
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	API キーを20文字以上に更新してください。設定または設定ファイルで変更できます
+Series {} was removed from {}	シリーズ {} は {} から削除されました
+Series {} were removed from {}	シリーズ {} は {} から削除されました
+Mount containing a series path is mounted read-only: {}	シリーズのパスを含むマウントが読み取り専用でマウントされています: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	ダウンロードクライアント {} は完了したダウンロードを削除するように設定されています。Kitsunarr がインポートする前にダウンロードがクライアントから削除される可能性があります。
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	ダウンロードクライアント {} で、Kitsunarr のカテゴリーに対して {} の並べ替えが有効になっています。インポートの問題を避けるため、ダウンロードクライアントで並べ替えを無効にしてください。
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	ダウンロードクライアント {} はダウンロードをルートフォルダー {} に保存しています。ルートフォルダーにはダウンロードしないでください。
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	リモートのダウンロードクライアント {} はダウンロードを {} に保存していますが、これは有効な {} のパスではありません。リモートパスのマッピングとダウンロードクライアントの設定を確認してください。
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	docker を使用しています。ダウンロードクライアント {} はダウンロードを {} に保存していますが、これは有効な {} のパスではありません。リモートパスのマッピングとダウンロードクライアントの設定を確認してください。
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	ローカルのダウンロードクライアント {} はダウンロードを {} に保存していますが、これは有効な {} のパスではありません。ダウンロードクライアントの設定を確認してください。
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	docker を使用しています。ダウンロードクライアント {} はダウンロードを {} に保存していますが、このディレクトリはコンテナー内に存在しないようです。リモートパスのマッピングとコンテナーのボリューム設定を確認してください。
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	リモートのダウンロードクライアント {} はダウンロードを {} に保存していますが、このディレクトリは存在しないようです。リモートパスのマッピングがないか、正しくない可能性があります。
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	ダウンロードクライアント {} はダウンロードを {} に保存していますが、Kitsunarr からこのディレクトリが見えません。フォルダーの権限を調整する必要があるかもしれません。
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr はダウンロードしたエピソード {} を認識できますが、アクセスできません。権限のエラーと考えられます。
+File {} was removed part way through processing.	ファイル {} は処理の途中で削除されました。
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr はエピソードのインポートに失敗しました。詳細はログを確認してください。
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	リモートのダウンロードクライアント {} は {} 内のファイルを報告しましたが、これは有効な {} のパスではありません。リモートパスのマッピングとダウンロードクライアントの設定を確認してください。
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	docker を使用しています。ダウンロードクライアント {} は {} 内のファイルを報告しましたが、これは有効な {} のパスではありません。リモートパスのマッピングとダウンロードクライアントの設定を確認してください。
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	ローカルのダウンロードクライアント {} は {} 内のファイルを報告しましたが、これは有効な {} のパスではありません。ダウンロードクライアントの設定を確認してください。
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr はダウンロードディレクトリ {} を認識できますが、アクセスできません。権限のエラーと考えられます。
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	リモートのダウンロードクライアント {} は {} 内のファイルを報告しましたが、このディレクトリは存在しないようです。リモートパスのマッピングがない可能性があります。
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	ダウンロードクライアント {} は {} 内のファイルを報告しましたが、Kitsunarr からこのディレクトリが見えません。フォルダーの権限を調整する必要があるかもしれません。
+The configured password reset token is shorter than {} characters and is being ignored	設定されたパスワードリセットトークンが {} 文字未満のため、無視されています
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	パスワードリセットトークンが設定されています。不要になったら KITSUNARR_AUTH_RESET_TOKEN 環境変数 (または config.toml の reset_token) を削除してください
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC 認証が有効ですが、Authority、Client ID、Client Secret、User、Scopes の一部が設定されていません
+The OIDC Authority must start with 'https://'	OIDC Authority は 'https://' で始まる必要があります
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	{} から OIDC の設定を取得できません。到達可能になるまで ID プロバイダーでのサインインは失敗します
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	ルートフォルダーがまだ設定されていません。設定 → メディア管理 で追加するか、既存のインストールをインポートしてください。
+Root folder {} is missing or not accessible.	ルートフォルダー {} が見つからないか、アクセスできません。
+Root folder {} has only {} MiB free.	ルートフォルダー {} の空き容量は {} MiB しかありません。
+No enabled {} is configured; automatic downloads are not possible.	有効な{}が設定されていないため、自動ダウンロードはできません。
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	次の{}は以前のインストールから引き継がれましたが、まだネイティブには実装されていません: {}。
+All download clients are unavailable due to failures	障害により、すべてのダウンロードクライアントが利用できません
+Download clients are unavailable due to failures: {}	障害により利用できないダウンロードクライアント: {}
+All indexers are unavailable due to failures	障害により、すべてのインデクサーが利用できません
+Indexers unavailable due to failures: {}	障害により利用できないインデクサー: {}
+Failed to resolve the IP address of the configured proxy host {}	設定されたプロキシホスト {} の IP アドレスを解決できませんでした
+The data directory has only {} MiB free; the database may fail to write.	データディレクトリの空き容量は {} MiB しかありません。データベースへの書き込みが失敗する可能性があります。

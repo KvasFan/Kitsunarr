@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ aktuelle Nummer
 or	oder
 1 title	1 Titel
+Episode titles (one per line)	Folgentitel (einer pro Zeile)
+For conditions that ignore episode titles.	Für Bedingungen, die Folgentitel ignorieren.
+Test episode titles	Test-Folgentitel
+· group {}	· Gruppe {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Bekannte Folgentitel beim Prüfen von Release-Namen ausschließen, damit Wörter im Folgentitel nicht als Dienst oder Release-Gruppe zählen.
+Ignore episode titles {}	Folgentitel ignorieren {}
+Ignore episode titles	Folgentitel ignorieren
+Alternative group	Alternative Gruppe
+Alternative group {}	Alternative Gruppe {}
+Group anime seasons	Anime-Staffeln gruppieren
+Anime group {}	Anime-Gruppe {}
+Group of {} · {}	Gruppe mit {} · {}
+Import progress	Importfortschritt
+Waiting to import	Wartet auf Import
+Import progress of {}	Importfortschritt von {}
+Import details of {}	Importdetails von {}
+{} / {} episodes imported	{} / {} Folgen importiert
+· {} not imported	· {} nicht importiert
+Series, anime or film title, e.g. Severance	Serien-, Anime- oder Filmtitel, z. B. Severance
+All enabled catalogues	Alle aktivierten Kataloge
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Kein aktivierter Katalog kann durchsucht werden: Aktivieren Sie einen oder geben Sie seinen API-Schlüssel unter Einstellungen › Metadatenquellen ein.
+Searches every enabled catalogue, results in your order:	Durchsucht jeden aktivierten Katalog, Ergebnisse in Ihrer Reihenfolge:
+Grouping	Gruppierung
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	„Automatisch“ gruppiert den Titel anhand offizieller Relationen mit seinem Franchise oder seiner Sammlung. „Deaktiviert“ lässt ihn für sich allein.
+Automatic (official relations)	Automatisch (offizielle Relationen)
+Too many failed sign in attempts. Please try again in {} minute(s).	Zu viele fehlgeschlagene Anmeldeversuche. Bitte versuchen Sie es in {} Minute(n) erneut.
+Reset your password	Passwort zurücksetzen
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr schreibt ein einmalig verwendbares Reset-Token in sein Log. Kopieren Sie es aus der Zeile
+line in the latest log (System › Logs, or the container's output).	im neuesten Log (System › Logs oder die Ausgabe des Containers).
+Write a reset token to the log	Reset-Token ins Log schreiben
+I already have a reset token	Ich habe bereits ein Reset-Token
+Back to sign in	Zurück zur Anmeldung
+Your password has been reset, sign in with your new password.	Ihr Passwort wurde zurückgesetzt. Melden Sie sich mit Ihrem neuen Passwort an.
+Unable to sign in with your identity provider.	Anmeldung über Ihren Identitätsanbieter nicht möglich.
+Incorrect username or password.	Falscher Benutzername oder falsches Passwort.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	Die OIDC-Authentifizierung ist aktiviert, aber nicht korrekt konfiguriert. Melden Sie sich mit Ihrem Passwort an und aktualisieren Sie die OIDC-Einstellungen (Einstellungen › Allgemein › Sicherheit oder die Konfigurationsdatei).
+Sign in with SSO	Mit SSO anmelden
+You will be sent to your identity provider.	Sie werden zu Ihrem Identitätsanbieter weitergeleitet.
+Forgot your password?	Passwort vergessen?
+Invalid or expired reset token.	Ungültiges oder abgelaufenes Reset-Token.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Benutzername und Passwort sind erforderlich, die Passwörter müssen übereinstimmen, und das Passwort muss mindestens {} Zeichen lang sein.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Es wurde kein neues Reset-Token ins Log geschrieben. Möglicherweise ist bereits eines aktiv, prüfen Sie also zuerst das Log. Ein Neustart von Kitsunarr verwirft es und ermöglicht eine neue Anforderung.
+Enter the token from the	Geben Sie das Token aus der Zeile
+line in the log. It's valid for 15 minutes and can only be used once. If you set	im Log ein. Es ist 15 Minuten gültig und kann nur einmal verwendet werden. Wenn Sie
+Reset token	Reset-Token
+Confirm new password	Neues Passwort bestätigen
+Reset password	Passwort zurücksetzen
+Signed out	Abgemeldet
+You have been signed out of Kitsunarr.	Sie wurden von Kitsunarr abgemeldet.
+Sign in again	Erneut anmelden
+Search for missing	Fehlende suchen
+Month	Monat
+Week	Woche
+Forecast	Vorhersage
+Day	Tag
+Agenda	Agenda
+On disk	Auf der Festplatte
+Not aired yet	Noch nicht ausgestrahlt
+Search for the episodes shown that aired and have no file	Nach den angezeigten Folgen suchen, die ausgestrahlt wurden und keine Datei haben
+Previous period	Vorheriger Zeitraum
+Next period	Nächster Zeitraum
+Calendar view	Kalenderansicht
+Nothing airs in this period.	In diesem Zeitraum wird nichts ausgestrahlt.
+Legend	Legende
+Disabled removes the series from its anime group and keeps it out of automatic grouping	„Deaktiviert“ entfernt die Serie aus ihrer Anime-Gruppe und hält sie aus der automatischen Gruppierung heraus
+Disabled removes the film from its collection and keeps it out of automatic grouping	„Deaktiviert“ entfernt den Film aus seiner Sammlung und hält ihn aus der automatischen Gruppierung heraus
+Filter	Filter
+Filter by path	Nach Pfad filtern
+All paths	Alle Pfade
+Combine filters	Filter kombinieren
+Show series matching every selected filter	Serien anzeigen, die jedem ausgewählten Filter entsprechen
+Clear combined filters	Kombinierte Filter zurücksetzen
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Jede Anime-Gruppe (Anime-Gruppierung von Tanukarr) nur einmal anzeigen, anhand ihrer ersten Staffel
+Save the current filters as a filter of your own	Die aktuellen Filter als eigenen Filter speichern
+Save filter…	Filter speichern…
+Shown series	Angezeigte Serien
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr kann diese Bedingungen des gespeicherten Filters nicht anwenden, daher werden sie ausgelassen:
+The selected filters contradict each other, so no series can match all of them.	Die ausgewählten Filter widersprechen sich, daher kann keine Serie alle erfüllen.
+No series match the selected filters.	Keine Serie entspricht den ausgewählten Filtern.
+Filter "{}" saved.	Filter „{}“ gespeichert.
+Save filter	Filter speichern
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Der Filter speichert den ausgewählten Filter, die kombinierten Filter und den Pfad; er wird bei den integrierten Filtern aufgeführt.
+Filter label	Filterbezeichnung
+Delete saved filter	Gespeicherten Filter löschen
+Delete this saved filter? The series are not changed.	Diesen gespeicherten Filter löschen? Die Serien werden nicht verändert.
+Monitored only	Nur überwachte
+Unmonitored only	Nur nicht überwachte
+Continuing only	Nur fortgesetzte
+Ended only	Nur beendete
+Missing episodes	Fehlende Folgen
+Security settings saved.	Sicherheitseinstellungen gespeichert.
+Security	Sicherheit
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Um Fernzugriff ohne Authentifizierung zu verhindern, verlangt Kitsunarr eine Authentifizierung. Optional können Sie sie für lokale Adressen deaktivieren.
+Authentication	Authentifizierung
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Wie sich Benutzer anmelden: über die Anmeldeseite von Kitsunarr oder über Ihren OpenID-Connect-Identitätsanbieter.
+Forms (sign-in page)	Formulare (Anmeldeseite)
+OIDC (identity provider)	OIDC (Identitätsanbieter)
+External (reverse proxy)	Extern (Reverse-Proxy)
+Authentication required	Authentifizierung erforderlich
+Require authentication for every request, or not for requests from local addresses or this machine.	Authentifizierung für jede Anfrage verlangen oder nicht für Anfragen von lokalen Adressen oder diesem Rechner.
+Disabled for localhost	Für localhost deaktiviert
+Allowed hosts	Erlaubte Hosts
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Kommagetrennte Liste von Hostnamen und IP-Adressen, unter denen Kitsunarr erreichbar sein soll, einschließlich des Hostnamens des Systems oder des Containernamens. Leer lassen, um alle Hosts zu erlauben. Erforderlich, wenn die Authentifizierung nicht immer verlangt wird. Zum Beispiel: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	CGNAT-Adressen vertrauen
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	CGNAT-Adressen (100.64.0.0/10, z. B. Tailscale) als lokal behandeln
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Extern: Kitsunarr verlangt keine Anmeldung und verlässt sich auf den vorgeschalteten Reverse-Proxy. Nur hinter einem Proxy verwenden, der jede Anfrage authentifiziert.
+Register Kitsunarr with your provider using the redirect URI	Registrieren Sie Kitsunarr bei Ihrem Anbieter mit der Weiterleitungs-URI
+. Saving signs out password sessions; you then sign in through the provider.	. Beim Speichern werden Passwort-Sitzungen abgemeldet; danach melden Sie sich über den Anbieter an.
+OIDC Authority	OIDC-Authority
+The URL of the OIDC provider (https://).	Die URL des OIDC-Anbieters (https://).
+OIDC Client ID	OIDC-Client-ID
+The Client ID registered with the OIDC provider.	Die beim OIDC-Anbieter registrierte Client-ID.
+OIDC Client Secret	OIDC-Client-Secret
+The Client Secret registered with the OIDC provider.	Das beim OIDC-Anbieter registrierte Client-Secret.
+OIDC User	OIDC-Benutzer
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Die verifizierte E-Mail-Adresse oder Subjektkennung (sub) beim OIDC-Anbieter, die sich bei Kitsunarr anmelden darf.
+OIDC Scopes	OIDC-Scopes
+The scopes to request from the OIDC provider; must include openid.	Die beim OIDC-Anbieter anzufordernden Scopes; muss openid enthalten.
+Set in config.toml or the environment, which take precedence: {}.	In config.toml oder der Umgebung festgelegt, die Vorrang haben: {}.
+Backup settings saved.	Backup-Einstellungen gespeichert.
+Interval (days)	Intervall (Tage)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Wie oft automatisch ein Backup erstellt wird (1–7 Tage). Ein manuelles Backup startet das Intervall neu.
+Backup interval in days	Backup-Intervall in Tagen
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Automatische Backups, die älter sind, werden gelöscht (1–90 Tage). Manuelle Backups werden behalten.
+Backup retention in days	Backup-Aufbewahrung in Tagen
+A quality without an override uses the global sizes of	Eine Qualität ohne Überschreibung verwendet die globalen Größen unter
+Settings › Quality	Einstellungen › Qualität
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Innerhalb einer Überschreibung bedeutet leer unbegrenzt; ein Maximum von null bedeutet ebenfalls unbegrenzt.
+Signed in. Save to keep the token.	Angemeldet. Speichern, um das Token zu behalten.
+Redirect URL to register with your API client:	Bei Ihrem API-Client zu registrierende Weiterleitungs-URL:
+Test all	Alle prüfen
+All {} passed their test.	Alle {} haben ihre Prüfung bestanden.
+{} of {} failed their test.	{} von {} haben ihre Prüfung nicht bestanden.
+Test every {} entry	Jeden Eintrag unter {} prüfen
+Test results	Prüfergebnisse
+passed with warnings	mit Warnungen bestanden
+Warning:	Warnung:
+Dismiss test results	Prüfergebnisse schließen
+Delete for upgrade	Löschen bei Upgrade
+Metadata sources saved.	Metadatenquellen gespeichert.
+Order	Reihenfolge
+Enable {}	{} aktivieren
+Move {} up	{} nach oben verschieben
+Move {} down	{} nach unten verschieben
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	„Medien hinzufügen“ listet die aktivierten Kataloge in dieser Reihenfolge auf, und „Alle aktivierten Kataloge“ führt ihre Ergebnisse in dieser Reihenfolge zusammen. Deaktivierte Kataloge werden weder angeboten noch durchsucht; Titel, die bereits zu einem gehören, werden weiterhin daraus aktualisiert. Unten speichern, um die Änderungen anzuwenden.
+Enable at least one metadata source.	Aktivieren Sie mindestens eine Metadatenquelle.
+Mixed	Gemischt
+Unlimited	Unbegrenzt
+0 GiB/h	0 GiB/h
+{} min: {}	{} Min.: {}
+No limit	Kein Limit
+Quality definitions saved.	Qualitätsdefinitionen gespeichert.
+Quality definitions reset to the defaults.	Qualitätsdefinitionen auf die Standardwerte zurückgesetzt.
+Reset definitions	Definitionen zurücksetzen
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Größen sind in MiB pro Minute Laufzeit angegeben; die Größe pro Stunde wird jeweils darunter angezeigt. Ein Release außerhalb der Limits einer Qualität wird abgelehnt; die bevorzugte Größe bestimmt die Rangfolge der Releases. Profile können eigene Limits behalten (
+Settings › Quality profiles	Einstellungen › Qualitätsprofile
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): „Gemischt“ bedeutet, dass die Profile unterschiedliche Limits verwenden, und ein hier eingegebener Wert wird in jedes Profil geschrieben.
+Title of {}	Titel von {}
+{} size of {} (MiB per minute)	{}-Größe von {} (MiB pro Minute)
+Profiles use different limits	Profile verwenden unterschiedliche Limits
+No minimum	Kein Minimum
+Hide retired qualities	Ausgemusterte Qualitäten ausblenden
+Show retired qualities	Ausgemusterte Qualitäten anzeigen
+Reset quality definitions	Qualitätsdefinitionen zurücksetzen
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Jeder Standardqualität ihren Standardtitel und ihre Standard-Größenlimits zurückgeben? Eigene Presets und die eigenen Limits der Profile bleiben erhalten.
+Reset	Zurücksetzen
+RefreshMonitoredDownloads	Überwachte Downloads aktualisieren
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Liest die Download-Clients und importiert abgeschlossene Downloads, die Kitsunarr erfasst hat
+ProcessPendingJellyfinRefresh	Ausstehende Jellyfin-Aktualisierungen verarbeiten
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Aktualisiert die Jellyfin-Bibliotheken mit ausstehenden Importen (gemäß dem Aktualisierungsmodus jeder Verbindung)
+SyncJellyfinWatched	Jellyfin-Gesehen-Status synchronisieren
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Liest, welche Folgen ein Jellyfin-Benutzer gesehen hat (im eigenen Intervall der Verbindung)
+CleanUpRecycleBin	Papierkorb bereinigen
+Deletes files kept in the recycle bin longer than the media management setting allows	Löscht Dateien, die länger im Papierkorb liegen, als die Einstellung der Medienverwaltung erlaubt
+RescanFolders	Ordner erneut scannen
+Scans series and movie folders: forgets files that are gone and adds files found there	Scannt Serien- und Filmordner: vergisst verschwundene Dateien und fügt dort gefundene Dateien hinzu
+RefreshMetadata	Metadaten aktualisieren
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Aktualisiert Titel aus ihren Metadatenkatalogen (fortgesetzte alle 6 Stunden, beendete monatlich)
+Housekeeping	Wartung
+Purges expired sessions, prunes task history and checks database integrity	Entfernt abgelaufene Sitzungen, kürzt den Aufgabenverlauf und prüft die Integrität der Datenbank
+CleanupSessions	Sitzungen bereinigen
+Removes expired login sessions	Entfernt abgelaufene Anmeldesitzungen
+HealthCheck	Integritätsprüfung
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Wertet die Integritätsprüfungen neu aus, benachrichtigt verbundene Browser und sendet Integritätsbenachrichtigungen
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Integritätsprüfung der SQLite-Datenbank fehlgeschlagen: {}. Stellen Sie ein bekanntermaßen fehlerfreies Backup wieder her.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Die Integritätsprüfung der SQLite-Datenbank hat kein Ergebnis geliefert. Stellen Sie ein bekanntermaßen fehlerfreies Backup wieder her, falls Datenbankfehler auftreten.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Integritätsprüfung der SQLite-Datenbank fehlgeschlagen: {} Fremdschlüsselverletzungen. Stellen Sie ein bekanntermaßen fehlerfreies Backup wieder her.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Keine Indexer mit aktiviertem RSS-Sync verfügbar, Kitsunarr wird neue Releases nicht automatisch erfassen
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Alle RSS-fähigen Indexer sind aufgrund kürzlicher Indexer-Fehler vorübergehend nicht verfügbar
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Keine Indexer mit aktivierter automatischer Suche verfügbar, Kitsunarr wird keine automatischen Suchergebnisse liefern
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Keine Indexer mit aktivierter interaktiver Suche verfügbar, Kitsunarr wird keine interaktiven Suchergebnisse liefern
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Alle suchfähigen Indexer sind aufgrund kürzlicher Indexer-Fehler vorübergehend nicht verfügbar
+All indexers are unavailable due to failures for more than 6 hours	Alle Indexer sind wegen Fehlern seit mehr als 6 Stunden nicht verfügbar
+Indexers unavailable due to failures for more than 6 hours: {}	Indexer wegen Fehlern seit mehr als 6 Stunden nicht verfügbar: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Indexer, die den nicht unterstützten Jackett-Endpunkt 'all' verwenden: {}
+Indexers with invalid download clients: {}.	Indexer mit ungültigen Download-Clients: {}.
+Enable Completed Download Handling	Aktivieren Sie die Behandlung abgeschlossener Downloads
+All notifications are unavailable due to failures	Alle Benachrichtigungen sind wegen Fehlern nicht verfügbar
+Notifications unavailable due to failures: {}	Benachrichtigungen wegen Fehlern nicht verfügbar: {}
+All lists are unavailable due to failures	Alle Listen sind wegen Fehlern nicht verfügbar
+Lists unavailable due to failures: {}	Listen wegen Fehlern nicht verfügbar: {}
+Missing root folder for import list(s): {}	Fehlendes Stammverzeichnis für Importliste(n): {}
+Multiple root folders are missing for import lists: {}	Mehrere Stammverzeichnisse für Importlisten fehlen: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	In den konfigurierten Papierkorbordner kann nicht geschrieben werden: {}. Stellen Sie sicher, dass dieser Pfad existiert und für den Benutzer, unter dem Kitsunarr läuft, beschreibbar ist
+Unable to write to the backup folder {}; scheduled backups will fail.	In den Backup-Ordner {} kann nicht geschrieben werden; geplante Backups werden fehlschlagen.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Bitte ändern Sie Ihren API-Schlüssel auf mindestens 20 Zeichen. Dies ist über die Einstellungen oder die Konfigurationsdatei möglich
+Series {} was removed from {}	Serie {} wurde aus {} entfernt
+Series {} were removed from {}	Serien {} wurden aus {} entfernt
+Mount containing a series path is mounted read-only: {}	Ein Mount mit einem Serienpfad ist schreibgeschützt eingehängt: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Download-Client {} ist so eingestellt, dass abgeschlossene Downloads entfernt werden. Dadurch können Downloads aus Ihrem Client entfernt werden, bevor Kitsunarr sie importieren kann.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Beim Download-Client {} ist die Sortierung {} für die Kategorie von Kitsunarr aktiviert. Deaktivieren Sie die Sortierung in Ihrem Download-Client, um Importprobleme zu vermeiden.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Download-Client {} legt Downloads im Stammverzeichnis {} ab. Sie sollten nicht in ein Stammverzeichnis herunterladen.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Remote-Download-Client {} legt Downloads in {} ab, dies ist jedoch kein gültiger {}-Pfad. Überprüfen Sie Ihre Remote-Pfadzuordnungen und die Einstellungen des Download-Clients.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Sie verwenden Docker; Download-Client {} legt Downloads in {} ab, dies ist jedoch kein gültiger {}-Pfad. Überprüfen Sie Ihre Remote-Pfadzuordnungen und die Einstellungen des Download-Clients.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Lokaler Download-Client {} legt Downloads in {} ab, dies ist jedoch kein gültiger {}-Pfad. Überprüfen Sie die Einstellungen Ihres Download-Clients.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Sie verwenden Docker; Download-Client {} legt Downloads in {} ab, dieses Verzeichnis scheint im Container jedoch nicht zu existieren. Überprüfen Sie Ihre Remote-Pfadzuordnungen und die Volume-Einstellungen des Containers.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Remote-Download-Client {} legt Downloads in {} ab, dieses Verzeichnis scheint jedoch nicht zu existieren. Wahrscheinlich fehlt eine Remote-Pfadzuordnung oder ist falsch.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Download-Client {} legt Downloads in {} ab, Kitsunarr kann dieses Verzeichnis jedoch nicht sehen. Möglicherweise müssen Sie die Berechtigungen des Ordners anpassen.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr kann die heruntergeladene Folge {} sehen, aber nicht darauf zugreifen. Wahrscheinlich ein Berechtigungsfehler.
+File {} was removed part way through processing.	Datei {} wurde während der Verarbeitung entfernt.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr konnte Folge(n) nicht importieren. Details finden Sie in Ihren Logs.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Remote-Download-Client {} meldete Dateien in {}, dies ist jedoch kein gültiger {}-Pfad. Überprüfen Sie Ihre Remote-Pfadzuordnungen und die Einstellungen des Download-Clients.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Sie verwenden Docker; Download-Client {} meldete Dateien in {}, dies ist jedoch kein gültiger {}-Pfad. Überprüfen Sie Ihre Remote-Pfadzuordnungen und die Einstellungen des Download-Clients.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Lokaler Download-Client {} meldete Dateien in {}, dies ist jedoch kein gültiger {}-Pfad. Überprüfen Sie die Einstellungen Ihres Download-Clients.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr kann das Download-Verzeichnis {} sehen, aber nicht darauf zugreifen. Wahrscheinlich ein Berechtigungsfehler.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Remote-Download-Client {} meldete Dateien in {}, dieses Verzeichnis scheint jedoch nicht zu existieren. Wahrscheinlich fehlt eine Remote-Pfadzuordnung.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Download-Client {} meldete Dateien in {}, Kitsunarr kann dieses Verzeichnis jedoch nicht sehen. Möglicherweise müssen Sie die Berechtigungen des Ordners anpassen.
+The configured password reset token is shorter than {} characters and is being ignored	Das konfigurierte Reset-Token für das Passwort ist kürzer als {} Zeichen und wird ignoriert
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Ein Reset-Token für das Passwort ist konfiguriert. Entfernen Sie die Umgebungsvariable KITSUNARR_AUTH_RESET_TOKEN (oder reset_token in config.toml), sobald Sie es nicht mehr benötigen
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	Die OIDC-Authentifizierung ist aktiviert, aber Authority, Client-ID, Client-Secret, Benutzer und Scopes sind nicht alle konfiguriert
+The OIDC Authority must start with 'https://'	Die OIDC-Authority muss mit 'https://' beginnen
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Die OIDC-Konfiguration konnte nicht von {} abgerufen werden; die Anmeldung über Ihren Identitätsanbieter schlägt fehl, bis er erreichbar ist
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Es sind noch keine Stammverzeichnisse konfiguriert. Fügen Sie eines unter Einstellungen → Medienverwaltung hinzu oder importieren Sie eine bestehende Installation.
+Root folder {} is missing or not accessible.	Stammverzeichnis {} fehlt oder ist nicht zugänglich.
+Root folder {} has only {} MiB free.	Stammverzeichnis {} hat nur {} MiB frei.
+No enabled {} is configured; automatic downloads are not possible.	Kein aktivierter {} konfiguriert; automatische Downloads sind nicht möglich.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Diese Elemente ({}) wurden aus Ihrer vorherigen Installation übernommen, sind aber noch nicht nativ implementiert: {}.
+All download clients are unavailable due to failures	Alle Download-Clients sind wegen Fehlern nicht verfügbar
+Download clients are unavailable due to failures: {}	Download-Clients sind wegen Fehlern nicht verfügbar: {}
+All indexers are unavailable due to failures	Alle Indexer sind wegen Fehlern nicht verfügbar
+Indexers unavailable due to failures: {}	Indexer wegen Fehlern nicht verfügbar: {}
+Failed to resolve the IP address of the configured proxy host {}	Die IP-Adresse des konfigurierten Proxy-Hosts {} konnte nicht aufgelöst werden
+The data directory has only {} MiB free; the database may fail to write.	Das Datenverzeichnis hat nur {} MiB frei; das Schreiben in die Datenbank kann fehlschlagen.

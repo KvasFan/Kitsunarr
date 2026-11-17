@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ τρέχων αριθμός
 or	ή
 1 title	1 τίτλος
+Episode titles (one per line)	Τίτλοι επεισοδίων (ένας ανά γραμμή)
+For conditions that ignore episode titles.	Για συνθήκες που αγνοούν τους τίτλους επεισοδίων.
+Test episode titles	Τίτλοι επεισοδίων για δοκιμή
+· group {}	· ομάδα {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Εξαίρεση των γνωστών τίτλων επεισοδίων κατά τον έλεγχο των ονομάτων κυκλοφοριών, ώστε οι λέξεις του τίτλου επεισοδίου να μη μετρούν ως υπηρεσία ή ομάδα κυκλοφορίας.
+Ignore episode titles {}	Αγνόηση τίτλων επεισοδίων {}
+Ignore episode titles	Αγνόηση τίτλων επεισοδίων
+Alternative group	Εναλλακτική ομάδα
+Alternative group {}	Εναλλακτική ομάδα {}
+Group anime seasons	Ομαδοποίηση κύκλων anime
+Anime group {}	Ομάδα anime {}
+Group of {} · {}	Ομάδα {} σειρών · {}
+Import progress	Πρόοδος εισαγωγής
+Waiting to import	Αναμονή για εισαγωγή
+Import progress of {}	Πρόοδος εισαγωγής του {}
+Import details of {}	Λεπτομέρειες εισαγωγής του {}
+{} / {} episodes imported	Εισήχθησαν {} / {} επεισόδια
+· {} not imported	· {} δεν εισήχθησαν
+Series, anime or film title, e.g. Severance	Τίτλος σειράς, anime ή ταινίας, π.χ. Severance
+All enabled catalogues	Όλοι οι ενεργοί κατάλογοι
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Δεν υπάρχει ενεργός κατάλογος για αναζήτηση: ενεργοποιήστε έναν ή εισαγάγετε το κλειδί API του στις Ρυθμίσεις › Πηγές μεταδεδομένων.
+Searches every enabled catalogue, results in your order:	Αναζήτηση σε κάθε ενεργό κατάλογο, με τα αποτελέσματα στη διάταξη που ορίσατε:
+Grouping	Ομαδοποίηση
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Η Αυτόματη ομαδοποιεί τον τίτλο με το franchise ή τη συλλογή του βάσει των επίσημων συσχετίσεων. Η Ανενεργή τον κρατά μόνο του.
+Automatic (official relations)	Αυτόματη (επίσημες συσχετίσεις)
+Too many failed sign in attempts. Please try again in {} minute(s).	Πάρα πολλές αποτυχημένες απόπειρες σύνδεσης. Δοκιμάστε ξανά σε {} λεπτό/ά.
+Reset your password	Επαναφορά του κωδικού πρόσβασης
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Το Kitsunarr θα γράψει ένα token επαναφοράς μίας χρήσης στο αρχείο καταγραφής του. Αντιγράψτε το από τη γραμμή
+line in the latest log (System › Logs, or the container's output).	του πιο πρόσφατου αρχείου καταγραφής (Σύστημα › Αρχεία καταγραφής ή η έξοδος του κοντέινερ).
+Write a reset token to the log	Εγγραφή token επαναφοράς στο αρχείο καταγραφής
+I already have a reset token	Έχω ήδη token επαναφοράς
+Back to sign in	Επιστροφή στη σύνδεση
+Your password has been reset, sign in with your new password.	Ο κωδικός πρόσβασής σας επαναφέρθηκε· συνδεθείτε με τον νέο κωδικό πρόσβασης.
+Unable to sign in with your identity provider.	Δεν ήταν δυνατή η σύνδεση μέσω του παρόχου ταυτότητας.
+Incorrect username or password.	Λανθασμένο όνομα χρήστη ή κωδικός πρόσβασης.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	Ο έλεγχος ταυτότητας OIDC είναι ενεργός, αλλά δεν έχει διαμορφωθεί σωστά. Συνδεθείτε με τον κωδικό πρόσβασής σας και ενημερώστε τις ρυθμίσεις OIDC (Ρυθμίσεις › Γενικά › Ασφάλεια ή το αρχείο διαμόρφωσης).
+Sign in with SSO	Σύνδεση με SSO
+You will be sent to your identity provider.	Θα μεταφερθείτε στον πάροχο ταυτότητάς σας.
+Forgot your password?	Ξεχάσατε τον κωδικό πρόσβασης;
+Invalid or expired reset token.	Μη έγκυρο ή ληγμένο token επαναφοράς.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Απαιτούνται όνομα χρήστη και κωδικός πρόσβασης, οι κωδικοί πρέπει να ταιριάζουν και ο κωδικός πρόσβασης χρειάζεται τουλάχιστον {} χαρακτήρες.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Δεν γράφτηκε νέο token επαναφοράς στο αρχείο καταγραφής. Ίσως υπάρχει ήδη ένα ενεργό, οπότε ελέγξτε πρώτα το αρχείο καταγραφής. Η επανεκκίνηση του Kitsunarr το διαγράφει και σας επιτρέπει να ζητήσετε άλλο.
+Enter the token from the	Εισαγάγετε το token από τη γραμμή
+line in the log. It's valid for 15 minutes and can only be used once. If you set	του αρχείου καταγραφής. Ισχύει για 15 λεπτά και μπορεί να χρησιμοποιηθεί μόνο μία φορά. Αν έχετε ορίσει
+Reset token	Token επαναφοράς
+Confirm new password	Επιβεβαίωση νέου κωδικού πρόσβασης
+Reset password	Επαναφορά κωδικού πρόσβασης
+Signed out	Αποσυνδεθήκατε
+You have been signed out of Kitsunarr.	Αποσυνδεθήκατε από το Kitsunarr.
+Sign in again	Σύνδεση ξανά
+Search for missing	Αναζήτηση όσων λείπουν
+Month	Μήνας
+Week	Εβδομάδα
+Forecast	Πρόβλεψη
+Day	Ημέρα
+Agenda	Ατζέντα
+On disk	Στον δίσκο
+Not aired yet	Δεν έχει προβληθεί ακόμη
+Search for the episodes shown that aired and have no file	Αναζήτηση των εμφανιζόμενων επεισοδίων που έχουν προβληθεί και δεν έχουν αρχείο
+Previous period	Προηγούμενο διάστημα
+Next period	Επόμενο διάστημα
+Calendar view	Προβολή ημερολογίου
+Nothing airs in this period.	Τίποτα δεν προβάλλεται σε αυτό το διάστημα.
+Legend	Υπόμνημα
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Η Ανενεργή αφαιρεί τη σειρά από την ομάδα anime της και την κρατά εκτός αυτόματης ομαδοποίησης
+Disabled removes the film from its collection and keeps it out of automatic grouping	Η Ανενεργή αφαιρεί την ταινία από τη συλλογή της και την κρατά εκτός αυτόματης ομαδοποίησης
+Filter	Φίλτρο
+Filter by path	Φιλτράρισμα κατά διαδρομή
+All paths	Όλες οι διαδρομές
+Combine filters	Συνδυασμός φίλτρων
+Show series matching every selected filter	Εμφάνιση σειρών που ταιριάζουν με κάθε επιλεγμένο φίλτρο
+Clear combined filters	Εκκαθάριση συνδυασμένων φίλτρων
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Εμφάνιση κάθε ομάδας anime (ομαδοποίηση anime του Tanukarr) μία φορά, μέσω του πρώτου κύκλου της
+Save the current filters as a filter of your own	Αποθήκευση των τρεχόντων φίλτρων ως δικό σας φίλτρο
+Save filter…	Αποθήκευση φίλτρου…
+Shown series	Εμφανιζόμενες σειρές
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Το Kitsunarr δεν μπορεί να εφαρμόσει αυτές τις συνθήκες του αποθηκευμένου φίλτρου, οπότε παραλείπονται:
+The selected filters contradict each other, so no series can match all of them.	Τα επιλεγμένα φίλτρα αντιφάσκουν μεταξύ τους, οπότε καμία σειρά δεν μπορεί να ταιριάζει με όλα.
+No series match the selected filters.	Καμία σειρά δεν ταιριάζει με τα επιλεγμένα φίλτρα.
+Filter "{}" saved.	Το φίλτρο «{}» αποθηκεύτηκε.
+Save filter	Αποθήκευση φίλτρου
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Το φίλτρο διατηρεί το επιλεγμένο φίλτρο, τα συνδυασμένα φίλτρα και τη διαδρομή· εμφανίζεται μαζί με τα ενσωματωμένα φίλτρα.
+Filter label	Όνομα φίλτρου
+Delete saved filter	Διαγραφή αποθηκευμένου φίλτρου
+Delete this saved filter? The series are not changed.	Διαγραφή αυτού του αποθηκευμένου φίλτρου; Οι σειρές δεν αλλάζουν.
+Monitored only	Μόνο σε παρακολούθηση
+Unmonitored only	Μόνο χωρίς παρακολούθηση
+Continuing only	Μόνο σε εξέλιξη
+Ended only	Μόνο όσες έληξαν
+Missing episodes	Επεισόδια που λείπουν
+Security settings saved.	Οι ρυθμίσεις ασφαλείας αποθηκεύτηκαν.
+Security	Ασφάλεια
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Για να αποτραπεί η απομακρυσμένη πρόσβαση χωρίς έλεγχο ταυτότητας, το Kitsunarr απαιτεί έλεγχο ταυτότητας. Προαιρετικά, μπορείτε να τον απενεργοποιήσετε για τοπικές διευθύνσεις.
+Authentication	Έλεγχος ταυτότητας
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Πώς συνδέονται οι χρήστες: η σελίδα σύνδεσης του Kitsunarr ή ο πάροχος ταυτότητας OpenID Connect σας.
+Forms (sign-in page)	Φόρμες (σελίδα σύνδεσης)
+OIDC (identity provider)	OIDC (πάροχος ταυτότητας)
+External (reverse proxy)	Εξωτερικός (reverse proxy)
+Authentication required	Απαιτείται έλεγχος ταυτότητας
+Require authentication for every request, or not for requests from local addresses or this machine.	Απαίτηση ελέγχου ταυτότητας για κάθε αίτημα ή όχι για αιτήματα από τοπικές διευθύνσεις ή από αυτό το μηχάνημα.
+Disabled for localhost	Ανενεργή για το localhost
+Allowed hosts	Επιτρεπόμενοι host
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Λίστα ονομάτων host και διευθύνσεων IP, χωρισμένων με κόμμα, μέσω των οποίων πρέπει να είναι προσβάσιμο το Kitsunarr, συμπεριλαμβανομένου του ονόματος host του συστήματος ή του ονόματος του κοντέινερ. Αφήστε κενό για να επιτρέπονται όλοι οι host. Απαιτείται όταν ο έλεγχος ταυτότητας δεν απαιτείται πάντα. Για παράδειγμα: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Εμπιστοσύνη σε διευθύνσεις CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Αντιμετώπιση των διευθύνσεων CGNAT (100.64.0.0/10, π.χ. Tailscale) ως τοπικών
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Εξωτερικός: το Kitsunarr δεν ζητά σύνδεση και βασίζεται στο reverse proxy που βρίσκεται μπροστά του. Χρησιμοποιήστε το μόνο πίσω από proxy που ελέγχει την ταυτότητα σε κάθε αίτημα.
+Register Kitsunarr with your provider using the redirect URI	Καταχωρίστε το Kitsunarr στον πάροχό σας με το URI ανακατεύθυνσης
+. Saving signs out password sessions; you then sign in through the provider.	. Η αποθήκευση αποσυνδέει τις συνεδρίες με κωδικό πρόσβασης· στη συνέχεια συνδέεστε μέσω του παρόχου.
+OIDC Authority	Αρχή OIDC
+The URL of the OIDC provider (https://).	Η διεύθυνση URL του παρόχου OIDC (https://).
+OIDC Client ID	Client ID OIDC
+The Client ID registered with the OIDC provider.	Το Client ID που έχει καταχωριστεί στον πάροχο OIDC.
+OIDC Client Secret	Client Secret OIDC
+The Client Secret registered with the OIDC provider.	Το Client Secret που έχει καταχωριστεί στον πάροχο OIDC.
+OIDC User	Χρήστης OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Η επαληθευμένη διεύθυνση e-mail ή το αναγνωριστικό υποκειμένου (sub) στον πάροχο OIDC που μπορεί να συνδέεται στο Kitsunarr.
+OIDC Scopes	Scopes OIDC
+The scopes to request from the OIDC provider; must include openid.	Τα scopes που ζητούνται από τον πάροχο OIDC· πρέπει να περιλαμβάνουν το openid.
+Set in config.toml or the environment, which take precedence: {}.	Ορίζεται στο config.toml ή στο περιβάλλον, που έχουν προτεραιότητα: {}.
+Backup settings saved.	Οι ρυθμίσεις αντιγράφων ασφαλείας αποθηκεύτηκαν.
+Interval (days)	Διάστημα (ημέρες)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Κάθε πότε δημιουργείται αυτόματα αντίγραφο ασφαλείας (1-7 ημέρες). Ένα χειροκίνητο αντίγραφο ασφαλείας επανεκκινεί το διάστημα.
+Backup interval in days	Διάστημα αντιγράφων ασφαλείας σε ημέρες
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Τα αυτόματα αντίγραφα ασφαλείας παλαιότερα από αυτό διαγράφονται (1-90 ημέρες). Τα χειροκίνητα αντίγραφα ασφαλείας διατηρούνται.
+Backup retention in days	Διατήρηση αντιγράφων ασφαλείας σε ημέρες
+A quality without an override uses the global sizes of	Μια ποιότητα χωρίς παράκαμψη χρησιμοποιεί τα γενικά μεγέθη από τις
+Settings › Quality	Ρυθμίσεις › Ποιότητα
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Σε μια παράκαμψη, το κενό σημαίνει χωρίς όριο· μέγιστο μηδέν σημαίνει επίσης χωρίς όριο.
+Signed in. Save to keep the token.	Συνδεθήκατε. Αποθηκεύστε για να διατηρηθεί το token.
+Redirect URL to register with your API client:	URL ανακατεύθυνσης για καταχώριση στην εφαρμογή API σας:
+Test all	Δοκιμή όλων
+All {} passed their test.	Και οι {} καταχωρίσεις πέρασαν τη δοκιμή.
+{} of {} failed their test.	{} από {} απέτυχαν στη δοκιμή.
+Test every {} entry	Δοκιμή κάθε καταχώρισης: {}
+Test results	Αποτελέσματα δοκιμής
+passed with warnings	πέρασε με προειδοποιήσεις
+Warning:	Προειδοποίηση:
+Dismiss test results	Απόρριψη αποτελεσμάτων δοκιμής
+Delete for upgrade	Διαγραφή για αναβάθμιση
+Metadata sources saved.	Οι πηγές μεταδεδομένων αποθηκεύτηκαν.
+Order	Διάταξη
+Enable {}	Ενεργοποίηση {}
+Move {} up	Μετακίνηση του {} προς τα πάνω
+Move {} down	Μετακίνηση του {} προς τα κάτω
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Η Προσθήκη περιεχομένου εμφανίζει τους ενεργούς καταλόγους με αυτή τη διάταξη και η επιλογή «Όλοι οι ενεργοί κατάλογοι» συγχωνεύει τα αποτελέσματά τους με αυτή τη διάταξη. Οι ανενεργοί κατάλογοι δεν προσφέρονται ούτε αναζητούνται· οι τίτλοι που ήδη ανήκουν σε κάποιον εξακολουθούν να ανανεώνονται από αυτόν. Αποθηκεύστε παρακάτω για εφαρμογή.
+Enable at least one metadata source.	Ενεργοποιήστε τουλάχιστον μία πηγή μεταδεδομένων.
+Mixed	Μικτό
+Unlimited	Χωρίς όριο
+0 GiB/h	0 GiB/h
+{} min: {}	{} λεπτά: {}
+No limit	Χωρίς όριο
+Quality definitions saved.	Οι ορισμοί ποιότητας αποθηκεύτηκαν.
+Quality definitions reset to the defaults.	Οι ορισμοί ποιότητας επανήλθαν στις προεπιλογές.
+Reset definitions	Επαναφορά ορισμών
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Τα μεγέθη είναι σε MiB ανά λεπτό διάρκειας· το ωριαίο μέγεθος εμφανίζεται κάτω από το καθένα. Μια κυκλοφορία εκτός των ορίων μιας ποιότητας απορρίπτεται· το προτιμώμενο μέγεθος κατατάσσει τις κυκλοφορίες. Τα προφίλ μπορούν να έχουν τα δικά τους όρια (
+Settings › Quality profiles	Ρυθμίσεις › Προφίλ ποιότητας
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): «Μικτό» σημαίνει ότι τα προφίλ χρησιμοποιούν διαφορετικά όρια και μια τιμή που εισάγεται εδώ γράφεται σε κάθε προφίλ.
+Title of {}	Τίτλος του {}
+{} size of {} (MiB per minute)	{} μέγεθος για {} (MiB ανά λεπτό)
+Profiles use different limits	Τα προφίλ χρησιμοποιούν διαφορετικά όρια
+No minimum	Χωρίς ελάχιστο
+Hide retired qualities	Απόκρυψη ποιοτήτων που αποσύρθηκαν
+Show retired qualities	Εμφάνιση ποιοτήτων που αποσύρθηκαν
+Reset quality definitions	Επαναφορά ορισμών ποιότητας
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Επαναφορά του προεπιλεγμένου τίτλου και των ορίων μεγέθους για κάθε τυπική ποιότητα; Οι προσαρμοσμένες προρυθμίσεις και τα δικά όρια των προφίλ διατηρούνται.
+Reset	Επαναφορά
+RefreshMonitoredDownloads	Ανανέωση λήψεων σε παρακολούθηση
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Διαβάζει τα client λήψεων και εισάγει τις ολοκληρωμένες λήψεις που έκανε το Kitsunarr
+ProcessPendingJellyfinRefresh	Επεξεργασία εκκρεμών ανανεώσεων Jellyfin
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Ανανεώνει τις βιβλιοθήκες Jellyfin που έχουν εκκρεμείς εισαγωγές (σύμφωνα με τη λειτουργία ανανέωσης κάθε σύνδεσης)
+SyncJellyfinWatched	Συγχρονισμός προβολών Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Διαβάζει ποια επεισόδια έχει δει ένας χρήστης Jellyfin (με το διάστημα της σύνδεσης)
+CleanUpRecycleBin	Καθαρισμός κάδου ανακύκλωσης
+Deletes files kept in the recycle bin longer than the media management setting allows	Διαγράφει αρχεία που παραμένουν στον κάδο ανακύκλωσης περισσότερο από όσο επιτρέπει η ρύθμιση διαχείρισης πολυμέσων
+RescanFolders	Επανασάρωση φακέλων
+Scans series and movie folders: forgets files that are gone and adds files found there	Σαρώνει τους φακέλους σειρών και ταινιών: ξεχνά τα αρχεία που δεν υπάρχουν πια και προσθέτει τα αρχεία που βρίσκει εκεί
+RefreshMetadata	Ανανέωση μεταδεδομένων
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Ανανεώνει τους τίτλους από τους καταλόγους μεταδεδομένων τους (όσους είναι σε εξέλιξη κάθε 6 ώρες, όσους έληξαν μηνιαία)
+Housekeeping	Συντήρηση
+Purges expired sessions, prunes task history and checks database integrity	Διαγράφει τις ληγμένες συνεδρίες, περικόπτει το ιστορικό εργασιών και ελέγχει την ακεραιότητα της βάσης δεδομένων
+CleanupSessions	Καθαρισμός συνεδριών
+Removes expired login sessions	Αφαιρεί τις ληγμένες συνεδρίες σύνδεσης
+HealthCheck	Έλεγχος υγείας
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Επαναξιολογεί τους ελέγχους υγείας, ειδοποιεί τα συνδεδεμένα προγράμματα περιήγησης και στέλνει ειδοποιήσεις υγείας
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Ο έλεγχος ακεραιότητας της βάσης δεδομένων SQLite απέτυχε: {}. Κάντε επαναφορά από ένα αντίγραφο ασφαλείας που γνωρίζετε ότι είναι σωστό.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Ο έλεγχος ακεραιότητας της βάσης δεδομένων SQLite δεν επέστρεψε αποτέλεσμα. Αν εμφανίζονται σφάλματα βάσης δεδομένων, κάντε επαναφορά από ένα αντίγραφο ασφαλείας που γνωρίζετε ότι είναι σωστό.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Ο έλεγχος ακεραιότητας της βάσης δεδομένων SQLite απέτυχε: {} παραβιάσεις ξένων κλειδιών. Κάντε επαναφορά από ένα αντίγραφο ασφαλείας που γνωρίζετε ότι είναι σωστό.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Δεν υπάρχουν διαθέσιμα ευρετήρια με ενεργό συγχρονισμό RSS· το Kitsunarr δεν θα κάνει αυτόματα λήψη νέων κυκλοφοριών
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Κανένα ευρετήριο με δυνατότητα RSS δεν είναι προσωρινά διαθέσιμο λόγω πρόσφατων σφαλμάτων ευρετηρίων
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Δεν υπάρχουν διαθέσιμα ευρετήρια με ενεργή αυτόματη αναζήτηση· το Kitsunarr δεν θα παρέχει αποτελέσματα αυτόματης αναζήτησης
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Δεν υπάρχουν διαθέσιμα ευρετήρια με ενεργή αλληλεπιδραστική αναζήτηση· το Kitsunarr δεν θα παρέχει αποτελέσματα αλληλεπιδραστικής αναζήτησης
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Κανένα ευρετήριο με δυνατότητα αναζήτησης δεν είναι προσωρινά διαθέσιμο λόγω πρόσφατων σφαλμάτων ευρετηρίων
+All indexers are unavailable due to failures for more than 6 hours	Κανένα ευρετήριο δεν είναι διαθέσιμο λόγω αποτυχιών για περισσότερες από 6 ώρες
+Indexers unavailable due to failures for more than 6 hours: {}	Ευρετήρια μη διαθέσιμα λόγω αποτυχιών για περισσότερες από 6 ώρες: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Ευρετήρια που χρησιμοποιούν το μη υποστηριζόμενο endpoint 'all' του Jackett: {}
+Indexers with invalid download clients: {}.	Ευρετήρια με μη έγκυρα client λήψεων: {}.
+Enable Completed Download Handling	Ενεργοποιήστε τη Διαχείριση ολοκληρωμένων λήψεων
+All notifications are unavailable due to failures	Καμία ειδοποίηση δεν είναι διαθέσιμη λόγω αποτυχιών
+Notifications unavailable due to failures: {}	Ειδοποιήσεις μη διαθέσιμες λόγω αποτυχιών: {}
+All lists are unavailable due to failures	Καμία λίστα δεν είναι διαθέσιμη λόγω αποτυχιών
+Lists unavailable due to failures: {}	Λίστες μη διαθέσιμες λόγω αποτυχιών: {}
+Missing root folder for import list(s): {}	Λείπει ο ριζικός φάκελος για λίστα/ες εισαγωγής: {}
+Multiple root folders are missing for import lists: {}	Λείπουν πολλοί ριζικοί φάκελοι για λίστες εισαγωγής: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Δεν είναι δυνατή η εγγραφή στον διαμορφωμένο φάκελο κάδου ανακύκλωσης: {}. Βεβαιωθείτε ότι η διαδρομή υπάρχει και ότι ο χρήστης που εκτελεί το Kitsunarr έχει δικαίωμα εγγραφής σε αυτήν
+Unable to write to the backup folder {}; scheduled backups will fail.	Δεν είναι δυνατή η εγγραφή στον φάκελο αντιγράφων ασφαλείας {}· τα προγραμματισμένα αντίγραφα ασφαλείας θα αποτύχουν.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Ενημερώστε το κλειδί API σας ώστε να έχει μήκος τουλάχιστον 20 χαρακτήρων. Μπορείτε να το κάνετε από τις ρυθμίσεις ή το αρχείο διαμόρφωσης
+Series {} was removed from {}	Η σειρά {} αφαιρέθηκε από το {}
+Series {} were removed from {}	Οι σειρές {} αφαιρέθηκαν από το {}
+Mount containing a series path is mounted read-only: {}	Η προσάρτηση που περιέχει διαδρομή σειράς είναι προσαρτημένη μόνο για ανάγνωση: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Το client λήψεων {} έχει ρυθμιστεί να αφαιρεί τις ολοκληρωμένες λήψεις. Αυτό μπορεί να έχει ως αποτέλεσμα να αφαιρούνται λήψεις από το client σας πριν προλάβει το Kitsunarr να τις εισαγάγει.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Το client λήψεων {} έχει ενεργή την ταξινόμηση {} για την κατηγορία του Kitsunarr. Πρέπει να απενεργοποιήσετε την ταξινόμηση στο client λήψεών σας για να αποφύγετε προβλήματα εισαγωγής.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Το client λήψεων {} τοποθετεί τις λήψεις στον ριζικό φάκελο {}. Δεν πρέπει να γίνονται λήψεις σε ριζικό φάκελο.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Το απομακρυσμένο client λήψεων {} τοποθετεί τις λήψεις στο {}, αλλά αυτή δεν είναι έγκυρη διαδρομή {}. Ελέγξτε τις αντιστοιχίσεις απομακρυσμένων διαδρομών και τις ρυθμίσεις του client λήψεων.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Χρησιμοποιείτε docker· το client λήψεων {} τοποθετεί τις λήψεις στο {}, αλλά αυτή δεν είναι έγκυρη διαδρομή {}. Ελέγξτε τις αντιστοιχίσεις απομακρυσμένων διαδρομών και τις ρυθμίσεις του client λήψεων.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Το τοπικό client λήψεων {} τοποθετεί τις λήψεις στο {}, αλλά αυτή δεν είναι έγκυρη διαδρομή {}. Ελέγξτε τις ρυθμίσεις του client λήψεων.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Χρησιμοποιείτε docker· το client λήψεων {} τοποθετεί τις λήψεις στο {}, αλλά αυτός ο φάκελος δεν φαίνεται να υπάρχει μέσα στο κοντέινερ. Ελέγξτε τις αντιστοιχίσεις απομακρυσμένων διαδρομών και τις ρυθμίσεις τόμων του κοντέινερ.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Το απομακρυσμένο client λήψεων {} τοποθετεί τις λήψεις στο {}, αλλά αυτός ο φάκελος δεν φαίνεται να υπάρχει. Πιθανώς λείπει ή είναι λανθασμένη η αντιστοίχιση απομακρυσμένης διαδρομής.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Το client λήψεων {} τοποθετεί τις λήψεις στο {}, αλλά το Kitsunarr δεν μπορεί να δει αυτόν τον φάκελο. Ίσως χρειαστεί να προσαρμόσετε τα δικαιώματα του φακέλου.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Το Kitsunarr βλέπει το ληφθέν επεισόδιο {} αλλά δεν έχει πρόσβαση σε αυτό. Πιθανώς σφάλμα δικαιωμάτων.
+File {} was removed part way through processing.	Το αρχείο {} αφαιρέθηκε κατά τη διάρκεια της επεξεργασίας.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Το Kitsunarr απέτυχε να εισαγάγει ένα ή περισσότερα επεισόδια. Ελέγξτε τα αρχεία καταγραφής για λεπτομέρειες.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Το απομακρυσμένο client λήψεων {} ανέφερε αρχεία στο {}, αλλά αυτή δεν είναι έγκυρη διαδρομή {}. Ελέγξτε τις αντιστοιχίσεις απομακρυσμένων διαδρομών και τις ρυθμίσεις του client λήψεων.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Χρησιμοποιείτε docker· το client λήψεων {} ανέφερε αρχεία στο {}, αλλά αυτή δεν είναι έγκυρη διαδρομή {}. Ελέγξτε τις αντιστοιχίσεις απομακρυσμένων διαδρομών και τις ρυθμίσεις του client λήψεων.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Το τοπικό client λήψεων {} ανέφερε αρχεία στο {}, αλλά αυτή δεν είναι έγκυρη διαδρομή {}. Ελέγξτε τις ρυθμίσεις του client λήψεων.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Το Kitsunarr βλέπει τον φάκελο λήψεων {} αλλά δεν έχει πρόσβαση σε αυτόν. Πιθανώς σφάλμα δικαιωμάτων.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Το απομακρυσμένο client λήψεων {} ανέφερε αρχεία στο {}, αλλά αυτός ο φάκελος δεν φαίνεται να υπάρχει. Πιθανώς λείπει αντιστοίχιση απομακρυσμένης διαδρομής.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Το client λήψεων {} ανέφερε αρχεία στο {}, αλλά το Kitsunarr δεν μπορεί να δει αυτόν τον φάκελο. Ίσως χρειαστεί να προσαρμόσετε τα δικαιώματα του φακέλου.
+The configured password reset token is shorter than {} characters and is being ignored	Το διαμορφωμένο token επαναφοράς κωδικού πρόσβασης είναι μικρότερο από {} χαρακτήρες και αγνοείται
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Έχει διαμορφωθεί token επαναφοράς κωδικού πρόσβασης. Αφαιρέστε τη μεταβλητή περιβάλλοντος KITSUNARR_AUTH_RESET_TOKEN (ή το reset_token στο config.toml) όταν δεν το χρειάζεστε πια
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	Ο έλεγχος ταυτότητας OIDC είναι ενεργός, αλλά δεν έχουν διαμορφωθεί όλα τα πεδία Αρχή, Client ID, Client Secret, Χρήστης και Scopes
+The OIDC Authority must start with 'https://'	Η Αρχή OIDC πρέπει να ξεκινά με 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Δεν είναι δυνατή η ανάκτηση της διαμόρφωσης OIDC από {}· η σύνδεση μέσω του παρόχου ταυτότητας θα αποτυγχάνει μέχρι να γίνει προσβάσιμος
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Δεν έχουν διαμορφωθεί ακόμη ριζικοί φάκελοι. Προσθέστε έναν στις Ρυθμίσεις → Διαχείριση πολυμέσων ή εισαγάγετε μια υπάρχουσα εγκατάσταση.
+Root folder {} is missing or not accessible.	Ο ριζικός φάκελος {} λείπει ή δεν είναι προσβάσιμος.
+Root folder {} has only {} MiB free.	Ο ριζικός φάκελος {} έχει μόνο {} MiB ελεύθερα.
+No enabled {} is configured; automatic downloads are not possible.	Δεν έχει διαμορφωθεί κανένα ενεργό {}· οι αυτόματες λήψεις δεν είναι δυνατές.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Αυτά τα στοιχεία τύπου {} διατηρήθηκαν από την προηγούμενη εγκατάστασή σας, αλλά δεν υλοποιούνται ακόμη εγγενώς: {}.
+All download clients are unavailable due to failures	Κανένα client λήψεων δεν είναι διαθέσιμο λόγω αποτυχιών
+Download clients are unavailable due to failures: {}	Client λήψεων μη διαθέσιμα λόγω αποτυχιών: {}
+All indexers are unavailable due to failures	Κανένα ευρετήριο δεν είναι διαθέσιμο λόγω αποτυχιών
+Indexers unavailable due to failures: {}	Ευρετήρια μη διαθέσιμα λόγω αποτυχιών: {}
+Failed to resolve the IP address of the configured proxy host {}	Αποτυχία επίλυσης της διεύθυνσης IP του host {} του διαμορφωμένου διακομιστή μεσολάβησης
+The data directory has only {} MiB free; the database may fail to write.	Ο φάκελος δεδομένων έχει μόνο {} MiB ελεύθερα· η εγγραφή στη βάση δεδομένων ενδέχεται να αποτύχει.

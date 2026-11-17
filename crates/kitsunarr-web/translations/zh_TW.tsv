@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ 目前編號
 or	或
 1 title	1 個標題
+Episode titles (one per line)	集標題（每行一個）
+For conditions that ignore episode titles.	用於忽略集標題的條件。
+Test episode titles	測試集標題
+· group {}	· 群組 {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	檢查發布版本名稱時排除已知的集標題，讓集標題中的字詞不會被視為服務或發布群組。
+Ignore episode titles {}	忽略集標題 {}
+Ignore episode titles	忽略集標題
+Alternative group	替代群組
+Alternative group {}	替代群組 {}
+Group anime seasons	將動畫各季設為群組
+Anime group {}	動畫群組 {}
+Group of {} · {}	{} 的群組 · {}
+Import progress	匯入進度
+Waiting to import	等待匯入
+Import progress of {}	{} 的匯入進度
+Import details of {}	{} 的匯入詳細資料
+{} / {} episodes imported	已匯入 {} / {} 集
+· {} not imported	· {} 個未匯入
+Series, anime or film title, e.g. Severance	影集、動畫或電影標題，例如 Severance
+All enabled catalogues	所有已啟用的影視目錄
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	沒有可搜尋的已啟用影視目錄：請在 設定 › 中繼資料來源 中啟用一個影視目錄或輸入其 API 金鑰。
+Searches every enabled catalogue, results in your order:	搜尋所有已啟用的影視目錄，結果依您設定的順序排列：
+Grouping	群組
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	自動：依官方關聯將標題歸入其系列作品或合集。停用：保持獨立。
+Automatic (official relations)	自動（官方關聯）
+Too many failed sign in attempts. Please try again in {} minute(s).	登入失敗次數過多。請在 {} 分鐘後再試一次。
+Reset your password	重設密碼
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr 會將一次性重設權杖寫入日誌。請從最新日誌（系統 › 日誌，或容器輸出）中的
+line in the latest log (System › Logs, or the container's output).	行複製該權杖。
+Write a reset token to the log	將重設權杖寫入日誌
+I already have a reset token	我已有重設權杖
+Back to sign in	返回登入
+Your password has been reset, sign in with your new password.	密碼已重設，請使用新密碼登入。
+Unable to sign in with your identity provider.	無法透過身分識別提供者登入。
+Incorrect username or password.	使用者名稱或密碼不正確。
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC 驗證已啟用，但設定不正確。請使用密碼登入並更新 OIDC 設定（設定 › 一般 › 安全性，或設定檔）。
+Sign in with SSO	使用 SSO 登入
+You will be sent to your identity provider.	您將被導向身分識別提供者。
+Forgot your password?	忘記密碼？
+Invalid or expired reset token.	重設權杖無效或已過期。
+Username and password are required, the passwords must match, and the password needs at least {} characters.	使用者名稱和密碼為必填，兩次輸入的密碼必須相符，且密碼至少需要 {} 個字元。
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	新的重設權杖未寫入日誌。可能已有一個有效的權杖，請先檢查日誌。重新啟動 Kitsunarr 會清除它，之後即可重新要求。
+Enter the token from the	輸入日誌中
+line in the log. It's valid for 15 minutes and can only be used once. If you set	行裡的權杖。它在 15 分鐘內有效，且只能使用一次。如果您設定了
+Reset token	重設權杖
+Confirm new password	確認新密碼
+Reset password	重設密碼
+Signed out	已登出
+You have been signed out of Kitsunarr.	您已登出 Kitsunarr。
+Sign in again	重新登入
+Search for missing	搜尋缺少項目
+Month	月
+Week	週
+Forecast	預測
+Day	日
+Agenda	日程
+On disk	已在磁碟中
+Not aired yet	尚未播出
+Search for the episodes shown that aired and have no file	搜尋顯示的集數中已播出但沒有檔案的集
+Previous period	上一個期間
+Next period	下一個期間
+Calendar view	行事曆檢視
+Nothing airs in this period.	此期間沒有播出內容。
+Legend	圖例
+Disabled removes the series from its anime group and keeps it out of automatic grouping	停用後，影集會從其動畫群組中移除，並排除於自動群組之外
+Disabled removes the film from its collection and keeps it out of automatic grouping	停用後，電影會從其合集中移除，並排除於自動群組之外
+Filter	篩選
+Filter by path	依路徑篩選
+All paths	所有路徑
+Combine filters	組合篩選
+Show series matching every selected filter	顯示符合所有已選篩選條件的影集
+Clear combined filters	清除組合篩選
+Show each anime group (Tanukarr's anime grouping) once, by its first season	每個動畫群組（Tanukarr 的動畫群組）只依其第一季顯示一次
+Save the current filters as a filter of your own	將目前的篩選儲存為自訂篩選
+Save filter…	儲存篩選…
+Shown series	顯示的影集
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr 無法套用已儲存篩選中的下列條件，因此已略過：
+The selected filters contradict each other, so no series can match all of them.	所選的篩選條件互相矛盾，沒有影集能同時符合全部條件。
+No series match the selected filters.	沒有影集符合所選的篩選條件。
+Filter "{}" saved.	已儲存篩選「{}」。
+Save filter	儲存篩選
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	篩選會保存所選篩選、組合篩選和路徑；它會與內建篩選一起列出。
+Filter label	篩選名稱
+Delete saved filter	刪除已儲存的篩選
+Delete this saved filter? The series are not changed.	要刪除此已儲存的篩選嗎？影集不會變更。
+Monitored only	僅已監控
+Unmonitored only	僅未監控
+Continuing only	僅連載中
+Ended only	僅已完結
+Missing episodes	缺少的集數
+Security settings saved.	安全性設定已儲存。
+Security	安全性
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	為防止未經驗證的遠端存取，Kitsunarr 需要驗證。您可以選擇對本機位址停用驗證。
+Authentication	驗證
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	使用者的登入方式：Kitsunarr 的登入頁面，或您的 OpenID Connect 身分識別提供者。
+Forms (sign-in page)	表單（登入頁面）
+OIDC (identity provider)	OIDC（身分識別提供者）
+External (reverse proxy)	外部（反向代理）
+Authentication required	需要驗證
+Require authentication for every request, or not for requests from local addresses or this machine.	所有要求都需要驗證，或來自本機位址或此電腦的要求不需要驗證。
+Disabled for localhost	本機停用
+Allowed hosts	允許的主機
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	以逗號分隔的主機名稱和 IP 位址清單，Kitsunarr 應可透過這些名稱存取，包括系統主機名稱或容器名稱。留空則允許所有主機。當驗證並非一律需要時為必填。例如：kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	信任 CGNAT 位址
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	將 CGNAT 位址（100.64.0.0/10，例如 Tailscale）視為本機
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	外部：Kitsunarr 不要求登入，而是依賴其前方的反向代理。僅在會驗證每個要求的代理之後使用。
+Register Kitsunarr with your provider using the redirect URI	請在提供者處使用下列重新導向 URI 註冊 Kitsunarr：
+. Saving signs out password sessions; you then sign in through the provider.	。儲存後會登出以密碼登入的工作階段；之後請透過提供者登入。
+OIDC Authority	OIDC 授權單位（Authority）
+The URL of the OIDC provider (https://).	OIDC 提供者的 URL（https://）。
+OIDC Client ID	OIDC 用戶端 ID
+The Client ID registered with the OIDC provider.	在 OIDC 提供者註冊的用戶端 ID。
+OIDC Client Secret	OIDC 用戶端密碼
+The Client Secret registered with the OIDC provider.	在 OIDC 提供者註冊的用戶端密碼。
+OIDC User	OIDC 使用者
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	OIDC 提供者上可登入 Kitsunarr 的已驗證電子郵件地址或主體識別碼（sub）。
+OIDC Scopes	OIDC 範圍
+The scopes to request from the OIDC provider; must include openid.	向 OIDC 提供者要求的範圍；必須包含 openid。
+Set in config.toml or the environment, which take precedence: {}.	已在 config.toml 或環境變數中設定，且優先採用：{}。
+Backup settings saved.	備份設定已儲存。
+Interval (days)	間隔（天）
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	自動建立備份的頻率（1-7 天）。手動備份會重新開始計算間隔。
+Backup interval in days	備份間隔（天）
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	早於此時間的自動備份會被刪除（1-90 天）。手動備份會保留。
+Backup retention in days	備份保留期限（天）
+A quality without an override uses the global sizes of	沒有覆寫設定的品質會使用下列位置的全域大小：
+Settings › Quality	設定 › 品質
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	。在覆寫設定中，留空表示無限制；最大值為零也表示無限制。
+Signed in. Save to keep the token.	已登入。請儲存以保留權杖。
+Redirect URL to register with your API client:	在您的 API 用戶端註冊的重新導向 URL：
+Test all	全部測試
+All {} passed their test.	全部 {} 個都通過測試。
+{} of {} failed their test.	{} 個未通過測試（共 {} 個）。
+Test every {} entry	測試每個{}項目
+Test results	測試結果
+passed with warnings	通過，但有警告
+Warning:	警告：
+Dismiss test results	關閉測試結果
+Delete for upgrade	升級時刪除
+Metadata sources saved.	中繼資料來源已儲存。
+Order	順序
+Enable {}	啟用 {}
+Move {} up	上移 {}
+Move {} down	下移 {}
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	新增媒體時會依此順序列出已啟用的影視目錄，「所有已啟用的影視目錄」也會依此順序合併結果。已停用的影視目錄不會提供或搜尋；已屬於該目錄的標題仍會從中重新整理。在下方儲存以套用。
+Enable at least one metadata source.	請至少啟用一個中繼資料來源。
+Mixed	混合
+Unlimited	無限制
+0 GiB/h	0 GiB/h
+{} min: {}	{} 分鐘：{}
+No limit	無限制
+Quality definitions saved.	品質定義已儲存。
+Quality definitions reset to the defaults.	品質定義已重設為預設值。
+Reset definitions	重設定義
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	大小以每分鐘片長的 MiB 計；每項下方會顯示每小時大小。超出品質限制的發布版本會被拒絕；偏好大小用於排序發布版本。品質設定檔可以保留自己的限制（
+Settings › Quality profiles	設定 › 品質設定檔
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	）：「混合」表示各設定檔使用不同的限制，在此輸入的值會寫入每個設定檔。
+Title of {}	{} 的標題
+{} size of {} (MiB per minute)	{}大小：{}（每分鐘 MiB）
+Profiles use different limits	各設定檔使用不同的限制
+No minimum	無最小值
+Hide retired qualities	隱藏已停用的品質
+Show retired qualities	顯示已停用的品質
+Reset quality definitions	重設品質定義
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	要將每個標準品質還原為預設標題和大小限制嗎？自訂預設集和各設定檔自己的限制會保留。
+Reset	重設
+RefreshMonitoredDownloads	重新整理已監控的下載
+Reads the download clients and imports completed downloads Kitsunarr grabbed	讀取下載用戶端並匯入 Kitsunarr 抓取的已完成下載
+ProcessPendingJellyfinRefresh	處理待執行的 Jellyfin 重新整理
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	重新整理有待處理匯入的 Jellyfin 媒體櫃（依各連線的重新整理模式）
+SyncJellyfinWatched	同步 Jellyfin 觀看紀錄
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	讀取 Jellyfin 使用者已觀看的集（依連線自己的間隔）
+CleanUpRecycleBin	清理資源回收筒
+Deletes files kept in the recycle bin longer than the media management setting allows	刪除在資源回收筒中保留超過媒體管理設定所允許時間的檔案
+RescanFolders	重新掃描資料夾
+Scans series and movie folders: forgets files that are gone and adds files found there	掃描影集和電影資料夾：移除已不存在的檔案紀錄，並加入新找到的檔案
+RefreshMetadata	重新整理中繼資料
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	從中繼資料目錄重新整理標題（連載中的每 6 小時一次，已完結的每月一次）
+Housekeeping	例行維護
+Purges expired sessions, prunes task history and checks database integrity	清除過期的工作階段、精簡工作歷史記錄並檢查資料庫完整性
+CleanupSessions	清理工作階段
+Removes expired login sessions	移除過期的登入工作階段
+HealthCheck	健康狀態檢查
+Re-evaluates health checks, notifies connected browsers and sends health notifications	重新評估健康狀態檢查、通知已連線的瀏覽器並傳送健康狀態通知
+SQLite database integrity check failed: {}. Restore from a known-good backup.	SQLite 資料庫完整性檢查失敗：{}。請從已知良好的備份還原。
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	SQLite 資料庫完整性檢查未傳回結果。如果發生資料庫錯誤，請從已知良好的備份還原。
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	SQLite 資料庫完整性檢查失敗：{} 個外部索引鍵違規。請從已知良好的備份還原。
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	沒有啟用 RSS 同步的索引器，Kitsunarr 將不會自動抓取新的發布版本
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	由於近期的索引器錯誤，所有支援 RSS 的索引器暫時無法使用
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	沒有啟用自動搜尋的索引器，Kitsunarr 將不會提供任何自動搜尋結果
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	沒有啟用互動式搜尋的索引器，Kitsunarr 將不會提供任何互動式搜尋結果
+All search-capable indexers are temporarily unavailable due to recent indexer errors	由於近期的索引器錯誤，所有支援搜尋的索引器暫時無法使用
+All indexers are unavailable due to failures for more than 6 hours	由於故障超過 6 小時，所有索引器都無法使用
+Indexers unavailable due to failures for more than 6 hours: {}	因故障超過 6 小時而無法使用的索引器：{}
+Indexers using the unsupported Jackett 'all' endpoint: {}	使用不受支援的 Jackett 'all' 端點的索引器：{}
+Indexers with invalid download clients: {}.	下載用戶端無效的索引器：{}。
+Enable Completed Download Handling	啟用已完成下載處理
+All notifications are unavailable due to failures	由於故障，所有通知都無法使用
+Notifications unavailable due to failures: {}	因故障而無法使用的通知：{}
+All lists are unavailable due to failures	由於故障，所有清單都無法使用
+Lists unavailable due to failures: {}	因故障而無法使用的清單：{}
+Missing root folder for import list(s): {}	匯入清單缺少根目錄：{}
+Multiple root folders are missing for import lists: {}	多個匯入清單的根目錄遺失：{}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	無法寫入設定的資源回收筒資料夾：{}。請確認此路徑存在，且執行 Kitsunarr 的使用者可以寫入
+Unable to write to the backup folder {}; scheduled backups will fail.	無法寫入備份資料夾 {}；排程備份將會失敗。
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	請將您的 API 金鑰更新為至少 20 個字元。您可以透過設定或設定檔進行變更
+Series {} was removed from {}	影集 {} 已從 {} 中移除
+Series {} were removed from {}	影集 {} 已從 {} 中移除
+Mount containing a series path is mounted read-only: {}	包含影集路徑的掛載點以唯讀方式掛載：{}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	下載用戶端 {} 設定為移除已完成的下載。這可能導致下載在 Kitsunarr 匯入之前就從用戶端中被移除。
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	下載用戶端 {} 為 Kitsunarr 的類別啟用了 {} 排序。您應在下載用戶端中停用排序，以避免匯入問題。
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	下載用戶端 {} 將下載內容放在根目錄 {} 中。您不應下載到根目錄。
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	遠端下載用戶端 {} 將下載內容放在 {}，但這不是有效的 {} 路徑。請檢查您的遠端路徑對應和下載用戶端設定。
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	您正在使用 docker；下載用戶端 {} 將下載內容放在 {}，但這不是有效的 {} 路徑。請檢查您的遠端路徑對應和下載用戶端設定。
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	本機下載用戶端 {} 將下載內容放在 {}，但這不是有效的 {} 路徑。請檢查您的下載用戶端設定。
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	您正在使用 docker；下載用戶端 {} 將下載內容放在 {}，但此目錄在容器內似乎不存在。請檢查您的遠端路徑對應和容器磁碟區設定。
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	遠端下載用戶端 {} 將下載內容放在 {}，但此目錄似乎不存在。可能缺少遠端路徑對應或對應不正確。
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	下載用戶端 {} 將下載內容放在 {}，但 Kitsunarr 看不到此目錄。您可能需要調整該資料夾的權限。
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr 看得到但無法存取已下載的集 {}。可能是權限錯誤。
+File {} was removed part way through processing.	檔案 {} 在處理過程中被移除。
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr 匯入集數失敗。請查看日誌以了解詳細資料。
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	遠端下載用戶端 {} 回報的檔案位於 {}，但這不是有效的 {} 路徑。請檢查您的遠端路徑對應和下載用戶端設定。
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	您正在使用 docker；下載用戶端 {} 回報的檔案位於 {}，但這不是有效的 {} 路徑。請檢查您的遠端路徑對應和下載用戶端設定。
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	本機下載用戶端 {} 回報的檔案位於 {}，但這不是有效的 {} 路徑。請檢查您的下載用戶端設定。
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr 看得到但無法存取下載目錄 {}。可能是權限錯誤。
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	遠端下載用戶端 {} 回報的檔案位於 {}，但此目錄似乎不存在。可能缺少遠端路徑對應。
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	下載用戶端 {} 回報的檔案位於 {}，但 Kitsunarr 看不到此目錄。您可能需要調整該資料夾的權限。
+The configured password reset token is shorter than {} characters and is being ignored	設定的密碼重設權杖短於 {} 個字元，已被忽略
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	已設定密碼重設權杖。不再需要時，請移除 KITSUNARR_AUTH_RESET_TOKEN 環境變數（或 config.toml 中的 reset_token）
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC 驗證已啟用，但 Authority、Client ID、Client Secret、User 和 Scopes 並未全部設定
+The OIDC Authority must start with 'https://'	OIDC Authority 必須以 'https://' 開頭
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	無法從 {} 擷取 OIDC 設定，在可連線之前，透過身分識別提供者登入將會失敗
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	尚未設定根目錄。請在 設定 → 媒體管理 中新增，或匯入現有的安裝。
+Root folder {} is missing or not accessible.	根目錄 {} 遺失或無法存取。
+Root folder {} has only {} MiB free.	根目錄 {} 僅剩 {} MiB 可用空間。
+No enabled {} is configured; automatic downloads are not possible.	未設定已啟用的{}；無法自動下載。
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	下列{}已從您先前的安裝保留，但尚未原生實作：{}。
+All download clients are unavailable due to failures	由於故障，所有下載用戶端都無法使用
+Download clients are unavailable due to failures: {}	因故障而無法使用的下載用戶端：{}
+All indexers are unavailable due to failures	由於故障，所有索引器都無法使用
+Indexers unavailable due to failures: {}	因故障而無法使用的索引器：{}
+Failed to resolve the IP address of the configured proxy host {}	無法解析設定的代理伺服器主機 {} 的 IP 位址
+The data directory has only {} MiB free; the database may fail to write.	資料目錄僅剩 {} MiB 可用空間；資料庫可能無法寫入。

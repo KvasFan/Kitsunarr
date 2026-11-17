@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ số hiện tại
 or	hoặc
 1 title	1 tựa
+Episode titles (one per line)	Tiêu đề tập (mỗi dòng một tiêu đề)
+For conditions that ignore episode titles.	Dùng cho các điều kiện bỏ qua tiêu đề tập.
+Test episode titles	Tiêu đề tập để kiểm tra
+· group {}	· nhóm {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Loại trừ các tiêu đề tập đã biết khi kiểm tra tên bản phát hành, để các từ trong tiêu đề tập không bị tính là dịch vụ hoặc nhóm phát hành.
+Ignore episode titles {}	Bỏ qua tiêu đề tập {}
+Ignore episode titles	Bỏ qua tiêu đề tập
+Alternative group	Nhóm thay thế
+Alternative group {}	Nhóm thay thế {}
+Group anime seasons	Nhóm các mùa anime
+Anime group {}	Nhóm anime {}
+Group of {} · {}	Nhóm của {} · {}
+Import progress	Tiến trình nhập
+Waiting to import	Đang chờ nhập
+Import progress of {}	Tiến trình nhập của {}
+Import details of {}	Chi tiết nhập của {}
+{} / {} episodes imported	Đã nhập {} / {} tập
+· {} not imported	· {} chưa được nhập
+Series, anime or film title, e.g. Severance	Tiêu đề phim bộ, anime hoặc phim lẻ, ví dụ Severance
+All enabled catalogues	Tất cả kho dữ liệu đã bật
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Không có kho dữ liệu đã bật nào có thể tìm kiếm: hãy bật một kho hoặc nhập khóa API của nó trong Cài đặt › Nguồn siêu dữ liệu.
+Searches every enabled catalogue, results in your order:	Tìm trong mọi kho dữ liệu đã bật, kết quả theo thứ tự của bạn:
+Grouping	Nhóm
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	Tự động nhóm tựa với franchise hoặc bộ sưu tập của nó dựa trên quan hệ chính thức. Tắt sẽ giữ tựa đứng riêng.
+Automatic (official relations)	Tự động (quan hệ chính thức)
+Too many failed sign in attempts. Please try again in {} minute(s).	Đăng nhập thất bại quá nhiều lần. Vui lòng thử lại sau {} phút.
+Reset your password	Đặt lại mật khẩu
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr sẽ ghi một token đặt lại dùng một lần vào nhật ký. Hãy sao chép nó từ dòng
+line in the latest log (System › Logs, or the container's output).	trong nhật ký mới nhất (Hệ thống › Nhật ký, hoặc đầu ra của container).
+Write a reset token to the log	Ghi token đặt lại vào nhật ký
+I already have a reset token	Tôi đã có token đặt lại
+Back to sign in	Quay lại đăng nhập
+Your password has been reset, sign in with your new password.	Mật khẩu của bạn đã được đặt lại, hãy đăng nhập bằng mật khẩu mới.
+Unable to sign in with your identity provider.	Không thể đăng nhập bằng nhà cung cấp danh tính của bạn.
+Incorrect username or password.	Tên người dùng hoặc mật khẩu không đúng.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	Xác thực OIDC đã được bật nhưng chưa được cấu hình đúng. Hãy đăng nhập bằng mật khẩu và cập nhật cài đặt OIDC (Cài đặt › Chung › Bảo mật, hoặc tệp cấu hình).
+Sign in with SSO	Đăng nhập bằng SSO
+You will be sent to your identity provider.	Bạn sẽ được chuyển đến nhà cung cấp danh tính.
+Forgot your password?	Quên mật khẩu?
+Invalid or expired reset token.	Token đặt lại không hợp lệ hoặc đã hết hạn.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Tên người dùng và mật khẩu là bắt buộc, hai mật khẩu phải khớp nhau và mật khẩu cần ít nhất {} ký tự.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Không có token đặt lại mới nào được ghi vào nhật ký. Có thể đã có một token đang hiệu lực, hãy kiểm tra nhật ký trước. Khởi động lại Kitsunarr sẽ xóa nó và cho phép bạn yêu cầu token khác.
+Enter the token from the	Nhập token từ dòng
+line in the log. It's valid for 15 minutes and can only be used once. If you set	trong nhật ký. Token có hiệu lực trong 15 phút và chỉ dùng được một lần. Nếu bạn đặt
+Reset token	Token đặt lại
+Confirm new password	Xác nhận mật khẩu mới
+Reset password	Đặt lại mật khẩu
+Signed out	Đã đăng xuất
+You have been signed out of Kitsunarr.	Bạn đã đăng xuất khỏi Kitsunarr.
+Sign in again	Đăng nhập lại
+Search for missing	Tìm các mục thiếu
+Month	Tháng
+Week	Tuần
+Forecast	Dự báo
+Day	Ngày
+Agenda	Lịch trình
+On disk	Có trên đĩa
+Not aired yet	Chưa phát sóng
+Search for the episodes shown that aired and have no file	Tìm các tập đang hiển thị đã phát sóng nhưng chưa có tệp
+Previous period	Khoảng trước
+Next period	Khoảng sau
+Calendar view	Chế độ xem lịch
+Nothing airs in this period.	Không có gì phát sóng trong khoảng này.
+Legend	Chú thích
+Disabled removes the series from its anime group and keeps it out of automatic grouping	Tắt sẽ gỡ phim bộ khỏi nhóm anime của nó và loại nó khỏi việc nhóm tự động
+Disabled removes the film from its collection and keeps it out of automatic grouping	Tắt sẽ gỡ phim lẻ khỏi bộ sưu tập của nó và loại nó khỏi việc nhóm tự động
+Filter	Bộ lọc
+Filter by path	Lọc theo đường dẫn
+All paths	Tất cả đường dẫn
+Combine filters	Kết hợp bộ lọc
+Show series matching every selected filter	Hiển thị phim bộ khớp với mọi bộ lọc đã chọn
+Clear combined filters	Xóa các bộ lọc kết hợp
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Hiển thị mỗi nhóm anime (cách nhóm anime của Tanukarr) một lần, theo mùa đầu tiên
+Save the current filters as a filter of your own	Lưu các bộ lọc hiện tại thành bộ lọc riêng của bạn
+Save filter…	Lưu bộ lọc…
+Shown series	Phim bộ đang hiển thị
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr không thể áp dụng các điều kiện này của bộ lọc đã lưu nên đã bỏ qua chúng:
+The selected filters contradict each other, so no series can match all of them.	Các bộ lọc đã chọn mâu thuẫn với nhau nên không phim bộ nào có thể khớp với tất cả.
+No series match the selected filters.	Không có phim bộ nào khớp với các bộ lọc đã chọn.
+Filter "{}" saved.	Đã lưu bộ lọc "{}".
+Save filter	Lưu bộ lọc
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Bộ lọc giữ bộ lọc đã chọn, các bộ lọc kết hợp và đường dẫn; nó được liệt kê cùng các bộ lọc có sẵn.
+Filter label	Nhãn bộ lọc
+Delete saved filter	Xóa bộ lọc đã lưu
+Delete this saved filter? The series are not changed.	Xóa bộ lọc đã lưu này? Các phim bộ không bị thay đổi.
+Monitored only	Chỉ đang theo dõi
+Unmonitored only	Chỉ không theo dõi
+Continuing only	Chỉ đang tiếp diễn
+Ended only	Chỉ đã kết thúc
+Missing episodes	Tập bị thiếu
+Security settings saved.	Đã lưu cài đặt bảo mật.
+Security	Bảo mật
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Để ngăn truy cập từ xa mà không xác thực, Kitsunarr yêu cầu xác thực. Bạn có thể tùy chọn tắt nó cho các địa chỉ cục bộ.
+Authentication	Xác thực
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Cách người dùng đăng nhập: trang đăng nhập của Kitsunarr, hoặc nhà cung cấp danh tính OpenID Connect của bạn.
+Forms (sign-in page)	Biểu mẫu (trang đăng nhập)
+OIDC (identity provider)	OIDC (nhà cung cấp danh tính)
+External (reverse proxy)	Bên ngoài (reverse proxy)
+Authentication required	Yêu cầu xác thực
+Require authentication for every request, or not for requests from local addresses or this machine.	Yêu cầu xác thực cho mọi yêu cầu, hoặc không yêu cầu với các yêu cầu từ địa chỉ cục bộ hoặc máy này.
+Disabled for localhost	Tắt cho localhost
+Allowed hosts	Máy chủ được phép
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Danh sách tên máy chủ và địa chỉ IP, phân tách bằng dấu phẩy, mà Kitsunarr có thể được truy cập qua đó, bao gồm tên máy chủ của hệ thống hoặc tên container. Để trống để cho phép mọi máy chủ. Bắt buộc khi xác thực không phải lúc nào cũng được yêu cầu. Ví dụ: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Tin cậy địa chỉ CGNAT
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Coi địa chỉ CGNAT (100.64.0.0/10, ví dụ Tailscale) là cục bộ
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Bên ngoài: Kitsunarr không yêu cầu đăng nhập và dựa vào reverse proxy đứng trước nó. Chỉ dùng tùy chọn này phía sau một proxy xác thực mọi yêu cầu.
+Register Kitsunarr with your provider using the redirect URI	Đăng ký Kitsunarr với nhà cung cấp của bạn bằng URI chuyển hướng
+. Saving signs out password sessions; you then sign in through the provider.	. Khi lưu, các phiên đăng nhập bằng mật khẩu sẽ bị đăng xuất; sau đó bạn đăng nhập qua nhà cung cấp.
+OIDC Authority	OIDC Authority
+The URL of the OIDC provider (https://).	URL của nhà cung cấp OIDC (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID đã đăng ký với nhà cung cấp OIDC.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret đã đăng ký với nhà cung cấp OIDC.
+OIDC User	Người dùng OIDC
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Địa chỉ e-mail đã xác minh hoặc định danh chủ thể (sub) trên nhà cung cấp OIDC được phép đăng nhập vào Kitsunarr.
+OIDC Scopes	Phạm vi OIDC
+The scopes to request from the OIDC provider; must include openid.	Các phạm vi cần yêu cầu từ nhà cung cấp OIDC; phải bao gồm openid.
+Set in config.toml or the environment, which take precedence: {}.	Được đặt trong config.toml hoặc biến môi trường, vốn được ưu tiên: {}.
+Backup settings saved.	Đã lưu cài đặt sao lưu.
+Interval (days)	Khoảng thời gian (ngày)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Tần suất tự động tạo bản sao lưu (1-7 ngày). Sao lưu thủ công sẽ bắt đầu lại khoảng thời gian.
+Backup interval in days	Khoảng thời gian sao lưu tính bằng ngày
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Các bản sao lưu tự động cũ hơn thời hạn này sẽ bị xóa (1-90 ngày). Bản sao lưu thủ công được giữ lại.
+Backup retention in days	Thời gian lưu giữ bản sao lưu tính bằng ngày
+A quality without an override uses the global sizes of	Chất lượng không có ghi đè sẽ dùng kích thước chung của
+Settings › Quality	Cài đặt › Chất lượng
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Trong một ghi đè, để trống nghĩa là không giới hạn; giá trị tối đa bằng 0 cũng nghĩa là không giới hạn.
+Signed in. Save to keep the token.	Đã đăng nhập. Lưu để giữ token.
+Redirect URL to register with your API client:	URL chuyển hướng để đăng ký với ứng dụng API của bạn:
+Test all	Kiểm tra tất cả
+All {} passed their test.	Cả {} đều đã vượt qua kiểm tra.
+{} of {} failed their test.	{} trên {} không vượt qua kiểm tra.
+Test every {} entry	Kiểm tra mọi mục {}
+Test results	Kết quả kiểm tra
+passed with warnings	đạt nhưng có cảnh báo
+Warning:	Cảnh báo:
+Dismiss test results	Đóng kết quả kiểm tra
+Delete for upgrade	Xóa để nâng cấp
+Metadata sources saved.	Đã lưu nguồn siêu dữ liệu.
+Order	Thứ tự
+Enable {}	Bật {}
+Move {} up	Chuyển {} lên
+Move {} down	Chuyển {} xuống
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	Thêm phương tiện liệt kê các kho dữ liệu đã bật theo thứ tự này, và "Tất cả kho dữ liệu đã bật" gộp kết quả của chúng theo thứ tự này. Kho dữ liệu đã tắt sẽ không được đề xuất hay tìm kiếm; các tựa đã thuộc về một kho vẫn tiếp tục làm mới từ kho đó. Lưu bên dưới để áp dụng.
+Enable at least one metadata source.	Hãy bật ít nhất một nguồn siêu dữ liệu.
+Mixed	Hỗn hợp
+Unlimited	Không giới hạn
+0 GiB/h	0 GiB/giờ
+{} min: {}	{} phút: {}
+No limit	Không giới hạn
+Quality definitions saved.	Đã lưu định nghĩa chất lượng.
+Quality definitions reset to the defaults.	Đã đặt lại định nghĩa chất lượng về mặc định.
+Reset definitions	Đặt lại định nghĩa
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Kích thước tính bằng MiB trên mỗi phút thời lượng; kích thước theo giờ được hiển thị bên dưới mỗi giá trị. Bản phát hành nằm ngoài giới hạn của chất lượng sẽ bị từ chối; kích thước ưu tiên dùng để xếp hạng bản phát hành. Hồ sơ có thể giữ giới hạn riêng (
+Settings › Quality profiles	Cài đặt › Hồ sơ chất lượng
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): "Hỗn hợp" nghĩa là các hồ sơ dùng giới hạn khác nhau, và giá trị nhập ở đây sẽ được ghi vào mọi hồ sơ.
+Title of {}	Tiêu đề của {}
+{} size of {} (MiB per minute)	Kích thước {} của {} (MiB mỗi phút)
+Profiles use different limits	Các hồ sơ dùng giới hạn khác nhau
+No minimum	Không có mức tối thiểu
+Hide retired qualities	Ẩn các chất lượng đã ngừng dùng
+Show retired qualities	Hiện các chất lượng đã ngừng dùng
+Reset quality definitions	Đặt lại định nghĩa chất lượng
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Đặt mọi chất lượng tiêu chuẩn về tiêu đề và giới hạn kích thước mặc định? Các thiết lập sẵn tùy chỉnh và giới hạn riêng của hồ sơ được giữ nguyên.
+Reset	Đặt lại
+RefreshMonitoredDownloads	Làm mới các lượt tải đang theo dõi
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Đọc các trình tải xuống và nhập các lượt tải đã hoàn tất mà Kitsunarr đã lấy
+ProcessPendingJellyfinRefresh	Xử lý các lượt làm mới Jellyfin đang chờ
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Làm mới các thư viện Jellyfin có lượt nhập đang chờ (theo chế độ làm mới của từng kết nối)
+SyncJellyfinWatched	Đồng bộ trạng thái đã xem từ Jellyfin
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Đọc những tập mà người dùng Jellyfin đã xem (theo khoảng thời gian riêng của kết nối)
+CleanUpRecycleBin	Dọn thùng rác
+Deletes files kept in the recycle bin longer than the media management setting allows	Xóa các tệp nằm trong thùng rác lâu hơn mức cài đặt quản lý phương tiện cho phép
+RescanFolders	Quét lại thư mục
+Scans series and movie folders: forgets files that are gone and adds files found there	Quét thư mục phim bộ và phim lẻ: bỏ các tệp không còn và thêm các tệp tìm thấy ở đó
+RefreshMetadata	Làm mới siêu dữ liệu
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Làm mới các tựa từ kho siêu dữ liệu của chúng (tựa đang tiếp diễn mỗi 6 giờ, tựa đã kết thúc hằng tháng)
+Housekeeping	Bảo trì
+Purges expired sessions, prunes task history and checks database integrity	Xóa các phiên đã hết hạn, rút gọn lịch sử tác vụ và kiểm tra tính toàn vẹn của cơ sở dữ liệu
+CleanupSessions	Dọn phiên
+Removes expired login sessions	Xóa các phiên đăng nhập đã hết hạn
+HealthCheck	Kiểm tra tình trạng
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Đánh giá lại các kiểm tra tình trạng, thông báo cho các trình duyệt đang kết nối và gửi thông báo tình trạng
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Kiểm tra tính toàn vẹn cơ sở dữ liệu SQLite thất bại: {}. Hãy khôi phục từ một bản sao lưu còn tốt.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Kiểm tra tính toàn vẹn cơ sở dữ liệu SQLite không trả về kết quả. Hãy khôi phục từ một bản sao lưu còn tốt nếu đang xảy ra lỗi cơ sở dữ liệu.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Kiểm tra tính toàn vẹn cơ sở dữ liệu SQLite thất bại: {} vi phạm khóa ngoại. Hãy khôi phục từ một bản sao lưu còn tốt.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Không có trình lập chỉ mục nào bật đồng bộ RSS, Kitsunarr sẽ không tự động lấy bản phát hành mới
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Tất cả trình lập chỉ mục hỗ trợ RSS tạm thời không khả dụng do các lỗi gần đây của trình lập chỉ mục
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Không có trình lập chỉ mục nào bật tìm kiếm tự động, Kitsunarr sẽ không cung cấp kết quả tìm kiếm tự động nào
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Không có trình lập chỉ mục nào bật tìm kiếm tương tác, Kitsunarr sẽ không cung cấp kết quả tìm kiếm tương tác nào
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Tất cả trình lập chỉ mục hỗ trợ tìm kiếm tạm thời không khả dụng do các lỗi gần đây của trình lập chỉ mục
+All indexers are unavailable due to failures for more than 6 hours	Tất cả trình lập chỉ mục không khả dụng do lỗi kéo dài hơn 6 giờ
+Indexers unavailable due to failures for more than 6 hours: {}	Trình lập chỉ mục không khả dụng do lỗi kéo dài hơn 6 giờ: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Trình lập chỉ mục dùng endpoint 'all' không được hỗ trợ của Jackett: {}
+Indexers with invalid download clients: {}.	Trình lập chỉ mục có trình tải xuống không hợp lệ: {}.
+Enable Completed Download Handling	Bật xử lý lượt tải đã hoàn tất
+All notifications are unavailable due to failures	Tất cả thông báo không khả dụng do lỗi
+Notifications unavailable due to failures: {}	Thông báo không khả dụng do lỗi: {}
+All lists are unavailable due to failures	Tất cả danh sách không khả dụng do lỗi
+Lists unavailable due to failures: {}	Danh sách không khả dụng do lỗi: {}
+Missing root folder for import list(s): {}	Thiếu thư mục gốc cho danh sách nhập: {}
+Multiple root folders are missing for import lists: {}	Thiếu nhiều thư mục gốc cho các danh sách nhập: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Không thể ghi vào thư mục thùng rác đã cấu hình: {}. Hãy đảm bảo đường dẫn này tồn tại và người dùng chạy Kitsunarr có quyền ghi
+Unable to write to the backup folder {}; scheduled backups will fail.	Không thể ghi vào thư mục sao lưu {}; các bản sao lưu theo lịch sẽ thất bại.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Vui lòng cập nhật khóa API dài ít nhất 20 ký tự. Bạn có thể làm việc này trong cài đặt hoặc tệp cấu hình
+Series {} was removed from {}	Phim bộ {} đã bị gỡ khỏi {}
+Series {} were removed from {}	Các phim bộ {} đã bị gỡ khỏi {}
+Mount containing a series path is mounted read-only: {}	Ổ gắn kết chứa đường dẫn phim bộ đang được gắn ở chế độ chỉ đọc: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Trình tải xuống {} được đặt để xóa các lượt tải đã hoàn tất. Điều này có thể khiến lượt tải bị xóa khỏi trình tải trước khi Kitsunarr kịp nhập.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Trình tải xuống {} đã bật sắp xếp {} cho danh mục của Kitsunarr. Bạn nên tắt sắp xếp trong trình tải xuống để tránh lỗi khi nhập.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Trình tải xuống {} đặt các lượt tải vào thư mục gốc {}. Bạn không nên tải xuống vào thư mục gốc.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Trình tải xuống từ xa {} đặt các lượt tải vào {} nhưng đây không phải đường dẫn {} hợp lệ. Hãy xem lại ánh xạ đường dẫn từ xa và cài đặt trình tải xuống.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Bạn đang dùng docker; trình tải xuống {} đặt các lượt tải vào {} nhưng đây không phải đường dẫn {} hợp lệ. Hãy xem lại ánh xạ đường dẫn từ xa và cài đặt trình tải xuống.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Trình tải xuống cục bộ {} đặt các lượt tải vào {} nhưng đây không phải đường dẫn {} hợp lệ. Hãy xem lại cài đặt trình tải xuống.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Bạn đang dùng docker; trình tải xuống {} đặt các lượt tải vào {} nhưng thư mục này dường như không tồn tại trong container. Hãy xem lại ánh xạ đường dẫn từ xa và cài đặt volume của container.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Trình tải xuống từ xa {} đặt các lượt tải vào {} nhưng thư mục này dường như không tồn tại. Có thể thiếu hoặc sai ánh xạ đường dẫn từ xa.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Trình tải xuống {} đặt các lượt tải vào {} nhưng Kitsunarr không thấy thư mục này. Bạn có thể cần điều chỉnh quyền của thư mục.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr thấy nhưng không truy cập được tập đã tải {}. Có thể là lỗi quyền truy cập.
+File {} was removed part way through processing.	Tệp {} đã bị xóa giữa chừng khi đang xử lý.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr không nhập được tập. Hãy kiểm tra nhật ký để biết chi tiết.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Trình tải xuống từ xa {} báo cáo tệp trong {} nhưng đây không phải đường dẫn {} hợp lệ. Hãy xem lại ánh xạ đường dẫn từ xa và cài đặt trình tải xuống.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Bạn đang dùng docker; trình tải xuống {} báo cáo tệp trong {} nhưng đây không phải đường dẫn {} hợp lệ. Hãy xem lại ánh xạ đường dẫn từ xa và cài đặt trình tải xuống.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Trình tải xuống cục bộ {} báo cáo tệp trong {} nhưng đây không phải đường dẫn {} hợp lệ. Hãy xem lại cài đặt trình tải xuống.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr thấy nhưng không truy cập được thư mục tải xuống {}. Có thể là lỗi quyền truy cập.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Trình tải xuống từ xa {} báo cáo tệp trong {} nhưng thư mục này dường như không tồn tại. Có thể thiếu ánh xạ đường dẫn từ xa.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Trình tải xuống {} báo cáo tệp trong {} nhưng Kitsunarr không thấy thư mục này. Bạn có thể cần điều chỉnh quyền của thư mục.
+The configured password reset token is shorter than {} characters and is being ignored	Token đặt lại mật khẩu đã cấu hình ngắn hơn {} ký tự và đang bị bỏ qua
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Đã cấu hình token đặt lại mật khẩu. Hãy xóa biến môi trường KITSUNARR_AUTH_RESET_TOKEN (hoặc reset_token trong config.toml) khi bạn không cần nữa
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	Xác thực OIDC đã được bật nhưng Authority, Client ID, Client Secret, User và Scopes chưa được cấu hình đầy đủ
+The OIDC Authority must start with 'https://'	OIDC Authority phải bắt đầu bằng 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Không thể lấy cấu hình OIDC từ {}, việc đăng nhập bằng nhà cung cấp danh tính sẽ thất bại cho đến khi truy cập được
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Chưa cấu hình thư mục gốc nào. Hãy thêm một thư mục trong Cài đặt → Quản lý phương tiện hoặc nhập một bản cài đặt có sẵn.
+Root folder {} is missing or not accessible.	Thư mục gốc {} bị thiếu hoặc không truy cập được.
+Root folder {} has only {} MiB free.	Thư mục gốc {} chỉ còn trống {} MiB.
+No enabled {} is configured; automatic downloads are not possible.	Chưa cấu hình {} nào được bật; không thể tải xuống tự động.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Các {} này được giữ lại từ bản cài đặt trước nhưng chưa được hỗ trợ gốc: {}.
+All download clients are unavailable due to failures	Tất cả trình tải xuống không khả dụng do lỗi
+Download clients are unavailable due to failures: {}	Trình tải xuống không khả dụng do lỗi: {}
+All indexers are unavailable due to failures	Tất cả trình lập chỉ mục không khả dụng do lỗi
+Indexers unavailable due to failures: {}	Trình lập chỉ mục không khả dụng do lỗi: {}
+Failed to resolve the IP address of the configured proxy host {}	Không thể phân giải địa chỉ IP của máy chủ proxy đã cấu hình {}
+The data directory has only {} MiB free; the database may fail to write.	Thư mục dữ liệu chỉ còn trống {} MiB; cơ sở dữ liệu có thể không ghi được.

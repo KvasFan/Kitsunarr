@@ -1310,3 +1310,246 @@ tag in it); imported titles keep their folder, their files are scanned in place,
 → current number	→ тренутни број
 or	или
 1 title	1 наслов
+Episode titles (one per line)	Наслови епизода (један по реду)
+For conditions that ignore episode titles.	За услове који занемарују наслове епизода.
+Test episode titles	Тест наслови епизода
+· group {}	· група {}
+Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.	Изузми познате наслове епизода при провери имена издања, тако да се речи из наслова епизоде не рачунају као услуга или група издања.
+Ignore episode titles {}	Занемари наслове епизода {}
+Ignore episode titles	Занемари наслове епизода
+Alternative group	Алтернативна група
+Alternative group {}	Алтернативна група {}
+Group anime seasons	Групиши аниме сезоне
+Anime group {}	Аниме група {}
+Group of {} · {}	Група за {} · {}
+Import progress	Напредак увоза
+Waiting to import	Чека увоз
+Import progress of {}	Напредак увоза за {}
+Import details of {}	Детаљи увоза за {}
+{} / {} episodes imported	{} / {} епизода увезено
+· {} not imported	· {} није увезено
+Series, anime or film title, e.g. Severance	Наслов серије, анимеа или филма, нпр. Severance
+All enabled catalogues	Сви омогућени каталози
+No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources.	Ниједан омогућени каталог се не може претраживати: омогућите један или унесите његов API кључ у Подешавања › Извори метаподатака.
+Searches every enabled catalogue, results in your order:	Претражује сваки омогућени каталог, резултати по вашем редоследу:
+Grouping	Груписање
+Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.	„Аутоматски“ групише наслов са његовом франшизом или колекцијом према званичним везама. „Онемогућено“ га оставља засебно.
+Automatic (official relations)	Аутоматски (званичне везе)
+Too many failed sign in attempts. Please try again in {} minute(s).	Превише неуспелих покушаја пријаве. Покушајте поново за {} мин.
+Reset your password	Ресетујте лозинку
+Kitsunarr will write a single-use reset token to its log. Copy it from the	Kitsunarr ће уписати једнократни токен за ресетовање у свој дневник. Копирајте га из реда
+line in the latest log (System › Logs, or the container's output).	у најновијем дневнику (Систем › Дневници или излаз контејнера).
+Write a reset token to the log	Упиши токен за ресетовање у дневник
+I already have a reset token	Већ имам токен за ресетовање
+Back to sign in	Назад на пријаву
+Your password has been reset, sign in with your new password.	Лозинка је ресетована, пријавите се новом лозинком.
+Unable to sign in with your identity provider.	Пријава преко добављача идентитета није успела.
+Incorrect username or password.	Нетачно корисничко име или лозинка.
+OIDC authentication is enabled, but isn't configured correctly. Sign in with your password and update the OIDC settings (Settings › General › Security, or the configuration file).	OIDC аутентификација је омогућена, али није исправно подешена. Пријавите се лозинком и ажурирајте OIDC подешавања (Подешавања › Опште › Безбедност или конфигурациона датотека).
+Sign in with SSO	Пријави се преко SSO
+You will be sent to your identity provider.	Бићете преусмерени на свог добављача идентитета.
+Forgot your password?	Заборавили сте лозинку?
+Invalid or expired reset token.	Неважећи или истекао токен за ресетовање.
+Username and password are required, the passwords must match, and the password needs at least {} characters.	Корисничко име и лозинка су обавезни, лозинке се морају подударати, а лозинка мора имати најмање {} знакова.
+A new reset token wasn't written to the log. One may already be active, so check the log first. Restarting Kitsunarr clears it and lets you request another.	Нови токен за ресетовање није уписан у дневник. Можда је један већ активан, па прво проверите дневник. Поновно покретање програма Kitsunarr га брише и омогућава вам да затражите нови.
+Enter the token from the	Унесите токен из реда
+line in the log. It's valid for 15 minutes and can only be used once. If you set	у дневнику. Важи 15 минута и може се употребити само једном. Ако сте подесили
+Reset token	Токен за ресетовање
+Confirm new password	Потврдите нову лозинку
+Reset password	Ресетуј лозинку
+Signed out	Одјављени сте
+You have been signed out of Kitsunarr.	Одјављени сте из програма Kitsunarr.
+Sign in again	Пријави се поново
+Search for missing	Тражи недостајуће
+Month	Месец
+Week	Недеља
+Forecast	Прогноза
+Day	Дан
+Agenda	Агенда
+On disk	На диску
+Not aired yet	Још није емитовано
+Search for the episodes shown that aired and have no file	Тражи приказане епизоде које су емитоване, а немају датотеку
+Previous period	Претходни период
+Next period	Следећи период
+Calendar view	Приказ календара
+Nothing airs in this period.	Ништа се не емитује у овом периоду.
+Legend	Легенда
+Disabled removes the series from its anime group and keeps it out of automatic grouping	„Онемогућено“ уклања серију из њене аниме групе и искључује је из аутоматског груписања
+Disabled removes the film from its collection and keeps it out of automatic grouping	„Онемогућено“ уклања филм из његове колекције и искључује га из аутоматског груписања
+Filter	Филтер
+Filter by path	Филтрирај по путањи
+All paths	Све путање
+Combine filters	Комбинуј филтере
+Show series matching every selected filter	Прикажи серије које одговарају свим изабраним филтерима
+Clear combined filters	Очисти комбиноване филтере
+Show each anime group (Tanukarr's anime grouping) once, by its first season	Прикажи сваку аниме групу (аниме груписање из Tanukarr) једном, према њеној првој сезони
+Save the current filters as a filter of your own	Сачувај тренутне филтере као сопствени филтер
+Save filter…	Сачувај филтер…
+Shown series	Приказане серије
+Kitsunarr cannot apply these conditions of the saved filter, so they are left out:	Kitsunarr не може да примени ове услове сачуваног филтера, па су изостављени:
+The selected filters contradict each other, so no series can match all of them.	Изабрани филтери су међусобно противречни, па ниједна серија не може да одговара свима.
+No series match the selected filters.	Ниједна серија не одговара изабраним филтерима.
+Filter "{}" saved.	Филтер „{}“ је сачуван.
+Save filter	Сачувај филтер
+The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters.	Филтер чува изабрани филтер, комбиноване филтере и путању; наводи се уз уграђене филтере.
+Filter label	Назив филтера
+Delete saved filter	Обриши сачувани филтер
+Delete this saved filter? The series are not changed.	Обрисати овај сачувани филтер? Серије се не мењају.
+Monitored only	Само праћене
+Unmonitored only	Само непраћене
+Continuing only	Само у току
+Ended only	Само завршене
+Missing episodes	Епизоде које недостају
+Security settings saved.	Безбедносна подешавања су сачувана.
+Security	Безбедност
+To prevent remote access without authentication, Kitsunarr requires authentication. You can optionally disable it for local addresses.	Да би спречио удаљени приступ без аутентификације, Kitsunarr захтева аутентификацију. Опционо је можете онемогућити за локалне адресе.
+Authentication	Аутентификација
+How users sign in: Kitsunarr's sign-in page, or your OpenID Connect identity provider.	Како се корисници пријављују: страница за пријаву програма Kitsunarr или ваш OpenID Connect добављач идентитета.
+Forms (sign-in page)	Обрасци (страница за пријаву)
+OIDC (identity provider)	OIDC (добављач идентитета)
+External (reverse proxy)	Спољна (обрнути прокси)
+Authentication required	Обавезна аутентификација
+Require authentication for every request, or not for requests from local addresses or this machine.	Захтевај аутентификацију за сваки захтев или не за захтеве са локалних адреса или са овог рачунара.
+Disabled for localhost	Онемогућено за localhost
+Allowed hosts	Дозвољени хостови
+Comma separated list of host names and IP addresses Kitsunarr should be accessible as, including the system's host name or the container name. Leave empty to allow all hosts. Required when authentication is not always required. For example: kitsunarr, kitsunarr.example.com, 192.168.0.100	Листа имена хостова и IP адреса раздвојених зарезима под којима Kitsunarr треба да буде доступан, укључујући име хоста система или име контејнера. Оставите празно да бисте дозволили све хостове. Обавезно када аутентификација није увек обавезна. На пример: kitsunarr, kitsunarr.example.com, 192.168.0.100
+Trust CGNAT addresses	Веруј CGNAT адресама
+Treat CGNAT addresses (100.64.0.0/10, e.g. Tailscale) as local	Сматрај CGNAT адресе (100.64.0.0/10, нпр. Tailscale) локалним
+External: Kitsunarr asks for no sign-in and relies on the reverse proxy in front of it. Only use this behind a proxy that authenticates every request.	Спољна: Kitsunarr не тражи пријаву и ослања се на обрнути прокси испред себе. Користите ово само иза проксија који аутентификује сваки захтев.
+Register Kitsunarr with your provider using the redirect URI	Региструјте Kitsunarr код свог добављача помоћу URI-ја за преусмеравање
+. Saving signs out password sessions; you then sign in through the provider.	. Чување одјављује сесије пријављене лозинком; након тога се пријављујете преко добављача.
+OIDC Authority	OIDC ауторитет
+The URL of the OIDC provider (https://).	URL OIDC добављача (https://).
+OIDC Client ID	OIDC Client ID
+The Client ID registered with the OIDC provider.	Client ID регистрован код OIDC добављача.
+OIDC Client Secret	OIDC Client Secret
+The Client Secret registered with the OIDC provider.	Client Secret регистрован код OIDC добављача.
+OIDC User	OIDC корисник
+The verified e-mail address or subject identifier (sub) on the OIDC provider that may sign in to Kitsunarr.	Потврђена адреса е-поште или идентификатор субјекта (sub) код OIDC добављача која сме да се пријави у Kitsunarr.
+OIDC Scopes	OIDC опсези
+The scopes to request from the OIDC provider; must include openid.	Опсези који се траже од OIDC добављача; морају укључивати openid.
+Set in config.toml or the environment, which take precedence: {}.	Подешено у config.toml или у окружењу, што има предност: {}.
+Backup settings saved.	Подешавања резервних копија су сачувана.
+Interval (days)	Интервал (дани)
+How often a backup is made automatically (1-7 days). A manual backup restarts the interval.	Колико често се резервна копија прави аутоматски (1-7 дана). Ручна резервна копија поново покреће интервал.
+Backup interval in days	Интервал резервних копија у данима
+Automatic backups older than this are deleted (1-90 days). Manual backups are kept.	Аутоматске резервне копије старије од овога се бришу (1-90 дана). Ручне резервне копије се задржавају.
+Backup retention in days	Задржавање резервних копија у данима
+A quality without an override uses the global sizes of	Квалитет без замене користи глобалне величине из
+Settings › Quality	Подешавања › Квалитет
+. Within an override, empty means unlimited; a maximum of zero also means unlimited.	. Унутар замене празно значи неограничено; максимум нула такође значи неограничено.
+Signed in. Save to keep the token.	Пријављени сте. Сачувајте да бисте задржали токен.
+Redirect URL to register with your API client:	URL за преусмеравање који треба регистровати у вашем API клијенту:
+Test all	Тестирај све
+All {} passed their test.	Тест је успео за све: {}.
+{} of {} failed their test.	{} од {} није прошло тест.
+Test every {} entry	Тестирај сваки унос ({})
+Test results	Резултати теста
+passed with warnings	успешно уз упозорења
+Warning:	Упозорење:
+Dismiss test results	Одбаци резултате теста
+Delete for upgrade	Обриши ради надоградње
+Metadata sources saved.	Извори метаподатака су сачувани.
+Order	Редослед
+Enable {}	Омогући {}
+Move {} up	Помери {} нагоре
+Move {} down	Помери {} надоле
+Add media lists the enabled catalogues in this order, and "All enabled catalogues" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply.	„Додај медије“ наводи омогућене каталоге овим редоследом, а „Сви омогућени каталози“ спаја њихове резултате истим редоследом. Онемогућени каталози се не нуде нити претражују; наслови који већ припадају неком од њих и даље се освежавају из њега. Сачувајте испод да бисте применили.
+Enable at least one metadata source.	Омогућите бар један извор метаподатака.
+Mixed	Мешовито
+Unlimited	Неограничено
+0 GiB/h	0 GiB/h
+{} min: {}	{} мин: {}
+No limit	Без ограничења
+Quality definitions saved.	Дефиниције квалитета су сачуване.
+Quality definitions reset to the defaults.	Дефиниције квалитета су враћене на подразумеване.
+Reset definitions	Ресетуј дефиниције
+Sizes are in MiB per minute of runtime; the hourly size is shown under each. A release outside a quality's limits is rejected; the preferred size ranks releases. Profiles can keep their own limits (	Величине су у MiB по минуту трајања; величина по сату приказана је испод сваке. Издање ван ограничења квалитета се одбацује; пожељна величина рангира издања. Профили могу задржати сопствена ограничења (
+Settings › Quality profiles	Подешавања › Профили квалитета
+): "Mixed" means profiles use different limits, and a value entered here is written into every profile.	): „Мешовито“ значи да профили користе различита ограничења, а вредност унета овде уписује се у сваки профил.
+Title of {}	Наслов за {}
+{} size of {} (MiB per minute)	{}: величина за {} (MiB по минуту)
+Profiles use different limits	Профили користе различита ограничења
+No minimum	Без минимума
+Hide retired qualities	Сакриј повучене квалитете
+Show retired qualities	Прикажи повучене квалитете
+Reset quality definitions	Ресетуј дефиниције квалитета
+Give every standard quality its default title and size limits? Custom presets and the profiles' own limits are kept.	Вратити сваком стандардном квалитету подразумевани наслов и ограничења величине? Прилагођене поставке и сопствена ограничења профила се задржавају.
+Reset	Ресетуј
+RefreshMonitoredDownloads	Освежи праћена преузимања
+Reads the download clients and imports completed downloads Kitsunarr grabbed	Чита клијенте за преузимање и увози завршена преузимања која је Kitsunarr покренуо
+ProcessPendingJellyfinRefresh	Обради Jellyfin освежавања на чекању
+Refreshes the Jellyfin libraries that have imports pending (on each connection's refresh mode)	Освежава Jellyfin библиотеке које имају увозе на чекању (према режиму освежавања сваке везе)
+SyncJellyfinWatched	Синхронизуј Jellyfin одгледано
+Reads which episodes a Jellyfin user has watched (on the connection's own interval)	Чита које је епизоде Jellyfin корисник одгледао (према сопственом интервалу везе)
+CleanUpRecycleBin	Очисти корпу за отпатке
+Deletes files kept in the recycle bin longer than the media management setting allows	Брише датотеке које се у корпи за отпатке чувају дуже него што подешавање управљања медијима дозвољава
+RescanFolders	Поново скенирај фасцикле
+Scans series and movie folders: forgets files that are gone and adds files found there	Скенира фасцикле серија и филмова: заборавља датотеке којих више нема и додаје тамо пронађене датотеке
+RefreshMetadata	Освежи метаподатке
+Refreshes titles from their metadata catalogues (continuing ones every 6 hours, ended ones monthly)	Освежава наслове из њихових каталога метаподатака (оне у току на сваких 6 сати, завршене месечно)
+Housekeeping	Одржавање
+Purges expired sessions, prunes task history and checks database integrity	Брише истекле сесије, скраћује историју задатака и проверава интегритет базе података
+CleanupSessions	Очисти сесије
+Removes expired login sessions	Уклања истекле сесије пријаве
+HealthCheck	Провера стања
+Re-evaluates health checks, notifies connected browsers and sends health notifications	Поново процењује провере стања, обавештава повезане прегледаче и шаље обавештења о стању
+SQLite database integrity check failed: {}. Restore from a known-good backup.	Провера интегритета SQLite базе података није успела: {}. Вратите из поуздане резервне копије.
+SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring.	Провера интегритета SQLite базе података није вратила резултат. Вратите из поуздане резервне копије ако се јављају грешке базе података.
+SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.	Провера интегритета SQLite базе података није успела: {} кршења страних кључева. Вратите из поуздане резервне копије.
+No indexers available with RSS sync enabled, Kitsunarr will not grab new releases automatically	Нема доступних индексера са омогућеном RSS синхронизацијом, Kitsunarr неће аутоматски преузимати нова издања
+All rss-capable indexers are temporarily unavailable due to recent indexer errors	Сви индексери који подржавају RSS привремено су недоступни због недавних грешака индексера
+No indexers available with Automatic Search enabled, Kitsunarr will not provide any automatic search results	Нема доступних индексера са омогућеном аутоматском претрагом, Kitsunarr неће давати резултате аутоматске претраге
+No indexers available with Interactive Search enabled, Kitsunarr will not provide any interactive search results	Нема доступних индексера са омогућеном интерактивном претрагом, Kitsunarr неће давати резултате интерактивне претраге
+All search-capable indexers are temporarily unavailable due to recent indexer errors	Сви индексери који подржавају претрагу привремено су недоступни због недавних грешака индексера
+All indexers are unavailable due to failures for more than 6 hours	Сви индексери су недоступни због грешака дуже од 6 сати
+Indexers unavailable due to failures for more than 6 hours: {}	Индексери недоступни због грешака дуже од 6 сати: {}
+Indexers using the unsupported Jackett 'all' endpoint: {}	Индексери који користе неподржану Jackett крајњу тачку 'all': {}
+Indexers with invalid download clients: {}.	Индексери са неважећим клијентима за преузимање: {}.
+Enable Completed Download Handling	Омогућите обраду завршених преузимања
+All notifications are unavailable due to failures	Сва обавештења су недоступна због грешака
+Notifications unavailable due to failures: {}	Обавештења недоступна због грешака: {}
+All lists are unavailable due to failures	Све листе су недоступне због грешака
+Lists unavailable due to failures: {}	Листе недоступне због грешака: {}
+Missing root folder for import list(s): {}	Недостаје коренска фасцикла за листе за увоз: {}
+Multiple root folders are missing for import lists: {}	Недостаје више коренских фасцикли за листе за увоз: {}
+Unable to write to configured recycling bin folder: {}. Ensure this path exists and is writable by the user running Kitsunarr	Није могуће писати у подешену фасциклу корпе за отпатке: {}. Уверите се да путања постоји и да корисник који покреће Kitsunarr може да пише у њу
+Unable to write to the backup folder {}; scheduled backups will fail.	Није могуће писати у фасциклу резервних копија {}; заказане резервне копије неће успети.
+Please update your API key to be at least 20 characters long. You can do this via settings or the config file	Ажурирајте API кључ тако да има најмање 20 знакова. То можете учинити у подешавањима или конфигурационој датотеци
+Series {} was removed from {}	Серија {} је уклоњена са {}
+Series {} were removed from {}	Серије {} су уклоњене са {}
+Mount containing a series path is mounted read-only: {}	Тачка монтирања која садржи путању серије монтирана је само за читање: {}
+Download client {} is set to remove completed downloads. This can result in downloads being removed from your client before Kitsunarr can import them.	Клијент за преузимање {} је подешен да уклања завршена преузимања. То може довести до уклањања преузимања из клијента пре него што их Kitsunarr увезе.
+Download client {} has {} sorting enabled for Kitsunarr's category. You should disable sorting in your download client to avoid import issues.	Клијент за преузимање {} има омогућено сортирање {} за категорију програма Kitsunarr. Требало би да онемогућите сортирање у клијенту за преузимање да бисте избегли проблеме при увозу.
+Download client {} places downloads in the root folder {}. You should not download to a root folder.	Клијент за преузимање {} смешта преузимања у коренску фасциклу {}. Не би требало да преузимате у коренску фасциклу.
+Remote download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Удаљени клијент за преузимање {} смешта преузимања у {}, али то није важећа {} путања. Прегледајте мапирања удаљених путања и подешавања клијента за преузимање.
+You are using docker; download client {} places downloads in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Користите Docker; клијент за преузимање {} смешта преузимања у {}, али то није важећа {} путања. Прегледајте мапирања удаљених путања и подешавања клијента за преузимање.
+Local download client {} places downloads in {} but this is not a valid {} path. Review your download client settings.	Локални клијент за преузимање {} смешта преузимања у {}, али то није важећа {} путања. Прегледајте подешавања клијента за преузимање.
+You are using docker; download client {} places downloads in {} but this directory does not appear to exist inside the container. Review your remote path mappings and container volume settings.	Користите Docker; клијент за преузимање {} смешта преузимања у {}, али изгледа да та фасцикла не постоји унутар контејнера. Прегледајте мапирања удаљених путања и подешавања волумена контејнера.
+Remote download client {} places downloads in {} but this directory does not appear to exist. Likely missing or incorrect remote path mapping.	Удаљени клијент за преузимање {} смешта преузимања у {}, али изгледа да та фасцикла не постоји. Вероватно недостаје мапирање удаљене путање или није исправно.
+Download client {} places downloads in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Клијент за преузимање {} смешта преузимања у {}, али Kitsunarr не види ту фасциклу. Можда треба да прилагодите дозволе фасцикле.
+Kitsunarr can see but not access downloaded episode {}. Likely permissions error.	Kitsunarr види преузету епизоду {}, али не може да јој приступи. Вероватно грешка у дозволама.
+File {} was removed part way through processing.	Датотека {} је уклоњена током обраде.
+Kitsunarr failed to import (an) episode(s). Check your logs for details.	Kitsunarr није успео да увезе једну или више епизода. Проверите дневнике за детаље.
+Remote download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Удаљени клијент за преузимање {} пријавио је датотеке у {}, али то није важећа {} путања. Прегледајте мапирања удаљених путања и подешавања клијента за преузимање.
+You are using docker; download client {} reported files in {} but this is not a valid {} path. Review your remote path mappings and download client settings.	Користите Docker; клијент за преузимање {} пријавио је датотеке у {}, али то није важећа {} путања. Прегледајте мапирања удаљених путања и подешавања клијента за преузимање.
+Local download client {} reported files in {} but this is not a valid {} path. Review your download client settings.	Локални клијент за преузимање {} пријавио је датотеке у {}, али то није важећа {} путања. Прегледајте подешавања клијента за преузимање.
+Kitsunarr can see but not access download directory {}. Likely permissions error.	Kitsunarr види фасциклу за преузимања {}, али не може да јој приступи. Вероватно грешка у дозволама.
+Remote download client {} reported files in {} but this directory does not appear to exist. Likely missing remote path mapping.	Удаљени клијент за преузимање {} пријавио је датотеке у {}, али изгледа да та фасцикла не постоји. Вероватно недостаје мапирање удаљене путање.
+Download client {} reported files in {} but Kitsunarr cannot see this directory. You may need to adjust the folder's permissions.	Клијент за преузимање {} пријавио је датотеке у {}, али Kitsunarr не види ту фасциклу. Можда треба да прилагодите дозволе фасцикле.
+The configured password reset token is shorter than {} characters and is being ignored	Подешени токен за ресетовање лозинке краћи је од {} знакова и занемарује се
+A password reset token is configured. Remove the KITSUNARR_AUTH_RESET_TOKEN environment variable (or reset_token in config.toml) once you no longer need it	Подешен је токен за ресетовање лозинке. Уклоните променљиву окружења KITSUNARR_AUTH_RESET_TOKEN (или reset_token у config.toml) када вам више не буде потребан
+OIDC authentication is enabled, but Authority, Client ID, Client Secret, User and Scopes are not all configured	OIDC аутентификација је омогућена, али ауторитет, Client ID, Client Secret, корисник и опсези нису сви подешени
+The OIDC Authority must start with 'https://'	OIDC ауторитет мора почињати са 'https://'
+Unable to retrieve the OIDC configuration from {}, signing in with your identity provider will fail until it is reachable	Није могуће преузети OIDC конфигурацију са {}; пријава преко добављача идентитета неће успевати док не постане доступна
+No root folders are configured yet. Add one in Settings → Media Management or import an existing installation.	Још нема подешених коренских фасцикли. Додајте једну у Подешавања → Управљање медијима или увезите постојећу инсталацију.
+Root folder {} is missing or not accessible.	Коренска фасцикла {} недостаје или није доступна.
+Root folder {} has only {} MiB free.	Коренска фасцикла {} има слободно само {} MiB.
+No enabled {} is configured; automatic downloads are not possible.	Није подешен ниједан омогућени {}; аутоматска преузимања нису могућа.
+These {}s were kept from your previous installation but are not implemented natively yet: {}.	Ове ставке ({}) задржане су из претходне инсталације, али још нису изворно подржане: {}.
+All download clients are unavailable due to failures	Сви клијенти за преузимање су недоступни због грешака
+Download clients are unavailable due to failures: {}	Клијенти за преузимање су недоступни због грешака: {}
+All indexers are unavailable due to failures	Сви индексери су недоступни због грешака
+Indexers unavailable due to failures: {}	Индексери недоступни због грешака: {}
+Failed to resolve the IP address of the configured proxy host {}	Није успело разрешавање IP адресе подешеног хоста проксија {}
+The data directory has only {} MiB free; the database may fail to write.	Фасцикла са подацима има слободно само {} MiB; упис у базу података можда неће успети.
