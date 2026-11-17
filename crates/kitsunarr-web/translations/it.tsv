@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Tutti gli indexer sono non disponib
 Indexers unavailable due to failures: {}	Indexer non disponibili a causa di errori: {}
 Failed to resolve the IP address of the configured proxy host {}	Impossibile risolvere l'indirizzo IP dell'host proxy configurato {}
 The data directory has only {} MiB free; the database may fail to write.	La cartella dati ha solo {} MiB liberi; il database potrebbe non riuscire a scrivere.
+(or reset_token in config.toml), enter its value instead.	(o reset_token in config.toml), inserisci invece il suo valore.
+Backup {} deleted.	Backup {} eliminato.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Backup {} predisposto. Kitsunarr si sta riavviando per ripristinarlo; ricarica la pagina tra poco.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Copie coerenti del database. I backup pianificati seguono l'intervallo e la conservazione impostati in Impostazioni › Generale › Backup; ogni migrazione ne crea prima uno. Il ripristino verifica il backup, mette da parte il database attuale e riavvia Kitsunarr. Con Kitsunarr fermo,
+Delete backup	Elimina backup
+Delete {}?	Eliminare {}?
+Download	Scarica
+Kitsunarr is restarting.	Kitsunarr si sta riavviando.
+Kitsunarr is shutting down.	Kitsunarr si sta arrestando.
+Restart	Riavvia
+Restart Kitsunarr	Riavvia Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Riavviare Kitsunarr ora? Le attività in corso vengono interrotte e la pagina si ricollega quando torna disponibile.
+Restore and restart	Ripristina e riavvia
+Restore backup	Ripristina backup
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Ripristinare {}? Le modifiche fatte da quando è stato creato vanno perse; il database attuale viene messo da parte. Kitsunarr si riavvia per applicarlo.
+Shut down	Arresta
+Shut down Kitsunarr	Arresta Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Arrestare Kitsunarr ora? Resta fermo finché non viene avviato di nuovo (un container lo riavvia solo se la sua politica di riavvio lo prevede).
+does the same.	fa lo stesso.

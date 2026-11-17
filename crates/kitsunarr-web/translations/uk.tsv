@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Усі індексатори не�
 Indexers unavailable due to failures: {}	Індексатори, недоступні через збої: {}
 Failed to resolve the IP address of the configured proxy host {}	Не вдалося визначити IP-адресу налаштованого хоста проксі {}
 The data directory has only {} MiB free; the database may fail to write.	У теці даних вільно лише {} MiB; база даних може не записатися.
+(or reset_token in config.toml), enter its value instead.	(або reset_token у config.toml), натомість введіть його значення.
+Backup {} deleted.	Резервну копію {} видалено.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Резервну копію {} підготовлено. Kitsunarr перезапускається, щоб відновити її; оновіть сторінку за мить.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Узгоджені копії бази даних. Заплановані резервні копії створюються з інтервалом і терміном утримання з Налаштування › Загальні › Резервні копії; кожна міграція також спершу створює одну. Відновлення перевіряє резервну копію, відкладає поточну базу даних убік і перезапускає Kitsunarr. Коли Kitsunarr зупинено, команда
+Delete backup	Видалити резервну копію
+Delete {}?	Видалити {}?
+Download	Завантажити
+Kitsunarr is restarting.	Kitsunarr перезапускається.
+Kitsunarr is shutting down.	Kitsunarr вимикається.
+Restart	Перезапустити
+Restart Kitsunarr	Перезапустити Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Перезапустити Kitsunarr зараз? Запущені завдання буде зупинено, а сторінка перепід'єднається, коли він знову запрацює.
+Restore and restart	Відновити й перезапустити
+Restore backup	Відновити резервну копію
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Відновити {}? Зміни, внесені після її створення, буде втрачено; поточну базу даних буде відкладено вбік. Kitsunarr перезапуститься, щоб застосувати її.
+Shut down	Вимкнути
+Shut down Kitsunarr	Вимкнути Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Вимкнути Kitsunarr зараз? Він залишатиметься зупиненим, доки його знову не запустять (контейнер перезапустить його, лише якщо це передбачає його політика перезапуску).
+does the same.	робить те саме.

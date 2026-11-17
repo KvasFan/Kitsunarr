@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	อินเด็กเซอร�
 Indexers unavailable due to failures: {}	อินเด็กเซอร์ที่ใช้งานไม่ได้เนื่องจากความล้มเหลว: {}
 Failed to resolve the IP address of the configured proxy host {}	ไม่สามารถแปลงที่อยู่ IP ของโฮสต์พร็อกซีที่กำหนดค่าไว้ {}
 The data directory has only {} MiB free; the database may fail to write.	ไดเรกทอรีข้อมูลเหลือพื้นที่ว่างเพียง {} MiB ฐานข้อมูลอาจเขียนไม่สำเร็จ
+(or reset_token in config.toml), enter its value instead.	(หรือ reset_token ใน config.toml) ให้กรอกค่านั้นแทน
+Backup {} deleted.	ลบข้อมูลสำรอง {} แล้ว
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	เตรียมข้อมูลสำรอง {} แล้ว Kitsunarr กำลังรีสตาร์ตเพื่อกู้คืน โปรดโหลดหน้านี้ใหม่ในอีกสักครู่
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	สำเนาฐานข้อมูลที่สอดคล้องกัน การสำรองข้อมูลตามกำหนดเวลาจะใช้ช่วงเวลาและระยะเวลาเก็บรักษาใน การตั้งค่า › ทั่วไป › ข้อมูลสำรอง; การย้ายข้อมูลทุกครั้งจะสร้างข้อมูลสำรองก่อนด้วย การกู้คืนจะตรวจสอบข้อมูลสำรอง แยกฐานข้อมูลปัจจุบันเก็บไว้ แล้วรีสตาร์ต Kitsunarr เมื่อหยุด Kitsunarr แล้ว คำสั่ง
+Delete backup	ลบข้อมูลสำรอง
+Delete {}?	ลบ {}?
+Download	ดาวน์โหลด
+Kitsunarr is restarting.	Kitsunarr กำลังรีสตาร์ต
+Kitsunarr is shutting down.	Kitsunarr กำลังปิดระบบ
+Restart	รีสตาร์ต
+Restart Kitsunarr	รีสตาร์ต Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	รีสตาร์ต Kitsunarr ตอนนี้หรือไม่? งานที่กำลังทำงานจะหยุดลง และหน้านี้จะเชื่อมต่อใหม่เมื่อ Kitsunarr กลับมาทำงาน
+Restore and restart	กู้คืนและรีสตาร์ต
+Restore backup	กู้คืนข้อมูลสำรอง
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	กู้คืน {} หรือไม่? การเปลี่ยนแปลงที่เกิดขึ้นหลังจากสร้างข้อมูลสำรองนี้จะสูญหาย ฐานข้อมูลปัจจุบันจะถูกแยกเก็บไว้ Kitsunarr จะรีสตาร์ตเพื่อนำไปใช้
+Shut down	ปิดระบบ
+Shut down Kitsunarr	ปิด Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	ปิด Kitsunarr ตอนนี้หรือไม่? Kitsunarr จะหยุดทำงานจนกว่าจะเริ่มอีกครั้ง (คอนเทนเนอร์จะรีสตาร์ตให้เฉพาะเมื่อนโยบายการรีสตาร์ตกำหนดไว้เท่านั้น)
+does the same.	ก็ทำงานเหมือนกัน

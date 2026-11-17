@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	כל האינדקסרים אינם 
 Indexers unavailable due to failures: {}	אינדקסרים שאינם זמינים עקב כשלים: {}
 Failed to resolve the IP address of the configured proxy host {}	נכשל פענוח כתובת ה-IP של מארח הפרוקסי שהוגדר {}
 The data directory has only {} MiB free; the database may fail to write.	בתיקיית הנתונים נותרו רק {} MiB פנויים; ייתכן שמסד הנתונים לא יצליח לכתוב.
+(or reset_token in config.toml), enter its value instead.	(או reset_token ב-config.toml), הזן במקום זאת את הערך שלו.
+Backup {} deleted.	הגיבוי {} נמחק.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	הגיבוי {} הוכן. Kitsunarr מופעל מחדש כדי לשחזר אותו; טען את הדף מחדש בעוד רגע.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	עותקים עקביים של מסד הנתונים. גיבויים מתוזמנים פועלים לפי המרווח וזמן השמירה שבהגדרות › כללי › גיבויים; כל העברה גם יוצרת אחד קודם. השחזור בודק את הגיבוי, שומר את מסד הנתונים הנוכחי בצד ומפעיל מחדש את Kitsunarr. כאשר Kitsunarr עצור,
+Delete backup	מחק גיבוי
+Delete {}?	למחוק את {}?
+Download	הורד
+Kitsunarr is restarting.	Kitsunarr מופעל מחדש.
+Kitsunarr is shutting down.	Kitsunarr נכבה.
+Restart	הפעל מחדש
+Restart Kitsunarr	הפעל מחדש את Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	להפעיל מחדש את Kitsunarr עכשיו? משימות פעילות נעצרות והדף מתחבר מחדש כשהוא חוזר.
+Restore and restart	שחזר והפעל מחדש
+Restore backup	שחזר גיבוי
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	לשחזר את {}? שינויים שבוצעו מאז שנוצר יאבדו; מסד הנתונים הנוכחי נשמר בצד. Kitsunarr מופעל מחדש כדי להחיל אותו.
+Shut down	כבה
+Shut down Kitsunarr	כבה את Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	לכבות את Kitsunarr עכשיו? הוא יישאר עצור עד שיופעל שוב (קונטיינר מפעיל אותו מחדש רק אם מדיניות ההפעלה מחדש שלו קובעת זאת).
+does the same.	עושה את אותו הדבר.

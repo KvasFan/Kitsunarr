@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Semua indexer tidak tersedia karena
 Indexers unavailable due to failures: {}	Indexer tidak tersedia karena kegagalan: {}
 Failed to resolve the IP address of the configured proxy host {}	Gagal me-resolve alamat IP host proxy yang dikonfigurasi {}
 The data directory has only {} MiB free; the database may fail to write.	Direktori data hanya memiliki {} MiB ruang kosong; basis data mungkin gagal menulis.
+(or reset_token in config.toml), enter its value instead.	(atau reset_token di config.toml), masukkan nilainya sebagai gantinya.
+Backup {} deleted.	Cadangan {} dihapus.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Cadangan {} disiapkan. Kitsunarr sedang dimulai ulang untuk memulihkannya; muat ulang halaman sebentar lagi.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Salinan basis data yang konsisten. Cadangan terjadwal mengikuti interval dan retensi di Pengaturan › Umum › Cadangan; setiap migrasi juga membuat satu cadangan terlebih dahulu. Pemulihan memeriksa cadangan, menyisihkan basis data saat ini, dan memulai ulang Kitsunarr. Saat Kitsunarr dihentikan,
+Delete backup	Hapus cadangan
+Delete {}?	Hapus {}?
+Download	Unduh
+Kitsunarr is restarting.	Kitsunarr sedang dimulai ulang.
+Kitsunarr is shutting down.	Kitsunarr sedang dimatikan.
+Restart	Mulai ulang
+Restart Kitsunarr	Mulai ulang Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Mulai ulang Kitsunarr sekarang? Tugas yang sedang berjalan dihentikan dan halaman akan tersambung kembali saat Kitsunarr aktif lagi.
+Restore and restart	Pulihkan dan mulai ulang
+Restore backup	Pulihkan cadangan
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Pulihkan {}? Perubahan yang dibuat sejak cadangan diambil akan hilang; basis data saat ini disisihkan. Kitsunarr dimulai ulang untuk menerapkannya.
+Shut down	Matikan
+Shut down Kitsunarr	Matikan Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Matikan Kitsunarr sekarang? Kitsunarr tetap berhenti sampai dijalankan lagi (kontainer hanya memulainya ulang jika kebijakan mulai ulangnya menentukan demikian).
+does the same.	melakukan hal yang sama.

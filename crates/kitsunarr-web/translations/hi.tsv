@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	विफलताओं के क
 Indexers unavailable due to failures: {}	विफलताओं के कारण अनुपलब्ध इंडेक्सर: {}
 Failed to resolve the IP address of the configured proxy host {}	कॉन्फ़िगर किए गए प्रॉक्सी होस्ट {} का IP पता रिज़ॉल्व नहीं हो सका
 The data directory has only {} MiB free; the database may fail to write.	डेटा डायरेक्टरी में केवल {} MiB खाली है; डेटाबेस लिखने में विफल हो सकता है।
+(or reset_token in config.toml), enter its value instead.	(या config.toml में reset_token) सेट किया है, तो इसके बजाय उसका मान दर्ज करें।
+Backup {} deleted.	बैकअप {} हटाया गया।
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	बैकअप {} तैयार किया गया। इसे पुनर्स्थापित करने के लिए Kitsunarr पुनः आरंभ हो रहा है; थोड़ी देर में पेज फिर से लोड करें।
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	डेटाबेस की सुसंगत प्रतियाँ। निर्धारित बैकअप सेटिंग्स › सामान्य › बैकअप में दिए अंतराल और प्रतिधारण का पालन करते हैं; हर माइग्रेशन भी पहले एक बनाता है। पुनर्स्थापना बैकअप की जाँच करती है, मौजूदा डेटाबेस को अलग रख देती है और Kitsunarr को पुनः आरंभ करती है। Kitsunarr रुका होने पर
+Delete backup	बैकअप हटाएँ
+Delete {}?	{} हटाएँ?
+Download	डाउनलोड करें
+Kitsunarr is restarting.	Kitsunarr पुनः आरंभ हो रहा है।
+Kitsunarr is shutting down.	Kitsunarr बंद हो रहा है।
+Restart	पुनः आरंभ करें
+Restart Kitsunarr	Kitsunarr पुनः आरंभ करें
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Kitsunarr को अभी पुनः आरंभ करें? चल रहे कार्य रोक दिए जाते हैं और इसके वापस आने पर पेज फिर से कनेक्ट हो जाता है।
+Restore and restart	पुनर्स्थापित करें और पुनः आरंभ करें
+Restore backup	बैकअप पुनर्स्थापित करें
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	{} पुनर्स्थापित करें? इसके बनने के बाद किए गए बदलाव खो जाएँगे; मौजूदा डेटाबेस अलग रखा जाता है। इसे लागू करने के लिए Kitsunarr पुनः आरंभ होता है।
+Shut down	बंद करें
+Shut down Kitsunarr	Kitsunarr बंद करें
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kitsunarr को अभी बंद करें? यह तब तक रुका रहता है जब तक इसे फिर से शुरू न किया जाए (कंटेनर इसे तभी पुनः आरंभ करता है जब उसकी रीस्टार्ट नीति ऐसा कहती है)।
+does the same.	भी यही करता है।

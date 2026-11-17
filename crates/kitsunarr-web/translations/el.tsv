@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Κανένα ευρετήριο δ�
 Indexers unavailable due to failures: {}	Ευρετήρια μη διαθέσιμα λόγω αποτυχιών: {}
 Failed to resolve the IP address of the configured proxy host {}	Αποτυχία επίλυσης της διεύθυνσης IP του host {} του διαμορφωμένου διακομιστή μεσολάβησης
 The data directory has only {} MiB free; the database may fail to write.	Ο φάκελος δεδομένων έχει μόνο {} MiB ελεύθερα· η εγγραφή στη βάση δεδομένων ενδέχεται να αποτύχει.
+(or reset_token in config.toml), enter its value instead.	(ή reset_token στο config.toml), εισαγάγετε αντί γι' αυτό την τιμή του.
+Backup {} deleted.	Το αντίγραφο ασφαλείας {} διαγράφηκε.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Το αντίγραφο ασφαλείας {} προετοιμάστηκε. Το Kitsunarr επανεκκινείται για να το επαναφέρει· ανανεώστε τη σελίδα σε λίγο.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Συνεπή αντίγραφα της βάσης δεδομένων. Τα προγραμματισμένα αντίγραφα ασφαλείας ακολουθούν το διάστημα και τη διατήρηση από Ρυθμίσεις › Γενικά › Αντίγραφα ασφαλείας· κάθε μεταφορά δημιουργεί επίσης ένα πρώτα. Η επαναφορά ελέγχει το αντίγραφο ασφαλείας, κρατά στην άκρη την τρέχουσα βάση δεδομένων και επανεκκινεί το Kitsunarr. Με το Kitsunarr σταματημένο, η εντολή
+Delete backup	Διαγραφή αντιγράφου ασφαλείας
+Delete {}?	Διαγραφή του {};
+Download	Λήψη
+Kitsunarr is restarting.	Το Kitsunarr επανεκκινείται.
+Kitsunarr is shutting down.	Το Kitsunarr τερματίζεται.
+Restart	Επανεκκίνηση
+Restart Kitsunarr	Επανεκκίνηση του Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Επανεκκίνηση του Kitsunarr τώρα; Οι εργασίες που εκτελούνται διακόπτονται και η σελίδα επανασυνδέεται όταν επανέλθει.
+Restore and restart	Επαναφορά και επανεκκίνηση
+Restore backup	Επαναφορά αντιγράφου ασφαλείας
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Επαναφορά του {}; Οι αλλαγές που έγιναν από τη δημιουργία του χάνονται· η τρέχουσα βάση δεδομένων κρατιέται στην άκρη. Το Kitsunarr επανεκκινείται για να το εφαρμόσει.
+Shut down	Τερματισμός
+Shut down Kitsunarr	Τερματισμός του Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Τερματισμός του Kitsunarr τώρα; Παραμένει σταματημένο μέχρι να ξεκινήσει ξανά (ένα κοντέινερ το επανεκκινεί μόνο αν το προβλέπει η πολιτική επανεκκίνησής του).
+does the same.	κάνει το ίδιο.

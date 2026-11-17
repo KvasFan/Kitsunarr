@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Tüm indeksleyiciler hatalar nedeni
 Indexers unavailable due to failures: {}	Hatalar nedeniyle kullanılamayan indeksleyiciler: {}
 Failed to resolve the IP address of the configured proxy host {}	Yapılandırılan proxy ana makinesi {} için IP adresi çözümlenemedi
 The data directory has only {} MiB free; the database may fail to write.	Veri dizininde yalnızca {} MiB boş alan var; veritabanı yazamayabilir.
+(or reset_token in config.toml), enter its value instead.	(veya config.toml içinde reset_token), bunun yerine onun değerini girin.
+Backup {} deleted.	{} yedeği silindi.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	{} yedeği hazırlandı. Kitsunarr geri yüklemek için yeniden başlatılıyor; birazdan sayfayı yenileyin.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Veritabanının tutarlı kopyaları. Zamanlanmış yedeklemeler Ayarlar › Genel › Yedeklemeler bölümündeki aralığa ve saklama süresine uyar; her taşıma da önce bir yedek oluşturur. Geri yükleme yedeği denetler, mevcut veritabanını kenara ayırır ve Kitsunarr'ı yeniden başlatır. Kitsunarr durdurulmuşken
+Delete backup	Yedeği sil
+Delete {}?	{} silinsin mi?
+Download	İndir
+Kitsunarr is restarting.	Kitsunarr yeniden başlatılıyor.
+Kitsunarr is shutting down.	Kitsunarr kapatılıyor.
+Restart	Yeniden başlat
+Restart Kitsunarr	Kitsunarr'ı yeniden başlat
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Kitsunarr şimdi yeniden başlatılsın mı? Çalışan görevler durdurulur ve Kitsunarr geri geldiğinde sayfa yeniden bağlanır.
+Restore and restart	Geri yükle ve yeniden başlat
+Restore backup	Yedeği geri yükle
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	{} geri yüklensin mi? Yedek alındıktan sonra yapılan değişiklikler kaybolur; mevcut veritabanı kenara ayrılır. Uygulamak için Kitsunarr yeniden başlatılır.
+Shut down	Kapat
+Shut down Kitsunarr	Kitsunarr'ı kapat
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kitsunarr şimdi kapatılsın mı? Yeniden başlatılana kadar durdurulmuş kalır (bir konteyner onu yalnızca yeniden başlatma ilkesi öyle diyorsa yeniden başlatır).
+does the same.	komutu da aynı işi yapar.

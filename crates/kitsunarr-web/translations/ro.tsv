@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Toate indexatoarele sunt indisponib
 Indexers unavailable due to failures: {}	Indexatoare indisponibile din cauza eșecurilor: {}
 Failed to resolve the IP address of the configured proxy host {}	Nu s-a putut rezolva adresa IP a gazdei proxy configurate {}
 The data directory has only {} MiB free; the database may fail to write.	Directorul de date are doar {} MiB liberi; scrierea în baza de date poate eșua.
+(or reset_token in config.toml), enter its value instead.	(sau reset_token în config.toml), introduceți în schimb valoarea acestuia.
+Backup {} deleted.	Copia de rezervă {} a fost ștearsă.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Copia de rezervă {} a fost pregătită. Kitsunarr repornește pentru a o restaura; reîncărcați pagina în câteva momente.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Copii consistente ale bazei de date. Copiile de rezervă programate respectă intervalul și păstrarea din Setări › General › Copii de rezervă; fiecare migrare creează mai întâi una. Restaurarea verifică copia de rezervă, pune deoparte baza de date curentă și repornește Kitsunarr. Cu Kitsunarr oprit,
+Delete backup	Șterge copia de rezervă
+Delete {}?	Ștergeți {}?
+Download	Descarcă
+Kitsunarr is restarting.	Kitsunarr repornește.
+Kitsunarr is shutting down.	Kitsunarr se oprește.
+Restart	Repornește
+Restart Kitsunarr	Repornește Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Reporniți Kitsunarr acum? Sarcinile în curs sunt oprite, iar pagina se reconectează când acesta revine.
+Restore and restart	Restaurează și repornește
+Restore backup	Restaurează copia de rezervă
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Restaurați {}? Modificările făcute de la crearea ei se pierd; baza de date curentă este pusă deoparte. Kitsunarr repornește pentru a o aplica.
+Shut down	Oprește
+Shut down Kitsunarr	Oprește Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Opriți Kitsunarr acum? Rămâne oprit până când este pornit din nou (un container îl repornește doar dacă politica sa de repornire prevede acest lucru).
+does the same.	face același lucru.

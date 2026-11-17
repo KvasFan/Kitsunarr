@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	ব্যর্থতার কা�
 Indexers unavailable due to failures: {}	ব্যর্থতার কারণে অনুপলব্ধ ইনডেক্সার: {}
 Failed to resolve the IP address of the configured proxy host {}	কনফিগার করা প্রক্সি হোস্ট {}-এর IP ঠিকানা রিজলভ করা যায়নি
 The data directory has only {} MiB free; the database may fail to write.	ডেটা ডিরেক্টরিতে মাত্র {} MiB খালি আছে; ডেটাবেস লিখতে ব্যর্থ হতে পারে।
+(or reset_token in config.toml), enter its value instead.	(বা config.toml-এ reset_token) সেট করে থাকেন, তবে তার বদলে সেটির মান দিন।
+Backup {} deleted.	ব্যাকআপ {} মুছে ফেলা হয়েছে।
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	ব্যাকআপ {} প্রস্তুত। এটি রিস্টোর করতে Kitsunarr রিস্টার্ট হচ্ছে; কিছুক্ষণ পরে পেজটি আবার লোড করুন।
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	ডেটাবেসের সামঞ্জস্যপূর্ণ কপি। নির্ধারিত ব্যাকআপ সেটিংস › সাধারণ › ব্যাকআপ-এর ব্যবধান ও সংরক্ষণকাল মেনে চলে; প্রতিটি মাইগ্রেশনও আগে একটি তৈরি করে। রিস্টোর করলে ব্যাকআপটি যাচাই হয়, বর্তমান ডেটাবেস আলাদা করে রাখা হয় এবং Kitsunarr রিস্টার্ট হয়। Kitsunarr বন্ধ থাকলে
+Delete backup	ব্যাকআপ মুছুন
+Delete {}?	{} মুছবেন?
+Download	ডাউনলোড করুন
+Kitsunarr is restarting.	Kitsunarr রিস্টার্ট হচ্ছে।
+Kitsunarr is shutting down.	Kitsunarr বন্ধ হচ্ছে।
+Restart	রিস্টার্ট করুন
+Restart Kitsunarr	Kitsunarr রিস্টার্ট করুন
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	এখনই Kitsunarr রিস্টার্ট করবেন? চলমান টাস্কগুলো থেমে যাবে এবং এটি ফিরে এলে পেজটি আবার সংযুক্ত হবে।
+Restore and restart	রিস্টোর করে রিস্টার্ট করুন
+Restore backup	ব্যাকআপ রিস্টোর করুন
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	{} রিস্টোর করবেন? এটি নেওয়ার পর থেকে করা পরিবর্তনগুলো হারিয়ে যাবে; বর্তমান ডেটাবেস আলাদা করে রাখা হবে। এটি প্রয়োগ করতে Kitsunarr রিস্টার্ট হবে।
+Shut down	বন্ধ করুন
+Shut down Kitsunarr	Kitsunarr বন্ধ করুন
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	এখনই Kitsunarr বন্ধ করবেন? আবার চালু না করা পর্যন্ত এটি বন্ধ থাকবে (কন্টেইনার এটি আবার চালু করে কেবল তখনই, যখন তার রিস্টার্ট নীতি তা বলে)।
+does the same.	একই কাজ করে।

@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Visi indeksētāji nav pieejami kļ
 Indexers unavailable due to failures: {}	Indeksētāji, kas nav pieejami kļūmju dēļ: {}
 Failed to resolve the IP address of the configured proxy host {}	Neizdevās noteikt konfigurētā starpniekservera resursdatora {} IP adresi
 The data directory has only {} MiB free; the database may fail to write.	Datu direktorijā ir brīvi tikai {} MiB; datubāzei var neizdoties rakstīt.
+(or reset_token in config.toml), enter its value instead.	(vai reset_token failā config.toml), tā vietā ievadiet tā vērtību.
+Backup {} deleted.	Dublējums {} izdzēsts.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Dublējums {} sagatavots. Kitsunarr tiek restartēts, lai to atjaunotu; pēc brīža pārlādējiet lapu.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Konsekventas datubāzes kopijas. Ieplānotie dublējumi ievēro intervālu un saglabāšanu sadaļā Iestatījumi › Vispārīgi › Dublējumi; katra migrācija arī vispirms izveido vienu. Atjaunošana pārbauda dublējumu, noliek pašreizējo datubāzi malā un restartē Kitsunarr. Kad Kitsunarr ir apturēts, komanda
+Delete backup	Dzēst dublējumu
+Delete {}?	Dzēst {}?
+Download	Lejupielādēt
+Kitsunarr is restarting.	Kitsunarr tiek restartēts.
+Kitsunarr is shutting down.	Kitsunarr tiek izslēgts.
+Restart	Restartēt
+Restart Kitsunarr	Restartēt Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Restartēt Kitsunarr tagad? Darbojošies uzdevumi tiek apturēti, un lapa atkal izveidos savienojumu, kad Kitsunarr atkal darbosies.
+Restore and restart	Atjaunot un restartēt
+Restore backup	Atjaunot dublējumu
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Atjaunot {}? Kopš tā izveides veiktās izmaiņas tiks zaudētas; pašreizējā datubāze tiek nolikta malā. Kitsunarr tiek restartēts, lai to piemērotu.
+Shut down	Izslēgt
+Shut down Kitsunarr	Izslēgt Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Izslēgt Kitsunarr tagad? Tas paliks apturēts, līdz to atkal palaidīs (konteiners to restartē tikai tad, ja to paredz tā restartēšanas politika).
+does the same.	dara to pašu.

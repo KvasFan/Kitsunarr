@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Todos os indexadores estão indispo
 Indexers unavailable due to failures: {}	Indexadores indisponíveis devido a falhas: {}
 Failed to resolve the IP address of the configured proxy host {}	Falha ao resolver o endereço IP do host do proxy configurado {}
 The data directory has only {} MiB free; the database may fail to write.	O diretório de dados tem apenas {} MiB livres; a gravação no banco de dados pode falhar.
+(or reset_token in config.toml), enter its value instead.	(ou reset_token em config.toml), insira o valor dele em vez disso.
+Backup {} deleted.	Backup {} excluído.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Backup {} preparado. O Kitsunarr está reiniciando para restaurá-lo; recarregue a página em instantes.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Cópias consistentes do banco de dados. Backups agendados seguem o intervalo e a retenção em Configurações › Geral › Backups; toda migração também cria um antes. A restauração verifica o backup, guarda o banco de dados atual à parte e reinicia o Kitsunarr. Com o Kitsunarr parado,
+Delete backup	Excluir backup
+Delete {}?	Excluir {}?
+Download	Baixar
+Kitsunarr is restarting.	O Kitsunarr está reiniciando.
+Kitsunarr is shutting down.	O Kitsunarr está sendo desligado.
+Restart	Reiniciar
+Restart Kitsunarr	Reiniciar o Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Reiniciar o Kitsunarr agora? As tarefas em execução são interrompidas e a página se reconecta quando ele voltar.
+Restore and restart	Restaurar e reiniciar
+Restore backup	Restaurar backup
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Restaurar {}? As alterações feitas desde que ele foi criado serão perdidas; o banco de dados atual é guardado à parte. O Kitsunarr reinicia para aplicá-lo.
+Shut down	Desligar
+Shut down Kitsunarr	Desligar o Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Desligar o Kitsunarr agora? Ele fica parado até ser iniciado novamente (um contêiner só o reinicia se a política de reinício dele assim determinar).
+does the same.	faz o mesmo.

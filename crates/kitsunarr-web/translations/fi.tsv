@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Kaikki hakupalvelut ovat poissa kä
 Indexers unavailable due to failures: {}	Hakupalvelut poissa käytöstä virheiden vuoksi: {}
 Failed to resolve the IP address of the configured proxy host {}	Määritetyn välityspalvelimen isännän {} IP-osoitetta ei voitu selvittää
 The data directory has only {} MiB free; the database may fail to write.	Datakansiossa on vapaana vain {} MiB; tietokantaan kirjoittaminen voi epäonnistua.
+(or reset_token in config.toml), enter its value instead.	(tai reset_token tiedostossa config.toml), syötä sen sijaan sen arvo.
+Backup {} deleted.	Varmuuskopio {} poistettiin.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Varmuuskopio {} on valmisteltu. Kitsunarr käynnistyy uudelleen palauttaakseen sen; lataa sivu uudelleen hetken kuluttua.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Tietokannan yhtenäiset kopiot. Ajoitetut varmuuskopiot noudattavat kohdan Asetukset › Yleiset › Varmuuskopiot aikaväliä ja säilytystä; jokainen siirto luo myös ensin yhden. Palautus tarkistaa varmuuskopion, siirtää nykyisen tietokannan sivuun ja käynnistää Kitsunarrin uudelleen. Kun Kitsunarr on pysäytetty,
+Delete backup	Poista varmuuskopio
+Delete {}?	Poistetaanko {}?
+Download	Lataa
+Kitsunarr is restarting.	Kitsunarr käynnistyy uudelleen.
+Kitsunarr is shutting down.	Kitsunarr sammuu.
+Restart	Käynnistä uudelleen
+Restart Kitsunarr	Käynnistä Kitsunarr uudelleen
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Käynnistetäänkö Kitsunarr uudelleen nyt? Käynnissä olevat tehtävät pysäytetään, ja sivu yhdistää uudelleen, kun se on taas käytettävissä.
+Restore and restart	Palauta ja käynnistä uudelleen
+Restore backup	Palauta varmuuskopio
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Palautetaanko {}? Sen ottamisen jälkeen tehdyt muutokset menetetään; nykyinen tietokanta siirretään sivuun. Kitsunarr käynnistyy uudelleen ottaakseen sen käyttöön.
+Shut down	Sammuta
+Shut down Kitsunarr	Sammuta Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Sammutetaanko Kitsunarr nyt? Se pysyy pysäytettynä, kunnes se käynnistetään uudelleen (säilö käynnistää sen uudelleen vain, jos sen uudelleenkäynnistyskäytäntö niin määrää).
+does the same.	tekee saman.

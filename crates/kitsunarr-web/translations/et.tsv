@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Kõik indekserid on tõrgete tõttu
 Indexers unavailable due to failures: {}	Tõrgete tõttu kättesaamatud indekserid: {}
 Failed to resolve the IP address of the configured proxy host {}	Seadistatud proksihosti {} IP-aadressi ei õnnestunud lahendada
 The data directory has only {} MiB free; the database may fail to write.	Andmekaustas on vaba ainult {} MiB; andmebaasi kirjutamine võib nurjuda.
+(or reset_token in config.toml), enter its value instead.	(või reset_token failis config.toml), sisesta hoopis selle väärtus.
+Backup {} deleted.	Varukoopia {} kustutatud.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Varukoopia {} on ette valmistatud. Kitsunarr taaskäivitub, et see taastada; laadi leht hetke pärast uuesti.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Andmebaasi järjepidevad koopiad. Ajastatud varundused järgivad intervalli ja säilitamist jaotises Seaded › Üldine › Varukoopiad; iga migratsioon loob enne ühe. Taastamine kontrollib varukoopiat, paneb praeguse andmebaasi kõrvale ja taaskäivitab Kitsunarri. Kui Kitsunarr on peatatud, teeb
+Delete backup	Kustuta varukoopia
+Delete {}?	Kas kustutada {}?
+Download	Laadi alla
+Kitsunarr is restarting.	Kitsunarr taaskäivitub.
+Kitsunarr is shutting down.	Kitsunarr lülitub välja.
+Restart	Taaskäivita
+Restart Kitsunarr	Taaskäivita Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Kas taaskäivitada Kitsunarr kohe? Käimasolevad ülesanded peatatakse ja leht loob uuesti ühenduse, kui see on tagasi.
+Restore and restart	Taasta ja taaskäivita
+Restore backup	Taasta varukoopia
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Kas taastada {}? Pärast selle tegemist tehtud muudatused lähevad kaotsi; praegune andmebaas pannakse kõrvale. Kitsunarr taaskäivitub, et see rakendada.
+Shut down	Lülita välja
+Shut down Kitsunarr	Lülita Kitsunarr välja
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kas lülitada Kitsunarr kohe välja? See jääb peatatuks, kuni see uuesti käivitatakse (konteiner taaskäivitab selle ainult siis, kui tema taaskäivituspoliitika seda ette näeb).
+does the same.	sama.

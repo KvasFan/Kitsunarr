@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	همه ایندکسرها به دل
 Indexers unavailable due to failures: {}	ایندکسرهایی که به دلیل خرابی در دسترس نیستند: {}
 Failed to resolve the IP address of the configured proxy host {}	تفکیک نشانی IP میزبان پروکسی پیکربندی‌شده {} ناموفق بود
 The data directory has only {} MiB free; the database may fail to write.	پوشه داده فقط {} MiB فضای خالی دارد؛ ممکن است نوشتن در پایگاه داده ناموفق باشد.
+(or reset_token in config.toml), enter its value instead.	(یا reset_token در config.toml) را تنظیم کرده‌اید، به‌جای آن مقدارش را وارد کنید.
+Backup {} deleted.	پشتیبان {} حذف شد.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	پشتیبان {} آماده شد. Kitsunarr برای بازیابی آن در حال راه‌اندازی دوباره است؛ چند لحظه دیگر صفحه را دوباره بارگیری کنید.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	نسخه‌های سازگار از پایگاه داده. پشتیبان‌های زمان‌بندی‌شده از فاصله زمانی و مدت نگه‌داری در تنظیمات › عمومی › پشتیبان‌ها پیروی می‌کنند؛ هر مهاجرت نیز ابتدا یکی می‌سازد. بازیابی، پشتیبان را بررسی می‌کند، پایگاه داده فعلی را کنار می‌گذارد و Kitsunarr را دوباره راه‌اندازی می‌کند. وقتی Kitsunarr متوقف است،
+Delete backup	حذف پشتیبان
+Delete {}?	{} حذف شود؟
+Download	دانلود
+Kitsunarr is restarting.	Kitsunarr در حال راه‌اندازی دوباره است.
+Kitsunarr is shutting down.	Kitsunarr در حال خاموش شدن است.
+Restart	راه‌اندازی دوباره
+Restart Kitsunarr	راه‌اندازی دوباره Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	اکنون Kitsunarr دوباره راه‌اندازی شود؟ وظایف در حال اجرا متوقف می‌شوند و صفحه پس از بازگشت آن دوباره متصل می‌شود.
+Restore and restart	بازیابی و راه‌اندازی دوباره
+Restore backup	بازیابی پشتیبان
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	{} بازیابی شود؟ تغییراتی که پس از گرفتن آن انجام شده از بین می‌روند؛ پایگاه داده فعلی کنار گذاشته می‌شود. Kitsunarr برای اعمال آن دوباره راه‌اندازی می‌شود.
+Shut down	خاموش کردن
+Shut down Kitsunarr	خاموش کردن Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	اکنون Kitsunarr خاموش شود؟ تا زمانی که دوباره اجرا نشود متوقف می‌ماند (کانتینر فقط در صورتی آن را دوباره راه‌اندازی می‌کند که سیاست راه‌اندازی دوباره‌اش چنین بگوید).
+does the same.	همین کار را انجام می‌دهد.

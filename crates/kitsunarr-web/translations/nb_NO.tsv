@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Alle indeksere er utilgjengelige p�
 Indexers unavailable due to failures: {}	Indeksere utilgjengelige på grunn av feil: {}
 Failed to resolve the IP address of the configured proxy host {}	Kunne ikke slå opp IP-adressen til den konfigurerte proxyverten {}
 The data directory has only {} MiB free; the database may fail to write.	Datamappen har bare {} MiB ledig; databasen kan mislykkes med å skrive.
+(or reset_token in config.toml), enter its value instead.	(eller reset_token i config.toml), skriver du inn verdien i stedet.
+Backup {} deleted.	Sikkerhetskopi {} slettet.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Sikkerhetskopi {} er klargjort. Kitsunarr starter på nytt for å gjenopprette den; last inn siden på nytt om et øyeblikk.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Konsistente kopier av databasen. Planlagte sikkerhetskopier følger intervallet og oppbevaringen i Innstillinger › Generelt › Sikkerhetskopier; hver migrering lager også en først. Gjenoppretting kontrollerer sikkerhetskopien, legger den nåværende databasen til side og starter Kitsunarr på nytt. Når Kitsunarr er stoppet, gjør
+Delete backup	Slett sikkerhetskopi
+Delete {}?	Slette {}?
+Download	Last ned
+Kitsunarr is restarting.	Kitsunarr starter på nytt.
+Kitsunarr is shutting down.	Kitsunarr slås av.
+Restart	Start på nytt
+Restart Kitsunarr	Start Kitsunarr på nytt
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Starte Kitsunarr på nytt nå? Kjørende oppgaver stoppes, og siden kobler til igjen når Kitsunarr er tilbake.
+Restore and restart	Gjenopprett og start på nytt
+Restore backup	Gjenopprett sikkerhetskopi
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Gjenopprette {}? Endringer gjort etter at den ble tatt, går tapt; den nåværende databasen legges til side. Kitsunarr starter på nytt for å ta den i bruk.
+Shut down	Slå av
+Shut down Kitsunarr	Slå av Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Slå av Kitsunarr nå? Den forblir stoppet til den startes igjen (en container starter den på nytt bare hvis omstartspolicyen tilsier det).
+does the same.	det samme.

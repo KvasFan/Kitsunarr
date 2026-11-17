@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Сви индексери су не
 Indexers unavailable due to failures: {}	Индексери недоступни због грешака: {}
 Failed to resolve the IP address of the configured proxy host {}	Није успело разрешавање IP адресе подешеног хоста проксија {}
 The data directory has only {} MiB free; the database may fail to write.	Фасцикла са подацима има слободно само {} MiB; упис у базу података можда неће успети.
+(or reset_token in config.toml), enter its value instead.	(или reset_token у config.toml), уместо тога унесите његову вредност.
+Backup {} deleted.	Резервна копија {} је обрисана.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Резервна копија {} је припремљена. Kitsunarr се поново покреће да би је вратио; ускоро поново учитајте страницу.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Конзистентне копије базе података. Заказане резервне копије прате интервал и задржавање из Подешавања › Опште › Резервне копије; свака миграција такође прво прави једну. Враћање проверава резервну копију, склања тренутну базу на страну и поново покреће Kitsunarr. Када је Kitsunarr заустављен, команда
+Delete backup	Обриши резервну копију
+Delete {}?	Обрисати {}?
+Download	Преузми
+Kitsunarr is restarting.	Kitsunarr се поново покреће.
+Kitsunarr is shutting down.	Kitsunarr се гаси.
+Restart	Поново покрени
+Restart Kitsunarr	Поново покрени Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Поново покренути Kitsunarr сада? Покренути задаци се заустављају, а страница се поново повезује када се Kitsunarr врати.
+Restore and restart	Врати и поново покрени
+Restore backup	Врати резервну копију
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Вратити {}? Измене направљене након њеног прављења се губе; тренутна база се склања на страну. Kitsunarr се поново покреће да би је применио.
+Shut down	Угаси
+Shut down Kitsunarr	Угаси Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Угасити Kitsunarr сада? Остаје заустављен док се поново не покрене (контејнер га поново покреће само ако то налаже његова политика поновног покретања).
+does the same.	ради исто.

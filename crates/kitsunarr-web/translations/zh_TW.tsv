@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	由於故障，所有索引器都�
 Indexers unavailable due to failures: {}	因故障而無法使用的索引器：{}
 Failed to resolve the IP address of the configured proxy host {}	無法解析設定的代理伺服器主機 {} 的 IP 位址
 The data directory has only {} MiB free; the database may fail to write.	資料目錄僅剩 {} MiB 可用空間；資料庫可能無法寫入。
+(or reset_token in config.toml), enter its value instead.	（或 config.toml 中的 reset_token），請改為輸入其值。
+Backup {} deleted.	已刪除備份 {}。
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	備份 {} 已就緒。Kitsunarr 正在重新啟動以還原它；請稍後重新載入頁面。
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	資料庫的一致性副本。排程備份依照 設定 › 一般 › 備份 中的間隔與保留期限執行；每次遷移前也會先建立一份。還原時會檢查備份、將目前的資料庫另行保留，並重新啟動 Kitsunarr。在 Kitsunarr 停止時，執行
+Delete backup	刪除備份
+Delete {}?	刪除 {}？
+Download	下載
+Kitsunarr is restarting.	Kitsunarr 正在重新啟動。
+Kitsunarr is shutting down.	Kitsunarr 正在關閉。
+Restart	重新啟動
+Restart Kitsunarr	重新啟動 Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	立即重新啟動 Kitsunarr？執行中的工作會被停止，恢復後頁面將重新連線。
+Restore and restart	還原並重新啟動
+Restore backup	還原備份
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	還原 {}？此備份建立之後的變更將會遺失；目前的資料庫會另行保留。Kitsunarr 將重新啟動以套用它。
+Shut down	關閉
+Shut down Kitsunarr	關閉 Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	立即關閉 Kitsunarr？它會保持停止狀態，直到再次啟動（只有在容器的重新啟動原則如此規定時，容器才會重新啟動它）。
+does the same.	也能完成相同的操作。

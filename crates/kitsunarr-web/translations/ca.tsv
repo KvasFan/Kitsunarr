@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Cap indexador no està disponible a
 Indexers unavailable due to failures: {}	Indexadors no disponibles a causa d'errors: {}
 Failed to resolve the IP address of the configured proxy host {}	No s'ha pogut resoldre l'adreça IP de l'amfitrió del servidor intermediari configurat {}
 The data directory has only {} MiB free; the database may fail to write.	El directori de dades només té {} MiB lliures; pot fallar l'escriptura a la base de dades.
+(or reset_token in config.toml), enter its value instead.	(o reset_token a config.toml), introduïu-ne el valor.
+Backup {} deleted.	S'ha suprimit la còpia de seguretat {}.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	S'ha preparat la còpia de seguretat {}. Kitsunarr s'està reiniciant per restaurar-la; torneu a carregar la pàgina d'aquí a un moment.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Còpies coherents de la base de dades. Les còpies programades segueixen l'interval i la retenció de Configuració › General › Còpies de seguretat; cada migració també en crea una abans. La restauració comprova la còpia, aparta la base de dades actual i reinicia Kitsunarr. Amb Kitsunarr aturat,
+Delete backup	Suprimeix la còpia de seguretat
+Delete {}?	Voleu suprimir {}?
+Download	Baixa
+Kitsunarr is restarting.	Kitsunarr s'està reiniciant.
+Kitsunarr is shutting down.	Kitsunarr s'està apagant.
+Restart	Reinicia
+Restart Kitsunarr	Reinicia Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Voleu reiniciar Kitsunarr ara? Les tasques en curs s'aturen i la pàgina es torna a connectar quan torni a estar disponible.
+Restore and restart	Restaura i reinicia
+Restore backup	Restaura la còpia de seguretat
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Voleu restaurar {}? Es perden els canvis fets des que es va crear; la base de dades actual es conserva a part. Kitsunarr es reinicia per aplicar-la.
+Shut down	Apaga
+Shut down Kitsunarr	Apaga Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Voleu apagar Kitsunarr ara? Es manté aturat fins que es torni a iniciar (un contenidor només el reinicia si la seva política de reinici ho indica).
+does the same.	fa el mateix.

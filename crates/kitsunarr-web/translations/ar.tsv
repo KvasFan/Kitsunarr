@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	كل المفهرسات غير مت
 Indexers unavailable due to failures: {}	المفهرسات غير المتاحة بسبب أعطال: {}
 Failed to resolve the IP address of the configured proxy host {}	تعذّر تحليل عنوان IP لمضيف الوكيل المهيأ {}
 The data directory has only {} MiB free; the database may fail to write.	دليل البيانات لا يحتوي إلا على {} MiB من المساحة الحرة؛ قد تفشل الكتابة في قاعدة البيانات.
+(or reset_token in config.toml), enter its value instead.	(أو reset_token في config.toml)، فأدخل قيمته بدلًا من ذلك.
+Backup {} deleted.	تم حذف النسخة الاحتياطية {}.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	تم تجهيز النسخة الاحتياطية {}. يُعاد تشغيل Kitsunarr لاستعادتها؛ أعد تحميل الصفحة بعد قليل.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	نسخ متسقة من قاعدة البيانات. تتبع النسخ الاحتياطية المجدولة الفاصل الزمني ومدة الاحتفاظ المحددين في الإعدادات › عام › النسخ الاحتياطية؛ وكل عملية ترحيل تنشئ نسخة أولًا. تتحقق الاستعادة من النسخة الاحتياطية، وتضع قاعدة البيانات الحالية جانبًا، ثم تعيد تشغيل Kitsunarr. عندما يكون Kitsunarr متوقفًا، يؤدي الأمر
+Delete backup	حذف النسخة الاحتياطية
+Delete {}?	حذف {}؟
+Download	تنزيل
+Kitsunarr is restarting.	يُعاد تشغيل Kitsunarr.
+Kitsunarr is shutting down.	يجري إيقاف تشغيل Kitsunarr.
+Restart	إعادة التشغيل
+Restart Kitsunarr	إعادة تشغيل Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	إعادة تشغيل Kitsunarr الآن؟ تتوقف المهام الجارية وتعيد الصفحة الاتصال عند عودته.
+Restore and restart	استعادة وإعادة التشغيل
+Restore backup	استعادة النسخة الاحتياطية
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	استعادة {}؟ ستُفقد التغييرات التي أُجريت منذ إنشائها؛ وتوضع قاعدة البيانات الحالية جانبًا. يُعاد تشغيل Kitsunarr لتطبيقها.
+Shut down	إيقاف التشغيل
+Shut down Kitsunarr	إيقاف تشغيل Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	إيقاف تشغيل Kitsunarr الآن؟ يظل متوقفًا حتى يُشغَّل مرة أخرى (لا تعيد الحاوية تشغيله إلا إذا نصّت سياسة إعادة التشغيل الخاصة بها على ذلك).
+does the same.	المهمة نفسها.

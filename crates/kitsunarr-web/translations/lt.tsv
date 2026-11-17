@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Visi indeksuotojai nepasiekiami dė
 Indexers unavailable due to failures: {}	Indeksuotojai, nepasiekiami dėl klaidų: {}
 Failed to resolve the IP address of the configured proxy host {}	Nepavyko nustatyti sukonfigūruoto tarpinio serverio {} IP adreso
 The data directory has only {} MiB free; the database may fail to write.	Duomenų kataloge laisvos vietos liko tik {} MiB; duomenų bazei gali nepavykti įrašyti.
+(or reset_token in config.toml), enter its value instead.	(arba reset_token faile config.toml), vietoj to įveskite jo reikšmę.
+Backup {} deleted.	Atsarginė kopija {} ištrinta.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Atsarginė kopija {} paruošta. Kitsunarr paleidžiama iš naujo, kad ją atkurtų; netrukus įkelkite puslapį iš naujo.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Nuoseklios duomenų bazės kopijos. Suplanuotos atsarginės kopijos daromos pagal intervalą ir saugojimo laiką, nurodytus skiltyje Nustatymai › Bendra › Atsarginės kopijos; kiekvienas perkėlimas taip pat pirmiausia sukuria vieną. Atkuriant patikrinama atsarginė kopija, dabartinė duomenų bazė atidedama į šalį ir Kitsunarr paleidžiama iš naujo. Kai Kitsunarr sustabdyta, komanda
+Delete backup	Ištrinti atsarginę kopiją
+Delete {}?	Ištrinti {}?
+Download	Atsisiųsti
+Kitsunarr is restarting.	Kitsunarr paleidžiama iš naujo.
+Kitsunarr is shutting down.	Kitsunarr išjungiama.
+Restart	Paleisti iš naujo
+Restart Kitsunarr	Paleisti Kitsunarr iš naujo
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Paleisti Kitsunarr iš naujo dabar? Vykdomos užduotys sustabdomos, o puslapis vėl prisijungs, kai programa vėl veiks.
+Restore and restart	Atkurti ir paleisti iš naujo
+Restore backup	Atkurti atsarginę kopiją
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Atkurti {}? Pakeitimai, padaryti po jos sukūrimo, bus prarasti; dabartinė duomenų bazė atidedama į šalį. Kitsunarr bus paleista iš naujo, kad ją pritaikytų.
+Shut down	Išjungti
+Shut down Kitsunarr	Išjungti Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Išjungti Kitsunarr dabar? Programa liks sustabdyta, kol vėl bus paleista (konteineris ją paleis iš naujo tik tada, jei tai numato jo paleidimo iš naujo politika).
+does the same.	daro tą patį.

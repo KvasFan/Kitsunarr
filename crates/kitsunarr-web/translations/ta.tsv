@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	தோல்விகளால் �
 Indexers unavailable due to failures: {}	தோல்விகளால் கிடைக்காத குறியீட்டாளர்கள்: {}
 Failed to resolve the IP address of the configured proxy host {}	உள்ளமைக்கப்பட்ட ப்ராக்ஸி ஹோஸ்ட் {} இன் IP முகவரியைத் தீர்க்க முடியவில்லை
 The data directory has only {} MiB free; the database may fail to write.	தரவுக் கோப்பகத்தில் {} MiB மட்டுமே காலியாக உள்ளது; தரவுத்தளம் எழுதத் தவறலாம்.
+(or reset_token in config.toml), enter its value instead.	(அல்லது config.toml இல் reset_token) ஐ அமைத்திருந்தால், அதற்குப் பதிலாக அதன் மதிப்பை உள்ளிடவும்.
+Backup {} deleted.	காப்புப்பிரதி {} நீக்கப்பட்டது.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	காப்புப்பிரதி {} தயார் செய்யப்பட்டது. அதை மீட்டெடுக்க Kitsunarr மறுதொடக்கம் செய்கிறது; சிறிது நேரத்தில் பக்கத்தை மீண்டும் ஏற்றவும்.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	தரவுத்தளத்தின் சீரான நகல்கள். திட்டமிட்ட காப்புப்பிரதிகள் அமைப்புகள் › பொது › காப்புப்பிரதிகள் இல் உள்ள இடைவெளியையும் தக்கவைப்பையும் பின்பற்றும்; ஒவ்வொரு இடம்பெயர்வும் முதலில் ஒன்றை உருவாக்கும். மீட்டெடுப்பது காப்புப்பிரதியைச் சரிபார்த்து, தற்போதைய தரவுத்தளத்தைத் தனியே வைத்து, Kitsunarr ஐ மறுதொடக்கம் செய்யும். Kitsunarr நிறுத்தப்பட்டிருக்கும்போது,
+Delete backup	காப்புப்பிரதியை நீக்கு
+Delete {}?	{} ஐ நீக்கவா?
+Download	பதிவிறக்கு
+Kitsunarr is restarting.	Kitsunarr மறுதொடக்கம் செய்கிறது.
+Kitsunarr is shutting down.	Kitsunarr பணிநிறுத்தம் செய்யப்படுகிறது.
+Restart	மறுதொடக்கம்
+Restart Kitsunarr	Kitsunarr ஐ மறுதொடக்கம் செய்
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Kitsunarr ஐ இப்போது மறுதொடக்கம் செய்யவா? இயங்கும் பணிகள் நிறுத்தப்படும், அது மீண்டும் இயங்கியதும் பக்கம் மீண்டும் இணையும்.
+Restore and restart	மீட்டெடுத்து மறுதொடக்கம் செய்
+Restore backup	காப்புப்பிரதியை மீட்டெடு
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	{} ஐ மீட்டெடுக்கவா? அது எடுக்கப்பட்டதிலிருந்து செய்த மாற்றங்கள் இழக்கப்படும்; தற்போதைய தரவுத்தளம் தனியே வைக்கப்படும். அதைப் பயன்படுத்த Kitsunarr மறுதொடக்கம் செய்யும்.
+Shut down	பணிநிறுத்து
+Shut down Kitsunarr	Kitsunarr ஐப் பணிநிறுத்து
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kitsunarr ஐ இப்போது பணிநிறுத்தவா? மீண்டும் தொடங்கப்படும் வரை அது நிறுத்தப்பட்டே இருக்கும் (கொள்கலனின் மறுதொடக்கக் கொள்கை அனுமதித்தால் மட்டுமே கொள்கலன் அதை மறுதொடக்கம் செய்யும்).
+does the same.	உம் அதையே செய்யும்.

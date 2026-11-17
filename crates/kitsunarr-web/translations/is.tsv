@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Allir leitarþjónar eru ótiltæki
 Indexers unavailable due to failures: {}	Leitarþjónar ótiltækir vegna bilana: {}
 Failed to resolve the IP address of the configured proxy host {}	Ekki tókst að fletta upp IP-vistfangi uppsetta proxy-hýsilsins {}
 The data directory has only {} MiB free; the database may fail to write.	Gagnamappan hefur aðeins {} MiB laus; ekki er víst að gagnagrunnurinn geti skrifað.
+(or reset_token in config.toml), enter its value instead.	(eða reset_token í config.toml) skaltu slá inn gildi þess í staðinn.
+Backup {} deleted.	Afriti {} eytt.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Afrit {} undirbúið. Kitsunarr endurræsist til að endurheimta það; endurhlaðaðu síðunni eftir smástund.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Samræmd afrit af gagnagrunninum. Áætluð afrit fylgja tímabilinu og varðveislunni í Stillingar › Almennt › Afrit; hver yfirfærsla tekur líka eitt fyrst. Endurheimt athugar afritið, leggur núverandi gagnagrunn til hliðar og endurræsir Kitsunarr. Þegar Kitsunarr er stöðvað gerir
+Delete backup	Eyða afriti
+Delete {}?	Eyða {}?
+Download	Sækja
+Kitsunarr is restarting.	Kitsunarr endurræsist.
+Kitsunarr is shutting down.	Það er verið að slökkva á Kitsunarr.
+Restart	Endurræsa
+Restart Kitsunarr	Endurræsa Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Endurræsa Kitsunarr núna? Verk í gangi eru stöðvuð og síðan tengist aftur þegar það er komið upp aftur.
+Restore and restart	Endurheimta og endurræsa
+Restore backup	Endurheimta afrit
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Endurheimta {}? Breytingar sem gerðar hafa verið síðan það var tekið glatast; núverandi gagnagrunnur er geymdur til hliðar. Kitsunarr endurræsist til að virkja það.
+Shut down	Slökkva
+Shut down Kitsunarr	Slökkva á Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Slökkva á Kitsunarr núna? Það helst stöðvað þar til það er ræst aftur (gámur endurræsir það aðeins ef endurræsingarstefna hans segir svo).
+does the same.	það sama.

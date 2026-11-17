@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Alla indexerare är otillgängliga 
 Indexers unavailable due to failures: {}	Indexerare otillgängliga på grund av fel: {}
 Failed to resolve the IP address of the configured proxy host {}	Det gick inte att slå upp IP-adressen för den konfigurerade proxyvärden {}
 The data directory has only {} MiB free; the database may fail to write.	Datakatalogen har bara {} MiB ledigt; databasen kan misslyckas med att skriva.
+(or reset_token in config.toml), enter its value instead.	(eller reset_token i config.toml), anger du dess värde i stället.
+Backup {} deleted.	Säkerhetskopian {} har raderats.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Säkerhetskopian {} är förberedd. Kitsunarr startas om för att återställa den; läs in sidan igen om en stund.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Konsekventa kopior av databasen. Schemalagda säkerhetskopior följer intervallet och lagringstiden i Inställningar › Allmänt › Säkerhetskopior; varje migrering skapar också en först. Återställning kontrollerar säkerhetskopian, lägger den nuvarande databasen åt sidan och startar om Kitsunarr. När Kitsunarr är stoppat gör
+Delete backup	Radera säkerhetskopia
+Delete {}?	Radera {}?
+Download	Ladda ner
+Kitsunarr is restarting.	Kitsunarr startas om.
+Kitsunarr is shutting down.	Kitsunarr stängs av.
+Restart	Starta om
+Restart Kitsunarr	Starta om Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Starta om Kitsunarr nu? Pågående uppgifter stoppas och sidan återansluter när Kitsunarr är tillbaka.
+Restore and restart	Återställ och starta om
+Restore backup	Återställ säkerhetskopia
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Återställ {}? Ändringar som gjorts sedan den skapades går förlorade; den nuvarande databasen läggs åt sidan. Kitsunarr startas om för att tillämpa den.
+Shut down	Stäng av
+Shut down Kitsunarr	Stäng av Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Stäng av Kitsunarr nu? Det förblir stoppat tills det startas igen (en container startar om det bara om dess omstartspolicy anger det).
+does the same.	samma sak.

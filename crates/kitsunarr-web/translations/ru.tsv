@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Все индексаторы не�
 Indexers unavailable due to failures: {}	Индексаторы, недоступные из-за сбоев: {}
 Failed to resolve the IP address of the configured proxy host {}	Не удалось определить IP-адрес настроенного хоста прокси {}
 The data directory has only {} MiB free; the database may fail to write.	В папке данных свободно только {} МиБ; база данных может не суметь выполнить запись.
+(or reset_token in config.toml), enter its value instead.	(или reset_token в config.toml), введите вместо этого его значение.
+Backup {} deleted.	Резервная копия {} удалена.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Резервная копия {} подготовлена. Kitsunarr перезапускается, чтобы восстановить её; обновите страницу через несколько секунд.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Согласованные копии базы данных. Плановые резервные копии создаются с интервалом и сроком хранения из Настройки › Общие › Резервные копии; каждая миграция тоже сначала создаёт копию. Восстановление проверяет резервную копию, откладывает текущую базу данных в сторону и перезапускает Kitsunarr. При остановленном Kitsunarr команда
+Delete backup	Удалить резервную копию
+Delete {}?	Удалить {}?
+Download	Скачать
+Kitsunarr is restarting.	Kitsunarr перезапускается.
+Kitsunarr is shutting down.	Kitsunarr завершает работу.
+Restart	Перезапустить
+Restart Kitsunarr	Перезапустить Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Перезапустить Kitsunarr сейчас? Выполняющиеся задачи будут остановлены, а страница переподключится, когда он снова заработает.
+Restore and restart	Восстановить и перезапустить
+Restore backup	Восстановить резервную копию
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Восстановить {}? Изменения, сделанные после её создания, будут потеряны; текущая база данных сохраняется отдельно. Kitsunarr перезапустится, чтобы применить её.
+Shut down	Завершить работу
+Shut down Kitsunarr	Завершить работу Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Завершить работу Kitsunarr сейчас? Он останется остановленным, пока его снова не запустят (контейнер перезапустит его, только если это предусмотрено его политикой перезапуска).
+does the same.	делает то же самое.

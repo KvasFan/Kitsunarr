@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Tất cả trình lập chỉ mục
 Indexers unavailable due to failures: {}	Trình lập chỉ mục không khả dụng do lỗi: {}
 Failed to resolve the IP address of the configured proxy host {}	Không thể phân giải địa chỉ IP của máy chủ proxy đã cấu hình {}
 The data directory has only {} MiB free; the database may fail to write.	Thư mục dữ liệu chỉ còn trống {} MiB; cơ sở dữ liệu có thể không ghi được.
+(or reset_token in config.toml), enter its value instead.	(hoặc reset_token trong config.toml), hãy nhập giá trị đó thay thế.
+Backup {} deleted.	Đã xóa bản sao lưu {}.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Đã chuẩn bị bản sao lưu {}. Kitsunarr đang khởi động lại để khôi phục nó; hãy tải lại trang sau giây lát.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Các bản sao nhất quán của cơ sở dữ liệu. Sao lưu theo lịch tuân theo khoảng thời gian và thời gian lưu giữ trong Cài đặt › Chung › Sao lưu; mỗi lần di chuyển cũng tạo một bản trước. Khôi phục sẽ kiểm tra bản sao lưu, để riêng cơ sở dữ liệu hiện tại và khởi động lại Kitsunarr. Khi Kitsunarr đã dừng, lệnh
+Delete backup	Xóa bản sao lưu
+Delete {}?	Xóa {}?
+Download	Tải xuống
+Kitsunarr is restarting.	Kitsunarr đang khởi động lại.
+Kitsunarr is shutting down.	Kitsunarr đang tắt.
+Restart	Khởi động lại
+Restart Kitsunarr	Khởi động lại Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Khởi động lại Kitsunarr ngay bây giờ? Các tác vụ đang chạy sẽ bị dừng và trang sẽ kết nối lại khi Kitsunarr hoạt động trở lại.
+Restore and restart	Khôi phục và khởi động lại
+Restore backup	Khôi phục bản sao lưu
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Khôi phục {}? Các thay đổi kể từ khi tạo bản này sẽ bị mất; cơ sở dữ liệu hiện tại được để riêng. Kitsunarr sẽ khởi động lại để áp dụng.
+Shut down	Tắt
+Shut down Kitsunarr	Tắt Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Tắt Kitsunarr ngay bây giờ? Kitsunarr sẽ dừng cho đến khi được khởi động lại (container chỉ khởi động lại nó nếu chính sách khởi động lại cho phép).
+does the same.	cũng làm điều tương tự.

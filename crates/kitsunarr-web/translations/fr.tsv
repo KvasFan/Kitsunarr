@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Tous les indexeurs sont indisponibl
 Indexers unavailable due to failures: {}	Indexeurs indisponibles en raison d'échecs : {}
 Failed to resolve the IP address of the configured proxy host {}	Impossible de résoudre l'adresse IP de l'hôte proxy configuré {}
 The data directory has only {} MiB free; the database may fail to write.	Le dossier de données n'a que {} MiB libres ; l'écriture dans la base de données risque d'échouer.
+(or reset_token in config.toml), enter its value instead.	(ou reset_token dans config.toml), saisissez plutôt sa valeur.
+Backup {} deleted.	Sauvegarde {} supprimée.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Sauvegarde {} préparée. Kitsunarr redémarre pour la restaurer ; rechargez la page dans un instant.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Copies cohérentes de la base de données. Les sauvegardes planifiées suivent l'intervalle et la rétention définis dans Paramètres › Général › Sauvegardes ; chaque migration en crée aussi une au préalable. La restauration vérifie la sauvegarde, met de côté la base de données actuelle et redémarre Kitsunarr. Lorsque Kitsunarr est arrêté, la commande
+Delete backup	Supprimer la sauvegarde
+Delete {}?	Supprimer {} ?
+Download	Télécharger
+Kitsunarr is restarting.	Kitsunarr redémarre.
+Kitsunarr is shutting down.	Kitsunarr s'arrête.
+Restart	Redémarrer
+Restart Kitsunarr	Redémarrer Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Redémarrer Kitsunarr maintenant ? Les tâches en cours sont arrêtées et la page se reconnecte dès son retour.
+Restore and restart	Restaurer et redémarrer
+Restore backup	Restaurer la sauvegarde
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Restaurer {} ? Les modifications effectuées depuis sa création sont perdues ; la base de données actuelle est mise de côté. Kitsunarr redémarre pour l'appliquer.
+Shut down	Arrêter
+Shut down Kitsunarr	Arrêter Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Arrêter Kitsunarr maintenant ? Il reste arrêté jusqu'à ce qu'il soit relancé (un conteneur ne le redémarre que si sa politique de redémarrage le prévoit).
+does the same.	fait la même chose.

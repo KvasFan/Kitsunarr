@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Alle indexeerders zijn niet beschik
 Indexers unavailable due to failures: {}	Indexeerders niet beschikbaar door storingen: {}
 Failed to resolve the IP address of the configured proxy host {}	Kan het IP-adres van de geconfigureerde proxyhost {} niet omzetten
 The data directory has only {} MiB free; the database may fail to write.	De datamap heeft nog maar {} MiB vrij; het schrijven naar de database kan mislukken.
+(or reset_token in config.toml), enter its value instead.	(of reset_token in config.toml), voer dan in plaats daarvan die waarde in.
+Backup {} deleted.	Back-up {} verwijderd.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Back-up {} klaargezet. Kitsunarr wordt opnieuw gestart om hem te herstellen; laad de pagina zo meteen opnieuw.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Consistente kopieën van de database. Geplande back-ups volgen het interval en de bewaartermijn in Instellingen › Algemeen › Back-ups; elke migratie maakt er ook eerst een. Herstellen controleert de back-up, zet de huidige database opzij en start Kitsunarr opnieuw. Met Kitsunarr gestopt doet
+Delete backup	Back-up verwijderen
+Delete {}?	{} verwijderen?
+Download	Downloaden
+Kitsunarr is restarting.	Kitsunarr wordt opnieuw gestart.
+Kitsunarr is shutting down.	Kitsunarr wordt afgesloten.
+Restart	Opnieuw starten
+Restart Kitsunarr	Kitsunarr opnieuw starten
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Kitsunarr nu opnieuw starten? Lopende taken worden gestopt en de pagina maakt opnieuw verbinding zodra Kitsunarr terug is.
+Restore and restart	Herstellen en opnieuw starten
+Restore backup	Back-up herstellen
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	{} herstellen? Wijzigingen sinds het maken ervan gaan verloren; de huidige database wordt opzij gezet. Kitsunarr start opnieuw om hem toe te passen.
+Shut down	Afsluiten
+Shut down Kitsunarr	Kitsunarr afsluiten
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kitsunarr nu afsluiten? Het blijft gestopt totdat het opnieuw wordt gestart (een container start het alleen opnieuw als het herstartbeleid dat aangeeft).
+does the same.	hetzelfde.

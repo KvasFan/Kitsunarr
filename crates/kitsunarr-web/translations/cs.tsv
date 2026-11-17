@@ -1553,3 +1553,22 @@ All indexers are unavailable due to failures	Všechny indexery jsou nedostupné 
 Indexers unavailable due to failures: {}	Indexery nedostupné kvůli selháním: {}
 Failed to resolve the IP address of the configured proxy host {}	Nepodařilo se přeložit IP adresu nastaveného hostitele proxy {}
 The data directory has only {} MiB free; the database may fail to write.	Datový adresář má volných jen {} MiB; zápis do databáze může selhat.
+(or reset_token in config.toml), enter its value instead.	(nebo reset_token v config.toml), zadejte místo toho jeho hodnotu.
+Backup {} deleted.	Záloha {} smazána.
+Backup {} staged. Kitsunarr is restarting to restore it; reload the page in a moment.	Záloha {} připravena. Kitsunarr se restartuje, aby ji obnovil; za chvíli stránku znovu načtěte.
+Consistent copies of the database. Scheduled backups follow the interval and retention in Settings › General › Backups; every migration also creates one first. Restoring checks the backup, keeps the current database aside and restarts Kitsunarr. With Kitsunarr stopped,	Konzistentní kopie databáze. Plánované zálohy se řídí intervalem a dobou uchování v Nastavení › Obecné › Zálohy; každá migrace také nejprve jednu vytvoří. Obnovení zálohu zkontroluje, odloží stávající databázi stranou a restartuje Kitsunarr. Při zastaveném Kitsunarr
+Delete backup	Smazat zálohu
+Delete {}?	Smazat {}?
+Download	Stáhnout
+Kitsunarr is restarting.	Kitsunarr se restartuje.
+Kitsunarr is shutting down.	Kitsunarr se vypíná.
+Restart	Restartovat
+Restart Kitsunarr	Restartovat Kitsunarr
+Restart Kitsunarr now? Running tasks are stopped and the page reconnects when it is back.	Restartovat Kitsunarr nyní? Běžící úlohy se zastaví a stránka se znovu připojí, jakmile bude opět dostupný.
+Restore and restart	Obnovit a restartovat
+Restore backup	Obnovit zálohu
+Restore {}? Changes made since it was taken are lost; the current database is kept aside. Kitsunarr restarts to apply it.	Obnovit {}? Změny provedené od jejího vytvoření budou ztraceny; stávající databáze se odloží stranou. Kitsunarr se restartuje, aby ji použil.
+Shut down	Vypnout
+Shut down Kitsunarr	Vypnout Kitsunarr
+Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Vypnout Kitsunarr nyní? Zůstane zastavený, dokud nebude znovu spuštěn (kontejner jej restartuje, jen pokud to stanoví jeho zásada restartu).
+does the same.	udělá totéž.
