@@ -966,3 +966,347 @@ Scene numbering from TheXEM	TheXEM のシーン番号
 Scene numbering extrapolated from TheXEM (unverified)	TheXEM から推定したシーン番号 (未検証)
 Season {} (scene seasons {})	シーズン {} (シーンシーズン {})
 {} (scene {})	{} (シーン {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	AniList または MyAnimeList の関連情報から見つかったフランチャイズグループ。後から追加された同じフランチャイズのタイトルも参加します。削除したタイトルは更新しても戻りません。
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	上書きのない品質は 設定 › 品質 を使用します。上書き内では空欄は無制限を意味し、最大値 0 も無制限を意味します。
+Add a movie, or change the search and watched filter.	映画を追加するか、検索と視聴状態のフィルターを変更してください。
+Add a root folder in Settings › Media management first.	先に 設定 › メディア管理 でルートフォルダーを追加してください。
+Add qualities to {}	{} に品質を追加
+All decisions	すべての判定
+All seasons	すべてのシーズン
+All selected flags must be present.	選択したフラグがすべて含まれている必要があります。
+All sources	すべてのソース
+Allow {}	{} を許可
+Also delete their folders and files (to the recycle bin when one is set)	フォルダーとファイルも削除する (ごみ箱が設定されていればごみ箱へ)
+Apply sources	ソースを適用
+As the catalogue says	カタログのとおり
+Auto tag name	オートタグ名
+Automatic match / keep current number	自動マッチ / 現在の番号を保持
+Automatic search for {}	{} の自動検索
+Below the root folder; use / for sub-folders.	ルートフォルダーの下。サブフォルダーには / を使用します。
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	上ほど優先されます。ハンドルをドラッグするか矢印で並べ替えます。グループ内の品質は同じ順位です。
+Bulk actions	一括操作
+Catalogue ID	カタログID
+Catalogue changed.	カタログを変更しました。
+Catalogue match	カタログのマッチ
+Change catalogue	カタログを変更
+Choose a movie…	映画を選択…
+Choose a root folder…	ルートフォルダーを選択…
+Choose episodes for {}	{} のエピソードを選択
+Choose which episodes are monitored, as when adding the series	シリーズの追加時と同様に、監視するエピソードを選択します
+Choose which episodes of the selected series are monitored	選択したシリーズで監視するエピソードを選択します
+Choose {}	{} を選択
+Clean library level	ライブラリ整理のレベル
+Clean library tag	ライブラリ整理のタグ
+Clear filters	フィルターをクリア
+Clear or adjust the filters to see more results.	フィルターをクリアまたは調整すると、さらに結果が表示されます。
+Codec of {}	{} のコーデック
+Compression mode	圧縮モード
+Condition indexer flags	条件のインデクサーフラグ
+Condition language	条件の言語
+Condition name	条件名
+Condition name {}	条件名 {}
+Condition regular expression {}	条件の正規表現 {}
+Condition size {}	条件のサイズ {}
+Condition type	条件の種類
+Condition value	条件の値
+Copy (keep the source)	コピー (元を保持)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	品質からグループを作成し、さらに品質をドラッグするか、グループのセレクターを使用してください。カットオフは品質とともにそのグループに移ります。グループを解除するとグループ内の最上位のメンバーが使われます。
+Current folder:	現在のフォルダー:
+Custom format name	カスタムフォーマット名
+Delete tag {}	タグ {} を削除
+Delete the file of episode {}	エピソード {} のファイルを削除
+Delete the movie folder and its files	映画フォルダーとそのファイルを削除
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	「{}」と一致する字幕を削除しますか？ ごみ箱が設定されていればごみ箱に移動します。
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	「{}」を削除しますか？ そのシリーズと映画はライブラリに残り、更新時に自動で再参加することはありません。
+Detect from title	タイトルから検出
+Disk scanned: {} {}	ディスクをスキャンしました: {} {}
+Dismiss	閉じる
+Don't change	変更しない
+Don't import	インポートしない
+Done editing groups	グループの編集を完了
+Drag to reorder or move into a group	ドラッグして並べ替えるか、グループに移動します
+Drag {}	{} をドラッグ
+Drop here to move out of a group or to the lowest preference	ここにドロップするとグループから外すか、最も低い優先度にします
+Drop qualities here	ここに品質をドロップ
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	各シリーズはルートフォルダーの下に自身のフォルダーを保持します。新しいフォルダーが存在して空でない場合、そのシリーズは現在のフォルダーのままです。
+Edit JSON	JSONを編集
+Edit group	グループを編集
+Edit groups	グループを編集
+Enter a non-negative test size within the supported range.	サポートされている範囲内で、負でないテストサイズを入力してください。
+Enter a valid test size in GiB.	有効なテストサイズを GiB で入力してください。
+Enter valid test indexer flags.	有効なテスト用インデクサーフラグを入力してください。
+Episode matches	エピソードのマッチ
+Event type	イベントの種類
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	すべての条件の種類が一致する必要があります。同じ種類の中では、いずれかの条件が一致し、かつすべての必須条件が一致する必要があります。否定は有効な条件を反転します。
+Every folder of this root folder belongs to a title already.	このルートフォルダーのフォルダーはすべてタイトルに割り当て済みです。
+Exclude {}	{} を除外
+Exclusion catalogue	除外のカタログ
+Exclusion id	除外のID
+Exclusion title	除外のタイトル
+Factor for {}	{} の係数
+Feed tags	フィードのタグ
+File name (optional)	ファイル名 (任意)
+Filter by monitoring	監視状態で絞り込み
+Filter by watched state	視聴状態で絞り込み
+Filter release decisions	リリースの判定を絞り込み
+Filter releases	リリースを絞り込み
+Find target title	対象のタイトルを検索
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	どのタイトルにも使われていないルートフォルダー内のフォルダー。それぞれ名前 (またはその中の
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	一致しないリリースについては、下の解析されたタイトルとエピソード番号を、検討されたタイトルと照らし合わせて確認してください。必要に応じて、ライブラリで別タイトルを追加するか、エピソードのマッピングを修正してください。
+Format does not match	フォーマットが一致しません
+Format matches	フォーマットが一致します
+Full season	フルシーズン
+Grab it now instead of waiting for the delay	遅延を待たずに今すぐ取得
+Grab {}	{} を取得
+Group	グループ化
+Group for {}	{} のグループ
+Group name	グループ名
+Group {}	{} をグループ化
+Guided editor	ガイド付きエディター
+I confirm that the target catalogue entry is the same title.	対象のカタログ項目が同じタイトルであることを確認しました。
+Import	インポート
+Import existing folders	既存のフォルダーをインポート
+Import mode	インポートモード
+Import {}	{} をインポート
+Imported from movie folder	映画フォルダーからインポート
+Include in file names ({} token)	ファイル名に含める ({} トークン)
+Include {}	{} を含める
+Indexer flags (bitmask)	インデクサーフラグ (ビットマスク)
+Jellyfin library	Jellyfin のライブラリ
+Jellyfin user	Jellyfin のユーザー
+Jellyfin watched sync can update this status.	Jellyfin の視聴済み同期がこのステータスを更新することがあります。
+Key name	キー名
+Key permission	キーの権限
+Kind of {}	{} の種類
+Label of {}	{} のラベル
+Language	言語
+Library import	ライブラリのインポート
+List exclusions	リストの除外
+Loading sources…	ソースを読み込み中…
+Main navigation	メインナビゲーション
+Mark unwatched	未視聴にする
+Mark watched	視聴済みにする
+Match	マッチ
+Match any other language	その他の言語に一致
+Match episode {}	エピソード {} のマッチ
+Match for {}	{} のマッチ
+Matching series	一致するシリーズ
+Matching subtitles follow the file's new name.	一致する字幕はファイルの新しい名前に合わせて変更されます。
+Maximum GiB (inclusive)	最大 GiB (この値を含む)
+Maximum size	最大サイズ
+Maximum year	最大年
+Minimum GiB (exclusive)	最小 GiB (この値を含まない)
+Minimum age	最小経過時間
+Minimum level	最小レベル
+Minimum score increment for upgrades	アップグレードに必要なスコアの最小増分
+Minimum year	最小年
+Monitor episode {}	エピソード {} を監視
+Monitor new seasons	新しいシーズンを監視
+Monitored filter	監視フィルター
+Monitoring	監視
+Monitoring updated for {} series.	{} 件のシリーズの監視を更新しました。
+Monitoring — {} series	監視 — {} 件のシリーズ
+Monitoring…	監視…
+Move folder	フォルダーを移動
+Move the files	ファイルを移動
+Move the files to the new folder	ファイルを新しいフォルダーに移動
+Move the movie folder, or point the movie at another folder	映画フォルダーを移動するか、映画が別のフォルダーを指すようにします
+Move the selected series into another root folder	選択したシリーズを別のルートフォルダーに移動
+Move the series folder, or point the series at another folder	シリーズフォルダーを移動するか、シリーズが別のフォルダーを指すようにします
+Move to root folder…	ルートフォルダーへ移動…
+Move {} series	{} 件のシリーズを移動
+Movie bulk actions	映画の一括操作
+Movie file deleted	映画ファイル削除
+Movie file renamed	映画ファイル名変更
+Movie file restored	映画ファイル復元
+Movie for {}	{} の映画
+Movie history	映画の履歴
+Movie import mode	映画のインポートモード
+Movie removed, and its folder deleted or recycled.	映画を削除し、そのフォルダーを削除またはごみ箱に移動しました。
+Movie source folder	映画のソースフォルダー
+Movies (Tanukarr)	映画 (Tanukarr)
+Moving…	移動中…
+Naming & file settings	命名とファイルの設定
+Negate condition {}	条件 {} を否定
+New condition type	新しい条件の種類
+New profile	新しいプロファイル
+New root folder path	新しいルートフォルダーのパス
+New tag	新しいタグ
+Next	次へ
+No group	グループなし
+No indexer responded successfully. Check the source errors above, then try again.	正常に応答したインデクサーはありません。上のソースのエラーを確認してから、もう一度お試しください。
+No match for “{}”	「{}」に一致するものはありません
+No releases match these filters	これらのフィルターに一致するリリースはありません
+No root folder	ルートフォルダーなし
+Nothing to import	インポートするものはありません
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	記録されているフォルダーのみ変更されます。ファイルがすでにそこにある場合に使用し、その後ディスクをスキャンしてください。
+Open navigation	ナビゲーションを開く
+Open on {}	{} で開く
+Organize files	ファイルを整理
+Organizing…	整理中…
+Original language	元の言語
+Override for a mapped anime batch or a movie feature (single episode).	マッピングされたアニメのバッチまたは映画の本編 (単一エピソード) 用の上書き。
+Parsed title:	解析されたタイトル:
+Passkey	パスキー
+Place above {}	{} の上に配置
+Place at lowest preference	最も低い優先度に配置
+Position of {}	{} の位置
+Prefer {} less	{} の優先度を下げる
+Prefer {} more	{} の優先度を上げる
+Preferred catalogue	優先するカタログ
+Preset title	プリセットのタイトル
+Prevent import lists from adding it again	インポートリストによる再追加を防ぐ
+Prevent import lists from adding them again	インポートリストによる再追加を防ぐ
+Preview again to review your changes.	もう一度プレビューして変更内容を確認してください。
+Previous	前へ
+Progress of {}	{} の進捗
+Proxy hostname	プロキシのホスト名
+Proxy port	プロキシのポート
+Quality cutoff	品質のカットオフ
+Quality profile for added shows	追加する番組の品質プロファイル
+Quality sizes	品質のサイズ
+Quality: {} · Group: {} · Languages: {} · {}	品質: {} · グループ: {} · 言語: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	クエリプランには、実行されない可能性のあるフォールバック段階が含まれます。ソースごとの制限時間は35秒、インタラクティブ検索の合計制限時間は45秒です。
+RSS sync interval	RSS同期の間隔
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	読み取り専用: シリーズと映画のフォルダー、安全でないファイルレコード、ディスク上にないファイルを確認します。
+Reading the root folder…	ルートフォルダーを読み込み中…
+Regular expression	正規表現
+Rejected	拒否
+Release title	リリースのタイトル
+Release type	リリースの種類
+Reload folders	フォルダーを再読み込み
+Remove condition	条件を削除
+Remove condition {}	条件 {} を削除
+Remove mapping	マッピングを削除
+Remove the selected series from Kitsunarr	選択したシリーズを Kitsunarr から削除
+Remove the {} selected series and their episode records from Kitsunarr?	選択した {} 件のシリーズとそのエピソードのレコードを Kitsunarr から削除しますか？
+Remove {}	{} を削除
+Remove {} from the blocklist	{} をブロックリストから削除
+Remove {} series	{} 件のシリーズを削除
+Remove “{}” from Kitsunarr?	「{}」を Kitsunarr から削除しますか？
+Remove…	削除…
+Removing…	削除中…
+Rename every file of the selected series to the naming settings	選択したシリーズのすべてのファイルを命名設定に従ってリネーム
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	選択した {} 件のシリーズのすべてのファイルを命名設定に従ってリネームしますか？ 先にシリーズの「ファイルをリネーム」プレビューで名前を確認してください。
+Rename file	ファイルをリネーム
+Renaming mode	リネームモード
+Required condition {}	条件 {} を必須にする
+Rescan disk	ディスクを再スキャン
+Restore media type	復元するメディアの種類
+Result	結果
+Retention	保持期間
+Review	確認
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	対象のタイトルとエピソードのマッチを確認してください。ファイル、パス、監視、履歴は保持されます。一致しないエピソードは、その番号が新しいカタログで空いている場合にのみ番号を保持します。
+Root folder for added shows	追加する番組のルートフォルダー
+Save path	保存先のパス
+Saving…	保存中…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	ダウンロードフォルダーをスキャンし、映画ごとに確認して、本編と一致する字幕をライブラリにコピーまたは移動します。既存の本編はアップグレードの場合にのみ置き換えられます。
+Search again	再検索
+Search catalogues	カタログを検索
+Search diagnostics	検索の診断
+Search for missing episodes once imported	インポート後に欠落エピソードを検索
+Search for {}	{} を検索
+Search incomplete	検索が完了しませんでした
+Search indexers for {}	インデクサーで {} を検索
+Search season packs for {}	{} のシーズンパックを検索
+Search sources	検索ソース
+Search sources unavailable	検索ソースを利用できません
+Search the library	ライブラリを検索
+Search titles…	タイトルを検索…
+Search {}	{} で検索
+Searching “{}”…	「{}」を検索中…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	シーズンフォルダーのタイトルは {} 内のカタログのタイトルを置き換えます。カタログのタイトルを使う場合は空欄にしてください。
+Season {} title	シーズン {} のタイトル
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	上でソースを選択するか、インデクサーの設定でインタラクティブ検索を有効にしてください。ソースのタグで検索対象のシリーズを制限することもできます。
+Select all	すべて選択
+Select all movies on this page	このページのすべての映画を選択
+Select every episode on this page	このページのすべてのエピソードを選択
+Select {}	{} を選択
+Select {} S{}E{}	{} S{}E{} を選択
+Send now	今すぐ送信
+Send {} now	{} を今すぐ送信
+Series & anime	シリーズとアニメ
+Series history	シリーズの履歴
+Series of {}	{} のシリーズ
+Series title, e.g. Severance (or tvdb:12345)	シリーズのタイトル (例: Severance、または tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	{} / {} 件のリリースを表示中。フィルターは再検索せずにこれらの結果に適用されます。
+Size (GiB)	サイズ (GiB)
+Sort by	並べ替え
+Specifications JSON	仕様 JSON
+Stalled torrent timeout	停滞したトレントのタイムアウト
+TMDB API key	TMDB APIキー
+Tag existing titles	既存のタイトルにタグを付ける
+Tag {}	タグ {}
+Target catalogue	対象のカタログ
+Target catalogue ID	対象のカタログID
+Test a release	リリースをテスト
+Test details	テストの詳細
+Test file name	テスト用のファイル名
+Test format	フォーマットをテスト
+Test indexer flags	テスト用のインデクサーフラグ
+Test language	テスト用の言語
+Test original language	テスト用の元の言語
+Test quality	テスト用の品質
+Test release title	テスト用のリリースタイトル
+Test release type	テスト用のリリースの種類
+Test size in GiB	テスト用のサイズ (GiB)
+The catalogues share an external identity.	これらのカタログは外部IDを共有しています。
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	この選択はすべてのエピソードの監視状態を置き換え (スペシャルは2つのスペシャル用の選択肢でのみ変更されます)、監視中のエピソードがある各シーズンを監視します。「なし」はシリーズの監視も解除します。
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	本編と一致する字幕は映画フォルダーに復元されます。既存のファイルが上書きされることはありません。
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	フォルダーの名前が変更されます (別のディスクの場合はコピーしてから削除されます)。新しいフォルダーは存在しないか空である必要があります。
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	応答したインデクサーからリリースは返されませんでした。他のソースは失敗しました。上のエラーを確認して、もう一度お試しください。
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	この条件は保持されます。フィールドを変更するには「JSONを編集」を使用してください。「フォーマットをテスト」で評価できるかどうかがわかります。
+Title pattern of {}	{} のタイトルパターン
+Title to add	追加するタイトル
+Title to search for	検索するタイトル
+Title, group, quality or rejection reason…	タイトル、グループ、品質、または拒否理由…
+Titles considered:	検討されたタイトル:
+Toggle colour theme	カラーテーマを切り替え
+Toggle sort direction	並べ替えの方向を切り替え
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	保存する前に、テレビ、アニメ、映画のリリース名で試してください。フォーマットの条件を確認します。品質プロファイルのスコアとダウンロードの承認は別です。
+Ungroup	グループを解除
+Ungroup {}	{} のグループを解除
+Unknown value ({})	不明な値 ({})
+Unmapped folders	未マッピングのフォルダー
+Unmatched titles	一致しないタイトル
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	削除されたエピソードの監視を解除 (手動で削除されたか、ディスクから消えたもの。アップグレードで監視が解除されることはありません)
+Unwatched	未視聴
+Use global	グローバル設定を使用
+Use global sizes for {}	{} にグローバルのサイズを使用
+Valid days	有効日数
+Value	値
+Values	値の一覧
+View	表示
+Wanted lists	未取得のリスト
+Watched	視聴済み
+Watched date	視聴日
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	このオプションがオフの場合、ファイルはディスクに残ります。削除されたフォルダーは、ごみ箱が設定されていればごみ箱に移動します。
+iCal feed address	iCal フィードのアドレス
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	タグ) でカタログと照合されます。インポートされたタイトルはフォルダーをそのまま使い、ファイルはその場でスキャンされ、その後監視の選択が適用されます。移動やリネームは一切行われません。
+{} Not renamed: {}	{} リネームされなかったもの: {}
+{} factor	{} の係数
+{} files imported. Review the results below.	{} 件のファイルをインポートしました。下の結果を確認してください。
+{} imported, {} failed; see each folder.	{} 件をインポート、{} 件が失敗しました。各フォルダーを確認してください。
+{} imported.	{} をインポートしました。
+{} matched · {} kept at current numbers · {} new episodes	{} 件マッチ · {} 件は現在の番号を保持 · {} 件の新しいエピソード
+{} min	{} 分
+{} of {} folders selected	{} / {} 個のフォルダーを選択
+{} releases found, {} accepted, nothing grabbed.	{} 件のリリースが見つかり、{} 件が承認されましたが、何も取得されませんでした。
+{} series and {} movies, {} files checked: {} issues.	シリーズ {} 件、映画 {} 件、ファイル {} 件を確認しました: 問題 {} 件。
+{} series moved.	{} 件のシリーズを移動しました。
+{} series moved; not moved: {}	{} 件のシリーズを移動しました。移動されなかったもの: {}
+{} series removed.	{} 件のシリーズを削除しました。
+{} series removed; kept: {}	{} 件のシリーズを削除しました。保持: {}
+{} size of {}	{}サイズ: {}
+{} size slider of {}	{}サイズのスライダー: {}
+{} titles	{} 件のタイトル
+{}: {} releases from {} indexer(s). {} responding.	{}: {} 件のリリース ({} 個のインデクサーから)。{} 個が応答。
+· API:	· API:
+· negated	· 否定
+· required	· 必須
+· {} ms · {} releases	· {} ms · {} 件のリリース
+— MiB per minute	— 1分あたりのMiB
+— in library	— ライブラリ内
+→ current number	→ 現在の番号
+or	または
+1 title	1 件のタイトル

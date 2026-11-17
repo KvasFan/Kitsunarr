@@ -966,3 +966,347 @@ Scene numbering from TheXEM	ترقيم المشهد من TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	ترقيم المشهد مستنتج من TheXEM (غير موثّق)
 Season {} (scene seasons {})	الموسم {} (مواسم المشهد {})
 {} (scene {})	{} (المشهد {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	مجموعة سلسلة مستخرجة من علاقات AniList أو MyAnimeList. العناوين المضافة لاحقًا من السلسلة نفسها تنضم إليها أيضًا. العناوين المُزالة تبقى خارجها عند التحديث.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	الجودة التي ليس لها تجاوز تستخدم الإعدادات › الجودة. داخل التجاوز، الفارغ يعني بلا حد؛ والحد الأقصى صفر يعني أيضًا بلا حد.
+Add a movie, or change the search and watched filter.	أضف فيلمًا، أو غيّر البحث ومرشح المشاهدة.
+Add a root folder in Settings › Media management first.	أضف مجلدًا جذرًا في الإعدادات › إدارة الوسائط أولًا.
+Add qualities to {}	إضافة جودات إلى {}
+All decisions	كل القرارات
+All seasons	كل المواسم
+All selected flags must be present.	يجب أن تكون كل العلامات المحددة موجودة.
+All sources	كل المصادر
+Allow {}	السماح بـ {}
+Also delete their folders and files (to the recycle bin when one is set)	حذف مجلداتها وملفاتها أيضًا (إلى سلة المحذوفات إن كانت محددة)
+Apply sources	تطبيق المصادر
+As the catalogue says	كما يقول الكتالوج
+Auto tag name	اسم الوسم التلقائي
+Automatic match / keep current number	مطابقة تلقائية / الإبقاء على الرقم الحالي
+Automatic search for {}	البحث التلقائي عن {}
+Below the root folder; use / for sub-folders.	تحت المجلد الجذر؛ استخدم / للمجلدات الفرعية.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	الأفضل أولًا. اسحب المقابض أو استخدم الأسهم لإعادة الترتيب. الجودات داخل مجموعة واحدة متساوية في الترتيب.
+Bulk actions	إجراءات جماعية
+Catalogue ID	معرّف الكتالوج
+Catalogue changed.	تم تغيير الكتالوج.
+Catalogue match	مطابقة الكتالوج
+Change catalogue	تغيير الكتالوج
+Choose a movie…	اختر فيلمًا…
+Choose a root folder…	اختر مجلدًا جذرًا…
+Choose episodes for {}	اختر حلقات لـ {}
+Choose which episodes are monitored, as when adding the series	اختر الحلقات المراقبة، كما عند إضافة المسلسل
+Choose which episodes of the selected series are monitored	اختر الحلقات المراقبة من المسلسلات المحددة
+Choose {}	اختيار {}
+Clean library level	مستوى تنظيف المكتبة
+Clean library tag	وسم تنظيف المكتبة
+Clear filters	مسح المرشحات
+Clear or adjust the filters to see more results.	امسح المرشحات أو عدّلها لرؤية نتائج أكثر.
+Codec of {}	ترميز {}
+Compression mode	وضع الضغط
+Condition indexer flags	علامات المفهرس للشرط
+Condition language	لغة الشرط
+Condition name	اسم الشرط
+Condition name {}	اسم الشرط {}
+Condition regular expression {}	التعبير النمطي للشرط {}
+Condition size {}	حجم الشرط {}
+Condition type	نوع الشرط
+Condition value	قيمة الشرط
+Copy (keep the source)	نسخ (الاحتفاظ بالمصدر)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	أنشئ مجموعة من جودة، ثم اسحب جودات أخرى إليها أو استخدم محددات المجموعة. يتبع حد القطع الجودة إلى مجموعتها؛ وعند فك التجميع يُستخدم أعلى عضو في المجموعة.
+Current folder:	المجلد الحالي:
+Custom format name	اسم التنسيق المخصص
+Delete tag {}	حذف الوسم {}
+Delete the file of episode {}	حذف ملف الحلقة {}
+Delete the movie folder and its files	حذف مجلد الفيلم وملفاته
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	حذف «{}» والترجمات المطابقة له؟ تذهب إلى سلة المحذوفات إن كانت محددة.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	حذف «{}»؟ تبقى مسلسلاتها وأفلامها في المكتبة ولن تنضم إليها تلقائيًا عند التحديث.
+Detect from title	اكتشاف من العنوان
+Disk scanned: {} {}	تم فحص القرص: {} {}
+Dismiss	تجاهل
+Don't change	بلا تغيير
+Don't import	عدم الاستيراد
+Done editing groups	إنهاء تعديل المجموعات
+Drag to reorder or move into a group	اسحب لإعادة الترتيب أو للنقل إلى مجموعة
+Drag {}	سحب {}
+Drop here to move out of a group or to the lowest preference	أفلت هنا للإخراج من مجموعة أو للنقل إلى أدنى أفضلية
+Drop qualities here	أفلت الجودات هنا
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	يحتفظ كل مسلسل بمجلده تحت المجلد الجذر. المسلسل الذي يوجد مجلده الجديد وليس فارغًا يحتفظ بمجلده الحالي.
+Edit JSON	تعديل JSON
+Edit group	تعديل المجموعة
+Edit groups	تعديل المجموعات
+Enter a non-negative test size within the supported range.	أدخل حجم اختبار غير سالب ضمن النطاق المدعوم.
+Enter a valid test size in GiB.	أدخل حجم اختبار صالحًا بوحدة GiB.
+Enter valid test indexer flags.	أدخل علامات مفهرس صالحة للاختبار.
+Episode matches	مطابقات الحلقات
+Event type	نوع الحدث
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	يجب أن يتطابق كل نوع من الشروط. داخل النوع الواحد، يمكن أن يتطابق أي شرط ويجب أن يتطابق كل شرط مطلوب. النفي يعكس الشرط الصالح.
+Every folder of this root folder belongs to a title already.	كل مجلدات هذا المجلد الجذر تعود بالفعل إلى عنوان ما.
+Exclude {}	استبعاد {}
+Exclusion catalogue	كتالوج الاستثناء
+Exclusion id	معرّف الاستثناء
+Exclusion title	عنوان الاستثناء
+Factor for {}	معامل {}
+Feed tags	وسوم الموجز
+File name (optional)	اسم الملف (اختياري)
+Filter by monitoring	التصفية حسب المراقبة
+Filter by watched state	التصفية حسب حالة المشاهدة
+Filter release decisions	تصفية قرارات الإصدارات
+Filter releases	تصفية الإصدارات
+Find target title	البحث عن العنوان الهدف
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	مجلدات في مجلد جذر لا يستخدمها أي عنوان. يُطابق كل منها مع الكتالوج حسب اسمه (أو
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	بالنسبة للإصدارات غير المطابقة، قارن العنوان المحلَّل وأرقام الحلقات أدناه بالعناوين التي أُخذت في الاعتبار. أضف عنوانًا بديلًا أو صحّح تعيين الحلقات في المكتبة عند الحاجة.
+Format does not match	التنسيق غير مطابق
+Format matches	التنسيق مطابق
+Full season	موسم كامل
+Grab it now instead of waiting for the delay	اجلبه الآن بدلًا من انتظار التأخير
+Grab {}	جلب {}
+Group	المجموعة
+Group for {}	مجموعة {}
+Group name	اسم المجموعة
+Group {}	المجموعة {}
+Guided editor	المحرر الموجَّه
+I confirm that the target catalogue entry is the same title.	أؤكد أن إدخال الكتالوج الهدف هو العنوان نفسه.
+Import	استيراد
+Import existing folders	استيراد المجلدات الموجودة
+Import mode	وضع الاستيراد
+Import {}	استيراد {}
+Imported from movie folder	مستورد من مجلد الفيلم
+Include in file names ({} token)	تضمين في أسماء الملفات (الرمز {})
+Include {}	تضمين {}
+Indexer flags (bitmask)	علامات المفهرس (قناع بتات)
+Jellyfin library	مكتبة Jellyfin
+Jellyfin user	مستخدم Jellyfin
+Jellyfin watched sync can update this status.	يمكن لمزامنة المشاهدة مع Jellyfin تحديث هذه الحالة.
+Key name	اسم المفتاح
+Key permission	صلاحية المفتاح
+Kind of {}	نوع {}
+Label of {}	تسمية {}
+Language	اللغة
+Library import	استيراد المكتبة
+List exclusions	قائمة الاستثناءات
+Loading sources…	جارٍ تحميل المصادر…
+Main navigation	التنقل الرئيسي
+Mark unwatched	وضع علامة غير مشاهَد
+Mark watched	وضع علامة مشاهَد
+Match	مطابقة
+Match any other language	مطابقة أي لغة أخرى
+Match episode {}	مطابقة الحلقة {}
+Match for {}	مطابقة لـ {}
+Matching series	المسلسلات المطابقة
+Matching subtitles follow the file's new name.	تتبع الترجمات المطابقة الاسم الجديد للملف.
+Maximum GiB (inclusive)	الحد الأقصى بـ GiB (شامل)
+Maximum size	الحجم الأقصى
+Maximum year	السنة القصوى
+Minimum GiB (exclusive)	الحد الأدنى بـ GiB (غير شامل)
+Minimum age	العمر الأدنى
+Minimum level	المستوى الأدنى
+Minimum score increment for upgrades	الحد الأدنى لزيادة النقاط للترقيات
+Minimum year	السنة الدنيا
+Monitor episode {}	مراقبة الحلقة {}
+Monitor new seasons	مراقبة المواسم الجديدة
+Monitored filter	مرشح المراقبة
+Monitoring	المراقبة
+Monitoring updated for {} series.	تم تحديث المراقبة للمسلسلات: {}.
+Monitoring — {} series	المراقبة — المسلسلات: {}
+Monitoring…	جارٍ تطبيق المراقبة…
+Move folder	نقل المجلد
+Move the files	نقل الملفات
+Move the files to the new folder	نقل الملفات إلى المجلد الجديد
+Move the movie folder, or point the movie at another folder	انقل مجلد الفيلم، أو وجّه الفيلم إلى مجلد آخر
+Move the selected series into another root folder	نقل المسلسلات المحددة إلى مجلد جذر آخر
+Move the series folder, or point the series at another folder	انقل مجلد المسلسل، أو وجّه المسلسل إلى مجلد آخر
+Move to root folder…	نقل إلى مجلد جذر…
+Move {} series	نقل المسلسلات: {}
+Movie bulk actions	إجراءات جماعية للأفلام
+Movie file deleted	تم حذف ملف الفيلم
+Movie file renamed	تمت إعادة تسمية ملف الفيلم
+Movie file restored	تمت استعادة ملف الفيلم
+Movie for {}	فيلم لـ {}
+Movie history	سجل الفيلم
+Movie import mode	وضع استيراد الأفلام
+Movie removed, and its folder deleted or recycled.	تمت إزالة الفيلم، وحُذف مجلده أو نُقل إلى سلة المحذوفات.
+Movie source folder	مجلد مصدر الفيلم
+Movies (Tanukarr)	الأفلام (Tanukarr)
+Moving…	جارٍ النقل…
+Naming & file settings	التسمية وإعدادات الملفات
+Negate condition {}	نفي الشرط {}
+New condition type	نوع الشرط الجديد
+New profile	ملف تعريف جديد
+New root folder path	مسار المجلد الجذر الجديد
+New tag	وسم جديد
+Next	التالي
+No group	بلا مجموعة
+No indexer responded successfully. Check the source errors above, then try again.	لم يستجب أي مفهرس بنجاح. تحقق من أخطاء المصادر أعلاه، ثم حاول مرة أخرى.
+No match for “{}”	لا تطابق لـ «{}»
+No releases match these filters	لا توجد إصدارات تطابق هذه المرشحات
+No root folder	لا يوجد مجلد جذر
+Nothing to import	لا شيء للاستيراد
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	يتغير المجلد المسجّل فقط؛ استخدم هذا عندما تكون الملفات موجودة هناك بالفعل، ثم افحص القرص.
+Open navigation	فتح التنقل
+Open on {}	فتح في {}
+Organize files	تنظيم الملفات
+Organizing…	جارٍ التنظيم…
+Original language	اللغة الأصلية
+Override for a mapped anime batch or a movie feature (single episode).	تجاوز لدفعة أنمي معيّنة أو لملف فيلم رئيسي (حلقة واحدة).
+Parsed title:	العنوان المحلَّل:
+Passkey	مفتاح المرور
+Place above {}	الوضع فوق {}
+Place at lowest preference	الوضع في أدنى أفضلية
+Position of {}	موضع {}
+Prefer {} less	تفضيل {} أقل
+Prefer {} more	تفضيل {} أكثر
+Preferred catalogue	الكتالوج المفضل
+Preset title	العنوان المُعدّ مسبقًا
+Prevent import lists from adding it again	منع قوائم الاستيراد من إضافته مرة أخرى
+Prevent import lists from adding them again	منع قوائم الاستيراد من إضافتها مرة أخرى
+Preview again to review your changes.	عاين مرة أخرى لمراجعة تغييراتك.
+Previous	السابق
+Progress of {}	تقدم {}
+Proxy hostname	اسم مضيف الوكيل
+Proxy port	منفذ الوكيل
+Quality cutoff	حد القطع للجودة
+Quality profile for added shows	ملف تعريف الجودة للعروض المضافة
+Quality sizes	أحجام الجودة
+Quality: {} · Group: {} · Languages: {} · {}	الجودة: {} · المجموعة: {} · اللغات: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	تتضمن خطط الاستعلام مستويات احتياطية قد لا تُنفَّذ. للمصادر مهلة 35 ثانية؛ وللبحث التفاعلي مهلة إجمالية 45 ثانية.
+RSS sync interval	الفاصل الزمني لمزامنة RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	للقراءة فقط: يفحص مجلدات المسلسلات والأفلام، وسجلات الملفات غير الآمنة، والملفات المفقودة من القرص.
+Reading the root folder…	جارٍ قراءة المجلد الجذر…
+Regular expression	تعبير نمطي
+Rejected	مرفوض
+Release title	عنوان الإصدار
+Release type	نوع الإصدار
+Reload folders	إعادة تحميل المجلدات
+Remove condition	إزالة الشرط
+Remove condition {}	إزالة الشرط {}
+Remove mapping	إزالة التعيين
+Remove the selected series from Kitsunarr	إزالة المسلسلات المحددة من Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	إزالة المسلسلات المحددة ({}) وسجلات حلقاتها من Kitsunarr؟
+Remove {}	إزالة {}
+Remove {} from the blocklist	إزالة {} من قائمة الحظر
+Remove {} series	إزالة المسلسلات: {}
+Remove “{}” from Kitsunarr?	إزالة «{}» من Kitsunarr؟
+Remove…	إزالة…
+Removing…	جارٍ الإزالة…
+Rename every file of the selected series to the naming settings	إعادة تسمية كل ملفات المسلسلات المحددة وفق إعدادات التسمية
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	إعادة تسمية كل ملفات المسلسلات المحددة ({}) وفق إعدادات التسمية؟ استخدم معاينة «إعادة تسمية الملفات» لكل مسلسل للتحقق من الأسماء أولًا.
+Rename file	إعادة تسمية الملف
+Renaming mode	وضع إعادة التسمية
+Required condition {}	الشرط المطلوب {}
+Rescan disk	إعادة فحص القرص
+Restore media type	استعادة نوع الوسائط
+Result	النتيجة
+Retention	مدة الاحتفاظ
+Review	مراجعة
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	راجع العنوان الهدف ومطابقات الحلقات. يُحتفظ بالملفات والمسارات والمراقبة والسجل. تحتفظ الحلقات غير المطابقة بأرقامها فقط إذا كانت هذه الأرقام غير مستخدمة في الكتالوج الجديد.
+Root folder for added shows	المجلد الجذر للعروض المضافة
+Save path	مسار الحفظ
+Saving…	جارٍ الحفظ…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	افحص مجلد تنزيل، وراجع كل فيلم وانسخ ملفه الرئيسي أو انقله مع الترجمات المطابقة إلى المكتبة. لا تُستبدل الملفات الرئيسية الموجودة إلا بالترقيات.
+Search again	البحث مرة أخرى
+Search catalogues	البحث في الكتالوجات
+Search diagnostics	تشخيص البحث
+Search for missing episodes once imported	البحث عن الحلقات المفقودة بعد الاستيراد
+Search for {}	البحث عن {}
+Search incomplete	البحث غير مكتمل
+Search indexers for {}	البحث في المفهرسات عن {}
+Search season packs for {}	البحث عن حزم المواسم لـ {}
+Search sources	مصادر البحث
+Search sources unavailable	مصادر البحث غير متاحة
+Search the library	البحث في المكتبة
+Search titles…	البحث في العناوين…
+Search {}	بحث {}
+Searching “{}”…	جارٍ البحث عن «{}»…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	تحل عناوين مجلدات المواسم محل عناوين الكتالوج في {}. اتركها فارغة للإبقاء على عناوين الكتالوج.
+Season {} title	عنوان الموسم {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	اختر مصدرًا أعلاه، أو فعّل البحث التفاعلي في إعدادات المفهرس. يمكن لوسوم المصادر أيضًا تقييد المسلسلات التي يُبحث عنها.
+Select all	تحديد الكل
+Select all movies on this page	تحديد كل الأفلام في هذه الصفحة
+Select every episode on this page	تحديد كل الحلقات في هذه الصفحة
+Select {}	تحديد {}
+Select {} S{}E{}	تحديد {} S{}E{}
+Send now	إرسال الآن
+Send {} now	إرسال {} الآن
+Series & anime	المسلسلات والأنمي
+Series history	سجل المسلسل
+Series of {}	مسلسل {}
+Series title, e.g. Severance (or tvdb:12345)	عنوان المسلسل، مثل Severance (أو tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	عرض {} من {} إصدار. تُطبَّق المرشحات على هذه النتائج دون بحث جديد.
+Size (GiB)	الحجم (GiB)
+Sort by	الترتيب حسب
+Specifications JSON	JSON المواصفات
+Stalled torrent timeout	مهلة التورنت المتوقف
+TMDB API key	مفتاح TMDB API
+Tag existing titles	وسم العناوين الموجودة
+Tag {}	وسم {}
+Target catalogue	الكتالوج الهدف
+Target catalogue ID	معرّف الكتالوج الهدف
+Test a release	اختبار إصدار
+Test details	تفاصيل الاختبار
+Test file name	اسم ملف الاختبار
+Test format	اختبار التنسيق
+Test indexer flags	علامات المفهرس للاختبار
+Test language	لغة الاختبار
+Test original language	اللغة الأصلية للاختبار
+Test quality	جودة الاختبار
+Test release title	عنوان إصدار الاختبار
+Test release type	نوع إصدار الاختبار
+Test size in GiB	حجم الاختبار بـ GiB
+The catalogues share an external identity.	تشترك الكتالوجات في هوية خارجية.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	يستبدل الاختيار حالة المراقبة لكل حلقة (لا تتغير الحلقات الخاصة إلا بخياري الحلقات الخاصة)، ثم يراقب كل موسم فيه حلقة مراقبة. «لا شيء» يلغي أيضًا مراقبة المسلسل.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	يُستعاد الملف الرئيسي والترجمات المطابقة إلى مجلد الفيلم. لا تُستبدل الملفات الموجودة أبدًا.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	تُعاد تسمية المجلد، أو يُنسخ ثم يُحذف إذا كان على قرص آخر. يجب أن يكون المجلد الجديد غير موجود أو فارغًا.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	لم تُرجع المفهرسات المستجيبة أي إصدارات. فشلت مصادر أخرى؛ تحقق من الأخطاء أعلاه وحاول مرة أخرى.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	هذا الشرط محفوظ كما هو. استخدم «تعديل JSON» لتغيير حقوله؛ و«اختبار التنسيق» يُبيّن ما إذا كان يمكن تقييمه.
+Title pattern of {}	نمط عنوان {}
+Title to add	العنوان المراد إضافته
+Title to search for	العنوان المراد البحث عنه
+Title, group, quality or rejection reason…	العنوان أو المجموعة أو الجودة أو سبب الرفض…
+Titles considered:	العناوين التي أُخذت في الاعتبار:
+Toggle colour theme	تبديل سمة الألوان
+Toggle sort direction	تبديل اتجاه الترتيب
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	جرّب اسم إصدار لمسلسل أو أنمي أو فيلم قبل الحفظ. يتحقق هذا من شروط التنسيق؛ أما نقاط ملف تعريف الجودة والموافقة على التنزيل فمنفصلة.
+Ungroup	فك التجميع
+Ungroup {}	فك تجميع {}
+Unknown value ({})	قيمة غير معروفة ({})
+Unmapped folders	مجلدات غير معيّنة
+Unmatched titles	عناوين غير مطابقة
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	إلغاء مراقبة الحلقات المحذوفة (المحذوفة يدويًا أو المفقودة من القرص؛ الترقيات لا تلغي المراقبة أبدًا)
+Unwatched	غير مشاهَد
+Use global	استخدام الإعداد العام
+Use global sizes for {}	استخدام الأحجام العامة لـ {}
+Valid days	أيام الصلاحية
+Value	القيمة
+Values	القيم
+View	عرض
+Wanted lists	قوائم المطلوب
+Watched	تمت المشاهدة
+Watched date	تاريخ المشاهدة
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	عند تعطيل هذا الخيار، تبقى الملفات على القرص. تذهب المجلدات المحذوفة إلى سلة المحذوفات إن كانت محددة.
+iCal feed address	عنوان موجز iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	الوسم الموجود فيه)؛ تحتفظ العناوين المستوردة بمجلدها، وتُفحص ملفاتها في مكانها، ثم يُطبَّق خيار المراقبة. لا يُنقل أو يُعاد تسمية أي شيء.
+{} Not renamed: {}	{} لم تتم إعادة تسميته: {}
+{} factor	معامل {}
+{} files imported. Review the results below.	الملفات المستوردة: {}. راجع النتائج أدناه.
+{} imported, {} failed; see each folder.	المستورد: {}، الفاشل: {}؛ راجع كل مجلد.
+{} imported.	المستورد: {}.
+{} matched · {} kept at current numbers · {} new episodes	المطابق: {} · المحتفظ بأرقامه الحالية: {} · الحلقات الجديدة: {}
+{} min	{} دقيقة
+{} of {} folders selected	المجلدات المحددة: {} من {}
+{} releases found, {} accepted, nothing grabbed.	الإصدارات الموجودة: {}، المقبولة: {}، ولم يُجلب شيء.
+{} series and {} movies, {} files checked: {} issues.	المسلسلات: {}، الأفلام: {}، الملفات المفحوصة: {}، المشكلات: {}.
+{} series moved.	المسلسلات المنقولة: {}.
+{} series moved; not moved: {}	المسلسلات المنقولة: {}؛ لم يُنقل: {}
+{} series removed.	المسلسلات المُزالة: {}.
+{} series removed; kept: {}	المسلسلات المُزالة: {}؛ المحتفظ بها: {}
+{} size of {}	حجم {} لـ {}
+{} size slider of {}	شريط حجم {} لـ {}
+{} titles	العناوين: {}
+{}: {} releases from {} indexer(s). {} responding.	{}: {} إصدار من {} مفهرس. المستجيبة: {}.
+· API:	· API:
+· negated	· منفي
+· required	· مطلوب
+· {} ms · {} releases	· {} ms · {} إصدار
+— MiB per minute	— MiB لكل دقيقة
+— in library	— في المكتبة
+→ current number	→ الرقم الحالي
+or	أو
+1 title	عنوان واحد

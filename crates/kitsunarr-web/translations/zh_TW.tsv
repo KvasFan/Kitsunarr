@@ -966,3 +966,347 @@ Scene numbering from TheXEM	來自 TheXEM 的場景編號
 Scene numbering extrapolated from TheXEM (unverified)	從 TheXEM 推算的場景編號（未驗證）
 Season {} (scene seasons {})	第 {} 季（場景季 {}）
 {} (scene {})	{}（場景 {}）
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	從 AniList 或 MyAnimeList 關聯找到的系列作品群組。之後新增的同系列標題仍會加入其中。已移除的標題在重新整理時不會再加入。
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	沒有覆寫設定的品質會使用「設定 › 品質」。在覆寫設定中，留空表示無限制；最大值為零也表示無限制。
+Add a movie, or change the search and watched filter.	新增電影，或變更搜尋內容與觀看狀態篩選。
+Add a root folder in Settings › Media management first.	請先在「設定 › 媒體管理」中新增根目錄。
+Add qualities to {}	將品質加入 {}
+All decisions	所有決策
+All seasons	所有季
+All selected flags must be present.	必須具備所有選取的旗標。
+All sources	所有來源
+Allow {}	允許 {}
+Also delete their folders and files (to the recycle bin when one is set)	同時刪除其資料夾與檔案（若有設定資源回收筒則移至其中）
+Apply sources	套用來源
+As the catalogue says	依影視目錄
+Auto tag name	自動標籤名稱
+Automatic match / keep current number	自動比對 / 保留目前編號
+Automatic search for {}	自動搜尋 {}
+Below the root folder; use / for sub-folders.	位於根目錄之下；使用 / 表示子資料夾。
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	越前面越優先。拖曳把手或使用箭頭重新排序。群組內的品質優先順序相同。
+Bulk actions	批次操作
+Catalogue ID	影視目錄 ID
+Catalogue changed.	影視目錄已變更。
+Catalogue match	影視目錄比對
+Change catalogue	變更影視目錄
+Choose a movie…	選擇電影…
+Choose a root folder…	選擇根目錄…
+Choose episodes for {}	選擇 {} 的集數
+Choose which episodes are monitored, as when adding the series	選擇要監控的集數，與新增影集時相同
+Choose which episodes of the selected series are monitored	選擇所選影集中要監控的集數
+Choose {}	選擇 {}
+Clean library level	清理媒體庫層級
+Clean library tag	清理媒體庫標籤
+Clear filters	清除篩選
+Clear or adjust the filters to see more results.	清除或調整篩選條件以查看更多結果。
+Codec of {}	{} 的編解碼器
+Compression mode	壓縮模式
+Condition indexer flags	條件索引器旗標
+Condition language	條件語言
+Condition name	條件名稱
+Condition name {}	條件名稱 {}
+Condition regular expression {}	條件正規表示式 {}
+Condition size {}	條件大小 {}
+Condition type	條件類型
+Condition value	條件值
+Copy (keep the source)	複製（保留來源）
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	從某個品質建立群組，再將更多品質拖曳進去或使用群組選擇器。門檻會隨品質移入其群組；取消群組時會使用群組中最高的成員。
+Current folder:	目前資料夾：
+Custom format name	自訂格式名稱
+Delete tag {}	刪除標籤 {}
+Delete the file of episode {}	刪除第 {} 集的檔案
+Delete the movie folder and its files	刪除電影資料夾及其檔案
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	要刪除「{}」及其相符的字幕嗎？若有設定資源回收筒，將移至其中。
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	刪除「{}」？其中的影集與電影會保留在媒體庫中，重新整理時不會自動重新加入。
+Detect from title	從標題偵測
+Disk scanned: {} {}	已掃描磁碟：{} {}
+Dismiss	關閉
+Don't change	不變更
+Don't import	不匯入
+Done editing groups	完成群組編輯
+Drag to reorder or move into a group	拖曳以重新排序或移入群組
+Drag {}	拖曳 {}
+Drop here to move out of a group or to the lowest preference	拖放到這裡以移出群組或設為最低偏好
+Drop qualities here	將品質拖放到這裡
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	每部影集會在根目錄下保留自己的資料夾。若影集的新資料夾已存在且不是空的，則保留其目前資料夾。
+Edit JSON	編輯 JSON
+Edit group	編輯群組
+Edit groups	編輯群組
+Enter a non-negative test size within the supported range.	請輸入支援範圍內的非負測試大小。
+Enter a valid test size in GiB.	請輸入有效的測試大小（GiB）。
+Enter valid test indexer flags.	請輸入有效的測試索引器旗標。
+Episode matches	集數比對
+Event type	事件類型
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	每種條件類型都必須符合。同一類型中，任一條件符合即可，但所有必要條件都必須符合。反向會反轉有效的條件。
+Every folder of this root folder belongs to a title already.	此根目錄中的每個資料夾都已屬於某個標題。
+Exclude {}	排除 {}
+Exclusion catalogue	排除項目的影視目錄
+Exclusion id	排除項目 ID
+Exclusion title	排除項目標題
+Factor for {}	{} 的係數
+Feed tags	訂閱源標籤
+File name (optional)	檔案名稱（選填）
+Filter by monitoring	依監控狀態篩選
+Filter by watched state	依觀看狀態篩選
+Filter release decisions	篩選發布版本決策
+Filter releases	篩選發布版本
+Find target title	尋找目標標題
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	根目錄中沒有任何標題使用的資料夾。每個資料夾會依其名稱（或其中的
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	對於未比對的發布版本，請將下方解析出的標題與集數和已考慮的標題相互對照。必要時請在媒體庫中新增別名或更正集數對應。
+Format does not match	格式不符合
+Format matches	格式符合
+Full season	整季
+Grab it now instead of waiting for the delay	立即抓取，不等待延遲
+Grab {}	抓取 {}
+Group	群組
+Group for {}	{} 的群組
+Group name	群組名稱
+Group {}	將 {} 設為群組
+Guided editor	引導式編輯器
+I confirm that the target catalogue entry is the same title.	我確認目標影視目錄項目是同一個標題。
+Import	匯入
+Import existing folders	匯入現有資料夾
+Import mode	匯入模式
+Import {}	匯入 {}
+Imported from movie folder	已從電影資料夾匯入
+Include in file names ({} token)	包含於檔案名稱中（{} 標記）
+Include {}	包含 {}
+Indexer flags (bitmask)	索引器旗標（位元遮罩）
+Jellyfin library	Jellyfin 媒體庫
+Jellyfin user	Jellyfin 使用者
+Jellyfin watched sync can update this status.	Jellyfin 觀看狀態同步可能會更新此狀態。
+Key name	金鑰名稱
+Key permission	金鑰權限
+Kind of {}	{} 的類型
+Label of {}	{} 的標示
+Language	語言
+Library import	媒體庫匯入
+List exclusions	清單排除項目
+Loading sources…	正在載入來源…
+Main navigation	主導覽
+Mark unwatched	標記為未觀看
+Mark watched	標記為已觀看
+Match	比對
+Match any other language	符合任何其他語言
+Match episode {}	比對第 {} 集
+Match for {}	{} 的比對
+Matching series	相符的影集
+Matching subtitles follow the file's new name.	相符的字幕會隨檔案的新名稱一起變更。
+Maximum GiB (inclusive)	最大 GiB（含）
+Maximum size	最大大小
+Maximum year	最大年份
+Minimum GiB (exclusive)	最小 GiB（不含）
+Minimum age	最短時間長度
+Minimum level	最低層級
+Minimum score increment for upgrades	升級所需的最小分數增量
+Minimum year	最小年份
+Monitor episode {}	監控第 {} 集
+Monitor new seasons	監控新的季
+Monitored filter	監控篩選
+Monitoring	監控
+Monitoring updated for {} series.	已更新 {} 部影集的監控設定。
+Monitoring — {} series	監控 — {} 部影集
+Monitoring…	監控…
+Move folder	移動資料夾
+Move the files	移動檔案
+Move the files to the new folder	將檔案移至新資料夾
+Move the movie folder, or point the movie at another folder	移動電影資料夾，或將電影指向另一個資料夾
+Move the selected series into another root folder	將所選影集移至另一個根目錄
+Move the series folder, or point the series at another folder	移動影集資料夾，或將影集指向另一個資料夾
+Move to root folder…	移至根目錄…
+Move {} series	移動 {} 部影集
+Movie bulk actions	電影批次操作
+Movie file deleted	電影檔案已刪除
+Movie file renamed	電影檔案已重新命名
+Movie file restored	電影檔案已還原
+Movie for {}	{} 的電影
+Movie history	電影歷史記錄
+Movie import mode	電影匯入模式
+Movie removed, and its folder deleted or recycled.	電影已移除，其資料夾已刪除或移至資源回收筒。
+Movie source folder	電影來源資料夾
+Movies (Tanukarr)	電影（Tanukarr）
+Moving…	移動中…
+Naming & file settings	命名與檔案設定
+Negate condition {}	將條件 {} 反向
+New condition type	新條件類型
+New profile	新增設定檔
+New root folder path	新根目錄路徑
+New tag	新標籤
+Next	下一步
+No group	無群組
+No indexer responded successfully. Check the source errors above, then try again.	沒有索引器成功回應。請檢查上方的來源錯誤，然後再試一次。
+No match for “{}”	沒有符合「{}」的項目
+No releases match these filters	沒有符合這些篩選條件的發布版本
+No root folder	無根目錄
+Nothing to import	沒有可匯入的項目
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	只會變更記錄的資料夾；當檔案已在該處時使用此選項，然後掃描磁碟。
+Open navigation	開啟導覽
+Open on {}	在 {} 上開啟
+Organize files	整理檔案
+Organizing…	整理中…
+Original language	原始語言
+Override for a mapped anime batch or a movie feature (single episode).	用於已對應的動畫合輯或電影正片（單集）的覆寫設定。
+Parsed title:	解析出的標題：
+Passkey	Passkey
+Place above {}	放在 {} 之上
+Place at lowest preference	放在最低偏好
+Position of {}	{} 的位置
+Prefer {} less	降低 {} 的偏好
+Prefer {} more	提高 {} 的偏好
+Preferred catalogue	偏好的影視目錄
+Preset title	預設集標題
+Prevent import lists from adding it again	防止匯入清單再次新增它
+Prevent import lists from adding them again	防止匯入清單再次新增它們
+Preview again to review your changes.	請再次預覽以檢查您的變更。
+Previous	上一步
+Progress of {}	{} 的進度
+Proxy hostname	代理伺服器主機名稱
+Proxy port	代理伺服器連接埠
+Quality cutoff	品質門檻
+Quality profile for added shows	新增影集時的品質設定檔
+Quality sizes	品質大小
+Quality: {} · Group: {} · Languages: {} · {}	品質：{} · 群組：{} · 語言：{} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	查詢計畫包含可能不會執行的備援層級。每個來源有 35 秒的時間預算；互動式搜尋的總時間預算為 45 秒。
+RSS sync interval	RSS 同步間隔
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	唯讀：檢查影集與電影資料夾、不安全的檔案記錄，以及磁碟上遺失的檔案。
+Reading the root folder…	正在讀取根目錄…
+Regular expression	正規表示式
+Rejected	已拒絕
+Release title	發布版本標題
+Release type	發布版本類型
+Reload folders	重新載入資料夾
+Remove condition	移除條件
+Remove condition {}	移除條件 {}
+Remove mapping	移除對應
+Remove the selected series from Kitsunarr	從 Kitsunarr 移除所選影集
+Remove the {} selected series and their episode records from Kitsunarr?	要從 Kitsunarr 移除所選的 {} 部影集及其集數記錄嗎？
+Remove {}	移除 {}
+Remove {} from the blocklist	從封鎖清單移除 {}
+Remove {} series	移除 {} 部影集
+Remove “{}” from Kitsunarr?	要從 Kitsunarr 移除「{}」嗎？
+Remove…	移除…
+Removing…	移除中…
+Rename every file of the selected series to the naming settings	依命名設定重新命名所選影集的所有檔案
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	要依命名設定重新命名所選 {} 部影集的所有檔案嗎？請先使用影集的「重新命名檔案」預覽檢查名稱。
+Rename file	重新命名檔案
+Renaming mode	重新命名模式
+Required condition {}	條件 {} 為必要
+Rescan disk	重新掃描磁碟
+Restore media type	還原的媒體類型
+Result	結果
+Retention	保留期限
+Review	檢閱
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	請檢閱目標標題與集數比對。檔案、路徑、監控與歷史記錄都會保留。未比對的集數只有在其編號於新影視目錄中未被使用時，才會保留原編號。
+Root folder for added shows	新增影集時的根目錄
+Save path	儲存路徑
+Saving…	儲存中…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	掃描下載資料夾，逐一檢閱每部電影，並將其正片與相符的字幕複製或移動到媒體庫。現有正片只會被升級取代。
+Search again	再次搜尋
+Search catalogues	搜尋影視目錄
+Search diagnostics	搜尋診斷
+Search for missing episodes once imported	匯入後搜尋缺少的集數
+Search for {}	搜尋 {}
+Search incomplete	搜尋未完成
+Search indexers for {}	在索引器中搜尋 {}
+Search season packs for {}	搜尋 {} 的季合輯包
+Search sources	搜尋來源
+Search sources unavailable	搜尋來源無法使用
+Search the library	搜尋媒體庫
+Search titles…	搜尋標題…
+Search {}	使用 {} 搜尋
+Searching “{}”…	正在搜尋「{}」…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	季資料夾標題會取代 {} 中影視目錄的標題。留空則保留影視目錄的標題。
+Season {} title	第 {} 季標題
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	請在上方選擇來源，或在索引器設定中啟用互動式搜尋。來源標籤也能限制要搜尋哪些影集。
+Select all	全選
+Select all movies on this page	選取此頁上的所有電影
+Select every episode on this page	選取此頁上的所有集數
+Select {}	選取 {}
+Select {} S{}E{}	選取 {} S{}E{}
+Send now	立即傳送
+Send {} now	立即傳送 {}
+Series & anime	影集與動畫
+Series history	影集歷史記錄
+Series of {}	{} 的影集
+Series title, e.g. Severance (or tvdb:12345)	影集標題，例如 Severance（或 tvdb:12345）
+Showing {} of {} releases. Filters apply to these results without searching again.	顯示 {} 個（共 {} 個）發布版本。篩選只會套用到這些結果，不會重新搜尋。
+Size (GiB)	大小（GiB）
+Sort by	排序方式
+Specifications JSON	規格 JSON
+Stalled torrent timeout	停滯 torrent 逾時
+TMDB API key	TMDB API 金鑰
+Tag existing titles	為現有標題加上標籤
+Tag {}	標籤 {}
+Target catalogue	目標影視目錄
+Target catalogue ID	目標影視目錄 ID
+Test a release	測試發布版本
+Test details	測試詳細資料
+Test file name	測試檔案名稱
+Test format	測試格式
+Test indexer flags	測試索引器旗標
+Test language	測試語言
+Test original language	測試原始語言
+Test quality	測試品質
+Test release title	測試發布版本標題
+Test release type	測試發布版本類型
+Test size in GiB	測試大小（GiB）
+The catalogues share an external identity.	這些影視目錄共用一個外部識別。
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	此選項會取代每一集的監控狀態（特別篇只會由兩個特別篇選項變更），然後監控每個含有已監控集數的季。「無」也會取消監控該影集。
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	正片與相符的字幕會還原到電影資料夾中。現有檔案絕不會被覆寫。
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	資料夾會重新命名；若在另一個磁碟上，則先複製再移除。新資料夾必須不存在或為空。
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	有回應的索引器沒有傳回任何發布版本。其他來源失敗；請檢查上方的錯誤並再試一次。
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	此條件會被保留。使用「編輯 JSON」變更其欄位；「測試格式」會回報它能否被評估。
+Title pattern of {}	{} 的標題模式
+Title to add	要新增的標題
+Title to search for	要搜尋的標題
+Title, group, quality or rejection reason…	標題、發布群組、品質或拒絕原因…
+Titles considered:	已考慮的標題：
+Toggle colour theme	切換色彩主題
+Toggle sort direction	切換排序方向
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	儲存前，請用電視、動畫或電影的發布名稱試試看。這會檢查格式的條件；品質設定檔分數與下載核准是分開的。
+Ungroup	取消群組
+Ungroup {}	取消群組 {}
+Unknown value ({})	未知值（{}）
+Unmapped folders	未對應的資料夾
+Unmatched titles	未比對的標題
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	取消監控已刪除的集數（手動刪除或磁碟上遺失；升級絕不會取消監控）
+Unwatched	未觀看
+Use global	使用全域設定
+Use global sizes for {}	對 {} 使用全域大小
+Valid days	有效天數
+Value	值
+Values	值清單
+View	檢視
+Wanted lists	待尋清單
+Watched	已觀看
+Watched date	觀看日期
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	關閉此選項時，檔案會保留在磁碟上。已刪除的資料夾在有設定資源回收筒時會移至其中。
+iCal feed address	iCal 訂閱源位址
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	標籤）與影視目錄比對；匯入的標題會保留其資料夾，其檔案會在原處掃描，然後套用監控選擇。不會移動或重新命名任何內容。
+{} Not renamed: {}	{} 未重新命名：{}
+{} factor	{} 係數
+{} files imported. Review the results below.	已匯入 {} 個檔案。請檢閱下方的結果。
+{} imported, {} failed; see each folder.	已匯入 {} 個，{} 個失敗；請查看各資料夾。
+{} imported.	已匯入 {}。
+{} matched · {} kept at current numbers · {} new episodes	{} 個已比對 · {} 個保留目前編號 · {} 個新集數
+{} min	{} 分鐘
+{} of {} folders selected	已選取 {} 個資料夾（共 {} 個）
+{} releases found, {} accepted, nothing grabbed.	找到 {} 個發布版本，接受 {} 個，未抓取任何項目。
+{} series and {} movies, {} files checked: {} issues.	已檢查 {} 部影集、{} 部電影、{} 個檔案：{} 個問題。
+{} series moved.	已移動 {} 部影集。
+{} series moved; not moved: {}	已移動 {} 部影集；未移動：{}
+{} series removed.	已移除 {} 部影集。
+{} series removed; kept: {}	已移除 {} 部影集；已保留：{}
+{} size of {}	{}大小：{}
+{} size slider of {}	{}大小滑桿：{}
+{} titles	{} 個標題
+{}: {} releases from {} indexer(s). {} responding.	{}：{} 個發布版本，來自 {} 個索引器。{} 個有回應。
+· API:	· API：
+· negated	· 反向
+· required	· 必要
+· {} ms · {} releases	· {} ms · {} 個發布版本
+— MiB per minute	— 每分鐘 MiB
+— in library	— 在媒體庫中
+→ current number	→ 目前編號
+or	或
+1 title	1 個標題

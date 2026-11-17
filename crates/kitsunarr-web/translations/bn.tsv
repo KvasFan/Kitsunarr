@@ -966,3 +966,347 @@ Scene numbering from TheXEM	TheXEM থেকে সিন নম্বরিং
 Scene numbering extrapolated from TheXEM (unverified)	TheXEM থেকে অনুমান করা সিন নম্বরিং (যাচাই করা হয়নি)
 Season {} (scene seasons {})	সিজন {} (সিন সিজন {})
 {} (scene {})	{} (সিন {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	AniList বা MyAnimeList সম্পর্ক থেকে পাওয়া একটি ফ্র্যাঞ্চাইজ গ্রুপ। একই ফ্র্যাঞ্চাইজের পরে যোগ করা শিরোনামগুলোও এতে যুক্ত হয়। সরানো শিরোনামগুলো রিফ্রেশের পরেও বাইরে থাকে।
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	ওভাররাইড ছাড়া কোনো কোয়ালিটি সেটিংস › কোয়ালিটি ব্যবহার করে। কোনো ওভাররাইডের মধ্যে খালি মানে সীমাহীন; সর্বোচ্চ শূন্য হলেও সীমাহীন।
+Add a movie, or change the search and watched filter.	একটি মুভি যোগ করুন, অথবা অনুসন্ধান ও দেখা-ফিল্টার পরিবর্তন করুন।
+Add a root folder in Settings › Media management first.	প্রথমে সেটিংস › মিডিয়া ম্যানেজমেন্টে একটি রুট ফোল্ডার যোগ করুন।
+Add qualities to {}	{}-এ কোয়ালিটি যোগ করুন
+All decisions	সব সিদ্ধান্ত
+All seasons	সব সিজন
+All selected flags must be present.	নির্বাচিত সব ফ্ল্যাগ উপস্থিত থাকতে হবে।
+All sources	সব সোর্স
+Allow {}	{} অনুমোদন করুন
+Also delete their folders and files (to the recycle bin when one is set)	তাদের ফোল্ডার ও ফাইলগুলোও মুছুন (রিসাইকেল বিন সেট থাকলে সেখানে যাবে)
+Apply sources	সোর্স প্রয়োগ করুন
+As the catalogue says	ক্যাটালগ যেমন বলে
+Auto tag name	অটো ট্যাগের নাম
+Automatic match / keep current number	স্বয়ংক্রিয় মিল / বর্তমান নম্বর রাখুন
+Automatic search for {}	{}-এর স্বয়ংক্রিয় অনুসন্ধান
+Below the root folder; use / for sub-folders.	রুট ফোল্ডারের ভেতরে; সাব-ফোল্ডারের জন্য / ব্যবহার করুন।
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	সেরাটি প্রথমে। ক্রম বদলাতে হ্যান্ডেল টানুন বা তীর ব্যবহার করুন। একটি গ্রুপের ভেতরের কোয়ালিটিগুলো সমান র‍্যাংকের।
+Bulk actions	একসাথে একাধিক কাজ
+Catalogue ID	ক্যাটালগ ID
+Catalogue changed.	ক্যাটালগ পরিবর্তিত হয়েছে।
+Catalogue match	ক্যাটালগ মিল
+Change catalogue	ক্যাটালগ পরিবর্তন করুন
+Choose a movie…	একটি মুভি বেছে নিন…
+Choose a root folder…	একটি রুট ফোল্ডার বেছে নিন…
+Choose episodes for {}	{}-এর জন্য পর্ব বেছে নিন
+Choose which episodes are monitored, as when adding the series	কোন পর্বগুলো মনিটর করা হবে বেছে নিন, সিরিজ যোগ করার সময়ের মতো
+Choose which episodes of the selected series are monitored	নির্বাচিত সিরিজগুলোর কোন পর্বগুলো মনিটর করা হবে বেছে নিন
+Choose {}	{} বেছে নিন
+Clean library level	লাইব্রেরি পরিষ্কারের স্তর
+Clean library tag	লাইব্রেরি পরিষ্কারের ট্যাগ
+Clear filters	ফিল্টার মুছুন
+Clear or adjust the filters to see more results.	আরও ফলাফল দেখতে ফিল্টারগুলো মুছুন বা পরিবর্তন করুন।
+Codec of {}	{}-এর কোডেক
+Compression mode	কম্প্রেশন মোড
+Condition indexer flags	শর্ত: ইনডেক্সার ফ্ল্যাগ
+Condition language	শর্ত: ভাষা
+Condition name	শর্তের নাম
+Condition name {}	শর্তের নাম {}
+Condition regular expression {}	শর্তের রেগুলার এক্সপ্রেশন {}
+Condition size {}	শর্তের সাইজ {}
+Condition type	শর্তের ধরন
+Condition value	শর্তের মান
+Copy (keep the source)	কপি (সোর্স রাখুন)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	একটি কোয়ালিটি থেকে গ্রুপ তৈরি করুন, তারপর আরও কোয়ালিটি টেনে এতে আনুন বা গ্রুপ সিলেক্টর ব্যবহার করুন। কাটঅফ কোয়ালিটির সাথে তার গ্রুপে যায়; গ্রুপ ভাঙলে গ্রুপের সর্বোচ্চ সদস্যটি ব্যবহৃত হয়।
+Current folder:	বর্তমান ফোল্ডার:
+Custom format name	কাস্টম ফরম্যাটের নাম
+Delete tag {}	ট্যাগ {} মুছুন
+Delete the file of episode {}	পর্ব {}-এর ফাইল মুছুন
+Delete the movie folder and its files	মুভির ফোল্ডার ও এর ফাইলগুলো মুছুন
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	“{}” ও এর সাথে মেলা সাবটাইটেলগুলো মুছবেন? রিসাইকেল বিন সেট থাকলে সেগুলো সেখানে যাবে।
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	“{}” মুছবেন? এর সিরিজ ও মুভিগুলো লাইব্রেরিতে থাকবে এবং রিফ্রেশে স্বয়ংক্রিয়ভাবে আবার যুক্ত হবে না।
+Detect from title	শিরোনাম থেকে শনাক্ত করুন
+Disk scanned: {} {}	ডিস্ক স্ক্যান করা হয়েছে: {} {}
+Dismiss	বাতিল করুন
+Don't change	পরিবর্তন করবেন না
+Don't import	ইমপোর্ট করবেন না
+Done editing groups	গ্রুপ সম্পাদনা শেষ
+Drag to reorder or move into a group	ক্রম বদলাতে বা কোনো গ্রুপে সরাতে টানুন
+Drag {}	{} টানুন
+Drop here to move out of a group or to the lowest preference	গ্রুপ থেকে বের করতে বা সর্বনিম্ন পছন্দে নিতে এখানে ছাড়ুন
+Drop qualities here	কোয়ালিটিগুলো এখানে ছাড়ুন
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	প্রতিটি সিরিজ তার ফোল্ডার রুট ফোল্ডারের ভেতরে রাখে। যে সিরিজের নতুন ফোল্ডার আগে থেকেই আছে এবং খালি নয়, সেটি তার বর্তমান ফোল্ডারেই থাকে।
+Edit JSON	JSON সম্পাদনা করুন
+Edit group	গ্রুপ সম্পাদনা করুন
+Edit groups	গ্রুপগুলো সম্পাদনা করুন
+Enter a non-negative test size within the supported range.	সমর্থিত সীমার মধ্যে একটি অঋণাত্মক টেস্ট সাইজ দিন।
+Enter a valid test size in GiB.	GiB-তে একটি বৈধ টেস্ট সাইজ দিন।
+Enter valid test indexer flags.	বৈধ টেস্ট ইনডেক্সার ফ্ল্যাগ দিন।
+Episode matches	পর্বের মিল
+Event type	ইভেন্টের ধরন
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	প্রতিটি শর্তের ধরন মিলতে হবে। একই ধরনের মধ্যে যেকোনো শর্ত মিললেই চলে এবং প্রতিটি আবশ্যিক শর্ত মিলতে হবে। উল্টান একটি বৈধ শর্তকে বিপরীত করে।
+Every folder of this root folder belongs to a title already.	এই রুট ফোল্ডারের প্রতিটি ফোল্ডার ইতিমধ্যে কোনো শিরোনামের।
+Exclude {}	{} বাদ দিন
+Exclusion catalogue	বাদ দেওয়ার ক্যাটালগ
+Exclusion id	বাদ দেওয়ার id
+Exclusion title	বাদ দেওয়ার শিরোনাম
+Factor for {}	{}-এর গুণক
+Feed tags	ফিড ট্যাগ
+File name (optional)	ফাইলের নাম (ঐচ্ছিক)
+Filter by monitoring	মনিটরিং অনুযায়ী ফিল্টার করুন
+Filter by watched state	দেখার অবস্থা অনুযায়ী ফিল্টার করুন
+Filter release decisions	রিলিজের সিদ্ধান্ত ফিল্টার করুন
+Filter releases	রিলিজ ফিল্টার করুন
+Find target title	লক্ষ্য শিরোনাম খুঁজুন
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	রুট ফোল্ডারের যে ফোল্ডারগুলো কোনো শিরোনাম ব্যবহার করে না। প্রতিটি তার নাম (অথবা তার মধ্যে থাকা
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	মেলেনি এমন রিলিজের ক্ষেত্রে, নিচের পার্স করা শিরোনাম ও পর্ব নম্বরগুলো বিবেচিত শিরোনামগুলোর সাথে মিলিয়ে দেখুন। প্রয়োজনে লাইব্রেরিতে একটি বিকল্প শিরোনাম যোগ করুন বা পর্বের ম্যাপিং ঠিক করুন।
+Format does not match	ফরম্যাট মেলে না
+Format matches	ফরম্যাট মেলে
+Full season	পূর্ণ সিজন
+Grab it now instead of waiting for the delay	বিলম্বের অপেক্ষা না করে এখনই গ্র্যাব করুন
+Grab {}	{} গ্র্যাব করুন
+Group	গ্রুপ
+Group for {}	{}-এর গ্রুপ
+Group name	গ্রুপের নাম
+Group {}	গ্রুপ {}
+Guided editor	নির্দেশিত এডিটর
+I confirm that the target catalogue entry is the same title.	আমি নিশ্চিত করছি যে লক্ষ্য ক্যাটালগ এন্ট্রিটি একই শিরোনাম।
+Import	ইমপোর্ট
+Import existing folders	বিদ্যমান ফোল্ডার ইমপোর্ট করুন
+Import mode	ইমপোর্ট মোড
+Import {}	{} ইমপোর্ট করুন
+Imported from movie folder	মুভির ফোল্ডার থেকে ইমপোর্ট করা হয়েছে
+Include in file names ({} token)	ফাইলের নামে অন্তর্ভুক্ত করুন ({} টোকেন)
+Include {}	{} অন্তর্ভুক্ত করুন
+Indexer flags (bitmask)	ইনডেক্সার ফ্ল্যাগ (বিটমাস্ক)
+Jellyfin library	Jellyfin লাইব্রেরি
+Jellyfin user	Jellyfin ব্যবহারকারী
+Jellyfin watched sync can update this status.	Jellyfin দেখা সিঙ্ক এই অবস্থা আপডেট করতে পারে।
+Key name	কী-এর নাম
+Key permission	কী-এর অনুমতি
+Kind of {}	{}-এর ধরন
+Label of {}	{}-এর লেবেল
+Language	ভাষা
+Library import	লাইব্রেরি ইমপোর্ট
+List exclusions	তালিকার বাদ তালিকা
+Loading sources…	সোর্স লোড হচ্ছে…
+Main navigation	প্রধান নেভিগেশন
+Mark unwatched	না দেখা হিসেবে চিহ্নিত করুন
+Mark watched	দেখা হিসেবে চিহ্নিত করুন
+Match	মেলান
+Match any other language	অন্য যেকোনো ভাষার সাথে মেলান
+Match episode {}	পর্ব {} মেলান
+Match for {}	{}-এর জন্য মিল
+Matching series	মিলে যাওয়া সিরিজ
+Matching subtitles follow the file's new name.	মিলে যাওয়া সাবটাইটেলগুলো ফাইলের নতুন নাম অনুসরণ করে।
+Maximum GiB (inclusive)	সর্বোচ্চ GiB (সহ)
+Maximum size	সর্বোচ্চ সাইজ
+Maximum year	সর্বোচ্চ বছর
+Minimum GiB (exclusive)	সর্বনিম্ন GiB (বাদে)
+Minimum age	সর্বনিম্ন বয়স
+Minimum level	সর্বনিম্ন স্তর
+Minimum score increment for upgrades	আপগ্রেডের জন্য সর্বনিম্ন স্কোর বৃদ্ধি
+Minimum year	সর্বনিম্ন বছর
+Monitor episode {}	পর্ব {} মনিটর করুন
+Monitor new seasons	নতুন সিজন মনিটর করুন
+Monitored filter	মনিটর ফিল্টার
+Monitoring	মনিটরিং
+Monitoring updated for {} series.	{}টি সিরিজের মনিটরিং আপডেট হয়েছে।
+Monitoring — {} series	মনিটরিং — {}টি সিরিজ
+Monitoring…	মনিটরিং আপডেট হচ্ছে…
+Move folder	ফোল্ডার সরান
+Move the files	ফাইলগুলো সরান
+Move the files to the new folder	ফাইলগুলো নতুন ফোল্ডারে সরান
+Move the movie folder, or point the movie at another folder	মুভির ফোল্ডার সরান, অথবা মুভিটিকে অন্য ফোল্ডারে নির্দেশ করুন
+Move the selected series into another root folder	নির্বাচিত সিরিজগুলো অন্য রুট ফোল্ডারে সরান
+Move the series folder, or point the series at another folder	সিরিজের ফোল্ডার সরান, অথবা সিরিজটিকে অন্য ফোল্ডারে নির্দেশ করুন
+Move to root folder…	রুট ফোল্ডারে সরান…
+Move {} series	{}টি সিরিজ সরান
+Movie bulk actions	মুভির একসাথে একাধিক কাজ
+Movie file deleted	মুভির ফাইল মুছে ফেলা হয়েছে
+Movie file renamed	মুভির ফাইলের নাম পরিবর্তিত হয়েছে
+Movie file restored	মুভির ফাইল রিস্টোর করা হয়েছে
+Movie for {}	{}-এর জন্য মুভি
+Movie history	মুভির ইতিহাস
+Movie import mode	মুভি ইমপোর্ট মোড
+Movie removed, and its folder deleted or recycled.	মুভি সরানো হয়েছে, এবং এর ফোল্ডার মুছে ফেলা বা রিসাইকেল বিনে পাঠানো হয়েছে।
+Movie source folder	মুভির সোর্স ফোল্ডার
+Movies (Tanukarr)	মুভি (Tanukarr)
+Moving…	সরানো হচ্ছে…
+Naming & file settings	নামকরণ ও ফাইল সেটিংস
+Negate condition {}	শর্ত {} উল্টান
+New condition type	নতুন শর্তের ধরন
+New profile	নতুন প্রোফাইল
+New root folder path	নতুন রুট ফোল্ডারের পাথ
+New tag	নতুন ট্যাগ
+Next	পরবর্তী
+No group	কোনো গ্রুপ নেই
+No indexer responded successfully. Check the source errors above, then try again.	কোনো ইনডেক্সার সফলভাবে সাড়া দেয়নি। উপরের সোর্স ত্রুটিগুলো দেখুন, তারপর আবার চেষ্টা করুন।
+No match for “{}”	“{}”-এর কোনো মিল নেই
+No releases match these filters	এই ফিল্টারগুলোর সাথে কোনো রিলিজ মেলে না
+No root folder	কোনো রুট ফোল্ডার নেই
+Nothing to import	ইমপোর্ট করার কিছু নেই
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	শুধু রেকর্ড করা ফোল্ডার পরিবর্তিত হয়; ফাইলগুলো আগে থেকেই সেখানে থাকলে এটি ব্যবহার করুন, তারপর ডিস্ক স্ক্যান করুন।
+Open navigation	নেভিগেশন খুলুন
+Open on {}	{}-এ খুলুন
+Organize files	ফাইল সংগঠিত করুন
+Organizing…	সংগঠিত করা হচ্ছে…
+Original language	মূল ভাষা
+Override for a mapped anime batch or a movie feature (single episode).	ম্যাপ করা অ্যানিমে ব্যাচ বা মুভির ফিচার ফাইলের জন্য ওভাররাইড (একক পর্ব)।
+Parsed title:	পার্স করা শিরোনাম:
+Passkey	পাসকী
+Place above {}	{}-এর উপরে রাখুন
+Place at lowest preference	সর্বনিম্ন পছন্দে রাখুন
+Position of {}	{}-এর অবস্থান
+Prefer {} less	{} কম পছন্দ করুন
+Prefer {} more	{} বেশি পছন্দ করুন
+Preferred catalogue	পছন্দের ক্যাটালগ
+Preset title	প্রিসেট শিরোনাম
+Prevent import lists from adding it again	ইমপোর্ট তালিকাকে এটি আবার যোগ করতে দেবেন না
+Prevent import lists from adding them again	ইমপোর্ট তালিকাকে এগুলো আবার যোগ করতে দেবেন না
+Preview again to review your changes.	আপনার পরিবর্তনগুলো পর্যালোচনা করতে আবার প্রিভিউ করুন।
+Previous	পূর্ববর্তী
+Progress of {}	{}-এর অগ্রগতি
+Proxy hostname	প্রক্সি হোস্টনেম
+Proxy port	প্রক্সি পোর্ট
+Quality cutoff	কোয়ালিটি কাটঅফ
+Quality profile for added shows	যোগ করা শো-এর কোয়ালিটি প্রোফাইল
+Quality sizes	কোয়ালিটি সাইজ
+Quality: {} · Group: {} · Languages: {} · {}	কোয়ালিটি: {} · গ্রুপ: {} · ভাষা: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	কোয়েরি পরিকল্পনায় ফলব্যাক স্তর থাকে যা হয়তো চলবে না। সোর্সগুলোর জন্য 35 সেকেন্ডের সময়সীমা; ইন্টারঅ্যাক্টিভ অনুসন্ধানের মোট সময়সীমা 45 সেকেন্ড।
+RSS sync interval	RSS সিঙ্কের ব্যবধান
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	শুধু পড়া: সিরিজ ও মুভির ফোল্ডার, অনিরাপদ ফাইল রেকর্ড এবং ডিস্কে অনুপস্থিত ফাইল পরীক্ষা করে।
+Reading the root folder…	রুট ফোল্ডার পড়া হচ্ছে…
+Regular expression	রেগুলার এক্সপ্রেশন
+Rejected	প্রত্যাখ্যাত
+Release title	রিলিজের শিরোনাম
+Release type	রিলিজের ধরন
+Reload folders	ফোল্ডার আবার লোড করুন
+Remove condition	শর্ত সরান
+Remove condition {}	শর্ত {} সরান
+Remove mapping	ম্যাপিং সরান
+Remove the selected series from Kitsunarr	নির্বাচিত সিরিজগুলো Kitsunarr থেকে সরান
+Remove the {} selected series and their episode records from Kitsunarr?	নির্বাচিত {}টি সিরিজ ও তাদের পর্বের রেকর্ড Kitsunarr থেকে সরাবেন?
+Remove {}	{} সরান
+Remove {} from the blocklist	{} ব্লকলিস্ট থেকে সরান
+Remove {} series	{}টি সিরিজ সরান
+Remove “{}” from Kitsunarr?	“{}” Kitsunarr থেকে সরাবেন?
+Remove…	সরান…
+Removing…	সরানো হচ্ছে…
+Rename every file of the selected series to the naming settings	নির্বাচিত সিরিজগুলোর প্রতিটি ফাইলের নাম নামকরণ সেটিংস অনুযায়ী পরিবর্তন করুন
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	নির্বাচিত {}টি সিরিজের প্রতিটি ফাইলের নাম নামকরণ সেটিংস অনুযায়ী পরিবর্তন করবেন? আগে নাম যাচাই করতে কোনো সিরিজের ফাইলের নাম পরিবর্তনের প্রিভিউ ব্যবহার করুন।
+Rename file	ফাইলের নাম পরিবর্তন করুন
+Renaming mode	নাম পরিবর্তনের মোড
+Required condition {}	আবশ্যিক শর্ত {}
+Rescan disk	ডিস্ক আবার স্ক্যান করুন
+Restore media type	মিডিয়ার ধরন রিস্টোর করুন
+Result	ফলাফল
+Retention	সংরক্ষণকাল
+Review	পর্যালোচনা
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	লক্ষ্য শিরোনাম ও পর্বের মিলগুলো পর্যালোচনা করুন। ফাইল, পাথ, মনিটরিং ও ইতিহাস রাখা হয়। মেলেনি এমন পর্বগুলো তাদের নম্বর রাখে কেবল তখনই, যখন সেই নম্বরগুলো নতুন ক্যাটালগে খালি থাকে।
+Root folder for added shows	যোগ করা শো-এর রুট ফোল্ডার
+Save path	সংরক্ষণের পাথ
+Saving…	সংরক্ষণ করা হচ্ছে…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	একটি ডাউনলোড ফোল্ডার স্ক্যান করুন, প্রতিটি মুভি পর্যালোচনা করুন এবং এর ফিচার ফাইল মিলে যাওয়া সাবটাইটেলসহ লাইব্রেরিতে কপি করুন বা সরান। বিদ্যমান ফিচার ফাইল কেবল আপগ্রেড দিয়েই প্রতিস্থাপিত হয়।
+Search again	আবার অনুসন্ধান করুন
+Search catalogues	ক্যাটালগে অনুসন্ধান করুন
+Search diagnostics	অনুসন্ধানের ডায়াগনস্টিক
+Search for missing episodes once imported	ইমপোর্টের পর অনুপস্থিত পর্বগুলো অনুসন্ধান করুন
+Search for {}	{} অনুসন্ধান করুন
+Search incomplete	অনুসন্ধান অসম্পূর্ণ
+Search indexers for {}	{}-এর জন্য ইনডেক্সারে অনুসন্ধান করুন
+Search season packs for {}	{}-এর জন্য সিজন প্যাক অনুসন্ধান করুন
+Search sources	অনুসন্ধানের সোর্স
+Search sources unavailable	অনুসন্ধানের সোর্স উপলব্ধ নেই
+Search the library	লাইব্রেরিতে অনুসন্ধান করুন
+Search titles…	শিরোনাম অনুসন্ধান করুন…
+Search {}	{} অনুসন্ধান করুন
+Searching “{}”…	“{}” অনুসন্ধান করা হচ্ছে…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	{}-এ সিজন ফোল্ডারের শিরোনাম ক্যাটালগের শিরোনামের জায়গা নেয়। ক্যাটালগেরটি রাখতে খালি রাখুন।
+Season {} title	সিজন {}-এর শিরোনাম
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	উপরে একটি সোর্স নির্বাচন করুন, অথবা ইনডেক্সার সেটিংসে ইন্টারঅ্যাক্টিভ অনুসন্ধান চালু করুন। সোর্সের ট্যাগ দিয়েও কোন সিরিজ অনুসন্ধান করা হবে তা সীমিত করা যায়।
+Select all	সব নির্বাচন করুন
+Select all movies on this page	এই পেজের সব মুভি নির্বাচন করুন
+Select every episode on this page	এই পেজের প্রতিটি পর্ব নির্বাচন করুন
+Select {}	{} নির্বাচন করুন
+Select {} S{}E{}	{} S{}E{} নির্বাচন করুন
+Send now	এখনই পাঠান
+Send {} now	{} এখনই পাঠান
+Series & anime	সিরিজ ও অ্যানিমে
+Series history	সিরিজের ইতিহাস
+Series of {}	{}-এর সিরিজ
+Series title, e.g. Severance (or tvdb:12345)	সিরিজের শিরোনাম, যেমন Severance (অথবা tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	{}টি দেখানো হচ্ছে, মোট {}টি রিলিজের মধ্যে। ফিল্টারগুলো আবার অনুসন্ধান না করেই এই ফলাফলে প্রয়োগ হয়।
+Size (GiB)	সাইজ (GiB)
+Sort by	সাজানোর ভিত্তি
+Specifications JSON	স্পেসিফিকেশন JSON
+Stalled torrent timeout	আটকে থাকা টরেন্টের টাইমআউট
+TMDB API key	TMDB API কী
+Tag existing titles	বিদ্যমান শিরোনামগুলোতে ট্যাগ দিন
+Tag {}	{} ট্যাগ করুন
+Target catalogue	লক্ষ্য ক্যাটালগ
+Target catalogue ID	লক্ষ্য ক্যাটালগ ID
+Test a release	একটি রিলিজ টেস্ট করুন
+Test details	টেস্টের বিবরণ
+Test file name	টেস্ট ফাইলের নাম
+Test format	ফরম্যাট টেস্ট করুন
+Test indexer flags	টেস্ট ইনডেক্সার ফ্ল্যাগ
+Test language	টেস্ট ভাষা
+Test original language	টেস্ট মূল ভাষা
+Test quality	টেস্ট কোয়ালিটি
+Test release title	টেস্ট রিলিজের শিরোনাম
+Test release type	টেস্ট রিলিজের ধরন
+Test size in GiB	GiB-তে টেস্ট সাইজ
+The catalogues share an external identity.	ক্যাটালগগুলোর একটি অভিন্ন বাহ্যিক পরিচয় আছে।
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	এই বিকল্পটি প্রতিটি পর্বের মনিটর অবস্থা প্রতিস্থাপন করে (বিশেষ পর্বগুলো কেবল দুটি বিশেষ-পর্ব বিকল্প দিয়েই পরিবর্তিত হয়), তারপর মনিটর করা পর্ব আছে এমন প্রতিটি সিজন মনিটর করে। "কিছুই না" সিরিজটির মনিটরও বন্ধ করে।
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	ফিচার ফাইল ও মিলে যাওয়া সাবটাইটেলগুলো মুভির ফোল্ডারে রিস্টোর করা হয়। বিদ্যমান ফাইল কখনো ওভাররাইট করা হয় না।
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	ফোল্ডারটির নাম পরিবর্তন করা হয়, অথবা অন্য ডিস্কে হলে কপি করে তারপর সরানো হয়। নতুন ফোল্ডারটি অনুপস্থিত বা খালি হতে হবে।
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	সাড়া দেওয়া ইনডেক্সারগুলো কোনো রিলিজ দেয়নি। অন্য সোর্সগুলো ব্যর্থ হয়েছে; উপরের ত্রুটিগুলো দেখে আবার চেষ্টা করুন।
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	এই শর্তটি সংরক্ষিত থাকে। এর ফিল্ড পরিবর্তন করতে JSON সম্পাদনা ব্যবহার করুন; ফরম্যাট টেস্ট জানায় এটি মূল্যায়ন করা যায় কিনা।
+Title pattern of {}	{}-এর শিরোনাম প্যাটার্ন
+Title to add	যোগ করার শিরোনাম
+Title to search for	যে শিরোনাম অনুসন্ধান করবেন
+Title, group, quality or rejection reason…	শিরোনাম, গ্রুপ, কোয়ালিটি বা প্রত্যাখ্যানের কারণ…
+Titles considered:	বিবেচিত শিরোনাম:
+Toggle colour theme	রঙের থিম পরিবর্তন করুন
+Toggle sort direction	সাজানোর দিক পরিবর্তন করুন
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	সংরক্ষণের আগে একটি টিভি, অ্যানিমে বা মুভি রিলিজের নাম চেষ্টা করুন। এটি ফরম্যাটের শর্তগুলো যাচাই করে; কোয়ালিটি প্রোফাইলের স্কোর ও ডাউনলোড অনুমোদন আলাদা।
+Ungroup	গ্রুপ ভাঙুন
+Ungroup {}	{} গ্রুপ ভাঙুন
+Unknown value ({})	অজানা মান ({})
+Unmapped folders	ম্যাপ না করা ফোল্ডার
+Unmatched titles	মেলেনি এমন শিরোনাম
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	মুছে ফেলা পর্বগুলোর মনিটর বন্ধ করুন (হাতে মোছা বা ডিস্কে অনুপস্থিত; আপগ্রেড কখনো মনিটর বন্ধ করে না)
+Unwatched	দেখা হয়নি
+Use global	গ্লোবাল ব্যবহার করুন
+Use global sizes for {}	{}-এর জন্য গ্লোবাল সাইজ ব্যবহার করুন
+Valid days	বৈধ দিন
+Value	মান
+Values	মানসমূহ
+View	দেখুন
+Wanted lists	কাঙ্ক্ষিত তালিকা
+Watched	দেখা হয়েছে
+Watched date	দেখার তারিখ
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	এই অপশন বন্ধ থাকলে ফাইলগুলো ডিস্কে থাকে। মুছে ফেলা ফোল্ডারগুলো রিসাইকেল বিন সেট থাকলে সেখানে যায়।
+iCal feed address	iCal ফিডের ঠিকানা
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	ট্যাগ) দিয়ে ক্যাটালগের সাথে মেলানো হয়; ইমপোর্ট করা শিরোনামগুলো তাদের ফোল্ডার রাখে, তাদের ফাইলগুলো যেখানে আছে সেখানেই স্ক্যান করা হয়, তারপর মনিটরিংয়ের পছন্দ প্রয়োগ হয়। কিছুই সরানো বা নাম পরিবর্তন করা হয় না।
+{} Not renamed: {}	{} নাম পরিবর্তন হয়নি: {}
+{} factor	{} গুণক
+{} files imported. Review the results below.	{}টি ফাইল ইমপোর্ট হয়েছে। নিচের ফলাফল পর্যালোচনা করুন।
+{} imported, {} failed; see each folder.	{}টি ইমপোর্ট হয়েছে, {}টি ব্যর্থ; প্রতিটি ফোল্ডার দেখুন।
+{} imported.	{}টি ইমপোর্ট হয়েছে।
+{} matched · {} kept at current numbers · {} new episodes	{}টি মিলেছে · {}টি বর্তমান নম্বরে রাখা হয়েছে · {}টি নতুন পর্ব
+{} min	{} মিনিট
+{} of {} folders selected	{}টি নির্বাচিত, মোট {}টি ফোল্ডারের মধ্যে
+{} releases found, {} accepted, nothing grabbed.	{}টি রিলিজ পাওয়া গেছে, {}টি গৃহীত, কিছুই গ্র্যাব করা হয়নি।
+{} series and {} movies, {} files checked: {} issues.	{}টি সিরিজ ও {}টি মুভি, {}টি ফাইল পরীক্ষা করা হয়েছে: {}টি সমস্যা।
+{} series moved.	{}টি সিরিজ স্থানান্তরিত হয়েছে।
+{} series moved; not moved: {}	{}টি সিরিজ স্থানান্তরিত হয়েছে; স্থানান্তরিত হয়নি: {}
+{} series removed.	{}টি সিরিজ সরানো হয়েছে।
+{} series removed; kept: {}	{}টি সিরিজ সরানো হয়েছে; রাখা হয়েছে: {}
+{} size of {}	{} সাইজ — {}
+{} size slider of {}	{} সাইজ স্লাইডার — {}
+{} titles	{}টি শিরোনাম
+{}: {} releases from {} indexer(s). {} responding.	{}: {}টি রিলিজ, {}টি ইনডেক্সার থেকে। {}টি সাড়া দিয়েছে।
+· API:	· API:
+· negated	· উল্টানো
+· required	· আবশ্যিক
+· {} ms · {} releases	· {} ms · {}টি রিলিজ
+— MiB per minute	— MiB প্রতি মিনিট
+— in library	— লাইব্রেরিতে আছে
+→ current number	→ বর্তমান নম্বর
+or	অথবা
+1 title	১টি শিরোনাম

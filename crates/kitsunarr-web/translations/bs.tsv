@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Scenska numeracija s TheXEM-a
 Scene numbering extrapolated from TheXEM (unverified)	Scenska numeracija ekstrapolirana s TheXEM-a (neprovjereno)
 Season {} (scene seasons {})	Sezona {} (scenske sezone {})
 {} (scene {})	{} (scena {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Grupa franšize pronađena iz veza na AniListu ili MyAnimeListu. Naslovi iz iste franšize dodani kasnije također joj se pridružuju. Uklonjeni naslovi ostaju izvan nje pri osvježavanju.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Kvalitet bez zamjene koristi Postavke › Kvalitet. Unutar zamjene prazno znači neograničeno; maksimum nula također znači neograničeno.
+Add a movie, or change the search and watched filter.	Dodajte film ili promijenite pretragu i filter pogledanog.
+Add a root folder in Settings › Media management first.	Prvo dodajte korijenski folder u Postavke › Upravljanje medijima.
+Add qualities to {}	Dodaj kvalitete u {}
+All decisions	Sve odluke
+All seasons	Sve sezone
+All selected flags must be present.	Sve odabrane zastavice moraju biti prisutne.
+All sources	Svi izvori
+Allow {}	Dozvoli {}
+Also delete their folders and files (to the recycle bin when one is set)	Obriši i njihove foldere i datoteke (u korpu za otpatke, ako je postavljena)
+Apply sources	Primijeni izvore
+As the catalogue says	Kako kaže katalog
+Auto tag name	Naziv automatske oznake
+Automatic match / keep current number	Automatsko podudaranje / zadrži trenutni broj
+Automatic search for {}	Automatska pretraga za {}
+Below the root folder; use / for sub-folders.	Ispod korijenskog foldera; koristite / za podfoldere.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Najbolje prvo. Prevucite ručke ili koristite strelice za promjenu redoslijeda. Kvaliteti unutar grupe jednako su rangirani.
+Bulk actions	Grupne radnje
+Catalogue ID	ID u katalogu
+Catalogue changed.	Katalog je promijenjen.
+Catalogue match	Podudaranje u katalogu
+Change catalogue	Promijeni katalog
+Choose a movie…	Odaberite film…
+Choose a root folder…	Odaberite korijenski folder…
+Choose episodes for {}	Odaberite epizode za {}
+Choose which episodes are monitored, as when adding the series	Odaberite koje se epizode prate, kao pri dodavanju serije
+Choose which episodes of the selected series are monitored	Odaberite koje se epizode odabranih serija prate
+Choose {}	Odaberi {}
+Clean library level	Nivo za čišćenje biblioteke
+Clean library tag	Oznaka za čišćenje biblioteke
+Clear filters	Očisti filtere
+Clear or adjust the filters to see more results.	Očistite ili prilagodite filtere da vidite više rezultata.
+Codec of {}	Kodek za {}
+Compression mode	Način kompresije
+Condition indexer flags	Zastavice indeksera u uslovu
+Condition language	Jezik uslova
+Condition name	Naziv uslova
+Condition name {}	Naziv uslova {}
+Condition regular expression {}	Regularni izraz uslova {}
+Condition size {}	Veličina uslova {}
+Condition type	Tip uslova
+Condition value	Vrijednost uslova
+Copy (keep the source)	Kopiraj (zadrži izvor)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Kreirajte grupu od kvaliteta, zatim prevucite još kvaliteta u nju ili koristite birače grupe. Granica prati kvalitet u njegovu grupu; razgrupisavanje koristi najviši član grupe.
+Current folder:	Trenutni folder:
+Custom format name	Naziv prilagođenog formata
+Delete tag {}	Obriši oznaku {}
+Delete the file of episode {}	Obriši datoteku epizode {}
+Delete the movie folder and its files	Obriši folder filma i njegove datoteke
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Obrisati “{}” i odgovarajuće titlove? Idu u korpu za otpatke, ako je postavljena.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Obrisati “{}”? Njene serije i filmovi ostaju u biblioteci i neće joj se automatski ponovo pridružiti pri osvježavanju.
+Detect from title	Prepoznaj iz naslova
+Disk scanned: {} {}	Disk skeniran: {} {}
+Dismiss	Odbaci
+Don't change	Ne mijenjaj
+Don't import	Ne uvozi
+Done editing groups	Završi uređivanje grupa
+Drag to reorder or move into a group	Prevucite da promijenite redoslijed ili premjestite u grupu
+Drag {}	Prevuci {}
+Drop here to move out of a group or to the lowest preference	Ispustite ovdje da uklonite iz grupe ili stavite na najnižu preferenciju
+Drop qualities here	Ispustite kvalitete ovdje
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Svaka serija zadržava svoj folder ispod korijenskog foldera. Serija čiji novi folder postoji i nije prazan zadržava trenutni folder.
+Edit JSON	Uredi JSON
+Edit group	Uredi grupu
+Edit groups	Uredi grupe
+Enter a non-negative test size within the supported range.	Unesite nenegativnu testnu veličinu u podržanom rasponu.
+Enter a valid test size in GiB.	Unesite ispravnu testnu veličinu u GiB.
+Enter valid test indexer flags.	Unesite ispravne testne zastavice indeksera.
+Episode matches	Podudaranja epizoda
+Event type	Tip događaja
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Svaki tip uslova mora se podudarati. Unutar jednog tipa dovoljno je da se podudara bilo koji uslov, a svaki obavezni uslov mora se podudarati. Negiraj obrće ispravan uslov.
+Every folder of this root folder belongs to a title already.	Svaki folder ovog korijenskog foldera već pripada nekom naslovu.
+Exclude {}	Isključi {}
+Exclusion catalogue	Katalog izuzetka
+Exclusion id	ID izuzetka
+Exclusion title	Naslov izuzetka
+Factor for {}	Faktor za {}
+Feed tags	Oznake feeda
+File name (optional)	Naziv datoteke (opcionalno)
+Filter by monitoring	Filtriraj po praćenju
+Filter by watched state	Filtriraj po statusu gledanja
+Filter release decisions	Filtriraj odluke o izdanjima
+Filter releases	Filtriraj izdanja
+Find target title	Pronađi ciljni naslov
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Folderi korijenskog foldera koje nijedan naslov ne koristi. Svaki se podudara s katalogom po svom nazivu (ili po oznaci
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Za nepodudarna izdanja provjerite raščlanjeni naslov i brojeve epizoda ispod u odnosu na razmatrane naslove. Po potrebi dodajte alternativni naslov ili ispravite mapiranje epizoda u biblioteci.
+Format does not match	Format se ne podudara
+Format matches	Format se podudara
+Full season	Cijela sezona
+Grab it now instead of waiting for the delay	Zgrabi odmah umjesto čekanja na odgodu
+Grab {}	Zgrabi {}
+Group	Grupa
+Group for {}	Grupa za {}
+Group name	Naziv grupe
+Group {}	Grupa {}
+Guided editor	Vođeni uređivač
+I confirm that the target catalogue entry is the same title.	Potvrđujem da je ciljni unos u katalogu isti naslov.
+Import	Uvezi
+Import existing folders	Uvezi postojeće foldere
+Import mode	Način uvoza
+Import {}	Uvezi {}
+Imported from movie folder	Uvezeno iz foldera filma
+Include in file names ({} token)	Uključi u nazive datoteka (token {})
+Include {}	Uključi {}
+Indexer flags (bitmask)	Zastavice indeksera (bitmaska)
+Jellyfin library	Jellyfin biblioteka
+Jellyfin user	Jellyfin korisnik
+Jellyfin watched sync can update this status.	Jellyfin sinhronizacija pogledanog može ažurirati ovaj status.
+Key name	Naziv ključa
+Key permission	Dozvola ključa
+Kind of {}	Vrsta za {}
+Label of {}	Oznaka za {}
+Language	Jezik
+Library import	Uvoz biblioteke
+List exclusions	Izuzeci lista
+Loading sources…	Učitavanje izvora…
+Main navigation	Glavna navigacija
+Mark unwatched	Označi kao nepogledano
+Mark watched	Označi kao pogledano
+Match	Podudari
+Match any other language	Podudari bilo koji drugi jezik
+Match episode {}	Podudari epizodu {}
+Match for {}	Podudaranje za {}
+Matching series	Odgovarajuće serije
+Matching subtitles follow the file's new name.	Odgovarajući titlovi prate novi naziv datoteke.
+Maximum GiB (inclusive)	Maksimum GiB (uključivo)
+Maximum size	Maksimalna veličina
+Maximum year	Maksimalna godina
+Minimum GiB (exclusive)	Minimum GiB (isključivo)
+Minimum age	Minimalna starost
+Minimum level	Minimalni nivo
+Minimum score increment for upgrades	Minimalno povećanje rezultata za nadogradnje
+Minimum year	Minimalna godina
+Monitor episode {}	Prati epizodu {}
+Monitor new seasons	Prati nove sezone
+Monitored filter	Filter praćenja
+Monitoring	Praćenje
+Monitoring updated for {} series.	Praćenje ažurirano za {} serija.
+Monitoring — {} series	Praćenje — {} serija
+Monitoring…	Praćenje…
+Move folder	Premjesti folder
+Move the files	Premjesti datoteke
+Move the files to the new folder	Premjesti datoteke u novi folder
+Move the movie folder, or point the movie at another folder	Premjestite folder filma ili usmjerite film na drugi folder
+Move the selected series into another root folder	Premjestite odabrane serije u drugi korijenski folder
+Move the series folder, or point the series at another folder	Premjestite folder serije ili usmjerite seriju na drugi folder
+Move to root folder…	Premjesti u korijenski folder…
+Move {} series	Premjesti serije ({})
+Movie bulk actions	Grupne radnje za filmove
+Movie file deleted	Datoteka filma obrisana
+Movie file renamed	Datoteka filma preimenovana
+Movie file restored	Datoteka filma vraćena
+Movie for {}	Film za {}
+Movie history	Historija filma
+Movie import mode	Način uvoza filmova
+Movie removed, and its folder deleted or recycled.	Film je uklonjen, a njegov folder obrisan ili premješten u korpu za otpatke.
+Movie source folder	Izvorni folder filmova
+Movies (Tanukarr)	Filmovi (Tanukarr)
+Moving…	Premještanje…
+Naming & file settings	Imenovanje i postavke datoteka
+Negate condition {}	Negiraj uslov {}
+New condition type	Novi tip uslova
+New profile	Novi profil
+New root folder path	Putanja novog korijenskog foldera
+New tag	Nova oznaka
+Next	Dalje
+No group	Bez grupe
+No indexer responded successfully. Check the source errors above, then try again.	Nijedan indekser nije uspješno odgovorio. Provjerite greške izvora iznad, pa pokušajte ponovo.
+No match for “{}”	Nema podudaranja za “{}”
+No releases match these filters	Nijedno izdanje ne odgovara ovim filterima
+No root folder	Nema korijenskog foldera
+Nothing to import	Nema ništa za uvoz
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Mijenja se samo zabilježeni folder; koristite ovo kada su datoteke već tamo, pa skenirajte disk.
+Open navigation	Otvori navigaciju
+Open on {}	Otvori na {}
+Organize files	Organizuj datoteke
+Organizing…	Organizovanje…
+Original language	Originalni jezik
+Override for a mapped anime batch or a movie feature (single episode).	Zamjena za mapirani anime paket ili glavni dio filma (jedna epizoda).
+Parsed title:	Raščlanjeni naslov:
+Passkey	Passkey
+Place above {}	Stavi iznad {}
+Place at lowest preference	Stavi na najnižu preferenciju
+Position of {}	Pozicija za {}
+Prefer {} less	Manje preferiraj {}
+Prefer {} more	Više preferiraj {}
+Preferred catalogue	Preferirani katalog
+Preset title	Naslov predloška
+Prevent import lists from adding it again	Spriječi da ga liste za uvoz ponovo dodaju
+Prevent import lists from adding them again	Spriječi da ih liste za uvoz ponovo dodaju
+Preview again to review your changes.	Ponovo pregledajte da provjerite izmjene.
+Previous	Prethodno
+Progress of {}	Napredak za {}
+Proxy hostname	Ime hosta proxyja
+Proxy port	Port proxyja
+Quality cutoff	Granica kvaliteta
+Quality profile for added shows	Profil kvaliteta za dodane serije
+Quality sizes	Veličine kvaliteta
+Quality: {} · Group: {} · Languages: {} · {}	Kvalitet: {} · Grupa: {} · Jezici: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Planovi upita uključuju rezervne nivoe koji se možda neće pokrenuti. Izvori imaju budžet od 35 sekundi; interaktivne pretrage imaju ukupni budžet od 45 sekundi.
+RSS sync interval	Interval RSS sinhronizacije
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Samo čitanje: provjerava foldere serija i filmova, nesigurne zapise datoteka i datoteke kojih nema na disku.
+Reading the root folder…	Čitanje korijenskog foldera…
+Regular expression	Regularni izraz
+Rejected	Odbijeno
+Release title	Naslov izdanja
+Release type	Tip izdanja
+Reload folders	Ponovo učitaj foldere
+Remove condition	Ukloni uslov
+Remove condition {}	Ukloni uslov {}
+Remove mapping	Ukloni mapiranje
+Remove the selected series from Kitsunarr	Uklonite odabrane serije iz Kitsunarra
+Remove the {} selected series and their episode records from Kitsunarr?	Ukloniti {} odabranih serija i njihove zapise epizoda iz Kitsunarra?
+Remove {}	Ukloni {}
+Remove {} from the blocklist	Ukloni {} s liste blokiranih
+Remove {} series	Ukloni serije ({})
+Remove “{}” from Kitsunarr?	Ukloniti “{}” iz Kitsunarra?
+Remove…	Ukloni…
+Removing…	Uklanjanje…
+Rename every file of the selected series to the naming settings	Preimenujte sve datoteke odabranih serija prema postavkama imenovanja
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Preimenovati sve datoteke {} odabranih serija prema postavkama imenovanja? Prvo provjerite nazive u pregledu “Preimenuj datoteke” serije.
+Rename file	Preimenuj datoteku
+Renaming mode	Način preimenovanja
+Required condition {}	Obavezni uslov {}
+Rescan disk	Ponovo skeniraj disk
+Restore media type	Tip medija za vraćanje
+Result	Rezultat
+Retention	Zadržavanje
+Review	Pregled
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Pregledajte ciljni naslov i podudaranja epizoda. Datoteke, putanje, praćenje i historija se zadržavaju. Nepodudarne epizode zadržavaju svoje brojeve samo ako su ti brojevi slobodni u novom katalogu.
+Root folder for added shows	Korijenski folder za dodane serije
+Save path	Putanja za čuvanje
+Saving…	Čuvanje…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Skenirajte folder za preuzimanja, pregledajte svaki film i kopirajte ili premjestite njegov glavni dio s odgovarajućim titlovima u biblioteku. Postojeći glavni dijelovi zamjenjuju se samo nadogradnjama.
+Search again	Traži ponovo
+Search catalogues	Pretraži kataloge
+Search diagnostics	Dijagnostika pretrage
+Search for missing episodes once imported	Traži epizode koje nedostaju nakon uvoza
+Search for {}	Traži {}
+Search incomplete	Pretraga nije završena
+Search indexers for {}	Traži {} na indekserima
+Search season packs for {}	Traži pakete sezona za {}
+Search sources	Pretraži izvore
+Search sources unavailable	Izvori pretrage nisu dostupni
+Search the library	Pretraži biblioteku
+Search titles…	Traži naslove…
+Search {}	Traži {}
+Searching “{}”…	Traženje “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Naslovi foldera sezona zamjenjuju naslove kataloga u {}. Ostavite prazno da zadržite naslove kataloga.
+Season {} title	Naslov sezone {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Odaberite izvor iznad ili omogućite interaktivnu pretragu u postavkama indeksera. Oznake izvora također mogu ograničiti koje se serije pretražuju.
+Select all	Odaberi sve
+Select all movies on this page	Odaberi sve filmove na ovoj stranici
+Select every episode on this page	Odaberi svaku epizodu na ovoj stranici
+Select {}	Odaberi {}
+Select {} S{}E{}	Odaberi {} S{}E{}
+Send now	Pošalji sada
+Send {} now	Pošalji {} sada
+Series & anime	Serije i anime
+Series history	Historija serije
+Series of {}	Serija za {}
+Series title, e.g. Severance (or tvdb:12345)	Naslov serije, npr. Severance (ili tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Prikazano {} od {} izdanja. Filteri se primjenjuju na ove rezultate bez ponovne pretrage.
+Size (GiB)	Veličina (GiB)
+Sort by	Sortiraj po
+Specifications JSON	Specifikacije u JSON-u
+Stalled torrent timeout	Istek zaglavljenog torrenta
+TMDB API key	TMDB API ključ
+Tag existing titles	Označi postojeće naslove
+Tag {}	Označi {}
+Target catalogue	Ciljni katalog
+Target catalogue ID	ID u ciljnom katalogu
+Test a release	Testiraj izdanje
+Test details	Detalji testa
+Test file name	Testni naziv datoteke
+Test format	Testiraj format
+Test indexer flags	Testne zastavice indeksera
+Test language	Testni jezik
+Test original language	Testni originalni jezik
+Test quality	Testni kvalitet
+Test release title	Testni naslov izdanja
+Test release type	Testni tip izdanja
+Test size in GiB	Testna veličina u GiB
+The catalogues share an external identity.	Katalozi dijele vanjski identitet.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Izbor zamjenjuje stanje praćenja svake epizode (specijale mijenjaju samo dva izbora za specijale), a zatim prati svaku sezonu koja ima praćenu epizodu. “Ništa” također prestaje pratiti seriju.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Glavni dio i odgovarajući titlovi vraćaju se u folder filma. Postojeće datoteke se nikada ne prepisuju.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Folder se preimenuje, ili kopira pa ukloni na drugom disku. Novi folder ne smije postojati ili mora biti prazan.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Indekseri koji su odgovorili nisu vratili nijedno izdanje. Drugi izvori nisu uspjeli; provjerite greške iznad i pokušajte ponovo.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Ovaj uslov je sačuvan. Koristite “Uredi JSON” da promijenite njegova polja; “Testiraj format” javlja može li se procijeniti.
+Title pattern of {}	Uzorak naslova za {}
+Title to add	Naslov za dodavanje
+Title to search for	Naslov za pretragu
+Title, group, quality or rejection reason…	Naslov, grupa, kvalitet ili razlog odbijanja…
+Titles considered:	Razmatrani naslovi:
+Toggle colour theme	Promijeni temu boja
+Toggle sort direction	Promijeni smjer sortiranja
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Isprobajte naziv TV, anime ili filmskog izdanja prije čuvanja. Ovo provjerava uslove formata; rezultati profila kvaliteta i odobrenje preuzimanja su zasebni.
+Ungroup	Razgrupiši
+Ungroup {}	Razgrupiši {}
+Unknown value ({})	Nepoznata vrijednost ({})
+Unmapped folders	Nemapirani folderi
+Unmatched titles	Nepodudarni naslovi
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Prestani pratiti obrisane epizode (obrisane ručno ili nestale s diska; nadogradnje nikada ne ukidaju praćenje)
+Unwatched	Nepogledano
+Use global	Koristi globalno
+Use global sizes for {}	Koristi globalne veličine za {}
+Valid days	Važi dana
+Value	Vrijednost
+Values	Vrijednosti
+View	Prikaz
+Wanted lists	Liste traženog
+Watched	Pogledano
+Watched date	Datum gledanja
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Kada je ova opcija isključena, datoteke ostaju na disku. Obrisani folderi idu u korpu za otpatke, ako je postavljena.
+iCal feed address	Adresa iCal feeda
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	u njemu); uvezeni naslovi zadržavaju svoj folder, njihove datoteke se skeniraju na mjestu, a zatim se primjenjuje izbor praćenja. Ništa se ne premješta niti preimenuje.
+{} Not renamed: {}	{} Nije preimenovano: {}
+{} factor	Faktor za {}
+{} files imported. Review the results below.	Uvezeno datoteka: {}. Pregledajte rezultate ispod.
+{} imported, {} failed; see each folder.	Uvezeno: {}, neuspjelo: {}; pogledajte svaki folder.
+{} imported.	Uvezeno: {}.
+{} matched · {} kept at current numbers · {} new episodes	Podudareno: {} · zadržano na trenutnim brojevima: {} · novih epizoda: {}
+{} min	{} min
+{} of {} folders selected	Odabrano {} od {} foldera
+{} releases found, {} accepted, nothing grabbed.	Pronađeno izdanja: {}, prihvaćeno: {}, ništa nije zgrabljeno.
+{} series and {} movies, {} files checked: {} issues.	Provjereno serija: {}, filmova: {}, datoteka: {}; problema: {}.
+{} series moved.	Premješteno serija: {}.
+{} series moved; not moved: {}	Premješteno serija: {}; nije premješteno: {}
+{} series removed.	Uklonjeno serija: {}.
+{} series removed; kept: {}	Uklonjeno serija: {}; zadržano: {}
+{} size of {}	{} veličina za {}
+{} size slider of {}	{} klizač veličine za {}
+{} titles	{} naslova
+{}: {} releases from {} indexer(s). {} responding.	{}: izdanja: {} s indeksera: {}. Odgovorilo: {}.
+· API:	· API:
+· negated	· negirano
+· required	· obavezno
+· {} ms · {} releases	· {} ms · izdanja: {}
+— MiB per minute	— MiB po minuti
+— in library	— u biblioteci
+→ current number	→ trenutni broj
+or	ili
+1 title	1 naslov

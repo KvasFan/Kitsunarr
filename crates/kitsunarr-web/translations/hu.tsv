@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Scene-számozás a TheXEM-ből
 Scene numbering extrapolated from TheXEM (unverified)	A TheXEM-ből extrapolált scene-számozás (nem ellenőrzött)
 Season {} (scene seasons {})	{}. évad (scene évadok: {})
 {} (scene {})	{} (scene: {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	AniList- vagy MyAnimeList-kapcsolatokból talált franchise-csoport. Az ugyanabból a franchise-ból később hozzáadott címek is bekerülnek. Az eltávolított címek frissítéskor sem kerülnek vissza.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	A felülbírálás nélküli minőség a Beállítások › Minőség értékeit használja. Felülbíráláson belül az üres mező korlátlant jelent; a nulla maximum szintén korlátlant jelent.
+Add a movie, or change the search and watched filter.	Adj hozzá egy filmet, vagy módosítsd a keresést és a megnézettségi szűrőt.
+Add a root folder in Settings › Media management first.	Előbb adj hozzá egy gyökérmappát itt: Beállítások › Médiakezelés.
+Add qualities to {}	Minőségek hozzáadása ehhez: {}
+All decisions	Minden döntés
+All seasons	Minden évad
+All selected flags must be present.	Minden kiválasztott jelzőnek jelen kell lennie.
+All sources	Minden forrás
+Allow {}	Engedélyezés: {}
+Also delete their folders and files (to the recycle bin when one is set)	A mappáik és fájljaik törlése is (a lomtárba, ha be van állítva)
+Apply sources	Források alkalmazása
+As the catalogue says	Ahogy a katalógus mondja
+Auto tag name	Automatikus címke neve
+Automatic match / keep current number	Automatikus egyeztetés / jelenlegi szám megtartása
+Automatic search for {}	Automatikus keresés: {}
+Below the root folder; use / for sub-folders.	A gyökérmappán belül; almappákhoz használj / jelet.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	A legjobbtól kezdve. Az átrendezéshez húzd a fogantyúkat, vagy használd a nyilakat. A csoporton belüli minőségek egyenrangúak.
+Bulk actions	Tömeges műveletek
+Catalogue ID	Katalógusazonosító
+Catalogue changed.	Katalógus módosítva.
+Catalogue match	Katalógusegyezés
+Change catalogue	Katalógus módosítása
+Choose a movie…	Válassz filmet…
+Choose a root folder…	Válassz gyökérmappát…
+Choose episodes for {}	Epizódok kiválasztása: {}
+Choose which episodes are monitored, as when adding the series	Válaszd ki, mely epizódok legyenek megfigyelve, mint a sorozat hozzáadásakor
+Choose which episodes of the selected series are monitored	Válaszd ki, a kiválasztott sorozatok mely epizódjai legyenek megfigyelve
+Choose {}	Kiválasztás: {}
+Clean library level	Könyvtártisztítás szintje
+Clean library tag	Könyvtártisztítás címkéje
+Clear filters	Szűrők törlése
+Clear or adjust the filters to see more results.	Több találathoz töröld vagy módosítsd a szűrőket.
+Codec of {}	{} kodekje
+Compression mode	Tömörítési mód
+Condition indexer flags	Feltétel indexelőjelzői
+Condition language	Feltétel nyelve
+Condition name	Feltétel neve
+Condition name {}	Feltétel neve: {}
+Condition regular expression {}	Feltétel reguláris kifejezése: {}
+Condition size {}	Feltétel mérete: {}
+Condition type	Feltétel típusa
+Condition value	Feltétel értéke
+Copy (keep the source)	Másolás (a forrás megtartásával)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Hozz létre egy csoportot egy minőségből, majd húzz bele további minőségeket, vagy használd a Csoport választókat. A küszöbérték követi a minőséget a csoportjába; a csoportbontás a csoport legmagasabb tagját használja.
+Current folder:	Jelenlegi mappa:
+Custom format name	Egyéni formátum neve
+Delete tag {}	{} címke törlése
+Delete the file of episode {}	Epizód fájljának törlése: {}
+Delete the movie folder and its files	A film mappájának és fájljainak törlése
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Törlöd: „{}” és a hozzá tartozó feliratok? A lomtárba kerülnek, ha be van állítva.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Törlöd: „{}”? A sorozatai és filmjei a könyvtárban maradnak, és frissítéskor sem csatlakoznak újra automatikusan.
+Detect from title	Felismerés a címből
+Disk scanned: {} {}	Lemez átvizsgálva: {} {}
+Dismiss	Elvetés
+Don't change	Nincs módosítás
+Don't import	Nincs importálás
+Done editing groups	Csoportszerkesztés befejezése
+Drag to reorder or move into a group	Húzd az átrendezéshez vagy egy csoportba helyezéshez
+Drag {}	{} húzása
+Drop here to move out of a group or to the lowest preference	Ejtsd ide a csoportból való kivételhez vagy a legalacsonyabb preferenciához
+Drop qualities here	Ejtsd ide a minőségeket
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Minden sorozat megtartja a mappáját a gyökérmappán belül. Az a sorozat, amelynek új mappája létezik és nem üres, megtartja a jelenlegi mappáját.
+Edit JSON	JSON szerkesztése
+Edit group	Csoport szerkesztése
+Edit groups	Csoportok szerkesztése
+Enter a non-negative test size within the supported range.	Adj meg egy nem negatív tesztméretet a támogatott tartományban.
+Enter a valid test size in GiB.	Adj meg érvényes tesztméretet GiB-ban.
+Enter valid test indexer flags.	Adj meg érvényes teszt indexelőjelzőket.
+Episode matches	Epizódegyezések
+Event type	Eseménytípus
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Minden feltételtípusnak teljesülnie kell. Egy típuson belül bármelyik feltétel elég, de minden kötelező feltételnek teljesülnie kell. A tagadás megfordít egy érvényes feltételt.
+Every folder of this root folder belongs to a title already.	Ennek a gyökérmappának minden mappája már egy címhez tartozik.
+Exclude {}	Kizárás: {}
+Exclusion catalogue	Kizárás katalógusa
+Exclusion id	Kizárás azonosítója
+Exclusion title	Kizárás címe
+Factor for {}	{} szorzója
+Feed tags	Feed címkéi
+File name (optional)	Fájlnév (nem kötelező)
+Filter by monitoring	Szűrés figyelés szerint
+Filter by watched state	Szűrés megnézettség szerint
+Filter release decisions	Kiadási döntések szűrése
+Filter releases	Kiadások szűrése
+Find target title	Célcím keresése
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	A gyökérmappa azon mappái, amelyeket egyetlen cím sem használ. Mindegyiket a neve alapján egyezteti a katalógussal (vagy a benne lévő
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Az egyeztetetlen kiadásoknál vesd össze az alábbi értelmezett címet és epizódszámokat a figyelembe vett címekkel. Szükség esetén adj hozzá alternatív címet, vagy javítsd az epizódleképezést a könyvtárban.
+Format does not match	A formátum nem egyezik
+Format matches	A formátum egyezik
+Full season	Teljes évad
+Grab it now instead of waiting for the delay	Megragadás most, a késleltetés kivárása helyett
+Grab {}	{} megragadása
+Group	Csoport
+Group for {}	{} csoportja
+Group name	Csoport neve
+Group {}	{} csoport
+Guided editor	Vezetett szerkesztő
+I confirm that the target catalogue entry is the same title.	Megerősítem, hogy a cél katalógusbejegyzés ugyanaz a cím.
+Import	Importálás
+Import existing folders	Meglévő mappák importálása
+Import mode	Importálási mód
+Import {}	{} importálása
+Imported from movie folder	Importálva a film mappájából
+Include in file names ({} token)	Szerepeljen a fájlnevekben ({} token)
+Include {}	Belefoglalás: {}
+Indexer flags (bitmask)	Indexelőjelzők (bitmaszk)
+Jellyfin library	Jellyfin-könyvtár
+Jellyfin user	Jellyfin-felhasználó
+Jellyfin watched sync can update this status.	A Jellyfin megnézettség-szinkronizálás módosíthatja ezt az állapotot.
+Key name	Kulcs neve
+Key permission	Kulcs jogosultsága
+Kind of {}	{} típusa
+Label of {}	{} megnevezése
+Language	Nyelv
+Library import	Könyvtár importálása
+List exclusions	Listakizárások
+Loading sources…	Források betöltése…
+Main navigation	Fő navigáció
+Mark unwatched	Megjelölés nem megnézettként
+Mark watched	Megjelölés megnézettként
+Match	Egyeztetés
+Match any other language	Bármely más nyelvre illeszkedik
+Match episode {}	Epizód egyeztetése: {}
+Match for {}	{} egyezése
+Matching series	Egyező sorozatok
+Matching subtitles follow the file's new name.	Az egyező feliratok követik a fájl új nevét.
+Maximum GiB (inclusive)	Maximum GiB (bezárólag)
+Maximum size	Maximális méret
+Maximum year	Legkésőbbi év
+Minimum GiB (exclusive)	Minimum GiB (kizárólag)
+Minimum age	Minimális kor
+Minimum level	Minimális szint
+Minimum score increment for upgrades	Minimális pontszám-növekmény minőségfrissítéshez
+Minimum year	Legkorábbi év
+Monitor episode {}	Epizód figyelése: {}
+Monitor new seasons	Új évadok figyelése
+Monitored filter	Figyelési szűrő
+Monitoring	Figyelés
+Monitoring updated for {} series.	Figyelés frissítve {} sorozatnál.
+Monitoring — {} series	Figyelés — {} sorozat
+Monitoring…	Figyelés beállítása…
+Move folder	Mappa áthelyezése
+Move the files	Fájlok áthelyezése
+Move the files to the new folder	Fájlok áthelyezése az új mappába
+Move the movie folder, or point the movie at another folder	A film mappájának áthelyezése, vagy a film átirányítása egy másik mappára
+Move the selected series into another root folder	A kiválasztott sorozatok áthelyezése egy másik gyökérmappába
+Move the series folder, or point the series at another folder	A sorozat mappájának áthelyezése, vagy a sorozat átirányítása egy másik mappára
+Move to root folder…	Áthelyezés gyökérmappába…
+Move {} series	{} sorozat áthelyezése
+Movie bulk actions	Tömeges filmműveletek
+Movie file deleted	Filmfájl törölve
+Movie file renamed	Filmfájl átnevezve
+Movie file restored	Filmfájl visszaállítva
+Movie for {}	{} filmje
+Movie history	Film előzményei
+Movie import mode	Filmimportálási mód
+Movie removed, and its folder deleted or recycled.	Film eltávolítva, a mappája törölve vagy a lomtárba helyezve.
+Movie source folder	Filmek forrásmappája
+Movies (Tanukarr)	Filmek (Tanukarr)
+Moving…	Áthelyezés…
+Naming & file settings	Elnevezés és fájlbeállítások
+Negate condition {}	Feltétel tagadása: {}
+New condition type	Új feltételtípus
+New profile	Új profil
+New root folder path	Új gyökérmappa útvonala
+New tag	Új címke
+Next	Tovább
+No group	Nincs csoport
+No indexer responded successfully. Check the source errors above, then try again.	Egyetlen indexelő sem válaszolt sikeresen. Ellenőrizd a fenti forráshibákat, majd próbáld újra.
+No match for “{}”	Nincs egyezés erre: „{}”
+No releases match these filters	Egyetlen kiadás sem felel meg ezeknek a szűrőknek
+No root folder	Nincs gyökérmappa
+Nothing to import	Nincs mit importálni
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Csak a rögzített mappa változik; akkor használd, ha a fájlok már ott vannak, utána vizsgáld át a lemezt.
+Open navigation	Navigáció megnyitása
+Open on {}	Megnyitás itt: {}
+Organize files	Fájlok rendezése
+Organizing…	Rendezés…
+Original language	Eredeti nyelv
+Override for a mapped anime batch or a movie feature (single episode).	Felülbírálás leképezett anime-csomaghoz vagy a film fő fájljához (egyetlen epizód).
+Parsed title:	Értelmezett cím:
+Passkey	Passkey
+Place above {}	Elhelyezés ez fölé: {}
+Place at lowest preference	Elhelyezés a legalacsonyabb preferenciára
+Position of {}	{} pozíciója
+Prefer {} less	{} kevésbé preferálása
+Prefer {} more	{} jobban preferálása
+Preferred catalogue	Preferált katalógus
+Preset title	Előbeállítás címe
+Prevent import lists from adding it again	Ne adhassák hozzá újra az importálási listák
+Prevent import lists from adding them again	Ne adhassák hozzá őket újra az importálási listák
+Preview again to review your changes.	Készíts újra előnézetet a módosítások áttekintéséhez.
+Previous	Előző
+Progress of {}	{} haladása
+Proxy hostname	Proxy hosztneve
+Proxy port	Proxy portja
+Quality cutoff	Minőségi küszöbérték
+Quality profile for added shows	Minőségi profil a hozzáadott sorozatokhoz
+Quality sizes	Minőségi méretek
+Quality: {} · Group: {} · Languages: {} · {}	Minőség: {} · Csoport: {} · Nyelvek: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	A lekérdezési tervek tartalék szinteket is tartalmaznak, amelyek nem feltétlenül futnak le. A források keretideje 35 másodperc; az interaktív keresések teljes keretideje 45 másodperc.
+RSS sync interval	RSS-szinkronizálás időköze
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Csak olvasás: ellenőrzi a sorozat- és filmmappákat, a nem biztonságos fájlrekordokat és a lemezről hiányzó fájlokat.
+Reading the root folder…	A gyökérmappa olvasása…
+Regular expression	Reguláris kifejezés
+Rejected	Elutasítva
+Release title	Kiadás címe
+Release type	Kiadás típusa
+Reload folders	Mappák újratöltése
+Remove condition	Feltétel eltávolítása
+Remove condition {}	Feltétel eltávolítása: {}
+Remove mapping	Leképezés eltávolítása
+Remove the selected series from Kitsunarr	A kiválasztott sorozatok eltávolítása a Kitsunarrból
+Remove the {} selected series and their episode records from Kitsunarr?	Eltávolítod a Kitsunarrból a(z) {} kiválasztott sorozatot az epizódrekordjaikkal együtt?
+Remove {}	{} eltávolítása
+Remove {} from the blocklist	{} eltávolítása a tiltólistáról
+Remove {} series	{} sorozat eltávolítása
+Remove “{}” from Kitsunarr?	Eltávolítod a Kitsunarrból ezt: „{}”?
+Remove…	Eltávolítás…
+Removing…	Eltávolítás folyamatban…
+Rename every file of the selected series to the naming settings	A kiválasztott sorozatok minden fájljának átnevezése az elnevezési beállítások szerint
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Átnevezed a(z) {} kiválasztott sorozat minden fájlját az elnevezési beállítások szerint? Előbb nézd meg a neveket a sorozat Fájlok átnevezése előnézetében.
+Rename file	Fájl átnevezése
+Renaming mode	Átnevezési mód
+Required condition {}	Kötelező feltétel: {}
+Rescan disk	Lemez újbóli átvizsgálása
+Restore media type	Visszaállítandó médiatípus
+Result	Eredmény
+Retention	Megőrzési idő
+Review	Áttekintés
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Tekintsd át a célcímet és az epizódegyezéseket. A fájlok, útvonalak, a figyelés és az előzmények megmaradnak. Az egyeztetetlen epizódok csak akkor tartják meg a számukat, ha az az új katalógusban szabad.
+Root folder for added shows	Gyökérmappa a hozzáadott sorozatokhoz
+Save path	Mentési útvonal
+Saving…	Mentés…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Vizsgálj át egy letöltési mappát, tekintsd át az egyes filmeket, és másold vagy helyezd át a fő fájljukat az egyező feliratokkal együtt a könyvtárba. A meglévő fő fájlokat csak minőségfrissítés cseréli le.
+Search again	Újrakeresés
+Search catalogues	Keresés a katalógusokban
+Search diagnostics	Keresési diagnosztika
+Search for missing episodes once imported	Hiányzó epizódok keresése importálás után
+Search for {}	Keresés: {}
+Search incomplete	Hiányos keresés
+Search indexers for {}	Keresés az indexelőkben: {}
+Search season packs for {}	Évadcsomagok keresése: {}
+Search sources	Keresési források
+Search sources unavailable	A keresési források nem érhetők el
+Search the library	Keresés a könyvtárban
+Search titles…	Címek keresése…
+Search {}	Keresés: {}
+Searching “{}”…	Keresés: „{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Az évadmappák címei felváltják a katalógusét a {} tokenben. Hagyd üresen a katalógus címeinek megtartásához.
+Season {} title	{}. évad címe
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Válassz egy forrást fent, vagy engedélyezd az interaktív keresést az indexelő beállításaiban. A forráscímkék azt is korlátozhatják, mely sorozatokban keres.
+Select all	Összes kiválasztása
+Select all movies on this page	Az oldal összes filmjének kiválasztása
+Select every episode on this page	Az oldal összes epizódjának kiválasztása
+Select {}	Kiválasztás: {}
+Select {} S{}E{}	Kiválasztás: {} S{}E{}
+Send now	Küldés most
+Send {} now	{} küldése most
+Series & anime	Sorozatok és anime
+Series history	Sorozat előzményei
+Series of {}	{} sorozata
+Series title, e.g. Severance (or tvdb:12345)	Sorozat címe, pl. Severance (vagy tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	{} / {} kiadás látható. A szűrők újrakeresés nélkül vonatkoznak ezekre az eredményekre.
+Size (GiB)	Méret (GiB)
+Sort by	Rendezés
+Specifications JSON	Specifikációk JSON-ja
+Stalled torrent timeout	Elakadt torrentek időkorlátja
+TMDB API key	TMDB API-kulcs
+Tag existing titles	Meglévő címek címkézése
+Tag {}	{} címke
+Target catalogue	Célkatalógus
+Target catalogue ID	Célkatalógus-azonosító
+Test a release	Kiadás tesztelése
+Test details	Teszt részletei
+Test file name	Teszt fájlnév
+Test format	Formátum tesztelése
+Test indexer flags	Teszt indexelőjelzők
+Test language	Teszt nyelv
+Test original language	Teszt eredeti nyelv
+Test quality	Teszt minőség
+Test release title	Teszt kiadáscím
+Test release type	Teszt kiadástípus
+Test size in GiB	Teszt méret GiB-ban
+The catalogues share an external identity.	A katalógusok közös külső azonosítóval rendelkeznek.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	A választás minden epizód figyelési állapotát lecseréli (a különkiadásokat csak a két különkiadás-opció módosítja), majd figyeli minden olyan évadot, amelyben van megfigyelt epizód. A „Nincs” a sorozat figyelését is kikapcsolja.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	A fő fájl és az egyező feliratok visszakerülnek a film mappájába. Meglévő fájlok sosem íródnak felül.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	A mappa átnevezésre kerül, vagy másik lemezen átmásolásra, majd törlésre. Az új mappa nem létezhet, vagy üresnek kell lennie.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	A válaszoló indexelők nem adtak vissza kiadást. Más források hibát adtak; ellenőrizd a fenti hibákat, és próbáld újra.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Ez a feltétel megmarad. A mezőit a JSON szerkesztése gombbal módosíthatod; a Formátum tesztelése megmutatja, kiértékelhető-e.
+Title pattern of {}	{} címmintája
+Title to add	Hozzáadandó cím
+Title to search for	Keresendő cím
+Title, group, quality or rejection reason…	Cím, csoport, minőség vagy elutasítási ok…
+Titles considered:	Figyelembe vett címek:
+Toggle colour theme	Színtéma váltása
+Toggle sort direction	Rendezési irány váltása
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Mentés előtt próbálj ki egy sorozat-, anime- vagy filmkiadás-nevet. Ez a formátum feltételeit ellenőrzi; a minőségi profil pontszámai és a letöltés jóváhagyása külön történik.
+Ungroup	Csoportbontás
+Ungroup {}	{} csoport bontása
+Unknown value ({})	Ismeretlen érték ({})
+Unmapped folders	Leképezetlen mappák
+Unmatched titles	Egyeztetetlen címek
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Törölt epizódok figyelésének kikapcsolása (kézzel törölt vagy a lemezről hiányzó; a minőségfrissítések sosem kapcsolják ki a figyelést)
+Unwatched	Nem megnézett
+Use global	Globális használata
+Use global sizes for {}	Globális méretek használata: {}
+Valid days	Érvényesség (nap)
+Value	Érték
+Values	Értékek
+View	Nézet
+Wanted lists	Keresett listák
+Watched	Megnézett
+Watched date	Megnézés dátuma
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Ha ez a beállítás ki van kapcsolva, a fájlok a lemezen maradnak. A törölt mappák a lomtárba kerülnek, ha be van állítva.
+iCal feed address	iCal-feed címe
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	címke alapján); az importált címek megtartják a mappájukat, a fájljaikat helyben vizsgálja át, majd a figyelési választás érvényesül. Semmi sem kerül áthelyezésre vagy átnevezésre.
+{} Not renamed: {}	{} Nincs átnevezve: {}
+{} factor	{} szorzó
+{} files imported. Review the results below.	{} fájl importálva. Tekintsd át az alábbi eredményeket.
+{} imported, {} failed; see each folder.	{} importálva, {} sikertelen; lásd az egyes mappáknál.
+{} imported.	{} importálva.
+{} matched · {} kept at current numbers · {} new episodes	{} egyeztetve · {} megtartotta a jelenlegi számát · {} új epizód
+{} min	{} perc
+{} of {} folders selected	{} / {} mappa kiválasztva
+{} releases found, {} accepted, nothing grabbed.	{} talált kiadás, {} elfogadva, semmi sincs megragadva.
+{} series and {} movies, {} files checked: {} issues.	{} sorozat, {} film és {} fájl ellenőrizve: {} probléma.
+{} series moved.	{} sorozat áthelyezve.
+{} series moved; not moved: {}	{} sorozat áthelyezve; nincs áthelyezve: {}
+{} series removed.	{} sorozat eltávolítva.
+{} series removed; kept: {}	{} sorozat eltávolítva; megtartva: {}
+{} size of {}	{} méret – {}
+{} size slider of {}	{} méret csúszkája – {}
+{} titles	{} cím
+{}: {} releases from {} indexer(s). {} responding.	{}: {} kiadás {} indexelőből. {} válaszolt.
+· API:	· API:
+· negated	· tagadva
+· required	· kötelező
+· {} ms · {} releases	· {} ms · {} kiadás
+— MiB per minute	— MiB percenként
+— in library	— a könyvtárban
+→ current number	→ jelenlegi szám
+or	vagy
+1 title	1 cím

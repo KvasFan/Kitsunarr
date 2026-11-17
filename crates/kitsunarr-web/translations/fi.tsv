@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Scene-numerointi TheXEMistä
 Scene numbering extrapolated from TheXEM (unverified)	TheXEMistä johdettu scene-numerointi (vahvistamaton)
 Season {} (scene seasons {})	Kausi {} (scene-kaudet {})
 {} (scene {})	{} (scene {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	AniListin tai MyAnimeListin suhteista löydetty franchise-ryhmä. Myöhemmin lisätyt saman franchisen nimikkeet liittyvät siihen myös. Poistetut nimikkeet pysyvät poissa päivitettäessä.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Laatu ilman erillisasetusta käyttää kohtaa Asetukset › Laatu. Erillisasetuksessa tyhjä tarkoittaa rajoittamatonta; myös nollan enimmäisarvo tarkoittaa rajoittamatonta.
+Add a movie, or change the search and watched filter.	Lisää elokuva tai muuta hakua ja katselutilan suodatinta.
+Add a root folder in Settings › Media management first.	Lisää ensin juurikansio kohdassa Asetukset › Median hallinta.
+Add qualities to {}	Lisää laatuja kohteeseen {}
+All decisions	Kaikki päätökset
+All seasons	Kaikki kaudet
+All selected flags must be present.	Kaikkien valittujen lippujen on oltava mukana.
+All sources	Kaikki lähteet
+Allow {}	Salli {}
+Also delete their folders and files (to the recycle bin when one is set)	Poista myös niiden kansiot ja tiedostot (roskakoriin, jos se on määritetty)
+Apply sources	Käytä lähteitä
+As the catalogue says	Kuten katalogi ilmoittaa
+Auto tag name	Automaattisen tunnisteen nimi
+Automatic match / keep current number	Automaattinen vastaavuus / säilytä nykyinen numero
+Automatic search for {}	Automaattihaku kohteelle {}
+Below the root folder; use / for sub-folders.	Juurikansion alla; käytä alikansioihin /-merkkiä.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Paras ensin. Järjestä uudelleen vetämällä kahvoista tai nuolilla. Ryhmän sisäiset laadut ovat samanarvoisia.
+Bulk actions	Joukkotoiminnot
+Catalogue ID	Katalogin tunniste
+Catalogue changed.	Katalogi vaihdettu.
+Catalogue match	Katalogivastaavuus
+Change catalogue	Vaihda katalogi
+Choose a movie…	Valitse elokuva…
+Choose a root folder…	Valitse juurikansio…
+Choose episodes for {}	Valitse jaksot kohteelle {}
+Choose which episodes are monitored, as when adding the series	Valitse, mitä jaksoja valvotaan, kuten sarjaa lisättäessä
+Choose which episodes of the selected series are monitored	Valitse, mitä valittujen sarjojen jaksoja valvotaan
+Choose {}	Valitse {}
+Clean library level	Kirjaston siivouksen taso
+Clean library tag	Kirjaston siivouksen tunniste
+Clear filters	Tyhjennä suodattimet
+Clear or adjust the filters to see more results.	Tyhjennä tai säädä suodattimia nähdäksesi lisää tuloksia.
+Codec of {}	Kohteen {} koodekki
+Compression mode	Pakkaustila
+Condition indexer flags	Ehdon hakupalveluliput
+Condition language	Ehdon kieli
+Condition name	Ehdon nimi
+Condition name {}	Ehdon {} nimi
+Condition regular expression {}	Ehdon {} säännöllinen lauseke
+Condition size {}	Ehdon {} koko
+Condition type	Ehdon tyyppi
+Condition value	Ehdon arvo
+Copy (keep the source)	Kopioi (säilytä lähde)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Luo ryhmä laadusta ja vedä siihen sitten lisää laatuja tai käytä ryhmävalitsimia. Katkaisutaso seuraa laatua sen ryhmään; ryhmän purkaminen käyttää ryhmän korkeinta jäsentä.
+Current folder:	Nykyinen kansio:
+Custom format name	Mukautetun muodon nimi
+Delete tag {}	Poista tunniste {}
+Delete the file of episode {}	Poista jakson {} tiedosto
+Delete the movie folder and its files	Poista elokuvan kansio ja sen tiedostot
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Poistetaanko ”{}” ja sitä vastaavat tekstitykset? Ne siirtyvät roskakoriin, jos sellainen on määritetty.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Poistetaanko ”{}”? Sen sarjat ja elokuvat jäävät kirjastoon eivätkä liity siihen automaattisesti uudelleen päivitettäessä.
+Detect from title	Tunnista nimestä
+Disk scanned: {} {}	Levy tarkistettu: {} {}
+Dismiss	Sulje
+Don't change	Älä muuta
+Don't import	Älä tuo
+Done editing groups	Ryhmien muokkaus valmis
+Drag to reorder or move into a group	Järjestä uudelleen tai siirrä ryhmään vetämällä
+Drag {}	Vedä {}
+Drop here to move out of a group or to the lowest preference	Pudota tähän siirtääksesi ryhmästä pois tai alimmalle sijalle
+Drop qualities here	Pudota laadut tähän
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Jokainen sarja säilyttää kansionsa juurikansion alla. Sarja, jonka uusi kansio on olemassa eikä ole tyhjä, säilyttää nykyisen kansionsa.
+Edit JSON	Muokkaa JSONia
+Edit group	Muokkaa ryhmää
+Edit groups	Muokkaa ryhmiä
+Enter a non-negative test size within the supported range.	Syötä ei-negatiivinen testikoko tuetulla alueella.
+Enter a valid test size in GiB.	Syötä kelvollinen testikoko (GiB).
+Enter valid test indexer flags.	Syötä kelvolliset testin hakupalveluliput.
+Episode matches	Jaksojen vastaavuudet
+Event type	Tapahtuman tyyppi
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Jokaisen ehtotyypin on täytyttävä. Saman tyypin sisällä mikä tahansa ehto voi täyttyä, ja jokaisen pakollisen ehdon on täytyttävä. Kiellä kääntää kelvollisen ehdon.
+Every folder of this root folder belongs to a title already.	Tämän juurikansion jokainen kansio kuuluu jo jollekin nimikkeelle.
+Exclude {}	Jätä pois {}
+Exclusion catalogue	Poikkeuksen katalogi
+Exclusion id	Poikkeuksen tunniste
+Exclusion title	Poikkeuksen nimike
+Factor for {}	Kohteen {} kerroin
+Feed tags	Syötteen tunnisteet
+File name (optional)	Tiedostonimi (valinnainen)
+Filter by monitoring	Suodata valvonnan mukaan
+Filter by watched state	Suodata katselutilan mukaan
+Filter release decisions	Suodata julkaisupäätöksiä
+Filter releases	Suodata julkaisuja
+Find target title	Etsi kohdenimike
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Juurikansion kansiot, joita mikään nimike ei käytä. Kutakin verrataan katalogiin nimensä perusteella (tai siinä olevan
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Vastaavuutta vailla oleville julkaisuille: vertaa alla olevaa jäsennettyä nimeä ja jaksonumeroita huomioituihin nimikkeisiin. Lisää tarvittaessa vaihtoehtoinen nimi tai korjaa jaksojen kohdistus kirjastossa.
+Format does not match	Muoto ei täsmää
+Format matches	Muoto täsmää
+Full season	Koko kausi
+Grab it now instead of waiting for the delay	Kaappaa nyt viiveen odottamisen sijaan
+Grab {}	Kaappaa {}
+Group	Ryhmä
+Group for {}	Kohteen {} ryhmä
+Group name	Ryhmän nimi
+Group {}	Ryhmä {}
+Guided editor	Ohjattu muokkain
+I confirm that the target catalogue entry is the same title.	Vahvistan, että kohdekatalogin merkintä on sama nimike.
+Import	Tuo
+Import existing folders	Tuo olemassa olevat kansiot
+Import mode	Tuontitila
+Import {}	Tuo {}
+Imported from movie folder	Tuotu elokuvan kansiosta
+Include in file names ({} token)	Sisällytä tiedostonimiin ({}-tunniste)
+Include {}	Sisällytä {}
+Indexer flags (bitmask)	Hakupalvelun liput (bittimaski)
+Jellyfin library	Jellyfin-kirjasto
+Jellyfin user	Jellyfin-käyttäjä
+Jellyfin watched sync can update this status.	Jellyfinin katselutilan synkronointi voi päivittää tämän tilan.
+Key name	Avaimen nimi
+Key permission	Avaimen käyttöoikeus
+Kind of {}	Kohteen {} tyyppi
+Label of {}	Kohteen {} nimi
+Language	Kieli
+Library import	Kirjaston tuonti
+List exclusions	Listojen poikkeukset
+Loading sources…	Ladataan lähteitä…
+Main navigation	Päänavigointi
+Mark unwatched	Merkitse katsomattomaksi
+Mark watched	Merkitse katsotuksi
+Match	Kohdista
+Match any other language	Vastaa mitä tahansa muuta kieltä
+Match episode {}	Jakson {} vastaavuus
+Match for {}	Kohteen {} vastaavuus
+Matching series	Vastaavat sarjat
+Matching subtitles follow the file's new name.	Vastaavat tekstitykset seuraavat tiedoston uutta nimeä.
+Maximum GiB (inclusive)	Enintään GiB (mukaan lukien)
+Maximum size	Enimmäiskoko
+Maximum year	Enimmäisvuosi
+Minimum GiB (exclusive)	Vähintään GiB (pois lukien)
+Minimum age	Vähimmäisikä
+Minimum level	Vähimmäistaso
+Minimum score increment for upgrades	Päivitysten pienin pistekorotus
+Minimum year	Vähimmäisvuosi
+Monitor episode {}	Valvo jaksoa {}
+Monitor new seasons	Valvo uusia kausia
+Monitored filter	Valvontasuodatin
+Monitoring	Valvonta
+Monitoring updated for {} series.	Valvonta päivitettiin, sarjoja: {}.
+Monitoring — {} series	Valvonta — {} sarjaa
+Monitoring…	Päivitetään valvontaa…
+Move folder	Siirrä kansio
+Move the files	Siirrä tiedostot
+Move the files to the new folder	Siirrä tiedostot uuteen kansioon
+Move the movie folder, or point the movie at another folder	Siirrä elokuvan kansio tai osoita elokuva toiseen kansioon
+Move the selected series into another root folder	Siirrä valitut sarjat toiseen juurikansioon
+Move the series folder, or point the series at another folder	Siirrä sarjan kansio tai osoita sarja toiseen kansioon
+Move to root folder…	Siirrä juurikansioon…
+Move {} series	Siirrä {} sarjaa
+Movie bulk actions	Elokuvien joukkotoiminnot
+Movie file deleted	Elokuvatiedosto poistettu
+Movie file renamed	Elokuvatiedosto nimetty uudelleen
+Movie file restored	Elokuvatiedosto palautettu
+Movie for {}	Kohteen {} elokuva
+Movie history	Elokuvan historia
+Movie import mode	Elokuvien tuontitila
+Movie removed, and its folder deleted or recycled.	Elokuva poistettiin, ja sen kansio poistettiin tai siirrettiin roskakoriin.
+Movie source folder	Elokuvien lähdekansio
+Movies (Tanukarr)	Elokuvat (Tanukarr)
+Moving…	Siirretään…
+Naming & file settings	Nimeäminen ja tiedostoasetukset
+Negate condition {}	Kiellä ehto {}
+New condition type	Uusi ehtotyyppi
+New profile	Uusi profiili
+New root folder path	Uuden juurikansion polku
+New tag	Uusi tunniste
+Next	Seuraava
+No group	Ei ryhmää
+No indexer responded successfully. Check the source errors above, then try again.	Yksikään hakupalvelu ei vastannut onnistuneesti. Tarkista yllä olevat lähdevirheet ja yritä uudelleen.
+No match for “{}”	Ei osumia haulle ”{}”
+No releases match these filters	Mikään julkaisu ei vastaa näitä suodattimia
+No root folder	Ei juurikansiota
+Nothing to import	Ei tuotavaa
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Vain kirjattu kansio muuttuu; käytä tätä, kun tiedostot ovat jo siellä, ja tarkista sitten levy.
+Open navigation	Avaa navigointi
+Open on {}	Avaa palvelussa {}
+Organize files	Järjestä tiedostot
+Organizing…	Järjestetään…
+Original language	Alkuperäinen kieli
+Override for a mapped anime batch or a movie feature (single episode).	Erillisasetus kohdistetulle animekoosteelle tai elokuvan päätiedostolle (yksittäinen jakso).
+Parsed title:	Jäsennetty nimi:
+Passkey	Pääsyavain
+Place above {}	Sijoita kohteen {} yläpuolelle
+Place at lowest preference	Sijoita alimmalle sijalle
+Position of {}	Kohteen {} sijainti
+Prefer {} less	Suosi {} vähemmän
+Prefer {} more	Suosi {} enemmän
+Preferred catalogue	Ensisijainen katalogi
+Preset title	Esiasetuksen nimi
+Prevent import lists from adding it again	Estä tuontilistoja lisäämästä sitä uudelleen
+Prevent import lists from adding them again	Estä tuontilistoja lisäämästä niitä uudelleen
+Preview again to review your changes.	Esikatsele uudelleen tarkistaaksesi muutoksesi.
+Previous	Edellinen
+Progress of {}	Kohteen {} edistyminen
+Proxy hostname	Välityspalvelimen isäntänimi
+Proxy port	Välityspalvelimen portti
+Quality cutoff	Laadun katkaisutaso
+Quality profile for added shows	Lisättävien sarjojen laatuprofiili
+Quality sizes	Laatujen koot
+Quality: {} · Group: {} · Languages: {} · {}	Laatu: {} · Ryhmä: {} · Kielet: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Hakusuunnitelmat sisältävät varatasoja, joita ei välttämättä suoriteta. Lähteillä on 35 sekunnin aikabudjetti; manuaalihauilla on yhteensä 45 sekunnin budjetti.
+RSS sync interval	RSS-synkronoinnin ajoitus
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Vain luku: tarkistaa sarja- ja elokuvakansiot, vaaralliset tiedostotietueet ja levyltä puuttuvat tiedostot.
+Reading the root folder…	Luetaan juurikansiota…
+Regular expression	Säännöllinen lauseke
+Rejected	Hylätty
+Release title	Julkaisun nimi
+Release type	Julkaisun tyyppi
+Reload folders	Lataa kansiot uudelleen
+Remove condition	Poista ehto
+Remove condition {}	Poista ehto {}
+Remove mapping	Poista kohdistus
+Remove the selected series from Kitsunarr	Poista valitut sarjat Kitsunarrista
+Remove the {} selected series and their episode records from Kitsunarr?	Poistetaanko {} valittua sarjaa ja niiden jaksotietueet Kitsunarrista?
+Remove {}	Poista {}
+Remove {} from the blocklist	Poista {} estolistalta
+Remove {} series	Poista {} sarjaa
+Remove “{}” from Kitsunarr?	Poistetaanko ”{}” Kitsunarrista?
+Remove…	Poista…
+Removing…	Poistetaan…
+Rename every file of the selected series to the naming settings	Nimeä valittujen sarjojen kaikki tiedostot uudelleen nimeämisasetusten mukaan
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Nimetäänkö {} valitun sarjan kaikki tiedostot uudelleen nimeämisasetusten mukaan? Tarkista nimet ensin sarjan Nimeä tiedostot uudelleen -esikatselulla.
+Rename file	Nimeä tiedosto uudelleen
+Renaming mode	Uudelleennimeämistila
+Required condition {}	Pakollinen ehto {}
+Rescan disk	Tarkista levy uudelleen
+Restore media type	Palauta mediatyyppi
+Result	Tulos
+Retention	Säilytys
+Review	Tarkastelu
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Tarkista kohdenimike ja jaksojen vastaavuudet. Tiedostot, polut, valvonta ja historia säilytetään. Vastaavuutta vailla olevat jaksot säilyttävät numeronsa vain, jos ne ovat vapaina uudessa katalogissa.
+Root folder for added shows	Lisättävien sarjojen juurikansio
+Save path	Tallennuspolku
+Saving…	Tallennetaan…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Tarkista latauskansio, tarkastele kutakin elokuvaa ja kopioi tai siirrä sen päätiedosto vastaavine tekstityksineen kirjastoon. Olemassa olevat päätiedostot korvataan vain päivityksillä.
+Search again	Hae uudelleen
+Search catalogues	Hae katalogeista
+Search diagnostics	Haun diagnostiikka
+Search for missing episodes once imported	Hae puuttuvia jaksoja tuonnin jälkeen
+Search for {}	Hae kohdetta {}
+Search incomplete	Haku keskeneräinen
+Search indexers for {}	Hae kohdetta {} hakupalveluista
+Search season packs for {}	Hae kausikoosteita kohteelle {}
+Search sources	Hakulähteet
+Search sources unavailable	Hakulähteet eivät ole käytettävissä
+Search the library	Hae kirjastosta
+Search titles…	Hae nimikkeitä…
+Search {}	Hae lähteestä {}
+Searching “{}”…	Haetaan ”{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Kausikansioiden nimet korvaavat katalogin nimet tunnisteessa {}. Jätä tyhjäksi säilyttääksesi katalogin nimet.
+Season {} title	Kauden {} nimi
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Valitse lähde yltä tai ota manuaalihaku käyttöön hakupalvelun asetuksissa. Lähteiden tunnisteet voivat myös rajata, mitä sarjoja haetaan.
+Select all	Valitse kaikki
+Select all movies on this page	Valitse kaikki tämän sivun elokuvat
+Select every episode on this page	Valitse kaikki tämän sivun jaksot
+Select {}	Valitse {}
+Select {} S{}E{}	Valitse {} S{}E{}
+Send now	Lähetä nyt
+Send {} now	Lähetä {} nyt
+Series & anime	Sarjat ja anime
+Series history	Sarjan historia
+Series of {}	Kohteen {} sarja
+Series title, e.g. Severance (or tvdb:12345)	Sarjan nimi, esim. Severance (tai tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Näytetään {} / {} julkaisua. Suodattimet koskevat näitä tuloksia ilman uutta hakua.
+Size (GiB)	Koko (GiB)
+Sort by	Lajitteluperuste
+Specifications JSON	Määritykset (JSON)
+Stalled torrent timeout	Pysähtyneen torrentin aikakatkaisu
+TMDB API key	TMDB-rajapinnan avain
+Tag existing titles	Merkitse olemassa olevat nimikkeet tunnisteella
+Tag {}	Tunniste {}
+Target catalogue	Kohdekatalogi
+Target catalogue ID	Kohdekatalogin tunniste
+Test a release	Testaa julkaisua
+Test details	Testin tiedot
+Test file name	Testitiedoston nimi
+Test format	Testaa muotoa
+Test indexer flags	Testin hakupalveluliput
+Test language	Testin kieli
+Test original language	Testin alkuperäinen kieli
+Test quality	Testin laatu
+Test release title	Testijulkaisun nimi
+Test release type	Testijulkaisun tyyppi
+Test size in GiB	Testikoko (GiB)
+The catalogues share an external identity.	Katalogeilla on yhteinen ulkoinen identiteetti.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Valinta korvaa jokaisen jakson valvontatilan (erikoisjaksoja muuttavat vain kaksi erikoisjaksovalintaa) ja valvoo sitten jokaista kautta, jossa on valvottu jakso. ”Ei mitään” lopettaa myös sarjan valvonnan.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Päätiedosto ja vastaavat tekstitykset palautetaan elokuvan kansioon. Olemassa olevia tiedostoja ei koskaan korvata.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Kansio nimetään uudelleen, tai toisella levyllä se kopioidaan ja poistetaan sitten. Uutta kansiota ei saa olla olemassa, tai sen on oltava tyhjä.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Vastanneet hakupalvelut eivät palauttaneet julkaisuja. Muut lähteet epäonnistuivat; tarkista yllä olevat virheet ja yritä uudelleen.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Tämä ehto säilytetään. Muuta sen kenttiä Muokkaa JSONia -toiminnolla; Testaa muotoa kertoo, voidaanko se arvioida.
+Title pattern of {}	Kohteen {} nimikekaava
+Title to add	Lisättävä nimike
+Title to search for	Haettava nimike
+Title, group, quality or rejection reason…	Nimike, ryhmä, laatu tai hylkäyssyy…
+Titles considered:	Huomioidut nimikkeet:
+Toggle colour theme	Vaihda väriteema
+Toggle sort direction	Vaihda lajittelusuunta
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Kokeile TV-, anime- tai elokuvajulkaisun nimeä ennen tallentamista. Tämä tarkistaa muodon ehdot; laatuprofiilien pisteytykset ja latauksen hyväksyntä ovat erillisiä.
+Ungroup	Pura ryhmä
+Ungroup {}	Pura ryhmä {}
+Unknown value ({})	Tuntematon arvo ({})
+Unmapped folders	Kohdistamattomat kansiot
+Unmatched titles	Vastaavuutta vailla olevat nimikkeet
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Lopeta poistettujen jaksojen valvonta (käsin poistetut tai levyltä puuttuvat; päivitykset eivät koskaan lopeta valvontaa)
+Unwatched	Katsomaton
+Use global	Käytä yleistä
+Use global sizes for {}	Käytä yleisiä kokoja kohteelle {}
+Valid days	Voimassaolopäivät
+Value	Arvo
+Values	Arvot
+View	Näkymä
+Wanted lists	Halutut-listat
+Watched	Katsottu
+Watched date	Katselupäivä
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Kun tämä asetus ei ole käytössä, tiedostot jäävät levylle. Poistetut kansiot siirtyvät roskakoriin, jos sellainen on määritetty.
+iCal feed address	iCal-syötteen osoite
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	tunnisteen); tuodut nimikkeet säilyttävät kansionsa, niiden tiedostot tarkistetaan paikallaan, ja sitten valvontavalinta otetaan käyttöön. Mitään ei siirretä eikä nimetä uudelleen.
+{} Not renamed: {}	{} Ei nimetty uudelleen: {}
+{} factor	{}-kerroin
+{} files imported. Review the results below.	Tiedostoja tuotu: {}. Tarkista tulokset alta.
+{} imported, {} failed; see each folder.	Tuotu: {}, epäonnistui: {}; katso kunkin kansion tila.
+{} imported.	Tuotu: {}.
+{} matched · {} kept at current numbers · {} new episodes	{} vastaavuutta · {} säilytetty nykyisillä numeroilla · {} uutta jaksoa
+{} min	{} min
+{} of {} folders selected	{} / {} kansiota valittu
+{} releases found, {} accepted, nothing grabbed.	Julkaisuja löytyi {}, hyväksyttiin {}, mitään ei kaapattu.
+{} series and {} movies, {} files checked: {} issues.	{} sarjaa ja {} elokuvaa, {} tiedostoa tarkistettu: {} ongelmaa.
+{} series moved.	{} sarjaa siirretty.
+{} series moved; not moved: {}	{} sarjaa siirretty; ei siirretty: {}
+{} series removed.	{} sarjaa poistettu.
+{} series removed; kept: {}	{} sarjaa poistettu; säilytetty: {}
+{} size of {}	{} koko: {}
+{} size slider of {}	{} kokoliukusäädin: {}
+{} titles	{} nimikettä
+{}: {} releases from {} indexer(s). {} responding.	{}: {} julkaisua {} hakupalvelusta. {} vastasi.
+· API:	· API:
+· negated	· kielletty
+· required	· pakollinen
+· {} ms · {} releases	· {} ms · {} julkaisua
+— MiB per minute	— MiB minuutissa
+— in library	— kirjastossa
+→ current number	→ nykyinen numero
+or	tai
+1 title	1 nimike

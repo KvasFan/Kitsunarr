@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Нумерація сцен із TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Нумерація сцен, екстрапольована з TheXEM (не перевірено)
 Season {} (scene seasons {})	Сезон {} (сезони сцени {})
 {} (scene {})	{} (сцена {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Група франшизи, знайдена за зв'язками AniList або MyAnimeList. Назви з тієї самої франшизи, додані пізніше, теж до неї приєднуються. Видалені назви не повертаються до неї під час оновлення.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Якість без перевизначення використовує Налаштування › Якість. У межах перевизначення порожнє значення означає «без обмежень»; максимум, що дорівнює нулю, теж означає «без обмежень».
+Add a movie, or change the search and watched filter.	Додайте фільм або змініть пошук і фільтр переглянутого.
+Add a root folder in Settings › Media management first.	Спочатку додайте кореневу теку в Налаштування › Керування медіа.
+Add qualities to {}	Додати якості до {}
+All decisions	Усі рішення
+All seasons	Усі сезони
+All selected flags must be present.	Мають бути присутні всі вибрані прапорці.
+All sources	Усі джерела
+Allow {}	Дозволити {}
+Also delete their folders and files (to the recycle bin when one is set)	Також видалити їхні теки та файли (у кошик, якщо його задано)
+Apply sources	Застосувати джерела
+As the catalogue says	Як указано в каталозі
+Auto tag name	Назва автотегу
+Automatic match / keep current number	Автоматичне зіставлення / зберегти поточний номер
+Automatic search for {}	Автоматичний пошук для {}
+Below the root folder; use / for sub-folders.	Усередині кореневої теки; використовуйте / для підтек.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Найкращі першими. Перетягуйте маркери або використовуйте стрілки, щоб змінити порядок. Якості всередині групи мають однаковий ранг.
+Bulk actions	Масові дії
+Catalogue ID	ID у каталозі
+Catalogue changed.	Каталог змінено.
+Catalogue match	Збіг у каталозі
+Change catalogue	Змінити каталог
+Choose a movie…	Виберіть фільм…
+Choose a root folder…	Виберіть кореневу теку…
+Choose episodes for {}	Виберіть епізоди для {}
+Choose which episodes are monitored, as when adding the series	Виберіть, які епізоди відстежуються, як під час додавання серіалу
+Choose which episodes of the selected series are monitored	Виберіть, які епізоди вибраних серіалів відстежуються
+Choose {}	Вибрати {}
+Clean library level	Рівень для очищення бібліотеки
+Clean library tag	Тег для очищення бібліотеки
+Clear filters	Очистити фільтри
+Clear or adjust the filters to see more results.	Очистьте або змініть фільтри, щоб побачити більше результатів.
+Codec of {}	Кодек для {}
+Compression mode	Режим стиснення
+Condition indexer flags	Прапорці індексатора в умові
+Condition language	Мова умови
+Condition name	Назва умови
+Condition name {}	Назва умови {}
+Condition regular expression {}	Регулярний вираз умови {}
+Condition size {}	Розмір умови {}
+Condition type	Тип умови
+Condition value	Значення умови
+Copy (keep the source)	Копіювати (зберегти джерело)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Створіть групу з якості, потім перетягніть до неї інші якості або скористайтеся селекторами групи. Поріг переходить разом з якістю до її групи; під час розгрупування використовується найвищий член групи.
+Current folder:	Поточна тека:
+Custom format name	Назва власного формату
+Delete tag {}	Видалити тег {}
+Delete the file of episode {}	Видалити файл епізоду {}
+Delete the movie folder and its files	Видалити теку фільму та її файли
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Видалити «{}» і відповідні субтитри? Вони потрапляють у кошик, якщо його задано.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Видалити «{}»? Її серіали й фільми залишаться в бібліотеці й не приєднаються знову автоматично під час оновлення.
+Detect from title	Визначити з назви
+Disk scanned: {} {}	Диск проскановано: {} {}
+Dismiss	Закрити
+Don't change	Не змінювати
+Don't import	Не імпортувати
+Done editing groups	Завершити редагування груп
+Drag to reorder or move into a group	Перетягніть, щоб змінити порядок або перемістити до групи
+Drag {}	Перетягнути {}
+Drop here to move out of a group or to the lowest preference	Перетягніть сюди, щоб вилучити з групи або поставити на найнижчий пріоритет
+Drop qualities here	Перетягніть якості сюди
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Кожен серіал зберігає свою теку всередині кореневої теки. Серіал, нова тека якого існує й не порожня, зберігає поточну теку.
+Edit JSON	Редагувати JSON
+Edit group	Редагувати групу
+Edit groups	Редагувати групи
+Enter a non-negative test size within the supported range.	Введіть невід'ємний тестовий розмір у підтримуваному діапазоні.
+Enter a valid test size in GiB.	Введіть коректний тестовий розмір у GiB.
+Enter valid test indexer flags.	Введіть коректні тестові прапорці індексатора.
+Episode matches	Збіги епізодів
+Event type	Тип події
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Кожен тип умови має збігтися. У межах одного типу достатньо збігу будь-якої умови, і кожна обов'язкова умова має збігтися. «Інвертувати» обертає коректну умову.
+Every folder of this root folder belongs to a title already.	Кожна тека цієї кореневої теки вже належить якійсь назві.
+Exclude {}	Виключити {}
+Exclusion catalogue	Каталог винятку
+Exclusion id	ID винятку
+Exclusion title	Назва винятку
+Factor for {}	Коефіцієнт для {}
+Feed tags	Теги стрічки
+File name (optional)	Ім'я файлу (необов'язково)
+Filter by monitoring	Фільтр за відстеженням
+Filter by watched state	Фільтр за станом перегляду
+Filter release decisions	Фільтр рішень щодо релізів
+Filter releases	Фільтр релізів
+Find target title	Знайти цільову назву
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Теки кореневої теки, які не використовує жодна назва. Кожну зіставляють із каталогом за її назвою (або за тегом
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Для незіставлених релізів порівняйте розпізнану назву й номери епізодів нижче з розглянутими назвами. За потреби додайте альтернативну назву або виправте зіставлення епізодів у бібліотеці.
+Format does not match	Формат не збігається
+Format matches	Формат збігається
+Full season	Увесь сезон
+Grab it now instead of waiting for the delay	Отримати зараз, не чекаючи на затримку
+Grab {}	Отримати {}
+Group	Група
+Group for {}	Група для {}
+Group name	Назва групи
+Group {}	Група {}
+Guided editor	Покроковий редактор
+I confirm that the target catalogue entry is the same title.	Підтверджую, що цільовий запис у каталозі — та сама назва.
+Import	Імпортувати
+Import existing folders	Імпортувати наявні теки
+Import mode	Режим імпорту
+Import {}	Імпортувати {}
+Imported from movie folder	Імпортовано з теки фільму
+Include in file names ({} token)	Включати в імена файлів (токен {})
+Include {}	Включити {}
+Indexer flags (bitmask)	Прапорці індексатора (бітова маска)
+Jellyfin library	Бібліотека Jellyfin
+Jellyfin user	Користувач Jellyfin
+Jellyfin watched sync can update this status.	Синхронізація переглянутого з Jellyfin може оновлювати цей стан.
+Key name	Назва ключа
+Key permission	Дозвіл ключа
+Kind of {}	Тип для {}
+Label of {}	Мітка для {}
+Language	Мова
+Library import	Імпорт бібліотеки
+List exclusions	Винятки списків
+Loading sources…	Завантаження джерел…
+Main navigation	Головна навігація
+Mark unwatched	Позначити непереглянутим
+Mark watched	Позначити переглянутим
+Match	Зіставити
+Match any other language	Збіг з будь-якою іншою мовою
+Match episode {}	Зіставити епізод {}
+Match for {}	Зіставлення для {}
+Matching series	Відповідні серіали
+Matching subtitles follow the file's new name.	Відповідні субтитри отримують нове ім'я файлу.
+Maximum GiB (inclusive)	Максимум GiB (включно)
+Maximum size	Максимальний розмір
+Maximum year	Максимальний рік
+Minimum GiB (exclusive)	Мінімум GiB (не включно)
+Minimum age	Мінімальний вік
+Minimum level	Мінімальний рівень
+Minimum score increment for upgrades	Мінімальний приріст оцінки для оновлень
+Minimum year	Мінімальний рік
+Monitor episode {}	Відстежувати епізод {}
+Monitor new seasons	Відстежувати нові сезони
+Monitored filter	Фільтр відстеження
+Monitoring	Відстеження
+Monitoring updated for {} series.	Відстеження оновлено для серіалів: {}.
+Monitoring — {} series	Відстеження — серіалів: {}
+Monitoring…	Відстеження…
+Move folder	Перемістити теку
+Move the files	Перемістити файли
+Move the files to the new folder	Перемістити файли до нової теки
+Move the movie folder, or point the movie at another folder	Перемістіть теку фільму або вкажіть для фільму іншу теку
+Move the selected series into another root folder	Перемістіть вибрані серіали до іншої кореневої теки
+Move the series folder, or point the series at another folder	Перемістіть теку серіалу або вкажіть для серіалу іншу теку
+Move to root folder…	Перемістити до кореневої теки…
+Move {} series	Перемістити серіали ({})
+Movie bulk actions	Масові дії з фільмами
+Movie file deleted	Файл фільму видалено
+Movie file renamed	Файл фільму перейменовано
+Movie file restored	Файл фільму відновлено
+Movie for {}	Фільм для {}
+Movie history	Історія фільму
+Movie import mode	Режим імпорту фільмів
+Movie removed, and its folder deleted or recycled.	Фільм видалено, а його теку видалено або переміщено в кошик.
+Movie source folder	Тека-джерело фільмів
+Movies (Tanukarr)	Фільми (Tanukarr)
+Moving…	Переміщення…
+Naming & file settings	Іменування й налаштування файлів
+Negate condition {}	Інвертувати умову {}
+New condition type	Новий тип умови
+New profile	Новий профіль
+New root folder path	Шлях нової кореневої теки
+New tag	Новий тег
+Next	Далі
+No group	Без групи
+No indexer responded successfully. Check the source errors above, then try again.	Жоден індексатор не відповів успішно. Перевірте помилки джерел вище й спробуйте ще раз.
+No match for “{}”	Немає збігів для «{}»
+No releases match these filters	Жоден реліз не відповідає цим фільтрам
+No root folder	Немає кореневої теки
+Nothing to import	Нічого імпортувати
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Змінюється лише записана тека; використовуйте це, коли файли вже там, а потім проскануйте диск.
+Open navigation	Відкрити навігацію
+Open on {}	Відкрити на {}
+Organize files	Упорядкувати файли
+Organizing…	Упорядкування…
+Original language	Оригінальна мова
+Override for a mapped anime batch or a movie feature (single episode).	Перевизначення для зіставленого аніме-пакета або основного файлу фільму (один епізод).
+Parsed title:	Розпізнана назва:
+Passkey	Passkey
+Place above {}	Поставити над {}
+Place at lowest preference	Поставити на найнижчий пріоритет
+Position of {}	Позиція {}
+Prefer {} less	Менше віддавати перевагу {}
+Prefer {} more	Більше віддавати перевагу {}
+Preferred catalogue	Бажаний каталог
+Preset title	Назва пресету
+Prevent import lists from adding it again	Не дозволяти спискам імпорту додавати його знову
+Prevent import lists from adding them again	Не дозволяти спискам імпорту додавати їх знову
+Preview again to review your changes.	Перегляньте попередньо ще раз, щоб перевірити зміни.
+Previous	Назад
+Progress of {}	Прогрес {}
+Proxy hostname	Ім'я хоста проксі
+Proxy port	Порт проксі
+Quality cutoff	Поріг якості
+Quality profile for added shows	Профіль якості для доданих серіалів
+Quality sizes	Розміри якостей
+Quality: {} · Group: {} · Languages: {} · {}	Якість: {} · Група: {} · Мови: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Плани запитів містять резервні рівні, які можуть не виконатися. Джерела мають бюджет 35 секунд; інтерактивні пошуки мають загальний бюджет 45 секунд.
+RSS sync interval	Інтервал синхронізації RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Лише читання: перевіряє теки серіалів і фільмів, небезпечні записи файлів і файли, яких немає на диску.
+Reading the root folder…	Читання кореневої теки…
+Regular expression	Регулярний вираз
+Rejected	Відхилено
+Release title	Назва релізу
+Release type	Тип релізу
+Reload folders	Перезавантажити теки
+Remove condition	Видалити умову
+Remove condition {}	Видалити умову {}
+Remove mapping	Видалити зіставлення
+Remove the selected series from Kitsunarr	Видалити вибрані серіали з Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Видалити вибрані серіали ({}) та їхні записи епізодів з Kitsunarr?
+Remove {}	Видалити {}
+Remove {} from the blocklist	Видалити {} з чорного списку
+Remove {} series	Видалити серіали ({})
+Remove “{}” from Kitsunarr?	Видалити «{}» з Kitsunarr?
+Remove…	Видалити…
+Removing…	Видалення…
+Rename every file of the selected series to the naming settings	Перейменувати всі файли вибраних серіалів за налаштуваннями іменування
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Перейменувати всі файли вибраних серіалів ({}) за налаштуваннями іменування? Спершу перевірте імена в попередньому перегляді «Перейменувати файли» серіалу.
+Rename file	Перейменувати файл
+Renaming mode	Режим перейменування
+Required condition {}	Обов'язкова умова {}
+Rescan disk	Пересканувати диск
+Restore media type	Тип медіа для відновлення
+Result	Результат
+Retention	Утримання
+Review	Перевірка
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Перевірте цільову назву й збіги епізодів. Файли, шляхи, відстеження та історія зберігаються. Незіставлені епізоди зберігають свої номери, лише якщо ці номери вільні в новому каталозі.
+Root folder for added shows	Коренева тека для доданих серіалів
+Save path	Шлях збереження
+Saving…	Збереження…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Проскануйте теку завантажень, перевірте кожен фільм і скопіюйте або перемістіть його основний файл із відповідними субтитрами до бібліотеки. Наявні основні файли замінюються лише оновленнями.
+Search again	Шукати знову
+Search catalogues	Пошук у каталогах
+Search diagnostics	Діагностика пошуку
+Search for missing episodes once imported	Шукати відсутні епізоди після імпорту
+Search for {}	Шукати {}
+Search incomplete	Пошук не завершено
+Search indexers for {}	Шукати {} в індексаторах
+Search season packs for {}	Шукати сезонні пакети для {}
+Search sources	Пошук у джерелах
+Search sources unavailable	Джерела пошуку недоступні
+Search the library	Пошук у бібліотеці
+Search titles…	Пошук назв…
+Search {}	Шукати {}
+Searching “{}”…	Пошук «{}»…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Назви тек сезонів замінюють назви з каталогу в {}. Залиште порожнім, щоб зберегти назви з каталогу.
+Season {} title	Назва сезону {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Виберіть джерело вище або ввімкніть інтерактивний пошук у налаштуваннях індексатора. Теги джерел також можуть обмежувати, які серіали шукаються.
+Select all	Вибрати всі
+Select all movies on this page	Вибрати всі фільми на цій сторінці
+Select every episode on this page	Вибрати кожен епізод на цій сторінці
+Select {}	Вибрати {}
+Select {} S{}E{}	Вибрати {} S{}E{}
+Send now	Надіслати зараз
+Send {} now	Надіслати {} зараз
+Series & anime	Серіали й аніме
+Series history	Історія серіалу
+Series of {}	Серіал для {}
+Series title, e.g. Severance (or tvdb:12345)	Назва серіалу, напр. Severance (або tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Показано {} з {} релізів. Фільтри застосовуються до цих результатів без повторного пошуку.
+Size (GiB)	Розмір (GiB)
+Sort by	Сортувати за
+Specifications JSON	Специфікації JSON
+Stalled torrent timeout	Тайм-аут завислих торрентів
+TMDB API key	Ключ API TMDB
+Tag existing titles	Позначити наявні назви тегами
+Tag {}	Позначити тегом {}
+Target catalogue	Цільовий каталог
+Target catalogue ID	ID у цільовому каталозі
+Test a release	Перевірити реліз
+Test details	Деталі перевірки
+Test file name	Тестове ім'я файлу
+Test format	Перевірити формат
+Test indexer flags	Тестові прапорці індексатора
+Test language	Тестова мова
+Test original language	Тестова оригінальна мова
+Test quality	Тестова якість
+Test release title	Тестова назва релізу
+Test release type	Тестовий тип релізу
+Test size in GiB	Тестовий розмір у GiB
+The catalogues share an external identity.	Каталоги мають спільну зовнішню ідентичність.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Вибір замінює стан відстеження кожного епізоду (спецепізоди змінюють лише два варіанти для спецепізодів), а потім відстежує кожен сезон, у якому є відстежуваний епізод. «Немає» також припиняє відстеження серіалу.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Основний файл і відповідні субтитри відновлюються в теку фільму. Наявні файли ніколи не перезаписуються.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Теку перейменовують або, на іншому диску, копіюють, а потім видаляють. Нової теки не має існувати, або вона має бути порожньою.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Індексатори, що відповіли, не повернули жодного релізу. Інші джерела не спрацювали; перевірте помилки вище й спробуйте ще раз.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Цю умову збережено. Використовуйте «Редагувати JSON», щоб змінити її поля; «Перевірити формат» повідомить, чи можна її обчислити.
+Title pattern of {}	Шаблон назви для {}
+Title to add	Назва для додавання
+Title to search for	Назва для пошуку
+Title, group, quality or rejection reason…	Назва, група, якість або причина відхилення…
+Titles considered:	Розглянуті назви:
+Toggle colour theme	Перемкнути колірну тему
+Toggle sort direction	Перемкнути напрямок сортування
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Перевірте назву релізу серіалу, аніме або фільму перед збереженням. Це перевіряє умови формату; оцінки профілів якості та схвалення завантаження — окремо.
+Ungroup	Розгрупувати
+Ungroup {}	Розгрупувати {}
+Unknown value ({})	Невідоме значення ({})
+Unmapped folders	Незіставлені теки
+Unmatched titles	Незіставлені назви
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Не відстежувати видалені епізоди (видалені вручну або відсутні на диску; оновлення ніколи не скасовують відстеження)
+Unwatched	Непереглянуте
+Use global	Використовувати глобальні
+Use global sizes for {}	Використовувати глобальні розміри для {}
+Valid days	Діє днів
+Value	Значення
+Values	Значення
+View	Вигляд
+Wanted lists	Списки розшукуваного
+Watched	Переглянуте
+Watched date	Дата перегляду
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Якщо цей параметр вимкнено, файли залишаються на диску. Видалені теки потрапляють у кошик, якщо його задано.
+iCal feed address	Адреса стрічки iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	у ній); імпортовані назви зберігають свою теку, їхні файли скануються на місці, потім застосовується вибір відстеження. Нічого не переміщується й не перейменовується.
+{} Not renamed: {}	{} Не перейменовано: {}
+{} factor	Коефіцієнт для {}
+{} files imported. Review the results below.	Імпортовано файлів: {}. Перегляньте результати нижче.
+{} imported, {} failed; see each folder.	Імпортовано: {}, з помилкою: {}; див. кожну теку.
+{} imported.	Імпортовано: {}.
+{} matched · {} kept at current numbers · {} new episodes	Зіставлено: {} · збережено поточні номери: {} · нових епізодів: {}
+{} min	{} хв
+{} of {} folders selected	Вибрано {} з {} тек
+{} releases found, {} accepted, nothing grabbed.	Знайдено релізів: {}, прийнято: {}, нічого не отримано.
+{} series and {} movies, {} files checked: {} issues.	Перевірено серіалів: {}, фільмів: {}, файлів: {}; проблем: {}.
+{} series moved.	Переміщено серіалів: {}.
+{} series moved; not moved: {}	Переміщено серіалів: {}; не переміщено: {}
+{} series removed.	Видалено серіалів: {}.
+{} series removed; kept: {}	Видалено серіалів: {}; залишено: {}
+{} size of {}	{} розмір для {}
+{} size slider of {}	{} повзунок розміру для {}
+{} titles	{} назв
+{}: {} releases from {} indexer(s). {} responding.	{}: релізів: {} з індексаторів: {}. Відповіли: {}.
+· API:	· API:
+· negated	· інвертовано
+· required	· обов'язково
+· {} ms · {} releases	· {} ms · релізів: {}
+— MiB per minute	— MiB за хвилину
+— in library	— у бібліотеці
+→ current number	→ поточний номер
+or	або
+1 title	1 назва

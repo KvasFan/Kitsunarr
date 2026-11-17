@@ -966,3 +966,347 @@ Scene numbering from TheXEM	TheXEM'den sahne numaralandırması
 Scene numbering extrapolated from TheXEM (unverified)	TheXEM'den tahmin edilen sahne numaralandırması (doğrulanmamış)
 Season {} (scene seasons {})	Sezon {} (sahne sezonları {})
 {} (scene {})	{} (sahne {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	AniList veya MyAnimeList ilişkilerinden bulunan bir seri grubu. Aynı seriden sonradan eklenen yapımlar da gruba katılır. Çıkarılan yapımlar yenilendiğinde dışarıda kalır.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Geçersiz kılması olmayan bir kalite Ayarlar › Kalite değerlerini kullanır. Bir geçersiz kılmada boş, sınırsız demektir; sıfır maksimum da sınırsız demektir.
+Add a movie, or change the search and watched filter.	Bir film ekleyin ya da aramayı ve izlenme filtresini değiştirin.
+Add a root folder in Settings › Media management first.	Önce Ayarlar › Medya yönetimi bölümünden bir kök klasör ekleyin.
+Add qualities to {}	Kalite ekle: {}
+All decisions	Tüm kararlar
+All seasons	Tüm sezonlar
+All selected flags must be present.	Seçilen tüm bayraklar bulunmalıdır.
+All sources	Tüm kaynaklar
+Allow {}	İzin ver: {}
+Also delete their folders and files (to the recycle bin when one is set)	Klasörlerini ve dosyalarını da sil (ayarlanmışsa geri dönüşüm kutusuna)
+Apply sources	Kaynakları uygula
+As the catalogue says	Kataloğun belirttiği gibi
+Auto tag name	Otomatik etiket adı
+Automatic match / keep current number	Otomatik eşleme / mevcut numarayı koru
+Automatic search for {}	{} için otomatik arama
+Below the root folder; use / for sub-folders.	Kök klasörün altında; alt klasörler için / kullanın.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	En iyisi en üstte. Yeniden sıralamak için tutamaçları sürükleyin veya okları kullanın. Bir gruptaki kaliteler eşit sıradadır.
+Bulk actions	Toplu işlemler
+Catalogue ID	Katalog kimliği
+Catalogue changed.	Katalog değiştirildi.
+Catalogue match	Katalog eşleşmesi
+Change catalogue	Kataloğu değiştir
+Choose a movie…	Bir film seçin…
+Choose a root folder…	Bir kök klasör seçin…
+Choose episodes for {}	Bölümleri seçin: {}
+Choose which episodes are monitored, as when adding the series	Diziyi eklerken olduğu gibi hangi bölümlerin takip edileceğini seçin
+Choose which episodes of the selected series are monitored	Seçilen dizilerin hangi bölümlerinin takip edileceğini seçin
+Choose {}	Seç: {}
+Clean library level	Kütüphane temizleme düzeyi
+Clean library tag	Kütüphane temizleme etiketi
+Clear filters	Filtreleri temizle
+Clear or adjust the filters to see more results.	Daha fazla sonuç görmek için filtreleri temizleyin veya ayarlayın.
+Codec of {}	Codec: {}
+Compression mode	Sıkıştırma modu
+Condition indexer flags	Koşul indeksleyici bayrakları
+Condition language	Koşul dili
+Condition name	Koşul adı
+Condition name {}	Koşul adı {}
+Condition regular expression {}	Koşul düzenli ifadesi {}
+Condition size {}	Koşul boyutu {}
+Condition type	Koşul türü
+Condition value	Koşul değeri
+Copy (keep the source)	Kopyala (kaynağı sakla)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Bir kaliteden grup oluşturun, ardından başka kaliteleri gruba sürükleyin veya Grup seçicilerini kullanın. Sınır, kaliteyle birlikte grubuna geçer; grup çözüldüğünde grubun en yüksek üyesi kullanılır.
+Current folder:	Mevcut klasör:
+Custom format name	Özel format adı
+Delete tag {}	Etiketi sil: {}
+Delete the file of episode {}	Bölümün dosyasını sil: {}
+Delete the movie folder and its files	Film klasörünü ve dosyalarını sil
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	“{}” ve eşleşen altyazıları silinsin mi? Ayarlanmışsa geri dönüşüm kutusuna giderler.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	“{}” silinsin mi? Dizileri ve filmleri kütüphanede kalır ve yenilemede otomatik olarak yeniden katılmaz.
+Detect from title	Başlıktan algıla
+Disk scanned: {} {}	Disk tarandı: {} {}
+Dismiss	Kapat
+Don't change	Değiştirme
+Don't import	İçe aktarma
+Done editing groups	Grup düzenlemeyi bitir
+Drag to reorder or move into a group	Yeniden sıralamak veya bir gruba taşımak için sürükleyin
+Drag {}	Sürükle: {}
+Drop here to move out of a group or to the lowest preference	Gruptan çıkarmak veya en düşük tercihe taşımak için buraya bırakın
+Drop qualities here	Kaliteleri buraya bırakın
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Her dizi klasörünü kök klasörün altında tutar. Yeni klasörü var olan ve boş olmayan bir dizi mevcut klasörünü korur.
+Edit JSON	JSON'u düzenle
+Edit group	Grubu düzenle
+Edit groups	Grupları düzenle
+Enter a non-negative test size within the supported range.	Desteklenen aralıkta negatif olmayan bir test boyutu girin.
+Enter a valid test size in GiB.	GiB cinsinden geçerli bir test boyutu girin.
+Enter valid test indexer flags.	Geçerli test indeksleyici bayrakları girin.
+Episode matches	Bölüm eşleşmeleri
+Event type	Olay türü
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Her koşul türü eşleşmelidir. Bir tür içinde herhangi bir koşul eşleşebilir ve her zorunlu koşul eşleşmelidir. Tersine çevir, geçerli bir koşulu tersine çevirir.
+Every folder of this root folder belongs to a title already.	Bu kök klasörün her klasörü zaten bir yapıma ait.
+Exclude {}	Hariç tut: {}
+Exclusion catalogue	Hariç tutma kataloğu
+Exclusion id	Hariç tutma kimliği
+Exclusion title	Hariç tutma başlığı
+Factor for {}	Katsayı: {}
+Feed tags	Akış etiketleri
+File name (optional)	Dosya adı (isteğe bağlı)
+Filter by monitoring	Takip durumuna göre filtrele
+Filter by watched state	İzlenme durumuna göre filtrele
+Filter release decisions	Sürüm kararlarını filtrele
+Filter releases	Sürümleri filtrele
+Find target title	Hedef yapımı bul
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Bir kök klasörün hiçbir yapımın kullanmadığı klasörleri. Her biri katalogla adına (veya içindeki
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Eşleşmeyen sürümler için aşağıdaki ayrıştırılmış başlığı ve bölüm numaralarını değerlendirilen yapımlarla karşılaştırın. Gerekirse kütüphanede alternatif bir başlık ekleyin veya bölüm eşlemesini düzeltin.
+Format does not match	Format eşleşmiyor
+Format matches	Format eşleşiyor
+Full season	Tam sezon
+Grab it now instead of waiting for the delay	Gecikmeyi beklemek yerine şimdi al
+Grab {}	Al: {}
+Group	Grup
+Group for {}	Grup: {}
+Group name	Grup adı
+Group {}	Grup {}
+Guided editor	Rehberli düzenleyici
+I confirm that the target catalogue entry is the same title.	Hedef katalog kaydının aynı yapım olduğunu onaylıyorum.
+Import	İçe aktar
+Import existing folders	Mevcut klasörleri içe aktar
+Import mode	İçe aktarma modu
+Import {}	İçe aktar: {}
+Imported from movie folder	Film klasöründen içe aktarıldı
+Include in file names ({} token)	Dosya adlarına ekle ({} belirteci)
+Include {}	Dahil et: {}
+Indexer flags (bitmask)	İndeksleyici bayrakları (bit maskesi)
+Jellyfin library	Jellyfin kütüphanesi
+Jellyfin user	Jellyfin kullanıcısı
+Jellyfin watched sync can update this status.	Jellyfin izlenme senkronizasyonu bu durumu güncelleyebilir.
+Key name	Anahtar adı
+Key permission	Anahtar izni
+Kind of {}	Tür: {}
+Label of {}	Etiket: {}
+Language	Dil
+Library import	Kütüphane içe aktarma
+List exclusions	Liste hariç tutmaları
+Loading sources…	Kaynaklar yükleniyor…
+Main navigation	Ana gezinme
+Mark unwatched	İzlenmedi olarak işaretle
+Mark watched	İzlendi olarak işaretle
+Match	Eşleştir
+Match any other language	Diğer herhangi bir dille eşleş
+Match episode {}	Bölümü eşleştir: {}
+Match for {}	Eşleşme: {}
+Matching series	Eşleşen diziler
+Matching subtitles follow the file's new name.	Eşleşen altyazılar dosyanın yeni adını izler.
+Maximum GiB (inclusive)	Maksimum GiB (dahil)
+Maximum size	Maksimum boyut
+Maximum year	Maksimum yıl
+Minimum GiB (exclusive)	Minimum GiB (hariç)
+Minimum age	Minimum yaş
+Minimum level	Minimum düzey
+Minimum score increment for upgrades	Yükseltmeler için minimum puan artışı
+Minimum year	Minimum yıl
+Monitor episode {}	Bölümü takip et: {}
+Monitor new seasons	Yeni sezonları takip et
+Monitored filter	Takip filtresi
+Monitoring	Takip
+Monitoring updated for {} series.	{} dizinin takip durumu güncellendi.
+Monitoring — {} series	Takip — {} dizi
+Monitoring…	Takip ayarlanıyor…
+Move folder	Klasörü taşı
+Move the files	Dosyaları taşı
+Move the files to the new folder	Dosyaları yeni klasöre taşı
+Move the movie folder, or point the movie at another folder	Film klasörünü taşıyın veya filmi başka bir klasöre yönlendirin
+Move the selected series into another root folder	Seçilen dizileri başka bir kök klasöre taşı
+Move the series folder, or point the series at another folder	Dizi klasörünü taşıyın veya diziyi başka bir klasöre yönlendirin
+Move to root folder…	Kök klasöre taşı…
+Move {} series	{} diziyi taşı
+Movie bulk actions	Film toplu işlemleri
+Movie file deleted	Film dosyası silindi
+Movie file renamed	Film dosyası yeniden adlandırıldı
+Movie file restored	Film dosyası geri yüklendi
+Movie for {}	Film: {}
+Movie history	Film geçmişi
+Movie import mode	Film içe aktarma modu
+Movie removed, and its folder deleted or recycled.	Film kaldırıldı, klasörü silindi veya geri dönüşüm kutusuna gönderildi.
+Movie source folder	Film kaynak klasörü
+Movies (Tanukarr)	Filmler (Tanukarr)
+Moving…	Taşınıyor…
+Naming & file settings	Adlandırma ve dosya ayarları
+Negate condition {}	Koşulu tersine çevir {}
+New condition type	Yeni koşul türü
+New profile	Yeni profil
+New root folder path	Yeni kök klasör yolu
+New tag	Yeni etiket
+Next	İleri
+No group	Grup yok
+No indexer responded successfully. Check the source errors above, then try again.	Hiçbir indeksleyici başarıyla yanıt vermedi. Yukarıdaki kaynak hatalarını kontrol edip yeniden deneyin.
+No match for “{}”	“{}” için eşleşme yok
+No releases match these filters	Bu filtrelerle eşleşen sürüm yok
+No root folder	Kök klasör yok
+Nothing to import	İçe aktarılacak bir şey yok
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Yalnızca kayıtlı klasör değişir; dosyalar zaten oradaysa bunu kullanın, ardından diski tarayın.
+Open navigation	Gezinmeyi aç
+Open on {}	{} üzerinde aç
+Organize files	Dosyaları düzenle
+Organizing…	Düzenleniyor…
+Original language	Orijinal dil
+Override for a mapped anime batch or a movie feature (single episode).	Eşlenmiş bir anime toplu sürümü veya bir film ana dosyası (tek bölüm) için geçersiz kılma.
+Parsed title:	Ayrıştırılan başlık:
+Passkey	Passkey
+Place above {}	Üstüne yerleştir: {}
+Place at lowest preference	En düşük tercihe yerleştir
+Position of {}	Konum: {}
+Prefer {} less	{} daha az tercih et
+Prefer {} more	{} daha çok tercih et
+Preferred catalogue	Tercih edilen katalog
+Preset title	Ön ayar başlığı
+Prevent import lists from adding it again	İçe aktarma listelerinin onu yeniden eklemesini engelle
+Prevent import lists from adding them again	İçe aktarma listelerinin onları yeniden eklemesini engelle
+Preview again to review your changes.	Değişikliklerinizi gözden geçirmek için yeniden önizleyin.
+Previous	Geri
+Progress of {}	İlerleme: {}
+Proxy hostname	Proxy ana makine adı
+Proxy port	Proxy bağlantı noktası
+Quality cutoff	Kalite sınırı
+Quality profile for added shows	Eklenen yapımlar için kalite profili
+Quality sizes	Kalite boyutları
+Quality: {} · Group: {} · Languages: {} · {}	Kalite: {} · Grup: {} · Diller: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Sorgu planları çalışmayabilecek yedek kademeler içerir. Kaynakların 35 saniyelik süresi vardır; etkileşimli aramaların toplam süresi 45 saniyedir.
+RSS sync interval	RSS senkronizasyon aralığı
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Salt okunur: dizi ve film klasörlerini, güvenli olmayan dosya kayıtlarını ve diskte eksik dosyaları denetler.
+Reading the root folder…	Kök klasör okunuyor…
+Regular expression	Düzenli ifade
+Rejected	Reddedildi
+Release title	Sürüm başlığı
+Release type	Sürüm türü
+Reload folders	Klasörleri yeniden yükle
+Remove condition	Koşulu kaldır
+Remove condition {}	Koşulu kaldır {}
+Remove mapping	Eşlemeyi kaldır
+Remove the selected series from Kitsunarr	Seçilen dizileri Kitsunarr'dan kaldır
+Remove the {} selected series and their episode records from Kitsunarr?	Seçilen {} dizi ve bölüm kayıtları Kitsunarr'dan kaldırılsın mı?
+Remove {}	Kaldır: {}
+Remove {} from the blocklist	Engellenenler listesinden kaldır: {}
+Remove {} series	{} diziyi kaldır
+Remove “{}” from Kitsunarr?	“{}” Kitsunarr'dan kaldırılsın mı?
+Remove…	Kaldır…
+Removing…	Kaldırılıyor…
+Rename every file of the selected series to the naming settings	Seçilen dizilerin tüm dosyalarını adlandırma ayarlarına göre yeniden adlandır
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Seçilen {} dizinin tüm dosyaları adlandırma ayarlarına göre yeniden adlandırılsın mı? Önce adları kontrol etmek için dizinin Dosyaları yeniden adlandır önizlemesini kullanın.
+Rename file	Dosyayı yeniden adlandır
+Renaming mode	Yeniden adlandırma modu
+Required condition {}	Zorunlu koşul {}
+Rescan disk	Diski yeniden tara
+Restore media type	Medya türünü geri yükle
+Result	Sonuç
+Retention	Saklama
+Review	Gözden geçir
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Hedef yapımı ve bölüm eşleşmelerini gözden geçirin. Dosyalar, yollar, takip durumu ve geçmiş korunur. Eşleşmeyen bölümler numaralarını yalnızca bu numaralar yeni katalogda boşsa korur.
+Root folder for added shows	Eklenen yapımlar için kök klasör
+Save path	Kayıt yolu
+Saving…	Kaydediliyor…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Bir indirme klasörünü tarayın, her filmi gözden geçirin ve ana dosyasını eşleşen altyazılarla birlikte kütüphaneye kopyalayın veya taşıyın. Mevcut ana dosyalar yalnızca yükseltmelerle değiştirilir.
+Search again	Yeniden ara
+Search catalogues	Kataloglarda ara
+Search diagnostics	Arama tanılaması
+Search for missing episodes once imported	İçe aktarıldıktan sonra eksik bölümleri ara
+Search for {}	{} için ara
+Search incomplete	Arama tamamlanmadı
+Search indexers for {}	İndeksleyicilerde ara: {}
+Search season packs for {}	Sezon paketlerini ara: {}
+Search sources	Kaynaklarda ara
+Search sources unavailable	Arama kaynakları kullanılamıyor
+Search the library	Kütüphanede ara
+Search titles…	Yapım ara…
+Search {}	Ara: {}
+Searching “{}”…	“{}” aranıyor…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Sezon klasörü başlıkları {} içinde kataloğunkilerin yerine geçer. Kataloğunkileri korumak için boş bırakın.
+Season {} title	Sezon {} başlığı
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Yukarıdan bir kaynak seçin veya indeksleyici ayarlarında etkileşimli aramayı etkinleştirin. Kaynak etiketleri hangi dizilerin aranacağını da kısıtlayabilir.
+Select all	Tümünü seç
+Select all movies on this page	Bu sayfadaki tüm filmleri seç
+Select every episode on this page	Bu sayfadaki tüm bölümleri seç
+Select {}	Seç: {}
+Select {} S{}E{}	Seç: {} S{}E{}
+Send now	Şimdi gönder
+Send {} now	Şimdi gönder: {}
+Series & anime	Diziler ve anime
+Series history	Dizi geçmişi
+Series of {}	Dizi: {}
+Series title, e.g. Severance (or tvdb:12345)	Dizi başlığı, ör. Severance (veya tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	{} / {} sürüm gösteriliyor. Filtreler yeniden aramadan bu sonuçlara uygulanır.
+Size (GiB)	Boyut (GiB)
+Sort by	Sırala
+Specifications JSON	Belirtimler JSON
+Stalled torrent timeout	Takılan torrent zaman aşımı
+TMDB API key	TMDB API anahtarı
+Tag existing titles	Mevcut yapımları etiketle
+Tag {}	Etiket {}
+Target catalogue	Hedef katalog
+Target catalogue ID	Hedef katalog kimliği
+Test a release	Bir sürümü test et
+Test details	Test ayrıntıları
+Test file name	Test dosya adı
+Test format	Formatı test et
+Test indexer flags	Test indeksleyici bayrakları
+Test language	Test dili
+Test original language	Test orijinal dili
+Test quality	Test kalitesi
+Test release title	Test sürüm başlığı
+Test release type	Test sürüm türü
+Test size in GiB	GiB cinsinden test boyutu
+The catalogues share an external identity.	Kataloglar ortak bir harici kimliği paylaşıyor.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Seçim, her bölümün takip durumunun yerini alır (özel bölümler yalnızca iki özel bölüm seçeneğiyle değişir), ardından takip edilen bir bölümü olan her sezonu takip eder. "Hiçbiri" dizinin takibini de bırakır.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Ana dosya ve eşleşen altyazılar film klasörüne geri yüklenir. Mevcut dosyaların üzerine asla yazılmaz.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Klasör yeniden adlandırılır veya başka bir diskteyse kopyalanıp kaldırılır. Yeni klasör mevcut olmamalı veya boş olmalıdır.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Yanıt veren indeksleyiciler sürüm döndürmedi. Diğer kaynaklar başarısız oldu; yukarıdaki hataları kontrol edip yeniden deneyin.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Bu koşul korunur. Alanlarını değiştirmek için JSON'u düzenle'yi kullanın; Formatı test et, değerlendirilip değerlendirilemeyeceğini bildirir.
+Title pattern of {}	Başlık kalıbı: {}
+Title to add	Eklenecek yapım
+Title to search for	Aranacak yapım
+Title, group, quality or rejection reason…	Başlık, grup, kalite veya ret nedeni…
+Titles considered:	Değerlendirilen yapımlar:
+Toggle colour theme	Renk temasını değiştir
+Toggle sort direction	Sıralama yönünü değiştir
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Kaydetmeden önce bir dizi, anime veya film sürüm adı deneyin. Bu, formatın koşullarını denetler; kalite profili puanları ve indirme onayı ayrıdır.
+Ungroup	Grubu çöz
+Ungroup {}	Grubu çöz: {}
+Unknown value ({})	Bilinmeyen değer ({})
+Unmapped folders	Eşlenmemiş klasörler
+Unmatched titles	Eşleşmeyen yapımlar
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Silinen bölümlerin takibini bırak (elle silinen veya diskte eksik olanlar; yükseltmeler takibi asla bırakmaz)
+Unwatched	İzlenmedi
+Use global	Genel ayarı kullan
+Use global sizes for {}	Genel boyutları kullan: {}
+Valid days	Geçerli günler
+Value	Değer
+Values	Değerler
+View	Görünüm
+Wanted lists	Arananlar listeleri
+Watched	İzlendi
+Watched date	İzlenme tarihi
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Bu seçenek kapalıyken dosyalar diskte kalır. Silinen klasörler, ayarlanmışsa geri dönüşüm kutusuna gider.
+iCal feed address	iCal akış adresi
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	etiketine) göre eşleştirilir; içe aktarılan yapımlar klasörlerini korur, dosyaları yerinde taranır, ardından takip seçimi uygulanır. Hiçbir şey taşınmaz veya yeniden adlandırılmaz.
+{} Not renamed: {}	{} Yeniden adlandırılmayan: {}
+{} factor	{} katsayısı
+{} files imported. Review the results below.	İçe aktarılan dosya: {}. Sonuçları aşağıda gözden geçirin.
+{} imported, {} failed; see each folder.	İçe aktarılan: {}, başarısız: {}; her klasöre bakın.
+{} imported.	İçe aktarılan: {}.
+{} matched · {} kept at current numbers · {} new episodes	Eşleşen: {} · Mevcut numarasında kalan: {} · Yeni bölüm: {}
+{} min	{} dk
+{} of {} folders selected	{} / {} klasör seçildi
+{} releases found, {} accepted, nothing grabbed.	Bulunan sürüm: {}, kabul edilen: {}, hiçbiri alınmadı.
+{} series and {} movies, {} files checked: {} issues.	Denetlenen: {} dizi, {} film ve {} dosya; sorun: {}.
+{} series moved.	Taşınan dizi: {}.
+{} series moved; not moved: {}	Taşınan dizi: {}; taşınamayan: {}
+{} series removed.	Kaldırılan dizi: {}.
+{} series removed; kept: {}	Kaldırılan dizi: {}; korunan: {}
+{} size of {}	{} boyut ({})
+{} size slider of {}	{} boyut kaydırıcısı ({})
+{} titles	{} yapım
+{}: {} releases from {} indexer(s). {} responding.	{}: {} sürüm ({} indeksleyici). {} yanıt veriyor.
+· API:	· API:
+· negated	· tersine çevrildi
+· required	· zorunlu
+· {} ms · {} releases	· {} ms · {} sürüm
+— MiB per minute	— dakika başına MiB
+— in library	— kütüphanede
+→ current number	→ mevcut numara
+or	veya
+1 title	1 başlık

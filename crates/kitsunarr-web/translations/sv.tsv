@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Scennumrering från TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Scennumrering extrapolerad från TheXEM (ej verifierad)
 Season {} (scene seasons {})	Säsong {} (scensäsonger {})
 {} (scene {})	{} (scen {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	En franchisegrupp som hittats via relationer i AniList eller MyAnimeList. Titlar från samma franchise som läggs till senare ansluts fortfarande. Borttagna titlar hålls utanför vid uppdatering.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	En kvalitet utan åsidosättning använder Inställningar › Kvalitet. Inom en åsidosättning betyder tomt obegränsat; ett maximum på noll betyder också obegränsat.
+Add a movie, or change the search and watched filter.	Lägg till en film, eller ändra sökningen och filtret för sedda.
+Add a root folder in Settings › Media management first.	Lägg först till en rotmapp i Inställningar › Mediehantering.
+Add qualities to {}	Lägg till kvaliteter i {}
+All decisions	Alla beslut
+All seasons	Alla säsonger
+All selected flags must be present.	Alla valda flaggor måste finnas.
+All sources	Alla källor
+Allow {}	Tillåt {}
+Also delete their folders and files (to the recycle bin when one is set)	Radera även deras mappar och filer (till papperskorgen om en är angiven)
+Apply sources	Tillämpa källor
+As the catalogue says	Enligt katalogen
+Auto tag name	Namn på automatisk tagg
+Automatic match / keep current number	Automatisk matchning / behåll nuvarande nummer
+Automatic search for {}	Automatisk sökning efter {}
+Below the root folder; use / for sub-folders.	Under rotmappen; använd / för undermappar.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Bästa först. Dra i handtagen eller använd pilarna för att ändra ordningen. Kvaliteter i en grupp rankas lika.
+Bulk actions	Massåtgärder
+Catalogue ID	Katalog-id
+Catalogue changed.	Katalogen har ändrats.
+Catalogue match	Katalogmatchning
+Change catalogue	Byt katalog
+Choose a movie…	Välj en film…
+Choose a root folder…	Välj en rotmapp…
+Choose episodes for {}	Välj avsnitt för {}
+Choose which episodes are monitored, as when adding the series	Välj vilka avsnitt som bevakas, som när serien läggs till
+Choose which episodes of the selected series are monitored	Välj vilka avsnitt i de markerade serierna som bevakas
+Choose {}	Välj {}
+Clean library level	Nivå för biblioteksrensning
+Clean library tag	Tagg för biblioteksrensning
+Clear filters	Rensa filter
+Clear or adjust the filters to see more results.	Rensa eller justera filtren för att se fler resultat.
+Codec of {}	Kodek för {}
+Compression mode	Komprimeringsläge
+Condition indexer flags	Indexerarflaggor för villkor
+Condition language	Språk för villkor
+Condition name	Namn på villkor
+Condition name {}	Namn på villkor {}
+Condition regular expression {}	Reguljärt uttryck för villkor {}
+Condition size {}	Storlek för villkor {}
+Condition type	Villkorstyp
+Condition value	Villkorsvärde
+Copy (keep the source)	Kopiera (behåll källan)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Skapa en grupp från en kvalitet och dra sedan fler kvaliteter in i den, eller använd gruppväljarna. Uppgraderingsgränsen följer en kvalitet in i dess grupp; när en grupp löses upp används gruppens högsta medlem.
+Current folder:	Nuvarande mapp:
+Custom format name	Namn på anpassat format
+Delete tag {}	Radera taggen {}
+Delete the file of episode {}	Radera filen för avsnitt {}
+Delete the movie folder and its files	Radera filmmappen och dess filer
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Radera ”{}” och dess matchande undertexter? De flyttas till papperskorgen om en är angiven.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Radera ”{}”? Dess serier och filmer finns kvar i biblioteket och ansluts inte automatiskt igen vid uppdatering.
+Detect from title	Identifiera från titeln
+Disk scanned: {} {}	Disken skannad: {} {}
+Dismiss	Avfärda
+Don't change	Ändra inte
+Don't import	Importera inte
+Done editing groups	Klar med att redigera grupper
+Drag to reorder or move into a group	Dra för att ändra ordning eller flytta in i en grupp
+Drag {}	Dra {}
+Drop here to move out of a group or to the lowest preference	Släpp här för att flytta ut ur en grupp eller till lägsta preferens
+Drop qualities here	Släpp kvaliteter här
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Varje serie behåller sin mapp under rotmappen. En serie vars nya mapp redan finns och inte är tom behåller sin nuvarande mapp.
+Edit JSON	Redigera JSON
+Edit group	Redigera grupp
+Edit groups	Redigera grupper
+Enter a non-negative test size within the supported range.	Ange en icke-negativ teststorlek inom det tillåtna intervallet.
+Enter a valid test size in GiB.	Ange en giltig teststorlek i GiB.
+Enter valid test indexer flags.	Ange giltiga indexerarflaggor för testet.
+Episode matches	Avsnittsmatchningar
+Event type	Händelsetyp
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Varje villkorstyp måste matcha. Inom en typ räcker det att något villkor matchar, och alla obligatoriska villkor måste matcha. Negera vänder på ett giltigt villkor.
+Every folder of this root folder belongs to a title already.	Alla mappar i den här rotmappen tillhör redan en titel.
+Exclude {}	Exkludera {}
+Exclusion catalogue	Katalog för undantag
+Exclusion id	Id för undantag
+Exclusion title	Titel för undantag
+Factor for {}	Faktor för {}
+Feed tags	Flödestaggar
+File name (optional)	Filnamn (valfritt)
+Filter by monitoring	Filtrera efter bevakning
+Filter by watched state	Filtrera efter sett-status
+Filter release decisions	Filtrera utgåvebeslut
+Filter releases	Filtrera utgåvor
+Find target title	Hitta måltitel
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Mappar i en rotmapp som ingen titel använder. Var och en matchas mot katalogen efter sitt namn (eller taggen
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	För utgåvor utan matchning, jämför den tolkade titeln och avsnittsnumren nedan med de titlar som övervägdes. Lägg till en alternativ titel eller rätta avsnittsmappningen i biblioteket vid behov.
+Format does not match	Formatet matchar inte
+Format matches	Formatet matchar
+Full season	Hel säsong
+Grab it now instead of waiting for the delay	Hämta den nu i stället för att vänta på fördröjningen
+Grab {}	Hämta {}
+Group	Grupp
+Group for {}	Grupp för {}
+Group name	Gruppnamn
+Group {}	Gruppera {}
+Guided editor	Guidad redigerare
+I confirm that the target catalogue entry is the same title.	Jag bekräftar att målposten i katalogen är samma titel.
+Import	Importera
+Import existing folders	Importera befintliga mappar
+Import mode	Importläge
+Import {}	Importera {}
+Imported from movie folder	Importerad från filmmappen
+Include in file names ({} token)	Inkludera i filnamn (platshållaren {})
+Include {}	Inkludera {}
+Indexer flags (bitmask)	Indexerarflaggor (bitmask)
+Jellyfin library	Jellyfin-bibliotek
+Jellyfin user	Jellyfin-användare
+Jellyfin watched sync can update this status.	Synkronisering av sedda i Jellyfin kan uppdatera den här statusen.
+Key name	Nyckelnamn
+Key permission	Nyckelbehörighet
+Kind of {}	Typ av {}
+Label of {}	Etikett för {}
+Language	Språk
+Library import	Biblioteksimport
+List exclusions	Listundantag
+Loading sources…	Läser in källor…
+Main navigation	Huvudnavigering
+Mark unwatched	Markera som osedd
+Mark watched	Markera som sedd
+Match	Matcha
+Match any other language	Matcha alla andra språk
+Match episode {}	Matcha avsnitt {}
+Match for {}	Matchning för {}
+Matching series	Matchande serier
+Matching subtitles follow the file's new name.	Matchande undertexter följer filens nya namn.
+Maximum GiB (inclusive)	Högst GiB (inklusive)
+Maximum size	Maxstorlek
+Maximum year	Högsta år
+Minimum GiB (exclusive)	Minst GiB (exklusive)
+Minimum age	Minsta ålder
+Minimum level	Lägsta nivå
+Minimum score increment for upgrades	Minsta poängökning för uppgraderingar
+Minimum year	Lägsta år
+Monitor episode {}	Bevaka avsnitt {}
+Monitor new seasons	Bevaka nya säsonger
+Monitored filter	Bevakningsfilter
+Monitoring	Bevakning
+Monitoring updated for {} series.	Bevakningen uppdaterad för {} serier.
+Monitoring — {} series	Bevakning — {} serier
+Monitoring…	Bevakar…
+Move folder	Flytta mapp
+Move the files	Flytta filerna
+Move the files to the new folder	Flytta filerna till den nya mappen
+Move the movie folder, or point the movie at another folder	Flytta filmmappen, eller peka filmen mot en annan mapp
+Move the selected series into another root folder	Flytta de markerade serierna till en annan rotmapp
+Move the series folder, or point the series at another folder	Flytta seriemappen, eller peka serien mot en annan mapp
+Move to root folder…	Flytta till rotmapp…
+Move {} series	Flytta {} serier
+Movie bulk actions	Massåtgärder för filmer
+Movie file deleted	Filmfil raderad
+Movie file renamed	Filmfil omdöpt
+Movie file restored	Filmfil återställd
+Movie for {}	Film för {}
+Movie history	Filmhistorik
+Movie import mode	Importläge för filmer
+Movie removed, and its folder deleted or recycled.	Filmen har tagits bort och dess mapp raderats eller flyttats till papperskorgen.
+Movie source folder	Källmapp för filmer
+Movies (Tanukarr)	Filmer (Tanukarr)
+Moving…	Flyttar…
+Naming & file settings	Namngivning och filinställningar
+Negate condition {}	Negera villkor {}
+New condition type	Ny villkorstyp
+New profile	Ny profil
+New root folder path	Sökväg till ny rotmapp
+New tag	Ny tagg
+Next	Nästa
+No group	Ingen grupp
+No indexer responded successfully. Check the source errors above, then try again.	Ingen indexerare svarade utan fel. Kontrollera källfelen ovan och försök sedan igen.
+No match for “{}”	Ingen träff för ”{}”
+No releases match these filters	Inga utgåvor matchar de här filtren
+No root folder	Ingen rotmapp
+Nothing to import	Inget att importera
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Endast den registrerade mappen ändras; använd detta när filerna redan finns där och skanna sedan disken.
+Open navigation	Öppna navigering
+Open on {}	Öppna på {}
+Organize files	Organisera filer
+Organizing…	Organiserar…
+Original language	Originalspråk
+Override for a mapped anime batch or a movie feature (single episode).	Åsidosättning för ett mappat animepaket eller en films huvudfil (enstaka avsnitt).
+Parsed title:	Tolkad titel:
+Passkey	Passkey
+Place above {}	Placera ovanför {}
+Place at lowest preference	Placera på lägsta preferens
+Position of {}	Position för {}
+Prefer {} less	Föredra {} mindre
+Prefer {} more	Föredra {} mer
+Preferred catalogue	Föredragen katalog
+Preset title	Förinställningens titel
+Prevent import lists from adding it again	Förhindra att importlistor lägger till den igen
+Prevent import lists from adding them again	Förhindra att importlistor lägger till dem igen
+Preview again to review your changes.	Förhandsgranska igen för att granska dina ändringar.
+Previous	Föregående
+Progress of {}	Förlopp för {}
+Proxy hostname	Proxyns värdnamn
+Proxy port	Proxyns port
+Quality cutoff	Uppgraderingsgräns för kvalitet
+Quality profile for added shows	Kvalitetsprofil för tillagda serier
+Quality sizes	Kvalitetsstorlekar
+Quality: {} · Group: {} · Languages: {} · {}	Kvalitet: {} · Grupp: {} · Språk: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Frågeplaner innehåller reservnivåer som kanske inte körs. Källor har en tidsbudget på 35 sekunder; interaktiva sökningar har en total tidsbudget på 45 sekunder.
+RSS sync interval	Intervall för RSS-synkronisering
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Skrivskyddat: kontrollerar serie- och filmmappar, osäkra filposter och filer som saknas på disken.
+Reading the root folder…	Läser rotmappen…
+Regular expression	Reguljärt uttryck
+Rejected	Avvisad
+Release title	Utgåvans titel
+Release type	Utgåvetyp
+Reload folders	Läs in mappar igen
+Remove condition	Ta bort villkor
+Remove condition {}	Ta bort villkor {}
+Remove mapping	Ta bort mappning
+Remove the selected series from Kitsunarr	Ta bort de markerade serierna från Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Ta bort de {} markerade serierna och deras avsnittsposter från Kitsunarr?
+Remove {}	Ta bort {}
+Remove {} from the blocklist	Ta bort {} från spärrlistan
+Remove {} series	Ta bort {} serier
+Remove “{}” from Kitsunarr?	Ta bort ”{}” från Kitsunarr?
+Remove…	Ta bort…
+Removing…	Tar bort…
+Rename every file of the selected series to the naming settings	Byt namn på alla filer i de markerade serierna enligt namngivningsinställningarna
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Byta namn på alla filer i de {} markerade serierna enligt namngivningsinställningarna? Använd förhandsgranskningen Byt namn på filer för en serie för att kontrollera namnen först.
+Rename file	Byt namn på fil
+Renaming mode	Namnbyteläge
+Required condition {}	Obligatoriskt villkor {}
+Rescan disk	Skanna disken igen
+Restore media type	Återställ medietyp
+Result	Resultat
+Retention	Lagringstid
+Review	Granska
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Granska måltiteln och avsnittsmatchningarna. Filer, sökvägar, bevakning och historik behålls. Avsnitt utan matchning behåller sina nummer endast om de numren är lediga i den nya katalogen.
+Root folder for added shows	Rotmapp för tillagda serier
+Save path	Lagringssökväg
+Saving…	Sparar…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Skanna en nedladdningsmapp, granska varje film och kopiera eller flytta dess huvudfil med matchande undertexter till biblioteket. Befintliga huvudfiler ersätts endast av uppgraderingar.
+Search again	Sök igen
+Search catalogues	Sök i kataloger
+Search diagnostics	Sökdiagnostik
+Search for missing episodes once imported	Sök efter saknade avsnitt efter importen
+Search for {}	Sök efter {}
+Search incomplete	Sökningen är ofullständig
+Search indexers for {}	Sök hos indexerare efter {}
+Search season packs for {}	Sök efter säsongspaket för {}
+Search sources	Sökkällor
+Search sources unavailable	Sökkällor otillgängliga
+Search the library	Sök i biblioteket
+Search titles…	Sök titlar…
+Search {}	Sök {}
+Searching “{}”…	Söker efter ”{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Titlarna på säsongsmappar ersätter katalogens i {}. Lämna tomt för att behålla katalogens.
+Season {} title	Titel för säsong {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Välj en källa ovan, eller aktivera interaktiv sökning i inställningarna för indexerare. Källtaggar kan också begränsa vilka serier som söks.
+Select all	Markera alla
+Select all movies on this page	Markera alla filmer på den här sidan
+Select every episode on this page	Markera alla avsnitt på den här sidan
+Select {}	Markera {}
+Select {} S{}E{}	Markera {} S{}E{}
+Send now	Skicka nu
+Send {} now	Skicka {} nu
+Series & anime	Serier och anime
+Series history	Seriehistorik
+Series of {}	Serie för {}
+Series title, e.g. Severance (or tvdb:12345)	Serietitel, t.ex. Severance (eller tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Visar {} av {} utgåvor. Filtren tillämpas på de här resultaten utan att söka igen.
+Size (GiB)	Storlek (GiB)
+Sort by	Sortera efter
+Specifications JSON	Specifikationer i JSON
+Stalled torrent timeout	Tidsgräns för stillastående torrenter
+TMDB API key	TMDB API-nyckel
+Tag existing titles	Tagga befintliga titlar
+Tag {}	Tagg {}
+Target catalogue	Målkatalog
+Target catalogue ID	Id i målkatalogen
+Test a release	Testa en utgåva
+Test details	Testdetaljer
+Test file name	Testfilnamn
+Test format	Testa format
+Test indexer flags	Indexerarflaggor för test
+Test language	Testspråk
+Test original language	Originalspråk för test
+Test quality	Testkvalitet
+Test release title	Utgåvetitel för test
+Test release type	Utgåvetyp för test
+Test size in GiB	Teststorlek i GiB
+The catalogues share an external identity.	Katalogerna delar en extern identitet.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Valet ersätter bevakningsstatusen för varje avsnitt (specialavsnitt ändras bara av de två valen för specialavsnitt) och bevakar sedan varje säsong som har ett bevakat avsnitt. ”Ingen” slutar också bevaka serien.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Huvudfilen och matchande undertexter återställs till filmmappen. Befintliga filer skrivs aldrig över.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Mappen byter namn, eller kopieras och tas sedan bort om den ligger på en annan disk. Den nya mappen får inte finnas eller måste vara tom.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Indexerarna som svarade returnerade inga utgåvor. Andra källor misslyckades; kontrollera felen ovan och försök igen.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Det här villkoret bevaras. Använd Redigera JSON för att ändra dess fält; Testa format visar om det kan utvärderas.
+Title pattern of {}	Titelmönster för {}
+Title to add	Titel att lägga till
+Title to search for	Titel att söka efter
+Title, group, quality or rejection reason…	Titel, grupp, kvalitet eller avvisningsorsak…
+Titles considered:	Titlar som övervägdes:
+Toggle colour theme	Växla färgtema
+Toggle sort direction	Växla sorteringsordning
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Prova ett utgåvenamn för tv, anime eller film innan du sparar. Detta kontrollerar formatets villkor; poäng i kvalitetsprofiler och godkännande för nedladdning är separata.
+Ungroup	Lös upp grupp
+Ungroup {}	Lös upp {}
+Unknown value ({})	Okänt värde ({})
+Unmapped folders	Ej mappade mappar
+Unmatched titles	Ej matchade titlar
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Sluta bevaka raderade avsnitt (raderade manuellt eller saknas på disken; uppgraderingar slutar aldrig bevaka)
+Unwatched	Osedd
+Use global	Använd globala
+Use global sizes for {}	Använd globala storlekar för {}
+Valid days	Giltiga dagar
+Value	Värde
+Values	Värden
+View	Vy
+Wanted lists	Listor över önskade
+Watched	Sedd
+Watched date	Datum sedd
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	När det här alternativet är avstängt finns filerna kvar på disken. Raderade mappar flyttas till papperskorgen om en är angiven.
+iCal feed address	Adress för iCal-flöde
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	i namnet); importerade titlar behåller sin mapp, deras filer skannas på plats och sedan tillämpas bevakningsvalet. Inget flyttas eller byter namn.
+{} Not renamed: {}	{} Inte omdöpta: {}
+{} factor	{}-faktor
+{} files imported. Review the results below.	{} filer importerade. Granska resultaten nedan.
+{} imported, {} failed; see each folder.	{} importerade, {} misslyckades; se varje mapp.
+{} imported.	{} importerade.
+{} matched · {} kept at current numbers · {} new episodes	{} matchade · {} behåller nuvarande nummer · {} nya avsnitt
+{} min	{} min
+{} of {} folders selected	{} av {} mappar markerade
+{} releases found, {} accepted, nothing grabbed.	{} utgåvor hittades, {} godkändes, inget hämtades.
+{} series and {} movies, {} files checked: {} issues.	{} serier och {} filmer, {} filer kontrollerade: {} problem.
+{} series moved.	{} serier flyttade.
+{} series moved; not moved: {}	{} serier flyttade; ej flyttade: {}
+{} series removed.	{} serier borttagna.
+{} series removed; kept: {}	{} serier borttagna; behållna: {}
+{} size of {}	{} storlek för {}
+{} size slider of {}	{} storleksreglage för {}
+{} titles	{} titlar
+{}: {} releases from {} indexer(s). {} responding.	{}: {} utgåvor från {} indexerare. {} svarade.
+· API:	· API:
+· negated	· negerat
+· required	· obligatoriskt
+· {} ms · {} releases	· {} ms · {} utgåvor
+— MiB per minute	— MiB per minut
+— in library	— i biblioteket
+→ current number	→ nuvarande nummer
+or	eller
+1 title	1 titel

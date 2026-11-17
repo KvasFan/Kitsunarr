@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Đánh số scene từ TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Đánh số scene ngoại suy từ TheXEM (chưa xác minh)
 Season {} (scene seasons {})	Mùa {} (mùa scene {})
 {} (scene {})	{} (scene {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Một nhóm franchise tìm thấy từ quan hệ trên AniList hoặc MyAnimeList. Các tựa được thêm sau thuộc cùng franchise vẫn được đưa vào nhóm. Các tựa đã gỡ sẽ không quay lại khi làm mới.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Chất lượng không có ghi đè sẽ dùng Cài đặt › Chất lượng. Trong một ghi đè, để trống nghĩa là không giới hạn; giá trị tối đa bằng 0 cũng nghĩa là không giới hạn.
+Add a movie, or change the search and watched filter.	Thêm phim lẻ, hoặc thay đổi tìm kiếm và bộ lọc trạng thái đã xem.
+Add a root folder in Settings › Media management first.	Hãy thêm thư mục gốc trong Cài đặt › Quản lý phương tiện trước.
+Add qualities to {}	Thêm chất lượng vào {}
+All decisions	Tất cả quyết định
+All seasons	Tất cả các mùa
+All selected flags must be present.	Phải có tất cả các cờ đã chọn.
+All sources	Tất cả nguồn
+Allow {}	Cho phép {}
+Also delete their folders and files (to the recycle bin when one is set)	Đồng thời xóa thư mục và tệp của chúng (vào thùng rác nếu đã thiết lập)
+Apply sources	Áp dụng nguồn
+As the catalogue says	Theo kho dữ liệu
+Auto tag name	Tên thẻ tự động
+Automatic match / keep current number	Khớp tự động / giữ số hiện tại
+Automatic search for {}	Tìm kiếm tự động cho {}
+Below the root folder; use / for sub-folders.	Nằm dưới thư mục gốc; dùng / cho thư mục con.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Cao nhất trước. Kéo tay cầm hoặc dùng mũi tên để sắp xếp lại. Các chất lượng trong cùng một nhóm được xếp ngang nhau.
+Bulk actions	Thao tác hàng loạt
+Catalogue ID	ID kho dữ liệu
+Catalogue changed.	Đã đổi kho dữ liệu.
+Catalogue match	Khớp kho dữ liệu
+Change catalogue	Đổi kho dữ liệu
+Choose a movie…	Chọn phim lẻ…
+Choose a root folder…	Chọn thư mục gốc…
+Choose episodes for {}	Chọn tập cho {}
+Choose which episodes are monitored, as when adding the series	Chọn những tập được theo dõi, giống như khi thêm phim bộ
+Choose which episodes of the selected series are monitored	Chọn những tập được theo dõi của các phim bộ đã chọn
+Choose {}	Chọn {}
+Clean library level	Mức dọn dẹp thư viện
+Clean library tag	Thẻ dọn dẹp thư viện
+Clear filters	Xóa bộ lọc
+Clear or adjust the filters to see more results.	Xóa hoặc điều chỉnh bộ lọc để xem thêm kết quả.
+Codec of {}	Codec của {}
+Compression mode	Chế độ nén
+Condition indexer flags	Cờ trình lập chỉ mục của điều kiện
+Condition language	Ngôn ngữ của điều kiện
+Condition name	Tên điều kiện
+Condition name {}	Tên điều kiện {}
+Condition regular expression {}	Biểu thức chính quy của điều kiện {}
+Condition size {}	Kích thước của điều kiện {}
+Condition type	Loại điều kiện
+Condition value	Giá trị điều kiện
+Copy (keep the source)	Sao chép (giữ nguồn)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Tạo nhóm từ một chất lượng, rồi kéo thêm chất lượng vào hoặc dùng bộ chọn Nhóm. Ngưỡng đi theo chất lượng vào nhóm của nó; khi bỏ nhóm sẽ dùng thành viên cao nhất của nhóm.
+Current folder:	Thư mục hiện tại:
+Custom format name	Tên định dạng tùy chỉnh
+Delete tag {}	Xóa thẻ {}
+Delete the file of episode {}	Xóa tệp của tập {}
+Delete the movie folder and its files	Xóa thư mục phim và các tệp của nó
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Xóa “{}” và phụ đề khớp với nó? Tệp sẽ vào thùng rác nếu đã thiết lập.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Xóa “{}”? Các phim bộ và phim lẻ của nó vẫn ở trong thư viện và sẽ không tự động tham gia lại khi làm mới.
+Detect from title	Nhận diện từ tiêu đề
+Disk scanned: {} {}	Đã quét ổ đĩa: {} {}
+Dismiss	Đóng
+Don't change	Không thay đổi
+Don't import	Không nhập
+Done editing groups	Xong chỉnh sửa nhóm
+Drag to reorder or move into a group	Kéo để sắp xếp lại hoặc chuyển vào một nhóm
+Drag {}	Kéo {}
+Drop here to move out of a group or to the lowest preference	Thả vào đây để đưa ra khỏi nhóm hoặc xuống mức ưu tiên thấp nhất
+Drop qualities here	Thả chất lượng vào đây
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Mỗi phim bộ giữ thư mục của nó dưới thư mục gốc. Phim bộ có thư mục mới đã tồn tại và không trống sẽ giữ thư mục hiện tại.
+Edit JSON	Chỉnh sửa JSON
+Edit group	Chỉnh sửa nhóm
+Edit groups	Chỉnh sửa các nhóm
+Enter a non-negative test size within the supported range.	Nhập kích thước kiểm tra không âm và nằm trong phạm vi được hỗ trợ.
+Enter a valid test size in GiB.	Nhập kích thước kiểm tra hợp lệ tính bằng GiB.
+Enter valid test indexer flags.	Nhập cờ trình lập chỉ mục kiểm tra hợp lệ.
+Episode matches	Tập khớp
+Event type	Loại sự kiện
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Mọi loại điều kiện đều phải khớp. Trong cùng một loại, chỉ cần một điều kiện bất kỳ khớp và mọi điều kiện bắt buộc phải khớp. Phủ định đảo ngược một điều kiện hợp lệ.
+Every folder of this root folder belongs to a title already.	Mọi thư mục của thư mục gốc này đều đã thuộc về một tựa.
+Exclude {}	Loại trừ {}
+Exclusion catalogue	Kho dữ liệu của loại trừ
+Exclusion id	ID loại trừ
+Exclusion title	Tiêu đề loại trừ
+Factor for {}	Hệ số cho {}
+Feed tags	Thẻ nguồn cấp
+File name (optional)	Tên tệp (tùy chọn)
+Filter by monitoring	Lọc theo trạng thái theo dõi
+Filter by watched state	Lọc theo trạng thái đã xem
+Filter release decisions	Lọc quyết định về bản phát hành
+Filter releases	Lọc bản phát hành
+Find target title	Tìm tựa đích
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Các thư mục trong thư mục gốc chưa được tựa nào sử dụng. Mỗi thư mục được đối chiếu với kho dữ liệu theo tên (hoặc thẻ
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Với các bản phát hành không khớp, hãy so tiêu đề đã phân tích và số tập bên dưới với các tựa đã được xem xét. Thêm tiêu đề thay thế hoặc sửa ánh xạ tập trong thư viện khi cần.
+Format does not match	Định dạng không khớp
+Format matches	Định dạng khớp
+Full season	Trọn mùa
+Grab it now instead of waiting for the delay	Lấy ngay thay vì chờ hết thời gian trì hoãn
+Grab {}	Lấy {}
+Group	Nhóm
+Group for {}	Nhóm cho {}
+Group name	Tên nhóm
+Group {}	Nhóm {}
+Guided editor	Trình chỉnh sửa có hướng dẫn
+I confirm that the target catalogue entry is the same title.	Tôi xác nhận mục kho dữ liệu đích là cùng một tựa.
+Import	Nhập
+Import existing folders	Nhập thư mục hiện có
+Import mode	Chế độ nhập
+Import {}	Nhập {}
+Imported from movie folder	Đã nhập từ thư mục phim
+Include in file names ({} token)	Đưa vào tên tệp (token {})
+Include {}	Bao gồm {}
+Indexer flags (bitmask)	Cờ trình lập chỉ mục (bitmask)
+Jellyfin library	Thư viện Jellyfin
+Jellyfin user	Người dùng Jellyfin
+Jellyfin watched sync can update this status.	Đồng bộ trạng thái đã xem của Jellyfin có thể cập nhật trạng thái này.
+Key name	Tên khóa
+Key permission	Quyền của khóa
+Kind of {}	Loại của {}
+Label of {}	Nhãn của {}
+Language	Ngôn ngữ
+Library import	Nhập thư viện
+List exclusions	Loại trừ của danh sách
+Loading sources…	Đang tải nguồn…
+Main navigation	Điều hướng chính
+Mark unwatched	Đánh dấu chưa xem
+Mark watched	Đánh dấu đã xem
+Match	Khớp
+Match any other language	Khớp mọi ngôn ngữ khác
+Match episode {}	Khớp tập {}
+Match for {}	Khớp cho {}
+Matching series	Phim bộ khớp
+Matching subtitles follow the file's new name.	Phụ đề khớp sẽ đổi theo tên mới của tệp.
+Maximum GiB (inclusive)	GiB tối đa (bao gồm)
+Maximum size	Kích thước tối đa
+Maximum year	Năm tối đa
+Minimum GiB (exclusive)	GiB tối thiểu (không bao gồm)
+Minimum age	Tuổi tối thiểu
+Minimum level	Mức tối thiểu
+Minimum score increment for upgrades	Mức tăng điểm tối thiểu để nâng cấp
+Minimum year	Năm tối thiểu
+Monitor episode {}	Theo dõi tập {}
+Monitor new seasons	Theo dõi các mùa mới
+Monitored filter	Bộ lọc theo dõi
+Monitoring	Theo dõi
+Monitoring updated for {} series.	Đã cập nhật theo dõi cho {} phim bộ.
+Monitoring — {} series	Theo dõi — {} phim bộ
+Monitoring…	Theo dõi…
+Move folder	Di chuyển thư mục
+Move the files	Di chuyển tệp
+Move the files to the new folder	Di chuyển tệp sang thư mục mới
+Move the movie folder, or point the movie at another folder	Di chuyển thư mục phim, hoặc trỏ phim lẻ tới một thư mục khác
+Move the selected series into another root folder	Di chuyển các phim bộ đã chọn sang thư mục gốc khác
+Move the series folder, or point the series at another folder	Di chuyển thư mục phim bộ, hoặc trỏ phim bộ tới một thư mục khác
+Move to root folder…	Chuyển sang thư mục gốc…
+Move {} series	Di chuyển {} phim bộ
+Movie bulk actions	Thao tác hàng loạt cho phim lẻ
+Movie file deleted	Đã xóa tệp phim
+Movie file renamed	Đã đổi tên tệp phim
+Movie file restored	Đã khôi phục tệp phim
+Movie for {}	Phim lẻ cho {}
+Movie history	Lịch sử phim lẻ
+Movie import mode	Chế độ nhập phim lẻ
+Movie removed, and its folder deleted or recycled.	Đã gỡ phim lẻ, và thư mục của nó đã bị xóa hoặc chuyển vào thùng rác.
+Movie source folder	Thư mục nguồn của phim
+Movies (Tanukarr)	Phim lẻ (Tanukarr)
+Moving…	Đang di chuyển…
+Naming & file settings	Đặt tên & cài đặt tệp
+Negate condition {}	Phủ định điều kiện {}
+New condition type	Loại điều kiện mới
+New profile	Hồ sơ mới
+New root folder path	Đường dẫn thư mục gốc mới
+New tag	Thẻ mới
+Next	Tiếp
+No group	Không có nhóm
+No indexer responded successfully. Check the source errors above, then try again.	Không có trình lập chỉ mục nào phản hồi thành công. Kiểm tra lỗi của nguồn ở trên, rồi thử lại.
+No match for “{}”	Không có kết quả khớp với “{}”
+No releases match these filters	Không có bản phát hành nào khớp với các bộ lọc này
+No root folder	Không có thư mục gốc
+Nothing to import	Không có gì để nhập
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Chỉ thư mục được ghi nhận thay đổi; dùng khi tệp đã ở đó, rồi quét ổ đĩa.
+Open navigation	Mở điều hướng
+Open on {}	Mở trên {}
+Organize files	Sắp xếp tệp
+Organizing…	Đang sắp xếp…
+Original language	Ngôn ngữ gốc
+Override for a mapped anime batch or a movie feature (single episode).	Ghi đè cho một lô anime đã ánh xạ hoặc phim chính của phim lẻ (một tập).
+Parsed title:	Tiêu đề đã phân tích:
+Passkey	Passkey
+Place above {}	Đặt phía trên {}
+Place at lowest preference	Đặt ở mức ưu tiên thấp nhất
+Position of {}	Vị trí của {}
+Prefer {} less	Ưu tiên {} ít hơn
+Prefer {} more	Ưu tiên {} nhiều hơn
+Preferred catalogue	Kho dữ liệu ưu tiên
+Preset title	Tiêu đề thiết lập sẵn
+Prevent import lists from adding it again	Ngăn danh sách nhập thêm lại tựa này
+Prevent import lists from adding them again	Ngăn danh sách nhập thêm lại các tựa này
+Preview again to review your changes.	Xem trước lại để duyệt các thay đổi của bạn.
+Previous	Trước
+Progress of {}	Tiến độ của {}
+Proxy hostname	Tên máy chủ proxy
+Proxy port	Cổng proxy
+Quality cutoff	Ngưỡng chất lượng
+Quality profile for added shows	Hồ sơ chất lượng cho phim bộ được thêm
+Quality sizes	Kích thước chất lượng
+Quality: {} · Group: {} · Languages: {} · {}	Chất lượng: {} · Nhóm: {} · Ngôn ngữ: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Kế hoạch truy vấn bao gồm các tầng dự phòng có thể không chạy. Mỗi nguồn có ngân sách 35 giây; tìm kiếm tương tác có tổng ngân sách 45 giây.
+RSS sync interval	Chu kỳ đồng bộ RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Chỉ đọc: kiểm tra thư mục phim bộ và phim lẻ, bản ghi tệp không an toàn và tệp bị thiếu trên ổ đĩa.
+Reading the root folder…	Đang đọc thư mục gốc…
+Regular expression	Biểu thức chính quy
+Rejected	Bị từ chối
+Release title	Tiêu đề bản phát hành
+Release type	Loại bản phát hành
+Reload folders	Tải lại thư mục
+Remove condition	Gỡ điều kiện
+Remove condition {}	Gỡ điều kiện {}
+Remove mapping	Gỡ ánh xạ
+Remove the selected series from Kitsunarr	Gỡ các phim bộ đã chọn khỏi Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Gỡ {} phim bộ đã chọn và các bản ghi tập của chúng khỏi Kitsunarr?
+Remove {}	Gỡ {}
+Remove {} from the blocklist	Gỡ {} khỏi danh sách chặn
+Remove {} series	Gỡ {} phim bộ
+Remove “{}” from Kitsunarr?	Gỡ “{}” khỏi Kitsunarr?
+Remove…	Gỡ…
+Removing…	Đang gỡ…
+Rename every file of the selected series to the naming settings	Đổi tên mọi tệp của các phim bộ đã chọn theo cài đặt đặt tên
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Đổi tên mọi tệp của {} phim bộ đã chọn theo cài đặt đặt tên? Hãy dùng bản xem trước Đổi tên tệp của từng phim bộ để kiểm tra tên trước.
+Rename file	Đổi tên tệp
+Renaming mode	Chế độ đổi tên
+Required condition {}	Điều kiện bắt buộc {}
+Rescan disk	Quét lại ổ đĩa
+Restore media type	Loại phương tiện cần khôi phục
+Result	Kết quả
+Retention	Thời gian lưu giữ
+Review	Duyệt
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Duyệt lại tựa đích và các tập khớp. Tệp, đường dẫn, trạng thái theo dõi và lịch sử được giữ nguyên. Các tập không khớp chỉ giữ số của chúng khi các số đó còn trống trong kho dữ liệu mới.
+Root folder for added shows	Thư mục gốc cho phim bộ được thêm
+Save path	Đường dẫn lưu
+Saving…	Đang lưu…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Quét một thư mục tải xuống, duyệt từng phim và sao chép hoặc di chuyển phim chính cùng phụ đề khớp vào thư viện. Phim chính hiện có chỉ bị thay thế khi được nâng cấp.
+Search again	Tìm lại
+Search catalogues	Tìm trong kho dữ liệu
+Search diagnostics	Chẩn đoán tìm kiếm
+Search for missing episodes once imported	Tìm các tập còn thiếu sau khi nhập
+Search for {}	Tìm {}
+Search incomplete	Tìm kiếm chưa hoàn tất
+Search indexers for {}	Tìm {} trên trình lập chỉ mục
+Search season packs for {}	Tìm gói mùa cho {}
+Search sources	Nguồn tìm kiếm
+Search sources unavailable	Nguồn tìm kiếm không khả dụng
+Search the library	Tìm trong thư viện
+Search titles…	Tìm tựa…
+Search {}	Tìm trên {}
+Searching “{}”…	Đang tìm “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Tiêu đề thư mục mùa thay thế tiêu đề của kho dữ liệu trong {}. Để trống để giữ tiêu đề của kho dữ liệu.
+Season {} title	Tiêu đề mùa {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Chọn một nguồn ở trên, hoặc bật tìm kiếm tương tác trong cài đặt trình lập chỉ mục. Thẻ của nguồn cũng có thể giới hạn những phim bộ được tìm kiếm.
+Select all	Chọn tất cả
+Select all movies on this page	Chọn tất cả phim lẻ trên trang này
+Select every episode on this page	Chọn mọi tập trên trang này
+Select {}	Chọn {}
+Select {} S{}E{}	Chọn {} S{}E{}
+Send now	Gửi ngay
+Send {} now	Gửi {} ngay
+Series & anime	Phim bộ & anime
+Series history	Lịch sử phim bộ
+Series of {}	Phim bộ của {}
+Series title, e.g. Severance (or tvdb:12345)	Tiêu đề phim bộ, ví dụ Severance (hoặc tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Đang hiển thị {} trên {} bản phát hành. Bộ lọc áp dụng cho các kết quả này mà không cần tìm lại.
+Size (GiB)	Kích thước (GiB)
+Sort by	Sắp xếp theo
+Specifications JSON	Đặc tả JSON
+Stalled torrent timeout	Thời gian chờ torrent bị đứng
+TMDB API key	Khóa API TMDB
+Tag existing titles	Gắn thẻ các tựa hiện có
+Tag {}	Thẻ {}
+Target catalogue	Kho dữ liệu đích
+Target catalogue ID	ID kho dữ liệu đích
+Test a release	Kiểm tra một bản phát hành
+Test details	Chi tiết kiểm tra
+Test file name	Tên tệp kiểm tra
+Test format	Kiểm tra định dạng
+Test indexer flags	Cờ trình lập chỉ mục kiểm tra
+Test language	Ngôn ngữ kiểm tra
+Test original language	Ngôn ngữ gốc kiểm tra
+Test quality	Chất lượng kiểm tra
+Test release title	Tiêu đề bản phát hành kiểm tra
+Test release type	Loại bản phát hành kiểm tra
+Test size in GiB	Kích thước kiểm tra tính bằng GiB
+The catalogues share an external identity.	Các kho dữ liệu có chung một định danh bên ngoài.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Lựa chọn này thay thế trạng thái theo dõi của mọi tập (tập đặc biệt chỉ thay đổi bởi hai lựa chọn dành cho tập đặc biệt), sau đó theo dõi từng mùa có tập được theo dõi. "Không có" cũng bỏ theo dõi phim bộ.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Phim chính và phụ đề khớp được khôi phục vào thư mục phim. Tệp hiện có không bao giờ bị ghi đè.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Thư mục được đổi tên, hoặc sao chép rồi xóa nếu ở ổ đĩa khác. Thư mục mới phải chưa tồn tại hoặc trống.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Các trình lập chỉ mục phản hồi không trả về bản phát hành nào. Các nguồn khác bị lỗi; kiểm tra lỗi ở trên và thử lại.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Điều kiện này được giữ nguyên. Dùng Chỉnh sửa JSON để thay đổi các trường của nó; Kiểm tra định dạng cho biết liệu nó có thể được đánh giá hay không.
+Title pattern of {}	Mẫu tiêu đề của {}
+Title to add	Tựa cần thêm
+Title to search for	Tựa cần tìm
+Title, group, quality or rejection reason…	Tiêu đề, nhóm, chất lượng hoặc lý do từ chối…
+Titles considered:	Các tựa đã xem xét:
+Toggle colour theme	Chuyển chủ đề màu
+Toggle sort direction	Đảo chiều sắp xếp
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Thử với tên bản phát hành TV, anime hoặc phim trước khi lưu. Việc này kiểm tra các điều kiện của định dạng; điểm của hồ sơ chất lượng và việc chấp thuận tải xuống là riêng biệt.
+Ungroup	Bỏ nhóm
+Ungroup {}	Bỏ nhóm {}
+Unknown value ({})	Giá trị không rõ ({})
+Unmapped folders	Thư mục chưa ánh xạ
+Unmatched titles	Tựa không khớp
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Bỏ theo dõi các tập đã bị xóa (xóa thủ công hoặc mất khỏi ổ đĩa; nâng cấp không bao giờ bỏ theo dõi)
+Unwatched	Chưa xem
+Use global	Dùng cài đặt chung
+Use global sizes for {}	Dùng kích thước chung cho {}
+Valid days	Số ngày hiệu lực
+Value	Giá trị
+Values	Các giá trị
+View	Chế độ xem
+Wanted lists	Danh sách cần tìm
+Watched	Đã xem
+Watched date	Ngày xem
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Khi tắt tùy chọn này, tệp vẫn ở trên ổ đĩa. Các thư mục bị xóa sẽ vào thùng rác nếu đã thiết lập.
+iCal feed address	Địa chỉ nguồn cấp iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	trong tên); các tựa được nhập giữ nguyên thư mục, tệp được quét tại chỗ, sau đó lựa chọn theo dõi được áp dụng. Không có gì bị di chuyển hay đổi tên.
+{} Not renamed: {}	{} Chưa đổi tên: {}
+{} factor	Hệ số {}
+{} files imported. Review the results below.	Đã nhập {} tệp. Hãy duyệt kết quả bên dưới.
+{} imported, {} failed; see each folder.	Đã nhập {}, thất bại {}; xem từng thư mục.
+{} imported.	Đã nhập {}.
+{} matched · {} kept at current numbers · {} new episodes	{} đã khớp · {} giữ số hiện tại · {} tập mới
+{} min	{} phút
+{} of {} folders selected	Đã chọn {} trên {} thư mục
+{} releases found, {} accepted, nothing grabbed.	Tìm thấy {} bản phát hành, chấp nhận {}, không lấy bản nào.
+{} series and {} movies, {} files checked: {} issues.	Đã kiểm tra {} phim bộ, {} phim lẻ và {} tệp: {} vấn đề.
+{} series moved.	Đã di chuyển {} phim bộ.
+{} series moved; not moved: {}	Đã di chuyển {} phim bộ; không di chuyển được: {}
+{} series removed.	Đã gỡ {} phim bộ.
+{} series removed; kept: {}	Đã gỡ {} phim bộ; giữ lại: {}
+{} size of {}	Kích thước {} của {}
+{} size slider of {}	Thanh trượt kích thước {} của {}
+{} titles	{} tựa
+{}: {} releases from {} indexer(s). {} responding.	{}: {} bản phát hành từ {} trình lập chỉ mục. {} phản hồi.
+· API:	· API:
+· negated	· phủ định
+· required	· bắt buộc
+· {} ms · {} releases	· {} ms · {} bản phát hành
+— MiB per minute	— MiB mỗi phút
+— in library	— trong thư viện
+→ current number	→ số hiện tại
+or	hoặc
+1 title	1 tựa

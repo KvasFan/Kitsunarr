@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Numeração de cena do TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Numeração de cena extrapolada do TheXEM (não verificada)
 Season {} (scene seasons {})	Temporada {} (temporadas de cena {})
 {} (scene {})	{} (cena {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Um grupo de franquia encontrado a partir das relações do AniList ou MyAnimeList. Os títulos da mesma franquia adicionados depois também se juntam a ele. Os títulos removidos ficam de fora ao atualizar.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Uma qualidade sem substituição usa Definições › Qualidade. Dentro de uma substituição, vazio significa ilimitado; um máximo de zero também significa ilimitado.
+Add a movie, or change the search and watched filter.	Adicione um filme ou altere a pesquisa e o filtro de visto.
+Add a root folder in Settings › Media management first.	Adicione primeiro uma pasta raiz em Definições › Gestão de media.
+Add qualities to {}	Adicionar qualidades a {}
+All decisions	Todas as decisões
+All seasons	Todas as temporadas
+All selected flags must be present.	Todos os indicadores selecionados têm de estar presentes.
+All sources	Todas as origens
+Allow {}	Permitir {}
+Also delete their folders and files (to the recycle bin when one is set)	Eliminar também as suas pastas e ficheiros (para a reciclagem, se estiver definida)
+Apply sources	Aplicar origens
+As the catalogue says	Conforme o catálogo
+Auto tag name	Nome da etiqueta automática
+Automatic match / keep current number	Correspondência automática / manter o número atual
+Automatic search for {}	Pesquisa automática de {}
+Below the root folder; use / for sub-folders.	Dentro da pasta raiz; use / para subpastas.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Melhor primeiro. Arraste as pegas ou use as setas para reordenar. As qualidades dentro de um grupo têm a mesma posição.
+Bulk actions	Ações em massa
+Catalogue ID	ID do catálogo
+Catalogue changed.	Catálogo alterado.
+Catalogue match	Correspondência no catálogo
+Change catalogue	Mudar catálogo
+Choose a movie…	Escolha um filme…
+Choose a root folder…	Escolha uma pasta raiz…
+Choose episodes for {}	Escolher episódios de {}
+Choose which episodes are monitored, as when adding the series	Escolher que episódios são monitorizados, como ao adicionar a série
+Choose which episodes of the selected series are monitored	Escolher que episódios das séries selecionadas são monitorizados
+Choose {}	Escolher {}
+Clean library level	Nível da limpeza da biblioteca
+Clean library tag	Etiqueta da limpeza da biblioteca
+Clear filters	Limpar filtros
+Clear or adjust the filters to see more results.	Limpe ou ajuste os filtros para ver mais resultados.
+Codec of {}	Codec de {}
+Compression mode	Modo de compressão
+Condition indexer flags	Indicadores de indexador da condição
+Condition language	Idioma da condição
+Condition name	Nome da condição
+Condition name {}	Nome da condição {}
+Condition regular expression {}	Expressão regular da condição {}
+Condition size {}	Tamanho da condição {}
+Condition type	Tipo de condição
+Condition value	Valor da condição
+Copy (keep the source)	Copiar (manter a origem)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Crie um grupo a partir de uma qualidade e depois arraste mais qualidades para ele ou use os seletores de grupo. O limite acompanha uma qualidade para o seu grupo; ao desagrupar, é usado o membro mais alto do grupo.
+Current folder:	Pasta atual:
+Custom format name	Nome do formato personalizado
+Delete tag {}	Eliminar a etiqueta {}
+Delete the file of episode {}	Eliminar o ficheiro do episódio {}
+Delete the movie folder and its files	Eliminar a pasta do filme e os seus ficheiros
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Eliminar “{}” e as legendas correspondentes? Vão para a reciclagem, se estiver definida.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Eliminar “{}”? As suas séries e filmes ficam na biblioteca e não voltam a juntar-se automaticamente ao atualizar.
+Detect from title	Detetar a partir do título
+Disk scanned: {} {}	Disco analisado: {} {}
+Dismiss	Dispensar
+Don't change	Não alterar
+Don't import	Não importar
+Done editing groups	Terminar edição de grupos
+Drag to reorder or move into a group	Arraste para reordenar ou mover para um grupo
+Drag {}	Arrastar {}
+Drop here to move out of a group or to the lowest preference	Largue aqui para sair de um grupo ou passar para a menor preferência
+Drop qualities here	Largue as qualidades aqui
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Cada série mantém a sua pasta dentro da pasta raiz. Uma série cuja nova pasta existe e não está vazia mantém a pasta atual.
+Edit JSON	Editar JSON
+Edit group	Editar grupo
+Edit groups	Editar grupos
+Enter a non-negative test size within the supported range.	Introduza um tamanho de teste não negativo dentro do intervalo suportado.
+Enter a valid test size in GiB.	Introduza um tamanho de teste válido em GiB.
+Enter valid test indexer flags.	Introduza indicadores de indexador de teste válidos.
+Episode matches	Correspondências de episódios
+Event type	Tipo de evento
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Cada tipo de condição tem de corresponder. Dentro de um mesmo tipo, qualquer condição pode corresponder e cada condição obrigatória tem de corresponder. Negar inverte uma condição válida.
+Every folder of this root folder belongs to a title already.	Cada pasta desta pasta raiz já pertence a um título.
+Exclude {}	Excluir {}
+Exclusion catalogue	Catálogo da exclusão
+Exclusion id	ID da exclusão
+Exclusion title	Título da exclusão
+Factor for {}	Fator de {}
+Feed tags	Etiquetas do feed
+File name (optional)	Nome do ficheiro (opcional)
+Filter by monitoring	Filtrar por monitorização
+Filter by watched state	Filtrar por estado de visto
+Filter release decisions	Filtrar decisões sobre lançamentos
+Filter releases	Filtrar lançamentos
+Find target title	Encontrar o título de destino
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Pastas de uma pasta raiz que nenhum título usa. Cada uma é comparada com o catálogo pelo seu nome (ou pela etiqueta
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Nos lançamentos sem correspondência, compare o título analisado e os números de episódio abaixo com os títulos considerados. Adicione um título alternativo ou corrija o mapeamento de episódios na biblioteca quando necessário.
+Format does not match	O formato não corresponde
+Format matches	O formato corresponde
+Full season	Temporada completa
+Grab it now instead of waiting for the delay	Capturá-lo agora em vez de esperar pelo atraso
+Grab {}	Capturar {}
+Group	Grupo
+Group for {}	Grupo de {}
+Group name	Nome do grupo
+Group {}	Grupo {}
+Guided editor	Editor guiado
+I confirm that the target catalogue entry is the same title.	Confirmo que a entrada do catálogo de destino é o mesmo título.
+Import	Importar
+Import existing folders	Importar pastas existentes
+Import mode	Modo de importação
+Import {}	Importar {}
+Imported from movie folder	Importado da pasta do filme
+Include in file names ({} token)	Incluir nos nomes de ficheiro (token {})
+Include {}	Incluir {}
+Indexer flags (bitmask)	Indicadores de indexador (máscara de bits)
+Jellyfin library	Biblioteca do Jellyfin
+Jellyfin user	Utilizador do Jellyfin
+Jellyfin watched sync can update this status.	A sincronização de vistos do Jellyfin pode atualizar este estado.
+Key name	Nome da chave
+Key permission	Permissão da chave
+Kind of {}	Tipo de {}
+Label of {}	Rótulo de {}
+Language	Idioma
+Library import	Importação da biblioteca
+List exclusions	Exclusões de listas
+Loading sources…	A carregar origens…
+Main navigation	Navegação principal
+Mark unwatched	Marcar como não visto
+Mark watched	Marcar como visto
+Match	Associar
+Match any other language	Corresponder a qualquer outro idioma
+Match episode {}	Associar o episódio {}
+Match for {}	Correspondência para {}
+Matching series	Séries correspondentes
+Matching subtitles follow the file's new name.	As legendas correspondentes acompanham o novo nome do ficheiro.
+Maximum GiB (inclusive)	Máximo em GiB (inclusive)
+Maximum size	Tamanho máximo
+Maximum year	Ano máximo
+Minimum GiB (exclusive)	Mínimo em GiB (exclusive)
+Minimum age	Idade mínima
+Minimum level	Nível mínimo
+Minimum score increment for upgrades	Incremento mínimo de pontuação para melhorias
+Minimum year	Ano mínimo
+Monitor episode {}	Monitorizar o episódio {}
+Monitor new seasons	Monitorizar novas temporadas
+Monitored filter	Filtro de monitorização
+Monitoring	Monitorização
+Monitoring updated for {} series.	Monitorização atualizada para {} séries.
+Monitoring — {} series	Monitorização — {} séries
+Monitoring…	A atualizar a monitorização…
+Move folder	Mover pasta
+Move the files	Mover os ficheiros
+Move the files to the new folder	Mover os ficheiros para a nova pasta
+Move the movie folder, or point the movie at another folder	Mover a pasta do filme ou apontar o filme para outra pasta
+Move the selected series into another root folder	Mover as séries selecionadas para outra pasta raiz
+Move the series folder, or point the series at another folder	Mover a pasta da série ou apontar a série para outra pasta
+Move to root folder…	Mover para pasta raiz…
+Move {} series	Mover {} séries
+Movie bulk actions	Ações em massa de filmes
+Movie file deleted	Ficheiro de filme eliminado
+Movie file renamed	Ficheiro de filme renomeado
+Movie file restored	Ficheiro de filme restaurado
+Movie for {}	Filme para {}
+Movie history	Histórico do filme
+Movie import mode	Modo de importação de filmes
+Movie removed, and its folder deleted or recycled.	Filme removido e a sua pasta eliminada ou enviada para a reciclagem.
+Movie source folder	Pasta de origem dos filmes
+Movies (Tanukarr)	Filmes (Tanukarr)
+Moving…	A mover…
+Naming & file settings	Nomenclatura e definições de ficheiros
+Negate condition {}	Negar a condição {}
+New condition type	Novo tipo de condição
+New profile	Novo perfil
+New root folder path	Caminho da nova pasta raiz
+New tag	Nova etiqueta
+Next	Seguinte
+No group	Sem grupo
+No indexer responded successfully. Check the source errors above, then try again.	Nenhum indexador respondeu com êxito. Verifique os erros das origens acima e tente novamente.
+No match for “{}”	Sem correspondência para “{}”
+No releases match these filters	Nenhum lançamento corresponde a estes filtros
+No root folder	Sem pasta raiz
+Nothing to import	Nada para importar
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Só a pasta registada muda; use esta opção quando os ficheiros já lá estiverem e depois analise o disco.
+Open navigation	Abrir navegação
+Open on {}	Abrir em {}
+Organize files	Organizar ficheiros
+Organizing…	A organizar…
+Original language	Idioma original
+Override for a mapped anime batch or a movie feature (single episode).	Substituição para um lote de anime mapeado ou o ficheiro principal de um filme (episódio único).
+Parsed title:	Título analisado:
+Passkey	Passkey
+Place above {}	Colocar acima de {}
+Place at lowest preference	Passar para a menor preferência
+Position of {}	Posição de {}
+Prefer {} less	Preferir menos {}
+Prefer {} more	Preferir mais {}
+Preferred catalogue	Catálogo preferido
+Preset title	Título da predefinição
+Prevent import lists from adding it again	Impedir que as listas de importação o voltem a adicionar
+Prevent import lists from adding them again	Impedir que as listas de importação os voltem a adicionar
+Preview again to review your changes.	Pré-visualize novamente para rever as alterações.
+Previous	Anterior
+Progress of {}	Progresso de {}
+Proxy hostname	Nome do anfitrião do proxy
+Proxy port	Porta do proxy
+Quality cutoff	Limite de qualidade
+Quality profile for added shows	Perfil de qualidade para as séries adicionadas
+Quality sizes	Tamanhos de qualidade
+Quality: {} · Group: {} · Languages: {} · {}	Qualidade: {} · Grupo: {} · Idiomas: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Os planos de consulta incluem níveis de recurso que podem não ser executados. As origens têm um orçamento de 35 segundos; as pesquisas interativas têm um orçamento total de 45 segundos.
+RSS sync interval	Intervalo de sincronização RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Só leitura: verifica as pastas de séries e filmes, os registos de ficheiros inseguros e os ficheiros em falta no disco.
+Reading the root folder…	A ler a pasta raiz…
+Regular expression	Expressão regular
+Rejected	Rejeitado
+Release title	Título do lançamento
+Release type	Tipo de lançamento
+Reload folders	Recarregar pastas
+Remove condition	Remover condição
+Remove condition {}	Remover a condição {}
+Remove mapping	Remover mapeamento
+Remove the selected series from Kitsunarr	Remover as séries selecionadas do Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Remover do Kitsunarr as {} séries selecionadas e os seus registos de episódios?
+Remove {}	Remover {}
+Remove {} from the blocklist	Remover {} da lista de bloqueio
+Remove {} series	Remover {} séries
+Remove “{}” from Kitsunarr?	Remover “{}” do Kitsunarr?
+Remove…	Remover…
+Removing…	A remover…
+Rename every file of the selected series to the naming settings	Renomear todos os ficheiros das séries selecionadas segundo as definições de nomenclatura
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Renomear todos os ficheiros das {} séries selecionadas segundo as definições de nomenclatura? Use a pré-visualização “Renomear ficheiros” de uma série para verificar primeiro os nomes.
+Rename file	Renomear ficheiro
+Renaming mode	Modo de renomeação
+Required condition {}	Condição obrigatória {}
+Rescan disk	Voltar a analisar o disco
+Restore media type	Tipo de media a restaurar
+Result	Resultado
+Retention	Retenção
+Review	Revisão
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Reveja o título de destino e as correspondências de episódios. Os ficheiros, caminhos, a monitorização e o histórico são mantidos. Os episódios sem correspondência só mantêm os seus números se esses números estiverem livres no novo catálogo.
+Root folder for added shows	Pasta raiz para as séries adicionadas
+Save path	Caminho de gravação
+Saving…	A guardar…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Analise uma pasta de transferências, reveja cada filme e copie ou mova o seu ficheiro principal com as legendas correspondentes para a biblioteca. Os ficheiros principais existentes só são substituídos por melhorias.
+Search again	Pesquisar novamente
+Search catalogues	Pesquisar nos catálogos
+Search diagnostics	Diagnóstico da pesquisa
+Search for missing episodes once imported	Pesquisar episódios em falta após importar
+Search for {}	Pesquisar {}
+Search incomplete	Pesquisa incompleta
+Search indexers for {}	Pesquisar {} nos indexadores
+Search season packs for {}	Pesquisar packs de temporada de {}
+Search sources	Pesquisar nas origens
+Search sources unavailable	Origens de pesquisa indisponíveis
+Search the library	Pesquisar na biblioteca
+Search titles…	Pesquisar títulos…
+Search {}	Pesquisar {}
+Searching “{}”…	A pesquisar “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Os títulos das pastas de temporada substituem os do catálogo em {}. Deixe vazio para manter os do catálogo.
+Season {} title	Título da temporada {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Selecione uma origem acima ou ative a pesquisa interativa nas definições do indexador. As etiquetas das origens também podem restringir as séries pesquisadas.
+Select all	Selecionar tudo
+Select all movies on this page	Selecionar todos os filmes desta página
+Select every episode on this page	Selecionar todos os episódios desta página
+Select {}	Selecionar {}
+Select {} S{}E{}	Selecionar {} S{}E{}
+Send now	Enviar agora
+Send {} now	Enviar {} agora
+Series & anime	Séries e anime
+Series history	Histórico da série
+Series of {}	Série de {}
+Series title, e.g. Severance (or tvdb:12345)	Título da série, ex. Severance (ou tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	A mostrar {} de {} lançamentos. Os filtros aplicam-se a estes resultados sem pesquisar novamente.
+Size (GiB)	Tamanho (GiB)
+Sort by	Ordenar por
+Specifications JSON	JSON das especificações
+Stalled torrent timeout	Tempo limite de torrent parado
+TMDB API key	Chave de API do TMDB
+Tag existing titles	Etiquetar títulos existentes
+Tag {}	Etiquetar {}
+Target catalogue	Catálogo de destino
+Target catalogue ID	ID do catálogo de destino
+Test a release	Testar um lançamento
+Test details	Detalhes do teste
+Test file name	Nome de ficheiro de teste
+Test format	Testar formato
+Test indexer flags	Indicadores de indexador de teste
+Test language	Idioma de teste
+Test original language	Idioma original de teste
+Test quality	Qualidade de teste
+Test release title	Título de lançamento de teste
+Test release type	Tipo de lançamento de teste
+Test size in GiB	Tamanho de teste em GiB
+The catalogues share an external identity.	Os catálogos partilham uma identidade externa.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	A escolha substitui o estado de monitorização de cada episódio (os especiais só são alterados pelas duas opções de especiais) e depois monitoriza cada temporada que tenha um episódio monitorizado. “Nenhum” também deixa de monitorizar a série.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	O ficheiro principal e as legendas correspondentes são restaurados para a pasta do filme. Os ficheiros existentes nunca são substituídos.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	A pasta é renomeada, ou copiada e depois removida se estiver noutro disco. A nova pasta tem de não existir ou estar vazia.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Os indexadores que responderam não devolveram lançamentos. Outras origens falharam; verifique os erros acima e tente novamente.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Esta condição é preservada. Use Editar JSON para alterar os seus campos; Testar formato indica se pode ser avaliada.
+Title pattern of {}	Padrão de título de {}
+Title to add	Título a adicionar
+Title to search for	Título a pesquisar
+Title, group, quality or rejection reason…	Título, grupo, qualidade ou motivo de rejeição…
+Titles considered:	Títulos considerados:
+Toggle colour theme	Alternar tema de cores
+Toggle sort direction	Alternar direção da ordenação
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Experimente um nome de lançamento de série, anime ou filme antes de guardar. Isto verifica as condições do formato; as pontuações do perfil de qualidade e a aprovação da transferência são separadas.
+Ungroup	Desagrupar
+Ungroup {}	Desagrupar {}
+Unknown value ({})	Valor desconhecido ({})
+Unmapped folders	Pastas não mapeadas
+Unmatched titles	Títulos sem correspondência
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Deixar de monitorizar episódios eliminados (eliminados manualmente ou em falta no disco; as melhorias nunca deixam de monitorizar)
+Unwatched	Não visto
+Use global	Usar global
+Use global sizes for {}	Usar tamanhos globais para {}
+Valid days	Dias de validade
+Value	Valor
+Values	Valores
+View	Vista
+Wanted lists	Listas de pretendidos
+Watched	Visto
+Watched date	Data de visualização
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Com esta opção desligada, os ficheiros ficam no disco. As pastas eliminadas vão para a reciclagem, se estiver definida.
+iCal feed address	Endereço do feed iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	nela contida); os títulos importados mantêm a sua pasta, os seus ficheiros são analisados no local e depois aplica-se a opção de monitorização. Nada é movido nem renomeado.
+{} Not renamed: {}	{} Não renomeados: {}
+{} factor	Fator {}
+{} files imported. Review the results below.	{} ficheiros importados. Reveja os resultados abaixo.
+{} imported, {} failed; see each folder.	{} importados, {} falharam; consulte cada pasta.
+{} imported.	{} importados.
+{} matched · {} kept at current numbers · {} new episodes	{} correspondidos · {} mantidos nos números atuais · {} episódios novos
+{} min	{} min
+{} of {} folders selected	{} de {} pastas selecionadas
+{} releases found, {} accepted, nothing grabbed.	{} lançamentos encontrados, {} aceites, nada capturado.
+{} series and {} movies, {} files checked: {} issues.	{} séries e {} filmes, {} ficheiros verificados: {} problemas.
+{} series moved.	{} séries movidas.
+{} series moved; not moved: {}	{} séries movidas; não movidas: {}
+{} series removed.	{} séries removidas.
+{} series removed; kept: {}	{} séries removidas; mantidas: {}
+{} size of {}	Tamanho {} de {}
+{} size slider of {}	Controlo deslizante de tamanho {} de {}
+{} titles	{} títulos
+{}: {} releases from {} indexer(s). {} responding.	{}: {} lançamentos de {} indexador(es). {} respondem.
+· API:	· API:
+· negated	· negada
+· required	· obrigatória
+· {} ms · {} releases	· {} ms · {} lançamentos
+— MiB per minute	— MiB por minuto
+— in library	— na biblioteca
+→ current number	→ número atual
+or	ou
+1 title	1 título

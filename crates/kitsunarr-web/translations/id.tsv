@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Penomoran scene dari TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Penomoran scene diekstrapolasi dari TheXEM (belum diverifikasi)
 Season {} (scene seasons {})	Musim {} (musim scene {})
 {} (scene {})	{} (scene {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Grup franchise yang ditemukan dari relasi AniList atau MyAnimeList. Judul dari franchise yang sama yang ditambahkan kemudian tetap bergabung. Judul yang dihapus tidak kembali saat dimuat ulang.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Kualitas tanpa penimpaan memakai Pengaturan › Kualitas. Dalam penimpaan, kosong berarti tanpa batas; maksimum nol juga berarti tanpa batas.
+Add a movie, or change the search and watched filter.	Tambahkan film, atau ubah penelusuran dan filter tontonan.
+Add a root folder in Settings › Media management first.	Tambahkan folder root di Pengaturan › Pengelolaan media terlebih dahulu.
+Add qualities to {}	Tambahkan kualitas ke {}
+All decisions	Semua keputusan
+All seasons	Semua musim
+All selected flags must be present.	Semua flag yang dipilih harus ada.
+All sources	Semua sumber
+Allow {}	Izinkan {}
+Also delete their folders and files (to the recycle bin when one is set)	Hapus juga folder dan filenya (ke tempat sampah jika sudah diatur)
+Apply sources	Terapkan sumber
+As the catalogue says	Sesuai katalog
+Auto tag name	Nama tag otomatis
+Automatic match / keep current number	Pencocokan otomatis / pertahankan nomor saat ini
+Automatic search for {}	Penelusuran otomatis untuk {}
+Below the root folder; use / for sub-folders.	Di bawah folder root; gunakan / untuk subfolder.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Yang terbaik di atas. Seret pegangan atau gunakan panah untuk mengurutkan ulang. Kualitas dalam satu grup memiliki peringkat yang sama.
+Bulk actions	Tindakan massal
+Catalogue ID	ID katalog
+Catalogue changed.	Katalog diubah.
+Catalogue match	Kecocokan katalog
+Change catalogue	Ganti katalog
+Choose a movie…	Pilih film…
+Choose a root folder…	Pilih folder root…
+Choose episodes for {}	Pilih episode untuk {}
+Choose which episodes are monitored, as when adding the series	Pilih episode yang dimonitor, seperti saat menambahkan serial
+Choose which episodes of the selected series are monitored	Pilih episode yang dimonitor dari serial yang dipilih
+Choose {}	Pilih {}
+Clean library level	Tingkat pembersihan pustaka
+Clean library tag	Tag pembersihan pustaka
+Clear filters	Kosongkan filter
+Clear or adjust the filters to see more results.	Kosongkan atau sesuaikan filter untuk melihat lebih banyak hasil.
+Codec of {}	Codec untuk {}
+Compression mode	Mode kompresi
+Condition indexer flags	Flag indexer kondisi
+Condition language	Bahasa kondisi
+Condition name	Nama kondisi
+Condition name {}	Nama kondisi {}
+Condition regular expression {}	Ekspresi reguler kondisi {}
+Condition size {}	Ukuran kondisi {}
+Condition type	Jenis kondisi
+Condition value	Nilai kondisi
+Copy (keep the source)	Salin (simpan sumbernya)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Buat grup dari sebuah kualitas, lalu seret kualitas lain ke dalamnya atau gunakan pemilih Grup. Cutoff mengikuti kualitas ke dalam grupnya; membubarkan grup memakai anggota tertinggi grup.
+Current folder:	Folder saat ini:
+Custom format name	Nama format khusus
+Delete tag {}	Hapus tag {}
+Delete the file of episode {}	Hapus file episode {}
+Delete the movie folder and its files	Hapus folder film dan filenya
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Hapus “{}” dan subtitle yang cocok? File akan masuk ke tempat sampah jika sudah diatur.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Hapus “{}”? Serial dan filmnya tetap di pustaka dan tidak akan bergabung kembali secara otomatis saat dimuat ulang.
+Detect from title	Deteksi dari judul
+Disk scanned: {} {}	Disk dipindai: {} {}
+Dismiss	Tutup
+Don't change	Jangan ubah
+Don't import	Jangan impor
+Done editing groups	Selesai mengedit grup
+Drag to reorder or move into a group	Seret untuk mengurutkan ulang atau memindahkan ke grup
+Drag {}	Seret {}
+Drop here to move out of a group or to the lowest preference	Lepas di sini untuk keluar dari grup atau ke prioritas terendah
+Drop qualities here	Lepas kualitas di sini
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Setiap serial mempertahankan foldernya di bawah folder root. Serial yang folder barunya sudah ada dan tidak kosong tetap memakai folder saat ini.
+Edit JSON	Edit JSON
+Edit group	Edit grup
+Edit groups	Edit grup
+Enter a non-negative test size within the supported range.	Masukkan ukuran uji non-negatif dalam rentang yang didukung.
+Enter a valid test size in GiB.	Masukkan ukuran uji yang valid dalam GiB.
+Enter valid test indexer flags.	Masukkan flag indexer uji yang valid.
+Episode matches	Kecocokan episode
+Event type	Jenis peristiwa
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Setiap jenis kondisi harus cocok. Dalam satu jenis, kondisi mana pun boleh cocok dan setiap kondisi wajib harus cocok. Negasi membalik kondisi yang valid.
+Every folder of this root folder belongs to a title already.	Setiap folder di folder root ini sudah dimiliki sebuah judul.
+Exclude {}	Kecualikan {}
+Exclusion catalogue	Katalog pengecualian
+Exclusion id	ID pengecualian
+Exclusion title	Judul pengecualian
+Factor for {}	Faktor untuk {}
+Feed tags	Tag feed
+File name (optional)	Nama file (opsional)
+Filter by monitoring	Filter menurut pemantauan
+Filter by watched state	Filter menurut status tontonan
+Filter release decisions	Filter keputusan rilis
+Filter releases	Filter rilis
+Find target title	Cari judul tujuan
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Folder di folder root yang tidak dipakai judul mana pun. Masing-masing dicocokkan dengan katalog berdasarkan namanya (atau tag
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Untuk rilis yang tidak cocok, periksa judul hasil parsing dan nomor episode di bawah terhadap judul yang dipertimbangkan. Tambahkan judul alternatif atau perbaiki pemetaan episode di pustaka bila perlu.
+Format does not match	Format tidak cocok
+Format matches	Format cocok
+Full season	Satu musim penuh
+Grab it now instead of waiting for the delay	Ambil sekarang tanpa menunggu penundaan
+Grab {}	Ambil {}
+Group	Grupkan
+Group for {}	Grup untuk {}
+Group name	Nama grup
+Group {}	Grupkan {}
+Guided editor	Editor terpandu
+I confirm that the target catalogue entry is the same title.	Saya mengonfirmasi bahwa entri katalog tujuan adalah judul yang sama.
+Import	Impor
+Import existing folders	Impor folder yang sudah ada
+Import mode	Mode impor
+Import {}	Impor {}
+Imported from movie folder	Diimpor dari folder film
+Include in file names ({} token)	Sertakan dalam nama file (token {})
+Include {}	Sertakan {}
+Indexer flags (bitmask)	Flag indexer (bitmask)
+Jellyfin library	Pustaka Jellyfin
+Jellyfin user	Pengguna Jellyfin
+Jellyfin watched sync can update this status.	Sinkronisasi tontonan Jellyfin dapat memperbarui status ini.
+Key name	Nama kunci
+Key permission	Izin kunci
+Kind of {}	Jenis {}
+Label of {}	Label {}
+Language	Bahasa
+Library import	Impor pustaka
+List exclusions	Pengecualian daftar
+Loading sources…	Memuat sumber…
+Main navigation	Navigasi utama
+Mark unwatched	Tandai belum ditonton
+Mark watched	Tandai sudah ditonton
+Match	Cocokkan
+Match any other language	Cocok dengan bahasa lain mana pun
+Match episode {}	Cocokkan episode {}
+Match for {}	Kecocokan untuk {}
+Matching series	Serial yang cocok
+Matching subtitles follow the file's new name.	Subtitle yang cocok mengikuti nama baru file.
+Maximum GiB (inclusive)	GiB maksimum (inklusif)
+Maximum size	Ukuran maksimum
+Maximum year	Tahun maksimum
+Minimum GiB (exclusive)	GiB minimum (eksklusif)
+Minimum age	Usia minimum
+Minimum level	Tingkat minimum
+Minimum score increment for upgrades	Kenaikan skor minimum untuk peningkatan
+Minimum year	Tahun minimum
+Monitor episode {}	Monitor episode {}
+Monitor new seasons	Monitor musim baru
+Monitored filter	Filter pemantauan
+Monitoring	Pemantauan
+Monitoring updated for {} series.	Pemantauan diperbarui untuk {} serial.
+Monitoring — {} series	Pemantauan — {} serial
+Monitoring…	Pemantauan…
+Move folder	Pindahkan folder
+Move the files	Pindahkan file
+Move the files to the new folder	Pindahkan file ke folder baru
+Move the movie folder, or point the movie at another folder	Pindahkan folder film, atau arahkan film ke folder lain
+Move the selected series into another root folder	Pindahkan serial yang dipilih ke folder root lain
+Move the series folder, or point the series at another folder	Pindahkan folder serial, atau arahkan serial ke folder lain
+Move to root folder…	Pindahkan ke folder root…
+Move {} series	Pindahkan {} serial
+Movie bulk actions	Tindakan massal film
+Movie file deleted	File film dihapus
+Movie file renamed	File film diganti namanya
+Movie file restored	File film dipulihkan
+Movie for {}	Film untuk {}
+Movie history	Riwayat film
+Movie import mode	Mode impor film
+Movie removed, and its folder deleted or recycled.	Film dihapus, dan foldernya dihapus atau dipindahkan ke tempat sampah.
+Movie source folder	Folder sumber film
+Movies (Tanukarr)	Film (Tanukarr)
+Moving…	Memindahkan…
+Naming & file settings	Penamaan & pengaturan file
+Negate condition {}	Negasikan kondisi {}
+New condition type	Jenis kondisi baru
+New profile	Profil baru
+New root folder path	Path folder root baru
+New tag	Tag baru
+Next	Berikutnya
+No group	Tanpa grup
+No indexer responded successfully. Check the source errors above, then try again.	Tidak ada indexer yang merespons dengan berhasil. Periksa galat sumber di atas, lalu coba lagi.
+No match for “{}”	Tidak ada yang cocok untuk “{}”
+No releases match these filters	Tidak ada rilis yang cocok dengan filter ini
+No root folder	Tanpa folder root
+Nothing to import	Tidak ada yang diimpor
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Hanya folder yang tercatat yang berubah; gunakan ini jika file sudah ada di sana, lalu pindai disk.
+Open navigation	Buka navigasi
+Open on {}	Buka di {}
+Organize files	Atur file
+Organizing…	Mengatur…
+Original language	Bahasa asli
+Override for a mapped anime batch or a movie feature (single episode).	Penimpaan untuk batch anime yang dipetakan atau fitur utama film (satu episode).
+Parsed title:	Judul hasil parsing:
+Passkey	Passkey
+Place above {}	Tempatkan di atas {}
+Place at lowest preference	Tempatkan di prioritas terendah
+Position of {}	Posisi {}
+Prefer {} less	Kurangi prioritas {}
+Prefer {} more	Tambah prioritas {}
+Preferred catalogue	Katalog yang diutamakan
+Preset title	Judul preset
+Prevent import lists from adding it again	Cegah daftar impor menambahkannya lagi
+Prevent import lists from adding them again	Cegah daftar impor menambahkannya lagi
+Preview again to review your changes.	Pratinjau lagi untuk meninjau perubahanmu.
+Previous	Sebelumnya
+Progress of {}	Kemajuan {}
+Proxy hostname	Nama host proxy
+Proxy port	Port proxy
+Quality cutoff	Cutoff kualitas
+Quality profile for added shows	Profil kualitas untuk serial yang ditambahkan
+Quality sizes	Ukuran kualitas
+Quality: {} · Group: {} · Languages: {} · {}	Kualitas: {} · Grup: {} · Bahasa: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Rencana kueri mencakup tingkat cadangan yang mungkin tidak dijalankan. Setiap sumber memiliki batas waktu 35 detik; penelusuran interaktif memiliki batas waktu total 45 detik.
+RSS sync interval	Interval sinkronisasi RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Hanya baca: memeriksa folder serial dan film, catatan file yang tidak aman, dan file yang hilang dari disk.
+Reading the root folder…	Membaca folder root…
+Regular expression	Ekspresi reguler
+Rejected	Ditolak
+Release title	Judul rilis
+Release type	Jenis rilis
+Reload folders	Muat ulang folder
+Remove condition	Hapus kondisi
+Remove condition {}	Hapus kondisi {}
+Remove mapping	Hapus pemetaan
+Remove the selected series from Kitsunarr	Hapus serial yang dipilih dari Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Hapus {} serial yang dipilih beserta data episodenya dari Kitsunarr?
+Remove {}	Hapus {}
+Remove {} from the blocklist	Hapus {} dari blocklist
+Remove {} series	Hapus {} serial
+Remove “{}” from Kitsunarr?	Hapus “{}” dari Kitsunarr?
+Remove…	Hapus…
+Removing…	Menghapus…
+Rename every file of the selected series to the naming settings	Ganti nama semua file serial yang dipilih sesuai pengaturan penamaan
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Ganti nama semua file dari {} serial yang dipilih sesuai pengaturan penamaan? Gunakan pratinjau Ganti nama file pada serial untuk memeriksa nama terlebih dahulu.
+Rename file	Ganti nama file
+Renaming mode	Mode penggantian nama
+Required condition {}	Kondisi wajib {}
+Rescan disk	Pindai ulang disk
+Restore media type	Jenis media yang dipulihkan
+Result	Hasil
+Retention	Retensi
+Review	Tinjau
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Tinjau judul tujuan dan kecocokan episode. File, path, pemantauan, dan riwayat dipertahankan. Episode yang tidak cocok mempertahankan nomornya hanya jika nomor tersebut masih kosong di katalog baru.
+Root folder for added shows	Folder root untuk serial yang ditambahkan
+Save path	Path penyimpanan
+Saving…	Menyimpan…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Pindai folder unduhan, tinjau setiap film, lalu salin atau pindahkan fitur utamanya beserta subtitle yang cocok ke pustaka. Fitur utama yang sudah ada hanya diganti oleh peningkatan.
+Search again	Cari lagi
+Search catalogues	Cari di katalog
+Search diagnostics	Diagnostik penelusuran
+Search for missing episodes once imported	Cari episode yang hilang setelah diimpor
+Search for {}	Cari {}
+Search incomplete	Penelusuran tidak lengkap
+Search indexers for {}	Cari {} di indexer
+Search season packs for {}	Cari paket musim untuk {}
+Search sources	Sumber penelusuran
+Search sources unavailable	Sumber penelusuran tidak tersedia
+Search the library	Cari di pustaka
+Search titles…	Cari judul…
+Search {}	Cari di {}
+Searching “{}”…	Mencari “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Judul folder musim menggantikan judul dari katalog di {}. Biarkan kosong untuk mempertahankan judul katalog.
+Season {} title	Judul musim {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Pilih sumber di atas, atau aktifkan penelusuran interaktif di pengaturan indexer. Tag sumber juga dapat membatasi serial mana yang ditelusuri.
+Select all	Pilih semua
+Select all movies on this page	Pilih semua film di halaman ini
+Select every episode on this page	Pilih semua episode di halaman ini
+Select {}	Pilih {}
+Select {} S{}E{}	Pilih {} S{}E{}
+Send now	Kirim sekarang
+Send {} now	Kirim {} sekarang
+Series & anime	Serial & anime
+Series history	Riwayat serial
+Series of {}	Serial untuk {}
+Series title, e.g. Severance (or tvdb:12345)	Judul serial, mis. Severance (atau tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Menampilkan {} dari {} rilis. Filter diterapkan pada hasil ini tanpa menelusuri ulang.
+Size (GiB)	Ukuran (GiB)
+Sort by	Urutkan menurut
+Specifications JSON	Spesifikasi JSON
+Stalled torrent timeout	Batas waktu torrent macet
+TMDB API key	Kunci API TMDB
+Tag existing titles	Beri tag judul yang sudah ada
+Tag {}	Tag {}
+Target catalogue	Katalog tujuan
+Target catalogue ID	ID katalog tujuan
+Test a release	Uji sebuah rilis
+Test details	Detail uji
+Test file name	Nama file uji
+Test format	Uji format
+Test indexer flags	Flag indexer uji
+Test language	Bahasa uji
+Test original language	Bahasa asli uji
+Test quality	Kualitas uji
+Test release title	Judul rilis uji
+Test release type	Jenis rilis uji
+Test size in GiB	Ukuran uji dalam GiB
+The catalogues share an external identity.	Katalog-katalog ini berbagi identitas eksternal.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Pilihan ini menggantikan status pemantauan setiap episode (spesial hanya diubah oleh dua pilihan spesial), lalu memonitor setiap musim yang memiliki episode yang dimonitor. "Tidak ada" juga menghentikan pemantauan serial.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Fitur utama dan subtitle yang cocok dipulihkan ke folder film. File yang sudah ada tidak pernah ditimpa.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Folder diganti namanya, atau disalin lalu dihapus jika berada di disk lain. Folder baru harus belum ada atau kosong.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Indexer yang merespons tidak mengembalikan rilis. Sumber lain gagal; periksa galat di atas dan coba lagi.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Kondisi ini dipertahankan. Gunakan Edit JSON untuk mengubah kolomnya; Uji format melaporkan apakah kondisi ini dapat dievaluasi.
+Title pattern of {}	Pola judul {}
+Title to add	Judul yang akan ditambahkan
+Title to search for	Judul yang akan dicari
+Title, group, quality or rejection reason…	Judul, grup, kualitas, atau alasan penolakan…
+Titles considered:	Judul yang dipertimbangkan:
+Toggle colour theme	Ganti tema warna
+Toggle sort direction	Ganti arah urutan
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Coba nama rilis TV, anime, atau film sebelum menyimpan. Ini memeriksa kondisi format; skor profil kualitas dan persetujuan unduhan terpisah.
+Ungroup	Bubarkan grup
+Ungroup {}	Bubarkan grup {}
+Unknown value ({})	Nilai tidak dikenal ({})
+Unmapped folders	Folder belum dipetakan
+Unmatched titles	Judul tidak cocok
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Hentikan pemantauan episode yang dihapus (dihapus manual atau hilang dari disk; peningkatan tidak pernah menghentikan pemantauan)
+Unwatched	Belum ditonton
+Use global	Gunakan global
+Use global sizes for {}	Gunakan ukuran global untuk {}
+Valid days	Hari berlaku
+Value	Nilai
+Values	Nilai-nilai
+View	Tampilan
+Wanted lists	Daftar dicari
+Watched	Sudah ditonton
+Watched date	Tanggal ditonton
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Jika opsi ini nonaktif, file tetap di disk. Folder yang dihapus masuk ke tempat sampah jika sudah diatur.
+iCal feed address	Alamat feed iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	di dalamnya); judul yang diimpor mempertahankan foldernya, filenya dipindai di tempat, lalu pilihan pemantauan diterapkan. Tidak ada yang dipindahkan atau diganti namanya.
+{} Not renamed: {}	{} Tidak diganti namanya: {}
+{} factor	Faktor {}
+{} files imported. Review the results below.	{} file diimpor. Tinjau hasilnya di bawah.
+{} imported, {} failed; see each folder.	{} diimpor, {} gagal; lihat setiap folder.
+{} imported.	{} diimpor.
+{} matched · {} kept at current numbers · {} new episodes	{} cocok · {} tetap di nomor saat ini · {} episode baru
+{} min	{} mnt
+{} of {} folders selected	{} dari {} folder dipilih
+{} releases found, {} accepted, nothing grabbed.	{} rilis ditemukan, {} diterima, tidak ada yang diambil.
+{} series and {} movies, {} files checked: {} issues.	{} serial dan {} film, {} file diperiksa: {} masalah.
+{} series moved.	{} serial dipindahkan.
+{} series moved; not moved: {}	{} serial dipindahkan; tidak dipindahkan: {}
+{} series removed.	{} serial dihapus.
+{} series removed; kept: {}	{} serial dihapus; dipertahankan: {}
+{} size of {}	Ukuran {} untuk {}
+{} size slider of {}	Penggeser ukuran {} untuk {}
+{} titles	{} judul
+{}: {} releases from {} indexer(s). {} responding.	{}: {} rilis dari {} indexer. {} merespons.
+· API:	· API:
+· negated	· dinegasikan
+· required	· wajib
+· {} ms · {} releases	· {} ms · {} rilis
+— MiB per minute	— MiB per menit
+— in library	— di pustaka
+→ current number	→ nomor saat ini
+or	atau
+1 title	1 judul

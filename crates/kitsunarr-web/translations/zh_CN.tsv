@@ -966,3 +966,347 @@ Scene numbering from TheXEM	来自 TheXEM 的场景编号
 Scene numbering extrapolated from TheXEM (unverified)	从 TheXEM 推算的场景编号（未验证）
 Season {} (scene seasons {})	第 {} 季（场景季 {}）
 {} (scene {})	{}（场景 {}）
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	根据 AniList 或 MyAnimeList 关联找到的系列作品分组。之后添加的同系列标题仍会加入该分组。已移除的标题在刷新时不会重新加入。
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	没有覆盖设置的质量使用“设置 › 质量”。在覆盖设置中，留空表示不限制；最大值为零也表示不限制。
+Add a movie, or change the search and watched filter.	添加电影，或更改搜索内容和观看状态筛选。
+Add a root folder in Settings › Media management first.	请先在“设置 › 媒体管理”中添加根目录。
+Add qualities to {}	向 {} 添加质量
+All decisions	所有决定
+All seasons	所有季
+All selected flags must be present.	必须包含所有选中的标记。
+All sources	所有来源
+Allow {}	允许 {}
+Also delete their folders and files (to the recycle bin when one is set)	同时删除其文件夹和文件（若已设置回收站则移至回收站）
+Apply sources	应用来源
+As the catalogue says	按目录
+Auto tag name	自动标签名称
+Automatic match / keep current number	自动匹配 / 保留当前编号
+Automatic search for {}	自动搜索 {}
+Below the root folder; use / for sub-folders.	位于根目录下；使用 / 表示子文件夹。
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	越靠前越优先。拖动手柄或使用箭头重新排序。同一分组内的质量优先级相同。
+Bulk actions	批量操作
+Catalogue ID	目录 ID
+Catalogue changed.	目录已更改。
+Catalogue match	目录匹配
+Change catalogue	更改目录
+Choose a movie…	选择电影…
+Choose a root folder…	选择根目录…
+Choose episodes for {}	选择 {} 的剧集
+Choose which episodes are monitored, as when adding the series	选择要追踪的剧集，与添加节目时相同
+Choose which episodes of the selected series are monitored	选择所选节目中要追踪的剧集
+Choose {}	选择 {}
+Clean library level	清理媒体库级别
+Clean library tag	清理媒体库标签
+Clear filters	清除筛选
+Clear or adjust the filters to see more results.	清除或调整筛选条件以查看更多结果。
+Codec of {}	{} 的编码
+Compression mode	压缩模式
+Condition indexer flags	条件索引器标记
+Condition language	条件语言
+Condition name	条件名称
+Condition name {}	条件名称 {}
+Condition regular expression {}	条件正则表达式 {}
+Condition size {}	条件大小 {}
+Condition type	条件类型
+Condition value	条件值
+Copy (keep the source)	复制（保留源文件）
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	从某个质量创建分组，然后将更多质量拖入其中或使用分组选择器。阈值会随质量进入其分组；取消分组时使用该分组中最高的成员。
+Current folder:	当前文件夹：
+Custom format name	自定义格式名称
+Delete tag {}	删除标签 {}
+Delete the file of episode {}	删除第 {} 集的文件
+Delete the movie folder and its files	删除电影文件夹及其文件
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	删除“{}”及其匹配的字幕？若已设置回收站则移至回收站。
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	删除“{}”？其中的节目和电影会保留在媒体库中，刷新时不会自动重新加入。
+Detect from title	从标题检测
+Disk scanned: {} {}	磁盘已扫描：{} {}
+Dismiss	关闭
+Don't change	不更改
+Don't import	不导入
+Done editing groups	完成分组编辑
+Drag to reorder or move into a group	拖动以重新排序或移入分组
+Drag {}	拖动 {}
+Drop here to move out of a group or to the lowest preference	拖放到此处以移出分组或设为最低优先级
+Drop qualities here	将质量拖放到此处
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	每个节目在根目录下保留自己的文件夹。如果节目的新文件夹已存在且不为空，则保留其当前文件夹。
+Edit JSON	编辑 JSON
+Edit group	编辑分组
+Edit groups	编辑分组
+Enter a non-negative test size within the supported range.	请输入支持范围内的非负测试大小。
+Enter a valid test size in GiB.	请输入有效的测试大小（GiB）。
+Enter valid test indexer flags.	请输入有效的测试索引器标记。
+Episode matches	剧集匹配
+Event type	事件类型
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	每种条件类型都必须匹配。同一类型中，任一条件匹配即可，但所有强制匹配的条件都必须匹配。取反会反转有效的条件。
+Every folder of this root folder belongs to a title already.	此根目录中的每个文件夹都已属于某个标题。
+Exclude {}	排除 {}
+Exclusion catalogue	排除项目录
+Exclusion id	排除项 ID
+Exclusion title	排除项标题
+Factor for {}	{} 的系数
+Feed tags	订阅源标签
+File name (optional)	文件名（可选）
+Filter by monitoring	按追踪状态筛选
+Filter by watched state	按观看状态筛选
+Filter release decisions	筛选发布资源决定
+Filter releases	筛选发布资源
+Find target title	查找目标标题
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	根目录中未被任何标题使用的文件夹。每个文件夹按其名称（或其中的
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	对于未匹配的发布资源，请将下方解析出的标题和集数与已考虑的标题进行对照。必要时在媒体库中添加别名或更正剧集映射。
+Format does not match	格式不匹配
+Format matches	格式匹配
+Full season	整季
+Grab it now instead of waiting for the delay	立即抓取，而不是等待延时
+Grab {}	抓取 {}
+Group	分组
+Group for {}	{} 的分组
+Group name	分组名称
+Group {}	将 {} 分组
+Guided editor	引导式编辑器
+I confirm that the target catalogue entry is the same title.	我确认目标目录条目是同一个标题。
+Import	导入
+Import existing folders	导入现有文件夹
+Import mode	导入模式
+Import {}	导入 {}
+Imported from movie folder	从电影文件夹导入
+Include in file names ({} token)	包含在文件名中（{} 令牌）
+Include {}	包含 {}
+Indexer flags (bitmask)	索引器标记（位掩码）
+Jellyfin library	Jellyfin 媒体库
+Jellyfin user	Jellyfin 用户
+Jellyfin watched sync can update this status.	Jellyfin 观看状态同步可能会更新此状态。
+Key name	密钥名称
+Key permission	密钥权限
+Kind of {}	{} 的类型
+Label of {}	{} 的标签
+Language	语言
+Library import	媒体库导入
+List exclusions	列表排除项
+Loading sources…	正在加载来源…
+Main navigation	主导航
+Mark unwatched	标记为未观看
+Mark watched	标记为已观看
+Match	匹配
+Match any other language	匹配任何其他语言
+Match episode {}	匹配第 {} 集
+Match for {}	{} 的匹配
+Matching series	匹配的节目
+Matching subtitles follow the file's new name.	匹配的字幕会随文件的新名称一起更改。
+Maximum GiB (inclusive)	最大 GiB（含）
+Maximum size	最大大小
+Maximum year	最大年份
+Minimum GiB (exclusive)	最小 GiB（不含）
+Minimum age	最低间隔
+Minimum level	最低级别
+Minimum score increment for upgrades	升级所需的最小分数增量
+Minimum year	最小年份
+Monitor episode {}	追踪第 {} 集
+Monitor new seasons	追踪新季
+Monitored filter	追踪筛选
+Monitoring	追踪
+Monitoring updated for {} series.	已更新 {} 个节目的追踪设置。
+Monitoring — {} series	追踪 — {} 个节目
+Monitoring…	追踪…
+Move folder	移动文件夹
+Move the files	移动文件
+Move the files to the new folder	将文件移动到新文件夹
+Move the movie folder, or point the movie at another folder	移动电影文件夹，或将电影指向另一个文件夹
+Move the selected series into another root folder	将所选节目移动到另一个根目录
+Move the series folder, or point the series at another folder	移动节目文件夹，或将节目指向另一个文件夹
+Move to root folder…	移动到根目录…
+Move {} series	移动 {} 个节目
+Movie bulk actions	电影批量操作
+Movie file deleted	电影文件已删除
+Movie file renamed	电影文件已重命名
+Movie file restored	电影文件已恢复
+Movie for {}	{} 的电影
+Movie history	电影历史记录
+Movie import mode	电影导入模式
+Movie removed, and its folder deleted or recycled.	电影已移除，其文件夹已删除或移至回收站。
+Movie source folder	电影源文件夹
+Movies (Tanukarr)	电影（Tanukarr）
+Moving…	正在移动…
+Naming & file settings	命名和文件设置
+Negate condition {}	对条件 {} 取反
+New condition type	新条件类型
+New profile	新建配置
+New root folder path	新根目录路径
+New tag	新标签
+Next	下一步
+No group	无分组
+No indexer responded successfully. Check the source errors above, then try again.	没有索引器成功响应。请检查上方的来源错误，然后重试。
+No match for “{}”	没有与“{}”匹配的结果
+No releases match these filters	没有符合这些筛选条件的发布资源
+No root folder	无根目录
+Nothing to import	没有可导入的内容
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	仅更改记录的文件夹；当文件已在该位置时使用此项，然后扫描磁盘。
+Open navigation	打开导航
+Open on {}	在 {} 上打开
+Organize files	整理文件
+Organizing…	正在整理…
+Original language	原始语言
+Override for a mapped anime batch or a movie feature (single episode).	用于已映射的动漫合集或电影正片（单集）的覆盖设置。
+Parsed title:	解析出的标题：
+Passkey	Passkey
+Place above {}	放在 {} 之上
+Place at lowest preference	放在最低优先级
+Position of {}	{} 的位置
+Prefer {} less	降低 {} 的优先级
+Prefer {} more	提高 {} 的优先级
+Preferred catalogue	首选目录
+Preset title	预设标题
+Prevent import lists from adding it again	防止导入列表再次添加它
+Prevent import lists from adding them again	防止导入列表再次添加它们
+Preview again to review your changes.	请再次预览以检查你的更改。
+Previous	上一步
+Progress of {}	{} 的进度
+Proxy hostname	代理主机名
+Proxy port	代理端口
+Quality cutoff	质量阈值
+Quality profile for added shows	所添加节目的质量配置
+Quality sizes	质量大小
+Quality: {} · Group: {} · Languages: {} · {}	质量：{} · 分组：{} · 语言：{} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	查询计划包含可能不会执行的后备层级。每个来源有 35 秒的时间预算；手动搜索的总时间预算为 45 秒。
+RSS sync interval	RSS 同步间隔
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	只读：检查节目和电影文件夹、不安全的文件记录以及磁盘上缺失的文件。
+Reading the root folder…	正在读取根目录…
+Regular expression	正则表达式
+Rejected	已拒绝
+Release title	发布资源标题
+Release type	发布资源类型
+Reload folders	重新加载文件夹
+Remove condition	移除条件
+Remove condition {}	移除条件 {}
+Remove mapping	移除映射
+Remove the selected series from Kitsunarr	从 Kitsunarr 移除所选节目
+Remove the {} selected series and their episode records from Kitsunarr?	从 Kitsunarr 移除所选的 {} 个节目及其剧集记录？
+Remove {}	移除 {}
+Remove {} from the blocklist	从黑名单移除 {}
+Remove {} series	移除 {} 个节目
+Remove “{}” from Kitsunarr?	从 Kitsunarr 移除“{}”？
+Remove…	移除…
+Removing…	正在移除…
+Rename every file of the selected series to the naming settings	按命名设置重命名所选节目的所有文件
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	按命名设置重命名所选的 {} 个节目的所有文件？请先使用节目的“重命名文件”预览检查名称。
+Rename file	重命名文件
+Renaming mode	重命名模式
+Required condition {}	条件 {} 强制匹配
+Rescan disk	重新扫描磁盘
+Restore media type	恢复的媒体类型
+Result	结果
+Retention	保留
+Review	审核
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	请检查目标标题和剧集匹配。文件、路径、追踪和历史记录都会保留。未匹配的剧集只有在其编号在新目录中空闲时才保留原编号。
+Root folder for added shows	所添加节目的根目录
+Save path	保存路径
+Saving…	正在保存…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	扫描下载文件夹，逐一检查每部电影，并将其正片及匹配的字幕复制或移动到媒体库。现有正片仅会被升级替换。
+Search again	再次搜索
+Search catalogues	搜索目录
+Search diagnostics	搜索诊断
+Search for missing episodes once imported	导入后搜索缺失的剧集
+Search for {}	搜索 {}
+Search incomplete	搜索未完成
+Search indexers for {}	在索引器中搜索 {}
+Search season packs for {}	搜索 {} 的季包
+Search sources	搜索来源
+Search sources unavailable	搜索来源不可用
+Search the library	搜索媒体库
+Search titles…	搜索标题…
+Search {}	使用 {} 搜索
+Searching “{}”…	正在搜索“{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	季文件夹标题会替换 {} 中的目录标题。留空则保留目录标题。
+Season {} title	第 {} 季标题
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	请在上方选择一个来源，或在索引器设置中启用手动搜索。来源标签也可以限制搜索哪些节目。
+Select all	全选
+Select all movies on this page	选择此页上的所有电影
+Select every episode on this page	选择此页上的所有剧集
+Select {}	选择 {}
+Select {} S{}E{}	选择 {} S{}E{}
+Send now	立即发送
+Send {} now	立即发送 {}
+Series & anime	节目和动漫
+Series history	节目历史记录
+Series of {}	{} 的节目
+Series title, e.g. Severance (or tvdb:12345)	节目标题，例如 Severance（或 tvdb:12345）
+Showing {} of {} releases. Filters apply to these results without searching again.	显示 {} 个（共 {} 个）发布资源。筛选仅作用于这些结果，不会重新搜索。
+Size (GiB)	大小（GiB）
+Sort by	排序方式
+Specifications JSON	规格 JSON
+Stalled torrent timeout	停滞种子超时
+TMDB API key	TMDB API 密钥
+Tag existing titles	为现有标题添加标签
+Tag {}	标签 {}
+Target catalogue	目标目录
+Target catalogue ID	目标目录 ID
+Test a release	测试发布资源
+Test details	测试详情
+Test file name	测试文件名
+Test format	测试格式
+Test indexer flags	测试索引器标记
+Test language	测试语言
+Test original language	测试原始语言
+Test quality	测试质量
+Test release title	测试发布资源标题
+Test release type	测试发布资源类型
+Test size in GiB	测试大小（GiB）
+The catalogues share an external identity.	这些目录共享一个外部标识。
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	此选项会替换每一集的追踪状态（特别节目仅由两个特别节目选项更改），然后追踪每个包含已追踪剧集的季。“无”还会取消追踪该节目。
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	正片及匹配的字幕会恢复到电影文件夹中。现有文件永远不会被覆盖。
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	文件夹会被重命名；若在另一个磁盘上，则先复制再移除。新文件夹必须不存在或为空。
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	已响应的索引器未返回任何发布资源。其他来源失败；请检查上方的错误并重试。
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	此条件会被保留。使用“编辑 JSON”更改其字段；“测试格式”会报告它能否被评估。
+Title pattern of {}	{} 的标题模式
+Title to add	要添加的标题
+Title to search for	要搜索的标题
+Title, group, quality or rejection reason…	标题、发布组、质量或拒绝原因…
+Titles considered:	已考虑的标题：
+Toggle colour theme	切换颜色主题
+Toggle sort direction	切换排序方向
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	保存前用电视、动漫或电影的发布名称试一试。这会检查格式的条件；质量配置分数和下载批准是分开的。
+Ungroup	取消分组
+Ungroup {}	取消分组 {}
+Unknown value ({})	未知值（{}）
+Unmapped folders	未映射的文件夹
+Unmatched titles	未匹配的标题
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	取消追踪已删除的剧集（手动删除或磁盘上缺失；升级永远不会取消追踪）
+Unwatched	未观看
+Use global	使用全局设置
+Use global sizes for {}	对 {} 使用全局大小
+Valid days	有效天数
+Value	值
+Values	值列表
+View	视图
+Wanted lists	待寻列表
+Watched	已观看
+Watched date	观看日期
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	关闭此选项时，文件会保留在磁盘上。已删除的文件夹在设置了回收站时会移至回收站。
+iCal feed address	iCal 订阅地址
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	标签）与目录匹配；导入的标题保留其文件夹，其文件就地扫描，然后应用追踪选择。不会移动或重命名任何内容。
+{} Not renamed: {}	{} 未重命名：{}
+{} factor	{} 系数
+{} files imported. Review the results below.	已导入 {} 个文件。请检查下方的结果。
+{} imported, {} failed; see each folder.	已导入 {} 个，{} 个失败；请查看各文件夹。
+{} imported.	已导入 {}。
+{} matched · {} kept at current numbers · {} new episodes	{} 个已匹配 · {} 个保留当前编号 · {} 个新剧集
+{} min	{} 分钟
+{} of {} folders selected	已选择 {} 个文件夹（共 {} 个）
+{} releases found, {} accepted, nothing grabbed.	找到 {} 个发布资源，接受 {} 个，未抓取任何内容。
+{} series and {} movies, {} files checked: {} issues.	已检查 {} 个节目和 {} 部电影、{} 个文件：{} 个问题。
+{} series moved.	已移动 {} 个节目。
+{} series moved; not moved: {}	已移动 {} 个节目；未移动：{}
+{} series removed.	已移除 {} 个节目。
+{} series removed; kept: {}	已移除 {} 个节目；已保留：{}
+{} size of {}	{}大小：{}
+{} size slider of {}	{}大小滑块：{}
+{} titles	{} 个标题
+{}: {} releases from {} indexer(s). {} responding.	{}：{} 个发布资源，来自 {} 个索引器。{} 个已响应。
+· API:	· API：
+· negated	· 取反
+· required	· 强制匹配
+· {} ms · {} releases	· {} ms · {} 个发布资源
+— MiB per minute	— 每分钟 MiB
+— in library	— 已在媒体库
+→ current number	→ 当前编号
+or	或
+1 title	1 个标题

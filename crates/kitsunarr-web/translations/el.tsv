@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Αρίθμηση scene από το TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Αρίθμηση scene κατ' εκτίμηση από το TheXEM (μη επαληθευμένη)
 Season {} (scene seasons {})	Κύκλος {} (κύκλοι scene {})
 {} (scene {})	{} (scene {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Μια ομάδα franchise που βρέθηκε από τις συσχετίσεις του AniList ή του MyAnimeList. Τίτλοι του ίδιου franchise που προστίθενται αργότερα εντάσσονται επίσης σε αυτήν. Οι τίτλοι που αφαιρέθηκαν δεν επανεντάσσονται κατά την ανανέωση.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Μια ποιότητα χωρίς παράκαμψη χρησιμοποιεί τις Ρυθμίσεις › Ποιότητα. Μέσα σε μια παράκαμψη, το κενό σημαίνει απεριόριστο· μέγιστο μηδέν σημαίνει επίσης απεριόριστο.
+Add a movie, or change the search and watched filter.	Προσθέστε μια ταινία ή αλλάξτε την αναζήτηση και το φίλτρο προβολής.
+Add a root folder in Settings › Media management first.	Προσθέστε πρώτα έναν ριζικό φάκελο στις Ρυθμίσεις › Διαχείριση πολυμέσων.
+Add qualities to {}	Προσθήκη ποιοτήτων στο {}
+All decisions	Όλες οι αποφάσεις
+All seasons	Όλοι οι κύκλοι
+All selected flags must be present.	Πρέπει να υπάρχουν όλες οι επιλεγμένες σημαίες.
+All sources	Όλες οι πηγές
+Allow {}	Επιτρέπεται {}
+Also delete their folders and files (to the recycle bin when one is set)	Διαγραφή και των φακέλων και των αρχείων τους (στον κάδο ανακύκλωσης, αν έχει οριστεί)
+Apply sources	Εφαρμογή πηγών
+As the catalogue says	Όπως ορίζει ο κατάλογος
+Auto tag name	Όνομα αυτόματης ετικέτας
+Automatic match / keep current number	Αυτόματη αντιστοίχιση / διατήρηση τρέχοντος αριθμού
+Automatic search for {}	Αυτόματη αναζήτηση για {}
+Below the root folder; use / for sub-folders.	Κάτω από τον ριζικό φάκελο· χρησιμοποιήστε / για υποφακέλους.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Η καλύτερη πρώτη. Σύρετε τις λαβές ή χρησιμοποιήστε τα βέλη για αλλαγή σειράς. Οι ποιότητες μέσα σε μια ομάδα κατατάσσονται ισότιμα.
+Bulk actions	Μαζικές ενέργειες
+Catalogue ID	ID καταλόγου
+Catalogue changed.	Ο κατάλογος άλλαξε.
+Catalogue match	Αντιστοίχιση καταλόγου
+Change catalogue	Αλλαγή καταλόγου
+Choose a movie…	Επιλέξτε ταινία…
+Choose a root folder…	Επιλέξτε ριζικό φάκελο…
+Choose episodes for {}	Επιλογή επεισοδίων για {}
+Choose which episodes are monitored, as when adding the series	Επιλέξτε ποια επεισόδια παρακολουθούνται, όπως κατά την προσθήκη της σειράς
+Choose which episodes of the selected series are monitored	Επιλέξτε ποια επεισόδια των επιλεγμένων σειρών παρακολουθούνται
+Choose {}	Επιλογή {}
+Clean library level	Επίπεδο καθαρισμού βιβλιοθήκης
+Clean library tag	Ετικέτα καθαρισμού βιβλιοθήκης
+Clear filters	Εκκαθάριση φίλτρων
+Clear or adjust the filters to see more results.	Καθαρίστε ή προσαρμόστε τα φίλτρα για να δείτε περισσότερα αποτελέσματα.
+Codec of {}	Codec του {}
+Compression mode	Λειτουργία συμπίεσης
+Condition indexer flags	Σημαίες ευρετηρίου συνθήκης
+Condition language	Γλώσσα συνθήκης
+Condition name	Όνομα συνθήκης
+Condition name {}	Όνομα συνθήκης {}
+Condition regular expression {}	Κανονική έκφραση συνθήκης {}
+Condition size {}	Μέγεθος συνθήκης {}
+Condition type	Τύπος συνθήκης
+Condition value	Τιμή συνθήκης
+Copy (keep the source)	Αντιγραφή (διατήρηση της πηγής)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Δημιουργήστε μια ομάδα από μια ποιότητα και, στη συνέχεια, σύρετε περισσότερες ποιότητες σε αυτήν ή χρησιμοποιήστε τους επιλογείς ομάδας. Το όριο ακολουθεί μια ποιότητα στην ομάδα της· η κατάργηση ομαδοποίησης χρησιμοποιεί το υψηλότερο μέλος της ομάδας.
+Current folder:	Τρέχων φάκελος:
+Custom format name	Όνομα προσαρμοσμένης μορφής
+Delete tag {}	Διαγραφή ετικέτας {}
+Delete the file of episode {}	Διαγραφή του αρχείου του επεισοδίου {}
+Delete the movie folder and its files	Διαγραφή του φακέλου της ταινίας και των αρχείων του
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Διαγραφή του «{}» και των αντίστοιχων υποτίτλων; Μεταφέρονται στον κάδο ανακύκλωσης, αν έχει οριστεί.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Διαγραφή του «{}»; Οι σειρές και οι ταινίες του παραμένουν στη βιβλιοθήκη και δεν θα επανενταχθούν αυτόματα κατά την ανανέωση.
+Detect from title	Ανίχνευση από τον τίτλο
+Disk scanned: {} {}	Ο δίσκος σαρώθηκε: {} {}
+Dismiss	Απόρριψη
+Don't change	Χωρίς αλλαγή
+Don't import	Χωρίς εισαγωγή
+Done editing groups	Τέλος επεξεργασίας ομάδων
+Drag to reorder or move into a group	Σύρετε για αλλαγή σειράς ή μετακίνηση σε ομάδα
+Drag {}	Μεταφορά {}
+Drop here to move out of a group or to the lowest preference	Αφήστε εδώ για αφαίρεση από ομάδα ή για τη χαμηλότερη προτίμηση
+Drop qualities here	Αφήστε ποιότητες εδώ
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Κάθε σειρά διατηρεί τον φάκελό της κάτω από τον ριζικό φάκελο. Μια σειρά της οποίας ο νέος φάκελος υπάρχει και δεν είναι κενός διατηρεί τον τρέχοντα φάκελό της.
+Edit JSON	Επεξεργασία JSON
+Edit group	Επεξεργασία ομάδας
+Edit groups	Επεξεργασία ομάδων
+Enter a non-negative test size within the supported range.	Εισαγάγετε ένα μη αρνητικό μέγεθος δοκιμής εντός του υποστηριζόμενου εύρους.
+Enter a valid test size in GiB.	Εισαγάγετε ένα έγκυρο μέγεθος δοκιμής σε GiB.
+Enter valid test indexer flags.	Εισαγάγετε έγκυρες σημαίες ευρετηρίου δοκιμής.
+Episode matches	Αντιστοιχίσεις επεισοδίων
+Event type	Τύπος συμβάντος
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Κάθε τύπος συνθήκης πρέπει να ταιριάζει. Μέσα σε έναν τύπο, αρκεί να ταιριάζει οποιαδήποτε συνθήκη και κάθε υποχρεωτική συνθήκη πρέπει να ταιριάζει. Η άρνηση αντιστρέφει μια έγκυρη συνθήκη.
+Every folder of this root folder belongs to a title already.	Κάθε φάκελος αυτού του ριζικού φακέλου ανήκει ήδη σε έναν τίτλο.
+Exclude {}	Εξαίρεση {}
+Exclusion catalogue	Κατάλογος εξαίρεσης
+Exclusion id	ID εξαίρεσης
+Exclusion title	Τίτλος εξαίρεσης
+Factor for {}	Συντελεστής για {}
+Feed tags	Ετικέτες ροής
+File name (optional)	Όνομα αρχείου (προαιρετικό)
+Filter by monitoring	Φιλτράρισμα κατά παρακολούθηση
+Filter by watched state	Φιλτράρισμα κατά κατάσταση προβολής
+Filter release decisions	Φιλτράρισμα αποφάσεων κυκλοφοριών
+Filter releases	Φιλτράρισμα κυκλοφοριών
+Find target title	Εύρεση τίτλου προορισμού
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Φάκελοι ενός ριζικού φακέλου που δεν χρησιμοποιεί κανένας τίτλος. Ο καθένας αντιστοιχίζεται με τον κατάλογο βάσει του ονόματός του (ή της ετικέτας
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Για κυκλοφορίες χωρίς αντιστοίχιση, ελέγξτε τον αναλυμένο τίτλο και τους αριθμούς επεισοδίων παρακάτω σε σχέση με τους τίτλους που εξετάστηκαν. Αν χρειάζεται, προσθέστε έναν εναλλακτικό τίτλο ή διορθώστε την αντιστοίχιση επεισοδίων στη βιβλιοθήκη.
+Format does not match	Η μορφή δεν ταιριάζει
+Format matches	Η μορφή ταιριάζει
+Full season	Ολόκληρος κύκλος
+Grab it now instead of waiting for the delay	Λήψη τώρα αντί για αναμονή της καθυστέρησης
+Grab {}	Λήψη {}
+Group	Ομάδα
+Group for {}	Ομάδα για {}
+Group name	Όνομα ομάδας
+Group {}	Ομάδα {}
+Guided editor	Καθοδηγούμενος επεξεργαστής
+I confirm that the target catalogue entry is the same title.	Επιβεβαιώνω ότι η καταχώριση προορισμού στον κατάλογο είναι ο ίδιος τίτλος.
+Import	Εισαγωγή
+Import existing folders	Εισαγωγή υπαρχόντων φακέλων
+Import mode	Λειτουργία εισαγωγής
+Import {}	Εισαγωγή: {}
+Imported from movie folder	Εισήχθη από τον φάκελο της ταινίας
+Include in file names ({} token)	Συμπερίληψη στα ονόματα αρχείων (token {})
+Include {}	Συμπερίληψη {}
+Indexer flags (bitmask)	Σημαίες ευρετηρίου (bitmask)
+Jellyfin library	Βιβλιοθήκη Jellyfin
+Jellyfin user	Χρήστης Jellyfin
+Jellyfin watched sync can update this status.	Ο συγχρονισμός προβολών Jellyfin μπορεί να ενημερώσει αυτήν την κατάσταση.
+Key name	Όνομα κλειδιού
+Key permission	Δικαίωμα κλειδιού
+Kind of {}	Είδος του {}
+Label of {}	Ετικέτα του {}
+Language	Γλώσσα
+Library import	Εισαγωγή βιβλιοθήκης
+List exclusions	Εξαιρέσεις λιστών
+Loading sources…	Φόρτωση πηγών…
+Main navigation	Κύρια πλοήγηση
+Mark unwatched	Σήμανση ως μη προβεβλημένο
+Mark watched	Σήμανση ως προβεβλημένο
+Match	Αντιστοίχιση
+Match any other language	Ταίριασμα με οποιαδήποτε άλλη γλώσσα
+Match episode {}	Αντιστοίχιση επεισοδίου {}
+Match for {}	Αντιστοίχιση για {}
+Matching series	Σειρές που ταιριάζουν
+Matching subtitles follow the file's new name.	Οι αντίστοιχοι υπότιτλοι ακολουθούν το νέο όνομα του αρχείου.
+Maximum GiB (inclusive)	Μέγιστο GiB (συμπεριλαμβάνεται)
+Maximum size	Μέγιστο μέγεθος
+Maximum year	Μέγιστο έτος
+Minimum GiB (exclusive)	Ελάχιστο GiB (δεν συμπεριλαμβάνεται)
+Minimum age	Ελάχιστη ηλικία
+Minimum level	Ελάχιστο επίπεδο
+Minimum score increment for upgrades	Ελάχιστη αύξηση βαθμολογίας για αναβαθμίσεις
+Minimum year	Ελάχιστο έτος
+Monitor episode {}	Παρακολούθηση επεισοδίου {}
+Monitor new seasons	Παρακολούθηση νέων κύκλων
+Monitored filter	Φίλτρο παρακολούθησης
+Monitoring	Παρακολούθηση
+Monitoring updated for {} series.	Η παρακολούθηση ενημερώθηκε για {} σειρές.
+Monitoring — {} series	Παρακολούθηση — {} σειρές
+Monitoring…	Παρακολούθηση…
+Move folder	Μετακίνηση φακέλου
+Move the files	Μετακίνηση των αρχείων
+Move the files to the new folder	Μετακίνηση των αρχείων στον νέο φάκελο
+Move the movie folder, or point the movie at another folder	Μετακινήστε τον φάκελο της ταινίας ή αντιστοιχίστε την ταινία σε άλλον φάκελο
+Move the selected series into another root folder	Μετακινήστε τις επιλεγμένες σειρές σε άλλον ριζικό φάκελο
+Move the series folder, or point the series at another folder	Μετακινήστε τον φάκελο της σειράς ή αντιστοιχίστε τη σειρά σε άλλον φάκελο
+Move to root folder…	Μετακίνηση σε ριζικό φάκελο…
+Move {} series	Μετακίνηση {} σειρών
+Movie bulk actions	Μαζικές ενέργειες ταινιών
+Movie file deleted	Το αρχείο της ταινίας διαγράφηκε
+Movie file renamed	Το αρχείο της ταινίας μετονομάστηκε
+Movie file restored	Το αρχείο της ταινίας επαναφέρθηκε
+Movie for {}	Ταινία για {}
+Movie history	Ιστορικό ταινίας
+Movie import mode	Λειτουργία εισαγωγής ταινιών
+Movie removed, and its folder deleted or recycled.	Η ταινία αφαιρέθηκε και ο φάκελός της διαγράφηκε ή μεταφέρθηκε στον κάδο ανακύκλωσης.
+Movie source folder	Φάκελος πηγής ταινιών
+Movies (Tanukarr)	Ταινίες (Tanukarr)
+Moving…	Μετακίνηση…
+Naming & file settings	Ονομασία και ρυθμίσεις αρχείων
+Negate condition {}	Άρνηση συνθήκης {}
+New condition type	Νέος τύπος συνθήκης
+New profile	Νέο προφίλ
+New root folder path	Διαδρομή νέου ριζικού φακέλου
+New tag	Νέα ετικέτα
+Next	Επόμενο
+No group	Χωρίς ομάδα
+No indexer responded successfully. Check the source errors above, then try again.	Κανένα ευρετήριο δεν απάντησε με επιτυχία. Ελέγξτε τα σφάλματα των πηγών παραπάνω και δοκιμάστε ξανά.
+No match for “{}”	Καμία αντιστοίχιση για «{}»
+No releases match these filters	Καμία κυκλοφορία δεν ταιριάζει με αυτά τα φίλτρα
+No root folder	Κανένας ριζικός φάκελος
+Nothing to import	Τίποτα για εισαγωγή
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Αλλάζει μόνο ο καταγεγραμμένος φάκελος· χρησιμοποιήστε το όταν τα αρχεία βρίσκονται ήδη εκεί και, στη συνέχεια, σαρώστε τον δίσκο.
+Open navigation	Άνοιγμα πλοήγησης
+Open on {}	Άνοιγμα στο {}
+Organize files	Οργάνωση αρχείων
+Organizing…	Οργάνωση…
+Original language	Αρχική γλώσσα
+Override for a mapped anime batch or a movie feature (single episode).	Παράκαμψη για αντιστοιχισμένο πακέτο anime ή για το κύριο αρχείο ταινίας (ένα επεισόδιο).
+Parsed title:	Αναλυμένος τίτλος:
+Passkey	Passkey
+Place above {}	Τοποθέτηση πάνω από {}
+Place at lowest preference	Τοποθέτηση στη χαμηλότερη προτίμηση
+Position of {}	Θέση του {}
+Prefer {} less	Λιγότερη προτίμηση για {}
+Prefer {} more	Περισσότερη προτίμηση για {}
+Preferred catalogue	Προτιμώμενος κατάλογος
+Preset title	Τίτλος προρύθμισης
+Prevent import lists from adding it again	Να μην το προσθέτουν ξανά οι λίστες εισαγωγής
+Prevent import lists from adding them again	Να μην τα προσθέτουν ξανά οι λίστες εισαγωγής
+Preview again to review your changes.	Κάντε ξανά προεπισκόπηση για να ελέγξετε τις αλλαγές σας.
+Previous	Προηγούμενο
+Progress of {}	Πρόοδος του {}
+Proxy hostname	Όνομα host διακομιστή μεσολάβησης
+Proxy port	Θύρα διακομιστή μεσολάβησης
+Quality cutoff	Όριο ποιότητας
+Quality profile for added shows	Προφίλ ποιότητας για σειρές που προστίθενται
+Quality sizes	Μεγέθη ποιοτήτων
+Quality: {} · Group: {} · Languages: {} · {}	Ποιότητα: {} · Ομάδα: {} · Γλώσσες: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Τα σχέδια ερωτημάτων περιλαμβάνουν εφεδρικά επίπεδα που μπορεί να μην εκτελεστούν. Οι πηγές έχουν προϋπολογισμό 35 δευτερολέπτων· οι αλληλεπιδραστικές αναζητήσεις έχουν συνολικό προϋπολογισμό 45 δευτερολέπτων.
+RSS sync interval	Διάστημα συγχρονισμού RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Μόνο ανάγνωση: ελέγχει φακέλους σειρών και ταινιών, μη ασφαλείς εγγραφές αρχείων και αρχεία που λείπουν από τον δίσκο.
+Reading the root folder…	Ανάγνωση του ριζικού φακέλου…
+Regular expression	Κανονική έκφραση
+Rejected	Απορρίφθηκε
+Release title	Τίτλος κυκλοφορίας
+Release type	Τύπος κυκλοφορίας
+Reload folders	Επαναφόρτωση φακέλων
+Remove condition	Αφαίρεση συνθήκης
+Remove condition {}	Αφαίρεση συνθήκης {}
+Remove mapping	Αφαίρεση αντιστοίχισης
+Remove the selected series from Kitsunarr	Αφαίρεση των επιλεγμένων σειρών από το Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Αφαίρεση των {} επιλεγμένων σειρών και των εγγραφών επεισοδίων τους από το Kitsunarr;
+Remove {}	Αφαίρεση {}
+Remove {} from the blocklist	Αφαίρεση του {} από τη λίστα αποκλεισμού
+Remove {} series	Αφαίρεση {} σειρών
+Remove “{}” from Kitsunarr?	Αφαίρεση του «{}» από το Kitsunarr;
+Remove…	Αφαίρεση…
+Removing…	Αφαίρεση σε εξέλιξη…
+Rename every file of the selected series to the naming settings	Μετονομασία όλων των αρχείων των επιλεγμένων σειρών σύμφωνα με τις ρυθμίσεις ονομασίας
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Μετονομασία όλων των αρχείων των {} επιλεγμένων σειρών σύμφωνα με τις ρυθμίσεις ονομασίας; Χρησιμοποιήστε πρώτα την προεπισκόπηση «Μετονομασία αρχείων» μιας σειράς για να ελέγξετε τα ονόματα.
+Rename file	Μετονομασία αρχείου
+Renaming mode	Λειτουργία μετονομασίας
+Required condition {}	Υποχρεωτική συνθήκη {}
+Rescan disk	Νέα σάρωση δίσκου
+Restore media type	Τύπος πολυμέσων για επαναφορά
+Result	Αποτέλεσμα
+Retention	Διατήρηση
+Review	Έλεγχος
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Ελέγξτε τον τίτλο προορισμού και τις αντιστοιχίσεις επεισοδίων. Τα αρχεία, οι διαδρομές, η παρακολούθηση και το ιστορικό διατηρούνται. Τα επεισόδια χωρίς αντιστοίχιση κρατούν τους αριθμούς τους μόνο όταν αυτοί είναι ελεύθεροι στον νέο κατάλογο.
+Root folder for added shows	Ριζικός φάκελος για σειρές που προστίθενται
+Save path	Διαδρομή αποθήκευσης
+Saving…	Αποθήκευση…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Σαρώστε έναν φάκελο λήψεων, ελέγξτε κάθε ταινία και αντιγράψτε ή μετακινήστε το κύριο αρχείο της μαζί με τους αντίστοιχους υπότιτλους στη βιβλιοθήκη. Τα υπάρχοντα κύρια αρχεία αντικαθίστανται μόνο από αναβαθμίσεις.
+Search again	Νέα αναζήτηση
+Search catalogues	Αναζήτηση καταλόγων
+Search diagnostics	Διαγνωστικά αναζήτησης
+Search for missing episodes once imported	Αναζήτηση επεισοδίων που λείπουν μετά την εισαγωγή
+Search for {}	Αναζήτηση για {}
+Search incomplete	Ημιτελής αναζήτηση
+Search indexers for {}	Αναζήτηση στα ευρετήρια για {}
+Search season packs for {}	Αναζήτηση πακέτων κύκλου για {}
+Search sources	Αναζήτηση πηγών
+Search sources unavailable	Οι πηγές αναζήτησης δεν είναι διαθέσιμες
+Search the library	Αναζήτηση στη βιβλιοθήκη
+Search titles…	Αναζήτηση τίτλων…
+Search {}	Αναζήτηση {}
+Searching “{}”…	Αναζήτηση «{}»…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Οι τίτλοι φακέλων κύκλων αντικαθιστούν αυτούς του καταλόγου στο {}. Αφήστε κενό για να διατηρηθούν αυτοί του καταλόγου.
+Season {} title	Τίτλος κύκλου {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Επιλέξτε μια πηγή παραπάνω ή ενεργοποιήστε την αλληλεπιδραστική αναζήτηση στις ρυθμίσεις ευρετηρίων. Οι ετικέτες πηγών μπορούν επίσης να περιορίσουν ποιες σειρές αναζητούνται.
+Select all	Επιλογή όλων
+Select all movies on this page	Επιλογή όλων των ταινιών αυτής της σελίδας
+Select every episode on this page	Επιλογή κάθε επεισοδίου αυτής της σελίδας
+Select {}	Επιλογή {}
+Select {} S{}E{}	Επιλογή {} S{}E{}
+Send now	Αποστολή τώρα
+Send {} now	Αποστολή {} τώρα
+Series & anime	Σειρές και anime
+Series history	Ιστορικό σειράς
+Series of {}	Σειρά για {}
+Series title, e.g. Severance (or tvdb:12345)	Τίτλος σειράς, π.χ. Severance (ή tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Εμφανίζονται {} από {} κυκλοφορίες. Τα φίλτρα εφαρμόζονται σε αυτά τα αποτελέσματα χωρίς νέα αναζήτηση.
+Size (GiB)	Μέγεθος (GiB)
+Sort by	Ταξινόμηση κατά
+Specifications JSON	Προδιαγραφές JSON
+Stalled torrent timeout	Χρονικό όριο για κολλημένα torrent
+TMDB API key	Κλειδί API TMDB
+Tag existing titles	Προσθήκη ετικετών σε υπάρχοντες τίτλους
+Tag {}	Ετικέτα {}
+Target catalogue	Κατάλογος προορισμού
+Target catalogue ID	ID καταλόγου προορισμού
+Test a release	Δοκιμή κυκλοφορίας
+Test details	Λεπτομέρειες δοκιμής
+Test file name	Όνομα αρχείου δοκιμής
+Test format	Δοκιμή μορφής
+Test indexer flags	Σημαίες ευρετηρίου δοκιμής
+Test language	Γλώσσα δοκιμής
+Test original language	Αρχική γλώσσα δοκιμής
+Test quality	Ποιότητα δοκιμής
+Test release title	Τίτλος κυκλοφορίας δοκιμής
+Test release type	Τύπος κυκλοφορίας δοκιμής
+Test size in GiB	Μέγεθος δοκιμής σε GiB
+The catalogues share an external identity.	Οι κατάλογοι μοιράζονται μια εξωτερική ταυτότητα.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Η επιλογή αντικαθιστά την κατάσταση παρακολούθησης κάθε επεισοδίου (τα ειδικά αλλάζουν μόνο από τις δύο επιλογές για ειδικά) και, στη συνέχεια, παρακολουθεί κάθε κύκλο που έχει επεισόδιο σε παρακολούθηση. Το «Κανένα» διακόπτει επίσης την παρακολούθηση της σειράς.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Το κύριο αρχείο και οι αντίστοιχοι υπότιτλοι επαναφέρονται στον φάκελο της ταινίας. Τα υπάρχοντα αρχεία δεν αντικαθίστανται ποτέ.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Ο φάκελος μετονομάζεται ή, σε άλλον δίσκο, αντιγράφεται και μετά αφαιρείται. Ο νέος φάκελος πρέπει να μην υπάρχει ή να είναι κενός.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Τα ευρετήρια που απάντησαν δεν επέστρεψαν κυκλοφορίες. Άλλες πηγές απέτυχαν· ελέγξτε τα σφάλματα παραπάνω και δοκιμάστε ξανά.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Αυτή η συνθήκη διατηρείται. Χρησιμοποιήστε την «Επεξεργασία JSON» για να αλλάξετε τα πεδία της· η «Δοκιμή μορφής» αναφέρει αν μπορεί να αξιολογηθεί.
+Title pattern of {}	Μοτίβο τίτλου του {}
+Title to add	Τίτλος προς προσθήκη
+Title to search for	Τίτλος προς αναζήτηση
+Title, group, quality or rejection reason…	Τίτλος, ομάδα, ποιότητα ή λόγος απόρριψης…
+Titles considered:	Τίτλοι που εξετάστηκαν:
+Toggle colour theme	Εναλλαγή θέματος χρωμάτων
+Toggle sort direction	Εναλλαγή κατεύθυνσης ταξινόμησης
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Δοκιμάστε ένα όνομα κυκλοφορίας σειράς, anime ή ταινίας πριν από την αποθήκευση. Αυτό ελέγχει τις συνθήκες της μορφής· οι βαθμολογίες προφίλ ποιότητας και η έγκριση λήψης είναι ξεχωριστά.
+Ungroup	Κατάργηση ομάδας
+Ungroup {}	Κατάργηση ομάδας {}
+Unknown value ({})	Άγνωστη τιμή ({})
+Unmapped folders	Μη αντιστοιχισμένοι φάκελοι
+Unmatched titles	Τίτλοι χωρίς αντιστοίχιση
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Διακοπή παρακολούθησης διαγραμμένων επεισοδίων (διαγραμμένα χειροκίνητα ή που λείπουν από τον δίσκο· οι αναβαθμίσεις δεν διακόπτουν ποτέ την παρακολούθηση)
+Unwatched	Μη προβεβλημένο
+Use global	Χρήση καθολικών
+Use global sizes for {}	Χρήση καθολικών μεγεθών για {}
+Valid days	Ημέρες ισχύος
+Value	Τιμή
+Values	Τιμές
+View	Προβολή
+Wanted lists	Λίστες ζητούμενων
+Watched	Προβεβλημένο
+Watched date	Ημερομηνία προβολής
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Όταν αυτή η επιλογή είναι απενεργοποιημένη, τα αρχεία παραμένουν στον δίσκο. Οι διαγραμμένοι φάκελοι μεταφέρονται στον κάδο ανακύκλωσης, αν έχει οριστεί.
+iCal feed address	Διεύθυνση ροής iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	που περιέχει)· οι εισαγόμενοι τίτλοι διατηρούν τον φάκελό τους, τα αρχεία τους σαρώνονται επιτόπου και, στη συνέχεια, εφαρμόζεται η επιλογή παρακολούθησης. Τίποτα δεν μετακινείται ούτε μετονομάζεται.
+{} Not renamed: {}	{} Δεν μετονομάστηκε: {}
+{} factor	Συντελεστής {}
+{} files imported. Review the results below.	Εισήχθησαν {} αρχεία. Ελέγξτε τα αποτελέσματα παρακάτω.
+{} imported, {} failed; see each folder.	{} εισήχθησαν, {} απέτυχαν· δείτε κάθε φάκελο.
+{} imported.	{} εισήχθησαν.
+{} matched · {} kept at current numbers · {} new episodes	{} αντιστοιχίστηκαν · {} κράτησαν τους τρέχοντες αριθμούς · {} νέα επεισόδια
+{} min	{} λεπτά
+{} of {} folders selected	Επιλέχθηκαν {} από {} φακέλους
+{} releases found, {} accepted, nothing grabbed.	Βρέθηκαν {} κυκλοφορίες, {} αποδεκτές, καμία λήψη.
+{} series and {} movies, {} files checked: {} issues.	{} σειρές και {} ταινίες, {} αρχεία ελέγχθηκαν: {} προβλήματα.
+{} series moved.	{} σειρές μετακινήθηκαν.
+{} series moved; not moved: {}	{} σειρές μετακινήθηκαν· δεν μετακινήθηκαν: {}
+{} series removed.	{} σειρές αφαιρέθηκαν.
+{} series removed; kept: {}	{} σειρές αφαιρέθηκαν· διατηρήθηκαν: {}
+{} size of {}	{} μέγεθος για {}
+{} size slider of {}	{} ρυθμιστικό μεγέθους για {}
+{} titles	{} τίτλοι
+{}: {} releases from {} indexer(s). {} responding.	{}: {} κυκλοφορίες από {} ευρετήριο(-α). {} απάντησαν.
+· API:	· API:
+· negated	· με άρνηση
+· required	· υποχρεωτική
+· {} ms · {} releases	· {} ms · {} κυκλοφορίες
+— MiB per minute	— MiB ανά λεπτό
+— in library	— στη βιβλιοθήκη
+→ current number	→ τρέχων αριθμός
+or	ή
+1 title	1 τίτλος

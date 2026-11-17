@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Scenos numeracija iš TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Scenos numeracija, išvesta iš TheXEM (nepatikrinta)
 Season {} (scene seasons {})	{} sezonas (scenos sezonai {})
 {} (scene {})	{} (scena {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Franšizės grupė, rasta pagal AniList arba MyAnimeList ryšius. Vėliau pridėti tos pačios franšizės kūriniai taip pat prie jos prisijungia. Pašalinti kūriniai atnaujinant į ją negrįžta.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Kokybė be perrašymo naudoja Nustatymai › Kokybė. Perrašyme tuščia reikšmė reiškia „be ribos“; didžiausia reikšmė nulis taip pat reiškia „be ribos“.
+Add a movie, or change the search and watched filter.	Pridėkite filmą arba pakeiskite paiešką ir peržiūrų filtrą.
+Add a root folder in Settings › Media management first.	Pirmiausia pridėkite šakninį aplanką skiltyje Nustatymai › Medijos valdymas.
+Add qualities to {}	Pridėti kokybes į {}
+All decisions	Visi sprendimai
+All seasons	Visi sezonai
+All selected flags must be present.	Turi būti visos pasirinktos vėliavėlės.
+All sources	Visi šaltiniai
+Allow {}	Leisti {}
+Also delete their folders and files (to the recycle bin when one is set)	Taip pat ištrinti jų aplankus ir failus (į šiukšlinę, jei ji nustatyta)
+Apply sources	Taikyti šaltinius
+As the catalogue says	Kaip nurodyta kataloge
+Auto tag name	Automatinės žymos pavadinimas
+Automatic match / keep current number	Automatinis susiejimas / palikti dabartinį numerį
+Automatic search for {}	Automatinė paieška: {}
+Below the root folder; use / for sub-folders.	Šakniniame aplanke; poaplankiams naudokite /.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Geriausia pirmiau. Norėdami pakeisti tvarką, vilkite rankenėles arba naudokite rodykles. Grupės viduje esančios kokybės laikomos lygiavertėmis.
+Bulk actions	Masiniai veiksmai
+Catalogue ID	Katalogo ID
+Catalogue changed.	Katalogas pakeistas.
+Catalogue match	Katalogo atitikmuo
+Change catalogue	Keisti katalogą
+Choose a movie…	Pasirinkite filmą…
+Choose a root folder…	Pasirinkite šakninį aplanką…
+Choose episodes for {}	Pasirinkite epizodus: {}
+Choose which episodes are monitored, as when adding the series	Pasirinkite, kurie epizodai stebimi, kaip pridedant serialą
+Choose which episodes of the selected series are monitored	Pasirinkite, kurie pasirinktų serialų epizodai stebimi
+Choose {}	Pasirinkti {}
+Clean library level	Bibliotekos valymo lygis
+Clean library tag	Bibliotekos valymo žyma
+Clear filters	Išvalyti filtrus
+Clear or adjust the filters to see more results.	Išvalykite arba pakoreguokite filtrus, kad matytumėte daugiau rezultatų.
+Codec of {}	Kodekas: {}
+Compression mode	Glaudinimo režimas
+Condition indexer flags	Sąlygos indeksuotojo vėliavėlės
+Condition language	Sąlygos kalba
+Condition name	Sąlygos pavadinimas
+Condition name {}	Sąlygos pavadinimas {}
+Condition regular expression {}	Sąlygos reguliarusis reiškinys {}
+Condition size {}	Sąlygos dydis {}
+Condition type	Sąlygos tipas
+Condition value	Sąlygos reikšmė
+Copy (keep the source)	Kopijuoti (palikti šaltinį)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Sukurkite grupę iš kokybės, tada nuvilkite į ją daugiau kokybių arba naudokite grupių parinkiklius. Riba keliauja kartu su kokybe į jos grupę; išgrupuojant naudojamas aukščiausias grupės narys.
+Current folder:	Dabartinis aplankas:
+Custom format name	Pasirinktinio formato pavadinimas
+Delete tag {}	Ištrinti žymą {}
+Delete the file of episode {}	Ištrinti epizodo {} failą
+Delete the movie folder and its files	Ištrinti filmo aplanką ir jo failus
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Ištrinti „{}“ ir atitinkančius subtitrus? Jie perkeliami į šiukšlinę, jei ji nustatyta.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Ištrinti „{}“? Jos serialai ir filmai lieka bibliotekoje ir atnaujinant automatiškai į ją negrįš.
+Detect from title	Nustatyti iš pavadinimo
+Disk scanned: {} {}	Diskas nuskaitytas: {} {}
+Dismiss	Atmesti
+Don't change	Nekeisti
+Don't import	Neimportuoti
+Done editing groups	Baigti redaguoti grupes
+Drag to reorder or move into a group	Vilkite, kad pakeistumėte tvarką arba perkeltumėte į grupę
+Drag {}	Vilkti {}
+Drop here to move out of a group or to the lowest preference	Numeskite čia, kad iškeltumėte iš grupės arba perkeltumėte į žemiausią pirmenybę
+Drop qualities here	Numeskite kokybes čia
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Kiekvienas serialas išlaiko savo aplanką šakniniame aplanke. Serialas, kurio naujas aplankas egzistuoja ir nėra tuščias, išlaiko dabartinį aplanką.
+Edit JSON	Redaguoti JSON
+Edit group	Redaguoti grupę
+Edit groups	Redaguoti grupes
+Enter a non-negative test size within the supported range.	Įveskite neneigiamą bandomąjį dydį palaikomame intervale.
+Enter a valid test size in GiB.	Įveskite tinkamą bandomąjį dydį GiB.
+Enter valid test indexer flags.	Įveskite tinkamas bandomąsias indeksuotojo vėliavėles.
+Episode matches	Epizodų atitikmenys
+Event type	Įvykio tipas
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Turi atitikti kiekvienas sąlygos tipas. To paties tipo viduje pakanka, kad atitiktų bet kuri sąlyga, o kiekviena privaloma sąlyga turi atitikti. „Neigti“ apverčia tinkamą sąlygą.
+Every folder of this root folder belongs to a title already.	Kiekvienas šio šakninio aplanko aplankas jau priklauso kuriam nors kūriniui.
+Exclude {}	Neįtraukti {}
+Exclusion catalogue	Išimties katalogas
+Exclusion id	Išimties ID
+Exclusion title	Išimties pavadinimas
+Factor for {}	Koeficientas: {}
+Feed tags	Srauto žymos
+File name (optional)	Failo pavadinimas (neprivaloma)
+Filter by monitoring	Filtruoti pagal stebėjimą
+Filter by watched state	Filtruoti pagal peržiūros būseną
+Filter release decisions	Filtruoti sprendimus dėl leidimų
+Filter releases	Filtruoti leidimus
+Find target title	Rasti tikslinį kūrinį
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Šakninio aplanko aplankai, kurių nenaudoja joks kūrinys. Kiekvienas susiejamas su katalogu pagal savo pavadinimą (arba pagal jame esančią žymą
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Nesusietiems leidimams palyginkite toliau pateiktą atpažintą pavadinimą ir epizodų numerius su svarstytais pavadinimais. Jei reikia, pridėkite alternatyvų pavadinimą arba pataisykite epizodų susiejimą bibliotekoje.
+Format does not match	Formatas neatitinka
+Format matches	Formatas atitinka
+Full season	Visas sezonas
+Grab it now instead of waiting for the delay	Paimti dabar, nelaukiant delsos
+Grab {}	Paimti {}
+Group	Grupė
+Group for {}	Grupė: {}
+Group name	Grupės pavadinimas
+Group {}	Grupė {}
+Guided editor	Vedlio redaktorius
+I confirm that the target catalogue entry is the same title.	Patvirtinu, kad tikslinis katalogo įrašas yra tas pats kūrinys.
+Import	Importuoti
+Import existing folders	Importuoti esamus aplankus
+Import mode	Importavimo režimas
+Import {}	Importuoti ({})
+Imported from movie folder	Importuota iš filmo aplanko
+Include in file names ({} token)	Įtraukti į failų pavadinimus (žetonas {})
+Include {}	Įtraukti {}
+Indexer flags (bitmask)	Indeksuotojo vėliavėlės (bitų kaukė)
+Jellyfin library	Jellyfin biblioteka
+Jellyfin user	Jellyfin naudotojas
+Jellyfin watched sync can update this status.	Jellyfin peržiūrų sinchronizacija gali atnaujinti šią būseną.
+Key name	Rakto pavadinimas
+Key permission	Rakto teisė
+Kind of {}	Rūšis: {}
+Label of {}	Etiketė: {}
+Language	Kalba
+Library import	Bibliotekos importas
+List exclusions	Sąrašų išimtys
+Loading sources…	Įkeliami šaltiniai…
+Main navigation	Pagrindinė navigacija
+Mark unwatched	Pažymėti kaip neperžiūrėtą
+Mark watched	Pažymėti kaip peržiūrėtą
+Match	Susieti
+Match any other language	Atitikti bet kurią kitą kalbą
+Match episode {}	Susieti epizodą {}
+Match for {}	Atitikmuo: {}
+Matching series	Atitinkantys serialai
+Matching subtitles follow the file's new name.	Atitinkantys subtitrai gauna naują failo pavadinimą.
+Maximum GiB (inclusive)	Didžiausia GiB (imtinai)
+Maximum size	Didžiausias dydis
+Maximum year	Didžiausi metai
+Minimum GiB (exclusive)	Mažiausia GiB (neimtinai)
+Minimum age	Mažiausias amžius
+Minimum level	Mažiausias lygis
+Minimum score increment for upgrades	Mažiausias balo padidėjimas atnaujinimams
+Minimum year	Mažiausi metai
+Monitor episode {}	Stebėti epizodą {}
+Monitor new seasons	Stebėti naujus sezonus
+Monitored filter	Stebėjimo filtras
+Monitoring	Stebėjimas
+Monitoring updated for {} series.	Stebėjimas atnaujintas serialams: {}.
+Monitoring — {} series	Stebėjimas — serialų: {}
+Monitoring…	Stebėjimas…
+Move folder	Perkelti aplanką
+Move the files	Perkelti failus
+Move the files to the new folder	Perkelti failus į naują aplanką
+Move the movie folder, or point the movie at another folder	Perkelkite filmo aplanką arba nukreipkite filmą į kitą aplanką
+Move the selected series into another root folder	Perkelkite pasirinktus serialus į kitą šakninį aplanką
+Move the series folder, or point the series at another folder	Perkelkite serialo aplanką arba nukreipkite serialą į kitą aplanką
+Move to root folder…	Perkelti į šakninį aplanką…
+Move {} series	Perkelti serialus ({})
+Movie bulk actions	Masiniai filmų veiksmai
+Movie file deleted	Filmo failas ištrintas
+Movie file renamed	Filmo failas pervadintas
+Movie file restored	Filmo failas atkurtas
+Movie for {}	Filmas: {}
+Movie history	Filmo istorija
+Movie import mode	Filmų importavimo režimas
+Movie removed, and its folder deleted or recycled.	Filmas pašalintas, o jo aplankas ištrintas arba perkeltas į šiukšlinę.
+Movie source folder	Filmų šaltinio aplankas
+Movies (Tanukarr)	Filmai (Tanukarr)
+Moving…	Perkeliama…
+Naming & file settings	Pavadinimų ir failų nustatymai
+Negate condition {}	Neigti sąlygą {}
+New condition type	Naujas sąlygos tipas
+New profile	Naujas profilis
+New root folder path	Naujo šakninio aplanko kelias
+New tag	Nauja žyma
+Next	Kitas
+No group	Be grupės
+No indexer responded successfully. Check the source errors above, then try again.	Nė vienas indeksuotojas sėkmingai neatsakė. Patikrinkite aukščiau pateiktas šaltinių klaidas ir bandykite dar kartą.
+No match for “{}”	Nėra atitikmens: „{}“
+No releases match these filters	Nė vienas leidimas neatitinka šių filtrų
+No root folder	Nėra šakninio aplanko
+Nothing to import	Nėra ką importuoti
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Pakeičiamas tik įrašytas aplankas; naudokite tai, kai failai jau yra ten, tada nuskaitykite diską.
+Open navigation	Atverti navigaciją
+Open on {}	Atverti {} svetainėje
+Organize files	Tvarkyti failus
+Organizing…	Tvarkoma…
+Original language	Originalo kalba
+Override for a mapped anime batch or a movie feature (single episode).	Perrašymas susietam anime paketui arba pagrindiniam filmo failui (vienas epizodas).
+Parsed title:	Atpažintas pavadinimas:
+Passkey	Passkey
+Place above {}	Dėti virš {}
+Place at lowest preference	Dėti į žemiausią pirmenybę
+Position of {}	Pozicija: {}
+Prefer {} less	Mažiau pirmenybės: {}
+Prefer {} more	Daugiau pirmenybės: {}
+Preferred catalogue	Pageidaujamas katalogas
+Preset title	Šablono pavadinimas
+Prevent import lists from adding it again	Neleisti importavimo sąrašams jo vėl pridėti
+Prevent import lists from adding them again	Neleisti importavimo sąrašams jų vėl pridėti
+Preview again to review your changes.	Peržiūrėkite dar kartą, kad patikrintumėte pakeitimus.
+Previous	Ankstesnis
+Progress of {}	Progresas: {}
+Proxy hostname	Tarpinio serverio vardas
+Proxy port	Tarpinio serverio prievadas
+Quality cutoff	Kokybės riba
+Quality profile for added shows	Kokybės profilis pridedamiems serialams
+Quality sizes	Kokybių dydžiai
+Quality: {} · Group: {} · Languages: {} · {}	Kokybė: {} · Grupė: {} · Kalbos: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Užklausų planuose yra atsarginių pakopų, kurios gali būti nevykdomos. Šaltiniams skirta 35 sekundžių; interaktyvioms paieškoms iš viso skirta 45 sekundės.
+RSS sync interval	RSS sinchronizacijos intervalas
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Tik skaitymas: tikrina serialų ir filmų aplankus, nesaugius failų įrašus ir diske trūkstamus failus.
+Reading the root folder…	Skaitomas šakninis aplankas…
+Regular expression	Reguliarusis reiškinys
+Rejected	Atmesta
+Release title	Leidimo pavadinimas
+Release type	Leidimo tipas
+Reload folders	Įkelti aplankus iš naujo
+Remove condition	Pašalinti sąlygą
+Remove condition {}	Pašalinti sąlygą {}
+Remove mapping	Pašalinti susiejimą
+Remove the selected series from Kitsunarr	Pašalinti pasirinktus serialus iš Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Pašalinti pasirinktus serialus ({}) ir jų epizodų įrašus iš Kitsunarr?
+Remove {}	Pašalinti {}
+Remove {} from the blocklist	Pašalinti {} iš blokuojamųjų sąrašo
+Remove {} series	Pašalinti serialus ({})
+Remove “{}” from Kitsunarr?	Pašalinti „{}“ iš Kitsunarr?
+Remove…	Pašalinti…
+Removing…	Šalinama…
+Rename every file of the selected series to the naming settings	Pervadinti visus pasirinktų serialų failus pagal pavadinimų nustatymus
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Pervadinti visus pasirinktų serialų ({}) failus pagal pavadinimų nustatymus? Pirmiausia patikrinkite pavadinimus serialo peržiūroje „Pervadinti failus“.
+Rename file	Pervadinti failą
+Renaming mode	Pervadinimo režimas
+Required condition {}	Privaloma sąlyga {}
+Rescan disk	Nuskaityti diską iš naujo
+Restore media type	Atkuriamos medijos tipas
+Result	Rezultatas
+Retention	Saugojimo laikas
+Review	Peržiūra
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Peržiūrėkite tikslinį kūrinį ir epizodų atitikmenis. Failai, keliai, stebėjimas ir istorija išsaugomi. Nesusieti epizodai išlaiko savo numerius tik tada, kai tie numeriai naujame kataloge laisvi.
+Root folder for added shows	Šakninis aplankas pridedamiems serialams
+Save path	Išsaugojimo kelias
+Saving…	Išsaugoma…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Nuskaitykite atsisiuntimų aplanką, peržiūrėkite kiekvieną filmą ir nukopijuokite arba perkelkite jo pagrindinį failą su atitinkančiais subtitrais į biblioteką. Esami pagrindiniai failai pakeičiami tik atnaujinimais.
+Search again	Ieškoti iš naujo
+Search catalogues	Ieškoti kataloguose
+Search diagnostics	Paieškos diagnostika
+Search for missing episodes once imported	Po importavimo ieškoti trūkstamų epizodų
+Search for {}	Ieškoti: {}
+Search incomplete	Paieška neužbaigta
+Search indexers for {}	Ieškoti indeksuotojuose: {}
+Search season packs for {}	Ieškoti sezonų paketų: {}
+Search sources	Ieškoti šaltiniuose
+Search sources unavailable	Paieškos šaltiniai nepasiekiami
+Search the library	Ieškoti bibliotekoje
+Search titles…	Ieškoti kūrinių…
+Search {}	Ieškoti {}
+Searching “{}”…	Ieškoma „{}“…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Sezonų aplankų pavadinimai pakeičia katalogo pavadinimus žetone {}. Palikite tuščią, kad liktų katalogo.
+Season {} title	Sezono {} pavadinimas
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Pasirinkite šaltinį aukščiau arba įjunkite interaktyvią paiešką indeksuotojo nustatymuose. Šaltinių žymos taip pat gali apriboti, kurių serialų ieškoma.
+Select all	Pasirinkti visus
+Select all movies on this page	Pasirinkti visus šio puslapio filmus
+Select every episode on this page	Pasirinkti kiekvieną šio puslapio epizodą
+Select {}	Pasirinkti {}
+Select {} S{}E{}	Pasirinkti {} S{}E{}
+Send now	Siųsti dabar
+Send {} now	Siųsti {} dabar
+Series & anime	Serialai ir anime
+Series history	Serialo istorija
+Series of {}	Serialas: {}
+Series title, e.g. Severance (or tvdb:12345)	Serialo pavadinimas, pvz., Severance (arba tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Rodoma {} iš {} leidimų. Filtrai taikomi šiems rezultatams be naujos paieškos.
+Size (GiB)	Dydis (GiB)
+Sort by	Rikiuoti pagal
+Specifications JSON	Specifikacijų JSON
+Stalled torrent timeout	Įstrigusio torento skirtasis laikas
+TMDB API key	TMDB API raktas
+Tag existing titles	Pažymėti esamus kūrinius
+Tag {}	Pažymėti {}
+Target catalogue	Tikslinis katalogas
+Target catalogue ID	Tikslinio katalogo ID
+Test a release	Testuoti leidimą
+Test details	Testo išsami informacija
+Test file name	Bandomasis failo pavadinimas
+Test format	Testuoti formatą
+Test indexer flags	Bandomosios indeksuotojo vėliavėlės
+Test language	Bandomoji kalba
+Test original language	Bandomoji originalo kalba
+Test quality	Bandomoji kokybė
+Test release title	Bandomasis leidimo pavadinimas
+Test release type	Bandomasis leidimo tipas
+Test size in GiB	Bandomasis dydis GiB
+The catalogues share an external identity.	Katalogai turi bendrą išorinį tapatumą.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Pasirinkimas pakeičia kiekvieno epizodo stebėjimo būseną (specialiuosius epizodus keičia tik du specialiųjų epizodų pasirinkimai), tada stebi kiekvieną sezoną, kuriame yra stebimas epizodas. „Nėra“ taip pat nutraukia serialo stebėjimą.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Pagrindinis failas ir atitinkantys subtitrai atkuriami į filmo aplanką. Esami failai niekada neperrašomi.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Aplankas pervadinamas arba, kitame diske, nukopijuojamas ir tada pašalinamas. Naujo aplanko neturi būti arba jis turi būti tuščias.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Atsakę indeksuotojai negrąžino jokių leidimų. Kiti šaltiniai nepavyko; patikrinkite aukščiau pateiktas klaidas ir bandykite dar kartą.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Ši sąlyga išsaugoma. Norėdami keisti jos laukus, naudokite „Redaguoti JSON“; „Testuoti formatą“ praneša, ar ją galima įvertinti.
+Title pattern of {}	Pavadinimo šablonas: {}
+Title to add	Pridedamas kūrinys
+Title to search for	Ieškomas kūrinys
+Title, group, quality or rejection reason…	Pavadinimas, grupė, kokybė arba atmetimo priežastis…
+Titles considered:	Svarstyti pavadinimai:
+Toggle colour theme	Perjungti spalvų temą
+Toggle sort direction	Perjungti rikiavimo kryptį
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Prieš išsaugodami išbandykite serialo, anime ar filmo leidimo pavadinimą. Tai tikrina formato sąlygas; kokybės profilių balai ir atsisiuntimo patvirtinimas vertinami atskirai.
+Ungroup	Išgrupuoti
+Ungroup {}	Išgrupuoti {}
+Unknown value ({})	Nežinoma reikšmė ({})
+Unmapped folders	Nesusieti aplankai
+Unmatched titles	Nesusieti pavadinimai
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Nebestebėti ištrintų epizodų (ištrintų rankiniu būdu arba dingusių iš disko; atnaujinimai niekada nenutraukia stebėjimo)
+Unwatched	Neperžiūrėta
+Use global	Naudoti bendrus
+Use global sizes for {}	Naudoti bendrus dydžius: {}
+Valid days	Galioja dienų
+Value	Reikšmė
+Values	Reikšmės
+View	Rodinys
+Wanted lists	Pageidaujamų sąrašai
+Watched	Peržiūrėta
+Watched date	Peržiūros data
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Kai ši parinktis išjungta, failai lieka diske. Ištrinti aplankai perkeliami į šiukšlinę, jei ji nustatyta.
+iCal feed address	iCal srauto adresas
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	); importuoti kūriniai išlaiko savo aplanką, jų failai nuskaitomi vietoje, tada pritaikomas stebėjimo pasirinkimas. Niekas neperkeliama ir nepervadinama.
+{} Not renamed: {}	{} Nepervadinta: {}
+{} factor	Koeficientas: {}
+{} files imported. Review the results below.	Importuota failų: {}. Peržiūrėkite rezultatus toliau.
+{} imported, {} failed; see each folder.	Importuota: {}, nepavyko: {}; žr. kiekvieną aplanką.
+{} imported.	Importuota: {}.
+{} matched · {} kept at current numbers · {} new episodes	Susieta: {} · palikta dabartiniais numeriais: {} · naujų epizodų: {}
+{} min	{} min.
+{} of {} folders selected	Pasirinkta aplankų: {} iš {}
+{} releases found, {} accepted, nothing grabbed.	Rasta leidimų: {}, priimta: {}, niekas nepaimta.
+{} series and {} movies, {} files checked: {} issues.	Serialų: {}, filmų: {}, patikrinta failų: {}; problemų: {}.
+{} series moved.	Perkelta serialų: {}.
+{} series moved; not moved: {}	Perkelta serialų: {}; neperkelta: {}
+{} series removed.	Pašalinta serialų: {}.
+{} series removed; kept: {}	Pašalinta serialų: {}; palikta: {}
+{} size of {}	{} dydis: {}
+{} size slider of {}	{} dydžio slankiklis: {}
+{} titles	{} kūriniai
+{}: {} releases from {} indexer(s). {} responding.	{}: leidimų: {}, indeksuotojų: {}. Atsakė: {}.
+· API:	· API:
+· negated	· neigiama
+· required	· privaloma
+· {} ms · {} releases	· {} ms · leidimų: {}
+— MiB per minute	— MiB per minutę
+— in library	— bibliotekoje
+→ current number	→ dabartinis numeris
+or	arba
+1 title	1 kūrinys

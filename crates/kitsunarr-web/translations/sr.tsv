@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Нумерисање сцене из TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Нумерисање сцене екстраполирано из TheXEM (непроверено)
 Season {} (scene seasons {})	Сезона {} (сезоне сцене {})
 {} (scene {})	{} (сцена {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Група франшизе пронађена из веза на AniList или MyAnimeList. Наслови из исте франшизе додати касније такође јој се придружују. Уклоњени наслови остају ван ње при освежавању.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Квалитет без замене користи Подешавања › Квалитет. Унутар замене празно значи неограничено; максимум нула такође значи неограничено.
+Add a movie, or change the search and watched filter.	Додајте филм или промените претрагу и филтер одгледаног.
+Add a root folder in Settings › Media management first.	Прво додајте коренску фасциклу у Подешавања › Управљање медијима.
+Add qualities to {}	Додај квалитете у {}
+All decisions	Све одлуке
+All seasons	Све сезоне
+All selected flags must be present.	Све изабране заставице морају бити присутне.
+All sources	Сви извори
+Allow {}	Дозволи {}
+Also delete their folders and files (to the recycle bin when one is set)	Обриши и њихове фасцикле и датотеке (у корпу за отпатке ако је подешена)
+Apply sources	Примени изворе
+As the catalogue says	Како каже каталог
+Auto tag name	Име аутоматске ознаке
+Automatic match / keep current number	Аутоматско упаривање / задржи тренутни број
+Automatic search for {}	Аутоматска претрага за {}
+Below the root folder; use / for sub-folders.	Испод коренске фасцикле; користите / за подфасцикле.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Најбоље прво. Превуците ручице или користите стрелице за промену редоследа. Квалитети унутар групе рангирају се једнако.
+Bulk actions	Групне радње
+Catalogue ID	ИД у каталогу
+Catalogue changed.	Каталог је промењен.
+Catalogue match	Подударање у каталогу
+Change catalogue	Промени каталог
+Choose a movie…	Изаберите филм…
+Choose a root folder…	Изаберите коренску фасциклу…
+Choose episodes for {}	Изаберите епизоде за {}
+Choose which episodes are monitored, as when adding the series	Изаберите које се епизоде прате, као при додавању серије
+Choose which episodes of the selected series are monitored	Изаберите које се епизоде изабраних серија прате
+Choose {}	Изабери {}
+Clean library level	Ниво за чишћење библиотеке
+Clean library tag	Ознака за чишћење библиотеке
+Clear filters	Очисти филтере
+Clear or adjust the filters to see more results.	Очистите или прилагодите филтере да бисте видели више резултата.
+Codec of {}	Кодек за {}
+Compression mode	Режим компресије
+Condition indexer flags	Заставице индексера у услову
+Condition language	Језик услова
+Condition name	Име услова
+Condition name {}	Име услова {}
+Condition regular expression {}	Регуларни израз услова {}
+Condition size {}	Величина услова {}
+Condition type	Тип услова
+Condition value	Вредност услова
+Copy (keep the source)	Копирај (задржи извор)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Направите групу од квалитета, затим превуците још квалитета у њу или користите бираче групе. Граница прати квалитет у његову групу; разгруписавање користи највиши члан групе.
+Current folder:	Тренутна фасцикла:
+Custom format name	Име прилагођеног формата
+Delete tag {}	Обриши ознаку {}
+Delete the file of episode {}	Обриши датотеку епизоде {}
+Delete the movie folder and its files	Обриши фасциклу филма и њене датотеке
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Обрисати „{}“ и одговарајуће титлове? Иду у корпу за отпатке ако је подешена.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Обрисати „{}“? Њене серије и филмови остају у библиотеци и неће јој се аутоматски поново придружити при освежавању.
+Detect from title	Препознај из наслова
+Disk scanned: {} {}	Диск скениран: {} {}
+Dismiss	Одбаци
+Don't change	Не мењај
+Don't import	Не увози
+Done editing groups	Заврши уређивање група
+Drag to reorder or move into a group	Превуците да промените редослед или преместите у групу
+Drag {}	Превуци {}
+Drop here to move out of a group or to the lowest preference	Испустите овде да уклоните из групе или ставите на најнижу предност
+Drop qualities here	Испустите квалитете овде
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Свака серија задржава своју фасциклу испод коренске фасцикле. Серија чија нова фасцикла постоји и није празна задржава тренутну фасциклу.
+Edit JSON	Уреди JSON
+Edit group	Уреди групу
+Edit groups	Уреди групе
+Enter a non-negative test size within the supported range.	Унесите ненегативну тест величину у подржаном опсегу.
+Enter a valid test size in GiB.	Унесите исправну тест величину у GiB.
+Enter valid test indexer flags.	Унесите исправне тест заставице индексера.
+Episode matches	Подударања епизода
+Event type	Тип догађаја
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Сваки тип услова мора да се подудара. Унутар једног типа довољно је да се подудара било који услов, а сваки обавезни услов мора да се подудара. Негирај обрће исправан услов.
+Every folder of this root folder belongs to a title already.	Свака фасцикла ове коренске фасцикле већ припада неком наслову.
+Exclude {}	Искључи {}
+Exclusion catalogue	Каталог изузетка
+Exclusion id	ИД изузетка
+Exclusion title	Наслов изузетка
+Factor for {}	Фактор за {}
+Feed tags	Ознаке фида
+File name (optional)	Име датотеке (опционо)
+Filter by monitoring	Филтрирај по праћењу
+Filter by watched state	Филтрирај по стању гледања
+Filter release decisions	Филтрирај одлуке о издањима
+Filter releases	Филтрирај издања
+Find target title	Пронађи циљни наслов
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Фасцикле коренске фасцикле које ниједан наслов не користи. Свака се упарује са каталогом по свом имену (или по ознаци
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	За неупарена издања проверите рашчлањени наслов и бројеве епизода испод у односу на размотрене наслове. По потреби додајте алтернативни наслов или исправите мапирање епизода у библиотеци.
+Format does not match	Формат се не подудара
+Format matches	Формат се подудара
+Full season	Цела сезона
+Grab it now instead of waiting for the delay	Преузми одмах уместо чекања на кашњење
+Grab {}	Преузми {}
+Group	Група
+Group for {}	Група за {}
+Group name	Име групе
+Group {}	Група {}
+Guided editor	Вођени уређивач
+I confirm that the target catalogue entry is the same title.	Потврђујем да је циљни унос у каталогу исти наслов.
+Import	Увези
+Import existing folders	Увези постојеће фасцикле
+Import mode	Режим увоза
+Import {}	Увези {}
+Imported from movie folder	Увезено из фасцикле филма
+Include in file names ({} token)	Укључи у имена датотека (токен {})
+Include {}	Укључи {}
+Indexer flags (bitmask)	Заставице индексера (битмаска)
+Jellyfin library	Jellyfin библиотека
+Jellyfin user	Jellyfin корисник
+Jellyfin watched sync can update this status.	Jellyfin синхронизација одгледаног може да ажурира овај статус.
+Key name	Име кључа
+Key permission	Дозвола кључа
+Kind of {}	Врста за {}
+Label of {}	Натпис за {}
+Language	Језик
+Library import	Увоз библиотеке
+List exclusions	Изузеци листа
+Loading sources…	Учитавање извора…
+Main navigation	Главна навигација
+Mark unwatched	Означи као неодгледано
+Mark watched	Означи као одгледано
+Match	Упари
+Match any other language	Подудари било који други језик
+Match episode {}	Упари епизоду {}
+Match for {}	Подударање за {}
+Matching series	Одговарајуће серије
+Matching subtitles follow the file's new name.	Одговарајући титлови прате ново име датотеке.
+Maximum GiB (inclusive)	Максимум GiB (укључиво)
+Maximum size	Максимална величина
+Maximum year	Максимална година
+Minimum GiB (exclusive)	Минимум GiB (искључиво)
+Minimum age	Минимална старост
+Minimum level	Минимални ниво
+Minimum score increment for upgrades	Минимално повећање оцене за надоградње
+Minimum year	Минимална година
+Monitor episode {}	Прати епизоду {}
+Monitor new seasons	Прати нове сезоне
+Monitored filter	Филтер праћења
+Monitoring	Праћење
+Monitoring updated for {} series.	Праћење ажурирано за {} серија.
+Monitoring — {} series	Праћење — {} серија
+Monitoring…	Праћење…
+Move folder	Премести фасциклу
+Move the files	Премести датотеке
+Move the files to the new folder	Премести датотеке у нову фасциклу
+Move the movie folder, or point the movie at another folder	Преместите фасциклу филма или усмерите филм на другу фасциклу
+Move the selected series into another root folder	Преместите изабране серије у другу коренску фасциклу
+Move the series folder, or point the series at another folder	Преместите фасциклу серије или усмерите серију на другу фасциклу
+Move to root folder…	Премести у коренску фасциклу…
+Move {} series	Премести серије ({})
+Movie bulk actions	Групне радње за филмове
+Movie file deleted	Датотека филма обрисана
+Movie file renamed	Датотека филма преименована
+Movie file restored	Датотека филма враћена
+Movie for {}	Филм за {}
+Movie history	Историја филма
+Movie import mode	Режим увоза филмова
+Movie removed, and its folder deleted or recycled.	Филм је уклоњен, а његова фасцикла обрисана или премештена у корпу за отпатке.
+Movie source folder	Изворна фасцикла филмова
+Movies (Tanukarr)	Филмови (Tanukarr)
+Moving…	Премештање…
+Naming & file settings	Именовање и подешавања датотека
+Negate condition {}	Негирај услов {}
+New condition type	Нови тип услова
+New profile	Нови профил
+New root folder path	Путања нове коренске фасцикле
+New tag	Нова ознака
+Next	Следеће
+No group	Без групе
+No indexer responded successfully. Check the source errors above, then try again.	Ниједан индексер није успешно одговорио. Проверите грешке извора изнад, па покушајте поново.
+No match for “{}”	Нема подударања за „{}“
+No releases match these filters	Ниједно издање не одговара овим филтерима
+No root folder	Нема коренске фасцикле
+Nothing to import	Нема шта да се увезе
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Мења се само забележена фасцикла; користите ово када су датотеке већ тамо, па скенирајте диск.
+Open navigation	Отвори навигацију
+Open on {}	Отвори на {}
+Organize files	Организуј датотеке
+Organizing…	Организовање…
+Original language	Оригинални језик
+Override for a mapped anime batch or a movie feature (single episode).	Замена за мапирани аниме пакет или главни део филма (једна епизода).
+Parsed title:	Рашчлањени наслов:
+Passkey	Passkey
+Place above {}	Стави изнад {}
+Place at lowest preference	Стави на најнижу предност
+Position of {}	Позиција за {}
+Prefer {} less	Мање преферирај {}
+Prefer {} more	Више преферирај {}
+Preferred catalogue	Жељени каталог
+Preset title	Наслов поставке
+Prevent import lists from adding it again	Спречи да га листе за увоз поново додају
+Prevent import lists from adding them again	Спречи да их листе за увоз поново додају
+Preview again to review your changes.	Поново прегледајте да бисте проверили измене.
+Previous	Претходно
+Progress of {}	Напредак за {}
+Proxy hostname	Име хоста проксија
+Proxy port	Порт проксија
+Quality cutoff	Граница квалитета
+Quality profile for added shows	Профил квалитета за додате серије
+Quality sizes	Величине квалитета
+Quality: {} · Group: {} · Languages: {} · {}	Квалитет: {} · Група: {} · Језици: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Планови упита укључују резервне нивое који можда неће бити покренути. Извори имају буџет од 35 секунди; интерактивне претраге имају укупан буџет од 45 секунди.
+RSS sync interval	Интервал RSS синхронизације
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Само читање: проверава фасцикле серија и филмова, небезбедне записе датотека и датотеке којих нема на диску.
+Reading the root folder…	Читање коренске фасцикле…
+Regular expression	Регуларни израз
+Rejected	Одбачено
+Release title	Наслов издања
+Release type	Тип издања
+Reload folders	Поново учитај фасцикле
+Remove condition	Уклони услов
+Remove condition {}	Уклони услов {}
+Remove mapping	Уклони мапирање
+Remove the selected series from Kitsunarr	Уклоните изабране серије из програма Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Уклонити {} изабраних серија и њихове записе епизода из програма Kitsunarr?
+Remove {}	Уклони {}
+Remove {} from the blocklist	Уклони {} са листе блокираних
+Remove {} series	Уклони серије ({})
+Remove “{}” from Kitsunarr?	Уклонити „{}“ из програма Kitsunarr?
+Remove…	Уклони…
+Removing…	Уклањање…
+Rename every file of the selected series to the naming settings	Преименујте све датотеке изабраних серија према подешавањима именовања
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Преименовати све датотеке {} изабраних серија према подешавањима именовања? Најпре проверите имена у прегледу „Преименуј датотеке“ серије.
+Rename file	Преименуј датотеку
+Renaming mode	Режим преименовања
+Required condition {}	Обавезни услов {}
+Rescan disk	Поново скенирај диск
+Restore media type	Тип медија за враћање
+Result	Резултат
+Retention	Задржавање
+Review	Преглед
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Прегледајте циљни наслов и подударања епизода. Датотеке, путање, праћење и историја се задржавају. Неупарене епизоде задржавају своје бројеве само ако су ти бројеви слободни у новом каталогу.
+Root folder for added shows	Коренска фасцикла за додате серије
+Save path	Путања за чување
+Saving…	Чување…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Скенирајте фасциклу за преузимања, прегледајте сваки филм и копирајте или преместите његов главни део са одговарајућим титловима у библиотеку. Постојећи главни делови замењују се само надоградњама.
+Search again	Тражи поново
+Search catalogues	Претражи каталоге
+Search diagnostics	Дијагностика претраге
+Search for missing episodes once imported	Тражи епизоде које недостају након увоза
+Search for {}	Тражи {}
+Search incomplete	Претрага није довршена
+Search indexers for {}	Претражи индексере за {}
+Search season packs for {}	Тражи пакете сезона за {}
+Search sources	Претражи изворе
+Search sources unavailable	Извори претраге нису доступни
+Search the library	Претражи библиотеку
+Search titles…	Претражи наслове…
+Search {}	Претражи {}
+Searching “{}”…	Претраживање „{}“…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Наслови фасцикли сезона замењују наслове из каталога у {}. Оставите празно да бисте задржали наслове из каталога.
+Season {} title	Наслов сезоне {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Изаберите извор изнад или омогућите интерактивну претрагу у подешавањима индексера. Ознаке извора могу и да ограниче које се серије претражују.
+Select all	Изабери све
+Select all movies on this page	Изабери све филмове на овој страници
+Select every episode on this page	Изабери сваку епизоду на овој страници
+Select {}	Изабери {}
+Select {} S{}E{}	Изабери {} S{}E{}
+Send now	Пошаљи сада
+Send {} now	Пошаљи {} сада
+Series & anime	Серије и аниме
+Series history	Историја серије
+Series of {}	Серија за {}
+Series title, e.g. Severance (or tvdb:12345)	Наслов серије, нпр. Severance (или tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Приказано {} од {} издања. Филтери се примењују на ове резултате без нове претраге.
+Size (GiB)	Величина (GiB)
+Sort by	Сортирај по
+Specifications JSON	Спецификације у JSON-у
+Stalled torrent timeout	Време чекања за заглављени торент
+TMDB API key	TMDB API кључ
+Tag existing titles	Означи постојеће наслове
+Tag {}	Означи {}
+Target catalogue	Циљни каталог
+Target catalogue ID	ИД у циљном каталогу
+Test a release	Тестирај издање
+Test details	Детаљи теста
+Test file name	Тест име датотеке
+Test format	Тестирај формат
+Test indexer flags	Тест заставице индексера
+Test language	Тест језик
+Test original language	Тест оригинални језик
+Test quality	Тест квалитет
+Test release title	Тест наслов издања
+Test release type	Тест тип издања
+Test size in GiB	Тест величина у GiB
+The catalogues share an external identity.	Каталози деле спољни идентитет.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Избор замењује стање праћења сваке епизоде (специјале мењају само два избора за специјале), а затим прати сваку сезону која има праћену епизоду. „Ништа“ такође престаје да прати серију.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Главни део и одговарајући титлови враћају се у фасциклу филма. Постојеће датотеке се никада не преписују.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Фасцикла се преименује, или копира па уклони на другом диску. Нова фасцикла мора да не постоји или да буде празна.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Индексери који су одговорили нису вратили ниједно издање. Други извори нису успели; проверите грешке изнад и покушајте поново.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Овај услов је сачуван. Користите „Уреди JSON“ да промените његова поља; „Тестирај формат“ јавља да ли може да се процени.
+Title pattern of {}	Образац наслова за {}
+Title to add	Наслов за додавање
+Title to search for	Наслов за претрагу
+Title, group, quality or rejection reason…	Наслов, група, квалитет или разлог одбацивања…
+Titles considered:	Размотрени наслови:
+Toggle colour theme	Промени тему боја
+Toggle sort direction	Промени смер сортирања
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Испробајте назив ТВ, аниме или филмског издања пре чувања. Ово проверава услове формата; оцене профила квалитета и одобрење преузимања су засебни.
+Ungroup	Разгрупиши
+Ungroup {}	Разгрупиши {}
+Unknown value ({})	Непозната вредност ({})
+Unmapped folders	Немапиране фасцикле
+Unmatched titles	Неупарени наслови
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Престани да пратиш обрисане епизоде (обрисане ручно или нестале са диска; надоградње никада не укидају праћење)
+Unwatched	Неодгледано
+Use global	Користи глобално
+Use global sizes for {}	Користи глобалне величине за {}
+Valid days	Важи дана
+Value	Вредност
+Values	Вредности
+View	Приказ
+Wanted lists	Листе траженог
+Watched	Одгледано
+Watched date	Датум гледања
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Када је ова опција искључена, датотеке остају на диску. Обрисане фасцикле иду у корпу за отпатке ако је подешена.
+iCal feed address	Адреса iCal фида
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	у њему); увезени наслови задржавају своју фасциклу, њихове датотеке се скенирају на месту, а затим се примењује избор праћења. Ништа се не премешта нити преименује.
+{} Not renamed: {}	{} Није преименовано: {}
+{} factor	Фактор за {}
+{} files imported. Review the results below.	Увезено датотека: {}. Прегледајте резултате испод.
+{} imported, {} failed; see each folder.	Увезено: {}, неуспело: {}; погледајте сваку фасциклу.
+{} imported.	Увезено: {}.
+{} matched · {} kept at current numbers · {} new episodes	Упарено: {} · задржано на тренутним бројевима: {} · нових епизода: {}
+{} min	{} мин
+{} of {} folders selected	Изабрано {} од {} фасцикли
+{} releases found, {} accepted, nothing grabbed.	Пронађено издања: {}, прихваћено: {}, ништа није преузето.
+{} series and {} movies, {} files checked: {} issues.	Проверено серија: {}, филмова: {}, датотека: {}; проблема: {}.
+{} series moved.	Премештено серија: {}.
+{} series moved; not moved: {}	Премештено серија: {}; није премештено: {}
+{} series removed.	Уклоњено серија: {}.
+{} series removed; kept: {}	Уклоњено серија: {}; задржано: {}
+{} size of {}	{} величина за {}
+{} size slider of {}	{} клизач величине за {}
+{} titles	{} наслова
+{}: {} releases from {} indexer(s). {} responding.	{}: издања: {} са индексера: {}. Одговорило: {}.
+· API:	· API:
+· negated	· негирано
+· required	· обавезно
+· {} ms · {} releases	· {} ms · издања: {}
+— MiB per minute	— MiB по минуту
+— in library	— у библиотеци
+→ current number	→ тренутни број
+or	или
+1 title	1 наслов

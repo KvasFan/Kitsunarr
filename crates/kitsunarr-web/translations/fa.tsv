@@ -966,3 +966,347 @@ Scene numbering from TheXEM	شماره‌گذاری سین از TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	شماره‌گذاری سین برون‌یابی‌شده از TheXEM (تأییدنشده)
 Season {} (scene seasons {})	فصل {} (فصل‌های سین {})
 {} (scene {})	{} (سین {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	یک گروه فرنچایز که از روابط AniList یا MyAnimeList یافت شده است. عنوان‌هایی که بعداً از همان فرنچایز اضافه شوند نیز به آن می‌پیوندند. عنوان‌های حذف‌شده هنگام تازه‌سازی بیرون می‌مانند.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	کیفیتی که بازنویسی ندارد از تنظیمات › کیفیت استفاده می‌کند. در یک بازنویسی، خالی یعنی نامحدود؛ حداکثر صفر نیز یعنی نامحدود.
+Add a movie, or change the search and watched filter.	یک فیلم اضافه کنید، یا جستجو و فیلتر دیده‌شده را تغییر دهید.
+Add a root folder in Settings › Media management first.	ابتدا در تنظیمات › مدیریت رسانه یک پوشه ریشه اضافه کنید.
+Add qualities to {}	افزودن کیفیت‌ها به {}
+All decisions	همه تصمیم‌ها
+All seasons	همه فصل‌ها
+All selected flags must be present.	همه پرچم‌های انتخاب‌شده باید وجود داشته باشند.
+All sources	همه منابع
+Allow {}	مجاز کردن {}
+Also delete their folders and files (to the recycle bin when one is set)	پوشه‌ها و فایل‌هایشان نیز حذف شوند (در صورت تنظیم سطل بازیافت، به آن منتقل می‌شوند)
+Apply sources	اعمال منابع
+As the catalogue says	همان‌طور که کاتالوگ می‌گوید
+Auto tag name	نام برچسب خودکار
+Automatic match / keep current number	تطبیق خودکار / حفظ شماره فعلی
+Automatic search for {}	جستجوی خودکار برای {}
+Below the root folder; use / for sub-folders.	زیر پوشه ریشه؛ برای زیرپوشه‌ها از / استفاده کنید.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	بهترین در ابتدا. برای تغییر ترتیب، دستگیره‌ها را بکشید یا از پیکان‌ها استفاده کنید. کیفیت‌های داخل یک گروه رتبه برابر دارند.
+Bulk actions	عملیات گروهی
+Catalogue ID	شناسه کاتالوگ
+Catalogue changed.	کاتالوگ تغییر کرد.
+Catalogue match	تطبیق کاتالوگ
+Change catalogue	تغییر کاتالوگ
+Choose a movie…	انتخاب فیلم…
+Choose a root folder…	انتخاب پوشه ریشه…
+Choose episodes for {}	انتخاب قسمت‌ها برای {}
+Choose which episodes are monitored, as when adding the series	انتخاب قسمت‌های پایش‌شده، مانند هنگام افزودن سریال
+Choose which episodes of the selected series are monitored	انتخاب قسمت‌های پایش‌شده سریال‌های انتخاب‌شده
+Choose {}	انتخاب {}
+Clean library level	سطح پاک‌سازی کتابخانه
+Clean library tag	برچسب پاک‌سازی کتابخانه
+Clear filters	پاک کردن فیلترها
+Clear or adjust the filters to see more results.	برای دیدن نتایج بیشتر، فیلترها را پاک یا تنظیم کنید.
+Codec of {}	کدک {}
+Compression mode	حالت فشرده‌سازی
+Condition indexer flags	پرچم‌های ایندکسر شرط
+Condition language	زبان شرط
+Condition name	نام شرط
+Condition name {}	نام شرط {}
+Condition regular expression {}	عبارت باقاعده شرط {}
+Condition size {}	حجم شرط {}
+Condition type	نوع شرط
+Condition value	مقدار شرط
+Copy (keep the source)	کپی (نگه‌داشتن منبع)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	از یک کیفیت گروه بسازید، سپس کیفیت‌های بیشتری را به داخل آن بکشید یا از انتخابگرهای «گروه» استفاده کنید. حد نهایی همراه کیفیت به گروهش می‌رود؛ با لغو گروه‌بندی، بالاترین عضو گروه استفاده می‌شود.
+Current folder:	پوشه فعلی:
+Custom format name	نام قالب سفارشی
+Delete tag {}	حذف برچسب {}
+Delete the file of episode {}	حذف فایل قسمت {}
+Delete the movie folder and its files	حذف پوشه فیلم و فایل‌های آن
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	«{}» و زیرنویس‌های منطبق با آن حذف شوند؟ در صورت تنظیم سطل بازیافت، به آن منتقل می‌شوند.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	«{}» حذف شود؟ سریال‌ها و فیلم‌های آن در کتابخانه می‌مانند و هنگام تازه‌سازی به‌طور خودکار دوباره به آن نمی‌پیوندند.
+Detect from title	تشخیص از عنوان
+Disk scanned: {} {}	دیسک اسکن شد: {} {}
+Dismiss	رد کردن
+Don't change	تغییر نده
+Don't import	وارد نکن
+Done editing groups	پایان ویرایش گروه‌ها
+Drag to reorder or move into a group	برای تغییر ترتیب یا انتقال به یک گروه بکشید
+Drag {}	کشیدن {}
+Drop here to move out of a group or to the lowest preference	برای خارج کردن از گروه یا انتقال به کمترین اولویت، اینجا رها کنید
+Drop qualities here	کیفیت‌ها را اینجا رها کنید
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	هر سریال پوشه خود را زیر پوشه ریشه نگه می‌دارد. سریالی که پوشه جدیدش وجود دارد و خالی نیست، پوشه فعلی خود را نگه می‌دارد.
+Edit JSON	ویرایش JSON
+Edit group	ویرایش گروه
+Edit groups	ویرایش گروه‌ها
+Enter a non-negative test size within the supported range.	یک حجم آزمایشی غیرمنفی در محدوده پشتیبانی‌شده وارد کنید.
+Enter a valid test size in GiB.	یک حجم آزمایشی معتبر به GiB وارد کنید.
+Enter valid test indexer flags.	پرچم‌های ایندکسر آزمایشی معتبر وارد کنید.
+Episode matches	تطبیق قسمت‌ها
+Event type	نوع رویداد
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	هر نوع شرط باید منطبق باشد. در یک نوع، هر شرطی می‌تواند منطبق باشد و هر شرط الزامی باید منطبق باشد. «نقیض» یک شرط معتبر را برعکس می‌کند.
+Every folder of this root folder belongs to a title already.	همه پوشه‌های این پوشه ریشه از قبل به یک عنوان تعلق دارند.
+Exclude {}	مستثنا کردن {}
+Exclusion catalogue	کاتالوگ استثنا
+Exclusion id	شناسه استثنا
+Exclusion title	عنوان استثنا
+Factor for {}	ضریب برای {}
+Feed tags	برچسب‌های فید
+File name (optional)	نام فایل (اختیاری)
+Filter by monitoring	فیلتر بر اساس پایش
+Filter by watched state	فیلتر بر اساس وضعیت دیده‌شدن
+Filter release decisions	فیلتر تصمیم‌های ریلیز
+Filter releases	فیلتر ریلیزها
+Find target title	یافتن عنوان مقصد
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	پوشه‌هایی از یک پوشه ریشه که هیچ عنوانی از آن‌ها استفاده نمی‌کند. هر کدام بر اساس نامش (یا برچسب
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	برای ریلیزهای منطبق‌نشده، عنوان تجزیه‌شده و شماره قسمت‌های زیر را با عنوان‌های بررسی‌شده مقایسه کنید. در صورت نیاز، یک عنوان جایگزین اضافه کنید یا نگاشت قسمت‌ها را در کتابخانه اصلاح کنید.
+Format does not match	قالب منطبق نیست
+Format matches	قالب منطبق است
+Full season	فصل کامل
+Grab it now instead of waiting for the delay	همین حالا دریافت شود به‌جای انتظار برای تأخیر
+Grab {}	دریافت {}
+Group	گروه
+Group for {}	گروه برای {}
+Group name	نام گروه
+Group {}	گروه {}
+Guided editor	ویرایشگر راهنما
+I confirm that the target catalogue entry is the same title.	تأیید می‌کنم که ورودی کاتالوگ مقصد همان عنوان است.
+Import	وارد کردن
+Import existing folders	وارد کردن پوشه‌های موجود
+Import mode	حالت وارد کردن
+Import {}	وارد کردن {}
+Imported from movie folder	واردشده از پوشه فیلم
+Include in file names ({} token)	درج در نام فایل‌ها (توکن {})
+Include {}	شامل کردن {}
+Indexer flags (bitmask)	پرچم‌های ایندکسر (بیت‌ماسک)
+Jellyfin library	کتابخانه Jellyfin
+Jellyfin user	کاربر Jellyfin
+Jellyfin watched sync can update this status.	همگام‌سازی دیده‌شده‌های Jellyfin می‌تواند این وضعیت را به‌روز کند.
+Key name	نام کلید
+Key permission	مجوز کلید
+Kind of {}	نوع {}
+Label of {}	لیبل {}
+Language	زبان
+Library import	وارد کردن کتابخانه
+List exclusions	استثناهای فهرست
+Loading sources…	در حال بارگیری منابع…
+Main navigation	ناوبری اصلی
+Mark unwatched	علامت‌گذاری به‌عنوان دیده‌نشده
+Mark watched	علامت‌گذاری به‌عنوان دیده‌شده
+Match	تطبیق
+Match any other language	تطبیق با هر زبان دیگر
+Match episode {}	تطبیق قسمت {}
+Match for {}	تطبیق برای {}
+Matching series	سریال‌های منطبق
+Matching subtitles follow the file's new name.	زیرنویس‌های منطبق از نام جدید فایل پیروی می‌کنند.
+Maximum GiB (inclusive)	حداکثر GiB (شامل)
+Maximum size	حداکثر حجم
+Maximum year	حداکثر سال
+Minimum GiB (exclusive)	حداقل GiB (ناشامل)
+Minimum age	حداقل سن
+Minimum level	حداقل سطح
+Minimum score increment for upgrades	حداقل افزایش امتیاز برای ارتقا
+Minimum year	حداقل سال
+Monitor episode {}	پایش قسمت {}
+Monitor new seasons	پایش فصل‌های جدید
+Monitored filter	فیلتر پایش
+Monitoring	پایش
+Monitoring updated for {} series.	پایش برای {} سریال به‌روز شد.
+Monitoring — {} series	پایش — {} سریال
+Monitoring…	در حال پایش…
+Move folder	جابه‌جایی پوشه
+Move the files	جابه‌جایی فایل‌ها
+Move the files to the new folder	جابه‌جایی فایل‌ها به پوشه جدید
+Move the movie folder, or point the movie at another folder	پوشه فیلم را جابه‌جا کنید، یا فیلم را به پوشه دیگری ارجاع دهید
+Move the selected series into another root folder	جابه‌جایی سریال‌های انتخاب‌شده به پوشه ریشه دیگر
+Move the series folder, or point the series at another folder	پوشه سریال را جابه‌جا کنید، یا سریال را به پوشه دیگری ارجاع دهید
+Move to root folder…	جابه‌جایی به پوشه ریشه…
+Move {} series	جابه‌جایی {} سریال
+Movie bulk actions	عملیات گروهی فیلم‌ها
+Movie file deleted	فایل فیلم حذف شد
+Movie file renamed	فایل فیلم تغییر نام یافت
+Movie file restored	فایل فیلم بازیابی شد
+Movie for {}	فیلم برای {}
+Movie history	تاریخچه فیلم
+Movie import mode	حالت وارد کردن فیلم
+Movie removed, and its folder deleted or recycled.	فیلم حذف شد و پوشه آن پاک یا به سطل بازیافت منتقل شد.
+Movie source folder	پوشه منبع فیلم
+Movies (Tanukarr)	فیلم‌ها (Tanukarr)
+Moving…	در حال جابه‌جایی…
+Naming & file settings	نام‌گذاری و تنظیمات فایل
+Negate condition {}	نقیض شرط {}
+New condition type	نوع شرط جدید
+New profile	پروفایل جدید
+New root folder path	مسیر پوشه ریشه جدید
+New tag	برچسب جدید
+Next	بعدی
+No group	بدون گروه
+No indexer responded successfully. Check the source errors above, then try again.	هیچ ایندکسری با موفقیت پاسخ نداد. خطاهای منابع در بالا را بررسی کنید، سپس دوباره امتحان کنید.
+No match for “{}”	موردی برای «{}» یافت نشد
+No releases match these filters	هیچ ریلیزی با این فیلترها منطبق نیست
+No root folder	بدون پوشه ریشه
+Nothing to import	چیزی برای وارد کردن وجود ندارد
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	فقط پوشه ثبت‌شده تغییر می‌کند؛ وقتی فایل‌ها از قبل آنجا هستند از این استفاده کنید، سپس دیسک را اسکن کنید.
+Open navigation	باز کردن ناوبری
+Open on {}	باز کردن در {}
+Organize files	سازمان‌دهی فایل‌ها
+Organizing…	در حال سازمان‌دهی…
+Original language	زبان اصلی
+Override for a mapped anime batch or a movie feature (single episode).	بازنویسی برای یک بسته انیمه نگاشت‌شده یا فایل اصلی فیلم (تک‌قسمت).
+Parsed title:	عنوان تجزیه‌شده:
+Passkey	کلید عبور (Passkey)
+Place above {}	قرار دادن بالای {}
+Place at lowest preference	قرار دادن در کمترین اولویت
+Position of {}	موقعیت {}
+Prefer {} less	ترجیح کمتر {}
+Prefer {} more	ترجیح بیشتر {}
+Preferred catalogue	کاتالوگ ترجیحی
+Preset title	عنوان پیش‌تنظیم
+Prevent import lists from adding it again	جلوگیری از افزودن دوباره آن توسط فهرست‌های واردات
+Prevent import lists from adding them again	جلوگیری از افزودن دوباره آن‌ها توسط فهرست‌های واردات
+Preview again to review your changes.	برای بازبینی تغییرات، دوباره پیش‌نمایش بگیرید.
+Previous	قبلی
+Progress of {}	پیشرفت {}
+Proxy hostname	نام میزبان پروکسی
+Proxy port	پورت پروکسی
+Quality cutoff	حد نهایی کیفیت
+Quality profile for added shows	پروفایل کیفیت برای سریال‌های افزوده‌شده
+Quality sizes	حجم‌های کیفیت
+Quality: {} · Group: {} · Languages: {} · {}	کیفیت: {} · گروه: {} · زبان‌ها: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	برنامه‌های پرس‌وجو شامل سطوح جایگزینی هستند که ممکن است اجرا نشوند. منابع 35 ثانیه زمان دارند؛ جستجوهای تعاملی در مجموع 45 ثانیه زمان دارند.
+RSS sync interval	فاصله همگام‌سازی RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	فقط خواندنی: پوشه‌های سریال و فیلم، رکوردهای فایل ناامن و فایل‌های ناموجود روی دیسک را بررسی می‌کند.
+Reading the root folder…	در حال خواندن پوشه ریشه…
+Regular expression	عبارت باقاعده
+Rejected	ردشده
+Release title	عنوان ریلیز
+Release type	نوع ریلیز
+Reload folders	بارگیری مجدد پوشه‌ها
+Remove condition	حذف شرط
+Remove condition {}	حذف شرط {}
+Remove mapping	حذف نگاشت
+Remove the selected series from Kitsunarr	حذف سریال‌های انتخاب‌شده از Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	{} سریال انتخاب‌شده و رکوردهای قسمت‌هایشان از Kitsunarr حذف شوند؟
+Remove {}	حذف {}
+Remove {} from the blocklist	حذف {} از فهرست مسدود
+Remove {} series	حذف {} سریال
+Remove “{}” from Kitsunarr?	«{}» از Kitsunarr حذف شود؟
+Remove…	حذف…
+Removing…	در حال حذف…
+Rename every file of the selected series to the naming settings	تغییر نام همه فایل‌های سریال‌های انتخاب‌شده مطابق تنظیمات نام‌گذاری
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	نام همه فایل‌های {} سریال انتخاب‌شده مطابق تنظیمات نام‌گذاری تغییر کند؟ برای بررسی نام‌ها، ابتدا از پیش‌نمایش «تغییر نام فایل‌ها»ی هر سریال استفاده کنید.
+Rename file	تغییر نام فایل
+Renaming mode	حالت تغییر نام
+Required condition {}	شرط الزامی {}
+Rescan disk	اسکن مجدد دیسک
+Restore media type	بازیابی نوع رسانه
+Result	نتیجه
+Retention	نگه‌داری
+Review	بازبینی
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	عنوان مقصد و تطبیق قسمت‌ها را بازبینی کنید. فایل‌ها، مسیرها، پایش و تاریخچه حفظ می‌شوند. قسمت‌های منطبق‌نشده فقط وقتی شماره خود را نگه می‌دارند که آن شماره‌ها در کاتالوگ جدید آزاد باشند.
+Root folder for added shows	پوشه ریشه برای سریال‌های افزوده‌شده
+Save path	مسیر ذخیره
+Saving…	در حال ذخیره…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	یک پوشه دانلود را اسکن کنید، هر فیلم را بازبینی کنید و فایل اصلی آن را همراه زیرنویس‌های منطبق به کتابخانه کپی یا منتقل کنید. فایل‌های اصلی موجود فقط با ارتقا جایگزین می‌شوند.
+Search again	جستجوی دوباره
+Search catalogues	جستجوی کاتالوگ‌ها
+Search diagnostics	عیب‌یابی جستجو
+Search for missing episodes once imported	جستجوی قسمت‌های ناموجود پس از وارد کردن
+Search for {}	جستجو برای {}
+Search incomplete	جستجو ناقص است
+Search indexers for {}	جستجو در ایندکسرها برای {}
+Search season packs for {}	جستجوی بسته‌های فصل برای {}
+Search sources	جستجوی منابع
+Search sources unavailable	منابع جستجو در دسترس نیستند
+Search the library	جستجو در کتابخانه
+Search titles…	جستجوی عنوان‌ها…
+Search {}	جستجوی {}
+Searching “{}”…	در حال جستجوی «{}»…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	عنوان‌های پوشه فصل جایگزین عنوان‌های کاتالوگ در {} می‌شوند. برای حفظ عنوان‌های کاتالوگ خالی بگذارید.
+Season {} title	عنوان فصل {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	یک منبع را در بالا انتخاب کنید، یا جستجوی تعاملی را در تنظیمات ایندکسر فعال کنید. برچسب‌های منبع نیز می‌توانند سریال‌های قابل جستجو را محدود کنند.
+Select all	انتخاب همه
+Select all movies on this page	انتخاب همه فیلم‌های این صفحه
+Select every episode on this page	انتخاب همه قسمت‌های این صفحه
+Select {}	انتخاب {}
+Select {} S{}E{}	انتخاب {} S{}E{}
+Send now	همین حالا ارسال شود
+Send {} now	ارسال {} همین حالا
+Series & anime	سریال و انیمه
+Series history	تاریخچه سریال
+Series of {}	سریال {}
+Series title, e.g. Severance (or tvdb:12345)	عنوان سریال، مثلاً Severance (یا tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	نمایش {} از {} ریلیز. فیلترها بدون جستجوی دوباره روی همین نتایج اعمال می‌شوند.
+Size (GiB)	حجم (GiB)
+Sort by	مرتب‌سازی بر اساس
+Specifications JSON	JSON مشخصه‌ها
+Stalled torrent timeout	مهلت تورنت‌های متوقف‌شده
+TMDB API key	کلید API برای TMDB
+Tag existing titles	برچسب‌گذاری عنوان‌های موجود
+Tag {}	برچسب {}
+Target catalogue	کاتالوگ مقصد
+Target catalogue ID	شناسه کاتالوگ مقصد
+Test a release	آزمایش یک ریلیز
+Test details	جزئیات آزمایش
+Test file name	نام فایل آزمایشی
+Test format	آزمایش قالب
+Test indexer flags	پرچم‌های ایندکسر آزمایشی
+Test language	زبان آزمایشی
+Test original language	زبان اصلی آزمایشی
+Test quality	کیفیت آزمایشی
+Test release title	عنوان ریلیز آزمایشی
+Test release type	نوع ریلیز آزمایشی
+Test size in GiB	حجم آزمایشی به GiB
+The catalogues share an external identity.	کاتالوگ‌ها یک هویت خارجی مشترک دارند.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	این انتخاب وضعیت پایش همه قسمت‌ها را جایگزین می‌کند (قسمت‌های ویژه فقط با دو گزینه مربوط به ویژه‌ها تغییر می‌کنند)، سپس هر فصلی را که قسمت پایش‌شده دارد پایش می‌کند. «هیچ‌کدام» پایش خود سریال را نیز متوقف می‌کند.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	فایل اصلی و زیرنویس‌های منطبق به پوشه فیلم بازیابی می‌شوند. فایل‌های موجود هرگز بازنویسی نمی‌شوند.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	نام پوشه تغییر می‌کند، یا روی دیسک دیگر کپی و سپس حذف می‌شود. پوشه جدید باید وجود نداشته باشد یا خالی باشد.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	ایندکسرهای پاسخ‌دهنده هیچ ریلیزی برنگرداندند. منابع دیگر ناموفق بودند؛ خطاهای بالا را بررسی کنید و دوباره امتحان کنید.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	این شرط حفظ می‌شود. برای تغییر فیلدهای آن از «ویرایش JSON» استفاده کنید؛ «آزمایش قالب» گزارش می‌دهد که آیا قابل ارزیابی است یا نه.
+Title pattern of {}	الگوی عنوان {}
+Title to add	عنوان برای افزودن
+Title to search for	عنوان برای جستجو
+Title, group, quality or rejection reason…	عنوان، گروه، کیفیت یا دلیل رد…
+Titles considered:	عنوان‌های بررسی‌شده:
+Toggle colour theme	تغییر پوسته رنگ
+Toggle sort direction	تغییر جهت مرتب‌سازی
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	پیش از ذخیره، نام یک ریلیز سریال، انیمه یا فیلم را امتحان کنید. این کار شرط‌های قالب را بررسی می‌کند؛ امتیازهای پروفایل کیفیت و تأیید دانلود جداگانه هستند.
+Ungroup	لغو گروه‌بندی
+Ungroup {}	لغو گروه‌بندی {}
+Unknown value ({})	مقدار ناشناخته ({})
+Unmapped folders	پوشه‌های نگاشت‌نشده
+Unmatched titles	عنوان‌های منطبق‌نشده
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	توقف پایش قسمت‌های حذف‌شده (حذف‌شده به‌صورت دستی یا ناموجود روی دیسک؛ ارتقاها هرگز پایش را متوقف نمی‌کنند)
+Unwatched	دیده‌نشده
+Use global	استفاده از سراسری
+Use global sizes for {}	استفاده از حجم‌های سراسری برای {}
+Valid days	روزهای اعتبار
+Value	مقدار
+Values	مقادیر
+View	نمایش
+Wanted lists	فهرست‌های موردنیاز
+Watched	دیده‌شده
+Watched date	تاریخ دیدن
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	با خاموش بودن این گزینه، فایل‌ها روی دیسک می‌مانند. پوشه‌های حذف‌شده در صورت تنظیم سطل بازیافت، به آن منتقل می‌شوند.
+iCal feed address	نشانی فید iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	موجود در آن) با کاتالوگ تطبیق داده می‌شود؛ عنوان‌های واردشده پوشه خود را نگه می‌دارند، فایل‌هایشان در همان‌جا اسکن می‌شوند، سپس انتخاب پایش اعمال می‌شود. هیچ چیزی جابه‌جا یا تغییر نام داده نمی‌شود.
+{} Not renamed: {}	{} تغییر نام داده‌نشده: {}
+{} factor	ضریب {}
+{} files imported. Review the results below.	{} فایل وارد شد. نتایج زیر را بازبینی کنید.
+{} imported, {} failed; see each folder.	{} وارد شد، {} ناموفق؛ هر پوشه را ببینید.
+{} imported.	{} وارد شد.
+{} matched · {} kept at current numbers · {} new episodes	{} منطبق · {} با شماره فعلی حفظ شد · {} قسمت جدید
+{} min	{} دقیقه
+{} of {} folders selected	{} از {} پوشه انتخاب شده
+{} releases found, {} accepted, nothing grabbed.	{} ریلیز یافت شد، {} پذیرفته شد، چیزی دریافت نشد.
+{} series and {} movies, {} files checked: {} issues.	{} سریال و {} فیلم، {} فایل بررسی شد: {} مشکل.
+{} series moved.	{} سریال جابه‌جا شد.
+{} series moved; not moved: {}	{} سریال جابه‌جا شد؛ جابه‌جانشده: {}
+{} series removed.	{} سریال حذف شد.
+{} series removed; kept: {}	{} سریال حذف شد؛ نگه‌داشته‌شده: {}
+{} size of {}	حجم {} برای {}
+{} size slider of {}	لغزنده حجم {} برای {}
+{} titles	{} عنوان
+{}: {} releases from {} indexer(s). {} responding.	{}: {} ریلیز از {} ایندکسر. {} پاسخ‌دهنده.
+· API:	· API:
+· negated	· نقیض‌شده
+· required	· الزامی
+· {} ms · {} releases	· {} ms · {} ریلیز
+— MiB per minute	— MiB در دقیقه
+— in library	— در کتابخانه
+→ current number	→ شماره فعلی
+or	یا
+1 title	۱ عنوان

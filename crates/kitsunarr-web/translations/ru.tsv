@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Нумерация сцен из TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Нумерация сцен, экстраполированная из TheXEM (не проверено)
 Season {} (scene seasons {})	Сезон {} (сезоны сцены {})
 {} (scene {})	{} (сцена {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Группа франшизы, найденная по связям AniList или MyAnimeList. Тайтлы той же франшизы, добавленные позже, тоже входят в неё. Удалённые тайтлы не возвращаются в неё при обновлении.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Качество без переопределения использует Настройки › Качество. Внутри переопределения пустое значение означает «без ограничений»; максимум, равный нулю, тоже означает «без ограничений».
+Add a movie, or change the search and watched filter.	Добавьте фильм или измените поиск и фильтр просмотренного.
+Add a root folder in Settings › Media management first.	Сначала добавьте корневую папку в Настройки › Управление медиа.
+Add qualities to {}	Добавить качества в {}
+All decisions	Все решения
+All seasons	Все сезоны
+All selected flags must be present.	Должны присутствовать все выбранные флаги.
+All sources	Все источники
+Allow {}	Разрешить {}
+Also delete their folders and files (to the recycle bin when one is set)	Также удалить их папки и файлы (в корзину, если она задана)
+Apply sources	Применить источники
+As the catalogue says	Как указано в каталоге
+Auto tag name	Название автотега
+Automatic match / keep current number	Автоматическое сопоставление / сохранить текущий номер
+Automatic search for {}	Автоматический поиск для {}
+Below the root folder; use / for sub-folders.	Внутри корневой папки; используйте / для подпапок.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Лучшие первыми. Перетаскивайте маркеры или используйте стрелки, чтобы изменить порядок. Качества внутри группы имеют одинаковый ранг.
+Bulk actions	Массовые действия
+Catalogue ID	ID в каталоге
+Catalogue changed.	Каталог изменён.
+Catalogue match	Совпадение в каталоге
+Change catalogue	Сменить каталог
+Choose a movie…	Выберите фильм…
+Choose a root folder…	Выберите корневую папку…
+Choose episodes for {}	Выберите эпизоды для {}
+Choose which episodes are monitored, as when adding the series	Выберите, какие эпизоды отслеживаются, как при добавлении сериала
+Choose which episodes of the selected series are monitored	Выберите, какие эпизоды выбранных сериалов отслеживаются
+Choose {}	Выбрать {}
+Clean library level	Уровень для очистки библиотеки
+Clean library tag	Тег для очистки библиотеки
+Clear filters	Сбросить фильтры
+Clear or adjust the filters to see more results.	Сбросьте или измените фильтры, чтобы увидеть больше результатов.
+Codec of {}	Кодек для {}
+Compression mode	Режим сжатия
+Condition indexer flags	Флаги индексатора в условии
+Condition language	Язык условия
+Condition name	Название условия
+Condition name {}	Название условия {}
+Condition regular expression {}	Регулярное выражение условия {}
+Condition size {}	Размер условия {}
+Condition type	Тип условия
+Condition value	Значение условия
+Copy (keep the source)	Копировать (сохранить источник)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Создайте группу из качества, затем перетащите в неё другие качества или используйте селекторы группы. Порог переходит вместе с качеством в его группу; при разгруппировке используется самый высокий член группы.
+Current folder:	Текущая папка:
+Custom format name	Название пользовательского формата
+Delete tag {}	Удалить тег {}
+Delete the file of episode {}	Удалить файл эпизода {}
+Delete the movie folder and its files	Удалить папку фильма и её файлы
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Удалить «{}» и соответствующие субтитры? Они попадают в корзину, если она задана.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Удалить «{}»? Её сериалы и фильмы останутся в библиотеке и не вернутся в неё автоматически при обновлении.
+Detect from title	Определить по названию
+Disk scanned: {} {}	Диск просканирован: {} {}
+Dismiss	Закрыть
+Don't change	Не менять
+Don't import	Не импортировать
+Done editing groups	Завершить редактирование групп
+Drag to reorder or move into a group	Перетащите, чтобы изменить порядок или переместить в группу
+Drag {}	Перетащить {}
+Drop here to move out of a group or to the lowest preference	Перетащите сюда, чтобы убрать из группы или поставить на самый низкий приоритет
+Drop qualities here	Перетащите качества сюда
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Каждый сериал сохраняет свою папку внутри корневой папки. Сериал, новая папка которого существует и не пуста, сохраняет текущую папку.
+Edit JSON	Редактировать JSON
+Edit group	Редактировать группу
+Edit groups	Редактировать группы
+Enter a non-negative test size within the supported range.	Введите неотрицательный тестовый размер в поддерживаемом диапазоне.
+Enter a valid test size in GiB.	Введите корректный тестовый размер в GiB.
+Enter valid test indexer flags.	Введите корректные тестовые флаги индексатора.
+Episode matches	Совпадения эпизодов
+Event type	Тип события
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Каждый тип условия должен совпасть. Внутри одного типа достаточно совпадения любого условия, а каждое обязательное условие должно совпасть. «Инвертировать» обращает корректное условие.
+Every folder of this root folder belongs to a title already.	Каждая папка этой корневой папки уже принадлежит какому-либо тайтлу.
+Exclude {}	Исключить {}
+Exclusion catalogue	Каталог исключения
+Exclusion id	ID исключения
+Exclusion title	Название исключения
+Factor for {}	Коэффициент для {}
+Feed tags	Теги ленты
+File name (optional)	Имя файла (необязательно)
+Filter by monitoring	Фильтр по отслеживанию
+Filter by watched state	Фильтр по просмотру
+Filter release decisions	Фильтр решений по релизам
+Filter releases	Фильтр релизов
+Find target title	Найти целевой тайтл
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Папки корневой папки, которые не использует ни один тайтл. Каждая сопоставляется с каталогом по своему имени (или по тегу
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Для несопоставленных релизов сравните распознанное название и номера эпизодов ниже с рассмотренными названиями. При необходимости добавьте альтернативное название или исправьте сопоставление эпизодов в библиотеке.
+Format does not match	Формат не совпадает
+Format matches	Формат совпадает
+Full season	Весь сезон
+Grab it now instead of waiting for the delay	Захватить сейчас, не дожидаясь задержки
+Grab {}	Захватить {}
+Group	Группа
+Group for {}	Группа для {}
+Group name	Название группы
+Group {}	Группа {}
+Guided editor	Пошаговый редактор
+I confirm that the target catalogue entry is the same title.	Подтверждаю, что целевая запись каталога — тот же тайтл.
+Import	Импортировать
+Import existing folders	Импортировать существующие папки
+Import mode	Режим импорта
+Import {}	Импортировать {}
+Imported from movie folder	Импортировано из папки фильма
+Include in file names ({} token)	Включать в имена файлов (токен {})
+Include {}	Включить {}
+Indexer flags (bitmask)	Флаги индексатора (битовая маска)
+Jellyfin library	Библиотека Jellyfin
+Jellyfin user	Пользователь Jellyfin
+Jellyfin watched sync can update this status.	Синхронизация просмотров Jellyfin может обновлять этот статус.
+Key name	Название ключа
+Key permission	Права ключа
+Kind of {}	Тип для {}
+Label of {}	Метка для {}
+Language	Язык
+Library import	Импорт библиотеки
+List exclusions	Исключения списков
+Loading sources…	Загрузка источников…
+Main navigation	Главная навигация
+Mark unwatched	Пометить непросмотренным
+Mark watched	Пометить просмотренным
+Match	Сопоставить
+Match any other language	Совпадение с любым другим языком
+Match episode {}	Сопоставить эпизод {}
+Match for {}	Сопоставление для {}
+Matching series	Подходящие сериалы
+Matching subtitles follow the file's new name.	Соответствующие субтитры получают новое имя файла.
+Maximum GiB (inclusive)	Максимум GiB (включительно)
+Maximum size	Максимальный размер
+Maximum year	Максимальный год
+Minimum GiB (exclusive)	Минимум GiB (не включительно)
+Minimum age	Минимальный возраст
+Minimum level	Минимальный уровень
+Minimum score increment for upgrades	Минимальный прирост оценки для улучшений
+Minimum year	Минимальный год
+Monitor episode {}	Отслеживать эпизод {}
+Monitor new seasons	Отслеживать новые сезоны
+Monitored filter	Фильтр отслеживания
+Monitoring	Отслеживание
+Monitoring updated for {} series.	Отслеживание обновлено для сериалов: {}.
+Monitoring — {} series	Отслеживание — сериалов: {}
+Monitoring…	Отслеживание…
+Move folder	Переместить папку
+Move the files	Переместить файлы
+Move the files to the new folder	Переместить файлы в новую папку
+Move the movie folder, or point the movie at another folder	Переместите папку фильма или укажите для фильма другую папку
+Move the selected series into another root folder	Переместите выбранные сериалы в другую корневую папку
+Move the series folder, or point the series at another folder	Переместите папку сериала или укажите для сериала другую папку
+Move to root folder…	Переместить в корневую папку…
+Move {} series	Переместить сериалы ({})
+Movie bulk actions	Массовые действия с фильмами
+Movie file deleted	Файл фильма удалён
+Movie file renamed	Файл фильма переименован
+Movie file restored	Файл фильма восстановлен
+Movie for {}	Фильм для {}
+Movie history	История фильма
+Movie import mode	Режим импорта фильмов
+Movie removed, and its folder deleted or recycled.	Фильм удалён, а его папка удалена или перемещена в корзину.
+Movie source folder	Исходная папка фильмов
+Movies (Tanukarr)	Фильмы (Tanukarr)
+Moving…	Перемещение…
+Naming & file settings	Именование и настройки файлов
+Negate condition {}	Инвертировать условие {}
+New condition type	Новый тип условия
+New profile	Новый профиль
+New root folder path	Путь новой корневой папки
+New tag	Новый тег
+Next	Далее
+No group	Без группы
+No indexer responded successfully. Check the source errors above, then try again.	Ни один индексатор не ответил успешно. Проверьте ошибки источников выше и повторите попытку.
+No match for “{}”	Нет совпадений для «{}»
+No releases match these filters	Ни один релиз не соответствует этим фильтрам
+No root folder	Нет корневой папки
+Nothing to import	Нечего импортировать
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Меняется только записанная папка; используйте это, когда файлы уже там, а затем просканируйте диск.
+Open navigation	Открыть навигацию
+Open on {}	Открыть на {}
+Organize files	Организовать файлы
+Organizing…	Организация…
+Original language	Язык оригинала
+Override for a mapped anime batch or a movie feature (single episode).	Переопределение для сопоставленного аниме-пака или основного файла фильма (один эпизод).
+Parsed title:	Распознанное название:
+Passkey	Passkey
+Place above {}	Поставить над {}
+Place at lowest preference	Поставить на самый низкий приоритет
+Position of {}	Позиция {}
+Prefer {} less	Меньше предпочитать {}
+Prefer {} more	Больше предпочитать {}
+Preferred catalogue	Предпочтительный каталог
+Preset title	Название пресета
+Prevent import lists from adding it again	Не давать спискам импорта добавлять его снова
+Prevent import lists from adding them again	Не давать спискам импорта добавлять их снова
+Preview again to review your changes.	Повторите предпросмотр, чтобы проверить изменения.
+Previous	Назад
+Progress of {}	Прогресс {}
+Proxy hostname	Имя хоста прокси
+Proxy port	Порт прокси
+Quality cutoff	Порог качества
+Quality profile for added shows	Профиль качества для добавленных сериалов
+Quality sizes	Размеры качеств
+Quality: {} · Group: {} · Languages: {} · {}	Качество: {} · Группа: {} · Языки: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Планы запросов включают резервные уровни, которые могут не выполниться. У источников бюджет 35 секунд; у интерактивного поиска общий бюджет 45 секунд.
+RSS sync interval	Интервал синхронизации RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Только чтение: проверяет папки сериалов и фильмов, небезопасные записи файлов и файлы, отсутствующие на диске.
+Reading the root folder…	Чтение корневой папки…
+Regular expression	Регулярное выражение
+Rejected	Отклонён
+Release title	Название релиза
+Release type	Тип релиза
+Reload folders	Перезагрузить папки
+Remove condition	Удалить условие
+Remove condition {}	Удалить условие {}
+Remove mapping	Удалить сопоставление
+Remove the selected series from Kitsunarr	Удалить выбранные сериалы из Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Удалить выбранные сериалы ({}) и их записи эпизодов из Kitsunarr?
+Remove {}	Удалить {}
+Remove {} from the blocklist	Удалить {} из черного списка
+Remove {} series	Удалить сериалы ({})
+Remove “{}” from Kitsunarr?	Удалить «{}» из Kitsunarr?
+Remove…	Удалить…
+Removing…	Удаление…
+Rename every file of the selected series to the naming settings	Переименовать все файлы выбранных сериалов по настройкам именования
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Переименовать все файлы выбранных сериалов ({}) по настройкам именования? Сначала проверьте имена в предпросмотре «Переименовать файлы» сериала.
+Rename file	Переименовать файл
+Renaming mode	Режим переименования
+Required condition {}	Обязательное условие {}
+Rescan disk	Пересканировать диск
+Restore media type	Тип медиа для восстановления
+Result	Результат
+Retention	Хранение
+Review	Проверка
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Проверьте целевой тайтл и совпадения эпизодов. Файлы, пути, отслеживание и история сохраняются. Несопоставленные эпизоды сохраняют свои номера, только если эти номера свободны в новом каталоге.
+Root folder for added shows	Корневая папка для добавленных сериалов
+Save path	Путь сохранения
+Saving…	Сохранение…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Просканируйте папку загрузок, проверьте каждый фильм и скопируйте или переместите его основной файл с соответствующими субтитрами в библиотеку. Существующие основные файлы заменяются только улучшениями.
+Search again	Искать снова
+Search catalogues	Поиск в каталогах
+Search diagnostics	Диагностика поиска
+Search for missing episodes once imported	Искать отсутствующие эпизоды после импорта
+Search for {}	Искать {}
+Search incomplete	Поиск не завершён
+Search indexers for {}	Искать {} в индексаторах
+Search season packs for {}	Искать сезонные паки для {}
+Search sources	Поиск в источниках
+Search sources unavailable	Источники поиска недоступны
+Search the library	Поиск в библиотеке
+Search titles…	Поиск тайтлов…
+Search {}	Искать {}
+Searching “{}”…	Поиск «{}»…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Названия папок сезонов заменяют названия каталога в {}. Оставьте пустым, чтобы использовать названия каталога.
+Season {} title	Название сезона {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Выберите источник выше или включите интерактивный поиск в настройках индексатора. Теги источников также могут ограничивать, какие сериалы ищутся.
+Select all	Выбрать все
+Select all movies on this page	Выбрать все фильмы на этой странице
+Select every episode on this page	Выбрать каждый эпизод на этой странице
+Select {}	Выбрать {}
+Select {} S{}E{}	Выбрать {} S{}E{}
+Send now	Отправить сейчас
+Send {} now	Отправить {} сейчас
+Series & anime	Сериалы и аниме
+Series history	История сериала
+Series of {}	Сериал для {}
+Series title, e.g. Severance (or tvdb:12345)	Название сериала, напр. Severance (или tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Показано {} из {} релизов. Фильтры применяются к этим результатам без повторного поиска.
+Size (GiB)	Размер (GiB)
+Sort by	Сортировать по
+Specifications JSON	Спецификации JSON
+Stalled torrent timeout	Тайм-аут зависшего торрента
+TMDB API key	API-ключ TMDB
+Tag existing titles	Пометить существующие тайтлы
+Tag {}	Пометить тегом {}
+Target catalogue	Целевой каталог
+Target catalogue ID	ID в целевом каталоге
+Test a release	Проверить релиз
+Test details	Подробности проверки
+Test file name	Тестовое имя файла
+Test format	Проверить формат
+Test indexer flags	Тестовые флаги индексатора
+Test language	Тестовый язык
+Test original language	Тестовый язык оригинала
+Test quality	Тестовое качество
+Test release title	Тестовое название релиза
+Test release type	Тестовый тип релиза
+Test size in GiB	Тестовый размер в GiB
+The catalogues share an external identity.	У каталогов общая внешняя идентичность.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Выбор заменяет состояние отслеживания каждого эпизода (спецвыпуски меняют только два варианта для спецвыпусков), а затем отслеживает каждый сезон, в котором есть отслеживаемый эпизод. «Ничего» также прекращает отслеживание сериала.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Основной файл и соответствующие субтитры восстанавливаются в папку фильма. Существующие файлы никогда не перезаписываются.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Папка переименовывается или, на другом диске, копируется, а затем удаляется. Новой папки не должно существовать, или она должна быть пустой.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Ответившие индексаторы не вернули ни одного релиза. Другие источники не сработали; проверьте ошибки выше и повторите попытку.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Это условие сохранено. Используйте «Редактировать JSON», чтобы изменить его поля; «Проверить формат» сообщит, можно ли его вычислить.
+Title pattern of {}	Шаблон названия для {}
+Title to add	Тайтл для добавления
+Title to search for	Тайтл для поиска
+Title, group, quality or rejection reason…	Название, группа, качество или причина отклонения…
+Titles considered:	Рассмотренные названия:
+Toggle colour theme	Переключить цветовую тему
+Toggle sort direction	Переключить направление сортировки
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Проверьте название релиза сериала, аниме или фильма перед сохранением. Это проверяет условия формата; оценки профилей качества и одобрение загрузки — отдельно.
+Ungroup	Разгруппировать
+Ungroup {}	Разгруппировать {}
+Unknown value ({})	Неизвестное значение ({})
+Unmapped folders	Несопоставленные папки
+Unmatched titles	Несопоставленные названия
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Не отслеживать удалённые эпизоды (удалённые вручную или отсутствующие на диске; улучшения никогда не отключают отслеживание)
+Unwatched	Не просмотрено
+Use global	Использовать глобальные
+Use global sizes for {}	Использовать глобальные размеры для {}
+Valid days	Действует дней
+Value	Значение
+Values	Значения
+View	Вид
+Wanted lists	Списки ожидаемого
+Watched	Просмотрено
+Watched date	Дата просмотра
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Если этот параметр выключен, файлы остаются на диске. Удалённые папки попадают в корзину, если она задана.
+iCal feed address	Адрес ленты iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	в ней); импортированные тайтлы сохраняют свою папку, их файлы сканируются на месте, затем применяется выбор отслеживания. Ничего не перемещается и не переименовывается.
+{} Not renamed: {}	{} Не переименовано: {}
+{} factor	Коэффициент для {}
+{} files imported. Review the results below.	Импортировано файлов: {}. Проверьте результаты ниже.
+{} imported, {} failed; see each folder.	Импортировано: {}, с ошибкой: {}; см. каждую папку.
+{} imported.	Импортировано: {}.
+{} matched · {} kept at current numbers · {} new episodes	Сопоставлено: {} · сохранены текущие номера: {} · новых эпизодов: {}
+{} min	{} мин
+{} of {} folders selected	Выбрано {} из {} папок
+{} releases found, {} accepted, nothing grabbed.	Найдено релизов: {}, принято: {}, ничего не захвачено.
+{} series and {} movies, {} files checked: {} issues.	Проверено сериалов: {}, фильмов: {}, файлов: {}; проблем: {}.
+{} series moved.	Перемещено сериалов: {}.
+{} series moved; not moved: {}	Перемещено сериалов: {}; не перемещено: {}
+{} series removed.	Удалено сериалов: {}.
+{} series removed; kept: {}	Удалено сериалов: {}; оставлено: {}
+{} size of {}	{} размер для {}
+{} size slider of {}	{} ползунок размера для {}
+{} titles	{} тайтлов
+{}: {} releases from {} indexer(s). {} responding.	{}: релизов: {} от индексаторов: {}. Ответили: {}.
+· API:	· API:
+· negated	· инвертировано
+· required	· обязательно
+· {} ms · {} releases	· {} ms · релизов: {}
+— MiB per minute	— MiB в минуту
+— in library	— в библиотеке
+→ current number	→ текущий номер
+or	или
+1 title	1 тайтл

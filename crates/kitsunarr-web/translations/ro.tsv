@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Numerotare de scenă din TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Numerotare de scenă extrapolată din TheXEM (neverificată)
 Season {} (scene seasons {})	Sezonul {} (sezoane de scenă {})
 {} (scene {})	{} (scenă {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Un grup de francize găsit din relațiile AniList sau MyAnimeList. Titlurile adăugate ulterior din aceeași franciză se alătură și ele. Titlurile eliminate nu revin la reîmprospătare.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	O calitate fără suprascriere folosește Setări › Calitate. Într-o suprascriere, gol înseamnă nelimitat; un maxim de zero înseamnă tot nelimitat.
+Add a movie, or change the search and watched filter.	Adăugați un film sau schimbați căutarea și filtrul de vizionare.
+Add a root folder in Settings › Media management first.	Adăugați mai întâi un folder rădăcină în Setări › Gestionare media.
+Add qualities to {}	Adaugă calități în {}
+All decisions	Toate deciziile
+All seasons	Toate sezoanele
+All selected flags must be present.	Toate indicatoarele selectate trebuie să fie prezente.
+All sources	Toate sursele
+Allow {}	Permite {}
+Also delete their folders and files (to the recycle bin when one is set)	Șterge și folderele și fișierele lor (în coșul de reciclare, dacă este setat)
+Apply sources	Aplică sursele
+As the catalogue says	Așa cum indică catalogul
+Auto tag name	Numele etichetei automate
+Automatic match / keep current number	Potrivire automată / păstrează numărul curent
+Automatic search for {}	Căutare automată pentru {}
+Below the root folder; use / for sub-folders.	Sub folderul rădăcină; folosiți / pentru subfoldere.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	De la cea mai bună. Trageți de mânere sau folosiți săgețile pentru a reordona. Calitățile dintr-un grup au același rang.
+Bulk actions	Acțiuni în masă
+Catalogue ID	ID în catalog
+Catalogue changed.	Catalog schimbat.
+Catalogue match	Potrivire în catalog
+Change catalogue	Schimbă catalogul
+Choose a movie…	Alegeți un film…
+Choose a root folder…	Alegeți un folder rădăcină…
+Choose episodes for {}	Alege episoadele pentru {}
+Choose which episodes are monitored, as when adding the series	Alegeți ce episoade sunt monitorizate, ca la adăugarea serialului
+Choose which episodes of the selected series are monitored	Alegeți ce episoade ale serialelor selectate sunt monitorizate
+Choose {}	Alege {}
+Clean library level	Nivelul curățării bibliotecii
+Clean library tag	Eticheta curățării bibliotecii
+Clear filters	Șterge filtrele
+Clear or adjust the filters to see more results.	Ștergeți sau ajustați filtrele pentru a vedea mai multe rezultate.
+Codec of {}	Codecul pentru {}
+Compression mode	Mod de compresie
+Condition indexer flags	Indicatoarele de indexator ale condiției
+Condition language	Limba condiției
+Condition name	Numele condiției
+Condition name {}	Numele condiției {}
+Condition regular expression {}	Expresia regulată a condiției {}
+Condition size {}	Dimensiunea condiției {}
+Condition type	Tipul condiției
+Condition value	Valoarea condiției
+Copy (keep the source)	Copiază (păstrează sursa)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Creați un grup dintr-o calitate, apoi trageți alte calități în el sau folosiți selectoarele Grup. Limita urmează o calitate în grupul ei; degruparea folosește cel mai înalt membru al grupului.
+Current folder:	Folder curent:
+Custom format name	Numele formatului personalizat
+Delete tag {}	Șterge eticheta {}
+Delete the file of episode {}	Șterge fișierul episodului {}
+Delete the movie folder and its files	Șterge folderul filmului și fișierele lui
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Ștergeți „{}” și subtitrările potrivite? Ajung în coșul de reciclare, dacă este setat.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Ștergeți „{}”? Serialele și filmele sale rămân în bibliotecă și nu se vor realătura automat la reîmprospătare.
+Detect from title	Detectează din titlu
+Disk scanned: {} {}	Disc scanat: {} {}
+Dismiss	Închide
+Don't change	Nu schimba
+Don't import	Nu importa
+Done editing groups	Gata cu editarea grupurilor
+Drag to reorder or move into a group	Trageți pentru a reordona sau a muta într-un grup
+Drag {}	Trage {}
+Drop here to move out of a group or to the lowest preference	Plasați aici pentru a scoate dintr-un grup sau pentru preferința cea mai mică
+Drop qualities here	Plasați calitățile aici
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Fiecare serial își păstrează folderul sub folderul rădăcină. Un serial al cărui folder nou există și nu este gol își păstrează folderul curent.
+Edit JSON	Editează JSON
+Edit group	Editează grupul
+Edit groups	Editează grupurile
+Enter a non-negative test size within the supported range.	Introduceți o dimensiune de test nenegativă, în intervalul acceptat.
+Enter a valid test size in GiB.	Introduceți o dimensiune de test validă în GiB.
+Enter valid test indexer flags.	Introduceți indicatoare de indexator de test valide.
+Episode matches	Potriviri de episoade
+Event type	Tip de eveniment
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Fiecare tip de condiție trebuie să se potrivească. În cadrul unui tip, se poate potrivi oricare condiție, iar fiecare condiție obligatorie trebuie să se potrivească. Neagă inversează o condiție validă.
+Every folder of this root folder belongs to a title already.	Fiecare folder din acest folder rădăcină aparține deja unui titlu.
+Exclude {}	Exclude {}
+Exclusion catalogue	Catalogul excluderii
+Exclusion id	ID-ul excluderii
+Exclusion title	Titlul excluderii
+Factor for {}	Factor pentru {}
+Feed tags	Etichetele fluxului
+File name (optional)	Nume fișier (opțional)
+Filter by monitoring	Filtrează după monitorizare
+Filter by watched state	Filtrează după starea de vizionare
+Filter release decisions	Filtrează deciziile privind lansările
+Filter releases	Filtrează lansările
+Find target title	Găsește titlul țintă
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Folderele unui folder rădăcină pe care nu le folosește niciun titlu. Fiecare este potrivit cu catalogul după nume (sau după eticheta
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Pentru lansările nepotrivite, comparați titlul analizat și numerele de episod de mai jos cu titlurile luate în considerare. Adăugați un titlu alternativ sau corectați maparea episoadelor în bibliotecă, dacă este nevoie.
+Format does not match	Formatul nu se potrivește
+Format matches	Formatul se potrivește
+Full season	Sezon complet
+Grab it now instead of waiting for the delay	Preia acum în loc să aștepți întârzierea
+Grab {}	Preia {}
+Group	Grup
+Group for {}	Grup pentru {}
+Group name	Numele grupului
+Group {}	Grup {}
+Guided editor	Editor ghidat
+I confirm that the target catalogue entry is the same title.	Confirm că intrarea din catalogul țintă este același titlu.
+Import	Importă
+Import existing folders	Importă folderele existente
+Import mode	Mod de import
+Import {}	Importă {}
+Imported from movie folder	Importat din folderul filmului
+Include in file names ({} token)	Include în numele fișierelor (tokenul {})
+Include {}	Include {}
+Indexer flags (bitmask)	Indicatoare de indexator (mască de biți)
+Jellyfin library	Bibliotecă Jellyfin
+Jellyfin user	Utilizator Jellyfin
+Jellyfin watched sync can update this status.	Sincronizarea vizionărilor Jellyfin poate actualiza această stare.
+Key name	Numele cheii
+Key permission	Permisiunea cheii
+Kind of {}	Tipul pentru {}
+Label of {}	Eticheta pentru {}
+Language	Limbă
+Library import	Import bibliotecă
+List exclusions	Excluderi din liste
+Loading sources…	Se încarcă sursele…
+Main navigation	Navigare principală
+Mark unwatched	Marchează ca nevizionat
+Mark watched	Marchează ca vizionat
+Match	Potrivește
+Match any other language	Potrivește orice altă limbă
+Match episode {}	Potrivește episodul {}
+Match for {}	Potrivire pentru {}
+Matching series	Seriale potrivite
+Matching subtitles follow the file's new name.	Subtitrările potrivite urmează noul nume al fișierului.
+Maximum GiB (inclusive)	Maxim GiB (inclusiv)
+Maximum size	Dimensiune maximă
+Maximum year	An maxim
+Minimum GiB (exclusive)	Minim GiB (exclusiv)
+Minimum age	Vechime minimă
+Minimum level	Nivel minim
+Minimum score increment for upgrades	Creștere minimă a scorului pentru upgrade-uri
+Minimum year	An minim
+Monitor episode {}	Monitorizează episodul {}
+Monitor new seasons	Monitorizează sezoanele noi
+Monitored filter	Filtru de monitorizare
+Monitoring	Monitorizare
+Monitoring updated for {} series.	Monitorizare actualizată pentru seriale: {}.
+Monitoring — {} series	Monitorizare — seriale: {}
+Monitoring…	Se monitorizează…
+Move folder	Mută folderul
+Move the files	Mută fișierele
+Move the files to the new folder	Mută fișierele în noul folder
+Move the movie folder, or point the movie at another folder	Mută folderul filmului sau indică filmului alt folder
+Move the selected series into another root folder	Mută serialele selectate în alt folder rădăcină
+Move the series folder, or point the series at another folder	Mută folderul serialului sau indică serialului alt folder
+Move to root folder…	Mută în folderul rădăcină…
+Move {} series	Mută seriale: {}
+Movie bulk actions	Acțiuni în masă pentru filme
+Movie file deleted	Fișierul filmului a fost șters
+Movie file renamed	Fișierul filmului a fost redenumit
+Movie file restored	Fișierul filmului a fost restaurat
+Movie for {}	Film pentru {}
+Movie history	Istoricul filmului
+Movie import mode	Mod de import al filmelor
+Movie removed, and its folder deleted or recycled.	Filmul a fost eliminat, iar folderul său a fost șters sau mutat în coșul de reciclare.
+Movie source folder	Folder sursă pentru filme
+Movies (Tanukarr)	Filme (Tanukarr)
+Moving…	Se mută…
+Naming & file settings	Denumire și setări de fișiere
+Negate condition {}	Neagă condiția {}
+New condition type	Tip nou de condiție
+New profile	Profil nou
+New root folder path	Calea noului folder rădăcină
+New tag	Etichetă nouă
+Next	Următor
+No group	Fără grup
+No indexer responded successfully. Check the source errors above, then try again.	Niciun indexator nu a răspuns cu succes. Verificați erorile surselor de mai sus, apoi încercați din nou.
+No match for “{}”	Nicio potrivire pentru „{}”
+No releases match these filters	Nicio lansare nu se potrivește acestor filtre
+No root folder	Niciun folder rădăcină
+Nothing to import	Nimic de importat
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Se schimbă doar folderul înregistrat; folosiți asta când fișierele sunt deja acolo, apoi scanați discul.
+Open navigation	Deschide navigarea
+Open on {}	Deschide pe {}
+Organize files	Organizează fișierele
+Organizing…	Se organizează…
+Original language	Limba originală
+Override for a mapped anime batch or a movie feature (single episode).	Suprascriere pentru un pachet anime mapat sau pentru fișierul principal al unui film (un singur episod).
+Parsed title:	Titlu analizat:
+Passkey	Passkey
+Place above {}	Plasează deasupra lui {}
+Place at lowest preference	Plasează la preferința cea mai mică
+Position of {}	Poziția pentru {}
+Prefer {} less	Preferă mai puțin {}
+Prefer {} more	Preferă mai mult {}
+Preferred catalogue	Catalog preferat
+Preset title	Titlul presetării
+Prevent import lists from adding it again	Împiedică listele de import să îl adauge din nou
+Prevent import lists from adding them again	Împiedică listele de import să le adauge din nou
+Preview again to review your changes.	Previzualizați din nou pentru a revedea modificările.
+Previous	Anterior
+Progress of {}	Progresul pentru {}
+Proxy hostname	Nume gazdă proxy
+Proxy port	Port proxy
+Quality cutoff	Limită de calitate
+Quality profile for added shows	Profil de calitate pentru serialele adăugate
+Quality sizes	Dimensiuni pe calitate
+Quality: {} · Group: {} · Languages: {} · {}	Calitate: {} · Grup: {} · Limbi: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Planurile de interogare includ niveluri de rezervă care s-ar putea să nu ruleze. Sursele au un buget de 35 de secunde; căutările interactive au un buget total de 45 de secunde.
+RSS sync interval	Interval de sincronizare RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Doar citire: verifică folderele serialelor și filmelor, înregistrările de fișiere nesigure și fișierele lipsă de pe disc.
+Reading the root folder…	Se citește folderul rădăcină…
+Regular expression	Expresie regulată
+Rejected	Respins
+Release title	Titlul lansării
+Release type	Tipul lansării
+Reload folders	Reîncarcă folderele
+Remove condition	Elimină condiția
+Remove condition {}	Elimină condiția {}
+Remove mapping	Elimină maparea
+Remove the selected series from Kitsunarr	Elimină serialele selectate din Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Eliminați serialele selectate ({}) și înregistrările episoadelor lor din Kitsunarr?
+Remove {}	Elimină {}
+Remove {} from the blocklist	Elimină {} din lista neagră
+Remove {} series	Elimină seriale: {}
+Remove “{}” from Kitsunarr?	Eliminați „{}” din Kitsunarr?
+Remove…	Elimină…
+Removing…	Se elimină…
+Rename every file of the selected series to the naming settings	Redenumește toate fișierele serialelor selectate conform setărilor de denumire
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Redenumiți toate fișierele serialelor selectate ({}) conform setărilor de denumire? Verificați mai întâi numele în previzualizarea Redenumește fișierele a fiecărui serial.
+Rename file	Redenumește fișierul
+Renaming mode	Mod de redenumire
+Required condition {}	Condiția obligatorie {}
+Rescan disk	Rescanează discul
+Restore media type	Tipul media de restaurat
+Result	Rezultat
+Retention	Păstrare
+Review	Verificare
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Verificați titlul țintă și potrivirile de episoade. Fișierele, căile, monitorizarea și istoricul sunt păstrate. Episoadele nepotrivite își păstrează numerele doar dacă acestea sunt libere în noul catalog.
+Root folder for added shows	Folder rădăcină pentru serialele adăugate
+Save path	Cale de salvare
+Saving…	Se salvează…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Scanați un folder de descărcări, verificați fiecare film și copiați sau mutați fișierul său principal, cu subtitrările potrivite, în bibliotecă. Fișierele principale existente sunt înlocuite doar de upgrade-uri.
+Search again	Caută din nou
+Search catalogues	Caută în cataloage
+Search diagnostics	Diagnosticarea căutării
+Search for missing episodes once imported	Caută episoadele lipsă după import
+Search for {}	Caută {}
+Search incomplete	Căutare incompletă
+Search indexers for {}	Caută în indexatoare pentru {}
+Search season packs for {}	Caută pachete de sezon pentru {}
+Search sources	Surse de căutare
+Search sources unavailable	Surse de căutare indisponibile
+Search the library	Caută în bibliotecă
+Search titles…	Caută titluri…
+Search {}	Caută {}
+Searching “{}”…	Se caută „{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Titlurile folderelor de sezon înlocuiesc pe cele ale catalogului în {}. Lăsați gol pentru a le păstra pe cele ale catalogului.
+Season {} title	Titlul sezonului {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Selectați o sursă de mai sus sau activați căutarea interactivă în setările indexatorului. Etichetele surselor pot restrânge și ce seriale sunt căutate.
+Select all	Selectează tot
+Select all movies on this page	Selectează toate filmele de pe această pagină
+Select every episode on this page	Selectează toate episoadele de pe această pagină
+Select {}	Selectează {}
+Select {} S{}E{}	Selectează {} S{}E{}
+Send now	Trimite acum
+Send {} now	Trimite {} acum
+Series & anime	Seriale și anime
+Series history	Istoricul serialului
+Series of {}	Serial pentru {}
+Series title, e.g. Severance (or tvdb:12345)	Titlul serialului, de ex. Severance (sau tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Se afișează {} din {} lansări. Filtrele se aplică acestor rezultate fără o nouă căutare.
+Size (GiB)	Dimensiune (GiB)
+Sort by	Sortează după
+Specifications JSON	JSON specificații
+Stalled torrent timeout	Timp limită pentru torrent blocat
+TMDB API key	Cheie API TMDB
+Tag existing titles	Etichetează titlurile existente
+Tag {}	Etichetă {}
+Target catalogue	Catalog țintă
+Target catalogue ID	ID în catalogul țintă
+Test a release	Testează o lansare
+Test details	Detaliile testului
+Test file name	Nume de fișier de test
+Test format	Testează formatul
+Test indexer flags	Indicatoare de indexator de test
+Test language	Limbă de test
+Test original language	Limbă originală de test
+Test quality	Calitate de test
+Test release title	Titlu de lansare de test
+Test release type	Tip de lansare de test
+Test size in GiB	Dimensiune de test în GiB
+The catalogues share an external identity.	Cataloagele au o identitate externă comună.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Alegerea înlocuiește starea de monitorizare a fiecărui episod (episoadele speciale sunt schimbate doar de cele două opțiuni pentru episoade speciale), apoi monitorizează fiecare sezon care are un episod monitorizat. „Niciunul” oprește și monitorizarea serialului.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Fișierul principal și subtitrările potrivite sunt restaurate în folderul filmului. Fișierele existente nu sunt niciodată suprascrise.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Folderul este redenumit sau, pe alt disc, copiat și apoi eliminat. Noul folder trebuie să lipsească sau să fie gol.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Indexatoarele care au răspuns nu au returnat nicio lansare. Alte surse au eșuat; verificați erorile de mai sus și încercați din nou.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Această condiție este păstrată. Folosiți Editează JSON pentru a-i schimba câmpurile; Testează formatul arată dacă poate fi evaluată.
+Title pattern of {}	Modelul de titlu pentru {}
+Title to add	Titlu de adăugat
+Title to search for	Titlu de căutat
+Title, group, quality or rejection reason…	Titlu, grup, calitate sau motiv de respingere…
+Titles considered:	Titluri luate în considerare:
+Toggle colour theme	Comută tema de culori
+Toggle sort direction	Comută direcția de sortare
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Încercați un nume de lansare de serial, anime sau film înainte de a salva. Se verifică condițiile formatului; scorurile profilului de calitate și aprobarea descărcării sunt separate.
+Ungroup	Degrupează
+Ungroup {}	Degrupează {}
+Unknown value ({})	Valoare necunoscută ({})
+Unmapped folders	Foldere nemapate
+Unmatched titles	Titluri nepotrivite
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Nu mai monitoriza episoadele șterse (șterse manual sau lipsă de pe disc; upgrade-urile nu opresc niciodată monitorizarea)
+Unwatched	Nevizionat
+Use global	Folosește globalul
+Use global sizes for {}	Folosește dimensiunile globale pentru {}
+Valid days	Zile de valabilitate
+Value	Valoare
+Values	Valori
+View	Vizualizare
+Wanted lists	Liste de dorite
+Watched	Vizionat
+Watched date	Data vizionării
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Cu această opțiune dezactivată, fișierele rămân pe disc. Folderele șterse ajung în coșul de reciclare, dacă este setat.
+iCal feed address	Adresa fluxului iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	din nume); titlurile importate își păstrează folderul, fișierele lor sunt scanate pe loc, apoi se aplică opțiunea de monitorizare. Nimic nu este mutat sau redenumit.
+{} Not renamed: {}	{} Neredenumite: {}
+{} factor	Factor {}
+{} files imported. Review the results below.	Fișiere importate: {}. Verificați rezultatele de mai jos.
+{} imported, {} failed; see each folder.	Importate: {}, eșuate: {}; vedeți fiecare folder.
+{} imported.	Importate: {}.
+{} matched · {} kept at current numbers · {} new episodes	potrivite: {} · păstrate la numerele curente: {} · episoade noi: {}
+{} min	{} min
+{} of {} folders selected	Foldere selectate: {} din {}
+{} releases found, {} accepted, nothing grabbed.	Lansări găsite: {}, acceptate: {}, nimic preluat.
+{} series and {} movies, {} files checked: {} issues.	Seriale verificate: {}, filme: {}, fișiere: {}; probleme: {}.
+{} series moved.	Seriale mutate: {}.
+{} series moved; not moved: {}	Seriale mutate: {}; nemutate: {}
+{} series removed.	Seriale eliminate: {}.
+{} series removed; kept: {}	Seriale eliminate: {}; păstrate: {}
+{} size of {}	{}: dimensiune pentru {}
+{} size slider of {}	{}: glisor de dimensiune pentru {}
+{} titles	Titluri: {}
+{}: {} releases from {} indexer(s). {} responding.	{}: lansări: {}, din {} indexatoare. Au răspuns: {}.
+· API:	· API:
+· negated	· negată
+· required	· obligatorie
+· {} ms · {} releases	· {} ms · lansări: {}
+— MiB per minute	— MiB pe minut
+— in library	— în bibliotecă
+→ current number	→ numărul curent
+or	sau
+1 title	1 titlu

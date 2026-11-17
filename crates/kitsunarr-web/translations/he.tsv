@@ -966,3 +966,347 @@ Scene numbering from TheXEM	מספור סצנה מ-TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	מספור סצנה שנגזר מ-TheXEM (לא מאומת)
 Season {} (scene seasons {})	עונה {} (עונות סצנה {})
 {} (scene {})	{} (סצנה {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	קבוצת זיכיון שנמצאה מקשרים ב-AniList או ב-MyAnimeList. כותרים מאותו זיכיון שיתווספו בהמשך יצטרפו אליה גם כן. כותרים שהוסרו נשארים מחוץ לה בעת רענון.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	איכות ללא דריסה משתמשת בהגדרות › איכות. בתוך דריסה, ריק פירושו ללא הגבלה; מקסימום של אפס פירושו גם ללא הגבלה.
+Add a movie, or change the search and watched filter.	הוסף סרט, או שנה את החיפוש ואת מסנן הצפייה.
+Add a root folder in Settings › Media management first.	הוסף קודם תיקיית שורש בהגדרות › ניהול מדיה.
+Add qualities to {}	הוסף איכויות ל-{}
+All decisions	כל ההחלטות
+All seasons	כל העונות
+All selected flags must be present.	כל הדגלים שנבחרו חייבים להופיע.
+All sources	כל המקורות
+Allow {}	אפשר את {}
+Also delete their folders and files (to the recycle bin when one is set)	מחק גם את התיקיות והקבצים שלהן (לסל המחזור אם הוגדר)
+Apply sources	החל מקורות
+As the catalogue says	כפי שמופיע בקטלוג
+Auto tag name	שם התגית האוטומטית
+Automatic match / keep current number	התאמה אוטומטית / שמור את המספר הנוכחי
+Automatic search for {}	חיפוש אוטומטי עבור {}
+Below the root folder; use / for sub-folders.	מתחת לתיקיית השורש; השתמש ב-/ לתיקיות משנה.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	הטוב ביותר ראשון. גרור את הידיות או השתמש בחצים כדי לשנות את הסדר. איכויות בתוך קבוצה מדורגות באופן שווה.
+Bulk actions	פעולות מרובות
+Catalogue ID	מזהה קטלוג
+Catalogue changed.	הקטלוג שונה.
+Catalogue match	התאמת קטלוג
+Change catalogue	שנה קטלוג
+Choose a movie…	בחר סרט…
+Choose a root folder…	בחר תיקיית שורש…
+Choose episodes for {}	בחר פרקים עבור {}
+Choose which episodes are monitored, as when adding the series	בחר אילו פרקים יהיו במעקב, כמו בעת הוספת הסדרה
+Choose which episodes of the selected series are monitored	בחר אילו פרקים של הסדרות שנבחרו יהיו במעקב
+Choose {}	בחר {}
+Clean library level	רמת ניקוי ספרייה
+Clean library tag	תגית ניקוי ספרייה
+Clear filters	נקה מסננים
+Clear or adjust the filters to see more results.	נקה או התאם את המסננים כדי לראות תוצאות נוספות.
+Codec of {}	קודק של {}
+Compression mode	מצב דחיסה
+Condition indexer flags	דגלי אינדקסר של התנאי
+Condition language	שפת התנאי
+Condition name	שם התנאי
+Condition name {}	שם התנאי {}
+Condition regular expression {}	ביטוי רגולרי של התנאי {}
+Condition size {}	גודל התנאי {}
+Condition type	סוג התנאי
+Condition value	ערך התנאי
+Copy (keep the source)	העתק (שמור את המקור)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	צור קבוצה מאיכות, ואז גרור אליה איכויות נוספות או השתמש בבוררי הקבוצה. סף היעד עובר יחד עם האיכות לקבוצה שלה; פירוק קבוצה משתמש בחבר הגבוה ביותר בקבוצה.
+Current folder:	התיקייה הנוכחית:
+Custom format name	שם הפורמט המותאם אישית
+Delete tag {}	מחק את התגית {}
+Delete the file of episode {}	מחק את הקובץ של פרק {}
+Delete the movie folder and its files	מחק את תיקיית הסרט ואת קבציה
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	למחוק את “{}” ואת הכתוביות התואמות לו? הם יועברו לסל המחזור אם הוגדר.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	למחוק את “{}”? הסדרות והסרטים שבה נשארים בספרייה ולא יצטרפו אליה שוב אוטומטית בעת רענון.
+Detect from title	זהה מהכותרת
+Disk scanned: {} {}	הדיסק נסרק: {} {}
+Dismiss	סגור
+Don't change	אל תשנה
+Don't import	אל תייבא
+Done editing groups	סיום עריכת הקבוצות
+Drag to reorder or move into a group	גרור כדי לשנות סדר או להעביר לקבוצה
+Drag {}	גרור את {}
+Drop here to move out of a group or to the lowest preference	שחרר כאן כדי להוציא מקבוצה או להעביר להעדפה הנמוכה ביותר
+Drop qualities here	שחרר איכויות כאן
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	כל סדרה שומרת על התיקייה שלה מתחת לתיקיית השורש. סדרה שהתיקייה החדשה שלה קיימת ואינה ריקה שומרת על התיקייה הנוכחית שלה.
+Edit JSON	ערוך JSON
+Edit group	ערוך קבוצה
+Edit groups	ערוך קבוצות
+Enter a non-negative test size within the supported range.	הזן גודל בדיקה אי-שלילי בטווח הנתמך.
+Enter a valid test size in GiB.	הזן גודל בדיקה תקין ב-GiB.
+Enter valid test indexer flags.	הזן דגלי אינדקסר תקינים לבדיקה.
+Episode matches	התאמות פרקים
+Event type	סוג אירוע
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	כל סוג תנאי חייב להתאים. בתוך סוג אחד, די בהתאמה של תנאי כלשהו, וכל תנאי נדרש חייב להתאים. שלילה הופכת תנאי תקין.
+Every folder of this root folder belongs to a title already.	כל התיקיות בתיקיית שורש זו כבר שייכות לכותר.
+Exclude {}	החרג את {}
+Exclusion catalogue	קטלוג ההחרגה
+Exclusion id	מזהה ההחרגה
+Exclusion title	כותר ההחרגה
+Factor for {}	מקדם עבור {}
+Feed tags	תגיות הפיד
+File name (optional)	שם קובץ (אופציונלי)
+Filter by monitoring	סנן לפי מעקב
+Filter by watched state	סנן לפי מצב צפייה
+Filter release decisions	סנן החלטות על גרסאות
+Filter releases	סנן גרסאות
+Find target title	מצא כותר יעד
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	תיקיות בתיקיית שורש שאף כותר אינו משתמש בהן. כל אחת מותאמת לקטלוג לפי שמה (או לפי התגית
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	עבור גרסאות שלא הותאמו, השווה את הכותר המפוענח ואת מספרי הפרקים שלהלן לכותרים שנבדקו. הוסף כותר חלופי או תקן את מיפוי הפרקים בספרייה בעת הצורך.
+Format does not match	הפורמט אינו תואם
+Format matches	הפורמט תואם
+Full season	עונה מלאה
+Grab it now instead of waiting for the delay	תפוס אותה עכשיו במקום להמתין להשהייה
+Grab {}	תפוס את {}
+Group	קבוצה
+Group for {}	קבוצה עבור {}
+Group name	שם הקבוצה
+Group {}	קבוצה {}
+Guided editor	עורך מודרך
+I confirm that the target catalogue entry is the same title.	אני מאשר שרשומת קטלוג היעד היא אותו כותר.
+Import	ייבא
+Import existing folders	ייבא תיקיות קיימות
+Import mode	מצב ייבוא
+Import {}	ייבא את {}
+Imported from movie folder	יובא מתיקיית הסרט
+Include in file names ({} token)	כלול בשמות קבצים (אסימון {})
+Include {}	כלול את {}
+Indexer flags (bitmask)	דגלי אינדקסר (מסכת סיביות)
+Jellyfin library	ספריית Jellyfin
+Jellyfin user	משתמש Jellyfin
+Jellyfin watched sync can update this status.	סנכרון הצפיות של Jellyfin יכול לעדכן מצב זה.
+Key name	שם המפתח
+Key permission	הרשאת המפתח
+Kind of {}	סוג של {}
+Label of {}	תווית של {}
+Language	שפה
+Library import	ייבוא ספרייה
+List exclusions	החרגות רשימה
+Loading sources…	טוען מקורות…
+Main navigation	ניווט ראשי
+Mark unwatched	סמן כלא נצפה
+Mark watched	סמן כנצפה
+Match	התאם
+Match any other language	התאם כל שפה אחרת
+Match episode {}	התאם את פרק {}
+Match for {}	התאמה עבור {}
+Matching series	סדרות תואמות
+Matching subtitles follow the file's new name.	כתוביות תואמות מקבלות את השם החדש של הקובץ.
+Maximum GiB (inclusive)	GiB מרבי (כולל)
+Maximum size	גודל מרבי
+Maximum year	שנה מרבית
+Minimum GiB (exclusive)	GiB מינימלי (לא כולל)
+Minimum age	גיל מינימלי
+Minimum level	רמה מינימלית
+Minimum score increment for upgrades	תוספת ניקוד מינימלית לשדרוגים
+Minimum year	שנה מינימלית
+Monitor episode {}	עקוב אחר פרק {}
+Monitor new seasons	עקוב אחר עונות חדשות
+Monitored filter	מסנן מעקב
+Monitoring	מעקב
+Monitoring updated for {} series.	המעקב עודכן עבור {} סדרות.
+Monitoring — {} series	מעקב — {} סדרות
+Monitoring…	מעדכן מעקב…
+Move folder	העבר תיקייה
+Move the files	העבר את הקבצים
+Move the files to the new folder	העבר את הקבצים לתיקייה החדשה
+Move the movie folder, or point the movie at another folder	העבר את תיקיית הסרט, או הפנה את הסרט לתיקייה אחרת
+Move the selected series into another root folder	העבר את הסדרות שנבחרו לתיקיית שורש אחרת
+Move the series folder, or point the series at another folder	העבר את תיקיית הסדרה, או הפנה את הסדרה לתיקייה אחרת
+Move to root folder…	העבר לתיקיית שורש…
+Move {} series	העבר {} סדרות
+Movie bulk actions	פעולות מרובות לסרטים
+Movie file deleted	קובץ הסרט נמחק
+Movie file renamed	שם קובץ הסרט שונה
+Movie file restored	קובץ הסרט שוחזר
+Movie for {}	סרט עבור {}
+Movie history	היסטוריית הסרט
+Movie import mode	מצב ייבוא סרטים
+Movie removed, and its folder deleted or recycled.	הסרט הוסר, והתיקייה שלו נמחקה או הועברה לסל המחזור.
+Movie source folder	תיקיית מקור של סרטים
+Movies (Tanukarr)	סרטים (Tanukarr)
+Moving…	מעביר…
+Naming & file settings	מתן שמות והגדרות קבצים
+Negate condition {}	שלול את התנאי {}
+New condition type	סוג תנאי חדש
+New profile	פרופיל חדש
+New root folder path	נתיב תיקיית השורש החדשה
+New tag	תגית חדשה
+Next	הבא
+No group	ללא קבוצה
+No indexer responded successfully. Check the source errors above, then try again.	אף אינדקסר לא הגיב בהצלחה. בדוק את שגיאות המקורות למעלה ונסה שוב.
+No match for “{}”	אין התאמה עבור “{}”
+No releases match these filters	אין גרסאות התואמות למסננים אלה
+No root folder	אין תיקיית שורש
+Nothing to import	אין מה לייבא
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	רק התיקייה הרשומה משתנה; השתמש בזה כשהקבצים כבר נמצאים שם, ואז סרוק את הדיסק.
+Open navigation	פתח ניווט
+Open on {}	פתח ב-{}
+Organize files	ארגן קבצים
+Organizing…	מארגן…
+Original language	שפת מקור
+Override for a mapped anime batch or a movie feature (single episode).	דריסה עבור אצוות אנימה ממופה או עבור קובץ הסרט הראשי (פרק בודד).
+Parsed title:	כותר מפוענח:
+Passkey	מפתח גישה (Passkey)
+Place above {}	מקם מעל {}
+Place at lowest preference	מקם בהעדפה הנמוכה ביותר
+Position of {}	מיקום של {}
+Prefer {} less	העדף את {} פחות
+Prefer {} more	העדף את {} יותר
+Preferred catalogue	קטלוג מועדף
+Preset title	כותר מוגדר מראש
+Prevent import lists from adding it again	מנע מרשימות ייבוא להוסיף אותו שוב
+Prevent import lists from adding them again	מנע מרשימות ייבוא להוסיף אותם שוב
+Preview again to review your changes.	הצג שוב תצוגה מקדימה כדי לסקור את השינויים.
+Previous	הקודם
+Progress of {}	התקדמות של {}
+Proxy hostname	שם המארח של הפרוקסי
+Proxy port	פורט הפרוקסי
+Quality cutoff	סף יעד לאיכות
+Quality profile for added shows	פרופיל איכות לסדרות שנוספו
+Quality sizes	גדלי איכות
+Quality: {} · Group: {} · Languages: {} · {}	איכות: {} · קבוצה: {} · שפות: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	תוכניות השאילתה כוללות שכבות גיבוי שייתכן שלא ירוצו. למקורות יש תקציב של 35 שניות; לחיפושים אינטראקטיביים יש תקציב כולל של 45 שניות.
+RSS sync interval	מרווח סנכרון RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	קריאה בלבד: בודק תיקיות של סדרות וסרטים, רשומות קבצים לא בטוחות וקבצים החסרים בדיסק.
+Reading the root folder…	קורא את תיקיית השורש…
+Regular expression	ביטוי רגולרי
+Rejected	נדחתה
+Release title	כותרת הגרסה
+Release type	סוג הגרסה
+Reload folders	טען תיקיות מחדש
+Remove condition	הסר תנאי
+Remove condition {}	הסר את התנאי {}
+Remove mapping	הסר מיפוי
+Remove the selected series from Kitsunarr	הסר את הסדרות שנבחרו מ-Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	להסיר את {} הסדרות שנבחרו ואת רשומות הפרקים שלהן מ-Kitsunarr?
+Remove {}	הסר את {}
+Remove {} from the blocklist	הסר את {} מרשימת החסימה
+Remove {} series	הסר {} סדרות
+Remove “{}” from Kitsunarr?	להסיר את “{}” מ-Kitsunarr?
+Remove…	הסר…
+Removing…	מסיר…
+Rename every file of the selected series to the naming settings	שנה את שמות כל הקבצים של הסדרות שנבחרו לפי הגדרות מתן השמות
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	לשנות את שמות כל הקבצים של {} הסדרות שנבחרו לפי הגדרות מתן השמות? השתמש בתצוגה המקדימה של שינוי שמות הקבצים בדף הסדרה כדי לבדוק את השמות קודם.
+Rename file	שנה שם קובץ
+Renaming mode	מצב שינוי שמות
+Required condition {}	תנאי נדרש {}
+Rescan disk	סרוק דיסק מחדש
+Restore media type	שחזר סוג מדיה
+Result	תוצאה
+Retention	זמן שמירה
+Review	סקירה
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	סקור את כותר היעד ואת התאמות הפרקים. קבצים, נתיבים, מעקב והיסטוריה נשמרים. פרקים שלא הותאמו שומרים על המספרים שלהם רק אם מספרים אלה פנויים בקטלוג החדש.
+Root folder for added shows	תיקיית שורש לסדרות שנוספו
+Save path	נתיב שמירה
+Saving…	שומר…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	סרוק תיקיית הורדות, סקור כל סרט והעתק או העבר את קובץ הסרט הראשי שלו יחד עם הכתוביות התואמות לספרייה. קובצי סרט ראשיים קיימים מוחלפים רק בשדרוגים.
+Search again	חפש שוב
+Search catalogues	חפש בקטלוגים
+Search diagnostics	אבחון חיפוש
+Search for missing episodes once imported	חפש פרקים חסרים לאחר הייבוא
+Search for {}	חפש את {}
+Search incomplete	החיפוש לא הושלם
+Search indexers for {}	חפש באינדקסרים את {}
+Search season packs for {}	חפש חבילות עונה עבור {}
+Search sources	מקורות חיפוש
+Search sources unavailable	מקורות החיפוש אינם זמינים
+Search the library	חפש בספרייה
+Search titles…	חפש כותרים…
+Search {}	חפש את {}
+Searching “{}”…	מחפש את “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	כותרות תיקיות העונה מחליפות את אלה של הקטלוג ב-{}. השאר ריק כדי לשמור את אלה של הקטלוג.
+Season {} title	כותרת עונה {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	בחר מקור למעלה, או הפעל חיפוש אינטראקטיבי בהגדרות האינדקסר. תגיות המקור יכולות גם להגביל אילו סדרות יחופשו.
+Select all	בחר הכל
+Select all movies on this page	בחר את כל הסרטים בדף זה
+Select every episode on this page	בחר את כל הפרקים בדף זה
+Select {}	בחר את {}
+Select {} S{}E{}	בחר את {} S{}E{}
+Send now	שלח עכשיו
+Send {} now	שלח את {} עכשיו
+Series & anime	סדרות ואנימה
+Series history	היסטוריית הסדרה
+Series of {}	סדרה של {}
+Series title, e.g. Severance (or tvdb:12345)	כותר סדרה, למשל Severance (או tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	מוצגות {} מתוך {} גרסאות. המסננים חלים על תוצאות אלה ללא חיפוש חוזר.
+Size (GiB)	גודל (GiB)
+Sort by	מיין לפי
+Specifications JSON	JSON של המפרטים
+Stalled torrent timeout	זמן קצוב לטורנטים תקועים
+TMDB API key	מפתח API של TMDB
+Tag existing titles	תייג כותרים קיימים
+Tag {}	תייג את {}
+Target catalogue	קטלוג יעד
+Target catalogue ID	מזהה בקטלוג היעד
+Test a release	בדוק גרסה
+Test details	פרטי הבדיקה
+Test file name	שם קובץ לבדיקה
+Test format	בדוק פורמט
+Test indexer flags	דגלי אינדקסר לבדיקה
+Test language	שפה לבדיקה
+Test original language	שפת מקור לבדיקה
+Test quality	איכות לבדיקה
+Test release title	כותרת גרסה לבדיקה
+Test release type	סוג גרסה לבדיקה
+Test size in GiB	גודל לבדיקה ב-GiB
+The catalogues share an external identity.	לקטלוגים יש זהות חיצונית משותפת.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	הבחירה מחליפה את מצב המעקב של כל פרק (ספיישלים משתנים רק באמצעות שתי האפשרויות של הספיישלים), ואז מוסיפה למעקב כל עונה שיש בה פרק במעקב. "ללא" גם מסירה את הסדרה ממעקב.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	קובץ הסרט הראשי והכתוביות התואמות משוחזרים לתיקיית הסרט. קבצים קיימים לעולם אינם נדרסים.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	שם התיקייה משתנה, או שהיא מועתקת ואז מוסרת כשמדובר בדיסק אחר. התיקייה החדשה חייבת להיות לא קיימת או ריקה.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	האינדקסרים שהגיבו לא החזירו גרסאות. מקורות אחרים נכשלו; בדוק את השגיאות למעלה ונסה שוב.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	תנאי זה נשמר כמות שהוא. השתמש בעריכת JSON כדי לשנות את השדות שלו; בדיקת הפורמט מדווחת אם ניתן להעריך אותו.
+Title pattern of {}	תבנית כותרת של {}
+Title to add	כותר להוספה
+Title to search for	כותר לחיפוש
+Title, group, quality or rejection reason…	כותרת, קבוצה, איכות או סיבת דחייה…
+Titles considered:	כותרים שנבדקו:
+Toggle colour theme	החלף ערכת צבעים
+Toggle sort direction	החלף כיוון מיון
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	נסה שם גרסה של סדרה, אנימה או סרט לפני השמירה. פעולה זו בודקת את תנאי הפורמט; ניקוד פרופיל האיכות ואישור ההורדה נפרדים.
+Ungroup	פרק קבוצה
+Ungroup {}	פרק את הקבוצה {}
+Unknown value ({})	ערך לא ידוע ({})
+Unmapped folders	תיקיות לא ממופות
+Unmatched titles	כותרים שלא הותאמו
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	הסר ממעקב פרקים שנמחקו (נמחקו ידנית או חסרים בדיסק; שדרוגים לעולם אינם מסירים ממעקב)
+Unwatched	לא נצפה
+Use global	השתמש בהגדרה הכללית
+Use global sizes for {}	השתמש בגדלים הכלליים עבור {}
+Valid days	ימי תוקף
+Value	ערך
+Values	ערכים
+View	תצוגה
+Wanted lists	רשימות מבוקשים
+Watched	נצפה
+Watched date	תאריך צפייה
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	כשאפשרות זו כבויה, הקבצים נשארים בדיסק. תיקיות שנמחקות עוברות לסל המחזור אם הוגדר.
+iCal feed address	כתובת פיד iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	שבה); כותרים מיובאים שומרים על התיקייה שלהם, הקבצים שלהם נסרקים במקומם, ואז מוחלת בחירת המעקב. שום דבר אינו מועבר ושמות אינם משתנים.
+{} Not renamed: {}	{} שמות לא שונו: {}
+{} factor	מקדם {}
+{} files imported. Review the results below.	{} קבצים יובאו. סקור את התוצאות שלהלן.
+{} imported, {} failed; see each folder.	{} יובאו, {} נכשלו; ראה כל תיקייה.
+{} imported.	{} יובאו.
+{} matched · {} kept at current numbers · {} new episodes	{} הותאמו · {} נשמרו במספרים הנוכחיים · {} פרקים חדשים
+{} min	{} דק'
+{} of {} folders selected	{} מתוך {} תיקיות נבחרו
+{} releases found, {} accepted, nothing grabbed.	נמצאו {} גרסאות, {} התקבלו, דבר לא נתפס.
+{} series and {} movies, {} files checked: {} issues.	{} סדרות ו-{} סרטים, {} קבצים נבדקו: {} בעיות.
+{} series moved.	{} סדרות הועברו.
+{} series moved; not moved: {}	{} סדרות הועברו; לא הועברו: {}
+{} series removed.	{} סדרות הוסרו.
+{} series removed; kept: {}	{} סדרות הוסרו; נשמרו: {}
+{} size of {}	גודל {} של {}
+{} size slider of {}	מחוון גודל {} של {}
+{} titles	{} כותרים
+{}: {} releases from {} indexer(s). {} responding.	{}: {} גרסאות מ-{} אינדקסרים. {} הגיבו.
+· API:	· API:
+· negated	· שלול
+· required	· נדרש
+· {} ms · {} releases	· {} ms · {} גרסאות
+— MiB per minute	— MiB לדקה
+— in library	— בספרייה
+→ current number	→ המספר הנוכחי
+or	או
+1 title	כותר אחד

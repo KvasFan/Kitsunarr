@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Senunúmering frá TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Senunúmering framreiknuð frá TheXEM (óstaðfest)
 Season {} (scene seasons {})	Sería {} (senuseríur {})
 {} (scene {})	{} (sena {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Hópur sérleyfis fundinn út frá tengslum í AniList eða MyAnimeList. Titlar úr sama sérleyfi sem bætt er við síðar bætast samt í hann. Fjarlægðir titlar haldast utan hans við endurnýjun.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Gæði án yfirskrifunar nota Stillingar › Gæði. Innan yfirskrifunar þýðir autt ótakmarkað; hámark núll þýðir einnig ótakmarkað.
+Add a movie, or change the search and watched filter.	Bættu við kvikmynd eða breyttu leitinni og áhorfssíunni.
+Add a root folder in Settings › Media management first.	Bættu fyrst við rótarmöppu í Stillingar › Miðlastjórnun.
+Add qualities to {}	Bæta gæðum við {}
+All decisions	Allar ákvarðanir
+All seasons	Allar seríur
+All selected flags must be present.	Öll valin flögg verða að vera til staðar.
+All sources	Allar uppsprettur
+Allow {}	Leyfa {}
+Also delete their folders and files (to the recycle bin when one is set)	Eyða einnig möppum þeirra og skrám (í ruslafötuna ef hún er stillt)
+Apply sources	Nota uppsprettur
+As the catalogue says	Eins og gagnaveitan segir til um
+Auto tag name	Heiti sjálfvirks merkis
+Automatic match / keep current number	Sjálfvirk pörun / halda núverandi númeri
+Automatic search for {}	Sjálfvirk leit að {}
+Below the root folder; use / for sub-folders.	Undir rótarmöppunni; notaðu / fyrir undirmöppur.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Best fyrst. Dragðu handföngin eða notaðu örvarnar til að endurraða. Gæði innan hóps eru jafnsett.
+Bulk actions	Fjöldaaðgerðir
+Catalogue ID	Auðkenni í gagnaveitu
+Catalogue changed.	Gagnaveitu breytt.
+Catalogue match	Pörun í gagnaveitu
+Change catalogue	Skipta um gagnaveitu
+Choose a movie…	Veldu kvikmynd…
+Choose a root folder…	Veldu rótarmöppu…
+Choose episodes for {}	Veldu þætti fyrir {}
+Choose which episodes are monitored, as when adding the series	Veldu hvaða þættir eru vaktaðir, eins og þegar þáttaröðinni er bætt við
+Choose which episodes of the selected series are monitored	Veldu hvaða þættir valinna þáttaraða eru vaktaðir
+Choose {}	Velja {}
+Clean library level	Stig hreinsunar safns
+Clean library tag	Merki hreinsunar safns
+Clear filters	Hreinsa síur
+Clear or adjust the filters to see more results.	Hreinsaðu eða breyttu síunum til að sjá fleiri niðurstöður.
+Codec of {}	Kóði fyrir {}
+Compression mode	Þjöppunarhamur
+Condition indexer flags	Flögg leitarþjóns í skilyrði
+Condition language	Tungumál í skilyrði
+Condition name	Heiti skilyrðis
+Condition name {}	Heiti skilyrðis {}
+Condition regular expression {}	Regluleg segð skilyrðis {}
+Condition size {}	Stærð skilyrðis {}
+Condition type	Tegund skilyrðis
+Condition value	Gildi skilyrðis
+Copy (keep the source)	Afrita (halda upprunanum)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Búðu til hóp úr gæðum, dragðu síðan fleiri gæði inn í hann eða notaðu hópvalin. Gæðaþak fylgir gæðum inn í hóp þeirra; þegar hópur er leystur upp er hæsti meðlimur hans notaður.
+Current folder:	Núverandi mappa:
+Custom format name	Heiti sérsniðs
+Delete tag {}	Eyða merki {}
+Delete the file of episode {}	Eyða skrá þáttar {}
+Delete the movie folder and its files	Eyða kvikmyndamöppunni og skrám hennar
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Eyða „{}“ og samsvarandi skjátextum? Þeir fara í ruslafötuna ef hún er stillt.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Eyða „{}“? Þáttaraðir þess og kvikmyndir verða áfram í safninu og bætast ekki sjálfvirkt aftur í það við endurnýjun.
+Detect from title	Greina út frá titli
+Disk scanned: {} {}	Diskur skannaður: {} {}
+Dismiss	Loka
+Don't change	Ekki breyta
+Don't import	Ekki flytja inn
+Done editing groups	Lokið við að breyta hópum
+Drag to reorder or move into a group	Dragðu til að endurraða eða færa í hóp
+Drag {}	Draga {}
+Drop here to move out of a group or to the lowest preference	Slepptu hér til að færa úr hópi eða í lægsta forgang
+Drop qualities here	Slepptu gæðum hér
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Hver þáttaröð heldur möppu sinni undir rótarmöppunni. Þáttaröð þar sem nýja mappan er til og er ekki tóm heldur núverandi möppu sinni.
+Edit JSON	Breyta JSON
+Edit group	Breyta hópi
+Edit groups	Breyta hópum
+Enter a non-negative test size within the supported range.	Sláðu inn prófunarstærð sem er ekki neikvæð og innan studds bils.
+Enter a valid test size in GiB.	Sláðu inn gilda prófunarstærð í GiB.
+Enter valid test indexer flags.	Sláðu inn gild prófunarflögg leitarþjóns.
+Episode matches	Pörun þátta
+Event type	Tegund atburðar
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Hver tegund skilyrða verður að passa. Innan einnar tegundar nægir að eitthvert skilyrði passi og öll áskilin skilyrði verða að passa. Neita snýr gildu skilyrði við.
+Every folder of this root folder belongs to a title already.	Allar möppur þessarar rótarmöppu tilheyra nú þegar titli.
+Exclude {}	Útiloka {}
+Exclusion catalogue	Gagnaveita útilokunar
+Exclusion id	Auðkenni útilokunar
+Exclusion title	Titill útilokunar
+Factor for {}	Stuðull fyrir {}
+Feed tags	Merki straums
+File name (optional)	Skráarheiti (valfrjálst)
+Filter by monitoring	Sía eftir vöktun
+Filter by watched state	Sía eftir áhorfsstöðu
+Filter release decisions	Sía ákvarðanir um útgáfur
+Filter releases	Sía útgáfur
+Find target title	Finna markatitil
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Möppur í rótarmöppu sem enginn titill notar. Hver þeirra er pöruð við gagnaveituna eftir heiti sínu (eða
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Fyrir óparaðar útgáfur skaltu bera greindan titil og þáttanúmer hér fyrir neðan saman við titlana sem komu til greina. Bættu við öðrum titli eða leiðréttu vörpun þátta í safninu ef þörf krefur.
+Format does not match	Sniðið passar ekki
+Format matches	Sniðið passar
+Full season	Heil sería
+Grab it now instead of waiting for the delay	Sækja núna í stað þess að bíða eftir töfinni
+Grab {}	Sækja {}
+Group	Hópur
+Group for {}	Hópur fyrir {}
+Group name	Heiti hóps
+Group {}	Búa til hóp úr {}
+Guided editor	Leiðbeinandi ritill
+I confirm that the target catalogue entry is the same title.	Ég staðfesti að færslan í markgagnaveitunni sé sami titill.
+Import	Flytja inn
+Import existing folders	Flytja inn fyrirliggjandi möppur
+Import mode	Innflutningshamur
+Import {}	Flytja inn {}
+Imported from movie folder	Flutt inn úr kvikmyndamöppu
+Include in file names ({} token)	Hafa með í skráarnöfnum ({} tóki)
+Include {}	Hafa {} með
+Indexer flags (bitmask)	Flögg leitarþjóns (bitamaski)
+Jellyfin library	Jellyfin-safn
+Jellyfin user	Jellyfin-notandi
+Jellyfin watched sync can update this status.	Samstilling áhorfs við Jellyfin getur uppfært þessa stöðu.
+Key name	Heiti lykils
+Key permission	Heimild lykils
+Kind of {}	Tegund fyrir {}
+Label of {}	Merkimiði fyrir {}
+Language	Tungumál
+Library import	Innflutningur safns
+List exclusions	Útilokanir lista
+Loading sources…	Hleð uppsprettum…
+Main navigation	Aðalvalmynd
+Mark unwatched	Merkja sem óáhorft
+Mark watched	Merkja sem áhorft
+Match	Para
+Match any other language	Passa við hvaða annað tungumál sem er
+Match episode {}	Para þátt {}
+Match for {}	Pörun fyrir {}
+Matching series	Samsvarandi þáttaraðir
+Matching subtitles follow the file's new name.	Samsvarandi skjátextar fylgja nýju heiti skrárinnar.
+Maximum GiB (inclusive)	Hámark GiB (meðtalið)
+Maximum size	Hámarksstærð
+Maximum year	Hámarksár
+Minimum GiB (exclusive)	Lágmark GiB (ekki meðtalið)
+Minimum age	Lágmarksaldur
+Minimum level	Lágmarksstig
+Minimum score increment for upgrades	Lágmarkshækkun stiga fyrir uppfærslur
+Minimum year	Lágmarksár
+Monitor episode {}	Vakta þátt {}
+Monitor new seasons	Vakta nýjar seríur
+Monitored filter	Vöktunarsía
+Monitoring	Vöktun
+Monitoring updated for {} series.	Vöktun uppfærð fyrir {} þáttaraðir.
+Monitoring — {} series	Vöktun — {} þáttaraðir
+Monitoring…	Uppfæri vöktun…
+Move folder	Færa möppu
+Move the files	Færa skrárnar
+Move the files to the new folder	Færa skrárnar í nýju möppuna
+Move the movie folder, or point the movie at another folder	Færa kvikmyndamöppuna eða beina kvikmyndinni á aðra möppu
+Move the selected series into another root folder	Færa valdar þáttaraðir í aðra rótarmöppu
+Move the series folder, or point the series at another folder	Færa möppu þáttaraðarinnar eða beina þáttaröðinni á aðra möppu
+Move to root folder…	Færa í rótarmöppu…
+Move {} series	Færa {} þáttaraðir
+Movie bulk actions	Fjöldaaðgerðir kvikmynda
+Movie file deleted	Kvikmyndaskrá eytt
+Movie file renamed	Kvikmyndaskrá endurnefnd
+Movie file restored	Kvikmyndaskrá endurheimt
+Movie for {}	Kvikmynd fyrir {}
+Movie history	Saga kvikmyndar
+Movie import mode	Innflutningshamur kvikmynda
+Movie removed, and its folder deleted or recycled.	Kvikmynd fjarlægð og möppu hennar eytt eða hún sett í ruslafötu.
+Movie source folder	Upprunamappa kvikmynda
+Movies (Tanukarr)	Kvikmyndir (Tanukarr)
+Moving…	Færi…
+Naming & file settings	Nafngiftir og skráastillingar
+Negate condition {}	Neita skilyrði {}
+New condition type	Ný tegund skilyrðis
+New profile	Nýtt snið
+New root folder path	Slóð nýrrar rótarmöppu
+New tag	Nýtt merki
+Next	Áfram
+No group	Enginn hópur
+No indexer responded successfully. Check the source errors above, then try again.	Enginn leitarþjónn svaraði án villu. Athugaðu villur uppsprettnanna hér fyrir ofan og reyndu svo aftur.
+No match for “{}”	Engin samsvörun fyrir „{}“
+No releases match these filters	Engar útgáfur passa við þessar síur
+No root folder	Engin rótarmappa
+Nothing to import	Ekkert til að flytja inn
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Aðeins skráða mappan breytist; notaðu þetta þegar skrárnar eru þegar þar og skannaðu síðan diskinn.
+Open navigation	Opna valmynd
+Open on {}	Opna á {}
+Organize files	Skipuleggja skrár
+Organizing…	Skipulegg…
+Original language	Upprunalegt tungumál
+Override for a mapped anime batch or a movie feature (single episode).	Yfirskrifun fyrir varpaðan anime-pakka eða aðalskrá kvikmyndar (stakur þáttur).
+Parsed title:	Greindur titill:
+Passkey	Aðgangslykill
+Place above {}	Setja fyrir ofan {}
+Place at lowest preference	Setja í lægsta forgang
+Position of {}	Staða fyrir {}
+Prefer {} less	Lækka forgang {}
+Prefer {} more	Hækka forgang {}
+Preferred catalogue	Æskileg gagnaveita
+Preset title	Heiti forstillingar
+Prevent import lists from adding it again	Koma í veg fyrir að innflutningslistar bæti titlinum við aftur
+Prevent import lists from adding them again	Koma í veg fyrir að innflutningslistar bæti þeim við aftur
+Preview again to review your changes.	Forskoðaðu aftur til að yfirfara breytingarnar.
+Previous	Fyrri
+Progress of {}	Framvinda fyrir {}
+Proxy hostname	Hýsilnafn proxy
+Proxy port	Gátt proxy
+Quality cutoff	Gæðaþak
+Quality profile for added shows	Gæðasnið fyrir þáttaraðir sem bætt er við
+Quality sizes	Stærðir gæða
+Quality: {} · Group: {} · Languages: {} · {}	Gæði: {} · Hópur: {} · Tungumál: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Leitaráætlanir innihalda varaþrep sem keyra ekki endilega. Uppsprettur hafa 35 sekúndna tímaramma; gagnvirkar leitir hafa 45 sekúndna heildartímaramma.
+RSS sync interval	Tímabil RSS-samstillingar
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Aðeins lestur: athugar möppur þáttaraða og kvikmynda, óöruggar skráafærslur og skrár sem vantar á diski.
+Reading the root folder…	Les rótarmöppuna…
+Regular expression	Regluleg segð
+Rejected	Hafnað
+Release title	Titill útgáfu
+Release type	Tegund útgáfu
+Reload folders	Endurhlaða möppum
+Remove condition	Fjarlægja skilyrði
+Remove condition {}	Fjarlægja skilyrði {}
+Remove mapping	Fjarlægja vörpun
+Remove the selected series from Kitsunarr	Fjarlægja valdar þáttaraðir úr Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Fjarlægja {} valdar þáttaraðir og þáttafærslur þeirra úr Kitsunarr?
+Remove {}	Fjarlægja {}
+Remove {} from the blocklist	Fjarlægja {} af bannlistanum
+Remove {} series	Fjarlægja {} þáttaraðir
+Remove “{}” from Kitsunarr?	Fjarlægja „{}“ úr Kitsunarr?
+Remove…	Fjarlægja…
+Removing…	Fjarlægi…
+Rename every file of the selected series to the naming settings	Endurnefna allar skrár valinna þáttaraða samkvæmt stillingum um nafngiftir
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Endurnefna allar skrár {} valinna þáttaraða samkvæmt stillingum um nafngiftir? Notaðu forskoðunina Endurnefna skrár hjá þáttaröð til að athuga nöfnin fyrst.
+Rename file	Endurnefna skrá
+Renaming mode	Endurnefningarhamur
+Required condition {}	Áskilið skilyrði {}
+Rescan disk	Skanna disk aftur
+Restore media type	Endurheimta miðlategund
+Result	Niðurstaða
+Retention	Varðveisla
+Review	Yfirfara
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Yfirfarðu markatitilinn og pörun þátta. Skrár, slóðir, vöktun og saga eru geymd. Óparaðir þættir halda númerum sínum aðeins ef þau númer eru laus í nýju gagnaveitunni.
+Root folder for added shows	Rótarmappa fyrir þáttaraðir sem bætt er við
+Save path	Vistunarslóð
+Saving…	Vista…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Skannaðu niðurhalsmöppu, yfirfarðu hverja kvikmynd og afritaðu eða færðu aðalskrá hennar ásamt samsvarandi skjátextum í safnið. Fyrirliggjandi aðalskrám er aðeins skipt út fyrir uppfærslur.
+Search again	Leita aftur
+Search catalogues	Leita í gagnaveitum
+Search diagnostics	Leitargreining
+Search for missing episodes once imported	Leita að þáttum sem vantar eftir innflutning
+Search for {}	Leita að {}
+Search incomplete	Leit ófullgerð
+Search indexers for {}	Leita hjá leitarþjónum að {}
+Search season packs for {}	Leita að seríupökkum fyrir {}
+Search sources	Leitaruppsprettur
+Search sources unavailable	Leitaruppsprettur ekki tiltækar
+Search the library	Leita í safninu
+Search titles…	Leita að titlum…
+Search {}	Leita í {}
+Searching “{}”…	Leita að „{}“…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Titlar seríumappa koma í stað titla gagnaveitunnar í {}. Hafðu autt til að halda titlum gagnaveitunnar.
+Season {} title	Titill seríu {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Veldu uppsprettu hér fyrir ofan eða virkjaðu gagnvirka leit í stillingum leitarþjóns. Merki uppsprettna geta einnig takmarkað að hvaða þáttaröðum er leitað.
+Select all	Velja allt
+Select all movies on this page	Velja allar kvikmyndir á þessari síðu
+Select every episode on this page	Velja alla þætti á þessari síðu
+Select {}	Velja {}
+Select {} S{}E{}	Velja {} S{}E{}
+Send now	Senda núna
+Send {} now	Senda {} núna
+Series & anime	Þáttaraðir og anime
+Series history	Saga þáttaraðar
+Series of {}	Þáttaröð fyrir {}
+Series title, e.g. Severance (or tvdb:12345)	Titill þáttaraðar, t.d. Severance (eða tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Sýni {} af {} útgáfum. Síur gilda um þessar niðurstöður án þess að leita aftur.
+Size (GiB)	Stærð (GiB)
+Sort by	Raða eftir
+Specifications JSON	JSON skilgreininga
+Stalled torrent timeout	Tímamörk stöðvaðra torrenta
+TMDB API key	TMDB API-lykill
+Tag existing titles	Merkja fyrirliggjandi titla
+Tag {}	Merkja með {}
+Target catalogue	Markgagnaveita
+Target catalogue ID	Auðkenni í markgagnaveitu
+Test a release	Prófa útgáfu
+Test details	Upplýsingar um prófun
+Test file name	Skráarheiti til prófunar
+Test format	Prófa snið
+Test indexer flags	Flögg leitarþjóns til prófunar
+Test language	Tungumál til prófunar
+Test original language	Upprunalegt tungumál til prófunar
+Test quality	Gæði til prófunar
+Test release title	Titill útgáfu til prófunar
+Test release type	Tegund útgáfu til prófunar
+Test size in GiB	Stærð til prófunar í GiB
+The catalogues share an external identity.	Gagnaveiturnar deila ytra auðkenni.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Valið kemur í stað vöktunarstöðu allra þátta (sérþáttum er aðeins breytt með sérþáttavalkostunum tveimur) og vaktar síðan hverja seríu sem hefur vaktaðan þátt. „Ekkert“ hættir einnig að vakta þáttaröðina.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Aðalskráin og samsvarandi skjátextar eru endurheimt í kvikmyndamöppuna. Aldrei er skrifað yfir fyrirliggjandi skrár.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Mappan er endurnefnd, eða afrituð og síðan fjarlægð ef um annan disk er að ræða. Nýja mappan má ekki vera til eða verður að vera tóm.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Leitarþjónarnir sem svöruðu skiluðu engum útgáfum. Aðrar uppsprettur brugðust; athugaðu villurnar hér fyrir ofan og reyndu aftur.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Þetta skilyrði er varðveitt. Notaðu Breyta JSON til að breyta reitum þess; Prófa snið segir til um hvort hægt sé að meta það.
+Title pattern of {}	Titilmynstur fyrir {}
+Title to add	Titill til að bæta við
+Title to search for	Titill til að leita að
+Title, group, quality or rejection reason…	Titill, hópur, gæði eða höfnunarástæða…
+Titles considered:	Titlar sem komu til greina:
+Toggle colour theme	Skipta um litaþema
+Toggle sort direction	Snúa röðun við
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Prófaðu heiti útgáfu sjónvarpsþáttar, anime eða kvikmyndar áður en þú vistar. Þetta athugar skilyrði sniðsins; stig gæðasniðs og samþykki niðurhals eru aðskilin.
+Ungroup	Leysa upp hóp
+Ungroup {}	Leysa upp hópinn {}
+Unknown value ({})	Óþekkt gildi ({})
+Unmapped folders	Óvarpaðar möppur
+Unmatched titles	Óparaðir titlar
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Hætta að vakta eydda þætti (eytt handvirkt eða vantar á diski; uppfærslur hætta aldrei vöktun)
+Unwatched	Óáhorft
+Use global	Nota almennt
+Use global sizes for {}	Nota almennar stærðir fyrir {}
+Valid days	Gildistími í dögum
+Value	Gildi
+Values	Gildi
+View	Sýn
+Wanted lists	Listar yfir eftirsótt
+Watched	Áhorft
+Watched date	Dagsetning áhorfs
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Þegar slökkt er á þessum valkosti verða skrár áfram á diski. Eyddar möppur fara í ruslafötuna ef hún er stillt.
+iCal feed address	Vistfang iCal-straums
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	merkinu í henni); innfluttir titlar halda möppu sinni, skrár þeirra eru skannaðar á staðnum og síðan gildir vöktunarvalið. Engu er fært eða endurnefnt.
+{} Not renamed: {}	{} Ekki endurnefnt: {}
+{} factor	Stuðull {}
+{} files imported. Review the results below.	{} skrár fluttar inn. Yfirfarðu niðurstöðurnar hér fyrir neðan.
+{} imported, {} failed; see each folder.	{} flutt inn, {} mistókust; sjá hverja möppu.
+{} imported.	{} flutt inn.
+{} matched · {} kept at current numbers · {} new episodes	{} paraðir · {} halda núverandi númerum · {} nýir þættir
+{} min	{} mín.
+{} of {} folders selected	{} af {} möppum valdar
+{} releases found, {} accepted, nothing grabbed.	{} útgáfur fundust, {} samþykktar, ekkert sótt.
+{} series and {} movies, {} files checked: {} issues.	{} þáttaraðir og {} kvikmyndir, {} skrár athugaðar: {} vandamál.
+{} series moved.	{} þáttaraðir færðar.
+{} series moved; not moved: {}	{} þáttaraðir færðar; ekki færðar: {}
+{} series removed.	{} þáttaraðir fjarlægðar.
+{} series removed; kept: {}	{} þáttaraðir fjarlægðar; haldið: {}
+{} size of {}	{}: stærð fyrir {}
+{} size slider of {}	{}: stærðarsleði fyrir {}
+{} titles	{} titla
+{}: {} releases from {} indexer(s). {} responding.	{}: {} útgáfur frá {} leitarþjóni/-þjónum. {} svöruðu.
+· API:	· API:
+· negated	· neitað
+· required	· áskilið
+· {} ms · {} releases	· {} ms · {} útgáfur
+— MiB per minute	— MiB á mínútu
+— in library	— í safni
+→ current number	→ núverandi númer
+or	eða
+1 title	1 titill

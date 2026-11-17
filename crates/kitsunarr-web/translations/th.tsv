@@ -966,3 +966,347 @@ Scene numbering from TheXEM	ลำดับเลขซีนจาก TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	ลำดับเลขซีนที่อนุมานจาก TheXEM (ยังไม่ยืนยัน)
 Season {} (scene seasons {})	ซีซัน {} (ซีซันซีน {})
 {} (scene {})	{} (ซีน {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	กลุ่มแฟรนไชส์ที่พบจากความสัมพันธ์ใน AniList หรือ MyAnimeList ชื่อเรื่องจากแฟรนไชส์เดียวกันที่เพิ่มภายหลังจะเข้าร่วมกลุ่มด้วย ชื่อเรื่องที่ลบออกจะไม่กลับเข้ามาเมื่อรีเฟรช
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	คุณภาพที่ไม่มีค่าแทนที่จะใช้ การตั้งค่า › คุณภาพ ภายในค่าแทนที่ การเว้นว่างหมายถึงไม่จำกัด; ค่าสูงสุดเป็นศูนย์ก็หมายถึงไม่จำกัดเช่นกัน
+Add a movie, or change the search and watched filter.	เพิ่มภาพยนตร์ หรือเปลี่ยนการค้นหาและตัวกรองสถานะดูแล้ว
+Add a root folder in Settings › Media management first.	เพิ่มโฟลเดอร์หลักใน การตั้งค่า › การจัดการสื่อ ก่อน
+Add qualities to {}	เพิ่มคุณภาพลงใน {}
+All decisions	การตัดสินทั้งหมด
+All seasons	ทุกซีซัน
+All selected flags must be present.	ต้องมีแฟล็กที่เลือกทั้งหมด
+All sources	ทุกแหล่งที่มา
+Allow {}	อนุญาต {}
+Also delete their folders and files (to the recycle bin when one is set)	ลบโฟลเดอร์และไฟล์ด้วย (ไปยังถังรีไซเคิลหากตั้งค่าไว้)
+Apply sources	ใช้แหล่งที่มา
+As the catalogue says	ตามแคตตาล็อก
+Auto tag name	ชื่อแท็กอัตโนมัติ
+Automatic match / keep current number	จับคู่อัตโนมัติ / คงหมายเลขปัจจุบัน
+Automatic search for {}	ค้นหาอัตโนมัติสำหรับ {}
+Below the root folder; use / for sub-folders.	อยู่ใต้โฟลเดอร์หลัก; ใช้ / สำหรับโฟลเดอร์ย่อย
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	อันดับแรกดีที่สุด ลากที่จับหรือใช้ลูกศรเพื่อจัดลำดับใหม่ คุณภาพภายในกลุ่มมีอันดับเท่ากัน
+Bulk actions	การดำเนินการหลายรายการ
+Catalogue ID	ID แคตตาล็อก
+Catalogue changed.	เปลี่ยนแคตตาล็อกแล้ว
+Catalogue match	การจับคู่แคตตาล็อก
+Change catalogue	เปลี่ยนแคตตาล็อก
+Choose a movie…	เลือกภาพยนตร์…
+Choose a root folder…	เลือกโฟลเดอร์หลัก…
+Choose episodes for {}	เลือกตอนของ {}
+Choose which episodes are monitored, as when adding the series	เลือกตอนที่จะติดตาม เหมือนตอนเพิ่มซีรีส์
+Choose which episodes of the selected series are monitored	เลือกตอนที่จะติดตามของซีรีส์ที่เลือก
+Choose {}	เลือก {}
+Clean library level	ระดับการล้างคลัง
+Clean library tag	แท็กการล้างคลัง
+Clear filters	ล้างตัวกรอง
+Clear or adjust the filters to see more results.	ล้างหรือปรับตัวกรองเพื่อดูผลลัพธ์เพิ่มเติม
+Codec of {}	โคเดกของ {}
+Compression mode	โหมดการบีบอัด
+Condition indexer flags	แฟล็กอินเด็กเซอร์ของเงื่อนไข
+Condition language	ภาษาของเงื่อนไข
+Condition name	ชื่อเงื่อนไข
+Condition name {}	ชื่อเงื่อนไข {}
+Condition regular expression {}	นิพจน์ปกติของเงื่อนไข {}
+Condition size {}	ขนาดของเงื่อนไข {}
+Condition type	ประเภทเงื่อนไข
+Condition value	ค่าของเงื่อนไข
+Copy (keep the source)	คัดลอก (เก็บต้นทางไว้)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	สร้างกลุ่มจากคุณภาพหนึ่ง แล้วลากคุณภาพอื่นเข้าไปหรือใช้ตัวเลือกกลุ่ม จุดตัดจะตามคุณภาพเข้าไปในกลุ่ม; การยกเลิกกลุ่มจะใช้สมาชิกที่สูงที่สุดของกลุ่ม
+Current folder:	โฟลเดอร์ปัจจุบัน:
+Custom format name	ชื่อรูปแบบกำหนดเอง
+Delete tag {}	ลบแท็ก {}
+Delete the file of episode {}	ลบไฟล์ของตอน {}
+Delete the movie folder and its files	ลบโฟลเดอร์ภาพยนตร์และไฟล์ในนั้น
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	ลบ “{}” และคำบรรยายที่ตรงกัน? ไฟล์จะไปยังถังรีไซเคิลหากตั้งค่าไว้
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	ลบ “{}”? ซีรีส์และภาพยนตร์ในนั้นยังคงอยู่ในคลังและจะไม่กลับเข้าร่วมโดยอัตโนมัติเมื่อรีเฟรช
+Detect from title	ตรวจจับจากชื่อเรื่อง
+Disk scanned: {} {}	สแกนดิสก์แล้ว: {} {}
+Dismiss	ปิด
+Don't change	ไม่เปลี่ยน
+Don't import	ไม่นำเข้า
+Done editing groups	แก้ไขกลุ่มเสร็จแล้ว
+Drag to reorder or move into a group	ลากเพื่อจัดลำดับใหม่หรือย้ายเข้ากลุ่ม
+Drag {}	ลาก {}
+Drop here to move out of a group or to the lowest preference	วางที่นี่เพื่อย้ายออกจากกลุ่มหรือไปยังลำดับความสำคัญต่ำสุด
+Drop qualities here	วางคุณภาพที่นี่
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	แต่ละซีรีส์จะคงโฟลเดอร์ของตนไว้ใต้โฟลเดอร์หลัก ซีรีส์ที่โฟลเดอร์ใหม่มีอยู่แล้วและไม่ว่างจะคงโฟลเดอร์ปัจจุบันไว้
+Edit JSON	แก้ไข JSON
+Edit group	แก้ไขกลุ่ม
+Edit groups	แก้ไขกลุ่ม
+Enter a non-negative test size within the supported range.	ป้อนขนาดทดสอบที่ไม่ติดลบและอยู่ในช่วงที่รองรับ
+Enter a valid test size in GiB.	ป้อนขนาดทดสอบที่ถูกต้องเป็น GiB
+Enter valid test indexer flags.	ป้อนแฟล็กอินเด็กเซอร์สำหรับทดสอบที่ถูกต้อง
+Episode matches	การจับคู่ตอน
+Event type	ประเภทเหตุการณ์
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	เงื่อนไขทุกประเภทต้องตรงกัน ภายในประเภทเดียวกัน เงื่อนไขใดก็ได้ตรงกันก็พอ แต่เงื่อนไขที่จำเป็นทุกข้อต้องตรงกัน กลับเงื่อนไขจะกลับผลของเงื่อนไขที่ถูกต้อง
+Every folder of this root folder belongs to a title already.	ทุกโฟลเดอร์ในโฟลเดอร์หลักนี้เป็นของชื่อเรื่องแล้ว
+Exclude {}	ยกเว้น {}
+Exclusion catalogue	แคตตาล็อกของรายการยกเว้น
+Exclusion id	ID ของรายการยกเว้น
+Exclusion title	ชื่อเรื่องของรายการยกเว้น
+Factor for {}	ตัวคูณสำหรับ {}
+Feed tags	แท็กฟีด
+File name (optional)	ชื่อไฟล์ (ไม่บังคับ)
+Filter by monitoring	กรองตามการติดตาม
+Filter by watched state	กรองตามสถานะดูแล้ว
+Filter release decisions	กรองการตัดสินรีลีส
+Filter releases	กรองรีลีส
+Find target title	ค้นหาชื่อเรื่องเป้าหมาย
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	โฟลเดอร์ในโฟลเดอร์หลักที่ไม่มีชื่อเรื่องใดใช้ แต่ละโฟลเดอร์จะถูกจับคู่กับแคตตาล็อกตามชื่อ (หรือแท็ก
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	สำหรับรีลีสที่ไม่ตรงกัน ให้ตรวจสอบชื่อเรื่องที่แยกวิเคราะห์ได้และหมายเลขตอนด้านล่างเทียบกับชื่อเรื่องที่พิจารณา เพิ่มชื่อเรื่องสำรองหรือแก้ไขการแมปตอนในคลังเมื่อจำเป็น
+Format does not match	รูปแบบไม่ตรงกัน
+Format matches	รูปแบบตรงกัน
+Full season	เต็มซีซัน
+Grab it now instead of waiting for the delay	คว้าเลยตอนนี้แทนการรอการหน่วงเวลา
+Grab {}	คว้า {}
+Group	จัดกลุ่ม
+Group for {}	กลุ่มสำหรับ {}
+Group name	ชื่อกลุ่ม
+Group {}	จัดกลุ่ม {}
+Guided editor	ตัวแก้ไขแบบแนะนำ
+I confirm that the target catalogue entry is the same title.	ฉันยืนยันว่ารายการในแคตตาล็อกเป้าหมายเป็นชื่อเรื่องเดียวกัน
+Import	นำเข้า
+Import existing folders	นำเข้าโฟลเดอร์ที่มีอยู่
+Import mode	โหมดการนำเข้า
+Import {}	นำเข้า {}
+Imported from movie folder	นำเข้าจากโฟลเดอร์ภาพยนตร์
+Include in file names ({} token)	รวมในชื่อไฟล์ (โทเค็น {})
+Include {}	รวม {}
+Indexer flags (bitmask)	แฟล็กอินเด็กเซอร์ (บิตมาสก์)
+Jellyfin library	คลัง Jellyfin
+Jellyfin user	ผู้ใช้ Jellyfin
+Jellyfin watched sync can update this status.	การซิงค์สถานะดูแล้วของ Jellyfin อาจอัปเดตสถานะนี้
+Key name	ชื่อคีย์
+Key permission	สิทธิ์ของคีย์
+Kind of {}	ประเภทของ {}
+Label of {}	ป้ายกำกับของ {}
+Language	ภาษา
+Library import	นำเข้าคลัง
+List exclusions	รายการยกเว้นของรายการ
+Loading sources…	กำลังโหลดแหล่งที่มา…
+Main navigation	การนำทางหลัก
+Mark unwatched	ทำเครื่องหมายว่ายังไม่ได้ดู
+Mark watched	ทำเครื่องหมายว่าดูแล้ว
+Match	จับคู่
+Match any other language	ตรงกับภาษาอื่นใดก็ได้
+Match episode {}	จับคู่ตอน {}
+Match for {}	การจับคู่สำหรับ {}
+Matching series	ซีรีส์ที่ตรงกัน
+Matching subtitles follow the file's new name.	คำบรรยายที่ตรงกันจะเปลี่ยนตามชื่อใหม่ของไฟล์
+Maximum GiB (inclusive)	GiB สูงสุด (รวมค่านี้)
+Maximum size	ขนาดสูงสุด
+Maximum year	ปีสูงสุด
+Minimum GiB (exclusive)	GiB ต่ำสุด (ไม่รวมค่านี้)
+Minimum age	อายุขั้นต่ำ
+Minimum level	ระดับต่ำสุด
+Minimum score increment for upgrades	คะแนนที่เพิ่มขึ้นขั้นต่ำสำหรับการอัปเกรด
+Minimum year	ปีต่ำสุด
+Monitor episode {}	ติดตามตอน {}
+Monitor new seasons	ติดตามซีซันใหม่
+Monitored filter	ตัวกรองการติดตาม
+Monitoring	การติดตาม
+Monitoring updated for {} series.	อัปเดตการติดตามของ {} ซีรีส์แล้ว
+Monitoring — {} series	การติดตาม — {} ซีรีส์
+Monitoring…	การติดตาม…
+Move folder	ย้ายโฟลเดอร์
+Move the files	ย้ายไฟล์
+Move the files to the new folder	ย้ายไฟล์ไปยังโฟลเดอร์ใหม่
+Move the movie folder, or point the movie at another folder	ย้ายโฟลเดอร์ภาพยนตร์ หรือชี้ภาพยนตร์ไปยังโฟลเดอร์อื่น
+Move the selected series into another root folder	ย้ายซีรีส์ที่เลือกไปยังโฟลเดอร์หลักอื่น
+Move the series folder, or point the series at another folder	ย้ายโฟลเดอร์ซีรีส์ หรือชี้ซีรีส์ไปยังโฟลเดอร์อื่น
+Move to root folder…	ย้ายไปยังโฟลเดอร์หลัก…
+Move {} series	ย้าย {} ซีรีส์
+Movie bulk actions	การดำเนินการหลายรายการสำหรับภาพยนตร์
+Movie file deleted	ลบไฟล์ภาพยนตร์แล้ว
+Movie file renamed	เปลี่ยนชื่อไฟล์ภาพยนตร์แล้ว
+Movie file restored	กู้คืนไฟล์ภาพยนตร์แล้ว
+Movie for {}	ภาพยนตร์สำหรับ {}
+Movie history	ประวัติภาพยนตร์
+Movie import mode	โหมดการนำเข้าภาพยนตร์
+Movie removed, and its folder deleted or recycled.	ลบภาพยนตร์แล้ว และลบโฟลเดอร์หรือย้ายไปถังรีไซเคิลแล้ว
+Movie source folder	โฟลเดอร์ต้นทางของภาพยนตร์
+Movies (Tanukarr)	ภาพยนตร์ (Tanukarr)
+Moving…	กำลังย้าย…
+Naming & file settings	การตั้งชื่อและการตั้งค่าไฟล์
+Negate condition {}	กลับเงื่อนไข {}
+New condition type	ประเภทเงื่อนไขใหม่
+New profile	โปรไฟล์ใหม่
+New root folder path	พาธโฟลเดอร์หลักใหม่
+New tag	แท็กใหม่
+Next	ถัดไป
+No group	ไม่มีกลุ่ม
+No indexer responded successfully. Check the source errors above, then try again.	ไม่มีอินเด็กเซอร์ใดตอบกลับสำเร็จ ตรวจสอบข้อผิดพลาดของแหล่งที่มาด้านบน แล้วลองอีกครั้ง
+No match for “{}”	ไม่มีผลที่ตรงกับ “{}”
+No releases match these filters	ไม่มีรีลีสที่ตรงกับตัวกรองเหล่านี้
+No root folder	ไม่มีโฟลเดอร์หลัก
+Nothing to import	ไม่มีอะไรให้นำเข้า
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	เปลี่ยนเฉพาะโฟลเดอร์ที่บันทึกไว้; ใช้ตัวเลือกนี้เมื่อไฟล์อยู่ที่นั่นแล้ว จากนั้นสแกนดิสก์
+Open navigation	เปิดการนำทาง
+Open on {}	เปิดบน {}
+Organize files	จัดระเบียบไฟล์
+Organizing…	กำลังจัดระเบียบ…
+Original language	ภาษาต้นฉบับ
+Override for a mapped anime batch or a movie feature (single episode).	ค่าแทนที่สำหรับชุดอนิเมะที่แมปไว้หรือไฟล์หลักของภาพยนตร์ (ตอนเดียว)
+Parsed title:	ชื่อเรื่องที่แยกวิเคราะห์ได้:
+Passkey	Passkey
+Place above {}	วางไว้เหนือ {}
+Place at lowest preference	วางไว้ที่ลำดับความสำคัญต่ำสุด
+Position of {}	ตำแหน่งของ {}
+Prefer {} less	ให้ความสำคัญกับ {} น้อยลง
+Prefer {} more	ให้ความสำคัญกับ {} มากขึ้น
+Preferred catalogue	แคตตาล็อกที่ต้องการ
+Preset title	ชื่อพรีเซ็ต
+Prevent import lists from adding it again	ป้องกันไม่ให้รายการนำเข้าเพิ่มกลับมาอีก
+Prevent import lists from adding them again	ป้องกันไม่ให้รายการนำเข้าเพิ่มกลับมาอีก
+Preview again to review your changes.	ดูตัวอย่างอีกครั้งเพื่อตรวจสอบการเปลี่ยนแปลงของคุณ
+Previous	ก่อนหน้า
+Progress of {}	ความคืบหน้าของ {}
+Proxy hostname	ชื่อโฮสต์พร็อกซี
+Proxy port	พอร์ตพร็อกซี
+Quality cutoff	จุดตัดคุณภาพ
+Quality profile for added shows	โปรไฟล์คุณภาพสำหรับซีรีส์ที่เพิ่ม
+Quality sizes	ขนาดคุณภาพ
+Quality: {} · Group: {} · Languages: {} · {}	คุณภาพ: {} · กลุ่ม: {} · ภาษา: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	แผนการค้นหารวมขั้นสำรองที่อาจไม่ได้ทำงาน แต่ละแหล่งที่มามีเวลา 35 วินาที; การค้นหาแบบโต้ตอบมีเวลารวม 45 วินาที
+RSS sync interval	ช่วงเวลาซิงค์ RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	อ่านอย่างเดียว: ตรวจสอบโฟลเดอร์ซีรีส์และภาพยนตร์ ระเบียนไฟล์ที่ไม่ปลอดภัย และไฟล์ที่หายไปจากดิสก์
+Reading the root folder…	กำลังอ่านโฟลเดอร์หลัก…
+Regular expression	นิพจน์ปกติ
+Rejected	ถูกปฏิเสธ
+Release title	ชื่อรีลีส
+Release type	ประเภทรีลีส
+Reload folders	โหลดโฟลเดอร์ใหม่
+Remove condition	ลบเงื่อนไข
+Remove condition {}	ลบเงื่อนไข {}
+Remove mapping	ลบการแมป
+Remove the selected series from Kitsunarr	ลบซีรีส์ที่เลือกออกจาก Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	ลบ {} ซีรีส์ที่เลือกและระเบียนตอนออกจาก Kitsunarr?
+Remove {}	ลบ {}
+Remove {} from the blocklist	ลบ {} ออกจากรายการบล็อก
+Remove {} series	ลบ {} ซีรีส์
+Remove “{}” from Kitsunarr?	ลบ “{}” ออกจาก Kitsunarr?
+Remove…	ลบ…
+Removing…	กำลังลบ…
+Rename every file of the selected series to the naming settings	เปลี่ยนชื่อทุกไฟล์ของซีรีส์ที่เลือกตามการตั้งค่าการตั้งชื่อ
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	เปลี่ยนชื่อทุกไฟล์ของ {} ซีรีส์ที่เลือกตามการตั้งค่าการตั้งชื่อ? ใช้ตัวอย่าง เปลี่ยนชื่อไฟล์ ของซีรีส์เพื่อตรวจสอบชื่อก่อน
+Rename file	เปลี่ยนชื่อไฟล์
+Renaming mode	โหมดการเปลี่ยนชื่อ
+Required condition {}	เงื่อนไขที่จำเป็น {}
+Rescan disk	สแกนดิสก์ใหม่
+Restore media type	ประเภทสื่อที่จะกู้คืน
+Result	ผลลัพธ์
+Retention	ระยะเวลาเก็บรักษา
+Review	ตรวจทาน
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	ตรวจทานชื่อเรื่องเป้าหมายและการจับคู่ตอน ไฟล์ พาธ การติดตาม และประวัติจะถูกเก็บไว้ ตอนที่ไม่ตรงกันจะคงหมายเลขไว้ก็ต่อเมื่อหมายเลขนั้นว่างในแคตตาล็อกใหม่
+Root folder for added shows	โฟลเดอร์หลักสำหรับซีรีส์ที่เพิ่ม
+Save path	พาธที่บันทึก
+Saving…	กำลังบันทึก…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	สแกนโฟลเดอร์ดาวน์โหลด ตรวจทานภาพยนตร์แต่ละเรื่อง แล้วคัดลอกหรือย้ายไฟล์หลักพร้อมคำบรรยายที่ตรงกันเข้าคลัง ไฟล์หลักที่มีอยู่จะถูกแทนที่เฉพาะเมื่อเป็นการอัปเกรด
+Search again	ค้นหาอีกครั้ง
+Search catalogues	ค้นหาแคตตาล็อก
+Search diagnostics	การวินิจฉัยการค้นหา
+Search for missing episodes once imported	ค้นหาตอนที่ขาดหายเมื่อนำเข้าแล้ว
+Search for {}	ค้นหา {}
+Search incomplete	การค้นหาไม่สมบูรณ์
+Search indexers for {}	ค้นหา {} ในอินเด็กเซอร์
+Search season packs for {}	ค้นหาแพ็กซีซันของ {}
+Search sources	แหล่งที่มาสำหรับค้นหา
+Search sources unavailable	แหล่งที่มาสำหรับค้นหาไม่พร้อมใช้งาน
+Search the library	ค้นหาในคลัง
+Search titles…	ค้นหาชื่อเรื่อง…
+Search {}	ค้นหาใน {}
+Searching “{}”…	กำลังค้นหา “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	ชื่อโฟลเดอร์ซีซันจะแทนที่ชื่อจากแคตตาล็อกใน {} เว้นว่างไว้เพื่อใช้ชื่อจากแคตตาล็อก
+Season {} title	ชื่อซีซัน {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	เลือกแหล่งที่มาด้านบน หรือเปิดการค้นหาแบบโต้ตอบในการตั้งค่าอินเด็กเซอร์ แท็กของแหล่งที่มายังจำกัดได้ว่าจะค้นหาซีรีส์ใด
+Select all	เลือกทั้งหมด
+Select all movies on this page	เลือกภาพยนตร์ทั้งหมดในหน้านี้
+Select every episode on this page	เลือกทุกตอนในหน้านี้
+Select {}	เลือก {}
+Select {} S{}E{}	เลือก {} S{}E{}
+Send now	ส่งตอนนี้
+Send {} now	ส่ง {} ตอนนี้
+Series & anime	ซีรีส์และอนิเมะ
+Series history	ประวัติซีรีส์
+Series of {}	ซีรีส์ของ {}
+Series title, e.g. Severance (or tvdb:12345)	ชื่อซีรีส์ เช่น Severance (หรือ tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	แสดง {} จาก {} รีลีส ตัวกรองจะใช้กับผลลัพธ์เหล่านี้โดยไม่ค้นหาใหม่
+Size (GiB)	ขนาด (GiB)
+Sort by	เรียงตาม
+Specifications JSON	ข้อกำหนด JSON
+Stalled torrent timeout	หมดเวลาทอร์เรนต์ที่ค้าง
+TMDB API key	คีย์ API ของ TMDB
+Tag existing titles	แท็กชื่อเรื่องที่มีอยู่
+Tag {}	แท็ก {}
+Target catalogue	แคตตาล็อกเป้าหมาย
+Target catalogue ID	ID แคตตาล็อกเป้าหมาย
+Test a release	ทดสอบรีลีส
+Test details	รายละเอียดการทดสอบ
+Test file name	ชื่อไฟล์สำหรับทดสอบ
+Test format	ทดสอบรูปแบบ
+Test indexer flags	แฟล็กอินเด็กเซอร์สำหรับทดสอบ
+Test language	ภาษาสำหรับทดสอบ
+Test original language	ภาษาต้นฉบับสำหรับทดสอบ
+Test quality	คุณภาพสำหรับทดสอบ
+Test release title	ชื่อรีลีสสำหรับทดสอบ
+Test release type	ประเภทรีลีสสำหรับทดสอบ
+Test size in GiB	ขนาดสำหรับทดสอบเป็น GiB
+The catalogues share an external identity.	แคตตาล็อกเหล่านี้ใช้ตัวตนภายนอกร่วมกัน
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	ตัวเลือกนี้จะแทนที่สถานะการติดตามของทุกตอน (ตอนพิเศษจะเปลี่ยนเฉพาะจากสองตัวเลือกสำหรับตอนพิเศษ) จากนั้นติดตามแต่ละซีซันที่มีตอนที่ติดตาม "ไม่มี" จะเลิกติดตามซีรีส์ด้วย
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	ไฟล์หลักและคำบรรยายที่ตรงกันจะถูกกู้คืนไปยังโฟลเดอร์ภาพยนตร์ ไฟล์ที่มีอยู่จะไม่ถูกเขียนทับ
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	โฟลเดอร์จะถูกเปลี่ยนชื่อ หรือคัดลอกแล้วลบหากอยู่บนดิสก์อื่น โฟลเดอร์ใหม่ต้องไม่มีอยู่หรือว่างเปล่า
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	อินเด็กเซอร์ที่ตอบกลับไม่ได้ส่งรีลีสใดมา แหล่งที่มาอื่นล้มเหลว; ตรวจสอบข้อผิดพลาดด้านบนแล้วลองอีกครั้ง
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	เงื่อนไขนี้จะถูกเก็บไว้ ใช้ แก้ไข JSON เพื่อเปลี่ยนฟิลด์; ทดสอบรูปแบบ จะแจ้งว่าสามารถประเมินได้หรือไม่
+Title pattern of {}	รูปแบบชื่อเรื่องของ {}
+Title to add	ชื่อเรื่องที่จะเพิ่ม
+Title to search for	ชื่อเรื่องที่จะค้นหา
+Title, group, quality or rejection reason…	ชื่อเรื่อง กลุ่ม คุณภาพ หรือเหตุผลที่ปฏิเสธ…
+Titles considered:	ชื่อเรื่องที่พิจารณา:
+Toggle colour theme	สลับธีมสี
+Toggle sort direction	สลับทิศทางการเรียง
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	ลองชื่อรีลีสทีวี อนิเมะ หรือภาพยนตร์ก่อนบันทึก การทดสอบนี้ตรวจสอบเงื่อนไขของรูปแบบ; คะแนนในโปรไฟล์คุณภาพและการอนุมัติการดาวน์โหลดแยกจากกัน
+Ungroup	ยกเลิกกลุ่ม
+Ungroup {}	ยกเลิกกลุ่ม {}
+Unknown value ({})	ค่าที่ไม่รู้จัก ({})
+Unmapped folders	โฟลเดอร์ที่ยังไม่ได้แมป
+Unmatched titles	ชื่อเรื่องที่ไม่ตรงกัน
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	เลิกติดตามตอนที่ถูกลบ (ลบด้วยตนเองหรือหายไปจากดิสก์; การอัปเกรดจะไม่ทำให้เลิกติดตาม)
+Unwatched	ยังไม่ได้ดู
+Use global	ใช้ค่าส่วนกลาง
+Use global sizes for {}	ใช้ขนาดส่วนกลางสำหรับ {}
+Valid days	จำนวนวันที่ใช้ได้
+Value	ค่า
+Values	ค่าต่างๆ
+View	มุมมอง
+Wanted lists	รายการที่ต้องการ
+Watched	ดูแล้ว
+Watched date	วันที่ดู
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	เมื่อปิดตัวเลือกนี้ ไฟล์จะยังอยู่บนดิสก์ โฟลเดอร์ที่ถูกลบจะไปยังถังรีไซเคิลหากตั้งค่าไว้
+iCal feed address	ที่อยู่ฟีด iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	ในชื่อนั้น); ชื่อเรื่องที่นำเข้าจะคงโฟลเดอร์เดิม ไฟล์จะถูกสแกนในที่เดิม จากนั้นจึงใช้ตัวเลือกการติดตาม จะไม่มีการย้ายหรือเปลี่ยนชื่อใดๆ
+{} Not renamed: {}	{} ไม่ได้เปลี่ยนชื่อ: {}
+{} factor	ตัวคูณ {}
+{} files imported. Review the results below.	นำเข้าแล้ว {} ไฟล์ ตรวจทานผลลัพธ์ด้านล่าง
+{} imported, {} failed; see each folder.	นำเข้าแล้ว {} ล้มเหลว {}; ดูแต่ละโฟลเดอร์
+{} imported.	นำเข้า {} แล้ว
+{} matched · {} kept at current numbers · {} new episodes	จับคู่แล้ว {} · คงหมายเลขปัจจุบัน {} · ตอนใหม่ {}
+{} min	{} นาที
+{} of {} folders selected	เลือกแล้ว {} จาก {} โฟลเดอร์
+{} releases found, {} accepted, nothing grabbed.	พบ {} รีลีส ยอมรับ {} ไม่ได้คว้าอะไร
+{} series and {} movies, {} files checked: {} issues.	ตรวจสอบ {} ซีรีส์ {} ภาพยนตร์ และ {} ไฟล์: พบปัญหา {} รายการ
+{} series moved.	ย้ายแล้ว {} ซีรีส์
+{} series moved; not moved: {}	ย้ายแล้ว {} ซีรีส์; ไม่ได้ย้าย: {}
+{} series removed.	ลบแล้ว {} ซีรีส์
+{} series removed; kept: {}	ลบแล้ว {} ซีรีส์; เก็บไว้: {}
+{} size of {}	ขนาด{}ของ {}
+{} size slider of {}	แถบเลื่อนขนาด{}ของ {}
+{} titles	{} ชื่อเรื่อง
+{}: {} releases from {} indexer(s). {} responding.	{}: {} รีลีสจาก {} อินเด็กเซอร์ ตอบกลับ {} ตัว
+· API:	· API:
+· negated	· กลับเงื่อนไข
+· required	· จำเป็น
+· {} ms · {} releases	· {} ms · {} รีลีส
+— MiB per minute	— MiB ต่อนาที
+— in library	— อยู่ในคลัง
+→ current number	→ หมายเลขปัจจุบัน
+or	หรือ
+1 title	1 รายการ

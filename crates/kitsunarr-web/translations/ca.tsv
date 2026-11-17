@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Numeració d'escena de TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Numeració d'escena extrapolada de TheXEM (no verificada)
 Season {} (scene seasons {})	Temporada {} (temporades d'escena {})
 {} (scene {})	{} (escena {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Un grup de franquícia trobat a partir de les relacions d'AniList o MyAnimeList. Els títols de la mateixa franquícia afegits més tard també s'hi uneixen. Els títols eliminats no hi tornen en actualitzar.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Una qualitat sense substitució fa servir Configuració › Qualitat. Dins d'una substitució, buit vol dir sense límit; un màxim de zero també vol dir sense límit.
+Add a movie, or change the search and watched filter.	Afegiu una pel·lícula, o canvieu la cerca i el filtre de vistos.
+Add a root folder in Settings › Media management first.	Primer afegiu una carpeta arrel a Configuració › Gestió multimèdia.
+Add qualities to {}	Afegeix qualitats a {}
+All decisions	Totes les decisions
+All seasons	Totes les temporades
+All selected flags must be present.	Han de ser presents tots els indicadors seleccionats.
+All sources	Totes les fonts
+Allow {}	Permet {}
+Also delete their folders and files (to the recycle bin when one is set)	Suprimeix també les seves carpetes i fitxers (a la paperera de reciclatge, si n'hi ha una de configurada)
+Apply sources	Aplica les fonts
+As the catalogue says	Com diu el catàleg
+Auto tag name	Nom de l'etiqueta automàtica
+Automatic match / keep current number	Coincidència automàtica / conserva el número actual
+Automatic search for {}	Cerca automàtica de {}
+Below the root folder; use / for sub-folders.	Dins de la carpeta arrel; feu servir / per a les subcarpetes.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	La millor primer. Arrossegueu les nanses o feu servir les fletxes per reordenar. Les qualitats d'un mateix grup tenen la mateixa prioritat.
+Bulk actions	Accions en bloc
+Catalogue ID	ID del catàleg
+Catalogue changed.	S'ha canviat el catàleg.
+Catalogue match	Coincidència al catàleg
+Change catalogue	Canvia el catàleg
+Choose a movie…	Trieu una pel·lícula…
+Choose a root folder…	Trieu una carpeta arrel…
+Choose episodes for {}	Trieu els episodis de {}
+Choose which episodes are monitored, as when adding the series	Trieu quins episodis es monitoren, com en afegir la sèrie
+Choose which episodes of the selected series are monitored	Trieu quins episodis de les sèries seleccionades es monitoren
+Choose {}	Trieu {}
+Clean library level	Nivell de neteja de la biblioteca
+Clean library tag	Etiqueta de neteja de la biblioteca
+Clear filters	Esborra els filtres
+Clear or adjust the filters to see more results.	Esborreu o ajusteu els filtres per veure més resultats.
+Codec of {}	Còdec de {}
+Compression mode	Mode de compressió
+Condition indexer flags	Indicadors d'indexador de la condició
+Condition language	Idioma de la condició
+Condition name	Nom de la condició
+Condition name {}	Nom de la condició {}
+Condition regular expression {}	Expressió regular de la condició {}
+Condition size {}	Mida de la condició {}
+Condition type	Tipus de condició
+Condition value	Valor de la condició
+Copy (keep the source)	Copia (conserva l'origen)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Creeu un grup a partir d'una qualitat i després arrossegueu-hi més qualitats o feu servir els selectors de Grup. El tall segueix una qualitat dins del seu grup; en desagrupar es fa servir el membre més alt del grup.
+Current folder:	Carpeta actual:
+Custom format name	Nom del format personalitzat
+Delete tag {}	Suprimeix l'etiqueta {}
+Delete the file of episode {}	Suprimeix el fitxer de l'episodi {}
+Delete the movie folder and its files	Suprimeix la carpeta de la pel·lícula i els seus fitxers
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Voleu suprimir “{}” i els subtítols coincidents? Van a la paperera de reciclatge, si n'hi ha una de configurada.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Voleu suprimir “{}”? Les seves sèries i pel·lícules es queden a la biblioteca i no s'hi tornaran a unir automàticament en actualitzar.
+Detect from title	Detecta a partir del títol
+Disk scanned: {} {}	Disc analitzat: {} {}
+Dismiss	Descarta
+Don't change	No ho canviïs
+Don't import	No importis
+Done editing groups	Acaba d'editar els grups
+Drag to reorder or move into a group	Arrossegueu per reordenar o moure a un grup
+Drag {}	Arrossega {}
+Drop here to move out of a group or to the lowest preference	Deixeu-ho anar aquí per treure-ho d'un grup o portar-ho a la preferència més baixa
+Drop qualities here	Deixeu anar qualitats aquí
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Cada sèrie conserva la seva carpeta dins de la carpeta arrel. Una sèrie la carpeta nova de la qual ja existeix i no és buida conserva la carpeta actual.
+Edit JSON	Edita el JSON
+Edit group	Edita el grup
+Edit groups	Edita els grups
+Enter a non-negative test size within the supported range.	Introduïu una mida de prova no negativa dins de l'interval admès.
+Enter a valid test size in GiB.	Introduïu una mida de prova vàlida en GiB.
+Enter valid test indexer flags.	Introduïu uns indicadors d'indexador de prova vàlids.
+Episode matches	Coincidències d'episodis
+Event type	Tipus d'esdeveniment
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Cada tipus de condició ha de coincidir. Dins d'un mateix tipus, n'hi ha prou que coincideixi qualsevol condició, però totes les condicions obligatòries han de coincidir. Nega inverteix una condició vàlida.
+Every folder of this root folder belongs to a title already.	Totes les carpetes d'aquesta carpeta arrel ja pertanyen a un títol.
+Exclude {}	Exclou {}
+Exclusion catalogue	Catàleg de l'exclusió
+Exclusion id	ID de l'exclusió
+Exclusion title	Títol de l'exclusió
+Factor for {}	Factor per a {}
+Feed tags	Etiquetes del canal
+File name (optional)	Nom del fitxer (opcional)
+Filter by monitoring	Filtra per monitoratge
+Filter by watched state	Filtra per estat de visualització
+Filter release decisions	Filtra les decisions de llançament
+Filter releases	Filtra els llançaments
+Find target title	Cerca el títol de destinació
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Carpetes d'una carpeta arrel que cap títol no fa servir. Cadascuna es compara amb el catàleg pel seu nom (o per l'etiqueta
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Per als llançaments sense coincidència, compareu el títol analitzat i els números d'episodi de sota amb els títols considerats. Si cal, afegiu un títol alternatiu o corregiu el mapatge d'episodis a la biblioteca.
+Format does not match	El format no coincideix
+Format matches	El format coincideix
+Full season	Temporada completa
+Grab it now instead of waiting for the delay	Captura-ho ara en lloc d'esperar el retard
+Grab {}	Captura {}
+Group	Agrupa
+Group for {}	Grup per a {}
+Group name	Nom del grup
+Group {}	Agrupa {}
+Guided editor	Editor guiat
+I confirm that the target catalogue entry is the same title.	Confirmo que l'entrada del catàleg de destinació és el mateix títol.
+Import	Importa
+Import existing folders	Importa carpetes existents
+Import mode	Mode d'importació
+Import {}	Importa {}
+Imported from movie folder	Importat de la carpeta de la pel·lícula
+Include in file names ({} token)	Inclou als noms de fitxer (testimoni {})
+Include {}	Inclou {}
+Indexer flags (bitmask)	Indicadors d'indexador (màscara de bits)
+Jellyfin library	Biblioteca de Jellyfin
+Jellyfin user	Usuari de Jellyfin
+Jellyfin watched sync can update this status.	La sincronització de vistos de Jellyfin pot actualitzar aquest estat.
+Key name	Nom de la clau
+Key permission	Permís de la clau
+Kind of {}	Tipus de {}
+Label of {}	Rètol de {}
+Language	Idioma
+Library import	Importació de la biblioteca
+List exclusions	Exclusions de llistes
+Loading sources…	S'estan carregant les fonts…
+Main navigation	Navegació principal
+Mark unwatched	Marca com a no vist
+Mark watched	Marca com a vist
+Match	Fes coincidir
+Match any other language	Coincideix amb qualsevol altre idioma
+Match episode {}	Fes coincidir l'episodi {}
+Match for {}	Coincidència per a {}
+Matching series	Sèries coincidents
+Matching subtitles follow the file's new name.	Els subtítols coincidents segueixen el nom nou del fitxer.
+Maximum GiB (inclusive)	GiB màxims (inclusiu)
+Maximum size	Mida màxima
+Maximum year	Any màxim
+Minimum GiB (exclusive)	GiB mínims (exclusiu)
+Minimum age	Edat mínima
+Minimum level	Nivell mínim
+Minimum score increment for upgrades	Increment mínim de puntuació per a les actualitzacions
+Minimum year	Any mínim
+Monitor episode {}	Monitora l'episodi {}
+Monitor new seasons	Monitora les temporades noves
+Monitored filter	Filtre de monitoratge
+Monitoring	Monitoratge
+Monitoring updated for {} series.	S'ha actualitzat el monitoratge de {} sèries.
+Monitoring — {} series	Monitoratge — {} sèries
+Monitoring…	Monitoratge…
+Move folder	Mou la carpeta
+Move the files	Mou els fitxers
+Move the files to the new folder	Mou els fitxers a la carpeta nova
+Move the movie folder, or point the movie at another folder	Mou la carpeta de la pel·lícula o fes que la pel·lícula apunti a una altra carpeta
+Move the selected series into another root folder	Mou les sèries seleccionades a una altra carpeta arrel
+Move the series folder, or point the series at another folder	Mou la carpeta de la sèrie o fes que la sèrie apunti a una altra carpeta
+Move to root folder…	Mou a una carpeta arrel…
+Move {} series	Mou {} sèries
+Movie bulk actions	Accions en bloc de pel·lícules
+Movie file deleted	Fitxer de pel·lícula suprimit
+Movie file renamed	Fitxer de pel·lícula reanomenat
+Movie file restored	Fitxer de pel·lícula restaurat
+Movie for {}	Pel·lícula per a {}
+Movie history	Historial de la pel·lícula
+Movie import mode	Mode d'importació de pel·lícules
+Movie removed, and its folder deleted or recycled.	S'ha eliminat la pel·lícula i se n'ha suprimit la carpeta o s'ha enviat a la paperera.
+Movie source folder	Carpeta d'origen de la pel·lícula
+Movies (Tanukarr)	Pel·lícules (Tanukarr)
+Moving…	S'està movent…
+Naming & file settings	Noms i configuració de fitxers
+Negate condition {}	Nega la condició {}
+New condition type	Tipus de condició nou
+New profile	Perfil nou
+New root folder path	Ruta de la carpeta arrel nova
+New tag	Etiqueta nova
+Next	Següent
+No group	Sense grup
+No indexer responded successfully. Check the source errors above, then try again.	Cap indexador no ha respost correctament. Reviseu els errors de les fonts de dalt i torneu-ho a provar.
+No match for “{}”	Cap coincidència per a “{}”
+No releases match these filters	Cap llançament coincideix amb aquests filtres
+No root folder	Sense carpeta arrel
+Nothing to import	No hi ha res per importar
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Només canvia la carpeta registrada; feu-ho servir quan els fitxers ja hi siguin i després analitzeu el disc.
+Open navigation	Obre la navegació
+Open on {}	Obre a {}
+Organize files	Organitza els fitxers
+Organizing…	S'està organitzant…
+Original language	Idioma original
+Override for a mapped anime batch or a movie feature (single episode).	Substitució per a un lot d'anime mapat o per a la pel·lícula principal (un sol episodi).
+Parsed title:	Títol analitzat:
+Passkey	Passkey
+Place above {}	Col·loca per sobre de {}
+Place at lowest preference	Col·loca a la preferència més baixa
+Position of {}	Posició de {}
+Prefer {} less	Prefereix menys {}
+Prefer {} more	Prefereix més {}
+Preferred catalogue	Catàleg preferit
+Preset title	Títol del preajust
+Prevent import lists from adding it again	Impedeix que les llistes d'importació el tornin a afegir
+Prevent import lists from adding them again	Impedeix que les llistes d'importació els tornin a afegir
+Preview again to review your changes.	Torneu a previsualitzar per revisar els canvis.
+Previous	Anterior
+Progress of {}	Progrés de {}
+Proxy hostname	Nom d'amfitrió del servidor intermediari
+Proxy port	Port del servidor intermediari
+Quality cutoff	Tall de qualitat
+Quality profile for added shows	Perfil de qualitat per a les sèries afegides
+Quality sizes	Mides de qualitat
+Quality: {} · Group: {} · Languages: {} · {}	Qualitat: {} · Grup: {} · Idiomes: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Els plans de consulta inclouen nivells alternatius que potser no s'executen. Cada font té un límit de 35 segons; les cerques interactives tenen un límit total de 45 segons.
+RSS sync interval	Interval de sincronització RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Només lectura: comprova les carpetes de sèries i pel·lícules, els registres de fitxers no segurs i els fitxers que falten al disc.
+Reading the root folder…	S'està llegint la carpeta arrel…
+Regular expression	Expressió regular
+Rejected	Rebutjat
+Release title	Títol del llançament
+Release type	Tipus de llançament
+Reload folders	Torna a carregar les carpetes
+Remove condition	Elimina la condició
+Remove condition {}	Elimina la condició {}
+Remove mapping	Elimina el mapatge
+Remove the selected series from Kitsunarr	Elimina les sèries seleccionades de Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Voleu eliminar de Kitsunarr les {} sèries seleccionades i els registres dels seus episodis?
+Remove {}	Elimina {}
+Remove {} from the blocklist	Treu {} de la llista de bloqueig
+Remove {} series	Elimina {} sèries
+Remove “{}” from Kitsunarr?	Voleu eliminar “{}” de Kitsunarr?
+Remove…	Elimina…
+Removing…	S'està eliminant…
+Rename every file of the selected series to the naming settings	Canvia el nom de tots els fitxers de les sèries seleccionades segons la configuració de noms
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Voleu canviar el nom de tots els fitxers de les {} sèries seleccionades segons la configuració de noms? Feu servir primer la previsualització Canvia el nom dels fitxers de cada sèrie per comprovar els noms.
+Rename file	Canvia el nom del fitxer
+Renaming mode	Mode de canvi de nom
+Required condition {}	Condició obligatòria {}
+Rescan disk	Torna a analitzar el disc
+Restore media type	Tipus de mitjà a restaurar
+Result	Resultat
+Retention	Retenció
+Review	Revisió
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Reviseu el títol de destinació i les coincidències d'episodis. Es conserven els fitxers, les rutes, el monitoratge i l'historial. Els episodis sense coincidència només conserven els seus números si estan lliures al catàleg nou.
+Root folder for added shows	Carpeta arrel per a les sèries afegides
+Save path	Ruta de desament
+Saving…	S'està desant…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Analitzeu una carpeta de baixades, reviseu cada pel·lícula i copieu o moveu-ne la pel·lícula principal amb els subtítols coincidents a la biblioteca. Les pel·lícules principals existents només se substitueixen per actualitzacions.
+Search again	Torna a cercar
+Search catalogues	Cerca als catàlegs
+Search diagnostics	Diagnòstic de la cerca
+Search for missing episodes once imported	Cerca els episodis absents un cop importats
+Search for {}	Cerca {}
+Search incomplete	Cerca incompleta
+Search indexers for {}	Cerca {} als indexadors
+Search season packs for {}	Cerca paquets de temporada de {}
+Search sources	Fonts de cerca
+Search sources unavailable	Fonts de cerca no disponibles
+Search the library	Cerca a la biblioteca
+Search titles…	Cerca títols…
+Search {}	Cerca a {}
+Searching “{}”…	S'està cercant “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Els títols de les carpetes de temporada substitueixen els del catàleg a {}. Deixeu-ho buit per conservar els del catàleg.
+Season {} title	Títol de la temporada {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Seleccioneu una font de dalt o activeu la cerca interactiva a la configuració de l'indexador. Les etiquetes de les fonts també poden restringir quines sèries es cerquen.
+Select all	Selecciona-ho tot
+Select all movies on this page	Selecciona totes les pel·lícules d'aquesta pàgina
+Select every episode on this page	Selecciona tots els episodis d'aquesta pàgina
+Select {}	Selecciona {}
+Select {} S{}E{}	Selecciona {} S{}E{}
+Send now	Envia ara
+Send {} now	Envia {} ara
+Series & anime	Sèries i anime
+Series history	Historial de la sèrie
+Series of {}	Sèrie de {}
+Series title, e.g. Severance (or tvdb:12345)	Títol de la sèrie, p. ex. Severance (o tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Es mostren {} de {} llançaments. Els filtres s'apliquen a aquests resultats sense tornar a cercar.
+Size (GiB)	Mida (GiB)
+Sort by	Ordena per
+Specifications JSON	Especificacions en JSON
+Stalled torrent timeout	Temps d'espera dels torrents encallats
+TMDB API key	Clau API de TMDB
+Tag existing titles	Etiqueta els títols existents
+Tag {}	Etiqueta {}
+Target catalogue	Catàleg de destinació
+Target catalogue ID	ID del catàleg de destinació
+Test a release	Prova un llançament
+Test details	Detalls de la prova
+Test file name	Nom de fitxer de prova
+Test format	Prova el format
+Test indexer flags	Indicadors d'indexador de prova
+Test language	Idioma de prova
+Test original language	Idioma original de prova
+Test quality	Qualitat de prova
+Test release title	Títol del llançament de prova
+Test release type	Tipus de llançament de prova
+Test size in GiB	Mida de prova en GiB
+The catalogues share an external identity.	Els catàlegs comparteixen una identitat externa.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	L'elecció substitueix l'estat de monitoratge de cada episodi (els especials només canvien amb les dues opcions d'especials) i després monitora cada temporada que té un episodi monitorat. "Cap" també deixa de monitorar la sèrie.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	La pel·lícula principal i els subtítols coincidents es restauren a la carpeta de la pel·lícula. Els fitxers existents no se sobreescriuen mai.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	La carpeta es reanomena, o es copia i després s'elimina si és en un altre disc. La carpeta nova no ha d'existir o ha d'estar buida.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Els indexadors que han respost no han retornat cap llançament. Les altres fonts han fallat; reviseu els errors de dalt i torneu-ho a provar.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Aquesta condició es conserva. Feu servir Edita el JSON per canviar-ne els camps; Prova el format indica si es pot avaluar.
+Title pattern of {}	Patró de títol de {}
+Title to add	Títol a afegir
+Title to search for	Títol a cercar
+Title, group, quality or rejection reason…	Títol, grup, qualitat o motiu de rebuig…
+Titles considered:	Títols considerats:
+Toggle colour theme	Canvia el tema de color
+Toggle sort direction	Canvia el sentit de l'ordenació
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Proveu un nom de llançament de TV, anime o pel·lícula abans de desar. Això comprova les condicions del format; les puntuacions del perfil de qualitat i l'aprovació de la baixada són a part.
+Ungroup	Desagrupa
+Ungroup {}	Desagrupa {}
+Unknown value ({})	Valor desconegut ({})
+Unmapped folders	Carpetes sense mapar
+Unmatched titles	Títols sense coincidència
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Deixa de monitorar els episodis suprimits (suprimits a mà o absents del disc; les actualitzacions mai no deixen de monitorar)
+Unwatched	No vist
+Use global	Usa la configuració global
+Use global sizes for {}	Usa les mides globals per a {}
+Valid days	Dies de validesa
+Value	Valor
+Values	Valors
+View	Visualització
+Wanted lists	Llistes de demanats
+Watched	Vist
+Watched date	Data de visualització
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Amb aquesta opció desactivada, els fitxers es queden al disc. Les carpetes suprimides van a la paperera de reciclatge, si n'hi ha una de configurada.
+iCal feed address	Adreça del canal iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	que conté); els títols importats conserven la seva carpeta, els seus fitxers s'analitzen al seu lloc i després s'aplica l'elecció de monitoratge. No es mou ni es canvia el nom de res.
+{} Not renamed: {}	{} Sense canviar el nom: {}
+{} factor	Factor {}
+{} files imported. Review the results below.	{} fitxers importats. Reviseu els resultats de sota.
+{} imported, {} failed; see each folder.	{} importats, {} amb errors; vegeu cada carpeta.
+{} imported.	{} importats.
+{} matched · {} kept at current numbers · {} new episodes	{} amb coincidència · {} amb el número actual · {} episodis nous
+{} min	{} min
+{} of {} folders selected	{} de {} carpetes seleccionades
+{} releases found, {} accepted, nothing grabbed.	{} llançaments trobats, {} acceptats, no s'ha capturat res.
+{} series and {} movies, {} files checked: {} issues.	{} sèries i {} pel·lícules, {} fitxers comprovats: {} problemes.
+{} series moved.	{} sèries mogudes.
+{} series moved; not moved: {}	{} sèries mogudes; no mogudes: {}
+{} series removed.	{} sèries eliminades.
+{} series removed; kept: {}	{} sèries eliminades; conservades: {}
+{} size of {}	Mida {} de {}
+{} size slider of {}	Control lliscant de mida {} de {}
+{} titles	{} títols
+{}: {} releases from {} indexer(s). {} responding.	{}: {} llançaments de {} indexadors. {} han respost.
+· API:	· API:
+· negated	· negada
+· required	· obligatòria
+· {} ms · {} releases	· {} ms · {} llançaments
+— MiB per minute	— MiB per minut
+— in library	— a la biblioteca
+→ current number	→ número actual
+or	o
+1 title	1 títol

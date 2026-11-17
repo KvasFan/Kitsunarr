@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Stseeni nummerdus TheXEM-ist
 Scene numbering extrapolated from TheXEM (unverified)	TheXEM-ist ekstrapoleeritud stseeni nummerdus (kontrollimata)
 Season {} (scene seasons {})	Hooaeg {} (stseeni hooajad {})
 {} (scene {})	{} (stseen {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	AniListi või MyAnimeListi seoste põhjal leitud frantsiisirühm. Samast frantsiisist hiljem lisatud pealkirjad liituvad sellega samuti. Eemaldatud pealkirjad jäävad värskendamisel välja.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Ülekirjutuseta kvaliteet kasutab jaotist Seaded › Kvaliteet. Ülekirjutuses tähendab tühi piiramatut; maksimum null tähendab samuti piiramatut.
+Add a movie, or change the search and watched filter.	Lisa film või muuda otsingut ja vaadatud oleku filtrit.
+Add a root folder in Settings › Media management first.	Lisa esmalt juurkaust jaotises Seaded › Meediahaldus.
+Add qualities to {}	Lisa kvaliteete rühma {}
+All decisions	Kõik otsused
+All seasons	Kõik hooajad
+All selected flags must be present.	Kõik valitud lipud peavad olemas olema.
+All sources	Kõik allikad
+Allow {}	Luba {}
+Also delete their folders and files (to the recycle bin when one is set)	Kustuta ka nende kaustad ja failid (prügikasti, kui see on määratud)
+Apply sources	Rakenda allikad
+As the catalogue says	Nagu kataloog määrab
+Auto tag name	Automaatse sildi nimi
+Automatic match / keep current number	Automaatne sobitamine / säilita praegune number
+Automatic search for {}	Automaatne otsing: {}
+Below the root folder; use / for sub-folders.	Juurkausta all; alamkaustade jaoks kasuta /.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Parim on esimene. Järjestuse muutmiseks lohista pidemeid või kasuta nooli. Rühma sees olevad kvaliteedid on võrdsed.
+Bulk actions	Hulgitoimingud
+Catalogue ID	Kataloogi ID
+Catalogue changed.	Kataloog muudetud.
+Catalogue match	Kataloogi vaste
+Change catalogue	Muuda kataloogi
+Choose a movie…	Vali film…
+Choose a root folder…	Vali juurkaust…
+Choose episodes for {}	Vali episoodid: {}
+Choose which episodes are monitored, as when adding the series	Vali, milliseid episoode jälgitakse, nagu sarja lisamisel
+Choose which episodes of the selected series are monitored	Vali, milliseid valitud sarjade episoode jälgitakse
+Choose {}	Vali {}
+Clean library level	Teegi puhastamise tase
+Clean library tag	Teegi puhastamise silt
+Clear filters	Tühjenda filtrid
+Clear or adjust the filters to see more results.	Rohkemate tulemuste nägemiseks tühjenda või muuda filtreid.
+Codec of {}	Koodek: {}
+Compression mode	Tihendusrežiim
+Condition indexer flags	Tingimuse indekserilipud
+Condition language	Tingimuse keel
+Condition name	Tingimuse nimi
+Condition name {}	Tingimuse nimi {}
+Condition regular expression {}	Tingimuse regulaaravaldis {}
+Condition size {}	Tingimuse suurus {}
+Condition type	Tingimuse tüüp
+Condition value	Tingimuse väärtus
+Copy (keep the source)	Kopeeri (säilita allikas)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Loo kvaliteedist rühm, seejärel lohista sinna rohkem kvaliteete või kasuta rühmavalijaid. Lävend järgneb kvaliteedile selle rühma; rühmituse tühistamisel kasutatakse rühma kõrgeimat liiget.
+Current folder:	Praegune kaust:
+Custom format name	Kohandatud vormingu nimi
+Delete tag {}	Kustuta silt {}
+Delete the file of episode {}	Kustuta episoodi {} fail
+Delete the movie folder and its files	Kustuta filmi kaust ja selle failid
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Kas kustutada „{}“ ja sellele vastavad subtiitrid? Need lähevad prügikasti, kui see on määratud.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Kas kustutada „{}“? Selle sarjad ja filmid jäävad teeki ega liitu värskendamisel automaatselt uuesti.
+Detect from title	Tuvasta pealkirjast
+Disk scanned: {} {}	Ketas skaneeritud: {} {}
+Dismiss	Sulge
+Don't change	Ära muuda
+Don't import	Ära impordi
+Done editing groups	Lõpeta rühmade muutmine
+Drag to reorder or move into a group	Lohista järjestuse muutmiseks või rühma teisaldamiseks
+Drag {}	Lohista {}
+Drop here to move out of a group or to the lowest preference	Lohista siia, et rühmast välja viia või madalaimale eelistusele panna
+Drop qualities here	Lohista kvaliteedid siia
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Iga sari säilitab oma kausta juurkausta all. Sari, mille uus kaust on olemas ja pole tühi, säilitab praeguse kausta.
+Edit JSON	Muuda JSON-i
+Edit group	Muuda rühma
+Edit groups	Muuda rühmi
+Enter a non-negative test size within the supported range.	Sisesta mittenegatiivne testsuurus toetatud vahemikus.
+Enter a valid test size in GiB.	Sisesta kehtiv testsuurus GiB-des.
+Enter valid test indexer flags.	Sisesta kehtivad testi indekserilipud.
+Episode matches	Episoodide vasted
+Event type	Sündmuse tüüp
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Iga tingimuse tüüp peab sobima. Ühe tüübi piires võib sobida ükskõik milline tingimus ja iga nõutav tingimus peab sobima. Eitamine pöörab kehtiva tingimuse ümber.
+Every folder of this root folder belongs to a title already.	Selle juurkausta iga kaust kuulub juba mõnele pealkirjale.
+Exclude {}	Välista {}
+Exclusion catalogue	Välistuse kataloog
+Exclusion id	Välistuse ID
+Exclusion title	Välistuse pealkiri
+Factor for {}	Tegur: {}
+Feed tags	Voo sildid
+File name (optional)	Faili nimi (valikuline)
+Filter by monitoring	Filtreeri jälgimise järgi
+Filter by watched state	Filtreeri vaadatud oleku järgi
+Filter release decisions	Filtreeri väljalasete otsuseid
+Filter releases	Filtreeri väljalaskeid
+Find target title	Leia sihtpealkiri
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Juurkausta kaustad, mida ükski pealkiri ei kasuta. Igaüht sobitatakse kataloogiga nime (või
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Sobitamata väljalasete puhul võrdle allolevat parsitud pealkirja ja episoodinumbreid arvesse võetud pealkirjadega. Vajadusel lisa teegis alternatiivne pealkiri või paranda episoodide kaardistust.
+Format does not match	Vorming ei sobi
+Format matches	Vorming sobib
+Full season	Terve hooaeg
+Grab it now instead of waiting for the delay	Haara kohe, ilma viivitust ootamata
+Grab {}	Haara {}
+Group	Rühm
+Group for {}	Rühm: {}
+Group name	Rühma nimi
+Group {}	Rühmita {}
+Guided editor	Juhitud redaktor
+I confirm that the target catalogue entry is the same title.	Kinnitan, et sihtkataloogi kirje on sama pealkiri.
+Import	Impordi
+Import existing folders	Impordi olemasolevad kaustad
+Import mode	Importimise režiim
+Import {}	Impordi {}
+Imported from movie folder	Imporditud filmi kaustast
+Include in file names ({} token)	Kaasa failinimedesse ({} märgend)
+Include {}	Kaasa {}
+Indexer flags (bitmask)	Indekseri lipud (bitimask)
+Jellyfin library	Jellyfini teek
+Jellyfin user	Jellyfini kasutaja
+Jellyfin watched sync can update this status.	Jellyfini vaadatute sünkroonimine võib seda olekut uuendada.
+Key name	Võtme nimi
+Key permission	Võtme õigus
+Kind of {}	Liik: {}
+Label of {}	Nimetus: {}
+Language	Keel
+Library import	Teegi import
+List exclusions	Loendite välistused
+Loading sources…	Allikate laadimine…
+Main navigation	Põhinavigatsioon
+Mark unwatched	Märgi vaatamata
+Mark watched	Märgi vaadatuks
+Match	Sobita
+Match any other language	Sobib iga muu keelega
+Match episode {}	Sobita episood {}
+Match for {}	Vaste: {}
+Matching series	Sobivad sarjad
+Matching subtitles follow the file's new name.	Vastavad subtiitrid järgivad faili uut nime.
+Maximum GiB (inclusive)	Maksimum GiB (kaasa arvatud)
+Maximum size	Maksimaalne suurus
+Maximum year	Maksimaalne aasta
+Minimum GiB (exclusive)	Miinimum GiB (välja arvatud)
+Minimum age	Minimaalne vanus
+Minimum level	Minimaalne tase
+Minimum score increment for upgrades	Minimaalne skoori kasv täienduste jaoks
+Minimum year	Minimaalne aasta
+Monitor episode {}	Jälgi episoodi {}
+Monitor new seasons	Jälgi uusi hooaegu
+Monitored filter	Jälgimise filter
+Monitoring	Jälgimine
+Monitoring updated for {} series.	{} sarja jälgimine uuendatud.
+Monitoring — {} series	Jälgimine — {} sarja
+Monitoring…	Jälgimise määramine…
+Move folder	Teisalda kaust
+Move the files	Teisalda failid
+Move the files to the new folder	Teisalda failid uude kausta
+Move the movie folder, or point the movie at another folder	Teisalda filmi kaust või suuna film teisele kaustale
+Move the selected series into another root folder	Teisalda valitud sarjad teise juurkausta
+Move the series folder, or point the series at another folder	Teisalda sarja kaust või suuna sari teisele kaustale
+Move to root folder…	Teisalda juurkausta…
+Move {} series	Teisalda {} sarja
+Movie bulk actions	Filmide hulgitoimingud
+Movie file deleted	Filmifail kustutatud
+Movie file renamed	Filmifail ümber nimetatud
+Movie file restored	Filmifail taastatud
+Movie for {}	Film: {}
+Movie history	Filmi ajalugu
+Movie import mode	Filmide importimise režiim
+Movie removed, and its folder deleted or recycled.	Film eemaldati ja selle kaust kustutati või viidi prügikasti.
+Movie source folder	Filmide lähtekaust
+Movies (Tanukarr)	Filmid (Tanukarr)
+Moving…	Teisaldamine…
+Naming & file settings	Nimetamise ja failide seaded
+Negate condition {}	Eita tingimust {}
+New condition type	Uus tingimuse tüüp
+New profile	Uus profiil
+New root folder path	Uue juurkausta tee
+New tag	Uus silt
+Next	Järgmine
+No group	Rühm puudub
+No indexer responded successfully. Check the source errors above, then try again.	Ükski indekser ei vastanud edukalt. Kontrolli ülal olevaid allikate vigu ja proovi uuesti.
+No match for “{}”	Vastet pole: „{}“
+No releases match these filters	Ükski väljalase ei vasta neile filtritele
+No root folder	Juurkaust puudub
+Nothing to import	Pole midagi importida
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Muutub ainult salvestatud kaust; kasuta seda, kui failid on juba seal, seejärel skaneeri ketast.
+Open navigation	Ava navigatsioon
+Open on {}	Ava saidil {}
+Organize files	Korrasta failid
+Organizing…	Korrastamine…
+Original language	Originaalkeel
+Override for a mapped anime batch or a movie feature (single episode).	Ülekirjutus kaardistatud anime paki või filmi põhifaili jaoks (üks episood).
+Parsed title:	Parsitud pealkiri:
+Passkey	Pääsuvõti
+Place above {}	Aseta {} kohale
+Place at lowest preference	Aseta madalaimale eelistusele
+Position of {}	Asukoht: {}
+Prefer {} less	Eelista {} vähem
+Prefer {} more	Eelista {} rohkem
+Preferred catalogue	Eelistatud kataloog
+Preset title	Eelseadistuse pealkiri
+Prevent import lists from adding it again	Takista impordiloenditel seda uuesti lisamast
+Prevent import lists from adding them again	Takista impordiloenditel neid uuesti lisamast
+Preview again to review your changes.	Muudatuste ülevaatamiseks tee uuesti eelvaade.
+Previous	Eelmine
+Progress of {}	Edenemine: {}
+Proxy hostname	Proksi hostinimi
+Proxy port	Proksi port
+Quality cutoff	Kvaliteedi lävend
+Quality profile for added shows	Lisatud sarjade kvaliteediprofiil
+Quality sizes	Kvaliteetide suurused
+Quality: {} · Group: {} · Languages: {} · {}	Kvaliteet: {} · Rühm: {} · Keeled: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Päringuplaanid sisaldavad varutasemeid, mis ei pruugi käivituda. Allikatel on 35-sekundiline ajaeelarve; interaktiivsetel otsingutel on 45-sekundiline koguajaeelarve.
+RSS sync interval	RSS-sünkroonimise intervall
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Ainult lugemiseks: kontrollib sarjade ja filmide kaustu, ebaturvalisi failikirjeid ja kettalt puuduvaid faile.
+Reading the root folder…	Juurkausta lugemine…
+Regular expression	Regulaaravaldis
+Rejected	Tagasi lükatud
+Release title	Väljalaske pealkiri
+Release type	Väljalaske tüüp
+Reload folders	Laadi kaustad uuesti
+Remove condition	Eemalda tingimus
+Remove condition {}	Eemalda tingimus {}
+Remove mapping	Eemalda kaardistus
+Remove the selected series from Kitsunarr	Eemalda valitud sarjad Kitsunarrist
+Remove the {} selected series and their episode records from Kitsunarr?	Kas eemaldada {} valitud sarja ja nende episoodikirjed Kitsunarrist?
+Remove {}	Eemalda {}
+Remove {} from the blocklist	Eemalda {} blokeerimisloendist
+Remove {} series	Eemalda {} sarja
+Remove “{}” from Kitsunarr?	Kas eemaldada „{}“ Kitsunarrist?
+Remove…	Eemalda…
+Removing…	Eemaldamine…
+Rename every file of the selected series to the naming settings	Nimeta valitud sarjade kõik failid nimetamise seadete järgi ümber
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Kas nimetada {} valitud sarja kõik failid nimetamise seadete järgi ümber? Nimede eelnevaks kontrollimiseks kasuta sarja eelvaadet Nimeta failid ümber.
+Rename file	Nimeta fail ümber
+Renaming mode	Ümbernimetamise režiim
+Required condition {}	Nõutav tingimus {}
+Rescan disk	Skaneeri ketas uuesti
+Restore media type	Taasta meedia tüüp
+Result	Tulemus
+Retention	Säilitamine
+Review	Ülevaatus
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Vaata üle sihtpealkiri ja episoodide vasted. Failid, teed, jälgimine ja ajalugu säilitatakse. Sobitamata episoodid säilitavad oma numbrid ainult siis, kui need numbrid on uues kataloogis vabad.
+Root folder for added shows	Lisatud sarjade juurkaust
+Save path	Salvestuskoht
+Saving…	Salvestamine…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Skaneeri allalaadimiste kausta, vaata iga film üle ning kopeeri või teisalda selle põhifail koos vastavate subtiitritega teeki. Olemasolevad põhifailid asendatakse ainult täiendustega.
+Search again	Otsi uuesti
+Search catalogues	Otsi kataloogidest
+Search diagnostics	Otsingu diagnostika
+Search for missing episodes once imported	Otsi pärast importi puuduvaid episoode
+Search for {}	Otsi: {}
+Search incomplete	Otsing pole täielik
+Search indexers for {}	Otsi indekseritest: {}
+Search season packs for {}	Otsi hooajapakke: {}
+Search sources	Otsinguallikad
+Search sources unavailable	Otsinguallikad pole saadaval
+Search the library	Otsi teegist
+Search titles…	Otsi pealkirju…
+Search {}	Otsi allikast {}
+Searching “{}”…	Otsimine: „{}“…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Hooajakaustade pealkirjad asendavad kataloogi omad märgendis {}. Kataloogi omade säilitamiseks jäta tühjaks.
+Season {} title	Hooaja {} pealkiri
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Vali ülal allikas või luba indekseri seadetes interaktiivne otsing. Allika sildid võivad ka piirata, milliseid sarju otsitakse.
+Select all	Vali kõik
+Select all movies on this page	Vali kõik selle lehe filmid
+Select every episode on this page	Vali kõik selle lehe episoodid
+Select {}	Vali {}
+Select {} S{}E{}	Vali {} S{}E{}
+Send now	Saada kohe
+Send {} now	Saada {} kohe
+Series & anime	Sarjad ja anime
+Series history	Sarja ajalugu
+Series of {}	Sari: {}
+Series title, e.g. Severance (or tvdb:12345)	Sarja pealkiri, nt Severance (või tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Kuvatakse {} / {} väljalaset. Filtrid rakenduvad nendele tulemustele ilma uuesti otsimata.
+Size (GiB)	Suurus (GiB)
+Sort by	Sorteeri
+Specifications JSON	Spetsifikatsioonide JSON
+Stalled torrent timeout	Seiskunud torrenti ajalõpp
+TMDB API key	TMDB API-võti
+Tag existing titles	Sildista olemasolevad pealkirjad
+Tag {}	Silt {}
+Target catalogue	Sihtkataloog
+Target catalogue ID	Sihtkataloogi ID
+Test a release	Testi väljalaset
+Test details	Testi üksikasjad
+Test file name	Testfaili nimi
+Test format	Testi vormingut
+Test indexer flags	Testi indekserilipud
+Test language	Testi keel
+Test original language	Testi originaalkeel
+Test quality	Testi kvaliteet
+Test release title	Testväljalaske pealkiri
+Test release type	Testväljalaske tüüp
+Test size in GiB	Testsuurus GiB-des
+The catalogues share an external identity.	Kataloogidel on ühine väline identiteet.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Valik asendab iga episoodi jälgimisoleku (eriepisoode muudavad ainult kaks eriepisoodide valikut), seejärel jälgitakse iga hooaega, millel on jälgitav episood. „Puudub“ lõpetab ka sarja jälgimise.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Põhifail ja vastavad subtiitrid taastatakse filmi kausta. Olemasolevaid faile ei kirjutata kunagi üle.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Kaust nimetatakse ümber või teisele kettale liikumisel kopeeritakse ja seejärel eemaldatakse. Uut kausta ei tohi olla olemas või see peab olema tühi.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Vastanud indekserid ei tagastanud ühtegi väljalaset. Teised allikad nurjusid; kontrolli ülal olevaid vigu ja proovi uuesti.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	See tingimus säilitatakse. Selle väljade muutmiseks kasuta nuppu Muuda JSON-i; Testi vormingut näitab, kas seda saab hinnata.
+Title pattern of {}	Pealkirja muster: {}
+Title to add	Lisatav pealkiri
+Title to search for	Otsitav pealkiri
+Title, group, quality or rejection reason…	Pealkiri, rühm, kvaliteet või tagasilükkamise põhjus…
+Titles considered:	Arvesse võetud pealkirjad:
+Toggle colour theme	Vaheta värviteemat
+Toggle sort direction	Vaheta sortimissuunda
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Proovi enne salvestamist teleri, anime või filmi väljalaske nime. See kontrollib vormingu tingimusi; kvaliteediprofiili skoorid ja allalaadimise heakskiit on eraldi.
+Ungroup	Tühista rühmitus
+Ungroup {}	Tühista rühmitus: {}
+Unknown value ({})	Tundmatu väärtus ({})
+Unmapped folders	Kaardistamata kaustad
+Unmatched titles	Sobitamata pealkirjad
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Lõpeta kustutatud episoodide jälgimine (käsitsi kustutatud või kettalt puuduvad; täiendused ei lõpeta kunagi jälgimist)
+Unwatched	Vaatamata
+Use global	Kasuta üldist
+Use global sizes for {}	Kasuta üldisi suurusi: {}
+Valid days	Kehtivus päevades
+Value	Väärtus
+Values	Väärtused
+View	Vaade
+Wanted lists	Soovitud loendid
+Watched	Vaadatud
+Watched date	Vaatamise kuupäev
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Kui see valik on välja lülitatud, jäävad failid kettale. Kustutatud kaustad lähevad prügikasti, kui see on määratud.
+iCal feed address	iCal-voo aadress
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	selles oleva sildi) järgi; imporditud pealkirjad säilitavad oma kausta, nende failid skaneeritakse kohapeal, seejärel rakendub jälgimise valik. Midagi ei teisaldata ega nimetata ümber.
+{} Not renamed: {}	{} Ümber nimetamata: {}
+{} factor	{} tegur
+{} files imported. Review the results below.	{} faili imporditud. Vaata allpool tulemused üle.
+{} imported, {} failed; see each folder.	{} imporditud, {} nurjus; vaata iga kausta.
+{} imported.	{} imporditud.
+{} matched · {} kept at current numbers · {} new episodes	{} sobitatud · {} säilitatud praeguste numbritega · {} uut episoodi
+{} min	{} min
+{} of {} folders selected	{} / {} kausta valitud
+{} releases found, {} accepted, nothing grabbed.	{} väljalaset leitud, {} aktsepteeritud, midagi ei haaratud.
+{} series and {} movies, {} files checked: {} issues.	{} sarja ja {} filmi, {} faili kontrollitud: {} probleemi.
+{} series moved.	{} sarja teisaldatud.
+{} series moved; not moved: {}	{} sarja teisaldatud; teisaldamata: {}
+{} series removed.	{} sarja eemaldatud.
+{} series removed; kept: {}	{} sarja eemaldatud; säilitatud: {}
+{} size of {}	{} suurus – {}
+{} size slider of {}	{} suuruse liugur – {}
+{} titles	{} pealkirja
+{}: {} releases from {} indexer(s). {} responding.	{}: {} väljalaset {} indekserist. Vastas {}.
+· API:	· API:
+· negated	· eitatud
+· required	· nõutav
+· {} ms · {} releases	· {} ms · {} väljalaset
+— MiB per minute	— MiB minutis
+— in library	— teegis
+→ current number	→ praegune number
+or	või
+1 title	1 pealkiri

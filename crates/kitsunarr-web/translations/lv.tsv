@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Scene numerācija no TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Scene numerācija, ekstrapolēta no TheXEM (nepārbaudīta)
 Season {} (scene seasons {})	{}. sezona (scene sezonas {})
 {} (scene {})	{} (scene {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Franšīzes grupa, atrasta pēc AniList vai MyAnimeList saistībām. Vēlāk pievienoti tās pašas franšīzes nosaukumi arī pievienojas tai. Noņemtie nosaukumi atsvaidzinot tai vairs nepievienojas.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Kvalitāte bez pārrakstīšanas izmanto Iestatījumi › Kvalitāte. Pārrakstīšanā tukša vērtība nozīmē “bez ierobežojuma”; maksimums nulle arī nozīmē “bez ierobežojuma”.
+Add a movie, or change the search and watched filter.	Pievienojiet filmu vai mainiet meklēšanu un noskatīto filtru.
+Add a root folder in Settings › Media management first.	Vispirms pievienojiet saknes mapi sadaļā Iestatījumi › Multivides pārvaldība.
+Add qualities to {}	Pievienot kvalitātes grupai {}
+All decisions	Visi lēmumi
+All seasons	Visas sezonas
+All selected flags must be present.	Jābūt visiem atlasītajiem karodziņiem.
+All sources	Visi avoti
+Allow {}	Atļaut {}
+Also delete their folders and files (to the recycle bin when one is set)	Dzēst arī to mapes un failus (uz atkritni, ja tā ir iestatīta)
+Apply sources	Lietot avotus
+As the catalogue says	Kā norādīts katalogā
+Auto tag name	Automātiskā taga nosaukums
+Automatic match / keep current number	Automātiska saskaņošana / saglabāt pašreizējo numuru
+Automatic search for {}	Automātiskā meklēšana: {}
+Below the root folder; use / for sub-folders.	Zem saknes mapes; apakšmapēm izmantojiet /.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Labākā vispirms. Velciet turus vai izmantojiet bultiņas, lai mainītu secību. Kvalitātes vienā grupā ir līdzvērtīgas.
+Bulk actions	Lielapjoma darbības
+Catalogue ID	Kataloga ID
+Catalogue changed.	Katalogs mainīts.
+Catalogue match	Atbilstība katalogā
+Change catalogue	Mainīt katalogu
+Choose a movie…	Izvēlieties filmu…
+Choose a root folder…	Izvēlieties saknes mapi…
+Choose episodes for {}	Izvēlēties epizodes: {}
+Choose which episodes are monitored, as when adding the series	Izvēlieties, kuras epizodes tiek uzraudzītas, kā pievienojot seriālu
+Choose which episodes of the selected series are monitored	Izvēlieties, kuras atlasīto seriālu epizodes tiek uzraudzītas
+Choose {}	Izvēlēties {}
+Clean library level	Bibliotēkas tīrīšanas līmenis
+Clean library tag	Bibliotēkas tīrīšanas tags
+Clear filters	Notīrīt filtrus
+Clear or adjust the filters to see more results.	Notīriet vai pielāgojiet filtrus, lai redzētu vairāk rezultātu.
+Codec of {}	Kodeks: {}
+Compression mode	Saspiešanas režīms
+Condition indexer flags	Nosacījuma indeksētāja karodziņi
+Condition language	Nosacījuma valoda
+Condition name	Nosacījuma nosaukums
+Condition name {}	Nosacījuma nosaukums {}
+Condition regular expression {}	Nosacījuma regulārā izteiksme {}
+Condition size {}	Nosacījuma izmērs {}
+Condition type	Nosacījuma tips
+Condition value	Nosacījuma vērtība
+Copy (keep the source)	Kopēt (saglabāt avotu)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Izveidojiet grupu no kvalitātes, pēc tam ievelciet tajā citas kvalitātes vai izmantojiet grupu atlasītājus. Robeža seko kvalitātei uz tās grupu; atgrupējot tiek izmantots grupas augstākais dalībnieks.
+Current folder:	Pašreizējā mape:
+Custom format name	Pielāgotā formāta nosaukums
+Delete tag {}	Dzēst tagu {}
+Delete the file of episode {}	Dzēst epizodes {} failu
+Delete the movie folder and its files	Dzēst filmas mapi un tās failus
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Dzēst “{}” un atbilstošos subtitrus? Tie tiek pārvietoti uz atkritni, ja tā ir iestatīta.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Dzēst “{}”? Tās seriāli un filmas paliek bibliotēkā un atsvaidzinot tai automātiski vairs nepievienosies.
+Detect from title	Noteikt pēc nosaukuma
+Disk scanned: {} {}	Disks skenēts: {} {}
+Dismiss	Nerādīt
+Don't change	Nemainīt
+Don't import	Neimportēt
+Done editing groups	Beigt grupu rediģēšanu
+Drag to reorder or move into a group	Velciet, lai mainītu secību vai pārvietotu uz grupu
+Drag {}	Vilkt {}
+Drop here to move out of a group or to the lowest preference	Nometiet šeit, lai izņemtu no grupas vai novietotu zemākajā prioritātē
+Drop qualities here	Nometiet kvalitātes šeit
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Katrs seriāls saglabā savu mapi zem saknes mapes. Seriāls, kura jaunā mape pastāv un nav tukša, saglabā pašreizējo mapi.
+Edit JSON	Rediģēt JSON
+Edit group	Rediģēt grupu
+Edit groups	Rediģēt grupas
+Enter a non-negative test size within the supported range.	Ievadiet nenegatīvu testa izmēru atbalstītajā diapazonā.
+Enter a valid test size in GiB.	Ievadiet derīgu testa izmēru GiB.
+Enter valid test indexer flags.	Ievadiet derīgus testa indeksētāja karodziņus.
+Episode matches	Epizožu atbilstības
+Event type	Notikuma tips
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Katram nosacījuma tipam jāatbilst. Viena tipa ietvaros pietiek, ka atbilst jebkurš nosacījums, un katram obligātajam nosacījumam jāatbilst. “Noliegt” apgriež derīgu nosacījumu.
+Every folder of this root folder belongs to a title already.	Katra šīs saknes mapes mape jau pieder kādam nosaukumam.
+Exclude {}	Izslēgt {}
+Exclusion catalogue	Izslēgšanas katalogs
+Exclusion id	Izslēgšanas ID
+Exclusion title	Izslēgšanas nosaukums
+Factor for {}	Koeficients: {}
+Feed tags	Plūsmas tagi
+File name (optional)	Faila nosaukums (neobligāts)
+Filter by monitoring	Filtrēt pēc uzraudzības
+Filter by watched state	Filtrēt pēc noskatīšanās stāvokļa
+Filter release decisions	Filtrēt izlaidumu lēmumus
+Filter releases	Filtrēt izlaidumus
+Find target title	Atrast mērķa nosaukumu
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Saknes mapes mapes, kuras neizmanto neviens nosaukums. Katra tiek saskaņota ar katalogu pēc tās nosaukuma (vai pēc tajā esošā taga
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Nesaskaņotajiem izlaidumiem salīdziniet tālāk redzamo atpazīto nosaukumu un epizožu numurus ar apskatītajiem nosaukumiem. Ja nepieciešams, pievienojiet alternatīvu nosaukumu vai izlabojiet epizožu kartējumu bibliotēkā.
+Format does not match	Formāts neatbilst
+Format matches	Formāts atbilst
+Full season	Visa sezona
+Grab it now instead of waiting for the delay	Paņemt tagad, negaidot aizkavi
+Grab {}	Paņemt {}
+Group	Grupa
+Group for {}	Grupa: {}
+Group name	Grupas nosaukums
+Group {}	Grupa {}
+Guided editor	Vadītais redaktors
+I confirm that the target catalogue entry is the same title.	Apstiprinu, ka mērķa kataloga ieraksts ir tas pats nosaukums.
+Import	Importēt
+Import existing folders	Importēt esošās mapes
+Import mode	Importēšanas režīms
+Import {}	Importēt ({})
+Imported from movie folder	Importēts no filmas mapes
+Include in file names ({} token)	Iekļaut failu nosaukumos (marķieris {})
+Include {}	Iekļaut {}
+Indexer flags (bitmask)	Indeksētāja karodziņi (bitu maska)
+Jellyfin library	Jellyfin bibliotēka
+Jellyfin user	Jellyfin lietotājs
+Jellyfin watched sync can update this status.	Jellyfin noskatīto sinhronizācija var atjaunināt šo statusu.
+Key name	Atslēgas nosaukums
+Key permission	Atslēgas atļauja
+Kind of {}	Veids: {}
+Label of {}	Etiķete: {}
+Language	Valoda
+Library import	Bibliotēkas importēšana
+List exclusions	Sarakstu izslēgšanas
+Loading sources…	Ielādē avotus…
+Main navigation	Galvenā navigācija
+Mark unwatched	Atzīmēt kā nenoskatītu
+Mark watched	Atzīmēt kā noskatītu
+Match	Saskaņot
+Match any other language	Atbilst jebkurai citai valodai
+Match episode {}	Saskaņot epizodi {}
+Match for {}	Atbilstība: {}
+Matching series	Atbilstošie seriāli
+Matching subtitles follow the file's new name.	Atbilstošie subtitri saņem jauno faila nosaukumu.
+Maximum GiB (inclusive)	Maksimums GiB (ieskaitot)
+Maximum size	Maksimālais izmērs
+Maximum year	Maksimālais gads
+Minimum GiB (exclusive)	Minimums GiB (neieskaitot)
+Minimum age	Minimālais vecums
+Minimum level	Minimālais līmenis
+Minimum score increment for upgrades	Minimālais vērtējuma pieaugums jauninājumiem
+Minimum year	Minimālais gads
+Monitor episode {}	Uzraudzīt epizodi {}
+Monitor new seasons	Uzraudzīt jaunas sezonas
+Monitored filter	Uzraudzības filtrs
+Monitoring	Uzraudzība
+Monitoring updated for {} series.	Uzraudzība atjaunināta seriāliem: {}.
+Monitoring — {} series	Uzraudzība — seriāli: {}
+Monitoring…	Uzraudzība…
+Move folder	Pārvietot mapi
+Move the files	Pārvietot failus
+Move the files to the new folder	Pārvietot failus uz jauno mapi
+Move the movie folder, or point the movie at another folder	Pārvietojiet filmas mapi vai norādiet filmai citu mapi
+Move the selected series into another root folder	Pārvietojiet atlasītos seriālus uz citu saknes mapi
+Move the series folder, or point the series at another folder	Pārvietojiet seriāla mapi vai norādiet seriālam citu mapi
+Move to root folder…	Pārvietot uz saknes mapi…
+Move {} series	Pārvietot seriālus ({})
+Movie bulk actions	Filmu lielapjoma darbības
+Movie file deleted	Filmas fails dzēsts
+Movie file renamed	Filmas fails pārdēvēts
+Movie file restored	Filmas fails atjaunots
+Movie for {}	Filma: {}
+Movie history	Filmas vēsture
+Movie import mode	Filmu importēšanas režīms
+Movie removed, and its folder deleted or recycled.	Filma noņemta, un tās mape dzēsta vai pārvietota uz atkritni.
+Movie source folder	Filmu avota mape
+Movies (Tanukarr)	Filmas (Tanukarr)
+Moving…	Pārvieto…
+Naming & file settings	Nosaukumu un failu iestatījumi
+Negate condition {}	Noliegt nosacījumu {}
+New condition type	Jauns nosacījuma tips
+New profile	Jauns profils
+New root folder path	Jaunās saknes mapes ceļš
+New tag	Jauns tags
+Next	Nākamā
+No group	Bez grupas
+No indexer responded successfully. Check the source errors above, then try again.	Neviens indeksētājs neatbildēja veiksmīgi. Pārbaudiet iepriekš redzamās avotu kļūdas un mēģiniet vēlreiz.
+No match for “{}”	Nav atbilstības: “{}”
+No releases match these filters	Neviens izlaidums neatbilst šiem filtriem
+No root folder	Nav saknes mapes
+Nothing to import	Nav ko importēt
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Mainās tikai reģistrētā mape; izmantojiet to, ja faili jau ir tur, pēc tam skenējiet disku.
+Open navigation	Atvērt navigāciju
+Open on {}	Atvērt vietnē {}
+Organize files	Kārtot failus
+Organizing…	Kārto…
+Original language	Oriģinālvaloda
+Override for a mapped anime batch or a movie feature (single episode).	Pārrakstīšana kartētai anime pakai vai filmas galvenajam failam (viena epizode).
+Parsed title:	Atpazītais nosaukums:
+Passkey	Passkey
+Place above {}	Novietot virs {}
+Place at lowest preference	Novietot zemākajā prioritātē
+Position of {}	Pozīcija: {}
+Prefer {} less	Mazāka prioritāte: {}
+Prefer {} more	Lielāka prioritāte: {}
+Preferred catalogue	Vēlamais katalogs
+Preset title	Sagataves nosaukums
+Prevent import lists from adding it again	Neļaut importēšanas sarakstiem to pievienot atkārtoti
+Prevent import lists from adding them again	Neļaut importēšanas sarakstiem tos pievienot atkārtoti
+Preview again to review your changes.	Priekšskatiet vēlreiz, lai pārskatītu izmaiņas.
+Previous	Iepriekšējā
+Progress of {}	Progress: {}
+Proxy hostname	Starpniekservera resursdatora nosaukums
+Proxy port	Starpniekservera ports
+Quality cutoff	Kvalitātes robeža
+Quality profile for added shows	Kvalitātes profils pievienotajiem seriāliem
+Quality sizes	Kvalitāšu izmēri
+Quality: {} · Group: {} · Languages: {} · {}	Kvalitāte: {} · Grupa: {} · Valodas: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Vaicājumu plānos ir rezerves līmeņi, kas var netikt izpildīti. Avotiem ir 35 sekunžu budžets; interaktīvajām meklēšanām ir kopējais 45 sekunžu budžets.
+RSS sync interval	RSS sinhronizācijas intervāls
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Tikai lasīšana: pārbauda seriālu un filmu mapes, nedrošus failu ierakstus un diskā trūkstošus failus.
+Reading the root folder…	Lasa saknes mapi…
+Regular expression	Regulārā izteiksme
+Rejected	Noraidīts
+Release title	Izlaiduma nosaukums
+Release type	Izlaiduma tips
+Reload folders	Pārlādēt mapes
+Remove condition	Noņemt nosacījumu
+Remove condition {}	Noņemt nosacījumu {}
+Remove mapping	Noņemt kartējumu
+Remove the selected series from Kitsunarr	Noņemt atlasītos seriālus no Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Noņemt atlasītos seriālus ({}) un to epizožu ierakstus no Kitsunarr?
+Remove {}	Noņemt {}
+Remove {} from the blocklist	Noņemt {} no bloķēšanas saraksta
+Remove {} series	Noņemt seriālus ({})
+Remove “{}” from Kitsunarr?	Noņemt “{}” no Kitsunarr?
+Remove…	Noņemt…
+Removing…	Noņem…
+Rename every file of the selected series to the naming settings	Pārdēvēt visus atlasīto seriālu failus atbilstoši nosaukumu iestatījumiem
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Pārdēvēt visus atlasīto seriālu ({}) failus atbilstoši nosaukumu iestatījumiem? Vispirms pārbaudiet nosaukumus seriāla priekšskatījumā “Pārdēvēt failus”.
+Rename file	Pārdēvēt failu
+Renaming mode	Pārdēvēšanas režīms
+Required condition {}	Obligāts nosacījums {}
+Rescan disk	Skenēt disku vēlreiz
+Restore media type	Atjaunojamās multivides tips
+Result	Rezultāts
+Retention	Saglabāšana
+Review	Pārskatīt
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Pārskatiet mērķa nosaukumu un epizožu atbilstības. Faili, ceļi, uzraudzība un vēsture tiek saglabāti. Nesaskaņotās epizodes saglabā savus numurus tikai tad, ja šie numuri jaunajā katalogā ir brīvi.
+Root folder for added shows	Saknes mape pievienotajiem seriāliem
+Save path	Saglabāšanas ceļš
+Saving…	Saglabā…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Skenējiet lejupielāžu mapi, pārskatiet katru filmu un nokopējiet vai pārvietojiet tās galveno failu ar atbilstošajiem subtitriem uz bibliotēku. Esošie galvenie faili tiek aizstāti tikai ar jauninājumiem.
+Search again	Meklēt vēlreiz
+Search catalogues	Meklēt katalogos
+Search diagnostics	Meklēšanas diagnostika
+Search for missing episodes once imported	Pēc importēšanas meklēt trūkstošās epizodes
+Search for {}	Meklēt: {}
+Search incomplete	Meklēšana nav pabeigta
+Search indexers for {}	Meklēt indeksētājos: {}
+Search season packs for {}	Meklēt sezonu pakas: {}
+Search sources	Meklēt avotos
+Search sources unavailable	Meklēšanas avoti nav pieejami
+Search the library	Meklēt bibliotēkā
+Search titles…	Meklēt nosaukumus…
+Search {}	Meklēt {}
+Searching “{}”…	Meklē “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Sezonu mapju nosaukumi aizstāj kataloga nosaukumus {}. Atstājiet tukšu, lai saglabātu kataloga nosaukumus.
+Season {} title	{}. sezonas nosaukums
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Atlasiet avotu iepriekš vai iespējojiet interaktīvo meklēšanu indeksētāja iestatījumos. Avotu tagi var arī ierobežot, kuri seriāli tiek meklēti.
+Select all	Atlasīt visu
+Select all movies on this page	Atlasīt visas filmas šajā lapā
+Select every episode on this page	Atlasīt katru epizodi šajā lapā
+Select {}	Atlasīt {}
+Select {} S{}E{}	Atlasīt {} S{}E{}
+Send now	Sūtīt tagad
+Send {} now	Sūtīt {} tagad
+Series & anime	Seriāli un anime
+Series history	Seriāla vēsture
+Series of {}	Seriāls: {}
+Series title, e.g. Severance (or tvdb:12345)	Seriāla nosaukums, piem., Severance (vai tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Rāda {} no {} izlaidumiem. Filtri tiek lietoti šiem rezultātiem bez atkārtotas meklēšanas.
+Size (GiB)	Izmērs (GiB)
+Sort by	Kārtot pēc
+Specifications JSON	Specifikāciju JSON
+Stalled torrent timeout	Iestrēguša torrenta noildze
+TMDB API key	TMDB API atslēga
+Tag existing titles	Pievienot tagu esošajiem nosaukumiem
+Tag {}	Pievienot tagu {}
+Target catalogue	Mērķa katalogs
+Target catalogue ID	Mērķa kataloga ID
+Test a release	Pārbaudīt izlaidumu
+Test details	Pārbaudes informācija
+Test file name	Testa faila nosaukums
+Test format	Pārbaudīt formātu
+Test indexer flags	Testa indeksētāja karodziņi
+Test language	Testa valoda
+Test original language	Testa oriģinālvaloda
+Test quality	Testa kvalitāte
+Test release title	Testa izlaiduma nosaukums
+Test release type	Testa izlaiduma tips
+Test size in GiB	Testa izmērs GiB
+The catalogues share an external identity.	Katalogiem ir kopīga ārējā identitāte.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Izvēle aizstāj katras epizodes uzraudzības stāvokli (speciālās epizodes maina tikai divas speciālo epizožu izvēles), pēc tam uzrauga katru sezonu, kurā ir uzraudzīta epizode. “Nav” arī pārtrauc seriāla uzraudzību.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Galvenais fails un atbilstošie subtitri tiek atjaunoti filmas mapē. Esošie faili nekad netiek pārrakstīti.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Mape tiek pārdēvēta vai, citā diskā, nokopēta un pēc tam noņemta. Jaunajai mapei jābūt neesošai vai tukšai.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Atbildējušie indeksētāji neatgrieza nevienu izlaidumu. Citi avoti neizdevās; pārbaudiet iepriekš redzamās kļūdas un mēģiniet vēlreiz.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Šis nosacījums tiek saglabāts. Izmantojiet “Rediģēt JSON”, lai mainītu tā laukus; “Pārbaudīt formātu” ziņo, vai to var izvērtēt.
+Title pattern of {}	Nosaukuma šablons: {}
+Title to add	Pievienojamais nosaukums
+Title to search for	Meklējamais nosaukums
+Title, group, quality or rejection reason…	Nosaukums, grupa, kvalitāte vai noraidīšanas iemesls…
+Titles considered:	Apskatītie nosaukumi:
+Toggle colour theme	Pārslēgt krāsu motīvu
+Toggle sort direction	Pārslēgt kārtošanas virzienu
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Pirms saglabāšanas izmēģiniet seriāla, anime vai filmas izlaiduma nosaukumu. Tas pārbauda formāta nosacījumus; kvalitātes profilu vērtējumi un lejupielādes apstiprināšana ir atsevišķi.
+Ungroup	Atgrupēt
+Ungroup {}	Atgrupēt {}
+Unknown value ({})	Nezināma vērtība ({})
+Unmapped folders	Nekartētas mapes
+Unmatched titles	Nesaskaņoti nosaukumi
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Pārtraukt dzēsto epizožu uzraudzību (dzēstas manuāli vai trūkst diskā; jauninājumi nekad nepārtrauc uzraudzību)
+Unwatched	Nenoskatīts
+Use global	Izmantot globālos
+Use global sizes for {}	Izmantot globālos izmērus: {}
+Valid days	Derīgs dienas
+Value	Vērtība
+Values	Vērtības
+View	Skats
+Wanted lists	Vēlamo saraksti
+Watched	Noskatīts
+Watched date	Noskatīšanās datums
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Ja šī opcija ir izslēgta, faili paliek diskā. Dzēstās mapes tiek pārvietotas uz atkritni, ja tā ir iestatīta.
+iCal feed address	iCal plūsmas adrese
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	); importētie nosaukumi saglabā savu mapi, to faili tiek skenēti uz vietas, pēc tam tiek lietota uzraudzības izvēle. Nekas netiek pārvietots vai pārdēvēts.
+{} Not renamed: {}	{} Nav pārdēvēts: {}
+{} factor	Koeficients: {}
+{} files imported. Review the results below.	Importēti faili: {}. Pārskatiet rezultātus tālāk.
+{} imported, {} failed; see each folder.	Importēti: {}, neizdevās: {}; skatiet katru mapi.
+{} imported.	Importēti: {}.
+{} matched · {} kept at current numbers · {} new episodes	Saskaņotas: {} · saglabāti pašreizējie numuri: {} · jaunas epizodes: {}
+{} min	{} min
+{} of {} folders selected	Atlasītas {} no {} mapēm
+{} releases found, {} accepted, nothing grabbed.	Atrasti izlaidumi: {}, pieņemti: {}, nekas nav paņemts.
+{} series and {} movies, {} files checked: {} issues.	Pārbaudīti seriāli: {}, filmas: {}, faili: {}; problēmas: {}.
+{} series moved.	Pārvietoti seriāli: {}.
+{} series moved; not moved: {}	Pārvietoti seriāli: {}; nav pārvietoti: {}
+{} series removed.	Noņemti seriāli: {}.
+{} series removed; kept: {}	Noņemti seriāli: {}; paturēti: {}
+{} size of {}	{} izmērs: {}
+{} size slider of {}	{} izmēra slīdnis: {}
+{} titles	{} nosaukumi
+{}: {} releases from {} indexer(s). {} responding.	{}: izlaidumi: {}, indeksētāji: {}. Atbildēja: {}.
+· API:	· API:
+· negated	· noliegts
+· required	· obligāts
+· {} ms · {} releases	· {} ms · izlaidumi: {}
+— MiB per minute	— MiB minūtē
+— in library	— bibliotēkā
+→ current number	→ pašreizējais numurs
+or	vai
+1 title	1 nosaukums

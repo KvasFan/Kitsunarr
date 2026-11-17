@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Číslování scény z TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Číslování scény odvozené z TheXEM (neověřeno)
 Season {} (scene seasons {})	Řada {} (řady scény {})
 {} (scene {})	{} (scéna {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Skupina franšízy nalezená ze vztahů AniList nebo MyAnimeList. Tituly později přidané ze stejné franšízy se k ní také připojí. Odebrané tituly se při obnovení nevrátí.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Kvalita bez přepsání používá Nastavení › Kvalita. V přepsání znamená prázdné pole bez omezení; maximum nula také znamená bez omezení.
+Add a movie, or change the search and watched filter.	Přidejte film nebo změňte hledání a filtr zhlédnutí.
+Add a root folder in Settings › Media management first.	Nejprve přidejte kořenovou složku v Nastavení › Správa médií.
+Add qualities to {}	Přidat kvality do {}
+All decisions	Všechna rozhodnutí
+All seasons	Všechny řady
+All selected flags must be present.	Všechny vybrané příznaky musí být přítomny.
+All sources	Všechny zdroje
+Allow {}	Povolit {}
+Also delete their folders and files (to the recycle bin when one is set)	Smazat také jejich složky a soubory (do koše, pokud je nastaven)
+Apply sources	Použít zdroje
+As the catalogue says	Podle katalogu
+Auto tag name	Název automatického štítku
+Automatic match / keep current number	Automatické spárování / zachovat současné číslo
+Automatic search for {}	Automatické vyhledávání pro {}
+Below the root folder; use / for sub-folders.	Uvnitř kořenové složky; pro podsložky použijte /.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Od nejlepší. Pořadí změníte přetažením úchytů nebo šipkami. Kvality ve skupině jsou si rovny.
+Bulk actions	Hromadné akce
+Catalogue ID	ID v katalogu
+Catalogue changed.	Katalog změněn.
+Catalogue match	Shoda v katalogu
+Change catalogue	Změnit katalog
+Choose a movie…	Vyberte film…
+Choose a root folder…	Vyberte kořenovou složku…
+Choose episodes for {}	Vybrat epizody pro {}
+Choose which episodes are monitored, as when adding the series	Zvolte, které epizody jsou monitorovány, jako při přidávání seriálu
+Choose which episodes of the selected series are monitored	Zvolte, které epizody vybraných seriálů jsou monitorovány
+Choose {}	Vybrat {}
+Clean library level	Úroveň čištění knihovny
+Clean library tag	Štítek čištění knihovny
+Clear filters	Vymazat filtry
+Clear or adjust the filters to see more results.	Pro více výsledků vymažte nebo upravte filtry.
+Codec of {}	Kodek pro {}
+Compression mode	Režim komprese
+Condition indexer flags	Příznaky indexeru podmínky
+Condition language	Jazyk podmínky
+Condition name	Název podmínky
+Condition name {}	Název podmínky {}
+Condition regular expression {}	Regulární výraz podmínky {}
+Condition size {}	Velikost podmínky {}
+Condition type	Typ podmínky
+Condition value	Hodnota podmínky
+Copy (keep the source)	Kopírovat (zachovat zdroj)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Vytvořte skupinu z kvality a pak do ní přetáhněte další kvality nebo použijte výběry Skupina. Mezní hodnota následuje kvalitu do její skupiny; zrušení skupiny použije nejvyššího člena skupiny.
+Current folder:	Současná složka:
+Custom format name	Název vlastního formátu
+Delete tag {}	Smazat štítek {}
+Delete the file of episode {}	Smazat soubor epizody {}
+Delete the movie folder and its files	Smazat složku filmu a její soubory
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	Smazat „{}“ a odpovídající titulky? Přesunou se do koše, pokud je nastaven.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	Smazat „{}“? Jeho seriály a filmy zůstanou v knihovně a při obnovení se automaticky znovu nepřipojí.
+Detect from title	Zjistit z názvu
+Disk scanned: {} {}	Disk prohledán: {} {}
+Dismiss	Zavřít
+Don't change	Neměnit
+Don't import	Neimportovat
+Done editing groups	Dokončit úpravy skupin
+Drag to reorder or move into a group	Přetažením změníte pořadí nebo přesunete do skupiny
+Drag {}	Přetáhnout {}
+Drop here to move out of a group or to the lowest preference	Pusťte sem pro vyjmutí ze skupiny nebo přesun na nejnižší preferenci
+Drop qualities here	Sem pusťte kvality
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Každý seriál si ponechá svou složku uvnitř kořenové složky. Seriál, jehož nová složka existuje a není prázdná, si ponechá současnou složku.
+Edit JSON	Upravit JSON
+Edit group	Upravit skupinu
+Edit groups	Upravit skupiny
+Enter a non-negative test size within the supported range.	Zadejte nezápornou testovací velikost v podporovaném rozsahu.
+Enter a valid test size in GiB.	Zadejte platnou testovací velikost v GiB.
+Enter valid test indexer flags.	Zadejte platné testovací příznaky indexeru.
+Episode matches	Shody epizod
+Event type	Typ události
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Shodovat se musí každý typ podmínky. V rámci jednoho typu stačí kterákoli podmínka, ale každá povinná podmínka se musí shodovat. Negace obrací platnou podmínku.
+Every folder of this root folder belongs to a title already.	Každá složka této kořenové složky už patří některému titulu.
+Exclude {}	Vyloučit {}
+Exclusion catalogue	Katalog výjimky
+Exclusion id	ID výjimky
+Exclusion title	Název výjimky
+Factor for {}	Faktor pro {}
+Feed tags	Štítky zdroje
+File name (optional)	Název souboru (volitelné)
+Filter by monitoring	Filtrovat podle monitorování
+Filter by watched state	Filtrovat podle stavu zhlédnutí
+Filter release decisions	Filtrovat rozhodnutí o vydáních
+Filter releases	Filtrovat vydání
+Find target title	Najít cílový titul
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Složky kořenové složky, které nepoužívá žádný titul. Každá se páruje s katalogem podle svého názvu (nebo podle štítku
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	U nespárovaných vydání porovnejte níže zpracovaný název a čísla epizod se zvažovanými tituly. V případě potřeby přidejte alternativní název nebo opravte mapování epizod v knihovně.
+Format does not match	Formát se neshoduje
+Format matches	Formát se shoduje
+Full season	Celá řada
+Grab it now instead of waiting for the delay	Získat hned místo čekání na zpoždění
+Grab {}	Získat {}
+Group	Skupina
+Group for {}	Skupina pro {}
+Group name	Název skupiny
+Group {}	Skupina {}
+Guided editor	Řízený editor
+I confirm that the target catalogue entry is the same title.	Potvrzuji, že cílová položka katalogu je tentýž titul.
+Import	Importovat
+Import existing folders	Importovat existující složky
+Import mode	Režim importu
+Import {}	Importovat {}
+Imported from movie folder	Importováno ze složky filmu
+Include in file names ({} token)	Zahrnout do názvů souborů (token {})
+Include {}	Zahrnout {}
+Indexer flags (bitmask)	Příznaky indexeru (bitová maska)
+Jellyfin library	Knihovna Jellyfin
+Jellyfin user	Uživatel Jellyfin
+Jellyfin watched sync can update this status.	Synchronizace zhlédnutí z Jellyfin může tento stav aktualizovat.
+Key name	Název klíče
+Key permission	Oprávnění klíče
+Kind of {}	Druh: {}
+Label of {}	Popisek: {}
+Language	Jazyk
+Library import	Import knihovny
+List exclusions	Výjimky seznamů
+Loading sources…	Načítání zdrojů…
+Main navigation	Hlavní navigace
+Mark unwatched	Označit jako nezhlédnuté
+Mark watched	Označit jako zhlédnuté
+Match	Spárovat
+Match any other language	Shoda s jakýmkoli jiným jazykem
+Match episode {}	Spárovat epizodu {}
+Match for {}	Shoda pro {}
+Matching series	Odpovídající seriály
+Matching subtitles follow the file's new name.	Odpovídající titulky převezmou nový název souboru.
+Maximum GiB (inclusive)	Maximum GiB (včetně)
+Maximum size	Maximální velikost
+Maximum year	Maximální rok
+Minimum GiB (exclusive)	Minimum GiB (bez)
+Minimum age	Minimální stáří
+Minimum level	Minimální úroveň
+Minimum score increment for upgrades	Minimální přírůstek skóre pro upgrady
+Minimum year	Minimální rok
+Monitor episode {}	Monitorovat epizodu {}
+Monitor new seasons	Monitorovat nové řady
+Monitored filter	Filtr monitorování
+Monitoring	Monitorování
+Monitoring updated for {} series.	Monitorování aktualizováno, seriály: {}.
+Monitoring — {} series	Monitorování — seriály: {}
+Monitoring…	Monitorování…
+Move folder	Přesunout složku
+Move the files	Přesunout soubory
+Move the files to the new folder	Přesunout soubory do nové složky
+Move the movie folder, or point the movie at another folder	Přesunout složku filmu nebo filmu přiřadit jinou složku
+Move the selected series into another root folder	Přesunout vybrané seriály do jiné kořenové složky
+Move the series folder, or point the series at another folder	Přesunout složku seriálu nebo seriálu přiřadit jinou složku
+Move to root folder…	Přesunout do kořenové složky…
+Move {} series	Přesunout seriály: {}
+Movie bulk actions	Hromadné akce s filmy
+Movie file deleted	Soubor filmu smazán
+Movie file renamed	Soubor filmu přejmenován
+Movie file restored	Soubor filmu obnoven
+Movie for {}	Film pro {}
+Movie history	Historie filmu
+Movie import mode	Režim importu filmů
+Movie removed, and its folder deleted or recycled.	Film odebrán a jeho složka smazána nebo přesunuta do koše.
+Movie source folder	Zdrojová složka filmů
+Movies (Tanukarr)	Filmy (Tanukarr)
+Moving…	Přesouvání…
+Naming & file settings	Pojmenování a nastavení souborů
+Negate condition {}	Negovat podmínku {}
+New condition type	Nový typ podmínky
+New profile	Nový profil
+New root folder path	Cesta nové kořenové složky
+New tag	Nový štítek
+Next	Další
+No group	Bez skupiny
+No indexer responded successfully. Check the source errors above, then try again.	Žádný indexer neodpověděl úspěšně. Zkontrolujte chyby zdrojů výše a zkuste to znovu.
+No match for “{}”	Žádná shoda pro „{}“
+No releases match these filters	Těmto filtrům neodpovídá žádné vydání
+No root folder	Žádná kořenová složka
+Nothing to import	Nic k importu
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Změní se jen zaznamenaná složka; použijte, když už tam soubory jsou, a pak prohledejte disk.
+Open navigation	Otevřít navigaci
+Open on {}	Otevřít na {}
+Organize files	Uspořádat soubory
+Organizing…	Uspořádávání…
+Original language	Původní jazyk
+Override for a mapped anime batch or a movie feature (single episode).	Přepsání pro mapovaný balíček anime nebo hlavní soubor filmu (jedna epizoda).
+Parsed title:	Zpracovaný název:
+Passkey	Passkey
+Place above {}	Umístit nad {}
+Place at lowest preference	Umístit na nejnižší preferenci
+Position of {}	Pozice: {}
+Prefer {} less	Méně preferovat {}
+Prefer {} more	Více preferovat {}
+Preferred catalogue	Preferovaný katalog
+Preset title	Název předvolby
+Prevent import lists from adding it again	Zabránit seznamům k importu v jeho opětovném přidání
+Prevent import lists from adding them again	Zabránit seznamům k importu v jejich opětovném přidání
+Preview again to review your changes.	Pro kontrolu změn vytvořte náhled znovu.
+Previous	Předchozí
+Progress of {}	Průběh: {}
+Proxy hostname	Název hostitele proxy
+Proxy port	Port proxy
+Quality cutoff	Mezní hodnota kvality
+Quality profile for added shows	Profil kvality pro přidávané seriály
+Quality sizes	Velikosti kvalit
+Quality: {} · Group: {} · Languages: {} · {}	Kvalita: {} · Skupina: {} · Jazyky: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Plány dotazů zahrnují záložní úrovně, které se nemusí spustit. Zdroje mají limit 35 sekund; interaktivní vyhledávání má celkový limit 45 sekund.
+RSS sync interval	Interval synchronizace RSS
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Pouze čtení: kontroluje složky seriálů a filmů, nebezpečné záznamy souborů a soubory chybějící na disku.
+Reading the root folder…	Čtení kořenové složky…
+Regular expression	Regulární výraz
+Rejected	Odmítnuto
+Release title	Název vydání
+Release type	Typ vydání
+Reload folders	Znovu načíst složky
+Remove condition	Odebrat podmínku
+Remove condition {}	Odebrat podmínku {}
+Remove mapping	Odebrat mapování
+Remove the selected series from Kitsunarr	Odebrat vybrané seriály z Kitsunarr
+Remove the {} selected series and their episode records from Kitsunarr?	Odebrat vybrané seriály ({}) a záznamy jejich epizod z Kitsunarr?
+Remove {}	Odebrat {}
+Remove {} from the blocklist	Odebrat {} z blocklistu
+Remove {} series	Odebrat seriály: {}
+Remove “{}” from Kitsunarr?	Odebrat „{}“ z Kitsunarr?
+Remove…	Odebrat…
+Removing…	Odebírání…
+Rename every file of the selected series to the naming settings	Přejmenovat všechny soubory vybraných seriálů podle nastavení pojmenování
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Přejmenovat všechny soubory vybraných seriálů ({}) podle nastavení pojmenování? Názvy si nejprve ověřte v náhledu Přejmenovat soubory daného seriálu.
+Rename file	Přejmenovat soubor
+Renaming mode	Režim přejmenování
+Required condition {}	Povinná podmínka {}
+Rescan disk	Znovu prohledat disk
+Restore media type	Typ médií k obnovení
+Result	Výsledek
+Retention	Uchování
+Review	Kontrola
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Zkontrolujte cílový titul a shody epizod. Soubory, cesty, monitorování a historie se zachovají. Nespárované epizody si ponechají svá čísla jen tehdy, když jsou v novém katalogu volná.
+Root folder for added shows	Kořenová složka pro přidávané seriály
+Save path	Cesta pro uložení
+Saving…	Ukládání…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Prohledejte složku stahování, zkontrolujte každý film a zkopírujte nebo přesuňte jeho hlavní soubor s odpovídajícími titulky do knihovny. Existující hlavní soubory se nahrazují jen upgrady.
+Search again	Hledat znovu
+Search catalogues	Hledat v katalozích
+Search diagnostics	Diagnostika vyhledávání
+Search for missing episodes once imported	Po importu hledat chybějící epizody
+Search for {}	Hledat {}
+Search incomplete	Vyhledávání neúplné
+Search indexers for {}	Hledat v indexerech pro {}
+Search season packs for {}	Hledat balíčky řad pro {}
+Search sources	Zdroje vyhledávání
+Search sources unavailable	Zdroje vyhledávání nejsou dostupné
+Search the library	Hledat v knihovně
+Search titles…	Hledat tituly…
+Search {}	Hledat {}
+Searching “{}”…	Hledání „{}“…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Názvy složek řad nahrazují názvy z katalogu v {}. Ponechte prázdné pro zachování názvů z katalogu.
+Season {} title	Název řady {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Vyberte zdroj výše nebo povolte interaktivní vyhledávání v nastavení indexeru. Štítky zdrojů mohou také omezit, které seriály se prohledávají.
+Select all	Vybrat vše
+Select all movies on this page	Vybrat všechny filmy na této stránce
+Select every episode on this page	Vybrat všechny epizody na této stránce
+Select {}	Vybrat {}
+Select {} S{}E{}	Vybrat {} S{}E{}
+Send now	Odeslat hned
+Send {} now	Odeslat {} hned
+Series & anime	Seriály a anime
+Series history	Historie seriálu
+Series of {}	Seriál pro {}
+Series title, e.g. Severance (or tvdb:12345)	Název seriálu, např. Severance (nebo tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	Zobrazeno {} z {} vydání. Filtry se použijí na tyto výsledky bez nového vyhledávání.
+Size (GiB)	Velikost (GiB)
+Sort by	Řadit podle
+Specifications JSON	JSON specifikací
+Stalled torrent timeout	Časový limit zaseknutých torrentů
+TMDB API key	Klíč API TMDB
+Tag existing titles	Označit existující tituly štítkem
+Tag {}	Štítek {}
+Target catalogue	Cílový katalog
+Target catalogue ID	ID v cílovém katalogu
+Test a release	Otestovat vydání
+Test details	Podrobnosti testu
+Test file name	Testovací název souboru
+Test format	Otestovat formát
+Test indexer flags	Testovací příznaky indexeru
+Test language	Testovací jazyk
+Test original language	Testovací původní jazyk
+Test quality	Testovací kvalita
+Test release title	Testovací název vydání
+Test release type	Testovací typ vydání
+Test size in GiB	Testovací velikost v GiB
+The catalogues share an external identity.	Katalogy sdílejí externí identitu.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	Volba nahradí stav monitorování každé epizody (speciály mění jen dvě volby pro speciály) a pak monitoruje každou řadu, která má monitorovanou epizodu. „Žádné“ také vypne monitorování seriálu.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	Hlavní soubor a odpovídající titulky se obnoví do složky filmu. Existující soubory se nikdy nepřepíší.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	Složka se přejmenuje, nebo na jiném disku zkopíruje a poté odstraní. Nová složka nesmí existovat nebo musí být prázdná.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	Odpovídající indexery nevrátily žádná vydání. Ostatní zdroje selhaly; zkontrolujte chyby výše a zkuste to znovu.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Tato podmínka je zachována. Její pole změníte přes Upravit JSON; Otestovat formát ukáže, zda ji lze vyhodnotit.
+Title pattern of {}	Vzor názvu pro {}
+Title to add	Titul k přidání
+Title to search for	Titul k vyhledání
+Title, group, quality or rejection reason…	Název, skupina, kvalita nebo důvod odmítnutí…
+Titles considered:	Zvažované tituly:
+Toggle colour theme	Přepnout barevný motiv
+Toggle sort direction	Přepnout směr řazení
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Před uložením vyzkoušejte název vydání seriálu, anime nebo filmu. Kontrolují se podmínky formátu; skóre profilu kvality a schválení stažení jsou samostatné.
+Ungroup	Zrušit skupinu
+Ungroup {}	Zrušit skupinu {}
+Unknown value ({})	Neznámá hodnota ({})
+Unmapped folders	Nenamapované složky
+Unmatched titles	Nespárované tituly
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Přestat monitorovat smazané epizody (smazané ručně nebo chybějící na disku; upgrady monitorování nikdy nevypínají)
+Unwatched	Nezhlédnuto
+Use global	Použít globální
+Use global sizes for {}	Použít globální velikosti pro {}
+Valid days	Platnost (dny)
+Value	Hodnota
+Values	Hodnoty
+View	Zobrazení
+Wanted lists	Seznamy hledaných
+Watched	Zhlédnuto
+Watched date	Datum zhlédnutí
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Když je tato volba vypnutá, soubory zůstanou na disku. Smazané složky se přesunou do koše, pokud je nastaven.
+iCal feed address	Adresa zdroje iCal
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	v názvu); importované tituly si ponechají svou složku, jejich soubory se prohledají na místě a pak se použije volba monitorování. Nic se nepřesouvá ani nepřejmenovává.
+{} Not renamed: {}	{} Nepřejmenováno: {}
+{} factor	Faktor {}
+{} files imported. Review the results below.	Importované soubory: {}. Zkontrolujte výsledky níže.
+{} imported, {} failed; see each folder.	Importováno: {}, selhalo: {}; podrobnosti u jednotlivých složek.
+{} imported.	Importováno: {}.
+{} matched · {} kept at current numbers · {} new episodes	spárováno: {} · ponechána současná čísla: {} · nové epizody: {}
+{} min	{} min
+{} of {} folders selected	Vybrané složky: {} z {}
+{} releases found, {} accepted, nothing grabbed.	Nalezená vydání: {}, přijatá: {}, nic nezískáno.
+{} series and {} movies, {} files checked: {} issues.	Zkontrolováno seriálů: {}, filmů: {}, souborů: {}; problémy: {}.
+{} series moved.	Přesunuté seriály: {}.
+{} series moved; not moved: {}	Přesunuté seriály: {}; nepřesunuto: {}
+{} series removed.	Odebrané seriály: {}.
+{} series removed; kept: {}	Odebrané seriály: {}; ponecháno: {}
+{} size of {}	{}: velikost pro {}
+{} size slider of {}	{}: posuvník velikosti pro {}
+{} titles	Tituly: {}
+{}: {} releases from {} indexer(s). {} responding.	{}: vydání: {}, indexery: {}. Odpovědělo: {}.
+· API:	· API:
+· negated	· negováno
+· required	· povinné
+· {} ms · {} releases	· {} ms · vydání: {}
+— MiB per minute	— MiB za minutu
+— in library	— v knihovně
+→ current number	→ současné číslo
+or	nebo
+1 title	1 titul

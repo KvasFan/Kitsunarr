@@ -966,3 +966,347 @@ Scene numbering from TheXEM	TheXEM இலிருந்து scene எண்�
 Scene numbering extrapolated from TheXEM (unverified)	TheXEM இலிருந்து ஊகிக்கப்பட்ட scene எண்ணிடல் (சரிபார்க்கப்படவில்லை)
 Season {} (scene seasons {})	சீசன் {} (scene சீசன்கள் {})
 {} (scene {})	{} (scene {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	AniList அல்லது MyAnimeList தொடர்புகளிலிருந்து கண்டறியப்பட்ட உரிமைக் குழு. அதே உரிமையிலிருந்து பின்னர் சேர்க்கப்படும் தலைப்புகளும் இதில் சேரும். அகற்றப்பட்ட தலைப்புகள் புதுப்பிக்கப்படும்போதும் வெளியிலேயே இருக்கும்.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	மேலெழுதல் இல்லாத தரம் அமைப்புகள் › தரம் ஐப் பயன்படுத்தும். மேலெழுதலில், காலியாக இருந்தால் வரம்பற்றது; அதிகபட்சம் பூஜ்ஜியம் என்றாலும் வரம்பற்றது.
+Add a movie, or change the search and watched filter.	ஒரு திரைப்படத்தைச் சேர்க்கவும், அல்லது தேடல் மற்றும் பார்த்தவை வடிகட்டியை மாற்றவும்.
+Add a root folder in Settings › Media management first.	முதலில் அமைப்புகள் › ஊடக மேலாண்மை இல் ஒரு மூல கோப்புறையைச் சேர்க்கவும்.
+Add qualities to {}	{} இல் தரங்களைச் சேர்
+All decisions	அனைத்து முடிவுகளும்
+All seasons	அனைத்து சீசன்களும்
+All selected flags must be present.	தேர்ந்தெடுத்த அனைத்துக் கொடிகளும் இருக்க வேண்டும்.
+All sources	அனைத்து மூலங்களும்
+Allow {}	{} ஐ அனுமதி
+Also delete their folders and files (to the recycle bin when one is set)	அவற்றின் கோப்புறைகளையும் கோப்புகளையும் நீக்கு (அமைக்கப்பட்டிருந்தால் மறுசுழற்சித் தொட்டிக்கு)
+Apply sources	மூலங்களைப் பயன்படுத்து
+As the catalogue says	பட்டியல் கூறுவது போல
+Auto tag name	தானியங்கு குறிச்சொல் பெயர்
+Automatic match / keep current number	தானியங்குப் பொருத்தம் / தற்போதைய எண்ணை வை
+Automatic search for {}	{} க்கான தானியங்கு தேடல்
+Below the root folder; use / for sub-folders.	மூல கோப்புறைக்குக் கீழே; துணைக் கோப்புறைகளுக்கு / பயன்படுத்தவும்.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	சிறந்தது முதலில். வரிசையை மாற்ற கைப்பிடிகளை இழுக்கவும் அல்லது அம்புகளைப் பயன்படுத்தவும். ஒரு குழுவிலுள்ள தரங்கள் சம நிலையில் இருக்கும்.
+Bulk actions	மொத்தச் செயல்கள்
+Catalogue ID	பட்டியல் ID
+Catalogue changed.	பட்டியல் மாற்றப்பட்டது.
+Catalogue match	பட்டியல் பொருத்தம்
+Change catalogue	பட்டியலை மாற்று
+Choose a movie…	ஒரு திரைப்படத்தைத் தேர்ந்தெடு…
+Choose a root folder…	ஒரு மூல கோப்புறையைத் தேர்ந்தெடு…
+Choose episodes for {}	{} க்கான அத்தியாயங்களைத் தேர்ந்தெடு
+Choose which episodes are monitored, as when adding the series	தொடரைச் சேர்க்கும்போது போலவே, எந்த அத்தியாயங்கள் கண்காணிக்கப்படும் என்பதைத் தேர்ந்தெடு
+Choose which episodes of the selected series are monitored	தேர்ந்தெடுத்த தொடர்களின் எந்த அத்தியாயங்கள் கண்காணிக்கப்படும் என்பதைத் தேர்ந்தெடு
+Choose {}	{} ஐத் தேர்ந்தெடு
+Clean library level	நூலகச் சுத்த நிலை
+Clean library tag	நூலகச் சுத்தக் குறிச்சொல்
+Clear filters	வடிகட்டிகளை அழி
+Clear or adjust the filters to see more results.	மேலும் முடிவுகளைக் காண வடிகட்டிகளை அழிக்கவும் அல்லது சரிசெய்யவும்.
+Codec of {}	{} இன் கோடெக்
+Compression mode	சுருக்கப் பயன்முறை
+Condition indexer flags	நிபந்தனை குறியீட்டாளர் கொடிகள்
+Condition language	நிபந்தனை மொழி
+Condition name	நிபந்தனைப் பெயர்
+Condition name {}	நிபந்தனைப் பெயர் {}
+Condition regular expression {}	நிபந்தனை ரெகுலர் எக்ஸ்பிரஷன் {}
+Condition size {}	நிபந்தனை அளவு {}
+Condition type	நிபந்தனை வகை
+Condition value	நிபந்தனை மதிப்பு
+Copy (keep the source)	நகலெடு (மூலத்தை வைத்திரு)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	ஒரு தரத்திலிருந்து குழுவை உருவாக்கி, பின்னர் மேலும் தரங்களை அதற்குள் இழுக்கவும் அல்லது குழுத் தேர்விகளைப் பயன்படுத்தவும். வரம்பு ஒரு தரத்தைப் பின்தொடர்ந்து அதன் குழுவுக்குச் செல்லும்; குழுவைப் பிரிக்கும்போது குழுவின் மிக உயர்ந்த உறுப்பினர் பயன்படும்.
+Current folder:	தற்போதைய கோப்புறை:
+Custom format name	தனிப்பயன் வடிவப் பெயர்
+Delete tag {}	{} குறிச்சொல்லை நீக்கு
+Delete the file of episode {}	அத்தியாயம் {} இன் கோப்பை நீக்கு
+Delete the movie folder and its files	திரைப்படக் கோப்புறையையும் அதன் கோப்புகளையும் நீக்கு
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	“{}” ஐயும் அதனுடன் பொருந்தும் வசனங்களையும் நீக்கவா? அமைக்கப்பட்டிருந்தால் அவை மறுசுழற்சித் தொட்டிக்குச் செல்லும்.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	“{}” ஐ நீக்கவா? அதன் தொடர்களும் திரைப்படங்களும் நூலகத்தில் இருக்கும், புதுப்பிக்கும்போது தானாக மீண்டும் சேராது.
+Detect from title	தலைப்பிலிருந்து கண்டறி
+Disk scanned: {} {}	வட்டு ஸ்கேன் செய்யப்பட்டது: {} {}
+Dismiss	நிராகரி
+Don't change	மாற்றாதே
+Don't import	இறக்குமதி செய்யாதே
+Done editing groups	குழுக்களைத் திருத்துவது முடிந்தது
+Drag to reorder or move into a group	வரிசையை மாற்ற அல்லது ஒரு குழுவுக்குள் நகர்த்த இழுக்கவும்
+Drag {}	{} ஐ இழு
+Drop here to move out of a group or to the lowest preference	குழுவிலிருந்து வெளியே நகர்த்த அல்லது குறைந்த முன்னுரிமைக்கு நகர்த்த இங்கே விடவும்
+Drop qualities here	தரங்களை இங்கே விடவும்
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	ஒவ்வொரு தொடரும் மூல கோப்புறைக்குக் கீழே தனது கோப்புறையை வைத்திருக்கும். புதிய கோப்புறை ஏற்கனவே இருந்து காலியாக இல்லாத தொடர் தனது தற்போதைய கோப்புறையை வைத்திருக்கும்.
+Edit JSON	JSON ஐத் திருத்து
+Edit group	குழுவைத் திருத்து
+Edit groups	குழுக்களைத் திருத்து
+Enter a non-negative test size within the supported range.	ஆதரிக்கப்படும் வரம்பிற்குள் எதிர்மறையல்லாத சோதனை அளவை உள்ளிடவும்.
+Enter a valid test size in GiB.	GiB இல் சரியான சோதனை அளவை உள்ளிடவும்.
+Enter valid test indexer flags.	சரியான சோதனைக் குறியீட்டாளர் கொடிகளை உள்ளிடவும்.
+Episode matches	அத்தியாயப் பொருத்தங்கள்
+Event type	நிகழ்வு வகை
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	ஒவ்வொரு நிபந்தனை வகையும் பொருந்த வேண்டும். ஒரே வகைக்குள், ஏதேனும் ஒரு நிபந்தனை பொருந்தலாம், தேவையான ஒவ்வொரு நிபந்தனையும் பொருந்த வேண்டும். எதிர்மறையாக்கு சரியான நிபந்தனையைத் தலைகீழாக்கும்.
+Every folder of this root folder belongs to a title already.	இந்த மூல கோப்புறையின் ஒவ்வொரு கோப்புறையும் ஏற்கனவே ஒரு தலைப்புக்குச் சொந்தமானது.
+Exclude {}	{} ஐ விலக்கு
+Exclusion catalogue	விலக்குப் பட்டியல்
+Exclusion id	விலக்கு id
+Exclusion title	விலக்குத் தலைப்பு
+Factor for {}	{} க்கான காரணி
+Feed tags	ஊட்டக் குறிச்சொற்கள்
+File name (optional)	கோப்புப் பெயர் (விருப்பத்தேர்வு)
+Filter by monitoring	கண்காணிப்பின்படி வடிகட்டு
+Filter by watched state	பார்த்த நிலையின்படி வடிகட்டு
+Filter release decisions	வெளியீட்டு முடிவுகளை வடிகட்டு
+Filter releases	வெளியீடுகளை வடிகட்டு
+Find target title	இலக்குத் தலைப்பைக் கண்டுபிடி
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	எந்தத் தலைப்பும் பயன்படுத்தாத மூல கோப்புறையின் கோப்புறைகள். ஒவ்வொன்றும் அதன் பெயரால் (அல்லது அதிலுள்ள
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	பொருந்தாத வெளியீடுகளுக்கு, கீழே உள்ள பாகுபடுத்திய தலைப்பு மற்றும் அத்தியாய எண்களைப் பரிசீலிக்கப்பட்ட தலைப்புகளுடன் ஒப்பிட்டுப் பார்க்கவும். தேவைப்பட்டால் நூலகத்தில் மாற்றுத் தலைப்பைச் சேர்க்கவும் அல்லது அத்தியாய வரைபடத்தைத் திருத்தவும்.
+Format does not match	வடிவம் பொருந்தவில்லை
+Format matches	வடிவம் பொருந்துகிறது
+Full season	முழு சீசன்
+Grab it now instead of waiting for the delay	தாமதத்திற்குக் காத்திருக்காமல் இப்போதே பெறு
+Grab {}	{} ஐப் பெறு
+Group	குழு
+Group for {}	{} க்கான குழு
+Group name	குழுப் பெயர்
+Group {}	குழு {}
+Guided editor	வழிகாட்டப்பட்ட திருத்தி
+I confirm that the target catalogue entry is the same title.	இலக்குப் பட்டியல் உள்ளீடும் அதே தலைப்புதான் என்பதை உறுதிசெய்கிறேன்.
+Import	இறக்குமதி செய்
+Import existing folders	ஏற்கனவே உள்ள கோப்புறைகளை இறக்குமதி செய்
+Import mode	இறக்குமதிப் பயன்முறை
+Import {}	{} ஐ இறக்குமதி செய்
+Imported from movie folder	திரைப்படக் கோப்புறையிலிருந்து இறக்குமதி செய்யப்பட்டது
+Include in file names ({} token)	கோப்புப் பெயர்களில் சேர் ({} டோக்கன்)
+Include {}	{} ஐச் சேர்த்துக்கொள்
+Indexer flags (bitmask)	குறியீட்டாளர் கொடிகள் (பிட்மாஸ்க்)
+Jellyfin library	Jellyfin நூலகம்
+Jellyfin user	Jellyfin பயனர்
+Jellyfin watched sync can update this status.	Jellyfin பார்த்தவை ஒத்திசைவு இந்த நிலையைப் புதுப்பிக்கலாம்.
+Key name	விசைப் பெயர்
+Key permission	விசை அனுமதி
+Kind of {}	{} இன் வகை
+Label of {}	{} இன் லேபிள்
+Language	மொழி
+Library import	நூலக இறக்குமதி
+List exclusions	பட்டியல் விலக்குகள்
+Loading sources…	மூலங்களை ஏற்றுகிறது…
+Main navigation	முதன்மை வழிசெலுத்தல்
+Mark unwatched	பார்க்காததாகக் குறி
+Mark watched	பார்த்ததாகக் குறி
+Match	பொருத்து
+Match any other language	வேறு எந்த மொழியுடனும் பொருத்து
+Match episode {}	அத்தியாயம் {} ஐப் பொருத்து
+Match for {}	{} க்கான பொருத்தம்
+Matching series	பொருந்தும் தொடர்கள்
+Matching subtitles follow the file's new name.	பொருந்தும் வசனங்கள் கோப்பின் புதிய பெயரைப் பின்பற்றும்.
+Maximum GiB (inclusive)	அதிகபட்ச GiB (உட்பட)
+Maximum size	அதிகபட்ச அளவு
+Maximum year	அதிகபட்ச ஆண்டு
+Minimum GiB (exclusive)	குறைந்தபட்ச GiB (தவிர்த்து)
+Minimum age	குறைந்தபட்ச வயது
+Minimum level	குறைந்தபட்ச நிலை
+Minimum score increment for upgrades	மேம்படுத்தல்களுக்கான குறைந்தபட்ச மதிப்பெண் அதிகரிப்பு
+Minimum year	குறைந்தபட்ச ஆண்டு
+Monitor episode {}	அத்தியாயம் {} ஐக் கண்காணி
+Monitor new seasons	புதிய சீசன்களைக் கண்காணி
+Monitored filter	கண்காணிப்பு வடிகட்டி
+Monitoring	கண்காணிப்பு
+Monitoring updated for {} series.	{} தொடர்களுக்கான கண்காணிப்பு புதுப்பிக்கப்பட்டது.
+Monitoring — {} series	கண்காணிப்பு — {} தொடர்கள்
+Monitoring…	கண்காணிப்பை அமைக்கிறது…
+Move folder	கோப்புறையை நகர்த்து
+Move the files	கோப்புகளை நகர்த்து
+Move the files to the new folder	கோப்புகளைப் புதிய கோப்புறைக்கு நகர்த்து
+Move the movie folder, or point the movie at another folder	திரைப்படக் கோப்புறையை நகர்த்து, அல்லது திரைப்படத்தை வேறொரு கோப்புறைக்குச் சுட்டு
+Move the selected series into another root folder	தேர்ந்தெடுத்த தொடர்களை வேறொரு மூல கோப்புறைக்கு நகர்த்து
+Move the series folder, or point the series at another folder	தொடர் கோப்புறையை நகர்த்து, அல்லது தொடரை வேறொரு கோப்புறைக்குச் சுட்டு
+Move to root folder…	மூல கோப்புறைக்கு நகர்த்து…
+Move {} series	{} தொடர்களை நகர்த்து
+Movie bulk actions	திரைப்பட மொத்தச் செயல்கள்
+Movie file deleted	திரைப்படக் கோப்பு நீக்கப்பட்டது
+Movie file renamed	திரைப்படக் கோப்பு மறுபெயரிடப்பட்டது
+Movie file restored	திரைப்படக் கோப்பு மீட்டமைக்கப்பட்டது
+Movie for {}	{} க்கான திரைப்படம்
+Movie history	திரைப்பட வரலாறு
+Movie import mode	திரைப்பட இறக்குமதிப் பயன்முறை
+Movie removed, and its folder deleted or recycled.	திரைப்படம் அகற்றப்பட்டது, அதன் கோப்புறை நீக்கப்பட்டது அல்லது மறுசுழற்சி செய்யப்பட்டது.
+Movie source folder	திரைப்பட மூலக் கோப்புறை
+Movies (Tanukarr)	திரைப்படங்கள் (Tanukarr)
+Moving…	நகர்த்துகிறது…
+Naming & file settings	பெயரிடல் & கோப்பு அமைப்புகள்
+Negate condition {}	நிபந்தனை {} ஐ எதிர்மறையாக்கு
+New condition type	புதிய நிபந்தனை வகை
+New profile	புதிய சுயவிவரம்
+New root folder path	புதிய மூல கோப்புறைப் பாதை
+New tag	புதிய குறிச்சொல்
+Next	அடுத்து
+No group	குழு இல்லை
+No indexer responded successfully. Check the source errors above, then try again.	எந்தக் குறியீட்டாளரும் வெற்றிகரமாகப் பதிலளிக்கவில்லை. மேலே உள்ள மூலப் பிழைகளைச் சரிபார்த்து, மீண்டும் முயலவும்.
+No match for “{}”	“{}” க்குப் பொருத்தம் இல்லை
+No releases match these filters	இந்த வடிகட்டிகளுடன் எந்த வெளியீடும் பொருந்தவில்லை
+No root folder	மூல கோப்புறை இல்லை
+Nothing to import	இறக்குமதி செய்ய எதுவும் இல்லை
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	பதிவுசெய்யப்பட்ட கோப்புறை மட்டுமே மாறும்; கோப்புகள் ஏற்கனவே அங்கு இருக்கும்போது இதைப் பயன்படுத்தி, பின்னர் வட்டை ஸ்கேன் செய்யவும்.
+Open navigation	வழிசெலுத்தலைத் திற
+Open on {}	{} இல் திற
+Organize files	கோப்புகளை ஒழுங்கமை
+Organizing…	ஒழுங்கமைக்கிறது…
+Original language	மூல மொழி
+Override for a mapped anime batch or a movie feature (single episode).	வரைபடமிடப்பட்ட அனிமே தொகுப்பு அல்லது திரைப்படத்தின் முதன்மைக் கோப்புக்கான மேலெழுதல் (ஒற்றை அத்தியாயம்).
+Parsed title:	பாகுபடுத்திய தலைப்பு:
+Passkey	Passkey
+Place above {}	{} க்கு மேலே வை
+Place at lowest preference	குறைந்த முன்னுரிமையில் வை
+Position of {}	{} இன் நிலை
+Prefer {} less	{} க்குக் குறைவான முன்னுரிமை அளி
+Prefer {} more	{} க்கு அதிக முன்னுரிமை அளி
+Preferred catalogue	விருப்பப் பட்டியல்
+Preset title	முன்னமைவுத் தலைப்பு
+Prevent import lists from adding it again	இறக்குமதிப் பட்டியல்கள் இதை மீண்டும் சேர்ப்பதைத் தடு
+Prevent import lists from adding them again	இறக்குமதிப் பட்டியல்கள் இவற்றை மீண்டும் சேர்ப்பதைத் தடு
+Preview again to review your changes.	உங்கள் மாற்றங்களை மதிப்பாய்வு செய்ய மீண்டும் முன்னோட்டமிடவும்.
+Previous	முந்தையது
+Progress of {}	{} இன் முன்னேற்றம்
+Proxy hostname	ப்ராக்ஸி ஹோஸ்ட்பெயர்
+Proxy port	ப்ராக்ஸி போர்ட்
+Quality cutoff	தர வரம்பு
+Quality profile for added shows	சேர்க்கப்படும் நிகழ்ச்சிகளுக்கான தர சுயவிவரம்
+Quality sizes	தர அளவுகள்
+Quality: {} · Group: {} · Languages: {} · {}	தரம்: {} · குழு: {} · மொழிகள்: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	வினவல் திட்டங்களில் இயங்காமல் போகக்கூடிய மாற்று அடுக்குகள் உள்ளன. மூலங்களுக்கு 35 வினாடி வரம்பு உள்ளது; ஊடாடும் தேடல்களுக்கு மொத்தம் 45 வினாடி வரம்பு உள்ளது.
+RSS sync interval	RSS ஒத்திசைவு இடைவெளி
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	படிக்க மட்டும்: தொடர் மற்றும் திரைப்படக் கோப்புறைகள், பாதுகாப்பற்ற கோப்புப் பதிவுகள் மற்றும் வட்டில் காணாமல் போன கோப்புகளைச் சரிபார்க்கும்.
+Reading the root folder…	மூல கோப்புறையைப் படிக்கிறது…
+Regular expression	ரெகுலர் எக்ஸ்பிரஷன்
+Rejected	நிராகரிக்கப்பட்டது
+Release title	வெளியீட்டுத் தலைப்பு
+Release type	வெளியீட்டு வகை
+Reload folders	கோப்புறைகளை மீண்டும் ஏற்று
+Remove condition	நிபந்தனையை அகற்று
+Remove condition {}	நிபந்தனை {} ஐ அகற்று
+Remove mapping	வரைபடத்தை அகற்று
+Remove the selected series from Kitsunarr	தேர்ந்தெடுத்த தொடர்களை Kitsunarr இலிருந்து அகற்று
+Remove the {} selected series and their episode records from Kitsunarr?	தேர்ந்தெடுத்த {} தொடர்களையும் அவற்றின் அத்தியாயப் பதிவுகளையும் Kitsunarr இலிருந்து அகற்றவா?
+Remove {}	{} ஐ அகற்று
+Remove {} from the blocklist	{} ஐத் தடுப்புப்பட்டியலிலிருந்து அகற்று
+Remove {} series	{} தொடர்களை அகற்று
+Remove “{}” from Kitsunarr?	“{}” ஐ Kitsunarr இலிருந்து அகற்றவா?
+Remove…	அகற்று…
+Removing…	அகற்றுகிறது…
+Rename every file of the selected series to the naming settings	தேர்ந்தெடுத்த தொடர்களின் ஒவ்வொரு கோப்பையும் பெயரிடல் அமைப்புகளின்படி மறுபெயரிடு
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	தேர்ந்தெடுத்த {} தொடர்களின் ஒவ்வொரு கோப்பையும் பெயரிடல் அமைப்புகளின்படி மறுபெயரிடவா? பெயர்களை முதலில் சரிபார்க்க ஒரு தொடரின் கோப்புகளை மறுபெயரிடு முன்னோட்டத்தைப் பயன்படுத்தவும்.
+Rename file	கோப்பை மறுபெயரிடு
+Renaming mode	மறுபெயரிடல் பயன்முறை
+Required condition {}	தேவையான நிபந்தனை {}
+Rescan disk	வட்டை மீண்டும் ஸ்கேன் செய்
+Restore media type	ஊடக வகையை மீட்டமை
+Result	முடிவு
+Retention	தக்கவைப்பு
+Review	மதிப்பாய்வு
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	இலக்குத் தலைப்பையும் அத்தியாயப் பொருத்தங்களையும் மதிப்பாய்வு செய்யவும். கோப்புகள், பாதைகள், கண்காணிப்பு மற்றும் வரலாறு வைக்கப்படும். பொருந்தாத அத்தியாயங்கள் தங்கள் எண்கள் புதிய பட்டியலில் காலியாக இருந்தால் மட்டுமே அவற்றை வைத்திருக்கும்.
+Root folder for added shows	சேர்க்கப்படும் நிகழ்ச்சிகளுக்கான மூல கோப்புறை
+Save path	சேமிப்புப் பாதை
+Saving…	சேமிக்கிறது…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	ஒரு பதிவிறக்கக் கோப்புறையை ஸ்கேன் செய்து, ஒவ்வொரு திரைப்படத்தையும் மதிப்பாய்வு செய்து, அதன் முதன்மைக் கோப்பைப் பொருந்தும் வசனங்களுடன் நூலகத்திற்கு நகலெடுக்கவும் அல்லது நகர்த்தவும். ஏற்கனவே உள்ள முதன்மைக் கோப்புகள் மேம்படுத்தல்களால் மட்டுமே மாற்றப்படும்.
+Search again	மீண்டும் தேடு
+Search catalogues	பட்டியல்களைத் தேடு
+Search diagnostics	தேடல் கண்டறிதல்
+Search for missing episodes once imported	இறக்குமதி செய்யப்பட்டதும் காணாமல் போன அத்தியாயங்களைத் தேடு
+Search for {}	{} ஐத் தேடு
+Search incomplete	தேடல் முழுமையடையவில்லை
+Search indexers for {}	{} க்காகக் குறியீட்டாளர்களைத் தேடு
+Search season packs for {}	{} க்கான சீசன் தொகுப்புகளைத் தேடு
+Search sources	தேடல் மூலங்கள்
+Search sources unavailable	தேடல் மூலங்கள் கிடைக்கவில்லை
+Search the library	நூலகத்தைத் தேடு
+Search titles…	தலைப்புகளைத் தேடு…
+Search {}	{} ஐத் தேடு
+Searching “{}”…	“{}” ஐத் தேடுகிறது…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	{} இல் சீசன் கோப்புறைத் தலைப்புகள் பட்டியலின் தலைப்புகளை மாற்றும். பட்டியலின் தலைப்புகளை வைத்திருக்கக் காலியாக விடவும்.
+Season {} title	சீசன் {} தலைப்பு
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	மேலே ஒரு மூலத்தைத் தேர்ந்தெடுக்கவும், அல்லது குறியீட்டாளர் அமைப்புகளில் ஊடாடும் தேடலை இயக்கவும். எந்தத் தொடர்கள் தேடப்படும் என்பதை மூலக் குறிச்சொற்களும் கட்டுப்படுத்தலாம்.
+Select all	அனைத்தையும் தேர்ந்தெடு
+Select all movies on this page	இந்தப் பக்கத்திலுள்ள அனைத்துத் திரைப்படங்களையும் தேர்ந்தெடு
+Select every episode on this page	இந்தப் பக்கத்திலுள்ள ஒவ்வொரு அத்தியாயத்தையும் தேர்ந்தெடு
+Select {}	{} ஐத் தேர்ந்தெடு
+Select {} S{}E{}	{} S{}E{} ஐத் தேர்ந்தெடு
+Send now	இப்போது அனுப்பு
+Send {} now	{} ஐ இப்போது அனுப்பு
+Series & anime	தொடர்கள் & அனிமே
+Series history	தொடர் வரலாறு
+Series of {}	{} இன் தொடர்
+Series title, e.g. Severance (or tvdb:12345)	தொடர் தலைப்பு, எ.கா. Severance (அல்லது tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	{} / {} வெளியீடுகள் காட்டப்படுகின்றன. வடிகட்டிகள் மீண்டும் தேடாமல் இந்த முடிவுகளுக்குப் பொருந்தும்.
+Size (GiB)	அளவு (GiB)
+Sort by	இதன்படி வரிசைப்படுத்து
+Specifications JSON	விவரக்குறிப்புகள் JSON
+Stalled torrent timeout	தேங்கிய டோரன்ட் காலவரம்பு
+TMDB API key	TMDB API விசை
+Tag existing titles	ஏற்கனவே உள்ள தலைப்புகளுக்குக் குறிச்சொல்லிடு
+Tag {}	{} க்குக் குறிச்சொல்லிடு
+Target catalogue	இலக்குப் பட்டியல்
+Target catalogue ID	இலக்குப் பட்டியல் ID
+Test a release	ஒரு வெளியீட்டைச் சோதி
+Test details	சோதனை விவரங்கள்
+Test file name	சோதனைக் கோப்புப் பெயர்
+Test format	வடிவத்தைச் சோதி
+Test indexer flags	சோதனைக் குறியீட்டாளர் கொடிகள்
+Test language	சோதனை மொழி
+Test original language	சோதனை மூல மொழி
+Test quality	சோதனைத் தரம்
+Test release title	சோதனை வெளியீட்டுத் தலைப்பு
+Test release type	சோதனை வெளியீட்டு வகை
+Test size in GiB	சோதனை அளவு (GiB)
+The catalogues share an external identity.	பட்டியல்கள் ஒரு வெளிப்புற அடையாளத்தைப் பகிர்கின்றன.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	இந்தத் தேர்வு ஒவ்வொரு அத்தியாயத்தின் கண்காணிப்பு நிலையையும் மாற்றும் (சிறப்புகள் இரண்டு சிறப்புத் தேர்வுகளால் மட்டுமே மாற்றப்படும்), பின்னர் கண்காணிக்கப்படும் அத்தியாயம் உள்ள ஒவ்வொரு சீசனையும் கண்காணிக்கும். "எதுவுமில்லை" தொடரின் கண்காணிப்பையும் நிறுத்தும்.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	முதன்மைக் கோப்பும் பொருந்தும் வசனங்களும் திரைப்படக் கோப்புறைக்கு மீட்டமைக்கப்படும். ஏற்கனவே உள்ள கோப்புகள் ஒருபோதும் மேலெழுதப்படாது.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	கோப்புறை மறுபெயரிடப்படும், அல்லது வேறொரு வட்டில் இருந்தால் நகலெடுக்கப்பட்டுப் பின்னர் அகற்றப்படும். புதிய கோப்புறை இல்லாமலோ காலியாகவோ இருக்க வேண்டும்.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	பதிலளித்த குறியீட்டாளர்கள் எந்த வெளியீடுகளையும் திருப்பவில்லை. மற்ற மூலங்கள் தோல்வியடைந்தன; மேலே உள்ள பிழைகளைச் சரிபார்த்து மீண்டும் முயலவும்.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	இந்த நிபந்தனை பாதுகாக்கப்படுகிறது. அதன் புலங்களை மாற்ற JSON ஐத் திருத்து என்பதைப் பயன்படுத்தவும்; அதை மதிப்பிட முடியுமா என்பதை வடிவத்தைச் சோதி தெரிவிக்கும்.
+Title pattern of {}	{} இன் தலைப்பு வடிவம்
+Title to add	சேர்க்க வேண்டிய தலைப்பு
+Title to search for	தேட வேண்டிய தலைப்பு
+Title, group, quality or rejection reason…	தலைப்பு, குழு, தரம் அல்லது நிராகரிப்புக் காரணம்…
+Titles considered:	பரிசீலிக்கப்பட்ட தலைப்புகள்:
+Toggle colour theme	வண்ணத் தீமை மாற்று
+Toggle sort direction	வரிசைப்படுத்தும் திசையை மாற்று
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	சேமிப்பதற்கு முன் ஒரு TV, அனிமே அல்லது திரைப்பட வெளியீட்டுப் பெயரை முயலவும். இது வடிவத்தின் நிபந்தனைகளைச் சரிபார்க்கும்; தர சுயவிவர மதிப்பெண்களும் பதிவிறக்க ஒப்புதலும் தனியானவை.
+Ungroup	குழுவைப் பிரி
+Ungroup {}	{} குழுவைப் பிரி
+Unknown value ({})	தெரியாத மதிப்பு ({})
+Unmapped folders	வரைபடமிடப்படாத கோப்புறைகள்
+Unmatched titles	பொருந்தாத தலைப்புகள்
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	நீக்கப்பட்ட அத்தியாயங்களின் கண்காணிப்பை நிறுத்து (கைமுறையாக நீக்கப்பட்டவை அல்லது வட்டில் காணாமல் போனவை; மேம்படுத்தல்கள் ஒருபோதும் கண்காணிப்பை நிறுத்தாது)
+Unwatched	பார்க்காதவை
+Use global	பொது அமைப்பைப் பயன்படுத்து
+Use global sizes for {}	{} க்குப் பொது அளவுகளைப் பயன்படுத்து
+Valid days	செல்லுபடியாகும் நாட்கள்
+Value	மதிப்பு
+Values	மதிப்புகள்
+View	காட்சி
+Wanted lists	தேவைப் பட்டியல்கள்
+Watched	பார்த்தவை
+Watched date	பார்த்த தேதி
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	இந்த விருப்பம் அணைக்கப்பட்டிருந்தால், கோப்புகள் வட்டில் இருக்கும். நீக்கப்பட்ட கோப்புறைகள் அமைக்கப்பட்டிருந்தால் மறுசுழற்சித் தொட்டிக்குச் செல்லும்.
+iCal feed address	iCal ஊட்ட முகவரி
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	குறிச்சொல்லால்) பட்டியலுடன் பொருத்தப்படும்; இறக்குமதி செய்யப்பட்ட தலைப்புகள் தங்கள் கோப்புறையை வைத்திருக்கும், அவற்றின் கோப்புகள் அதே இடத்தில் ஸ்கேன் செய்யப்படும், பின்னர் கண்காணிப்புத் தேர்வு பொருந்தும். எதுவும் நகர்த்தப்படவோ மறுபெயரிடப்படவோ இல்லை.
+{} Not renamed: {}	{} மறுபெயரிடப்படாதவை: {}
+{} factor	{} காரணி
+{} files imported. Review the results below.	{} கோப்புகள் இறக்குமதி செய்யப்பட்டன. கீழே உள்ள முடிவுகளை மதிப்பாய்வு செய்யவும்.
+{} imported, {} failed; see each folder.	{} இறக்குமதி செய்யப்பட்டன, {} தோல்வியடைந்தன; ஒவ்வொரு கோப்புறையையும் பார்க்கவும்.
+{} imported.	{} இறக்குமதி செய்யப்பட்டன.
+{} matched · {} kept at current numbers · {} new episodes	{} பொருந்தின · {} தற்போதைய எண்களில் வைக்கப்பட்டன · {} புதிய அத்தியாயங்கள்
+{} min	{} நிமி
+{} of {} folders selected	{} / {} கோப்புறைகள் தேர்ந்தெடுக்கப்பட்டன
+{} releases found, {} accepted, nothing grabbed.	{} வெளியீடுகள் கண்டறியப்பட்டன, {} ஏற்கப்பட்டன, எதுவும் பெறப்படவில்லை.
+{} series and {} movies, {} files checked: {} issues.	{} தொடர்கள் மற்றும் {} திரைப்படங்கள், {} கோப்புகள் சரிபார்க்கப்பட்டன: {} சிக்கல்கள்.
+{} series moved.	{} தொடர்கள் நகர்த்தப்பட்டன.
+{} series moved; not moved: {}	{} தொடர்கள் நகர்த்தப்பட்டன; நகர்த்தப்படாதவை: {}
+{} series removed.	{} தொடர்கள் அகற்றப்பட்டன.
+{} series removed; kept: {}	{} தொடர்கள் அகற்றப்பட்டன; வைக்கப்பட்டவை: {}
+{} size of {}	{} அளவு — {}
+{} size slider of {}	{} அளவு ஸ்லைடர் — {}
+{} titles	{} தலைப்புகள்
+{}: {} releases from {} indexer(s). {} responding.	{}: {} வெளியீடுகள் {} குறியீட்டாளர்(கள்)இலிருந்து. {} பதிலளிக்கின்றன.
+· API:	· API:
+· negated	· எதிர்மறையாக்கப்பட்டது
+· required	· தேவை
+· {} ms · {} releases	· {} ms · {} வெளியீடுகள்
+— MiB per minute	— நிமிடத்திற்கு MiB
+— in library	— நூலகத்தில்
+→ current number	→ தற்போதைய எண்
+or	அல்லது
+1 title	1 தலைப்பு

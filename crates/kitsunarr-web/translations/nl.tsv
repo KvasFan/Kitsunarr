@@ -966,3 +966,347 @@ Scene numbering from TheXEM	Scenenummering van TheXEM
 Scene numbering extrapolated from TheXEM (unverified)	Scenenummering geëxtrapoleerd uit TheXEM (niet geverifieerd)
 Season {} (scene seasons {})	Seizoen {} (sceneseizoenen {})
 {} (scene {})	{} (scene {})
+A franchise group found from AniList or MyAnimeList relations. Titles added later from the same franchise still join it. Removed titles stay out when refreshed.	Een franchisegroep gevonden via relaties op AniList of MyAnimeList. Titels die later uit dezelfde franchise worden toegevoegd, sluiten zich er ook bij aan. Verwijderde titels blijven erbuiten bij het vernieuwen.
+A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited.	Een kwaliteit zonder afwijkende instelling gebruikt Instellingen › Kwaliteit. Binnen een afwijkende instelling betekent leeg onbeperkt; een maximum van nul betekent ook onbeperkt.
+Add a movie, or change the search and watched filter.	Voeg een film toe, of wijzig de zoekopdracht en het filter op bekeken.
+Add a root folder in Settings › Media management first.	Voeg eerst een hoofdmap toe in Instellingen › Mediabeheer.
+Add qualities to {}	Kwaliteiten toevoegen aan {}
+All decisions	Alle beslissingen
+All seasons	Alle seizoenen
+All selected flags must be present.	Alle geselecteerde vlaggen moeten aanwezig zijn.
+All sources	Alle bronnen
+Allow {}	{} toestaan
+Also delete their folders and files (to the recycle bin when one is set)	Ook hun mappen en bestanden verwijderen (naar de prullenbak als die is ingesteld)
+Apply sources	Bronnen toepassen
+As the catalogue says	Zoals de catalogus aangeeft
+Auto tag name	Naam automatische tag
+Automatic match / keep current number	Automatisch koppelen / huidig nummer behouden
+Automatic search for {}	Automatisch zoeken naar {}
+Below the root folder; use / for sub-folders.	Onder de hoofdmap; gebruik / voor submappen.
+Best first. Drag the handles or use the arrows to reorder. Qualities inside a group rank equally.	Beste eerst. Sleep de grepen of gebruik de pijlen om de volgorde te wijzigen. Kwaliteiten in een groep zijn gelijkwaardig.
+Bulk actions	Bulkacties
+Catalogue ID	Catalogus-ID
+Catalogue changed.	Catalogus gewijzigd.
+Catalogue match	Overeenkomst in catalogus
+Change catalogue	Catalogus wijzigen
+Choose a movie…	Kies een film…
+Choose a root folder…	Kies een hoofdmap…
+Choose episodes for {}	Afleveringen kiezen voor {}
+Choose which episodes are monitored, as when adding the series	Kies welke afleveringen gemonitord worden, zoals bij het toevoegen van de serie
+Choose which episodes of the selected series are monitored	Kies welke afleveringen van de geselecteerde series gemonitord worden
+Choose {}	{} kiezen
+Clean library level	Niveau bibliotheek opschonen
+Clean library tag	Tag bibliotheek opschonen
+Clear filters	Filters wissen
+Clear or adjust the filters to see more results.	Wis of wijzig de filters om meer resultaten te zien.
+Codec of {}	Codec van {}
+Compression mode	Compressiemodus
+Condition indexer flags	Indexeerdervlaggen van voorwaarde
+Condition language	Taal van voorwaarde
+Condition name	Naam van voorwaarde
+Condition name {}	Naam van voorwaarde {}
+Condition regular expression {}	Reguliere expressie van voorwaarde {}
+Condition size {}	Grootte van voorwaarde {}
+Condition type	Type voorwaarde
+Condition value	Waarde van voorwaarde
+Copy (keep the source)	Kopiëren (bron behouden)
+Create a group from a quality, then drag more qualities into it or use the Group selectors. Cutoff follows a quality into its group; ungrouping uses the group's highest member.	Maak een groep van een kwaliteit en sleep er dan meer kwaliteiten in, of gebruik de groepskeuzes. De drempel volgt een kwaliteit naar haar groep; bij opheffen van de groep wordt het hoogste lid gebruikt.
+Current folder:	Huidige map:
+Custom format name	Naam aangepast formaat
+Delete tag {}	Tag {} verwijderen
+Delete the file of episode {}	Het bestand van aflevering {} verwijderen
+Delete the movie folder and its files	De filmmap en de bestanden verwijderen
+Delete “{}” and its matching subtitles? They go to the recycle bin when one is set.	“{}” en de bijbehorende ondertitels verwijderen? Ze gaan naar de prullenbak als die is ingesteld.
+Delete “{}”? Its series and movies stay in the library and will not rejoin automatically on refresh.	“{}” verwijderen? De series en films ervan blijven in de bibliotheek en sluiten zich bij het vernieuwen niet automatisch weer aan.
+Detect from title	Afleiden uit titel
+Disk scanned: {} {}	Schijf gescand: {} {}
+Dismiss	Sluiten
+Don't change	Niet wijzigen
+Don't import	Niet importeren
+Done editing groups	Klaar met groepen bewerken
+Drag to reorder or move into a group	Sleep om de volgorde te wijzigen of naar een groep te verplaatsen
+Drag {}	{} slepen
+Drop here to move out of a group or to the lowest preference	Zet hier neer om uit een groep te halen of naar de laagste voorkeur te verplaatsen
+Drop qualities here	Zet kwaliteiten hier neer
+Each series keeps its folder below the root folder. A series whose new folder exists and is not empty keeps its current folder.	Elke serie behoudt haar map onder de hoofdmap. Een serie waarvan de nieuwe map bestaat en niet leeg is, behoudt haar huidige map.
+Edit JSON	JSON bewerken
+Edit group	Groep bewerken
+Edit groups	Groepen bewerken
+Enter a non-negative test size within the supported range.	Voer een niet-negatieve testgrootte in binnen het ondersteunde bereik.
+Enter a valid test size in GiB.	Voer een geldige testgrootte in GiB in.
+Enter valid test indexer flags.	Voer geldige testvlaggen voor de indexeerder in.
+Episode matches	Overeenkomende afleveringen
+Event type	Type gebeurtenis
+Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition.	Elk type voorwaarde moet overeenkomen. Binnen één type mag elke voorwaarde overeenkomen en moet elke verplichte voorwaarde overeenkomen. Omkeren keert een geldige voorwaarde om.
+Every folder of this root folder belongs to a title already.	Elke map van deze hoofdmap hoort al bij een titel.
+Exclude {}	{} uitsluiten
+Exclusion catalogue	Catalogus van uitsluiting
+Exclusion id	Id van uitsluiting
+Exclusion title	Titel van uitsluiting
+Factor for {}	Factor voor {}
+Feed tags	Feedtags
+File name (optional)	Bestandsnaam (optioneel)
+Filter by monitoring	Filteren op monitoring
+Filter by watched state	Filteren op bekeken
+Filter release decisions	Releasebeslissingen filteren
+Filter releases	Releases filteren
+Find target title	Doeltitel zoeken
+Folders of a root folder that no title uses. Each is matched against the catalogue by its name (or the	Mappen van een hoofdmap die door geen enkele titel worden gebruikt. Elke map wordt aan de catalogus gekoppeld op basis van de naam (of de
+For unmatched releases, check the parsed title and episode numbers below against the titles considered. Add an alternate title or correct the episode mapping in the library when needed.	Controleer bij niet-gekoppelde releases de geparseerde titel en afleveringsnummers hieronder tegen de overwogen titels. Voeg zo nodig een alternatieve titel toe of corrigeer de afleveringstoewijzing in de bibliotheek.
+Format does not match	Formaat komt niet overeen
+Format matches	Formaat komt overeen
+Full season	Volledig seizoen
+Grab it now instead of waiting for the delay	Nu ophalen in plaats van op de vertraging te wachten
+Grab {}	{} ophalen
+Group	Groeperen
+Group for {}	Groep voor {}
+Group name	Groepsnaam
+Group {}	{} groeperen
+Guided editor	Begeleide editor
+I confirm that the target catalogue entry is the same title.	Ik bevestig dat het doelitem in de catalogus dezelfde titel is.
+Import	Importeren
+Import existing folders	Bestaande mappen importeren
+Import mode	Importmodus
+Import {}	{} importeren
+Imported from movie folder	Geïmporteerd uit de filmmap
+Include in file names ({} token)	Opnemen in bestandsnamen (token {})
+Include {}	{} opnemen
+Indexer flags (bitmask)	Indexeerdervlaggen (bitmasker)
+Jellyfin library	Jellyfin-bibliotheek
+Jellyfin user	Jellyfin-gebruiker
+Jellyfin watched sync can update this status.	De Jellyfin-synchronisatie van bekeken kan deze status bijwerken.
+Key name	Naam sleutel
+Key permission	Rechten sleutel
+Kind of {}	Soort van {}
+Label of {}	Label van {}
+Language	Taal
+Library import	Bibliotheekimport
+List exclusions	Uitsluitingen van lijsten
+Loading sources…	Bronnen laden…
+Main navigation	Hoofdnavigatie
+Mark unwatched	Als niet bekeken markeren
+Mark watched	Als bekeken markeren
+Match	Koppelen
+Match any other language	Elke andere taal laten overeenkomen
+Match episode {}	Aflevering {} koppelen
+Match for {}	Overeenkomst voor {}
+Matching series	Overeenkomende series
+Matching subtitles follow the file's new name.	Bijbehorende ondertitels volgen de nieuwe naam van het bestand.
+Maximum GiB (inclusive)	Maximum GiB (inclusief)
+Maximum size	Maximale grootte
+Maximum year	Maximaal jaar
+Minimum GiB (exclusive)	Minimum GiB (exclusief)
+Minimum age	Minimale ouderdom
+Minimum level	Minimaal niveau
+Minimum score increment for upgrades	Minimale scoreverhoging voor upgrades
+Minimum year	Minimaal jaar
+Monitor episode {}	Aflevering {} monitoren
+Monitor new seasons	Nieuwe seizoenen monitoren
+Monitored filter	Filter op gemonitord
+Monitoring	Monitoring
+Monitoring updated for {} series.	Monitoring bijgewerkt voor {} series.
+Monitoring — {} series	Monitoring — {} series
+Monitoring…	Monitoring bijwerken…
+Move folder	Map verplaatsen
+Move the files	De bestanden verplaatsen
+Move the files to the new folder	De bestanden naar de nieuwe map verplaatsen
+Move the movie folder, or point the movie at another folder	De filmmap verplaatsen, of de film naar een andere map laten verwijzen
+Move the selected series into another root folder	De geselecteerde series naar een andere hoofdmap verplaatsen
+Move the series folder, or point the series at another folder	De seriemap verplaatsen, of de serie naar een andere map laten verwijzen
+Move to root folder…	Naar hoofdmap verplaatsen…
+Move {} series	{} series verplaatsen
+Movie bulk actions	Bulkacties voor films
+Movie file deleted	Filmbestand verwijderd
+Movie file renamed	Filmbestand hernoemd
+Movie file restored	Filmbestand hersteld
+Movie for {}	Film voor {}
+Movie history	Filmhistorie
+Movie import mode	Importmodus films
+Movie removed, and its folder deleted or recycled.	Film verwijderd, en de map ervan gewist of naar de prullenbak verplaatst.
+Movie source folder	Bronmap van de film
+Movies (Tanukarr)	Films (Tanukarr)
+Moving…	Verplaatsen…
+Naming & file settings	Naamgeving en bestandsinstellingen
+Negate condition {}	Voorwaarde {} omkeren
+New condition type	Nieuw type voorwaarde
+New profile	Nieuw profiel
+New root folder path	Pad nieuwe hoofdmap
+New tag	Nieuwe tag
+Next	Volgende
+No group	Geen groep
+No indexer responded successfully. Check the source errors above, then try again.	Geen enkele indexeerder heeft succesvol gereageerd. Controleer de bronfouten hierboven en probeer het opnieuw.
+No match for “{}”	Geen overeenkomst voor “{}”
+No releases match these filters	Geen releases komen overeen met deze filters
+No root folder	Geen hoofdmap
+Nothing to import	Niets om te importeren
+Only the recorded folder changes; use this when the files are already there, then scan the disk.	Alleen de geregistreerde map verandert; gebruik dit als de bestanden er al staan en scan daarna de schijf.
+Open navigation	Navigatie openen
+Open on {}	Openen op {}
+Organize files	Bestanden organiseren
+Organizing…	Organiseren…
+Original language	Originele taal
+Override for a mapped anime batch or a movie feature (single episode).	Afwijkende instelling voor een toegewezen anime-batch of een hoofdfilm (enkele aflevering).
+Parsed title:	Geparseerde titel:
+Passkey	Passkey
+Place above {}	Boven {} plaatsen
+Place at lowest preference	Op laagste voorkeur plaatsen
+Position of {}	Positie van {}
+Prefer {} less	Minder voorkeur voor {}
+Prefer {} more	Meer voorkeur voor {}
+Preferred catalogue	Voorkeurscatalogus
+Preset title	Titel van preset
+Prevent import lists from adding it again	Voorkomen dat importlijsten hem opnieuw toevoegen
+Prevent import lists from adding them again	Voorkomen dat importlijsten ze opnieuw toevoegen
+Preview again to review your changes.	Bekijk het voorbeeld opnieuw om je wijzigingen te controleren.
+Previous	Vorige
+Progress of {}	Voortgang van {}
+Proxy hostname	Hostnaam proxy
+Proxy port	Poort proxy
+Quality cutoff	Kwaliteitsdrempel
+Quality profile for added shows	Kwaliteitsprofiel voor toegevoegde series
+Quality sizes	Kwaliteitsgroottes
+Quality: {} · Group: {} · Languages: {} · {}	Kwaliteit: {} · Groep: {} · Talen: {} · {}
+Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Zoekplannen bevatten terugvalniveaus die mogelijk niet worden uitgevoerd. Bronnen hebben een budget van 35 seconden; interactieve zoekopdrachten hebben in totaal een budget van 45 seconden.
+RSS sync interval	RSS-synchronisatie-interval
+Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Alleen-lezen: controleert serie- en filmmappen, onveilige bestandsrecords en bestanden die op schijf ontbreken.
+Reading the root folder…	Hoofdmap lezen…
+Regular expression	Reguliere expressie
+Rejected	Geweigerd
+Release title	Releasetitel
+Release type	Releasetype
+Reload folders	Mappen opnieuw laden
+Remove condition	Voorwaarde verwijderen
+Remove condition {}	Voorwaarde {} verwijderen
+Remove mapping	Toewijzing verwijderen
+Remove the selected series from Kitsunarr	De geselecteerde series uit Kitsunarr verwijderen
+Remove the {} selected series and their episode records from Kitsunarr?	De {} geselecteerde series en hun afleveringsrecords uit Kitsunarr verwijderen?
+Remove {}	{} verwijderen
+Remove {} from the blocklist	{} van de blokkeerlijst verwijderen
+Remove {} series	{} series verwijderen
+Remove “{}” from Kitsunarr?	“{}” uit Kitsunarr verwijderen?
+Remove…	Verwijderen…
+Removing…	Verwijderen…
+Rename every file of the selected series to the naming settings	Elk bestand van de geselecteerde series hernoemen volgens de naamgevingsinstellingen
+Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.	Elk bestand van de {} geselecteerde series hernoemen volgens de naamgevingsinstellingen? Gebruik het voorbeeld van Bestanden hernoemen van een serie om de namen eerst te controleren.
+Rename file	Bestand hernoemen
+Renaming mode	Hernoemmodus
+Required condition {}	Verplichte voorwaarde {}
+Rescan disk	Schijf opnieuw scannen
+Restore media type	Mediatype herstellen
+Result	Resultaat
+Retention	Bewaartermijn
+Review	Controle
+Review the target title and episode matches. Files, paths, monitoring and history are kept. Unmatched episodes keep their numbers only when those numbers are free in the new catalogue.	Controleer de doeltitel en de overeenkomende afleveringen. Bestanden, paden, monitoring en historie blijven behouden. Niet-gekoppelde afleveringen behouden hun nummers alleen als die nummers vrij zijn in de nieuwe catalogus.
+Root folder for added shows	Hoofdmap voor toegevoegde series
+Save path	Opslagpad
+Saving…	Opslaan…
+Scan a download folder, review each movie and copy or move its feature with matching subtitles into the library. Existing features are replaced only by upgrades.	Scan een downloadmap, controleer elke film en kopieer of verplaats de hoofdfilm met bijbehorende ondertitels naar de bibliotheek. Bestaande hoofdfilms worden alleen door upgrades vervangen.
+Search again	Opnieuw zoeken
+Search catalogues	Catalogi doorzoeken
+Search diagnostics	Zoekdiagnose
+Search for missing episodes once imported	Na het importeren naar ontbrekende afleveringen zoeken
+Search for {}	Zoeken naar {}
+Search incomplete	Zoekopdracht onvolledig
+Search indexers for {}	Indexeerders doorzoeken naar {}
+Search season packs for {}	Seizoenspakketten zoeken voor {}
+Search sources	Zoekbronnen
+Search sources unavailable	Zoekbronnen niet beschikbaar
+Search the library	De bibliotheek doorzoeken
+Search titles…	Titels zoeken…
+Search {}	{} doorzoeken
+Searching “{}”…	Zoeken naar “{}”…
+Season folder titles replace the catalogue's in {}. Leave empty to keep the catalogue's.	Titels van seizoensmappen vervangen die van de catalogus in {}. Laat leeg om die van de catalogus te behouden.
+Season {} title	Titel seizoen {}
+Select a source above, or enable interactive search in indexer settings. Source tags can also restrict which series are searched.	Selecteer hierboven een bron, of schakel interactief zoeken in bij de indexeerderinstellingen. Brontags kunnen ook beperken welke series worden doorzocht.
+Select all	Alles selecteren
+Select all movies on this page	Alle films op deze pagina selecteren
+Select every episode on this page	Elke aflevering op deze pagina selecteren
+Select {}	{} selecteren
+Select {} S{}E{}	{} S{}E{} selecteren
+Send now	Nu verzenden
+Send {} now	{} nu verzenden
+Series & anime	Series en anime
+Series history	Seriehistorie
+Series of {}	Serie van {}
+Series title, e.g. Severance (or tvdb:12345)	Serietitel, bijv. Severance (of tvdb:12345)
+Showing {} of {} releases. Filters apply to these results without searching again.	{} van {} releases getoond. Filters gelden voor deze resultaten zonder opnieuw te zoeken.
+Size (GiB)	Grootte (GiB)
+Sort by	Sorteren op
+Specifications JSON	Specificaties-JSON
+Stalled torrent timeout	Time-out vastgelopen torrents
+TMDB API key	TMDB API-sleutel
+Tag existing titles	Bestaande titels taggen
+Tag {}	{} taggen
+Target catalogue	Doelcatalogus
+Target catalogue ID	ID in doelcatalogus
+Test a release	Een release testen
+Test details	Testdetails
+Test file name	Testbestandsnaam
+Test format	Formaat testen
+Test indexer flags	Test-indexeerdervlaggen
+Test language	Testtaal
+Test original language	Test-originele taal
+Test quality	Testkwaliteit
+Test release title	Test-releasetitel
+Test release type	Test-releasetype
+Test size in GiB	Testgrootte in GiB
+The catalogues share an external identity.	De catalogi delen een externe identiteit.
+The choice replaces the monitored state of every episode (specials are only changed by the two specials choices), then monitors each season that has a monitored episode. "None" also unmonitors the series.	De keuze vervangt de monitoringstatus van elke aflevering (specials worden alleen door de twee keuzes voor specials gewijzigd) en monitort daarna elk seizoen met een gemonitorde aflevering. “Geen” zet ook de monitoring van de serie uit.
+The feature and matching subtitles are restored into the movie folder. Existing files are never overwritten.	De hoofdfilm en bijbehorende ondertitels worden in de filmmap hersteld. Bestaande bestanden worden nooit overschreven.
+The folder is renamed, or copied then removed on another disk. The new folder must be missing or empty.	De map wordt hernoemd, of op een andere schijf gekopieerd en daarna verwijderd. De nieuwe map moet ontbreken of leeg zijn.
+The responding indexers returned no releases. Other sources failed; check the errors above and try again.	De reagerende indexeerders gaven geen releases terug. Andere bronnen zijn mislukt; controleer de fouten hierboven en probeer het opnieuw.
+This condition is preserved. Use Edit JSON to change its fields; Test format reports whether it can be evaluated.	Deze voorwaarde blijft behouden. Gebruik JSON bewerken om de velden te wijzigen; Formaat testen meldt of ze kan worden beoordeeld.
+Title pattern of {}	Titelpatroon van {}
+Title to add	Toe te voegen titel
+Title to search for	Titel om naar te zoeken
+Title, group, quality or rejection reason…	Titel, groep, kwaliteit of reden van weigering…
+Titles considered:	Overwogen titels:
+Toggle colour theme	Kleurthema wisselen
+Toggle sort direction	Sorteerrichting wisselen
+Try a TV, anime or movie release name before saving. This checks the format's conditions; quality-profile scores and download approval are separate.	Probeer vóór het opslaan een releasenaam van een tv-serie, anime of film. Dit controleert de voorwaarden van het formaat; scores in kwaliteitsprofielen en goedkeuring voor downloaden staan daar los van.
+Ungroup	Groep opheffen
+Ungroup {}	Groep {} opheffen
+Unknown value ({})	Onbekende waarde ({})
+Unmapped folders	Niet-toegewezen mappen
+Unmatched titles	Niet-gekoppelde titels
+Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)	Verwijderde afleveringen niet meer monitoren (handmatig verwijderd of ontbrekend op schijf; upgrades zetten monitoring nooit uit)
+Unwatched	Niet bekeken
+Use global	Globaal gebruiken
+Use global sizes for {}	Globale groottes gebruiken voor {}
+Valid days	Geldige dagen
+Value	Waarde
+Values	Waarden
+View	Weergave
+Wanted lists	Gezochte lijsten
+Watched	Bekeken
+Watched date	Datum bekeken
+With this option off, files stay on disk. Deleted folders go to the recycle bin when one is set.	Met deze optie uit blijven bestanden op schijf. Verwijderde mappen gaan naar de prullenbak als die is ingesteld.
+iCal feed address	iCal-feedadres
+tag in it); imported titles keep their folder, their files are scanned in place, then the monitoring choice applies. Nothing is moved or renamed.	tag erin); geïmporteerde titels behouden hun map, hun bestanden worden ter plekke gescand en daarna geldt de monitoringkeuze. Er wordt niets verplaatst of hernoemd.
+{} Not renamed: {}	{} Niet hernoemd: {}
+{} factor	{}-factor
+{} files imported. Review the results below.	{} bestanden geïmporteerd. Bekijk de resultaten hieronder.
+{} imported, {} failed; see each folder.	{} geïmporteerd, {} mislukt; zie elke map.
+{} imported.	{} geïmporteerd.
+{} matched · {} kept at current numbers · {} new episodes	{} gekoppeld · {} op huidige nummers behouden · {} nieuwe afleveringen
+{} min	{} min
+{} of {} folders selected	{} van {} mappen geselecteerd
+{} releases found, {} accepted, nothing grabbed.	{} releases gevonden, {} geaccepteerd, niets opgehaald.
+{} series and {} movies, {} files checked: {} issues.	{} series en {} films, {} bestanden gecontroleerd: {} problemen.
+{} series moved.	{} series verplaatst.
+{} series moved; not moved: {}	{} series verplaatst; niet verplaatst: {}
+{} series removed.	{} series verwijderd.
+{} series removed; kept: {}	{} series verwijderd; behouden: {}
+{} size of {}	{}-grootte van {}
+{} size slider of {}	Schuifregelaar {}-grootte van {}
+{} titles	{} titels
+{}: {} releases from {} indexer(s). {} responding.	{}: {} releases van {} indexeerder(s). {} reageerden.
+· API:	· API:
+· negated	· omgekeerd
+· required	· verplicht
+· {} ms · {} releases	· {} ms · {} releases
+— MiB per minute	— MiB per minuut
+— in library	— in bibliotheek
+→ current number	→ huidig nummer
+or	of
+1 title	1 titel
