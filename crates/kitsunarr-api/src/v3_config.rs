@@ -61,10 +61,10 @@ pub fn router() -> Router<AppState> {
 }
 
 /// (Sonarr's key, Kitsunarr's key) of a setting both have.
-type Keys = &'static [(&'static str, &'static str)];
+pub(crate) type Keys = &'static [(&'static str, &'static str)];
 
 /// Kitsunarr's settings as a Sonarr resource (`id` 1, as Sonarr's config resources).
-fn resource<T: Serialize>(native: &T, keys: Keys, fixed: Value) -> Value {
+pub(crate) fn resource<T: Serialize>(native: &T, keys: Keys, fixed: Value) -> Value {
     let native = serde_json::to_value(native).unwrap_or_default();
     let mut out = Map::new();
     out.insert("id".into(), json!(1));
@@ -80,7 +80,11 @@ fn resource<T: Serialize>(native: &T, keys: Keys, fixed: Value) -> Value {
 }
 
 /// The stored settings with the keys `body` sends (and that both have) replaced.
-fn merged<T: Serialize + DeserializeOwned>(stored: &T, body: &Value, keys: Keys) -> ApiResult<T> {
+pub(crate) fn merged<T: Serialize + DeserializeOwned>(
+    stored: &T,
+    body: &Value,
+    keys: Keys,
+) -> ApiResult<T> {
     let mut native = serde_json::to_value(stored).map_err(ApiError::internal)?;
     for (sonarr, ours) in keys {
         if let Some(v) = body.get(*sonarr).filter(|v| !v.is_null()) {
@@ -91,12 +95,16 @@ fn merged<T: Serialize + DeserializeOwned>(stored: &T, body: &Value, keys: Keys)
         .map_err(|e| ApiError::BadRequest(format!("Invalid settings: {e}")))
 }
 
-fn accepted(v: Value) -> (StatusCode, Json<Value>) {
+pub(crate) fn accepted(v: Value) -> (StatusCode, Json<Value>) {
     (StatusCode::ACCEPTED, Json(v))
 }
 
 /// An integer field of a resource, checked against Sonarr's range.
-fn int_in(body: &Value, key: &str, range: std::ops::RangeInclusive<i64>) -> ApiResult<()> {
+pub(crate) fn int_in(
+    body: &Value,
+    key: &str,
+    range: std::ops::RangeInclusive<i64>,
+) -> ApiResult<()> {
     match body.get(key) {
         None | Some(Value::Null) => Ok(()),
         Some(v) if v.as_i64().is_some_and(|n| range.contains(&n)) => Ok(()),
@@ -113,7 +121,7 @@ fn int_in(body: &Value, key: &str, range: std::ops::RangeInclusive<i64>) -> ApiR
 
 // ---- naming ---------------------------------------------------------------------------------
 
-const NAMING: Keys = &[
+pub(crate) const NAMING: Keys = &[
     ("renameEpisodes", "renameEpisodes"),
     ("replaceIllegalCharacters", "replaceIllegalCharacters"),
     ("colonReplacementFormat", "colonReplacementFormat"),
@@ -144,15 +152,15 @@ const NAMING: Keys = &[
     ),
 ];
 
-async fn naming(state: &AppState) -> ApiResult<NamingSettings> {
+pub(crate) async fn naming(state: &AppState) -> ApiResult<NamingSettings> {
     Ok(kv::get_or_default(state.db.pool(), kv::KEY_NAMING).await?)
 }
 
-async fn get_naming(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_naming(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     Ok(Json(resource(&naming(&state).await?, NAMING, json!({}))))
 }
 
-async fn put_naming(
+pub(crate) async fn put_naming(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -165,7 +173,7 @@ async fn put_naming(
 
 // ---- media management -----------------------------------------------------------------------
 
-const MEDIA: Keys = &[
+pub(crate) const MEDIA: Keys = &[
     (
         "autoUnmonitorPreviouslyDownloadedEpisodes",
         "autoUnmonitorPreviouslyDownloadedEpisodes",
@@ -188,7 +196,7 @@ const MEDIA: Keys = &[
 ];
 
 /// Sonarr's `ProperDownloadTypes` by name or number.
-fn propers(v: &Value) -> Option<ProperDownloadType> {
+pub(crate) fn propers(v: &Value) -> Option<ProperDownloadType> {
     match v {
         Value::String(s) => ProperDownloadType::from_sonarr(s),
         Value::Number(n) => match n.as_u64()? {
@@ -201,7 +209,7 @@ fn propers(v: &Value) -> Option<ProperDownloadType> {
     }
 }
 
-fn media_resource(m: &MediaManagementSettings) -> Value {
+pub(crate) fn media_resource(m: &MediaManagementSettings) -> Value {
     resource(
         m,
         MEDIA,
@@ -228,15 +236,15 @@ fn media_resource(m: &MediaManagementSettings) -> Value {
     )
 }
 
-async fn media_management(state: &AppState) -> ApiResult<MediaManagementSettings> {
+pub(crate) async fn media_management(state: &AppState) -> ApiResult<MediaManagementSettings> {
     Ok(kv::get_or_default(state.db.pool(), kv::KEY_MEDIA_MANAGEMENT).await?)
 }
 
-async fn get_media_management(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_media_management(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     Ok(Json(media_resource(&media_management(&state).await?)))
 }
 
-async fn put_media_management(
+pub(crate) async fn put_media_management(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -281,7 +289,7 @@ async fn put_media_management(
 
 // ---- indexers, download clients and import lists ----------------------------------------------
 
-const INDEXER: Keys = &[
+pub(crate) const INDEXER: Keys = &[
     ("minimumAge", "minimumAge"),
     ("retention", "retention"),
     ("maximumSize", "maximumSize"),
@@ -290,13 +298,13 @@ const INDEXER: Keys = &[
     ("enableFakeReleaseProtection", "enableFakeReleaseProtection"),
 ];
 
-async fn get_indexer(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_indexer(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let s: IndexerOptionsSettings =
         kv::get_or_default(state.db.pool(), kv::KEY_INDEXER_OPTIONS).await?;
     Ok(Json(resource(&s, INDEXER, json!({}))))
 }
 
-async fn put_indexer(
+pub(crate) async fn put_indexer(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -309,7 +317,7 @@ async fn put_indexer(
     Ok(accepted(resource(&saved, INDEXER, json!({}))))
 }
 
-const DOWNLOAD_CLIENT: Keys = &[
+pub(crate) const DOWNLOAD_CLIENT: Keys = &[
     (
         "enableCompletedDownloadHandling",
         "enableCompletedDownloadHandling",
@@ -322,17 +330,17 @@ const DOWNLOAD_CLIENT: Keys = &[
     ("stalledTorrentTimeout", "stalledTorrentTimeout"),
 ];
 
-fn download_client_fixed() -> Value {
+pub(crate) fn download_client_fixed() -> Value {
     json!({"downloadClientWorkingFolders": "_UNPACK_|_FAILED_"})
 }
 
-async fn get_download_client(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_download_client(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let s: DownloadClientOptionsSettings =
         kv::get_or_default(state.db.pool(), kv::KEY_DOWNLOAD_CLIENT_OPTIONS).await?;
     Ok(Json(resource(&s, DOWNLOAD_CLIENT, download_client_fixed())))
 }
 
-async fn put_download_client(
+pub(crate) async fn put_download_client(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -350,7 +358,7 @@ async fn put_download_client(
     )))
 }
 
-fn import_list_resource(s: &ImportListOptionsSettings) -> Value {
+pub(crate) fn import_list_resource(s: &ImportListOptionsSettings) -> Value {
     json!({
         "id": 1,
         "listSyncLevel": s.list_sync_level,
@@ -359,12 +367,12 @@ fn import_list_resource(s: &ImportListOptionsSettings) -> Value {
     })
 }
 
-async fn get_import_list(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_import_list(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let s = import_lists::get_options(State(state)).await?.0;
     Ok(Json(import_list_resource(&s)))
 }
 
-async fn put_import_list(
+pub(crate) async fn put_import_list(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -396,13 +404,13 @@ async fn put_import_list(
 
 // ---- interface and host ---------------------------------------------------------------------
 
-async fn general(state: &AppState) -> ApiResult<GeneralSettings> {
+pub(crate) async fn general(state: &AppState) -> ApiResult<GeneralSettings> {
     Ok(kv::get_or_default(state.db.pool(), kv::KEY_GENERAL).await?)
 }
 
 /// Sonarr's interface settings: the first day of the week is Kitsunarr's; the date formats and
 /// theme are Sonarr's defaults (Kitsunarr formats dates by the browser's locale).
-fn ui_resource(g: &GeneralSettings) -> Value {
+pub(crate) fn ui_resource(g: &GeneralSettings) -> Value {
     json!({
         "id": 1,
         "firstDayOfWeek": g.first_day_of_week,
@@ -419,11 +427,11 @@ fn ui_resource(g: &GeneralSettings) -> Value {
     })
 }
 
-async fn get_ui(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_ui(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     Ok(Json(ui_resource(&general(&state).await?)))
 }
 
-async fn put_ui(
+pub(crate) async fn put_ui(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -439,7 +447,7 @@ async fn put_ui(
     Ok(accepted(ui_resource(&saved)))
 }
 
-fn proxy_type_name(t: ProxyType) -> &'static str {
+pub(crate) fn proxy_type_name(t: ProxyType) -> &'static str {
     match t {
         ProxyType::Http => "http",
         ProxyType::Socks4 => "socks4",
@@ -450,7 +458,7 @@ fn proxy_type_name(t: ProxyType) -> &'static str {
 /// Sonarr's host settings: the instance name, certificate validation and proxy are Kitsunarr's
 /// and writable; the listening address, port and URL base come from `config.toml` (read-only
 /// here). The API key and passwords are never returned.
-fn host_resource(state: &AppState, g: &GeneralSettings, p: &ProxySettings) -> Value {
+pub(crate) fn host_resource(state: &AppState, g: &GeneralSettings, p: &ProxySettings) -> Value {
     let server = &state.config.server;
     json!({
         "id": 1,
@@ -497,16 +505,16 @@ fn host_resource(state: &AppState, g: &GeneralSettings, p: &ProxySettings) -> Va
     })
 }
 
-async fn proxy(state: &AppState) -> ApiResult<ProxySettings> {
+pub(crate) async fn proxy(state: &AppState) -> ApiResult<ProxySettings> {
     Ok(settings::get_proxy(State(state.clone())).await?.0)
 }
 
-async fn get_host(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_host(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let (g, p) = (general(&state).await?, proxy(&state).await?);
     Ok(Json(host_resource(&state, &g, &p)))
 }
 
-async fn put_host(
+pub(crate) async fn put_host(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {

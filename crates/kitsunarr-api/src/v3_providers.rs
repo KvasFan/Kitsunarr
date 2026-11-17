@@ -44,7 +44,7 @@ pub fn router() -> Router<AppState> {
 }
 
 /// Sonarr's `ImportListResource` keys Kitsunarr keeps as the list's options.
-const LIST_OPTIONS: &[&str] = &[
+pub(crate) const LIST_OPTIONS: &[&str] = &[
     "enableAutomaticAdd",
     "searchForMissingEpisodes",
     "shouldMonitor",
@@ -58,7 +58,7 @@ const LIST_OPTIONS: &[&str] = &[
 ];
 
 /// The resource's top-level keys that are options of the provider.
-fn is_option(kind: ProviderKind, key: &str) -> bool {
+pub(crate) fn is_option(kind: ProviderKind, key: &str) -> bool {
     match kind {
         ProviderKind::DownloadClient => {
             matches!(key, "removeCompletedDownloads" | "removeFailedDownloads")
@@ -73,7 +73,7 @@ fn is_option(kind: ProviderKind, key: &str) -> bool {
 }
 
 /// A Sonarr provider resource as the native provider input.
-fn input_from(kind: ProviderKind, v: &Value) -> ApiResult<ProviderInput> {
+pub(crate) fn input_from(kind: ProviderKind, v: &Value) -> ApiResult<ProviderInput> {
     let name = v["name"]
         .as_str()
         .filter(|n| !n.trim().is_empty())
@@ -117,7 +117,7 @@ fn input_from(kind: ProviderKind, v: &Value) -> ApiResult<ProviderInput> {
     })
 }
 
-fn path_of(kind: ProviderKind) -> &'static str {
+pub(crate) fn path_of(kind: ProviderKind) -> &'static str {
     match kind {
         ProviderKind::DownloadClient => "downloadclients",
         ProviderKind::ImportList => "importlists",
@@ -125,7 +125,7 @@ fn path_of(kind: ProviderKind) -> &'static str {
     }
 }
 
-fn supported(kind: ProviderKind, implementation: &str) -> bool {
+pub(crate) fn supported(kind: ProviderKind, implementation: &str) -> bool {
     match kind {
         ProviderKind::DownloadClient => kitsunarr_downloaders::supported(implementation),
         ProviderKind::ImportList => kitsunarr_importlists::is_supported(implementation),
@@ -133,12 +133,12 @@ fn supported(kind: ProviderKind, implementation: &str) -> bool {
     }
 }
 
-async fn resource(state: &AppState, kind: ProviderKind, id: i64) -> ApiResult<Value> {
+pub(crate) async fn resource(state: &AppState, kind: ProviderKind, id: i64) -> ApiResult<Value> {
     let p = providers::get(state.db.pool(), kind, id).await?;
     Ok(crate::v3::provider_json(&p))
 }
 
-async fn create(
+pub(crate) async fn create(
     state: AppState,
     kind: ProviderKind,
     v: Value,
@@ -162,7 +162,7 @@ async fn create(
     ))
 }
 
-async fn update(
+pub(crate) async fn update(
     state: AppState,
     kind: ProviderKind,
     id: i64,
@@ -182,14 +182,14 @@ async fn update(
     ))
 }
 
-async fn delete(state: AppState, kind: ProviderKind, id: i64) -> ApiResult<StatusCode> {
+pub(crate) async fn delete(state: AppState, kind: ProviderKind, id: i64) -> ApiResult<StatusCode> {
     providers::get(state.db.pool(), kind, id).await?;
     settings::delete_provider(State(state), Path((path_of(kind).into(), id))).await?;
     Ok(StatusCode::OK)
 }
 
 /// `…/schema`: Kitsunarr's templates for every implementation it supports.
-fn schema(kind: ProviderKind) -> Vec<Value> {
+pub(crate) fn schema(kind: ProviderKind) -> Vec<Value> {
     crate::routes::schema::templates(kind)
         .iter()
         .filter(|t| supported(kind, &t.implementation))
@@ -211,7 +211,7 @@ fn schema(kind: ProviderKind) -> Vec<Value> {
 }
 
 /// `…/test`: 200 when the provider answers, else 400 with Sonarr's validation list.
-async fn test(
+pub(crate) async fn test(
     state: AppState,
     kind: ProviderKind,
     v: Value,
@@ -244,11 +244,11 @@ async fn test(
     }
 }
 
-const DC: ProviderKind = ProviderKind::DownloadClient;
-const NO: ProviderKind = ProviderKind::Notification;
-const IL: ProviderKind = ProviderKind::ImportList;
+pub(crate) const DC: ProviderKind = ProviderKind::DownloadClient;
+pub(crate) const NO: ProviderKind = ProviderKind::Notification;
+pub(crate) const IL: ProviderKind = ProviderKind::ImportList;
 
-async fn list_import_lists(State(s): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn list_import_lists(State(s): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     Ok(Json(
         providers::list(s.db.pool(), IL)
             .await?
@@ -257,83 +257,92 @@ async fn list_import_lists(State(s): State<AppState>) -> ApiResult<Json<Vec<Valu
             .collect(),
     ))
 }
-async fn get_import_list(State(s): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_import_list(
+    State(s): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     Ok(Json(resource(&s, IL, id).await?))
 }
-async fn create_list(
+pub(crate) async fn create_list(
     State(s): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     create(s, IL, v).await
 }
-async fn update_list(
+pub(crate) async fn update_list(
     State(s): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     update(s, IL, id, v).await
 }
-async fn delete_list(State(s): State<AppState>, Path(id): Path<i64>) -> ApiResult<StatusCode> {
+pub(crate) async fn delete_list(
+    State(s): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<StatusCode> {
     delete(s, IL, id).await
 }
-async fn list_schema() -> Json<Vec<Value>> {
+pub(crate) async fn list_schema() -> Json<Vec<Value>> {
     Json(schema(IL))
 }
-async fn test_list(
+pub(crate) async fn test_list(
     State(s): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     test(s, IL, v).await
 }
 
-async fn create_client(
+pub(crate) async fn create_client(
     State(s): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     create(s, DC, v).await
 }
-async fn update_client(
+pub(crate) async fn update_client(
     State(s): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     update(s, DC, id, v).await
 }
-async fn delete_client(State(s): State<AppState>, Path(id): Path<i64>) -> ApiResult<StatusCode> {
+pub(crate) async fn delete_client(
+    State(s): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<StatusCode> {
     delete(s, DC, id).await
 }
-async fn client_schema() -> Json<Vec<Value>> {
+pub(crate) async fn client_schema() -> Json<Vec<Value>> {
     Json(schema(DC))
 }
-async fn test_client(
+pub(crate) async fn test_client(
     State(s): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     test(s, DC, v).await
 }
-async fn create_notification(
+pub(crate) async fn create_notification(
     State(s): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     create(s, NO, v).await
 }
-async fn update_notification(
+pub(crate) async fn update_notification(
     State(s): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     update(s, NO, id, v).await
 }
-async fn delete_notification(
+pub(crate) async fn delete_notification(
     State(s): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
     delete(s, NO, id).await
 }
-async fn notification_schema() -> Json<Vec<Value>> {
+pub(crate) async fn notification_schema() -> Json<Vec<Value>> {
     Json(schema(NO))
 }
-async fn test_notification(
+pub(crate) async fn test_notification(
     State(s): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {

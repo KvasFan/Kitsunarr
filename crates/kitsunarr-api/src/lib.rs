@@ -19,8 +19,11 @@ pub mod health;
 pub mod ical;
 pub mod import_lists;
 pub mod library_tools;
+pub mod lifecycle;
+pub mod log_files;
 pub mod logs;
 pub mod proxy;
+mod root;
 pub mod routes;
 pub mod rss;
 pub mod signalr;
@@ -29,9 +32,13 @@ pub mod v3;
 mod v3_admin;
 mod v3_config;
 mod v3_ext;
+mod v3_extra;
 mod v3_more;
 mod v3_providers;
 mod v3_settings;
+mod v3_system;
+mod v5;
+mod v5_settings;
 
 use std::sync::{Arc, RwLock};
 
@@ -106,6 +113,8 @@ pub struct AppStateInner {
     /// `RemotePathMappingCheck` after a failed import (`EpisodeImportFailedEvent`), until an
     /// import succeeds.
     pub import_health: std::sync::Mutex<Option<kitsunarr_domain::api::system::HealthCheck>>,
+    /// Shutdown and restart requests (`system/shutdown`, `system/restart`).
+    pub lifecycle: lifecycle::Lifecycle,
 }
 
 impl std::ops::Deref for AppState {
@@ -152,6 +161,7 @@ impl AppState {
             proxy: Default::default(),
             certificates: Default::default(),
             oauth_codes: Default::default(),
+            lifecycle: Default::default(),
             http,
             metadata,
             logs,
@@ -201,6 +211,16 @@ impl AppState {
                 inner.certificates = certificates;
             }
             None => tracing::warn!("certificate policy not applied: the state is already shared"),
+        }
+        self
+    }
+
+    /// Hands the server's shutdown handle to the API. Must be called before the state is
+    /// shared.
+    pub fn with_lifecycle(mut self, lifecycle: lifecycle::Lifecycle) -> Self {
+        match Arc::get_mut(&mut self.0) {
+            Some(inner) => inner.lifecycle = lifecycle,
+            None => tracing::warn!("lifecycle not replaced: the state is already shared"),
         }
         self
     }
@@ -269,6 +289,8 @@ pub fn app(state: AppState) -> Router {
         .merge(v3_config::router())
         .merge(v3_admin::router())
         .merge(v3_ext::router("notification"))
+        .merge(v3_extra::router())
+        .merge(v3_system::router())
         .route_layer(axum::middleware::from_fn_with_state(
             state.clone(),
             auth::require_auth_v3,
@@ -279,8 +301,19 @@ pub fn app(state: AppState) -> Router {
             HeaderName::from_static("x-application-version"),
             HeaderValue::from_static(v3::SONARR_VERSION),
         ));
-    // The few v5 routes the optional compression worker calls back on.
-    let v5 = v3::worker_router().route_layer(axum::middleware::from_fn_with_state(
+    // Sonarr's `/api/v5` (Tanukarr's current API), built on the v3 resources.
+    let v5 = v5::router()
+        .merge(v5_settings::router())
+        .route_layer(axum::middleware::from_fn_with_state(
+            state.clone(),
+            auth::require_auth_v3,
+        ))
+        .layer(SetResponseHeaderLayer::if_not_present(
+            HeaderName::from_static("x-application-version"),
+            HeaderValue::from_static(v3::SONARR_VERSION),
+        ));
+    // `GET /api` (API versions) needs authentication; `/ping` and `/content` do not.
+    let api_info = root::api_info_router().route_layer(axum::middleware::from_fn_with_state(
         state.clone(),
         auth::require_auth_v3,
     ));
@@ -298,7 +331,10 @@ pub fn app(state: AppState) -> Router {
         .merge(api)
         .nest("/api/v3", v3)
         .nest("/signalr", signalr)
-        .nest("/feed/v3", feed)
+        .nest("/feed/v3", feed.clone())
+        .nest("/feed/v5", feed)
+        .merge(api_info)
+        .merge(root::router())
         .nest("/api/v5", v5)
         .route(
             "/api/v1/openapi.json",

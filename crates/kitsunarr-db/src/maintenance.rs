@@ -94,8 +94,56 @@ pub fn list_backups(dir: &Path) -> std::io::Result<Vec<(String, u64, std::time::
     Ok(out)
 }
 
+/// Where a backup chosen for restoring (Sonarr's `system/backup/restore`) waits until the next
+/// start.
+pub fn staged_restore_path(data_dir: &Path) -> PathBuf {
+    data_dir.join("restore").join("kitsunarr.db")
+}
+
+/// Replaces the database with a staged backup, if one is waiting: the current database is kept
+/// next to it (`….db.pre-restore-<time>`), whose path is returned. Must run before the database
+/// is opened.
+pub fn apply_staged_restore(data_dir: &Path, database: &Path) -> std::io::Result<Option<PathBuf>> {
+    let staged = staged_restore_path(data_dir);
+    if !staged.is_file() {
+        return Ok(None);
+    }
+    let aside = database.with_extension(format!(
+        "db.pre-restore-{}",
+        chrono::Utc::now().format("%Y%m%d%H%M%S")
+    ));
+    if database.exists() {
+        std::fs::rename(database, &aside)?;
+    }
+    for ext in ["db-wal", "db-shm"] {
+        let _ = std::fs::remove_file(database.with_extension(ext));
+    }
+    if std::fs::rename(&staged, database).is_err() {
+        std::fs::copy(&staged, database)?;
+        std::fs::remove_file(&staged)?;
+    }
+    Ok(Some(aside))
+}
+
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn staged_restores_replace_the_database_once() {
+        let dir = tempfile::tempdir().unwrap();
+        let db = dir.path().join("kitsunarr.db");
+        std::fs::write(&db, b"old").unwrap();
+        std::fs::write(db.with_extension("db-wal"), b"wal").unwrap();
+        assert!(apply_staged_restore(dir.path(), &db).unwrap().is_none());
+        let staged = staged_restore_path(dir.path());
+        std::fs::create_dir_all(staged.parent().unwrap()).unwrap();
+        std::fs::write(&staged, b"new").unwrap();
+        let aside = apply_staged_restore(dir.path(), &db).unwrap().unwrap();
+        assert_eq!(std::fs::read(&db).unwrap(), b"new");
+        assert_eq!(std::fs::read(&aside).unwrap(), b"old");
+        assert!(!staged.exists() && !db.with_extension("db-wal").exists());
+        assert!(apply_staged_restore(dir.path(), &db).unwrap().is_none());
+    }
+
     use super::*;
 
     #[tokio::test]

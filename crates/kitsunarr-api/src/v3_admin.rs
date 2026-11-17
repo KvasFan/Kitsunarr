@@ -66,13 +66,13 @@ pub fn router() -> Router<AppState> {
         .route("/manualimport", get(manual_import_scan))
 }
 
-fn ids(v: &[i64]) -> Value {
+pub(crate) fn ids(v: &[i64]) -> Value {
     json!(v)
 }
 
 // ---- tags -----------------------------------------------------------------------------------
 
-async fn tag_label(state: &AppState, id: i64) -> ApiResult<String> {
+pub(crate) async fn tag_label(state: &AppState, id: i64) -> ApiResult<String> {
     kitsunarr_db::tags::list(state.db.pool())
         .await?
         .into_iter()
@@ -81,18 +81,21 @@ async fn tag_label(state: &AppState, id: i64) -> ApiResult<String> {
         .ok_or_else(|| ApiError::NotFound("The tag does not exist.".into()))
 }
 
-async fn get_tag(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_tag(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     Ok(Json(
         json!({"id": id, "label": tag_label(&state, id).await?}),
     ))
 }
 
 #[derive(Deserialize)]
-struct TagBody {
+pub(crate) struct TagBody {
     label: String,
 }
 
-async fn update_tag(
+pub(crate) async fn update_tag(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(body): Json<TagBody>,
@@ -110,14 +113,17 @@ async fn update_tag(
     ))
 }
 
-async fn delete_tag(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<StatusCode> {
+pub(crate) async fn delete_tag(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<StatusCode> {
     settings::delete_tag(State(state), Path(id)).await?;
     Ok(StatusCode::OK)
 }
 
 /// Sonarr's `TagDetailsResource` (release profiles are its "restrictions"); films are
 /// Kitsunarr's `movieIds`.
-async fn detail_json(state: &AppState, id: i64, label: String) -> ApiResult<Value> {
+pub(crate) async fn detail_json(state: &AppState, id: i64, label: String) -> ApiResult<Value> {
     let u = kitsunarr_db::tags::usage(&state.db, id).await?;
     Ok(json!({
         "id": id,
@@ -135,7 +141,7 @@ async fn detail_json(state: &AppState, id: i64, label: String) -> ApiResult<Valu
     }))
 }
 
-async fn tag_details(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn tag_details(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     let mut out = Vec::new();
     for t in kitsunarr_db::tags::list(state.db.pool()).await? {
         out.push(detail_json(&state, t.id, t.label).await?);
@@ -143,14 +149,17 @@ async fn tag_details(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>
     Ok(Json(out))
 }
 
-async fn tag_detail(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn tag_detail(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     let label = tag_label(&state, id).await?;
     Ok(Json(detail_json(&state, id, label).await?))
 }
 
 // ---- root folders ---------------------------------------------------------------------------
 
-async fn root_folder(state: &AppState, id: i64) -> ApiResult<Value> {
+pub(crate) async fn root_folder(state: &AppState, id: i64) -> ApiResult<Value> {
     let list = settings::list_root_folders(State(state.clone())).await?.0;
     let r = list
         .iter()
@@ -159,7 +168,7 @@ async fn root_folder(state: &AppState, id: i64) -> ApiResult<Value> {
     Ok(crate::v3::root_folder_json(state, r).await)
 }
 
-async fn get_root_folder(
+pub(crate) async fn get_root_folder(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
@@ -168,7 +177,7 @@ async fn get_root_folder(
 
 /// Sonarr's `POST /rootfolder` (`{path}`); Kitsunarr's optional `mediaKind` chooses the library
 /// section (series by default).
-async fn create_root_folder(
+pub(crate) async fn create_root_folder(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -196,7 +205,7 @@ async fn create_root_folder(
     ))
 }
 
-async fn delete_root_folder(
+pub(crate) async fn delete_root_folder(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -207,7 +216,7 @@ async fn delete_root_folder(
 // ---- delay profiles -------------------------------------------------------------------------
 
 /// Sonarr's `DelayProfileResource`: Kitsunarr's profile with `order` for its sort order.
-fn delay_json(d: &DelayProfile) -> Value {
+pub(crate) fn delay_json(d: &DelayProfile) -> Value {
     json!({
         "id": d.id,
         "enableUsenet": d.enable_usenet,
@@ -224,7 +233,7 @@ fn delay_json(d: &DelayProfile) -> Value {
 }
 
 /// A delay profile from Sonarr's resource, over `base` for the keys it leaves out.
-fn delay_from(v: &Value, base: DelayProfile) -> ApiResult<DelayProfile> {
+pub(crate) fn delay_from(v: &Value, base: DelayProfile) -> ApiResult<DelayProfile> {
     let b = |k: &str, d: bool| v.get(k).and_then(Value::as_bool).unwrap_or(d);
     let i = |k: &str, d: i64| v.get(k).and_then(Value::as_i64).unwrap_or(d);
     let protocol = match v.get("preferredProtocol") {
@@ -265,7 +274,7 @@ fn delay_from(v: &Value, base: DelayProfile) -> ApiResult<DelayProfile> {
     })
 }
 
-async fn delay_profile(state: &AppState, id: i64) -> ApiResult<DelayProfile> {
+pub(crate) async fn delay_profile(state: &AppState, id: i64) -> ApiResult<DelayProfile> {
     rules::list_delay_profiles(state.db.pool())
         .await?
         .into_iter()
@@ -273,7 +282,7 @@ async fn delay_profile(state: &AppState, id: i64) -> ApiResult<DelayProfile> {
         .ok_or_else(|| ApiError::NotFound("The delay profile does not exist.".into()))
 }
 
-async fn list_delay(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn list_delay(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     Ok(Json(
         rules::list_delay_profiles(state.db.pool())
             .await?
@@ -283,11 +292,14 @@ async fn list_delay(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>
     ))
 }
 
-async fn get_delay(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_delay(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     Ok(Json(delay_json(&delay_profile(&state, id).await?)))
 }
 
-async fn create_delay(
+pub(crate) async fn create_delay(
     State(state): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -312,7 +324,7 @@ async fn create_delay(
     Ok((StatusCode::CREATED, Json(delay_json(&saved))))
 }
 
-async fn update_delay(
+pub(crate) async fn update_delay(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
@@ -324,7 +336,10 @@ async fn update_delay(
     Ok((StatusCode::ACCEPTED, Json(delay_json(&saved))))
 }
 
-async fn delete_delay(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<StatusCode> {
+pub(crate) async fn delete_delay(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<StatusCode> {
     delay_profile(&state, id).await?;
     rule_routes::delete_delay(State(state), Path(id)).await?;
     Ok(StatusCode::OK)
@@ -332,7 +347,7 @@ async fn delete_delay(State(state): State<AppState>, Path(id): Path<i64>) -> Api
 
 // ---- remote path mappings -------------------------------------------------------------------
 
-fn mapping_from(v: &Value, id: i64) -> ApiResult<RemotePathMapping> {
+pub(crate) fn mapping_from(v: &Value, id: i64) -> ApiResult<RemotePathMapping> {
     let text = |k: &'static str| {
         v.get(k)
             .and_then(Value::as_str)
@@ -348,7 +363,7 @@ fn mapping_from(v: &Value, id: i64) -> ApiResult<RemotePathMapping> {
     })
 }
 
-async fn mapping(state: &AppState, id: i64) -> ApiResult<RemotePathMapping> {
+pub(crate) async fn mapping(state: &AppState, id: i64) -> ApiResult<RemotePathMapping> {
     rules::list_remote_path_mappings(state.db.pool())
         .await?
         .into_iter()
@@ -356,25 +371,27 @@ async fn mapping(state: &AppState, id: i64) -> ApiResult<RemotePathMapping> {
         .ok_or_else(|| ApiError::NotFound("The remote path mapping does not exist.".into()))
 }
 
-async fn list_mappings(State(state): State<AppState>) -> ApiResult<Json<Vec<RemotePathMapping>>> {
+pub(crate) async fn list_mappings(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<RemotePathMapping>>> {
     rule_routes::list_mappings(State(state)).await
 }
 
-async fn get_mapping(
+pub(crate) async fn get_mapping(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<RemotePathMapping>> {
     Ok(Json(mapping(&state, id).await?))
 }
 
-async fn create_mapping(
+pub(crate) async fn create_mapping(
     State(state): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<RemotePathMapping>)> {
     rule_routes::create_mapping(State(state), Json(mapping_from(&v, 0)?)).await
 }
 
-async fn update_mapping(
+pub(crate) async fn update_mapping(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
@@ -386,7 +403,7 @@ async fn update_mapping(
     Ok((StatusCode::ACCEPTED, Json(saved)))
 }
 
-async fn delete_mapping(
+pub(crate) async fn delete_mapping(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -399,7 +416,7 @@ async fn delete_mapping(
 
 /// Sonarr's `ImportListExclusionResource` (`tvdbId`, 0 for other catalogues), with
 /// Kitsunarr's catalogue and id.
-fn exclusion_json(e: &ImportListExclusionItem) -> Value {
+pub(crate) fn exclusion_json(e: &ImportListExclusionItem) -> Value {
     json!({
         "id": e.id,
         "tvdbId": if e.provider == "tvdb" { e.external_id.parse::<i64>().unwrap_or(0) } else { 0 },
@@ -410,7 +427,7 @@ fn exclusion_json(e: &ImportListExclusionItem) -> Value {
 }
 
 /// An exclusion from Sonarr's resource (`tvdbId`) or Kitsunarr's (`provider`, `externalId`).
-fn exclusion_from(v: &Value, id: i64) -> ApiResult<ImportListExclusionItem> {
+pub(crate) fn exclusion_from(v: &Value, id: i64) -> ApiResult<ImportListExclusionItem> {
     let (provider, external_id) = match (
         v.get("provider").and_then(Value::as_str),
         v.get("externalId"),
@@ -441,11 +458,11 @@ fn exclusion_from(v: &Value, id: i64) -> ApiResult<ImportListExclusionItem> {
     })
 }
 
-async fn exclusions(state: &AppState) -> ApiResult<Vec<ImportListExclusionItem>> {
+pub(crate) async fn exclusions(state: &AppState) -> ApiResult<Vec<ImportListExclusionItem>> {
     Ok(import_lists::list_exclusions(State(state.clone())).await?.0)
 }
 
-async fn exclusion(state: &AppState, id: i64) -> ApiResult<ImportListExclusionItem> {
+pub(crate) async fn exclusion(state: &AppState, id: i64) -> ApiResult<ImportListExclusionItem> {
     exclusions(state)
         .await?
         .into_iter()
@@ -453,7 +470,7 @@ async fn exclusion(state: &AppState, id: i64) -> ApiResult<ImportListExclusionIt
         .ok_or_else(|| ApiError::NotFound("The exclusion does not exist.".into()))
 }
 
-async fn list_exclusions(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn list_exclusions(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     Ok(Json(
         exclusions(&state)
             .await?
@@ -465,12 +482,12 @@ async fn list_exclusions(State(state): State<AppState>) -> ApiResult<Json<Vec<Va
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct PageQuery {
+pub(crate) struct PageQuery {
     page: Option<i64>,
     page_size: Option<i64>,
 }
 
-fn paged(records: Vec<Value>, q: &PageQuery, sort_key: &str, direction: &str) -> Value {
+pub(crate) fn paged(records: Vec<Value>, q: &PageQuery, sort_key: &str, direction: &str) -> Value {
     let total = records.len() as i64;
     let page = q.page.unwrap_or(1).max(1);
     let size = q.page_size.unwrap_or(10).clamp(1, 1000);
@@ -482,7 +499,7 @@ fn paged(records: Vec<Value>, q: &PageQuery, sort_key: &str, direction: &str) ->
     json!({"page": page, "pageSize": size, "sortKey": sort_key, "sortDirection": direction, "totalRecords": total, "records": records})
 }
 
-async fn paged_exclusions(
+pub(crate) async fn paged_exclusions(
     State(state): State<AppState>,
     Query(q): Query<PageQuery>,
 ) -> ApiResult<Json<Value>> {
@@ -494,14 +511,14 @@ async fn paged_exclusions(
     Ok(Json(paged(records, &q, "title", "ascending")))
 }
 
-async fn get_exclusion(
+pub(crate) async fn get_exclusion(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
     Ok(Json(exclusion_json(&exclusion(&state, id).await?)))
 }
 
-async fn create_exclusion(
+pub(crate) async fn create_exclusion(
     State(state): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -510,7 +527,7 @@ async fn create_exclusion(
     Ok((StatusCode::CREATED, Json(exclusion_json(&saved))))
 }
 
-async fn update_exclusion(
+pub(crate) async fn update_exclusion(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
@@ -544,7 +561,7 @@ async fn update_exclusion(
     ))
 }
 
-async fn delete_exclusion(
+pub(crate) async fn delete_exclusion(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -553,11 +570,11 @@ async fn delete_exclusion(
 }
 
 #[derive(Deserialize)]
-struct BulkIds {
+pub(crate) struct BulkIds {
     ids: Vec<i64>,
 }
 
-async fn delete_exclusions(
+pub(crate) async fn delete_exclusions(
     State(state): State<AppState>,
     Json(b): Json<BulkIds>,
 ) -> ApiResult<StatusCode> {
@@ -574,7 +591,7 @@ async fn delete_exclusions(
 
 /// Sonarr's `QueueStatusResource`: downloads (not episode records) and their problems, those
 /// of downloads no library title claims counted apart.
-async fn queue_status(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn queue_status(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let native = crate::routes::queue::get_queue(State(state)).await?.0;
     let known = |i: &&kitsunarr_domain::api::queue::QueueItem| {
         i.series_id.is_some() || i.movie_id.is_some()
@@ -604,14 +621,14 @@ async fn queue_status(State(state): State<AppState>) -> ApiResult<Json<Value>> {
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct DetailsQuery {
+pub(crate) struct DetailsQuery {
     series_id: Option<i64>,
     /// Comma-separated, or repeated.
     episode_ids: Option<String>,
 }
 
 /// Sonarr's `GET /queue/details`: every record, unpaged, of a series or of episodes.
-async fn queue_details(
+pub(crate) async fn queue_details(
     State(state): State<AppState>,
     Query(q): Query<DetailsQuery>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -641,7 +658,7 @@ async fn queue_details(
 }
 
 /// The pending release behind a queue record id (`queue/grab` is for pending releases).
-async fn pending_download_id(state: &AppState, id: i64) -> ApiResult<String> {
+pub(crate) async fn pending_download_id(state: &AppState, id: i64) -> ApiResult<String> {
     let native = crate::routes::queue::get_queue(State(state.clone()))
         .await?
         .0;
@@ -659,7 +676,7 @@ async fn pending_download_id(state: &AppState, id: i64) -> ApiResult<String> {
     Ok(item.download_id.clone())
 }
 
-async fn grab_queue_item(
+pub(crate) async fn grab_queue_item(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
@@ -670,7 +687,7 @@ async fn grab_queue_item(
     Ok(Json(json!({"message": done.message})))
 }
 
-async fn grab_queue_items(
+pub(crate) async fn grab_queue_items(
     State(state): State<AppState>,
     Json(b): Json<BulkIds>,
 ) -> ApiResult<Json<Value>> {
@@ -698,7 +715,7 @@ async fn grab_queue_items(
 // ---- system ---------------------------------------------------------------------------------
 
 /// Sonarr's `TimeSpan` text (`hh:mm:ss.fff`).
-fn time_span(ms: i64) -> String {
+pub(crate) fn time_span(ms: i64) -> String {
     let ms = ms.max(0);
     format!(
         "{:02}:{:02}:{:02}.{:03}",
@@ -710,7 +727,7 @@ fn time_span(ms: i64) -> String {
 }
 
 /// Sonarr's `TaskResource`; ids follow the task list's order (stable for a version).
-async fn tasks_json(state: &AppState) -> ApiResult<Vec<Value>> {
+pub(crate) async fn tasks_json(state: &AppState) -> ApiResult<Vec<Value>> {
     let list = system::tasks(State(state.clone())).await?.0;
     Ok(list
         .into_iter()
@@ -732,11 +749,14 @@ async fn tasks_json(state: &AppState) -> ApiResult<Vec<Value>> {
         .collect())
 }
 
-async fn list_tasks(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn list_tasks(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     Ok(Json(tasks_json(&state).await?))
 }
 
-async fn get_task(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_task(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     tasks_json(&state)
         .await?
         .into_iter()
@@ -745,43 +765,24 @@ async fn get_task(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResu
         .ok_or_else(|| ApiError::NotFound("The task does not exist.".into()))
 }
 
-/// Sonarr's `BackupResource`; the type comes from Kitsunarr's file name prefix.
-async fn list_backups(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
-    let list = system::backups(State(state)).await?.0;
-    Ok(Json(
-        list.into_iter()
-            .enumerate()
-            .map(|(i, b)| {
-                let kind = if b.name.starts_with("manual") {
-                    "manual"
-                } else if b.name.contains("update") {
-                    "update"
-                } else {
-                    "scheduled"
-                };
-                json!({
-                    "id": i + 1,
-                    "name": b.name,
-                    "path": format!("/backup/{kind}/{}", b.name),
-                    "type": kind,
-                    "size": b.size,
-                    "time": b.created_at,
-                })
-            })
-            .collect(),
-    ))
+/// Sonarr's `BackupResource`s (ids as Sonarr derives them from the type and name).
+pub(crate) async fn list_backups(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    Ok(Json(crate::v3_system::backups_json(&state)?))
 }
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct LogParams {
+pub(crate) struct LogParams {
     page: Option<i64>,
     page_size: Option<i64>,
     level: Option<String>,
 }
 
 /// Sonarr's paged `LogResource`s (newest first) from Kitsunarr's in-memory log.
-async fn logs(State(state): State<AppState>, Query(p): Query<LogParams>) -> ApiResult<Json<Value>> {
+pub(crate) async fn logs(
+    State(state): State<AppState>,
+    Query(p): Query<LogParams>,
+) -> ApiResult<Json<Value>> {
     // Sonarr's filter names; `fatal` is Kitsunarr's error.
     let level = p
         .level
@@ -825,13 +826,13 @@ async fn logs(State(state): State<AppState>, Query(p): Query<LogParams>) -> ApiR
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct RenameParams {
+pub(crate) struct RenameParams {
     series_id: i64,
     season_number: Option<i32>,
 }
 
 /// Sonarr's `GET /rename`: the files a rename would change (`RenameEpisodeResource`).
-async fn rename_preview(
+pub(crate) async fn rename_preview(
     State(state): State<AppState>,
     Query(p): Query<RenameParams>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -863,14 +864,14 @@ async fn rename_preview(
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct ManualImportParams {
+pub(crate) struct ManualImportParams {
     folder: String,
     series_id: Option<i64>,
 }
 
 /// Sonarr's `GET /manualimport`: a folder's video files with the series and episodes they
 /// match (`ManualImportResource`); importing them is the `ManualImport` command.
-async fn manual_import_scan(
+pub(crate) async fn manual_import_scan(
     State(state): State<AppState>,
     Query(p): Query<ManualImportParams>,
 ) -> ApiResult<Json<Vec<Value>>> {

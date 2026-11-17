@@ -57,9 +57,9 @@ pub fn router() -> Router<AppState> {
 
 /// Sonarr's specifications and the fields each has (`name`, `label`, `type`).
 /// (name, label, type) of a specification field.
-type Field = (&'static str, &'static str, &'static str);
+pub(crate) type Field = (&'static str, &'static str, &'static str);
 
-const SPECIFICATIONS: [(&str, &str, &[Field]); 8] = [
+pub(crate) const SPECIFICATIONS: [(&str, &str, &[Field]); 8] = [
     (
         "ReleaseTitleSpecification",
         "Release Title",
@@ -108,11 +108,11 @@ const SPECIFICATIONS: [(&str, &str, &[Field]); 8] = [
     ),
 ];
 
-fn field_json(order: usize, name: &str, label: &str, kind: &str, value: Value) -> Value {
+pub(crate) fn field_json(order: usize, name: &str, label: &str, kind: &str, value: Value) -> Value {
     json!({"order": order, "name": name, "label": label, "value": value, "type": kind, "advanced": false, "privacy": "normal", "isFloat": kind == "number"})
 }
 
-fn spec_json(s: &CustomFormatSpecification) -> Value {
+pub(crate) fn spec_json(s: &CustomFormatSpecification) -> Value {
     let known = SPECIFICATIONS
         .iter()
         .find(|(i, _, _)| *i == s.implementation);
@@ -145,7 +145,7 @@ fn spec_json(s: &CustomFormatSpecification) -> Value {
     })
 }
 
-fn format_json(f: &CustomFormat) -> Value {
+pub(crate) fn format_json(f: &CustomFormat) -> Value {
     json!({
         "id": f.id,
         "name": f.name,
@@ -156,7 +156,7 @@ fn format_json(f: &CustomFormat) -> Value {
 
 /// A `CustomFormatResource` as Kitsunarr's custom format. Fields come as Sonarr's list of
 /// `{name, value}` (or already as an object).
-fn format_from(v: &Value, id: i64) -> ApiResult<CustomFormat> {
+pub(crate) fn format_from(v: &Value, id: i64) -> ApiResult<CustomFormat> {
     let name = v["name"]
         .as_str()
         .filter(|n| !n.trim().is_empty())
@@ -201,12 +201,12 @@ fn format_from(v: &Value, id: i64) -> ApiResult<CustomFormat> {
     })
 }
 
-async fn list_formats(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn list_formats(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     let formats = quality::list_custom_formats(state.db.pool()).await?;
     Ok(Json(formats.iter().map(format_json).collect()))
 }
 
-async fn find_format(state: &AppState, id: i64) -> ApiResult<CustomFormat> {
+pub(crate) async fn find_format(state: &AppState, id: i64) -> ApiResult<CustomFormat> {
     quality::list_custom_formats(state.db.pool())
         .await?
         .into_iter()
@@ -214,11 +214,14 @@ async fn find_format(state: &AppState, id: i64) -> ApiResult<CustomFormat> {
         .ok_or_else(|| ApiError::NotFound("The custom format does not exist.".into()))
 }
 
-async fn get_format(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_format(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     Ok(Json(format_json(&find_format(&state, id).await?)))
 }
 
-async fn create_format(
+pub(crate) async fn create_format(
     State(state): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -227,7 +230,7 @@ async fn create_format(
     Ok((status, Json(format_json(&created))))
 }
 
-async fn update_format(
+pub(crate) async fn update_format(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
@@ -238,7 +241,7 @@ async fn update_format(
     Ok((StatusCode::ACCEPTED, Json(format_json(&updated))))
 }
 
-async fn delete_format(
+pub(crate) async fn delete_format(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -248,7 +251,7 @@ async fn delete_format(
 }
 
 /// `GET /customformat/schema`: every specification with empty fields.
-async fn format_schema() -> Json<Vec<Value>> {
+pub(crate) async fn format_schema() -> Json<Vec<Value>> {
     Json(
         SPECIFICATIONS
             .iter()
@@ -267,42 +270,101 @@ async fn format_schema() -> Json<Vec<Value>> {
 
 // ---- quality definitions -------------------------------------------------------------------
 
-fn size(v: Option<OrderedF64>) -> Value {
-    v.map_or(Value::Null, |s| json!(s.0))
+/// Tanukarr's `QualityProfileSizeLimit.Summarize` for one quality: each size (min, preferred,
+/// max) across the profiles (a profile without its own limit uses the definition's), `None`
+/// with the mixed flag when they differ.
+pub(crate) struct SizeSummary {
+    pub(crate) sizes: [Option<f64>; 3],
+    pub(crate) mixed: [bool; 3],
 }
 
-fn definition_json(d: &QualityDefinition) -> Value {
+pub(crate) fn size_summary(d: &QualityDefinition, profiles: &[QualityProfile]) -> SizeSummary {
+    let own = [d.min_size, d.preferred_size, d.max_size].map(|s| s.map(|v| v.0));
+    if profiles.is_empty() {
+        return SizeSummary {
+            sizes: own,
+            mixed: [false; 3],
+        };
+    }
+    let mut sizes = [None; 3];
+    let mut mixed = [false; 3];
+    for slot in 0..3 {
+        let mut values: Vec<Option<f64>> = Vec::new();
+        for p in profiles {
+            let v = p
+                .size_limits
+                .iter()
+                .find(|l| l.quality_id == d.quality_id)
+                .map_or(own[slot], |l| {
+                    [l.min_size, l.preferred_size, l.max_size][slot].map(|v| v.0)
+                });
+            // A maximum of 0 is no limit.
+            let v = if slot == 2 && v == Some(0.0) { None } else { v };
+            if !values.contains(&v) {
+                values.push(v);
+            }
+        }
+        if values.len() == 1 {
+            sizes[slot] = values[0];
+        } else {
+            mixed[slot] = true;
+        }
+    }
+    SizeSummary { sizes, mixed }
+}
+
+/// Tanukarr's `QualityDefinitionResource` (criteria, retirement, sizes summarised across the
+/// profiles with their mixed flags).
+pub(crate) fn definition_json(d: &QualityDefinition, profiles: &[QualityProfile]) -> Value {
+    let built_in = kitsunarr_domain::quality::Quality::by_id(d.quality_id);
+    let summary = size_summary(d, profiles);
+    let source = d.source.or(built_in.map(|q| q.source));
     json!({
         "id": d.quality_id,
         "quality": quality_json(d.quality_id),
         "title": d.title,
         "weight": d.weight,
-        "minSize": size(d.min_size),
-        "maxSize": size(d.max_size),
-        "preferredSize": size(d.preferred_size),
+        "source": source.map(|s| serde_json::to_value(s).unwrap_or_default()),
+        "resolution": d.resolution.or(built_in.map(|q| q.resolution)),
+        "codec": d.codec,
+        "titlePattern": d.title_pattern,
+        "isRetired": d.is_retired,
+        "isCustom": d.quality_id >= kitsunarr_domain::quality::CUSTOM_QUALITY_BASE,
+        "minSize": summary.sizes[0],
+        "maxSize": summary.sizes[2],
+        "preferredSize": summary.sizes[1],
+        "minSizeIsMixed": summary.mixed[0],
+        "maxSizeIsMixed": summary.mixed[2],
+        "preferredSizeIsMixed": summary.mixed[1],
     })
 }
 
-async fn list_definitions(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn definitions_json(state: &AppState) -> ApiResult<Vec<Value>> {
     let defs = quality::list_definitions(state.db.pool()).await?;
-    Ok(Json(defs.iter().map(definition_json).collect()))
+    let profiles = quality::list_profiles(state.db.pool()).await?;
+    Ok(defs.iter().map(|d| definition_json(d, &profiles)).collect())
 }
 
-async fn get_definition(
+pub(crate) async fn list_definitions(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    Ok(Json(definitions_json(&state).await?))
+}
+
+pub(crate) async fn get_definition(
     State(state): State<AppState>,
     Path(id): Path<i32>,
 ) -> ApiResult<Json<Value>> {
-    let defs = quality::list_definitions(state.db.pool()).await?;
-    defs.iter()
-        .find(|d| d.quality_id == id)
-        .map(|d| Json(definition_json(d)))
+    definitions_json(&state)
+        .await?
+        .into_iter()
+        .find(|d| d["id"] == json!(id))
+        .map(Json)
         .ok_or_else(|| ApiError::NotFound("The quality definition does not exist.".into()))
 }
 
 /// Applies a `QualityDefinitionResource` (title and sizes) to the stored definition. As in
 /// Sonarr, the resource replaces all three sizes: a size that is missing or null is no limit
 /// (Recyclarr leaves out the null ones, e.g. TRaSH's unlimited maximums).
-fn apply_definition(d: &mut QualityDefinition, v: &Value) {
+pub(crate) fn apply_definition(d: &mut QualityDefinition, v: &Value) {
     let num = |key: &str| v[key].as_f64().map(OrderedF64);
     if let Some(t) = v["title"].as_str().filter(|t| !t.trim().is_empty()) {
         d.title = t.to_string();
@@ -312,14 +374,14 @@ fn apply_definition(d: &mut QualityDefinition, v: &Value) {
     d.preferred_size = num("preferredSize");
 }
 
-fn definition_id(v: &Value) -> Option<i32> {
+pub(crate) fn definition_id(v: &Value) -> Option<i32> {
     v["quality"]["id"]
         .as_i64()
         .or_else(|| v["id"].as_i64())
         .and_then(|i| i32::try_from(i).ok())
 }
 
-async fn save_definitions(state: &AppState, changes: &[Value]) -> ApiResult<Vec<Value>> {
+pub(crate) async fn save_definitions(state: &AppState, changes: &[Value]) -> ApiResult<Vec<Value>> {
     let mut defs = quality::list_definitions(state.db.pool()).await?;
     for v in changes {
         let id = definition_id(v)
@@ -333,14 +395,15 @@ async fn save_definitions(state: &AppState, changes: &[Value]) -> ApiResult<Vec<
     let Json(saved) =
         settings::update_quality_definitions(State(state.clone()), Json(defs)).await?;
     let ids: Vec<i32> = changes.iter().filter_map(definition_id).collect();
+    let profiles = quality::list_profiles(state.db.pool()).await?;
     Ok(saved
         .iter()
         .filter(|d| ids.contains(&d.quality_id))
-        .map(definition_json)
+        .map(|d| definition_json(d, &profiles))
         .collect())
 }
 
-async fn update_definition(
+pub(crate) async fn update_definition(
     State(state): State<AppState>,
     Path(id): Path<i32>,
     Json(mut v): Json<Value>,
@@ -354,7 +417,7 @@ async fn update_definition(
 }
 
 /// `PUT /qualitydefinition/update`: several definitions at once (Recyclarr's size sync).
-async fn update_definitions(
+pub(crate) async fn update_definitions(
     State(state): State<AppState>,
     Json(v): Json<Vec<Value>>,
 ) -> ApiResult<(StatusCode, Json<Vec<Value>>)> {
@@ -417,7 +480,7 @@ pub(crate) fn profile_json(p: &QualityProfile, formats: &[CustomFormat]) -> Valu
 }
 
 /// A Sonarr/Tanukarr `QualityProfileResource` over `base`. Omitted fields are preserved.
-fn profile_from(v: &Value, mut base: QualityProfile) -> ApiResult<QualityProfile> {
+pub(crate) fn profile_from(v: &Value, mut base: QualityProfile) -> ApiResult<QualityProfile> {
     if let Some(value) = v.get("codecMultipliers") {
         base.codec_multipliers = if value.is_null() {
             Default::default()
@@ -505,7 +568,11 @@ fn profile_from(v: &Value, mut base: QualityProfile) -> ApiResult<QualityProfile
     Ok(base)
 }
 
-fn apply_profile_sizes(p: &mut QualityProfile, quality_id: i32, v: &Value) -> ApiResult<()> {
+pub(crate) fn apply_profile_sizes(
+    p: &mut QualityProfile,
+    quality_id: i32,
+    v: &Value,
+) -> ApiResult<()> {
     let fields = ["minSize", "preferredSize", "maxSize"];
     if !fields.iter().any(|f| v.get(*f).is_some()) {
         return Ok(());
@@ -541,14 +608,17 @@ fn apply_profile_sizes(p: &mut QualityProfile, quality_id: i32, v: &Value) -> Ap
     Ok(())
 }
 
-async fn get_profile(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_profile(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     let p = quality::get_profile(state.db.pool(), id).await?;
     let formats = quality::list_custom_formats(state.db.pool()).await?;
     Ok(Json(profile_json(&p, &formats)))
 }
 
 /// `GET /qualityprofile/schema`: a new profile with every quality, none allowed.
-async fn profile_schema(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn profile_schema(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let defs = quality::list_definitions(state.db.pool()).await?;
     let formats = quality::list_custom_formats(state.db.pool()).await?;
     let mut defs = defs;
@@ -576,7 +646,7 @@ async fn profile_schema(State(state): State<AppState>) -> ApiResult<Json<Value>>
     Ok(Json(profile_json(&profile, &formats)))
 }
 
-async fn create_profile(
+pub(crate) async fn create_profile(
     State(state): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -590,7 +660,7 @@ async fn create_profile(
     Ok((status, Json(profile_json(&created, &formats))))
 }
 
-fn empty_profile() -> QualityProfile {
+pub(crate) fn empty_profile() -> QualityProfile {
     QualityProfile {
         id: 0,
         name: String::new(),
@@ -606,7 +676,7 @@ fn empty_profile() -> QualityProfile {
     }
 }
 
-async fn update_profile(
+pub(crate) async fn update_profile(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
@@ -619,7 +689,7 @@ async fn update_profile(
     Ok((StatusCode::ACCEPTED, Json(profile_json(&updated, &formats))))
 }
 
-async fn delete_profile(
+pub(crate) async fn delete_profile(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -630,7 +700,7 @@ async fn delete_profile(
 
 // ---- release profiles ----------------------------------------------------------------------
 
-fn release_profile_json(r: &ReleaseProfile) -> Value {
+pub(crate) fn release_profile_json(r: &ReleaseProfile) -> Value {
     json!({
         "id": r.id,
         "name": r.name,
@@ -643,7 +713,7 @@ fn release_profile_json(r: &ReleaseProfile) -> Value {
 }
 
 /// Terms as Sonarr v4 takes them: a list, or one comma-separated string.
-fn terms(v: &Value) -> Vec<String> {
+pub(crate) fn terms(v: &Value) -> Vec<String> {
     match v {
         Value::Array(a) => a
             .iter()
@@ -662,7 +732,7 @@ fn terms(v: &Value) -> Vec<String> {
     }
 }
 
-fn release_profile_from(v: &Value, id: i64) -> ReleaseProfile {
+pub(crate) fn release_profile_from(v: &Value, id: i64) -> ReleaseProfile {
     ReleaseProfile {
         id,
         name: v["name"].as_str().map(str::to_string),
@@ -681,19 +751,21 @@ fn release_profile_from(v: &Value, id: i64) -> ReleaseProfile {
     }
 }
 
-async fn list_release_profiles(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn list_release_profiles(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<Value>>> {
     let Json(list) = rules::list_release(State(state)).await?;
     Ok(Json(list.iter().map(release_profile_json).collect()))
 }
 
-async fn find_release_profile(state: &AppState, id: i64) -> ApiResult<ReleaseProfile> {
+pub(crate) async fn find_release_profile(state: &AppState, id: i64) -> ApiResult<ReleaseProfile> {
     let Json(list) = rules::list_release(State(state.clone())).await?;
     list.into_iter()
         .find(|r| r.id == id)
         .ok_or_else(|| ApiError::NotFound("The release profile does not exist.".into()))
 }
 
-async fn get_release_profile(
+pub(crate) async fn get_release_profile(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
@@ -702,7 +774,7 @@ async fn get_release_profile(
     )))
 }
 
-async fn create_release_profile(
+pub(crate) async fn create_release_profile(
     State(state): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -711,7 +783,7 @@ async fn create_release_profile(
     Ok((status, Json(release_profile_json(&created))))
 }
 
-async fn update_release_profile(
+pub(crate) async fn update_release_profile(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(v): Json<Value>,
@@ -722,7 +794,7 @@ async fn update_release_profile(
     Ok((StatusCode::ACCEPTED, Json(release_profile_json(&updated))))
 }
 
-async fn delete_release_profile(
+pub(crate) async fn delete_release_profile(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -734,7 +806,7 @@ async fn delete_release_profile(
 // ---- languages -----------------------------------------------------------------------------
 
 /// `GET /language`: Sonarr's languages.
-async fn languages() -> Json<Vec<Value>> {
+pub(crate) async fn languages() -> Json<Vec<Value>> {
     Json(
         Language::all()
             .iter()

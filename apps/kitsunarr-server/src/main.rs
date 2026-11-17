@@ -134,6 +134,15 @@ fn init_logging(config: &Config, logs: &kitsunarr_api::LogBuffer) {
         .with(json.then(|| tracing_subscriber::fmt::layer().json().flatten_event(true)))
         .with((!json).then(|| tracing_subscriber::fmt::layer().with_target(true)))
         .with(logs.layer())
+        // Sonarr's text log files (`log/file`), rolled at 1 MiB.
+        .with(
+            tracing_subscriber::fmt::layer()
+                .with_ansi(false)
+                .with_target(true)
+                .with_writer(kitsunarr_api::log_files::RollingFile::new(
+                    kitsunarr_api::log_files::folder(&config.data_dir),
+                )),
+        )
         .init();
 }
 
@@ -268,6 +277,15 @@ async fn serve(config: Config) -> Result<()> {
     let logs = kitsunarr_api::LogBuffer::default();
     init_logging(&config, &logs);
     tracing::info!(version = VERSION, data_dir = %config.data_dir.display(), "starting Kitsunarr");
+    // A backup restored through the API (`system/backup/restore`) is applied before opening.
+    match kitsunarr_db::maintenance::apply_staged_restore(&config.data_dir, &config.database_path())
+    {
+        Ok(Some(aside)) => {
+            tracing::info!(previous = %aside.display(), "restored the staged backup")
+        }
+        Ok(None) => {}
+        Err(e) => tracing::error!(error = %e, "could not apply the staged backup"),
+    }
     let db = open_database(&config).await?;
     if let Some(dir) = Some(&config.config_dir).filter(|d| d.is_dir()) {
         let file = dir.join(kitsunarr_config::CONFIG_FILE_NAME);
@@ -353,6 +371,7 @@ async fn serve(config: Config) -> Result<()> {
     );
 
     let config = Arc::new(config);
+    let lifecycle = kitsunarr_api::lifecycle::Lifecycle::new(shutdown.clone());
     // Metadata consumers download artwork through the same (proxy-aware) client.
     kitsunarr_library::metadata_files::install_http_client(http.clone());
     let state = AppState::new(
@@ -372,7 +391,8 @@ async fn serve(config: Config) -> Result<()> {
     )
     .with_download_monitor(downloads)
     .with_proxy(proxy)
-    .with_certificates(certificates);
+    .with_certificates(certificates)
+    .with_lifecycle(lifecycle.clone());
     let _ = api_state.set(state.clone());
     // `ApplicationUpdatedEvent`: the first start of a new version.
     kitsunarr_library::notify::announce_version(&db, &state.downloads.notifier, VERSION).await;
@@ -402,7 +422,32 @@ async fn serve(config: Config) -> Result<()> {
     scheduler.shutdown(Duration::from_secs(30)).await;
     db.close().await;
     tracing::info!("Kitsunarr stopped");
+    if lifecycle.restart_requested() {
+        restart_process()?;
+    }
     Ok(())
+}
+
+/// Starts this binary again with the same arguments (Sonarr's restart): replaces the process
+/// on Unix, starts a new one elsewhere.
+fn restart_process() -> Result<()> {
+    let exe = std::env::current_exe().context("cannot find the running executable")?;
+    let args: Vec<std::ffi::OsString> = std::env::args_os().skip(1).collect();
+    tracing::info!(exe = %exe.display(), "restarting Kitsunarr");
+    #[cfg(unix)]
+    {
+        use std::os::unix::process::CommandExt;
+        let err = std::process::Command::new(&exe).args(&args).exec();
+        Err(err).context("cannot restart Kitsunarr")
+    }
+    #[cfg(not(unix))]
+    {
+        std::process::Command::new(&exe)
+            .args(&args)
+            .spawn()
+            .context("cannot restart Kitsunarr")?;
+        Ok(())
+    }
 }
 
 async fn healthcheck(config: &Config) -> Result<()> {

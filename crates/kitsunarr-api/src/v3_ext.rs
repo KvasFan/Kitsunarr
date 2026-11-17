@@ -20,10 +20,10 @@ use serde_json::{Map, Value, json};
 use crate::AppState;
 use crate::error::{ApiError, ApiResult};
 
-const IX: ProviderKind = ProviderKind::Indexer;
-const DC: ProviderKind = ProviderKind::DownloadClient;
-const IL: ProviderKind = ProviderKind::ImportList;
-const NO: ProviderKind = ProviderKind::Notification;
+pub(crate) const IX: ProviderKind = ProviderKind::Indexer;
+pub(crate) const DC: ProviderKind = ProviderKind::DownloadClient;
+pub(crate) const IL: ProviderKind = ProviderKind::ImportList;
+pub(crate) const NO: ProviderKind = ProviderKind::Notification;
 
 /// The routes, for one resource name per provider kind (`notification` in v3, `connection`
 /// in v5).
@@ -74,7 +74,7 @@ pub(crate) fn resource(p: &ProviderRecord) -> Value {
     }
 }
 
-fn section(kind: ProviderKind) -> &'static str {
+pub(crate) fn section(kind: ProviderKind) -> &'static str {
     if kind == IX { "indexers" } else { "providers" }
 }
 
@@ -132,7 +132,7 @@ pub(crate) fn ids_of(v: &Value, key: &str) -> Vec<i64> {
 }
 
 /// The resource keys a bulk edit may set for each kind, stored as provider options.
-fn bulk_options(kind: ProviderKind) -> &'static [&'static str] {
+pub(crate) fn bulk_options(kind: ProviderKind) -> &'static [&'static str] {
     match kind {
         IX => &[
             "enableRss",
@@ -147,7 +147,7 @@ fn bulk_options(kind: ProviderKind) -> &'static [&'static str] {
 }
 
 /// Applies a bulk resource to one provider.
-fn apply_bulk(kind: ProviderKind, p: &mut ProviderRecord, body: &Value) {
+pub(crate) fn apply_bulk(kind: ProviderKind, p: &mut ProviderRecord, body: &Value) {
     if let Some(tags) = body["tags"].as_array() {
         let given: Vec<i64> = tags.iter().filter_map(Value::as_i64).collect();
         p.tags = ApplyTags::of(&body["applyTags"]).apply(&p.tags, &given);
@@ -166,7 +166,7 @@ fn apply_bulk(kind: ProviderKind, p: &mut ProviderRecord, body: &Value) {
     }
 }
 
-async fn bulk_update(
+pub(crate) async fn bulk_update(
     State(state): State<AppState>,
     kind: ProviderKind,
     Json(body): Json<Value>,
@@ -190,7 +190,7 @@ async fn bulk_update(
     Ok((StatusCode::ACCEPTED, Json(out)))
 }
 
-async fn bulk_delete(
+pub(crate) async fn bulk_delete(
     State(state): State<AppState>,
     kind: ProviderKind,
     Json(body): Json<Value>,
@@ -247,7 +247,7 @@ pub(crate) async fn test_stored(state: &AppState, p: &ProviderRecord) -> ApiResu
 
 /// `POST …/testall`: every enabled provider of the kind, as Sonarr's `ProviderTestAllResult`
 /// list; 400 when one fails.
-async fn test_all(
+pub(crate) async fn test_all(
     State(state): State<AppState>,
     kind: ProviderKind,
 ) -> ApiResult<(StatusCode, Json<Vec<Value>>)> {
@@ -283,7 +283,7 @@ pub(crate) fn test_result(id: i64, failure: Option<String>) -> Value {
 // ---- actions --------------------------------------------------------------------------------
 
 /// A provider resource's settings (its `fields`), with the stored secrets of a saved one.
-async fn settings_of(
+pub(crate) async fn settings_of(
     state: &AppState,
     kind: ProviderKind,
     body: &Value,
@@ -303,7 +303,7 @@ async fn settings_of(
     Ok(settings)
 }
 
-fn options(choices: Vec<kitsunarr_domain::api::settings::ProviderChoice>) -> Value {
+pub(crate) fn options(choices: Vec<kitsunarr_domain::api::settings::ProviderChoice>) -> Value {
     json!({"options": choices.into_iter().enumerate().map(|(i, c)| json!({
         "value": c.value, "name": c.name, "order": i, "hint": c.hint,
     })).collect::<Vec<_>>()})
@@ -316,7 +316,7 @@ fn options(choices: Vec<kitsunarr_domain::api::settings::ProviderChoice>) -> Val
 /// instead of the Servarr relay: `startOAuth` answers `oauthUrl` with the `code` to enter and
 /// a `state`; `getOAuthToken` (or `pollOAuth`) with that `state` answers the settings to save
 /// once the user has signed in, else `{"pending": true}`.
-async fn action(
+pub(crate) async fn action(
     State(state): State<AppState>,
     kind: ProviderKind,
     Path(name): Path<String>,
@@ -414,7 +414,7 @@ async fn action(
 
 /// `newznabCategories`: the indexer's categories from its capabilities, as Sonarr's
 /// `NewznabCategoryFieldOptionsConverter` lists them (subcategories under their parent).
-async fn newznab_categories(
+pub(crate) async fn newznab_categories(
     state: &AppState,
     id: Option<i64>,
     implementation: &str,
@@ -453,14 +453,14 @@ async fn newznab_categories(
 // ---- metadata consumers ---------------------------------------------------------------------
 
 /// Sonarr's four metadata consumers: (id, implementation, name, settings key).
-const CONSUMERS: [(i64, &str, &str, &str); 4] = [
+pub(crate) const CONSUMERS: [(i64, &str, &str, &str); 4] = [
     (1, "XbmcMetadata", "Kodi (XBMC) / Emby", "kodi"),
     (2, "RoksboxMetadata", "Roksbox", "roksbox"),
     (3, "WdtvMetadata", "WDTV", "wdtv"),
     (4, "PlexMetadata", "Plex", "plex"),
 ];
 
-async fn consumers(state: &AppState) -> ApiResult<Map<String, Value>> {
+pub(crate) async fn consumers(state: &AppState) -> ApiResult<Map<String, Value>> {
     let s = crate::routes::settings::get_metadata_consumers(State(state.clone()))
         .await?
         .0;
@@ -470,14 +470,14 @@ async fn consumers(state: &AppState) -> ApiResult<Map<String, Value>> {
     }
 }
 
-async fn save_consumers(state: &AppState, m: Map<String, Value>) -> ApiResult<()> {
+pub(crate) async fn save_consumers(state: &AppState, m: Map<String, Value>) -> ApiResult<()> {
     let s: MetadataConsumersSettings = serde_json::from_value(Value::Object(m))
         .map_err(|e| ApiError::BadRequest(e.to_string()))?;
     let _ = crate::routes::settings::put_metadata_consumers(State(state.clone()), Json(s)).await?;
     Ok(())
 }
 
-fn consumer_json(id: i64, settings: &Value) -> Value {
+pub(crate) fn consumer_json(id: i64, settings: &Value) -> Value {
     let (_, implementation, name, _) = CONSUMERS[(id - 1) as usize];
     let fields: Vec<Value> = settings
         .as_object()
@@ -503,7 +503,7 @@ fn consumer_json(id: i64, settings: &Value) -> Value {
     })
 }
 
-fn consumer_id(v: &Value) -> Option<i64> {
+pub(crate) fn consumer_id(v: &Value) -> Option<i64> {
     v["id"]
         .as_i64()
         .filter(|i| (1..=4).contains(i))
@@ -516,7 +516,7 @@ fn consumer_id(v: &Value) -> Option<i64> {
         })
 }
 
-async fn list_metadata(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn list_metadata(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     let m = consumers(&state).await?;
     Ok(Json(
         CONSUMERS
@@ -526,7 +526,7 @@ async fn list_metadata(State(state): State<AppState>) -> ApiResult<Json<Vec<Valu
     ))
 }
 
-async fn get_metadata(
+pub(crate) async fn get_metadata(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
@@ -538,7 +538,7 @@ async fn get_metadata(
     Ok(Json(consumer_json(id, &m[c.3])))
 }
 
-async fn metadata_schema() -> Json<Vec<Value>> {
+pub(crate) async fn metadata_schema() -> Json<Vec<Value>> {
     let d = serde_json::to_value(MetadataConsumersSettings::default()).unwrap_or_default();
     Json(
         CONSUMERS
@@ -553,7 +553,7 @@ async fn metadata_schema() -> Json<Vec<Value>> {
 }
 
 /// Writes a resource's `enable` and fields into its consumer.
-async fn write_metadata(state: &AppState, id: i64, body: &Value) -> ApiResult<Value> {
+pub(crate) async fn write_metadata(state: &AppState, id: i64, body: &Value) -> ApiResult<Value> {
     let key = CONSUMERS[(id - 1) as usize].3;
     let mut m = consumers(state).await?;
     let mut current = m.get(key).cloned().unwrap_or_else(|| json!({}));
@@ -573,7 +573,7 @@ async fn write_metadata(state: &AppState, id: i64, body: &Value) -> ApiResult<Va
 }
 
 /// `POST /metadata`: Kitsunarr keeps one consumer per kind, so creating one sets that kind's.
-async fn create_metadata(
+pub(crate) async fn create_metadata(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -585,7 +585,7 @@ async fn create_metadata(
     ))
 }
 
-async fn update_metadata(
+pub(crate) async fn update_metadata(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(body): Json<Value>,
@@ -602,7 +602,7 @@ async fn update_metadata(
 }
 
 /// `DELETE /metadata/{id}`: turns the consumer off (the four always exist).
-async fn delete_metadata(
+pub(crate) async fn delete_metadata(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -616,13 +616,15 @@ async fn delete_metadata(
 }
 
 /// Metadata consumers write files only, so there is nothing to reach.
-async fn test_metadata(Json(body): Json<Value>) -> ApiResult<Json<Value>> {
+pub(crate) async fn test_metadata(Json(body): Json<Value>) -> ApiResult<Json<Value>> {
     consumer_id(&body)
         .ok_or_else(|| ApiError::field("implementation", "Unknown metadata consumer."))?;
     Ok(Json(json!({})))
 }
 
-async fn test_all_metadata(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn test_all_metadata(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<Value>>> {
     let m = consumers(&state).await?;
     Ok(Json(
         CONSUMERS
@@ -633,7 +635,7 @@ async fn test_all_metadata(State(state): State<AppState>) -> ApiResult<Json<Vec<
     ))
 }
 
-async fn metadata_action(Path(name): Path<String>) -> ApiResult<Json<Value>> {
+pub(crate) async fn metadata_action(Path(name): Path<String>) -> ApiResult<Json<Value>> {
     Err(ApiError::BadRequest(format!(
         "Metadata consumers have no action \"{name}\"."
     )))

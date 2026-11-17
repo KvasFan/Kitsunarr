@@ -2,6 +2,7 @@
 //! through `routes!` keeps the router and the OpenAPI document identical.
 
 pub mod compression;
+pub mod custom_filters;
 pub mod events;
 pub mod grab;
 pub mod import_lists;
@@ -10,6 +11,7 @@ pub mod library_tools;
 pub mod metadata;
 pub mod migration;
 pub mod movie_search;
+pub mod provider_tests;
 pub mod queue;
 pub mod rules;
 pub mod schema;
@@ -277,4 +279,13 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(migration::apply))
         .routes(routes!(migration::runs))
         .routes(routes!(migration::run_report))
+        .routes(routes!(
+            custom_filters::list_custom_filters,
+            custom_filters::create_custom_filter
+        ))
+        .routes(routes!(
+            custom_filters::update_custom_filter,
+            custom_filters::delete_custom_filter
+        ))
+        .routes(routes!(provider_tests::test_all_providers))
 }
