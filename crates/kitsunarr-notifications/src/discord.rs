@@ -250,6 +250,65 @@ pub fn embed(s: &Map<String, Value>, event: &Event, instance: &Instance) -> Valu
                 Some(series),
             )
         }
+        // `OnImportComplete`: the import fields that describe the whole download.
+        Event::ImportComplete(i) => {
+            let series = &i.series;
+            for f in chosen(s, "importFields", &[0, 1, 2, 3, 5, 6, 9, 10, 11, 12]) {
+                match f {
+                    0 => fields.push(field(
+                        "Overview",
+                        overview(i.episodes.first().and_then(|e| e.overview.as_deref())),
+                        false,
+                    )),
+                    1 => fields.push(field(
+                        "Rating",
+                        series.rating.map(|r| r.to_string()).unwrap_or_default(),
+                        false,
+                    )),
+                    2 => fields.push(field(
+                        "Genres",
+                        series
+                            .genres
+                            .iter()
+                            .take(5)
+                            .cloned()
+                            .collect::<Vec<_>>()
+                            .join(", "),
+                        false,
+                    )),
+                    3 => fields.push(field("Quality", i.quality.clone(), true)),
+                    5 => {
+                        if let Some(group) = &i.release_group {
+                            fields.push(field("Group", group.clone(), false));
+                        }
+                    }
+                    6 => fields.push(field(
+                        "Size",
+                        bytes(
+                            i.release
+                                .size
+                                .unwrap_or_else(|| i.files.iter().map(|f| f.size).sum()),
+                        ),
+                        true,
+                    )),
+                    9 => fields.push(field("Links", links(series), false)),
+                    10 => {
+                        if let Some(title) = &i.release.release_title {
+                            fields.push(field("Release", format!("```{title}```"), false));
+                        }
+                    }
+                    11 => thumbnail = series.poster().map(str::to_string),
+                    12 => image = series.fanart().map(str::to_string),
+                    _ => {}
+                }
+            }
+            (
+                title(series, &i.episodes),
+                "Import Complete".to_string(),
+                colors::SUCCESS,
+                Some(series),
+            )
+        }
         Event::Rename { series, files } => {
             thumbnail = series.poster().map(str::to_string);
             (

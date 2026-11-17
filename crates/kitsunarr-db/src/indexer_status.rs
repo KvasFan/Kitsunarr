@@ -40,20 +40,22 @@ pub enum Kind {
     Indexer,
     /// Download clients: no escalation within 5 minutes of the first failure, at most 1 hour.
     DownloadClient,
+    /// Notifications (`NotificationStatusService`): the download clients' limits.
+    Notification,
 }
 
 impl Kind {
     fn max_level(self) -> i64 {
         match self {
             Self::Indexer => PERIODS.len() as i64 - 1,
-            Self::DownloadClient => 5,
+            Self::DownloadClient | Self::Notification => 5,
         }
     }
 
     fn initial_grace(self) -> Duration {
         match self {
             Self::Indexer => Duration::zero(),
-            Self::DownloadClient => Duration::minutes(5),
+            Self::DownloadClient | Self::Notification => Duration::minutes(5),
         }
     }
 
@@ -66,6 +68,10 @@ impl Kind {
             Self::DownloadClient => {
                 "SELECT download_client_id AS indexer_id, initial_failure, most_recent_failure, escalation_level, \
                  disabled_till FROM download_client_status WHERE download_client_id = ?"
+            }
+            Self::Notification => {
+                "SELECT notification_id AS indexer_id, initial_failure, most_recent_failure, escalation_level, \
+                 disabled_till FROM notification_status WHERE notification_id = ?"
             }
         }
     }
@@ -80,6 +86,10 @@ impl Kind {
                 "SELECT download_client_id AS indexer_id, initial_failure, most_recent_failure, escalation_level, \
                  disabled_till FROM download_client_status ORDER BY download_client_id"
             }
+            Self::Notification => {
+                "SELECT notification_id AS indexer_id, initial_failure, most_recent_failure, escalation_level, \
+                 disabled_till FROM notification_status ORDER BY notification_id"
+            }
         }
     }
 
@@ -93,6 +103,11 @@ impl Kind {
             Self::DownloadClient => {
                 "INSERT INTO download_client_status (download_client_id, initial_failure, most_recent_failure, \
                  escalation_level, disabled_till) VALUES (?1, ?2, ?3, ?4, ?5) ON CONFLICT (download_client_id) DO UPDATE SET \
+                 initial_failure = ?2, most_recent_failure = ?3, escalation_level = ?4, disabled_till = ?5"
+            }
+            Self::Notification => {
+                "INSERT INTO notification_status (notification_id, initial_failure, most_recent_failure, \
+                 escalation_level, disabled_till) VALUES (?1, ?2, ?3, ?4, ?5) ON CONFLICT (notification_id) DO UPDATE SET \
                  initial_failure = ?2, most_recent_failure = ?3, escalation_level = ?4, disabled_till = ?5"
             }
         }

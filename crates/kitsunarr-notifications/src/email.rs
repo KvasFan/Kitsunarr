@@ -21,6 +21,16 @@ fn recipients(s: &Map<String, Value>) -> Vec<String> {
 }
 
 fn text(event: &Event) -> (String, String) {
+    if matches!(event, Event::ImportComplete(_)) {
+        // `Email.OnImportComplete`.
+        return (
+            event.title().to_string(),
+            format!(
+                "All expected episode files in {} downloaded and sorted.",
+                event.message()
+            ),
+        );
+    }
     (format!("Kitsunarr - {}", event.title()), event.message())
 }
 

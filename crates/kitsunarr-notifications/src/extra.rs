@@ -63,6 +63,7 @@ pub async fn synology(s: &Map<String, Value>, event: &Event) -> NotifyResult {
             }
             calls.push(("-a", join(&d.series.path, &d.file.relative_path)));
         }
+        Event::ImportComplete(i) => calls.push(("-R", i.series.path.clone())),
         Event::Rename { series, .. } | Event::SeriesAdd(series) => {
             calls.push(("-R", series.path.clone()))
         }
@@ -167,6 +168,29 @@ pub async fn trakt(n: &Notifier, s: &Map<String, Value>, event: &Event) -> Notif
                 show(&d.series, json!([{"number": season, "episodes": episodes}])),
             )
         }
+        // Every imported file joins the collection, with its quality.
+        Event::ImportComplete(i) => {
+            let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
+            let q = i
+                .files
+                .first()
+                .and_then(|f| kitsunarr_domain::quality::Quality::by_name(&f.quality));
+            let mut seasons: Vec<(i32, Vec<Value>)> = Vec::new();
+            for e in &i.episodes {
+                let entry = json!({"number": e.episode_number, "collected_at": now,
+                    "resolution": q.map_or("", |q| resolution(q.resolution)),
+                    "media_type": q.map_or("", |q| media_type(q.source))});
+                match seasons.iter_mut().find(|(n, _)| *n == e.season_number) {
+                    Some((_, list)) => list.push(entry),
+                    None => seasons.push((e.season_number, vec![entry])),
+                }
+            }
+            let seasons: Vec<Value> = seasons
+                .into_iter()
+                .map(|(number, episodes)| json!({"number": number, "episodes": episodes}))
+                .collect();
+            ("sync/collection", show(&i.series, json!(seasons)))
+        }
         Event::EpisodeFileDelete {
             series, episodes, ..
         } => {
@@ -258,7 +282,7 @@ fn twitter_message(event: &Event) -> String {
     let prefix = match event {
         Event::Test => return "This is a test message from Kitsunarr".into(),
         Event::Grab(_) => "Grabbed",
-        Event::Download(_) => "Imported",
+        Event::Download(_) | Event::ImportComplete(_) => "Imported",
         Event::EpisodeFileDelete { .. } => "Episode Deleted",
         Event::SeriesAdd(_) => "Series Added",
         Event::SeriesDelete { .. } => "Series Deleted",

@@ -34,6 +34,7 @@ pub fn map_path(s: &Map<String, Value>, path: &str) -> String {
 fn library_change(event: &Event) -> Option<(&SeriesRef, &'static str)> {
     match event {
         Event::Download(d) => Some((&d.series, "Created")),
+        Event::ImportComplete(i) => Some((&i.series, "Created")),
         Event::EpisodeFileDelete { series, .. } => Some((series, "Deleted")),
         Event::SeriesDelete { series, .. } => Some((series, "Deleted")),
         _ => None,

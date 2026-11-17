@@ -93,6 +93,74 @@ pub fn environment(event: &Event, instance: &Instance) -> BTreeMap<String, Strin
         );
     };
     match event_type.as_str() {
+        // `CustomScript.OnImportComplete`: every file of the download.
+        "Download" if p["episodeFiles"].is_array() => {
+            let files = &p["episodeFiles"];
+            let r = &p["release"];
+            put("EpisodeFile_Ids", join(files, "id", "|"));
+            put(
+                "EpisodeFile_Count",
+                files.as_array().map_or(0, Vec::len).to_string(),
+            );
+            put(
+                "EpisodeFile_RelativePaths",
+                join(files, "relativePath", "|"),
+            );
+            put("EpisodeFile_Paths", join(files, "path", "|"));
+            put("EpisodeFile_EpisodeIds", join(episodes, "id", ","));
+            put("EpisodeFile_SeasonNumber", s(&episodes[0]["seasonNumber"]));
+            put(
+                "EpisodeFile_EpisodeNumbers",
+                join(episodes, "episodeNumber", ","),
+            );
+            put(
+                "EpisodeFile_EpisodeAirDates",
+                join(episodes, "airDate", ","),
+            );
+            put(
+                "EpisodeFile_EpisodeAirDatesUtc",
+                join(episodes, "airDateUtc", ","),
+            );
+            put("EpisodeFile_EpisodeTitles", join(episodes, "title", "|"));
+            put(
+                "EpisodeFile_EpisodeOverviews",
+                join(episodes, "overview", "|"),
+            );
+            put("EpisodeFile_Qualities", join(files, "quality", "|"));
+            put(
+                "EpisodeFile_QualityVersions",
+                join(files, "qualityVersion", "|"),
+            );
+            put(
+                "EpisodeFile_ReleaseGroups",
+                join(files, "releaseGroup", "|"),
+            );
+            put("EpisodeFile_SceneNames", join(files, "sceneName", "|"));
+            put("Download_Client", s(&p["downloadClient"]));
+            put("Download_Client_Type", s(&p["downloadClientType"]));
+            put("Download_Id", s(&p["downloadId"]));
+            if let Event::ImportComplete(i) = event {
+                put("Release_Group", i.release_group.clone().unwrap_or_default());
+                put("Release_Quality", i.quality.clone());
+                put("Release_QualityVersion", i.quality_version.to_string());
+            }
+            put("Release_Indexer", s(&r["indexer"]));
+            put("Release_Size", s(&r["size"]));
+            put("Release_Title", s(&r["releaseTitle"]));
+            put("Release_ReleaseType", s(&r["releaseType"]));
+            let source = s(&p["sourcePath"]);
+            let destination = s(&p["destinationPath"]);
+            let parent = |path: &str| {
+                std::path::Path::new(path)
+                    .parent()
+                    .map(|d| d.display().to_string())
+                    .unwrap_or_default()
+            };
+            put("SourceFolder", parent(&source));
+            put("SourcePath", source);
+            put("DestinationFolder", parent(&destination));
+            put("DestinationPath", destination);
+        }
         "Grab" => {
             episode_vars("Release", &mut put);
             let r = &p["release"];

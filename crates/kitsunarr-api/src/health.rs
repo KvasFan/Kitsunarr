@@ -2,7 +2,8 @@
 //! `IndexerRssCheck`, `IndexerSearchCheck`, `IndexerLongTermStatusCheck`,
 //! `IndexerJackettAllCheck`, `IndexerDownloadClientCheck`, `ImportMechanismCheck`,
 //! `ImportListStatusCheck`, `ImportListRootFolderCheck`, `RecyclingBinCheck`, `BackupCheck`,
-//! `ApiKeyValidationCheck`, `RemovedSeriesCheck` and `MountCheck`.
+//! `ApiKeyValidationCheck`, `RemovedSeriesCheck`, `MountCheck`, `NotificationStatusCheck` and
+//! `DatabaseIntegrityCheck`.
 
 use std::path::Path;
 
@@ -261,6 +262,48 @@ pub async fn more_checks(state: &AppState, out: &mut Vec<HealthCheck>) -> ApiRes
     }
 
     download_client_checks(state, &clients, dco.enable_completed_download_handling, out).await?;
+
+    // `NotificationStatusCheck`: connections backing off after failed deliveries, among those
+    // with at least one event switched on (`GetAvailableProviders`).
+    let notifications: Vec<ProviderRecord> = providers::list(pool, ProviderKind::Notification)
+        .await?
+        .into_iter()
+        .filter(|p| {
+            p.enabled
+                && p.options.iter().any(|(k, v)| {
+                    k.starts_with("on") && !k.eq("onEpisodeFileDeleteForUpgrade") && v == &true
+                })
+        })
+        .collect();
+    let blocked_notifications = kitsunarr_db::indexer_status::blocked_of(
+        kitsunarr_db::indexer_status::Kind::Notification,
+        pool,
+        now,
+    )
+    .await?;
+    let backing_off: Vec<&str> = notifications
+        .iter()
+        .filter(|n| blocked_notifications.iter().any(|b| b.indexer_id == n.id))
+        .map(|n| n.name.as_str())
+        .collect();
+    if !backing_off.is_empty() {
+        out.push(if backing_off.len() == notifications.len() {
+            check(
+                "NotificationStatusCheck",
+                HealthLevel::Error,
+                "All notifications are unavailable due to failures".into(),
+            )
+        } else {
+            check(
+                "NotificationStatusCheck",
+                HealthLevel::Warning,
+                format!(
+                    "Notifications unavailable due to failures: {}",
+                    backing_off.join(", ")
+                ),
+            )
+        });
+    }
 
     // `ImportListStatusCheck` and `ImportListRootFolderCheck`.
     let lists: Vec<ProviderRecord> = providers::list(pool, ProviderKind::ImportList)

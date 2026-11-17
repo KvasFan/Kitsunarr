@@ -2440,7 +2440,9 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
                                                     if p.kind == ProviderKind::Notification {
                                                         for (k, v) in &t.options {
                                                             if v.is_boolean() {
-                                                                p.options.entry(k.clone()).or_insert(Value::Bool(false));
+                                                                // "Delete for upgrade" was on for existing connections (Sonarr).
+                                                                let on = k == "onEpisodeFileDeleteForUpgrade";
+                                                                p.options.entry(k.clone()).or_insert(Value::Bool(on));
                                                             }
                                                         }
                                                     }
