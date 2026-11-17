@@ -1716,7 +1716,7 @@ async fn calendar(
 
 // ---- indexers (Prowlarr sync) -------------------------------------------------------------
 
-fn indexer_json(p: &ProviderRecord) -> Value {
+pub(crate) fn indexer_json(p: &ProviderRecord) -> Value {
     let settings = crate::routes::settings::redact(&p.settings);
     let fields: Vec<Value> = settings
         .iter()
