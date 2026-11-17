@@ -2056,6 +2056,7 @@ async fn first_run_setup_migration_and_library() {
                         if (english(s)) out.add(s);
                     }
                     for (const e of document.querySelectorAll('[placeholder],[title]')) {
+                        if (e.closest(skip)) continue;
                         for (const a of ['placeholder', 'title']) {
                             const s = (e.getAttribute(a) || '').trim();
                             if (english(s)) out.add(s);

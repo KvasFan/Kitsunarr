@@ -1572,3 +1572,30 @@ Shut down	Kapat
 Shut down Kitsunarr	Kitsunarr'ı kapat
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kitsunarr şimdi kapatılsın mı? Yeniden başlatılana kadar durdurulmuş kalır (bir konteyner onu yalnızca yeniden başlatma ilkesi öyle diyorsa yeniden başlatır).
 does the same.	komutu da aynı işi yapar.
+RssSync	RSS senkronizasyonu
+ImportListSync	İçe aktarma listelerini senkronize et
+Backup	Yedekleme
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	RSS'si etkin olan indeksleyicilerin en yeni sürümlerini okur ve istenenleri alır
+Reads the import lists that are due and adds their new titles	Zamanı gelen içe aktarma listelerini okur ve yeni başlıklarını ekler
+Creates a consistent database backup and removes scheduled backups older than the retention	Tutarlı bir veritabanı yedeği oluşturur ve saklama süresinden eski zamanlanmış yedekleri kaldırır
+Checking database integrity	Veritabanı bütünlüğü denetleniyor
+Nothing is due for a refresh	Yenilenmesi gereken bir şey yok
+Folder scan cancelled	Klasör taraması iptal edildi
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Taranan dizi: {}, film: {}; eklenen dosya: {}, kaldırılan eksik dosya: {}, güncellenen: {}, atlanan: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	TV dizileri ve anime, TheTVDB numaralandırmasıyla (Sonarr'ın kataloğu)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	TV bilgileri ve görselleri TheTVDB.com tarafından sağlanır, ancak TheTVDB.com veya bağlı kuruluşları tarafından onaylanmış ya da sertifikalandırılmış değiliz
+TV series, with TMDB's episode groups as orderings (needs an API key)	TV dizileri, sıralama olarak TMDB bölüm gruplarıyla (API anahtarı gerekir)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Bu ürün TMDB API'sini kullanır ancak TMDB tarafından onaylanmamış veya sertifikalandırılmamıştır
+TV series and their episode guides	TV dizileri ve bölüm rehberleri
+TV data provided by TVmaze.com under CC BY-SA 4.0	TV verileri TVmaze.com tarafından CC BY-SA 4.0 kapsamında sağlanır
+Anime series and anime films	Anime dizileri ve anime filmleri
+Anime data provided by AniList	Anime verileri AniList tarafından sağlanır
+Anime with episode titles and air dates, through the Jikan API	Bölüm başlıkları ve yayın tarihleriyle anime, Jikan API üzerinden
+Anime data from MyAnimeList, served by the unofficial Jikan API	MyAnimeList'ten anime verileri, resmî olmayan Jikan API tarafından sunulur
+Films (needs an API key)	Filmler (API anahtarı gerekir)
+Films by IMDb id or title (needs an API key)	IMDb kimliği veya başlığa göre filmler (API anahtarı gerekir)
+Film data provided by the OMDb API	Film verileri OMDb API tarafından sağlanır
+Skipped: the server is still starting	Atlandı: sunucu hâlâ başlatılıyor
+{} expired sessions removed	Süresi dolmuş oturum kaldırıldı: {}
+All {} refreshes failed; see the logs	{} yenilemenin tümü başarısız oldu; kayıtlara bakın
+every folder scan failed ({})	tüm klasör taramaları başarısız oldu ({})

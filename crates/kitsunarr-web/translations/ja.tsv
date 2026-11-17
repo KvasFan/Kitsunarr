@@ -1572,3 +1572,30 @@ Shut down	シャットダウン
 Shut down Kitsunarr	Kitsunarr をシャットダウン
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	今すぐ Kitsunarr をシャットダウンしますか？再び起動するまで停止したままになります (コンテナが再起動するのは、再起動ポリシーでそう指定されている場合のみです)。
 does the same.	を実行しても同じことができます。
+RssSync	RSS同期
+ImportListSync	インポートリストを同期
+Backup	バックアップ
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	RSS が有効なインデクサーの最新リリースを読み取り、必要なものを取得します
+Reads the import lists that are due and adds their new titles	期限が来たインポートリストを読み取り、新しいタイトルを追加します
+Creates a consistent database backup and removes scheduled backups older than the retention	データベースの整合性のあるバックアップを作成し、保持期間を過ぎたスケジュールされたバックアップを削除します
+Checking database integrity	データベースの整合性を確認中
+Nothing is due for a refresh	更新が必要なものはありません
+Folder scan cancelled	フォルダースキャンをキャンセルしました
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	シリーズ {} 件と映画 {} 件をスキャンしました: ファイル追加 {} 件、欠落ファイル削除 {} 件、更新 {} 件、スキップ {} 件
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	テレビシリーズとアニメ、TheTVDB の番号付け (Sonarr のカタログ)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	テレビの情報と画像は TheTVDB.com によって提供されていますが、本製品は TheTVDB.com またはその関連会社による承認・認定を受けたものではありません
+TV series, with TMDB's episode groups as orderings (needs an API key)	テレビシリーズ、TMDB のエピソードグループを順序として使用 (APIキーが必要)
+This product uses the TMDB API but is not endorsed or certified by TMDB	本製品は TMDB API を使用していますが、TMDB による承認・認定を受けたものではありません
+TV series and their episode guides	テレビシリーズとそのエピソードガイド
+TV data provided by TVmaze.com under CC BY-SA 4.0	テレビのデータは TVmaze.com により CC BY-SA 4.0 で提供されています
+Anime series and anime films	アニメシリーズとアニメ映画
+Anime data provided by AniList	アニメのデータは AniList により提供されています
+Anime with episode titles and air dates, through the Jikan API	エピソードタイトルと放送日付きのアニメ (Jikan API 経由)
+Anime data from MyAnimeList, served by the unofficial Jikan API	MyAnimeList のアニメデータ、非公式の Jikan API により提供
+Films (needs an API key)	映画 (APIキーが必要)
+Films by IMDb id or title (needs an API key)	IMDb ID またはタイトルで映画を検索 (APIキーが必要)
+Film data provided by the OMDb API	映画のデータは OMDb API により提供されています
+Skipped: the server is still starting	スキップしました: サーバーはまだ起動中です
+{} expired sessions removed	期限切れのセッションを {} 件削除しました
+All {} refreshes failed; see the logs	{} 件の更新がすべて失敗しました。ログを確認してください
+every folder scan failed ({})	すべてのフォルダースキャンが失敗しました ({})

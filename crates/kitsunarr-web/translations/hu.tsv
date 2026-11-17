@@ -1572,3 +1572,30 @@ Shut down	Leállítás
 Shut down Kitsunarr	Kitsunarr leállítása
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Leállítod most a Kitsunarrt? Leállítva marad, amíg újra el nem indítják (a konténer csak akkor indítja újra, ha az újraindítási szabályzata ezt írja elő).
 does the same.	parancs ugyanezt teszi.
+RssSync	RSS-szinkronizálás
+ImportListSync	Importálási listák szinkronizálása
+Backup	Biztonsági mentés
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Beolvassa az RSS-t engedélyező indexelők legújabb kiadásait, és megragadja a keresetteket
+Reads the import lists that are due and adds their new titles	Beolvassa az esedékes importálási listákat, és hozzáadja az új címeiket
+Creates a consistent database backup and removes scheduled backups older than the retention	Konzisztens biztonsági mentést készít az adatbázisról, és eltávolítja a megőrzési időnél régebbi ütemezett mentéseket
+Checking database integrity	Az adatbázis integritásának ellenőrzése
+Nothing is due for a refresh	Semmi sem esedékes frissítésre
+Folder scan cancelled	Mappa átvizsgálása megszakítva
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Átvizsgált sorozatok: {}, filmek: {}; hozzáadott fájlok: {}, eltávolított hiányzó fájlok: {}, frissítve: {}, kihagyva: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Tévésorozatok és anime, a TheTVDB számozásával (a Sonarr katalógusa)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	A tévés információkat és képeket a TheTVDB.com biztosítja, de minket a TheTVDB.com és társvállalatai nem támogatnak és nem tanúsítanak
+TV series, with TMDB's episode groups as orderings (needs an API key)	Tévésorozatok, a TMDB epizódcsoportjaival mint sorrendekkel (API-kulcs szükséges)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Ez a termék a TMDB API-t használja, de a TMDB nem támogatja és nem tanúsítja
+TV series and their episode guides	Tévésorozatok és epizódkalauzaik
+TV data provided by TVmaze.com under CC BY-SA 4.0	A tévés adatokat a TVmaze.com biztosítja CC BY-SA 4.0 licenc alatt
+Anime series and anime films	Anime sorozatok és anime filmek
+Anime data provided by AniList	Az anime adatokat az AniList biztosítja
+Anime with episode titles and air dates, through the Jikan API	Anime epizódcímekkel és adásdátumokkal, a Jikan API-n keresztül
+Anime data from MyAnimeList, served by the unofficial Jikan API	Anime adatok a MyAnimeListről, a nem hivatalos Jikan API szolgáltatásában
+Films (needs an API key)	Filmek (API-kulcs szükséges)
+Films by IMDb id or title (needs an API key)	Filmek IMDb-azonosító vagy cím alapján (API-kulcs szükséges)
+Film data provided by the OMDb API	A filmadatokat az OMDb API biztosítja
+Skipped: the server is still starting	Kihagyva: a szerver még indul
+{} expired sessions removed	{} lejárt munkamenet eltávolítva
+All {} refreshes failed; see the logs	Mind a(z) {} frissítés sikertelen; lásd a naplókat
+every folder scan failed ({})	minden mappa-átvizsgálás sikertelen ({})

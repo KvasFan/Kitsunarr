@@ -1572,3 +1572,30 @@ Shut down	Sammuta
 Shut down Kitsunarr	Sammuta Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Sammutetaanko Kitsunarr nyt? Se pysyy pysäytettynä, kunnes se käynnistetään uudelleen (säilö käynnistää sen uudelleen vain, jos sen uudelleenkäynnistyskäytäntö niin määrää).
 does the same.	tekee saman.
+RssSync	Synkronoi RSS
+ImportListSync	Synkronoi tuontilistat
+Backup	Varmuuskopioi
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Lukee uusimmat julkaisut hakupalveluista, joissa RSS on käytössä, ja kaappaa halutut
+Reads the import lists that are due and adds their new titles	Lukee vuorossa olevat tuontilistat ja lisää niiden uudet nimikkeet
+Creates a consistent database backup and removes scheduled backups older than the retention	Luo tietokannasta yhtenäisen varmuuskopion ja poistaa säilytysaikaa vanhemmat ajoitetut varmuuskopiot
+Checking database integrity	Tarkistetaan tietokannan eheyttä
+Nothing is due for a refresh	Mikään ei odota päivitystä
+Folder scan cancelled	Kansion skannaus peruttu
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Skannattu sarjoja: {}, elokuvia: {}; lisättyjä tiedostoja: {}, poistettuja puuttuvia tiedostoja: {}, päivitetty: {}, ohitettu: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	TV-sarjat ja anime TheTVDB:n numeroinnilla (Sonarrin katalogi)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	TV-tiedot ja -kuvat tarjoaa TheTVDB.com, mutta TheTVDB.com tai sen yhteistyökumppanit eivät ole hyväksyneet tai sertifioineet meitä
+TV series, with TMDB's episode groups as orderings (needs an API key)	TV-sarjat, TMDB:n jaksoryhmät järjestyksinä (vaatii rajapinnan avaimen)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Tämä tuote käyttää TMDB:n rajapintaa (API), mutta TMDB ei ole hyväksynyt tai sertifioinut sitä
+TV series and their episode guides	TV-sarjat ja niiden jako-oppaat
+TV data provided by TVmaze.com under CC BY-SA 4.0	TV-tiedot tarjoaa TVmaze.com lisenssillä CC BY-SA 4.0
+Anime series and anime films	Animesarjat ja animeelokuvat
+Anime data provided by AniList	Animetiedot tarjoaa AniList
+Anime with episode titles and air dates, through the Jikan API	Anime jaksojen nimillä ja esityspäivillä, Jikan-rajapinnan kautta
+Anime data from MyAnimeList, served by the unofficial Jikan API	Animetiedot MyAnimeLististä epävirallisen Jikan-rajapinnan välittäminä
+Films (needs an API key)	Elokuvat (vaatii rajapinnan avaimen)
+Films by IMDb id or title (needs an API key)	Elokuvat IMDb-tunnisteen tai nimen perusteella (vaatii rajapinnan avaimen)
+Film data provided by the OMDb API	Elokuvatiedot tarjoaa OMDb-rajapinta
+Skipped: the server is still starting	Ohitettu: palvelin käynnistyy vielä
+{} expired sessions removed	Vanhentuneita istuntoja poistettu: {}
+All {} refreshes failed; see the logs	Kaikki {} päivitystä epäonnistuivat; katso lokitiedot
+every folder scan failed ({})	jokainen kansion skannaus epäonnistui ({})

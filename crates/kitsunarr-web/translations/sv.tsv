@@ -1572,3 +1572,30 @@ Shut down	Stäng av
 Shut down Kitsunarr	Stäng av Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Stäng av Kitsunarr nu? Det förblir stoppat tills det startas igen (en container startar om det bara om dess omstartspolicy anger det).
 does the same.	samma sak.
+RssSync	RSS-synkronisering
+ImportListSync	Synkronisera importlistor
+Backup	Säkerhetskopiering
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Läser de senaste utgåvorna från indexerarna med RSS aktiverat och hämtar de önskade
+Reads the import lists that are due and adds their new titles	Läser de importlistor som står på tur och lägger till deras nya titlar
+Creates a consistent database backup and removes scheduled backups older than the retention	Skapar en konsekvent säkerhetskopia av databasen och tar bort schemalagda säkerhetskopior som är äldre än lagringstiden
+Checking database integrity	Kontrollerar databasens integritet
+Nothing is due for a refresh	Inget behöver uppdateras
+Folder scan cancelled	Mappskanningen avbröts
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Skannade {} serier och {} filmer: {} filer tillagda, {} saknade filer borttagna, {} uppdaterade, {} överhoppade
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	TV-serier och anime, med TheTVDB:s numrering (Sonarrs katalog)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	TV-information och bilder tillhandahålls av TheTVDB.com, men vi är inte godkända eller certifierade av TheTVDB.com eller dess närstående bolag
+TV series, with TMDB's episode groups as orderings (needs an API key)	TV-serier, med TMDB:s avsnittsgrupper som ordningar (kräver en API-nyckel)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Den här produkten använder TMDB:s API men är inte godkänd eller certifierad av TMDB
+TV series and their episode guides	TV-serier och deras avsnittsguider
+TV data provided by TVmaze.com under CC BY-SA 4.0	TV-data tillhandahålls av TVmaze.com under CC BY-SA 4.0
+Anime series and anime films	Animeserier och animefilmer
+Anime data provided by AniList	Animedata tillhandahålls av AniList
+Anime with episode titles and air dates, through the Jikan API	Anime med avsnittstitlar och sändningsdatum, via Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	Animedata från MyAnimeList, levererad av det inofficiella Jikan API
+Films (needs an API key)	Filmer (kräver en API-nyckel)
+Films by IMDb id or title (needs an API key)	Filmer via IMDb-id eller titel (kräver en API-nyckel)
+Film data provided by the OMDb API	Filmdata tillhandahålls av OMDb API
+Skipped: the server is still starting	Överhoppad: servern startar fortfarande
+{} expired sessions removed	{} utgångna sessioner borttagna
+All {} refreshes failed; see the logs	Alla {} uppdateringar misslyckades; se loggarna
+every folder scan failed ({})	alla mappskanningar misslyckades ({})

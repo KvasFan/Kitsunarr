@@ -1572,3 +1572,30 @@ Shut down	பணிநிறுத்து
 Shut down Kitsunarr	Kitsunarr ஐப் பணிநிறுத்து
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kitsunarr ஐ இப்போது பணிநிறுத்தவா? மீண்டும் தொடங்கப்படும் வரை அது நிறுத்தப்பட்டே இருக்கும் (கொள்கலனின் மறுதொடக்கக் கொள்கை அனுமதித்தால் மட்டுமே கொள்கலன் அதை மறுதொடக்கம் செய்யும்).
 does the same.	உம் அதையே செய்யும்.
+RssSync	RSS ஒத்திசைவு
+ImportListSync	இறக்குமதிப் பட்டியல்களை ஒத்திசை
+Backup	காப்புப்பிரதி
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	RSS இயக்கப்பட்ட குறியீட்டாளர்களின் புதிய வெளியீடுகளைப் படித்து, தேவைப்படுபவற்றைப் பெறுகிறது
+Reads the import lists that are due and adds their new titles	நேரம் வந்த இறக்குமதிப் பட்டியல்களைப் படித்து, அவற்றின் புதிய தலைப்புகளைச் சேர்க்கிறது
+Creates a consistent database backup and removes scheduled backups older than the retention	தரவுத்தளத்தின் சீரான காப்புப்பிரதியை உருவாக்கி, தக்கவைப்புக் காலத்தை விடப் பழைய திட்டமிட்ட காப்புப்பிரதிகளை அகற்றுகிறது
+Checking database integrity	தரவுத்தள ஒருமைப்பாட்டைச் சரிபார்க்கிறது
+Nothing is due for a refresh	புதுப்பிக்க வேண்டியது எதுவும் இல்லை
+Folder scan cancelled	கோப்புறை ஸ்கேன் ரத்து செய்யப்பட்டது
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	{} தொடர்கள் மற்றும் {} திரைப்படங்கள் ஸ்கேன் செய்யப்பட்டன: {} கோப்புகள் சேர்க்கப்பட்டன, {} காணாமல் போன கோப்புகள் அகற்றப்பட்டன, {} புதுப்பிக்கப்பட்டன, {} தவிர்க்கப்பட்டன
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	தொலைக்காட்சித் தொடர்கள் மற்றும் அனிமே, TheTVDB எண்ணிடலுடன் (Sonarr இன் பட்டியல்)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	தொலைக்காட்சித் தகவல்களும் படங்களும் TheTVDB.com ஆல் வழங்கப்படுகின்றன, ஆனால் நாங்கள் TheTVDB.com அல்லது அதன் துணை நிறுவனங்களால் அங்கீகரிக்கப்படவோ சான்றளிக்கப்படவோ இல்லை
+TV series, with TMDB's episode groups as orderings (needs an API key)	தொலைக்காட்சித் தொடர்கள், TMDB அத்தியாயக் குழுக்களை வரிசைகளாகக் கொண்டு (API விசை தேவை)
+This product uses the TMDB API but is not endorsed or certified by TMDB	இந்தத் தயாரிப்பு TMDB API ஐப் பயன்படுத்துகிறது, ஆனால் TMDB ஆல் அங்கீகரிக்கப்படவோ சான்றளிக்கப்படவோ இல்லை
+TV series and their episode guides	தொலைக்காட்சித் தொடர்களும் அவற்றின் அத்தியாய வழிகாட்டிகளும்
+TV data provided by TVmaze.com under CC BY-SA 4.0	தொலைக்காட்சித் தரவு TVmaze.com ஆல் CC BY-SA 4.0 இன் கீழ் வழங்கப்படுகிறது
+Anime series and anime films	அனிமே தொடர்கள் மற்றும் அனிமே திரைப்படங்கள்
+Anime data provided by AniList	அனிமே தரவு AniList ஆல் வழங்கப்படுகிறது
+Anime with episode titles and air dates, through the Jikan API	அத்தியாயத் தலைப்புகள் மற்றும் ஒளிபரப்புத் தேதிகளுடன் அனிமே, Jikan API வழியாக
+Anime data from MyAnimeList, served by the unofficial Jikan API	MyAnimeList இலிருந்து அனிமே தரவு, அதிகாரப்பூர்வமற்ற Jikan API மூலம் வழங்கப்படுகிறது
+Films (needs an API key)	திரைப்படங்கள் (API விசை தேவை)
+Films by IMDb id or title (needs an API key)	IMDb id அல்லது தலைப்பு மூலம் திரைப்படங்கள் (API விசை தேவை)
+Film data provided by the OMDb API	திரைப்படத் தரவு OMDb API ஆல் வழங்கப்படுகிறது
+Skipped: the server is still starting	தவிர்க்கப்பட்டது: சேவையகம் இன்னும் தொடங்குகிறது
+{} expired sessions removed	{} காலாவதியான அமர்வுகள் அகற்றப்பட்டன
+All {} refreshes failed; see the logs	அனைத்து {} புதுப்பிப்புகளும் தோல்வியடைந்தன; பதிவுகளைப் பார்க்கவும்
+every folder scan failed ({})	ஒவ்வொரு கோப்புறை ஸ்கேனும் தோல்வியடைந்தது ({})

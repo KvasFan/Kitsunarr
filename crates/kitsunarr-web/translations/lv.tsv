@@ -1572,3 +1572,30 @@ Shut down	Izslēgt
 Shut down Kitsunarr	Izslēgt Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Izslēgt Kitsunarr tagad? Tas paliks apturēts, līdz to atkal palaidīs (konteiners to restartē tikai tad, ja to paredz tā restartēšanas politika).
 does the same.	dara to pašu.
+RssSync	RSS sinhronizācija
+ImportListSync	Sinhronizēt importēšanas sarakstus
+Backup	Dublēšana
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Nolasa jaunākos izlaidumus no indeksētājiem ar ieslēgtu RSS un paņem vēlamos
+Reads the import lists that are due and adds their new titles	Nolasa importēšanas sarakstus, kuriem pienācis laiks, un pievieno to jaunos nosaukumus
+Creates a consistent database backup and removes scheduled backups older than the retention	Izveido konsekventu datubāzes dublējumu un noņem ieplānotos dublējumus, kas vecāki par saglabāšanas laiku
+Checking database integrity	Pārbauda datubāzes integritāti
+Nothing is due for a refresh	Nekas nav jāatsvaidzina
+Folder scan cancelled	Mapju skenēšana atcelta
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Skenēti seriāli: {}, filmas: {}; pievienoti faili: {}, noņemti trūkstošie faili: {}, atjaunināti: {}, izlaisti: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	TV seriāli un anime ar TheTVDB numerāciju (Sonarr katalogs)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	TV informāciju un attēlus nodrošina TheTVDB.com, taču TheTVDB.com vai tā saistītie uzņēmumi mūs nav apstiprinājuši vai sertificējuši
+TV series, with TMDB's episode groups as orderings (needs an API key)	TV seriāli ar TMDB epizožu grupām kā secībām (nepieciešama API atslēga)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Šis produkts izmanto TMDB API, taču TMDB to nav apstiprinājis vai sertificējis
+TV series and their episode guides	TV seriāli un to epizožu ceļveži
+TV data provided by TVmaze.com under CC BY-SA 4.0	TV datus nodrošina TVmaze.com saskaņā ar CC BY-SA 4.0
+Anime series and anime films	Anime seriāli un anime filmas
+Anime data provided by AniList	Anime datus nodrošina AniList
+Anime with episode titles and air dates, through the Jikan API	Anime ar epizožu nosaukumiem un pārraides datumiem, izmantojot Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	Anime dati no MyAnimeList, ko nodrošina neoficiālā Jikan API
+Films (needs an API key)	Filmas (nepieciešama API atslēga)
+Films by IMDb id or title (needs an API key)	Filmas pēc IMDb ID vai nosaukuma (nepieciešama API atslēga)
+Film data provided by the OMDb API	Filmu datus nodrošina OMDb API
+Skipped: the server is still starting	Izlaists: serveris joprojām startē
+{} expired sessions removed	Noņemtas beigušās sesijas: {}
+All {} refreshes failed; see the logs	Neizdevās neviena no {} atsvaidzināšanām; skatiet žurnālus
+every folder scan failed ({})	neizdevās neviena mapju skenēšana ({})

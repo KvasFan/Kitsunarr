@@ -1572,3 +1572,30 @@ Shut down	Apaga
 Shut down Kitsunarr	Apaga Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Voleu apagar Kitsunarr ara? Es manté aturat fins que es torni a iniciar (un contenidor només el reinicia si la seva política de reinici ho indica).
 does the same.	fa el mateix.
+RssSync	Sincronitza RSS
+ImportListSync	Sincronitza les llistes d'importació
+Backup	Fes una còpia de seguretat
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Llegeix els llançaments més recents dels indexadors amb RSS habilitat i captura els que es busquen
+Reads the import lists that are due and adds their new titles	Llegeix les llistes d'importació que toquen i n'afegeix els títols nous
+Creates a consistent database backup and removes scheduled backups older than the retention	Crea una còpia de seguretat coherent de la base de dades i elimina les còpies programades més antigues que la retenció
+Checking database integrity	S'està comprovant la integritat de la base de dades
+Nothing is due for a refresh	No hi ha res pendent d'actualitzar
+Folder scan cancelled	S'ha cancel·lat l'anàlisi de la carpeta
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Analitzades {} sèries i {} pel·lícules: {} fitxers afegits, {} fitxers absents eliminats, {} actualitzats, {} omesos
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Sèries de TV i anime, amb la numeració de TheTVDB (el catàleg de Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	La informació i les imatges de TV les proporciona TheTVDB.com, però TheTVDB.com i els seus afiliats no ens avalen ni ens certifiquen
+TV series, with TMDB's episode groups as orderings (needs an API key)	Sèries de TV, amb els grups d'episodis de TMDB com a ordres (cal una clau API)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Aquest producte utilitza l'API de TMDB, però TMDB no l'avala ni el certifica
+TV series and their episode guides	Sèries de TV i les seves guies d'episodis
+TV data provided by TVmaze.com under CC BY-SA 4.0	Dades de TV proporcionades per TVmaze.com sota CC BY-SA 4.0
+Anime series and anime films	Sèries i pel·lícules d'anime
+Anime data provided by AniList	Dades d'anime proporcionades per AniList
+Anime with episode titles and air dates, through the Jikan API	Anime amb títols d'episodis i dates d'emissió, mitjançant l'API Jikan
+Anime data from MyAnimeList, served by the unofficial Jikan API	Dades d'anime de MyAnimeList, servides per l'API no oficial Jikan
+Films (needs an API key)	Pel·lícules (cal una clau API)
+Films by IMDb id or title (needs an API key)	Pel·lícules per id d'IMDb o títol (cal una clau API)
+Film data provided by the OMDb API	Dades de pel·lícules proporcionades per l'API d'OMDb
+Skipped: the server is still starting	Omès: el servidor encara s'està iniciant
+{} expired sessions removed	{} sessions caducades eliminades
+All {} refreshes failed; see the logs	Han fallat totes les {} actualitzacions; consulteu els registres
+every folder scan failed ({})	han fallat totes les anàlisis de carpetes ({})

@@ -1572,3 +1572,30 @@ Shut down	关闭
 Shut down Kitsunarr	关闭 Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	立即关闭 Kitsunarr？它将保持停止状态，直到再次启动（只有当容器的重启策略如此规定时，容器才会重启它）。
 does the same.	也能完成同样的操作。
+RssSync	RSS 同步
+ImportListSync	同步导入列表
+Backup	备份
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	读取已启用 RSS 的索引器中的最新发布资源，并抓取待寻的内容
+Reads the import lists that are due and adds their new titles	读取到期的导入列表，并添加其中的新作品
+Creates a consistent database backup and removes scheduled backups older than the retention	创建一致性的数据库备份，并移除超过保留期限的计划备份
+Checking database integrity	正在检查数据库完整性
+Nothing is due for a refresh	没有需要刷新的内容
+Folder scan cancelled	文件夹扫描已取消
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	已扫描 {} 个节目和 {} 部电影：新增 {} 个文件，移除 {} 个缺失文件，更新 {} 个，跳过 {} 个
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	电视节目和动漫，使用 TheTVDB 的编号（Sonarr 的目录）
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	电视信息和图片由 TheTVDB.com 提供，但我们未获得 TheTVDB.com 或其关联公司的认可或认证
+TV series, with TMDB's episode groups as orderings (needs an API key)	电视节目，以 TMDB 剧集组作为顺序（需要 API 密钥）
+This product uses the TMDB API but is not endorsed or certified by TMDB	本产品使用 TMDB API，但未获得 TMDB 的认可或认证
+TV series and their episode guides	电视节目及其剧集指南
+TV data provided by TVmaze.com under CC BY-SA 4.0	电视数据由 TVmaze.com 依据 CC BY-SA 4.0 提供
+Anime series and anime films	动漫剧集和动漫电影
+Anime data provided by AniList	动漫数据由 AniList 提供
+Anime with episode titles and air dates, through the Jikan API	包含剧集标题和播出日期的动漫，通过 Jikan API 获取
+Anime data from MyAnimeList, served by the unofficial Jikan API	来自 MyAnimeList 的动漫数据，由非官方的 Jikan API 提供
+Films (needs an API key)	电影（需要 API 密钥）
+Films by IMDb id or title (needs an API key)	按 IMDb ID 或标题查找电影（需要 API 密钥）
+Film data provided by the OMDb API	电影数据由 OMDb API 提供
+Skipped: the server is still starting	已跳过：服务器仍在启动
+{} expired sessions removed	已移除 {} 个过期会话
+All {} refreshes failed; see the logs	全部 {} 次刷新均失败；请查看日志
+every folder scan failed ({})	所有文件夹扫描均失败（{}）

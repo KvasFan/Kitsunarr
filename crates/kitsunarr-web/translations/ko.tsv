@@ -1572,3 +1572,30 @@ Shut down	종료
 Shut down Kitsunarr	Kitsunarr 종료
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	지금 Kitsunarr를 종료할까요? 다시 시작할 때까지 중지된 상태로 유지됩니다 (컨테이너는 재시작 정책이 허용하는 경우에만 다시 시작합니다).
 does the same.	명령도 같은 작업을 수행합니다.
+RssSync	RSS 동기화
+ImportListSync	가져오기 목록 동기화
+Backup	백업
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	RSS가 활성화된 인덱서의 최신 릴리스를 읽고 원하는 릴리스를 잡습니다
+Reads the import lists that are due and adds their new titles	기한이 된 가져오기 목록을 읽고 새 제목을 추가합니다
+Creates a consistent database backup and removes scheduled backups older than the retention	일관된 데이터베이스 백업을 만들고 보존 기간이 지난 예약 백업을 삭제합니다
+Checking database integrity	데이터베이스 무결성 확인 중
+Nothing is due for a refresh	새로고침할 항목이 없습니다
+Folder scan cancelled	폴더 스캔이 취소되었습니다
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	시리즈 {}개와 영화 {}개를 스캔했습니다: 파일 {}개 추가, 누락된 파일 {}개 제거, {}개 업데이트, {}개 건너뜀
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	TV 시리즈와 애니메이션, TheTVDB 번호 체계 사용 (Sonarr의 카탈로그)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	TV 정보와 이미지는 TheTVDB.com에서 제공하지만, 본 제품은 TheTVDB.com 또는 그 계열사의 보증이나 인증을 받지 않았습니다
+TV series, with TMDB's episode groups as orderings (needs an API key)	TV 시리즈, TMDB 에피소드 그룹을 순서로 사용 (API 키 필요)
+This product uses the TMDB API but is not endorsed or certified by TMDB	이 제품은 TMDB API를 사용하지만 TMDB의 보증이나 인증을 받지 않았습니다
+TV series and their episode guides	TV 시리즈와 에피소드 가이드
+TV data provided by TVmaze.com under CC BY-SA 4.0	TV 데이터 제공: TVmaze.com (CC BY-SA 4.0)
+Anime series and anime films	애니메이션 시리즈와 애니메이션 영화
+Anime data provided by AniList	애니메이션 데이터 제공: AniList
+Anime with episode titles and air dates, through the Jikan API	에피소드 제목과 방영일이 포함된 애니메이션, Jikan API 사용
+Anime data from MyAnimeList, served by the unofficial Jikan API	MyAnimeList의 애니메이션 데이터, 비공식 Jikan API를 통해 제공
+Films (needs an API key)	영화 (API 키 필요)
+Films by IMDb id or title (needs an API key)	IMDb id 또는 제목으로 찾는 영화 (API 키 필요)
+Film data provided by the OMDb API	영화 데이터 제공: OMDb API
+Skipped: the server is still starting	건너뜀: 서버가 아직 시작 중입니다
+{} expired sessions removed	만료된 세션 {}개를 제거했습니다
+All {} refreshes failed; see the logs	새로고침 {}개가 모두 실패했습니다. 로그를 확인하세요
+every folder scan failed ({})	모든 폴더 스캔이 실패했습니다 ({})

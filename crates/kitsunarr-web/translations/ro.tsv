@@ -1572,3 +1572,30 @@ Shut down	Oprește
 Shut down Kitsunarr	Oprește Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Opriți Kitsunarr acum? Rămâne oprit până când este pornit din nou (un container îl repornește doar dacă politica sa de repornire prevede acest lucru).
 does the same.	face același lucru.
+RssSync	Sincronizare RSS
+ImportListSync	Sincronizează listele de import
+Backup	Copie de rezervă
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Citește cele mai noi lansări ale indexatoarelor cu RSS activat și le preia pe cele dorite
+Reads the import lists that are due and adds their new titles	Citește listele de import scadente și adaugă titlurile lor noi
+Creates a consistent database backup and removes scheduled backups older than the retention	Creează o copie de rezervă consistentă a bazei de date și elimină copiile de rezervă programate mai vechi decât perioada de păstrare
+Checking database integrity	Se verifică integritatea bazei de date
+Nothing is due for a refresh	Nimic nu trebuie reîmprospătat
+Folder scan cancelled	Scanarea folderelor a fost anulată
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Scanate seriale: {} și filme: {}; fișiere adăugate: {}, fișiere lipsă eliminate: {}, actualizate: {}, omise: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Seriale TV și anime, cu numerotarea TheTVDB (catalogul lui Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	Informațiile și imaginile TV sunt furnizate de TheTVDB.com, dar nu suntem susținuți sau certificați de TheTVDB.com sau afiliații săi
+TV series, with TMDB's episode groups as orderings (needs an API key)	Seriale TV, cu grupurile de episoade TMDB ca ordini (necesită o cheie API)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Acest produs folosește API-ul TMDB, dar nu este susținut sau certificat de TMDB
+TV series and their episode guides	Seriale TV și ghidurile lor de episoade
+TV data provided by TVmaze.com under CC BY-SA 4.0	Date TV furnizate de TVmaze.com sub licența CC BY-SA 4.0
+Anime series and anime films	Seriale anime și filme anime
+Anime data provided by AniList	Date anime furnizate de AniList
+Anime with episode titles and air dates, through the Jikan API	Anime cu titlurile episoadelor și datele de difuzare, prin API-ul Jikan
+Anime data from MyAnimeList, served by the unofficial Jikan API	Date anime de la MyAnimeList, oferite de API-ul neoficial Jikan
+Films (needs an API key)	Filme (necesită o cheie API)
+Films by IMDb id or title (needs an API key)	Filme după ID IMDb sau titlu (necesită o cheie API)
+Film data provided by the OMDb API	Date despre filme furnizate de API-ul OMDb
+Skipped: the server is still starting	Omis: serverul încă pornește
+{} expired sessions removed	Sesiuni expirate eliminate: {}
+All {} refreshes failed; see the logs	Toate cele {} reîmprospătări au eșuat; vedeți jurnalele
+every folder scan failed ({})	toate scanările folderelor au eșuat ({})

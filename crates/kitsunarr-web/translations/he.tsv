@@ -1572,3 +1572,30 @@ Shut down	כבה
 Shut down Kitsunarr	כבה את Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	לכבות את Kitsunarr עכשיו? הוא יישאר עצור עד שיופעל שוב (קונטיינר מפעיל אותו מחדש רק אם מדיניות ההפעלה מחדש שלו קובעת זאת).
 does the same.	עושה את אותו הדבר.
+RssSync	סנכרן RSS
+ImportListSync	סנכרן רשימות ייבוא
+Backup	צור גיבוי
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	קורא את הגרסאות החדשות ביותר מהאינדקסרים שבהם RSS מופעל ותופס את המבוקשות
+Reads the import lists that are due and adds their new titles	קורא את רשימות הייבוא שהגיע זמנן ומוסיף את הכותרים החדשים שלהן
+Creates a consistent database backup and removes scheduled backups older than the retention	יוצר גיבוי עקבי של מסד הנתונים ומסיר גיבויים מתוזמנים שישנים מזמן השמירה
+Checking database integrity	בודק את שלמות מסד הנתונים
+Nothing is due for a refresh	אין דבר שממתין לרענון
+Folder scan cancelled	סריקת התיקייה בוטלה
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	נסרקו סדרות: {}, סרטים: {}; קבצים שנוספו: {}, קבצים חסרים שהוסרו: {}, עודכנו: {}, דולגו: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	סדרות טלוויזיה ואנימה, עם המספור של TheTVDB (הקטלוג של Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	מידע ותמונות טלוויזיה מסופקים על ידי TheTVDB.com, אך איננו מאושרים או מוסמכים על ידי TheTVDB.com או השותפים שלה
+TV series, with TMDB's episode groups as orderings (needs an API key)	סדרות טלוויזיה, עם קבוצות הפרקים של TMDB כסדרי פרקים (נדרש מפתח API)
+This product uses the TMDB API but is not endorsed or certified by TMDB	מוצר זה משתמש ב-TMDB API אך אינו מאושר או מוסמך על ידי TMDB
+TV series and their episode guides	סדרות טלוויזיה ומדריכי הפרקים שלהן
+TV data provided by TVmaze.com under CC BY-SA 4.0	נתוני טלוויזיה מסופקים על ידי TVmaze.com תחת CC BY-SA 4.0
+Anime series and anime films	סדרות אנימה וסרטי אנימה
+Anime data provided by AniList	נתוני אנימה מסופקים על ידי AniList
+Anime with episode titles and air dates, through the Jikan API	אנימה עם שמות פרקים ותאריכי שידור, דרך Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	נתוני אנימה מ-MyAnimeList, מוגשים על ידי Jikan API הלא רשמי
+Films (needs an API key)	סרטים (נדרש מפתח API)
+Films by IMDb id or title (needs an API key)	סרטים לפי מזהה IMDb או כותר (נדרש מפתח API)
+Film data provided by the OMDb API	נתוני סרטים מסופקים על ידי OMDb API
+Skipped: the server is still starting	דולג: השרת עדיין מופעל
+{} expired sessions removed	הוסרו הפעלות שפג תוקפן: {}
+All {} refreshes failed; see the logs	כל {} הרענונים נכשלו; ראה את היומנים
+every folder scan failed ({})	כל סריקות התיקיות נכשלו ({})

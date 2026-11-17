@@ -1572,3 +1572,30 @@ Shut down	Vypnout
 Shut down Kitsunarr	Vypnout Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Vypnout Kitsunarr nyní? Zůstane zastavený, dokud nebude znovu spuštěn (kontejner jej restartuje, jen pokud to stanoví jeho zásada restartu).
 does the same.	udělá totéž.
+RssSync	Synchronizovat RSS
+ImportListSync	Synchronizovat seznamy k importu
+Backup	Zálohovat
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Načte nejnovější vydání z indexerů se zapnutým RSS a získá ta hledaná
+Reads the import lists that are due and adds their new titles	Načte seznamy k importu, na které přišla řada, a přidá jejich nové tituly
+Creates a consistent database backup and removes scheduled backups older than the retention	Vytvoří konzistentní zálohu databáze a odstraní plánované zálohy starší, než je doba uchování
+Checking database integrity	Kontroluje se integrita databáze
+Nothing is due for a refresh	Nic nečeká na obnovení
+Folder scan cancelled	Prohledávání složky zrušeno
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Prohledáno seriálů: {}, filmů: {}; přidané soubory: {}, odebrané chybějící soubory: {}, aktualizované: {}, přeskočené: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	TV seriály a anime, s číslováním TheTVDB (katalog Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	Informace a obrázky o TV poskytuje TheTVDB.com, ale nejsme schváleni ani certifikováni společností TheTVDB.com ani jejími přidruženými subjekty
+TV series, with TMDB's episode groups as orderings (needs an API key)	TV seriály, se skupinami epizod TMDB jako pořadími (je potřeba klíč API)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Tento produkt používá TMDB API, ale není schválen ani certifikován společností TMDB
+TV series and their episode guides	TV seriály a jejich průvodci epizodami
+TV data provided by TVmaze.com under CC BY-SA 4.0	Data o TV poskytuje TVmaze.com pod licencí CC BY-SA 4.0
+Anime series and anime films	Anime seriály a anime filmy
+Anime data provided by AniList	Data o anime poskytuje AniList
+Anime with episode titles and air dates, through the Jikan API	Anime s názvy epizod a daty vysílání, přes Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	Data o anime z MyAnimeList, poskytovaná neoficiálním Jikan API
+Films (needs an API key)	Filmy (je potřeba klíč API)
+Films by IMDb id or title (needs an API key)	Filmy podle id IMDb nebo názvu (je potřeba klíč API)
+Film data provided by the OMDb API	Data o filmech poskytuje OMDb API
+Skipped: the server is still starting	Přeskočeno: server se stále spouští
+{} expired sessions removed	Odstraněno vypršelých relací: {}
+All {} refreshes failed; see the logs	Všechna obnovení ({}) selhala; viz logy
+every folder scan failed ({})	všechna prohledávání složek selhala ({})

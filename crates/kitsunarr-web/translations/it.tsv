@@ -1572,3 +1572,30 @@ Shut down	Arresta
 Shut down Kitsunarr	Arresta Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Arrestare Kitsunarr ora? Resta fermo finché non viene avviato di nuovo (un container lo riavvia solo se la sua politica di riavvio lo prevede).
 does the same.	fa lo stesso.
+RssSync	Sincronizza RSS
+ImportListSync	Sincronizza liste di importazione
+Backup	Esegui backup
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Legge le release più recenti degli indexer con RSS abilitato e acquisisce quelle ricercate
+Reads the import lists that are due and adds their new titles	Legge le liste di importazione in scadenza e aggiunge i loro nuovi titoli
+Creates a consistent database backup and removes scheduled backups older than the retention	Crea un backup coerente del database e rimuove i backup pianificati più vecchi del periodo di conservazione
+Checking database integrity	Verifica dell'integrità del database
+Nothing is due for a refresh	Nulla da aggiornare per ora
+Folder scan cancelled	Analisi della cartella annullata
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Analizzate {} serie e {} film: {} file aggiunti, {} file mancanti rimossi, {} aggiornati, {} saltati
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Serie TV e anime, con la numerazione di TheTVDB (il catalogo di Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	Le informazioni e le immagini TV sono fornite da TheTVDB.com, ma non siamo approvati né certificati da TheTVDB.com o dalle sue affiliate
+TV series, with TMDB's episode groups as orderings (needs an API key)	Serie TV, con i gruppi di episodi di TMDB come ordinamenti (richiede una chiave API)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Questo prodotto usa l'API di TMDB ma non è approvato né certificato da TMDB
+TV series and their episode guides	Serie TV e le loro guide agli episodi
+TV data provided by TVmaze.com under CC BY-SA 4.0	Dati TV forniti da TVmaze.com con licenza CC BY-SA 4.0
+Anime series and anime films	Serie anime e film anime
+Anime data provided by AniList	Dati anime forniti da AniList
+Anime with episode titles and air dates, through the Jikan API	Anime con titoli degli episodi e date di messa in onda, tramite l'API Jikan
+Anime data from MyAnimeList, served by the unofficial Jikan API	Dati anime da MyAnimeList, forniti dall'API non ufficiale Jikan
+Films (needs an API key)	Film (richiede una chiave API)
+Films by IMDb id or title (needs an API key)	Film per id IMDb o titolo (richiede una chiave API)
+Film data provided by the OMDb API	Dati dei film forniti dall'API OMDb
+Skipped: the server is still starting	Saltato: il server si sta ancora avviando
+{} expired sessions removed	{} sessioni scadute rimosse
+All {} refreshes failed; see the logs	Tutti i {} aggiornamenti sono falliti; vedi i log
+every folder scan failed ({})	ogni analisi delle cartelle è fallita ({})

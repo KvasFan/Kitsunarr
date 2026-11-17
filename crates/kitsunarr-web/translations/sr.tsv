@@ -1572,3 +1572,30 @@ Shut down	Угаси
 Shut down Kitsunarr	Угаси Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Угасити Kitsunarr сада? Остаје заустављен док се поново не покрене (контејнер га поново покреће само ако то налаже његова политика поновног покретања).
 does the same.	ради исто.
+RssSync	RSS синхронизација
+ImportListSync	Синхронизуј листе за увоз
+Backup	Резервна копија
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Чита најновија издања индексера са укљученим RSS-ом и преузима тражена
+Reads the import lists that are due and adds their new titles	Чита листе за увоз којима је дошао ред и додаје њихове нове наслове
+Creates a consistent database backup and removes scheduled backups older than the retention	Прави конзистентну резервну копију базе података и уклања заказане резервне копије старије од периода задржавања
+Checking database integrity	Провера интегритета базе података
+Nothing is due for a refresh	Ништа не треба освежити
+Folder scan cancelled	Скенирање фасцикли је отказано
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Скенирано серија: {} и филмова: {}; додато датотека: {}, уклоњено недостајућих датотека: {}, ажурирано: {}, прескочено: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	ТВ серије и аниме, са нумерацијом TheTVDB (Sonarr-ов каталог)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	ТВ информације и слике обезбеђује TheTVDB.com, али нас TheTVDB.com или његова повезана друштва нису одобрила нити сертификовала
+TV series, with TMDB's episode groups as orderings (needs an API key)	ТВ серије, са TMDB групама епизода као редоследима (потребан је API кључ)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Овај производ користи TMDB API, али га TMDB није одобрио нити сертификовао
+TV series and their episode guides	ТВ серије и њихови водичи кроз епизоде
+TV data provided by TVmaze.com under CC BY-SA 4.0	ТВ подаци које обезбеђује TVmaze.com под лиценцом CC BY-SA 4.0
+Anime series and anime films	Аниме серије и аниме филмови
+Anime data provided by AniList	Аниме подаци које обезбеђује AniList
+Anime with episode titles and air dates, through the Jikan API	Аниме са насловима епизода и датумима емитовања, преко Jikan API-ја
+Anime data from MyAnimeList, served by the unofficial Jikan API	Аниме подаци са MyAnimeList, које пружа незванични Jikan API
+Films (needs an API key)	Филмови (потребан је API кључ)
+Films by IMDb id or title (needs an API key)	Филмови према IMDb ID или наслову (потребан је API кључ)
+Film data provided by the OMDb API	Подаци о филмовима које обезбеђује OMDb API
+Skipped: the server is still starting	Прескочено: сервер се још покреће
+{} expired sessions removed	Уклоњено истеклих сесија: {}
+All {} refreshes failed; see the logs	Сва освежавања ({}) су неуспела; погледајте дневнике
+every folder scan failed ({})	свако скенирање фасцикли је неуспело ({})

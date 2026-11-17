@@ -1572,3 +1572,30 @@ Shut down	Τερματισμός
 Shut down Kitsunarr	Τερματισμός του Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Τερματισμός του Kitsunarr τώρα; Παραμένει σταματημένο μέχρι να ξεκινήσει ξανά (ένα κοντέινερ το επανεκκινεί μόνο αν το προβλέπει η πολιτική επανεκκίνησής του).
 does the same.	κάνει το ίδιο.
+RssSync	Συγχρονισμός RSS
+ImportListSync	Συγχρονισμός λιστών εισαγωγής
+Backup	Αντίγραφο ασφαλείας
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Διαβάζει τις νεότερες κυκλοφορίες των ευρετηρίων με ενεργό RSS και κάνει λήψη των ζητούμενων
+Reads the import lists that are due and adds their new titles	Διαβάζει τις λίστες εισαγωγής που είναι προς ενημέρωση και προσθέτει τους νέους τίτλους τους
+Creates a consistent database backup and removes scheduled backups older than the retention	Δημιουργεί ένα συνεπές αντίγραφο ασφαλείας της βάσης δεδομένων και αφαιρεί τα προγραμματισμένα αντίγραφα που είναι παλαιότερα από την περίοδο διατήρησης
+Checking database integrity	Έλεγχος ακεραιότητας της βάσης δεδομένων
+Nothing is due for a refresh	Τίποτα δεν χρειάζεται ανανέωση
+Folder scan cancelled	Η σάρωση φακέλου ακυρώθηκε
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Σαρώθηκαν σειρές: {} και ταινίες: {}· αρχεία που προστέθηκαν: {}, αρχεία που έλειπαν και αφαιρέθηκαν: {}, ενημερώθηκαν: {}, παραλείφθηκαν: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Τηλεοπτικές σειρές και anime, με την αρίθμηση του TheTVDB (ο κατάλογος του Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	Οι τηλεοπτικές πληροφορίες και εικόνες παρέχονται από το TheTVDB.com, αλλά δεν έχουμε την έγκριση ή την πιστοποίηση του TheTVDB.com ή των συνεργατών του
+TV series, with TMDB's episode groups as orderings (needs an API key)	Τηλεοπτικές σειρές, με τις ομάδες επεισοδίων του TMDB ως σειρές ταξινόμησης (απαιτεί κλειδί API)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Αυτό το προϊόν χρησιμοποιεί το TMDB API αλλά δεν έχει την έγκριση ή την πιστοποίηση του TMDB
+TV series and their episode guides	Τηλεοπτικές σειρές και οι οδηγοί επεισοδίων τους
+TV data provided by TVmaze.com under CC BY-SA 4.0	Τηλεοπτικά δεδομένα από το TVmaze.com υπό την άδεια CC BY-SA 4.0
+Anime series and anime films	Σειρές anime και ταινίες anime
+Anime data provided by AniList	Δεδομένα anime από το AniList
+Anime with episode titles and air dates, through the Jikan API	Anime με τίτλους επεισοδίων και ημερομηνίες προβολής, μέσω του Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	Δεδομένα anime από το MyAnimeList, μέσω του ανεπίσημου Jikan API
+Films (needs an API key)	Ταινίες (απαιτεί κλειδί API)
+Films by IMDb id or title (needs an API key)	Ταινίες με βάση το IMDb id ή τον τίτλο (απαιτεί κλειδί API)
+Film data provided by the OMDb API	Δεδομένα ταινιών από το OMDb API
+Skipped: the server is still starting	Παραλείφθηκε: ο διακομιστής ξεκινά ακόμη
+{} expired sessions removed	Αφαιρέθηκαν {} ληγμένες συνεδρίες
+All {} refreshes failed; see the logs	Και οι {} ανανεώσεις απέτυχαν· δείτε τα αρχεία καταγραφής
+every folder scan failed ({})	απέτυχαν όλες οι σαρώσεις φακέλων ({})

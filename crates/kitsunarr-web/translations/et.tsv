@@ -1572,3 +1572,30 @@ Shut down	Lülita välja
 Shut down Kitsunarr	Lülita Kitsunarr välja
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kas lülitada Kitsunarr kohe välja? See jääb peatatuks, kuni see uuesti käivitatakse (konteiner taaskäivitab selle ainult siis, kui tema taaskäivituspoliitika seda ette näeb).
 does the same.	sama.
+RssSync	Sünkrooni RSS
+ImportListSync	Sünkrooni impordiloendid
+Backup	Varunda
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Loeb RSS-iga indekserite uusimaid väljalaskeid ja haarab soovitud
+Reads the import lists that are due and adds their new titles	Loeb impordiloendeid, mille kord on käes, ja lisab nende uued pealkirjad
+Creates a consistent database backup and removes scheduled backups older than the retention	Loob andmebaasist järjepideva varukoopia ja eemaldab ajastatud varukoopiad, mis on säilitusajast vanemad
+Checking database integrity	Andmebaasi terviklikkuse kontrollimine
+Nothing is due for a refresh	Midagi pole värskendamiseks ootel
+Folder scan cancelled	Kausta skaneerimine tühistati
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Skaneeriti sarju {} ja filme {}: lisatud faile {}, eemaldatud puuduvaid faile {}, uuendatud {}, vahele jäetud {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Telesarjad ja anime TheTVDB nummerdusega (Sonarri kataloog)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	Teleteavet ja pilte pakub TheTVDB.com, kuid TheTVDB.com ega selle sidusettevõtted ei ole meid heaks kiitnud ega sertifitseerinud
+TV series, with TMDB's episode groups as orderings (needs an API key)	Telesarjad, TMDB episoodirühmad järjestustena (vajab API-võtit)
+This product uses the TMDB API but is not endorsed or certified by TMDB	See toode kasutab TMDB API-t, kuid TMDB ei ole seda heaks kiitnud ega sertifitseerinud
+TV series and their episode guides	Telesarjad ja nende episoodijuhid
+TV data provided by TVmaze.com under CC BY-SA 4.0	Teleandmed pakub TVmaze.com litsentsi CC BY-SA 4.0 alusel
+Anime series and anime films	Animesarjad ja animefilmid
+Anime data provided by AniList	Animeandmed pakub AniList
+Anime with episode titles and air dates, through the Jikan API	Anime episoodide pealkirjade ja eetrikuupäevadega, Jikan API kaudu
+Anime data from MyAnimeList, served by the unofficial Jikan API	Animeandmed MyAnimeListist, vahendab mitteametlik Jikan API
+Films (needs an API key)	Filmid (vajab API-võtit)
+Films by IMDb id or title (needs an API key)	Filmid IMDb ID või pealkirja järgi (vajab API-võtit)
+Film data provided by the OMDb API	Filmiandmed pakub OMDb API
+Skipped: the server is still starting	Vahele jäetud: server alles käivitub
+{} expired sessions removed	Eemaldatud aegunud seansse: {}
+All {} refreshes failed; see the logs	Kõik {} värskendust nurjusid; vaata logisid
+every folder scan failed ({})	kõik kausta skaneerimised nurjusid ({})

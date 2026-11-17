@@ -1572,3 +1572,30 @@ Shut down	ปิดระบบ
 Shut down Kitsunarr	ปิด Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	ปิด Kitsunarr ตอนนี้หรือไม่? Kitsunarr จะหยุดทำงานจนกว่าจะเริ่มอีกครั้ง (คอนเทนเนอร์จะรีสตาร์ตให้เฉพาะเมื่อนโยบายการรีสตาร์ตกำหนดไว้เท่านั้น)
 does the same.	ก็ทำงานเหมือนกัน
+RssSync	ซิงค์ RSS
+ImportListSync	ซิงค์รายการนำเข้า
+Backup	สำรองข้อมูล
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	อ่านรีลีสล่าสุดของอินเด็กเซอร์ที่เปิดใช้ RSS แล้วคว้ารายการที่ต้องการ
+Reads the import lists that are due and adds their new titles	อ่านรายการนำเข้าที่ถึงกำหนด แล้วเพิ่มชื่อเรื่องใหม่จากรายการเหล่านั้น
+Creates a consistent database backup and removes scheduled backups older than the retention	สร้างข้อมูลสำรองของฐานข้อมูลที่สอดคล้องกัน และลบข้อมูลสำรองตามกำหนดเวลาที่เก่ากว่าระยะเวลาเก็บรักษา
+Checking database integrity	กำลังตรวจสอบความสมบูรณ์ของฐานข้อมูล
+Nothing is due for a refresh	ไม่มีรายการที่ถึงกำหนดรีเฟรช
+Folder scan cancelled	ยกเลิกการสแกนโฟลเดอร์แล้ว
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	สแกนซีรีส์ {} เรื่องและภาพยนตร์ {} เรื่อง: เพิ่มไฟล์ {} ไฟล์, ลบไฟล์ที่หายไป {} ไฟล์, อัปเดต {}, ข้าม {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	ซีรีส์ทีวีและอนิเมะ ใช้การนับตอนของ TheTVDB (แคตตาล็อกของ Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	ข้อมูลและรูปภาพทีวีให้บริการโดย TheTVDB.com แต่เราไม่ได้รับการรับรองหรือการรับรองมาตรฐานจาก TheTVDB.com หรือบริษัทในเครือ
+TV series, with TMDB's episode groups as orderings (needs an API key)	ซีรีส์ทีวี ใช้กลุ่มตอนของ TMDB เป็นลำดับ (ต้องใช้คีย์ API)
+This product uses the TMDB API but is not endorsed or certified by TMDB	ผลิตภัณฑ์นี้ใช้ TMDB API แต่ไม่ได้รับการรับรองหรือการรับรองมาตรฐานจาก TMDB
+TV series and their episode guides	ซีรีส์ทีวีและคู่มือตอนของซีรีส์
+TV data provided by TVmaze.com under CC BY-SA 4.0	ข้อมูลทีวีให้บริการโดย TVmaze.com ภายใต้ CC BY-SA 4.0
+Anime series and anime films	ซีรีส์อนิเมะและภาพยนตร์อนิเมะ
+Anime data provided by AniList	ข้อมูลอนิเมะให้บริการโดย AniList
+Anime with episode titles and air dates, through the Jikan API	อนิเมะพร้อมชื่อตอนและวันออกอากาศ ผ่าน Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	ข้อมูลอนิเมะจาก MyAnimeList ให้บริการผ่าน Jikan API ที่ไม่เป็นทางการ
+Films (needs an API key)	ภาพยนตร์ (ต้องใช้คีย์ API)
+Films by IMDb id or title (needs an API key)	ภาพยนตร์ตาม id ของ IMDb หรือชื่อเรื่อง (ต้องใช้คีย์ API)
+Film data provided by the OMDb API	ข้อมูลภาพยนตร์ให้บริการโดย OMDb API
+Skipped: the server is still starting	ข้ามแล้ว: เซิร์ฟเวอร์ยังเริ่มทำงานไม่เสร็จ
+{} expired sessions removed	ลบเซสชันที่หมดอายุแล้ว {} รายการ
+All {} refreshes failed; see the logs	การรีเฟรชทั้ง {} รายการล้มเหลว; ดูล็อก
+every folder scan failed ({})	การสแกนโฟลเดอร์ล้มเหลวทั้งหมด ({})

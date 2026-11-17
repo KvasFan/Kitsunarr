@@ -1572,3 +1572,30 @@ Shut down	خاموش کردن
 Shut down Kitsunarr	خاموش کردن Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	اکنون Kitsunarr خاموش شود؟ تا زمانی که دوباره اجرا نشود متوقف می‌ماند (کانتینر فقط در صورتی آن را دوباره راه‌اندازی می‌کند که سیاست راه‌اندازی دوباره‌اش چنین بگوید).
 does the same.	همین کار را انجام می‌دهد.
+RssSync	همگام‌سازی RSS
+ImportListSync	همگام‌سازی فهرست‌های واردات
+Backup	پشتیبان‌گیری
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	تازه‌ترین ریلیزهای ایندکسرهایی را که RSS آن‌ها فعال است می‌خواند و ریلیزهای موردنیاز را دریافت می‌کند
+Reads the import lists that are due and adds their new titles	فهرست‌های واردات سررسیدشده را می‌خواند و عنوان‌های جدید آن‌ها را اضافه می‌کند
+Creates a consistent database backup and removes scheduled backups older than the retention	یک پشتیبان سازگار از پایگاه داده می‌سازد و پشتیبان‌های زمان‌بندی‌شده قدیمی‌تر از مدت نگه‌داری را حذف می‌کند
+Checking database integrity	در حال بررسی یکپارچگی پایگاه داده
+Nothing is due for a refresh	چیزی برای تازه‌سازی سررسید نشده است
+Folder scan cancelled	پویش پوشه لغو شد
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	{} سریال و {} فیلم پویش شد: {} فایل اضافه شد، {} فایل ناموجود حذف شد، {} به‌روزرسانی شد، {} رد شد
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	سریال‌های تلویزیونی و انیمه، با شماره‌گذاری TheTVDB (کاتالوگ Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	اطلاعات و تصاویر تلویزیونی را TheTVDB.com فراهم می‌کند، اما ما مورد تأیید یا گواهی TheTVDB.com یا وابستگان آن نیستیم
+TV series, with TMDB's episode groups as orderings (needs an API key)	سریال‌های تلویزیونی، با گروه‌های قسمت TMDB به‌عنوان ترتیب‌ها (کلید API لازم است)
+This product uses the TMDB API but is not endorsed or certified by TMDB	این محصول از TMDB API استفاده می‌کند اما مورد تأیید یا گواهی TMDB نیست
+TV series and their episode guides	سریال‌های تلویزیونی و راهنمای قسمت‌های آن‌ها
+TV data provided by TVmaze.com under CC BY-SA 4.0	داده‌های تلویزیونی ارائه‌شده توسط TVmaze.com تحت مجوز CC BY-SA 4.0
+Anime series and anime films	سریال‌ها و فیلم‌های انیمه
+Anime data provided by AniList	داده‌های انیمه ارائه‌شده توسط AniList
+Anime with episode titles and air dates, through the Jikan API	انیمه با عنوان قسمت‌ها و تاریخ‌های پخش، از طریق Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	داده‌های انیمه از MyAnimeList، ارائه‌شده توسط Jikan API غیررسمی
+Films (needs an API key)	فیلم‌ها (کلید API لازم است)
+Films by IMDb id or title (needs an API key)	فیلم‌ها بر اساس شناسه IMDb یا عنوان (کلید API لازم است)
+Film data provided by the OMDb API	داده‌های فیلم ارائه‌شده توسط OMDb API
+Skipped: the server is still starting	رد شد: سرور هنوز در حال راه‌اندازی است
+{} expired sessions removed	{} نشست منقضی حذف شد
+All {} refreshes failed; see the logs	همه {} تازه‌سازی ناموفق بود؛ گزارش‌ها را ببینید
+every folder scan failed ({})	همه پویش‌های پوشه ناموفق بود ({})

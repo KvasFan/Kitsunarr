@@ -1572,3 +1572,30 @@ Shut down	বন্ধ করুন
 Shut down Kitsunarr	Kitsunarr বন্ধ করুন
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	এখনই Kitsunarr বন্ধ করবেন? আবার চালু না করা পর্যন্ত এটি বন্ধ থাকবে (কন্টেইনার এটি আবার চালু করে কেবল তখনই, যখন তার রিস্টার্ট নীতি তা বলে)।
 does the same.	একই কাজ করে।
+RssSync	RSS সিঙ্ক করুন
+ImportListSync	ইমপোর্ট তালিকা সিঙ্ক করুন
+Backup	ব্যাকআপ নিন
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	RSS চালু থাকা ইনডেক্সারগুলোর নতুনতম রিলিজ পড়ে এবং কাঙ্ক্ষিতগুলো গ্র্যাব করে
+Reads the import lists that are due and adds their new titles	সময় হয়ে যাওয়া ইমপোর্ট তালিকাগুলো পড়ে এবং সেগুলোর নতুন শিরোনাম যোগ করে
+Creates a consistent database backup and removes scheduled backups older than the retention	ডেটাবেসের একটি সামঞ্জস্যপূর্ণ ব্যাকআপ তৈরি করে এবং সংরক্ষণকালের চেয়ে পুরোনো নির্ধারিত ব্যাকআপ সরায়
+Checking database integrity	ডেটাবেসের অখণ্ডতা যাচাই করা হচ্ছে
+Nothing is due for a refresh	রিফ্রেশের সময় হয়েছে এমন কিছু নেই
+Folder scan cancelled	ফোল্ডার স্ক্যান বাতিল হয়েছে
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	{}টি সিরিজ ও {}টি মুভি স্ক্যান করা হয়েছে: {}টি ফাইল যোগ হয়েছে, {}টি অনুপস্থিত ফাইল সরানো হয়েছে, {}টি হালনাগাদ, {}টি বাদ দেওয়া হয়েছে
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	টিভি সিরিজ ও অ্যানিমে, TheTVDB-এর নম্বরিং সহ (Sonarr-এর ক্যাটালগ)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	টিভি তথ্য ও ছবি TheTVDB.com সরবরাহ করে, তবে আমরা TheTVDB.com বা এর সহযোগীদের দ্বারা অনুমোদিত বা প্রত্যয়িত নই
+TV series, with TMDB's episode groups as orderings (needs an API key)	টিভি সিরিজ, TMDB-এর পর্ব গ্রুপকে ক্রম হিসেবে নিয়ে (API কী প্রয়োজন)
+This product uses the TMDB API but is not endorsed or certified by TMDB	এই পণ্যটি TMDB API ব্যবহার করে, তবে TMDB দ্বারা অনুমোদিত বা প্রত্যয়িত নয়
+TV series and their episode guides	টিভি সিরিজ ও সেগুলোর পর্ব নির্দেশিকা
+TV data provided by TVmaze.com under CC BY-SA 4.0	টিভি ডেটা TVmaze.com সরবরাহ করে, CC BY-SA 4.0 লাইসেন্সের অধীনে
+Anime series and anime films	অ্যানিমে সিরিজ ও অ্যানিমে ফিল্ম
+Anime data provided by AniList	অ্যানিমে ডেটা AniList সরবরাহ করে
+Anime with episode titles and air dates, through the Jikan API	পর্বের শিরোনাম ও সম্প্রচারের তারিখসহ অ্যানিমে, Jikan API-এর মাধ্যমে
+Anime data from MyAnimeList, served by the unofficial Jikan API	MyAnimeList-এর অ্যানিমে ডেটা, অনানুষ্ঠানিক Jikan API-এর মাধ্যমে পরিবেশিত
+Films (needs an API key)	ফিল্ম (API কী প্রয়োজন)
+Films by IMDb id or title (needs an API key)	IMDb id বা শিরোনাম দিয়ে ফিল্ম (API কী প্রয়োজন)
+Film data provided by the OMDb API	ফিল্মের ডেটা OMDb API সরবরাহ করে
+Skipped: the server is still starting	বাদ দেওয়া হয়েছে: সার্ভার এখনো চালু হচ্ছে
+{} expired sessions removed	{}টি মেয়াদোত্তীর্ণ সেশন সরানো হয়েছে
+All {} refreshes failed; see the logs	{}টি রিফ্রেশের সবগুলোই ব্যর্থ হয়েছে; লগ দেখুন
+every folder scan failed ({})	প্রতিটি ফোল্ডার স্ক্যান ব্যর্থ হয়েছে ({})

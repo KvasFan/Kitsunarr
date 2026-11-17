@@ -1572,3 +1572,30 @@ Shut down	Afsluiten
 Shut down Kitsunarr	Kitsunarr afsluiten
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Kitsunarr nu afsluiten? Het blijft gestopt totdat het opnieuw wordt gestart (een container start het alleen opnieuw als het herstartbeleid dat aangeeft).
 does the same.	hetzelfde.
+RssSync	RSS-synchronisatie
+ImportListSync	Importlijsten synchroniseren
+Backup	Back-up
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Leest de nieuwste releases van de indexeerders met RSS ingeschakeld en haalt de gezochte op
+Reads the import lists that are due and adds their new titles	Leest de importlijsten die aan de beurt zijn en voegt hun nieuwe titels toe
+Creates a consistent database backup and removes scheduled backups older than the retention	Maakt een consistente back-up van de database en verwijdert geplande back-ups die ouder zijn dan de bewaartermijn
+Checking database integrity	Database-integriteit controleren
+Nothing is due for a refresh	Er hoeft niets vernieuwd te worden
+Folder scan cancelled	Mappenscan geannuleerd
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	{} series en {} films gescand: {} bestanden toegevoegd, {} ontbrekende bestanden verwijderd, {} bijgewerkt, {} overgeslagen
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Tv-series en anime, met de nummering van TheTVDB (de catalogus van Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	Tv-informatie en afbeeldingen worden geleverd door TheTVDB.com, maar wij worden niet onderschreven of gecertificeerd door TheTVDB.com of haar gelieerde ondernemingen
+TV series, with TMDB's episode groups as orderings (needs an API key)	Tv-series, met de afleveringsgroepen van TMDB als volgordes (API-sleutel vereist)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Dit product gebruikt de TMDB API, maar wordt niet onderschreven of gecertificeerd door TMDB
+TV series and their episode guides	Tv-series en hun afleveringsgidsen
+TV data provided by TVmaze.com under CC BY-SA 4.0	Tv-gegevens geleverd door TVmaze.com onder CC BY-SA 4.0
+Anime series and anime films	Animeseries en animefilms
+Anime data provided by AniList	Animegegevens geleverd door AniList
+Anime with episode titles and air dates, through the Jikan API	Anime met afleveringstitels en uitzenddata, via de Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	Animegegevens van MyAnimeList, geleverd door de onofficiële Jikan API
+Films (needs an API key)	Films (API-sleutel vereist)
+Films by IMDb id or title (needs an API key)	Films op IMDb-id of titel (API-sleutel vereist)
+Film data provided by the OMDb API	Filmgegevens geleverd door de OMDb API
+Skipped: the server is still starting	Overgeslagen: de server is nog aan het opstarten
+{} expired sessions removed	{} verlopen sessies verwijderd
+All {} refreshes failed; see the logs	Alle {} vernieuwingen zijn mislukt; zie de logs
+every folder scan failed ({})	elke mappenscan is mislukt ({})

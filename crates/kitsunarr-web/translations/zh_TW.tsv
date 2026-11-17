@@ -1572,3 +1572,30 @@ Shut down	關閉
 Shut down Kitsunarr	關閉 Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	立即關閉 Kitsunarr？它會保持停止狀態，直到再次啟動（只有在容器的重新啟動原則如此規定時，容器才會重新啟動它）。
 does the same.	也能完成相同的操作。
+RssSync	RSS 同步
+ImportListSync	同步匯入清單
+Backup	備份
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	讀取已啟用 RSS 的索引器中最新的發布版本，並抓取待尋的項目
+Reads the import lists that are due and adds their new titles	讀取到期的匯入清單，並新增其中的新作品
+Creates a consistent database backup and removes scheduled backups older than the retention	建立一致性的資料庫備份，並移除超過保留期限的排程備份
+Checking database integrity	正在檢查資料庫完整性
+Nothing is due for a refresh	沒有需要重新整理的項目
+Folder scan cancelled	資料夾掃描已取消
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	已掃描 {} 部影集與 {} 部電影：新增 {} 個檔案，移除 {} 個遺失檔案，更新 {} 個，略過 {} 個
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	電視影集與動畫，採用 TheTVDB 的編號（Sonarr 的影視目錄）
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	電視資訊與圖片由 TheTVDB.com 提供，但我們未獲 TheTVDB.com 或其關係企業背書或認證
+TV series, with TMDB's episode groups as orderings (needs an API key)	電視影集，以 TMDB 集數群組作為順序（需要 API 金鑰）
+This product uses the TMDB API but is not endorsed or certified by TMDB	本產品使用 TMDB API，但未獲 TMDB 背書或認證
+TV series and their episode guides	電視影集及其集數指南
+TV data provided by TVmaze.com under CC BY-SA 4.0	電視資料由 TVmaze.com 依 CC BY-SA 4.0 提供
+Anime series and anime films	動畫影集與動畫電影
+Anime data provided by AniList	動畫資料由 AniList 提供
+Anime with episode titles and air dates, through the Jikan API	含集數標題與播出日期的動畫，透過 Jikan API 取得
+Anime data from MyAnimeList, served by the unofficial Jikan API	來自 MyAnimeList 的動畫資料，由非官方的 Jikan API 提供
+Films (needs an API key)	電影（需要 API 金鑰）
+Films by IMDb id or title (needs an API key)	依 IMDb id 或標題查詢電影（需要 API 金鑰）
+Film data provided by the OMDb API	電影資料由 OMDb API 提供
+Skipped: the server is still starting	已略過：伺服器仍在啟動中
+{} expired sessions removed	已移除 {} 個過期的工作階段
+All {} refreshes failed; see the logs	全部 {} 次重新整理皆失敗；請查看日誌
+every folder scan failed ({})	所有資料夾掃描皆失敗（{}）

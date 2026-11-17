@@ -1572,3 +1572,30 @@ Shut down	Изключване
 Shut down Kitsunarr	Изключване на Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Да се изключи ли Kitsunarr сега? Остава спрян, докато не бъде стартиран отново (контейнерът го рестартира само ако неговата политика за рестартиране го предвижда).
 does the same.	прави същото.
+RssSync	RSS синхронизация
+ImportListSync	Синхронизация на списъците за импортиране
+Backup	Архивиране
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Чете най-новите издания от индексаторите с активиран RSS и грабва търсените
+Reads the import lists that are due and adds their new titles	Чете списъците за импортиране, на които им е дошъл редът, и добавя новите им заглавия
+Creates a consistent database backup and removes scheduled backups older than the retention	Създава консистентен архив на базата данни и премахва планираните архиви, по-стари от срока на съхранение
+Checking database integrity	Проверка на целостта на базата данни
+Nothing is due for a refresh	Нищо не чака опресняване
+Folder scan cancelled	Сканирането на папката е отменено
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Сканирани сериали: {} и филми: {}; добавени файлове: {}, премахнати липсващи файлове: {}, обновени: {}, пропуснати: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Телевизионни сериали и аниме, с номерацията на TheTVDB (каталогът на Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	Информацията и изображенията за телевизията се предоставят от TheTVDB.com, но ние не сме одобрени или сертифицирани от TheTVDB.com или свързаните с него лица
+TV series, with TMDB's episode groups as orderings (needs an API key)	Телевизионни сериали, с групите епизоди на TMDB като подредби (нужен е API ключ)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Този продукт използва TMDB API, но не е одобрен или сертифициран от TMDB
+TV series and their episode guides	Телевизионни сериали и техните ръководства за епизоди
+TV data provided by TVmaze.com under CC BY-SA 4.0	Телевизионните данни се предоставят от TVmaze.com под лиценз CC BY-SA 4.0
+Anime series and anime films	Аниме сериали и аниме филми
+Anime data provided by AniList	Данните за аниме се предоставят от AniList
+Anime with episode titles and air dates, through the Jikan API	Аниме със заглавия на епизодите и дати на излъчване, чрез Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	Данни за аниме от MyAnimeList, предоставяни от неофициалния Jikan API
+Films (needs an API key)	Филми (нужен е API ключ)
+Films by IMDb id or title (needs an API key)	Филми по IMDb id или заглавие (нужен е API ключ)
+Film data provided by the OMDb API	Данните за филми се предоставят от OMDb API
+Skipped: the server is still starting	Пропуснато: сървърът все още се стартира
+{} expired sessions removed	Премахнати изтекли сесии: {}
+All {} refreshes failed; see the logs	Всички опреснявания ({}) са неуспешни; вижте логовете
+every folder scan failed ({})	всички сканирания на папки са неуспешни ({})

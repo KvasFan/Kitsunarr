@@ -1572,3 +1572,30 @@ Shut down	Matikan
 Shut down Kitsunarr	Matikan Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Matikan Kitsunarr sekarang? Kitsunarr tetap berhenti sampai dijalankan lagi (kontainer hanya memulainya ulang jika kebijakan mulai ulangnya menentukan demikian).
 does the same.	melakukan hal yang sama.
+RssSync	Sinkronkan RSS
+ImportListSync	Sinkronkan daftar impor
+Backup	Cadangkan
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Membaca rilis terbaru dari indexer yang RSS-nya aktif dan mengambil rilis yang dicari
+Reads the import lists that are due and adds their new titles	Membaca daftar impor yang sudah waktunya dan menambahkan judul barunya
+Creates a consistent database backup and removes scheduled backups older than the retention	Membuat cadangan basis data yang konsisten dan menghapus cadangan terjadwal yang lebih lama dari masa retensi
+Checking database integrity	Memeriksa integritas basis data
+Nothing is due for a refresh	Tidak ada yang perlu dimuat ulang saat ini
+Folder scan cancelled	Pemindaian folder dibatalkan
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	{} serial dan {} film dipindai: {} file ditambahkan, {} file hilang dihapus, {} diperbarui, {} dilewati
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Serial TV dan anime, dengan penomoran TheTVDB (katalog Sonarr)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	Informasi dan gambar TV disediakan oleh TheTVDB.com, tetapi kami tidak didukung atau disertifikasi oleh TheTVDB.com atau afiliasinya
+TV series, with TMDB's episode groups as orderings (needs an API key)	Serial TV, dengan grup episode TMDB sebagai urutan (memerlukan kunci API)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Produk ini menggunakan API TMDB tetapi tidak didukung atau disertifikasi oleh TMDB
+TV series and their episode guides	Serial TV dan panduan episodenya
+TV data provided by TVmaze.com under CC BY-SA 4.0	Data TV disediakan oleh TVmaze.com di bawah CC BY-SA 4.0
+Anime series and anime films	Serial anime dan film anime
+Anime data provided by AniList	Data anime disediakan oleh AniList
+Anime with episode titles and air dates, through the Jikan API	Anime dengan judul episode dan tanggal tayang, melalui API Jikan
+Anime data from MyAnimeList, served by the unofficial Jikan API	Data anime dari MyAnimeList, disajikan oleh API Jikan tidak resmi
+Films (needs an API key)	Film (memerlukan kunci API)
+Films by IMDb id or title (needs an API key)	Film berdasarkan id IMDb atau judul (memerlukan kunci API)
+Film data provided by the OMDb API	Data film disediakan oleh API OMDb
+Skipped: the server is still starting	Dilewati: server masih memulai
+{} expired sessions removed	{} sesi kedaluwarsa dihapus
+All {} refreshes failed; see the logs	Semua {} pemuatan ulang gagal; lihat log
+every folder scan failed ({})	setiap pemindaian folder gagal ({})

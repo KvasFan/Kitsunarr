@@ -1572,3 +1572,30 @@ Shut down	Išjungti
 Shut down Kitsunarr	Išjungti Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Išjungti Kitsunarr dabar? Programa liks sustabdyta, kol vėl bus paleista (konteineris ją paleis iš naujo tik tada, jei tai numato jo paleidimo iš naujo politika).
 does the same.	daro tą patį.
+RssSync	RSS sinchronizacija
+ImportListSync	Sinchronizuoti importavimo sąrašus
+Backup	Atsarginė kopija
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Nuskaito naujausius indeksuotojų, kuriuose įjungtas RSS, leidimus ir paima pageidaujamus
+Reads the import lists that are due and adds their new titles	Nuskaito importavimo sąrašus, kurių laikas atėjo, ir įtraukia naujus jų pavadinimus
+Creates a consistent database backup and removes scheduled backups older than the retention	Sukuria nuoseklią duomenų bazės atsarginę kopiją ir pašalina suplanuotas atsargines kopijas, senesnes nei saugojimo laikas
+Checking database integrity	Tikrinamas duomenų bazės vientisumas
+Nothing is due for a refresh	Nieko nereikia atnaujinti
+Folder scan cancelled	Aplankų nuskaitymas atšauktas
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Nuskaityta serialų: {}, filmų: {}; pridėta failų: {}, pašalinta trūkstamų failų: {}, atnaujinta: {}, praleista: {}
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	Serialai ir anime su TheTVDB numeracija (Sonarr katalogas)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	TV informaciją ir vaizdus teikia TheTVDB.com, tačiau mūsų nepatvirtino ir nesertifikavo TheTVDB.com ar su ja susijusios įmonės
+TV series, with TMDB's episode groups as orderings (needs an API key)	Serialai su TMDB epizodų grupėmis kaip tvarkomis (reikia API rakto)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Šis produktas naudoja TMDB API, tačiau jo nepatvirtino ir nesertifikavo TMDB
+TV series and their episode guides	Serialai ir jų epizodų gidai
+TV data provided by TVmaze.com under CC BY-SA 4.0	TV duomenis teikia TVmaze.com pagal CC BY-SA 4.0
+Anime series and anime films	Anime serialai ir anime filmai
+Anime data provided by AniList	Anime duomenis teikia AniList
+Anime with episode titles and air dates, through the Jikan API	Anime su epizodų pavadinimais ir transliacijos datomis per Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	Anime duomenys iš MyAnimeList, teikiami per neoficialią Jikan API
+Films (needs an API key)	Filmai (reikia API rakto)
+Films by IMDb id or title (needs an API key)	Filmai pagal IMDb ID arba pavadinimą (reikia API rakto)
+Film data provided by the OMDb API	Filmų duomenis teikia OMDb API
+Skipped: the server is still starting	Praleista: serveris dar paleidžiamas
+{} expired sessions removed	Pašalinta pasibaigusių seansų: {}
+All {} refreshes failed; see the logs	Nepavyko nė vienas iš {} atnaujinimų; žr. žurnalus
+every folder scan failed ({})	nepavyko nė vienas aplankų nuskaitymas ({})

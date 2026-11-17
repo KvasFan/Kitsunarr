@@ -1572,3 +1572,30 @@ Shut down	Slå av
 Shut down Kitsunarr	Slå av Kitsunarr
 Shut down Kitsunarr now? It stays stopped until it is started again (a container restarts it only if its restart policy says so).	Slå av Kitsunarr nå? Den forblir stoppet til den startes igjen (en container starter den på nytt bare hvis omstartspolicyen tilsier det).
 does the same.	det samme.
+RssSync	RSS-synkronisering
+ImportListSync	Synkroniser importlister
+Backup	Sikkerhetskopi
+Reads the newest releases of the indexers with RSS enabled and grabs the wanted ones	Leser de nyeste utgivelsene fra indekserne med RSS aktivert og henter de ønskede
+Reads the import lists that are due and adds their new titles	Leser importlistene som står for tur, og legger til de nye titlene
+Creates a consistent database backup and removes scheduled backups older than the retention	Lager en konsistent sikkerhetskopi av databasen og fjerner planlagte sikkerhetskopier som er eldre enn oppbevaringstiden
+Checking database integrity	Kontrollerer databasens integritet
+Nothing is due for a refresh	Ingenting skal oppdateres nå
+Folder scan cancelled	Mappeskanning avbrutt
+Scanned {} series and {} movies: {} files added, {} missing files removed, {} updated, {} skipped	Skannet {} serier og {} filmer: {} filer lagt til, {} manglende filer fjernet, {} oppdatert, {} hoppet over
+TV series and anime, with TheTVDB's numbering (Sonarr's catalogue)	TV-serier og anime, med TheTVDB sin nummerering (Sonarrs katalog)
+TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates	TV-informasjon og bilder leveres av TheTVDB.com, men vi er ikke godkjent eller sertifisert av TheTVDB.com eller tilknyttede selskaper
+TV series, with TMDB's episode groups as orderings (needs an API key)	TV-serier, med TMDB-episodegrupper som rekkefølger (krever API-nøkkel)
+This product uses the TMDB API but is not endorsed or certified by TMDB	Dette produktet bruker TMDB API, men er ikke godkjent eller sertifisert av TMDB
+TV series and their episode guides	TV-serier og deres episodeguider
+TV data provided by TVmaze.com under CC BY-SA 4.0	TV-data levert av TVmaze.com under CC BY-SA 4.0
+Anime series and anime films	Anime-serier og anime-filmer
+Anime data provided by AniList	Anime-data levert av AniList
+Anime with episode titles and air dates, through the Jikan API	Anime med episodetitler og sendedatoer, via Jikan API
+Anime data from MyAnimeList, served by the unofficial Jikan API	Anime-data fra MyAnimeList, levert av det uoffisielle Jikan API
+Films (needs an API key)	Filmer (krever API-nøkkel)
+Films by IMDb id or title (needs an API key)	Filmer etter IMDb-id eller tittel (krever API-nøkkel)
+Film data provided by the OMDb API	Filmdata levert av OMDb API
+Skipped: the server is still starting	Hoppet over: serveren starter fortsatt
+{} expired sessions removed	{} utløpte økter fjernet
+All {} refreshes failed; see the logs	Alle {} oppdateringer mislyktes; se loggene
+every folder scan failed ({})	alle mappeskanninger mislyktes ({})
