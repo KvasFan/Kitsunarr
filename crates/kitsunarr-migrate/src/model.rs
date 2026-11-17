@@ -198,6 +198,9 @@ pub struct SrcEpisodeFile {
     pub original_file_path: Option<String>,
     pub indexer_flags: i64,
     pub release_type: i64,
+    /// Tanukarr's `SourceReleaseTitle` and `SourceReleaseSize` (migration 237).
+    pub source_release_title: Option<String>,
+    pub source_release_size: Option<i64>,
     pub unmapped: Map<String, Value>,
 }
 

@@ -1257,6 +1257,12 @@ pub struct FileRecord {
     pub added_at: String,
     /// Media information (Sonarr's `MediaInfoModel` JSON).
     pub media_info: Option<String>,
+    /// The grabbed release's size and title (Tanukarr's `SourceReleaseSize`,
+    /// `SourceReleaseTitle`), for custom formats of the file.
+    #[sqlx(default)]
+    pub source_release_size: Option<i64>,
+    #[sqlx(default)]
+    pub source_release_title: Option<String>,
 }
 
 impl FileRecord {
@@ -1362,12 +1368,36 @@ pub async fn paths(db: &Database) -> DbResult<Vec<(i64, String)>> {
 pub async fn file_records(db: &Database, series_id: i64) -> DbResult<Vec<FileRecord>> {
     Ok(sqlx::query_as(
         "SELECT id, relative_path, size, scene_name, original_path, release_group, quality_id, \
-           revision_version, revision_real, is_repack, languages, indexer_flags, release_type, added_at, media_info \
+           revision_version, revision_real, is_repack, languages, indexer_flags, release_type, added_at, media_info, \
+           source_release_size, source_release_title \
          FROM episode_files WHERE series_id = ? ORDER BY id",
     )
     .bind(series_id)
     .fetch_all(db.pool())
     .await?)
+}
+
+/// Records the grabbed release a file was imported from (`ImportApprovedEpisodes`): its title
+/// and size when the grab's size is known, else nothing.
+pub async fn set_source_release(
+    conn: &mut SqliteConnection,
+    file_id: i64,
+    title: Option<&str>,
+    size: Option<i64>,
+) -> DbResult<()> {
+    let (title, size) = match size.filter(|s| *s > 0) {
+        Some(size) => (title, Some(size)),
+        None => (None, None),
+    };
+    sqlx::query(
+        "UPDATE episode_files SET source_release_size = ?, source_release_title = ? WHERE id = ?",
+    )
+    .bind(size)
+    .bind(title)
+    .bind(file_id)
+    .execute(conn)
+    .await?;
+    Ok(())
 }
 
 /// The series' original language id, when known.

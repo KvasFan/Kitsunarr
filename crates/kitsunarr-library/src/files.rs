@@ -407,9 +407,12 @@ pub async fn rename_previews(
             .into_iter()
             .filter_map(Language::by_id)
             .collect();
+        // `ParseCustomFormat(EpisodeFile)`: the grabbed release first (Tanukarr).
         let release_title = r
-            .scene_name
+            .source_release_title
             .clone()
+            .filter(|t| !t.trim().is_empty())
+            .or_else(|| r.scene_name.clone())
             .unwrap_or_else(|| stem(Path::new(&r.relative_path)));
         let matched = decision::custom_format::evaluate(
             &formats,
@@ -418,7 +421,7 @@ pub async fn rename_previews(
                 file_name: Some(&file_name),
                 release_group: r.release_group.as_deref(),
                 quality: quality.quality(),
-                size: r.size,
+                size: r.source_release_size.unwrap_or(r.size),
                 indexer_flags: r.indexer_flags as u32,
                 languages: &languages,
                 release_type: kitsunarr_parser::ReleaseType::Unknown,

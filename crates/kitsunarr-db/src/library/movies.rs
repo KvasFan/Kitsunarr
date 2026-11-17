@@ -185,6 +185,29 @@ async fn replace_links(conn: &mut SqliteConnection, id: i64, m: &NewMovie) -> Db
 }
 
 /// Inserts or replaces the single file record of a movie.
+/// Records the grabbed release a film's file was imported from: its title and size when the
+/// grab's size is known, else nothing (Tanukarr's `SourceReleaseTitle`/`SourceReleaseSize`).
+pub async fn set_source_release(
+    conn: &mut SqliteConnection,
+    file_id: i64,
+    title: Option<&str>,
+    size: Option<i64>,
+) -> DbResult<()> {
+    let (title, size) = match size.filter(|s| *s > 0) {
+        Some(size) => (title, Some(size)),
+        None => (None, None),
+    };
+    sqlx::query(
+        "UPDATE movie_files SET source_release_size = ?, source_release_title = ? WHERE id = ?",
+    )
+    .bind(size)
+    .bind(title)
+    .bind(file_id)
+    .execute(conn)
+    .await?;
+    Ok(())
+}
+
 pub async fn upsert_file(conn: &mut SqliteConnection, f: &NewMovieFile) -> DbResult<i64> {
     sqlx::query_scalar(
         "INSERT INTO movie_files (movie_id, relative_path, size, added_at, scene_name, release_group, quality_id, revision_version, \

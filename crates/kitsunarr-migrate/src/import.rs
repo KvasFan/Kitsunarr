@@ -2199,6 +2199,13 @@ impl<'a> Importer<'a> {
                     },
                 )
                 .await?;
+                series::set_source_release(
+                    conn,
+                    id,
+                    f.source_release_title.as_deref(),
+                    f.source_release_size,
+                )
+                .await?;
                 file_map.insert(f.id, id);
                 if seen_paths.insert(f.relative_path.clone()) {
                     self.count("episodeFiles", Act::Create);
@@ -2435,7 +2442,7 @@ impl<'a> Importer<'a> {
                     ));
                 }
                 if let Some(f) = files.iter().max_by(|a, b| a.date_added.cmp(&b.date_added)) {
-                    movies::upsert_file(
+                    let file_id = movies::upsert_file(
                         conn,
                         &NewMovieFile {
                             movie_id: target,
@@ -2457,6 +2464,13 @@ impl<'a> Importer<'a> {
                             original_path: f.original_file_path.clone(),
                             edition: None,
                         },
+                    )
+                    .await?;
+                    movies::set_source_release(
+                        conn,
+                        file_id,
+                        f.source_release_title.as_deref(),
+                        f.source_release_size,
                     )
                     .await?;
                     self.count("movieFiles", Act::Create);

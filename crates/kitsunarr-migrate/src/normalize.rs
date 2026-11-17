@@ -573,9 +573,7 @@ fn episode(r: &Rec) -> Option<SrcEpisode> {
 fn episode_file(r: &Rec) -> Option<SrcEpisodeFile> {
     let (quality_id, revision) =
         quality_model(r.json("quality")).unwrap_or((0, SrcRevision::default()));
-    let mut unmapped = Map::new();
-    note(&mut unmapped, r, "sourcereleasetitle", zero_or_empty);
-    note(&mut unmapped, r, "sourcereleasesize", zero_or_empty);
+    let unmapped = Map::new();
     let relative_path = r.str("relativepath").or_else(|| {
         // API resources always have relativePath; very old databases may only have Path.
         r.str("path")
@@ -596,6 +594,8 @@ fn episode_file(r: &Rec) -> Option<SrcEpisodeFile> {
         media_info: r.json("mediainfo").filter(|v| v.is_object()),
         original_file_path: r.str("originalfilepath"),
         indexer_flags: r.i64("indexerflags").unwrap_or(0),
+        source_release_title: r.str("sourcereleasetitle"),
+        source_release_size: r.i64("sourcereleasesize").filter(|s| *s > 0),
         release_type: match r.raw("releasetype") {
             Some(Value::String(s)) if s.parse::<i64>().is_err() => [
                 "unknown",
