@@ -401,7 +401,7 @@ pub(crate) async fn create_tag(
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct SeriesFilter {
-    tvdb_id: Option<i64>,
+    pub(crate) tvdb_id: Option<i64>,
 }
 
 pub(crate) async fn list_series(
@@ -1955,7 +1955,7 @@ pub(crate) struct PushBody {
     size: Option<i64>,
     seeders: Option<i64>,
     leechers: Option<i64>,
-    tvdb_id: Option<i64>,
+    pub(crate) tvdb_id: Option<i64>,
     tv_rage_id: Option<i64>,
     imdb_id: Option<String>,
 }

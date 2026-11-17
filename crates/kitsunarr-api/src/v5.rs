@@ -2517,3 +2517,139 @@ async fn add_from_list(
     )
     .into_response())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn subresources_are_read_repeated_or_comma_separated() {
+        let s = subresources(Some(
+            "seriesId=1&includeSubresources=series&includeSubresources=episodeFile%2CImages",
+        ));
+        assert_eq!(
+            s.into_iter().collect::<Vec<_>>(),
+            ["episodefile", "images", "series"]
+        );
+        assert!(subresources(None).is_empty());
+        let q: Query<v3::SeriesFilter> = typed(
+            Some("tvdbId=81189&includeSubresources=a&includeSubresources=b"),
+            &["includeSubresources"],
+        )
+        .unwrap();
+        assert_eq!(q.0.tvdb_id, Some(81189));
+    }
+
+    #[test]
+    fn releases_nest_their_parts_like_sonarr_v5() {
+        let v3 = json!({
+            "guid": "g", "title": "Show.S01E02.1080p.WEB-DL-GRP", "seasonNumber": 1, "episodeNumbers": [2],
+            "absoluteEpisodeNumbers": [], "approved": false, "rejected": true, "temporarilyRejected": false,
+            "rejections": ["Not wanted"], "indexerId": 3, "indexer": "Nyaa", "protocol": "torrent",
+            "seriesId": 7, "quality": {"quality": {"id": 3}}, "size": 10, "customFormatScore": 5,
+        });
+        let v5 = release_v5(&v3);
+        assert_eq!(v5["release"]["guid"], "g");
+        assert_eq!(v5["release"]["indexerId"], 3);
+        assert_eq!(v5["parsedInfo"]["seasonNumbers"], json!([1]));
+        assert_eq!(v5["decision"]["approved"], false);
+        assert_eq!(v5["decision"]["rejections"][0]["message"], "Not wanted");
+        assert_eq!(v5["mappedSeriesId"], 7);
+        assert_eq!(v5["customFormatScore"], 5);
+        assert!(v5.get("guid").is_none(), "v5 has no flat release fields");
+    }
+
+    #[test]
+    fn series_gain_v5_statistics_and_lose_language_profiles() {
+        let mut facts = SeriesFacts::default();
+        facts.seasons.insert(
+            (1, 1),
+            SeasonFacts {
+                monitored: 3,
+                release_groups: ["GRP".to_string()].into(),
+                release_types: [1].into(),
+                qualities: [4].into(),
+                images: json!([{"coverType": "poster"}]),
+                next_airing: Some("2030-01-01T00:00:00Z".into()),
+                ..Default::default()
+            },
+        );
+        facts.original_country.insert(1, Some("us".into()));
+        let s = series_v5(
+            json!({"id": 1, "languageProfileId": 1, "statistics": {},
+                   "seasons": [{"seasonNumber": 1, "statistics": {}}, {"seasonNumber": 2, "statistics": {}}]}),
+            &facts,
+            true,
+        );
+        assert!(s.get("languageProfileId").is_none());
+        assert_eq!(s["originalCountry"], "us");
+        assert_eq!(s["statistics"]["monitoredEpisodeCount"], 3);
+        assert_eq!(s["statistics"]["releaseTypes"], json!(["singleEpisode"]));
+        assert_eq!(
+            s["seasons"][0]["statistics"]["releaseGroups"],
+            json!(["GRP"])
+        );
+        assert_eq!(
+            s["seasons"][0]["statistics"]["episodeFileQualities"][0]["id"],
+            4
+        );
+        assert_eq!(s["seasons"][0]["images"][0]["coverType"], "poster");
+        assert_eq!(s["seasons"][1]["images"], json!([]));
+        assert_eq!(s["nextAiring"], "2030-01-01T00:00:00Z");
+    }
+
+    #[test]
+    fn health_checks_carry_sonarr_reasons() {
+        assert_eq!(
+            health_reason(
+                "IndexerRssCheck",
+                "No indexers available with RSS sync enabled"
+            ),
+            "indexerRssNoIndexersEnabled"
+        );
+        assert_eq!(
+            health_reason("IndexerLongTermStatusCheck", "All indexers are unavailable"),
+            "indexerLongTermStatusAllUnavailable"
+        );
+        assert_eq!(health_reason("Something", ""), "unknown");
+        let mut v = json!([{"source": "BackupCheck", "type": "warning", "message": "old"}]);
+        health_out(&mut v);
+        assert_eq!(v[0]["reason"], "backupStale");
+        let mut s = json!({"appName": "Sonarr", "isContainerized": true, "sqliteVersion": "3"});
+        system_out(&mut s);
+        assert_eq!(s, json!({"appName": "Sonarr"}));
+    }
+
+    #[test]
+    fn media_information_is_shaped_like_sonarr_v5() {
+        assert_eq!(media_info_v5(None, ""), Value::Null);
+        let raw = json!({
+            "schemaRevision": 12, "videoFormat": "hevc", "videoBitDepth": 10, "width": 1920, "height": 1080,
+            "runTime": "00:42:05", "videoFps": 23.976,
+            "audioStreams": [{"language": "eng", "format": "eac3", "channels": 6, "channelPositions": "5.1", "bitrate": 0}],
+            "subtitleStreams": [{"language": "eng", "format": "subrip", "forced": false}],
+        })
+        .to_string();
+        let v = media_info_v5(Some(&raw), "Show.S01E01.1080p.WEB.x265-GRP");
+        assert_eq!(v["resolution"], "1920x1080");
+        assert_eq!(v["runTime"], "42:05");
+        assert_eq!(v["videoBitDepth"], 10);
+        assert_eq!(v["audioStreams"][0]["channels"], 5.1);
+        assert_eq!(v["subtitleStreams"][0]["language"], "eng");
+    }
+
+    #[test]
+    fn statistics_filters_become_sql_conditions() {
+        let (cond, binds) = statistics_filter(Some(
+            "rootFolderPaths=/tv&tagIds=1,2&tagIdsNot=true&monitored=true&seriesTypes=anime",
+        ));
+        assert!(cond.contains("SUBSTR(s.path, 1, ?) = ?"), "{cond}");
+        assert!(cond.contains("NOT (EXISTS"), "{cond}");
+        assert!(cond.contains("s.monitored = ?"));
+        assert!(cond.contains("s.series_type = ?"));
+        assert_eq!(binds[0], json!(4));
+        assert_eq!(binds[1], json!("/tv/"));
+        assert_eq!(binds.last(), Some(&json!("anime")));
+        assert_eq!(statistics_filter(None).0, "1 = 1");
+    }
+}
