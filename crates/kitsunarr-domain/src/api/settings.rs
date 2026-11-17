@@ -509,6 +509,12 @@ pub struct MetadataSourcesSettings {
     /// Sonarr's "Preferred metadata language" (a language id; English when unset): the
     /// language TheTVDB titles are searched and added in. Each series keeps its own.
     pub preferred_metadata_language: Option<i32>,
+    /// Tanukarr's `MetadataSourceOrder`: catalogues in preference order (empty = default order).
+    #[serde(default)]
+    pub source_order: Vec<crate::MetadataProvider>,
+    /// Tanukarr's `DisabledMetadataSources`.
+    #[serde(default)]
+    pub disabled_sources: Vec<crate::MetadataProvider>,
 }
 
 /// Download client options (Sonarr's Settings › Download Clients: completed and failed

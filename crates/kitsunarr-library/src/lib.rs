@@ -12,6 +12,7 @@ pub mod file_names;
 pub mod files;
 pub mod grouping;
 pub mod import;
+pub mod import_progress;
 pub mod jellyfin;
 pub mod jellyfin_refresh;
 pub mod library_import;

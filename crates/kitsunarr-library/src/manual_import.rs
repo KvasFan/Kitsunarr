@@ -271,6 +271,7 @@ pub async fn import(
                 client_name: "Manual Import",
                 client_implementation: "ManualImport",
                 move_files,
+                progress: None,
             };
             let outcome = import::import_download(db, &d).await?;
             for r in outcome.results.iter().filter(|r| r.imported) {

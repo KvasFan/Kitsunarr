@@ -127,6 +127,15 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
         }
         snap.media_management = Some(Rec(mm));
     }
+    // Tanukarr's `/config/metadatasource` (API sources; databases keep these in `Config`).
+    if let Some(ms) = raw.table("metadatasourceconfig").first() {
+        let mm = snap.media_management.get_or_insert_with(Rec::default);
+        for key in ["metadatasourceorder", "disabledmetadatasources"] {
+            if let Some(v) = ms.raw(key) {
+                mm.0.insert(key.to_string(), v.clone());
+            }
+        }
+    }
     if let Some(mm) = &snap.media_management {
         for (k, v) in &mm.0 {
             if !crate::import::MAPPED_MEDIA_MANAGEMENT_KEYS.contains(&k.as_str()) && k != "id" {

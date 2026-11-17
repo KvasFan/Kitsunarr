@@ -193,6 +193,10 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
                 .as_deref()
                 .map(|p| remap(&mappings, &host, p)),
             added: grab.map(|g| g.date.clone()),
+            import_progress: state
+                .downloads
+                .import_progress
+                .get(client.id, &item.download_id),
         });
     }
     // Releases a delay profile holds back (Sonarr shows them in the queue as "Delay").
@@ -254,6 +258,7 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
             ],
             output_path: None,
             added: Some(p.added_at),
+            import_progress: None,
         });
     }
     Ok(Json(QueueResult {

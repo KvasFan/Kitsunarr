@@ -328,6 +328,7 @@ impl Metadata {
                 kinds: vec![EntryKind::Series, EntryKind::Anime],
                 attribution: "TV information and images are provided by TheTVDB.com, but we are not endorsed or certified by TheTVDB.com or its affiliates".into(),
                 available: true,
+                enabled: true,
                 url: "https://thetvdb.com".into(),
             },
             CatalogueInfo {
@@ -338,6 +339,7 @@ impl Metadata {
                 kinds: vec![EntryKind::Series, EntryKind::Anime],
                 attribution: "This product uses the TMDB API but is not endorsed or certified by TMDB".into(),
                 available: true,
+                enabled: true,
                 url: "https://www.themoviedb.org".into(),
             },
             CatalogueInfo {
@@ -347,6 +349,7 @@ impl Metadata {
                 kinds: vec![EntryKind::Series],
                 attribution: "TV data provided by TVmaze.com under CC BY-SA 4.0".into(),
                 available: true,
+                enabled: true,
                 url: "https://www.tvmaze.com".into(),
             },
             CatalogueInfo {
@@ -356,6 +359,7 @@ impl Metadata {
                 kinds: vec![EntryKind::Anime, EntryKind::Movie],
                 attribution: "Anime data provided by AniList".into(),
                 available: true,
+                enabled: true,
                 url: "https://anilist.co".into(),
             },
             CatalogueInfo {
@@ -366,6 +370,7 @@ impl Metadata {
                 kinds: vec![EntryKind::Anime, EntryKind::Movie],
                 attribution: "Anime data from MyAnimeList, served by the unofficial Jikan API".into(),
                 available: true,
+                enabled: true,
                 url: "https://jikan.moe".into(),
             },
             CatalogueInfo {
@@ -375,6 +380,7 @@ impl Metadata {
                 kinds: vec![EntryKind::Movie],
                 attribution: "This product uses the TMDB API but is not endorsed or certified by TMDB".into(),
                 available: true,
+                enabled: true,
                 url: "https://www.themoviedb.org".into(),
             },
             CatalogueInfo {
@@ -384,6 +390,7 @@ impl Metadata {
                 kinds: vec![EntryKind::Movie],
                 attribution: "Film data provided by the OMDb API".into(),
                 available: true,
+                enabled: true,
                 url: "https://www.omdbapi.com".into(),
             },
         ]

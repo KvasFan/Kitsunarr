@@ -701,8 +701,9 @@ async fn catalogue_search_add_and_refresh() {
     );
 
     let query = |provider, term: &str| SearchQuery {
-        provider,
+        provider: Some(provider),
         term: term.into(),
+        all_sources: false,
     };
     let empty = client
         .metadata_search(&query(MetadataProvider::TvMaze, "  "))
@@ -1785,6 +1786,58 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     );
     let queue = client.queue().await.unwrap();
     assert_eq!(queue.items[0].tracked_state, "imported");
+    // Tanukarr's per-file import progress: the grabbed episode is imported; the sample was
+    // rejected with its reason.
+    let progress = queue.items[0]
+        .import_progress
+        .clone()
+        .expect("import progress");
+    assert_eq!(
+        (
+            progress.total_episodes,
+            progress.imported_episodes,
+            progress.waiting_episodes
+        ),
+        (1, 1, 0)
+    );
+    use kitsunarr_domain::api::queue::ImportProgressState;
+    let video = progress
+        .items
+        .iter()
+        .find(|i| i.source_path.ends_with("x264-GRP.mkv"))
+        .unwrap();
+    assert_eq!(video.state, ImportProgressState::Imported);
+    assert_eq!(
+        (video.season_number, video.episode_numbers.as_slice()),
+        (Some(1), &[1][..])
+    );
+    assert_eq!(video.episode_ids, [pilot.id]);
+    assert!(video.started.is_some() && video.completed.is_some());
+    let sample = progress
+        .items
+        .iter()
+        .find(|i| i.source_path.ends_with("sample.mkv"))
+        .unwrap();
+    assert_eq!(sample.state, ImportProgressState::Rejected);
+    assert!(!sample.errors.is_empty());
+    // The native queue resource carries it as `importProgress`.
+    let raw: serde_json::Value = reqwest::Client::new()
+        .get(format!("{}/api/v1/queue", server.base))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(raw["items"][0]["importProgress"]["importedEpisodes"], 1);
+    assert!(
+        raw["items"][0]["importProgress"]["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|i| i["state"] == "imported" && i["episodeIds"][0] == pilot.id)
+    );
     // A second check does not import it again.
     assert_eq!(
         client.refresh_queue().await.unwrap(),
@@ -2573,8 +2626,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     let client = signed_in(&server).await;
     let found = client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::Tvdb,
+            provider: Some(MetadataProvider::Tvdb),
             term: "Breaking Bad".into(),
+            all_sources: false,
         })
         .await
         .unwrap();
@@ -2583,8 +2637,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     // `tvdb:` terms look the title up directly.
     let direct = client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::Tvdb,
+            provider: Some(MetadataProvider::Tvdb),
             term: "tvdb:81189".into(),
+            all_sources: false,
         })
         .await
         .unwrap();
@@ -2657,8 +2712,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     log.lock().unwrap().clear();
     client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::Tvdb,
+            provider: Some(MetadataProvider::Tvdb),
             term: "Breaking Bad".into(),
+            all_sources: false,
         })
         .await
         .unwrap();
@@ -2705,8 +2761,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     assert!(!tmdb.available);
     let missing = client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::TmdbTv,
+            provider: Some(MetadataProvider::TmdbTv),
             term: "x".into(),
+            all_sources: false,
         })
         .await
         .unwrap_err();
@@ -2741,8 +2798,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     // With a key, TMDB is queried (and is unreachable here).
     let unreachable = client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::TmdbTv,
+            provider: Some(MetadataProvider::TmdbTv),
             term: "x".into(),
+            all_sources: false,
         })
         .await
         .unwrap_err();
@@ -9358,4 +9416,160 @@ async fn anime_season_searches_search_each_episode_unless_a_pack_covers_it() {
     };
     client.search_releases(&packs).await.unwrap();
     assert_eq!(terms(&log), ["Pack Show"]);
+}
+
+/// Tanukarr's `MetadataSourcePolicy`: catalogue order, disabled catalogues and the search of
+/// every enabled catalogue (`allSources`), with TheTVDB and TVmaze answering and the other
+/// catalogues offline or without keys.
+#[tokio::test]
+async fn catalogue_order_disabled_catalogues_and_all_sources_search() {
+    use kitsunarr_domain::api::settings::MetadataSourcesSettings;
+    let (skyhook, _log) = skyhook_mock().await;
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let all = |term: &str| SearchQuery {
+        provider: None,
+        term: term.into(),
+        all_sources: true,
+    };
+    let one = |provider, term: &str| SearchQuery {
+        provider: Some(provider),
+        term: term.into(),
+        all_sources: false,
+    };
+    let providers_of = |items: &[kitsunarr_domain::api::metadata::SearchItem]| {
+        let mut out: Vec<MetadataProvider> = Vec::new();
+        for i in items {
+            if !out.contains(&i.provider) {
+                out.push(i.provider);
+            }
+        }
+        out
+    };
+
+    // Tanukarr's default order; everything enabled.
+    let settings = client.metadata_sources().await.unwrap();
+    assert_eq!(
+        settings.source_order,
+        kitsunarr_domain::api::metadata::DEFAULT_SOURCE_ORDER
+    );
+    assert!(settings.disabled_sources.is_empty());
+    let catalogues = client.metadata_providers().await.unwrap();
+    assert_eq!(catalogues[0].provider, MetadataProvider::Tvdb);
+    assert!(catalogues.iter().all(|c| c.enabled));
+
+    // Every enabled catalogue: offline ones (AniList, Jikan) are skipped, keyless ones (TMDB,
+    // OMDb) are not searched, and results follow the order.
+    let merged = client.metadata_search(&all("breaking bad")).await.unwrap();
+    assert_eq!(
+        providers_of(&merged),
+        [MetadataProvider::Tvdb, MetadataProvider::TvMaze]
+    );
+    // Without a catalogue or `allSources`, the first enabled catalogue is searched.
+    let first = client
+        .metadata_search(&SearchQuery {
+            provider: None,
+            term: "breaking bad".into(),
+            all_sources: false,
+        })
+        .await
+        .unwrap();
+    assert_eq!(providers_of(&first), [MetadataProvider::Tvdb]);
+
+    // TVmaze first: the catalogue list and merged results follow; missing catalogues are
+    // appended in the default order.
+    let saved = client
+        .put_metadata_sources(&MetadataSourcesSettings {
+            source_order: vec![MetadataProvider::TvMaze, MetadataProvider::Tvdb],
+            ..settings.clone()
+        })
+        .await
+        .unwrap();
+    assert_eq!(
+        saved.source_order[..3],
+        [
+            MetadataProvider::TvMaze,
+            MetadataProvider::Tvdb,
+            MetadataProvider::TmdbTv
+        ]
+    );
+    assert_eq!(saved.source_order.len(), 7);
+    assert_eq!(
+        client.metadata_providers().await.unwrap()[0].provider,
+        MetadataProvider::TvMaze
+    );
+    let merged = client.metadata_search(&all("breaking bad")).await.unwrap();
+    assert_eq!(
+        providers_of(&merged),
+        [MetadataProvider::TvMaze, MetadataProvider::Tvdb]
+    );
+
+    // A disabled catalogue is neither offered nor searched.
+    let saved = client
+        .put_metadata_sources(&MetadataSourcesSettings {
+            disabled_sources: vec![MetadataProvider::TvMaze],
+            ..saved
+        })
+        .await
+        .unwrap();
+    assert_eq!(saved.disabled_sources, [MetadataProvider::TvMaze]);
+    let catalogues = client.metadata_providers().await.unwrap();
+    assert!(
+        !catalogues
+            .iter()
+            .find(|c| c.provider == MetadataProvider::TvMaze)
+            .unwrap()
+            .enabled
+    );
+    let refused = client
+        .metadata_search(&one(MetadataProvider::TvMaze, "breaking bad"))
+        .await
+        .unwrap_err();
+    assert_eq!(status(refused), 422);
+    let merged = client.metadata_search(&all("breaking bad")).await.unwrap();
+    assert_eq!(providers_of(&merged), [MetadataProvider::Tvdb]);
+
+    // `MetadataSourcePolicy.Save` validation.
+    for bad in [
+        MetadataSourcesSettings {
+            source_order: vec![MetadataProvider::Tvdb, MetadataProvider::Tvdb],
+            ..saved.clone()
+        },
+        MetadataSourcesSettings {
+            disabled_sources: kitsunarr_domain::api::metadata::DEFAULT_SOURCE_ORDER.to_vec(),
+            ..saved.clone()
+        },
+    ] {
+        assert_eq!(
+            status(client.put_metadata_sources(&bad).await.unwrap_err()),
+            422
+        );
+    }
+
+    // When every searched catalogue fails, the failure is reported.
+    client
+        .put_metadata_sources(&MetadataSourcesSettings {
+            disabled_sources: vec![
+                MetadataProvider::Tvdb,
+                MetadataProvider::TvMaze,
+                MetadataProvider::MyAnimeList,
+            ],
+            ..saved
+        })
+        .await
+        .unwrap();
+    let unreachable = client
+        .metadata_search(&all("breaking bad"))
+        .await
+        .unwrap_err();
+    assert_eq!(status(unreachable), 502);
 }

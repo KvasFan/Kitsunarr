@@ -208,6 +208,8 @@ pub struct Monitor {
     imports: Arc<Mutex<Vec<ImportedEpisodes>>>,
     /// Imports that failed since the last call to [`Monitor::take_import_failures`].
     import_failures: Arc<Mutex<Vec<ImportFailure>>>,
+    /// Per-file import progress of each download (Tanukarr's `ImportProgressService`).
+    pub import_progress: crate::import_progress::Tracker,
 }
 
 /// A failed import (`EpisodeImportFailedEvent`): the download's folder could not be read, or
@@ -532,6 +534,8 @@ impl Monitor {
         let (mut imported, mut blocked, mut failed_clients) = (0usize, 0usize, Vec::new());
         let mut failed_downloads = 0usize;
         let mut seen = HashSet::new();
+        // Downloads still in a client, by client: import progress of the others is dropped.
+        let mut progress_keys = HashSet::new();
         for client in &clients {
             let Ok(settings) =
                 ClientSettings::from_provider(&client.implementation, &client.settings)
@@ -579,6 +583,11 @@ impl Monitor {
             let mut items = items;
             apply_seed_goals(db, &mut items).await;
             seen.extend(items.iter().map(|i| i.download_id.to_ascii_uppercase()));
+            progress_keys.extend(
+                items
+                    .iter()
+                    .filter_map(|i| crate::import_progress::Key::new(client.id, &i.download_id)),
+            );
             let option = |key: &str| {
                 client
                     .options
@@ -884,6 +893,18 @@ impl Monitor {
                 };
                 let local = PathBuf::from(remap(&mappings, settings.host(), output));
                 self.set(&item.download_id, State::Importing, Vec::new());
+                // `BeginBatch`: the grabbed episodes are what the import is expected to bring.
+                let progress =
+                    crate::import_progress::Key::new(client.id, &item.download_id).map(|key| {
+                        crate::import_progress::Scope {
+                            tracker: self.import_progress.clone(),
+                            key,
+                        }
+                    });
+                if let Some(p) = &progress {
+                    p.tracker
+                        .begin_batch(&p.key, mine.iter().filter_map(|g| g.episode_id));
+                }
                 let outcome = import::import_download(
                     db,
                     &Download {
@@ -895,6 +916,7 @@ impl Monitor {
                         client_name: &client.name,
                         client_implementation: &client.implementation,
                         move_files: settings.can_move_files() && !multi_season,
+                        progress: progress.as_ref(),
                     },
                 )
                 .await
@@ -1013,6 +1035,7 @@ impl Monitor {
             if failed_clients.is_empty() {
                 // Downloads gone from the clients leave the queue.
                 active.retain(|id| seen.contains(id));
+                self.import_progress.prune(&progress_keys);
             }
             active.extend(seen);
             let tracked = self.tracked.lock().unwrap_or_else(|e| e.into_inner());

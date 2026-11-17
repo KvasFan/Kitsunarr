@@ -345,6 +345,11 @@ pub async fn load(
         }
     }
 
+    // Tanukarr's catalogue order and disabled catalogues (Sonarr has no such resource).
+    if let Some(v) = src.get_optional("api/v3/config/metadatasource").await? {
+        tables.insert("metadatasourceconfig".into(), records(v));
+    }
+
     progress("Reading series".into(), resources.len() as u64, total);
     let series = records(src.get("api/v3/series").await?);
     let ids: Vec<i64> = series.iter().filter_map(|s| s.i64("id")).collect();

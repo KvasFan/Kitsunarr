@@ -663,6 +663,8 @@ pub async fn get_metadata_sources(
         tmdb_api_key: redact_key(&s.tmdb_api_key),
         omdb_api_key: redact_key(&s.omdb_api_key),
         preferred_metadata_language: s.preferred_metadata_language,
+        source_order: kitsunarr_domain::api::metadata::source_order(&s),
+        disabled_sources: s.disabled_sources.clone(),
     }))
 }
 
@@ -688,10 +690,28 @@ pub async fn put_metadata_sources(
             "TheTVDB has no titles in this language.",
         ));
     }
+    // Tanukarr's `MetadataSourcePolicy.Save`.
+    if let Some((field, message)) = kitsunarr_domain::api::metadata::validate_sources(
+        &body.source_order,
+        &body.disabled_sources,
+    )
+    .into_iter()
+    .next()
+    {
+        return Err(ApiError::field(field, message));
+    }
+    let order = if body.source_order.is_empty() {
+        Vec::new()
+    } else {
+        kitsunarr_domain::api::metadata::source_order(&body)
+    };
     let next = MetadataSourcesSettings {
         tmdb_api_key: keep(body.tmdb_api_key, stored.tmdb_api_key),
         omdb_api_key: keep(body.omdb_api_key, stored.omdb_api_key),
         preferred_metadata_language: body.preferred_metadata_language,
+        // Older clients can omit a newer catalogue: it is appended without changing the order.
+        source_order: order,
+        disabled_sources: body.disabled_sources,
     };
     kv::set(state.db.pool(), kv::KEY_METADATA_SOURCES, &next).await?;
     apply_metadata_keys(&state).await?;
@@ -700,6 +720,8 @@ pub async fn put_metadata_sources(
         tmdb_api_key: redact_key(&next.tmdb_api_key),
         omdb_api_key: redact_key(&next.omdb_api_key),
         preferred_metadata_language: next.preferred_metadata_language,
+        source_order: kitsunarr_domain::api::metadata::source_order(&next),
+        disabled_sources: next.disabled_sources.clone(),
     }))
 }
 

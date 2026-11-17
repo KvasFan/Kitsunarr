@@ -2,7 +2,10 @@
 
 use dioxus::prelude::*;
 
-use kitsunarr_domain::api::queue::{BlocklistRemoval, QueueItem, QueueRemoval};
+use kitsunarr_domain::api::queue::{
+    BlocklistRemoval, ImportProgress, ImportProgressItem, ImportProgressState, QueueItem,
+    QueueRemoval,
+};
 
 use crate::components::common::{Badge, Confirm, Empty, ErrorBox, Loading, Modal, Pagination};
 use crate::route::Route;
@@ -41,12 +44,58 @@ fn import_state(tracked: &str) -> Option<(&'static str, &'static str)> {
     }
 }
 
+/// Tanukarr's `ImportProgressDetails`: each file of the download, its episodes and state.
+#[component]
+fn ImportProgressDetails(progress: ImportProgress) -> Element {
+    rsx! {
+        ul { class: "import-files small", "aria-label": "Import progress",
+            for item in progress.items.iter() {
+                {
+                    let (label, tone) = match item.state {
+                        ImportProgressState::Imported => ("Imported", "success"),
+                        ImportProgressState::Importing => ("Importing", "info"),
+                        ImportProgressState::Rejected => ("Rejected", "warning"),
+                        ImportProgressState::Failed => ("Failed", "danger"),
+                        ImportProgressState::Waiting => ("Waiting to import", ""),
+                    };
+                    let name = item.source_path.rsplit(['/', '\\']).next().unwrap_or_default().to_string();
+                    let reason = item.errors.join("; ");
+                    rsx! {
+                        li { key: "{item.id}", class: "row tight", title: if reason.is_empty() { label.to_string() } else { reason.clone() },
+                            Badge { text: label.to_string(), tone }
+                            span { class: "mono", {episode_label(item)} }
+                            span { class: "muted ellipsis", "{name}" }
+                            if !reason.is_empty() { span { class: "faint", "— {reason}" } }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// `S01E02` or `S01E02-04` for a file's episodes (their ids when the season is mixed).
+fn episode_label(item: &ImportProgressItem) -> String {
+    match (item.season_number, item.episode_numbers.as_slice()) {
+        (Some(s), [one]) => format!("S{s:02}E{one:02}"),
+        (Some(s), [first, .., last]) => format!("S{s:02}E{first:02}-{last:02}"),
+        (_, []) => "—".to_string(),
+        (None, numbers) => numbers
+            .iter()
+            .map(|n| format!("E{n:02}"))
+            .collect::<Vec<_>>()
+            .join(", "),
+    }
+}
+
 #[component]
 pub fn Queue() -> Element {
     let client = use_client();
     let app = use_app();
     let mut checking = use_signal(|| false);
     let mut tick = use_signal(|| 0u64);
+    // Downloads whose per-file import progress is shown.
+    let mut expanded = use_signal(std::collections::HashSet::<String>::new);
     // The item being removed and the chosen options.
     let mut removing = use_signal(|| None::<QueueItem>);
     let mut removal = use_signal(QueueRemoval::default);
@@ -130,6 +179,12 @@ pub fn Queue() -> Element {
                             for item in q.items.iter() {
                                 {
                                     let done = if item.size > 0 { 100 - (item.size_left * 100 / item.size).clamp(0, 100) } else { 0 };
+                                    // Tanukarr's queue row: once an import started, the bar shows
+                                    // the imported share of the expected episodes.
+                                    let import = item.import_progress.clone().filter(|p| p.total_episodes > 0);
+                                    let shown = import.as_ref().map_or(done, |p| i64::from(p.imported_episodes) * 100 / i64::from(p.total_episodes));
+                                    let is_expanded = expanded.read().contains(&item.download_id);
+                                    let span = 9;
                                     rsx! {
                                         tr { key: "{item.download_id}",
                                             td {
@@ -156,10 +211,24 @@ pub fn Queue() -> Element {
                                                 }
                                             }
                                             td {
-                                                div { class: "progress", role: "progressbar", "aria-valuenow": "{done}", "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Progress of {item.title}",
-                                                    div { class: "bar", style: "width: {done}%" }
+                                                if let Some(p) = import.as_ref() {
+                                                    div { class: "progress", role: "progressbar", "aria-valuenow": "{shown}", "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Import progress of {item.title}",
+                                                        div { class: "bar", style: "width: {shown}%" }
+                                                    }
+                                                    button { class: "btn sm ghost", "aria-expanded": "{is_expanded}", "aria-label": "Import details of {item.title}",
+                                                        onclick: { let id = item.download_id.clone(); move |_| { let mut e = expanded.write(); if !e.remove(&id) { e.insert(id.clone()); } } },
+                                                        span { class: "small", "{p.imported_episodes} / {p.total_episodes} episodes imported" }
+                                                        if p.failed_episodes + p.rejected_episodes > 0 {
+                                                            span { class: "small muted", " · {p.failed_episodes + p.rejected_episodes} not imported" }
+                                                        }
+                                                        if is_expanded { " ▴" } else { " ▾" }
+                                                    }
+                                                } else {
+                                                    div { class: "progress", role: "progressbar", "aria-valuenow": "{done}", "aria-valuemin": "0", "aria-valuemax": "100", "aria-label": "Progress of {item.title}",
+                                                        div { class: "bar", style: "width: {done}%" }
+                                                    }
+                                                    span { class: "small muted", "{done}% of {format_bytes(item.size)}" }
                                                 }
-                                                span { class: "small muted", "{done}% of {format_bytes(item.size)}" }
                                             }
                                             td { class: "num small", {time_left(item.time_left)} }
                                             td { class: "small", "{item.download_client}" }
@@ -183,6 +252,11 @@ pub fn Queue() -> Element {
                                                     } },
                                                     "Remove"
                                                 }
+                                            }
+                                        }
+                                        if let Some(p) = import.as_ref().filter(|_| is_expanded) {
+                                            tr { key: "{item.download_id}-import", class: "import-progress",
+                                                td { colspan: "{span}", ImportProgressDetails { progress: p.clone() } }
                                             }
                                         }
                                     }

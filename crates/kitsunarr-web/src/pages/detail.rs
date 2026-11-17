@@ -1561,8 +1561,9 @@ fn MetadataSourceDialog(
     let search = move |_| {
         let c = c1.clone();
         let q = SearchQuery {
-            provider: request().provider,
+            provider: Some(request().provider),
             term: term(),
+            all_sources: false,
         };
         busy.set(true);
         error.set(None);

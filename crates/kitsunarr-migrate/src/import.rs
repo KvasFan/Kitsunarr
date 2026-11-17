@@ -91,6 +91,9 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "preferredmetadatalanguage",
     "tmdbapikey",
     "omdbapikey",
+    // Tanukarr's catalogue order and disabled catalogues.
+    "metadatasourceorder",
+    "disabledmetadatasources",
 ];
 
 /// Custom-format specification implementations Sonarr v4 provides (others are kept but flagged).
@@ -1714,7 +1717,11 @@ impl<'a> Importer<'a> {
         }
         // Catalogue keys (Tanukarr's `tmdbapikey` and `omdbapikey` `Config` entries).
         if let Some(cfg) = self.snap.media_management.clone().filter(|r| {
-            r.has("tmdbapikey") || r.has("omdbapikey") || r.has("preferredmetadatalanguage")
+            r.has("tmdbapikey")
+                || r.has("omdbapikey")
+                || r.has("preferredmetadatalanguage")
+                || r.has("metadatasourceorder")
+                || r.has("disabledmetadatasources")
         }) {
             let current: MetadataSourcesSettings =
                 settings::get_or_default(&mut *conn, settings::KEY_METADATA_SOURCES).await?;
@@ -1727,6 +1734,25 @@ impl<'a> Importer<'a> {
             }
             if let Some(l) = cfg.i32("preferredmetadatalanguage").filter(|l| *l > 0) {
                 next.preferred_metadata_language = Some(l);
+            }
+            // Tanukarr's `MetadataSourceOrder` and `DisabledMetadataSources`: comma-separated
+            // `MetadataSourceType` numbers in the database, lists of names in the API.
+            if let Some(order) = cfg.raw("metadatasourceorder").map(metadata_sources) {
+                next.source_order = order;
+            }
+            if let Some(disabled) = cfg.raw("disabledmetadatasources").map(metadata_sources) {
+                if kitsunarr_domain::api::metadata::validate_sources(&[], &disabled).is_empty() {
+                    next.disabled_sources = disabled;
+                } else {
+                    self.warn(
+                        WarningSeverity::Warning,
+                        "settings",
+                        None,
+                        None,
+                        "Every metadata source is disabled in the source; all catalogues stay enabled."
+                            .to_string(),
+                    );
+                }
             }
             if next == current {
                 self.count("settings", Act::Skip);
@@ -3084,4 +3110,45 @@ async fn record_failure(
             migration_runs::finish(db.pool(), id, "failed", &json!([]), &json!({}), Some(error))
                 .await;
     }
+}
+
+/// Tanukarr's `MetadataSourcePolicy.Parse`: known catalogues, once each, from comma-separated
+/// `MetadataSourceType` numbers (`Config`) or a list of names or numbers (API).
+fn metadata_sources(v: &serde_json::Value) -> Vec<MetadataProvider> {
+    use kitsunarr_domain::api::metadata::from_tanukarr_source_id;
+    let parse = |part: &str| {
+        let part = part.trim();
+        part.parse::<i32>()
+            .ok()
+            .and_then(from_tanukarr_source_id)
+            .or_else(|| part.parse::<MetadataProvider>().ok())
+    };
+    let parsed: Vec<MetadataProvider> = match v {
+        serde_json::Value::String(s) => s.split(',').filter_map(parse).collect(),
+        serde_json::Value::Array(items) => items
+            .iter()
+            .filter_map(|i| match i {
+                serde_json::Value::String(s) => parse(s),
+                serde_json::Value::Number(n) => n
+                    .as_i64()
+                    .and_then(|n| i32::try_from(n).ok())
+                    .and_then(from_tanukarr_source_id),
+                _ => None,
+            })
+            .collect(),
+        serde_json::Value::Number(n) => n
+            .as_i64()
+            .and_then(|n| i32::try_from(n).ok())
+            .and_then(from_tanukarr_source_id)
+            .into_iter()
+            .collect(),
+        _ => Vec::new(),
+    };
+    let mut out = Vec::new();
+    for p in parsed {
+        if !out.contains(&p) {
+            out.push(p);
+        }
+    }
+    out
 }

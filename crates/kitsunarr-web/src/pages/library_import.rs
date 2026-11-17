@@ -98,8 +98,9 @@ pub fn LibraryImport() -> Element {
         spawn(async move {
             for folder in list {
                 let query = SearchQuery {
-                    provider: catalogue,
+                    provider: Some(catalogue),
                     term: folder.search_term.clone(),
+                    all_sources: false,
                 };
                 let result = if folder.search_term.trim().is_empty() {
                     Ok(Vec::new())

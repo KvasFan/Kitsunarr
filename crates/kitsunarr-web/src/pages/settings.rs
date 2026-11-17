@@ -2811,7 +2811,7 @@ pub fn SettingsMetadata() -> Element {
                 Ok(saved) => {
                     keys.set(Some(saved));
                     catalogues.restart();
-                    app.success("Metadata keys saved.");
+                    app.success("Metadata sources saved.");
                 }
                 Err(e) => app.error(&e),
             }
@@ -2825,26 +2825,66 @@ pub fn SettingsMetadata() -> Element {
         match &*catalogues.read() {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
-            Some(Ok(list)) => rsx! {
-                div { class: "table-wrap",
-                    table { class: "table",
-                        thead { tr { th { "Catalogue" } th { "Covers" } th { class: "hide-mobile", "Credit" } th { "Status" } } }
-                        tbody {
-                            for c in list.iter() {
-                                tr { key: "{c.provider}",
-                                    td { a { href: "{c.url}", target: "_blank", rel: "noopener", strong { "{c.name}" } } }
-                                    td { class: "small", "{c.description}" }
-                                    td { class: "hide-mobile small muted", "{c.attribution}" }
-                                    td {
-                                        if c.available { Badge { text: "available", tone: "success" } }
-                                        else { Badge { text: "API key needed", tone: "warning" } }
+            Some(Ok(list)) => {
+                // Tanukarr's Sources editor: catalogues in preference order (the add page lists
+                // and searches them in this order), each one on or off.
+                let order: Vec<kitsunarr_domain::MetadataProvider> = match keys() {
+                    Some(k) => kitsunarr_domain::api::metadata::source_order(&k),
+                    None => list.iter().map(|c| c.provider).collect(),
+                };
+                let rows: Vec<kitsunarr_domain::api::metadata::CatalogueInfo> = order
+                    .iter()
+                    .filter_map(|p| list.iter().find(|c| c.provider == *p).cloned())
+                    .collect();
+                let last = rows.len().saturating_sub(1);
+                let disabled = keys().map(|k| k.disabled_sources).unwrap_or_default();
+                rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { class: "num", "#" } th { "Catalogue" } th { "Covers" } th { class: "hide-mobile", "Credit" } th { "Status" } th { "Enabled" } th { span { class: "sr-only", "Order" } } } }
+                            tbody {
+                                for (i, c) in rows.iter().enumerate() {
+                                    {
+                                        let p = c.provider;
+                                        let on = !disabled.contains(&p);
+                                        rsx! {
+                                            tr { key: "{p}", class: if on { "" } else { "rejected" },
+                                                td { class: "num small muted", "{i + 1}" }
+                                                td { a { href: "{c.url}", target: "_blank", rel: "noopener", strong { "{c.name}" } } }
+                                                td { class: "small", "{c.description}" }
+                                                td { class: "hide-mobile small muted", "{c.attribution}" }
+                                                td {
+                                                    if c.available { Badge { text: "available", tone: "success" } }
+                                                    else { Badge { text: "API key needed", tone: "warning" } }
+                                                }
+                                                td {
+                                                    input { r#type: "checkbox", checked: on, "aria-label": "Enable {c.name}",
+                                                        onchange: move |e: FormEvent| {
+                                                            if let Some(k) = keys.write().as_mut() {
+                                                                k.disabled_sources.retain(|x| *x != p);
+                                                                if !e.checked() { k.disabled_sources.push(p); }
+                                                            }
+                                                        } }
+                                                }
+                                                td { class: "shrink",
+                                                    div { class: "row tight",
+                                                        button { class: "btn sm ghost", disabled: i == 0, "aria-label": "Move {c.name} up", onclick: move |_| move_source(keys, i, true), "↑" }
+                                                        button { class: "btn sm ghost", disabled: i == last, "aria-label": "Move {c.name} down", onclick: move |_| move_source(keys, i, false), "↓" }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    p { class: "help small faint", "Add media lists the enabled catalogues in this order, and \"All enabled catalogues\" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply." }
+                    if keys().is_some_and(|k| kitsunarr_domain::api::metadata::enabled_sources(&k).is_empty()) {
+                        div { class: "alert warning", role: "status", "Enable at least one metadata source." }
+                    }
                 }
-            },
+            }
         }
         div { class: "card", style: "margin-top: var(--sp-4)",
             h3 { "API keys and language" }
@@ -2870,11 +2910,27 @@ pub fn SettingsMetadata() -> Element {
                         }
                     }
                     p { class: "help small faint", "Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one." }
-                    div { class: "row end", button { class: "btn primary", onclick: save, "Save keys" } }
+                    div { class: "row end", button { class: "btn primary", onclick: save, "Save" } }
                 },
             }
         }
         MetadataConsumers {}
+    }
+}
+
+/// Moves the catalogue at `i` one place up or down in the preference order.
+fn move_source(mut keys: Signal<Option<MetadataSourcesSettings>>, i: usize, up: bool) {
+    if let Some(k) = keys.write().as_mut() {
+        let mut order = kitsunarr_domain::api::metadata::source_order(k);
+        let j = if up {
+            i.checked_sub(1)
+        } else {
+            Some(i + 1).filter(|j| *j < order.len())
+        };
+        if let Some(j) = j {
+            order.swap(i, j);
+            k.source_order = order;
+        }
     }
 }
 
