@@ -167,6 +167,8 @@ pub struct ServerConfig {
     /// Maximum size of an uploaded Sonarr/Tanukarr backup (bytes).
     pub max_backup_upload_bytes: usize,
     pub request_timeout_secs: u64,
+    /// Overrides Settings › General › Security › Allowed hosts (comma separated host names).
+    pub allowed_hosts: Option<String>,
 }
 
 impl Default for ServerConfig {
@@ -179,6 +181,65 @@ impl Default for ServerConfig {
             max_body_bytes: 2 * 1024 * 1024,
             max_backup_upload_bytes: 2 * 1024 * 1024 * 1024,
             request_timeout_secs: 60,
+            allowed_hosts: None,
+        }
+    }
+}
+
+/// How users sign in (Sonarr's `AuthenticationType`). Set here, it overrides Settings ›
+/// General › Security.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum AuthMethod {
+    /// Kitsunarr's sign-in page. Sonarr's retired `basic` and `none` mean this, as in Tanukarr.
+    #[serde(alias = "basic", alias = "none")]
+    Forms,
+    /// A reverse proxy authenticates; Kitsunarr asks for nothing.
+    External,
+    /// An OpenID Connect identity provider.
+    Oidc,
+}
+
+impl FromStr for AuthMethod {
+    type Err = String;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.trim().to_ascii_lowercase().as_str() {
+            "forms" | "basic" | "none" => Ok(Self::Forms),
+            "external" => Ok(Self::External),
+            "oidc" => Ok(Self::Oidc),
+            other => Err(format!(
+                "expected `forms`, `external` or `oidc`, got `{other}`"
+            )),
+        }
+    }
+}
+
+/// When authentication is required (Sonarr's `AuthenticationRequiredType`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum AuthRequired {
+    Enabled,
+    #[serde(alias = "disabled_for_local_addresses")]
+    DisabledForLocalAddresses,
+    #[serde(alias = "disabled_for_localhost", alias = "disabledForLocalHost")]
+    DisabledForLocalhost,
+}
+
+impl FromStr for AuthRequired {
+    type Err = String;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s
+            .trim()
+            .to_ascii_lowercase()
+            .replace(['_', '-'], "")
+            .as_str()
+        {
+            "enabled" => Ok(Self::Enabled),
+            "disabledforlocaladdresses" => Ok(Self::DisabledForLocalAddresses),
+            "disabledforlocalhost" => Ok(Self::DisabledForLocalhost),
+            other => Err(format!(
+                "expected `enabled`, `disabledForLocalAddresses` or `disabledForLocalhost`, got `{other}`"
+            )),
         }
     }
 }
@@ -194,6 +255,23 @@ pub struct AuthConfig {
     /// Failed logins allowed per client address within `login_window_secs`.
     pub max_failed_logins: u32,
     pub login_window_secs: u64,
+    /// Overrides of Settings › General › Security (Tanukarr's `SONARR__AUTH__*` options).
+    /// Unset values follow the settings saved in the web interface.
+    pub method: Option<AuthMethod>,
+    pub required: Option<AuthRequired>,
+    pub trust_cgnat_ip_addresses: Option<bool>,
+    pub oidc_authority: Option<String>,
+    pub oidc_client_id: Option<String>,
+    pub oidc_client_secret: Option<String>,
+    pub oidc_user_identifier: Option<String>,
+    pub oidc_scopes: Option<String>,
+    /// A password reset token (at least 20 characters) accepted once on the sign-in page's
+    /// reset form until the next restart (Tanukarr's `SONARR__AUTH__RESETTOKEN`).
+    pub reset_token: Option<String>,
+    /// Creates the administrator on first start instead of the setup page
+    /// (Tanukarr's `InitialUsername` / `InitialPassword`).
+    pub initial_username: Option<String>,
+    pub initial_password: Option<String>,
 }
 
 impl Default for AuthConfig {
@@ -204,6 +282,17 @@ impl Default for AuthConfig {
             secure_cookies: CookieSecurity::Auto,
             max_failed_logins: 10,
             login_window_secs: 300,
+            method: None,
+            required: None,
+            trust_cgnat_ip_addresses: None,
+            oidc_authority: None,
+            oidc_client_id: None,
+            oidc_client_secret: None,
+            oidc_user_identifier: None,
+            oidc_scopes: None,
+            reset_token: None,
+            initial_username: None,
+            initial_password: None,
         }
     }
 }
@@ -391,6 +480,49 @@ impl Config {
         if let Some(v) = env.var("KITSUNARR_SESSION_DAYS") {
             self.auth.session_days = parse("KITSUNARR_SESSION_DAYS", v)?;
         }
+        if let Some(v) = env.var("KITSUNARR_AUTH_METHOD") {
+            self.auth.method = Some(parse("KITSUNARR_AUTH_METHOD", v)?);
+        }
+        if let Some(v) = env.var("KITSUNARR_AUTH_REQUIRED") {
+            self.auth.required = Some(parse("KITSUNARR_AUTH_REQUIRED", v)?);
+        }
+        if let Some(v) = env.var("KITSUNARR_AUTH_TRUST_CGNAT_IP_ADDRESSES") {
+            self.auth.trust_cgnat_ip_addresses =
+                Some(parse("KITSUNARR_AUTH_TRUST_CGNAT_IP_ADDRESSES", v)?);
+        }
+        for (key, slot) in [
+            (
+                "KITSUNARR_AUTH_OIDC_AUTHORITY",
+                &mut self.auth.oidc_authority,
+            ),
+            (
+                "KITSUNARR_AUTH_OIDC_CLIENT_ID",
+                &mut self.auth.oidc_client_id,
+            ),
+            (
+                "KITSUNARR_AUTH_OIDC_CLIENT_SECRET",
+                &mut self.auth.oidc_client_secret,
+            ),
+            (
+                "KITSUNARR_AUTH_OIDC_USER_IDENTIFIER",
+                &mut self.auth.oidc_user_identifier,
+            ),
+            ("KITSUNARR_AUTH_OIDC_SCOPES", &mut self.auth.oidc_scopes),
+            ("KITSUNARR_AUTH_RESET_TOKEN", &mut self.auth.reset_token),
+            (
+                "KITSUNARR_AUTH_INITIAL_USERNAME",
+                &mut self.auth.initial_username,
+            ),
+            (
+                "KITSUNARR_AUTH_INITIAL_PASSWORD",
+                &mut self.auth.initial_password,
+            ),
+            ("KITSUNARR_ALLOWED_HOSTS", &mut self.server.allowed_hosts),
+        ] {
+            if let Some(v) = env.var(key) {
+                *slot = Some(v);
+            }
+        }
         Ok(())
     }
 
@@ -461,9 +593,22 @@ impl Config {
              # url_base = \"\"            # e.g. \"/kitsunarr\" behind a reverse proxy\n\
              # trusted_proxies = []      # e.g. [\"172.16.0.0/12\"]\n\
              \n\
+             # allowed_hosts = \"\"       # overrides Settings › General › Security\n\
+             \n\
              [auth]\n\
              # session_days = 30\n\
              # secure_cookies = \"auto\"   # auto | always | never\n\
+             # Overrides of Settings › General › Security (unset: as saved in the web interface)\n\
+             # method = \"forms\"          # forms | external | oidc\n\
+             # required = \"enabled\"      # enabled | disabledForLocalAddresses | disabledForLocalhost\n\
+             # oidc_authority = \"https://auth.example.com\"\n\
+             # oidc_client_id = \"\"\n\
+             # oidc_client_secret = \"\"\n\
+             # oidc_user_identifier = \"\"  # verified e-mail or subject allowed to sign in\n\
+             # oidc_scopes = \"openid profile email\"\n\
+             # reset_token = \"\"          # 20+ characters; enables one password reset\n\
+             # initial_username = \"admin\"\n\
+             # initial_password = \"\"     # creates the administrator on first start\n\
              \n\
              [log]\n\
              # level = \"info\"\n\
@@ -583,6 +728,46 @@ mod tests {
         )
         .unwrap_err();
         assert!(err.to_string().contains("metadata.anilist_url"), "{err}");
+    }
+
+    #[test]
+    fn authentication_overrides_from_file_and_env() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(
+            dir.path().join(CONFIG_FILE_NAME),
+            "[server]\nallowed_hosts = \"kitsunarr.lan\"\n[auth]\nmethod = \"basic\"\nrequired = \"disabledForLocalAddresses\"\noidc_scopes = \"openid email\"\n",
+        )
+        .unwrap();
+        let cfg = Config::load(Some(dir.path()), &[("X", "y")]).unwrap();
+        assert_eq!(
+            cfg.auth.method,
+            Some(AuthMethod::Forms),
+            "basic means forms"
+        );
+        assert_eq!(
+            cfg.auth.required,
+            Some(AuthRequired::DisabledForLocalAddresses)
+        );
+        assert_eq!(cfg.server.allowed_hosts.as_deref(), Some("kitsunarr.lan"));
+        let env = [
+            ("KITSUNARR_AUTH_METHOD", "OIDC"),
+            ("KITSUNARR_AUTH_REQUIRED", "disabled_for_localhost"),
+            ("KITSUNARR_AUTH_RESET_TOKEN", "abcdefghijklmnopqrstu"),
+            ("KITSUNARR_AUTH_OIDC_CLIENT_SECRET", "s3cret"),
+            ("KITSUNARR_AUTH_TRUST_CGNAT_IP_ADDRESSES", "true"),
+        ];
+        let cfg = Config::load(Some(dir.path()), &env).unwrap();
+        assert_eq!(cfg.auth.method, Some(AuthMethod::Oidc));
+        assert_eq!(cfg.auth.required, Some(AuthRequired::DisabledForLocalhost));
+        assert_eq!(
+            cfg.auth.reset_token.as_deref(),
+            Some("abcdefghijklmnopqrstu")
+        );
+        assert_eq!(cfg.auth.oidc_client_secret.as_deref(), Some("s3cret"));
+        assert_eq!(cfg.auth.oidc_scopes.as_deref(), Some("openid email"));
+        assert_eq!(cfg.auth.trust_cgnat_ip_addresses, Some(true));
+        let err = Config::load(Some(dir.path()), &[("KITSUNARR_AUTH_METHOD", "ldap")]).unwrap_err();
+        assert!(err.to_string().contains("KITSUNARR_AUTH_METHOD"), "{err}");
     }
 
     #[test]

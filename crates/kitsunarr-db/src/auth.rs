@@ -178,12 +178,138 @@ pub async fn delete_user_sessions(
     Ok(r.rows_affected())
 }
 
-pub async fn purge_expired_sessions(ex: impl SqliteExecutor<'_>) -> DbResult<u64> {
+/// Removes expired sessions, password and OIDC (single-sign-on) ones.
+pub async fn purge_expired_sessions(pool: &sqlx::SqlitePool) -> DbResult<u64> {
+    let ts = now();
     let r = sqlx::query("DELETE FROM sessions WHERE expires_at <= ?")
+        .bind(&ts)
+        .execute(pool)
+        .await?;
+    let sso = sqlx::query("DELETE FROM sso_sessions WHERE expires_at <= ?")
+        .bind(&ts)
+        .execute(pool)
+        .await?;
+    Ok(r.rows_affected() + sso.rows_affected())
+}
+
+/// The single administrator, if any (the account a password reset applies to).
+pub async fn first_admin(ex: impl SqliteExecutor<'_>) -> DbResult<Option<User>> {
+    Ok(
+        sqlx::query_as("SELECT * FROM users ORDER BY (role = 'admin') DESC, id LIMIT 1")
+            .fetch_optional(ex)
+            .await?,
+    )
+}
+
+/// Sonarr's `UserService.Upsert` for a password reset: the existing account gets the new name
+/// and password hash; without an account one is created. Returns the account id.
+pub async fn upsert_admin(db: &Database, username: &str, password_hash: &str) -> DbResult<i64> {
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    let existing: Option<i64> =
+        sqlx::query_scalar("SELECT id FROM users ORDER BY (role = 'admin') DESC, id LIMIT 1")
+            .fetch_optional(&mut *tx)
+            .await?;
+    let id = match existing {
+        Some(id) => {
+            sqlx::query("UPDATE users SET username = ?, password_hash = ? WHERE id = ?")
+                .bind(username.trim())
+                .bind(password_hash)
+                .bind(id)
+                .execute(&mut *tx)
+                .await
+                .map_err(|e| DbError::from_write(e, "user"))?;
+            id
+        }
+        None => sqlx::query_scalar(
+            "INSERT INTO users (username, password_hash, role, created_at) VALUES (?, ?, 'admin', ?) RETURNING id",
+        )
+        .bind(username.trim())
+        .bind(password_hash)
         .bind(now())
+        .fetch_one(&mut *tx)
+        .await
+        .map_err(|e| DbError::from_write(e, "user"))?,
+    };
+    tx.commit().await?;
+    Ok(id)
+}
+
+#[derive(Debug, Clone, FromRow)]
+pub struct SsoSession {
+    pub id: i64,
+    pub subject: String,
+    pub id_token: Option<String>,
+    pub expires_at: String,
+    pub last_seen_at: String,
+}
+
+pub struct NewSsoSession<'a> {
+    pub token_hash: &'a str,
+    pub subject: &'a str,
+    pub id_token: Option<&'a str>,
+    pub expires_at: &'a str,
+    pub user_agent: Option<&'a str>,
+    pub remote_addr: Option<&'a str>,
+}
+
+pub async fn create_sso_session(
+    ex: impl SqliteExecutor<'_>,
+    s: NewSsoSession<'_>,
+) -> DbResult<i64> {
+    let ts = now();
+    Ok(sqlx::query_scalar(
+        "INSERT INTO sso_sessions (token_hash, subject, id_token, created_at, expires_at, last_seen_at, user_agent, remote_addr) \
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+    )
+    .bind(s.token_hash)
+    .bind(s.subject)
+    .bind(s.id_token)
+    .bind(&ts)
+    .bind(s.expires_at)
+    .bind(&ts)
+    .bind(s.user_agent.map(|ua| ua.chars().take(256).collect::<String>()))
+    .bind(s.remote_addr)
+    .fetch_one(ex)
+    .await?)
+}
+
+/// A live (unexpired) single-sign-on session by token hash.
+pub async fn find_sso_session(
+    ex: impl SqliteExecutor<'_>,
+    token_hash: &str,
+    now_ts: &str,
+) -> DbResult<Option<SsoSession>> {
+    Ok(sqlx::query_as(
+        "SELECT id, subject, id_token, expires_at, last_seen_at FROM sso_sessions \
+         WHERE token_hash = ? AND expires_at > ?",
+    )
+    .bind(token_hash)
+    .bind(now_ts)
+    .fetch_optional(ex)
+    .await?)
+}
+
+pub async fn touch_sso_session(ex: impl SqliteExecutor<'_>, id: i64) -> DbResult<()> {
+    sqlx::query("UPDATE sso_sessions SET last_seen_at = ? WHERE id = ?")
+        .bind(now())
+        .bind(id)
         .execute(ex)
         .await?;
-    Ok(r.rows_affected())
+    Ok(())
+}
+
+/// Ends a single-sign-on session; returns it (for the provider's sign-out) when it existed.
+pub async fn delete_sso_session(
+    ex: impl SqliteExecutor<'_>,
+    token_hash: &str,
+) -> DbResult<Option<SsoSession>> {
+    Ok(sqlx::query_as(
+        "DELETE FROM sso_sessions WHERE token_hash = ? \
+         RETURNING id, subject, id_token, expires_at, last_seen_at",
+    )
+    .bind(token_hash)
+    .fetch_optional(ex)
+    .await?)
 }
 
 #[cfg(test)]
@@ -245,5 +371,68 @@ mod tests {
         );
         assert_eq!(purge_expired_sessions(db.pool()).await.unwrap(), 1);
         assert_eq!(delete_user_sessions(db.pool(), id, None).await.unwrap(), 1);
+    }
+
+    #[tokio::test]
+    async fn password_reset_upserts_the_administrator() {
+        let db = crate::test_support::db().await;
+        assert!(first_admin(db.pool()).await.unwrap().is_none());
+        let id = upsert_admin(&db, " boss ", "$one").await.unwrap();
+        let again = upsert_admin(&db, "chief", "$two").await.unwrap();
+        assert_eq!(id, again, "the one account is renamed, not duplicated");
+        let user = first_admin(db.pool()).await.unwrap().unwrap();
+        assert_eq!(
+            (user.username.as_str(), user.password_hash.as_str()),
+            ("chief", "$two")
+        );
+        assert_eq!(user_count(db.pool()).await.unwrap(), 1);
+    }
+
+    #[tokio::test]
+    async fn single_sign_on_sessions() {
+        let db = crate::test_support::db().await;
+        for (hash, expires) in [
+            ("live", "2999-01-01T00:00:00Z"),
+            ("old", "2000-01-01T00:00:00Z"),
+        ] {
+            create_sso_session(
+                db.pool(),
+                NewSsoSession {
+                    token_hash: hash,
+                    subject: "fox@example.com",
+                    id_token: Some("id.token.sig"),
+                    expires_at: expires,
+                    user_agent: None,
+                    remote_addr: Some("127.0.0.1"),
+                },
+            )
+            .await
+            .unwrap();
+        }
+        let ts = now();
+        let live = find_sso_session(db.pool(), "live", &ts)
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(live.subject, "fox@example.com");
+        touch_sso_session(db.pool(), live.id).await.unwrap();
+        assert!(
+            find_sso_session(db.pool(), "old", &ts)
+                .await
+                .unwrap()
+                .is_none()
+        );
+        assert_eq!(purge_expired_sessions(db.pool()).await.unwrap(), 1);
+        let ended = delete_sso_session(db.pool(), "live")
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(ended.id_token.as_deref(), Some("id.token.sig"));
+        assert!(
+            delete_sso_session(db.pool(), "live")
+                .await
+                .unwrap()
+                .is_none()
+        );
     }
 }

@@ -20,9 +20,11 @@ pub mod ical;
 pub mod import_lists;
 pub mod library_tools;
 pub mod logs;
+pub mod oidc;
 pub mod proxy;
 pub mod routes;
 pub mod rss;
+pub mod security;
 pub mod signalr;
 pub mod tls;
 pub mod v3;
@@ -105,6 +107,8 @@ pub struct AppStateInner {
     /// `RemotePathMappingCheck` after a failed import (`EpisodeImportFailedEvent`), until an
     /// import succeeds.
     pub import_health: std::sync::Mutex<Option<kitsunarr_domain::api::system::HealthCheck>>,
+    /// Settings › General › Security in force, password resets and OIDC sign-ins.
+    pub security: security::SecurityState,
 }
 
 impl std::ops::Deref for AppState {
@@ -128,6 +132,7 @@ impl AppState {
         metadata: kitsunarr_metadata::Metadata,
         logs: LogBuffer,
     ) -> Self {
+        let security_state = security::SecurityState::new(&config);
         Self(Arc::new(AppStateInner {
             db,
             config,
@@ -148,6 +153,7 @@ impl AppState {
             commands: Default::default(),
             last_health: Default::default(),
             import_health: Default::default(),
+            security: security_state,
             proxy: Default::default(),
             certificates: Default::default(),
             oauth_codes: Default::default(),
@@ -259,6 +265,7 @@ pub fn app(state: AppState) -> Router {
         .into();
     let max_body = state.config.server.max_body_bytes;
     let url_base = state.config.server.url_base.clone();
+    let host_filter_state = state.clone();
 
     // Sonarr's `/api/v3` for third-party tools, behind the same authentication.
     let v3 = v3::router()
@@ -310,6 +317,7 @@ pub fn app(state: AppState) -> Router {
                 }
             }),
         )
+        .merge(security::form_routes())
         .fallback(assets::serve)
         .with_state(state)
         .layer(DefaultBodyLimit::max(max_body));
@@ -324,21 +332,25 @@ pub fn app(state: AppState) -> Router {
         )
     };
 
-    app.layer(CsrfLayer::new())
-        .layer(SetResponseHeaderLayer::if_not_present(
-            HeaderName::from_static("x-content-type-options"),
-            HeaderValue::from_static("nosniff"),
-        ))
-        .layer(SetResponseHeaderLayer::if_not_present(
-            HeaderName::from_static("referrer-policy"),
-            HeaderValue::from_static("same-origin"),
-        ))
-        .layer(CompressionLayer::new())
-        .layer(TraceLayer::new_for_http())
-        .layer(SetSensitiveRequestHeadersLayer::new([
-            header::AUTHORIZATION,
-            header::COOKIE,
-            HeaderName::from_static("x-api-key"),
-        ]))
-        .layer(CatchPanicLayer::new())
+    app.layer(axum::middleware::from_fn_with_state(
+        host_filter_state,
+        security::host_filter,
+    ))
+    .layer(CsrfLayer::new())
+    .layer(SetResponseHeaderLayer::if_not_present(
+        HeaderName::from_static("x-content-type-options"),
+        HeaderValue::from_static("nosniff"),
+    ))
+    .layer(SetResponseHeaderLayer::if_not_present(
+        HeaderName::from_static("referrer-policy"),
+        HeaderValue::from_static("same-origin"),
+    ))
+    .layer(CompressionLayer::new())
+    .layer(TraceLayer::new_for_http())
+    .layer(SetSensitiveRequestHeadersLayer::new([
+        header::AUTHORIZATION,
+        header::COOKIE,
+        HeaderName::from_static("x-api-key"),
+    ]))
+    .layer(CatchPanicLayer::new())
 }

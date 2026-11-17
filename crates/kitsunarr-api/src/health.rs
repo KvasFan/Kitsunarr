@@ -364,6 +364,8 @@ pub async fn more_checks(state: &AppState, out: &mut Vec<HealthCheck>) -> ApiRes
             ));
         }
     }
+    // `PasswordResetTokenCheck` and `OidcConfigurationCheck` (Tanukarr).
+    crate::security::health_checks(state, out).await;
     Ok(())
 }
 

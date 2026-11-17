@@ -224,6 +224,16 @@ impl Client {
     pub async fn regenerate_api_key(&self) -> ClientResult<ApiKeyResponse> {
         self.post("/auth/apikey/regenerate", &Empty {}).await
     }
+    /// Settings › General › Security.
+    pub async fn security(&self) -> ClientResult<kitsunarr_domain::api::auth::SecuritySettings> {
+        self.get("/settings/security").await
+    }
+    pub async fn put_security(
+        &self,
+        s: &kitsunarr_domain::api::auth::SecuritySettings,
+    ) -> ClientResult<kitsunarr_domain::api::auth::SecuritySettings> {
+        self.put("/settings/security", s).await
+    }
 
     // --- system -------------------------------------------------------------------------------
     pub async fn system_status(&self) -> ClientResult<SystemStatus> {
