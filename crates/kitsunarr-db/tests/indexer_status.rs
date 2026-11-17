@@ -1,5 +1,84 @@
 //! Indexer failure back-off after Sonarr's `IndexerStatusServiceFixture`.
 
+/// `NotificationStatusService`: five minutes of grace after the first failure, at most level 5
+/// (one hour), and a deleted connection takes its status with it.
+#[tokio::test]
+async fn notification_failures_back_off_after_a_grace_period() {
+    use indexer_status::Kind;
+    let (_dir, db) = db().await;
+    let pool = db.pool();
+    sqlx::query("INSERT INTO notifications (id, name, implementation, settings, created_at) VALUES (1, 'Hook', 'Webhook', '{}', '2026-11-01T00:00:00Z')")
+        .execute(pool)
+        .await
+        .unwrap();
+    let started = Utc::now() - Duration::hours(1);
+    let now = Utc::now();
+    let fail = |at| {
+        indexer_status::record_failure_of(
+            Kind::Notification,
+            pool,
+            1,
+            Failure::Failure,
+            started,
+            at,
+        )
+    };
+    let s = fail(now).await.unwrap();
+    assert_eq!((s.escalation_level, s.disabled_till.as_deref()), (1, None));
+    assert!(
+        indexer_status::blocked_of(Kind::Notification, pool, now)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    // Past the grace period: blocked, escalating up to one hour.
+    let later = now + Duration::minutes(6);
+    for _ in 0..10 {
+        fail(later).await.unwrap();
+    }
+    let s = indexer_status::get_of(Kind::Notification, pool, 1)
+        .await
+        .unwrap();
+    assert_eq!(s.escalation_level, 5);
+    assert_eq!(
+        s.disabled_till().unwrap().timestamp(),
+        (later + Duration::hours(1)).timestamp()
+    );
+    assert_eq!(
+        indexer_status::blocked_of(Kind::Notification, pool, later)
+            .await
+            .unwrap()
+            .len(),
+        1
+    );
+    // Kept apart from indexers.
+    assert!(
+        indexer_status::blocked(pool, later)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    indexer_status::record_success_of(Kind::Notification, pool, 1)
+        .await
+        .unwrap();
+    assert!(
+        indexer_status::blocked_of(Kind::Notification, pool, later)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+    sqlx::query("DELETE FROM notifications WHERE id = 1")
+        .execute(pool)
+        .await
+        .unwrap();
+    assert!(
+        indexer_status::all_of(Kind::Notification, pool)
+            .await
+            .unwrap()
+            .is_empty()
+    );
+}
+
 use chrono::{Duration, Utc};
 use kitsunarr_db::Database;
 use kitsunarr_db::indexer_status::{self, Failure};

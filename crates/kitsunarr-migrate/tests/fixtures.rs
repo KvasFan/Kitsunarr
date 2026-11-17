@@ -819,6 +819,128 @@ async fn tanukarr_retained_versions_are_imported() {
     assert_eq!(m["addedAt"], "2026-10-01T10:00:00Z");
 }
 
+/// Tanukarr's `AnimeGroupingMode.Disabled` keeps titles out of automatic grouping after the
+/// migration, and its `SourceReleaseTitle`/`SourceReleaseSize` (migration 237) stay on the
+/// imported files and films.
+#[tokio::test]
+async fn tanukarr_disabled_grouping_and_source_releases_are_imported() {
+    let tmp = tempfile::tempdir().unwrap();
+    let media = tmp.path().join("media");
+    make_media(
+        &media,
+        &[
+            "/tv/Breaking Bad",
+            "/tv/Chernobyl",
+            "/anime/Cowboy Bebop",
+            "/tv/Cowboy Bebop",
+            "/movies/Cowboy Bebop - The Movie - Knockin' on Heaven's Door",
+        ],
+    );
+    let file = std::fs::File::open(fixture("tanukarr-0.1.5/backup.zip")).unwrap();
+    let mut archive = zip::ZipArchive::new(file).unwrap();
+    let db_path = tmp.path().join("sonarr.db");
+    std::io::copy(
+        &mut archive.by_name("sonarr.db").unwrap(),
+        &mut std::fs::File::create(&db_path).unwrap(),
+    )
+    .unwrap();
+    let source = sqlx::SqlitePool::connect(&format!("sqlite://{}", db_path.display()))
+        .await
+        .unwrap();
+    // Disabled grouping clears the group (Tanukarr's `Series.ApplyChanges`): only the mode is
+    // left. Series 3 is the anime Cowboy Bebop, series 4 the film.
+    sqlx::query("UPDATE Series SET AnimeGroupingMode = 2, AnimeGroupId = NULL WHERE Id IN (3, 4)")
+        .execute(&source)
+        .await
+        .unwrap();
+    sqlx::query("UPDATE EpisodeFiles SET SourceReleaseSize = 30000000000, SourceReleaseTitle = 'Breaking.Bad.S01.1080p.BluRay.x264-ROVERS' WHERE SeriesId = 1")
+        .execute(&source)
+        .await
+        .unwrap();
+    sqlx::query("UPDATE EpisodeFiles SET SourceReleaseSize = 0, SourceReleaseTitle = 'ignored' WHERE SeriesId = 2")
+        .execute(&source)
+        .await
+        .unwrap();
+    sqlx::query("UPDATE EpisodeFiles SET SourceReleaseSize = 45000000000, SourceReleaseTitle = 'Cowboy.Bebop.Collection.1080p.BluRay-GRP' WHERE Id = 15")
+        .execute(&source)
+        .await
+        .unwrap();
+    source.close().await;
+
+    let src = load_from_backup(&db_path, tmp.path()).await.unwrap();
+    let db = fresh_db(tmp.path()).await;
+    for _ in 0..2 {
+        run(
+            &db,
+            &src,
+            &options(&media),
+            Mode::Apply {
+                backup_dir: tmp.path().join("b"),
+            },
+            &noop,
+        )
+        .await
+        .unwrap();
+    }
+    let excluded: Vec<(Option<String>, Option<String>)> = sqlx::query_as(
+        "SELECT s.path, m.title FROM collection_grouping_exclusions x \
+         LEFT JOIN series s ON s.id = x.series_id LEFT JOIN movies m ON m.id = x.movie_id ORDER BY s.path, m.title",
+    )
+    .fetch_all(db.pool())
+    .await
+    .unwrap();
+    assert_eq!(excluded.len(), 2, "{excluded:?}");
+    assert!(
+        excluded.iter().any(|(path, _)| path
+            .as_deref()
+            .is_some_and(|p| p.ends_with("/anime/Cowboy Bebop"))),
+        "{excluded:?}"
+    );
+    assert!(
+        excluded.iter().any(|(_, title)| title.is_some()),
+        "{excluded:?}"
+    );
+    assert_eq!(
+        count(&db, "SELECT COUNT(*) FROM collection_members m JOIN collections c ON c.id = m.collection_id WHERE c.kind = 'animeGroup' AND m.series_id IN (SELECT series_id FROM collection_grouping_exclusions)").await,
+        0
+    );
+    let sources: Vec<(String, Option<i64>, Option<String>)> = sqlx::query_as(
+        "SELECT relative_path, source_release_size, source_release_title FROM episode_files ORDER BY relative_path",
+    )
+    .fetch_all(db.pool())
+    .await
+    .unwrap();
+    let breaking_bad = sources
+        .iter()
+        .find(|(p, _, _)| p.contains("Breaking.Bad.S01E01"))
+        .unwrap();
+    assert_eq!(
+        (breaking_bad.1, breaking_bad.2.as_deref()),
+        (
+            Some(30_000_000_000),
+            Some("Breaking.Bad.S01.1080p.BluRay.x264-ROVERS")
+        )
+    );
+    // A size of 0 is no source release.
+    let chernobyl = sources
+        .iter()
+        .find(|(p, _, _)| p.contains("Chernobyl.S01E01"))
+        .unwrap();
+    assert_eq!((chernobyl.1, chernobyl.2.as_deref()), (None, None));
+    let film: (Option<i64>, Option<String>) =
+        sqlx::query_as("SELECT source_release_size, source_release_title FROM movie_files")
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert_eq!(
+        film,
+        (
+            Some(45_000_000_000),
+            Some("Cowboy.Bebop.Collection.1080p.BluRay-GRP".into())
+        )
+    );
+}
+
 #[tokio::test]
 async fn auto_tagging_and_original_country_are_imported() {
     let tmp = tempfile::tempdir().unwrap();

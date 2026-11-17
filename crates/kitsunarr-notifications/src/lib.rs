@@ -887,6 +887,107 @@ pub(crate) mod tests {
             .wants(&warning)
         );
         assert!(conn(json!({}), vec![9]).wants(&Event::Test));
+        // "Delete for upgrade" (`OnEpisodeFileDeleteForUpgrade`): only upgrades need it, and
+        // connections saved before the switch existed keep it on.
+        let delete = |reason: &str| Event::EpisodeFileDelete {
+            series: Box::new(series()),
+            episodes: vec![episode(1, "Pilot")],
+            file: FileRef::default(),
+            reason: reason.into(),
+        };
+        let on = json!({"onEpisodeFileDelete": true, "onEpisodeFileDeleteForUpgrade": true});
+        let off = json!({"onEpisodeFileDelete": true, "onEpisodeFileDeleteForUpgrade": false});
+        assert!(conn(on.clone(), vec![]).wants(&delete("Upgrade")));
+        assert!(!conn(off.clone(), vec![]).wants(&delete("Upgrade")));
+        assert!(conn(off, vec![]).wants(&delete("Manual")));
+        assert!(conn(json!({"onEpisodeFileDelete": true}), vec![]).wants(&delete("Upgrade")));
+        assert!(
+            !conn(json!({"onEpisodeFileDeleteForUpgrade": true}), vec![]).wants(&delete("Upgrade"))
+        );
+        // "On import complete".
+        let complete = import_complete(false);
+        assert!(conn(json!({"onImportComplete": true}), vec![3]).wants(&complete));
+        assert!(!conn(json!({"onDownload": true}), vec![]).wants(&complete));
+        assert!(!conn(json!({"onImportComplete": true}), vec![4]).wants(&complete));
+    }
+
+    pub fn import_complete(full_season: bool) -> Event {
+        let file = |n: i32| FileRef {
+            id: i64::from(n),
+            relative_path: format!("Season 01/Breaking.Bad.S01E0{n}.mkv"),
+            path: format!("/tv/Breaking Bad/Season 01/Breaking.Bad.S01E0{n}.mkv"),
+            quality: "WEBDL-1080p".into(),
+            quality_version: 1,
+            size: 1_000,
+            ..Default::default()
+        };
+        Event::ImportComplete(Box::new(ImportComplete {
+            series: series(),
+            episodes: vec![episode(1, "Pilot"), episode(2, "Cat's in the Bag...")],
+            files: vec![file(1), file(2)],
+            release: GrabbedRef {
+                release_title: Some("Breaking.Bad.S01.1080p.WEB-DL-GRP".into()),
+                indexer: Some("Indexer".into()),
+                size: Some(30_000),
+                indexer_flags: Vec::new(),
+                release_type: Some("SeasonPack".into()),
+            },
+            full_season,
+            release_group: Some("GRP".into()),
+            quality: "WEBDL-1080p".into(),
+            quality_version: 2,
+            download_client: Some("SABnzbd".into()),
+            download_client_type: Some("Sabnzbd".into()),
+            download_id: Some("SAB_1".into()),
+            source_path: "/downloads/Breaking.Bad.S01".into(),
+            destination_path: "/tv/Breaking Bad/Season 01".into(),
+        }))
+    }
+
+    /// `ImportCompleteMessage`: `GetMessage`, or `GetFullSeasonMessage` for a season, and the
+    /// "Import Complete" title.
+    #[test]
+    fn import_complete_messages() {
+        let e = import_complete(false);
+        assert_eq!(e.title(), "Import Complete");
+        assert_eq!(
+            e.message(),
+            "Breaking Bad - 1x01x02 - Pilot + Cat's in the Bag... [WEBDL-1080p Proper]"
+        );
+        assert_eq!(
+            import_complete(true).message(),
+            "Breaking Bad - Season 1 [WEBDL-1080p Proper]"
+        );
+        // `WebhookImportCompletePayload`.
+        let p = crate::webhook::payload(&e, &Instance::default());
+        assert_eq!(p["eventType"], "Download");
+        assert_eq!(p["fileCount"], 2);
+        assert_eq!(
+            p["episodeFiles"][1]["relativePath"],
+            "Season 01/Breaking.Bad.S01E02.mkv"
+        );
+        assert_eq!(
+            p["release"]["releaseTitle"],
+            "Breaking.Bad.S01.1080p.WEB-DL-GRP"
+        );
+        assert_eq!(p["sourcePath"], "/downloads/Breaking.Bad.S01");
+        assert_eq!(p["destinationPath"], "/tv/Breaking Bad/Season 01");
+        assert_eq!(p["downloadId"], "SAB_1");
+        assert!(p.get("episodeFile").is_none() && p.get("isUpgrade").is_none());
+        // `CustomScript.OnImportComplete`.
+        let env = crate::script::environment(&e, &Instance::default());
+        assert_eq!(env["Sonarr_EventType"], "Download");
+        assert_eq!(env["Sonarr_EpisodeFile_Count"], "2");
+        assert_eq!(env["Sonarr_EpisodeFile_Ids"], "1|2");
+        assert_eq!(env["Sonarr_EpisodeFile_EpisodeNumbers"], "1,2");
+        assert_eq!(env["Sonarr_Release_Quality"], "WEBDL-1080p");
+        assert_eq!(env["Sonarr_Release_QualityVersion"], "2");
+        assert_eq!(env["Sonarr_Release_Group"], "GRP");
+        assert_eq!(env["Sonarr_Release_Size"], "30000");
+        assert_eq!(env["Sonarr_SourceFolder"], "/downloads");
+        assert_eq!(env["Sonarr_DestinationPath"], "/tv/Breaking Bad/Season 01");
+        assert_eq!(env["Sonarr_DestinationFolder"], "/tv/Breaking Bad");
+        assert!(!env.contains_key("Sonarr_EpisodeFile_Id"));
     }
 
     #[test]

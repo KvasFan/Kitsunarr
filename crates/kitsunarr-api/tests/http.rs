@@ -2300,6 +2300,38 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
     let detail = client.series_detail(added.id).await.unwrap();
     let on_disk = std::path::Path::new(&detail.item.path).join(&file.relative_path);
     assert_eq!(std::fs::read(on_disk).unwrap(), b"video");
+    // Tanukarr's `SourceReleaseTitle`/`SourceReleaseSize`: the grabbed release stays on the
+    // file, and custom formats of the existing file read its size, not the file's 5 bytes.
+    let (size, title): (Option<i64>, Option<String>) = sqlx::query_as(
+        "SELECT source_release_size, source_release_title FROM episode_files WHERE id = ?",
+    )
+    .bind(file.id)
+    .fetch_one(server.state.db.pool())
+    .await
+    .unwrap();
+    assert_eq!(size, Some(release.size));
+    assert_eq!(
+        title.as_deref(),
+        Some("Breaking.Bad.S01E01.720p.HDTV.x264-GRP")
+    );
+    let episodes = kitsunarr_db::library::series::list_episodes(&server.state.db, added.id, None)
+        .await
+        .unwrap();
+    let model =
+        kitsunarr_library::decision_input::series_model(&server.state.db, &detail, &episodes)
+            .await
+            .unwrap();
+    let decided = model
+        .episodes
+        .iter()
+        .find(|e| e.id == pilot.id)
+        .and_then(|e| e.file.as_ref())
+        .unwrap();
+    assert_eq!(decided.size, release.size);
+    assert_eq!(
+        decided.release_title,
+        "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
+    );
 }
 
 #[tokio::test]
@@ -2833,6 +2865,19 @@ async fn notifications_follow_series_grabs_and_imports() {
         .await
         .unwrap();
     assert_eq!(created["supported"], true);
+    // "On Import Complete" only: one delivery once the download is fully imported.
+    let (complete_url, complete) = webhook_mock().await;
+    let _: serde_json::Value = client
+        .post(
+            "/providers/notifications",
+            &serde_json::json!({
+                "name": "Complete", "implementation": "Webhook",
+                "options": {"onImportComplete": true},
+                "settings": {"url": complete_url}
+            }),
+        )
+        .await
+        .unwrap();
     let indexer: serde_json::Value = client
         .post(
             "/providers/indexers",
@@ -2941,6 +2986,20 @@ async fn notifications_follow_series_grabs_and_imports() {
         seen[3]["release"]["releaseTitle"],
         "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
     );
+    drop(seen);
+    wait_for(&complete, 1).await;
+    let seen = complete.lock().unwrap();
+    assert_eq!(seen.len(), 1, "{seen:#?}");
+    assert_eq!(seen[0]["eventType"], "Download");
+    assert_eq!(seen[0]["fileCount"], 1);
+    assert_eq!(seen[0]["episodes"][0]["title"], "Pilot");
+    assert_eq!(seen[0]["episodeFiles"][0]["quality"], "HDTV-720p");
+    assert_eq!(seen[0]["downloadId"], "SABnzbd_nzo_x1");
+    assert_eq!(
+        seen[0]["release"]["releaseTitle"],
+        "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
+    );
+    assert!(seen[0].get("isUpgrade").is_none());
 }
 
 #[tokio::test]
@@ -3815,6 +3874,589 @@ async fn paused_automation_skips_rss_and_scheduled_list_syncs() {
         kitsunarr_api::library_tools::PAUSED
     );
     assert!(client.recent_searches().await.unwrap().is_empty());
+}
+
+/// Tanukarr's `EpisodeRefreshedService`: episodes a refresh adds that aired in the last 14 days
+/// are searched (against the indexer); older ones are not, nor anything while automation is
+/// paused.
+#[tokio::test]
+async fn refreshes_search_episodes_that_recently_aired() {
+    use axum::extract::{Path, State};
+    use axum::routing::get;
+    use kitsunarr_domain::api::settings::LibraryToolsSettings;
+    type Extra = Arc<std::sync::Mutex<Vec<serde_json::Value>>>;
+    fn show_with(extra: &Extra) -> serde_json::Value {
+        let path = format!(
+            "{}/../../tests/fixtures/metadata/tvmaze-show-169.json",
+            env!("CARGO_MANIFEST_DIR")
+        );
+        let mut show: serde_json::Value =
+            serde_json::from_str(&std::fs::read_to_string(path).unwrap()).unwrap();
+        show["_embedded"]["episodes"]
+            .as_array_mut()
+            .unwrap()
+            .extend(extra.lock().unwrap().iter().cloned());
+        show
+    }
+    async fn show(
+        State(extra): State<Extra>,
+        Path(_id): Path<String>,
+    ) -> axum::Json<serde_json::Value> {
+        axum::Json(show_with(&extra))
+    }
+    async fn episodes(
+        State(extra): State<Extra>,
+        Path(_id): Path<String>,
+    ) -> axum::Json<serde_json::Value> {
+        axum::Json(show_with(&extra)["_embedded"]["episodes"].clone())
+    }
+    let extra: Extra = Arc::default();
+    let app = axum::Router::new()
+        .route("/shows/{id}", get(show))
+        .route("/shows/{id}/episodes", get(episodes))
+        .with_state(extra.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: format!("http://{addr}"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, requests) = newznab_mock().await;
+    let _: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Newznab",
+                "implementation": "Newznab",
+                "options": {"enableRss": true, "enableAutomaticSearch": true, "enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "k", "categories": [5030, 5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: root,
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let searched = |episode: i64| {
+        requests
+            .lock()
+            .unwrap()
+            .iter()
+            .any(|r| r.contains("t=tvsearch") && r.contains(&format!("&ep={episode}&")))
+    };
+    let episode = |number: i64, days: i64| {
+        let at = chrono::Utc::now() + chrono::Duration::days(days);
+        serde_json::json!({"id": 900_000 + number, "name": format!("New {number}"), "season": 5,
+            "number": number, "type": "regular", "airdate": at.format("%Y-%m-%d").to_string(),
+            "airstamp": at.to_rfc3339(), "runtime": 60})
+    };
+    extra
+        .lock()
+        .unwrap()
+        .extend([episode(17, -1), episode(18, -30)]);
+    let refreshed = client.refresh_series(added.id).await.unwrap();
+    assert_eq!(refreshed.added_episodes, 2);
+    let mut found = false;
+    for _ in 0..100 {
+        if searched(17) {
+            found = true;
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert!(found, "{:?}", requests.lock().unwrap());
+    assert!(!searched(18), "aired a month ago");
+
+    // Automation paused: a new recent episode waits for the user.
+    client
+        .put_library_tools(&LibraryToolsSettings {
+            automation_paused: true,
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    extra.lock().unwrap().push(episode(19, 0));
+    assert_eq!(
+        client
+            .refresh_series(added.id)
+            .await
+            .unwrap()
+            .added_episodes,
+        1
+    );
+    tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+    assert!(!searched(19));
+}
+
+/// Tanukarr's completed-fetch resume: a list whose complete read this process witnessed feeds
+/// its saved items again while it is not due, so an addition that failed (the catalogue
+/// answered 500) is retried on the next run without reading the list again.
+#[tokio::test]
+async fn witnessed_list_reads_retry_failed_additions_while_not_due() {
+    use axum::Json;
+    use axum::routing::post;
+    use serde_json::{Value, json};
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    #[derive(Clone, Default)]
+    struct Mock {
+        list_reads: Arc<AtomicUsize>,
+        catalogue_failures: Arc<AtomicUsize>,
+    }
+    async fn graphql(
+        axum::extract::State(m): axum::extract::State<Mock>,
+        Json(body): Json<Value>,
+    ) -> axum::response::Response {
+        use axum::response::IntoResponse;
+        let q = body["query"].as_str().unwrap_or_default();
+        if q.contains("mediaList") {
+            m.list_reads.fetch_add(1, Ordering::SeqCst);
+            let entry = json!({"status": "CURRENT", "progress": 0, "customListEntries": [],
+                "media": {"id": 5, "idMal": 105, "format": "TV", "status": "RELEASING",
+                    "title": {"userPreferred": "Listed show", "romaji": "x"}, "startDate": {"year": 2024}}});
+            return Json(json!({"data": {"Page": {"pageInfo": {"currentPage": 1, "hasNextPage": false}, "mediaList": [entry]}}})).into_response();
+        }
+        if m.catalogue_failures.load(Ordering::SeqCst) > 0 {
+            m.catalogue_failures.fetch_sub(1, Ordering::SeqCst);
+            return axum::http::StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        }
+        if q.contains("airingSchedule") {
+            return Json(json!({"data": {"Media": {"airingSchedule": {"pageInfo": {"hasNextPage": false}, "nodes": []}}}})).into_response();
+        }
+        if q.contains("relations") {
+            return Json(json!({"data": {"Media": {"id": 5, "format": "TV", "title": {"english": "Listed show"}, "relations": {"edges": []}}}})).into_response();
+        }
+        Json(json!({"data": {"Media": {"id": 5, "idMal": 105, "format": "TV", "status": "RELEASING", "episodes": 2,
+            "duration": 24, "seasonYear": 2024, "countryOfOrigin": "JP",
+            "title": {"romaji": "Listed show", "english": "Listed show", "native": "x"}, "synonyms": [],
+            "startDate": {"year": 2024, "month": 1, "day": 1}, "endDate": {}, "coverImage": {}, "genres": [],
+            "averageScore": 80, "popularity": 1, "description": "x", "studios": {"nodes": []},
+            "nextAiringEpisode": null}}})).into_response()
+    }
+    let mock = Mock::default();
+    // The catalogue fails the whole first add attempt (fetch, with its retry-free errors).
+    mock.catalogue_failures.store(1000, Ordering::SeqCst);
+    let app = axum::Router::new()
+        .route("/graphql", post(graphql))
+        .with_state(mock.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let base = format!("http://{addr}/graphql");
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            anilist: base.clone(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let _: Value = client
+        .post(
+            "/providers/importlists",
+            &json!({
+                "name": "My AniList",
+                "implementation": "AniListImport",
+                "enabled": true,
+                "options": {"enableAutomaticAdd": true, "rootFolderPath": root, "qualityProfileId": 1,
+                    "searchForMissingEpisodes": false},
+                "settings": {"username": "someone", "baseUrl": base}
+            }),
+        )
+        .await
+        .unwrap();
+    let sync = || kitsunarr_api::import_lists::sync(&server.state, None, false);
+    let first = sync().await.unwrap();
+    assert!(first.contains("0 titles added"), "{first}");
+    assert_eq!(mock.list_reads.load(Ordering::SeqCst), 1);
+    // Not due (6 hours), but witnessed: the saved item is retried without a list read.
+    mock.catalogue_failures.store(0, Ordering::SeqCst);
+    let second = sync().await.unwrap();
+    assert!(second.contains("1 titles added"), "{second}");
+    assert_eq!(mock.list_reads.load(Ordering::SeqCst), 1);
+    let series = client.series(&LibraryQuery::default()).await.unwrap();
+    assert_eq!(series.records.len(), 1);
+    // Nothing left to add: the next run adds nothing and still reads no list.
+    let third = sync().await.unwrap();
+    assert!(third.contains("0 titles added"), "{third}");
+    assert_eq!(mock.list_reads.load(Ordering::SeqCst), 1);
+    // Changed settings void the witness: nothing is fed until the list is due again.
+    let mut list = client.providers("importlists").await.unwrap().remove(0);
+    list.name = "Renamed".into();
+    client.update_provider("importlists", &list).await.unwrap();
+    assert_eq!(sync().await.unwrap(), "No list was due for a sync");
+}
+
+/// Tanukarr's `SearchSeriesComparer` on the add-series search: the exact title first, though
+/// AniList's own order put it last.
+#[tokio::test]
+async fn catalogue_search_ranks_the_closest_title_first() {
+    use axum::Json;
+    use axum::routing::post;
+    use serde_json::{Value, json};
+    async fn graphql(Json(_body): Json<Value>) -> Json<Value> {
+        let media = |id: i64, title: &str, popularity: i64, synonyms: Value| {
+            json!({"id": id, "idMal": null, "format": "TV", "status": "FINISHED", "episodes": 12, "duration": 24,
+                "seasonYear": 2020, "countryOfOrigin": "JP", "title": {"romaji": title, "english": title, "native": null},
+                "synonyms": synonyms, "startDate": {"year": 2020}, "endDate": {}, "coverImage": {}, "genres": [],
+                "averageScore": 80, "popularity": popularity, "description": null, "studios": {"nodes": []},
+                "nextAiringEpisode": null})
+        };
+        Json(json!({"data": {"Page": {"media": [
+            media(1, "Attack on Titan", 900_000, json!(["AoT"])),
+            media(2, "Attack on Titan: Junior High", 50_000, json!([])),
+            media(3, "Attack on Titan Season 2", 600_000, json!(["Shingeki no Kyojin 2"])),
+        ]}}}))
+    }
+    let app = axum::Router::new().route("/graphql", post(graphql));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            anilist: format!("http://{addr}/graphql"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let titles = |found: Vec<kitsunarr_domain::api::metadata::SearchItem>| {
+        found.into_iter().map(|i| i.title).collect::<Vec<_>>()
+    };
+    let found = client
+        .metadata_search(&SearchQuery {
+            provider: MetadataProvider::AniList,
+            term: "Attack on Titan 2nd Season".into(),
+        })
+        .await
+        .unwrap();
+    assert_eq!(titles(found)[0], "Attack on Titan Season 2");
+    let found = client
+        .metadata_search(&SearchQuery {
+            provider: MetadataProvider::AniList,
+            term: "Attack on Titan".into(),
+        })
+        .await
+        .unwrap();
+    // Sonarr's "CSI: ..." rule ranks a `Title: subtitle` above a merely similar title.
+    assert_eq!(
+        titles(found),
+        [
+            "Attack on Titan",
+            "Attack on Titan: Junior High",
+            "Attack on Titan Season 2"
+        ]
+    );
+}
+
+/// Tanukarr's "Disabled" grouping mode over the native API: chosen when adding, shown on the
+/// series, and switched back.
+#[tokio::test]
+async fn grouping_can_be_disabled_when_adding_and_on_the_series() {
+    use axum::Json;
+    use axum::routing::post;
+    use serde_json::{Value, json};
+    async fn graphql(Json(body): Json<Value>) -> Json<Value> {
+        let q = body["query"].as_str().unwrap_or_default();
+        let id = body["variables"]["id"].as_i64().unwrap_or(0);
+        if q.contains("airingSchedule") {
+            return Json(
+                json!({"data": {"Media": {"airingSchedule": {"pageInfo": {"hasNextPage": false}, "nodes": []}}}}),
+            );
+        }
+        if q.contains("relations") {
+            let edge = |kind: &str, n: i64| json!({"relationType": kind, "node": {"id": n, "type": "ANIME", "format": "TV", "title": {"english": format!("Part {n}")}}});
+            let edges = match id {
+                1 => vec![edge("SEQUEL", 2)],
+                2 => vec![edge("PREQUEL", 1)],
+                _ => vec![],
+            };
+            return Json(
+                json!({"data": {"Media": {"id": id, "format": "TV", "title": {"english": format!("Part {id}")}, "relations": {"edges": edges}}}}),
+            );
+        }
+        Json(
+            json!({"data": {"Media": {"id": id, "idMal": null, "format": "TV", "status": "FINISHED", "episodes": 1,
+            "duration": 24, "seasonYear": 2020, "countryOfOrigin": "JP",
+            "title": {"romaji": format!("Part {id}"), "english": format!("Part {id}"), "native": null}, "synonyms": [],
+            "startDate": {"year": 2020, "month": 1, "day": 1}, "endDate": {}, "coverImage": {}, "genres": [],
+            "averageScore": 80, "popularity": 1, "description": null, "studios": {"nodes": []},
+            "nextAiringEpisode": null}}}),
+        )
+    }
+    let app = axum::Router::new().route("/graphql", post(graphql));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            anilist: format!("http://{addr}/graphql"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title_with(&kitsunarr_domain::api::metadata::AddTitle {
+            title: AddTitleRequest {
+                provider: MetadataProvider::AniList,
+                id: "2".into(),
+                root_folder_path: root.clone(),
+                quality_profile_id: 1,
+                monitor: MonitorOption::All,
+                series_type: None,
+                season_folder: true,
+                tags: vec![],
+                search_for_missing: false,
+                episode_ordering: None,
+                path: None,
+            },
+            automatic_grouping: false,
+        })
+        .await
+        .unwrap();
+    let detail = client.series_detail(added.id).await.unwrap();
+    assert!(!detail.automatic_grouping);
+    assert!(detail.collections.is_empty());
+    assert_eq!(detail.item.path, format!("{root}/Part 2"));
+    tokio::time::sleep(std::time::Duration::from_millis(300)).await;
+    assert!(
+        client
+            .series_detail(added.id)
+            .await
+            .unwrap()
+            .collections
+            .is_empty()
+    );
+    // Back to automatic: grouped at once.
+    let detail = client
+        .update_series(
+            added.id,
+            &SeriesUpdate {
+                automatic_grouping: Some(true),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert!(detail.automatic_grouping);
+    let mut grouped = Vec::new();
+    for _ in 0..100 {
+        grouped = client.series_detail(added.id).await.unwrap().collections;
+        if !grouped.is_empty() {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert_eq!(grouped[0].title, "Part 1");
+    // Disabled again: the series leaves the group.
+    let detail = client
+        .update_series(
+            added.id,
+            &SeriesUpdate {
+                automatic_grouping: Some(false),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert!(!detail.automatic_grouping);
+    assert!(detail.collections.is_empty());
+}
+
+/// Settings › General › Backups: interval (1-7 days) and retention (1-90 days) are validated,
+/// drive the Backup task and the v3 host settings, and a manual backup restarts the interval.
+#[tokio::test]
+async fn backup_interval_retention_and_manual_backups() {
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let mut general = client.general().await.unwrap();
+    assert_eq!((general.backup_interval, general.backup_retention), (7, 28));
+    general.backup_interval = 8;
+    assert_eq!(status(client.put_general(&general).await.unwrap_err()), 422);
+    general.backup_interval = 3;
+    general.backup_retention = 91;
+    assert_eq!(status(client.put_general(&general).await.unwrap_err()), 422);
+    general.backup_retention = 14;
+    let saved = client.put_general(&general).await.unwrap();
+    assert_eq!((saved.backup_interval, saved.backup_retention), (3, 14));
+    let task = |name: &str| {
+        let pool = server.state.db.pool().clone();
+        let name = name.to_string();
+        async move {
+            kitsunarr_db::tasks::list(&pool)
+                .await
+                .unwrap()
+                .into_iter()
+                .find(|t| t.name == name)
+                .unwrap()
+        }
+    };
+    assert_eq!(task("Backup").await.interval_minutes, 3 * 24 * 60);
+    let host: serde_json::Value = reqwest::Client::new()
+        .get(format!("{}/api/v3/config/host", server.base))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(
+        (
+            host["backupInterval"].as_i64(),
+            host["backupRetention"].as_i64()
+        ),
+        (Some(3), Some(14))
+    );
+    // Tanukarr 1.0.4: the manual backup is the Backup task's latest run.
+    sqlx::query(
+        "UPDATE scheduled_tasks SET last_run_at = '2020-01-01T00:00:00Z' WHERE name = 'Backup'",
+    )
+    .execute(server.state.db.pool())
+    .await
+    .unwrap();
+    let backup: serde_json::Value = client
+        .post("/system/backups", &serde_json::json!({}))
+        .await
+        .unwrap();
+    assert!(backup["name"].as_str().unwrap().ends_with("_manual.db"));
+    let after = task("Backup").await;
+    assert_ne!(after.last_run_at.as_deref(), Some("2020-01-01T00:00:00Z"));
+    assert_eq!(after.last_status.as_deref(), Some("completed"));
+    let runs = kitsunarr_db::tasks::recent_runs(server.state.db.pool(), 10)
+        .await
+        .unwrap();
+    assert!(
+        runs.iter()
+            .any(|r| r.task_name == "Backup" && r.trigger == "manual")
+    );
+}
+
+/// `NotificationStatusCheck` (connections backing off) and `DatabaseIntegrityCheck`.
+#[tokio::test]
+async fn notification_back_off_and_database_integrity_are_health_checks() {
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let make = |name: &str| {
+        serde_json::json!({
+            "name": name, "implementation": "Webhook", "enabled": true,
+            "options": {"onGrab": true}, "settings": {"url": "http://127.0.0.1:9/hook", "method": 1}
+        })
+    };
+    let a: serde_json::Value = client
+        .post("/providers/notifications", &make("Hook A"))
+        .await
+        .unwrap();
+    let _: serde_json::Value = client
+        .post("/providers/notifications", &make("Hook B"))
+        .await
+        .unwrap();
+    use kitsunarr_domain::api::system::{HealthCheck, HealthLevel};
+    let health = || async { client.health().await.unwrap() };
+    let of = |list: &[HealthCheck], source: &str| list.iter().find(|h| h.source == source).cloned();
+    assert!(of(&health().await, "NotificationStatusCheck").is_none());
+    assert!(of(&health().await, "DatabaseIntegrityCheck").is_none());
+    let block = |id: i64| {
+        let pool = server.state.db.pool().clone();
+        async move {
+            sqlx::query("INSERT INTO notification_status (notification_id, initial_failure, most_recent_failure, escalation_level, disabled_till) VALUES (?, '2026-01-01T00:00:00Z', '2026-01-01T00:00:00Z', 3, '2999-01-01T00:00:00Z')")
+                .bind(id)
+                .execute(&pool)
+                .await
+                .unwrap();
+        }
+    };
+    block(a["id"].as_i64().unwrap()).await;
+    let check = of(&health().await, "NotificationStatusCheck").unwrap();
+    assert_eq!(check.level, HealthLevel::Warning);
+    assert_eq!(
+        check.message,
+        "Notifications unavailable due to failures: Hook A"
+    );
+    let all = client.providers("notifications").await.unwrap();
+    let b = all.iter().find(|n| n.name == "Hook B").unwrap();
+    block(b.id).await;
+    let check = of(&health().await, "NotificationStatusCheck").unwrap();
+    assert_eq!(check.level, HealthLevel::Error);
+    assert_eq!(
+        check.message,
+        "All notifications are unavailable due to failures"
+    );
+    // The integrity check is cached between scheduled runs.
+    let mut conn = server.state.db.pool().acquire().await.unwrap();
+    sqlx::query("PRAGMA foreign_keys = OFF")
+        .execute(&mut *conn)
+        .await
+        .unwrap();
+    sqlx::query("INSERT INTO series_tags (series_id, tag_id) VALUES (999, 999)")
+        .execute(&mut *conn)
+        .await
+        .unwrap();
+    sqlx::query("PRAGMA foreign_keys = ON")
+        .execute(&mut *conn)
+        .await
+        .unwrap();
+    drop(conn);
+    assert!(of(&health().await, "DatabaseIntegrityCheck").is_none());
+    kitsunarr_api::routes::system::check_health_and_notify(&server.state)
+        .await
+        .unwrap();
+    let check = of(&health().await, "DatabaseIntegrityCheck").unwrap();
+    assert_eq!(check.level, HealthLevel::Error);
+    // The row misses both its series and its tag.
+    assert_eq!(
+        check.message,
+        "SQLite database integrity check failed: 2 foreign key violations. Restore from a known-good backup."
+    );
 }
 
 #[tokio::test]

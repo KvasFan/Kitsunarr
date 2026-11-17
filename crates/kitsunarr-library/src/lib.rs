@@ -1121,6 +1121,94 @@ pub async fn folder_preview(
 mod tests {
     use super::*;
 
+    /// `EpisodeRefreshedServiceFixture`: which refreshed episodes are searched.
+    #[test]
+    fn recently_aired_episodes_are_searched() {
+        let now = Utc::now();
+        let at = |days: i64| (now + TimeDelta::days(days)).to_rfc3339();
+        let merged = |inserted: bool, monitored: bool, absolute: bool, old: Option<String>| {
+            series::MergedEpisode {
+                id: 1,
+                inserted,
+                monitored,
+                absolute_added: absolute,
+                previous_air_date_utc: old,
+            }
+        };
+        let search = |m: &series::MergedEpisode, air: Option<String>, anime: bool| {
+            recently_aired_to_search(m, air.as_deref(), anime, now)
+        };
+        // Added: monitored and aired between 14 days ago and tomorrow.
+        assert!(search(
+            &merged(true, true, false, None),
+            Some(at(-3)),
+            false
+        ));
+        assert!(search(&merged(true, true, false, None), Some(at(0)), false));
+        assert!(!search(
+            &merged(true, false, false, None),
+            Some(at(-3)),
+            false
+        ));
+        assert!(!search(
+            &merged(true, true, false, None),
+            Some(at(-15)),
+            false
+        ));
+        assert!(!search(
+            &merged(true, true, false, None),
+            Some(at(2)),
+            false
+        ));
+        assert!(!search(&merged(true, true, false, None), None, false));
+        // Updated with an absolute number added: anime only.
+        let recent = Some(at(-2));
+        assert!(search(
+            &merged(false, true, true, recent.clone()),
+            recent.clone(),
+            true
+        ));
+        assert!(!search(
+            &merged(false, true, true, recent.clone()),
+            recent.clone(),
+            false
+        ));
+        // Updated without a change: not searched.
+        assert!(!search(
+            &merged(false, true, false, recent.clone()),
+            recent.clone(),
+            true
+        ));
+        // Air date moved from the future (or unknown) to the recent past.
+        assert!(search(
+            &merged(false, true, false, Some(at(30))),
+            Some(at(-1)),
+            false
+        ));
+        assert!(search(
+            &merged(false, true, false, None),
+            Some(at(-1)),
+            false
+        ));
+        assert!(!search(
+            &merged(false, false, false, Some(at(30))),
+            Some(at(-1)),
+            false
+        ));
+        // Moved, but long ago: not recent.
+        assert!(!search(
+            &merged(false, true, false, Some(at(30))),
+            Some(at(-20)),
+            false
+        ));
+        // Already in the past before: not moved.
+        assert!(!search(
+            &merged(false, true, false, Some(at(-5))),
+            Some(at(-1)),
+            false
+        ));
+    }
+
     #[test]
     fn monitoring_options() {
         use MonitorOption as M;
