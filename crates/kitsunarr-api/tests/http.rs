@@ -1859,15 +1859,51 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         .expect("the delayed release is in the queue");
     assert_eq!(pending.title, "Breaking.Bad.S01E03.720p.BluRay.x264-GRP");
     assert_eq!(pending.episodes, vec!["S01E03"]);
-    // The delay is over: the pending release is decided again and grabbed.
-    set_delay(0).await;
-    // RSS sync: S01E03 is new and grabbed; S01E01 is on disk, S01E02 queued, and the other
-    // show is not in the library.
-    qbit.lock().unwrap().clear();
-    let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
+    // Sonarr's queue status counts it, and the series' queue details list it.
+    let v3 = |p: &str| format!("{}/api/v3{p}", server.base);
+    let http = reqwest::Client::new();
+    let get = |p: String| {
+        let r = http.get(p).header("X-Api-Key", &server.api_key).send();
+        async move { r.await.unwrap().json::<serde_json::Value>().await.unwrap() }
+    };
+    let status = get(v3("/queue/status")).await;
+    assert_eq!(status["totalCount"], queue.items.len(), "{status}");
+    assert_eq!(status["unknownCount"], 0, "{status}");
+    let details = get(v3(&format!("/queue/details?seriesId={}", added.id))).await;
+    let record = details
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|r| r["downloadId"] == pending.download_id.as_str())
+        .unwrap_or_else(|| panic!("{details}"))
+        .clone();
+    assert_eq!(record["status"], "delay");
     assert_eq!(
-        summary,
-        "4 releases found (3 for library series, 1 pending before), 1 approved, 1 grabbed: Breaking.Bad.S01E03.720p.BluRay.x264-GRP"
+        get(v3("/queue/details?seriesId=999999")).await,
+        serde_json::json!([])
+    );
+    // Only a pending release can be sent now.
+    let other = queue
+        .items
+        .iter()
+        .find(|i| i.tracked_state != "pending")
+        .unwrap();
+    assert!(client.grab_pending(&other.download_id).await.is_err());
+    // "Send now" (Sonarr's `POST /queue/grab/{id}`): decided again as the user's request, so
+    // the delay no longer holds it back, and grabbed.
+    qbit.lock().unwrap().clear();
+    let sent: serde_json::Value = http
+        .post(v3(&format!("/queue/grab/{}", record["id"])))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(
+        sent["message"],
+        "Breaking.Bad.S01E03.720p.BluRay.x264-GRP was sent to the download client."
     );
     assert!(
         kitsunarr_db::pending::list(server.state.db.pool())
@@ -1884,6 +1920,11 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         "{:#?}",
         qbit.lock().unwrap()
     );
+    assert!(
+        client.grab_pending(&pending.download_id).await.is_err(),
+        "it is pending no more"
+    );
+    set_delay(0).await;
     // The next sync grabs nothing again.
     let summary = kitsunarr_api::rss::sync(&server.state).await.unwrap();
     assert_eq!(
@@ -8472,4 +8513,633 @@ async fn several_series_are_organized_at_once() {
             .relative_path
             .starts_with("Season 01/Breaking Bad - S01E03")
     );
+}
+
+/// Sonarr's `/api/v3/config/*`, tags, root folders, delay profiles, remote path mappings,
+/// import lists and their exclusions, tasks, backups and logs, as sync tools and dashboards use
+/// them: resources in Sonarr's names, partial writes, Kitsunarr's validation.
+#[tokio::test]
+async fn sonarr_v3_config_rules_lists_and_system() {
+    use reqwest::Method as M;
+    use serde_json::{Value, json};
+    let server = start().await;
+    let http = reqwest::Client::new();
+    let key = server.api_key.clone();
+    let call = |m: M, p: &str, body: Option<Value>| {
+        let mut r = http
+            .request(m, format!("{}/api/v3{p}", server.base))
+            .header("X-Api-Key", &key);
+        if let Some(b) = body {
+            r = r.json(&b);
+        }
+        async move {
+            let r = r.send().await.unwrap();
+            let status = r.status().as_u16();
+            let text = r.text().await.unwrap();
+            (
+                status,
+                serde_json::from_str::<Value>(&text).unwrap_or(Value::Null),
+            )
+        }
+    };
+
+    // Media naming as Recyclarr writes it: read, change some formats, write back.
+    let (status, mut naming) = call(M::GET, "/config/naming", None).await;
+    assert_eq!((status, naming["id"].as_i64()), (200, Some(1)));
+    assert_eq!(naming["seriesFolderFormat"], "{Series Title}");
+    assert!(naming["movieFormat"].is_string());
+    naming["renameEpisodes"] = json!(true);
+    naming["standardEpisodeFormat"] = json!(
+        "{Series TitleYear} - S{season:00}E{episode:00} - {Episode CleanTitle} [{Quality Full}]"
+    );
+    naming["seasonFolderFormat"] = json!("Season {season:00}");
+    let (status, saved) = call(M::PUT, "/config/naming/1", Some(naming.clone())).await;
+    assert_eq!(status, 202, "{saved}");
+    assert_eq!(saved["seasonFolderFormat"], "Season {season:00}");
+    let native: kitsunarr_domain::api::settings::NamingSettings =
+        kitsunarr_db::settings::get_or_default(
+            server.state.db.pool(),
+            kitsunarr_db::settings::KEY_NAMING,
+        )
+        .await
+        .unwrap();
+    assert!(native.rename_episodes);
+    assert_eq!(native.season_folder_format, "Season {season:00}");
+    // Only the sent keys change; Sonarr's ranges and Kitsunarr's checks apply.
+    let (status, _) = call(
+        M::PUT,
+        "/config/naming",
+        Some(json!({"multiEpisodeStyle": 9})),
+    )
+    .await;
+    assert_eq!(status, 422);
+    let (status, err) = call(
+        M::PUT,
+        "/config/naming",
+        Some(json!({"seriesFolderFormat": "../x"})),
+    )
+    .await;
+    assert_eq!(status, 422, "{err}");
+    let (_, after) = call(M::GET, "/config/naming", None).await;
+    assert_eq!(after["seriesFolderFormat"], "{Series Title}");
+    assert_eq!(after["seasonFolderFormat"], "Season {season:00}");
+
+    // Media management: Recyclarr's "propers and repacks", Sonarr's names for Kitsunarr's keys.
+    let (status, media) = call(M::GET, "/config/mediamanagement", None).await;
+    assert_eq!(status, 200);
+    assert_eq!(media["downloadPropersAndRepacks"], "preferAndUpgrade");
+    assert!(media["copyUsingHardlinks"].is_boolean());
+    let (status, saved) = call(
+        M::PUT,
+        "/config/mediamanagement",
+        Some(json!({"downloadPropersAndRepacks": "doNotPrefer", "recycleBin": "/srv/recycle", "minimumFreeSpaceWhenImporting": 250, "fileDate": "utcAirDate", "rescanAfterRefresh": "never"})),
+    )
+    .await;
+    assert_eq!(status, 202, "{saved}");
+    assert_eq!(saved["downloadPropersAndRepacks"], "doNotPrefer");
+    assert_eq!(saved["recycleBin"], "/srv/recycle");
+    assert_eq!(saved["minimumFreeSpaceWhenImporting"], 250);
+    assert_eq!(saved["fileDate"], "utcAirDate");
+    let (status, _) = call(
+        M::PUT,
+        "/config/mediamanagement",
+        Some(json!({"chmodFolder": "999"})),
+    )
+    .await;
+    assert_eq!(status, 422);
+    let (status, _) = call(
+        M::PUT,
+        "/config/mediamanagement",
+        Some(json!({"downloadPropersAndRepacks": "always"})),
+    )
+    .await;
+    assert_eq!(status, 422);
+    let (_, media) = call(
+        M::PUT,
+        "/config/mediamanagement",
+        Some(json!({"recycleBin": ""})),
+    )
+    .await;
+    assert_eq!(media["recycleBin"], "");
+
+    // Indexer, download client and import list options.
+    let (status, saved) = call(
+        M::PUT,
+        "/config/indexer",
+        Some(json!({"rssSyncInterval": 30, "retention": 1500})),
+    )
+    .await;
+    assert_eq!(
+        (
+            status,
+            saved["rssSyncInterval"].as_i64(),
+            saved["retention"].as_i64()
+        ),
+        (202, Some(30), Some(1500))
+    );
+    let (status, _) = call(
+        M::PUT,
+        "/config/indexer",
+        Some(json!({"rssSyncInterval": 5})),
+    )
+    .await;
+    assert_eq!(status, 422);
+    let (status, saved) = call(
+        M::PUT,
+        "/config/downloadclient",
+        Some(json!({"autoRedownloadFailed": false})),
+    )
+    .await;
+    assert_eq!(
+        (status, saved["autoRedownloadFailed"].as_bool()),
+        (202, Some(false))
+    );
+    assert_eq!(saved["enableCompletedDownloadHandling"], true);
+    let (status, _) = call(
+        M::PUT,
+        "/config/importlist",
+        Some(json!({"listSyncLevel": "keepAndTag", "listSyncTag": 0})),
+    )
+    .await;
+    assert_eq!(status, 422, "keepAndTag needs a tag");
+    let (status, saved) = call(
+        M::PUT,
+        "/config/importlist",
+        Some(json!({"listSyncLevel": "logOnly"})),
+    )
+    .await;
+    assert_eq!(
+        (status, saved["listSyncLevel"].as_str()),
+        (202, Some("logOnly"))
+    );
+
+    // Interface and host settings.
+    let (status, saved) = call(
+        M::PUT,
+        "/config/ui",
+        Some(json!({"firstDayOfWeek": 0, "theme": "dark"})),
+    )
+    .await;
+    assert_eq!((status, saved["firstDayOfWeek"].as_i64()), (202, Some(0)));
+    let (status, host) = call(M::GET, "/config/host", None).await;
+    assert_eq!(status, 200);
+    assert_eq!(host["apiKey"], "", "the key is never returned");
+    assert_eq!(host["proxyEnabled"], false);
+    let (status, saved) = call(
+        M::PUT,
+        "/config/host",
+        Some(json!({"instanceName": "Den", "proxyEnabled": true, "proxyType": "socks5", "proxyHostname": "proxy.lan", "proxyPort": 1080, "proxyPassword": "pw", "certificateValidation": "disabledForLocalAddresses", "port": 1})),
+    )
+    .await;
+    assert_eq!(status, 202, "{saved}");
+    assert_eq!(saved["instanceName"], "Den");
+    assert_eq!(saved["proxyType"], "socks5");
+    assert_eq!(saved["proxyPassword"], "********");
+    assert_eq!(saved["certificateValidation"], "disabledForLocalAddresses");
+    assert_ne!(saved["port"], 1, "the port comes from config.toml");
+    let (status, _) = call(M::PUT, "/config/host", Some(json!({"proxyType": "ftp"}))).await;
+    assert_eq!(status, 422);
+    let (_, unchanged) = call(M::PUT, "/config/host", Some(saved.clone())).await;
+    assert_eq!(unchanged["proxyHostname"], "proxy.lan");
+    let proxy: kitsunarr_domain::api::settings::ProxySettings =
+        kitsunarr_db::settings::get_or_default(
+            server.state.db.pool(),
+            kitsunarr_db::settings::KEY_PROXY,
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        proxy.password, "pw",
+        "the redacted placeholder keeps the password"
+    );
+
+    // Tags: rename, details, delete.
+    let (_, tag) = call(M::POST, "/tag", Some(json!({"label": "4k"}))).await;
+    let tag_id = tag["id"].as_i64().unwrap();
+    let (status, renamed) = call(
+        M::PUT,
+        &format!("/tag/{tag_id}"),
+        Some(json!({"id": tag_id, "label": "UHD"})),
+    )
+    .await;
+    assert_eq!((status, renamed["label"].as_str()), (202, Some("uhd")));
+    let (status, _) = call(M::PUT, "/tag/9999", Some(json!({"label": "x"}))).await;
+    assert_eq!(status, 404);
+
+    // Delay profiles in Sonarr's shape (`order`), with the tag.
+    let (status, delay) = call(
+        M::POST,
+        "/delayprofile",
+        Some(json!({"enableUsenet": true, "enableTorrent": true, "preferredProtocol": "torrent", "usenetDelay": 0, "torrentDelay": 60, "tags": [tag_id]})),
+    )
+    .await;
+    assert_eq!(status, 201, "{delay}");
+    let delay_id = delay["id"].as_i64().unwrap();
+    assert_eq!(delay["preferredProtocol"], "torrent");
+    let (status, delay) = call(
+        M::PUT,
+        &format!("/delayprofile/{delay_id}"),
+        Some(json!({"torrentDelay": 90})),
+    )
+    .await;
+    assert_eq!((status, delay["torrentDelay"].as_i64()), (202, Some(90)));
+    assert_eq!(delay["tags"], json!([tag_id]));
+    let (_, list) = call(M::GET, "/delayprofile", None).await;
+    assert!(list.as_array().unwrap().len() >= 2, "{list}");
+    let (status, _) = call(
+        M::POST,
+        "/delayprofile",
+        Some(json!({"preferredProtocol": "ftp"})),
+    )
+    .await;
+    assert_eq!(status, 422);
+
+    let (status, detail) = call(M::GET, &format!("/tag/detail/{tag_id}"), None).await;
+    assert_eq!(status, 200);
+    assert_eq!(detail["delayProfileIds"], json!([delay_id]));
+    assert_eq!(detail["seriesIds"], json!([]));
+    let (_, all) = call(M::GET, "/tag/detail", None).await;
+    assert!(all.as_array().unwrap().iter().any(|t| t["id"] == tag_id));
+
+    // Remote path mappings.
+    let (status, mapping) = call(
+        M::POST,
+        "/remotepathmapping",
+        Some(json!({"host": "seedbox", "remotePath": "/downloads/", "localPath": "/mnt/seedbox/"})),
+    )
+    .await;
+    assert_eq!(status, 201, "{mapping}");
+    let mapping_id = mapping["id"].as_i64().unwrap();
+    let (status, mapping) = call(
+        M::PUT,
+        &format!("/remotepathmapping/{mapping_id}"),
+        Some(json!({"host": "seedbox", "remotePath": "/data/", "localPath": "/mnt/seedbox/"})),
+    )
+    .await;
+    assert_eq!(
+        (
+            status,
+            mapping["remotePath"]
+                .as_str()
+                .map(|p| p.trim_end_matches('/'))
+        ),
+        (202, Some("/data"))
+    );
+    let (status, _) = call(M::POST, "/remotepathmapping", Some(json!({"host": "x"}))).await;
+    assert_eq!(status, 422);
+    assert_eq!(
+        call(M::DELETE, &format!("/remotepathmapping/{mapping_id}"), None)
+            .await
+            .0,
+        200
+    );
+    assert_eq!(
+        call(M::GET, &format!("/remotepathmapping/{mapping_id}"), None)
+            .await
+            .0,
+        404
+    );
+
+    // Import list exclusions: TheTVDB ids as Sonarr's, other catalogues as Kitsunarr's.
+    let (status, ex) = call(
+        M::POST,
+        "/importlistexclusion",
+        Some(json!({"tvdbId": 81189, "title": "Breaking Bad"})),
+    )
+    .await;
+    assert_eq!(status, 201, "{ex}");
+    let ex_id = ex["id"].as_i64().unwrap();
+    assert_eq!(
+        (ex["tvdbId"].as_i64(), ex["provider"].as_str()),
+        (Some(81189), Some("tvdb"))
+    );
+    let (_, ex2) = call(
+        M::POST,
+        "/importlistexclusion",
+        Some(json!({"provider": "aniList", "externalId": "21", "title": "One Piece"})),
+    )
+    .await;
+    assert_eq!(ex2["tvdbId"], 0);
+    let (status, updated) = call(
+        M::PUT,
+        &format!("/importlistexclusion/{ex_id}"),
+        Some(json!({"tvdbId": 81190, "title": "Better Call Saul"})),
+    )
+    .await;
+    assert_eq!((status, updated["tvdbId"].as_i64()), (202, Some(81190)));
+    let (_, page) = call(M::GET, "/importlistexclusion/paged?page=1&pageSize=1", None).await;
+    assert_eq!(
+        (
+            page["totalRecords"].as_i64(),
+            page["records"].as_array().unwrap().len()
+        ),
+        (Some(2), 1)
+    );
+    assert_eq!(page["records"][0]["title"], "Better Call Saul");
+    let (status, _) = call(
+        M::POST,
+        "/importlistexclusion",
+        Some(json!({"title": "no id"})),
+    )
+    .await;
+    assert_eq!(status, 422);
+    assert_eq!(
+        call(
+            M::DELETE,
+            "/importlistexclusion/bulk",
+            Some(json!({"ids": [ex_id, ex2["id"]]}))
+        )
+        .await
+        .0,
+        200
+    );
+    assert_eq!(
+        call(M::GET, "/importlistexclusion", None).await.1,
+        json!([])
+    );
+
+    // Import lists: Sonarr's options are top-level keys.
+    let (_, schema) = call(M::GET, "/importlist/schema", None).await;
+    let mut anilist = schema
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|s| s["implementation"] == "AniListImport")
+        .unwrap()
+        .clone();
+    anilist["name"] = json!("Watching");
+    anilist["shouldMonitor"] = json!("firstSeason");
+    anilist["rootFolderPath"] = json!("/anime");
+    anilist["tags"] = json!([tag_id]);
+    let (status, list) = call(M::POST, "/importlist", Some(anilist)).await;
+    assert_eq!(status, 201, "{list}");
+    let list_id = list["id"].as_i64().unwrap();
+    assert_eq!(list["shouldMonitor"], "firstSeason");
+    assert_eq!(list["rootFolderPath"], "/anime");
+    let mut changed = list.clone();
+    changed["enableAutomaticAdd"] = json!(false);
+    let (status, list) = call(M::PUT, &format!("/importlist/{list_id}"), Some(changed)).await;
+    assert_eq!(
+        (status, list["enableAutomaticAdd"].as_bool()),
+        (202, Some(false))
+    );
+    assert_eq!(
+        call(M::GET, &format!("/importlist/{list_id}"), None)
+            .await
+            .1["name"],
+        "Watching"
+    );
+    let (_, detail) = call(M::GET, &format!("/tag/detail/{tag_id}"), None).await;
+    assert_eq!(detail["importListIds"], json!([list_id]));
+    let (status, _) = call(
+        M::POST,
+        "/importlist",
+        Some(json!({"name": "x", "implementation": "Nope", "fields": []})),
+    )
+    .await;
+    assert_eq!(status, 422);
+    assert_eq!(
+        call(M::DELETE, &format!("/importlist/{list_id}"), None)
+            .await
+            .0,
+        200
+    );
+    // Deleting the tag removes it from the delay profile.
+    assert_eq!(
+        call(M::DELETE, &format!("/tag/{tag_id}"), None).await.0,
+        200
+    );
+    assert_eq!(
+        call(M::GET, &format!("/delayprofile/{delay_id}"), None)
+            .await
+            .1["tags"],
+        json!([])
+    );
+    assert_eq!(
+        call(M::DELETE, &format!("/delayprofile/{delay_id}"), None)
+            .await
+            .0,
+        200
+    );
+
+    // Root folders.
+    let folder = tempfile::tempdir().unwrap();
+    let (status, root) = call(M::POST, "/rootfolder", Some(json!({"path": folder.path()}))).await;
+    assert_eq!(status, 201, "{root}");
+    let root_id = root["id"].as_i64().unwrap();
+    assert_eq!(root["accessible"], true);
+    assert_eq!(root["unmappedFolders"], json!([]));
+    let (status, _) = call(
+        M::POST,
+        "/rootfolder",
+        Some(json!({"path": "/does/not/exist"})),
+    )
+    .await;
+    assert_eq!(status, 422);
+    assert_eq!(
+        call(M::GET, &format!("/rootfolder/{root_id}"), None)
+            .await
+            .1["id"],
+        root_id
+    );
+    assert_eq!(
+        call(M::DELETE, &format!("/rootfolder/{root_id}"), None)
+            .await
+            .0,
+        200
+    );
+    assert_eq!(
+        call(M::GET, &format!("/rootfolder/{root_id}"), None)
+            .await
+            .0,
+        404
+    );
+
+    // Tasks, backups, logs, queue status and the rename preview.
+    let (status, tasks) = call(M::GET, "/system/task", None).await;
+    assert_eq!(status, 200);
+    let rss = tasks
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|t| t["taskName"] == "RssSync")
+        .unwrap_or_else(|| panic!("{tasks}"));
+    assert_eq!(rss["interval"], 30, "the interval written above");
+    assert_eq!(
+        call(M::GET, &format!("/system/task/{}", rss["id"]), None)
+            .await
+            .1["taskName"],
+        "RssSync"
+    );
+    let (status, backups) = call(M::GET, "/system/backup", None).await;
+    assert_eq!((status, backups.is_array()), (200, true));
+    let (status, logs) = call(M::GET, "/log?page=1&pageSize=5", None).await;
+    assert_eq!(status, 200);
+    assert_eq!(logs["sortDirection"], "descending");
+    assert!(logs["records"].as_array().unwrap().len() <= 5);
+    let (status, q) = call(M::GET, "/queue/status", None).await;
+    assert_eq!((status, q["totalCount"].as_i64()), (200, Some(0)));
+    assert_eq!(call(M::GET, "/rename?seriesId=999", None).await.0, 404);
+}
+
+/// Sonarr's manual import resources and the commands post-processing scripts send
+/// (`DownloadedEpisodesScan` with a path, `ManualImport` with chosen files).
+#[tokio::test]
+async fn sonarr_v3_manual_import_and_downloaded_episodes_scan() {
+    use serde_json::{Value, json};
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().join("tv");
+    std::fs::create_dir_all(&root).unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let id = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: root.display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap()
+        .id;
+    // A neutral folder: a release-named one would name the series of every file in it.
+    let incoming = dir.path().join("downloads/incoming");
+    std::fs::create_dir_all(&incoming).unwrap();
+    std::fs::write(
+        incoming.join("Breaking.Bad.S01E04.720p.HDTV.x264-GRP.mkv"),
+        b"ep4",
+    )
+    .unwrap();
+    std::fs::write(
+        incoming.join("Unknown.Thing.S03E04.720p.HDTV.x264-GRP.mkv"),
+        b"x",
+    )
+    .unwrap();
+    let http = reqwest::Client::new();
+    let v3 = |p: &str| format!("{}/api/v3{p}", server.base);
+
+    let items: Value = http
+        .get(v3("/manualimport"))
+        .query(&[("folder", incoming.display().to_string())])
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let items = items.as_array().unwrap();
+    assert_eq!(items.len(), 2, "{items:?}");
+    let ep4 = items
+        .iter()
+        .find(|i| i["name"].as_str().unwrap().starts_with("Breaking"))
+        .unwrap();
+    assert_eq!(ep4["series"]["id"], id);
+    assert_eq!(ep4["seasonNumber"], 1);
+    assert_eq!(ep4["episodes"][0]["title"], "S01E04");
+    assert_eq!(ep4["quality"]["quality"]["name"], "HDTV-720p");
+    assert_eq!(ep4["rejections"], json!([]));
+    assert_eq!(ep4["folderName"], "incoming");
+    let unknown = items
+        .iter()
+        .find(|i| i["name"].as_str().unwrap().starts_with("Unknown"))
+        .unwrap();
+    assert_eq!(unknown["rejections"][0]["reason"], "Unknown series");
+
+    let command = |body: Value| {
+        http.post(v3("/command"))
+            .header("X-Api-Key", &server.api_key)
+            .json(&body)
+            .send()
+    };
+    let episode_file = |n: i32| {
+        let client = &client;
+        async move {
+            client
+                .episodes(id)
+                .await
+                .unwrap()
+                .into_iter()
+                .find(|e| e.season_number == 1 && e.episode_number == n)
+                .and_then(|e| e.file)
+        }
+    };
+    // A post-processing script's scan of the finished folder: the matched file is imported
+    // (copied, as asked), the unknown one is left.
+    let r =
+        command(json!({"name": "DownloadedEpisodesScan", "path": incoming, "importMode": "Copy"}))
+            .await
+            .unwrap();
+    assert_eq!(r.status(), 201);
+    let mut imported = None;
+    for _ in 0..100 {
+        imported = episode_file(4).await;
+        if imported.is_some() {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert!(imported.is_some(), "S01E04 was imported");
+    assert!(
+        incoming
+            .join("Breaking.Bad.S01E04.720p.HDTV.x264-GRP.mkv")
+            .is_file(),
+        "copied"
+    );
+    assert!(
+        incoming
+            .join("Unknown.Thing.S03E04.720p.HDTV.x264-GRP.mkv")
+            .is_file()
+    );
+
+    // Sonarr's manual import: the unknown file is assigned by hand and moved.
+    let s01e05 = client
+        .episodes(id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 5)
+        .unwrap();
+    let unknown_path = incoming.join("Unknown.Thing.S03E04.720p.HDTV.x264-GRP.mkv");
+    let r = command(json!({"name": "ManualImport", "importMode": "move",
+        "files": [{"path": unknown_path, "seriesId": id, "episodeIds": [s01e05.id]}]}))
+    .await
+    .unwrap();
+    assert_eq!(r.status(), 201);
+    let mut moved = None;
+    for _ in 0..100 {
+        moved = episode_file(5).await;
+        if moved.is_some() {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert!(moved.is_some(), "S01E05 was imported");
+    assert!(!unknown_path.exists(), "moved");
+    let r = command(json!({"name": "ManualImport", "files": [{"path": "/x.mkv"}]}))
+        .await
+        .unwrap();
+    assert_eq!(r.status(), 422);
 }

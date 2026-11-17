@@ -389,7 +389,7 @@ async fn update_policy_overwrites_and_skip_policy_preserves() {
 
 /// Sonarr's proxy, stored in its `Config` table as text, becomes Kitsunarr's proxy settings.
 #[tokio::test]
-async fn sonarr_proxy_settings_are_imported() {
+async fn sonarr_proxy_settings_and_blocklist_are_imported() {
     let tmp = tempfile::tempdir().unwrap();
     let media = tmp.path().join("media");
     make_media(
@@ -414,18 +414,78 @@ async fn sonarr_proxy_settings_are_imported() {
     ] {
         config.insert(k.into(), v.into());
     }
-    let db = fresh_db(tmp.path()).await;
-    run(
-        &db,
-        &src,
-        &options(&media),
-        Mode::Apply {
-            backup_dir: tmp.path().join("b"),
+    // Sonarr's blocklist: an entry of an imported series, and one of a series that is not.
+    let series = src.snapshot.series[0].clone();
+    let episode = src
+        .snapshot
+        .episodes
+        .iter()
+        .find(|e| e.series_id == series.id)
+        .unwrap()
+        .clone();
+    let entry = kitsunarr_migrate::model::SrcBlocklist {
+        id: 1,
+        series_id: series.id,
+        episode_ids: vec![episode.id],
+        source_title: "Show.S01E01.720p.HDTV.x264-BAD".into(),
+        quality_id: Some(4),
+        revision: None,
+        languages: vec![1],
+        date: "2026-01-01T10:00:00Z".into(),
+        published_date: None,
+        size: Some(1000),
+        protocol: "torrent".into(),
+        indexer: Some("Nyaa".into()),
+        indexer_flags: 0,
+        release_type: Some("SingleEpisode".into()),
+        message: Some("Manually marked as failed".into()),
+        source: None,
+        torrent_info_hash: Some("abc".into()),
+    };
+    src.snapshot.blocklist = vec![
+        entry.clone(),
+        kitsunarr_migrate::model::SrcBlocklist {
+            id: 2,
+            series_id: 999_999,
+            ..entry
         },
-        &noop,
+    ];
+    let db = fresh_db(tmp.path()).await;
+    for _ in 0..2 {
+        run(
+            &db,
+            &src,
+            &options(&media),
+            Mode::Apply {
+                backup_dir: tmp.path().join("b"),
+            },
+            &noop,
+        )
+        .await
+        .unwrap();
+    }
+    // Imported once (the second run skips it), with the episode mapped; the other is skipped.
+    let rows: Vec<(String, String, String, Option<String>)> = sqlx::query_as(
+        "SELECT source_title, episode_ids, protocol, torrent_info_hash FROM blocklist",
     )
+    .fetch_all(db.pool())
     .await
     .unwrap();
+    assert_eq!(rows.len(), 1, "{rows:?}");
+    let episode_id: i64 = sqlx::query_scalar(
+        "SELECT e.id FROM episodes e JOIN series s ON s.id = e.series_id WHERE s.title = ? AND e.season_number = ? AND e.episode_number = ?",
+    )
+    .bind(&series.title)
+    .bind(episode.season_number)
+    .bind(episode.episode_number)
+    .fetch_one(db.pool())
+    .await
+    .unwrap();
+    assert_eq!(rows[0].1, format!("[{episode_id}]"));
+    assert_eq!(
+        (rows[0].2.as_str(), rows[0].3.as_deref()),
+        ("torrent", Some("abc"))
+    );
     use kitsunarr_domain::api::settings::{ProxySettings, ProxyType};
     let proxy: ProxySettings =
         kitsunarr_db::settings::get_or_default(db.pool(), kitsunarr_db::settings::KEY_PROXY)

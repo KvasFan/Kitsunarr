@@ -160,6 +160,7 @@ const ORDER: &[&str] = &[
     "movieFiles",
     "collections",
     "history",
+    "blocklist",
 ];
 
 /// Collection title, kind and its members `(member, sort key, role, label)`.
@@ -2599,6 +2600,73 @@ impl<'a> Importer<'a> {
         Ok(())
     }
 
+    /// Sonarr's blocklist: entries of imported series (or of Tanukarr films) with the episodes
+    /// that were imported; searches reject these releases again.
+    async fn blocklist(&mut self, conn: &mut SqliteConnection) -> Result<(), MigrateError> {
+        if !self.enabled("blocklist") {
+            return Ok(());
+        }
+        let rows = self.snap.blocklist.clone();
+        for b in &rows {
+            if migration_runs::lookup(conn, self.fp, "blocklist", &b.id.to_string())
+                .await?
+                .is_some()
+            {
+                self.count("blocklist", Act::Skip);
+                continue;
+            }
+            let movie_id = self.movie_by_series.get(&b.series_id).copied();
+            let series_id = if movie_id.is_some() {
+                None
+            } else {
+                self.series_map.get(&b.series_id).copied()
+            };
+            if movie_id.is_none() && series_id.is_none() {
+                self.count("blocklist", Act::Skip);
+                continue;
+            }
+            let episode_ids: Vec<i64> = if series_id.is_some() {
+                b.episode_ids
+                    .iter()
+                    .filter_map(|e| self.episode_map.get(e).copied())
+                    .collect()
+            } else {
+                Vec::new()
+            };
+            let id = kitsunarr_db::blocklist::insert(
+                &mut *conn,
+                &kitsunarr_db::blocklist::NewBlocklist {
+                    series_id,
+                    movie_id,
+                    episode_ids,
+                    source_title: b.source_title.clone(),
+                    quality_id: b.quality_id,
+                    revision: b.revision.map(
+                        |r| json!({"version": r.version, "real": r.real, "isRepack": r.is_repack}),
+                    ),
+                    languages: b.languages.clone(),
+                    date: b.date.clone(),
+                    published_date: b.published_date.clone(),
+                    size: b.size,
+                    protocol: b
+                        .protocol
+                        .parse()
+                        .unwrap_or(kitsunarr_domain::DownloadProtocol::Unknown),
+                    indexer: b.indexer.clone(),
+                    indexer_flags: b.indexer_flags,
+                    release_type: b.release_type.clone(),
+                    message: b.message.clone(),
+                    source: b.source.clone(),
+                    torrent_info_hash: b.torrent_info_hash.clone(),
+                },
+            )
+            .await?;
+            self.count("blocklist", Act::Create);
+            self.remember(conn, "blocklist", b.id, id).await?;
+        }
+        Ok(())
+    }
+
     fn blocking(&self) -> Vec<String> {
         let mut out = Vec::new();
         if self.opts.verify_paths
@@ -2884,6 +2952,7 @@ pub async fn run(
         imp.series_naming_options(conn).await?;
         imp.retained_versions(conn).await?;
         imp.history(conn).await?;
+        imp.blocklist(conn).await?;
         Ok(())
     }
     .await;

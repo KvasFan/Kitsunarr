@@ -474,6 +474,17 @@ impl Client {
     pub async fn refresh_queue(&self) -> ClientResult<String> {
         self.post("/queue/refresh", &serde_json::json!({})).await
     }
+    /// `POST /queue/{downloadId}/grab`: send a release a delay profile holds back now.
+    pub async fn grab_pending(
+        &self,
+        download_id: &str,
+    ) -> ClientResult<kitsunarr_domain::api::queue::QueueRemovalResult> {
+        self.post(
+            &format!("/queue/{}/grab", urlencoding(download_id)),
+            &serde_json::json!({}),
+        )
+        .await
+    }
     /// `DELETE /queue/{downloadId}`: remove from the client and/or blocklist the release.
     pub async fn remove_queue_item(
         &self,

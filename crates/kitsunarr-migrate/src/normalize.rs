@@ -155,6 +155,11 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
         .filter_map(episode_file)
         .collect();
     snap.history = raw.table("history").iter().filter_map(history).collect();
+    snap.blocklist = raw
+        .table("blocklist")
+        .iter()
+        .filter_map(blocklist)
+        .collect();
     snap.retained_versions = raw
         .table("retainedversions")
         .iter()
@@ -1136,10 +1141,96 @@ fn history(r: &Rec) -> Option<SrcHistory> {
     })
 }
 
+/// Sonarr's `DownloadProtocol` (number in SQLite, name in the API).
+fn protocol_name(v: Option<&Value>) -> String {
+    match enum_code(v) {
+        Some(Ok(1)) => "usenet".into(),
+        Some(Ok(2)) => "torrent".into(),
+        Some(Err(s)) if s == "usenet" || s == "torrent" => s,
+        _ => "unknown".into(),
+    }
+}
+
+/// Sonarr's `ReleaseType` (Tanukarr adds multi-season packs).
+fn release_type(v: Option<&Value>) -> Option<String> {
+    const NAMES: [&str; 5] = [
+        "Unknown",
+        "SingleEpisode",
+        "MultiEpisode",
+        "SeasonPack",
+        "MultiSeasonPack",
+    ];
+    match enum_code(v)? {
+        Ok(i) => NAMES
+            .get(usize::try_from(i).ok()?)
+            .map(|n| (*n).to_string()),
+        Err(s) => NAMES
+            .iter()
+            .find(|n| n.eq_ignore_ascii_case(&s))
+            .map(|n| (*n).to_string()),
+    }
+}
+
+fn blocklist(r: &Rec) -> Option<SrcBlocklist> {
+    let (quality_id, revision) = match quality_model(r.json("quality")) {
+        Some((q, rev)) => (Some(q), Some(rev)),
+        None => (None, None),
+    };
+    Some(SrcBlocklist {
+        id: r.i64("id")?,
+        series_id: r.i64("seriesid").filter(|v| *v > 0)?,
+        episode_ids: r.int_list("episodeids"),
+        source_title: r.str("sourcetitle")?,
+        quality_id,
+        revision,
+        languages: language_ids(r, "languages"),
+        date: r.ts("date")?,
+        published_date: r.ts("publisheddate"),
+        size: r.i64("size").filter(|s| *s > 0),
+        protocol: protocol_name(r.raw("protocol")),
+        indexer: r.str("indexer"),
+        indexer_flags: r.i64("indexerflags").unwrap_or(0),
+        release_type: release_type(r.raw("releasetype")),
+        message: r.str("message"),
+        source: r.str("source"),
+        torrent_info_hash: r.str("torrentinfohash").map(|h| h.to_ascii_lowercase()),
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn blocklist_rows_from_backups_and_the_api() {
+        let db = blocklist(&Rec::from_value(json!({"Id": 3, "SeriesId": 2, "EpisodeIds": "[5,6]", "SourceTitle": "Show.S01E01.720p-GRP",
+            "Quality": "{\"quality\": 4, \"revision\": {\"version\": 2, \"real\": 0, \"isRepack\": false}}",
+            "Date": "2026-01-01 10:00:00Z", "PublishedDate": "2025-12-31 09:00:00Z", "Size": 1000, "Protocol": 2,
+            "Indexer": "Nyaa", "IndexerFlags": 1, "ReleaseType": 1, "Message": "Failed", "TorrentInfoHash": "ABC",
+            "Languages": "[1]"}))).unwrap();
+        assert_eq!(db.episode_ids, vec![5, 6]);
+        assert_eq!(db.quality_id, Some(4));
+        assert_eq!(db.revision.as_ref().map(|r| r.version), Some(2));
+        assert_eq!(db.protocol, "torrent");
+        assert_eq!(db.release_type.as_deref(), Some("SingleEpisode"));
+        assert_eq!(db.torrent_info_hash.as_deref(), Some("abc"));
+        assert_eq!(db.languages, vec![1]);
+        let api = blocklist(&Rec::from_value(json!({"id": 9, "seriesId": 2, "episodeIds": [7], "sourceTitle": "x",
+            "quality": {"quality": {"id": 6, "name": "HDTV-1080p"}, "revision": {"version": 1}}, "languages": [{"id": 2, "name": "French"}],
+            "date": "2026-02-01T10:00:00Z", "protocol": "usenet", "indexer": "NZB", "message": null}))).unwrap();
+        assert_eq!(
+            (api.protocol.as_str(), api.quality_id, api.languages.clone()),
+            ("usenet", Some(6), vec![2])
+        );
+        assert_eq!(api.release_type, None);
+        assert!(
+            blocklist(&Rec::from_value(
+                json!({"id": 1, "seriesId": 0, "sourceTitle": "x", "date": "2026-01-01T00:00:00Z"})
+            ))
+            .is_none()
+        );
+    }
 
     fn raw(format: SourceFormat, tables: Vec<(&str, Vec<Value>)>) -> RawSource {
         RawSource {

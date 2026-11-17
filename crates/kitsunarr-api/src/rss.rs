@@ -173,6 +173,17 @@ pub(crate) async fn process(
     releases: &[IndexerRelease],
     extras: &search::Extras,
 ) -> Result<Processed, String> {
+    process_with(state, releases, extras, false).await
+}
+
+/// [`process`], optionally as a user's request (`user_invoked`: delay profiles do not hold the
+/// releases back, as Sonarr's "Send now" for a pending release).
+pub(crate) async fn process_with(
+    state: &AppState,
+    releases: &[IndexerRelease],
+    extras: &search::Extras,
+    user_invoked: bool,
+) -> Result<Processed, String> {
     let library = kitsunarr_library::decision_input::library_titles(&state.db)
         .await
         .map_err(|e| e.to_string())?;
@@ -241,7 +252,8 @@ pub(crate) async fn process(
     }
     matched += film_groups.iter().map(|(_, m)| m.len()).sum::<usize>();
 
-    let criteria = SearchCriteria::rss();
+    let mut criteria = SearchCriteria::rss();
+    criteria.user_invoked = user_invoked;
     let mut approved = 0usize;
     let mut grabbed = Vec::new();
     let mut grab_failures = Vec::new();

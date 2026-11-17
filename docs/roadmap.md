@@ -64,6 +64,18 @@ notification. A failing series is reported and does not stop the others. The lib
 Organize button asks for confirmation first; it was checked by compilation and lint only.
 The HTTP test covers the routes.
 
+Sonarr API completeness and transient-state migration:
+
+| Milestone | Scope | Status |
+|---|---|---|
+| 83 | v3 `config/naming`, `mediamanagement`, `indexer`, `downloadclient`, `importlist`, `ui`, `host` (partial writes through the native validation) | Done: HTTP, unit |
+| 84 | v3 tags (`tag/{id}`, `tag/detail`), root folders, delay profiles, remote path mappings, import lists and exclusions | Done: HTTP, unit |
+| 85 | "Send now" for pending releases (native `POST /queue/{id}/grab`, queue button, v3 `queue/grab`), v3 `queue/status`, `queue/details`, `system/task`, `system/backup`, `log`, `rename` | Done: HTTP, decision |
+| 86 | Sonarr/Tanukarr blocklist migration (backups and API) | Done: migrate fixtures, unit |
+| 87 | v3 `manualimport` and the `DownloadedEpisodesScan`, `RefreshMonitoredDownloads` and `ManualImport` commands (post-processing scripts) | Done: HTTP |
+
+Details: [milestones 83–87](milestones-2026-11-17-87.md).
+
 | Milestone | Scope | Status |
 |---|---|---|
 | 51 | Native Nyaa season searches without season aliases; standard and daily query coverage | Done: generator and HTTP tests |

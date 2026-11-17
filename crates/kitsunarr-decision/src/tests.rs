@@ -1510,6 +1510,18 @@ mod delay_specification_fixture {
         assert!(c.accepted(specs::delay));
     }
 
+    /// RSS sync waits; the same pending release sent now by the user does not.
+    #[test]
+    fn a_pending_release_sent_now_skips_the_delay() {
+        let mut c = case();
+        delayed(&mut c, 720);
+        c.release.publish_date = Utc::now();
+        c.criteria = crate::SearchCriteria::rss();
+        assert!(!c.accepted(specs::delay));
+        c.criteria.user_invoked = true;
+        assert!(c.accepted(specs::delay));
+    }
+
     /// A search the server starts itself (not `UserInvokedSearch`) waits like RSS sync.
     #[test]
     fn should_be_false_when_a_server_search_meets_a_delay() {

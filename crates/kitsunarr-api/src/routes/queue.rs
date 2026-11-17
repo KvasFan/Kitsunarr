@@ -263,6 +263,66 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
     }))
 }
 
+/// Sends a pending release now (Sonarr's queue "Send now", `QueueActionController.Grab`): it is
+/// decided again with the RSS rules as the user's request, so the delay profile no longer holds
+/// it back, and grabbed when approved; any other rejection is reported and it stays pending.
+#[utoipa::path(post, path = "/queue/{download_id}/grab", tag = "queue",
+    params(("download_id" = String, Path)),
+    responses(
+        (status = 200, body = QueueRemovalResult),
+        (status = 404, body = kitsunarr_domain::api::error::ApiErrorBody),
+        (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)
+    ))]
+pub async fn grab_pending(
+    State(state): State<AppState>,
+    axum::extract::Path(download_id): axum::extract::Path<String>,
+) -> ApiResult<Json<QueueRemovalResult>> {
+    let id = download_id
+        .strip_prefix("pending-")
+        .and_then(|i| i.parse::<i64>().ok())
+        .ok_or_else(|| {
+            ApiError::field(
+                "downloadId",
+                "Only a release a delay profile holds back can be sent now.",
+            )
+        })?;
+    let p = kitsunarr_db::pending::list(state.db.pool())
+        .await?
+        .into_iter()
+        .find(|p| p.id == id)
+        .ok_or_else(|| ApiError::NotFound("The pending release does not exist.".into()))?;
+    let stored: crate::rss::StoredRelease =
+        serde_json::from_str(&p.release).map_err(ApiError::internal)?;
+    let release = stored.release();
+    let (_, extras, _) = crate::routes::search::usable_indexers(&state, "enableRss").await?;
+    let processed = crate::rss::process_with(&state, std::slice::from_ref(&release), &extras, true)
+        .await
+        .map_err(ApiError::internal)?;
+    let outcome = processed.outcomes.into_iter().next().unwrap_or_default();
+    if outcome.grabbed {
+        // The grab ends the episodes' pending releases; a film's too.
+        let _ = kitsunarr_db::pending::remove(state.db.pool(), p.indexer_id, &p.guid).await;
+        return Ok(Json(QueueRemovalResult {
+            message: format!("{} was sent to the download client.", p.title),
+        }));
+    }
+    if let Some(f) = processed.grab_failures.first() {
+        return Err(ApiError::field(
+            "downloadId",
+            format!("{} could not be sent: {}", f.title, f.message),
+        ));
+    }
+    let reasons = if outcome.rejections.is_empty() {
+        "it no longer matches a monitored title".to_string()
+    } else {
+        outcome.rejections.join("; ")
+    };
+    Err(ApiError::field(
+        "downloadId",
+        format!("{} was not sent: {reasons}.", p.title),
+    ))
+}
+
 /// Runs one completed-download check now (`RefreshMonitoredDownloads`): imports downloads that
 /// finished. Returns the summary.
 #[utoipa::path(post, path = "/queue/refresh", tag = "queue", responses((status = 200, body = String)))]

@@ -64,6 +64,18 @@ pub fn Queue() -> Element {
             tick += 1;
         });
     };
+    // Sonarr's "Send now" for a release a delay profile holds back.
+    let c_send = client.clone();
+    let send_now = move |download_id: String| {
+        let c = c_send.clone();
+        spawn(async move {
+            match c.grab_pending(&download_id).await {
+                Ok(r) => app.success(r.message),
+                Err(e) => app.error(&e),
+            }
+            tick += 1;
+        });
+    };
     let c_check = client.clone();
     let check_now = move |_| {
         let c = c_check.clone();
@@ -152,6 +164,14 @@ pub fn Queue() -> Element {
                                             td { class: "num small", {time_left(item.time_left)} }
                                             td { class: "small", "{item.download_client}" }
                                             td { class: "shrink",
+                                                if item.tracked_state == "pending" {
+                                                    button { class: "btn sm", "aria-label": "Send {item.title} now",
+                                                        title: "Grab it now instead of waiting for the delay",
+                                                        onclick: { let id = item.download_id.clone(); let send = send_now.clone(); move |_| send(id.clone()) },
+                                                        "Send now"
+                                                    }
+                                                    " "
+                                                }
                                                 button { class: "btn sm", "aria-label": "Remove {item.title}",
                                                     onclick: { let item = item.clone(); move |_| {
                                                         removal.set(QueueRemoval {

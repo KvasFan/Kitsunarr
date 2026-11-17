@@ -1,7 +1,8 @@
-//! Sonarr's `/api/v3` download clients and connections written by tools (`downloadclient`,
-//! `notification`: create, update, delete, schema, test), in Sonarr's resource shape
-//! (`fields` as `{name, value}`, the notification triggers as top-level flags) and stored as
-//! Kitsunarr's providers through the native handlers (validation, secret redaction).
+//! Sonarr's `/api/v3` download clients, connections and import lists written by tools
+//! (`downloadclient`, `notification`, `importlist`: create, update, delete, schema, test), in
+//! Sonarr's resource shape (`fields` as `{name, value}`, the notification triggers and the list
+//! options as top-level keys) and stored as Kitsunarr's providers through the native handlers
+//! (validation, secret redaction).
 
 use axum::Json;
 use axum::Router;
@@ -33,7 +34,28 @@ pub fn router() -> Router<AppState> {
             "/notification/{id}",
             put(update_notification).delete(delete_notification),
         )
+        .route("/importlist", get(list_import_lists).post(create_list))
+        .route("/importlist/schema", get(list_schema))
+        .route("/importlist/test", post(test_list))
+        .route(
+            "/importlist/{id}",
+            get(get_import_list).put(update_list).delete(delete_list),
+        )
 }
+
+/// Sonarr's `ImportListResource` keys Kitsunarr keeps as the list's options.
+const LIST_OPTIONS: &[&str] = &[
+    "enableAutomaticAdd",
+    "searchForMissingEpisodes",
+    "shouldMonitor",
+    "monitorNewItems",
+    "rootFolderPath",
+    "qualityProfileId",
+    "seriesType",
+    "seasonFolder",
+    "tagExisting",
+    "preferredMetadataSource",
+];
 
 /// The resource's top-level keys that are options of the provider.
 fn is_option(kind: ProviderKind, key: &str) -> bool {
@@ -45,6 +67,7 @@ fn is_option(kind: ProviderKind, key: &str) -> bool {
             (key.starts_with("on") && key.chars().nth(2).is_some_and(char::is_uppercase))
                 || key.starts_with("include")
         }
+        ProviderKind::ImportList => LIST_OPTIONS.contains(&key),
         _ => false,
     }
 }
@@ -70,7 +93,12 @@ fn input_from(kind: ProviderKind, v: &Value) -> ApiResult<ProviderInput> {
     let mut options = Map::new();
     if let Some(o) = v.as_object() {
         for (k, val) in o {
-            if is_option(kind, k) && val.is_boolean() {
+            let usable = if kind == ProviderKind::ImportList {
+                !val.is_null()
+            } else {
+                val.is_boolean()
+            };
+            if is_option(kind, k) && usable {
                 options.insert(k.clone(), val.clone());
             }
         }
@@ -92,6 +120,7 @@ fn input_from(kind: ProviderKind, v: &Value) -> ApiResult<ProviderInput> {
 fn path_of(kind: ProviderKind) -> &'static str {
     match kind {
         ProviderKind::DownloadClient => "downloadclients",
+        ProviderKind::ImportList => "importlists",
         _ => "notifications",
     }
 }
@@ -99,6 +128,7 @@ fn path_of(kind: ProviderKind) -> &'static str {
 fn supported(kind: ProviderKind, implementation: &str) -> bool {
     match kind {
         ProviderKind::DownloadClient => kitsunarr_downloaders::supported(implementation),
+        ProviderKind::ImportList => kitsunarr_importlists::is_supported(implementation),
         _ => kitsunarr_notifications::supported(implementation),
     }
 }
@@ -196,6 +226,9 @@ async fn test(
         ProviderKind::DownloadClient => {
             crate::routes::grab::test_download_client(State(state), Json(req)).await?
         }
+        ProviderKind::ImportList => {
+            crate::routes::import_lists::test_import_list(State(state), Json(req)).await?
+        }
         _ => crate::routes::grab::test_notification(State(state), Json(req)).await?,
     }
     .0;
@@ -213,6 +246,45 @@ async fn test(
 
 const DC: ProviderKind = ProviderKind::DownloadClient;
 const NO: ProviderKind = ProviderKind::Notification;
+const IL: ProviderKind = ProviderKind::ImportList;
+
+async fn list_import_lists(State(s): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+    Ok(Json(
+        providers::list(s.db.pool(), IL)
+            .await?
+            .iter()
+            .map(crate::v3::provider_json)
+            .collect(),
+    ))
+}
+async fn get_import_list(State(s): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+    Ok(Json(resource(&s, IL, id).await?))
+}
+async fn create_list(
+    State(s): State<AppState>,
+    Json(v): Json<Value>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    create(s, IL, v).await
+}
+async fn update_list(
+    State(s): State<AppState>,
+    Path(id): Path<i64>,
+    Json(v): Json<Value>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    update(s, IL, id, v).await
+}
+async fn delete_list(State(s): State<AppState>, Path(id): Path<i64>) -> ApiResult<StatusCode> {
+    delete(s, IL, id).await
+}
+async fn list_schema() -> Json<Vec<Value>> {
+    Json(schema(IL))
+}
+async fn test_list(
+    State(s): State<AppState>,
+    Json(v): Json<Value>,
+) -> ApiResult<(StatusCode, Json<Value>)> {
+    test(s, IL, v).await
+}
 
 async fn create_client(
     State(s): State<AppState>,

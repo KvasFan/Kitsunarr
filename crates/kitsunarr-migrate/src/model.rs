@@ -347,6 +347,30 @@ pub struct SrcHistory {
     pub data: Value,
 }
 
+/// A blocklisted release (Sonarr's `Blocklist`).
+#[derive(Debug, Clone, PartialEq)]
+pub struct SrcBlocklist {
+    pub id: i64,
+    pub series_id: i64,
+    pub episode_ids: Vec<i64>,
+    pub source_title: String,
+    pub quality_id: Option<i32>,
+    pub revision: Option<SrcRevision>,
+    pub languages: Vec<i32>,
+    pub date: String,
+    pub published_date: Option<String>,
+    pub size: Option<i64>,
+    /// `usenet`, `torrent` or `unknown`.
+    pub protocol: String,
+    pub indexer: Option<String>,
+    pub indexer_flags: i64,
+    /// Sonarr's `ReleaseType` name.
+    pub release_type: Option<String>,
+    pub message: Option<String>,
+    pub source: Option<String>,
+    pub torrent_info_hash: Option<String>,
+}
+
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct SourceSnapshot {
     pub tags: Vec<(i64, String)>,
@@ -378,6 +402,8 @@ pub struct SourceSnapshot {
     pub episodes: Vec<SrcEpisode>,
     pub episode_files: Vec<SrcEpisodeFile>,
     pub history: Vec<SrcHistory>,
+    /// Blocklisted releases (Sonarr's `Blocklist`).
+    pub blocklist: Vec<SrcBlocklist>,
     /// Tanukarr's retained episode versions (backups only).
     pub retained_versions: Vec<SrcRetainedVersion>,
     /// Source settings Kitsunarr does not model (key → value), already filtered of internals.
@@ -429,6 +455,7 @@ impl SourceSnapshot {
                 self.remote_path_mappings.len() as u64,
             ),
             ("history".into(), self.history.len() as u64),
+            ("blocklist".into(), self.blocklist.len() as u64),
         ]
     }
 

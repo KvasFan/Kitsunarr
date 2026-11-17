@@ -338,22 +338,30 @@ async fn root_folders(State(state): State<AppState>) -> ApiResult<Json<Vec<Value
         .0;
     let mut out = Vec::with_capacity(list.len());
     for r in list {
-        // As Sonarr's `GetDetails`: at most 5 seconds for a slow disk, then none listed.
-        let unmapped = tokio::time::timeout(
-            std::time::Duration::from_secs(5),
-            kitsunarr_library::library_import::unmapped_folders(&state.db, r.id),
-        )
-        .await
-        .ok()
-        .and_then(Result::ok)
-        .unwrap_or_default();
-        let unmapped: Vec<Value> = unmapped
-            .iter()
-            .map(|u| json!({"name": u.name, "path": u.path, "relativePath": u.relative_path}))
-            .collect();
-        out.push(json!({"id": r.id, "path": r.path, "accessible": r.accessible, "freeSpace": r.free_space, "totalSpace": r.total_space, "unmappedFolders": unmapped}));
+        out.push(root_folder_json(&state, &r).await);
     }
     Ok(Json(out))
+}
+
+/// Sonarr's `RootFolderResource`, with its unmapped folders.
+pub(crate) async fn root_folder_json(
+    state: &AppState,
+    r: &kitsunarr_domain::api::settings::RootFolderItem,
+) -> Value {
+    // As Sonarr's `GetDetails`: at most 5 seconds for a slow disk, then none listed.
+    let unmapped = tokio::time::timeout(
+        std::time::Duration::from_secs(5),
+        kitsunarr_library::library_import::unmapped_folders(&state.db, r.id),
+    )
+    .await
+    .ok()
+    .and_then(Result::ok)
+    .unwrap_or_default();
+    let unmapped: Vec<Value> = unmapped
+        .iter()
+        .map(|u| json!({"name": u.name, "path": u.path, "relativePath": u.relative_path}))
+        .collect();
+    json!({"id": r.id, "path": r.path, "accessible": r.accessible, "freeSpace": r.free_space, "totalSpace": r.total_space, "unmappedFolders": unmapped, "mediaKind": r.media_kind})
 }
 
 async fn tags(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
@@ -1165,8 +1173,58 @@ struct CommandBody {
     series_ids: Vec<i64>,
     season_number: Option<i32>,
     episode_ids: Vec<i64>,
-    /// `RenameFiles`: episode file ids.
-    files: Vec<i64>,
+    /// `RenameFiles`: episode file ids; `ManualImport`: `{path, seriesId, episodeIds}` objects.
+    files: Vec<Value>,
+    /// `DownloadedEpisodesScan`: the folder (or file) to import.
+    path: Option<String>,
+    /// `DownloadedEpisodesScan`, `ManualImport`: `move`, `copy` or `auto` (Sonarr's
+    /// `ImportMode`).
+    import_mode: Option<String>,
+}
+
+/// Sonarr's `ImportMode`: copy only when asked; `auto` and `move` move.
+fn moves_files(mode: Option<&str>) -> bool {
+    !mode.is_some_and(|m| m.eq_ignore_ascii_case("copy"))
+}
+
+/// Imports every file of `folder` that matches a library series and its episodes without
+/// rejections (Sonarr's `DownloadedEpisodesScan` with a path); returns the summary.
+pub(crate) async fn import_folder(state: &AppState, folder: &str, move_files: bool) -> String {
+    let path = std::path::PathBuf::from(folder.trim());
+    if !path.is_absolute() {
+        return format!("{folder} is not an absolute path.");
+    }
+    let items = match kitsunarr_library::manual_import::scan(&state.db, &path, None).await {
+        Ok(items) => items,
+        Err(m) => return m,
+    };
+    let files: Vec<kitsunarr_domain::api::library_tools::ManualImportFile> = items
+        .iter()
+        .filter(|i| i.rejections.is_empty() && !i.episode_ids.is_empty())
+        .filter_map(|i| {
+            Some(kitsunarr_domain::api::library_tools::ManualImportFile {
+                path: i.path.clone(),
+                series_id: i.series_id?,
+                episode_ids: i.episode_ids.clone(),
+            })
+        })
+        .collect();
+    let skipped = items.len() - files.len();
+    let results = crate::routes::library_tools::manual_import(
+        State(state.clone()),
+        Json(kitsunarr_domain::api::library_tools::ManualImportRequest {
+            files,
+            import_mode: if move_files { "move" } else { "copy" }.into(),
+        }),
+    )
+    .await
+    .map(|j| j.0)
+    .unwrap_or_default();
+    let imported = results.iter().filter(|r| r.imported).count();
+    format!(
+        "{imported} of {} files imported from {folder} ({skipped} not matched or rejected)",
+        items.len()
+    )
 }
 
 fn command_json(id: i64, name: &str, status: &str, message: &str) -> Value {
@@ -1284,10 +1342,11 @@ async fn command(
                 let sid = body
                     .series_id
                     .ok_or_else(|| ApiError::field("seriesId", "A series id is required."))?;
-                if body.files.is_empty() {
+                let files: Vec<i64> = body.files.iter().filter_map(Value::as_i64).collect();
+                if files.is_empty() {
                     return Err(ApiError::field("files", "Choose the files to rename."));
                 }
-                vec![(sid, body.files.clone())]
+                vec![(sid, files)]
             } else {
                 if body.series_ids.is_empty() {
                     return Err(ApiError::field("seriesIds", "Choose the series to rename."));
@@ -1314,6 +1373,76 @@ async fn command(
                 }
             });
             "Renaming files"
+        }
+        // Completed-download handling (`RefreshMonitoredDownloads`), or, with a path, Sonarr's
+        // import of a finished download's folder (nzbToMedia, post-processing scripts).
+        "RefreshMonitoredDownloads" | "DownloadedEpisodesScan" | "ProcessMonitoredDownloads" => {
+            let st = state.clone();
+            match body.path.clone().filter(|p| !p.trim().is_empty()) {
+                Some(path) => {
+                    let move_files = moves_files(body.import_mode.as_deref());
+                    tokio::spawn(async move {
+                        let summary = import_folder(&st, &path, move_files).await;
+                        tracing::info!(%summary, "v3 downloaded episodes scan");
+                    });
+                    "Importing the folder"
+                }
+                None => {
+                    tokio::spawn(async move {
+                        if let Err(e) = crate::routes::queue::refresh_queue(State(st.clone())).await
+                        {
+                            tracing::warn!(error = %e.message(), "v3 download check failed");
+                        }
+                    });
+                    "Checking completed downloads"
+                }
+            }
+        }
+        // Sonarr's manual import UI: the chosen files with their series and episodes.
+        "ManualImport" => {
+            let mut files = Vec::new();
+            for f in &body.files {
+                let series_id = f["seriesId"].as_i64().filter(|s| *s > 0);
+                let episode_ids: Vec<i64> = f["episodeIds"]
+                    .as_array()
+                    .map(|a| a.iter().filter_map(Value::as_i64).collect())
+                    .unwrap_or_default();
+                match (f["path"].as_str(), series_id) {
+                    (Some(path), Some(series_id)) if !episode_ids.is_empty() => {
+                        files.push(kitsunarr_domain::api::library_tools::ManualImportFile {
+                            path: path.to_string(),
+                            series_id,
+                            episode_ids,
+                        })
+                    }
+                    _ => {
+                        return Err(ApiError::field(
+                            "files",
+                            "Each file needs its path, series and episodes.",
+                        ));
+                    }
+                }
+            }
+            if files.is_empty() {
+                return Err(ApiError::field("files", "Choose the files to import."));
+            }
+            let mode = if moves_files(body.import_mode.as_deref()) {
+                "move"
+            } else {
+                "copy"
+            };
+            let st = state.clone();
+            tokio::spawn(async move {
+                let _ = crate::routes::library_tools::manual_import(
+                    State(st),
+                    Json(kitsunarr_domain::api::library_tools::ManualImportRequest {
+                        files,
+                        import_mode: mode.into(),
+                    }),
+                )
+                .await;
+            });
+            "Importing the chosen files"
         }
         "RssSync" => {
             let st = state.clone();
@@ -1350,10 +1479,8 @@ struct QueueQuery {
     page_size: Option<i64>,
 }
 
-async fn queue(
-    State(state): State<AppState>,
-    Query(q): Query<QueueQuery>,
-) -> ApiResult<Json<Value>> {
+/// The queue as Sonarr's `QueueResource`s: one record per episode of a download.
+pub(crate) async fn queue_records(state: &AppState) -> ApiResult<Vec<Value>> {
     let native = crate::routes::queue::get_queue(State(state.clone()))
         .await?
         .0;
@@ -1394,6 +1521,14 @@ async fn queue(
             records.push(r);
         }
     }
+    Ok(records)
+}
+
+async fn queue(
+    State(state): State<AppState>,
+    Query(q): Query<QueueQuery>,
+) -> ApiResult<Json<Value>> {
+    let records = queue_records(&state).await?;
     let total = records.len() as i64;
     let page = q.page.unwrap_or(1).max(1);
     let size = q.page_size.unwrap_or(total.max(1)).max(1);
@@ -2066,7 +2201,9 @@ pub(crate) fn provider_json(p: &ProviderRecord) -> Value {
         "tags": p.tags,
         "fields": fields,
     });
-    if p.kind == ProviderKind::Notification
+    // Notification triggers, list options and download client removal flags are top-level
+    // keys in Sonarr's resources.
+    if p.kind != ProviderKind::Indexer
         && let Some(o) = v.as_object_mut()
     {
         for (k, t) in &p.options {

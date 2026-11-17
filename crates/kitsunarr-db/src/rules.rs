@@ -201,6 +201,28 @@ pub async fn upsert_exclusion(
         .await?)
 }
 
+/// Changes an exclusion's identity and title (Sonarr's `PUT /importlistexclusion/{id}`).
+pub async fn update_exclusion(
+    ex: impl SqliteExecutor<'_>,
+    e: &ImportListExclusion,
+) -> DbResult<()> {
+    let n = sqlx::query(
+        "UPDATE import_list_exclusions SET provider = ?, external_id = ?, title = ? WHERE id = ?",
+    )
+    .bind(&e.provider)
+    .bind(&e.external_id)
+    .bind(&e.title)
+    .bind(e.id)
+    .execute(ex)
+    .await
+    .map_err(|err| DbError::from_write(err, "exclusion"))?
+    .rows_affected();
+    if n == 0 {
+        return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
 pub async fn delete_exclusion(ex: impl SqliteExecutor<'_>, id: i64) -> DbResult<()> {
     let n = sqlx::query("DELETE FROM import_list_exclusions WHERE id = ?")
         .bind(id)

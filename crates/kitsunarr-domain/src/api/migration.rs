@@ -186,6 +186,7 @@ pub const MIGRATION_ENTITY_GROUPS: &[&str] = &[
     "series",
     "movies",
     "history",
+    "blocklist",
 ];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]

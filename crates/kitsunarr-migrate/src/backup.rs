@@ -198,6 +198,7 @@ const TABLES: &[(&str, &[&str])] = &[
     ("namingconfig", &["NamingConfig"]),
     ("remotepathmappings", &["RemotePathMappings"]),
     ("history", &["History"]),
+    ("blocklist", &["Blocklist", "Blacklist"]),
     ("scenemappings", &["SceneMappings"]),
     // Tanukarr's retained episode versions (migration 239).
     ("retainedversions", &["RetainedVersions"]),

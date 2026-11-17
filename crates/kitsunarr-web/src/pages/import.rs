@@ -61,6 +61,7 @@ fn group_label(g: &str) -> &'static str {
         "series" => "Series & anime",
         "movies" => "Movies (Tanukarr)",
         "history" => "History",
+        "blocklist" => "Blocklist",
         _ => "Other",
     }
 }

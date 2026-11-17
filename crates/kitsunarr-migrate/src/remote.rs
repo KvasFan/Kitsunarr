@@ -399,6 +399,26 @@ pub async fn load(
         }
     }
     tables.insert("history".into(), history);
+
+    // The blocklist (paged as history; failed releases are few).
+    let mut blocklist = Vec::new();
+    for page in 1..=MAX_HISTORY_PAGES {
+        let Some(v) = src
+            .get_optional(&format!(
+                "api/v3/blocklist?page={page}&pageSize={HISTORY_PAGE_SIZE}&sortKey=date&sortDirection=descending"
+            ))
+            .await?
+        else {
+            break;
+        };
+        let batch = records(v);
+        let len = batch.len();
+        blocklist.extend(batch);
+        if len < HISTORY_PAGE_SIZE as usize {
+            break;
+        }
+    }
+    tables.insert("blocklist".into(), blocklist);
     Ok((
         status,
         RawSource {

@@ -261,6 +261,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(queue::get_queue))
         .routes(routes!(queue::refresh_queue))
         .routes(routes!(queue::remove_from_queue))
+        .routes(routes!(queue::grab_pending))
         .routes(routes!(queue::list_blocklist))
         .routes(routes!(queue::delete_blocklist))
         .routes(routes!(queue::remove_blocklist))

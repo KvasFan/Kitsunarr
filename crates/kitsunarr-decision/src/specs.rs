@@ -1277,9 +1277,10 @@ pub(crate) fn history(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
 }
 
 /// `RssSync/DelaySpecification`: the delay profile's waiting period, for RSS sync and the
-/// searches the server starts itself; user-started searches skip it.
+/// searches the server starts itself; user-started searches skip it, as does a pending release
+/// the user sends now (RSS rules with `user_invoked`, Sonarr's queue "Send now").
 pub(crate) fn delay(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
-    if !env.criteria.is_rss() && env.criteria.user_invoked {
+    if env.criteria.user_invoked {
         return None;
     }
     let d = env.delay_profile()?;
