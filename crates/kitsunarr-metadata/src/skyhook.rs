@@ -370,6 +370,8 @@ impl SkyHook {
                 status: status(s.status.as_deref()),
                 poster_url: poster(&s),
                 external_ids: external_ids(&s),
+                alternate_titles: Vec::new(),
+                votes: 0,
             })
             .collect())
     }

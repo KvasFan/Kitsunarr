@@ -15,6 +15,7 @@ pub mod jikan;
 pub mod omdb;
 mod ratelimit;
 pub mod skyhook;
+pub mod title_matcher;
 pub mod tmdb;
 pub mod tvmaze;
 pub mod xem;
@@ -66,6 +67,12 @@ pub struct SearchResult {
     pub status: SeriesStatus,
     pub poster_url: Option<String>,
     pub external_ids: Vec<ExternalId>,
+    /// Other names the catalogue knows (synonyms, English and native titles), for ranking.
+    #[serde(default)]
+    pub alternate_titles: Vec<String>,
+    /// How many people rated or follow the title (Sonarr's `Ratings.Votes`), for ranking.
+    #[serde(default)]
+    pub votes: i64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -206,6 +213,8 @@ pub(crate) fn result_of(info: &SeriesInfo) -> SearchResult {
             .find(|i| i.cover_type == "poster")
             .map(|i| i.remote_url.clone()),
         external_ids: info.external_ids.clone(),
+        alternate_titles: info.alternate_titles.clone(),
+        votes: info.votes.unwrap_or(0),
     }
 }
 

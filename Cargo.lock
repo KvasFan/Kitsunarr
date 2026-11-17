@@ -2780,12 +2780,14 @@ dependencies = [
  "chrono",
  "kitsunarr-domain",
  "kitsunarr-parser",
+ "regex",
  "reqwest 0.13.5",
  "serde",
  "serde_json",
  "thiserror 2.0.21",
  "tokio",
  "tracing",
+ "unicode-normalization",
 ]
 
 [[package]]

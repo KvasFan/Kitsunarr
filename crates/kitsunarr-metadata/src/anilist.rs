@@ -417,12 +417,12 @@ impl AniList {
             "query ($search: String) {{ Page(perPage: 20) {{ media(search: $search, type: ANIME, sort: SEARCH_MATCH, isAdult: false) {{ {FIELDS} }} }} }}"
         );
         let data: PageData = self.query(&q, json!({ "search": term })).await?;
-        Ok(data
+        let mut results: Vec<SearchResult> = data
             .page
             .media
             .into_iter()
             .map(|m| {
-                let (title, _, _) = titles(&m);
+                let (title, alternate_titles, _) = titles(&m);
                 SearchResult {
                     provider: P,
                     id: m.id.to_string(),
@@ -442,9 +442,15 @@ impl AniList {
                         .or_else(|| m.cover.extra_large.clone()),
                     external_ids: external_ids(&m),
                     title,
+                    alternate_titles,
+                    votes: m.popularity.unwrap_or(0),
                 }
             })
-            .collect())
+            .collect();
+        // AniList's popularity weighting buries an exact title under the franchise's
+        // better-known entries.
+        crate::title_matcher::rank(term, &mut results);
+        Ok(results)
     }
 
     /// Drops a cached entry so the next [`Self::series`] call fetches fresh data.
