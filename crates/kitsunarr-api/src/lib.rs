@@ -12,6 +12,7 @@
 
 pub mod assets;
 pub mod auth;
+pub mod commands;
 pub mod downloads;
 pub mod error;
 pub mod health;
@@ -96,6 +97,8 @@ pub struct AppStateInner {
     pub last_download_client: std::sync::Mutex<std::collections::HashMap<String, i64>>,
     /// Held while a wanted-episodes search runs (one at a time).
     pub wanted_search: Arc<tokio::sync::Mutex<()>>,
+    /// Commands started through Sonarr's `/api/v3/command`, with their outcome.
+    pub commands: commands::CommandRegistry,
     pub logs: LogBuffer,
     /// The warnings and errors of the last health evaluation, for health notifications.
     pub last_health: std::sync::Mutex<Option<Vec<kitsunarr_domain::api::system::HealthCheck>>>,
@@ -142,6 +145,7 @@ impl AppState {
             releases: Default::default(),
             last_download_client: Default::default(),
             wanted_search: Default::default(),
+            commands: Default::default(),
             last_health: Default::default(),
             import_health: Default::default(),
             proxy: Default::default(),

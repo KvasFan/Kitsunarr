@@ -418,6 +418,64 @@ fn episode_searches(
     })
 }
 
+/// The episode searches of an anime season search (`SearchAnimeSeason`'s `SearchAnime` with
+/// `isSeasonSearch`): one per episode, by absolute number, without repeats. Automatic searches
+/// skip episodes that have not aired and, when asked, unmonitored ones.
+fn anime_season_episode_searches(
+    scene_titles: &[String],
+    episodes: &[&EpisodeItem],
+    automatic: bool,
+    monitored_only: bool,
+) -> Vec<(Search, SearchKind)> {
+    let now = chrono::Utc::now();
+    let mut out: Vec<(Search, SearchKind)> = Vec::new();
+    for e in episodes {
+        if monitored_only && !e.monitored {
+            continue;
+        }
+        let aired = e
+            .air_date_utc
+            .as_deref()
+            .and_then(|d| chrono::DateTime::parse_from_rfc3339(d).ok())
+            .is_some_and(|d| d < now);
+        if automatic && !aired {
+            continue;
+        }
+        let Ok((searches, _)) = episode_searches(SeriesType::Anime, scene_titles, e) else {
+            continue;
+        };
+        for (search, kind) in searches {
+            let kind = match kind {
+                SearchKind::AnimeEpisode { .. } => SearchKind::AnimeEpisode {
+                    season_search: true,
+                },
+                other => other,
+            };
+            if !out.iter().any(|(s, _)| *s == search) {
+                out.push((search, kind));
+            }
+        }
+    }
+    out
+}
+
+/// The episode an anime season search's episode search is for (by its scene numbers).
+fn anime_search_episode(search: &Search, episodes: &[EpisodeItem]) -> Option<i64> {
+    let Search::AnimeEpisode {
+        season, episode, ..
+    } = search
+    else {
+        return None;
+    };
+    episodes
+        .iter()
+        .find(|e| {
+            e.scene_season_number.unwrap_or(e.season_number) == *season
+                && e.scene_episode_number.unwrap_or(e.episode_number) == *episode
+        })
+        .map(|e| e.id)
+}
+
 /// The searches to run (each with its decision kind), their description and the requested
 /// episodes.
 type PlannedSearch = (Vec<(Search, SearchKind)>, String, Vec<i64>);
@@ -943,7 +1001,19 @@ pub(crate) async fn run_search(
                                 _ => search,
                             }
                         })
-                        .collect();
+                        .collect::<Vec<_>>();
+                    // Sonarr's `SearchAnimeSeason`: after the season searches, each episode is
+                    // searched by its absolute number (automatic searches: monitored and aired
+                    // episodes only); a season-pack search does not.
+                    let mut searches = searches;
+                    if anime && !q.season_packs_only {
+                        searches.extend(anime_season_episode_searches(
+                            &criteria.scene_titles,
+                            &wanted,
+                            automatic,
+                            automatic && options.monitored_only,
+                        ));
+                    }
                     (searches, description, requested)
                 }
             }
@@ -979,38 +1049,116 @@ pub(crate) async fn run_search(
         }
     }
 
-    let client = &state.indexers;
-    let planned: Vec<Search> = searches.iter().map(|(search, _)| search.clone()).collect();
-    let outcomes = futures::future::join_all(indexers.iter().map(|indexer| {
-        super::search_sources::query_source(
-            client,
-            indexer,
-            &criteria,
-            &planned,
-            crate::search_control::SOURCE_BUDGET,
-        )
-    }))
-    .await;
-    let diagnostics = outcomes.iter().map(|o| o.diagnostic.clone()).collect();
-    let successful_indexers = outcomes.iter().filter(|r| r.result.is_ok()).count();
-    // Each search's releases, in arrival order.
-    let mut found: Vec<Vec<IndexerRelease>> = vec![Vec::new(); searches.len()];
-    for (indexer, outcome) in indexers.iter().zip(outcomes) {
-        let outcome = outcome.result;
-        record_outcome(state, indexer.id, &outcome).await;
-        match outcome {
-            Ok(list) => {
-                for (k, r) in list {
-                    found[k].push(r);
+    let inputs = DecisionInputs::load(state, &detail, &episodes).await?;
+    let engine = Engine {
+        series: &inputs.series,
+        library: &inputs.library,
+        formats: &inputs.formats,
+        settings: &inputs.settings,
+    };
+    let decide = |kind: SearchKind, group: &[decision::Release]| {
+        let criteria = decision::SearchCriteria {
+            monitored_episodes_only: options.monitored_only,
+            user_invoked: options.user_invoked,
+            kind,
+            episode_ids: requested.clone(),
+        };
+        let slot = collection.as_ref().map(|(t, s)| (t.as_str(), *s));
+        engine.evaluate_collection(group, &criteria, slot)
+    };
+
+    // Tanukarr's "Prefer anime season packs": an automatic anime season search runs its season
+    // searches first and skips the episodes an approved full-season release already covers.
+    let episode_phase: Vec<usize> = searches
+        .iter()
+        .enumerate()
+        .filter(|(_, (_, kind))| {
+            matches!(
+                kind,
+                SearchKind::AnimeEpisode {
+                    season_search: true
                 }
+            )
+        })
+        .map(|(i, _)| i)
+        .collect();
+    let packs_first = automatic
+        && !episode_phase.is_empty()
+        && episode_phase.len() < searches.len()
+        && kitsunarr_db::settings::get_or_default::<
+            kitsunarr_domain::api::settings::LibraryToolsSettings,
+        >(state.db.pool(), kitsunarr_db::settings::KEY_LIBRARY_TOOLS)
+        .await?
+        .prefer_anime_season_packs;
+    let rounds: Vec<Vec<usize>> = if packs_first {
+        vec![
+            (0..searches.len())
+                .filter(|i| !episode_phase.contains(i))
+                .collect(),
+            episode_phase.clone(),
+        ]
+    } else {
+        vec![(0..searches.len()).collect()]
+    };
+    let mut found: Vec<Vec<IndexerRelease>> = vec![Vec::new(); searches.len()];
+    let mut diagnostics = Vec::new();
+    let mut successful_indexers = 0;
+    let mut covered: Vec<i64> = Vec::new();
+    for (round, mut members) in rounds.into_iter().enumerate() {
+        if round > 0 {
+            members.retain(|&i| {
+                anime_search_episode(&searches[i].0, &episodes)
+                    .is_none_or(|e| !covered.contains(&e))
+            });
+            if members.is_empty() {
+                break;
             }
-            Err(e) => {
-                tracing::warn!(indexer = %indexer.name, error = %super::search_sources::redact(indexer,&e.to_string()), "search failed");
-                failures.push(IndexerFailure {
-                    indexer_id: indexer.id,
-                    indexer: indexer.name.clone(),
-                    message: super::search_sources::redact(indexer, &describe(&e)),
-                });
+        }
+        let planned: Vec<Search> = members.iter().map(|&i| searches[i].0.clone()).collect();
+        // The episode round asks only the indexers the season round reached.
+        let round_indexers: Vec<Indexer> = indexers
+            .iter()
+            .filter(|i| round == 0 || !failures.iter().any(|f| f.indexer_id == i.id))
+            .cloned()
+            .collect();
+        let (lists, round_diagnostics, ok) =
+            query_round(state, &round_indexers, &criteria, &planned, &mut failures).await;
+        // One diagnostic per indexer: a later round adds to the first one's.
+        for d in round_diagnostics {
+            match diagnostics.iter_mut().find(
+                |x: &&mut kitsunarr_domain::api::search::IndexerSearchDiagnostic| {
+                    x.indexer_id == d.indexer_id
+                },
+            ) {
+                Some(x) => {
+                    x.duration_ms += d.duration_ms;
+                    x.releases += d.releases;
+                    x.planned_queries.extend(d.planned_queries);
+                    x.notes.extend(d.notes);
+                    if d.status != "success" {
+                        x.status = d.status;
+                    }
+                }
+                None => diagnostics.push(d),
+            }
+        }
+        if round == 0 {
+            successful_indexers = ok;
+        }
+        for (k, list) in lists.into_iter().enumerate() {
+            found[members[k]] = list;
+        }
+        if packs_first && round == 0 {
+            for &i in &members {
+                let group: Vec<decision::Release> = found[i]
+                    .iter()
+                    .map(|r| decision_release(r, extras.get(&r.indexer_id)))
+                    .collect();
+                for d in decide(searches[i].1, &group) {
+                    if d.approved() && d.parsed.as_ref().is_some_and(|p| p.full_season) {
+                        covered.extend(d.episodes.iter().map(|e| e.id));
+                    }
+                }
             }
         }
     }
@@ -1020,13 +1168,6 @@ pub(crate) async fn run_search(
         kitsunarr_db::library::wanted::set_last_search(&state.db, &requested, &now).await?;
     }
 
-    let inputs = DecisionInputs::load(state, &detail, &episodes).await?;
-    let engine = Engine {
-        series: &inputs.series,
-        library: &inputs.library,
-        formats: &inputs.formats,
-        settings: &inputs.settings,
-    };
     // Each search's releases are decided with its own criteria, then merged
     // (`SearchSpecial` decides its two searches separately, then `DeDupeDecisions`).
     let mut all_meta: Vec<IndexerRelease> = Vec::new();
@@ -1038,22 +1179,10 @@ pub(crate) async fn run_search(
             .iter()
             .map(|r| decision_release(r, extras.get(&r.indexer_id)))
             .collect();
-        let criteria = decision::SearchCriteria {
-            monitored_episodes_only: options.monitored_only,
-            user_invoked: options.user_invoked,
-            kind: *kind,
-            episode_ids: requested.clone(),
-        };
-        let slot = collection.as_ref().map(|(t, s)| (t.as_str(), *s));
-        decisions.extend(
-            engine
-                .evaluate_collection(&group, &criteria, slot)
-                .into_iter()
-                .map(|mut d| {
-                    d.release += offset;
-                    d
-                }),
-        );
+        decisions.extend(decide(*kind, &group).into_iter().map(|mut d| {
+            d.release += offset;
+            d
+        }));
         all.extend(group);
         all_meta.extend(list);
     }
@@ -1076,6 +1205,56 @@ pub(crate) async fn run_search(
     };
     crate::library_tools::record_search(state, &run, q.series_id, automatic).await;
     Ok(run)
+}
+
+/// One round of searches on every indexer in parallel: each search's releases, the indexers'
+/// diagnostics and how many answered; failures are added to `failures` and recorded.
+async fn query_round(
+    state: &AppState,
+    indexers: &[Indexer],
+    criteria: &Criteria,
+    planned: &[Search],
+    failures: &mut Vec<IndexerFailure>,
+) -> (
+    Vec<Vec<IndexerRelease>>,
+    Vec<kitsunarr_domain::api::search::IndexerSearchDiagnostic>,
+    usize,
+) {
+    let client = &state.indexers;
+    let outcomes = futures::future::join_all(indexers.iter().map(|indexer| {
+        super::search_sources::query_source(
+            client,
+            indexer,
+            criteria,
+            planned,
+            crate::search_control::SOURCE_BUDGET,
+        )
+    }))
+    .await;
+    let diagnostics = outcomes.iter().map(|o| o.diagnostic.clone()).collect();
+    let successful = outcomes.iter().filter(|r| r.result.is_ok()).count();
+    // Each search's releases, in arrival order.
+    let mut found: Vec<Vec<IndexerRelease>> = vec![Vec::new(); planned.len()];
+    for (indexer, outcome) in indexers.iter().zip(outcomes) {
+        let outcome = outcome.result;
+        record_outcome(state, indexer.id, &outcome).await;
+        match outcome {
+            Ok(list) => {
+                for (k, r) in list {
+                    found[k].push(r);
+                }
+            }
+            Err(e) => {
+                tracing::warn!(indexer = %indexer.name, error = %super::search_sources::redact(indexer,&e.to_string()), "search failed");
+                failures.push(IndexerFailure {
+                    indexer_id: indexer.id,
+                    indexer: indexer.name.clone(),
+                    message: super::search_sources::redact(indexer, &describe(&e)),
+                });
+            }
+        }
+    }
+    (found, diagnostics, successful)
 }
 
 /// Keeps a search's releases for grabbing: download links stay on the server.

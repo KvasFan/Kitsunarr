@@ -73,8 +73,10 @@ Sonarr API completeness and transient-state migration:
 | 85 | "Send now" for pending releases (native `POST /queue/{id}/grab`, queue button, v3 `queue/grab`), v3 `queue/status`, `queue/details`, `system/task`, `system/backup`, `log`, `rename` | Done: HTTP, decision |
 | 86 | Sonarr/Tanukarr blocklist migration (backups and API) | Done: migrate fixtures, unit |
 | 87 | v3 `manualimport` and the `DownloadedEpisodesScan`, `RefreshMonitoredDownloads` and `ManualImport` commands (post-processing scripts) | Done: HTTP |
+| 88 | v3 commands tracked to their end (`GET /command`, `GET /command/{id}`: started, then completed or failed with the outcome) | Done: HTTP, unit |
+| 89 | Anime season searches also search each episode (Sonarr's `SearchAnimeSeason`); Tanukarr's "Prefer anime season packs" skips the episodes an approved pack covers | Done: HTTP |
 
-Details: [milestones 83–87](milestones-2026-11-17-87.md).
+Details: [milestones 83–89](milestones-2026-11-17-89.md).
 
 | Milestone | Scope | Status |
 |---|---|---|

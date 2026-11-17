@@ -4081,6 +4081,33 @@ async fn sonarr_v3_api_serves_overseerr_and_prowlarr_flows() {
         .await
         .unwrap();
     assert_eq!(command.status(), 201);
+    // The command is tracked until it ends (Sonarr's `CommandResource`).
+    let started: Value = command.json().await.unwrap();
+    assert_eq!(started["name"], "RescanSeries");
+    assert_eq!(started["body"]["seriesId"], id);
+    let mut done = Value::Null;
+    for _ in 0..100 {
+        done = get(&format!("/command/{}", started["id"]))
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
+        if done["status"] != "started" {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    // The test's root folder is empty, so the scan is refused, and the command says so.
+    assert_eq!(done["status"], "failed", "{done}");
+    assert_eq!(done["result"], "unsuccessful");
+    assert!(
+        done["message"].as_str().unwrap().ends_with("is empty."),
+        "{done}"
+    );
+    let listed: Value = get("/command").await.unwrap().json().await.unwrap();
+    assert_eq!(listed[0]["id"], started["id"]);
+    assert_eq!(get("/command/999999").await.unwrap().status(), 404);
     let queue: Value = get("/queue?page=1&pageSize=50")
         .await
         .unwrap()
@@ -6919,10 +6946,29 @@ async fn direct_nyaa_season_searches_survive_other_source_failures_and_can_be_re
     assert_eq!(request.get("term").map(String::as_str), Some("Nyaa Show"));
     assert_eq!(request.get("page").map(String::as_str), Some("rss"));
     assert_eq!(request.get("c").map(String::as_str), Some("1_0"));
+    // Sonarr's `SearchAnimeSeason`: the season, then each episode by its absolute number.
+    let mut terms: Vec<String> = log
+        .lock()
+        .unwrap()
+        .iter()
+        .filter_map(|r| r.get("term").cloned())
+        .collect();
+    terms.sort();
+    assert_eq!(
+        terms,
+        [
+            "Nyaa Show",
+            "Nyaa Show 01",
+            "Nyaa Show 02",
+            "Nyaa Show 1",
+            "Nyaa Show 2"
+        ]
+    );
+    let per_search = terms.len();
     assert_eq!(client.search_releases(&q).await.unwrap().releases.len(), 3);
     assert_eq!(
         log.lock().unwrap().len(),
-        2,
+        2 * per_search,
         "repeat searches actually query Nyaa again"
     );
     let before = log.lock().unwrap().len();
@@ -9093,6 +9139,31 @@ async fn sonarr_v3_manual_import_and_downloaded_episodes_scan() {
             .await
             .unwrap();
     assert_eq!(r.status(), 201);
+    let started: Value = r.json().await.unwrap();
+    let mut done = Value::Null;
+    for _ in 0..100 {
+        done = http
+            .get(v3(&format!("/command/{}", started["id"])))
+            .header("X-Api-Key", &server.api_key)
+            .send()
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
+        if done["status"] != "started" {
+            break;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+    }
+    assert_eq!(done["status"], "completed", "{done}");
+    assert!(
+        done["message"]
+            .as_str()
+            .unwrap()
+            .starts_with("1 of 2 files imported from"),
+        "{done}"
+    );
     let mut imported = None;
     for _ in 0..100 {
         imported = episode_file(4).await;
@@ -9142,4 +9213,127 @@ async fn sonarr_v3_manual_import_and_downloaded_episodes_scan() {
         .await
         .unwrap();
     assert_eq!(r.status(), 422);
+}
+
+/// Sonarr's `SearchAnimeSeason`: an anime season search also searches each episode; with
+/// Tanukarr's "Prefer anime season packs", an automatic search skips the episodes an approved
+/// full-season release covers.
+#[tokio::test]
+async fn anime_season_searches_search_each_episode_unless_a_pack_covers_it() {
+    use axum::extract::{Query, State};
+    use axum::response::IntoResponse;
+    use kitsunarr_domain::api::search::ReleaseQuery;
+    use std::collections::HashMap;
+    type Log = Arc<std::sync::Mutex<Vec<String>>>;
+    let log: Log = Arc::default();
+    let router = axum::Router::new()
+        .route(
+            "/",
+            axum::routing::get(
+                |State(log): State<Log>, Query(query): Query<HashMap<String, String>>| async move {
+                    let term = query.get("term").cloned().unwrap_or_default();
+                    log.lock().unwrap().push(term.clone());
+                    let item = if term == "Pack Show" {
+                        r#"<item><title>Pack.Show.S01.1080p.WEB-DL.AAC2.0.x264-GRP</title>
+                        <link>https://nyaa.si/download/1.torrent</link>
+                        <guid isPermaLink="true">https://nyaa.si/view/1</guid>
+                        <pubDate>Tue, 24 Aug 2021 22:18:46 -0000</pubDate>
+                        <nyaa:seeders>40</nyaa:seeders><nyaa:leechers>3</nyaa:leechers>
+                        <nyaa:infoHash>e8ca5e20eca876339f41c3d9e95ea66c1d7caaee</nyaa:infoHash>
+                        <nyaa:categoryId>1_2</nyaa:categoryId><nyaa:size>2.0 GiB</nyaa:size></item>"#
+                    } else {
+                        ""
+                    };
+                    (
+                        [("content-type", "application/rss+xml")],
+                        format!(
+                            r#"<rss xmlns:nyaa="https://nyaa.si/xmlns/nyaa" version="2.0"><channel>{item}</channel></rss>"#
+                        ),
+                    )
+                        .into_response()
+                },
+            ),
+        )
+        .with_state(log.clone());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let pool = server.state.db.pool();
+    sqlx::query("INSERT INTO series (id,media_kind,title,sort_title,clean_title,title_slug,series_type,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (1,'anime','Pack Show','packshow','packshow','pack-show','anime','myAnimeList','1',1,'/library','/library/show','2026-11-15')").execute(pool).await.unwrap();
+    sqlx::query("INSERT INTO seasons (series_id, season_number, monitored) VALUES (1, 1, 1)")
+        .execute(pool)
+        .await
+        .unwrap();
+    for id in 1..=2 {
+        sqlx::query("INSERT INTO episodes (id,series_id,season_number,episode_number,absolute_episode_number,air_date_utc,monitored) VALUES (?,1,1,?,?,'2020-01-01T00:00:00Z',1)").bind(id).bind(id).bind(id).execute(pool).await.unwrap();
+    }
+    let _: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Nyaa", "implementation": "Nyaa", "enabled": true,
+                "options": {"enableInteractiveSearch": true, "enableRss": false, "enableAutomaticSearch": true},
+                "settings": {"baseUrl": base, "animeStandardFormatSearch": false, "additionalParameters": "&c=1_0&f=0", "minimumSeeders": 1}
+            }),
+        )
+        .await
+        .unwrap();
+    let q = ReleaseQuery {
+        series_id: 1,
+        season_number: Some(1),
+        episode_id: None,
+        complete_series: false,
+        season_packs_only: false,
+        indexer_ids: None,
+        search_session: None,
+    };
+    let terms = |log: &Log| {
+        let mut t = log.lock().unwrap().clone();
+        t.sort();
+        t
+    };
+
+    // Without the option: the season, then each episode.
+    let r = client.automatic_search(&q).await.unwrap();
+    assert_eq!(r.approved, 1, "{r:?}");
+    assert_eq!(
+        terms(&log),
+        [
+            "Pack Show",
+            "Pack Show 01",
+            "Pack Show 02",
+            "Pack Show 1",
+            "Pack Show 2"
+        ]
+    );
+
+    // With it: the approved pack covers both episodes, so they are not searched.
+    let mut tools: kitsunarr_domain::api::settings::LibraryToolsSettings =
+        kitsunarr_db::settings::get_or_default(pool, kitsunarr_db::settings::KEY_LIBRARY_TOOLS)
+            .await
+            .unwrap();
+    tools.prefer_anime_season_packs = true;
+    kitsunarr_db::settings::set(pool, kitsunarr_db::settings::KEY_LIBRARY_TOOLS, &tools)
+        .await
+        .unwrap();
+    log.lock().unwrap().clear();
+    let r = client.automatic_search(&q).await.unwrap();
+    assert_eq!(r.approved, 1, "{r:?}");
+    assert_eq!(terms(&log), ["Pack Show"]);
+
+    // An interactive search still searches every episode.
+    log.lock().unwrap().clear();
+    client.search_releases(&q).await.unwrap();
+    assert_eq!(terms(&log).len(), 5);
+
+    // A season-pack search searches the season only.
+    log.lock().unwrap().clear();
+    let packs = ReleaseQuery {
+        season_packs_only: true,
+        ..q.clone()
+    };
+    client.search_releases(&packs).await.unwrap();
+    assert_eq!(terms(&log), ["Pack Show"]);
 }

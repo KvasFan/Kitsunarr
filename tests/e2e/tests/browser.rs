@@ -574,7 +574,18 @@ async fn nyaa_mock(
                 |State((mode, hits, feed)): State<Control>,
                  Query(q): Query<std::collections::HashMap<String, String>>| async move {
                     assert_eq!(q.get("page").map(String::as_str), Some("rss"));
-                    assert_eq!(q.get("term").map(String::as_str), Some("Nyaa Test Show"));
+                    let term = q.get("term").cloned().unwrap_or_default();
+                    assert!(term.starts_with("Nyaa Test Show"), "{term}");
+                    // An anime season search then asks for each episode by its absolute number
+                    // (Sonarr's `SearchAnimeSeason`); those find nothing more here and are not
+                    // counted as searches.
+                    if term != "Nyaa Test Show" {
+                        return (
+                            [("content-type", "application/rss+xml")],
+                            "<rss><channel/></rss>",
+                        )
+                            .into_response();
+                    }
                     hits.fetch_add(1, Ordering::SeqCst);
                     if mode.load(Ordering::SeqCst) == 3 {
                         tokio::time::sleep(Duration::from_secs(2)).await;

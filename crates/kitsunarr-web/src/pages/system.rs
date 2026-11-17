@@ -333,7 +333,7 @@ pub fn SystemLibraryTools() -> Element {
                             onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.hardlink_only = v; } } }
                         crate::components::common::Switch { checked: o.match_external_ids, label: "Reject releases whose TheTVDB or IMDb id names another series",
                             onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.match_external_ids = v; } } }
-                        crate::components::common::Switch { checked: o.prefer_anime_season_packs, label: "Prefer anime season packs (Kitsunarr's anime season searches already search the season once)",
+                        crate::components::common::Switch { checked: o.prefer_anime_season_packs, label: "Prefer anime season packs",
                             onchange: move |v| { if let Some(x) = opts.write().as_mut() { x.prefer_anime_season_packs = v; } } }
                     }
                     div { class: "row end", button { class: "btn primary", onclick: save, "Save" } }

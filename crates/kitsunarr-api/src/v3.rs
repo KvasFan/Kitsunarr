@@ -70,7 +70,7 @@ pub fn router() -> Router<AppState> {
         .route("/seasonpass", post(season_pass))
         .route("/episodefile", get(list_episode_files))
         .route("/episodefile/{id}", get(get_episode_file))
-        .route("/command", post(command))
+        .route("/command", get(list_commands).post(command))
         .route("/command/{id}", get(get_command))
         .route("/queue", get(queue))
         .route("/calendar", get(calendar))
@@ -1227,27 +1227,44 @@ pub(crate) async fn import_folder(state: &AppState, folder: &str, move_files: bo
     )
 }
 
-fn command_json(id: i64, name: &str, status: &str, message: &str) -> Value {
-    let now = kitsunarr_db::now();
-    json!({"id": id, "name": name, "commandName": name, "status": status, "message": message,
-        "queued": now, "started": now, "ended": now, "trigger": "manual", "body": {"name": name}})
+/// A command's work: its summary, or why it failed.
+type CommandJob =
+    std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, String>> + Send + 'static>>;
+
+fn job<F>(f: F) -> Option<CommandJob>
+where
+    F: std::future::Future<Output = Result<String, String>> + Send + 'static,
+{
+    Some(Box::pin(f))
 }
 
-/// Commands run in the background (searches, refreshes); they report as started at once.
+/// Commands run in the background (searches, refreshes, imports): each is recorded as started
+/// at once and then completed or failed with its outcome (`GET /command/{id}`).
 async fn command(
     State(state): State<AppState>,
-    Json(body): Json<CommandBody>,
+    Json(raw): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
-    let id = chrono::Utc::now().timestamp_millis();
+    let body: CommandBody = serde_json::from_value(raw.clone())
+        .map_err(|e| ApiError::BadRequest(format!("Invalid command: {e}")))?;
     let name = body.name.clone();
-    let message = match name.as_str() {
+    let (message, work): (&str, Option<CommandJob>) = match name.as_str() {
         "SeriesSearch" => {
             let sid = body
                 .series_id
                 .ok_or_else(|| ApiError::field("seriesId", "A series id is required."))?;
             detail(&state, sid).await?;
-            crate::routes::wanted::search_missing_of_series(&state, sid, true);
-            "Searching the series' missing monitored episodes"
+            let st = state.clone();
+            (
+                "Searching the series' missing monitored episodes",
+                job(async move {
+                    Ok(crate::routes::wanted::missing_of_series(&st, sid, true)
+                        .await
+                        .unwrap_or_else(|| {
+                            "Nothing to search: no missing monitored episode outside the queue."
+                                .into()
+                        }))
+                }),
+            )
         }
         "SeasonSearch" | "EpisodeSearch" => {
             let queries: Vec<ReleaseQuery> = if name == "SeasonSearch" {
@@ -1278,17 +1295,35 @@ async fn command(
                 }
                 q
             };
+            if queries.is_empty() {
+                return Err(ApiError::field(
+                    "episodeIds",
+                    "Choose the episodes to search.",
+                ));
+            }
             let st = state.clone();
-            tokio::spawn(async move {
-                for q in queries {
-                    if let Err(e) =
-                        crate::routes::search::automatic_search(State(st.clone()), Json(q)).await
-                    {
-                        tracing::warn!(error = %e.message(), "v3 search command failed");
+            (
+                "Searching",
+                job(async move {
+                    let (mut found, mut grabbed, mut errors) = (0usize, 0usize, Vec::new());
+                    for q in queries {
+                        match crate::routes::search::automatic_search(State(st.clone()), Json(q))
+                            .await
+                        {
+                            Ok(Json(r)) => {
+                                found += r.found;
+                                grabbed += r.grabbed.len();
+                            }
+                            Err(e) => errors.push(e.message()),
+                        }
                     }
-                }
-            });
-            "Searching"
+                    if errors.is_empty() {
+                        Ok(format!("{found} releases found, {grabbed} grabbed"))
+                    } else {
+                        Err(errors.join("; "))
+                    }
+                }),
+            )
         }
         "RefreshSeries" | "RescanSeries" => {
             let targets: Vec<i64> = match body.series_id {
@@ -1302,23 +1337,33 @@ async fn command(
             };
             let st = state.clone();
             let refresh = name == "RefreshSeries";
-            tokio::spawn(async move {
-                for s in targets {
-                    let r = if refresh {
-                        crate::routes::metadata::refresh_series(State(st.clone()), Path(s))
-                            .await
-                            .map(|_| ())
-                    } else {
-                        crate::routes::library::rescan_series(State(st.clone()), Path(s))
-                            .await
-                            .map(|_| ())
-                    };
-                    if let Err(e) = r {
-                        tracing::warn!(series = s, error = %e.message(), "v3 command failed");
+            (
+                if refresh { "Refreshing" } else { "Rescanning" },
+                job(async move {
+                    let mut errors = Vec::new();
+                    for s in &targets {
+                        let r = if refresh {
+                            crate::routes::metadata::refresh_series(State(st.clone()), Path(*s))
+                                .await
+                                .map(|_| ())
+                        } else {
+                            crate::routes::library::rescan_series(State(st.clone()), Path(*s))
+                                .await
+                                .map(|_| ())
+                        };
+                        if let Err(e) = r {
+                            tracing::warn!(series = s, error = %e.message(), "v3 command failed");
+                            errors.push(format!("series {s}: {}", e.message()));
+                        }
                     }
-                }
-            });
-            if refresh { "Refreshing" } else { "Rescanning" }
+                    let verb = if refresh { "refreshed" } else { "rescanned" };
+                    if errors.is_empty() {
+                        Ok(format!("{} series {verb}", targets.len()))
+                    } else {
+                        Err(errors.join("; "))
+                    }
+                }),
+            )
         }
         "MissingEpisodeSearch" | "CutoffUnmetEpisodeSearch" => {
             let list = if name == "MissingEpisodeSearch" {
@@ -1326,16 +1371,33 @@ async fn command(
             } else {
                 kitsunarr_domain::api::wanted::WantedList::CutoffUnmet
             };
-            let _started = crate::routes::wanted::search_wanted(
-                State(state.clone()),
-                Json(kitsunarr_domain::api::wanted::WantedSearchRequest {
+            let (started, search) = crate::routes::wanted::prepare_wanted_search(
+                &state,
+                &kitsunarr_domain::api::wanted::WantedSearchRequest {
                     list,
                     episode_ids: body.episode_ids.clone(),
                     monitored: Some(true),
-                }),
+                },
             )
             .await?;
-            "Searching wanted episodes"
+            let st = state.clone();
+            (
+                "Searching wanted episodes",
+                job(async move {
+                    match search {
+                        Some(search) => {
+                            let summary = search.await;
+                            st.events
+                                .publish(kitsunarr_domain::api::events::ServerEvent::Notice {
+                                    level: "info".into(),
+                                    message: summary.clone(),
+                                });
+                            Ok(summary)
+                        }
+                        None => Ok(started.message),
+                    }
+                }),
+            )
         }
         "RenameSeries" | "RenameFiles" => {
             let jobs: Vec<(i64, Vec<i64>)> = if name == "RenameFiles" {
@@ -1357,22 +1419,37 @@ async fn command(
                 detail(&state, *sid).await?;
             }
             let st = state.clone();
-            tokio::spawn(async move {
-                for (sid, files) in jobs {
-                    if let Err(e) = crate::routes::library::rename_series_files(
-                        State(st.clone()),
-                        Path(sid),
-                        Json(kitsunarr_domain::api::library::RenameRequest {
-                            episode_file_ids: files,
-                        }),
-                    )
-                    .await
-                    {
-                        tracing::warn!(series = sid, error = %e.message(), "v3 rename failed");
+            (
+                "Renaming files",
+                job(async move {
+                    let (mut renamed, mut errors) = (Vec::new(), Vec::new());
+                    for (sid, files) in jobs {
+                        match crate::routes::library::rename_series_files(
+                            State(st.clone()),
+                            Path(sid),
+                            Json(kitsunarr_domain::api::library::RenameRequest {
+                                episode_file_ids: files,
+                            }),
+                        )
+                        .await
+                        {
+                            Ok(Json(r)) => {
+                                renamed.push(r.message);
+                                errors.extend(r.problems);
+                            }
+                            Err(e) => {
+                                tracing::warn!(series = sid, error = %e.message(), "v3 rename failed");
+                                errors.push(e.message());
+                            }
+                        }
                     }
-                }
-            });
-            "Renaming files"
+                    if errors.is_empty() {
+                        Ok(renamed.join(" "))
+                    } else {
+                        Err(errors.join("; "))
+                    }
+                }),
+            )
         }
         // Completed-download handling (`RefreshMonitoredDownloads`), or, with a path, Sonarr's
         // import of a finished download's folder (nzbToMedia, post-processing scripts).
@@ -1381,21 +1458,24 @@ async fn command(
             match body.path.clone().filter(|p| !p.trim().is_empty()) {
                 Some(path) => {
                     let move_files = moves_files(body.import_mode.as_deref());
-                    tokio::spawn(async move {
-                        let summary = import_folder(&st, &path, move_files).await;
-                        tracing::info!(%summary, "v3 downloaded episodes scan");
-                    });
-                    "Importing the folder"
+                    (
+                        "Importing the folder",
+                        job(async move {
+                            let summary = import_folder(&st, &path, move_files).await;
+                            tracing::info!(%summary, "v3 downloaded episodes scan");
+                            Ok(summary)
+                        }),
+                    )
                 }
-                None => {
-                    tokio::spawn(async move {
-                        if let Err(e) = crate::routes::queue::refresh_queue(State(st.clone())).await
-                        {
-                            tracing::warn!(error = %e.message(), "v3 download check failed");
-                        }
-                    });
-                    "Checking completed downloads"
-                }
+                None => (
+                    "Checking completed downloads",
+                    job(async move {
+                        crate::routes::queue::refresh_queue(State(st))
+                            .await
+                            .map(|j| j.0)
+                            .map_err(|e| e.message())
+                    }),
+                ),
             }
         }
         // Sonarr's manual import UI: the chosen files with their series and episodes.
@@ -1432,26 +1512,46 @@ async fn command(
                 "copy"
             };
             let st = state.clone();
-            tokio::spawn(async move {
-                let _ = crate::routes::library_tools::manual_import(
-                    State(st),
-                    Json(kitsunarr_domain::api::library_tools::ManualImportRequest {
-                        files,
-                        import_mode: mode.into(),
-                    }),
-                )
-                .await;
-            });
-            "Importing the chosen files"
+            (
+                "Importing the chosen files",
+                job(async move {
+                    let results = crate::routes::library_tools::manual_import(
+                        State(st),
+                        Json(kitsunarr_domain::api::library_tools::ManualImportRequest {
+                            files,
+                            import_mode: mode.into(),
+                        }),
+                    )
+                    .await
+                    .map_err(|e| e.message())?
+                    .0;
+                    let imported = results.iter().filter(|r| r.imported).count();
+                    let problems: Vec<String> = results
+                        .iter()
+                        .filter(|r| !r.imported)
+                        .map(|r| format!("{}: {}", r.path, r.messages.join(", ")))
+                        .collect();
+                    if problems.is_empty() {
+                        Ok(format!("{imported} files imported"))
+                    } else {
+                        Err(format!(
+                            "{imported} files imported; not imported: {}",
+                            problems.join("; ")
+                        ))
+                    }
+                }),
+            )
         }
         "RssSync" => {
             let st = state.clone();
-            tokio::spawn(async move {
-                if let Err(e) = crate::rss::sync(&st).await {
-                    tracing::warn!(error = %e, "v3 RSS sync failed");
-                }
-            });
-            "RSS sync started"
+            (
+                "RSS sync started",
+                job(async move {
+                    crate::rss::sync(&st).await.inspect_err(|e| {
+                        tracing::warn!(error = %e, "v3 RSS sync failed");
+                    })
+                }),
+            )
         }
         other => {
             return Err(ApiError::field(
@@ -1460,14 +1560,45 @@ async fn command(
             ));
         }
     };
+    let id = state.commands.start(&name, raw, message);
+    match work {
+        Some(work) => {
+            let st = state.clone();
+            tokio::spawn(async move {
+                let outcome = work.await;
+                st.commands.finish(id, outcome);
+            });
+        }
+        None => state.commands.finish(id, Ok(message.to_string())),
+    }
+    let record = state
+        .commands
+        .get(id)
+        .ok_or_else(|| ApiError::internal("command vanished"))?;
     Ok((
         StatusCode::CREATED,
-        Json(command_json(id, &name, "started", message)),
+        Json(crate::commands::resource(&record)),
     ))
 }
 
-async fn get_command(Path(id): Path<i64>) -> Json<Value> {
-    Json(command_json(id, "Command", "completed", "Completed"))
+async fn get_command(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+    state
+        .commands
+        .get(id)
+        .map(|r| Json(crate::commands::resource(&r)))
+        .ok_or_else(|| ApiError::NotFound("The command does not exist.".into()))
+}
+
+/// The commands started recently, newest first.
+async fn list_commands(State(state): State<AppState>) -> Json<Vec<Value>> {
+    Json(
+        state
+            .commands
+            .list()
+            .iter()
+            .map(crate::commands::resource)
+            .collect(),
+    )
 }
 
 // ---- queue and calendar -------------------------------------------------------------------

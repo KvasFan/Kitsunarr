@@ -294,53 +294,63 @@ async fn complete_series_step(
 pub(crate) fn search_missing_of_series(state: &AppState, series_id: i64, user_invoked: bool) {
     let state = state.clone();
     tokio::spawn(async move {
-        // Tanukarr also suppresses "add and search" while automation is paused.
-        if crate::library_tools::paused(&state).await {
-            tracing::info!(series_id, "{}", crate::library_tools::PAUSED);
-            return;
+        if let Some(summary) = missing_of_series(&state, series_id, user_invoked).await {
+            state.events.publish(ServerEvent::Notice {
+                level: "info".into(),
+                message: summary,
+            });
         }
-        let _guard = state.wanted_search.clone().lock_owned().await;
-        let now = now();
-        let targets = match wanted::all(&state.db, Wanted::Missing { now: &now }, true).await {
-            Ok(t) => t,
-            Err(e) => {
-                tracing::warn!(series_id, error = %e, "could not list missing episodes");
-                return;
-            }
-        };
-        let queued = state
-            .downloads
-            .queued_episode_ids(&state.db)
-            .await
-            .unwrap_or_default();
-        let targets: Vec<SearchTarget> = targets
-            .into_iter()
-            .filter(|t| t.series_id == series_id && !queued.contains(&t.episode_id))
-            .collect();
-        if targets.is_empty() {
-            return;
-        }
-        let summary = bulk_search(&state, groups(targets), true, user_invoked, true).await;
-        tracing::info!(series_id, %summary, "search for missing episodes completed");
-        state.events.publish(ServerEvent::Notice {
-            level: "info".into(),
-            message: summary,
-        });
     });
 }
 
-/// Search the indexers for wanted episodes and grab the best releases. The search runs in the
-/// background; its outcome arrives as a notification. Episodes already in the queue are skipped.
-#[utoipa::path(post, path = "/wanted/search", tag = "wanted", request_body = WantedSearchRequest,
-    responses(
-        (status = 202, body = WantedSearchStarted),
-        (status = 409, body = ApiErrorBody, description = "A wanted search is already running"),
-        (status = 422, body = ApiErrorBody)
-    ))]
-pub async fn search_wanted(
-    State(state): State<AppState>,
-    Json(req): Json<WantedSearchRequest>,
-) -> ApiResult<(StatusCode, Json<WantedSearchStarted>)> {
+/// The search behind [`search_missing_of_series`], awaited: its summary, or `None` when nothing
+/// was searched (automation paused, nothing missing outside the queue, or a listing failure).
+pub(crate) async fn missing_of_series(
+    state: &AppState,
+    series_id: i64,
+    user_invoked: bool,
+) -> Option<String> {
+    // Tanukarr also suppresses "add and search" while automation is paused.
+    if crate::library_tools::paused(state).await {
+        tracing::info!(series_id, "{}", crate::library_tools::PAUSED);
+        return None;
+    }
+    let _guard = state.wanted_search.clone().lock_owned().await;
+    let now = now();
+    let targets = match wanted::all(&state.db, Wanted::Missing { now: &now }, true).await {
+        Ok(t) => t,
+        Err(e) => {
+            tracing::warn!(series_id, error = %e, "could not list missing episodes");
+            return None;
+        }
+    };
+    let queued = state
+        .downloads
+        .queued_episode_ids(&state.db)
+        .await
+        .unwrap_or_default();
+    let targets: Vec<SearchTarget> = targets
+        .into_iter()
+        .filter(|t| t.series_id == series_id && !queued.contains(&t.episode_id))
+        .collect();
+    if targets.is_empty() {
+        return None;
+    }
+    let summary = bulk_search(state, groups(targets), true, user_invoked, true).await;
+    tracing::info!(series_id, %summary, "search for missing episodes completed");
+    Some(summary)
+}
+
+/// A wanted search ready to run: what it will search, and the search itself (its summary).
+pub(crate) type WantedSearchJob =
+    std::pin::Pin<Box<dyn std::future::Future<Output = String> + Send + 'static>>;
+
+/// Prepares a wanted search (refused while another runs): what it covers, and the search to
+/// run when there is anything to search.
+pub(crate) async fn prepare_wanted_search(
+    state: &AppState,
+    req: &WantedSearchRequest,
+) -> ApiResult<(WantedSearchStarted, Option<WantedSearchJob>)> {
     let Ok(guard) = state.wanted_search.clone().try_lock_owned() else {
         return Err(ApiError::Conflict(
             "A search for wanted episodes is already running; wait for its notification.".into(),
@@ -349,7 +359,7 @@ pub async fn search_wanted(
     let monitored = req.monitored.unwrap_or(true);
     let targets = if req.episode_ids.is_empty() {
         let now = now();
-        let below = below_cutoff(&state).await?;
+        let below = below_cutoff(state).await?;
         let list = match req.list {
             WantedList::Missing => Wanted::Missing { now: &now },
             WantedList::CutoffUnmet => Wanted::CutoffUnmet { below: &below },
@@ -381,18 +391,41 @@ pub async fn search_wanted(
             )
         },
     };
-    if episodes > 0 {
-        // Chosen episodes are searched as `EpisodeSearch` (monitored or not); whole lists keep
-        // their monitored filter.
-        let monitored_only = req.episode_ids.is_empty() && monitored;
-        // "Search all missing" (monitored) tries complete-series packs first, as Tanukarr.
-        let complete_first = monitored_only && matches!(req.list, WantedList::Missing);
+    if episodes == 0 {
+        return Ok((started, None));
+    }
+    // Chosen episodes are searched as `EpisodeSearch` (monitored or not); whole lists keep
+    // their monitored filter.
+    let monitored_only = req.episode_ids.is_empty() && monitored;
+    // "Search all missing" (monitored) tries complete-series packs first, as Tanukarr.
+    let complete_first = monitored_only && matches!(req.list, WantedList::Missing);
+    let task_state = state.clone();
+    let job: WantedSearchJob = Box::pin(async move {
+        let _guard = guard;
+        let summary = bulk_search(&task_state, groups, monitored_only, true, complete_first).await;
+        tracing::info!(%summary, "wanted search completed");
+        summary
+    });
+    Ok((started, Some(job)))
+}
+
+/// Search the indexers for wanted episodes and grab the best releases. The search runs in the
+/// background; its outcome arrives as a notification. Episodes already in the queue are skipped.
+#[utoipa::path(post, path = "/wanted/search", tag = "wanted", request_body = WantedSearchRequest,
+    responses(
+        (status = 202, body = WantedSearchStarted),
+        (status = 409, body = ApiErrorBody, description = "A wanted search is already running"),
+        (status = 422, body = ApiErrorBody)
+    ))]
+pub async fn search_wanted(
+    State(state): State<AppState>,
+    Json(req): Json<WantedSearchRequest>,
+) -> ApiResult<(StatusCode, Json<WantedSearchStarted>)> {
+    let (started, job) = prepare_wanted_search(&state, &req).await?;
+    if let Some(job) = job {
         let task_state = state.clone();
         tokio::spawn(async move {
-            let _guard = guard;
-            let summary =
-                bulk_search(&task_state, groups, monitored_only, true, complete_first).await;
-            tracing::info!(%summary, "wanted search completed");
+            let summary = job.await;
             task_state.events.publish(ServerEvent::Notice {
                 level: "info".into(),
                 message: summary,
