@@ -509,6 +509,12 @@ pub struct MetadataSourcesSettings {
     /// Sonarr's "Preferred metadata language" (a language id; English when unset): the
     /// language TheTVDB titles are searched and added in. Each series keeps its own.
     pub preferred_metadata_language: Option<i32>,
+    /// Tanukarr's `MetadataSourceOrder`: catalogues in preference order (empty = default order).
+    #[serde(default)]
+    pub source_order: Vec<crate::MetadataProvider>,
+    /// Tanukarr's `DisabledMetadataSources`.
+    #[serde(default)]
+    pub disabled_sources: Vec<crate::MetadataProvider>,
 }
 
 /// Download client options (Sonarr's Settings › Download Clients: completed and failed
@@ -1040,4 +1046,32 @@ impl Default for ProxySettings {
             bypass_local_addresses: true,
         }
     }
+}
+
+/// Sonarr's custom filter: a saved filter of one of the web interface's lists (`type`: e.g.
+/// `series`, `movies`, `history`, `blocklist`, `queue`), with Sonarr's filter items
+/// (`{key, value, type}`) kept verbatim.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct CustomFilter {
+    #[serde(default)]
+    pub id: i64,
+    pub r#type: String,
+    pub label: String,
+    #[serde(default)]
+    #[cfg_attr(feature = "openapi", schema(value_type = Vec<Object>))]
+    pub filters: Vec<serde_json::Value>,
+}
+
+/// One provider's outcome in `POST /providers/{kind}/testall` (Sonarr's "Test All").
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ProviderTestAllItem {
+    pub id: i64,
+    pub name: String,
+    pub ok: bool,
+    /// Why the test failed (absent when it passed).
+    pub message: Option<String>,
 }

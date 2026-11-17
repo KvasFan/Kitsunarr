@@ -1220,6 +1220,49 @@ pub async fn delete_episode_file(conn: &mut SqliteConnection, file_id: i64) -> D
     Ok(())
 }
 
+/// What Sonarr's episode file editor changes (`PUT episodefile/{id}`, `…/bulk`, `…/editor`);
+/// `None` keeps the stored value.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct EpisodeFileEdit {
+    /// Quality id, revision version, real (proper) count and repack flag.
+    pub quality: Option<(i64, i64, i64, bool)>,
+    pub languages: Option<Vec<i32>>,
+    pub scene_name: Option<String>,
+    pub release_group: Option<String>,
+    pub indexer_flags: Option<i64>,
+    pub release_type: Option<i64>,
+}
+
+/// Applies an edit to an episode file (`NotFound` when it does not exist).
+pub async fn edit_episode_file(db: &Database, file_id: i64, e: &EpisodeFileEdit) -> DbResult<()> {
+    let r = sqlx::query(
+        "UPDATE episode_files SET \
+           quality_id = COALESCE(?, quality_id), revision_version = COALESCE(?, revision_version), \
+           revision_real = COALESCE(?, revision_real), is_repack = COALESCE(?, is_repack), \
+           languages = COALESCE(?, languages), scene_name = COALESCE(?, scene_name), \
+           release_group = COALESCE(?, release_group), indexer_flags = COALESCE(?, indexer_flags), \
+           release_type = COALESCE(?, release_type) \
+         WHERE id = ?",
+    )
+    .bind(e.quality.map(|q| q.0))
+    .bind(e.quality.map(|q| q.1))
+    .bind(e.quality.map(|q| q.2))
+    .bind(e.quality.map(|q| q.3))
+    .bind(e.languages.as_ref().map(to_json).transpose()?)
+    .bind(e.scene_name.as_deref())
+    .bind(e.release_group.as_deref())
+    .bind(e.indexer_flags)
+    .bind(e.release_type)
+    .bind(file_id)
+    .execute(db.pool())
+    .await
+    .map_err(|err| DbError::from_write(err, "episode file"))?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
 /// An episode file with every column release decisions read (custom formats, upgrades).
 #[derive(Debug, Clone, FromRow)]
 pub struct FileRecord {

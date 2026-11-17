@@ -17,6 +17,8 @@ use crate::error::ApiResult;
 pub fn feed_router() -> Router<AppState> {
     Router::new()
         .route("/calendar/Sonarr.ics", get(calendar_feed))
+        // The documented spelling (Sonarr matches routes without regard to case).
+        .route("/calendar/sonarr.ics", get(calendar_feed))
         .route("/calendar/Kitsunarr.ics", get(calendar_feed))
 }
 

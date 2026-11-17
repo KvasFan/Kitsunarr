@@ -11,6 +11,7 @@ pub mod auth;
 pub mod auto_tags;
 pub mod blocklist;
 pub mod companion_keys;
+pub mod custom_filters;
 pub mod history;
 pub mod import_lists;
 pub mod indexer_status;

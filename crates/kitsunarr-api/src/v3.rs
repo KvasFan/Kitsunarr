@@ -47,7 +47,6 @@ pub fn router() -> Router<AppState> {
         .route("/system/status", get(system_status))
         .route("/health", get(health))
         .route("/qualityprofile", get(quality_profiles))
-        .route("/languageprofile", get(language_profiles))
         .route("/rootfolder", get(root_folders))
         .route("/tag", get(tags).post(create_tag))
         .route(
@@ -101,7 +100,7 @@ pub fn router() -> Router<AppState> {
 
 // ---- helpers ----------------------------------------------------------------------------
 
-fn ext(detail: &SeriesDetail, kind: ExternalIdKind) -> Option<String> {
+pub(crate) fn ext(detail: &SeriesDetail, kind: ExternalIdKind) -> Option<String> {
     detail
         .external_ids
         .iter()
@@ -109,7 +108,7 @@ fn ext(detail: &SeriesDetail, kind: ExternalIdKind) -> Option<String> {
         .map(|e| e.value.clone())
 }
 
-fn ext_int(detail: &SeriesDetail, kind: ExternalIdKind) -> i64 {
+pub(crate) fn ext_int(detail: &SeriesDetail, kind: ExternalIdKind) -> i64 {
     ext(detail, kind)
         .and_then(|v| v.trim().parse().ok())
         .unwrap_or(0)
@@ -120,12 +119,12 @@ pub(crate) fn quality_json(id: i32) -> Value {
     json!({
         "id": id,
         "name": q.map_or("Unknown", |q| q.name),
-        "source": q.map_or("unknown".to_string(), |q| format!("{:?}", q.source).to_lowercase()),
+        "source": q.map_or(json!("unknown"), |q| serde_json::to_value(q.source).unwrap_or_default()),
         "resolution": q.map_or(0, |q| q.resolution),
     })
 }
 
-fn images(detail: &SeriesDetail) -> Vec<Value> {
+pub(crate) fn images(detail: &SeriesDetail) -> Vec<Value> {
     detail
         .images
         .iter()
@@ -233,7 +232,11 @@ pub(crate) fn episode_json(e: &EpisodeItem) -> Value {
     })
 }
 
-fn episode_file_json(detail: &SeriesDetail, f: &series::FileRecord, languages: &[i32]) -> Value {
+pub(crate) fn episode_file_json(
+    detail: &SeriesDetail,
+    f: &series::FileRecord,
+    languages: &[i32],
+) -> Value {
     let path = std::path::Path::new(&detail.item.path).join(&f.relative_path);
     json!({
         "id": f.id,
@@ -253,11 +256,11 @@ fn episode_file_json(detail: &SeriesDetail, f: &series::FileRecord, languages: &
     })
 }
 
-async fn detail(state: &AppState, id: i64) -> ApiResult<SeriesDetail> {
+pub(crate) async fn detail(state: &AppState, id: i64) -> ApiResult<SeriesDetail> {
     Ok(series::get_detail(&state.db, id).await?)
 }
 
-async fn all_series(state: &AppState) -> ApiResult<Vec<SeriesDetail>> {
+pub(crate) async fn all_series(state: &AppState) -> ApiResult<Vec<SeriesDetail>> {
     let page = series::list(
         &state.db,
         &LibraryQuery {
@@ -275,7 +278,7 @@ async fn all_series(state: &AppState) -> ApiResult<Vec<SeriesDetail>> {
 
 // ---- system -----------------------------------------------------------------------------
 
-async fn system_status(State(state): State<AppState>) -> ApiResult<Json<Value>> {
+pub(crate) async fn system_status(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let native = crate::routes::system::status(State(state)).await?.0;
     Ok(Json(json!({
         // Sync tools check that they talk to Sonarr (Recyclarr 8 refuses any other name);
@@ -305,7 +308,7 @@ async fn system_status(State(state): State<AppState>) -> ApiResult<Json<Value>> 
     })))
 }
 
-async fn health(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn health(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     let checks = crate::routes::system::health(State(state)).await?.0;
     Ok(Json(
         checks
@@ -317,7 +320,7 @@ async fn health(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
 
 // ---- settings -----------------------------------------------------------------------------
 
-async fn quality_profiles(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn quality_profiles(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     let formats = kitsunarr_db::quality::list_custom_formats(state.db.pool()).await?;
     Ok(Json(
         kitsunarr_db::quality::list_profiles(state.db.pool())
@@ -328,15 +331,7 @@ async fn quality_profiles(State(state): State<AppState>) -> ApiResult<Json<Vec<V
     ))
 }
 
-/// Sonarr v4 has no language profiles; it answers one placeholder, as here.
-async fn language_profiles() -> Json<Vec<Value>> {
-    Json(vec![json!({
-        "id": 1, "name": "Deprecated", "upgradeAllowed": false,
-        "cutoff": {"id": 1, "name": "English"}, "languages": []
-    })])
-}
-
-async fn root_folders(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn root_folders(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     let list = crate::routes::settings::list_root_folders(State(state.clone()))
         .await?
         .0;
@@ -368,7 +363,7 @@ pub(crate) async fn root_folder_json(
     json!({"id": r.id, "path": r.path, "accessible": r.accessible, "freeSpace": r.free_space, "totalSpace": r.total_space, "unmappedFolders": unmapped, "mediaKind": r.media_kind})
 }
 
-async fn tags(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn tags(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     let list = kitsunarr_db::tags::list(state.db.pool()).await?;
     Ok(Json(
         list.into_iter()
@@ -378,11 +373,11 @@ async fn tags(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
 }
 
 #[derive(Deserialize)]
-struct TagBody {
+pub(crate) struct TagBody {
     label: String,
 }
 
-async fn create_tag(
+pub(crate) async fn create_tag(
     State(state): State<AppState>,
     Json(body): Json<TagBody>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -405,11 +400,11 @@ async fn create_tag(
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct SeriesFilter {
-    tvdb_id: Option<i64>,
+pub(crate) struct SeriesFilter {
+    pub(crate) tvdb_id: Option<i64>,
 }
 
-async fn list_series(
+pub(crate) async fn list_series(
     State(state): State<AppState>,
     Query(f): Query<SeriesFilter>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -426,19 +421,22 @@ async fn list_series(
     ))
 }
 
-async fn get_series(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_series(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     Ok(Json(series_json(&detail(&state, id).await?)))
 }
 
 #[derive(Deserialize)]
-struct LookupQuery {
+pub(crate) struct LookupQuery {
     term: String,
 }
 
 /// `GET /series/lookup?term=`: `tvdb:ID` reads that series (with its seasons); other terms
 /// search TheTVDB. Titles already in the library come back as their library resource (with
 /// an id), as in Sonarr.
-async fn lookup(
+pub(crate) async fn lookup(
     State(state): State<AppState>,
     Query(q): Query<LookupQuery>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -528,14 +526,14 @@ async fn lookup(
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct SeasonBody {
+pub(crate) struct SeasonBody {
     season_number: i32,
     monitored: bool,
 }
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct AddOptions {
+pub(crate) struct AddOptions {
     search_for_missing_episodes: bool,
     search_for_cutoff_unmet_episodes: bool,
     monitor: Option<String>,
@@ -543,7 +541,7 @@ struct AddOptions {
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct SeriesBody {
+pub(crate) struct SeriesBody {
     id: Option<i64>,
     path: Option<String>,
     tvdb_id: i64,
@@ -557,7 +555,7 @@ struct SeriesBody {
     add_options: Option<AddOptions>,
 }
 
-fn series_type(s: Option<&str>) -> Option<SeriesType> {
+pub(crate) fn series_type(s: Option<&str>) -> Option<SeriesType> {
     match s? {
         "anime" => Some(SeriesType::Anime),
         "daily" => Some(SeriesType::Daily),
@@ -566,7 +564,7 @@ fn series_type(s: Option<&str>) -> Option<SeriesType> {
     }
 }
 
-async fn add_series(
+pub(crate) async fn add_series(
     State(state): State<AppState>,
     principal: Option<axum::Extension<crate::auth::Principal>>,
     Json(body): Json<SeriesBody>,
@@ -577,7 +575,7 @@ async fn add_series(
 /// Sonarr's `SeriesImportController` (`POST /api/v3/series/import`): series added with their
 /// existing folders, which are scanned before the monitoring choice applies. Stops at the
 /// first failure; the series added before it stay.
-async fn import_series(
+pub(crate) async fn import_series(
     State(state): State<AppState>,
     principal: Option<axum::Extension<crate::auth::Principal>>,
     Json(list): Json<Vec<SeriesBody>>,
@@ -609,7 +607,7 @@ async fn import_series(
     Ok((StatusCode::CREATED, Json(added)))
 }
 
-async fn add_one(
+pub(crate) async fn add_one(
     state: AppState,
     principal: Option<axum::Extension<crate::auth::Principal>>,
     mut body: SeriesBody,
@@ -713,7 +711,7 @@ async fn add_one(
     ))
 }
 
-async fn apply(state: &AppState, id: i64, body: &SeriesBody) -> ApiResult<()> {
+pub(crate) async fn apply(state: &AppState, id: i64, body: &SeriesBody) -> ApiResult<()> {
     let update = SeriesUpdate {
         monitored: body.monitored,
         quality_profile_id: body.quality_profile_id,
@@ -743,11 +741,11 @@ async fn apply(state: &AppState, id: i64, body: &SeriesBody) -> ApiResult<()> {
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct MoveFilesQuery {
+pub(crate) struct MoveFilesQuery {
     move_files: bool,
 }
 
-async fn update_series(
+pub(crate) async fn update_series(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Query(q): Query<MoveFilesQuery>,
@@ -779,7 +777,7 @@ async fn update_series(
 }
 
 /// `PUT /series` with the id in the body (Overseerr).
-async fn update_series_body(
+pub(crate) async fn update_series_body(
     State(state): State<AppState>,
     Json(body): Json<SeriesBody>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -797,7 +795,7 @@ async fn update_series_body(
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct SeriesEditorBody {
+pub(crate) struct SeriesEditorBody {
     series_ids: Vec<i64>,
     monitored: Option<bool>,
     monitor_new_items: Option<String>,
@@ -812,7 +810,7 @@ struct SeriesEditorBody {
 }
 
 /// Sonarr's `SeriesEditorController.SaveAll` (`PUT /api/v3/series/editor`).
-async fn series_editor(
+pub(crate) async fn series_editor(
     State(state): State<AppState>,
     Json(body): Json<SeriesEditorBody>,
 ) -> ApiResult<(StatusCode, Json<Vec<Value>>)> {
@@ -907,12 +905,12 @@ async fn series_editor(
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct DeleteQuery {
+pub(crate) struct DeleteQuery {
     delete_files: bool,
     add_import_list_exclusion: bool,
 }
 
-async fn delete_series(
+pub(crate) async fn delete_series(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Query(q): Query<DeleteQuery>,
@@ -931,14 +929,14 @@ async fn delete_series(
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct EditorDeleteBody {
+pub(crate) struct EditorDeleteBody {
     series_ids: Vec<i64>,
     delete_files: bool,
     add_import_list_exclusion: bool,
 }
 
 /// Sonarr's `SeriesEditorController.DeleteSeries` (`DELETE /api/v3/series/editor`).
-async fn series_editor_delete(
+pub(crate) async fn series_editor_delete(
     State(state): State<AppState>,
     Json(body): Json<EditorDeleteBody>,
 ) -> ApiResult<Json<Value>> {
@@ -965,14 +963,14 @@ async fn series_editor_delete(
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct EpisodeFilter {
+pub(crate) struct EpisodeFilter {
     series_id: Option<i64>,
     season_number: Option<i32>,
     #[serde(default)]
     episode_ids: Option<String>,
 }
 
-async fn list_episodes(
+pub(crate) async fn list_episodes(
     State(state): State<AppState>,
     Query(f): Query<EpisodeFilter>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -996,7 +994,10 @@ async fn list_episodes(
     Ok(Json(list.iter().map(episode_json).collect()))
 }
 
-async fn get_episode(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_episode(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     let series_id: i64 = sqlx_series_of_episode(&state, id).await?;
     let list = series::list_episodes(&state.db, series_id, None).await?;
     let e = list
@@ -1006,7 +1007,7 @@ async fn get_episode(State(state): State<AppState>, Path(id): Path<i64>) -> ApiR
     Ok(Json(episode_json(e)))
 }
 
-async fn sqlx_series_of_episode(state: &AppState, id: i64) -> ApiResult<i64> {
+pub(crate) async fn sqlx_series_of_episode(state: &AppState, id: i64) -> ApiResult<i64> {
     series::series_of_episode(&state.db, id)
         .await?
         .ok_or_else(|| ApiError::NotFound("The episode does not exist.".into()))
@@ -1014,12 +1015,12 @@ async fn sqlx_series_of_episode(state: &AppState, id: i64) -> ApiResult<i64> {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct MonitorBody {
+pub(crate) struct MonitorBody {
     episode_ids: Vec<i64>,
     monitored: bool,
 }
 
-async fn monitor_episodes(
+pub(crate) async fn monitor_episodes(
     State(state): State<AppState>,
     Json(body): Json<MonitorBody>,
 ) -> ApiResult<StatusCode> {
@@ -1029,7 +1030,7 @@ async fn monitor_episodes(
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct SeasonPassSeries {
+pub(crate) struct SeasonPassSeries {
     id: i64,
     monitored: Option<bool>,
     #[serde(default)]
@@ -1038,20 +1039,20 @@ struct SeasonPassSeries {
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct MonitoringOptionsBody {
+pub(crate) struct MonitoringOptionsBody {
     /// A `MonitorTypes` name or number.
     monitor: Option<Value>,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct SeasonPassBody {
+pub(crate) struct SeasonPassBody {
     series: Vec<SeasonPassSeries>,
     monitoring_options: Option<MonitoringOptionsBody>,
 }
 
 /// Sonarr's `SeasonPassController.UpdateAll` (`POST /api/v3/seasonpass`).
-async fn season_pass(
+pub(crate) async fn season_pass(
     State(state): State<AppState>,
     Json(body): Json<SeasonPassBody>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -1108,11 +1109,11 @@ async fn season_pass(
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct FileFilter {
+pub(crate) struct FileFilter {
     series_id: Option<i64>,
 }
 
-async fn files_of(state: &AppState, series_id: i64) -> ApiResult<Vec<Value>> {
+pub(crate) async fn files_of(state: &AppState, series_id: i64) -> ApiResult<Vec<Value>> {
     let d = detail(state, series_id).await?;
     let episodes = series::list_episodes(&state.db, series_id, None).await?;
     Ok(series::file_records(&state.db, series_id)
@@ -1141,7 +1142,7 @@ async fn files_of(state: &AppState, series_id: i64) -> ApiResult<Vec<Value>> {
         .collect())
 }
 
-async fn list_episode_files(
+pub(crate) async fn list_episode_files(
     State(state): State<AppState>,
     Query(f): Query<FileFilter>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -1151,7 +1152,7 @@ async fn list_episode_files(
     Ok(Json(files_of(&state, series_id).await?))
 }
 
-async fn get_episode_file(
+pub(crate) async fn get_episode_file(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
@@ -1170,7 +1171,7 @@ async fn get_episode_file(
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct CommandBody {
+pub(crate) struct CommandBody {
     name: String,
     series_id: Option<i64>,
     /// Sonarr v4's multi-series commands (`RefreshSeries`, `RescanSeries`, `RenameSeries`).
@@ -1187,7 +1188,7 @@ struct CommandBody {
 }
 
 /// Sonarr's `ImportMode`: copy only when asked; `auto` and `move` move.
-fn moves_files(mode: Option<&str>) -> bool {
+pub(crate) fn moves_files(mode: Option<&str>) -> bool {
     !mode.is_some_and(|m| m.eq_ignore_ascii_case("copy"))
 }
 
@@ -1232,10 +1233,10 @@ pub(crate) async fn import_folder(state: &AppState, folder: &str, move_files: bo
 }
 
 /// A command's work: its summary, or why it failed.
-type CommandJob =
+pub(crate) type CommandJob =
     std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, String>> + Send + 'static>>;
 
-fn job<F>(f: F) -> Option<CommandJob>
+pub(crate) fn job<F>(f: F) -> Option<CommandJob>
 where
     F: std::future::Future<Output = Result<String, String>> + Send + 'static,
 {
@@ -1244,7 +1245,7 @@ where
 
 /// Commands run in the background (searches, refreshes, imports): each is recorded as started
 /// at once and then completed or failed with its outcome (`GET /command/{id}`).
-async fn command(
+pub(crate) async fn command(
     State(state): State<AppState>,
     Json(raw): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -1585,7 +1586,10 @@ async fn command(
     ))
 }
 
-async fn get_command(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_command(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     state
         .commands
         .get(id)
@@ -1594,7 +1598,7 @@ async fn get_command(State(state): State<AppState>, Path(id): Path<i64>) -> ApiR
 }
 
 /// The commands started recently, newest first.
-async fn list_commands(State(state): State<AppState>) -> Json<Vec<Value>> {
+pub(crate) async fn list_commands(State(state): State<AppState>) -> Json<Vec<Value>> {
     Json(
         state
             .commands
@@ -1609,7 +1613,7 @@ async fn list_commands(State(state): State<AppState>) -> Json<Vec<Value>> {
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct QueueQuery {
+pub(crate) struct QueueQuery {
     page: Option<i64>,
     page_size: Option<i64>,
 }
@@ -1659,7 +1663,7 @@ pub(crate) async fn queue_records(state: &AppState) -> ApiResult<Vec<Value>> {
     Ok(records)
 }
 
-async fn queue(
+pub(crate) async fn queue(
     State(state): State<AppState>,
     Query(q): Query<QueueQuery>,
 ) -> ApiResult<Json<Value>> {
@@ -1678,12 +1682,12 @@ async fn queue(
 }
 
 #[derive(Deserialize)]
-struct CalendarQuery {
+pub(crate) struct CalendarQuery {
     start: Option<String>,
     end: Option<String>,
 }
 
-async fn calendar(
+pub(crate) async fn calendar(
     State(state): State<AppState>,
     Query(q): Query<CalendarQuery>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -1752,7 +1756,7 @@ pub(crate) fn indexer_json(p: &ProviderRecord) -> Value {
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct IndexerBody {
+pub(crate) struct IndexerBody {
     name: String,
     implementation: String,
     priority: Option<i32>,
@@ -1767,12 +1771,12 @@ struct IndexerBody {
 
 #[derive(Deserialize, Default)]
 #[serde(default)]
-struct Field {
+pub(crate) struct Field {
     name: String,
     value: Value,
 }
 
-fn record(id: i64, b: &IndexerBody) -> ApiResult<ProviderRecord> {
+pub(crate) fn record(id: i64, b: &IndexerBody) -> ApiResult<ProviderRecord> {
     if kitsunarr_indexers::Dialect::from_implementation(&b.implementation).is_none() {
         return Err(ApiError::field(
             "implementation",
@@ -1817,7 +1821,7 @@ fn record(id: i64, b: &IndexerBody) -> ApiResult<ProviderRecord> {
     })
 }
 
-async fn list_indexers(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn list_indexers(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     Ok(Json(
         providers::list(state.db.pool(), ProviderKind::Indexer)
             .await?
@@ -1827,13 +1831,16 @@ async fn list_indexers(State(state): State<AppState>) -> ApiResult<Json<Vec<Valu
     ))
 }
 
-async fn get_indexer(State(state): State<AppState>, Path(id): Path<i64>) -> ApiResult<Json<Value>> {
+pub(crate) async fn get_indexer(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+) -> ApiResult<Json<Value>> {
     Ok(Json(indexer_json(
         &providers::get(state.db.pool(), ProviderKind::Indexer, id).await?,
     )))
 }
 
-async fn create_indexer(
+pub(crate) async fn create_indexer(
     State(state): State<AppState>,
     Json(body): Json<IndexerBody>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -1848,7 +1855,7 @@ async fn create_indexer(
     ))
 }
 
-async fn update_indexer(
+pub(crate) async fn update_indexer(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Json(body): Json<IndexerBody>,
@@ -1867,7 +1874,7 @@ async fn update_indexer(
     ))
 }
 
-async fn delete_indexer(
+pub(crate) async fn delete_indexer(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -1876,7 +1883,7 @@ async fn delete_indexer(
     Ok(StatusCode::OK)
 }
 
-async fn indexer_schema() -> Json<Vec<Value>> {
+pub(crate) async fn indexer_schema() -> Json<Vec<Value>> {
     Json(
         crate::routes::schema::templates(ProviderKind::Indexer)
             .iter()
@@ -1900,7 +1907,7 @@ async fn indexer_schema() -> Json<Vec<Value>> {
 }
 
 /// `POST /indexer/test`: 200 when the indexer answers, else 400 with Sonarr's validation list.
-async fn test_indexer(
+pub(crate) async fn test_indexer(
     State(state): State<AppState>,
     Json(body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
@@ -1934,7 +1941,7 @@ async fn test_indexer(
 /// Sonarr's `ReleaseResource` as pushed (`ReleasePushController`).
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct PushBody {
+pub(crate) struct PushBody {
     guid: Option<String>,
     title: Option<String>,
     download_url: Option<String>,
@@ -1948,12 +1955,12 @@ struct PushBody {
     size: Option<i64>,
     seeders: Option<i64>,
     leechers: Option<i64>,
-    tvdb_id: Option<i64>,
+    pub(crate) tvdb_id: Option<i64>,
     tv_rage_id: Option<i64>,
     imdb_id: Option<String>,
 }
 
-fn push_protocol(b: &PushBody) -> kitsunarr_domain::DownloadProtocol {
+pub(crate) fn push_protocol(b: &PushBody) -> kitsunarr_domain::DownloadProtocol {
     use kitsunarr_domain::DownloadProtocol::{Torrent, Usenet};
     match &b.protocol {
         Some(Value::String(p)) if p.eq_ignore_ascii_case("usenet") => Usenet,
@@ -1973,7 +1980,7 @@ fn push_protocol(b: &PushBody) -> kitsunarr_domain::DownloadProtocol {
 
 /// `POST /release/push`: one release decided with the RSS rules, then grabbed when approved
 /// or kept pending when a delay profile holds it back.
-async fn push_release(
+pub(crate) async fn push_release(
     State(state): State<AppState>,
     Json(b): Json<PushBody>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -2075,7 +2082,7 @@ async fn push_release(
 // ---- history --------------------------------------------------------------------------------
 
 /// Sonarr's `EpisodeHistoryEventType` numbers.
-const HISTORY_EVENTS: [&str; 8] = [
+pub(crate) const HISTORY_EVENTS: [&str; 8] = [
     "unknown",
     "grabbed",
     "seriesFolderImported",
@@ -2086,7 +2093,7 @@ const HISTORY_EVENTS: [&str; 8] = [
     "downloadIgnored",
 ];
 
-fn history_json(h: &kitsunarr_domain::api::library::HistoryItem) -> Value {
+pub(crate) fn history_json(h: &kitsunarr_domain::api::library::HistoryItem) -> Value {
     let quality = h
         .quality_name
         .as_deref()
@@ -2126,18 +2133,18 @@ fn history_json(h: &kitsunarr_domain::api::library::HistoryItem) -> Value {
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct HistoryQuery {
-    page: Option<u32>,
-    page_size: Option<u32>,
-    sort_direction: Option<String>,
-    event_type: Option<Value>,
-    series_id: Option<i64>,
-    episode_id: Option<i64>,
-    date: Option<String>,
-    download_id: Option<String>,
+pub(crate) struct HistoryQuery {
+    pub(crate) page: Option<u32>,
+    pub(crate) page_size: Option<u32>,
+    pub(crate) sort_direction: Option<String>,
+    pub(crate) event_type: Option<Value>,
+    pub(crate) series_id: Option<i64>,
+    pub(crate) episode_id: Option<i64>,
+    pub(crate) date: Option<String>,
+    pub(crate) download_id: Option<String>,
 }
 
-fn event_name(v: &Option<Value>) -> Option<String> {
+pub(crate) fn event_name(v: &Option<Value>) -> Option<String> {
     match v {
         Some(Value::Number(n)) => n
             .as_u64()
@@ -2159,7 +2166,7 @@ fn event_name(v: &Option<Value>) -> Option<String> {
 }
 
 /// `GET /history`: paged, newest first.
-async fn history(
+pub(crate) async fn history(
     State(state): State<AppState>,
     Query(q): Query<HistoryQuery>,
 ) -> ApiResult<Json<Value>> {
@@ -2192,7 +2199,7 @@ async fn history(
 }
 
 /// Every history record matching the filters, newest first.
-async fn filtered_history(
+pub(crate) async fn filtered_history(
     state: &AppState,
     q: &HistoryQuery,
     event: Option<&str>,
@@ -2236,7 +2243,7 @@ async fn filtered_history(
 }
 
 /// `GET /history/series?seriesId=`: the series' records (unpaged).
-async fn history_of_series(
+pub(crate) async fn history_of_series(
     State(state): State<AppState>,
     Query(q): Query<HistoryQuery>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -2248,7 +2255,7 @@ async fn history_of_series(
 }
 
 /// `GET /history/since?date=`: records since a date (unpaged).
-async fn history_since(
+pub(crate) async fn history_since(
     State(state): State<AppState>,
     Query(q): Query<HistoryQuery>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -2261,7 +2268,7 @@ async fn history_since(
 
 // ---- blocklist -----------------------------------------------------------------------------
 
-async fn blocklist(
+pub(crate) async fn blocklist(
     State(state): State<AppState>,
     Query(q): Query<HistoryQuery>,
 ) -> ApiResult<Json<Value>> {
@@ -2294,7 +2301,7 @@ async fn blocklist(
     })))
 }
 
-async fn delete_blocklisted(
+pub(crate) async fn delete_blocklisted(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
@@ -2304,11 +2311,11 @@ async fn delete_blocklisted(
 
 #[derive(Deserialize, Default)]
 #[serde(default)]
-struct BulkIds {
+pub(crate) struct BulkIds {
     ids: Vec<i64>,
 }
 
-async fn delete_blocklisted_bulk(
+pub(crate) async fn delete_blocklisted_bulk(
     State(state): State<AppState>,
     Json(b): Json<BulkIds>,
 ) -> ApiResult<Json<Value>> {
@@ -2348,7 +2355,7 @@ pub(crate) fn provider_json(p: &ProviderRecord) -> Value {
     v
 }
 
-async fn download_clients(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn download_clients(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     Ok(Json(
         providers::list(state.db.pool(), ProviderKind::DownloadClient)
             .await?
@@ -2358,7 +2365,7 @@ async fn download_clients(State(state): State<AppState>) -> ApiResult<Json<Vec<V
     ))
 }
 
-async fn download_client(
+pub(crate) async fn download_client(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
@@ -2366,7 +2373,7 @@ async fn download_client(
     Ok(Json(provider_json(&p)))
 }
 
-async fn notifications(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn notifications(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     Ok(Json(
         providers::list(state.db.pool(), ProviderKind::Notification)
             .await?
@@ -2376,7 +2383,7 @@ async fn notifications(State(state): State<AppState>) -> ApiResult<Json<Vec<Valu
     ))
 }
 
-async fn notification(
+pub(crate) async fn notification(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<Json<Value>> {
@@ -2388,16 +2395,16 @@ async fn notification(
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct V3WantedQuery {
-    page: Option<u32>,
-    page_size: Option<u32>,
-    sort_direction: Option<String>,
-    monitored: Option<bool>,
-    include_series: Option<bool>,
+pub(crate) struct V3WantedQuery {
+    pub(crate) page: Option<u32>,
+    pub(crate) page_size: Option<u32>,
+    pub(crate) sort_direction: Option<String>,
+    pub(crate) monitored: Option<bool>,
+    pub(crate) include_series: Option<bool>,
 }
 
 impl V3WantedQuery {
-    fn native(&self) -> kitsunarr_domain::api::wanted::WantedQuery {
+    pub(crate) fn native(&self) -> kitsunarr_domain::api::wanted::WantedQuery {
         use kitsunarr_domain::paging::SortDirection;
         kitsunarr_domain::api::wanted::WantedQuery {
             page: self.page,
@@ -2412,7 +2419,7 @@ impl V3WantedQuery {
     }
 }
 
-async fn wanted_json(
+pub(crate) async fn wanted_json(
     state: &AppState,
     q: &V3WantedQuery,
     page: kitsunarr_domain::Page<kitsunarr_domain::api::wanted::WantedEpisode>,
@@ -2451,7 +2458,7 @@ async fn wanted_json(
 }
 
 /// `GET /wanted/missing` (LunaSea, nzb360).
-async fn wanted_missing(
+pub(crate) async fn wanted_missing(
     State(state): State<AppState>,
     Query(q): Query<V3WantedQuery>,
 ) -> ApiResult<Json<Value>> {
@@ -2461,7 +2468,7 @@ async fn wanted_missing(
 }
 
 /// `GET /wanted/cutoff`.
-async fn wanted_cutoff(
+pub(crate) async fn wanted_cutoff(
     State(state): State<AppState>,
     Query(q): Query<V3WantedQuery>,
 ) -> ApiResult<Json<Value>> {

@@ -663,6 +663,8 @@ pub async fn get_metadata_sources(
         tmdb_api_key: redact_key(&s.tmdb_api_key),
         omdb_api_key: redact_key(&s.omdb_api_key),
         preferred_metadata_language: s.preferred_metadata_language,
+        source_order: s.source_order,
+        disabled_sources: s.disabled_sources,
     }))
 }
 
@@ -692,6 +694,8 @@ pub async fn put_metadata_sources(
         tmdb_api_key: keep(body.tmdb_api_key, stored.tmdb_api_key),
         omdb_api_key: keep(body.omdb_api_key, stored.omdb_api_key),
         preferred_metadata_language: body.preferred_metadata_language,
+        source_order: dedup_sources(body.source_order),
+        disabled_sources: dedup_sources(body.disabled_sources),
     };
     kv::set(state.db.pool(), kv::KEY_METADATA_SOURCES, &next).await?;
     apply_metadata_keys(&state).await?;
@@ -700,7 +704,22 @@ pub async fn put_metadata_sources(
         tmdb_api_key: redact_key(&next.tmdb_api_key),
         omdb_api_key: redact_key(&next.omdb_api_key),
         preferred_metadata_language: next.preferred_metadata_language,
+        source_order: next.source_order,
+        disabled_sources: next.disabled_sources,
     }))
+}
+
+/// Catalogue lists keep their first occurrence of each catalogue.
+fn dedup_sources(
+    list: Vec<kitsunarr_domain::MetadataProvider>,
+) -> Vec<kitsunarr_domain::MetadataProvider> {
+    let mut out = Vec::with_capacity(list.len());
+    for p in list {
+        if !out.contains(&p) {
+            out.push(p);
+        }
+    }
+    out
 }
 
 #[utoipa::path(get, path = "/settings/downloadclientoptions", tag = "settings",

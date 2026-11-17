@@ -34,7 +34,7 @@ pub enum Principal {
         username: String,
     },
     ApiKey,
-    /// A companion app key (Sonarr v3 API only, scoped by its permission).
+    /// A companion app key (Sonarr v3 and v5 APIs only, scoped by its permission).
     Companion {
         id: String,
         permission: String,
@@ -213,11 +213,14 @@ pub async fn authenticate(
     }))
 }
 
-/// What a companion key may call on the Sonarr v3 API (Tanukarr's allowlist): reads of the
-/// library resources (a list, or one item by numeric id), and adding a series with the
+/// What a companion key may call on the Sonarr v3 and v5 APIs (Tanukarr's allowlist): reads of
+/// the library resources (a list, or one item by numeric id), and adding a series with the
 /// `add-series` permission. Everything else (commands, settings, updates, deletes) is refused.
 pub fn companion_allows(permission: &str, method: &axum::http::Method, path: &str) -> bool {
-    let path = path.strip_prefix("/api/v3").unwrap_or(path);
+    let path = path
+        .strip_prefix("/api/v3")
+        .or_else(|| path.strip_prefix("/api/v5"))
+        .unwrap_or(path);
     if path.contains('%') || path.contains("..") {
         return false;
     }
@@ -578,6 +581,16 @@ mod tests {
             "read-library",
             &Method::GET,
             "/series/%2e%2e"
+        ));
+        assert!(companion_allows(
+            "read-library",
+            &Method::GET,
+            "/api/v5/calendar"
+        ));
+        assert!(!companion_allows(
+            "read-library",
+            &Method::GET,
+            "/api/v5/settings/general"
         ));
     }
 

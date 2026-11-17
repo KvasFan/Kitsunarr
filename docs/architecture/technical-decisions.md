@@ -581,6 +581,26 @@ from the native data with Sonarr's field names; handlers reuse the native routes
 - Pushed releases (`release/push`) go through the same code as RSS sync (`rss::process`):
   mapping, RSS decisions, pending releases and grabs. They are not affected by the automation
   pause, since a tool sent them on purpose.
+- Every operation of Tanukarr 0.1.5's v3 OpenAPI document is served (the login pages
+  excepted, which belong to the web authentication), including Tanukarr's additions (quality
+  presets and codec catalogue, metadata source order, anime grouping preview, collection
+  presentation, series folder). Commands never wait in a queue, so `DELETE command/{id}`
+  always answers Sonarr's 409. `mediacover` redirects to the catalogue's image (there is no
+  local artwork cache). Backups restored through the API are validated, staged under
+  `<data>/restore/` and applied by the server binary before it opens the database at the next
+  start; `system/restart` and `system/shutdown` cancel the server's shutdown token
+  (`Lifecycle`), and a restart re-executes the binary once everything has stopped.
+  `localization` serves Tanukarr's own interface strings (embedded) in the configured interface
+  language. Text log files are written to `<data>/logs/kitsunarr.txt`, rolled at 1 MiB with 50
+  archives, as Sonarr's.
+- `/api/v5` (Tanukarr's current API, module `kitsunarr-api::v5`) is built on the v3 handlers
+  with explicit transforms, so both versions stay consistent: v3's `notification` is v5's
+  `connection` and `config/*` is `settings/*` (each with exactly the v5 resource's fields);
+  queue items are grouped by download; releases nest `release`, `decision` and `parsedInfo`;
+  series, episodes and files are embedded only when `includeSubresources` asks for them;
+  series statistics gain per-season monitored counts, release groups, release types and file
+  qualities; episode files carry media information streams; deletes answer 204. Companion keys
+  follow the same allowlist on both versions.
 
 ## 36. List progress sync
 
@@ -612,5 +632,5 @@ Sonarr bundles ffprobe; Kitsunarr uses the one on `PATH` (or `KITSUNARR_FFPROBE`
 
 ## Per-show compression: a proxy to Tanukarr's worker
 
-Kitsunarr does not re-encode files itself. As Tanukarr, it proxies the series page's compression panel to an optional host worker over a Unix socket (the socket's permissions are the access control) and refuses operations that move a series' files (activating a kept version, restoring a recycled file) while a job is queued or running. The worker calls back with an API key on the few Sonarr v5 routes it uses (series, episode files, the `RescanSeries` command), which Kitsunarr serves from its v3 layer under `/api/v5`. Tanukarr's worker reads Sonarr's master API key from `config.xml`; with Kitsunarr, point it at a file holding a dedicated API key instead.
+Kitsunarr does not re-encode files itself. As Tanukarr, it proxies the series page's compression panel to an optional host worker over a Unix socket (the socket's permissions are the access control) and refuses operations that move a series' files (activating a kept version, restoring a recycled file) while a job is queued or running. The worker calls back with an API key on the few Sonarr v5 routes it uses (series, episode files, the `RescanSeries` command), which Kitsunarr serves with the rest of its `/api/v5`. Tanukarr's worker reads Sonarr's master API key from `config.xml`; with Kitsunarr, point it at a file holding a dedicated API key instead.
 

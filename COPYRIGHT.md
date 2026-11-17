@@ -22,6 +22,8 @@ Test fixtures in `tests/fixtures/` were produced by running unmodified Sonarr 4.
 
 `crates/kitsunarr-downloaders` ports Sonarr's qBittorrent client and torrent download logic (`src/NzbDrone.Core/Download/Clients/QBittorrent/`, `Download/TorrentClientBase.cs`, `Download/DownloadClientProvider.cs`, revision `c018578e4`).
 
+`crates/kitsunarr-api/localization/` contains Tanukarr 0.1.5's interface strings (`src/NzbDrone.Core/Localization/Core/*.json`: Sonarr's translations plus Tanukarr's additions), copied unmodified. The Sonarr-compatible `localization` endpoints of `/api/v3` and `/api/v5` serve them.
+
 `crates/kitsunarr-parser/src/diacritics.rs` is generated from Diacritical.Net 1.0.5 (https://github.com/anth12/diacritical-dotnet), used under the MIT License:
 
 > Copyright (c) 2019 Anthony Halliday

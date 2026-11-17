@@ -43,13 +43,13 @@ pub(crate) fn queue_id(download_id: &str) -> i64 {
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct ReleaseParams {
+pub(crate) struct ReleaseParams {
     series_id: Option<i64>,
     season_number: Option<i32>,
     episode_id: Option<i64>,
 }
 
-fn protocol_name(p: kitsunarr_domain::DownloadProtocol) -> &'static str {
+pub(crate) fn protocol_name(p: kitsunarr_domain::DownloadProtocol) -> &'static str {
     match p {
         kitsunarr_domain::DownloadProtocol::Usenet => "usenet",
         kitsunarr_domain::DownloadProtocol::Torrent => "torrent",
@@ -59,7 +59,7 @@ fn protocol_name(p: kitsunarr_domain::DownloadProtocol) -> &'static str {
 
 /// `GET /release`: an interactive search for an episode (`episodeId`) or a season
 /// (`seriesId` and `seasonNumber`), as `ReleaseResource`s.
-async fn search(
+pub(crate) async fn search(
     State(state): State<AppState>,
     Query(p): Query<ReleaseParams>,
 ) -> ApiResult<Json<Vec<Value>>> {
@@ -84,14 +84,28 @@ async fn search(
             ));
         }
     };
+    Ok(Json(
+        release_records(&state, series_id, season_number, episode_id, false, false).await?,
+    ))
+}
+
+/// An interactive search's results as Sonarr v3's `ReleaseResource`s (also the base of v5's).
+pub(crate) async fn release_records(
+    state: &AppState,
+    series_id: i64,
+    season_number: Option<i32>,
+    episode_id: Option<i64>,
+    complete_series: bool,
+    season_packs_only: bool,
+) -> ApiResult<Vec<Value>> {
     let result = crate::routes::search::search_releases(
         State(state.clone()),
         Query(ReleaseQuery {
             series_id,
             season_number,
             episode_id,
-            complete_series: false,
-            season_packs_only: false,
+            complete_series,
+            season_packs_only,
             indexer_ids: None,
             search_session: None,
         }),
@@ -99,8 +113,7 @@ async fn search(
     .await?
     .0;
     let now = chrono::Utc::now();
-    Ok(Json(
-        result
+    Ok(result
             .releases
             .iter()
             .map(|r| {
@@ -152,13 +165,12 @@ async fn search(
                     "indexerFlags": 0,
                 })
             })
-            .collect(),
-    ))
+            .collect())
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct GrabBody {
+pub(crate) struct GrabBody {
     guid: String,
     indexer_id: i64,
     #[serde(default)]
@@ -166,7 +178,10 @@ struct GrabBody {
 }
 
 /// `POST /release`: grabs a release of a recent search.
-async fn grab(State(state): State<AppState>, Json(b): Json<GrabBody>) -> ApiResult<Json<Value>> {
+pub(crate) async fn grab(
+    State(state): State<AppState>,
+    Json(b): Json<GrabBody>,
+) -> ApiResult<Json<Value>> {
     let result = crate::routes::grab::grab_release(
         State(state),
         Json(GrabRequest {
@@ -191,7 +206,7 @@ async fn grab(State(state): State<AppState>, Json(b): Json<GrabBody>) -> ApiResu
 
 #[derive(Deserialize, Default)]
 #[serde(rename_all = "camelCase", default)]
-struct RemovalParams {
+pub(crate) struct RemovalParams {
     remove_from_client: Option<bool>,
     blocklist: Option<bool>,
     skip_redownload: Option<bool>,
@@ -208,7 +223,7 @@ impl RemovalParams {
     }
 }
 
-async fn download_id_of(state: &AppState, id: i64) -> ApiResult<String> {
+pub(crate) async fn download_id_of(state: &AppState, id: i64) -> ApiResult<String> {
     let queue = crate::routes::queue::get_queue(State(state.clone()))
         .await?
         .0;
@@ -220,7 +235,7 @@ async fn download_id_of(state: &AppState, id: i64) -> ApiResult<String> {
         .ok_or_else(|| ApiError::NotFound("The queue item does not exist.".into()))
 }
 
-async fn remove(state: &AppState, id: i64, p: &RemovalParams) -> ApiResult<()> {
+pub(crate) async fn remove(state: &AppState, id: i64, p: &RemovalParams) -> ApiResult<()> {
     let download_id = download_id_of(state, id).await?;
     let _ = crate::routes::queue::remove_from_queue(
         State(state.clone()),
@@ -232,7 +247,7 @@ async fn remove(state: &AppState, id: i64, p: &RemovalParams) -> ApiResult<()> {
 }
 
 /// `DELETE /queue/{id}` (`removeFromClient`, `blocklist`, `skipRedownload`).
-async fn remove_queue_item(
+pub(crate) async fn remove_queue_item(
     State(state): State<AppState>,
     Path(id): Path<i64>,
     Query(p): Query<RemovalParams>,
@@ -242,12 +257,12 @@ async fn remove_queue_item(
 }
 
 #[derive(Deserialize)]
-struct Ids {
+pub(crate) struct Ids {
     ids: Vec<i64>,
 }
 
 /// `DELETE /queue/bulk` with `{"ids": [...]}`.
-async fn remove_queue_items(
+pub(crate) async fn remove_queue_items(
     State(state): State<AppState>,
     Query(p): Query<RemovalParams>,
     Json(b): Json<Ids>,
@@ -261,7 +276,7 @@ async fn remove_queue_items(
 // ---- disk space ---------------------------------------------------------------------------
 
 /// `GET /diskspace`: the root folders' disks.
-async fn disk_space(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
+pub(crate) async fn disk_space(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>> {
     let folders = crate::routes::settings::list_root_folders(State(state))
         .await?
         .0;
@@ -288,14 +303,14 @@ async fn disk_space(State(state): State<AppState>) -> ApiResult<Json<Vec<Value>>
 // ---- parse --------------------------------------------------------------------------------
 
 #[derive(Deserialize)]
-struct ParseParams {
+pub(crate) struct ParseParams {
     title: Option<String>,
     path: Option<String>,
 }
 
 /// `GET /parse?title=`: what the parser reads from a release name, with the library series
 /// and episodes it maps to.
-async fn parse(
+pub(crate) async fn parse(
     State(state): State<AppState>,
     Query(p): Query<ParseParams>,
 ) -> ApiResult<Json<Value>> {
@@ -360,7 +375,7 @@ async fn parse(
 
 // ---- episode files ------------------------------------------------------------------------
 
-async fn delete_file(state: &AppState, file_id: i64) -> ApiResult<()> {
+pub(crate) async fn delete_file(state: &AppState, file_id: i64) -> ApiResult<()> {
     let series_id: Option<i64> =
         kitsunarr_db::sqlx::query_scalar("SELECT series_id FROM episode_files WHERE id = ?")
             .bind(file_id)
@@ -375,7 +390,7 @@ async fn delete_file(state: &AppState, file_id: i64) -> ApiResult<()> {
 }
 
 /// `DELETE /episodefile/{id}`: the file goes to the recycle bin when one is set.
-async fn delete_episode_file(
+pub(crate) async fn delete_episode_file(
     State(state): State<AppState>,
     Path(id): Path<i64>,
 ) -> ApiResult<StatusCode> {
@@ -385,12 +400,12 @@ async fn delete_episode_file(
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct FileIds {
+pub(crate) struct FileIds {
     episode_file_ids: Vec<i64>,
 }
 
 /// `DELETE /episodefile/bulk` with `{"episodeFileIds": [...]}`.
-async fn delete_episode_files(
+pub(crate) async fn delete_episode_files(
     State(state): State<AppState>,
     Json(b): Json<FileIds>,
 ) -> ApiResult<StatusCode> {
