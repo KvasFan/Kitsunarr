@@ -691,3 +691,24 @@ fn anime_group_tokens() {
         "Other"
     );
 }
+
+/// Tanukarr's `{Season Year}` (`BuildSeasonFolder`): the year the season's first episode aired,
+/// empty when no episode of the season has an air date.
+#[test]
+fn season_year_token() {
+    use kitsunarr_library::file_names::season_folder;
+    let naming = NamingSettings {
+        season_folder_format: "Season {season:00} ({Season Year})".into(),
+        specials_folder_format: "Specials {Season.Year}".into(),
+        ..Default::default()
+    };
+    let series = Series {
+        title: "Frieren".into(),
+        season_years: vec![(0, 2024), (1, 2023), (2, 2026)],
+        ..Default::default()
+    };
+    assert_eq!(season_folder(&series, 1, &naming), "Season 01 (2023)");
+    assert_eq!(season_folder(&series, 2, &naming), "Season 02 (2026)");
+    assert_eq!(season_folder(&series, 0, &naming), "Specials 2024");
+    assert_eq!(season_folder(&series, 3, &naming), "Season 03 ()");
+}

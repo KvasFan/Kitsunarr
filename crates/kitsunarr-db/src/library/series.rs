@@ -1400,6 +1400,28 @@ pub async fn set_source_release(
     Ok(())
 }
 
+/// The UTC year of each season's earliest aired episode (Tanukarr's `{Season Year}`).
+pub async fn season_first_air_years(db: &Database, series_id: i64) -> DbResult<Vec<(i32, i32)>> {
+    let rows: Vec<(i64, String)> = sqlx::query_as(
+        "SELECT season_number, MIN(air_date_utc) FROM episodes \
+         WHERE series_id = ? AND air_date_utc IS NOT NULL AND air_date_utc <> '' \
+         GROUP BY season_number ORDER BY season_number",
+    )
+    .bind(series_id)
+    .fetch_all(db.pool())
+    .await?;
+    Ok(rows
+        .into_iter()
+        .filter_map(|(season, first)| {
+            let year = chrono::DateTime::parse_from_rfc3339(&first)
+                .map(|d| chrono::Datelike::year(&d.to_utc()))
+                .ok()
+                .or_else(|| first.get(..4)?.parse().ok())?;
+            Some((season as i32, year))
+        })
+        .collect())
+}
+
 /// The series' original language id, when known.
 pub async fn original_language(db: &Database, series_id: i64) -> DbResult<Option<i64>> {
     Ok(

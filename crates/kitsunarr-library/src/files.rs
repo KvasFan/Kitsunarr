@@ -771,10 +771,14 @@ pub(crate) async fn naming_series(
             season: ordinal.filter(|_| role.as_deref() == Some("season")),
             movie: ordinal.filter(|_| role.as_deref() == Some("movie")),
         });
+    let season_years = series::season_first_air_years(db, detail.item.id)
+        .await
+        .map_err(err)?;
     Ok((
         file_names::Series {
             season_titles,
             group,
+            season_years,
             ..file_names::Series::from_parts(
                 &detail.item.title,
                 detail.item.year,
