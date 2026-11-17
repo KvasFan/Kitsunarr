@@ -82,10 +82,58 @@ fn parse(ts: Option<&str>) -> Option<DateTime<Utc>> {
         .map(|d| d.with_timezone(&Utc))
 }
 
+/// `DatabaseIntegrityCheck`'s last result. Upstream runs it on start-up and with the scheduled
+/// health check only (`CheckOnStartup`, `CheckOnSchedule`), never per request: the first
+/// evaluation runs it, the `HealthCheck` task re-runs it, and other evaluations reuse it.
+#[derive(Default)]
+pub struct IntegrityCache(tokio::sync::Mutex<Option<Option<HealthCheck>>>);
+
+/// `DatabaseIntegrityCheck`: SQLite's `quick_check` and foreign key check, with upstream's
+/// messages; `None` when the database is fine.
+pub async fn database_integrity(db: &kitsunarr_db::Database) -> Option<HealthCheck> {
+    let error = |message: String| {
+        tracing::error!("{message}");
+        Some(check("DatabaseIntegrityCheck", HealthLevel::Error, message))
+    };
+    match kitsunarr_db::maintenance::integrity_check(db).await {
+        Ok(report) if report.ok() => None,
+        Ok(report) => match report.integrity.first().map(|s| s.trim()) {
+            Some(first) if !first.eq_ignore_ascii_case("ok") && !first.is_empty() => error(format!(
+                "SQLite database integrity check failed: {first}. Restore from a known-good backup."
+            )),
+            None | Some("") => error(
+                "SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring."
+                    .into(),
+            ),
+            Some(_) => error(format!(
+                "SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.",
+                report.foreign_key_violations
+            )),
+        },
+        Err(e) => error(format!(
+            "SQLite database integrity check failed: {e}. Restore from a known-good backup."
+        )),
+    }
+}
+
+impl IntegrityCache {
+    /// The cached result, running the check when there is none yet (or `rerun`).
+    pub async fn get(&self, db: &kitsunarr_db::Database, rerun: bool) -> Option<HealthCheck> {
+        let mut cached = self.0.lock().await;
+        if rerun || cached.is_none() {
+            *cached = Some(database_integrity(db).await);
+        }
+        cached.clone().flatten()
+    }
+}
+
 /// The checks above, appended to `out`.
 pub async fn more_checks(state: &AppState, out: &mut Vec<HealthCheck>) -> ApiResult<()> {
     let pool = state.db.pool();
     let now = Utc::now();
+    if let Some(problem) = state.database_integrity.get(&state.db, false).await {
+        out.push(problem);
+    }
     let indexers: Vec<ProviderRecord> = providers::list(pool, ProviderKind::Indexer)
         .await?
         .into_iter()

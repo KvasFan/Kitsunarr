@@ -2483,6 +2483,12 @@ impl<'a> Importer<'a> {
                     None => continue,
                 },
             };
+            // `AnimeGroupingMode.Disabled`: kept out of automatic grouping after the migration.
+            if s.group.as_ref().is_some_and(|g| g.grouping_mode == 2)
+                && collections::set_automatic_grouping(conn, member, false).await?
+            {
+                self.count("groupingExclusions", Act::Create);
+            }
             if let Some(g) = s.group.as_ref().filter(|g| g.grouping_mode != 2)
                 && let Some(gid) = &g.group_id
             {

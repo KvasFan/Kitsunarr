@@ -105,6 +105,11 @@ pub struct AppStateInner {
     /// `RemotePathMappingCheck` after a failed import (`EpisodeImportFailedEvent`), until an
     /// import succeeds.
     pub import_health: std::sync::Mutex<Option<kitsunarr_domain::api::system::HealthCheck>>,
+    /// Complete import list reads witnessed by this process (Tanukarr's completed-fetch
+    /// resume).
+    pub list_fetches: import_lists::CompletedFetches,
+    /// The cached result of `DatabaseIntegrityCheck`.
+    pub database_integrity: health::IntegrityCache,
 }
 
 impl std::ops::Deref for AppState {
@@ -154,6 +159,8 @@ impl AppState {
             http,
             metadata,
             logs,
+            list_fetches: Default::default(),
+            database_integrity: Default::default(),
         }))
     }
 

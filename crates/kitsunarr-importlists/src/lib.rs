@@ -200,6 +200,24 @@ pub(crate) fn connection_error(e: reqwest::Error) -> ListError {
     ListError::Connection(e.without_url().to_string())
 }
 
+/// Sends an AniList request through the pacer the whole server shares for that AniList
+/// server ([`kitsunarr_metadata::anilist_pacer`], Tanukarr's `AniListRequestService`): list
+/// reads, list tests, custom-list lookups and progress updates consume the same allowance as
+/// metadata. A limit still reached after its retries is [`ListError::RateLimited`].
+pub(crate) async fn anilist_send(
+    base: &str,
+    build: impl Fn() -> reqwest::RequestBuilder,
+) -> Result<reqwest::Response, ListError> {
+    use kitsunarr_metadata::anilist_pacer::{AniListPacer, PacerError};
+    AniListPacer::shared(base)
+        .send(build)
+        .await
+        .map_err(|e| match e {
+            PacerError::RateLimited { retry_after } => ListError::RateLimited(Some(retry_after)),
+            PacerError::Request(e) => connection_error(e),
+        })
+}
+
 /// Maps an unsuccessful status: 401/403 are authentication failures, 429 a rate limit.
 pub(crate) fn check_status(resp: &reqwest::Response) -> Result<(), ListError> {
     let status = resp.status();

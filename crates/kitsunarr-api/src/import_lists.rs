@@ -2,8 +2,10 @@
 //! with Tanukarr's `ImportListIdentity` (AniList, MyAnimeList and TMDB identities).
 //!
 //! Every enabled list with automatic add is read when due (its minimum refresh interval passed
-//! and it is not backing off after failures); lists not due reuse the membership stored at
-//! their last complete read. Each item is matched with the library by any shared catalogue id;
+//! and it is not backing off after failures); a list not due contributes the membership stored
+//! at its last complete read only when this process witnessed that read (Tanukarr's
+//! completed-fetch resume, see [`CompletedFetches`]), which retries additions that failed for
+//! a temporary reason on the next 5-minute run. Each item is matched with the library by any shared catalogue id;
 //! excluded items are skipped, existing titles optionally tagged, and new ones added with the
 //! list's root folder, profile, monitoring, type and tags. A failed read keeps the previous
 //! membership. Afterwards, tags of "sync" lists are removed from titles no longer on them, and
@@ -332,8 +334,154 @@ async fn lists(state: &AppState) -> Result<Vec<(ProviderRecord, ListOptions)>, S
         .collect())
 }
 
+/// A complete read of a list witnessed by this process (Tanukarr's `CompletedListFetch`).
+#[derive(Debug, Clone)]
+struct CompletedFetch {
+    fingerprint: String,
+    last_info_sync: String,
+    expires: std::time::Instant,
+}
+
+/// Tanukarr's completed-fetch resume: after a complete read witnessed by this process, a sync
+/// in which the list is not due re-feeds its saved membership, so additions that failed for a
+/// temporary reason (a catalogue's 429, a timeout) are retried on the next 5-minute tick
+/// without reading the list's pages again. Reset on restart.
+#[derive(Default)]
+pub struct CompletedFetches(std::sync::Mutex<HashMap<i64, CompletedFetch>>);
+
+impl CompletedFetches {
+    fn forget(&self, list_id: i64) {
+        self.0
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .remove(&list_id);
+    }
+
+    fn remember(&self, list_id: i64, fetch: CompletedFetch) {
+        self.0
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .insert(list_id, fetch);
+    }
+
+    fn find(&self, list_id: i64) -> Option<CompletedFetch> {
+        let mut map = self.0.lock().unwrap_or_else(|e| e.into_inner());
+        match map.get(&list_id) {
+            Some(f) if f.expires > std::time::Instant::now() => Some(f.clone()),
+            Some(_) => {
+                map.remove(&list_id);
+                None
+            }
+            None => None,
+        }
+    }
+}
+
+/// `SupportsCompletedFetchResume`.
+fn supports_completed_fetch_resume(implementation: &str) -> bool {
+    matches!(
+        implementation,
+        "AniListImport"
+            | "MyAnimeListImport"
+            | "TmdbListImport"
+            | "MDBListImport"
+            | "TraktListImport"
+            | "PlexImport"
+            | "SimklUserImport"
+    )
+}
+
+/// `DefinitionFingerprint`: a digest of the list's whole definition (credentials included,
+/// never kept in clear) and its refresh interval.
+fn definition_fingerprint(p: &ProviderRecord) -> String {
+    let mut tags = p.tags.clone();
+    tags.sort_unstable();
+    let configuration = serde_json::json!({
+        "id": p.id,
+        "name": p.name,
+        "implementation": p.implementation,
+        "enabled": p.enabled,
+        "options": p.options,
+        "settings": p.settings,
+        "tags": tags,
+        "minRefreshInterval": kitsunarr_importlists::min_refresh_interval(&p.implementation).as_secs(),
+    });
+    kitsunarr_auth::hash_token(&configuration.to_string())
+}
+
+/// The failure recorded at or after the successful read it is compared with.
+fn failed_since(status: &db_lists::ListStatus, last_info_sync: &str) -> bool {
+    let parse = |s: &str| chrono::DateTime::parse_from_rfc3339(s).ok();
+    match (status.most_recent_failure.as_deref(), parse(last_info_sync)) {
+        (Some(f), Some(sync)) => parse(f).is_none_or(|f| f >= sync),
+        (Some(_), None) => true,
+        (None, _) => false,
+    }
+}
+
+/// `RememberCompletedListFetch`, after a complete read was stored.
+async fn remember_completed_fetch(state: &AppState, p: &ProviderRecord, items: &[ListItem]) {
+    let o = ListOptions::from_record(p);
+    if !supports_completed_fetch_resume(&p.implementation)
+        || !o.automatic_add
+        || items.iter().any(|i| !i.seasons.is_empty())
+    {
+        return;
+    }
+    // The persisted status, as recorded by the read.
+    let Ok(status) = db_lists::status(state.db.pool(), p.id).await else {
+        return;
+    };
+    let Some(last) = status.last_info_sync.clone() else {
+        return;
+    };
+    if status.disabled_till.is_some() || failed_since(&status, &last) {
+        return;
+    }
+    state.list_fetches.remember(
+        p.id,
+        CompletedFetch {
+            fingerprint: definition_fingerprint(p),
+            last_info_sync: last,
+            expires: std::time::Instant::now()
+                + kitsunarr_importlists::min_refresh_interval(&p.implementation),
+        },
+    );
+}
+
+/// `ResumeCompletedListFetch`: the saved membership of a list not due, when this process
+/// witnessed its last complete read and nothing changed since; `None` otherwise.
+async fn resume_completed_fetch(
+    state: &AppState,
+    p: &ProviderRecord,
+    o: &ListOptions,
+    status: &db_lists::ListStatus,
+) -> Result<Option<Vec<ListItem>>, String> {
+    if !supports_completed_fetch_resume(&p.implementation) {
+        state.list_fetches.forget(p.id);
+        return Ok(None);
+    }
+    let Some(completed) = state.list_fetches.find(p.id) else {
+        return Ok(None);
+    };
+    if !o.automatic_add
+        || status.disabled_till.is_some()
+        || status.last_info_sync.as_deref() != Some(completed.last_info_sync.as_str())
+        || failed_since(status, &completed.last_info_sync)
+        || completed.fingerprint != definition_fingerprint(p)
+    {
+        state.list_fetches.forget(p.id);
+        return Ok(None);
+    }
+    let stored = db_lists::items(state.db.pool(), Some(p.id))
+        .await
+        .map_err(|e| e.to_string())?;
+    Ok(Some(stored.iter().map(from_row).collect()))
+}
+
 /// Reads one list now and stores its membership; `Err` keeps the previous membership.
 pub async fn read_list(state: &AppState, p: &ProviderRecord) -> Result<Vec<ListItem>, String> {
+    state.list_fetches.forget(p.id);
     let read = async {
         let mut settings = p.settings.clone();
         if let Some(renewed) =
@@ -358,6 +506,7 @@ pub async fn read_list(state: &AppState, p: &ProviderRecord) -> Result<Vec<ListI
             db_lists::record_sync(state.db.pool(), p.id, removed > 0)
                 .await
                 .map_err(|e| e.to_string())?;
+            remember_completed_fetch(state, p, &items).await;
             Ok(items)
         }
         Err(e) => {
@@ -397,6 +546,7 @@ pub async fn sync(state: &AppState, only: Option<i64>, force: bool) -> Result<St
     let mut summary = SyncSummary::default();
     let now = chrono::Utc::now();
     let mut items: Vec<(ListOptions, ListItem)> = Vec::new();
+    let mut resumed = 0usize;
     for (p, o) in &selected {
         let status = db_lists::status(state.db.pool(), p.id)
             .await
@@ -416,14 +566,12 @@ pub async fn sync(state: &AppState, only: Option<i64>, force: bool) -> Result<St
                 }
                 Err(_) => summary.lists_failed.push(p.name.clone()),
             }
-        } else {
-            let stored = db_lists::items(state.db.pool(), Some(p.id))
-                .await
-                .map_err(|e| e.to_string())?;
-            items.extend(stored.iter().map(|r| (o.clone(), from_row(r))));
+        } else if let Some(saved) = resume_completed_fetch(state, p, o, &status).await? {
+            resumed += 1;
+            items.extend(saved.into_iter().map(|i| (o.clone(), i)));
         }
     }
-    if !force && summary.lists_read == 0 {
+    if !force && summary.lists_read == 0 && resumed == 0 {
         return Ok(if summary.lists_failed.is_empty() {
             "No list was due for a sync".into()
         } else {

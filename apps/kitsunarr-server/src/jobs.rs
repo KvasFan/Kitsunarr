@@ -25,6 +25,7 @@ pub fn all(
     let api_for_health = api.clone();
     let api_for_watched = api.clone();
     let api_for_lists = api.clone();
+    let api_for_refresh = api.clone();
     let scan_notifier = downloads.notifier.clone();
     vec![
         job(
@@ -63,7 +64,9 @@ pub fn all(
         job(
             kitsunarr_api::import_lists::TASK,
             "Reads the import lists that are due and adds their new titles",
-            15,
+            // Sonarr's `ImportListSyncCommand` runs every 5 minutes; lists keep their own
+            // minimum refresh interval, and witnessed complete reads retry failed additions.
+            5,
             Duration::from_secs(2 * 3600),
             move |_ctx| {
                 let api = api_for_lists.clone();
@@ -141,7 +144,8 @@ pub fn all(
             Duration::from_secs(6 * 3600),
             move |ctx| {
                 let metadata = metadata.clone();
-                async move { refresh_metadata(&ctx, &metadata).await }
+                let api = api_for_refresh.clone();
+                async move { refresh_metadata(&ctx, &metadata, api.get()).await }
             },
         ),
         job(
@@ -231,7 +235,13 @@ pub fn all(
 
 /// Refreshes every title that is due. One failing title does not stop the others; the run
 /// fails only when every refresh failed (typically: the catalogue is unreachable).
-async fn refresh_metadata(ctx: &JobContext, metadata: &Metadata) -> JobResult {
+/// Episodes a series refresh added or moved into the recent past are searched afterwards, in
+/// the background (Tanukarr's `EpisodeRefreshedService`).
+async fn refresh_metadata(
+    ctx: &JobContext,
+    metadata: &Metadata,
+    api: Option<&kitsunarr_api::AppState>,
+) -> JobResult {
     let (series, movies) =
         kitsunarr_library::due_for_refresh(&ctx.db, metadata, chrono::Utc::now())
             .await
@@ -257,7 +267,17 @@ async fn refresh_metadata(ctx: &JobContext, metadata: &Metadata) -> JobResult {
         let result = if kind == "series" {
             kitsunarr_library::refresh_series(&ctx.db, metadata, id)
                 .await
-                .map(|_| ())
+                .map(|r| {
+                    if let Some(state) = api
+                        && !r.recently_aired_episode_ids.is_empty()
+                    {
+                        let (state, ids) = (state.clone(), r.recently_aired_episode_ids);
+                        tokio::spawn(async move {
+                            kitsunarr_api::routes::wanted::search_recently_aired(&state, id, &ids)
+                                .await;
+                        });
+                    }
+                })
         } else {
             kitsunarr_library::refresh_movie(&ctx.db, metadata, id).await
         };

@@ -385,6 +385,7 @@ pub async fn apply(
         RefreshResult {
             added_episodes: 0,
             updated_episodes: 0,
+            recently_aired_episode_ids: Vec::new(),
         }
     } else {
         let monitor_new: bool = sqlx::query_scalar(
@@ -430,7 +431,11 @@ pub async fn apply(
             .await?;
         sqlx::query("UPDATE series SET metadata_provider = ?, metadata_id = ?, episode_ordering = NULL WHERE id = ?")
             .bind(info.provider.as_str()).bind(&info.id).bind(id).execute(&mut *tx).await?;
-        crate::merge_series_info(&mut tx, id, &info, monitor_new).await?
+        let mut result = crate::merge_series_info(&mut tx, id, &info, monitor_new).await?;
+        // Every number was reset above, so "added" and "absolute number added" say nothing
+        // about recent airings here.
+        result.recently_aired_episode_ids.clear();
+        result
     };
     tx.commit().await?;
     Ok(result)

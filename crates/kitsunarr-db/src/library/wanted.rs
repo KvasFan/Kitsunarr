@@ -192,6 +192,30 @@ pub async fn targets(db: &Database, episode_ids: &[i64]) -> DbResult<Vec<SearchT
     Ok(q.build_query_as().fetch_all(db.pool()).await?)
 }
 
+/// Of `episode_ids` (episodes of `series_id`), the search targets that are monitored, belong to
+/// a monitored series and have no file (`EpisodeRefreshedService.Search`).
+pub async fn monitored_without_file(
+    db: &Database,
+    series_id: i64,
+    episode_ids: &[i64],
+) -> DbResult<Vec<SearchTarget>> {
+    if episode_ids.is_empty() {
+        return Ok(Vec::new());
+    }
+    let mut q = sqlx::QueryBuilder::new(
+        "SELECT e.id AS episode_id, e.series_id, e.season_number, e.last_search_at FROM episodes e \
+         JOIN series s ON s.id = e.series_id \
+         WHERE s.monitored AND e.monitored AND e.episode_file_id IS NULL AND e.series_id = ",
+    );
+    q.push_bind(series_id).push(" AND e.id IN (");
+    let mut sep = q.separated(", ");
+    for id in episode_ids {
+        sep.push_bind(*id);
+    }
+    q.push(") ORDER BY e.id");
+    Ok(q.build_query_as().fetch_all(db.pool()).await?)
+}
+
 /// `UpdateLastSearchTime`.
 pub async fn set_last_search(db: &Database, episode_ids: &[i64], when: &str) -> DbResult<()> {
     if episode_ids.is_empty() {

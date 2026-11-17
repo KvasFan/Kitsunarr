@@ -434,14 +434,17 @@ fn series(r: &Rec, scene: &HashMap<i64, Vec<(String, Option<i32>)>>) -> Option<S
     alternate_titles.sort();
     alternate_titles.dedup();
 
-    let group = r.str("animegroupid").map(|group_id| SrcGroup {
-        group_id: Some(group_id),
+    let grouping_mode = kind_code(
+        r.raw("animegroupingmode"),
+        &["automatic", "manual", "disabled"],
+    );
+    // A disabled title has no group (Tanukarr clears it) but its mode must still migrate.
+    let group_id = r.str("animegroupid");
+    let group = (group_id.is_some() || grouping_mode != 0).then(|| SrcGroup {
+        group_id,
         group_title: r.str("animegrouptitle"),
         group_kind: kind_code(r.raw("animegroupkind"), &["series", "moviesaga"]),
-        grouping_mode: kind_code(
-            r.raw("animegroupingmode"),
-            &["automatic", "manual", "disabled"],
-        ),
+        grouping_mode,
         member_kind: kind_code(
             r.raw("animegroupmemberkind"),
             &["season", "movie", "special"],

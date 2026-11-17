@@ -5,6 +5,7 @@ use axum::extract::Query;
 use axum::http::{HeaderMap, StatusCode};
 use axum::routing::{get, post};
 use kitsunarr_importlists::{ListError, fetch};
+use kitsunarr_metadata::anilist_pacer::AniListPacer;
 use serde_json::{Map, Value, json};
 
 async fn serve(app: axum::Router) -> String {
@@ -48,6 +49,8 @@ async fn anilist(Json(body): Json<Value>) -> Json<Value> {
 #[tokio::test]
 async fn anilist_filters_statuses_and_custom_lists_across_pages() {
     let base = serve(axum::Router::new().route("/", post(anilist))).await;
+    // A local mock needs no spacing (see `anilist_requests_share_the_server_pacer`).
+    AniListPacer::shared_with_interval(&base, std::time::Duration::ZERO);
     let s = settings(json!({"baseUrl": base, "username": "someone"}));
     let items = fetch(&reqwest::Client::new(), "AniListImport", &s)
         .await
@@ -532,6 +535,77 @@ async fn tmdb_discover_person_and_trakt_smart_lists() {
     );
     let items = fetch(&http, "TraktSmartListImport", &s).await.unwrap();
     assert_eq!(items[0].tvdb_id, Some(77));
+}
+
+/// Tanukarr's `AniListRequestService`: list reads, list tests and metadata send to the same
+/// AniList server through one pacer: 2.1 seconds apart, a 429 waited out and retried, and the
+/// limit reported (with its delay) after three refusals.
+#[tokio::test]
+async fn anilist_requests_share_the_server_pacer() {
+    use std::sync::Arc;
+    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::time::{Duration, Instant};
+    let hits = Arc::new(AtomicUsize::new(0));
+    let refuse = Arc::new(AtomicUsize::new(1));
+    let times = Arc::new(std::sync::Mutex::new(Vec::<Instant>::new()));
+    let (h, r, t) = (hits.clone(), refuse.clone(), times.clone());
+    let app = axum::Router::new().route(
+        "/",
+        post(move |body: Json<Value>| {
+            let (h, r, t) = (h.clone(), r.clone(), t.clone());
+            async move {
+                use axum::response::IntoResponse;
+                h.fetch_add(1, Ordering::SeqCst);
+                t.lock().unwrap().push(Instant::now());
+                if r.load(Ordering::SeqCst) > 0 {
+                    r.fetch_sub(1, Ordering::SeqCst);
+                    let mut headers = HeaderMap::new();
+                    headers.insert("Retry-After", "1".parse().unwrap());
+                    return (StatusCode::TOO_MANY_REQUESTS, headers, "{}").into_response();
+                }
+                anilist(body).await.into_response()
+            }
+        }),
+    );
+    let base = serve(app).await;
+    let metadata = kitsunarr_metadata::Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            anilist: base.clone(),
+            ..kitsunarr_metadata::Endpoints::default()
+        },
+    );
+    // The catalogue and the lists share one pacer for this server.
+    assert!(
+        metadata
+            .anilist_pacer()
+            .same_as(&AniListPacer::shared(&format!("{base}/")))
+    );
+    let s = settings(json!({"baseUrl": base, "username": "someone"}));
+    let started = Instant::now();
+    let items = fetch(&reqwest::Client::new(), "AniListImport", &s)
+        .await
+        .unwrap();
+    assert_eq!(items.len(), 3);
+    // One refusal, then two pages.
+    assert_eq!(hits.load(Ordering::SeqCst), 3);
+    let t = times.lock().unwrap().clone();
+    assert!(
+        t[1] - t[0] >= Duration::from_millis(950),
+        "Retry-After is honoured"
+    );
+    assert!(
+        t[2] - t[1] >= Duration::from_millis(2050),
+        "2.1 seconds apart"
+    );
+    assert!(started.elapsed() >= Duration::from_secs(3));
+    // Three refusals: the read fails with the delay to wait, and keeps the previous list.
+    refuse.store(3, Ordering::SeqCst);
+    match fetch(&reqwest::Client::new(), "AniListImport", &s).await {
+        Err(ListError::RateLimited(Some(wait))) => assert!(wait >= Duration::from_secs(1)),
+        other => panic!("{other:?}"),
+    }
+    assert_eq!(hits.load(Ordering::SeqCst), 6);
 }
 
 /// Account-list pickers: AniList custom lists, Trakt lists, Simkl custom lists.

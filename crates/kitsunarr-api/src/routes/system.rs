@@ -283,6 +283,8 @@ pub async fn compute_health(state: &AppState) -> ApiResult<Vec<HealthCheck>> {
 /// (`OnHealthIssue`) or cleared (`OnHealthRestored`) since the previous evaluation. The first
 /// evaluation after start-up only records the baseline, so restarts do not repeat old issues.
 pub async fn check_health_and_notify(state: &AppState) -> ApiResult<String> {
+    // `CheckOnSchedule` checks such as `DatabaseIntegrityCheck` run again on this task.
+    state.database_integrity.get(&state.db, true).await;
     let current: Vec<HealthCheck> = compute_health(state)
         .await?
         .into_iter()

@@ -598,7 +598,16 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
     .bind(id)
     .fetch_all(db.pool())
     .await?;
+    let grouping_disabled = {
+        let mut conn = db.pool().acquire().await?;
+        super::collections::automatic_grouping_disabled(
+            &mut conn,
+            super::collections::Member::Series(id),
+        )
+        .await?
+    };
     Ok(SeriesDetail {
+        automatic_grouping: !grouping_disabled,
         item,
         overview: d.overview,
         runtime: d.runtime.map(|r| r as i32),
@@ -778,6 +787,14 @@ pub async fn apply_update(db: &Database, id: i64, u: &SeriesUpdate) -> DbResult<
             .bind(id)
             .execute(&mut *tx)
             .await?;
+    }
+    if let Some(enabled) = u.automatic_grouping {
+        super::collections::set_automatic_grouping(
+            &mut tx,
+            super::collections::Member::Series(id),
+            enabled,
+        )
+        .await?;
     }
     if let Some(f) = u.season_folder {
         sqlx::query("UPDATE series SET season_folder = ? WHERE id = ?")
@@ -1818,11 +1835,27 @@ pub async fn update_metadata(
     Ok(())
 }
 
+/// What [`merge_episode`] did to one episode (the flags of Sonarr's `RefreshEpisodeService`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MergedEpisode {
+    pub id: i64,
+    /// A new row was inserted.
+    pub inserted: bool,
+    /// The episode's monitoring flag after the merge.
+    pub monitored: bool,
+    /// The row had no absolute number and the catalogue now gives one
+    /// (`AbsoluteEpisodeNumberAdded`; Sonarr only uses it for anime).
+    pub absolute_added: bool,
+    /// The air date (UTC, RFC 3339) the row had before the merge; `None` for a new row or a
+    /// row without one.
+    pub previous_air_date_utc: Option<String>,
+}
+
 /// Inserts a new episode, or refreshes the provider fields of an existing one while keeping
-/// its monitoring flag and file link. Returns `true` when a row was inserted.
-pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbResult<bool> {
-    let existing: Option<i64> = sqlx::query_scalar(
-        "SELECT id FROM episodes WHERE series_id = ? AND season_number = ? AND episode_number = ?",
+/// its monitoring flag and file link.
+pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbResult<MergedEpisode> {
+    let existing: Option<(i64, Option<i32>, Option<String>, bool)> = sqlx::query_as(
+        "SELECT id, absolute_episode_number, air_date_utc, monitored FROM episodes WHERE series_id = ? AND season_number = ? AND episode_number = ?",
     )
     .bind(e.series_id)
     .bind(e.season_number)
@@ -1830,7 +1863,7 @@ pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbRes
     .fetch_optional(&mut *conn)
     .await?;
     match existing {
-        Some(id) => {
+        Some((id, old_absolute, old_air, monitored)) => {
             sqlx::query(
                 "UPDATE episodes SET absolute_episode_number = COALESCE(?, absolute_episode_number), title = COALESCE(?, title), \
                  overview = COALESCE(?, overview), air_date = COALESCE(?, air_date), air_date_utc = COALESCE(?, air_date_utc), \
@@ -1846,12 +1879,21 @@ pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbRes
             .bind(id)
             .execute(&mut *conn)
             .await?;
-            Ok(false)
+            Ok(MergedEpisode {
+                id,
+                inserted: false,
+                monitored,
+                absolute_added: old_absolute.is_none() && e.absolute_episode_number.is_some(),
+                previous_air_date_utc: old_air,
+            })
         }
-        None => {
-            upsert_episode(conn, e).await?;
-            Ok(true)
-        }
+        None => Ok(MergedEpisode {
+            id: upsert_episode(conn, e).await?,
+            inserted: true,
+            monitored: e.monitored,
+            absolute_added: false,
+            previous_air_date_utc: None,
+        }),
     }
 }
 

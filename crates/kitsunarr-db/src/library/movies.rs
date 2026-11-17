@@ -450,7 +450,16 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<MovieDetail> {
     .bind(id)
     .fetch_all(db.pool())
     .await?;
+    let grouping_disabled = {
+        let mut conn = db.pool().acquire().await?;
+        super::collections::automatic_grouping_disabled(
+            &mut conn,
+            super::collections::Member::Movie(id),
+        )
+        .await?
+    };
     Ok(MovieDetail {
+        automatic_grouping: !grouping_disabled,
         item: item.into_item(),
         overview: d.overview,
         runtime: d.runtime.map(|r| r as i32),

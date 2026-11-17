@@ -40,6 +40,75 @@ pub async fn automatic_grouping_blocked(
         .bind(series).bind(movie).fetch_one(conn).await?)
 }
 
+fn member_ids(member: Member) -> (Option<i64>, Option<i64>) {
+    match member {
+        Member::Series(id) => (Some(id), None),
+        Member::Movie(id) => (None, Some(id)),
+    }
+}
+
+/// Whether the title is kept out of automatic grouping (Tanukarr's `AnimeGroupingMode.Disabled`,
+/// or an explicit removal from a group).
+pub async fn automatic_grouping_disabled(
+    conn: &mut SqliteConnection,
+    member: Member,
+) -> DbResult<bool> {
+    let (series, movie) = member_ids(member);
+    Ok(sqlx::query_scalar(
+        "SELECT EXISTS(SELECT 1 FROM collection_grouping_exclusions WHERE series_id IS ?1 AND movie_id IS ?2)",
+    )
+    .bind(series)
+    .bind(movie)
+    .fetch_one(conn)
+    .await?)
+}
+
+/// Sets Tanukarr's grouping mode of a title: disabled keeps it out of automatic grouping and,
+/// as `Series.ApplyChanges` clears the group, removes it from its anime groups and provider
+/// collections (manual collections are kept); automatic lets the next refresh group it again.
+/// Returns whether anything changed.
+pub async fn set_automatic_grouping(
+    conn: &mut SqliteConnection,
+    member: Member,
+    enabled: bool,
+) -> DbResult<bool> {
+    let (series, movie) = member_ids(member);
+    if enabled {
+        let done = sqlx::query(
+            "DELETE FROM collection_grouping_exclusions WHERE series_id IS ?1 AND movie_id IS ?2",
+        )
+        .bind(series)
+        .bind(movie)
+        .execute(&mut *conn)
+        .await?;
+        return Ok(done.rows_affected() > 0);
+    }
+    let added = sqlx::query(
+        "INSERT OR IGNORE INTO collection_grouping_exclusions (series_id, movie_id) VALUES (?, ?)",
+    )
+    .bind(series)
+    .bind(movie)
+    .execute(&mut *conn)
+    .await?;
+    let removed = sqlx::query(
+        "DELETE FROM collection_members WHERE series_id IS ?1 AND movie_id IS ?2 \
+         AND collection_id IN (SELECT id FROM collections WHERE kind IN ('animeGroup', 'provider'))",
+    )
+    .bind(series)
+    .bind(movie)
+    .execute(&mut *conn)
+    .await?;
+    Ok(added.rows_affected() + removed.rows_affected() > 0)
+}
+
+/// [`set_automatic_grouping`] in its own transaction.
+pub async fn set_title_grouping(db: &Database, member: Member, enabled: bool) -> DbResult<bool> {
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    let changed = set_automatic_grouping(&mut tx, member, enabled).await?;
+    tx.commit().await?;
+    Ok(changed)
+}
+
 pub async fn insert(conn: &mut SqliteConnection, c: &NewCollection) -> DbResult<i64> {
     if c.title.trim().is_empty() {
         return Err(DbError::Invalid("collection title is required".into()));
