@@ -511,7 +511,10 @@ pub(crate) async fn proxy(state: &AppState) -> ApiResult<ProxySettings> {
 
 pub(crate) async fn get_host(State(state): State<AppState>) -> ApiResult<Json<Value>> {
     let (g, p) = (general(&state).await?, proxy(&state).await?);
-    Ok(Json(host_resource(&state, &g, &p)))
+    let resource = host_resource(&state, &g, &p);
+    Ok(Json(
+        crate::security::with_v3_host_fields(&state, resource).await?,
+    ))
 }
 
 pub(crate) async fn put_host(
@@ -576,6 +579,8 @@ pub(crate) async fn put_host(
     if proxy_changed {
         crate::proxy::validate(&p).map_err(|(field, message)| ApiError::field(field, message))?;
     }
+    // Authentication, allowed hosts, OIDC and the account (Settings › General › Security).
+    crate::security::apply_v3_host(&state, &body).await?;
     let g = settings::put_general(State(state.clone()), Json(g))
         .await?
         .0;
@@ -584,7 +589,10 @@ pub(crate) async fn put_host(
     } else {
         p
     };
-    Ok(accepted(host_resource(&state, &g, &p)))
+    let resource = host_resource(&state, &g, &p);
+    Ok(accepted(
+        crate::security::with_v3_host_fields(&state, resource).await?,
+    ))
 }
 
 #[cfg(test)]

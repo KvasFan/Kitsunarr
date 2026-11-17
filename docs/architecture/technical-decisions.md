@@ -69,6 +69,12 @@ Because both modes run the same code, the preview cannot diverge from the result
 - **API keys.** One 128-bit hex key, compared in constant time and accepted as `X-Api-Key`, `?apikey=` or a Bearer token. It can only be read or regenerated from an interactive session.
 - **CSRF.** `tower_http::csrf::CsrfLayer` (the Go 1.25 cross-origin scheme) checks `Sec-Fetch-Site` and `Origin` against `Host`. No token state is needed. Requests from non-browser clients are unaffected.
 - **Login throttling.** Failed logins are rate-limited per client address (10 per 5 minutes by default). `X-Forwarded-For` and `X-Forwarded-Proto` are honoured only from configured trusted proxies.
+- **Authentication settings (Tanukarr's Settings › General › Security).** Stored in the database (`security`) and cached in memory; `config.toml` `[auth]` / `KITSUNARR_AUTH_*` (and `[server] allowed_hosts` / `KITSUNARR_ALLOWED_HOSTS`) pin any of them, as Tanukarr's `SONARR__AUTH__*` do, and the API reports them as `locked`.
+  - Methods: **forms** (the sign-in page; Sonarr's retired `basic` and `none` read as forms, and the v3 API refuses `basic` with Tanukarr's message), **external** (a reverse proxy authenticates; every request is Sonarr's anonymous user) and **OIDC**. OIDC that is not fully configured falls back to forms (`EffectiveAuthenticationMethod`); unlike Tanukarr's page, Kitsunarr's then keeps the password form so the settings can be fixed from the UI.
+  - "Disabled for local addresses / localhost" exempts clients whose address is known: no `X-Forwarded-For`, or every hop through trusted proxies. Localhost also requires that (Tanukarr trusts loopback proxies by default; Kitsunarr does not, so an untrusted local reverse proxy never makes every visitor "localhost").
+  - Allowed hosts are applied at once (Tanukarr: on restart) by a middleware with ASP.NET host filtering's rules: loopback names and the machine's host names are always accepted, `*.domain` matches subdomains, other hosts get 400.
+  - Password resets: `POST /reset-password/request` writes a 20-character token (Sonarr's unambiguous alphabet) to the log at warning level, valid 15 minutes, one at a time, one request per address and minute; a configured token (20+ characters) works once until restart and raises the `PasswordResetTokenCheck` notice. Failures count towards the login throttle. A reset renames the administrator, sets the password and revokes its sessions. `kitsunarr reset-password` does the same offline.
+  - OIDC is hand-written (no OIDC crate): authorization code with PKCE `S256`, `state` bound to the browser by a correlation cookie, `nonce`; ID tokens verified with the provider's JWKS through `aws-lc-rs` (RS/PS/ES 256–512, EdDSA; never `none` or `HS*`) and checked for issuer, audience/`azp`, expiry (5 minutes skew), `iat`, `nbf` and nonce; the user-info `sub` must match. The allowed user is the configured verified e-mail or subject, as Tanukarr's `TryAuthorize`. The redirect URI is Tanukarr's `/signin-oidc`, so providers set up for Tanukarr keep working. OIDC sessions live in `sso_sessions` and stop being valid when the method or the allowed user changes. Kitsunarr accepts `http://` authorities on the loopback interface (for local providers and tests); elsewhere `https://` is required as in Tanukarr.
 - **SSRF** (migration API sources):
   - Only `http` and `https`; credentials in URLs are refused.
   - DNS is resolved once and the resolved address is pinned, which blocks rebinding.
@@ -494,7 +500,11 @@ a search.
   and renews a token with its refresh token, storing the renewed token before reading. Trakt and
   Simkl need the user's own application Client ID (`clientId`, `clientIdV2`) and, for private
   data, a token of that application; Plex needs the account token; TMDB lists use the API Read
-  Access Token. Sign-in from the list editor (`kitsunarr-importlists::oauth`) uses the services' own flows with the user's application, never the Servarr relay: Simkl and Plex PINs, Trakt's device code, MyAnimeList's authorization code with PKCE; tokens can also be pasted or migrated.
+  Access Token. Instead of the relay, the editor signs in natively
+  (`kitsunarr-importlists::oauth`): Simkl and Plex PINs, Trakt's device flow, MyAnimeList's
+  code with PKCE and AniList's authorization code with the user's own API client, the last two
+  through Kitsunarr's callback (`/api/v1/importlists/oauth/callback`, which must be registered
+  with the client). The Trakt and Plex Media Server connections sign in the same way.
 
 ## 30. Codec size factors and per-profile size limits (Tanukarr)
 

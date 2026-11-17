@@ -132,6 +132,8 @@ impl AppState {
                 setup_required: false,
                 authenticated: false,
                 username: None,
+                authentication_method: Default::default(),
+                oidc_misconfigured: false,
             }));
         } else {
             self.toast(ToastLevel::Error, e.to_string());

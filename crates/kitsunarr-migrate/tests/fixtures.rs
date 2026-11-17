@@ -985,6 +985,108 @@ async fn auto_tagging_and_original_country_are_imported() {
     assert_eq!(tagged, vec!["Breaking Bad".to_string()]);
 }
 
+/// Tanukarr's alternative groups and "Ignore episode titles" survive a backup migration and
+/// keep their meaning: `1080p AND (x265 OR group GRP)`, with episode titles ignored by the
+/// x265 condition.
+#[tokio::test]
+async fn tanukarr_custom_format_alternative_groups_are_imported() {
+    let tmp = tempfile::tempdir().unwrap();
+    let media = tmp.path().join("media");
+    make_media(
+        &media,
+        &[
+            "/tv/Breaking Bad",
+            "/tv/Chernobyl",
+            "/anime/Cowboy Bebop",
+            "/tv/Cowboy Bebop",
+            "/movies/Cowboy Bebop - The Movie - Knockin' on Heaven's Door",
+        ],
+    );
+    let file = std::fs::File::open(fixture("tanukarr-0.1.5/backup.zip")).unwrap();
+    let mut archive = zip::ZipArchive::new(file).unwrap();
+    let db_path = tmp.path().join("sonarr.db");
+    std::io::copy(
+        &mut archive.by_name("sonarr.db").unwrap(),
+        &mut std::fs::File::create(&db_path).unwrap(),
+    )
+    .unwrap();
+    let source = sqlx::SqlitePool::connect(&format!("sqlite://{}", db_path.display()))
+        .await
+        .unwrap();
+    // Tanukarr 0.1.5's stored shape (as in the fixture's own formats).
+    let specifications = serde_json::json!([
+        {"type": "ReleaseTitleSpecification", "body": {"order": 1, "implementationName": "Release Title",
+            "infoLink": "https://wiki.servarr.com/sonarr/settings#custom-formats-2", "excludeEpisodeTitles": false,
+            "value": "1080p", "name": "1080p", "negate": false, "required": false, "alternativeGroup": 0}},
+        {"type": "ReleaseTitleSpecification", "body": {"order": 1, "implementationName": "Release Title",
+            "infoLink": "https://wiki.servarr.com/sonarr/settings#custom-formats-2", "excludeEpisodeTitles": true,
+            "value": "\\bx265\\b", "name": "x265", "negate": false, "required": false, "alternativeGroup": 1}},
+        {"type": "ReleaseGroupSpecification", "body": {"order": 9, "implementationName": "Release Group",
+            "infoLink": "https://wiki.servarr.com/sonarr/settings#custom-formats-2",
+            "value": "^GRP$", "name": "GRP", "negate": false, "required": false, "alternativeGroup": 2}}
+    ]);
+    sqlx::query("INSERT INTO CustomFormats (Name, Specifications, IncludeCustomFormatWhenRenaming) VALUES ('Grouped', ?, 0)")
+        .bind(specifications.to_string())
+        .execute(&source)
+        .await
+        .unwrap();
+    source.close().await;
+
+    let src = load_from_backup(&db_path, tmp.path()).await.unwrap();
+    let db = fresh_db(tmp.path()).await;
+    run(
+        &db,
+        &src,
+        &options(&media),
+        Mode::Apply {
+            backup_dir: tmp.path().join("b"),
+        },
+        &noop,
+    )
+    .await
+    .unwrap();
+    let formats = kitsunarr_db::quality::list_custom_formats(db.pool())
+        .await
+        .unwrap();
+    let grouped = formats.iter().find(|f| f.name == "Grouped").unwrap();
+    let groups: Vec<i64> = grouped
+        .specifications
+        .iter()
+        .map(|s| s.alternative_group())
+        .collect();
+    assert_eq!(groups, vec![0, 1, 2]);
+    assert!(grouped.specifications[1].flag("excludeEpisodeTitles"));
+    assert!(!grouped.specifications[0].flag("excludeEpisodeTitles"));
+
+    let (compiled, problems) = kitsunarr_decision::compile_formats(std::slice::from_ref(grouped));
+    assert!(problems.is_empty(), "{problems:?}");
+    let titles = vec!["The x265 Affair".to_string()];
+    let check = |title: &str, group: Option<&str>, titles: &[String]| {
+        compiled[0].matches(&kitsunarr_decision::CustomFormatInput {
+            release_title: title,
+            file_name: None,
+            release_group: group,
+            quality: kitsunarr_domain::Quality::unknown(),
+            size: 0,
+            indexer_flags: 0,
+            languages: &[],
+            release_type: kitsunarr_parser::ReleaseType::SingleEpisode,
+            original_language: None,
+            episode_titles: titles,
+        })
+    };
+    assert!(check("Show.S01E01.1080p.x265-OTHER", Some("OTHER"), &[]));
+    assert!(check("Show.S01E01.1080p.x264-GRP", Some("GRP"), &[]));
+    assert!(!check("Show.S01E01.1080p.x264-OTHER", Some("OTHER"), &[]));
+    assert!(!check("Show.S01E01.720p.x265-GRP", Some("GRP"), &[]));
+    // "x265" only in the episode title does not count.
+    assert!(!check(
+        "Show.S01E01.The.x265.Affair.1080p.x264-OTHER",
+        Some("OTHER"),
+        &titles
+    ));
+}
+
 // ---------------------------------------------------------------------------------------------
 // Simulated API source: replays captured /api/v3 responses.
 // ---------------------------------------------------------------------------------------------

@@ -63,7 +63,10 @@ pub(crate) const SPECIFICATIONS: [(&str, &str, &[Field]); 8] = [
     (
         "ReleaseTitleSpecification",
         "Release Title",
-        &[("value", "Regular Expression", "textbox")],
+        &[
+            ("value", "Regular Expression", "textbox"),
+            ("excludeEpisodeTitles", "Ignore episode titles", "checkbox"),
+        ],
     ),
     (
         "LanguageSpecification",
@@ -119,12 +122,27 @@ pub(crate) fn spec_json(s: &CustomFormatSpecification) -> Value {
     let mut fields: Vec<Value> = Vec::new();
     if let Some((_, _, defs)) = known {
         for (n, (name, label, kind)) in defs.iter().enumerate() {
-            let value = s.fields.get(*name).cloned().unwrap_or(Value::Null);
+            let value = s.fields.get(*name).cloned().unwrap_or(match *name {
+                "excludeEpisodeTitles" => Value::Bool(false),
+                _ => Value::Null,
+            });
             fields.push(field_json(n, name, label, kind, value));
         }
+        // Tanukarr's `AlternativeGroup`: an integer field of every specification (order 100).
+        let mut group = field_json(
+            100,
+            "alternativeGroup",
+            "Alternative group",
+            "number",
+            s.field("alternativeGroup").cloned().unwrap_or(json!(0)),
+        );
+        group["isFloat"] = json!(false);
+        fields.push(group);
     }
     for (name, value) in &s.fields {
-        if !known.is_some_and(|(_, _, defs)| defs.iter().any(|(n, _, _)| n == name)) {
+        if !known.is_some_and(|(_, _, defs)| {
+            defs.iter().any(|(n, _, _)| n == name) || name.eq_ignore_ascii_case("alternativeGroup")
+        }) {
             fields.push(field_json(
                 fields.len(),
                 name,

@@ -423,6 +423,11 @@ pub async fn rename_previews(
                 languages: &languages,
                 release_type: kitsunarr_parser::ReleaseType::Unknown,
                 original_language: model.original_language,
+                episode_titles: &linked
+                    .iter()
+                    .filter_map(|e| e.title.clone())
+                    .filter(|t| !t.trim().is_empty())
+                    .collect::<Vec<_>>(),
             },
         );
         let file = file_names::File {

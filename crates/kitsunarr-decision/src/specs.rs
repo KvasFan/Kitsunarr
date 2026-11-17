@@ -84,9 +84,21 @@ impl Env<'_> {
                     .map_or(kitsunarr_parser::ReleaseType::Unknown, |p| p.release_type())
             }),
             original_language: self.series.original_language,
+            episode_titles: &self.episode_titles(|e| grab.episode_ids.contains(&e.id)),
         };
         let formats = evaluate(self.formats, &input);
         self.profile().format_score(formats.iter().map(|f| &f.id))
+    }
+
+    /// Titles of the series' episodes chosen by `pick` (`Episodes.Select(e => e.Title)`).
+    fn episode_titles(&self, pick: impl Fn(&crate::model::Episode) -> bool) -> Vec<String> {
+        self.series
+            .episodes
+            .iter()
+            .filter(|e| pick(e))
+            .filter_map(|e| e.title.clone())
+            .filter(|t| !t.trim().is_empty())
+            .collect()
     }
 
     fn file_formats(&self, file: &EpisodeFile) -> (Vec<&CompiledFormat>, i32) {
@@ -100,6 +112,8 @@ impl Env<'_> {
             languages: &file.languages,
             release_type: file.release_type,
             original_language: self.series.original_language,
+            episode_titles: &self
+                .episode_titles(|e| e.file.as_ref().is_some_and(|f| f.id == file.id)),
         };
         let formats = evaluate(self.formats, &input);
         let score = self.profile().format_score(formats.iter().map(|f| &f.id));
@@ -117,6 +131,8 @@ struct GrabInput<'a> {
     languages: &'a [&'static kitsunarr_domain::Language],
     /// Stored with the grab (history); `None`: from the parsed title (queue).
     release_type: Option<kitsunarr_parser::ReleaseType>,
+    /// The queued release's episodes (`RemoteEpisode.Episodes`); none for history.
+    episode_ids: &'a [i64],
 }
 
 fn model(p: &ParsedEpisodeInfo) -> QualityModel {
@@ -1105,6 +1121,7 @@ pub(crate) fn queue(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
             indexer_flags: q.indexer_flags,
             languages: &q.languages,
             release_type: None,
+            episode_ids: &q.episode_ids,
         });
         let label = quality_model_label(&q.quality);
         if !profile.cutoff_not_met(&q.quality, queued_score, Some(&new)) {
@@ -1212,6 +1229,7 @@ pub(crate) fn history(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
             indexer_flags: g.indexer_flags,
             languages: &g.languages,
             release_type: Some(g.release_type),
+            episode_ids: &[],
         });
         let label = quality_model_label(&g.quality);
         if !profile.cutoff_not_met(&g.quality, score, Some(&new)) {

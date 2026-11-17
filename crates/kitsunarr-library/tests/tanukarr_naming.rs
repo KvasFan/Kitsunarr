@@ -135,6 +135,7 @@ fn custom_format_regexes_match_tanukarr_binary_oracle() {
             languages: &[],
             release_type: kitsunarr_parser::ReleaseType::Unknown,
             original_language: None,
+            episode_titles: &[],
         };
         assert_eq!(
             !evaluate(&formats, &input).is_empty(),

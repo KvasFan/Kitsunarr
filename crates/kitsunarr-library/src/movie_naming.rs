@@ -82,6 +82,7 @@ pub(crate) async fn file_name(
             languages: &languages,
             release_type: kitsunarr_parser::ReleaseType::Unknown,
             original_language: None,
+            episode_titles: &[],
         },
     );
     let quality_title = quality::list_definitions(db.pool())

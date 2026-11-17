@@ -20,6 +20,8 @@ pub const KEY_METADATA_CONSUMERS: &str = "metadataConsumers";
 pub const KEY_LAST_VERSION: &str = "lastStartedVersion";
 /// The last 100 searches (Library tools › Recent searches).
 pub const KEY_SEARCH_HISTORY: &str = "searchHistory";
+/// Settings › General › Security (authentication method, allowed hosts, OIDC).
+pub const KEY_SECURITY: &str = "security";
 
 pub async fn get<T: DeserializeOwned>(
     ex: impl SqliteExecutor<'_>,

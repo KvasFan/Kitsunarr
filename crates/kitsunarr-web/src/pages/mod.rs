@@ -12,6 +12,7 @@ pub mod library_import;
 pub mod placeholders;
 mod quality_profile_items;
 pub mod search;
+pub mod security;
 pub mod settings;
 pub mod settings_quality;
 pub mod system;

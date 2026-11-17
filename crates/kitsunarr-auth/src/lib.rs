@@ -86,6 +86,37 @@ pub fn secrets_equal(a: &str, b: &str) -> bool {
     a.len() == b.len() && bool::from(a.as_bytes().ct_eq(b.as_bytes()))
 }
 
+/// Sonarr's `SecretGenerator` alphabet: letters and digits without the ambiguous `0 O 1 l I`.
+const SECRET_ALPHABET: &[u8] = b"ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+
+/// A random secret of `len` characters from Sonarr's unambiguous alphabet (uniform: random
+/// bytes beyond the largest multiple of the alphabet size are drawn again).
+pub fn generate_secret(len: usize) -> String {
+    let n = SECRET_ALPHABET.len();
+    let limit = (256 / n * n) as u8;
+    let mut out = String::with_capacity(len);
+    while out.len() < len {
+        for b in random_bytes::<32>() {
+            if b < limit && out.len() < len {
+                out.push(SECRET_ALPHABET[usize::from(b) % n] as char);
+            }
+        }
+    }
+    out
+}
+
+/// A password reset token (Tanukarr: 20 characters, written to the log).
+pub fn generate_reset_token() -> String {
+    generate_secret(20)
+}
+
+/// The stored form of a reset token (Tanukarr's `HashToken`: base64 of SHA-256).
+pub fn hash_reset_token(token: &str) -> String {
+    base64::engine::general_purpose::STANDARD.encode(Sha256::digest(token.as_bytes()))
+}
+
+pub mod oidc;
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -124,6 +155,22 @@ mod tests {
         );
         assert_eq!(hash_token("abc").len(), 64);
         assert_eq!(hash_token("abc"), hash_token("abc"));
+    }
+
+    #[test]
+    fn reset_tokens_use_the_unambiguous_alphabet() {
+        let tokens: Vec<String> = (0..100).map(|_| generate_reset_token()).collect();
+        assert!(tokens.iter().all(|t| t.len() == 20));
+        let joined = tokens.concat();
+        assert!(!joined.contains(['0', 'O', '1', 'l', 'I']));
+        let mut unique = tokens.clone();
+        unique.sort();
+        unique.dedup();
+        assert_eq!(unique.len(), tokens.len());
+        assert_eq!(
+            hash_reset_token("abc"),
+            "ungWv48Bz+pBQUDeXa4iI7ADYaOWF3qctBD/YfIAFa0="
+        );
     }
 
     #[test]

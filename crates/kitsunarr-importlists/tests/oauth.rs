@@ -237,3 +237,143 @@ async fn myanimelist_pkce_through_the_callback() {
         "{body}"
     );
 }
+
+#[tokio::test]
+async fn anilist_authorization_code_through_the_callback() {
+    let seen: Arc<Mutex<Vec<Value>>> = Arc::default();
+    let log = seen.clone();
+    let app = axum::Router::new().route(
+        "/api/v2/oauth/token",
+        post(
+            move |headers: axum::http::HeaderMap, Json(body): Json<Value>| {
+                let log = log.clone();
+                async move {
+                    assert_eq!(headers["accept"], "application/json");
+                    log.lock().unwrap().push(body.clone());
+                    if body["code"] == "bad" {
+                        return StatusCode::BAD_REQUEST.into_response();
+                    }
+                    Json(json!({"token_type": "Bearer", "expires_in": 31536000, "access_token": "anilist-token", "refresh_token": "r"}))
+                        .into_response()
+                }
+            },
+        ),
+    );
+    let base = serve(app).await;
+    let http = reqwest::Client::new();
+    let s = settings(json!({
+        "username": "fox", "clientId": "4242", "clientSecret": "shh",
+        "tokenUrl": format!("{base}/api/v2/oauth/token")
+    }));
+    let callback = "https://kitsunarr.example/api/v1/importlists/oauth/callback";
+    let started = start(&http, "AniListImport", &s, callback).await.unwrap();
+    let state: Value = serde_json::from_str(&started.state).unwrap();
+    let nonce = state["nonce"].as_str().unwrap();
+    assert_eq!(
+        kitsunarr_importlists::oauth::nonce_of(&started.state).as_deref(),
+        Some(nonce)
+    );
+    assert_eq!(
+        started.url,
+        format!(
+            "https://anilist.co/api/v2/oauth/authorize?client_id=4242&redirect_uri=https%3A%2F%2Fkitsunarr.example%2Fapi%2Fv1%2Fimportlists%2Foauth%2Fcallback&response_type=code&state={nonce}"
+        )
+    );
+    assert_eq!(started.code, None);
+    assert_eq!(
+        poll(&http, "AniListImport", &s, &started.state, None)
+            .await
+            .unwrap(),
+        Polled::Pending
+    );
+    let done = until_done(&http, "AniListImport", &s, &started.state, Some("authcode")).await;
+    assert_eq!(done["accessToken"], "anilist-token");
+    assert_eq!(done.len(), 1, "only the token is stored: {done:?}");
+    let body = seen.lock().unwrap()[0].clone();
+    assert_eq!(
+        body,
+        json!({"grant_type": "authorization_code", "client_id": "4242", "client_secret": "shh",
+            "redirect_uri": callback, "code": "authcode"})
+    );
+    // A refused code is an authentication error; a missing secret stops before AniList.
+    let refused = poll(&http, "AniListImport", &s, &started.state, Some("bad"))
+        .await
+        .unwrap_err();
+    assert!(refused.to_string().contains("HTTP 400"), "{refused}");
+    let no_secret = settings(json!({"clientId": "4242"}));
+    assert!(
+        start(&http, "AniListImport", &no_secret, callback)
+            .await
+            .is_err()
+    );
+}
+
+/// The Trakt connection (notification) signs in with the device flow of the Trakt lists.
+#[tokio::test]
+async fn trakt_connection_device_code() {
+    let app = axum::Router::new()
+        .route(
+            "/oauth/device/code",
+            post(|Json(b): Json<Value>| async move {
+                assert_eq!(b["client_id"], "cid");
+                Json(json!({"device_code": "dev", "user_code": "CONN1", "verification_url": "https://trakt.tv/activate", "expires_in": 600, "interval": 5}))
+            }),
+        )
+        .route(
+            "/oauth/device/token",
+            post(|Json(b): Json<Value>| async move {
+                assert_eq!(b["client_secret"], "secret");
+                Json(json!({"access_token": "conn-token", "refresh_token": "conn-refresh", "expires_in": 7776000}))
+            }),
+        );
+    let base = serve(app).await;
+    let http = reqwest::Client::new();
+    assert!(kitsunarr_importlists::oauth::supported("Trakt"));
+    assert!(kitsunarr_importlists::oauth::is_connection("Trakt"));
+    let s = settings(json!({"clientId": "cid", "clientSecret": "secret", "baseUrl": base}));
+    let started = start(&http, "Trakt", &s, "").await.unwrap();
+    assert_eq!(started.code.as_deref(), Some("CONN1"));
+    assert_eq!(started.url, "https://trakt.tv/activate");
+    let done = until_done(&http, "Trakt", &s, &started.state, None).await;
+    assert_eq!(done["accessToken"], "conn-token");
+    assert_eq!(done["refreshToken"], "conn-refresh");
+}
+
+/// The Plex Media Server connection signs in with Plex's PIN and keeps the token as
+/// `authToken`, the setting the connection reads.
+#[tokio::test]
+async fn plex_server_connection_pin() {
+    let mock = Mock::default();
+    let app = axum::Router::new()
+        .route(
+            "/api/v2/pins",
+            post(|| async { Json(json!({"id": 7, "code": "srvcode", "expiresIn": 1800})) }),
+        )
+        .route(
+            "/api/v2/pins/{id}",
+            get(|State(m): State<Mock>, Path(id): Path<i64>| async move {
+                assert_eq!(id, 7);
+                if m.tick() < 2 {
+                    Json(json!({"id": 7, "authToken": ""}))
+                } else {
+                    Json(json!({"id": 7, "authToken": "server-token"}))
+                }
+            }),
+        )
+        .with_state(mock);
+    let base = serve(app).await;
+    let http = reqwest::Client::new();
+    assert!(kitsunarr_importlists::oauth::is_connection("PlexServer"));
+    let s = settings(json!({"host": "plex.local", "authBaseUrl": base}));
+    let started = start(&http, "PlexServer", &s, "").await.unwrap();
+    assert!(
+        started
+            .url
+            .starts_with("https://app.plex.tv/auth#?clientID=kitsunarr&code=srvcode"),
+        "{}",
+        started.url
+    );
+    let done = until_done(&http, "PlexServer", &s, &started.state, None).await;
+    assert_eq!(done["authToken"], "server-token");
+    assert!(!done.contains_key("accessToken"));
+}

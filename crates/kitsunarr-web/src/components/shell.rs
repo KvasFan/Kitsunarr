@@ -275,8 +275,20 @@ fn TopBar() -> Element {
         "☀"
     };
     let connected = (app.connected)();
+    let oidc = app.auth.read().as_ref().is_some_and(|a| {
+        a.authentication_method == kitsunarr_domain::api::auth::AuthenticationMethod::Oidc
+    });
     let logout = move |_| {
         let client = client.clone();
+        // With OIDC the server also signs out of the identity provider (Sonarr's /logout).
+        if oidc {
+            if let Some(w) = web_sys::window() {
+                let _ = w
+                    .location()
+                    .set_href(&format!("{}/logout", crate::util::url_base()));
+            }
+            return;
+        }
         spawn(async move {
             let _ = client.logout().await;
             // A full reload clears every cached signal and closes the event stream.

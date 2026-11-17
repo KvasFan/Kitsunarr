@@ -92,6 +92,16 @@ enum Command {
     },
     /// Print the effective configuration.
     Config,
+    /// Set the administrator's password (and optionally name) without the web interface, then
+    /// sign out every session of the account. Works while the server runs.
+    ResetPassword {
+        /// New user name (default: keep the current one; `admin` when there is no account).
+        #[arg(long)]
+        username: Option<String>,
+        /// New password; read from standard input when omitted.
+        #[arg(long, env = "KITSUNARR_NEW_PASSWORD", hide_env_values = true)]
+        password: Option<String>,
+    },
 }
 
 fn parse_mapping(s: &str) -> Result<PathMapping, String> {
@@ -217,6 +227,9 @@ async fn run(cli: Cli) -> Result<()> {
             };
             migrate_cli(&config, backup, url, api_key, options, apply).await
         }
+        Command::ResetPassword { username, password } => {
+            reset_password(&config, username, password).await
+        }
         Command::Config => {
             println!(
                 "# config dir: {}\n# database:   {}",
@@ -227,6 +240,43 @@ async fn run(cli: Cli) -> Result<()> {
             Ok(())
         }
     }
+}
+
+/// `kitsunarr reset-password`: the operator's way back in when the password is lost.
+async fn reset_password(
+    config: &Config,
+    username: Option<String>,
+    password: Option<String>,
+) -> Result<()> {
+    let db = open_database(config).await?;
+    let current = kitsunarr_db::auth::first_admin(db.pool()).await?;
+    let username = username
+        .map(|u| u.trim().to_string())
+        .filter(|u| !u.is_empty())
+        .or_else(|| current.map(|u| u.username))
+        .unwrap_or_else(|| "admin".to_string());
+    let password = match password {
+        Some(p) => p,
+        None => {
+            use std::io::BufRead;
+            eprint!("New password for '{username}': ");
+            let mut line = String::new();
+            std::io::stdin()
+                .lock()
+                .read_line(&mut line)
+                .context("cannot read the password from standard input")?;
+            line.trim_end_matches(['\r', '\n']).to_string()
+        }
+    };
+    if let Err(message) = kitsunarr_domain::api::auth::validate_credentials(&username, &password) {
+        bail!("{message}");
+    }
+    let hash = kitsunarr_auth::hash_password(&password)?;
+    let id = kitsunarr_db::auth::upsert_admin(&db, &username, &hash).await?;
+    let revoked = kitsunarr_db::auth::delete_user_sessions(db.pool(), id, None).await?;
+    db.close().await;
+    println!("The password of '{username}' was reset; {revoked} session(s) were signed out.");
+    Ok(())
 }
 
 fn toml_like(config: &Config) -> String {
@@ -300,6 +350,10 @@ async fn serve(config: Config) -> Result<()> {
             interrupted,
             "migration runs interrupted by the previous shutdown were rolled back"
         );
+    }
+    // Tanukarr's `InitialUserService`: the configured initial password creates the account.
+    if let Err(e) = kitsunarr_api::security::create_initial_user(&db, &config).await {
+        tracing::error!(error = %e.message(), "failed to create the initial user");
     }
     if kitsunarr_db::auth::user_count(db.pool()).await? == 0 {
         tracing::warn!("no administrator account exists yet: open the web interface to create one");
@@ -613,4 +667,70 @@ async fn migrate_cli(
         println!("\nDry run only: nothing was changed. Re-run with --apply to import.");
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[tokio::test]
+    async fn reset_password_renames_the_account_and_signs_it_out() {
+        let dir = tempfile::tempdir().unwrap();
+        let config = Config {
+            data_dir: dir.path().to_path_buf(),
+            ..Default::default()
+        };
+        // Without an account one is created.
+        reset_password(&config, None, Some("first long passphrase".into()))
+            .await
+            .unwrap();
+        let db = open_database(&config).await.unwrap();
+        let user = kitsunarr_db::auth::first_admin(db.pool())
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(user.username, "admin");
+        kitsunarr_db::auth::create_session(
+            db.pool(),
+            kitsunarr_db::auth::NewSession {
+                token_hash: "t",
+                user_id: user.id,
+                expires_at: "2999-01-01T00:00:00Z",
+                user_agent: None,
+                remote_addr: None,
+            },
+        )
+        .await
+        .unwrap();
+        db.close().await;
+        assert!(
+            reset_password(&config, None, Some("short".into()))
+                .await
+                .is_err(),
+            "Kitsunarr's password rules apply"
+        );
+        reset_password(
+            &config,
+            Some("boss".into()),
+            Some("second long passphrase".into()),
+        )
+        .await
+        .unwrap();
+        let db = open_database(&config).await.unwrap();
+        let user = kitsunarr_db::auth::first_admin(db.pool())
+            .await
+            .unwrap()
+            .unwrap();
+        assert_eq!(user.username, "boss");
+        assert!(
+            kitsunarr_auth::verify_password("second long passphrase", &user.password_hash).unwrap()
+        );
+        assert!(
+            kitsunarr_db::auth::find_session(db.pool(), "t", &kitsunarr_db::now())
+                .await
+                .unwrap()
+                .is_none(),
+            "sessions were signed out"
+        );
+    }
 }

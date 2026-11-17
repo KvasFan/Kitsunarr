@@ -189,6 +189,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(settings::get_general, settings::put_general))
         .routes(routes!(settings::get_proxy, settings::put_proxy))
         .routes(routes!(
+            crate::security::get_security,
+            crate::security::put_security
+        ))
+        .routes(routes!(
             settings::get_metadata_sources,
             settings::put_metadata_sources
         ))

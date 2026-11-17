@@ -17,8 +17,8 @@ use chrono::Utc;
 use kitsunarr_config::{CookieSecurity, IpNetwork};
 use kitsunarr_db::auth as users;
 use kitsunarr_domain::api::auth::{
-    ApiKeyResponse, AuthStatus, ChangePasswordRequest, LoginRequest, SetupRequest,
-    validate_credentials, validate_password,
+    ApiKeyResponse, AuthStatus, AuthenticationMethod, ChangePasswordRequest, LoginRequest,
+    SetupRequest, validate_credentials, validate_password,
 };
 use kitsunarr_domain::api::{API_KEY_HEADER, SESSION_COOKIE};
 
@@ -39,6 +39,14 @@ pub enum Principal {
         id: String,
         permission: String,
     },
+    /// Signed in through the OpenID Connect provider as the configured OIDC user.
+    Sso {
+        session_id: i64,
+        user: String,
+    },
+    /// No sign-in needed: a reverse proxy authenticates (`External`), or authentication is
+    /// disabled for this local client (Sonarr's anonymous user).
+    Anonymous,
 }
 
 impl<S: Send + Sync> FromRequestParts<S> for Principal {
@@ -122,7 +130,7 @@ pub struct LoginLimiter {
 }
 
 impl LoginLimiter {
-    fn blocked(&self, ip: IpAddr, max: u32, window: Duration) -> Option<Duration> {
+    pub(crate) fn blocked(&self, ip: IpAddr, max: u32, window: Duration) -> Option<Duration> {
         let mut map = self.state.lock().unwrap_or_else(|e| e.into_inner());
         let now = Instant::now();
         map.retain(|_, (_, start)| now.duration_since(*start) < window);
@@ -134,7 +142,7 @@ impl LoginLimiter {
         }
     }
 
-    fn record_failure(&self, ip: IpAddr, window: Duration) {
+    pub(crate) fn record_failure(&self, ip: IpAddr, window: Duration) {
         let mut map = self.state.lock().unwrap_or_else(|e| e.into_inner());
         let now = Instant::now();
         let entry = map.entry(ip).or_insert((0, now));
@@ -144,7 +152,7 @@ impl LoginLimiter {
         entry.0 += 1;
     }
 
-    fn clear(&self, ip: IpAddr) {
+    pub(crate) fn clear(&self, ip: IpAddr) {
         self.state
             .lock()
             .unwrap_or_else(|e| e.into_inner())
@@ -172,11 +180,15 @@ fn api_key_from(headers: &HeaderMap, query: Option<&str>) -> Option<String> {
     })
 }
 
-/// Resolves the principal of a request without rejecting it.
+/// Resolves the principal of a request without rejecting it: an API key, else the session
+/// of the authentication method in force, else Sonarr's anonymous user when no sign-in is
+/// needed (`External`, or authentication disabled for this local client). `peer` is the
+/// direct peer's address.
 pub async fn authenticate(
     state: &AppState,
     headers: &HeaderMap,
     query: Option<&str>,
+    peer: Option<IpAddr>,
 ) -> ApiResult<Option<Principal>> {
     if let Some(key) = api_key_from(headers, query) {
         let expected = state
@@ -190,14 +202,53 @@ pub async fn authenticate(
             Ok(None)
         };
     }
+    let settings = crate::security::effective(state).await?;
+    let method = settings.effective_method();
     let jar = CookieJar::from_headers(headers);
-    let Some(cookie) = jar.get(SESSION_COOKIE) else {
-        return Ok(None);
+    let session = match jar.get(SESSION_COOKIE) {
+        Some(cookie) => {
+            let token_hash = kitsunarr_auth::hash_token(cookie.value());
+            let now = kitsunarr_db::now();
+            match method {
+                AuthenticationMethod::Forms => {
+                    users::find_session(state.db.pool(), &token_hash, &now).await?
+                }
+                AuthenticationMethod::Oidc => {
+                    // `OnValidatePrincipal`: only sessions of the configured OIDC user.
+                    if let Some(sso) =
+                        users::find_sso_session(state.db.pool(), &token_hash, &now).await?
+                        && sso.subject.to_lowercase()
+                            == settings.oidc_user_identifier.trim().to_lowercase()
+                    {
+                        let stale = chrono::DateTime::parse_from_rfc3339(&sso.last_seen_at)
+                            .map(|t| {
+                                Utc::now().signed_duration_since(t) > chrono::Duration::minutes(1)
+                            })
+                            .unwrap_or(true);
+                        if stale {
+                            users::touch_sso_session(state.db.pool(), sso.id).await?;
+                        }
+                        return Ok(Some(Principal::Sso {
+                            session_id: sso.id,
+                            user: sso.subject,
+                        }));
+                    }
+                    None
+                }
+                AuthenticationMethod::External => None,
+            }
+        }
+        None => None,
     };
-    let token_hash = kitsunarr_auth::hash_token(cookie.value());
-    let now = kitsunarr_db::now();
-    let Some(session) = users::find_session(state.db.pool(), &token_hash, &now).await? else {
-        return Ok(None);
+    let Some(session) = session else {
+        let exempt = method == AuthenticationMethod::External
+            || crate::security::exempt(
+                &settings,
+                headers,
+                peer,
+                &state.config.server.trusted_proxies,
+            );
+        return Ok(exempt.then_some(Principal::Anonymous));
     };
     // Sliding refresh, at most once per minute to keep writes low.
     let stale = chrono::DateTime::parse_from_rfc3339(&session.last_seen_at)
@@ -253,7 +304,8 @@ pub async fn require_auth_v3(
     next: Next,
 ) -> Response {
     let query = req.uri().query().map(str::to_string);
-    match authenticate(&state, req.headers(), query.as_deref()).await {
+    let peer = crate::security::peer_of(req.extensions());
+    match authenticate(&state, req.headers(), query.as_deref(), peer).await {
         Ok(Some(principal)) => {
             req.extensions_mut().insert(principal);
             return next.run(req).await;
@@ -281,7 +333,8 @@ pub async fn require_auth_v3(
 /// Middleware for protected routes.
 pub async fn require_auth(State(state): State<AppState>, mut req: Request, next: Next) -> Response {
     let query = req.uri().query().map(str::to_string);
-    match authenticate(&state, req.headers(), query.as_deref()).await {
+    let peer = crate::security::peer_of(req.extensions());
+    match authenticate(&state, req.headers(), query.as_deref(), peer).await {
         Ok(Some(principal)) => {
             req.extensions_mut().insert(principal);
             next.run(req).await
@@ -291,7 +344,7 @@ pub async fn require_auth(State(state): State<AppState>, mut req: Request, next:
     }
 }
 
-fn session_cookie(
+pub(crate) fn session_cookie(
     state: &AppState,
     client: ClientInfo,
     token: String,
@@ -322,7 +375,7 @@ fn time_days(days: u32) -> time::Duration {
     time::Duration::days(i64::from(days))
 }
 
-async fn start_session(
+pub(crate) async fn start_session(
     state: &AppState,
     client: ClientInfo,
     headers: &HeaderMap,
@@ -353,7 +406,7 @@ async fn start_session(
     Ok(session_cookie(state, client, token, remember))
 }
 
-async fn hash_blocking(password: String) -> ApiResult<String> {
+pub(crate) async fn hash_blocking(password: String) -> ApiResult<String> {
     tokio::task::spawn_blocking(move || kitsunarr_auth::hash_password(&password))
         .await
         .map_err(ApiError::internal)?
@@ -372,26 +425,85 @@ async fn verify_blocking(password: String, phc: Option<String>) -> ApiResult<boo
     .map_err(ApiError::internal)
 }
 
+/// What a password sign-in found.
+pub(crate) enum PasswordCheck {
+    Valid(users::User),
+    Invalid,
+    /// Too many failures from this address: retry after the duration.
+    Locked(Duration),
+}
+
+/// `AuthenticationService.Login`: only with forms sign-in; failures count per address and
+/// lock it out for a while (even with the right password).
+pub(crate) async fn check_password(
+    state: &AppState,
+    ip: IpAddr,
+    username: &str,
+    password: String,
+) -> ApiResult<PasswordCheck> {
+    if crate::security::effective(state).await?.effective_method() != AuthenticationMethod::Forms {
+        return Ok(PasswordCheck::Invalid);
+    }
+    let window = Duration::from_secs(state.config.auth.login_window_secs);
+    if let Some(wait) = state
+        .login_limiter
+        .blocked(ip, state.config.auth.max_failed_logins, window)
+    {
+        tracing::warn!(target: "auth", "Auth-Lockout ip {ip} username '{username}'");
+        return Ok(PasswordCheck::Locked(wait));
+    }
+    let user = users::find_user_by_name(state.db.pool(), username).await?;
+    let ok = verify_blocking(password, user.as_ref().map(|u| u.password_hash.clone())).await?;
+    let Some(user) = user.filter(|_| ok) else {
+        state.login_limiter.record_failure(ip, window);
+        tracing::warn!(target: "auth", "Auth-Failure ip {ip} username '{username}'");
+        return Ok(PasswordCheck::Invalid);
+    };
+    state.login_limiter.clear(ip);
+    tracing::debug!(target: "auth", "Auth-Success ip {ip} username '{username}'");
+    Ok(PasswordCheck::Valid(user))
+}
+
+/// The cookie that removes the session cookie.
+pub(crate) fn removal_cookie(state: &AppState) -> Cookie<'static> {
+    let path = if state.config.server.url_base.is_empty() {
+        "/".to_string()
+    } else {
+        state.config.server.url_base.clone()
+    };
+    Cookie::build(SESSION_COOKIE).path(path).build()
+}
+
+async fn auth_status(state: &AppState, principal: Option<&Principal>) -> ApiResult<AuthStatus> {
+    let settings = crate::security::effective(state).await?;
+    let username = match principal {
+        Some(Principal::Session { username, .. }) => Some(username.clone()),
+        Some(Principal::Sso { user, .. }) => Some(user.clone()),
+        _ => None,
+    };
+    Ok(AuthStatus {
+        setup_required: crate::security::setup_required(state).await?,
+        authenticated: principal.is_some(),
+        username,
+        authentication_method: settings.effective_method(),
+        oidc_misconfigured: settings.authentication_method == AuthenticationMethod::Oidc
+            && !settings.is_oidc_configured(),
+    })
+}
+
 /// Authentication state for the current browser. Public.
 #[utoipa::path(get, path = "/auth/status", tag = "auth", responses((status = 200, body = AuthStatus)))]
 pub async fn status(
     State(state): State<AppState>,
+    crate::security::Peer(peer): crate::security::Peer,
     headers: HeaderMap,
 ) -> ApiResult<Json<AuthStatus>> {
-    let setup_required = users::user_count(state.db.pool()).await? == 0;
-    let principal = authenticate(&state, &headers, None).await?;
-    let username = match &principal {
-        Some(Principal::Session { username, .. }) => Some(username.clone()),
-        _ => None,
-    };
-    Ok(Json(AuthStatus {
-        setup_required,
-        authenticated: principal.is_some(),
-        username,
-    }))
+    let principal = authenticate(&state, &headers, None, peer).await?;
+    Ok(Json(auth_status(&state, principal.as_ref()).await?))
 }
 
-/// Creates the first administrator. Only possible while no user exists.
+/// Creates the first administrator. Only possible while no user exists (and with forms
+/// sign-in, without a configured initial password).
 #[utoipa::path(post, path = "/auth/setup", tag = "auth", request_body = SetupRequest,
     responses((status = 200, body = AuthStatus), (status = 409, description = "Already set up")))]
 pub async fn setup(
@@ -401,7 +513,7 @@ pub async fn setup(
     jar: CookieJar,
     Json(body): Json<SetupRequest>,
 ) -> ApiResult<(CookieJar, Json<AuthStatus>)> {
-    if users::user_count(state.db.pool()).await? > 0 {
+    if !crate::security::setup_required(&state).await? {
         return Err(ApiError::Conflict("Kitsunarr is already set up.".into()));
     }
     validate_credentials(&body.username, &body.password)
@@ -413,18 +525,19 @@ pub async fn setup(
         "administrator account created"
     );
     let cookie = start_session(&state, client, &headers, user_id, true).await?;
+    let principal = Principal::Session {
+        session_id: 0,
+        user_id,
+        username: body.username.trim().to_string(),
+    };
     Ok((
         jar.add(cookie),
-        Json(AuthStatus {
-            setup_required: false,
-            authenticated: true,
-            username: Some(body.username.trim().to_string()),
-        }),
+        Json(auth_status(&state, Some(&principal)).await?),
     ))
 }
 
 #[utoipa::path(post, path = "/auth/login", tag = "auth", request_body = LoginRequest,
-    responses((status = 200, body = AuthStatus), (status = 403, description = "Invalid credentials"), (status = 429)))]
+    responses((status = 200, body = AuthStatus), (status = 403, description = "Invalid credentials, or password sign-in is off"), (status = 429)))]
 pub async fn login(
     State(state): State<AppState>,
     client: ClientInfo,
@@ -432,37 +545,32 @@ pub async fn login(
     jar: CookieJar,
     Json(body): Json<LoginRequest>,
 ) -> ApiResult<(CookieJar, Json<AuthStatus>)> {
-    let window = Duration::from_secs(state.config.auth.login_window_secs);
-    if let Some(wait) =
-        state
-            .login_limiter
-            .blocked(client.ip, state.config.auth.max_failed_logins, window)
-    {
-        return Err(ApiError::TooManyRequests(format!(
-            "Too many failed logins. Try again in {} seconds.",
-            wait.as_secs().max(1)
-        )));
+    if crate::security::effective(&state).await?.effective_method() != AuthenticationMethod::Forms {
+        return Err(ApiError::Forbidden(
+            "Password sign-in is turned off; sign in with your identity provider.".into(),
+        ));
     }
-    let user = users::find_user_by_name(state.db.pool(), &body.username).await?;
-    let ok = verify_blocking(
-        body.password,
-        user.as_ref().map(|u| u.password_hash.clone()),
-    )
-    .await?;
-    let Some(user) = user.filter(|_| ok) else {
-        state.login_limiter.record_failure(client.ip, window);
-        tracing::warn!(ip = %client.ip, "failed login");
-        return Err(ApiError::Forbidden("Invalid username or password.".into()));
+    let user = match check_password(&state, client.ip, &body.username, body.password).await? {
+        PasswordCheck::Valid(user) => user,
+        PasswordCheck::Invalid => {
+            return Err(ApiError::Forbidden("Invalid username or password.".into()));
+        }
+        PasswordCheck::Locked(wait) => {
+            return Err(ApiError::TooManyRequests(format!(
+                "Too many failed logins. Try again in {} seconds.",
+                wait.as_secs().max(1)
+            )));
+        }
     };
-    state.login_limiter.clear(client.ip);
     let cookie = start_session(&state, client, &headers, user.id, body.remember_me).await?;
+    let principal = Principal::Session {
+        session_id: 0,
+        user_id: user.id,
+        username: user.username,
+    };
     Ok((
         jar.add(cookie),
-        Json(AuthStatus {
-            setup_required: false,
-            authenticated: true,
-            username: Some(user.username),
-        }),
+        Json(auth_status(&state, Some(&principal)).await?),
     ))
 }
 
@@ -472,17 +580,11 @@ pub async fn logout(
     jar: CookieJar,
 ) -> ApiResult<(CookieJar, StatusCode)> {
     if let Some(cookie) = jar.get(SESSION_COOKIE) {
-        users::delete_session(state.db.pool(), &kitsunarr_auth::hash_token(cookie.value())).await?;
+        let hash = kitsunarr_auth::hash_token(cookie.value());
+        users::delete_session(state.db.pool(), &hash).await?;
+        users::delete_sso_session(state.db.pool(), &hash).await?;
     }
-    let path = if state.config.server.url_base.is_empty() {
-        "/".to_string()
-    } else {
-        state.config.server.url_base.clone()
-    };
-    Ok((
-        jar.remove(Cookie::build(SESSION_COOKIE).path(path)),
-        StatusCode::NO_CONTENT,
-    ))
+    Ok((jar.remove(removal_cookie(&state)), StatusCode::NO_CONTENT))
 }
 
 #[utoipa::path(post, path = "/auth/password", tag = "auth", request_body = ChangePasswordRequest,

@@ -5,7 +5,14 @@
 //!   list's Client ID and secret (the user's own Trakt application);
 //! - **Plex**: Plex's PIN flow (`plex.tv/api/v2/pins`), as Sonarr's Plex sign-in;
 //! - **MyAnimeList**: authorization code with PKCE; MyAnimeList redirects the browser to
-//!   Kitsunarr's callback, which keeps the code for the editor's next poll.
+//!   Kitsunarr's callback, which keeps the code for the editor's next poll;
+//! - **AniList**: authorization code with the user's own AniList API client (Client ID and
+//!   secret), through the same callback.
+//!
+//! The Trakt and Plex Media Server *connections* (notifications `Trakt` and `PlexServer`) sign
+//! in the same way as the Trakt and Plex lists; the Plex token is stored as `authToken`.
+//! Tanukarr signs in through the Servarr relay (`auth.servarr.com`); Kitsunarr talks to the
+//! services directly.
 //!
 //! [`start`] gives the page to open (and a code to enter, when the service shows one) and an
 //! opaque state; the editor then calls [`poll`] at the given interval until the service hands
@@ -20,6 +27,8 @@ const TRAKT_API: &str = "https://api.trakt.tv";
 const PLEX_TV: &str = "https://plex.tv";
 const PLEX_APP: &str = "https://app.plex.tv";
 const MAL_AUTHORIZE: &str = "https://myanimelist.net/v1/oauth2/authorize";
+const ANILIST_AUTHORIZE: &str = "https://anilist.co/api/v2/oauth/authorize";
+const ANILIST_TOKEN: &str = "https://anilist.co/api/v2/oauth/token";
 
 /// A sign-in in progress.
 #[derive(Debug, Clone, PartialEq)]
@@ -56,7 +65,20 @@ pub fn supported(implementation: &str) -> bool {
             | "TraktSmartListImport"
             | "PlexImport"
             | "MyAnimeListImport"
+            | "AniListImport"
+            | "Trakt"
+            | "PlexServer"
     )
+}
+
+/// Implementations whose sign-in returns to Kitsunarr's callback (authorization code).
+pub fn needs_callback(implementation: &str) -> bool {
+    matches!(implementation, "MyAnimeListImport" | "AniListImport")
+}
+
+/// Whether an implementation is a connection (notification) rather than an import list.
+pub fn is_connection(implementation: &str) -> bool {
+    matches!(implementation, "Trakt" | "PlexServer")
 }
 
 fn random() -> String {
@@ -139,7 +161,7 @@ pub async fn start(
                 expires_in: v["expires_in"].as_u64().unwrap_or(600),
             })
         }
-        "PlexImport" => {
+        "PlexImport" | "PlexServer" => {
             let client = plex_client(s);
             let base = text(s, "authBaseUrl").unwrap_or_else(|| PLEX_TV.into());
             let resp = http
@@ -185,6 +207,23 @@ pub async fn start(
                 code: None,
                 state: json!({"verifier": verifier, "nonce": nonce, "redirect": callback})
                     .to_string(),
+                interval: 2,
+                expires_in: 600,
+            })
+        }
+        "AniListImport" => {
+            let client_id = required(s, "clientId", "your AniList Client ID")?;
+            required(s, "clientSecret", "your AniList Client Secret")?;
+            let nonce = random();
+            let authorize = text(s, "authorizeUrl").unwrap_or_else(|| ANILIST_AUTHORIZE.into());
+            Ok(Started {
+                url: format!(
+                    "{authorize}?client_id={}&redirect_uri={}&response_type=code&state={nonce}",
+                    urlencode(&client_id),
+                    urlencode(callback)
+                ),
+                code: None,
+                state: json!({"nonce": nonce, "redirect": callback}).to_string(),
                 interval: 2,
                 expires_in: 600,
             })
@@ -295,7 +334,7 @@ pub async fn poll(
                 );
             }
         }
-        "PlexImport" => {
+        "PlexImport" | "PlexServer" => {
             let base = text(s, "authBaseUrl").unwrap_or_else(|| PLEX_TV.into());
             let id = st["pin"].as_i64().unwrap_or_default();
             let resp = http
@@ -309,10 +348,48 @@ pub async fn poll(
             let v = json_of(resp, "Plex").await?;
             match v["authToken"].as_str().filter(|t| !t.is_empty()) {
                 Some(t) => {
-                    out.insert("accessToken".into(), json!(t));
+                    // The Plex Media Server connection keeps its token as `authToken`.
+                    let key = if implementation == "PlexServer" {
+                        "authToken"
+                    } else {
+                        "accessToken"
+                    };
+                    out.insert(key.into(), json!(t));
                 }
                 None => return Ok(Polled::Pending),
             }
+        }
+        "AniListImport" => {
+            let Some(code) = code else {
+                return Ok(Polled::Pending);
+            };
+            let client_id = required(s, "clientId", "your AniList Client ID")?;
+            let secret = required(s, "clientSecret", "your AniList Client Secret")?;
+            let url = text(s, "tokenUrl").unwrap_or_else(|| ANILIST_TOKEN.into());
+            let resp = http
+                .post(url)
+                .header("Accept", "application/json")
+                .json(&json!({
+                    "grant_type": "authorization_code",
+                    "client_id": client_id,
+                    "client_secret": secret,
+                    "redirect_uri": st["redirect"].as_str().unwrap_or_default(),
+                    "code": code,
+                }))
+                .send()
+                .await
+                .map_err(connection_error)?;
+            if !resp.status().is_success() {
+                return Err(ListError::Authentication(format!(
+                    "AniList refused the sign-in (HTTP {})",
+                    resp.status().as_u16()
+                )));
+            }
+            let v = json_of(resp, "AniList").await?;
+            let access = v["access_token"]
+                .as_str()
+                .ok_or_else(|| ListError::Invalid("AniList sent no token".into()))?;
+            out.insert("accessToken".into(), json!(access));
         }
         "MyAnimeListImport" => {
             let Some(code) = code else {
