@@ -1638,7 +1638,7 @@ fn MetadataSourceDialog(
                 select { class: "select", "aria-label":"Target catalogue", disabled:busy(), value: "{request().provider}",
                     onchange: move |e:FormEvent| {if let Ok(p)=e.value().parse() {request.set(MetadataSourceRequest{provider:p,id:String::new(),confirm_identity:false,mappings:vec![],revision:None});preview.set(None);results.set(vec![]);}},
                     if let Some(Ok(list))=&*providers.read() {
-                        for p in list.iter().filter(|p| if movie {p.kinds.contains(&EntryKind::Movie)} else {p.kinds.iter().any(|k| *k!=EntryKind::Movie)}) {
+                        for p in list.iter().filter(|p| p.enabled || p.provider == request().provider).filter(|p| if movie {p.kinds.contains(&EntryKind::Movie)} else {p.kinds.iter().any(|k| *k!=EntryKind::Movie)}) {
                             option { value:"{p.provider}", disabled:!p.available, "{p.name}" }
                         }
                     }

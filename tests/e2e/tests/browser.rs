@@ -763,6 +763,27 @@ async fn first_run_setup_migration_and_library() {
         );
         wait_text(&client, "1–2 of 2").await;
         screenshot(&client, "07-library-series").await;
+        // Tanukarr's index filters: "Anime" leaves no TV series; clearing brings them back.
+        client
+            .find(Locator::Css("select[aria-label='Filter']"))
+            .await
+            .unwrap()
+            .select_by_value("anime")
+            .await
+            .unwrap();
+        wait_text(&client, "No series match the selected filters.").await;
+        click_button(&client, "Clear filters").await;
+        wait_text(&client, "1–2 of 2").await;
+        assert!(
+            client
+                .find(Locator::Css("select[aria-label='Filter by path']"))
+                .await
+                .unwrap()
+                .html(false)
+                .await
+                .unwrap()
+                .contains("All paths")
+        );
         client.goto(&format!("{base}/anime")).await.unwrap();
         wait_text(&client, "Cowboy Bebop").await;
 
@@ -791,8 +812,9 @@ async fn first_run_setup_migration_and_library() {
         // through its shared TheTVDB id; a new show is added with an exact folder preview.
         client.goto(&format!("{base}/add")).await.unwrap();
         wait_text(&client, "Find something to add").await;
-        // TheTVDB is the default catalogue; TMDB waits for its API key.
-        wait_text(&client, "provided by TheTVDB.com").await;
+        // Tanukarr's default searches every enabled catalogue in order; TMDB waits for its
+        // API key.
+        wait_text(&client, "Searches every enabled catalogue").await;
         let catalogue = client
             .find(Locator::Css("select[aria-label='Catalogue']"))
             .await
@@ -1385,6 +1407,62 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "API key needed").await;
         wait_text(&client, "TMDB API key (v3)").await;
         screenshot(&client, "11c-settings-metadata").await;
+        // Tanukarr's catalogue order and on/off: OMDb off, TVmaze before TheTVDB.
+        client
+            .find(Locator::Css("input[aria-label='Enable OMDb']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        // TVmaze is fifth in Tanukarr's default order.
+        for _ in 0..4 {
+            client
+                .find(Locator::Css("button[aria-label='Move TVmaze up']"))
+                .await
+                .unwrap()
+                .click()
+                .await
+                .unwrap();
+        }
+        click_button(&client, "Save").await;
+        wait_text(&client, "Metadata sources saved.").await;
+        client.goto(&format!("{base}/add")).await.unwrap();
+        let offered = client
+            .wait()
+            .for_element(Locator::Css("select[aria-label='Catalogue']"))
+            .await
+            .unwrap()
+            .html(false)
+            .await
+            .unwrap();
+        assert!(!offered.contains("OMDb"), "{offered}");
+        assert!(
+            offered.find("TVmaze").unwrap() < offered.find("TheTVDB").unwrap(),
+            "{offered}"
+        );
+        // Settings › Quality: sizes in MiB per minute with the hourly size.
+        client.goto(&format!("{base}/settings/quality")).await.unwrap();
+        wait_text(&client, "Bluray-2160p").await;
+        fill(
+            &client,
+            "input[aria-label='Maximum size of Bluray-2160p (MiB per minute)']",
+            "60",
+        )
+        .await;
+        wait_text(&client, "3.52 GiB/h").await;
+        screenshot(&client, "11d-settings-quality").await;
+        // Calendar views: the month grid, then back to the agenda.
+        client.goto(&format!("{base}/calendar")).await.unwrap();
+        click_button(&client, "Month").await;
+        client
+            .wait()
+            .for_element(Locator::Css("div[role='grid'][aria-label='Calendar']"))
+            .await
+            .unwrap();
+        wait_text(&client, "Search for missing").await;
+        screenshot(&client, "11e-calendar-month").await;
+        click_button(&client, "Agenda").await;
         // Import lists: list behaviour fields in the editor, clean library and exclusions.
         client
             .goto(&format!("{base}/settings/importlists"))
@@ -1514,6 +1592,10 @@ async fn first_run_setup_migration_and_library() {
         screenshot(&client, "15-indexer-test").await;
         click_button(&client, "Save").await;
         wait_text(&client, "Saved.").await;
+        // Sonarr's "Test all": the reachable indexer passes, the unreachable one is reported.
+        click_button(&client, "Test all").await;
+        wait_text(&client, "test passed").await;
+        wait_text(&client, "test failed").await;
 
         client.goto(&format!("{base}/series")).await.unwrap();
         // An earlier step switched the library to the (persisted) table view.
@@ -1804,7 +1886,7 @@ async fn first_run_setup_migration_and_library() {
             browser_zoom(&client, zoom).await;
             for path in [
                 "/", "/series", "/series/1", "/movies", "/movies/900", "/wanted/missing", "/activity/queue",
-                "/activity/history", "/calendar", "/add", "/add/import", "/settings/indexers", "/settings/profiles",
+                "/activity/history", "/calendar", "/add", "/add/import", "/settings/indexers", "/settings/profiles", "/settings/quality",
                 "/settings/customformats", "/settings/notifications", "/system/tasks", "/system/library", "/activity/manualimport",
             ] {
                 client.goto(&format!("{base}{path}")).await.unwrap();

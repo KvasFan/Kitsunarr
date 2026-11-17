@@ -47,18 +47,32 @@ fn best_match(folder: &UnmappedFolder, items: &[SearchItem]) -> Option<String> {
 pub fn LibraryImport() -> Element {
     let app = use_app();
     let client = use_client();
+    let mut provider = use_signal(|| MetadataProvider::Tvdb);
     let c0 = client.clone();
     let setup = use_resource(move || {
         let c = c0.clone();
         async move {
             let roots = c.root_folders().await?;
             let profiles = c.quality_profiles().await?;
-            let catalogues = c.metadata_providers().await?;
+            // Disabled catalogues (Settings › Metadata sources) are not offered; the first
+            // usable one in the configured order is the default.
+            let catalogues: Vec<_> = c
+                .metadata_providers()
+                .await?
+                .into_iter()
+                .filter(|c| c.enabled)
+                .collect();
+            if !catalogues
+                .iter()
+                .any(|c| c.provider == *provider.peek() && c.available)
+                && let Some(first) = catalogues.iter().find(|c| c.available)
+            {
+                provider.set(first.provider);
+            }
             Ok::<_, kitsunarr_client::ClientError>((roots, profiles, catalogues))
         }
     });
     let mut root_id = use_signal(|| None::<i64>);
-    let mut provider = use_signal(|| MetadataProvider::Tvdb);
     let mut monitor = use_signal(|| MonitorOption::All);
     let mut profile_id = use_signal(|| None::<i64>);
     let mut series_type = use_signal(|| None::<SeriesType>);

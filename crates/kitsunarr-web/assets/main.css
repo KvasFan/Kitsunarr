@@ -344,3 +344,37 @@ kbd { font-family: var(--mono); font-size: var(--fs-xs); padding: 1px 6px; borde
 /* Queue: per-file import progress (Tanukarr's ImportProgressDetails). */
 .import-files { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); }
 .import-files li { flex-wrap: wrap; }
+
+/* Calendar views (Tanukarr's month, week, forecast and day). */
+.calendar-header { align-items: center; }
+.calendar-title { margin: 0; font-size: var(--fs-lg); text-align: center; }
+.calendar-days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; }
+.calendar-days.single { grid-template-columns: 1fr; }
+.calendar-dow { background: var(--bg-elev-2); padding: var(--sp-1) var(--sp-2); font-size: var(--fs-sm); color: var(--text-muted); text-align: center; }
+.calendar-day { background: var(--bg-elev); min-height: 7rem; padding: var(--sp-1); display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.calendar-day.outside { opacity: .55; }
+.calendar-day.today { box-shadow: inset 0 0 0 2px var(--accent); }
+.calendar-date { font-size: var(--fs-sm); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.calendar-day.today .calendar-date { color: var(--accent); font-weight: 600; }
+.cal-event { display: flex; flex-direction: column; padding: 3px 6px; border-radius: var(--r-sm); border-inline-start: 3px solid var(--text-faint); background: var(--bg-hover); color: inherit; text-decoration: none; min-width: 0; font-size: var(--fs-sm); }
+.cal-event:hover { background: var(--bg-elev-2); }
+.cal-status.downloaded { border-color: var(--success); }
+.cal-status.missing { border-color: var(--danger); }
+.cal-status.unaired { border-color: var(--info); }
+.cal-status.unmonitored { border-color: var(--text-faint); opacity: .8; }
+.calendar-legend { margin-top: var(--sp-3); flex-wrap: wrap; }
+.calendar-legend .cal-status { border-inline-start: 3px solid; padding-inline-start: 6px; }
+@media (max-width: 720px) {
+  .calendar-days { grid-template-columns: 1fr; }
+  .calendar-dow { display: none; }
+  .calendar-day { min-height: 0; }
+  .calendar-day.outside { display: none; }
+}
+.calendar-header .seg { flex-wrap: wrap; max-width: 100%; }
+
+/* Library filters (Tanukarr's SeriesPathFilter and "Combine filters"). */
+.toolbar .select { max-width: 100%; }
+.combine { position: relative; }
+.combine > summary { list-style: none; }
+.combine > summary::-webkit-details-marker { display: none; }
+.combine[open] > fieldset { position: absolute; z-index: 20; top: calc(100% + 4px); inset-inline-start: 0; min-width: 14rem; max-width: min(22rem, 90vw); background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--r-md); padding: var(--sp-3); box-shadow: var(--shadow); }

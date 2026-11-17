@@ -9662,7 +9662,7 @@ async fn library_index_filters() {
     assert_eq!(raw["totalRecords"], 1);
     assert_eq!(
         client.series_path_filters(None).await.unwrap(),
-        [root.clone()]
+        std::slice::from_ref(&root)
     );
     assert_eq!(
         client

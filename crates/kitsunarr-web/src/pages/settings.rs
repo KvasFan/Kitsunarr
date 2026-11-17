@@ -2399,14 +2399,69 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
         });
     };
     let can_add = matches!(&*templates.read(), Some(Ok(t)) if !t.is_empty());
+    // Sonarr's "Test all": every provider's test result, shown until the next run.
+    let mut tested = use_signal(|| None::<Vec<kitsunarr_client::contracts::ProviderTestAllResult>>);
+    let mut testing = use_signal(|| false);
+    let c4 = client.clone();
+    let test_all = move |_| {
+        let c = c4.clone();
+        testing.set(true);
+        spawn(async move {
+            match c.test_all_providers(kind).await {
+                Ok(results) => {
+                    let failed = results.iter().filter(|r| !r.is_valid).count();
+                    if failed == 0 {
+                        app.success(format!("All {} passed their test.", results.len()));
+                    } else {
+                        app.toast(
+                            ToastLevel::Warning,
+                            format!("{failed} of {} failed their test.", results.len()),
+                        );
+                    }
+                    tested.set(Some(results));
+                }
+                Err(e) => app.error(&e),
+            }
+            testing.set(false);
+        });
+    };
+    let has_items = matches!(&*items.read(), Some(Ok(l)) if !l.is_empty());
     rsx! {
         div { class: "page-head",
-            h1 { "{title}" }
+            h1 { class: "grow", "{title}" }
+            if has_items {
+                button { class: "btn", disabled: testing(), title: "Test every {title.to_lowercase()} entry", onclick: test_all,
+                    if testing() { "Testing…" } else { "Test all" }
+                }
+            }
             if can_add {
                 button { class: "btn primary", onclick: move |_| adding.set(true), "Add" }
             }
         }
         p { class: "muted small", "{note}" }
+        if let (Some(results), Some(Ok(list))) = (tested(), &*items.read()) {
+            if results.iter().any(|r| !r.is_valid || !r.validation_failures.is_empty()) {
+                div { class: "alert warning", role: "status", "aria-label": "Test results",
+                    div { class: "grow stack tight",
+                        for r in results.iter().filter(|r| !r.is_valid || !r.validation_failures.is_empty()) {
+                            div { key: "{r.id}",
+                                strong { {list.iter().find(|p| p.id == r.id).map_or_else(|| format!("#{}", r.id), |p| p.name.clone())} }
+                                if r.is_valid { " " Badge { text: "passed with warnings", tone: "warning" } } else { " " Badge { text: "failed", tone: "danger" } }
+                                ul { class: "messages small",
+                                    for (i, f) in r.validation_failures.iter().enumerate() {
+                                        li { key: "{i}",
+                                            if f.is_warning() { "Warning: " }
+                                            "{f.error_message}"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    button { class: "btn sm ghost", "aria-label": "Dismiss test results", onclick: move |_| tested.set(None), "×" }
+                }
+            }
+        }
         match &*items.read() {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
@@ -2423,7 +2478,13 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
                                         "{p.implementation}"
                                         if !p.supported { " " Badge { text: "stored only", tone: "warning" } }
                                     }
-                                    td { if p.enabled { Badge { text: "enabled", tone: "success" } } else { Badge { text: "disabled" } } }
+                                    td {
+                                        if p.enabled { Badge { text: "enabled", tone: "success" } } else { Badge { text: "disabled" } }
+                                        if let Some(r) = tested().and_then(|t| t.into_iter().find(|r| r.id == p.id)) {
+                                            " "
+                                            if r.is_valid { Badge { text: "test passed", tone: "success" } } else { Badge { text: "test failed", tone: "danger" } }
+                                        }
+                                    }
                                     td { class: "num", "{p.priority}" }
                                     td { class: "shrink",
                                         div { class: "row tight",
