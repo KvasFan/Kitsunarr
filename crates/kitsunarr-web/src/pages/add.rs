@@ -16,6 +16,8 @@ use crate::state::{use_app, use_client};
 use crate::util::{format_bytes, load_pref, save_pref};
 
 const PROVIDER_PREF: &str = "add.provider";
+/// The catalogue choice that searches every enabled catalogue (Tanukarr's `all`).
+const ALL_CATALOGUES: &str = "all";
 
 /// Sonarr's choices when adding a series ("skip" belongs to the editors).
 pub const SERIES_MONITOR: &[MonitorOption] = &[
@@ -72,11 +74,9 @@ pub fn AddMedia() -> Element {
         let c = c1.clone();
         async move { c.metadata_providers().await }
     });
-    let mut provider = use_signal(|| {
-        load_pref(PROVIDER_PREF)
-            .and_then(|p| p.parse::<MetadataProvider>().ok())
-            .unwrap_or(MetadataProvider::Tvdb)
-    });
+    // Tanukarr's catalogue choice: one catalogue, or every enabled one (`None`, the default).
+    let mut provider =
+        use_signal(|| load_pref(PROVIDER_PREF).and_then(|p| p.parse::<MetadataProvider>().ok()));
     let mut term = use_signal(String::new);
     // The last submitted search; results follow it.
     let mut submitted = use_signal(|| None::<SearchQuery>);
@@ -102,6 +102,7 @@ pub fn AddMedia() -> Element {
         let q = SearchQuery {
             provider: provider(),
             term: t,
+            all_sources: provider().is_none(),
         };
         if submitted.peek().as_ref() == Some(&q) {
             results.restart();
@@ -116,14 +117,19 @@ pub fn AddMedia() -> Element {
         Some(Err(e)) => {
             return rsx! { div { class: "page-head", h1 { "Add media" } } ErrorBox { message: e.to_string() } };
         }
-        Some(Ok(l)) => l.clone(),
+        // Disabled catalogues (Settings › Metadata sources) are not offered; the server lists
+        // the others in the configured order.
+        Some(Ok(l)) => l.iter().filter(|c| c.enabled).cloned().collect(),
     };
     drop(read);
-    let current = list
-        .iter()
-        .find(|c| c.provider == provider() && c.available)
-        .or(list.iter().find(|c| c.available))
+    // A saved catalogue that was disabled or lost its key falls back to every catalogue.
+    let current = provider()
+        .and_then(|p| list.iter().find(|c| c.provider == p && c.available))
         .cloned();
+    let searched: Vec<&CatalogueInfo> = match current.as_ref() {
+        Some(c) => vec![c],
+        None => list.iter().filter(|c| c.available).collect(),
+    };
     let placeholder = match current.as_ref().map(|c| c.provider) {
         Some(MetadataProvider::AniList | MetadataProvider::MyAnimeList) => {
             "Anime title, e.g. Frieren"
@@ -131,8 +137,10 @@ pub fn AddMedia() -> Element {
         Some(MetadataProvider::TmdbMovie | MetadataProvider::Omdb) => {
             "Film title or IMDb id, e.g. Arrival"
         }
-        _ => "Series title, e.g. Severance (or tvdb:12345)",
+        Some(_) => "Series title, e.g. Severance (or tvdb:12345)",
+        None => "Series, anime or film title, e.g. Severance",
     };
+    let all_mode = current.is_none();
 
     rsx! {
         div { class: "page-head",
@@ -144,11 +152,11 @@ pub fn AddMedia() -> Element {
         form { class: "toolbar", role: "search", onsubmit: search,
             select { class: "select", "aria-label": "Catalogue",
                 onchange: move |e: FormEvent| {
-                    if let Ok(p) = e.value().parse::<MetadataProvider>() {
-                        provider.set(p);
-                        save_pref(PROVIDER_PREF, p.as_str());
-                    }
+                    let p = e.value().parse::<MetadataProvider>().ok();
+                    provider.set(p);
+                    save_pref(PROVIDER_PREF, p.map_or(ALL_CATALOGUES, |p| p.as_str()));
                 },
+                option { value: ALL_CATALOGUES, selected: all_mode, "All enabled catalogues" }
                 for c in list.iter() {
                     option {
                         key: "{c.provider}",
@@ -178,6 +186,18 @@ pub fn AddMedia() -> Element {
                 a { href: "{c.url}", target: "_blank", rel: "noopener", "{c.attribution}" }
                 "."
             }
+        } else if searched.is_empty() {
+            p { class: "attribution", "No enabled catalogue can be searched: enable one or enter its API key in Settings › Metadata sources." }
+        } else {
+            p { class: "attribution",
+                "Searches every enabled catalogue, results in your order: "
+                {searched.iter().map(|c| c.name.as_str()).collect::<Vec<_>>().join(", ")}
+                ". "
+                for c in searched.iter() {
+                    a { key: "{c.provider}", href: "{c.url}", target: "_blank", rel: "noopener", title: "{c.attribution}", "{c.name}" }
+                    " "
+                }
+            }
         }
         match &*results.read() {
             Some(Ok(Some(items))) if !items.is_empty() => rsx! {
@@ -186,6 +206,7 @@ pub fn AddMedia() -> Element {
                         ResultRow {
                             key: "{item.provider}-{item.id}",
                             item: item.clone(),
+                            show_catalogue: all_mode,
                             on_add: move |i| adding.set(Some(i)),
                         }
                     }
@@ -211,7 +232,11 @@ pub fn AddMedia() -> Element {
 }
 
 #[component]
-fn ResultRow(item: SearchItem, on_add: EventHandler<SearchItem>) -> Element {
+fn ResultRow(
+    item: SearchItem,
+    #[props(default)] show_catalogue: bool,
+    on_add: EventHandler<SearchItem>,
+) -> Element {
     let status = status_label(item.status);
     let to_add = item.clone();
     rsx! {
@@ -224,6 +249,7 @@ fn ResultRow(item: SearchItem, on_add: EventHandler<SearchItem>) -> Element {
                 }
                 div { class: "row tight meta",
                     Badge { text: kind_label(item.kind).to_string(), tone: "accent" }
+                    if show_catalogue { Badge { text: item.provider.display_name().to_string() } }
                     if let Some((label, tone)) = status { Badge { text: label.to_string(), tone } }
                     if let Some(n) = item.network.as_ref() { span { class: "small muted", "{n}" } }
                 }

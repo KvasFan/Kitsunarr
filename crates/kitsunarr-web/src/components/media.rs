@@ -24,7 +24,13 @@ pub fn Poster(url: Option<String>, title: String, monitored: bool) -> Element {
 }
 
 #[component]
-pub fn SeriesCard(item: SeriesListItem, selected: bool) -> Element {
+pub fn SeriesCard(
+    item: SeriesListItem,
+    selected: bool,
+    /// The library shows anime groups once ("Group anime seasons").
+    #[props(default)]
+    grouped: bool,
+) -> Element {
     let pct = percent(item.episode_file_count, item.episode_count);
     let tone = if item.episode_count > 0 && item.episode_file_count >= item.episode_count {
         Some("success")
@@ -40,6 +46,9 @@ pub fn SeriesCard(item: SeriesListItem, selected: bool) -> Element {
                 span { class: "xs muted",
                     {item.year.map(|y| y.to_string()).unwrap_or_default()}
                     " · {item.episode_file_count}/{item.episode_count} ep"
+                }
+                if let Some(g) = item.anime_group.as_ref().filter(|g| grouped && g.series_count > 1) {
+                    span { class: "xs accent ellipsis", title: "Anime group {g.title}", "Group of {g.series_count} · {g.title}" }
                 }
                 Progress { percent: pct, tone }
             }

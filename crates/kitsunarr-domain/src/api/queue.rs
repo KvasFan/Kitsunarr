@@ -40,6 +40,56 @@ pub struct QueueItem {
     pub output_path: Option<String>,
     /// When it was grabbed (RFC 3339), for downloads Kitsunarr grabbed.
     pub added: Option<String>,
+    /// Tanukarr's per-file import progress (`ImportProgressResource`), once an import of the
+    /// download has started; kept until the download leaves the queue.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub import_progress: Option<ImportProgress>,
+}
+
+/// Tanukarr's `ImportProgressResource`: how many of a download's expected episodes are
+/// imported, being imported, waiting, failed or rejected, and each file's state.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ImportProgress {
+    pub total_episodes: i32,
+    pub imported_episodes: i32,
+    pub importing_episodes: i32,
+    pub waiting_episodes: i32,
+    pub failed_episodes: i32,
+    pub rejected_episodes: i32,
+    pub items: Vec<ImportProgressItem>,
+}
+
+/// Tanukarr's `ImportProgressItemResource`: one file of the download.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct ImportProgressItem {
+    pub id: String,
+    pub episode_ids: Vec<i64>,
+    pub season_number: Option<i32>,
+    pub episode_numbers: Vec<i32>,
+    pub source_path: String,
+    pub size: i64,
+    pub state: ImportProgressState,
+    /// RFC 3339.
+    pub started: Option<String>,
+    /// RFC 3339.
+    pub completed: Option<String>,
+    pub errors: Vec<String>,
+}
+
+/// Tanukarr's `ImportProgressState`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum ImportProgressState {
+    Waiting,
+    Importing,
+    Imported,
+    Rejected,
+    Failed,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

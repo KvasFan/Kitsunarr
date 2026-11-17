@@ -274,6 +274,8 @@ pub struct Download<'a> {
     /// The client lets Kitsunarr move the files (Usenet: `CanMoveFiles`); torrents keep
     /// seeding, so their files are copied or hard-linked.
     pub move_files: bool,
+    /// Where the per-file progress is reported (Tanukarr's `ImportProgressService`).
+    pub progress: Option<&'a crate::import_progress::Scope>,
 }
 
 /// What happened to one file.
@@ -919,6 +921,30 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
 
     // `ImportApprovedEpisodes`: approved files by first episode, larger first; an episode is
     // imported once.
+    if let Some(p) = d.progress {
+        let episodes_of = |ids: &[i64]| -> Vec<(i64, i32, i32)> {
+            ids.iter()
+                .filter_map(|id| model.episodes.iter().find(|e| e.id == *id))
+                .map(|e| (e.id, e.season_number, e.episode_number))
+                .collect()
+        };
+        let mut decisions: Vec<crate::import_progress::Decision<'_>> = results
+            .iter()
+            .map(|r| crate::import_progress::Decision {
+                path: &r.path,
+                episodes: episodes_of(&r.episode_ids),
+                size: std::fs::metadata(&r.path).map_or(0, |m| m.len() as i64),
+                rejections: &r.errors,
+            })
+            .collect();
+        decisions.extend(candidates.iter().map(|c| crate::import_progress::Decision {
+            path: &c.path,
+            episodes: episodes_of(&c.episodes),
+            size: c.size,
+            rejections: &c.errors,
+        }));
+        p.tracker.register(&p.key, &decisions);
+    }
     let (mut approved, rejected): (Vec<Candidate>, Vec<Candidate>) =
         candidates.into_iter().partition(|c| c.errors.is_empty());
     let first_number = |c: &Candidate| {
@@ -937,22 +963,36 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
     let mut done: HashSet<i64> = HashSet::new();
     for c in approved {
         if c.episodes.iter().any(|e| done.contains(e)) {
+            let errors = vec!["Episode has already been imported".to_string()];
+            if let Some(p) = d.progress {
+                p.tracker.mark_failed(&p.key, &c.path, &errors);
+            }
             results.push(FileResult {
                 path: c.path,
                 imported: false,
                 episode_ids: c.episodes,
-                errors: vec!["Episode has already been imported".into()],
+                errors,
                 imported_file: None,
             });
             continue;
         }
         done.extend(c.episodes.iter().copied());
+        if let Some(p) = d.progress {
+            p.tracker.mark_importing(&p.key, &c.path);
+        }
         let outcome =
             transfer_and_record(db, d, &detail, &model, &media, &series_path, &c, &grab_data).await;
         let (imported_file, errors) = match outcome {
             Ok(f) => (Some(f), Vec::new()),
             Err(e) => (None, vec![e]),
         };
+        if let Some(p) = d.progress {
+            if imported_file.is_some() {
+                p.tracker.mark_imported(&p.key, &c.path);
+            } else {
+                p.tracker.mark_failed(&p.key, &c.path, &errors);
+            }
+        }
         results.push(FileResult {
             imported: imported_file.is_some(),
             errors,

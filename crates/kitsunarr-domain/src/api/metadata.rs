@@ -2,6 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
+use crate::api::settings::MetadataSourcesSettings;
 use crate::media::{ExternalId, MetadataProvider, SeriesStatus, SeriesType};
 
 /// Catalogues Kitsunarr can currently search, add from and refresh from.
@@ -14,6 +15,75 @@ pub const SUPPORTED_CATALOGUES: &[MetadataProvider] = &[
     MetadataProvider::TmdbMovie,
     MetadataProvider::Omdb,
 ];
+
+/// Tanukarr's default catalogue order (`MetadataSourceType` values 0 to 6).
+pub const DEFAULT_SOURCE_ORDER: &[MetadataProvider] = &[
+    MetadataProvider::Tvdb,
+    MetadataProvider::TmdbTv,
+    MetadataProvider::AniList,
+    MetadataProvider::MyAnimeList,
+    MetadataProvider::TvMaze,
+    MetadataProvider::TmdbMovie,
+    MetadataProvider::Omdb,
+];
+
+/// Tanukarr's `MetadataSourceType` number of a catalogue (its `Config` values store these).
+pub fn tanukarr_source_id(provider: MetadataProvider) -> i32 {
+    DEFAULT_SOURCE_ORDER
+        .iter()
+        .position(|p| *p == provider)
+        .map_or(0, |i| i as i32)
+}
+
+/// The catalogue a Tanukarr `MetadataSourceType` number names.
+pub fn from_tanukarr_source_id(id: i32) -> Option<MetadataProvider> {
+    usize::try_from(id)
+        .ok()
+        .and_then(|i| DEFAULT_SOURCE_ORDER.get(i).copied())
+}
+
+/// `MetadataSourcePolicy.Order`: the configured order, then every other catalogue in the
+/// default order.
+pub fn source_order(settings: &MetadataSourcesSettings) -> Vec<MetadataProvider> {
+    let mut out: Vec<MetadataProvider> = Vec::with_capacity(DEFAULT_SOURCE_ORDER.len());
+    for p in settings.source_order.iter().chain(DEFAULT_SOURCE_ORDER) {
+        if !out.contains(p) {
+            out.push(*p);
+        }
+    }
+    out
+}
+
+/// `MetadataSourcePolicy.Enabled`: the ordered catalogues that are not disabled.
+pub fn enabled_sources(settings: &MetadataSourcesSettings) -> Vec<MetadataProvider> {
+    source_order(settings)
+        .into_iter()
+        .filter(|p| !settings.disabled_sources.contains(p))
+        .collect()
+}
+
+/// `MetadataSourcePolicy.Save` validation: `(field, message)` for each problem.
+pub fn validate_sources(
+    order: &[MetadataProvider],
+    disabled: &[MetadataProvider],
+) -> Vec<(&'static str, &'static str)> {
+    let mut failures = Vec::new();
+    let distinct =
+        |list: &[MetadataProvider]| list.iter().enumerate().all(|(i, p)| !list[..i].contains(p));
+    if !distinct(order) {
+        failures.push(("sourceOrder", "Choose each metadata source only once."));
+    }
+    if !distinct(disabled) {
+        failures.push((
+            "disabledSources",
+            "Choose valid metadata sources only once.",
+        ));
+    }
+    if DEFAULT_SOURCE_ORDER.iter().all(|p| disabled.contains(p)) {
+        failures.push(("disabledSources", "Enable at least one metadata source."));
+    }
+    failures
+}
 
 /// What a catalogue entry is.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -41,6 +111,9 @@ pub struct CatalogueInfo {
     /// Usable now: it needs no API key, or its key is set.
     #[serde(default = "available_default")]
     pub available: bool,
+    /// Offered and searched (Tanukarr's `DisabledMetadataSources` turns a catalogue off).
+    #[serde(default = "available_default")]
+    pub enabled: bool,
 }
 
 fn available_default() -> bool {
@@ -52,8 +125,15 @@ fn available_default() -> bool {
 #[cfg_attr(feature = "openapi", into_params(parameter_in = Query))]
 #[serde(rename_all = "camelCase")]
 pub struct SearchQuery {
-    pub provider: MetadataProvider,
+    /// The catalogue to search; the first enabled one when omitted (ignored with
+    /// `allSources`).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub provider: Option<MetadataProvider>,
     pub term: String,
+    /// Tanukarr's `allSources`: search every enabled catalogue and merge the results in the
+    /// configured catalogue order.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub all_sources: bool,
 }
 
 /// `GET /library/folder-preview`: the folder a title would get.

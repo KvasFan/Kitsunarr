@@ -6,10 +6,12 @@ use axum::http::StatusCode;
 use kitsunarr_domain::MetadataProvider;
 use kitsunarr_domain::api::error::ApiErrorBody;
 use kitsunarr_domain::api::events::ServerEvent;
+use kitsunarr_domain::api::metadata as metadata_api;
 use kitsunarr_domain::api::metadata::{
     AddTitleRequest, CatalogueInfo, FolderPreviewQuery, LibraryRef, RefreshResult, SearchItem,
     SearchQuery,
 };
+use kitsunarr_domain::api::settings::MetadataSourcesSettings;
 use kitsunarr_metadata::Metadata;
 
 use crate::AppState;
@@ -39,17 +41,92 @@ fn changed(state: &AppState, media_type: &str, id: i64) {
 /// Catalogues available for search, with the attribution their terms require.
 #[utoipa::path(get, path = "/metadata/providers", tag = "metadata",
     responses((status = 200, body = Vec<CatalogueInfo>)))]
-pub async fn providers(State(state): State<AppState>) -> Json<Vec<CatalogueInfo>> {
-    Json(
-        Metadata::catalogues()
-            .into_iter()
-            .map(|mut c| {
-                c.available = state.metadata.available(c.provider);
-                c
-            })
-            .collect(),
-    )
+pub async fn providers(State(state): State<AppState>) -> ApiResult<Json<Vec<CatalogueInfo>>> {
+    let settings = source_settings(&state).await?;
+    let order = metadata_api::source_order(&settings);
+    let mut list: Vec<CatalogueInfo> = Metadata::catalogues()
+        .into_iter()
+        .map(|mut c| {
+            c.available = state.metadata.available(c.provider);
+            c.enabled = !settings.disabled_sources.contains(&c.provider);
+            c
+        })
+        .collect();
+    // Tanukarr's Settings › Metadata Sources order drives every catalogue list.
+    list.sort_by_key(|c| order.iter().position(|p| *p == c.provider));
+    Ok(Json(list))
 }
+
+/// The catalogue settings (order, disabled catalogues, keys).
+async fn source_settings(state: &AppState) -> ApiResult<MetadataSourcesSettings> {
+    Ok(kitsunarr_db::settings::get_or_default(
+        state.db.pool(),
+        kitsunarr_db::settings::KEY_METADATA_SOURCES,
+    )
+    .await?)
+}
+
+/// Tanukarr's `MetadataSearchService.Search`: one enabled catalogue (the first enabled one
+/// when none is named), or with `all_sources` every enabled catalogue that can be used now,
+/// results merged in the configured order. A catalogue that fails while others answer is
+/// skipped (logged); when every one fails the last failure is returned.
+pub async fn search_catalogues(
+    state: &AppState,
+    provider: Option<MetadataProvider>,
+    all_sources: bool,
+    term: &str,
+) -> ApiResult<Vec<kitsunarr_metadata::SearchResult>> {
+    let settings = source_settings(state).await?;
+    let enabled = metadata_api::enabled_sources(&settings);
+    if !all_sources {
+        let provider = match provider {
+            Some(p) => p,
+            None => *enabled
+                .first()
+                .ok_or_else(|| ApiError::field("provider", DISABLED_SOURCE))?,
+        };
+        if !enabled.contains(&provider) {
+            return Err(ApiError::field("provider", DISABLED_SOURCE));
+        }
+        ensure_supported("provider", provider)?;
+        return Ok(state.metadata.search(provider, term).await?);
+    }
+    let sources: Vec<MetadataProvider> = enabled
+        .into_iter()
+        .filter(|p| Metadata::supports(*p) && state.metadata.available(*p))
+        .collect();
+    if sources.is_empty() {
+        return Err(ApiError::field(
+            "provider",
+            "No enabled metadata source can be searched; enable one or enter its API key in Settings › Metadata sources.",
+        ));
+    }
+    let searches = sources.iter().map(|p| state.metadata.search(*p, term));
+    let mut results = Vec::new();
+    let mut last_failure = None;
+    let mut succeeded = false;
+    for (provider, outcome) in sources
+        .iter()
+        .zip(futures::future::join_all(searches).await)
+    {
+        match outcome {
+            Ok(found) => {
+                succeeded = true;
+                results.extend(found);
+            }
+            Err(e) => {
+                tracing::warn!(source = %provider, error = %e, "metadata search source is unavailable; continuing with enabled sources");
+                last_failure = Some(e);
+            }
+        }
+    }
+    match last_failure {
+        Some(e) if !succeeded => Err(e.into()),
+        _ => Ok(results),
+    }
+}
+
+const DISABLED_SOURCE: &str = "The selected metadata source is disabled or unknown.";
 
 /// Searches a catalogue. Each result says whether it is already in the library (matched by
 /// catalogue id or any shared external id).
@@ -70,8 +147,7 @@ pub async fn search(
     if term.chars().count() > MAX_TERM_CHARS {
         return Err(ApiError::field("term", "The search term is too long."));
     }
-    ensure_supported("provider", q.provider)?;
-    let results = state.metadata.search(q.provider, term).await?;
+    let results = search_catalogues(&state, q.provider, q.all_sources, term).await?;
     let mut items = Vec::with_capacity(results.len());
     for r in results {
         let in_library =

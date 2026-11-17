@@ -1064,14 +1064,24 @@ pub struct CustomFilter {
     pub filters: Vec<serde_json::Value>,
 }
 
-/// One provider's outcome in `POST /providers/{kind}/testall` (Sonarr's "Test All").
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+/// Tanukarr's `QualityDefinitionSizeUpdate` (`PUT /qualitydefinitions/update`): a definition's
+/// title, and the size limits flagged for update, which apply to the definition and to every
+/// profile's own limit for that quality.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
-#[serde(rename_all = "camelCase")]
-pub struct ProviderTestAllItem {
-    pub id: i64,
-    pub name: String,
-    pub ok: bool,
-    /// Why the test failed (absent when it passed).
-    pub message: Option<String>,
+#[serde(rename_all = "camelCase", default)]
+pub struct QualityDefinitionUpdate {
+    pub quality_id: i32,
+    /// A new title (unchanged when omitted).
+    pub title: Option<String>,
+    /// MiB per minute; `None` is no limit.
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<f64>))]
+    pub min_size: Option<OrderedF64>,
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<f64>))]
+    pub preferred_size: Option<OrderedF64>,
+    #[cfg_attr(feature = "openapi", schema(value_type = Option<f64>))]
+    pub max_size: Option<OrderedF64>,
+    pub update_min_size: bool,
+    pub update_preferred_size: bool,
+    pub update_max_size: bool,
 }

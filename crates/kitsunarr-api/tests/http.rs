@@ -701,8 +701,9 @@ async fn catalogue_search_add_and_refresh() {
     );
 
     let query = |provider, term: &str| SearchQuery {
-        provider,
+        provider: Some(provider),
         term: term.into(),
+        all_sources: false,
     };
     let empty = client
         .metadata_search(&query(MetadataProvider::TvMaze, "  "))
@@ -1785,6 +1786,58 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     );
     let queue = client.queue().await.unwrap();
     assert_eq!(queue.items[0].tracked_state, "imported");
+    // Tanukarr's per-file import progress: the grabbed episode is imported; the sample was
+    // rejected with its reason.
+    let progress = queue.items[0]
+        .import_progress
+        .clone()
+        .expect("import progress");
+    assert_eq!(
+        (
+            progress.total_episodes,
+            progress.imported_episodes,
+            progress.waiting_episodes
+        ),
+        (1, 1, 0)
+    );
+    use kitsunarr_domain::api::queue::ImportProgressState;
+    let video = progress
+        .items
+        .iter()
+        .find(|i| i.source_path.ends_with("x264-GRP.mkv"))
+        .unwrap();
+    assert_eq!(video.state, ImportProgressState::Imported);
+    assert_eq!(
+        (video.season_number, video.episode_numbers.as_slice()),
+        (Some(1), &[1][..])
+    );
+    assert_eq!(video.episode_ids, [pilot.id]);
+    assert!(video.started.is_some() && video.completed.is_some());
+    let sample = progress
+        .items
+        .iter()
+        .find(|i| i.source_path.ends_with("sample.mkv"))
+        .unwrap();
+    assert_eq!(sample.state, ImportProgressState::Rejected);
+    assert!(!sample.errors.is_empty());
+    // The native queue resource carries it as `importProgress`.
+    let raw: serde_json::Value = reqwest::Client::new()
+        .get(format!("{}/api/v1/queue", server.base))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(raw["items"][0]["importProgress"]["importedEpisodes"], 1);
+    assert!(
+        raw["items"][0]["importProgress"]["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|i| i["state"] == "imported" && i["episodeIds"][0] == pilot.id)
+    );
     // A second check does not import it again.
     assert_eq!(
         client.refresh_queue().await.unwrap(),
@@ -2573,8 +2626,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     let client = signed_in(&server).await;
     let found = client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::Tvdb,
+            provider: Some(MetadataProvider::Tvdb),
             term: "Breaking Bad".into(),
+            all_sources: false,
         })
         .await
         .unwrap();
@@ -2583,8 +2637,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     // `tvdb:` terms look the title up directly.
     let direct = client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::Tvdb,
+            provider: Some(MetadataProvider::Tvdb),
             term: "tvdb:81189".into(),
+            all_sources: false,
         })
         .await
         .unwrap();
@@ -2657,8 +2712,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     log.lock().unwrap().clear();
     client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::Tvdb,
+            provider: Some(MetadataProvider::Tvdb),
             term: "Breaking Bad".into(),
+            all_sources: false,
         })
         .await
         .unwrap();
@@ -2705,8 +2761,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     assert!(!tmdb.available);
     let missing = client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::TmdbTv,
+            provider: Some(MetadataProvider::TmdbTv),
             term: "x".into(),
+            all_sources: false,
         })
         .await
         .unwrap_err();
@@ -2741,8 +2798,9 @@ async fn thetvdb_titles_are_added_and_refreshed_through_skyhook() {
     // With a key, TMDB is queried (and is unreachable here).
     let unreachable = client
         .metadata_search(&SearchQuery {
-            provider: MetadataProvider::TmdbTv,
+            provider: Some(MetadataProvider::TmdbTv),
             term: "x".into(),
+            all_sources: false,
         })
         .await
         .unwrap_err();
@@ -10782,16 +10840,17 @@ async fn sonarr_v5_settings_providers_and_library_tools() {
     let (status, results) = sonarr(&server, M::POST, "/api/v5/connection/testall", None).await;
     assert_eq!(status, 400, "the hook cannot be reached");
     assert_eq!(results[0]["isValid"], false);
-    let (_, native) = sonarr(
+    let (native_status, native) = sonarr(
         &server,
         M::POST,
         "/api/v1/providers/notifications/testall",
         None,
     )
     .await;
+    assert_eq!(native_status, 400);
     assert_eq!(native[0]["id"], cid);
-    assert_eq!(native[0]["ok"], false);
-    assert!(native[0]["message"].is_string());
+    assert_eq!(native[0]["isValid"], false);
+    assert!(native[0]["validationFailures"][0]["errorMessage"].is_string());
     assert_eq!(
         sonarr(
             &server,
@@ -10963,4 +11022,306 @@ async fn sonarr_v5_settings_providers_and_library_tools() {
             .0,
         404
     );
+}
+
+/// Tanukarr's `MetadataSourcePolicy`: catalogue order, disabled catalogues and the search of
+/// every enabled catalogue (`allSources`), with TheTVDB and TVmaze answering and the other
+/// catalogues offline or without keys.
+#[tokio::test]
+async fn catalogue_order_disabled_catalogues_and_all_sources_search() {
+    use kitsunarr_domain::api::settings::MetadataSourcesSettings;
+    let (skyhook, _log) = skyhook_mock().await;
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvdb: skyhook,
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let all = |term: &str| SearchQuery {
+        provider: None,
+        term: term.into(),
+        all_sources: true,
+    };
+    let one = |provider, term: &str| SearchQuery {
+        provider: Some(provider),
+        term: term.into(),
+        all_sources: false,
+    };
+    let providers_of = |items: &[kitsunarr_domain::api::metadata::SearchItem]| {
+        let mut out: Vec<MetadataProvider> = Vec::new();
+        for i in items {
+            if !out.contains(&i.provider) {
+                out.push(i.provider);
+            }
+        }
+        out
+    };
+
+    // Tanukarr's default order; everything enabled.
+    let settings = client.metadata_sources().await.unwrap();
+    assert_eq!(
+        settings.source_order,
+        kitsunarr_domain::api::metadata::DEFAULT_SOURCE_ORDER
+    );
+    assert!(settings.disabled_sources.is_empty());
+    let catalogues = client.metadata_providers().await.unwrap();
+    assert_eq!(catalogues[0].provider, MetadataProvider::Tvdb);
+    assert!(catalogues.iter().all(|c| c.enabled));
+
+    // Every enabled catalogue: offline ones (AniList, Jikan) are skipped, keyless ones (TMDB,
+    // OMDb) are not searched, and results follow the order.
+    let merged = client.metadata_search(&all("breaking bad")).await.unwrap();
+    assert_eq!(
+        providers_of(&merged),
+        [MetadataProvider::Tvdb, MetadataProvider::TvMaze]
+    );
+    // Without a catalogue or `allSources`, the first enabled catalogue is searched.
+    let first = client
+        .metadata_search(&SearchQuery {
+            provider: None,
+            term: "breaking bad".into(),
+            all_sources: false,
+        })
+        .await
+        .unwrap();
+    assert_eq!(providers_of(&first), [MetadataProvider::Tvdb]);
+
+    // TVmaze first: the catalogue list and merged results follow; missing catalogues are
+    // appended in the default order.
+    let saved = client
+        .put_metadata_sources(&MetadataSourcesSettings {
+            source_order: vec![MetadataProvider::TvMaze, MetadataProvider::Tvdb],
+            ..settings.clone()
+        })
+        .await
+        .unwrap();
+    assert_eq!(
+        saved.source_order[..3],
+        [
+            MetadataProvider::TvMaze,
+            MetadataProvider::Tvdb,
+            MetadataProvider::TmdbTv
+        ]
+    );
+    assert_eq!(saved.source_order.len(), 7);
+    assert_eq!(
+        client.metadata_providers().await.unwrap()[0].provider,
+        MetadataProvider::TvMaze
+    );
+    let merged = client.metadata_search(&all("breaking bad")).await.unwrap();
+    assert_eq!(
+        providers_of(&merged),
+        [MetadataProvider::TvMaze, MetadataProvider::Tvdb]
+    );
+
+    // A disabled catalogue is neither offered nor searched.
+    let saved = client
+        .put_metadata_sources(&MetadataSourcesSettings {
+            disabled_sources: vec![MetadataProvider::TvMaze],
+            ..saved
+        })
+        .await
+        .unwrap();
+    assert_eq!(saved.disabled_sources, [MetadataProvider::TvMaze]);
+    let catalogues = client.metadata_providers().await.unwrap();
+    assert!(
+        !catalogues
+            .iter()
+            .find(|c| c.provider == MetadataProvider::TvMaze)
+            .unwrap()
+            .enabled
+    );
+    let refused = client
+        .metadata_search(&one(MetadataProvider::TvMaze, "breaking bad"))
+        .await
+        .unwrap_err();
+    assert_eq!(status(refused), 422);
+    let merged = client.metadata_search(&all("breaking bad")).await.unwrap();
+    assert_eq!(providers_of(&merged), [MetadataProvider::Tvdb]);
+
+    // `MetadataSourcePolicy.Save` validation.
+    for bad in [
+        MetadataSourcesSettings {
+            source_order: vec![MetadataProvider::Tvdb, MetadataProvider::Tvdb],
+            ..saved.clone()
+        },
+        MetadataSourcesSettings {
+            disabled_sources: kitsunarr_domain::api::metadata::DEFAULT_SOURCE_ORDER.to_vec(),
+            ..saved.clone()
+        },
+    ] {
+        assert_eq!(
+            status(client.put_metadata_sources(&bad).await.unwrap_err()),
+            422
+        );
+    }
+
+    // When every searched catalogue fails, the failure is reported.
+    client
+        .put_metadata_sources(&MetadataSourcesSettings {
+            disabled_sources: vec![
+                MetadataProvider::Tvdb,
+                MetadataProvider::TvMaze,
+                MetadataProvider::MyAnimeList,
+            ],
+            ..saved
+        })
+        .await
+        .unwrap();
+    let unreachable = client
+        .metadata_search(&all("breaking bad"))
+        .await
+        .unwrap_err();
+    assert_eq!(status(unreachable), 502);
+}
+
+/// Tanukarr's series index filters through the native library query: path, missing episodes,
+/// series type, anime grouping, and the path filter choices.
+#[tokio::test]
+async fn library_index_filters() {
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(dir.path().join("tv")).unwrap();
+    let root = dir.path().join("tv").display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: root.clone(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let count = |q: LibraryQuery| {
+        let client = &client;
+        async move { client.series(&q).await.unwrap().total_records }
+    };
+    let by_path = |p: String| LibraryQuery {
+        path: Some(p),
+        ..Default::default()
+    };
+    assert_eq!(count(by_path(root.to_uppercase())).await, 1);
+    assert_eq!(count(by_path(format!("{root}/"))).await, 1);
+    assert_eq!(count(by_path(format!("{root}/Breaking"))).await, 0);
+    // Every episode aired long ago and has no file.
+    let missing = |m| LibraryQuery {
+        missing: Some(m),
+        ..Default::default()
+    };
+    assert_eq!(count(missing(true)).await, 1);
+    assert_eq!(count(missing(false)).await, 0);
+    let anime = LibraryQuery {
+        series_type: Some(kitsunarr_domain::SeriesType::Anime),
+        ..Default::default()
+    };
+    assert_eq!(count(anime).await, 0);
+    let grouped = client
+        .series(&LibraryQuery {
+            group_anime_seasons: Some(true),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert_eq!(grouped.records[0].id, added.id);
+    assert!(grouped.records[0].anime_group.is_none());
+    // Sonarr-style query names.
+    let raw: serde_json::Value = reqwest::Client::new()
+        .get(format!(
+            "{}/api/v1/series?missing=true&seriesType=standard&groupAnimeSeasons=true",
+            server.base
+        ))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(raw["totalRecords"], 1);
+    assert_eq!(
+        client.series_path_filters(None).await.unwrap(),
+        std::slice::from_ref(&root)
+    );
+    assert_eq!(
+        client
+            .series_path_filters(Some(kitsunarr_domain::MediaKind::Anime))
+            .await
+            .unwrap(),
+        [root]
+    );
+}
+
+/// Settings › Quality: titles and sizes saved through `PUT /qualitydefinitions/update` (sizes
+/// also replace profiles' own limits), refused updates, and the reset.
+#[tokio::test]
+async fn quality_definitions_update_and_reset() {
+    use kitsunarr_domain::api::settings::{OrderedF64, QualityDefinitionUpdate, QualitySizeLimit};
+    let server = start().await;
+    let client = signed_in(&server).await;
+    let mut profile = client.quality_profiles().await.unwrap()[0].clone();
+    profile.size_limits = vec![QualitySizeLimit {
+        quality_id: 7,
+        min_size: None,
+        preferred_size: None,
+        max_size: Some(OrderedF64(300.0)),
+    }];
+    client.update_quality_profile(&profile).await.unwrap();
+    let saved = client
+        .update_quality_definition_sizes(&[QualityDefinitionUpdate {
+            quality_id: 7,
+            title: Some("Blu-ray 1080p".into()),
+            max_size: Some(OrderedF64(150.0)),
+            update_max_size: true,
+            ..Default::default()
+        }])
+        .await
+        .unwrap();
+    let d = saved.iter().find(|d| d.quality_id == 7).unwrap();
+    assert_eq!(
+        (d.title.as_str(), d.max_size),
+        ("Blu-ray 1080p", Some(OrderedF64(150.0)))
+    );
+    let profile = client.quality_profiles().await.unwrap()[0].clone();
+    assert_eq!(profile.size_limits[0].max_size, Some(OrderedF64(150.0)));
+    let blank = client
+        .update_quality_definition_sizes(&[QualityDefinitionUpdate {
+            quality_id: 7,
+            title: Some(" ".into()),
+            ..Default::default()
+        }])
+        .await
+        .unwrap_err();
+    assert_eq!(status(blank), 400);
+    let reset = client.reset_quality_definitions().await.unwrap();
+    let d = reset.iter().find(|d| d.quality_id == 7).unwrap();
+    assert_eq!(d.title, "Bluray-1080p");
+    assert_ne!(d.max_size, Some(OrderedF64(150.0)));
 }

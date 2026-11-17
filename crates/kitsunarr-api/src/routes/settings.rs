@@ -183,6 +183,37 @@ pub async fn update_quality_definitions(
     Ok(Json(quality::list_definitions(state.db.pool()).await?))
 }
 
+/// Tanukarr's `QualityDefinitionUpdateService`: titles and flagged sizes of several
+/// definitions; a flagged size also replaces every profile's own limit for that quality.
+#[utoipa::path(put, path = "/qualitydefinitions/update", tag = "settings",
+    request_body = Vec<kitsunarr_domain::api::settings::QualityDefinitionUpdate>,
+    responses((status = 200, body = Vec<QualityDefinition>), (status = 422)))]
+pub async fn update_quality_definition_sizes(
+    State(state): State<AppState>,
+    Json(updates): Json<Vec<kitsunarr_domain::api::settings::QualityDefinitionUpdate>>,
+) -> ApiResult<Json<Vec<QualityDefinition>>> {
+    quality::update_definitions(&state.db, &updates).await?;
+    settings_changed(&state, "qualityDefinitions");
+    if updates
+        .iter()
+        .any(|u| u.update_min_size || u.update_preferred_size || u.update_max_size)
+    {
+        settings_changed(&state, "qualityProfiles");
+    }
+    Ok(Json(quality::list_definitions(state.db.pool()).await?))
+}
+
+/// Sonarr's `ResetQualityDefinitions`: default titles and sizes for the standard qualities.
+#[utoipa::path(post, path = "/qualitydefinitions/reset", tag = "settings",
+    responses((status = 200, body = Vec<QualityDefinition>)))]
+pub async fn reset_quality_definitions(
+    State(state): State<AppState>,
+) -> ApiResult<Json<Vec<QualityDefinition>>> {
+    quality::reset_definitions(&state.db).await?;
+    settings_changed(&state, "qualityDefinitions");
+    Ok(Json(quality::list_definitions(state.db.pool()).await?))
+}
+
 /// Creates a custom quality preset (Tanukarr), added to every profile as not allowed.
 #[utoipa::path(post, path = "/qualitydefinitions", tag = "settings",
     request_body = kitsunarr_domain::api::settings::CustomQualityCreate,
@@ -663,8 +694,8 @@ pub async fn get_metadata_sources(
         tmdb_api_key: redact_key(&s.tmdb_api_key),
         omdb_api_key: redact_key(&s.omdb_api_key),
         preferred_metadata_language: s.preferred_metadata_language,
-        source_order: s.source_order,
-        disabled_sources: s.disabled_sources,
+        source_order: kitsunarr_domain::api::metadata::source_order(&s),
+        disabled_sources: s.disabled_sources.clone(),
     }))
 }
 
@@ -690,12 +721,28 @@ pub async fn put_metadata_sources(
             "TheTVDB has no titles in this language.",
         ));
     }
+    // Tanukarr's `MetadataSourcePolicy.Save`.
+    if let Some((field, message)) = kitsunarr_domain::api::metadata::validate_sources(
+        &body.source_order,
+        &body.disabled_sources,
+    )
+    .into_iter()
+    .next()
+    {
+        return Err(ApiError::field(field, message));
+    }
+    let order = if body.source_order.is_empty() {
+        Vec::new()
+    } else {
+        kitsunarr_domain::api::metadata::source_order(&body)
+    };
     let next = MetadataSourcesSettings {
         tmdb_api_key: keep(body.tmdb_api_key, stored.tmdb_api_key),
         omdb_api_key: keep(body.omdb_api_key, stored.omdb_api_key),
         preferred_metadata_language: body.preferred_metadata_language,
-        source_order: dedup_sources(body.source_order),
-        disabled_sources: dedup_sources(body.disabled_sources),
+        // Older clients can omit a newer catalogue: it is appended without changing the order.
+        source_order: order,
+        disabled_sources: body.disabled_sources,
     };
     kv::set(state.db.pool(), kv::KEY_METADATA_SOURCES, &next).await?;
     apply_metadata_keys(&state).await?;
@@ -704,22 +751,9 @@ pub async fn put_metadata_sources(
         tmdb_api_key: redact_key(&next.tmdb_api_key),
         omdb_api_key: redact_key(&next.omdb_api_key),
         preferred_metadata_language: next.preferred_metadata_language,
-        source_order: next.source_order,
-        disabled_sources: next.disabled_sources,
+        source_order: kitsunarr_domain::api::metadata::source_order(&next),
+        disabled_sources: next.disabled_sources.clone(),
     }))
-}
-
-/// Catalogue lists keep their first occurrence of each catalogue.
-fn dedup_sources(
-    list: Vec<kitsunarr_domain::MetadataProvider>,
-) -> Vec<kitsunarr_domain::MetadataProvider> {
-    let mut out = Vec::with_capacity(list.len());
-    for p in list {
-        if !out.contains(&p) {
-            out.push(p);
-        }
-    }
-    out
 }
 
 #[utoipa::path(get, path = "/settings/downloadclientoptions", tag = "settings",

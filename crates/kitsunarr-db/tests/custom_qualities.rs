@@ -97,3 +97,118 @@ async fn presets_are_created_added_to_profiles_retired_and_restored() {
     assert!(Quality::by_id(d.quality_id).is_some());
     drop(reopened);
 }
+
+/// Tanukarr's `QualityDefinitionUpdateService`: titles and flagged sizes, sizes written into
+/// every profile's own limit too; Sonarr's reset restores titles and sizes.
+#[tokio::test]
+async fn definition_sizes_apply_to_profiles_and_reset() {
+    use kitsunarr_domain::api::settings::{OrderedF64, QualityDefinitionUpdate, QualitySizeLimit};
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    let mut profile = quality::list_profiles(db.pool()).await.unwrap()[0].clone();
+    profile.size_limits = vec![QualitySizeLimit {
+        quality_id: 7,
+        min_size: Some(OrderedF64(4.0)),
+        preferred_size: Some(OrderedF64(50.0)),
+        max_size: Some(OrderedF64(200.0)),
+    }];
+    quality::update_profile(db.pool(), &profile).await.unwrap();
+    let before = quality::list_definitions(db.pool()).await.unwrap();
+    let def = |list: &[kitsunarr_domain::api::settings::QualityDefinition]| {
+        list.iter().find(|d| d.quality_id == 7).unwrap().clone()
+    };
+
+    quality::update_definitions(
+        &db,
+        &[QualityDefinitionUpdate {
+            quality_id: 7,
+            title: Some(" Blu-ray 1080p ".into()),
+            preferred_size: Some(OrderedF64(60.0)),
+            update_preferred_size: true,
+            ..Default::default()
+        }],
+    )
+    .await
+    .unwrap();
+    let after = def(&quality::list_definitions(db.pool()).await.unwrap());
+    assert_eq!(after.title, "Blu-ray 1080p");
+    assert_eq!(after.preferred_size, Some(OrderedF64(60.0)));
+    assert_eq!(
+        after.min_size,
+        def(&before).min_size,
+        "unflagged sizes stay"
+    );
+    let limit = quality::get_profile(db.pool(), profile.id)
+        .await
+        .unwrap()
+        .size_limits[0]
+        .clone();
+    assert_eq!(
+        (limit.min_size, limit.preferred_size, limit.max_size),
+        (
+            Some(OrderedF64(4.0)),
+            Some(OrderedF64(60.0)),
+            Some(OrderedF64(200.0))
+        )
+    );
+
+    // Refused batches change nothing.
+    for bad in [
+        vec![QualityDefinitionUpdate {
+            quality_id: 7,
+            title: Some("  ".into()),
+            ..Default::default()
+        }],
+        vec![QualityDefinitionUpdate {
+            quality_id: 3,
+            title: Some("blu-ray 1080P".into()),
+            ..Default::default()
+        }],
+        vec![
+            QualityDefinitionUpdate {
+                quality_id: 7,
+                ..Default::default()
+            },
+            QualityDefinitionUpdate {
+                quality_id: 7,
+                ..Default::default()
+            },
+        ],
+        vec![QualityDefinitionUpdate {
+            quality_id: 999,
+            ..Default::default()
+        }],
+        // The profile's own minimum would exceed its maximum.
+        vec![QualityDefinitionUpdate {
+            quality_id: 7,
+            title: Some("Changed".into()),
+            max_size: Some(OrderedF64(2.0)),
+            update_max_size: true,
+            ..Default::default()
+        }],
+    ] {
+        assert!(
+            quality::update_definitions(&db, &bad).await.is_err(),
+            "{bad:?}"
+        );
+    }
+    assert_eq!(
+        def(&quality::list_definitions(db.pool()).await.unwrap()).title,
+        "Blu-ray 1080p"
+    );
+
+    quality::reset_definitions(&db).await.unwrap();
+    let reset = def(&quality::list_definitions(db.pool()).await.unwrap());
+    assert_eq!(reset.title, def(&before).title);
+    assert_eq!(reset.preferred_size, def(&before).preferred_size);
+    assert_eq!(
+        quality::get_profile(db.pool(), profile.id)
+            .await
+            .unwrap()
+            .size_limits[0]
+            .preferred_size,
+        Some(OrderedF64(60.0)),
+        "profiles keep their own limits"
+    );
+}

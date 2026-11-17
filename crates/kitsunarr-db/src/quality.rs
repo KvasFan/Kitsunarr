@@ -165,6 +165,115 @@ pub async fn upsert_definition(ex: impl SqliteExecutor<'_>, d: &QualityDefinitio
     Ok(())
 }
 
+/// `QualityDefinitionUpdateService.UpdateMany`: titles and the flagged size limits of several
+/// definitions in one transaction. A flagged size is set on the definition and on every
+/// profile's own limit for that quality (profiles without one use the definition), as Tanukarr
+/// writes sizes into every profile. Titles must stay unique, retired qualities included.
+pub async fn update_definitions(
+    db: &crate::Database,
+    updates: &[kitsunarr_domain::api::settings::QualityDefinitionUpdate],
+) -> DbResult<()> {
+    let mut tx = db.pool().begin().await?;
+    let stored = list_definitions(&mut *tx).await?;
+    let mut profiles = list_profiles(&mut *tx).await?;
+    let mut touched = std::collections::BTreeSet::new();
+    let mut titles: std::collections::HashMap<i32, String> = stored
+        .iter()
+        .map(|d| (d.quality_id, d.title.clone()))
+        .collect();
+    let mut seen = std::collections::HashSet::new();
+    for u in updates {
+        let Some(mut d) = stored
+            .iter()
+            .find(|d| d.quality_id == u.quality_id)
+            .cloned()
+            .filter(|_| seen.insert(u.quality_id))
+        else {
+            return Err(DbError::Invalid(
+                "Quality definition IDs must exist and must not be repeated.".into(),
+            ));
+        };
+        if let Some(title) = &u.title {
+            if title.trim().is_empty() {
+                return Err(DbError::Invalid("Quality titles must not be blank.".into()));
+            }
+            d.title = title.trim().to_string();
+        }
+        if u.update_min_size {
+            d.min_size = u.min_size;
+        }
+        if u.update_preferred_size {
+            d.preferred_size = u.preferred_size;
+        }
+        if u.update_max_size {
+            d.max_size = u.max_size;
+        }
+        titles.insert(d.quality_id, d.title.clone());
+        upsert_definition(&mut *tx, &d).await?;
+        for p in &mut profiles {
+            if let Some(l) = p
+                .size_limits
+                .iter_mut()
+                .find(|l| l.quality_id == u.quality_id)
+            {
+                if u.update_min_size {
+                    l.min_size = u.min_size;
+                }
+                if u.update_preferred_size {
+                    l.preferred_size = u.preferred_size;
+                }
+                if u.update_max_size {
+                    l.max_size = u.max_size;
+                }
+                if u.update_min_size || u.update_preferred_size || u.update_max_size {
+                    touched.insert(p.id);
+                }
+            }
+        }
+    }
+    let mut lower: Vec<String> = titles.values().map(|t| t.to_lowercase()).collect();
+    lower.sort();
+    if lower.windows(2).any(|w| w[0] == w[1]) {
+        return Err(DbError::Invalid(
+            "Quality names must be unique, including deleted qualities.".into(),
+        ));
+    }
+    // Every profile is validated before any is written (the transaction holds them all).
+    for p in profiles.iter().filter(|p| touched.contains(&p.id)) {
+        update_profile(&mut *tx, p).await?;
+    }
+    tx.commit().await?;
+    for d in updates
+        .iter()
+        .filter(|u| u.quality_id >= CUSTOM_QUALITY_BASE)
+    {
+        if let (Some(title), Some(q)) = (&d.title, Quality::by_id(d.quality_id)) {
+            Quality::register(d.quality_id, title.trim(), q.source, q.resolution);
+        }
+    }
+    Ok(())
+}
+
+/// Sonarr's `ResetQualityDefinitions` (with `resetTitles`): the standard qualities get their
+/// default titles and size limits back. Custom presets and profiles' own limits are kept.
+pub async fn reset_definitions(db: &crate::Database) -> DbResult<()> {
+    let mut tx = db.pool().begin().await?;
+    for d in default_definitions() {
+        sqlx::query(
+            "UPDATE quality_definitions SET title = ?, min_size = ?, preferred_size = ?, max_size = ? WHERE quality_id = ?",
+        )
+        .bind(&d.title)
+        .bind(d.min_size.map(|v| v.0))
+        .bind(d.preferred_size.map(|v| v.0))
+        .bind(d.max_size.map(|v| v.0))
+        .bind(d.quality_id)
+        .execute(&mut *tx)
+        .await?;
+    }
+    tx.commit().await?;
+    Ok(())
+}
+
 /// `QualityDefinitionService.Add`: a custom preset (id 10000 and up), appended to every profile
 /// as not allowed; `copy_from_id` copies a quality's size limits, globally and per profile.
 pub async fn create_custom(

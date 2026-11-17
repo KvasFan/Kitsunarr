@@ -958,7 +958,7 @@ fn ProfileEditor(
             }
             details { style: "margin-top: var(--sp-4)",
                 summary { strong { "Size limits" } span { class: "muted small", " — MiB per minute" } }
-                p { class: "help small faint", "A quality without an override uses Settings › Quality. Within an override, empty means unlimited; a maximum of zero also means unlimited." }
+                p { class: "help small faint", "A quality without an override uses the global sizes of " Link { to: crate::route::Route::SettingsQuality {}, "Settings › Quality" } ". Within an override, empty means unlimited; a maximum of zero also means unlimited." }
                 div { class: "table-wrap",
                     table { class: "table",
                         thead { tr { th { "Quality" } th { "Minimum" } th { "Preferred" } th { "Maximum" } } }
@@ -2399,14 +2399,69 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
         });
     };
     let can_add = matches!(&*templates.read(), Some(Ok(t)) if !t.is_empty());
+    // Sonarr's "Test all": every provider's test result, shown until the next run.
+    let mut tested = use_signal(|| None::<Vec<kitsunarr_client::contracts::ProviderTestAllResult>>);
+    let mut testing = use_signal(|| false);
+    let c4 = client.clone();
+    let test_all = move |_| {
+        let c = c4.clone();
+        testing.set(true);
+        spawn(async move {
+            match c.test_all_providers(kind).await {
+                Ok(results) => {
+                    let failed = results.iter().filter(|r| !r.is_valid).count();
+                    if failed == 0 {
+                        app.success(format!("All {} passed their test.", results.len()));
+                    } else {
+                        app.toast(
+                            ToastLevel::Warning,
+                            format!("{failed} of {} failed their test.", results.len()),
+                        );
+                    }
+                    tested.set(Some(results));
+                }
+                Err(e) => app.error(&e),
+            }
+            testing.set(false);
+        });
+    };
+    let has_items = matches!(&*items.read(), Some(Ok(l)) if !l.is_empty());
     rsx! {
         div { class: "page-head",
-            h1 { "{title}" }
+            h1 { class: "grow", "{title}" }
+            if has_items {
+                button { class: "btn", disabled: testing(), title: "Test every {title.to_lowercase()} entry", onclick: test_all,
+                    if testing() { "Testing…" } else { "Test all" }
+                }
+            }
             if can_add {
                 button { class: "btn primary", onclick: move |_| adding.set(true), "Add" }
             }
         }
         p { class: "muted small", "{note}" }
+        if let (Some(results), Some(Ok(list))) = (tested(), &*items.read()) {
+            if results.iter().any(|r| !r.is_valid || !r.validation_failures.is_empty()) {
+                div { class: "alert warning", role: "status", "aria-label": "Test results",
+                    div { class: "grow stack tight",
+                        for r in results.iter().filter(|r| !r.is_valid || !r.validation_failures.is_empty()) {
+                            div { key: "{r.id}",
+                                strong { {list.iter().find(|p| p.id == r.id).map_or_else(|| format!("#{}", r.id), |p| p.name.clone())} }
+                                if r.is_valid { " " Badge { text: "passed with warnings", tone: "warning" } } else { " " Badge { text: "failed", tone: "danger" } }
+                                ul { class: "messages small",
+                                    for (i, f) in r.validation_failures.iter().enumerate() {
+                                        li { key: "{i}",
+                                            if f.is_warning() { "Warning: " }
+                                            "{f.error_message}"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    button { class: "btn sm ghost", "aria-label": "Dismiss test results", onclick: move |_| tested.set(None), "×" }
+                }
+            }
+        }
         match &*items.read() {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
@@ -2423,7 +2478,13 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
                                         "{p.implementation}"
                                         if !p.supported { " " Badge { text: "stored only", tone: "warning" } }
                                     }
-                                    td { if p.enabled { Badge { text: "enabled", tone: "success" } } else { Badge { text: "disabled" } } }
+                                    td {
+                                        if p.enabled { Badge { text: "enabled", tone: "success" } } else { Badge { text: "disabled" } }
+                                        if let Some(r) = tested().and_then(|t| t.into_iter().find(|r| r.id == p.id)) {
+                                            " "
+                                            if r.is_valid { Badge { text: "test passed", tone: "success" } } else { Badge { text: "test failed", tone: "danger" } }
+                                        }
+                                    }
                                     td { class: "num", "{p.priority}" }
                                     td { class: "shrink",
                                         div { class: "row tight",
@@ -2811,7 +2872,7 @@ pub fn SettingsMetadata() -> Element {
                 Ok(saved) => {
                     keys.set(Some(saved));
                     catalogues.restart();
-                    app.success("Metadata keys saved.");
+                    app.success("Metadata sources saved.");
                 }
                 Err(e) => app.error(&e),
             }
@@ -2825,26 +2886,66 @@ pub fn SettingsMetadata() -> Element {
         match &*catalogues.read() {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
-            Some(Ok(list)) => rsx! {
-                div { class: "table-wrap",
-                    table { class: "table",
-                        thead { tr { th { "Catalogue" } th { "Covers" } th { class: "hide-mobile", "Credit" } th { "Status" } } }
-                        tbody {
-                            for c in list.iter() {
-                                tr { key: "{c.provider}",
-                                    td { a { href: "{c.url}", target: "_blank", rel: "noopener", strong { "{c.name}" } } }
-                                    td { class: "small", "{c.description}" }
-                                    td { class: "hide-mobile small muted", "{c.attribution}" }
-                                    td {
-                                        if c.available { Badge { text: "available", tone: "success" } }
-                                        else { Badge { text: "API key needed", tone: "warning" } }
+            Some(Ok(list)) => {
+                // Tanukarr's Sources editor: catalogues in preference order (the add page lists
+                // and searches them in this order), each one on or off.
+                let order: Vec<kitsunarr_domain::MetadataProvider> = match keys() {
+                    Some(k) => kitsunarr_domain::api::metadata::source_order(&k),
+                    None => list.iter().map(|c| c.provider).collect(),
+                };
+                let rows: Vec<kitsunarr_domain::api::metadata::CatalogueInfo> = order
+                    .iter()
+                    .filter_map(|p| list.iter().find(|c| c.provider == *p).cloned())
+                    .collect();
+                let last = rows.len().saturating_sub(1);
+                let disabled = keys().map(|k| k.disabled_sources).unwrap_or_default();
+                rsx! {
+                    div { class: "table-wrap",
+                        table { class: "table",
+                            thead { tr { th { class: "num", "#" } th { "Catalogue" } th { "Covers" } th { class: "hide-mobile", "Credit" } th { "Status" } th { "Enabled" } th { span { class: "sr-only", "Order" } } } }
+                            tbody {
+                                for (i, c) in rows.iter().enumerate() {
+                                    {
+                                        let p = c.provider;
+                                        let on = !disabled.contains(&p);
+                                        rsx! {
+                                            tr { key: "{p}", class: if on { "" } else { "rejected" },
+                                                td { class: "num small muted", "{i + 1}" }
+                                                td { a { href: "{c.url}", target: "_blank", rel: "noopener", strong { "{c.name}" } } }
+                                                td { class: "small", "{c.description}" }
+                                                td { class: "hide-mobile small muted", "{c.attribution}" }
+                                                td {
+                                                    if c.available { Badge { text: "available", tone: "success" } }
+                                                    else { Badge { text: "API key needed", tone: "warning" } }
+                                                }
+                                                td {
+                                                    input { r#type: "checkbox", checked: on, "aria-label": "Enable {c.name}",
+                                                        onchange: move |e: FormEvent| {
+                                                            if let Some(k) = keys.write().as_mut() {
+                                                                k.disabled_sources.retain(|x| *x != p);
+                                                                if !e.checked() { k.disabled_sources.push(p); }
+                                                            }
+                                                        } }
+                                                }
+                                                td { class: "shrink",
+                                                    div { class: "row tight",
+                                                        button { class: "btn sm ghost", disabled: i == 0, "aria-label": "Move {c.name} up", onclick: move |_| move_source(keys, i, true), "↑" }
+                                                        button { class: "btn sm ghost", disabled: i == last, "aria-label": "Move {c.name} down", onclick: move |_| move_source(keys, i, false), "↓" }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    p { class: "help small faint", "Add media lists the enabled catalogues in this order, and \"All enabled catalogues\" merges their results in this order. Disabled catalogues are not offered or searched; titles that already belong to one still refresh from it. Save below to apply." }
+                    if keys().is_some_and(|k| kitsunarr_domain::api::metadata::enabled_sources(&k).is_empty()) {
+                        div { class: "alert warning", role: "status", "Enable at least one metadata source." }
+                    }
                 }
-            },
+            }
         }
         div { class: "card", style: "margin-top: var(--sp-4)",
             h3 { "API keys and language" }
@@ -2870,11 +2971,27 @@ pub fn SettingsMetadata() -> Element {
                         }
                     }
                     p { class: "help small faint", "Saved keys show as {REDACTED}; leave them unchanged to keep them, or clear the field to remove one." }
-                    div { class: "row end", button { class: "btn primary", onclick: save, "Save keys" } }
+                    div { class: "row end", button { class: "btn primary", onclick: save, "Save" } }
                 },
             }
         }
         MetadataConsumers {}
+    }
+}
+
+/// Moves the catalogue at `i` one place up or down in the preference order.
+fn move_source(mut keys: Signal<Option<MetadataSourcesSettings>>, i: usize, up: bool) {
+    if let Some(k) = keys.write().as_mut() {
+        let mut order = kitsunarr_domain::api::metadata::source_order(k);
+        let j = if up {
+            i.checked_sub(1)
+        } else {
+            Some(i + 1).filter(|j| *j < order.len())
+        };
+        if let Some(j) = j {
+            order.swap(i, j);
+            k.source_order = order;
+        }
     }
 }
 

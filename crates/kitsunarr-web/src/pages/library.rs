@@ -9,8 +9,10 @@ use kitsunarr_domain::{MediaKind, SortDirection};
 
 use crate::components::common::{Empty, ErrorBox, Loading, Pagination};
 use crate::components::media::{MovieCard, MovieTable, SeriesCard, SeriesTable};
+use crate::pages::library_filters::{self, FilterRef};
 use crate::route::Route;
 use crate::state::{use_app, use_client};
+use crate::util::{load_pref, save_pref};
 
 const PAGE_SIZE: u32 = 60;
 
@@ -62,16 +64,101 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let mut page = use_signal(|| 1u32);
     let mut sort_key = use_signal(|| "title".to_string());
     let mut descending = use_signal(|| false);
-    let mut monitored = use_signal(|| None::<bool>);
+    // Tanukarr's series index options: the selected filter, the combined ones, the path
+    // filter and "Group anime seasons" (on by default), kept per library.
+    let pref = move |name: &str| format!("library.{}.{name}", kind.as_str());
+    let mut filter = use_signal(|| {
+        load_pref(&pref("filter"))
+            .map(|v| FilterRef::parse(&v))
+            .unwrap_or(FilterRef::Preset("all".into()))
+    });
+    let mut combined = use_signal(|| {
+        load_pref(&pref("combined"))
+            .unwrap_or_default()
+            .split(',')
+            .filter(|v| !v.is_empty())
+            .map(FilterRef::parse)
+            .collect::<Vec<_>>()
+    });
+    let mut path = use_signal(|| load_pref(&pref("path")).unwrap_or_default());
+    let mut group = use_signal(|| load_pref(&pref("group")).as_deref() != Some("false"));
+    let mut saving_filter = use_signal(|| false);
     let grid = use_signal(|| crate::util::load_pref("kitsunarr-view").as_deref() != Some("table"));
     let mut selected = use_signal(HashSet::<i64>::new);
     let mut bulk_profile = use_signal(String::new);
 
     // Reset to the first page when filters change.
     use_effect(move || {
-        let _ = (search(), sort_key(), descending(), monitored());
+        let _ = (
+            search(),
+            sort_key(),
+            descending(),
+            filter(),
+            combined(),
+            path(),
+            group(),
+        );
         if *page.peek() != 1 {
             page.set(1);
+        }
+    });
+    use_effect(move || {
+        save_pref(&pref("filter"), &filter().encode());
+        let list: Vec<String> = combined().iter().map(FilterRef::encode).collect();
+        save_pref(&pref("combined"), &list.join(","));
+        save_pref(&pref("path"), &path());
+        save_pref(&pref("group"), if group() { "true" } else { "false" });
+    });
+    // Saved filters (Sonarr's custom filters of the series index).
+    let cf = client.clone();
+    let mut saved_filters = use_resource(move || {
+        let c = cf.clone();
+        async move {
+            c.custom_filters().await.map(|list| {
+                list.into_iter()
+                    .filter(|f| f.kind == library_filters::FILTER_TYPE)
+                    .collect::<Vec<_>>()
+            })
+        }
+    });
+    let saved_list = move || match &*saved_filters.read() {
+        Some(Ok(list)) => list.clone(),
+        _ => Vec::new(),
+    };
+    let cp = client.clone();
+    let path_choices = use_resource(move || {
+        let _ = (app.library_rev)();
+        let c = cp.clone();
+        async move { c.series_path_filters(Some(kind)).await }
+    });
+    // The filter part of the query (what a saved filter stores).
+    let composed = move || {
+        let mut q = LibraryQuery::default();
+        let p = path();
+        if !p.trim().is_empty() {
+            q.path = Some(p);
+        }
+        let mut chosen = vec![filter()];
+        for f in combined() {
+            if !chosen.contains(&f) {
+                chosen.push(f);
+            }
+        }
+        let applied = library_filters::apply(&chosen, &saved_list(), &mut q);
+        (q, applied)
+    };
+    let ct = client.clone();
+    let total = use_resource(move || {
+        let _ = (app.library_rev)();
+        let c = ct.clone();
+        async move {
+            c.series(&LibraryQuery {
+                kind: Some(kind),
+                page_size: Some(1),
+                ..Default::default()
+            })
+            .await
+            .map(|p| p.total_records)
         }
     });
     use_effect(move || {
@@ -81,6 +168,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let c = client.clone();
     let data = use_resource(move || {
         let _ = (app.library_rev)();
+        let (filters, applied) = composed();
         let q = LibraryQuery {
             page: Some(page()),
             page_size: Some(PAGE_SIZE),
@@ -92,12 +180,26 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             }),
             search: Some(search()).filter(|s| !s.trim().is_empty()),
             kind: Some(kind),
-            monitored: monitored(),
-            ..Default::default()
+            group_anime_seasons: Some(group()),
+            ..filters
         };
         let c = c.clone();
-        async move { c.series(&q).await }
+        async move {
+            // Filters that contradict each other match nothing.
+            if applied.conflict {
+                return Ok(kitsunarr_domain::Page {
+                    page: 1,
+                    page_size: PAGE_SIZE,
+                    total_records: 0,
+                    records: Vec::new(),
+                });
+            }
+            c.series(&q).await
+        }
     });
+    let filtering = move || {
+        filter() != FilterRef::Preset("all".into()) || !combined().is_empty() || !path().is_empty()
+    };
     let pc = client.clone();
     let profiles = use_resource(move || {
         let c = pc.clone();
@@ -201,14 +303,110 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             button { class: "btn icon", "aria-label": "Toggle sort direction", onclick: move |_| descending.toggle(), if descending() { "↓" } else { "↑" } }
             select {
                 class: "select",
-                "aria-label": "Filter by monitoring",
-                onchange: move |e: FormEvent| monitored.set(match e.value().as_str() { "yes" => Some(true), "no" => Some(false), _ => None }),
-                option { value: "all", "All" }
-                option { value: "yes", {crate::i18n::t().monitored} }
-                option { value: "no", {crate::i18n::t().unmonitored} }
+                "aria-label": "Filter",
+                value: "{filter().encode()}",
+                onchange: move |e: FormEvent| filter.set(FilterRef::parse(&e.value())),
+                for (key, label) in library_filters::PRESETS.iter() {
+                    option { key: "{key}", value: "{key}", selected: filter() == FilterRef::Preset(key.to_string()), "{label}" }
+                }
+                for f in saved_list() {
+                    option { key: "custom-{f.id}", value: "custom:{f.id}", selected: filter() == FilterRef::Saved(f.id), "{f.label}" }
+                }
+            }
+            select {
+                class: "select",
+                "aria-label": "Filter by path",
+                value: "{path}",
+                onchange: move |e: FormEvent| path.set(e.value()),
+                option { value: "", "All paths" }
+                if let Some(Ok(list)) = &*path_choices.read() {
+                    for p in list.iter() { option { key: "{p}", value: "{p}", selected: path() == *p, "{p}" } }
+                }
+                // A path stored earlier that no longer exists stays visible so it can be cleared.
+                if !path().is_empty() && !matches!(&*path_choices.read(), Some(Ok(list)) if list.contains(&path())) {
+                    option { value: "{path}", selected: true, "{path}" }
+                }
+            }
+            if !path().is_empty() {
+                button { class: "btn sm ghost", onclick: move |_| path.set(String::new()), "Clear" }
+            }
+            details { class: "combine",
+                summary { class: "btn sm",
+                    "Combine filters"
+                    if !combined().is_empty() { " ({combined().len()})" }
+                }
+                fieldset { class: "menu stack tight",
+                    legend { class: "small muted", "Show series matching every selected filter" }
+                    for (key, label) in library_filters::PRESETS.iter().filter(|(k, _)| *k != "all") {
+                        {
+                            let f = FilterRef::Preset(key.to_string());
+                            let on = combined().contains(&f);
+                            rsx! {
+                                label { key: "{key}", class: "check small",
+                                    input { r#type: "checkbox", checked: on,
+                                        onchange: move |e: FormEvent| { let mut c = combined.write(); c.retain(|x| *x != f); if e.checked() { c.push(f.clone()); } } }
+                                    "{label}"
+                                }
+                            }
+                        }
+                    }
+                    for saved in saved_list() {
+                        {
+                            let f = FilterRef::Saved(saved.id);
+                            let on = combined().contains(&f);
+                            rsx! {
+                                label { key: "custom-{saved.id}", class: "check small",
+                                    input { r#type: "checkbox", checked: on,
+                                        onchange: move |e: FormEvent| { let mut c = combined.write(); c.retain(|x| *x != f); if e.checked() { c.push(f.clone()); } } }
+                                    "{saved.label}"
+                                }
+                            }
+                        }
+                    }
+                    button { class: "btn sm ghost", onclick: move |_| combined.write().clear(), "Clear combined filters" }
+                }
+            }
+            label { class: "check small", title: "Show each anime group (Tanukarr's anime grouping) once, by its first season",
+                input { r#type: "checkbox", checked: group(), onchange: move |e: FormEvent| group.set(e.checked()) }
+                "Group anime seasons"
+            }
+            button { class: "btn sm", disabled: !filtering(), title: "Save the current filters as a filter of your own", onclick: move |_| saving_filter.set(true), "Save filter…" }
+            if let FilterRef::Saved(id) = filter() {
+                DeleteSavedFilter { id, on_deleted: move |_| { filter.set(FilterRef::Preset("all".into())); saved_filters.restart(); } }
             }
             div { class: "spacer" }
+            if let (Some(Ok(p)), Some(Ok(t))) = (&*data.read(), &*total.read()) {
+                span { class: "small muted", "aria-label": "Shown series", "{p.total_records} / {t}" }
+            }
             ViewToggle { grid }
+        }
+        {
+            let (_, applied) = composed();
+            rsx! {
+                if !applied.ignored.is_empty() {
+                    div { class: "alert warning small", role: "status",
+                        "Kitsunarr cannot apply these conditions of the saved filter, so they are left out: "
+                        {applied.ignored.join(", ")}
+                    }
+                }
+                if applied.conflict {
+                    div { class: "alert info small", role: "status", "The selected filters contradict each other, so no series can match all of them." }
+                }
+            }
+        }
+        if saving_filter() {
+            SaveFilterDialog {
+                conditions: library_filters::conditions_of(&composed().0),
+                on_close: move |saved: Option<i64>| {
+                    saving_filter.set(false);
+                    if let Some(id) = saved {
+                        saved_filters.restart();
+                        filter.set(FilterRef::Saved(id));
+                        combined.write().clear();
+                        path.set(String::new());
+                    }
+                },
+            }
         }
         if !selected.read().is_empty() {
             div { class: "alert info", role: "region", "aria-label": "Bulk actions",
@@ -250,8 +448,11 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
             Some(Ok(p)) if p.records.is_empty() => rsx! {
-                Empty { title: if search().is_empty() { format!("No {} yet", title.to_lowercase()) } else { "No matches".to_string() },
-                    if search().is_empty() {
+                Empty { title: if search().is_empty() && !filtering() { format!("No {} yet", title.to_lowercase()) } else { "No matches".to_string() },
+                    if filtering() {
+                        p { "No series match the selected filters." }
+                        button { class: "btn", onclick: move |_| { filter.set(FilterRef::Preset("all".into())); combined.write().clear(); path.set(String::new()); }, "Clear filters" }
+                    } else if search().is_empty() {
                         p { "Add titles from TVmaze or AniList, or bring over an existing Sonarr or Tanukarr library." }
                         div { class: "row", style: "justify-content: center",
                             Link { to: Route::AddMedia {}, class: "btn primary", "Add media" }
@@ -264,7 +465,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 if grid() {
                     div { class: "media-grid",
                         for item in p.records.iter() {
-                            SeriesCard { key: "{item.id}", item: item.clone(), selected: selected.read().contains(&item.id) }
+                            SeriesCard { key: "{item.id}", item: item.clone(), selected: selected.read().contains(&item.id), grouped: group() }
                         }
                     }
                 } else {
@@ -389,6 +590,84 @@ pub fn MoviesLibrary() -> Element {
                 }else{MovieTable{items:p.records.clone(),selected,disabled:busy()}}
                 Pagination{page:p.page,page_size:p.page_size,total:p.total_records,on_page:move |n|page.set(n)}
             },
+        }
+    }
+}
+
+/// Names the current filters and saves them as a custom filter (Sonarr's
+/// `CustomFilterResource`, list `series`).
+#[component]
+fn SaveFilterDialog(
+    conditions: Vec<kitsunarr_client::contracts::CustomFilterCondition>,
+    on_close: EventHandler<Option<i64>>,
+) -> Element {
+    use crate::components::common::{Field, Modal};
+    let app = use_app();
+    let client = use_client();
+    let mut label = use_signal(String::new);
+    let mut busy = use_signal(|| false);
+    let save = move |_| {
+        let c = client.clone();
+        let filter = kitsunarr_client::contracts::CustomFilter {
+            id: 0,
+            kind: library_filters::FILTER_TYPE.into(),
+            label: label().trim().to_string(),
+            filters: conditions.clone(),
+        };
+        busy.set(true);
+        spawn(async move {
+            match c.create_custom_filter(&filter).await {
+                Ok(saved) => {
+                    app.success(format!("Filter \"{}\" saved.", saved.label));
+                    on_close.call(Some(saved.id));
+                }
+                Err(e) => app.error(&e),
+            }
+            busy.set(false);
+        });
+    };
+    rsx! {
+        Modal { title: "Save filter".to_string(), on_close: move |_| on_close.call(None),
+            footer: rsx! {
+                div { class: "spacer" }
+                button { class: "btn", onclick: move |_| on_close.call(None), "Cancel" }
+                button { class: "btn primary", disabled: busy() || label().trim().is_empty(), onclick: save, "Save" }
+            },
+            p { class: "small faint", "The filter keeps the selected filter, the combined filters and the path; it is listed with the built-in filters." }
+            Field { label: "Label",
+                input { class: "input", "aria-label": "Filter label", value: "{label}", oninput: move |e| label.set(e.value()) }
+            }
+        }
+    }
+}
+
+/// Deletes the selected saved filter, after confirmation.
+#[component]
+fn DeleteSavedFilter(id: i64, on_deleted: EventHandler<()>) -> Element {
+    let app = use_app();
+    let client = use_client();
+    let mut confirm = use_signal(|| false);
+    let delete = move |_| {
+        confirm.set(false);
+        let c = client.clone();
+        spawn(async move {
+            match c.delete_custom_filter(id).await {
+                Ok(()) => on_deleted.call(()),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    rsx! {
+        button { class: "btn sm ghost danger", onclick: move |_| confirm.set(true), "Delete saved filter" }
+        if confirm() {
+            crate::components::common::Confirm {
+                title: "Delete saved filter".to_string(),
+                message: "Delete this saved filter? The series are not changed.".to_string(),
+                confirm_label: "Delete".to_string(),
+                danger: true,
+                on_confirm: delete,
+                on_cancel: move |_| confirm.set(false),
+            }
         }
     }
 }

@@ -411,6 +411,9 @@ async fn sonarr_proxy_settings_and_blocklist_are_imported() {
         ("proxybypasslocaladdresses", "False"),
         ("preferredmetadatalanguage", "2"),
         ("autounmonitorpreviouslydownloadedepisodes", "True"),
+        // Tanukarr's `MetadataSourceType` numbers: AniList, TheTVDB, TVmaze first; films off.
+        ("metadatasourceorder", "2,0,4,99,2"),
+        ("disabledmetadatasources", "5,6"),
     ] {
         config.insert(k.into(), v.into());
     }
@@ -512,6 +515,13 @@ async fn sonarr_proxy_settings_and_blocklist_are_imported() {
         .await
         .unwrap();
     assert_eq!(sources.preferred_metadata_language, Some(2));
+    use kitsunarr_domain::MetadataProvider as P;
+    assert_eq!(sources.source_order, [P::AniList, P::Tvdb, P::TvMaze]);
+    assert_eq!(sources.disabled_sources, [P::TmdbMovie, P::Omdb]);
+    assert_eq!(
+        kitsunarr_domain::api::metadata::enabled_sources(&sources),
+        [P::AniList, P::Tvdb, P::TvMaze, P::TmdbTv, P::MyAnimeList]
+    );
     let media: kitsunarr_domain::api::settings::MediaManagementSettings =
         kitsunarr_db::settings::get_or_default(
             db.pool(),
