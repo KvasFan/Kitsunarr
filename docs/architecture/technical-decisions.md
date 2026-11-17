@@ -124,7 +124,7 @@ Assets have content-hashed names and are served with `immutable` caching. Respon
 ## 12. Metadata providers
 
 - **Adapters.** `kitsunarr-metadata` turns each catalogue into one model, `SeriesInfo` and `SearchResult`, and keeps the catalogue's own identity. TVmaze (TV) and AniList (anime and anime films) are implemented; neither needs an API key. Both endpoints can be configured (`[metadata]`) so a caching proxy can be used.
-- **Rate limits and caching.** Each adapter has a sliding-window limiter: TVmaze 18 requests per 10 s (its limit is 20), AniList 25 per minute (its degraded limit is 30). Both retry once after HTTP 429, honouring `Retry-After`. Detail responses are cached for 10 minutes; refreshes bypass the cache.
+- **Rate limits and caching.** Each adapter has a sliding-window limiter: TVmaze 18 requests per 10 s (its limit is 20), retrying once after HTTP 429 and honouring `Retry-After`. AniList requests (metadata, searches, franchise relations, import list reads and tests, custom-list pickers, progress writes) share one pacer per AniList server (`kitsunarr_metadata::anilist_pacer`, Tanukarr's `AniListRequestService`): one request at a time, 2.1 s apart, wider when `X-RateLimit-Limit`/`X-RateLimit-Remaining` call for it, and up to three attempts within two minutes after HTTP 429 (`Retry-After`, `X-RateLimit-Reset` or one minute). Detail responses are cached for 10 minutes; refreshes bypass the cache.
 - **Numbering matches Tanukarr.** Titles migrated from Tanukarr and titles added in Kitsunarr must refresh onto the same rows. So the TVmaze adapter fetches episodes with `specials=1`, keeps TVmaze season/number, puts unnumbered specials in season 0 in episode-id order, and sets no absolute numbers. AniList titles get one season with absolute = episode number. An inconsistent TVmaze episode list (duplicate slot or id, negative season) is rejected, so a refresh cannot overwrite good data with bad.
 - **Adding never touches the disk.** The folder path comes from the root folder and the naming settings. The web UI renders the same path with the shared `naming` module, so the preview is exact. The folder is created by the import pipeline when files arrive.
 - **Monitoring follows Sonarr.**
@@ -478,9 +478,13 @@ a search.
   (HTTP status, malformed page, inconsistent pagination) keeps the previous rows and records a
   failure with Sonarr's escalating back-off (`import_list_status`; a rate limit's Retry-After
   replaces the period). Lists not due (Sonarr's minimum refresh interval: 6 hours, 5 minutes
-  for Sonarr, 12 hours for Trakt) reuse their stored rows, as Tanukarr resumes completed
-  fetches. The scheduled task (every 15 minutes) only processes items when a list was read;
-  "Sync now" reads every list.
+  for Sonarr, 12 hours for Trakt) contribute their stored rows only when this process
+  witnessed their last complete read and nothing changed since (Tanukarr's completed-fetch
+  resume: AniList, MyAnimeList, TMDB List, MDBList, Trakt List, Plex Watchlist and SIMKL User;
+  same settings fingerprint, same successful-sync time, no failure since, no per-season
+  overrides). The scheduled task runs every 5 minutes, so an addition that failed for a
+  temporary reason is retried within minutes without reading the list again; a restart or a
+  settings change voids the witness. "Sync now" reads every list.
 - **Identity.** Items carry TheTVDB, TMDB, IMDb, AniList and MyAnimeList ids. A library title
   matches when it owns or carries any of them, except that an AniList item matches an
   AniList-owned title only by that title's own id (a sequel cour shares TheTVDB ids). New
@@ -563,6 +567,14 @@ and film; prequels must list the title as their only sequel of its kind; a prequ
 another prequel's reciprocal side story is ignored; ambiguity leaves the title ungrouped), TMDB
 films by their TMDB collection. Members never move and folders are not derived from groups:
 paths stay as the naming settings make them.
+
+Tanukarr's "Disabled" grouping mode is a row in `collection_grouping_exclusions` (the table
+an explicit removal from a group writes): the title gets no group folder when added and is
+never grouped automatically. Setting it (`automaticGrouping: false` on `POST /library/add`,
+`PATCH /series/{id}` or `PATCH /movies/{id}`) also removes the title from its anime groups
+and provider collections, as Tanukarr clears the group; manual collections are kept. Turning
+it back on groups the title at once. Migration writes the exclusion for Tanukarr titles in
+Disabled mode.
 
 ## 34. Library tools (Tanukarr)
 

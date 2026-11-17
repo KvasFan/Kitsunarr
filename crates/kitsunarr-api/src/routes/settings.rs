@@ -879,7 +879,21 @@ pub async fn put_general(
             "Use 0 (Sunday) to 6 (Saturday).",
         ));
     }
+    // Sonarr's `HostConfigResourceValidator`.
+    if !(1..=7).contains(&body.backup_interval) {
+        return Err(ApiError::field(
+            "backupInterval",
+            "The backup interval must be between 1 and 7 days.",
+        ));
+    }
+    if !(1..=90).contains(&body.backup_retention) {
+        return Err(ApiError::field(
+            "backupRetention",
+            "The backup retention must be between 1 and 90 days.",
+        ));
+    }
     kv::set(state.db.pool(), kv::KEY_GENERAL, &body).await?;
+    kitsunarr_db::maintenance::set_backup_interval(&state.db, body.backup_interval).await?;
     // Applies to the next HTTPS connection.
     state.certificates.set(body.certificate_validation);
     settings_changed(&state, "general");

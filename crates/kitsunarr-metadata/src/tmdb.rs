@@ -503,7 +503,7 @@ impl Tmdb {
                 &[("query", term.trim())],
             )
             .await?;
-        Ok(found
+        let mut results: Vec<SearchResult> = found
             .results
             .iter()
             .filter(|s| s.id > 0)
@@ -522,8 +522,12 @@ impl Tmdb {
                 status: tv_status(s.status.as_deref()),
                 poster_url: image(s.poster_path.as_deref(), "poster").map(|i| i.remote_url),
                 external_ids: show_ids(s),
+                alternate_titles: Vec::new(),
+                votes: s.vote_count.unwrap_or(0),
             })
-            .collect())
+            .collect();
+        crate::title_matcher::rank(term.trim(), &mut results);
+        Ok(results)
     }
 
     pub async fn search_movies(&self, term: &str) -> MetadataResult<Vec<SearchResult>> {
@@ -562,11 +566,13 @@ impl Tmdb {
             .await?
             .results
         };
-        Ok(movies
+        let mut results: Vec<SearchResult> = movies
             .iter()
             .filter(|m| m.id > 0)
             .map(|m| crate::result_of(&map_movie(m)))
-            .collect())
+            .collect();
+        crate::title_matcher::rank(trimmed, &mut results);
+        Ok(results)
     }
 
     pub fn forget(&self, id: &str) {

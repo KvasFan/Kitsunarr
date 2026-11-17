@@ -68,6 +68,21 @@ pub fn payload(event: &Event, instance: &Instance) -> Value {
             }
             m
         }
+        // `BuildOnImportCompletePayload` (`WebhookImportCompletePayload`).
+        Event::ImportComplete(i) => {
+            let mut m = base("Download");
+            m.insert("series".into(), json!(i.series));
+            m.insert("episodes".into(), json!(i.episodes));
+            m.insert("episodeFiles".into(), json!(i.files));
+            m.insert("downloadClient".into(), json!(i.download_client));
+            m.insert("downloadClientType".into(), json!(i.download_client_type));
+            m.insert("downloadId".into(), json!(i.download_id));
+            m.insert("release".into(), json!(i.release));
+            m.insert("fileCount".into(), i.files.len().into());
+            m.insert("sourcePath".into(), i.source_path.clone().into());
+            m.insert("destinationPath".into(), i.destination_path.clone().into());
+            m
+        }
         Event::Rename { series, files } => {
             let mut m = base("Rename");
             m.insert("series".into(), json!(series));

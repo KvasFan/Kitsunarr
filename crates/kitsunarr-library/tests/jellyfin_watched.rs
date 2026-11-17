@@ -342,6 +342,10 @@ async fn progress_state(db: &Database) -> Option<(i64, i64, i64, Option<String>)
 async fn watched_progress_reaches_the_anilist_list() {
     let (_dir, db, mock, http) = setup(json!({"syncListProgress": true})).await;
     let (lists, base) = lists_mock().await;
+    kitsunarr_metadata::anilist_pacer::AniListPacer::shared_with_interval(
+        &base,
+        std::time::Duration::ZERO,
+    );
     let settings = json!({"accessToken": "token", "username": "anna", "baseUrl": format!("{base}/graphql"),
         "syncWatchedProgress": true});
     sqlx::query("INSERT INTO import_lists (id, name, implementation, settings, created_at) VALUES (1, 'AniList', 'AniListImport', ?, '2026-11-01T00:00:00Z')")

@@ -386,6 +386,21 @@ pub async fn import_movie_download(
     record.size = size;
     let mut conn = db.pool().acquire().await.map_err(err)?;
     let file_id = movies::upsert_file(&mut conn, &record).await.map_err(err)?;
+    // The grabbed release's title and size stay on the file (Tanukarr's `SourceReleaseSize`).
+    let grab_size = grab
+        .and_then(|g| serde_json::from_str::<serde_json::Value>(&g.data).ok())
+        .and_then(|v| {
+            v.get("size")
+                .and_then(|s| s.as_str().and_then(|s| s.parse().ok()).or(s.as_i64()))
+        });
+    movies::set_source_release(
+        &mut conn,
+        file_id,
+        grab.map(|g| g.source_title.as_str()),
+        grab_size,
+    )
+    .await
+    .map_err(err)?;
     let data = serde_json::json!({
         "fileId": file_id,
         "droppedPath": source.display().to_string(),

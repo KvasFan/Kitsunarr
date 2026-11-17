@@ -1505,6 +1505,45 @@ impl<'a> Importer<'a> {
                 self.count("settings", Act::Skip);
             }
         }
+        // Sonarr's `BackupInterval` (1-7 days) and `BackupRetention` (1-90 days).
+        // A database's Config table, or the API's host settings.
+        let config_int = |key: &str| {
+            [&self.snap.media_management, &self.snap.host_options]
+                .into_iter()
+                .flatten()
+                .find_map(|r| r.raw(key))
+                .and_then(|v| v.as_i64().or_else(|| v.as_str()?.trim().parse().ok()))
+                .and_then(|v| i32::try_from(v).ok())
+        };
+        let interval = config_int("backupinterval").filter(|d| (1..=7).contains(d));
+        let retention = config_int("backupretention").filter(|d| (1..=90).contains(d));
+        if interval.is_some() || retention.is_some() {
+            let current: kitsunarr_domain::api::settings::GeneralSettings =
+                settings::get_or_default(&mut *conn, settings::KEY_GENERAL).await?;
+            let defaults = kitsunarr_domain::api::settings::GeneralSettings::default();
+            let next = kitsunarr_domain::api::settings::GeneralSettings {
+                backup_interval: interval.unwrap_or(current.backup_interval),
+                backup_retention: retention.unwrap_or(current.backup_retention),
+                ..current.clone()
+            };
+            let untouched = current.backup_interval == defaults.backup_interval
+                && current.backup_retention == defaults.backup_retention;
+            if next == current {
+                self.count("settings", Act::Skip);
+            } else if untouched || self.update_existing() {
+                settings::set(&mut *conn, settings::KEY_GENERAL, &next).await?;
+                sqlx::query("UPDATE scheduled_tasks SET interval_minutes = ? WHERE name = ?")
+                    .bind(kitsunarr_db::maintenance::backup_interval_minutes(
+                        next.backup_interval,
+                    ))
+                    .bind(kitsunarr_db::maintenance::BACKUP_TASK)
+                    .execute(&mut *conn)
+                    .await?;
+                self.count("settings", Act::Update);
+            } else {
+                self.count("settings", Act::Skip);
+            }
+        }
         // Metadata consumers (Sonarr's `Metadata` rows).
         if let Some(next) = self.snap.metadata_consumers {
             let current: kitsunarr_domain::api::settings::MetadataConsumersSettings =
@@ -2225,6 +2264,13 @@ impl<'a> Importer<'a> {
                     },
                 )
                 .await?;
+                series::set_source_release(
+                    conn,
+                    id,
+                    f.source_release_title.as_deref(),
+                    f.source_release_size,
+                )
+                .await?;
                 file_map.insert(f.id, id);
                 if seen_paths.insert(f.relative_path.clone()) {
                     self.count("episodeFiles", Act::Create);
@@ -2461,7 +2507,7 @@ impl<'a> Importer<'a> {
                     ));
                 }
                 if let Some(f) = files.iter().max_by(|a, b| a.date_added.cmp(&b.date_added)) {
-                    movies::upsert_file(
+                    let file_id = movies::upsert_file(
                         conn,
                         &NewMovieFile {
                             movie_id: target,
@@ -2483,6 +2529,13 @@ impl<'a> Importer<'a> {
                             original_path: f.original_file_path.clone(),
                             edition: None,
                         },
+                    )
+                    .await?;
+                    movies::set_source_release(
+                        conn,
+                        file_id,
+                        f.source_release_title.as_deref(),
+                        f.source_release_size,
                     )
                     .await?;
                     self.count("movieFiles", Act::Create);
@@ -2509,6 +2562,12 @@ impl<'a> Importer<'a> {
                     None => continue,
                 },
             };
+            // `AnimeGroupingMode.Disabled`: kept out of automatic grouping after the migration.
+            if s.group.as_ref().is_some_and(|g| g.grouping_mode == 2)
+                && collections::set_automatic_grouping(conn, member, false).await?
+            {
+                self.count("groupingExclusions", Act::Create);
+            }
             if let Some(g) = s.group.as_ref().filter(|g| g.grouping_mode != 2)
                 && let Some(gid) = &g.group_id
             {

@@ -16,6 +16,8 @@ serde_json = { workspace = true }
 thiserror = { workspace = true }
 chrono = { workspace = true }
 kitsunarr-indexers = { workspace = true }
+kitsunarr-metadata = { workspace = true }
+tokio = { workspace = true }
 regex = { workspace = true }
 url = { workspace = true }
 

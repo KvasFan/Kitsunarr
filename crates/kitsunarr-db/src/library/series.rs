@@ -705,7 +705,16 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
     .bind(id)
     .fetch_all(db.pool())
     .await?;
+    let grouping_disabled = {
+        let mut conn = db.pool().acquire().await?;
+        super::collections::automatic_grouping_disabled(
+            &mut conn,
+            super::collections::Member::Series(id),
+        )
+        .await?
+    };
     Ok(SeriesDetail {
+        automatic_grouping: !grouping_disabled,
         item,
         overview: d.overview,
         runtime: d.runtime.map(|r| r as i32),
@@ -885,6 +894,14 @@ pub async fn apply_update(db: &Database, id: i64, u: &SeriesUpdate) -> DbResult<
             .bind(id)
             .execute(&mut *tx)
             .await?;
+    }
+    if let Some(enabled) = u.automatic_grouping {
+        super::collections::set_automatic_grouping(
+            &mut tx,
+            super::collections::Member::Series(id),
+            enabled,
+        )
+        .await?;
     }
     if let Some(f) = u.season_folder {
         sqlx::query("UPDATE series SET season_folder = ? WHERE id = ?")
@@ -1390,6 +1407,12 @@ pub struct FileRecord {
     pub added_at: String,
     /// Media information (Sonarr's `MediaInfoModel` JSON).
     pub media_info: Option<String>,
+    /// The grabbed release's size and title (Tanukarr's `SourceReleaseSize`,
+    /// `SourceReleaseTitle`), for custom formats of the file.
+    #[sqlx(default)]
+    pub source_release_size: Option<i64>,
+    #[sqlx(default)]
+    pub source_release_title: Option<String>,
 }
 
 impl FileRecord {
@@ -1495,12 +1518,58 @@ pub async fn paths(db: &Database) -> DbResult<Vec<(i64, String)>> {
 pub async fn file_records(db: &Database, series_id: i64) -> DbResult<Vec<FileRecord>> {
     Ok(sqlx::query_as(
         "SELECT id, relative_path, size, scene_name, original_path, release_group, quality_id, \
-           revision_version, revision_real, is_repack, languages, indexer_flags, release_type, added_at, media_info \
+           revision_version, revision_real, is_repack, languages, indexer_flags, release_type, added_at, media_info, \
+           source_release_size, source_release_title \
          FROM episode_files WHERE series_id = ? ORDER BY id",
     )
     .bind(series_id)
     .fetch_all(db.pool())
     .await?)
+}
+
+/// Records the grabbed release a file was imported from (`ImportApprovedEpisodes`): its title
+/// and size when the grab's size is known, else nothing.
+pub async fn set_source_release(
+    conn: &mut SqliteConnection,
+    file_id: i64,
+    title: Option<&str>,
+    size: Option<i64>,
+) -> DbResult<()> {
+    let (title, size) = match size.filter(|s| *s > 0) {
+        Some(size) => (title, Some(size)),
+        None => (None, None),
+    };
+    sqlx::query(
+        "UPDATE episode_files SET source_release_size = ?, source_release_title = ? WHERE id = ?",
+    )
+    .bind(size)
+    .bind(title)
+    .bind(file_id)
+    .execute(conn)
+    .await?;
+    Ok(())
+}
+
+/// The UTC year of each season's earliest aired episode (Tanukarr's `{Season Year}`).
+pub async fn season_first_air_years(db: &Database, series_id: i64) -> DbResult<Vec<(i32, i32)>> {
+    let rows: Vec<(i64, String)> = sqlx::query_as(
+        "SELECT season_number, MIN(air_date_utc) FROM episodes \
+         WHERE series_id = ? AND air_date_utc IS NOT NULL AND air_date_utc <> '' \
+         GROUP BY season_number ORDER BY season_number",
+    )
+    .bind(series_id)
+    .fetch_all(db.pool())
+    .await?;
+    Ok(rows
+        .into_iter()
+        .filter_map(|(season, first)| {
+            let year = chrono::DateTime::parse_from_rfc3339(&first)
+                .map(|d| chrono::Datelike::year(&d.to_utc()))
+                .ok()
+                .or_else(|| first.get(..4)?.parse().ok())?;
+            Some((season as i32, year))
+        })
+        .collect())
 }
 
 /// The series' original language id, when known.
@@ -2083,11 +2152,27 @@ pub async fn update_metadata(
     Ok(())
 }
 
+/// What [`merge_episode`] did to one episode (the flags of Sonarr's `RefreshEpisodeService`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MergedEpisode {
+    pub id: i64,
+    /// A new row was inserted.
+    pub inserted: bool,
+    /// The episode's monitoring flag after the merge.
+    pub monitored: bool,
+    /// The row had no absolute number and the catalogue now gives one
+    /// (`AbsoluteEpisodeNumberAdded`; Sonarr only uses it for anime).
+    pub absolute_added: bool,
+    /// The air date (UTC, RFC 3339) the row had before the merge; `None` for a new row or a
+    /// row without one.
+    pub previous_air_date_utc: Option<String>,
+}
+
 /// Inserts a new episode, or refreshes the provider fields of an existing one while keeping
-/// its monitoring flag and file link. Returns `true` when a row was inserted.
-pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbResult<bool> {
-    let existing: Option<i64> = sqlx::query_scalar(
-        "SELECT id FROM episodes WHERE series_id = ? AND season_number = ? AND episode_number = ?",
+/// its monitoring flag and file link.
+pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbResult<MergedEpisode> {
+    let existing: Option<(i64, Option<i32>, Option<String>, bool)> = sqlx::query_as(
+        "SELECT id, absolute_episode_number, air_date_utc, monitored FROM episodes WHERE series_id = ? AND season_number = ? AND episode_number = ?",
     )
     .bind(e.series_id)
     .bind(e.season_number)
@@ -2095,7 +2180,7 @@ pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbRes
     .fetch_optional(&mut *conn)
     .await?;
     match existing {
-        Some(id) => {
+        Some((id, old_absolute, old_air, monitored)) => {
             sqlx::query(
                 "UPDATE episodes SET absolute_episode_number = COALESCE(?, absolute_episode_number), title = COALESCE(?, title), \
                  overview = COALESCE(?, overview), air_date = COALESCE(?, air_date), air_date_utc = COALESCE(?, air_date_utc), \
@@ -2111,12 +2196,21 @@ pub async fn merge_episode(conn: &mut SqliteConnection, e: &NewEpisode) -> DbRes
             .bind(id)
             .execute(&mut *conn)
             .await?;
-            Ok(false)
+            Ok(MergedEpisode {
+                id,
+                inserted: false,
+                monitored,
+                absolute_added: old_absolute.is_none() && e.absolute_episode_number.is_some(),
+                previous_air_date_utc: old_air,
+            })
         }
-        None => {
-            upsert_episode(conn, e).await?;
-            Ok(true)
-        }
+        None => Ok(MergedEpisode {
+            id: upsert_episode(conn, e).await?,
+            inserted: true,
+            monitored: e.monitored,
+            absolute_added: false,
+            previous_air_date_utc: None,
+        }),
     }
 }
 

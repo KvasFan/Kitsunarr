@@ -316,12 +316,30 @@ fn default_true() -> bool {
     true
 }
 
+/// `POST /library/add`: Sonarr's add request with Kitsunarr's native add options.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AddTitle {
+    #[serde(flatten)]
+    pub title: AddTitleRequest,
+    /// Tanukarr's anime grouping mode: `false` is "Disabled", the title gets no group folder
+    /// and stays out of automatic anime groups and TMDB collections.
+    #[serde(default = "default_true")]
+    pub automatic_grouping: bool,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct RefreshResult {
     pub added_episodes: u64,
     pub updated_episodes: u64,
+    /// Server side only: monitored episodes the refresh added, gave an absolute number (anime)
+    /// or moved into the recent past (Tanukarr's `EpisodeRefreshedService`); they are searched
+    /// once the refresh is done. Not part of the API.
+    #[serde(skip)]
+    pub recently_aired_episode_ids: Vec<i64>,
 }
 
 /// Preview a catalogue change first, then send its revision when applying it.

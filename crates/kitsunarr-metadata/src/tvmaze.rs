@@ -356,6 +356,8 @@ impl TvMaze {
                         .as_ref()
                         .and_then(|i| i.medium.clone().or_else(|| i.original.clone())),
                     external_ids: external_ids(&s),
+                    alternate_titles: Vec::new(),
+                    votes: 0,
                 }
             })
             .collect())

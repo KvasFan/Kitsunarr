@@ -214,10 +214,35 @@ async fn series_language_code(db: &Database, id: i64) -> LibraryResult<String> {
     Ok(metadata_language_code(language.map(|l| l as i32)))
 }
 
+/// Native add options beyond Sonarr's request.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct AddOptions {
+    /// Tanukarr's anime grouping mode: `false` is `Disabled` (no group folder, no group).
+    pub automatic_grouping: bool,
+}
+
+impl Default for AddOptions {
+    fn default() -> Self {
+        Self {
+            automatic_grouping: true,
+        }
+    }
+}
+
 pub async fn add_title(
     db: &Database,
     metadata: &Metadata,
     req: &AddTitleRequest,
+) -> LibraryResult<LibraryRef> {
+    add_title_with(db, metadata, req, AddOptions::default()).await
+}
+
+/// [`add_title`] with the native add options.
+pub async fn add_title_with(
+    db: &Database,
+    metadata: &Metadata,
+    req: &AddTitleRequest,
+    options: AddOptions,
 ) -> LibraryResult<LibraryRef> {
     let root = root_folders::normalize_path(&req.root_folder_path);
     let roots = root_folders::list(db.pool()).await?;
@@ -279,7 +304,8 @@ pub async fn add_title(
             &naming_settings.custom_colon_replacement_format,
         );
         // Tanukarr: a film of a TMDB collection goes to `{root}/{collection}/Film NN`.
-        let planned = if info.provider == MetadataProvider::TmdbMovie {
+        let planned = if info.provider == MetadataProvider::TmdbMovie && options.automatic_grouping
+        {
             grouping::plan_movie_path(db, metadata, &info.id, &info.title, &root, &naming_settings)
                 .await
         } else {
@@ -323,6 +349,14 @@ pub async fn add_title(
         .await?;
         movies::set_original_country(&mut conn, id, info.original_country.as_deref()).await?;
         kitsunarr_db::auto_tags::apply_movie(&mut conn, id).await?;
+        if !options.automatic_grouping {
+            kitsunarr_db::library::collections::set_automatic_grouping(
+                &mut conn,
+                grouping::Member::Movie(id),
+                false,
+            )
+            .await?;
+        }
         tracing::info!(title = %info.title, provider = %info.provider, "movie added");
         drop(conn);
         if existing_path.is_some()
@@ -330,7 +364,9 @@ pub async fn add_title(
         {
             tracing::warn!(movie_id = id, error = %e, "the imported film folder could not be scanned");
         }
-        spawn_grouping(db, metadata, req.provider, grouping::Member::Movie(id));
+        if options.automatic_grouping {
+            spawn_grouping(db, metadata, req.provider, grouping::Member::Movie(id));
+        }
         return Ok(LibraryRef {
             media_type: "movie".into(),
             id,
@@ -356,7 +392,9 @@ pub async fn add_title(
     // Tanukarr's group folders: an AniList or MyAnimeList series resolved into a franchise
     // goes to `{root}/{group}/{member}`, without season folders.
     let planned = match (info.provider, info.id.parse::<i64>()) {
-        (MetadataProvider::AniList | MetadataProvider::MyAnimeList, Ok(anime_id)) => {
+        (MetadataProvider::AniList | MetadataProvider::MyAnimeList, Ok(anime_id))
+            if options.automatic_grouping =>
+        {
             grouping::plan_series_path(
                 db,
                 metadata,
@@ -489,6 +527,14 @@ pub async fn add_title(
     // Sonarr's `EpisodeMonitoredService` with the add options, once every episode exists.
     series::apply_monitoring(&mut tx, id, req.monitor, chrono::Utc::now()).await?;
     kitsunarr_db::auto_tags::apply_series(&mut tx, id).await?;
+    if !options.automatic_grouping {
+        kitsunarr_db::library::collections::set_automatic_grouping(
+            &mut tx,
+            grouping::Member::Series(id),
+            false,
+        )
+        .await?;
+    }
     tx.commit().await?;
     tracing::info!(title = %info.title, provider = %info.provider, episodes = info.episodes.len(), "series added");
     // Sonarr's library import: the folder's files first, then the monitoring choice
@@ -510,7 +556,9 @@ pub async fn add_title(
     if let Some((_, g)) = &planned {
         grouping::join_resolved(db, info.provider, g, grouping::Member::Series(id)).await;
     }
-    spawn_grouping(db, metadata, req.provider, grouping::Member::Series(id));
+    if options.automatic_grouping {
+        spawn_grouping(db, metadata, req.provider, grouping::Member::Series(id));
+    }
     if req.provider == MetadataProvider::Tvdb {
         let (db, metadata) = (db.clone(), metadata.clone());
         tokio::spawn(async move {
@@ -669,7 +717,9 @@ pub async fn set_episode_ordering(
     .bind(id)
     .fetch_one(&mut *tx)
     .await?;
-    let result = merge_series_info(&mut tx, id, &info, monitor_new).await?;
+    let mut result = merge_series_info(&mut tx, id, &info, monitor_new).await?;
+    // Numbers were reassigned and absolute numbers cleared: not a sign of a recent airing.
+    result.recently_aired_episode_ids.clear();
     tx.commit().await?;
     if removed > 0 {
         tracing::info!(
@@ -837,6 +887,12 @@ async fn merge_series_info(
         series::set_season_images(conn, id, s.season_number, &s.images).await?;
     }
     let (mut added, mut updated) = (0u64, 0u64);
+    let anime: bool = sqlx::query_scalar("SELECT series_type = 'anime' FROM series WHERE id = ?")
+        .bind(id)
+        .fetch_one(&mut *conn)
+        .await?;
+    let now = Utc::now();
+    let mut recently_aired = Vec::new();
     for e in &info.episodes {
         series::ensure_season(
             conn,
@@ -846,7 +902,7 @@ async fn merge_series_info(
             None,
         )
         .await?;
-        let inserted = series::merge_episode(
+        let merged = series::merge_episode(
             conn,
             &series::NewEpisode {
                 series_id: id,
@@ -877,7 +933,14 @@ async fn merge_series_info(
             e.image.as_deref(),
         )
         .await?;
-        if inserted { added += 1 } else { updated += 1 }
+        if merged.inserted {
+            added += 1
+        } else {
+            updated += 1
+        }
+        if recently_aired_to_search(&merged, e.air_date_utc.as_deref(), anime, now) {
+            recently_aired.push(merged.id);
+        }
     }
     series::set_original_country(conn, id, info.original_country.as_deref()).await?;
     // Sonarr's refresh re-applies auto tagging (`RefreshSeriesService`).
@@ -885,7 +948,39 @@ async fn merge_series_info(
     Ok(RefreshResult {
         added_episodes: added,
         updated_episodes: updated,
+        recently_aired_episode_ids: recently_aired,
     })
+}
+
+/// Tanukarr's `EpisodeRefreshedService`: a monitored episode is searched after a refresh when
+/// it airs between 14 days ago and tomorrow and the refresh added it, gave it its absolute
+/// number (anime) or moved its air date from the future (or unknown) to now or the past.
+fn recently_aired_to_search(
+    merged: &series::MergedEpisode,
+    air_date_utc: Option<&str>,
+    anime: bool,
+    now: DateTime<Utc>,
+) -> bool {
+    let parse = |s: &str| DateTime::parse_from_rfc3339(s).ok().map(|d| d.to_utc());
+    // `COALESCE`: an episode the catalogue sends without a date keeps the one it had.
+    let Some(air) = air_date_utc
+        .and_then(parse)
+        .or_else(|| merged.previous_air_date_utc.as_deref().and_then(parse))
+    else {
+        return false;
+    };
+    let airs_soon = now + TimeDelta::days(1);
+    if !merged.monitored || air < now - TimeDelta::days(14) || air > airs_soon {
+        return false;
+    }
+    let moved_to_past = !merged.inserted
+        && air_date_utc.and_then(parse).is_some()
+        && merged
+            .previous_air_date_utc
+            .as_deref()
+            .and_then(parse)
+            .is_none_or(|old| old > airs_soon);
+    merged.inserted || (anime && merged.absolute_added) || moved_to_past
 }
 
 /// Refreshes a movie from its owning catalogue.
@@ -1026,6 +1121,94 @@ pub async fn folder_preview(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// `EpisodeRefreshedServiceFixture`: which refreshed episodes are searched.
+    #[test]
+    fn recently_aired_episodes_are_searched() {
+        let now = Utc::now();
+        let at = |days: i64| (now + TimeDelta::days(days)).to_rfc3339();
+        let merged = |inserted: bool, monitored: bool, absolute: bool, old: Option<String>| {
+            series::MergedEpisode {
+                id: 1,
+                inserted,
+                monitored,
+                absolute_added: absolute,
+                previous_air_date_utc: old,
+            }
+        };
+        let search = |m: &series::MergedEpisode, air: Option<String>, anime: bool| {
+            recently_aired_to_search(m, air.as_deref(), anime, now)
+        };
+        // Added: monitored and aired between 14 days ago and tomorrow.
+        assert!(search(
+            &merged(true, true, false, None),
+            Some(at(-3)),
+            false
+        ));
+        assert!(search(&merged(true, true, false, None), Some(at(0)), false));
+        assert!(!search(
+            &merged(true, false, false, None),
+            Some(at(-3)),
+            false
+        ));
+        assert!(!search(
+            &merged(true, true, false, None),
+            Some(at(-15)),
+            false
+        ));
+        assert!(!search(
+            &merged(true, true, false, None),
+            Some(at(2)),
+            false
+        ));
+        assert!(!search(&merged(true, true, false, None), None, false));
+        // Updated with an absolute number added: anime only.
+        let recent = Some(at(-2));
+        assert!(search(
+            &merged(false, true, true, recent.clone()),
+            recent.clone(),
+            true
+        ));
+        assert!(!search(
+            &merged(false, true, true, recent.clone()),
+            recent.clone(),
+            false
+        ));
+        // Updated without a change: not searched.
+        assert!(!search(
+            &merged(false, true, false, recent.clone()),
+            recent.clone(),
+            true
+        ));
+        // Air date moved from the future (or unknown) to the recent past.
+        assert!(search(
+            &merged(false, true, false, Some(at(30))),
+            Some(at(-1)),
+            false
+        ));
+        assert!(search(
+            &merged(false, true, false, None),
+            Some(at(-1)),
+            false
+        ));
+        assert!(!search(
+            &merged(false, false, false, Some(at(30))),
+            Some(at(-1)),
+            false
+        ));
+        // Moved, but long ago: not recent.
+        assert!(!search(
+            &merged(false, true, false, Some(at(30))),
+            Some(at(-20)),
+            false
+        ));
+        // Already in the past before: not moved.
+        assert!(!search(
+            &merged(false, true, false, Some(at(-5))),
+            Some(at(-1)),
+            false
+        ));
+    }
 
     #[test]
     fn monitoring_options() {

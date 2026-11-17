@@ -190,8 +190,57 @@ pub fn spawn(db: &Database, notifier: &Notifier, event: Event) {
             }
         }
         let instance = instance(&db).await;
-        notifier.dispatch(&others, &event, &instance).await;
+        let others = without_blocked(&db, others).await;
+        for (id, result) in notifier.dispatch_results(&others, &event, &instance).await {
+            record_outcome(&db, id, result.is_ok()).await;
+        }
     });
+}
+
+/// `FilterBlockedNotifications`: connections backing off after failures are skipped.
+pub async fn without_blocked(db: &Database, connections: Vec<Connection>) -> Vec<Connection> {
+    use kitsunarr_db::indexer_status::{Kind, blocked_of};
+    let blocked = blocked_of(Kind::Notification, db.pool(), chrono::Utc::now())
+        .await
+        .unwrap_or_default();
+    connections
+        .into_iter()
+        .filter(|c| match blocked.iter().find(|b| b.indexer_id == c.id) {
+            Some(b) => {
+                tracing::debug!(
+                    connection = %c.name,
+                    till = b.disabled_till.as_deref().unwrap_or_default(),
+                    "temporarily ignoring the notification due to recent failures"
+                );
+                false
+            }
+            None => true,
+        })
+        .collect()
+}
+
+/// `NotificationStatusService.RecordSuccess` / `RecordFailure`.
+pub async fn record_outcome(db: &Database, connection_id: i64, ok: bool) {
+    use kitsunarr_db::indexer_status::{
+        Failure, Kind, process_started, record_failure_of, record_success_of,
+    };
+    let result = if ok {
+        record_success_of(Kind::Notification, db.pool(), connection_id).await
+    } else {
+        record_failure_of(
+            Kind::Notification,
+            db.pool(),
+            connection_id,
+            Failure::Failure,
+            process_started(),
+            chrono::Utc::now(),
+        )
+        .await
+        .map(|_| ())
+    };
+    if let Err(e) = result {
+        tracing::debug!(error = %e, "the notification status could not be recorded");
+    }
 }
 
 /// Builds and sends the "Download" (or upgrade) notification for an imported file.
@@ -248,6 +297,101 @@ pub async fn imported(
             download_client_type: Some(client_implementation.to_string()),
             download_id: Some(download_id.to_string()),
         }));
+    spawn(db, notifier, event);
+}
+
+/// The longest common directory of paths (`GetLongestCommonPath`).
+fn longest_common_path(paths: &[String]) -> String {
+    let Some(first) = paths.first() else {
+        return String::new();
+    };
+    if paths.len() == 1 {
+        return first.clone();
+    }
+    let split: Vec<Vec<&str>> = paths.iter().map(|p| p.split('/').collect()).collect();
+    let mut common: Vec<&str> = Vec::new();
+    for (i, part) in split[0].iter().enumerate() {
+        if split.iter().all(|s| s.get(i) == Some(part)) {
+            common.push(part);
+        } else {
+            break;
+        }
+    }
+    common.join("/")
+}
+
+/// `DownloadCompletedEvent` → `OnImportComplete`: once every expected episode of a download
+/// was imported, one event with all its files.
+#[allow(clippy::too_many_arguments)]
+pub async fn import_complete(
+    db: &Database,
+    notifier: &Notifier,
+    series_id: i64,
+    results: &[crate::import::FileResult],
+    download_id: &str,
+    download_title: &str,
+    output_path: &str,
+    client_name: &str,
+    client_implementation: &str,
+) {
+    let Some(series) = series_ref(db, series_id).await else {
+        return;
+    };
+    let mut files = Vec::new();
+    let mut episode_ids = Vec::new();
+    for r in results.iter().filter(|r| r.imported) {
+        let Some(f) = &r.imported_file else {
+            continue;
+        };
+        if let Some(mut file) = file_ref(db, &series, f.file_id).await {
+            file.source_path = Some(f.source_path.clone());
+            files.push(file);
+        }
+        episode_ids.extend(r.episode_ids.iter().copied());
+    }
+    if files.is_empty() {
+        return;
+    }
+    episode_ids.sort_unstable();
+    episode_ids.dedup();
+    let episodes = episode_refs(db, series_id, &episode_ids).await;
+    let grabs = kitsunarr_db::history::grabs_for(db, &[download_id.to_string()])
+        .await
+        .unwrap_or_default();
+    let grab = grabs.first();
+    let data: serde_json::Value = grab
+        .and_then(|g| serde_json::from_str(&g.data).ok())
+        .unwrap_or_default();
+    let text = |k: &str| data.get(k).and_then(|v| v.as_str()).map(str::to_string);
+    // `ParsedEpisodeInfo` of the download: its quality, group and whether it is a season.
+    let title = grab.map_or(download_title, |g| g.source_title.as_str());
+    let parsed = kitsunarr_parser::parse_title(title);
+    let quality = parsed
+        .as_ref()
+        .map_or_else(kitsunarr_parser::ParsedQuality::unknown, |p| p.quality);
+    let destination =
+        longest_common_path(&files.iter().map(|f| f.path.clone()).collect::<Vec<_>>());
+    let event = Event::ImportComplete(Box::new(kitsunarr_notifications::ImportComplete {
+        series,
+        episodes,
+        release: kitsunarr_notifications::GrabbedRef {
+            release_title: grab.map(|g| g.source_title.clone()),
+            indexer: text("indexer"),
+            size: text("size").and_then(|v| v.parse().ok()),
+            indexer_flags: Vec::new(),
+            release_type: text("releaseType"),
+        },
+        full_season: parsed.as_ref().is_some_and(|p| p.full_season),
+        release_group: parsed.as_ref().and_then(|p| p.release_group.clone()),
+        quality: quality.quality.name.to_string(),
+        quality_version: quality.revision.version,
+        download_client: Some(client_name.to_string()),
+        download_client_type: Some(client_implementation.to_string()),
+        download_id: Some(download_id.to_string()),
+        source_path: output_path.to_string(),
+        destination_path: destination,
+        files,
+    }));
     spawn(db, notifier, event);
 }
 

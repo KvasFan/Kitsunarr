@@ -173,6 +173,122 @@ async fn an_added_sequel_joins_its_franchise_group() {
     );
 }
 
+/// Tanukarr's `AnimeGroupingMode.Disabled`: a sequel added with grouping disabled gets no group
+/// folder and no group, refreshes leave it alone, and switching back to automatic groups it.
+#[tokio::test]
+async fn disabled_grouping_keeps_a_title_out_of_its_franchise() {
+    use kitsunarr_db::library::collections::{self, Member};
+    let app = axum::Router::new().route("/graphql", post(graphql));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let metadata = Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            anilist: format!("http://{addr}/graphql"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    );
+    let dir = tempfile::tempdir().unwrap();
+    let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+    kitsunarr_db::seed::seed_defaults(&db).await.unwrap();
+    kitsunarr_db::root_folders::create(db.pool(), "/media/anime", None)
+        .await
+        .unwrap();
+    let added = kitsunarr_library::add_title_with(
+        &db,
+        &metadata,
+        &AddTitleRequest {
+            provider: MetadataProvider::AniList,
+            id: "2".into(),
+            root_folder_path: "/media/anime".into(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        },
+        kitsunarr_library::AddOptions {
+            automatic_grouping: false,
+        },
+    )
+    .await
+    .unwrap();
+    // The usual folder, not `{root}/{group}/Season 02`.
+    let (path, season_folder): (String, bool) =
+        sqlx::query_as("SELECT path, season_folder FROM series WHERE id = ?")
+            .bind(added.id)
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert_eq!(path, "/media/anime/Franchise part 2");
+    assert!(season_folder);
+    let detail = kitsunarr_db::library::series::get_detail(&db, added.id)
+        .await
+        .unwrap();
+    assert!(!detail.automatic_grouping);
+    for _ in 0..2 {
+        kitsunarr_library::refresh_series(&db, &metadata, added.id)
+            .await
+            .unwrap();
+        tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+        assert!(
+            collections::group_of_series(&db, added.id)
+                .await
+                .unwrap()
+                .is_none()
+        );
+    }
+    // Automatic again: the next refresh groups it.
+    kitsunarr_db::library::series::apply_update(
+        &db,
+        added.id,
+        &kitsunarr_domain::api::library::SeriesUpdate {
+            automatic_grouping: Some(true),
+            ..Default::default()
+        },
+    )
+    .await
+    .unwrap();
+    kitsunarr_library::refresh_series(&db, &metadata, added.id)
+        .await
+        .unwrap();
+    assert_eq!(
+        collections::group_of_series(&db, added.id)
+            .await
+            .unwrap()
+            .unwrap()
+            .0,
+        "Franchise part 1"
+    );
+    // Disabled again: it leaves the anime group (Tanukarr clears the group) and stays out.
+    let mut conn = db.pool().acquire().await.unwrap();
+    assert!(
+        collections::set_automatic_grouping(&mut conn, Member::Series(added.id), false)
+            .await
+            .unwrap()
+    );
+    drop(conn);
+    assert!(
+        collections::group_of_series(&db, added.id)
+            .await
+            .unwrap()
+            .is_none()
+    );
+    kitsunarr_library::refresh_series(&db, &metadata, added.id)
+        .await
+        .unwrap();
+    assert!(
+        collections::group_of_series(&db, added.id)
+            .await
+            .unwrap()
+            .is_none()
+    );
+}
+
 async fn tmdb_movie(axum::extract::Path(id): axum::extract::Path<i64>) -> Json<Value> {
     Json(
         json!({"id": id, "title": format!("Film {id}"), "release_date": "2003-05-01", "runtime": 120,

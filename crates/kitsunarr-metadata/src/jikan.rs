@@ -390,13 +390,15 @@ impl Jikan {
         })
         .await?;
         let mut seen = std::collections::HashSet::new();
-        Ok(found
+        let mut results: Vec<SearchResult> = found
             .data
             .iter()
             .filter(|a| suitable(a) && seen.insert(a.mal_id))
             .take(MAX_SEARCH_RESULTS)
             .map(result_of)
-            .collect())
+            .collect();
+        crate::title_matcher::rank(term.trim(), &mut results);
+        Ok(results)
     }
 
     pub fn forget(&self, id: &str) {
@@ -514,6 +516,8 @@ fn result_of(a: &Anime) -> SearchResult {
         status: status(a.status.as_deref()),
         poster_url: poster(a),
         external_ids: external_ids(a),
+        alternate_titles: Vec::new(),
+        votes: a.scored_by.unwrap_or(0),
     }
 }
 

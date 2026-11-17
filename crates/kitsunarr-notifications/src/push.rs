@@ -16,7 +16,10 @@ fn branded(title: &str) -> String {
 pub async fn slack(n: &Notifier, s: &Map<String, Value>, event: &Event) -> NotifyResult {
     let url = required(s, "webHookUrl", "The webhook URL")?;
     let color = match event {
-        Event::Download(_) | Event::SeriesAdd(_) | Event::HealthRestored(_) => "good",
+        Event::Download(_)
+        | Event::ImportComplete(_)
+        | Event::SeriesAdd(_)
+        | Event::HealthRestored(_) => "good",
         Event::HealthIssue(h) if h.level == "error" => "danger",
         Event::HealthIssue(_) => "warning",
         Event::SeriesDelete { .. } | Event::EpisodeFileDelete { .. } => "danger",

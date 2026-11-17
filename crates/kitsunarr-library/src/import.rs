@@ -1327,6 +1327,18 @@ async fn transfer_and_record(
     )
     .await
     .map_err(|e| e.to_string())?;
+    // Tanukarr: the newest grab's title and size stay on the file (`SourceReleaseSize`), so a
+    // season pack keeps scoring as one.
+    series::set_source_release(
+        &mut conn,
+        file_id,
+        d.grabs.last().map(|g| g.source_title.as_str()),
+        grab_data
+            .get("size")
+            .and_then(|v| v.as_str().and_then(|s| s.parse().ok()).or(v.as_i64())),
+    )
+    .await
+    .map_err(|e| e.to_string())?;
     series::link_episodes_to_file(&mut conn, &c.episodes, file_id)
         .await
         .map_err(|e| e.to_string())?;

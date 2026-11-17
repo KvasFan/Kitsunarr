@@ -499,8 +499,8 @@ pub(crate) fn host_resource(state: &AppState, g: &GeneralSettings, p: &ProxySett
         "proxyBypassLocalAddresses": p.bypass_local_addresses,
         "certificateValidation": g.certificate_validation,
         "backupFolder": state.config.backup_dir().display().to_string(),
-        "backupInterval": 7,
-        "backupRetention": 28,
+        "backupInterval": g.backup_interval,
+        "backupRetention": g.backup_retention,
         "trustCgnatIpAddresses": false,
     })
 }

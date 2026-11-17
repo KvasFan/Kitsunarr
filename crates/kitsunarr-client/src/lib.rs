@@ -417,6 +417,18 @@ impl Client {
         )
         .await
     }
+    /// Tanukarr's grouping mode of a film: `false` is "Disabled".
+    pub async fn set_movie_automatic_grouping(
+        &self,
+        id: i64,
+        enabled: bool,
+    ) -> ClientResult<MovieDetail> {
+        self.patch(
+            &format!("/movies/{id}"),
+            &serde_json::json!({ "automaticGrouping": enabled }),
+        )
+        .await
+    }
     pub async fn set_movie_watched(&self, id: i64, watched: bool) -> ClientResult<MovieDetail> {
         self.put(
             &format!("/movies/{id}/watched"),
@@ -939,6 +951,13 @@ impl Client {
         self.get_query("/library/folder-preview", q).await
     }
     pub async fn add_title(&self, req: &AddTitleRequest) -> ClientResult<LibraryRef> {
+        self.post("/library/add", req).await
+    }
+    /// [`Self::add_title`] with the native add options.
+    pub async fn add_title_with(
+        &self,
+        req: &kitsunarr_domain::api::metadata::AddTitle,
+    ) -> ClientResult<LibraryRef> {
         self.post("/library/add", req).await
     }
     pub async fn collections(&self) -> ClientResult<Vec<CollectionItem>> {

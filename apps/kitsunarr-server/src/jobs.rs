@@ -9,8 +9,6 @@ use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_metadata::Metadata;
 use kitsunarr_scheduler::{Job, JobContext, JobResult, job};
 
-/// Scheduled backups kept on disk (manual and pre-migration backups are never pruned).
-const KEEP_SCHEDULED_BACKUPS: usize = 8;
 const KEEP_TASK_RUNS: i64 = 2000;
 
 pub fn all(
@@ -25,6 +23,7 @@ pub fn all(
     let api_for_health = api.clone();
     let api_for_watched = api.clone();
     let api_for_lists = api.clone();
+    let api_for_refresh = api.clone();
     let scan_notifier = downloads.notifier.clone();
     vec![
         job(
@@ -63,7 +62,9 @@ pub fn all(
         job(
             kitsunarr_api::import_lists::TASK,
             "Reads the import lists that are due and adds their new titles",
-            15,
+            // Sonarr's `ImportListSyncCommand` runs every 5 minutes; lists keep their own
+            // minimum refresh interval, and witnessed complete reads retry failed additions.
+            5,
             Duration::from_secs(2 * 3600),
             move |_ctx| {
                 let api = api_for_lists.clone();
@@ -141,7 +142,8 @@ pub fn all(
             Duration::from_secs(6 * 3600),
             move |ctx| {
                 let metadata = metadata.clone();
-                async move { refresh_metadata(&ctx, &metadata).await }
+                let api = api_for_refresh.clone();
+                async move { refresh_metadata(&ctx, &metadata, api.get()).await }
             },
         ),
         job(
@@ -186,21 +188,35 @@ pub fn all(
             },
         ),
         job(
-            "Backup",
-            "Creates a consistent database backup and keeps the most recent ones",
-            7 * 24 * 60,
+            maintenance::BACKUP_TASK,
+            "Creates a consistent database backup and removes scheduled backups older than the retention",
+            // Settings › General › Backups sets the interval (Sonarr's `BackupInterval`).
+            maintenance::backup_interval_minutes(7),
             Duration::from_secs(1800),
             move |ctx| {
                 let dir = backup_dir_for_job.clone();
                 async move {
+                    let general: kitsunarr_domain::api::settings::GeneralSettings =
+                        kitsunarr_db::settings::get_or_default(
+                            ctx.db.pool(),
+                            kitsunarr_db::settings::KEY_GENERAL,
+                        )
+                        .await
+                        .map_err(|e| e.to_string())?;
                     let dest = maintenance::unique_backup_path(&dir, "scheduled");
                     maintenance::backup_to(&ctx.db, &dest)
                         .await
                         .map_err(|e| e.to_string())?;
-                    let pruned = prune_scheduled_backups(&dir, KEEP_SCHEDULED_BACKUPS);
+                    // `CleanupOldBackups` (Sonarr's `BackupRetention`).
+                    let pruned = maintenance::prune_scheduled_backups(
+                        &dir,
+                        general.backup_retention,
+                        std::time::SystemTime::now(),
+                    );
                     Ok(Some(format!(
-                        "{} written, {pruned} old scheduled backups removed",
-                        dest.display()
+                        "{} written, {pruned} scheduled backups older than {} days removed",
+                        dest.display(),
+                        general.backup_retention
                     )))
                 }
             },
@@ -231,7 +247,13 @@ pub fn all(
 
 /// Refreshes every title that is due. One failing title does not stop the others; the run
 /// fails only when every refresh failed (typically: the catalogue is unreachable).
-async fn refresh_metadata(ctx: &JobContext, metadata: &Metadata) -> JobResult {
+/// Episodes a series refresh added or moved into the recent past are searched afterwards, in
+/// the background (Tanukarr's `EpisodeRefreshedService`).
+async fn refresh_metadata(
+    ctx: &JobContext,
+    metadata: &Metadata,
+    api: Option<&kitsunarr_api::AppState>,
+) -> JobResult {
     let (series, movies) =
         kitsunarr_library::due_for_refresh(&ctx.db, metadata, chrono::Utc::now())
             .await
@@ -257,7 +279,17 @@ async fn refresh_metadata(ctx: &JobContext, metadata: &Metadata) -> JobResult {
         let result = if kind == "series" {
             kitsunarr_library::refresh_series(&ctx.db, metadata, id)
                 .await
-                .map(|_| ())
+                .map(|r| {
+                    if let Some(state) = api
+                        && !r.recently_aired_episode_ids.is_empty()
+                    {
+                        let (state, ids) = (state.clone(), r.recently_aired_episode_ids);
+                        tokio::spawn(async move {
+                            kitsunarr_api::routes::wanted::search_recently_aired(&state, id, &ids)
+                                .await;
+                        });
+                    }
+                })
         } else {
             kitsunarr_library::refresh_movie(&ctx.db, metadata, id).await
         };
@@ -311,18 +343,6 @@ fn remove_stale_files(dir: &std::path::Path, age: Duration) -> usize {
         }
     }
     removed
-}
-
-/// Deletes the oldest `*_scheduled.db` backups beyond `keep`. Other backups are untouched.
-fn prune_scheduled_backups(dir: &std::path::Path, keep: usize) -> usize {
-    let Ok(list) = maintenance::list_backups(dir) else {
-        return 0;
-    };
-    list.into_iter()
-        .filter(|(name, _, _)| name.ends_with("_scheduled.db") || name.contains("_scheduled-"))
-        .skip(keep)
-        .filter(|(name, _, _)| std::fs::remove_file(dir.join(name)).is_ok())
-        .count()
 }
 
 /// Scan both native libraries, isolating unavailable roots and individual title failures.
@@ -488,8 +508,10 @@ mod tests {
         );
     }
 
+    /// `CleanupOldBackups`: scheduled backups older than the retention go; manual and
+    /// pre-migration backups stay.
     #[test]
-    fn pruning_only_touches_scheduled_backups() {
+    fn pruning_only_touches_old_scheduled_backups() {
         let dir = tempfile::tempdir().unwrap();
         for i in 0..5 {
             std::fs::write(
@@ -500,24 +522,34 @@ mod tests {
                 b"x",
             )
             .unwrap();
-            std::thread::sleep(Duration::from_millis(15));
         }
-        std::fs::write(
-            dir.path()
-                .join("kitsunarr_2026-01-01_00-00-00-000_pre-migration.db"),
-            b"x",
-        )
-        .unwrap();
-        assert_eq!(prune_scheduled_backups(dir.path(), 2), 3);
-        let left: Vec<_> = std::fs::read_dir(dir.path())
+        for name in [
+            "kitsunarr_2026-01-01_00-00-00-000_pre-migration.db",
+            "kitsunarr_2026-01-01_00-00-00-000_manual.db",
+        ] {
+            std::fs::write(dir.path().join(name), b"x").unwrap();
+        }
+        let in_30_days = std::time::SystemTime::now() + Duration::from_secs(30 * 86_400);
+        // Written just now: within a 31-day retention 30 days from now.
+        assert_eq!(
+            maintenance::prune_scheduled_backups(dir.path(), 31, in_30_days),
+            0
+        );
+        assert_eq!(
+            maintenance::prune_scheduled_backups(dir.path(), 28, in_30_days),
+            5
+        );
+        let mut left: Vec<_> = std::fs::read_dir(dir.path())
             .unwrap()
-            .map(|e| e.unwrap().file_name())
+            .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
             .collect();
-        assert_eq!(left.len(), 3);
-        assert!(
-            dir.path()
-                .join("kitsunarr_2026-01-01_00-00-00-000_pre-migration.db")
-                .exists()
+        left.sort();
+        assert_eq!(
+            left,
+            [
+                "kitsunarr_2026-01-01_00-00-00-000_manual.db",
+                "kitsunarr_2026-01-01_00-00-00-000_pre-migration.db"
+            ]
         );
     }
 }

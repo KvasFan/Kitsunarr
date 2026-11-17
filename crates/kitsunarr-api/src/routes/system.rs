@@ -283,6 +283,8 @@ pub async fn compute_health(state: &AppState) -> ApiResult<Vec<HealthCheck>> {
 /// (`OnHealthIssue`) or cleared (`OnHealthRestored`) since the previous evaluation. The first
 /// evaluation after start-up only records the baseline, so restarts do not repeat old issues.
 pub async fn check_health_and_notify(state: &AppState) -> ApiResult<String> {
+    // `CheckOnSchedule` checks such as `DatabaseIntegrityCheck` run again on this task.
+    state.database_integrity.get(&state.db, true).await;
     let current: Vec<HealthCheck> = compute_health(state)
         .await?
         .into_iter()
@@ -399,9 +401,27 @@ pub async fn create_backup(
     State(state): State<AppState>,
     _p: Principal,
 ) -> ApiResult<(StatusCode, Json<BackupItem>)> {
+    let started = std::time::Instant::now();
     let dest = maintenance::unique_backup_path(&state.config.backup_dir(), "manual");
     let path = maintenance::backup_to(&state.db, &dest).await?;
     let size = std::fs::metadata(&path).map(|m| m.len()).unwrap_or(0);
+    // Tanukarr 1.0.4: the scheduled interval restarts from a successful manual backup.
+    let message = format!("{} written", path.display());
+    let run = maintenance::record_manual_backup(
+        &state.db,
+        &message,
+        started.elapsed().as_millis() as i64,
+    )
+    .await?;
+    state
+        .events
+        .publish(kitsunarr_domain::api::events::ServerEvent::Task {
+            run_id: run,
+            task_name: maintenance::BACKUP_TASK.into(),
+            status: "completed".into(),
+            progress: None,
+            message: Some(message),
+        });
     Ok((
         StatusCode::CREATED,
         Json(BackupItem {

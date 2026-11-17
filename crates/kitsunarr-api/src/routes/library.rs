@@ -87,6 +87,10 @@ pub async fn update_series(
     }
     series::apply_update(&state.db, id, &update).await?;
     changed(&state, "series", vec![id], false);
+    // Back to automatic grouping: resolve the group now rather than at the next refresh.
+    if update.automatic_grouping == Some(true) && !before.automatic_grouping {
+        regroup(&state, kitsunarr_library::grouping::Member::Series(id));
+    }
     // `SeriesEditedService`: a new language is read at once.
     if update
         .metadata_language
@@ -95,9 +99,15 @@ pub async fn update_series(
     {
         let state = state.clone();
         tokio::spawn(async move {
-            if let Err(e) = kitsunarr_library::refresh_series(&state.db, &state.metadata, id).await
-            {
-                tracing::warn!(series_id = id, error = %e, "refresh after a language change failed");
+            match kitsunarr_library::refresh_series(&state.db, &state.metadata, id).await {
+                Ok(r) => crate::routes::wanted::spawn_recently_aired_search(
+                    &state,
+                    id,
+                    r.recently_aired_episode_ids,
+                ),
+                Err(e) => {
+                    tracing::warn!(series_id = id, error = %e, "refresh after a language change failed");
+                }
             }
             changed(&state, "series", vec![id], false);
         });
@@ -377,6 +387,23 @@ pub struct MovieUpdate {
     pub monitored: Option<bool>,
     pub quality_profile_id: Option<i64>,
     pub tags: Option<Vec<i64>>,
+    /// `false` removes the film from its automatic groups (anime groups, TMDB collections) and
+    /// keeps it out of them; `true` lets it be grouped again.
+    #[serde(default)]
+    pub automatic_grouping: Option<bool>,
+}
+
+/// Re-runs automatic grouping for a title in the background (its group or collection).
+fn regroup(state: &AppState, member: kitsunarr_library::grouping::Member) {
+    let state = state.clone();
+    tokio::spawn(async move {
+        kitsunarr_library::grouping::group_new_title(&state.db, &state.metadata, member).await;
+        let (kind, id) = match member {
+            kitsunarr_library::grouping::Member::Series(id) => ("series", id),
+            kitsunarr_library::grouping::Member::Movie(id) => ("movie", id),
+        };
+        changed(&state, kind, vec![id], false);
+    });
 }
 
 #[utoipa::path(patch, path = "/movies/{id}", tag = "library", params(("id" = i64, Path)), request_body = MovieUpdate,
@@ -416,6 +443,14 @@ pub async fn update_movie(
             },
         )
         .await?;
+    }
+    if let Some(enabled) = update.automatic_grouping {
+        let member = kitsunarr_library::grouping::Member::Movie(id);
+        let before = movies::get_detail(&state.db, id).await?.automatic_grouping;
+        kitsunarr_db::library::collections::set_title_grouping(&state.db, member, enabled).await?;
+        if enabled && !before {
+            regroup(&state, member);
+        }
     }
     changed(&state, "movie", vec![id], false);
     Ok(Json(movies::get_detail(&state.db, id).await?))

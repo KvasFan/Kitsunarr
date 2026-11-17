@@ -40,13 +40,10 @@ pub async fn anilist(
     let call = |query: &'static str, variables: Value| {
         let (http, base, token) = (http.clone(), base.clone(), token.clone());
         async move {
-            let resp = http
-                .post(&base)
-                .bearer_auth(token)
-                .json(&json!({"query": query, "variables": variables}))
-                .send()
-                .await
-                .map_err(connection_error)?;
+            let body = json!({"query": query, "variables": variables});
+            let resp =
+                crate::anilist_send(&base, || http.post(&base).bearer_auth(&token).json(&body))
+                    .await?;
             check_status(&resp)?;
             let v: Value = resp
                 .json()

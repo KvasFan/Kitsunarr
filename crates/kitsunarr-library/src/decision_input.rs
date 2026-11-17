@@ -229,11 +229,13 @@ pub async fn series_model(
                                 is_repack: f.is_repack,
                             },
                         },
-                        // `ParseCustomFormat(EpisodeFile)`: scene name, else the original
-                        // file name, else the file name.
+                        // `ParseCustomFormat(EpisodeFile)`: the grabbed release's title (Tanukarr),
+                        // else the scene name, else the original file name, else the file name.
                         release_title: f
-                            .scene_name
+                            .source_release_title
                             .clone()
+                            .filter(|n| !n.trim().is_empty())
+                            .or_else(|| f.scene_name.clone())
                             .filter(|n| !n.trim().is_empty())
                             .or_else(|| {
                                 f.original_path
@@ -249,7 +251,8 @@ pub async fn series_model(
                             .into_iter()
                             .filter_map(Language::by_id)
                             .collect(),
-                        size: f.size,
+                        // The grabbed release's size (a season pack's, not the episode's).
+                        size: f.source_release_size.unwrap_or(f.size),
                         indexer_flags: f.indexer_flags as u32,
                         release_type: release_type(f.release_type),
                         date_added: history_date(&f.added_at),
@@ -307,10 +310,13 @@ pub async fn movie_model(
         original_path: Option<String>,
         size: i64,
         added_at: String,
+        source_release_size: Option<i64>,
+        source_release_title: Option<String>,
     }
     let row: Option<Row> = sqlx::query_as(
         "SELECT id, relative_path, quality_id, revision_version, revision_real, is_repack, languages, \
-         release_group, scene_name, original_path, size, added_at FROM movie_files WHERE movie_id = ?",
+         release_group, scene_name, original_path, size, added_at, source_release_size, source_release_title \
+         FROM movie_files WHERE movie_id = ?",
     )
     .bind(detail.item.id)
     .fetch_optional(db.pool())
@@ -326,7 +332,9 @@ pub async fn movie_model(
             },
         },
         release_title: f
-            .scene_name
+            .source_release_title
+            .filter(|n| !n.trim().is_empty())
+            .or(f.scene_name)
             .filter(|n| !n.trim().is_empty())
             .or_else(|| {
                 f.original_path
@@ -342,7 +350,7 @@ pub async fn movie_model(
             .into_iter()
             .filter_map(Language::by_id)
             .collect(),
-        size: f.size,
+        size: f.source_release_size.unwrap_or(f.size),
         indexer_flags: 0,
         release_type: kitsunarr_parser::ReleaseType::SingleEpisode,
         date_added: chrono::DateTime::parse_from_rfc3339(&f.added_at)

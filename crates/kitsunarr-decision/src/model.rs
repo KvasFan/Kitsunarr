@@ -59,11 +59,14 @@ pub struct Blocklisted {
 pub struct EpisodeFile {
     pub id: i64,
     pub quality: QualityModel,
-    /// The scene name, else the original file name, else the file name.
+    /// The grabbed release's title (Tanukarr's `SourceReleaseTitle`), else the scene name, else
+    /// the original file name, else the file name.
     pub release_title: String,
     pub file_name: String,
     pub release_group: Option<String>,
     pub languages: Vec<&'static Language>,
+    /// For custom formats: the grabbed release's size when known (`SourceReleaseSize`, a
+    /// season pack's for its episodes), else the file's.
     pub size: i64,
     pub indexer_flags: u32,
     pub release_type: ReleaseType,

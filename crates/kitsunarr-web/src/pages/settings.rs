@@ -58,6 +58,20 @@ pub fn SettingsGeneral() -> Element {
             }
         });
     };
+    let c4 = client.clone();
+    let save_backups = move |_| {
+        let Some(g) = form() else { return };
+        let c = c4.clone();
+        spawn(async move {
+            match c.put_general(&g).await {
+                Ok(saved) => {
+                    form.set(Some(saved));
+                    app.success("Backup settings saved.");
+                }
+                Err(e) => app.error(&e),
+            }
+        });
+    };
     let c2 = client.clone();
     let regenerate = move |_| {
         confirm_regen.set(false);
@@ -150,6 +164,26 @@ pub fn SettingsGeneral() -> Element {
         }
         crate::pages::security::SecurityCard {}
         ProxyCard {}
+        // Sonarr's Settings › General › Backups.
+        div { class: "card",
+            h3 { "Backups" }
+            match form() {
+                None => rsx! { Loading {} },
+                Some(g) => rsx! {
+                    div { class: "form-grid",
+                        Field { label: "Interval (days)", help: "How often a backup is made automatically (1-7 days). A manual backup restarts the interval.".to_string(),
+                            input { class: "input", r#type: "number", min: "1", max: "7", "aria-label": "Backup interval in days", value: "{g.backup_interval}",
+                                oninput: move |e| { if let Some(f) = form.write().as_mut() { f.backup_interval = e.value().parse().unwrap_or(f.backup_interval); } } }
+                        }
+                        Field { label: "Retention (days)", help: "Automatic backups older than this are deleted (1-90 days). Manual backups are kept.".to_string(),
+                            input { class: "input", r#type: "number", min: "1", max: "90", "aria-label": "Backup retention in days", value: "{g.backup_retention}",
+                                oninput: move |e| { if let Some(f) = form.write().as_mut() { f.backup_retention = e.value().parse().unwrap_or(f.backup_retention); } } }
+                        }
+                    }
+                    div { class: "row end", button { class: "btn primary", onclick: save_backups, {crate::i18n::t().save} } }
+                },
+            }
+        }
         if confirm_regen() {
             Confirm {
                 title: "Regenerate API key",
@@ -2521,7 +2555,9 @@ fn ProvidersPage(kind: &'static str, title: &'static str, note: &'static str) ->
                                                     if p.kind == ProviderKind::Notification {
                                                         for (k, v) in &t.options {
                                                             if v.is_boolean() {
-                                                                p.options.entry(k.clone()).or_insert(Value::Bool(false));
+                                                                // "Delete for upgrade" was on for existing connections (Sonarr).
+                                                                let on = k == "onEpisodeFileDeleteForUpgrade";
+                                                                p.options.entry(k.clone()).or_insert(Value::Bool(on));
                                                             }
                                                         }
                                                     }

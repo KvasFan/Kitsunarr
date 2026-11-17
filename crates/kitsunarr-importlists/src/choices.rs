@@ -34,14 +34,19 @@ async fn anilist(http: &reqwest::Client, s: &Map<String, Value>) -> Result<Vec<C
         "Enter the AniList username first".into(),
     ))?;
     let base = text(s, "baseUrl").unwrap_or_else(|| "https://graphql.anilist.co".into());
-    let mut req = http.post(&base).json(&json!({
+    let body = json!({
         "query": "query ($name: String) { User(name: $name) { mediaListOptions { animeList { customLists } } } }",
         "variables": {"name": user},
-    }));
-    if let Some(t) = text(s, "accessToken") {
-        req = req.bearer_auth(t);
-    }
-    let resp = req.send().await.map_err(connection_error)?;
+    });
+    let token = text(s, "accessToken");
+    let resp = crate::anilist_send(&base, || {
+        let req = http.post(&base).json(&body);
+        match &token {
+            Some(t) => req.bearer_auth(t),
+            None => req,
+        }
+    })
+    .await?;
     check_status(&resp)?;
     let v: Value = resp
         .json()

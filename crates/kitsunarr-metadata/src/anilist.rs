@@ -1,6 +1,6 @@
 //! AniList (<https://docs.anilist.co>): anime series and films through GraphQL, no API key.
-//! The public limit is 90 requests per minute (30 while AniList runs in degraded mode), so
-//! Kitsunarr stays below 25.
+//! Every request goes through the server's shared [`AniListPacer`] (Tanukarr's
+//! `AniListRequestService`), which import lists use too.
 
 use std::time::Duration;
 
@@ -10,9 +10,10 @@ use kitsunarr_domain::{
 use serde::Deserialize;
 use serde_json::json;
 
+use crate::anilist_pacer::{AniListPacer, PacerError};
 use crate::{
-    EntryKind, EpisodeInfo, MetadataError, MetadataResult, RateLimiter, SearchResult, SeasonInfo,
-    SeriesInfo, TtlCache, send_json, strip_html,
+    EntryKind, EpisodeInfo, MetadataError, MetadataResult, SearchResult, SeasonInfo, SeriesInfo,
+    TtlCache, strip_html,
 };
 
 const P: MetadataProvider = MetadataProvider::AniList;
@@ -28,7 +29,7 @@ const FIELDS: &str = "id idMal format status episodes duration seasonYear countr
 pub struct AniList {
     http: reqwest::Client,
     base: String,
-    limiter: RateLimiter,
+    pacer: AniListPacer,
     cache: TtlCache<SeriesInfo>,
 }
 
@@ -338,12 +339,21 @@ impl AniList {
     }
 
     pub fn with_base(http: reqwest::Client, base: &str) -> Self {
+        Self::with_pacer(http, base, AniListPacer::shared(base))
+    }
+
+    /// An adapter sending through a shared [`AniListPacer`].
+    pub fn with_pacer(http: reqwest::Client, base: &str, pacer: AniListPacer) -> Self {
         Self {
             http,
             base: base.trim_end_matches('/').to_string(),
-            limiter: RateLimiter::new(25, Duration::from_secs(60)),
+            pacer,
             cache: TtlCache::new(Duration::from_secs(600), 64),
         }
+    }
+
+    pub fn pacer(&self) -> &AniListPacer {
+        &self.pacer
     }
 
     async fn query<T: serde::de::DeserializeOwned>(
@@ -352,13 +362,41 @@ impl AniList {
         variables: serde_json::Value,
     ) -> MetadataResult<T> {
         let body = json!({ "query": query, "variables": variables });
-        let env: Envelope<T> = send_json(P, &self.limiter, || {
-            self.http
-                .post(&self.base)
-                .header("Accept", "application/json")
-                .json(&body)
-        })
-        .await?;
+        let resp = self
+            .pacer
+            .send(|| {
+                self.http
+                    .post(&self.base)
+                    .header("Accept", "application/json")
+                    .timeout(Duration::from_secs(30))
+                    .json(&body)
+            })
+            .await
+            .map_err(|e| MetadataError::Http {
+                provider: P,
+                message: match e {
+                    PacerError::Request(e) => e.without_url().to_string(),
+                    other => other.to_string(),
+                },
+            })?;
+        let status = resp.status();
+        if status == reqwest::StatusCode::NOT_FOUND {
+            return Err(MetadataError::NotFound(P));
+        }
+        if !status.is_success() {
+            return Err(MetadataError::Http {
+                provider: P,
+                message: format!("HTTP {status}"),
+            });
+        }
+        let text = resp.text().await.map_err(|e| MetadataError::Http {
+            provider: P,
+            message: e.to_string(),
+        })?;
+        let env: Envelope<T> = serde_json::from_str(&text).map_err(|e| MetadataError::Decode {
+            provider: P,
+            message: e.to_string(),
+        })?;
         if let Some(e) = env.errors.first() {
             if e.status == Some(404) {
                 return Err(MetadataError::NotFound(P));
@@ -379,12 +417,12 @@ impl AniList {
             "query ($search: String) {{ Page(perPage: 20) {{ media(search: $search, type: ANIME, sort: SEARCH_MATCH, isAdult: false) {{ {FIELDS} }} }} }}"
         );
         let data: PageData = self.query(&q, json!({ "search": term })).await?;
-        Ok(data
+        let mut results: Vec<SearchResult> = data
             .page
             .media
             .into_iter()
             .map(|m| {
-                let (title, _, _) = titles(&m);
+                let (title, alternate_titles, _) = titles(&m);
                 SearchResult {
                     provider: P,
                     id: m.id.to_string(),
@@ -404,9 +442,15 @@ impl AniList {
                         .or_else(|| m.cover.extra_large.clone()),
                     external_ids: external_ids(&m),
                     title,
+                    alternate_titles,
+                    votes: m.popularity.unwrap_or(0),
                 }
             })
-            .collect())
+            .collect();
+        // AniList's popularity weighting buries an exact title under the franchise's
+        // better-known entries.
+        crate::title_matcher::rank(term, &mut results);
+        Ok(results)
     }
 
     /// Drops a cached entry so the next [`Self::series`] call fetches fresh data.

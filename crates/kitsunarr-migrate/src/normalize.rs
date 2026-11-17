@@ -443,14 +443,17 @@ fn series(r: &Rec, scene: &HashMap<i64, Vec<(String, Option<i32>)>>) -> Option<S
     alternate_titles.sort();
     alternate_titles.dedup();
 
-    let group = r.str("animegroupid").map(|group_id| SrcGroup {
-        group_id: Some(group_id),
+    let grouping_mode = kind_code(
+        r.raw("animegroupingmode"),
+        &["automatic", "manual", "disabled"],
+    );
+    // A disabled title has no group (Tanukarr clears it) but its mode must still migrate.
+    let group_id = r.str("animegroupid");
+    let group = (group_id.is_some() || grouping_mode != 0).then(|| SrcGroup {
+        group_id,
         group_title: r.str("animegrouptitle"),
         group_kind: kind_code(r.raw("animegroupkind"), &["series", "moviesaga"]),
-        grouping_mode: kind_code(
-            r.raw("animegroupingmode"),
-            &["automatic", "manual", "disabled"],
-        ),
+        grouping_mode,
         member_kind: kind_code(
             r.raw("animegroupmemberkind"),
             &["season", "movie", "special"],
@@ -579,9 +582,7 @@ fn episode(r: &Rec) -> Option<SrcEpisode> {
 fn episode_file(r: &Rec) -> Option<SrcEpisodeFile> {
     let (quality_id, revision) =
         quality_model(r.json("quality")).unwrap_or((0, SrcRevision::default()));
-    let mut unmapped = Map::new();
-    note(&mut unmapped, r, "sourcereleasetitle", zero_or_empty);
-    note(&mut unmapped, r, "sourcereleasesize", zero_or_empty);
+    let unmapped = Map::new();
     let relative_path = r.str("relativepath").or_else(|| {
         // API resources always have relativePath; very old databases may only have Path.
         r.str("path")
@@ -602,6 +603,8 @@ fn episode_file(r: &Rec) -> Option<SrcEpisodeFile> {
         media_info: r.json("mediainfo").filter(|v| v.is_object()),
         original_file_path: r.str("originalfilepath"),
         indexer_flags: r.i64("indexerflags").unwrap_or(0),
+        source_release_title: r.str("sourcereleasetitle"),
+        source_release_size: r.i64("sourcereleasesize").filter(|s| *s > 0),
         release_type: match r.raw("releasetype") {
             Some(Value::String(s)) if s.parse::<i64>().is_err() => [
                 "unknown",

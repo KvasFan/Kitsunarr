@@ -261,6 +261,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let monitored = d.item.monitored;
     let update_monitored = update.clone();
     let update_language = update.clone();
+    let update_grouping = update.clone();
     let title = d.item.title.clone();
 
     rsx! {
@@ -308,6 +309,18 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                                 for l in kitsunarr_domain::Language::all().iter().filter(|l| l.id > 0) {
                                     option { key: "{l.id}", value: "{l.id}", "{l.name}" }
                                 }
+                            }
+                        }
+                    }
+                    // Tanukarr's anime grouping mode.
+                    if matches!(d.item.metadata_provider, MetadataProvider::AniList | MetadataProvider::MyAnimeList) {
+                        dt { "Grouping" }
+                        dd {
+                            select { class: "select", "aria-label": "Grouping", value: if d.automatic_grouping { "automatic" } else { "disabled" },
+                                title: "Disabled removes the series from its anime group and keeps it out of automatic grouping",
+                                onchange: move |e: FormEvent| update_grouping(SeriesUpdate { automatic_grouping: Some(e.value() != "disabled"), ..Default::default() }),
+                                option { value: "automatic", "Automatic (official relations)" }
+                                option { value: "disabled", "Disabled" }
                             }
                         }
                     }
@@ -689,6 +702,16 @@ pub fn MovieDetailPage(id: i64) -> Element {
             }
         });
     };
+    let c9 = client.clone();
+    let set_grouping = move |enabled: bool| {
+        let c = c9.clone();
+        spawn(async move {
+            match c.set_movie_automatic_grouping(id, enabled).await {
+                Ok(_) => detail.restart(),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
     let mut refreshing = use_signal(|| false);
     let c4 = client.clone();
     let refresh = move |_| {
@@ -828,6 +851,18 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     }
                     dt { "Metadata" }
                     dd { {d.last_refreshed_at.as_deref().map(|t| format!("refreshed {}", relative(t))).unwrap_or_else(|| "never refreshed".into())} }
+                    // Tanukarr's grouping mode (anime groups, TMDB collections).
+                    if matches!(d.item.metadata_provider, MetadataProvider::TmdbMovie | MetadataProvider::AniList | MetadataProvider::MyAnimeList) {
+                        dt { "Grouping" }
+                        dd {
+                            select { class: "select", "aria-label": "Grouping", value: if d.automatic_grouping { "automatic" } else { "disabled" },
+                                title: "Disabled removes the film from its collection and keeps it out of automatic grouping",
+                                onchange: move |e: FormEvent| set_grouping(e.value() != "disabled"),
+                                option { value: "automatic", "Automatic (official relations)" }
+                                option { value: "disabled", "Disabled" }
+                            }
+                        }
+                    }
                 }
                 div { class: "row", style: "margin-top: var(--sp-4)",
                     Switch { checked: d.item.monitored, label: if d.item.monitored { "Monitored".to_string() } else { "Unmonitored".to_string() }, onchange: set_monitored }

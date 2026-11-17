@@ -85,6 +85,8 @@ pub struct Series {
     pub season_titles: Vec<(i32, String)>,
     /// Tanukarr's anime group the series belongs to (`{Group Title}`, `{Group Season}`…).
     pub group: Option<GroupMembership>,
+    /// The year of each season's earliest aired episode (`{Season Year}`), by season number.
+    pub season_years: Vec<(i32, i32)>,
 }
 
 /// A series' place in its franchise or manual group.
@@ -131,6 +133,7 @@ impl Default for Series {
             tmdb_id: 0,
             season_titles: Vec::new(),
             group: None,
+            season_years: Vec::new(),
         }
     }
 }
@@ -1415,6 +1418,13 @@ pub fn season_folder(series: &Series, season: i32, naming: &NamingSettings) -> S
     } else {
         &naming.season_folder_format
     };
+    // Tanukarr's `{Season Year}`: the year the season's first episode aired.
+    let year = series
+        .season_years
+        .iter()
+        .find(|(n, _)| *n == season)
+        .map_or(String::new(), |(_, y)| y.to_string());
+    h.text("{Season Year}", year);
     let name = replace_tokens(format, &h, naming, false);
     let name = clean_folder_name(&name)
         .trim_matches([' ', '.', '-', '_'])
@@ -1483,6 +1493,7 @@ impl Series {
             tmdb_id: int(K::Tmdb),
             season_titles: Vec::new(),
             group: None,
+            season_years: Vec::new(),
         }
     }
 }

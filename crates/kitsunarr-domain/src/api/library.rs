@@ -137,6 +137,14 @@ pub struct SeriesDetail {
     pub last_refreshed_at: Option<String>,
     pub seasons: Vec<SeasonItem>,
     pub collections: Vec<CollectionRef>,
+    /// Tanukarr's anime grouping mode: `false` is "Disabled", the series stays out of
+    /// automatic anime groups.
+    #[serde(default = "crate::api::library::yes")]
+    pub automatic_grouping: bool,
+}
+
+pub(crate) fn yes() -> bool {
+    true
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -254,6 +262,9 @@ pub struct MovieDetail {
     pub last_refreshed_at: Option<String>,
     pub file: Option<MovieFileItem>,
     pub collections: Vec<CollectionRef>,
+    /// `false`: the film stays out of automatic anime groups and TMDB collections.
+    #[serde(default = "crate::api::library::yes")]
+    pub automatic_grouping: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -381,6 +392,10 @@ pub struct SeriesUpdate {
     /// Sonarr's `Series.Language` for TheTVDB titles (a language id); changing it refreshes.
     #[serde(default)]
     pub metadata_language: Option<i32>,
+    /// Tanukarr's anime grouping mode: `false` ("Disabled") removes the series from its
+    /// automatic groups and keeps it out of them; `true` lets the next refresh group it.
+    #[serde(default)]
+    pub automatic_grouping: Option<bool>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]

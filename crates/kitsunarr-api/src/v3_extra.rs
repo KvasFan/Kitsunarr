@@ -1528,6 +1528,7 @@ pub(crate) fn naming_examples_for(n: &kitsunarr_domain::api::settings::NamingSet
         tmdb_id: 11223,
         season_titles: vec![(1, "Part 1".into())],
         group: None,
+        season_years: vec![(1, 2013)],
     };
     let standard = series(kitsunarr_domain::SeriesType::Standard);
     let daily = series(kitsunarr_domain::SeriesType::Daily);

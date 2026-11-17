@@ -341,6 +341,68 @@ pub(crate) async fn missing_of_series(
     Some(summary)
 }
 
+/// Tanukarr's `EpisodeRefreshedService.Search`: after a refresh, an `EpisodeSearch` for the
+/// episodes it added, gave an absolute number or moved into the recent past
+/// ([`kitsunarr_domain::api::metadata::RefreshResult::recently_aired_episode_ids`]) that are
+/// still monitored and without a file. Skipped while automation is paused (an automatic
+/// search) or when the series is not monitored. Returns the summary, `None` when nothing was
+/// searched.
+pub async fn search_recently_aired(
+    state: &AppState,
+    series_id: i64,
+    episode_ids: &[i64],
+) -> Option<String> {
+    if episode_ids.is_empty() {
+        return None;
+    }
+    if crate::library_tools::paused(state).await {
+        tracing::info!(series_id, "{}", crate::library_tools::PAUSED);
+        return None;
+    }
+    let targets = match wanted::monitored_without_file(&state.db, series_id, episode_ids).await {
+        Ok(t) => t,
+        Err(e) => {
+            tracing::warn!(series_id, error = %e, "could not read recently aired episodes");
+            return None;
+        }
+    };
+    let queued = state
+        .downloads
+        .queued_episode_ids(&state.db)
+        .await
+        .unwrap_or_default();
+    let targets: Vec<SearchTarget> = targets
+        .into_iter()
+        .filter(|t| !queued.contains(&t.episode_id))
+        .collect();
+    if targets.is_empty() {
+        return None;
+    }
+    tracing::info!(
+        series_id,
+        count = targets.len(),
+        "searching episodes that were recently added, had their absolute episode number added or had their air date moved to the recent past"
+    );
+    let summary = bulk_search(state, groups(targets), false, false, false).await;
+    Some(summary)
+}
+
+/// [`search_recently_aired`] in the background, reported with a notice.
+pub(crate) fn spawn_recently_aired_search(state: &AppState, series_id: i64, episode_ids: Vec<i64>) {
+    if episode_ids.is_empty() {
+        return;
+    }
+    let state = state.clone();
+    tokio::spawn(async move {
+        if let Some(summary) = search_recently_aired(&state, series_id, &episode_ids).await {
+            state.events.publish(ServerEvent::Notice {
+                level: "info".into(),
+                message: summary,
+            });
+        }
+    });
+}
+
 /// A wanted search ready to run: what it will search, and the search itself (its summary).
 pub(crate) type WantedSearchJob =
     std::pin::Pin<Box<dyn std::future::Future<Output = String> + Send + 'static>>;

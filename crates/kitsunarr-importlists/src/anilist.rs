@@ -6,7 +6,7 @@ use std::collections::HashSet;
 
 use serde_json::{Map, Value, json};
 
-use crate::{ListError, ListItem, check_status, connection_error, flag, strings, text};
+use crate::{ListError, ListItem, anilist_send, check_status, flag, strings, text};
 
 const MAX_PAGES: i64 = 100;
 
@@ -91,14 +91,18 @@ pub async fn fetch(
     let mut excluded_ids = HashSet::new();
     let mut out: Vec<ListItem> = Vec::new();
     for page in 1..=MAX_PAGES {
-        let mut req = http
-            .post(&base)
-            .header(reqwest::header::ACCEPT, "application/json")
-            .json(&json!({"query": QUERY, "variables": {"id": user, "statusType": statuses, "page": page}}));
-        if let Some(t) = &token {
-            req = req.bearer_auth(t);
-        }
-        let resp = req.send().await.map_err(connection_error)?;
+        let body = json!({"query": QUERY, "variables": {"id": user, "statusType": statuses, "page": page}});
+        let resp = anilist_send(&base, || {
+            let req = http
+                .post(&base)
+                .header(reqwest::header::ACCEPT, "application/json")
+                .json(&body);
+            match &token {
+                Some(t) => req.bearer_auth(t),
+                None => req,
+            }
+        })
+        .await?;
         if resp.status().as_u16() == 404 {
             return Err(ListError::Settings(format!(
                 "the AniList user {user} does not exist or the list is private"

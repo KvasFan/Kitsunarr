@@ -2,7 +2,8 @@
 //! `IndexerRssCheck`, `IndexerSearchCheck`, `IndexerLongTermStatusCheck`,
 //! `IndexerJackettAllCheck`, `IndexerDownloadClientCheck`, `ImportMechanismCheck`,
 //! `ImportListStatusCheck`, `ImportListRootFolderCheck`, `RecyclingBinCheck`, `BackupCheck`,
-//! `ApiKeyValidationCheck`, `RemovedSeriesCheck` and `MountCheck`.
+//! `ApiKeyValidationCheck`, `RemovedSeriesCheck`, `MountCheck`, `NotificationStatusCheck` and
+//! `DatabaseIntegrityCheck`.
 
 use std::path::Path;
 
@@ -82,10 +83,58 @@ fn parse(ts: Option<&str>) -> Option<DateTime<Utc>> {
         .map(|d| d.with_timezone(&Utc))
 }
 
+/// `DatabaseIntegrityCheck`'s last result. Upstream runs it on start-up and with the scheduled
+/// health check only (`CheckOnStartup`, `CheckOnSchedule`), never per request: the first
+/// evaluation runs it, the `HealthCheck` task re-runs it, and other evaluations reuse it.
+#[derive(Default)]
+pub struct IntegrityCache(tokio::sync::Mutex<Option<Option<HealthCheck>>>);
+
+/// `DatabaseIntegrityCheck`: SQLite's `quick_check` and foreign key check, with upstream's
+/// messages; `None` when the database is fine.
+pub async fn database_integrity(db: &kitsunarr_db::Database) -> Option<HealthCheck> {
+    let error = |message: String| {
+        tracing::error!("{message}");
+        Some(check("DatabaseIntegrityCheck", HealthLevel::Error, message))
+    };
+    match kitsunarr_db::maintenance::integrity_check(db).await {
+        Ok(report) if report.ok() => None,
+        Ok(report) => match report.integrity.first().map(|s| s.trim()) {
+            Some(first) if !first.eq_ignore_ascii_case("ok") && !first.is_empty() => error(format!(
+                "SQLite database integrity check failed: {first}. Restore from a known-good backup."
+            )),
+            None | Some("") => error(
+                "SQLite database integrity check did not return a result. Restore from a known-good backup if database errors are occurring."
+                    .into(),
+            ),
+            Some(_) => error(format!(
+                "SQLite database integrity check failed: {} foreign key violations. Restore from a known-good backup.",
+                report.foreign_key_violations
+            )),
+        },
+        Err(e) => error(format!(
+            "SQLite database integrity check failed: {e}. Restore from a known-good backup."
+        )),
+    }
+}
+
+impl IntegrityCache {
+    /// The cached result, running the check when there is none yet (or `rerun`).
+    pub async fn get(&self, db: &kitsunarr_db::Database, rerun: bool) -> Option<HealthCheck> {
+        let mut cached = self.0.lock().await;
+        if rerun || cached.is_none() {
+            *cached = Some(database_integrity(db).await);
+        }
+        cached.clone().flatten()
+    }
+}
+
 /// The checks above, appended to `out`.
 pub async fn more_checks(state: &AppState, out: &mut Vec<HealthCheck>) -> ApiResult<()> {
     let pool = state.db.pool();
     let now = Utc::now();
+    if let Some(problem) = state.database_integrity.get(&state.db, false).await {
+        out.push(problem);
+    }
     let indexers: Vec<ProviderRecord> = providers::list(pool, ProviderKind::Indexer)
         .await?
         .into_iter()
@@ -213,6 +262,48 @@ pub async fn more_checks(state: &AppState, out: &mut Vec<HealthCheck>) -> ApiRes
     }
 
     download_client_checks(state, &clients, dco.enable_completed_download_handling, out).await?;
+
+    // `NotificationStatusCheck`: connections backing off after failed deliveries, among those
+    // with at least one event switched on (`GetAvailableProviders`).
+    let notifications: Vec<ProviderRecord> = providers::list(pool, ProviderKind::Notification)
+        .await?
+        .into_iter()
+        .filter(|p| {
+            p.enabled
+                && p.options.iter().any(|(k, v)| {
+                    k.starts_with("on") && !k.eq("onEpisodeFileDeleteForUpgrade") && v == true
+                })
+        })
+        .collect();
+    let blocked_notifications = kitsunarr_db::indexer_status::blocked_of(
+        kitsunarr_db::indexer_status::Kind::Notification,
+        pool,
+        now,
+    )
+    .await?;
+    let backing_off: Vec<&str> = notifications
+        .iter()
+        .filter(|n| blocked_notifications.iter().any(|b| b.indexer_id == n.id))
+        .map(|n| n.name.as_str())
+        .collect();
+    if !backing_off.is_empty() {
+        out.push(if backing_off.len() == notifications.len() {
+            check(
+                "NotificationStatusCheck",
+                HealthLevel::Error,
+                "All notifications are unavailable due to failures".into(),
+            )
+        } else {
+            check(
+                "NotificationStatusCheck",
+                HealthLevel::Warning,
+                format!(
+                    "Notifications unavailable due to failures: {}",
+                    backing_off.join(", ")
+                ),
+            )
+        });
+    }
 
     // `ImportListStatusCheck` and `ImportListRootFolderCheck`.
     let lists: Vec<ProviderRecord> = providers::list(pool, ProviderKind::ImportList)

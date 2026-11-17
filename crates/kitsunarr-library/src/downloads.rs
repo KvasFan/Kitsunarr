@@ -1008,7 +1008,19 @@ impl Monitor {
                     }
                     self.set(&item.download_id, State::Imported, Vec::new());
                     imported += 1;
-                    // `DownloadCompletedEvent`.
+                    // `DownloadCompletedEvent`: "On Import Complete".
+                    crate::notify::import_complete(
+                        db,
+                        &self.notifier,
+                        series_id,
+                        &outcome.results,
+                        &item.download_id,
+                        &item.title,
+                        &local.display().to_string(),
+                        &client.name,
+                        &client.implementation,
+                    )
+                    .await;
                     if remove_completed && item.can_be_removed && !multi_season {
                         self.remove_from_client(&settings, &item, &mappings).await;
                     }

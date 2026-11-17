@@ -8,8 +8,7 @@ use kitsunarr_domain::api::error::ApiErrorBody;
 use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::metadata as metadata_api;
 use kitsunarr_domain::api::metadata::{
-    AddTitleRequest, CatalogueInfo, FolderPreviewQuery, LibraryRef, RefreshResult, SearchItem,
-    SearchQuery,
+    AddTitle, CatalogueInfo, FolderPreviewQuery, LibraryRef, RefreshResult, SearchItem, SearchQuery,
 };
 use kitsunarr_domain::api::settings::MetadataSourcesSettings;
 use kitsunarr_metadata::Metadata;
@@ -183,7 +182,7 @@ pub async fn folder_preview(
 
 /// Adds a catalogue entry to the library. Series and anime get their seasons and episodes;
 /// films become movies. Nothing is created on disk: the folder is made when files arrive.
-#[utoipa::path(post, path = "/library/add", tag = "metadata", request_body = AddTitleRequest,
+#[utoipa::path(post, path = "/library/add", tag = "metadata", request_body = AddTitle,
     responses(
         (status = 201, body = LibraryRef),
         (status = 404, body = ApiErrorBody, description = "Not found in the catalogue"),
@@ -191,15 +190,35 @@ pub async fn folder_preview(
         (status = 422, body = ApiErrorBody),
         (status = 502, body = ApiErrorBody, description = "The catalogue could not be reached")
     ))]
+pub async fn add_title(
+    State(state): State<AppState>,
+    Json(body): Json<AddTitle>,
+) -> ApiResult<(StatusCode, Json<LibraryRef>)> {
+    add_with(&state, body.title, body.automatic_grouping).await
+}
+
+/// [`add_title`] with Sonarr's request alone (automatic grouping on), for the v3 API and import
+/// lists.
 pub async fn add(
     State(state): State<AppState>,
-    Json(req): Json<AddTitleRequest>,
+    Json(req): Json<kitsunarr_domain::api::metadata::AddTitleRequest>,
 ) -> ApiResult<(StatusCode, Json<LibraryRef>)> {
+    add_with(&state, req, true).await
+}
+
+async fn add_with(
+    state: &AppState,
+    req: kitsunarr_domain::api::metadata::AddTitleRequest,
+    automatic_grouping: bool,
+) -> ApiResult<(StatusCode, Json<LibraryRef>)> {
+    let state = state.clone();
     if req.id.trim().is_empty() {
         return Err(ApiError::field("id", "Choose a title to add."));
     }
     ensure_supported("provider", req.provider)?;
-    let added = kitsunarr_library::add_title(&state.db, &state.metadata, &req).await?;
+    let options = kitsunarr_library::AddOptions { automatic_grouping };
+    let added =
+        kitsunarr_library::add_title_with(&state.db, &state.metadata, &req, options).await?;
     changed(&state, &added.media_type, added.id);
     let notification_title = match added.media_type.as_str() {
         "series" => kitsunarr_library::notify::series_ref(&state.db, added.id).await,
@@ -246,6 +265,11 @@ pub async fn refresh_series(
 ) -> ApiResult<Json<RefreshResult>> {
     let result = kitsunarr_library::refresh_series(&state.db, &state.metadata, id).await?;
     changed(&state, "series", id);
+    crate::routes::wanted::spawn_recently_aired_search(
+        &state,
+        id,
+        result.recently_aired_episode_ids.clone(),
+    );
     Ok(Json(result))
 }
 

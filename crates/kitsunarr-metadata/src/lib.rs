@@ -9,11 +9,13 @@
 //! Jikan (anime and anime films, no key) and OMDb (films, the user's API key).
 
 pub mod anilist;
+pub mod anilist_pacer;
 mod cache;
 pub mod jikan;
 pub mod omdb;
 mod ratelimit;
 pub mod skyhook;
+pub mod title_matcher;
 pub mod tmdb;
 pub mod tvmaze;
 pub mod xem;
@@ -65,6 +67,12 @@ pub struct SearchResult {
     pub status: SeriesStatus,
     pub poster_url: Option<String>,
     pub external_ids: Vec<ExternalId>,
+    /// Other names the catalogue knows (synonyms, English and native titles), for ranking.
+    #[serde(default)]
+    pub alternate_titles: Vec<String>,
+    /// How many people rated or follow the title (Sonarr's `Ratings.Votes`), for ranking.
+    #[serde(default)]
+    pub votes: i64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -205,6 +213,8 @@ pub(crate) fn result_of(info: &SeriesInfo) -> SearchResult {
             .find(|i| i.cover_type == "poster")
             .map(|i| i.remote_url.clone()),
         external_ids: info.external_ids.clone(),
+        alternate_titles: info.alternate_titles.clone(),
+        votes: info.votes.unwrap_or(0),
     }
 }
 
@@ -219,11 +229,15 @@ pub struct Endpoints {
     pub omdb: String,
     /// TheXEM, for scene numbering.
     pub xem: String,
+    /// The minimum spacing of AniList requests ([`anilist_pacer::REQUEST_INTERVAL`]; tests
+    /// against a local mock use none).
+    pub anilist_request_interval: Duration,
 }
 
 impl Default for Endpoints {
     fn default() -> Self {
         Self {
+            anilist_request_interval: anilist_pacer::REQUEST_INTERVAL,
             tvmaze: tvmaze::DEFAULT_BASE.into(),
             anilist: anilist::DEFAULT_BASE.into(),
             tvdb: skyhook::DEFAULT_BASE.into(),
@@ -247,6 +261,7 @@ impl Endpoints {
             jikan: dead.clone(),
             omdb: dead.clone(),
             xem: dead,
+            anilist_request_interval: Duration::ZERO,
         }
     }
 }
@@ -283,13 +298,25 @@ impl Metadata {
     pub fn with(http: reqwest::Client, e: &Endpoints) -> Self {
         Self {
             tvmaze: tvmaze::TvMaze::with_base(http.clone(), &e.tvmaze),
-            anilist: anilist::AniList::with_base(http.clone(), &e.anilist),
+            anilist: anilist::AniList::with_pacer(
+                http.clone(),
+                &e.anilist,
+                anilist_pacer::AniListPacer::shared_with_interval(
+                    &e.anilist,
+                    e.anilist_request_interval,
+                ),
+            ),
             tvdb: skyhook::SkyHook::with_base(http.clone(), &e.tvdb),
             tmdb: tmdb::Tmdb::with_base(http.clone(), &e.tmdb),
             jikan: jikan::Jikan::with_base(http.clone(), &e.jikan),
             omdb: omdb::Omdb::with_base(http.clone(), &e.omdb),
             xem: xem::Xem::with_base(http, &e.xem),
         }
+    }
+
+    /// The pacer every AniList request of the server shares (import lists and list tests too).
+    pub fn anilist_pacer(&self) -> anilist_pacer::AniListPacer {
+        self.anilist.pacer().clone()
     }
 
     /// The user's API keys for TMDB and OMDb (`None` or empty: the catalogue is unavailable).
