@@ -47,11 +47,21 @@ pub async fn import_list_choices(
     ))
 }
 
-/// Where MyAnimeList sends the browser back after signing in.
+/// Where MyAnimeList and AniList send the browser back after signing in.
 pub const SIGN_IN_CALLBACK: &str = "/api/v1/importlists/oauth/callback";
 
-/// Starts signing in to a list service (Simkl, Trakt, Plex, MyAnimeList) with the editor's
-/// settings; stored secrets are reused.
+/// Where the stored secrets of a sign-in's provider live: the Trakt and Plex Media Server
+/// connections are notifications, everything else an import list.
+fn sign_in_kind(implementation: &str) -> ProviderKind {
+    if kitsunarr_importlists::oauth::is_connection(implementation) {
+        ProviderKind::Notification
+    } else {
+        ProviderKind::ImportList
+    }
+}
+
+/// Starts signing in to a list service (Simkl, Trakt, Plex, MyAnimeList, AniList) or a
+/// connection (Trakt, Plex Media Server) with the editor's settings; stored secrets are reused.
 #[utoipa::path(post, path = "/providers/importlists/signin/start", tag = "settings",
     request_body = kitsunarr_domain::api::settings::SignInRequest,
     responses((status = 200, body = kitsunarr_domain::api::settings::SignInStarted), (status = 422, body = kitsunarr_domain::api::error::ApiErrorBody)))]
@@ -69,7 +79,7 @@ pub async fn sign_in_start(
         ));
     }
     if let Some(id) = req.id {
-        let stored = providers::get(state.db.pool(), ProviderKind::ImportList, id).await?;
+        let stored = providers::get(state.db.pool(), sign_in_kind(&req.implementation), id).await?;
         crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
     }
     let callback = req
@@ -79,10 +89,10 @@ pub async fn sign_in_start(
             (c.starts_with("http://") || c.starts_with("https://")) && c.ends_with(SIGN_IN_CALLBACK)
         })
         .unwrap_or_default();
-    if req.implementation == "MyAnimeListImport" && callback.is_empty() {
+    if kitsunarr_importlists::oauth::needs_callback(&req.implementation) && callback.is_empty() {
         return Err(ApiError::field(
             "callback",
-            "MyAnimeList needs Kitsunarr's callback address.",
+            "This sign-in needs Kitsunarr's callback address.",
         ));
     }
     let s = kitsunarr_importlists::oauth::start(
@@ -118,7 +128,7 @@ pub async fn sign_in_poll(
         return twitter_poll(&state, req, &sign_in).await.map(Json);
     }
     if let Some(id) = req.id {
-        let stored = providers::get(state.db.pool(), ProviderKind::ImportList, id).await?;
+        let stored = providers::get(state.db.pool(), sign_in_kind(&req.implementation), id).await?;
         crate::routes::settings::merge_secrets(&mut req.settings, &stored.settings);
     }
     let code = kitsunarr_importlists::oauth::nonce_of(&sign_in).and_then(|n| {

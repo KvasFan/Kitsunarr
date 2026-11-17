@@ -1636,7 +1636,7 @@ fn SignInButton(mut draft: Signal<ProviderItem>) -> Element {
                     Ok(p) if p.done => {
                         draft.write().settings.extend(p.settings);
                         waiting.set(None);
-                        app.success("Signed in. Save the list to keep the token.");
+                        app.success("Signed in. Save to keep the token.");
                         return;
                     }
                     Ok(_) => {}
@@ -1653,7 +1653,26 @@ fn SignInButton(mut draft: Signal<ProviderItem>) -> Element {
             }
         });
     };
+    // AniList and MyAnimeList send the browser back to Kitsunarr: the API client registered
+    // with them must name this address.
+    let redirect = matches!(
+        draft.read().implementation.as_str(),
+        "AniListImport" | "MyAnimeListImport"
+    )
+    .then(|| {
+        let base = web_sys::window()
+            .and_then(|w| w.location().href().ok())
+            .and_then(|h| h.split("/settings").next().map(str::to_string))
+            .unwrap_or_default();
+        format!(
+            "{}/api/v1/importlists/oauth/callback",
+            base.trim_end_matches('/')
+        )
+    });
     rsx! {
+        if let Some(url) = redirect {
+            p { class: "help small", "Redirect URL to register with your API client: " code { "{url}" } }
+        }
         div { class: "row", style: "margin-bottom: var(--sp-3)",
             match waiting() {
                 None => rsx! {
@@ -2644,11 +2663,11 @@ fn ProviderEditor(
             if item.kind == ProviderKind::Notification && item.implementation.eq_ignore_ascii_case("Jellyfin") {
                 JellyfinPickers { draft }
             }
-            if item.kind == ProviderKind::Notification && item.implementation.eq_ignore_ascii_case("Twitter") {
+            if item.kind == ProviderKind::Notification && matches!(item.implementation.as_str(), "Twitter" | "Trakt" | "PlexServer") {
                 SignInButton { draft }
             }
             if item.kind == ProviderKind::ImportList
-                && matches!(item.implementation.as_str(), "SimklUserImport" | "TraktListImport" | "TraktUserImport" | "TraktPopularImport" | "TraktSmartListImport" | "PlexImport" | "MyAnimeListImport")
+                && matches!(item.implementation.as_str(), "SimklUserImport" | "TraktListImport" | "TraktUserImport" | "TraktPopularImport" | "TraktSmartListImport" | "PlexImport" | "MyAnimeListImport" | "AniListImport")
             {
                 SignInButton { draft }
             }
