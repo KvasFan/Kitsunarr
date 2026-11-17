@@ -227,6 +227,9 @@ pub struct CustomFormatTestRequest {
     /// 0 unknown, 1 single episode, 2 multiple episodes, 3 season, 4 multiple seasons.
     #[serde(default)]
     pub release_type: Option<i64>,
+    /// Titles of the release's episodes, for release-title conditions that ignore them.
+    #[serde(default)]
+    pub episode_titles: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

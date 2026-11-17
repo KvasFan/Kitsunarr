@@ -30,6 +30,8 @@ hex = { workspace = true }
 [dev-dependencies]
 tokio = { workspace = true }
 axum = { workspace = true }
+kitsunarr-decision = { workspace = true }
+kitsunarr-parser = { workspace = true }
 
 [lints]
 workspace = true

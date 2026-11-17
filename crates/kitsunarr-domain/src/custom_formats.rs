@@ -17,6 +17,29 @@ impl CustomFormatSpecification {
         self.fields.retain(|key, _| !key.eq_ignore_ascii_case(name));
         self.fields.insert(name.into(), value);
     }
+
+    /// Tanukarr's `AlternativeGroup`: 0 (or less) always applies; conditions sharing a
+    /// positive number form one alternative, and one alternative must match.
+    pub fn alternative_group(&self) -> i64 {
+        match self.field("alternativeGroup") {
+            Some(serde_json::Value::Number(n)) => n
+                .as_i64()
+                .or_else(|| n.as_f64().map(|f| f as i64))
+                .unwrap_or(0),
+            Some(serde_json::Value::String(s)) => s.trim().parse().unwrap_or(0),
+            _ => 0,
+        }
+    }
+
+    /// A checkbox field (`true`, a non-zero number or `"true"`).
+    pub fn flag(&self, name: &str) -> bool {
+        match self.field(name) {
+            Some(serde_json::Value::Bool(b)) => *b,
+            Some(serde_json::Value::Number(n)) => n.as_i64().is_some_and(|v| v != 0),
+            Some(serde_json::Value::String(s)) => s.eq_ignore_ascii_case("true"),
+            _ => false,
+        }
+    }
 }
 
 pub const SPECIFICATIONS: &[(&str, &str)] = &[

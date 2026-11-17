@@ -494,6 +494,11 @@ impl Engine<'_> {
                 ),
             );
         };
+        let episode_titles: Vec<String> = episodes
+            .iter()
+            .filter_map(|e| e.title.clone())
+            .filter(|t| !t.trim().is_empty())
+            .collect();
         let input = CustomFormatInput {
             release_title: &parsed.release_title,
             file_name: None,
@@ -504,6 +509,7 @@ impl Engine<'_> {
             languages: &languages,
             release_type: parsed.release_type(),
             original_language: series.original_language,
+            episode_titles: &episode_titles,
         };
         let formats = evaluate(self.formats, &input);
         let score = ProfileView(&series.profile).format_score(formats.iter().map(|f| &f.id));

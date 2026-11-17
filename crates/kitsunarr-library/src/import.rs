@@ -743,6 +743,11 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             .iter()
             .filter_map(|id| Language::by_id(*id))
             .collect();
+        let episode_titles: Vec<String> = mapped
+            .iter()
+            .filter_map(|e| e.title.clone())
+            .filter(|t| !t.trim().is_empty())
+            .collect();
         let formats_for = |file_name: &str| {
             decision::custom_format::evaluate(
                 &formats,
@@ -756,6 +761,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                     languages: &language_list,
                     release_type,
                     original_language: model.original_language,
+                    episode_titles: &episode_titles,
                 },
             )
         };
@@ -844,6 +850,13 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                     languages: &existing.languages,
                     release_type: existing.release_type,
                     original_language: model.original_language,
+                    episode_titles: &model
+                        .episodes
+                        .iter()
+                        .filter(|e| e.file.as_ref().is_some_and(|f| f.id == existing.id))
+                        .filter_map(|e| e.title.clone())
+                        .filter(|t| !t.trim().is_empty())
+                        .collect::<Vec<_>>(),
                 },
             );
             let current_score = score_of(&current);

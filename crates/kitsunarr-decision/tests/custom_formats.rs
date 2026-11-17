@@ -25,6 +25,7 @@ fn input<'a>(languages: &'a [&'static Language]) -> CustomFormatInput<'a> {
         languages,
         release_type: ReleaseType::Unknown,
         original_language: Some(lang("English")),
+        episode_titles: &[],
     }
 }
 
@@ -323,4 +324,152 @@ fn source_resolution_flags_and_size_use_sonarr_values() {
         "SizeSpecification",
         json!({"min": 5, "max": 6})
     )));
+}
+
+/// Tanukarr's alternative groups: group 0 always applies, positive groups are alternatives
+/// (`A AND (B OR C)`), each one grouped by implementation as usual.
+#[test]
+fn alternative_groups_form_or_branches() {
+    let cond = |implementation: &str, value: serde_json::Value, group: i64| {
+        let mut fields = value;
+        fields["alternativeGroup"] = json!(group);
+        spec(implementation, fields)
+    };
+    let check = |specs: Vec<_>, release_title: &str, group: Option<&str>| {
+        let (formats, problems) = compile_formats(&[format(1, "F", specs)]);
+        assert!(problems.is_empty(), "{problems:?}");
+        formats[0].matches(&CustomFormatInput {
+            release_title,
+            file_name: None,
+            release_group: group,
+            ..input(&[])
+        })
+    };
+    // 1080p AND (x265 OR group GRP).
+    let specs = || {
+        vec![
+            cond("ReleaseTitleSpecification", json!({"value": "1080p"}), 0),
+            cond("ReleaseTitleSpecification", json!({"value": "x265"}), 1),
+            cond("ReleaseGroupSpecification", json!({"value": "^GRP$"}), 2),
+        ]
+    };
+    assert!(check(
+        specs(),
+        "Show.S01E01.1080p.WEB.x265-OTHER",
+        Some("OTHER")
+    ));
+    assert!(check(
+        specs(),
+        "Show.S01E01.1080p.WEB.x264-GRP",
+        Some("GRP")
+    ));
+    assert!(!check(
+        specs(),
+        "Show.S01E01.1080p.WEB.x264-OTHER",
+        Some("OTHER")
+    ));
+    // The always-required part still has to match.
+    assert!(!check(
+        specs(),
+        "Show.S01E01.720p.WEB.x265-GRP",
+        Some("GRP")
+    ));
+    // Within one alternative, different implementations must all match, and same
+    // implementations are grouped as usual.
+    let both = vec![
+        cond("ReleaseTitleSpecification", json!({"value": "x265"}), 1),
+        cond("ReleaseGroupSpecification", json!({"value": "^GRP$"}), 1),
+        cond("ReleaseTitleSpecification", json!({"value": "AV1"}), 2),
+    ];
+    assert!(!check(
+        both.clone(),
+        "Show.S01E01.x265-OTHER",
+        Some("OTHER")
+    ));
+    assert!(check(both.clone(), "Show.S01E01.x265-GRP", Some("GRP")));
+    assert!(check(both, "Show.S01E01.AV1-OTHER", Some("OTHER")));
+    // Without a group 0 any alternative suffices; required keeps its meaning in a group.
+    let mut required = cond("ReleaseTitleSpecification", json!({"value": "HDR"}), 1);
+    required.required = true;
+    let only = vec![
+        cond("ReleaseTitleSpecification", json!({"value": "x265"}), 1),
+        required,
+        cond("ReleaseTitleSpecification", json!({"value": "AV1"}), 2),
+    ];
+    assert!(!check(only.clone(), "Show.S01E01.x265-GRP", None));
+    assert!(check(only.clone(), "Show.S01E01.HDR.x265-GRP", None));
+    assert!(check(only, "Show.S01E01.AV1-GRP", None));
+    // Migrated values may be strings; negative numbers behave as 0.
+    let mut negative = spec("ReleaseTitleSpecification", json!({"value": "1080p"}));
+    negative
+        .fields
+        .insert("AlternativeGroup".into(), json!("-1"));
+    let alternative = cond("ReleaseTitleSpecification", json!({"value": "x265"}), 3);
+    assert!(!check(
+        vec![negative.clone(), alternative.clone()],
+        "Show.S01E01.720p.x265",
+        None
+    ));
+    assert!(check(
+        vec![negative, alternative],
+        "Show.S01E01.1080p.x265",
+        None
+    ));
+}
+
+/// Tanukarr's `ExcludeEpisodeTitles`: words of the episode titles after the episode number do
+/// not count (`ReleaseTitleSpecification.WithoutEpisodeTitles`).
+#[test]
+fn release_titles_can_ignore_episode_titles() {
+    use kitsunarr_decision::custom_format::without_episode_titles;
+    let titles = vec!["The Amazon Job".to_string(), "Pilot".to_string()];
+    assert_eq!(
+        without_episode_titles("Show.S01E02.The.Amazon.Job.1080p.WEB-DL-GRP", &titles),
+        "Show.S01E02..1080p.WEB-DL-GRP"
+    );
+    // Before the episode number nothing is removed; short titles never are.
+    assert_eq!(
+        without_episode_titles("The.Amazon.Job.S01E02.1080p-GRP", &titles),
+        "The.Amazon.Job.S01E02.1080p-GRP"
+    );
+    assert_eq!(
+        without_episode_titles("Show.S01E01.Pilot.AMZ-GRP", &["AMZ".into()]),
+        "Show.S01E01.Pilot.AMZ-GRP"
+    );
+    // Whole words only, case-insensitive, any separator; titles without an episode number
+    // are left alone.
+    assert_eq!(
+        without_episode_titles("Show S01E01 pilotx AMZN", &titles),
+        "Show S01E01 pilotx AMZN"
+    );
+    assert_eq!(
+        without_episode_titles("Show - S01 E01-E02 - PILOT - AMZN", &titles),
+        "Show - S01 E01-E02 -  - AMZN"
+    );
+    assert_eq!(
+        without_episode_titles("Show.2024.1080p.Amazon.Job", &titles),
+        "Show.2024.1080p.Amazon.Job"
+    );
+
+    let amazon = |exclude: bool| {
+        spec(
+            "ReleaseTitleSpecification",
+            json!({"value": "\\bAmazon\\b", "excludeEpisodeTitles": exclude}),
+        )
+    };
+    let matches = |s, titles: &[String]| {
+        let (formats, _) = compile_formats(&[format(1, "AMZN", vec![s])]);
+        formats[0].matches(&CustomFormatInput {
+            release_title: "Show.S01E02.The.Amazon.Job.1080p.WEB-DL-GRP",
+            file_name: Some("Show.S01E02.The.Amazon.Job.1080p.WEB-DL-GRP.mkv"),
+            episode_titles: titles,
+            ..input(&[])
+        })
+    };
+    assert!(matches(amazon(false), &titles));
+    assert!(!matches(amazon(true), &titles));
+    assert!(
+        matches(amazon(true), &[]),
+        "no known titles: nothing removed"
+    );
 }

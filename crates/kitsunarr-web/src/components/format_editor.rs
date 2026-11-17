@@ -45,6 +45,7 @@ pub fn FormatEditor(
     let mut language = use_signal(String::new);
     let mut original = use_signal(String::new);
     let mut flags = use_signal(|| "0".to_string());
+    let mut episode_titles = use_signal(String::new);
     let mut preview = use_signal(|| {
         None::<(
             CustomFormatTestRequest,
@@ -75,6 +76,12 @@ pub fn FormatEditor(
             release_type: release_type().parse().ok(),
             languages: language().parse::<i32>().ok().map(|id| vec![id]),
             original_language: original().parse().ok(),
+            episode_titles: episode_titles()
+                .lines()
+                .map(str::trim)
+                .filter(|t| !t.is_empty())
+                .map(str::to_string)
+                .collect(),
         })
     })();
     let c1 = client.clone();
@@ -153,6 +160,7 @@ pub fn FormatEditor(
                 }, if advanced() { "Guided editor" } else { "Edit JSON" } }
             }
             p { class: "small muted", "Every condition type must match. Within one type, any condition may match and every required condition must match. Negate reverses a valid condition." }
+            p { class: "small muted", "Alternative groups: conditions in group 0 always apply; conditions sharing a positive group number form one alternative, and at least one alternative must match (A AND (B OR C))." }
             if advanced() {
                 Field { label: "Specifications (JSON)", textarea { class: "input mono", "aria-label": "Specifications JSON", rows: "14", spellcheck: false, value: "{json}", oninput: move |e| json.set(e.value()) } }
             } else {
@@ -196,10 +204,12 @@ pub fn FormatEditor(
                         for l in kitsunarr_domain::Language::all().iter().filter(|l| l.id > 0) { option { value: "{l.id}", "{l.name}" } }
                     } }
                     Field { label: "Indexer flags (bitmask)", input { class: "input", r#type: "number", min: "0", "aria-label": "Test indexer flags", value: "{flags}", oninput: move |e| flags.set(e.value()) } }
+                    Field { label: "Episode titles (one per line)", help: "For conditions that ignore episode titles.".to_string(),
+                        textarea { class: "input", rows: "2", "aria-label": "Test episode titles", value: "{episode_titles}", oninput: move |e| episode_titles.set(e.value()) } }
                 }
             }
             button { class: "btn", disabled: testing() || title().trim().is_empty(), onclick: test, if testing() { "Testing…" } else { "Test format" } }
-            if let Some((_, result)) = shown_preview {
+            if let Some((tested, result)) = shown_preview {
                 match result {
                     Err(e) => rsx! { div { class: "alert danger format-preview", role: "alert",
                         onmounted: move |event| async move { let _ = event.scroll_to(dioxus::html::ScrollBehavior::Instant).await; },
@@ -218,6 +228,7 @@ pub fn FormatEditor(
                                     "{condition.name}"
                                     if condition.negate { " · negated" }
                                     if condition.required { " · required" }
+                                    if let Some(group) = tested.format.specifications.get(i).map(|s| s.alternative_group()).filter(|g| *g > 0) { " · group {group}" }
                                 }
                             }
                         }
@@ -258,7 +269,14 @@ fn FormatCondition(mut draft: Signal<CustomFormat>, index: usize) -> Element {
             }
             div { class: "form-grid", style: "margin-top: var(--sp-3)",
                 match spec.implementation.as_str() {
-                    "ReleaseTitleSpecification" | "ReleaseGroupSpecification" => rsx! {
+                    "ReleaseTitleSpecification" => rsx! {
+                        Field { label: "Regular expression", input { class: "input mono", "aria-label": "Condition regular expression {index + 1}", spellcheck: false, value: "{value.as_str().unwrap_or_default()}", oninput: move |e| set_field("value", Value::from(e.value())) } }
+                        label { class: "check small", title: "Exclude known episode titles when checking release names, so words in the episode title do not count as a service or release group.",
+                            input { r#type: "checkbox", "aria-label": "Ignore episode titles {index + 1}", checked: spec.flag("excludeEpisodeTitles"), onchange: move |e| set_field("excludeEpisodeTitles", Value::from(e.checked())) }
+                            "Ignore episode titles"
+                        }
+                    },
+                    "ReleaseGroupSpecification" => rsx! {
                         Field { label: "Regular expression", input { class: "input mono", "aria-label": "Condition regular expression {index + 1}", spellcheck: false, value: "{value.as_str().unwrap_or_default()}", oninput: move |e| set_field("value", Value::from(e.value())) } }
                     },
                     "LanguageSpecification" => rsx! {
@@ -296,6 +314,11 @@ fn FormatCondition(mut draft: Signal<CustomFormat>, index: usize) -> Element {
             div { class: "row wrap",
                 label { class: "check small", input { r#type: "checkbox", "aria-label": "Negate condition {index + 1}", checked: spec.negate, onchange: move |e| draft.write().specifications[index].negate = e.checked() } "Negate" }
                 label { class: "check small", input { r#type: "checkbox", "aria-label": "Required condition {index + 1}", checked: spec.required, onchange: move |e| draft.write().specifications[index].required = e.checked() } "Required" }
+                label { class: "small row", title: "0 applies to every match. Positive numbers create alternatives: group 1 OR group 2. Within a group, different condition types must all match; Required keeps its usual meaning.",
+                    "Alternative group"
+                    input { class: "input", style: "width: 6em", r#type: "number", min: "0", step: "1", "aria-label": "Alternative group {index + 1}", value: "{spec.alternative_group()}",
+                        oninput: move |e| { if let Ok(n) = e.value().trim().parse::<i64>() { set_field("alternativeGroup", Value::from(n.max(0))); } } }
+                }
             }
         }
     }

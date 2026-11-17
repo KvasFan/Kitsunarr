@@ -10,6 +10,7 @@ use kitsunarr_domain::quality::Quality;
 use kitsunarr_parser::ReleaseType;
 use kitsunarr_parser::netregex::NetRegex;
 use serde_json::Value;
+use std::sync::LazyLock;
 
 /// What a custom format is evaluated against (`CustomFormatInput`).
 #[derive(Debug, Clone, Copy)]
@@ -26,6 +27,9 @@ pub struct CustomFormatInput<'a> {
     pub release_type: ReleaseType,
     /// The series' original language, which the `Original` language value stands for.
     pub original_language: Option<&'static Language>,
+    /// `EpisodeTitles`: the titles of the release's or file's episodes, for release-title
+    /// conditions that ignore episode titles (empty for history, blocklist and movies).
+    pub episode_titles: &'a [String],
 }
 
 /// Sonarr's numeric `ReleaseType`.
@@ -41,7 +45,11 @@ pub fn release_type_id(t: ReleaseType) -> i64 {
 
 #[derive(Debug)]
 enum Spec {
-    ReleaseTitle(Option<NetRegex>),
+    ReleaseTitle {
+        regex: Option<NetRegex>,
+        /// `ExcludeEpisodeTitles` (Tanukarr).
+        exclude_episode_titles: bool,
+    },
     ReleaseGroup(Option<NetRegex>),
     Language {
         value: i64,
@@ -66,6 +74,9 @@ struct CompiledSpec {
     spec: Spec,
     negate: bool,
     required: bool,
+    /// `AlternativeGroup` (Tanukarr): 0 or less always applies; positive numbers form
+    /// alternatives of which one must match.
+    alternative_group: i64,
 }
 
 /// A custom format ready for evaluation.
@@ -155,7 +166,10 @@ pub fn compile_formats(formats: &[CustomFormat]) -> (Vec<CompiledFormat>, Vec<St
                 .map(|s| {
                     let spec = match s.implementation.as_str() {
                         "ReleaseTitleSpecification" => regex(f, s, &mut problems)
-                            .map(Spec::ReleaseTitle)
+                            .map(|regex| Spec::ReleaseTitle {
+                                regex,
+                                exclude_episode_titles: bool_field(s, "excludeEpisodeTitles"),
+                            })
                             .unwrap_or(Spec::Unsupported),
                         "ReleaseGroupSpecification" => regex(f, s, &mut problems)
                             .map(Spec::ReleaseGroup)
@@ -185,6 +199,7 @@ pub fn compile_formats(formats: &[CustomFormat]) -> (Vec<CompiledFormat>, Vec<St
                         spec,
                         negate: s.negate,
                         required: s.required,
+                        alternative_group: int_field(s, "alternativeGroup"),
                     }
                 })
                 .collect(),
@@ -209,8 +224,19 @@ impl CompiledSpec {
     /// `IsSatisfiedByWithoutNegate`.
     fn satisfied_without_negate(&self, input: &CustomFormatInput<'_>) -> bool {
         match &self.spec {
-            Spec::ReleaseTitle(r) => {
-                matches(r, Some(input.release_title)) || matches(r, input.file_name)
+            Spec::ReleaseTitle {
+                regex,
+                exclude_episode_titles,
+            } => {
+                if *exclude_episode_titles {
+                    let title = without_episode_titles(input.release_title, input.episode_titles);
+                    let file = input
+                        .file_name
+                        .map(|f| without_episode_titles(f, input.episode_titles));
+                    matches(regex, Some(&title)) || matches(regex, file.as_deref())
+                } else {
+                    matches(regex, Some(input.release_title)) || matches(regex, input.file_name)
+                }
             }
             Spec::ReleaseGroup(r) => matches(r, input.release_group),
             Spec::Language { value, except } => {
@@ -254,25 +280,116 @@ impl CompiledSpec {
 impl CompiledFormat {
     /// `ParseCustomFormat`: specifications are grouped by implementation; every group must match,
     /// and a group matches unless a required member fails or no member matches
-    /// (`SpecificationMatchesGroup.DidMatch`).
+    /// (`SpecificationMatchesGroup.DidMatch`). With alternative groups (Tanukarr), the
+    /// specifications of group 0 must match that way, and so must those of at least one
+    /// positive group (`A AND (B OR C)`).
     pub fn matches(&self, input: &CustomFormatInput<'_>) -> bool {
-        let mut groups: Vec<(&str, Vec<(bool, bool)>)> = Vec::new();
-        for spec in &self.specs {
-            let result = (spec.required, spec.satisfied(input));
-            match groups
+        let always: Vec<&CompiledSpec> = self
+            .specs
+            .iter()
+            .filter(|s| s.alternative_group <= 0)
+            .collect();
+        if !conditions_match(&always, input) {
+            return false;
+        }
+        let mut alternatives: Vec<(i64, Vec<&CompiledSpec>)> = Vec::new();
+        for spec in self.specs.iter().filter(|s| s.alternative_group > 0) {
+            match alternatives
                 .iter_mut()
-                .find(|(k, _)| *k == spec.implementation.as_str())
+                .find(|(g, _)| *g == spec.alternative_group)
             {
-                Some((_, v)) => v.push(result),
-                None => groups.push((spec.implementation.as_str(), vec![result])),
+                Some((_, v)) => v.push(spec),
+                None => alternatives.push((spec.alternative_group, vec![spec])),
             }
         }
-        groups.iter().all(|(_, members)| {
-            let required_failed = members.iter().any(|(req, ok)| *req && !ok);
-            let none_matched = members.iter().all(|(_, ok)| !ok);
-            !(required_failed || none_matched)
-        })
+        alternatives.is_empty()
+            || alternatives
+                .iter()
+                .any(|(_, specs)| conditions_match(specs, input))
     }
+}
+
+/// `MatchesConditions`: conditions grouped by implementation, every group matching.
+fn conditions_match(specs: &[&CompiledSpec], input: &CustomFormatInput<'_>) -> bool {
+    let mut groups: Vec<(&str, Vec<(bool, bool)>)> = Vec::new();
+    for spec in specs {
+        let result = (spec.required, spec.satisfied(input));
+        match groups
+            .iter_mut()
+            .find(|(k, _)| *k == spec.implementation.as_str())
+        {
+            Some((_, v)) => v.push(result),
+            None => groups.push((spec.implementation.as_str(), vec![result])),
+        }
+    }
+    groups.iter().all(|(_, members)| {
+        let required_failed = members.iter().any(|(req, ok)| *req && !ok);
+        let none_matched = members.iter().all(|(_, ok)| !ok);
+        !(required_failed || none_matched)
+    })
+}
+
+/// The episode identifier (`S01E02`, `S01E02E03`, `S01 E02-03`) after which episode titles
+/// are removed.
+static EPISODE_IDENTIFIER: LazyLock<NetRegex> = LazyLock::new(|| {
+    NetRegex::compile(
+        r"(?i)\bS\d{1,3}[ ._-]*E\d{1,3}(?:[ ._-]*E?\d{1,3})*\b",
+        false,
+    )
+});
+
+static WORD_SEPARATOR: LazyLock<NetRegex> = LazyLock::new(|| NetRegex::compile(r"[\W_]+", false));
+
+/// `ReleaseTitleSpecification.WithoutEpisodeTitles` (Tanukarr): after the episode identifier,
+/// the first occurrence of each known episode title longer than three characters (longest
+/// first, words separated by any punctuation) is removed.
+pub fn without_episode_titles(value: &str, titles: &[String]) -> String {
+    if value.is_empty() || titles.is_empty() {
+        return value.to_string();
+    }
+    let Some(identifier) = EPISODE_IDENTIFIER.find(value) else {
+        return value.to_string();
+    };
+    let chars: Vec<char> = value.chars().collect();
+    let start = identifier.span().1;
+    let mut remainder: String = chars[start..].iter().collect();
+    let mut sorted: Vec<&str> = titles
+        .iter()
+        .map(String::as_str)
+        .filter(|t| !t.trim().is_empty() && t.encode_utf16().count() > 3)
+        .collect();
+    // `OrderByDescending(t => t.Length)` is stable.
+    sorted.sort_by_key(|t| std::cmp::Reverse(t.encode_utf16().count()));
+    for title in sorted {
+        // `Regex.Split(title.Trim(), @"[\W_]+")`; the words hold only word characters, which
+        // `Regex.Escape` leaves alone.
+        let trimmed: Vec<char> = title.trim().chars().collect();
+        let mut words: Vec<String> = Vec::new();
+        let mut last = 0;
+        for m in WORD_SEPARATOR.find_all(title.trim()) {
+            let (s, e) = m.span();
+            if s > last {
+                words.push(trimmed[last..s].iter().collect());
+            }
+            last = e;
+        }
+        if last < trimmed.len() {
+            words.push(trimmed[last..].iter().collect());
+        }
+        if words.is_empty() {
+            continue;
+        }
+        let pattern = format!(r"(?<!\w){}(?!\w)", words.join(r"[\W_]+"));
+        let Ok(regex) = NetRegex::new(&pattern, true) else {
+            continue;
+        };
+        if let Some(m) = regex.find(&remainder) {
+            let (s, e) = m.span();
+            let rest: Vec<char> = remainder.chars().collect();
+            remainder = rest[..s].iter().chain(&rest[e..]).collect();
+        }
+    }
+    chars[..start].iter().collect::<String>() + &remainder
 }
 
 /// The formats an input matches, ordered by name (`OrderBy(x => x.Name)`; culture-aware
@@ -382,6 +499,7 @@ pub fn test_format(request: &CustomFormatTestRequest) -> Result<CustomFormatTest
         languages: &languages,
         release_type,
         original_language: original,
+        episode_titles: &request.episode_titles,
     };
     let (formats, warnings) = compile_formats(std::slice::from_ref(&request.format));
     let format = &formats[0];
