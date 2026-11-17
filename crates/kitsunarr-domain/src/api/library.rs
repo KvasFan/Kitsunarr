@@ -26,6 +26,21 @@ pub struct LibraryQuery {
     pub tag_id: Option<i64>,
     pub quality_profile_id: Option<i64>,
     pub provider: Option<MetadataProvider>,
+    /// Tanukarr's path filter (series): titles in this folder or below it, compared without
+    /// case, with `\` read as `/`.
+    #[serde(default)]
+    pub path: Option<String>,
+    /// Tanukarr's "Missing episodes" filter (series): `true` keeps titles with monitored aired
+    /// episodes that have no file, `false` the others.
+    #[serde(default)]
+    pub missing: Option<bool>,
+    /// Tanukarr's "Anime" filter (series): the series type.
+    #[serde(default)]
+    pub series_type: Option<SeriesType>,
+    /// Tanukarr's "Group anime seasons" (series): one row per anime group, its first member
+    /// among the titles the other filters keep; [`SeriesListItem::anime_group`] tells the rest.
+    #[serde(default)]
+    pub group_anime_seasons: Option<bool>,
 }
 
 impl LibraryQuery {
@@ -67,6 +82,19 @@ pub struct SeriesListItem {
     pub next_airing: Option<String>,
     pub added_at: String,
     pub tags: Vec<i64>,
+    /// The anime group (Tanukarr's anime grouping) the series belongs to.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub anime_group: Option<AnimeGroupRef>,
+}
+
+/// A series' anime group: the `animeGroup` collection and how many series it holds.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AnimeGroupRef {
+    pub collection_id: i64,
+    pub title: String,
+    pub series_count: i64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

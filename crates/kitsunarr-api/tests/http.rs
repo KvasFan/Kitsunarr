@@ -9573,3 +9573,102 @@ async fn catalogue_order_disabled_catalogues_and_all_sources_search() {
         .unwrap_err();
     assert_eq!(status(unreachable), 502);
 }
+
+/// Tanukarr's series index filters through the native library query: path, missing episodes,
+/// series type, anime grouping, and the path filter choices.
+#[tokio::test]
+async fn library_index_filters() {
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    std::fs::create_dir_all(dir.path().join("tv")).unwrap();
+    let root = dir.path().join("tv").display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: root.clone(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let count = |q: LibraryQuery| {
+        let client = &client;
+        async move { client.series(&q).await.unwrap().total_records }
+    };
+    let by_path = |p: String| LibraryQuery {
+        path: Some(p),
+        ..Default::default()
+    };
+    assert_eq!(count(by_path(root.to_uppercase())).await, 1);
+    assert_eq!(count(by_path(format!("{root}/"))).await, 1);
+    assert_eq!(count(by_path(format!("{root}/Breaking"))).await, 0);
+    // Every episode aired long ago and has no file.
+    let missing = |m| LibraryQuery {
+        missing: Some(m),
+        ..Default::default()
+    };
+    assert_eq!(count(missing(true)).await, 1);
+    assert_eq!(count(missing(false)).await, 0);
+    let anime = LibraryQuery {
+        series_type: Some(kitsunarr_domain::SeriesType::Anime),
+        ..Default::default()
+    };
+    assert_eq!(count(anime).await, 0);
+    let grouped = client
+        .series(&LibraryQuery {
+            group_anime_seasons: Some(true),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert_eq!(grouped.records[0].id, added.id);
+    assert!(grouped.records[0].anime_group.is_none());
+    // Sonarr-style query names.
+    let raw: serde_json::Value = reqwest::Client::new()
+        .get(format!(
+            "{}/api/v1/series?missing=true&seriesType=standard&groupAnimeSeasons=true",
+            server.base
+        ))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(raw["totalRecords"], 1);
+    assert_eq!(
+        client.series_path_filters(None).await.unwrap(),
+        [root.clone()]
+    );
+    assert_eq!(
+        client
+            .series_path_filters(Some(kitsunarr_domain::MediaKind::Anime))
+            .await
+            .unwrap(),
+        [root]
+    );
+}

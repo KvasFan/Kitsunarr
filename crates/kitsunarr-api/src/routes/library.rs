@@ -41,6 +41,24 @@ pub async fn list_series(
     Ok(Json(series::list(&state.db, &q).await?))
 }
 
+#[derive(Deserialize, utoipa::IntoParams)]
+#[serde(rename_all = "camelCase")]
+pub struct PathFiltersQuery {
+    /// `series` or `anime`; every series when omitted.
+    pub kind: Option<kitsunarr_domain::MediaKind>,
+}
+
+/// The folders the library can be filtered by (Tanukarr's `SeriesPathFilter` choices): root
+/// folders, the folders the series are in, and their mount points.
+#[utoipa::path(get, path = "/series/pathfilters", tag = "library", params(PathFiltersQuery),
+    responses((status = 200, body = Vec<String>)))]
+pub async fn series_path_filters(
+    State(state): State<AppState>,
+    Query(q): Query<PathFiltersQuery>,
+) -> ApiResult<Json<Vec<String>>> {
+    Ok(Json(series::path_filters(&state.db, q.kind).await?))
+}
+
 #[utoipa::path(get, path = "/series/{id}", tag = "library", params(("id" = i64, Path)),
     responses((status = 200, body = SeriesDetail), (status = 404)))]
 pub async fn get_series(

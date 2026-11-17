@@ -41,8 +41,6 @@ pub struct Strings {
     pub delete: &'static str,
     pub loading: &'static str,
     pub retry: &'static str,
-    pub monitored: &'static str,
-    pub unmonitored: &'static str,
     pub sign_out: &'static str,
     pub search_placeholder: &'static str,
 }
@@ -87,8 +85,6 @@ pub const EN: Strings = Strings {
     delete: "Delete",
     loading: "Loading…",
     retry: "Retry",
-    monitored: "Monitored",
-    unmonitored: "Unmonitored",
     sign_out: "Sign out",
     search_placeholder: "Search titles…  ( / )",
 };

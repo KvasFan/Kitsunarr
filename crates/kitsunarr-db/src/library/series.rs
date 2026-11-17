@@ -412,6 +412,7 @@ struct ListRow {
     size_on_disk: i64,
     next_airing: Option<String>,
     tags: Option<String>,
+    anime_group: Option<String>,
 }
 
 impl ListRow {
@@ -442,6 +443,10 @@ impl ListRow {
             next_airing: self.next_airing,
             added_at: self.added_at,
             tags: int_list(self.tags.as_deref()),
+            anime_group: self
+                .anime_group
+                .as_deref()
+                .and_then(|g| serde_json::from_str(g).ok()),
         }
     }
 }
@@ -455,7 +460,11 @@ const LIST_COLUMNS: &str = "s.id, s.media_kind, s.title, s.sort_title, s.year, s
        AND e.season_number > 0 AND e.air_date_utc IS NOT NULL AND e.air_date_utc <= strftime('%Y-%m-%dT%H:%M:%SZ','now')) AS missing_count, \
     (SELECT COALESCE(SUM(f.size), 0) FROM episode_files f WHERE f.series_id = s.id) AS size_on_disk, \
     (SELECT MIN(e.air_date_utc) FROM episodes e WHERE e.series_id = s.id AND e.air_date_utc > strftime('%Y-%m-%dT%H:%M:%SZ','now')) AS next_airing, \
-    (SELECT json_group_array(t.tag_id) FROM series_tags t WHERE t.series_id = s.id) AS tags";
+    (SELECT json_group_array(t.tag_id) FROM series_tags t WHERE t.series_id = s.id) AS tags, \
+    (SELECT json_object('collectionId', c.id, 'title', c.title, 'seriesCount', \
+       (SELECT COUNT(*) FROM collection_members x WHERE x.collection_id = c.id AND x.series_id IS NOT NULL)) \
+     FROM collection_members m JOIN collections c ON c.id = m.collection_id \
+     WHERE m.series_id = s.id AND c.kind = 'animeGroup' ORDER BY c.id LIMIT 1) AS anime_group";
 
 fn sort_expression(key: Option<&str>) -> &'static str {
     match key.unwrap_or("title") {
@@ -476,41 +485,139 @@ fn sort_expression(key: Option<&str>) -> &'static str {
 
 fn push_filters(qb: &mut QueryBuilder<Sqlite>, q: &LibraryQuery) {
     qb.push(" WHERE 1 = 1");
+    push_conditions(qb, q, "s");
+    // Tanukarr's "Group anime seasons": a member of an anime group is listed only when no
+    // member before it in the group (by position, then id) passes the filters too.
+    if q.group_anime_seasons == Some(true) {
+        qb.push(
+            " AND NOT EXISTS (SELECT 1 FROM collection_members gm \
+             JOIN collections gc ON gc.id = gm.collection_id AND gc.kind = 'animeGroup' \
+             JOIN collection_members gm2 ON gm2.collection_id = gm.collection_id AND gm2.series_id IS NOT NULL AND gm2.series_id != s.id \
+             JOIN series o ON o.id = gm2.series_id \
+             WHERE gm.series_id = s.id AND (gm2.position < gm.position OR (gm2.position = gm.position AND gm2.series_id < s.id))",
+        );
+        push_conditions(qb, q, "o");
+        qb.push(")");
+    }
+}
+
+/// Tanukarr's path filter value: `\` read as `/`, no trailing `/`, ASCII lower case (as
+/// SQLite's `lower`).
+fn normalized_path(path: &str) -> String {
+    path.replace('\\', "/")
+        .trim_end_matches('/')
+        .to_ascii_lowercase()
+}
+
+/// The filters on the series aliased `a` (each starts with ` AND`).
+fn push_conditions(qb: &mut QueryBuilder<Sqlite>, q: &LibraryQuery, a: &str) {
     if let Some(kind) = q.kind {
-        qb.push(" AND s.media_kind = ").push_bind(kind.as_str());
+        qb.push(format_args!(" AND {a}.media_kind = "))
+            .push_bind(kind.as_str());
     }
     if let Some(m) = q.monitored {
-        qb.push(" AND s.monitored = ").push_bind(m);
+        qb.push(format_args!(" AND {a}.monitored = ")).push_bind(m);
     }
     if let Some(status) = q.status.as_deref().filter(|s| !s.is_empty()) {
-        qb.push(" AND s.status = ").push_bind(status.to_string());
+        qb.push(format_args!(" AND {a}.status = "))
+            .push_bind(status.to_string());
     }
     if let Some(tag) = q.tag_id {
-        qb.push(
-            " AND EXISTS (SELECT 1 FROM series_tags t WHERE t.series_id = s.id AND t.tag_id = ",
-        )
+        qb.push(format_args!(
+            " AND EXISTS (SELECT 1 FROM series_tags t WHERE t.series_id = {a}.id AND t.tag_id = "
+        ))
         .push_bind(tag)
         .push(")");
     }
     if let Some(p) = q.quality_profile_id {
-        qb.push(" AND s.quality_profile_id = ").push_bind(p);
+        qb.push(format_args!(" AND {a}.quality_profile_id = "))
+            .push_bind(p);
     }
     if let Some(p) = q.provider {
-        qb.push(" AND s.metadata_provider = ").push_bind(p.as_str());
+        qb.push(format_args!(" AND {a}.metadata_provider = "))
+            .push_bind(p.as_str());
+    }
+    if let Some(t) = q.series_type {
+        qb.push(format_args!(" AND {a}.series_type = "))
+            .push_bind(t.as_str());
+    }
+    if let Some(path) = q
+        .path
+        .as_deref()
+        .map(normalized_path)
+        .filter(|p| !p.is_empty())
+    {
+        let column = format!("lower(replace({a}.path, '\\', '/'))");
+        let prefix = format!("{path}/");
+        qb.push(format_args!(" AND ({column} = "))
+            .push_bind(path)
+            .push(format_args!(" OR substr({column}, 1, "))
+            .push_bind(prefix.chars().count() as i64)
+            .push(") = ")
+            .push_bind(prefix)
+            .push(")");
+    }
+    if let Some(missing) = q.missing {
+        qb.push(format_args!(
+            " AND {} EXISTS (SELECT 1 FROM episodes e WHERE e.series_id = {a}.id AND e.monitored = 1 \
+             AND e.episode_file_id IS NULL AND e.season_number > 0 AND e.air_date_utc IS NOT NULL \
+             AND e.air_date_utc <= strftime('%Y-%m-%dT%H:%M:%SZ','now'))",
+            if missing { "" } else { "NOT" }
+        ));
     }
     if let Some(term) = q.search.as_deref().map(str::trim).filter(|t| !t.is_empty()) {
         let like = like_pattern(term);
         let clean = like_pattern(&kitsunarr_domain::text::clean_title(term));
-        qb.push(" AND (s.title LIKE ")
+        qb.push(format_args!(" AND ({a}.title LIKE "))
             .push_bind(like.clone())
             .push(" ESCAPE '\\'");
-        qb.push(" OR s.clean_title LIKE ")
+        qb.push(format_args!(" OR {a}.clean_title LIKE "))
             .push_bind(clean.clone())
             .push(" ESCAPE '\\'");
-        qb.push(" OR EXISTS (SELECT 1 FROM series_alternate_titles a WHERE a.series_id = s.id AND a.clean_title LIKE ")
+        qb.push(format_args!(" OR EXISTS (SELECT 1 FROM series_alternate_titles x WHERE x.series_id = {a}.id AND x.clean_title LIKE "))
             .push_bind(clean)
             .push(" ESCAPE '\\'))");
     }
+}
+
+/// Tanukarr's path filter choices (`SeriesPathFilter`): the root folders, each title's parent
+/// folder, and the mount points (`/mnt/x`, `/media/x`, drive letters) they sit on, sorted.
+pub async fn path_filters(
+    db: &Database,
+    kind: Option<kitsunarr_domain::MediaKind>,
+) -> DbResult<Vec<String>> {
+    let roots: Vec<String> = sqlx::query_scalar("SELECT path FROM root_folders")
+        .fetch_all(db.pool())
+        .await?;
+    let mut qb = QueryBuilder::<Sqlite>::new("SELECT path FROM series");
+    if let Some(kind) = kind {
+        qb.push(" WHERE media_kind = ").push_bind(kind.as_str());
+    }
+    let paths: Vec<String> = qb.build_query_scalar().fetch_all(db.pool()).await?;
+    let mut folders: std::collections::BTreeSet<String> = roots.into_iter().collect();
+    for path in &paths {
+        let trimmed = path.trim_end_matches(['/', '\\']);
+        if let Some(i) = trimmed.rfind(['/', '\\'])
+            && i > 0
+        {
+            folders.insert(trimmed[..i].to_string());
+        }
+    }
+    for folder in folders.clone() {
+        let mount = ["/mnt/", "/media/"].iter().find_map(|m| {
+            let rest = folder.strip_prefix(m)?;
+            let name = rest.split('/').next().filter(|n| !n.is_empty())?;
+            Some(format!("{m}{name}"))
+        });
+        let bytes = folder.as_bytes();
+        let drive = (bytes.len() >= 3
+            && bytes[0].is_ascii_alphabetic()
+            && bytes[1] == b':'
+            && matches!(bytes[2], b'/' | b'\\'))
+        .then(|| folder[..3].to_string());
+        folders.extend(mount.into_iter().chain(drive));
+    }
+    Ok(folders.into_iter().collect())
 }
 
 pub async fn list(db: &Database, q: &LibraryQuery) -> DbResult<Page<SeriesListItem>> {
@@ -1707,6 +1814,121 @@ pub(crate) mod tests {
             .await
             .unwrap();
         assert_eq!(left, 0, "episodes cascade with their series");
+    }
+
+    /// Tanukarr's series index filters: path, missing episodes, anime, and "Group anime
+    /// seasons" applied after the other filters.
+    #[tokio::test]
+    async fn tanukarr_index_filters() {
+        let db = crate::test_support::db().await;
+        let bb = insert_sample(&db, "Breaking Bad", "81189", 3).await;
+        let s1 = insert_sample(&db, "Frieren", "1", 0).await;
+        let s2 = insert_sample(&db, "Frieren S2", "2", 0).await;
+        for (id, path) in [
+            (s1, "/mnt/anime/Frieren/Season 1"),
+            (s2, "/mnt/anime/Frieren/Season 2"),
+        ] {
+            sqlx::query("UPDATE series SET series_type = 'anime', path = ? WHERE id = ?")
+                .bind(path)
+                .bind(id)
+                .execute(db.pool())
+                .await
+                .unwrap();
+        }
+        let group: i64 = sqlx::query_scalar(
+            "INSERT INTO collections (title, sort_title, kind, created_at) VALUES ('Frieren', 'frieren', 'animeGroup', '2026-01-01') RETURNING id",
+        )
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+        for (position, id) in [(1, s1), (2, s2)] {
+            sqlx::query(
+                "INSERT INTO collection_members (collection_id, position, series_id) VALUES (?, ?, ?)",
+            )
+            .bind(group)
+            .bind(position)
+            .bind(id)
+            .execute(db.pool())
+            .await
+            .unwrap();
+        }
+        let ids = |q: LibraryQuery| {
+            let db = &db;
+            async move {
+                let mut ids: Vec<i64> = list(db, &q)
+                    .await
+                    .unwrap()
+                    .records
+                    .iter()
+                    .map(|r| r.id)
+                    .collect();
+                ids.sort_unstable();
+                ids
+            }
+        };
+        let path = |p: &str| LibraryQuery {
+            path: Some(p.into()),
+            ..Default::default()
+        };
+        assert_eq!(ids(path("/MEDIA/tv/")).await, [bb]);
+        assert_eq!(ids(path("\\media\\tv")).await, [bb]);
+        assert!(ids(path("/media/t")).await.is_empty(), "whole folders only");
+        assert_eq!(ids(path("/mnt/anime/Frieren/Season 1")).await, [s1]);
+        assert_eq!(ids(path("/mnt/anime")).await, [s1, s2]);
+        let missing = |m| LibraryQuery {
+            missing: Some(m),
+            ..Default::default()
+        };
+        assert_eq!(ids(missing(true)).await, [bb]);
+        assert_eq!(ids(missing(false)).await, [s1, s2]);
+        let anime = LibraryQuery {
+            series_type: Some(SeriesType::Anime),
+            ..Default::default()
+        };
+        assert_eq!(ids(anime.clone()).await, [s1, s2]);
+        // Grouped: the group shows once, by its first member the other filters keep.
+        let grouped = |q: LibraryQuery| LibraryQuery {
+            group_anime_seasons: Some(true),
+            ..q
+        };
+        assert_eq!(ids(grouped(LibraryQuery::default())).await, [bb, s1]);
+        assert_eq!(
+            list(&db, &grouped(LibraryQuery::default()))
+                .await
+                .unwrap()
+                .total_records,
+            2
+        );
+        assert_eq!(
+            ids(grouped(LibraryQuery {
+                search: Some("S2".into()),
+                ..Default::default()
+            }))
+            .await,
+            [s2]
+        );
+        assert_eq!(
+            ids(grouped(path("/mnt/anime/Frieren/Season 2"))).await,
+            [s2]
+        );
+        let first = list(&db, &grouped(anime)).await.unwrap().records;
+        assert_eq!(first.len(), 1);
+        let g = first[0].anime_group.as_ref().unwrap();
+        assert_eq!(
+            (g.collection_id, g.title.as_str(), g.series_count),
+            (group, "Frieren", 2)
+        );
+        assert!(get_list_item(&db, bb).await.unwrap().anime_group.is_none());
+
+        // Path filter choices: root folders, parent folders and their mount points.
+        sqlx::query("INSERT INTO root_folders (path, media_kind, created_at) VALUES ('/srv/tv', 'series', '2026-01-01')")
+            .execute(db.pool())
+            .await
+            .unwrap();
+        assert_eq!(
+            path_filters(&db, None).await.unwrap(),
+            ["/media/tv", "/mnt/anime", "/mnt/anime/Frieren", "/srv/tv"]
+        );
     }
 
     #[tokio::test]

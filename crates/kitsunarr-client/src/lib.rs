@@ -38,6 +38,8 @@ use kitsunarr_domain::api::system::{
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 
+pub mod contracts;
+
 #[derive(Debug, Clone, PartialEq, thiserror::Error)]
 pub enum ClientError {
     #[error("{}", .body.message)]
@@ -1185,6 +1187,69 @@ impl Client {
     /// `kind` is `indexers`, `downloadclients`, `notifications` or `importlists`.
     pub async fn providers(&self, kind: &str) -> ClientResult<Vec<ProviderItem>> {
         self.get(&format!("/providers/{kind}")).await
+    }
+    /// Sonarr's "Test all" (`POST /providers/{kind}/testall`): each provider's test. The
+    /// server answers 400 with the same list when one fails, so both are results here.
+    pub async fn test_all_providers(
+        &self,
+        kind: &str,
+    ) -> ClientResult<Vec<contracts::ProviderTestAllResult>> {
+        let resp = self
+            .request(reqwest::Method::POST, &format!("/providers/{kind}/testall"))
+            .json(&Empty {})
+            .send()
+            .await
+            .map_err(|e| ClientError::Network(e.to_string()))?;
+        let status = resp.status();
+        let text = resp
+            .text()
+            .await
+            .map_err(|e| ClientError::Network(e.to_string()))?;
+        if (status.is_success() || status.as_u16() == 400)
+            && let Ok(results) = serde_json::from_str(&text)
+        {
+            return Ok(results);
+        }
+        Err(ClientError::Api {
+            status: status.as_u16(),
+            body: serde_json::from_str::<ApiErrorBody>(&text).unwrap_or_else(|_| ApiErrorBody {
+                code: "http_error".into(),
+                message: format!("The server answered {status}."),
+                fields: Vec::new(),
+            }),
+        })
+    }
+    /// The folders the series library can be filtered by (Tanukarr's path filter).
+    pub async fn series_path_filters(
+        &self,
+        kind: Option<kitsunarr_domain::MediaKind>,
+    ) -> ClientResult<Vec<String>> {
+        match kind {
+            Some(k) => {
+                self.get_query("/series/pathfilters", &[("kind", k.as_str())])
+                    .await
+            }
+            None => self.get("/series/pathfilters").await,
+        }
+    }
+    // --- custom filters (Sonarr's `CustomFilterResource`) --------------------------------------
+    pub async fn custom_filters(&self) -> ClientResult<Vec<contracts::CustomFilter>> {
+        self.get("/customfilters").await
+    }
+    pub async fn create_custom_filter(
+        &self,
+        f: &contracts::CustomFilter,
+    ) -> ClientResult<contracts::CustomFilter> {
+        self.post("/customfilters", f).await
+    }
+    pub async fn update_custom_filter(
+        &self,
+        f: &contracts::CustomFilter,
+    ) -> ClientResult<contracts::CustomFilter> {
+        self.put(&format!("/customfilters/{}", f.id), f).await
+    }
+    pub async fn delete_custom_filter(&self, id: i64) -> ClientResult<()> {
+        self.delete(&format!("/customfilters/{id}")).await
     }
     /// Blank providers of each implementation Kitsunarr runs (`GET /providers/{kind}/schema`).
     pub async fn provider_schema(&self, kind: &str) -> ClientResult<Vec<ProviderItem>> {
