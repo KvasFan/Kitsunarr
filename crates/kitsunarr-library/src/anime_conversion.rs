@@ -80,6 +80,8 @@ pub(crate) struct Mapping {
     pub chunks: Vec<Chunk>,
     /// Regular episodes beyond the entries (never with files).
     pub leftover: Vec<usize>,
+    /// Season-aligned entries whose premiere differs from TheTVDB's air date.
+    pub warnings: Vec<String>,
 }
 
 fn date(raw: Option<&str>) -> Option<NaiveDate> {
@@ -107,13 +109,18 @@ fn listed(labels: Vec<String>) -> String {
 /// entry taking its episode count. An entry whose count is unknown takes the rest, which only
 /// the franchise's last entry may do (`more_in_chain` says whether entries follow the last one
 /// given). Each chunk's first episode must have aired within [`DATE_TOLERANCE_DAYS`] of the
-/// entry's premiere when both dates are known; episodes left over must have no file.
+/// entry's premiere when both dates are known, unless it opens a TheTVDB season (a streaming
+/// premiere weeks before the broadcast: only a warning); episodes left over must have no file.
 pub(crate) fn map_episodes(
     regular: &[SourceEpisode],
     entries: &[Entry],
     more_in_chain: bool,
 ) -> Result<Mapping, String> {
     let mut chunks = Vec::new();
+    let mut warnings = Vec::new();
+    // The gap between TheTVDB's and AniList's dates at the start of the current TheTVDB
+    // season: a streaming release in batches stays that far ahead for the whole season.
+    let mut season_gap: Option<(i32, i64)> = None;
     let mut next = 0usize;
     for (i, entry) in entries.iter().enumerate() {
         if next >= regular.len() {
@@ -131,17 +138,35 @@ pub(crate) fn map_episodes(
         };
         let end = (next + take).min(regular.len());
         let first = &regular[next];
+        let opens_season = next == 0 || regular[next - 1].season != first.season;
         if let (Some(tvdb), Some(anilist)) = (
             date(first.air_date.as_deref()),
             date(entry.first_air.as_deref()),
-        ) && (tvdb - anilist).num_days().abs() > DATE_TOLERANCE_DAYS
-        {
-            return Err(format!(
-                "{} aired on {tvdb} but {} (AniList {}) premiered on {anilist}: the episodes do not line up with the AniList entries.",
-                first.label(),
-                entry.title,
-                entry.id
-            ));
+        ) {
+            let gap = (tvdb - anilist).num_days();
+            let expected = match season_gap {
+                Some((season, g)) if season == first.season && !opens_season => g,
+                _ => 0,
+            };
+            if opens_season {
+                season_gap = Some((first.season, gap));
+                if gap.abs() > DATE_TOLERANCE_DAYS {
+                    warnings.push(format!(
+                        "{} aired on {tvdb} but {} (AniList {}) premiered on {anilist}; the entry starts with TheTVDB's season {}, so the seasons are matched as they are.",
+                        first.label(),
+                        entry.title,
+                        entry.id,
+                        first.season
+                    ));
+                }
+            } else if (gap - expected).abs() > DATE_TOLERANCE_DAYS {
+                return Err(format!(
+                    "{} aired on {tvdb} but {} (AniList {}) premiered on {anilist}: the episodes do not line up with the AniList entries.",
+                    first.label(),
+                    entry.title,
+                    entry.id
+                ));
+            }
         }
         chunks.push(Chunk {
             entry: i,
@@ -162,7 +187,11 @@ pub(crate) fn map_episodes(
             listed(with_files)
         ));
     }
-    Ok(Mapping { chunks, leftover })
+    Ok(Mapping {
+        chunks,
+        leftover,
+        warnings,
+    })
 }
 
 /// Whether the user follows a chunk: it has a file or a monitored episode.
@@ -185,6 +214,7 @@ struct Source {
     quality_profile_id: i64,
     keep_versions: bool,
     renaming_mode: String,
+    season_folder: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -302,7 +332,7 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
     let mut p = Prepared::new(id);
     let source: Source = sqlx::query_as(
         "SELECT id, title, path, root_folder_path, metadata_provider, monitored, monitor_new_items, \
-         quality_profile_id, keep_versions, renaming_mode FROM series WHERE id = ?",
+         quality_profile_id, keep_versions, renaming_mode, season_folder FROM series WHERE id = ?",
     )
     .bind(id)
     .fetch_optional(db.pool())
@@ -339,6 +369,9 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
     let fetch = move |n: i64| cached(metadata, cache, n);
     let mut resolved = None;
     let mut reasons = Vec::new();
+    // Standalone TV entries (no prequel or sequel): converted into one ungrouped AniList
+    // series when no franchise resolves, as Tanukarr keeps a standalone title.
+    let mut standalone_ids = Vec::new();
     for anime in &ids {
         let outcome = tokio::time::timeout(
             std::time::Duration::from_secs(60),
@@ -351,9 +384,7 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
                 break;
             }
             Ok(Ok(Resolution::Resolved(_) | Resolution::Unsupported)) => {}
-            Ok(Ok(Resolution::Unrelated)) => reasons.push(format!(
-                "AniList {anime} is a standalone title (Change catalogue suits it better)"
-            )),
+            Ok(Ok(Resolution::Unrelated)) => standalone_ids.push(*anime),
             Ok(Ok(Resolution::Ambiguous(why))) => reasons.push(format!(
                 "the relations of AniList {anime} are ambiguous ({why})"
             )),
@@ -366,56 +397,90 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
             Err(_) => return Ok(p.problem("AniList did not answer in time; try again later.")),
         }
     }
-    let Some((resolved_id, group)) = resolved else {
-        let why = if reasons.is_empty() {
-            "none of them is a TV season".to_string()
-        } else {
-            reasons.join("; ")
-        };
-        return Ok(p.problem(format!(
-            "None of the series' AniList IDs belongs to a franchise of seasons: {why}."
-        )));
-    };
-    p.plan.group_id = Some(group.id.clone());
-    p.plan.group_title = Some(group.title.clone());
-    p.group = Some(group.clone());
-    let chain = match grouping::season_chain(group.root, &fetch).await {
-        Ok(c) => c,
-        Err(e) => return Ok(p.problem(format!("AniList could not be read: {e}"))),
-    };
-    if let Some(why) = &chain.stopped {
-        p.plan.warnings.push(format!(
-            "The franchise was read up to {}: {why}.",
-            chain
+    let (group, chain, start) = match resolved {
+        Some((resolved_id, group)) => {
+            p.plan.group_id = Some(group.id.clone());
+            p.plan.group_title = Some(group.title.clone());
+            p.group = Some(group.clone());
+            let chain = match grouping::season_chain(group.root, &fetch).await {
+                Ok(c) => c,
+                Err(e) => return Ok(p.problem(format!("AniList could not be read: {e}"))),
+            };
+            if let Some(why) = &chain.stopped {
+                p.plan.warnings.push(format!(
+                    "The franchise was read up to {}: {why}.",
+                    chain
+                        .seasons
+                        .last()
+                        .map_or("its root", |s| s.title.as_str())
+                ));
+            }
+            if !chain.seasons.iter().any(|s| s.id == resolved_id) {
+                return Ok(p.problem(format!(
+                    "The season chain of {} does not reach AniList {resolved_id}; its relations are ambiguous.",
+                    group.title
+                )));
+            }
+            let id_set: HashSet<i64> = ids.iter().copied().collect();
+            let start = chain
                 .seasons
-                .last()
-                .map_or("its root", |s| s.title.as_str())
-        ));
-    }
-    if !chain.seasons.iter().any(|s| s.id == resolved_id) {
-        return Ok(p.problem(format!(
-            "The season chain of {} does not reach AniList {resolved_id}; its relations are ambiguous.",
-            group.title
-        )));
-    }
-    let id_set: HashSet<i64> = ids.iter().copied().collect();
-    let start = chain
-        .seasons
-        .iter()
-        .position(|s| id_set.contains(&s.id))
-        .expect("the resolved id is in the chain");
-    let chain_ids: HashSet<i64> = chain.seasons.iter().map(|s| s.id).collect();
-    for other in ids.iter().filter(|i| !chain_ids.contains(i)) {
-        p.plan.skipped.push(format!(
-            "AniList {other} is not a season of the franchise (a film, OVA, special or another title); it is not converted."
-        ));
-    }
-    if start > 0 {
-        p.plan.skipped.push(format!(
-            "Seasons before {} are not part of this series.",
-            chain.seasons[start].title
-        ));
-    }
+                .iter()
+                .position(|s| id_set.contains(&s.id))
+                .expect("the resolved id is in the chain");
+            let chain_ids: HashSet<i64> = chain.seasons.iter().map(|s| s.id).collect();
+            for other in ids.iter().filter(|i| !chain_ids.contains(i)) {
+                p.plan.skipped.push(format!(
+                    "AniList {other} is not a season of the franchise (a film, OVA, special or another title); it is not converted."
+                ));
+            }
+            if start > 0 {
+                p.plan.skipped.push(format!(
+                    "Seasons before {} are not part of this series.",
+                    chain.seasons[start].title
+                ));
+            }
+            (Some(group), chain, start)
+        }
+        None if !standalone_ids.is_empty() => {
+            // AniList ids grow with time: the standalone entries in release order (the dates
+            // are checked when the episodes are mapped).
+            let seasons = standalone_ids
+                .iter()
+                .enumerate()
+                .map(|(i, anime)| grouping::ChainSeason {
+                    id: *anime,
+                    title: format!("AniList {anime}"),
+                    ordinal: i as i32 + 1,
+                })
+                .collect();
+            for other in ids.iter().filter(|i| !standalone_ids.contains(i)) {
+                p.plan.skipped.push(format!(
+                    "AniList {other} is not a TV season (a film, OVA, special or ambiguous title); it is not converted."
+                ));
+            }
+            p.plan.warnings.push(
+                "This is a standalone AniList title: it becomes one AniList series without a group, in the same folder, and its files stay where they are.".into(),
+            );
+            (
+                None,
+                grouping::SeasonChain {
+                    seasons,
+                    stopped: None,
+                },
+                0,
+            )
+        }
+        None => {
+            let why = if reasons.is_empty() {
+                "none of them is a TV season".to_string()
+            } else {
+                reasons.join("; ")
+            };
+            return Ok(p.problem(format!(
+                "None of the series' AniList IDs belongs to a franchise of seasons: {why}."
+            )));
+        }
+    };
 
     // The series' episodes.
     type EpisodeRow = (
@@ -516,6 +581,7 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
         Ok(m) => m,
         Err(why) => return Ok(p.problem(why)),
     };
+    p.plan.warnings.extend(mapping.warnings.iter().cloned());
     if !mapping.leftover.is_empty() {
         let left: Vec<&SourceEpisode> = mapping.leftover.iter().map(|i| &regular[*i]).collect();
         p.plan.skipped.push(format!(
@@ -527,9 +593,13 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
 
     // Members: the followed entries only.
     let naming: NamingSettings = settings::get_or_default(db.pool(), settings::KEY_NAMING).await?;
-    let (group_kind, style) =
-        grouping::stored_folder_settings(db, MetadataProvider::AniList, &group.root.to_string())
-            .await;
+    let (group_kind, style) = match &group {
+        Some(g) => {
+            grouping::stored_folder_settings(db, MetadataProvider::AniList, &g.root.to_string())
+                .await
+        }
+        None => Default::default(),
+    };
     for chunk in &mapping.chunks {
         let entry = &entries[chunk.entry];
         let mapped: Vec<&SourceEpisode> = chunk.episodes.iter().map(|i| &regular[*i]).collect();
@@ -551,9 +621,10 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
         .bind(entry.id.to_string())
         .fetch_optional(db.pool())
         .await?;
-        let path = match &existing {
-            Some((_, path)) => path.clone(),
-            None => {
+        let path = match (&existing, &group) {
+            (Some((_, path)), _) => path.clone(),
+            (None, None) => source.path.clone(),
+            (None, Some(group)) => {
                 let membership = crate::file_names::Series {
                     title: info.title.clone(),
                     group: Some(crate::file_names::GroupMembership {
@@ -644,21 +715,30 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
             p.problem("No season has files or monitored episodes: there is nothing to convert.")
         );
     }
-    let collection_paths: Vec<String> = sqlx::query_scalar(
-        "SELECT s.path FROM collection_members m JOIN collections c ON c.id = m.collection_id \
-         JOIN series s ON s.id = m.series_id WHERE c.kind = 'animeGroup' AND c.metadata_provider = ? AND c.metadata_id = ?",
-    )
-    .bind(MetadataProvider::AniList.as_str())
-    .bind(group.root.to_string())
-    .fetch_all(db.pool())
-    .await?;
-    for other in collection_paths {
-        let parent = Path::new(&other).parent().map(Path::to_path_buf);
-        if parent.as_deref() != Some(Path::new(&source.path)) {
-            p.plan.warnings.push(format!(
-                "{other} is a member of this group outside {}; it stays where it is.",
-                source.path
-            ));
+    if p.members.len() > 1 && group.is_none() {
+        let titles: Vec<String> = p.members.iter().map(|m| m.info.title.clone()).collect();
+        p = p.problem(format!(
+            "Several standalone AniList titles have files or monitored episodes ({}): convert them with Change catalogue one at a time.",
+            titles.join(", ")
+        ));
+    }
+    if let Some(group) = &group {
+        let collection_paths: Vec<String> = sqlx::query_scalar(
+            "SELECT s.path FROM collection_members m JOIN collections c ON c.id = m.collection_id \
+             JOIN series s ON s.id = m.series_id WHERE c.kind = 'animeGroup' AND c.metadata_provider = ? AND c.metadata_id = ?",
+        )
+        .bind(MetadataProvider::AniList.as_str())
+        .bind(group.root.to_string())
+        .fetch_all(db.pool())
+        .await?;
+        for other in collection_paths {
+            let parent = Path::new(&other).parent().map(Path::to_path_buf);
+            if parent.as_deref() != Some(Path::new(&source.path)) {
+                p.plan.warnings.push(format!(
+                    "{other} is a member of this group outside {}; it stays where it is.",
+                    source.path
+                ));
+            }
         }
     }
 
@@ -697,11 +777,18 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_else(|| relative.clone());
+        // A standalone title keeps the series' layout: the same relative path (in the same
+        // folder, or in the folder of the library series that already owns the entry).
+        let new_relative = if group.is_some() {
+            name
+        } else {
+            relative.clone()
+        };
         p.files.push(FilePlan {
             id: *file_id,
             member,
             relative_path: relative.clone(),
-            new_relative: name,
+            new_relative,
             episodes: eps.iter().map(|e| e.id).collect(),
         });
     }
@@ -716,10 +803,12 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
             .files
             .iter()
             .map(|f| {
-                (
-                    base.join(&f.relative_path),
-                    PathBuf::from(&p.members[f.member].path),
-                )
+                let target = PathBuf::from(&p.members[f.member].path);
+                let folder = match Path::new(&f.new_relative).parent() {
+                    Some(dir) if group.is_none() => target.join(dir),
+                    _ => target,
+                };
+                (base.join(&f.relative_path), folder)
             })
             .collect();
         tokio::task::spawn_blocking(move || plan_moves(&files))
@@ -830,7 +919,10 @@ async fn prepare(db: &Database, metadata: &Metadata, id: i64) -> LibraryResult<P
             }
         };
         let m = &p.members[member];
-        if m.existing.is_some() || Path::new(&m.path).parent() != Some(Path::new(&source.path)) {
+        let takes_over = m.path == source.path;
+        if m.existing.is_some()
+            || (!takes_over && Path::new(&m.path).parent() != Some(Path::new(&source.path)))
+        {
             lost_versions += 1;
             continue;
         }
@@ -1047,7 +1139,13 @@ async fn write(tx: &mut SqliteConnection, p: &Prepared) -> LibraryResult<Vec<i64
         .source
         .as_ref()
         .expect("a convertible plan has its source");
-    let group = p.group.as_ref().expect("a convertible plan has its group");
+    let group = p.group.as_ref();
+    // The series leaves its folder free for a standalone title that takes it over; it is
+    // deleted at the end.
+    sqlx::query("UPDATE series SET path = path || ' (converting)' WHERE id = ?")
+        .bind(source.id)
+        .execute(&mut *tx)
+        .await?;
     let files_now: i64 =
         sqlx::query_scalar("SELECT COUNT(*) FROM episode_files WHERE series_id = ?")
             .bind(source.id)
@@ -1107,7 +1205,9 @@ async fn write(tx: &mut SqliteConnection, p: &Prepared) -> LibraryResult<Vec<i64
                         episode_ordering: None,
                         monitored: source.monitored,
                         monitor_new_items: monitor_new,
-                        season_folder: false,
+                        // Group members are season folders themselves; a standalone title keeps
+                        // the series' setting.
+                        season_folder: group.is_none() && source.season_folder,
                         use_scene_numbering: false,
                         quality_profile_id: source.quality_profile_id,
                         root_folder_path: source.root_folder_path.clone(),
@@ -1271,19 +1371,21 @@ async fn write(tx: &mut SqliteConnection, p: &Prepared) -> LibraryResult<Vec<i64
         .bind(season_monitored)
         .execute(&mut *tx)
         .await?;
-        grouping::join_in(
-            &mut *tx,
-            MetadataProvider::AniList,
-            &Group {
-                id: group.id.clone(),
-                root: group.root,
-                title: group.title.clone(),
-                member_kind: MemberKind::Season,
-                ordinal: m.entry.ordinal,
-            },
-            grouping::Member::Series(series_id),
-        )
-        .await?;
+        if let Some(group) = group {
+            grouping::join_in(
+                &mut *tx,
+                MetadataProvider::AniList,
+                &Group {
+                    id: group.id.clone(),
+                    root: group.root,
+                    title: group.title.clone(),
+                    member_kind: MemberKind::Season,
+                    ordinal: m.entry.ordinal,
+                },
+                grouping::Member::Series(series_id),
+            )
+            .await?;
+        }
         debug_assert_eq!(index, ids.len());
         ids.push(series_id);
     }
@@ -1335,13 +1437,19 @@ async fn write(tx: &mut SqliteConnection, p: &Prepared) -> LibraryResult<Vec<i64
             .file_name()
             .map(|n| n.to_string_lossy().into_owned())
             .unwrap_or_else(|| v.relative_path.clone());
-        // The archive stays in the group folder, one level above the member's folder.
+        // The archive stays in the group folder, one level above the member's folder; a
+        // standalone title keeps the series' folder and paths.
+        let (relative, archive) = if group.is_some() {
+            (name, format!("../{}", v.archive_path))
+        } else {
+            (v.relative_path.clone(), v.archive_path.clone())
+        };
         sqlx::query(
             "UPDATE retained_versions SET series_id = ?, relative_path = ?, archive_path = ?, episode_ids = ? WHERE id = ?",
         )
         .bind(ids[v.member])
-        .bind(name)
-        .bind(format!("../{}", v.archive_path))
+        .bind(relative)
+        .bind(archive)
         .bind(serde_json::to_string(&new_ids).unwrap_or_else(|_| "[]".into()))
         .bind(v.id)
         .execute(&mut *tx)
@@ -1541,6 +1649,44 @@ mod tests {
         eps[15].file_id = Some(9);
         let err = map_episodes(&eps, &entries, false).unwrap_err();
         assert!(err.contains("S02E04"), "{err}");
+    }
+
+    #[test]
+    fn a_streaming_premiere_at_a_season_start_is_accepted_with_a_warning() {
+        // JoJo's Stone Ocean: Netflix premiere five weeks before TheTVDB's broadcast date.
+        let eps = tvdb(&[(1, 12, "2018-01-05"), (2, 12, "2022-01-08")]);
+        let entries = [
+            entry(1, 1, Some(12), "2018-01-05"),
+            entry(2, 2, Some(12), "2021-12-01"),
+        ];
+        let m = map_episodes(&eps, &entries, false).expect("season-aligned");
+        assert_eq!(spans(&m), vec![(0, 0, 12), (1, 12, 12)]);
+        assert_eq!(m.warnings.len(), 1);
+        assert!(m.warnings[0].contains("S02E01"), "{:?}", m.warnings);
+    }
+
+    #[test]
+    fn a_season_released_in_batches_keeps_its_gap() {
+        // Stone Ocean: TheTVDB season 5 holds three AniList parts, each released on Netflix
+        // about five weeks before the broadcast.
+        let eps = tvdb(&[(5, 24, "2022-01-08")]);
+        let entries = [
+            entry(1, 1, Some(12), "2021-12-01"),
+            entry(2, 2, Some(12), "2022-02-24"),
+        ];
+        let m = map_episodes(&eps, &entries, false).expect("same gap as the season start");
+        assert_eq!(spans(&m), vec![(0, 0, 12), (1, 12, 12)]);
+    }
+
+    #[test]
+    fn a_mismatched_premiere_in_mid_season_still_rejects() {
+        // The second entry would start at S01E07: not a season start.
+        let eps = tvdb(&[(1, 12, "2020-01-05")]);
+        let entries = [
+            entry(1, 1, Some(6), "2020-01-05"),
+            entry(2, 2, Some(6), "2021-06-01"),
+        ];
+        assert!(map_episodes(&eps, &entries, false).is_err());
     }
 
     #[test]

@@ -13155,6 +13155,8 @@ async fn tvdb_anime_converts_into_anilist_group_members() {
                 100 => ("TV", vec![edge("SEQUEL", 101)]),
                 101 => ("TV", vec![edge("PREQUEL", 100), edge("SEQUEL", 102)]),
                 102 => ("TV", vec![edge("PREQUEL", 101)]),
+                // A standalone title: no prequel, no sequel.
+                500 => ("TV", vec![]),
                 _ => ("OVA", vec![]),
             };
             return Json(
@@ -13500,4 +13502,88 @@ async fn tvdb_anime_converts_into_anilist_group_members() {
     assert!(std::path::Path::new(&format!("{show}/Season 03/Show - S02E04.mkv")).is_file());
     assert_eq!(with_files(client.episodes(third).await.unwrap()), 2);
     assert_eq!(status(client.series_detail(copy).await.unwrap_err()), 404);
+
+    // A standalone AniList title: one ungrouped series that takes over the folder, files in place.
+    let solo = format!("{root}/Solo");
+    let mut conn = server.state.db.pool().acquire().await.unwrap();
+    let standalone = kitsunarr_db::library::series::insert(
+        &mut conn,
+        &new_series("Solo", &solo, "5003", &["500"]),
+    )
+    .await
+    .unwrap();
+    for (episode, aired) in [(1, "2021-04-04"), (2, "2021-04-11")] {
+        kitsunarr_db::library::series::upsert_season(
+            &mut conn,
+            standalone,
+            &kitsunarr_db::library::series::NewSeason {
+                season_number: 1,
+                monitored: true,
+                title: None,
+                images: vec![],
+            },
+        )
+        .await
+        .unwrap();
+        kitsunarr_db::library::series::upsert_episode(
+            &mut conn,
+            &kitsunarr_db::library::series::NewEpisode {
+                series_id: standalone,
+                season_number: 1,
+                episode_number: episode,
+                absolute_episode_number: None,
+                scene_season_number: None,
+                scene_episode_number: None,
+                scene_absolute_episode_number: None,
+                unverified_scene_numbering: false,
+                title: Some(format!("Solo {episode}")),
+                overview: None,
+                air_date: Some(aired.into()),
+                air_date_utc: Some(format!("{aired}T12:00:00Z")),
+                runtime: Some(24),
+                monitored: true,
+                episode_file_id: None,
+                provider_episode_id: None,
+                last_search_at: None,
+            },
+        )
+        .await
+        .unwrap();
+    }
+    drop(conn);
+    std::fs::create_dir_all(format!("{solo}/Season 1")).unwrap();
+    std::fs::write(format!("{solo}/Season 1/Solo - S01E01.mkv"), b"solo").unwrap();
+    client.rescan_series(standalone).await.unwrap();
+    let plan = client
+        .convert_to_anime_group(standalone, true)
+        .await
+        .unwrap();
+    assert!(plan.convertible, "{:?}", plan.problems);
+    assert_eq!(plan.group_id, None);
+    assert_eq!(plan.members.len(), 1);
+    assert_eq!(plan.members[0].path, solo);
+    assert!(plan.moves.is_empty(), "{:?}", plan.moves);
+    let done = client
+        .convert_to_anime_group(standalone, false)
+        .await
+        .unwrap();
+    assert!(done.applied, "{:?}", done.problems);
+    let solo_id = done.members[0].series_id.unwrap();
+    let detail = client.series_detail(solo_id).await.unwrap();
+    assert_eq!(detail.item.metadata_provider, MetadataProvider::AniList);
+    assert_eq!(detail.metadata_id, "500");
+    assert_eq!(detail.item.path, solo);
+    assert!(detail.collections.is_empty());
+    assert!(std::path::Path::new(&format!("{solo}/Season 1/Solo - S01E01.mkv")).is_file());
+    let relative: String =
+        sqlx::query_scalar("SELECT relative_path FROM episode_files WHERE series_id = ?")
+            .bind(solo_id)
+            .fetch_one(server.state.db.pool())
+            .await
+            .unwrap();
+    assert_eq!(relative, "Season 1/Solo - S01E01.mkv");
+    assert_eq!(
+        status(client.series_detail(standalone).await.unwrap_err()),
+        404
+    );
 }
