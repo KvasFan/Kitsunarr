@@ -47,9 +47,42 @@ pub struct CachedRelease {
     pub release_source: &'static str,
     /// The episodes were chosen by hand at grab time (Tanukarr's persistent manual mapping).
     pub manual_mapping: bool,
+    /// What "Override and grab" chose besides the episodes.
+    pub overrides: GrabOverrides,
     /// A film's release (Tanukarr's movies): `series_id` is then 0 and `episode_ids` empty.
     pub movie_id: Option<i64>,
     pub cached_at: Instant,
+}
+
+/// Sonarr's "Override and grab" choices kept with the grab: the import then records the files
+/// with this quality and these languages instead of reading them from the names.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct GrabOverrides {
+    pub quality: bool,
+    pub languages: bool,
+    /// The download client chosen by hand.
+    pub download_client_id: Option<i64>,
+}
+
+/// A Sonarr `QualityModel` (`{quality: {id}, revision}`); `None` without a known quality.
+pub(crate) fn sonarr_quality(v: &serde_json::Value) -> Option<QualityModel> {
+    let id = v["quality"]["id"].as_i64()? as i32;
+    kitsunarr_domain::Quality::by_id(id)?;
+    Some(QualityModel {
+        quality_id: id,
+        revision: serde_json::from_value(v["revision"].clone()).unwrap_or_default(),
+    })
+}
+
+/// Sonarr `Language` objects (`[{id, name}]`) as ids; `None` for an empty list.
+pub(crate) fn sonarr_languages(v: &serde_json::Value) -> Option<Vec<i32>> {
+    let ids: Vec<i32> = v
+        .as_array()?
+        .iter()
+        .filter_map(|l| l["id"].as_i64().or(l.as_i64()))
+        .map(|id| id as i32)
+        .collect();
+    (!ids.is_empty()).then_some(ids)
 }
 
 /// Search results by (indexer id, GUID).
@@ -249,17 +282,58 @@ pub async fn grab_release(
             )
         })?;
     let mut cached = cached;
+    cached.overrides.download_client_id = req.download_client_id.filter(|id| *id > 0);
+    if let Some(q) = req.quality {
+        if kitsunarr_domain::Quality::by_id(q.quality_id).is_none() {
+            return Err(ApiError::field("quality", "Choose a known quality."));
+        }
+        cached.quality = q;
+        cached.overrides.quality = true;
+    }
+    if let Some(languages) = req.languages.as_ref().filter(|l| !l.is_empty()) {
+        if languages
+            .iter()
+            .any(|l| kitsunarr_domain::Language::by_id(*l).is_none())
+        {
+            return Err(ApiError::field("languages", "Choose known languages."));
+        }
+        cached.languages = languages.clone();
+        cached.overrides.languages = true;
+    }
     if cached.movie_id.is_some() {
+        if req.series_id.is_some() || !req.episode_ids.is_empty() {
+            return Err(ApiError::field(
+                "seriesId",
+                "A film's release cannot be grabbed for a series.",
+            ));
+        }
+        if cached.overrides.quality || cached.overrides.languages {
+            return Err(ApiError::field(
+                "quality",
+                "Quality and language overrides apply to series releases.",
+            ));
+        }
         let target = pick_client(&state, &cached).await?;
         return send(&state, &cached, target).await.map(Json);
     }
+    // Sonarr's override: another series, with its episodes chosen by hand.
+    if let Some(series_id) = req.series_id.filter(|s| *s != cached.series_id) {
+        if req.episode_ids.is_empty() {
+            return Err(ApiError::field(
+                "episodeIds",
+                "Choose the episodes of the series the release is grabbed for.",
+            ));
+        }
+        series::get_list_item(&state.db, series_id).await?;
+        cached.series_id = series_id;
+    }
     if !req.episode_ids.is_empty() {
-        // Sonarr's override: the chosen episodes, which must belong to the searched series.
+        // Sonarr's override: the chosen episodes, which must belong to the chosen series.
         for id in &req.episode_ids {
             if series::series_of_episode(&state.db, *id).await? != Some(cached.series_id) {
                 return Err(ApiError::field(
                     "episodeIds",
-                    "The chosen episodes must belong to the searched series.",
+                    "The chosen episodes must belong to the chosen series.",
                 ));
             }
         }
@@ -303,7 +377,36 @@ pub(crate) async fn pick_client(state: &AppState, cached: &CachedRelease) -> Api
                 .tags
         }
     };
-    let client = choose_client(state, release.protocol, cached.release.indexer_id, &tags).await?;
+    let client = match cached.overrides.download_client_id {
+        // `DownloadService.DownloadReport` with a client chosen by hand.
+        Some(id) => {
+            let client = providers::get(state.db.pool(), ProviderKind::DownloadClient, id)
+                .await
+                .map_err(|_| {
+                    ApiError::field(
+                        "downloadClientId",
+                        "The chosen download client does not exist.",
+                    )
+                })?;
+            if !client.enabled {
+                return Err(ApiError::field(
+                    "downloadClientId",
+                    format!("The download client {} is disabled.", client.name),
+                ));
+            }
+            if client.protocol != release.protocol {
+                return Err(ApiError::field(
+                    "downloadClientId",
+                    format!(
+                        "The download client {} does not handle this release's protocol.",
+                        client.name
+                    ),
+                ));
+            }
+            client
+        }
+        None => choose_client(state, release.protocol, cached.release.indexer_id, &tags).await?,
+    };
     if !kitsunarr_downloaders::supported(&client.implementation) {
         return Err(ApiError::field(
             "guid",
@@ -638,6 +741,13 @@ async fn finish(
     if cached.manual_mapping {
         data["manualEpisodeMapping"] = serde_json::json!(true);
         data["manualEpisodeIds"] = serde_json::json!(cached.episode_ids);
+    }
+    // "Override and grab": the import uses the grab's quality and languages.
+    if cached.overrides.quality {
+        data["overrideQuality"] = serde_json::json!(true);
+    }
+    if cached.overrides.languages {
+        data["overrideLanguages"] = serde_json::json!(true);
     }
     // Tanukarr's `MovieGrabContext`: a collection pack's films, each imported from it.
     if let Some(movie_id) = cached.movie_id

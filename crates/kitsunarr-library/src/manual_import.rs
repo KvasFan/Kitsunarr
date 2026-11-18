@@ -150,6 +150,23 @@ pub async fn scan(
             quality: parse_quality(&name).quality.name.to_string(),
             release_group: parse_release_group(&name),
             rejections: Vec::new(),
+            quality_model: {
+                let q = parse_quality(&name);
+                kitsunarr_domain::quality::QualityModel {
+                    quality_id: q.quality.id,
+                    revision: q.revision,
+                }
+            },
+            languages: kitsunarr_parser::parse_languages(&name)
+                .iter()
+                .map(|l| l.id)
+                .filter(|id| *id != 0)
+                .collect(),
+            release_type: parsed
+                .as_ref()
+                .map(|p| release_type_api_name(p.release_type()))
+                .unwrap_or("unknown")
+                .to_string(),
         };
         match (sid, &parsed) {
             (None, _) => rejections.push("Unknown series".to_string()),
@@ -160,6 +177,11 @@ pub async fn scan(
                 let model = crate::decision_input::series_model(db, &detail, &episodes)
                     .await
                     .map_err(err)?;
+                // `AggregateLanguage`: a name that names no language means the original one
+                // (unknown without one).
+                if item.languages.is_empty() {
+                    item.languages = vec![model.original_language.map_or(0, |l| l.id)];
+                }
                 match parsed {
                     None => rejections.push("Unable to parse the file name".to_string()),
                     Some(p) => {
@@ -212,6 +234,18 @@ pub async fn scan(
     Ok(out)
 }
 
+/// Sonarr's API name of a release type (`singleEpisode`).
+pub fn release_type_api_name(t: kitsunarr_parser::ReleaseType) -> &'static str {
+    use kitsunarr_parser::ReleaseType;
+    match t {
+        ReleaseType::Unknown => "unknown",
+        ReleaseType::SingleEpisode => "singleEpisode",
+        ReleaseType::MultiEpisode => "multiEpisode",
+        ReleaseType::SeasonPack => "seasonPack",
+        ReleaseType::MultiSeasonPack => "multiSeasonPack",
+    }
+}
+
 /// Imports the chosen files (each with its series and episodes), moving or copying them.
 /// Each imported file is announced as a "Download" (Sonarr's `EpisodeImportedEvent`).
 pub async fn import(
@@ -235,13 +269,38 @@ pub async fn import(
             if !path.is_file() {
                 return Err(format!("{} is not a file.", path.display()));
             }
+            if let Some(q) = f.quality
+                && kitsunarr_domain::Quality::by_id(q.quality_id).is_none()
+            {
+                return Err(format!("Unknown quality {}.", q.quality_id));
+            }
+            if let Some(langs) = &f.languages
+                && let Some(bad) = langs
+                    .iter()
+                    .find(|l| kitsunarr_domain::Language::by_id(**l).is_none())
+            {
+                return Err(format!("Unknown language {bad}."));
+            }
             let download_id = format!("manual-{}", uuid::Uuid::new_v4().simple());
-            let data = serde_json::json!({
+            // Sonarr's manual import overrides: the import uses them instead of the names'.
+            let mut data = serde_json::json!({
                 "manualEpisodeMapping": true,
                 "manualEpisodeIds": f.episode_ids,
                 "releaseSource": "ManualImport",
-            })
-            .to_string();
+            });
+            if f.quality.is_some() {
+                data["overrideQuality"] = true.into();
+            }
+            if f.languages.as_ref().is_some_and(|l| !l.is_empty()) {
+                data["overrideLanguages"] = true.into();
+            }
+            if let Some(g) = f.release_group.as_deref().map(str::trim) {
+                data["overrideReleaseGroup"] = g.into();
+            }
+            if let Some(t) = f.release_type.as_deref() {
+                data["overrideReleaseType"] = t.into();
+            }
+            let data = data.to_string();
             let title = path
                 .file_name()
                 .map(|n| n.to_string_lossy().into_owned())
@@ -255,9 +314,14 @@ pub async fn import(
                     source_title: title.clone(),
                     series_id: Some(f.series_id),
                     episode_id: Some(*e),
-                    quality_id: None,
-                    revision: None,
-                    languages: None,
+                    quality_id: f.quality.map(|q| i64::from(q.quality_id)),
+                    revision: f
+                        .quality
+                        .and_then(|q| serde_json::to_string(&q.revision).ok()),
+                    languages: f
+                        .languages
+                        .as_ref()
+                        .and_then(|l| serde_json::to_string(l).ok()),
                     data: data.clone(),
                     movie_id: None,
                 })

@@ -175,6 +175,18 @@ pub(crate) struct GrabBody {
     indexer_id: i64,
     #[serde(default)]
     episode_ids: Vec<i64>,
+    /// Sonarr's "Override and grab": `seriesId`, `episodeIds`, `quality` and `languages` are
+    /// the user's choices.
+    #[serde(default)]
+    should_override: Option<bool>,
+    #[serde(default)]
+    series_id: Option<i64>,
+    #[serde(default)]
+    quality: Value,
+    #[serde(default)]
+    languages: Value,
+    #[serde(default)]
+    download_client_id: Option<i64>,
 }
 
 /// `POST /release`: grabs a release of a recent search.
@@ -184,10 +196,18 @@ pub(crate) async fn grab(
 ) -> ApiResult<Json<Value>> {
     let result = crate::routes::grab::grab_release(
         State(state),
-        Json(GrabRequest {
-            guid: b.guid.clone(),
-            indexer_id: b.indexer_id,
-            episode_ids: b.episode_ids,
+        Json({
+            let overriding = b.should_override == Some(true);
+            GrabRequest {
+                guid: b.guid.clone(),
+                indexer_id: b.indexer_id,
+                episode_ids: b.episode_ids,
+                series_id: b.series_id.filter(|_| overriding),
+                quality: crate::routes::grab::sonarr_quality(&b.quality).filter(|_| overriding),
+                languages: crate::routes::grab::sonarr_languages(&b.languages)
+                    .filter(|_| overriding),
+                download_client_id: b.download_client_id,
+            }
         }),
     )
     .await?

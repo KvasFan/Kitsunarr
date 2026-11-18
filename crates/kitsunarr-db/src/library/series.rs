@@ -1561,6 +1561,15 @@ pub async fn series_of_episode(db: &Database, episode_id: i64) -> DbResult<Optio
     )
 }
 
+/// An episode's series and overview (`NotFound` when the episode does not exist).
+pub async fn episode_overview(db: &Database, episode_id: i64) -> DbResult<(i64, Option<String>)> {
+    sqlx::query_as("SELECT series_id, overview FROM episodes WHERE id = ?")
+        .bind(episode_id)
+        .fetch_optional(db.pool())
+        .await?
+        .ok_or(DbError::NotFound)
+}
+
 /// The series an episode file belongs to.
 pub async fn series_of_file(db: &Database, file_id: i64) -> DbResult<Option<i64>> {
     Ok(

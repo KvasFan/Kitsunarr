@@ -272,7 +272,7 @@ pub struct IndexerTestResult {
 
 /// `POST /releases/grab`: a release from a recent search, by indexer and GUID. Download links
 /// stay on the server; it resolves them from its search cache.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct GrabRequest {
@@ -282,6 +282,19 @@ pub struct GrabRequest {
     /// is kept with the grab and used when the download is imported (Tanukarr).
     #[serde(default)]
     pub episode_ids: Vec<i64>,
+    /// Sonarr's "Override and grab": another series for the release (then `episodeIds` are
+    /// required and must belong to it).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub series_id: Option<i64>,
+    /// The quality the release is grabbed, and later imported, as.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quality: Option<crate::quality::QualityModel>,
+    /// The language ids the release is grabbed, and later imported, with.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub languages: Option<Vec<i32>>,
+    /// The download client to send it to instead of the one Kitsunarr would choose.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub download_client_id: Option<i64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

@@ -452,6 +452,38 @@ impl Client {
         )
         .await
     }
+    /// `GET /episodes/{id}`: Sonarr's episode details.
+    pub async fn episode_detail(
+        &self,
+        id: i64,
+    ) -> ClientResult<kitsunarr_domain::api::library::EpisodeDetail> {
+        self.get(&format!("/episodes/{id}")).await
+    }
+    /// `GET /series/{id}/files`: the series' episode files (Sonarr's episode file editor).
+    pub async fn episode_files(
+        &self,
+        series_id: i64,
+    ) -> ClientResult<Vec<kitsunarr_domain::api::library::EpisodeFileDetail>> {
+        self.get(&format!("/series/{series_id}/files")).await
+    }
+    pub async fn edit_episode_files(
+        &self,
+        req: &kitsunarr_domain::api::library::EpisodeFileEditRequest,
+    ) -> ClientResult<BulkEditResult> {
+        self.put("/episodefiles/editor", req).await
+    }
+    pub async fn delete_episode_files(
+        &self,
+        ids: &[i64],
+    ) -> ClientResult<kitsunarr_domain::api::library::BulkDeleteResult> {
+        self.post(
+            "/episodefiles/delete",
+            &kitsunarr_domain::api::library::EpisodeFileIds {
+                episode_file_ids: ids.to_vec(),
+            },
+        )
+        .await
+    }
     /// `PATCH /movies/{id}`: the movie Edit dialog's changes.
     pub async fn update_movie(
         &self,

@@ -346,13 +346,17 @@ pub fn Activity() -> Element {
 
 /// One history view shared by Activity and title detail dialogs. Filtering stays server-side.
 #[component]
-pub fn HistoryTable(series_id: Option<i64>, movie_id: Option<i64>) -> Element {
+pub fn HistoryTable(
+    series_id: Option<i64>,
+    movie_id: Option<i64>,
+    #[props(default)] episode_id: Option<i64>,
+) -> Element {
     let app = use_app();
     let client = use_client();
     let mut page = use_signal(|| 1u32);
     let mut event = use_signal(String::new);
     use_effect(move || {
-        let _ = (event(), series_id, movie_id);
+        let _ = (event(), series_id, movie_id, episode_id);
         if *page.peek() != 1 {
             page.set(1);
         }
@@ -385,6 +389,7 @@ pub fn HistoryTable(series_id: Option<i64>, movie_id: Option<i64>) -> Element {
                     event_type: Some(e).filter(|s| !s.is_empty()),
                     series_id,
                     movie_id,
+                    episode_id,
                     ..Default::default()
                 },
             )
@@ -393,7 +398,7 @@ pub fn HistoryTable(series_id: Option<i64>, movie_id: Option<i64>) -> Element {
     });
     rsx! {
         div { class: "page-head",
-            if series_id.is_none() && movie_id.is_none() { h1 { class: "grow", "History" } }
+            if series_id.is_none() && movie_id.is_none() && episode_id.is_none() { h1 { class: "grow", "History" } }
             select { class: "select", "aria-label": "Event type", value: event(), onchange: move |e: FormEvent| event.set(e.value()),
                 for (value, label) in EVENT_TYPES { option { value: "{value}", "{label}" } }
             }
@@ -699,9 +704,12 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
     let client = use_client();
     let mut folder = use_signal(String::new);
     let mut items = use_signal(Vec::<ManualImportItem>::new);
+    // The rows as scanned: only what differs is sent as an override.
+    let mut scanned = use_signal(Vec::<ManualImportItem>::new);
     let mut chosen = use_signal(Vec::<usize>::new);
     let mut mode = use_signal(|| "copy".to_string());
     let mut picking = use_signal(|| None::<usize>);
+    let mut editing = use_signal(|| None::<usize>);
     let c0 = client.clone();
     let series = use_resource(move || {
         let c = c0.clone();
@@ -728,6 +736,7 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
                             .filter(|i| list[*i].rejections.is_empty())
                             .collect(),
                     );
+                    scanned.set(list.clone());
                     items.set(list);
                 }
                 Err(e) => app.error(&e),
@@ -739,14 +748,21 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
     let run = move |_| {
         let c = c2.clone();
         let list = items();
+        let before = scanned();
         let files: Vec<ManualImportFile> = chosen()
             .into_iter()
-            .filter_map(|i| list.get(i))
-            .filter_map(|it| {
+            .filter_map(|i| Some((list.get(i)?, before.get(i)?)))
+            .filter_map(|(it, was)| {
                 Some(ManualImportFile {
                     path: it.path.clone(),
                     series_id: it.series_id?,
                     episode_ids: it.episode_ids.clone(),
+                    quality: (it.quality_model != was.quality_model).then_some(it.quality_model),
+                    languages: (it.languages != was.languages).then(|| it.languages.clone()),
+                    release_group: (it.release_group != was.release_group)
+                        .then(|| it.release_group.clone().unwrap_or_default()),
+                    release_type: (it.release_type != was.release_type)
+                        .then(|| it.release_type.clone()),
                 })
             })
             .collect();
@@ -795,7 +811,7 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
         if !items().is_empty() {
             div { class: "table-wrap", style: "margin-top: var(--sp-3)",
                 table { class: "table",
-                    thead { tr { th { "" } th { "File" } th { "Series" } th { "Episodes" } th { "Quality" } th { "" } } }
+                    thead { tr { th { "" } th { "File" } th { "Series" } th { "Episodes" } th { "Quality" } th { "Languages" } th { "Release group" } th { "" } } }
                     tbody {
                         for (i, it) in items().into_iter().enumerate() {
                             tr { key: "{i}",
@@ -818,7 +834,17 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
                                     " "
                                     button { class: "btn sm ghost", disabled: it.series_id.is_none(), onclick: move |_| picking.set(Some(i)), "Choose…" }
                                 }
-                                td { span { class: "badge", "{it.quality}" } }
+                                td {
+                                    button { class: "btn sm ghost", "aria-label": "Quality, languages and release of {it.name}",
+                                        title: "Choose the quality, languages, release group and release type the file is imported with",
+                                        onclick: move |_| editing.set(Some(i)),
+                                        span { class: "badge", {kitsunarr_domain::Quality::by_id(it.quality_model.quality_id).map_or(it.quality.clone(), |q| q.name.to_string())} }
+                                    }
+                                }
+                                td { class: "small",
+                                    {it.languages.iter().filter_map(|l| kitsunarr_domain::Language::by_id(*l)).map(|l| l.name).collect::<Vec<_>>().join(", ")}
+                                }
+                                td { class: "small", {it.release_group.clone().unwrap_or_default()} }
                                 td { for r in it.rejections.iter() { div { class: "small warning", "{r}" } } }
                             }
                         }
@@ -834,6 +860,16 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
                 button { class: "btn primary", disabled: busy() || !ready, onclick: run, if busy() { "Importing…" } else { "Import {chosen().len()} files" } }
             }
         }
+        if let Some(i) = editing() {
+            if let Some(item) = items().get(i).cloned() {
+                FileDetailsDialog { item, on_done: move |changed: Option<ManualImportItem>| {
+                    if let Some(c) = changed && let Some(x) = items.write().get_mut(i) {
+                        *x = c;
+                    }
+                    editing.set(None);
+                } }
+            }
+        }
         if let Some(i) = picking() {
             if let Some(sid) = items().get(i).and_then(|it| it.series_id) {
                 PickEpisodes { series_id: sid, initial: items().get(i).map(|it| it.episode_ids.clone()).unwrap_or_default(),
@@ -844,6 +880,76 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
                         }
                         picking.set(None);
                     } }
+            }
+        }
+    }
+}
+
+/// Sonarr's manual import quality, language, release group and release type choices for one
+/// file.
+#[component]
+fn FileDetailsDialog(
+    item: kitsunarr_domain::api::library_tools::ManualImportItem,
+    on_done: EventHandler<Option<kitsunarr_domain::api::library_tools::ManualImportItem>>,
+) -> Element {
+    use kitsunarr_domain::{Language, Quality};
+    let original = item.clone();
+    let mut quality = use_signal(|| item.quality_model.quality_id);
+    let mut version = use_signal(|| item.quality_model.revision.version);
+    let mut languages = use_signal(|| item.languages.clone());
+    let mut group = use_signal(|| item.release_group.clone().unwrap_or_default());
+    let mut release_type = use_signal(|| item.release_type.clone());
+    let done = move |_| {
+        let mut out = original.clone();
+        out.quality_model.quality_id = quality();
+        out.quality_model.revision.version = version().max(1);
+        out.languages = languages();
+        out.release_group = Some(group().trim().to_string()).filter(|g| !g.is_empty());
+        out.release_type = release_type();
+        on_done.call(Some(out));
+    };
+    rsx! {
+        Modal { title: format!("Import details — {}", item.name), wide: true, on_close: move |_| on_done.call(None),
+            footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| on_done.call(None), "Cancel" } button { class: "btn primary", onclick: done, "Use these details" } },
+            div { class: "form-grid",
+                crate::components::common::Field { label: "Quality",
+                    select { class: "select", "aria-label": "Quality",
+                        onchange: move |e: FormEvent| { if let Ok(q) = e.value().parse() { quality.set(q); } },
+                        for q in Quality::all().iter() { option { key: "{q.id}", value: "{q.id}", selected: q.id == quality(), "{q.name}" } }
+                    }
+                }
+                crate::components::common::Field { label: "Revision", help: "2 or more for a PROPER or REPACK.".to_string(),
+                    input { class: "input", r#type: "number", min: "1", "aria-label": "Revision", value: "{version}",
+                        oninput: move |e| { if let Ok(v) = e.value().parse() { version.set(v); } } }
+                }
+                crate::components::common::Field { label: "Release group",
+                    input { class: "input", "aria-label": "Release group", value: "{group}", oninput: move |e| group.set(e.value()) }
+                }
+                crate::components::common::Field { label: "Release type",
+                    select { class: "select", "aria-label": "Release type", value: release_type(),
+                        onchange: move |e: FormEvent| release_type.set(e.value()),
+                        option { value: "unknown", "Unknown" }
+                        option { value: "singleEpisode", "Single episode" }
+                        option { value: "multiEpisode", "Multi-episode" }
+                        option { value: "seasonPack", "Season pack" }
+                    }
+                }
+            }
+            crate::components::common::Field { label: "Languages",
+                div { class: "chips", role: "group", "aria-label": "Languages",
+                    for l in Language::all().iter().filter(|l| l.id > 0) {
+                        {
+                            let id = l.id;
+                            let on = languages().contains(&id);
+                            rsx! {
+                                button { key: "{id}", r#type: "button", class: if on { "chip on" } else { "chip" }, "aria-pressed": "{on}",
+                                    onclick: move |_| { let mut w = languages.write(); if let Some(i) = w.iter().position(|x| *x == id) { w.remove(i); } else { w.push(id); } },
+                                    "{l.name}"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

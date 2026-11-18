@@ -1816,6 +1816,10 @@ async fn grab_release(
             guid,
             indexer_id,
             episode_ids,
+            series_id: b["override"]["seriesId"].as_i64(),
+            quality: crate::routes::grab::sonarr_quality(&b["override"]["quality"]),
+            languages: crate::routes::grab::sonarr_languages(&b["override"]["languages"]),
+            download_client_id: b["override"]["downloadClientId"].as_i64(),
         }),
     )
     .await?;

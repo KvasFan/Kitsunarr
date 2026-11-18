@@ -163,16 +163,36 @@ pub struct ManualImportItem {
     pub release_group: Option<String>,
     /// Why it would not import as is (it can still be imported with explicit choices).
     pub rejections: Vec<String>,
+    /// The parsed quality and revision, the starting point of a quality override.
+    #[serde(default)]
+    pub quality_model: crate::quality::QualityModel,
+    /// Parsed language ids (the series' original language when the name names none).
+    #[serde(default)]
+    pub languages: Vec<i32>,
+    /// Sonarr's `ReleaseType`: `unknown`, `singleEpisode`, `multiEpisode` or `seasonPack`.
+    #[serde(default)]
+    pub release_type: String,
 }
 
-/// A file to import, with the series and episodes chosen for it.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+/// A file to import, with the series and episodes chosen for it, and optionally the quality,
+/// languages, release group and release type it is recorded with (Sonarr's manual import
+/// overrides; otherwise they are read from the names, as for downloads).
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ManualImportFile {
     pub path: String,
     pub series_id: i64,
     pub episode_ids: Vec<i64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quality: Option<crate::quality::QualityModel>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub languages: Option<Vec<i32>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub release_group: Option<String>,
+    /// `unknown`, `singleEpisode`, `multiEpisode` or `seasonPack`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub release_type: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
