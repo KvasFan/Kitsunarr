@@ -34,7 +34,7 @@ pub const SERIES_MONITOR: &[MonitorOption] = &[
     MonitorOption::None,
 ];
 
-const SERIES_TYPES: &[(SeriesType, &str)] = &[
+pub(crate) const SERIES_TYPES: &[(SeriesType, &str)] = &[
     (SeriesType::Standard, "Standard"),
     (SeriesType::Daily, "Daily"),
     (SeriesType::Anime, "Anime / absolute numbering"),

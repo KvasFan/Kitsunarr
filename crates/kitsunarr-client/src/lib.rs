@@ -452,6 +452,14 @@ impl Client {
         )
         .await
     }
+    /// `PATCH /movies/{id}`: the movie Edit dialog's changes.
+    pub async fn update_movie(
+        &self,
+        id: i64,
+        u: &kitsunarr_domain::api::library::MovieUpdate,
+    ) -> ClientResult<MovieDetail> {
+        self.patch(&format!("/movies/{id}"), u).await
+    }
     /// Tanukarr's grouping mode of a film: `false` is "Disabled".
     pub async fn set_movie_automatic_grouping(
         &self,

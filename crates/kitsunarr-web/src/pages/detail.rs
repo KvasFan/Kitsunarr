@@ -107,6 +107,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut compression_open = use_signal(|| false);
     let mut monitoring_open = use_signal(|| false);
     let mut move_open = use_signal(|| false);
+    let mut edit_open = use_signal(|| false);
     let mut scanning = use_signal(|| false);
     // An episode file to delete: (file id, relative path).
     let mut deleting_file = use_signal(|| None::<(i64, String)>);
@@ -332,6 +333,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                         onchange: move |v: bool| update_monitored(SeriesUpdate { monitored: Some(v), ..Default::default() }),
                     }
                     button { class: "btn", title: "Choose which episodes are monitored, as when adding the series", onclick: move |_| monitoring_open.set(true), "Monitoring" }
+                    button { class: "btn", title: "Monitoring, quality profile, series type, folder and tags", onclick: move |_| edit_open.set(true), "Edit" }
                     div { class: "spacer" }
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
                     button { class: "btn", onclick: move |_| source_open.set(true), "Change catalogue" }
@@ -395,6 +397,9 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     "Prevent import lists from adding it again"
                 }
             }
+        }
+        if edit_open() {
+            super::edit::EditSeriesDialog { detail: d.clone(), on_close: move |_| edit_open.set(false) }
         }
         if compression_open() {
             CompressionDialog { series_id: id, on_close: move |_| compression_open.set(false) }
@@ -792,6 +797,7 @@ pub fn MovieDetailPage(id: i64) -> Element {
     };
     let mut watching = use_signal(|| false);
     let mut move_open = use_signal(|| false);
+    let mut edit_open = use_signal(|| false);
     let c8 = client.clone();
     let mut set_watched = move |watched: bool| {
         let c = c8.clone();
@@ -866,6 +872,7 @@ pub fn MovieDetailPage(id: i64) -> Element {
                 }
                 div { class: "row", style: "margin-top: var(--sp-4)",
                     Switch { checked: d.item.monitored, label: if d.item.monitored { "Monitored".to_string() } else { "Unmonitored".to_string() }, onchange: set_monitored }
+                    button { class: "btn", title: "Monitoring, availability, quality profile, folder and tags", onclick: move |_| edit_open.set(true), "Edit" }
                     div { class: "spacer" }
                     button {class:"btn",disabled:watching(),title:"Jellyfin watched sync can update this status.",onclick:move |_|set_watched(!d.item.watched),if d.item.watched {"Mark unwatched"}else{"Mark watched"}}
                     RefreshButton { provider: d.item.metadata_provider, busy: refreshing(), on_click: refresh }
@@ -884,6 +891,9 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     button { class: "btn danger", onclick: move |_| { delete_folder.set(false); confirm_delete.set(true); }, "Remove from library" }
                 }
             }
+        }
+        if edit_open() {
+            super::edit::EditMovieDialog { detail: d.clone(), on_close: move |_| { edit_open.set(false); detail.restart(); } }
         }
         if move_open() {
             MoveFolderDialog {

@@ -416,6 +416,39 @@ pub struct SeriesUpdate {
     /// automatic groups and keeps it out of them; `true` lets the next refresh group it.
     #[serde(default)]
     pub automatic_grouping: Option<bool>,
+    /// A new series folder (Sonarr's series edit with `path`): absolute, inside a root folder.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
+    /// With `path`: move the folder's contents there (Sonarr's `moveFiles`); otherwise only the
+    /// recorded folder changes.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub move_files: bool,
+}
+
+/// Partial update of a movie (the movie page's Edit dialog); absent fields are left unchanged.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieUpdate {
+    #[serde(default)]
+    pub monitored: Option<bool>,
+    #[serde(default)]
+    pub quality_profile_id: Option<i64>,
+    /// Replaces the movie's tags.
+    #[serde(default)]
+    pub tags: Option<Vec<i64>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub minimum_availability: Option<MinimumAvailability>,
+    /// `false` removes the film from its automatic groups (anime groups, TMDB collections) and
+    /// keeps it out of them; `true` lets it be grouped again.
+    #[serde(default)]
+    pub automatic_grouping: Option<bool>,
+    /// A new movie folder: absolute, inside a root folder.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
+    /// With `path`: move the folder's contents there; otherwise only the recorded folder changes.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub move_files: bool,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -445,6 +478,16 @@ pub struct BulkEdit {
     /// Series only: whether seasons a refresh discovers are monitored.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub monitor_new_items: Option<MonitorNewItems>,
+    /// Replaces every title's tags (Sonarr's `applyTags: replace`); applied before `addTags`
+    /// and `removeTags`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub replace_tags: Option<Vec<i64>>,
+    /// Series only: the series type.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub series_type: Option<SeriesType>,
+    /// Series only: whether episodes go to season folders.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub season_folder: Option<bool>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]

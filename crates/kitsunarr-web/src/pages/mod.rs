@@ -5,6 +5,7 @@ pub mod calendar;
 pub mod collections;
 pub mod dashboard;
 pub mod detail;
+pub mod edit;
 pub mod import;
 pub mod library;
 pub mod library_filters;
