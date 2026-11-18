@@ -1166,7 +1166,7 @@ Quality cutoff	Ngưỡng chất lượng
 Quality profile for added shows	Hồ sơ chất lượng cho phim bộ được thêm
 Quality sizes	Kích thước chất lượng
 Quality: {} · Group: {} · Languages: {} · {}	Chất lượng: {} · Nhóm: {} · Ngôn ngữ: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Kế hoạch truy vấn bao gồm các tầng dự phòng có thể không chạy. Mỗi nguồn có ngân sách 35 giây; tìm kiếm tương tác có tổng ngân sách 45 giây.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Kế hoạch truy vấn bao gồm các tầng dự phòng có thể không chạy. Mỗi nguồn có ngân sách 90 giây; tìm kiếm tương tác có tổng ngân sách 100 giây.
 RSS sync interval	Chu kỳ đồng bộ RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Chỉ đọc: kiểm tra thư mục phim bộ và phim lẻ, bản ghi tệp không an toàn và tệp bị thiếu trên ổ đĩa.
 Reading the root folder…	Đang đọc thư mục gốc…
@@ -1907,3 +1907,5 @@ Recent entries	Mục gần đây
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Các mục gần nhất được giữ trong bộ nhớ. Các tệp nhật ký ở trên và đầu ra của tiến trình (nhật ký container hoặc journal) giữ mọi thứ.
 Yesterday	Hôm qua
 Tomorrow	Ngày mai
+Sort by rank	Sắp xếp theo thứ hạng
+{}: the search stopped at its time limit; showing the releases found so far.	{}: tìm kiếm đã dừng ở giới hạn thời gian; đang hiển thị các bản phát hành tìm được đến lúc này.

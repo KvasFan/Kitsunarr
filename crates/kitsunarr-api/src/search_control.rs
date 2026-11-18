@@ -7,8 +7,8 @@ use tokio_util::sync::CancellationToken;
 
 use crate::error::{ApiError, ApiResult};
 
-pub(crate) const SOURCE_BUDGET: Duration = Duration::from_secs(35);
-const INTERACTIVE_BUDGET: Duration = Duration::from_secs(45);
+pub(crate) const SOURCE_BUDGET: Duration = Duration::from_secs(90);
+const INTERACTIVE_BUDGET: Duration = Duration::from_secs(100);
 
 #[derive(Default)]
 struct Active {

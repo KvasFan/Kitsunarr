@@ -1166,7 +1166,7 @@ Quality cutoff	품질 중단점
 Quality profile for added shows	추가할 시리즈의 품질 프로필
 Quality sizes	품질 크기
 Quality: {} · Group: {} · Languages: {} · {}	품질: {} · 그룹: {} · 언어: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	쿼리 계획에는 실행되지 않을 수도 있는 대체 단계가 포함됩니다. 각 소스의 제한 시간은 35초이며, 대화형 검색의 전체 제한 시간은 45초입니다.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	쿼리 계획에는 실행되지 않을 수도 있는 대체 단계가 포함됩니다. 각 소스의 제한 시간은 90초이며, 대화형 검색의 전체 제한 시간은 100초입니다.
 RSS sync interval	RSS 동기화 간격
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	읽기 전용: 시리즈 및 영화 폴더, 안전하지 않은 파일 레코드, 디스크에 없는 파일을 확인합니다.
 Reading the root folder…	루트 폴더 읽는 중…
@@ -1907,3 +1907,5 @@ Recent entries	최근 항목
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	메모리에 보관된 최근 항목입니다. 위의 로그 파일과 프로세스 출력(컨테이너 로그 또는 저널)에는 모든 내용이 보관됩니다.
 Yesterday	어제
 Tomorrow	내일
+Sort by rank	순위별 정렬
+{}: the search stopped at its time limit; showing the releases found so far.	{}: 검색이 시간 제한에 도달해 중지되었습니다. 지금까지 찾은 릴리스를 표시합니다.

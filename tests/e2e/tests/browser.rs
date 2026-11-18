@@ -126,6 +126,19 @@ async fn modal_layout(client: &Client) -> serde_json::Value {
     "#, vec![]).await.unwrap()
 }
 
+/// Waits until the element's attribute has `value`.
+async fn wait_attr(client: &Client, locator: Locator<'_>, attr: &str, value: &str) {
+    for _ in 0..100 {
+        if let Ok(e) = client.find(locator).await
+            && e.attr(attr).await.ok().flatten().as_deref() == Some(value)
+        {
+            return;
+        }
+        tokio::time::sleep(std::time::Duration::from_millis(100)).await;
+    }
+    panic!("{attr} never became {value}");
+}
+
 async fn wait_text(client: &Client, text: &str) {
     step(&format!("waiting for {text:?}"));
     let xpath = format!("//*[contains(normalize-space(.), {})]", xpath_literal(text));
@@ -1460,16 +1473,20 @@ async fn first_run_setup_migration_and_library() {
         client.goto(&format!("{base}/calendar")).await.unwrap();
         click_button(&client, "iCal link").await;
         wait_text(&client, "Subscribe to this address").await;
-        let feed = client
-            .wait()
-            .at_most(Duration::from_secs(20))
-            .for_element(Locator::Css("input[aria-label='iCal feed address']"))
-            .await
-            .unwrap()
-            .prop("value")
-            .await
-            .unwrap()
-            .unwrap_or_default();
+        // The address is filled in once the API key has loaded.
+        let mut feed = String::new();
+        for _ in 0..200 {
+            if let Ok(input) = client
+                .find(Locator::Css("input[aria-label='iCal feed address']"))
+                .await
+            {
+                feed = input.prop("value").await.ok().flatten().unwrap_or_default();
+                if feed.contains("apikey=") {
+                    break;
+                }
+            }
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
         assert!(feed.contains("/feed/v3/calendar/Kitsunarr.ics?pastDays=7&futureDays=28&apikey="), "{feed}");
         click_button(&client, "Close").await;
         // Auto tagging (Sonarr's Settings › Tags): a rule with a genre condition.
@@ -1743,6 +1760,25 @@ async fn first_run_setup_migration_and_library() {
             "indexer download links (with their keys) never reach the browser"
         );
         screenshot(&client, "16-interactive-search").await;
+        // Column sorting: largest first, then reversed, then back to the ranking.
+        let size_header = Locator::XPath("//table[contains(@class,'releases')]//th[.//button[normalize-space(.)='Size' or starts-with(normalize-space(.),'Size ')]]");
+        let sizes = async |client: &Client| -> Vec<String> {
+            let mut out = Vec::new();
+            for row in client.find_all(Locator::Css("table.releases tbody tr td[data-bytes]")).await.unwrap() {
+                out.push(row.attr("data-bytes").await.unwrap().unwrap_or_default());
+            }
+            out
+        };
+        client.find(size_header).await.unwrap().find(Locator::Css("button")).await.unwrap().click().await.unwrap();
+        wait_attr(&client, size_header, "aria-sort", "descending").await;
+        let desc: Vec<i64> = sizes(&client).await.iter().map(|v| v.parse().unwrap()).collect();
+        assert!(desc.windows(2).all(|w| w[0] >= w[1]), "sizes largest first: {desc:?}");
+        client.find(size_header).await.unwrap().find(Locator::Css("button")).await.unwrap().click().await.unwrap();
+        wait_attr(&client, size_header, "aria-sort", "ascending").await;
+        let asc: Vec<i64> = sizes(&client).await.iter().map(|v| v.parse().unwrap()).collect();
+        assert!(asc.windows(2).all(|w| w[0] <= w[1]), "sizes smallest first: {asc:?}");
+        client.find(Locator::Css("table.releases button[aria-label='Sort by rank']")).await.unwrap().click().await.unwrap();
+        wait_attr(&client, size_header, "aria-sort", "none").await;
         // Rejected releases need a second click; this one cannot be matched to episodes.
         let grab = Locator::Css("table.releases tbody tr button[aria-label^='Grab ']");
         client.find(grab).await.unwrap().click().await.unwrap();

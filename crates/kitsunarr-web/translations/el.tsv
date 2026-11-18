@@ -1166,7 +1166,7 @@ Quality cutoff	Όριο ποιότητας
 Quality profile for added shows	Προφίλ ποιότητας για σειρές που προστίθενται
 Quality sizes	Μεγέθη ποιοτήτων
 Quality: {} · Group: {} · Languages: {} · {}	Ποιότητα: {} · Ομάδα: {} · Γλώσσες: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Τα σχέδια ερωτημάτων περιλαμβάνουν εφεδρικά επίπεδα που μπορεί να μην εκτελεστούν. Οι πηγές έχουν προϋπολογισμό 35 δευτερολέπτων· οι αλληλεπιδραστικές αναζητήσεις έχουν συνολικό προϋπολογισμό 45 δευτερολέπτων.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Τα σχέδια ερωτημάτων περιλαμβάνουν εφεδρικά επίπεδα που μπορεί να μην εκτελεστούν. Οι πηγές έχουν προϋπολογισμό 90 δευτερολέπτων· οι αλληλεπιδραστικές αναζητήσεις έχουν συνολικό προϋπολογισμό 100 δευτερολέπτων.
 RSS sync interval	Διάστημα συγχρονισμού RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Μόνο ανάγνωση: ελέγχει φακέλους σειρών και ταινιών, μη ασφαλείς εγγραφές αρχείων και αρχεία που λείπουν από τον δίσκο.
 Reading the root folder…	Ανάγνωση του ριζικού φακέλου…
@@ -1907,3 +1907,5 @@ Recent entries	Πρόσφατες εγγραφές
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Οι πιο πρόσφατες εγγραφές που κρατούνται στη μνήμη. Τα παραπάνω αρχεία καταγραφής και η έξοδος της διεργασίας (καταγραφές container ή journal) κρατούν τα πάντα.
 Yesterday	Χθες
 Tomorrow	Αύριο
+Sort by rank	Ταξινόμηση κατά κατάταξη
+{}: the search stopped at its time limit; showing the releases found so far.	{}: η αναζήτηση σταμάτησε στο χρονικό της όριο· εμφανίζονται οι εκδόσεις που βρέθηκαν μέχρι στιγμής.

@@ -1166,7 +1166,7 @@ Quality cutoff	தர வரம்பு
 Quality profile for added shows	சேர்க்கப்படும் நிகழ்ச்சிகளுக்கான தர சுயவிவரம்
 Quality sizes	தர அளவுகள்
 Quality: {} · Group: {} · Languages: {} · {}	தரம்: {} · குழு: {} · மொழிகள்: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	வினவல் திட்டங்களில் இயங்காமல் போகக்கூடிய மாற்று அடுக்குகள் உள்ளன. மூலங்களுக்கு 35 வினாடி வரம்பு உள்ளது; ஊடாடும் தேடல்களுக்கு மொத்தம் 45 வினாடி வரம்பு உள்ளது.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	வினவல் திட்டங்களில் இயங்காமல் போகக்கூடிய மாற்று அடுக்குகள் உள்ளன. மூலங்களுக்கு 90 வினாடி வரம்பு உள்ளது; ஊடாடும் தேடல்களுக்கு மொத்தம் 100 வினாடி வரம்பு உள்ளது.
 RSS sync interval	RSS ஒத்திசைவு இடைவெளி
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	படிக்க மட்டும்: தொடர் மற்றும் திரைப்படக் கோப்புறைகள், பாதுகாப்பற்ற கோப்புப் பதிவுகள் மற்றும் வட்டில் காணாமல் போன கோப்புகளைச் சரிபார்க்கும்.
 Reading the root folder…	மூல கோப்புறையைப் படிக்கிறது…
@@ -1907,3 +1907,5 @@ Recent entries	சமீபத்திய பதிவுகள்
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	நினைவகத்தில் வைக்கப்பட்ட மிகச் சமீபத்திய பதிவுகள். மேலே உள்ள பதிவுக் கோப்புகளும் செயல்முறை வெளியீடும் (கன்டெய்னர் பதிவுகள் அல்லது journal) அனைத்தையும் வைத்திருக்கும்.
 Yesterday	நேற்று
 Tomorrow	நாளை
+Sort by rank	தரவரிசைப்படி வரிசைப்படுத்து
+{}: the search stopped at its time limit; showing the releases found so far.	{}: தேடல் அதன் நேர வரம்பில் நின்றது; இதுவரை கண்டறிந்த வெளியீடுகள் காட்டப்படுகின்றன.

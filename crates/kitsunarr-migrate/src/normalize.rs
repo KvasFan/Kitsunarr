@@ -148,7 +148,12 @@ pub fn normalize(raw: &RawSource) -> SourceSnapshot {
     let mut scene: HashMap<i64, Vec<(String, Option<i32>)>> = HashMap::new();
     for r in raw.table("scenemappings") {
         if let (Some(tvdb), Some(title)) = (r.i64("tvdbid"), r.str("title")) {
-            let season = r.i32("seasonnumber").filter(|s| *s >= 0);
+            // TheXEM's names carry the scene season (`SceneSeasonNumber`), the services' names
+            // the TVDB season; -1 (or none) applies to every season.
+            let season = r
+                .i32("sceneseasonnumber")
+                .filter(|s| *s >= 0)
+                .or_else(|| r.i32("seasonnumber").filter(|s| *s >= 0));
             scene.entry(tvdb).or_default().push((title, season));
         }
     }
@@ -1289,6 +1294,41 @@ mod tests {
         assert_eq!(a.monitor_new_items, MonitorNewItems::None);
         assert_eq!(a.root_folder_path.as_deref(), Some("/media/anime"));
         assert_eq!(a.identity(), (MetadataProvider::Tvdb, "76885".to_string()));
+    }
+
+    #[test]
+    fn xem_scene_titles_keep_their_scene_season() {
+        let snap = normalize(&raw(
+            SourceFormat::Database,
+            vec![
+                (
+                    "series",
+                    vec![
+                        json!({"Id": 4, "Title": "Oshi no Ko", "Path": "/anime/Oshi no Ko", "TvdbId": 421069}),
+                    ],
+                ),
+                (
+                    "scenemappings",
+                    vec![
+                        json!({"TvdbId": 421069, "Title": "Oshi no Ko S3", "SceneSeasonNumber": 3, "SceneOrigin": "XemService"}),
+                        json!({"TvdbId": 421069, "Title": "Oshi no Ko Mein Star", "SceneSeasonNumber": -1}),
+                        json!({"TvdbId": 421069, "Title": "Ochi no Ko", "SeasonNumber": -1}),
+                        json!({"TvdbId": 421069, "Title": "Oshi no Ko 2nd Season", "SeasonNumber": 2}),
+                    ],
+                ),
+            ],
+        ));
+        let mut titles = snap.series[0].alternate_titles.clone();
+        titles.sort();
+        assert_eq!(
+            titles,
+            vec![
+                ("Ochi no Ko".to_string(), None),
+                ("Oshi no Ko 2nd Season".to_string(), Some(2)),
+                ("Oshi no Ko Mein Star".to_string(), None),
+                ("Oshi no Ko S3".to_string(), Some(3)),
+            ]
+        );
     }
 
     #[test]

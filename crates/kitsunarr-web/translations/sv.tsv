@@ -1166,7 +1166,7 @@ Quality cutoff	Uppgraderingsgräns för kvalitet
 Quality profile for added shows	Kvalitetsprofil för tillagda serier
 Quality sizes	Kvalitetsstorlekar
 Quality: {} · Group: {} · Languages: {} · {}	Kvalitet: {} · Grupp: {} · Språk: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Frågeplaner innehåller reservnivåer som kanske inte körs. Källor har en tidsbudget på 35 sekunder; interaktiva sökningar har en total tidsbudget på 45 sekunder.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Frågeplaner innehåller reservnivåer som kanske inte körs. Källor har en tidsbudget på 90 sekunder; interaktiva sökningar har en total tidsbudget på 100 sekunder.
 RSS sync interval	Intervall för RSS-synkronisering
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Skrivskyddat: kontrollerar serie- och filmmappar, osäkra filposter och filer som saknas på disken.
 Reading the root folder…	Läser rotmappen…
@@ -1907,3 +1907,5 @@ Recent entries	Senaste poster
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	De senaste posterna som hålls i minnet. Loggfilerna ovan och processens utdata (containerloggar eller journal) behåller allt.
 Yesterday	I går
 Tomorrow	I morgon
+Sort by rank	Sortera efter rangordning
+{}: the search stopped at its time limit; showing the releases found so far.	{}: sökningen stoppade vid sin tidsgräns; visar de utgåvor som hittats hittills.

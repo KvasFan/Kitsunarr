@@ -1166,7 +1166,7 @@ Quality cutoff	Limită de calitate
 Quality profile for added shows	Profil de calitate pentru serialele adăugate
 Quality sizes	Dimensiuni pe calitate
 Quality: {} · Group: {} · Languages: {} · {}	Calitate: {} · Grup: {} · Limbi: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Planurile de interogare includ niveluri de rezervă care s-ar putea să nu ruleze. Sursele au un buget de 35 de secunde; căutările interactive au un buget total de 45 de secunde.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Planurile de interogare includ niveluri de rezervă care s-ar putea să nu ruleze. Sursele au un buget de 90 de secunde; căutările interactive au un buget total de 100 de secunde.
 RSS sync interval	Interval de sincronizare RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Doar citire: verifică folderele serialelor și filmelor, înregistrările de fișiere nesigure și fișierele lipsă de pe disc.
 Reading the root folder…	Se citește folderul rădăcină…
@@ -1907,3 +1907,5 @@ Recent entries	Intrări recente
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Cele mai recente intrări păstrate în memorie. Fișierele jurnal de mai sus și ieșirea procesului (jurnalele containerului sau journal) păstrează totul.
 Yesterday	Ieri
 Tomorrow	Mâine
+Sort by rank	Sortează după clasament
+{}: the search stopped at its time limit; showing the releases found so far.	{}: căutarea s-a oprit la limita de timp; sunt afișate lansările găsite până acum.

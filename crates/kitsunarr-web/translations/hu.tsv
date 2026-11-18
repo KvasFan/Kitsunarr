@@ -1166,7 +1166,7 @@ Quality cutoff	Minőségi küszöbérték
 Quality profile for added shows	Minőségi profil a hozzáadott sorozatokhoz
 Quality sizes	Minőségi méretek
 Quality: {} · Group: {} · Languages: {} · {}	Minőség: {} · Csoport: {} · Nyelvek: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	A lekérdezési tervek tartalék szinteket is tartalmaznak, amelyek nem feltétlenül futnak le. A források keretideje 35 másodperc; az interaktív keresések teljes keretideje 45 másodperc.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	A lekérdezési tervek tartalék szinteket is tartalmaznak, amelyek nem feltétlenül futnak le. A források keretideje 90 másodperc; az interaktív keresések teljes keretideje 100 másodperc.
 RSS sync interval	RSS-szinkronizálás időköze
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Csak olvasás: ellenőrzi a sorozat- és filmmappákat, a nem biztonságos fájlrekordokat és a lemezről hiányzó fájlokat.
 Reading the root folder…	A gyökérmappa olvasása…
@@ -1907,3 +1907,5 @@ Recent entries	Legutóbbi bejegyzések
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	A memóriában tartott legutóbbi bejegyzések. A fenti naplófájlok és a folyamat kimenete (konténernaplók vagy journal) mindent megőriznek.
 Yesterday	Tegnap
 Tomorrow	Holnap
+Sort by rank	Rendezés rangsor szerint
+{}: the search stopped at its time limit; showing the releases found so far.	{}: a keresés elérte az időkorlátját; az eddig talált kiadások láthatók.

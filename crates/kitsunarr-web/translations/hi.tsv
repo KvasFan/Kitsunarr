@@ -1166,7 +1166,7 @@ Quality cutoff	गुणवत्ता कटऑफ़
 Quality profile for added shows	जोड़े गए शो के लिए गुणवत्ता प्रोफ़ाइल
 Quality sizes	गुणवत्ता आकार
 Quality: {} · Group: {} · Languages: {} · {}	गुणवत्ता: {} · समूह: {} · भाषाएँ: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	क्वेरी योजनाओं में फ़ॉलबैक स्तर शामिल हैं जो शायद न चलें। स्रोतों का बजट 35 सेकंड है; इंटरैक्टिव खोजों का कुल बजट 45 सेकंड है।
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	क्वेरी योजनाओं में फ़ॉलबैक स्तर शामिल हैं जो शायद न चलें। स्रोतों का बजट 90 सेकंड है; इंटरैक्टिव खोजों का कुल बजट 100 सेकंड है।
 RSS sync interval	RSS सिंक अंतराल
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	केवल पढ़ने के लिए: सीरीज़ और फ़िल्म फ़ोल्डर, असुरक्षित फ़ाइल रिकॉर्ड और डिस्क पर अनुपलब्ध फ़ाइलें जाँचता है।
 Reading the root folder…	रूट फ़ोल्डर पढ़ा जा रहा है…
@@ -1907,3 +1907,5 @@ Recent entries	हाल की प्रविष्टियाँ
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	मेमोरी में रखी गई सबसे हाल की प्रविष्टियाँ। ऊपर की लॉग फ़ाइलें और प्रोसेस आउटपुट (कंटेनर लॉग या journal) सब कुछ रखते हैं।
 Yesterday	बीता कल
 Tomorrow	आने वाला कल
+Sort by rank	रैंक के अनुसार क्रमबद्ध करें
+{}: the search stopped at its time limit; showing the releases found so far.	{}: खोज अपनी समय सीमा पर रुक गई; अब तक मिली रिलीज़ दिखाई जा रही हैं।

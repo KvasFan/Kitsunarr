@@ -1166,7 +1166,7 @@ Quality cutoff	حد القطع للجودة
 Quality profile for added shows	ملف تعريف الجودة للعروض المضافة
 Quality sizes	أحجام الجودة
 Quality: {} · Group: {} · Languages: {} · {}	الجودة: {} · المجموعة: {} · اللغات: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	تتضمن خطط الاستعلام مستويات احتياطية قد لا تُنفَّذ. للمصادر مهلة 35 ثانية؛ وللبحث التفاعلي مهلة إجمالية 45 ثانية.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	تتضمن خطط الاستعلام مستويات احتياطية قد لا تُنفَّذ. للمصادر مهلة 90 ثانية؛ وللبحث التفاعلي مهلة إجمالية 100 ثانية.
 RSS sync interval	الفاصل الزمني لمزامنة RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	للقراءة فقط: يفحص مجلدات المسلسلات والأفلام، وسجلات الملفات غير الآمنة، والملفات المفقودة من القرص.
 Reading the root folder…	جارٍ قراءة المجلد الجذر…
@@ -1907,3 +1907,5 @@ Recent entries	الإدخالات الأخيرة
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	أحدث الإدخالات المحفوظة في الذاكرة. ملفات السجل أعلاه ومخرجات العملية (سجلات الحاوية أو journal) تحتفظ بكل شيء.
 Yesterday	أمس
 Tomorrow	غدًا
+Sort by rank	ترتيب حسب التصنيف
+{}: the search stopped at its time limit; showing the releases found so far.	{}: توقف البحث عند حده الزمني؛ يتم عرض الإصدارات التي عُثر عليها حتى الآن.

@@ -1166,7 +1166,7 @@ Quality cutoff	Mezní hodnota kvality
 Quality profile for added shows	Profil kvality pro přidávané seriály
 Quality sizes	Velikosti kvalit
 Quality: {} · Group: {} · Languages: {} · {}	Kvalita: {} · Skupina: {} · Jazyky: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Plány dotazů zahrnují záložní úrovně, které se nemusí spustit. Zdroje mají limit 35 sekund; interaktivní vyhledávání má celkový limit 45 sekund.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Plány dotazů zahrnují záložní úrovně, které se nemusí spustit. Zdroje mají limit 90 sekund; interaktivní vyhledávání má celkový limit 100 sekund.
 RSS sync interval	Interval synchronizace RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Pouze čtení: kontroluje složky seriálů a filmů, nebezpečné záznamy souborů a soubory chybějící na disku.
 Reading the root folder…	Čtení kořenové složky…
@@ -1907,3 +1907,5 @@ Recent entries	Nedávné záznamy
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Nejnovější záznamy uchované v paměti. Soubory logů výše a výstup procesu (logy kontejneru nebo journal) uchovávají vše.
 Yesterday	Včera
 Tomorrow	Zítra
+Sort by rank	Seřadit podle pořadí
+{}: the search stopped at its time limit; showing the releases found so far.	{}: hledání se zastavilo na časovém limitu; zobrazují se dosud nalezená vydání.

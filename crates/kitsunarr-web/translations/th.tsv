@@ -1166,7 +1166,7 @@ Quality cutoff	จุดตัดคุณภาพ
 Quality profile for added shows	โปรไฟล์คุณภาพสำหรับซีรีส์ที่เพิ่ม
 Quality sizes	ขนาดคุณภาพ
 Quality: {} · Group: {} · Languages: {} · {}	คุณภาพ: {} · กลุ่ม: {} · ภาษา: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	แผนการค้นหารวมขั้นสำรองที่อาจไม่ได้ทำงาน แต่ละแหล่งที่มามีเวลา 35 วินาที; การค้นหาแบบโต้ตอบมีเวลารวม 45 วินาที
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	แผนการค้นหารวมขั้นสำรองที่อาจไม่ได้ทำงาน แต่ละแหล่งที่มามีเวลา 90 วินาที; การค้นหาแบบโต้ตอบมีเวลารวม 100 วินาที
 RSS sync interval	ช่วงเวลาซิงค์ RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	อ่านอย่างเดียว: ตรวจสอบโฟลเดอร์ซีรีส์และภาพยนตร์ ระเบียนไฟล์ที่ไม่ปลอดภัย และไฟล์ที่หายไปจากดิสก์
 Reading the root folder…	กำลังอ่านโฟลเดอร์หลัก…
@@ -1907,3 +1907,5 @@ Recent entries	รายการล่าสุด
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	รายการล่าสุดที่เก็บไว้ในหน่วยความจำ ไฟล์ล็อกด้านบนและเอาต์พุตของโปรเซส (ล็อกคอนเทนเนอร์หรือ journal) จะเก็บทุกอย่างไว้
 Yesterday	เมื่อวาน
 Tomorrow	พรุ่งนี้
+Sort by rank	เรียงตามอันดับ
+{}: the search stopped at its time limit; showing the releases found so far.	{}: การค้นหาหยุดเมื่อถึงขีดจำกัดเวลา กำลังแสดงรีลีสที่พบจนถึงตอนนี้

@@ -1166,7 +1166,7 @@ Quality cutoff	Kalite sınırı
 Quality profile for added shows	Eklenen yapımlar için kalite profili
 Quality sizes	Kalite boyutları
 Quality: {} · Group: {} · Languages: {} · {}	Kalite: {} · Grup: {} · Diller: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Sorgu planları çalışmayabilecek yedek kademeler içerir. Kaynakların 35 saniyelik süresi vardır; etkileşimli aramaların toplam süresi 45 saniyedir.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Sorgu planları çalışmayabilecek yedek kademeler içerir. Kaynakların 90 saniyelik süresi vardır; etkileşimli aramaların toplam süresi 100 saniyedir.
 RSS sync interval	RSS senkronizasyon aralığı
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Salt okunur: dizi ve film klasörlerini, güvenli olmayan dosya kayıtlarını ve diskte eksik dosyaları denetler.
 Reading the root folder…	Kök klasör okunuyor…
@@ -1907,3 +1907,5 @@ Recent entries	Son kayıtlar
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Bellekte tutulan en son kayıtlar. Yukarıdaki kayıt dosyaları ve işlem çıktısı (konteyner kayıtları veya journal) her şeyi saklar.
 Yesterday	Dün
 Tomorrow	Yarın
+Sort by rank	Sıralamaya göre sırala
+{}: the search stopped at its time limit; showing the releases found so far.	{}: arama zaman sınırında durdu; şimdiye kadar bulunan sürümler gösteriliyor.

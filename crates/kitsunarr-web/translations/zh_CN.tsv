@@ -1166,7 +1166,7 @@ Quality cutoff	质量阈值
 Quality profile for added shows	所添加节目的质量配置
 Quality sizes	质量大小
 Quality: {} · Group: {} · Languages: {} · {}	质量：{} · 分组：{} · 语言：{} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	查询计划包含可能不会执行的后备层级。每个来源有 35 秒的时间预算；手动搜索的总时间预算为 45 秒。
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	查询计划包含可能不会执行的后备层级。每个来源有 90 秒的时间预算；手动搜索的总时间预算为 100 秒。
 RSS sync interval	RSS 同步间隔
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	只读：检查节目和电影文件夹、不安全的文件记录以及磁盘上缺失的文件。
 Reading the root folder…	正在读取根目录…
@@ -1907,3 +1907,5 @@ Recent entries	最近条目
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	保留在内存中的最新条目。上方的日志文件和进程输出（容器日志或 journal）会保留全部内容。
 Yesterday	昨天
 Tomorrow	明天
+Sort by rank	按排名排序
+{}: the search stopped at its time limit; showing the releases found so far.	{}：搜索已达到时间限制而停止；显示目前已找到的发布。

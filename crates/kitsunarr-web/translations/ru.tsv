@@ -1166,7 +1166,7 @@ Quality cutoff	Порог качества
 Quality profile for added shows	Профиль качества для добавленных сериалов
 Quality sizes	Размеры качеств
 Quality: {} · Group: {} · Languages: {} · {}	Качество: {} · Группа: {} · Языки: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Планы запросов включают резервные уровни, которые могут не выполниться. У источников бюджет 35 секунд; у интерактивного поиска общий бюджет 45 секунд.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Планы запросов включают резервные уровни, которые могут не выполниться. У источников бюджет 90 секунд; у интерактивного поиска общий бюджет 100 секунд.
 RSS sync interval	Интервал синхронизации RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Только чтение: проверяет папки сериалов и фильмов, небезопасные записи файлов и файлы, отсутствующие на диске.
 Reading the root folder…	Чтение корневой папки…
@@ -1907,3 +1907,5 @@ Recent entries	Последние записи
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Самые свежие записи, хранящиеся в памяти. Файлы журнала выше и вывод процесса (журналы контейнера или journal) хранят всё.
 Yesterday	Вчера
 Tomorrow	Завтра
+Sort by rank	Сортировать по рейтингу
+{}: the search stopped at its time limit; showing the releases found so far.	{}: поиск остановлен по лимиту времени; показаны релизы, найденные к этому моменту.

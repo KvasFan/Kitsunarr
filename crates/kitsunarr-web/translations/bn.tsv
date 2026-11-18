@@ -1166,7 +1166,7 @@ Quality cutoff	কোয়ালিটি কাটঅফ
 Quality profile for added shows	যোগ করা শো-এর কোয়ালিটি প্রোফাইল
 Quality sizes	কোয়ালিটি সাইজ
 Quality: {} · Group: {} · Languages: {} · {}	কোয়ালিটি: {} · গ্রুপ: {} · ভাষা: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	কোয়েরি পরিকল্পনায় ফলব্যাক স্তর থাকে যা হয়তো চলবে না। সোর্সগুলোর জন্য 35 সেকেন্ডের সময়সীমা; ইন্টারঅ্যাক্টিভ অনুসন্ধানের মোট সময়সীমা 45 সেকেন্ড।
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	কোয়েরি পরিকল্পনায় ফলব্যাক স্তর থাকে যা হয়তো চলবে না। সোর্সগুলোর জন্য 90 সেকেন্ডের সময়সীমা; ইন্টারঅ্যাক্টিভ অনুসন্ধানের মোট সময়সীমা 100 সেকেন্ড।
 RSS sync interval	RSS সিঙ্কের ব্যবধান
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	শুধু পড়া: সিরিজ ও মুভির ফোল্ডার, অনিরাপদ ফাইল রেকর্ড এবং ডিস্কে অনুপস্থিত ফাইল পরীক্ষা করে।
 Reading the root folder…	রুট ফোল্ডার পড়া হচ্ছে…
@@ -1907,3 +1907,5 @@ Recent entries	সাম্প্রতিক এন্ট্রি
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	মেমরিতে রাখা সবচেয়ে সাম্প্রতিক এন্ট্রি। উপরের লগ ফাইল এবং প্রসেসের আউটপুট (কন্টেইনার লগ বা জার্নাল) সবকিছু রাখে।
 Yesterday	গতকাল
 Tomorrow	আগামীকাল
+Sort by rank	র‍্যাঙ্ক অনুযায়ী সাজান
+{}: the search stopped at its time limit; showing the releases found so far.	{}: অনুসন্ধান সময়সীমায় থেমে গেছে; এখন পর্যন্ত পাওয়া রিলিজগুলো দেখানো হচ্ছে।

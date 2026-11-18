@@ -1166,7 +1166,7 @@ Quality cutoff	حد نهایی کیفیت
 Quality profile for added shows	پروفایل کیفیت برای سریال‌های افزوده‌شده
 Quality sizes	حجم‌های کیفیت
 Quality: {} · Group: {} · Languages: {} · {}	کیفیت: {} · گروه: {} · زبان‌ها: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	برنامه‌های پرس‌وجو شامل سطوح جایگزینی هستند که ممکن است اجرا نشوند. منابع 35 ثانیه زمان دارند؛ جستجوهای تعاملی در مجموع 45 ثانیه زمان دارند.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	برنامه‌های پرس‌وجو شامل سطوح جایگزینی هستند که ممکن است اجرا نشوند. منابع 90 ثانیه زمان دارند؛ جستجوهای تعاملی در مجموع 100 ثانیه زمان دارند.
 RSS sync interval	فاصله همگام‌سازی RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	فقط خواندنی: پوشه‌های سریال و فیلم، رکوردهای فایل ناامن و فایل‌های ناموجود روی دیسک را بررسی می‌کند.
 Reading the root folder…	در حال خواندن پوشه ریشه…
@@ -1907,3 +1907,5 @@ Recent entries	ورودی‌های اخیر
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	جدیدترین ورودی‌های نگه‌داشته‌شده در حافظه. فایل‌های گزارش بالا و خروجی فرایند (گزارش‌های کانتینر یا journal) همه چیز را نگه می‌دارند.
 Yesterday	دیروز
 Tomorrow	فردا
+Sort by rank	مرتب‌سازی بر اساس رتبه
+{}: the search stopped at its time limit; showing the releases found so far.	{}: جستجو در محدودیت زمانی خود متوقف شد؛ نسخه‌هایی که تاکنون پیدا شده‌اند نمایش داده می‌شوند.

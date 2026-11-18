@@ -1166,7 +1166,7 @@ Quality cutoff	Gæðaþak
 Quality profile for added shows	Gæðasnið fyrir þáttaraðir sem bætt er við
 Quality sizes	Stærðir gæða
 Quality: {} · Group: {} · Languages: {} · {}	Gæði: {} · Hópur: {} · Tungumál: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Leitaráætlanir innihalda varaþrep sem keyra ekki endilega. Uppsprettur hafa 35 sekúndna tímaramma; gagnvirkar leitir hafa 45 sekúndna heildartímaramma.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Leitaráætlanir innihalda varaþrep sem keyra ekki endilega. Uppsprettur hafa 90 sekúndna tímaramma; gagnvirkar leitir hafa 100 sekúndna heildartímaramma.
 RSS sync interval	Tímabil RSS-samstillingar
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Aðeins lestur: athugar möppur þáttaraða og kvikmynda, óöruggar skráafærslur og skrár sem vantar á diski.
 Reading the root folder…	Les rótarmöppuna…
@@ -1907,3 +1907,5 @@ Recent entries	Nýlegar færslur
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Nýjustu færslurnar sem eru geymdar í minni. Annálaskrárnar hér fyrir ofan og úttak ferlisins (gámaannálar eða journal) geyma allt.
 Yesterday	Í gær
 Tomorrow	Á morgun
+Sort by rank	Raða eftir röðun
+{}: the search stopped at its time limit; showing the releases found so far.	{}: leitin stöðvaðist við tímamörk sín; útgáfur sem fundust hingað til eru sýndar.

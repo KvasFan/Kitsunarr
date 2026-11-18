@@ -142,10 +142,13 @@ pub(crate) async fn query_source(
 ) -> SourceOutcome {
     let started = Instant::now();
     let mut plans = Vec::new();
+    // Releases already read survive the budget: a slow source (rate-limit waits queued behind
+    // other searches, many alternate titles) still contributes what it found in time, as
+    // Sonarr's searches, which have no budget, would.
+    let mut found = Vec::new();
     let work = async {
         let caps = client.capabilities(indexer).await?;
         let generator = client.generator(indexer, &caps);
-        let mut found = Vec::new();
         for (i, search) in searches.iter().enumerate() {
             let chain = generator.search(criteria, search);
             for plan in query_plans(indexer, &chain) {
@@ -161,10 +164,14 @@ pub(crate) async fn query_source(
                     .map(|r| (i, r)),
             );
         }
-        Ok(found)
+        Ok::<_, IndexerError>(())
     };
     let (result, timed_out) = match tokio::time::timeout(budget, work).await {
-        Ok(result) => (result, false),
+        Ok(Ok(())) => (Ok(found), false),
+        Ok(Err(e)) if found.is_empty() => (Err(e), false),
+        // A later query failed: keep the earlier queries' releases.
+        Ok(Err(_)) => (Ok(found), false),
+        Err(_) if !found.is_empty() => (Ok(found), true),
         Err(_) => (
             Err(IndexerError::Connection(
                 "The source search exceeded its time budget.".into(),
@@ -175,7 +182,9 @@ pub(crate) async fn query_source(
     let diagnostic = IndexerSearchDiagnostic {
         indexer_id: indexer.id,
         indexer: indexer.name.clone(),
-        status: if timed_out {
+        status: if timed_out && result.is_ok() {
+            "partial"
+        } else if timed_out {
             "timedOut"
         } else if result.is_ok() {
             "success"
@@ -301,6 +310,56 @@ mod tests {
         assert_eq!(slow.diagnostic.status, "timedOut");
         assert!(started.elapsed() < Duration::from_secs(2));
         assert!(!slow.diagnostic.planned_queries.is_empty());
+        server.abort();
+    }
+    #[tokio::test]
+    async fn a_source_out_of_time_keeps_the_releases_already_read() {
+        use std::sync::atomic::{AtomicUsize, Ordering};
+        let calls = std::sync::Arc::new(AtomicUsize::new(0));
+        let counter = calls.clone();
+        let app = axum::Router::new().route(
+            "/partial/",
+            axum::routing::get(move || {
+                let counter = counter.clone();
+                async move {
+                    if counter.fetch_add(1, Ordering::SeqCst) > 0 {
+                        std::future::pending::<()>().await;
+                    }
+                    (
+                        [("content-type", "application/rss+xml")],
+                        r#"<rss xmlns:nyaa="https://nyaa.si/xmlns/nyaa"><channel><item>
+<title>[Group] Example Show - S01E01 [1080p].mkv</title>
+<link>https://example.invalid/download/1.torrent</link>
+<guid isPermaLink="true">https://example.invalid/view/1</guid>
+<pubDate>Mon, 16 Nov 2026 10:00:00 -0000</pubDate>
+<nyaa:seeders>10</nyaa:seeders><nyaa:leechers>1</nyaa:leechers>
+<nyaa:infoHash>0123456789abcdef0123456789abcdef01234567</nyaa:infoHash>
+<nyaa:size>1.2 GiB</nyaa:size>
+</item></channel></rss>"#,
+                    )
+                }
+            }),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let base = format!("http://{}", listener.local_addr().unwrap());
+        let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client = IndexerClient::new(reqwest::Client::new()).with_rate_limit(Duration::ZERO);
+        let source = indexer(3, format!("{base}/partial"));
+        let searches = [Search::Season { season: 1 }, Search::Season { season: 2 }];
+        let outcome = query_source(
+            &client,
+            &source,
+            &criteria(),
+            &searches,
+            Duration::from_millis(300),
+        )
+        .await;
+        let found = outcome.result.expect("the first query's releases are kept");
+        assert_eq!(found.len(), 1);
+        assert_eq!(found[0].0, 0);
+        assert_eq!(outcome.diagnostic.status, "partial");
+        assert_eq!(outcome.diagnostic.releases, 1);
+        assert!(calls.load(Ordering::SeqCst) >= 2);
         server.abort();
     }
 }

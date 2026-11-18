@@ -1166,7 +1166,7 @@ Quality cutoff	Kvalitātes robeža
 Quality profile for added shows	Kvalitātes profils pievienotajiem seriāliem
 Quality sizes	Kvalitāšu izmēri
 Quality: {} · Group: {} · Languages: {} · {}	Kvalitāte: {} · Grupa: {} · Valodas: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Vaicājumu plānos ir rezerves līmeņi, kas var netikt izpildīti. Avotiem ir 35 sekunžu budžets; interaktīvajām meklēšanām ir kopējais 45 sekunžu budžets.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Vaicājumu plānos ir rezerves līmeņi, kas var netikt izpildīti. Avotiem ir 90 sekunžu budžets; interaktīvajām meklēšanām ir kopējais 100 sekunžu budžets.
 RSS sync interval	RSS sinhronizācijas intervāls
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Tikai lasīšana: pārbauda seriālu un filmu mapes, nedrošus failu ierakstus un diskā trūkstošus failus.
 Reading the root folder…	Lasa saknes mapi…
@@ -1907,3 +1907,5 @@ Recent entries	Jaunākie ieraksti
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Jaunākie atmiņā glabātie ieraksti. Augstāk esošie žurnāla faili un procesa izvade (konteinera žurnāli vai journal) saglabā visu.
 Yesterday	Vakar
 Tomorrow	Rīt
+Sort by rank	Kārtot pēc ranga
+{}: the search stopped at its time limit; showing the releases found so far.	{}: meklēšana apstājās pie laika ierobežojuma; tiek rādīti līdz šim atrastie laidieni.

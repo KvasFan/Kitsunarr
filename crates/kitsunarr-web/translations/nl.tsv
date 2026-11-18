@@ -1166,7 +1166,7 @@ Quality cutoff	Kwaliteitsdrempel
 Quality profile for added shows	Kwaliteitsprofiel voor toegevoegde series
 Quality sizes	Kwaliteitsgroottes
 Quality: {} · Group: {} · Languages: {} · {}	Kwaliteit: {} · Groep: {} · Talen: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Zoekplannen bevatten terugvalniveaus die mogelijk niet worden uitgevoerd. Bronnen hebben een budget van 35 seconden; interactieve zoekopdrachten hebben in totaal een budget van 45 seconden.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Zoekplannen bevatten terugvalniveaus die mogelijk niet worden uitgevoerd. Bronnen hebben een budget van 90 seconden; interactieve zoekopdrachten hebben in totaal een budget van 100 seconden.
 RSS sync interval	RSS-synchronisatie-interval
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Alleen-lezen: controleert serie- en filmmappen, onveilige bestandsrecords en bestanden die op schijf ontbreken.
 Reading the root folder…	Hoofdmap lezen…
@@ -1907,3 +1907,5 @@ Recent entries	Recente vermeldingen
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	De meest recente vermeldingen die in het geheugen worden bewaard. De logbestanden hierboven en de procesuitvoer (containerlogs of journal) bewaren alles.
 Yesterday	Gisteren
 Tomorrow	Morgen
+Sort by rank	Sorteren op rangschikking
+{}: the search stopped at its time limit; showing the releases found so far.	{}: de zoekopdracht stopte bij de tijdslimiet; de tot nu toe gevonden releases worden getoond.

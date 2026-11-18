@@ -1166,7 +1166,7 @@ Quality cutoff	Cutoff di qualità
 Quality profile for added shows	Profilo di qualità per le serie aggiunte
 Quality sizes	Dimensioni delle qualità
 Quality: {} · Group: {} · Languages: {} · {}	Qualità: {} · Gruppo: {} · Lingue: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	I piani di query includono livelli di riserva che potrebbero non essere eseguiti. Le sorgenti hanno un budget di 35 secondi; le ricerche interattive hanno un budget totale di 45 secondi.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	I piani di query includono livelli di riserva che potrebbero non essere eseguiti. Le sorgenti hanno un budget di 90 secondi; le ricerche interattive hanno un budget totale di 100 secondi.
 RSS sync interval	Intervallo di sincronizzazione RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Sola lettura: controlla le cartelle di serie e film, i record di file non sicuri e i file mancanti su disco.
 Reading the root folder…	Lettura della cartella radice…
@@ -1907,3 +1907,5 @@ Recent entries	Voci recenti
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Le voci più recenti tenute in memoria. I file di log qui sopra e l'output del processo (log del container o journal) conservano tutto.
 Yesterday	Ieri
 Tomorrow	Domani
+Sort by rank	Ordina per classifica
+{}: the search stopped at its time limit; showing the releases found so far.	{}: la ricerca si è fermata al limite di tempo; vengono mostrate le release trovate finora.

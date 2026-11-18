@@ -1166,7 +1166,7 @@ Quality cutoff	品質のカットオフ
 Quality profile for added shows	追加する番組の品質プロファイル
 Quality sizes	品質のサイズ
 Quality: {} · Group: {} · Languages: {} · {}	品質: {} · グループ: {} · 言語: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	クエリプランには、実行されない可能性のあるフォールバック段階が含まれます。ソースごとの制限時間は35秒、インタラクティブ検索の合計制限時間は45秒です。
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	クエリプランには、実行されない可能性のあるフォールバック段階が含まれます。ソースごとの制限時間は90秒、インタラクティブ検索の合計制限時間は100秒です。
 RSS sync interval	RSS同期の間隔
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	読み取り専用: シリーズと映画のフォルダー、安全でないファイルレコード、ディスク上にないファイルを確認します。
 Reading the root folder…	ルートフォルダーを読み込み中…
@@ -1907,3 +1907,5 @@ Recent entries	最近のエントリ
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	メモリに保持されている最新のエントリ。上のログファイルとプロセスの出力 (コンテナのログまたは journal) にはすべてが保持されます。
 Yesterday	昨日
 Tomorrow	明日
+Sort by rank	ランク順に並べ替え
+{}: the search stopped at its time limit; showing the releases found so far.	{}: 検索が制限時間で停止しました。ここまでに見つかったリリースを表示しています。

@@ -1166,7 +1166,7 @@ Quality cutoff	סף יעד לאיכות
 Quality profile for added shows	פרופיל איכות לסדרות שנוספו
 Quality sizes	גדלי איכות
 Quality: {} · Group: {} · Languages: {} · {}	איכות: {} · קבוצה: {} · שפות: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	תוכניות השאילתה כוללות שכבות גיבוי שייתכן שלא ירוצו. למקורות יש תקציב של 35 שניות; לחיפושים אינטראקטיביים יש תקציב כולל של 45 שניות.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	תוכניות השאילתה כוללות שכבות גיבוי שייתכן שלא ירוצו. למקורות יש תקציב של 90 שניות; לחיפושים אינטראקטיביים יש תקציב כולל של 100 שניות.
 RSS sync interval	מרווח סנכרון RSS
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	קריאה בלבד: בודק תיקיות של סדרות וסרטים, רשומות קבצים לא בטוחות וקבצים החסרים בדיסק.
 Reading the root folder…	קורא את תיקיית השורש…
@@ -1907,3 +1907,5 @@ Recent entries	רשומות אחרונות
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	הרשומות האחרונות שנשמרות בזיכרון. קובצי היומן שלמעלה ופלט התהליך (יומני הקונטיינר או ה-journal) שומרים הכל.
 Yesterday	אתמול
 Tomorrow	מחר
+Sort by rank	מיון לפי דירוג
+{}: the search stopped at its time limit; showing the releases found so far.	{}: החיפוש נעצר במגבלת הזמן שלו; מוצגות ההוצאות שנמצאו עד כה.

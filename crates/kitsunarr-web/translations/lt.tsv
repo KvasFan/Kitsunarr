@@ -1166,7 +1166,7 @@ Quality cutoff	Kokybės riba
 Quality profile for added shows	Kokybės profilis pridedamiems serialams
 Quality sizes	Kokybių dydžiai
 Quality: {} · Group: {} · Languages: {} · {}	Kokybė: {} · Grupė: {} · Kalbos: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Užklausų planuose yra atsarginių pakopų, kurios gali būti nevykdomos. Šaltiniams skirta 35 sekundžių; interaktyvioms paieškoms iš viso skirta 45 sekundės.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Užklausų planuose yra atsarginių pakopų, kurios gali būti nevykdomos. Šaltiniams skirta 90 sekundžių; interaktyvioms paieškoms iš viso skirta 100 sekundės.
 RSS sync interval	RSS sinchronizacijos intervalas
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Tik skaitymas: tikrina serialų ir filmų aplankus, nesaugius failų įrašus ir diske trūkstamus failus.
 Reading the root folder…	Skaitomas šakninis aplankas…
@@ -1907,3 +1907,5 @@ Recent entries	Naujausi įrašai
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Naujausi atmintyje laikomi įrašai. Aukščiau esantys žurnalo failai ir proceso išvestis (konteinerio žurnalai arba journal) saugo viską.
 Yesterday	Vakar
 Tomorrow	Rytoj
+Sort by rank	Rikiuoti pagal reitingą
+{}: the search stopped at its time limit; showing the releases found so far.	{}: paieška sustojo pasiekus laiko ribą; rodomi iki šiol rasti leidimai.

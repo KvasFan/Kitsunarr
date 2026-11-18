@@ -47,6 +47,60 @@ fn episodes_label(r: &ReleaseItem) -> String {
 }
 
 /// Searches the indexers for a season or an episode of a series and lists the releases.
+/// A column of the release table the results can be sorted by (Sonarr's interactive search
+/// columns); `Rank` is the decision engine's order (`releaseWeight`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum SortKey {
+    Rank,
+    Source,
+    Age,
+    Title,
+    Episodes,
+    Indexer,
+    Size,
+    Peers,
+    Languages,
+    Quality,
+    Score,
+}
+
+/// Sorts `rows` (in rank order) by `key`; ties keep the rank order.
+fn sort_releases(rows: &mut [(usize, &ReleaseItem)], key: SortKey, descending: bool) {
+    use std::cmp::Ordering;
+    let by = |a: &ReleaseItem, b: &ReleaseItem| -> Ordering {
+        match key {
+            SortKey::Rank => Ordering::Equal,
+            SortKey::Source => (a.protocol as u8).cmp(&(b.protocol as u8)),
+            // Newest first is "ascending age": compare publish dates the other way round.
+            SortKey::Age => b.publish_date.cmp(&a.publish_date),
+            SortKey::Title => a.title.to_lowercase().cmp(&b.title.to_lowercase()),
+            SortKey::Episodes => (
+                a.season_numbers.first(),
+                a.episode_numbers
+                    .first()
+                    .or(a.absolute_episode_numbers.first()),
+            )
+                .cmp(&(
+                    b.season_numbers.first(),
+                    b.episode_numbers
+                        .first()
+                        .or(b.absolute_episode_numbers.first()),
+                )),
+            SortKey::Indexer => a.indexer.to_lowercase().cmp(&b.indexer.to_lowercase()),
+            SortKey::Size => a.size.cmp(&b.size),
+            SortKey::Peers => (a.seeders, a.peers).cmp(&(b.seeders, b.peers)),
+            SortKey::Languages => a.languages.join(", ").cmp(&b.languages.join(", ")),
+            SortKey::Quality => a.quality_weight.cmp(&b.quality_weight),
+            SortKey::Score => a.custom_format_score.cmp(&b.custom_format_score),
+        }
+    };
+    rows.sort_by(|(ia, a), (ib, b)| {
+        let o = by(a, b);
+        let o = if descending { o.reverse() } else { o };
+        o.then(ia.cmp(ib))
+    });
+}
+
 #[component]
 pub fn ReleaseSearch(
     series_id: i64,
@@ -125,6 +179,7 @@ fn ReleaseResults(
     let mut grabbed = use_signal(Vec::<String>::new);
     let mut filter_text = use_signal(String::new);
     let mut filter_status = use_signal(|| ReleaseFilter::All);
+    let mut sort = use_signal(|| (SortKey::Rank, false));
     // A release whose episodes are being chosen by hand: (indexer id, guid, title).
     let mut choosing = use_signal(|| None::<ReleaseItem>);
     let c0 = client.clone();
@@ -185,11 +240,42 @@ fn ReleaseResults(
         }
     };
     drop(read);
-    let visible = r
+    let mut ranked = r
         .releases
         .iter()
-        .filter(|rel| filter_status().matches(rel, &filter_text()))
+        .enumerate()
+        .filter(|(_, rel)| filter_status().matches(rel, &filter_text()))
         .collect::<Vec<_>>();
+    let (sort_key, descending) = sort();
+    sort_releases(&mut ranked, sort_key, descending);
+    let visible = ranked.into_iter().map(|(_, rel)| rel).collect::<Vec<_>>();
+    // A sortable column header: the first click sorts ascending (sizes, scores and peers
+    // largest first, as Sonarr), the second reverses; sorting by rank restores the ranking.
+    let header = move |key: SortKey, label: &'static str, class: &'static str| {
+        let (current, desc) = sort();
+        let active = current == key;
+        let aria = match (active, desc) {
+            (false, _) => "none",
+            (true, false) => "ascending",
+            (true, true) => "descending",
+        };
+        let first_desc = matches!(
+            key,
+            SortKey::Size | SortKey::Peers | SortKey::Quality | SortKey::Score
+        );
+        rsx! {
+            th { class: "{class} sortable", "aria-sort": aria,
+                button { class: "th-sort", r#type: "button",
+                    onclick: move |_| {
+                        let (current, desc) = sort();
+                        sort.set(if current == key { (key, !desc) } else { (key, first_desc) });
+                    },
+                    "{label}"
+                    if active { if desc { " ▾" } else { " ▴" } }
+                }
+            }
+        }
+    };
     rsx! {
         div { class: "row",
             p { class: "small muted grow",
@@ -208,7 +294,7 @@ fn ReleaseResults(
         details { class: "card search-diagnostics",
             summary { "Search diagnostics" }
             p { class: "small", "Titles considered: " {r.considered_titles.join(", ")} }
-            p { class: "small muted", "Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget." }
+            p { class: "small muted", "Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget." }
             for diagnostic in r.diagnostics.iter() {
                 div { key: "d{diagnostic.indexer_id}",
                     strong { "{diagnostic.indexer}: {diagnostic.status}" }
@@ -269,17 +355,20 @@ fn ReleaseResults(
                 table { class: "table releases",
                     thead {
                         tr {
-                            th { span { class: "sr-only", "Decision" } }
-                            th { "Source" }
-                            th { "Age" }
-                            th { "Title" }
-                            th { "Episodes" }
-                            th { "Indexer" }
-                            th { class: "num", "Size" }
-                            th { class: "num", "Peers" }
-                            th { "Languages" }
-                            th { "Quality" }
-                            th { class: "num", "Score" }
+                            th { class: "sortable", "aria-sort": if sort().0 == SortKey::Rank { "ascending" } else { "none" },
+                                button { class: "th-sort", r#type: "button", title: "Sort by rank", "aria-label": "Sort by rank",
+                                    onclick: move |_| sort.set((SortKey::Rank, false)), "#" }
+                            }
+                            {header(SortKey::Source, "Source", "")}
+                            {header(SortKey::Age, "Age", "")}
+                            {header(SortKey::Title, "Title", "")}
+                            {header(SortKey::Episodes, "Episodes", "")}
+                            {header(SortKey::Indexer, "Indexer", "")}
+                            {header(SortKey::Size, "Size", "num")}
+                            {header(SortKey::Peers, "Peers", "num")}
+                            {header(SortKey::Languages, "Languages", "")}
+                            {header(SortKey::Quality, "Quality", "")}
+                            {header(SortKey::Score, "Score", "num")}
                             th { span { class: "sr-only", "Actions" } }
                         }
                     }
@@ -320,7 +409,7 @@ fn ReleaseResults(
                                 }
                                 td { class: "small", title: "{rel.mapped_episodes.join(\", \")}", {episodes_label(rel)} }
                                 td { class: "small", "{rel.indexer}" }
-                                td { class: "num small", {format_bytes(rel.size)} }
+                                td { class: "num small", "data-bytes": "{rel.size}", {format_bytes(rel.size)} }
                                 td { class: "num small",
                                     {match (rel.seeders, rel.peers) {
                                         (Some(s), Some(p)) => format!("{s} / {p}"),

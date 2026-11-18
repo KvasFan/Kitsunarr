@@ -1191,6 +1191,18 @@ pub(crate) async fn run_search(
     if q.season_packs_only {
         decisions.retain(|d| d.parsed.as_ref().is_some_and(|p| p.full_season));
     }
+    let mut warnings = inputs.warnings;
+    warnings.extend(
+        diagnostics
+            .iter()
+            .filter(|d| d.status == "partial")
+            .map(|d| {
+                format!(
+                    "{}: the search stopped at its time limit; showing the releases found so far.",
+                    d.indexer
+                )
+            }),
+    );
     let run = SearchRun {
         decisions,
         releases: all_meta,
@@ -1198,7 +1210,7 @@ pub(crate) async fn run_search(
         searched_indexers: indexers.len(),
         successful_indexers,
         description,
-        warnings: inputs.warnings,
+        warnings,
         diagnostics,
         considered_titles: criteria.scene_titles.clone(),
         series: inputs.series,

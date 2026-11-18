@@ -1166,7 +1166,7 @@ Quality cutoff	Laadun katkaisutaso
 Quality profile for added shows	Lisättävien sarjojen laatuprofiili
 Quality sizes	Laatujen koot
 Quality: {} · Group: {} · Languages: {} · {}	Laatu: {} · Ryhmä: {} · Kielet: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Hakusuunnitelmat sisältävät varatasoja, joita ei välttämättä suoriteta. Lähteillä on 35 sekunnin aikabudjetti; manuaalihauilla on yhteensä 45 sekunnin budjetti.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Hakusuunnitelmat sisältävät varatasoja, joita ei välttämättä suoriteta. Lähteillä on 90 sekunnin aikabudjetti; manuaalihauilla on yhteensä 100 sekunnin budjetti.
 RSS sync interval	RSS-synkronoinnin ajoitus
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Vain luku: tarkistaa sarja- ja elokuvakansiot, vaaralliset tiedostotietueet ja levyltä puuttuvat tiedostot.
 Reading the root folder…	Luetaan juurikansiota…
@@ -1907,3 +1907,5 @@ Recent entries	Viimeisimmät merkinnät
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Viimeisimmät muistissa säilytetyt merkinnät. Yllä olevat lokitiedostot ja prosessin tuloste (kontin lokit tai journal) säilyttävät kaiken.
 Yesterday	Eilen
 Tomorrow	Huomenna
+Sort by rank	Lajittele sijoituksen mukaan
+{}: the search stopped at its time limit; showing the releases found so far.	{}: haku pysähtyi aikarajaansa; näytetään tähän mennessä löydetyt julkaisut.

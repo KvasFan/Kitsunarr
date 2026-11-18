@@ -1166,7 +1166,7 @@ Quality cutoff	Праг на качеството
 Quality profile for added shows	Профил за качество за добавените сериали
 Quality sizes	Размери по качество
 Quality: {} · Group: {} · Languages: {} · {}	Качество: {} · Група: {} · Езици: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Плановете за заявки включват резервни нива, които може да не се изпълнят. Източниците имат лимит от 35 секунди; интерактивните търсения имат общ лимит от 45 секунди.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Плановете за заявки включват резервни нива, които може да не се изпълнят. Източниците имат лимит от 90 секунди; интерактивните търсения имат общ лимит от 100 секунди.
 RSS sync interval	Интервал на RSS синхронизация
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Само четене: проверява папките на сериали и филми, опасните записи за файлове и файловете, липсващи на диска.
 Reading the root folder…	Четене на основната папка…
@@ -1907,3 +1907,5 @@ Recent entries	Скорошни записи
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Най-скорошните записи, пазени в паметта. Лог файловете по-горе и изходът на процеса (логове на контейнера или journal) пазят всичко.
 Yesterday	Вчера
 Tomorrow	Утре
+Sort by rank	Подреди по класиране
+{}: the search stopped at its time limit; showing the releases found so far.	{}: търсенето спря при лимита си за време; показват се намерените досега издания.

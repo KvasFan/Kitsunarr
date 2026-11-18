@@ -1166,7 +1166,7 @@ Quality cutoff	品質門檻
 Quality profile for added shows	新增影集時的品質設定檔
 Quality sizes	品質大小
 Quality: {} · Group: {} · Languages: {} · {}	品質：{} · 群組：{} · 語言：{} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	查詢計畫包含可能不會執行的備援層級。每個來源有 35 秒的時間預算；互動式搜尋的總時間預算為 45 秒。
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	查詢計畫包含可能不會執行的備援層級。每個來源有 90 秒的時間預算；互動式搜尋的總時間預算為 100 秒。
 RSS sync interval	RSS 同步間隔
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	唯讀：檢查影集與電影資料夾、不安全的檔案記錄，以及磁碟上遺失的檔案。
 Reading the root folder…	正在讀取根目錄…
@@ -1907,3 +1907,5 @@ Recent entries	最近項目
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	保存在記憶體中的最新項目。上方的日誌檔案與處理程序輸出（容器日誌或 journal）會保留所有內容。
 Yesterday	昨天
 Tomorrow	明天
+Sort by rank	依排名排序
+{}: the search stopped at its time limit; showing the releases found so far.	{}：搜尋已達時間限制而停止；顯示目前已找到的發布。

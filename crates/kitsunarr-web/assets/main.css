@@ -194,6 +194,9 @@ textarea.input { height: auto; min-height: 120px; padding: var(--sp-2) var(--sp-
 table.table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); }
 .table th { text-align: start; font-weight: 600; color: var(--text-muted); font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .05em; padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--border); background: var(--bg-elev-2); position: sticky; top: 0; z-index: 1; white-space: nowrap; }
 .table th.sortable { cursor: pointer; }
+.table th .th-sort { all: unset; cursor: pointer; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; }
+.table th .th-sort:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm, 4px); }
+.table th.num .th-sort { display: block; text-align: end; }
 .table td { padding: var(--sp-2) var(--sp-3); border-bottom: 1px solid var(--border); vertical-align: middle; }
 .table tr:last-child td { border-bottom: 0; }
 .table tbody tr:hover td { background: var(--bg-hover); }

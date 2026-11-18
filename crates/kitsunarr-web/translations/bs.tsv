@@ -1166,7 +1166,7 @@ Quality cutoff	Granica kvaliteta
 Quality profile for added shows	Profil kvaliteta za dodane serije
 Quality sizes	Veličine kvaliteta
 Quality: {} · Group: {} · Languages: {} · {}	Kvalitet: {} · Grupa: {} · Jezici: {} · {}
-Query plans include fallback tiers that may not run. Sources have a 35-second budget; interactive searches have a 45-second total budget.	Planovi upita uključuju rezervne nivoe koji se možda neće pokrenuti. Izvori imaju budžet od 35 sekundi; interaktivne pretrage imaju ukupni budžet od 45 sekundi.
+Query plans include fallback tiers that may not run. Sources have a 90-second budget; interactive searches have a 100-second total budget.	Planovi upita uključuju rezervne nivoe koji se možda neće pokrenuti. Izvori imaju budžet od 90 sekundi; interaktivne pretrage imaju ukupni budžet od 100 sekundi.
 RSS sync interval	Interval RSS sinhronizacije
 Read-only: checks series and movie folders, unsafe file records and files missing on disk.	Samo čitanje: provjerava foldere serija i filmova, nesigurne zapise datoteka i datoteke kojih nema na disku.
 Reading the root folder…	Čitanje korijenskog foldera…
@@ -1907,3 +1907,5 @@ Recent entries	Nedavni unosi
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Najnoviji unosi koji se čuvaju u memoriji. Datoteke zapisnika iznad i izlaz procesa (zapisnici kontejnera ili journal) čuvaju sve.
 Yesterday	Jučer
 Tomorrow	Sutra
+Sort by rank	Sortiraj po rangu
+{}: the search stopped at its time limit; showing the releases found so far.	{}: pretraga je zaustavljena na vremenskom ograničenju; prikazuju se do sada pronađena izdanja.
