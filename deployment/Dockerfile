@@ -55,7 +55,7 @@ COPY --from=build /kitsunarr /usr/local/bin/kitsunarr
 COPY LICENSE COPYRIGHT.md /usr/share/doc/kitsunarr/
 ENV KITSUNARR_CONFIG_DIR=/config \
     KITSUNARR_DATA_DIR=/config \
-    KITSUNARR_BIND_ADDRESS=0.0.0.0 \
+    KITSUNARR_BIND_ADDRESS=:: \
     KITSUNARR_PORT=8990 \
     TZ=Etc/UTC
 USER 1000:1000

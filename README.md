@@ -81,7 +81,7 @@ Settings edited in the web interface live in the database. Process settings come
 | `KITSUNARR_CONFIG_DIR` | `/config` | Location of `config.toml` |
 | `KITSUNARR_DATA_DIR` | `/var/lib/kitsunarr` (`/config` in the image) | Database, backups, temporary files |
 | `KITSUNARR_PORT` | `8990` | HTTP port |
-| `KITSUNARR_BIND_ADDRESS` | `0.0.0.0` | Listen address |
+| `KITSUNARR_BIND_ADDRESS` | `0.0.0.0` (`::` in the container image) | Listen address; `::` listens on IPv6 and IPv4, falling back to IPv4 only when IPv6 is unavailable |
 | `KITSUNARR_URL_BASE` | *(empty)* | Path prefix behind a reverse proxy, e.g. `/kitsunarr` |
 | `KITSUNARR_TRUSTED_PROXIES` | *(none)* | Comma-separated proxy IPs or CIDRs whose `X-Forwarded-*` headers are trusted |
 | `KITSUNARR_SECURE_COOKIES` | `auto` | `auto`, `always` or `never` |

@@ -3,7 +3,7 @@
 mod assets;
 mod jobs;
 
-use std::net::SocketAddr;
+use std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddr};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
@@ -301,6 +301,9 @@ fn toml_like(config: &Config) -> String {
     )
 }
 
+/// How long requests in flight may run once a shutdown or restart is requested.
+const SHUTDOWN_DRAIN: Duration = Duration::from_secs(5);
+
 async fn shutdown_signal(token: CancellationToken) {
     let ctrl_c = async {
         let _ = tokio::signal::ctrl_c().await;
@@ -470,18 +473,38 @@ async fn serve(config: Config) -> Result<()> {
         tracing::warn!("this build does not include the web interface; only the API is served");
     }
 
-    let addr = SocketAddr::new(config.server.bind_address, config.server.port);
-    let listener = tokio::net::TcpListener::bind(addr)
-        .await
-        .with_context(|| format!("cannot listen on {addr}"))?;
+    let mut addr = SocketAddr::new(config.server.bind_address, config.server.port);
+    let listener = match tokio::net::TcpListener::bind(addr).await {
+        Ok(l) => l,
+        // `::` listens on IPv6 and IPv4 at once; on a host without IPv6 it cannot be bound,
+        // so fall back to every IPv4 address instead of refusing to start.
+        Err(e) if addr.ip() == IpAddr::V6(Ipv6Addr::UNSPECIFIED) => {
+            tracing::warn!(error = %e, "IPv6 is unavailable; listening on IPv4 only");
+            addr.set_ip(IpAddr::V4(Ipv4Addr::UNSPECIFIED));
+            tokio::net::TcpListener::bind(addr)
+                .await
+                .with_context(|| format!("cannot listen on {addr}"))?
+        }
+        Err(e) => return Err(e).with_context(|| format!("cannot listen on {addr}")),
+    };
     tracing::info!("listening on http://{addr}{}/", config.server.url_base);
     let app = kitsunarr_api::app(state);
-    axum::serve(
+    let server = axum::serve(
         listener,
         app.into_make_service_with_connect_info::<SocketAddr>(),
     )
-    .with_graceful_shutdown(shutdown_signal(shutdown.clone()))
-    .await?;
+    .with_graceful_shutdown(shutdown_signal(shutdown.clone()));
+    // Open event streams (`/api/v1/events`, SignalR) never end on their own, so an open browser
+    // tab would hold the graceful shutdown (and a restart from the interface) forever: requests
+    // in flight get a few seconds to finish, then the remaining connections are dropped.
+    let drain = async {
+        shutdown.cancelled().await;
+        tokio::time::sleep(SHUTDOWN_DRAIN).await;
+    };
+    tokio::select! {
+        result = server => result?,
+        () = drain => tracing::info!("closing the connections still open"),
+    }
 
     tracing::info!("stopping background tasks");
     scheduler.shutdown(Duration::from_secs(30)).await;
@@ -518,7 +541,8 @@ fn restart_process() -> Result<()> {
 async fn healthcheck(config: &Config) -> Result<()> {
     let host = match config.server.bind_address {
         std::net::IpAddr::V4(v4) if v4.is_unspecified() => "127.0.0.1".to_string(),
-        std::net::IpAddr::V6(v6) if v6.is_unspecified() => "[::1]".to_string(),
+        // `::` also accepts IPv4 (and falls back to it when IPv6 is unavailable).
+        std::net::IpAddr::V6(v6) if v6.is_unspecified() => "127.0.0.1".to_string(),
         std::net::IpAddr::V6(v6) => format!("[{v6}]"),
         ip => ip.to_string(),
     };
