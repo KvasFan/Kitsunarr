@@ -1089,15 +1089,8 @@ fn release_profile(r: &Rec) -> Option<SrcReleaseProfile> {
     }
     indexer_ids.retain(|v| *v > 0);
     let mut unmapped = Map::new();
-    for key in [
-        "excludedtags",
-        "airdaterestriction",
-        "airdategraceperiod",
-        "allowseasonpackwithoutallepisodesaired",
-        "preferred",
-    ] {
-        note(&mut unmapped, r, key, zero_or_empty);
-    }
+    // Sonarr v3's preferred words became custom formats in v4.
+    note(&mut unmapped, r, "preferred", zero_or_empty);
     Some(SrcReleaseProfile {
         id: r.i64("id")?,
         name: r.str("name"),
@@ -1106,6 +1099,14 @@ fn release_profile(r: &Rec) -> Option<SrcReleaseProfile> {
         ignored: r.string_list("ignored"),
         indexer_ids,
         tags: r.int_list("tags"),
+        excluded_tags: r.int_list("excludedtags"),
+        air_date_restriction: r.bool_or("airdaterestriction", false),
+        air_date_grace_period: r
+            .i64("airdategraceperiod")
+            .and_then(|v| i32::try_from(v).ok())
+            .unwrap_or(0),
+        allow_season_pack_without_all_episodes_aired: r
+            .bool_or("allowseasonpackwithoutallepisodesaired", false),
         unmapped,
     })
 }

@@ -5508,11 +5508,64 @@ async fn delay_release_profiles_and_remote_path_mappings_are_managed() {
             ignored: vec!["CAM".into(), "/\\bTS\\b/".into()],
             indexer_ids: vec![],
             tags: vec![],
+            ..Default::default()
         })
         .await
         .unwrap();
     assert_eq!(client.release_profiles().await.unwrap()[0].ignored.len(), 2);
     client.delete_release_profile(release.id).await.unwrap();
+
+    // Sonarr's air-date options stand on their own; a tag cannot be both required and
+    // excluded.
+    let tag = client.create_tag("late").await.unwrap();
+    let mut air = ReleaseProfile {
+        name: Some("After airing".into()),
+        enabled: true,
+        air_date_restriction: true,
+        air_date_grace_period: -2,
+        allow_season_pack_without_all_episodes_aired: true,
+        excluded_tags: vec![tag.id],
+        tags: vec![tag.id],
+        ..Default::default()
+    };
+    match client.save_release_profile(&air).await.unwrap_err() {
+        ClientError::Api { status, body } => {
+            assert_eq!(status, 422);
+            assert_eq!(
+                body.fields[0].message,
+                "'late' cannot be in both 'Tags' and 'Excluded Tags'"
+            );
+        }
+        other => panic!("{other:?}"),
+    }
+    air.tags.clear();
+    let saved = client.save_release_profile(&air).await.unwrap();
+    let listed = client.release_profiles().await.unwrap();
+    assert_eq!(
+        (
+            listed[0].air_date_restriction,
+            listed[0].air_date_grace_period,
+            listed[0].allow_season_pack_without_all_episodes_aired,
+            listed[0].excluded_tags.clone()
+        ),
+        (true, -2, true, vec![tag.id])
+    );
+    let empty = ReleaseProfile {
+        enabled: true,
+        ..Default::default()
+    };
+    assert_eq!(
+        status(client.save_release_profile(&empty).await.unwrap_err()),
+        422
+    );
+    // Deleting the tag takes it out of the excluded tags.
+    client.delete_tag(tag.id).await.unwrap();
+    assert!(
+        client.release_profiles().await.unwrap()[0]
+            .excluded_tags
+            .is_empty()
+    );
+    client.delete_release_profile(saved.id).await.unwrap();
 
     let mapping = client
         .save_remote_path_mapping(&RemotePathMapping {
@@ -6585,7 +6638,37 @@ async fn sonarr_v3_settings_serve_recyclarr_sync() {
     .await;
     assert_eq!(status, 201, "{rp}");
     assert_eq!(rp["ignored"], json!(["x265", "HEVC"]));
+    assert_eq!(
+        (
+            &rp["airDateRestriction"],
+            &rp["airDateGracePeriod"],
+            &rp["excludedTags"]
+        ),
+        (&json!(false), &json!(0), &json!([]))
+    );
     let rid = rp["id"].as_i64().unwrap();
+    // Sonarr 4's air-date options and excluded tags.
+    let (status, rp) = json_of(
+        send(
+            M::PUT,
+            &format!("/releaseprofile/{rid}"),
+            Some(json!({"name": "No x265", "enabled": true, "required": [], "ignored": "x265", "indexerId": 0, "tags": [],
+                "airDateRestriction": true, "airDateGracePeriod": -3, "allowSeasonPackWithoutAllEpisodesAired": true, "excludedTags": [7]})),
+        )
+        .await
+        .unwrap(),
+    )
+    .await;
+    assert_eq!(status, 202, "{rp}");
+    assert_eq!(
+        (
+            &rp["airDateRestriction"],
+            &rp["airDateGracePeriod"],
+            &rp["allowSeasonPackWithoutAllEpisodesAired"],
+            &rp["excludedTags"]
+        ),
+        (&json!(true), &json!(-3), &json!(true), &json!([7]))
+    );
     assert_eq!(
         send(M::DELETE, &format!("/releaseprofile/{rid}"), None)
             .await
@@ -11539,7 +11622,7 @@ async fn sonarr_v5_settings_providers_and_library_tools() {
         204
     );
 
-    // Release profiles take several indexers.
+    // Release profiles take several indexers, and need a grace period (`NotNull`).
     let (status, rp) = sonarr(
         &server,
         M::POST,
@@ -11547,18 +11630,38 @@ async fn sonarr_v5_settings_providers_and_library_tools() {
         Some(json!({"name": "Required", "required": ["x265"], "ignored": [], "indexerIds": [], "tags": []})),
     )
     .await;
+    assert_eq!(status, 422, "{rp}");
+    assert_eq!(rp["fields"][0]["field"], "airDateGracePeriod");
+    let (status, rp) = sonarr(
+        &server,
+        M::POST,
+        "/api/v5/releaseprofile",
+        Some(json!({"name": "Required", "required": ["x265"], "ignored": [], "indexerIds": [], "tags": [],
+            "airDateRestriction": true, "airDateGracePeriod": 6, "excludedTags": []})),
+    )
+    .await;
     assert_eq!(status, 201, "{rp}");
     assert_eq!(rp["indexerIds"], json!([]));
     assert!(rp.get("indexerId").is_none());
+    assert_eq!(
+        (
+            &rp["airDateRestriction"],
+            &rp["airDateGracePeriod"],
+            &rp["allowSeasonPackWithoutAllEpisodesAired"],
+            &rp["excludedTags"]
+        ),
+        (&json!(true), &json!(6), &json!(false), &json!([]))
+    );
     let rid = rp["id"].as_i64().unwrap();
     let (status, rp) = sonarr(
         &server,
         M::PUT,
         &format!("/api/v5/releaseprofile/{rid}"),
-        Some(json!({"name": "Required", "required": ["x265", "hevc"], "ignored": [], "indexerIds": []})),
+        Some(json!({"name": "Required", "required": ["x265", "hevc"], "ignored": [], "indexerIds": [], "airDateGracePeriod": 0})),
     )
     .await;
     assert_eq!((status, rp["required"].as_array().unwrap().len()), (202, 2));
+    assert_eq!(rp["airDateRestriction"], false);
     assert_eq!(
         sonarr(
             &server,

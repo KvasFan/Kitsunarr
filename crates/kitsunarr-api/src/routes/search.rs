@@ -1313,6 +1313,8 @@ pub(crate) struct IndexerExtras {
     pub(crate) tags: Vec<i64>,
     minimum_seeders: Option<i64>,
     multi_languages: Vec<i32>,
+    /// Days (0: off), for `SeasonPackOnlySpecification`.
+    season_search_maximum_single_episode_age: i64,
 }
 
 impl IndexerExtras {
@@ -1334,6 +1336,11 @@ impl IndexerExtras {
                         .collect()
                 })
                 .unwrap_or_default(),
+            season_search_maximum_single_episode_age: p
+                .options
+                .get("seasonSearchMaximumSingleEpisodeAge")
+                .and_then(|v| v.as_i64())
+                .unwrap_or(0),
         }
     }
 }
@@ -1375,6 +1382,8 @@ pub(crate) fn decision_release(
                     .as_deref()
                     .and_then(kitsunarr_downloaders::magnet_info_hash)
             }),
+        season_search_maximum_single_episode_age: extras
+            .map_or(0, |e| e.season_search_maximum_single_episode_age),
     }
 }
 
@@ -1426,6 +1435,16 @@ impl DecisionInputs {
             kv::get_or_default(db.pool(), kv::KEY_INDEXER_OPTIONS).await?;
         let tools: kitsunarr_domain::api::settings::LibraryToolsSettings =
             kv::get_or_default(db.pool(), kv::KEY_LIBRARY_TOOLS).await?;
+        let client_options: kitsunarr_domain::api::settings::DownloadClientOptionsSettings =
+            kv::get_or_default(db.pool(), kv::KEY_DOWNLOAD_CLIENT_OPTIONS).await?;
+        // `DeletedEpisodeFileSpecification` reads the disk only with its setting on.
+        let missing_files = match series_id {
+            Some(id) if media.auto_unmonitor_previously_downloaded_episodes => {
+                let path = series::get_detail(db, id).await?.item.path;
+                kitsunarr_library::decision_input::missing_files(db, id, &path).await?
+            }
+            _ => Vec::new(),
+        };
         let settings = decision::Settings {
             last_grabs: match series_id {
                 Some(id) => kitsunarr_library::decision_input::last_grabs(db, id).await?,
@@ -1474,6 +1493,11 @@ impl DecisionInputs {
                     ignored: r.ignored,
                     indexer_ids: r.indexer_ids,
                     tags: r.tags,
+                    excluded_tags: r.excluded_tags,
+                    air_date_restriction: r.air_date_restriction,
+                    air_date_grace_period: r.air_date_grace_period,
+                    allow_season_pack_without_all_episodes_aired: r
+                        .allow_season_pack_without_all_episodes_aired,
                 })
                 .collect(),
             delay_profiles: rules::list_delay_profiles(db.pool())
@@ -1500,6 +1524,16 @@ impl DecisionInputs {
             retention_days: i64::from(options.retention),
             maximum_size_mb: i64::from(options.maximum_size),
             free_space: free_space(db, owner, &media).await,
+            completed_download_handling: client_options.enable_completed_download_handling,
+            episode_history: match series_id {
+                Some(id) => kitsunarr_library::decision_input::episode_history(db, id).await?,
+                None => Vec::new(),
+            },
+            auto_unmonitor_previously_downloaded_episodes: media
+                .auto_unmonitor_previously_downloaded_episodes,
+            missing_files,
+            season_pack_upgrade: media.season_pack_upgrade,
+            season_pack_upgrade_threshold: media.season_pack_upgrade_threshold.0,
             now: chrono::Utc::now(),
         };
         Ok(Self {
@@ -1513,13 +1547,14 @@ impl DecisionInputs {
 }
 
 /// `FreeSpaceSpecification`'s disk: the series' (or film's) folder, else its root folder;
-/// `None` when the check is off or the space cannot be read.
+/// `None` when the check is off (`SkipFreeSpaceCheckWhenGrabbing`) or the space cannot be
+/// read.
 async fn free_space(
     db: &kitsunarr_db::Database,
     owner: Owner,
     media: &MediaManagementSettings,
 ) -> Option<decision::FreeSpace> {
-    if media.skip_free_space_check {
+    if media.skip_free_space_check_when_grabbing {
         return None;
     }
     let (path, root) = match owner {

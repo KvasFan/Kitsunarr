@@ -79,6 +79,12 @@ pub(crate) fn settings() -> Settings {
         retention_days: 0,
         maximum_size_mb: 0,
         free_space: None,
+        completed_download_handling: true,
+        episode_history: Vec::new(),
+        auto_unmonitor_previously_downloaded_episodes: false,
+        missing_files: Vec::new(),
+        season_pack_upgrade: kitsunarr_domain::api::settings::SeasonPackUpgrade::All,
+        season_pack_upgrade_threshold: 100.0,
         now: Utc::now(),
     }
 }
@@ -121,6 +127,7 @@ pub(crate) fn release(title: &str) -> Release {
         codec: None,
         container: None,
         info_hash: None,
+        season_search_maximum_single_episode_age: 0,
     }
 }
 
@@ -976,6 +983,7 @@ mod release_restrictions_specification_fixture {
             ignored: ignored.iter().map(|s| s.to_string()).collect(),
             indexer_ids: Vec::new(),
             tags: Vec::new(),
+            ..Default::default()
         }];
         c
     }
@@ -1990,4 +1998,512 @@ fn free_space_specification() {
         message(&c).as_deref(),
         Some("Importing after download will exceed available disk space")
     );
+}
+
+fn file_with_id(id: i64, quality_id: i32) -> EpisodeFile {
+    EpisodeFile {
+        id,
+        quality: QualityModel {
+            quality_id,
+            revision: Revision {
+                version: 1,
+                ..Default::default()
+            },
+        },
+        release_title: "Series.Title.S01E01".into(),
+        file_name: "Series.Title.S01E01.mkv".into(),
+        release_group: None,
+        languages: Vec::new(),
+        size: 0,
+        indexer_flags: 0,
+        release_type: ReleaseType::SingleEpisode,
+        date_added: None,
+    }
+}
+
+/// `AirDateSpecificationFixture`: the episode aired now, the release was published a day ago.
+mod air_date_specification_fixture {
+    use super::*;
+
+    fn case(profiles: &[(bool, i32)]) -> Case {
+        let mut c = Case::new();
+        c.episodes[0].air_date_utc = Some(Utc::now());
+        c.release.publish_date = Utc::now() - Duration::days(1);
+        c.settings.release_profiles = profiles
+            .iter()
+            .map(|(restriction, grace)| ReleaseProfile {
+                enabled: true,
+                air_date_restriction: *restriction,
+                air_date_grace_period: *grace,
+                ..Default::default()
+            })
+            .collect();
+        c
+    }
+
+    fn shifted(profile: (bool, i32), publish_offset: Duration) -> Case {
+        let mut c = case(&[profile]);
+        let aired = Utc::now();
+        c.episodes[0].air_date_utc = Some(aired);
+        c.release.publish_date = aired + publish_offset;
+        c
+    }
+
+    #[test]
+    fn should_be_true_if_profile_does_not_enforce_air_date_restriction() {
+        assert!(case(&[(false, 0)]).accepted(specs::air_date));
+        assert!(case(&[]).accepted(specs::air_date), "no release profile");
+    }
+
+    #[test]
+    fn should_be_true_if_release_date_is_after_air_date() {
+        assert!(shifted((true, 0), Duration::days(1)).accepted(specs::air_date));
+    }
+
+    #[test]
+    fn should_be_true_if_release_date_with_grace_period_is_after_air_date() {
+        assert!(shifted((true, -2), Duration::days(1)).accepted(specs::air_date));
+    }
+
+    #[test]
+    fn should_be_true_if_release_date_is_the_same_as_air_date() {
+        assert!(shifted((true, 0), Duration::zero()).accepted(specs::air_date));
+    }
+
+    #[test]
+    fn should_be_false_if_air_date_is_null() {
+        let mut c = case(&[(true, -2)]);
+        c.episodes[0].air_date_utc = None;
+        let r = c.check(specs::air_date).unwrap();
+        assert_eq!(
+            (r.reason, r.message.as_str()),
+            (RejectionReason::BeforeAirDate, "No air date available")
+        );
+    }
+
+    #[test]
+    fn should_be_false_if_release_date_is_before_air_date() {
+        assert!(!shifted((true, 0), -Duration::days(1)).accepted(specs::air_date));
+    }
+
+    #[test]
+    fn should_be_true_if_release_date_is_within_grace_period() {
+        assert!(shifted((true, -2), -Duration::hours(1)).accepted(specs::air_date));
+    }
+
+    #[test]
+    fn should_be_false_if_release_date_with_grace_period_is_before_air_date() {
+        assert!(!shifted((true, -2), -Duration::hours(3)).accepted(specs::air_date));
+    }
+
+    #[test]
+    fn should_be_false_if_release_date_is_after_air_date_and_grace_period_is_positive() {
+        let c = shifted((true, 2), Duration::hours(1));
+        let r = c.check(specs::air_date).unwrap();
+        assert!(
+            r.message.starts_with("Release date ")
+                && r.message.ends_with(". Grace period 2 hours)"),
+            "{}",
+            r.message
+        );
+    }
+
+    #[test]
+    fn should_be_false_if_release_date_with_highest_grace_period_is_before_air_date() {
+        assert!(!case(&[(true, 0), (true, -5)]).accepted(specs::air_date));
+    }
+
+    #[test]
+    fn should_be_false_if_one_release_profile_does_not_allow_grabbing_before_air_date() {
+        assert!(!case(&[(true, 0), (false, 0)]).accepted(specs::air_date));
+    }
+
+    #[test]
+    fn excluded_tags_take_a_profile_away() {
+        let mut c = case(&[(true, 0)]);
+        c.series.tags = vec![3];
+        c.settings.release_profiles[0].excluded_tags = vec![3];
+        assert!(c.accepted(specs::air_date), "the series' tag is excluded");
+        c.settings.release_profiles[0].excluded_tags = vec![4];
+        assert!(!c.accepted(specs::air_date));
+    }
+}
+
+/// `FullSeasonSpecificationFixture`: release profiles may allow packs before every episode
+/// aired; the most restrictive one wins.
+#[test]
+fn full_season_specification_release_profiles() {
+    let mut c = Case::new();
+    c.parsed.full_season = true;
+    c.episodes = vec![ep(1, 1, 1, 30), ep(2, 1, 2, 30)];
+    c.episodes[0].air_date_utc = Some(Utc::now() - Duration::days(7));
+    c.episodes[1].air_date_utc = Some(Utc::now() + Duration::days(2));
+    let profile = |allow| ReleaseProfile {
+        enabled: true,
+        allow_season_pack_without_all_episodes_aired: allow,
+        ..Default::default()
+    };
+    c.settings.release_profiles = vec![profile(true)];
+    assert!(c.accepted(specs::full_season));
+    c.settings.release_profiles = vec![profile(true), profile(false)];
+    assert!(!c.accepted(specs::full_season));
+    c.settings.release_profiles[1].enabled = false;
+    assert!(
+        c.accepted(specs::full_season),
+        "a disabled profile is ignored"
+    );
+}
+
+/// `AlreadyImportedSpecificationFixture`.
+mod already_imported_specification_fixture {
+    use super::*;
+
+    const TITLE: &str = "Series.Title.S01E01.720p.HDTV.x264-Sonarr";
+    const HASH: &str = "35BE2D8ABBDC8D57B6C2F2E1AC7AA5B0B2C11B0A";
+
+    fn hdtv(id: i32) -> QualityModel {
+        QualityModel {
+            quality_id: id,
+            revision: Revision {
+                version: 1,
+                ..Default::default()
+            },
+        }
+    }
+
+    fn case() -> Case {
+        let mut c = Case::new();
+        c.release.title = TITLE.into();
+        c.release.protocol = DownloadProtocol::Torrent;
+        c.episodes[0].file = Some(file_with_id(1, HDTV720P));
+        c
+    }
+
+    fn history(c: &mut Case, id: Option<&str>, quality: i32, event: EpisodeHistoryEvent) {
+        // `FindByEpisodeId` is newest first: later items are older.
+        c.settings.episode_history.insert(
+            0,
+            EpisodeHistory {
+                episode_id: 5,
+                event,
+                download_id: id.map(str::to_string),
+                source_title: TITLE.into(),
+                quality: hdtv(quality),
+            },
+        );
+    }
+
+    fn grabbed_and_imported(c: &mut Case, grabbed_id: Option<&str>) {
+        history(c, grabbed_id, HDTV720P, EpisodeHistoryEvent::Grabbed);
+        history(
+            c,
+            Some(HASH),
+            HDTV1080P,
+            EpisodeHistoryEvent::DownloadFolderImported,
+        );
+    }
+
+    #[test]
+    fn should_be_accepted_if_cdh_is_disabled() {
+        let mut c = case();
+        grabbed_and_imported(&mut c, Some(HASH));
+        c.settings.completed_download_handling = false;
+        assert!(c.accepted(specs::already_imported));
+    }
+
+    #[test]
+    fn should_be_accepted_if_episode_does_not_have_a_file() {
+        let mut c = case();
+        grabbed_and_imported(&mut c, Some(HASH));
+        c.episodes[0].file = None;
+        assert!(c.accepted(specs::already_imported));
+    }
+
+    #[test]
+    fn should_be_accepted_if_episode_does_not_have_grabbed_event() {
+        assert!(case().accepted(specs::already_imported));
+    }
+
+    #[test]
+    fn should_be_accepted_if_episode_does_not_have_imported_event() {
+        let mut c = case();
+        history(&mut c, Some(HASH), HDTV720P, EpisodeHistoryEvent::Grabbed);
+        assert!(c.accepted(specs::already_imported));
+    }
+
+    #[test]
+    fn should_be_accepted_if_grabbed_and_imported_quality_is_the_same() {
+        let mut c = case();
+        history(&mut c, Some(HASH), HDTV720P, EpisodeHistoryEvent::Grabbed);
+        history(
+            &mut c,
+            Some(HASH),
+            HDTV720P,
+            EpisodeHistoryEvent::DownloadFolderImported,
+        );
+        assert!(c.accepted(specs::already_imported));
+    }
+
+    #[test]
+    fn should_be_accepted_if_grabbed_download_id_and_release_torrent_hash_is_unknown() {
+        let mut c = case();
+        grabbed_and_imported(&mut c, Some(HASH));
+        c.release.title = "Another.Title".into();
+        c.release.info_hash = None;
+        assert!(c.accepted(specs::already_imported));
+    }
+
+    #[test]
+    fn should_be_accepted_if_grabbed_download_does_not_have_an_id() {
+        let mut c = case();
+        grabbed_and_imported(&mut c, None);
+        c.release.title = "Another.Title".into();
+        c.release.info_hash = Some(HASH.into());
+        assert!(c.accepted(specs::already_imported));
+    }
+
+    #[test]
+    fn should_be_rejected_if_grabbed_download_id_matches_release_torrent_hash() {
+        let mut c = case();
+        grabbed_and_imported(&mut c, Some(HASH));
+        c.release.title = "Another.Title".into();
+        c.release.info_hash = Some(HASH.to_lowercase());
+        let r = c.check(specs::already_imported).unwrap();
+        assert_eq!(
+            (r.reason, r.message.as_str()),
+            (
+                RejectionReason::AlreadyImportedSameHash,
+                "Has same torrent hash as a grabbed and imported release"
+            )
+        );
+    }
+
+    #[test]
+    fn should_be_rejected_if_release_title_matches_grabbed_event_source_title() {
+        let mut c = case();
+        grabbed_and_imported(&mut c, Some(HASH));
+        c.release.protocol = DownloadProtocol::Usenet;
+        c.release.title = TITLE.to_uppercase();
+        let r = c.check(specs::already_imported).unwrap();
+        assert_eq!(
+            (r.reason, r.message.as_str()),
+            (
+                RejectionReason::AlreadyImportedSameName,
+                "Has same release name as a grabbed and imported release"
+            )
+        );
+    }
+}
+
+/// `DeletedEpisodeFileSpecificationFixture`.
+mod deleted_episode_file_specification_fixture {
+    use super::*;
+
+    fn case(enabled: bool, episodes: usize) -> Case {
+        let mut c = Case::new();
+        c.criteria = SearchCriteria::rss();
+        c.settings.auto_unmonitor_previously_downloaded_episodes = enabled;
+        c.episodes = (0..episodes)
+            .map(|i| {
+                let mut e = ep(i as i64 + 1, 1, i as i32 + 1, 30);
+                e.file = Some(file_with_id(i as i64 + 10, SDTV));
+                e
+            })
+            .collect();
+        c
+    }
+
+    #[test]
+    fn should_return_true_when_unmonitor_deleted_episdes_is_off() {
+        let mut c = case(false, 1);
+        c.settings.missing_files = vec![10];
+        assert!(c.accepted(specs::deleted_episode_file));
+    }
+
+    #[test]
+    fn should_return_true_when_searching() {
+        let mut c = case(true, 1);
+        c.settings.missing_files = vec![10];
+        c.criteria.kind = SearchKind::Season { season: 1 };
+        assert!(c.accepted(specs::deleted_episode_file));
+    }
+
+    #[test]
+    fn should_return_true_if_file_exists() {
+        assert!(case(true, 1).accepted(specs::deleted_episode_file));
+    }
+
+    #[test]
+    fn should_return_false_if_file_is_missing() {
+        let mut c = case(true, 1);
+        c.settings.missing_files = vec![10];
+        let r = c.check(specs::deleted_episode_file).unwrap();
+        assert_eq!(
+            (r.reason, r.message.as_str()),
+            (
+                RejectionReason::EpisodeNotMonitored,
+                "Episode is not monitored"
+            )
+        );
+    }
+
+    #[test]
+    fn should_return_true_if_both_of_multiple_episode_exist() {
+        assert!(case(true, 2).accepted(specs::deleted_episode_file));
+    }
+
+    #[test]
+    fn should_return_false_if_one_of_multiple_episode_is_missing() {
+        let mut c = case(true, 2);
+        c.settings.missing_files = vec![11];
+        assert!(!c.accepted(specs::deleted_episode_file));
+    }
+}
+
+/// `SingleEpisodeAgeDownloadDecisionFixture` (`SeasonPackOnlySpecification`): a season search
+/// for four episodes that aired 400, 370, 340 and 310 days ago.
+mod single_episode_age_download_decision_fixture {
+    use super::*;
+
+    fn case(max_age: i64) -> Case {
+        let mut c = Case::new();
+        c.series.episodes = [(1, 400), (2, 370), (3, 340), (4, 310)]
+            .into_iter()
+            .map(|(n, age)| {
+                let mut e = ep(n, 1, n as i32, 30);
+                e.air_date_utc = Some(Utc::now() - Duration::days(age));
+                e
+            })
+            .collect();
+        c.criteria.kind = SearchKind::Season { season: 1 };
+        c.criteria.episode_ids = vec![1, 2, 3, 4];
+        c.release.season_search_maximum_single_episode_age = max_age;
+        c
+    }
+
+    #[test]
+    fn single_episode_release() {
+        for (episode, max_age, expected) in [
+            (1, 200, false),
+            (4, 200, false),
+            (1, 600, true),
+            (1, 365, true),
+            (4, 365, true),
+            (1, 0, true),
+        ] {
+            let mut c = case(max_age);
+            c.episodes = vec![c.series.episodes[episode - 1].clone()];
+            assert_eq!(
+                c.accepted(specs::season_pack_only),
+                expected,
+                "{episode} {max_age}"
+            );
+        }
+        let mut c = case(200);
+        c.episodes = vec![c.series.episodes[0].clone()];
+        let r = c.check(specs::season_pack_only).unwrap();
+        assert_eq!(
+            (r.reason, r.message.as_str()),
+            (
+                RejectionReason::NotSeasonPack,
+                "Last episode in this season aired more than 200 days ago, season pack required."
+            )
+        );
+    }
+
+    #[test]
+    fn multi_episode_release() {
+        // Season packs are always accepted.
+        for max_age in [200, 600, 365, 0] {
+            let mut c = case(max_age);
+            c.parsed.full_season = true;
+            c.episodes = c.series.episodes.clone();
+            assert!(c.accepted(specs::season_pack_only), "{max_age}");
+        }
+    }
+
+    #[test]
+    fn single_episode_searches_rss_and_anime_are_left_alone() {
+        let mut c = case(200);
+        c.episodes = vec![c.series.episodes[0].clone()];
+        c.series.series_type = SeriesType::Anime;
+        assert!(c.accepted(specs::season_pack_only));
+        c.series.series_type = SeriesType::Standard;
+        c.criteria = SearchCriteria::rss();
+        assert!(c.accepted(specs::season_pack_only));
+        c.criteria.kind = SearchKind::SingleEpisode {
+            season: 1,
+            episode: 1,
+        };
+        c.criteria.episode_ids = vec![1];
+        assert!(c.accepted(specs::season_pack_only));
+    }
+}
+
+/// `UpgradeDiskSpecificationFixture`: the season pack upgrade modes.
+mod season_pack_upgrade_fixture {
+    use super::*;
+    use kitsunarr_domain::api::settings::SeasonPackUpgrade;
+
+    fn case(files: &[Option<i32>], mode: SeasonPackUpgrade, threshold: f64) -> Case {
+        let mut c = Case::new();
+        c.series.profile.upgrade_allowed = true;
+        c.series.profile.cutoff = BLURAY1080P;
+        c.parsed.full_season = true;
+        c.parsed.episode_numbers = Vec::new();
+        c.parsed.quality = quality(BLURAY1080P, 1, 0);
+        c.episodes = files
+            .iter()
+            .enumerate()
+            .map(|(i, q)| {
+                let mut e = ep(i as i64 + 1, 1, i as i32 + 1, 30);
+                e.file = q.map(|q| file_with_id(i as i64 + 1, q));
+                e
+            })
+            .collect();
+        c.series.episodes = c.episodes.clone();
+        c.settings.season_pack_upgrade = mode;
+        c.settings.season_pack_upgrade_threshold = threshold;
+        c
+    }
+
+    #[test]
+    fn should_reject_season_pack_when_mode_is_all_and_not_all_are_upgradable() {
+        let c = case(
+            &[Some(SDTV), Some(BLURAY1080P)],
+            SeasonPackUpgrade::All,
+            100.0,
+        );
+        assert!(!c.accepted(specs::upgrade_disk));
+    }
+
+    #[test]
+    fn should_reject_for_season_pack_not_meeting_threshold() {
+        let mut files = vec![Some(SDTV); 7];
+        files.extend([Some(BLURAY1080P), Some(BLURAY1080P), None]);
+        let c = case(&files, SeasonPackUpgrade::Threshold, 90.0);
+        let r = c.check(specs::upgrade_disk).unwrap();
+        assert_eq!(r.reason, RejectionReason::DiskNotUpgrade);
+        assert_eq!(
+            r.message,
+            "Season pack does not meet the upgrade criteria. Upgradable: 8/10 (80%), Mode: Threshold, Threshold: 90%"
+        );
+        let c = case(&files, SeasonPackUpgrade::Threshold, 75.5);
+        assert!(c.accepted(specs::upgrade_disk), "80% meets 75.5%");
+    }
+
+    #[test]
+    fn should_accept_season_pack_when_mode_is_any_and_at_least_one_upgradable() {
+        let c = case(
+            &[Some(SDTV), Some(BLURAY1080P)],
+            SeasonPackUpgrade::Any,
+            100.0,
+        );
+        assert!(c.accepted(specs::upgrade_disk));
+        let c = case(&[Some(BLURAY1080P)], SeasonPackUpgrade::Any, 100.0);
+        assert_eq!(
+            c.check(specs::upgrade_disk).unwrap().message,
+            "Season pack does not meet the upgrade criteria. Upgradable: 0/1 (0%), Mode: Any, Threshold: 100%"
+        );
+    }
 }

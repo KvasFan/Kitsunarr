@@ -84,6 +84,12 @@ fn settings() -> Settings {
         retention_days: 0,
         maximum_size_mb: 0,
         free_space: None,
+        completed_download_handling: true,
+        episode_history: Vec::new(),
+        auto_unmonitor_previously_downloaded_episodes: false,
+        missing_files: Vec::new(),
+        season_pack_upgrade: kitsunarr_domain::api::settings::SeasonPackUpgrade::All,
+        season_pack_upgrade_threshold: 100.0,
         now: Utc::now(),
     }
 }
@@ -111,6 +117,7 @@ fn release(title: &str) -> Release {
         codec: None,
         container: None,
         info_hash: None,
+        season_search_maximum_single_episode_age: 0,
     }
 }
 

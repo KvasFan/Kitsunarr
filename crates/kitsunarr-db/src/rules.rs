@@ -80,6 +80,24 @@ struct ReleaseRow {
     ignored: String,
     indexer_ids: String,
     tags: String,
+    excluded_tags: String,
+    air_date_restriction: bool,
+    air_date_grace_period: i64,
+    allow_season_pack_without_all_episodes_aired: bool,
+}
+
+/// Sonarr's release profile validation: terms, or one of the air-date options.
+fn check_release_profile(p: &ReleaseProfile) -> DbResult<()> {
+    if p.required.is_empty()
+        && p.ignored.is_empty()
+        && !p.air_date_restriction
+        && !p.allow_season_pack_without_all_episodes_aired
+    {
+        return Err(DbError::Invalid(
+            "a release profile needs required or ignored terms".into(),
+        ));
+    }
+    Ok(())
 }
 
 pub async fn list_release_profiles(ex: impl SqliteExecutor<'_>) -> DbResult<Vec<ReleaseProfile>> {
@@ -96,6 +114,11 @@ pub async fn list_release_profiles(ex: impl SqliteExecutor<'_>) -> DbResult<Vec<
                 ignored: from_json(&r.ignored)?,
                 indexer_ids: from_json(&r.indexer_ids)?,
                 tags: from_json(&r.tags)?,
+                excluded_tags: from_json(&r.excluded_tags)?,
+                air_date_restriction: r.air_date_restriction,
+                air_date_grace_period: r.air_date_grace_period as i32,
+                allow_season_pack_without_all_episodes_aired: r
+                    .allow_season_pack_without_all_episodes_aired,
             })
         })
         .collect()
@@ -106,7 +129,9 @@ pub async fn create_release_profile(
     r: &ReleaseProfile,
 ) -> DbResult<i64> {
     sqlx::query_scalar(
-        "INSERT INTO release_profiles (name, enabled, required, ignored, indexer_ids, tags) VALUES (?, ?, ?, ?, ?, ?) RETURNING id",
+        "INSERT INTO release_profiles (name, enabled, required, ignored, indexer_ids, tags, excluded_tags, \
+         air_date_restriction, air_date_grace_period, allow_season_pack_without_all_episodes_aired) \
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
     )
     .bind(&r.name)
     .bind(r.enabled)
@@ -114,6 +139,10 @@ pub async fn create_release_profile(
     .bind(to_json(&r.ignored)?)
     .bind(to_json(&r.indexer_ids)?)
     .bind(to_json(&r.tags)?)
+    .bind(to_json(&r.excluded_tags)?)
+    .bind(r.air_date_restriction)
+    .bind(r.air_date_grace_period)
+    .bind(r.allow_season_pack_without_all_episodes_aired)
     .fetch_one(ex)
     .await
     .map_err(|e| DbError::from_write(e, "release profile"))
@@ -277,13 +306,11 @@ pub async fn update_release_profile(
     ex: impl SqliteExecutor<'_>,
     p: &ReleaseProfile,
 ) -> DbResult<()> {
-    if p.required.is_empty() && p.ignored.is_empty() {
-        return Err(DbError::Invalid(
-            "a release profile needs required or ignored terms".into(),
-        ));
-    }
+    check_release_profile(p)?;
     let r = sqlx::query(
-        "UPDATE release_profiles SET name = ?, enabled = ?, required = ?, ignored = ?, indexer_ids = ?, tags = ? WHERE id = ?",
+        "UPDATE release_profiles SET name = ?, enabled = ?, required = ?, ignored = ?, indexer_ids = ?, tags = ?, \
+         excluded_tags = ?, air_date_restriction = ?, air_date_grace_period = ?, \
+         allow_season_pack_without_all_episodes_aired = ? WHERE id = ?",
     )
     .bind(&p.name)
     .bind(p.enabled)
@@ -291,6 +318,10 @@ pub async fn update_release_profile(
     .bind(to_json(&p.ignored)?)
     .bind(to_json(&p.indexer_ids)?)
     .bind(to_json(&p.tags)?)
+    .bind(to_json(&p.excluded_tags)?)
+    .bind(p.air_date_restriction)
+    .bind(p.air_date_grace_period)
+    .bind(p.allow_season_pack_without_all_episodes_aired)
     .bind(p.id)
     .execute(ex)
     .await?;
@@ -386,6 +417,7 @@ mod tests {
                 ignored: vec!["CAM".into()],
                 indexer_ids: vec![],
                 tags: vec![],
+                ..Default::default()
             },
         )
         .await

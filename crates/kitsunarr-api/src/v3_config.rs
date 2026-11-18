@@ -193,6 +193,28 @@ pub(crate) const MEDIA: Keys = &[
     ("importExtraFiles", "importExtraFiles"),
     ("extraFileExtensions", "extraFileExtensions"),
     ("enableMediaInfo", "enableMediaInfo"),
+    (
+        "skipFreeSpaceCheckWhenGrabbing",
+        "skipFreeSpaceCheckWhenGrabbing",
+    ),
+    ("chownGroup", "chownGroup"),
+    ("useScriptImport", "useScriptImport"),
+    ("scriptImportPath", "scriptImportPath"),
+    ("userRejectedExtensions", "userRejectedExtensions"),
+    ("seasonPackUpgradeThreshold", "seasonPackUpgradeThreshold"),
+    ("rescanAfterRefresh", "rescanAfterRefresh"),
+    ("episodeTitleRequired", "episodeTitleRequired"),
+    ("seasonPackUpgrade", "seasonPackUpgrade"),
+];
+
+/// Media management's enum settings, which Sonarr takes by name or number.
+const MEDIA_ENUMS: &[(&str, &[&str])] = &[
+    ("rescanAfterRefresh", &["always", "afterManual", "never"]),
+    (
+        "episodeTitleRequired",
+        &["always", "bulkSeasonReleases", "never"],
+    ),
+    ("seasonPackUpgrade", &["all", "threshold", "any"]),
 ];
 
 /// Sonarr's `ProperDownloadTypes` by name or number.
@@ -216,22 +238,9 @@ pub(crate) fn media_resource(m: &MediaManagementSettings) -> Value {
         json!({
             "recycleBin": m.recycle_bin.clone().unwrap_or_default(),
             "downloadPropersAndRepacks": m.download_propers_and_repacks,
-            // Tanukarr's "preserve original" has no Sonarr name; it reads as "none".
-            "fileDate": match m.file_date {
-                FileDate::LocalAirDate => "localAirDate",
-                FileDate::UtcAirDate => "utcAirDate",
-                FileDate::None | FileDate::PreserveOriginal => "none",
-            },
+            // Tanukarr's `FileDateType` (3 is "preserve original").
+            "fileDate": m.file_date,
             "kitsunarrFileDate": m.file_date,
-            "skipFreeSpaceCheckWhenGrabbing": m.skip_free_space_check,
-            "rescanAfterRefresh": "always",
-            "chownGroup": "",
-            "episodeTitleRequired": "always",
-            "useScriptImport": false,
-            "scriptImportPath": "",
-            "userRejectedExtensions": "",
-            "seasonPackUpgrade": "all",
-            "seasonPackUpgradeThreshold": 100.0,
         }),
     )
 }
@@ -246,8 +255,17 @@ pub(crate) async fn get_media_management(State(state): State<AppState>) -> ApiRe
 
 pub(crate) async fn put_media_management(
     State(state): State<AppState>,
-    Json(body): Json<Value>,
+    Json(mut body): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
+    for (key, names) in MEDIA_ENUMS {
+        if let Some(v) = body.get(*key).filter(|v| !v.is_null()) {
+            let text = v.as_str().map_or_else(|| v.to_string(), str::to_string);
+            let pairs: Vec<(&str, &str)> = names.iter().map(|n| (*n, *n)).collect();
+            let name = kitsunarr_domain::api::settings::sonarr_enum(&text, &pairs)
+                .ok_or_else(|| ApiError::field(key, format!("Use {}.", names.join(", "))))?;
+            body[*key] = json!(name);
+        }
+    }
     let mut next = merged(&media_management(&state).await?, &body, MEDIA)?;
     if let Some(bin) = body.get("recycleBin").and_then(Value::as_str) {
         let bin = bin.trim();
@@ -271,15 +289,12 @@ pub(crate) async fn put_media_management(
         .filter(|v| !v.is_null());
     if let Some(v) = date {
         let text = v.as_str().map_or_else(|| v.to_string(), str::to_string);
-        let parsed = FileDate::from_sonarr(&text)
-            .ok_or_else(|| ApiError::field("fileDate", "Use none, localAirDate or utcAirDate."))?;
-        // Writing Sonarr's "none" back keeps Tanukarr's "preserve original".
-        if !(parsed == FileDate::None
-            && next.file_date == FileDate::PreserveOriginal
-            && body.get("kitsunarrFileDate").is_none())
-        {
-            next.file_date = parsed;
-        }
+        next.file_date = FileDate::from_sonarr(&text).ok_or_else(|| {
+            ApiError::field(
+                "fileDate",
+                "Use none, localAirDate, utcAirDate or preserveOriginal.",
+            )
+        })?;
     }
     let saved = settings::put_media_management(State(state), Json(next))
         .await?

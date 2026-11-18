@@ -571,7 +571,7 @@ pub struct DelayProfile {
 }
 
 /// Sonarr's release profile: terms a release must or must not contain.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ReleaseProfile {
@@ -584,6 +584,19 @@ pub struct ReleaseProfile {
     /// Empty = applies to every indexer.
     pub indexer_ids: Vec<i64>,
     pub tags: Vec<i64>,
+    /// Sonarr's "excluded tags": the profile does not apply to series with any of them.
+    #[serde(default)]
+    pub excluded_tags: Vec<i64>,
+    /// Sonarr's air-date restriction: releases published before an episode's air date (plus
+    /// the grace period) are rejected.
+    #[serde(default)]
+    pub air_date_restriction: bool,
+    /// Hours after the air date during which releases are still rejected (negative: before).
+    #[serde(default)]
+    pub air_date_grace_period: i32,
+    /// Sonarr's "allow season packs before all episodes aired".
+    #[serde(default)]
+    pub allow_season_pack_without_all_episodes_aired: bool,
 }
 
 /// Sonarr's remote path mapping: a download client's path as Kitsunarr sees it.
@@ -838,10 +851,124 @@ pub struct MediaManagementSettings {
     /// Upgrades never unmonitor.
     #[serde(default)]
     pub auto_unmonitor_previously_downloaded_episodes: bool,
+    /// Sonarr's `SkipFreeSpaceCheckWhenGrabbing` (`skip_free_space_check` is the import one).
+    #[serde(default)]
+    pub skip_free_space_check_when_grabbing: bool,
+    /// Sonarr's `RescanAfterRefresh`: when a refresh rescans the title's folder.
+    #[serde(default)]
+    pub rescan_after_refresh: RescanAfterRefresh,
+    /// Sonarr's `ChownGroup` (Linux): the group (name or id) files and folders get when
+    /// permissions are set.
+    #[serde(default)]
+    pub chown_group: String,
+    /// Sonarr's `EpisodeTitleRequired`: when imports wait for an episode title the naming
+    /// format uses.
+    #[serde(default)]
+    pub episode_title_required: EpisodeTitleRequired,
+    /// Sonarr's `UseScriptImport`: a script imports each file instead of the copy or move.
+    #[serde(default)]
+    pub use_script_import: bool,
+    #[serde(default)]
+    pub script_import_path: String,
+    /// Sonarr's `UserRejectedExtensions`: comma-separated extensions downloads must not have.
+    #[serde(default)]
+    pub user_rejected_extensions: String,
+    /// Sonarr's `SeasonPackUpgrade`: how many of a season pack's episodes must be upgrades.
+    #[serde(default)]
+    pub season_pack_upgrade: SeasonPackUpgrade,
+    /// Percentage for [`SeasonPackUpgrade::Threshold`].
+    #[serde(default = "default_season_pack_threshold")]
+    #[cfg_attr(feature = "openapi", schema(value_type = f64))]
+    pub season_pack_upgrade_threshold: OrderedF64,
 }
 
 fn default_true() -> bool {
     true
+}
+
+fn default_season_pack_threshold() -> OrderedF64 {
+    OrderedF64(100.0)
+}
+
+/// Sonarr's `RescanAfterRefreshType`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum RescanAfterRefresh {
+    #[default]
+    Always,
+    AfterManual,
+    Never,
+}
+
+/// Sonarr's `EpisodeTitleRequiredType`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum EpisodeTitleRequired {
+    #[default]
+    Always,
+    BulkSeasonReleases,
+    Never,
+}
+
+/// Sonarr's `SeasonPackUpgradeType`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub enum SeasonPackUpgrade {
+    #[default]
+    All,
+    Threshold,
+    Any,
+}
+
+impl SeasonPackUpgrade {
+    /// Sonarr's enum name (`All`, `Threshold`, `Any`), as its rejection message shows it.
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::All => "All",
+            Self::Threshold => "Threshold",
+            Self::Any => "Any",
+        }
+    }
+}
+
+/// Reads one of Sonarr's enum settings by name (any case) or number, as its config table and
+/// API store them.
+pub fn sonarr_enum<T: Copy>(v: &str, values: &[(&str, T)]) -> Option<T> {
+    let v = v.trim();
+    if let Ok(n) = v.parse::<usize>() {
+        return values.get(n).map(|(_, t)| *t);
+    }
+    values
+        .iter()
+        .find(|(name, _)| name.eq_ignore_ascii_case(v))
+        .map(|(_, t)| *t)
+}
+
+impl RescanAfterRefresh {
+    pub const SONARR: &[(&str, Self)] = &[
+        ("always", Self::Always),
+        ("afterManual", Self::AfterManual),
+        ("never", Self::Never),
+    ];
+}
+
+impl EpisodeTitleRequired {
+    pub const SONARR: &[(&str, Self)] = &[
+        ("always", Self::Always),
+        ("bulkSeasonReleases", Self::BulkSeasonReleases),
+        ("never", Self::Never),
+    ];
+}
+
+impl SeasonPackUpgrade {
+    pub const SONARR: &[(&str, Self)] = &[
+        ("all", Self::All),
+        ("threshold", Self::Threshold),
+        ("any", Self::Any),
+    ];
 }
 
 /// Sonarr's `FileDateType` and Tanukarr's `PreserveOriginal`.
@@ -891,6 +1018,15 @@ impl Default for MediaManagementSettings {
             file_date: FileDate::None,
             enable_media_info: true,
             auto_unmonitor_previously_downloaded_episodes: false,
+            skip_free_space_check_when_grabbing: false,
+            rescan_after_refresh: RescanAfterRefresh::Always,
+            chown_group: String::new(),
+            episode_title_required: EpisodeTitleRequired::Always,
+            use_script_import: false,
+            script_import_path: String::new(),
+            user_rejected_extensions: String::new(),
+            season_pack_upgrade: SeasonPackUpgrade::All,
+            season_pack_upgrade_threshold: default_season_pack_threshold(),
         }
     }
 }

@@ -21,7 +21,7 @@ use kitsunarr_db::library::series::{self, NewEpisodeFile};
 use kitsunarr_db::{Database, quality, settings};
 use kitsunarr_decision::{self as decision, ProfileView};
 use kitsunarr_domain::api::settings::{
-    MediaManagementSettings, NamingSettings, ProperDownloadType,
+    EpisodeTitleRequired, MediaManagementSettings, NamingSettings, ProperDownloadType,
 };
 use kitsunarr_domain::quality::{QualityModel, Revision};
 use kitsunarr_domain::{Language, QualitySource};
@@ -41,6 +41,52 @@ pub(crate) const VIDEO_EXTENSIONS: &[&str] = &[
     ".avi", ".bin", ".dat", ".dvr-ms", ".mpg", ".mpeg", ".mp4", ".avc", ".vp3", ".svq3", ".nuv",
     ".viv", ".dv", ".fli", ".flv", ".wpl", ".img", ".iso", ".vob", ".mkv", ".ts", ".wtv", ".m2ts",
 ];
+
+/// `FileExtensions.ArchiveExtensions`.
+const ARCHIVE_EXTENSIONS: &[&str] = &[
+    ".7z", ".bz2", ".gz", ".r00", ".rar", ".tar.bz2", ".tar.gz", ".tar", ".tb2", ".tbz2", ".tgz",
+    ".zip",
+];
+
+/// `FileExtensions.ParseUserRejectedExtensions`: comma-separated, spaces and dots trimmed,
+/// each with a leading dot, lower-case (compared ignoring case).
+pub fn user_rejected_extensions(input: &str) -> Vec<String> {
+    input
+        .split(',')
+        .filter(|e| !e.is_empty())
+        .map(|e| format!(".{}", e.trim_matches([' ', '.']).to_lowercase()))
+        .collect()
+}
+
+/// Media management's validation of `UserRejectedExtensions`: archive and video extensions
+/// cannot be rejected.
+pub fn user_rejected_extensions_problems(input: &str) -> Vec<String> {
+    let parsed = user_rejected_extensions(input);
+    let mut problems = Vec::new();
+    let archives: Vec<&str> = parsed
+        .iter()
+        .map(String::as_str)
+        .filter(|e| ARCHIVE_EXTENSIONS.contains(e))
+        .collect();
+    if !archives.is_empty() {
+        problems.push(format!(
+            "Rejected extensions may not include valid archive extensions: {}",
+            archives.join(", ")
+        ));
+    }
+    let videos: Vec<&str> = parsed
+        .iter()
+        .map(String::as_str)
+        .filter(|e| VIDEO_EXTENSIONS.contains(e))
+        .collect();
+    if !videos.is_empty() {
+        problems.push(format!(
+            "Rejected extensions may not include valid media file extensions: {}",
+            videos.join(", ")
+        ));
+    }
+    problems
+}
 
 static EXCLUDED_SUBFOLDERS: LazyLock<NetRegex> = LazyLock::new(|| {
     NetRegex::compile(
@@ -394,6 +440,51 @@ fn matches_folder(
     }
 }
 
+/// `EpisodeTitleSpecification` once the naming format needs titles: an episode that aired in
+/// the last 48 hours (or has no air date) must have a title other than "TBA". With "bulk
+/// season releases", only episodes of a season of which at least 4 aired the same day.
+pub(crate) fn episode_title_rejection(
+    mode: EpisodeTitleRequired,
+    episodes: &[&decision::Episode],
+    series_episodes: &[decision::Episode],
+    now: chrono::DateTime<chrono::Utc>,
+) -> Option<&'static str> {
+    let first = episodes.first()?;
+    if mode == EpisodeTitleRequired::Never {
+        return None;
+    }
+    let same_day =
+        |e: &decision::Episode| e.air_date_utc.is_none_or(|a| Some(a) == first.air_date_utc);
+    // Sonarr looks the season up with the episode number (`GetEpisodesBySeason(seriesId,
+    // firstEpisode.EpisodeNumber)`); the season number is what it means.
+    if mode == EpisodeTitleRequired::BulkSeasonReleases
+        && first.air_date_utc.is_some()
+        && episodes.iter().all(|e| same_day(e))
+        && series_episodes
+            .iter()
+            .filter(|e| e.season_number == first.season_number)
+            .filter(|e| same_day(e))
+            .count()
+            < 4
+    {
+        return None;
+    }
+    let recent = now - chrono::Duration::hours(48);
+    for e in episodes {
+        if e.air_date_utc.is_some_and(|a| a < recent) {
+            continue;
+        }
+        let title = e.title.as_deref().unwrap_or_default();
+        if title.trim().is_empty() {
+            return Some("Episode does not have a title and recently aired");
+        }
+        if title == "TBA" {
+            return Some("Episode has a TBA title and recently aired");
+        }
+    }
+    None
+}
+
 /// Imports a completed download. Database or filesystem failures of single files are reported
 /// per file; only problems with the whole download stop the import.
 pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome, String> {
@@ -411,6 +502,17 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             "Import failed, path does not exist or is not accessible by Kitsunarr: {}. Ensure the path exists and the user running Kitsunarr can read it; you may need a remote path mapping.",
             output.display()
         )));
+    }
+    // `ProcessFile`: a single-file download with a user-rejected extension.
+    if !output.is_dir() {
+        let ext = extension(output);
+        if !ext.is_empty()
+            && user_rejected_extensions(&media.user_rejected_extensions).contains(&ext)
+        {
+            return Ok(Outcome::blocked(format!(
+                "Caution: Found file with user defined rejected extension: '{ext}'"
+            )));
+        }
     }
     let detail = series::get_detail(db, d.series_id).await.map_err(err)?;
     let series_path = PathBuf::from(&detail.item.path);
@@ -821,23 +923,17 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                 .join(", ")
         };
         let (new_score, before_score) = (score_of(&after_rename), score_of(&before_rename));
-        // `EpisodeTitleSpecification` (episode titles are required whenever the format uses them).
-        if file_names::requires_episode_title(&naming, &naming_series, &naming_episodes) {
-            let recent = chrono::Utc::now() - chrono::Duration::hours(48);
-            for e in &mapped {
-                if e.air_date_utc.is_some_and(|a| a < recent) {
-                    continue;
-                }
-                let title = e.title.as_deref().unwrap_or_default();
-                if title.trim().is_empty() {
-                    errors.push("Episode does not have a title and recently aired".into());
-                    break;
-                }
-                if title == "TBA" {
-                    errors.push("Episode has a TBA title and recently aired".into());
-                    break;
-                }
-            }
+        // `EpisodeTitleSpecification` (when the naming format uses episode titles).
+        if media.episode_title_required != EpisodeTitleRequired::Never
+            && file_names::requires_episode_title(&naming, &naming_series, &naming_episodes)
+            && let Some(e) = episode_title_rejection(
+                media.episode_title_required,
+                &mapped,
+                &model.episodes,
+                chrono::Utc::now(),
+            )
+        {
+            errors.push(e.into());
         }
         for existing in mapped.iter().filter_map(|e| e.file.as_ref()) {
             let current = decision::custom_format::evaluate(

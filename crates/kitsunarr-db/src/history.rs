@@ -107,6 +107,32 @@ pub async fn last_grabs_for_series(db: &Database, series_id: i64) -> DbResult<Ve
     .await?)
 }
 
+/// A grab or download-folder import of one of a series' episodes.
+#[derive(Debug, Clone, FromRow)]
+pub struct GrabOrImport {
+    pub episode_id: i64,
+    pub event_type: String,
+    pub source_title: String,
+    pub quality_id: Option<i64>,
+    /// JSON `Revision`.
+    pub revision: Option<String>,
+    pub download_id: Option<String>,
+}
+
+/// The series' grabs and download-folder imports, newest first (`FindByEpisodeId` orders by
+/// date, descending), for `AlreadyImportedSpecification`.
+pub async fn grabs_and_imports(db: &Database, series_id: i64) -> DbResult<Vec<GrabOrImport>> {
+    Ok(sqlx::query_as(
+        "SELECT episode_id, event_type, source_title, quality_id, revision, download_id FROM history \
+         WHERE series_id = ? AND episode_id IS NOT NULL \
+           AND event_type IN ('grabbed', 'downloadFolderImported') \
+         ORDER BY date DESC, id DESC",
+    )
+    .bind(series_id)
+    .fetch_all(db.pool())
+    .await?)
+}
+
 /// Download ids (upper-case) among `download_ids` that were imported: a
 /// `downloadFolderImported` entry newer than their last grab.
 /// A series' grabs and failed downloads, newest first: (event type, date, release guid,

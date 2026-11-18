@@ -70,18 +70,50 @@ pub async fn list_release(State(state): State<AppState>) -> ApiResult<Json<Vec<R
     Ok(Json(rules::list_release_profiles(state.db.pool()).await?))
 }
 
+/// Sonarr's `ReleaseProfileController` validation: terms or an air-date option, and no tag
+/// both required and excluded.
+async fn check_release(state: &AppState, body: &ReleaseProfile) -> ApiResult<()> {
+    if body.required.is_empty()
+        && body.ignored.is_empty()
+        && !body.air_date_restriction
+        && !body.allow_season_pack_without_all_episodes_aired
+    {
+        return Err(crate::error::ApiError::field(
+            "required",
+            "'Must contain' or 'Must not contain' is required",
+        ));
+    }
+    let both: Vec<i64> = body
+        .tags
+        .iter()
+        .filter(|t| body.excluded_tags.contains(t))
+        .copied()
+        .collect();
+    if !both.is_empty() {
+        let labels: Vec<String> = kitsunarr_db::tags::list(state.db.pool())
+            .await?
+            .into_iter()
+            .filter(|t| both.contains(&t.id))
+            .map(|t| t.label)
+            .collect();
+        return Err(crate::error::ApiError::field(
+            "excludedTags",
+            format!(
+                "'{}' cannot be in both 'Tags' and 'Excluded Tags'",
+                labels.join(", ")
+            ),
+        ));
+    }
+    Ok(())
+}
+
 #[utoipa::path(post, path = "/releaseprofiles", tag = "settings", request_body = ReleaseProfile,
     responses((status = 201, body = ReleaseProfile), (status = 400, body = kitsunarr_domain::api::error::ApiErrorBody)))]
 pub async fn create_release(
     State(state): State<AppState>,
     Json(mut body): Json<ReleaseProfile>,
 ) -> ApiResult<(StatusCode, Json<ReleaseProfile>)> {
-    if body.required.is_empty() && body.ignored.is_empty() {
-        return Err(crate::error::ApiError::field(
-            "required",
-            "Add required or ignored terms.",
-        ));
-    }
+    check_release(&state, &body).await?;
     body.id = rules::create_release_profile(state.db.pool(), &body).await?;
     changed(&state, "releaseProfiles");
     Ok((StatusCode::CREATED, Json(body)))
@@ -95,6 +127,7 @@ pub async fn update_release(
     Json(mut body): Json<ReleaseProfile>,
 ) -> ApiResult<Json<ReleaseProfile>> {
     body.id = id;
+    check_release(&state, &body).await?;
     rules::update_release_profile(state.db.pool(), &body).await?;
     changed(&state, "releaseProfiles");
     Ok(Json(body))

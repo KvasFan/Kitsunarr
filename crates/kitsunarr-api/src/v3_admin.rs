@@ -133,6 +133,7 @@ pub(crate) async fn detail_json(state: &AppState, id: i64, label: String) -> Api
         "notificationIds": ids(&u.notifications),
         "restrictionIds": ids(&u.release_profiles),
         "releaseProfileIds": ids(&u.release_profiles),
+        "excludedReleaseProfileIds": ids(&u.excluded_release_profiles),
         "indexerIds": ids(&u.indexers),
         "downloadClientIds": ids(&u.download_clients),
         "autoTagIds": ids(&u.auto_tags),

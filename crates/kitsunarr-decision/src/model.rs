@@ -41,6 +41,9 @@ pub struct Release {
     pub codec: Option<String>,
     /// The container the indexer reported (BroadcasTheNet: `VOB`, `ISO`, `M2TS` are discs).
     pub container: Option<String>,
+    /// The indexer's `SeasonSearchMaximumSingleEpisodeAge` in days (0: off), for
+    /// `SeasonPackOnlySpecification`.
+    pub season_search_maximum_single_episode_age: i64,
 }
 
 /// A blocklisted release (`ReleaseComparerModel`).
@@ -215,7 +218,7 @@ pub struct HistoryGrab {
     pub release_type: ReleaseType,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ReleaseProfile {
     pub enabled: bool,
     pub required: Vec<String>,
@@ -223,6 +226,12 @@ pub struct ReleaseProfile {
     /// Empty: every indexer.
     pub indexer_ids: Vec<i64>,
     pub tags: Vec<i64>,
+    /// Series with one of these tags are not covered.
+    pub excluded_tags: Vec<i64>,
+    pub air_date_restriction: bool,
+    /// Hours.
+    pub air_date_grace_period: i32,
+    pub allow_season_pack_without_all_episodes_aired: bool,
 }
 
 #[derive(Debug, Clone)]
@@ -239,6 +248,23 @@ pub struct DelayProfile {
     pub minimum_custom_format_score: i32,
     pub order: i64,
     pub tags: Vec<i64>,
+}
+
+/// A grab or a download-folder import in an episode's history, for
+/// `AlreadyImportedSpecification` (`HistoryService.FindByEpisodeId`, newest first).
+#[derive(Debug, Clone)]
+pub struct EpisodeHistory {
+    pub episode_id: i64,
+    pub event: EpisodeHistoryEvent,
+    pub download_id: Option<String>,
+    pub source_title: String,
+    pub quality: QualityModel,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum EpisodeHistoryEvent {
+    Grabbed,
+    DownloadFolderImported,
 }
 
 /// A release a delay profile holds back (`PendingRelease`), for the delay rule.
@@ -277,6 +303,19 @@ pub struct Settings {
     /// Free space where the series' files go, for `FreeSpaceSpecification` (`None`: unknown or
     /// the check is off).
     pub free_space: Option<FreeSpace>,
+    /// Completed download handling is on (`AlreadyImportedSpecification` only runs then).
+    pub completed_download_handling: bool,
+    /// The series' grabs and imports, newest first, for `AlreadyImportedSpecification`.
+    pub episode_history: Vec<EpisodeHistory>,
+    /// Media management's "unmonitor deleted episodes", for `DeletedEpisodeFileSpecification`.
+    pub auto_unmonitor_previously_downloaded_episodes: bool,
+    /// Ids of the series' files that are missing from disk (read only when the setting above
+    /// is on).
+    pub missing_files: Vec<i64>,
+    /// Media management's season pack upgrade rule, for `UpgradeDiskSpecification`.
+    pub season_pack_upgrade: kitsunarr_domain::api::settings::SeasonPackUpgrade,
+    /// Percentage, for [`kitsunarr_domain::api::settings::SeasonPackUpgrade::Threshold`].
+    pub season_pack_upgrade_threshold: f64,
     pub now: DateTime<Utc>,
 }
 
@@ -356,6 +395,10 @@ pub enum RejectionReason {
     PropersDisabled,
     ProperForOldFile,
     AmbiguousNumbering,
+    BeforeAirDate,
+    AlreadyImportedSameHash,
+    AlreadyImportedSameName,
+    NotSeasonPack,
     DecisionError,
 }
 
