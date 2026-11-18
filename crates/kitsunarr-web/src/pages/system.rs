@@ -350,7 +350,9 @@ pub fn SystemLogs() -> Element {
                 option { value: "error", "Errors" } option { value: "warn", "Warnings" } option { value: "info", "Info" } option { value: "debug", "Debug" }
             }
         }
-        p { class: "muted small", "The most recent entries kept in memory. Full logs go to the process output (container logs or journal)." }
+        super::parse::LogFiles {}
+        h2 { class: "section-title", "Recent entries" }
+        p { class: "muted small", "The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything." }
         match &*logs.read() {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },

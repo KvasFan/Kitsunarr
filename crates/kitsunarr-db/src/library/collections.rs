@@ -867,6 +867,56 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn collection_settings_are_stored_and_sagas_hold_only_films() {
+        let db = crate::test_support::db().await;
+        let s = crate::library::series::tests::insert_sample(&db, "Saga", "1", 1).await;
+        let c = manual(&db, "Collection").await;
+        assert_eq!(
+            folder_settings(&mut db.pool().acquire().await.unwrap(), c)
+                .await
+                .unwrap(),
+            ("series".to_string(), "automatic".to_string())
+        );
+        update_settings(&db, c, Some(" Renamed "), None, Some("numbered"))
+            .await
+            .unwrap();
+        let d = detail(&db, c).await.unwrap();
+        assert_eq!(
+            (d.title.as_str(), d.movie_folder_style.as_str()),
+            ("Renamed", "numbered")
+        );
+        // An empty group may become a saga; one with a season may not.
+        update_settings(&db, c, None, Some("movieSaga"), None)
+            .await
+            .unwrap();
+        update_settings(&db, c, None, Some("series"), None)
+            .await
+            .unwrap();
+        let edit = CollectionMemberEdit {
+            series_id: Some(s),
+            ..Default::default()
+        };
+        add_member_manually(&db, c, &edit).await.unwrap();
+        assert!(matches!(
+            update_settings(&db, c, None, Some("movieSaga"), None).await,
+            Err(DbError::Invalid(_))
+        ));
+        assert!(matches!(
+            update_settings(&db, c, None, None, Some("fancy")).await,
+            Err(DbError::Invalid(_))
+        ));
+        assert!(matches!(
+            update_settings(&db, 999, None, None, None).await,
+            Err(DbError::NotFound)
+        ));
+        let mut conn = db.pool().acquire().await.unwrap();
+        assert_eq!(next_slot(&mut conn, c, "season").await.unwrap(), 2);
+        assert_eq!(next_slot(&mut conn, c, "movie").await.unwrap(), 1);
+        drop(conn);
+        assert_eq!(member_titles(&db, c).await.unwrap(), (vec![s], vec![]));
+    }
+
+    #[tokio::test]
     async fn native_seasons_keep_their_identity_and_borrow_presentation() {
         let db = crate::test_support::db().await;
         let s = crate::library::series::tests::insert_sample(&db, "Saga", "1", 2).await;

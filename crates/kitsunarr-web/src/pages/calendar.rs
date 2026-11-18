@@ -245,7 +245,7 @@ pub fn Calendar() -> Element {
     for e in &entries {
         if let Some(t) = parse_ts(&e.air_date_utc) {
             by_day
-                .entry(t.with_timezone(&Local).date_naive())
+                .entry(crate::util::local_naive(t).date())
                 .or_default()
                 .push(e.clone());
         }
@@ -285,7 +285,7 @@ pub fn Calendar() -> Element {
                 }
                 for (day, list) in by_day.clone() {
                     section { key: "{day}", class: if day == today { "agenda-day today" } else { "agenda-day" },
-                        h3 { {day.format("%A, %d %B %Y").to_string()} if day == today { " · today" } }
+                        h3 { {crate::util::format_long_day(day)} if day == today { " · today" } }
                         for e in list {
                             AgendaItem { key: "{e.episode_id}", entry: e.clone() }
                         }
@@ -296,7 +296,9 @@ pub fn Calendar() -> Element {
                 div { class: if view() == View::Day { "calendar-days single" } else { "calendar-days" }, role: "grid", "aria-label": "Calendar",
                     if view() != View::Day {
                         for d in days.iter().take(7) {
-                            div { key: "h{d}", class: "calendar-dow", role: "columnheader", {d.format("%a").to_string()} }
+                            div { key: "h{d}", class: "calendar-dow", role: "columnheader",
+                                if view() == View::Week { {crate::util::format_week_header(*d)} } else { {d.format("%a").to_string()} }
+                            }
                         }
                     }
                     for d in days.iter() {
@@ -339,9 +341,7 @@ pub fn Calendar() -> Element {
 #[component]
 fn CalendarEvent(entry: CalendarEntry, now: chrono::DateTime<Utc>) -> Element {
     let (class, label) = status(&entry, now);
-    let time = parse_ts(&entry.air_date_utc)
-        .map(|t| t.with_timezone(&Local).format("%H:%M").to_string())
-        .unwrap_or_default();
+    let time = crate::util::format_time(&entry.air_date_utc);
     rsx! {
         Link { to: Route::SeriesDetailPage { id: entry.series_id }, class: "cal-event cal-status {class}", title: "{label}",
             span { class: "ellipsis strong", "{entry.series_title}" }
@@ -359,7 +359,7 @@ fn AgendaItem(entry: CalendarEntry) -> Element {
     let e = entry;
     rsx! {
         div { class: "agenda-item",
-            span { class: "time", {parse_ts(&e.air_date_utc).map(|t| t.with_timezone(&Local).format("%H:%M").to_string()).unwrap_or_default()} }
+            span { class: "time", {crate::util::format_time(&e.air_date_utc)} }
             span { class: if e.has_file { "dot success" } else if e.monitored { "dot accent" } else { "dot" } }
             div { class: "grow ellipsis",
                 Link { to: Route::SeriesDetailPage { id: e.series_id }, "{e.series_title}" }

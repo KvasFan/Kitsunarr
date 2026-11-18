@@ -769,6 +769,50 @@ mod tests {
         ]
     }
 
+    /// Tanukarr's `GetAnimeGroupMemberFolder` choice of format.
+    #[test]
+    fn member_folders_follow_the_collection_style() {
+        let n = kitsunarr_domain::api::settings::NamingSettings::default();
+        let season = n.anime_group_season_folder_format.as_str();
+        let arc = n.anime_group_arc_folder_format.as_str();
+        let film = n.anime_group_movie_folder_format.as_str();
+        let numbered = n.anime_group_movie_saga_folder_format.as_str();
+        // Seasons: arcs by title when automatic, always with `title`, never with `numbered`.
+        assert_eq!(
+            member_folder_format(&n, "series", "automatic", false, false),
+            season
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "automatic", false, true),
+            arc
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "title", false, false),
+            arc
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "numbered", false, true),
+            season
+        );
+        // Films: numbered in sagas when automatic.
+        assert_eq!(
+            member_folder_format(&n, "movieSaga", "automatic", true, false),
+            numbered
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "automatic", true, false),
+            film
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "numbered", true, false),
+            numbered
+        );
+        assert_eq!(
+            member_folder_format(&n, "movieSaga", "title", true, false),
+            film
+        );
+    }
+
     #[tokio::test]
     async fn chains_number_seasons_and_films_from_the_root() {
         let g = |r: Resolution| match r {

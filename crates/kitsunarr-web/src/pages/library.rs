@@ -8,7 +8,10 @@ use kitsunarr_domain::api::library::{BulkEdit, LibraryQuery};
 use kitsunarr_domain::{MediaKind, SortDirection};
 
 use crate::components::common::{Empty, ErrorBox, Loading, Pagination};
-use crate::components::media::{MovieCard, MovieTable, SeriesCard, SeriesTable};
+use crate::components::media::{
+    ColumnChooser, MOVIE_COLUMNS, MovieCard, MovieOverview, MovieTable, SERIES_COLUMNS, SeriesCard,
+    SeriesOverview, SeriesTable, ViewSwitch, use_columns, use_view,
+};
 use crate::pages::library_filters::{self, FilterRef};
 use crate::route::Route;
 use crate::state::{use_app, use_client};
@@ -46,14 +49,15 @@ fn use_debounced(source: Signal<String>, ms: u32) -> Signal<String> {
     out
 }
 
-#[component]
-fn ViewToggle(grid: Signal<bool>) -> Element {
-    rsx! {
-        div { class: "seg", role: "group", "aria-label": "View",
-            button { class: if grid() { "on" } else { "" }, onclick: move |_| grid.set(true), "Posters" }
-            button { class: if !grid() { "on" } else { "" }, onclick: move |_| grid.set(false), "Table" }
-        }
-    }
+/// Tag labels for the index's tags column.
+fn use_tags() -> Resource<Vec<kitsunarr_domain::api::settings::TagItem>> {
+    let client = use_client();
+    let app = use_app();
+    use_resource(move || {
+        let _ = (app.settings_rev)();
+        let c = client.clone();
+        async move { c.tags().await.unwrap_or_default() }
+    })
 }
 
 #[component]
@@ -83,7 +87,10 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let mut path = use_signal(|| load_pref(&pref("path")).unwrap_or_default());
     let mut group = use_signal(|| load_pref(&pref("group")).as_deref() != Some("false"));
     let mut saving_filter = use_signal(|| false);
-    let grid = use_signal(|| crate::util::load_pref("kitsunarr-view").as_deref() != Some("table"));
+    let view = use_view();
+    let columns = use_columns(kind.as_str(), SERIES_COLUMNS);
+    let tags = use_tags();
+    let tag_list = move || tags.read().clone().unwrap_or_default();
     let mut selected = use_signal(HashSet::<i64>::new);
     let mut bulk_profile = use_signal(String::new);
 
@@ -161,10 +168,6 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             .map(|p| p.total_records)
         }
     });
-    use_effect(move || {
-        crate::util::save_pref("kitsunarr-view", if grid() { "grid" } else { "table" })
-    });
-
     let c = client.clone();
     let data = use_resource(move || {
         let _ = (app.library_rev)();
@@ -378,7 +381,8 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             if let (Some(Ok(p)), Some(Ok(t))) = (&*data.read(), &*total.read()) {
                 span { class: "small muted", "aria-label": "Shown series", "{p.total_records} / {t}" }
             }
-            ViewToggle { grid }
+            ColumnChooser { all: SERIES_COLUMNS, columns }
+            ViewSwitch { view }
         }
         {
             let (_, applied) = composed();
@@ -462,19 +466,27 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 }
             },
             Some(Ok(p)) => rsx! {
-                if grid() {
-                    div { class: "media-grid",
-                        for item in p.records.iter() {
-                            SeriesCard { key: "{item.id}", item: item.clone(), selected: selected.read().contains(&item.id), grouped: group() }
+                match view().as_str() {
+                    "table" => rsx! {
+                        SeriesTable {
+                            items: p.records.clone(),
+                            selected,
+                            sort_key: sort_key(),
+                            on_sort: move |k: String| { if sort_key() == k { descending.toggle(); } else { sort_key.set(k); } },
+                            columns: Some(columns()),
+                            tags: tag_list(),
                         }
-                    }
-                } else {
-                    SeriesTable {
-                        items: p.records.clone(),
-                        selected,
-                        sort_key: sort_key(),
-                        on_sort: move |k: String| { if sort_key() == k { descending.toggle(); } else { sort_key.set(k); } },
-                    }
+                    },
+                    "overview" => rsx! {
+                        SeriesOverview { items: p.records.clone(), selected, columns: columns(), tags: tag_list() }
+                    },
+                    _ => rsx! {
+                        div { class: "media-grid",
+                            for item in p.records.iter() {
+                                SeriesCard { key: "{item.id}", item: item.clone(), selected: selected.read().contains(&item.id), grouped: group(), columns: columns(), tags: tag_list() }
+                            }
+                        }
+                    },
                 }
                 Pagination { page: p.page, page_size: p.page_size, total: p.total_records, on_page: move |n| page.set(n) }
             },
@@ -490,7 +502,10 @@ pub fn MoviesLibrary() -> Element {
     let mut page = use_signal(|| 1u32);
     let mut sort_key = use_signal(|| "title".to_string());
     let mut watched = use_signal(|| None::<bool>);
-    let grid = use_signal(|| crate::util::load_pref("kitsunarr-view").as_deref() != Some("table"));
+    let view = use_view();
+    let columns = use_columns("movies", MOVIE_COLUMNS);
+    let tags = use_tags();
+    let tag_list = move || tags.read().clone().unwrap_or_default();
     let mut selected = use_signal(HashSet::<i64>::new);
     let mut busy = use_signal(|| false);
     use_effect(move || {
@@ -499,9 +514,6 @@ pub fn MoviesLibrary() -> Element {
             page.set(1);
         }
         selected.write().clear();
-    });
-    use_effect(move || {
-        crate::util::save_pref("kitsunarr-view", if grid() { "grid" } else { "table" })
     });
     let c0 = client.clone();
     let mut data = use_resource(move || {
@@ -555,7 +567,7 @@ pub fn MoviesLibrary() -> Element {
             select{class:"select","aria-label":"Filter by watched state",onchange:move |e:FormEvent|{selected.write().clear();page.set(1);watched.set(match e.value().as_str(){"yes"=>Some(true),"no"=>Some(false),_=>None});},
                 option{value:"all","All"}option{value:"yes","Watched"}option{value:"no","Unwatched"}
             }
-            div{class:"spacer"}ViewToggle{grid}
+            div{class:"spacer"}ColumnChooser{all:MOVIE_COLUMNS,columns}ViewSwitch{view}
         }
         if !selected.read().is_empty(){div{class:"alert info",role:"region","aria-label":"Movie bulk actions",
             div{class:"row grow",
@@ -576,18 +588,20 @@ pub fn MoviesLibrary() -> Element {
                 }
             },
             Some(Ok(p))=>rsx!{
-                if grid(){
+                if view()=="overview"{
+                    MovieOverview{items:p.records.clone(),selected,columns:columns(),tags:tag_list(),disabled:busy()}
+                }else if view()!="table"{
                     div{class:"media-grid",
                         for item in &p.records{
                             div{key:"{item.id}",style:"position:relative;min-width:0",
-                                MovieCard{item:item.clone(),selected:selected.read().contains(&item.id)}
+                                MovieCard{item:item.clone(),selected:selected.read().contains(&item.id),columns:columns(),tags:tag_list()}
                                 label{style:"position:absolute;top:.5rem;inset-inline-end:.5rem;padding:.3rem;background:var(--bg-elev);border-radius:var(--r-sm)",
                                     input{r#type:"checkbox","aria-label":"Select {item.title}",disabled:busy(),checked:selected.read().contains(&item.id),onchange:{let id=item.id;move |e:FormEvent|{if e.checked(){selected.write().insert(id);}else{selected.write().remove(&id);}}}}
                                 }
                             }
                         }
                     }
-                }else{MovieTable{items:p.records.clone(),selected,disabled:busy()}}
+                }else{MovieTable{items:p.records.clone(),selected,disabled:busy(),columns:Some(columns()),tags:tag_list()}}
                 Pagination{page:p.page,page_size:p.page_size,total:p.total_records,on_page:move |n|page.set(n)}
             },
         }
