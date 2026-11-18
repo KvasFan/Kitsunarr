@@ -413,6 +413,14 @@ struct ListRow {
     next_airing: Option<String>,
     tags: Option<String>,
     anime_group: Option<String>,
+    overview: Option<String>,
+    genres: String,
+    ratings: Option<String>,
+    certification: Option<String>,
+    previous_airing: Option<String>,
+    release_groups: Option<String>,
+    season_folder: bool,
+    runtime: Option<i64>,
 }
 
 impl ListRow {
@@ -447,6 +455,22 @@ impl ListRow {
                 .anime_group
                 .as_deref()
                 .and_then(|g| serde_json::from_str(g).ok()),
+            index: kitsunarr_domain::api::library::IndexColumns {
+                overview: self.overview,
+                genres: serde_json::from_str(&self.genres).unwrap_or_default(),
+                rating: super::rating_value(self.ratings.as_deref()),
+                certification: self.certification,
+                runtime: self.runtime.map(|r| r as i32),
+                previous_airing: self.previous_airing,
+                release_groups: self
+                    .release_groups
+                    .as_deref()
+                    .and_then(|g| serde_json::from_str(g).ok())
+                    .unwrap_or_default(),
+                season_folder: Some(self.season_folder),
+                in_cinemas: None,
+                file_quality: None,
+            },
         }
     }
 }
@@ -464,7 +488,11 @@ const LIST_COLUMNS: &str = "s.id, s.media_kind, s.title, s.sort_title, s.year, s
     (SELECT json_object('collectionId', c.id, 'title', c.title, 'seriesCount', \
        (SELECT COUNT(*) FROM collection_members x WHERE x.collection_id = c.id AND x.series_id IS NOT NULL)) \
      FROM collection_members m JOIN collections c ON c.id = m.collection_id \
-     WHERE m.series_id = s.id AND c.kind = 'animeGroup' ORDER BY c.id LIMIT 1) AS anime_group";
+     WHERE m.series_id = s.id AND c.kind = 'animeGroup' ORDER BY c.id LIMIT 1) AS anime_group, \
+    s.overview, s.genres, s.ratings, s.certification, s.season_folder, s.runtime, \
+    (SELECT MAX(e.air_date_utc) FROM episodes e WHERE e.series_id = s.id AND e.air_date_utc <= strftime('%Y-%m-%dT%H:%M:%SZ','now')) AS previous_airing, \
+    (SELECT json_group_array(g) FROM (SELECT DISTINCT f.release_group AS g FROM episode_files f \
+       WHERE f.series_id = s.id AND f.release_group IS NOT NULL AND f.release_group <> '' ORDER BY g)) AS release_groups";
 
 fn sort_expression(key: Option<&str>) -> &'static str {
     match key.unwrap_or("title") {
@@ -715,8 +743,8 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
     };
     let membership: Option<MembershipRow> =
         sqlx::query_as(
-            "SELECT c.id, c.kind, c.metadata_provider, c.metadata_id, c.title, m.role, m.label, m.position \
-             FROM collection_members m JOIN collections c ON c.id = m.collection_id \
+            "SELECT c.id, c.kind, c.metadata_provider, c.metadata_id, c.title, m.role, m.label, m.position, \
+             c.group_kind, c.movie_folder_style FROM collection_members m JOIN collections c ON c.id = m.collection_id \
              WHERE m.series_id = ? AND c.kind IN ('animeGroup', 'manual') \
              ORDER BY c.kind = 'animeGroup' DESC, c.id LIMIT 1",
         )
@@ -725,7 +753,18 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
         .await?;
     Ok(SeriesDetail {
         group_membership: membership.map(
-            |(collection_id, kind, provider, key, title, role, label, position)| {
+            |(
+                collection_id,
+                kind,
+                provider,
+                key,
+                title,
+                role,
+                label,
+                position,
+                group_kind,
+                movie_folder_style,
+            )| {
                 GroupMembershipRef {
                     collection_id,
                     group_key: provider.zip(key).map(|(p, k)| format!("{p}:{k}")),
@@ -734,6 +773,8 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
                     role,
                     label,
                     position,
+                    group_kind,
+                    movie_folder_style,
                 }
             },
         ),
@@ -777,7 +818,8 @@ pub async fn get_detail(db: &Database, id: i64) -> DbResult<SeriesDetail> {
     })
 }
 
-/// (collection id, kind, catalogue, catalogue id, title, role, label, position).
+/// (collection id, kind, catalogue, catalogue id, title, role, label, position, group kind,
+/// movie folder style).
 type MembershipRow = (
     i64,
     String,
@@ -787,6 +829,8 @@ type MembershipRow = (
     Option<String>,
     Option<String>,
     i64,
+    String,
+    String,
 );
 
 pub async fn get_list_item(db: &Database, id: i64) -> DbResult<SeriesListItem> {

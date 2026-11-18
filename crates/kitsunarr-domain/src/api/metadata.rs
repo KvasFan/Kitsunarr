@@ -327,6 +327,10 @@ pub struct AddTitle {
     /// and stays out of automatic anime groups and TMDB collections.
     #[serde(default = "default_true")]
     pub automatic_grouping: bool,
+    /// Tanukarr's "Manual" grouping: the title joins this existing anime group or manual
+    /// collection (and goes to its group folder) instead of being grouped automatically.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub manual_group_id: Option<i64>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

@@ -36,6 +36,14 @@ pub(crate) fn poster_url(images_json: &str) -> Option<String> {
         .map(|i| i.remote_url)
 }
 
+/// The value of a stored `{"value", "votes"}` rating.
+pub(crate) fn rating_value(ratings_json: Option<&str>) -> Option<f64> {
+    serde_json::from_str::<serde_json::Value>(ratings_json?)
+        .ok()?
+        .get("value")?
+        .as_f64()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

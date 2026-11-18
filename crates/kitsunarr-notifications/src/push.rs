@@ -63,12 +63,37 @@ pub async fn telegram(n: &Notifier, s: &Map<String, Value>, event: &Event) -> No
             .replace('<', "&lt;")
             .replace('>', "&gt;")
     };
+    // Tanukarr's metadata links, and the link preview of one of them.
+    let chosen = crate::links::chosen(s)?;
+    let preview = int(s, "linkPreview", crate::links::NO_PREVIEW);
+    if preview != crate::links::NO_PREVIEW && !chosen.contains(&preview) {
+        return Err(NotifyError::Settings(
+            "Link Preview must be one of the selected Metadata Links".into(),
+        ));
+    }
+    let links = if matches!(event, Event::Test) {
+        vec![crate::links::MetadataLink {
+            kind: None,
+            label: "Kitsunarr".into(),
+            url: "https://github.com/KvasFan/Kitsunarr".into(),
+        }]
+    } else {
+        crate::links::generate(event.series(), &chosen)
+    };
+    let mut message = format!("<b>{}</b>\n{}", escape(&title), escape(&event.message()));
+    for l in &links {
+        message.push_str(&format!("\n<a href=\"{}\">{}</a>", l.url, escape(&l.label)));
+    }
+    let mut preview_options = json!({"is_disabled": preview == crate::links::NO_PREVIEW});
+    if let Some(l) = links.iter().find(|l| l.kind == Some(preview)) {
+        preview_options["url"] = l.url.clone().into();
+    }
     let mut body = json!({
         "chat_id": chat,
         "parse_mode": "HTML",
-        "text": format!("<b>{}</b>\n{}", escape(&title), escape(&event.message())),
+        "text": message,
         "disable_notification": flag(s, "sendSilently", false),
-        "link_preview_options": {"is_disabled": true},
+        "link_preview_options": preview_options,
     });
     if let Some(topic) = text(s, "topicId") {
         body["message_thread_id"] = topic

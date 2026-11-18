@@ -915,7 +915,54 @@ pub struct GeneralSettings {
     /// Sonarr's `BackupRetention`: days scheduled backups are kept (1-90).
     #[serde(default = "default_backup_retention")]
     pub backup_retention: i32,
+    /// Sonarr's Settings › UI (moment.js formats, as Sonarr stores them).
+    #[serde(default = "default_short_date_format")]
+    pub short_date_format: String,
+    #[serde(default = "default_long_date_format")]
+    pub long_date_format: String,
+    /// `h(:mm)a` (12-hour, minutes only when not zero) or `HH:mm`.
+    #[serde(default = "default_time_format")]
+    pub time_format: String,
+    /// An IANA time zone (`Europe/Rome`); empty follows the browser.
+    #[serde(default)]
+    pub time_zone: String,
+    #[serde(default = "default_true_ui")]
+    pub show_relative_dates: bool,
+    #[serde(default)]
+    pub enable_color_impaired_mode: bool,
+    /// The calendar's week view column header (`ddd M/D` …).
+    #[serde(default = "default_week_column_header")]
+    pub calendar_week_column_header: String,
 }
+
+fn default_short_date_format() -> String {
+    "MMM D YYYY".into()
+}
+fn default_long_date_format() -> String {
+    "dddd, MMMM D YYYY".into()
+}
+fn default_time_format() -> String {
+    "h(:mm)a".into()
+}
+fn default_week_column_header() -> String {
+    "ddd M/D".into()
+}
+fn default_true_ui() -> bool {
+    true
+}
+
+/// Sonarr's choices for Settings › UI (`UISettings.tsx`).
+pub const SHORT_DATE_FORMATS: &[&str] = &[
+    "MMM D YYYY",
+    "DD MMM YYYY",
+    "MM/D/YYYY",
+    "MM/DD/YYYY",
+    "DD/MM/YYYY",
+    "YYYY-MM-DD",
+];
+pub const LONG_DATE_FORMATS: &[&str] = &["dddd, MMMM D YYYY", "dddd, D MMMM YYYY"];
+pub const TIME_FORMATS: &[&str] = &["h(:mm)a", "HH:mm"];
+pub const WEEK_COLUMN_HEADERS: &[&str] = &["ddd M/D", "ddd MM/DD", "ddd D/M", "ddd DD/MM"];
 
 fn default_backup_interval() -> i32 {
     7
@@ -1007,6 +1054,13 @@ impl Default for GeneralSettings {
             certificate_validation: CertificateValidation::Enabled,
             backup_interval: default_backup_interval(),
             backup_retention: default_backup_retention(),
+            short_date_format: default_short_date_format(),
+            long_date_format: default_long_date_format(),
+            time_format: default_time_format(),
+            time_zone: String::new(),
+            show_relative_dates: true,
+            enable_color_impaired_mode: false,
+            calendar_week_column_header: default_week_column_header(),
         }
     }
 }

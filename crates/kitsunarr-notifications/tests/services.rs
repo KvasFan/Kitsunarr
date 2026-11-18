@@ -644,3 +644,74 @@ async fn twitter_posts_or_sends_a_direct_message() {
             && supported("SynologyIndexer")
     );
 }
+
+/// Tanukarr's metadata links: Telegram lists them (and previews one), Pushcut offers them as
+/// actions.
+#[tokio::test]
+async fn telegram_and_pushcut_send_metadata_links() {
+    let (base, _, log) = mock().await;
+    let n = Notifier::new(reqwest::Client::new());
+    n.send(
+        &conn(
+            "Telegram",
+            json!({"botToken": "1:t", "chatId": "42", "apiUrl": base, "metadataLinks": [1, 3], "linkPreview": 1}),
+        ),
+        &download(),
+        &instance(),
+    )
+    .await
+    .unwrap();
+    n.send(
+        &conn(
+            "Pushcut",
+            json!({"notificationName": "N", "apiKey": "pk", "baseUrl": base, "metadataLinks": [3, 0]}),
+        ),
+        &download(),
+        &instance(),
+    )
+    .await
+    .unwrap();
+    // A preview of a link that is not chosen is refused, as Tanukarr's validator does.
+    let refused = n
+        .send(
+            &conn(
+                "Telegram",
+                json!({"botToken": "1:t", "chatId": "42", "apiUrl": base, "metadataLinks": [0], "linkPreview": 2}),
+            ),
+            &download(),
+            &instance(),
+        )
+        .await;
+    assert!(refused.is_err());
+    let seen = log.lock().unwrap().clone();
+    let telegram: Value = serde_json::from_str(
+        &seen
+            .iter()
+            .find(|s| s.path == "/bot1:t/sendMessage")
+            .unwrap()
+            .body,
+    )
+    .unwrap();
+    assert_eq!(
+        telegram["text"],
+        "<b>Episode Downloaded</b>\nBreaking Bad - 1x01 - Pilot [HDTV-720p]\n<a href=\"http://www.thetvdb.com/?tab=series&id=81189\">TVDb</a>\n<a href=\"http://trakt.tv/search/tvdb/81189?id_type=show\">Trakt</a>"
+    );
+    assert_eq!(telegram["link_preview_options"]["is_disabled"], false);
+    assert_eq!(
+        telegram["link_preview_options"]["url"],
+        "http://www.thetvdb.com/?tab=series&id=81189"
+    );
+    let push: Value = serde_json::from_str(
+        &seen
+            .iter()
+            .find(|s| s.path == "/v1/notifications/N")
+            .unwrap()
+            .body,
+    )
+    .unwrap();
+    // The series has no IMDb id, so only Trakt is offered.
+    assert_eq!(
+        push["actions"],
+        json!([{"name": "Trakt", "url": "http://trakt.tv/search/tvdb/81189?id_type=show"}])
+    );
+}

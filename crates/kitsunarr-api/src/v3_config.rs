@@ -408,19 +408,18 @@ pub(crate) async fn general(state: &AppState) -> ApiResult<GeneralSettings> {
     Ok(kv::get_or_default(state.db.pool(), kv::KEY_GENERAL).await?)
 }
 
-/// Sonarr's interface settings: the first day of the week is Kitsunarr's; the date formats and
-/// theme are Sonarr's defaults (Kitsunarr formats dates by the browser's locale).
+/// Sonarr's interface settings, Kitsunarr's Settings › UI (the theme is chosen per browser).
 pub(crate) fn ui_resource(g: &GeneralSettings) -> Value {
     json!({
         "id": 1,
         "firstDayOfWeek": g.first_day_of_week,
-        "calendarWeekColumnHeader": "ddd M/D",
-        "shortDateFormat": "MMM D YYYY",
-        "longDateFormat": "dddd, MMMM D YYYY",
-        "timeFormat": "h(:mm)a",
-        "timeZone": "",
-        "showRelativeDates": true,
-        "enableColorImpairedMode": false,
+        "calendarWeekColumnHeader": g.calendar_week_column_header,
+        "shortDateFormat": g.short_date_format,
+        "longDateFormat": g.long_date_format,
+        "timeFormat": g.time_format,
+        "timeZone": g.time_zone,
+        "showRelativeDates": g.show_relative_dates,
+        "enableColorImpairedMode": g.enable_color_impaired_mode,
         "theme": "auto",
         "uiLanguage": 1,
         "kitsunarrUiLanguage": g.ui_language,
@@ -443,8 +442,33 @@ pub(crate) async fn put_ui(
     if let Some(code) = body.get("kitsunarrUiLanguage").and_then(Value::as_str) {
         next.ui_language = code.to_string();
     }
+    apply_ui_fields(&mut next, &body);
     let saved = settings::put_general(State(state), Json(next)).await?.0;
     Ok(accepted(ui_resource(&saved)))
+}
+
+/// Sonarr's `UiConfigResource` fields that Settings › UI stores (absent ones are kept).
+pub(crate) fn apply_ui_fields(g: &mut GeneralSettings, body: &Value) {
+    for (key, field) in [
+        (
+            "calendarWeekColumnHeader",
+            &mut g.calendar_week_column_header,
+        ),
+        ("shortDateFormat", &mut g.short_date_format),
+        ("longDateFormat", &mut g.long_date_format),
+        ("timeFormat", &mut g.time_format),
+        ("timeZone", &mut g.time_zone),
+    ] {
+        if let Some(v) = body.get(key).and_then(Value::as_str) {
+            *field = v.to_string();
+        }
+    }
+    if let Some(v) = body.get("showRelativeDates").and_then(Value::as_bool) {
+        g.show_relative_dates = v;
+    }
+    if let Some(v) = body.get("enableColorImpairedMode").and_then(Value::as_bool) {
+        g.enable_color_impaired_mode = v;
+    }
 }
 
 pub(crate) fn proxy_type_name(t: ProxyType) -> &'static str {

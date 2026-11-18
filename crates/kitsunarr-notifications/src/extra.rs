@@ -9,11 +9,19 @@ pub async fn pushcut(n: &Notifier, s: &Map<String, Value>, event: &Event) -> Not
     let name = required(s, "notificationName", "The notification name")?;
     let key = required(s, "apiKey", "The API key")?;
     let base = text(s, "baseUrl").unwrap_or_else(|| "https://api.pushcut.io".into());
+    // Tanukarr's metadata links become the notification's actions (not for manual interaction).
+    let series = event
+        .series()
+        .filter(|_| !matches!(event, Event::ManualInteractionRequired(_)));
+    let actions: Vec<Value> = crate::links::generate(series, &crate::links::chosen(s)?)
+        .into_iter()
+        .map(|l| json!({"name": l.label, "url": l.url}))
+        .collect();
     let mut body = json!({
         "title": event.title(),
         "text": event.message(),
         "isTimeSensitive": flag(s, "timeSensitive", false),
-        "actions": [],
+        "actions": actions,
     });
     if flag(s, "includePoster", false)
         && let Some(poster) = event.series().and_then(|x| x.poster())

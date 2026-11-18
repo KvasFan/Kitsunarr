@@ -1,5 +1,5 @@
 //! Discord webhooks (Sonarr's `Discord`, `DiscordProxy`): one embed per event, with the fields
-//! chosen in `grabFields` and `importFields`.
+//! chosen in `grabFields`, `importFields` and `manualInteractionFields`.
 
 use serde_json::{Map, Value, json};
 
@@ -372,22 +372,69 @@ pub fn embed(s: &Map<String, Value>, event: &Event, instance: &Instance) -> Valu
             None,
         ),
         Event::ManualInteractionRequired(m) => {
-            thumbnail = m
-                .series
-                .as_ref()
-                .and_then(|s| s.poster())
-                .map(str::to_string);
-            fields.push(field("Download", m.title.clone(), false));
+            // Tanukarr's `OnManualInteractionRequired` with `manualInteractionFields`.
+            let series = m.series.as_ref();
+            for f in chosen(
+                s,
+                "manualInteractionFields",
+                &[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            ) {
+                let (name, value, inline) = match f {
+                    0 => (
+                        "Overview",
+                        overview(m.episodes.first().and_then(|e| e.overview.as_deref())),
+                        false,
+                    ),
+                    1 => (
+                        "Rating",
+                        series
+                            .and_then(|x| x.rating)
+                            .map(|r| r.to_string())
+                            .unwrap_or_default(),
+                        false,
+                    ),
+                    2 => (
+                        "Genres",
+                        series
+                            .map(|x| {
+                                x.genres
+                                    .iter()
+                                    .take(5)
+                                    .cloned()
+                                    .collect::<Vec<_>>()
+                                    .join(", ")
+                            })
+                            .unwrap_or_default(),
+                        false,
+                    ),
+                    3 => ("Quality", m.quality.clone(), true),
+                    4 => ("Group", m.release_group.clone().unwrap_or_default(), false),
+                    5 => ("Size", bytes(m.size), true),
+                    6 => ("Links", series.map(links).unwrap_or_default(), false),
+                    7 => ("Download", format!("```{}```", m.title), false),
+                    8 => {
+                        thumbnail = series.and_then(|x| x.poster()).map(str::to_string);
+                        continue;
+                    }
+                    9 => {
+                        image = series.and_then(|x| x.fanart()).map(str::to_string);
+                        continue;
+                    }
+                    _ => continue,
+                };
+                if !value.trim().is_empty() {
+                    fields.push(field(name, value, inline));
+                }
+            }
+            // Kitsunarr also says why the import is blocked.
             if !m.messages.is_empty() {
                 fields.push(field("Reason", m.messages.join("\n"), false));
             }
             (
-                m.series
-                    .as_ref()
-                    .map_or_else(|| m.title.clone(), |s| title(s, &m.episodes)),
-                "Manual Interaction Required".to_string(),
-                colors::WARNING,
-                m.series.as_ref(),
+                series.map_or_else(|| m.title.clone(), |x| title(x, &m.episodes)),
+                "Manual interaction needed".to_string(),
+                colors::STANDARD,
+                series,
             )
         }
         Event::ApplicationUpdate {
@@ -481,6 +528,61 @@ mod tests {
         assert_eq!(e["fields"][2]["value"], "1.4 GB");
         assert_eq!(e["thumbnail"]["url"], "https://img/poster.jpg");
         assert_eq!(e["url"], "http://thetvdb.com/?tab=series&id=81189");
+    }
+
+    #[test]
+    fn manual_interaction_embeds_follow_tanukarr() {
+        let Event::Grab(g) = grab() else {
+            unreachable!()
+        };
+        let mut series = g.series.clone();
+        series.rating = Some(8.5);
+        series.genres = vec!["Drama".into(), "Crime".into()];
+        let mi = Event::ManualInteractionRequired(Box::new(crate::ManualInteraction {
+            series: Some(series),
+            episodes: g.episodes.clone(),
+            title: "Show.S01E01.1080p-GRP".into(),
+            quality: "WEBDL-1080p".into(),
+            quality_version: 1,
+            size: 1_503_238_553,
+            release_group: Some("GRP".into()),
+            messages: vec!["No files found".into()],
+            ..Default::default()
+        }));
+        let instance = Instance {
+            name: "Kitsunarr".into(),
+            application_url: None,
+        };
+        let s = json!({"manualInteractionFields": [1, 2, 3, 4, 5, 7, 8]});
+        let e = embed(s.as_object().unwrap(), &mi, &instance);
+        let names: Vec<&str> = e["fields"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|f| f["name"].as_str().unwrap())
+            .collect();
+        assert_eq!(
+            names,
+            vec![
+                "Rating", "Genres", "Quality", "Group", "Size", "Download", "Reason"
+            ]
+        );
+        assert_eq!(e["fields"][0]["value"], "8.5");
+        assert_eq!(e["fields"][1]["value"], "Drama, Crime");
+        assert_eq!(e["fields"][4]["value"], "1.4 GB");
+        assert_eq!(e["fields"][5]["value"], "```Show.S01E01.1080p-GRP```");
+        assert_eq!(e["description"], "Manual interaction needed");
+        assert_eq!(e["thumbnail"]["url"], "https://img/poster.jpg");
+        assert!(e.get("image").is_none());
+        // Without a choice every field is sent (Tanukarr's defaults).
+        let e = embed(json!({}).as_object().unwrap(), &mi, &instance);
+        assert!(
+            e["fields"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|f| f["name"] == "Links")
+        );
     }
 
     #[test]

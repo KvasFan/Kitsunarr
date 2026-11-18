@@ -356,6 +356,12 @@ pub struct Config {
     pub config_dir: PathBuf,
     /// Directory holding the database, backups and logs.
     pub data_dir: PathBuf,
+    /// Where backups go (Sonarr's `BackupFolder`); default `<data_dir>/backups`.
+    pub backup_folder: Option<PathBuf>,
+    /// Keys an environment variable or command-line flag set (`server.port` …), which win
+    /// over the file. Not part of the file.
+    #[serde(skip)]
+    pub overridden: Vec<String>,
 }
 
 impl Default for Config {
@@ -367,6 +373,8 @@ impl Default for Config {
             metadata: MetadataConfig::default(),
             config_dir: PathBuf::from(DEFAULT_CONFIG_DIR),
             data_dir: PathBuf::from(DEFAULT_DATA_DIR),
+            backup_folder: None,
+            overridden: Vec::new(),
         }
     }
 }
@@ -399,6 +407,15 @@ impl Config {
             .map(Path::to_path_buf)
             .or_else(|| env.var("KITSUNARR_CONFIG_DIR").map(PathBuf::from))
             .unwrap_or_else(|| PathBuf::from(DEFAULT_CONFIG_DIR));
+        let mut config = Self::load_file(&config_dir)?;
+        config.apply_env(env)?;
+        config.normalize()?;
+        Ok(config)
+    }
+
+    /// Defaults and the config file alone (what the file will give at the next start, before
+    /// environment variables and flags).
+    pub fn load_file(config_dir: &Path) -> Result<Self, ConfigError> {
         let file = config_dir.join(CONFIG_FILE_NAME);
         let mut config = if file.is_file() {
             let text = std::fs::read_to_string(&file).map_err(|source| ConfigError::Read {
@@ -412,10 +429,15 @@ impl Config {
         } else {
             Config::default()
         };
-        config.config_dir = config_dir;
-        config.apply_env(env)?;
-        config.normalize()?;
+        config.config_dir = config_dir.to_path_buf();
         Ok(config)
+    }
+
+    /// Records that an environment variable or flag set `key`.
+    pub fn mark_overridden(&mut self, key: &str) {
+        if !self.overridden.iter().any(|k| k == key) {
+            self.overridden.push(key.to_string());
+        }
     }
 
     fn apply_env(&mut self, env: &dyn Env) -> Result<(), ConfigError> {
@@ -433,12 +455,19 @@ impl Config {
         }
         if let Some(v) = env.var("KITSUNARR_BIND_ADDRESS") {
             self.server.bind_address = parse("KITSUNARR_BIND_ADDRESS", v)?;
+            self.mark_overridden("server.bind_address");
         }
         if let Some(v) = env.var("KITSUNARR_PORT") {
             self.server.port = parse("KITSUNARR_PORT", v)?;
+            self.mark_overridden("server.port");
         }
         if let Some(v) = env.var("KITSUNARR_URL_BASE") {
             self.server.url_base = v;
+            self.mark_overridden("server.url_base");
+        }
+        if let Some(v) = env.var("KITSUNARR_BACKUP_DIR") {
+            self.backup_folder = Some(PathBuf::from(v));
+            self.mark_overridden("backup_folder");
         }
         if let Some(v) = env.var("KITSUNARR_TRUSTED_PROXIES") {
             self.server.trusted_proxies = v
@@ -449,6 +478,7 @@ impl Config {
         }
         if let Some(v) = env.var("KITSUNARR_LOG_LEVEL") {
             self.log.level = v;
+            self.mark_overridden("log.level");
         }
         if let Some(v) = env.var("KITSUNARR_LOG_FORMAT") {
             self.log.format = parse("KITSUNARR_LOG_FORMAT", v)?;
@@ -575,7 +605,14 @@ impl Config {
     }
 
     pub fn backup_dir(&self) -> PathBuf {
-        self.data_dir.join("backups")
+        self.backup_folder
+            .clone()
+            .filter(|p| !p.as_os_str().is_empty())
+            .unwrap_or_else(|| self.data_dir.join("backups"))
+    }
+
+    pub fn config_file(&self) -> PathBuf {
+        self.config_dir.join(CONFIG_FILE_NAME)
     }
 
     /// Commented example written next to the database on first start.
@@ -586,6 +623,7 @@ impl Config {
              # Settings edited in the web interface are stored in the database, not here.\n\
              \n\
              # data_dir = \"{DEFAULT_DATA_DIR}\"\n\
+             # backup_folder = \"\"     # default: <data_dir>/backups\n\
              \n\
              [server]\n\
              # bind_address = \"0.0.0.0\"\n\
@@ -625,6 +663,89 @@ impl Config {
              # xem_url = \"https://thexem.info\"\n"
         )
     }
+}
+
+/// Settings › General › Host and Logging as written to `config.toml` by the web interface.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HostFileValues {
+    pub bind_address: IpAddr,
+    pub port: u16,
+    pub url_base: String,
+    pub log_level: String,
+    /// `None` removes the key (the default folder).
+    pub backup_folder: Option<PathBuf>,
+}
+
+/// Log levels the web interface offers (any `tracing` filter is accepted in the file).
+pub const LOG_LEVELS: &[&str] = &["trace", "debug", "info", "warn", "error"];
+
+/// Writes the host values into `config.toml`, keeping its comments and other keys, after
+/// checking the result loads. Environment variables and flags still win at the next start.
+pub fn write_host_values(config_dir: &Path, v: &HostFileValues) -> Result<PathBuf, ConfigError> {
+    let file = config_dir.join(CONFIG_FILE_NAME);
+    let invalid = |key: &str, message: String| ConfigError::Invalid {
+        key: key.into(),
+        message,
+    };
+    if v.port == 0 {
+        return Err(invalid("server.port", "must not be 0".into()));
+    }
+    let url_base = normalize_url_base(&v.url_base).map_err(|m| invalid("server.url_base", m))?;
+    let level = v.log_level.trim().to_ascii_lowercase();
+    if !LOG_LEVELS.contains(&level.as_str()) {
+        return Err(invalid(
+            "log.level",
+            format!("must be one of {}", LOG_LEVELS.join(", ")),
+        ));
+    }
+    if let Some(folder) = &v.backup_folder
+        && !folder.is_absolute()
+    {
+        return Err(invalid("backup_folder", "must be an absolute path".into()));
+    }
+    let text = if file.is_file() {
+        std::fs::read_to_string(&file).map_err(|source| ConfigError::Read {
+            path: file.clone(),
+            source,
+        })?
+    } else {
+        String::new()
+    };
+    let mut doc: toml_edit::DocumentMut =
+        text.parse()
+            .map_err(|e: toml_edit::TomlError| ConfigError::Parse {
+                path: file.clone(),
+                message: e.to_string(),
+            })?;
+    match &v.backup_folder {
+        Some(folder) => doc["backup_folder"] = toml_edit::value(folder.display().to_string()),
+        None => {
+            doc.remove("backup_folder");
+        }
+    }
+    let server = doc["server"].or_insert(toml_edit::table());
+    server["bind_address"] = toml_edit::value(v.bind_address.to_string());
+    server["port"] = toml_edit::value(i64::from(v.port));
+    server["url_base"] = toml_edit::value(url_base);
+    let log = doc["log"].or_insert(toml_edit::table());
+    log["level"] = toml_edit::value(level);
+    let out = doc.to_string();
+    toml::from_str::<Config>(&out).map_err(|e| ConfigError::Parse {
+        path: file.clone(),
+        message: e.to_string(),
+    })?;
+    std::fs::create_dir_all(config_dir).map_err(|source| ConfigError::Read {
+        path: config_dir.to_path_buf(),
+        source,
+    })?;
+    let tmp = file.with_extension("toml.tmp");
+    std::fs::write(&tmp, out)
+        .and_then(|()| std::fs::rename(&tmp, &file))
+        .map_err(|source| ConfigError::Read {
+            path: file.clone(),
+            source,
+        })?;
+    Ok(file)
 }
 
 /// `"kitsunarr/"` → `"/kitsunarr"`, `"/"` → `""`. Rejects characters that would break URLs.
@@ -768,6 +889,79 @@ mod tests {
         assert_eq!(cfg.auth.trust_cgnat_ip_addresses, Some(true));
         let err = Config::load(Some(dir.path()), &[("KITSUNARR_AUTH_METHOD", "ldap")]).unwrap_err();
         assert!(err.to_string().contains("KITSUNARR_AUTH_METHOD"), "{err}");
+    }
+
+    #[test]
+    fn host_values_are_written_without_losing_the_rest() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(
+            dir.path().join(CONFIG_FILE_NAME),
+            "# my comment\n[server]\nport = 9000\ntrusted_proxies = [\"10.0.0.0/8\"]\n[auth]\nsession_days = 7\n",
+        )
+        .unwrap();
+        let values = HostFileValues {
+            bind_address: "127.0.0.1".parse().unwrap(),
+            port: 9100,
+            url_base: "kitsunarr/".into(),
+            log_level: "Debug".into(),
+            backup_folder: Some(PathBuf::from("/srv/backups")),
+        };
+        write_host_values(dir.path(), &values).unwrap();
+        let text = std::fs::read_to_string(dir.path().join(CONFIG_FILE_NAME)).unwrap();
+        assert!(text.contains("# my comment"), "{text}");
+        let cfg = Config::load(Some(dir.path()), &[("X", "y")]).unwrap();
+        assert_eq!(cfg.server.port, 9100);
+        assert_eq!(cfg.server.url_base, "/kitsunarr");
+        assert_eq!(cfg.server.bind_address.to_string(), "127.0.0.1");
+        assert_eq!(cfg.server.trusted_proxies.len(), 1);
+        assert_eq!(cfg.auth.session_days, 7);
+        assert_eq!(cfg.log.level, "debug");
+        assert_eq!(cfg.backup_dir(), PathBuf::from("/srv/backups"));
+        assert!(cfg.overridden.is_empty());
+        // Environment variables still win, and are reported.
+        let cfg = Config::load(
+            Some(dir.path()),
+            &[("KITSUNARR_PORT", "9200"), ("KITSUNARR_LOG_LEVEL", "warn")],
+        )
+        .unwrap();
+        assert_eq!(cfg.server.port, 9200);
+        assert_eq!(cfg.log.level, "warn");
+        assert_eq!(cfg.overridden, vec!["server.port", "log.level"]);
+        // Removing the backup folder restores the default; bad values are refused.
+        write_host_values(
+            dir.path(),
+            &HostFileValues {
+                backup_folder: None,
+                ..values.clone()
+            },
+        )
+        .unwrap();
+        let cfg = Config::load_file(dir.path()).unwrap();
+        assert_eq!(cfg.backup_folder, None);
+        for bad in [
+            HostFileValues {
+                port: 0,
+                ..values.clone()
+            },
+            HostFileValues {
+                log_level: "loud".into(),
+                ..values.clone()
+            },
+            HostFileValues {
+                url_base: "/a b".into(),
+                ..values.clone()
+            },
+            HostFileValues {
+                backup_folder: Some(PathBuf::from("relative")),
+                ..values.clone()
+            },
+        ] {
+            assert!(write_host_values(dir.path(), &bad).is_err());
+        }
+        // A new file is created when there is none.
+        let empty = tempfile::tempdir().unwrap();
+        write_host_values(empty.path(), &values).unwrap();
+        assert_eq!(Config::load_file(empty.path()).unwrap().server.port, 9100);
     }
 
     #[test]

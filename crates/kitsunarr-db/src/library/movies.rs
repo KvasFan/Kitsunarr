@@ -293,6 +293,14 @@ struct ListRow {
     size_on_disk: i64,
     added_at: String,
     tags: Option<String>,
+    overview: Option<String>,
+    genres: String,
+    ratings: Option<String>,
+    certification: Option<String>,
+    runtime: Option<i64>,
+    in_cinemas: Option<String>,
+    release_group: Option<String>,
+    file_quality_id: Option<i64>,
 }
 
 impl ListRow {
@@ -323,6 +331,26 @@ impl ListRow {
             size_on_disk: self.size_on_disk,
             added_at: self.added_at,
             tags: int_list(self.tags.as_deref()),
+            index: kitsunarr_domain::api::library::IndexColumns {
+                overview: self.overview,
+                genres: serde_json::from_str(&self.genres).unwrap_or_default(),
+                rating: super::rating_value(self.ratings.as_deref()),
+                certification: self.certification,
+                runtime: self.runtime.map(|r| r as i32),
+                previous_airing: None,
+                release_groups: self
+                    .release_group
+                    .filter(|g| !g.is_empty())
+                    .into_iter()
+                    .collect(),
+                season_folder: None,
+                in_cinemas: self.in_cinemas,
+                file_quality: self
+                    .file_quality_id
+                    .and_then(|q| i32::try_from(q).ok())
+                    .and_then(Quality::by_id)
+                    .map(|q| q.name.to_string()),
+            },
         }
     }
 }
@@ -331,7 +359,10 @@ const LIST_COLUMNS: &str = "m.id, m.title, m.sort_title, m.year, m.status, m.stu
     m.quality_profile_id, qp.name AS quality_profile_name, m.metadata_provider, m.path, m.added_at, \
     EXISTS (SELECT 1 FROM movie_files f WHERE f.movie_id = m.id) AS has_file, \
     (SELECT COALESCE(SUM(f.size), 0) FROM movie_files f WHERE f.movie_id = m.id) AS size_on_disk, \
-    (SELECT json_group_array(t.tag_id) FROM movie_tags t WHERE t.movie_id = m.id) AS tags";
+    (SELECT json_group_array(t.tag_id) FROM movie_tags t WHERE t.movie_id = m.id) AS tags, \
+    m.overview, m.genres, m.ratings, m.certification, m.runtime, m.in_cinemas, \
+    (SELECT f.release_group FROM movie_files f WHERE f.movie_id = m.id) AS release_group, \
+    (SELECT f.quality_id FROM movie_files f WHERE f.movie_id = m.id) AS file_quality_id";
 
 fn sort_expression(key: Option<&str>) -> &'static str {
     match key.unwrap_or("title") {

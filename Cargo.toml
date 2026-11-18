@@ -130,6 +130,7 @@ regex = "1"
 url = { version = "2", features = ["serde"] }
 clap = { version = "4", features = ["derive", "env"] }
 toml = "1"
+toml_edit = "0.25"
 zip = { version = "9", default-features = false, features = ["deflate"] }
 rust-embed = { version = "8.13", features = ["interpolate-folder-path", "mime-guess"] }
 mime_guess = "2"

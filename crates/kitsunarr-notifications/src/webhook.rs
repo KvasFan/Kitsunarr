@@ -280,6 +280,7 @@ mod tests {
             download_id: "ABC".into(),
             messages: vec!["No files found".into()],
             release: Default::default(),
+            release_group: None,
         }));
         let p = payload(&mi, &instance);
         assert_eq!(p["eventType"], "ManualInteractionRequired");

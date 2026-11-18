@@ -215,7 +215,8 @@ pub(crate) fn series_json(detail: &SeriesDetail) -> Value {
             Some("special") => "special",
             _ => "season",
         }),
-        "animeGroupKind": detail.group_membership.as_ref().map(|_| "series"),
+        "animeGroupKind": detail.group_membership.as_ref().map(|g| g.group_kind.clone()),
+        "animeGroupMovieFolderStyle": detail.group_membership.as_ref().map(|g| g.movie_folder_style.clone()),
         "animeGroupMovieNumber": detail.group_membership.as_ref().filter(|g| matches!(g.role.as_deref(), Some("movie" | "film"))).map(group_number),
         "animeGroupSpecialNumber": detail.group_membership.as_ref().filter(|g| g.role.as_deref() == Some("special")).map(group_number),
         "statistics": {
@@ -913,6 +914,10 @@ pub(crate) struct SeriesEditorBody {
     /// `add`, `remove` or `replace` (Sonarr's `ApplyTags`, by name or number).
     apply_tags: Option<Value>,
     move_files: bool,
+    /// Tanukarr's collection settings (`SeriesCollectionEditor`).
+    anime_group_title: Option<String>,
+    anime_group_kind: Option<String>,
+    anime_group_movie_folder_style: Option<String>,
 }
 
 /// Sonarr's `SeriesEditorController.SaveAll` (`PUT /api/v3/series/editor`).
@@ -944,6 +949,14 @@ pub(crate) async fn series_editor(
     for id in &body.series_ids {
         detail(&state, *id).await?;
     }
+    crate::routes::views::apply_group_editor(
+        &state,
+        &body.series_ids,
+        body.anime_group_title.as_deref(),
+        body.anime_group_kind.as_deref(),
+        body.anime_group_movie_folder_style.as_deref(),
+    )
+    .await?;
     if let Some(root) = body
         .root_folder_path
         .as_deref()

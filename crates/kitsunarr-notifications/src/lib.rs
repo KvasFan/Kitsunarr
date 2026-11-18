@@ -11,6 +11,7 @@
 pub mod discord;
 pub mod email;
 pub mod extra;
+pub mod links;
 pub mod media;
 pub mod push;
 pub mod script;
@@ -408,6 +409,9 @@ pub struct ManualInteraction {
     /// Why the import is blocked.
     pub messages: Vec<String>,
     pub release: GrabbedRef,
+    /// The release group parsed from the download's title.
+    #[serde(skip)]
+    pub release_group: Option<String>,
 }
 
 /// A renamed episode file (Sonarr's `RenamedEpisodeFile`).
