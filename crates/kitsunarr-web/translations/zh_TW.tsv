@@ -1907,3 +1907,26 @@ Recent entries	最近項目
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	保存在記憶體中的最新項目。上方的日誌檔案與處理程序輸出（容器日誌或 journal）會保留所有內容。
 Yesterday	昨天
 Tomorrow	明天
+Convert to AniList group	轉換為 AniList 群組
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	將此 TheTVDB 影集拆分為依 Tanukarr 方式分組的 AniList 季，只保留你在追的季
+Convert to AniList groups…	轉換為 AniList 群組…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	將所選 TheTVDB 影集拆分為依 Tanukarr 方式分組的 AniList 季
+Group: {group}	群組：{group}
+This series cannot be converted:	此影集無法轉換：
+TheTVDB episodes	TheTVDB 集數
+Files	檔案
+already in the library	已在媒體庫中
+Files to move ({n})	要移動的檔案（{n}）
+Left out ({n})	未包含（{n}）
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	你在追的每個 AniList 季（有檔案或受監控的集數）都會成為此影集資料夾內的獨立影集，其檔案會移動到該季的資料夾。請檢查計畫，然後轉換。
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	在每部影集中，你在追的每個 AniList 季都會成為該影集資料夾內的獨立影集，其檔案會移動到那裡。無法轉換的影集保持不變。
+Convert	轉換
+Converting…	正在轉換…
+Converted into {n} AniList series.	已轉換為 {n} 部 AniList 影集。
+Convert {count} series to AniList groups	將 {count} 部影集轉換為 AniList 群組
+Convert {n} series	轉換 {n} 部影集
+{done} series converted, {failed} not converted.	已轉換 {done} 部影集，{failed} 部未轉換。
+None of the selected series can be converted.	所選影集皆無法轉換。
+Converted	已轉換
+Cannot be converted: {problem}	無法轉換：{problem}
+{n} seasons, {m} files to move	{n} 季，要移動 {m} 個檔案

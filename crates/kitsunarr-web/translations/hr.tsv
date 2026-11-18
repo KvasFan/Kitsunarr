@@ -1907,3 +1907,26 @@ Recent entries	Nedavni zapisi
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Najnoviji zapisi koji se čuvaju u memoriji. Datoteke zapisnika iznad i izlaz procesa (zapisnici spremnika ili journal) čuvaju sve.
 Yesterday	Jučer
 Tomorrow	Sutra
+Convert to AniList group	Pretvori u AniList grupu
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Podijeli ovu TheTVDB seriju u AniList sezone grupirane kao u Tanukarru, zadržavajući samo sezone koje pratiš
+Convert to AniList groups…	Pretvori u AniList grupe…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Podijeli odabrane TheTVDB serije u AniList sezone grupirane kao u Tanukarru
+Group: {group}	Grupa: {group}
+This series cannot be converted:	Ova serija ne može se pretvoriti:
+TheTVDB episodes	TheTVDB epizode
+Files	Datoteke
+already in the library	već u biblioteci
+Files to move ({n})	Datoteke za premještanje ({n})
+Left out ({n})	Izostavljeno ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Svaka AniList sezona koju pratiš (s datotekama ili nadziranim epizodama) postaje zasebna serija u mapi ove serije, a njezine se datoteke premještaju u mapu sezone. Pregledaj plan, a zatim pretvori.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	U svakoj seriji svaka AniList sezona koju pratiš postaje zasebna serija u mapi serije, a njezine se datoteke premještaju onamo. Serije koje se ne mogu pretvoriti ostaju kakve jesu.
+Convert	Pretvori
+Converting…	Pretvaranje…
+Converted into {n} AniList series.	Pretvoreno u AniList serije: {n}.
+Convert {count} series to AniList groups	Pretvori serije ({count}) u AniList grupe
+Convert {n} series	Pretvori serije ({n})
+{done} series converted, {failed} not converted.	Pretvoreno serija: {done}, nepretvoreno: {failed}.
+None of the selected series can be converted.	Nijedna od odabranih serija ne može se pretvoriti.
+Converted	Pretvoreno
+Cannot be converted: {problem}	Ne može se pretvoriti: {problem}
+{n} seasons, {m} files to move	Sezone: {n}, datoteke za premještanje: {m}

@@ -1907,3 +1907,26 @@ Recent entries	최근 항목
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	메모리에 보관된 최근 항목입니다. 위의 로그 파일과 프로세스 출력(컨테이너 로그 또는 저널)에는 모든 내용이 보관됩니다.
 Yesterday	어제
 Tomorrow	내일
+Convert to AniList group	AniList 그룹으로 변환
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	이 TheTVDB 시리즈를 Tanukarr처럼 그룹화된 AniList 시즌으로 나누고, 따라가는 시즌만 남깁니다
+Convert to AniList groups…	AniList 그룹으로 변환…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	선택한 TheTVDB 시리즈를 Tanukarr처럼 그룹화된 AniList 시즌으로 나눕니다
+Group: {group}	그룹: {group}
+This series cannot be converted:	이 시리즈는 변환할 수 없습니다:
+TheTVDB episodes	TheTVDB 에피소드
+Files	파일
+already in the library	이미 라이브러리에 있음
+Files to move ({n})	이동할 파일 ({n})
+Left out ({n})	제외됨 ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	따라가는 각 AniList 시즌(파일이나 모니터링 중인 에피소드가 있는 시즌)은 이 시리즈 폴더 안에서 별도의 시리즈가 되고, 해당 파일은 시즌 폴더로 이동합니다. 계획을 검토한 다음 변환하세요.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	각 시리즈에서 따라가는 각 AniList 시즌은 시리즈 폴더 안에서 별도의 시리즈가 되고, 해당 파일은 그곳으로 이동합니다. 변환할 수 없는 시리즈는 그대로 남습니다.
+Convert	변환
+Converting…	변환 중…
+Converted into {n} AniList series.	AniList 시리즈 {n}개로 변환했습니다.
+Convert {count} series to AniList groups	시리즈 {count}개를 AniList 그룹으로 변환
+Convert {n} series	시리즈 {n}개 변환
+{done} series converted, {failed} not converted.	시리즈 {done}개 변환됨, {failed}개 변환되지 않음.
+None of the selected series can be converted.	선택한 시리즈 중 변환할 수 있는 것이 없습니다.
+Converted	변환됨
+Cannot be converted: {problem}	변환할 수 없음: {problem}
+{n} seasons, {m} files to move	시즌 {n}개, 이동할 파일 {m}개

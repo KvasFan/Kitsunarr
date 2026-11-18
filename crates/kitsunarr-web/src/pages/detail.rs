@@ -109,6 +109,7 @@ pub fn SeriesDetailPage(id: i64) -> Element {
     let mut move_open = use_signal(|| false);
     let mut edit_open = use_signal(|| false);
     let mut manage_open = use_signal(|| false);
+    let mut converting = use_signal(|| false);
     // The episode whose details are open.
     let mut episode_open = use_signal(|| None::<i64>);
     let mut scanning = use_signal(|| false);
@@ -356,6 +357,9 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     }
                     button { class: "btn", title: "Interactive search for packs of the whole series (and of its seasons) on torrent indexers", onclick: move |_| searching_complete.set(true), "Complete series" }
                     button { class: "btn", title: "Move the series folder, or point the series at another folder", onclick: move |_| move_open.set(true), "Move folder" }
+                    if super::anime_conversion::eligible(&d) {
+                        button { class: "btn", title: "Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow", onclick: move |_| converting.set(true), "Convert to AniList group" }
+                    }
                     button { class: "btn danger", onclick: move |_| { delete_folder.set(false); exclude_from_lists.set(false); confirm_delete.set(true) }, "Remove from library" }
                 }
             }
@@ -415,6 +419,9 @@ pub fn SeriesDetailPage(id: i64) -> Element {
         }
         if compression_open() {
             CompressionDialog { series_id: id, on_close: move |_| compression_open.set(false) }
+        }
+        if converting() {
+            super::anime_conversion::AnimeConversionDialog { series_id: id, on_close: move |_| converting.set(false) }
         }
         if move_open() {
             MoveFolderDialog {

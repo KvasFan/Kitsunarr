@@ -1907,3 +1907,26 @@ Recent entries	Naujausi įrašai
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Naujausi atmintyje laikomi įrašai. Aukščiau esantys žurnalo failai ir proceso išvestis (konteinerio žurnalai arba journal) saugo viską.
 Yesterday	Vakar
 Tomorrow	Rytoj
+Convert to AniList group	Konvertuoti į AniList grupę
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Padalyti šį TheTVDB serialą į AniList sezonus, sugrupuotus kaip Tanukarr, paliekant tik jūsų stebimus sezonus
+Convert to AniList groups…	Konvertuoti į AniList grupes…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Padalyti pasirinktus TheTVDB serialus į AniList sezonus, sugrupuotus kaip Tanukarr
+Group: {group}	Grupė: {group}
+This series cannot be converted:	Šio serialo negalima konvertuoti:
+TheTVDB episodes	TheTVDB epizodai
+Files	Failai
+already in the library	jau bibliotekoje
+Files to move ({n})	Perkeliami failai ({n})
+Left out ({n})	Praleista ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Kiekvienas jūsų stebimas AniList sezonas (su failais ar stebimais epizodais) tampa atskiru serialu šio serialo aplanke, o jo failai perkeliami į sezono aplanką. Peržiūrėkite planą ir tada konvertuokite.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Kiekviename seriale kiekvienas jūsų stebimas AniList sezonas tampa atskiru serialu serialo aplanke, o jo failai perkeliami ten. Serialai, kurių negalima konvertuoti, paliekami kaip yra.
+Convert	Konvertuoti
+Converting…	Konvertuojama…
+Converted into {n} AniList series.	Konvertuota į {n} AniList serialus.
+Convert {count} series to AniList groups	Konvertuoti {count} serialus į AniList grupes
+Convert {n} series	Konvertuoti {n} serialus
+{done} series converted, {failed} not converted.	Konvertuota serialų: {done}, nekonvertuota: {failed}.
+None of the selected series can be converted.	Nė vieno pasirinkto serialo negalima konvertuoti.
+Converted	Konvertuota
+Cannot be converted: {problem}	Negalima konvertuoti: {problem}
+{n} seasons, {m} files to move	Sezonų: {n}, perkeliamų failų: {m}

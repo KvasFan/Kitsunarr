@@ -4,6 +4,7 @@
 //! folder and the naming settings, and folders are created by the import pipeline when files
 //! arrive. Refreshing updates provider-owned fields only.
 
+pub mod anime_conversion;
 pub mod decision_input;
 pub mod downloads;
 pub mod extras;

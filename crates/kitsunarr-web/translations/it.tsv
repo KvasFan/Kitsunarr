@@ -1907,3 +1907,26 @@ Recent entries	Voci recenti
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Le voci più recenti tenute in memoria. I file di log qui sopra e l'output del processo (log del container o journal) conservano tutto.
 Yesterday	Ieri
 Tomorrow	Domani
+Convert to AniList group	Converti in gruppo AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Dividi questa serie TheTVDB in stagioni AniList raggruppate come in Tanukarr, tenendo solo le stagioni che segui
+Convert to AniList groups…	Converti in gruppi AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Dividi le serie TheTVDB selezionate in stagioni AniList raggruppate come in Tanukarr
+Group: {group}	Gruppo: {group}
+This series cannot be converted:	Questa serie non può essere convertita:
+TheTVDB episodes	Episodi TheTVDB
+Files	File
+already in the library	già nella libreria
+Files to move ({n})	File da spostare ({n})
+Left out ({n})	Esclusi ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Ogni stagione AniList che segui (con file o episodi monitorati) diventa una serie a sé nella cartella di questa serie, e i suoi file vengono spostati nella cartella della stagione. Controlla il piano, poi converti.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	In ogni serie, ogni stagione AniList che segui diventa una serie a sé nella cartella della serie, con i suoi file spostati lì. Le serie che non possono essere convertite restano come sono.
+Convert	Converti
+Converting…	Conversione…
+Converted into {n} AniList series.	Convertita in {n} serie AniList.
+Convert {count} series to AniList groups	Converti {count} serie in gruppi AniList
+Convert {n} series	Converti {n} serie
+{done} series converted, {failed} not converted.	{done} serie convertite, {failed} non convertite.
+None of the selected series can be converted.	Nessuna delle serie selezionate può essere convertita.
+Converted	Convertita
+Cannot be converted: {problem}	Non convertibile: {problem}
+{n} seasons, {m} files to move	{n} stagioni, {m} file da spostare

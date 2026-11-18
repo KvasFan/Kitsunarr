@@ -1907,3 +1907,26 @@ Recent entries	Viimeisimmät merkinnät
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Viimeisimmät muistissa säilytetyt merkinnät. Yllä olevat lokitiedostot ja prosessin tuloste (kontin lokit tai journal) säilyttävät kaiken.
 Yesterday	Eilen
 Tomorrow	Huomenna
+Convert to AniList group	Muunna AniList-ryhmäksi
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Jaa tämä TheTVDB-sarja AniList-kausiksi Tanukarrin tapaan ryhmiteltyinä ja säilytä vain seuraamasi kaudet
+Convert to AniList groups…	Muunna AniList-ryhmiksi…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Jaa valitut TheTVDB-sarjat AniList-kausiksi Tanukarrin tapaan ryhmiteltyinä
+Group: {group}	Ryhmä: {group}
+This series cannot be converted:	Tätä sarjaa ei voi muuntaa:
+TheTVDB episodes	TheTVDB-jaksot
+Files	Tiedostot
+already in the library	jo kirjastossa
+Files to move ({n})	Siirrettävät tiedostot ({n})
+Left out ({n})	Pois jätetyt ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Jokaisesta seuraamastasi AniList-kaudesta (jolla on tiedostoja tai valvottuja jaksoja) tulee oma sarjansa tämän sarjan kansioon, ja sen tiedostot siirretään kauden kansioon. Tarkista suunnitelma ja muunna sitten.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Jokaisessa sarjassa jokaisesta seuraamastasi AniList-kaudesta tulee oma sarjansa sarjan kansioon, ja sen tiedostot siirretään sinne. Sarjat, joita ei voi muuntaa, jätetään ennalleen.
+Convert	Muunna
+Converting…	Muunnetaan…
+Converted into {n} AniList series.	Muunnettu {n} AniList-sarjaksi.
+Convert {count} series to AniList groups	Muunna {count} sarjaa AniList-ryhmiksi
+Convert {n} series	Muunna {n} sarjaa
+{done} series converted, {failed} not converted.	{done} sarjaa muunnettu, {failed} muuntamatta.
+None of the selected series can be converted.	Mitään valituista sarjoista ei voi muuntaa.
+Converted	Muunnettu
+Cannot be converted: {problem}	Ei voi muuntaa: {problem}
+{n} seasons, {m} files to move	{n} kautta, {m} siirrettävää tiedostoa

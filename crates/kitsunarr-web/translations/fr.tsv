@@ -1907,3 +1907,26 @@ Recent entries	Entrées récentes
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Les entrées les plus récentes conservées en mémoire. Les fichiers journaux ci-dessus et la sortie du processus (journaux du conteneur ou journal système) conservent tout.
 Yesterday	Hier
 Tomorrow	Demain
+Convert to AniList group	Convertir en groupe AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Diviser cette série TheTVDB en saisons AniList regroupées comme dans Tanukarr, en ne gardant que les saisons suivies
+Convert to AniList groups…	Convertir en groupes AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Diviser les séries TheTVDB sélectionnées en saisons AniList regroupées comme dans Tanukarr
+Group: {group}	Groupe : {group}
+This series cannot be converted:	Cette série ne peut pas être convertie :
+TheTVDB episodes	Épisodes TheTVDB
+Files	Fichiers
+already in the library	déjà dans la bibliothèque
+Files to move ({n})	Fichiers à déplacer ({n})
+Left out ({n})	Laissés de côté ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Chaque saison AniList suivie (avec des fichiers ou des épisodes surveillés) devient sa propre série dans le dossier de cette série, et ses fichiers sont déplacés dans le dossier de la saison. Vérifiez le plan, puis convertissez.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Dans chaque série, chaque saison AniList suivie devient sa propre série dans le dossier de la série, avec ses fichiers déplacés. Les séries qui ne peuvent pas être converties restent telles quelles.
+Convert	Convertir
+Converting…	Conversion…
+Converted into {n} AniList series.	Convertie en {n} séries AniList.
+Convert {count} series to AniList groups	Convertir {count} séries en groupes AniList
+Convert {n} series	Convertir {n} séries
+{done} series converted, {failed} not converted.	{done} séries converties, {failed} non converties.
+None of the selected series can be converted.	Aucune des séries sélectionnées ne peut être convertie.
+Converted	Convertie
+Cannot be converted: {problem}	Non convertible : {problem}
+{n} seasons, {m} files to move	{n} saisons, {m} fichiers à déplacer

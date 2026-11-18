@@ -1907,3 +1907,26 @@ Recent entries	Hiljutised kirjed
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Viimased mälus hoitavad kirjed. Ülalolevad logifailid ja protsessi väljund (konteineri logid või journal) säilitavad kõike.
 Yesterday	Eile
 Tomorrow	Homme
+Convert to AniList group	Teisenda AniListi grupiks
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Jaga see TheTVDB sari AniListi hooaegadeks, rühmitatuna nagu Tanukarris, ja jäta alles ainult hooajad, mida jälgid
+Convert to AniList groups…	Teisenda AniListi gruppideks…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Jaga valitud TheTVDB sarjad AniListi hooaegadeks, rühmitatuna nagu Tanukarris
+Group: {group}	Grupp: {group}
+This series cannot be converted:	Seda sarja ei saa teisendada:
+TheTVDB episodes	TheTVDB osad
+Files	Failid
+already in the library	juba teegis
+Files to move ({n})	Teisaldatavad failid ({n})
+Left out ({n})	Välja jäetud ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Iga AniListi hooaeg, mida jälgid (failide või jälgitavate osadega), muutub selle sarja kaustas omaette sarjaks ning selle failid teisaldatakse hooaja kausta. Vaata plaan üle ja teisenda siis.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Igas sarjas muutub iga AniListi hooaeg, mida jälgid, sarja kaustas omaette sarjaks ning selle failid teisaldatakse sinna. Sarjad, mida ei saa teisendada, jäävad samaks.
+Convert	Teisenda
+Converting…	Teisendamine…
+Converted into {n} AniList series.	Teisendatud {n} AniListi sarjaks.
+Convert {count} series to AniList groups	Teisenda {count} sarja AniListi gruppideks
+Convert {n} series	Teisenda {n} sarja
+{done} series converted, {failed} not converted.	{done} sarja teisendatud, {failed} teisendamata.
+None of the selected series can be converted.	Ühtegi valitud sarja ei saa teisendada.
+Converted	Teisendatud
+Cannot be converted: {problem}	Ei saa teisendada: {problem}
+{n} seasons, {m} files to move	{n} hooaega, {m} teisaldatavat faili

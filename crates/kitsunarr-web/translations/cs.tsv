@@ -1907,3 +1907,26 @@ Recent entries	Nedávné záznamy
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Nejnovější záznamy uchované v paměti. Soubory logů výše a výstup procesu (logy kontejneru nebo journal) uchovávají vše.
 Yesterday	Včera
 Tomorrow	Zítra
+Convert to AniList group	Převést na skupinu AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Rozdělit tento seriál z TheTVDB na řady AniList seskupené jako v Tanukarr a ponechat jen sledované řady
+Convert to AniList groups…	Převést na skupiny AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Rozdělit vybrané seriály z TheTVDB na řady AniList seskupené jako v Tanukarr
+Group: {group}	Skupina: {group}
+This series cannot be converted:	Tento seriál nelze převést:
+TheTVDB episodes	Díly z TheTVDB
+Files	Soubory
+already in the library	již v knihovně
+Files to move ({n})	Soubory k přesunutí ({n})
+Left out ({n})	Vynecháno ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Každá sledovaná řada AniList (se soubory nebo sledovanými díly) se stane samostatným seriálem ve složce tohoto seriálu a její soubory se přesunou do složky řady. Zkontrolujte plán a pak převeďte.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	V každém seriálu se každá sledovaná řada AniList stane samostatným seriálem ve složce seriálu a její soubory se přesunou tam. Seriály, které nelze převést, zůstanou beze změny.
+Convert	Převést
+Converting…	Převádění…
+Converted into {n} AniList series.	Převedeno na seriály AniList: {n}.
+Convert {count} series to AniList groups	Převést seriály ({count}) na skupiny AniList
+Convert {n} series	Převést seriály ({n})
+{done} series converted, {failed} not converted.	Převedené seriály: {done}, nepřevedené: {failed}.
+None of the selected series can be converted.	Žádný z vybraných seriálů nelze převést.
+Converted	Převedeno
+Cannot be converted: {problem}	Nelze převést: {problem}
+{n} seasons, {m} files to move	Řady: {n}, soubory k přesunutí: {m}

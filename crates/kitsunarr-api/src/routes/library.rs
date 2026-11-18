@@ -338,6 +338,91 @@ pub async fn bulk_move_series(
     Ok(Json(out))
 }
 
+/// Converts a TheTVDB series that carries AniList IDs into Tanukarr-style AniList anime-group
+/// members: one series per followed AniList season, in `{series folder}/{member folder}`, with
+/// the files moved there. `dryRun` only returns the plan. A series that cannot be converted is
+/// answered with its problems (`convertible: false`), never changed.
+#[utoipa::path(post, path = "/series/{id}/anime-conversion", tag = "library", params(("id" = i64, Path)),
+    request_body = kitsunarr_domain::api::library::AnimeConversionRequest,
+    responses((status = 200, body = kitsunarr_domain::api::library::AnimeConversionPlan), (status = 404), (status = 409, body = ApiErrorBody)))]
+pub async fn convert_to_anime_group(
+    State(state): State<AppState>,
+    Path(id): Path<i64>,
+    Json(req): Json<kitsunarr_domain::api::library::AnimeConversionRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::library::AnimeConversionPlan>> {
+    if !req.dry_run {
+        crate::routes::compression::ensure_idle(id).await?;
+    }
+    let plan =
+        kitsunarr_library::anime_conversion::convert(&state.db, &state.metadata, id, req.dry_run)
+            .await?;
+    if plan.applied {
+        conversion_changed(&state, &plan);
+    }
+    Ok(Json(plan))
+}
+
+fn conversion_changed(
+    state: &AppState,
+    plan: &kitsunarr_domain::api::library::AnimeConversionPlan,
+) {
+    changed(state, "series", vec![plan.series_id], true);
+    let members: Vec<i64> = plan.members.iter().filter_map(|m| m.series_id).collect();
+    changed(state, "series", members, false);
+}
+
+/// [`convert_to_anime_group`] for several series, one after the other; each outcome is reported
+/// on its own and a failure does not stop the others.
+#[utoipa::path(post, path = "/series/anime-conversion", tag = "library",
+    request_body = kitsunarr_domain::api::library::BulkAnimeConversionRequest,
+    responses((status = 200, body = kitsunarr_domain::api::library::BulkAnimeConversionResult), (status = 400, body = ApiErrorBody)))]
+pub async fn bulk_convert_to_anime_group(
+    State(state): State<AppState>,
+    Json(req): Json<kitsunarr_domain::api::library::BulkAnimeConversionRequest>,
+) -> ApiResult<Json<kitsunarr_domain::api::library::BulkAnimeConversionResult>> {
+    use kitsunarr_domain::api::library::{AnimeConversionPlan, BulkAnimeConversionResult};
+    if req.series_ids.len() > 500 {
+        return Err(ApiError::BadRequest(
+            "At most 500 series can be converted at once.".into(),
+        ));
+    }
+    let mut out = BulkAnimeConversionResult::default();
+    for id in &req.series_ids {
+        let outcome = async {
+            if !req.dry_run {
+                crate::routes::compression::ensure_idle(*id).await?;
+            }
+            Ok::<_, ApiError>(
+                kitsunarr_library::anime_conversion::convert(
+                    &state.db,
+                    &state.metadata,
+                    *id,
+                    req.dry_run,
+                )
+                .await?,
+            )
+        }
+        .await;
+        let plan = match outcome {
+            Ok(plan) => plan,
+            Err(e) => AnimeConversionPlan {
+                series_id: *id,
+                title: series::get_list_item(&state.db, *id)
+                    .await
+                    .map(|s| s.title)
+                    .unwrap_or_else(|_| format!("Series {id}")),
+                problems: vec![e.to_string()],
+                ..Default::default()
+            },
+        };
+        if plan.applied {
+            conversion_changed(&state, &plan);
+        }
+        out.results.push(plan);
+    }
+    Ok(Json(out))
+}
+
 /// Changes a film's folder, as for series.
 #[utoipa::path(put, path = "/movies/{id}/path", tag = "library", params(("id" = i64, Path)),
     request_body = kitsunarr_domain::api::library::MoveTitleRequest,

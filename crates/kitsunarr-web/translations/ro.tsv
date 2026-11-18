@@ -1907,3 +1907,26 @@ Recent entries	Intrări recente
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Cele mai recente intrări păstrate în memorie. Fișierele jurnal de mai sus și ieșirea procesului (jurnalele containerului sau journal) păstrează totul.
 Yesterday	Ieri
 Tomorrow	Mâine
+Convert to AniList group	Convertește în grup AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Împarte acest serial TheTVDB în sezoane AniList grupate ca în Tanukarr, păstrând doar sezoanele pe care le urmărești
+Convert to AniList groups…	Convertește în grupuri AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Împarte serialele TheTVDB selectate în sezoane AniList grupate ca în Tanukarr
+Group: {group}	Grup: {group}
+This series cannot be converted:	Acest serial nu poate fi convertit:
+TheTVDB episodes	Episoade TheTVDB
+Files	Fișiere
+already in the library	deja în bibliotecă
+Files to move ({n})	Fișiere de mutat ({n})
+Left out ({n})	Lăsate deoparte ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Fiecare sezon AniList pe care îl urmărești (cu fișiere sau episoade monitorizate) devine un serial separat în folderul acestui serial, iar fișierele sale sunt mutate în folderul sezonului. Verifică planul, apoi convertește.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	În fiecare serial, fiecare sezon AniList pe care îl urmărești devine un serial separat în folderul serialului, cu fișierele mutate acolo. Serialele care nu pot fi convertite rămân neschimbate.
+Convert	Convertește
+Converting…	Se convertește…
+Converted into {n} AniList series.	Convertit în {n} seriale AniList.
+Convert {count} series to AniList groups	Convertește {count} seriale în grupuri AniList
+Convert {n} series	Convertește {n} seriale
+{done} series converted, {failed} not converted.	{done} seriale convertite, {failed} neconvertite.
+None of the selected series can be converted.	Niciunul dintre serialele selectate nu poate fi convertit.
+Converted	Convertit
+Cannot be converted: {problem}	Nu poate fi convertit: {problem}
+{n} seasons, {m} files to move	{n} sezoane, {m} fișiere de mutat

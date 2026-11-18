@@ -1907,3 +1907,26 @@ Recent entries	Последние записи
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Самые свежие записи, хранящиеся в памяти. Файлы журнала выше и вывод процесса (журналы контейнера или journal) хранят всё.
 Yesterday	Вчера
 Tomorrow	Завтра
+Convert to AniList group	Преобразовать в группу AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Разделить этот сериал TheTVDB на сезоны AniList, сгруппированные как в Tanukarr, оставив только отслеживаемые сезоны
+Convert to AniList groups…	Преобразовать в группы AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Разделить выбранные сериалы TheTVDB на сезоны AniList, сгруппированные как в Tanukarr
+Group: {group}	Группа: {group}
+This series cannot be converted:	Этот сериал нельзя преобразовать:
+TheTVDB episodes	Эпизоды TheTVDB
+Files	Файлы
+already in the library	уже в библиотеке
+Files to move ({n})	Файлы для перемещения ({n})
+Left out ({n})	Пропущено ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Каждый отслеживаемый сезон AniList (с файлами или отслеживаемыми эпизодами) становится отдельным сериалом в папке этого сериала, а его файлы перемещаются в папку сезона. Проверьте план, затем преобразуйте.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	В каждом сериале каждый отслеживаемый сезон AniList становится отдельным сериалом в папке сериала, а его файлы перемещаются туда. Сериалы, которые нельзя преобразовать, остаются без изменений.
+Convert	Преобразовать
+Converting…	Преобразование…
+Converted into {n} AniList series.	Преобразовано в сериалы AniList: {n}.
+Convert {count} series to AniList groups	Преобразовать сериалы ({count}) в группы AniList
+Convert {n} series	Преобразовать сериалы ({n})
+{done} series converted, {failed} not converted.	Преобразовано сериалов: {done}, не преобразовано: {failed}.
+None of the selected series can be converted.	Ни один из выбранных сериалов нельзя преобразовать.
+Converted	Преобразовано
+Cannot be converted: {problem}	Нельзя преобразовать: {problem}
+{n} seasons, {m} files to move	Сезонов: {n}, файлов для перемещения: {m}

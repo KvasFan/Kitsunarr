@@ -71,6 +71,8 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(library::bulk_edit_series))
         .routes(routes!(library::move_series))
         .routes(routes!(library::bulk_move_series))
+        .routes(routes!(library::convert_to_anime_group))
+        .routes(routes!(library::bulk_convert_to_anime_group))
         .routes(routes!(library::bulk_delete_series))
         .routes(routes!(library::bulk_rename_series))
         .routes(routes!(library::move_movie))

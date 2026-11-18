@@ -1907,3 +1907,26 @@ Recent entries	ورودی‌های اخیر
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	جدیدترین ورودی‌های نگه‌داشته‌شده در حافظه. فایل‌های گزارش بالا و خروجی فرایند (گزارش‌های کانتینر یا journal) همه چیز را نگه می‌دارند.
 Yesterday	دیروز
 Tomorrow	فردا
+Convert to AniList group	تبدیل به گروه AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	این سریال TheTVDB را به فصل‌های AniList گروه‌بندی‌شده مانند Tanukarr تقسیم کن و فقط فصل‌هایی را که دنبال می‌کنی نگه دار
+Convert to AniList groups…	تبدیل به گروه‌های AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	سریال‌های TheTVDB انتخاب‌شده را به فصل‌های AniList گروه‌بندی‌شده مانند Tanukarr تقسیم کن
+Group: {group}	گروه: {group}
+This series cannot be converted:	این سریال قابل تبدیل نیست:
+TheTVDB episodes	قسمت‌های TheTVDB
+Files	فایل‌ها
+already in the library	از قبل در کتابخانه
+Files to move ({n})	فایل‌های قابل جابه‌جایی ({n})
+Left out ({n})	کنار گذاشته‌شده ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	هر فصل AniList که دنبال می‌کنی (دارای فایل یا قسمت‌های پایش‌شده) به سریالی جداگانه درون پوشه این سریال تبدیل می‌شود و فایل‌هایش به پوشه آن فصل منتقل می‌شوند. برنامه را بررسی کن و سپس تبدیل کن.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	در هر سریال، هر فصل AniList که دنبال می‌کنی به سریالی جداگانه درون پوشه سریال تبدیل می‌شود و فایل‌هایش به آنجا منتقل می‌شوند. سریال‌هایی که قابل تبدیل نیستند همان‌طور باقی می‌مانند.
+Convert	تبدیل
+Converting…	در حال تبدیل…
+Converted into {n} AniList series.	به {n} سریال AniList تبدیل شد.
+Convert {count} series to AniList groups	تبدیل {count} سریال به گروه‌های AniList
+Convert {n} series	تبدیل {n} سریال
+{done} series converted, {failed} not converted.	{done} سریال تبدیل شد، {failed} سریال تبدیل نشد.
+None of the selected series can be converted.	هیچ‌یک از سریال‌های انتخاب‌شده قابل تبدیل نیست.
+Converted	تبدیل شد
+Cannot be converted: {problem}	قابل تبدیل نیست: {problem}
+{n} seasons, {m} files to move	{n} فصل، {m} فایل برای جابه‌جایی

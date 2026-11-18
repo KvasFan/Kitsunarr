@@ -1907,3 +1907,26 @@ Recent entries	רשומות אחרונות
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	הרשומות האחרונות שנשמרות בזיכרון. קובצי היומן שלמעלה ופלט התהליך (יומני הקונטיינר או ה-journal) שומרים הכל.
 Yesterday	אתמול
 Tomorrow	מחר
+Convert to AniList group	המרה לקבוצת AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	פיצול סדרת TheTVDB זו לעונות AniList המקובצות כמו ב-Tanukarr, תוך שמירה רק על העונות שאתה עוקב אחריהן
+Convert to AniList groups…	המרה לקבוצות AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	פיצול סדרות TheTVDB שנבחרו לעונות AniList המקובצות כמו ב-Tanukarr
+Group: {group}	קבוצה: {group}
+This series cannot be converted:	לא ניתן להמיר סדרה זו:
+TheTVDB episodes	פרקי TheTVDB
+Files	קבצים
+already in the library	כבר בספרייה
+Files to move ({n})	קבצים להעברה ({n})
+Left out ({n})	הושמטו ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	כל עונת AniList שאתה עוקב אחריה (עם קבצים או פרקים במעקב) הופכת לסדרה נפרדת בתוך התיקייה של סדרה זו, והקבצים שלה מועברים לתיקיית העונה. עיין בתוכנית ואז המר.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	בכל סדרה, כל עונת AniList שאתה עוקב אחריה הופכת לסדרה נפרדת בתוך תיקיית הסדרה, והקבצים שלה מועברים לשם. סדרות שלא ניתן להמיר נשארות כפי שהן.
+Convert	המרה
+Converting…	ממיר…
+Converted into {n} AniList series.	הומרה ל-{n} סדרות AniList.
+Convert {count} series to AniList groups	המרת {count} סדרות לקבוצות AniList
+Convert {n} series	המרת {n} סדרות
+{done} series converted, {failed} not converted.	{done} סדרות הומרו, {failed} לא הומרו.
+None of the selected series can be converted.	לא ניתן להמיר אף אחת מהסדרות שנבחרו.
+Converted	הומרה
+Cannot be converted: {problem}	לא ניתן להמיר: {problem}
+{n} seasons, {m} files to move	{n} עונות, {m} קבצים להעברה

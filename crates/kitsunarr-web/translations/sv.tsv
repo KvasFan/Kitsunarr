@@ -1907,3 +1907,26 @@ Recent entries	Senaste poster
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	De senaste posterna som hålls i minnet. Loggfilerna ovan och processens utdata (containerloggar eller journal) behåller allt.
 Yesterday	I går
 Tomorrow	I morgon
+Convert to AniList group	Konvertera till AniList-grupp
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Dela upp den här TheTVDB-serien i AniList-säsonger grupperade som i Tanukarr och behåll bara säsongerna du följer
+Convert to AniList groups…	Konvertera till AniList-grupper…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Dela upp de valda TheTVDB-serierna i AniList-säsonger grupperade som i Tanukarr
+Group: {group}	Grupp: {group}
+This series cannot be converted:	Den här serien kan inte konverteras:
+TheTVDB episodes	TheTVDB-avsnitt
+Files	Filer
+already in the library	redan i biblioteket
+Files to move ({n})	Filer att flytta ({n})
+Left out ({n})	Utelämnade ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Varje AniList-säsong du följer (med filer eller bevakade avsnitt) blir en egen serie i den här seriens mapp, och dess filer flyttas till säsongens mapp. Granska planen och konvertera sedan.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	I varje serie blir varje AniList-säsong du följer en egen serie i seriens mapp, med filerna flyttade dit. Serier som inte kan konverteras lämnas som de är.
+Convert	Konvertera
+Converting…	Konverterar…
+Converted into {n} AniList series.	Konverterad till {n} AniList-serier.
+Convert {count} series to AniList groups	Konvertera {count} serier till AniList-grupper
+Convert {n} series	Konvertera {n} serier
+{done} series converted, {failed} not converted.	{done} serier konverterade, {failed} inte konverterade.
+None of the selected series can be converted.	Ingen av de valda serierna kan konverteras.
+Converted	Konverterad
+Cannot be converted: {problem}	Kan inte konverteras: {problem}
+{n} seasons, {m} files to move	{n} säsonger, {m} filer att flytta

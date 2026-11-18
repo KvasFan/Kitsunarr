@@ -1907,3 +1907,26 @@ Recent entries	சமீபத்திய பதிவுகள்
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	நினைவகத்தில் வைக்கப்பட்ட மிகச் சமீபத்திய பதிவுகள். மேலே உள்ள பதிவுக் கோப்புகளும் செயல்முறை வெளியீடும் (கன்டெய்னர் பதிவுகள் அல்லது journal) அனைத்தையும் வைத்திருக்கும்.
 Yesterday	நேற்று
 Tomorrow	நாளை
+Convert to AniList group	AniList குழுவாக மாற்று
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	இந்த TheTVDB தொடரை Tanukarr போலக் குழுவாக்கப்பட்ட AniList சீசன்களாகப் பிரி, நீங்கள் பின்தொடரும் சீசன்களை மட்டும் வைத்துக்கொண்டு
+Convert to AniList groups…	AniList குழுக்களாக மாற்று…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	தேர்ந்தெடுத்த TheTVDB தொடர்களை Tanukarr போலக் குழுவாக்கப்பட்ட AniList சீசன்களாகப் பிரி
+Group: {group}	குழு: {group}
+This series cannot be converted:	இந்தத் தொடரை மாற்ற முடியாது:
+TheTVDB episodes	TheTVDB அத்தியாயங்கள்
+Files	கோப்புகள்
+already in the library	ஏற்கனவே நூலகத்தில் உள்ளது
+Files to move ({n})	நகர்த்த வேண்டிய கோப்புகள் ({n})
+Left out ({n})	விடுபட்டவை ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	நீங்கள் பின்தொடரும் ஒவ்வொரு AniList சீசனும் (கோப்புகள் அல்லது கண்காணிக்கப்படும் அத்தியாயங்களுடன்) இந்தத் தொடரின் கோப்புறைக்குள் தனித் தொடராக மாறும், அதன் கோப்புகள் சீசனின் கோப்புறைக்கு நகர்த்தப்படும். திட்டத்தைச் சரிபார்த்து, பின்னர் மாற்றுங்கள்.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	ஒவ்வொரு தொடரிலும், நீங்கள் பின்தொடரும் ஒவ்வொரு AniList சீசனும் தொடரின் கோப்புறைக்குள் தனித் தொடராக மாறும், அதன் கோப்புகள் அங்கு நகர்த்தப்படும். மாற்ற முடியாத தொடர்கள் அப்படியே இருக்கும்.
+Convert	மாற்று
+Converting…	மாற்றப்படுகிறது…
+Converted into {n} AniList series.	{n} AniList தொடர்களாக மாற்றப்பட்டது.
+Convert {count} series to AniList groups	{count} தொடர்களை AniList குழுக்களாக மாற்று
+Convert {n} series	{n} தொடர்களை மாற்று
+{done} series converted, {failed} not converted.	{done} தொடர்கள் மாற்றப்பட்டன, {failed} மாற்றப்படவில்லை.
+None of the selected series can be converted.	தேர்ந்தெடுத்த தொடர்களில் எதையும் மாற்ற முடியாது.
+Converted	மாற்றப்பட்டது
+Cannot be converted: {problem}	மாற்ற முடியாது: {problem}
+{n} seasons, {m} files to move	{n} சீசன்கள், நகர்த்த வேண்டிய {m} கோப்புகள்

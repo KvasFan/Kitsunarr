@@ -979,3 +979,93 @@ pub struct EpisodeFileEditRequest {
 pub struct EpisodeFileIds {
     pub episode_file_ids: Vec<i64>,
 }
+
+/// Converts a TheTVDB series that is really an anime into Tanukarr-style AniList group members.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AnimeConversionRequest {
+    /// Only plan the conversion: nothing is written and no file is moved.
+    #[serde(default)]
+    pub dry_run: bool,
+}
+
+/// [`AnimeConversionRequest`] for several series; each is planned or converted on its own.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct BulkAnimeConversionRequest {
+    pub series_ids: Vec<i64>,
+    #[serde(default)]
+    pub dry_run: bool,
+}
+
+/// One AniList entry the series' episodes map to.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AnimeConversionMember {
+    pub anilist_id: i64,
+    pub title: String,
+    /// The entry's season number in the group ("Season N").
+    pub ordinal: i32,
+    /// The member's folder.
+    pub path: String,
+    /// The member's episodes (AniList's count).
+    pub episodes: i32,
+    /// The TheTVDB episodes mapped to it, as `S01E13–S01E24`.
+    pub source_episodes: String,
+    pub files: i32,
+    pub monitored_episodes: i32,
+    /// A library series already owns this AniList entry and receives the episodes.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub existing_series_id: Option<i64>,
+    /// The member's series once converted.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub series_id: Option<i64>,
+}
+
+/// A file moved into its member's folder.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AnimeConversionMove {
+    pub from: String,
+    pub to: String,
+}
+
+/// The plan (dry run) or outcome of an anime conversion.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AnimeConversionPlan {
+    pub series_id: i64,
+    pub title: String,
+    /// Whether the series can be converted (no problem found).
+    pub convertible: bool,
+    /// Whether the conversion was carried out (never on a dry run).
+    pub applied: bool,
+    /// Why the series cannot be converted.
+    pub problems: Vec<String>,
+    /// `anilist:{root id}`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub group_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub group_title: Option<String>,
+    /// The group folder (the series' current folder).
+    pub group_path: String,
+    /// The members to create or fill: only the seasons followed (with files or monitored
+    /// episodes).
+    pub members: Vec<AnimeConversionMember>,
+    pub moves: Vec<AnimeConversionMove>,
+    /// What is not carried over: seasons not followed, episodes beyond the AniList entries.
+    pub skipped: Vec<String>,
+    pub warnings: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct BulkAnimeConversionResult {
+    pub results: Vec<AnimeConversionPlan>,
+}

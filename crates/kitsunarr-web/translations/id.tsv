@@ -1907,3 +1907,26 @@ Recent entries	Entri terbaru
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Entri terbaru yang disimpan di memori. File log di atas dan output proses (log container atau journal) menyimpan semuanya.
 Yesterday	Kemarin
 Tomorrow	Besok
+Convert to AniList group	Ubah menjadi grup AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Pecah serial TheTVDB ini menjadi musim AniList yang dikelompokkan seperti di Tanukarr, hanya menyimpan musim yang Anda ikuti
+Convert to AniList groups…	Ubah menjadi grup AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Pecah serial TheTVDB yang dipilih menjadi musim AniList yang dikelompokkan seperti di Tanukarr
+Group: {group}	Grup: {group}
+This series cannot be converted:	Serial ini tidak dapat diubah:
+TheTVDB episodes	Episode TheTVDB
+Files	Berkas
+already in the library	sudah ada di pustaka
+Files to move ({n})	Berkas yang dipindahkan ({n})
+Left out ({n})	Tidak disertakan ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Setiap musim AniList yang Anda ikuti (dengan berkas atau episode yang dipantau) menjadi serial tersendiri di dalam folder serial ini, dan berkasnya dipindahkan ke folder musim tersebut. Tinjau rencananya, lalu ubah.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Di setiap serial, setiap musim AniList yang Anda ikuti menjadi serial tersendiri di dalam folder serial, dengan berkasnya dipindahkan ke sana. Serial yang tidak dapat diubah dibiarkan apa adanya.
+Convert	Ubah
+Converting…	Mengubah…
+Converted into {n} AniList series.	Diubah menjadi {n} serial AniList.
+Convert {count} series to AniList groups	Ubah {count} serial menjadi grup AniList
+Convert {n} series	Ubah {n} serial
+{done} series converted, {failed} not converted.	{done} serial diubah, {failed} tidak diubah.
+None of the selected series can be converted.	Tidak ada serial terpilih yang dapat diubah.
+Converted	Diubah
+Cannot be converted: {problem}	Tidak dapat diubah: {problem}
+{n} seasons, {m} files to move	{n} musim, {m} berkas yang dipindahkan

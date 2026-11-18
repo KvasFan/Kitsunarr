@@ -1907,3 +1907,26 @@ Recent entries	সাম্প্রতিক এন্ট্রি
 The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	মেমরিতে রাখা সবচেয়ে সাম্প্রতিক এন্ট্রি। উপরের লগ ফাইল এবং প্রসেসের আউটপুট (কন্টেইনার লগ বা জার্নাল) সবকিছু রাখে।
 Yesterday	গতকাল
 Tomorrow	আগামীকাল
+Convert to AniList group	AniList গ্রুপে রূপান্তর করুন
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	এই TheTVDB সিরিজটিকে Tanukarr-এর মতো গোষ্ঠীবদ্ধ AniList সিজনে ভাগ করুন, শুধু আপনি যে সিজনগুলো অনুসরণ করেন সেগুলো রেখে
+Convert to AniList groups…	AniList গ্রুপে রূপান্তর করুন…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	নির্বাচিত TheTVDB সিরিজগুলোকে Tanukarr-এর মতো গোষ্ঠীবদ্ধ AniList সিজনে ভাগ করুন
+Group: {group}	গ্রুপ: {group}
+This series cannot be converted:	এই সিরিজটি রূপান্তর করা যাবে না:
+TheTVDB episodes	TheTVDB পর্ব
+Files	ফাইল
+already in the library	ইতিমধ্যে লাইব্রেরিতে
+Files to move ({n})	সরানোর ফাইল ({n})
+Left out ({n})	বাদ দেওয়া ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	আপনি যে প্রতিটি AniList সিজন অনুসরণ করেন (ফাইল বা পর্যবেক্ষিত পর্বসহ) তা এই সিরিজের ফোল্ডারের ভেতরে আলাদা সিরিজ হয়ে যায়, এবং এর ফাইলগুলো সিজনের ফোল্ডারে সরানো হয়। পরিকল্পনাটি দেখে নিন, তারপর রূপান্তর করুন।
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	প্রতিটি সিরিজে, আপনি যে প্রতিটি AniList সিজন অনুসরণ করেন তা সিরিজের ফোল্ডারের ভেতরে আলাদা সিরিজ হয়ে যায়, এর ফাইলগুলো সেখানে সরানো হয়। যে সিরিজগুলো রূপান্তর করা যায় না সেগুলো যেমন আছে তেমনই থাকে।
+Convert	রূপান্তর করুন
+Converting…	রূপান্তর হচ্ছে…
+Converted into {n} AniList series.	{n}টি AniList সিরিজে রূপান্তরিত হয়েছে।
+Convert {count} series to AniList groups	{count}টি সিরিজ AniList গ্রুপে রূপান্তর করুন
+Convert {n} series	{n}টি সিরিজ রূপান্তর করুন
+{done} series converted, {failed} not converted.	{done}টি সিরিজ রূপান্তরিত, {failed}টি রূপান্তরিত হয়নি।
+None of the selected series can be converted.	নির্বাচিত কোনো সিরিজই রূপান্তর করা যাবে না।
+Converted	রূপান্তরিত
+Cannot be converted: {problem}	রূপান্তর করা যাবে না: {problem}
+{n} seasons, {m} files to move	{n}টি সিজন, সরানোর {m}টি ফাইল
