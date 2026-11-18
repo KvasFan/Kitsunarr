@@ -55,6 +55,7 @@ async fn start_with(metadata: Metadata) -> Server {
         .await
         .unwrap();
     media.skip_free_space_check = true;
+    media.skip_free_space_check_when_grabbing = true;
     kitsunarr_db::settings::set(
         db.pool(),
         kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
