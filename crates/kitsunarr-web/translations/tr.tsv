@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Atlandı: sunucu hâlâ başlatılıyor
 {} expired sessions removed	Süresi dolmuş oturum kaldırıldı: {}
 All {} refreshes failed; see the logs	{} yenilemenin tümü başarısız oldu; kayıtlara bakın
 every folder scan failed ({})	tüm klasör taramaları başarısız oldu ({})
+Links	Bağlantılar
+Copy {}	Kopyala: {}
+Copy the {} id	{} kimliğini kopyala
+Type	Tür
+Previous airing	Önceki yayın
+Season folder	Sezon klasörü
+Average episode size	Ortalama bölüm boyutu
+Genres	Türler
+Rating	Puan
+Certification	Yaş sınırı
+Release groups	Sürüm grupları
+File quality	Dosya kalitesi
+In cinemas	Sinemalarda
+Runtime	Süre
+Release group	Sürüm grubu
+Columns	Sütunlar
+Shown in the table, the overview and under posters	Tabloda, genel bakışta ve posterlerin altında gösterilir
+Column {}	Sütun {}
+Reset columns	Sütunları sıfırla
+Yes	Evet
+Override and grab {}	Geçersiz kıl ve al: {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Bu sürümün dizisini, bölümlerini, kalitesini, dillerini veya indirme istemcisini seçin, ardından alın (seçimler içe aktarma için saklanır)
+Override…	Geçersiz kıl…
+Override and grab	Geçersiz kıl ve al
+Override and grab — {}	Geçersiz kıl ve al — {}
+{} episodes chosen	{} bölüm seçildi
+Grab release	Sürümü al
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Değiştirilmeyen seçimler sürüm başlığında yazanı korur. Seçilmeyen bölümler, başlığın eşlendiği bölümleri korur.
+Searched series	Aranan dizi
+Download client	İndirme istemcisi
+Episodes (required)	Bölümler (zorunlu)
+Statistics	İstatistikler
+Test parsing	Ayrıştırmayı test et
+{} items removed.	Kaldırılan öğe: {}.
+{} items removed; {}	Kaldırılan öğe: {}; {}
+Select every queue item	Kuyruktaki tüm öğeleri seç
+Queue bulk actions	Kuyruk toplu işlemleri
+Grab the selected releases a delay profile holds back now	Bir gecikme profilinin beklettiği seçili sürümleri şimdi al
+Remove selected…	Seçilenleri kaldır…
+Remove {} items from the queue	Kuyruktan {} öğeyi kaldır
+Held-back releases are forgotten; a later search can find them again.	Bekletilen sürümler unutulur; sonraki bir arama onları yeniden bulabilir.
+Removal method	Kaldırma yöntemi
+Remove from the download client	İndirme istemcisinden kaldır
+Change category	Kategoriyi değiştir
+Keep it in the download client	İndirme istemcisinde tut
+The download and its files are removed from the download client.	İndirme ve dosyaları indirme istemcisinden kaldırılır.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	İndirme, istemcinin içe aktarma sonrası kategorisine taşınır ve artık izlenmez; dosyaları kalır.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	İndirme, indirme istemcisinde olduğu gibi kalır; sürümünü engellenenler listesine eklemek için bir engelleme seçeneği seçin.
+Blocklist release	Sürümü engellenenler listesine ekle
+Do not blocklist	Engellenenler listesine ekleme
+Blocklist and search for a replacement	Engellenenler listesine ekle ve yerine başka sürüm ara
+Blocklist only	Yalnızca engellenenler listesine ekle
+Removed {} releases from the blocklist.	Engellenenler listesinden kaldırılan sürüm: {}.
+Remove {} selected	Seçilen {} öğeyi kaldır
+Select every release on this page	Bu sayfadaki tüm sürümleri seç
+Remove from the blocklist	Engellenenler listesinden kaldır
+Remove the {} selected releases from the blocklist?	Seçilen {} sürüm engellenenler listesinden kaldırılsın mı?
+Quality, languages and release of {}	{} için kalite, diller ve sürüm
+Choose the quality, languages, release group and release type the file is imported with	Dosyanın içe aktarılacağı kaliteyi, dilleri, sürüm grubunu ve sürüm türünü seçin
+Import details — {}	İçe aktarma ayrıntıları — {}
+Use these details	Bu ayrıntıları kullan
+Revision	Revizyon
+2 or more for a PROPER or REPACK.	PROPER veya REPACK için 2 veya daha fazla.
+Single episode	Tek bölüm
+Multi-episode	Çoklu bölüm
+Season pack	Sezon paketi
+Manual	Manuel
+Choose the group the title joins.	Yapımın katılacağı grubu seçin.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Otomatik, yapımı resmi ilişkilere göre serisi veya koleksiyonuyla gruplar. Manuel, onu seçtiğiniz bir gruba koyar. Devre dışı, onu tek başına tutar.
+Manual puts the title in a group you choose, in the group's folder.	Manuel, yapımı seçtiğiniz bir gruba, grubun klasörüne koyar.
+Manual (choose a group)	Manuel (bir grup seçin)
+The title joins the group as its next season or film, in the group's folder.	Yapım, gruba bir sonraki sezonu veya filmi olarak, grubun klasöründe katılır.
+Choose a group…	Bir grup seçin…
+Collection settings saved.	Koleksiyon ayarları kaydedildi.
+Collection settings	Koleksiyon ayarları
+Collection name	Koleksiyon adı
+Collection type	Koleksiyon türü
+A movie saga holds only films.	Bir film sagası yalnızca film içerir.
+Movie saga	Film sagası
+Movie folder format	Film klasörü formatı
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Yapımlar katıldığında üye klasörlerinin nasıl adlandırılacağı: otomatik, sagalarda numaralı klasörler, yaylarda hikâye yayı klasörleri kullanır.
+Numbered	Numaralı
+No change	Değişiklik yok
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Takip, kalite profili ve sezon klasörü şimdi tüm üyelere uygulanır; tür ve klasör formatı bundan sonra katılan yapımlara uygulanır.
+Collection settings…	Koleksiyon ayarları…
+Monitoring, quality profile, series type, folder and tags	Takip, kalite profili, dizi türü, klasör ve etiketler
+Change the quality, languages or release group of episode files, or delete them	Bölüm dosyalarının kalitesini, dillerini veya sürüm grubunu değiştirin ya da onları silin
+Manage episodes	Bölümleri yönet
+Episode details: overview, file, history and searches	Bölüm ayrıntıları: genel bakış, dosya, geçmiş ve aramalar
+Details of episode {}	{} bölümünün ayrıntıları
+Monitoring, availability, quality profile, folder and tags	Takip, mevcudiyet, kalite profili, klasör ve etiketler
+No tags yet: create them in Settings › Tags.	Henüz etiket yok: Ayarlar › Etiketler bölümünde oluşturun.
+Below the root folder.	Kök klasörün altında.
+Use the folder name the naming settings give	Adlandırma ayarlarının verdiği klasör adını kullan
+Use naming format	Adlandırma formatını kullan
+Series saved.	Dizi kaydedildi.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr, takip edilen bir dizinin takip edilen bölümlerini arar ve indirir.
+Whether seasons a refresh discovers are monitored.	Yenilemenin bulduğu sezonların takip edilip edilmeyeceği.
+Sort episodes into season folders.	Bölümleri sezon klasörlerine ayır.
+Use season folders	Sezon klasörlerini kullan
+Decides how episodes are numbered when searching and importing.	Arama ve içe aktarma sırasında bölümlerin nasıl numaralandırılacağını belirler.
+TheTVDB titles in this language; changing it refreshes the series.	Bu dildeki TheTVDB başlıkları; değiştirmek diziyi yeniler.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Devre dışı, diziyi anime grubundan çıkarır ve otomatik gruplamanın dışında tutar.
+Enter a folder name.	Bir klasör adı girin.
+Edit — {}	Düzenle — {}
+Announced	Duyuruldu
+Released	Yayımlandı
+Movie saved.	Film kaydedildi.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr, takip edilen bir filmi arar ve indirir.
+Minimum availability	Minimum mevcudiyet
+When the movie counts as available for automatic searches.	Filmin otomatik aramalar için ne zaman mevcut sayılacağı.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Devre dışı, filmi koleksiyonundan çıkarır ve otomatik gruplamanın dışında tutar.
+Edit {} selected	Seçilen {} öğeyi düzenle
+Apply changes	Değişiklikleri uygula
+No season folders	Sezon klasörü yok
+Tags updated on {} items.	Etiketleri güncellenen öğe: {}.
+Removes the chosen tags from every selected title.	Seçilen etiketleri seçili tüm yapımlardan kaldırır.
+Every selected title gets exactly the chosen tags (none removes all).	Seçili her yapım tam olarak seçilen etiketleri alır (hiçbiri seçilmezse tümü kaldırılır).
+Adds the chosen tags to every selected title.	Seçilen etiketleri seçili tüm yapımlara ekler.
+Tags — {} selected	Etiketler — {} seçili
+Apply tags	Etiketleri uygula
+Replace	Değiştir
+Manage	Yönet
+Multi-season pack	Çoklu sezon paketi
+Scene name	Sahne adı
+Video	Video
+· {} fps	· {} fps
+Run time	Süre
+Audio	Ses
+Subtitles	Altyazılar
+Details	Ayrıntılar
+Search the indexers and grab the best release	İndeksleyicilerde ara ve en iyi sürümü al
+See every release and choose	Tüm sürümleri gör ve seç
+absolute {}	mutlak {}
+Air date	Yayın tarihi
+No overview.	Genel bakış yok.
+Delete this episode's file? It goes to the recycle bin when one is set.	Bu bölümün dosyası silinsin mi? Ayarlanmışsa geri dönüşüm kutusuna gider.
+{} files updated.	Güncellenen dosya: {}.
+{} files deleted.	Silinen dosya: {}.
+{} files deleted; {}	Silinen dosya: {}; {}
+Delete files	Dosyaları sil
+The series has no files.	Dizinin dosyası yok.
+Change	Değiştir
+Change for the selected files…	Seçilen dosyalar için değiştir…
+Empty clears it	Boş bırakmak temizler
+Select every file	Tüm dosyaları seç
+Delete the {} selected files? They go to the recycle bin when one is set.	Seçilen {} dosya silinsin mi? Ayarlanmışsa geri dönüşüm kutusuna giderler.
+Monitoring, quality profile, series type and season folders of the selected series	Seçilen dizilerin takip durumu, kalite profili, dizi türü ve sezon klasörleri
+Edit…	Düzenle…
+Add, remove or replace the tags of the selected series	Seçilen dizilerin etiketlerini ekleyin, kaldırın veya değiştirin
+Tags…	Etiketler…
+Monitoring and quality profile of the selected movies	Seçilen filmlerin takip durumu ve kalite profili
+Add, remove or replace the tags of the selected movies	Seçilen filmlerin etiketlerini ekleyin, kaldırın veya değiştirin
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Kitsunarr'ın onu nasıl okuduğunu ve hangi bölümlerle eşleştirdiğini görmek için bir sürüm başlığı veya dosya adı yapıştırın.
+Parse	Ayrıştır
+Kitsunarr could not read this title.	Kitsunarr bu başlığı okuyamadı.
+Parse result	Ayrıştırma sonucu
+Series title	Dizi başlığı
+Absolute episodes	Mutlak bölümler
+Release hash	Sürüm hash'i
+Multi-season	Çoklu sezon
+Absolute numbering	Mutlak numaralandırma
+Library match	Kütüphane eşleşmesi
+No series in the library matches this title.	Kütüphanede bu başlıkla eşleşen dizi yok.
+No episode of the series matches.	Dizinin hiçbir bölümü eşleşmiyor.
+Log files	Kayıt dosyaları
+Refresh	Yenile
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr kayıtlarını veri klasöründeki dosyalara yazar; dosya 1 MiB'ye ulaşınca yenisine geçilir. Kayıt seviyesi Ayarlar › Genel bölümünden ayarlanır.
+No log files yet	Henüz kayıt dosyası yok
+Last written	Son yazma
+Skip the free-space check when importing	İçe aktarırken boş alan denetimini atla
+Create empty series folders during disk scans (not with "delete empty folders")	Disk taramaları sırasında boş dizi klasörleri oluştur ("boş klasörleri sil" ile birlikte değil)
+Skip the free-space check when grabbing	Alırken boş alan denetimini atla
+Set permissions on imported files and folders (Linux)	İçe aktarılan dosya ve klasörlerde izinleri ayarla (Linux)
+Import using a script	Betik kullanarak içe aktar
+Rescan series folder after refresh	Yenilemeden sonra dizi klasörünü yeniden tara
+Whether a metadata refresh scans the series folder for changes afterwards.	Meta veri yenilemesinin ardından dizi klasörünün değişiklikler için taranıp taranmayacağı.
+Always	Her zaman
+After manual refresh	Manuel yenilemeden sonra
+Never	Asla
+Episode title required	Bölüm başlığı zorunlu
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Adlandırma formatı bölüm başlığını kullanıyorsa ve bölüm son 48 saat içinde yayınlandıysa içe aktarmalar başlığı bekler.
+Only for bulk season releases	Yalnızca toplu sezon sürümleri için
+Season pack upgrades	Sezon paketi yükseltmeleri
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Paketin alınması için bir sezon paketinin kaç bölümünün eksik veya yükseltilebilir olması gerektiği.
+A share of the episodes	Bölümlerin bir kısmı
+Any episode	Herhangi bir bölüm
+Season pack upgrade threshold (%)	Sezon paketi yükseltme eşiği (%)
+Rejected extensions	Reddedilen uzantılar
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Virgülle ayrılmış, ör. exe, bat. Bu uzantılardan birine sahip tek dosyalı bir indirme içe aktarılmaz.
+Folder permissions (chmod)	Klasör izinleri (chmod)
+Octal mode for folders; files get it without the execute bits.	Klasörler için sekizlik mod; dosyalar bunu çalıştırma bitleri olmadan alır.
+Group (chown)	Grup (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	İçe aktarılan dosya ve klasörler için grup adı veya kimliği; boş bırakılırsa grup değiştirilmez.
+Import script path	İçe aktarma betiği yolu
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Betiğin mutlak yolu; betik kaynak ve hedef yollarını ve Sonarr'ın ortam değişkenlerini alır.
+Excluded tags (ids, comma separated)	Hariç tutulan etiketler (kimlikler, virgülle ayrılmış)
+The profile does not apply to series with one of these tags.	Profil, bu etiketlerden birine sahip dizilere uygulanmaz.
+Reject releases published before the episode airs	Bölüm yayınlanmadan önce yayımlanan sürümleri reddet
+Allow season packs before every episode has aired	Tüm bölümler yayınlanmadan sezon paketlerine izin ver
+Air date grace period (hours)	Yayın tarihi tolerans süresi (saat)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Yayın tarihinden sonra bu kadar saate kadar yayımlanan sürümler yine reddedilir; negatif bir sayı onlara o kadar saat önce izin verir.
+Presets	Ön ayarlar
+Series ID	Dizi kimliği
+Anime group	Anime grubu
+Absolute episode number	Mutlak bölüm numarası
+Episode title	Bölüm başlığı
+Media info	Medya bilgisi
+Original	Orijinal
+File name tokens	Dosya adı token'ları
+Folder name tokens	Klasör adı token'ları
+Format	Format
+Separator	Ayırıcı
+Space ( )	Boşluk ( )
+Period (.)	Nokta (.)
+Underscore (_)	Alt çizgi (_)
+Dash (-)	Tire (-)
+Capitalization	Büyük/küçük harf
+Default case	Varsayılan
+Lowercase	Küçük harf
+Uppercase	Büyük harf
+Click a token to insert it at the cursor; a preset replaces the whole format.	İmlecin bulunduğu yere eklemek için bir token'a tıklayın; bir ön ayar tüm formatı değiştirir.
+Tokens	Token'lar
+Tokens for {}	{} için token'lar
+Invalid format	Geçersiz format
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Formatlar Sonarr'ın token'larını kullanır; aşağıdaki örnekler kaydetmeden önce değişikliklerinizi yansıtır.
+Rename episodes	Bölümleri yeniden adlandır
+Replace illegal characters (otherwise they are removed)	Geçersiz karakterleri değiştir (aksi halde kaldırılırlar)
+Colon replacement	İki nokta değiştirme
+How colons in titles are written in file and folder names.	Başlıklardaki iki noktaların dosya ve klasör adlarında nasıl yazılacağı.
+Replace with dash	Tire ile değiştir
+Replace with space dash	Boşluk ve tire ile değiştir
+Replace with space dash space	Boşluk, tire ve boşluk ile değiştir
+Smart replace (dash or space dash)	Akıllı değiştirme (tire veya boşluk ve tire)
+Custom	Özel
+Custom colon replacement	Özel iki nokta değiştirme
+The characters written instead of a colon.	İki nokta yerine yazılan karakterler.
+Multi-episode style	Çoklu bölüm stili
+Extend (S01E01-02-03)	Uzat (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Çoğalt (S01E01.S01E02)
+Repeat (S01E01E02E03)	Tekrarla (S01E01E02E03)
+Scene (S01E01-E02-E03)	Sahne (S01E01-E02-E03)
+Range (S01E01-03)	Aralık (S01E01-03)
+Prefixed range (S01E01-E03)	Önekli aralık (S01E01-E03)
+Example	Örnek
+Anime group movie	Anime grubu filmi
+Used when films are renamed.	Filmler yeniden adlandırıldığında kullanılır.
+Used when adding a new series or moving one.	Yeni bir dizi eklenirken veya bir dizi taşınırken kullanılır.
+Specials folder format	Özel bölümler klasörü formatı
+Anime groups and collections: titles go to {}/{}/{}.	Anime grupları ve koleksiyonlar: yapımlar {}/{}/{} konumuna gider.
+Interface settings saved.	Arayüz ayarları kaydedildi.
+Week column header	Hafta sütun başlığı
+The column headers of the calendar's week view.	Takvimin hafta görünümündeki sütun başlıkları.
+Dates	Tarihler
+Short date format	Kısa tarih formatı
+Long date format	Uzun tarih formatı
+Time format	Saat formatı
+Time zone	Saat dilimi
+Dates and times are shown in this time zone; empty follows the browser.	Tarihler ve saatler bu saat diliminde gösterilir; boş bırakılırsa tarayıcınınki kullanılır.
+The browser's time zone	Tarayıcının saat dilimi
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Tarih yerine göreli tarihleri (Bugün, Dün, Yarın) göster
+Style	Stil
+Theme	Tema
+Kept in this browser; the top bar button switches it too.	Bu tarayıcıda saklanır; üst çubuktaki düğme de bunu değiştirir.
+Dark	Koyu
+Light	Açık
+Colour-impaired mode (colours easier to tell apart, with patterns)	Renk körlüğü modu (ayırt etmesi daha kolay renkler, desenlerle)
+Saved to the configuration file. Restart Kitsunarr to apply.	Yapılandırma dosyasına kaydedildi. Uygulamak için Kitsunarr'ı yeniden başlatın.
+Host and logging	Sunucu ve kayıt
+Set by an environment variable or command-line flag: {}	Bir ortam değişkeni veya komut satırı bayrağıyla ayarlandı: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Kaydedildiği yer: {}. Değişiklikler Kitsunarr bir sonraki başlatıldığında uygulanır; ortam değişkenleri ve komut satırı bayrakları yine önceliklidir.
+Restart required: the saved values differ from the ones in use.	Yeniden başlatma gerekli: kaydedilen değerler kullanılanlardan farklı.
+Restart now	Şimdi yeniden başlat
+Bind address	Bağlanma adresi
+0.0.0.0 listens on every interface.	0.0.0.0 tüm arayüzleri dinler.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Ters proxy'ler için, ör. /kitsunarr; boş bırakılırsa kökten sunulur.
+Log level	Kayıt seviyesi
+Debug and trace write much more to the log files.	Hata ayıklama ve izleme, kayıt dosyalarına çok daha fazla yazar.
+Trace	İzleme
+Warn	Uyarı
+Error	Hata
+Backup folder	Yedekleme klasörü
+Absolute path; empty uses {}.	Mutlak yol; boş bırakılırsa {} kullanılır.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr düz HTTP sunar; HTTPS için önüne bir ters proxy koyun.
+Save host settings	Sunucu ayarlarını kaydet
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Kitsunarr şimdi yeniden başlatılsın mı? Adres, bağlantı noktası veya URL tabanı değiştiyse ardından yeni adresi açın.
+Nothing to show.	Gösterilecek bir şey yok.
+All series	Tüm diziler
+All types	Tüm türler
+All profiles	Tüm profiller
+All tags	Tüm etiketler
+Downloaded	İndirildi
+Unaired	Yayınlanmadı
+{} files · {}	{} dosya · {}
+Summary	Özet
+Monitored series	Takip edilen diziler
+Completed series	Tamamlanan diziler
+{} ({} completed)	{} ({} tamamlandı)
+{} ({} monitored)	{} ({} takip ediliyor)
+Episode files	Bölüm dosyaları
+{} ({} downloaded)	{} ({} indirildi)
+{} ({} per episode)	{} (bölüm başına {})
+Series status	Dizi durumu
+File qualities	Dosya kaliteleri
+Recent entries	Son kayıtlar
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Bellekte tutulan en son kayıtlar. Yukarıdaki kayıt dosyaları ve işlem çıktısı (konteyner kayıtları veya journal) her şeyi saklar.
+Yesterday	Dün
+Tomorrow	Yarın

@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	已略過：伺服器仍在啟動中
 {} expired sessions removed	已移除 {} 個過期的工作階段
 All {} refreshes failed; see the logs	全部 {} 次重新整理皆失敗；請查看日誌
 every folder scan failed ({})	所有資料夾掃描皆失敗（{}）
+Links	連結
+Copy {}	複製 {}
+Copy the {} id	複製 {} ID
+Type	類型
+Previous airing	上次播出
+Season folder	季資料夾
+Average episode size	平均每集大小
+Genres	類別
+Rating	評分
+Certification	分級
+Release groups	發布群組
+File quality	檔案品質
+In cinemas	院線上映
+Runtime	片長
+Release group	發布群組
+Columns	欄位
+Shown in the table, the overview and under posters	顯示於表格、概要檢視及海報下方
+Column {}	欄位：{}
+Reset columns	重設欄位
+Yes	是
+Override and grab {}	覆寫並抓取 {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	選擇此發布版本對應的影集、集數、品質、語言或下載用戶端，然後抓取（選擇會保留至匯入時）
+Override…	覆寫…
+Override and grab	覆寫並抓取
+Override and grab — {}	覆寫並抓取 — {}
+{} episodes chosen	已選擇 {} 集
+Grab release	抓取發布版本
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	未變更的選項沿用發布版本標題中的資訊。未選擇集數時，沿用標題所對應的集數。
+Searched series	搜尋的影集
+Download client	下載用戶端
+Episodes (required)	集數（必填）
+Statistics	統計
+Test parsing	解析測試
+{} items removed.	已移除 {} 個項目。
+{} items removed; {}	已移除 {} 個項目；{}
+Select every queue item	選取佇列中的所有項目
+Queue bulk actions	佇列批次動作
+Grab the selected releases a delay profile holds back now	立即抓取被延遲設定檔暫緩的所選發布版本
+Remove selected…	移除所選項目…
+Remove {} items from the queue	從佇列移除 {} 個項目
+Held-back releases are forgotten; a later search can find them again.	被暫緩的發布版本將被捨棄；之後的搜尋可能會再次找到它們。
+Removal method	移除方式
+Remove from the download client	從下載用戶端移除
+Change category	變更分類
+Keep it in the download client	保留在下載用戶端中
+The download and its files are removed from the download client.	下載及其檔案會從下載用戶端中移除。
+The download moves to the client's post-import category and is no longer tracked; its files stay.	下載會移至用戶端的匯入後分類，且不再追蹤；其檔案會保留。
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	下載會原封不動地保留在下載用戶端中；若要將其發布版本加入封鎖清單，請選擇封鎖清單選項。
+Blocklist release	將發布版本加入封鎖清單
+Do not blocklist	不加入封鎖清單
+Blocklist and search for a replacement	加入封鎖清單並搜尋替代版本
+Blocklist only	僅加入封鎖清單
+Removed {} releases from the blocklist.	已從封鎖清單移除 {} 個發布版本。
+Remove {} selected	移除所選的 {} 個項目
+Select every release on this page	選取此頁上的所有發布版本
+Remove from the blocklist	從封鎖清單移除
+Remove the {} selected releases from the blocklist?	要從封鎖清單移除所選的 {} 個發布版本嗎？
+Quality, languages and release of {}	{} 的品質、語言與發布版本
+Choose the quality, languages, release group and release type the file is imported with	選擇匯入檔案時使用的品質、語言、發布群組與發布版本類型
+Import details — {}	匯入詳細資料 — {}
+Use these details	使用這些資料
+Revision	修訂版本
+2 or more for a PROPER or REPACK.	PROPER 或 REPACK 為 2 以上。
+Single episode	單集
+Multi-episode	多集
+Season pack	整季包
+Manual	手動
+Choose the group the title joins.	選擇標題要加入的群組。
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	自動：依官方關聯將標題歸入其系列作品或合集。手動：放入您選擇的群組。停用：保持獨立。
+Manual puts the title in a group you choose, in the group's folder.	手動：將標題放入您選擇的群組，並位於該群組的資料夾中。
+Manual (choose a group)	手動（選擇群組）
+The title joins the group as its next season or film, in the group's folder.	標題會以下一季或下一部電影的身分加入群組，並放在群組的資料夾中。
+Choose a group…	選擇群組…
+Collection settings saved.	已儲存合集設定。
+Collection settings	合集設定
+Collection name	合集名稱
+Collection type	合集類型
+A movie saga holds only films.	電影系列只包含電影。
+Movie saga	電影系列
+Movie folder format	電影資料夾格式
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	標題加入時成員資料夾的命名方式：自動會在電影系列中使用編號資料夾，在篇章中使用故事篇章資料夾。
+Numbered	編號
+No change	不變更
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	監控、品質設定檔與季資料夾會立即套用至所有成員；類型與資料夾格式會套用至之後加入的標題。
+Collection settings…	合集設定…
+Monitoring, quality profile, series type, folder and tags	監控、品質設定檔、影集類型、資料夾與標籤
+Change the quality, languages or release group of episode files, or delete them	變更集數檔案的品質、語言或發布群組，或刪除檔案
+Manage episodes	管理集數
+Episode details: overview, file, history and searches	集數詳細資料：概要、檔案、歷史記錄與搜尋
+Details of episode {}	集 {} 的詳細資料
+Monitoring, availability, quality profile, folder and tags	監控、可用狀態、品質設定檔、資料夾與標籤
+No tags yet: create them in Settings › Tags.	尚無標籤：請在「設定 › 標籤」中建立。
+Below the root folder.	位於根目錄之下。
+Use the folder name the naming settings give	使用命名設定所產生的資料夾名稱
+Use naming format	使用命名格式
+Series saved.	已儲存影集。
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr 會搜尋並下載已監控影集中已監控的集數。
+Whether seasons a refresh discovers are monitored.	重新整理時發現的季是否要監控。
+Sort episodes into season folders.	將集數依季分到季資料夾中。
+Use season folders	使用季資料夾
+Decides how episodes are numbered when searching and importing.	決定搜尋與匯入時集數的編號方式。
+TheTVDB titles in this language; changing it refreshes the series.	以此語言顯示 TheTVDB 標題；變更後會重新整理影集。
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	停用後，影集會從其動畫群組中移除，並排除於自動群組之外。
+Enter a folder name.	請輸入資料夾名稱。
+Edit — {}	編輯 — {}
+Announced	已公布
+Released	已發行
+Movie saved.	已儲存電影。
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr 會搜尋並下載已監控的電影。
+Minimum availability	最低可用狀態
+When the movie counts as available for automatic searches.	自動搜尋時電影何時視為可用。
+Disabled removes the film from its collection and keeps it out of automatic grouping.	停用後，電影會從其合集中移除，並排除於自動群組之外。
+Edit {} selected	編輯 {} 個所選項目
+Apply changes	套用變更
+No season folders	不使用季資料夾
+Tags updated on {} items.	已更新 {} 個項目的標籤。
+Removes the chosen tags from every selected title.	從每個所選標題移除選擇的標籤。
+Every selected title gets exactly the chosen tags (none removes all).	每個所選標題的標籤會完全變成選擇的標籤（不選則全部移除）。
+Adds the chosen tags to every selected title.	將選擇的標籤加入每個所選標題。
+Tags — {} selected	標籤 — 已選擇 {} 個
+Apply tags	套用標籤
+Replace	取代
+Manage	管理
+Multi-season pack	多季包
+Scene name	Scene 名稱
+Video	視訊
+· {} fps	· {} fps
+Run time	片長
+Audio	音訊
+Subtitles	字幕
+Details	詳細資料
+Search the indexers and grab the best release	搜尋索引器並抓取最佳發布版本
+See every release and choose	查看所有發布版本並選擇
+absolute {}	絕對編號 {}
+Air date	播出日期
+No overview.	沒有概要。
+Delete this episode's file? It goes to the recycle bin when one is set.	要刪除此集的檔案嗎？若有設定資源回收筒，將移至其中。
+{} files updated.	已更新 {} 個檔案。
+{} files deleted.	已刪除 {} 個檔案。
+{} files deleted; {}	已刪除 {} 個檔案；{}
+Delete files	刪除檔案
+The series has no files.	此影集沒有檔案。
+Change	變更
+Change for the selected files…	變更所選檔案…
+Empty clears it	留空即清除
+Select every file	選取所有檔案
+Delete the {} selected files? They go to the recycle bin when one is set.	要刪除所選的 {} 個檔案嗎？若有設定資源回收筒，將移至其中。
+Monitoring, quality profile, series type and season folders of the selected series	所選影集的監控、品質設定檔、影集類型與季資料夾
+Edit…	編輯…
+Add, remove or replace the tags of the selected series	新增、移除或取代所選影集的標籤
+Tags…	標籤…
+Monitoring and quality profile of the selected movies	所選電影的監控與品質設定檔
+Add, remove or replace the tags of the selected movies	新增、移除或取代所選電影的標籤
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	貼上發布版本標題或檔案名稱，查看 Kitsunarr 如何解析，以及它符合哪些集數。
+Parse	解析
+Kitsunarr could not read this title.	Kitsunarr 無法解析此標題。
+Parse result	解析結果
+Series title	影集標題
+Absolute episodes	絕對編號集數
+Release hash	發布雜湊
+Multi-season	多季
+Absolute numbering	絕對編號
+Library match	媒體庫比對
+No series in the library matches this title.	媒體庫中沒有符合此標題的影集。
+No episode of the series matches.	沒有符合此影集的集數。
+Log files	日誌檔案
+Refresh	重新整理
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr 會將日誌寫入資料資料夾中的檔案，每 1 MiB 輪替一次。日誌層級在「設定 › 一般」中設定。
+No log files yet	尚無日誌檔案
+Last written	最後寫入
+Skip the free-space check when importing	匯入時略過可用空間檢查
+Create empty series folders during disk scans (not with "delete empty folders")	磁碟掃描時建立空的影集資料夾（不可與「刪除空資料夾」同時使用）
+Skip the free-space check when grabbing	抓取時略過可用空間檢查
+Set permissions on imported files and folders (Linux)	為匯入的檔案與資料夾設定權限（Linux）
+Import using a script	使用指令碼匯入
+Rescan series folder after refresh	重新整理後重新掃描影集資料夾
+Whether a metadata refresh scans the series folder for changes afterwards.	中繼資料重新整理後是否掃描影集資料夾的變更。
+Always	一律
+After manual refresh	手動重新整理後
+Never	永不
+Episode title required	需要集數標題
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	當命名格式使用集數標題且該集在過去 48 小時內播出時，匯入會等待集數標題。
+Only for bulk season releases	僅限整季批次發布版本
+Season pack upgrades	整季包升級
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	整季包中需要有多少集缺少或可升級，才會抓取該整季包。
+A share of the episodes	一定比例的集數
+Any episode	任何一集
+Season pack upgrade threshold (%)	整季包升級門檻（%）
+Rejected extensions	拒絕的副檔名
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	以逗號分隔，例如 exe, bat。具有這些副檔名之一的單一檔案下載不會被匯入。
+Folder permissions (chmod)	資料夾權限（chmod）
+Octal mode for folders; files get it without the execute bits.	資料夾的八進位模式；檔案會使用去除執行位元後的模式。
+Group (chown)	群組（chown）
+Group name or id for imported files and folders; empty leaves the group alone.	匯入檔案與資料夾的群組名稱或 ID；留空則不變更群組。
+Import script path	匯入指令碼路徑
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	指令碼的絕對路徑；指令碼會收到來源與目的地路徑，以及 Sonarr 的環境變數。
+Excluded tags (ids, comma separated)	排除的標籤（id，以逗號分隔）
+The profile does not apply to series with one of these tags.	此設定檔不適用於帶有這些標籤之一的影集。
+Reject releases published before the episode airs	拒絕在該集播出前發布的發布版本
+Allow season packs before every episode has aired	在所有集數播出前也允許整季包
+Air date grace period (hours)	播出日期寬限期（小時）
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	在播出日期後此時數內發布的發布版本仍會被拒絕；負數則允許在播出日期前這麼多小時發布的版本。
+Presets	預設集
+Series ID	影集 ID
+Anime group	動畫群組
+Absolute episode number	絕對集數編號
+Episode title	集數標題
+Media info	媒體資訊
+Original	原始
+File name tokens	檔案名稱標記
+Folder name tokens	資料夾名稱標記
+Format	格式
+Separator	分隔符號
+Space ( )	空格 ( )
+Period (.)	句點 (.)
+Underscore (_)	底線 (_)
+Dash (-)	連字號 (-)
+Capitalization	大小寫
+Default case	預設大小寫
+Lowercase	小寫
+Uppercase	大寫
+Click a token to insert it at the cursor; a preset replaces the whole format.	按一下標記即可插入至游標處；預設集會取代整個格式。
+Tokens	標記
+Tokens for {}	{} 的標記
+Invalid format	格式無效
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	格式使用 Sonarr 的標記；下方範例會在儲存前反映您的變更。
+Rename episodes	重新命名集數
+Replace illegal characters (otherwise they are removed)	取代不合法的字元（否則將其移除）
+Colon replacement	冒號取代
+How colons in titles are written in file and folder names.	標題中的冒號在檔案與資料夾名稱中的寫法。
+Replace with dash	以連字號取代
+Replace with space dash	以空格連字號取代
+Replace with space dash space	以空格連字號空格取代
+Smart replace (dash or space dash)	智慧取代（連字號或空格連字號）
+Custom	自訂
+Custom colon replacement	自訂冒號取代
+The characters written instead of a colon.	用來取代冒號的字元。
+Multi-episode style	多集樣式
+Extend (S01E01-02-03)	延伸 (S01E01-02-03)
+Duplicate (S01E01.S01E02)	重複 (S01E01.S01E02)
+Repeat (S01E01E02E03)	連寫 (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	範圍 (S01E01-03)
+Prefixed range (S01E01-E03)	帶前綴的範圍 (S01E01-E03)
+Example	範例
+Anime group movie	動畫群組電影
+Used when films are renamed.	重新命名電影時使用。
+Used when adding a new series or moving one.	新增影集或移動影集時使用。
+Specials folder format	特別篇資料夾格式
+Anime groups and collections: titles go to {}/{}/{}.	動畫群組與合集：標題會放在 {}/{}/{}。
+Interface settings saved.	已儲存介面設定。
+Week column header	週檢視欄位標題
+The column headers of the calendar's week view.	行事曆週檢視的欄位標題。
+Dates	日期
+Short date format	簡短日期格式
+Long date format	完整日期格式
+Time format	時間格式
+Time zone	時區
+Dates and times are shown in this time zone; empty follows the browser.	日期與時間會以此時區顯示；留空則依照瀏覽器。
+The browser's time zone	瀏覽器的時區
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	顯示相對日期（今天、昨天、明天）而非日期
+Style	樣式
+Theme	主題
+Kept in this browser; the top bar button switches it too.	儲存在此瀏覽器中；頂端列的按鈕也可以切換。
+Dark	深色
+Light	淺色
+Colour-impaired mode (colours easier to tell apart, with patterns)	色覺輔助模式（顏色更易區分，並加上圖案）
+Saved to the configuration file. Restart Kitsunarr to apply.	已儲存至設定檔案。請重新啟動 Kitsunarr 以套用。
+Host and logging	主機與記錄
+Set by an environment variable or command-line flag: {}	由環境變數或命令列旗標設定：{}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	已儲存至 {}。變更會在下次啟動 Kitsunarr 時套用；環境變數與命令列旗標仍然優先。
+Restart required: the saved values differ from the ones in use.	需要重新啟動：已儲存的值與使用中的值不同。
+Restart now	立即重新啟動
+Bind address	繫結位址
+0.0.0.0 listens on every interface.	0.0.0.0 會在所有介面上接聽。
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	用於反向代理伺服器，例如 /kitsunarr；留空則從根路徑提供服務。
+Log level	日誌層級
+Debug and trace write much more to the log files.	偵錯與追蹤會向日誌檔案寫入多得多的內容。
+Trace	追蹤
+Warn	警告
+Error	錯誤
+Backup folder	備份資料夾
+Absolute path; empty uses {}.	絕對路徑；留空則使用 {}。
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr 僅提供純 HTTP；若要使用 HTTPS，請在前方設置反向代理伺服器。
+Save host settings	儲存主機設定
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	要立即重新啟動 Kitsunarr 嗎？若位址、連接埠或 URL 基底已變更，之後請開啟新位址。
+Nothing to show.	沒有可顯示的內容。
+All series	所有影集
+All types	所有類型
+All profiles	所有設定檔
+All tags	所有標籤
+Downloaded	已下載
+Unaired	未播出
+{} files · {}	{} 個檔案 · {}
+Summary	摘要
+Monitored series	已監控的影集
+Completed series	已完結的影集
+{} ({} completed)	{}（{} 已完結）
+{} ({} monitored)	{}（{} 已監控）
+Episode files	集數檔案
+{} ({} downloaded)	{}（{} 已下載）
+{} ({} per episode)	{}（每集 {}）
+Series status	影集狀態
+File qualities	檔案品質
+Recent entries	最近項目
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	保存在記憶體中的最新項目。上方的日誌檔案與處理程序輸出（容器日誌或 journal）會保留所有內容。
+Yesterday	昨天
+Tomorrow	明天

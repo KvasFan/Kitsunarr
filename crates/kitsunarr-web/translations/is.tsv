@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Sleppt: þjónninn er enn að ræsa
 {} expired sessions removed	Útrunnar lotur fjarlægðar: {}
 All {} refreshes failed; see the logs	Allar {} endurnýjanir mistókust; sjá annála
 every folder scan failed ({})	allar möppuskannanir mistókust ({})
+Links	Tenglar
+Copy {}	Afrita {}
+Copy the {} id	Afrita {}-auðkennið
+Type	Tegund
+Previous airing	Fyrri sýning
+Season folder	Seríumappa
+Average episode size	Meðalstærð þáttar
+Genres	Tegundir
+Rating	Einkunn
+Certification	Aldurstakmark
+Release groups	Útgáfuhópar
+File quality	Gæði skrár
+In cinemas	Í kvikmyndahúsum
+Runtime	Lengd
+Release group	Útgáfuhópur
+Columns	Dálkar
+Shown in the table, the overview and under posters	Birt í töflunni, yfirlitinu og undir veggspjöldum
+Column {}	Dálkur {}
+Reset columns	Endurstilla dálka
+Yes	Já
+Override and grab {}	Yfirskrifa og sækja {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Veldu þáttaröð, þætti, gæði, tungumál eða niðurhalsforrit þessarar útgáfu og sæktu hana svo (valið er geymt fyrir innflutninginn)
+Override…	Yfirskrifa…
+Override and grab	Yfirskrifa og sækja
+Override and grab — {}	Yfirskrifa og sækja — {}
+{} episodes chosen	{} þættir valdir
+Grab release	Sækja útgáfu
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Óbreytt val heldur því sem titill útgáfunnar segir. Þættir sem eru ekki valdir halda þeim þáttum sem titillinn vísar til.
+Searched series	Leitað að þáttaröð
+Download client	Niðurhalsforrit
+Episodes (required)	Þættir (nauðsynlegt)
+Statistics	Tölfræði
+Test parsing	Prófa greiningu
+{} items removed.	{} atriði fjarlægð.
+{} items removed; {}	{} atriði fjarlægð; {}
+Select every queue item	Velja öll atriði í biðröðinni
+Queue bulk actions	Fjöldaaðgerðir biðraðar
+Grab the selected releases a delay profile holds back now	Sækja núna valdar útgáfur sem töfasnið heldur aftur
+Remove selected…	Fjarlægja valin…
+Remove {} items from the queue	Fjarlægja {} atriði úr biðröðinni
+Held-back releases are forgotten; a later search can find them again.	Útgáfum sem haldið er aftur er gleymt; síðari leit getur fundið þær aftur.
+Removal method	Aðferð við fjarlægingu
+Remove from the download client	Fjarlægja úr niðurhalsforritinu
+Change category	Breyta flokki
+Keep it in the download client	Halda í niðurhalsforritinu
+The download and its files are removed from the download client.	Niðurhalið og skrár þess eru fjarlægð úr niðurhalsforritinu.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Niðurhalið færist í flokk forritsins eftir innflutning og er ekki lengur fylgst með því; skrár þess verða áfram.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Niðurhalið verður óhreyft í niðurhalsforritinu; veldu valkost fyrir bannlista til að setja útgáfu þess á bannlista.
+Blocklist release	Setja útgáfu á bannlista
+Do not blocklist	Ekki setja á bannlista
+Blocklist and search for a replacement	Setja á bannlista og leita að staðgengli
+Blocklist only	Aðeins setja á bannlista
+Removed {} releases from the blocklist.	{} útgáfur fjarlægðar af bannlistanum.
+Remove {} selected	Fjarlægja {} valin
+Select every release on this page	Velja allar útgáfur á þessari síðu
+Remove from the blocklist	Fjarlægja af bannlistanum
+Remove the {} selected releases from the blocklist?	Fjarlægja {} valdar útgáfur af bannlistanum?
+Quality, languages and release of {}	Gæði, tungumál og útgáfa: {}
+Choose the quality, languages, release group and release type the file is imported with	Veldu gæðin, tungumálin, útgáfuhópinn og tegund útgáfu sem skráin er flutt inn með
+Import details — {}	Upplýsingar um innflutning — {}
+Use these details	Nota þessar upplýsingar
+Revision	Endurskoðun
+2 or more for a PROPER or REPACK.	2 eða meira fyrir PROPER eða REPACK.
+Single episode	Stakur þáttur
+Multi-episode	Margir þættir
+Season pack	Seríupakki
+Manual	Handvirkt
+Choose the group the title joins.	Veldu hópinn sem titillinn bætist í.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Sjálfvirkt setur titilinn í hóp með framhaldsröð hans eða samsafni út frá opinberum tengslum. Handvirkt setur hann í hóp sem þú velur. Óvirkt heldur honum sér.
+Manual puts the title in a group you choose, in the group's folder.	Handvirkt setur titilinn í hóp sem þú velur, í möppu hópsins.
+Manual (choose a group)	Handvirkt (veldu hóp)
+The title joins the group as its next season or film, in the group's folder.	Titillinn bætist í hópinn sem næsta sería eða kvikmynd hans, í möppu hópsins.
+Choose a group…	Veldu hóp…
+Collection settings saved.	Stillingar samsafns vistaðar.
+Collection settings	Stillingar samsafns
+Collection name	Heiti samsafns
+Collection type	Tegund samsafns
+A movie saga holds only films.	Kvikmyndabálkur inniheldur aðeins kvikmyndir.
+Movie saga	Kvikmyndabálkur
+Movie folder format	Snið kvikmyndamöppu
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Hvernig möppur meðlima eru nefndar þegar titlar bætast við: sjálfvirkt notar númeraðar möppur í bálkum og söguþráðarmöppur fyrir söguþræði.
+Numbered	Númerað
+No change	Engin breyting
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Vöktun, gæðasnið og seríumappa gilda nú um alla meðlimi; tegundin og möppusniðið gilda um titla sem bætast við héðan í frá.
+Collection settings…	Stillingar samsafns…
+Monitoring, quality profile, series type, folder and tags	Vöktun, gæðasnið, tegund þáttaraðar, mappa og merki
+Change the quality, languages or release group of episode files, or delete them	Breyta gæðum, tungumálum eða útgáfuhópi þáttaskráa, eða eyða þeim
+Manage episodes	Sýsla með þætti
+Episode details: overview, file, history and searches	Upplýsingar um þátt: yfirlit, skrá, saga og leitir
+Details of episode {}	Upplýsingar um þátt {}
+Monitoring, availability, quality profile, folder and tags	Vöktun, framboð, gæðasnið, mappa og merki
+No tags yet: create them in Settings › Tags.	Engin merki enn: búðu þau til í Stillingar › Merki.
+Below the root folder.	Undir rótarmöppunni.
+Use the folder name the naming settings give	Nota möppuheitið sem stillingar nafngifta gefa
+Use naming format	Nota nafngiftarsnið
+Series saved.	Þáttaröð vistuð.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr leitar að og sækir vaktaða þætti vaktaðrar þáttaraðar.
+Whether seasons a refresh discovers are monitored.	Hvort seríur sem endurnýjun finnur séu vaktaðar.
+Sort episodes into season folders.	Raða þáttum í seríumöppur.
+Use season folders	Nota seríumöppur
+Decides how episodes are numbered when searching and importing.	Ákvarðar hvernig þættir eru númeraðir við leit og innflutning.
+TheTVDB titles in this language; changing it refreshes the series.	Titlar TheTVDB á þessu tungumáli; breyting endurnýjar þáttaröðina.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Óvirkt fjarlægir þáttaröðina úr anime-hópi hennar og heldur henni utan sjálfvirkrar hópunar.
+Enter a folder name.	Sláðu inn möppuheiti.
+Edit — {}	Breyta — {}
+Announced	Tilkynnt
+Released	Gefin út
+Movie saved.	Kvikmynd vistuð.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr leitar að og sækir vaktaða kvikmynd.
+Minimum availability	Lágmarksframboð
+When the movie counts as available for automatic searches.	Hvenær kvikmyndin telst fáanleg fyrir sjálfvirkar leitir.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Óvirkt fjarlægir kvikmyndina úr samsafni hennar og heldur henni utan sjálfvirkrar hópunar.
+Edit {} selected	Breyta {} völdum
+Apply changes	Nota breytingar
+No season folders	Engar seríumöppur
+Tags updated on {} items.	Merki uppfærð á {} atriðum.
+Removes the chosen tags from every selected title.	Fjarlægir valin merki af hverjum völdum titli.
+Every selected title gets exactly the chosen tags (none removes all).	Hver valinn titill fær nákvæmlega valin merki (ekkert fjarlægir öll).
+Adds the chosen tags to every selected title.	Bætir valin merki við hvern valinn titil.
+Tags — {} selected	Merki — {} valin
+Apply tags	Nota merki
+Replace	Skipta út
+Manage	Sýsla
+Multi-season pack	Pakki margra sería
+Scene name	Senuheiti
+Video	Myndskeið
+· {} fps	· {} fps
+Run time	Lengd
+Audio	Hljóð
+Subtitles	Skjátextar
+Details	Upplýsingar
+Search the indexers and grab the best release	Leita hjá leitarþjónum og sækja bestu útgáfuna
+See every release and choose	Skoða allar útgáfur og velja
+absolute {}	algilt {}
+Air date	Sýningardagsetning
+No overview.	Ekkert yfirlit.
+Delete this episode's file? It goes to the recycle bin when one is set.	Eyða skrá þessa þáttar? Hún fer í ruslafötuna ef hún er stillt.
+{} files updated.	{} skrár uppfærðar.
+{} files deleted.	{} skrám eytt.
+{} files deleted; {}	{} skrám eytt; {}
+Delete files	Eyða skrám
+The series has no files.	Þáttaröðin hefur engar skrár.
+Change	Breyta
+Change for the selected files…	Breyta fyrir valdar skrár…
+Empty clears it	Autt hreinsar það
+Select every file	Velja allar skrár
+Delete the {} selected files? They go to the recycle bin when one is set.	Eyða {} völdum skrám? Þær fara í ruslafötuna ef hún er stillt.
+Monitoring, quality profile, series type and season folders of the selected series	Vöktun, gæðasnið, tegund þáttaraðar og seríumöppur valinna þáttaraða
+Edit…	Breyta…
+Add, remove or replace the tags of the selected series	Bæta við, fjarlægja eða skipta út merkjum valinna þáttaraða
+Tags…	Merki…
+Monitoring and quality profile of the selected movies	Vöktun og gæðasnið valinna kvikmynda
+Add, remove or replace the tags of the selected movies	Bæta við, fjarlægja eða skipta út merkjum valinna kvikmynda
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Límdu inn titil útgáfu eða skráarheiti til að sjá hvernig Kitsunarr les það og hvaða þáttum það samsvarar.
+Parse	Greina
+Kitsunarr could not read this title.	Kitsunarr gat ekki lesið þennan titil.
+Parse result	Niðurstaða greiningar
+Series title	Titill þáttaraðar
+Absolute episodes	Algildir þættir
+Release hash	Tætigildi útgáfu
+Multi-season	Margar seríur
+Absolute numbering	Algild númering
+Library match	Samsvörun í safni
+No series in the library matches this title.	Engin þáttaröð í safninu samsvarar þessum titli.
+No episode of the series matches.	Enginn þáttur þáttaraðarinnar samsvarar.
+Log files	Annálaskrár
+Refresh	Endurnýja
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr skrifar annál sinn í skrár í gagnamöppunni, sem skipt er við 1 MiB. Annálsstigið er stillt í Stillingar › Almennt.
+No log files yet	Engar annálaskrár enn
+Last written	Síðast skrifað
+Skip the free-space check when importing	Sleppa athugun á lausu plássi við innflutning
+Create empty series folders during disk scans (not with "delete empty folders")	Búa til tómar möppur þáttaraða við diskskönnun (ekki með „eyða tómum möppum“)
+Skip the free-space check when grabbing	Sleppa athugun á lausu plássi við sókn
+Set permissions on imported files and folders (Linux)	Stilla heimildir á innfluttum skrám og möppum (Linux)
+Import using a script	Flytja inn með skriftu
+Rescan series folder after refresh	Skanna möppu þáttaraðar aftur eftir endurnýjun
+Whether a metadata refresh scans the series folder for changes afterwards.	Hvort endurnýjun lýsigagna skanni möppu þáttaraðarinnar eftir breytingum á eftir.
+Always	Alltaf
+After manual refresh	Eftir handvirka endurnýjun
+Never	Aldrei
+Episode title required	Titill þáttar nauðsynlegur
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Innflutningur bíður eftir titli þáttar þegar nafngiftarsniðið notar hann og þátturinn var sýndur á síðustu 48 klukkustundum.
+Only for bulk season releases	Aðeins fyrir útgáfur heilla sería
+Season pack upgrades	Uppfærslur seríupakka
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Hversu margir þættir seríupakka þurfa að vanta eða vera uppfæranlegir til að pakkinn sé sóttur.
+A share of the episodes	Hlutfall þáttanna
+Any episode	Hvaða þáttur sem er
+Season pack upgrade threshold (%)	Þröskuldur uppfærslu seríupakka (%)
+Rejected extensions	Hafnaðar skráarendingar
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Aðgreint með kommum, t.d. exe, bat. Niðurhal með einni skrá sem hefur eina af þessum endingum er ekki flutt inn.
+Folder permissions (chmod)	Heimildir mappa (chmod)
+Octal mode for folders; files get it without the execute bits.	Áttundarhamur fyrir möppur; skrár fá hann án keyrslubitanna.
+Group (chown)	Hópur (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Heiti eða auðkenni hóps fyrir innfluttar skrár og möppur; autt lætur hópinn óbreyttan.
+Import script path	Slóð innflutningsskriftu
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Algild slóð skriftunnar; hún fær upprunaslóð og áfangaslóð og umhverfisbreytur Sonarr.
+Excluded tags (ids, comma separated)	Útilokuð merki (auðkenni, aðgreind með kommum)
+The profile does not apply to series with one of these tags.	Sniðið gildir ekki um þáttaraðir með einhverju þessara merkja.
+Reject releases published before the episode airs	Hafna útgáfum sem birtar eru áður en þátturinn er sýndur
+Allow season packs before every episode has aired	Leyfa seríupakka áður en allir þættir hafa verið sýndir
+Air date grace period (hours)	Frestur sýningardagsetningar (klukkustundir)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Útgáfum sem birtar eru allt að svo mörgum klukkustundum eftir sýningardagsetningu er samt hafnað; neikvæð tala leyfir þær svo mörgum klukkustundum fyrr.
+Presets	Forstillingar
+Series ID	Auðkenni þáttaraðar
+Anime group	Anime-hópur
+Absolute episode number	Algilt þáttanúmer
+Episode title	Titill þáttar
+Media info	Upplýsingar um miðil
+Original	Upprunalegt
+File name tokens	Tókar fyrir skráarheiti
+Folder name tokens	Tókar fyrir möppuheiti
+Format	Snið
+Separator	Skiltákn
+Space ( )	Bil ( )
+Period (.)	Punktur (.)
+Underscore (_)	Undirstrik (_)
+Dash (-)	Bandstrik (-)
+Capitalization	Hástafanotkun
+Default case	Sjálfgefinn ritháttur
+Lowercase	Lágstafir
+Uppercase	Hástafir
+Click a token to insert it at the cursor; a preset replaces the whole format.	Smelltu á tóka til að setja hann inn við bendilinn; forstilling kemur í stað alls sniðsins.
+Tokens	Tókar
+Tokens for {}	Tókar fyrir {}
+Invalid format	Ógilt snið
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Sniðin nota tóka Sonarr; dæmin hér fyrir neðan fylgja breytingum þínum áður en þú vistar.
+Rename episodes	Endurnefna þætti
+Replace illegal characters (otherwise they are removed)	Skipta út ógildum stöfum (annars eru þeir fjarlægðir)
+Colon replacement	Útskipting tvípunkta
+How colons in titles are written in file and folder names.	Hvernig tvípunktar í titlum eru skrifaðir í skráar- og möppuheitum.
+Replace with dash	Skipta út fyrir bandstrik
+Replace with space dash	Skipta út fyrir bil og bandstrik
+Replace with space dash space	Skipta út fyrir bil, bandstrik og bil
+Smart replace (dash or space dash)	Snjöll útskipting (bandstrik eða bil og bandstrik)
+Custom	Sérsniðið
+Custom colon replacement	Sérsniðin útskipting tvípunkta
+The characters written instead of a colon.	Stafirnir sem eru skrifaðir í stað tvípunkts.
+Multi-episode style	Stíll fyrir marga þætti
+Extend (S01E01-02-03)	Lengja (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Tvítaka (S01E01.S01E02)
+Repeat (S01E01E02E03)	Endurtaka (S01E01E02E03)
+Scene (S01E01-E02-E03)	Sena (S01E01-E02-E03)
+Range (S01E01-03)	Bil (S01E01-03)
+Prefixed range (S01E01-E03)	Bil með forskeyti (S01E01-E03)
+Example	Dæmi
+Anime group movie	Kvikmynd í anime-hópi
+Used when films are renamed.	Notað þegar kvikmyndir eru endurnefndar.
+Used when adding a new series or moving one.	Notað þegar ný þáttaröð er bætt við eða þáttaröð er færð.
+Specials folder format	Snið möppu sérþátta
+Anime groups and collections: titles go to {}/{}/{}.	Anime-hópar og samsöfn: titlar fara í {}/{}/{}.
+Interface settings saved.	Stillingar viðmóts vistaðar.
+Week column header	Dálkhaus vikuyfirlits
+The column headers of the calendar's week view.	Dálkhausar vikuyfirlits dagatalsins.
+Dates	Dagsetningar
+Short date format	Stutt dagsetningarsnið
+Long date format	Langt dagsetningarsnið
+Time format	Tímasnið
+Time zone	Tímabelti
+Dates and times are shown in this time zone; empty follows the browser.	Dagsetningar og tímar eru birtir á þessu tímabelti; autt fylgir vafranum.
+The browser's time zone	Tímabelti vafrans
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Sýna afstæðar dagsetningar (Í dag, Í gær, Á morgun) í stað dagsetningarinnar
+Style	Stíll
+Theme	Þema
+Kept in this browser; the top bar button switches it too.	Geymt í þessum vafra; hnappurinn í efstu stikunni skiptir því líka.
+Dark	Dökkt
+Light	Ljóst
+Colour-impaired mode (colours easier to tell apart, with patterns)	Litblinduhamur (litir sem auðveldara er að greina í sundur, með mynstrum)
+Saved to the configuration file. Restart Kitsunarr to apply.	Vistað í stillingaskrána. Endurræstu Kitsunarr til að virkja.
+Host and logging	Hýsill og annálar
+Set by an environment variable or command-line flag: {}	Stillt af umhverfisbreytu eða skipanalínurofa: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Vistað í {}. Breytingar taka gildi næst þegar Kitsunarr ræsist; umhverfisbreytur og skipanalínurofar hafa áfram forgang.
+Restart required: the saved values differ from the ones in use.	Endurræsingar krafist: vistuðu gildin eru frábrugðin þeim sem eru í notkun.
+Restart now	Endurræsa núna
+Bind address	Bindivistfang
+0.0.0.0 listens on every interface.	0.0.0.0 hlustar á öllum netviðmótum.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Fyrir öfuga proxy-þjóna, t.d. /kitsunarr; autt þjónar frá rótinni.
+Log level	Annálsstig
+Debug and trace write much more to the log files.	Villuleit og rakning skrifa miklu meira í annálaskrárnar.
+Trace	Rakning
+Warn	Viðvörun
+Error	Villa
+Backup folder	Mappa fyrir afrit
+Absolute path; empty uses {}.	Algild slóð; autt notar {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr þjónar venjulegu HTTP; settu öfugan proxy fyrir framan fyrir HTTPS.
+Save host settings	Vista stillingar hýsils
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Endurræsa Kitsunarr núna? Ef vistfang, gátt eða grunnur slóðar breyttist skaltu opna nýja vistfangið á eftir.
+Nothing to show.	Ekkert að sýna.
+All series	Allar þáttaraðir
+All types	Allar tegundir
+All profiles	Öll snið
+All tags	Öll merki
+Downloaded	Sótt
+Unaired	Ósýnt
+{} files · {}	{} skrár · {}
+Summary	Samantekt
+Monitored series	Vaktaðar þáttaraðir
+Completed series	Fullkláraðar þáttaraðir
+{} ({} completed)	{} ({} fullklárað)
+{} ({} monitored)	{} ({} vaktað)
+Episode files	Þáttaskrár
+{} ({} downloaded)	{} ({} sótt)
+{} ({} per episode)	{} ({} á þátt)
+Series status	Staða þáttaraða
+File qualities	Gæði skráa
+Recent entries	Nýlegar færslur
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Nýjustu færslurnar sem eru geymdar í minni. Annálaskrárnar hér fyrir ofan og úttak ferlisins (gámaannálar eða journal) geyma allt.
+Yesterday	Í gær
+Tomorrow	Á morgun

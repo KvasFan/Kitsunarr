@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Прескочено: сервер се ј
 {} expired sessions removed	Уклоњено истеклих сесија: {}
 All {} refreshes failed; see the logs	Сва освежавања ({}) су неуспела; погледајте дневнике
 every folder scan failed ({})	свако скенирање фасцикли је неуспело ({})
+Links	Везе
+Copy {}	Копирај {}
+Copy the {} id	Копирај {} ID
+Type	Тип
+Previous airing	Претходно емитовање
+Season folder	Фасцикла сезоне
+Average episode size	Просечна величина епизоде
+Genres	Жанрови
+Rating	Оцена
+Certification	Узрасна категорија
+Release groups	Групе издања
+File quality	Квалитет датотеке
+In cinemas	У биоскопима
+Runtime	Трајање
+Release group	Група издања
+Columns	Колоне
+Shown in the table, the overview and under posters	Приказано у табели, прегледу и испод постера
+Column {}	Колона {}
+Reset columns	Ресетуј колоне
+Yes	Да
+Override and grab {}	Измени и преузми {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Изаберите серију, епизоде, квалитет, језике или клијент за преузимање за ово издање, па га преузмите (избори се чувају за увоз)
+Override…	Измени…
+Override and grab	Измени и преузми
+Override and grab — {}	Измени и преузми — {}
+{} episodes chosen	Изабрано епизода: {}
+Grab release	Преузми издање
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Непромењени избори задржавају оно што каже наслов издања. Неизабране епизоде задржавају епизоде на које се наслов односи.
+Searched series	Тражена серија
+Download client	Клијент за преузимање
+Episodes (required)	Епизоде (обавезно)
+Statistics	Статистика
+Test parsing	Тест рашчлањивања
+{} items removed.	Уклоњено ставки: {}.
+{} items removed; {}	Уклоњено ставки: {}; {}
+Select every queue item	Изабери све ставке реда чекања
+Queue bulk actions	Групне радње за ред чекања
+Grab the selected releases a delay profile holds back now	Преузми одмах изабрана издања која задржава профил кашњења
+Remove selected…	Уклони изабрано…
+Remove {} items from the queue	Уклони из реда чекања (ставки: {})
+Held-back releases are forgotten; a later search can find them again.	Задржана издања се заборављају; каснија претрага их може поново пронаћи.
+Removal method	Начин уклањања
+Remove from the download client	Уклони из клијента за преузимање
+Change category	Промени категорију
+Keep it in the download client	Задржи у клијенту за преузимање
+The download and its files are removed from the download client.	Преузимање и његове датотеке уклањају се из клијента за преузимање.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Преузимање прелази у категорију клијента после увоза и више се не прати; његове датотеке остају.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Преузимање остаје нетакнуто у клијенту за преузимање; изаберите опцију листе блокираних да бисте блокирали његово издање.
+Blocklist release	Блокирај издање
+Do not blocklist	Не блокирај
+Blocklist and search for a replacement	Блокирај и потражи замену
+Blocklist only	Само блокирај
+Removed {} releases from the blocklist.	Уклоњено издања са листе блокираних: {}.
+Remove {} selected	Уклони изабрано ({})
+Select every release on this page	Изабери сва издања на овој страници
+Remove from the blocklist	Уклони са листе блокираних
+Remove the {} selected releases from the blocklist?	Уклонити изабрана издања ({}) са листе блокираних?
+Quality, languages and release of {}	Квалитет, језици и издање за {}
+Choose the quality, languages, release group and release type the file is imported with	Изаберите квалитет, језике, групу издања и тип издања са којима се датотека увози
+Import details — {}	Детаљи увоза — {}
+Use these details	Користи ове детаље
+Revision	Ревизија
+2 or more for a PROPER or REPACK.	2 или више за PROPER или REPACK.
+Single episode	Једна епизода
+Multi-episode	Више епизода
+Season pack	Пакет сезоне
+Manual	Ручно
+Choose the group the title joins.	Изаберите групу којој се наслов придружује.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	„Аутоматски“ групише наслов са његовом франшизом или колекцијом према званичним везама. „Ручно“ га ставља у групу коју изаберете. „Онемогућено“ га оставља самосталним.
+Manual puts the title in a group you choose, in the group's folder.	„Ручно“ ставља наслов у групу коју изаберете, у фасциклу групе.
+Manual (choose a group)	Ручно (изаберите групу)
+The title joins the group as its next season or film, in the group's folder.	Наслов се придружује групи као њена следећа сезона или филм, у фасцикли групе.
+Choose a group…	Изаберите групу…
+Collection settings saved.	Подешавања колекције су сачувана.
+Collection settings	Подешавања колекције
+Collection name	Назив колекције
+Collection type	Тип колекције
+A movie saga holds only films.	Филмска сага садржи само филмове.
+Movie saga	Филмска сага
+Movie folder format	Формат фасцикле филма
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Како се именују фасцикле чланова када се наслови придруже: аутоматски користи нумерисане фасцикле у сагама и фасцикле сижејних лукова за лукове.
+Numbered	Нумерисано
+No change	Без промене
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Праћење, профил квалитета и фасцикла сезоне сада се примењују на сваког члана; тип и формат фасцикле примењују се на наслове који се придруже од сада.
+Collection settings…	Подешавања колекције…
+Monitoring, quality profile, series type, folder and tags	Праћење, профил квалитета, тип серије, фасцикла и ознаке
+Change the quality, languages or release group of episode files, or delete them	Промените квалитет, језике или групу издања датотека епизода или их обришите
+Manage episodes	Управљај епизодама
+Episode details: overview, file, history and searches	Детаљи епизоде: преглед, датотека, историја и претраге
+Details of episode {}	Детаљи епизоде {}
+Monitoring, availability, quality profile, folder and tags	Праћење, доступност, профил квалитета, фасцикла и ознаке
+No tags yet: create them in Settings › Tags.	Још нема ознака: направите их у Подешавања › Ознаке.
+Below the root folder.	Испод коренске фасцикле.
+Use the folder name the naming settings give	Користи назив фасцикле из подешавања именовања
+Use naming format	Користи формат именовања
+Series saved.	Серија је сачувана.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr тражи и преузима праћене епизоде праћене серије.
+Whether seasons a refresh discovers are monitored.	Да ли се прате сезоне које освежавање открије.
+Sort episodes into season folders.	Разврстај епизоде у фасцикле сезона.
+Use season folders	Користи фасцикле сезона
+Decides how episodes are numbered when searching and importing.	Одређује како се епизоде нумеришу при претрази и увозу.
+TheTVDB titles in this language; changing it refreshes the series.	Наслови са TheTVDB на овом језику; промена освежава серију.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	„Онемогућено“ уклања серију из њене аниме групе и искључује је из аутоматског груписања.
+Enter a folder name.	Унесите назив фасцикле.
+Edit — {}	Уреди — {}
+Announced	Најављено
+Released	Објављено
+Movie saved.	Филм је сачуван.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr тражи и преузима праћени филм.
+Minimum availability	Минимална доступност
+When the movie counts as available for automatic searches.	Када се филм сматра доступним за аутоматске претраге.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	„Онемогућено“ уклања филм из његове колекције и искључује га из аутоматског груписања.
+Edit {} selected	Уреди изабрано ({})
+Apply changes	Примени измене
+No season folders	Без фасцикли сезона
+Tags updated on {} items.	Ознаке су ажуриране на ставкама: {}.
+Removes the chosen tags from every selected title.	Уклања изабране ознаке са сваког изабраног наслова.
+Every selected title gets exactly the chosen tags (none removes all).	Сваки изабрани наслов добија тачно изабране ознаке (ниједна уклања све).
+Adds the chosen tags to every selected title.	Додаје изабране ознаке сваком изабраном наслову.
+Tags — {} selected	Ознаке — изабрано: {}
+Apply tags	Примени ознаке
+Replace	Замени
+Manage	Управљај
+Multi-season pack	Пакет више сезона
+Scene name	Назив сцене
+Video	Видео
+· {} fps	· {} fps
+Run time	Трајање
+Audio	Аудио
+Subtitles	Титлови
+Details	Детаљи
+Search the indexers and grab the best release	Претражи индексере и преузми најбоље издање
+See every release and choose	Погледај сва издања и изабери
+absolute {}	апсолутно {}
+Air date	Датум емитовања
+No overview.	Нема прегледа.
+Delete this episode's file? It goes to the recycle bin when one is set.	Обрисати датотеку ове епизоде? Иде у корпу за отпатке ако је подешена.
+{} files updated.	Ажурирано датотека: {}.
+{} files deleted.	Обрисано датотека: {}.
+{} files deleted; {}	Обрисано датотека: {}; {}
+Delete files	Обриши датотеке
+The series has no files.	Серија нема датотека.
+Change	Промени
+Change for the selected files…	Промени за изабране датотеке…
+Empty clears it	Празно брише вредност
+Select every file	Изабери све датотеке
+Delete the {} selected files? They go to the recycle bin when one is set.	Обрисати изабране датотеке ({})? Иду у корпу за отпатке ако је подешена.
+Monitoring, quality profile, series type and season folders of the selected series	Праћење, профил квалитета, тип серије и фасцикле сезона изабраних серија
+Edit…	Уреди…
+Add, remove or replace the tags of the selected series	Додај, уклони или замени ознаке изабраних серија
+Tags…	Ознаке…
+Monitoring and quality profile of the selected movies	Праћење и профил квалитета изабраних филмова
+Add, remove or replace the tags of the selected movies	Додај, уклони или замени ознаке изабраних филмова
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Налепите наслов издања или назив датотеке да видите како га Kitsunarr чита и са којим се епизодама поклапа.
+Parse	Рашчлани
+Kitsunarr could not read this title.	Kitsunarr није могао да прочита овај наслов.
+Parse result	Резултат рашчлањивања
+Series title	Наслов серије
+Absolute episodes	Апсолутне епизоде
+Release hash	Хеш издања
+Multi-season	Више сезона
+Absolute numbering	Апсолутно нумерисање
+Library match	Поклапање у библиотеци
+No series in the library matches this title.	Ниједна серија у библиотеци се не поклапа са овим насловом.
+No episode of the series matches.	Ниједна епизода серије се не поклапа.
+Log files	Датотеке дневника
+Refresh	Освежи
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr уписује дневник у датотеке у фасцикли података, уз ротацију на 1 MiB. Ниво дневника се подешава у Подешавања › Опште.
+No log files yet	Још нема датотека дневника
+Last written	Последњи упис
+Skip the free-space check when importing	Прескочи проверу слободног простора при увозу
+Create empty series folders during disk scans (not with "delete empty folders")	Прави празне фасцикле серија током скенирања диска (не уз „брисање празних фасцикли“)
+Skip the free-space check when grabbing	Прескочи проверу слободног простора при преузимању
+Set permissions on imported files and folders (Linux)	Постави дозволе за увезене датотеке и фасцикле (Linux)
+Import using a script	Увези помоћу скрипте
+Rescan series folder after refresh	Поново скенирај фасциклу серије после освежавања
+Whether a metadata refresh scans the series folder for changes afterwards.	Да ли освежавање метаподатака после тога скенира фасциклу серије ради промена.
+Always	Увек
+After manual refresh	После ручног освежавања
+Never	Никад
+Episode title required	Обавезан наслов епизоде
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Увози чекају наслов епизоде када га формат именовања користи, а епизода је емитована у последњих 48 сати.
+Only for bulk season releases	Само за групна издања сезона
+Season pack upgrades	Надоградње пакета сезоне
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Колико епизода из пакета сезоне мора да недостаје или да може да се надогради да би пакет био преузет.
+A share of the episodes	Део епизода
+Any episode	Било која епизода
+Season pack upgrade threshold (%)	Праг за надоградњу пакета сезоне (%)
+Rejected extensions	Одбијене екстензије
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Раздвојене зарезом, нпр. exe, bat. Преузимање са једном датотеком која има неку од ових екстензија се не увози.
+Folder permissions (chmod)	Дозволе фасцикли (chmod)
+Octal mode for folders; files get it without the execute bits.	Октални режим за фасцикле; датотеке га добијају без битова за извршавање.
+Group (chown)	Група (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Назив или ID групе за увезене датотеке и фасцикле; празно не мења групу.
+Import script path	Путања скрипте за увоз
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Апсолутна путања скрипте; добија изворну и одредишну путању и Sonarr променљиве окружења.
+Excluded tags (ids, comma separated)	Изузете ознаке (ID-ови, раздвојени зарезом)
+The profile does not apply to series with one of these tags.	Профил се не примењује на серије са неком од ових ознака.
+Reject releases published before the episode airs	Одбаци издања објављена пре емитовања епизоде
+Allow season packs before every episode has aired	Дозволи пакете сезона пре него што се емитују све епизоде
+Air date grace period (hours)	Период толеранције за датум емитовања (сати)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Издања објављена до оволико сати после датума емитовања и даље се одбацују; негативан број их дозвољава толико сати раније.
+Presets	Предлошци
+Series ID	ID серије
+Anime group	Аниме група
+Absolute episode number	Апсолутни број епизоде
+Episode title	Наслов епизоде
+Media info	Медијске информације
+Original	Оригинал
+File name tokens	Токени назива датотеке
+Folder name tokens	Токени назива фасцикле
+Format	Формат
+Separator	Раздвајач
+Space ( )	Размак ( )
+Period (.)	Тачка (.)
+Underscore (_)	Доња црта (_)
+Dash (-)	Цртица (-)
+Capitalization	Велика и мала слова
+Default case	Подразумевано
+Lowercase	Мала слова
+Uppercase	Велика слова
+Click a token to insert it at the cursor; a preset replaces the whole format.	Кликните на токен да бисте га уметнули на месту курсора; предложак замењује цео формат.
+Tokens	Токени
+Tokens for {}	Токени за {}
+Invalid format	Неважећи формат
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Формати користе токене из Sonarr; примери испод прате ваше измене пре чувања.
+Rename episodes	Преименуј епизоде
+Replace illegal characters (otherwise they are removed)	Замени недозвољене знакове (иначе се уклањају)
+Colon replacement	Замена двотачке
+How colons in titles are written in file and folder names.	Како се двотачке из наслова пишу у називима датотека и фасцикли.
+Replace with dash	Замени цртицом
+Replace with space dash	Замени размаком и цртицом
+Replace with space dash space	Замени размаком, цртицом и размаком
+Smart replace (dash or space dash)	Паметна замена (цртица или размак и цртица)
+Custom	Прилагођено
+Custom colon replacement	Прилагођена замена двотачке
+The characters written instead of a colon.	Знакови који се пишу уместо двотачке.
+Multi-episode style	Стил више епизода
+Extend (S01E01-02-03)	Проширено (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Дуплирано (S01E01.S01E02)
+Repeat (S01E01E02E03)	Понављано (S01E01E02E03)
+Scene (S01E01-E02-E03)	Сцена (S01E01-E02-E03)
+Range (S01E01-03)	Опсег (S01E01-03)
+Prefixed range (S01E01-E03)	Опсег са префиксом (S01E01-E03)
+Example	Пример
+Anime group movie	Филм аниме групе
+Used when films are renamed.	Користи се када се филмови преименују.
+Used when adding a new series or moving one.	Користи се при додавању нове серије или премештању постојеће.
+Specials folder format	Формат фасцикле специјала
+Anime groups and collections: titles go to {}/{}/{}.	Аниме групе и колекције: наслови иду у {}/{}/{}.
+Interface settings saved.	Подешавања интерфејса су сачувана.
+Week column header	Заглавље колоне недеље
+The column headers of the calendar's week view.	Заглавља колона у недељном приказу календара.
+Dates	Датуми
+Short date format	Кратак формат датума
+Long date format	Дуги формат датума
+Time format	Формат времена
+Time zone	Временска зона
+Dates and times are shown in this time zone; empty follows the browser.	Датуми и времена приказују се у овој временској зони; празно прати прегледач.
+The browser's time zone	Временска зона прегледача
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Прикажи релативне датуме (Данас, Јуче, Сутра) уместо датума
+Style	Стил
+Theme	Тема
+Kept in this browser; the top bar button switches it too.	Чува се у овом прегледачу; мења је и дугме у горњој траци.
+Dark	Тамна
+Light	Светла
+Colour-impaired mode (colours easier to tell apart, with patterns)	Режим за слабије разликовање боја (боје које се лакше разликују, са шарама)
+Saved to the configuration file. Restart Kitsunarr to apply.	Сачувано у конфигурациону датотеку. Поново покрените Kitsunarr да бисте применили измене.
+Host and logging	Хост и евидентирање
+Set by an environment variable or command-line flag: {}	Подешено променљивом окружења или заставицом командне линије: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Сачувано у {}. Измене се примењују при следећем покретању програма Kitsunarr; променљиве окружења и заставице командне линије и даље имају предност.
+Restart required: the saved values differ from the ones in use.	Потребно је поновно покретање: сачуване вредности се разликују од оних у употреби.
+Restart now	Поново покрени сада
+Bind address	Адреса везивања
+0.0.0.0 listens on every interface.	0.0.0.0 слуша на сваком интерфејсу.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	За обрнуте проксије, нпр. /kitsunarr; празно служи из корена.
+Log level	Ниво дневника
+Debug and trace write much more to the log files.	Нивои за отклањање грешака и детаљно праћење уписују много више у датотеке дневника.
+Trace	Детаљно праћење
+Warn	Упозорење
+Error	Грешка
+Backup folder	Фасцикла резервних копија
+Absolute path; empty uses {}.	Апсолутна путања; празно користи {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr служи обичан HTTP; за HTTPS поставите обрнути прокси испред њега.
+Save host settings	Сачувај подешавања хоста
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Поново покренути Kitsunarr сада? Ако су се адреса, порт или URL основа променили, после тога отворите нову адресу.
+Nothing to show.	Нема шта да се прикаже.
+All series	Све серије
+All types	Сви типови
+All profiles	Сви профили
+All tags	Све ознаке
+Downloaded	Преузето
+Unaired	Неемитовано
+{} files · {}	Датотека: {} · {}
+Summary	Сажетак
+Monitored series	Праћене серије
+Completed series	Завршене серије
+{} ({} completed)	{} (завршено: {})
+{} ({} monitored)	{} (праћено: {})
+Episode files	Датотеке епизода
+{} ({} downloaded)	{} (преузето: {})
+{} ({} per episode)	{} ({} по епизоди)
+Series status	Статус серије
+File qualities	Квалитети датотека
+Recent entries	Недавни уноси
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Најновији уноси који се чувају у меморији. Датотеке дневника изнад и излаз процеса (дневници контејнера или journal) чувају све.
+Yesterday	Јуче
+Tomorrow	Сутра

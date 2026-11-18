@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Dilewati: server masih memulai
 {} expired sessions removed	{} sesi kedaluwarsa dihapus
 All {} refreshes failed; see the logs	Semua {} pemuatan ulang gagal; lihat log
 every folder scan failed ({})	setiap pemindaian folder gagal ({})
+Links	Tautan
+Copy {}	Salin {}
+Copy the {} id	Salin id {}
+Type	Jenis
+Previous airing	Penayangan sebelumnya
+Season folder	Folder musim
+Average episode size	Ukuran rata-rata episode
+Genres	Genre
+Rating	Rating
+Certification	Klasifikasi usia
+Release groups	Grup rilis
+File quality	Kualitas file
+In cinemas	Di bioskop
+Runtime	Durasi
+Release group	Grup rilis
+Columns	Kolom
+Shown in the table, the overview and under posters	Ditampilkan di tabel, tampilan ringkasan, dan di bawah poster
+Column {}	Kolom {}
+Reset columns	Atur ulang kolom
+Yes	Ya
+Override and grab {}	Timpa dan ambil {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Pilih serial, episode, kualitas, bahasa, atau download client untuk rilis ini, lalu ambil (pilihan disimpan untuk impor)
+Override…	Timpa…
+Override and grab	Timpa dan ambil
+Override and grab — {}	Timpa dan ambil — {}
+{} episodes chosen	{} episode dipilih
+Grab release	Ambil rilis
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Pilihan yang tidak diubah mengikuti judul rilis. Jika tidak ada episode yang dipilih, episode yang dipetakan dari judul tetap dipakai.
+Searched series	Serial yang dicari
+Download client	Download client
+Episodes (required)	Episode (wajib)
+Statistics	Statistik
+Test parsing	Uji parsing
+{} items removed.	{} item dihapus.
+{} items removed; {}	{} item dihapus; {}
+Select every queue item	Pilih semua item antrean
+Queue bulk actions	Tindakan massal antrean
+Grab the selected releases a delay profile holds back now	Ambil sekarang rilis terpilih yang ditahan oleh delay profile
+Remove selected…	Hapus yang dipilih…
+Remove {} items from the queue	Hapus {} item dari antrean
+Held-back releases are forgotten; a later search can find them again.	Rilis yang ditahan akan dilupakan; penelusuran berikutnya dapat menemukannya lagi.
+Removal method	Metode penghapusan
+Remove from the download client	Hapus dari download client
+Change category	Ubah kategori
+Keep it in the download client	Biarkan di download client
+The download and its files are removed from the download client.	Unduhan dan file-nya dihapus dari download client.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Unduhan dipindahkan ke kategori setelah impor milik klien dan tidak lagi dilacak; file-nya tetap ada.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Unduhan tetap ada di download client tanpa diubah; pilih opsi blocklist untuk memasukkan rilisnya ke blocklist.
+Blocklist release	Masukkan rilis ke blocklist
+Do not blocklist	Jangan masukkan ke blocklist
+Blocklist and search for a replacement	Masukkan ke blocklist dan cari pengganti
+Blocklist only	Hanya masukkan ke blocklist
+Removed {} releases from the blocklist.	{} rilis dihapus dari blocklist.
+Remove {} selected	Hapus {} yang dipilih
+Select every release on this page	Pilih semua rilis di halaman ini
+Remove from the blocklist	Hapus dari blocklist
+Remove the {} selected releases from the blocklist?	Hapus {} rilis yang dipilih dari blocklist?
+Quality, languages and release of {}	Kualitas, bahasa, dan rilis {}
+Choose the quality, languages, release group and release type the file is imported with	Pilih kualitas, bahasa, grup rilis, dan jenis rilis yang dipakai saat file diimpor
+Import details — {}	Detail impor — {}
+Use these details	Gunakan detail ini
+Revision	Revisi
+2 or more for a PROPER or REPACK.	2 atau lebih untuk PROPER atau REPACK.
+Single episode	Satu episode
+Multi-episode	Multi-episode
+Season pack	Paket musim
+Manual	Manual
+Choose the group the title joins.	Pilih grup yang akan dimasuki judul.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Otomatis mengelompokkan judul dengan franchise atau koleksinya berdasarkan relasi resmi. Manual memasukkannya ke grup yang Anda pilih. Nonaktif membiarkannya berdiri sendiri.
+Manual puts the title in a group you choose, in the group's folder.	Manual memasukkan judul ke grup yang Anda pilih, di dalam folder grup.
+Manual (choose a group)	Manual (pilih grup)
+The title joins the group as its next season or film, in the group's folder.	Judul bergabung ke grup sebagai musim atau film berikutnya, di dalam folder grup.
+Choose a group…	Pilih grup…
+Collection settings saved.	Pengaturan koleksi disimpan.
+Collection settings	Pengaturan koleksi
+Collection name	Nama koleksi
+Collection type	Jenis koleksi
+A movie saga holds only films.	Saga film hanya berisi film.
+Movie saga	Saga film
+Movie folder format	Format folder film
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Cara folder anggota diberi nama saat judul bergabung: otomatis memakai folder bernomor pada saga dan folder alur cerita untuk arc.
+Numbered	Bernomor
+No change	Tidak diubah
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Pemantauan, profil kualitas, dan folder musim langsung diterapkan ke semua anggota; jenis dan format folder berlaku untuk judul yang bergabung mulai sekarang.
+Collection settings…	Pengaturan koleksi…
+Monitoring, quality profile, series type, folder and tags	Pemantauan, profil kualitas, jenis serial, folder, dan tag
+Change the quality, languages or release group of episode files, or delete them	Ubah kualitas, bahasa, atau grup rilis file episode, atau hapus file
+Manage episodes	Kelola episode
+Episode details: overview, file, history and searches	Detail episode: ringkasan, file, riwayat, dan penelusuran
+Details of episode {}	Detail episode {}
+Monitoring, availability, quality profile, folder and tags	Pemantauan, ketersediaan, profil kualitas, folder, dan tag
+No tags yet: create them in Settings › Tags.	Belum ada tag: buat di Pengaturan › Tag.
+Below the root folder.	Di bawah folder root.
+Use the folder name the naming settings give	Gunakan nama folder dari pengaturan penamaan
+Use naming format	Gunakan format penamaan
+Series saved.	Serial disimpan.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr mencari dan mengunduh episode yang dimonitor dari serial yang dimonitor.
+Whether seasons a refresh discovers are monitored.	Apakah musim yang ditemukan saat muat ulang akan dimonitor.
+Sort episodes into season folders.	Pisahkan episode ke dalam folder musim.
+Use season folders	Gunakan folder musim
+Decides how episodes are numbered when searching and importing.	Menentukan cara episode dinomori saat mencari dan mengimpor.
+TheTVDB titles in this language; changing it refreshes the series.	Judul TheTVDB dalam bahasa ini; mengubahnya akan memuat ulang serial.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Nonaktif mengeluarkan serial dari grup animenya dan mengecualikannya dari pengelompokan otomatis.
+Enter a folder name.	Masukkan nama folder.
+Edit — {}	Edit — {}
+Announced	Diumumkan
+Released	Dirilis
+Movie saved.	Film disimpan.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr mencari dan mengunduh film yang dimonitor.
+Minimum availability	Ketersediaan minimum
+When the movie counts as available for automatic searches.	Kapan film dianggap tersedia untuk penelusuran otomatis.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Nonaktif mengeluarkan film dari koleksinya dan mengecualikannya dari pengelompokan otomatis.
+Edit {} selected	Edit {} yang dipilih
+Apply changes	Terapkan perubahan
+No season folders	Tanpa folder musim
+Tags updated on {} items.	Tag diperbarui pada {} item.
+Removes the chosen tags from every selected title.	Menghapus tag yang dipilih dari setiap judul yang dipilih.
+Every selected title gets exactly the chosen tags (none removes all).	Setiap judul yang dipilih mendapat tepat tag yang dipilih (tanpa tag berarti menghapus semua).
+Adds the chosen tags to every selected title.	Menambahkan tag yang dipilih ke setiap judul yang dipilih.
+Tags — {} selected	Tag — {} dipilih
+Apply tags	Terapkan tag
+Replace	Ganti
+Manage	Kelola
+Multi-season pack	Paket multi-musim
+Scene name	Nama scene
+Video	Video
+· {} fps	· {} fps
+Run time	Durasi
+Audio	Audio
+Subtitles	Subtitle
+Details	Detail
+Search the indexers and grab the best release	Cari di indexer dan ambil rilis terbaik
+See every release and choose	Lihat semua rilis dan pilih
+absolute {}	absolut {}
+Air date	Tanggal tayang
+No overview.	Tidak ada ringkasan.
+Delete this episode's file? It goes to the recycle bin when one is set.	Hapus file episode ini? File akan masuk ke tempat sampah jika sudah diatur.
+{} files updated.	{} file diperbarui.
+{} files deleted.	{} file dihapus.
+{} files deleted; {}	{} file dihapus; {}
+Delete files	Hapus file
+The series has no files.	Serial ini tidak memiliki file.
+Change	Ubah
+Change for the selected files…	Ubah untuk file yang dipilih…
+Empty clears it	Kosongkan untuk menghapus
+Select every file	Pilih semua file
+Delete the {} selected files? They go to the recycle bin when one is set.	Hapus {} file yang dipilih? File akan masuk ke tempat sampah jika sudah diatur.
+Monitoring, quality profile, series type and season folders of the selected series	Pemantauan, profil kualitas, jenis serial, dan folder musim dari serial yang dipilih
+Edit…	Edit…
+Add, remove or replace the tags of the selected series	Tambah, hapus, atau ganti tag serial yang dipilih
+Tags…	Tag…
+Monitoring and quality profile of the selected movies	Pemantauan dan profil kualitas film yang dipilih
+Add, remove or replace the tags of the selected movies	Tambah, hapus, atau ganti tag film yang dipilih
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Tempel judul rilis atau nama file untuk melihat cara Kitsunarr membacanya dan episode mana yang cocok.
+Parse	Parsing
+Kitsunarr could not read this title.	Kitsunarr tidak dapat membaca judul ini.
+Parse result	Hasil parsing
+Series title	Judul serial
+Absolute episodes	Episode absolut
+Release hash	Hash rilis
+Multi-season	Multi-musim
+Absolute numbering	Penomoran absolut
+Library match	Kecocokan pustaka
+No series in the library matches this title.	Tidak ada serial di pustaka yang cocok dengan judul ini.
+No episode of the series matches.	Tidak ada episode serial yang cocok.
+Log files	File log
+Refresh	Muat ulang
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr menulis log-nya ke file di folder data, dirotasi setiap 1 MiB. Level log diatur di Pengaturan › Umum.
+No log files yet	Belum ada file log
+Last written	Terakhir ditulis
+Skip the free-space check when importing	Lewati pemeriksaan ruang kosong saat mengimpor
+Create empty series folders during disk scans (not with "delete empty folders")	Buat folder serial kosong saat pemindaian disk (tidak bersama "hapus folder kosong")
+Skip the free-space check when grabbing	Lewati pemeriksaan ruang kosong saat mengambil
+Set permissions on imported files and folders (Linux)	Atur izin pada file dan folder yang diimpor (Linux)
+Import using a script	Impor menggunakan skrip
+Rescan series folder after refresh	Pindai ulang folder serial setelah muat ulang
+Whether a metadata refresh scans the series folder for changes afterwards.	Apakah muat ulang metadata memindai perubahan di folder serial setelahnya.
+Always	Selalu
+After manual refresh	Setelah muat ulang manual
+Never	Tidak pernah
+Episode title required	Judul episode wajib
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Impor menunggu judul episode jika format penamaan memakainya dan episode tayang dalam 48 jam terakhir.
+Only for bulk season releases	Hanya untuk rilis musim sekaligus
+Season pack upgrades	Peningkatan paket musim
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Berapa banyak episode dalam paket musim yang harus hilang atau dapat ditingkatkan agar paket diambil.
+A share of the episodes	Sebagian episode
+Any episode	Episode mana pun
+Season pack upgrade threshold (%)	Ambang peningkatan paket musim (%)
+Rejected extensions	Ekstensi yang ditolak
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Dipisahkan koma, misalnya exe, bat. Unduhan satu file dengan salah satu ekstensi ini tidak diimpor.
+Folder permissions (chmod)	Izin folder (chmod)
+Octal mode for folders; files get it without the execute bits.	Mode oktal untuk folder; file mendapatkannya tanpa bit eksekusi.
+Group (chown)	Grup (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Nama grup atau id untuk file dan folder yang diimpor; kosong berarti grup tidak diubah.
+Import script path	Path skrip impor
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Path absolut skrip; skrip menerima path sumber dan tujuan serta variabel environment Sonarr.
+Excluded tags (ids, comma separated)	Tag yang dikecualikan (id, dipisahkan koma)
+The profile does not apply to series with one of these tags.	Profil tidak berlaku untuk serial yang memiliki salah satu tag ini.
+Reject releases published before the episode airs	Tolak rilis yang diterbitkan sebelum episode tayang
+Allow season packs before every episode has aired	Izinkan paket musim sebelum semua episode tayang
+Air date grace period (hours)	Masa tenggang tanggal tayang (jam)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Rilis yang diterbitkan hingga sekian jam setelah tanggal tayang tetap ditolak; angka negatif mengizinkannya sekian jam sebelumnya.
+Presets	Preset
+Series ID	ID serial
+Anime group	Grup anime
+Absolute episode number	Nomor episode absolut
+Episode title	Judul episode
+Media info	Info media
+Original	Asli
+File name tokens	Token nama file
+Folder name tokens	Token nama folder
+Format	Format
+Separator	Pemisah
+Space ( )	Spasi ( )
+Period (.)	Titik (.)
+Underscore (_)	Garis bawah (_)
+Dash (-)	Tanda hubung (-)
+Capitalization	Kapitalisasi
+Default case	Huruf bawaan
+Lowercase	Huruf kecil
+Uppercase	Huruf besar
+Click a token to insert it at the cursor; a preset replaces the whole format.	Klik token untuk menyisipkannya di kursor; preset menggantikan seluruh format.
+Tokens	Token
+Tokens for {}	Token untuk {}
+Invalid format	Format tidak valid
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Format memakai token Sonarr; contoh di bawah mengikuti perubahan Anda sebelum disimpan.
+Rename episodes	Ganti nama episode
+Replace illegal characters (otherwise they are removed)	Ganti karakter ilegal (jika tidak, karakter tersebut dihapus)
+Colon replacement	Pengganti titik dua
+How colons in titles are written in file and folder names.	Cara titik dua dalam judul ditulis pada nama file dan folder.
+Replace with dash	Ganti dengan tanda hubung
+Replace with space dash	Ganti dengan spasi tanda hubung
+Replace with space dash space	Ganti dengan spasi tanda hubung spasi
+Smart replace (dash or space dash)	Penggantian cerdas (tanda hubung atau spasi tanda hubung)
+Custom	Khusus
+Custom colon replacement	Pengganti titik dua khusus
+The characters written instead of a colon.	Karakter yang ditulis sebagai ganti titik dua.
+Multi-episode style	Gaya multi-episode
+Extend (S01E01-02-03)	Perpanjang (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Duplikat (S01E01.S01E02)
+Repeat (S01E01E02E03)	Ulang (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	Rentang (S01E01-03)
+Prefixed range (S01E01-E03)	Rentang berawalan (S01E01-E03)
+Example	Contoh
+Anime group movie	Film grup anime
+Used when films are renamed.	Dipakai saat film diganti namanya.
+Used when adding a new series or moving one.	Dipakai saat menambahkan serial baru atau memindahkannya.
+Specials folder format	Format folder spesial
+Anime groups and collections: titles go to {}/{}/{}.	Grup anime dan koleksi: judul ditempatkan di {}/{}/{}.
+Interface settings saved.	Pengaturan antarmuka disimpan.
+Week column header	Judul kolom minggu
+The column headers of the calendar's week view.	Judul kolom pada tampilan minggu kalender.
+Dates	Tanggal
+Short date format	Format tanggal pendek
+Long date format	Format tanggal panjang
+Time format	Format waktu
+Time zone	Zona waktu
+Dates and times are shown in this time zone; empty follows the browser.	Tanggal dan waktu ditampilkan dalam zona waktu ini; kosong mengikuti browser.
+The browser's time zone	Zona waktu browser
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Tampilkan tanggal relatif (Hari Ini, Kemarin, Besok) sebagai ganti tanggal
+Style	Gaya
+Theme	Tema
+Kept in this browser; the top bar button switches it too.	Disimpan di browser ini; tombol di bilah atas juga dapat menggantinya.
+Dark	Gelap
+Light	Terang
+Colour-impaired mode (colours easier to tell apart, with patterns)	Mode buta warna (warna lebih mudah dibedakan, dengan pola)
+Saved to the configuration file. Restart Kitsunarr to apply.	Disimpan ke file konfigurasi. Mulai ulang Kitsunarr untuk menerapkan.
+Host and logging	Host dan logging
+Set by an environment variable or command-line flag: {}	Diatur oleh variabel environment atau flag baris perintah: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Disimpan ke {}. Perubahan berlaku saat Kitsunarr dimulai berikutnya; variabel environment dan flag baris perintah tetap lebih diutamakan.
+Restart required: the saved values differ from the ones in use.	Perlu mulai ulang: nilai yang disimpan berbeda dari nilai yang sedang dipakai.
+Restart now	Mulai ulang sekarang
+Bind address	Alamat bind
+0.0.0.0 listens on every interface.	0.0.0.0 mendengarkan di semua antarmuka.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Untuk reverse proxy, mis. /kitsunarr; kosong berarti dilayani dari root.
+Log level	Level log
+Debug and trace write much more to the log files.	Debug dan trace menulis jauh lebih banyak ke file log.
+Trace	Trace
+Warn	Peringatan
+Error	Kesalahan
+Backup folder	Folder cadangan
+Absolute path; empty uses {}.	Path absolut; kosong memakai {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr melayani HTTP biasa; pasang reverse proxy di depannya untuk HTTPS.
+Save host settings	Simpan pengaturan host
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Mulai ulang Kitsunarr sekarang? Jika alamat, port, atau URL base berubah, buka alamat baru setelahnya.
+Nothing to show.	Tidak ada yang ditampilkan.
+All series	Semua serial
+All types	Semua jenis
+All profiles	Semua profil
+All tags	Semua tag
+Downloaded	Diunduh
+Unaired	Belum tayang
+{} files · {}	{} file · {}
+Summary	Ringkasan
+Monitored series	Serial yang dimonitor
+Completed series	Serial yang selesai
+{} ({} completed)	{} ({} selesai)
+{} ({} monitored)	{} ({} dimonitor)
+Episode files	File episode
+{} ({} downloaded)	{} ({} diunduh)
+{} ({} per episode)	{} ({} per episode)
+Series status	Status serial
+File qualities	Kualitas file
+Recent entries	Entri terbaru
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Entri terbaru yang disimpan di memori. File log di atas dan output proses (log container atau journal) menyimpan semuanya.
+Yesterday	Kemarin
+Tomorrow	Besok

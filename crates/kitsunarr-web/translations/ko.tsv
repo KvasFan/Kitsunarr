@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	건너뜀: 서버가 아직 시작 중입�
 {} expired sessions removed	만료된 세션 {}개를 제거했습니다
 All {} refreshes failed; see the logs	새로고침 {}개가 모두 실패했습니다. 로그를 확인하세요
 every folder scan failed ({})	모든 폴더 스캔이 실패했습니다 ({})
+Links	링크
+Copy {}	{} 복사
+Copy the {} id	{} ID 복사
+Type	유형
+Previous airing	이전 방영
+Season folder	시즌 폴더
+Average episode size	평균 에피소드 크기
+Genres	장르
+Rating	평점
+Certification	관람 등급
+Release groups	릴리스 그룹
+File quality	파일 품질
+In cinemas	극장 상영
+Runtime	상영 시간
+Release group	릴리스 그룹
+Columns	열
+Shown in the table, the overview and under posters	표, 개요 보기, 포스터 아래에 표시됩니다
+Column {}	열: {}
+Reset columns	열 초기화
+Yes	예
+Override and grab {}	재정의 후 잡기: {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	이 릴리스의 시리즈, 에피소드, 품질, 언어 또는 다운로드 클라이언트를 선택한 뒤 잡기 (선택 내용은 가져오기에 유지됨)
+Override…	재정의…
+Override and grab	재정의 후 잡기
+Override and grab — {}	재정의 후 잡기 — {}
+{} episodes chosen	에피소드 {}개 선택됨
+Grab release	릴리스 잡기
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	변경하지 않은 항목은 릴리스 제목에 따른 값을 유지합니다. 선택하지 않은 에피소드는 제목이 가리키는 에피소드를 유지합니다.
+Searched series	검색한 시리즈
+Download client	다운로드 클라이언트
+Episodes (required)	에피소드 (필수)
+Statistics	통계
+Test parsing	파싱 테스트
+{} items removed.	항목 {}개를 제거했습니다.
+{} items removed; {}	항목 {}개를 제거했습니다. {}
+Select every queue item	큐의 모든 항목 선택
+Queue bulk actions	큐 일괄 작업
+Grab the selected releases a delay profile holds back now	지연 프로필이 보류 중인 선택한 릴리스를 지금 잡기
+Remove selected…	선택 항목 제거…
+Remove {} items from the queue	큐에서 항목 {}개 제거
+Held-back releases are forgotten; a later search can find them again.	보류된 릴리스는 잊힙니다. 이후 검색에서 다시 찾을 수 있습니다.
+Removal method	제거 방법
+Remove from the download client	다운로드 클라이언트에서 제거
+Change category	카테고리 변경
+Keep it in the download client	다운로드 클라이언트에 유지
+The download and its files are removed from the download client.	다운로드와 해당 파일이 다운로드 클라이언트에서 제거됩니다.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	다운로드가 클라이언트의 가져오기 후 카테고리로 이동하며 더 이상 추적되지 않습니다. 파일은 유지됩니다.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	다운로드는 다운로드 클라이언트에 그대로 남습니다. 릴리스를 차단 목록에 추가하려면 차단 목록 옵션을 선택하세요.
+Blocklist release	릴리스를 차단 목록에 추가
+Do not blocklist	차단 목록에 추가하지 않음
+Blocklist and search for a replacement	차단 목록에 추가하고 대체 항목 검색
+Blocklist only	차단 목록에만 추가
+Removed {} releases from the blocklist.	차단 목록에서 릴리스 {}개를 제거했습니다.
+Remove {} selected	선택한 {}개 제거
+Select every release on this page	이 페이지의 모든 릴리스 선택
+Remove from the blocklist	차단 목록에서 제거
+Remove the {} selected releases from the blocklist?	선택한 릴리스 {}개를 차단 목록에서 제거할까요?
+Quality, languages and release of {}	{}의 품질, 언어, 릴리스
+Choose the quality, languages, release group and release type the file is imported with	파일을 가져올 때 사용할 품질, 언어, 릴리스 그룹, 릴리스 유형을 선택합니다
+Import details — {}	가져오기 세부 정보 — {}
+Use these details	이 정보 사용
+Revision	리비전
+2 or more for a PROPER or REPACK.	PROPER 또는 REPACK이면 2 이상.
+Single episode	단일 에피소드
+Multi-episode	멀티 에피소드
+Season pack	시즌 팩
+Manual	수동
+Choose the group the title joins.	작품이 들어갈 그룹을 선택하세요.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	자동은 공식 관계 정보를 바탕으로 작품을 프랜차이즈나 컬렉션으로 묶습니다. 수동은 선택한 그룹에 넣습니다. 비활성화하면 단독으로 유지됩니다.
+Manual puts the title in a group you choose, in the group's folder.	수동은 작품을 선택한 그룹의 폴더 안에 그룹의 일원으로 넣습니다.
+Manual (choose a group)	수동 (그룹 선택)
+The title joins the group as its next season or film, in the group's folder.	작품은 다음 시즌 또는 영화로 그룹에 들어가며 그룹 폴더에 배치됩니다.
+Choose a group…	그룹 선택…
+Collection settings saved.	컬렉션 설정을 저장했습니다.
+Collection settings	컬렉션 설정
+Collection name	컬렉션 이름
+Collection type	컬렉션 유형
+A movie saga holds only films.	영화 사가에는 영화만 들어갑니다.
+Movie saga	영화 사가
+Movie folder format	영화 폴더 형식
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	작품이 들어올 때 멤버 폴더의 이름을 정하는 방식입니다. 자동은 사가에는 번호가 매겨진 폴더를, 아크에는 스토리 아크 폴더를 사용합니다.
+Numbered	번호 매김
+No change	변경 안 함
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	모니터링, 품질 프로필, 시즌 폴더는 지금 모든 멤버에 적용됩니다. 유형과 폴더 형식은 앞으로 들어오는 작품에 적용됩니다.
+Collection settings…	컬렉션 설정…
+Monitoring, quality profile, series type, folder and tags	모니터링, 품질 프로필, 시리즈 유형, 폴더, 태그
+Change the quality, languages or release group of episode files, or delete them	에피소드 파일의 품질, 언어, 릴리스 그룹을 변경하거나 파일을 삭제
+Manage episodes	에피소드 관리
+Episode details: overview, file, history and searches	에피소드 세부 정보: 개요, 파일, 내역, 검색
+Details of episode {}	에피소드 {} 세부 정보
+Monitoring, availability, quality profile, folder and tags	모니터링, 공개 여부, 품질 프로필, 폴더, 태그
+No tags yet: create them in Settings › Tags.	아직 태그가 없습니다. 설정 › 태그에서 만드세요.
+Below the root folder.	루트 폴더 아래.
+Use the folder name the naming settings give	이름 지정 설정에 따른 폴더 이름 사용
+Use naming format	이름 지정 형식 사용
+Series saved.	시리즈를 저장했습니다.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr는 모니터링되는 시리즈의 모니터링되는 에피소드를 검색하고 다운로드합니다.
+Whether seasons a refresh discovers are monitored.	새로고침으로 발견된 시즌을 모니터링할지 여부입니다.
+Sort episodes into season folders.	에피소드를 시즌 폴더로 나눕니다.
+Use season folders	시즌 폴더 사용
+Decides how episodes are numbered when searching and importing.	검색 및 가져오기 시 에피소드 번호를 매기는 방식을 정합니다.
+TheTVDB titles in this language; changing it refreshes the series.	이 언어의 TheTVDB 제목. 변경하면 시리즈를 새로고침합니다.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	비활성화하면 시리즈를 애니메이션 그룹에서 제거하고 자동 그룹화에서 제외합니다.
+Enter a folder name.	폴더 이름을 입력하세요.
+Edit — {}	편집 — {}
+Announced	발표됨
+Released	공개됨
+Movie saved.	영화를 저장했습니다.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr는 모니터링되는 영화를 검색하고 다운로드합니다.
+Minimum availability	최소 공개 상태
+When the movie counts as available for automatic searches.	자동 검색에서 영화를 공개된 것으로 간주하는 시점입니다.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	비활성화하면 영화를 컬렉션에서 제거하고 자동 그룹화에서 제외합니다.
+Edit {} selected	선택한 {}개 편집
+Apply changes	변경 사항 적용
+No season folders	시즌 폴더 없음
+Tags updated on {} items.	항목 {}개의 태그를 업데이트했습니다.
+Removes the chosen tags from every selected title.	선택한 모든 작품에서 선택한 태그를 제거합니다.
+Every selected title gets exactly the chosen tags (none removes all).	선택한 모든 작품이 정확히 선택한 태그만 갖게 됩니다 (없음은 모두 제거).
+Adds the chosen tags to every selected title.	선택한 모든 작품에 선택한 태그를 추가합니다.
+Tags — {} selected	태그 — {}개 선택됨
+Apply tags	태그 적용
+Replace	바꾸기
+Manage	관리
+Multi-season pack	멀티 시즌 팩
+Scene name	씬 이름
+Video	비디오
+· {} fps	· {} fps
+Run time	재생 시간
+Audio	오디오
+Subtitles	자막
+Details	세부 정보
+Search the indexers and grab the best release	인덱서를 검색하고 최적의 릴리스 잡기
+See every release and choose	모든 릴리스를 보고 선택
+absolute {}	절대 {}
+Air date	방영일
+No overview.	개요가 없습니다.
+Delete this episode's file? It goes to the recycle bin when one is set.	이 에피소드의 파일을 삭제할까요? 휴지통이 설정되어 있으면 휴지통으로 이동합니다.
+{} files updated.	파일 {}개를 업데이트했습니다.
+{} files deleted.	파일 {}개를 삭제했습니다.
+{} files deleted; {}	파일 {}개를 삭제했습니다. {}
+Delete files	파일 삭제
+The series has no files.	이 시리즈에는 파일이 없습니다.
+Change	변경
+Change for the selected files…	선택한 파일 변경…
+Empty clears it	비워 두면 지웁니다
+Select every file	모든 파일 선택
+Delete the {} selected files? They go to the recycle bin when one is set.	선택한 파일 {}개를 삭제할까요? 휴지통이 설정되어 있으면 휴지통으로 이동합니다.
+Monitoring, quality profile, series type and season folders of the selected series	선택한 시리즈의 모니터링, 품질 프로필, 시리즈 유형, 시즌 폴더
+Edit…	편집…
+Add, remove or replace the tags of the selected series	선택한 시리즈의 태그 추가, 제거 또는 바꾸기
+Tags…	태그…
+Monitoring and quality profile of the selected movies	선택한 영화의 모니터링과 품질 프로필
+Add, remove or replace the tags of the selected movies	선택한 영화의 태그 추가, 제거 또는 바꾸기
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	릴리스 제목이나 파일 이름을 붙여 넣으면 Kitsunarr가 어떻게 해석하고 어떤 에피소드와 일치하는지 볼 수 있습니다.
+Parse	파싱
+Kitsunarr could not read this title.	Kitsunarr가 이 제목을 해석하지 못했습니다.
+Parse result	파싱 결과
+Series title	시리즈 제목
+Absolute episodes	절대 에피소드
+Release hash	릴리스 해시
+Multi-season	멀티 시즌
+Absolute numbering	절대 번호
+Library match	라이브러리 일치
+No series in the library matches this title.	라이브러리에 이 제목과 일치하는 시리즈가 없습니다.
+No episode of the series matches.	시리즈에서 일치하는 에피소드가 없습니다.
+Log files	로그 파일
+Refresh	새로고침
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr는 데이터 폴더의 파일에 로그를 기록하며 1 MiB마다 교체합니다. 로그 수준은 설정 › 일반에서 설정합니다.
+No log files yet	아직 로그 파일이 없습니다
+Last written	마지막 기록
+Skip the free-space check when importing	가져올 때 여유 공간 확인 건너뛰기
+Create empty series folders during disk scans (not with "delete empty folders")	디스크 스캔 중 빈 시리즈 폴더 만들기 ("빈 폴더 삭제"와 함께 사용 불가)
+Skip the free-space check when grabbing	잡을 때 여유 공간 확인 건너뛰기
+Set permissions on imported files and folders (Linux)	가져온 파일과 폴더에 권한 설정 (Linux)
+Import using a script	스크립트로 가져오기
+Rescan series folder after refresh	새로고침 후 시리즈 폴더 다시 스캔
+Whether a metadata refresh scans the series folder for changes afterwards.	메타데이터 새로고침 후 시리즈 폴더의 변경 사항을 스캔할지 여부입니다.
+Always	항상
+After manual refresh	수동 새로고침 후
+Never	안 함
+Episode title required	에피소드 제목 필수
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	이름 지정 형식에서 에피소드 제목을 사용하고 에피소드가 최근 48시간 이내에 방영된 경우, 가져오기는 에피소드 제목이 나올 때까지 기다립니다.
+Only for bulk season releases	시즌 일괄 릴리스에만
+Season pack upgrades	시즌 팩 업그레이드
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	시즌 팩을 잡으려면 팩의 에피소드 중 몇 개가 누락되었거나 업그레이드 가능해야 하는지 정합니다.
+A share of the episodes	에피소드의 일정 비율
+Any episode	아무 에피소드나
+Season pack upgrade threshold (%)	시즌 팩 업그레이드 임계값 (%)
+Rejected extensions	거부할 확장자
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	쉼표로 구분, 예: exe, bat. 이 확장자 중 하나를 가진 단일 파일 다운로드는 가져오지 않습니다.
+Folder permissions (chmod)	폴더 권한 (chmod)
+Octal mode for folders; files get it without the execute bits.	폴더의 8진수 모드. 파일에는 실행 비트를 뺀 값이 적용됩니다.
+Group (chown)	그룹 (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	가져온 파일과 폴더의 그룹 이름 또는 ID. 비워 두면 그룹을 변경하지 않습니다.
+Import script path	가져오기 스크립트 경로
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	스크립트의 절대 경로. 스크립트는 원본 및 대상 경로와 Sonarr의 환경 변수를 받습니다.
+Excluded tags (ids, comma separated)	제외 태그 (id, 쉼표로 구분)
+The profile does not apply to series with one of these tags.	이 태그 중 하나가 있는 시리즈에는 프로필이 적용되지 않습니다.
+Reject releases published before the episode airs	에피소드 방영 전에 게시된 릴리스 거부
+Allow season packs before every episode has aired	모든 에피소드가 방영되기 전에도 시즌 팩 허용
+Air date grace period (hours)	방영일 유예 기간 (시간)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	방영일 이후 이 시간 안에 게시된 릴리스도 계속 거부됩니다. 음수를 입력하면 방영일 그 시간 전부터 허용합니다.
+Presets	프리셋
+Series ID	시리즈 ID
+Anime group	애니메이션 그룹
+Absolute episode number	절대 에피소드 번호
+Episode title	에피소드 제목
+Media info	미디어 정보
+Original	원본
+File name tokens	파일 이름 토큰
+Folder name tokens	폴더 이름 토큰
+Format	형식
+Separator	구분자
+Space ( )	공백 ( )
+Period (.)	마침표 (.)
+Underscore (_)	밑줄 (_)
+Dash (-)	대시 (-)
+Capitalization	대소문자
+Default case	기본 대소문자
+Lowercase	소문자
+Uppercase	대문자
+Click a token to insert it at the cursor; a preset replaces the whole format.	토큰을 클릭하면 커서 위치에 삽입됩니다. 프리셋은 형식 전체를 바꿉니다.
+Tokens	토큰
+Tokens for {}	{} 토큰
+Invalid format	잘못된 형식
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	형식은 Sonarr의 토큰을 사용합니다. 아래 예시는 저장하기 전의 변경 사항을 반영합니다.
+Rename episodes	에피소드 이름 변경
+Replace illegal characters (otherwise they are removed)	사용할 수 없는 문자 바꾸기 (그렇지 않으면 제거됨)
+Colon replacement	콜론 바꾸기
+How colons in titles are written in file and folder names.	제목의 콜론을 파일 및 폴더 이름에 어떻게 쓸지 정합니다.
+Replace with dash	대시로 바꾸기
+Replace with space dash	공백 대시로 바꾸기
+Replace with space dash space	공백 대시 공백으로 바꾸기
+Smart replace (dash or space dash)	스마트 바꾸기 (대시 또는 공백 대시)
+Custom	사용자 정의
+Custom colon replacement	사용자 정의 콜론 바꾸기
+The characters written instead of a colon.	콜론 대신 쓸 문자입니다.
+Multi-episode style	멀티 에피소드 스타일
+Extend (S01E01-02-03)	확장 (S01E01-02-03)
+Duplicate (S01E01.S01E02)	중복 (S01E01.S01E02)
+Repeat (S01E01E02E03)	반복 (S01E01E02E03)
+Scene (S01E01-E02-E03)	씬 (S01E01-E02-E03)
+Range (S01E01-03)	범위 (S01E01-03)
+Prefixed range (S01E01-E03)	접두사 범위 (S01E01-E03)
+Example	예시
+Anime group movie	애니메이션 그룹 영화
+Used when films are renamed.	영화 이름을 변경할 때 사용합니다.
+Used when adding a new series or moving one.	새 시리즈를 추가하거나 이동할 때 사용합니다.
+Specials folder format	스페셜 폴더 형식
+Anime groups and collections: titles go to {}/{}/{}.	애니메이션 그룹과 컬렉션: 작품은 {}/{}/{}에 저장됩니다.
+Interface settings saved.	인터페이스 설정을 저장했습니다.
+Week column header	주간 열 머리글
+The column headers of the calendar's week view.	캘린더 주간 보기의 열 머리글입니다.
+Dates	날짜
+Short date format	짧은 날짜 형식
+Long date format	긴 날짜 형식
+Time format	시간 형식
+Time zone	시간대
+Dates and times are shown in this time zone; empty follows the browser.	날짜와 시간이 이 시간대로 표시됩니다. 비워 두면 브라우저를 따릅니다.
+The browser's time zone	브라우저 시간대
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	날짜 대신 상대 날짜(오늘, 어제, 내일) 표시
+Style	스타일
+Theme	테마
+Kept in this browser; the top bar button switches it too.	이 브라우저에 저장됩니다. 상단 바 버튼으로도 전환할 수 있습니다.
+Dark	어둡게
+Light	밝게
+Colour-impaired mode (colours easier to tell apart, with patterns)	색각 보조 모드 (색을 구분하기 쉽게, 패턴 포함)
+Saved to the configuration file. Restart Kitsunarr to apply.	설정 파일에 저장했습니다. 적용하려면 Kitsunarr를 다시 시작하세요.
+Host and logging	호스트 및 로깅
+Set by an environment variable or command-line flag: {}	환경 변수 또는 명령줄 플래그로 설정됨: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	{}에 저장했습니다. 변경 사항은 다음에 Kitsunarr를 시작할 때 적용되며, 환경 변수와 명령줄 플래그가 계속 우선합니다.
+Restart required: the saved values differ from the ones in use.	다시 시작 필요: 저장된 값이 현재 사용 중인 값과 다릅니다.
+Restart now	지금 다시 시작
+Bind address	바인드 주소
+0.0.0.0 listens on every interface.	0.0.0.0은 모든 인터페이스에서 수신합니다.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	리버스 프록시용, 예: /kitsunarr. 비워 두면 루트에서 제공합니다.
+Log level	로그 수준
+Debug and trace write much more to the log files.	디버그와 추적은 로그 파일에 훨씬 더 많이 기록합니다.
+Trace	추적
+Warn	경고
+Error	오류
+Backup folder	백업 폴더
+Absolute path; empty uses {}.	절대 경로. 비워 두면 {}을(를) 사용합니다.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr는 일반 HTTP로 제공합니다. HTTPS를 사용하려면 앞단에 리버스 프록시를 두세요.
+Save host settings	호스트 설정 저장
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	지금 Kitsunarr를 다시 시작할까요? 주소, 포트 또는 URL 기본 경로를 변경했다면 이후 새 주소를 여세요.
+Nothing to show.	표시할 항목이 없습니다.
+All series	모든 시리즈
+All types	모든 유형
+All profiles	모든 프로필
+All tags	모든 태그
+Downloaded	다운로드됨
+Unaired	미방영
+{} files · {}	파일 {}개 · {}
+Summary	요약
+Monitored series	모니터링되는 시리즈
+Completed series	완결된 시리즈
+{} ({} completed)	{} (완결 {})
+{} ({} monitored)	{} (모니터링 {})
+Episode files	에피소드 파일
+{} ({} downloaded)	{} (다운로드됨 {})
+{} ({} per episode)	{} (에피소드당 {})
+Series status	시리즈 상태
+File qualities	파일 품질
+Recent entries	최근 항목
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	메모리에 보관된 최근 항목입니다. 위의 로그 파일과 프로세스 출력(컨테이너 로그 또는 저널)에는 모든 내용이 보관됩니다.
+Yesterday	어제
+Tomorrow	내일

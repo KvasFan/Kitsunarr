@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Omis: serverul încă pornește
 {} expired sessions removed	Sesiuni expirate eliminate: {}
 All {} refreshes failed; see the logs	Toate cele {} reîmprospătări au eșuat; vedeți jurnalele
 every folder scan failed ({})	toate scanările folderelor au eșuat ({})
+Links	Linkuri
+Copy {}	Copiază {}
+Copy the {} id	Copiază ID-ul {}
+Type	Tip
+Previous airing	Difuzarea anterioară
+Season folder	Folder de sezon
+Average episode size	Dimensiunea medie a episodului
+Genres	Genuri
+Rating	Evaluare
+Certification	Clasificare
+Release groups	Grupuri de lansare
+File quality	Calitatea fișierului
+In cinemas	În cinematografe
+Runtime	Durată
+Release group	Grup de lansare
+Columns	Coloane
+Shown in the table, the overview and under posters	Afișate în tabel, în prezentarea generală și sub postere
+Column {}	Coloana {}
+Reset columns	Resetează coloanele
+Yes	Da
+Override and grab {}	Suprascrie și preia {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Alegeți serialul, episoadele, calitatea, limbile sau clientul de descărcare pentru această lansare, apoi preluați-o (alegerile sunt păstrate pentru import)
+Override…	Suprascrie…
+Override and grab	Suprascrie și preia
+Override and grab — {}	Suprascrie și preia — {}
+{} episodes chosen	Episoade alese: {}
+Grab release	Preia lansarea
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Alegerile nemodificate păstrează ce indică titlul lansării. Dacă nu se aleg episoade, se păstrează episoadele cărora le corespunde titlul.
+Searched series	Serial căutat
+Download client	Client de descărcare
+Episodes (required)	Episoade (obligatoriu)
+Statistics	Statistici
+Test parsing	Testare analiză
+{} items removed.	Elemente eliminate: {}.
+{} items removed; {}	Elemente eliminate: {}; {}
+Select every queue item	Selectează toate elementele din coadă
+Queue bulk actions	Acțiuni în masă pentru coadă
+Grab the selected releases a delay profile holds back now	Preia acum lansările selectate reținute de un profil de întârziere
+Remove selected…	Elimină selecția…
+Remove {} items from the queue	Eliminați {} elemente din coadă
+Held-back releases are forgotten; a later search can find them again.	Lansările reținute sunt uitate; o căutare ulterioară le poate găsi din nou.
+Removal method	Metoda de eliminare
+Remove from the download client	Elimină din clientul de descărcare
+Change category	Schimbă categoria
+Keep it in the download client	Păstrează în clientul de descărcare
+The download and its files are removed from the download client.	Descărcarea și fișierele ei sunt eliminate din clientul de descărcare.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Descărcarea este mutată în categoria post-import a clientului și nu mai este urmărită; fișierele ei rămân.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Descărcarea rămâne neatinsă în clientul de descărcare; alegeți o opțiune de listă neagră pentru a adăuga lansarea în lista neagră.
+Blocklist release	Adaugă lansarea în lista neagră
+Do not blocklist	Nu adăuga în lista neagră
+Blocklist and search for a replacement	Adaugă în lista neagră și caută un înlocuitor
+Blocklist only	Doar lista neagră
+Removed {} releases from the blocklist.	Lansări eliminate din lista neagră: {}.
+Remove {} selected	Elimină selecția ({})
+Select every release on this page	Selectează toate lansările de pe această pagină
+Remove from the blocklist	Elimină din lista neagră
+Remove the {} selected releases from the blocklist?	Eliminați cele {} lansări selectate din lista neagră?
+Quality, languages and release of {}	Calitatea, limbile și lansarea pentru {}
+Choose the quality, languages, release group and release type the file is imported with	Alegeți calitatea, limbile, grupul de lansare și tipul lansării cu care este importat fișierul
+Import details — {}	Detaliile importului — {}
+Use these details	Folosește aceste detalii
+Revision	Revizie
+2 or more for a PROPER or REPACK.	2 sau mai mult pentru un PROPER sau REPACK.
+Single episode	Un singur episod
+Multi-episode	Mai multe episoade
+Season pack	Pachet de sezon
+Manual	Manual
+Choose the group the title joins.	Alegeți grupul căruia i se alătură titlul.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automat grupează titlul cu franciza sau colecția sa pe baza relațiilor oficiale. Manual îl pune într-un grup ales de dumneavoastră. Dezactivat îl păstrează separat.
+Manual puts the title in a group you choose, in the group's folder.	Manual pune titlul într-un grup ales de dumneavoastră, în folderul grupului.
+Manual (choose a group)	Manual (alegeți un grup)
+The title joins the group as its next season or film, in the group's folder.	Titlul se alătură grupului ca sezonul sau filmul următor, în folderul grupului.
+Choose a group…	Alegeți un grup…
+Collection settings saved.	Setările colecției au fost salvate.
+Collection settings	Setările colecției
+Collection name	Numele colecției
+Collection type	Tipul colecției
+A movie saga holds only films.	O saga de filme conține doar filme.
+Movie saga	Saga de filme
+Movie folder format	Format folder film
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Cum sunt denumite folderele membrilor când li se alătură titluri: automat folosește foldere numerotate în sage și foldere de arc narativ pentru arcuri.
+Numbered	Numerotat
+No change	Nicio modificare
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Monitorizarea, profilul de calitate și folderul de sezon se aplică acum fiecărui membru; tipul și formatul folderului se aplică titlurilor care se alătură de acum înainte.
+Collection settings…	Setările colecției…
+Monitoring, quality profile, series type, folder and tags	Monitorizare, profil de calitate, tip serial, folder și etichete
+Change the quality, languages or release group of episode files, or delete them	Schimbați calitatea, limbile sau grupul de lansare al fișierelor episoadelor sau ștergeți-le
+Manage episodes	Gestionează episoadele
+Episode details: overview, file, history and searches	Detaliile episodului: prezentare generală, fișier, istoric și căutări
+Details of episode {}	Detaliile episodului {}
+Monitoring, availability, quality profile, folder and tags	Monitorizare, disponibilitate, profil de calitate, folder și etichete
+No tags yet: create them in Settings › Tags.	Nicio etichetă încă: creați-le în Setări › Etichete.
+Below the root folder.	Sub folderul rădăcină.
+Use the folder name the naming settings give	Folosește numele de folder dat de setările de denumire
+Use naming format	Folosește formatul de denumire
+Series saved.	Serialul a fost salvat.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr caută și descarcă episoadele monitorizate ale unui serial monitorizat.
+Whether seasons a refresh discovers are monitored.	Dacă sezoanele descoperite la o reîmprospătare sunt monitorizate.
+Sort episodes into season folders.	Sortează episoadele în foldere de sezon.
+Use season folders	Folosește foldere de sezon
+Decides how episodes are numbered when searching and importing.	Decide cum sunt numerotate episoadele la căutare și import.
+TheTVDB titles in this language; changing it refreshes the series.	Titluri TheTVDB în această limbă; schimbarea ei reîmprospătează serialul.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Dezactivat elimină serialul din grupul său anime și îl exclude din gruparea automată.
+Enter a folder name.	Introduceți un nume de folder.
+Edit — {}	Editare — {}
+Announced	Anunțat
+Released	Lansat
+Movie saved.	Filmul a fost salvat.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr caută și descarcă un film monitorizat.
+Minimum availability	Disponibilitate minimă
+When the movie counts as available for automatic searches.	Când filmul este considerat disponibil pentru căutările automate.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Dezactivat elimină filmul din colecția sa și îl exclude din gruparea automată.
+Edit {} selected	Editează selecția ({})
+Apply changes	Aplică modificările
+No season folders	Fără foldere de sezon
+Tags updated on {} items.	Etichete actualizate pentru {} elemente.
+Removes the chosen tags from every selected title.	Elimină etichetele alese de la fiecare titlu selectat.
+Every selected title gets exactly the chosen tags (none removes all).	Fiecare titlu selectat primește exact etichetele alese (niciuna le elimină pe toate).
+Adds the chosen tags to every selected title.	Adaugă etichetele alese la fiecare titlu selectat.
+Tags — {} selected	Etichete — selectate: {}
+Apply tags	Aplică etichetele
+Replace	Înlocuiește
+Manage	Gestionează
+Multi-season pack	Pachet cu mai multe sezoane
+Scene name	Nume de scenă
+Video	Video
+· {} fps	· {} fps
+Run time	Durată
+Audio	Audio
+Subtitles	Subtitrări
+Details	Detalii
+Search the indexers and grab the best release	Caută în indexatoare și preia cea mai bună lansare
+See every release and choose	Vezi toate lansările și alege
+absolute {}	absolut {}
+Air date	Data difuzării
+No overview.	Nicio prezentare generală.
+Delete this episode's file? It goes to the recycle bin when one is set.	Ștergeți fișierul acestui episod? Ajunge în coșul de reciclare, dacă este setat.
+{} files updated.	Fișiere actualizate: {}.
+{} files deleted.	Fișiere șterse: {}.
+{} files deleted; {}	Fișiere șterse: {}; {}
+Delete files	Șterge fișierele
+The series has no files.	Serialul nu are fișiere.
+Change	Schimbă
+Change for the selected files…	Schimbă pentru fișierele selectate…
+Empty clears it	Gol îl golește
+Select every file	Selectează toate fișierele
+Delete the {} selected files? They go to the recycle bin when one is set.	Ștergeți cele {} fișiere selectate? Ajung în coșul de reciclare, dacă este setat.
+Monitoring, quality profile, series type and season folders of the selected series	Monitorizarea, profilul de calitate, tipul și folderele de sezon ale serialelor selectate
+Edit…	Editează…
+Add, remove or replace the tags of the selected series	Adăugați, eliminați sau înlocuiți etichetele serialelor selectate
+Tags…	Etichete…
+Monitoring and quality profile of the selected movies	Monitorizarea și profilul de calitate ale filmelor selectate
+Add, remove or replace the tags of the selected movies	Adăugați, eliminați sau înlocuiți etichetele filmelor selectate
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Lipiți titlul unei lansări sau un nume de fișier pentru a vedea cum îl citește Kitsunarr și ce episoade îi corespund.
+Parse	Analizează
+Kitsunarr could not read this title.	Kitsunarr nu a putut citi acest titlu.
+Parse result	Rezultatul analizei
+Series title	Titlul serialului
+Absolute episodes	Episoade absolute
+Release hash	Hash-ul lansării
+Multi-season	Mai multe sezoane
+Absolute numbering	Numerotare absolută
+Library match	Potrivire în bibliotecă
+No series in the library matches this title.	Niciun serial din bibliotecă nu se potrivește cu acest titlu.
+No episode of the series matches.	Niciun episod al serialului nu se potrivește.
+Log files	Fișiere jurnal
+Refresh	Reîmprospătează
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr scrie jurnalul în fișiere din folderul de date, rotite la 1 MiB. Nivelul de jurnalizare se setează în Setări › General.
+No log files yet	Niciun fișier jurnal încă
+Last written	Ultima scriere
+Skip the free-space check when importing	Omite verificarea spațiului liber la import
+Create empty series folders during disk scans (not with "delete empty folders")	Creează foldere de serial goale la scanările discului (nu cu „șterge folderele goale”)
+Skip the free-space check when grabbing	Omite verificarea spațiului liber la preluare
+Set permissions on imported files and folders (Linux)	Setează permisiunile fișierelor și folderelor importate (Linux)
+Import using a script	Importă folosind un script
+Rescan series folder after refresh	Rescanează folderul serialului după reîmprospătare
+Whether a metadata refresh scans the series folder for changes afterwards.	Dacă o reîmprospătare a metadatelor scanează ulterior folderul serialului pentru modificări.
+Always	Întotdeauna
+After manual refresh	După reîmprospătarea manuală
+Never	Niciodată
+Episode title required	Titlul episodului este obligatoriu
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Importurile așteaptă un titlu de episod când formatul de denumire îl folosește și episodul a fost difuzat în ultimele 48 de ore.
+Only for bulk season releases	Doar pentru lansările de sezon în bloc
+Season pack upgrades	Upgrade-uri pentru pachetele de sezon
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Câte episoade dintr-un pachet de sezon trebuie să lipsească sau să poată primi upgrade pentru ca pachetul să fie preluat.
+A share of the episodes	O parte din episoade
+Any episode	Orice episod
+Season pack upgrade threshold (%)	Pragul de upgrade pentru pachetele de sezon (%)
+Rejected extensions	Extensii respinse
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Separate prin virgulă, de exemplu exe, bat. O descărcare cu un singur fișier având una dintre aceste extensii nu este importată.
+Folder permissions (chmod)	Permisiunile folderelor (chmod)
+Octal mode for folders; files get it without the execute bits.	Mod octal pentru foldere; fișierele îl primesc fără biții de execuție.
+Group (chown)	Grup (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Numele sau ID-ul grupului pentru fișierele și folderele importate; gol lasă grupul neschimbat.
+Import script path	Calea scriptului de import
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Calea absolută a scriptului; primește căile sursă și destinație și variabilele de mediu ale Sonarr.
+Excluded tags (ids, comma separated)	Etichete excluse (ID-uri, separate prin virgulă)
+The profile does not apply to series with one of these tags.	Profilul nu se aplică serialelor care au una dintre aceste etichete.
+Reject releases published before the episode airs	Respinge lansările publicate înainte de difuzarea episodului
+Allow season packs before every episode has aired	Permite pachetele de sezon înainte ca toate episoadele să fi fost difuzate
+Air date grace period (hours)	Perioadă de toleranță pentru data difuzării (ore)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Lansările publicate până la acest număr de ore după data difuzării sunt totuși respinse; un număr negativ le permite cu atâtea ore înainte.
+Presets	Presetări
+Series ID	ID serial
+Anime group	Grup anime
+Absolute episode number	Numărul absolut al episodului
+Episode title	Titlul episodului
+Media info	Informații media
+Original	Original
+File name tokens	Tokenuri pentru numele fișierelor
+Folder name tokens	Tokenuri pentru numele folderelor
+Format	Format
+Separator	Separator
+Space ( )	Spațiu ( )
+Period (.)	Punct (.)
+Underscore (_)	Liniuță de subliniere (_)
+Dash (-)	Cratimă (-)
+Capitalization	Majuscule
+Default case	Majuscule implicite
+Lowercase	Litere mici
+Uppercase	Litere mari
+Click a token to insert it at the cursor; a preset replaces the whole format.	Faceți clic pe un token pentru a-l insera la cursor; o presetare înlocuiește întregul format.
+Tokens	Tokenuri
+Tokens for {}	Tokenuri pentru {}
+Invalid format	Format nevalid
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Formatele folosesc tokenurile Sonarr; exemplele de mai jos urmează modificările dumneavoastră înainte de salvare.
+Rename episodes	Redenumește episoadele
+Replace illegal characters (otherwise they are removed)	Înlocuiește caracterele nepermise (altfel sunt eliminate)
+Colon replacement	Înlocuirea două puncte
+How colons in titles are written in file and folder names.	Cum sunt scrise două punctele din titluri în numele fișierelor și folderelor.
+Replace with dash	Înlocuiește cu cratimă
+Replace with space dash	Înlocuiește cu spațiu și cratimă
+Replace with space dash space	Înlocuiește cu spațiu, cratimă și spațiu
+Smart replace (dash or space dash)	Înlocuire inteligentă (cratimă sau spațiu și cratimă)
+Custom	Personalizat
+Custom colon replacement	Înlocuire personalizată pentru două puncte
+The characters written instead of a colon.	Caracterele scrise în locul celor două puncte.
+Multi-episode style	Stil pentru mai multe episoade
+Extend (S01E01-02-03)	Extins (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Duplicat (S01E01.S01E02)
+Repeat (S01E01E02E03)	Repetat (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scenă (S01E01-E02-E03)
+Range (S01E01-03)	Interval (S01E01-03)
+Prefixed range (S01E01-E03)	Interval cu prefix (S01E01-E03)
+Example	Exemplu
+Anime group movie	Film din grup anime
+Used when films are renamed.	Folosit când filmele sunt redenumite.
+Used when adding a new series or moving one.	Folosit la adăugarea unui serial nou sau la mutarea unuia.
+Specials folder format	Format folder episoade speciale
+Anime groups and collections: titles go to {}/{}/{}.	Grupuri anime și colecții: titlurile ajung în {}/{}/{}.
+Interface settings saved.	Setările interfeței au fost salvate.
+Week column header	Antetul coloanelor săptămânii
+The column headers of the calendar's week view.	Anteturile coloanelor din vizualizarea săptămânală a calendarului.
+Dates	Date
+Short date format	Format dată scurtă
+Long date format	Format dată lungă
+Time format	Format oră
+Time zone	Fus orar
+Dates and times are shown in this time zone; empty follows the browser.	Datele și orele sunt afișate în acest fus orar; gol urmează browserul.
+The browser's time zone	Fusul orar al browserului
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Afișează date relative (Azi, Ieri, Mâine) în loc de dată
+Style	Stil
+Theme	Temă
+Kept in this browser; the top bar button switches it too.	Păstrată în acest browser; butonul din bara de sus o comută și el.
+Dark	Întunecată
+Light	Luminoasă
+Colour-impaired mode (colours easier to tell apart, with patterns)	Mod pentru deficiențe de vedere a culorilor (culori mai ușor de distins, cu modele)
+Saved to the configuration file. Restart Kitsunarr to apply.	Salvat în fișierul de configurare. Reporniți Kitsunarr pentru a aplica.
+Host and logging	Gazdă și jurnalizare
+Set by an environment variable or command-line flag: {}	Setat printr-o variabilă de mediu sau un argument din linia de comandă: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Salvat în {}. Modificările se aplică la următoarea pornire a Kitsunarr; variabilele de mediu și argumentele din linia de comandă au în continuare prioritate.
+Restart required: the saved values differ from the ones in use.	Repornire necesară: valorile salvate diferă de cele în uz.
+Restart now	Repornește acum
+Bind address	Adresă de ascultare
+0.0.0.0 listens on every interface.	0.0.0.0 ascultă pe toate interfețele.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Pentru reverse proxy, de ex. /kitsunarr; gol servește de la rădăcină.
+Log level	Nivel de jurnalizare
+Debug and trace write much more to the log files.	Debug și trace scriu mult mai mult în fișierele jurnal.
+Trace	Trace
+Warn	Avertisment
+Error	Eroare
+Backup folder	Folder pentru copiile de rezervă
+Absolute path; empty uses {}.	Cale absolută; gol folosește {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr servește HTTP simplu; puneți un reverse proxy în fața sa pentru HTTPS.
+Save host settings	Salvează setările gazdei
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Reporniți Kitsunarr acum? Dacă adresa, portul sau baza URL s-au schimbat, deschideți apoi noua adresă.
+Nothing to show.	Nimic de afișat.
+All series	Toate serialele
+All types	Toate tipurile
+All profiles	Toate profilurile
+All tags	Toate etichetele
+Downloaded	Descărcate
+Unaired	Nedifuzate
+{} files · {}	{} fișiere · {}
+Summary	Rezumat
+Monitored series	Seriale monitorizate
+Completed series	Seriale finalizate
+{} ({} completed)	{} ({} finalizate)
+{} ({} monitored)	{} ({} monitorizate)
+Episode files	Fișiere de episoade
+{} ({} downloaded)	{} ({} descărcate)
+{} ({} per episode)	{} ({} pe episod)
+Series status	Starea serialelor
+File qualities	Calitățile fișierelor
+Recent entries	Intrări recente
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Cele mai recente intrări păstrate în memorie. Fișierele jurnal de mai sus și ieșirea procesului (jurnalele containerului sau journal) păstrează totul.
+Yesterday	Ieri
+Tomorrow	Mâine

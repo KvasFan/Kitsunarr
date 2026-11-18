@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Izlaists: serveris joprojām startē
 {} expired sessions removed	Noņemtas beigušās sesijas: {}
 All {} refreshes failed; see the logs	Neizdevās neviena no {} atsvaidzināšanām; skatiet žurnālus
 every folder scan failed ({})	neizdevās neviena mapju skenēšana ({})
+Links	Saites
+Copy {}	Kopēt {}
+Copy the {} id	Kopēt {} ID
+Type	Tips
+Previous airing	Iepriekšējā pārraide
+Season folder	Sezonas mape
+Average episode size	Vidējais epizodes izmērs
+Genres	Žanri
+Rating	Vērtējums
+Certification	Vecuma ierobežojums
+Release groups	Izlaiduma grupas
+File quality	Faila kvalitāte
+In cinemas	Kinoteātros
+Runtime	Ilgums
+Release group	Izlaiduma grupa
+Columns	Kolonnas
+Shown in the table, the overview and under posters	Rāda tabulā, pārskatā un zem plakātiem
+Column {}	Kolonna {}
+Reset columns	Atiestatīt kolonnas
+Yes	Jā
+Override and grab {}	Pārrakstīt un paņemt {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Izvēlieties šī izlaiduma seriālu, epizodes, kvalitāti, valodas vai lejupielādes klientu un pēc tam paņemiet to (izvēles tiek saglabātas importēšanai)
+Override…	Pārrakstīt…
+Override and grab	Pārrakstīt un paņemt
+Override and grab — {}	Pārrakstīt un paņemt — {}
+{} episodes chosen	Izvēlētas epizodes: {}
+Grab release	Paņemt izlaidumu
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Nemainītās izvēles saglabā to, ko norāda izlaiduma nosaukums. Neizvēlētās epizodes paliek tās, uz kurām norāda nosaukums.
+Searched series	Meklētais seriāls
+Download client	Lejupielādes klients
+Episodes (required)	Epizodes (obligāti)
+Statistics	Statistika
+Test parsing	Parsēšanas pārbaude
+{} items removed.	Noņemti vienumi: {}.
+{} items removed; {}	Noņemti vienumi: {}; {}
+Select every queue item	Atlasīt visus rindas vienumus
+Queue bulk actions	Rindas lielapjoma darbības
+Grab the selected releases a delay profile holds back now	Paņemt tagad atlasītos izlaidumus, kurus aiztur aizkaves profils
+Remove selected…	Noņemt atlasītos…
+Remove {} items from the queue	Noņemt no rindas (vienumi: {})
+Held-back releases are forgotten; a later search can find them again.	Aizturētie izlaidumi tiek aizmirsti; vēlāka meklēšana var tos atrast atkal.
+Removal method	Noņemšanas veids
+Remove from the download client	Noņemt no lejupielādes klienta
+Change category	Mainīt kategoriju
+Keep it in the download client	Paturēt lejupielādes klientā
+The download and its files are removed from the download client.	Lejupielāde un tās faili tiek noņemti no lejupielādes klienta.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Lejupielāde pāriet uz klienta kategoriju pēc importēšanas un vairs netiek izsekota; tās faili paliek.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Lejupielāde paliek lejupielādes klientā neskarta; izvēlieties bloķēšanas saraksta opciju, lai pievienotu tās izlaidumu bloķēšanas sarakstam.
+Blocklist release	Pievienot izlaidumu bloķēšanas sarakstam
+Do not blocklist	Nepievienot bloķēšanas sarakstam
+Blocklist and search for a replacement	Pievienot bloķēšanas sarakstam un meklēt aizstājēju
+Blocklist only	Tikai pievienot bloķēšanas sarakstam
+Removed {} releases from the blocklist.	No bloķēšanas saraksta noņemti izlaidumi: {}.
+Remove {} selected	Noņemt atlasītos ({})
+Select every release on this page	Atlasīt visus šīs lapas izlaidumus
+Remove from the blocklist	Noņemt no bloķēšanas saraksta
+Remove the {} selected releases from the blocklist?	Noņemt atlasītos izlaidumus ({}) no bloķēšanas saraksta?
+Quality, languages and release of {}	{}: kvalitāte, valodas un izlaidums
+Choose the quality, languages, release group and release type the file is imported with	Izvēlieties kvalitāti, valodas, izlaiduma grupu un izlaiduma tipu, ar kuriem fails tiek importēts
+Import details — {}	Importēšanas informācija — {}
+Use these details	Izmantot šo informāciju
+Revision	Revīzija
+2 or more for a PROPER or REPACK.	2 vai vairāk PROPER vai REPACK izlaidumam.
+Single episode	Viena epizode
+Multi-episode	Vairākas epizodes
+Season pack	Sezonas paka
+Manual	Manuāli
+Choose the group the title joins.	Izvēlieties grupu, kurai pievienojas nosaukums.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automātiski grupē nosaukumu ar tā franšīzi vai kolekciju pēc oficiālajām saistībām. Manuāli ievieto to jūsu izvēlētā grupā. Atspējots atstāj to atsevišķi.
+Manual puts the title in a group you choose, in the group's folder.	Manuāli ievieto nosaukumu jūsu izvēlētā grupā, grupas mapē.
+Manual (choose a group)	Manuāli (izvēlieties grupu)
+The title joins the group as its next season or film, in the group's folder.	Nosaukums pievienojas grupai kā tās nākamā sezona vai filma, grupas mapē.
+Choose a group…	Izvēlieties grupu…
+Collection settings saved.	Kolekcijas iestatījumi saglabāti.
+Collection settings	Kolekcijas iestatījumi
+Collection name	Kolekcijas nosaukums
+Collection type	Kolekcijas tips
+A movie saga holds only films.	Filmu sāgā ir tikai filmas.
+Movie saga	Filmu sāga
+Movie folder format	Filmas mapes formāts
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Kā tiek nosauktas dalībnieku mapes, kad pievienojas nosaukumi: automātiskais režīms izmanto numurētas mapes sāgās un sižeta loku mapes lokiem.
+Numbered	Numurētas
+No change	Bez izmaiņām
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Uzraudzība, kvalitātes profils un sezonas mape tagad attiecas uz katru dalībnieku; tips un mapes formāts attiecas uz nosaukumiem, kas pievienosies turpmāk.
+Collection settings…	Kolekcijas iestatījumi…
+Monitoring, quality profile, series type, folder and tags	Uzraudzība, kvalitātes profils, seriāla tips, mape un tagi
+Change the quality, languages or release group of episode files, or delete them	Mainīt epizožu failu kvalitāti, valodas vai izlaiduma grupu vai dzēst tos
+Manage episodes	Pārvaldīt epizodes
+Episode details: overview, file, history and searches	Epizodes informācija: pārskats, fails, vēsture un meklēšanas
+Details of episode {}	Epizodes {} informācija
+Monitoring, availability, quality profile, folder and tags	Uzraudzība, pieejamība, kvalitātes profils, mape un tagi
+No tags yet: create them in Settings › Tags.	Vēl nav tagu: izveidojiet tos sadaļā Iestatījumi › Tagi.
+Below the root folder.	Saknes mapes iekšpusē.
+Use the folder name the naming settings give	Izmantot mapes nosaukumu no nosaukumu veidošanas iestatījumiem
+Use naming format	Izmantot nosaukumu formātu
+Series saved.	Seriāls saglabāts.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr meklē un lejupielādē uzraudzīta seriāla uzraudzītās epizodes.
+Whether seasons a refresh discovers are monitored.	Vai tiek uzraudzītas sezonas, ko atklāj atsvaidzināšana.
+Sort episodes into season folders.	Kārtot epizodes sezonu mapēs.
+Use season folders	Izmantot sezonu mapes
+Decides how episodes are numbered when searching and importing.	Nosaka, kā epizodes tiek numurētas meklēšanā un importēšanā.
+TheTVDB titles in this language; changing it refreshes the series.	TheTVDB nosaukumi šajā valodā; mainot to, seriāls tiek atsvaidzināts.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Atspējots izņem seriālu no tā anime grupas un neļauj to grupēt automātiski.
+Enter a folder name.	Ievadiet mapes nosaukumu.
+Edit — {}	Rediģēt — {}
+Announced	Paziņots
+Released	Izlaists
+Movie saved.	Filma saglabāta.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr meklē un lejupielādē uzraudzītu filmu.
+Minimum availability	Minimālā pieejamība
+When the movie counts as available for automatic searches.	Kad filma tiek uzskatīta par pieejamu automātiskajai meklēšanai.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Atspējots izņem filmu no tās kolekcijas un neļauj to grupēt automātiski.
+Edit {} selected	Rediģēt atlasītos ({})
+Apply changes	Lietot izmaiņas
+No season folders	Bez sezonu mapēm
+Tags updated on {} items.	Tagi atjaunināti vienumiem: {}.
+Removes the chosen tags from every selected title.	Noņem izvēlētos tagus no katra atlasītā nosaukuma.
+Every selected title gets exactly the chosen tags (none removes all).	Katrs atlasītais nosaukums saņem tieši izvēlētos tagus (neviens — noņem visus).
+Adds the chosen tags to every selected title.	Pievieno izvēlētos tagus katram atlasītajam nosaukumam.
+Tags — {} selected	Tagi — atlasīti: {}
+Apply tags	Lietot tagus
+Replace	Aizstāt
+Manage	Pārvaldīt
+Multi-season pack	Vairāku sezonu paka
+Scene name	Scene nosaukums
+Video	Video
+· {} fps	· {} fps
+Run time	Ilgums
+Audio	Audio
+Subtitles	Subtitri
+Details	Informācija
+Search the indexers and grab the best release	Meklēt indeksētājos un paņemt labāko izlaidumu
+See every release and choose	Skatīt visus izlaidumus un izvēlēties
+absolute {}	absolūtā {}
+Air date	Pārraides datums
+No overview.	Nav pārskata.
+Delete this episode's file? It goes to the recycle bin when one is set.	Dzēst šīs epizodes failu? Tas tiks pārvietots uz atkritni, ja tā ir iestatīta.
+{} files updated.	Atjaunināti faili: {}.
+{} files deleted.	Dzēsti faili: {}.
+{} files deleted; {}	Dzēsti faili: {}; {}
+Delete files	Dzēst failus
+The series has no files.	Seriālam nav failu.
+Change	Mainīt
+Change for the selected files…	Mainīt atlasītajiem failiem…
+Empty clears it	Tukšs notīra
+Select every file	Atlasīt visus failus
+Delete the {} selected files? They go to the recycle bin when one is set.	Dzēst atlasītos failus ({})? Tie tiks pārvietoti uz atkritni, ja tā ir iestatīta.
+Monitoring, quality profile, series type and season folders of the selected series	Atlasīto seriālu uzraudzība, kvalitātes profils, seriāla tips un sezonu mapes
+Edit…	Rediģēt…
+Add, remove or replace the tags of the selected series	Pievienot, noņemt vai aizstāt atlasīto seriālu tagus
+Tags…	Tagi…
+Monitoring and quality profile of the selected movies	Atlasīto filmu uzraudzība un kvalitātes profils
+Add, remove or replace the tags of the selected movies	Pievienot, noņemt vai aizstāt atlasīto filmu tagus
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Ielīmējiet izlaiduma nosaukumu vai faila nosaukumu, lai redzētu, kā Kitsunarr to nolasa un kurām epizodēm tas atbilst.
+Parse	Parsēt
+Kitsunarr could not read this title.	Kitsunarr nevarēja nolasīt šo nosaukumu.
+Parse result	Parsēšanas rezultāts
+Series title	Seriāla nosaukums
+Absolute episodes	Absolūtās epizodes
+Release hash	Izlaiduma jaucējkods
+Multi-season	Vairākas sezonas
+Absolute numbering	Absolūtā numerācija
+Library match	Atbilstība bibliotēkā
+No series in the library matches this title.	Neviens seriāls bibliotēkā neatbilst šim nosaukumam.
+No episode of the series matches.	Neviena seriāla epizode neatbilst.
+Log files	Žurnāla faili
+Refresh	Atsvaidzināt
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr raksta žurnālu failos datu mapē, mainot failu ik pēc 1 MiB. Žurnāla līmeni iestata sadaļā Iestatījumi › Vispārīgi.
+No log files yet	Vēl nav žurnāla failu
+Last written	Pēdējais ieraksts
+Skip the free-space check when importing	Izlaist brīvās vietas pārbaudi importējot
+Create empty series folders during disk scans (not with "delete empty folders")	Veidot tukšas seriālu mapes diska skenēšanas laikā (ne kopā ar "dzēst tukšās mapes")
+Skip the free-space check when grabbing	Izlaist brīvās vietas pārbaudi paņemot
+Set permissions on imported files and folders (Linux)	Iestatīt atļaujas importētajiem failiem un mapēm (Linux)
+Import using a script	Importēt, izmantojot skriptu
+Rescan series folder after refresh	Pēc atsvaidzināšanas atkārtoti skenēt seriāla mapi
+Whether a metadata refresh scans the series folder for changes afterwards.	Vai metadatu atsvaidzināšana pēc tam skenē seriāla mapi, meklējot izmaiņas.
+Always	Vienmēr
+After manual refresh	Pēc manuālas atsvaidzināšanas
+Never	Nekad
+Episode title required	Nepieciešams epizodes nosaukums
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Importēšana gaida epizodes nosaukumu, ja nosaukumu formāts to izmanto un epizode pārraidīta pēdējo 48 stundu laikā.
+Only for bulk season releases	Tikai sezonu lielapjoma izlaidumiem
+Season pack upgrades	Sezonu paku jauninājumi
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Cik sezonas pakas epizodēm jātrūkst vai jābūt jaunināmām, lai paka tiktu paņemta.
+A share of the episodes	Daļa epizožu
+Any episode	Jebkura epizode
+Season pack upgrade threshold (%)	Sezonas pakas jaunināšanas slieksnis (%)
+Rejected extensions	Noraidītie paplašinājumi
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Atdalīti ar komatu, piemēram, exe, bat. Viena faila lejupielāde ar kādu no šiem paplašinājumiem netiek importēta.
+Folder permissions (chmod)	Mapju atļaujas (chmod)
+Octal mode for folders; files get it without the execute bits.	Oktālais režīms mapēm; faili to saņem bez izpildes bitiem.
+Group (chown)	Grupa (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Grupas nosaukums vai ID importētajiem failiem un mapēm; tukšs grupu nemaina.
+Import script path	Importēšanas skripta ceļš
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Skripta absolūtais ceļš; tas saņem avota un mērķa ceļus un Sonarr vides mainīgos.
+Excluded tags (ids, comma separated)	Izslēgtie tagi (ID, atdalīti ar komatu)
+The profile does not apply to series with one of these tags.	Profils neattiecas uz seriāliem ar kādu no šiem tagiem.
+Reject releases published before the episode airs	Noraidīt izlaidumus, kas publicēti pirms epizodes pārraides
+Allow season packs before every episode has aired	Atļaut sezonu pakas, pirms visas epizodes ir pārraidītas
+Air date grace period (hours)	Pārraides datuma pieļaujamais laiks (stundas)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Izlaidumi, kas publicēti līdz tik stundām pēc pārraides datuma, joprojām tiek noraidīti; negatīvs skaitlis tos atļauj tik stundas agrāk.
+Presets	Sagataves
+Series ID	Seriāla ID
+Anime group	Anime grupa
+Absolute episode number	Absolūtais epizodes numurs
+Episode title	Epizodes nosaukums
+Media info	Multivides informācija
+Original	Oriģināls
+File name tokens	Faila nosaukuma marķieri
+Folder name tokens	Mapes nosaukuma marķieri
+Format	Formāts
+Separator	Atdalītājs
+Space ( )	Atstarpe ( )
+Period (.)	Punkts (.)
+Underscore (_)	Pasvītra (_)
+Dash (-)	Defise (-)
+Capitalization	Burtu reģistrs
+Default case	Noklusējuma reģistrs
+Lowercase	Mazie burti
+Uppercase	Lielie burti
+Click a token to insert it at the cursor; a preset replaces the whole format.	Noklikšķiniet uz marķiera, lai to ievietotu kursora vietā; sagatave aizstāj visu formātu.
+Tokens	Marķieri
+Tokens for {}	{} marķieri
+Invalid format	Nederīgs formāts
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Formāti izmanto Sonarr marķierus; zemāk esošie piemēri atspoguļo jūsu izmaiņas vēl pirms saglabāšanas.
+Rename episodes	Pārdēvēt epizodes
+Replace illegal characters (otherwise they are removed)	Aizstāt neatļautās rakstzīmes (citādi tās tiek noņemtas)
+Colon replacement	Kolu aizstāšana
+How colons in titles are written in file and folder names.	Kā nosaukumos esošie koli tiek rakstīti failu un mapju nosaukumos.
+Replace with dash	Aizstāt ar defisi
+Replace with space dash	Aizstāt ar atstarpi un defisi
+Replace with space dash space	Aizstāt ar atstarpi, defisi un atstarpi
+Smart replace (dash or space dash)	Viedā aizstāšana (defise vai atstarpe un defise)
+Custom	Pielāgota
+Custom colon replacement	Pielāgota kola aizstāšana
+The characters written instead of a colon.	Rakstzīmes, ko raksta kola vietā.
+Multi-episode style	Vairāku epizožu stils
+Extend (S01E01-02-03)	Paplašināts (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Dublēts (S01E01.S01E02)
+Repeat (S01E01E02E03)	Atkārtots (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	Diapazons (S01E01-03)
+Prefixed range (S01E01-E03)	Diapazons ar prefiksu (S01E01-E03)
+Example	Piemērs
+Anime group movie	Anime grupas filma
+Used when films are renamed.	Tiek izmantots, kad filmas tiek pārdēvētas.
+Used when adding a new series or moving one.	Tiek izmantots, pievienojot jaunu seriālu vai pārvietojot esošu.
+Specials folder format	Speciālo epizožu mapes formāts
+Anime groups and collections: titles go to {}/{}/{}.	Anime grupas un kolekcijas: nosaukumi tiek ievietoti {}/{}/{}.
+Interface settings saved.	Saskarnes iestatījumi saglabāti.
+Week column header	Nedēļas kolonnas virsraksts
+The column headers of the calendar's week view.	Kalendāra nedēļas skata kolonnu virsraksti.
+Dates	Datumi
+Short date format	Īsais datuma formāts
+Long date format	Garais datuma formāts
+Time format	Laika formāts
+Time zone	Laika josla
+Dates and times are shown in this time zone; empty follows the browser.	Datumi un laiki tiek rādīti šajā laika joslā; tukšs — pēc pārlūka.
+The browser's time zone	Pārlūka laika josla
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Rādīt relatīvos datumus (Šodien, Vakar, Rīt) datuma vietā
+Style	Stils
+Theme	Motīvs
+Kept in this browser; the top bar button switches it too.	Saglabāts šajā pārlūkā; to pārslēdz arī augšējās joslas poga.
+Dark	Tumšs
+Light	Gaišs
+Colour-impaired mode (colours easier to tell apart, with patterns)	Krāsu redzes traucējumu režīms (vieglāk atšķiramas krāsas, ar rakstiem)
+Saved to the configuration file. Restart Kitsunarr to apply.	Saglabāts konfigurācijas failā. Restartējiet Kitsunarr, lai lietotu.
+Host and logging	Resursdators un žurnāls
+Set by an environment variable or command-line flag: {}	Iestatīts ar vides mainīgo vai komandrindas karodziņu: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Saglabāts failā {}. Izmaiņas stāsies spēkā nākamreiz, kad Kitsunarr tiks palaists; vides mainīgajiem un komandrindas karodziņiem joprojām ir prioritāte.
+Restart required: the saved values differ from the ones in use.	Nepieciešama restartēšana: saglabātās vērtības atšķiras no izmantotajām.
+Restart now	Restartēt tagad
+Bind address	Piesaistes adrese
+0.0.0.0 listens on every interface.	0.0.0.0 klausās visās saskarnēs.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Reversajiem starpniekserveriem, piemēram, /kitsunarr; tukšs — apkalpo no saknes.
+Log level	Žurnāla līmenis
+Debug and trace write much more to the log files.	Atkļūdošana un trasēšana žurnāla failos raksta daudz vairāk.
+Trace	Trasēšana
+Warn	Brīdinājums
+Error	Kļūda
+Backup folder	Dublējumu mape
+Absolute path; empty uses {}.	Absolūtais ceļš; tukšs izmanto {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr apkalpo vienkāršu HTTP; HTTPS nodrošināšanai novietojiet tā priekšā reverso starpniekserveri.
+Save host settings	Saglabāt resursdatora iestatījumus
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Restartēt Kitsunarr tagad? Ja mainījās adrese, ports vai URL bāze, pēc tam atveriet jauno adresi.
+Nothing to show.	Nav ko rādīt.
+All series	Visi seriāli
+All types	Visi tipi
+All profiles	Visi profili
+All tags	Visi tagi
+Downloaded	Lejupielādēts
+Unaired	Nepārraidīts
+{} files · {}	Faili: {} · {}
+Summary	Kopsavilkums
+Monitored series	Uzraudzītie seriāli
+Completed series	Pabeigtie seriāli
+{} ({} completed)	{} (pabeigti: {})
+{} ({} monitored)	{} (uzraudzīti: {})
+Episode files	Epizožu faili
+{} ({} downloaded)	{} (lejupielādēti: {})
+{} ({} per episode)	{} ({} uz epizodi)
+Series status	Seriāla statuss
+File qualities	Failu kvalitātes
+Recent entries	Jaunākie ieraksti
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Jaunākie atmiņā glabātie ieraksti. Augstāk esošie žurnāla faili un procesa izvade (konteinera žurnāli vai journal) saglabā visu.
+Yesterday	Vakar
+Tomorrow	Rīt

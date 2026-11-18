@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	ข้ามแล้ว: เซิร์�
 {} expired sessions removed	ลบเซสชันที่หมดอายุแล้ว {} รายการ
 All {} refreshes failed; see the logs	การรีเฟรชทั้ง {} รายการล้มเหลว; ดูล็อก
 every folder scan failed ({})	การสแกนโฟลเดอร์ล้มเหลวทั้งหมด ({})
+Links	ลิงก์
+Copy {}	คัดลอก {}
+Copy the {} id	คัดลอก id ของ {}
+Type	ประเภท
+Previous airing	ออกอากาศครั้งก่อน
+Season folder	โฟลเดอร์ซีซัน
+Average episode size	ขนาดเฉลี่ยต่อตอน
+Genres	แนว
+Rating	เรตติ้ง
+Certification	การจัดเรต
+Release groups	กลุ่มรีลีส
+File quality	คุณภาพไฟล์
+In cinemas	เข้าฉายในโรง
+Runtime	ความยาว
+Release group	กลุ่มรีลีส
+Columns	คอลัมน์
+Shown in the table, the overview and under posters	แสดงในตาราง มุมมองภาพรวม และใต้โปสเตอร์
+Column {}	คอลัมน์ {}
+Reset columns	รีเซ็ตคอลัมน์
+Yes	ใช่
+Override and grab {}	แทนที่และคว้า {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	เลือกซีรีส์ ตอน คุณภาพ ภาษา หรือไคลเอนต์ดาวน์โหลดของรีลีสนี้ แล้วคว้า (ตัวเลือกจะถูกเก็บไว้สำหรับการนำเข้า)
+Override…	แทนที่…
+Override and grab	แทนที่และคว้า
+Override and grab — {}	แทนที่และคว้า — {}
+{} episodes chosen	เลือกแล้ว {} ตอน
+Grab release	คว้ารีลีส
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	ตัวเลือกที่ไม่เปลี่ยนจะใช้ตามที่ชื่อรีลีสระบุ ตอนที่ไม่ได้เลือกจะใช้ตอนที่ชื่อเรื่องจับคู่ได้
+Searched series	ซีรีส์ที่ค้นหา
+Download client	ไคลเอนต์ดาวน์โหลด
+Episodes (required)	ตอน (จำเป็น)
+Statistics	สถิติ
+Test parsing	ทดสอบการแยกวิเคราะห์
+{} items removed.	ลบแล้ว {} รายการ
+{} items removed; {}	ลบแล้ว {} รายการ; {}
+Select every queue item	เลือกทุกรายการในคิว
+Queue bulk actions	การดำเนินการแบบกลุ่มในคิว
+Grab the selected releases a delay profile holds back now	คว้ารีลีสที่เลือกซึ่งโปรไฟล์หน่วงเวลากักไว้ทันที
+Remove selected…	ลบที่เลือก…
+Remove {} items from the queue	ลบ {} รายการออกจากคิว
+Held-back releases are forgotten; a later search can find them again.	รีลีสที่ถูกกักไว้จะถูกลืม การค้นหาครั้งต่อไปอาจพบอีกครั้ง
+Removal method	วิธีการลบ
+Remove from the download client	ลบออกจากไคลเอนต์ดาวน์โหลด
+Change category	เปลี่ยนหมวดหมู่
+Keep it in the download client	เก็บไว้ในไคลเอนต์ดาวน์โหลด
+The download and its files are removed from the download client.	การดาวน์โหลดและไฟล์จะถูกลบออกจากไคลเอนต์ดาวน์โหลด
+The download moves to the client's post-import category and is no longer tracked; its files stay.	การดาวน์โหลดจะย้ายไปยังหมวดหมู่หลังนำเข้าของไคลเอนต์และไม่ถูกติดตามอีก ไฟล์ยังคงอยู่
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	การดาวน์โหลดจะคงอยู่ในไคลเอนต์ดาวน์โหลดโดยไม่ถูกแตะต้อง เลือกตัวเลือกรายการบล็อกเพื่อบล็อกรีลีสนั้น
+Blocklist release	บล็อกรีลีส
+Do not blocklist	ไม่บล็อก
+Blocklist and search for a replacement	บล็อกและค้นหารีลีสทดแทน
+Blocklist only	บล็อกเท่านั้น
+Removed {} releases from the blocklist.	ลบ {} รีลีสออกจากรายการบล็อกแล้ว
+Remove {} selected	ลบที่เลือก {} รายการ
+Select every release on this page	เลือกทุกรีลีสในหน้านี้
+Remove from the blocklist	ลบออกจากรายการบล็อก
+Remove the {} selected releases from the blocklist?	ลบ {} รีลีสที่เลือกออกจากรายการบล็อก?
+Quality, languages and release of {}	คุณภาพ ภาษา และรีลีสของ {}
+Choose the quality, languages, release group and release type the file is imported with	เลือกคุณภาพ ภาษา กลุ่มรีลีส และประเภทรีลีสที่ใช้นำเข้าไฟล์
+Import details — {}	รายละเอียดการนำเข้า — {}
+Use these details	ใช้รายละเอียดเหล่านี้
+Revision	รีวิชัน
+2 or more for a PROPER or REPACK.	2 ขึ้นไปสำหรับ PROPER หรือ REPACK
+Single episode	ตอนเดียว
+Multi-episode	หลายตอน
+Season pack	แพ็กซีซัน
+Manual	ด้วยตนเอง
+Choose the group the title joins.	เลือกกลุ่มที่ชื่อเรื่องจะเข้าร่วม
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	อัตโนมัติจะจัดชื่อเรื่องเข้ากับแฟรนไชส์หรือคอลเลกชันตามความสัมพันธ์อย่างเป็นทางการ ด้วยตนเองจะใส่ไว้ในกลุ่มที่คุณเลือก ปิดใช้งานจะให้ชื่อเรื่องอยู่แยกเดี่ยว
+Manual puts the title in a group you choose, in the group's folder.	ด้วยตนเองจะใส่ชื่อเรื่องไว้ในกลุ่มที่คุณเลือก ภายในโฟลเดอร์ของกลุ่ม
+Manual (choose a group)	ด้วยตนเอง (เลือกกลุ่ม)
+The title joins the group as its next season or film, in the group's folder.	ชื่อเรื่องจะเข้าร่วมกลุ่มเป็นซีซันหรือภาพยนตร์ถัดไป ภายในโฟลเดอร์ของกลุ่ม
+Choose a group…	เลือกกลุ่ม…
+Collection settings saved.	บันทึกการตั้งค่าคอลเลกชันแล้ว
+Collection settings	การตั้งค่าคอลเลกชัน
+Collection name	ชื่อคอลเลกชัน
+Collection type	ประเภทคอลเลกชัน
+A movie saga holds only films.	ซากาภาพยนตร์มีได้เฉพาะภาพยนตร์
+Movie saga	ซากาภาพยนตร์
+Movie folder format	รูปแบบโฟลเดอร์ภาพยนตร์
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	วิธีตั้งชื่อโฟลเดอร์สมาชิกเมื่อชื่อเรื่องเข้าร่วม: อัตโนมัติจะใช้โฟลเดอร์แบบมีหมายเลขในซากา และโฟลเดอร์เนื้อเรื่องสำหรับอาร์ก
+Numbered	มีหมายเลข
+No change	ไม่เปลี่ยน
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	การติดตาม โปรไฟล์คุณภาพ และโฟลเดอร์ซีซันจะมีผลกับทุกสมาชิกทันที ประเภทและรูปแบบโฟลเดอร์จะมีผลกับชื่อเรื่องที่เข้าร่วมนับจากนี้
+Collection settings…	การตั้งค่าคอลเลกชัน…
+Monitoring, quality profile, series type, folder and tags	การติดตาม โปรไฟล์คุณภาพ ประเภทซีรีส์ โฟลเดอร์ และแท็ก
+Change the quality, languages or release group of episode files, or delete them	เปลี่ยนคุณภาพ ภาษา หรือกลุ่มรีลีสของไฟล์ตอน หรือลบไฟล์
+Manage episodes	จัดการตอน
+Episode details: overview, file, history and searches	รายละเอียดตอน: ภาพรวม ไฟล์ ประวัติ และการค้นหา
+Details of episode {}	รายละเอียดของตอน {}
+Monitoring, availability, quality profile, folder and tags	การติดตาม ความพร้อมให้ชม โปรไฟล์คุณภาพ โฟลเดอร์ และแท็ก
+No tags yet: create them in Settings › Tags.	ยังไม่มีแท็ก: สร้างได้ใน การตั้งค่า › แท็ก
+Below the root folder.	อยู่ภายใต้โฟลเดอร์หลัก
+Use the folder name the naming settings give	ใช้ชื่อโฟลเดอร์ตามการตั้งค่าการตั้งชื่อ
+Use naming format	ใช้รูปแบบการตั้งชื่อ
+Series saved.	บันทึกซีรีส์แล้ว
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr จะค้นหาและดาวน์โหลดตอนที่ติดตามของซีรีส์ที่ติดตาม
+Whether seasons a refresh discovers are monitored.	จะติดตามซีซันที่พบระหว่างการรีเฟรชหรือไม่
+Sort episodes into season folders.	จัดตอนลงในโฟลเดอร์ซีซัน
+Use season folders	ใช้โฟลเดอร์ซีซัน
+Decides how episodes are numbered when searching and importing.	กำหนดวิธีนับหมายเลขตอนเมื่อค้นหาและนำเข้า
+TheTVDB titles in this language; changing it refreshes the series.	ชื่อเรื่องจาก TheTVDB ในภาษานี้; การเปลี่ยนจะรีเฟรชซีรีส์
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	ปิดใช้งานจะนำซีรีส์ออกจากกลุ่มอนิเมะและไม่รวมไว้ในการจัดกลุ่มอัตโนมัติ
+Enter a folder name.	ป้อนชื่อโฟลเดอร์
+Edit — {}	แก้ไข — {}
+Announced	ประกาศแล้ว
+Released	ออกฉายแล้ว
+Movie saved.	บันทึกภาพยนตร์แล้ว
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr จะค้นหาและดาวน์โหลดภาพยนตร์ที่ติดตาม
+Minimum availability	ความพร้อมขั้นต่ำ
+When the movie counts as available for automatic searches.	เวลาที่ถือว่าภาพยนตร์พร้อมสำหรับการค้นหาอัตโนมัติ
+Disabled removes the film from its collection and keeps it out of automatic grouping.	ปิดใช้งานจะนำภาพยนตร์ออกจากคอลเลกชันและไม่รวมไว้ในการจัดกลุ่มอัตโนมัติ
+Edit {} selected	แก้ไขที่เลือก {} รายการ
+Apply changes	ใช้การเปลี่ยนแปลง
+No season folders	ไม่มีโฟลเดอร์ซีซัน
+Tags updated on {} items.	อัปเดตแท็กของ {} รายการแล้ว
+Removes the chosen tags from every selected title.	ลบแท็กที่เลือกออกจากทุกชื่อเรื่องที่เลือก
+Every selected title gets exactly the chosen tags (none removes all).	ทุกชื่อเรื่องที่เลือกจะมีแท็กตรงตามที่เลือกเท่านั้น (ไม่เลือกเลยจะลบทั้งหมด)
+Adds the chosen tags to every selected title.	เพิ่มแท็กที่เลือกให้ทุกชื่อเรื่องที่เลือก
+Tags — {} selected	แท็ก — เลือกแล้ว {} รายการ
+Apply tags	ใช้แท็ก
+Replace	แทนที่
+Manage	จัดการ
+Multi-season pack	แพ็กหลายซีซัน
+Scene name	ชื่อซีน
+Video	วิดีโอ
+· {} fps	· {} fps
+Run time	ความยาว
+Audio	เสียง
+Subtitles	คำบรรยาย
+Details	รายละเอียด
+Search the indexers and grab the best release	ค้นหาในอินเด็กเซอร์แล้วคว้ารีลีสที่ดีที่สุด
+See every release and choose	ดูทุกรีลีสแล้วเลือก
+absolute {}	ลำดับสัมบูรณ์ {}
+Air date	วันออกอากาศ
+No overview.	ไม่มีภาพรวม
+Delete this episode's file? It goes to the recycle bin when one is set.	ลบไฟล์ของตอนนี้? ไฟล์จะไปยังถังรีไซเคิลหากตั้งค่าไว้
+{} files updated.	อัปเดต {} ไฟล์แล้ว
+{} files deleted.	ลบ {} ไฟล์แล้ว
+{} files deleted; {}	ลบ {} ไฟล์แล้ว; {}
+Delete files	ลบไฟล์
+The series has no files.	ซีรีส์นี้ไม่มีไฟล์
+Change	เปลี่ยน
+Change for the selected files…	เปลี่ยนสำหรับไฟล์ที่เลือก…
+Empty clears it	เว้นว่างเพื่อล้าง
+Select every file	เลือกทุกไฟล์
+Delete the {} selected files? They go to the recycle bin when one is set.	ลบ {} ไฟล์ที่เลือก? ไฟล์จะไปยังถังรีไซเคิลหากตั้งค่าไว้
+Monitoring, quality profile, series type and season folders of the selected series	การติดตาม โปรไฟล์คุณภาพ ประเภทซีรีส์ และโฟลเดอร์ซีซันของซีรีส์ที่เลือก
+Edit…	แก้ไข…
+Add, remove or replace the tags of the selected series	เพิ่ม ลบ หรือแทนที่แท็กของซีรีส์ที่เลือก
+Tags…	แท็ก…
+Monitoring and quality profile of the selected movies	การติดตามและโปรไฟล์คุณภาพของภาพยนตร์ที่เลือก
+Add, remove or replace the tags of the selected movies	เพิ่ม ลบ หรือแทนที่แท็กของภาพยนตร์ที่เลือก
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	วางชื่อรีลีสหรือชื่อไฟล์เพื่อดูว่า Kitsunarr อ่านอย่างไรและตรงกับตอนใด
+Parse	แยกวิเคราะห์
+Kitsunarr could not read this title.	Kitsunarr อ่านชื่อนี้ไม่ได้
+Parse result	ผลการแยกวิเคราะห์
+Series title	ชื่อซีรีส์
+Absolute episodes	ตอนแบบลำดับสัมบูรณ์
+Release hash	แฮชของรีลีส
+Multi-season	หลายซีซัน
+Absolute numbering	ลำดับเลขแบบสัมบูรณ์
+Library match	การจับคู่ในคลัง
+No series in the library matches this title.	ไม่มีซีรีส์ในคลังที่ตรงกับชื่อนี้
+No episode of the series matches.	ไม่มีตอนของซีรีส์ที่ตรงกัน
+Log files	ไฟล์ล็อก
+Refresh	รีเฟรช
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr เขียนล็อกลงไฟล์ในโฟลเดอร์ข้อมูล และหมุนไฟล์ทุก 1 MiB ระดับล็อกตั้งค่าได้ใน การตั้งค่า › ทั่วไป
+No log files yet	ยังไม่มีไฟล์ล็อก
+Last written	เขียนล่าสุด
+Skip the free-space check when importing	ข้ามการตรวจสอบพื้นที่ว่างเมื่อนำเข้า
+Create empty series folders during disk scans (not with "delete empty folders")	สร้างโฟลเดอร์ซีรีส์ว่างระหว่างการสแกนดิสก์ (ใช้ร่วมกับ "ลบโฟลเดอร์ว่าง" ไม่ได้)
+Skip the free-space check when grabbing	ข้ามการตรวจสอบพื้นที่ว่างเมื่อคว้า
+Set permissions on imported files and folders (Linux)	ตั้งสิทธิ์ให้ไฟล์และโฟลเดอร์ที่นำเข้า (Linux)
+Import using a script	นำเข้าด้วยสคริปต์
+Rescan series folder after refresh	สแกนโฟลเดอร์ซีรีส์ใหม่หลังรีเฟรช
+Whether a metadata refresh scans the series folder for changes afterwards.	จะสแกนหาการเปลี่ยนแปลงในโฟลเดอร์ซีรีส์หลังรีเฟรชข้อมูลเมตาหรือไม่
+Always	ทุกครั้ง
+After manual refresh	หลังรีเฟรชด้วยตนเอง
+Never	ไม่เลย
+Episode title required	ต้องมีชื่อตอน
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	การนำเข้าจะรอชื่อตอนเมื่อรูปแบบการตั้งชื่อใช้ชื่อตอนและตอนนั้นออกอากาศภายใน 48 ชั่วโมงที่ผ่านมา
+Only for bulk season releases	เฉพาะรีลีสแบบยกซีซัน
+Season pack upgrades	การอัปเกรดแพ็กซีซัน
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	จำนวนตอนในแพ็กซีซันที่ต้องขาดหายหรืออัปเกรดได้ จึงจะคว้าแพ็กนั้น
+A share of the episodes	สัดส่วนของตอน
+Any episode	ตอนใดก็ได้
+Season pack upgrade threshold (%)	เกณฑ์การอัปเกรดแพ็กซีซัน (%)
+Rejected extensions	นามสกุลไฟล์ที่ปฏิเสธ
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	คั่นด้วยจุลภาค เช่น exe, bat การดาวน์โหลดไฟล์เดียวที่มีนามสกุลเหล่านี้จะไม่ถูกนำเข้า
+Folder permissions (chmod)	สิทธิ์โฟลเดอร์ (chmod)
+Octal mode for folders; files get it without the execute bits.	โหมดฐานแปดสำหรับโฟลเดอร์ ไฟล์จะได้ค่านี้โดยไม่มีบิตการเรียกใช้
+Group (chown)	กลุ่ม (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	ชื่อกลุ่มหรือ id สำหรับไฟล์และโฟลเดอร์ที่นำเข้า เว้นว่างเพื่อไม่เปลี่ยนกลุ่ม
+Import script path	พาธสคริปต์นำเข้า
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	พาธแบบเต็มของสคริปต์ สคริปต์จะได้รับพาธต้นทางและปลายทาง รวมถึงตัวแปรสภาพแวดล้อมของ Sonarr
+Excluded tags (ids, comma separated)	แท็กที่ยกเว้น (id คั่นด้วยจุลภาค)
+The profile does not apply to series with one of these tags.	โปรไฟล์จะไม่มีผลกับซีรีส์ที่มีแท็กใดแท็กหนึ่งเหล่านี้
+Reject releases published before the episode airs	ปฏิเสธรีลีสที่เผยแพร่ก่อนตอนออกอากาศ
+Allow season packs before every episode has aired	อนุญาตแพ็กซีซันก่อนที่ทุกตอนจะออกอากาศ
+Air date grace period (hours)	ระยะผ่อนผันวันออกอากาศ (ชั่วโมง)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	รีลีสที่เผยแพร่ภายในจำนวนชั่วโมงนี้หลังวันออกอากาศจะยังถูกปฏิเสธ ค่าติดลบจะอนุญาตรีลีสที่เผยแพร่ก่อนวันออกอากาศตามจำนวนชั่วโมงนั้น
+Presets	พรีเซ็ต
+Series ID	ID ซีรีส์
+Anime group	กลุ่มอนิเมะ
+Absolute episode number	หมายเลขตอนแบบสัมบูรณ์
+Episode title	ชื่อตอน
+Media info	ข้อมูลสื่อ
+Original	ต้นฉบับ
+File name tokens	โทเค็นชื่อไฟล์
+Folder name tokens	โทเค็นชื่อโฟลเดอร์
+Format	รูปแบบ
+Separator	ตัวคั่น
+Space ( )	เว้นวรรค ( )
+Period (.)	จุด (.)
+Underscore (_)	ขีดล่าง (_)
+Dash (-)	ขีดกลาง (-)
+Capitalization	ตัวพิมพ์
+Default case	ตัวพิมพ์เริ่มต้น
+Lowercase	ตัวพิมพ์เล็ก
+Uppercase	ตัวพิมพ์ใหญ่
+Click a token to insert it at the cursor; a preset replaces the whole format.	คลิกโทเค็นเพื่อแทรกที่เคอร์เซอร์ พรีเซ็ตจะแทนที่รูปแบบทั้งหมด
+Tokens	โทเค็น
+Tokens for {}	โทเค็นสำหรับ {}
+Invalid format	รูปแบบไม่ถูกต้อง
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	รูปแบบใช้โทเค็นของ Sonarr ตัวอย่างด้านล่างจะแสดงตามการเปลี่ยนแปลงของคุณก่อนบันทึก
+Rename episodes	เปลี่ยนชื่อตอน
+Replace illegal characters (otherwise they are removed)	แทนที่อักขระที่ใช้ไม่ได้ (มิฉะนั้นจะถูกลบ)
+Colon replacement	การแทนที่โคลอน
+How colons in titles are written in file and folder names.	วิธีเขียนโคลอนในชื่อเรื่องลงในชื่อไฟล์และโฟลเดอร์
+Replace with dash	แทนที่ด้วยขีดกลาง
+Replace with space dash	แทนที่ด้วยเว้นวรรคขีดกลาง
+Replace with space dash space	แทนที่ด้วยเว้นวรรคขีดกลางเว้นวรรค
+Smart replace (dash or space dash)	แทนที่อัจฉริยะ (ขีดกลาง หรือเว้นวรรคขีดกลาง)
+Custom	กำหนดเอง
+Custom colon replacement	การแทนที่โคลอนแบบกำหนดเอง
+The characters written instead of a colon.	อักขระที่เขียนแทนโคลอน
+Multi-episode style	รูปแบบหลายตอน
+Extend (S01E01-02-03)	ขยาย (S01E01-02-03)
+Duplicate (S01E01.S01E02)	ซ้ำ (S01E01.S01E02)
+Repeat (S01E01E02E03)	ต่อเนื่อง (S01E01E02E03)
+Scene (S01E01-E02-E03)	ซีน (S01E01-E02-E03)
+Range (S01E01-03)	ช่วง (S01E01-03)
+Prefixed range (S01E01-E03)	ช่วงมีคำนำหน้า (S01E01-E03)
+Example	ตัวอย่าง
+Anime group movie	ภาพยนตร์ในกลุ่มอนิเมะ
+Used when films are renamed.	ใช้เมื่อเปลี่ยนชื่อภาพยนตร์
+Used when adding a new series or moving one.	ใช้เมื่อเพิ่มซีรีส์ใหม่หรือย้ายซีรีส์
+Specials folder format	รูปแบบโฟลเดอร์ตอนพิเศษ
+Anime groups and collections: titles go to {}/{}/{}.	กลุ่มอนิเมะและคอลเลกชัน: ชื่อเรื่องจะไปอยู่ที่ {}/{}/{}
+Interface settings saved.	บันทึกการตั้งค่าอินเทอร์เฟซแล้ว
+Week column header	หัวคอลัมน์รายสัปดาห์
+The column headers of the calendar's week view.	หัวคอลัมน์ในมุมมองรายสัปดาห์ของปฏิทิน
+Dates	วันที่
+Short date format	รูปแบบวันที่แบบสั้น
+Long date format	รูปแบบวันที่แบบยาว
+Time format	รูปแบบเวลา
+Time zone	เขตเวลา
+Dates and times are shown in this time zone; empty follows the browser.	วันที่และเวลาจะแสดงตามเขตเวลานี้ เว้นว่างเพื่อใช้ตามเบราว์เซอร์
+The browser's time zone	เขตเวลาของเบราว์เซอร์
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	แสดงวันที่แบบสัมพัทธ์ (วันนี้ เมื่อวาน พรุ่งนี้) แทนวันที่
+Style	สไตล์
+Theme	ธีม
+Kept in this browser; the top bar button switches it too.	เก็บไว้ในเบราว์เซอร์นี้ ปุ่มบนแถบด้านบนก็สลับได้เช่นกัน
+Dark	มืด
+Light	สว่าง
+Colour-impaired mode (colours easier to tell apart, with patterns)	โหมดสำหรับผู้บกพร่องทางการเห็นสี (แยกสีได้ง่ายขึ้น พร้อมลวดลาย)
+Saved to the configuration file. Restart Kitsunarr to apply.	บันทึกลงไฟล์การกำหนดค่าแล้ว รีสตาร์ต Kitsunarr เพื่อให้มีผล
+Host and logging	โฮสต์และการบันทึกล็อก
+Set by an environment variable or command-line flag: {}	ตั้งค่าโดยตัวแปรสภาพแวดล้อมหรือแฟล็กบรรทัดคำสั่ง: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	บันทึกลงใน {} แล้ว การเปลี่ยนแปลงจะมีผลเมื่อ Kitsunarr เริ่มทำงานครั้งถัดไป ตัวแปรสภาพแวดล้อมและแฟล็กบรรทัดคำสั่งยังคงมีความสำคัญกว่า
+Restart required: the saved values differ from the ones in use.	ต้องรีสตาร์ต: ค่าที่บันทึกไว้ต่างจากค่าที่ใช้อยู่
+Restart now	รีสตาร์ตตอนนี้
+Bind address	ที่อยู่สำหรับ bind
+0.0.0.0 listens on every interface.	0.0.0.0 จะรับฟังบนทุกอินเทอร์เฟซ
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	สำหรับ reverse proxy เช่น /kitsunarr เว้นว่างเพื่อให้บริการจากราก
+Log level	ระดับล็อก
+Debug and trace write much more to the log files.	ดีบักและเทรซจะเขียนลงไฟล์ล็อกมากขึ้นมาก
+Trace	เทรซ
+Warn	คำเตือน
+Error	ข้อผิดพลาด
+Backup folder	โฟลเดอร์สำรองข้อมูล
+Absolute path; empty uses {}.	พาธแบบเต็ม เว้นว่างเพื่อใช้ {}
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr ให้บริการแบบ HTTP ธรรมดา ให้วาง reverse proxy ไว้ด้านหน้าเพื่อใช้ HTTPS
+Save host settings	บันทึกการตั้งค่าโฮสต์
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	รีสตาร์ต Kitsunarr ตอนนี้หรือไม่? หากที่อยู่ พอร์ต หรือ URL base เปลี่ยนไป ให้เปิดที่อยู่ใหม่หลังจากนั้น
+Nothing to show.	ไม่มีสิ่งที่จะแสดง
+All series	ซีรีส์ทั้งหมด
+All types	ทุกประเภท
+All profiles	ทุกโปรไฟล์
+All tags	ทุกแท็ก
+Downloaded	ดาวน์โหลดแล้ว
+Unaired	ยังไม่ออกอากาศ
+{} files · {}	{} ไฟล์ · {}
+Summary	สรุป
+Monitored series	ซีรีส์ที่ติดตาม
+Completed series	ซีรีส์ที่จบแล้ว
+{} ({} completed)	{} (จบแล้ว {})
+{} ({} monitored)	{} (ติดตาม {})
+Episode files	ไฟล์ตอน
+{} ({} downloaded)	{} (ดาวน์โหลดแล้ว {})
+{} ({} per episode)	{} ({} ต่อตอน)
+Series status	สถานะซีรีส์
+File qualities	คุณภาพไฟล์
+Recent entries	รายการล่าสุด
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	รายการล่าสุดที่เก็บไว้ในหน่วยความจำ ไฟล์ล็อกด้านบนและเอาต์พุตของโปรเซส (ล็อกคอนเทนเนอร์หรือ journal) จะเก็บทุกอย่างไว้
+Yesterday	เมื่อวาน
+Tomorrow	พรุ่งนี้

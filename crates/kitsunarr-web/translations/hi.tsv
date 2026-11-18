@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	छोड़ा गया: सर्वर
 {} expired sessions removed	{} समाप्त सत्र हटाए गए
 All {} refreshes failed; see the logs	सभी {} रीफ़्रेश विफल रहे; लॉग देखें
 every folder scan failed ({})	हर फ़ोल्डर स्कैन विफल रहा ({})
+Links	लिंक
+Copy {}	{} कॉपी करें
+Copy the {} id	{} ID कॉपी करें
+Type	प्रकार
+Previous airing	पिछला प्रसारण
+Season folder	सीज़न फ़ोल्डर
+Average episode size	औसत एपिसोड आकार
+Genres	शैलियाँ
+Rating	रेटिंग
+Certification	प्रमाणन
+Release groups	रिलीज़ समूह
+File quality	फ़ाइल गुणवत्ता
+In cinemas	सिनेमाघरों में
+Runtime	अवधि
+Release group	रिलीज़ समूह
+Columns	कॉलम
+Shown in the table, the overview and under posters	तालिका, विवरण दृश्य और पोस्टर के नीचे दिखाया जाता है
+Column {}	कॉलम {}
+Reset columns	कॉलम रीसेट करें
+Yes	हाँ
+Override and grab {}	{} को ओवरराइड करके ग्रैब करें
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	इस रिलीज़ की सीरीज़, एपिसोड, गुणवत्ता, भाषाएँ या डाउनलोड क्लाइंट चुनें, फिर इसे ग्रैब करें (चुनाव आयात के लिए रखे जाते हैं)
+Override…	ओवरराइड करें…
+Override and grab	ओवरराइड करें और ग्रैब करें
+Override and grab — {}	ओवरराइड करें और ग्रैब करें — {}
+{} episodes chosen	{} एपिसोड चुने गए
+Grab release	रिलीज़ ग्रैब करें
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	बिना बदले चुनाव वही रखते हैं जो रिलीज़ का शीर्षक बताता है। एपिसोड न चुनने पर वही एपिसोड रहते हैं जिनसे शीर्षक मेल खाता है।
+Searched series	खोजी गई सीरीज़
+Download client	डाउनलोड क्लाइंट
+Episodes (required)	एपिसोड (आवश्यक)
+Statistics	आँकड़े
+Test parsing	पार्सिंग टेस्ट
+{} items removed.	{} आइटम हटाए गए।
+{} items removed; {}	{} आइटम हटाए गए; {}
+Select every queue item	कतार के सभी आइटम चुनें
+Queue bulk actions	कतार बल्क क्रियाएँ
+Grab the selected releases a delay profile holds back now	विलंब प्रोफ़ाइल द्वारा रोकी गई चयनित रिलीज़ अभी ग्रैब करें
+Remove selected…	चयनित हटाएँ…
+Remove {} items from the queue	कतार से {} आइटम हटाएँ
+Held-back releases are forgotten; a later search can find them again.	रोकी गई रिलीज़ भुला दी जाती हैं; बाद की खोज उन्हें फिर से ढूँढ सकती है।
+Removal method	हटाने का तरीका
+Remove from the download client	डाउनलोड क्लाइंट से हटाएँ
+Change category	श्रेणी बदलें
+Keep it in the download client	डाउनलोड क्लाइंट में रखें
+The download and its files are removed from the download client.	डाउनलोड और उसकी फ़ाइलें डाउनलोड क्लाइंट से हटा दी जाती हैं।
+The download moves to the client's post-import category and is no longer tracked; its files stay.	डाउनलोड क्लाइंट की आयात के बाद की श्रेणी में चला जाता है और अब ट्रैक नहीं किया जाता; उसकी फ़ाइलें बनी रहती हैं।
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	डाउनलोड, डाउनलोड क्लाइंट में बिना बदलाव के रहता है; उसकी रिलीज़ को ब्लॉकलिस्ट करने के लिए कोई ब्लॉकलिस्ट विकल्प चुनें।
+Blocklist release	रिलीज़ ब्लॉकलिस्ट करें
+Do not blocklist	ब्लॉकलिस्ट न करें
+Blocklist and search for a replacement	ब्लॉकलिस्ट करें और विकल्प खोजें
+Blocklist only	केवल ब्लॉकलिस्ट करें
+Removed {} releases from the blocklist.	ब्लॉकलिस्ट से {} रिलीज़ हटाई गईं।
+Remove {} selected	{} चयनित हटाएँ
+Select every release on this page	इस पृष्ठ की सभी रिलीज़ चुनें
+Remove from the blocklist	ब्लॉकलिस्ट से हटाएँ
+Remove the {} selected releases from the blocklist?	{} चयनित रिलीज़ को ब्लॉकलिस्ट से हटाएँ?
+Quality, languages and release of {}	{} की गुणवत्ता, भाषाएँ और रिलीज़
+Choose the quality, languages, release group and release type the file is imported with	वह गुणवत्ता, भाषाएँ, रिलीज़ समूह और रिलीज़ प्रकार चुनें जिनके साथ फ़ाइल आयात की जाती है
+Import details — {}	आयात विवरण — {}
+Use these details	ये विवरण उपयोग करें
+Revision	संशोधन
+2 or more for a PROPER or REPACK.	PROPER या REPACK के लिए 2 या अधिक।
+Single episode	एकल एपिसोड
+Multi-episode	मल्टी-एपिसोड
+Season pack	सीज़न पैक
+Manual	मैनुअल
+Choose the group the title joins.	वह समूह चुनें जिसमें शीर्षक शामिल होता है।
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	स्वचालित, आधिकारिक संबंधों के आधार पर शीर्षक को उसकी फ़्रैंचाइज़ी या संग्रह के साथ समूहित करता है। मैनुअल उसे आपके चुने हुए समूह में रखता है। अक्षम उसे अलग रखता है।
+Manual puts the title in a group you choose, in the group's folder.	मैनुअल शीर्षक को आपके चुने हुए समूह में, समूह के फ़ोल्डर में रखता है।
+Manual (choose a group)	मैनुअल (समूह चुनें)
+The title joins the group as its next season or film, in the group's folder.	शीर्षक समूह में उसके अगले सीज़न या फ़िल्म के रूप में, समूह के फ़ोल्डर में शामिल होता है।
+Choose a group…	समूह चुनें…
+Collection settings saved.	संग्रह सेटिंग्स सहेजी गईं।
+Collection settings	संग्रह सेटिंग्स
+Collection name	संग्रह का नाम
+Collection type	संग्रह का प्रकार
+A movie saga holds only films.	फ़िल्म सागा में केवल फ़िल्में होती हैं।
+Movie saga	फ़िल्म सागा
+Movie folder format	फ़िल्म फ़ोल्डर फ़ॉर्मेट
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	शीर्षकों के शामिल होने पर सदस्य फ़ोल्डरों के नाम कैसे रखे जाते हैं: स्वचालित, सागाओं में क्रमांकित फ़ोल्डर और आर्क के लिए कथा-आर्क फ़ोल्डर उपयोग करता है।
+Numbered	क्रमांकित
+No change	कोई बदलाव नहीं
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	निगरानी, गुणवत्ता प्रोफ़ाइल और सीज़न फ़ोल्डर अभी हर सदस्य पर लागू होते हैं; प्रकार और फ़ोल्डर फ़ॉर्मेट अब से शामिल होने वाले शीर्षकों पर लागू होते हैं।
+Collection settings…	संग्रह सेटिंग्स…
+Monitoring, quality profile, series type, folder and tags	निगरानी, गुणवत्ता प्रोफ़ाइल, सीरीज़ प्रकार, फ़ोल्डर और टैग
+Change the quality, languages or release group of episode files, or delete them	एपिसोड फ़ाइलों की गुणवत्ता, भाषाएँ या रिलीज़ समूह बदलें, या उन्हें हटाएँ
+Manage episodes	एपिसोड प्रबंधित करें
+Episode details: overview, file, history and searches	एपिसोड की जानकारी: विवरण, फ़ाइल, इतिहास और खोजें
+Details of episode {}	एपिसोड {} की जानकारी
+Monitoring, availability, quality profile, folder and tags	निगरानी, उपलब्धता, गुणवत्ता प्रोफ़ाइल, फ़ोल्डर और टैग
+No tags yet: create them in Settings › Tags.	अभी तक कोई टैग नहीं: उन्हें सेटिंग्स › टैग में बनाएँ।
+Below the root folder.	रूट फ़ोल्डर के अंदर।
+Use the folder name the naming settings give	नामकरण सेटिंग्स द्वारा दिया गया फ़ोल्डर नाम उपयोग करें
+Use naming format	नामकरण फ़ॉर्मेट उपयोग करें
+Series saved.	सीरीज़ सहेजी गई।
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr निगरानी वाली सीरीज़ के निगरानी वाले एपिसोड खोजता और डाउनलोड करता है।
+Whether seasons a refresh discovers are monitored.	क्या रीफ़्रेश में मिले सीज़न निगरानी में रखे जाते हैं।
+Sort episodes into season folders.	एपिसोड को सीज़न फ़ोल्डरों में व्यवस्थित करें।
+Use season folders	सीज़न फ़ोल्डर उपयोग करें
+Decides how episodes are numbered when searching and importing.	तय करता है कि खोज और आयात के समय एपिसोड कैसे क्रमांकित होते हैं।
+TheTVDB titles in this language; changing it refreshes the series.	इस भाषा में TheTVDB शीर्षक; इसे बदलने से सीरीज़ रीफ़्रेश होती है।
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	अक्षम सीरीज़ को उसके एनीमे समूह से हटाता है और उसे स्वचालित समूहीकरण से बाहर रखता है।
+Enter a folder name.	फ़ोल्डर का नाम दर्ज करें।
+Edit — {}	संपादित करें — {}
+Announced	घोषित
+Released	रिलीज़ हुई
+Movie saved.	फ़िल्म सहेजी गई।
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr निगरानी वाली फ़िल्म खोजता और डाउनलोड करता है।
+Minimum availability	न्यूनतम उपलब्धता
+When the movie counts as available for automatic searches.	स्वचालित खोजों के लिए फ़िल्म कब उपलब्ध मानी जाती है।
+Disabled removes the film from its collection and keeps it out of automatic grouping.	अक्षम फ़िल्म को उसके संग्रह से हटाता है और उसे स्वचालित समूहीकरण से बाहर रखता है।
+Edit {} selected	{} चयनित संपादित करें
+Apply changes	बदलाव लागू करें
+No season folders	सीज़न फ़ोल्डर नहीं
+Tags updated on {} items.	{} आइटम पर टैग अपडेट किए गए।
+Removes the chosen tags from every selected title.	हर चयनित शीर्षक से चुने गए टैग हटाता है।
+Every selected title gets exactly the chosen tags (none removes all).	हर चयनित शीर्षक को ठीक चुने गए टैग मिलते हैं (कोई नहीं चुनने पर सभी हट जाते हैं)।
+Adds the chosen tags to every selected title.	हर चयनित शीर्षक में चुने गए टैग जोड़ता है।
+Tags — {} selected	टैग — {} चयनित
+Apply tags	टैग लागू करें
+Replace	प्रतिस्थापित करें
+Manage	प्रबंधित करें
+Multi-season pack	मल्टी-सीज़न पैक
+Scene name	सीन नाम
+Video	वीडियो
+· {} fps	· {} fps
+Run time	अवधि
+Audio	ऑडियो
+Subtitles	उपशीर्षक
+Details	जानकारी
+Search the indexers and grab the best release	इंडेक्सर में खोजें और सर्वश्रेष्ठ रिलीज़ ग्रैब करें
+See every release and choose	हर रिलीज़ देखें और चुनें
+absolute {}	पूर्ण {}
+Air date	प्रसारण तारीख
+No overview.	कोई विवरण नहीं।
+Delete this episode's file? It goes to the recycle bin when one is set.	इस एपिसोड की फ़ाइल हटाएँ? रीसायकल बिन सेट होने पर यह उसमें जाती है।
+{} files updated.	{} फ़ाइलें अपडेट की गईं।
+{} files deleted.	{} फ़ाइलें हटाई गईं।
+{} files deleted; {}	{} फ़ाइलें हटाई गईं; {}
+Delete files	फ़ाइलें हटाएँ
+The series has no files.	सीरीज़ में कोई फ़ाइल नहीं है।
+Change	बदलें
+Change for the selected files…	चयनित फ़ाइलों के लिए बदलें…
+Empty clears it	खाली छोड़ने पर मान साफ़ होता है
+Select every file	सभी फ़ाइलें चुनें
+Delete the {} selected files? They go to the recycle bin when one is set.	{} चयनित फ़ाइलें हटाएँ? रीसायकल बिन सेट होने पर वे उसमें जाती हैं।
+Monitoring, quality profile, series type and season folders of the selected series	चयनित सीरीज़ की निगरानी, गुणवत्ता प्रोफ़ाइल, सीरीज़ प्रकार और सीज़न फ़ोल्डर
+Edit…	संपादित करें…
+Add, remove or replace the tags of the selected series	चयनित सीरीज़ के टैग जोड़ें, हटाएँ या प्रतिस्थापित करें
+Tags…	टैग…
+Monitoring and quality profile of the selected movies	चयनित फ़िल्मों की निगरानी और गुणवत्ता प्रोफ़ाइल
+Add, remove or replace the tags of the selected movies	चयनित फ़िल्मों के टैग जोड़ें, हटाएँ या प्रतिस्थापित करें
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	रिलीज़ शीर्षक या फ़ाइल नाम पेस्ट करें और देखें कि Kitsunarr उसे कैसे पढ़ता है और वह किन एपिसोड से मेल खाता है।
+Parse	पार्स करें
+Kitsunarr could not read this title.	Kitsunarr यह शीर्षक नहीं पढ़ सका।
+Parse result	पार्स परिणाम
+Series title	सीरीज़ शीर्षक
+Absolute episodes	पूर्ण एपिसोड
+Release hash	रिलीज़ हैश
+Multi-season	मल्टी-सीज़न
+Absolute numbering	पूर्ण क्रमांकन
+Library match	लाइब्रेरी मिलान
+No series in the library matches this title.	लाइब्रेरी में कोई सीरीज़ इस शीर्षक से मेल नहीं खाती।
+No episode of the series matches.	सीरीज़ का कोई एपिसोड मेल नहीं खाता।
+Log files	लॉग फ़ाइलें
+Refresh	रीफ़्रेश करें
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr अपना लॉग डेटा फ़ोल्डर की फ़ाइलों में लिखता है, और हर 1 MiB पर नई फ़ाइल शुरू करता है। लॉग स्तर सेटिंग्स › सामान्य में सेट होता है।
+No log files yet	अभी तक कोई लॉग फ़ाइल नहीं
+Last written	अंतिम बार लिखा गया
+Skip the free-space check when importing	आयात करते समय खाली स्थान की जाँच छोड़ें
+Create empty series folders during disk scans (not with "delete empty folders")	डिस्क स्कैन के दौरान खाली सीरीज़ फ़ोल्डर बनाएँ ("खाली फ़ोल्डर हटाएँ" के साथ नहीं)
+Skip the free-space check when grabbing	ग्रैब करते समय खाली स्थान की जाँच छोड़ें
+Set permissions on imported files and folders (Linux)	आयात की गई फ़ाइलों और फ़ोल्डरों पर अनुमतियाँ सेट करें (Linux)
+Import using a script	स्क्रिप्ट से आयात करें
+Rescan series folder after refresh	रीफ़्रेश के बाद सीरीज़ फ़ोल्डर फिर से स्कैन करें
+Whether a metadata refresh scans the series folder for changes afterwards.	क्या मेटाडेटा रीफ़्रेश के बाद सीरीज़ फ़ोल्डर को बदलावों के लिए स्कैन किया जाता है।
+Always	हमेशा
+After manual refresh	मैनुअल रीफ़्रेश के बाद
+Never	कभी नहीं
+Episode title required	एपिसोड शीर्षक आवश्यक
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	जब नामकरण फ़ॉर्मेट एपिसोड शीर्षक का उपयोग करता है और एपिसोड पिछले 48 घंटों में प्रसारित हुआ हो, तो आयात एपिसोड शीर्षक की प्रतीक्षा करते हैं।
+Only for bulk season releases	केवल पूरे सीज़न की बल्क रिलीज़ के लिए
+Season pack upgrades	सीज़न पैक अपग्रेड
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	पैक ग्रैब होने के लिए सीज़न पैक के कितने एपिसोड अनुपलब्ध या अपग्रेड योग्य होने चाहिए।
+A share of the episodes	एपिसोड का एक हिस्सा
+Any episode	कोई भी एपिसोड
+Season pack upgrade threshold (%)	सीज़न पैक अपग्रेड सीमा (%)
+Rejected extensions	अस्वीकृत एक्सटेंशन
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	अल्पविराम से अलग, जैसे exe, bat। इनमें से किसी एक्सटेंशन वाला एकल-फ़ाइल डाउनलोड आयात नहीं किया जाता।
+Folder permissions (chmod)	फ़ोल्डर अनुमतियाँ (chmod)
+Octal mode for folders; files get it without the execute bits.	फ़ोल्डरों के लिए ऑक्टल मोड; फ़ाइलों को यह निष्पादन बिट के बिना मिलता है।
+Group (chown)	समूह (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	आयात की गई फ़ाइलों और फ़ोल्डरों के लिए समूह का नाम या ID; खाली छोड़ने पर समूह नहीं बदला जाता।
+Import script path	आयात स्क्रिप्ट पथ
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	स्क्रिप्ट का पूर्ण पथ; इसे स्रोत और गंतव्य पथ तथा Sonarr के एनवायरनमेंट वेरिएबल मिलते हैं।
+Excluded tags (ids, comma separated)	बाहर रखे गए टैग (ID, अल्पविराम से अलग)
+The profile does not apply to series with one of these tags.	इनमें से किसी टैग वाली सीरीज़ पर प्रोफ़ाइल लागू नहीं होती।
+Reject releases published before the episode airs	एपिसोड के प्रसारण से पहले प्रकाशित रिलीज़ अस्वीकार करें
+Allow season packs before every episode has aired	हर एपिसोड के प्रसारित होने से पहले सीज़न पैक की अनुमति दें
+Air date grace period (hours)	प्रसारण तारीख छूट अवधि (घंटे)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	प्रसारण तारीख के बाद इतने घंटों तक प्रकाशित रिलीज़ अब भी अस्वीकार की जाती हैं; ऋणात्मक संख्या उन्हें इतने घंटे पहले की अनुमति देती है।
+Presets	प्रीसेट
+Series ID	सीरीज़ ID
+Anime group	एनीमे समूह
+Absolute episode number	पूर्ण एपिसोड संख्या
+Episode title	एपिसोड शीर्षक
+Media info	मीडिया जानकारी
+Original	मूल
+File name tokens	फ़ाइल नाम टोकन
+Folder name tokens	फ़ोल्डर नाम टोकन
+Format	फ़ॉर्मेट
+Separator	विभाजक
+Space ( )	स्पेस ( )
+Period (.)	पूर्ण विराम (.)
+Underscore (_)	अंडरस्कोर (_)
+Dash (-)	डैश (-)
+Capitalization	अक्षरों का केस
+Default case	डिफ़ॉल्ट केस
+Lowercase	छोटे अक्षर
+Uppercase	बड़े अक्षर
+Click a token to insert it at the cursor; a preset replaces the whole format.	कर्सर पर डालने के लिए किसी टोकन पर क्लिक करें; प्रीसेट पूरे फ़ॉर्मेट को बदल देता है।
+Tokens	टोकन
+Tokens for {}	{} के लिए टोकन
+Invalid format	अमान्य फ़ॉर्मेट
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	फ़ॉर्मेट Sonarr के टोकन का उपयोग करते हैं; नीचे के उदाहरण सहेजने से पहले ही आपके बदलावों के अनुसार बदलते हैं।
+Rename episodes	एपिसोड का नाम बदलें
+Replace illegal characters (otherwise they are removed)	अमान्य वर्ण बदलें (अन्यथा उन्हें हटा दिया जाता है)
+Colon replacement	कोलन प्रतिस्थापन
+How colons in titles are written in file and folder names.	शीर्षकों के कोलन फ़ाइल और फ़ोल्डर नामों में कैसे लिखे जाते हैं।
+Replace with dash	डैश से बदलें
+Replace with space dash	स्पेस डैश से बदलें
+Replace with space dash space	स्पेस डैश स्पेस से बदलें
+Smart replace (dash or space dash)	स्मार्ट प्रतिस्थापन (डैश या स्पेस डैश)
+Custom	कस्टम
+Custom colon replacement	कस्टम कोलन प्रतिस्थापन
+The characters written instead of a colon.	कोलन के बजाय लिखे जाने वाले वर्ण।
+Multi-episode style	मल्टी-एपिसोड शैली
+Extend (S01E01-02-03)	विस्तार (S01E01-02-03)
+Duplicate (S01E01.S01E02)	डुप्लिकेट (S01E01.S01E02)
+Repeat (S01E01E02E03)	पुनरावृत्ति (S01E01E02E03)
+Scene (S01E01-E02-E03)	सीन (S01E01-E02-E03)
+Range (S01E01-03)	रेंज (S01E01-03)
+Prefixed range (S01E01-E03)	उपसर्ग वाली रेंज (S01E01-E03)
+Example	उदाहरण
+Anime group movie	एनीमे समूह फ़िल्म
+Used when films are renamed.	फ़िल्मों का नाम बदलते समय उपयोग होता है।
+Used when adding a new series or moving one.	नई सीरीज़ जोड़ते या किसी सीरीज़ को स्थानांतरित करते समय उपयोग होता है।
+Specials folder format	स्पेशल फ़ोल्डर फ़ॉर्मेट
+Anime groups and collections: titles go to {}/{}/{}.	एनीमे समूह और संग्रह: शीर्षक {}/{}/{} में जाते हैं।
+Interface settings saved.	इंटरफ़ेस सेटिंग्स सहेजी गईं।
+Week column header	सप्ताह कॉलम हेडर
+The column headers of the calendar's week view.	कैलेंडर के सप्ताह दृश्य के कॉलम हेडर।
+Dates	तारीखें
+Short date format	छोटा तारीख फ़ॉर्मेट
+Long date format	लंबा तारीख फ़ॉर्मेट
+Time format	समय फ़ॉर्मेट
+Time zone	समय क्षेत्र
+Dates and times are shown in this time zone; empty follows the browser.	तारीखें और समय इस समय क्षेत्र में दिखाए जाते हैं; खाली होने पर ब्राउज़र का समय क्षेत्र उपयोग होता है।
+The browser's time zone	ब्राउज़र का समय क्षेत्र
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	तारीख के बजाय सापेक्ष तारीखें (आज, बीता कल, आने वाला कल) दिखाएँ
+Style	शैली
+Theme	थीम
+Kept in this browser; the top bar button switches it too.	इस ब्राउज़र में रखी जाती है; शीर्ष बार का बटन भी इसे बदलता है।
+Dark	डार्क
+Light	लाइट
+Colour-impaired mode (colours easier to tell apart, with patterns)	रंग-दृष्टि बाधित मोड (पैटर्न के साथ, आसानी से अलग पहचाने जाने वाले रंग)
+Saved to the configuration file. Restart Kitsunarr to apply.	कॉन्फ़िगरेशन फ़ाइल में सहेजा गया। लागू करने के लिए Kitsunarr पुनः आरंभ करें।
+Host and logging	होस्ट और लॉगिंग
+Set by an environment variable or command-line flag: {}	एनवायरनमेंट वेरिएबल या कमांड-लाइन फ़्लैग द्वारा सेट: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	{} में सहेजा गया। बदलाव अगली बार Kitsunarr शुरू होने पर लागू होंगे; एनवायरनमेंट वेरिएबल और कमांड-लाइन फ़्लैग को अब भी प्राथमिकता मिलती है।
+Restart required: the saved values differ from the ones in use.	पुनः आरंभ आवश्यक: सहेजे गए मान उपयोग में चल रहे मानों से अलग हैं।
+Restart now	अभी पुनः आरंभ करें
+Bind address	बाइंड पता
+0.0.0.0 listens on every interface.	0.0.0.0 हर इंटरफ़ेस पर सुनता है।
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	रिवर्स प्रॉक्सी के लिए, जैसे /kitsunarr; खाली होने पर रूट से सर्व करता है।
+Log level	लॉग स्तर
+Debug and trace write much more to the log files.	डीबग और ट्रेस लॉग फ़ाइलों में बहुत अधिक लिखते हैं।
+Trace	ट्रेस
+Warn	चेतावनी
+Error	त्रुटि
+Backup folder	बैकअप फ़ोल्डर
+Absolute path; empty uses {}.	पूर्ण पथ; खाली होने पर {} उपयोग होता है।
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr सादा HTTP सर्व करता है; HTTPS के लिए इसके आगे रिवर्स प्रॉक्सी लगाएँ।
+Save host settings	होस्ट सेटिंग्स सहेजें
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Kitsunarr अभी पुनः आरंभ करें? यदि पता, पोर्ट या URL बेस बदला है, तो बाद में नया पता खोलें।
+Nothing to show.	दिखाने के लिए कुछ नहीं।
+All series	सभी सीरीज़
+All types	सभी प्रकार
+All profiles	सभी प्रोफ़ाइलें
+All tags	सभी टैग
+Downloaded	डाउनलोड किए गए
+Unaired	अप्रसारित
+{} files · {}	{} फ़ाइलें · {}
+Summary	सारांश
+Monitored series	निगरानी वाली सीरीज़
+Completed series	पूर्ण सीरीज़
+{} ({} completed)	{} ({} पूर्ण)
+{} ({} monitored)	{} ({} निगरानी में)
+Episode files	एपिसोड फ़ाइलें
+{} ({} downloaded)	{} ({} डाउनलोड किए गए)
+{} ({} per episode)	{} ({} प्रति एपिसोड)
+Series status	सीरीज़ स्थिति
+File qualities	फ़ाइल गुणवत्ताएँ
+Recent entries	हाल की प्रविष्टियाँ
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	मेमोरी में रखी गई सबसे हाल की प्रविष्टियाँ। ऊपर की लॉग फ़ाइलें और प्रोसेस आउटपुट (कंटेनर लॉग या journal) सब कुछ रखते हैं।
+Yesterday	बीता कल
+Tomorrow	आने वाला कल

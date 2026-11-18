@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Đã bỏ qua: máy chủ vẫn đang kh�
 {} expired sessions removed	Đã xóa {} phiên hết hạn
 All {} refreshes failed; see the logs	Cả {} lần làm mới đều thất bại; xem nhật ký
 every folder scan failed ({})	mọi lần quét thư mục đều thất bại ({})
+Links	Liên kết
+Copy {}	Sao chép {}
+Copy the {} id	Sao chép id {}
+Type	Loại
+Previous airing	Lần phát sóng trước
+Season folder	Thư mục mùa
+Average episode size	Kích thước tập trung bình
+Genres	Thể loại
+Rating	Đánh giá
+Certification	Phân loại độ tuổi
+Release groups	Nhóm phát hành
+File quality	Chất lượng tệp
+In cinemas	Chiếu rạp
+Runtime	Thời lượng
+Release group	Nhóm phát hành
+Columns	Cột
+Shown in the table, the overview and under posters	Hiển thị trong bảng, chế độ tóm tắt và dưới áp phích
+Column {}	Cột {}
+Reset columns	Đặt lại cột
+Yes	Có
+Override and grab {}	Ghi đè và lấy {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Chọn phim bộ, tập, chất lượng, ngôn ngữ hoặc trình tải xuống của bản phát hành này rồi lấy nó (lựa chọn được giữ lại khi nhập)
+Override…	Ghi đè…
+Override and grab	Ghi đè và lấy
+Override and grab — {}	Ghi đè và lấy — {}
+{} episodes chosen	Đã chọn {} tập
+Grab release	Lấy bản phát hành
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Các mục không thay đổi giữ theo tiêu đề của bản phát hành. Nếu không chọn tập, các tập mà tiêu đề ánh xạ tới được giữ nguyên.
+Searched series	Phim bộ đã tìm
+Download client	Trình tải xuống
+Episodes (required)	Tập (bắt buộc)
+Statistics	Thống kê
+Test parsing	Thử phân tích
+{} items removed.	Đã gỡ {} mục.
+{} items removed; {}	Đã gỡ {} mục; {}
+Select every queue item	Chọn mọi mục trong hàng đợi
+Queue bulk actions	Thao tác hàng loạt trên hàng đợi
+Grab the selected releases a delay profile holds back now	Lấy ngay các bản phát hành đã chọn đang bị hồ sơ trì hoãn giữ lại
+Remove selected…	Gỡ mục đã chọn…
+Remove {} items from the queue	Gỡ {} mục khỏi hàng đợi
+Held-back releases are forgotten; a later search can find them again.	Các bản phát hành bị giữ lại sẽ bị bỏ qua; lần tìm kiếm sau có thể tìm lại chúng.
+Removal method	Cách gỡ bỏ
+Remove from the download client	Gỡ khỏi trình tải xuống
+Change category	Đổi danh mục
+Keep it in the download client	Giữ trong trình tải xuống
+The download and its files are removed from the download client.	Bản tải và các tệp của nó bị gỡ khỏi trình tải xuống.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Bản tải được chuyển sang danh mục sau khi nhập của trình tải xuống và không còn được theo dõi; các tệp vẫn được giữ.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Bản tải vẫn nằm nguyên trong trình tải xuống; hãy chọn một tùy chọn danh sách chặn để chặn bản phát hành của nó.
+Blocklist release	Chặn bản phát hành
+Do not blocklist	Không chặn
+Blocklist and search for a replacement	Chặn và tìm bản thay thế
+Blocklist only	Chỉ chặn
+Removed {} releases from the blocklist.	Đã gỡ {} bản phát hành khỏi danh sách chặn.
+Remove {} selected	Gỡ {} mục đã chọn
+Select every release on this page	Chọn mọi bản phát hành trên trang này
+Remove from the blocklist	Gỡ khỏi danh sách chặn
+Remove the {} selected releases from the blocklist?	Gỡ {} bản phát hành đã chọn khỏi danh sách chặn?
+Quality, languages and release of {}	Chất lượng, ngôn ngữ và bản phát hành của {}
+Choose the quality, languages, release group and release type the file is imported with	Chọn chất lượng, ngôn ngữ, nhóm phát hành và loại bản phát hành dùng khi nhập tệp
+Import details — {}	Chi tiết nhập — {}
+Use these details	Dùng các chi tiết này
+Revision	Bản sửa đổi
+2 or more for a PROPER or REPACK.	2 trở lên cho PROPER hoặc REPACK.
+Single episode	Một tập
+Multi-episode	Nhiều tập
+Season pack	Gói mùa
+Manual	Thủ công
+Choose the group the title joins.	Chọn nhóm mà tựa sẽ tham gia.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Tự động nhóm tựa với franchise hoặc bộ sưu tập của nó dựa trên quan hệ chính thức. Thủ công đưa tựa vào nhóm bạn chọn. Tắt sẽ giữ tựa đứng riêng.
+Manual puts the title in a group you choose, in the group's folder.	Thủ công đưa tựa vào nhóm bạn chọn, trong thư mục của nhóm.
+Manual (choose a group)	Thủ công (chọn nhóm)
+The title joins the group as its next season or film, in the group's folder.	Tựa tham gia nhóm như mùa hoặc phim tiếp theo, trong thư mục của nhóm.
+Choose a group…	Chọn nhóm…
+Collection settings saved.	Đã lưu cài đặt bộ sưu tập.
+Collection settings	Cài đặt bộ sưu tập
+Collection name	Tên bộ sưu tập
+Collection type	Loại bộ sưu tập
+A movie saga holds only films.	Một saga phim chỉ chứa phim lẻ.
+Movie saga	Saga phim
+Movie folder format	Định dạng thư mục phim
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Cách đặt tên thư mục thành viên khi các tựa tham gia: tự động dùng thư mục đánh số trong saga và thư mục mạch truyện cho các arc.
+Numbered	Đánh số
+No change	Không thay đổi
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Theo dõi, hồ sơ chất lượng và thư mục mùa được áp dụng ngay cho mọi thành viên; loại và định dạng thư mục áp dụng cho các tựa tham gia từ nay về sau.
+Collection settings…	Cài đặt bộ sưu tập…
+Monitoring, quality profile, series type, folder and tags	Theo dõi, hồ sơ chất lượng, loại phim bộ, thư mục và thẻ
+Change the quality, languages or release group of episode files, or delete them	Đổi chất lượng, ngôn ngữ hoặc nhóm phát hành của các tệp tập, hoặc xóa chúng
+Manage episodes	Quản lý tập
+Episode details: overview, file, history and searches	Chi tiết tập: tóm tắt, tệp, lịch sử và tìm kiếm
+Details of episode {}	Chi tiết tập {}
+Monitoring, availability, quality profile, folder and tags	Theo dõi, tình trạng có sẵn, hồ sơ chất lượng, thư mục và thẻ
+No tags yet: create them in Settings › Tags.	Chưa có thẻ: hãy tạo trong Cài đặt › Thẻ.
+Below the root folder.	Bên dưới thư mục gốc.
+Use the folder name the naming settings give	Dùng tên thư mục do cài đặt đặt tên đưa ra
+Use naming format	Dùng định dạng đặt tên
+Series saved.	Đã lưu phim bộ.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr tìm và tải xuống các tập đang theo dõi của một phim bộ đang theo dõi.
+Whether seasons a refresh discovers are monitored.	Có theo dõi các mùa được phát hiện khi làm mới hay không.
+Sort episodes into season folders.	Sắp xếp các tập vào thư mục mùa.
+Use season folders	Dùng thư mục mùa
+Decides how episodes are numbered when searching and importing.	Quyết định cách đánh số tập khi tìm kiếm và nhập.
+TheTVDB titles in this language; changing it refreshes the series.	Tựa TheTVDB bằng ngôn ngữ này; thay đổi sẽ làm mới phim bộ.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Tắt sẽ gỡ phim bộ khỏi nhóm anime của nó và loại nó khỏi việc nhóm tự động.
+Enter a folder name.	Nhập tên thư mục.
+Edit — {}	Chỉnh sửa — {}
+Announced	Đã công bố
+Released	Đã phát hành
+Movie saved.	Đã lưu phim lẻ.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr tìm và tải xuống một phim lẻ đang theo dõi.
+Minimum availability	Mức có sẵn tối thiểu
+When the movie counts as available for automatic searches.	Thời điểm phim lẻ được coi là có sẵn cho tìm kiếm tự động.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Tắt sẽ gỡ phim lẻ khỏi bộ sưu tập của nó và loại nó khỏi việc nhóm tự động.
+Edit {} selected	Chỉnh sửa {} mục đã chọn
+Apply changes	Áp dụng thay đổi
+No season folders	Không có thư mục mùa
+Tags updated on {} items.	Đã cập nhật thẻ cho {} mục.
+Removes the chosen tags from every selected title.	Gỡ các thẻ đã chọn khỏi mọi tựa được chọn.
+Every selected title gets exactly the chosen tags (none removes all).	Mọi tựa được chọn sẽ có đúng các thẻ đã chọn (không chọn thẻ nào sẽ gỡ tất cả).
+Adds the chosen tags to every selected title.	Thêm các thẻ đã chọn vào mọi tựa được chọn.
+Tags — {} selected	Thẻ — đã chọn {}
+Apply tags	Áp dụng thẻ
+Replace	Thay thế
+Manage	Quản lý
+Multi-season pack	Gói nhiều mùa
+Scene name	Tên scene
+Video	Video
+· {} fps	· {} fps
+Run time	Thời lượng
+Audio	Âm thanh
+Subtitles	Phụ đề
+Details	Chi tiết
+Search the indexers and grab the best release	Tìm trên trình lập chỉ mục và lấy bản phát hành tốt nhất
+See every release and choose	Xem mọi bản phát hành và chọn
+absolute {}	tuyệt đối {}
+Air date	Ngày phát sóng
+No overview.	Không có tóm tắt.
+Delete this episode's file? It goes to the recycle bin when one is set.	Xóa tệp của tập này? Tệp sẽ vào thùng rác nếu đã thiết lập.
+{} files updated.	Đã cập nhật {} tệp.
+{} files deleted.	Đã xóa {} tệp.
+{} files deleted; {}	Đã xóa {} tệp; {}
+Delete files	Xóa tệp
+The series has no files.	Phim bộ này không có tệp.
+Change	Thay đổi
+Change for the selected files…	Thay đổi cho các tệp đã chọn…
+Empty clears it	Để trống sẽ xóa giá trị
+Select every file	Chọn mọi tệp
+Delete the {} selected files? They go to the recycle bin when one is set.	Xóa {} tệp đã chọn? Tệp sẽ vào thùng rác nếu đã thiết lập.
+Monitoring, quality profile, series type and season folders of the selected series	Theo dõi, hồ sơ chất lượng, loại phim bộ và thư mục mùa của các phim bộ đã chọn
+Edit…	Chỉnh sửa…
+Add, remove or replace the tags of the selected series	Thêm, gỡ hoặc thay thế thẻ của các phim bộ đã chọn
+Tags…	Thẻ…
+Monitoring and quality profile of the selected movies	Theo dõi và hồ sơ chất lượng của các phim lẻ đã chọn
+Add, remove or replace the tags of the selected movies	Thêm, gỡ hoặc thay thế thẻ của các phim lẻ đã chọn
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Dán tiêu đề bản phát hành hoặc tên tệp để xem Kitsunarr đọc nó thế nào và nó khớp với những tập nào.
+Parse	Phân tích
+Kitsunarr could not read this title.	Kitsunarr không đọc được tiêu đề này.
+Parse result	Kết quả phân tích
+Series title	Tựa phim bộ
+Absolute episodes	Tập tuyệt đối
+Release hash	Mã băm bản phát hành
+Multi-season	Nhiều mùa
+Absolute numbering	Đánh số tuyệt đối
+Library match	Khớp trong thư viện
+No series in the library matches this title.	Không có phim bộ nào trong thư viện khớp với tiêu đề này.
+No episode of the series matches.	Không có tập nào của phim bộ khớp.
+Log files	Tệp nhật ký
+Refresh	Làm mới
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr ghi nhật ký vào các tệp trong thư mục dữ liệu, xoay vòng mỗi 1 MiB. Mức nhật ký được đặt trong Cài đặt › Chung.
+No log files yet	Chưa có tệp nhật ký
+Last written	Ghi lần cuối
+Skip the free-space check when importing	Bỏ qua kiểm tra dung lượng trống khi nhập
+Create empty series folders during disk scans (not with "delete empty folders")	Tạo thư mục phim bộ trống khi quét ổ đĩa (không dùng cùng "xóa thư mục trống")
+Skip the free-space check when grabbing	Bỏ qua kiểm tra dung lượng trống khi lấy
+Set permissions on imported files and folders (Linux)	Đặt quyền cho tệp và thư mục đã nhập (Linux)
+Import using a script	Nhập bằng script
+Rescan series folder after refresh	Quét lại thư mục phim bộ sau khi làm mới
+Whether a metadata refresh scans the series folder for changes afterwards.	Có quét thư mục phim bộ để tìm thay đổi sau khi làm mới siêu dữ liệu hay không.
+Always	Luôn luôn
+After manual refresh	Sau khi làm mới thủ công
+Never	Không bao giờ
+Episode title required	Bắt buộc có tên tập
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Việc nhập sẽ chờ có tên tập khi định dạng đặt tên dùng tên tập và tập đó phát sóng trong 48 giờ qua.
+Only for bulk season releases	Chỉ cho bản phát hành theo cả mùa
+Season pack upgrades	Nâng cấp gói mùa
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Số tập trong một gói mùa phải đang thiếu hoặc có thể nâng cấp để gói đó được lấy.
+A share of the episodes	Một tỷ lệ các tập
+Any episode	Bất kỳ tập nào
+Season pack upgrade threshold (%)	Ngưỡng nâng cấp gói mùa (%)
+Rejected extensions	Phần mở rộng bị từ chối
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Phân tách bằng dấu phẩy, ví dụ exe, bat. Bản tải một tệp có một trong các phần mở rộng này sẽ không được nhập.
+Folder permissions (chmod)	Quyền thư mục (chmod)
+Octal mode for folders; files get it without the execute bits.	Chế độ bát phân cho thư mục; tệp nhận chế độ này nhưng không có bit thực thi.
+Group (chown)	Nhóm (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Tên nhóm hoặc id cho tệp và thư mục đã nhập; để trống sẽ không đổi nhóm.
+Import script path	Đường dẫn script nhập
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Đường dẫn tuyệt đối của script; script nhận đường dẫn nguồn và đích cùng các biến môi trường của Sonarr.
+Excluded tags (ids, comma separated)	Thẻ loại trừ (id, phân tách bằng dấu phẩy)
+The profile does not apply to series with one of these tags.	Hồ sơ không áp dụng cho phim bộ có một trong các thẻ này.
+Reject releases published before the episode airs	Từ chối bản phát hành được đăng trước khi tập phát sóng
+Allow season packs before every episode has aired	Cho phép gói mùa trước khi mọi tập đã phát sóng
+Air date grace period (hours)	Thời gian ân hạn ngày phát sóng (giờ)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Bản phát hành đăng trong số giờ này sau ngày phát sóng vẫn bị từ chối; số âm cho phép chúng sớm hơn ngày phát sóng chừng ấy giờ.
+Presets	Mẫu đặt sẵn
+Series ID	ID phim bộ
+Anime group	Nhóm anime
+Absolute episode number	Số tập tuyệt đối
+Episode title	Tên tập
+Media info	Thông tin phương tiện
+Original	Gốc
+File name tokens	Token tên tệp
+Folder name tokens	Token tên thư mục
+Format	Định dạng
+Separator	Dấu phân cách
+Space ( )	Dấu cách ( )
+Period (.)	Dấu chấm (.)
+Underscore (_)	Gạch dưới (_)
+Dash (-)	Gạch nối (-)
+Capitalization	Viết hoa
+Default case	Giữ nguyên chữ hoa/thường
+Lowercase	Chữ thường
+Uppercase	Chữ hoa
+Click a token to insert it at the cursor; a preset replaces the whole format.	Nhấp vào một token để chèn tại con trỏ; một mẫu đặt sẵn sẽ thay thế toàn bộ định dạng.
+Tokens	Token
+Tokens for {}	Token cho {}
+Invalid format	Định dạng không hợp lệ
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Định dạng dùng token của Sonarr; các ví dụ bên dưới cập nhật theo thay đổi của bạn trước khi lưu.
+Rename episodes	Đổi tên tập
+Replace illegal characters (otherwise they are removed)	Thay thế ký tự không hợp lệ (nếu không chúng sẽ bị xóa)
+Colon replacement	Thay thế dấu hai chấm
+How colons in titles are written in file and folder names.	Cách viết dấu hai chấm trong tiêu đề vào tên tệp và thư mục.
+Replace with dash	Thay bằng gạch nối
+Replace with space dash	Thay bằng dấu cách gạch nối
+Replace with space dash space	Thay bằng dấu cách gạch nối dấu cách
+Smart replace (dash or space dash)	Thay thế thông minh (gạch nối hoặc dấu cách gạch nối)
+Custom	Tùy chỉnh
+Custom colon replacement	Thay thế dấu hai chấm tùy chỉnh
+The characters written instead of a colon.	Các ký tự được viết thay cho dấu hai chấm.
+Multi-episode style	Kiểu nhiều tập
+Extend (S01E01-02-03)	Mở rộng (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Nhân đôi (S01E01.S01E02)
+Repeat (S01E01E02E03)	Lặp lại (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	Khoảng (S01E01-03)
+Prefixed range (S01E01-E03)	Khoảng có tiền tố (S01E01-E03)
+Example	Ví dụ
+Anime group movie	Phim của nhóm anime
+Used when films are renamed.	Dùng khi đổi tên phim lẻ.
+Used when adding a new series or moving one.	Dùng khi thêm phim bộ mới hoặc di chuyển phim bộ.
+Specials folder format	Định dạng thư mục tập đặc biệt
+Anime groups and collections: titles go to {}/{}/{}.	Nhóm anime và bộ sưu tập: các tựa được đặt vào {}/{}/{}.
+Interface settings saved.	Đã lưu cài đặt giao diện.
+Week column header	Tiêu đề cột tuần
+The column headers of the calendar's week view.	Tiêu đề cột trong chế độ xem tuần của lịch.
+Dates	Ngày tháng
+Short date format	Định dạng ngày ngắn
+Long date format	Định dạng ngày dài
+Time format	Định dạng giờ
+Time zone	Múi giờ
+Dates and times are shown in this time zone; empty follows the browser.	Ngày giờ được hiển thị theo múi giờ này; để trống sẽ theo trình duyệt.
+The browser's time zone	Múi giờ của trình duyệt
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Hiển thị ngày tương đối (Hôm nay, Hôm qua, Ngày mai) thay cho ngày
+Style	Kiểu
+Theme	Chủ đề
+Kept in this browser; the top bar button switches it too.	Lưu trong trình duyệt này; nút trên thanh trên cùng cũng chuyển được.
+Dark	Tối
+Light	Sáng
+Colour-impaired mode (colours easier to tell apart, with patterns)	Chế độ cho người khó phân biệt màu (màu dễ phân biệt hơn, có họa tiết)
+Saved to the configuration file. Restart Kitsunarr to apply.	Đã lưu vào tệp cấu hình. Khởi động lại Kitsunarr để áp dụng.
+Host and logging	Máy chủ và ghi nhật ký
+Set by an environment variable or command-line flag: {}	Được đặt bởi biến môi trường hoặc cờ dòng lệnh: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Đã lưu vào {}. Thay đổi có hiệu lực vào lần khởi động Kitsunarr tiếp theo; biến môi trường và cờ dòng lệnh vẫn được ưu tiên.
+Restart required: the saved values differ from the ones in use.	Cần khởi động lại: các giá trị đã lưu khác với giá trị đang dùng.
+Restart now	Khởi động lại ngay
+Bind address	Địa chỉ lắng nghe
+0.0.0.0 listens on every interface.	0.0.0.0 lắng nghe trên mọi giao diện mạng.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Dành cho reverse proxy, ví dụ /kitsunarr; để trống sẽ phục vụ từ gốc.
+Log level	Mức nhật ký
+Debug and trace write much more to the log files.	Gỡ lỗi và truy vết ghi vào tệp nhật ký nhiều hơn rất nhiều.
+Trace	Truy vết
+Warn	Cảnh báo
+Error	Lỗi
+Backup folder	Thư mục sao lưu
+Absolute path; empty uses {}.	Đường dẫn tuyệt đối; để trống sẽ dùng {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr phục vụ HTTP thuần; hãy đặt một reverse proxy phía trước để dùng HTTPS.
+Save host settings	Lưu cài đặt máy chủ
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Khởi động lại Kitsunarr ngay bây giờ? Nếu địa chỉ, cổng hoặc URL gốc đã thay đổi, hãy mở địa chỉ mới sau đó.
+Nothing to show.	Không có gì để hiển thị.
+All series	Tất cả phim bộ
+All types	Tất cả loại
+All profiles	Tất cả hồ sơ
+All tags	Tất cả thẻ
+Downloaded	Đã tải xuống
+Unaired	Chưa phát sóng
+{} files · {}	{} tệp · {}
+Summary	Tổng quan
+Monitored series	Phim bộ đang theo dõi
+Completed series	Phim bộ đã hoàn tất
+{} ({} completed)	{} ({} đã hoàn tất)
+{} ({} monitored)	{} ({} đang theo dõi)
+Episode files	Tệp tập
+{} ({} downloaded)	{} ({} đã tải xuống)
+{} ({} per episode)	{} ({} mỗi tập)
+Series status	Trạng thái phim bộ
+File qualities	Chất lượng tệp
+Recent entries	Mục gần đây
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Các mục gần nhất được giữ trong bộ nhớ. Các tệp nhật ký ở trên và đầu ra của tiến trình (nhật ký container hoặc journal) giữ mọi thứ.
+Yesterday	Hôm qua
+Tomorrow	Ngày mai

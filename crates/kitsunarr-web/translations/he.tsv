@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	דולג: השרת עדיין מופעל
 {} expired sessions removed	הוסרו הפעלות שפג תוקפן: {}
 All {} refreshes failed; see the logs	כל {} הרענונים נכשלו; ראה את היומנים
 every folder scan failed ({})	כל סריקות התיקיות נכשלו ({})
+Links	קישורים
+Copy {}	העתק {}
+Copy the {} id	העתק את המזהה של {}
+Type	סוג
+Previous airing	השידור הקודם
+Season folder	תיקיית עונה
+Average episode size	גודל פרק ממוצע
+Genres	ז'אנרים
+Rating	דירוג
+Certification	סיווג גיל
+Release groups	קבוצות הפצה
+File quality	איכות הקובץ
+In cinemas	בבתי הקולנוע
+Runtime	משך
+Release group	קבוצת הפצה
+Columns	עמודות
+Shown in the table, the overview and under posters	מוצג בטבלה, בתצוגת התקציר ומתחת לפוסטרים
+Column {}	עמודה {}
+Reset columns	אפס עמודות
+Yes	כן
+Override and grab {}	עקוף ותפוס את {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	בחר את הסדרה, הפרקים, האיכות, השפות או לקוח ההורדות של גרסה זו, ואז תפוס אותה (הבחירות נשמרות לייבוא)
+Override…	עקוף…
+Override and grab	עקוף ותפוס
+Override and grab — {}	עקוף ותפוס — {}
+{} episodes chosen	{} פרקים נבחרו
+Grab release	תפוס גרסה
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	בחירות שלא שונו שומרות על מה שכותר הגרסה מציין. אם לא נבחרו פרקים, נשמרים הפרקים שהכותר ממופה אליהם.
+Searched series	הסדרה שחופשה
+Download client	לקוח הורדות
+Episodes (required)	פרקים (נדרש)
+Statistics	סטטיסטיקה
+Test parsing	בדיקת פענוח
+{} items removed.	{} פריטים הוסרו.
+{} items removed; {}	{} פריטים הוסרו; {}
+Select every queue item	בחר את כל פריטי התור
+Queue bulk actions	פעולות מרובות בתור
+Grab the selected releases a delay profile holds back now	תפוס עכשיו את הגרסאות שנבחרו שפרופיל השהייה מעכב
+Remove selected…	הסר את הנבחרים…
+Remove {} items from the queue	הסר {} פריטים מהתור
+Held-back releases are forgotten; a later search can find them again.	גרסאות מעוכבות נשכחות; חיפוש מאוחר יותר יכול למצוא אותן שוב.
+Removal method	שיטת הסרה
+Remove from the download client	הסר מלקוח ההורדות
+Change category	שנה קטגוריה
+Keep it in the download client	השאר בלקוח ההורדות
+The download and its files are removed from the download client.	ההורדה והקבצים שלה מוסרים מלקוח ההורדות.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	ההורדה עוברת לקטגוריה לאחר הייבוא של הלקוח ואינה נמצאת עוד במעקב; הקבצים שלה נשארים.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	ההורדה נשארת בלקוח ההורדות ללא שינוי; בחר אפשרות של רשימת חסימה כדי להוסיף את הגרסה שלה לרשימת החסימה.
+Blocklist release	הוסף גרסה לרשימת החסימה
+Do not blocklist	אל תוסיף לרשימת החסימה
+Blocklist and search for a replacement	הוסף לרשימת החסימה וחפש תחליף
+Blocklist only	רק הוסף לרשימת החסימה
+Removed {} releases from the blocklist.	{} גרסאות הוסרו מרשימת החסימה.
+Remove {} selected	הסר {} נבחרים
+Select every release on this page	בחר את כל הגרסאות בעמוד זה
+Remove from the blocklist	הסר מרשימת החסימה
+Remove the {} selected releases from the blocklist?	להסיר את {} הגרסאות שנבחרו מרשימת החסימה?
+Quality, languages and release of {}	איכות, שפות וגרסה של {}
+Choose the quality, languages, release group and release type the file is imported with	בחר את האיכות, השפות, קבוצת ההפצה וסוג הגרסה שאיתם הקובץ ייובא
+Import details — {}	פרטי ייבוא — {}
+Use these details	השתמש בפרטים אלה
+Revision	רוויזיה
+2 or more for a PROPER or REPACK.	2 ומעלה עבור PROPER או REPACK.
+Single episode	פרק בודד
+Multi-episode	מרובה פרקים
+Season pack	חבילת עונה
+Manual	ידני
+Choose the group the title joins.	בחר את הקבוצה שאליה הכותר מצטרף.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	"אוטומטי" מקבץ את הכותר עם הזיכיון או האוסף שלו לפי קשרים רשמיים. "ידני" מכניס אותו לקבוצה שתבחר. "מושבת" משאיר אותו בנפרד.
+Manual puts the title in a group you choose, in the group's folder.	"ידני" מכניס את הכותר לקבוצה שתבחר, בתיקיית הקבוצה.
+Manual (choose a group)	ידני (בחר קבוצה)
+The title joins the group as its next season or film, in the group's folder.	הכותר מצטרף לקבוצה כעונה או כסרט הבא שלה, בתיקיית הקבוצה.
+Choose a group…	בחר קבוצה…
+Collection settings saved.	הגדרות האוסף נשמרו.
+Collection settings	הגדרות האוסף
+Collection name	שם האוסף
+Collection type	סוג האוסף
+A movie saga holds only films.	סאגת סרטים מכילה סרטים בלבד.
+Movie saga	סאגת סרטים
+Movie folder format	פורמט תיקיית סרט
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	כיצד נקראות תיקיות החברים כאשר כותרים מצטרפים: "אוטומטי" משתמש בתיקיות ממוספרות בסאגות ובתיקיות קשת עלילתית עבור קשתות.
+Numbered	ממוספר
+No change	ללא שינוי
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	המעקב, פרופיל האיכות ותיקיית העונה חלים כעת על כל החברים; הסוג ופורמט התיקייה חלים על כותרים שיצטרפו מעתה והלאה.
+Collection settings…	הגדרות האוסף…
+Monitoring, quality profile, series type, folder and tags	מעקב, פרופיל איכות, סוג סדרה, תיקייה ותגיות
+Change the quality, languages or release group of episode files, or delete them	שנה את האיכות, השפות או קבוצת ההפצה של קובצי הפרקים, או מחק אותם
+Manage episodes	נהל פרקים
+Episode details: overview, file, history and searches	פרטי הפרק: תקציר, קובץ, היסטוריה וחיפושים
+Details of episode {}	פרטי הפרק {}
+Monitoring, availability, quality profile, folder and tags	מעקב, זמינות, פרופיל איכות, תיקייה ותגיות
+No tags yet: create them in Settings › Tags.	אין תגיות עדיין: צור אותן ב-הגדרות › תגיות.
+Below the root folder.	מתחת לתיקיית השורש.
+Use the folder name the naming settings give	השתמש בשם התיקייה שנקבע בהגדרות מתן השמות
+Use naming format	השתמש בפורמט מתן השמות
+Series saved.	הסדרה נשמרה.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr מחפש ומוריד את הפרקים שבמעקב של סדרה שבמעקב.
+Whether seasons a refresh discovers are monitored.	האם עונות שרענון מגלה נכנסות למעקב.
+Sort episodes into season folders.	מיין פרקים לתיקיות עונה.
+Use season folders	השתמש בתיקיות עונה
+Decides how episodes are numbered when searching and importing.	קובע כיצד הפרקים ממוספרים בעת חיפוש וייבוא.
+TheTVDB titles in this language; changing it refreshes the series.	כותרים של TheTVDB בשפה זו; שינויה מרענן את הסדרה.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	"מושבת" מסיר את הסדרה מקבוצת האנימה שלה ומוציא אותה מהקיבוץ האוטומטי.
+Enter a folder name.	הזן שם תיקייה.
+Edit — {}	עריכה — {}
+Announced	הוכרז
+Released	שוחרר
+Movie saved.	הסרט נשמר.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr מחפש ומוריד סרט שבמעקב.
+Minimum availability	זמינות מינימלית
+When the movie counts as available for automatic searches.	מתי הסרט נחשב זמין לחיפושים אוטומטיים.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	"מושבת" מסיר את הסרט מהאוסף שלו ומוציא אותו מהקיבוץ האוטומטי.
+Edit {} selected	ערוך {} נבחרים
+Apply changes	החל שינויים
+No season folders	ללא תיקיות עונה
+Tags updated on {} items.	התגיות עודכנו ב-{} פריטים.
+Removes the chosen tags from every selected title.	מסיר את התגיות שנבחרו מכל כותר שנבחר.
+Every selected title gets exactly the chosen tags (none removes all).	כל כותר שנבחר מקבל בדיוק את התגיות שנבחרו (ללא תגיות מסיר את כולן).
+Adds the chosen tags to every selected title.	מוסיף את התגיות שנבחרו לכל כותר שנבחר.
+Tags — {} selected	תגיות — {} נבחרים
+Apply tags	החל תגיות
+Replace	החלף
+Manage	נהל
+Multi-season pack	חבילת עונות מרובות
+Scene name	שם סצנה
+Video	וידאו
+· {} fps	· {} fps
+Run time	משך
+Audio	שמע
+Subtitles	כתוביות
+Details	פרטים
+Search the indexers and grab the best release	חפש באינדקסרים ותפוס את הגרסה הטובה ביותר
+See every release and choose	הצג את כל הגרסאות ובחר
+absolute {}	מוחלט {}
+Air date	תאריך שידור
+No overview.	אין תקציר.
+Delete this episode's file? It goes to the recycle bin when one is set.	למחוק את הקובץ של פרק זה? הוא יועבר לסל המחזור אם הוגדר.
+{} files updated.	{} קבצים עודכנו.
+{} files deleted.	{} קבצים נמחקו.
+{} files deleted; {}	{} קבצים נמחקו; {}
+Delete files	מחק קבצים
+The series has no files.	לסדרה אין קבצים.
+Change	שנה
+Change for the selected files…	שנה עבור הקבצים שנבחרו…
+Empty clears it	ריק מנקה את הערך
+Select every file	בחר את כל הקבצים
+Delete the {} selected files? They go to the recycle bin when one is set.	למחוק את {} הקבצים שנבחרו? הם יועברו לסל המחזור אם הוגדר.
+Monitoring, quality profile, series type and season folders of the selected series	מעקב, פרופיל איכות, סוג סדרה ותיקיות עונה של הסדרות שנבחרו
+Edit…	ערוך…
+Add, remove or replace the tags of the selected series	הוסף, הסר או החלף את התגיות של הסדרות שנבחרו
+Tags…	תגיות…
+Monitoring and quality profile of the selected movies	מעקב ופרופיל איכות של הסרטים שנבחרו
+Add, remove or replace the tags of the selected movies	הוסף, הסר או החלף את התגיות של הסרטים שנבחרו
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	הדבק כותר גרסה או שם קובץ כדי לראות כיצד Kitsunarr מפענח אותו ולאילו פרקים הוא מתאים.
+Parse	פענח
+Kitsunarr could not read this title.	Kitsunarr לא הצליח לפענח כותר זה.
+Parse result	תוצאת הפענוח
+Series title	כותר הסדרה
+Absolute episodes	פרקים מוחלטים
+Release hash	גיבוב הגרסה
+Multi-season	מרובה עונות
+Absolute numbering	מספור מוחלט
+Library match	התאמה בספרייה
+No series in the library matches this title.	אין סדרה בספרייה שתואמת לכותר זה.
+No episode of the series matches.	אין פרק של הסדרה שתואם.
+Log files	קובצי יומן
+Refresh	רענן
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr כותב את היומן שלו לקבצים בתיקיית הנתונים, ומתחיל קובץ חדש בכל 1 MiB. רמת היומן נקבעת ב-הגדרות › כללי.
+No log files yet	אין קובצי יומן עדיין
+Last written	נכתב לאחרונה
+Skip the free-space check when importing	דלג על בדיקת השטח הפנוי בעת ייבוא
+Create empty series folders during disk scans (not with "delete empty folders")	צור תיקיות סדרות ריקות במהלך סריקות דיסק (לא יחד עם "מחק תיקיות ריקות")
+Skip the free-space check when grabbing	דלג על בדיקת השטח הפנוי בעת תפיסה
+Set permissions on imported files and folders (Linux)	הגדר הרשאות לקבצים ולתיקיות מיובאים (Linux)
+Import using a script	ייבא באמצעות סקריפט
+Rescan series folder after refresh	סרוק מחדש את תיקיית הסדרה לאחר רענון
+Whether a metadata refresh scans the series folder for changes afterwards.	האם רענון מטא-דאטה סורק לאחר מכן את תיקיית הסדרה לאיתור שינויים.
+Always	תמיד
+After manual refresh	לאחר רענון ידני
+Never	לעולם לא
+Episode title required	נדרש כותר פרק
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	הייבוא ממתין לכותר פרק כאשר פורמט מתן השמות משתמש בו והפרק שודר ב-48 השעות האחרונות.
+Only for bulk season releases	רק עבור גרסאות של עונה שלמה
+Season pack upgrades	שדרוגי חבילות עונה
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	כמה מפרקי חבילת העונה חייבים להיות חסרים או ניתנים לשדרוג כדי שהחבילה תיתפס.
+A share of the episodes	חלק מהפרקים
+Any episode	כל פרק
+Season pack upgrade threshold (%)	סף שדרוג חבילת עונה (%)
+Rejected extensions	סיומות נדחות
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	מופרד בפסיקים, למשל exe, bat. הורדה של קובץ יחיד עם אחת מסיומות אלה אינה מיובאת.
+Folder permissions (chmod)	הרשאות תיקייה (chmod)
+Octal mode for folders; files get it without the execute bits.	מצב אוקטלי לתיקיות; הקבצים מקבלים אותו ללא סיביות ההרצה.
+Group (chown)	קבוצה (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	שם או מזהה קבוצה לקבצים ולתיקיות מיובאים; ריק משאיר את הקבוצה ללא שינוי.
+Import script path	נתיב סקריפט הייבוא
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	נתיב מוחלט של הסקריפט; הוא מקבל את נתיבי המקור והיעד ואת משתני הסביבה של Sonarr.
+Excluded tags (ids, comma separated)	תגיות מוחרגות (מזהים, מופרדים בפסיקים)
+The profile does not apply to series with one of these tags.	הפרופיל אינו חל על סדרות עם אחת מתגיות אלה.
+Reject releases published before the episode airs	דחה גרסאות שפורסמו לפני שידור הפרק
+Allow season packs before every episode has aired	אפשר חבילות עונה לפני שכל הפרקים שודרו
+Air date grace period (hours)	תקופת חסד לתאריך השידור (שעות)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	גרסאות שפורסמו עד מספר שעות זה אחרי תאריך השידור עדיין נדחות; מספר שלילי מאפשר אותן מספר שעות זה לפני.
+Presets	קביעות מוגדרות
+Series ID	מזהה סדרה
+Anime group	קבוצת אנימה
+Absolute episode number	מספר פרק מוחלט
+Episode title	כותר הפרק
+Media info	מידע מדיה
+Original	מקורי
+File name tokens	אסימוני שם קובץ
+Folder name tokens	אסימוני שם תיקייה
+Format	פורמט
+Separator	מפריד
+Space ( )	רווח ( )
+Period (.)	נקודה (.)
+Underscore (_)	קו תחתון (_)
+Dash (-)	מקף (-)
+Capitalization	רישיות
+Default case	רישיות ברירת מחדל
+Lowercase	אותיות קטנות
+Uppercase	אותיות גדולות
+Click a token to insert it at the cursor; a preset replaces the whole format.	לחץ על אסימון כדי להוסיף אותו במיקום הסמן; קביעה מוגדרת מחליפה את כל הפורמט.
+Tokens	אסימונים
+Tokens for {}	אסימונים עבור {}
+Invalid format	פורמט לא חוקי
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	הפורמטים משתמשים באסימונים של Sonarr; הדוגמאות שלהלן מתעדכנות לפי השינויים שלך עוד לפני השמירה.
+Rename episodes	שנה שמות פרקים
+Replace illegal characters (otherwise they are removed)	החלף תווים לא חוקיים (אחרת הם מוסרים)
+Colon replacement	החלפת נקודתיים
+How colons in titles are written in file and folder names.	כיצד נקודתיים בכותרים נכתבים בשמות קבצים ותיקיות.
+Replace with dash	החלף במקף
+Replace with space dash	החלף ברווח ומקף
+Replace with space dash space	החלף ברווח, מקף ורווח
+Smart replace (dash or space dash)	החלפה חכמה (מקף או רווח ומקף)
+Custom	מותאם אישית
+Custom colon replacement	החלפת נקודתיים מותאמת אישית
+The characters written instead of a colon.	התווים שנכתבים במקום נקודתיים.
+Multi-episode style	סגנון ריבוי פרקים
+Extend (S01E01-02-03)	הרחבה (S01E01-02-03)
+Duplicate (S01E01.S01E02)	שכפול (S01E01.S01E02)
+Repeat (S01E01E02E03)	חזרה (S01E01E02E03)
+Scene (S01E01-E02-E03)	סצנה (S01E01-E02-E03)
+Range (S01E01-03)	טווח (S01E01-03)
+Prefixed range (S01E01-E03)	טווח עם קידומת (S01E01-E03)
+Example	דוגמה
+Anime group movie	סרט בקבוצת אנימה
+Used when films are renamed.	משמש כאשר משנים שמות של סרטים.
+Used when adding a new series or moving one.	משמש בעת הוספת סדרה חדשה או העברתה.
+Specials folder format	פורמט תיקיית ספיישלים
+Anime groups and collections: titles go to {}/{}/{}.	קבוצות אנימה ואוספים: הכותרים נשמרים ב-{}/{}/{}.
+Interface settings saved.	הגדרות הממשק נשמרו.
+Week column header	כותרת עמודה בתצוגת שבוע
+The column headers of the calendar's week view.	כותרות העמודות בתצוגת השבוע של לוח השנה.
+Dates	תאריכים
+Short date format	פורמט תאריך קצר
+Long date format	פורמט תאריך ארוך
+Time format	פורמט שעה
+Time zone	אזור זמן
+Dates and times are shown in this time zone; empty follows the browser.	תאריכים ושעות מוצגים באזור זמן זה; ריק פירושו לפי הדפדפן.
+The browser's time zone	אזור הזמן של הדפדפן
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	הצג תאריכים יחסיים (היום, אתמול, מחר) במקום התאריך
+Style	סגנון
+Theme	ערכת נושא
+Kept in this browser; the top bar button switches it too.	נשמר בדפדפן זה; גם הכפתור בסרגל העליון מחליף אותה.
+Dark	כהה
+Light	בהיר
+Colour-impaired mode (colours easier to tell apart, with patterns)	מצב לעיוורי צבעים (צבעים שקל יותר להבחין ביניהם, עם תבניות)
+Saved to the configuration file. Restart Kitsunarr to apply.	נשמר בקובץ התצורה. הפעל מחדש את Kitsunarr כדי להחיל.
+Host and logging	מארח ורישום ביומן
+Set by an environment variable or command-line flag: {}	נקבע על ידי משתנה סביבה או דגל שורת פקודה: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	נשמר ב-{}. השינויים ייכנסו לתוקף בהפעלה הבאה של Kitsunarr; משתני סביבה ודגלי שורת פקודה עדיין קודמים להם.
+Restart required: the saved values differ from the ones in use.	נדרשת הפעלה מחדש: הערכים השמורים שונים מאלה שבשימוש.
+Restart now	הפעל מחדש עכשיו
+Bind address	כתובת האזנה
+0.0.0.0 listens on every interface.	0.0.0.0 מאזין בכל הממשקים.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	עבור פרוקסי הפוך, למשל /kitsunarr; ריק מגיש מהשורש.
+Log level	רמת יומן
+Debug and trace write much more to the log files.	ניפוי שגיאות ועקיבה כותבים הרבה יותר לקובצי היומן.
+Trace	עקיבה
+Warn	אזהרה
+Error	שגיאה
+Backup folder	תיקיית גיבוי
+Absolute path; empty uses {}.	נתיב מוחלט; ריק משתמש ב-{}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr מגיש HTTP רגיל; הצב פרוקסי הפוך לפניו עבור HTTPS.
+Save host settings	שמור הגדרות מארח
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	להפעיל מחדש את Kitsunarr עכשיו? אם הכתובת, היציאה או בסיס ה-URL השתנו, פתח את הכתובת החדשה לאחר מכן.
+Nothing to show.	אין מה להציג.
+All series	כל הסדרות
+All types	כל הסוגים
+All profiles	כל הפרופילים
+All tags	כל התגיות
+Downloaded	הורד
+Unaired	טרם שודר
+{} files · {}	{} קבצים · {}
+Summary	סיכום
+Monitored series	סדרות במעקב
+Completed series	סדרות שהושלמו
+{} ({} completed)	{} ({} הושלמו)
+{} ({} monitored)	{} ({} במעקב)
+Episode files	קובצי פרקים
+{} ({} downloaded)	{} ({} הורדו)
+{} ({} per episode)	{} ({} לפרק)
+Series status	סטטוס הסדרות
+File qualities	איכויות קבצים
+Recent entries	רשומות אחרונות
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	הרשומות האחרונות שנשמרות בזיכרון. קובצי היומן שלמעלה ופלט התהליך (יומני הקונטיינר או ה-journal) שומרים הכל.
+Yesterday	אתמול
+Tomorrow	מחר

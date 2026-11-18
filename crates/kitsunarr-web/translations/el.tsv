@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Παραλείφθηκε: ο διακομ�
 {} expired sessions removed	Αφαιρέθηκαν {} ληγμένες συνεδρίες
 All {} refreshes failed; see the logs	Και οι {} ανανεώσεις απέτυχαν· δείτε τα αρχεία καταγραφής
 every folder scan failed ({})	απέτυχαν όλες οι σαρώσεις φακέλων ({})
+Links	Σύνδεσμοι
+Copy {}	Αντιγραφή {}
+Copy the {} id	Αντιγραφή του ID {}
+Type	Τύπος
+Previous airing	Προηγούμενη προβολή
+Season folder	Φάκελος κύκλου
+Average episode size	Μέσο μέγεθος επεισοδίου
+Genres	Είδη
+Rating	Βαθμολογία
+Certification	Κατάταξη ηλικίας
+Release groups	Ομάδες κυκλοφορίας
+File quality	Ποιότητα αρχείου
+In cinemas	Στους κινηματογράφους
+Runtime	Διάρκεια
+Release group	Ομάδα κυκλοφορίας
+Columns	Στήλες
+Shown in the table, the overview and under posters	Εμφανίζονται στον πίνακα, στην επισκόπηση και κάτω από τις αφίσες
+Column {}	Στήλη {}
+Reset columns	Επαναφορά στηλών
+Yes	Ναι
+Override and grab {}	Παράκαμψη και λήψη {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Επιλέξτε τη σειρά, τα επεισόδια, την ποιότητα, τις γλώσσες ή το client λήψεων αυτής της κυκλοφορίας και έπειτα κάντε λήψη (οι επιλογές διατηρούνται για την εισαγωγή)
+Override…	Παράκαμψη…
+Override and grab	Παράκαμψη και λήψη
+Override and grab — {}	Παράκαμψη και λήψη — {}
+{} episodes chosen	Επιλεγμένα επεισόδια: {}
+Grab release	Λήψη κυκλοφορίας
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Όσες επιλογές μένουν αμετάβλητες κρατούν ό,τι λέει ο τίτλος της κυκλοφορίας. Τα μη επιλεγμένα επεισόδια παραμένουν αυτά στα οποία αντιστοιχεί ο τίτλος.
+Searched series	Σειρά αναζήτησης
+Download client	Client λήψεων
+Episodes (required)	Επεισόδια (υποχρεωτικό)
+Statistics	Στατιστικά
+Test parsing	Δοκιμή ανάλυσης
+{} items removed.	Αφαιρέθηκαν στοιχεία: {}.
+{} items removed; {}	Αφαιρέθηκαν στοιχεία: {}· {}
+Select every queue item	Επιλογή όλων των στοιχείων της ουράς
+Queue bulk actions	Μαζικές ενέργειες ουράς
+Grab the selected releases a delay profile holds back now	Λήψη τώρα των επιλεγμένων κυκλοφοριών που κρατά ένα προφίλ καθυστέρησης
+Remove selected…	Αφαίρεση επιλεγμένων…
+Remove {} items from the queue	Αφαίρεση από την ουρά (στοιχεία: {})
+Held-back releases are forgotten; a later search can find them again.	Οι κυκλοφορίες σε αναμονή ξεχνιούνται· μια μεταγενέστερη αναζήτηση μπορεί να τις βρει ξανά.
+Removal method	Μέθοδος αφαίρεσης
+Remove from the download client	Αφαίρεση από το client λήψεων
+Change category	Αλλαγή κατηγορίας
+Keep it in the download client	Διατήρηση στο client λήψεων
+The download and its files are removed from the download client.	Η λήψη και τα αρχεία της αφαιρούνται από το client λήψεων.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Η λήψη μεταφέρεται στην κατηγορία μετά την εισαγωγή του client και δεν παρακολουθείται πλέον· τα αρχεία της παραμένουν.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Η λήψη μένει ανέγγιχτη στο client λήψεων· επιλέξτε μια επιλογή λίστας αποκλεισμού για να αποκλείσετε την κυκλοφορία της.
+Blocklist release	Αποκλεισμός κυκλοφορίας
+Do not blocklist	Χωρίς αποκλεισμό
+Blocklist and search for a replacement	Αποκλεισμός και αναζήτηση αντικατάστασης
+Blocklist only	Μόνο αποκλεισμός
+Removed {} releases from the blocklist.	Αφαιρέθηκαν κυκλοφορίες από τη λίστα αποκλεισμού: {}.
+Remove {} selected	Αφαίρεση επιλεγμένων ({})
+Select every release on this page	Επιλογή όλων των κυκλοφοριών αυτής της σελίδας
+Remove from the blocklist	Αφαίρεση από τη λίστα αποκλεισμού
+Remove the {} selected releases from the blocklist?	Αφαίρεση των επιλεγμένων κυκλοφοριών ({}) από τη λίστα αποκλεισμού;
+Quality, languages and release of {}	Ποιότητα, γλώσσες και κυκλοφορία του {}
+Choose the quality, languages, release group and release type the file is imported with	Επιλέξτε την ποιότητα, τις γλώσσες, την ομάδα κυκλοφορίας και τον τύπο κυκλοφορίας με τα οποία εισάγεται το αρχείο
+Import details — {}	Λεπτομέρειες εισαγωγής — {}
+Use these details	Χρήση αυτών των λεπτομερειών
+Revision	Αναθεώρηση
+2 or more for a PROPER or REPACK.	2 ή περισσότερο για PROPER ή REPACK.
+Single episode	Μεμονωμένο επεισόδιο
+Multi-episode	Πολλαπλά επεισόδια
+Season pack	Πακέτο κύκλου
+Manual	Χειροκίνητη
+Choose the group the title joins.	Επιλέξτε την ομάδα στην οποία εντάσσεται ο τίτλος.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Η Αυτόματη ομαδοποιεί τον τίτλο με το franchise ή τη συλλογή του βάσει επίσημων συσχετίσεων. Η Χειροκίνητη τον βάζει σε μια ομάδα που επιλέγετε. Η Ανενεργή τον κρατά μόνο του.
+Manual puts the title in a group you choose, in the group's folder.	Η Χειροκίνητη βάζει τον τίτλο σε μια ομάδα που επιλέγετε, στον φάκελο της ομάδας.
+Manual (choose a group)	Χειροκίνητη (επιλέξτε ομάδα)
+The title joins the group as its next season or film, in the group's folder.	Ο τίτλος εντάσσεται στην ομάδα ως ο επόμενος κύκλος ή η επόμενη ταινία της, στον φάκελο της ομάδας.
+Choose a group…	Επιλέξτε ομάδα…
+Collection settings saved.	Οι ρυθμίσεις συλλογής αποθηκεύτηκαν.
+Collection settings	Ρυθμίσεις συλλογής
+Collection name	Όνομα συλλογής
+Collection type	Τύπος συλλογής
+A movie saga holds only films.	Ένα κινηματογραφικό έπος περιέχει μόνο ταινίες.
+Movie saga	Κινηματογραφικό έπος
+Movie folder format	Μορφή φακέλου ταινίας
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Πώς ονομάζονται οι φάκελοι των μελών όταν εντάσσονται τίτλοι: η αυτόματη χρησιμοποιεί αριθμημένους φακέλους στα έπη και φακέλους αφηγηματικού τόξου για τα τόξα.
+Numbered	Αριθμημένοι
+No change	Χωρίς αλλαγή
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Η παρακολούθηση, το προφίλ ποιότητας και ο φάκελος κύκλου εφαρμόζονται τώρα σε κάθε μέλος· ο τύπος και η μορφή φακέλου εφαρμόζονται στους τίτλους που εντάσσονται από εδώ και πέρα.
+Collection settings…	Ρυθμίσεις συλλογής…
+Monitoring, quality profile, series type, folder and tags	Παρακολούθηση, προφίλ ποιότητας, τύπος σειράς, φάκελος και ετικέτες
+Change the quality, languages or release group of episode files, or delete them	Αλλαγή της ποιότητας, των γλωσσών ή της ομάδας κυκλοφορίας των αρχείων επεισοδίων ή διαγραφή τους
+Manage episodes	Διαχείριση επεισοδίων
+Episode details: overview, file, history and searches	Λεπτομέρειες επεισοδίου: περίληψη, αρχείο, ιστορικό και αναζητήσεις
+Details of episode {}	Λεπτομέρειες επεισοδίου {}
+Monitoring, availability, quality profile, folder and tags	Παρακολούθηση, διαθεσιμότητα, προφίλ ποιότητας, φάκελος και ετικέτες
+No tags yet: create them in Settings › Tags.	Δεν υπάρχουν ακόμη ετικέτες: δημιουργήστε τις στις Ρυθμίσεις › Ετικέτες.
+Below the root folder.	Κάτω από τον ριζικό φάκελο.
+Use the folder name the naming settings give	Χρήση του ονόματος φακέλου που δίνουν οι ρυθμίσεις ονομασίας
+Use naming format	Χρήση μορφής ονομασίας
+Series saved.	Η σειρά αποθηκεύτηκε.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Το Kitsunarr αναζητά και κατεβάζει τα επεισόδια σε παρακολούθηση μιας σειράς σε παρακολούθηση.
+Whether seasons a refresh discovers are monitored.	Αν παρακολουθούνται οι κύκλοι που εντοπίζει μια ανανέωση.
+Sort episodes into season folders.	Ταξινόμηση επεισοδίων σε φακέλους κύκλων.
+Use season folders	Χρήση φακέλων κύκλων
+Decides how episodes are numbered when searching and importing.	Καθορίζει πώς αριθμούνται τα επεισόδια κατά την αναζήτηση και την εισαγωγή.
+TheTVDB titles in this language; changing it refreshes the series.	Τίτλοι του TheTVDB σε αυτή τη γλώσσα· η αλλαγή της ανανεώνει τη σειρά.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Η Ανενεργή αφαιρεί τη σειρά από την ομάδα anime της και την κρατά εκτός αυτόματης ομαδοποίησης.
+Enter a folder name.	Εισαγάγετε όνομα φακέλου.
+Edit — {}	Επεξεργασία — {}
+Announced	Ανακοινώθηκε
+Released	Κυκλοφόρησε
+Movie saved.	Η ταινία αποθηκεύτηκε.
+Kitsunarr searches for and downloads a monitored movie.	Το Kitsunarr αναζητά και κατεβάζει μια ταινία σε παρακολούθηση.
+Minimum availability	Ελάχιστη διαθεσιμότητα
+When the movie counts as available for automatic searches.	Πότε η ταινία θεωρείται διαθέσιμη για αυτόματες αναζητήσεις.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Η Ανενεργή αφαιρεί την ταινία από τη συλλογή της και την κρατά εκτός αυτόματης ομαδοποίησης.
+Edit {} selected	Επεξεργασία επιλεγμένων ({})
+Apply changes	Εφαρμογή αλλαγών
+No season folders	Χωρίς φακέλους κύκλων
+Tags updated on {} items.	Οι ετικέτες ενημερώθηκαν σε στοιχεία: {}.
+Removes the chosen tags from every selected title.	Αφαιρεί τις επιλεγμένες ετικέτες από κάθε επιλεγμένο τίτλο.
+Every selected title gets exactly the chosen tags (none removes all).	Κάθε επιλεγμένος τίτλος παίρνει ακριβώς τις επιλεγμένες ετικέτες (καμία αφαιρεί όλες).
+Adds the chosen tags to every selected title.	Προσθέτει τις επιλεγμένες ετικέτες σε κάθε επιλεγμένο τίτλο.
+Tags — {} selected	Ετικέτες — επιλεγμένα: {}
+Apply tags	Εφαρμογή ετικετών
+Replace	Αντικατάσταση
+Manage	Διαχείριση
+Multi-season pack	Πακέτο πολλών κύκλων
+Scene name	Όνομα scene
+Video	Βίντεο
+· {} fps	· {} fps
+Run time	Διάρκεια
+Audio	Ήχος
+Subtitles	Υπότιτλοι
+Details	Λεπτομέρειες
+Search the indexers and grab the best release	Αναζήτηση στα ευρετήρια και λήψη της καλύτερης κυκλοφορίας
+See every release and choose	Προβολή όλων των κυκλοφοριών και επιλογή
+absolute {}	απόλυτο {}
+Air date	Ημερομηνία προβολής
+No overview.	Χωρίς περίληψη.
+Delete this episode's file? It goes to the recycle bin when one is set.	Διαγραφή του αρχείου αυτού του επεισοδίου; Μεταφέρεται στον κάδο ανακύκλωσης, αν έχει οριστεί.
+{} files updated.	Ενημερώθηκαν αρχεία: {}.
+{} files deleted.	Διαγράφηκαν αρχεία: {}.
+{} files deleted; {}	Διαγράφηκαν αρχεία: {}· {}
+Delete files	Διαγραφή αρχείων
+The series has no files.	Η σειρά δεν έχει αρχεία.
+Change	Αλλαγή
+Change for the selected files…	Αλλαγή για τα επιλεγμένα αρχεία…
+Empty clears it	Το κενό το εκκαθαρίζει
+Select every file	Επιλογή όλων των αρχείων
+Delete the {} selected files? They go to the recycle bin when one is set.	Διαγραφή των επιλεγμένων αρχείων ({}); Μεταφέρονται στον κάδο ανακύκλωσης, αν έχει οριστεί.
+Monitoring, quality profile, series type and season folders of the selected series	Παρακολούθηση, προφίλ ποιότητας, τύπος σειράς και φάκελοι κύκλων των επιλεγμένων σειρών
+Edit…	Επεξεργασία…
+Add, remove or replace the tags of the selected series	Προσθήκη, αφαίρεση ή αντικατάσταση των ετικετών των επιλεγμένων σειρών
+Tags…	Ετικέτες…
+Monitoring and quality profile of the selected movies	Παρακολούθηση και προφίλ ποιότητας των επιλεγμένων ταινιών
+Add, remove or replace the tags of the selected movies	Προσθήκη, αφαίρεση ή αντικατάσταση των ετικετών των επιλεγμένων ταινιών
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Επικολλήστε έναν τίτλο κυκλοφορίας ή ένα όνομα αρχείου για να δείτε πώς τον διαβάζει το Kitsunarr και με ποια επεισόδια αντιστοιχεί.
+Parse	Ανάλυση
+Kitsunarr could not read this title.	Το Kitsunarr δεν μπόρεσε να διαβάσει αυτόν τον τίτλο.
+Parse result	Αποτέλεσμα ανάλυσης
+Series title	Τίτλος σειράς
+Absolute episodes	Απόλυτα επεισόδια
+Release hash	Hash κυκλοφορίας
+Multi-season	Πολλαπλοί κύκλοι
+Absolute numbering	Απόλυτη αρίθμηση
+Library match	Αντιστοίχιση στη βιβλιοθήκη
+No series in the library matches this title.	Καμία σειρά της βιβλιοθήκης δεν αντιστοιχεί σε αυτόν τον τίτλο.
+No episode of the series matches.	Κανένα επεισόδιο της σειράς δεν αντιστοιχεί.
+Log files	Αρχεία καταγραφής
+Refresh	Ανανέωση
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Το Kitsunarr γράφει την καταγραφή του σε αρχεία στον φάκελο δεδομένων, με εναλλαγή στο 1 MiB. Το επίπεδο καταγραφής ορίζεται στις Ρυθμίσεις › Γενικά.
+No log files yet	Δεν υπάρχουν ακόμη αρχεία καταγραφής
+Last written	Τελευταία εγγραφή
+Skip the free-space check when importing	Παράλειψη του ελέγχου ελεύθερου χώρου κατά την εισαγωγή
+Create empty series folders during disk scans (not with "delete empty folders")	Δημιουργία κενών φακέλων σειρών κατά τις σαρώσεις δίσκου (όχι με τη «διαγραφή κενών φακέλων»)
+Skip the free-space check when grabbing	Παράλειψη του ελέγχου ελεύθερου χώρου κατά τη λήψη
+Set permissions on imported files and folders (Linux)	Ορισμός δικαιωμάτων στα εισαγόμενα αρχεία και φακέλους (Linux)
+Import using a script	Εισαγωγή με σενάριο
+Rescan series folder after refresh	Επανασάρωση του φακέλου της σειράς μετά την ανανέωση
+Whether a metadata refresh scans the series folder for changes afterwards.	Αν μια ανανέωση μεταδεδομένων σαρώνει στη συνέχεια τον φάκελο της σειράς για αλλαγές.
+Always	Πάντα
+After manual refresh	Μετά από χειροκίνητη ανανέωση
+Never	Ποτέ
+Episode title required	Απαιτείται τίτλος επεισοδίου
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Οι εισαγωγές περιμένουν τίτλο επεισοδίου όταν η μορφή ονομασίας τον χρησιμοποιεί και το επεισόδιο προβλήθηκε τις τελευταίες 48 ώρες.
+Only for bulk season releases	Μόνο για μαζικές κυκλοφορίες κύκλων
+Season pack upgrades	Αναβαθμίσεις πακέτων κύκλων
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Πόσα επεισόδια ενός πακέτου κύκλου πρέπει να λείπουν ή να επιδέχονται αναβάθμιση για να γίνει λήψη του πακέτου.
+A share of the episodes	Ένα ποσοστό των επεισοδίων
+Any episode	Οποιοδήποτε επεισόδιο
+Season pack upgrade threshold (%)	Όριο αναβάθμισης πακέτου κύκλου (%)
+Rejected extensions	Απορριπτόμενες επεκτάσεις
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Διαχωρισμένες με κόμμα, όπως exe, bat. Μια λήψη ενός αρχείου με μία από αυτές τις επεκτάσεις δεν εισάγεται.
+Folder permissions (chmod)	Δικαιώματα φακέλων (chmod)
+Octal mode for folders; files get it without the execute bits.	Οκταδική λειτουργία για φακέλους· τα αρχεία την παίρνουν χωρίς τα bit εκτέλεσης.
+Group (chown)	Ομάδα (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Όνομα ή ID ομάδας για τα εισαγόμενα αρχεία και φακέλους· το κενό αφήνει την ομάδα ως έχει.
+Import script path	Διαδρομή σεναρίου εισαγωγής
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Απόλυτη διαδρομή του σεναρίου· λαμβάνει τις διαδρομές προέλευσης και προορισμού και τις μεταβλητές περιβάλλοντος του Sonarr.
+Excluded tags (ids, comma separated)	Εξαιρούμενες ετικέτες (ID, διαχωρισμένα με κόμμα)
+The profile does not apply to series with one of these tags.	Το προφίλ δεν εφαρμόζεται σε σειρές με μία από αυτές τις ετικέτες.
+Reject releases published before the episode airs	Απόρριψη κυκλοφοριών που δημοσιεύτηκαν πριν από την προβολή του επεισοδίου
+Allow season packs before every episode has aired	Να επιτρέπονται πακέτα κύκλων πριν προβληθούν όλα τα επεισόδια
+Air date grace period (hours)	Περίοδος χάριτος ημερομηνίας προβολής (ώρες)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Οι κυκλοφορίες που δημοσιεύονται έως τόσες ώρες μετά την ημερομηνία προβολής απορρίπτονται ακόμη· ένας αρνητικός αριθμός τις επιτρέπει τόσες ώρες νωρίτερα.
+Presets	Προκαθορισμένα
+Series ID	ID σειράς
+Anime group	Ομάδα anime
+Absolute episode number	Απόλυτος αριθμός επεισοδίου
+Episode title	Τίτλος επεισοδίου
+Media info	Πληροφορίες πολυμέσων
+Original	Πρωτότυπο
+File name tokens	Token ονόματος αρχείου
+Folder name tokens	Token ονόματος φακέλου
+Format	Μορφή
+Separator	Διαχωριστικό
+Space ( )	Κενό ( )
+Period (.)	Τελεία (.)
+Underscore (_)	Κάτω παύλα (_)
+Dash (-)	Παύλα (-)
+Capitalization	Πεζά/κεφαλαία
+Default case	Προεπιλεγμένη μορφή
+Lowercase	Πεζά
+Uppercase	Κεφαλαία
+Click a token to insert it at the cursor; a preset replaces the whole format.	Κάντε κλικ σε ένα token για να το εισαγάγετε στη θέση του δρομέα· ένα προκαθορισμένο αντικαθιστά ολόκληρη τη μορφή.
+Tokens	Token
+Tokens for {}	Token για {}
+Invalid format	Μη έγκυρη μορφή
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Οι μορφές χρησιμοποιούν τα token του Sonarr· τα παρακάτω παραδείγματα ακολουθούν τις αλλαγές σας πριν από την αποθήκευση.
+Rename episodes	Μετονομασία επεισοδίων
+Replace illegal characters (otherwise they are removed)	Αντικατάσταση μη επιτρεπτών χαρακτήρων (αλλιώς αφαιρούνται)
+Colon replacement	Αντικατάσταση άνω-κάτω τελείας
+How colons in titles are written in file and folder names.	Πώς γράφονται οι άνω-κάτω τελείες των τίτλων στα ονόματα αρχείων και φακέλων.
+Replace with dash	Αντικατάσταση με παύλα
+Replace with space dash	Αντικατάσταση με κενό και παύλα
+Replace with space dash space	Αντικατάσταση με κενό, παύλα και κενό
+Smart replace (dash or space dash)	Έξυπνη αντικατάσταση (παύλα ή κενό και παύλα)
+Custom	Προσαρμοσμένη
+Custom colon replacement	Προσαρμοσμένη αντικατάσταση άνω-κάτω τελείας
+The characters written instead of a colon.	Οι χαρακτήρες που γράφονται αντί για άνω-κάτω τελεία.
+Multi-episode style	Στυλ πολλαπλών επεισοδίων
+Extend (S01E01-02-03)	Επέκταση (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Διπλότυπο (S01E01.S01E02)
+Repeat (S01E01E02E03)	Επανάληψη (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	Εύρος (S01E01-03)
+Prefixed range (S01E01-E03)	Εύρος με πρόθεμα (S01E01-E03)
+Example	Παράδειγμα
+Anime group movie	Ταινία ομάδας anime
+Used when films are renamed.	Χρησιμοποιείται όταν μετονομάζονται ταινίες.
+Used when adding a new series or moving one.	Χρησιμοποιείται κατά την προσθήκη νέας σειράς ή τη μετακίνησή της.
+Specials folder format	Μορφή φακέλου ειδικών
+Anime groups and collections: titles go to {}/{}/{}.	Ομάδες anime και συλλογές: οι τίτλοι πηγαίνουν στο {}/{}/{}.
+Interface settings saved.	Οι ρυθμίσεις διεπαφής αποθηκεύτηκαν.
+Week column header	Κεφαλίδα στήλης εβδομάδας
+The column headers of the calendar's week view.	Οι κεφαλίδες στηλών της εβδομαδιαίας προβολής του ημερολογίου.
+Dates	Ημερομηνίες
+Short date format	Σύντομη μορφή ημερομηνίας
+Long date format	Πλήρης μορφή ημερομηνίας
+Time format	Μορφή ώρας
+Time zone	Ζώνη ώρας
+Dates and times are shown in this time zone; empty follows the browser.	Οι ημερομηνίες και οι ώρες εμφανίζονται σε αυτή τη ζώνη ώρας· το κενό ακολουθεί το πρόγραμμα περιήγησης.
+The browser's time zone	Η ζώνη ώρας του προγράμματος περιήγησης
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Εμφάνιση σχετικών ημερομηνιών (Σήμερα, Χθες, Αύριο) αντί για την ημερομηνία
+Style	Στυλ
+Theme	Θέμα
+Kept in this browser; the top bar button switches it too.	Αποθηκεύεται σε αυτό το πρόγραμμα περιήγησης· το κουμπί της επάνω γραμμής το αλλάζει επίσης.
+Dark	Σκούρο
+Light	Ανοιχτό
+Colour-impaired mode (colours easier to tell apart, with patterns)	Λειτουργία για δυσχρωματοψία (χρώματα που ξεχωρίζουν πιο εύκολα, με μοτίβα)
+Saved to the configuration file. Restart Kitsunarr to apply.	Αποθηκεύτηκε στο αρχείο διαμόρφωσης. Επανεκκινήστε το Kitsunarr για εφαρμογή.
+Host and logging	Host και καταγραφή
+Set by an environment variable or command-line flag: {}	Ορίστηκε από μεταβλητή περιβάλλοντος ή σημαία γραμμής εντολών: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Αποθηκεύτηκε στο {}. Οι αλλαγές εφαρμόζονται την επόμενη φορά που θα ξεκινήσει το Kitsunarr· οι μεταβλητές περιβάλλοντος και οι σημαίες γραμμής εντολών εξακολουθούν να έχουν προτεραιότητα.
+Restart required: the saved values differ from the ones in use.	Απαιτείται επανεκκίνηση: οι αποθηκευμένες τιμές διαφέρουν από αυτές που χρησιμοποιούνται.
+Restart now	Επανεκκίνηση τώρα
+Bind address	Διεύθυνση σύνδεσης
+0.0.0.0 listens on every interface.	Το 0.0.0.0 ακούει σε κάθε διεπαφή.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Για αντίστροφους διακομιστές μεσολάβησης, π.χ. /kitsunarr· το κενό εξυπηρετεί από τη ρίζα.
+Log level	Επίπεδο καταγραφής
+Debug and trace write much more to the log files.	Τα επίπεδα Debug και Trace γράφουν πολύ περισσότερα στα αρχεία καταγραφής.
+Trace	Trace
+Warn	Προειδοποίηση
+Error	Σφάλμα
+Backup folder	Φάκελος αντιγράφων ασφαλείας
+Absolute path; empty uses {}.	Απόλυτη διαδρομή· το κενό χρησιμοποιεί {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Το Kitsunarr εξυπηρετεί απλό HTTP· για HTTPS βάλτε μπροστά του έναν αντίστροφο διακομιστή μεσολάβησης.
+Save host settings	Αποθήκευση ρυθμίσεων host
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Επανεκκίνηση του Kitsunarr τώρα; Αν άλλαξε η διεύθυνση, η θύρα ή η βάση URL, ανοίξτε έπειτα τη νέα διεύθυνση.
+Nothing to show.	Τίποτα για εμφάνιση.
+All series	Όλες οι σειρές
+All types	Όλοι οι τύποι
+All profiles	Όλα τα προφίλ
+All tags	Όλες οι ετικέτες
+Downloaded	Ληφθέντα
+Unaired	Μη προβληθέντα
+{} files · {}	Αρχεία: {} · {}
+Summary	Σύνοψη
+Monitored series	Σειρές σε παρακολούθηση
+Completed series	Ολοκληρωμένες σειρές
+{} ({} completed)	{} ({} ολοκληρωμένες)
+{} ({} monitored)	{} ({} σε παρακολούθηση)
+Episode files	Αρχεία επεισοδίων
+{} ({} downloaded)	{} ({} ληφθέντα)
+{} ({} per episode)	{} ({} ανά επεισόδιο)
+Series status	Κατάσταση σειράς
+File qualities	Ποιότητες αρχείων
+Recent entries	Πρόσφατες εγγραφές
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Οι πιο πρόσφατες εγγραφές που κρατούνται στη μνήμη. Τα παραπάνω αρχεία καταγραφής και η έξοδος της διεργασίας (καταγραφές container ή journal) κρατούν τα πάντα.
+Yesterday	Χθες
+Tomorrow	Αύριο

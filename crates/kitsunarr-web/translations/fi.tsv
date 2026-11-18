@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Ohitettu: palvelin käynnistyy vielä
 {} expired sessions removed	Vanhentuneita istuntoja poistettu: {}
 All {} refreshes failed; see the logs	Kaikki {} päivitystä epäonnistuivat; katso lokitiedot
 every folder scan failed ({})	jokainen kansion skannaus epäonnistui ({})
+Links	Linkit
+Copy {}	Kopioi {}
+Copy the {} id	Kopioi {}-tunnus
+Type	Tyyppi
+Previous airing	Edellinen esitys
+Season folder	Kausikansio
+Average episode size	Jakson keskikoko
+Genres	Lajityypit
+Rating	Arvio
+Certification	Ikäraja
+Release groups	Julkaisuryhmät
+File quality	Tiedoston laatu
+In cinemas	Elokuvateattereissa
+Runtime	Kesto
+Release group	Julkaisuryhmä
+Columns	Sarakkeet
+Shown in the table, the overview and under posters	Näytetään taulukossa, yleisnäkymässä ja julisteiden alla
+Column {}	Sarake {}
+Reset columns	Palauta sarakkeet
+Yes	Kyllä
+Override and grab {}	Muuta ja kaappaa {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Valitse tämän julkaisun sarja, jaksot, laatu, kielet tai latauspalvelu ja kaappaa se sitten (valinnat säilytetään tuontia varten)
+Override…	Muuta…
+Override and grab	Muuta ja kaappaa
+Override and grab — {}	Muuta ja kaappaa — {}
+{} episodes chosen	Valittuja jaksoja: {}
+Grab release	Kaappaa julkaisu
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Muuttamattomat valinnat säilyttävät sen, mitä julkaisun nimi kertoo. Valitsematta jätetyt jaksot säilyttävät jaksot, joihin nimi viittaa.
+Searched series	Haettu sarja
+Download client	Latauspalvelu
+Episodes (required)	Jaksot (pakollinen)
+Statistics	Tilastot
+Test parsing	Testaa jäsennys
+{} items removed.	Poistettiin {} kohdetta.
+{} items removed; {}	Poistettiin {} kohdetta; {}
+Select every queue item	Valitse kaikki jonon kohteet
+Queue bulk actions	Jonon joukkotoiminnot
+Grab the selected releases a delay profile holds back now	Kaappaa nyt valitut julkaisut, joita viiveprofiili pidättää
+Remove selected…	Poista valitut…
+Remove {} items from the queue	Poista {} kohdetta jonosta
+Held-back releases are forgotten; a later search can find them again.	Pidätetyt julkaisut unohdetaan; myöhempi haku voi löytää ne uudelleen.
+Removal method	Poistotapa
+Remove from the download client	Poista latauspalvelusta
+Change category	Vaihda kategoriaa
+Keep it in the download client	Säilytä latauspalvelussa
+The download and its files are removed from the download client.	Lataus ja sen tiedostot poistetaan latauspalvelusta.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Lataus siirtyy palvelun tuonnin jälkeiseen kategoriaan, eikä sitä enää seurata; sen tiedostot säilyvät.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Lataus jää latauspalveluun koskemattomana; valitse estolistavaihtoehto, jos haluat lisätä sen julkaisun estolistalle.
+Blocklist release	Lisää julkaisu estolistalle
+Do not blocklist	Älä lisää estolistalle
+Blocklist and search for a replacement	Lisää estolistalle ja hae korvaava
+Blocklist only	Vain estolistalle
+Removed {} releases from the blocklist.	Poistettiin {} julkaisua estolistalta.
+Remove {} selected	Poista {} valittua
+Select every release on this page	Valitse kaikki tämän sivun julkaisut
+Remove from the blocklist	Poista estolistalta
+Remove the {} selected releases from the blocklist?	Poistetaanko {} valittua julkaisua estolistalta?
+Quality, languages and release of {}	Laatu, kielet ja julkaisu: {}
+Choose the quality, languages, release group and release type the file is imported with	Valitse laatu, kielet, julkaisuryhmä ja julkaisun tyyppi, joilla tiedosto tuodaan
+Import details — {}	Tuonnin tiedot — {}
+Use these details	Käytä näitä tietoja
+Revision	Revisio
+2 or more for a PROPER or REPACK.	2 tai enemmän PROPER- tai REPACK-julkaisulle.
+Single episode	Yksittäinen jakso
+Multi-episode	Monijakso
+Season pack	Kausikooste
+Manual	Manuaalinen
+Choose the group the title joins.	Valitse ryhmä, johon nimike liittyy.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automaattinen ryhmittelee nimikkeen sen franchisen tai kokoelman kanssa virallisten suhteiden perusteella. Manuaalinen sijoittaa sen valitsemaasi ryhmään. Ei käytössä pitää sen erillään.
+Manual puts the title in a group you choose, in the group's folder.	Manuaalinen sijoittaa nimikkeen valitsemaasi ryhmään, ryhmän kansioon.
+Manual (choose a group)	Manuaalinen (valitse ryhmä)
+The title joins the group as its next season or film, in the group's folder.	Nimike liittyy ryhmään sen seuraavana kautena tai elokuvana, ryhmän kansioon.
+Choose a group…	Valitse ryhmä…
+Collection settings saved.	Kokoelman asetukset tallennettiin.
+Collection settings	Kokoelman asetukset
+Collection name	Kokoelman nimi
+Collection type	Kokoelman tyyppi
+A movie saga holds only films.	Elokuvasaaga sisältää vain elokuvia.
+Movie saga	Elokuvasaaga
+Movie folder format	Elokuvakansion kaava
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Miten jäsenten kansiot nimetään, kun nimikkeitä liittyy: automaattinen käyttää numeroituja kansioita saagoissa ja tarinakaarikansioita tarinakaarissa.
+Numbered	Numeroitu
+No change	Ei muutosta
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Valvonta, laatuprofiili ja kausikansio koskevat nyt kaikkia jäseniä; tyyppi ja kansion kaava koskevat tästä lähtien liittyviä nimikkeitä.
+Collection settings…	Kokoelman asetukset…
+Monitoring, quality profile, series type, folder and tags	Valvonta, laatuprofiili, sarjan tyyppi, kansio ja tunnisteet
+Change the quality, languages or release group of episode files, or delete them	Muuta jaksotiedostojen laatua, kieliä tai julkaisuryhmää tai poista ne
+Manage episodes	Hallitse jaksoja
+Episode details: overview, file, history and searches	Jakson tiedot: tiivistelmä, tiedosto, historia ja haut
+Details of episode {}	Jakson {} tiedot
+Monitoring, availability, quality profile, folder and tags	Valvonta, saatavuus, laatuprofiili, kansio ja tunnisteet
+No tags yet: create them in Settings › Tags.	Ei vielä tunnisteita: luo ne kohdassa Asetukset › Tunnisteet.
+Below the root folder.	Juurikansion alla.
+Use the folder name the naming settings give	Käytä nimeämisasetusten antamaa kansion nimeä
+Use naming format	Käytä nimeämiskaavaa
+Series saved.	Sarja tallennettiin.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr hakee ja lataa valvotun sarjan valvotut jaksot.
+Whether seasons a refresh discovers are monitored.	Valvotaanko päivityksessä löytyviä kausia.
+Sort episodes into season folders.	Lajittele jaksot kausikansioihin.
+Use season folders	Käytä kausikansioita
+Decides how episodes are numbered when searching and importing.	Määrittää, miten jaksot numeroidaan haussa ja tuonnissa.
+TheTVDB titles in this language; changing it refreshes the series.	TheTVDB:n nimet tällä kielellä; muuttaminen päivittää sarjan.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Ei käytössä poistaa sarjan animeryhmästään ja pitää sen automaattisen ryhmittelyn ulkopuolella.
+Enter a folder name.	Anna kansion nimi.
+Edit — {}	Muokkaa — {}
+Announced	Julkistettu
+Released	Julkaistu
+Movie saved.	Elokuva tallennettiin.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr hakee ja lataa valvotun elokuvan.
+Minimum availability	Vähimmäissaatavuus
+When the movie counts as available for automatic searches.	Milloin elokuva katsotaan saatavaksi automaattisia hakuja varten.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Ei käytössä poistaa elokuvan kokoelmastaan ja pitää sen automaattisen ryhmittelyn ulkopuolella.
+Edit {} selected	Muokkaa valittuja ({})
+Apply changes	Ota muutokset käyttöön
+No season folders	Ei kausikansioita
+Tags updated on {} items.	Tunnisteet päivitettiin {} kohteeseen.
+Removes the chosen tags from every selected title.	Poistaa valitut tunnisteet jokaisesta valitusta nimikkeestä.
+Every selected title gets exactly the chosen tags (none removes all).	Jokainen valittu nimike saa täsmälleen valitut tunnisteet (ei mitään poistaa kaikki).
+Adds the chosen tags to every selected title.	Lisää valitut tunnisteet jokaiseen valittuun nimikkeeseen.
+Tags — {} selected	Tunnisteet — {} valittu
+Apply tags	Aseta tunnisteet
+Replace	Korvaa
+Manage	Hallitse
+Multi-season pack	Monen kauden kooste
+Scene name	Scene-nimi
+Video	Video
+· {} fps	· {} fps
+Run time	Kesto
+Audio	Ääni
+Subtitles	Tekstitykset
+Details	Tiedot
+Search the indexers and grab the best release	Hae hakupalveluista ja kaappaa paras julkaisu
+See every release and choose	Näytä kaikki julkaisut ja valitse
+absolute {}	absoluuttinen {}
+Air date	Esityspäivä
+No overview.	Ei tiivistelmää.
+Delete this episode's file? It goes to the recycle bin when one is set.	Poistetaanko tämän jakson tiedosto? Se siirtyy roskakoriin, jos se on määritetty.
+{} files updated.	Päivitettiin {} tiedostoa.
+{} files deleted.	Poistettiin {} tiedostoa.
+{} files deleted; {}	Poistettiin {} tiedostoa; {}
+Delete files	Poista tiedostot
+The series has no files.	Sarjalla ei ole tiedostoja.
+Change	Muuta
+Change for the selected files…	Muuta valituille tiedostoille…
+Empty clears it	Tyhjä tyhjentää sen
+Select every file	Valitse kaikki tiedostot
+Delete the {} selected files? They go to the recycle bin when one is set.	Poistetaanko {} valittua tiedostoa? Ne siirtyvät roskakoriin, jos se on määritetty.
+Monitoring, quality profile, series type and season folders of the selected series	Valittujen sarjojen valvonta, laatuprofiili, sarjan tyyppi ja kausikansiot
+Edit…	Muokkaa…
+Add, remove or replace the tags of the selected series	Lisää, poista tai korvaa valittujen sarjojen tunnisteet
+Tags…	Tunnisteet…
+Monitoring and quality profile of the selected movies	Valittujen elokuvien valvonta ja laatuprofiili
+Add, remove or replace the tags of the selected movies	Lisää, poista tai korvaa valittujen elokuvien tunnisteet
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Liitä julkaisun nimi tai tiedostonimi nähdäksesi, miten Kitsunarr lukee sen ja mihin jaksoihin se täsmää.
+Parse	Jäsennä
+Kitsunarr could not read this title.	Kitsunarr ei pystynyt lukemaan tätä nimeä.
+Parse result	Jäsennyksen tulos
+Series title	Sarjan nimi
+Absolute episodes	Absoluuttiset jaksot
+Release hash	Julkaisun tiiviste
+Multi-season	Monen kauden
+Absolute numbering	Absoluuttinen numerointi
+Library match	Vastine kirjastossa
+No series in the library matches this title.	Mikään kirjaston sarja ei täsmää tähän nimeen.
+No episode of the series matches.	Mikään sarjan jakso ei täsmää.
+Log files	Lokitiedostot
+Refresh	Päivitä
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr kirjoittaa lokinsa datakansion tiedostoihin, jotka kierrätetään 1 MiB:n kohdalla. Lokitaso asetetaan kohdassa Asetukset › Yleiset.
+No log files yet	Ei vielä lokitiedostoja
+Last written	Viimeksi kirjoitettu
+Skip the free-space check when importing	Ohita vapaan tilan tarkistus tuotaessa
+Create empty series folders during disk scans (not with "delete empty folders")	Luo tyhjät sarjakansiot levyn tarkistuksissa (ei yhdessä asetuksen "poista tyhjät kansiot" kanssa)
+Skip the free-space check when grabbing	Ohita vapaan tilan tarkistus kaapattaessa
+Set permissions on imported files and folders (Linux)	Aseta käyttöoikeudet tuoduille tiedostoille ja kansioille (Linux)
+Import using a script	Tuo komentosarjalla
+Rescan series folder after refresh	Tarkista sarjakansio uudelleen päivityksen jälkeen
+Whether a metadata refresh scans the series folder for changes afterwards.	Tarkistaako metatietojen päivitys sarjakansion muutokset jälkeenpäin.
+Always	Aina
+After manual refresh	Manuaalisen päivityksen jälkeen
+Never	Ei koskaan
+Episode title required	Jakson nimi vaaditaan
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Tuonnit odottavat jakson nimeä, kun nimeämiskaava käyttää sitä ja jakso on esitetty viimeisten 48 tunnin aikana.
+Only for bulk season releases	Vain koko kauden julkaisuille
+Season pack upgrades	Kausikoosteiden päivitykset
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Kuinka monen kausikoosteen jaksoista on puututtava tai oltava päivitettävissä, jotta kooste kaapataan.
+A share of the episodes	Osuus jaksoista
+Any episode	Mikä tahansa jakso
+Season pack upgrade threshold (%)	Kausikoosteen päivityksen kynnys (%)
+Rejected extensions	Hylätyt tiedostopäätteet
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Pilkuin eroteltuina, esimerkiksi exe, bat. Yhden tiedoston latausta, jolla on jokin näistä päätteistä, ei tuoda.
+Folder permissions (chmod)	Kansioiden käyttöoikeudet (chmod)
+Octal mode for folders; files get it without the execute bits.	Kansioiden oktaalitila; tiedostot saavat sen ilman suoritusbittejä.
+Group (chown)	Ryhmä (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Tuotujen tiedostojen ja kansioiden ryhmän nimi tai tunnus; tyhjä jättää ryhmän ennalleen.
+Import script path	Tuontikomentosarjan polku
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Komentosarjan absoluuttinen polku; se saa lähde- ja kohdepolut sekä Sonarrin ympäristömuuttujat.
+Excluded tags (ids, comma separated)	Poissuljetut tunnisteet (tunnukset pilkuin eroteltuina)
+The profile does not apply to series with one of these tags.	Profiili ei koske sarjoja, joilla on jokin näistä tunnisteista.
+Reject releases published before the episode airs	Hylkää julkaisut, jotka on julkaistu ennen jakson esitystä
+Allow season packs before every episode has aired	Salli kausikoosteet ennen kuin kaikki jaksot on esitetty
+Air date grace period (hours)	Esityspäivän armonaika (tunteina)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Julkaisut, jotka on julkaistu enintään näin monta tuntia esityspäivän jälkeen, hylätään edelleen; negatiivinen luku sallii ne näin monta tuntia ennen.
+Presets	Esiasetukset
+Series ID	Sarjan tunnus
+Anime group	Animeryhmä
+Absolute episode number	Absoluuttinen jaksonumero
+Episode title	Jakson nimi
+Media info	Mediatiedot
+Original	Alkuperäinen
+File name tokens	Tiedostonimen tunnisteet
+Folder name tokens	Kansion nimen tunnisteet
+Format	Muoto
+Separator	Erotin
+Space ( )	Välilyönti ( )
+Period (.)	Piste (.)
+Underscore (_)	Alaviiva (_)
+Dash (-)	Viiva (-)
+Capitalization	Kirjainkoko
+Default case	Oletuskirjainkoko
+Lowercase	Pienet kirjaimet
+Uppercase	Isot kirjaimet
+Click a token to insert it at the cursor; a preset replaces the whole format.	Napsauta tunnistetta lisätäksesi sen kohdistimen kohdalle; esiasetus korvaa koko kaavan.
+Tokens	Tunnisteet
+Tokens for {}	Tunnisteet: {}
+Invalid format	Virheellinen kaava
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Kaavat käyttävät Sonarrin tunnisteita; alla olevat esimerkit seuraavat muutoksiasi ennen tallennusta.
+Rename episodes	Nimeä jaksot uudelleen
+Replace illegal characters (otherwise they are removed)	Korvaa kielletyt merkit (muuten ne poistetaan)
+Colon replacement	Kaksoispisteen korvaus
+How colons in titles are written in file and folder names.	Miten nimikkeiden kaksoispisteet kirjoitetaan tiedosto- ja kansionimiin.
+Replace with dash	Korvaa viivalla
+Replace with space dash	Korvaa välilyönnillä ja viivalla
+Replace with space dash space	Korvaa välilyönnillä, viivalla ja välilyönnillä
+Smart replace (dash or space dash)	Älykäs korvaus (viiva tai välilyönti ja viiva)
+Custom	Mukautettu
+Custom colon replacement	Mukautettu kaksoispisteen korvaus
+The characters written instead of a colon.	Merkit, jotka kirjoitetaan kaksoispisteen tilalle.
+Multi-episode style	Monijaksotyyli
+Extend (S01E01-02-03)	Laajenna (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Monista (S01E01.S01E02)
+Repeat (S01E01E02E03)	Toista (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	Väli (S01E01-03)
+Prefixed range (S01E01-E03)	Etuliitteellinen väli (S01E01-E03)
+Example	Esimerkki
+Anime group movie	Animeryhmän elokuva
+Used when films are renamed.	Käytetään, kun elokuvat nimetään uudelleen.
+Used when adding a new series or moving one.	Käytetään, kun uusi sarja lisätään tai sarja siirretään.
+Specials folder format	Erikoisjaksokansion kaava
+Anime groups and collections: titles go to {}/{}/{}.	Animeryhmät ja kokoelmat: nimikkeet sijoitetaan kohteeseen {}/{}/{}.
+Interface settings saved.	Käyttöliittymän asetukset tallennettiin.
+Week column header	Viikkonäkymän sarakeotsikko
+The column headers of the calendar's week view.	Kalenterin viikkonäkymän sarakeotsikot.
+Dates	Päivämäärät
+Short date format	Lyhyt päivämäärämuoto
+Long date format	Pitkä päivämäärämuoto
+Time format	Aikamuoto
+Time zone	Aikavyöhyke
+Dates and times are shown in this time zone; empty follows the browser.	Päivämäärät ja kellonajat näytetään tällä aikavyöhykkeellä; tyhjä noudattaa selainta.
+The browser's time zone	Selaimen aikavyöhyke
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Näytä suhteelliset päivämäärät (Tänään, Eilen, Huomenna) päivämäärän sijaan
+Style	Tyyli
+Theme	Teema
+Kept in this browser; the top bar button switches it too.	Tallennetaan tähän selaimeen; yläpalkin painike vaihtaa sitä myös.
+Dark	Tumma
+Light	Vaalea
+Colour-impaired mode (colours easier to tell apart, with patterns)	Värisokeustila (helpommin erotettavat värit, kuvioilla)
+Saved to the configuration file. Restart Kitsunarr to apply.	Tallennettu asetustiedostoon. Käynnistä Kitsunarr uudelleen, jotta muutos tulee voimaan.
+Host and logging	Osoite ja lokitus
+Set by an environment variable or command-line flag: {}	Asetettu ympäristömuuttujalla tai komentorivin valitsimella: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Tallennettu kohteeseen {}. Muutokset tulevat voimaan, kun Kitsunarr seuraavan kerran käynnistyy; ympäristömuuttujat ja komentorivin valitsimet ovat edelleen etusijalla.
+Restart required: the saved values differ from the ones in use.	Uudelleenkäynnistys vaaditaan: tallennetut arvot eroavat käytössä olevista.
+Restart now	Käynnistä uudelleen nyt
+Bind address	Sidososoite
+0.0.0.0 listens on every interface.	0.0.0.0 kuuntelee kaikissa verkkoliitännöissä.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Käänteisiä välityspalvelimia varten, esim. /kitsunarr; tyhjä tarjoilee juuresta.
+Log level	Lokitaso
+Debug and trace write much more to the log files.	Vianselvitys ja jäljitys kirjoittavat lokitiedostoihin paljon enemmän.
+Trace	Jäljitys
+Warn	Varoitus
+Error	Virhe
+Backup folder	Varmuuskopiokansio
+Absolute path; empty uses {}.	Absoluuttinen polku; tyhjä käyttää kohdetta {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr tarjoilee pelkkää HTTP:tä; aseta käänteinen välityspalvelin sen eteen HTTPS:ää varten.
+Save host settings	Tallenna osoiteasetukset
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Käynnistetäänkö Kitsunarr uudelleen nyt? Jos osoite, portti tai URL-perusta muuttui, avaa uusi osoite sen jälkeen.
+Nothing to show.	Ei näytettävää.
+All series	Kaikki sarjat
+All types	Kaikki tyypit
+All profiles	Kaikki profiilit
+All tags	Kaikki tunnisteet
+Downloaded	Ladattu
+Unaired	Esittämätön
+{} files · {}	{} tiedostoa · {}
+Summary	Yhteenveto
+Monitored series	Valvotut sarjat
+Completed series	Valmiit sarjat
+{} ({} completed)	{} ({} valmiina)
+{} ({} monitored)	{} ({} valvottu)
+Episode files	Jaksotiedostot
+{} ({} downloaded)	{} ({} ladattu)
+{} ({} per episode)	{} ({} jaksoa kohden)
+Series status	Sarjojen tila
+File qualities	Tiedostojen laadut
+Recent entries	Viimeisimmät merkinnät
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Viimeisimmät muistissa säilytetyt merkinnät. Yllä olevat lokitiedostot ja prosessin tuloste (kontin lokit tai journal) säilyttävät kaiken.
+Yesterday	Eilen
+Tomorrow	Huomenna

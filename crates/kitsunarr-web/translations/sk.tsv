@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Preskočené: server sa ešte spúšťa
 {} expired sessions removed	Odstránené vypršané relácie: {}
 All {} refreshes failed; see the logs	Všetky obnovenia ({}) zlyhali; pozrite si logy
 every folder scan failed ({})	každé prehľadávanie priečinkov zlyhalo ({})
+Links	Odkazy
+Copy {}	Kopírovať {}
+Copy the {} id	Kopírovať id {}
+Type	Typ
+Previous airing	Predchádzajúce vysielanie
+Season folder	Priečinok sezóny
+Average episode size	Priemerná veľkosť epizódy
+Genres	Žánre
+Rating	Hodnotenie
+Certification	Certifikácia
+Release groups	Skupiny vydania
+File quality	Kvalita súboru
+In cinemas	V kinách
+Runtime	Dĺžka
+Release group	Skupina vydania
+Columns	Stĺpce
+Shown in the table, the overview and under posters	Zobrazuje sa v tabuľke, v prehľade a pod plagátmi
+Column {}	Stĺpec {}
+Reset columns	Resetovať stĺpce
+Yes	Áno
+Override and grab {}	Prepísať a stiahnuť {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Vyberte sériu, epizódy, kvalitu, jazyky alebo klienta na sťahovanie tohto vydania a potom ho stiahnite (voľby sa zachovajú pre import)
+Override…	Prepísať…
+Override and grab	Prepísať a stiahnuť
+Override and grab — {}	Prepísať a stiahnuť — {}
+{} episodes chosen	Vybrané epizódy: {}
+Grab release	Stiahnuť vydanie
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Nezmenené voľby ponechajú to, čo uvádza názov vydania. Ak epizódy nevyberiete, ponechajú sa epizódy, ktorým názov zodpovedá.
+Searched series	Hľadaná séria
+Download client	Klient na sťahovanie
+Episodes (required)	Epizódy (povinné)
+Statistics	Štatistiky
+Test parsing	Test spracovania
+{} items removed.	Odstránené položky: {}.
+{} items removed; {}	Odstránené položky: {}; {}
+Select every queue item	Vybrať všetky položky vo fronte
+Queue bulk actions	Hromadné akcie vo fronte
+Grab the selected releases a delay profile holds back now	Teraz stiahnuť vybrané vydania, ktoré zadržiava profil oneskorenia
+Remove selected…	Odstrániť vybrané…
+Remove {} items from the queue	Odstrániť položky z fronty: {}
+Held-back releases are forgotten; a later search can find them again.	Zadržané vydania sa zabudnú; neskoršie vyhľadávanie ich môže nájsť znova.
+Removal method	Spôsob odstránenia
+Remove from the download client	Odstrániť z klienta na sťahovanie
+Change category	Zmeniť kategóriu
+Keep it in the download client	Ponechať v klientovi na sťahovanie
+The download and its files are removed from the download client.	Sťahovanie a jeho súbory sa odstránia z klienta na sťahovanie.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Sťahovanie sa presunie do kategórie klienta po importe a už sa nesleduje; jeho súbory zostanú.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Sťahovanie zostane v klientovi na sťahovanie nedotknuté; ak chcete jeho vydanie pridať do blocklistu, vyberte možnosť blocklistu.
+Blocklist release	Pridať vydanie do blocklistu
+Do not blocklist	Nepridávať do blocklistu
+Blocklist and search for a replacement	Pridať do blocklistu a hľadať náhradu
+Blocklist only	Iba pridať do blocklistu
+Removed {} releases from the blocklist.	Z blocklistu odstránené vydania: {}.
+Remove {} selected	Odstrániť vybrané: {}
+Select every release on this page	Vybrať všetky vydania na tejto stránke
+Remove from the blocklist	Odstrániť z blocklistu
+Remove the {} selected releases from the blocklist?	Odstrániť vybrané vydania ({}) z blocklistu?
+Quality, languages and release of {}	Kvalita, jazyky a vydanie pre {}
+Choose the quality, languages, release group and release type the file is imported with	Vyberte kvalitu, jazyky, skupinu vydania a typ vydania, s ktorými sa súbor importuje
+Import details — {}	Podrobnosti importu — {}
+Use these details	Použiť tieto podrobnosti
+Revision	Revízia
+2 or more for a PROPER or REPACK.	2 alebo viac pre PROPER alebo REPACK.
+Single episode	Jedna epizóda
+Multi-episode	Viac epizód
+Season pack	Balík sezóny
+Manual	Ručne
+Choose the group the title joins.	Vyberte skupinu, ku ktorej sa titul pripojí.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automaticky zoskupí titul s jeho franšízou alebo kolekciou podľa oficiálnych vzťahov. Ručne ho zaradí do skupiny, ktorú vyberiete. Zakázané ho ponechá samostatne.
+Manual puts the title in a group you choose, in the group's folder.	Ručne zaradí titul do skupiny, ktorú vyberiete, v priečinku skupiny.
+Manual (choose a group)	Ručne (vybrať skupinu)
+The title joins the group as its next season or film, in the group's folder.	Titul sa pripojí k skupine ako jej ďalšia sezóna alebo film, v priečinku skupiny.
+Choose a group…	Vyberte skupinu…
+Collection settings saved.	Nastavenia kolekcie uložené.
+Collection settings	Nastavenia kolekcie
+Collection name	Názov kolekcie
+Collection type	Typ kolekcie
+A movie saga holds only films.	Filmová sága obsahuje iba filmy.
+Movie saga	Filmová sága
+Movie folder format	Formát priečinka filmu
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Ako sa pomenujú priečinky členov pri pripojení titulov: automaticky používa číslované priečinky v ságach a priečinky dejových oblúkov pre oblúky.
+Numbered	Číslované
+No change	Bez zmeny
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Sledovanie, profil kvality a priečinok sezóny sa teraz uplatnia na každého člena; typ a formát priečinka sa uplatnia na tituly, ktoré sa pripoja odteraz.
+Collection settings…	Nastavenia kolekcie…
+Monitoring, quality profile, series type, folder and tags	Sledovanie, profil kvality, typ série, priečinok a značky
+Change the quality, languages or release group of episode files, or delete them	Zmeniť kvalitu, jazyky alebo skupinu vydania súborov epizód, alebo ich zmazať
+Manage episodes	Spravovať epizódy
+Episode details: overview, file, history and searches	Podrobnosti epizódy: prehľad, súbor, história a vyhľadávania
+Details of episode {}	Podrobnosti epizódy {}
+Monitoring, availability, quality profile, folder and tags	Sledovanie, dostupnosť, profil kvality, priečinok a značky
+No tags yet: create them in Settings › Tags.	Zatiaľ žiadne značky: vytvorte ich v Nastavenia › Značky.
+Below the root folder.	Pod koreňovým priečinkom.
+Use the folder name the naming settings give	Použiť názov priečinka podľa nastavení pomenovania
+Use naming format	Použiť formát pomenovania
+Series saved.	Séria uložená.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr hľadá a sťahuje sledované epizódy sledovanej série.
+Whether seasons a refresh discovers are monitored.	Či sa sezóny zistené pri obnovení sledujú.
+Sort episodes into season folders.	Triediť epizódy do priečinkov sezón.
+Use season folders	Používať priečinky sezón
+Decides how episodes are numbered when searching and importing.	Určuje, ako sa epizódy číslujú pri vyhľadávaní a importe.
+TheTVDB titles in this language; changing it refreshes the series.	Názvy z TheTVDB v tomto jazyku; zmena obnoví sériu.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Zakázané odstráni sériu z jej skupiny anime a vylúči ju z automatického zoskupovania.
+Enter a folder name.	Zadajte názov priečinka.
+Edit — {}	Upraviť — {}
+Announced	Ohlásené
+Released	Vydané
+Movie saved.	Film uložený.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr hľadá a sťahuje sledovaný film.
+Minimum availability	Minimálna dostupnosť
+When the movie counts as available for automatic searches.	Kedy sa film považuje za dostupný pre automatické vyhľadávanie.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Zakázané odstráni film z jeho kolekcie a vylúči ho z automatického zoskupovania.
+Edit {} selected	Upraviť vybrané: {}
+Apply changes	Použiť zmeny
+No season folders	Bez priečinkov sezón
+Tags updated on {} items.	Značky aktualizované na položkách: {}.
+Removes the chosen tags from every selected title.	Odstráni zvolené značky zo všetkých vybraných titulov.
+Every selected title gets exactly the chosen tags (none removes all).	Každý vybraný titul dostane presne zvolené značky (žiadne = odstránenie všetkých).
+Adds the chosen tags to every selected title.	Pridá zvolené značky ku všetkým vybraným titulom.
+Tags — {} selected	Značky — vybrané: {}
+Apply tags	Použiť značky
+Replace	Nahradiť
+Manage	Spravovať
+Multi-season pack	Balík viacerých sezón
+Scene name	Názov scény
+Video	Video
+· {} fps	· {} fps
+Run time	Dĺžka
+Audio	Zvuk
+Subtitles	Titulky
+Details	Podrobnosti
+Search the indexers and grab the best release	Hľadať v indexeroch a stiahnuť najlepšie vydanie
+See every release and choose	Zobraziť všetky vydania a vybrať
+absolute {}	absolútne {}
+Air date	Dátum vysielania
+No overview.	Žiadny prehľad.
+Delete this episode's file? It goes to the recycle bin when one is set.	Zmazať súbor tejto epizódy? Ak je nastavený kôš, presunie sa doň.
+{} files updated.	Aktualizované súbory: {}.
+{} files deleted.	Zmazané súbory: {}.
+{} files deleted; {}	Zmazané súbory: {}; {}
+Delete files	Zmazať súbory
+The series has no files.	Séria nemá žiadne súbory.
+Change	Zmeniť
+Change for the selected files…	Zmeniť pre vybrané súbory…
+Empty clears it	Prázdne hodnotu vymaže
+Select every file	Vybrať všetky súbory
+Delete the {} selected files? They go to the recycle bin when one is set.	Zmazať vybrané súbory ({})? Ak je nastavený kôš, presunú sa doň.
+Monitoring, quality profile, series type and season folders of the selected series	Sledovanie, profil kvality, typ série a priečinky sezón vybraných sérií
+Edit…	Upraviť…
+Add, remove or replace the tags of the selected series	Pridať, odstrániť alebo nahradiť značky vybraných sérií
+Tags…	Značky…
+Monitoring and quality profile of the selected movies	Sledovanie a profil kvality vybraných filmov
+Add, remove or replace the tags of the selected movies	Pridať, odstrániť alebo nahradiť značky vybraných filmov
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Vložte názov vydania alebo súboru a uvidíte, ako ho Kitsunarr prečíta a ktorým epizódam zodpovedá.
+Parse	Spracovať
+Kitsunarr could not read this title.	Kitsunarr nedokázal prečítať tento názov.
+Parse result	Výsledok spracovania
+Series title	Názov série
+Absolute episodes	Absolútne epizódy
+Release hash	Hash vydania
+Multi-season	Viac sezón
+Absolute numbering	Absolútne číslovanie
+Library match	Zhoda v knižnici
+No series in the library matches this title.	Tomuto názvu nezodpovedá žiadna séria v knižnici.
+No episode of the series matches.	Nezodpovedá žiadna epizóda série.
+Log files	Súbory logov
+Refresh	Obnoviť
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr zapisuje log do súborov v dátovom priečinku, s rotáciou pri 1 MiB. Úroveň logovania sa nastavuje v Nastavenia › Všeobecné.
+No log files yet	Zatiaľ žiadne súbory logov
+Last written	Posledný zápis
+Skip the free-space check when importing	Pri importe preskočiť kontrolu voľného miesta
+Create empty series folders during disk scans (not with "delete empty folders")	Vytvárať prázdne priečinky sérií počas prehľadávania disku (nie s „zmazať prázdne priečinky“)
+Skip the free-space check when grabbing	Pri sťahovaní preskočiť kontrolu voľného miesta
+Set permissions on imported files and folders (Linux)	Nastaviť oprávnenia importovaných súborov a priečinkov (Linux)
+Import using a script	Importovať pomocou skriptu
+Rescan series folder after refresh	Po obnovení znova prehľadať priečinok série
+Whether a metadata refresh scans the series folder for changes afterwards.	Či obnovenie metadát potom prehľadá priečinok série kvôli zmenám.
+Always	Vždy
+After manual refresh	Po ručnom obnovení
+Never	Nikdy
+Episode title required	Vyžadovať názov epizódy
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Importy čakajú na názov epizódy, keď ho formát pomenovania používa a epizóda sa vysielala za posledných 48 hodín.
+Only for bulk season releases	Iba pre hromadné vydania sezón
+Season pack upgrades	Vylepšenia balíkmi sezón
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Koľko epizód z balíka sezóny musí chýbať alebo byť vylepšiteľných, aby sa balík stiahol.
+A share of the episodes	Podiel epizód
+Any episode	Ktorákoľvek epizóda
+Season pack upgrade threshold (%)	Prah vylepšenia balíkom sezóny (%)
+Rejected extensions	Odmietnuté prípony
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Oddelené čiarkami, napríklad exe, bat. Jednosúborové sťahovanie s jednou z týchto prípon sa neimportuje.
+Folder permissions (chmod)	Oprávnenia priečinkov (chmod)
+Octal mode for folders; files get it without the execute bits.	Osmičkový režim pre priečinky; súbory ho dostanú bez bitov spustenia.
+Group (chown)	Skupina (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Názov alebo id skupiny pre importované súbory a priečinky; prázdne ponechá skupinu bez zmeny.
+Import script path	Cesta k importnému skriptu
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Absolútna cesta ku skriptu; dostane zdrojovú a cieľovú cestu a premenné prostredia zo Sonarr.
+Excluded tags (ids, comma separated)	Vylúčené značky (id, oddelené čiarkami)
+The profile does not apply to series with one of these tags.	Profil sa neuplatní na série s niektorou z týchto značiek.
+Reject releases published before the episode airs	Odmietnuť vydania zverejnené pred vysielaním epizódy
+Allow season packs before every episode has aired	Povoliť balíky sezón skôr, ako sa odvysielajú všetky epizódy
+Air date grace period (hours)	Tolerancia dátumu vysielania (hodiny)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Vydania zverejnené až toľko hodín po dátume vysielania sa stále odmietnu; záporné číslo ich povolí toľko hodín pred ním.
+Presets	Predvoľby
+Series ID	ID série
+Anime group	Skupina anime
+Absolute episode number	Absolútne číslo epizódy
+Episode title	Názov epizódy
+Media info	Informácie o médiu
+Original	Pôvodné
+File name tokens	Tokeny názvu súboru
+Folder name tokens	Tokeny názvu priečinka
+Format	Formát
+Separator	Oddeľovač
+Space ( )	Medzera ( )
+Period (.)	Bodka (.)
+Underscore (_)	Podčiarkovník (_)
+Dash (-)	Pomlčka (-)
+Capitalization	Veľkosť písmen
+Default case	Predvolená veľkosť
+Lowercase	Malé písmená
+Uppercase	Veľké písmená
+Click a token to insert it at the cursor; a preset replaces the whole format.	Kliknutím na token ho vložíte na pozíciu kurzora; predvoľba nahradí celý formát.
+Tokens	Tokeny
+Tokens for {}	Tokeny pre {}
+Invalid format	Neplatný formát
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Formáty používajú tokeny zo Sonarr; príklady nižšie zohľadňujú vaše zmeny ešte pred uložením.
+Rename episodes	Premenovať epizódy
+Replace illegal characters (otherwise they are removed)	Nahradiť nepovolené znaky (inak sa odstránia)
+Colon replacement	Náhrada dvojbodky
+How colons in titles are written in file and folder names.	Ako sa dvojbodky z názvov zapíšu v názvoch súborov a priečinkov.
+Replace with dash	Nahradiť pomlčkou
+Replace with space dash	Nahradiť medzerou a pomlčkou
+Replace with space dash space	Nahradiť medzerou, pomlčkou a medzerou
+Smart replace (dash or space dash)	Inteligentná náhrada (pomlčka alebo medzera a pomlčka)
+Custom	Vlastné
+Custom colon replacement	Vlastná náhrada dvojbodky
+The characters written instead of a colon.	Znaky zapísané namiesto dvojbodky.
+Multi-episode style	Štýl viacerých epizód
+Extend (S01E01-02-03)	Rozšíriť (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Duplikovať (S01E01.S01E02)
+Repeat (S01E01E02E03)	Opakovať (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scéna (S01E01-E02-E03)
+Range (S01E01-03)	Rozsah (S01E01-03)
+Prefixed range (S01E01-E03)	Rozsah s predponou (S01E01-E03)
+Example	Príklad
+Anime group movie	Film v skupine anime
+Used when films are renamed.	Používa sa pri premenovaní filmov.
+Used when adding a new series or moving one.	Používa sa pri pridávaní novej série alebo jej presúvaní.
+Specials folder format	Formát priečinka špeciálov
+Anime groups and collections: titles go to {}/{}/{}.	Skupiny anime a kolekcie: tituly idú do {}/{}/{}.
+Interface settings saved.	Nastavenia rozhrania uložené.
+Week column header	Hlavička stĺpca týždňa
+The column headers of the calendar's week view.	Hlavičky stĺpcov v týždennom zobrazení kalendára.
+Dates	Dátumy
+Short date format	Krátky formát dátumu
+Long date format	Dlhý formát dátumu
+Time format	Formát času
+Time zone	Časové pásmo
+Dates and times are shown in this time zone; empty follows the browser.	Dátumy a časy sa zobrazujú v tomto časovom pásme; prázdne použije pásmo prehliadača.
+The browser's time zone	Časové pásmo prehliadača
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Zobrazovať relatívne dátumy (Dnes, Včera, Zajtra) namiesto dátumu
+Style	Štýl
+Theme	Téma
+Kept in this browser; the top bar button switches it too.	Uchováva sa v tomto prehliadači; prepína ju aj tlačidlo v hornej lište.
+Dark	Tmavá
+Light	Svetlá
+Colour-impaired mode (colours easier to tell apart, with patterns)	Režim pre farbosleposť (ľahšie rozlíšiteľné farby, so vzormi)
+Saved to the configuration file. Restart Kitsunarr to apply.	Uložené do konfiguračného súboru. Na uplatnenie reštartujte Kitsunarr.
+Host and logging	Hostiteľ a logovanie
+Set by an environment variable or command-line flag: {}	Nastavené premennou prostredia alebo prepínačom príkazového riadka: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Uložené do {}. Zmeny sa uplatnia pri ďalšom spustení Kitsunarr; premenné prostredia a prepínače príkazového riadka majú naďalej prednosť.
+Restart required: the saved values differ from the ones in use.	Vyžaduje sa reštart: uložené hodnoty sa líšia od používaných.
+Restart now	Reštartovať teraz
+Bind address	Adresa naviazania
+0.0.0.0 listens on every interface.	0.0.0.0 počúva na všetkých rozhraniach.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Pre reverzné proxy, napr. /kitsunarr; prázdne slúži z koreňa.
+Log level	Úroveň logovania
+Debug and trace write much more to the log files.	Ladenie a trasovanie zapisujú do súborov logov oveľa viac.
+Trace	Trasovanie
+Warn	Varovanie
+Error	Chyba
+Backup folder	Priečinok záloh
+Absolute path; empty uses {}.	Absolútna cesta; prázdne použije {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr poskytuje čisté HTTP; pre HTTPS pred neho umiestnite reverznú proxy.
+Save host settings	Uložiť nastavenia hostiteľa
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Reštartovať Kitsunarr teraz? Ak sa zmenila adresa, port alebo základ URL, potom otvorte novú adresu.
+Nothing to show.	Nie je čo zobraziť.
+All series	Všetky série
+All types	Všetky typy
+All profiles	Všetky profily
+All tags	Všetky značky
+Downloaded	Stiahnuté
+Unaired	Neodvysielané
+{} files · {}	Súbory: {} · {}
+Summary	Súhrn
+Monitored series	Sledované série
+Completed series	Dokončené série
+{} ({} completed)	{} (dokončené: {})
+{} ({} monitored)	{} (sledované: {})
+Episode files	Súbory epizód
+{} ({} downloaded)	{} (stiahnuté: {})
+{} ({} per episode)	{} ({} na epizódu)
+Series status	Stav sérií
+File qualities	Kvality súborov
+Recent entries	Nedávne záznamy
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Najnovšie záznamy uchované v pamäti. Súbory logov vyššie a výstup procesu (logy kontajnera alebo journal) uchovávajú všetko.
+Yesterday	Včera
+Tomorrow	Zajtra

@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	تم التخطي: الخادم لا يز�
 {} expired sessions removed	الجلسات المنتهية التي أُزيلت: {}
 All {} refreshes failed; see the logs	فشلت جميع عمليات التحديث ({})؛ راجع السجلات
 every folder scan failed ({})	فشلت جميع عمليات فحص المجلدات ({})
+Links	الروابط
+Copy {}	نسخ {}
+Copy the {} id	نسخ معرّف {}
+Type	النوع
+Previous airing	البث السابق
+Season folder	مجلد الموسم
+Average episode size	متوسط حجم الحلقة
+Genres	الأنواع
+Rating	التقييم
+Certification	التصنيف العمري
+Release groups	مجموعات الإصدار
+File quality	جودة الملف
+In cinemas	في دور العرض
+Runtime	المدة
+Release group	مجموعة الإصدار
+Columns	الأعمدة
+Shown in the table, the overview and under posters	تُعرض في الجدول وفي عرض النبذة وتحت الملصقات
+Column {}	العمود {}
+Reset columns	إعادة تعيين الأعمدة
+Yes	نعم
+Override and grab {}	تجاوز وجلب {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	اختر المسلسل أو الحلقات أو الجودة أو اللغات أو عميل التنزيل لهذا الإصدار، ثم اجلبه (تُحفظ الاختيارات للاستيراد)
+Override…	تجاوز…
+Override and grab	تجاوز وجلب
+Override and grab — {}	تجاوز وجلب — {}
+{} episodes chosen	الحلقات المختارة: {}
+Grab release	جلب الإصدار
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	الاختيارات غير المعدّلة تُبقي ما يقوله عنوان الإصدار. وإن لم تُختر حلقات، فتُعتمد الحلقات التي يطابقها العنوان.
+Searched series	المسلسل الذي جرى البحث عنه
+Download client	عميل التنزيل
+Episodes (required)	الحلقات (مطلوبة)
+Statistics	الإحصاءات
+Test parsing	اختبار التحليل
+{} items removed.	العناصر المُزالة: {}.
+{} items removed; {}	العناصر المُزالة: {}؛ {}
+Select every queue item	تحديد كل عناصر قائمة الانتظار
+Queue bulk actions	إجراءات جماعية لقائمة الانتظار
+Grab the selected releases a delay profile holds back now	جلب الإصدارات المحددة التي يؤخرها ملف تعريف التأخير الآن
+Remove selected…	إزالة المحدد…
+Remove {} items from the queue	إزالة العناصر ({}) من قائمة الانتظار
+Held-back releases are forgotten; a later search can find them again.	تُنسى الإصدارات المؤجلة؛ ويمكن لبحث لاحق العثور عليها مجددًا.
+Removal method	طريقة الإزالة
+Remove from the download client	الإزالة من عميل التنزيل
+Change category	تغيير الفئة
+Keep it in the download client	إبقاؤه في عميل التنزيل
+The download and its files are removed from the download client.	يُزال التنزيل وملفاته من عميل التنزيل.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	ينتقل التنزيل إلى فئة ما بعد الاستيراد في العميل ولا يعود متتبَّعًا؛ وتبقى ملفاته.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	يبقى التنزيل في عميل التنزيل دون تغيير؛ اختر أحد خيارات قائمة الحظر لإضافة إصداره إليها.
+Blocklist release	إضافة الإصدار إلى قائمة الحظر
+Do not blocklist	عدم الإضافة إلى قائمة الحظر
+Blocklist and search for a replacement	الإضافة إلى قائمة الحظر والبحث عن بديل
+Blocklist only	الإضافة إلى قائمة الحظر فقط
+Removed {} releases from the blocklist.	تمت إزالة الإصدارات من قائمة الحظر: {}.
+Remove {} selected	إزالة المحدد ({})
+Select every release on this page	تحديد كل الإصدارات في هذه الصفحة
+Remove from the blocklist	الإزالة من قائمة الحظر
+Remove the {} selected releases from the blocklist?	إزالة الإصدارات المحددة ({}) من قائمة الحظر؟
+Quality, languages and release of {}	الجودة واللغات والإصدار لـ {}
+Choose the quality, languages, release group and release type the file is imported with	اختر الجودة واللغات ومجموعة الإصدار ونوع الإصدار التي يُستورد بها الملف
+Import details — {}	تفاصيل الاستيراد — {}
+Use these details	استخدام هذه التفاصيل
+Revision	المراجعة
+2 or more for a PROPER or REPACK.	2 أو أكثر لإصدار PROPER أو REPACK.
+Single episode	حلقة واحدة
+Multi-episode	حلقات متعددة
+Season pack	حزمة موسم
+Manual	يدوي
+Choose the group the title joins.	اختر المجموعة التي ينضم إليها العنوان.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	«تلقائي» يجمع العنوان مع سلسلته أو مجموعته وفق العلاقات الرسمية. «يدوي» يضعه في مجموعة تختارها. «معطّل» يبقيه منفردًا.
+Manual puts the title in a group you choose, in the group's folder.	«يدوي» يضع العنوان في مجموعة تختارها، داخل مجلد المجموعة.
+Manual (choose a group)	يدوي (اختر مجموعة)
+The title joins the group as its next season or film, in the group's folder.	ينضم العنوان إلى المجموعة بوصفه موسمها أو فيلمها التالي، داخل مجلد المجموعة.
+Choose a group…	اختر مجموعة…
+Collection settings saved.	تم حفظ إعدادات المجموعة.
+Collection settings	إعدادات المجموعة
+Collection name	اسم المجموعة
+Collection type	نوع المجموعة
+A movie saga holds only films.	سلسلة الأفلام لا تضم إلا أفلامًا.
+Movie saga	سلسلة أفلام
+Movie folder format	تنسيق مجلد الأفلام
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	كيفية تسمية مجلدات الأعضاء عند انضمام العناوين: يستخدم الوضع التلقائي مجلدات مرقّمة في السلاسل ومجلدات الأقواس القصصية للأقواس.
+Numbered	مرقّم
+No change	بلا تغيير
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	تُطبَّق المراقبة وملف تعريف الجودة ومجلد الموسم على كل الأعضاء الآن؛ ويُطبَّق النوع وتنسيق المجلد على العناوين المنضمة من الآن فصاعدًا.
+Collection settings…	إعدادات المجموعة…
+Monitoring, quality profile, series type, folder and tags	المراقبة وملف تعريف الجودة ونوع المسلسل والمجلد والوسوم
+Change the quality, languages or release group of episode files, or delete them	تغيير الجودة أو اللغات أو مجموعة الإصدار لملفات الحلقات، أو حذفها
+Manage episodes	إدارة الحلقات
+Episode details: overview, file, history and searches	تفاصيل الحلقة: النبذة والملف والسجل وعمليات البحث
+Details of episode {}	تفاصيل الحلقة {}
+Monitoring, availability, quality profile, folder and tags	المراقبة والتوفر وملف تعريف الجودة والمجلد والوسوم
+No tags yet: create them in Settings › Tags.	لا توجد وسوم بعد: أنشئها في الإعدادات › الوسوم.
+Below the root folder.	داخل المجلد الجذر.
+Use the folder name the naming settings give	استخدام اسم المجلد الذي تحدده إعدادات التسمية
+Use naming format	استخدام تنسيق التسمية
+Series saved.	تم حفظ المسلسل.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	يبحث Kitsunarr عن الحلقات المراقبة في المسلسل المراقب وينزّلها.
+Whether seasons a refresh discovers are monitored.	ما إذا كانت المواسم التي يكتشفها التحديث تُراقَب.
+Sort episodes into season folders.	فرز الحلقات في مجلدات المواسم.
+Use season folders	استخدام مجلدات المواسم
+Decides how episodes are numbered when searching and importing.	يحدد كيفية ترقيم الحلقات عند البحث والاستيراد.
+TheTVDB titles in this language; changing it refreshes the series.	عناوين TheTVDB بهذه اللغة؛ وتغييرها يحدّث المسلسل.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	«معطّل» يزيل المسلسل من مجموعة الأنمي الخاصة به ويستبعده من التجميع التلقائي.
+Enter a folder name.	أدخل اسم مجلد.
+Edit — {}	تعديل — {}
+Announced	مُعلَن
+Released	صدر
+Movie saved.	تم حفظ الفيلم.
+Kitsunarr searches for and downloads a monitored movie.	يبحث Kitsunarr عن الفيلم المراقب وينزّله.
+Minimum availability	الحد الأدنى للتوفر
+When the movie counts as available for automatic searches.	متى يُعدّ الفيلم متاحًا لعمليات البحث التلقائي.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	«معطّل» يزيل الفيلم من مجموعته ويستبعده من التجميع التلقائي.
+Edit {} selected	تعديل المحدد ({})
+Apply changes	تطبيق التغييرات
+No season folders	بلا مجلدات مواسم
+Tags updated on {} items.	تم تحديث الوسوم على العناصر: {}.
+Removes the chosen tags from every selected title.	يزيل الوسوم المختارة من كل عنوان محدد.
+Every selected title gets exactly the chosen tags (none removes all).	يحصل كل عنوان محدد على الوسوم المختارة بالضبط (عدم اختيار أي وسم يزيلها كلها).
+Adds the chosen tags to every selected title.	يضيف الوسوم المختارة إلى كل عنوان محدد.
+Tags — {} selected	الوسوم — المحدد: {}
+Apply tags	تطبيق الوسوم
+Replace	استبدال
+Manage	إدارة
+Multi-season pack	حزمة متعددة المواسم
+Scene name	اسم المشهد
+Video	الفيديو
+· {} fps	· {} fps
+Run time	مدة التشغيل
+Audio	الصوت
+Subtitles	الترجمات
+Details	التفاصيل
+Search the indexers and grab the best release	البحث في المفهرسات وجلب أفضل إصدار
+See every release and choose	عرض كل الإصدارات والاختيار
+absolute {}	مطلق {}
+Air date	تاريخ البث
+No overview.	لا توجد نبذة.
+Delete this episode's file? It goes to the recycle bin when one is set.	حذف ملف هذه الحلقة؟ سينتقل إلى سلة المحذوفات إن كانت محددة.
+{} files updated.	الملفات المحدّثة: {}.
+{} files deleted.	الملفات المحذوفة: {}.
+{} files deleted; {}	الملفات المحذوفة: {}؛ {}
+Delete files	حذف الملفات
+The series has no files.	لا توجد ملفات للمسلسل.
+Change	تغيير
+Change for the selected files…	تغيير للملفات المحددة…
+Empty clears it	اتركه فارغًا لمسحه
+Select every file	تحديد كل الملفات
+Delete the {} selected files? They go to the recycle bin when one is set.	حذف الملفات المحددة ({})؟ ستنتقل إلى سلة المحذوفات إن كانت محددة.
+Monitoring, quality profile, series type and season folders of the selected series	المراقبة وملف تعريف الجودة ونوع المسلسل ومجلدات المواسم للمسلسلات المحددة
+Edit…	تعديل…
+Add, remove or replace the tags of the selected series	إضافة وسوم المسلسلات المحددة أو إزالتها أو استبدالها
+Tags…	الوسوم…
+Monitoring and quality profile of the selected movies	المراقبة وملف تعريف الجودة للأفلام المحددة
+Add, remove or replace the tags of the selected movies	إضافة وسوم الأفلام المحددة أو إزالتها أو استبدالها
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	الصق عنوان إصدار أو اسم ملف لترى كيف يقرؤه Kitsunarr وأي الحلقات يطابق.
+Parse	تحليل
+Kitsunarr could not read this title.	تعذّر على Kitsunarr قراءة هذا العنوان.
+Parse result	نتيجة التحليل
+Series title	عنوان المسلسل
+Absolute episodes	الحلقات المطلقة
+Release hash	تجزئة الإصدار
+Multi-season	متعدد المواسم
+Absolute numbering	الترقيم المطلق
+Library match	المطابقة في المكتبة
+No series in the library matches this title.	لا يوجد مسلسل في المكتبة يطابق هذا العنوان.
+No episode of the series matches.	لا توجد حلقة مطابقة في المسلسل.
+Log files	ملفات السجل
+Refresh	تحديث
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	يكتب Kitsunarr سجله في ملفات داخل مجلد البيانات، ويبدأ ملفًا جديدًا كل 1 MiB. يُضبط مستوى السجل في الإعدادات › عام.
+No log files yet	لا توجد ملفات سجل بعد
+Last written	آخر كتابة
+Skip the free-space check when importing	تخطي فحص المساحة المتاحة عند الاستيراد
+Create empty series folders during disk scans (not with "delete empty folders")	إنشاء مجلدات المسلسلات الفارغة أثناء فحص القرص (ليس مع «حذف المجلدات الفارغة»)
+Skip the free-space check when grabbing	تخطي فحص المساحة المتاحة عند الجلب
+Set permissions on imported files and folders (Linux)	تعيين الصلاحيات على الملفات والمجلدات المستوردة (Linux)
+Import using a script	الاستيراد باستخدام برنامج نصي
+Rescan series folder after refresh	إعادة فحص مجلد المسلسل بعد التحديث
+Whether a metadata refresh scans the series folder for changes afterwards.	ما إذا كان تحديث البيانات الوصفية يفحص مجلد المسلسل بحثًا عن تغييرات بعده.
+Always	دائمًا
+After manual refresh	بعد التحديث اليدوي
+Never	أبدًا
+Episode title required	عنوان الحلقة مطلوب
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	ينتظر الاستيراد عنوان الحلقة عندما يستخدمه تنسيق التسمية وتكون الحلقة قد بُثّت خلال آخر 48 ساعة.
+Only for bulk season releases	فقط لإصدارات المواسم المجمّعة
+Season pack upgrades	ترقيات حزم المواسم
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	كم من حلقات حزمة الموسم يجب أن تكون مفقودة أو قابلة للترقية لكي تُجلب الحزمة.
+A share of the episodes	نسبة من الحلقات
+Any episode	أي حلقة
+Season pack upgrade threshold (%)	عتبة ترقية حزمة الموسم (%)
+Rejected extensions	الامتدادات المرفوضة
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	مفصولة بفواصل، مثل exe, bat. لا يُستورد التنزيل المكوّن من ملف واحد بأحد هذه الامتدادات.
+Folder permissions (chmod)	صلاحيات المجلدات (chmod)
+Octal mode for folders; files get it without the execute bits.	الوضع الثماني للمجلدات؛ وتحصل عليه الملفات دون بتات التنفيذ.
+Group (chown)	المجموعة (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	اسم المجموعة أو معرّفها للملفات والمجلدات المستوردة؛ اتركه فارغًا لعدم تغيير المجموعة.
+Import script path	مسار برنامج الاستيراد النصي
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	المسار المطلق للبرنامج النصي؛ يتلقى مساري المصدر والوجهة ومتغيرات بيئة Sonarr.
+Excluded tags (ids, comma separated)	الوسوم المستثناة (معرّفات، مفصولة بفواصل)
+The profile does not apply to series with one of these tags.	لا ينطبق ملف التعريف على المسلسلات التي تحمل أحد هذه الوسوم.
+Reject releases published before the episode airs	رفض الإصدارات المنشورة قبل بث الحلقة
+Allow season packs before every episode has aired	السماح بحزم المواسم قبل بث كل الحلقات
+Air date grace period (hours)	مهلة تاريخ البث (ساعات)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	تظل الإصدارات المنشورة خلال هذا العدد من الساعات بعد تاريخ البث مرفوضة؛ والعدد السالب يسمح بها قبله بهذا العدد من الساعات.
+Presets	الإعدادات المسبقة
+Series ID	معرّف المسلسل
+Anime group	مجموعة الأنمي
+Absolute episode number	رقم الحلقة المطلق
+Episode title	عنوان الحلقة
+Media info	معلومات الوسائط
+Original	الأصلي
+File name tokens	رموز اسم الملف
+Folder name tokens	رموز اسم المجلد
+Format	التنسيق
+Separator	الفاصل
+Space ( )	مسافة ( )
+Period (.)	نقطة (.)
+Underscore (_)	شرطة سفلية (_)
+Dash (-)	شرطة (-)
+Capitalization	حالة الأحرف
+Default case	الحالة الافتراضية
+Lowercase	أحرف صغيرة
+Uppercase	أحرف كبيرة
+Click a token to insert it at the cursor; a preset replaces the whole format.	انقر على رمز لإدراجه عند المؤشر؛ والإعداد المسبق يستبدل التنسيق كله.
+Tokens	الرموز
+Tokens for {}	رموز {}
+Invalid format	تنسيق غير صالح
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	تستخدم التنسيقات رموز Sonarr؛ وتتبع الأمثلة أدناه تغييراتك قبل الحفظ.
+Rename episodes	إعادة تسمية الحلقات
+Replace illegal characters (otherwise they are removed)	استبدال الأحرف غير المسموح بها (وإلا فستُزال)
+Colon replacement	استبدال النقطتين
+How colons in titles are written in file and folder names.	كيفية كتابة النقطتين الموجودتين في العناوين ضمن أسماء الملفات والمجلدات.
+Replace with dash	الاستبدال بشرطة
+Replace with space dash	الاستبدال بمسافة وشرطة
+Replace with space dash space	الاستبدال بمسافة وشرطة ومسافة
+Smart replace (dash or space dash)	استبدال ذكي (شرطة أو مسافة وشرطة)
+Custom	مخصص
+Custom colon replacement	استبدال مخصص للنقطتين
+The characters written instead of a colon.	الأحرف المكتوبة بدلًا من النقطتين.
+Multi-episode style	نمط الحلقات المتعددة
+Extend (S01E01-02-03)	تمديد (S01E01-02-03)
+Duplicate (S01E01.S01E02)	تكرار (S01E01.S01E02)
+Repeat (S01E01E02E03)	إعادة (S01E01E02E03)
+Scene (S01E01-E02-E03)	المشهد (S01E01-E02-E03)
+Range (S01E01-03)	نطاق (S01E01-03)
+Prefixed range (S01E01-E03)	نطاق بالبادئة (S01E01-E03)
+Example	مثال
+Anime group movie	فيلم مجموعة الأنمي
+Used when films are renamed.	يُستخدم عند إعادة تسمية الأفلام.
+Used when adding a new series or moving one.	يُستخدم عند إضافة مسلسل جديد أو نقله.
+Specials folder format	تنسيق مجلد الحلقات الخاصة
+Anime groups and collections: titles go to {}/{}/{}.	مجموعات الأنمي ومجموعات الأفلام: تُوضع العناوين في {}/{}/{}.
+Interface settings saved.	تم حفظ إعدادات الواجهة.
+Week column header	ترويسة عمود الأسبوع
+The column headers of the calendar's week view.	ترويسات الأعمدة في عرض الأسبوع بالتقويم.
+Dates	التواريخ
+Short date format	تنسيق التاريخ القصير
+Long date format	تنسيق التاريخ الطويل
+Time format	تنسيق الوقت
+Time zone	المنطقة الزمنية
+Dates and times are shown in this time zone; empty follows the browser.	تُعرض التواريخ والأوقات بهذه المنطقة الزمنية؛ اتركها فارغة لاتباع المتصفح.
+The browser's time zone	المنطقة الزمنية للمتصفح
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	عرض التواريخ النسبية (اليوم، أمس، غدًا) بدلًا من التاريخ
+Style	النمط
+Theme	السمة
+Kept in this browser; the top bar button switches it too.	تُحفظ في هذا المتصفح؛ ويبدّلها زر الشريط العلوي أيضًا.
+Dark	داكن
+Light	فاتح
+Colour-impaired mode (colours easier to tell apart, with patterns)	وضع ضعف تمييز الألوان (ألوان أسهل تمييزًا، مع أنماط)
+Saved to the configuration file. Restart Kitsunarr to apply.	تم الحفظ في ملف الإعدادات. أعد تشغيل Kitsunarr للتطبيق.
+Host and logging	المضيف والتسجيل
+Set by an environment variable or command-line flag: {}	مُعيَّن بمتغير بيئة أو خيار سطر أوامر: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	تم الحفظ في {}. تُطبَّق التغييرات في المرة القادمة التي يبدأ فيها Kitsunarr؛ وتظل الأولوية لمتغيرات البيئة وخيارات سطر الأوامر.
+Restart required: the saved values differ from the ones in use.	إعادة التشغيل مطلوبة: القيم المحفوظة تختلف عن المستخدمة حاليًا.
+Restart now	إعادة التشغيل الآن
+Bind address	عنوان الربط
+0.0.0.0 listens on every interface.	العنوان 0.0.0.0 يستمع على كل الواجهات.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	للوكلاء العكسيين، مثل /kitsunarr؛ اتركه فارغًا للتقديم من الجذر.
+Log level	مستوى السجل
+Debug and trace write much more to the log files.	يكتب مستويا التصحيح والتتبع قدرًا أكبر بكثير في ملفات السجل.
+Trace	التتبع
+Warn	تحذير
+Error	خطأ
+Backup folder	مجلد النسخ الاحتياطي
+Absolute path; empty uses {}.	مسار مطلق؛ إن تُرك فارغًا يُستخدم {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	يقدّم Kitsunarr بروتوكول HTTP العادي؛ ضع وكيلًا عكسيًا أمامه لاستخدام HTTPS.
+Save host settings	حفظ إعدادات المضيف
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	إعادة تشغيل Kitsunarr الآن؟ إن تغيّر العنوان أو المنفذ أو أساس URL، فافتح العنوان الجديد بعد ذلك.
+Nothing to show.	لا شيء لعرضه.
+All series	كل المسلسلات
+All types	كل الأنواع
+All profiles	كل ملفات التعريف
+All tags	كل الوسوم
+Downloaded	تم التنزيل
+Unaired	لم يُبث
+{} files · {}	الملفات: {} · {}
+Summary	الملخص
+Monitored series	المسلسلات المراقبة
+Completed series	المسلسلات المكتملة
+{} ({} completed)	{} (المكتمل: {})
+{} ({} monitored)	{} (المراقب: {})
+Episode files	ملفات الحلقات
+{} ({} downloaded)	{} (المُنزَّل: {})
+{} ({} per episode)	{} ({} لكل حلقة)
+Series status	حالة المسلسلات
+File qualities	جودات الملفات
+Recent entries	الإدخالات الأخيرة
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	أحدث الإدخالات المحفوظة في الذاكرة. ملفات السجل أعلاه ومخرجات العملية (سجلات الحاوية أو journal) تحتفظ بكل شيء.
+Yesterday	أمس
+Tomorrow	غدًا

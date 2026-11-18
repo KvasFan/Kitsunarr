@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Praleista: serveris dar paleidžiamas
 {} expired sessions removed	Pašalinta pasibaigusių seansų: {}
 All {} refreshes failed; see the logs	Nepavyko nė vienas iš {} atnaujinimų; žr. žurnalus
 every folder scan failed ({})	nepavyko nė vienas aplankų nuskaitymas ({})
+Links	Nuorodos
+Copy {}	Kopijuoti {}
+Copy the {} id	Kopijuoti {} ID
+Type	Tipas
+Previous airing	Ankstesnė transliacija
+Season folder	Sezono aplankas
+Average episode size	Vidutinis epizodo dydis
+Genres	Žanrai
+Rating	Įvertinimas
+Certification	Amžiaus cenzas
+Release groups	Leidimo grupės
+File quality	Failo kokybė
+In cinemas	Kino teatruose
+Runtime	Trukmė
+Release group	Leidimo grupė
+Columns	Stulpeliai
+Shown in the table, the overview and under posters	Rodoma lentelėje, apžvalgoje ir po plakatais
+Column {}	Stulpelis {}
+Reset columns	Atkurti stulpelius
+Yes	Taip
+Override and grab {}	Perrašyti ir paimti {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Pasirinkite šio leidimo serialą, epizodus, kokybę, kalbas ar atsisiuntimo klientą, tada jį paimkite (pasirinkimai išsaugomi importui)
+Override…	Perrašyti…
+Override and grab	Perrašyti ir paimti
+Override and grab — {}	Perrašyti ir paimti — {}
+{} episodes chosen	Pasirinkta epizodų: {}
+Grab release	Paimti leidimą
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Nepakeisti pasirinkimai išlaiko tai, ką nurodo leidimo pavadinimas. Nepasirinkti epizodai lieka tie, kuriuos nurodo pavadinimas.
+Searched series	Ieškotas serialas
+Download client	Atsisiuntimo klientas
+Episodes (required)	Epizodai (privaloma)
+Statistics	Statistika
+Test parsing	Analizės bandymas
+{} items removed.	Pašalinta elementų: {}.
+{} items removed; {}	Pašalinta elementų: {}; {}
+Select every queue item	Pasirinkti visus eilės elementus
+Queue bulk actions	Masiniai eilės veiksmai
+Grab the selected releases a delay profile holds back now	Dabar paimti pasirinktus leidimus, kuriuos sulaiko delsos profilis
+Remove selected…	Pašalinti pasirinktus…
+Remove {} items from the queue	Pašalinti iš eilės (elementų: {})
+Held-back releases are forgotten; a later search can find them again.	Sulaikyti leidimai pamirštami; vėlesnė paieška gali juos vėl rasti.
+Removal method	Šalinimo būdas
+Remove from the download client	Pašalinti iš atsisiuntimo kliento
+Change category	Keisti kategoriją
+Keep it in the download client	Palikti atsisiuntimo kliente
+The download and its files are removed from the download client.	Atsisiuntimas ir jo failai pašalinami iš atsisiuntimo kliento.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Atsisiuntimas perkeliamas į kliento kategoriją po importo ir nebestebimas; jo failai lieka.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Atsisiuntimas lieka atsisiuntimo kliente nepaliestas; pasirinkite blokuojamųjų sąrašo parinktį, kad jo leidimas būtų įtrauktas į blokuojamųjų sąrašą.
+Blocklist release	Įtraukti leidimą į blokuojamųjų sąrašą
+Do not blocklist	Neįtraukti į blokuojamųjų sąrašą
+Blocklist and search for a replacement	Įtraukti į blokuojamųjų sąrašą ir ieškoti pakaitalo
+Blocklist only	Tik įtraukti į blokuojamųjų sąrašą
+Removed {} releases from the blocklist.	Iš blokuojamųjų sąrašo pašalinta leidimų: {}.
+Remove {} selected	Pašalinti pasirinktus ({})
+Select every release on this page	Pasirinkti visus šio puslapio leidimus
+Remove from the blocklist	Pašalinti iš blokuojamųjų sąrašo
+Remove the {} selected releases from the blocklist?	Pašalinti pasirinktus leidimus ({}) iš blokuojamųjų sąrašo?
+Quality, languages and release of {}	{}: kokybė, kalbos ir leidimas
+Choose the quality, languages, release group and release type the file is imported with	Pasirinkite kokybę, kalbas, leidimo grupę ir leidimo tipą, su kuriais importuojamas failas
+Import details — {}	Importo informacija — {}
+Use these details	Naudoti šią informaciją
+Revision	Revizija
+2 or more for a PROPER or REPACK.	2 ar daugiau PROPER arba REPACK leidimui.
+Single episode	Vienas epizodas
+Multi-episode	Keli epizodai
+Season pack	Sezono paketas
+Manual	Rankinis
+Choose the group the title joins.	Pasirinkite grupę, prie kurios prisijungia kūrinys.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automatinis sugrupuoja kūrinį su jo franšize ar kolekcija pagal oficialius ryšius. Rankinis įtraukia jį į jūsų pasirinktą grupę. Išjungta palieka jį atskirai.
+Manual puts the title in a group you choose, in the group's folder.	Rankinis įtraukia kūrinį į jūsų pasirinktą grupę, grupės aplanke.
+Manual (choose a group)	Rankinis (pasirinkite grupę)
+The title joins the group as its next season or film, in the group's folder.	Kūrinys prisijungia prie grupės kaip kitas jos sezonas ar filmas, grupės aplanke.
+Choose a group…	Pasirinkite grupę…
+Collection settings saved.	Kolekcijos nustatymai išsaugoti.
+Collection settings	Kolekcijos nustatymai
+Collection name	Kolekcijos pavadinimas
+Collection type	Kolekcijos tipas
+A movie saga holds only films.	Filmų saga apima tik filmus.
+Movie saga	Filmų saga
+Movie folder format	Filmo aplanko formatas
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Kaip pavadinami narių aplankai, kai prisijungia kūriniai: automatinis naudoja numeruotus aplankus sagose ir siužeto arkų aplankus arkoms.
+Numbered	Numeruoti
+No change	Be pakeitimų
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Stebėjimas, kokybės profilis ir sezono aplankas dabar taikomi kiekvienam nariui; tipas ir aplanko formatas taikomi kūriniams, prisijungsiantiems nuo šiol.
+Collection settings…	Kolekcijos nustatymai…
+Monitoring, quality profile, series type, folder and tags	Stebėjimas, kokybės profilis, serialo tipas, aplankas ir žymos
+Change the quality, languages or release group of episode files, or delete them	Keisti epizodų failų kokybę, kalbas ar leidimo grupę arba juos ištrinti
+Manage episodes	Tvarkyti epizodus
+Episode details: overview, file, history and searches	Epizodo informacija: apžvalga, failas, istorija ir paieškos
+Details of episode {}	Epizodo {} informacija
+Monitoring, availability, quality profile, folder and tags	Stebėjimas, prieinamumas, kokybės profilis, aplankas ir žymos
+No tags yet: create them in Settings › Tags.	Žymų dar nėra: sukurkite jas skiltyje Nustatymai › Žymos.
+Below the root folder.	Šakninio aplanko viduje.
+Use the folder name the naming settings give	Naudoti aplanko pavadinimą pagal pavadinimų nustatymus
+Use naming format	Naudoti pavadinimų formatą
+Series saved.	Serialas išsaugotas.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr ieško ir atsisiunčia stebimo serialo stebimus epizodus.
+Whether seasons a refresh discovers are monitored.	Ar stebimi sezonai, kuriuos aptinka atnaujinimas.
+Sort episodes into season folders.	Rūšiuoti epizodus į sezonų aplankus.
+Use season folders	Naudoti sezonų aplankus
+Decides how episodes are numbered when searching and importing.	Nustato, kaip numeruojami epizodai ieškant ir importuojant.
+TheTVDB titles in this language; changing it refreshes the series.	TheTVDB pavadinimai šia kalba; pakeitus serialas atnaujinamas.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Išjungta pašalina serialą iš jo anime grupės ir neleidžia jo grupuoti automatiškai.
+Enter a folder name.	Įveskite aplanko pavadinimą.
+Edit — {}	Redaguoti — {}
+Announced	Paskelbtas
+Released	Išleistas
+Movie saved.	Filmas išsaugotas.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr ieško ir atsisiunčia stebimą filmą.
+Minimum availability	Minimalus prieinamumas
+When the movie counts as available for automatic searches.	Kada filmas laikomas prieinamu automatinėms paieškoms.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Išjungta pašalina filmą iš jo kolekcijos ir neleidžia jo grupuoti automatiškai.
+Edit {} selected	Redaguoti pasirinktus ({})
+Apply changes	Taikyti pakeitimus
+No season folders	Be sezonų aplankų
+Tags updated on {} items.	Žymos atnaujintos elementų: {}.
+Removes the chosen tags from every selected title.	Pašalina pasirinktas žymas iš kiekvieno pasirinkto kūrinio.
+Every selected title gets exactly the chosen tags (none removes all).	Kiekvienas pasirinktas kūrinys gauna lygiai pasirinktas žymas (jokios – pašalina visas).
+Adds the chosen tags to every selected title.	Prideda pasirinktas žymas kiekvienam pasirinktam kūriniui.
+Tags — {} selected	Žymos — pasirinkta: {}
+Apply tags	Taikyti žymas
+Replace	Pakeisti
+Manage	Tvarkyti
+Multi-season pack	Kelių sezonų paketas
+Scene name	Scenos pavadinimas
+Video	Vaizdas
+· {} fps	· {} fps
+Run time	Trukmė
+Audio	Garsas
+Subtitles	Subtitrai
+Details	Informacija
+Search the indexers and grab the best release	Ieškoti indeksuotojuose ir paimti geriausią leidimą
+See every release and choose	Peržiūrėti visus leidimus ir pasirinkti
+absolute {}	absoliutus {}
+Air date	Transliacijos data
+No overview.	Apžvalgos nėra.
+Delete this episode's file? It goes to the recycle bin when one is set.	Ištrinti šio epizodo failą? Jis keliauja į šiukšlinę, jei ji nustatyta.
+{} files updated.	Atnaujinta failų: {}.
+{} files deleted.	Ištrinta failų: {}.
+{} files deleted; {}	Ištrinta failų: {}; {}
+Delete files	Ištrinti failus
+The series has no files.	Serialas neturi failų.
+Change	Keisti
+Change for the selected files…	Keisti pasirinktiems failams…
+Empty clears it	Tuščia išvalo
+Select every file	Pasirinkti visus failus
+Delete the {} selected files? They go to the recycle bin when one is set.	Ištrinti pasirinktus failus ({})? Jie keliauja į šiukšlinę, jei ji nustatyta.
+Monitoring, quality profile, series type and season folders of the selected series	Pasirinktų serialų stebėjimas, kokybės profilis, serialo tipas ir sezonų aplankai
+Edit…	Redaguoti…
+Add, remove or replace the tags of the selected series	Pridėti, pašalinti arba pakeisti pasirinktų serialų žymas
+Tags…	Žymos…
+Monitoring and quality profile of the selected movies	Pasirinktų filmų stebėjimas ir kokybės profilis
+Add, remove or replace the tags of the selected movies	Pridėti, pašalinti arba pakeisti pasirinktų filmų žymas
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Įklijuokite leidimo pavadinimą arba failo vardą, kad pamatytumėte, kaip Kitsunarr jį nuskaito ir kuriuos epizodus jis atitinka.
+Parse	Analizuoti
+Kitsunarr could not read this title.	Kitsunarr nepavyko nuskaityti šio pavadinimo.
+Parse result	Analizės rezultatas
+Series title	Serialo pavadinimas
+Absolute episodes	Absoliutūs epizodai
+Release hash	Leidimo maiša
+Multi-season	Keli sezonai
+Absolute numbering	Absoliuti numeracija
+Library match	Atitikmuo bibliotekoje
+No series in the library matches this title.	Joks bibliotekos serialas neatitinka šio pavadinimo.
+No episode of the series matches.	Joks serialo epizodas neatitinka.
+Log files	Žurnalo failai
+Refresh	Atnaujinti
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr rašo žurnalą į failus duomenų aplanke, keisdamas juos kas 1 MiB. Žurnalo lygis nustatomas skiltyje Nustatymai › Bendra.
+No log files yet	Žurnalo failų dar nėra
+Last written	Paskutinis įrašas
+Skip the free-space check when importing	Praleisti laisvos vietos patikrą importuojant
+Create empty series folders during disk scans (not with "delete empty folders")	Kurti tuščius serialų aplankus disko nuskaitymo metu (ne su „trinti tuščius aplankus“)
+Skip the free-space check when grabbing	Praleisti laisvos vietos patikrą paimant
+Set permissions on imported files and folders (Linux)	Nustatyti importuotų failų ir aplankų teises (Linux)
+Import using a script	Importuoti naudojant scenarijų
+Rescan series folder after refresh	Po atnaujinimo iš naujo nuskaityti serialo aplanką
+Whether a metadata refresh scans the series folder for changes afterwards.	Ar metaduomenų atnaujinimas po to nuskaito serialo aplanką ieškodamas pakeitimų.
+Always	Visada
+After manual refresh	Po rankinio atnaujinimo
+Never	Niekada
+Episode title required	Būtinas epizodo pavadinimas
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Importai laukia epizodo pavadinimo, kai pavadinimų formatas jį naudoja, o epizodas transliuotas per pastarąsias 48 valandas.
+Only for bulk season releases	Tik masiniams sezonų leidimams
+Season pack upgrades	Sezonų paketų atnaujinimai
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Kiek sezono paketo epizodų turi trūkti arba būti atnaujinami, kad paketas būtų paimtas.
+A share of the episodes	Dalis epizodų
+Any episode	Bet kuris epizodas
+Season pack upgrade threshold (%)	Sezono paketo atnaujinimo slenkstis (%)
+Rejected extensions	Atmetami plėtiniai
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Atskirti kableliais, pvz., exe, bat. Vieno failo atsisiuntimas su vienu iš šių plėtinių neimportuojamas.
+Folder permissions (chmod)	Aplankų teisės (chmod)
+Octal mode for folders; files get it without the execute bits.	Aštuntainis režimas aplankams; failai jį gauna be vykdymo bitų.
+Group (chown)	Grupė (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Importuotų failų ir aplankų grupės pavadinimas arba ID; tuščia grupės nekeičia.
+Import script path	Importo scenarijaus kelias
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Absoliutus scenarijaus kelias; jis gauna šaltinio ir paskirties kelius bei Sonarr aplinkos kintamuosius.
+Excluded tags (ids, comma separated)	Neįtraukiamos žymos (ID, atskirti kableliais)
+The profile does not apply to series with one of these tags.	Profilis netaikomas serialams su viena iš šių žymų.
+Reject releases published before the episode airs	Atmesti leidimus, paskelbtus prieš epizodo transliaciją
+Allow season packs before every episode has aired	Leisti sezonų paketus prieš transliuojant visus epizodus
+Air date grace period (hours)	Transliacijos datos lengvatinis laikotarpis (valandomis)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Leidimai, paskelbti iki tiek valandų po transliacijos datos, vis tiek atmetami; neigiamas skaičius leidžia juos tiek valandų anksčiau.
+Presets	Šablonai
+Series ID	Serialo ID
+Anime group	Anime grupė
+Absolute episode number	Absoliutus epizodo numeris
+Episode title	Epizodo pavadinimas
+Media info	Medijos informacija
+Original	Originalas
+File name tokens	Failo pavadinimo žetonai
+Folder name tokens	Aplanko pavadinimo žetonai
+Format	Formatas
+Separator	Skirtukas
+Space ( )	Tarpas ( )
+Period (.)	Taškas (.)
+Underscore (_)	Pabraukimas (_)
+Dash (-)	Brūkšnelis (-)
+Capitalization	Raidžių dydis
+Default case	Numatytasis
+Lowercase	Mažosios raidės
+Uppercase	Didžiosios raidės
+Click a token to insert it at the cursor; a preset replaces the whole format.	Spustelėkite žetoną, kad įterptumėte jį žymeklio vietoje; šablonas pakeičia visą formatą.
+Tokens	Žetonai
+Tokens for {}	{} žetonai
+Invalid format	Netinkamas formatas
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Formatai naudoja Sonarr žetonus; toliau pateikti pavyzdžiai atspindi jūsų pakeitimus dar prieš išsaugant.
+Rename episodes	Pervadinti epizodus
+Replace illegal characters (otherwise they are removed)	Keisti neleistinus simbolius (kitaip jie pašalinami)
+Colon replacement	Dvitaškio keitimas
+How colons in titles are written in file and folder names.	Kaip pavadinimų dvitaškiai rašomi failų ir aplankų pavadinimuose.
+Replace with dash	Keisti brūkšneliu
+Replace with space dash	Keisti tarpu ir brūkšneliu
+Replace with space dash space	Keisti tarpu, brūkšneliu ir tarpu
+Smart replace (dash or space dash)	Išmanus keitimas (brūkšnelis arba tarpas ir brūkšnelis)
+Custom	Pasirinktinis
+Custom colon replacement	Pasirinktinis dvitaškio keitimas
+The characters written instead of a colon.	Simboliai, rašomi vietoj dvitaškio.
+Multi-episode style	Kelių epizodų stilius
+Extend (S01E01-02-03)	Išplėstinis (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Dubliuotas (S01E01.S01E02)
+Repeat (S01E01E02E03)	Kartojamas (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scenos (S01E01-E02-E03)
+Range (S01E01-03)	Intervalas (S01E01-03)
+Prefixed range (S01E01-E03)	Intervalas su priešdėliu (S01E01-E03)
+Example	Pavyzdys
+Anime group movie	Anime grupės filmas
+Used when films are renamed.	Naudojama pervadinant filmus.
+Used when adding a new series or moving one.	Naudojama pridedant naują serialą arba jį perkeliant.
+Specials folder format	Specialiųjų epizodų aplanko formatas
+Anime groups and collections: titles go to {}/{}/{}.	Anime grupės ir kolekcijos: kūriniai keliauja į {}/{}/{}.
+Interface settings saved.	Sąsajos nustatymai išsaugoti.
+Week column header	Savaitės stulpelio antraštė
+The column headers of the calendar's week view.	Kalendoriaus savaitės rodinio stulpelių antraštės.
+Dates	Datos
+Short date format	Trumpasis datos formatas
+Long date format	Ilgasis datos formatas
+Time format	Laiko formatas
+Time zone	Laiko juosta
+Dates and times are shown in this time zone; empty follows the browser.	Datos ir laikas rodomi šia laiko juosta; tuščia – pagal naršyklę.
+The browser's time zone	Naršyklės laiko juosta
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Rodyti santykines datas (Šiandien, Vakar, Rytoj) vietoj datos
+Style	Stilius
+Theme	Tema
+Kept in this browser; the top bar button switches it too.	Saugoma šioje naršyklėje; ją perjungia ir viršutinės juostos mygtukas.
+Dark	Tamsi
+Light	Šviesi
+Colour-impaired mode (colours easier to tell apart, with patterns)	Spalvų neskiriančiųjų režimas (lengviau atskiriamos spalvos, su raštais)
+Saved to the configuration file. Restart Kitsunarr to apply.	Išsaugota konfigūracijos faile. Paleiskite Kitsunarr iš naujo, kad pritaikytumėte.
+Host and logging	Serveris ir žurnalas
+Set by an environment variable or command-line flag: {}	Nustatyta aplinkos kintamuoju arba komandinės eilutės vėliavėle: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Išsaugota į {}. Pakeitimai įsigalios kitą kartą paleidus Kitsunarr; aplinkos kintamieji ir komandinės eilutės vėliavėlės vis tiek turi pirmenybę.
+Restart required: the saved values differ from the ones in use.	Reikia paleisti iš naujo: išsaugotos reikšmės skiriasi nuo naudojamų.
+Restart now	Paleisti iš naujo dabar
+Bind address	Susiejimo adresas
+0.0.0.0 listens on every interface.	0.0.0.0 klausosi visose sąsajose.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Atvirkštiniams tarpiniams serveriams, pvz., /kitsunarr; tuščia – teikiama iš šaknies.
+Log level	Žurnalo lygis
+Debug and trace write much more to the log files.	Derinimas ir sekimas į žurnalo failus rašo daug daugiau.
+Trace	Sekimas
+Warn	Įspėjimas
+Error	Klaida
+Backup folder	Atsarginių kopijų aplankas
+Absolute path; empty uses {}.	Absoliutus kelias; tuščia naudoja {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr teikia paprastą HTTP; norėdami HTTPS, prieš jį pastatykite atvirkštinį tarpinį serverį.
+Save host settings	Išsaugoti serverio nustatymus
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Paleisti Kitsunarr iš naujo dabar? Jei pasikeitė adresas, prievadas ar URL bazė, po to atidarykite naują adresą.
+Nothing to show.	Nėra ką rodyti.
+All series	Visi serialai
+All types	Visi tipai
+All profiles	Visi profiliai
+All tags	Visos žymos
+Downloaded	Atsisiųsta
+Unaired	Netransliuota
+{} files · {}	Failų: {} · {}
+Summary	Suvestinė
+Monitored series	Stebimi serialai
+Completed series	Užbaigti serialai
+{} ({} completed)	{} (užbaigta: {})
+{} ({} monitored)	{} (stebima: {})
+Episode files	Epizodų failai
+{} ({} downloaded)	{} (atsisiųsta: {})
+{} ({} per episode)	{} ({} epizodui)
+Series status	Serialo būsena
+File qualities	Failų kokybės
+Recent entries	Naujausi įrašai
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Naujausi atmintyje laikomi įrašai. Aukščiau esantys žurnalo failai ir proceso išvestis (konteinerio žurnalai arba journal) saugo viską.
+Yesterday	Vakar
+Tomorrow	Rytoj

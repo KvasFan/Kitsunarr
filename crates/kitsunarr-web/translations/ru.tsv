@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Пропущено: сервер ещё з
 {} expired sessions removed	Удалено истёкших сеансов: {}
 All {} refreshes failed; see the logs	Все обновления ({}) завершились ошибкой; см. журналы
 every folder scan failed ({})	все сканирования папок завершились ошибкой ({})
+Links	Ссылки
+Copy {}	Копировать {}
+Copy the {} id	Копировать ID {}
+Type	Тип
+Previous airing	Предыдущий выход
+Season folder	Папка сезона
+Average episode size	Средний размер эпизода
+Genres	Жанры
+Rating	Рейтинг
+Certification	Возрастной рейтинг
+Release groups	Релиз-группы
+File quality	Качество файла
+In cinemas	В кинотеатрах
+Runtime	Продолжительность
+Release group	Релиз-группа
+Columns	Столбцы
+Shown in the table, the overview and under posters	Отображаются в таблице, обзоре и под постерами
+Column {}	Столбец {}
+Reset columns	Сбросить столбцы
+Yes	Да
+Override and grab {}	Переопределить и захватить {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Выберите сериал, эпизоды, качество, языки или клиент загрузки для этого релиза, затем захватите его (выбор сохраняется для импорта)
+Override…	Переопределить…
+Override and grab	Переопределить и захватить
+Override and grab — {}	Переопределить и захватить — {}
+{} episodes chosen	Выбрано эпизодов: {}
+Grab release	Захватить релиз
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Неизменённые параметры сохраняют то, что указано в названии релиза. Невыбранные эпизоды остаются теми, на которые указывает название.
+Searched series	Искомый сериал
+Download client	Клиент загрузки
+Episodes (required)	Эпизоды (обязательно)
+Statistics	Статистика
+Test parsing	Проверка разбора
+{} items removed.	Удалено элементов: {}.
+{} items removed; {}	Удалено элементов: {}; {}
+Select every queue item	Выбрать все элементы очереди
+Queue bulk actions	Массовые действия с очередью
+Grab the selected releases a delay profile holds back now	Захватить сейчас выбранные релизы, которые удерживает профиль задержки
+Remove selected…	Удалить выбранные…
+Remove {} items from the queue	Удалить из очереди (элементов: {})
+Held-back releases are forgotten; a later search can find them again.	Удержанные релизы забываются; последующий поиск может найти их снова.
+Removal method	Способ удаления
+Remove from the download client	Удалить из клиента загрузки
+Change category	Изменить категорию
+Keep it in the download client	Оставить в клиенте загрузки
+The download and its files are removed from the download client.	Загрузка и её файлы удаляются из клиента загрузки.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Загрузка переходит в категорию клиента после импорта и больше не отслеживается; её файлы остаются.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Загрузка остаётся в клиенте загрузки без изменений; выберите вариант черного списка, чтобы внести её релиз в черный список.
+Blocklist release	Внести релиз в черный список
+Do not blocklist	Не вносить в черный список
+Blocklist and search for a replacement	Внести в черный список и искать замену
+Blocklist only	Только внести в черный список
+Removed {} releases from the blocklist.	Удалено релизов из черного списка: {}.
+Remove {} selected	Удалить выбранные ({})
+Select every release on this page	Выбрать все релизы на этой странице
+Remove from the blocklist	Удалить из черного списка
+Remove the {} selected releases from the blocklist?	Удалить выбранные релизы ({}) из черного списка?
+Quality, languages and release of {}	Качество, языки и релиз для {}
+Choose the quality, languages, release group and release type the file is imported with	Выберите качество, языки, релиз-группу и тип релиза, с которыми импортируется файл
+Import details — {}	Сведения об импорте — {}
+Use these details	Использовать эти сведения
+Revision	Ревизия
+2 or more for a PROPER or REPACK.	2 или больше для PROPER или REPACK.
+Single episode	Один эпизод
+Multi-episode	Несколько эпизодов
+Season pack	Сезонный пак
+Manual	Вручную
+Choose the group the title joins.	Выберите группу, в которую входит тайтл.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	«Автоматически» группирует тайтл с его франшизой или коллекцией по официальным связям. «Вручную» помещает его в выбранную вами группу. «Выключено» оставляет его отдельно.
+Manual puts the title in a group you choose, in the group's folder.	«Вручную» помещает тайтл в выбранную вами группу, в папку группы.
+Manual (choose a group)	Вручную (выберите группу)
+The title joins the group as its next season or film, in the group's folder.	Тайтл входит в группу как её следующий сезон или фильм, в папке группы.
+Choose a group…	Выберите группу…
+Collection settings saved.	Настройки коллекции сохранены.
+Collection settings	Настройки коллекции
+Collection name	Название коллекции
+Collection type	Тип коллекции
+A movie saga holds only films.	Киносага содержит только фильмы.
+Movie saga	Киносага
+Movie folder format	Формат папки фильма
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Как называются папки участников при добавлении тайтлов: автоматический режим использует нумерованные папки в сагах и папки сюжетных арок для арок.
+Numbered	Нумерованные
+No change	Без изменений
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Отслеживание, профиль качества и папка сезона применяются ко всем участникам сейчас; тип и формат папки — к тайтлам, добавляемым с этого момента.
+Collection settings…	Настройки коллекции…
+Monitoring, quality profile, series type, folder and tags	Отслеживание, профиль качества, тип сериала, папка и теги
+Change the quality, languages or release group of episode files, or delete them	Изменить качество, языки или релиз-группу файлов эпизодов либо удалить их
+Manage episodes	Управлять эпизодами
+Episode details: overview, file, history and searches	Сведения об эпизоде: обзор, файл, история и поиски
+Details of episode {}	Сведения об эпизоде {}
+Monitoring, availability, quality profile, folder and tags	Отслеживание, доступность, профиль качества, папка и теги
+No tags yet: create them in Settings › Tags.	Тегов пока нет: создайте их в Настройки › Теги.
+Below the root folder.	Внутри корневой папки.
+Use the folder name the naming settings give	Использовать имя папки из настроек именования
+Use naming format	Использовать формат именования
+Series saved.	Сериал сохранён.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr ищет и скачивает отслеживаемые эпизоды отслеживаемого сериала.
+Whether seasons a refresh discovers are monitored.	Отслеживаются ли сезоны, обнаруженные при обновлении.
+Sort episodes into season folders.	Раскладывать эпизоды по папкам сезонов.
+Use season folders	Использовать папки сезонов
+Decides how episodes are numbered when searching and importing.	Определяет, как нумеруются эпизоды при поиске и импорте.
+TheTVDB titles in this language; changing it refreshes the series.	Названия TheTVDB на этом языке; изменение обновляет сериал.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	«Выключено» удаляет сериал из его аниме-группы и исключает его из автоматической группировки.
+Enter a folder name.	Введите имя папки.
+Edit — {}	Редактировать — {}
+Announced	Анонсирован
+Released	Выпущен
+Movie saved.	Фильм сохранён.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr ищет и скачивает отслеживаемый фильм.
+Minimum availability	Минимальная доступность
+When the movie counts as available for automatic searches.	Когда фильм считается доступным для автоматического поиска.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	«Выключено» удаляет фильм из его коллекции и исключает его из автоматической группировки.
+Edit {} selected	Редактировать выбранные ({})
+Apply changes	Применить изменения
+No season folders	Без папок сезонов
+Tags updated on {} items.	Теги обновлены у элементов: {}.
+Removes the chosen tags from every selected title.	Удаляет выбранные теги у каждого выбранного тайтла.
+Every selected title gets exactly the chosen tags (none removes all).	Каждый выбранный тайтл получает ровно выбранные теги (без тегов — все удаляются).
+Adds the chosen tags to every selected title.	Добавляет выбранные теги каждому выбранному тайтлу.
+Tags — {} selected	Теги — выбрано: {}
+Apply tags	Применить теги
+Replace	Заменить
+Manage	Управлять
+Multi-season pack	Пак нескольких сезонов
+Scene name	Название сцены
+Video	Видео
+· {} fps	· {} fps
+Run time	Продолжительность
+Audio	Аудио
+Subtitles	Субтитры
+Details	Сведения
+Search the indexers and grab the best release	Искать в индексаторах и захватить лучший релиз
+See every release and choose	Посмотреть все релизы и выбрать
+absolute {}	абсолютный {}
+Air date	Дата выхода
+No overview.	Нет описания.
+Delete this episode's file? It goes to the recycle bin when one is set.	Удалить файл этого эпизода? Файл попадёт в корзину, если она задана.
+{} files updated.	Обновлено файлов: {}.
+{} files deleted.	Удалено файлов: {}.
+{} files deleted; {}	Удалено файлов: {}; {}
+Delete files	Удалить файлы
+The series has no files.	У сериала нет файлов.
+Change	Изменить
+Change for the selected files…	Изменить для выбранных файлов…
+Empty clears it	Пустое значение очищает
+Select every file	Выбрать все файлы
+Delete the {} selected files? They go to the recycle bin when one is set.	Удалить выбранные файлы ({})? Они попадут в корзину, если она задана.
+Monitoring, quality profile, series type and season folders of the selected series	Отслеживание, профиль качества, тип сериала и папки сезонов выбранных сериалов
+Edit…	Редактировать…
+Add, remove or replace the tags of the selected series	Добавить, удалить или заменить теги выбранных сериалов
+Tags…	Теги…
+Monitoring and quality profile of the selected movies	Отслеживание и профиль качества выбранных фильмов
+Add, remove or replace the tags of the selected movies	Добавить, удалить или заменить теги выбранных фильмов
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Вставьте название релиза или имя файла, чтобы увидеть, как Kitsunarr его разбирает и каким эпизодам оно соответствует.
+Parse	Разобрать
+Kitsunarr could not read this title.	Kitsunarr не удалось разобрать это название.
+Parse result	Результат разбора
+Series title	Название сериала
+Absolute episodes	Абсолютные эпизоды
+Release hash	Хеш релиза
+Multi-season	Несколько сезонов
+Absolute numbering	Абсолютная нумерация
+Library match	Совпадение в библиотеке
+No series in the library matches this title.	Ни один сериал в библиотеке не соответствует этому названию.
+No episode of the series matches.	Ни один эпизод сериала не соответствует.
+Log files	Файлы журнала
+Refresh	Обновить
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr пишет журнал в файлы в папке данных с ротацией по 1 MiB. Уровень журналирования задаётся в Настройки › Общие.
+No log files yet	Файлов журнала пока нет
+Last written	Последняя запись
+Skip the free-space check when importing	Пропускать проверку свободного места при импорте
+Create empty series folders during disk scans (not with "delete empty folders")	Создавать пустые папки сериалов при сканировании диска (не вместе с «удалять пустые папки»)
+Skip the free-space check when grabbing	Пропускать проверку свободного места при захвате
+Set permissions on imported files and folders (Linux)	Устанавливать права на импортированные файлы и папки (Linux)
+Import using a script	Импортировать с помощью скрипта
+Rescan series folder after refresh	Пересканировать папку сериала после обновления
+Whether a metadata refresh scans the series folder for changes afterwards.	Сканирует ли обновление метаданных папку сериала на изменения после завершения.
+Always	Всегда
+After manual refresh	После ручного обновления
+Never	Никогда
+Episode title required	Требуется название эпизода
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Импорт ждёт названия эпизода, если формат именования его использует, а эпизод вышел в последние 48 часов.
+Only for bulk season releases	Только для сезонных релизов
+Season pack upgrades	Улучшения сезонных паков
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Сколько эпизодов сезонного пака должны отсутствовать или допускать улучшение, чтобы пак был захвачен.
+A share of the episodes	Доля эпизодов
+Any episode	Любой эпизод
+Season pack upgrade threshold (%)	Порог улучшения сезонного пака (%)
+Rejected extensions	Отклоняемые расширения
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Через запятую, например exe, bat. Загрузка из одного файла с одним из этих расширений не импортируется.
+Folder permissions (chmod)	Права папок (chmod)
+Octal mode for folders; files get it without the execute bits.	Восьмеричный режим для папок; файлы получают его без битов выполнения.
+Group (chown)	Группа (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Имя или ID группы для импортированных файлов и папок; пустое значение не меняет группу.
+Import script path	Путь к скрипту импорта
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Абсолютный путь к скрипту; он получает пути источника и назначения и переменные окружения Sonarr.
+Excluded tags (ids, comma separated)	Исключённые теги (ID через запятую)
+The profile does not apply to series with one of these tags.	Профиль не применяется к сериалам с одним из этих тегов.
+Reject releases published before the episode airs	Отклонять релизы, опубликованные до выхода эпизода
+Allow season packs before every episode has aired	Разрешать сезонные паки до выхода всех эпизодов
+Air date grace period (hours)	Льготный период даты выхода (часы)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Релизы, опубликованные не позднее чем через столько часов после даты выхода, всё равно отклоняются; отрицательное число разрешает их за столько же часов до неё.
+Presets	Шаблоны
+Series ID	ID сериала
+Anime group	Аниме-группа
+Absolute episode number	Абсолютный номер эпизода
+Episode title	Название эпизода
+Media info	Медиаинформация
+Original	Оригинал
+File name tokens	Токены имени файла
+Folder name tokens	Токены имени папки
+Format	Формат
+Separator	Разделитель
+Space ( )	Пробел ( )
+Period (.)	Точка (.)
+Underscore (_)	Подчёркивание (_)
+Dash (-)	Дефис (-)
+Capitalization	Регистр
+Default case	Регистр по умолчанию
+Lowercase	Нижний регистр
+Uppercase	Верхний регистр
+Click a token to insert it at the cursor; a preset replaces the whole format.	Нажмите на токен, чтобы вставить его в позицию курсора; шаблон заменяет весь формат.
+Tokens	Токены
+Tokens for {}	Токены для {}
+Invalid format	Недопустимый формат
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Форматы используют токены Sonarr; примеры ниже отражают ваши изменения ещё до сохранения.
+Rename episodes	Переименовывать эпизоды
+Replace illegal characters (otherwise they are removed)	Заменять недопустимые символы (иначе они удаляются)
+Colon replacement	Замена двоеточия
+How colons in titles are written in file and folder names.	Как двоеточия из названий записываются в именах файлов и папок.
+Replace with dash	Заменять дефисом
+Replace with space dash	Заменять пробелом и дефисом
+Replace with space dash space	Заменять пробелом, дефисом и пробелом
+Smart replace (dash or space dash)	Умная замена (дефис или пробел и дефис)
+Custom	Своя
+Custom colon replacement	Своя замена двоеточия
+The characters written instead of a colon.	Символы, записываемые вместо двоеточия.
+Multi-episode style	Стиль нескольких эпизодов
+Extend (S01E01-02-03)	Расширенный (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Дублированный (S01E01.S01E02)
+Repeat (S01E01E02E03)	Повторённый (S01E01E02E03)
+Scene (S01E01-E02-E03)	Сцена (S01E01-E02-E03)
+Range (S01E01-03)	Диапазон (S01E01-03)
+Prefixed range (S01E01-E03)	Диапазон с префиксом (S01E01-E03)
+Example	Пример
+Anime group movie	Фильм аниме-группы
+Used when films are renamed.	Используется при переименовании фильмов.
+Used when adding a new series or moving one.	Используется при добавлении нового сериала или его перемещении.
+Specials folder format	Формат папки спецвыпусков
+Anime groups and collections: titles go to {}/{}/{}.	Аниме-группы и коллекции: тайтлы попадают в {}/{}/{}.
+Interface settings saved.	Настройки интерфейса сохранены.
+Week column header	Заголовок столбца недели
+The column headers of the calendar's week view.	Заголовки столбцов в недельном виде календаря.
+Dates	Даты
+Short date format	Короткий формат даты
+Long date format	Длинный формат даты
+Time format	Формат времени
+Time zone	Часовой пояс
+Dates and times are shown in this time zone; empty follows the browser.	Даты и время отображаются в этом часовом поясе; пустое значение — как в браузере.
+The browser's time zone	Часовой пояс браузера
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Показывать относительные даты (Сегодня, Вчера, Завтра) вместо даты
+Style	Стиль
+Theme	Тема
+Kept in this browser; the top bar button switches it too.	Хранится в этом браузере; кнопка на верхней панели тоже её переключает.
+Dark	Тёмная
+Light	Светлая
+Colour-impaired mode (colours easier to tell apart, with patterns)	Режим для нарушений цветового зрения (цвета легче различить, с узорами)
+Saved to the configuration file. Restart Kitsunarr to apply.	Сохранено в файл конфигурации. Перезапустите Kitsunarr, чтобы применить.
+Host and logging	Хост и журналирование
+Set by an environment variable or command-line flag: {}	Задано переменной окружения или флагом командной строки: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Сохранено в {}. Изменения вступят в силу при следующем запуске Kitsunarr; переменные окружения и флаги командной строки по-прежнему имеют приоритет.
+Restart required: the saved values differ from the ones in use.	Требуется перезапуск: сохранённые значения отличаются от используемых.
+Restart now	Перезапустить сейчас
+Bind address	Адрес привязки
+0.0.0.0 listens on every interface.	0.0.0.0 слушает на всех интерфейсах.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Для обратных прокси, например /kitsunarr; пустое значение — обслуживание из корня.
+Log level	Уровень журналирования
+Debug and trace write much more to the log files.	Отладка и трассировка пишут в файлы журнала намного больше.
+Trace	Трассировка
+Warn	Предупреждение
+Error	Ошибка
+Backup folder	Папка резервных копий
+Absolute path; empty uses {}.	Абсолютный путь; пустое значение — {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr обслуживает обычный HTTP; для HTTPS поставьте перед ним обратный прокси.
+Save host settings	Сохранить настройки хоста
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Перезапустить Kitsunarr сейчас? Если изменились адрес, порт или базовый URL, после этого откройте новый адрес.
+Nothing to show.	Нечего показать.
+All series	Все сериалы
+All types	Все типы
+All profiles	Все профили
+All tags	Все теги
+Downloaded	Скачано
+Unaired	Не вышли
+{} files · {}	Файлов: {} · {}
+Summary	Сводка
+Monitored series	Отслеживаемые сериалы
+Completed series	Завершённые сериалы
+{} ({} completed)	{} (завершено: {})
+{} ({} monitored)	{} (отслеживается: {})
+Episode files	Файлы эпизодов
+{} ({} downloaded)	{} (скачано: {})
+{} ({} per episode)	{} ({} на эпизод)
+Series status	Статус сериала
+File qualities	Качество файлов
+Recent entries	Последние записи
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Самые свежие записи, хранящиеся в памяти. Файлы журнала выше и вывод процесса (журналы контейнера или journal) хранят всё.
+Yesterday	Вчера
+Tomorrow	Завтра

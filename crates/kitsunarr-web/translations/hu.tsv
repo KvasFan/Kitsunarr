@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Kihagyva: a szerver még indul
 {} expired sessions removed	{} lejárt munkamenet eltávolítva
 All {} refreshes failed; see the logs	Mind a(z) {} frissítés sikertelen; lásd a naplókat
 every folder scan failed ({})	minden mappa-átvizsgálás sikertelen ({})
+Links	Hivatkozások
+Copy {}	{} másolása
+Copy the {} id	{} azonosító másolása
+Type	Típus
+Previous airing	Előző adás
+Season folder	Évadmappa
+Average episode size	Átlagos epizódméret
+Genres	Műfajok
+Rating	Értékelés
+Certification	Korhatár-besorolás
+Release groups	Kiadócsoportok
+File quality	Fájlminőség
+In cinemas	Moziban
+Runtime	Játékidő
+Release group	Kiadócsoport
+Columns	Oszlopok
+Shown in the table, the overview and under posters	Megjelenik a táblázatban, az ismertető nézetben és a poszterek alatt
+Column {}	Oszlop: {}
+Reset columns	Oszlopok visszaállítása
+Yes	Igen
+Override and grab {}	Felülbírálás és megragadás: {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Válaszd ki a kiadás sorozatát, epizódjait, minőségét, nyelveit vagy letöltő kliensét, majd ragadd meg (a választások az importáláshoz megmaradnak)
+Override…	Felülbírálás…
+Override and grab	Felülbírálás és megragadás
+Override and grab — {}	Felülbírálás és megragadás — {}
+{} episodes chosen	{} epizód kiválasztva
+Grab release	Kiadás megragadása
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	A változatlanul hagyott választások a kiadás címében szereplő értékeket tartják meg. Ha nem választasz epizódot, a címhez leképezett epizódok maradnak.
+Searched series	Keresett sorozat
+Download client	Letöltő kliens
+Episodes (required)	Epizódok (kötelező)
+Statistics	Statisztika
+Test parsing	Elemzés tesztelése
+{} items removed.	{} elem eltávolítva.
+{} items removed; {}	{} elem eltávolítva; {}
+Select every queue item	A várakozási sor összes elemének kiválasztása
+Queue bulk actions	Tömeges műveletek a várakozási sorban
+Grab the selected releases a delay profile holds back now	A késleltetési profil által visszatartott kiválasztott kiadások megragadása most
+Remove selected…	Kiválasztottak eltávolítása…
+Remove {} items from the queue	{} elem eltávolítása a várakozási sorból
+Held-back releases are forgotten; a later search can find them again.	A visszatartott kiadásokat a Kitsunarr elfelejti; egy későbbi keresés újra megtalálhatja őket.
+Removal method	Eltávolítás módja
+Remove from the download client	Eltávolítás a letöltő kliensből
+Change category	Kategória módosítása
+Keep it in the download client	Megtartás a letöltő kliensben
+The download and its files are removed from the download client.	A letöltés és fájljai törlődnek a letöltő kliensből.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	A letöltés a kliens importálás utáni kategóriájába kerül, és a Kitsunarr nem követi tovább; a fájljai megmaradnak.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	A letöltés érintetlenül marad a letöltő kliensben; a kiadás tiltólistára tételéhez válassz egy tiltólista-beállítást.
+Blocklist release	Kiadás tiltólistára tétele
+Do not blocklist	Ne kerüljön tiltólistára
+Blocklist and search for a replacement	Tiltólistára tétel és csere keresése
+Blocklist only	Csak tiltólistára tétel
+Removed {} releases from the blocklist.	{} kiadás eltávolítva a tiltólistáról.
+Remove {} selected	{} kiválasztott eltávolítása
+Select every release on this page	Az oldal összes kiadásának kiválasztása
+Remove from the blocklist	Eltávolítás a tiltólistáról
+Remove the {} selected releases from the blocklist?	Eltávolítod a kiválasztott kiadásokat ({}) a tiltólistáról?
+Quality, languages and release of {}	{}: minőség, nyelvek és kiadás
+Choose the quality, languages, release group and release type the file is imported with	Válaszd ki, milyen minőséggel, nyelvekkel, kiadócsoporttal és kiadástípussal legyen importálva a fájl
+Import details — {}	Importálási részletek — {}
+Use these details	Ezen adatok használata
+Revision	Revízió
+2 or more for a PROPER or REPACK.	2 vagy több PROPER vagy REPACK esetén.
+Single episode	Egyetlen epizód
+Multi-episode	Többepizódos
+Season pack	Évadcsomag
+Manual	Kézi
+Choose the group the title joins.	Válaszd ki a csoportot, amelyhez a cím csatlakozik.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Az Automatikus a hivatalos kapcsolatok alapján a franchise-ával vagy gyűjteményével csoportosítja a címet. A Kézi egy általad választott csoportba teszi. A Letiltva önállóan hagyja.
+Manual puts the title in a group you choose, in the group's folder.	A Kézi egy általad választott csoportba teszi a címet, a csoport mappájába.
+Manual (choose a group)	Kézi (csoport választása)
+The title joins the group as its next season or film, in the group's folder.	A cím a csoport következő évadaként vagy filmjeként csatlakozik, a csoport mappájában.
+Choose a group…	Válassz csoportot…
+Collection settings saved.	Gyűjtemény beállításai mentve.
+Collection settings	Gyűjtemény beállításai
+Collection name	Gyűjtemény neve
+Collection type	Gyűjtemény típusa
+A movie saga holds only films.	A filmsaga csak filmeket tartalmaz.
+Movie saga	Filmsaga
+Movie folder format	Filmmappa-formátum
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	A tagok mappáinak elnevezése címek csatlakozásakor: az automatikus a sagákban számozott mappákat, a történetíveknél történetív-mappákat használ.
+Numbered	Számozott
+No change	Nincs változás
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	A figyelés, a minőségi profil és az évadmappa most minden tagra érvényes lesz; a típus és a mappaformátum a mostantól csatlakozó címekre vonatkozik.
+Collection settings…	Gyűjtemény beállításai…
+Monitoring, quality profile, series type, folder and tags	Figyelés, minőségi profil, sorozattípus, mappa és címkék
+Change the quality, languages or release group of episode files, or delete them	Epizódfájlok minőségének, nyelveinek vagy kiadócsoportjának módosítása, illetve a fájlok törlése
+Manage episodes	Epizódok kezelése
+Episode details: overview, file, history and searches	Epizód részletei: ismertető, fájl, előzmények és keresések
+Details of episode {}	Epizód részletei: {}
+Monitoring, availability, quality profile, folder and tags	Figyelés, elérhetőség, minőségi profil, mappa és címkék
+No tags yet: create them in Settings › Tags.	Még nincsenek címkék: hozd létre őket itt: Beállítások › Címkék.
+Below the root folder.	A gyökérmappán belül.
+Use the folder name the naming settings give	Az elnevezési beállítások szerinti mappanév használata
+Use naming format	Elnevezési formátum használata
+Series saved.	Sorozat mentve.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	A Kitsunarr megkeresi és letölti a megfigyelt sorozatok megfigyelt epizódjait.
+Whether seasons a refresh discovers are monitored.	Legyenek-e megfigyelve a frissítéskor felfedezett évadok.
+Sort episodes into season folders.	Epizódok rendezése évadmappákba.
+Use season folders	Évadmappák használata
+Decides how episodes are numbered when searching and importing.	Meghatározza, hogyan számozódnak az epizódok kereséskor és importáláskor.
+TheTVDB titles in this language; changing it refreshes the series.	TheTVDB-címek ezen a nyelven; módosítása frissíti a sorozatot.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	A Letiltva eltávolítja a sorozatot az anime csoportjából, és kizárja az automatikus csoportosításból.
+Enter a folder name.	Adj meg egy mappanevet.
+Edit — {}	Szerkesztés — {}
+Announced	Bejelentve
+Released	Megjelent
+Movie saved.	Film mentve.
+Kitsunarr searches for and downloads a monitored movie.	A Kitsunarr megkeresi és letölti a megfigyelt filmet.
+Minimum availability	Minimális elérhetőség
+When the movie counts as available for automatic searches.	Mikortól számít a film elérhetőnek az automatikus keresésekhez.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	A Letiltva eltávolítja a filmet a gyűjteményéből, és kizárja az automatikus csoportosításból.
+Edit {} selected	{} kiválasztott szerkesztése
+Apply changes	Módosítások alkalmazása
+No season folders	Évadmappák nélkül
+Tags updated on {} items.	Címkék frissítve {} elemen.
+Removes the chosen tags from every selected title.	Eltávolítja a választott címkéket minden kiválasztott címről.
+Every selected title gets exactly the chosen tags (none removes all).	Minden kiválasztott cím pontosan a választott címkéket kapja (ha egy sincs választva, mindet eltávolítja).
+Adds the chosen tags to every selected title.	Hozzáadja a választott címkéket minden kiválasztott címhez.
+Tags — {} selected	Címkék — {} kiválasztva
+Apply tags	Címkék alkalmazása
+Replace	Csere
+Manage	Kezelés
+Multi-season pack	Többévados csomag
+Scene name	Scene-név
+Video	Videó
+· {} fps	· {} fps
+Run time	Játékidő
+Audio	Hang
+Subtitles	Feliratok
+Details	Részletek
+Search the indexers and grab the best release	Keresés az indexelőkben és a legjobb kiadás megragadása
+See every release and choose	Az összes kiadás megtekintése és választás
+absolute {}	abszolút: {}
+Air date	Adásdátum
+No overview.	Nincs ismertető.
+Delete this episode's file? It goes to the recycle bin when one is set.	Törlöd az epizód fájlját? A lomtárba kerül, ha be van állítva.
+{} files updated.	{} fájl frissítve.
+{} files deleted.	{} fájl törölve.
+{} files deleted; {}	{} fájl törölve; {}
+Delete files	Fájlok törlése
+The series has no files.	A sorozatnak nincsenek fájljai.
+Change	Módosítás
+Change for the selected files…	Módosítás a kiválasztott fájloknál…
+Empty clears it	Üresen törli
+Select every file	Összes fájl kiválasztása
+Delete the {} selected files? They go to the recycle bin when one is set.	Törlöd a kiválasztott fájlokat ({})? A lomtárba kerülnek, ha be van állítva.
+Monitoring, quality profile, series type and season folders of the selected series	A kiválasztott sorozatok figyelése, minőségi profilja, sorozattípusa és évadmappái
+Edit…	Szerkesztés…
+Add, remove or replace the tags of the selected series	A kiválasztott sorozatok címkéinek hozzáadása, eltávolítása vagy cseréje
+Tags…	Címkék…
+Monitoring and quality profile of the selected movies	A kiválasztott filmek figyelése és minőségi profilja
+Add, remove or replace the tags of the selected movies	A kiválasztott filmek címkéinek hozzáadása, eltávolítása vagy cseréje
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Illessz be egy kiadáscímet vagy fájlnevet, hogy lásd, hogyan értelmezi a Kitsunarr, és mely epizódokhoz illeszkedik.
+Parse	Elemzés
+Kitsunarr could not read this title.	A Kitsunarr nem tudta értelmezni ezt a címet.
+Parse result	Elemzés eredménye
+Series title	Sorozat címe
+Absolute episodes	Abszolút epizódok
+Release hash	Kiadás hash-e
+Multi-season	Többévados
+Absolute numbering	Abszolút számozás
+Library match	Egyezés a könyvtárban
+No series in the library matches this title.	A könyvtárban egyetlen sorozat sem illeszkedik erre a címre.
+No episode of the series matches.	A sorozat egyetlen epizódja sem illeszkedik.
+Log files	Naplófájlok
+Refresh	Frissítés
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	A Kitsunarr az adatmappában lévő fájlokba írja a naplóját, 1 MiB-onként új fájlt kezdve. A naplózási szint a Beállítások › Általános alatt állítható.
+No log files yet	Még nincsenek naplófájlok
+Last written	Utolsó írás
+Skip the free-space check when importing	Szabadhely-ellenőrzés kihagyása importáláskor
+Create empty series folders during disk scans (not with "delete empty folders")	Üres sorozatmappák létrehozása lemezvizsgálatkor (az „üres mappák törlése” beállítással együtt nem)
+Skip the free-space check when grabbing	Szabadhely-ellenőrzés kihagyása megragadáskor
+Set permissions on imported files and folders (Linux)	Jogosultságok beállítása az importált fájlokon és mappákon (Linux)
+Import using a script	Importálás szkripttel
+Rescan series folder after refresh	Sorozatmappa újbóli átvizsgálása frissítés után
+Whether a metadata refresh scans the series folder for changes afterwards.	Átvizsgálja-e utána a metaadat-frissítés a sorozatmappát változásokat keresve.
+Always	Mindig
+After manual refresh	Kézi frissítés után
+Never	Soha
+Episode title required	Epizódcím kötelező
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Az importálás vár az epizódcímre, ha az elnevezési formátum használja, és az epizód az elmúlt 48 órában került adásba.
+Only for bulk season releases	Csak teljes évados kiadásoknál
+Season pack upgrades	Évadcsomagos minőségfrissítések
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Az évadcsomag epizódjai közül hánynak kell hiányoznia vagy frissíthetőnek lennie ahhoz, hogy a csomag megragadásra kerüljön.
+A share of the episodes	Az epizódok egy bizonyos hányada
+Any episode	Bármely epizód
+Season pack upgrade threshold (%)	Évadcsomagos minőségfrissítés küszöbe (%)
+Rejected extensions	Elutasított kiterjesztések
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Vesszővel elválasztva, például exe, bat. Az ilyen kiterjesztésű egyfájlos letöltések nem kerülnek importálásra.
+Folder permissions (chmod)	Mappajogosultságok (chmod)
+Octal mode for folders; files get it without the execute bits.	Oktális mód a mappákhoz; a fájlok a végrehajtási bitek nélkül kapják meg.
+Group (chown)	Csoport (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Csoportnév vagy -azonosító az importált fájlokhoz és mappákhoz; üresen a csoport nem változik.
+Import script path	Importálószkript útvonala
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	A szkript abszolút útvonala; megkapja a forrás- és célútvonalat, valamint a Sonarr környezeti változóit.
+Excluded tags (ids, comma separated)	Kizárt címkék (azonosítók, vesszővel elválasztva)
+The profile does not apply to series with one of these tags.	A profil nem vonatkozik az e címkék valamelyikével rendelkező sorozatokra.
+Reject releases published before the episode airs	Az epizód adásba kerülése előtt közzétett kiadások elutasítása
+Allow season packs before every episode has aired	Évadcsomagok engedélyezése, mielőtt minden epizód adásba került volna
+Air date grace period (hours)	Adásdátum türelmi ideje (óra)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Az adásdátum után legfeljebb ennyi órával közzétett kiadások is elutasításra kerülnek; negatív szám esetén ennyi órával az adás előtt már engedélyezettek.
+Presets	Előbeállítások
+Series ID	Sorozatazonosító
+Anime group	Anime csoport
+Absolute episode number	Abszolút epizódszám
+Episode title	Epizódcím
+Media info	Médiainformáció
+Original	Eredeti
+File name tokens	Fájlnév-tokenek
+Folder name tokens	Mappanév-tokenek
+Format	Formátum
+Separator	Elválasztó
+Space ( )	Szóköz ( )
+Period (.)	Pont (.)
+Underscore (_)	Aláhúzás (_)
+Dash (-)	Kötőjel (-)
+Capitalization	Kis- és nagybetűk
+Default case	Alapértelmezett
+Lowercase	Kisbetűs
+Uppercase	Nagybetűs
+Click a token to insert it at the cursor; a preset replaces the whole format.	Kattints egy tokenre a kurzorhoz való beszúrásához; egy előbeállítás a teljes formátumot lecseréli.
+Tokens	Tokenek
+Tokens for {}	Tokenek: {}
+Invalid format	Érvénytelen formátum
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	A formátumok a Sonarr tokenjeit használják; az alábbi példák mentés előtt is követik a módosításaidat.
+Rename episodes	Epizódok átnevezése
+Replace illegal characters (otherwise they are removed)	Érvénytelen karakterek cseréje (különben eltávolításra kerülnek)
+Colon replacement	Kettőspont cseréje
+How colons in titles are written in file and folder names.	Hogyan jelenjenek meg a címekben lévő kettőspontok a fájl- és mappanevekben.
+Replace with dash	Csere kötőjelre
+Replace with space dash	Csere szóköz+kötőjelre
+Replace with space dash space	Csere szóköz+kötőjel+szóközre
+Smart replace (dash or space dash)	Intelligens csere (kötőjel vagy szóköz+kötőjel)
+Custom	Egyéni
+Custom colon replacement	Egyéni kettőspont-csere
+The characters written instead of a colon.	A kettőspont helyett írt karakterek.
+Multi-episode style	Többepizódos stílus
+Extend (S01E01-02-03)	Kiterjesztés (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Duplikálás (S01E01.S01E02)
+Repeat (S01E01E02E03)	Ismétlés (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	Tartomány (S01E01-03)
+Prefixed range (S01E01-E03)	Előtagos tartomány (S01E01-E03)
+Example	Példa
+Anime group movie	Anime csoport filmje
+Used when films are renamed.	Filmek átnevezésekor használatos.
+Used when adding a new series or moving one.	Új sorozat hozzáadásakor vagy sorozat áthelyezésekor használatos.
+Specials folder format	Különkiadások mappájának formátuma
+Anime groups and collections: titles go to {}/{}/{}.	Anime csoportok és gyűjtemények: a címek ide kerülnek: {}/{}/{}.
+Interface settings saved.	Felületbeállítások mentve.
+Week column header	Heti oszlopfejléc
+The column headers of the calendar's week view.	A naptár heti nézetének oszlopfejlécei.
+Dates	Dátumok
+Short date format	Rövid dátumformátum
+Long date format	Hosszú dátumformátum
+Time format	Időformátum
+Time zone	Időzóna
+Dates and times are shown in this time zone; empty follows the browser.	A dátumok és időpontok ebben az időzónában jelennek meg; üresen a böngészőét követi.
+The browser's time zone	A böngésző időzónája
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Relatív dátumok (Ma, Tegnap, Holnap) megjelenítése a dátum helyett
+Style	Stílus
+Theme	Téma
+Kept in this browser; the top bar button switches it too.	Ebben a böngészőben tárolódik; a felső sáv gombja is váltja.
+Dark	Sötét
+Light	Világos
+Colour-impaired mode (colours easier to tell apart, with patterns)	Színtévesztő mód (könnyebben megkülönböztethető színek, mintázatokkal)
+Saved to the configuration file. Restart Kitsunarr to apply.	Mentve a konfigurációs fájlba. Az érvénybe lépéshez indítsd újra a Kitsunarrt.
+Host and logging	Hoszt és naplózás
+Set by an environment variable or command-line flag: {}	Környezeti változó vagy parancssori kapcsoló állítja be: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Mentve ide: {}. A módosítások a Kitsunarr következő indításakor lépnek érvénybe; a környezeti változók és a parancssori kapcsolók továbbra is elsőbbséget élveznek.
+Restart required: the saved values differ from the ones in use.	Újraindítás szükséges: a mentett értékek eltérnek a használatban lévőktől.
+Restart now	Újraindítás most
+Bind address	Kötési cím
+0.0.0.0 listens on every interface.	A 0.0.0.0 minden interfészen figyel.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Fordított proxykhoz, pl. /kitsunarr; üresen a gyökérből szolgál ki.
+Log level	Naplózási szint
+Debug and trace write much more to the log files.	A Hibakeresés és a Nyomkövetés sokkal többet ír a naplófájlokba.
+Trace	Nyomkövetés
+Warn	Figyelmeztetés
+Error	Hiba
+Backup folder	Biztonsági mentések mappája
+Absolute path; empty uses {}.	Abszolút útvonal; üresen ezt használja: {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	A Kitsunarr sima HTTP-t szolgál ki; HTTPS-hez tegyél elé fordított proxyt.
+Save host settings	Hosztbeállítások mentése
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Újraindítod most a Kitsunarrt? Ha a cím, a port vagy az URL-alap megváltozott, utána nyisd meg az új címet.
+Nothing to show.	Nincs mit megjeleníteni.
+All series	Minden sorozat
+All types	Minden típus
+All profiles	Minden profil
+All tags	Minden címke
+Downloaded	Letöltve
+Unaired	Még nem került adásba
+{} files · {}	{} fájl · {}
+Summary	Összegzés
+Monitored series	Megfigyelt sorozatok
+Completed series	Befejezett sorozatok
+{} ({} completed)	{} ({} befejezett)
+{} ({} monitored)	{} ({} megfigyelt)
+Episode files	Epizódfájlok
+{} ({} downloaded)	{} ({} letöltve)
+{} ({} per episode)	{} ({} epizódonként)
+Series status	Sorozatok állapota
+File qualities	Fájlminőségek
+Recent entries	Legutóbbi bejegyzések
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	A memóriában tartott legutóbbi bejegyzések. A fenti naplófájlok és a folyamat kimenete (konténernaplók vagy journal) mindent megőriznek.
+Yesterday	Tegnap
+Tomorrow	Holnap

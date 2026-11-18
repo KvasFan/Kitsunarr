@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Overgeslagen: de server is nog aan het ops
 {} expired sessions removed	{} verlopen sessies verwijderd
 All {} refreshes failed; see the logs	Alle {} vernieuwingen zijn mislukt; zie de logs
 every folder scan failed ({})	elke mappenscan is mislukt ({})
+Links	Links
+Copy {}	{} kopiëren
+Copy the {} id	De {}-id kopiëren
+Type	Type
+Previous airing	Vorige uitzending
+Season folder	Seizoensmap
+Average episode size	Gemiddelde afleveringsgrootte
+Genres	Genres
+Rating	Beoordeling
+Certification	Leeftijdsclassificatie
+Release groups	Releasegroepen
+File quality	Bestandskwaliteit
+In cinemas	In de bioscoop
+Runtime	Speelduur
+Release group	Releasegroep
+Columns	Kolommen
+Shown in the table, the overview and under posters	Getoond in de tabel, het overzicht en onder posters
+Column {}	Kolom {}
+Reset columns	Kolommen herstellen
+Yes	Ja
+Override and grab {}	{} aanpassen en ophalen
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Kies de serie, afleveringen, kwaliteit, talen of downloadclient van deze release en haal hem daarna op (de keuzes worden bewaard voor de import)
+Override…	Aanpassen…
+Override and grab	Aanpassen en ophalen
+Override and grab — {}	Aanpassen en ophalen — {}
+{} episodes chosen	{} afleveringen gekozen
+Grab release	Release ophalen
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Ongewijzigde keuzes behouden wat de titel van de release aangeeft. Niet-gekozen afleveringen behouden de afleveringen waarnaar de titel verwijst.
+Searched series	Gezochte serie
+Download client	Downloadclient
+Episodes (required)	Afleveringen (verplicht)
+Statistics	Statistieken
+Test parsing	Parsing testen
+{} items removed.	{} items verwijderd.
+{} items removed; {}	{} items verwijderd; {}
+Select every queue item	Elk wachtrij-item selecteren
+Queue bulk actions	Bulkacties voor de wachtrij
+Grab the selected releases a delay profile holds back now	De geselecteerde releases die een vertragingsprofiel tegenhoudt nu ophalen
+Remove selected…	Selectie verwijderen…
+Remove {} items from the queue	{} items uit de wachtrij verwijderen
+Held-back releases are forgotten; a later search can find them again.	Tegengehouden releases worden vergeten; een latere zoekopdracht kan ze opnieuw vinden.
+Removal method	Verwijdermethode
+Remove from the download client	Uit de downloadclient verwijderen
+Change category	Categorie wijzigen
+Keep it in the download client	In de downloadclient laten staan
+The download and its files are removed from the download client.	De download en de bestanden ervan worden uit de downloadclient verwijderd.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	De download gaat naar de categorie na import van de client en wordt niet langer gevolgd; de bestanden blijven staan.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	De download blijft onaangeroerd in de downloadclient; kies een blokkeeroptie om de release op de blokkeerlijst te zetten.
+Blocklist release	Release op de blokkeerlijst zetten
+Do not blocklist	Niet op de blokkeerlijst zetten
+Blocklist and search for a replacement	Op de blokkeerlijst zetten en een vervanging zoeken
+Blocklist only	Alleen op de blokkeerlijst zetten
+Removed {} releases from the blocklist.	{} releases van de blokkeerlijst verwijderd.
+Remove {} selected	{} geselecteerde verwijderen
+Select every release on this page	Elke release op deze pagina selecteren
+Remove from the blocklist	Van de blokkeerlijst verwijderen
+Remove the {} selected releases from the blocklist?	De {} geselecteerde releases van de blokkeerlijst verwijderen?
+Quality, languages and release of {}	Kwaliteit, talen en release van {}
+Choose the quality, languages, release group and release type the file is imported with	Kies de kwaliteit, talen, releasegroep en het releasetype waarmee het bestand wordt geïmporteerd
+Import details — {}	Importgegevens — {}
+Use these details	Deze gegevens gebruiken
+Revision	Revisie
+2 or more for a PROPER or REPACK.	2 of meer voor een PROPER of REPACK.
+Single episode	Enkele aflevering
+Multi-episode	Meerdere afleveringen
+Season pack	Seizoenspakket
+Manual	Handmatig
+Choose the group the title joins.	Kies de groep waar de titel bij komt.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automatisch groepeert de titel met zijn franchise of collectie op basis van officiële relaties. Handmatig plaatst hem in een groep die je kiest. Uitgeschakeld houdt hem apart.
+Manual puts the title in a group you choose, in the group's folder.	Handmatig plaatst de titel in een groep die je kiest, in de map van de groep.
+Manual (choose a group)	Handmatig (kies een groep)
+The title joins the group as its next season or film, in the group's folder.	De titel komt in de groep als volgend seizoen of volgende film, in de map van de groep.
+Choose a group…	Kies een groep…
+Collection settings saved.	Collectie-instellingen opgeslagen.
+Collection settings	Collectie-instellingen
+Collection name	Collectienaam
+Collection type	Collectietype
+A movie saga holds only films.	Een filmsaga bevat alleen films.
+Movie saga	Filmsaga
+Movie folder format	Mapformaat voor films
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Hoe mappen van leden worden genoemd wanneer titels erbij komen: automatisch gebruikt genummerde mappen in saga's en verhaalboogmappen voor verhaalbogen.
+Numbered	Genummerd
+No change	Geen wijziging
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Monitoring, kwaliteitsprofiel en seizoensmap gelden nu voor elk lid; het type en het mapformaat gelden voor titels die er vanaf nu bij komen.
+Collection settings…	Collectie-instellingen…
+Monitoring, quality profile, series type, folder and tags	Monitoring, kwaliteitsprofiel, serietype, map en tags
+Change the quality, languages or release group of episode files, or delete them	De kwaliteit, talen of releasegroep van afleveringsbestanden wijzigen, of ze verwijderen
+Manage episodes	Afleveringen beheren
+Episode details: overview, file, history and searches	Afleveringsdetails: overzicht, bestand, historie en zoekopdrachten
+Details of episode {}	Details van aflevering {}
+Monitoring, availability, quality profile, folder and tags	Monitoring, beschikbaarheid, kwaliteitsprofiel, map en tags
+No tags yet: create them in Settings › Tags.	Nog geen tags: maak ze aan in Instellingen › Tags.
+Below the root folder.	Onder de hoofdmap.
+Use the folder name the naming settings give	De mapnaam van de naamgevingsinstellingen gebruiken
+Use naming format	Naamgevingsformaat gebruiken
+Series saved.	Serie opgeslagen.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr zoekt en downloadt de gemonitorde afleveringen van een gemonitorde serie.
+Whether seasons a refresh discovers are monitored.	Of seizoenen die bij een vernieuwing worden gevonden, gemonitord worden.
+Sort episodes into season folders.	Afleveringen in seizoensmappen sorteren.
+Use season folders	Seizoensmappen gebruiken
+Decides how episodes are numbered when searching and importing.	Bepaalt hoe afleveringen worden genummerd bij zoeken en importeren.
+TheTVDB titles in this language; changing it refreshes the series.	TheTVDB-titels in deze taal; wijzigen vernieuwt de serie.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Uitgeschakeld haalt de serie uit de animegroep en houdt hem buiten automatisch groeperen.
+Enter a folder name.	Voer een mapnaam in.
+Edit — {}	Bewerken — {}
+Announced	Aangekondigd
+Released	Uitgebracht
+Movie saved.	Film opgeslagen.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr zoekt en downloadt een gemonitorde film.
+Minimum availability	Minimale beschikbaarheid
+When the movie counts as available for automatic searches.	Wanneer de film als beschikbaar geldt voor automatisch zoeken.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Uitgeschakeld haalt de film uit de collectie en houdt hem buiten automatisch groeperen.
+Edit {} selected	{} geselecteerde bewerken
+Apply changes	Wijzigingen toepassen
+No season folders	Geen seizoensmappen
+Tags updated on {} items.	Tags bijgewerkt op {} items.
+Removes the chosen tags from every selected title.	Verwijdert de gekozen tags van elke geselecteerde titel.
+Every selected title gets exactly the chosen tags (none removes all).	Elke geselecteerde titel krijgt precies de gekozen tags (geen verwijdert alle).
+Adds the chosen tags to every selected title.	Voegt de gekozen tags toe aan elke geselecteerde titel.
+Tags — {} selected	Tags — {} geselecteerd
+Apply tags	Tags toepassen
+Replace	Vervangen
+Manage	Beheren
+Multi-season pack	Pakket met meerdere seizoenen
+Scene name	Scenenaam
+Video	Video
+· {} fps	· {} fps
+Run time	Speelduur
+Audio	Audio
+Subtitles	Ondertitels
+Details	Details
+Search the indexers and grab the best release	De indexeerders doorzoeken en de beste release ophalen
+See every release and choose	Elke release bekijken en kiezen
+absolute {}	absoluut {}
+Air date	Uitzenddatum
+No overview.	Geen overzicht.
+Delete this episode's file? It goes to the recycle bin when one is set.	Het bestand van deze aflevering verwijderen? Het gaat naar de prullenbak als die is ingesteld.
+{} files updated.	{} bestanden bijgewerkt.
+{} files deleted.	{} bestanden verwijderd.
+{} files deleted; {}	{} bestanden verwijderd; {}
+Delete files	Bestanden verwijderen
+The series has no files.	De serie heeft geen bestanden.
+Change	Wijzigen
+Change for the selected files…	Wijzigen voor de geselecteerde bestanden…
+Empty clears it	Leeg wist het
+Select every file	Elk bestand selecteren
+Delete the {} selected files? They go to the recycle bin when one is set.	De {} geselecteerde bestanden verwijderen? Ze gaan naar de prullenbak als die is ingesteld.
+Monitoring, quality profile, series type and season folders of the selected series	Monitoring, kwaliteitsprofiel, serietype en seizoensmappen van de geselecteerde series
+Edit…	Bewerken…
+Add, remove or replace the tags of the selected series	Tags van de geselecteerde series toevoegen, verwijderen of vervangen
+Tags…	Tags…
+Monitoring and quality profile of the selected movies	Monitoring en kwaliteitsprofiel van de geselecteerde films
+Add, remove or replace the tags of the selected movies	Tags van de geselecteerde films toevoegen, verwijderen of vervangen
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Plak een releasetitel of bestandsnaam om te zien hoe Kitsunarr hem leest en met welke afleveringen hij overeenkomt.
+Parse	Parsen
+Kitsunarr could not read this title.	Kitsunarr kon deze titel niet lezen.
+Parse result	Parseresultaat
+Series title	Serietitel
+Absolute episodes	Absolute afleveringen
+Release hash	Releasehash
+Multi-season	Meerdere seizoenen
+Absolute numbering	Absolute nummering
+Library match	Overeenkomst in bibliotheek
+No series in the library matches this title.	Geen serie in de bibliotheek komt overeen met deze titel.
+No episode of the series matches.	Geen aflevering van de serie komt overeen.
+Log files	Logbestanden
+Refresh	Vernieuwen
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr schrijft zijn log naar bestanden in de datamap, geroteerd bij 1 MiB. Het logniveau stel je in via Instellingen › Algemeen.
+No log files yet	Nog geen logbestanden
+Last written	Laatst geschreven
+Skip the free-space check when importing	Controle op vrije ruimte overslaan bij importeren
+Create empty series folders during disk scans (not with "delete empty folders")	Lege seriemappen aanmaken tijdens schijfscans (niet met "lege mappen verwijderen")
+Skip the free-space check when grabbing	Controle op vrije ruimte overslaan bij ophalen
+Set permissions on imported files and folders (Linux)	Rechten instellen op geïmporteerde bestanden en mappen (Linux)
+Import using a script	Importeren met een script
+Rescan series folder after refresh	Seriemap opnieuw scannen na vernieuwen
+Whether a metadata refresh scans the series folder for changes afterwards.	Of een metadatavernieuwing daarna de seriemap op wijzigingen scant.
+Always	Altijd
+After manual refresh	Na handmatig vernieuwen
+Never	Nooit
+Episode title required	Afleveringstitel verplicht
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Imports wachten op een afleveringstitel wanneer het naamgevingsformaat die gebruikt en de aflevering in de afgelopen 48 uur is uitgezonden.
+Only for bulk season releases	Alleen voor seizoensreleases in bulk
+Season pack upgrades	Upgrades van seizoenspakketten
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Hoeveel afleveringen van een seizoenspakket moeten ontbreken of te upgraden zijn om het pakket op te halen.
+A share of the episodes	Een deel van de afleveringen
+Any episode	Elke aflevering
+Season pack upgrade threshold (%)	Drempel voor upgrades van seizoenspakketten (%)
+Rejected extensions	Geweigerde extensies
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Kommagescheiden, zoals exe, bat. Een download met één bestand met een van deze extensies wordt niet geïmporteerd.
+Folder permissions (chmod)	Maprechten (chmod)
+Octal mode for folders; files get it without the execute bits.	Octale modus voor mappen; bestanden krijgen hem zonder de uitvoerbits.
+Group (chown)	Groep (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Groepsnaam of -id voor geïmporteerde bestanden en mappen; leeg laat de groep ongemoeid.
+Import script path	Pad van importscript
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Absoluut pad van het script; het krijgt de bron- en doelpaden en de omgevingsvariabelen van Sonarr.
+Excluded tags (ids, comma separated)	Uitgesloten tags (id's, kommagescheiden)
+The profile does not apply to series with one of these tags.	Het profiel geldt niet voor series met een van deze tags.
+Reject releases published before the episode airs	Releases weigeren die zijn gepubliceerd voordat de aflevering wordt uitgezonden
+Allow season packs before every episode has aired	Seizoenspakketten toestaan voordat elke aflevering is uitgezonden
+Air date grace period (hours)	Respijtperiode uitzenddatum (uren)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Releases die tot zoveel uur na de uitzenddatum zijn gepubliceerd, worden nog steeds geweigerd; een negatief getal staat ze zoveel uur ervoor toe.
+Presets	Presets
+Series ID	Serie-ID
+Anime group	Animegroep
+Absolute episode number	Absoluut afleveringsnummer
+Episode title	Afleveringstitel
+Media info	Media-info
+Original	Origineel
+File name tokens	Tokens voor bestandsnamen
+Folder name tokens	Tokens voor mapnamen
+Format	Formaat
+Separator	Scheidingsteken
+Space ( )	Spatie ( )
+Period (.)	Punt (.)
+Underscore (_)	Liggend streepje (_)
+Dash (-)	Streepje (-)
+Capitalization	Hoofdlettergebruik
+Default case	Standaard
+Lowercase	Kleine letters
+Uppercase	Hoofdletters
+Click a token to insert it at the cursor; a preset replaces the whole format.	Klik op een token om het bij de cursor in te voegen; een preset vervangt het hele formaat.
+Tokens	Tokens
+Tokens for {}	Tokens voor {}
+Invalid format	Ongeldig formaat
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Formaten gebruiken de tokens van Sonarr; de voorbeelden hieronder volgen je wijzigingen voordat je opslaat.
+Rename episodes	Afleveringen hernoemen
+Replace illegal characters (otherwise they are removed)	Ongeldige tekens vervangen (anders worden ze verwijderd)
+Colon replacement	Vervanging van dubbele punten
+How colons in titles are written in file and folder names.	Hoe dubbele punten in titels in bestands- en mapnamen worden geschreven.
+Replace with dash	Vervangen door streepje
+Replace with space dash	Vervangen door spatie streepje
+Replace with space dash space	Vervangen door spatie streepje spatie
+Smart replace (dash or space dash)	Slim vervangen (streepje of spatie streepje)
+Custom	Aangepast
+Custom colon replacement	Aangepaste vervanging van dubbele punten
+The characters written instead of a colon.	De tekens die in plaats van een dubbele punt worden geschreven.
+Multi-episode style	Stijl voor meerdere afleveringen
+Extend (S01E01-02-03)	Uitbreiden (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Dupliceren (S01E01.S01E02)
+Repeat (S01E01E02E03)	Herhalen (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	Bereik (S01E01-03)
+Prefixed range (S01E01-E03)	Bereik met voorvoegsel (S01E01-E03)
+Example	Voorbeeld
+Anime group movie	Film in animegroep
+Used when films are renamed.	Gebruikt wanneer films worden hernoemd.
+Used when adding a new series or moving one.	Gebruikt bij het toevoegen of verplaatsen van een serie.
+Specials folder format	Formaat specialsmap
+Anime groups and collections: titles go to {}/{}/{}.	Animegroepen en collecties: titels gaan naar {}/{}/{}.
+Interface settings saved.	Interface-instellingen opgeslagen.
+Week column header	Kolomkop weekweergave
+The column headers of the calendar's week view.	De kolomkoppen van de weekweergave van de kalender.
+Dates	Datums
+Short date format	Korte datumnotatie
+Long date format	Lange datumnotatie
+Time format	Tijdnotatie
+Time zone	Tijdzone
+Dates and times are shown in this time zone; empty follows the browser.	Datums en tijden worden in deze tijdzone getoond; leeg volgt de browser.
+The browser's time zone	Tijdzone van de browser
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Relatieve datums tonen (Vandaag, Gisteren, Morgen) in plaats van de datum
+Style	Stijl
+Theme	Thema
+Kept in this browser; the top bar button switches it too.	Bewaard in deze browser; de knop in de bovenbalk wisselt het ook.
+Dark	Donker
+Light	Licht
+Colour-impaired mode (colours easier to tell apart, with patterns)	Modus voor kleurenblinden (beter te onderscheiden kleuren, met patronen)
+Saved to the configuration file. Restart Kitsunarr to apply.	Opgeslagen in het configuratiebestand. Start Kitsunarr opnieuw om toe te passen.
+Host and logging	Host en logging
+Set by an environment variable or command-line flag: {}	Ingesteld door een omgevingsvariabele of opdrachtregeloptie: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Opgeslagen in {}. Wijzigingen gelden de volgende keer dat Kitsunarr start; omgevingsvariabelen en opdrachtregelopties hebben nog steeds voorrang.
+Restart required: the saved values differ from the ones in use.	Herstart vereist: de opgeslagen waarden verschillen van de waarden die in gebruik zijn.
+Restart now	Nu opnieuw starten
+Bind address	Bindadres
+0.0.0.0 listens on every interface.	0.0.0.0 luistert op elke interface.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Voor reverse proxy's, bijv. /kitsunarr; leeg serveert vanaf de root.
+Log level	Logniveau
+Debug and trace write much more to the log files.	Debug en trace schrijven veel meer naar de logbestanden.
+Trace	Trace
+Warn	Waarschuwing
+Error	Fout
+Backup folder	Back-upmap
+Absolute path; empty uses {}.	Absoluut pad; leeg gebruikt {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr serveert gewone HTTP; zet er een reverse proxy voor voor HTTPS.
+Save host settings	Hostinstellingen opslaan
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Kitsunarr nu opnieuw starten? Als het adres, de poort of de URL-basis is gewijzigd, open daarna het nieuwe adres.
+Nothing to show.	Niets om te tonen.
+All series	Alle series
+All types	Alle typen
+All profiles	Alle profielen
+All tags	Alle tags
+Downloaded	Gedownload
+Unaired	Niet uitgezonden
+{} files · {}	{} bestanden · {}
+Summary	Samenvatting
+Monitored series	Gemonitorde series
+Completed series	Voltooide series
+{} ({} completed)	{} ({} voltooid)
+{} ({} monitored)	{} ({} gemonitord)
+Episode files	Afleveringsbestanden
+{} ({} downloaded)	{} ({} gedownload)
+{} ({} per episode)	{} ({} per aflevering)
+Series status	Seriestatus
+File qualities	Bestandskwaliteiten
+Recent entries	Recente vermeldingen
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	De meest recente vermeldingen die in het geheugen worden bewaard. De logbestanden hierboven en de procesuitvoer (containerlogs of journal) bewaren alles.
+Yesterday	Gisteren
+Tomorrow	Morgen

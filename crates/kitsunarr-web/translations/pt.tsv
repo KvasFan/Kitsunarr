@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Ignorado: o servidor ainda está a iniciar
 {} expired sessions removed	{} sessões expiradas removidas
 All {} refreshes failed; see the logs	Todas as {} atualizações falharam; consulte os registos
 every folder scan failed ({})	todas as análises de pastas falharam ({})
+Links	Ligações
+Copy {}	Copiar {}
+Copy the {} id	Copiar o id do {}
+Type	Tipo
+Previous airing	Emissão anterior
+Season folder	Pasta da temporada
+Average episode size	Tamanho médio por episódio
+Genres	Géneros
+Rating	Avaliação
+Certification	Classificação etária
+Release groups	Grupos de lançamento
+File quality	Qualidade do ficheiro
+In cinemas	Nos cinemas
+Runtime	Duração
+Release group	Grupo de lançamento
+Columns	Colunas
+Shown in the table, the overview and under posters	Mostradas na tabela, na vista geral e por baixo dos pósteres
+Column {}	Coluna {}
+Reset columns	Repor colunas
+Yes	Sim
+Override and grab {}	Substituir e capturar {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Escolha a série, os episódios, a qualidade, os idiomas ou o cliente de transferências deste lançamento e depois capture-o (as escolhas são mantidas para a importação)
+Override…	Substituir…
+Override and grab	Substituir e capturar
+Override and grab — {}	Substituir e capturar — {}
+{} episodes chosen	{} episódios escolhidos
+Grab release	Capturar lançamento
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	As escolhas não alteradas mantêm o que o título do lançamento indica. Se não escolher episódios, ficam os episódios a que o título corresponde.
+Searched series	Série pesquisada
+Download client	Cliente de transferências
+Episodes (required)	Episódios (obrigatório)
+Statistics	Estatísticas
+Test parsing	Testar análise
+{} items removed.	{} itens removidos.
+{} items removed; {}	{} itens removidos; {}
+Select every queue item	Selecionar todos os itens da fila
+Queue bulk actions	Ações em massa da fila
+Grab the selected releases a delay profile holds back now	Capturar agora os lançamentos selecionados retidos por um perfil de atraso
+Remove selected…	Remover selecionados…
+Remove {} items from the queue	Remover {} itens da fila
+Held-back releases are forgotten; a later search can find them again.	Os lançamentos retidos são esquecidos; uma pesquisa posterior pode encontrá-los de novo.
+Removal method	Método de remoção
+Remove from the download client	Remover do cliente de transferências
+Change category	Alterar categoria
+Keep it in the download client	Mantê-la no cliente de transferências
+The download and its files are removed from the download client.	A transferência e os seus ficheiros são removidos do cliente de transferências.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	A transferência passa para a categoria pós-importação do cliente e deixa de ser acompanhada; os seus ficheiros ficam.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	A transferência fica intacta no cliente de transferências; escolha uma opção de lista de bloqueio para bloquear o seu lançamento.
+Blocklist release	Bloquear lançamento
+Do not blocklist	Não adicionar à lista de bloqueio
+Blocklist and search for a replacement	Adicionar à lista de bloqueio e pesquisar um substituto
+Blocklist only	Apenas adicionar à lista de bloqueio
+Removed {} releases from the blocklist.	{} lançamentos removidos da lista de bloqueio.
+Remove {} selected	Remover {} selecionados
+Select every release on this page	Selecionar todos os lançamentos desta página
+Remove from the blocklist	Remover da lista de bloqueio
+Remove the {} selected releases from the blocklist?	Remover os {} lançamentos selecionados da lista de bloqueio?
+Quality, languages and release of {}	Qualidade, idiomas e lançamento de {}
+Choose the quality, languages, release group and release type the file is imported with	Escolha a qualidade, os idiomas, o grupo de lançamento e o tipo de lançamento com que o ficheiro é importado
+Import details — {}	Detalhes da importação — {}
+Use these details	Usar estes detalhes
+Revision	Revisão
+2 or more for a PROPER or REPACK.	2 ou mais para um PROPER ou REPACK.
+Single episode	Episódio único
+Multi-episode	Multiepisódio
+Season pack	Pack de temporada
+Manual	Manual
+Choose the group the title joins.	Escolha o grupo a que o título se junta.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automático agrupa o título com a sua franquia ou coleção a partir das relações oficiais. Manual coloca-o num grupo que escolher. Desativado mantém-no isolado.
+Manual puts the title in a group you choose, in the group's folder.	Manual coloca o título num grupo que escolher, na pasta do grupo.
+Manual (choose a group)	Manual (escolher um grupo)
+The title joins the group as its next season or film, in the group's folder.	O título junta-se ao grupo como a sua próxima temporada ou filme, na pasta do grupo.
+Choose a group…	Escolher um grupo…
+Collection settings saved.	Definições da coleção guardadas.
+Collection settings	Definições da coleção
+Collection name	Nome da coleção
+Collection type	Tipo de coleção
+A movie saga holds only films.	Uma saga de filmes contém apenas filmes.
+Movie saga	Saga de filmes
+Movie folder format	Formato da pasta de filmes
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Como são nomeadas as pastas dos membros quando os títulos se juntam: o modo automático usa pastas numeradas nas sagas e pastas de arco narrativo para os arcos.
+Numbered	Numeradas
+No change	Sem alteração
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	A monitorização, o perfil de qualidade e a pasta da temporada aplicam-se já a todos os membros; o tipo e o formato da pasta aplicam-se aos títulos que se juntarem a partir de agora.
+Collection settings…	Definições da coleção…
+Monitoring, quality profile, series type, folder and tags	Monitorização, perfil de qualidade, tipo de série, pasta e etiquetas
+Change the quality, languages or release group of episode files, or delete them	Alterar a qualidade, os idiomas ou o grupo de lançamento dos ficheiros de episódios, ou eliminá-los
+Manage episodes	Gerir episódios
+Episode details: overview, file, history and searches	Detalhes do episódio: sinopse, ficheiro, histórico e pesquisas
+Details of episode {}	Detalhes do episódio {}
+Monitoring, availability, quality profile, folder and tags	Monitorização, disponibilidade, perfil de qualidade, pasta e etiquetas
+No tags yet: create them in Settings › Tags.	Ainda sem etiquetas: crie-as em Definições › Etiquetas.
+Below the root folder.	Dentro da pasta raiz.
+Use the folder name the naming settings give	Usar o nome de pasta dado pelas definições de nomenclatura
+Use naming format	Usar formato de nomenclatura
+Series saved.	Série guardada.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	O Kitsunarr pesquisa e transfere os episódios monitorizados de uma série monitorizada.
+Whether seasons a refresh discovers are monitored.	Se as temporadas que uma atualização descobre são monitorizadas.
+Sort episodes into season folders.	Organizar os episódios em pastas de temporada.
+Use season folders	Usar pastas de temporada
+Decides how episodes are numbered when searching and importing.	Decide como os episódios são numerados ao pesquisar e importar.
+TheTVDB titles in this language; changing it refreshes the series.	Títulos do TheTVDB neste idioma; alterá-lo atualiza a série.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Desativado remove a série do seu grupo de anime e mantém-na fora do agrupamento automático.
+Enter a folder name.	Introduza um nome de pasta.
+Edit — {}	Editar — {}
+Announced	Anunciado
+Released	Lançado
+Movie saved.	Filme guardado.
+Kitsunarr searches for and downloads a monitored movie.	O Kitsunarr pesquisa e transfere um filme monitorizado.
+Minimum availability	Disponibilidade mínima
+When the movie counts as available for automatic searches.	Quando o filme conta como disponível para as pesquisas automáticas.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Desativado remove o filme da sua coleção e mantém-no fora do agrupamento automático.
+Edit {} selected	Editar {} selecionados
+Apply changes	Aplicar alterações
+No season folders	Sem pastas de temporada
+Tags updated on {} items.	Etiquetas atualizadas em {} itens.
+Removes the chosen tags from every selected title.	Remove as etiquetas escolhidas de todos os títulos selecionados.
+Every selected title gets exactly the chosen tags (none removes all).	Cada título selecionado fica exatamente com as etiquetas escolhidas (nenhuma remove todas).
+Adds the chosen tags to every selected title.	Adiciona as etiquetas escolhidas a todos os títulos selecionados.
+Tags — {} selected	Etiquetas — {} selecionados
+Apply tags	Aplicar etiquetas
+Replace	Substituir
+Manage	Gerir
+Multi-season pack	Pack de várias temporadas
+Scene name	Nome de cena
+Video	Vídeo
+· {} fps	· {} fps
+Run time	Duração
+Audio	Áudio
+Subtitles	Legendas
+Details	Detalhes
+Search the indexers and grab the best release	Pesquisar nos indexadores e capturar o melhor lançamento
+See every release and choose	Ver todos os lançamentos e escolher
+absolute {}	absoluto {}
+Air date	Data de emissão
+No overview.	Sem sinopse.
+Delete this episode's file? It goes to the recycle bin when one is set.	Eliminar o ficheiro deste episódio? Vai para a reciclagem, se estiver definida.
+{} files updated.	{} ficheiros atualizados.
+{} files deleted.	{} ficheiros eliminados.
+{} files deleted; {}	{} ficheiros eliminados; {}
+Delete files	Eliminar ficheiros
+The series has no files.	A série não tem ficheiros.
+Change	Alterar
+Change for the selected files…	Alterar para os ficheiros selecionados…
+Empty clears it	Vazio limpa o valor
+Select every file	Selecionar todos os ficheiros
+Delete the {} selected files? They go to the recycle bin when one is set.	Eliminar os {} ficheiros selecionados? Vão para a reciclagem, se estiver definida.
+Monitoring, quality profile, series type and season folders of the selected series	Monitorização, perfil de qualidade, tipo de série e pastas de temporada das séries selecionadas
+Edit…	Editar…
+Add, remove or replace the tags of the selected series	Adicionar, remover ou substituir as etiquetas das séries selecionadas
+Tags…	Etiquetas…
+Monitoring and quality profile of the selected movies	Monitorização e perfil de qualidade dos filmes selecionados
+Add, remove or replace the tags of the selected movies	Adicionar, remover ou substituir as etiquetas dos filmes selecionados
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Cole um título de lançamento ou um nome de ficheiro para ver como o Kitsunarr o lê e a que episódios corresponde.
+Parse	Analisar
+Kitsunarr could not read this title.	O Kitsunarr não conseguiu ler este título.
+Parse result	Resultado da análise
+Series title	Título da série
+Absolute episodes	Episódios absolutos
+Release hash	Hash do lançamento
+Multi-season	Várias temporadas
+Absolute numbering	Numeração absoluta
+Library match	Correspondência na biblioteca
+No series in the library matches this title.	Nenhuma série da biblioteca corresponde a este título.
+No episode of the series matches.	Nenhum episódio da série corresponde.
+Log files	Ficheiros de registo
+Refresh	Atualizar
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	O Kitsunarr escreve o registo em ficheiros na pasta de dados, rodados a cada 1 MiB. O nível de registo é definido em Definições › Geral.
+No log files yet	Ainda sem ficheiros de registo
+Last written	Última escrita
+Skip the free-space check when importing	Ignorar a verificação de espaço livre ao importar
+Create empty series folders during disk scans (not with "delete empty folders")	Criar pastas de séries vazias durante as análises do disco (não com "eliminar pastas vazias")
+Skip the free-space check when grabbing	Ignorar a verificação de espaço livre ao capturar
+Set permissions on imported files and folders (Linux)	Definir permissões nos ficheiros e pastas importados (Linux)
+Import using a script	Importar com um script
+Rescan series folder after refresh	Voltar a analisar a pasta da série após a atualização
+Whether a metadata refresh scans the series folder for changes afterwards.	Se uma atualização de metadados analisa depois a pasta da série à procura de alterações.
+Always	Sempre
+After manual refresh	Após atualização manual
+Never	Nunca
+Episode title required	Título do episódio obrigatório
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	As importações aguardam um título de episódio quando o formato de nomenclatura o usa e o episódio foi emitido nas últimas 48 horas.
+Only for bulk season releases	Apenas para lançamentos de temporadas completas
+Season pack upgrades	Melhorias com packs de temporada
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Quantos episódios de um pack de temporada têm de estar em falta ou poder ser melhorados para que o pack seja capturado.
+A share of the episodes	Uma parte dos episódios
+Any episode	Qualquer episódio
+Season pack upgrade threshold (%)	Limiar de melhoria com packs de temporada (%)
+Rejected extensions	Extensões rejeitadas
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Separadas por vírgulas, como exe, bat. Uma transferência de um único ficheiro com uma destas extensões não é importada.
+Folder permissions (chmod)	Permissões das pastas (chmod)
+Octal mode for folders; files get it without the execute bits.	Modo octal para as pastas; os ficheiros recebem-no sem os bits de execução.
+Group (chown)	Grupo (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Nome ou id do grupo para os ficheiros e pastas importados; vazio deixa o grupo como está.
+Import script path	Caminho do script de importação
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Caminho absoluto do script; recebe os caminhos de origem e de destino e as variáveis de ambiente do Sonarr.
+Excluded tags (ids, comma separated)	Etiquetas excluídas (ids, separados por vírgulas)
+The profile does not apply to series with one of these tags.	O perfil não se aplica a séries com uma destas etiquetas.
+Reject releases published before the episode airs	Rejeitar lançamentos publicados antes da emissão do episódio
+Allow season packs before every episode has aired	Permitir packs de temporada antes de todos os episódios terem sido emitidos
+Air date grace period (hours)	Margem sobre a data de emissão (horas)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Os lançamentos publicados até este número de horas após a data de emissão continuam a ser rejeitados; um número negativo permite-os esse número de horas antes.
+Presets	Predefinições
+Series ID	ID da série
+Anime group	Grupo de anime
+Absolute episode number	Número absoluto do episódio
+Episode title	Título do episódio
+Media info	Informação multimédia
+Original	Original
+File name tokens	Tokens do nome do ficheiro
+Folder name tokens	Tokens do nome da pasta
+Format	Formato
+Separator	Separador
+Space ( )	Espaço ( )
+Period (.)	Ponto (.)
+Underscore (_)	Sublinhado (_)
+Dash (-)	Hífen (-)
+Capitalization	Maiúsculas/minúsculas
+Default case	Sem alteração
+Lowercase	Minúsculas
+Uppercase	Maiúsculas
+Click a token to insert it at the cursor; a preset replaces the whole format.	Clique num token para o inserir no cursor; uma predefinição substitui o formato inteiro.
+Tokens	Tokens
+Tokens for {}	Tokens de {}
+Invalid format	Formato inválido
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Os formatos usam os tokens do Sonarr; os exemplos abaixo acompanham as suas alterações antes de guardar.
+Rename episodes	Renomear episódios
+Replace illegal characters (otherwise they are removed)	Substituir caracteres inválidos (caso contrário são removidos)
+Colon replacement	Substituição de dois pontos
+How colons in titles are written in file and folder names.	Como os dois pontos dos títulos são escritos nos nomes de ficheiros e pastas.
+Replace with dash	Substituir por hífen
+Replace with space dash	Substituir por espaço e hífen
+Replace with space dash space	Substituir por espaço, hífen e espaço
+Smart replace (dash or space dash)	Substituição inteligente (hífen ou espaço e hífen)
+Custom	Personalizado
+Custom colon replacement	Substituição personalizada de dois pontos
+The characters written instead of a colon.	Os caracteres escritos em vez de dois pontos.
+Multi-episode style	Estilo multiepisódio
+Extend (S01E01-02-03)	Estender (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Duplicar (S01E01.S01E02)
+Repeat (S01E01E02E03)	Repetir (S01E01E02E03)
+Scene (S01E01-E02-E03)	Cena (S01E01-E02-E03)
+Range (S01E01-03)	Intervalo (S01E01-03)
+Prefixed range (S01E01-E03)	Intervalo com prefixo (S01E01-E03)
+Example	Exemplo
+Anime group movie	Filme de grupo de anime
+Used when films are renamed.	Usado quando os filmes são renomeados.
+Used when adding a new series or moving one.	Usado ao adicionar uma nova série ou ao movê-la.
+Specials folder format	Formato da pasta de especiais
+Anime groups and collections: titles go to {}/{}/{}.	Grupos de anime e coleções: os títulos vão para {}/{}/{}.
+Interface settings saved.	Definições da interface guardadas.
+Week column header	Cabeçalho das colunas da semana
+The column headers of the calendar's week view.	Os cabeçalhos das colunas da vista semanal do calendário.
+Dates	Datas
+Short date format	Formato de data curto
+Long date format	Formato de data longo
+Time format	Formato de hora
+Time zone	Fuso horário
+Dates and times are shown in this time zone; empty follows the browser.	As datas e horas são mostradas neste fuso horário; vazio segue o navegador.
+The browser's time zone	O fuso horário do navegador
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Mostrar datas relativas (Hoje, Ontem, Amanhã) em vez da data
+Style	Estilo
+Theme	Tema
+Kept in this browser; the top bar button switches it too.	Guardado neste navegador; o botão da barra superior também o muda.
+Dark	Escuro
+Light	Claro
+Colour-impaired mode (colours easier to tell apart, with patterns)	Modo para daltónicos (cores mais fáceis de distinguir, com padrões)
+Saved to the configuration file. Restart Kitsunarr to apply.	Guardado no ficheiro de configuração. Reinicie o Kitsunarr para aplicar.
+Host and logging	Anfitrião e registo
+Set by an environment variable or command-line flag: {}	Definido por uma variável de ambiente ou opção da linha de comandos: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Guardado em {}. As alterações aplicam-se no próximo arranque do Kitsunarr; as variáveis de ambiente e as opções da linha de comandos continuam a ter precedência.
+Restart required: the saved values differ from the ones in use.	Reinício necessário: os valores guardados diferem dos que estão em uso.
+Restart now	Reiniciar agora
+Bind address	Endereço de escuta
+0.0.0.0 listens on every interface.	0.0.0.0 escuta em todas as interfaces.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Para proxies inversos, ex. /kitsunarr; vazio serve a partir da raiz.
+Log level	Nível de registo
+Debug and trace write much more to the log files.	Depuração e rastreio escrevem muito mais nos ficheiros de registo.
+Trace	Rastreio
+Warn	Aviso
+Error	Erro
+Backup folder	Pasta de cópias de segurança
+Absolute path; empty uses {}.	Caminho absoluto; vazio usa {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	O Kitsunarr serve HTTP simples; coloque um proxy inverso à frente dele para HTTPS.
+Save host settings	Guardar definições do anfitrião
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Reiniciar o Kitsunarr agora? Se o endereço, a porta ou a base do URL mudaram, abra depois o novo endereço.
+Nothing to show.	Nada para mostrar.
+All series	Todas as séries
+All types	Todos os tipos
+All profiles	Todos os perfis
+All tags	Todas as etiquetas
+Downloaded	Transferidos
+Unaired	Por emitir
+{} files · {}	{} ficheiros · {}
+Summary	Resumo
+Monitored series	Séries monitorizadas
+Completed series	Séries concluídas
+{} ({} completed)	{} ({} concluídas)
+{} ({} monitored)	{} ({} monitorizadas)
+Episode files	Ficheiros de episódios
+{} ({} downloaded)	{} ({} transferidos)
+{} ({} per episode)	{} ({} por episódio)
+Series status	Estado das séries
+File qualities	Qualidades dos ficheiros
+Recent entries	Entradas recentes
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	As entradas mais recentes mantidas em memória. Os ficheiros de registo acima e a saída do processo (registos do contentor ou journal) guardam tudo.
+Yesterday	Ontem
+Tomorrow	Amanhã

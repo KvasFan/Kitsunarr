@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Přeskočeno: server se stále spouští
 {} expired sessions removed	Odstraněno vypršelých relací: {}
 All {} refreshes failed; see the logs	Všechna obnovení ({}) selhala; viz logy
 every folder scan failed ({})	všechna prohledávání složek selhala ({})
+Links	Odkazy
+Copy {}	Kopírovat {}
+Copy the {} id	Kopírovat ID {}
+Type	Typ
+Previous airing	Předchozí vysílání
+Season folder	Složka řady
+Average episode size	Průměrná velikost epizody
+Genres	Žánry
+Rating	Hodnocení
+Certification	Věková klasifikace
+Release groups	Skupiny vydání
+File quality	Kvalita souboru
+In cinemas	V kinech
+Runtime	Délka
+Release group	Skupina vydání
+Columns	Sloupce
+Shown in the table, the overview and under posters	Zobrazeno v tabulce, v přehledu a pod plakáty
+Column {}	Sloupec {}
+Reset columns	Obnovit výchozí sloupce
+Yes	Ano
+Override and grab {}	Přepsat a získat {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Vyberte seriál, epizody, kvalitu, jazyky nebo klienta pro stahování tohoto vydání a poté jej získejte (volby se zachovají pro import)
+Override…	Přepsat…
+Override and grab	Přepsat a získat
+Override and grab — {}	Přepsat a získat — {}
+{} episodes chosen	Vybrané epizody: {}
+Grab release	Získat vydání
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Nezměněné volby zachovají to, co uvádí název vydání. Pokud epizody nevyberete, zůstanou epizody, na které název odkazuje.
+Searched series	Hledaný seriál
+Download client	Klient pro stahování
+Episodes (required)	Epizody (povinné)
+Statistics	Statistiky
+Test parsing	Test parsování
+{} items removed.	Odebrané položky: {}.
+{} items removed; {}	Odebrané položky: {}; {}
+Select every queue item	Vybrat všechny položky fronty
+Queue bulk actions	Hromadné akce s frontou
+Grab the selected releases a delay profile holds back now	Získat nyní vybraná vydání zadržovaná profilem zpoždění
+Remove selected…	Odebrat vybrané…
+Remove {} items from the queue	Odebrat položky z fronty: {}
+Held-back releases are forgotten; a later search can find them again.	Zadržená vydání se zapomenou; pozdější vyhledávání je může znovu najít.
+Removal method	Způsob odebrání
+Remove from the download client	Odebrat z klienta pro stahování
+Change category	Změnit kategorii
+Keep it in the download client	Ponechat v klientovi pro stahování
+The download and its files are removed from the download client.	Stahování a jeho soubory se odeberou z klienta pro stahování.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Stahování se v klientovi přesune do kategorie po importu a přestane se sledovat; jeho soubory zůstanou.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Stahování zůstane v klientovi pro stahování nedotčeno; chcete-li jeho vydání přidat do blocklistu, zvolte možnost blocklistu.
+Blocklist release	Přidat vydání do blocklistu
+Do not blocklist	Nepřidávat do blocklistu
+Blocklist and search for a replacement	Přidat do blocklistu a hledat náhradu
+Blocklist only	Pouze přidat do blocklistu
+Removed {} releases from the blocklist.	Z blocklistu odebrána vydání: {}.
+Remove {} selected	Odebrat vybrané: {}
+Select every release on this page	Vybrat všechna vydání na této stránce
+Remove from the blocklist	Odebrat z blocklistu
+Remove the {} selected releases from the blocklist?	Odebrat z blocklistu vybraná vydání ({})?
+Quality, languages and release of {}	Kvalita, jazyky a vydání: {}
+Choose the quality, languages, release group and release type the file is imported with	Vyberte kvalitu, jazyky, skupinu vydání a typ vydání, se kterými se soubor importuje
+Import details — {}	Podrobnosti importu — {}
+Use these details	Použít tyto údaje
+Revision	Revize
+2 or more for a PROPER or REPACK.	2 nebo více pro PROPER nebo REPACK.
+Single episode	Jedna epizoda
+Multi-episode	Více epizod
+Season pack	Balíček řady
+Manual	Ručně
+Choose the group the title joins.	Vyberte skupinu, ke které se titul připojí.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automaticky seskupí titul s jeho franšízou nebo kolekcí podle oficiálních vztahů. Ručně jej zařadí do vámi zvolené skupiny. Zakázáno jej ponechá samostatně.
+Manual puts the title in a group you choose, in the group's folder.	Ručně zařadí titul do vámi zvolené skupiny, do složky skupiny.
+Manual (choose a group)	Ručně (vyberte skupinu)
+The title joins the group as its next season or film, in the group's folder.	Titul se připojí ke skupině jako její další řada nebo film, ve složce skupiny.
+Choose a group…	Vyberte skupinu…
+Collection settings saved.	Nastavení kolekce uloženo.
+Collection settings	Nastavení kolekce
+Collection name	Název kolekce
+Collection type	Typ kolekce
+A movie saga holds only films.	Filmová sága obsahuje pouze filmy.
+Movie saga	Filmová sága
+Movie folder format	Formát složky filmu
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Jak se pojmenují složky členů při připojení titulů: automaticky se používají číslované složky v ságách a složky dějových oblouků pro oblouky.
+Numbered	Číslované
+No change	Beze změny
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Monitorování, profil kvality a složka řady se nyní uplatní na všechny členy; typ a formát složky platí pro tituly, které se připojí od teď.
+Collection settings…	Nastavení kolekce…
+Monitoring, quality profile, series type, folder and tags	Monitorování, profil kvality, typ seriálu, složka a štítky
+Change the quality, languages or release group of episode files, or delete them	Změnit kvalitu, jazyky nebo skupinu vydání souborů epizod, nebo je smazat
+Manage episodes	Spravovat epizody
+Episode details: overview, file, history and searches	Podrobnosti epizody: přehled děje, soubor, historie a vyhledávání
+Details of episode {}	Podrobnosti epizody {}
+Monitoring, availability, quality profile, folder and tags	Monitorování, dostupnost, profil kvality, složka a štítky
+No tags yet: create them in Settings › Tags.	Zatím žádné štítky: vytvořte je v Nastavení › Štítky.
+Below the root folder.	Pod kořenovou složkou.
+Use the folder name the naming settings give	Použít název složky podle nastavení pojmenování
+Use naming format	Použít formát pojmenování
+Series saved.	Seriál uložen.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr hledá a stahuje monitorované epizody monitorovaného seriálu.
+Whether seasons a refresh discovers are monitored.	Zda jsou monitorovány řady nalezené při obnovení.
+Sort episodes into season folders.	Řadit epizody do složek řad.
+Use season folders	Použít složky řad
+Decides how episodes are numbered when searching and importing.	Určuje, jak se epizody číslují při vyhledávání a importu.
+TheTVDB titles in this language; changing it refreshes the series.	Názvy z TheTVDB v tomto jazyce; jeho změna seriál obnoví.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Zakázáno odebere seriál z jeho skupiny anime a vyřadí jej z automatického seskupování.
+Enter a folder name.	Zadejte název složky.
+Edit — {}	Upravit — {}
+Announced	Oznámeno
+Released	Vydáno
+Movie saved.	Film uložen.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr hledá a stahuje monitorovaný film.
+Minimum availability	Minimální dostupnost
+When the movie counts as available for automatic searches.	Kdy se film považuje za dostupný pro automatická vyhledávání.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Zakázáno odebere film z jeho kolekce a vyřadí jej z automatického seskupování.
+Edit {} selected	Upravit vybrané: {}
+Apply changes	Použít změny
+No season folders	Bez složek řad
+Tags updated on {} items.	Štítky aktualizovány, položky: {}.
+Removes the chosen tags from every selected title.	Odebere zvolené štítky ze všech vybraných titulů.
+Every selected title gets exactly the chosen tags (none removes all).	Každý vybraný titul dostane přesně zvolené štítky (žádné odebere všechny).
+Adds the chosen tags to every selected title.	Přidá zvolené štítky ke všem vybraným titulům.
+Tags — {} selected	Štítky — vybráno: {}
+Apply tags	Použít štítky
+Replace	Nahradit
+Manage	Spravovat
+Multi-season pack	Balíček více řad
+Scene name	Název scény
+Video	Video
+· {} fps	· {} fps
+Run time	Délka
+Audio	Zvuk
+Subtitles	Titulky
+Details	Podrobnosti
+Search the indexers and grab the best release	Prohledat indexery a získat nejlepší vydání
+See every release and choose	Zobrazit všechna vydání a vybrat
+absolute {}	absolutní {}
+Air date	Datum vysílání
+No overview.	Bez přehledu děje.
+Delete this episode's file? It goes to the recycle bin when one is set.	Smazat soubor této epizody? Přesune se do koše, pokud je nastaven.
+{} files updated.	Aktualizované soubory: {}.
+{} files deleted.	Smazané soubory: {}.
+{} files deleted; {}	Smazané soubory: {}; {}
+Delete files	Smazat soubory
+The series has no files.	Seriál nemá žádné soubory.
+Change	Změnit
+Change for the selected files…	Změnit u vybraných souborů…
+Empty clears it	Prázdné hodnotu vymaže
+Select every file	Vybrat všechny soubory
+Delete the {} selected files? They go to the recycle bin when one is set.	Smazat vybrané soubory ({})? Přesunou se do koše, pokud je nastaven.
+Monitoring, quality profile, series type and season folders of the selected series	Monitorování, profil kvality, typ seriálu a složky řad vybraných seriálů
+Edit…	Upravit…
+Add, remove or replace the tags of the selected series	Přidat, odebrat nebo nahradit štítky vybraných seriálů
+Tags…	Štítky…
+Monitoring and quality profile of the selected movies	Monitorování a profil kvality vybraných filmů
+Add, remove or replace the tags of the selected movies	Přidat, odebrat nebo nahradit štítky vybraných filmů
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Vložte název vydání nebo souboru a uvidíte, jak jej Kitsunarr čte a kterým epizodám odpovídá.
+Parse	Zpracovat
+Kitsunarr could not read this title.	Kitsunarr tento název nedokázal přečíst.
+Parse result	Výsledek zpracování
+Series title	Název seriálu
+Absolute episodes	Absolutní epizody
+Release hash	Hash vydání
+Multi-season	Více řad
+Absolute numbering	Absolutní číslování
+Library match	Shoda v knihovně
+No series in the library matches this title.	Tomuto názvu neodpovídá žádný seriál v knihovně.
+No episode of the series matches.	Neodpovídá žádná epizoda seriálu.
+Log files	Soubory logů
+Refresh	Obnovit
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr zapisuje log do souborů v datové složce, rotovaných po 1 MiB. Úroveň logování se nastavuje v Nastavení › Obecné.
+No log files yet	Zatím žádné soubory logů
+Last written	Poslední zápis
+Skip the free-space check when importing	Přeskočit kontrolu volného místa při importu
+Create empty series folders during disk scans (not with "delete empty folders")	Vytvářet prázdné složky seriálů při prohledávání disku (ne spolu s „mazat prázdné složky“)
+Skip the free-space check when grabbing	Přeskočit kontrolu volného místa při získávání
+Set permissions on imported files and folders (Linux)	Nastavit oprávnění importovaných souborů a složek (Linux)
+Import using a script	Importovat pomocí skriptu
+Rescan series folder after refresh	Znovu prohledat složku seriálu po obnovení
+Whether a metadata refresh scans the series folder for changes afterwards.	Zda obnovení metadat poté prohledá složku seriálu kvůli změnám.
+Always	Vždy
+After manual refresh	Po ručním obnovení
+Never	Nikdy
+Episode title required	Vyžadovat název epizody
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Importy čekají na název epizody, pokud jej formát pojmenování používá a epizoda byla odvysílána během posledních 48 hodin.
+Only for bulk season releases	Pouze pro hromadná vydání řad
+Season pack upgrades	Upgrady balíčků řad
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Kolik epizod balíčku řady musí chybět nebo být upgradovatelných, aby byl balíček získán.
+A share of the episodes	Podíl epizod
+Any episode	Jakákoli epizoda
+Season pack upgrade threshold (%)	Práh upgradu balíčku řady (%)
+Rejected extensions	Odmítané přípony
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Oddělené čárkami, např. exe, bat. Stahování s jediným souborem s některou z těchto přípon se neimportuje.
+Folder permissions (chmod)	Oprávnění složek (chmod)
+Octal mode for folders; files get it without the execute bits.	Osmičkový režim pro složky; soubory jej dostanou bez bitů pro spuštění.
+Group (chown)	Skupina (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Název nebo ID skupiny pro importované soubory a složky; prázdné skupinu nemění.
+Import script path	Cesta ke skriptu importu
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Absolutní cesta ke skriptu; dostane zdrojovou a cílovou cestu a proměnné prostředí Sonarr.
+Excluded tags (ids, comma separated)	Vyloučené štítky (ID, oddělené čárkami)
+The profile does not apply to series with one of these tags.	Profil se nevztahuje na seriály s některým z těchto štítků.
+Reject releases published before the episode airs	Odmítat vydání zveřejněná před odvysíláním epizody
+Allow season packs before every episode has aired	Povolit balíčky řad dříve, než jsou odvysílány všechny epizody
+Air date grace period (hours)	Tolerance data vysílání (hodiny)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Vydání zveřejněná až do tohoto počtu hodin po datu vysílání se stále odmítají; záporné číslo je povolí o tolik hodin dříve.
+Presets	Předvolby
+Series ID	ID seriálu
+Anime group	Skupina anime
+Absolute episode number	Absolutní číslo epizody
+Episode title	Název epizody
+Media info	Informace o médiu
+Original	Originál
+File name tokens	Tokeny názvu souboru
+Folder name tokens	Tokeny názvu složky
+Format	Formát
+Separator	Oddělovač
+Space ( )	Mezera ( )
+Period (.)	Tečka (.)
+Underscore (_)	Podtržítko (_)
+Dash (-)	Pomlčka (-)
+Capitalization	Velikost písmen
+Default case	Výchozí velikost písmen
+Lowercase	Malá písmena
+Uppercase	Velká písmena
+Click a token to insert it at the cursor; a preset replaces the whole format.	Kliknutím na token jej vložíte na pozici kurzoru; předvolba nahradí celý formát.
+Tokens	Tokeny
+Tokens for {}	Tokeny pro {}
+Invalid format	Neplatný formát
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Formáty používají tokeny Sonarr; příklady níže sledují vaše změny ještě před uložením.
+Rename episodes	Přejmenovat epizody
+Replace illegal characters (otherwise they are removed)	Nahradit nepovolené znaky (jinak se odstraní)
+Colon replacement	Nahrazení dvojtečky
+How colons in titles are written in file and folder names.	Jak se dvojtečky v názvech zapisují do názvů souborů a složek.
+Replace with dash	Nahradit pomlčkou
+Replace with space dash	Nahradit mezerou a pomlčkou
+Replace with space dash space	Nahradit mezerou, pomlčkou a mezerou
+Smart replace (dash or space dash)	Chytré nahrazení (pomlčka nebo mezera a pomlčka)
+Custom	Vlastní
+Custom colon replacement	Vlastní nahrazení dvojtečky
+The characters written instead of a colon.	Znaky zapsané místo dvojtečky.
+Multi-episode style	Styl více epizod
+Extend (S01E01-02-03)	Rozšířit (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Duplikovat (S01E01.S01E02)
+Repeat (S01E01E02E03)	Opakovat (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scéna (S01E01-E02-E03)
+Range (S01E01-03)	Rozsah (S01E01-03)
+Prefixed range (S01E01-E03)	Rozsah s předponou (S01E01-E03)
+Example	Příklad
+Anime group movie	Film ve skupině anime
+Used when films are renamed.	Používá se při přejmenování filmů.
+Used when adding a new series or moving one.	Používá se při přidání nového seriálu nebo jeho přesunu.
+Specials folder format	Formát složky speciálů
+Anime groups and collections: titles go to {}/{}/{}.	Skupiny anime a kolekce: tituly se ukládají do {}/{}/{}.
+Interface settings saved.	Nastavení rozhraní uloženo.
+Week column header	Záhlaví sloupců týdne
+The column headers of the calendar's week view.	Záhlaví sloupců v týdenním zobrazení kalendáře.
+Dates	Datum a čas
+Short date format	Krátký formát data
+Long date format	Dlouhý formát data
+Time format	Formát času
+Time zone	Časové pásmo
+Dates and times are shown in this time zone; empty follows the browser.	Data a časy se zobrazují v tomto časovém pásmu; prázdné použije pásmo prohlížeče.
+The browser's time zone	Časové pásmo prohlížeče
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Zobrazit relativní data (Dnes, Včera, Zítra) místo data
+Style	Styl
+Theme	Motiv
+Kept in this browser; the top bar button switches it too.	Uloženo v tomto prohlížeči; přepíná jej i tlačítko v horní liště.
+Dark	Tmavý
+Light	Světlý
+Colour-impaired mode (colours easier to tell apart, with patterns)	Režim pro barvoslepé (lépe rozlišitelné barvy, se vzory)
+Saved to the configuration file. Restart Kitsunarr to apply.	Uloženo do konfiguračního souboru. Pro uplatnění restartujte Kitsunarr.
+Host and logging	Hostitel a logování
+Set by an environment variable or command-line flag: {}	Nastaveno proměnnou prostředí nebo přepínačem příkazové řádky: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Uloženo do {}. Změny se uplatní při příštím spuštění Kitsunarr; proměnné prostředí a přepínače příkazové řádky mají stále přednost.
+Restart required: the saved values differ from the ones in use.	Vyžadován restart: uložené hodnoty se liší od používaných.
+Restart now	Restartovat nyní
+Bind address	Adresa naslouchání
+0.0.0.0 listens on every interface.	0.0.0.0 naslouchá na všech rozhraních.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Pro reverzní proxy, např. /kitsunarr; prázdné obsluhuje z kořene.
+Log level	Úroveň logování
+Debug and trace write much more to the log files.	Ladění a trasování zapisují do souborů logů mnohem více.
+Trace	Trasování
+Warn	Varování
+Error	Chyba
+Backup folder	Složka záloh
+Absolute path; empty uses {}.	Absolutní cesta; prázdné použije {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr poskytuje prosté HTTP; pro HTTPS před něj umístěte reverzní proxy.
+Save host settings	Uložit nastavení hostitele
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Restartovat Kitsunarr nyní? Pokud se změnila adresa, port nebo základ URL, otevřete poté novou adresu.
+Nothing to show.	Nic k zobrazení.
+All series	Všechny seriály
+All types	Všechny typy
+All profiles	Všechny profily
+All tags	Všechny štítky
+Downloaded	Staženo
+Unaired	Neodvysíláno
+{} files · {}	Soubory: {} · {}
+Summary	Souhrn
+Monitored series	Monitorované seriály
+Completed series	Dokončené seriály
+{} ({} completed)	{} (dokončeno: {})
+{} ({} monitored)	{} (monitorováno: {})
+Episode files	Soubory epizod
+{} ({} downloaded)	{} (staženo: {})
+{} ({} per episode)	{} ({} na epizodu)
+Series status	Stav seriálů
+File qualities	Kvality souborů
+Recent entries	Nedávné záznamy
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Nejnovější záznamy uchované v paměti. Soubory logů výše a výstup procesu (logy kontejneru nebo journal) uchovávají vše.
+Yesterday	Včera
+Tomorrow	Zítra

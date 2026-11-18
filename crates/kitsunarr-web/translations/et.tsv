@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Vahele jäetud: server alles käivitub
 {} expired sessions removed	Eemaldatud aegunud seansse: {}
 All {} refreshes failed; see the logs	Kõik {} värskendust nurjusid; vaata logisid
 every folder scan failed ({})	kõik kausta skaneerimised nurjusid ({})
+Links	Lingid
+Copy {}	Kopeeri {}
+Copy the {} id	Kopeeri {} ID
+Type	Tüüp
+Previous airing	Eelmine eetriaeg
+Season folder	Hooaja kaust
+Average episode size	Episoodi keskmine suurus
+Genres	Žanrid
+Rating	Hinnang
+Certification	Vanusepiirang
+Release groups	Väljalaskegrupid
+File quality	Faili kvaliteet
+In cinemas	Kinodes
+Runtime	Kestus
+Release group	Väljalaskegrupp
+Columns	Veerud
+Shown in the table, the overview and under posters	Kuvatakse tabelis, ülevaates ja plakatite all
+Column {}	Veerg {}
+Reset columns	Lähtesta veerud
+Yes	Jah
+Override and grab {}	Kirjuta üle ja haara {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Vali selle väljalaske sari, episoodid, kvaliteet, keeled või allalaadimisklient ja haara see siis (valikud säilitatakse importimiseks)
+Override…	Kirjuta üle…
+Override and grab	Kirjuta üle ja haara
+Override and grab — {}	Kirjuta üle ja haara — {}
+{} episodes chosen	Valitud episoode: {}
+Grab release	Haara väljalase
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Muutmata valikud jätavad selle, mida väljalaske pealkiri ütleb. Valimata episoodid jätavad episoodid, millele pealkiri vastab.
+Searched series	Otsitud sari
+Download client	Allalaadimisklient
+Episodes (required)	Episoodid (kohustuslik)
+Statistics	Statistika
+Test parsing	Testi parsimist
+{} items removed.	Eemaldatud kirjeid: {}.
+{} items removed; {}	Eemaldatud kirjeid: {}; {}
+Select every queue item	Vali kõik järjekorra kirjed
+Queue bulk actions	Järjekorra hulgitoimingud
+Grab the selected releases a delay profile holds back now	Haara kohe valitud väljalasked, mida viivitusprofiil kinni hoiab
+Remove selected…	Eemalda valitud…
+Remove {} items from the queue	Eemalda järjekorrast {} kirjet
+Held-back releases are forgotten; a later search can find them again.	Kinni hoitud väljalasked unustatakse; hilisem otsing võib need uuesti leida.
+Removal method	Eemaldamise viis
+Remove from the download client	Eemalda allalaadimiskliendist
+Change category	Muuda kategooriat
+Keep it in the download client	Jäta allalaadimisklienti
+The download and its files are removed from the download client.	Allalaadimine ja selle failid eemaldatakse allalaadimiskliendist.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Allalaadimine liigub kliendi impordijärgsesse kategooriasse ja seda enam ei jälgita; selle failid jäävad alles.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Allalaadimine jääb allalaadimisklienti puutumata; vali blokeerimisvalik, et selle väljalase blokeerimisloendisse lisada.
+Blocklist release	Lisa väljalase blokeerimisloendisse
+Do not blocklist	Ära lisa blokeerimisloendisse
+Blocklist and search for a replacement	Lisa blokeerimisloendisse ja otsi asendus
+Blocklist only	Ainult blokeerimisloendisse
+Removed {} releases from the blocklist.	Blokeerimisloendist eemaldatud väljalaskeid: {}.
+Remove {} selected	Eemalda valitud ({})
+Select every release on this page	Vali kõik selle lehe väljalasked
+Remove from the blocklist	Eemalda blokeerimisloendist
+Remove the {} selected releases from the blocklist?	Kas eemaldada {} valitud väljalaset blokeerimisloendist?
+Quality, languages and release of {}	Kvaliteet, keeled ja väljalase: {}
+Choose the quality, languages, release group and release type the file is imported with	Vali kvaliteet, keeled, väljalaskegrupp ja väljalaske tüüp, millega fail imporditakse
+Import details — {}	Importimise üksikasjad — {}
+Use these details	Kasuta neid üksikasju
+Revision	Redaktsioon
+2 or more for a PROPER or REPACK.	2 või rohkem PROPER- või REPACK-väljalaske puhul.
+Single episode	Üks episood
+Multi-episode	Mitu episoodi
+Season pack	Hooajapakk
+Manual	Käsitsi
+Choose the group the title joins.	Vali rühm, millega pealkiri liitub.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automaatne rühmitab pealkirja ametlike seoste põhjal selle frantsiisi või kollektsiooniga. Käsitsi paigutab selle sinu valitud rühma. Välja lülitatud hoiab selle eraldi.
+Manual puts the title in a group you choose, in the group's folder.	Käsitsi paigutab pealkirja sinu valitud rühma, rühma kausta.
+Manual (choose a group)	Käsitsi (vali rühm)
+The title joins the group as its next season or film, in the group's folder.	Pealkiri liitub rühmaga selle järgmise hooaja või filmina, rühma kausta.
+Choose a group…	Vali rühm…
+Collection settings saved.	Kollektsiooni seaded salvestatud.
+Collection settings	Kollektsiooni seaded
+Collection name	Kollektsiooni nimi
+Collection type	Kollektsiooni tüüp
+A movie saga holds only films.	Filmisaaga sisaldab ainult filme.
+Movie saga	Filmisaaga
+Movie folder format	Filmi kausta vorming
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Kuidas liikmete kaustad nimetatakse, kui pealkirjad liituvad: automaatne kasutab saagades nummerdatud kaustu ja süžeekaartes süžeekaare kaustu.
+Numbered	Nummerdatud
+No change	Muutmata
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Jälgimine, kvaliteediprofiil ja hooaja kaust kehtivad nüüd kõigile liikmetele; tüüp ja kausta vorming kehtivad edaspidi liituvatele pealkirjadele.
+Collection settings…	Kollektsiooni seaded…
+Monitoring, quality profile, series type, folder and tags	Jälgimine, kvaliteediprofiil, sarja tüüp, kaust ja sildid
+Change the quality, languages or release group of episode files, or delete them	Muuda episoodifailide kvaliteeti, keeli või väljalaskegruppi või kustuta need
+Manage episodes	Halda episoode
+Episode details: overview, file, history and searches	Episoodi üksikasjad: ülevaade, fail, ajalugu ja otsingud
+Details of episode {}	Episoodi {} üksikasjad
+Monitoring, availability, quality profile, folder and tags	Jälgimine, saadavus, kvaliteediprofiil, kaust ja sildid
+No tags yet: create them in Settings › Tags.	Silte veel pole: loo need jaotises Seaded › Sildid.
+Below the root folder.	Juurkausta all.
+Use the folder name the naming settings give	Kasuta nimetamisseadetest tulenevat kausta nime
+Use naming format	Kasuta nimetamisvormingut
+Series saved.	Sari salvestatud.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr otsib ja laadib alla jälgitava sarja jälgitavad episoodid.
+Whether seasons a refresh discovers are monitored.	Kas värskendamisel leitud hooaegu jälgitakse.
+Sort episodes into season folders.	Sorteeri episoodid hooajakaustadesse.
+Use season folders	Kasuta hooajakaustu
+Decides how episodes are numbered when searching and importing.	Määrab, kuidas episoode otsimisel ja importimisel nummerdatakse.
+TheTVDB titles in this language; changing it refreshes the series.	TheTVDB pealkirjad selles keeles; muutmine värskendab sarja.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Välja lülitatud eemaldab sarja selle anime rühmast ja hoiab selle automaatsest rühmitamisest väljas.
+Enter a folder name.	Sisesta kausta nimi.
+Edit — {}	Muuda — {}
+Announced	Välja kuulutatud
+Released	Välja antud
+Movie saved.	Film salvestatud.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr otsib ja laadib alla jälgitava filmi.
+Minimum availability	Minimaalne saadavus
+When the movie counts as available for automatic searches.	Millal film loetakse automaatsete otsingute jaoks saadavaks.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Välja lülitatud eemaldab filmi selle kollektsioonist ja hoiab selle automaatsest rühmitamisest väljas.
+Edit {} selected	Muuda valitud ({})
+Apply changes	Rakenda muudatused
+No season folders	Hooajakaustu pole
+Tags updated on {} items.	Sildid uuendatud, kirjeid: {}.
+Removes the chosen tags from every selected title.	Eemaldab valitud sildid igalt valitud pealkirjalt.
+Every selected title gets exactly the chosen tags (none removes all).	Iga valitud pealkiri saab täpselt valitud sildid (mitte ühtegi eemaldab kõik).
+Adds the chosen tags to every selected title.	Lisab valitud sildid igale valitud pealkirjale.
+Tags — {} selected	Sildid — valitud {}
+Apply tags	Rakenda sildid
+Replace	Asenda
+Manage	Halda
+Multi-season pack	Mitme hooaja pakk
+Scene name	Stseeninimi
+Video	Video
+· {} fps	· {} fps
+Run time	Kestus
+Audio	Heli
+Subtitles	Subtiitrid
+Details	Üksikasjad
+Search the indexers and grab the best release	Otsi indekseritest ja haara parim väljalase
+See every release and choose	Vaata kõiki väljalaskeid ja vali
+absolute {}	absoluutne {}
+Air date	Eetrikuupäev
+No overview.	Ülevaade puudub.
+Delete this episode's file? It goes to the recycle bin when one is set.	Kas kustutada selle episoodi fail? See läheb prügikasti, kui see on määratud.
+{} files updated.	Uuendatud faile: {}.
+{} files deleted.	Kustutatud faile: {}.
+{} files deleted; {}	Kustutatud faile: {}; {}
+Delete files	Kustuta failid
+The series has no files.	Sarjal pole faile.
+Change	Muuda
+Change for the selected files…	Muuda valitud failide jaoks…
+Empty clears it	Tühi kustutab väärtuse
+Select every file	Vali kõik failid
+Delete the {} selected files? They go to the recycle bin when one is set.	Kas kustutada {} valitud faili? Need lähevad prügikasti, kui see on määratud.
+Monitoring, quality profile, series type and season folders of the selected series	Valitud sarjade jälgimine, kvaliteediprofiil, sarja tüüp ja hooajakaustad
+Edit…	Muuda…
+Add, remove or replace the tags of the selected series	Lisa, eemalda või asenda valitud sarjade silte
+Tags…	Sildid…
+Monitoring and quality profile of the selected movies	Valitud filmide jälgimine ja kvaliteediprofiil
+Add, remove or replace the tags of the selected movies	Lisa, eemalda või asenda valitud filmide silte
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Kleebi väljalaske pealkiri või failinimi, et näha, kuidas Kitsunarr seda loeb ja milliste episoodidega see sobib.
+Parse	Parsi
+Kitsunarr could not read this title.	Kitsunarr ei suutnud seda pealkirja lugeda.
+Parse result	Parsimise tulemus
+Series title	Sarja pealkiri
+Absolute episodes	Absoluutsed episoodid
+Release hash	Väljalaske räsi
+Multi-season	Mitu hooaega
+Absolute numbering	Absoluutne nummerdus
+Library match	Vaste teegis
+No series in the library matches this title.	Ükski teegi sari ei vasta sellele pealkirjale.
+No episode of the series matches.	Ükski sarja episood ei vasta.
+Log files	Logifailid
+Refresh	Värskenda
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr kirjutab oma logi andmekausta failidesse, mida roteeritakse 1 MiB järel. Logitase määratakse jaotises Seaded › Üldine.
+No log files yet	Logifaile veel pole
+Last written	Viimati kirjutatud
+Skip the free-space check when importing	Jäta importimisel vaba ruumi kontroll vahele
+Create empty series folders during disk scans (not with "delete empty folders")	Loo kettaskaneerimisel tühjad sarjakaustad (mitte koos valikuga "kustuta tühjad kaustad")
+Skip the free-space check when grabbing	Jäta haaramisel vaba ruumi kontroll vahele
+Set permissions on imported files and folders (Linux)	Määra imporditud failide ja kaustade õigused (Linux)
+Import using a script	Impordi skriptiga
+Rescan series folder after refresh	Skaneeri sarja kaust pärast värskendamist uuesti
+Whether a metadata refresh scans the series folder for changes afterwards.	Kas metaandmete värskendamine skaneerib seejärel sarja kausta muudatuste suhtes.
+Always	Alati
+After manual refresh	Pärast käsitsi värskendamist
+Never	Mitte kunagi
+Episode title required	Episoodi pealkiri on nõutav
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Importimised ootavad episoodi pealkirja, kui nimetamisvorming seda kasutab ja episood on eetris olnud viimase 48 tunni jooksul.
+Only for bulk season releases	Ainult terve hooaja väljalasete puhul
+Season pack upgrades	Hooajapakkide täiendused
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Mitu hooajapaki episoodi peab puuduma või olema täiendatav, et pakk haarataks.
+A share of the episodes	Osa episoodidest
+Any episode	Ükskõik milline episood
+Season pack upgrade threshold (%)	Hooajapaki täienduse lävi (%)
+Rejected extensions	Keelatud laiendid
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Komadega eraldatud, näiteks exe, bat. Ühe failiga allalaadimist, millel on mõni neist laienditest, ei impordita.
+Folder permissions (chmod)	Kaustade õigused (chmod)
+Octal mode for folders; files get it without the execute bits.	Kaustade kaheksandsüsteemis režiim; failid saavad selle ilma käivitusbittideta.
+Group (chown)	Grupp (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Imporditud failide ja kaustade grupi nimi või ID; tühi jätab grupi muutmata.
+Import script path	Impordiskripti tee
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Skripti absoluutne tee; see saab lähte- ja sihttee ning Sonarri keskkonnamuutujad.
+Excluded tags (ids, comma separated)	Välistatud sildid (ID-d, komadega eraldatud)
+The profile does not apply to series with one of these tags.	Profiil ei kehti sarjadele, millel on mõni neist siltidest.
+Reject releases published before the episode airs	Lükka tagasi väljalasked, mis avaldati enne episoodi eetrisse jõudmist
+Allow season packs before every episode has aired	Luba hooajapakid enne, kui kõik episoodid on eetris olnud
+Air date grace period (hours)	Eetrikuupäeva ajapuhver (tundides)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Väljalasked, mis avaldati kuni nii mitu tundi pärast eetrikuupäeva, lükatakse ikkagi tagasi; negatiivne arv lubab need nii mitu tundi varem.
+Presets	Eelseadistused
+Series ID	Sarja ID
+Anime group	Anime rühm
+Absolute episode number	Absoluutne episoodi number
+Episode title	Episoodi pealkiri
+Media info	Meediateave
+Original	Originaal
+File name tokens	Failinime märgendid
+Folder name tokens	Kaustanime märgendid
+Format	Vorming
+Separator	Eraldaja
+Space ( )	Tühik ( )
+Period (.)	Punkt (.)
+Underscore (_)	Allkriips (_)
+Dash (-)	Sidekriips (-)
+Capitalization	Tähesuurus
+Default case	Vaikimisi tähesuurus
+Lowercase	Väiketähed
+Uppercase	Suurtähed
+Click a token to insert it at the cursor; a preset replaces the whole format.	Klõpsa märgendil, et see kursori kohale lisada; eelseadistus asendab kogu vormingu.
+Tokens	Märgendid
+Tokens for {}	Märgendid: {}
+Invalid format	Vigane vorming
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Vormingud kasutavad Sonarri märgendeid; allolevad näited järgivad sinu muudatusi enne salvestamist.
+Rename episodes	Nimeta episoodid ümber
+Replace illegal characters (otherwise they are removed)	Asenda keelatud märgid (muidu need eemaldatakse)
+Colon replacement	Koolonite asendamine
+How colons in titles are written in file and folder names.	Kuidas pealkirjades olevad koolonid faili- ja kaustanimedesse kirjutatakse.
+Replace with dash	Asenda sidekriipsuga
+Replace with space dash	Asenda tühiku ja sidekriipsuga
+Replace with space dash space	Asenda tühiku, sidekriipsu ja tühikuga
+Smart replace (dash or space dash)	Nutikas asendus (sidekriips või tühik ja sidekriips)
+Custom	Kohandatud
+Custom colon replacement	Kohandatud koolonite asendus
+The characters written instead of a colon.	Märgid, mis kirjutatakse kooloni asemele.
+Multi-episode style	Mitme episoodi stiil
+Extend (S01E01-02-03)	Laienda (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Dubleeri (S01E01.S01E02)
+Repeat (S01E01E02E03)	Korda (S01E01E02E03)
+Scene (S01E01-E02-E03)	Stseen (S01E01-E02-E03)
+Range (S01E01-03)	Vahemik (S01E01-03)
+Prefixed range (S01E01-E03)	Eesliitega vahemik (S01E01-E03)
+Example	Näide
+Anime group movie	Anime rühma film
+Used when films are renamed.	Kasutatakse filmide ümbernimetamisel.
+Used when adding a new series or moving one.	Kasutatakse uue sarja lisamisel või sarja teisaldamisel.
+Specials folder format	Eriepisoodide kausta vorming
+Anime groups and collections: titles go to {}/{}/{}.	Anime rühmad ja kollektsioonid: pealkirjad lähevad kausta {}/{}/{}.
+Interface settings saved.	Liidese seaded salvestatud.
+Week column header	Nädalavaate veerupäis
+The column headers of the calendar's week view.	Kalendri nädalavaate veerupäised.
+Dates	Kuupäevad
+Short date format	Lühike kuupäevavorming
+Long date format	Pikk kuupäevavorming
+Time format	Kellaaja vorming
+Time zone	Ajavöönd
+Dates and times are shown in this time zone; empty follows the browser.	Kuupäevi ja kellaaegu kuvatakse selles ajavööndis; tühi järgib brauserit.
+The browser's time zone	Brauseri ajavöönd
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Näita suhtelisi kuupäevi (Täna, Eile, Homme) kuupäeva asemel
+Style	Stiil
+Theme	Teema
+Kept in this browser; the top bar button switches it too.	Säilitatakse selles brauseris; ülariba nupp vahetab seda samuti.
+Dark	Tume
+Light	Hele
+Colour-impaired mode (colours easier to tell apart, with patterns)	Värvipimeduse režiim (kergemini eristatavad värvid, mustritega)
+Saved to the configuration file. Restart Kitsunarr to apply.	Salvestatud konfiguratsioonifaili. Rakendamiseks taaskäivita Kitsunarr.
+Host and logging	Host ja logimine
+Set by an environment variable or command-line flag: {}	Määratud keskkonnamuutuja või käsurea lipuga: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Salvestatud faili {}. Muudatused rakenduvad Kitsunarri järgmisel käivitamisel; keskkonnamuutujatel ja käsurea lippudel on endiselt eelis.
+Restart required: the saved values differ from the ones in use.	Vajalik on taaskäivitus: salvestatud väärtused erinevad kasutusel olevatest.
+Restart now	Taaskäivita kohe
+Bind address	Sidumisaadress
+0.0.0.0 listens on every interface.	0.0.0.0 kuulab kõigil liidestel.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Pöördproksi jaoks, nt /kitsunarr; tühi serveerib juurest.
+Log level	Logitase
+Debug and trace write much more to the log files.	Silumine ja jälitus kirjutavad logifailidesse palju rohkem.
+Trace	Jälitus
+Warn	Hoiatus
+Error	Viga
+Backup folder	Varukoopiate kaust
+Absolute path; empty uses {}.	Absoluutne tee; tühi kasutab {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr serveerib tavalist HTTP-d; HTTPS-i jaoks pane selle ette pöördproksi.
+Save host settings	Salvesta hosti seaded
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Kas taaskäivitada Kitsunarr kohe? Kui aadress, port või baas-URL muutus, ava pärast seda uus aadress.
+Nothing to show.	Pole midagi näidata.
+All series	Kõik sarjad
+All types	Kõik tüübid
+All profiles	Kõik profiilid
+All tags	Kõik sildid
+Downloaded	Alla laaditud
+Unaired	Eetrisse jõudmata
+{} files · {}	Faile {} · {}
+Summary	Kokkuvõte
+Monitored series	Jälgitavad sarjad
+Completed series	Täielikud sarjad
+{} ({} completed)	{} ({} täielik)
+{} ({} monitored)	{} ({} jälgitav)
+Episode files	Episoodifailid
+{} ({} downloaded)	{} ({} alla laaditud)
+{} ({} per episode)	{} ({} episoodi kohta)
+Series status	Sarjade olek
+File qualities	Failide kvaliteedid
+Recent entries	Hiljutised kirjed
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Viimased mälus hoitavad kirjed. Ülalolevad logifailid ja protsessi väljund (konteineri logid või journal) säilitavad kõike.
+Yesterday	Eile
+Tomorrow	Homme

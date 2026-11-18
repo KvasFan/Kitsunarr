@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Пропуснато: сървърът в�
 {} expired sessions removed	Премахнати изтекли сесии: {}
 All {} refreshes failed; see the logs	Всички опреснявания ({}) са неуспешни; вижте логовете
 every folder scan failed ({})	всички сканирания на папки са неуспешни ({})
+Links	Връзки
+Copy {}	Копиране на {}
+Copy the {} id	Копиране на {} id
+Type	Тип
+Previous airing	Предишно излъчване
+Season folder	Папка за сезон
+Average episode size	Среден размер на епизод
+Genres	Жанрове
+Rating	Оценка
+Certification	Възрастова категория
+Release groups	Групи на изданията
+File quality	Качество на файла
+In cinemas	В кината
+Runtime	Продължителност
+Release group	Група на изданието
+Columns	Колони
+Shown in the table, the overview and under posters	Показва се в таблицата, общия преглед и под плакатите
+Column {}	Колона {}
+Reset columns	Нулиране на колоните
+Yes	Да
+Override and grab {}	Промяна и грабване на {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Изберете сериала, епизодите, качеството, езиците или клиента за изтегляне на това издание, след което го грабнете (изборът се запазва за импортирането)
+Override…	Промяна…
+Override and grab	Промяна и грабване
+Override and grab — {}	Промяна и грабване — {}
+{} episodes chosen	Избрани епизоди: {}
+Grab release	Грабване на изданието
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Непроменените избори запазват посоченото в заглавието на изданието. Ако не са избрани епизоди, се запазват епизодите, към които се съпоставя заглавието.
+Searched series	Търсен сериал
+Download client	Клиент за изтегляне
+Episodes (required)	Епизоди (задължително)
+Statistics	Статистика
+Test parsing	Тест на разпознаването
+{} items removed.	Премахнати елементи: {}.
+{} items removed; {}	Премахнати елементи: {}; {}
+Select every queue item	Избиране на всички елементи в опашката
+Queue bulk actions	Групови действия с опашката
+Grab the selected releases a delay profile holds back now	Грабване сега на избраните издания, задържани от профил за забавяне
+Remove selected…	Премахване на избраните…
+Remove {} items from the queue	Премахване на елементи от опашката: {}
+Held-back releases are forgotten; a later search can find them again.	Задържаните издания се забравят; по-късно търсене може да ги открие отново.
+Removal method	Начин на премахване
+Remove from the download client	Премахване от клиента за изтегляне
+Change category	Смяна на категорията
+Keep it in the download client	Оставяне в клиента за изтегляне
+The download and its files are removed from the download client.	Изтеглянето и файловете му се премахват от клиента за изтегляне.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Изтеглянето се премества в категорията на клиента след импортиране и вече не се следи; файловете му остават.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Изтеглянето остава непокътнато в клиента за изтегляне; изберете опция за блокиране, за да блокирате изданието му.
+Blocklist release	Блокиране на изданието
+Do not blocklist	Без блокиране
+Blocklist and search for a replacement	Блокиране и търсене на заместител
+Blocklist only	Само блокиране
+Removed {} releases from the blocklist.	Премахнати издания от списъка за блокиране: {}.
+Remove {} selected	Премахване на избраните: {}
+Select every release on this page	Избиране на всички издания на тази страница
+Remove from the blocklist	Премахване от списъка за блокиране
+Remove the {} selected releases from the blocklist?	Да се премахнат ли избраните издания ({}) от списъка за блокиране?
+Quality, languages and release of {}	Качество, езици и издание на {}
+Choose the quality, languages, release group and release type the file is imported with	Изберете качеството, езиците, групата на изданието и типа на изданието, с които се импортира файлът
+Import details — {}	Данни за импортиране — {}
+Use these details	Използване на тези данни
+Revision	Ревизия
+2 or more for a PROPER or REPACK.	2 или повече за PROPER или REPACK.
+Single episode	Единичен епизод
+Multi-episode	Няколко епизода
+Season pack	Пакет за сезон
+Manual	Ръчно
+Choose the group the title joins.	Изберете групата, към която се присъединява заглавието.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Автоматично групира заглавието с неговия франчайз или колекция по официалните връзки. Ръчно го поставя в избрана от вас група. Деактивирано го оставя самостоятелно.
+Manual puts the title in a group you choose, in the group's folder.	Ръчно поставя заглавието в избрана от вас група, в папката на групата.
+Manual (choose a group)	Ръчно (изберете група)
+The title joins the group as its next season or film, in the group's folder.	Заглавието се присъединява към групата като следващия ѝ сезон или филм, в папката на групата.
+Choose a group…	Изберете група…
+Collection settings saved.	Настройките на колекцията са запазени.
+Collection settings	Настройки на колекцията
+Collection name	Име на колекцията
+Collection type	Тип на колекцията
+A movie saga holds only films.	Филмовата сага съдържа само филми.
+Movie saga	Филмова сага
+Movie folder format	Формат на папката за филми
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Как се именуват папките на членовете при присъединяване на заглавия: автоматично използва номерирани папки в сагите и папки за сюжетни арки за арките.
+Numbered	Номерирани
+No change	Без промяна
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Наблюдението, профилът за качество и папката за сезон се прилагат веднага към всеки член; типът и форматът на папката се прилагат към заглавията, които се присъединят оттук нататък.
+Collection settings…	Настройки на колекцията…
+Monitoring, quality profile, series type, folder and tags	Наблюдение, профил за качество, тип сериал, папка и тагове
+Change the quality, languages or release group of episode files, or delete them	Промяна на качеството, езиците или групата на изданието на файловете на епизодите или изтриването им
+Manage episodes	Управление на епизодите
+Episode details: overview, file, history and searches	Подробности за епизода: общ преглед, файл, история и търсения
+Details of episode {}	Подробности за епизод {}
+Monitoring, availability, quality profile, folder and tags	Наблюдение, наличност, профил за качество, папка и тагове
+No tags yet: create them in Settings › Tags.	Все още няма тагове: създайте ги в Настройки › Тагове.
+Below the root folder.	Под основната папка.
+Use the folder name the naming settings give	Използване на името на папката според настройките за именуване
+Use naming format	Използване на формата за именуване
+Series saved.	Сериалът е запазен.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr търси и изтегля наблюдаваните епизоди на наблюдаван сериал.
+Whether seasons a refresh discovers are monitored.	Дали сезоните, открити при опресняване, се наблюдават.
+Sort episodes into season folders.	Подреждане на епизодите в папки за сезони.
+Use season folders	Използване на папки за сезони
+Decides how episodes are numbered when searching and importing.	Определя как се номерират епизодите при търсене и импортиране.
+TheTVDB titles in this language; changing it refreshes the series.	Заглавия от TheTVDB на този език; промяната му опреснява сериала.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Деактивирано премахва сериала от аниме групата му и го изключва от автоматичното групиране.
+Enter a folder name.	Въведете име на папка.
+Edit — {}	Редактиране — {}
+Announced	Обявен
+Released	Издаден
+Movie saved.	Филмът е запазен.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr търси и изтегля наблюдаван филм.
+Minimum availability	Минимална наличност
+When the movie counts as available for automatic searches.	Кога филмът се счита за наличен за автоматичните търсения.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Деактивирано премахва филма от колекцията му и го изключва от автоматичното групиране.
+Edit {} selected	Редактиране на избраните: {}
+Apply changes	Прилагане на промените
+No season folders	Без папки за сезони
+Tags updated on {} items.	Таговете са обновени за елементи: {}.
+Removes the chosen tags from every selected title.	Премахва избраните тагове от всяко избрано заглавие.
+Every selected title gets exactly the chosen tags (none removes all).	Всяко избрано заглавие получава точно избраните тагове (без избор премахва всички).
+Adds the chosen tags to every selected title.	Добавя избраните тагове към всяко избрано заглавие.
+Tags — {} selected	Тагове — избрани: {}
+Apply tags	Прилагане на таговете
+Replace	Замяна
+Manage	Управление
+Multi-season pack	Пакет с няколко сезона
+Scene name	Име от сцената
+Video	Видео
+· {} fps	· {} fps
+Run time	Продължителност
+Audio	Аудио
+Subtitles	Субтитри
+Details	Подробности
+Search the indexers and grab the best release	Търсене в индексаторите и грабване на най-доброто издание
+See every release and choose	Преглед на всички издания и избор
+absolute {}	абсолютен {}
+Air date	Дата на излъчване
+No overview.	Няма описание.
+Delete this episode's file? It goes to the recycle bin when one is set.	Да се изтрие ли файлът на този епизод? Отива в кошчето, ако е зададено.
+{} files updated.	Обновени файлове: {}.
+{} files deleted.	Изтрити файлове: {}.
+{} files deleted; {}	Изтрити файлове: {}; {}
+Delete files	Изтриване на файловете
+The series has no files.	Сериалът няма файлове.
+Change	Промяна
+Change for the selected files…	Промяна за избраните файлове…
+Empty clears it	Празно го изчиства
+Select every file	Избиране на всички файлове
+Delete the {} selected files? They go to the recycle bin when one is set.	Да се изтрият ли избраните файлове ({})? Отиват в кошчето, ако е зададено.
+Monitoring, quality profile, series type and season folders of the selected series	Наблюдение, профил за качество, тип сериал и папки за сезони на избраните сериали
+Edit…	Редактиране…
+Add, remove or replace the tags of the selected series	Добавяне, премахване или замяна на таговете на избраните сериали
+Tags…	Тагове…
+Monitoring and quality profile of the selected movies	Наблюдение и профил за качество на избраните филми
+Add, remove or replace the tags of the selected movies	Добавяне, премахване или замяна на таговете на избраните филми
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Поставете заглавие на издание или име на файл, за да видите как Kitsunarr го разпознава и с кои епизоди съвпада.
+Parse	Разпознаване
+Kitsunarr could not read this title.	Kitsunarr не успя да разпознае това заглавие.
+Parse result	Резултат от разпознаването
+Series title	Заглавие на сериала
+Absolute episodes	Абсолютни епизоди
+Release hash	Хеш на изданието
+Multi-season	Няколко сезона
+Absolute numbering	Абсолютна номерация
+Library match	Съвпадение в библиотеката
+No series in the library matches this title.	Нито един сериал в библиотеката не съвпада с това заглавие.
+No episode of the series matches.	Нито един епизод на сериала не съвпада.
+Log files	Лог файлове
+Refresh	Опресняване
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr записва лога си във файлове в папката с данни, като започва нов файл при 1 MiB. Нивото на лога се задава в Настройки › Общи.
+No log files yet	Все още няма лог файлове
+Last written	Последен запис
+Skip the free-space check when importing	Пропускане на проверката за свободно място при импортиране
+Create empty series folders during disk scans (not with "delete empty folders")	Създаване на празни папки на сериали при сканиране на диска (не заедно с „изтриване на празните папки“)
+Skip the free-space check when grabbing	Пропускане на проверката за свободно място при грабване
+Set permissions on imported files and folders (Linux)	Задаване на права за импортираните файлове и папки (Linux)
+Import using a script	Импортиране чрез скрипт
+Rescan series folder after refresh	Повторно сканиране на папката на сериала след опресняване
+Whether a metadata refresh scans the series folder for changes afterwards.	Дали след опресняване на метаданните папката на сериала се сканира за промени.
+Always	Винаги
+After manual refresh	След ръчно опресняване
+Never	Никога
+Episode title required	Изисква се заглавие на епизода
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Импортирането изчаква заглавие на епизода, когато форматът за именуване го използва и епизодът е излъчен през последните 48 часа.
+Only for bulk season releases	Само за издания на цели сезони
+Season pack upgrades	Надграждания чрез пакети за сезон
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Колко от епизодите в пакета за сезон трябва да липсват или да могат да се надградят, за да бъде грабнат пакетът.
+A share of the episodes	Част от епизодите
+Any episode	Всеки епизод
+Season pack upgrade threshold (%)	Праг за надграждане чрез пакет за сезон (%)
+Rejected extensions	Отхвърлени разширения
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Разделени със запетая, напр. exe, bat. Изтегляне от един файл с някое от тези разширения не се импортира.
+Folder permissions (chmod)	Права за папките (chmod)
+Octal mode for folders; files get it without the execute bits.	Осмичен режим за папките; файловете го получават без битовете за изпълнение.
+Group (chown)	Група (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Име или id на групата за импортираните файлове и папки; празно оставя групата непроменена.
+Import script path	Път до скрипта за импортиране
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Абсолютен път до скрипта; той получава пътищата на източника и местоназначението и променливите на средата на Sonarr.
+Excluded tags (ids, comma separated)	Изключени тагове (id, разделени със запетая)
+The profile does not apply to series with one of these tags.	Профилът не се прилага за сериали с някой от тези тагове.
+Reject releases published before the episode airs	Отхвърляне на издания, публикувани преди излъчването на епизода
+Allow season packs before every episode has aired	Разрешаване на пакети за сезон, преди всички епизоди да са излъчени
+Air date grace period (hours)	Гратисен период след датата на излъчване (часове)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Изданията, публикувани до толкова часа след датата на излъчване, все още се отхвърлят; отрицателно число ги разрешава съответния брой часове преди нея.
+Presets	Предварителни настройки
+Series ID	ID на сериала
+Anime group	Аниме група
+Absolute episode number	Абсолютен номер на епизода
+Episode title	Заглавие на епизода
+Media info	Медийна информация
+Original	Оригинал
+File name tokens	Токени за име на файл
+Folder name tokens	Токени за име на папка
+Format	Формат
+Separator	Разделител
+Space ( )	Интервал ( )
+Period (.)	Точка (.)
+Underscore (_)	Долна черта (_)
+Dash (-)	Тире (-)
+Capitalization	Регистър на буквите
+Default case	Регистър по подразбиране
+Lowercase	Малки букви
+Uppercase	Главни букви
+Click a token to insert it at the cursor; a preset replaces the whole format.	Щракнете върху токен, за да го вмъкнете при курсора; предварителната настройка заменя целия формат.
+Tokens	Токени
+Tokens for {}	Токени за {}
+Invalid format	Невалиден формат
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Форматите използват токените на Sonarr; примерите по-долу следват промените ви още преди да запазите.
+Rename episodes	Преименуване на епизодите
+Replace illegal characters (otherwise they are removed)	Замяна на недопустимите символи (иначе се премахват)
+Colon replacement	Замяна на двоеточието
+How colons in titles are written in file and folder names.	Как се записват двоеточията от заглавията в имената на файлове и папки.
+Replace with dash	Замяна с тире
+Replace with space dash	Замяна с интервал и тире
+Replace with space dash space	Замяна с интервал, тире и интервал
+Smart replace (dash or space dash)	Интелигентна замяна (тире или интервал и тире)
+Custom	Персонализирано
+Custom colon replacement	Персонализирана замяна на двоеточието
+The characters written instead of a colon.	Символите, които се записват вместо двоеточие.
+Multi-episode style	Стил за няколко епизода
+Extend (S01E01-02-03)	Разширяване (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Дублиране (S01E01.S01E02)
+Repeat (S01E01E02E03)	Повторение (S01E01E02E03)
+Scene (S01E01-E02-E03)	Сцена (S01E01-E02-E03)
+Range (S01E01-03)	Диапазон (S01E01-03)
+Prefixed range (S01E01-E03)	Диапазон с префикс (S01E01-E03)
+Example	Пример
+Anime group movie	Филм от аниме група
+Used when films are renamed.	Използва се при преименуване на филми.
+Used when adding a new series or moving one.	Използва се при добавяне на нов сериал или преместване на сериал.
+Specials folder format	Формат на папката за специални епизоди
+Anime groups and collections: titles go to {}/{}/{}.	Аниме групи и колекции: заглавията отиват в {}/{}/{}.
+Interface settings saved.	Настройките на интерфейса са запазени.
+Week column header	Заглавия на колоните в седмичния изглед
+The column headers of the calendar's week view.	Заглавията на колоните в седмичния изглед на календара.
+Dates	Дати
+Short date format	Кратък формат на датата
+Long date format	Дълъг формат на датата
+Time format	Формат на часа
+Time zone	Часова зона
+Dates and times are shown in this time zone; empty follows the browser.	Датите и часовете се показват в тази часова зона; празно следва браузъра.
+The browser's time zone	Часовата зона на браузъра
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Показване на относителни дати (Днес, Вчера, Утре) вместо датата
+Style	Стил
+Theme	Тема
+Kept in this browser; the top bar button switches it too.	Пази се в този браузър; бутонът в горната лента също я превключва.
+Dark	Тъмна
+Light	Светла
+Colour-impaired mode (colours easier to tell apart, with patterns)	Режим за нарушено цветово зрение (по-лесно различими цветове, с шарки)
+Saved to the configuration file. Restart Kitsunarr to apply.	Запазено в конфигурационния файл. Рестартирайте Kitsunarr, за да се приложи.
+Host and logging	Хост и логване
+Set by an environment variable or command-line flag: {}	Зададено чрез променлива на средата или флаг на командния ред: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Запазено в {}. Промените се прилагат при следващото стартиране на Kitsunarr; променливите на средата и флаговете на командния ред все още имат предимство.
+Restart required: the saved values differ from the ones in use.	Необходимо е рестартиране: запазените стойности се различават от използваните.
+Restart now	Рестартиране сега
+Bind address	Адрес за свързване
+0.0.0.0 listens on every interface.	0.0.0.0 слуша на всички интерфейси.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	За обратни проксита, напр. /kitsunarr; празно обслужва от корена.
+Log level	Ниво на лога
+Debug and trace write much more to the log files.	Дебъгването и проследяването записват много повече в лог файловете.
+Trace	Проследяване
+Warn	Предупреждение
+Error	Грешка
+Backup folder	Папка за архиви
+Absolute path; empty uses {}.	Абсолютен път; празно използва {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr обслужва обикновен HTTP; поставете обратно прокси пред него за HTTPS.
+Save host settings	Запазване на настройките на хоста
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Да се рестартира ли Kitsunarr сега? Ако адресът, портът или URL основата са променени, след това отворете новия адрес.
+Nothing to show.	Няма нищо за показване.
+All series	Всички сериали
+All types	Всички типове
+All profiles	Всички профили
+All tags	Всички тагове
+Downloaded	Изтеглени
+Unaired	Неизлъчени
+{} files · {}	Файлове: {} · {}
+Summary	Обобщение
+Monitored series	Наблюдавани сериали
+Completed series	Завършени сериали
+{} ({} completed)	{} (завършени: {})
+{} ({} monitored)	{} (наблюдавани: {})
+Episode files	Файлове на епизоди
+{} ({} downloaded)	{} (изтеглени: {})
+{} ({} per episode)	{} ({} на епизод)
+Series status	Статус на сериалите
+File qualities	Качества на файловете
+Recent entries	Скорошни записи
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Най-скорошните записи, пазени в паметта. Лог файловете по-горе и изходът на процеса (логове на контейнера или journal) пазят всичко.
+Yesterday	Вчера
+Tomorrow	Утре

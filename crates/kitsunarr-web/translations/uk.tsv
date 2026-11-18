@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Пропущено: сервер ще за
 {} expired sessions removed	Видалено прострочених сеансів: {}
 All {} refreshes failed; see the logs	Усі оновлення ({}) завершилися помилкою; див. журнали
 every folder scan failed ({})	усі сканування тек завершилися помилкою ({})
+Links	Посилання
+Copy {}	Копіювати {}
+Copy the {} id	Копіювати ID {}
+Type	Тип
+Previous airing	Попередній вихід
+Season folder	Тека сезону
+Average episode size	Середній розмір епізоду
+Genres	Жанри
+Rating	Рейтинг
+Certification	Віковий рейтинг
+Release groups	Групи релізів
+File quality	Якість файлу
+In cinemas	У кінотеатрах
+Runtime	Тривалість
+Release group	Група релізу
+Columns	Стовпці
+Shown in the table, the overview and under posters	Показуються в таблиці, огляді та під постерами
+Column {}	Стовпець {}
+Reset columns	Скинути стовпці
+Yes	Так
+Override and grab {}	Перевизначити й отримати {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Виберіть серіал, епізоди, якість, мови або клієнт завантаження для цього релізу, а потім отримайте його (вибір зберігається для імпорту)
+Override…	Перевизначити…
+Override and grab	Перевизначити й отримати
+Override and grab — {}	Перевизначити й отримати — {}
+{} episodes chosen	Вибрано епізодів: {}
+Grab release	Отримати реліз
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Незмінені параметри залишають те, що вказано в назві релізу. Невибрані епізоди залишаються тими, на які вказує назва.
+Searched series	Шуканий серіал
+Download client	Клієнт завантаження
+Episodes (required)	Епізоди (обов'язково)
+Statistics	Статистика
+Test parsing	Перевірка розбору
+{} items removed.	Видалено елементів: {}.
+{} items removed; {}	Видалено елементів: {}; {}
+Select every queue item	Вибрати всі елементи черги
+Queue bulk actions	Групові дії з чергою
+Grab the selected releases a delay profile holds back now	Отримати зараз вибрані релізи, які утримує профіль затримки
+Remove selected…	Видалити вибрані…
+Remove {} items from the queue	Видалити з черги (елементів: {})
+Held-back releases are forgotten; a later search can find them again.	Утримані релізи забуваються; пізніший пошук може знайти їх знову.
+Removal method	Спосіб видалення
+Remove from the download client	Видалити з клієнта завантаження
+Change category	Змінити категорію
+Keep it in the download client	Залишити в клієнті завантаження
+The download and its files are removed from the download client.	Завантаження та його файли видаляються з клієнта завантаження.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Завантаження переходить до категорії клієнта після імпорту й більше не відстежується; його файли залишаються.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Завантаження залишається в клієнті завантаження без змін; виберіть параметр чорного списку, щоб додати його реліз до чорного списку.
+Blocklist release	Додати реліз до чорного списку
+Do not blocklist	Не додавати до чорного списку
+Blocklist and search for a replacement	Додати до чорного списку й шукати заміну
+Blocklist only	Лише додати до чорного списку
+Removed {} releases from the blocklist.	Видалено релізів із чорного списку: {}.
+Remove {} selected	Видалити вибрані ({})
+Select every release on this page	Вибрати всі релізи на цій сторінці
+Remove from the blocklist	Видалити з чорного списку
+Remove the {} selected releases from the blocklist?	Видалити вибрані релізи ({}) з чорного списку?
+Quality, languages and release of {}	Якість, мови й реліз для {}
+Choose the quality, languages, release group and release type the file is imported with	Виберіть якість, мови, групу релізу й тип релізу, з якими імпортується файл
+Import details — {}	Деталі імпорту — {}
+Use these details	Використати ці деталі
+Revision	Ревізія
+2 or more for a PROPER or REPACK.	2 або більше для PROPER чи REPACK.
+Single episode	Один епізод
+Multi-episode	Кілька епізодів
+Season pack	Пакет сезону
+Manual	Вручну
+Choose the group the title joins.	Виберіть групу, до якої приєднується назва.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	«Автоматично» групує назву з її франшизою або колекцією за офіційними зв'язками. «Вручну» поміщає її в обрану вами групу. «Вимкнено» залишає її окремо.
+Manual puts the title in a group you choose, in the group's folder.	«Вручну» поміщає назву в обрану вами групу, у теку групи.
+Manual (choose a group)	Вручну (виберіть групу)
+The title joins the group as its next season or film, in the group's folder.	Назва приєднується до групи як її наступний сезон або фільм, у теці групи.
+Choose a group…	Виберіть групу…
+Collection settings saved.	Налаштування колекції збережено.
+Collection settings	Налаштування колекції
+Collection name	Назва колекції
+Collection type	Тип колекції
+A movie saga holds only films.	Кіносага містить лише фільми.
+Movie saga	Кіносага
+Movie folder format	Формат теки фільму
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Як називаються теки учасників, коли назви приєднуються: автоматичний режим використовує нумеровані теки в сагах і теки сюжетних арок для арок.
+Numbered	Нумеровані
+No change	Без змін
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Відстеження, профіль якості й тека сезону застосовуються до кожного учасника зараз; тип і формат теки — до назв, що приєднуються відтепер.
+Collection settings…	Налаштування колекції…
+Monitoring, quality profile, series type, folder and tags	Відстеження, профіль якості, тип серіалу, тека й теги
+Change the quality, languages or release group of episode files, or delete them	Змінити якість, мови або групу релізу файлів епізодів чи видалити їх
+Manage episodes	Керувати епізодами
+Episode details: overview, file, history and searches	Деталі епізоду: огляд, файл, історія та пошуки
+Details of episode {}	Деталі епізоду {}
+Monitoring, availability, quality profile, folder and tags	Відстеження, доступність, профіль якості, тека й теги
+No tags yet: create them in Settings › Tags.	Тегів ще немає: створіть їх у Налаштування › Теги.
+Below the root folder.	Усередині кореневої теки.
+Use the folder name the naming settings give	Використовувати назву теки з налаштувань іменування
+Use naming format	Використовувати формат іменування
+Series saved.	Серіал збережено.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr шукає й завантажує відстежувані епізоди відстежуваного серіалу.
+Whether seasons a refresh discovers are monitored.	Чи відстежуються сезони, які виявляє оновлення.
+Sort episodes into season folders.	Розкладати епізоди по теках сезонів.
+Use season folders	Використовувати теки сезонів
+Decides how episodes are numbered when searching and importing.	Визначає, як нумеруються епізоди під час пошуку й імпорту.
+TheTVDB titles in this language; changing it refreshes the series.	Назви TheTVDB цією мовою; зміна оновлює серіал.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	«Вимкнено» вилучає серіал з його аніме-групи й виключає його з автоматичного групування.
+Enter a folder name.	Введіть назву теки.
+Edit — {}	Редагувати — {}
+Announced	Анонсовано
+Released	Випущено
+Movie saved.	Фільм збережено.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr шукає й завантажує відстежуваний фільм.
+Minimum availability	Мінімальна доступність
+When the movie counts as available for automatic searches.	Коли фільм вважається доступним для автоматичних пошуків.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	«Вимкнено» вилучає фільм з його колекції й виключає його з автоматичного групування.
+Edit {} selected	Редагувати вибрані ({})
+Apply changes	Застосувати зміни
+No season folders	Без тек сезонів
+Tags updated on {} items.	Теги оновлено для елементів: {}.
+Removes the chosen tags from every selected title.	Вилучає вибрані теги з кожної вибраної назви.
+Every selected title gets exactly the chosen tags (none removes all).	Кожна вибрана назва отримує саме вибрані теги (без тегів — усі вилучаються).
+Adds the chosen tags to every selected title.	Додає вибрані теги до кожної вибраної назви.
+Tags — {} selected	Теги — вибрано: {}
+Apply tags	Застосувати теги
+Replace	Замінити
+Manage	Керувати
+Multi-season pack	Пакет кількох сезонів
+Scene name	Назва сцени
+Video	Відео
+· {} fps	· {} fps
+Run time	Тривалість
+Audio	Аудіо
+Subtitles	Субтитри
+Details	Деталі
+Search the indexers and grab the best release	Шукати в індексаторах і отримати найкращий реліз
+See every release and choose	Переглянути всі релізи й вибрати
+absolute {}	абсолютний {}
+Air date	Дата виходу
+No overview.	Немає опису.
+Delete this episode's file? It goes to the recycle bin when one is set.	Видалити файл цього епізоду? Файл потрапить у кошик, якщо його задано.
+{} files updated.	Оновлено файлів: {}.
+{} files deleted.	Видалено файлів: {}.
+{} files deleted; {}	Видалено файлів: {}; {}
+Delete files	Видалити файли
+The series has no files.	Серіал не має файлів.
+Change	Змінити
+Change for the selected files…	Змінити для вибраних файлів…
+Empty clears it	Порожнє значення очищає
+Select every file	Вибрати всі файли
+Delete the {} selected files? They go to the recycle bin when one is set.	Видалити вибрані файли ({})? Вони потраплять у кошик, якщо його задано.
+Monitoring, quality profile, series type and season folders of the selected series	Відстеження, профіль якості, тип серіалу й теки сезонів вибраних серіалів
+Edit…	Редагувати…
+Add, remove or replace the tags of the selected series	Додати, вилучити або замінити теги вибраних серіалів
+Tags…	Теги…
+Monitoring and quality profile of the selected movies	Відстеження й профіль якості вибраних фільмів
+Add, remove or replace the tags of the selected movies	Додати, вилучити або замінити теги вибраних фільмів
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Вставте назву релізу або ім'я файлу, щоб побачити, як Kitsunarr її розбирає і яким епізодам вона відповідає.
+Parse	Розібрати
+Kitsunarr could not read this title.	Kitsunarr не вдалося розібрати цю назву.
+Parse result	Результат розбору
+Series title	Назва серіалу
+Absolute episodes	Абсолютні епізоди
+Release hash	Хеш релізу
+Multi-season	Кілька сезонів
+Absolute numbering	Абсолютна нумерація
+Library match	Збіг у бібліотеці
+No series in the library matches this title.	Жоден серіал у бібліотеці не відповідає цій назві.
+No episode of the series matches.	Жоден епізод серіалу не відповідає.
+Log files	Файли журналу
+Refresh	Оновити
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr записує журнал у файли в теці даних із ротацією на 1 MiB. Рівень журналювання задається в Налаштування › Загальні.
+No log files yet	Файлів журналу ще немає
+Last written	Останній запис
+Skip the free-space check when importing	Пропускати перевірку вільного місця під час імпорту
+Create empty series folders during disk scans (not with "delete empty folders")	Створювати порожні теки серіалів під час сканування диска (не разом із «видаляти порожні теки»)
+Skip the free-space check when grabbing	Пропускати перевірку вільного місця під час отримання
+Set permissions on imported files and folders (Linux)	Встановлювати дозволи на імпортовані файли й теки (Linux)
+Import using a script	Імпортувати за допомогою скрипту
+Rescan series folder after refresh	Пересканувати теку серіалу після оновлення
+Whether a metadata refresh scans the series folder for changes afterwards.	Чи сканує оновлення метаданих теку серіалу на зміни після завершення.
+Always	Завжди
+After manual refresh	Після ручного оновлення
+Never	Ніколи
+Episode title required	Потрібна назва епізоду
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Імпорт чекає на назву епізоду, коли формат іменування її використовує, а епізод вийшов за останні 48 годин.
+Only for bulk season releases	Лише для сезонних релізів
+Season pack upgrades	Оновлення пакетів сезону
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Скільки епізодів пакета сезону мають бути відсутніми або придатними до оновлення, щоб пакет було отримано.
+A share of the episodes	Частка епізодів
+Any episode	Будь-який епізод
+Season pack upgrade threshold (%)	Поріг оновлення пакета сезону (%)
+Rejected extensions	Відхилені розширення
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Через кому, наприклад exe, bat. Завантаження з одним файлом з одним із цих розширень не імпортується.
+Folder permissions (chmod)	Дозволи тек (chmod)
+Octal mode for folders; files get it without the execute bits.	Вісімковий режим для тек; файли отримують його без бітів виконання.
+Group (chown)	Група (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Назва або ID групи для імпортованих файлів і тек; порожнє значення не змінює групу.
+Import script path	Шлях до скрипту імпорту
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Абсолютний шлях до скрипту; він отримує шляхи джерела й призначення та змінні середовища Sonarr.
+Excluded tags (ids, comma separated)	Виключені теги (ID через кому)
+The profile does not apply to series with one of these tags.	Профіль не застосовується до серіалів з одним із цих тегів.
+Reject releases published before the episode airs	Відхиляти релізи, опубліковані до виходу епізоду
+Allow season packs before every episode has aired	Дозволяти пакети сезонів до виходу всіх епізодів
+Air date grace period (hours)	Пільговий період дати виходу (години)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Релізи, опубліковані не пізніше ніж через стільки годин після дати виходу, усе одно відхиляються; від'ємне число дозволяє їх за стільки ж годин до неї.
+Presets	Шаблони
+Series ID	ID серіалу
+Anime group	Аніме-група
+Absolute episode number	Абсолютний номер епізоду
+Episode title	Назва епізоду
+Media info	Медіаінформація
+Original	Оригінал
+File name tokens	Токени імені файлу
+Folder name tokens	Токени назви теки
+Format	Формат
+Separator	Роздільник
+Space ( )	Пробіл ( )
+Period (.)	Крапка (.)
+Underscore (_)	Підкреслення (_)
+Dash (-)	Дефіс (-)
+Capitalization	Регістр
+Default case	Типовий регістр
+Lowercase	Нижній регістр
+Uppercase	Верхній регістр
+Click a token to insert it at the cursor; a preset replaces the whole format.	Клацніть токен, щоб вставити його в позицію курсора; шаблон замінює весь формат.
+Tokens	Токени
+Tokens for {}	Токени для {}
+Invalid format	Недійсний формат
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Формати використовують токени Sonarr; приклади нижче відображають ваші зміни ще до збереження.
+Rename episodes	Перейменовувати епізоди
+Replace illegal characters (otherwise they are removed)	Замінювати недопустимі символи (інакше вони видаляються)
+Colon replacement	Заміна двокрапки
+How colons in titles are written in file and folder names.	Як двокрапки з назв записуються в іменах файлів і тек.
+Replace with dash	Замінювати дефісом
+Replace with space dash	Замінювати пробілом і дефісом
+Replace with space dash space	Замінювати пробілом, дефісом і пробілом
+Smart replace (dash or space dash)	Розумна заміна (дефіс або пробіл і дефіс)
+Custom	Власна
+Custom colon replacement	Власна заміна двокрапки
+The characters written instead of a colon.	Символи, що записуються замість двокрапки.
+Multi-episode style	Стиль кількох епізодів
+Extend (S01E01-02-03)	Розширений (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Дубльований (S01E01.S01E02)
+Repeat (S01E01E02E03)	Повторений (S01E01E02E03)
+Scene (S01E01-E02-E03)	Сцена (S01E01-E02-E03)
+Range (S01E01-03)	Діапазон (S01E01-03)
+Prefixed range (S01E01-E03)	Діапазон із префіксом (S01E01-E03)
+Example	Приклад
+Anime group movie	Фільм аніме-групи
+Used when films are renamed.	Використовується під час перейменування фільмів.
+Used when adding a new series or moving one.	Використовується під час додавання нового серіалу або його переміщення.
+Specials folder format	Формат теки спецепізодів
+Anime groups and collections: titles go to {}/{}/{}.	Аніме-групи й колекції: назви потрапляють у {}/{}/{}.
+Interface settings saved.	Налаштування інтерфейсу збережено.
+Week column header	Заголовок стовпця тижня
+The column headers of the calendar's week view.	Заголовки стовпців у тижневому поданні календаря.
+Dates	Дати
+Short date format	Короткий формат дати
+Long date format	Довгий формат дати
+Time format	Формат часу
+Time zone	Часовий пояс
+Dates and times are shown in this time zone; empty follows the browser.	Дати й час показуються в цьому часовому поясі; порожнє значення — як у браузері.
+The browser's time zone	Часовий пояс браузера
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Показувати відносні дати (Сьогодні, Вчора, Завтра) замість дати
+Style	Стиль
+Theme	Тема
+Kept in this browser; the top bar button switches it too.	Зберігається в цьому браузері; кнопка на верхній панелі теж її перемикає.
+Dark	Темна
+Light	Світла
+Colour-impaired mode (colours easier to tell apart, with patterns)	Режим для порушень сприйняття кольорів (кольори легше розрізнити, з візерунками)
+Saved to the configuration file. Restart Kitsunarr to apply.	Збережено у файл конфігурації. Перезапустіть Kitsunarr, щоб застосувати.
+Host and logging	Хост і журналювання
+Set by an environment variable or command-line flag: {}	Задано змінною середовища або прапорцем командного рядка: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Збережено в {}. Зміни застосуються під час наступного запуску Kitsunarr; змінні середовища й прапорці командного рядка й далі мають пріоритет.
+Restart required: the saved values differ from the ones in use.	Потрібен перезапуск: збережені значення відрізняються від тих, що використовуються.
+Restart now	Перезапустити зараз
+Bind address	Адреса прив'язки
+0.0.0.0 listens on every interface.	0.0.0.0 слухає на всіх інтерфейсах.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Для зворотних проксі, наприклад /kitsunarr; порожнє значення — обслуговування з кореня.
+Log level	Рівень журналювання
+Debug and trace write much more to the log files.	Налагодження й трасування записують у файли журналу значно більше.
+Trace	Трасування
+Warn	Попередження
+Error	Помилка
+Backup folder	Тека резервних копій
+Absolute path; empty uses {}.	Абсолютний шлях; порожнє значення — {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr обслуговує звичайний HTTP; для HTTPS поставте перед ним зворотний проксі.
+Save host settings	Зберегти налаштування хоста
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Перезапустити Kitsunarr зараз? Якщо змінилися адреса, порт або база URL, після цього відкрийте нову адресу.
+Nothing to show.	Нічого показати.
+All series	Усі серіали
+All types	Усі типи
+All profiles	Усі профілі
+All tags	Усі теги
+Downloaded	Завантажено
+Unaired	Не вийшли
+{} files · {}	Файлів: {} · {}
+Summary	Підсумок
+Monitored series	Відстежувані серіали
+Completed series	Завершені серіали
+{} ({} completed)	{} (завершено: {})
+{} ({} monitored)	{} (відстежується: {})
+Episode files	Файли епізодів
+{} ({} downloaded)	{} (завантажено: {})
+{} ({} per episode)	{} ({} на епізод)
+Series status	Статус серіалу
+File qualities	Якості файлів
+Recent entries	Останні записи
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Найновіші записи, що зберігаються в пам'яті. Файли журналу вище й вивід процесу (журнали контейнера або journal) зберігають усе.
+Yesterday	Вчора
+Tomorrow	Завтра

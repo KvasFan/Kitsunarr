@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Hoppet over: serveren starter fortsatt
 {} expired sessions removed	{} utløpte økter fjernet
 All {} refreshes failed; see the logs	Alle {} oppdateringer mislyktes; se loggene
 every folder scan failed ({})	alle mappeskanninger mislyktes ({})
+Links	Lenker
+Copy {}	Kopier {}
+Copy the {} id	Kopier {}-ID-en
+Type	Type
+Previous airing	Forrige sending
+Season folder	Sesongmappe
+Average episode size	Gjennomsnittlig episodestørrelse
+Genres	Sjangre
+Rating	Vurdering
+Certification	Aldersgrense
+Release groups	Utgivelsesgrupper
+File quality	Filkvalitet
+In cinemas	På kino
+Runtime	Spilletid
+Release group	Utgivelsesgruppe
+Columns	Kolonner
+Shown in the table, the overview and under posters	Vises i tabellen, oversikten og under plakater
+Column {}	Kolonne {}
+Reset columns	Tilbakestill kolonner
+Yes	Ja
+Override and grab {}	Overstyr og hent {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Velg serien, episodene, kvaliteten, språkene eller nedlastingsklienten for denne utgivelsen, og hent den deretter (valgene beholdes for importen)
+Override…	Overstyr…
+Override and grab	Overstyr og hent
+Override and grab — {}	Overstyr og hent — {}
+{} episodes chosen	{} episoder valgt
+Grab release	Hent utgivelse
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Uendrede valg beholder det utgivelsens tittel angir. Episoder som ikke velges, beholder episodene tittelen tilsvarer.
+Searched series	Søkt serie
+Download client	Nedlastingsklient
+Episodes (required)	Episoder (påkrevd)
+Statistics	Statistikk
+Test parsing	Test tolking
+{} items removed.	{} elementer fjernet.
+{} items removed; {}	{} elementer fjernet; {}
+Select every queue item	Velg alle elementer i køen
+Queue bulk actions	Massehandlinger for køen
+Grab the selected releases a delay profile holds back now	Hent nå de valgte utgivelsene som en forsinkelsesprofil holder tilbake
+Remove selected…	Fjern valgte…
+Remove {} items from the queue	Fjern {} elementer fra køen
+Held-back releases are forgotten; a later search can find them again.	Tilbakeholdte utgivelser glemmes; et senere søk kan finne dem igjen.
+Removal method	Fjerningsmetode
+Remove from the download client	Fjern fra nedlastingsklienten
+Change category	Endre kategori
+Keep it in the download client	Behold i nedlastingsklienten
+The download and its files are removed from the download client.	Nedlastingen og filene dens fjernes fra nedlastingsklienten.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	Nedlastingen flyttes til klientens kategori etter import og spores ikke lenger; filene blir liggende.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	Nedlastingen blir liggende urørt i nedlastingsklienten; velg et blokkeringsvalg for å blokkere utgivelsen.
+Blocklist release	Blokker utgivelse
+Do not blocklist	Ikke blokker
+Blocklist and search for a replacement	Blokker og søk etter en erstatning
+Blocklist only	Bare blokker
+Removed {} releases from the blocklist.	Fjernet {} utgivelser fra blokkeringslisten.
+Remove {} selected	Fjern {} valgte
+Select every release on this page	Velg alle utgivelser på denne siden
+Remove from the blocklist	Fjern fra blokkeringslisten
+Remove the {} selected releases from the blocklist?	Fjerne de {} valgte utgivelsene fra blokkeringslisten?
+Quality, languages and release of {}	Kvalitet, språk og utgivelse for {}
+Choose the quality, languages, release group and release type the file is imported with	Velg kvaliteten, språkene, utgivelsesgruppen og utgivelsestypen filen importeres med
+Import details — {}	Importdetaljer — {}
+Use these details	Bruk disse detaljene
+Revision	Revisjon
+2 or more for a PROPER or REPACK.	2 eller mer for en PROPER eller REPACK.
+Single episode	Enkeltepisode
+Multi-episode	Flere episoder
+Season pack	Sesongpakke
+Manual	Manuell
+Choose the group the title joins.	Velg gruppen tittelen skal legges til i.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automatisk grupperer tittelen med franchisen eller samlingen dens ut fra offisielle relasjoner. Manuell legger den i en gruppe du velger. Deaktivert holder den for seg selv.
+Manual puts the title in a group you choose, in the group's folder.	Manuell legger tittelen i en gruppe du velger, i gruppens mappe.
+Manual (choose a group)	Manuell (velg en gruppe)
+The title joins the group as its next season or film, in the group's folder.	Tittelen legges til i gruppen som neste sesong eller film, i gruppens mappe.
+Choose a group…	Velg en gruppe…
+Collection settings saved.	Samlingsinnstillinger lagret.
+Collection settings	Samlingsinnstillinger
+Collection name	Samlingens navn
+Collection type	Samlingstype
+A movie saga holds only films.	En filmsaga inneholder bare filmer.
+Movie saga	Filmsaga
+Movie folder format	Mappeformat for filmer
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Hvordan medlemmenes mapper navngis når titler legges til: automatisk bruker nummererte mapper i sagaer og historiebuemapper for historiebuer.
+Numbered	Nummerert
+No change	Ingen endring
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	Overvåking, kvalitetsprofil og sesongmappe gjelder for alle medlemmer nå; typen og mappeformatet gjelder for titler som legges til fra nå av.
+Collection settings…	Samlingsinnstillinger…
+Monitoring, quality profile, series type, folder and tags	Overvåking, kvalitetsprofil, serietype, mappe og merker
+Change the quality, languages or release group of episode files, or delete them	Endre kvalitet, språk eller utgivelsesgruppe for episodefiler, eller slett dem
+Manage episodes	Administrer episoder
+Episode details: overview, file, history and searches	Episodedetaljer: handling, fil, historikk og søk
+Details of episode {}	Detaljer for episode {}
+Monitoring, availability, quality profile, folder and tags	Overvåking, tilgjengelighet, kvalitetsprofil, mappe og merker
+No tags yet: create them in Settings › Tags.	Ingen merker ennå: opprett dem under Innstillinger › Merker.
+Below the root folder.	Under rotmappen.
+Use the folder name the naming settings give	Bruk mappenavnet navngivingsinnstillingene gir
+Use naming format	Bruk navngivingsformat
+Series saved.	Serie lagret.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr søker etter og laster ned de overvåkede episodene i en overvåket serie.
+Whether seasons a refresh discovers are monitored.	Om sesonger som en oppdatering oppdager, overvåkes.
+Sort episodes into season folders.	Sorter episoder i sesongmapper.
+Use season folders	Bruk sesongmapper
+Decides how episodes are numbered when searching and importing.	Bestemmer hvordan episoder nummereres ved søk og import.
+TheTVDB titles in this language; changing it refreshes the series.	TheTVDB-titler på dette språket; en endring oppdaterer serien.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Deaktivert fjerner serien fra animegruppen og holder den utenfor automatisk gruppering.
+Enter a folder name.	Skriv inn et mappenavn.
+Edit — {}	Rediger — {}
+Announced	Annonsert
+Released	Utgitt
+Movie saved.	Film lagret.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr søker etter og laster ned en overvåket film.
+Minimum availability	Minste tilgjengelighet
+When the movie counts as available for automatic searches.	Når filmen regnes som tilgjengelig for automatiske søk.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Deaktivert fjerner filmen fra samlingen og holder den utenfor automatisk gruppering.
+Edit {} selected	Rediger {} valgte
+Apply changes	Bruk endringer
+No season folders	Ingen sesongmapper
+Tags updated on {} items.	Merker oppdatert på {} elementer.
+Removes the chosen tags from every selected title.	Fjerner de valgte merkene fra hver valgte tittel.
+Every selected title gets exactly the chosen tags (none removes all).	Hver valgte tittel får nøyaktig de valgte merkene (ingen fjerner alle).
+Adds the chosen tags to every selected title.	Legger til de valgte merkene på hver valgte tittel.
+Tags — {} selected	Merker — {} valgt
+Apply tags	Bruk merker
+Replace	Erstatt
+Manage	Administrer
+Multi-season pack	Pakke med flere sesonger
+Scene name	Scenenavn
+Video	Video
+· {} fps	· {} fps
+Run time	Spilletid
+Audio	Lyd
+Subtitles	Undertekster
+Details	Detaljer
+Search the indexers and grab the best release	Søk i indekserne og hent den beste utgivelsen
+See every release and choose	Se alle utgivelser og velg
+absolute {}	absolutt {}
+Air date	Sendedato
+No overview.	Ingen handling.
+Delete this episode's file? It goes to the recycle bin when one is set.	Slette filen til denne episoden? Den havner i papirkurven hvis en er angitt.
+{} files updated.	{} filer oppdatert.
+{} files deleted.	{} filer slettet.
+{} files deleted; {}	{} filer slettet; {}
+Delete files	Slett filer
+The series has no files.	Serien har ingen filer.
+Change	Endre
+Change for the selected files…	Endre for de valgte filene…
+Empty clears it	Tomt fjerner verdien
+Select every file	Velg alle filer
+Delete the {} selected files? They go to the recycle bin when one is set.	Slette de {} valgte filene? De havner i papirkurven hvis en er angitt.
+Monitoring, quality profile, series type and season folders of the selected series	Overvåking, kvalitetsprofil, serietype og sesongmapper for de valgte seriene
+Edit…	Rediger…
+Add, remove or replace the tags of the selected series	Legg til, fjern eller erstatt merkene til de valgte seriene
+Tags…	Merker…
+Monitoring and quality profile of the selected movies	Overvåking og kvalitetsprofil for de valgte filmene
+Add, remove or replace the tags of the selected movies	Legg til, fjern eller erstatt merkene til de valgte filmene
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Lim inn en utgivelsestittel eller et filnavn for å se hvordan Kitsunarr leser det og hvilke episoder det samsvarer med.
+Parse	Tolk
+Kitsunarr could not read this title.	Kitsunarr kunne ikke lese denne tittelen.
+Parse result	Tolkingsresultat
+Series title	Seriens tittel
+Absolute episodes	Absolutte episoder
+Release hash	Utgivelseshash
+Multi-season	Flere sesonger
+Absolute numbering	Absolutt nummerering
+Library match	Treff i biblioteket
+No series in the library matches this title.	Ingen serie i biblioteket samsvarer med denne tittelen.
+No episode of the series matches.	Ingen episode i serien samsvarer.
+Log files	Loggfiler
+Refresh	Oppdater
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr skriver loggen sin til filer i datamappen, rullert ved 1 MiB. Loggnivået angis under Innstillinger › Generelt.
+No log files yet	Ingen loggfiler ennå
+Last written	Sist skrevet
+Skip the free-space check when importing	Hopp over kontrollen av ledig plass ved import
+Create empty series folders during disk scans (not with "delete empty folders")	Opprett tomme seriemapper under diskskanninger (ikke med «slett tomme mapper»)
+Skip the free-space check when grabbing	Hopp over kontrollen av ledig plass ved henting
+Set permissions on imported files and folders (Linux)	Angi tillatelser på importerte filer og mapper (Linux)
+Import using a script	Importer med et skript
+Rescan series folder after refresh	Skann seriemappen på nytt etter oppdatering
+Whether a metadata refresh scans the series folder for changes afterwards.	Om en metadataoppdatering skanner seriemappen for endringer etterpå.
+Always	Alltid
+After manual refresh	Etter manuell oppdatering
+Never	Aldri
+Episode title required	Episodetittel påkrevd
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Importer venter på en episodetittel når navngivingsformatet bruker den og episoden ble sendt i løpet av de siste 48 timene.
+Only for bulk season releases	Bare for utgivelser med hele sesonger
+Season pack upgrades	Oppgraderinger av sesongpakker
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Hvor mange av episodene i en sesongpakke som må mangle eller kunne oppgraderes for at pakken skal hentes.
+A share of the episodes	En andel av episodene
+Any episode	Hvilken som helst episode
+Season pack upgrade threshold (%)	Terskel for oppgradering av sesongpakker (%)
+Rejected extensions	Avviste filendelser
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Kommaseparert, for eksempel exe, bat. En nedlasting med én fil som har en av disse filendelsene, importeres ikke.
+Folder permissions (chmod)	Mappetillatelser (chmod)
+Octal mode for folders; files get it without the execute bits.	Oktal modus for mapper; filer får den uten kjørebitene.
+Group (chown)	Gruppe (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Gruppenavn eller ID for importerte filer og mapper; tomt lar gruppen være.
+Import script path	Sti til importskript
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Absolutt sti til skriptet; det får kilde- og målstiene og Sonarrs miljøvariabler.
+Excluded tags (ids, comma separated)	Ekskluderte merker (ID-er, kommaseparert)
+The profile does not apply to series with one of these tags.	Profilen gjelder ikke for serier med et av disse merkene.
+Reject releases published before the episode airs	Avvis utgivelser publisert før episoden sendes
+Allow season packs before every episode has aired	Tillat sesongpakker før alle episodene er sendt
+Air date grace period (hours)	Frist for sendedato (timer)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Utgivelser publisert opptil så mange timer etter sendedatoen avvises fortsatt; et negativt tall tillater dem så mange timer før.
+Presets	Forhåndsinnstillinger
+Series ID	Serie-ID
+Anime group	Animegruppe
+Absolute episode number	Absolutt episodenummer
+Episode title	Episodetittel
+Media info	Medieinfo
+Original	Original
+File name tokens	Tokens for filnavn
+Folder name tokens	Tokens for mappenavn
+Format	Format
+Separator	Skilletegn
+Space ( )	Mellomrom ( )
+Period (.)	Punktum (.)
+Underscore (_)	Understrek (_)
+Dash (-)	Bindestrek (-)
+Capitalization	Store/små bokstaver
+Default case	Standard
+Lowercase	Små bokstaver
+Uppercase	Store bokstaver
+Click a token to insert it at the cursor; a preset replaces the whole format.	Klikk på et token for å sette det inn ved markøren; en forhåndsinnstilling erstatter hele formatet.
+Tokens	Tokens
+Tokens for {}	Tokens for {}
+Invalid format	Ugyldig format
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Formatene bruker Sonarrs tokens; eksemplene nedenfor følger endringene dine før du lagrer.
+Rename episodes	Gi episoder nytt navn
+Replace illegal characters (otherwise they are removed)	Erstatt ugyldige tegn (ellers fjernes de)
+Colon replacement	Erstatning av kolon
+How colons in titles are written in file and folder names.	Hvordan kolon i titler skrives i fil- og mappenavn.
+Replace with dash	Erstatt med bindestrek
+Replace with space dash	Erstatt med mellomrom bindestrek
+Replace with space dash space	Erstatt med mellomrom bindestrek mellomrom
+Smart replace (dash or space dash)	Smart erstatning (bindestrek eller mellomrom bindestrek)
+Custom	Egendefinert
+Custom colon replacement	Egendefinert erstatning av kolon
+The characters written instead of a colon.	Tegnene som skrives i stedet for et kolon.
+Multi-episode style	Stil for flere episoder
+Extend (S01E01-02-03)	Utvid (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Dupliser (S01E01.S01E02)
+Repeat (S01E01E02E03)	Gjenta (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	Intervall (S01E01-03)
+Prefixed range (S01E01-E03)	Intervall med prefiks (S01E01-E03)
+Example	Eksempel
+Anime group movie	Film i animegruppe
+Used when films are renamed.	Brukes når filmer får nytt navn.
+Used when adding a new series or moving one.	Brukes når en ny serie legges til eller en serie flyttes.
+Specials folder format	Mappeformat for spesialepisoder
+Anime groups and collections: titles go to {}/{}/{}.	Animegrupper og samlinger: titler havner i {}/{}/{}.
+Interface settings saved.	Grensesnittinnstillinger lagret.
+Week column header	Kolonneoverskrift i ukevisning
+The column headers of the calendar's week view.	Kolonneoverskriftene i kalenderens ukevisning.
+Dates	Datoer
+Short date format	Kort datoformat
+Long date format	Langt datoformat
+Time format	Tidsformat
+Time zone	Tidssone
+Dates and times are shown in this time zone; empty follows the browser.	Datoer og klokkeslett vises i denne tidssonen; tomt følger nettleseren.
+The browser's time zone	Nettleserens tidssone
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Vis relative datoer (I dag, I går, I morgen) i stedet for datoen
+Style	Stil
+Theme	Tema
+Kept in this browser; the top bar button switches it too.	Lagres i denne nettleseren; knappen i topplinjen bytter det også.
+Dark	Mørkt
+Light	Lyst
+Colour-impaired mode (colours easier to tell apart, with patterns)	Modus for fargeblinde (farger som er lettere å skille, med mønstre)
+Saved to the configuration file. Restart Kitsunarr to apply.	Lagret i konfigurasjonsfilen. Start Kitsunarr på nytt for å ta i bruk.
+Host and logging	Vert og logging
+Set by an environment variable or command-line flag: {}	Satt av en miljøvariabel eller et kommandolinjeflagg: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	Lagret i {}. Endringer gjelder neste gang Kitsunarr starter; miljøvariabler og kommandolinjeflagg har fortsatt forrang.
+Restart required: the saved values differ from the ones in use.	Omstart kreves: de lagrede verdiene er forskjellige fra dem som er i bruk.
+Restart now	Start på nytt nå
+Bind address	Bindingsadresse
+0.0.0.0 listens on every interface.	0.0.0.0 lytter på alle grensesnitt.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	For omvendte proxyer, f.eks. /kitsunarr; tomt serverer fra roten.
+Log level	Loggnivå
+Debug and trace write much more to the log files.	Feilsøking og sporing skriver mye mer til loggfilene.
+Trace	Sporing
+Warn	Advarsel
+Error	Feil
+Backup folder	Mappe for sikkerhetskopier
+Absolute path; empty uses {}.	Absolutt sti; tomt bruker {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr serverer vanlig HTTP; sett en omvendt proxy foran for HTTPS.
+Save host settings	Lagre vertsinnstillinger
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Starte Kitsunarr på nytt nå? Hvis adressen, porten eller URL-basen er endret, åpner du den nye adressen etterpå.
+Nothing to show.	Ingenting å vise.
+All series	Alle serier
+All types	Alle typer
+All profiles	Alle profiler
+All tags	Alle merker
+Downloaded	Lastet ned
+Unaired	Ikke sendt
+{} files · {}	{} filer · {}
+Summary	Sammendrag
+Monitored series	Overvåkede serier
+Completed series	Komplette serier
+{} ({} completed)	{} ({} komplette)
+{} ({} monitored)	{} ({} overvåket)
+Episode files	Episodefiler
+{} ({} downloaded)	{} ({} lastet ned)
+{} ({} per episode)	{} ({} per episode)
+Series status	Seriestatus
+File qualities	Filkvaliteter
+Recent entries	Nylige oppføringer
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	De nyeste oppføringene som holdes i minnet. Loggfilene ovenfor og prosessens utdata (containerlogger eller journal) beholder alt.
+Yesterday	I går
+Tomorrow	I morgen

@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	スキップしました: サーバーは�
 {} expired sessions removed	期限切れのセッションを {} 件削除しました
 All {} refreshes failed; see the logs	{} 件の更新がすべて失敗しました。ログを確認してください
 every folder scan failed ({})	すべてのフォルダースキャンが失敗しました ({})
+Links	リンク
+Copy {}	{} をコピー
+Copy the {} id	{} の ID をコピー
+Type	種類
+Previous airing	前回の放送
+Season folder	シーズンフォルダー
+Average episode size	エピソードの平均サイズ
+Genres	ジャンル
+Rating	評価
+Certification	レーティング
+Release groups	リリースグループ
+File quality	ファイルの品質
+In cinemas	劇場公開
+Runtime	再生時間
+Release group	リリースグループ
+Columns	列
+Shown in the table, the overview and under posters	テーブル、概要表示、ポスターの下に表示されます
+Column {}	列: {}
+Reset columns	列をリセット
+Yes	はい
+Override and grab {}	上書きして取得: {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	このリリースのシリーズ、エピソード、品質、言語、ダウンロードクライアントを選択してから取得 (選択内容はインポート時にも保持されます)
+Override…	上書き…
+Override and grab	上書きして取得
+Override and grab — {}	上書きして取得 — {}
+{} episodes chosen	{} 件のエピソードを選択
+Grab release	リリースを取得
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	変更しない項目はリリースのタイトルの内容に従います。選択しなかったエピソードは、タイトルが対応するエピソードのままです。
+Searched series	検索したシリーズ
+Download client	ダウンロードクライアント
+Episodes (required)	エピソード (必須)
+Statistics	統計
+Test parsing	解析テスト
+{} items removed.	{} 件の項目を削除しました。
+{} items removed; {}	{} 件の項目を削除しました。{}
+Select every queue item	キューのすべての項目を選択
+Queue bulk actions	キューの一括操作
+Grab the selected releases a delay profile holds back now	遅延プロファイルで保留中の選択したリリースを今すぐ取得
+Remove selected…	選択項目を削除…
+Remove {} items from the queue	キューから {} 件の項目を削除
+Held-back releases are forgotten; a later search can find them again.	保留中のリリースは破棄されます。後の検索で再び見つかる場合があります。
+Removal method	削除方法
+Remove from the download client	ダウンロードクライアントから削除
+Change category	カテゴリを変更
+Keep it in the download client	ダウンロードクライアントに残す
+The download and its files are removed from the download client.	ダウンロードとそのファイルはダウンロードクライアントから削除されます。
+The download moves to the client's post-import category and is no longer tracked; its files stay.	ダウンロードはクライアントのインポート後のカテゴリに移動し、以後は追跡されません。ファイルは残ります。
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	ダウンロードはそのままダウンロードクライアントに残ります。リリースをブロックリストに追加するには、ブロックリストのオプションを選択してください。
+Blocklist release	リリースをブロックリストに追加
+Do not blocklist	ブロックリストに追加しない
+Blocklist and search for a replacement	ブロックリストに追加して代わりを検索
+Blocklist only	ブロックリストに追加のみ
+Removed {} releases from the blocklist.	ブロックリストから {} 件のリリースを削除しました。
+Remove {} selected	選択した {} 件を削除
+Select every release on this page	このページのすべてのリリースを選択
+Remove from the blocklist	ブロックリストから削除
+Remove the {} selected releases from the blocklist?	選択した {} 件のリリースをブロックリストから削除しますか？
+Quality, languages and release of {}	{} の品質、言語、リリース
+Choose the quality, languages, release group and release type the file is imported with	ファイルをインポートする際の品質、言語、リリースグループ、リリースの種類を選択します
+Import details — {}	インポートの詳細 — {}
+Use these details	この内容を使用
+Revision	リビジョン
+2 or more for a PROPER or REPACK.	PROPER または REPACK の場合は 2 以上。
+Single episode	単一エピソード
+Multi-episode	マルチエピソード
+Season pack	シーズンパック
+Manual	手動
+Choose the group the title joins.	タイトルが参加するグループを選択します。
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	自動では、公式の関連情報に基づいてタイトルをフランチャイズまたはコレクションにまとめます。手動では、選択したグループに入れます。無効では単独のままにします。
+Manual puts the title in a group you choose, in the group's folder.	手動では、選択したグループのフォルダー内でタイトルをそのグループに入れます。
+Manual (choose a group)	手動 (グループを選択)
+The title joins the group as its next season or film, in the group's folder.	タイトルは次のシーズンまたは映画としてグループに参加し、グループのフォルダーに入ります。
+Choose a group…	グループを選択…
+Collection settings saved.	コレクションの設定を保存しました。
+Collection settings	コレクションの設定
+Collection name	コレクション名
+Collection type	コレクションの種類
+A movie saga holds only films.	映画サーガには映画のみが含まれます。
+Movie saga	映画サーガ
+Movie folder format	映画フォルダーの形式
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	タイトルが参加したときのメンバーフォルダーの名前の付け方。自動では、サーガでは番号付きフォルダー、アークではストーリーアークフォルダーを使用します。
+Numbered	番号付き
+No change	変更しない
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	監視、品質プロファイル、シーズンフォルダーは今すぐすべてのメンバーに適用されます。種類とフォルダー形式は今後参加するタイトルに適用されます。
+Collection settings…	コレクションの設定…
+Monitoring, quality profile, series type, folder and tags	監視、品質プロファイル、シリーズの種類、フォルダー、タグ
+Change the quality, languages or release group of episode files, or delete them	エピソードファイルの品質、言語、リリースグループを変更、または削除
+Manage episodes	エピソードを管理
+Episode details: overview, file, history and searches	エピソードの詳細: あらすじ、ファイル、履歴、検索
+Details of episode {}	エピソード {} の詳細
+Monitoring, availability, quality profile, folder and tags	監視、利用可能時期、品質プロファイル、フォルダー、タグ
+No tags yet: create them in Settings › Tags.	タグはまだありません。設定 › タグ で作成してください。
+Below the root folder.	ルートフォルダーの下。
+Use the folder name the naming settings give	命名設定で決まるフォルダー名を使用
+Use naming format	命名形式を使用
+Series saved.	シリーズを保存しました。
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr は監視中のシリーズの監視中のエピソードを検索してダウンロードします。
+Whether seasons a refresh discovers are monitored.	更新で見つかったシーズンを監視するかどうか。
+Sort episodes into season folders.	エピソードをシーズンフォルダーに分けます。
+Use season folders	シーズンフォルダーを使用
+Decides how episodes are numbered when searching and importing.	検索とインポートの際のエピソードの番号付けを決めます。
+TheTVDB titles in this language; changing it refreshes the series.	この言語での TheTVDB のタイトル。変更するとシリーズが更新されます。
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	無効にすると、シリーズをアニメグループから外し、自動グループ化の対象外にします。
+Enter a folder name.	フォルダー名を入力してください。
+Edit — {}	編集 — {}
+Announced	発表済み
+Released	公開済み
+Movie saved.	映画を保存しました。
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr は監視中の映画を検索してダウンロードします。
+Minimum availability	最低利用可能状態
+When the movie counts as available for automatic searches.	自動検索で映画を利用可能とみなす時期。
+Disabled removes the film from its collection and keeps it out of automatic grouping.	無効にすると、映画をコレクションから外し、自動グループ化の対象外にします。
+Edit {} selected	選択した {} 件を編集
+Apply changes	変更を適用
+No season folders	シーズンフォルダーなし
+Tags updated on {} items.	{} 件の項目のタグを更新しました。
+Removes the chosen tags from every selected title.	選択したすべてのタイトルから、選んだタグを削除します。
+Every selected title gets exactly the chosen tags (none removes all).	選択したすべてのタイトルのタグを、選んだタグと完全に同じにします (なしの場合はすべて削除)。
+Adds the chosen tags to every selected title.	選択したすべてのタイトルに、選んだタグを追加します。
+Tags — {} selected	タグ — {} 件選択
+Apply tags	タグを適用
+Replace	置き換え
+Manage	管理
+Multi-season pack	マルチシーズンパック
+Scene name	シーン名
+Video	映像
+· {} fps	· {} fps
+Run time	再生時間
+Audio	音声
+Subtitles	字幕
+Details	詳細
+Search the indexers and grab the best release	インデクサーを検索し、最適なリリースを取得
+See every release and choose	すべてのリリースを表示して選択
+absolute {}	絶対番号 {}
+Air date	放送日
+No overview.	あらすじはありません。
+Delete this episode's file? It goes to the recycle bin when one is set.	このエピソードのファイルを削除しますか？ ごみ箱が設定されていればごみ箱に移動します。
+{} files updated.	{} 件のファイルを更新しました。
+{} files deleted.	{} 件のファイルを削除しました。
+{} files deleted; {}	{} 件のファイルを削除しました。{}
+Delete files	ファイルを削除
+The series has no files.	このシリーズにはファイルがありません。
+Change	変更
+Change for the selected files…	選択したファイルを変更…
+Empty clears it	空欄でクリア
+Select every file	すべてのファイルを選択
+Delete the {} selected files? They go to the recycle bin when one is set.	選択した {} 件のファイルを削除しますか？ ごみ箱が設定されていればごみ箱に移動します。
+Monitoring, quality profile, series type and season folders of the selected series	選択したシリーズの監視、品質プロファイル、シリーズの種類、シーズンフォルダー
+Edit…	編集…
+Add, remove or replace the tags of the selected series	選択したシリーズのタグを追加、削除、置き換え
+Tags…	タグ…
+Monitoring and quality profile of the selected movies	選択した映画の監視と品質プロファイル
+Add, remove or replace the tags of the selected movies	選択した映画のタグを追加、削除、置き換え
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	リリースのタイトルまたはファイル名を貼り付けると、Kitsunarr がどう解釈し、どのエピソードに一致するかを確認できます。
+Parse	解析
+Kitsunarr could not read this title.	Kitsunarr はこのタイトルを解釈できませんでした。
+Parse result	解析結果
+Series title	シリーズのタイトル
+Absolute episodes	絶対番号のエピソード
+Release hash	リリースハッシュ
+Multi-season	マルチシーズン
+Absolute numbering	絶対番号
+Library match	ライブラリとの一致
+No series in the library matches this title.	このタイトルに一致するシリーズはライブラリにありません。
+No episode of the series matches.	このシリーズに一致するエピソードはありません。
+Log files	ログファイル
+Refresh	更新
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr はデータフォルダー内のファイルにログを書き込み、1 MiB ごとにローテーションします。ログレベルは 設定 › 一般 で設定します。
+No log files yet	ログファイルはまだありません
+Last written	最終書き込み
+Skip the free-space check when importing	インポート時に空き容量のチェックをスキップ
+Create empty series folders during disk scans (not with "delete empty folders")	ディスクスキャン時に空のシリーズフォルダーを作成 (「空のフォルダーを削除」と併用不可)
+Skip the free-space check when grabbing	取得時に空き容量のチェックをスキップ
+Set permissions on imported files and folders (Linux)	インポートしたファイルとフォルダーに権限を設定 (Linux)
+Import using a script	スクリプトを使用してインポート
+Rescan series folder after refresh	更新後にシリーズフォルダーを再スキャン
+Whether a metadata refresh scans the series folder for changes afterwards.	メタデータの更新後にシリーズフォルダーの変更をスキャンするかどうか。
+Always	常に
+After manual refresh	手動更新の後
+Never	しない
+Episode title required	エピソードのタイトルが必須
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	命名形式でエピソードのタイトルを使用し、そのエピソードが過去 48 時間以内に放送された場合、インポートはタイトルが判明するまで待機します。
+Only for bulk season releases	シーズン一括リリースのみ
+Season pack upgrades	シーズンパックのアップグレード
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	シーズンパックを取得するために、パック内のエピソードのうち欠落またはアップグレード可能でなければならない数。
+A share of the episodes	エピソードの一定割合
+Any episode	いずれかのエピソード
+Season pack upgrade threshold (%)	シーズンパックのアップグレードのしきい値 (%)
+Rejected extensions	拒否する拡張子
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	カンマ区切り (例: exe, bat)。これらの拡張子のいずれかを持つ単一ファイルのダウンロードはインポートされません。
+Folder permissions (chmod)	フォルダーの権限 (chmod)
+Octal mode for folders; files get it without the execute bits.	フォルダーの8進数モード。ファイルには実行ビットを除いて適用されます。
+Group (chown)	グループ (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	インポートしたファイルとフォルダーのグループ名または ID。空欄の場合はグループを変更しません。
+Import script path	インポートスクリプトのパス
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	スクリプトの絶対パス。スクリプトには移動元と移動先のパス、および Sonarr の環境変数が渡されます。
+Excluded tags (ids, comma separated)	除外するタグ (ID、カンマ区切り)
+The profile does not apply to series with one of these tags.	これらのタグのいずれかを持つシリーズにはこのプロファイルを適用しません。
+Reject releases published before the episode airs	エピソードの放送前に公開されたリリースを拒否
+Allow season packs before every episode has aired	すべてのエピソードの放送前でもシーズンパックを許可
+Air date grace period (hours)	放送日の猶予期間 (時間)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	放送日からこの時間数以内に公開されたリリースも拒否されます。負の数を指定すると、放送日のその時間数前から許可します。
+Presets	プリセット
+Series ID	シリーズ ID
+Anime group	アニメグループ
+Absolute episode number	絶対エピソード番号
+Episode title	エピソードのタイトル
+Media info	メディア情報
+Original	オリジナル
+File name tokens	ファイル名のトークン
+Folder name tokens	フォルダー名のトークン
+Format	形式
+Separator	区切り文字
+Space ( )	スペース ( )
+Period (.)	ピリオド (.)
+Underscore (_)	アンダースコア (_)
+Dash (-)	ダッシュ (-)
+Capitalization	大文字と小文字
+Default case	既定のまま
+Lowercase	小文字
+Uppercase	大文字
+Click a token to insert it at the cursor; a preset replaces the whole format.	トークンをクリックするとカーソル位置に挿入されます。プリセットは形式全体を置き換えます。
+Tokens	トークン
+Tokens for {}	{} のトークン
+Invalid format	無効な形式
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	形式は Sonarr のトークンを使用します。下の例は保存前の変更を反映します。
+Rename episodes	エピソードをリネーム
+Replace illegal characters (otherwise they are removed)	使用できない文字を置き換える (それ以外の場合は削除)
+Colon replacement	コロンの置き換え
+How colons in titles are written in file and folder names.	タイトル中のコロンをファイル名とフォルダー名でどう書くか。
+Replace with dash	ダッシュに置き換え
+Replace with space dash	スペースとダッシュに置き換え
+Replace with space dash space	スペース、ダッシュ、スペースに置き換え
+Smart replace (dash or space dash)	スマート置き換え (ダッシュまたはスペースとダッシュ)
+Custom	カスタム
+Custom colon replacement	カスタムのコロン置き換え
+The characters written instead of a colon.	コロンの代わりに書き込む文字。
+Multi-episode style	マルチエピソードのスタイル
+Extend (S01E01-02-03)	拡張 (S01E01-02-03)
+Duplicate (S01E01.S01E02)	重複 (S01E01.S01E02)
+Repeat (S01E01E02E03)	繰り返し (S01E01E02E03)
+Scene (S01E01-E02-E03)	シーン (S01E01-E02-E03)
+Range (S01E01-03)	範囲 (S01E01-03)
+Prefixed range (S01E01-E03)	プレフィックス付き範囲 (S01E01-E03)
+Example	例
+Anime group movie	アニメグループの映画
+Used when films are renamed.	映画をリネームするときに使用します。
+Used when adding a new series or moving one.	新しいシリーズを追加するとき、または移動するときに使用します。
+Specials folder format	スペシャルのフォルダー形式
+Anime groups and collections: titles go to {}/{}/{}.	アニメグループとコレクション: タイトルは {}/{}/{} に配置されます。
+Interface settings saved.	インターフェースの設定を保存しました。
+Week column header	週の列見出し
+The column headers of the calendar's week view.	カレンダーの週表示の列見出し。
+Dates	日付
+Short date format	短い日付の形式
+Long date format	長い日付の形式
+Time format	時刻の形式
+Time zone	タイムゾーン
+Dates and times are shown in this time zone; empty follows the browser.	日付と時刻はこのタイムゾーンで表示されます。空欄の場合はブラウザーに従います。
+The browser's time zone	ブラウザーのタイムゾーン
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	日付の代わりに相対的な日付 (今日、昨日、明日) を表示
+Style	スタイル
+Theme	テーマ
+Kept in this browser; the top bar button switches it too.	このブラウザーに保存されます。上部バーのボタンでも切り替えられます。
+Dark	ダーク
+Light	ライト
+Colour-impaired mode (colours easier to tell apart, with patterns)	色覚サポートモード (色を見分けやすくし、パターンを付ける)
+Saved to the configuration file. Restart Kitsunarr to apply.	設定ファイルに保存しました。適用するには Kitsunarr を再起動してください。
+Host and logging	ホストとログ
+Set by an environment variable or command-line flag: {}	環境変数またはコマンドラインフラグで設定されています: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	{} に保存しました。変更は次回 Kitsunarr の起動時に適用されます。環境変数とコマンドラインフラグが引き続き優先されます。
+Restart required: the saved values differ from the ones in use.	再起動が必要です: 保存された値が使用中の値と異なります。
+Restart now	今すぐ再起動
+Bind address	バインドアドレス
+0.0.0.0 listens on every interface.	0.0.0.0 はすべてのインターフェースで待ち受けます。
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	リバースプロキシ用 (例: /kitsunarr)。空欄の場合はルートから提供します。
+Log level	ログレベル
+Debug and trace write much more to the log files.	デバッグとトレースはログファイルにはるかに多く書き込みます。
+Trace	トレース
+Warn	警告
+Error	エラー
+Backup folder	バックアップフォルダー
+Absolute path; empty uses {}.	絶対パス。空欄の場合は {} を使用します。
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr はプレーンな HTTP で提供します。HTTPS にはリバースプロキシを前段に置いてください。
+Save host settings	ホストの設定を保存
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	今すぐ Kitsunarr を再起動しますか？ アドレス、ポート、URLベースを変更した場合は、その後新しいアドレスを開いてください。
+Nothing to show.	表示する項目はありません。
+All series	すべてのシリーズ
+All types	すべての種類
+All profiles	すべてのプロファイル
+All tags	すべてのタグ
+Downloaded	ダウンロード済み
+Unaired	未放送
+{} files · {}	{} 件のファイル · {}
+Summary	概要
+Monitored series	監視中のシリーズ
+Completed series	完結したシリーズ
+{} ({} completed)	{} (完結 {})
+{} ({} monitored)	{} (監視中 {})
+Episode files	エピソードファイル
+{} ({} downloaded)	{} (ダウンロード済み {})
+{} ({} per episode)	{} (エピソードあたり {})
+Series status	シリーズのステータス
+File qualities	ファイルの品質
+Recent entries	最近のエントリ
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	メモリに保持されている最新のエントリ。上のログファイルとプロセスの出力 (コンテナのログまたは journal) にはすべてが保持されます。
+Yesterday	昨日
+Tomorrow	明日

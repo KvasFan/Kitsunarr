@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	தவிர்க்கப்பட்ட
 {} expired sessions removed	{} காலாவதியான அமர்வுகள் அகற்றப்பட்டன
 All {} refreshes failed; see the logs	அனைத்து {} புதுப்பிப்புகளும் தோல்வியடைந்தன; பதிவுகளைப் பார்க்கவும்
 every folder scan failed ({})	ஒவ்வொரு கோப்புறை ஸ்கேனும் தோல்வியடைந்தது ({})
+Links	இணைப்புகள்
+Copy {}	{} ஐ நகலெடு
+Copy the {} id	{} அடையாளத்தை நகலெடு
+Type	வகை
+Previous airing	முந்தைய ஒளிபரப்பு
+Season folder	சீசன் கோப்புறை
+Average episode size	சராசரி அத்தியாய அளவு
+Genres	வகைமைகள்
+Rating	மதிப்பீடு
+Certification	சான்றளிப்பு
+Release groups	வெளியீட்டுக் குழுக்கள்
+File quality	கோப்புத் தரம்
+In cinemas	திரையரங்குகளில்
+Runtime	இயக்க நேரம்
+Release group	வெளியீட்டுக் குழு
+Columns	நெடுவரிசைகள்
+Shown in the table, the overview and under posters	அட்டவணையிலும் மேலோட்டத்திலும் போஸ்டர்களுக்குக் கீழும் காட்டப்படும்
+Column {}	நெடுவரிசை {}
+Reset columns	நெடுவரிசைகளை மீட்டமை
+Yes	ஆம்
+Override and grab {}	{} ஐ மேலெழுதிப் பெறு
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	இந்த வெளியீட்டின் தொடர், அத்தியாயங்கள், தரம், மொழிகள் அல்லது பதிவிறக்க கிளையன்டைத் தேர்ந்தெடுத்து, பிறகு அதைப் பெறு (தேர்வுகள் இறக்குமதிக்காக வைக்கப்படும்)
+Override…	மேலெழுது…
+Override and grab	மேலெழுதிப் பெறு
+Override and grab — {}	மேலெழுதிப் பெறு — {}
+{} episodes chosen	{} அத்தியாயங்கள் தேர்ந்தெடுக்கப்பட்டன
+Grab release	வெளியீட்டைப் பெறு
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	மாற்றப்படாத தேர்வுகள் வெளியீட்டின் தலைப்பு கூறுவதையே வைத்திருக்கும். தேர்ந்தெடுக்கப்படாத அத்தியாயங்கள் தலைப்பு குறிக்கும் அத்தியாயங்களையே வைத்திருக்கும்.
+Searched series	தேடப்பட்ட தொடர்
+Download client	பதிவிறக்க கிளையன்ட்
+Episodes (required)	அத்தியாயங்கள் (தேவை)
+Statistics	புள்ளிவிவரங்கள்
+Test parsing	பாகுபடுத்தலைச் சோதி
+{} items removed.	{} உருப்படிகள் அகற்றப்பட்டன.
+{} items removed; {}	{} உருப்படிகள் அகற்றப்பட்டன; {}
+Select every queue item	ஒவ்வொரு வரிசை உருப்படியையும் தேர்ந்தெடு
+Queue bulk actions	வரிசை மொத்தச் செயல்கள்
+Grab the selected releases a delay profile holds back now	தாமத சுயவிவரம் நிறுத்தி வைத்துள்ள தேர்ந்தெடுத்த வெளியீடுகளை இப்போதே பெறு
+Remove selected…	தேர்ந்தவற்றை அகற்று…
+Remove {} items from the queue	வரிசையிலிருந்து {} உருப்படிகளை அகற்று
+Held-back releases are forgotten; a later search can find them again.	நிறுத்தி வைக்கப்பட்ட வெளியீடுகள் மறக்கப்படும்; பிந்தைய தேடல் அவற்றை மீண்டும் கண்டறியலாம்.
+Removal method	அகற்றும் முறை
+Remove from the download client	பதிவிறக்க கிளையன்டிலிருந்து அகற்று
+Change category	வகையை மாற்று
+Keep it in the download client	பதிவிறக்க கிளையன்டில் வைத்திரு
+The download and its files are removed from the download client.	பதிவிறக்கமும் அதன் கோப்புகளும் பதிவிறக்க கிளையன்டிலிருந்து அகற்றப்படும்.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	பதிவிறக்கம் கிளையன்டின் இறக்குமதிக்குப் பிந்தைய வகைக்கு நகர்த்தப்பட்டு இனி கண்காணிக்கப்படாது; அதன் கோப்புகள் அப்படியே இருக்கும்.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	பதிவிறக்கம் பதிவிறக்க கிளையன்டில் மாற்றமின்றி இருக்கும்; அதன் வெளியீட்டைத் தடுப்புப்பட்டியலில் சேர்க்க ஒரு தடுப்புப்பட்டியல் விருப்பத்தைத் தேர்ந்தெடு.
+Blocklist release	வெளியீட்டைத் தடுப்புப்பட்டியலில் சேர்
+Do not blocklist	தடுப்புப்பட்டியலில் சேர்க்காதே
+Blocklist and search for a replacement	தடுப்புப்பட்டியலில் சேர்த்து மாற்றீட்டைத் தேடு
+Blocklist only	தடுப்புப்பட்டியலில் மட்டும் சேர்
+Removed {} releases from the blocklist.	தடுப்புப்பட்டியலிலிருந்து {} வெளியீடுகள் அகற்றப்பட்டன.
+Remove {} selected	தேர்ந்த {} ஐ அகற்று
+Select every release on this page	இந்தப் பக்கத்திலுள்ள ஒவ்வொரு வெளியீட்டையும் தேர்ந்தெடு
+Remove from the blocklist	தடுப்புப்பட்டியலிலிருந்து அகற்று
+Remove the {} selected releases from the blocklist?	தேர்ந்தெடுத்த {} வெளியீடுகளைத் தடுப்புப்பட்டியலிலிருந்து அகற்றவா?
+Quality, languages and release of {}	{} இன் தரம், மொழிகள் மற்றும் வெளியீடு
+Choose the quality, languages, release group and release type the file is imported with	கோப்பு இறக்குமதி செய்யப்படும் தரம், மொழிகள், வெளியீட்டுக் குழு மற்றும் வெளியீட்டு வகையைத் தேர்ந்தெடு
+Import details — {}	இறக்குமதி விவரங்கள் — {}
+Use these details	இந்த விவரங்களைப் பயன்படுத்து
+Revision	திருத்தம்
+2 or more for a PROPER or REPACK.	PROPER அல்லது REPACK க்கு 2 அல்லது அதற்கு மேல்.
+Single episode	ஒற்றை அத்தியாயம்
+Multi-episode	பல அத்தியாயங்கள்
+Season pack	சீசன் தொகுப்பு
+Manual	கைமுறை
+Choose the group the title joins.	தலைப்பு சேரும் குழுவைத் தேர்ந்தெடு.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	தானியங்கு, அதிகாரப்பூர்வ தொடர்புகளிலிருந்து தலைப்பை அதன் உரிமைத்தொடர் அல்லது தொகுப்புடன் குழுவாக்கும். கைமுறை அதை நீங்கள் தேர்ந்தெடுக்கும் குழுவில் வைக்கும். முடக்கப்பட்டது அதைத் தனியாக வைத்திருக்கும்.
+Manual puts the title in a group you choose, in the group's folder.	கைமுறை தலைப்பை நீங்கள் தேர்ந்தெடுக்கும் குழுவில், குழுவின் கோப்புறையில் வைக்கும்.
+Manual (choose a group)	கைமுறை (குழுவைத் தேர்ந்தெடு)
+The title joins the group as its next season or film, in the group's folder.	தலைப்பு குழுவின் அடுத்த சீசனாக அல்லது திரைப்படமாக, குழுவின் கோப்புறையில் சேரும்.
+Choose a group…	குழுவைத் தேர்ந்தெடு…
+Collection settings saved.	தொகுப்பு அமைப்புகள் சேமிக்கப்பட்டன.
+Collection settings	தொகுப்பு அமைப்புகள்
+Collection name	தொகுப்பின் பெயர்
+Collection type	தொகுப்பு வகை
+A movie saga holds only films.	திரைப்படச் சாகா திரைப்படங்களை மட்டுமே கொண்டிருக்கும்.
+Movie saga	திரைப்படச் சாகா
+Movie folder format	திரைப்படக் கோப்புறை வடிவம்
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	தலைப்புகள் சேரும்போது உறுப்பினர் கோப்புறைகள் எவ்வாறு பெயரிடப்படும்: தானியங்கு, சாகாக்களில் எண்ணிடப்பட்ட கோப்புறைகளையும் கதைத் தொடர்களுக்குக் கதைத் தொடர் கோப்புறைகளையும் பயன்படுத்தும்.
+Numbered	எண்ணிடப்பட்டது
+No change	மாற்றமில்லை
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	கண்காணிப்பு, தர சுயவிவரம் மற்றும் சீசன் கோப்புறை இப்போதே ஒவ்வொரு உறுப்பினருக்கும் பொருந்தும்; வகையும் கோப்புறை வடிவமும் இனி சேரும் தலைப்புகளுக்குப் பொருந்தும்.
+Collection settings…	தொகுப்பு அமைப்புகள்…
+Monitoring, quality profile, series type, folder and tags	கண்காணிப்பு, தர சுயவிவரம், தொடர் வகை, கோப்புறை மற்றும் குறிச்சொற்கள்
+Change the quality, languages or release group of episode files, or delete them	அத்தியாயக் கோப்புகளின் தரம், மொழிகள் அல்லது வெளியீட்டுக் குழுவை மாற்று, அல்லது அவற்றை நீக்கு
+Manage episodes	அத்தியாயங்களை நிர்வகி
+Episode details: overview, file, history and searches	அத்தியாய விவரங்கள்: மேலோட்டம், கோப்பு, வரலாறு மற்றும் தேடல்கள்
+Details of episode {}	அத்தியாயம் {} இன் விவரங்கள்
+Monitoring, availability, quality profile, folder and tags	கண்காணிப்பு, கிடைக்கும் நிலை, தர சுயவிவரம், கோப்புறை மற்றும் குறிச்சொற்கள்
+No tags yet: create them in Settings › Tags.	இதுவரை குறிச்சொற்கள் இல்லை: அமைப்புகள் › குறிச்சொற்கள் இல் அவற்றை உருவாக்கவும்.
+Below the root folder.	மூல கோப்புறையின் கீழ்.
+Use the folder name the naming settings give	பெயரிடல் அமைப்புகள் தரும் கோப்புறைப் பெயரைப் பயன்படுத்து
+Use naming format	பெயரிடல் வடிவத்தைப் பயன்படுத்து
+Series saved.	தொடர் சேமிக்கப்பட்டது.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	கண்காணிக்கப்படும் தொடரின் கண்காணிக்கப்படும் அத்தியாயங்களை Kitsunarr தேடிப் பதிவிறக்கும்.
+Whether seasons a refresh discovers are monitored.	புதுப்பிப்பு கண்டறியும் சீசன்கள் கண்காணிக்கப்படுமா என்பது.
+Sort episodes into season folders.	அத்தியாயங்களைச் சீசன் கோப்புறைகளில் வரிசைப்படுத்து.
+Use season folders	சீசன் கோப்புறைகளைப் பயன்படுத்து
+Decides how episodes are numbered when searching and importing.	தேடும்போதும் இறக்குமதி செய்யும்போதும் அத்தியாயங்கள் எவ்வாறு எண்ணிடப்படும் என்பதைத் தீர்மானிக்கும்.
+TheTVDB titles in this language; changing it refreshes the series.	இந்த மொழியில் TheTVDB தலைப்புகள்; இதை மாற்றினால் தொடர் புதுப்பிக்கப்படும்.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	முடக்கப்பட்டது தொடரை அதன் அனிமே குழுவிலிருந்து அகற்றி, தானியங்கு குழுவாக்கத்திலிருந்து விலக்கி வைக்கும்.
+Enter a folder name.	கோப்புறைப் பெயரை உள்ளிடவும்.
+Edit — {}	திருத்து — {}
+Announced	அறிவிக்கப்பட்டது
+Released	வெளியிடப்பட்டது
+Movie saved.	திரைப்படம் சேமிக்கப்பட்டது.
+Kitsunarr searches for and downloads a monitored movie.	கண்காணிக்கப்படும் திரைப்படத்தை Kitsunarr தேடிப் பதிவிறக்கும்.
+Minimum availability	குறைந்தபட்சக் கிடைக்கும் நிலை
+When the movie counts as available for automatic searches.	தானியங்கு தேடல்களுக்குத் திரைப்படம் எப்போது கிடைப்பதாகக் கருதப்படும்.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	முடக்கப்பட்டது திரைப்படத்தை அதன் தொகுப்பிலிருந்து அகற்றி, தானியங்கு குழுவாக்கத்திலிருந்து விலக்கி வைக்கும்.
+Edit {} selected	தேர்ந்த {} ஐத் திருத்து
+Apply changes	மாற்றங்களைப் பயன்படுத்து
+No season folders	சீசன் கோப்புறைகள் இல்லை
+Tags updated on {} items.	{} உருப்படிகளில் குறிச்சொற்கள் புதுப்பிக்கப்பட்டன.
+Removes the chosen tags from every selected title.	தேர்ந்தெடுத்த குறிச்சொற்களைத் தேர்ந்தெடுத்த ஒவ்வொரு தலைப்பிலிருந்தும் அகற்றும்.
+Every selected title gets exactly the chosen tags (none removes all).	தேர்ந்தெடுத்த ஒவ்வொரு தலைப்பும் தேர்ந்தெடுத்த குறிச்சொற்களை மட்டுமே பெறும் (எதுவுமில்லை என்றால் அனைத்தும் அகற்றப்படும்).
+Adds the chosen tags to every selected title.	தேர்ந்தெடுத்த குறிச்சொற்களைத் தேர்ந்தெடுத்த ஒவ்வொரு தலைப்பிலும் சேர்க்கும்.
+Tags — {} selected	குறிச்சொற்கள் — {} தேர்ந்தெடுக்கப்பட்டன
+Apply tags	குறிச்சொற்களைப் பயன்படுத்து
+Replace	மாற்றியமை
+Manage	நிர்வகி
+Multi-season pack	பல சீசன் தொகுப்பு
+Scene name	Scene பெயர்
+Video	வீடியோ
+· {} fps	· {} fps
+Run time	இயக்க நேரம்
+Audio	ஆடியோ
+Subtitles	வசனங்கள்
+Details	விவரங்கள்
+Search the indexers and grab the best release	குறியீட்டாளர்களைத் தேடி சிறந்த வெளியீட்டைப் பெறு
+See every release and choose	ஒவ்வொரு வெளியீட்டையும் பார்த்துத் தேர்ந்தெடு
+absolute {}	முழுமையான {}
+Air date	ஒளிபரப்புத் தேதி
+No overview.	மேலோட்டம் இல்லை.
+Delete this episode's file? It goes to the recycle bin when one is set.	இந்த அத்தியாயத்தின் கோப்பை நீக்கவா? மறுசுழற்சித் தொட்டி அமைக்கப்பட்டிருந்தால் அது அங்கு செல்லும்.
+{} files updated.	{} கோப்புகள் புதுப்பிக்கப்பட்டன.
+{} files deleted.	{} கோப்புகள் நீக்கப்பட்டன.
+{} files deleted; {}	{} கோப்புகள் நீக்கப்பட்டன; {}
+Delete files	கோப்புகளை நீக்கு
+The series has no files.	தொடருக்குக் கோப்புகள் இல்லை.
+Change	மாற்று
+Change for the selected files…	தேர்ந்தெடுத்த கோப்புகளுக்கு மாற்று…
+Empty clears it	காலியாக இருந்தால் அழிக்கப்படும்
+Select every file	ஒவ்வொரு கோப்பையும் தேர்ந்தெடு
+Delete the {} selected files? They go to the recycle bin when one is set.	தேர்ந்தெடுத்த {} கோப்புகளை நீக்கவா? மறுசுழற்சித் தொட்டி அமைக்கப்பட்டிருந்தால் அவை அங்கு செல்லும்.
+Monitoring, quality profile, series type and season folders of the selected series	தேர்ந்தெடுத்த தொடர்களின் கண்காணிப்பு, தர சுயவிவரம், தொடர் வகை மற்றும் சீசன் கோப்புறைகள்
+Edit…	திருத்து…
+Add, remove or replace the tags of the selected series	தேர்ந்தெடுத்த தொடர்களின் குறிச்சொற்களைச் சேர், அகற்று அல்லது மாற்றியமை
+Tags…	குறிச்சொற்கள்…
+Monitoring and quality profile of the selected movies	தேர்ந்தெடுத்த திரைப்படங்களின் கண்காணிப்பு மற்றும் தர சுயவிவரம்
+Add, remove or replace the tags of the selected movies	தேர்ந்தெடுத்த திரைப்படங்களின் குறிச்சொற்களைச் சேர், அகற்று அல்லது மாற்றியமை
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Kitsunarr அதை எவ்வாறு படிக்கிறது, எந்த அத்தியாயங்களுடன் பொருத்துகிறது என்பதைக் காண ஒரு வெளியீட்டுத் தலைப்பு அல்லது கோப்புப் பெயரை ஒட்டவும்.
+Parse	பாகுபடுத்து
+Kitsunarr could not read this title.	Kitsunarr ஆல் இந்தத் தலைப்பைப் படிக்க முடியவில்லை.
+Parse result	பாகுபடுத்தல் முடிவு
+Series title	தொடர் தலைப்பு
+Absolute episodes	முழுமையான அத்தியாயங்கள்
+Release hash	வெளியீட்டு ஹாஷ்
+Multi-season	பல சீசன்
+Absolute numbering	முழுமையான எண்ணிடல்
+Library match	நூலகப் பொருத்தம்
+No series in the library matches this title.	நூலகத்திலுள்ள எந்தத் தொடரும் இந்தத் தலைப்புடன் பொருந்தவில்லை.
+No episode of the series matches.	தொடரின் எந்த அத்தியாயமும் பொருந்தவில்லை.
+Log files	பதிவுக் கோப்புகள்
+Refresh	புதுப்பி
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr தனது பதிவைத் தரவுக் கோப்புறையிலுள்ள கோப்புகளில் எழுதும், 1 MiB இல் சுழற்றப்படும். பதிவு நிலை அமைப்புகள் › பொது இல் அமைக்கப்படும்.
+No log files yet	இதுவரை பதிவுக் கோப்புகள் இல்லை
+Last written	கடைசியாக எழுதப்பட்டது
+Skip the free-space check when importing	இறக்குமதி செய்யும்போது காலி இடச் சரிபார்ப்பைத் தவிர்
+Create empty series folders during disk scans (not with "delete empty folders")	வட்டு ஸ்கேன்களின்போது காலியான தொடர் கோப்புறைகளை உருவாக்கு ("காலியான கோப்புறைகளை நீக்கு" உடன் அல்ல)
+Skip the free-space check when grabbing	பெறும்போது காலி இடச் சரிபார்ப்பைத் தவிர்
+Set permissions on imported files and folders (Linux)	இறக்குமதி செய்த கோப்புகள் மற்றும் கோப்புறைகளில் அனுமதிகளை அமை (Linux)
+Import using a script	ஸ்கிரிப்ட் மூலம் இறக்குமதி செய்
+Rescan series folder after refresh	புதுப்பித்த பின் தொடர் கோப்புறையை மீண்டும் ஸ்கேன் செய்
+Whether a metadata refresh scans the series folder for changes afterwards.	மெட்டாடேட்டா புதுப்பிப்புக்குப் பின் தொடர் கோப்புறையில் மாற்றங்களை ஸ்கேன் செய்ய வேண்டுமா என்பது.
+Always	எப்போதும்
+After manual refresh	கைமுறைப் புதுப்பிப்புக்குப் பின்
+Never	ஒருபோதும் இல்லை
+Episode title required	அத்தியாயத் தலைப்பு தேவை
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	பெயரிடல் வடிவம் அத்தியாயத் தலைப்பைப் பயன்படுத்தி, அத்தியாயம் கடந்த 48 மணிநேரத்தில் ஒளிபரப்பப்பட்டிருந்தால், இறக்குமதிகள் அத்தியாயத் தலைப்புக்குக் காத்திருக்கும்.
+Only for bulk season releases	மொத்த சீசன் வெளியீடுகளுக்கு மட்டும்
+Season pack upgrades	சீசன் தொகுப்பு மேம்படுத்தல்கள்
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	தொகுப்பைப் பெற, சீசன் தொகுப்பின் எத்தனை அத்தியாயங்கள் காணாமல் அல்லது மேம்படுத்தக்கூடியதாக இருக்க வேண்டும்.
+A share of the episodes	அத்தியாயங்களின் ஒரு பங்கு
+Any episode	எந்த அத்தியாயமும்
+Season pack upgrade threshold (%)	சீசன் தொகுப்பு மேம்படுத்தல் வரம்பு (%)
+Rejected extensions	நிராகரிக்கப்பட்ட நீட்டிப்புகள்
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	காற்புள்ளியால் பிரிக்கப்பட்டது, எ.கா. exe, bat. இவற்றில் ஒரு நீட்டிப்பு கொண்ட ஒற்றைக் கோப்புப் பதிவிறக்கம் இறக்குமதி செய்யப்படாது.
+Folder permissions (chmod)	கோப்புறை அனுமதிகள் (chmod)
+Octal mode for folders; files get it without the execute bits.	கோப்புறைகளுக்கான எண்ம முறை; கோப்புகள் இயக்க பிட்கள் இல்லாமல் அதைப் பெறும்.
+Group (chown)	குழு (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	இறக்குமதி செய்த கோப்புகள் மற்றும் கோப்புறைகளுக்கான குழுப் பெயர் அல்லது அடையாளம்; காலியாக இருந்தால் குழு மாற்றப்படாது.
+Import script path	இறக்குமதி ஸ்கிரிப்ட் பாதை
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	ஸ்கிரிப்டின் முழுமையான பாதை; அது மூல மற்றும் இலக்குப் பாதைகளையும் Sonarr இன் சூழல் மாறிகளையும் பெறும்.
+Excluded tags (ids, comma separated)	விலக்கப்பட்ட குறிச்சொற்கள் (அடையாளங்கள், காற்புள்ளியால் பிரிக்கப்பட்டவை)
+The profile does not apply to series with one of these tags.	இவற்றில் ஒரு குறிச்சொல் கொண்ட தொடர்களுக்குச் சுயவிவரம் பொருந்தாது.
+Reject releases published before the episode airs	அத்தியாயம் ஒளிபரப்பாவதற்கு முன் வெளியிடப்பட்ட வெளியீடுகளை நிராகரி
+Allow season packs before every episode has aired	ஒவ்வொரு அத்தியாயமும் ஒளிபரப்பாவதற்கு முன்பே சீசன் தொகுப்புகளை அனுமதி
+Air date grace period (hours)	ஒளிபரப்புத் தேதி சலுகைக் காலம் (மணிநேரம்)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	ஒளிபரப்புத் தேதிக்குப் பின் இத்தனை மணிநேரம் வரை வெளியிடப்பட்ட வெளியீடுகள் இன்னும் நிராகரிக்கப்படும்; எதிர்மறை எண் அவற்றை அத்தனை மணிநேரம் முன்பே அனுமதிக்கும்.
+Presets	முன்னமைவுகள்
+Series ID	தொடர் அடையாளம்
+Anime group	அனிமே குழு
+Absolute episode number	முழுமையான அத்தியாய எண்
+Episode title	அத்தியாயத் தலைப்பு
+Media info	ஊடகத் தகவல்
+Original	அசல்
+File name tokens	கோப்புப் பெயர் டோக்கன்கள்
+Folder name tokens	கோப்புறைப் பெயர் டோக்கன்கள்
+Format	வடிவம்
+Separator	பிரிப்பான்
+Space ( )	இடைவெளி ( )
+Period (.)	புள்ளி (.)
+Underscore (_)	அடிக்கோடு (_)
+Dash (-)	சிறுகோடு (-)
+Capitalization	எழுத்து வடிவம்
+Default case	இயல்புநிலை எழுத்து வடிவம்
+Lowercase	சிற்றெழுத்து
+Uppercase	பேரெழுத்து
+Click a token to insert it at the cursor; a preset replaces the whole format.	டோக்கனைக் கர்சரில் செருக அதைக் கிளிக் செய்யவும்; முன்னமைவு முழு வடிவத்தையும் மாற்றியமைக்கும்.
+Tokens	டோக்கன்கள்
+Tokens for {}	{} க்கான டோக்கன்கள்
+Invalid format	தவறான வடிவம்
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	வடிவங்கள் Sonarr இன் டோக்கன்களைப் பயன்படுத்துகின்றன; கீழே உள்ள எடுத்துக்காட்டுகள் நீங்கள் சேமிப்பதற்கு முன்பே உங்கள் மாற்றங்களைப் பின்பற்றும்.
+Rename episodes	அத்தியாயங்களை மறுபெயரிடு
+Replace illegal characters (otherwise they are removed)	சட்டவிரோத எழுத்துகளை மாற்றியமை (இல்லையெனில் அவை அகற்றப்படும்)
+Colon replacement	முக்காற்புள்ளி மாற்றீடு
+How colons in titles are written in file and folder names.	தலைப்புகளிலுள்ள முக்காற்புள்ளிகள் கோப்பு மற்றும் கோப்புறைப் பெயர்களில் எவ்வாறு எழுதப்படும்.
+Replace with dash	சிறுகோட்டால் மாற்று
+Replace with space dash	இடைவெளி சிறுகோட்டால் மாற்று
+Replace with space dash space	இடைவெளி சிறுகோடு இடைவெளியால் மாற்று
+Smart replace (dash or space dash)	சிறந்த மாற்றீடு (சிறுகோடு அல்லது இடைவெளி சிறுகோடு)
+Custom	தனிப்பயன்
+Custom colon replacement	தனிப்பயன் முக்காற்புள்ளி மாற்றீடு
+The characters written instead of a colon.	முக்காற்புள்ளிக்குப் பதிலாக எழுதப்படும் எழுத்துகள்.
+Multi-episode style	பல அத்தியாய பாணி
+Extend (S01E01-02-03)	நீட்டிப்பு (S01E01-02-03)
+Duplicate (S01E01.S01E02)	நகல் (S01E01.S01E02)
+Repeat (S01E01E02E03)	மீண்டும் (S01E01E02E03)
+Scene (S01E01-E02-E03)	Scene (S01E01-E02-E03)
+Range (S01E01-03)	வரம்பு (S01E01-03)
+Prefixed range (S01E01-E03)	முன்னொட்டு வரம்பு (S01E01-E03)
+Example	எடுத்துக்காட்டு
+Anime group movie	அனிமே குழுத் திரைப்படம்
+Used when films are renamed.	திரைப்படங்கள் மறுபெயரிடப்படும்போது பயன்படும்.
+Used when adding a new series or moving one.	புதிய தொடரைச் சேர்க்கும்போது அல்லது ஒன்றை நகர்த்தும்போது பயன்படும்.
+Specials folder format	சிறப்புகள் கோப்புறை வடிவம்
+Anime groups and collections: titles go to {}/{}/{}.	அனிமே குழுக்கள் மற்றும் தொகுப்புகள்: தலைப்புகள் {}/{}/{} க்குச் செல்லும்.
+Interface settings saved.	இடைமுக அமைப்புகள் சேமிக்கப்பட்டன.
+Week column header	வார நெடுவரிசைத் தலைப்பு
+The column headers of the calendar's week view.	நாள்காட்டியின் வாரக் காட்சியின் நெடுவரிசைத் தலைப்புகள்.
+Dates	தேதிகள்
+Short date format	சுருக்கத் தேதி வடிவம்
+Long date format	நீண்ட தேதி வடிவம்
+Time format	நேர வடிவம்
+Time zone	நேர மண்டலம்
+Dates and times are shown in this time zone; empty follows the browser.	தேதிகளும் நேரங்களும் இந்த நேர மண்டலத்தில் காட்டப்படும்; காலியாக இருந்தால் உலாவியைப் பின்பற்றும்.
+The browser's time zone	உலாவியின் நேர மண்டலம்
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	தேதிக்குப் பதிலாகச் சார்புத் தேதிகளைக் (இன்று, நேற்று, நாளை) காட்டு
+Style	பாணி
+Theme	தீம்
+Kept in this browser; the top bar button switches it too.	இந்த உலாவியில் வைக்கப்படும்; மேல் பட்டையின் பொத்தானும் இதை மாற்றும்.
+Dark	இருண்ட
+Light	வெளிர்
+Colour-impaired mode (colours easier to tell apart, with patterns)	நிறக்குருடு பயன்முறை (எளிதில் வேறுபடுத்தக்கூடிய நிறங்கள், வடிவங்களுடன்)
+Saved to the configuration file. Restart Kitsunarr to apply.	உள்ளமைவுக் கோப்பில் சேமிக்கப்பட்டது. பயன்படுத்த Kitsunarr ஐ மறுதொடக்கம் செய்யவும்.
+Host and logging	ஹோஸ்ட் மற்றும் பதிவிடல்
+Set by an environment variable or command-line flag: {}	சூழல் மாறி அல்லது கட்டளை வரிக் கொடியால் அமைக்கப்பட்டது: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	{} இல் சேமிக்கப்பட்டது. அடுத்த முறை Kitsunarr தொடங்கும்போது மாற்றங்கள் பொருந்தும்; சூழல் மாறிகளும் கட்டளை வரிக் கொடிகளும் இன்னும் முன்னுரிமை பெறும்.
+Restart required: the saved values differ from the ones in use.	மறுதொடக்கம் தேவை: சேமிக்கப்பட்ட மதிப்புகள் பயன்பாட்டிலுள்ளவற்றிலிருந்து வேறுபடுகின்றன.
+Restart now	இப்போது மறுதொடக்கம் செய்
+Bind address	பிணைப்பு முகவரி
+0.0.0.0 listens on every interface.	0.0.0.0 ஒவ்வொரு இடைமுகத்திலும் கேட்கும்.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	தலைகீழ் ப்ராக்ஸிகளுக்கு, எ.கா. /kitsunarr; காலியாக இருந்தால் மூலத்திலிருந்து வழங்கும்.
+Log level	பதிவு நிலை
+Debug and trace write much more to the log files.	பிழைத்திருத்தம் மற்றும் ட்ரேஸ் பதிவுக் கோப்புகளில் மிக அதிகமாக எழுதும்.
+Trace	ட்ரேஸ்
+Warn	எச்சரிக்கை
+Error	பிழை
+Backup folder	காப்புப்பிரதிக் கோப்புறை
+Absolute path; empty uses {}.	முழுமையான பாதை; காலியாக இருந்தால் {} பயன்படும்.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr வெற்று HTTP ஐ வழங்கும்; HTTPS க்கு அதன் முன் ஒரு தலைகீழ் ப்ராக்ஸியை வைக்கவும்.
+Save host settings	ஹோஸ்ட் அமைப்புகளைச் சேமி
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Kitsunarr ஐ இப்போது மறுதொடக்கம் செய்யவா? முகவரி, போர்ட் அல்லது URL அடிப்படை மாறியிருந்தால், பிறகு புதிய முகவரியைத் திறக்கவும்.
+Nothing to show.	காட்ட எதுவுமில்லை.
+All series	அனைத்துத் தொடர்களும்
+All types	அனைத்து வகைகளும்
+All profiles	அனைத்துச் சுயவிவரங்களும்
+All tags	அனைத்துக் குறிச்சொற்களும்
+Downloaded	பதிவிறக்கப்பட்டது
+Unaired	ஒளிபரப்பாகாதவை
+{} files · {}	{} கோப்புகள் · {}
+Summary	சுருக்கம்
+Monitored series	கண்காணிக்கப்படும் தொடர்கள்
+Completed series	முடிந்த தொடர்கள்
+{} ({} completed)	{} ({} முடிந்தன)
+{} ({} monitored)	{} ({} கண்காணிக்கப்படுகின்றன)
+Episode files	அத்தியாயக் கோப்புகள்
+{} ({} downloaded)	{} ({} பதிவிறக்கப்பட்டன)
+{} ({} per episode)	{} (அத்தியாயத்திற்கு {})
+Series status	தொடர் நிலை
+File qualities	கோப்புத் தரங்கள்
+Recent entries	சமீபத்திய பதிவுகள்
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	நினைவகத்தில் வைக்கப்பட்ட மிகச் சமீபத்திய பதிவுகள். மேலே உள்ள பதிவுக் கோப்புகளும் செயல்முறை வெளியீடும் (கன்டெய்னர் பதிவுகள் அல்லது journal) அனைத்தையும் வைத்திருக்கும்.
+Yesterday	நேற்று
+Tomorrow	நாளை

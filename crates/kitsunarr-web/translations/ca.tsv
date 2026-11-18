@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	Omès: el servidor encara s'està iniciant
 {} expired sessions removed	{} sessions caducades eliminades
 All {} refreshes failed; see the logs	Han fallat totes les {} actualitzacions; consulteu els registres
 every folder scan failed ({})	han fallat totes les anàlisis de carpetes ({})
+Links	Enllaços
+Copy {}	Copia {}
+Copy the {} id	Copia l'id de {}
+Type	Tipus
+Previous airing	Emissió anterior
+Season folder	Carpeta de temporada
+Average episode size	Mida mitjana per episodi
+Genres	Gèneres
+Rating	Valoració
+Certification	Qualificació per edats
+Release groups	Grups de llançament
+File quality	Qualitat del fitxer
+In cinemas	En cinemes
+Runtime	Durada
+Release group	Grup de llançament
+Columns	Columnes
+Shown in the table, the overview and under posters	Es mostren a la taula, a la vista de sinopsi i sota els pòsters
+Column {}	Columna {}
+Reset columns	Restableix les columnes
+Yes	Sí
+Override and grab {}	Substitueix i captura {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	Trieu la sèrie, els episodis, la qualitat, els idiomes o el client de baixada d'aquest llançament i després captureu-lo (les opcions es conserven per a la importació)
+Override…	Substitueix…
+Override and grab	Substitueix i captura
+Override and grab — {}	Substitueix i captura — {}
+{} episodes chosen	{} episodis triats
+Grab release	Captura el llançament
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	Les opcions sense canvis mantenen el que diu el títol del llançament. Si no es trien episodis, es mantenen els episodis als quals correspon el títol.
+Searched series	Sèrie cercada
+Download client	Client de baixada
+Episodes (required)	Episodis (obligatori)
+Statistics	Estadístiques
+Test parsing	Prova d'anàlisi
+{} items removed.	S'han eliminat {} elements.
+{} items removed; {}	S'han eliminat {} elements; {}
+Select every queue item	Selecciona tots els elements de la cua
+Queue bulk actions	Accions en bloc de la cua
+Grab the selected releases a delay profile holds back now	Captura ara els llançaments seleccionats que un perfil de retard reté
+Remove selected…	Elimina els seleccionats…
+Remove {} items from the queue	Elimina {} elements de la cua
+Held-back releases are forgotten; a later search can find them again.	Els llançaments retinguts s'obliden; una cerca posterior els pot tornar a trobar.
+Removal method	Mètode d'eliminació
+Remove from the download client	Elimina del client de baixada
+Change category	Canvia la categoria
+Keep it in the download client	Mantén-la al client de baixada
+The download and its files are removed from the download client.	La baixada i els seus fitxers s'eliminen del client de baixada.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	La baixada passa a la categoria posterior a la importació del client i deixa de seguir-se; els fitxers es conserven.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	La baixada es queda intacta al client de baixada; trieu una opció de llista de bloqueig per bloquejar-ne el llançament.
+Blocklist release	Bloqueja el llançament
+Do not blocklist	No el bloquegis
+Blocklist and search for a replacement	Bloqueja i cerca un substitut
+Blocklist only	Només bloqueja
+Removed {} releases from the blocklist.	S'han tret {} llançaments de la llista de bloqueig.
+Remove {} selected	Treu els {} seleccionats
+Select every release on this page	Selecciona tots els llançaments d'aquesta pàgina
+Remove from the blocklist	Treu de la llista de bloqueig
+Remove the {} selected releases from the blocklist?	Voleu treure de la llista de bloqueig els {} llançaments seleccionats?
+Quality, languages and release of {}	Qualitat, idiomes i llançament de {}
+Choose the quality, languages, release group and release type the file is imported with	Trieu la qualitat, els idiomes, el grup de llançament i el tipus de llançament amb què s'importa el fitxer
+Import details — {}	Detalls de la importació — {}
+Use these details	Fes servir aquests detalls
+Revision	Revisió
+2 or more for a PROPER or REPACK.	2 o més per a un PROPER o REPACK.
+Single episode	Episodi únic
+Multi-episode	Multiepisodi
+Season pack	Paquet de temporada
+Manual	Manual
+Choose the group the title joins.	Trieu el grup al qual s'uneix el títol.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	Automàtica agrupa el títol amb la seva franquícia o col·lecció segons les relacions oficials. Manual el posa en un grup que trieu. Desactivada el manté sol.
+Manual puts the title in a group you choose, in the group's folder.	Manual posa el títol en un grup que trieu, a la carpeta del grup.
+Manual (choose a group)	Manual (trieu un grup)
+The title joins the group as its next season or film, in the group's folder.	El títol s'uneix al grup com a temporada o pel·lícula següent, a la carpeta del grup.
+Choose a group…	Trieu un grup…
+Collection settings saved.	S'ha desat la configuració de la col·lecció.
+Collection settings	Configuració de la col·lecció
+Collection name	Nom de la col·lecció
+Collection type	Tipus de col·lecció
+A movie saga holds only films.	Una saga de pel·lícules només conté pel·lícules.
+Movie saga	Saga de pel·lícules
+Movie folder format	Format de carpeta de pel·lícula
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	Com s'anomenen les carpetes dels membres quan s'hi uneixen títols: automàtic fa servir carpetes numerades a les sagues i carpetes d'arc argumental per als arcs.
+Numbered	Numerades
+No change	Sense canvis
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	El monitoratge, el perfil de qualitat i la carpeta de temporada s'apliquen ara a tots els membres; el tipus i el format de carpeta s'apliquen als títols que s'hi uneixin a partir d'ara.
+Collection settings…	Configuració de la col·lecció…
+Monitoring, quality profile, series type, folder and tags	Monitoratge, perfil de qualitat, tipus de sèrie, carpeta i etiquetes
+Change the quality, languages or release group of episode files, or delete them	Canvia la qualitat, els idiomes o el grup de llançament dels fitxers d'episodi, o suprimeix-los
+Manage episodes	Gestiona els episodis
+Episode details: overview, file, history and searches	Detalls de l'episodi: sinopsi, fitxer, historial i cerques
+Details of episode {}	Detalls de l'episodi {}
+Monitoring, availability, quality profile, folder and tags	Monitoratge, disponibilitat, perfil de qualitat, carpeta i etiquetes
+No tags yet: create them in Settings › Tags.	Encara no hi ha etiquetes: creeu-les a Configuració › Etiquetes.
+Below the root folder.	Dins de la carpeta arrel.
+Use the folder name the naming settings give	Fes servir el nom de carpeta que dona la configuració de noms
+Use naming format	Fes servir el format de noms
+Series saved.	S'ha desat la sèrie.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr cerca i baixa els episodis monitorats d'una sèrie monitorada.
+Whether seasons a refresh discovers are monitored.	Si les temporades que descobreix una actualització es monitoren.
+Sort episodes into season folders.	Organitza els episodis en carpetes de temporada.
+Use season folders	Fes servir carpetes de temporada
+Decides how episodes are numbered when searching and importing.	Decideix com es numeren els episodis en cercar i importar.
+TheTVDB titles in this language; changing it refreshes the series.	Títols de TheTVDB en aquest idioma; canviar-lo actualitza la sèrie.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	Desactivada treu la sèrie del seu grup d'anime i la manté fora de l'agrupació automàtica.
+Enter a folder name.	Introduïu un nom de carpeta.
+Edit — {}	Edita — {}
+Announced	Anunciada
+Released	Estrenada
+Movie saved.	S'ha desat la pel·lícula.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr cerca i baixa una pel·lícula monitorada.
+Minimum availability	Disponibilitat mínima
+When the movie counts as available for automatic searches.	Quan es considera disponible la pel·lícula per a les cerques automàtiques.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	Desactivada treu la pel·lícula de la seva col·lecció i la manté fora de l'agrupació automàtica.
+Edit {} selected	Edita {} seleccionats
+Apply changes	Aplica els canvis
+No season folders	Sense carpetes de temporada
+Tags updated on {} items.	S'han actualitzat les etiquetes de {} elements.
+Removes the chosen tags from every selected title.	Treu les etiquetes triades de tots els títols seleccionats.
+Every selected title gets exactly the chosen tags (none removes all).	Tots els títols seleccionats tenen exactament les etiquetes triades (cap les treu totes).
+Adds the chosen tags to every selected title.	Afegeix les etiquetes triades a tots els títols seleccionats.
+Tags — {} selected	Etiquetes — {} seleccionats
+Apply tags	Aplica les etiquetes
+Replace	Substitueix
+Manage	Gestiona
+Multi-season pack	Paquet de diverses temporades
+Scene name	Nom de l'escena
+Video	Vídeo
+· {} fps	· {} fps
+Run time	Durada
+Audio	Àudio
+Subtitles	Subtítols
+Details	Detalls
+Search the indexers and grab the best release	Cerca als indexadors i captura el millor llançament
+See every release and choose	Mostra tots els llançaments i tria
+absolute {}	absolut {}
+Air date	Data d'emissió
+No overview.	No hi ha sinopsi.
+Delete this episode's file? It goes to the recycle bin when one is set.	Voleu suprimir el fitxer d'aquest episodi? Va a la paperera de reciclatge, si n'hi ha una de configurada.
+{} files updated.	S'han actualitzat {} fitxers.
+{} files deleted.	S'han suprimit {} fitxers.
+{} files deleted; {}	S'han suprimit {} fitxers; {}
+Delete files	Suprimeix els fitxers
+The series has no files.	La sèrie no té fitxers.
+Change	Canvia
+Change for the selected files…	Canvia per als fitxers seleccionats…
+Empty clears it	Si és buit, s'esborra
+Select every file	Selecciona tots els fitxers
+Delete the {} selected files? They go to the recycle bin when one is set.	Voleu suprimir els {} fitxers seleccionats? Van a la paperera de reciclatge, si n'hi ha una de configurada.
+Monitoring, quality profile, series type and season folders of the selected series	Monitoratge, perfil de qualitat, tipus de sèrie i carpetes de temporada de les sèries seleccionades
+Edit…	Edita…
+Add, remove or replace the tags of the selected series	Afegeix, treu o substitueix les etiquetes de les sèries seleccionades
+Tags…	Etiquetes…
+Monitoring and quality profile of the selected movies	Monitoratge i perfil de qualitat de les pel·lícules seleccionades
+Add, remove or replace the tags of the selected movies	Afegeix, treu o substitueix les etiquetes de les pel·lícules seleccionades
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	Enganxeu un títol de llançament o un nom de fitxer per veure com el llegeix Kitsunarr i amb quins episodis coincideix.
+Parse	Analitza
+Kitsunarr could not read this title.	Kitsunarr no ha pogut llegir aquest títol.
+Parse result	Resultat de l'anàlisi
+Series title	Títol de la sèrie
+Absolute episodes	Episodis absoluts
+Release hash	Hash del llançament
+Multi-season	Diverses temporades
+Absolute numbering	Numeració absoluta
+Library match	Coincidència a la biblioteca
+No series in the library matches this title.	Cap sèrie de la biblioteca no coincideix amb aquest títol.
+No episode of the series matches.	Cap episodi de la sèrie no coincideix.
+Log files	Fitxers de registre
+Refresh	Actualitza
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr escriu el registre en fitxers de la carpeta de dades, que roten cada 1 MiB. El nivell de registre es defineix a Configuració › General.
+No log files yet	Encara no hi ha fitxers de registre
+Last written	Darrera escriptura
+Skip the free-space check when importing	Omet la comprovació de l'espai lliure en importar
+Create empty series folders during disk scans (not with "delete empty folders")	Crea carpetes de sèrie buides durant els escanejos del disc (no amb "suprimeix les carpetes buides")
+Skip the free-space check when grabbing	Omet la comprovació de l'espai lliure en capturar
+Set permissions on imported files and folders (Linux)	Defineix permisos als fitxers i carpetes importats (Linux)
+Import using a script	Importa amb un script
+Rescan series folder after refresh	Torna a escanejar la carpeta de la sèrie després d'actualitzar
+Whether a metadata refresh scans the series folder for changes afterwards.	Si una actualització de metadades escaneja després la carpeta de la sèrie per detectar canvis.
+Always	Sempre
+After manual refresh	Després d'una actualització manual
+Never	Mai
+Episode title required	Títol d'episodi obligatori
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	Les importacions esperen un títol d'episodi quan el format de noms el fa servir i l'episodi s'ha emès en les darreres 48 hores.
+Only for bulk season releases	Només per a llançaments de temporada en bloc
+Season pack upgrades	Actualitzacions de paquets de temporada
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	Quants episodis d'un paquet de temporada han de faltar o ser actualitzables perquè es capturi el paquet.
+A share of the episodes	Una part dels episodis
+Any episode	Qualsevol episodi
+Season pack upgrade threshold (%)	Llindar d'actualització de paquets de temporada (%)
+Rejected extensions	Extensions rebutjades
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	Separades per comes, com ara exe, bat. Una baixada d'un sol fitxer amb una d'aquestes extensions no s'importa.
+Folder permissions (chmod)	Permisos de carpeta (chmod)
+Octal mode for folders; files get it without the execute bits.	Mode octal per a les carpetes; els fitxers el reben sense els bits d'execució.
+Group (chown)	Grup (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	Nom o id del grup per als fitxers i carpetes importats; si és buit, el grup no es toca.
+Import script path	Ruta de l'script d'importació
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	Ruta absoluta de l'script; rep les rutes d'origen i de destinació i les variables d'entorn de Sonarr.
+Excluded tags (ids, comma separated)	Etiquetes excloses (ids, separats per comes)
+The profile does not apply to series with one of these tags.	El perfil no s'aplica a les sèries amb alguna d'aquestes etiquetes.
+Reject releases published before the episode airs	Rebutja els llançaments publicats abans que s'emeti l'episodi
+Allow season packs before every episode has aired	Permet paquets de temporada abans que s'hagin emès tots els episodis
+Air date grace period (hours)	Període de gràcia de la data d'emissió (hores)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	Els llançaments publicats fins a aquest nombre d'hores després de la data d'emissió encara es rebutgen; un nombre negatiu els permet aquest nombre d'hores abans.
+Presets	Predefinits
+Series ID	ID de la sèrie
+Anime group	Grup d'anime
+Absolute episode number	Número d'episodi absolut
+Episode title	Títol de l'episodi
+Media info	Informació multimèdia
+Original	Original
+File name tokens	Testimonis del nom de fitxer
+Folder name tokens	Testimonis del nom de carpeta
+Format	Format
+Separator	Separador
+Space ( )	Espai ( )
+Period (.)	Punt (.)
+Underscore (_)	Guió baix (_)
+Dash (-)	Guió (-)
+Capitalization	Majúscules i minúscules
+Default case	Per defecte
+Lowercase	Minúscules
+Uppercase	Majúscules
+Click a token to insert it at the cursor; a preset replaces the whole format.	Feu clic en un testimoni per inserir-lo al cursor; un predefinit substitueix tot el format.
+Tokens	Testimonis
+Tokens for {}	Testimonis per a {}
+Invalid format	Format no vàlid
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	Els formats fan servir els testimonis de Sonarr; els exemples de sota segueixen els vostres canvis abans de desar.
+Rename episodes	Canvia el nom dels episodis
+Replace illegal characters (otherwise they are removed)	Substitueix els caràcters no permesos (altrament s'eliminen)
+Colon replacement	Substitució dels dos punts
+How colons in titles are written in file and folder names.	Com s'escriuen els dos punts dels títols als noms de fitxers i carpetes.
+Replace with dash	Substitueix per un guió
+Replace with space dash	Substitueix per espai i guió
+Replace with space dash space	Substitueix per espai, guió i espai
+Smart replace (dash or space dash)	Substitució intel·ligent (guió o espai i guió)
+Custom	Personalitzada
+Custom colon replacement	Substitució personalitzada dels dos punts
+The characters written instead of a colon.	Els caràcters que s'escriuen en lloc dels dos punts.
+Multi-episode style	Estil de multiepisodi
+Extend (S01E01-02-03)	Estén (S01E01-02-03)
+Duplicate (S01E01.S01E02)	Duplica (S01E01.S01E02)
+Repeat (S01E01E02E03)	Repeteix (S01E01E02E03)
+Scene (S01E01-E02-E03)	Escena (S01E01-E02-E03)
+Range (S01E01-03)	Interval (S01E01-03)
+Prefixed range (S01E01-E03)	Interval amb prefix (S01E01-E03)
+Example	Exemple
+Anime group movie	Pel·lícula del grup d'anime
+Used when films are renamed.	S'utilitza quan es canvia el nom de les pel·lícules.
+Used when adding a new series or moving one.	S'utilitza quan s'afegeix una sèrie nova o se'n mou una.
+Specials folder format	Format de carpeta dels especials
+Anime groups and collections: titles go to {}/{}/{}.	Grups d'anime i col·leccions: els títols van a {}/{}/{}.
+Interface settings saved.	S'ha desat la configuració de la interfície.
+Week column header	Capçalera de columna de la setmana
+The column headers of the calendar's week view.	Les capçaleres de columna de la vista setmanal del calendari.
+Dates	Dates
+Short date format	Format de data curt
+Long date format	Format de data llarg
+Time format	Format d'hora
+Time zone	Fus horari
+Dates and times are shown in this time zone; empty follows the browser.	Les dates i les hores es mostren en aquest fus horari; si és buit, se segueix el del navegador.
+The browser's time zone	El fus horari del navegador
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	Mostra dates relatives (Avui, Ahir, Demà) en lloc de la data
+Style	Estil
+Theme	Tema
+Kept in this browser; the top bar button switches it too.	Es conserva en aquest navegador; el botó de la barra superior també el canvia.
+Dark	Fosc
+Light	Clar
+Colour-impaired mode (colours easier to tell apart, with patterns)	Mode per a daltonisme (colors més fàcils de distingir, amb patrons)
+Saved to the configuration file. Restart Kitsunarr to apply.	S'ha desat al fitxer de configuració. Reinicieu Kitsunarr per aplicar-ho.
+Host and logging	Amfitrió i registre
+Set by an environment variable or command-line flag: {}	Definit per una variable d'entorn o una opció de línia d'ordres: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	S'ha desat a {}. Els canvis s'apliquen la propera vegada que s'inicia Kitsunarr; les variables d'entorn i les opcions de línia d'ordres continuen tenint prioritat.
+Restart required: the saved values differ from the ones in use.	Cal reiniciar: els valors desats són diferents dels que s'estan fent servir.
+Restart now	Reinicia ara
+Bind address	Adreça d'escolta
+0.0.0.0 listens on every interface.	0.0.0.0 escolta a totes les interfícies.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	Per a servidors intermediaris inversos, p. ex. /kitsunarr; si és buit, se serveix des de l'arrel.
+Log level	Nivell de registre
+Debug and trace write much more to the log files.	Depuració i traça escriuen molt més als fitxers de registre.
+Trace	Traça
+Warn	Avís
+Error	Error
+Backup folder	Carpeta de còpies de seguretat
+Absolute path; empty uses {}.	Ruta absoluta; si és buida, s'usa {}.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr serveix HTTP simple; poseu-hi un servidor intermediari invers al davant per a HTTPS.
+Save host settings	Desa la configuració de l'amfitrió
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Voleu reiniciar Kitsunarr ara? Si l'adreça, el port o la base URL han canviat, obriu després l'adreça nova.
+Nothing to show.	No hi ha res a mostrar.
+All series	Totes les sèries
+All types	Tots els tipus
+All profiles	Tots els perfils
+All tags	Totes les etiquetes
+Downloaded	Baixats
+Unaired	No emesos
+{} files · {}	{} fitxers · {}
+Summary	Resum
+Monitored series	Sèries monitorades
+Completed series	Sèries completades
+{} ({} completed)	{} ({} completades)
+{} ({} monitored)	{} ({} monitorades)
+Episode files	Fitxers d'episodi
+{} ({} downloaded)	{} ({} baixats)
+{} ({} per episode)	{} ({} per episodi)
+Series status	Estat de la sèrie
+File qualities	Qualitats dels fitxers
+Recent entries	Entrades recents
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	Les entrades més recents conservades en memòria. Els fitxers de registre de més amunt i la sortida del procés (registres del contenidor o journal) ho conserven tot.
+Yesterday	Ahir
+Tomorrow	Demà

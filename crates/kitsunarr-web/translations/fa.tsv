@@ -1599,3 +1599,311 @@ Skipped: the server is still starting	رد شد: سرور هنوز در حال �
 {} expired sessions removed	{} نشست منقضی حذف شد
 All {} refreshes failed; see the logs	همه {} تازه‌سازی ناموفق بود؛ گزارش‌ها را ببینید
 every folder scan failed ({})	همه پویش‌های پوشه ناموفق بود ({})
+Links	پیوندها
+Copy {}	کپی {}
+Copy the {} id	کپی شناسه {}
+Type	نوع
+Previous airing	پخش قبلی
+Season folder	پوشه فصل
+Average episode size	میانگین حجم قسمت
+Genres	ژانرها
+Rating	امتیاز
+Certification	رده‌بندی سنی
+Release groups	گروه‌های ریلیز
+File quality	کیفیت فایل
+In cinemas	در سینماها
+Runtime	مدت زمان
+Release group	گروه ریلیز
+Columns	ستون‌ها
+Shown in the table, the overview and under posters	در جدول، نمای خلاصه داستان و زیر پوسترها نمایش داده می‌شود
+Column {}	ستون {}
+Reset columns	بازنشانی ستون‌ها
+Yes	بله
+Override and grab {}	بازنویسی و دریافت {}
+Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)	سریال، قسمت‌ها، کیفیت، زبان‌ها یا کلاینت دانلود این ریلیز را انتخاب کنید، سپس آن را دریافت کنید (انتخاب‌ها برای وارد کردن حفظ می‌شوند)
+Override…	بازنویسی…
+Override and grab	بازنویسی و دریافت
+Override and grab — {}	بازنویسی و دریافت — {}
+{} episodes chosen	{} قسمت انتخاب شد
+Grab release	دریافت ریلیز
+Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to.	انتخاب‌های تغییرنیافته همان چیزی را نگه می‌دارند که عنوان ریلیز می‌گوید. اگر قسمتی انتخاب نشود، قسمت‌هایی که عنوان به آن‌ها اشاره دارد حفظ می‌شوند.
+Searched series	سریال جستجوشده
+Download client	کلاینت دانلود
+Episodes (required)	قسمت‌ها (الزامی)
+Statistics	آمار
+Test parsing	آزمایش تجزیه
+{} items removed.	{} مورد حذف شد.
+{} items removed; {}	{} مورد حذف شد؛ {}
+Select every queue item	انتخاب همه موارد صف
+Queue bulk actions	عملیات گروهی صف
+Grab the selected releases a delay profile holds back now	دریافت همین حالای ریلیزهای انتخاب‌شده‌ای که پروفایل تأخیر نگه داشته است
+Remove selected…	حذف انتخاب‌شده‌ها…
+Remove {} items from the queue	حذف {} مورد از صف
+Held-back releases are forgotten; a later search can find them again.	ریلیزهای نگه‌داشته‌شده فراموش می‌شوند؛ جستجوی بعدی می‌تواند دوباره آن‌ها را پیدا کند.
+Removal method	روش حذف
+Remove from the download client	حذف از کلاینت دانلود
+Change category	تغییر دسته
+Keep it in the download client	نگه داشتن در کلاینت دانلود
+The download and its files are removed from the download client.	دانلود و فایل‌های آن از کلاینت دانلود حذف می‌شوند.
+The download moves to the client's post-import category and is no longer tracked; its files stay.	دانلود به دسته پس از وارد کردن کلاینت منتقل می‌شود و دیگر پیگیری نمی‌شود؛ فایل‌هایش باقی می‌مانند.
+The download stays in the download client untouched; choose a blocklist option to blocklist its release.	دانلود بدون تغییر در کلاینت دانلود می‌ماند؛ برای افزودن ریلیز آن به فهرست مسدود، یکی از گزینه‌های فهرست مسدود را انتخاب کنید.
+Blocklist release	افزودن ریلیز به فهرست مسدود
+Do not blocklist	عدم افزودن به فهرست مسدود
+Blocklist and search for a replacement	افزودن به فهرست مسدود و جستجوی جایگزین
+Blocklist only	فقط افزودن به فهرست مسدود
+Removed {} releases from the blocklist.	{} ریلیز از فهرست مسدود حذف شد.
+Remove {} selected	حذف {} مورد انتخاب‌شده
+Select every release on this page	انتخاب همه ریلیزهای این صفحه
+Remove from the blocklist	حذف از فهرست مسدود
+Remove the {} selected releases from the blocklist?	{} ریلیز انتخاب‌شده از فهرست مسدود حذف شوند؟
+Quality, languages and release of {}	کیفیت، زبان‌ها و ریلیز {}
+Choose the quality, languages, release group and release type the file is imported with	کیفیت، زبان‌ها، گروه ریلیز و نوع ریلیزی را که فایل با آن وارد می‌شود انتخاب کنید
+Import details — {}	جزئیات واردات — {}
+Use these details	استفاده از این جزئیات
+Revision	بازبینی
+2 or more for a PROPER or REPACK.	2 یا بیشتر برای PROPER یا REPACK.
+Single episode	تک‌قسمت
+Multi-episode	چندقسمتی
+Season pack	بسته فصل
+Manual	دستی
+Choose the group the title joins.	گروهی را که عنوان به آن می‌پیوندد انتخاب کنید.
+Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.	«خودکار» عنوان را بر اساس روابط رسمی با فرنچایز یا مجموعه‌اش گروه‌بندی می‌کند. «دستی» آن را در گروهی که انتخاب می‌کنید قرار می‌دهد. «غیرفعال» آن را جدا نگه می‌دارد.
+Manual puts the title in a group you choose, in the group's folder.	«دستی» عنوان را در گروهی که انتخاب می‌کنید، در پوشه گروه قرار می‌دهد.
+Manual (choose a group)	دستی (انتخاب گروه)
+The title joins the group as its next season or film, in the group's folder.	عنوان به‌عنوان فصل یا فیلم بعدی گروه، در پوشه گروه به آن می‌پیوندد.
+Choose a group…	انتخاب گروه…
+Collection settings saved.	تنظیمات مجموعه ذخیره شد.
+Collection settings	تنظیمات مجموعه
+Collection name	نام مجموعه
+Collection type	نوع مجموعه
+A movie saga holds only films.	حماسه فیلم فقط شامل فیلم‌هاست.
+Movie saga	حماسه فیلم
+Movie folder format	قالب پوشه فیلم
+How member folders are named when titles join: automatic uses numbered folders in sagas and story-arc folders for arcs.	نحوه نام‌گذاری پوشه‌های اعضا هنگام پیوستن عنوان‌ها: حالت خودکار در حماسه‌ها از پوشه‌های شماره‌دار و برای آرک‌ها از پوشه‌های آرک داستانی استفاده می‌کند.
+Numbered	شماره‌دار
+No change	بدون تغییر
+Monitoring, quality profile and season folder apply to every member now; the type and folder format apply to titles joining from now on.	پایش، پروفایل کیفیت و پوشه فصل اکنون روی همه اعضا اعمال می‌شوند؛ نوع و قالب پوشه از این پس روی عنوان‌هایی که می‌پیوندند اعمال می‌شوند.
+Collection settings…	تنظیمات مجموعه…
+Monitoring, quality profile, series type, folder and tags	پایش، پروفایل کیفیت، نوع سریال، پوشه و برچسب‌ها
+Change the quality, languages or release group of episode files, or delete them	تغییر کیفیت، زبان‌ها یا گروه ریلیز فایل‌های قسمت‌ها، یا حذف آن‌ها
+Manage episodes	مدیریت قسمت‌ها
+Episode details: overview, file, history and searches	جزئیات قسمت: خلاصه داستان، فایل، تاریخچه و جستجوها
+Details of episode {}	جزئیات قسمت {}
+Monitoring, availability, quality profile, folder and tags	پایش، در دسترس بودن، پروفایل کیفیت، پوشه و برچسب‌ها
+No tags yet: create them in Settings › Tags.	هنوز برچسبی وجود ندارد: آن‌ها را در تنظیمات › برچسب‌ها بسازید.
+Below the root folder.	زیر پوشه ریشه.
+Use the folder name the naming settings give	استفاده از نام پوشه‌ای که تنظیمات نام‌گذاری تعیین می‌کند
+Use naming format	استفاده از قالب نام‌گذاری
+Series saved.	سریال ذخیره شد.
+Kitsunarr searches for and downloads the monitored episodes of a monitored series.	Kitsunarr قسمت‌های پایش‌شده یک سریال پایش‌شده را جستجو و دانلود می‌کند.
+Whether seasons a refresh discovers are monitored.	اینکه فصل‌هایی که تازه‌سازی پیدا می‌کند پایش شوند یا نه.
+Sort episodes into season folders.	مرتب کردن قسمت‌ها در پوشه‌های فصل.
+Use season folders	استفاده از پوشه‌های فصل
+Decides how episodes are numbered when searching and importing.	تعیین می‌کند قسمت‌ها هنگام جستجو و وارد کردن چگونه شماره‌گذاری شوند.
+TheTVDB titles in this language; changing it refreshes the series.	عنوان‌های TheTVDB به این زبان؛ تغییر آن سریال را تازه‌سازی می‌کند.
+Disabled removes the series from its anime group and keeps it out of automatic grouping.	«غیرفعال» سریال را از گروه انیمه‌اش حذف می‌کند و آن را از گروه‌بندی خودکار بیرون نگه می‌دارد.
+Enter a folder name.	یک نام پوشه وارد کنید.
+Edit — {}	ویرایش — {}
+Announced	اعلام‌شده
+Released	منتشرشده
+Movie saved.	فیلم ذخیره شد.
+Kitsunarr searches for and downloads a monitored movie.	Kitsunarr یک فیلم پایش‌شده را جستجو و دانلود می‌کند.
+Minimum availability	حداقل در دسترس بودن
+When the movie counts as available for automatic searches.	زمانی که فیلم برای جستجوهای خودکار در دسترس به حساب می‌آید.
+Disabled removes the film from its collection and keeps it out of automatic grouping.	«غیرفعال» فیلم را از مجموعه‌اش حذف می‌کند و آن را از گروه‌بندی خودکار بیرون نگه می‌دارد.
+Edit {} selected	ویرایش {} مورد انتخاب‌شده
+Apply changes	اعمال تغییرات
+No season folders	بدون پوشه فصل
+Tags updated on {} items.	برچسب‌ها روی {} مورد به‌روزرسانی شد.
+Removes the chosen tags from every selected title.	برچسب‌های انتخاب‌شده را از همه عنوان‌های انتخاب‌شده حذف می‌کند.
+Every selected title gets exactly the chosen tags (none removes all).	هر عنوان انتخاب‌شده دقیقاً برچسب‌های انتخاب‌شده را می‌گیرد (انتخاب نکردن هیچ برچسبی همه را حذف می‌کند).
+Adds the chosen tags to every selected title.	برچسب‌های انتخاب‌شده را به همه عنوان‌های انتخاب‌شده اضافه می‌کند.
+Tags — {} selected	برچسب‌ها — {} انتخاب‌شده
+Apply tags	اعمال برچسب‌ها
+Replace	جایگزینی
+Manage	مدیریت
+Multi-season pack	بسته چندفصلی
+Scene name	نام سین
+Video	ویدیو
+· {} fps	· {} fps
+Run time	مدت پخش
+Audio	صدا
+Subtitles	زیرنویس‌ها
+Details	جزئیات
+Search the indexers and grab the best release	جستجو در ایندکسرها و دریافت بهترین ریلیز
+See every release and choose	دیدن همه ریلیزها و انتخاب
+absolute {}	مطلق {}
+Air date	تاریخ پخش
+No overview.	خلاصه داستانی وجود ندارد.
+Delete this episode's file? It goes to the recycle bin when one is set.	فایل این قسمت حذف شود؟ اگر سطل بازیافت تنظیم شده باشد، به آن منتقل می‌شود.
+{} files updated.	{} فایل به‌روزرسانی شد.
+{} files deleted.	{} فایل حذف شد.
+{} files deleted; {}	{} فایل حذف شد؛ {}
+Delete files	حذف فایل‌ها
+The series has no files.	این سریال فایلی ندارد.
+Change	تغییر
+Change for the selected files…	تغییر برای فایل‌های انتخاب‌شده…
+Empty clears it	خالی آن را پاک می‌کند
+Select every file	انتخاب همه فایل‌ها
+Delete the {} selected files? They go to the recycle bin when one is set.	{} فایل انتخاب‌شده حذف شوند؟ اگر سطل بازیافت تنظیم شده باشد، به آن منتقل می‌شوند.
+Monitoring, quality profile, series type and season folders of the selected series	پایش، پروفایل کیفیت، نوع سریال و پوشه‌های فصل سریال‌های انتخاب‌شده
+Edit…	ویرایش…
+Add, remove or replace the tags of the selected series	افزودن، حذف یا جایگزینی برچسب‌های سریال‌های انتخاب‌شده
+Tags…	برچسب‌ها…
+Monitoring and quality profile of the selected movies	پایش و پروفایل کیفیت فیلم‌های انتخاب‌شده
+Add, remove or replace the tags of the selected movies	افزودن، حذف یا جایگزینی برچسب‌های فیلم‌های انتخاب‌شده
+Paste a release title or file name to see how Kitsunarr reads it and which episodes it matches.	عنوان یک ریلیز یا نام فایل را جای‌گذاری کنید تا ببینید Kitsunarr آن را چگونه می‌خواند و با کدام قسمت‌ها مطابقت دارد.
+Parse	تجزیه
+Kitsunarr could not read this title.	Kitsunarr نتوانست این عنوان را بخواند.
+Parse result	نتیجه تجزیه
+Series title	عنوان سریال
+Absolute episodes	قسمت‌های مطلق
+Release hash	هش ریلیز
+Multi-season	چندفصلی
+Absolute numbering	شماره‌گذاری مطلق
+Library match	تطبیق در کتابخانه
+No series in the library matches this title.	هیچ سریالی در کتابخانه با این عنوان مطابقت ندارد.
+No episode of the series matches.	هیچ قسمتی از سریال مطابقت ندارد.
+Log files	فایل‌های گزارش
+Refresh	تازه‌سازی
+Kitsunarr writes its log to files in the data folder, rolled at 1 MiB. The log level is set in Settings › General.	Kitsunarr گزارش خود را در فایل‌هایی در پوشه داده می‌نویسد و در 1 MiB فایل جدیدی آغاز می‌کند. سطح گزارش در تنظیمات › عمومی تعیین می‌شود.
+No log files yet	هنوز فایل گزارشی وجود ندارد
+Last written	آخرین نوشتن
+Skip the free-space check when importing	رد شدن از بررسی فضای آزاد هنگام وارد کردن
+Create empty series folders during disk scans (not with "delete empty folders")	ایجاد پوشه‌های خالی سریال هنگام اسکن دیسک (نه همراه با «حذف پوشه‌های خالی»)
+Skip the free-space check when grabbing	رد شدن از بررسی فضای آزاد هنگام دریافت
+Set permissions on imported files and folders (Linux)	تنظیم مجوزها روی فایل‌ها و پوشه‌های واردشده (Linux)
+Import using a script	وارد کردن با یک اسکریپت
+Rescan series folder after refresh	اسکن مجدد پوشه سریال پس از تازه‌سازی
+Whether a metadata refresh scans the series folder for changes afterwards.	اینکه تازه‌سازی فراداده پس از آن پوشه سریال را برای یافتن تغییرات اسکن کند یا نه.
+Always	همیشه
+After manual refresh	پس از تازه‌سازی دستی
+Never	هرگز
+Episode title required	عنوان قسمت الزامی است
+Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.	وقتی قالب نام‌گذاری از عنوان قسمت استفاده می‌کند و قسمت در 48 ساعت گذشته پخش شده است، وارد کردن منتظر عنوان قسمت می‌ماند.
+Only for bulk season releases	فقط برای ریلیزهای فصل کامل
+Season pack upgrades	ارتقای بسته‌های فصل
+How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.	چه تعداد از قسمت‌های یک بسته فصل باید ناموجود یا قابل ارتقا باشند تا بسته دریافت شود.
+A share of the episodes	بخشی از قسمت‌ها
+Any episode	هر قسمتی
+Season pack upgrade threshold (%)	آستانه ارتقای بسته فصل (%)
+Rejected extensions	پسوندهای ردشده
+Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.	جداشده با کاما، مانند exe, bat. دانلود تک‌فایلی با یکی از این پسوندها وارد نمی‌شود.
+Folder permissions (chmod)	مجوزهای پوشه (chmod)
+Octal mode for folders; files get it without the execute bits.	حالت هشت‌هشتی برای پوشه‌ها؛ فایل‌ها آن را بدون بیت‌های اجرا می‌گیرند.
+Group (chown)	گروه (chown)
+Group name or id for imported files and folders; empty leaves the group alone.	نام یا شناسه گروه برای فایل‌ها و پوشه‌های واردشده؛ خالی گروه را تغییر نمی‌دهد.
+Import script path	مسیر اسکریپت وارد کردن
+Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.	مسیر مطلق اسکریپت؛ مسیرهای مبدأ و مقصد و متغیرهای محیطی Sonarr را دریافت می‌کند.
+Excluded tags (ids, comma separated)	برچسب‌های مستثنا (شناسه‌ها، جداشده با کاما)
+The profile does not apply to series with one of these tags.	پروفایل روی سریال‌هایی که یکی از این برچسب‌ها را دارند اعمال نمی‌شود.
+Reject releases published before the episode airs	رد ریلیزهایی که پیش از پخش قسمت منتشر شده‌اند
+Allow season packs before every episode has aired	اجازه بسته‌های فصل پیش از پخش همه قسمت‌ها
+Air date grace period (hours)	مهلت تاریخ پخش (ساعت)
+Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.	ریلیزهایی که تا این تعداد ساعت پس از تاریخ پخش منتشر شوند همچنان رد می‌شوند؛ عدد منفی آن‌ها را از همین تعداد ساعت پیش از آن مجاز می‌کند.
+Presets	پیش‌تنظیم‌ها
+Series ID	شناسه سریال
+Anime group	گروه انیمه
+Absolute episode number	شماره مطلق قسمت
+Episode title	عنوان قسمت
+Media info	اطلاعات رسانه
+Original	اصلی
+File name tokens	توکن‌های نام فایل
+Folder name tokens	توکن‌های نام پوشه
+Format	قالب
+Separator	جداکننده
+Space ( )	فاصله ( )
+Period (.)	نقطه (.)
+Underscore (_)	زیرخط (_)
+Dash (-)	خط تیره (-)
+Capitalization	حروف بزرگ و کوچک
+Default case	حالت پیش‌فرض
+Lowercase	حروف کوچک
+Uppercase	حروف بزرگ
+Click a token to insert it at the cursor; a preset replaces the whole format.	روی یک توکن کلیک کنید تا در محل نشانگر درج شود؛ پیش‌تنظیم کل قالب را جایگزین می‌کند.
+Tokens	توکن‌ها
+Tokens for {}	توکن‌های {}
+Invalid format	قالب نامعتبر
+Formats use Sonarr's tokens; the examples below follow your changes before you save.	قالب‌ها از توکن‌های Sonarr استفاده می‌کنند؛ نمونه‌های زیر پیش از ذخیره، تغییرات شما را دنبال می‌کنند.
+Rename episodes	تغییر نام قسمت‌ها
+Replace illegal characters (otherwise they are removed)	جایگزینی نویسه‌های غیرمجاز (در غیر این صورت حذف می‌شوند)
+Colon replacement	جایگزینی دونقطه
+How colons in titles are written in file and folder names.	نحوه نوشتن دونقطه‌های عنوان‌ها در نام فایل‌ها و پوشه‌ها.
+Replace with dash	جایگزینی با خط تیره
+Replace with space dash	جایگزینی با فاصله و خط تیره
+Replace with space dash space	جایگزینی با فاصله، خط تیره و فاصله
+Smart replace (dash or space dash)	جایگزینی هوشمند (خط تیره یا فاصله و خط تیره)
+Custom	سفارشی
+Custom colon replacement	جایگزینی سفارشی دونقطه
+The characters written instead of a colon.	نویسه‌هایی که به‌جای دونقطه نوشته می‌شوند.
+Multi-episode style	سبک چندقسمتی
+Extend (S01E01-02-03)	گسترش (S01E01-02-03)
+Duplicate (S01E01.S01E02)	تکرار عنوان (S01E01.S01E02)
+Repeat (S01E01E02E03)	تکرار (S01E01E02E03)
+Scene (S01E01-E02-E03)	سین (S01E01-E02-E03)
+Range (S01E01-03)	بازه (S01E01-03)
+Prefixed range (S01E01-E03)	بازه با پیشوند (S01E01-E03)
+Example	نمونه
+Anime group movie	فیلم گروه انیمه
+Used when films are renamed.	هنگام تغییر نام فیلم‌ها استفاده می‌شود.
+Used when adding a new series or moving one.	هنگام افزودن سریال جدید یا جابه‌جایی یک سریال استفاده می‌شود.
+Specials folder format	قالب پوشه ویژه‌ها
+Anime groups and collections: titles go to {}/{}/{}.	گروه‌های انیمه و مجموعه‌ها: عنوان‌ها به {}/{}/{} می‌روند.
+Interface settings saved.	تنظیمات رابط کاربری ذخیره شد.
+Week column header	سرستون هفته
+The column headers of the calendar's week view.	سرستون‌های نمای هفتگی تقویم.
+Dates	تاریخ‌ها
+Short date format	قالب تاریخ کوتاه
+Long date format	قالب تاریخ بلند
+Time format	قالب زمان
+Time zone	منطقه زمانی
+Dates and times are shown in this time zone; empty follows the browser.	تاریخ‌ها و زمان‌ها در این منطقه زمانی نمایش داده می‌شوند؛ خالی از مرورگر پیروی می‌کند.
+The browser's time zone	منطقه زمانی مرورگر
+Show relative dates (Today, Yesterday, Tomorrow) instead of the date	نمایش تاریخ‌های نسبی (امروز، دیروز، فردا) به‌جای تاریخ
+Style	سبک
+Theme	پوسته
+Kept in this browser; the top bar button switches it too.	در این مرورگر نگه داشته می‌شود؛ دکمه نوار بالا هم آن را تغییر می‌دهد.
+Dark	تیره
+Light	روشن
+Colour-impaired mode (colours easier to tell apart, with patterns)	حالت کم‌بینی رنگ (رنگ‌هایی که آسان‌تر از هم تشخیص داده می‌شوند، همراه با الگو)
+Saved to the configuration file. Restart Kitsunarr to apply.	در فایل پیکربندی ذخیره شد. برای اعمال، Kitsunarr را دوباره راه‌اندازی کنید.
+Host and logging	میزبان و گزارش‌گیری
+Set by an environment variable or command-line flag: {}	با یک متغیر محیطی یا گزینه خط فرمان تنظیم شده است: {}
+Saved to {}. Changes apply the next time Kitsunarr starts; environment variables and command-line flags still take precedence.	در {} ذخیره شد. تغییرات دفعه بعد که Kitsunarr آغاز شود اعمال می‌شوند؛ متغیرهای محیطی و گزینه‌های خط فرمان همچنان اولویت دارند.
+Restart required: the saved values differ from the ones in use.	راه‌اندازی دوباره لازم است: مقادیر ذخیره‌شده با مقادیر در حال استفاده تفاوت دارند.
+Restart now	اکنون راه‌اندازی دوباره شود
+Bind address	نشانی اتصال
+0.0.0.0 listens on every interface.	0.0.0.0 روی همه رابط‌ها گوش می‌دهد.
+For reverse proxies, e.g. /kitsunarr; empty serves from the root.	برای پروکسی‌های معکوس، مثلاً /kitsunarr؛ خالی از ریشه سرویس می‌دهد.
+Log level	سطح گزارش
+Debug and trace write much more to the log files.	اشکال‌زدایی و ردیابی مقدار بسیار بیشتری در فایل‌های گزارش می‌نویسند.
+Trace	ردیابی
+Warn	هشدار
+Error	خطا
+Backup folder	پوشه پشتیبان
+Absolute path; empty uses {}.	مسیر مطلق؛ خالی از {} استفاده می‌کند.
+Kitsunarr serves plain HTTP; put a reverse proxy in front of it for HTTPS.	Kitsunarr فقط HTTP ساده ارائه می‌دهد؛ برای HTTPS یک پروکسی معکوس جلوی آن قرار دهید.
+Save host settings	ذخیره تنظیمات میزبان
+Restart Kitsunarr now? If the address, port or URL base changed, open the new address afterwards.	Kitsunarr اکنون دوباره راه‌اندازی شود؟ اگر نشانی، پورت یا پایه URL تغییر کرده است، پس از آن نشانی جدید را باز کنید.
+Nothing to show.	چیزی برای نمایش وجود ندارد.
+All series	همه سریال‌ها
+All types	همه انواع
+All profiles	همه پروفایل‌ها
+All tags	همه برچسب‌ها
+Downloaded	دانلودشده
+Unaired	پخش‌نشده
+{} files · {}	{} فایل · {}
+Summary	خلاصه
+Monitored series	سریال‌های پایش‌شده
+Completed series	سریال‌های کامل‌شده
+{} ({} completed)	{} ({} کامل‌شده)
+{} ({} monitored)	{} ({} پایش‌شده)
+Episode files	فایل‌های قسمت
+{} ({} downloaded)	{} ({} دانلودشده)
+{} ({} per episode)	{} ({} برای هر قسمت)
+Series status	وضعیت سریال‌ها
+File qualities	کیفیت‌های فایل
+Recent entries	ورودی‌های اخیر
+The most recent entries kept in memory. The log files above and the process output (container logs or journal) keep everything.	جدیدترین ورودی‌های نگه‌داشته‌شده در حافظه. فایل‌های گزارش بالا و خروجی فرایند (گزارش‌های کانتینر یا journal) همه چیز را نگه می‌دارند.
+Yesterday	دیروز
+Tomorrow	فردا
