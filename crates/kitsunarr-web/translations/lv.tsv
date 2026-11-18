@@ -1909,3 +1909,26 @@ Yesterday	Vakar
 Tomorrow	Rīt
 Sort by rank	Kārtot pēc ranga
 {}: the search stopped at its time limit; showing the releases found so far.	{}: meklēšana apstājās pie laika ierobežojuma; tiek rādīti līdz šim atrastie laidieni.
+Convert to AniList group	Pārveidot par AniList grupu
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Sadalīt šo TheTVDB seriālu AniList sezonās, grupētās kā Tanukarr, paturot tikai sezonas, kurām sekojat
+Convert to AniList groups…	Pārveidot par AniList grupām…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Sadalīt atlasītos TheTVDB seriālus AniList sezonās, grupētās kā Tanukarr
+Group: {group}	Grupa: {group}
+This series cannot be converted:	Šo seriālu nevar pārveidot:
+TheTVDB episodes	TheTVDB sērijas
+Files	Faili
+already in the library	jau bibliotēkā
+Files to move ({n})	Pārvietojamie faili ({n})
+Left out ({n})	Izlaisti ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Katra AniList sezona, kurai sekojat (ar failiem vai uzraudzītām sērijām), kļūst par atsevišķu seriālu šī seriāla mapē, un tās faili tiek pārvietoti uz sezonas mapi. Pārskatiet plānu un tad pārveidojiet.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Katrā seriālā katra AniList sezona, kurai sekojat, kļūst par atsevišķu seriālu seriāla mapē, un tās faili tiek pārvietoti tur. Seriāli, kurus nevar pārveidot, paliek nemainīti.
+Convert	Pārveidot
+Converting…	Pārveido…
+Converted into {n} AniList series.	Pārveidots par {n} AniList seriāliem.
+Convert {count} series to AniList groups	Pārveidot {count} seriālus par AniList grupām
+Convert {n} series	Pārveidot {n} seriālus
+{done} series converted, {failed} not converted.	Pārveidoti seriāli: {done}, nepārveidoti: {failed}.
+None of the selected series can be converted.	Nevienu no atlasītajiem seriāliem nevar pārveidot.
+Converted	Pārveidots
+Cannot be converted: {problem}	Nevar pārveidot: {problem}
+{n} seasons, {m} files to move	Sezonas: {n}, pārvietojamie faili: {m}

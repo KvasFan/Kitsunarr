@@ -1909,3 +1909,26 @@ Yesterday	أمس
 Tomorrow	غدًا
 Sort by rank	ترتيب حسب التصنيف
 {}: the search stopped at its time limit; showing the releases found so far.	{}: توقف البحث عند حده الزمني؛ يتم عرض الإصدارات التي عُثر عليها حتى الآن.
+Convert to AniList group	تحويل إلى مجموعة AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	تقسيم مسلسل TheTVDB هذا إلى مواسم AniList مجمّعة كما في Tanukarr، مع الإبقاء على المواسم التي تتابعها فقط
+Convert to AniList groups…	تحويل إلى مجموعات AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	تقسيم مسلسلات TheTVDB المحددة إلى مواسم AniList مجمّعة كما في Tanukarr
+Group: {group}	المجموعة: {group}
+This series cannot be converted:	لا يمكن تحويل هذا المسلسل:
+TheTVDB episodes	حلقات TheTVDB
+Files	الملفات
+already in the library	موجود بالفعل في المكتبة
+Files to move ({n})	الملفات المراد نقلها ({n})
+Left out ({n})	مستبعد ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	يصبح كل موسم AniList تتابعه (يحتوي على ملفات أو حلقات مراقبة) مسلسلًا مستقلًا داخل مجلد هذا المسلسل، وتُنقل ملفاته إلى مجلد الموسم. راجع الخطة ثم حوّل.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	في كل مسلسل، يصبح كل موسم AniList تتابعه مسلسلًا مستقلًا داخل مجلد المسلسل، وتُنقل ملفاته إليه. تبقى المسلسلات التي لا يمكن تحويلها كما هي.
+Convert	تحويل
+Converting…	جارٍ التحويل…
+Converted into {n} AniList series.	تم التحويل إلى {n} من مسلسلات AniList.
+Convert {count} series to AniList groups	تحويل {count} من المسلسلات إلى مجموعات AniList
+Convert {n} series	تحويل {n} من المسلسلات
+{done} series converted, {failed} not converted.	تم تحويل {done} من المسلسلات، ولم يُحوَّل {failed}.
+None of the selected series can be converted.	لا يمكن تحويل أي من المسلسلات المحددة.
+Converted	تم التحويل
+Cannot be converted: {problem}	لا يمكن التحويل: {problem}
+{n} seasons, {m} files to move	{n} من المواسم، {m} من الملفات المراد نقلها

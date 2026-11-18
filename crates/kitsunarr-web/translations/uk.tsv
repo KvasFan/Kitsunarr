@@ -1909,3 +1909,26 @@ Yesterday	Вчора
 Tomorrow	Завтра
 Sort by rank	Сортувати за рейтингом
 {}: the search stopped at its time limit; showing the releases found so far.	{}: пошук зупинено через ліміт часу; показано релізи, знайдені досі.
+Convert to AniList group	Перетворити на групу AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Розділити цей серіал TheTVDB на сезони AniList, згруповані як у Tanukarr, залишивши лише сезони, які ви відстежуєте
+Convert to AniList groups…	Перетворити на групи AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Розділити вибрані серіали TheTVDB на сезони AniList, згруповані як у Tanukarr
+Group: {group}	Група: {group}
+This series cannot be converted:	Цей серіал неможливо перетворити:
+TheTVDB episodes	Епізоди TheTVDB
+Files	Файли
+already in the library	вже в бібліотеці
+Files to move ({n})	Файли для переміщення ({n})
+Left out ({n})	Пропущено ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Кожен сезон AniList, який ви відстежуєте (з файлами або відстежуваними епізодами), стає окремим серіалом у теці цього серіалу, а його файли переміщуються до теки сезону. Перегляньте план, а потім перетворіть.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	У кожному серіалі кожен сезон AniList, який ви відстежуєте, стає окремим серіалом у теці серіалу, а його файли переміщуються туди. Серіали, які неможливо перетворити, залишаються без змін.
+Convert	Перетворити
+Converting…	Перетворення…
+Converted into {n} AniList series.	Перетворено на серіали AniList: {n}.
+Convert {count} series to AniList groups	Перетворити серіали ({count}) на групи AniList
+Convert {n} series	Перетворити серіали ({n})
+{done} series converted, {failed} not converted.	Перетворено серіалів: {done}, не перетворено: {failed}.
+None of the selected series can be converted.	Жоден із вибраних серіалів неможливо перетворити.
+Converted	Перетворено
+Cannot be converted: {problem}	Неможливо перетворити: {problem}
+{n} seasons, {m} files to move	Сезонів: {n}, файлів для переміщення: {m}

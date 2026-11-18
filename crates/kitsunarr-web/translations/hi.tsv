@@ -1909,3 +1909,26 @@ Yesterday	बीता कल
 Tomorrow	आने वाला कल
 Sort by rank	रैंक के अनुसार क्रमबद्ध करें
 {}: the search stopped at its time limit; showing the releases found so far.	{}: खोज अपनी समय सीमा पर रुक गई; अब तक मिली रिलीज़ दिखाई जा रही हैं।
+Convert to AniList group	AniList समूह में बदलें
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	इस TheTVDB सीरीज़ को Tanukarr की तरह समूहित AniList सीज़न में बाँटें, केवल वे सीज़न रखते हुए जिन्हें आप फ़ॉलो करते हैं
+Convert to AniList groups…	AniList समूहों में बदलें…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	चुनी गई TheTVDB सीरीज़ को Tanukarr की तरह समूहित AniList सीज़न में बाँटें
+Group: {group}	समूह: {group}
+This series cannot be converted:	इस सीरीज़ को बदला नहीं जा सकता:
+TheTVDB episodes	TheTVDB एपिसोड
+Files	फ़ाइलें
+already in the library	पहले से लाइब्रेरी में
+Files to move ({n})	ले जाने वाली फ़ाइलें ({n})
+Left out ({n})	छोड़े गए ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	आपके द्वारा फ़ॉलो किया गया हर AniList सीज़न (फ़ाइलों या मॉनिटर किए गए एपिसोड वाला) इस सीरीज़ के फ़ोल्डर में अपनी अलग सीरीज़ बन जाता है, और उसकी फ़ाइलें सीज़न के फ़ोल्डर में ले जाई जाती हैं। योजना देखें, फिर बदलें।
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	हर सीरीज़ में, आपके द्वारा फ़ॉलो किया गया हर AniList सीज़न सीरीज़ के फ़ोल्डर में अपनी अलग सीरीज़ बन जाता है, और उसकी फ़ाइलें वहाँ ले जाई जाती हैं। जिन सीरीज़ को बदला नहीं जा सकता वे जैसी हैं वैसी रहती हैं।
+Convert	बदलें
+Converting…	बदला जा रहा है…
+Converted into {n} AniList series.	{n} AniList सीरीज़ में बदला गया।
+Convert {count} series to AniList groups	{count} सीरीज़ को AniList समूहों में बदलें
+Convert {n} series	{n} सीरीज़ बदलें
+{done} series converted, {failed} not converted.	{done} सीरीज़ बदली गईं, {failed} नहीं बदली गईं।
+None of the selected series can be converted.	चुनी गई सीरीज़ में से किसी को भी बदला नहीं जा सकता।
+Converted	बदला गया
+Cannot be converted: {problem}	बदला नहीं जा सकता: {problem}
+{n} seasons, {m} files to move	{n} सीज़न, ले जाने वाली {m} फ़ाइलें

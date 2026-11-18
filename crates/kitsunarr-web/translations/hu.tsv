@@ -1909,3 +1909,26 @@ Yesterday	Tegnap
 Tomorrow	Holnap
 Sort by rank	Rendezés rangsor szerint
 {}: the search stopped at its time limit; showing the releases found so far.	{}: a keresés elérte az időkorlátját; az eddig talált kiadások láthatók.
+Convert to AniList group	Átalakítás AniList-csoporttá
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	A TheTVDB-sorozat felosztása a Tanukarrhoz hasonlóan csoportosított AniList-évadokra, csak a követett évadokat megtartva
+Convert to AniList groups…	Átalakítás AniList-csoportokká…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	A kiválasztott TheTVDB-sorozatok felosztása a Tanukarrhoz hasonlóan csoportosított AniList-évadokra
+Group: {group}	Csoport: {group}
+This series cannot be converted:	Ez a sorozat nem alakítható át:
+TheTVDB episodes	TheTVDB-epizódok
+Files	Fájlok
+already in the library	már a könyvtárban
+Files to move ({n})	Áthelyezendő fájlok ({n})
+Left out ({n})	Kihagyva ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Minden követett AniList-évad (fájlokkal vagy figyelt epizódokkal) önálló sorozat lesz ennek a sorozatnak a mappájában, és a fájljai az évad mappájába kerülnek. Nézd át a tervet, majd alakítsd át.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Minden sorozatban minden követett AniList-évad önálló sorozat lesz a sorozat mappájában, a fájljai pedig oda kerülnek. Az át nem alakítható sorozatok változatlanok maradnak.
+Convert	Átalakítás
+Converting…	Átalakítás folyamatban…
+Converted into {n} AniList series.	Átalakítva {n} AniList-sorozattá.
+Convert {count} series to AniList groups	{count} sorozat átalakítása AniList-csoportokká
+Convert {n} series	{n} sorozat átalakítása
+{done} series converted, {failed} not converted.	{done} sorozat átalakítva, {failed} nem.
+None of the selected series can be converted.	A kiválasztott sorozatok közül egyik sem alakítható át.
+Converted	Átalakítva
+Cannot be converted: {problem}	Nem alakítható át: {problem}
+{n} seasons, {m} files to move	{n} évad, {m} áthelyezendő fájl

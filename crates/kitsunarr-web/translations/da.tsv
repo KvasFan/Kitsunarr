@@ -1909,3 +1909,26 @@ Yesterday	I går
 Tomorrow	I morgen
 Sort by rank	Sortér efter rangering
 {}: the search stopped at its time limit; showing the releases found so far.	{}: søgningen stoppede ved sin tidsgrænse; viser de udgivelser, der er fundet indtil nu.
+Convert to AniList group	Konvertér til AniList-gruppe
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Del denne TheTVDB-serie op i AniList-sæsoner grupperet som i Tanukarr, og behold kun de sæsoner, du følger
+Convert to AniList groups…	Konvertér til AniList-grupper…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Del de valgte TheTVDB-serier op i AniList-sæsoner grupperet som i Tanukarr
+Group: {group}	Gruppe: {group}
+This series cannot be converted:	Denne serie kan ikke konverteres:
+TheTVDB episodes	TheTVDB-afsnit
+Files	Filer
+already in the library	allerede i biblioteket
+Files to move ({n})	Filer, der skal flyttes ({n})
+Left out ({n})	Udeladt ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Hver AniList-sæson, du følger (med filer eller overvågede afsnit), bliver sin egen serie i denne series mappe, og dens filer flyttes til sæsonens mappe. Gennemgå planen, og konvertér derefter.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	I hver serie bliver hver AniList-sæson, du følger, sin egen serie i seriens mappe, med dens filer flyttet derhen. Serier, der ikke kan konverteres, forbliver som de er.
+Convert	Konvertér
+Converting…	Konverterer…
+Converted into {n} AniList series.	Konverteret til {n} AniList-serier.
+Convert {count} series to AniList groups	Konvertér {count} serier til AniList-grupper
+Convert {n} series	Konvertér {n} serier
+{done} series converted, {failed} not converted.	{done} serier konverteret, {failed} ikke konverteret.
+None of the selected series can be converted.	Ingen af de valgte serier kan konverteres.
+Converted	Konverteret
+Cannot be converted: {problem}	Kan ikke konverteres: {problem}
+{n} seasons, {m} files to move	{n} sæsoner, {m} filer, der skal flyttes

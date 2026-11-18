@@ -1909,3 +1909,26 @@ Yesterday	Wczoraj
 Tomorrow	Jutro
 Sort by rank	Sortuj według rankingu
 {}: the search stopped at its time limit; showing the releases found so far.	{}: wyszukiwanie zatrzymało się na limicie czasu; wyświetlane są dotychczas znalezione wydania.
+Convert to AniList group	Konwertuj na grupę AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Podziel ten serial z TheTVDB na sezony AniList pogrupowane jak w Tanukarr, zachowując tylko obserwowane sezony
+Convert to AniList groups…	Konwertuj na grupy AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Podziel zaznaczone seriale z TheTVDB na sezony AniList pogrupowane jak w Tanukarr
+Group: {group}	Grupa: {group}
+This series cannot be converted:	Tego serialu nie można przekonwertować:
+TheTVDB episodes	Odcinki TheTVDB
+Files	Pliki
+already in the library	już w bibliotece
+Files to move ({n})	Pliki do przeniesienia ({n})
+Left out ({n})	Pominięte ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Każdy obserwowany sezon AniList (z plikami lub monitorowanymi odcinkami) staje się osobnym serialem w folderze tego serialu, a jego pliki są przenoszone do folderu sezonu. Przejrzyj plan, a następnie przekonwertuj.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	W każdym serialu każdy obserwowany sezon AniList staje się osobnym serialem w folderze serialu, a jego pliki są tam przenoszone. Seriale, których nie można przekonwertować, pozostają bez zmian.
+Convert	Konwertuj
+Converting…	Konwertowanie…
+Converted into {n} AniList series.	Przekonwertowano na seriale AniList: {n}.
+Convert {count} series to AniList groups	Konwertuj seriale ({count}) na grupy AniList
+Convert {n} series	Konwertuj seriale ({n})
+{done} series converted, {failed} not converted.	Przekonwertowane seriale: {done}, nieprzekonwertowane: {failed}.
+None of the selected series can be converted.	Żadnego z zaznaczonych seriali nie można przekonwertować.
+Converted	Przekonwertowano
+Cannot be converted: {problem}	Nie można przekonwertować: {problem}
+{n} seasons, {m} files to move	Sezony: {n}, pliki do przeniesienia: {m}

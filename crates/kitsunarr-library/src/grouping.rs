@@ -188,6 +188,92 @@ where
     }))
 }
 
+/// A season (TV, TV short or ONA) entry of a franchise's main line.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ChainSeason {
+    pub id: i64,
+    pub title: String,
+    /// 1-based, counting the season entries from the group's root (as [`resolve`] numbers them).
+    pub ordinal: i32,
+}
+
+/// A franchise's season entries in order, from its root forwards.
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct SeasonChain {
+    pub seasons: Vec<ChainSeason>,
+    /// Why the walk stopped before the franchise's last entry (an ambiguous sequel, a link
+    /// that is not reciprocal, a cycle, the fetch budget); `None` when it reached the end.
+    pub stopped: Option<String>,
+}
+
+/// Walks a franchise forwards from its root through SEQUEL links, mirroring [`resolve`]'s
+/// rules: a main-line sequel must name the entry as its prequel, films are passed through (and
+/// not listed), and two candidate sequels of the same kind end the walk rather than being
+/// guessed. At most [`MAX_FETCHES`] nodes are read.
+pub async fn season_chain<F, Fut>(root: i64, fetch: F) -> MetadataResult<SeasonChain>
+where
+    F: Fn(i64) -> Fut,
+    Fut: Future<Output = MetadataResult<AnimeNode>>,
+{
+    let mut chain = SeasonChain::default();
+    let mut fetched = 1usize;
+    let mut current = fetch(root).await?;
+    let mut seen = HashSet::from([root]);
+    let mut ordinal = 0;
+    loop {
+        if !is_movie(&current.format) && eligible(&current.format) {
+            ordinal += 1;
+            chain.seasons.push(ChainSeason {
+                id: current.id,
+                title: current.title.clone(),
+                ordinal,
+            });
+        }
+        let sequels: Vec<(i64, bool)> = current
+            .relations
+            .iter()
+            .filter(|r| r.kind == "SEQUEL" && eligible(&r.format))
+            .map(|r| (r.id, is_movie(&r.format)))
+            .collect();
+        let seasons: Vec<i64> = sequels.iter().filter(|s| !s.1).map(|s| s.0).collect();
+        let films: Vec<i64> = sequels.iter().filter(|s| s.1).map(|s| s.0).collect();
+        let next = match (seasons.as_slice(), films.as_slice()) {
+            ([one], _) | ([], [one]) => *one,
+            ([], []) => break,
+            _ => {
+                chain.stopped = Some(format!(
+                    "{} has several sequels of the same kind",
+                    current.title
+                ));
+                break;
+            }
+        };
+        if !seen.insert(next) {
+            chain.stopped = Some("a relation cycle".into());
+            break;
+        }
+        if fetched >= MAX_FETCHES {
+            chain.stopped = Some("the franchise has too many entries to read".into());
+            break;
+        }
+        fetched += 1;
+        let node = fetch(next).await?;
+        if !node
+            .relations
+            .iter()
+            .any(|r| r.kind == "PREQUEL" && r.id == current.id)
+        {
+            chain.stopped = Some(format!(
+                "{} does not list {} as its prequel",
+                node.title, current.title
+            ));
+            break;
+        }
+        current = node;
+    }
+    Ok(chain)
+}
+
 /// Tanukarr's `AnimeGroupPathBuilder.BuildPath` for a new AniList or MyAnimeList series: its
 /// group is resolved first, and the series goes to `{root}/{group folder}/{member folder}`.
 /// The group folder of a member already in the library is reused; a path another series uses,
@@ -392,7 +478,7 @@ pub fn member_folder_format<'a>(
 
 /// The stored kind and film folder style of a catalogue's collection, or the defaults
 /// (TMDB collections are sagas).
-async fn stored_folder_settings(
+pub(crate) async fn stored_folder_settings(
     db: &Database,
     provider: MetadataProvider,
     metadata_id: &str,
@@ -676,7 +762,20 @@ async fn join(
     member: Member,
 ) -> kitsunarr_db::DbResult<()> {
     let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
-    if collections::automatic_grouping_blocked(&mut tx, member).await? {
+    join_in(&mut tx, source, g, member).await?;
+    tx.commit().await?;
+    Ok(())
+}
+
+/// [`join_resolved`] inside the caller's transaction: the group's collection is created on
+/// first use; a title already in a group, or kept out of grouping, is left alone.
+pub(crate) async fn join_in(
+    tx: &mut sqlx::SqliteConnection,
+    source: MetadataProvider,
+    g: &Group,
+    member: Member,
+) -> kitsunarr_db::DbResult<()> {
+    if collections::automatic_grouping_blocked(&mut *tx, member).await? {
         return Ok(());
     }
     let existing: Option<i64> = sqlx::query_scalar(
@@ -690,7 +789,7 @@ async fn join(
         Some(id) => id,
         None => {
             collections::insert(
-                &mut tx,
+                &mut *tx,
                 &NewCollection {
                     title: g.title.clone(),
                     kind: "animeGroup".into(),
@@ -709,7 +808,7 @@ async fn join(
         MemberKind::Movie => (1000 + g.ordinal, "movie", format!("Movie {}", g.ordinal)),
     };
     collections::add_member(
-        &mut tx,
+        &mut *tx,
         collection,
         member,
         position,
@@ -717,7 +816,6 @@ async fn join(
         Some(&label),
     )
     .await?;
-    tx.commit().await?;
     Ok(())
 }
 
@@ -811,6 +909,38 @@ mod tests {
             member_folder_format(&n, "movieSaga", "title", true, false),
             film
         );
+    }
+
+    async fn walk(nodes: Vec<AnimeNode>, root: i64) -> SeasonChain {
+        let map: HashMap<i64, AnimeNode> = nodes.into_iter().map(|n| (n.id, n)).collect();
+        season_chain(root, |id| {
+            let n = map.get(&id).cloned();
+            async move { n.ok_or(MetadataError::NotFound(MetadataProvider::AniList)) }
+        })
+        .await
+        .unwrap()
+    }
+
+    #[tokio::test]
+    async fn season_chains_follow_sequels_through_films() {
+        let chain = walk(franchise(), 1).await;
+        let seasons: Vec<(i64, i32)> = chain.seasons.iter().map(|s| (s.id, s.ordinal)).collect();
+        assert_eq!(seasons, vec![(1, 1), (3, 2)]);
+        assert_eq!(chain.stopped, None);
+        // Two TV sequels: the walk stops instead of guessing.
+        let forked = vec![
+            node(40, "TV", &[("SEQUEL", 41, "TV"), ("SEQUEL", 42, "TV")]),
+            node(41, "TV", &[("PREQUEL", 40, "TV")]),
+            node(42, "TV", &[("PREQUEL", 40, "TV")]),
+        ];
+        let chain = walk(forked, 40).await;
+        assert_eq!(chain.seasons.len(), 1);
+        assert!(chain.stopped.is_some());
+        // A sequel that does not name its prequel back ends the chain.
+        let one_way = vec![node(50, "TV", &[("SEQUEL", 51, "TV")]), node(51, "TV", &[])];
+        let chain = walk(one_way, 50).await;
+        assert_eq!(chain.seasons.len(), 1);
+        assert!(chain.stopped.is_some());
     }
 
     #[tokio::test]

@@ -1909,3 +1909,26 @@ Yesterday	เมื่อวาน
 Tomorrow	พรุ่งนี้
 Sort by rank	เรียงตามอันดับ
 {}: the search stopped at its time limit; showing the releases found so far.	{}: การค้นหาหยุดเมื่อถึงขีดจำกัดเวลา กำลังแสดงรีลีสที่พบจนถึงตอนนี้
+Convert to AniList group	แปลงเป็นกลุ่ม AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	แยกซีรีส์ TheTVDB นี้เป็นซีซัน AniList ที่จัดกลุ่มแบบ Tanukarr โดยเก็บเฉพาะซีซันที่คุณติดตาม
+Convert to AniList groups…	แปลงเป็นกลุ่ม AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	แยกซีรีส์ TheTVDB ที่เลือกเป็นซีซัน AniList ที่จัดกลุ่มแบบ Tanukarr
+Group: {group}	กลุ่ม: {group}
+This series cannot be converted:	ไม่สามารถแปลงซีรีส์นี้ได้:
+TheTVDB episodes	ตอนของ TheTVDB
+Files	ไฟล์
+already in the library	มีอยู่ในคลังแล้ว
+Files to move ({n})	ไฟล์ที่จะย้าย ({n})
+Left out ({n})	ไม่รวม ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	ซีซัน AniList แต่ละซีซันที่คุณติดตาม (ที่มีไฟล์หรือตอนที่เฝ้าติดตาม) จะกลายเป็นซีรีส์แยกในโฟลเดอร์ของซีรีส์นี้ และไฟล์ของซีซันจะถูกย้ายไปยังโฟลเดอร์ของซีซัน ตรวจสอบแผนแล้วจึงแปลง
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	ในแต่ละซีรีส์ ซีซัน AniList แต่ละซีซันที่คุณติดตามจะกลายเป็นซีรีส์แยกในโฟลเดอร์ของซีรีส์ โดยย้ายไฟล์ไปไว้ที่นั่น ซีรีส์ที่แปลงไม่ได้จะคงไว้ตามเดิม
+Convert	แปลง
+Converting…	กำลังแปลง…
+Converted into {n} AniList series.	แปลงเป็นซีรีส์ AniList {n} เรื่องแล้ว
+Convert {count} series to AniList groups	แปลงซีรีส์ {count} เรื่องเป็นกลุ่ม AniList
+Convert {n} series	แปลงซีรีส์ {n} เรื่อง
+{done} series converted, {failed} not converted.	แปลงแล้ว {done} เรื่อง ไม่ได้แปลง {failed} เรื่อง
+None of the selected series can be converted.	ไม่มีซีรีส์ที่เลือกเรื่องใดแปลงได้
+Converted	แปลงแล้ว
+Cannot be converted: {problem}	แปลงไม่ได้: {problem}
+{n} seasons, {m} files to move	{n} ซีซัน ไฟล์ที่จะย้าย {m} ไฟล์

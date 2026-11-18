@@ -1909,3 +1909,26 @@ Yesterday	Í gær
 Tomorrow	Á morgun
 Sort by rank	Raða eftir röðun
 {}: the search stopped at its time limit; showing the releases found so far.	{}: leitin stöðvaðist við tímamörk sín; útgáfur sem fundust hingað til eru sýndar.
+Convert to AniList group	Breyta í AniList-hóp
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Skipta þessari TheTVDB-þáttaröð í AniList-seríur flokkaðar eins og í Tanukarr og halda aðeins seríunum sem þú fylgist með
+Convert to AniList groups…	Breyta í AniList-hópa…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Skipta völdum TheTVDB-þáttaröðum í AniList-seríur flokkaðar eins og í Tanukarr
+Group: {group}	Hópur: {group}
+This series cannot be converted:	Ekki er hægt að breyta þessari þáttaröð:
+TheTVDB episodes	TheTVDB-þættir
+Files	Skrár
+already in the library	þegar í safninu
+Files to move ({n})	Skrár sem á að færa ({n})
+Left out ({n})	Sleppt ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Hver AniList-sería sem þú fylgist með (með skrám eða vöktuðum þáttum) verður sérstök þáttaröð í möppu þessarar þáttaraðar og skrár hennar eru færðar í möppu seríunnar. Farðu yfir áætlunina og breyttu svo.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Í hverri þáttaröð verður hver AniList-sería sem þú fylgist með sérstök þáttaröð í möppu þáttaraðarinnar og skrár hennar færðar þangað. Þáttaraðir sem ekki er hægt að breyta haldast óbreyttar.
+Convert	Breyta
+Converting…	Breyti…
+Converted into {n} AniList series.	Breytt í {n} AniList-þáttaraðir.
+Convert {count} series to AniList groups	Breyta {count} þáttaröðum í AniList-hópa
+Convert {n} series	Breyta {n} þáttaröðum
+{done} series converted, {failed} not converted.	{done} þáttaraðir breyttar, {failed} óbreyttar.
+None of the selected series can be converted.	Ekki er hægt að breyta neinni af völdu þáttaröðunum.
+Converted	Breytt
+Cannot be converted: {problem}	Ekki hægt að breyta: {problem}
+{n} seasons, {m} files to move	{n} seríur, {m} skrár sem á að færa

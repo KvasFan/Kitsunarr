@@ -1909,3 +1909,26 @@ Yesterday	Јуче
 Tomorrow	Сутра
 Sort by rank	Сортирај по рангу
 {}: the search stopped at its time limit; showing the releases found so far.	{}: претрага је заустављена на временском ограничењу; приказују се до сада пронађена издања.
+Convert to AniList group	Претвори у AniList групу
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Подели ову TheTVDB серију на AniList сезоне груписане као у Tanukarr-у, задржавајући само сезоне које пратиш
+Convert to AniList groups…	Претвори у AniList групе…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Подели изабране TheTVDB серије на AniList сезоне груписане као у Tanukarr-у
+Group: {group}	Група: {group}
+This series cannot be converted:	Ова серија не може да се претвори:
+TheTVDB episodes	TheTVDB епизоде
+Files	Датотеке
+already in the library	већ у библиотеци
+Files to move ({n})	Датотеке за премештање ({n})
+Left out ({n})	Изостављено ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Свака AniList сезона коју пратиш (са датотекама или надгледаним епизодама) постаје засебна серија у фасцикли ове серије, а њене датотеке се премештају у фасциклу сезоне. Прегледај план, па претвори.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	У свакој серији свака AniList сезона коју пратиш постаје засебна серија у фасцикли серије, а њене датотеке се премештају тамо. Серије које не могу да се претворе остају какве јесу.
+Convert	Претвори
+Converting…	Претварање…
+Converted into {n} AniList series.	Претворено у AniList серије: {n}.
+Convert {count} series to AniList groups	Претвори серије ({count}) у AniList групе
+Convert {n} series	Претвори серије ({n})
+{done} series converted, {failed} not converted.	Претворено серија: {done}, непретворено: {failed}.
+None of the selected series can be converted.	Ниједна од изабраних серија не може да се претвори.
+Converted	Претворено
+Cannot be converted: {problem}	Не може да се претвори: {problem}
+{n} seasons, {m} files to move	Сезоне: {n}, датотеке за премештање: {m}

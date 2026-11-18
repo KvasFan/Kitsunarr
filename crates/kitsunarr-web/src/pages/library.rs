@@ -227,6 +227,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let mut remove_open = use_signal(|| false);
     let mut edit_open = use_signal(|| false);
     let mut tags_open = use_signal(|| false);
+    let mut convert_open = use_signal(|| false);
     let mut organizing = use_signal(|| false);
     let mut confirm_organize = use_signal(|| false);
     let organize_client = use_client();
@@ -293,6 +294,17 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 ids: selected_ids(),
                 on_close: move |done: bool| {
                     tags_open.set(false);
+                    if done {
+                        selected.write().clear();
+                    }
+                },
+            }
+        }
+        if convert_open() {
+            super::anime_conversion::BulkAnimeConversionDialog {
+                series_ids: selected_ids(),
+                on_close: move |done: bool| {
+                    convert_open.set(false);
                     if done {
                         selected.write().clear();
                     }
@@ -448,6 +460,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     button { class: "btn sm", title: "Monitoring, quality profile, series type and season folders of the selected series", onclick: move |_| edit_open.set(true), "Edit…" }
                     button { class: "btn sm", title: "Add, remove or replace the tags of the selected series", onclick: move |_| tags_open.set(true), "Tags…" }
                     button { class: "btn sm", title: "Move the selected series into another root folder", onclick: move |_| move_open.set(true), "Move to root folder…" }
+                    button { class: "btn sm", title: "Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr", onclick: move |_| convert_open.set(true), "Convert to AniList groups…" }
                     button { class: "btn sm", disabled: organizing(), title: "Rename every file of the selected series to the naming settings", onclick: move |_| confirm_organize.set(true),
                         if organizing() { "Organizing…" } else { "Organize" }
                     }

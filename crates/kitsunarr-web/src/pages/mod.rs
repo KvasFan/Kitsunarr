@@ -1,5 +1,6 @@
 pub mod activity;
 pub mod add;
+pub mod anime_conversion;
 pub mod auth;
 pub mod calendar;
 mod collection_settings;

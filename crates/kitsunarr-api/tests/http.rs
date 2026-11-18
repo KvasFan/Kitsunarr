@@ -13103,3 +13103,401 @@ async fn release_profiles_history_and_indexer_age_reach_the_decisions() {
     let r = rejections(Some(1)).await;
     assert!(r.contains(&pack_only), "{r:?}");
 }
+
+/// A TheTVDB series carrying AniList IDs becomes AniList anime-group members: the dry run plans
+/// the followed seasons and the moves without touching anything, and applying it creates the
+/// members, moves the files (with their subtitles) and their history, and removes the series.
+#[tokio::test]
+async fn tvdb_anime_converts_into_anilist_group_members() {
+    use axum::Json;
+    use axum::routing::post;
+    use kitsunarr_domain::{
+        ExternalId, ExternalIdKind, MediaKind, MonitorNewItems, SeriesStatus, SeriesType,
+    };
+    use serde_json::{Value, json};
+    // AniList: 100 (3 episodes) → 101 (2) → 102 (2), and an OVA (999) outside the chain.
+    fn premiere(id: i64) -> chrono::NaiveDate {
+        let (y, m, d) = match id {
+            100 => (2020, 1, 5),
+            101 => (2021, 1, 3),
+            _ => (2021, 4, 4),
+        };
+        chrono::NaiveDate::from_ymd_opt(y, m, d).unwrap()
+    }
+    fn count(id: i64) -> i64 {
+        if id == 100 { 3 } else { 2 }
+    }
+    fn title(id: i64) -> String {
+        if id == 100 {
+            "Show".to_string()
+        } else {
+            format!("Show Part {id}")
+        }
+    }
+    async fn graphql(Json(body): Json<Value>) -> Json<Value> {
+        let q = body["query"].as_str().unwrap_or_default();
+        let id = body["variables"]["id"].as_i64().unwrap_or(0);
+        if q.contains("airingSchedule") {
+            let nodes: Vec<Value> = (0..count(id))
+                .map(|n| {
+                    let day = premiere(id) + chrono::Days::new(7 * n as u64);
+                    let at = day.and_hms_opt(12, 0, 0).unwrap().and_utc().timestamp();
+                    json!({"episode": n + 1, "airingAt": at})
+                })
+                .collect();
+            return Json(
+                json!({"data": {"Media": {"airingSchedule": {"pageInfo": {"hasNextPage": false}, "nodes": nodes}}}}),
+            );
+        }
+        if q.contains("relations") {
+            let edge = |kind: &str, n: i64| json!({"relationType": kind, "node": {"id": n, "type": "ANIME", "format": "TV", "title": {"english": title(n)}}});
+            let (format, edges) = match id {
+                100 => ("TV", vec![edge("SEQUEL", 101)]),
+                101 => ("TV", vec![edge("PREQUEL", 100), edge("SEQUEL", 102)]),
+                102 => ("TV", vec![edge("PREQUEL", 101)]),
+                _ => ("OVA", vec![]),
+            };
+            return Json(
+                json!({"data": {"Media": {"id": id, "format": format, "title": {"english": title(id)}, "relations": {"edges": edges}}}}),
+            );
+        }
+        let start = premiere(id);
+        Json(
+            json!({"data": {"Media": {"id": id, "idMal": null, "format": "TV", "status": "FINISHED", "episodes": count(id),
+            "duration": 24, "seasonYear": 2020, "countryOfOrigin": "JP",
+            "title": {"romaji": title(id), "english": title(id), "native": null}, "synonyms": [],
+            "startDate": {"year": start.format("%Y").to_string().parse::<i32>().unwrap(), "month": 1, "day": 1},
+            "endDate": {}, "coverImage": {}, "genres": [],
+            "averageScore": 80, "popularity": 1, "description": "An anime.", "studios": {"nodes": []},
+            "nextAiringEpisode": null}}}),
+        )
+    }
+    let app = axum::Router::new().route("/graphql", post(graphql));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let addr = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            anilist: format!("http://{addr}/graphql"),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let show = format!("{root}/Show");
+    let new_series = |title: &str, path: &str, metadata_id: &str, anilist: &[&str]| {
+        kitsunarr_db::library::series::NewSeries {
+            media_kind: MediaKind::Series,
+            title: title.into(),
+            year: Some(2020),
+            status: SeriesStatus::Ended,
+            overview: None,
+            network: None,
+            air_time: None,
+            runtime: Some(24),
+            certification: None,
+            original_language: None,
+            genres: vec![],
+            images: vec![],
+            ratings: None,
+            first_aired: None,
+            last_aired: None,
+            series_type: SeriesType::Standard,
+            metadata_provider: MetadataProvider::Tvdb,
+            metadata_id: metadata_id.into(),
+            episode_ordering: None,
+            monitored: true,
+            monitor_new_items: MonitorNewItems::All,
+            season_folder: true,
+            use_scene_numbering: false,
+            quality_profile_id: 1,
+            root_folder_path: root.clone(),
+            path: path.into(),
+            added_at: kitsunarr_db::now(),
+            last_refreshed_at: None,
+            tags: vec![],
+            external_ids: anilist
+                .iter()
+                .map(|v| ExternalId {
+                    kind: ExternalIdKind::AniList,
+                    value: (*v).into(),
+                })
+                .collect(),
+            alternate_titles: vec![],
+        }
+    };
+    let mut conn = server.state.db.pool().acquire().await.unwrap();
+    let id = kitsunarr_db::library::series::insert(
+        &mut conn,
+        &new_series("Show", &show, "5000", &["100", "101", "102", "999"]),
+    )
+    .await
+    .unwrap();
+    let plain = kitsunarr_db::library::series::insert(
+        &mut conn,
+        &new_series("Plain", &format!("{root}/Plain"), "5001", &[]),
+    )
+    .await
+    .unwrap();
+    // TheTVDB: season 1 = AniList 100; season 2 = AniList 101 and 102 (a split cour).
+    let tvdb = [
+        (1, 1, "2020-01-05", false),
+        (1, 2, "2020-01-12", false),
+        (1, 3, "2020-01-19", false),
+        (2, 1, "2021-01-03", false),
+        (2, 2, "2021-01-10", false),
+        (2, 3, "2021-04-04", true),
+        (2, 4, "2021-04-11", true),
+    ];
+    for (season, episode, aired, monitored) in tvdb {
+        kitsunarr_db::library::series::upsert_season(
+            &mut conn,
+            id,
+            &kitsunarr_db::library::series::NewSeason {
+                season_number: season,
+                monitored: true,
+                title: None,
+                images: vec![],
+            },
+        )
+        .await
+        .unwrap();
+        kitsunarr_db::library::series::upsert_episode(
+            &mut conn,
+            &kitsunarr_db::library::series::NewEpisode {
+                series_id: id,
+                season_number: season,
+                episode_number: episode,
+                absolute_episode_number: None,
+                scene_season_number: None,
+                scene_episode_number: None,
+                scene_absolute_episode_number: None,
+                unverified_scene_numbering: false,
+                title: Some(format!("Episode {season}x{episode}")),
+                overview: None,
+                air_date: Some(aired.into()),
+                air_date_utc: Some(format!("{aired}T12:00:00Z")),
+                runtime: Some(24),
+                monitored,
+                episode_file_id: None,
+                provider_episode_id: None,
+                last_search_at: None,
+            },
+        )
+        .await
+        .unwrap();
+    }
+    drop(conn);
+    std::fs::create_dir_all(format!("{show}/Season 01")).unwrap();
+    std::fs::create_dir_all(format!("{show}/Season 02")).unwrap();
+    std::fs::write(format!("{show}/Season 01/Show - S01E02.mkv"), b"one").unwrap();
+    std::fs::write(format!("{show}/Season 02/Show - S02E03.mkv"), b"three").unwrap();
+    std::fs::write(format!("{show}/Season 02/Show - S02E03.en.srt"), b"subs").unwrap();
+    client.rescan_series(id).await.unwrap();
+    let s2e3: i64 = sqlx::query_scalar(
+        "SELECT id FROM episodes WHERE series_id = ? AND season_number = 2 AND episode_number = 3",
+    )
+    .bind(id)
+    .fetch_one(server.state.db.pool())
+    .await
+    .unwrap();
+    let linked: Option<i64> =
+        sqlx::query_scalar("SELECT episode_file_id FROM episodes WHERE id = ?")
+            .bind(s2e3)
+            .fetch_one(server.state.db.pool())
+            .await
+            .unwrap();
+    assert!(linked.is_some(), "the scan links the file");
+    // The subtitle as an import records it.
+    sqlx::query("DELETE FROM extra_files")
+        .execute(server.state.db.pool())
+        .await
+        .unwrap();
+    sqlx::query(
+        "INSERT INTO extra_files (series_id, episode_file_id, season_number, relative_path, extension, kind, added_at) \
+         VALUES (?, ?, 2, 'Season 02/Show - S02E03.en.srt', '.srt', 'subtitle', ?)",
+    )
+    .bind(id)
+    .bind(linked)
+    .bind(kitsunarr_db::now())
+    .execute(server.state.db.pool())
+    .await
+    .unwrap();
+    sqlx::query(
+        "INSERT INTO history (event_type, date, source_title, series_id, episode_id) VALUES ('grabbed', ?, 'Show S02E03', ?, ?)",
+    )
+    .bind(kitsunarr_db::now())
+    .bind(id)
+    .bind(s2e3)
+    .execute(server.state.db.pool())
+    .await
+    .unwrap();
+
+    // Dry run: the followed seasons only, nothing changed.
+    let plan = client.convert_to_anime_group(id, true).await.unwrap();
+    assert!(plan.convertible, "{:?}", plan.problems);
+    assert!(!plan.applied);
+    assert_eq!(plan.group_id.as_deref(), Some("anilist:100"));
+    let members: Vec<(i64, i32, String, String)> = plan
+        .members
+        .iter()
+        .map(|m| {
+            (
+                m.anilist_id,
+                m.ordinal,
+                m.path.clone(),
+                m.source_episodes.clone(),
+            )
+        })
+        .collect();
+    assert_eq!(
+        members,
+        vec![
+            (100, 1, format!("{show}/Season 01"), "S01E01–S01E03".into()),
+            (102, 3, format!("{show}/Season 03"), "S02E03–S02E04".into()),
+        ]
+    );
+    assert!(
+        plan.skipped.iter().any(|s| s.contains("AniList 101")),
+        "{:?}",
+        plan.skipped
+    );
+    assert!(plan.skipped.iter().any(|s| s.contains("AniList 999")));
+    let mut moved: Vec<String> = plan.moves.iter().map(|m| m.to.clone()).collect();
+    moved.sort();
+    assert_eq!(
+        moved,
+        vec![
+            format!("{show}/Season 03/Show - S02E03.en.srt"),
+            format!("{show}/Season 03/Show - S02E03.mkv"),
+        ]
+    );
+    assert!(std::path::Path::new(&format!("{show}/Season 02/Show - S02E03.mkv")).is_file());
+    client.series_detail(id).await.unwrap();
+    // The bulk dry run reports each series on its own.
+    let bulk = client
+        .bulk_convert_to_anime_group(vec![id, plain], true)
+        .await
+        .unwrap();
+    assert!(bulk.results[0].convertible);
+    assert!(!bulk.results[1].convertible);
+    assert!(bulk.results[1].problems[0].contains("AniList ID"));
+
+    // Apply.
+    let done = client.convert_to_anime_group(id, false).await.unwrap();
+    assert!(done.applied, "{:?}", done.problems);
+    assert_eq!(status(client.series_detail(id).await.unwrap_err()), 404);
+    assert!(std::path::Path::new(&format!("{show}/Season 03/Show - S02E03.mkv")).is_file());
+    assert!(std::path::Path::new(&format!("{show}/Season 03/Show - S02E03.en.srt")).is_file());
+    assert!(!std::path::Path::new(&format!("{show}/Season 02")).exists());
+    assert!(std::path::Path::new(&format!("{show}/Season 01/Show - S01E02.mkv")).is_file());
+    let third = done.members[1].series_id.unwrap();
+    let detail = client.series_detail(third).await.unwrap();
+    assert_eq!(detail.item.metadata_provider, MetadataProvider::AniList);
+    assert_eq!(detail.metadata_id, "102");
+    assert_eq!(detail.item.path, format!("{show}/Season 03"));
+    assert_eq!(detail.collections[0].title, "Show");
+    let episodes = client.episodes(third).await.unwrap();
+    assert_eq!(episodes.len(), 2);
+    assert!(episodes.iter().all(|e| e.season_number == 1 && e.monitored));
+    let first = episodes.iter().find(|e| e.episode_number == 1).unwrap();
+    assert!(first.file.is_some());
+    assert_eq!(first.title.as_deref(), Some("Episode 2x3"));
+    let file: (String, i64) = sqlx::query_as(
+        "SELECT relative_path, f.series_id FROM episode_files f JOIN episodes e ON e.episode_file_id = f.id WHERE e.id = ?",
+    )
+    .bind(first.id)
+    .fetch_one(server.state.db.pool())
+    .await
+    .unwrap();
+    assert_eq!(file, ("Show - S02E03.mkv".to_string(), third));
+    let history: (i64, i64) = sqlx::query_as(
+        "SELECT series_id, episode_id FROM history WHERE source_title = 'Show S02E03'",
+    )
+    .fetch_one(server.state.db.pool())
+    .await
+    .unwrap();
+    assert_eq!(history, (third, first.id));
+    let extras: Vec<(i64, String)> =
+        sqlx::query_as("SELECT series_id, relative_path FROM extra_files")
+            .fetch_all(server.state.db.pool())
+            .await
+            .unwrap();
+    assert_eq!(extras, vec![(third, "Show - S02E03.en.srt".to_string())]);
+    // The first member keeps its file in place; both are in the group.
+    let season_one = done.members[0].series_id.unwrap();
+    let group = client
+        .collection(client.series_detail(season_one).await.unwrap().collections[0].id)
+        .await
+        .unwrap();
+    assert_eq!(group.members.len(), 2);
+    // A disk scan of a member finds its files where they were moved.
+    let scan = client.rescan_series(third).await.unwrap();
+    assert!(scan.problems.is_empty(), "{:?}", scan.problems);
+    let with_files = |list: Vec<kitsunarr_domain::api::library::EpisodeItem>| {
+        list.iter().filter(|e| e.file.is_some()).count()
+    };
+    assert_eq!(with_files(client.episodes(third).await.unwrap()), 1);
+
+    // A second TheTVDB copy of the franchise: the AniList entry already in the library
+    // receives its file instead of a duplicate being created.
+    let again = format!("{root}/Show Again");
+    let mut conn = server.state.db.pool().acquire().await.unwrap();
+    let copy = kitsunarr_db::library::series::insert(
+        &mut conn,
+        &new_series("Show Again", &again, "5002", &["100", "101", "102"]),
+    )
+    .await
+    .unwrap();
+    for (season, episode, aired, _) in tvdb {
+        kitsunarr_db::library::series::upsert_episode(
+            &mut conn,
+            &kitsunarr_db::library::series::NewEpisode {
+                series_id: copy,
+                season_number: season,
+                episode_number: episode,
+                absolute_episode_number: None,
+                scene_season_number: None,
+                scene_episode_number: None,
+                scene_absolute_episode_number: None,
+                unverified_scene_numbering: false,
+                title: None,
+                overview: None,
+                air_date: Some(aired.into()),
+                air_date_utc: None,
+                runtime: Some(24),
+                monitored: false,
+                episode_file_id: None,
+                provider_episode_id: None,
+                last_search_at: None,
+            },
+        )
+        .await
+        .unwrap();
+    }
+    drop(conn);
+    std::fs::create_dir_all(format!("{again}/Season 02")).unwrap();
+    std::fs::write(format!("{again}/Season 02/Show - S02E04.mkv"), b"four").unwrap();
+    client.rescan_series(copy).await.unwrap();
+    let plan = client.convert_to_anime_group(copy, true).await.unwrap();
+    assert!(plan.convertible, "{:?}", plan.problems);
+    assert_eq!(plan.members.len(), 1);
+    assert_eq!(plan.members[0].existing_series_id, Some(third));
+    assert_eq!(plan.members[0].path, format!("{show}/Season 03"));
+    let done = client.convert_to_anime_group(copy, false).await.unwrap();
+    assert!(done.applied, "{:?}", done.problems);
+    assert_eq!(done.members[0].series_id, Some(third));
+    assert!(std::path::Path::new(&format!("{show}/Season 03/Show - S02E04.mkv")).is_file());
+    assert_eq!(with_files(client.episodes(third).await.unwrap()), 2);
+    assert_eq!(status(client.series_detail(copy).await.unwrap_err()), 404);
+}

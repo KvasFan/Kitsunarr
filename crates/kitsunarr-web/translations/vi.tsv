@@ -1909,3 +1909,26 @@ Yesterday	Hôm qua
 Tomorrow	Ngày mai
 Sort by rank	Sắp xếp theo thứ hạng
 {}: the search stopped at its time limit; showing the releases found so far.	{}: tìm kiếm đã dừng ở giới hạn thời gian; đang hiển thị các bản phát hành tìm được đến lúc này.
+Convert to AniList group	Chuyển thành nhóm AniList
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	Tách loạt phim TheTVDB này thành các mùa AniList được nhóm như trong Tanukarr, chỉ giữ các mùa bạn theo dõi
+Convert to AniList groups…	Chuyển thành nhóm AniList…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	Tách các loạt phim TheTVDB đã chọn thành các mùa AniList được nhóm như trong Tanukarr
+Group: {group}	Nhóm: {group}
+This series cannot be converted:	Không thể chuyển đổi loạt phim này:
+TheTVDB episodes	Tập TheTVDB
+Files	Tệp
+already in the library	đã có trong thư viện
+Files to move ({n})	Tệp cần di chuyển ({n})
+Left out ({n})	Bị bỏ qua ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	Mỗi mùa AniList bạn theo dõi (có tệp hoặc tập được giám sát) trở thành một loạt phim riêng trong thư mục của loạt phim này, và các tệp của nó được chuyển vào thư mục của mùa. Xem lại kế hoạch rồi chuyển đổi.
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	Trong mỗi loạt phim, mỗi mùa AniList bạn theo dõi trở thành một loạt phim riêng trong thư mục của loạt phim, với các tệp được chuyển vào đó. Các loạt phim không thể chuyển đổi được giữ nguyên.
+Convert	Chuyển đổi
+Converting…	Đang chuyển đổi…
+Converted into {n} AniList series.	Đã chuyển thành {n} loạt phim AniList.
+Convert {count} series to AniList groups	Chuyển {count} loạt phim thành nhóm AniList
+Convert {n} series	Chuyển đổi {n} loạt phim
+{done} series converted, {failed} not converted.	Đã chuyển đổi {done} loạt phim, {failed} chưa chuyển đổi.
+None of the selected series can be converted.	Không có loạt phim nào được chọn có thể chuyển đổi.
+Converted	Đã chuyển đổi
+Cannot be converted: {problem}	Không thể chuyển đổi: {problem}
+{n} seasons, {m} files to move	{n} mùa, {m} tệp cần di chuyển

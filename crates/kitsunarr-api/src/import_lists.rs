@@ -1113,4 +1113,38 @@ mod tests {
         assert!(!s.matches(&item(Some(182255), Some(424536))));
         assert!(s.matches(&item(None, Some(424536))));
     }
+
+    /// A TheTVDB series migrated from Sonarr keeps its franchise's AniList IDs: an AniList list
+    /// entry it covers is that series, not a new title to add (convert it to AniList group
+    /// members instead).
+    #[test]
+    fn anilist_items_covered_by_a_tvdb_series_are_not_new() {
+        let s = LibrarySeries {
+            id: 7,
+            title: "Oshi no Ko".into(),
+            provider: "tvdb".into(),
+            metadata_id: "421069".into(),
+            monitored: true,
+            tags: vec![],
+            keys: [
+                "tvdb:421069",
+                "aniList:150672",
+                "aniList:166531",
+                "aniList:182587",
+                "myAnimeList:52034",
+            ]
+            .map(String::from)
+            .into_iter()
+            .collect(),
+        };
+        let item = |a: Option<i64>, m: Option<i64>| ListItem {
+            anilist_id: a,
+            mal_id: m,
+            ..Default::default()
+        };
+        assert!(s.matches(&item(Some(166531), None)));
+        assert!(s.matches(&item(None, Some(52034))));
+        // An entry the series does not carry is still a new title.
+        assert!(!s.matches(&item(Some(209827), None)));
+    }
 }

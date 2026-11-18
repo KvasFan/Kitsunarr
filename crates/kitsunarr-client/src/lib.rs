@@ -1239,6 +1239,33 @@ impl Client {
     ) -> ClientResult<kitsunarr_domain::api::library::BulkMoveResult> {
         self.post("/series/move", req).await
     }
+    /// Plans (`dry_run`) or carries out the conversion of a TheTVDB series into AniList
+    /// anime-group members.
+    pub async fn convert_to_anime_group(
+        &self,
+        id: i64,
+        dry_run: bool,
+    ) -> ClientResult<kitsunarr_domain::api::library::AnimeConversionPlan> {
+        self.post(
+            &format!("/series/{id}/anime-conversion"),
+            &kitsunarr_domain::api::library::AnimeConversionRequest { dry_run },
+        )
+        .await
+    }
+    pub async fn bulk_convert_to_anime_group(
+        &self,
+        series_ids: Vec<i64>,
+        dry_run: bool,
+    ) -> ClientResult<kitsunarr_domain::api::library::BulkAnimeConversionResult> {
+        self.post(
+            "/series/anime-conversion",
+            &kitsunarr_domain::api::library::BulkAnimeConversionRequest {
+                series_ids,
+                dry_run,
+            },
+        )
+        .await
+    }
     pub async fn unmapped_folders(
         &self,
         root_folder_id: i64,

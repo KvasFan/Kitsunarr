@@ -1909,3 +1909,26 @@ Yesterday	昨日
 Tomorrow	明日
 Sort by rank	ランク順に並べ替え
 {}: the search stopped at its time limit; showing the releases found so far.	{}: 検索が制限時間で停止しました。ここまでに見つかったリリースを表示しています。
+Convert to AniList group	AniList グループに変換
+Split this TheTVDB series into AniList seasons grouped as in Tanukarr, keeping only the seasons you follow	この TheTVDB シリーズを Tanukarr と同じようにグループ化した AniList のシーズンに分割し、追っているシーズンだけを残します
+Convert to AniList groups…	AniList グループに変換…
+Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr	選択した TheTVDB シリーズを Tanukarr と同じようにグループ化した AniList のシーズンに分割します
+Group: {group}	グループ: {group}
+This series cannot be converted:	このシリーズは変換できません:
+TheTVDB episodes	TheTVDB のエピソード
+Files	ファイル
+already in the library	ライブラリに登録済み
+Files to move ({n})	移動するファイル ({n})
+Left out ({n})	対象外 ({n})
+Each AniList season you follow (with files or monitored episodes) becomes its own series inside this series' folder, and its files move into the season's folder. Review the plan, then convert.	追っている AniList の各シーズン（ファイルまたは監視中のエピソードがあるもの）は、このシリーズのフォルダー内で独立したシリーズになり、そのファイルはシーズンのフォルダーに移動されます。計画を確認してから変換してください。
+In each series, every AniList season you follow becomes its own series inside the series' folder, with its files moved there. Series that cannot be converted are left as they are.	各シリーズで、追っている AniList の各シーズンはシリーズのフォルダー内で独立したシリーズになり、そのファイルはそこへ移動されます。変換できないシリーズはそのまま残ります。
+Convert	変換
+Converting…	変換中…
+Converted into {n} AniList series.	{n} 件の AniList シリーズに変換しました。
+Convert {count} series to AniList groups	{count} 件のシリーズを AniList グループに変換
+Convert {n} series	{n} 件のシリーズを変換
+{done} series converted, {failed} not converted.	{done} 件のシリーズを変換、{failed} 件は未変換。
+None of the selected series can be converted.	選択したシリーズはどれも変換できません。
+Converted	変換済み
+Cannot be converted: {problem}	変換できません: {problem}
+{n} seasons, {m} files to move	{n} シーズン、移動するファイル {m} 件
