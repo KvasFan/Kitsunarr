@@ -3,6 +3,7 @@
 
 pub mod compression;
 pub mod custom_filters;
+pub mod episode_files;
 pub mod events;
 pub mod grab;
 pub mod import_lists;
@@ -299,4 +300,10 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
             custom_filters::delete_custom_filter
         ))
         .routes(routes!(provider_tests::test_all_providers))
+        .routes(routes!(episode_files::get_episode))
+        .routes(routes!(episode_files::list_episode_files))
+        .routes(routes!(episode_files::edit_episode_files))
+        .routes(routes!(episode_files::delete_episode_files))
+        .routes(routes!(queue::bulk_remove_from_queue))
+        .routes(routes!(queue::bulk_grab_pending))
 }

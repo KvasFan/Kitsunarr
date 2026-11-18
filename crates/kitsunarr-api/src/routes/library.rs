@@ -85,6 +85,14 @@ pub async fn update_series(
             "TheTVDB has no titles in this language.",
         ));
     }
+    // The folder first: a refused move leaves the other changes unsaved (Sonarr's series
+    // edit with `moveFiles`).
+    if let Some(path) = update.path.as_deref().map(str::trim)
+        && path.trim_end_matches(['/', '\\']) != before.item.path.trim_end_matches(['/', '\\'])
+    {
+        use kitsunarr_library::move_title::{Title, move_title};
+        move_title(&state.db, Title::Series(id), path, update.move_files).await?;
+    }
     series::apply_update(&state.db, id, &update).await?;
     changed(&state, "series", vec![id], false);
     // Back to automatic grouping: resolve the group now rather than at the next refresh.
@@ -381,17 +389,7 @@ pub async fn get_movie(
     Ok(Json(movies::get_detail(&state.db, id).await?))
 }
 
-#[derive(Debug, Deserialize, utoipa::ToSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct MovieUpdate {
-    pub monitored: Option<bool>,
-    pub quality_profile_id: Option<i64>,
-    pub tags: Option<Vec<i64>>,
-    /// `false` removes the film from its automatic groups (anime groups, TMDB collections) and
-    /// keeps it out of them; `true` lets it be grouped again.
-    #[serde(default)]
-    pub automatic_grouping: Option<bool>,
-}
+pub use kitsunarr_domain::api::library::MovieUpdate;
 
 /// Re-runs automatic grouping for a title in the background (its group or collection).
 pub(crate) fn regroup(state: &AppState, member: kitsunarr_library::grouping::Member) {
@@ -413,6 +411,16 @@ pub async fn update_movie(
     Path(id): Path<i64>,
     Json(update): Json<MovieUpdate>,
 ) -> ApiResult<Json<MovieDetail>> {
+    let before = movies::get_detail(&state.db, id).await?;
+    if let Some(path) = update.path.as_deref().map(str::trim)
+        && path.trim_end_matches(['/', '\\']) != before.item.path.trim_end_matches(['/', '\\'])
+    {
+        use kitsunarr_library::move_title::{Title, move_title};
+        move_title(&state.db, Title::Movie(id), path, update.move_files).await?;
+    }
+    if let Some(a) = update.minimum_availability {
+        movies::set_minimum_availability(&state.db, id, a).await?;
+    }
     if let Some(m) = update.monitored {
         movies::set_monitored(&state.db, id, m).await?;
     }
@@ -498,6 +506,12 @@ pub async fn bulk_edit_movies(
         return Err(ApiError::field(
             "monitor",
             "Episode monitoring choices apply to series only.",
+        ));
+    }
+    if edit.series_type.is_some() || edit.season_folder.is_some() {
+        return Err(ApiError::field(
+            "seriesType",
+            "The series type and season folders apply to series only.",
         ));
     }
     let updated = movies::bulk_edit(&state.db, &edit).await?;

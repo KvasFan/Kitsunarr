@@ -96,20 +96,61 @@ pub fn Queue() -> Element {
     let mut tick = use_signal(|| 0u64);
     // Downloads whose per-file import progress is shown.
     let mut expanded = use_signal(std::collections::HashSet::<String>::new);
-    // The item being removed and the chosen options.
-    let mut removing = use_signal(|| None::<QueueItem>);
+    // The items being removed and the chosen options.
+    let mut removing = use_signal(|| None::<Vec<QueueItem>>);
     let mut removal = use_signal(QueueRemoval::default);
+    // Queue items selected for bulk actions, by download id.
+    let mut selected = use_signal(std::collections::HashSet::<String>::new);
     let c_remove = client.clone();
     let confirm_remove = move |_| {
-        let Some(item) = removing() else { return };
+        let Some(items) = removing() else { return };
         let options = removal();
         let c = c_remove.clone();
         removing.set(None);
         spawn(async move {
-            match c.remove_queue_item(&item.download_id, &options).await {
-                Ok(r) => app.success(r.message),
+            if let [item] = items.as_slice() {
+                match c.remove_queue_item(&item.download_id, &options).await {
+                    Ok(r) => app.success(r.message),
+                    Err(e) => app.error(&e),
+                }
+            } else {
+                let req = kitsunarr_domain::api::queue::QueueBulkRemoval {
+                    download_ids: items.iter().map(|i| i.download_id.clone()).collect(),
+                    removal: options,
+                };
+                match c.remove_queue_items(&req).await {
+                    Ok(r) if r.failures.is_empty() => {
+                        app.success(format!("{} items removed.", r.done.len()))
+                    }
+                    Ok(r) => app.toast(
+                        crate::state::ToastLevel::Warning,
+                        format!("{} items removed; {}", r.done.len(), r.failures.join("; ")),
+                    ),
+                    Err(e) => app.error(&e),
+                }
+                selected.write().clear();
+            }
+            tick += 1;
+        });
+    };
+    let c_send_all = client.clone();
+    let send_selected = move |ids: Vec<String>| {
+        let c = c_send_all.clone();
+        spawn(async move {
+            match c.grab_pending_items(&ids).await {
+                Ok(r) if r.failures.is_empty() => app.success(r.done.join(" ")),
+                Ok(r) => app.toast(
+                    crate::state::ToastLevel::Warning,
+                    r.done
+                        .iter()
+                        .chain(r.failures.iter())
+                        .cloned()
+                        .collect::<Vec<_>>()
+                        .join(" "),
+                ),
                 Err(e) => app.error(&e),
             }
+            selected.write().clear();
             tick += 1;
         });
     };
@@ -150,6 +191,15 @@ pub fn Queue() -> Element {
         async move { c.queue().await }
     });
     let read = queue.read();
+    let selected_items: Vec<QueueItem> = match &*read {
+        Some(Ok(q)) => q
+            .items
+            .iter()
+            .filter(|i| selected.read().contains(&i.download_id))
+            .cloned()
+            .collect(),
+        _ => Vec::new(),
+    };
     let body = match &*read {
         None => rsx! { Loading { label: "Reading the download clients…" } },
         Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
@@ -172,6 +222,15 @@ pub fn Queue() -> Element {
                 div { class: "table-wrap",
                     table { class: "table queue",
                         thead { tr {
+                            th { class: "shrink",
+                                input { r#type: "checkbox", "aria-label": "Select every queue item",
+                                    checked: !q.items.is_empty() && q.items.iter().all(|i| selected.read().contains(&i.download_id)),
+                                    onchange: {
+                                        let all: Vec<String> = q.items.iter().map(|i| i.download_id.clone()).collect();
+                                        move |e: FormEvent| { let mut w = selected.write(); w.clear(); if e.checked() { w.extend(all.iter().cloned()); } }
+                                    }
+                                }
+                            }
                             th { "Series" } th { "Episodes" } th { "Title" } th { "Quality" }
                             th { "Status" } th { "Progress" } th { class: "num", "Time left" } th { "Client" } th { "" }
                         } }
@@ -184,9 +243,14 @@ pub fn Queue() -> Element {
                                     let import = item.import_progress.clone().filter(|p| p.total_episodes > 0);
                                     let shown = import.as_ref().map_or(done, |p| i64::from(p.imported_episodes) * 100 / i64::from(p.total_episodes));
                                     let is_expanded = expanded.read().contains(&item.download_id);
-                                    let span = 9;
+                                    let span = 10;
+                                    let is_selected = selected.read().contains(&item.download_id);
                                     rsx! {
                                         tr { key: "{item.download_id}",
+                                            td { class: "shrink",
+                                                input { r#type: "checkbox", "aria-label": "Select {item.title}", checked: is_selected,
+                                                    onchange: { let id = item.download_id.clone(); move |e: FormEvent| { if e.checked() { selected.write().insert(id.clone()); } else { selected.write().remove(&id); } } } }
+                                            }
                                             td {
                                                 match (item.series_id, item.movie_id) {
                                                     (Some(id), _) => rsx! { Link { to: Route::SeriesDetailPage { id }, "{item.series_title.clone().unwrap_or_default()}" } },
@@ -245,10 +309,9 @@ pub fn Queue() -> Element {
                                                     onclick: { let item = item.clone(); move |_| {
                                                         removal.set(QueueRemoval {
                                                             remove_from_client: true,
-                                                            blocklist: false,
-                                                            skip_redownload: false,
+                                                            ..Default::default()
                                                         });
-                                                        removing.set(Some(item.clone()));
+                                                        removing.set(Some(vec![item.clone()]));
                                                     } },
                                                     "Remove"
                                                 }
@@ -276,33 +339,91 @@ pub fn Queue() -> Element {
             }
         }
         p { class: "help small faint", "Read live from the download clients every few seconds. Completed downloads Kitsunarr grabbed are imported into the series folder every minute (torrents are copied or hard-linked, so they keep seeding; Usenet downloads are moved). Failed downloads are blocklisted and searched again." }
-        div { class: "card", {body} }
-        if let Some(item) = removing() {
-            Modal {
-                title: "Remove from queue".to_string(),
-                on_close: move |_| removing.set(None),
-                footer: rsx! {
+        if !selected_items.is_empty() {
+            div { class: "alert info", role: "region", "aria-label": "Queue bulk actions",
+                div { class: "row grow",
+                    strong { "{selected_items.len()} selected" }
+                    button { class: "btn sm",
+                        disabled: !selected_items.iter().any(|i| i.tracked_state == "pending"),
+                        title: "Grab the selected releases a delay profile holds back now",
+                        onclick: {
+                            let ids: Vec<String> = selected_items.iter().filter(|i| i.tracked_state == "pending").map(|i| i.download_id.clone()).collect();
+                            let send = send_selected.clone();
+                            move |_| send(ids.clone())
+                        },
+                        "Send now"
+                    }
+                    button { class: "btn sm danger",
+                        onclick: {
+                            let items = selected_items.clone();
+                            move |_| {
+                                removal.set(QueueRemoval { remove_from_client: true, ..Default::default() });
+                                removing.set(Some(items.clone()));
+                            }
+                        },
+                        "Remove selected…"
+                    }
                     div { class: "spacer" }
-                    button { class: "btn", onclick: move |_| removing.set(None), "Cancel" }
-                    button { class: "btn danger solid", onclick: confirm_remove, "Remove" }
-                },
-                p { class: "mono small", "{item.title}" }
-                div { class: "stack",
-                    label { class: "check",
-                        input { r#type: "checkbox", checked: removal().remove_from_client,
-                            onchange: move |e: FormEvent| removal.write().remove_from_client = e.checked() }
-                        "Remove from the download client (deletes its files there)"
-                    }
-                    label { class: "check",
-                        input { r#type: "checkbox", checked: removal().blocklist, disabled: item.series_id.is_none(),
-                            onchange: move |e: FormEvent| removal.write().blocklist = e.checked() }
-                        "Blocklist the release: it is never grabbed again"
-                    }
-                    if removal().blocklist {
-                        label { class: "check",
-                            input { r#type: "checkbox", checked: removal().skip_redownload,
-                                onchange: move |e: FormEvent| removal.write().skip_redownload = e.checked() }
-                            "Do not search for a replacement"
+                    button { class: "btn ghost sm", onclick: move |_| selected.write().clear(), "Clear" }
+                }
+            }
+        }
+        div { class: "card", {body} }
+        if let Some(items) = removing() {
+            {
+                let pending = items.iter().all(|i| i.tracked_state == "pending");
+                let can_change = items.iter().all(|i| i.download_client_has_post_import_category);
+                let can_blocklist = items.iter().all(|i| i.series_id.is_some() || i.movie_id.is_some());
+                let method = if removal().remove_from_client { "removeFromClient" } else if removal().change_category { "changeCategory" } else { "ignore" };
+                let blocklist = if !removal().blocklist { "doNotBlocklist" } else if removal().skip_redownload { "blocklistOnly" } else { "blocklistAndSearch" };
+                rsx! {
+                    Modal {
+                        title: if items.len() == 1 { "Remove from queue".to_string() } else { format!("Remove {} items from the queue", items.len()) },
+                        on_close: move |_| removing.set(None),
+                        footer: rsx! {
+                            div { class: "spacer" }
+                            button { class: "btn", onclick: move |_| removing.set(None), "Cancel" }
+                            button { class: "btn danger solid", disabled: !pending && method == "ignore" && blocklist == "doNotBlocklist", onclick: confirm_remove, "Remove" }
+                        },
+                        if let [one] = items.as_slice() {
+                            p { class: "mono small", "{one.title}" }
+                        }
+                        if pending {
+                            p { class: "help small", "Held-back releases are forgotten; a later search can find them again." }
+                        } else {
+                            div { class: "stack",
+                                crate::components::common::Field { label: "Removal method",
+                                    select { class: "select", "aria-label": "Removal method", value: method,
+                                        onchange: move |e: FormEvent| {
+                                            let mut w = removal.write();
+                                            w.remove_from_client = e.value() == "removeFromClient";
+                                            w.change_category = e.value() == "changeCategory";
+                                        },
+                                        option { value: "removeFromClient", "Remove from the download client" }
+                                        if can_change { option { value: "changeCategory", "Change category" } }
+                                        option { value: "ignore", "Keep it in the download client" }
+                                    }
+                                }
+                                p { class: "help small",
+                                    match method {
+                                        "removeFromClient" => "The download and its files are removed from the download client.",
+                                        "changeCategory" => "The download moves to the client's post-import category and is no longer tracked; its files stay.",
+                                        _ => "The download stays in the download client untouched; choose a blocklist option to blocklist its release.",
+                                    }
+                                }
+                                crate::components::common::Field { label: "Blocklist release",
+                                    select { class: "select", "aria-label": "Blocklist release", value: blocklist, disabled: !can_blocklist,
+                                        onchange: move |e: FormEvent| {
+                                            let mut w = removal.write();
+                                            w.blocklist = e.value() != "doNotBlocklist";
+                                            w.skip_redownload = e.value() == "blocklistOnly";
+                                        },
+                                        option { value: "doNotBlocklist", "Do not blocklist" }
+                                        option { value: "blocklistAndSearch", "Blocklist and search for a replacement" }
+                                        option { value: "blocklistOnly", "Blocklist only" }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -346,13 +467,17 @@ pub fn Activity() -> Element {
 
 /// One history view shared by Activity and title detail dialogs. Filtering stays server-side.
 #[component]
-pub fn HistoryTable(series_id: Option<i64>, movie_id: Option<i64>) -> Element {
+pub fn HistoryTable(
+    series_id: Option<i64>,
+    movie_id: Option<i64>,
+    #[props(default)] episode_id: Option<i64>,
+) -> Element {
     let app = use_app();
     let client = use_client();
     let mut page = use_signal(|| 1u32);
     let mut event = use_signal(String::new);
     use_effect(move || {
-        let _ = (event(), series_id, movie_id);
+        let _ = (event(), series_id, movie_id, episode_id);
         if *page.peek() != 1 {
             page.set(1);
         }
@@ -385,6 +510,7 @@ pub fn HistoryTable(series_id: Option<i64>, movie_id: Option<i64>) -> Element {
                     event_type: Some(e).filter(|s| !s.is_empty()),
                     series_id,
                     movie_id,
+                    episode_id,
                     ..Default::default()
                 },
             )
@@ -393,7 +519,7 @@ pub fn HistoryTable(series_id: Option<i64>, movie_id: Option<i64>) -> Element {
     });
     rsx! {
         div { class: "page-head",
-            if series_id.is_none() && movie_id.is_none() { h1 { class: "grow", "History" } }
+            if series_id.is_none() && movie_id.is_none() && episode_id.is_none() { h1 { class: "grow", "History" } }
             select { class: "select", "aria-label": "Event type", value: event(), onchange: move |e: FormEvent| event.set(e.value()),
                 for (value, label) in EVENT_TYPES { option { value: "{value}", "{label}" } }
             }
@@ -459,6 +585,8 @@ pub fn Blocklist() -> Element {
     let mut page = use_signal(|| 1u32);
     let mut refresh = use_signal(|| 0u32);
     let mut confirm_clear = use_signal(|| false);
+    let mut confirm_selected = use_signal(|| false);
+    let mut selected = use_signal(std::collections::HashSet::<i64>::new);
     let c0 = client.clone();
     let data = use_resource(move || {
         let _ = refresh();
@@ -495,10 +623,31 @@ pub fn Blocklist() -> Element {
             refresh += 1;
         });
     };
+    let c3 = client.clone();
+    let remove_selected = move |_| {
+        confirm_selected.set(false);
+        let ids: Vec<i64> = selected().into_iter().collect();
+        let c = c3.clone();
+        spawn(async move {
+            match c
+                .remove_blocklist(&BlocklistRemoval { ids, all: false })
+                .await
+            {
+                Ok(n) => app.success(format!("Removed {n} releases from the blocklist.")),
+                Err(e) => app.error(&e),
+            }
+            selected.write().clear();
+            refresh += 1;
+        });
+    };
     let has_entries = matches!(&*data.read(), Some(Ok(p)) if p.total_records > 0);
+    let selected_count = selected.read().len();
     rsx! {
         div { class: "page-head",
             h1 { class: "grow", "Blocklist" }
+            if selected_count > 0 {
+                button { class: "btn", onclick: move |_| confirm_selected.set(true), "Remove {selected_count} selected" }
+            }
             if has_entries {
                 button { class: "btn danger", onclick: move |_| confirm_clear.set(true), "Clear blocklist" }
             }
@@ -511,10 +660,25 @@ pub fn Blocklist() -> Element {
             Some(Ok(p)) => rsx! {
                 div { class: "table-wrap",
                     table { class: "table",
-                        thead { tr { th { "Series" } th { "Release" } th { "Quality" } th { class: "hide-mobile", "Indexer" } th { class: "hide-mobile", "Message" } th { "Date" } th { "" } } }
+                        thead { tr {
+                            th { class: "shrink",
+                                input { r#type: "checkbox", "aria-label": "Select every release on this page",
+                                    checked: !p.records.is_empty() && p.records.iter().all(|b| selected.read().contains(&b.id)),
+                                    onchange: {
+                                        let all: Vec<i64> = p.records.iter().map(|b| b.id).collect();
+                                        move |e: FormEvent| { let mut w = selected.write(); w.clear(); if e.checked() { w.extend(all.iter().copied()); } }
+                                    }
+                                }
+                            }
+                            th { "Series" } th { "Release" } th { "Quality" } th { class: "hide-mobile", "Indexer" } th { class: "hide-mobile", "Message" } th { "Date" } th { "" }
+                        } }
                         tbody {
                             for b in p.records.iter() {
                                 tr { key: "{b.id}",
+                                    td { class: "shrink",
+                                        input { r#type: "checkbox", "aria-label": "Select {b.source_title}", checked: selected.read().contains(&b.id),
+                                            onchange: { let id = b.id; move |e: FormEvent| { if e.checked() { selected.write().insert(id); } else { selected.write().remove(&id); } } } }
+                                    }
                                     td {
                                         match b.movie_id {
                                             Some(id) => rsx! { Link { to: Route::MovieDetailPage { id }, {b.series_title.clone().unwrap_or_default()} } },
@@ -535,8 +699,17 @@ pub fn Blocklist() -> Element {
                         }
                     }
                 }
-                Pagination { page: p.page, page_size: p.page_size, total: p.total_records, on_page: move |n| page.set(n) }
+                Pagination { page: p.page, page_size: p.page_size, total: p.total_records, on_page: move |n| { selected.write().clear(); page.set(n) } }
             },
+        }
+        if confirm_selected() {
+            Confirm {
+                title: "Remove from the blocklist",
+                message: format!("Remove the {selected_count} selected releases from the blocklist?"),
+                confirm_label: "Remove",
+                on_confirm: remove_selected,
+                on_cancel: move |_| confirm_selected.set(false),
+            }
         }
         if confirm_clear() {
             Confirm {
@@ -699,9 +872,12 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
     let client = use_client();
     let mut folder = use_signal(String::new);
     let mut items = use_signal(Vec::<ManualImportItem>::new);
+    // The rows as scanned: only what differs is sent as an override.
+    let mut scanned = use_signal(Vec::<ManualImportItem>::new);
     let mut chosen = use_signal(Vec::<usize>::new);
     let mut mode = use_signal(|| "copy".to_string());
     let mut picking = use_signal(|| None::<usize>);
+    let mut editing = use_signal(|| None::<usize>);
     let c0 = client.clone();
     let series = use_resource(move || {
         let c = c0.clone();
@@ -728,6 +904,7 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
                             .filter(|i| list[*i].rejections.is_empty())
                             .collect(),
                     );
+                    scanned.set(list.clone());
                     items.set(list);
                 }
                 Err(e) => app.error(&e),
@@ -739,14 +916,21 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
     let run = move |_| {
         let c = c2.clone();
         let list = items();
+        let before = scanned();
         let files: Vec<ManualImportFile> = chosen()
             .into_iter()
-            .filter_map(|i| list.get(i))
-            .filter_map(|it| {
+            .filter_map(|i| Some((list.get(i)?, before.get(i)?)))
+            .filter_map(|(it, was)| {
                 Some(ManualImportFile {
                     path: it.path.clone(),
                     series_id: it.series_id?,
                     episode_ids: it.episode_ids.clone(),
+                    quality: (it.quality_model != was.quality_model).then_some(it.quality_model),
+                    languages: (it.languages != was.languages).then(|| it.languages.clone()),
+                    release_group: (it.release_group != was.release_group)
+                        .then(|| it.release_group.clone().unwrap_or_default()),
+                    release_type: (it.release_type != was.release_type)
+                        .then(|| it.release_type.clone()),
                 })
             })
             .collect();
@@ -795,7 +979,7 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
         if !items().is_empty() {
             div { class: "table-wrap", style: "margin-top: var(--sp-3)",
                 table { class: "table",
-                    thead { tr { th { "" } th { "File" } th { "Series" } th { "Episodes" } th { "Quality" } th { "" } } }
+                    thead { tr { th { "" } th { "File" } th { "Series" } th { "Episodes" } th { "Quality" } th { "Languages" } th { "Release group" } th { "" } } }
                     tbody {
                         for (i, it) in items().into_iter().enumerate() {
                             tr { key: "{i}",
@@ -818,7 +1002,17 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
                                     " "
                                     button { class: "btn sm ghost", disabled: it.series_id.is_none(), onclick: move |_| picking.set(Some(i)), "Choose…" }
                                 }
-                                td { span { class: "badge", "{it.quality}" } }
+                                td {
+                                    button { class: "btn sm ghost", "aria-label": "Quality, languages and release of {it.name}",
+                                        title: "Choose the quality, languages, release group and release type the file is imported with",
+                                        onclick: move |_| editing.set(Some(i)),
+                                        span { class: "badge", {kitsunarr_domain::Quality::by_id(it.quality_model.quality_id).map_or(it.quality.clone(), |q| q.name.to_string())} }
+                                    }
+                                }
+                                td { class: "small",
+                                    {it.languages.iter().filter_map(|l| kitsunarr_domain::Language::by_id(*l)).map(|l| l.name).collect::<Vec<_>>().join(", ")}
+                                }
+                                td { class: "small", {it.release_group.clone().unwrap_or_default()} }
                                 td { for r in it.rejections.iter() { div { class: "small warning", "{r}" } } }
                             }
                         }
@@ -834,6 +1028,16 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
                 button { class: "btn primary", disabled: busy() || !ready, onclick: run, if busy() { "Importing…" } else { "Import {chosen().len()} files" } }
             }
         }
+        if let Some(i) = editing() {
+            if let Some(item) = items().get(i).cloned() {
+                FileDetailsDialog { item, on_done: move |changed: Option<ManualImportItem>| {
+                    if let Some(c) = changed && let Some(x) = items.write().get_mut(i) {
+                        *x = c;
+                    }
+                    editing.set(None);
+                } }
+            }
+        }
         if let Some(i) = picking() {
             if let Some(sid) = items().get(i).and_then(|it| it.series_id) {
                 PickEpisodes { series_id: sid, initial: items().get(i).map(|it| it.episode_ids.clone()).unwrap_or_default(),
@@ -844,6 +1048,76 @@ fn SeriesManualImport(mut busy: Signal<bool>) -> Element {
                         }
                         picking.set(None);
                     } }
+            }
+        }
+    }
+}
+
+/// Sonarr's manual import quality, language, release group and release type choices for one
+/// file.
+#[component]
+fn FileDetailsDialog(
+    item: kitsunarr_domain::api::library_tools::ManualImportItem,
+    on_done: EventHandler<Option<kitsunarr_domain::api::library_tools::ManualImportItem>>,
+) -> Element {
+    use kitsunarr_domain::{Language, Quality};
+    let original = item.clone();
+    let mut quality = use_signal(|| item.quality_model.quality_id);
+    let mut version = use_signal(|| item.quality_model.revision.version);
+    let mut languages = use_signal(|| item.languages.clone());
+    let mut group = use_signal(|| item.release_group.clone().unwrap_or_default());
+    let mut release_type = use_signal(|| item.release_type.clone());
+    let done = move |_| {
+        let mut out = original.clone();
+        out.quality_model.quality_id = quality();
+        out.quality_model.revision.version = version().max(1);
+        out.languages = languages();
+        out.release_group = Some(group().trim().to_string()).filter(|g| !g.is_empty());
+        out.release_type = release_type();
+        on_done.call(Some(out));
+    };
+    rsx! {
+        Modal { title: format!("Import details — {}", item.name), wide: true, on_close: move |_| on_done.call(None),
+            footer: rsx! { div { class: "spacer" } button { class: "btn", onclick: move |_| on_done.call(None), "Cancel" } button { class: "btn primary", onclick: done, "Use these details" } },
+            div { class: "form-grid",
+                crate::components::common::Field { label: "Quality",
+                    select { class: "select", "aria-label": "Quality",
+                        onchange: move |e: FormEvent| { if let Ok(q) = e.value().parse() { quality.set(q); } },
+                        for q in Quality::all().iter() { option { key: "{q.id}", value: "{q.id}", selected: q.id == quality(), "{q.name}" } }
+                    }
+                }
+                crate::components::common::Field { label: "Revision", help: "2 or more for a PROPER or REPACK.".to_string(),
+                    input { class: "input", r#type: "number", min: "1", "aria-label": "Revision", value: "{version}",
+                        oninput: move |e| { if let Ok(v) = e.value().parse() { version.set(v); } } }
+                }
+                crate::components::common::Field { label: "Release group",
+                    input { class: "input", "aria-label": "Release group", value: "{group}", oninput: move |e| group.set(e.value()) }
+                }
+                crate::components::common::Field { label: "Release type",
+                    select { class: "select", "aria-label": "Release type", value: release_type(),
+                        onchange: move |e: FormEvent| release_type.set(e.value()),
+                        option { value: "unknown", "Unknown" }
+                        option { value: "singleEpisode", "Single episode" }
+                        option { value: "multiEpisode", "Multi-episode" }
+                        option { value: "seasonPack", "Season pack" }
+                    }
+                }
+            }
+            crate::components::common::Field { label: "Languages",
+                div { class: "chips", role: "group", "aria-label": "Languages",
+                    for l in Language::all().iter().filter(|l| l.id > 0) {
+                        {
+                            let id = l.id;
+                            let on = languages().contains(&id);
+                            rsx! {
+                                button { key: "{id}", r#type: "button", class: if on { "chip on" } else { "chip" }, "aria-pressed": "{on}",
+                                    onclick: move |_| { let mut w = languages.write(); if let Some(i) = w.iter().position(|x| *x == id) { w.remove(i); } else { w.push(id); } },
+                                    "{l.name}"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

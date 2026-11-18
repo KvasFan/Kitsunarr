@@ -1306,6 +1306,38 @@ pub(crate) struct CommandBody {
     import_mode: Option<String>,
 }
 
+/// The quality, languages, release group and release type of a Sonarr `ManualImport` file
+/// (`ManualImportResource`); an unknown quality or language list is no override, as Sonarr
+/// parses the name for those.
+pub(crate) fn manual_import_overrides(
+    f: &Value,
+) -> kitsunarr_domain::api::library_tools::ManualImportFile {
+    let quality = f["quality"]["quality"]["id"]
+        .as_i64()
+        .filter(|id| *id > 0)
+        .map(|id| kitsunarr_domain::quality::QualityModel {
+            quality_id: id as i32,
+            revision: serde_json::from_value(f["quality"]["revision"].clone()).unwrap_or_default(),
+        });
+    let languages: Vec<i32> = f["languages"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|l| l["id"].as_i64().or(l.as_i64()))
+        .map(|id| id as i32)
+        .collect();
+    kitsunarr_domain::api::library_tools::ManualImportFile {
+        quality,
+        languages: (!(languages.is_empty() || languages == [0])).then_some(languages),
+        release_group: f["releaseGroup"].as_str().map(str::to_string),
+        release_type: f["releaseType"]
+            .as_str()
+            .filter(|t| !t.eq_ignore_ascii_case("unknown"))
+            .map(str::to_string),
+        ..Default::default()
+    }
+}
+
 /// Sonarr's `ImportMode`: copy only when asked; `auto` and `move` move.
 pub(crate) fn moves_files(mode: Option<&str>) -> bool {
     !mode.is_some_and(|m| m.eq_ignore_ascii_case("copy"))
@@ -1330,6 +1362,7 @@ pub(crate) async fn import_folder(state: &AppState, folder: &str, move_files: bo
                 path: i.path.clone(),
                 series_id: i.series_id?,
                 episode_ids: i.episode_ids.clone(),
+                ..Default::default()
             })
         })
         .collect();
@@ -1617,6 +1650,7 @@ pub(crate) async fn command(
                             path: path.to_string(),
                             series_id,
                             episode_ids,
+                            ..manual_import_overrides(f)
                         })
                     }
                     _ => {
@@ -1768,6 +1802,7 @@ pub(crate) async fn queue_records(state: &AppState) -> ApiResult<Vec<Value>> {
             "downloadClient": i.download_client,
             "indexer": i.indexer,
             "outputPath": i.output_path,
+            "downloadClientHasPostImportCategory": i.download_client_has_post_import_category,
         });
         let mut base = base;
         // The release's custom formats and score in the series' profile.

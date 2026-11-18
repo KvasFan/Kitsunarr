@@ -1302,6 +1302,7 @@ pub(crate) fn cached_release(
             .any(|e| matches!((e.air_date_utc, recent_cutoff), (Some(a), Some(c)) if a >= c)),
         release_source: "Search",
         manual_mapping: false,
+        overrides: Default::default(),
         movie_id: None,
         cached_at: std::time::Instant::now(),
     }

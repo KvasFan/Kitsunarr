@@ -35,7 +35,31 @@ pub fn release_type_name(t: ReleaseType) -> &'static str {
     }
 }
 
-fn release_type_named(name: &str) -> ReleaseType {
+/// The number episode files store for a release type (Sonarr's enum values).
+pub fn release_type_id(t: ReleaseType) -> i64 {
+    match t {
+        ReleaseType::Unknown => 0,
+        ReleaseType::SingleEpisode => 1,
+        ReleaseType::MultiEpisode => 2,
+        ReleaseType::SeasonPack => 3,
+        ReleaseType::MultiSeasonPack => 4,
+    }
+}
+
+/// A release type as history data or an API stores it: a name (any case) or a number.
+pub fn release_type_value(v: &serde_json::Value) -> ReleaseType {
+    match v {
+        serde_json::Value::Number(n) => release_type(n.as_i64().unwrap_or(0)),
+        serde_json::Value::String(s) => match s.trim().parse::<i64>() {
+            Ok(id) => release_type(id),
+            Err(_) => release_type_named(s.trim()),
+        },
+        _ => ReleaseType::Unknown,
+    }
+}
+
+/// A release type by name, compared without case (`SingleEpisode`, `singleEpisode`).
+pub fn release_type_named(name: &str) -> ReleaseType {
     match name {
         n if n.eq_ignore_ascii_case("SingleEpisode") => ReleaseType::SingleEpisode,
         n if n.eq_ignore_ascii_case("MultiEpisode") => ReleaseType::MultiEpisode,

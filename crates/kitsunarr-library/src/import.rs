@@ -337,6 +337,56 @@ struct Candidate {
     relative_dest: String,
     errors: Vec<String>,
     media_info: Option<crate::media_info::MediaInfo>,
+    /// The release type chosen by hand (manual import), else `None`.
+    release_type: Option<kitsunarr_parser::ReleaseType>,
+}
+
+/// What a user chose by hand for a download's files: in "Override and grab" (quality,
+/// languages) or in manual import (also the release group and type). Stored in the grab's data
+/// (`overrideQuality`, `overrideLanguages` with the grab's own quality and languages,
+/// `overrideReleaseGroup`, `overrideReleaseType`), they replace what the names say.
+#[derive(Debug, Clone, Default, PartialEq)]
+pub(crate) struct Overrides {
+    pub quality: Option<QualityModel>,
+    pub languages: Option<Vec<i32>>,
+    pub release_group: Option<String>,
+    pub release_type: Option<kitsunarr_parser::ReleaseType>,
+}
+
+impl Overrides {
+    pub(crate) fn of(grab: Option<&GrabRecord>, data: &serde_json::Value) -> Self {
+        let quality = grab
+            .filter(|_| data["overrideQuality"].as_bool() == Some(true))
+            .and_then(|g| {
+                Some(QualityModel {
+                    quality_id: g.quality_id? as i32,
+                    revision: g
+                        .revision
+                        .as_deref()
+                        .and_then(|r| serde_json::from_str(r).ok())
+                        .unwrap_or_default(),
+                })
+            });
+        let languages = grab
+            .filter(|_| data["overrideLanguages"].as_bool() == Some(true))
+            .and_then(|g| g.languages.as_deref())
+            .and_then(|l| serde_json::from_str::<Vec<i32>>(l).ok())
+            .filter(|l| !l.is_empty());
+        let release_group = data["overrideReleaseGroup"]
+            .as_str()
+            .map(str::trim)
+            .filter(|g| !g.is_empty())
+            .map(str::to_string);
+        let release_type = data
+            .get("overrideReleaseType")
+            .map(crate::decision_input::release_type_value);
+        Self {
+            quality,
+            languages,
+            release_group,
+            release_type,
+        }
+    }
 }
 
 fn label(e: &decision::Episode) -> String {
@@ -462,6 +512,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         .last()
         .and_then(|g| serde_json::from_str(&g.data).ok())
         .unwrap_or_default();
+    let overrides = Overrides::of(d.grabs.last(), &grab_data);
     let unknown = Language::by_id(0).map(|l| l.id).unwrap_or(0);
     let original = model.original_language.map(|l| l.id).unwrap_or(unknown);
 
@@ -627,6 +678,9 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             )
             .id;
         }
+        if let Some(q) = overrides.quality {
+            quality = q;
+        }
         // `AggregateLanguage`: the last of file, folder and download names that names one.
         let mut languages = vec![original];
         for source in [Some(name.as_str()), folder_name.as_deref(), Some(d.title)]
@@ -637,6 +691,9 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             if !found.is_empty() && !(found.len() == 1 && found[0].id == unknown) {
                 languages = found.iter().map(|l| l.id).collect();
             }
+        }
+        if let Some(chosen) = &overrides.languages {
+            languages = chosen.clone();
         }
         // `AggregateReleaseGroup`.
         let client_full = client_info.as_ref().is_some_and(|c| c.full_season);
@@ -655,6 +712,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
         .into_iter()
         .flatten()
         .find(|g| !g.trim().is_empty());
+        let release_group = overrides.release_group.clone().or(release_group);
         // `SceneNameCalculator`.
         let scene_name = if !other_videos && !client_full {
             Some(remove_extension(d.title))
@@ -735,7 +793,9 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
                     .to_string()
             });
         let release_title = scene_name.clone().unwrap_or_else(|| stem(&path));
-        let release_type = info.release_type();
+        let release_type = overrides
+            .release_type
+            .unwrap_or_else(|| info.release_type());
         let indexer_flags = grab_data
             .get("indexerFlags")
             .and_then(|v| v.as_str())
@@ -929,6 +989,7 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             relative_dest,
             errors,
             media_info,
+            release_type: overrides.release_type,
         });
     }
 
@@ -1296,11 +1357,11 @@ async fn transfer_and_record(
         .and_then(|v| v.as_str())
         .and_then(|v| v.parse().ok())
         .unwrap_or(0);
-    let release_type = grab_data
-        .get("releaseType")
-        .and_then(|v| v.as_str())
-        .and_then(|v| v.parse().ok())
-        .unwrap_or(0);
+    // The grabbed release's type (stored by name), or the type chosen in manual import.
+    let release_type =
+        crate::decision_input::release_type_id(c.release_type.unwrap_or_else(|| {
+            crate::decision_input::release_type_value(&grab_data["releaseType"])
+        }));
     let file_id = series::upsert_episode_file(
         &mut conn,
         &NewEpisodeFile {

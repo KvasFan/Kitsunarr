@@ -1547,7 +1547,9 @@ pub(crate) async fn queue_v5(
             "quality": v3::quality_json(quality.quality.id),
             "revision": {"version": quality.revision.version, "real": quality.revision.real, "isRepack": quality.revision.is_repack},
         });
-        r["downloadClientHasPostImportCategory"] = json!(false);
+        if r["downloadClientHasPostImportCategory"].is_null() {
+            r["downloadClientHasPostImportCategory"] = json!(false);
+        }
         let sid = r["seriesId"].as_i64();
         if include.contains("series")
             && let Some(sid) = sid
@@ -1816,6 +1818,10 @@ async fn grab_release(
             guid,
             indexer_id,
             episode_ids,
+            series_id: b["override"]["seriesId"].as_i64(),
+            quality: crate::routes::grab::sonarr_quality(&b["override"]["quality"]),
+            languages: crate::routes::grab::sonarr_languages(&b["override"]["languages"]),
+            download_client_id: b["override"]["downloadClientId"].as_i64(),
         }),
     )
     .await?;

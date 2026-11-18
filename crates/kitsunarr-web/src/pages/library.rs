@@ -222,6 +222,8 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let mut monitoring_open = use_signal(|| false);
     let mut move_open = use_signal(|| false);
     let mut remove_open = use_signal(|| false);
+    let mut edit_open = use_signal(|| false);
+    let mut tags_open = use_signal(|| false);
     let mut organizing = use_signal(|| false);
     let mut confirm_organize = use_signal(|| false);
     let organize_client = use_client();
@@ -265,6 +267,30 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 on_close: move |removed: bool| {
                     remove_open.set(false);
                     if removed {
+                        selected.write().clear();
+                    }
+                },
+            }
+        }
+        if edit_open() {
+            super::edit::BulkEditDialog {
+                movie: false,
+                ids: selected_ids(),
+                on_close: move |done: bool| {
+                    edit_open.set(false);
+                    if done {
+                        selected.write().clear();
+                    }
+                },
+            }
+        }
+        if tags_open() {
+            super::edit::BulkTagsDialog {
+                movie: false,
+                ids: selected_ids(),
+                on_close: move |done: bool| {
+                    tags_open.set(false);
+                    if done {
                         selected.write().clear();
                     }
                 },
@@ -415,6 +441,8 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(true), ..Default::default() }), "Monitor" }
                     button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(false), ..Default::default() }), "Unmonitor" }
                     button { class: "btn sm", title: "Choose which episodes of the selected series are monitored", onclick: move |_| monitoring_open.set(true), "Monitoring…" }
+                    button { class: "btn sm", title: "Monitoring, quality profile, series type and season folders of the selected series", onclick: move |_| edit_open.set(true), "Edit…" }
+                    button { class: "btn sm", title: "Add, remove or replace the tags of the selected series", onclick: move |_| tags_open.set(true), "Tags…" }
                     button { class: "btn sm", title: "Move the selected series into another root folder", onclick: move |_| move_open.set(true), "Move to root folder…" }
                     button { class: "btn sm", disabled: organizing(), title: "Rename every file of the selected series to the naming settings", onclick: move |_| confirm_organize.set(true),
                         if organizing() { "Organizing…" } else { "Organize" }
@@ -493,6 +521,8 @@ pub fn MoviesLibrary() -> Element {
     let grid = use_signal(|| crate::util::load_pref("kitsunarr-view").as_deref() != Some("table"));
     let mut selected = use_signal(HashSet::<i64>::new);
     let mut busy = use_signal(|| false);
+    let mut edit_open = use_signal(|| false);
+    let mut tags_open = use_signal(|| false);
     use_effect(move || {
         let _ = search();
         if *page.peek() != 1 {
@@ -546,7 +576,16 @@ pub fn MoviesLibrary() -> Element {
             busy.set(false);
         });
     });
+    let movie_ids = move || selected.read().iter().copied().collect::<Vec<_>>();
     rsx! {
+        if edit_open() {
+            super::edit::BulkEditDialog { movie: true, ids: movie_ids(),
+                on_close: move |done: bool| { edit_open.set(false); if done { selected.write().clear(); data.restart(); } } }
+        }
+        if tags_open() {
+            super::edit::BulkTagsDialog { movie: true, ids: movie_ids(),
+                on_close: move |done: bool| { tags_open.set(false); if done { selected.write().clear(); data.restart(); } } }
+        }
         div{class:"page-head",h1{class:"grow","Movies"}}
         div{class:"toolbar",
             select{class:"select","aria-label":"Sort by",value:sort_key(),onchange:move |e:FormEvent|{selected.write().clear();page.set(1);sort_key.set(e.value());},
@@ -564,6 +603,8 @@ pub fn MoviesLibrary() -> Element {
                 button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((Some(false),None)),"Mark unwatched"}
                 button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((None,Some(true))),"Monitor"}
                 button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((None,Some(false))),"Unmonitor"}
+                button{class:"btn sm",disabled:busy(),title:"Monitoring and quality profile of the selected movies",onclick:move |_|edit_open.set(true),"Edit…"}
+                button{class:"btn sm",disabled:busy(),title:"Add, remove or replace the tags of the selected movies",onclick:move |_|tags_open.set(true),"Tags…"}
                 button{class:"btn ghost sm",disabled:busy(),onclick:move |_|selected.write().clear(),"Clear"}
             }
         }}

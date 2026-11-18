@@ -301,7 +301,19 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
         .unwrap();
     let notifier = kitsunarr_notifications::Notifier::new(reqwest::Client::new());
 
-    // Imported as episode 3 by hand: the choice wins over the name.
+    // The scan offers the parsed quality, languages and release type as the starting point
+    // of overrides.
+    assert_eq!(
+        kitsunarr_domain::Quality::by_id(ep2.quality_model.quality_id)
+            .unwrap()
+            .name,
+        "HDTV-720p"
+    );
+    assert_eq!(ep2.release_type, "singleEpisode");
+    assert!(!ep2.languages.is_empty());
+    // Imported as episode 3 by hand: the choice wins over the name, and so do the quality,
+    // languages, release group and release type chosen for it (Sonarr's manual import
+    // overrides).
     let results = kitsunarr_library::manual_import::import(
         &db,
         &notifier,
@@ -309,6 +321,17 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
             path: ep2.path.clone(),
             series_id: 1,
             episode_ids: vec![3],
+            quality: Some(kitsunarr_domain::quality::QualityModel {
+                quality_id: 7,
+                revision: kitsunarr_domain::quality::Revision {
+                    version: 2,
+                    real: 0,
+                    is_repack: false,
+                },
+            }),
+            languages: Some(vec![2, 8]),
+            release_group: Some("OVR".into()),
+            release_type: Some("multiEpisode".into()),
         }],
         false,
     )
@@ -321,6 +344,27 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
             .await
             .unwrap();
     assert!(linked.is_some());
+    let (quality, version, languages, group, release_type): (
+        i64,
+        i64,
+        String,
+        Option<String>,
+        i64,
+    ) = sqlx::query_as(
+        "SELECT quality_id, revision_version, languages, release_group, release_type \
+             FROM episode_files WHERE id = ?",
+    )
+    .bind(linked)
+    .fetch_one(pool)
+    .await
+    .unwrap();
+    assert_eq!((quality, version), (7, 2), "Bluray-1080p v2 as chosen");
+    assert_eq!(
+        serde_json::from_str::<Vec<i32>>(&languages).unwrap(),
+        vec![2, 8]
+    );
+    assert_eq!(group.as_deref(), Some("OVR"));
+    assert_eq!(release_type, 2, "multi-episode as chosen");
     assert!(
         incoming.join("Show.S01E02.720p.HDTV.x264-GRP.mkv").exists(),
         "copied, not moved"
@@ -333,6 +377,7 @@ async fn manual_import_matches_files_and_imports_the_chosen_episodes() {
             path: ep2.path.clone(),
             series_id: 1,
             episode_ids: vec![99],
+            ..Default::default()
         }],
         false,
     )

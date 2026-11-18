@@ -1030,6 +1030,34 @@ pub async fn bulk_edit(db: &Database, edit: &BulkEdit) -> DbResult<u64> {
         if let Some(option) = edit.monitor {
             apply_monitoring(&mut tx, *id, option, chrono::Utc::now()).await?;
         }
+        if let Some(t) = edit.series_type {
+            sqlx::query("UPDATE series SET series_type = ? WHERE id = ?")
+                .bind(t.as_str())
+                .bind(id)
+                .execute(&mut *tx)
+                .await?;
+        }
+        if let Some(f) = edit.season_folder {
+            sqlx::query("UPDATE series SET season_folder = ? WHERE id = ?")
+                .bind(f)
+                .bind(id)
+                .execute(&mut *tx)
+                .await?;
+        }
+        if let Some(tags) = &edit.replace_tags {
+            sqlx::query("DELETE FROM series_tags WHERE series_id = ?")
+                .bind(id)
+                .execute(&mut *tx)
+                .await?;
+            for tag in tags {
+                sqlx::query("INSERT OR IGNORE INTO series_tags (series_id, tag_id) VALUES (?, ?)")
+                    .bind(id)
+                    .bind(tag)
+                    .execute(&mut *tx)
+                    .await
+                    .map_err(|e| DbError::from_write(e, "tag"))?;
+            }
+        }
         for tag in &edit.add_tags {
             sqlx::query("INSERT OR IGNORE INTO series_tags (series_id, tag_id) VALUES (?, ?)")
                 .bind(id)
@@ -1531,6 +1559,15 @@ pub async fn series_of_episode(db: &Database, episode_id: i64) -> DbResult<Optio
             .fetch_optional(db.pool())
             .await?,
     )
+}
+
+/// An episode's series and overview (`NotFound` when the episode does not exist).
+pub async fn episode_overview(db: &Database, episode_id: i64) -> DbResult<(i64, Option<String>)> {
+    sqlx::query_as("SELECT series_id, overview FROM episodes WHERE id = ?")
+        .bind(episode_id)
+        .fetch_optional(db.pool())
+        .await?
+        .ok_or(DbError::NotFound)
 }
 
 /// The series an episode file belongs to.

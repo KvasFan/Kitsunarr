@@ -126,7 +126,7 @@ fn ReleaseResults(
     let mut filter_text = use_signal(String::new);
     let mut filter_status = use_signal(|| ReleaseFilter::All);
     // A release whose episodes are being chosen by hand: (indexer id, guid, title).
-    let mut choosing = use_signal(|| None::<(i64, String, String)>);
+    let mut choosing = use_signal(|| None::<ReleaseItem>);
     let c0 = client.clone();
     // Resource dependencies must track ordinary props too: changing a component key alone
     // does not reliably remount a static child in this Dioxus tree.
@@ -341,7 +341,7 @@ fn ReleaseResults(
                                             let done = grabbed.read().contains(&key);
                                             let busy = grabbing() == Some(key.clone());
                                             let confirming = confirm() == Some(key.clone());
-                                            let req = GrabRequest { guid: rel.guid.clone(), indexer_id: rel.indexer_id, episode_ids: Vec::new() };
+                                            let req = GrabRequest { guid: rel.guid.clone(), indexer_id: rel.indexer_id, ..Default::default() };
                                             let approved = rel.approved;
                                             let label = rel.title.clone();
                                             let c = client.clone();
@@ -378,11 +378,11 @@ fn ReleaseResults(
                                         }
                                         if movie_id.is_none() {
                                             {
-                                                let target = (rel.indexer_id, rel.guid.clone(), rel.title.clone());
+                                                let target = rel.clone();
                                                 rsx! {
-                                                    button { class: "btn sm ghost", "aria-label": "Choose episodes for {rel.title}",
-                                                        title: "Choose the episodes of this release by hand, then grab it (the choice is kept for the import)",
-                                                        onclick: move |_| choosing.set(Some(target.clone())), "Episodes…" }
+                                                    button { class: "btn sm ghost", "aria-label": "Override and grab {rel.title}",
+                                                        title: "Choose the series, episodes, quality, languages or download client of this release, then grab it (the choices are kept for the import)",
+                                                        onclick: move |_| choosing.set(Some(target.clone())), "Override…" }
                                                 }
                                             }
                                         }
@@ -394,83 +394,188 @@ fn ReleaseResults(
                 }
             } }
         }
-        if let Some((indexer_id, guid, title)) = choosing() {
-            ChooseEpisodes { series_id, indexer_id, guid, title, on_close: move |done: bool| {
-                if done && let Some((i, g, _)) = choosing() { grabbed.write().push(format!("{i}-{g}")); }
+        if let Some(release) = choosing() {
+            OverrideGrab { series_id, release, on_close: move |done: bool| {
+                if done && let Some(r) = choosing() { grabbed.write().push(format!("{}-{}", r.indexer_id, r.guid)); }
                 choosing.set(None);
             } }
         }
     }
 }
 
-/// Sonarr's grab override: choose a release's episodes by hand, then grab it. The choice is
-/// kept with the grab and used to import the download (Tanukarr's persistent manual mapping).
+/// Sonarr's "Override and grab": the series, episodes, quality, languages and download client
+/// of a release chosen by hand, then grabbed. The choices are kept with the grab and used to
+/// import the download (Tanukarr's persistent manual mapping).
 #[component]
-fn ChooseEpisodes(
-    series_id: i64,
-    indexer_id: i64,
-    guid: String,
-    title: String,
-    on_close: EventHandler<bool>,
-) -> Element {
+fn OverrideGrab(series_id: i64, release: ReleaseItem, on_close: EventHandler<bool>) -> Element {
+    use kitsunarr_domain::{Language, Quality};
     let app = use_app();
     let client = use_client();
+    let mut chosen_series = use_signal(move || series_id);
     let c0 = client.clone();
     let episodes = use_resource(move || {
         let c = c0.clone();
-        async move { c.episodes(series_id).await }
+        let id = chosen_series();
+        async move { c.episodes(id).await }
     });
+    let c1 = client.clone();
+    let choices = use_resource(move || {
+        let c = c1.clone();
+        async move {
+            let series = c
+                .series(&kitsunarr_domain::api::library::LibraryQuery {
+                    page_size: Some(10_000),
+                    ..Default::default()
+                })
+                .await?;
+            let clients = c.providers("downloadclients").await?;
+            Ok::<_, kitsunarr_client::ClientError>((series.records, clients))
+        }
+    });
+    let initial_quality = Quality::all()
+        .iter()
+        .find(|q| q.name == release.quality)
+        .map_or(0, |q| q.id);
+    let initial_languages: Vec<i32> = release
+        .languages
+        .iter()
+        .filter_map(|n| Language::all().iter().find(|l| l.name == n.as_str()))
+        .map(|l| l.id)
+        .collect();
     let mut chosen = use_signal(Vec::<i64>::new);
+    let mut quality = use_signal(move || initial_quality);
+    let languages = use_signal({
+        let l = initial_languages.clone();
+        move || l.clone()
+    });
+    let mut download_client = use_signal(|| 0i64);
     let mut busy = use_signal(|| false);
-    let grab = move |_| {
-        let c = client.clone();
-        let req = GrabRequest {
-            guid: guid.clone(),
-            indexer_id,
-            episode_ids: chosen(),
-        };
-        busy.set(true);
-        spawn(async move {
-            match c.grab_release(&req).await {
-                Ok(r) => {
-                    app.success(&r.message);
-                    on_close.call(true);
+    let protocol = release.protocol;
+    let other_series = chosen_series() != series_id;
+    let grab = {
+        let release = release.clone();
+        let initial_languages = initial_languages.clone();
+        move |_| {
+            let c = client.clone();
+            let mut langs = languages();
+            langs.sort_unstable();
+            let mut before = initial_languages.clone();
+            before.sort_unstable();
+            let req = GrabRequest {
+                guid: release.guid.clone(),
+                indexer_id: release.indexer_id,
+                episode_ids: chosen(),
+                series_id: Some(chosen_series()).filter(|s| *s != series_id),
+                quality: (quality() != initial_quality).then_some(
+                    kitsunarr_domain::quality::QualityModel {
+                        quality_id: quality(),
+                        revision: Default::default(),
+                    },
+                ),
+                languages: (langs != before && !langs.is_empty()).then_some(langs),
+                download_client_id: Some(download_client()).filter(|id| *id > 0),
+            };
+            busy.set(true);
+            spawn(async move {
+                match c.grab_release(&req).await {
+                    Ok(r) => {
+                        app.success(&r.message);
+                        on_close.call(true);
+                    }
+                    Err(e) => {
+                        app.error(&e);
+                        busy.set(false);
+                    }
                 }
-                Err(e) => {
-                    app.error(&e);
-                    busy.set(false);
-                }
-            }
-        });
+            });
+        }
     };
+    let (series_list, clients) = match &*choices.read() {
+        Some(Ok((s, c))) => (s.clone(), c.clone()),
+        _ => (Vec::new(), Vec::new()),
+    };
+    let missing_episodes = other_series && chosen().is_empty();
     rsx! {
-        crate::components::common::Modal { title: format!("Episodes of {title}"), on_close: move |_| on_close.call(false),
+        crate::components::common::Modal { title: format!("Override and grab — {}", release.title), wide: true, on_close: move |_| on_close.call(false),
             footer: rsx! {
-                span { class: "small muted", "{chosen().len()} chosen" }
+                span { class: "small muted", "{chosen().len()} episodes chosen" }
                 div { class: "spacer" }
                 button { class: "btn", onclick: move |_| on_close.call(false), "Cancel" }
-                button { class: "btn primary", disabled: chosen().is_empty() || busy(), onclick: grab, if busy() { "Grabbing…" } else { "Grab with these episodes" } }
+                button { class: "btn primary", disabled: missing_episodes || busy(), onclick: grab, if busy() { "Grabbing…" } else { "Grab release" } }
             },
-            match &*episodes.read() {
-                None => rsx! { Loading {} },
-                Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
-                Some(Ok(list)) => rsx! {
-                    div { class: "stack", style: "max-height: 60vh; overflow: auto",
-                        for e in list.iter() {
-                            {
-                                let id = e.id;
-                                rsx! {
-                                    label { key: "{e.id}", class: "check small",
-                                        input { r#type: "checkbox", checked: chosen().contains(&id),
-                                            onchange: move |ev: FormEvent| { let mut w = chosen.write(); w.retain(|x| *x != id); if ev.checked() { w.push(id); } } }
-                                        "S{e.season_number:02}E{e.episode_number:02} "
-                                        {e.title.clone().unwrap_or_default()}
-                                    }
+            p { class: "help small", "Unchanged choices keep what the release's title says. Episodes left unchosen keep the episodes the title maps to." }
+            div { class: "form-grid",
+                crate::components::common::Field { label: "Series",
+                    select { class: "select", "aria-label": "Series", disabled: busy(),
+                        onchange: move |e: FormEvent| {
+                            if let Ok(id) = e.value().parse() {
+                                chosen_series.set(id);
+                                chosen.write().clear();
+                            }
+                        },
+                        if series_list.is_empty() { option { value: "{series_id}", selected: true, "Searched series" } }
+                        for s in series_list.iter() {
+                            option { key: "{s.id}", value: "{s.id}", selected: s.id == chosen_series(), "{s.title}" }
+                        }
+                    }
+                }
+                crate::components::common::Field { label: "Quality",
+                    select { class: "select", "aria-label": "Quality", disabled: busy(),
+                        onchange: move |e: FormEvent| { if let Ok(q) = e.value().parse() { quality.set(q); } },
+                        for q in Quality::all().iter() {
+                            option { key: "{q.id}", value: "{q.id}", selected: q.id == quality(), "{q.name}" }
+                        }
+                    }
+                }
+                crate::components::common::Field { label: "Download client",
+                    select { class: "select", "aria-label": "Download client", disabled: busy(),
+                        onchange: move |e: FormEvent| download_client.set(e.value().parse().unwrap_or(0)),
+                        option { value: "0", selected: download_client() == 0, "Automatic" }
+                        for dc in clients.iter().filter(|c| c.enabled && c.protocol == Some(protocol)) {
+                            option { key: "{dc.id}", value: "{dc.id}", selected: dc.id == download_client(), "{dc.name}" }
+                        }
+                    }
+                }
+            }
+            crate::components::common::Field { label: "Languages",
+                div { class: "chips", role: "group", "aria-label": "Languages",
+                    for l in Language::all().iter().filter(|l| l.id > 0) {
+                        {
+                            let id = l.id;
+                            let on = languages().contains(&id);
+                            let mut languages = languages;
+                            rsx! {
+                                button { key: "{id}", r#type: "button", class: if on { "chip on" } else { "chip" }, "aria-pressed": "{on}", disabled: busy(),
+                                    onclick: move |_| { let mut w = languages.write(); if let Some(i) = w.iter().position(|x| *x == id) { w.remove(i); } else { w.push(id); } },
+                                    "{l.name}"
                                 }
                             }
                         }
                     }
-                },
+                }
+            }
+            crate::components::common::Field { label: if other_series { "Episodes (required)".to_string() } else { "Episodes".to_string() },
+                match &*episodes.read() {
+                    None => rsx! { Loading {} },
+                    Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
+                    Some(Ok(list)) => rsx! {
+                        div { class: "stack", style: "max-height: 40vh; overflow: auto",
+                            for e in list.iter() {
+                                {
+                                    let id = e.id;
+                                    rsx! {
+                                        label { key: "{e.id}", class: "check small",
+                                            input { r#type: "checkbox", checked: chosen().contains(&id),
+                                                onchange: move |ev: FormEvent| { let mut w = chosen.write(); w.retain(|x| *x != id); if ev.checked() { w.push(id); } } }
+                                            "S{e.season_number:02}E{e.episode_number:02} "
+                                            {e.title.clone().unwrap_or_default()}
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                }
             }
         }
     }

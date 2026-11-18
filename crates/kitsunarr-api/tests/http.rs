@@ -1463,6 +1463,7 @@ async fn torrent_blackhole_writes_grabs_and_imports_the_watch_folder() {
             guid: release.guid.clone(),
             indexer_id,
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap();
@@ -1599,6 +1600,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             guid: "bb-s01e01".into(),
             indexer_id,
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap_err();
@@ -1629,6 +1631,7 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
             guid: release.guid.clone(),
             indexer_id,
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap();
@@ -1664,6 +1667,10 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     assert_eq!((queue.clients, queue.failures.len()), (1, 0));
     let item = &queue.items[0];
     assert_eq!(item.download_id, grabbed.download_id.to_uppercase());
+    assert!(
+        item.download_client_has_post_import_category,
+        "a post-import category is set"
+    );
     assert_eq!(item.series_title.as_deref(), Some("Breaking Bad"));
     assert_eq!(item.episodes, vec!["S01E01"]);
     assert_eq!(item.quality.as_deref(), Some("Bluray-720p"));
@@ -1843,6 +1850,53 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         client.refresh_queue().await.unwrap(),
         "0 downloads imported, 0 need attention"
     );
+    // "Change category" (Sonarr's `changeCategory`): the download moves to the post-import
+    // category instead of being removed from the client.
+    qbit.lock().unwrap().clear();
+    let moved = client
+        .remove_queue_item(
+            &grabbed.download_id,
+            &kitsunarr_domain::api::queue::QueueRemoval {
+                change_category: true,
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert!(
+        moved
+            .message
+            .contains("post-import category of qBittorrent"),
+        "{}",
+        moved.message
+    );
+    let calls = qbit.lock().unwrap().clone();
+    assert!(
+        calls.contains(&format!(
+            "/api/v2/torrents/setCategory category=tv-imported hashes={}",
+            grabbed.download_id
+        )),
+        "{calls:#?}"
+    );
+    assert!(
+        !calls
+            .iter()
+            .any(|c| c.starts_with("/api/v2/torrents/delete")),
+        "{calls:#?}"
+    );
+    // Bulk removal reports each item it could not remove and goes on with the others.
+    let bulk = client
+        .remove_queue_items(&kitsunarr_domain::api::queue::QueueBulkRemoval {
+            download_ids: vec!["pending-999999".into(), "NOT-A-DOWNLOAD".into()],
+            removal: kitsunarr_domain::api::queue::QueueRemoval {
+                remove_from_client: true,
+                ..Default::default()
+            },
+        })
+        .await
+        .unwrap();
+    assert!(bulk.done.is_empty());
+    assert_eq!(bulk.failures.len(), 2, "{:?}", bulk.failures);
 
     // An automatic season search grabs what is missing (S01E02, by magnet) and skips S01E01,
     // which is on disk now.
@@ -1942,6 +1996,12 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         .find(|i| i.tracked_state != "pending")
         .unwrap();
     assert!(client.grab_pending(&other.download_id).await.is_err());
+    let bulk = client
+        .grab_pending_items(std::slice::from_ref(&other.download_id))
+        .await
+        .unwrap();
+    assert!(bulk.done.is_empty());
+    assert_eq!(bulk.failures.len(), 1, "{:?}", bulk.failures);
     // "Send now" (Sonarr's `POST /queue/grab/{id}`): decided again as the user's request, so
     // the delay no longer holds it back, and grabbed.
     qbit.lock().unwrap().clear();
@@ -2301,6 +2361,7 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
             guid: release.guid.clone(),
             indexer_id,
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap();
@@ -2385,6 +2446,223 @@ async fn usenet_grab_goes_to_sabnzbd_and_imports_by_moving() {
         decided.release_title,
         "Breaking.Bad.S01E01.720p.HDTV.x264-GRP"
     );
+}
+
+#[tokio::test]
+async fn override_and_grab_keeps_the_chosen_quality_and_languages_for_the_import() {
+    use kitsunarr_domain::api::search::{GrabRequest, ReleaseQuery};
+    use kitsunarr_domain::quality::QualityModel;
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: tvmaze.clone(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, sab_port, sab) = usenet_mocks().await;
+    let indexer: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Newznab", "implementation": "Newznab",
+                "options": {"enableInteractiveSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "n3wznab-key", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let indexer_id = indexer["id"].as_i64().unwrap();
+    let sabnzbd: serde_json::Value = client
+        .post(
+            "/providers/downloadclients",
+            &serde_json::json!({
+                "name": "SABnzbd", "implementation": "Sabnzbd", "enabled": true,
+                "settings": {"host": "127.0.0.1", "port": sab_port, "apiKey": "sab-key", "tvCategory": "tv"}
+            }),
+        )
+        .await
+        .unwrap();
+    let sab_id = sabnzbd["id"].as_i64().unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let pilot = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    let found = client
+        .search_releases(&ReleaseQuery {
+            series_id: added.id,
+            season_number: None,
+            episode_id: Some(pilot.id),
+            complete_series: false,
+            season_packs_only: false,
+            indexer_ids: None,
+            search_session: None,
+        })
+        .await
+        .unwrap();
+    let release = found.releases.iter().find(|r| r.guid == "nzb-77").unwrap();
+    assert_eq!(release.quality, "HDTV-720p");
+    let grab = |q: Option<QualityModel>, langs: Option<Vec<i32>>, dc: Option<i64>| GrabRequest {
+        guid: release.guid.clone(),
+        indexer_id,
+        quality: q,
+        languages: langs,
+        download_client_id: dc,
+        ..Default::default()
+    };
+    // Unknown choices are refused before anything is sent.
+    let bluray = QualityModel {
+        quality_id: 7,
+        revision: Default::default(),
+    };
+    for bad in [
+        grab(
+            Some(QualityModel {
+                quality_id: 9999,
+                revision: Default::default(),
+            }),
+            None,
+            None,
+        ),
+        grab(Some(bluray), Some(vec![-77]), None),
+        grab(Some(bluray), None, Some(9999)),
+    ] {
+        assert_eq!(status(client.grab_release(&bad).await.unwrap_err()), 422);
+    }
+    assert!(sab.lock().unwrap()["uploaded"].is_null());
+    // Override and grab: Bluray-1080p in French, sent to the chosen client.
+    let grabbed = client
+        .grab_release(&grab(Some(bluray), Some(vec![2]), Some(sab_id)))
+        .await
+        .unwrap();
+    assert_eq!(grabbed.download_id, "SABnzbd_nzo_x1");
+    let grabs = client.history(1, 10, Some("grabbed")).await.unwrap();
+    assert_eq!(grabs.records.len(), 1);
+    assert_eq!(
+        grabs.records[0].quality_name.as_deref(),
+        Some("Bluray-1080p")
+    );
+    assert_eq!(grabs.records[0].data["overrideQuality"], true);
+    assert_eq!(grabs.records[0].data["overrideLanguages"], true);
+
+    // The download completes: the import records the chosen quality and languages, not the
+    // HDTV-720p (and unnamed language) of the release title.
+    let downloads = tempfile::tempdir().unwrap();
+    let job = downloads
+        .path()
+        .join("Breaking.Bad.S01E01.720p.HDTV.x264-GRP");
+    std::fs::create_dir_all(&job).unwrap();
+    let video = job.join("Breaking.Bad.S01E01.720p.HDTV.x264-GRP.mkv");
+    std::fs::write(&video, b"video").unwrap();
+    sab.lock().unwrap()["history"] = serde_json::json!([{"status": "Completed", "nzo_id": "SABnzbd_nzo_x1",
+        "name": "Breaking.Bad.S01E01.720p.HDTV.x264-GRP", "category": "tv", "bytes": 5,
+        "storage": video.display().to_string()}]);
+    assert_eq!(
+        client.refresh_queue().await.unwrap(),
+        "1 downloads imported, 0 need attention"
+    );
+    let file = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.id == pilot.id)
+        .and_then(|e| e.file)
+        .expect("the pilot has a file");
+    assert_eq!(file.quality_name, "Bluray-1080p");
+    assert_eq!(file.languages, vec![2]);
+
+    // Episode details: the episode, its series and its file.
+    let details = client.episode_detail(pilot.id).await.unwrap();
+    assert_eq!(details.series_title, "Breaking Bad");
+    assert_eq!(details.episode.id, pilot.id);
+    let shown = details.file.expect("the file is shown");
+    assert_eq!(shown.id, file.id);
+    assert_eq!(shown.quality_name, "Bluray-1080p");
+    assert_eq!(shown.episodes, vec!["S01E01"]);
+    assert!(shown.path.ends_with(&file.relative_path));
+    assert_eq!(
+        status(client.episode_detail(999_999).await.unwrap_err()),
+        404
+    );
+
+    // The episode file editor ("Manage episodes"): quality, group and type of several files.
+    let files = client.episode_files(added.id).await.unwrap();
+    assert_eq!(files.len(), 1);
+    let edited = client
+        .edit_episode_files(&kitsunarr_domain::api::library::EpisodeFileEditRequest {
+            episode_file_ids: vec![file.id, 999_999],
+            quality: Some(QualityModel {
+                quality_id: 4,
+                revision: Default::default(),
+            }),
+            languages: Some(vec![1, 2]),
+            release_group: Some("EDIT".into()),
+            release_type: Some("seasonPack".into()),
+        })
+        .await
+        .unwrap();
+    assert_eq!(edited.updated, 1, "missing files are skipped");
+    let after = &client.episode_files(added.id).await.unwrap()[0];
+    assert_eq!(after.quality_name, "HDTV-720p");
+    assert_eq!(after.languages, vec![1, 2]);
+    assert_eq!(after.release_group.as_deref(), Some("EDIT"));
+    assert_eq!(after.release_type, "seasonPack");
+    let refused = client
+        .edit_episode_files(&kitsunarr_domain::api::library::EpisodeFileEditRequest {
+            episode_file_ids: vec![file.id],
+            release_type: Some("box set".into()),
+            ..Default::default()
+        })
+        .await
+        .unwrap_err();
+    assert_eq!(status(refused), 422);
+    // Bulk delete: a missing file is reported, the others are deleted.
+    let deleted = client
+        .delete_episode_files(&[file.id, 999_999])
+        .await
+        .unwrap();
+    assert_eq!(deleted.deleted, 1);
+    assert_eq!(deleted.failures.len(), 1);
+    assert!(
+        client
+            .episode_detail(pilot.id)
+            .await
+            .unwrap()
+            .file
+            .is_none()
+    );
+    assert!(client.episode_files(added.id).await.unwrap().is_empty());
 }
 
 #[tokio::test]
@@ -2487,6 +2765,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
             guid: "nzb-77".into(),
             indexer_id,
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap();
@@ -2547,6 +2826,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
             guid: "nzb-77".into(),
             indexer_id,
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap();
@@ -2565,6 +2845,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
                 remove_from_client: true,
                 blocklist: true,
                 skip_redownload: true,
+                change_category: false,
             },
         )
         .await
@@ -3012,6 +3293,7 @@ async fn notifications_follow_series_grabs_and_imports() {
             guid: "nzb-77".into(),
             indexer_id: indexer["id"].as_i64().unwrap(),
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap();
@@ -3313,6 +3595,7 @@ async fn multi_season_packs_serve_season_searches_and_keep_their_source() {
             guid: "nzb-77".into(),
             indexer_id: indexer["id"].as_i64().unwrap(),
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap();
@@ -3708,6 +3991,7 @@ async fn fake_torrents_are_rejected_before_grabbing() {
             guid: "fake".into(),
             indexer_id: indexer["id"].as_i64().unwrap(),
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap_err()
@@ -3733,6 +4017,7 @@ async fn fake_torrents_are_rejected_before_grabbing() {
             guid: "fake".into(),
             indexer_id: indexer["id"].as_i64().unwrap(),
             episode_ids: Vec::new(),
+            ..Default::default()
         })
         .await
         .unwrap_err()
@@ -8418,6 +8703,191 @@ async fn custom_format_preview_covers_conditions_anime_and_invalid_drafts_withou
         before,
         "testing must never save a draft"
     );
+}
+
+/// The series and movie Edit dialogs (`PATCH /series/{id}`, `PATCH /movies/{id}`) and the
+/// library's bulk editor and tag editor (`POST /series/bulk`, `POST /movies/bulk`).
+#[tokio::test]
+async fn edit_dialogs_and_bulk_editor_change_series_and_movies() {
+    use kitsunarr_domain::api::library::MovieUpdate;
+    use kitsunarr_domain::{MinimumAvailability, MonitorNewItems, SeriesType};
+    let base = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: base,
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let dir = tempfile::tempdir().unwrap();
+    let root = dir.path().display().to_string();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: root.clone(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: root.clone(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let one = client.create_tag("one").await.unwrap();
+    let two = client.create_tag("two").await.unwrap();
+    let profiles = client.quality_profiles().await.unwrap();
+    let other_profile = profiles.iter().find(|p| p.id != 1).unwrap().id;
+
+    // A folder outside every root folder is refused, and nothing else is saved with it.
+    let refused = client
+        .update_series(
+            added.id,
+            &SeriesUpdate {
+                quality_profile_id: Some(other_profile),
+                path: Some("/nowhere/Breaking Bad".into()),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap_err();
+    assert_eq!(status(refused), 422);
+    assert_eq!(
+        client
+            .series_detail(added.id)
+            .await
+            .unwrap()
+            .item
+            .quality_profile_id,
+        1
+    );
+
+    // The Edit dialog's fields in one save; the folder changes without moving files.
+    let renamed = format!("{root}/Breaking Bad (Edited)");
+    let saved = client
+        .update_series(
+            added.id,
+            &SeriesUpdate {
+                monitored: Some(false),
+                quality_profile_id: Some(other_profile),
+                series_type: Some(SeriesType::Anime),
+                season_folder: Some(false),
+                monitor_new_items: Some(MonitorNewItems::None),
+                tags: Some(vec![one.id]),
+                path: Some(renamed.clone()),
+                move_files: false,
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert!(!saved.item.monitored);
+    assert_eq!(saved.item.quality_profile_id, other_profile);
+    assert_eq!(saved.item.series_type, SeriesType::Anime);
+    assert!(!saved.season_folder);
+    assert_eq!(saved.monitor_new_items, MonitorNewItems::None);
+    assert_eq!(saved.item.tags, vec![one.id]);
+    assert_eq!(saved.item.path, renamed);
+
+    // Bulk editor: series type and season folders; tags replaced, then added and removed.
+    let edited = client
+        .bulk_edit_series(&BulkEdit {
+            ids: vec![added.id, 9999],
+            series_type: Some(SeriesType::Daily),
+            season_folder: Some(true),
+            replace_tags: Some(vec![two.id]),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert_eq!(edited.updated, 1, "missing series are skipped");
+    let d = client.series_detail(added.id).await.unwrap();
+    assert_eq!(d.item.series_type, SeriesType::Daily);
+    assert!(d.season_folder);
+    assert_eq!(d.item.tags, vec![two.id]);
+    client
+        .bulk_edit_series(&BulkEdit {
+            ids: vec![added.id],
+            add_tags: vec![one.id],
+            remove_tags: vec![two.id],
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert_eq!(
+        client.series_detail(added.id).await.unwrap().item.tags,
+        vec![one.id]
+    );
+
+    // A film: the movie Edit dialog and the movie bulk editor.
+    let films = dir.path().join("Films");
+    std::fs::create_dir_all(films.join("Film")).unwrap();
+    kitsunarr_db::root_folders::create(server.state.db.pool(), films.to_str().unwrap(), None)
+        .await
+        .unwrap();
+    sqlx::query("INSERT INTO movies (id,title,sort_title,clean_title,title_slug,year,metadata_provider,metadata_id,quality_profile_id,root_folder_path,path,added_at) VALUES (1,'Film','film','film','film',2020,'tmdbMovie','1',1,?,?,'2026-11-14T00:00:00Z')")
+        .bind(films.to_str().unwrap())
+        .bind(films.join("Film").to_str().unwrap())
+        .execute(server.state.db.pool())
+        .await
+        .unwrap();
+    let moved_to = films.join("Film (2020)").display().to_string();
+    let movie = client
+        .update_movie(
+            1,
+            &MovieUpdate {
+                monitored: Some(false),
+                quality_profile_id: Some(other_profile),
+                tags: Some(vec![two.id]),
+                minimum_availability: Some(MinimumAvailability::InCinemas),
+                path: Some(moved_to.clone()),
+                move_files: true,
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert!(!movie.item.monitored);
+    assert_eq!(movie.item.quality_profile_id, other_profile);
+    assert_eq!(movie.item.tags, vec![two.id]);
+    assert_eq!(
+        movie.item.minimum_availability,
+        MinimumAvailability::InCinemas
+    );
+    assert_eq!(movie.item.path, moved_to);
+    assert!(films.join("Film (2020)").is_dir(), "the folder was moved");
+    assert!(!films.join("Film").exists());
+    client
+        .bulk_edit_movies(&BulkEdit {
+            ids: vec![1],
+            replace_tags: Some(vec![]),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert!(client.movie_detail(1).await.unwrap().item.tags.is_empty());
+    // Series-only settings are refused for films.
+    let refused = client
+        .bulk_edit_movies(&BulkEdit {
+            ids: vec![1],
+            season_folder: Some(true),
+            ..Default::default()
+        })
+        .await
+        .unwrap_err();
+    assert_eq!(status(refused), 422);
 }
 
 /// Sonarr's monitoring choices: on add, from the bulk editor and through `/api/v3/seasonpass`.

@@ -416,6 +416,39 @@ pub struct SeriesUpdate {
     /// automatic groups and keeps it out of them; `true` lets the next refresh group it.
     #[serde(default)]
     pub automatic_grouping: Option<bool>,
+    /// A new series folder (Sonarr's series edit with `path`): absolute, inside a root folder.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
+    /// With `path`: move the folder's contents there (Sonarr's `moveFiles`); otherwise only the
+    /// recorded folder changes.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub move_files: bool,
+}
+
+/// Partial update of a movie (the movie page's Edit dialog); absent fields are left unchanged.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MovieUpdate {
+    #[serde(default)]
+    pub monitored: Option<bool>,
+    #[serde(default)]
+    pub quality_profile_id: Option<i64>,
+    /// Replaces the movie's tags.
+    #[serde(default)]
+    pub tags: Option<Vec<i64>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub minimum_availability: Option<MinimumAvailability>,
+    /// `false` removes the film from its automatic groups (anime groups, TMDB collections) and
+    /// keeps it out of them; `true` lets it be grouped again.
+    #[serde(default)]
+    pub automatic_grouping: Option<bool>,
+    /// A new movie folder: absolute, inside a root folder.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
+    /// With `path`: move the folder's contents there; otherwise only the recorded folder changes.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub move_files: bool,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -445,6 +478,16 @@ pub struct BulkEdit {
     /// Series only: whether seasons a refresh discovers are monitored.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub monitor_new_items: Option<MonitorNewItems>,
+    /// Replaces every title's tags (Sonarr's `applyTags: replace`); applied before `addTags`
+    /// and `removeTags`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub replace_tags: Option<Vec<i64>>,
+    /// Series only: the series type.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub series_type: Option<SeriesType>,
+    /// Series only: whether episodes go to season folders.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub season_folder: Option<bool>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
@@ -796,4 +839,93 @@ pub struct BulkDeleteResult {
 #[serde(rename_all = "camelCase")]
 pub struct BulkRenameRequest {
     pub ids: Vec<i64>,
+}
+
+/// A file's media information, formatted as Sonarr's file details show it.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct MediaInfoSummary {
+    pub video_codec: String,
+    pub video_dynamic_range: String,
+    /// `1920x1080`.
+    pub resolution: String,
+    /// `m:ss` or `h:mm:ss`.
+    pub run_time: String,
+    pub video_bitrate: i64,
+    pub video_bit_depth: i32,
+    pub video_fps: f64,
+    pub scan_type: Option<String>,
+    pub audio: Vec<AudioStreamSummary>,
+    /// Subtitle stream languages (or formats when a stream names no language).
+    pub subtitles: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct AudioStreamSummary {
+    pub language: Option<String>,
+    pub codec: String,
+    pub channels: f64,
+}
+
+/// An episode file with what Sonarr's file details and episode file editor show.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct EpisodeFileDetail {
+    pub id: i64,
+    pub series_id: i64,
+    pub season_number: i32,
+    /// `S01E02` labels of the file's episodes.
+    pub episodes: Vec<String>,
+    pub relative_path: String,
+    pub path: String,
+    pub size: i64,
+    pub quality: crate::quality::QualityModel,
+    pub quality_name: String,
+    pub languages: Vec<i32>,
+    pub release_group: Option<String>,
+    pub scene_name: Option<String>,
+    /// `unknown`, `singleEpisode`, `multiEpisode` or `seasonPack`.
+    pub release_type: String,
+    pub added_at: String,
+    pub media_info: Option<MediaInfoSummary>,
+}
+
+/// `GET /episodes/{id}`: Sonarr's episode details (summary, file, history).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct EpisodeDetail {
+    pub episode: EpisodeItem,
+    pub series_title: String,
+    pub overview: Option<String>,
+    pub file: Option<EpisodeFileDetail>,
+}
+
+/// Sonarr's episode file editor: the same changes for several files; absent fields are kept.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct EpisodeFileEditRequest {
+    pub episode_file_ids: Vec<i64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quality: Option<crate::quality::QualityModel>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub languages: Option<Vec<i32>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub release_group: Option<String>,
+    /// `unknown`, `singleEpisode`, `multiEpisode` or `seasonPack`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub release_type: Option<String>,
+}
+
+/// Episode files to delete (to the recycle bin when one is set).
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct EpisodeFileIds {
+    pub episode_file_ids: Vec<i64>,
 }

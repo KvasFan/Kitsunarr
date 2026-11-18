@@ -267,6 +267,17 @@ Where files are at stake, Kitsunarr is stricter than Sonarr:
 - **Torrents stay in the client.** Their files are copied, hard-linked when "Use hardlinks" is on, so they keep seeding. Usenet downloads are moved, as upstream (section 16).
 - **Removal from the client follows upstream.** With the client's "Remove completed downloads" option on, a download is removed (with its data) after import only when the client is done with it (`CanBeRemoved`): Usenet jobs always; qBittorrent torrents stopped at their seed limit (ratio or seeding time, the torrent's or the global one); Transmission torrents past their ratio or idle limit; Deluge torrents it manages and stopped at their ratio. A torrent that finishes seeding later is removed by a later check (`DownloadCanBeRemovedEvent`). The inactive-seeding limit of qBittorrent is not read, so such torrents stay.
 
+**Choices made by hand win over names.** Manual import (per file: quality, languages, release
+group, release type) and "Override and grab" (quality, languages) store the choices in the grab
+the import reads: the grab record carries the quality and languages, its data the flags
+`overrideQuality`, `overrideLanguages` and the values `overrideReleaseGroup`,
+`overrideReleaseType`. The import then records the files with them instead of what the file,
+folder and release names (or media information) say. Sonarr applies manual import choices the
+same way; for an override grab it records the chosen quality in history but its import parses
+the release title again, so Kitsunarr keeping the choice through the import is deliberate. Only
+values that differ from the scan are sent as manual import overrides, so untouched files keep
+the download pipeline's aggregation (folder and download names, media information).
+
 Where Kitsunarr lacks a component, it says so instead of guessing:
 
 - **Naming:** files and season folders are named by the port of `FileNameBuilder` (section 18). With "Rename files on import" off (Sonarr's default), files keep the release or file name, cleaned as `CleanFileName` does.

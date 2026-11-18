@@ -539,6 +539,23 @@ pub async fn set_monitored(db: &Database, id: i64, monitored: bool) -> DbResult<
     Ok(())
 }
 
+/// Sets a film's minimum availability (the movie Edit dialog).
+pub async fn set_minimum_availability(
+    db: &Database,
+    id: i64,
+    availability: kitsunarr_domain::MinimumAvailability,
+) -> DbResult<()> {
+    let r = sqlx::query("UPDATE movies SET minimum_availability = ? WHERE id = ?")
+        .bind(availability.as_str())
+        .bind(id)
+        .execute(db.pool())
+        .await?;
+    if r.rows_affected() == 0 {
+        return Err(DbError::NotFound);
+    }
+    Ok(())
+}
+
 /// Manual watched changes preserve monitoring choices and the ownership of automatic
 /// unmonitoring; only an explicit monitoring edit revokes that ownership.
 pub async fn set_watched(db: &Database, ids: &[i64], watched: bool) -> DbResult<u64> {
@@ -582,6 +599,20 @@ pub async fn bulk_edit(db: &Database, edit: &BulkEdit) -> DbResult<u64> {
                 .execute(&mut *tx)
                 .await
                 .map_err(|e| DbError::from_write(e, "quality profile"))?;
+        }
+        if let Some(tags) = &edit.replace_tags {
+            sqlx::query("DELETE FROM movie_tags WHERE movie_id = ?")
+                .bind(id)
+                .execute(&mut *tx)
+                .await?;
+            for tag in tags {
+                sqlx::query("INSERT OR IGNORE INTO movie_tags (movie_id, tag_id) VALUES (?, ?)")
+                    .bind(id)
+                    .bind(tag)
+                    .execute(&mut *tx)
+                    .await
+                    .map_err(|e| DbError::from_write(e, "tag"))?;
+            }
         }
         for tag in &edit.add_tags {
             sqlx::query("INSERT OR IGNORE INTO movie_tags (movie_id, tag_id) VALUES (?, ?)")
