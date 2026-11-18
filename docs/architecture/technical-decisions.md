@@ -607,8 +607,13 @@ from the native data with Sonarr's field names; handlers reuse the native routes
   excepted, which belong to the web authentication), including Tanukarr's additions (quality
   presets and codec catalogue, metadata source order, anime grouping preview, collection
   presentation, series folder). Commands never wait in a queue, so `DELETE command/{id}`
-  always answers Sonarr's 409. `mediacover` redirects to the catalogue's image (there is no
-  local artwork cache). Backups restored through the API are validated, staged under
+  always answers Sonarr's 409. `mediacover` serves a local copy of the
+  catalogue's artwork (`kitsunarr-api::media_cover`, `<data>/MediaCover/{id}/`), fetched on
+  first use, fetched again when the catalogue's address changes, and resized to Sonarr's
+  heights (poster 500/250, fanart 360/180, banner 70/35) as JPEG. Queue items, interactive
+  search results and episode files carry their custom formats and score in the series'
+  profile; v5 releases also carry `formatScores` and `history` (when the release was grabbed,
+  and when that download failed). Backups restored through the API are validated, staged under
   `<data>/restore/` and applied by the server binary before it opens the database at the next
   start; `system/restart` and `system/shutdown` cancel the server's shutdown token
   (`Lifecycle`), and a restart re-executes the binary once everything has stopped.
