@@ -966,6 +966,59 @@ async fn first_run_setup_migration_and_library() {
             "only the pilot stays monitored: {checked}"
         );
 
+        // Sonarr's Edit dialog: the series type and new-season monitoring in one save.
+        click_button(&client, "Edit").await;
+        wait_text(&client, "Use naming format").await;
+        select_value(&client, ".modal select[aria-label='Series type']", "anime").await;
+        select_value(&client, ".modal select[aria-label='Monitor new seasons']", "none").await;
+        screenshot(&client, "11l-edit-series").await;
+        click_button(&client, "Save").await;
+        wait_text(&client, "Series saved.").await;
+        client
+            .wait()
+            .for_element(Locator::XPath("//div[contains(@class,'hero')]//*[contains(@class,'badge') and normalize-space(.)='anime']"))
+            .await
+            .unwrap();
+
+        // Episode details from the episode row: summary, history and searches.
+        client
+            .wait()
+            .for_element(Locator::Css("button[aria-label='Details of episode 1']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, "Air date").await;
+        wait_text(&client, "missing").await;
+        screenshot(&client, "11m-episode-details").await;
+        client
+            .find(Locator::XPath("//div[contains(@class,'modal')]//button[@role='tab' and normalize-space(.)='History']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        client
+            .wait()
+            .for_element(Locator::Css(".modal select[aria-label='Event type']"))
+            .await
+            .unwrap();
+        client
+            .find(Locator::XPath("//div[contains(@class,'modal')]//button[@role='tab' and normalize-space(.)='Search']"))
+            .await
+            .unwrap()
+            .click()
+            .await
+            .unwrap();
+        wait_text(&client, "Interactive search").await;
+        client.find(Locator::Css(".modal button[aria-label='Close']")).await.unwrap().click().await.unwrap();
+
+        // Manage episodes (Sonarr's episode file editor): the series has no files yet.
+        click_button(&client, "Manage episodes").await;
+        wait_text(&client, "The series has no files.").await;
+        client.find(Locator::Css(".modal button[aria-label='Close']")).await.unwrap().click().await.unwrap();
+
         // Library import: an unmapped folder is matched by its name and year, imported in
         // place and scanned before "existing" monitoring applies.
         let minisodes = media.join("tv/Breaking Bad Original Minisodes (2009)");
@@ -1335,6 +1388,13 @@ async fn first_run_setup_migration_and_library() {
         client.find(Locator::Css("a.media-card[href='/movies/900']")).await.unwrap().click().await.unwrap();
         click_button(&client,"Mark unwatched").await;
         client.wait().for_element(Locator::XPath("//button[normalize-space(.)='Mark watched']")).await.unwrap();
+        // The movie Edit dialog: minimum availability and monitoring in one save.
+        click_button(&client,"Edit").await;
+        wait_text(&client,"Minimum availability").await;
+        select_value(&client,".modal select[aria-label='Minimum availability']","inCinemas").await;
+        screenshot(&client,"11n-edit-movie").await;
+        click_button(&client,"Save").await;
+        wait_text(&client,"Movie saved.").await;
         assert!(!original.exists());
         let renamed: Vec<_> = std::fs::read_dir(&film_folder).unwrap().flatten().map(|e|e.path()).filter(|p|p.extension().is_some_and(|e|e=="mkv")).collect();
         assert_eq!(renamed.len(),1);

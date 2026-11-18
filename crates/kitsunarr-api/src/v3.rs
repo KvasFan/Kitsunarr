@@ -1802,6 +1802,7 @@ pub(crate) async fn queue_records(state: &AppState) -> ApiResult<Vec<Value>> {
             "downloadClient": i.download_client,
             "indexer": i.indexer,
             "outputPath": i.output_path,
+            "downloadClientHasPostImportCategory": i.download_client_has_post_import_category,
         });
         let mut base = base;
         // The release's custom formats and score in the series' profile.

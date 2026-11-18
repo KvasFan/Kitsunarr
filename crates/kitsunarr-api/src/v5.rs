@@ -1547,7 +1547,9 @@ pub(crate) async fn queue_v5(
             "quality": v3::quality_json(quality.quality.id),
             "revision": {"version": quality.revision.version, "real": quality.revision.real, "isRepack": quality.revision.is_repack},
         });
-        r["downloadClientHasPostImportCategory"] = json!(false);
+        if r["downloadClientHasPostImportCategory"].is_null() {
+            r["downloadClientHasPostImportCategory"] = json!(false);
+        }
         let sid = r["seriesId"].as_i64();
         if include.contains("series")
             && let Some(sid) = sid
