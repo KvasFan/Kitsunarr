@@ -84,8 +84,12 @@ Sonarr API completeness and transient-state migration:
 | 96 | Tanukarr parity, authentication: External and OIDC sign-in, local-address exemptions, Allowed Hosts, password reset; custom-format alternative groups and episode-title exclusion | Done: HTTP (mock OIDC provider), unit |
 | 97 | Native sign-in for AniList lists and the Trakt and Plex Media Server connections (no Servarr relay) | Done: mocked flows |
 | 98 | Tanukarr parity, web: catalogue order and all-catalogue search, Settings › Quality, import progress, library filters and saved filters, calendar views, "Test all" | Done: HTTP, browser e2e |
+| 99 | Second Tanukarr audit, decisions: release profile air date and excluded tags; AlreadyImported, DeletedEpisodeFile, SeasonPackOnly, BlockedIndexer and Pending; every media-management option working | Done: decision fixtures, HTTP, migrate fixtures |
+| 100 | Second Tanukarr audit, series and activity: Edit dialogs, bulk editor, manual import and grab overrides, episode details and file editor, queue and blocklist bulk actions | Done: HTTP, browser e2e |
+| 101 | Second Tanukarr audit, views: naming options and token picker, collection settings and manual grouping, statistics, index views and columns, Settings › UI, external links, Test parsing, log files, host settings, notification links | Done: HTTP, browser e2e |
+| 102 | Sonarr API polish: media cover cache, custom formats on queue items and releases, v5 release history; translations of the new interface | Done: HTTP, unit, browser e2e |
 
-Details: [milestones 83–89](milestones-2026-11-17-89.md), [milestones 93–98](milestones-2026-11-17-98.md), the [Recyclarr verification](recyclarr-verification-2026-11-17.md) (90) and the [browser timings](performance.md#browser-at-1000-series) (91).
+Details: [milestones 83–89](milestones-2026-11-17-89.md), [milestones 93–98](milestones-2026-11-17-98.md), [milestones 99–102](milestones-2026-11-18-102.md), the [Recyclarr verification](recyclarr-verification-2026-11-17.md) (90) and the [browser timings](performance.md#browser-at-1000-series) (91).
 
 | Milestone | Scope | Status |
 |---|---|---|
