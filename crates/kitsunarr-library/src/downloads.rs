@@ -466,6 +466,8 @@ impl Monitor {
                 download_client_type: Some(client.implementation.clone()),
                 download_id: item.download_id.clone(),
                 messages,
+                release_group: kitsunarr_parser::parse_title(&item.title)
+                    .and_then(|p| p.release_group),
                 release: kitsunarr_notifications::GrabbedRef {
                     release_title: grab.map(|g| g.source_title.clone()),
                     indexer: text("indexer"),

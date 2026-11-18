@@ -2089,8 +2089,13 @@ async fn statistics(
     State(state): State<AppState>,
     RawQuery(raw): RawQuery,
 ) -> ApiResult<Json<Value>> {
+    Ok(Json(statistics_json(&state, raw.as_deref()).await?))
+}
+
+/// [`statistics`] for a raw query (also Kitsunarr's native statistics page).
+pub(crate) async fn statistics_json(state: &AppState, raw: Option<&str>) -> ApiResult<Value> {
     use kitsunarr_db::sqlx;
-    let (cond, binds) = statistics_filter(raw.as_deref());
+    let (cond, binds) = statistics_filter(raw);
     let pool = state.db.pool();
     let now = kitsunarr_db::now();
     let map_err = |e: sqlx::Error| ApiError::from(kitsunarr_db::DbError::from(e));
@@ -2206,7 +2211,7 @@ async fn statistics(
     .fetch_all(pool)
     .await
     .map_err(map_err)?;
-    Ok(Json(json!({
+    Ok(json!({
         "id": 0,
         "seriesCount": series.0,
         "monitoredSeriesCount": series.1,
@@ -2240,7 +2245,7 @@ async fn statistics(
             json!({"tagId": id, "label": label, "seriesCount": count,
                    "episodeFileCount": f.map_or(0, |f| f.1), "sizeOnDisk": f.map_or(0, |f| f.2)})
         }).collect::<Vec<_>>(),
-    })))
+    }))
 }
 
 // ---- library tools --------------------------------------------------------------------------

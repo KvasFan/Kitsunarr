@@ -39,6 +39,7 @@ use serde::Serialize;
 use serde::de::DeserializeOwned;
 
 pub mod contracts;
+mod views;
 
 #[derive(Debug, Clone, PartialEq, thiserror::Error)]
 pub enum ClientError {

@@ -85,6 +85,33 @@ pub struct SeriesListItem {
     /// The anime group (Tanukarr's anime grouping) the series belongs to.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub anime_group: Option<AnimeGroupRef>,
+    /// Tanukarr's index columns and overview view.
+    #[serde(default)]
+    pub index: IndexColumns,
+}
+
+/// What Tanukarr's library index shows beyond the basic row (table columns and the overview
+/// view), kept apart so the detail resources that flatten a row keep their own fields.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct IndexColumns {
+    pub overview: Option<String>,
+    pub genres: Vec<String>,
+    /// The catalogue rating (0-10).
+    pub rating: Option<f64>,
+    pub certification: Option<String>,
+    pub runtime: Option<i32>,
+    /// Series: the last episode that aired (RFC 3339 UTC).
+    pub previous_airing: Option<String>,
+    /// Release groups of the files.
+    pub release_groups: Vec<String>,
+    /// Series: whether episodes go to season folders.
+    pub season_folder: Option<bool>,
+    /// Movies: the cinema release.
+    pub in_cinemas: Option<String>,
+    /// Movies: the file's quality.
+    pub file_quality: Option<String>,
 }
 
 /// A series' anime group: the `animeGroup` collection and how many series it holds.
@@ -161,6 +188,12 @@ pub struct GroupMembershipRef {
     pub role: Option<String>,
     pub label: Option<String>,
     pub position: i64,
+    /// The group's `AnimeGroupKind` (`series` or `movieSaga`).
+    #[serde(default = "series_kind")]
+    pub group_kind: String,
+    /// The group's `AnimeGroupMovieFolderStyle`.
+    #[serde(default = "automatic_style")]
+    pub movie_folder_style: String,
 }
 
 pub(crate) fn yes() -> bool {
@@ -235,6 +268,9 @@ pub struct MovieListItem {
     pub size_on_disk: i64,
     pub added_at: String,
     pub tags: Vec<i64>,
+    /// Tanukarr's index columns and overview view.
+    #[serde(default)]
+    pub index: IndexColumns,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -324,6 +360,20 @@ pub struct CollectionDetail {
     /// Native seasons and features, presented in collection order (Tanukarr CollectionPage).
     #[serde(default)]
     pub entries: Vec<CollectionEntry>,
+    /// Tanukarr's `AnimeGroupKind`: `series` or `movieSaga`.
+    #[serde(default = "series_kind")]
+    pub group_kind: String,
+    /// Tanukarr's `AnimeGroupMovieFolderStyle`: `automatic`, `numbered` or `title`.
+    #[serde(default = "automatic_style")]
+    pub movie_folder_style: String,
+}
+
+pub(crate) fn series_kind() -> String {
+    "series".into()
+}
+
+pub(crate) fn automatic_style() -> String {
+    "automatic".into()
 }
 
 /// A series or movie in a collection, in position order.

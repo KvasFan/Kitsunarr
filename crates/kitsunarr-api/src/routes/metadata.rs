@@ -194,7 +194,15 @@ pub async fn add_title(
     State(state): State<AppState>,
     Json(body): Json<AddTitle>,
 ) -> ApiResult<(StatusCode, Json<LibraryRef>)> {
-    add_with(&state, body.title, body.automatic_grouping).await
+    add_with(
+        &state,
+        body.title,
+        kitsunarr_library::AddOptions {
+            automatic_grouping: body.automatic_grouping,
+            manual_group: body.manual_group_id,
+        },
+    )
+    .await
 }
 
 /// [`add_title`] with Sonarr's request alone (automatic grouping on), for the v3 API and import
@@ -203,20 +211,19 @@ pub async fn add(
     State(state): State<AppState>,
     Json(req): Json<kitsunarr_domain::api::metadata::AddTitleRequest>,
 ) -> ApiResult<(StatusCode, Json<LibraryRef>)> {
-    add_with(&state, req, true).await
+    add_with(&state, req, kitsunarr_library::AddOptions::default()).await
 }
 
 async fn add_with(
     state: &AppState,
     req: kitsunarr_domain::api::metadata::AddTitleRequest,
-    automatic_grouping: bool,
+    options: kitsunarr_library::AddOptions,
 ) -> ApiResult<(StatusCode, Json<LibraryRef>)> {
     let state = state.clone();
     if req.id.trim().is_empty() {
         return Err(ApiError::field("id", "Choose a title to add."));
     }
     ensure_supported("provider", req.provider)?;
-    let options = kitsunarr_library::AddOptions { automatic_grouping };
     let added =
         kitsunarr_library::add_title_with(&state.db, &state.metadata, &req, options).await?;
     changed(&state, &added.media_type, added.id);

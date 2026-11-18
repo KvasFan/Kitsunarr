@@ -119,9 +119,11 @@ fn load_config(cli: &Cli) -> Result<Config> {
     }
     if let Some(p) = cli.port {
         config.server.port = p;
+        config.mark_overridden("server.port");
     }
     if let Some(b) = cli.bind {
         config.server.bind_address = b;
+        config.mark_overridden("server.bind_address");
     }
     config.normalize()?;
     Ok(config)

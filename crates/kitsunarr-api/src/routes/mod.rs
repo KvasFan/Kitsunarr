@@ -20,6 +20,7 @@ pub mod search;
 pub(crate) mod search_sources;
 pub mod settings;
 pub mod system;
+pub mod views;
 pub mod wanted;
 
 use utoipa_axum::router::OpenApiRouter;
@@ -306,4 +307,13 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(episode_files::delete_episode_files))
         .routes(routes!(queue::bulk_remove_from_queue))
         .routes(routes!(queue::bulk_grab_pending))
+        // Tanukarr's interface pages (naming samples, statistics, collection settings, host
+        // settings, log files, parse tester).
+        .routes(routes!(views::naming_examples))
+        .routes(routes!(views::statistics))
+        .routes(routes!(views::update_collection_settings))
+        .routes(routes!(views::get_host, views::put_host))
+        .routes(routes!(views::log_files))
+        .routes(routes!(views::log_file))
+        .routes(routes!(views::parse))
 }

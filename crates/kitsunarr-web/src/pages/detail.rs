@@ -288,6 +288,8 @@ pub fn SeriesDetailPage(id: i64) -> Element {
                     dt { "Quality profile" } dd { "{d.item.quality_profile_name}" }
                     dt { "Network" } dd { {d.item.network.clone().unwrap_or_else(|| "—".into())} }
                     dt { "Episodes" } dd { "{d.item.episode_file_count} / {d.item.episode_count} on disk · {format_bytes(d.item.size_on_disk)}" }
+                    dt { "Links" }
+                    dd { crate::components::links::ExternalLinks { provider: d.item.metadata_provider, metadata_id: d.metadata_id.clone(), external_ids: d.external_ids.clone() } }
                     if !d.external_ids.is_empty() {
                         dt { "Identities" }
                         dd { {d.external_ids.iter().map(|x| format!("{}:{}", x.kind, x.value)).collect::<Vec<_>>().join("  ")} }
@@ -863,6 +865,8 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     } else {
                         dt { "File" } dd { span { class: "badge warning", "missing" } }
                     }
+                    dt { "Links" }
+                    dd { crate::components::links::ExternalLinks { provider: d.item.metadata_provider, metadata_id: d.metadata_id.clone(), external_ids: d.external_ids.clone(), movie: true } }
                     if !d.external_ids.is_empty() {
                         dt { "Identities" }
                         dd { {d.external_ids.iter().map(|x| format!("{}:{}", x.kind, x.value)).collect::<Vec<_>>().join("  ")} }

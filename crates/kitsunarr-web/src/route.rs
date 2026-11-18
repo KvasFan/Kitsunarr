@@ -13,6 +13,7 @@ use crate::pages::detail::{MovieDetailPage, SeriesDetailPage};
 use crate::pages::import::ImportWizard;
 use crate::pages::library::{AnimeLibrary, MoviesLibrary, SeriesLibrary};
 use crate::pages::library_import::LibraryImport;
+use crate::pages::parse::ParsePage;
 use crate::pages::placeholders::NotFound;
 use crate::pages::search::InteractiveSearch;
 use crate::pages::settings::{
@@ -21,6 +22,8 @@ use crate::pages::settings::{
     SettingsTags,
 };
 use crate::pages::settings_quality::SettingsQuality;
+use crate::pages::settings_views::SettingsUi;
+use crate::pages::statistics::Statistics;
 use crate::pages::system::{
     SystemBackups, SystemLibraryTools, SystemLogs, SystemStatusPage, SystemTasks,
 };
@@ -54,6 +57,8 @@ pub enum Route {
         Collections {},
         #[route("/calendar")]
         Calendar {},
+        #[route("/statistics")]
+        Statistics {},
         #[route("/activity/queue")]
         Queue {},
         #[route("/activity/history")]
@@ -96,6 +101,8 @@ pub enum Route {
         SettingsMetadata {},
         #[route("/settings/tags")]
         SettingsTags {},
+        #[route("/settings/ui")]
+        SettingsUi {},
         #[route("/system")]
         SystemStatusPage {},
         #[route("/system/tasks")]
@@ -106,6 +113,8 @@ pub enum Route {
         SystemBackups {},
         #[route("/system/logs")]
         SystemLogs {},
+        #[route("/system/parse")]
+        ParsePage {},
         #[route("/:..segments")]
         NotFound { segments: Vec<String> },
 }

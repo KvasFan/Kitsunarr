@@ -221,12 +221,15 @@ async fn series_language_code(db: &Database, id: i64) -> LibraryResult<String> {
 pub struct AddOptions {
     /// Tanukarr's anime grouping mode: `false` is `Disabled` (no group folder, no group).
     pub automatic_grouping: bool,
+    /// Tanukarr's `Manual` mode: the title joins this anime group or manual collection.
+    pub manual_group: Option<i64>,
 }
 
 impl Default for AddOptions {
     fn default() -> Self {
         Self {
             automatic_grouping: true,
+            manual_group: None,
         }
     }
 }
@@ -306,8 +309,18 @@ pub async fn add_title_with(
             &naming_settings.custom_colon_replacement_format,
         );
         // Tanukarr: a film of a TMDB collection goes to `{root}/{collection}/Film NN`.
-        let planned = if info.provider == MetadataProvider::TmdbMovie && options.automatic_grouping
-        {
+        let planned = if let Some(group) = options.manual_group {
+            grouping::plan_manual_path(
+                db,
+                group,
+                &info.title,
+                info.year,
+                true,
+                &root,
+                &naming_settings,
+            )
+            .await?
+        } else if info.provider == MetadataProvider::TmdbMovie && options.automatic_grouping {
             grouping::plan_movie_path(db, metadata, &info.id, &info.title, &root, &naming_settings)
                 .await
         } else {
@@ -351,7 +364,7 @@ pub async fn add_title_with(
         .await?;
         movies::set_original_country(&mut conn, id, info.original_country.as_deref()).await?;
         kitsunarr_db::auto_tags::apply_movie(&mut conn, id).await?;
-        if !options.automatic_grouping {
+        if !options.automatic_grouping && options.manual_group.is_none() {
             kitsunarr_db::library::collections::set_automatic_grouping(
                 &mut conn,
                 grouping::Member::Movie(id),
@@ -366,7 +379,9 @@ pub async fn add_title_with(
         {
             tracing::warn!(movie_id = id, error = %e, "the imported film folder could not be scanned");
         }
-        if options.automatic_grouping {
+        if let Some(group) = options.manual_group {
+            join_manual_group(db, group, grouping::Member::Movie(id)).await?;
+        } else if options.automatic_grouping {
             spawn_grouping(db, metadata, req.provider, grouping::Member::Movie(id));
         }
         return Ok(LibraryRef {
@@ -393,7 +408,23 @@ pub async fn add_title_with(
         .unwrap_or(1);
     // Tanukarr's group folders: an AniList or MyAnimeList series resolved into a franchise
     // goes to `{root}/{group}/{member}`, without season folders.
+    let manual_path = match options.manual_group {
+        Some(group) => {
+            grouping::plan_manual_path(
+                db,
+                group,
+                &info.title,
+                info.year,
+                false,
+                &root,
+                &naming_settings,
+            )
+            .await?
+        }
+        None => None,
+    };
     let planned = match (info.provider, info.id.parse::<i64>()) {
+        _ if options.manual_group.is_some() => None,
         (MetadataProvider::AniList | MetadataProvider::MyAnimeList, Ok(anime_id))
             if options.automatic_grouping =>
         {
@@ -439,14 +470,16 @@ pub async fn add_title_with(
             } else {
                 MonitorNewItems::All
             },
-            season_folder: req.season_folder && planned.is_none(),
+            season_folder: req.season_folder && planned.is_none() && manual_path.is_none(),
             use_scene_numbering: false,
             quality_profile_id: req.quality_profile_id,
             root_folder_path: root.clone(),
             path: existing_path.clone().unwrap_or_else(|| {
                 planned
                     .as_ref()
-                    .map_or_else(|| naming::join(&root, &folder), |(p, _)| p.clone())
+                    .map(|(p, _)| p.clone())
+                    .or_else(|| manual_path.clone())
+                    .unwrap_or_else(|| naming::join(&root, &folder))
             }),
             added_at: now.clone(),
             last_refreshed_at: Some(now.clone()),
@@ -529,7 +562,7 @@ pub async fn add_title_with(
     // Sonarr's `EpisodeMonitoredService` with the add options, once every episode exists.
     series::apply_monitoring(&mut tx, id, req.monitor, chrono::Utc::now()).await?;
     kitsunarr_db::auto_tags::apply_series(&mut tx, id).await?;
-    if !options.automatic_grouping {
+    if !options.automatic_grouping && options.manual_group.is_none() {
         kitsunarr_db::library::collections::set_automatic_grouping(
             &mut tx,
             grouping::Member::Series(id),
@@ -569,7 +602,9 @@ pub async fn add_title_with(
     if let Some((_, g)) = &planned {
         grouping::join_resolved(db, info.provider, g, grouping::Member::Series(id)).await;
     }
-    if options.automatic_grouping {
+    if let Some(group) = options.manual_group {
+        join_manual_group(db, group, grouping::Member::Series(id)).await?;
+    } else if options.automatic_grouping {
         spawn_grouping(db, metadata, req.provider, grouping::Member::Series(id));
     }
     if req.provider == MetadataProvider::Tvdb {
@@ -582,6 +617,28 @@ pub async fn add_title_with(
         media_type: "series".into(),
         id,
     })
+}
+
+/// Tanukarr's manual grouping: the new title joins the chosen group as its next season or film.
+async fn join_manual_group(
+    db: &Database,
+    collection_id: i64,
+    member: grouping::Member,
+) -> LibraryResult<()> {
+    let edit = match member {
+        grouping::Member::Series(id) => kitsunarr_domain::api::library::CollectionMemberEdit {
+            series_id: Some(id),
+            role: Some("season".into()),
+            ..Default::default()
+        },
+        grouping::Member::Movie(id) => kitsunarr_domain::api::library::CollectionMemberEdit {
+            movie_id: Some(id),
+            role: Some("movie".into()),
+            ..Default::default()
+        },
+    };
+    kitsunarr_db::library::collections::add_member_manually(db, collection_id, &edit).await?;
+    Ok(())
 }
 
 /// Groups a new AniList title into its franchise, or a TMDB film into its collection, in the

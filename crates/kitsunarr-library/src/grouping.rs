@@ -255,11 +255,14 @@ pub async fn plan_series_path(
             naming_settings,
         ),
     };
-    let member_format = if crate::file_names::is_story_arc(title, &g.title) {
-        &naming_settings.anime_group_arc_folder_format
-    } else {
-        &naming_settings.anime_group_season_folder_format
-    };
+    let (kind, style) = stored_folder_settings(db, source, &g.root.to_string()).await;
+    let member_format = member_folder_format(
+        naming_settings,
+        &kind,
+        &style,
+        false,
+        crate::file_names::is_story_arc(title, &g.title),
+    );
     let member_folder = crate::file_names::group_folder(member_format, &series, naming_settings);
     if group_folder.is_empty() || member_folder.is_empty() {
         return None;
@@ -339,8 +342,10 @@ pub async fn plan_movie_path(
             naming_settings,
         )
     });
+    let (kind, style) =
+        stored_folder_settings(db, MetadataProvider::TmdbMovie, &c.id.to_string()).await;
     let member = crate::file_names::group_folder(
-        &naming_settings.anime_group_movie_saga_folder_format,
+        member_folder_format(naming_settings, &kind, &style, true, false),
         &series,
         naming_settings,
     );
@@ -359,6 +364,147 @@ pub async fn plan_movie_path(
     .await
     .ok()?;
     (used == 0).then_some(path)
+}
+
+/// Tanukarr's `GetAnimeGroupMemberFolder`: a season uses the story-arc format when the style
+/// is `title`, or `automatic` and its title names an arc; a film uses the numbered format when
+/// the style is `numbered`, or `automatic` in a movie saga, else the film-title format.
+pub fn member_folder_format<'a>(
+    naming: &'a kitsunarr_domain::api::settings::NamingSettings,
+    group_kind: &str,
+    style: &str,
+    movie: bool,
+    arc_title: bool,
+) -> &'a str {
+    if movie {
+        let numbered = style == "numbered" || (style == "automatic" && group_kind == "movieSaga");
+        if numbered {
+            &naming.anime_group_movie_saga_folder_format
+        } else {
+            &naming.anime_group_movie_folder_format
+        }
+    } else if style == "title" || (style == "automatic" && arc_title) {
+        &naming.anime_group_arc_folder_format
+    } else {
+        &naming.anime_group_season_folder_format
+    }
+}
+
+/// The stored kind and film folder style of a catalogue's collection, or the defaults
+/// (TMDB collections are sagas).
+async fn stored_folder_settings(
+    db: &Database,
+    provider: MetadataProvider,
+    metadata_id: &str,
+) -> (String, String) {
+    let stored: Option<(String, String)> = sqlx::query_as(
+        "SELECT group_kind, movie_folder_style FROM collections WHERE metadata_provider = ? AND metadata_id = ?",
+    )
+    .bind(provider.as_str())
+    .bind(metadata_id)
+    .fetch_optional(db.pool())
+    .await
+    .ok()
+    .flatten();
+    stored.unwrap_or_else(|| {
+        let kind = if provider == MetadataProvider::TmdbMovie {
+            "movieSaga"
+        } else {
+            "series"
+        };
+        (kind.to_string(), "automatic".to_string())
+    })
+}
+
+/// Tanukarr's manual grouping when adding: the title joins an existing anime group or manual
+/// collection as its next season (or film), in `{root}/{group folder}/{member folder}`. The
+/// group folder of a member already under the root folder is reused. `None` when the planned
+/// path is in use (the title keeps its usual folder but still joins the group).
+pub async fn plan_manual_path(
+    db: &Database,
+    collection_id: i64,
+    title: &str,
+    year: Option<i32>,
+    movie: bool,
+    root: &str,
+    naming_settings: &kitsunarr_domain::api::settings::NamingSettings,
+) -> kitsunarr_db::DbResult<Option<String>> {
+    let row: Option<(String, String)> =
+        sqlx::query_as("SELECT title, kind FROM collections WHERE id = ?")
+            .bind(collection_id)
+            .fetch_optional(db.pool())
+            .await?;
+    let Some((group_title, kind)) = row else {
+        return Err(kitsunarr_db::DbError::NotFound);
+    };
+    if kind != "manual" && kind != "animeGroup" {
+        return Err(kitsunarr_db::DbError::Invalid(
+            "Choose an anime group or a collection of your own".into(),
+        ));
+    }
+    let mut conn = db.pool().acquire().await?;
+    let (group_kind, style) = collections::folder_settings(&mut conn, collection_id).await?;
+    if group_kind == "movieSaga" && !movie {
+        return Err(kitsunarr_db::DbError::Invalid(
+            "A movie saga contains only movies".into(),
+        ));
+    }
+    let role = if movie { "movie" } else { "season" };
+    let ordinal = collections::next_slot(&mut conn, collection_id, role).await?;
+    drop(conn);
+    let member_paths: Vec<String> = sqlx::query_scalar(
+        "SELECT COALESCE(s.path, v.path) FROM collection_members m LEFT JOIN series s ON s.id = m.series_id \
+         LEFT JOIN movies v ON v.id = m.movie_id WHERE m.collection_id = ?",
+    )
+    .bind(collection_id)
+    .fetch_all(db.pool())
+    .await?;
+    let root_path = std::path::Path::new(root);
+    let existing = member_paths.iter().find_map(|p| {
+        let parent = std::path::Path::new(p).parent()?;
+        (parent.parent()? == root_path)
+            .then(|| parent.file_name().map(|n| n.to_string_lossy().into_owned()))
+            .flatten()
+    });
+    let series = crate::file_names::Series {
+        title: title.to_string(),
+        year: year.unwrap_or_default(),
+        group: Some(crate::file_names::GroupMembership {
+            title: group_title.clone(),
+            season: (!movie).then_some(ordinal),
+            movie: movie.then_some(ordinal),
+        }),
+        ..Default::default()
+    };
+    let group_folder = existing.unwrap_or_else(|| {
+        crate::file_names::group_folder(
+            &naming_settings.anime_group_folder_format,
+            &series,
+            naming_settings,
+        )
+    });
+    let member_format = member_folder_format(
+        naming_settings,
+        &group_kind,
+        &style,
+        movie,
+        crate::file_names::is_story_arc(title, &group_title),
+    );
+    let member = crate::file_names::group_folder(member_format, &series, naming_settings);
+    if group_folder.is_empty() || member.is_empty() {
+        return Ok(None);
+    }
+    let path = kitsunarr_domain::naming::join(
+        &kitsunarr_domain::naming::join(root, &group_folder),
+        &member,
+    );
+    let used: i64 = sqlx::query_scalar(
+        "SELECT (SELECT COUNT(*) FROM movies WHERE path = ?1) + (SELECT COUNT(*) FROM series WHERE path = ?1)",
+    )
+    .bind(&path)
+    .fetch_one(db.pool())
+    .await?;
+    Ok((used == 0).then_some(path))
 }
 
 /// Joins a group already resolved (by [`plan_series_path`]).
@@ -621,6 +767,50 @@ mod tests {
                 &[("PREQUEL", 2, "MOVIE"), ("SIDE_STORY", 9, "OVA")],
             ),
         ]
+    }
+
+    /// Tanukarr's `GetAnimeGroupMemberFolder` choice of format.
+    #[test]
+    fn member_folders_follow_the_collection_style() {
+        let n = kitsunarr_domain::api::settings::NamingSettings::default();
+        let season = n.anime_group_season_folder_format.as_str();
+        let arc = n.anime_group_arc_folder_format.as_str();
+        let film = n.anime_group_movie_folder_format.as_str();
+        let numbered = n.anime_group_movie_saga_folder_format.as_str();
+        // Seasons: arcs by title when automatic, always with `title`, never with `numbered`.
+        assert_eq!(
+            member_folder_format(&n, "series", "automatic", false, false),
+            season
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "automatic", false, true),
+            arc
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "title", false, false),
+            arc
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "numbered", false, true),
+            season
+        );
+        // Films: numbered in sagas when automatic.
+        assert_eq!(
+            member_folder_format(&n, "movieSaga", "automatic", true, false),
+            numbered
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "automatic", true, false),
+            film
+        );
+        assert_eq!(
+            member_folder_format(&n, "series", "numbered", true, false),
+            numbered
+        );
+        assert_eq!(
+            member_folder_format(&n, "movieSaga", "title", true, false),
+            film
+        );
     }
 
     #[tokio::test]

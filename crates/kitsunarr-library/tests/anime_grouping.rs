@@ -213,6 +213,7 @@ async fn disabled_grouping_keeps_a_title_out_of_its_franchise() {
         },
         kitsunarr_library::AddOptions {
             automatic_grouping: false,
+            manual_group: None,
         },
     )
     .await

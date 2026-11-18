@@ -1177,6 +1177,17 @@ async fn grouping_preview(
         kitsunarr_db::settings::get_or_default(state.db.pool(), kitsunarr_db::settings::KEY_NAMING)
             .await?;
     let movie = g.member_kind == MemberKind::Movie;
+    // The group's stored collection settings (Tanukarr's kind and film folder style).
+    let stored: Option<(String, String)> = kitsunarr_db::sqlx::query_as(
+        "SELECT group_kind, movie_folder_style FROM collections WHERE metadata_provider = ? AND metadata_id = ?",
+    )
+    .bind(source.as_str())
+    .bind(g.root.to_string())
+    .fetch_optional(state.db.pool())
+    .await
+    .map_err(kitsunarr_db::DbError::from)?;
+    let (group_kind, folder_style) =
+        stored.unwrap_or_else(|| ("series".to_string(), "automatic".to_string()));
     let member = kitsunarr_library::file_names::Series {
         title: g.title.clone(),
         series_type: kitsunarr_domain::SeriesType::Anime,
@@ -1193,11 +1204,13 @@ async fn grouping_preview(
         &naming,
     );
     let member_folder = kitsunarr_library::file_names::group_folder(
-        if movie {
-            &naming.anime_group_movie_folder_format
-        } else {
-            &naming.anime_group_season_folder_format
-        },
+        kitsunarr_library::grouping::member_folder_format(
+            &naming,
+            &group_kind,
+            &folder_style,
+            movie,
+            false,
+        ),
         &member,
         &naming,
     );
@@ -1212,6 +1225,8 @@ async fn grouping_preview(
     r["animeGroupFolder"] = json!(group_folder);
     r["animeGroupMemberFolder"] = json!(member_folder);
     r["animeGroupMemberKind"] = json!(if movie { "movie" } else { "season" });
+    r["animeGroupKind"] = json!(group_kind);
+    r["animeGroupMovieFolderStyle"] = json!(folder_style);
     if movie {
         r["animeGroupMovieNumber"] = json!(g.ordinal);
     } else {

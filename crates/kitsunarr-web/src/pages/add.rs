@@ -314,6 +314,21 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
     let mut season_folder = use_signal(|| true);
     let mut search_missing = use_signal(|| false);
     let mut automatic_grouping = use_signal(|| true);
+    // Tanukarr's "Manual" grouping: an existing anime group or collection of your own.
+    let mut manual_group = use_signal(|| None::<i64>);
+    let mut manual = use_signal(|| false);
+    let c_groups = client.clone();
+    let groups = use_resource(move || {
+        let c = c_groups.clone();
+        async move {
+            c.collections()
+                .await
+                .unwrap_or_default()
+                .into_iter()
+                .filter(|g| g.kind == "manual" || g.kind == "animeGroup")
+                .collect::<Vec<_>>()
+        }
+    });
     let groupable = matches!(
         item.provider,
         kitsunarr_domain::MetadataProvider::AniList
@@ -387,9 +402,15 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
         let name = request_item.title.clone();
         busy.set(true);
         error.set(None);
+        if manual() && manual_group().is_none() {
+            busy.set(false);
+            error.set(Some("Choose the group the title joins.".into()));
+            return;
+        }
         let req = kitsunarr_domain::api::metadata::AddTitle {
             title: req,
             automatic_grouping: !groupable || automatic_grouping(),
+            manual_group_id: manual_group().filter(|_| manual()),
         };
         spawn(async move {
             match c.add_title_with(&req).await {
@@ -452,15 +473,38 @@ fn AddDialog(item: SearchItem, on_close: EventHandler<()>) -> Element {
                         }
                         // Tanukarr's anime grouping mode (AniList and MyAnimeList franchises, TMDB
                         // film collections).
-                        if groupable {
-                            Field { label: "Grouping", help: "Automatic groups the title with its franchise or collection from official relations. Disabled keeps it on its own.".to_string(),
+                        Field { label: "Grouping", help: if groupable { "Automatic groups the title with its franchise or collection from official relations. Manual puts it in a group you choose. Disabled keeps it on its own.".to_string() } else { "Manual puts the title in a group you choose, in the group's folder.".to_string() },
+                            select {
+                                class: "select",
+                                "aria-label": "Grouping",
+                                onchange: move |e: FormEvent| {
+                                    let v = e.value();
+                                    manual.set(v == "manual");
+                                    automatic_grouping.set(v != "disabled");
+                                },
+                                if groupable {
+                                    option { value: "automatic", selected: !manual() && automatic_grouping(), "Automatic (official relations)" }
+                                } else {
+                                    option { value: "automatic", selected: !manual() && automatic_grouping(), "None" }
+                                }
+                                option { value: "manual", selected: manual(), "Manual (choose a group)" }
+                                if groupable {
+                                    option { value: "disabled", selected: !manual() && !automatic_grouping(), "Disabled" }
+                                }
+                            }
+                        }
+                        if manual() {
+                            Field { label: "Group", help: "The title joins the group as its next season or film, in the group's folder.".to_string(),
                                 select {
                                     class: "select",
-                                    "aria-label": "Grouping",
-                                    value: if automatic_grouping() { "automatic" } else { "disabled" },
-                                    onchange: move |e: FormEvent| automatic_grouping.set(e.value() != "disabled"),
-                                    option { value: "automatic", "Automatic (official relations)" }
-                                    option { value: "disabled", "Disabled" }
+                                    "aria-label": "Group",
+                                    onchange: move |e: FormEvent| manual_group.set(e.value().parse().ok()),
+                                    option { value: "", selected: manual_group().is_none(), "Choose a group…" }
+                                    if let Some(list) = &*groups.read() {
+                                        for g in list.iter() {
+                                            option { key: "{g.id}", value: "{g.id}", selected: manual_group() == Some(g.id), "{g.title}" }
+                                        }
+                                    }
                                 }
                             }
                         }

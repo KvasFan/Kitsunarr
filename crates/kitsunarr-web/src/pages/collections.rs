@@ -115,6 +115,7 @@ fn CollectionEditor(detail: CollectionDetail, on_change: EventHandler<()>) -> El
     let mut title = use_signal(|| detail.title.clone());
     let mut overview = use_signal(|| detail.overview.clone().unwrap_or_default());
     let mut confirm_delete = use_signal(|| false);
+    let mut settings_open = use_signal(|| false);
     let nav = use_navigator();
     let c1 = client.clone();
     let save = move |_| {
@@ -168,7 +169,19 @@ fn CollectionEditor(detail: CollectionDetail, on_change: EventHandler<()>) -> El
                     }
                 }
             }
+            button { class: "btn", onclick: move |_| settings_open.set(true), "Collection settings…" }
             button { class: "btn danger", onclick: move |_| confirm_delete.set(true), "Delete group" }
+        }
+        if settings_open() {
+            super::collection_settings::CollectionSettingsDialog {
+                detail: detail.clone(),
+                on_close: move |saved: bool| {
+                    settings_open.set(false);
+                    if saved {
+                        on_change.call(());
+                    }
+                },
+            }
         }
         div { class: "hero",
             Poster { url: detail.poster_url.clone(), title: detail.title.clone(), monitored: true }

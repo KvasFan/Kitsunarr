@@ -4607,6 +4607,7 @@ async fn grouping_can_be_disabled_when_adding_and_on_the_series() {
                 path: None,
             },
             automatic_grouping: false,
+            manual_group_id: None,
         })
         .await
         .unwrap();

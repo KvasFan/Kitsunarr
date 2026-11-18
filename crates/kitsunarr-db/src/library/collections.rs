@@ -114,8 +114,8 @@ pub async fn insert(conn: &mut SqliteConnection, c: &NewCollection) -> DbResult<
         return Err(DbError::Invalid("collection title is required".into()));
     }
     sqlx::query_scalar(
-        "INSERT INTO collections (title, sort_title, kind, metadata_provider, metadata_id, overview, images, created_at) \
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
+        "INSERT INTO collections (title, sort_title, kind, metadata_provider, metadata_id, overview, images, created_at, group_kind) \
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING id",
     )
     .bind(c.title.trim())
     .bind(kitsunarr_domain::text::sort_title(&c.title))
@@ -125,6 +125,14 @@ pub async fn insert(conn: &mut SqliteConnection, c: &NewCollection) -> DbResult<
     .bind(&c.overview)
     .bind(to_json(&c.images)?)
     .bind(now())
+    // TMDB collections are film sagas (Tanukarr's `TmdbMovieProxy`).
+    .bind(
+        if c.kind == "provider" && c.metadata_provider == Some(MetadataProvider::TmdbMovie) {
+            "movieSaga"
+        } else {
+            "series"
+        },
+    )
     .fetch_one(&mut *conn)
     .await
     .map_err(|e| DbError::from_write(e, "collection"))
@@ -310,6 +318,10 @@ pub async fn detail(db: &Database, id: i64) -> DbResult<CollectionDetail> {
     let Some((id, title, kind, overview, images)) = row else {
         return Err(DbError::NotFound);
     };
+    let (group_kind, movie_folder_style) = {
+        let mut conn = db.pool().acquire().await?;
+        folder_settings(&mut conn, id).await?
+    };
     #[derive(FromRow)]
     struct M {
         id: i64,
@@ -438,6 +450,8 @@ pub async fn detail(db: &Database, id: i64) -> DbResult<CollectionDetail> {
         )
     });
     Ok(CollectionDetail {
+        group_kind,
+        movie_folder_style,
         id,
         title,
         kind,
@@ -717,6 +731,108 @@ pub async fn remove_member(db: &Database, collection_id: i64, member_id: i64) ->
     Ok(())
 }
 
+/// A collection's `AnimeGroupKind` and `AnimeGroupMovieFolderStyle`.
+pub async fn folder_settings(
+    conn: &mut SqliteConnection,
+    collection_id: i64,
+) -> DbResult<(String, String)> {
+    sqlx::query_as("SELECT group_kind, movie_folder_style FROM collections WHERE id = ?")
+        .bind(collection_id)
+        .fetch_optional(conn)
+        .await?
+        .ok_or(DbError::NotFound)
+}
+
+/// Tanukarr's `SeriesCollectionEditor.Apply` for a whole collection: a new name, kind or film
+/// folder style. A movie saga holds only films.
+pub async fn update_settings(
+    db: &Database,
+    id: i64,
+    title: Option<&str>,
+    group_kind: Option<&str>,
+    movie_folder_style: Option<&str>,
+) -> DbResult<()> {
+    if let Some(t) = title
+        && (t.trim().is_empty() || matches!(t.trim(), "." | ".."))
+    {
+        return Err(DbError::Invalid("Enter a valid collection name".into()));
+    }
+    if let Some(k) = group_kind
+        && !kitsunarr_domain::api::views::GROUP_KINDS.contains(&k)
+    {
+        return Err(DbError::Invalid("Choose a collection type".into()));
+    }
+    if let Some(s) = movie_folder_style
+        && !kitsunarr_domain::api::views::MOVIE_FOLDER_STYLES.contains(&s)
+    {
+        return Err(DbError::Invalid("Choose a movie folder format".into()));
+    }
+    let mut tx = db.pool().begin_with("BEGIN IMMEDIATE").await?;
+    let exists: Option<i64> = sqlx::query_scalar("SELECT id FROM collections WHERE id = ?")
+        .bind(id)
+        .fetch_optional(&mut *tx)
+        .await?;
+    if exists.is_none() {
+        return Err(DbError::NotFound);
+    }
+    if group_kind == Some("movieSaga") {
+        let roles: Vec<(Option<i64>, Option<String>)> =
+            sqlx::query_as("SELECT movie_id, role FROM collection_members WHERE collection_id = ?")
+                .bind(id)
+                .fetch_all(&mut *tx)
+                .await?;
+        if roles
+            .iter()
+            .any(|(movie, role)| effective_role(*movie, role.as_deref()) != "movie")
+        {
+            return Err(DbError::Invalid("A movie saga contains only movies".into()));
+        }
+    }
+    sqlx::query(
+        "UPDATE collections SET title = COALESCE(?1, title), sort_title = COALESCE(?2, sort_title), \
+         group_kind = COALESCE(?3, group_kind), movie_folder_style = COALESCE(?4, movie_folder_style) WHERE id = ?5",
+    )
+    .bind(title.map(str::trim))
+    .bind(title.map(kitsunarr_domain::text::sort_title))
+    .bind(group_kind)
+    .bind(movie_folder_style)
+    .bind(id)
+    .execute(&mut *tx)
+    .await?;
+    tx.commit().await?;
+    Ok(())
+}
+
+/// The series and movies of a collection.
+pub async fn member_titles(db: &Database, id: i64) -> DbResult<(Vec<i64>, Vec<i64>)> {
+    let rows: Vec<(Option<i64>, Option<i64>)> = sqlx::query_as(
+        "SELECT series_id, movie_id FROM collection_members WHERE collection_id = ? ORDER BY position, id",
+    )
+    .bind(id)
+    .fetch_all(db.pool())
+    .await?;
+    Ok((
+        rows.iter().filter_map(|(s, _)| *s).collect(),
+        rows.iter().filter_map(|(_, m)| *m).collect(),
+    ))
+}
+
+/// The next number of a role in a collection (Tanukarr's `AnimeGroupSeasonNumber` /
+/// `AnimeGroupMovieNumber` of a title joining by hand).
+pub async fn next_slot(
+    conn: &mut SqliteConnection,
+    collection_id: i64,
+    role: &str,
+) -> DbResult<i32> {
+    let used: Vec<i32> = member_slots(conn, collection_id)
+        .await?
+        .into_iter()
+        .filter(|m| m.role == role)
+        .flat_map(|m| m.start..m.start.saturating_add(m.span))
+        .collect();
+    Ok((1..=999).find(|n| !used.contains(n)).unwrap_or(1))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -748,6 +864,56 @@ mod tests {
             assert_eq!(member_number(Some(label)), expected, "{label}");
         }
         assert_eq!(member_number(None), None);
+    }
+
+    #[tokio::test]
+    async fn collection_settings_are_stored_and_sagas_hold_only_films() {
+        let db = crate::test_support::db().await;
+        let s = crate::library::series::tests::insert_sample(&db, "Saga", "1", 1).await;
+        let c = manual(&db, "Collection").await;
+        assert_eq!(
+            folder_settings(&mut db.pool().acquire().await.unwrap(), c)
+                .await
+                .unwrap(),
+            ("series".to_string(), "automatic".to_string())
+        );
+        update_settings(&db, c, Some(" Renamed "), None, Some("numbered"))
+            .await
+            .unwrap();
+        let d = detail(&db, c).await.unwrap();
+        assert_eq!(
+            (d.title.as_str(), d.movie_folder_style.as_str()),
+            ("Renamed", "numbered")
+        );
+        // An empty group may become a saga; one with a season may not.
+        update_settings(&db, c, None, Some("movieSaga"), None)
+            .await
+            .unwrap();
+        update_settings(&db, c, None, Some("series"), None)
+            .await
+            .unwrap();
+        let edit = CollectionMemberEdit {
+            series_id: Some(s),
+            ..Default::default()
+        };
+        add_member_manually(&db, c, &edit).await.unwrap();
+        assert!(matches!(
+            update_settings(&db, c, None, Some("movieSaga"), None).await,
+            Err(DbError::Invalid(_))
+        ));
+        assert!(matches!(
+            update_settings(&db, c, None, None, Some("fancy")).await,
+            Err(DbError::Invalid(_))
+        ));
+        assert!(matches!(
+            update_settings(&db, 999, None, None, None).await,
+            Err(DbError::NotFound)
+        ));
+        let mut conn = db.pool().acquire().await.unwrap();
+        assert_eq!(next_slot(&mut conn, c, "season").await.unwrap(), 2);
+        assert_eq!(next_slot(&mut conn, c, "movie").await.unwrap(), 1);
+        drop(conn);
+        assert_eq!(member_titles(&db, c).await.unwrap(), (vec![s], vec![]));
     }
 
     #[tokio::test]

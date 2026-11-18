@@ -913,6 +913,7 @@ pub async fn put_general(
             "The backup retention must be between 1 and 90 days.",
         ));
     }
+    crate::routes::views::validate_ui(&body)?;
     kv::set(state.db.pool(), kv::KEY_GENERAL, &body).await?;
     kitsunarr_db::maintenance::set_backup_interval(&state.db, body.backup_interval).await?;
     // Applies to the next HTTPS connection.

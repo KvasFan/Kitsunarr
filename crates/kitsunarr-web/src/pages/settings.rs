@@ -4,9 +4,8 @@ use dioxus::prelude::*;
 use kitsunarr_domain::api::auth::ChangePasswordRequest;
 use kitsunarr_domain::api::settings::{
     CustomFormat, DownloadClientOptionsSettings, GeneralSettings, IndexerOptionsSettings,
-    MediaManagementSettings, MetadataSourcesSettings, NamingSettings, ProperDownloadType,
-    ProviderItem, ProviderKind, ProxySettings, ProxyType, QualityProfile, REDACTED,
-    RootFolderCreate,
+    MediaManagementSettings, MetadataSourcesSettings, ProperDownloadType, ProviderItem,
+    ProviderKind, ProxySettings, ProxyType, QualityProfile, REDACTED, RootFolderCreate,
 };
 use kitsunarr_domain::{MediaKind, Quality};
 use serde_json::Value;
@@ -202,6 +201,7 @@ pub fn SettingsGeneral() -> Element {
             }
             div { class: "row end", button { class: "btn primary", r#type: "submit", disabled: current_pw().is_empty() || new_pw().is_empty(), "Change password" } }
         }
+        super::settings_views::HostCard {}
     }
 }
 
@@ -293,7 +293,6 @@ pub fn SettingsMedia() -> Element {
     let client = use_client();
     let mut new_path = use_signal(String::new);
     let mut new_kind = use_signal(String::new);
-    let mut naming = use_signal(|| None::<NamingSettings>);
     let mut mm = use_signal(|| None::<MediaManagementSettings>);
     let c0 = client.clone();
     let mut roots = use_resource(move || {
@@ -305,10 +304,6 @@ pub fn SettingsMedia() -> Element {
     use_future(move || {
         let c = c1.clone();
         async move {
-            match c.naming().await {
-                Ok(n) => naming.set(Some(n)),
-                Err(e) => app.error(&e),
-            }
             match c.media_management().await {
                 Ok(m) => mm.set(Some(m)),
                 Err(e) => app.error(&e),
@@ -338,17 +333,6 @@ pub fn SettingsMedia() -> Element {
         spawn(async move {
             match c.delete_root_folder(id).await {
                 Ok(()) => roots.restart(),
-                Err(e) => app.error(&e),
-            }
-        });
-    };
-    let c4 = client.clone();
-    let save_naming = move |_| {
-        let Some(n) = naming() else { return };
-        let c = c4.clone();
-        spawn(async move {
-            match c.put_naming(&n).await {
-                Ok(_) => app.success("Naming saved."),
                 Err(e) => app.error(&e),
             }
         });
@@ -400,30 +384,7 @@ pub fn SettingsMedia() -> Element {
             }
             p { class: "help small faint", "The folder must already exist; Kitsunarr never creates or removes it." }
         }
-        div { class: "card",
-            h3 { "Episode and movie naming" }
-            match naming() {
-                None => rsx! { Loading {} },
-                Some(n) => rsx! {
-                    Switch { checked: n.rename_episodes, label: "Rename files on import", onchange: move |v| { if let Some(x) = naming.write().as_mut() { x.rename_episodes = v; } } }
-                    p { class: "help small faint", "Formats use Sonarr's tokens." }
-                    div { class: "form-grid",
-                        NamingInput { label: "Standard episode format", value: n.standard_episode_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.standard_episode_format = v; } } }
-                        NamingInput { label: "Daily episode format", value: n.daily_episode_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.daily_episode_format = v; } } }
-                        NamingInput { label: "Anime episode format", value: n.anime_episode_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_episode_format = v; } } }
-                        NamingInput { label: "Series folder format", value: n.series_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.series_folder_format = v; } } }
-                        NamingInput { label: "Season folder format", value: n.season_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.season_folder_format = v; } } }
-                        NamingInput { label: "Movie file format", value: n.movie_file_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.movie_file_format = v; } } }
-                        NamingInput { label: "Group folder format", value: n.anime_group_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_folder_format = v; } } }
-                        NamingInput { label: "Group season folder format", value: n.anime_group_season_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_season_folder_format = v; } } }
-                        NamingInput { label: "Group story-arc folder format", value: n.anime_group_arc_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_arc_folder_format = v; } } }
-                        NamingInput { label: "Group film folder format", value: n.anime_group_movie_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_movie_folder_format = v; } } }
-                        NamingInput { label: "Collection film folder format", value: n.anime_group_movie_saga_folder_format.clone(), on_change: move |v| { if let Some(x) = naming.write().as_mut() { x.anime_group_movie_saga_folder_format = v; } } }
-                    }
-                    div { class: "row end", button { class: "btn primary", onclick: save_naming, "Save naming" } }
-                },
-            }
-        }
+        super::settings_views::NamingCard {}
         div { class: "card",
             h3 { "File management" }
             match mm() {
@@ -563,15 +524,6 @@ fn MediaManagementFields(mm: Signal<Option<MediaManagementSettings>>) -> Element
             Field { label: "Import script path", help: "Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.".to_string(),
                 input { class: "input mono", value: "{m.script_import_path}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.script_import_path = e.value(); } } }
             }
-        }
-    }
-}
-
-#[component]
-fn NamingInput(label: &'static str, value: String, on_change: EventHandler<String>) -> Element {
-    rsx! {
-        Field { label: label.to_string(),
-            input { class: "input mono", value: "{value}", oninput: move |e| on_change.call(e.value()) }
         }
     }
 }

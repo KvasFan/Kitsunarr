@@ -600,6 +600,17 @@ and provider collections, as Tanukarr clears the group; manual collections are k
 it back on groups the title at once. Migration writes the exclusion for Tanukarr titles in
 Disabled mode.
 
+Tanukarr's collection settings (`AnimeGroupKind`, `AnimeGroupMovieFolderStyle`) are columns of
+`collections` (`group_kind`: `series` or `movieSaga`, TMDB collections being sagas;
+`movie_folder_style`: `automatic`, `numbered` or `title`), not of each series. They choose the
+member folder format when a title joins (`GetAnimeGroupMemberFolder`: arc format for `title`
+or an arc-named season under `automatic`; numbered film format for `numbered` or a saga under
+`automatic`); existing members never move. `PUT /collections/{id}/settings` also applies
+monitoring, quality profile and season folders to every member without storing them, like
+Tanukarr's modal does through the series editor. "Manual" grouping when adding
+(`manualGroupId` on `POST /library/add`) joins an existing anime group or manual collection
+as its next season or film, in `{root}/{group folder}/{member folder}`.
+
 ## 34. Library tools (Tanukarr)
 
 Tanukarr's `ProOptions` switches live in the `libraryTools` settings key. Kitsunarr has no

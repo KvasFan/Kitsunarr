@@ -26,6 +26,7 @@ pub fn AppShell() -> Element {
                     app.auth.set(Some(s));
                     // Follow the server's interface language (set from another browser too).
                     if signed_in && let Ok(g) = client.general().await {
+                        crate::util::apply_ui_settings(&g);
                         crate::translate::set_language(&g.ui_language);
                     }
                 }
@@ -226,6 +227,7 @@ fn Sidebar() -> Element {
             NavLink { to: Route::MoviesLibrary {}, icon: "◉", label: s.movies }
             NavLink { to: Route::Collections {}, icon: "▤", label: s.collections }
             NavLink { to: Route::Calendar {}, icon: "▦", label: s.calendar }
+            NavLink { to: Route::Statistics {}, icon: "▥", label: "Statistics" }
             div { class: "nav-section", "{s.activity}" }
             NavLink { to: Route::Queue {}, icon: "⇣", label: s.queue }
             NavLink { to: Route::Activity {}, icon: "↺", label: s.history }
@@ -247,12 +249,14 @@ fn Sidebar() -> Element {
             NavLink { to: Route::SettingsImportLists {}, icon: "☰", label: s.import_lists }
             NavLink { to: Route::SettingsMetadata {}, icon: "ⓘ", label: s.metadata }
             NavLink { to: Route::SettingsTags {}, icon: "#", label: s.tags }
+            NavLink { to: Route::SettingsUi {}, icon: "◐", label: "UI" }
             div { class: "nav-section", "{s.system}" }
             NavLink { to: Route::SystemStatusPage {}, icon: "♥", label: s.status }
             NavLink { to: Route::SystemTasks {}, icon: "⏱", label: s.tasks }
             NavLink { to: Route::SystemLibraryTools {}, icon: "⚒", label: s.library_tools }
             NavLink { to: Route::SystemBackups {}, icon: "⛁", label: s.backups }
             NavLink { to: Route::SystemLogs {}, icon: "☷", label: s.logs }
+            NavLink { to: Route::ParsePage {}, icon: "⌥", label: "Test parsing" }
         }
     }
 }
