@@ -1769,6 +1769,27 @@ pub(crate) async fn queue_records(state: &AppState) -> ApiResult<Vec<Value>> {
             "indexer": i.indexer,
             "outputPath": i.output_path,
         });
+        let mut base = base;
+        // The release's custom formats and score in the series' profile.
+        let (formats, score) = match i.series_id {
+            Some(sid) => kitsunarr_library::files::release_custom_formats(
+                &state.db,
+                sid,
+                &i.title,
+                i.size,
+                &episode_ids,
+            )
+            .await
+            .unwrap_or_default(),
+            None => Default::default(),
+        };
+        base["customFormats"] = json!(
+            formats
+                .iter()
+                .map(|(id, name)| json!({"id": id, "name": name}))
+                .collect::<Vec<_>>()
+        );
+        base["customFormatScore"] = json!(score);
         if episode_ids.is_empty() {
             records.push(base.clone());
         }

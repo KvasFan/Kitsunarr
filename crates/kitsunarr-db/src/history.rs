@@ -109,6 +109,21 @@ pub async fn last_grabs_for_series(db: &Database, series_id: i64) -> DbResult<Ve
 
 /// Download ids (upper-case) among `download_ids` that were imported: a
 /// `downloadFolderImported` entry newer than their last grab.
+/// A series' grabs and failed downloads, newest first: (event type, date, release guid,
+/// download id). Sonarr v5 reports them on interactive search results (`ReleaseHistoryResource`).
+pub async fn grab_and_failure_events(
+    db: &Database,
+    series_id: i64,
+) -> DbResult<Vec<(String, String, Option<String>, Option<String>)>> {
+    Ok(sqlx::query_as(
+        "SELECT event_type, date, json_extract(data, '$.guid'), download_id FROM history \
+         WHERE series_id = ? AND event_type IN ('grabbed', 'downloadFailed') ORDER BY date DESC",
+    )
+    .bind(series_id)
+    .fetch_all(db.pool())
+    .await?)
+}
+
 pub async fn imported_downloads(
     db: &Database,
     download_ids: &[String],

@@ -559,6 +559,67 @@ pub async fn file_custom_formats(
     Ok(out)
 }
 
+/// The custom formats (id, name) a release title matches for a series, with their score in the
+/// series' quality profile: what Sonarr reports on queue items, interactive search results and
+/// manual imports (`CustomFormatCalculationService.ParseCustomFormat(RemoteEpisode)`).
+pub async fn release_custom_formats(
+    db: &Database,
+    series_id: i64,
+    title: &str,
+    size: i64,
+    episode_ids: &[i64],
+) -> Result<(Vec<(i64, String)>, i32), String> {
+    let detail = series::get_detail(db, series_id).await.map_err(err)?;
+    let episodes = series::list_episodes(db, series_id, None)
+        .await
+        .map_err(err)?;
+    let model = crate::decision_input::series_model(db, &detail, &episodes)
+        .await
+        .map_err(err)?;
+    let (formats, _) =
+        decision::compile_formats(&quality::list_custom_formats(db.pool()).await.map_err(err)?);
+    let parsed = kitsunarr_parser::parse_title(title);
+    let quality = kitsunarr_parser::parse_quality(title).quality;
+    let languages = parsed
+        .as_ref()
+        .map(|p| p.languages.clone())
+        .unwrap_or_else(|| kitsunarr_parser::parse_languages(title));
+    let group = parsed
+        .as_ref()
+        .and_then(|p| p.release_group.clone())
+        .or_else(|| kitsunarr_parser::parse_release_group(title));
+    let episode_titles: Vec<String> = model
+        .episodes
+        .iter()
+        .filter(|e| episode_ids.contains(&e.id))
+        .filter_map(|e| e.title.clone())
+        .filter(|t| !t.trim().is_empty())
+        .collect();
+    let matched = decision::custom_format::evaluate(
+        &formats,
+        &decision::CustomFormatInput {
+            release_title: title,
+            file_name: None,
+            release_group: group.as_deref(),
+            quality,
+            size,
+            indexer_flags: 0,
+            languages: &languages,
+            release_type: parsed
+                .as_ref()
+                .map_or(kitsunarr_parser::ReleaseType::Unknown, |p| p.release_type()),
+            original_language: model.original_language,
+            episode_titles: &episode_titles,
+        },
+    );
+    let ids: Vec<i64> = matched.iter().map(|f| f.id).collect();
+    let score = decision::profile::ProfileView(&model.profile).format_score(&ids);
+    Ok((
+        matched.iter().map(|f| (f.id, f.name.clone())).collect(),
+        score,
+    ))
+}
+
 pub async fn rename_files(
     db: &Database,
     series_id: i64,

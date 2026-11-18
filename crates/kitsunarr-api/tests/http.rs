@@ -6337,6 +6337,37 @@ async fn sonarr_v3_release_parse_diskspace_and_removals() {
     assert_eq!(pack["protocol"], "usenet");
     assert_eq!(pack["seriesId"], added.id);
     assert_eq!(pack["quality"]["quality"]["name"], "WEBDL-480p");
+    // Sonarr v5 nests the release and lists each custom format with its profile score; a release
+    // never grabbed has no history.
+    let created = http
+        .post(url("/customformat"))
+        .header("X-Api-Key", &key)
+        .json(&json!({"name": "H.264", "specifications": [{"name": "h264", "implementation": "ReleaseTitleSpecification", "negate": false, "required": true, "fields": [{"name": "value", "value": "H\\.264"}]}]}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(created.status(), 201);
+    let v5: Value = http
+        .get(format!(
+            "{}/api/v5/release?seriesId={}&seasonNumber=1",
+            server.base, added.id
+        ))
+        .header("X-Api-Key", &key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    let pack5 = v5
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|r| r["release"]["title"] == "Breaking.Bad.S01.480p.WEB-DL.AAC2.0.H.264-GRP")
+        .unwrap();
+    assert_eq!(pack5["formatScores"][0]["name"], "H.264", "{pack5}");
+    assert_eq!(pack5["formatScores"][0]["score"], 0);
+    assert!(pack5["history"].is_null());
     // A release no longer in the search cache cannot be grabbed.
     let stale = http
         .post(url("/release"))

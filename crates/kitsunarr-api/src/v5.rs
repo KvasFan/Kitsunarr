@@ -1547,8 +1547,6 @@ pub(crate) async fn queue_v5(
             "quality": v3::quality_json(quality.quality.id),
             "revision": {"version": quality.revision.version, "real": quality.revision.real, "isRepack": quality.revision.is_repack},
         });
-        r["customFormats"] = json!([]);
-        r["customFormatScore"] = json!(0);
         r["downloadClientHasPostImportCategory"] = json!(false);
         let sid = r["seriesId"].as_i64();
         if include.contains("series")
@@ -1721,7 +1719,77 @@ async fn releases(
         let p = typed::<v3_more::ReleaseParams>(raw.as_deref(), &[])?;
         v3_more::search(State(state.clone()), p).await?.0
     };
-    Ok(Json(list.iter().map(release_v5).collect()))
+    let mut out: Vec<Value> = list.iter().map(release_v5).collect();
+    release_scores_and_history(&state, &mut out).await?;
+    Ok(Json(out))
+}
+
+/// (event type, date, release guid, download id).
+type ReleaseEvent = (String, String, Option<String>, Option<String>);
+
+/// Sonarr v5's `formatScores` (each matched custom format with its score in the series'
+/// profile) and `history` (when the release was grabbed, and when that download failed).
+async fn release_scores_and_history(state: &AppState, list: &mut [Value]) -> ApiResult<()> {
+    let formats = kitsunarr_db::quality::list_custom_formats(state.db.pool()).await?;
+    let mut profiles: std::collections::HashMap<
+        i64,
+        kitsunarr_domain::api::settings::QualityProfile,
+    > = Default::default();
+    // (series id) → [(event, date, guid, download id)]
+    let mut histories: std::collections::HashMap<i64, Vec<ReleaseEvent>> = Default::default();
+    for r in list.iter_mut() {
+        let Some(sid) = r["release"]["mappedSeriesId"]
+            .as_i64()
+            .or_else(|| r["release"]["seriesId"].as_i64())
+            .or_else(|| r["mappedSeriesId"].as_i64())
+        else {
+            continue;
+        };
+        if !profiles.contains_key(&sid)
+            && let Ok(d) = series::get_detail(&state.db, sid).await
+            && let Ok(p) =
+                kitsunarr_db::quality::get_profile(state.db.pool(), d.item.quality_profile_id).await
+        {
+            profiles.insert(sid, p);
+        }
+        if let Some(profile) = profiles.get(&sid) {
+            let view = kitsunarr_decision::profile::ProfileView(profile);
+            let scores: Vec<Value> = r["customFormats"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .filter_map(|cf| {
+                    let name = cf["name"].as_str()?;
+                    let f = formats.iter().find(|f| f.name == name)?;
+                    Some(json!({"id": f.id, "name": f.name, "score": view.format_score(&[f.id])}))
+                })
+                .collect();
+            r["formatScores"] = json!(scores);
+        }
+        if let std::collections::hash_map::Entry::Vacant(e) = histories.entry(sid) {
+            e.insert(kitsunarr_db::history::grab_and_failure_events(&state.db, sid).await?);
+        }
+        let guid = r["release"]["guid"]
+            .as_str()
+            .unwrap_or_default()
+            .to_string();
+        let rows = &histories[&sid];
+        let grabbed = rows.iter().find(|(e, _, g, _)| {
+            e == "grabbed" && !guid.is_empty() && g.as_deref() == Some(guid.as_str())
+        });
+        r["history"] = match grabbed {
+            Some((_, date, _, download)) => {
+                let failed = download.as_ref().and_then(|d| {
+                    rows.iter()
+                        .find(|(e, _, _, dl)| e == "downloadFailed" && dl.as_ref() == Some(d))
+                        .map(|(_, date, _, _)| date.clone())
+                });
+                json!({"grabbed": date, "failed": failed})
+            }
+            None => Value::Null,
+        };
+    }
+    Ok(())
 }
 
 /// `POST /release`: Sonarr v5's `ReleaseGrabResource` (`override` picks the episodes).
