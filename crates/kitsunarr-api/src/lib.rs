@@ -22,6 +22,7 @@ pub mod library_tools;
 pub mod lifecycle;
 pub mod log_files;
 pub mod logs;
+pub mod media_cover;
 pub mod oidc;
 pub mod proxy;
 mod root;

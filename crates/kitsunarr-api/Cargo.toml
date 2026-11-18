@@ -45,6 +45,7 @@ chrono = { workspace = true }
 mime_guess = { workspace = true }
 url = { workspace = true }
 reqwest = { workspace = true }
+image = { workspace = true }
 rustls = { workspace = true }
 rustls-platform-verifier = { workspace = true }
 tempfile = { workspace = true }
@@ -57,6 +58,7 @@ http-body-util = { workspace = true }
 tokio-tungstenite = "0.29"
 kitsunarr-client = { workspace = true }
 sqlx = { workspace = true }
+image = { workspace = true }
 
 [lints]
 workspace = true

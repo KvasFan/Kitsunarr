@@ -89,6 +89,8 @@ http = "1"
 sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "sqlite-bundled", "migrate", "json", "chrono", "macros"] }
 
 # HTTP client (rustls with the platform verifier)
+# Artwork resizing for Sonarr's `mediacover` (JPEG, PNG and WebP only).
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp"] }
 reqwest = { version = "0.13", default-features = false, features = ["json", "query", "form", "rustls", "http2", "charset", "socks"] }
 # The TLS configuration reqwest is given (Sonarr's certificate validation setting).
 rustls = { version = "0.23", default-features = false, features = ["aws_lc_rs", "std", "tls12"] }

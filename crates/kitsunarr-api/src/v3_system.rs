@@ -10,7 +10,7 @@ use axum::Json;
 use axum::Router;
 use axum::extract::{DefaultBodyLimit, Multipart, Path, Query, State};
 use axum::http::{StatusCode, header};
-use axum::response::{IntoResponse, Redirect, Response};
+use axum::response::{IntoResponse, Response};
 use axum::routing::{delete, get, post};
 use serde::Deserialize;
 use serde_json::{Map, Value, json};
@@ -388,8 +388,8 @@ async fn localization_language(State(state): State<AppState>) -> Json<Value> {
 
 // ---- media covers -------------------------------------------------------------------------
 
-/// `GET /mediacover/{seriesId}/{poster|fanart|banner…}[-size].ext`: Kitsunarr keeps no local
-/// artwork cache, so this redirects to the catalogue's image.
+/// `GET /mediacover/{seriesId}/{poster|fanart|banner…}[-size].ext`: the series' artwork from
+/// Kitsunarr's local copy (`crate::media_cover`), fetched from the catalogue on first use.
 async fn media_cover(
     State(state): State<AppState>,
     Path((series_id, filename)): Path<(i64, String)>,
@@ -397,13 +397,24 @@ async fn media_cover(
     let detail = kitsunarr_db::library::series::get_detail(&state.db, series_id)
         .await
         .map_err(|_| ApiError::NotFound("The series does not exist.".into()))?;
-    let stem = filename.split(['.', '-']).next().unwrap_or_default();
-    detail
+    let req = crate::media_cover::CoverRequest::parse(&filename)
+        .ok_or_else(|| ApiError::NotFound("No such image.".into()))?;
+    let image = detail
         .images
         .iter()
-        .find(|i| i.cover_type.eq_ignore_ascii_case(stem) && !i.remote_url.is_empty())
-        .map(|i| Redirect::temporary(&i.remote_url).into_response())
-        .ok_or_else(|| ApiError::NotFound("No such image.".into()))
+        .find(|i| i.cover_type.eq_ignore_ascii_case(&req.cover_type) && !i.remote_url.is_empty())
+        .ok_or_else(|| ApiError::NotFound("No such image.".into()))?;
+    let (path, content_type) =
+        crate::media_cover::cover_file(&state, series_id, false, &image.remote_url, &req).await?;
+    let bytes = tokio::fs::read(&path).await.map_err(ApiError::internal)?;
+    Ok((
+        [
+            (axum::http::header::CONTENT_TYPE, content_type),
+            (axum::http::header::CACHE_CONTROL, "public, max-age=86400"),
+        ],
+        bytes,
+    )
+        .into_response())
 }
 
 // ---- backups --------------------------------------------------------------------------------

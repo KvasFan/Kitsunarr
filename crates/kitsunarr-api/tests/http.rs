@@ -11272,27 +11272,69 @@ async fn sonarr_v3_and_v5_library_resources_over_one_series() {
     assert_eq!(parsed["series"]["id"], sid);
     assert!(parsed["series"].get("languageProfileId").is_none());
 
-    // Artwork redirects to the catalogue's image.
-    let no_redirect = reqwest::Client::builder()
-        .redirect(reqwest::redirect::Policy::none())
-        .build()
-        .unwrap();
-    let cover = no_redirect
-        .get(format!(
-            "{}/api/v3/mediacover/{sid}/poster-500.jpg",
-            server.base
-        ))
-        .header("X-Api-Key", &server.api_key)
-        .send()
+    // Artwork comes from Kitsunarr's local copy, fetched once from the catalogue and resized
+    // to Sonarr's sizes.
+    let art = {
+        use axum::routing::get;
+        let hits = std::sync::Arc::new(std::sync::atomic::AtomicUsize::new(0));
+        let h = hits.clone();
+        let png = {
+            let mut buf = std::io::Cursor::new(Vec::new());
+            image::RgbImage::from_pixel(340, 500, image::Rgb([20, 120, 220]))
+                .write_to(&mut buf, image::ImageFormat::Png)
+                .unwrap();
+            buf.into_inner()
+        };
+        let app = axum::Router::new().route(
+            "/poster.png",
+            get(move || {
+                h.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+                let png = png.clone();
+                async move { ([(axum::http::header::CONTENT_TYPE, "image/png")], png) }
+            }),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let addr = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        (format!("http://{addr}/poster.png"), hits)
+    };
+    sqlx::query("UPDATE series SET images = ? WHERE id = ?")
+        .bind(serde_json::json!([{"coverType": "poster", "remoteUrl": art.0}]).to_string())
+        .bind(sid)
+        .execute(server.state.db.pool())
         .await
         .unwrap();
-    match detail.images.iter().find(|i| i.cover_type == "poster") {
-        Some(p) => {
-            assert_eq!(cover.status().as_u16(), 307);
-            assert_eq!(cover.headers()["location"].to_str().unwrap(), p.remote_url);
-        }
-        None => assert_eq!(cover.status().as_u16(), 404),
+    for (file, height, kind) in [
+        ("poster.jpg", 500, "image/png"),
+        ("poster-250.jpg", 250, "image/jpeg"),
+    ] {
+        let cover = reqwest::Client::new()
+            .get(format!("{}/api/v3/mediacover/{sid}/{file}", server.base))
+            .header("X-Api-Key", &server.api_key)
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(cover.status().as_u16(), 200, "{file}");
+        assert_eq!(cover.headers()["content-type"], kind);
+        let img = image::load_from_memory(&cover.bytes().await.unwrap()).unwrap();
+        assert_eq!(img.height(), height, "{file}");
     }
+    assert_eq!(
+        art.1.load(std::sync::atomic::Ordering::SeqCst),
+        1,
+        "fetched once"
+    );
+    assert_eq!(
+        sonarr(
+            &server,
+            M::GET,
+            &format!("/api/v3/mediacover/{sid}/poster-123.jpg"),
+            None
+        )
+        .await
+        .0,
+        404
+    );
 
     // Tanukarr's grouping preview and collection presentation inputs.
     assert_eq!(
