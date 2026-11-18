@@ -27,6 +27,8 @@ pub mod movie_import;
 pub mod movie_manual_import;
 mod movie_naming;
 pub mod notify;
+pub mod permissions;
+pub mod script_import;
 pub mod tools;
 pub mod versions;
 pub mod xem;
@@ -552,6 +554,17 @@ pub async fn add_title_with(
         }
         let mut conn = db.pool().acquire().await?;
         series::apply_monitoring(&mut conn, id, req.monitor, chrono::Utc::now()).await?;
+    } else if kitsunarr_db::settings::get_or_default::<
+        kitsunarr_domain::api::settings::MediaManagementSettings,
+    >(db.pool(), kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT)
+    .await
+    .is_ok_and(|m| m.create_empty_series_folders && !m.delete_empty_folders)
+    {
+        // Sonarr scans a new series (`RescanSeries` after its first refresh), which creates the
+        // empty folder with "create empty series folders".
+        if let Err(e) = files::scan_series(db, id).await {
+            tracing::warn!(series_id = id, error = %e, "the new series folder could not be created");
+        }
     }
     if let Some((_, g)) = &planned {
         grouping::join_resolved(db, info.provider, g, grouping::Member::Series(id)).await;
@@ -776,6 +789,44 @@ pub async fn refresh_series(
     metadata_files::after_series_scan(db, id).await;
     refresh_grouping(db, metadata, grouping::Member::Series(id)).await;
     Ok(result)
+}
+
+/// Sonarr's `RefreshSeriesService.RescanSeries`: after a refresh, the series folder is
+/// rescanned as media management's "rescan after refresh" says (`manual`: a person asked for
+/// the refresh). A folder that cannot be scanned is logged, as upstream.
+pub async fn rescan_after_refresh(
+    db: &Database,
+    id: i64,
+    manual: bool,
+) -> Option<files::ScanSummary> {
+    use kitsunarr_domain::api::settings::{MediaManagementSettings, RescanAfterRefresh};
+    let media: MediaManagementSettings = kitsunarr_db::settings::get_or_default(
+        db.pool(),
+        kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+    )
+    .await
+    .unwrap_or_default();
+    match media.rescan_after_refresh {
+        RescanAfterRefresh::Never => {
+            tracing::debug!(series_id = id, "not rescanning: never rescan after refresh");
+            return None;
+        }
+        RescanAfterRefresh::AfterManual if !manual => {
+            tracing::debug!(
+                series_id = id,
+                "not rescanning: only after manual refreshes"
+            );
+            return None;
+        }
+        _ => {}
+    }
+    match files::scan_series(db, id).await {
+        Ok(summary) => Some(summary),
+        Err(e) => {
+            tracing::warn!(series_id = id, error = %e, "rescan after refresh skipped");
+            None
+        }
+    }
 }
 
 /// Reject a refresh fetched before another request changed catalogue ownership or ordering.

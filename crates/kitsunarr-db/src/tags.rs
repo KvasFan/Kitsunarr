@@ -34,6 +34,7 @@ pub async fn list(ex: impl SqliteExecutor<'_>) -> DbResult<Vec<TagItem>> {
            (SELECT COUNT(*) FROM import_lists x, json_each(x.tags) j WHERE j.value = t.id) + \
            (SELECT COUNT(*) FROM delay_profiles x, json_each(x.tags) j WHERE j.value = t.id) + \
            (SELECT COUNT(*) FROM release_profiles x, json_each(x.tags) j WHERE j.value = t.id) + \
+           (SELECT COUNT(*) FROM release_profiles x, json_each(x.excluded_tags) j WHERE j.value = t.id) + \
            (SELECT COUNT(*) FROM auto_tags x, json_each(x.tags) j WHERE j.value = t.id) AS usage_count \
          FROM tags t ORDER BY t.label COLLATE NOCASE",
     )
@@ -111,6 +112,8 @@ pub struct TagUsage {
     pub import_lists: Vec<i64>,
     pub delay_profiles: Vec<i64>,
     pub release_profiles: Vec<i64>,
+    /// Release profiles that exclude the tag (Sonarr's `ExcludedReleaseProfileIds`).
+    pub excluded_release_profiles: Vec<i64>,
     pub auto_tags: Vec<i64>,
 }
 
@@ -141,6 +144,10 @@ pub async fn usage(db: &Database, id: i64) -> DbResult<TagUsage> {
         import_lists: provider("import_lists").await?,
         delay_profiles: provider("delay_profiles").await?,
         release_profiles: provider("release_profiles").await?,
+        excluded_release_profiles: ids(
+            "SELECT x.id FROM release_profiles x WHERE EXISTS (SELECT 1 FROM json_each(x.excluded_tags) j WHERE j.value = ?) ORDER BY x.id",
+        )
+        .await?,
         auto_tags: provider("auto_tags").await?,
     })
 }
@@ -158,6 +165,13 @@ pub async fn delete(db: &Database, id: i64) -> DbResult<()> {
             .execute(&mut *tx)
             .await?;
     }
+    sqlx::query(
+        "UPDATE release_profiles SET excluded_tags = (SELECT COALESCE(json_group_array(j.value), '[]') FROM json_each(release_profiles.excluded_tags) j WHERE j.value <> ?1) \
+         WHERE EXISTS (SELECT 1 FROM json_each(release_profiles.excluded_tags) j WHERE j.value = ?1)",
+    )
+    .bind(id)
+    .execute(&mut *tx)
+    .await?;
     let r = sqlx::query("DELETE FROM tags WHERE id = ?")
         .bind(id)
         .execute(&mut *tx)

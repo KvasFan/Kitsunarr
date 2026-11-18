@@ -1371,7 +1371,8 @@ struct Writer<'a> {
     db: &'a Database,
     series: &'a SeriesData,
     existing: Vec<Tracked>,
-    file_mode: Option<u32>,
+    /// For the permissions setting (`SetFilePermissions`).
+    media: kitsunarr_domain::api::settings::MediaManagementSettings,
 }
 
 fn hash(contents: &str) -> String {
@@ -1466,13 +1467,7 @@ impl Writer<'_> {
     }
 
     fn permissions(&self, path: &Path) {
-        #[cfg(unix)]
-        if let Some(mode) = self.file_mode {
-            use std::os::unix::fs::PermissionsExt;
-            let _ = std::fs::set_permissions(path, std::fs::Permissions::from_mode(mode));
-        }
-        #[cfg(not(unix))]
-        let _ = (path, self.file_mode);
+        crate::permissions::apply(path, &self.media);
     }
 
     async fn download(&self, image: &ImageResult) -> bool {
@@ -1649,19 +1644,13 @@ async fn writer<'a>(db: &'a Database, series: &'a SeriesData) -> Writer<'a> {
         settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
             .await
             .unwrap_or_default();
-    // `SetFilePermissions`: the folder mode without its execute bits.
-    let file_mode = media
-        .set_permissions
-        .then(|| u32::from_str_radix(media.chmod_folder.trim(), 8).ok())
-        .flatten()
-        .map(|m| m & !0o111);
     let mut existing = tracked(db, series.id).await;
     clean(db, series, &mut existing).await;
     Writer {
         db,
         series,
         existing,
-        file_mode,
+        media,
     }
 }
 

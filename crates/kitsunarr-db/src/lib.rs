@@ -204,4 +204,44 @@ mod tests {
         db.close().await;
         Database::open(&dir.path().join("k.db")).await.unwrap();
     }
+
+    /// An installation that skipped the free-space check keeps skipping it when grabbing once
+    /// the switch is split.
+    #[tokio::test]
+    async fn the_split_free_space_switch_keeps_the_old_choice() {
+        let dir = tempfile::tempdir().unwrap();
+        let db = Database::open(&dir.path().join("k.db")).await.unwrap();
+        for (key, value) in [
+            ("mediaManagement", r#"{"skipFreeSpaceCheck":true}"#),
+            ("naming", r#"{"skipFreeSpaceCheck":true}"#),
+        ] {
+            sqlx::query(
+                "INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES (?, ?, 'now')",
+            )
+            .bind(key)
+            .bind(value)
+            .execute(db.pool())
+            .await
+            .unwrap();
+        }
+        sqlx::raw_sql(include_str!(
+            "../../../migrations/20261118500002_skip_free_space_when_grabbing.sql"
+        ))
+        .execute(db.pool())
+        .await
+        .unwrap();
+        let get = |key: &'static str| {
+            let pool = db.pool().clone();
+            async move {
+                sqlx::query_scalar::<_, String>("SELECT value FROM settings WHERE key = ?")
+                    .bind(key)
+                    .fetch_one(&pool)
+                    .await
+                    .unwrap()
+            }
+        };
+        let media: serde_json::Value = serde_json::from_str(&get("mediaManagement").await).unwrap();
+        assert_eq!(media["skipFreeSpaceCheckWhenGrabbing"], true);
+        assert!(!get("naming").await.contains("WhenGrabbing"));
+    }
 }

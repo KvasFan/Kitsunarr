@@ -164,6 +164,47 @@ pub async fn last_grabs(db: &Database, series_id: i64) -> DbResult<Vec<decision:
         .collect())
 }
 
+/// The series' grabs and imports, newest first, for `AlreadyImportedSpecification`.
+pub async fn episode_history(
+    db: &Database,
+    series_id: i64,
+) -> DbResult<Vec<decision::EpisodeHistory>> {
+    Ok(kitsunarr_db::history::grabs_and_imports(db, series_id)
+        .await?
+        .into_iter()
+        .map(|h| decision::EpisodeHistory {
+            episode_id: h.episode_id,
+            event: if h.event_type == "grabbed" {
+                decision::EpisodeHistoryEvent::Grabbed
+            } else {
+                decision::EpisodeHistoryEvent::DownloadFolderImported
+            },
+            download_id: h.download_id,
+            source_title: h.source_title,
+            quality: QualityModel {
+                quality_id: h.quality_id.unwrap_or(0) as i32,
+                revision: h
+                    .revision
+                    .as_deref()
+                    .and_then(|r| serde_json::from_str(r).ok())
+                    .unwrap_or_default(),
+            },
+        })
+        .collect())
+}
+
+/// Ids of the series' files that are missing from disk (`DeletedEpisodeFileSpecification`'s
+/// `FileExists(Path.Combine(series.Path, file.RelativePath))`).
+pub async fn missing_files(db: &Database, series_id: i64, series_path: &str) -> DbResult<Vec<i64>> {
+    let base = std::path::Path::new(series_path);
+    Ok(series::file_records(db, series_id)
+        .await?
+        .into_iter()
+        .filter(|f| !base.join(&f.relative_path).is_file())
+        .map(|f| f.id)
+        .collect())
+}
+
 pub fn ids_of(external: &[(String, String)]) -> (i64, i64, Option<String>) {
     let get = |kind: &str| {
         external

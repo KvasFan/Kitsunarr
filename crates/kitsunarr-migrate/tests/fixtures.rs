@@ -1507,3 +1507,134 @@ async fn a_tanukarr_films_watched_feature_is_imported_without_overriding_a_local
     );
     assert_eq!(tree(&media), before);
 }
+
+/// Sonarr's release profile air-date options and excluded tags, and the media management
+/// settings Kitsunarr now has (`Config` keys, as the database keeps them: lower-case keys,
+/// enum names), come over from a Tanukarr backup.
+#[tokio::test]
+async fn tanukarr_release_profile_options_and_media_management_are_imported() {
+    let tmp = tempfile::tempdir().unwrap();
+    let media = tmp.path().join("media");
+    make_media(
+        &media,
+        &[
+            "/tv/Breaking Bad",
+            "/tv/Chernobyl",
+            "/anime/Cowboy Bebop",
+            "/tv/Cowboy Bebop",
+            "/movies/Cowboy Bebop - The Movie - Knockin' on Heaven's Door",
+        ],
+    );
+    let file = std::fs::File::open(fixture("tanukarr-0.1.5/backup.zip")).unwrap();
+    let mut archive = zip::ZipArchive::new(file).unwrap();
+    let db_path = tmp.path().join("sonarr.db");
+    std::io::copy(
+        &mut archive.by_name("sonarr.db").unwrap(),
+        &mut std::fs::File::create(&db_path).unwrap(),
+    )
+    .unwrap();
+    let source = sqlx::SqlitePool::connect(&format!("sqlite://{}", db_path.display()))
+        .await
+        .unwrap();
+    // Tag 3 is "kids".
+    sqlx::query(
+        "UPDATE ReleaseProfiles SET AirDateRestriction = 1, AirDateGracePeriod = -6, \
+         AllowSeasonPackWithoutAllEpisodesAired = 1, ExcludedTags = '[3]' WHERE Id = 1",
+    )
+    .execute(&source)
+    .await
+    .unwrap();
+    for (key, value) in [
+        ("rescanafterrefresh", "AfterManual"),
+        ("episodetitlerequired", "BulkSeasonReleases"),
+        ("seasonpackupgrade", "Threshold"),
+        ("seasonpackupgradethreshold", "75.5"),
+        ("chowngroup", "media"),
+        ("userrejectedextensions", "exe,bat"),
+        ("usescriptimport", "True"),
+        ("scriptimportpath", "/media/scripts/import.sh"),
+        ("skipfreespacecheckwhengrabbing", "True"),
+        ("filedate", "PreserveOriginal"),
+        ("createemptyseriesfolders", "True"),
+    ] {
+        sqlx::query("INSERT INTO Config (Key, Value) VALUES (?, ?)")
+            .bind(key)
+            .bind(value)
+            .execute(&source)
+            .await
+            .unwrap();
+    }
+    source.close().await;
+
+    let src = load_from_backup(&db_path, tmp.path()).await.unwrap();
+    for key in ["rescanafterrefresh", "seasonpackupgrade", "chowngroup"] {
+        assert!(
+            !src.snapshot.unmapped_settings.contains_key(key),
+            "{key} is mapped"
+        );
+    }
+    let db = fresh_db(tmp.path()).await;
+    run(
+        &db,
+        &src,
+        &options(&media),
+        Mode::Apply {
+            backup_dir: tmp.path().join("b"),
+        },
+        &noop,
+    )
+    .await
+    .unwrap();
+
+    let profiles = kitsunarr_db::rules::list_release_profiles(db.pool())
+        .await
+        .unwrap();
+    let p = profiles
+        .iter()
+        .find(|p| p.name.as_deref() == Some("No CAM"))
+        .unwrap();
+    let kids: i64 = sqlx::query_scalar("SELECT id FROM tags WHERE label = 'kids'")
+        .fetch_one(db.pool())
+        .await
+        .unwrap();
+    assert_eq!(
+        (
+            p.air_date_restriction,
+            p.air_date_grace_period,
+            p.allow_season_pack_without_all_episodes_aired,
+            p.excluded_tags.clone(),
+            p.indexer_ids.clone()
+        ),
+        (true, -6, true, vec![kids], vec![])
+    );
+
+    use kitsunarr_domain::api::settings::{
+        EpisodeTitleRequired, FileDate, MediaManagementSettings, RescanAfterRefresh,
+        SeasonPackUpgrade,
+    };
+    let m: MediaManagementSettings = kitsunarr_db::settings::get_or_default(
+        db.pool(),
+        kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+    )
+    .await
+    .unwrap();
+    assert_eq!(m.rescan_after_refresh, RescanAfterRefresh::AfterManual);
+    assert_eq!(
+        m.episode_title_required,
+        EpisodeTitleRequired::BulkSeasonReleases
+    );
+    assert_eq!(m.season_pack_upgrade, SeasonPackUpgrade::Threshold);
+    assert_eq!(m.season_pack_upgrade_threshold.0, 75.5);
+    assert_eq!(m.chown_group, "media");
+    assert_eq!(m.user_rejected_extensions, "exe,bat");
+    assert!(m.use_script_import);
+    assert_eq!(
+        m.script_import_path,
+        media.join("scripts/import.sh").display().to_string()
+    );
+    assert!(m.skip_free_space_check_when_grabbing);
+    assert!(!m.skip_free_space_check);
+    assert_eq!(m.file_date, FileDate::PreserveOriginal);
+    assert!(m.create_empty_series_folders);
+    assert!(m.delete_empty_folders);
+}

@@ -201,8 +201,10 @@ Regular expressions in custom formats and release profiles run on the .NET-seman
 Known differences, all reported rather than hidden:
 
 - **The download queue** is checked against the downloads Kitsunarr grabbed that a download client still holds and that are not imported. The list is kept in memory: it is filled by grabs and by the minute-by-minute download check, so after a restart it is complete only after the first check.
-- **Checks that need missing data are not evaluated yet:** the blocklist, pending releases, free space, scene-mapping origins (`SceneMappingSpecification`: only Sonarr's scene-mapping feed sets them, and Tanukarr blocks it; TheXEM's names have none) and v5-only release-profile options. Delay-profile delays do not apply to interactive searches upstream either.
-- **Settings:** minimum age, retention and maximum size (Settings › Indexers › Options) and "propers and repacks" (Settings › Media management) are Kitsunarr settings, migrated from the source's database `Config` keys or its `/config/indexer` and `/config/mediamanagement` API. Season-pack upgrades use Sonarr's default (every episode must be missing or upgradable), as that setting does not exist in Sonarr 4.
+- **Checks that need missing data are not evaluated:** scene-mapping origins (`SceneMappingSpecification`: only Sonarr's scene-mapping feed sets them, and Tanukarr blocks it; TheXEM's names have none). Delay-profile delays do not apply to interactive searches upstream either.
+- **Specification order:** the specifications run in alphabetical order of their names, which is how Sonarr's container lists them within a priority; every rejection is kept, so the order only changes the order of the messages.
+- **Library data the specifications read:** release profiles (terms, excluded tags, air-date restriction and grace period, "allow season packs before all episodes aired"), the series' grabs and download-folder imports newest first (`AlreadyImportedSpecification`, only with completed download handling on; torrent hashes are compared ignoring case), the files missing from disk (`DeletedEpisodeFileSpecification`, read only when "unmonitor deleted episodes" is on, RSS only) and each indexer's "season search maximum single episode age" (`SeasonPackOnlySpecification`).
+- **Settings:** minimum age, retention and maximum size (Settings › Indexers › Options), "propers and repacks", the season pack upgrade rule (all, threshold, any) and the separate free-space checks for grabbing and importing (Settings › Media management) are Kitsunarr settings, migrated from the source's database `Config` keys or its `/config/indexer` and `/config/mediamanagement` API.
 - **Releases of other library series are rejected as "Wrong series" without evaluating that series' episodes and profile.** They are listed after the searched series' releases, in arrival order; upstream orders series groups by first appearance.
 - **A custom format specification that cannot be evaluated never matches, and a warning is shown with the search results.** This covers an unknown implementation, such as Tanukarr's `SeasonPackSpecification`, and an invalid pattern. Sonarr would refuse to load such a format.
 
@@ -399,6 +401,11 @@ The rename, episode-file-deleted, manual-interaction and application-update even
   As upstream, a series whose root folder is missing or empty is skipped, so a disconnected drive does not empty the library. Records only are removed, never files, and a later scan adds the files back once they are reachable again. The exclusion rules for extras and system folders are the import's (`FilterPaths`).
 - **Renaming** previews every file whose path differs from what the naming settings give, with the same naming engine imports use (custom formats evaluated on the file), then renames the chosen files. Destinations stay inside the series folder and are never overwritten. Each rename writes "episodeFileRenamed" history (source and new path), and an emptied season folder is removed.
 - **Deleting** a file sends it to the recycle bin (or deletes it when none is set), with "episodeFileDeleted" history (reason `Manual`). Removing a series can also delete its folder, in the same way. The folder is deleted only when it lies inside its root folder.
+- **Media management's folder options:**
+  - "Delete empty folders" removes the empty folders inside a series folder, then the series folder itself when empty: after a scan of a folder that exists (`RemoveEmptySeriesFolder`), after a file is deleted by hand and after an upgrade replaced a file (never for files missing from disk, never the root folder);
+  - "Create empty series folders" creates a missing series folder during a scan and when a series is added, unless "delete empty folders" is on.
+- **Rescan after refresh** (`RescanAfterRefresh`): a series refresh scans the folder afterwards always, only when a person asked for the refresh (the series page, the API, Sonarr's `RefreshSeries` command), or never. Scheduled refreshes and refreshes after a language change are automatic. Films are refreshed without a rescan; the `RescanFolders` task scans them.
+- **Permissions:** with "set permissions", folders get the mode, files the mode without execute bits, and both the "chown group" (a name from `/etc/group`, or a number) when one is set.
 
 ## 26. Multi-season packs: Tanukarr's rules
 
@@ -438,6 +445,12 @@ Collection titles and the automatic complete-series attempt that Tanukarr makes 
 
   Unreadable file lists and magnet-only releases pass, with a warning. A rejected grab moves an automatic search on to the next release; nothing is stored, as upstream.
 - **Pack trimming** (Media management, default off): a file whose episodes are all unmonitored is not imported from a download. Tanukarr still expects those episodes, so a trimmed pack stays "import blocked" forever. Kitsunarr expects only the monitored grabbed episodes, so the download completes.
+
+### Import options from Sonarr's media management
+
+- **Rejected extensions** (`UserRejectedExtensions`): a download that is a single file with one of these extensions is not imported ("Caution: Found file with user defined rejected extension"). Archive and video extensions cannot be rejected. Sonarr's indexer "fail downloads" option, which also checks torrent file lists against this list, is not implemented.
+- **Episode title required:** always, only for bulk season releases (at least four episodes of the season aired the same day; Sonarr looks the season up by the episode number, Kitsunarr by the season number) or never.
+- **Import using a script** (`ImportScriptService`): the script gets the source and destination paths as arguments and Sonarr's `Sonarr_*` environment variables, and answers on its output (`[MoveStatus] MoveComplete|RenameRequested|DeferMove`, `[MediaFile] path`, `[ExtraFile] path`, `[PreventExtraImport]`). A non-zero exit code fails the import. Differences: replaced files are removed after the script runs (Kitsunarr removes them after the new file is in place), so `Sonarr_DeletedRecycleBinPaths` is empty; "rename requested" gives the script's file the planned name with the file's own extension (Sonarr rebuilds the whole name); the script's `[ExtraFile]` list is not used (extras come from the download folder, unless `[PreventExtraImport]`); `Sonarr_ApplicationUrl` is empty.
 
 ## 28. Jellyfin watched sync (Tanukarr)
 

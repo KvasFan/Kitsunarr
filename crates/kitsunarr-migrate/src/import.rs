@@ -60,6 +60,16 @@ pub const MAPPED_MEDIA_MANAGEMENT_KEYS: &[&str] = &[
     "autounmonitorpreviouslydownloadedepisodes",
     "extrafileextensions",
     "downloadpropersandrepacks",
+    "filedate",
+    "skipfreespacecheckwhengrabbing",
+    "rescanafterrefresh",
+    "chowngroup",
+    "episodetitlerequired",
+    "usescriptimport",
+    "scriptimportpath",
+    "userrejectedextensions",
+    "seasonpackupgrade",
+    "seasonpackupgradethreshold",
     // Indexer options (database `Config` keys; the API serves them separately).
     "minimumage",
     "retention",
@@ -1169,6 +1179,11 @@ impl<'a> Importer<'a> {
                         ignored: r.ignored.clone(),
                         indexer_ids,
                         tags: self.map_tags(&r.tags),
+                        excluded_tags: self.map_tags(&r.excluded_tags),
+                        air_date_restriction: r.air_date_restriction,
+                        air_date_grace_period: r.air_date_grace_period,
+                        allow_season_pack_without_all_episodes_aired: r
+                            .allow_season_pack_without_all_episodes_aired,
                     },
                 )
                 .await?;
@@ -1343,6 +1358,46 @@ impl<'a> Importer<'a> {
             next.extra_file_extensions = mm
                 .str("extrafileextensions")
                 .unwrap_or(next.extra_file_extensions);
+            next.skip_free_space_check_when_grabbing = mm.bool_or(
+                "skipfreespacecheckwhengrabbing",
+                next.skip_free_space_check_when_grabbing,
+            );
+            next.chown_group = mm.str("chowngroup").unwrap_or(next.chown_group);
+            next.use_script_import = mm.bool_or("usescriptimport", next.use_script_import);
+            next.script_import_path = mm
+                .str("scriptimportpath")
+                .map(|p| self.mapper.map(&p))
+                .unwrap_or(next.script_import_path);
+            next.user_rejected_extensions = mm
+                .str("userrejectedextensions")
+                .unwrap_or(next.user_rejected_extensions);
+            {
+                use kitsunarr_domain::api::settings::{
+                    EpisodeTitleRequired, RescanAfterRefresh, SeasonPackUpgrade, sonarr_enum,
+                };
+                let named = |key: &str| mm.str(key);
+                if let Some(v) = named("rescanafterrefresh")
+                    .and_then(|v| sonarr_enum(&v, RescanAfterRefresh::SONARR))
+                {
+                    next.rescan_after_refresh = v;
+                }
+                if let Some(v) = named("episodetitlerequired")
+                    .and_then(|v| sonarr_enum(&v, EpisodeTitleRequired::SONARR))
+                {
+                    next.episode_title_required = v;
+                }
+                if let Some(v) = named("seasonpackupgrade")
+                    .and_then(|v| sonarr_enum(&v, SeasonPackUpgrade::SONARR))
+                {
+                    next.season_pack_upgrade = v;
+                }
+            }
+            if let Some(t) = mm
+                .f64("seasonpackupgradethreshold")
+                .filter(|t| (0.0..=100.0).contains(t))
+            {
+                next.season_pack_upgrade_threshold = kitsunarr_domain::api::settings::OrderedF64(t);
+            }
             if let Some(v) = mm.str("downloadpropersandrepacks") {
                 match ProperDownloadType::from_sonarr(&v) {
                     Some(p) => next.download_propers_and_repacks = p,

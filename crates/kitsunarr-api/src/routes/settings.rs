@@ -659,6 +659,27 @@ pub async fn put_media_management(
             "The recycle bin must be an absolute path.",
         ));
     }
+    // Sonarr's `MediaManagementConfigController` rules for the import options.
+    if body.use_script_import && !std::path::Path::new(body.script_import_path.trim()).is_absolute()
+    {
+        return Err(ApiError::field(
+            "scriptImportPath",
+            "The import script must be an absolute path.",
+        ));
+    }
+    if let Some(problem) =
+        kitsunarr_library::import::user_rejected_extensions_problems(&body.user_rejected_extensions)
+            .into_iter()
+            .next()
+    {
+        return Err(ApiError::field("userRejectedExtensions", problem));
+    }
+    if !(0.0..=100.0).contains(&body.season_pack_upgrade_threshold.0) {
+        return Err(ApiError::field(
+            "seasonPackUpgradeThreshold",
+            "'Season Pack Upgrade Threshold' must be between 0 and 100.",
+        ));
+    }
     kv::set(state.db.pool(), kv::KEY_MEDIA_MANAGEMENT, &body).await?;
     settings_changed(&state, "mediaManagement");
     Ok(Json(body))

@@ -176,6 +176,16 @@ pub(crate) async fn process(
     process_with(state, releases, extras, false).await
 }
 
+/// [`process`] for releases pushed by a tool (`release/push`): Sonarr's
+/// `PendingSpecification` holds one back while a release for its episodes is pending.
+pub(crate) async fn process_pushed(
+    state: &AppState,
+    releases: &[IndexerRelease],
+    extras: &search::Extras,
+) -> Result<Processed, String> {
+    process_source(state, releases, extras, false, true).await
+}
+
 /// [`process`], optionally as a user's request (`user_invoked`: delay profiles do not hold the
 /// releases back, as Sonarr's "Send now" for a pending release).
 pub(crate) async fn process_with(
@@ -183,6 +193,16 @@ pub(crate) async fn process_with(
     releases: &[IndexerRelease],
     extras: &search::Extras,
     user_invoked: bool,
+) -> Result<Processed, String> {
+    process_source(state, releases, extras, user_invoked, false).await
+}
+
+async fn process_source(
+    state: &AppState,
+    releases: &[IndexerRelease],
+    extras: &search::Extras,
+    user_invoked: bool,
+    pushed: bool,
 ) -> Result<Processed, String> {
     let library = kitsunarr_library::decision_input::library_titles(&state.db)
         .await
@@ -254,6 +274,9 @@ pub(crate) async fn process_with(
 
     let mut criteria = SearchCriteria::rss();
     criteria.user_invoked = user_invoked;
+    if pushed {
+        criteria.kind = decision::SearchKind::Push;
+    }
     let mut approved = 0usize;
     let mut grabbed = Vec::new();
     let mut grab_failures = Vec::new();
@@ -280,9 +303,7 @@ pub(crate) async fn process_with(
                 series_id: Some(series_id),
                 approved: d.approved(),
                 temporarily_rejected: !d.rejections.is_empty()
-                    && d.rejections
-                        .iter()
-                        .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay),
+                    && d.rejections.iter().all(|x| x.reason.is_temporary()),
                 rejections: d.rejections.iter().map(|x| x.message.clone()).collect(),
                 grabbed: false,
             };
@@ -292,9 +313,7 @@ pub(crate) async fn process_with(
             let r = &releases[members[d.release]];
             let delayed = !d.rejections.is_empty()
                 && !d.episodes.is_empty()
-                && d.rejections
-                    .iter()
-                    .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay);
+                && d.rejections.iter().all(|x| x.reason.is_temporary());
             let db = state.db.pool();
             let result = if delayed {
                 let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
@@ -401,10 +420,7 @@ pub(crate) async fn process_with(
         );
         approved += decisions.iter().filter(|d| d.approved()).count();
         let delayed = |d: &decision::Decision| {
-            !d.rejections.is_empty()
-                && d.rejections
-                    .iter()
-                    .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay)
+            !d.rejections.is_empty() && d.rejections.iter().all(|x| x.reason.is_temporary())
         };
         for d in &decisions {
             outcomes[members[d.release]] = ReleaseOutcome {
@@ -483,9 +499,7 @@ pub(crate) async fn keep_pending(state: &AppState, series_id: i64, run: &SearchR
         let r = &run.releases[d.release];
         let delayed = !d.rejections.is_empty()
             && !d.episodes.is_empty()
-            && d.rejections
-                .iter()
-                .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay);
+            && d.rejections.iter().all(|x| x.reason.is_temporary());
         let result = if delayed {
             let episodes: Vec<i64> = d.episodes.iter().map(|e| e.id).collect();
             kitsunarr_db::pending::upsert(

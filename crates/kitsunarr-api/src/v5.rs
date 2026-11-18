@@ -1899,9 +1899,22 @@ async fn parse(State(state): State<AppState>, RawQuery(raw): RawQuery) -> ApiRes
 fn release_profile_v5(r: &kitsunarr_domain::api::settings::ReleaseProfile) -> Value {
     json!({
         "id": r.id, "name": r.name, "enabled": r.enabled, "required": r.required,
-        "ignored": r.ignored, "indexerIds": r.indexer_ids, "tags": r.tags,
-        "airDateGracePeriod": null, "airDateGracePeriodEnabled": false,
+        "ignored": r.ignored, "airDateRestriction": r.air_date_restriction,
+        "airDateGracePeriod": r.air_date_grace_period,
+        "allowSeasonPackWithoutAllEpisodesAired": r.allow_season_pack_without_all_episodes_aired,
+        "indexerIds": r.indexer_ids, "tags": r.tags, "excludedTags": r.excluded_tags,
     })
+}
+
+/// Sonarr v5's `RuleFor(d => d.AirDateGracePeriod).NotNull()`.
+fn check_grace_period_v5(v: &Value) -> ApiResult<()> {
+    if v["airDateGracePeriod"].is_null() {
+        return Err(ApiError::field(
+            "airDateGracePeriod",
+            "'Air Date Grace Period' must not be empty.",
+        ));
+    }
+    Ok(())
 }
 
 fn release_profile_from_v5(v: &Value, id: i64) -> kitsunarr_domain::api::settings::ReleaseProfile {
@@ -1939,6 +1952,7 @@ async fn create_release_profile(
     State(state): State<AppState>,
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
+    check_grace_period_v5(&v)?;
     let (_, Json(saved)) =
         crate::routes::rules::create_release(State(state), Json(release_profile_from_v5(&v, 0)))
             .await?;
@@ -1951,6 +1965,7 @@ async fn update_release_profile(
     Json(v): Json<Value>,
 ) -> ApiResult<(StatusCode, Json<Value>)> {
     v3_settings::find_release_profile(&state, id).await?;
+    check_grace_period_v5(&v)?;
     let Json(saved) = crate::routes::rules::update_release(
         State(state),
         Path(id),

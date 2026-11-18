@@ -324,6 +324,11 @@ pub struct SrcReleaseProfile {
     pub ignored: Vec<String>,
     pub indexer_ids: Vec<i64>,
     pub tags: Vec<i64>,
+    pub excluded_tags: Vec<i64>,
+    pub air_date_restriction: bool,
+    /// Hours.
+    pub air_date_grace_period: i32,
+    pub allow_season_pack_without_all_episodes_aired: bool,
     pub unmapped: Map<String, Value>,
 }
 

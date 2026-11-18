@@ -277,19 +277,21 @@ async fn refresh_metadata(
         )
         .await;
         let result = if kind == "series" {
-            kitsunarr_library::refresh_series(&ctx.db, metadata, id)
-                .await
-                .map(|r| {
-                    if let Some(state) = api
-                        && !r.recently_aired_episode_ids.is_empty()
-                    {
-                        let (state, ids) = (state.clone(), r.recently_aired_episode_ids);
-                        tokio::spawn(async move {
-                            kitsunarr_api::routes::wanted::search_recently_aired(&state, id, &ids)
-                                .await;
-                        });
-                    }
-                })
+            let refreshed = kitsunarr_library::refresh_series(&ctx.db, metadata, id).await;
+            if refreshed.is_ok() {
+                kitsunarr_library::rescan_after_refresh(&ctx.db, id, false).await;
+            }
+            refreshed.map(|r| {
+                if let Some(state) = api
+                    && !r.recently_aired_episode_ids.is_empty()
+                {
+                    let (state, ids) = (state.clone(), r.recently_aired_episode_ids);
+                    tokio::spawn(async move {
+                        kitsunarr_api::routes::wanted::search_recently_aired(&state, id, &ids)
+                            .await;
+                    });
+                }
+            })
         } else {
             kitsunarr_library::refresh_movie(&ctx.db, metadata, id).await
         };

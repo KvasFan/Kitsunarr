@@ -2230,7 +2230,7 @@ pub(crate) async fn push_release(
             },
         },
     };
-    let processed = crate::rss::process(&state, std::slice::from_ref(&release), &extras)
+    let processed = crate::rss::process_pushed(&state, std::slice::from_ref(&release), &extras)
         .await
         .map_err(ApiError::internal)?;
     let o = processed.outcomes.first().cloned().unwrap_or_default();

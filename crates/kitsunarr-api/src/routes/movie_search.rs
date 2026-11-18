@@ -50,10 +50,8 @@ async fn keep_pending(state: &AppState, movie_id: i64, run: &SearchRun, grabbed:
     }
     for d in &run.decisions {
         let r = &run.releases[d.release];
-        let delayed = !d.rejections.is_empty()
-            && d.rejections
-                .iter()
-                .all(|x| x.reason == decision::RejectionReason::MinimumAgeDelay);
+        let delayed =
+            !d.rejections.is_empty() && d.rejections.iter().all(|x| x.reason.is_temporary());
         let result = if delayed {
             kitsunarr_db::pending::upsert_movie(
                 db,

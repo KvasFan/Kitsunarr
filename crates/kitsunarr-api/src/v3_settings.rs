@@ -725,8 +725,12 @@ pub(crate) fn release_profile_json(r: &ReleaseProfile) -> Value {
         "enabled": r.enabled,
         "required": r.required,
         "ignored": r.ignored,
+        "airDateRestriction": r.air_date_restriction,
+        "airDateGracePeriod": r.air_date_grace_period,
+        "allowSeasonPackWithoutAllEpisodesAired": r.allow_season_pack_without_all_episodes_aired,
         "indexerId": r.indexer_ids.first().copied().unwrap_or(0),
         "tags": r.tags,
+        "excludedTags": r.excluded_tags,
     })
 }
 
@@ -766,6 +770,18 @@ pub(crate) fn release_profile_from(v: &Value, id: i64) -> ReleaseProfile {
             .as_array()
             .map(|a| a.iter().filter_map(Value::as_i64).collect())
             .unwrap_or_default(),
+        excluded_tags: v["excludedTags"]
+            .as_array()
+            .map(|a| a.iter().filter_map(Value::as_i64).collect())
+            .unwrap_or_default(),
+        air_date_restriction: v["airDateRestriction"].as_bool().unwrap_or(false),
+        air_date_grace_period: v["airDateGracePeriod"]
+            .as_i64()
+            .and_then(|g| i32::try_from(g).ok())
+            .unwrap_or(0),
+        allow_season_pack_without_all_episodes_aired: v["allowSeasonPackWithoutAllEpisodesAired"]
+            .as_bool()
+            .unwrap_or(false),
     }
 }
 

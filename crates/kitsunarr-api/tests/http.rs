@@ -55,6 +55,7 @@ async fn start_with(metadata: Metadata) -> Server {
         .await
         .unwrap();
     media.skip_free_space_check = true;
+    media.skip_free_space_check_when_grabbing = true;
     kitsunarr_db::settings::set(
         db.pool(),
         kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
@@ -5793,11 +5794,64 @@ async fn delay_release_profiles_and_remote_path_mappings_are_managed() {
             ignored: vec!["CAM".into(), "/\\bTS\\b/".into()],
             indexer_ids: vec![],
             tags: vec![],
+            ..Default::default()
         })
         .await
         .unwrap();
     assert_eq!(client.release_profiles().await.unwrap()[0].ignored.len(), 2);
     client.delete_release_profile(release.id).await.unwrap();
+
+    // Sonarr's air-date options stand on their own; a tag cannot be both required and
+    // excluded.
+    let tag = client.create_tag("late").await.unwrap();
+    let mut air = ReleaseProfile {
+        name: Some("After airing".into()),
+        enabled: true,
+        air_date_restriction: true,
+        air_date_grace_period: -2,
+        allow_season_pack_without_all_episodes_aired: true,
+        excluded_tags: vec![tag.id],
+        tags: vec![tag.id],
+        ..Default::default()
+    };
+    match client.save_release_profile(&air).await.unwrap_err() {
+        ClientError::Api { status, body } => {
+            assert_eq!(status, 422);
+            assert_eq!(
+                body.fields[0].message,
+                "'late' cannot be in both 'Tags' and 'Excluded Tags'"
+            );
+        }
+        other => panic!("{other:?}"),
+    }
+    air.tags.clear();
+    let saved = client.save_release_profile(&air).await.unwrap();
+    let listed = client.release_profiles().await.unwrap();
+    assert_eq!(
+        (
+            listed[0].air_date_restriction,
+            listed[0].air_date_grace_period,
+            listed[0].allow_season_pack_without_all_episodes_aired,
+            listed[0].excluded_tags.clone()
+        ),
+        (true, -2, true, vec![tag.id])
+    );
+    let empty = ReleaseProfile {
+        enabled: true,
+        ..Default::default()
+    };
+    assert_eq!(
+        status(client.save_release_profile(&empty).await.unwrap_err()),
+        422
+    );
+    // Deleting the tag takes it out of the excluded tags.
+    client.delete_tag(tag.id).await.unwrap();
+    assert!(
+        client.release_profiles().await.unwrap()[0]
+            .excluded_tags
+            .is_empty()
+    );
+    client.delete_release_profile(saved.id).await.unwrap();
 
     let mapping = client
         .save_remote_path_mapping(&RemotePathMapping {
@@ -6870,7 +6924,37 @@ async fn sonarr_v3_settings_serve_recyclarr_sync() {
     .await;
     assert_eq!(status, 201, "{rp}");
     assert_eq!(rp["ignored"], json!(["x265", "HEVC"]));
+    assert_eq!(
+        (
+            &rp["airDateRestriction"],
+            &rp["airDateGracePeriod"],
+            &rp["excludedTags"]
+        ),
+        (&json!(false), &json!(0), &json!([]))
+    );
     let rid = rp["id"].as_i64().unwrap();
+    // Sonarr 4's air-date options and excluded tags.
+    let (status, rp) = json_of(
+        send(
+            M::PUT,
+            &format!("/releaseprofile/{rid}"),
+            Some(json!({"name": "No x265", "enabled": true, "required": [], "ignored": "x265", "indexerId": 0, "tags": [],
+                "airDateRestriction": true, "airDateGracePeriod": -3, "allowSeasonPackWithoutAllEpisodesAired": true, "excludedTags": [7]})),
+        )
+        .await
+        .unwrap(),
+    )
+    .await;
+    assert_eq!(status, 202, "{rp}");
+    assert_eq!(
+        (
+            &rp["airDateRestriction"],
+            &rp["airDateGracePeriod"],
+            &rp["allowSeasonPackWithoutAllEpisodesAired"],
+            &rp["excludedTags"]
+        ),
+        (&json!(true), &json!(-3), &json!(true), &json!([7]))
+    );
     assert_eq!(
         send(M::DELETE, &format!("/releaseprofile/{rid}"), None)
             .await
@@ -9872,6 +9956,78 @@ async fn sonarr_v3_config_rules_lists_and_system() {
     assert_eq!(saved["recycleBin"], "/srv/recycle");
     assert_eq!(saved["minimumFreeSpaceWhenImporting"], 250);
     assert_eq!(saved["fileDate"], "utcAirDate");
+    assert_eq!(saved["rescanAfterRefresh"], "never");
+    // Every media management key Sonarr has is Kitsunarr's own setting, both ways; enums by
+    // name or number; Tanukarr's "preserve original" file date.
+    let (status, saved) = call(
+        M::PUT,
+        "/config/mediamanagement",
+        Some(json!({
+            "fileDate": "preserveOriginal", "rescanAfterRefresh": 1, "episodeTitleRequired": "bulkSeasonReleases",
+            "seasonPackUpgrade": "threshold", "seasonPackUpgradeThreshold": 87.5, "chownGroup": "media",
+            "useScriptImport": true, "scriptImportPath": "/scripts/import.sh", "userRejectedExtensions": "exe,.bat",
+            "skipFreeSpaceCheckWhenGrabbing": true, "skipFreeSpaceCheckWhenImporting": false,
+            "createEmptySeriesFolders": true, "deleteEmptyFolders": false
+        })),
+    )
+    .await;
+    assert_eq!(status, 202, "{saved}");
+    for (key, value) in [
+        ("fileDate", json!("preserveOriginal")),
+        ("rescanAfterRefresh", json!("afterManual")),
+        ("episodeTitleRequired", json!("bulkSeasonReleases")),
+        ("seasonPackUpgrade", json!("threshold")),
+        ("seasonPackUpgradeThreshold", json!(87.5)),
+        ("chownGroup", json!("media")),
+        ("useScriptImport", json!(true)),
+        ("scriptImportPath", json!("/scripts/import.sh")),
+        ("userRejectedExtensions", json!("exe,.bat")),
+        ("skipFreeSpaceCheckWhenGrabbing", json!(true)),
+        ("skipFreeSpaceCheckWhenImporting", json!(false)),
+        ("createEmptySeriesFolders", json!(true)),
+    ] {
+        assert_eq!(saved[key], value, "{key}");
+    }
+    let (_, again) = call(M::GET, "/config/mediamanagement", None).await;
+    assert_eq!(again["fileDate"], "preserveOriginal");
+    let native = Client::new(&server.base)
+        .with_api_key(&server.api_key)
+        .media_management()
+        .await
+        .unwrap();
+    assert_eq!(
+        (
+            native.rescan_after_refresh,
+            native.season_pack_upgrade,
+            native.season_pack_upgrade_threshold.0,
+            native.skip_free_space_check,
+            native.skip_free_space_check_when_grabbing,
+        ),
+        (
+            kitsunarr_domain::api::settings::RescanAfterRefresh::AfterManual,
+            kitsunarr_domain::api::settings::SeasonPackUpgrade::Threshold,
+            87.5,
+            false,
+            true
+        )
+    );
+    for bad in [
+        json!({"seasonPackUpgradeThreshold": 101}),
+        json!({"userRejectedExtensions": "rar"}),
+        json!({"userRejectedExtensions": "mkv"}),
+        json!({"scriptImportPath": "relative.sh"}),
+        json!({"rescanAfterRefresh": "sometimes"}),
+    ] {
+        let (status, body) = call(M::PUT, "/config/mediamanagement", Some(bad.clone())).await;
+        assert_eq!(status, 422, "{bad} {body}");
+    }
+    let (status, _) = call(
+        M::PUT,
+        "/config/mediamanagement",
+        Some(json!({"useScriptImport": false, "chownGroup": "", "userRejectedExtensions": ""})),
+    )
+    .await;
+    assert_eq!(status, 202);
     let (status, _) = call(
         M::PUT,
         "/config/mediamanagement",
@@ -12051,7 +12207,7 @@ async fn sonarr_v5_settings_providers_and_library_tools() {
         204
     );
 
-    // Release profiles take several indexers.
+    // Release profiles take several indexers, and need a grace period (`NotNull`).
     let (status, rp) = sonarr(
         &server,
         M::POST,
@@ -12059,18 +12215,38 @@ async fn sonarr_v5_settings_providers_and_library_tools() {
         Some(json!({"name": "Required", "required": ["x265"], "ignored": [], "indexerIds": [], "tags": []})),
     )
     .await;
+    assert_eq!(status, 422, "{rp}");
+    assert_eq!(rp["fields"][0]["field"], "airDateGracePeriod");
+    let (status, rp) = sonarr(
+        &server,
+        M::POST,
+        "/api/v5/releaseprofile",
+        Some(json!({"name": "Required", "required": ["x265"], "ignored": [], "indexerIds": [], "tags": [],
+            "airDateRestriction": true, "airDateGracePeriod": 6, "excludedTags": []})),
+    )
+    .await;
     assert_eq!(status, 201, "{rp}");
     assert_eq!(rp["indexerIds"], json!([]));
     assert!(rp.get("indexerId").is_none());
+    assert_eq!(
+        (
+            &rp["airDateRestriction"],
+            &rp["airDateGracePeriod"],
+            &rp["allowSeasonPackWithoutAllEpisodesAired"],
+            &rp["excludedTags"]
+        ),
+        (&json!(true), &json!(6), &json!(false), &json!([]))
+    );
     let rid = rp["id"].as_i64().unwrap();
     let (status, rp) = sonarr(
         &server,
         M::PUT,
         &format!("/api/v5/releaseprofile/{rid}"),
-        Some(json!({"name": "Required", "required": ["x265", "hevc"], "ignored": [], "indexerIds": []})),
+        Some(json!({"name": "Required", "required": ["x265", "hevc"], "ignored": [], "indexerIds": [], "airDateGracePeriod": 0})),
     )
     .await;
     assert_eq!((status, rp["required"].as_array().unwrap().len()), (202, 2));
+    assert_eq!(rp["airDateRestriction"], false);
     assert_eq!(
         sonarr(
             &server,
@@ -12720,4 +12896,209 @@ async fn backups_download_restore_delete_and_lifecycle() {
 
     client.shutdown().await.unwrap();
     client.restart().await.unwrap();
+}
+
+/// The decision rules fed from the library: release profile air dates and excluded tags,
+/// `AlreadyImportedSpecification` from grab and import history, and
+/// `SeasonPackOnlySpecification` from the indexer's "season search maximum single episode
+/// age".
+#[tokio::test]
+async fn release_profiles_history_and_indexer_age_reach_the_decisions() {
+    use kitsunarr_domain::api::search::ReleaseQuery;
+    use kitsunarr_domain::api::settings::ReleaseProfile;
+    let tvmaze = tvmaze_mock().await;
+    let server = start_with(Metadata::with(
+        reqwest::Client::new(),
+        &kitsunarr_metadata::Endpoints {
+            tvmaze: tvmaze.clone(),
+            anilist: "http://127.0.0.1:9/graphql".to_string(),
+            ..kitsunarr_metadata::Endpoints::offline()
+        },
+    ))
+    .await;
+    let client = signed_in(&server).await;
+    let (indexer_url, _, _) = usenet_mocks().await;
+    let _: serde_json::Value = client
+        .post(
+            "/providers/indexers",
+            &serde_json::json!({
+                "name": "Mock Newznab", "implementation": "Newznab",
+                "options": {"enableInteractiveSearch": true, "enableAutomaticSearch": true},
+                "settings": {"baseUrl": indexer_url, "apiPath": "/api", "apiKey": "n3wznab-key", "categories": [5040]}
+            }),
+        )
+        .await
+        .unwrap();
+    let dir = tempfile::tempdir().unwrap();
+    client
+        .create_root_folder(&RootFolderCreate {
+            path: dir.path().display().to_string(),
+            media_kind: None,
+        })
+        .await
+        .unwrap();
+    let tag = client.create_tag("early").await.unwrap();
+    let added = client
+        .add_title(&AddTitleRequest {
+            provider: MetadataProvider::TvMaze,
+            id: "169".into(),
+            root_folder_path: dir.path().display().to_string(),
+            quality_profile_id: 1,
+            monitor: MonitorOption::All,
+            series_type: None,
+            season_folder: true,
+            tags: vec![],
+            search_for_missing: false,
+            episode_ordering: None,
+            path: None,
+        })
+        .await
+        .unwrap();
+    let pilot = client
+        .episodes(added.id)
+        .await
+        .unwrap()
+        .into_iter()
+        .find(|e| e.season_number == 1 && e.episode_number == 1)
+        .unwrap();
+    let query = |season: Option<i32>| ReleaseQuery {
+        series_id: added.id,
+        season_number: season,
+        episode_id: season.is_none().then_some(pilot.id),
+        complete_series: false,
+        season_packs_only: false,
+        indexer_ids: None,
+        search_session: None,
+    };
+    let rejections = |season: Option<i32>| {
+        let client = &client;
+        let q = query(season);
+        async move {
+            client
+                .search_releases(&q)
+                .await
+                .unwrap()
+                .releases
+                .into_iter()
+                .find(|r| r.guid == "nzb-77")
+                .unwrap()
+                .rejections
+        }
+    };
+    assert!(rejections(None).await.is_empty());
+
+    // An air-date restriction with a grace period far beyond the release's publish date.
+    let profile = client
+        .save_release_profile(&ReleaseProfile {
+            enabled: true,
+            air_date_restriction: true,
+            air_date_grace_period: 1_000_000,
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    let r = rejections(None).await;
+    assert!(
+        r.iter().any(|m| m
+            .starts_with("Release date 11/03/2025 10:00:00 is before adjusted air date of ")
+            && m.ends_with("Grace period 1000000 hours)")),
+        "{r:?}"
+    );
+    // The series has the profile's excluded tag: the profile does not apply.
+    let mut excluded = profile.clone();
+    excluded.excluded_tags = vec![tag.id];
+    client.save_release_profile(&excluded).await.unwrap();
+    client
+        .update_series(
+            added.id,
+            &kitsunarr_domain::api::library::SeriesUpdate {
+                tags: Some(vec![tag.id]),
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert!(rejections(None).await.is_empty());
+
+    // The pilot has a file whose last grab, of this release, was imported at another quality.
+    {
+        use kitsunarr_db::history::NewHistory;
+        let mut conn = server.state.db.pool().acquire().await.unwrap();
+        let file_id = kitsunarr_db::library::series::upsert_episode_file(
+            &mut conn,
+            &kitsunarr_db::library::series::NewEpisodeFile {
+                series_id: added.id,
+                season_number: 1,
+                relative_path: "Season 01/Breaking.Bad.S01E01.mkv".into(),
+                size: 5,
+                added_at: "2025-11-04T00:00:00Z".into(),
+                scene_name: None,
+                release_group: None,
+                quality_id: 3,
+                revision_version: 1,
+                revision_real: 0,
+                is_repack: false,
+                languages: vec![1],
+                media_info: None,
+                original_path: None,
+                indexer_flags: 0,
+                release_type: 1,
+            },
+        )
+        .await
+        .unwrap();
+        kitsunarr_db::library::series::link_episodes_to_file(&mut conn, &[pilot.id], file_id)
+            .await
+            .unwrap();
+        for (event, quality, date) in [
+            ("grabbed", 4, "2025-11-03T11:00:00Z"),
+            ("downloadFolderImported", 3, "2025-11-03T12:00:00Z"),
+        ] {
+            kitsunarr_db::history::insert(
+                &mut conn,
+                &NewHistory {
+                    event_type: event.into(),
+                    date: date.into(),
+                    source_title: "Breaking.Bad.S01E01.720p.HDTV.x264-GRP".into(),
+                    series_id: Some(added.id),
+                    episode_id: Some(pilot.id),
+                    movie_id: None,
+                    quality_id: Some(quality),
+                    revision: Some(serde_json::json!({"version": 1, "real": 0, "isRepack": false})),
+                    languages: vec![1],
+                    custom_format_score: None,
+                    download_id: Some("SABnzbd_nzo_x1".into()),
+                    data: serde_json::json!({}),
+                },
+            )
+            .await
+            .unwrap();
+        }
+    }
+    let r = rejections(None).await;
+    assert!(
+        r.contains(&"Has same release name as a grabbed and imported release".to_string()),
+        "{r:?}"
+    );
+    let mut options = client.download_client_options().await.unwrap();
+    options.enable_completed_download_handling = false;
+    client.put_download_client_options(&options).await.unwrap();
+    let r = rejections(None).await;
+    assert!(
+        !r.iter().any(|m| m.starts_with("Has same release name")),
+        "{r:?}"
+    );
+
+    // A season search: season 1 ended long ago, so the indexer's maximum single episode age
+    // asks for season packs.
+    let pack_only =
+        "Last episode in this season aired more than 30 days ago, season pack required."
+            .to_string();
+    assert!(!rejections(Some(1)).await.contains(&pack_only));
+    sqlx::query("UPDATE indexers SET season_search_maximum_single_episode_age = 30")
+        .execute(server.state.db.pool())
+        .await
+        .unwrap();
+    let r = rejections(Some(1)).await;
+    assert!(r.contains(&pack_only), "{r:?}");
 }

@@ -3,6 +3,7 @@
 
 use std::sync::LazyLock;
 
+use kitsunarr_domain::api::settings::SeasonPackUpgrade;
 use kitsunarr_domain::quality::QualityModel;
 use kitsunarr_domain::{DownloadProtocol, SeriesType};
 use kitsunarr_parser::ParsedEpisodeInfo;
@@ -45,12 +46,14 @@ impl Env<'_> {
         ProfileView(&self.series.profile)
     }
 
-    /// `ReleaseProfileService.EnabledForTags(series.Tags, indexerId)`.
+    /// `ReleaseProfileService.EnabledForTags(series.Tags, indexerId)`: a profile applies when
+    /// it has no tags or one of the series' tags, and none of its excluded tags.
     fn release_profiles(&self, indexer_id: i64) -> Vec<&ReleaseProfile> {
         self.settings
             .release_profiles
             .iter()
             .filter(|r| r.tags.is_empty() || r.tags.iter().any(|t| self.series.tags.contains(t)))
+            .filter(|r| !r.excluded_tags.iter().any(|t| self.series.tags.contains(t)))
             .filter(|r| r.enabled)
             .filter(|r| r.indexer_ids.is_empty() || r.indexer_ids.contains(&indexer_id))
             .collect()
@@ -181,13 +184,17 @@ fn episode_files<'a>(s: &Subject<'a>) -> impl Iterator<Item = &'a EpisodeFile> {
 
 /// Every specification, in a stable (alphabetical) order.
 pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
-    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 34] = [
+    let specs: [fn(&Env<'_>, &Subject<'_>) -> Option<Rejection>; 40] = [
         acceptable_size,
+        air_date,
+        already_imported,
         anime_version_upgrade,
+        blocked_indexer,
         blocklist,
         complete_season_upgrade,
         custom_format_allowed_by_profile,
         delay,
+        deleted_episode_file,
         episode_numbering,
         episode_requested,
         external_ids,
@@ -200,6 +207,7 @@ pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
         monitored_episode,
         multi_season,
         not_sample,
+        pending,
         proper,
         protocol,
         quality_allowed_by_profile,
@@ -210,6 +218,7 @@ pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
         retention,
         same_episodes_grab,
         season_match,
+        season_pack_only,
         series_spec,
         single_episode_search_match,
         split_episode,
@@ -218,6 +227,43 @@ pub(crate) fn evaluate_all(env: &Env<'_>, s: &Subject<'_>) -> Vec<Rejection> {
         upgrade_disk,
     ];
     specs.iter().filter_map(|spec| spec(env, s)).collect()
+}
+
+/// `BlockedIndexerSpecification` (temporary): the release's indexer is blocked after failures.
+pub(crate) fn blocked_indexer(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let (_, till) = env
+        .settings
+        .blocked_indexers
+        .iter()
+        .find(|(id, _)| *id == s.release.indexer_id)?;
+    Some(Rejection::new(
+        R::IndexerDisabled,
+        format!(
+            "Indexer {} is blocked till {} due to failures, cannot grab release.",
+            s.release.indexer,
+            net_date(*till)
+        ),
+    ))
+}
+
+/// `PendingSpecification` (temporary): a pushed release (or an automatic search's) waits when a
+/// release for one of its episodes is already pending; RSS sync and searches the user started
+/// are not held.
+pub(crate) fn pending(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if env.criteria.kind == SearchKind::Rss || env.criteria.user_invoked {
+        return None;
+    }
+    let ids: Vec<i64> = s.episodes.iter().map(|e| e.id).collect();
+    env.settings
+        .pending
+        .iter()
+        .any(|p| p.series_id == env.series.id && p.episode_ids.iter().any(|e| ids.contains(e)))
+        .then(|| {
+            Rejection::new(
+                R::MinimumAgeDelayPushed,
+                "Release containing at least one matching episode is already pending, delaying pushed release",
+            )
+        })
 }
 
 /// Tanukarr's `EpisodeNumberingSpecification` (permanent): an unresolved numbering must not
@@ -530,10 +576,17 @@ pub(crate) fn episode_requested(env: &Env<'_>, s: &Subject<'_>) -> Option<Reject
     Some(Rejection::new(R::WrongEpisode, message))
 }
 
-/// `FullSeasonSpecification` (release profiles cannot allow incomplete seasons in Kitsunarr).
+/// `FullSeasonSpecification`: a season pack waits until every episode has aired, unless the
+/// release profiles allow packs before (the most restrictive profile wins).
 pub(crate) fn full_season(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
     let cutoff = env.settings.now + chrono::Duration::hours(24);
+    let profiles = env.release_profiles(s.release.indexer_id);
+    let allowed = !profiles.is_empty()
+        && profiles
+            .iter()
+            .all(|p| p.allow_season_pack_without_all_episodes_aired);
     (s.parsed.full_season
+        && !allowed
         && s.episodes
             .iter()
             .any(|e| e.air_date_utc.is_none_or(|a| a > cutoff)))
@@ -541,6 +594,141 @@ pub(crate) fn full_season(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
         Rejection::new(
             R::FullSeasonNotAired,
             "Full season release rejected. All episodes haven't aired yet.",
+        )
+    })
+}
+
+/// .NET's `DateTime.ToString()` in the invariant culture, as Sonarr's messages show dates.
+fn net_date(d: chrono::DateTime<chrono::Utc>) -> String {
+    d.format("%m/%d/%Y %H:%M:%S").to_string()
+}
+
+/// `AirDateSpecification`: with an air-date restriction (the release profile with one and the
+/// longest grace period), releases published before every episode's air date plus the grace
+/// period are rejected.
+pub(crate) fn air_date(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let best = env
+        .release_profiles(s.release.indexer_id)
+        .into_iter()
+        .max_by_key(|p| (p.air_date_restriction, p.air_date_grace_period))?;
+    if !best.air_date_restriction {
+        return None;
+    }
+    let release_date = s.release.publish_date;
+    let grace = best.air_date_grace_period;
+    for e in &s.episodes {
+        let Some(air) = e.air_date_utc else {
+            return Some(Rejection::new(R::BeforeAirDate, "No air date available"));
+        };
+        let adjusted = air + chrono::Duration::hours(i64::from(grace));
+        if release_date < adjusted {
+            return Some(Rejection::new(
+                R::BeforeAirDate,
+                format!(
+                    "Release date {} is before adjusted air date of {} (Air Date: {}. Grace period {grace} hours)",
+                    net_date(release_date),
+                    net_date(adjusted),
+                    net_date(air)
+                ),
+            ));
+        }
+    }
+    None
+}
+
+/// `AlreadyImportedSpecification` (with completed download handling on): for an episode with
+/// a file whose last grab was imported at another quality than it was grabbed, a release
+/// with that grab's torrent hash or title is not grabbed again.
+pub(crate) fn already_imported(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    use crate::model::EpisodeHistoryEvent as H;
+    if !env.settings.completed_download_handling {
+        return None;
+    }
+    let release = s.release;
+    for e in s.episodes.iter().filter(|e| e.file.is_some()) {
+        let history = || {
+            env.settings
+                .episode_history
+                .iter()
+                .filter(|h| h.episode_id == e.id)
+        };
+        let Some(last_grabbed) = history().find(|h| h.event == H::Grabbed) else {
+            continue;
+        };
+        let Some(imported) = history().find(|h| {
+            h.event == H::DownloadFolderImported && h.download_id == last_grabbed.download_id
+        }) else {
+            continue;
+        };
+        // `QualityModel.Equals`: quality, version and real.
+        let (g, i) = (&last_grabbed.quality, &imported.quality);
+        if g.quality_id == i.quality_id
+            && g.revision.version == i.revision.version
+            && g.revision.real == i.revision.real
+        {
+            continue;
+        }
+        if release.protocol == DownloadProtocol::Torrent
+            && let (Some(hash), Some(id)) = (&release.info_hash, &last_grabbed.download_id)
+            && hash.eq_ignore_ascii_case(id)
+        {
+            return Some(Rejection::new(
+                R::AlreadyImportedSameHash,
+                "Has same torrent hash as a grabbed and imported release",
+            ));
+        }
+        if release.title.to_lowercase() == last_grabbed.source_title.to_lowercase() {
+            return Some(Rejection::new(
+                R::AlreadyImportedSameName,
+                "Has same release name as a grabbed and imported release",
+            ));
+        }
+    }
+    None
+}
+
+/// `RssSync/DeletedEpisodeFileSpecification` (RSS only, with "unmonitor deleted episodes"):
+/// an episode whose file is gone from disk will be unmonitored by the next scan, so it is
+/// not grabbed meanwhile.
+pub(crate) fn deleted_episode_file(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    if !env.settings.auto_unmonitor_previously_downloaded_episodes || !env.criteria.is_rss() {
+        return None;
+    }
+    episode_files(s)
+        .any(|f| env.settings.missing_files.contains(&f.id))
+        .then(|| Rejection::new(R::EpisodeNotMonitored, "Episode is not monitored"))
+}
+
+/// `SeasonPackOnlySpecification`: in a search for several episodes, with the indexer's
+/// "season search maximum single episode age", a standard series' season whose last searched
+/// episode aired longer ago than that only takes season packs.
+pub(crate) fn season_pack_only(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
+    let criteria = env.criteria;
+    if criteria.is_rss() || criteria.episode_ids.len() == 1 {
+        return None;
+    }
+    let max_age = s.release.season_search_maximum_single_episode_age;
+    if max_age <= 0
+        || env.series.series_type != SeriesType::Standard
+        || s.parsed.full_season
+        || s.episodes.is_empty()
+    {
+        return None;
+    }
+    let season = s.episodes[0].season_number;
+    let last_aired = env
+        .series
+        .episodes
+        .iter()
+        .filter(|e| criteria.episode_ids.contains(&e.id) && e.season_number == season)
+        .filter_map(|e| e.air_date_utc)
+        .max()?;
+    (last_aired < env.settings.now - chrono::Duration::days(max_age)).then(|| {
+        Rejection::new(
+            R::NotSeasonPack,
+            format!(
+                "Last episode in this season aired more than {max_age} days ago, season pack required."
+            ),
         )
     })
 }
@@ -964,8 +1152,8 @@ pub(crate) fn upgrade_allowed(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejectio
     None
 }
 
-/// `UpgradeDiskSpecification` with the default season-pack rule (every episode must be missing
-/// or upgradable).
+/// `UpgradeDiskSpecification`, with media management's season pack rule: every episode
+/// missing or upgradable (all), a share of them (threshold) or one (any).
 pub(crate) fn upgrade_disk(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> {
     let profile = env.profile();
     let new = model(s.parsed);
@@ -993,14 +1181,22 @@ pub(crate) fn upgrade_disk(env: &Env<'_>, s: &Subject<'_>) -> Option<Rejection> 
             }
         }
         let percentage = upgraded as f64 / total as f64 * 100.0;
-        if percentage >= 100.0 {
+        let mode = env.settings.season_pack_upgrade;
+        let configured = env.settings.season_pack_upgrade_threshold;
+        let accepted = match mode {
+            SeasonPackUpgrade::Any => upgraded > 0,
+            SeasonPackUpgrade::All => percentage >= 100.0,
+            SeasonPackUpgrade::Threshold => percentage >= configured,
+        };
+        if accepted {
             return None;
         }
         return Some(Rejection::new(
-            R::DiskCutoffMet,
+            R::DiskNotUpgrade,
             format!(
-                "Season pack does not meet the upgrade criteria. Upgradable: {upgraded}/{total} ({}%), Mode: All, Threshold: 100%",
-                format_number(percentage, 2)
+                "Season pack does not meet the upgrade criteria. Upgradable: {upgraded}/{total} ({}%), Mode: {}, Threshold: {configured}%",
+                format_number(percentage, 2),
+                mode.name()
             ),
         ));
     }

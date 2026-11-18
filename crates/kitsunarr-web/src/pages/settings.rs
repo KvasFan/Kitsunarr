@@ -435,8 +435,9 @@ pub fn SettingsMedia() -> Element {
                         Switch { checked: m.skip_unmonitored_episodes_from_packs, label: "Skip unmonitored episodes when importing packs", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.skip_unmonitored_episodes_from_packs = v; } } }
                         Switch { checked: m.enable_media_info, label: "Analyze video files (resolution, runtime and codecs, with ffprobe)", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.enable_media_info = v; } } }
                         Switch { checked: m.auto_unmonitor_previously_downloaded_episodes, label: "Unmonitor deleted episodes (deleted by hand or missing from disk; upgrades never unmonitor)", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.auto_unmonitor_previously_downloaded_episodes = v; } } }
-                        Switch { checked: m.skip_free_space_check, label: "Skip the free-space check", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.skip_free_space_check = v; } } }
+                        Switch { checked: m.skip_free_space_check, label: "Skip the free-space check when importing", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.skip_free_space_check = v; } } }
                         Switch { checked: m.import_extra_files, label: "Import extra files (subtitles…)", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.import_extra_files = v; } } }
+                        MediaManagementMore { mm }
                     }
                     div { class: "form-grid",
                         Field { label: "Recycle bin", help: "Absolute path; empty to delete permanently.".to_string(),
@@ -486,9 +487,81 @@ pub fn SettingsMedia() -> Element {
                                 option { value: "doNotPrefer", selected: m.download_propers_and_repacks == ProperDownloadType::DoNotPrefer, "Do not prefer" }
                             }
                         }
+                        MediaManagementFields { mm }
                     }
                     div { class: "row end", button { class: "btn primary", onclick: save_mm, "Save" } }
                 },
+            }
+        }
+    }
+}
+
+/// Sonarr's other media management switches: folders, free space when grabbing, permissions
+/// and script import.
+#[component]
+fn MediaManagementMore(mm: Signal<Option<MediaManagementSettings>>) -> Element {
+    let Some(m) = mm() else { return rsx! {} };
+    rsx! {
+        Switch { checked: m.create_empty_series_folders, label: "Create empty series folders during disk scans (not with \"delete empty folders\")", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.create_empty_series_folders = v; } } }
+        Switch { checked: m.skip_free_space_check_when_grabbing, label: "Skip the free-space check when grabbing", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.skip_free_space_check_when_grabbing = v; } } }
+        Switch { checked: m.set_permissions, label: "Set permissions on imported files and folders (Linux)", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.set_permissions = v; } } }
+        Switch { checked: m.use_script_import, label: "Import using a script", onchange: move |v| { if let Some(x) = mm.write().as_mut() { x.use_script_import = v; } } }
+    }
+}
+
+/// Sonarr's other media management fields: rescans, episode titles, season pack upgrades,
+/// rejected extensions, permissions and the import script.
+#[component]
+fn MediaManagementFields(mm: Signal<Option<MediaManagementSettings>>) -> Element {
+    use kitsunarr_domain::api::settings::{
+        EpisodeTitleRequired as T, OrderedF64, RescanAfterRefresh as R, SeasonPackUpgrade as S,
+        sonarr_enum,
+    };
+    let Some(m) = mm() else { return rsx! {} };
+    rsx! {
+        Field { label: "Rescan series folder after refresh", help: "Whether a metadata refresh scans the series folder for changes afterwards.".to_string(),
+            select { class: "select", "aria-label": "Rescan series folder after refresh",
+                onchange: move |e: FormEvent| { if let (Some(x), Some(v)) = (mm.write().as_mut(), sonarr_enum(&e.value(), R::SONARR)) { x.rescan_after_refresh = v; } },
+                option { value: "always", selected: m.rescan_after_refresh == R::Always, "Always" }
+                option { value: "afterManual", selected: m.rescan_after_refresh == R::AfterManual, "After manual refresh" }
+                option { value: "never", selected: m.rescan_after_refresh == R::Never, "Never" }
+            }
+        }
+        Field { label: "Episode title required", help: "Imports wait for an episode title when the naming format uses it and the episode aired in the last 48 hours.".to_string(),
+            select { class: "select", "aria-label": "Episode title required",
+                onchange: move |e: FormEvent| { if let (Some(x), Some(v)) = (mm.write().as_mut(), sonarr_enum(&e.value(), T::SONARR)) { x.episode_title_required = v; } },
+                option { value: "always", selected: m.episode_title_required == T::Always, "Always" }
+                option { value: "bulkSeasonReleases", selected: m.episode_title_required == T::BulkSeasonReleases, "Only for bulk season releases" }
+                option { value: "never", selected: m.episode_title_required == T::Never, "Never" }
+            }
+        }
+        Field { label: "Season pack upgrades", help: "How many of a season pack's episodes must be missing or upgradable for the pack to be grabbed.".to_string(),
+            select { class: "select", "aria-label": "Season pack upgrades",
+                onchange: move |e: FormEvent| { if let (Some(x), Some(v)) = (mm.write().as_mut(), sonarr_enum(&e.value(), S::SONARR)) { x.season_pack_upgrade = v; } },
+                option { value: "all", selected: m.season_pack_upgrade == S::All, "All episodes" }
+                option { value: "threshold", selected: m.season_pack_upgrade == S::Threshold, "A share of the episodes" }
+                option { value: "any", selected: m.season_pack_upgrade == S::Any, "Any episode" }
+            }
+        }
+        if m.season_pack_upgrade == S::Threshold {
+            Field { label: "Season pack upgrade threshold (%)",
+                input { class: "input", r#type: "number", min: "0", max: "100", step: "any", value: "{m.season_pack_upgrade_threshold.0}", oninput: move |e| { if let (Some(x), Ok(v)) = (mm.write().as_mut(), e.value().parse::<f64>()) { x.season_pack_upgrade_threshold = OrderedF64(v); } } }
+            }
+        }
+        Field { label: "Rejected extensions", help: "Comma separated, such as exe, bat. A single-file download with one of these extensions is not imported.".to_string(),
+            input { class: "input", value: "{m.user_rejected_extensions}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.user_rejected_extensions = e.value(); } } }
+        }
+        if m.set_permissions {
+            Field { label: "Folder permissions (chmod)", help: "Octal mode for folders; files get it without the execute bits.".to_string(),
+                input { class: "input mono", value: "{m.chmod_folder}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.chmod_folder = e.value(); } } }
+            }
+            Field { label: "Group (chown)", help: "Group name or id for imported files and folders; empty leaves the group alone.".to_string(),
+                input { class: "input", value: "{m.chown_group}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.chown_group = e.value(); } } }
+            }
+        }
+        if m.use_script_import {
+            Field { label: "Import script path", help: "Absolute path of the script; it gets the source and destination paths and Sonarr's environment variables.".to_string(),
+                input { class: "input mono", value: "{m.script_import_path}", oninput: move |e| { if let Some(x) = mm.write().as_mut() { x.script_import_path = e.value(); } } }
             }
         }
     }
@@ -1424,7 +1497,7 @@ fn ReleaseProfiles() -> Element {
         div { class: "card",
             div { class: "row",
                 h3 { class: "grow", "Release profiles" }
-                button { class: "btn", onclick: move |_| editing.set(Some(ReleaseProfile { id: 0, name: None, enabled: true, required: Vec::new(), ignored: Vec::new(), indexer_ids: Vec::new(), tags: Vec::new() })), "Add" }
+                button { class: "btn", onclick: move |_| editing.set(Some(ReleaseProfile { enabled: true, ..Default::default() })), "Add" }
             }
             match &*list.read() {
                 None => rsx! { Loading {} },
@@ -1466,6 +1539,18 @@ fn ReleaseProfiles() -> Element {
                     Field { label: "Must contain (comma separated; /regex/ allowed)", input { class: "input", value: "{r.required.join(\", \")}", onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.required = split_terms(&e.value()); } } } }
                     Field { label: "Must not contain", input { class: "input", value: "{r.ignored.join(\", \")}", onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.ignored = split_terms(&e.value()); } } } }
                     Field { label: "Tags (ids, comma separated)", input { class: "input", value: "{r.tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(\", \")}", onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.tags = tag_ids(&e.value()); } } } }
+                    Field { label: "Excluded tags (ids, comma separated)", help: "The profile does not apply to series with one of these tags.".to_string(), input { class: "input", value: "{r.excluded_tags.iter().map(|t| t.to_string()).collect::<Vec<_>>().join(\", \")}", onchange: move |e: FormEvent| { if let Some(x) = editing.write().as_mut() { x.excluded_tags = tag_ids(&e.value()); } } } }
+                }
+                div { class: "stack",
+                    Switch { checked: r.air_date_restriction, label: "Reject releases published before the episode airs", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.air_date_restriction = v; } } }
+                    Switch { checked: r.allow_season_pack_without_all_episodes_aired, label: "Allow season packs before every episode has aired", onchange: move |v| { if let Some(x) = editing.write().as_mut() { x.allow_season_pack_without_all_episodes_aired = v; } } }
+                }
+                if r.air_date_restriction {
+                    div { class: "form-grid",
+                        Field { label: "Air date grace period (hours)", help: "Releases published up to this many hours after the air date are still rejected; a negative number allows them that many hours before.".to_string(),
+                            input { class: "input", r#type: "number", value: "{r.air_date_grace_period}", oninput: move |e| { if let Some(x) = editing.write().as_mut() { x.air_date_grace_period = e.value().parse().unwrap_or(0); } } }
+                        }
+                    }
                 }
             }
         }
