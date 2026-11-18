@@ -230,6 +230,7 @@ pub(crate) struct RemovalParams {
     remove_from_client: Option<bool>,
     blocklist: Option<bool>,
     skip_redownload: Option<bool>,
+    change_category: Option<bool>,
 }
 
 impl RemovalParams {
@@ -239,6 +240,7 @@ impl RemovalParams {
             remove_from_client: self.remove_from_client.unwrap_or(true),
             blocklist: self.blocklist.unwrap_or(false),
             skip_redownload: self.skip_redownload.unwrap_or(false),
+            change_category: self.change_category.unwrap_or(false),
         }
     }
 }

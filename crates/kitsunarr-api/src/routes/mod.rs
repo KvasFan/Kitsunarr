@@ -304,4 +304,6 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(episode_files::list_episode_files))
         .routes(routes!(episode_files::edit_episode_files))
         .routes(routes!(episode_files::delete_episode_files))
+        .routes(routes!(queue::bulk_remove_from_queue))
+        .routes(routes!(queue::bulk_grab_pending))
 }

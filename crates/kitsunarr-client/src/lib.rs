@@ -591,14 +591,35 @@ impl Client {
         removal: &kitsunarr_domain::api::queue::QueueRemoval,
     ) -> ClientResult<kitsunarr_domain::api::queue::QueueRemovalResult> {
         let path = format!(
-            "/queue/{}?removeFromClient={}&blocklist={}&skipRedownload={}",
+            "/queue/{}?removeFromClient={}&blocklist={}&skipRedownload={}&changeCategory={}",
             urlencoding(download_id),
             removal.remove_from_client,
             removal.blocklist,
-            removal.skip_redownload
+            removal.skip_redownload,
+            removal.change_category
         );
         self.send(self.request(reqwest::Method::DELETE, &path))
             .await
+    }
+    /// `POST /queue/remove`: several queue items removed with the same options.
+    pub async fn remove_queue_items(
+        &self,
+        req: &kitsunarr_domain::api::queue::QueueBulkRemoval,
+    ) -> ClientResult<kitsunarr_domain::api::queue::QueueBulkResult> {
+        self.post("/queue/remove", req).await
+    }
+    /// `POST /queue/grab`: several held-back releases sent now.
+    pub async fn grab_pending_items(
+        &self,
+        download_ids: &[String],
+    ) -> ClientResult<kitsunarr_domain::api::queue::QueueBulkResult> {
+        self.post(
+            "/queue/grab",
+            &kitsunarr_domain::api::queue::QueueBulkGrab {
+                download_ids: download_ids.to_vec(),
+            },
+        )
+        .await
     }
     pub async fn blocklist(
         &self,

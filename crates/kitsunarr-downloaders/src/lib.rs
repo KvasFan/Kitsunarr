@@ -269,6 +269,23 @@ impl ClientSettings {
         }
     }
 
+    /// `DownloadClientItemClientInfo.HasPostImportCategory`: a post-import category (Flood:
+    /// post-import tags) is set, so a queue item can be moved there instead of removed
+    /// (Sonarr's "Change category"). Transmission also needs labels (version 4), checked when
+    /// the category is changed.
+    pub fn has_post_import_category(&self) -> bool {
+        let set = |c: &Option<String>| c.as_deref().is_some_and(|c| !c.trim().is_empty());
+        match self {
+            Self::QBittorrent(s) => set(&s.imported_category),
+            Self::Deluge(s) => set(&s.imported_category),
+            Self::RTorrent(s) => set(&s.imported_category),
+            Self::UTorrent(s) => set(&s.imported_category),
+            Self::Transmission(s) => !s.vuze && set(&s.imported_category),
+            Self::Flood(s) => !s.post_import_tags.is_empty(),
+            _ => false,
+        }
+    }
+
     /// `PreferTorrentFile`: the torrent file is sent before the magnet link.
     pub fn prefers_torrent_file(&self) -> bool {
         matches!(self, Self::TorrentBlackhole(_))

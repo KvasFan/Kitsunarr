@@ -44,6 +44,10 @@ pub struct QueueItem {
     /// download has started; kept until the download leaves the queue.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub import_progress: Option<ImportProgress>,
+    /// The download client has a post-import category, so the item can be moved there
+    /// instead of removed (Sonarr's `downloadClientHasPostImportCategory`).
+    #[serde(default)]
+    pub download_client_has_post_import_category: bool,
 }
 
 /// Tanukarr's `ImportProgressResource`: how many of a download's expected episodes are
@@ -144,6 +148,36 @@ pub struct QueueRemoval {
     pub blocklist: bool,
     /// With `blocklist`: do not search for a replacement.
     pub skip_redownload: bool,
+    /// Instead of removing it, move the download to the client's post-import category
+    /// (Sonarr's `changeCategory`); ignored with `removeFromClient`.
+    pub change_category: bool,
+}
+
+/// Several queue items removed with the same options (Sonarr's `DELETE /queue/bulk`).
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct QueueBulkRemoval {
+    pub download_ids: Vec<String>,
+    #[serde(flatten)]
+    pub removal: QueueRemoval,
+}
+
+/// Several pending releases sent now (Sonarr's queue `grab/bulk`).
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase", default)]
+pub struct QueueBulkGrab {
+    pub download_ids: Vec<String>,
+}
+
+/// What a bulk queue action did: one message per item done, one per failure.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct QueueBulkResult {
+    pub done: Vec<String>,
+    pub failures: Vec<String>,
 }
 
 /// What removing a queue item did.

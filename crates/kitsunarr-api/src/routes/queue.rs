@@ -11,8 +11,8 @@ use kitsunarr_db::rules;
 use kitsunarr_db::{blocklist, history};
 use kitsunarr_domain::Quality;
 use kitsunarr_domain::api::queue::{
-    BlocklistItem, BlocklistRemoval, QueueClientFailure, QueueItem, QueueRemoval,
-    QueueRemovalResult, QueueResult,
+    BlocklistItem, BlocklistRemoval, QueueBulkGrab, QueueBulkRemoval, QueueBulkResult,
+    QueueClientFailure, QueueItem, QueueRemoval, QueueRemovalResult, QueueResult,
 };
 use kitsunarr_domain::api::settings::ProviderKind;
 use kitsunarr_downloaders::{ClientSettings, ItemStatus};
@@ -55,14 +55,21 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
             .await
             .map_err(|_| "The download client did not answer within 15 seconds.".to_string())?
             .map_err(|e| e.to_string())?;
-            Ok::<_, String>((settings.host().to_string(), list))
+            Ok::<_, String>((
+                settings.host().to_string(),
+                settings.has_post_import_category(),
+                list,
+            ))
         }
     });
     let mut items = Vec::new();
     let mut failures = Vec::new();
     for (client, read) in clients.iter().zip(futures::future::join_all(reads).await) {
         match read {
-            Ok((host, list)) => items.extend(list.into_iter().map(|i| (client, host.clone(), i))),
+            Ok((host, post_import, list)) => items.extend(
+                list.into_iter()
+                    .map(|i| (client, host.clone(), post_import, i)),
+            ),
             Err(message) => failures.push(QueueClientFailure {
                 download_client: client.name.clone(),
                 message,
@@ -72,13 +79,13 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
 
     let ids: Vec<String> = items
         .iter()
-        .map(|(_, _, i)| i.download_id.clone())
+        .map(|(_, _, _, i)| i.download_id.clone())
         .collect();
     let grabs = history::grabs_for(&state.db, &ids).await?;
     let mut series_titles: HashMap<i64, String> = HashMap::new();
     let mut episode_labels: HashMap<i64, HashMap<i64, String>> = HashMap::new();
     let mut out = Vec::new();
-    for (client, host, item) in items {
+    for (client, host, post_import, item) in items {
         let mine: Vec<&history::GrabRecord> = grabs
             .iter()
             .filter(|g| g.download_id.eq_ignore_ascii_case(&item.download_id))
@@ -197,6 +204,7 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
                 .downloads
                 .import_progress
                 .get(client.id, &item.download_id),
+            download_client_has_post_import_category: post_import,
         });
     }
     // Releases a delay profile holds back (Sonarr shows them in the queue as "Delay").
@@ -259,6 +267,7 @@ pub async fn get_queue(State(state): State<AppState>) -> ApiResult<Json<QueueRes
             output_path: None,
             added: Some(p.added_at),
             import_progress: None,
+            download_client_has_post_import_category: false,
         });
     }
     Ok(Json(QueueResult {
@@ -450,6 +459,33 @@ pub async fn remove_from_queue(
             done.push("searching for a replacement".into());
         }
     }
+    if !q.remove_from_client
+        && q.change_category
+        && let Some((client, settings, item)) = &found
+    {
+        // Sonarr's `MarkItemAsImported`: the download moves to the post-import category and
+        // is no longer tracked.
+        if !settings.has_post_import_category() {
+            return Err(ApiError::field(
+                "changeCategory",
+                format!(
+                    "{} has no post-import category to move the download to.",
+                    client.name
+                ),
+            ));
+        }
+        state
+            .downloads
+            .clients
+            .mark_imported(settings, &item.download_id)
+            .await
+            .map_err(|e| ApiError::field("changeCategory", format!("{}: {e}", client.name)))?;
+        state.downloads.forget(&download_id);
+        done.push(format!(
+            "moved it to the post-import category of {}",
+            client.name
+        ));
+    }
     if q.remove_from_client
         && let Some((client, settings, item)) = &found
     {
@@ -479,6 +515,53 @@ pub async fn remove_from_queue(
             m
         },
     }))
+}
+
+/// Removes several queue items with the same options, each as `DELETE /queue/{downloadId}`
+/// does (Sonarr's `DELETE /queue/bulk`); a failure does not stop the others.
+#[utoipa::path(post, path = "/queue/remove", tag = "queue", request_body = QueueBulkRemoval,
+    responses((status = 200, body = QueueBulkResult)))]
+pub async fn bulk_remove_from_queue(
+    State(state): State<AppState>,
+    Json(req): Json<QueueBulkRemoval>,
+) -> ApiResult<Json<QueueBulkResult>> {
+    let mut out = QueueBulkResult::default();
+    let mut seen = std::collections::HashSet::new();
+    for id in req
+        .download_ids
+        .iter()
+        .filter(|i| seen.insert(i.to_ascii_lowercase()))
+    {
+        match remove_from_queue(
+            State(state.clone()),
+            axum::extract::Path(id.clone()),
+            axum::extract::Query(req.removal),
+        )
+        .await
+        {
+            Ok(Json(r)) => out.done.push(r.message),
+            Err(e) => out.failures.push(format!("{id}: {}", e.message())),
+        }
+    }
+    Ok(Json(out))
+}
+
+/// Sends several pending releases now, each as `POST /queue/{downloadId}/grab` does (Sonarr's
+/// queue `grab/bulk`).
+#[utoipa::path(post, path = "/queue/grab", tag = "queue", request_body = QueueBulkGrab,
+    responses((status = 200, body = QueueBulkResult)))]
+pub async fn bulk_grab_pending(
+    State(state): State<AppState>,
+    Json(req): Json<QueueBulkGrab>,
+) -> ApiResult<Json<QueueBulkResult>> {
+    let mut out = QueueBulkResult::default();
+    for id in &req.download_ids {
+        match grab_pending(State(state.clone()), axum::extract::Path(id.clone())).await {
+            Ok(Json(r)) => out.done.push(r.message),
+            Err(e) => out.failures.push(e.message()),
+        }
+    }
+    Ok(Json(out))
 }
 
 #[derive(Debug, serde::Deserialize, utoipa::IntoParams)]

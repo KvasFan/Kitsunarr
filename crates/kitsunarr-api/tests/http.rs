@@ -1667,6 +1667,10 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
     assert_eq!((queue.clients, queue.failures.len()), (1, 0));
     let item = &queue.items[0];
     assert_eq!(item.download_id, grabbed.download_id.to_uppercase());
+    assert!(
+        item.download_client_has_post_import_category,
+        "a post-import category is set"
+    );
     assert_eq!(item.series_title.as_deref(), Some("Breaking Bad"));
     assert_eq!(item.episodes, vec!["S01E01"]);
     assert_eq!(item.quality.as_deref(), Some("Bluray-720p"));
@@ -1846,6 +1850,53 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         client.refresh_queue().await.unwrap(),
         "0 downloads imported, 0 need attention"
     );
+    // "Change category" (Sonarr's `changeCategory`): the download moves to the post-import
+    // category instead of being removed from the client.
+    qbit.lock().unwrap().clear();
+    let moved = client
+        .remove_queue_item(
+            &grabbed.download_id,
+            &kitsunarr_domain::api::queue::QueueRemoval {
+                change_category: true,
+                ..Default::default()
+            },
+        )
+        .await
+        .unwrap();
+    assert!(
+        moved
+            .message
+            .contains("post-import category of qBittorrent"),
+        "{}",
+        moved.message
+    );
+    let calls = qbit.lock().unwrap().clone();
+    assert!(
+        calls.contains(&format!(
+            "/api/v2/torrents/setCategory category=tv-imported hashes={}",
+            grabbed.download_id
+        )),
+        "{calls:#?}"
+    );
+    assert!(
+        !calls
+            .iter()
+            .any(|c| c.starts_with("/api/v2/torrents/delete")),
+        "{calls:#?}"
+    );
+    // Bulk removal reports each item it could not remove and goes on with the others.
+    let bulk = client
+        .remove_queue_items(&kitsunarr_domain::api::queue::QueueBulkRemoval {
+            download_ids: vec!["pending-999999".into(), "NOT-A-DOWNLOAD".into()],
+            removal: kitsunarr_domain::api::queue::QueueRemoval {
+                remove_from_client: true,
+                ..Default::default()
+            },
+        })
+        .await
+        .unwrap();
+    assert!(bulk.done.is_empty());
+    assert_eq!(bulk.failures.len(), 2, "{:?}", bulk.failures);
 
     // An automatic season search grabs what is missing (S01E02, by magnet) and skips S01E01,
     // which is on disk now.
@@ -1945,6 +1996,12 @@ async fn grab_sends_the_torrent_to_qbittorrent_and_records_history() {
         .find(|i| i.tracked_state != "pending")
         .unwrap();
     assert!(client.grab_pending(&other.download_id).await.is_err());
+    let bulk = client
+        .grab_pending_items(std::slice::from_ref(&other.download_id))
+        .await
+        .unwrap();
+    assert!(bulk.done.is_empty());
+    assert_eq!(bulk.failures.len(), 1, "{:?}", bulk.failures);
     // "Send now" (Sonarr's `POST /queue/grab/{id}`): decided again as the user's request, so
     // the delay no longer holds it back, and grabbed.
     qbit.lock().unwrap().clear();
@@ -2788,6 +2845,7 @@ async fn failed_downloads_are_blocklisted_and_queue_items_removed() {
                 remove_from_client: true,
                 blocklist: true,
                 skip_redownload: true,
+                change_category: false,
             },
         )
         .await
