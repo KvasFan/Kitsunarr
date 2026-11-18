@@ -365,3 +365,60 @@ async fn an_import_script_can_convert_defer_or_fail() {
         "{out:?}"
     );
 }
+
+/// What `DeletedEpisodeFileSpecification` and `AlreadyImportedSpecification` read: files gone
+/// from disk, and grabs and imports newest first.
+#[tokio::test]
+async fn decision_inputs_read_missing_files_and_history() {
+    let dir = tempfile::tempdir().unwrap();
+    let db = library(dir.path()).await;
+    let season = dir.path().join("tv/Show/Season 01");
+    std::fs::create_dir_all(&season).unwrap();
+    std::fs::write(season.join("Show.S01E01.720p.HDTV.x264-GRP.mkv"), b"video").unwrap();
+    std::fs::write(season.join("Show.S01E02.720p.HDTV.x264-GRP.mkv"), b"video").unwrap();
+    kitsunarr_library::files::scan_series(&db, 1).await.unwrap();
+    std::fs::remove_file(season.join("Show.S01E02.720p.HDTV.x264-GRP.mkv")).unwrap();
+    let show = dir.path().join("tv/Show").display().to_string();
+    let missing = kitsunarr_library::decision_input::missing_files(&db, 1, &show)
+        .await
+        .unwrap();
+    let second: i64 =
+        sqlx::query_scalar("SELECT id FROM episode_files WHERE relative_path LIKE '%S01E02%'")
+            .fetch_one(db.pool())
+            .await
+            .unwrap();
+    assert_eq!(missing, vec![second]);
+
+    for (event, date, quality) in [
+        ("grabbed", "2026-01-01T00:00:00Z", 4),
+        ("downloadFolderImported", "2026-01-02T00:00:00Z", 3),
+        ("downloadFailed", "2026-01-03T00:00:00Z", 4),
+    ] {
+        sqlx::query(
+            "INSERT INTO history (event_type, date, source_title, series_id, episode_id, quality_id, revision, languages, download_id, data) \
+             VALUES (?, ?, 'Show.S01E01.720p.HDTV.x264-GRP', 1, 1, ?, '{\"version\":2,\"real\":0,\"isRepack\":false}', '[1]', 'ABC', '{}')",
+        )
+        .bind(event)
+        .bind(date)
+        .bind(quality)
+        .execute(db.pool())
+        .await
+        .unwrap();
+    }
+    let history = kitsunarr_library::decision_input::episode_history(&db, 1)
+        .await
+        .unwrap();
+    assert_eq!(history.len(), 2, "grabs and imports only");
+    assert_eq!(
+        history[0].event,
+        kitsunarr_decision::EpisodeHistoryEvent::DownloadFolderImported
+    );
+    assert_eq!(
+        (
+            history[1].quality.quality_id,
+            history[1].quality.revision.version,
+            history[1].download_id.as_deref()
+        ),
+        (4, 2, Some("ABC"))
+    );
+}
