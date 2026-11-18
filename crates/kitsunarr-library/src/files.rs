@@ -71,7 +71,8 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
     let detail = series::get_detail(db, series_id).await.map_err(err)?;
     let series_path = PathBuf::from(&detail.item.path);
     let root = Path::new(&detail.root_folder_path);
-    let files: Vec<PathBuf> = if series_path.is_dir() {
+    let scanned_folder = series_path.is_dir();
+    let files: Vec<PathBuf> = if scanned_folder {
         video_files(&series_path)
     } else {
         // A missing series folder means its files are gone only if the root folder is there
@@ -90,6 +91,19 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
                 "Series' root folder ({}) is empty.",
                 root.display()
             ));
+        }
+        // "Create empty series folders", unless "delete empty folders" would remove it again.
+        let media: MediaManagementSettings =
+            settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
+                .await
+                .map_err(err)?;
+        if media.create_empty_series_folders && !media.delete_empty_folders {
+            match std::fs::create_dir_all(&series_path) {
+                Ok(()) => crate::permissions::apply(&series_path, &media),
+                Err(e) => {
+                    tracing::warn!(path = %series_path.display(), error = %e, "could not create the series folder")
+                }
+            }
         }
         Vec::new()
     };
@@ -297,6 +311,14 @@ pub async fn scan_series(db: &Database, series_id: i64) -> Result<ScanSummary, S
         .execute(&mut *conn)
         .await
         .ok();
+    // `RemoveEmptySeriesFolder`, after scanning a folder that was there.
+    if scanned_folder {
+        let media: MediaManagementSettings =
+            settings::get_or_default(db.pool(), settings::KEY_MEDIA_MANAGEMENT)
+                .await
+                .map_err(err)?;
+        remove_empty_series_folder(&series_path, root, &media);
+    }
     tracing::info!(series_id, summary = %summary.describe(), "disk scan");
     // `SeriesScannedEvent`: existing metadata files are recorded, then the consumers write.
     crate::metadata_files::import_existing(db, series_id).await;
@@ -775,7 +797,48 @@ pub async fn delete_file(db: &Database, series_id: i64, file_id: i64) -> Result<
     if media.auto_unmonitor_previously_downloaded_episodes {
         unmonitor_without_file(&mut conn, &linked).await?;
     }
+    // `MediaFileDeletionService.Handle(EpisodeFileDeletedEvent)`.
+    remove_empty_series_folder(&series_path, Path::new(&detail.root_folder_path), &media);
     Ok(())
+}
+
+/// `DiskProviderBase.RemoveEmptySubfolders`: depth first, every empty folder below `path`
+/// (symbolic links are not followed).
+pub(crate) fn remove_empty_subfolders(path: &Path) {
+    let Ok(entries) = std::fs::read_dir(path) else {
+        return;
+    };
+    for entry in entries.flatten() {
+        if !entry.file_type().is_ok_and(|t| t.is_dir()) {
+            continue;
+        }
+        let sub = entry.path();
+        remove_empty_subfolders(&sub);
+        if std::fs::read_dir(&sub).is_ok_and(|mut d| d.next().is_none())
+            && let Err(e) = std::fs::remove_dir(&sub)
+        {
+            tracing::warn!(path = %sub.display(), error = %e, "failed to remove an empty folder");
+        }
+    }
+}
+
+/// Media management's "delete empty folders" (`DiskScanService.RemoveEmptySeriesFolder`, and
+/// after a file is deleted by hand or replaced by an upgrade): empty folders in the series
+/// folder go, then the series folder itself when it is empty. Never the root folder.
+pub(crate) fn remove_empty_series_folder(
+    series_path: &Path,
+    root: &Path,
+    media: &MediaManagementSettings,
+) {
+    if !media.delete_empty_folders || !series_path.is_dir() || series_path == root {
+        return;
+    }
+    remove_empty_subfolders(series_path);
+    if std::fs::read_dir(series_path).is_ok_and(|mut d| d.next().is_none())
+        && let Err(e) = std::fs::remove_dir(series_path)
+    {
+        tracing::warn!(path = %series_path.display(), error = %e, "failed to remove the empty series folder");
+    }
 }
 
 /// `DeleteSeriesService` with "delete files": the series folder goes to the recycle bin (or is

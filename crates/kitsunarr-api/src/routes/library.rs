@@ -100,11 +100,14 @@ pub async fn update_series(
         let state = state.clone();
         tokio::spawn(async move {
             match kitsunarr_library::refresh_series(&state.db, &state.metadata, id).await {
-                Ok(r) => crate::routes::wanted::spawn_recently_aired_search(
-                    &state,
-                    id,
-                    r.recently_aired_episode_ids,
-                ),
+                Ok(r) => {
+                    kitsunarr_library::rescan_after_refresh(&state.db, id, false).await;
+                    crate::routes::wanted::spawn_recently_aired_search(
+                        &state,
+                        id,
+                        r.recently_aired_episode_ids,
+                    )
+                }
                 Err(e) => {
                     tracing::warn!(series_id = id, error = %e, "refresh after a language change failed");
                 }

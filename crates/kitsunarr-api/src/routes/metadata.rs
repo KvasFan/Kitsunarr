@@ -264,6 +264,7 @@ pub async fn refresh_series(
     Path(id): Path<i64>,
 ) -> ApiResult<Json<RefreshResult>> {
     let result = kitsunarr_library::refresh_series(&state.db, &state.metadata, id).await?;
+    kitsunarr_library::rescan_after_refresh(&state.db, id, true).await;
     changed(&state, "series", id);
     crate::routes::wanted::spawn_recently_aired_search(
         &state,

@@ -383,6 +383,9 @@ struct Candidate {
     relative_dest: String,
     errors: Vec<String>,
     media_info: Option<crate::media_info::MediaInfo>,
+    /// The file's custom formats (names) and score, for the import script.
+    custom_formats: Vec<String>,
+    custom_format_score: i32,
 }
 
 fn label(e: &decision::Episode) -> String {
@@ -1025,6 +1028,8 @@ pub async fn import_download(db: &Database, d: &Download<'_>) -> Result<Outcome,
             relative_dest,
             errors,
             media_info,
+            custom_formats: after_rename.iter().map(|f| f.name.clone()).collect(),
+            custom_format_score: new_score,
         });
     }
 
@@ -1260,36 +1265,68 @@ async fn transfer_and_record(
         )
         .await
         .unwrap_or_default();
-    if tools.hardlink_only && !d.move_files {
-        std::fs::hard_link(&c.path, &dest).map_err(|e| {
-            format!(
-                "Hardlink-only import cannot link this download to the library ({e}). Existing files have been kept."
-            )
-        })?;
-    }
-    let linked_only = tools.hardlink_only && !d.move_files;
-    let moved = d.move_files && std::fs::rename(&c.path, &dest).is_ok();
-    let linked = linked_only
-        || (!moved
-            && !d.move_files
-            && media.use_hardlinks
-            && std::fs::hard_link(&c.path, &dest).is_ok());
-    if !moved && !linked {
-        std::fs::copy(&c.path, &dest).map_err(|e| {
-            let _ = std::fs::remove_file(&dest);
-            if e.kind() == std::io::ErrorKind::PermissionDenied {
-                "Failed to import episode due to permission issues.".to_string()
-            } else {
-                format!("Failed to import episode: {e}")
+    // Sonarr's "Import using script" (`ImportScriptService.TryImport`) comes first; a script
+    // that defers leaves the file to the usual transfer.
+    let transfer_mode = if d.move_files {
+        "Move"
+    } else if tools.hardlink_only {
+        "HardLink"
+    } else if media.use_hardlinks {
+        "HardLinkOrCopy"
+    } else {
+        "Copy"
+    };
+    let script = if media.use_script_import {
+        let env = script_environment(db, d, detail, model, c, &dest, transfer_mode).await;
+        let outcome = crate::script_import::run(
+            Path::new(media.script_import_path.trim()),
+            &c.path,
+            &dest,
+            &env,
+        )
+        .await
+        .map_err(|e| format!("Failed to import episode: {e}"))?;
+        (outcome.decision != crate::script_import::ScriptDecision::DeferMove).then_some(outcome)
+    } else {
+        None
+    };
+    let import_extra_files = script.as_ref().is_none_or(|s| s.import_extra_files);
+    let (dest, linked, media_info) = match script {
+        Some(outcome) => script_imported(series_path, c, &dest, &outcome).await?,
+        None => {
+            if tools.hardlink_only && !d.move_files {
+                std::fs::hard_link(&c.path, &dest).map_err(|e| {
+                    format!(
+                        "Hardlink-only import cannot link this download to the library ({e}). Existing files have been kept."
+                    )
+                })?;
             }
-        })?;
-        if d.move_files {
-            // A move across file systems: the copy is in place, so the source can go.
-            if let Err(e) = std::fs::remove_file(&c.path) {
-                tracing::warn!(path = %c.path.display(), error = %e, "could not remove the moved file's source");
+            let linked_only = tools.hardlink_only && !d.move_files;
+            let moved = d.move_files && std::fs::rename(&c.path, &dest).is_ok();
+            let linked = linked_only
+                || (!moved
+                    && !d.move_files
+                    && media.use_hardlinks
+                    && std::fs::hard_link(&c.path, &dest).is_ok());
+            if !moved && !linked {
+                std::fs::copy(&c.path, &dest).map_err(|e| {
+                    let _ = std::fs::remove_file(&dest);
+                    if e.kind() == std::io::ErrorKind::PermissionDenied {
+                        "Failed to import episode due to permission issues.".to_string()
+                    } else {
+                        format!("Failed to import episode: {e}")
+                    }
+                })?;
+                if d.move_files {
+                    // A move across file systems: the copy is in place, so the source can go.
+                    if let Err(e) = std::fs::remove_file(&c.path) {
+                        tracing::warn!(path = %c.path.display(), error = %e, "could not remove the moved file's source");
+                    }
+                }
             }
+            (dest, linked, c.media_info.clone())
         }
-    }
+    };
 
     let mut conn = db.pool().acquire().await.map_err(|e| e.to_string())?;
     let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
@@ -1374,6 +1411,14 @@ async fn transfer_and_record(
             .map_err(|e| e.to_string())?;
     }
 
+    // `MediaFileDeletionService.Handle(EpisodeFileDeletedEvent)` for the replaced files.
+    if !replaced.is_empty() {
+        crate::files::remove_empty_series_folder(
+            series_path,
+            Path::new(&detail.root_folder_path),
+            media,
+        );
+    }
     apply_file_date(db, media, model, &c.episodes, &dest, preserved_date).await;
     let relative = dest
         .strip_prefix(series_path)
@@ -1412,8 +1457,7 @@ async fn transfer_and_record(
             revision_real: c.quality.revision.real,
             is_repack: c.quality.revision.is_repack,
             languages: c.languages.clone(),
-            media_info: c
-                .media_info
+            media_info: media_info
                 .as_ref()
                 .and_then(|m| serde_json::to_value(m).ok()),
             original_path,
@@ -1471,23 +1515,26 @@ async fn transfer_and_record(
         .map_err(|e| e.to_string())?;
     }
     tracing::info!(file = %dest.display(), linked, "episode imported");
-    // Sonarr's `ExtraService.ImportEpisode`: subtitles and other extras come along.
+    // Sonarr's `ExtraService.ImportEpisode`: subtitles and other extras come along (unless an
+    // import script said `[PreventExtraImport]`).
     let source_info = parse_path(&c.path.to_string_lossy());
-    crate::extras::import_extras(
-        db,
-        media,
-        &crate::extras::ExtraImport {
-            series_id: model.id,
-            series_path,
-            season_number: c.season,
-            episode_file_id: file_id,
-            episode_file: &dest,
-            source: &c.path,
-            source_info: source_info.as_ref(),
-            read_only: !d.move_files,
-        },
-    )
-    .await;
+    if import_extra_files {
+        crate::extras::import_extras(
+            db,
+            media,
+            &crate::extras::ExtraImport {
+                series_id: model.id,
+                series_path,
+                season_number: c.season,
+                episode_file_id: file_id,
+                episode_file: &dest,
+                source: &c.path,
+                source_info: source_info.as_ref(),
+                read_only: !d.move_files,
+            },
+        )
+        .await;
+    }
     // `ExtraService.ImportEpisode` then `EpisodeFolderCreatedEvent`: metadata files.
     crate::metadata_files::after_episode_import(
         db,
@@ -1502,6 +1549,330 @@ async fn transfer_and_record(
         source_path: c.path.to_string_lossy().into_owned(),
         replaced,
     })
+}
+
+/// A file the import script put in place (`MoveComplete`, `RenameRequested`): where it is,
+/// whether it was linked, and its media information. `RenameRequested` (`MoveEpisodeFile`)
+/// gives the script's file the planned name with its own extension, reading it again.
+async fn script_imported(
+    series_path: &Path,
+    c: &Candidate,
+    dest: &Path,
+    outcome: &crate::script_import::ScriptOutcome,
+) -> Result<(PathBuf, bool, Option<crate::media_info::MediaInfo>), String> {
+    let media_file = outcome
+        .media_file
+        .clone()
+        .unwrap_or_else(|| dest.to_path_buf());
+    if !media_file.is_file() || !is_within(&media_file, series_path) {
+        return Err(format!(
+            "Failed to import episode: the import script did not leave a file in the series folder ({})",
+            media_file.display()
+        ));
+    }
+    if outcome.decision != crate::script_import::ScriptDecision::RenameRequested {
+        return Ok((media_file, false, c.media_info.clone()));
+    }
+    let renamed = match media_file.extension() {
+        Some(ext) => dest.with_extension(ext),
+        None => dest.to_path_buf(),
+    };
+    if renamed != media_file {
+        if renamed.exists() {
+            return Err("Failed to import episode, Destination already exists.".into());
+        }
+        if std::fs::rename(&media_file, &renamed).is_err() {
+            std::fs::copy(&media_file, &renamed)
+                .map_err(|e| format!("Failed to import episode: {e}"))?;
+            let _ = std::fs::remove_file(&media_file);
+        }
+    }
+    let info = crate::media_info::reader::read(&renamed)
+        .await
+        .or_else(|| c.media_info.clone());
+    Ok((renamed, false, info))
+}
+
+/// Sonarr's `ImportScriptService` environment (`Sonarr_*`), for the import script.
+async fn script_environment(
+    db: &Database,
+    d: &Download<'_>,
+    detail: &kitsunarr_domain::api::library::SeriesDetail,
+    model: &decision::Series,
+    c: &Candidate,
+    dest: &Path,
+    transfer_mode: &str,
+) -> Vec<(String, String)> {
+    use crate::media_info::format;
+    let net_date = |d: chrono::DateTime<chrono::Utc>| d.format("%m/%d/%Y %H:%M:%S").to_string();
+    let general: kitsunarr_domain::api::settings::GeneralSettings =
+        settings::get_or_default(db.pool(), settings::KEY_GENERAL)
+            .await
+            .unwrap_or_default();
+    let slug: Option<String> = sqlx::query_scalar("SELECT title_slug FROM series WHERE id = ?")
+        .bind(model.id)
+        .fetch_optional(db.pool())
+        .await
+        .ok()
+        .flatten();
+    let tag_labels: Vec<String> = kitsunarr_db::tags::list(db.pool())
+        .await
+        .unwrap_or_default()
+        .into_iter()
+        .filter(|t| detail.item.tags.contains(&t.id))
+        .map(|t| t.label)
+        .collect();
+    let external = |kind: &str| {
+        detail
+            .external_ids
+            .iter()
+            .find(|e| e.kind.to_string() == kind)
+            .map(|e| e.value.clone())
+    };
+    let number = |kind: &str| external(kind).unwrap_or_else(|| "0".into());
+    let episodes: Vec<&decision::Episode> = c
+        .episodes
+        .iter()
+        .filter_map(|id| model.episodes.iter().find(|e| e.id == *id))
+        .collect();
+    let mut overviews = Vec::new();
+    for e in &episodes {
+        let o: Option<String> = sqlx::query_scalar("SELECT overview FROM episodes WHERE id = ?")
+            .bind(e.id)
+            .fetch_optional(db.pool())
+            .await
+            .ok()
+            .flatten();
+        overviews.push(o.unwrap_or_default());
+    }
+    let join = |sep: &str, v: Vec<String>| v.join(sep);
+    let series_type = match detail.item.series_type {
+        kitsunarr_domain::SeriesType::Standard => "Standard",
+        kitsunarr_domain::SeriesType::Daily => "Daily",
+        kitsunarr_domain::SeriesType::Anime => "Anime",
+    };
+    let mut env: Vec<(&str, String)> = vec![
+        ("Sonarr_SourcePath", c.path.to_string_lossy().into_owned()),
+        (
+            "Sonarr_DestinationPath",
+            dest.to_string_lossy().into_owned(),
+        ),
+        ("Sonarr_InstanceName", general.instance_name),
+        ("Sonarr_ApplicationUrl", String::new()),
+        ("Sonarr_TransferMode", transfer_mode.into()),
+        ("Sonarr_Series_Id", model.id.to_string()),
+        ("Sonarr_Series_Title", detail.item.title.clone()),
+        ("Sonarr_Series_TitleSlug", slug.unwrap_or_default()),
+        ("Sonarr_Series_Path", detail.item.path.clone()),
+        ("Sonarr_Series_TvdbId", number("tvdb")),
+        ("Sonarr_Series_TvMazeId", number("tvMaze")),
+        ("Sonarr_Series_TmdbId", number("tmdb")),
+        ("Sonarr_Series_ImdbId", external("imdb").unwrap_or_default()),
+        ("Sonarr_Series_Type", series_type.into()),
+        (
+            "Sonarr_Series_OriginalLanguage",
+            model
+                .original_language
+                .map(|l| crate::metadata_language_code(Some(l.id)))
+                .unwrap_or_default(),
+        ),
+        ("Sonarr_Series_Genres", detail.genres.join("|")),
+        ("Sonarr_Series_Tags", tag_labels.join("|")),
+        (
+            "Sonarr_EpisodeFile_EpisodeCount",
+            episodes.len().to_string(),
+        ),
+        (
+            "Sonarr_EpisodeFile_EpisodeIds",
+            join(",", episodes.iter().map(|e| e.id.to_string()).collect()),
+        ),
+        ("Sonarr_EpisodeFile_SeasonNumber", c.season.to_string()),
+        (
+            "Sonarr_EpisodeFile_EpisodeNumbers",
+            join(
+                ",",
+                episodes
+                    .iter()
+                    .map(|e| e.episode_number.to_string())
+                    .collect(),
+            ),
+        ),
+        (
+            "Sonarr_EpisodeFile_EpisodeAirDates",
+            join(
+                ",",
+                episodes
+                    .iter()
+                    .map(|e| e.air_date.clone().unwrap_or_default())
+                    .collect(),
+            ),
+        ),
+        (
+            "Sonarr_EpisodeFile_EpisodeAirDatesUtc",
+            join(
+                ",",
+                episodes
+                    .iter()
+                    .map(|e| e.air_date_utc.map(net_date).unwrap_or_default())
+                    .collect(),
+            ),
+        ),
+        (
+            "Sonarr_EpisodeFile_EpisodeTitles",
+            join(
+                "|",
+                episodes
+                    .iter()
+                    .map(|e| e.title.clone().unwrap_or_default())
+                    .collect(),
+            ),
+        ),
+        ("Sonarr_EpisodeFile_EpisodeOverviews", overviews.join("|")),
+        (
+            "Sonarr_EpisodeFile_Quality",
+            c.quality.quality().name.to_string(),
+        ),
+        (
+            "Sonarr_EpisodeFile_QualityVersion",
+            c.quality.revision.version.to_string(),
+        ),
+        (
+            "Sonarr_EpisodeFile_ReleaseGroup",
+            c.release_group.clone().unwrap_or_default(),
+        ),
+        (
+            "Sonarr_EpisodeFile_SceneName",
+            c.scene_name.clone().unwrap_or_default(),
+        ),
+        ("Sonarr_Download_Client", d.client_name.to_string()),
+        (
+            "Sonarr_Download_Client_Type",
+            d.client_implementation.to_string(),
+        ),
+        ("Sonarr_Download_Id", d.download_id.to_string()),
+    ];
+    if let Some(info) = &c.media_info {
+        let primary = info.primary_audio();
+        let languages: Vec<String> = info
+            .audio_streams
+            .iter()
+            .map(|a| a.language.clone().unwrap_or_default())
+            .collect();
+        let mut distinct = languages.clone();
+        distinct.dedup();
+        let mut seen = HashSet::new();
+        distinct.retain(|l| seen.insert(l.clone()));
+        env.extend([
+            (
+                "Sonarr_EpisodeFile_MediaInfo_AudioChannels",
+                format::format_audio_channels(primary).to_string(),
+            ),
+            (
+                "Sonarr_EpisodeFile_MediaInfo_AudioCodec",
+                format::format_audio_codec(primary, ""),
+            ),
+            (
+                "Sonarr_EpisodeFile_MediaInfo_AudioLanguages",
+                distinct.join(" / "),
+            ),
+            (
+                "Sonarr_EpisodeFile_MediaInfo_Languages",
+                languages.join(" / "),
+            ),
+            (
+                "Sonarr_EpisodeFile_MediaInfo_Height",
+                info.height.to_string(),
+            ),
+            ("Sonarr_EpisodeFile_MediaInfo_Width", info.width.to_string()),
+            (
+                "Sonarr_EpisodeFile_MediaInfo_Subtitles",
+                info.subtitle_streams
+                    .iter()
+                    .map(|s| s.language.clone().unwrap_or_default())
+                    .collect::<Vec<_>>()
+                    .join(" / "),
+            ),
+            (
+                "Sonarr_EpisodeFile_MediaInfo_VideoCodec",
+                format::format_video_codec(info, ""),
+            ),
+            (
+                "Sonarr_EpisodeFile_MediaInfo_VideoDynamicRangeType",
+                format::format_video_dynamic_range_type(info),
+            ),
+        ]);
+    }
+    env.extend([
+        (
+            "Sonarr_EpisodeFile_CustomFormat",
+            c.custom_formats.join("|"),
+        ),
+        (
+            "Sonarr_EpisodeFile_CustomFormatScore",
+            c.custom_format_score.to_string(),
+        ),
+    ]);
+    // The files this import replaces (Kitsunarr removes them after the import, so their
+    // recycle bin paths are not known yet).
+    let mut seen = HashSet::new();
+    let old: Vec<i64> = episodes
+        .iter()
+        .filter_map(|e| e.file.as_ref())
+        .map(|f| f.id)
+        .filter(|id| seen.insert(*id))
+        .collect();
+    if !old.is_empty() {
+        let records: Vec<kitsunarr_db::library::series::FileRecord> =
+            series::file_records(db, model.id)
+                .await
+                .unwrap_or_default()
+                .into_iter()
+                .filter(|f| old.contains(&f.id))
+                .collect();
+        env.extend([
+            (
+                "Sonarr_DeletedRelativePaths",
+                join(
+                    "|",
+                    records.iter().map(|f| f.relative_path.clone()).collect(),
+                ),
+            ),
+            (
+                "Sonarr_DeletedPaths",
+                join(
+                    "|",
+                    records
+                        .iter()
+                        .map(|f| {
+                            Path::new(&detail.item.path)
+                                .join(&f.relative_path)
+                                .to_string_lossy()
+                                .into_owned()
+                        })
+                        .collect(),
+                ),
+            ),
+            (
+                "Sonarr_DeletedDateAdded",
+                join(
+                    "|",
+                    records
+                        .iter()
+                        .map(|f| {
+                            crate::decision_input::history_date(&f.added_at)
+                                .map(net_date)
+                                .unwrap_or_default()
+                        })
+                        .collect(),
+                ),
+            ),
+            (
+                "Sonarr_DeletedRecycleBinPaths",
+                join("|", records.iter().map(|_| String::new()).collect()),
+            ),
+        ]);
+    }
+    env.into_iter().map(|(k, v)| (k.to_string(), v)).collect()
 }
 
 /// Sonarr's `UpdateEpisodeFileService.ChangeFileDate` (and Tanukarr's "preserve original"),
@@ -1553,18 +1924,9 @@ async fn apply_file_date(
     {
         tracing::warn!(path = %dest.display(), error = %e, "could not change the file date");
     }
-    #[cfg(unix)]
-    if media.set_permissions
-        && let Ok(mode) = u32::from_str_radix(media.chmod_folder.trim(), 8)
-    {
-        use std::os::unix::fs::PermissionsExt;
-        let file_mode = mode & !0o111;
-        if let Err(e) = std::fs::set_permissions(dest, std::fs::Permissions::from_mode(file_mode)) {
-            tracing::warn!(path = %dest.display(), error = %e, "could not set the file permissions");
-        }
-        if let Some(dir) = dest.parent() {
-            let _ = std::fs::set_permissions(dir, std::fs::Permissions::from_mode(mode));
-        }
+    crate::permissions::apply(dest, media);
+    if let Some(dir) = dest.parent() {
+        crate::permissions::apply(dir, media);
     }
 }
 
@@ -1799,6 +2161,75 @@ mod tests {
             super::manual_episodes(&data(&[11, 999]), &model, false, None)
                 .unwrap()
                 .is_err()
+        );
+    }
+
+    /// `EpisodeTitleSpecificationFixture` (titles are needed by the naming format).
+    #[test]
+    fn episode_title_specification_fixture() {
+        use EpisodeTitleRequired as T;
+        let now = chrono::Utc::now();
+        let mut series = mapped_series();
+        let episode = |title: Option<&str>, aired: Option<chrono::DateTime<chrono::Utc>>| {
+            let mut e = series.episodes[0].clone();
+            e.title = title.map(str::to_string);
+            e.air_date_utc = aired;
+            e
+        };
+        let check = |mode, e: &decision::Episode, season: &[decision::Episode]| {
+            episode_title_rejection(mode, &[e], season, now)
+        };
+        // should_reject_when_title_is_null / _is_TBA
+        let none = episode(None, Some(now));
+        assert_eq!(
+            check(T::Always, &none, &series.episodes),
+            Some("Episode does not have a title and recently aired")
+        );
+        let tba = episode(Some("TBA"), Some(now));
+        assert_eq!(
+            check(T::Always, &tba, &series.episodes),
+            Some("Episode has a TBA title and recently aired")
+        );
+        // should_accept_when_did_not_air_recently_but_title_is_TBA
+        let old = episode(Some("TBA"), Some(now - chrono::Duration::days(7)));
+        assert_eq!(check(T::Always, &old, &series.episodes), None);
+        // should_accept_when_episode_title_is_never_required
+        assert_eq!(check(T::Never, &tba, &series.episodes), None);
+        // should_accept_if_episode_title_is_required_for_bulk_season_releases_and_not_bulk_season
+        assert_eq!(check(T::BulkSeasonReleases, &tba, &series.episodes), None);
+        // should_reject_if_episode_title_is_required_for_bulk_season_releases_and_it_is_missing:
+        // five episodes of the season aired at the same time.
+        series.episodes = (1..=5)
+            .map(|n| {
+                let mut e = episode(Some("Title"), Some(now));
+                e.id = n;
+                e.episode_number = n as i32;
+                e
+            })
+            .collect();
+        assert_eq!(
+            check(T::BulkSeasonReleases, &tba, &series.episodes),
+            Some("Episode has a TBA title and recently aired")
+        );
+        // ..._and_some_episodes_do_not_have_air_date
+        series.episodes[0].air_date_utc = None;
+        series.episodes[1].air_date_utc = None;
+        assert!(check(T::BulkSeasonReleases, &tba, &series.episodes).is_some());
+    }
+
+    #[test]
+    fn user_rejected_extensions_like_upstream() {
+        assert_eq!(
+            user_rejected_extensions(" exe, .BAT ,,sh."),
+            vec![".exe", ".bat", ".sh"]
+        );
+        assert!(user_rejected_extensions_problems("exe, nfo").is_empty());
+        assert_eq!(
+            user_rejected_extensions_problems("rar, .mkv, exe"),
+            vec![
+                "Rejected extensions may not include valid archive extensions: .rar",
+                "Rejected extensions may not include valid media file extensions: .mkv",
+            ]
         );
     }
 

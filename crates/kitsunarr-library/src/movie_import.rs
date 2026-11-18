@@ -169,6 +169,25 @@ pub async fn import_movie_download(
             d.output_path.display()
         )));
     }
+    // `ProcessFile`: a single-file download with a user-rejected extension.
+    if !d.output_path.is_dir() {
+        let media: kitsunarr_domain::api::settings::MediaManagementSettings =
+            kitsunarr_db::settings::get_or_default(
+                db.pool(),
+                kitsunarr_db::settings::KEY_MEDIA_MANAGEMENT,
+            )
+            .await
+            .map_err(err)?;
+        let ext = crate::import::extension(d.output_path);
+        if !ext.is_empty()
+            && crate::import::user_rejected_extensions(&media.user_rejected_extensions)
+                .contains(&ext)
+        {
+            return Ok(blocked(&format!(
+                "Caution: Found file with user defined rejected extension: '{ext}'"
+            )));
+        }
+    }
     let files: Vec<PathBuf> = if d.output_path.is_dir() {
         video_files(d.output_path)
     } else {
