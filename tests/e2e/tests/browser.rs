@@ -2005,6 +2005,56 @@ async fn first_run_setup_migration_and_library() {
         }
         assert!(overflowing.is_empty(), "pages scroll sideways: {overflowing:#?}");
 
+        // Tanukarr's statistics page.
+        client.goto(&format!("{base}/statistics")).await.unwrap();
+        wait_text(&client, "Series status").await;
+        wait_text(&client, "Quality profiles").await;
+        wait_text(&client, "File qualities").await;
+        screenshot(&client, "13a-statistics").await;
+        // The overview view, with a column chosen in the column chooser.
+        client.goto(&format!("{base}/series")).await.unwrap();
+        click_button(&client, "Overview").await;
+        client
+            .wait()
+            .at_most(Duration::from_secs(20))
+            .for_element(Locator::XPath("//article[contains(@class,'overview-item')][contains(., 'Breaking Bad')]"))
+            .await
+            .unwrap();
+        client.find(Locator::Css("details.column-chooser > summary")).await.unwrap().click().await.unwrap();
+        client.wait().for_element(Locator::Css("input[aria-label='Column Path']")).await.unwrap().click().await.unwrap();
+        client
+            .wait()
+            .for_element(Locator::XPath("//dl[contains(@class,'overview-details')]//dt[normalize-space(.)='Path']"))
+            .await
+            .unwrap();
+        screenshot(&client, "13b-overview").await;
+        client.find(Locator::Css("input[aria-label='Column Path']")).await.unwrap().click().await.unwrap();
+        client.find(Locator::Css("details.column-chooser > summary")).await.unwrap().click().await.unwrap();
+        click_button(&client, "Posters").await;
+        client.wait().for_element(Locator::Css("a.media-card")).await.unwrap();
+        // Settings › UI: the short date format applies to the library's dates.
+        client.goto(&format!("{base}/settings/ui")).await.unwrap();
+        select_value(&client, "select[aria-label='Short date format']", "DD/MM/YYYY").await;
+        // The switch's input is hidden: its label is clicked.
+        let relative = "input[aria-label='Show relative dates (Today, Yesterday, Tomorrow) instead of the date']";
+        let relative_switch = "//label[.//input[@aria-label='Show relative dates (Today, Yesterday, Tomorrow) instead of the date']]";
+        if client.find(Locator::Css(relative)).await.unwrap().prop("checked").await.unwrap().as_deref() == Some("true") {
+            client.find(Locator::XPath(relative_switch)).await.unwrap().click().await.unwrap();
+        }
+        click_button(&client, "Save").await;
+        wait_text(&client, "Interface settings saved.").await;
+        client.goto(&format!("{base}/movies")).await.unwrap();
+        click_button(&client, "Table").await;
+        // E2E Film was added on 2026-11-14 (the day may differ by the browser's time zone).
+        wait_text(&client, "/11/2026").await;
+        screenshot(&client, "13c-ui-date-format").await;
+        click_button(&client, "Posters").await;
+        client.goto(&format!("{base}/settings/ui")).await.unwrap();
+        select_value(&client, "select[aria-label='Short date format']", "MMM D YYYY").await;
+        client.find(Locator::XPath(relative_switch)).await.unwrap().click().await.unwrap();
+        click_button(&client, "Save").await;
+        wait_text(&client, "Interface settings saved.").await;
+
         // The interface in Italian (Sonarr's UI languages), then back to English.
         client
             .goto(&format!("{base}/settings"))
