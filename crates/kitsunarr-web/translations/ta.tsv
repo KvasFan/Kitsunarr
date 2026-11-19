@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	தேர்ந்தெடுத�
 Converted	மாற்றப்பட்டது
 Cannot be converted: {problem}	மாற்ற முடியாது: {problem}
 {n} seasons, {m} files to move	{n} சீசன்கள், நகர்த்த வேண்டிய {m} கோப்புகள்
+Monitored/Status	கண்காணிப்பு/நிலை
+Episode count	அத்தியாயங்களின் எண்ணிக்கை
+Select multiple series	பல தொடர்களைத் தேர்ந்தெடு
+Stop selecting	தேர்வை நிறுத்து
+Show individual series	தொடர்களைத் தனித்தனியாகக் காட்டு
+Show groups	குழுக்களைக் காட்டு
+Edit movies…	திரைப்படங்களைத் திருத்து…
+Movie tags…	திரைப்படக் குறிச்சொற்கள்…
+{} seasons · {} movies	{} சீசன்கள் · {} திரைப்படங்கள்
+{} seasons · {} movies · {} specials	{} சீசன்கள் · {} திரைப்படங்கள் · {} சிறப்புகள்
+{}/{} episodes	{}/{} அத்தியாயங்கள்
+Total file size	மொத்த கோப்பு அளவு
+No series yet	இன்னும் தொடர்கள் இல்லை

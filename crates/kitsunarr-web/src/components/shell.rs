@@ -223,9 +223,6 @@ fn Sidebar() -> Element {
             NavLink { to: Route::Dashboard {}, icon: "◧", label: s.dashboard }
             div { class: "nav-section", "{s.library}" }
             NavLink { to: Route::SeriesLibrary {}, icon: "▶", label: s.series }
-            NavLink { to: Route::AnimeLibrary {}, icon: "✿", label: s.anime }
-            NavLink { to: Route::MoviesLibrary {}, icon: "◉", label: s.movies }
-            NavLink { to: Route::Collections {}, icon: "▤", label: s.collections }
             NavLink { to: Route::Calendar {}, icon: "▦", label: s.calendar }
             NavLink { to: Route::Statistics {}, icon: "▥", label: "Statistics" }
             div { class: "nav-section", "{s.activity}" }

@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Niciunul dintre serialele selectat
 Converted	Convertit
 Cannot be converted: {problem}	Nu poate fi convertit: {problem}
 {n} seasons, {m} files to move	{n} sezoane, {m} fișiere de mutat
+Monitored/Status	Monitorizare/Stare
+Episode count	Număr de episoade
+Select multiple series	Selectează mai multe seriale
+Stop selecting	Oprește selectarea
+Show individual series	Afișează serialele individual
+Show groups	Afișează grupurile
+Edit movies…	Editează filmele…
+Movie tags…	Etichetele filmelor…
+{} seasons · {} movies	Sezoane: {} · filme: {}
+{} seasons · {} movies · {} specials	Sezoane: {} · filme: {} · episoade speciale: {}
+{}/{} episodes	{}/{} episoade
+Total file size	Dimensiunea totală a fișierelor
+No series yet	Încă nu există seriale

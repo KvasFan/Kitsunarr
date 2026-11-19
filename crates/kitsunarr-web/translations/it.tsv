@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Nessuna delle serie selezionate pu
 Converted	Convertita
 Cannot be converted: {problem}	Non convertibile: {problem}
 {n} seasons, {m} files to move	{n} stagioni, {m} file da spostare
+Monitored/Status	Monitoraggio/Stato
+Episode count	Numero di episodi
+Select multiple series	Seleziona più serie
+Stop selecting	Termina selezione
+Show individual series	Mostra le singole serie
+Show groups	Mostra i gruppi
+Edit movies…	Modifica film…
+Movie tags…	Tag dei film…
+{} seasons · {} movies	{} stagioni · {} film
+{} seasons · {} movies · {} specials	{} stagioni · {} film · {} speciali
+{}/{} episodes	{}/{} episodi
+Total file size	Dimensione totale dei file
+No series yet	Ancora nessuna serie

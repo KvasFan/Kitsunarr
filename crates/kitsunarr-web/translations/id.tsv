@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Tidak ada serial terpilih yang dap
 Converted	Diubah
 Cannot be converted: {problem}	Tidak dapat diubah: {problem}
 {n} seasons, {m} files to move	{n} musim, {m} berkas yang dipindahkan
+Monitored/Status	Dimonitor/Status
+Episode count	Jumlah episode
+Select multiple series	Pilih beberapa serial
+Stop selecting	Berhenti memilih
+Show individual series	Tampilkan serial satu per satu
+Show groups	Tampilkan grup
+Edit movies…	Edit film…
+Movie tags…	Tag film…
+{} seasons · {} movies	{} musim · {} film
+{} seasons · {} movies · {} specials	{} musim · {} film · {} spesial
+{}/{} episodes	{}/{} episode
+Total file size	Ukuran total file
+No series yet	Belum ada serial

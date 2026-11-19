@@ -777,7 +777,7 @@ pub fn MovieDetailPage(id: i64) -> Element {
                     } else {
                         "Movie removed from Kitsunarr. Files on disk were not touched."
                     });
-                    nav.push(Route::MoviesLibrary {});
+                    nav.push(Route::SeriesLibrary {});
                 }
                 Err(e) => app.error(&e),
             }

@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	ไม่มีซีรีส์�
 Converted	แปลงแล้ว
 Cannot be converted: {problem}	แปลงไม่ได้: {problem}
 {n} seasons, {m} files to move	{n} ซีซัน ไฟล์ที่จะย้าย {m} ไฟล์
+Monitored/Status	ติดตาม/สถานะ
+Episode count	จำนวนตอน
+Select multiple series	เลือกหลายซีรีส์
+Stop selecting	หยุดเลือก
+Show individual series	แสดงซีรีส์แยกกัน
+Show groups	แสดงกลุ่ม
+Edit movies…	แก้ไขภาพยนตร์…
+Movie tags…	แท็กภาพยนตร์…
+{} seasons · {} movies	{} ซีซัน · ภาพยนตร์ {} เรื่อง
+{} seasons · {} movies · {} specials	{} ซีซัน · ภาพยนตร์ {} เรื่อง · ตอนพิเศษ {} ตอน
+{}/{} episodes	{}/{} ตอน
+Total file size	ขนาดไฟล์ทั้งหมด
+No series yet	ยังไม่มีซีรีส์

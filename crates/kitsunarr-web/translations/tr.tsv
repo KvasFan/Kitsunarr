@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Seçili dizilerin hiçbiri dönü�
 Converted	Dönüştürüldü
 Cannot be converted: {problem}	Dönüştürülemez: {problem}
 {n} seasons, {m} files to move	{n} sezon, taşınacak {m} dosya
+Monitored/Status	Takip/Durum
+Episode count	Bölüm sayısı
+Select multiple series	Birden çok dizi seç
+Stop selecting	Seçimi bitir
+Show individual series	Dizileri tek tek göster
+Show groups	Grupları göster
+Edit movies…	Filmleri düzenle…
+Movie tags…	Film etiketleri…
+{} seasons · {} movies	{} sezon · {} film
+{} seasons · {} movies · {} specials	{} sezon · {} film · {} özel bölüm
+{}/{} episodes	{}/{} bölüm
+Total file size	Toplam dosya boyutu
+No series yet	Henüz dizi yok

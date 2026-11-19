@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	所选剧集均无法转换。
 Converted	已转换
 Cannot be converted: {problem}	无法转换：{problem}
 {n} seasons, {m} files to move	{n} 季，要移动 {m} 个文件
+Monitored/Status	追踪/状态
+Episode count	集数
+Select multiple series	选择多部剧集
+Stop selecting	停止选择
+Show individual series	单独显示剧集
+Show groups	显示分组
+Edit movies…	编辑电影…
+Movie tags…	电影标签…
+{} seasons · {} movies	{} 季 · {} 部电影
+{} seasons · {} movies · {} specials	{} 季 · {} 部电影 · {} 个特别节目
+{}/{} episodes	{}/{} 集
+Total file size	文件总大小
+No series yet	尚无剧集

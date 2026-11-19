@@ -310,6 +310,26 @@ async fn large_library_queries() {
         .await,
     ));
     rows.push((
+        "library index, grouped, sort by title",
+        median(runs, || async {
+            let mut query = q("title", false, None, None);
+            query.group_anime_seasons = Some(true);
+            kitsunarr_db::library::index::list(&db, &query)
+                .await
+                .unwrap();
+        })
+        .await,
+    ));
+    rows.push((
+        "library index, sort by size",
+        median(runs, || async {
+            kitsunarr_db::library::index::list(&db, &q("size", true, None, None))
+                .await
+                .unwrap();
+        })
+        .await,
+    ));
+    rows.push((
         "dashboard statistics",
         median(runs, || async {
             stats::library_stats(&db).await.unwrap();

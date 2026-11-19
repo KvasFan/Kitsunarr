@@ -1,32 +1,69 @@
-//! Library pages (TV series, anime, movies) with server-side paging, search, sort, filters,
-//! poster and table views, and bulk editing.
+//! The library, as Tanukarr's single series index: series, anime and movies in one list with
+//! server-side paging, search, sort, filters, anime grouping (on by default), poster, table and
+//! overview views, the jump bar, select mode with the mass editor, and the footer statistics.
 
 use std::collections::HashSet;
 
 use dioxus::prelude::*;
-use kitsunarr_domain::api::library::{BulkEdit, LibraryQuery};
-use kitsunarr_domain::{MediaKind, SortDirection};
+use kitsunarr_domain::SortDirection;
+use kitsunarr_domain::api::library::{BulkEdit, LibraryIndex, LibraryKey, LibraryQuery};
 
 use crate::components::common::{Empty, ErrorBox, Loading, Pagination};
 use crate::components::media::{
-    ColumnChooser, MOVIE_COLUMNS, MovieCard, MovieOverview, MovieTable, SERIES_COLUMNS, SeriesCard,
-    SeriesOverview, SeriesTable, ViewSwitch, use_columns, use_view,
+    ColumnChooser, LibraryOverview, LibraryPosters, LibraryTable, SERIES_COLUMNS, SortMenu,
+    ViewSwitch, use_columns, use_view,
 };
 use crate::pages::library_filters::{self, FilterRef};
 use crate::route::Route;
 use crate::state::{use_app, use_client};
-use crate::util::{load_pref, save_pref};
+use crate::util::{format_bytes, load_pref, save_pref};
 
 const PAGE_SIZE: u32 = 60;
 
-#[component]
-pub fn SeriesLibrary() -> Element {
-    rsx! { SeriesLibraryView { kind: MediaKind::Series, title: "TV Series" } }
+/// A preference of the library index (kept per browser, as Tanukarr's `series_options`).
+fn pref(name: &str) -> String {
+    format!("library.index.{name}")
 }
 
+/// Tanukarr's "Group anime seasons" starts on. Before the single list each library page kept
+/// its own choice, written only as "false" when someone turned grouping off on the anime page;
+/// that explicit choice carries over, nothing else does.
+fn initial_grouping() -> bool {
+    match load_pref(&pref("group")) {
+        Some(saved) => saved != "false",
+        None => load_pref("library.anime.group").as_deref() != Some("false"),
+    }
+}
+
+/// The library (Tanukarr's "Series" page).
+#[component]
+pub fn SeriesLibrary() -> Element {
+    rsx! { LibraryIndexPage {} }
+}
+
+/// The former anime page: the library with Tanukarr's "Anime" filter.
 #[component]
 pub fn AnimeLibrary() -> Element {
-    rsx! { SeriesLibraryView { kind: MediaKind::Anime, title: "Anime" } }
+    rsx! { RedirectWithFilter { filter: "anime" } }
+}
+
+/// The former movie page: the library with the "Movies" filter.
+#[component]
+pub fn MoviesLibrary() -> Element {
+    rsx! { RedirectWithFilter { filter: "movies" } }
+}
+
+/// Selects a filter of the library and opens it (old links keep showing the same titles).
+#[component]
+fn RedirectWithFilter(filter: &'static str) -> Element {
+    let nav = navigator();
+    use_effect(move || {
+        save_pref(&pref("filter"), filter);
+        save_pref(&pref("combined"), "");
+        save_pref(&pref("path"), "");
+        nav.replace(Route::SeriesLibrary {});
+    });
+    rsx! { Loading {} }
 }
 
 /// Debounces a signal: the returned signal follows `source` after `ms` of inactivity.
@@ -60,17 +97,43 @@ fn use_tags() -> Resource<Vec<kitsunarr_domain::api::settings::TagItem>> {
     })
 }
 
+fn empty_index() -> LibraryIndex {
+    LibraryIndex {
+        page: 1,
+        page_size: PAGE_SIZE,
+        total_records: 0,
+        records: Vec::new(),
+        filtered_items: 0,
+        total_items: 0,
+        has_groups: false,
+        jump_bar: Vec::new(),
+        footer: Default::default(),
+        keys: Vec::new(),
+    }
+}
+
+/// Brings an entry of the shown page into view (the jump bar).
+fn scroll_to_entry(index: u64) -> bool {
+    let Some(el) = web_sys::window()
+        .and_then(|w| w.document())
+        .and_then(|d| d.get_element_by_id(&format!("library-entry-{index}")))
+    else {
+        return false;
+    };
+    el.scroll_into_view();
+    true
+}
+
 #[component]
-fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
+fn LibraryIndexPage() -> Element {
     let app = use_app();
     let client = use_client();
     let search = use_debounced(app.search, 300);
     let mut page = use_signal(|| 1u32);
-    let mut sort_key = use_signal(|| "title".to_string());
-    let mut descending = use_signal(|| false);
-    // Tanukarr's series index options: the selected filter, the combined ones, the path
-    // filter and "Group anime seasons" (on by default), kept per library.
-    let pref = move |name: &str| format!("library.{}.{name}", kind.as_str());
+    // Tanukarr's options: sort, filters, path and grouping are remembered.
+    let mut sort_key = use_signal(|| load_pref(&pref("sort")).unwrap_or_else(|| "title".into()));
+    let mut descending =
+        use_signal(|| load_pref(&pref("sortDirection")).as_deref() == Some("descending"));
     let mut filter = use_signal(|| {
         load_pref(&pref("filter"))
             .map(|v| FilterRef::parse(&v))
@@ -85,16 +148,18 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             .collect::<Vec<_>>()
     });
     let mut path = use_signal(|| load_pref(&pref("path")).unwrap_or_default());
-    let mut group = use_signal(|| load_pref(&pref("group")).as_deref() != Some("false"));
+    let mut group = use_signal(initial_grouping);
     let mut saving_filter = use_signal(|| false);
     let view = use_view();
-    let columns = use_columns(kind.as_str(), SERIES_COLUMNS);
+    let columns = use_columns("index", SERIES_COLUMNS);
     let tags = use_tags();
     let tag_list = move || tags.read().clone().unwrap_or_default();
-    let mut selected = use_signal(HashSet::<i64>::new);
+    let mut select_mode = use_signal(|| false);
+    let mut selected = use_signal(HashSet::<LibraryKey>::new);
     let mut bulk_profile = use_signal(String::new);
+    let mut jump_to = use_signal(|| None::<u64>);
 
-    // Reset to the first page when filters change.
+    // Back to the first page when the list changes.
     use_effect(move || {
         let _ = (
             search(),
@@ -110,11 +175,19 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
         }
     });
     use_effect(move || {
+        save_pref(&pref("sort"), &sort_key());
+        save_pref(
+            &pref("sortDirection"),
+            if descending() {
+                "descending"
+            } else {
+                "ascending"
+            },
+        );
         save_pref(&pref("filter"), &filter().encode());
         let list: Vec<String> = combined().iter().map(FilterRef::encode).collect();
         save_pref(&pref("combined"), &list.join(","));
         save_pref(&pref("path"), &path());
-        save_pref(&pref("group"), if group() { "true" } else { "false" });
     });
     // Saved filters (Sonarr's custom filters of the series index).
     let cf = client.clone();
@@ -136,7 +209,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let path_choices = use_resource(move || {
         let _ = (app.library_rev)();
         let c = cp.clone();
-        async move { c.series_path_filters(Some(kind)).await }
+        async move { c.series_path_filters(None).await }
     });
     // The filter part of the query (what a saved filter stores).
     let composed = move || {
@@ -154,27 +227,11 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
         let applied = library_filters::apply(&chosen, &saved_list(), &mut q);
         (q, applied)
     };
-    let ct = client.clone();
-    let total = use_resource(move || {
-        let _ = (app.library_rev)();
-        let c = ct.clone();
-        async move {
-            c.series(&LibraryQuery {
-                kind: Some(kind),
-                page_size: Some(1),
-                ..Default::default()
-            })
-            .await
-            .map(|p| p.total_records)
-        }
-    });
-    let c = client.clone();
-    let data = use_resource(move || {
-        let _ = (app.library_rev)();
+    let query = move |page: u32, page_size: u32| {
         let (filters, applied) = composed();
         let q = LibraryQuery {
-            page: Some(page()),
-            page_size: Some(PAGE_SIZE),
+            page: Some(page),
+            page_size: Some(page_size),
             sort_key: Some(sort_key()),
             sort_direction: Some(if descending() {
                 SortDirection::Desc
@@ -182,22 +239,31 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 SortDirection::Asc
             }),
             search: Some(search()).filter(|s| !s.trim().is_empty()),
-            kind: Some(kind),
             group_anime_seasons: Some(group()),
             ..filters
         };
+        (q, applied.conflict)
+    };
+    let c = client.clone();
+    let mut data = use_resource(move || {
+        let _ = (app.library_rev)();
+        let (q, conflict) = query(page(), PAGE_SIZE);
         let c = c.clone();
         async move {
             // Filters that contradict each other match nothing.
-            if applied.conflict {
-                return Ok(kitsunarr_domain::Page {
-                    page: 1,
-                    page_size: PAGE_SIZE,
-                    total_records: 0,
-                    records: Vec::new(),
-                });
+            if conflict {
+                return Ok(empty_index());
             }
-            c.series(&q).await
+            c.library_index(&q).await
+        }
+    });
+    // After a jump to another page, scroll once its entries are shown.
+    use_effect(move || {
+        let _ = data.read();
+        if let Some(i) = jump_to()
+            && scroll_to_entry(i)
+        {
+            jump_to.set(None);
         }
     });
     let filtering = move || {
@@ -209,24 +275,126 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
         async move { c.quality_profiles().await }
     });
 
+    let series_ids = move || {
+        let mut ids: Vec<i64> = selected
+            .read()
+            .iter()
+            .filter(|k| !k.movie)
+            .map(|k| k.id)
+            .collect();
+        ids.sort_unstable();
+        ids
+    };
+    let movie_ids = move || {
+        let mut ids: Vec<i64> = selected
+            .read()
+            .iter()
+            .filter(|k| k.movie)
+            .map(|k| k.id)
+            .collect();
+        ids.sort_unstable();
+        ids
+    };
+    let mut busy = use_signal(|| false);
+    // Monitoring and the quality profile apply to the selected series and movies alike.
+    let bc = client.clone();
     let bulk = use_callback(move |edit: BulkEdit| {
-        let client = client.clone();
+        let c = bc.clone();
+        let (series, movies) = (series_ids(), movie_ids());
+        busy.set(true);
         spawn(async move {
-            match client.bulk_edit_series(&edit).await {
+            let mut updated = 0;
+            let mut failed = None;
+            if !series.is_empty() {
+                match c
+                    .bulk_edit_series(&BulkEdit {
+                        ids: series,
+                        ..edit.clone()
+                    })
+                    .await
+                {
+                    Ok(r) => updated += r.updated,
+                    Err(e) => failed = Some(e),
+                }
+            }
+            if !movies.is_empty() && failed.is_none() {
+                match c
+                    .bulk_edit_movies(&BulkEdit {
+                        ids: movies,
+                        ..edit
+                    })
+                    .await
+                {
+                    Ok(r) => updated += r.updated,
+                    Err(e) => failed = Some(e),
+                }
+            }
+            match failed {
+                None => {
+                    app.success(format!("Updated {updated} items."));
+                    selected.write().clear();
+                }
+                Some(e) => app.error(&e),
+            }
+            busy.set(false);
+            data.restart();
+        });
+    });
+    let wc = client.clone();
+    let mark_watched = use_callback(move |watched: bool| {
+        let c = wc.clone();
+        let ids = movie_ids();
+        busy.set(true);
+        spawn(async move {
+            match c.set_movies_watched(&ids, watched).await {
                 Ok(r) => {
                     app.success(format!("Updated {} items.", r.updated));
                     selected.write().clear();
                 }
                 Err(e) => app.error(&e),
             }
+            busy.set(false);
+            data.restart();
         });
     });
-    let selected_ids = move || selected.read().iter().copied().collect::<Vec<_>>();
+    // Tanukarr's "Select all": every title the filters keep, on every page.
+    let ac = client.clone();
+    let select_all = move |_| {
+        let (mut q, conflict) = query(1, 1);
+        if conflict {
+            return;
+        }
+        q.group_anime_seasons = Some(false);
+        q.include_keys = Some(true);
+        let c = ac.clone();
+        spawn(async move {
+            match c.library_index(&q).await {
+                Ok(index) => selected.set(index.keys.into_iter().collect()),
+                Err(e) => app.error(&e),
+            }
+        });
+    };
+    let on_sort = move |key: String| {
+        // Tanukarr's `applySort`: the sorted key again reverses it, another keeps the direction.
+        if sort_key() == key {
+            descending.toggle();
+        } else {
+            sort_key.set(key);
+        }
+    };
+    let mut jump = move |index: u64| {
+        let target = (index / u64::from(PAGE_SIZE)) as u32 + 1;
+        jump_to.set(Some(index));
+        if page() != target {
+            page.set(target);
+        }
+    };
     let mut monitoring_open = use_signal(|| false);
     let mut move_open = use_signal(|| false);
     let mut remove_open = use_signal(|| false);
-    let mut edit_open = use_signal(|| false);
-    let mut tags_open = use_signal(|| false);
+    // Some(movie) opens the edit or tags dialog for the selected series (false) or movies.
+    let mut edit_open = use_signal(|| None::<bool>);
+    let mut tags_open = use_signal(|| None::<bool>);
     let mut convert_open = use_signal(|| false);
     let mut organizing = use_signal(|| false);
     let mut confirm_organize = use_signal(|| false);
@@ -234,7 +402,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
     let organize = move |_| {
         confirm_organize.set(false);
         let c = organize_client.clone();
-        let ids = selected_ids();
+        let ids = series_ids();
         organizing.set(true);
         spawn(async move {
             match c
@@ -251,6 +419,15 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             organizing.set(false);
         });
     };
+    let loaded = match &*data.read() {
+        Some(Ok(index)) => Some(index.clone()),
+        _ => None,
+    };
+    let has_groups = loaded.as_ref().is_some_and(|i| i.has_groups);
+    let n_series = selected.read().iter().filter(|k| !k.movie).count();
+    let n_movies = selected.read().iter().filter(|k| k.movie).count();
+    let n_selected = n_series + n_movies;
+    let none_selected = n_selected == 0 || busy();
 
     rsx! {
         if confirm_organize() {
@@ -258,7 +435,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 title: "Organize files".to_string(),
                 message: format!(
                     "Rename every file of the {} selected series to the naming settings? Use a series' Rename files preview to check names first.",
-                    selected.read().len()
+                    n_series
                 ),
                 confirm_label: "Organize".to_string(),
                 on_confirm: organize,
@@ -267,7 +444,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
         }
         if remove_open() {
             BulkRemoveDialog {
-                series_ids: selected_ids(),
+                series_ids: series_ids(),
                 on_close: move |removed: bool| {
                     remove_open.set(false);
                     if removed {
@@ -276,33 +453,35 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 },
             }
         }
-        if edit_open() {
+        if let Some(movie) = edit_open() {
             super::edit::BulkEditDialog {
-                movie: false,
-                ids: selected_ids(),
+                movie,
+                ids: if movie { movie_ids() } else { series_ids() },
                 on_close: move |done: bool| {
-                    edit_open.set(false);
+                    edit_open.set(None);
                     if done {
                         selected.write().clear();
+                        data.restart();
                     }
                 },
             }
         }
-        if tags_open() {
+        if let Some(movie) = tags_open() {
             super::edit::BulkTagsDialog {
-                movie: false,
-                ids: selected_ids(),
+                movie,
+                ids: if movie { movie_ids() } else { series_ids() },
                 on_close: move |done: bool| {
-                    tags_open.set(false);
+                    tags_open.set(None);
                     if done {
                         selected.write().clear();
+                        data.restart();
                     }
                 },
             }
         }
         if convert_open() {
             super::anime_conversion::BulkAnimeConversionDialog {
-                series_ids: selected_ids(),
+                series_ids: series_ids(),
                 on_close: move |done: bool| {
                     convert_open.set(false);
                     if done {
@@ -313,35 +492,50 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
         }
         if move_open() {
             BulkMoveDialog {
-                series_ids: selected_ids(),
+                series_ids: series_ids(),
                 on_close: move |_| move_open.set(false),
             }
         }
         if monitoring_open() {
             super::detail::MonitoringDialog {
-                series_ids: selected_ids(),
+                series_ids: series_ids(),
                 monitor_new_items: None,
                 on_close: move |_| monitoring_open.set(false),
             }
         }
         div { class: "page-head",
-            h1 { class: "grow", "{title}" }
+            h1 { class: "grow", "Series" }
+            Link { to: Route::Collections {}, class: "btn", "Collections" }
             Link { to: Route::ImportWizard {}, class: "btn", "Import from Sonarr/Tanukarr" }
         }
         div { class: "toolbar",
-            select {
-                class: "select",
-                "aria-label": "Sort by",
-                value: "{sort_key}",
-                onchange: move |e: FormEvent| sort_key.set(e.value()),
-                option { value: "title", "Title" }
-                option { value: "added", "Date added" }
-                option { value: "year", "Year" }
-                option { value: "size", "Size on disk" }
-                option { value: "nextAiring", "Next airing" }
-                option { value: "status", "Status" }
+            button {
+                class: if select_mode() { "btn sm on" } else { "btn sm" },
+                "aria-pressed": if select_mode() { "true" } else { "false" },
+                onclick: move |_| {
+                    select_mode.toggle();
+                    selected.write().clear();
+                },
+                if select_mode() { "Stop selecting" } else { "Select multiple series" }
             }
-            button { class: "btn icon", "aria-label": "Toggle sort direction", onclick: move |_| descending.toggle(), if descending() { "↓" } else { "↑" } }
+            if select_mode() {
+                button { class: "btn sm", onclick: select_all, "Select all" }
+            }
+            div { class: "spacer" }
+            if has_groups {
+                button {
+                    class: "btn sm",
+                    onclick: move |_| {
+                        group.toggle();
+                        save_pref(&pref("group"), if group() { "true" } else { "false" });
+                        if let Some(w) = web_sys::window() { w.scroll_to_with_x_and_y(0.0, 0.0); }
+                    },
+                    if group() { "Show individual series" } else { "Show groups" }
+                }
+            }
+            ColumnChooser { all: SERIES_COLUMNS, columns }
+            ViewSwitch { view }
+            SortMenu { sort_key: sort_key(), descending: descending(), on_sort }
             select {
                 class: "select",
                 "aria-label": "Filter",
@@ -353,23 +547,6 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 for f in saved_list() {
                     option { key: "custom-{f.id}", value: "custom:{f.id}", selected: filter() == FilterRef::Saved(f.id), "{f.label}" }
                 }
-            }
-            select {
-                class: "select",
-                "aria-label": "Filter by path",
-                value: "{path}",
-                onchange: move |e: FormEvent| path.set(e.value()),
-                option { value: "", "All paths" }
-                if let Some(Ok(list)) = &*path_choices.read() {
-                    for p in list.iter() { option { key: "{p}", value: "{p}", selected: path() == *p, "{p}" } }
-                }
-                // A path stored earlier that no longer exists stays visible so it can be cleared.
-                if !path().is_empty() && !matches!(&*path_choices.read(), Some(Ok(list)) if list.contains(&path())) {
-                    option { value: "{path}", selected: true, "{path}" }
-                }
-            }
-            if !path().is_empty() {
-                button { class: "btn sm ghost", onclick: move |_| path.set(String::new()), "Clear" }
             }
             details { class: "combine",
                 summary { class: "btn sm",
@@ -407,20 +584,33 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     button { class: "btn sm ghost", onclick: move |_| combined.write().clear(), "Clear combined filters" }
                 }
             }
-            label { class: "check small", title: "Show each anime group (Tanukarr's anime grouping) once, by its first season",
-                input { r#type: "checkbox", checked: group(), onchange: move |e: FormEvent| group.set(e.checked()) }
-                "Group anime seasons"
-            }
             button { class: "btn sm", disabled: !filtering(), title: "Save the current filters as a filter of your own", onclick: move |_| saving_filter.set(true), "Save filter…" }
             if let FilterRef::Saved(id) = filter() {
                 DeleteSavedFilter { id, on_deleted: move |_| { filter.set(FilterRef::Preset("all".into())); saved_filters.restart(); } }
             }
-            div { class: "spacer" }
-            if let (Some(Ok(p)), Some(Ok(t))) = (&*data.read(), &*total.read()) {
-                span { class: "small muted", "aria-label": "Shown series", "{p.total_records} / {t}" }
+        }
+        // Tanukarr's path filter, with the count of titles shown.
+        div { class: "toolbar",
+            select {
+                class: "select",
+                "aria-label": "Filter by path",
+                value: "{path}",
+                onchange: move |e: FormEvent| path.set(e.value()),
+                option { value: "", "All paths" }
+                if let Some(Ok(list)) = &*path_choices.read() {
+                    for p in list.iter() { option { key: "{p}", value: "{p}", selected: path() == *p, "{p}" } }
+                }
+                // A path stored earlier that no longer exists stays visible so it can be cleared.
+                if !path().is_empty() && !matches!(&*path_choices.read(), Some(Ok(list)) if list.contains(&path())) {
+                    option { value: "{path}", selected: true, "{path}" }
+                }
             }
-            ColumnChooser { all: SERIES_COLUMNS, columns }
-            ViewSwitch { view }
+            if !path().is_empty() {
+                button { class: "btn sm ghost", onclick: move |_| path.set(String::new()), "Clear" }
+            }
+            if let Some(index) = &loaded {
+                span { class: "small muted", "aria-label": "Shown series", "{index.filtered_items} / {index.total_items}" }
+            }
         }
         {
             let (_, applied) = composed();
@@ -450,24 +640,40 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                 },
             }
         }
-        if !selected.read().is_empty() {
+        // Tanukarr's select footer (the mass editor) while selecting.
+        if select_mode() {
             div { class: "alert info", role: "region", "aria-label": "Bulk actions",
                 div { class: "row grow",
-                    strong { "{selected.read().len()} selected" }
-                    button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(true), ..Default::default() }), "Monitor" }
-                    button { class: "btn sm", onclick: move |_| bulk.call(BulkEdit { ids: selected_ids(), monitored: Some(false), ..Default::default() }), "Unmonitor" }
-                    button { class: "btn sm", title: "Choose which episodes of the selected series are monitored", onclick: move |_| monitoring_open.set(true), "Monitoring…" }
-                    button { class: "btn sm", title: "Monitoring, quality profile, series type and season folders of the selected series", onclick: move |_| edit_open.set(true), "Edit…" }
-                    button { class: "btn sm", title: "Add, remove or replace the tags of the selected series", onclick: move |_| tags_open.set(true), "Tags…" }
-                    button { class: "btn sm", title: "Move the selected series into another root folder", onclick: move |_| move_open.set(true), "Move to root folder…" }
-                    button { class: "btn sm", title: "Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr", onclick: move |_| convert_open.set(true), "Convert to AniList groups…" }
-                    button { class: "btn sm", disabled: organizing(), title: "Rename every file of the selected series to the naming settings", onclick: move |_| confirm_organize.set(true),
-                        if organizing() { "Organizing…" } else { "Organize" }
+                    strong { "{n_selected} selected" }
+                    button { class: "btn sm", disabled: none_selected, onclick: move |_| bulk.call(BulkEdit { monitored: Some(true), ..Default::default() }), "Monitor" }
+                    button { class: "btn sm", disabled: none_selected, onclick: move |_| bulk.call(BulkEdit { monitored: Some(false), ..Default::default() }), "Unmonitor" }
+                    if n_series > 0 {
+                        button { class: "btn sm", title: "Choose which episodes of the selected series are monitored", onclick: move |_| monitoring_open.set(true), "Monitoring…" }
                     }
-                    button { class: "btn sm danger", title: "Remove the selected series from Kitsunarr", onclick: move |_| remove_open.set(true), "Remove…" }
+                    if n_series > 0 || n_movies > 0 {
+                        button { class: "btn sm", disabled: busy(), title: "Monitoring, quality profile, series type and season folders of the selected series", onclick: move |_| edit_open.set(Some(n_series == 0)), "Edit…" }
+                        button { class: "btn sm", disabled: busy(), title: "Add, remove or replace the tags of the selected series", onclick: move |_| tags_open.set(Some(n_series == 0)), "Tags…" }
+                    }
+                    if n_series > 0 && n_movies > 0 {
+                        button { class: "btn sm", disabled: busy(), title: "Monitoring and quality profile of the selected movies", onclick: move |_| edit_open.set(Some(true)), "Edit movies…" }
+                        button { class: "btn sm", disabled: busy(), title: "Add, remove or replace the tags of the selected movies", onclick: move |_| tags_open.set(Some(true)), "Movie tags…" }
+                    }
+                    if n_movies > 0 {
+                        button { class: "btn sm", disabled: busy(), onclick: move |_| mark_watched.call(true), "Mark watched" }
+                        button { class: "btn sm", disabled: busy(), onclick: move |_| mark_watched.call(false), "Mark unwatched" }
+                    }
+                    if n_series > 0 {
+                        button { class: "btn sm", title: "Move the selected series into another root folder", onclick: move |_| move_open.set(true), "Move to root folder…" }
+                        button { class: "btn sm", title: "Split the selected TheTVDB series into AniList seasons grouped as in Tanukarr", onclick: move |_| convert_open.set(true), "Convert to AniList groups…" }
+                        button { class: "btn sm", disabled: organizing(), title: "Rename every file of the selected series to the naming settings", onclick: move |_| confirm_organize.set(true),
+                            if organizing() { "Organizing…" } else { "Organize" }
+                        }
+                        button { class: "btn sm danger", title: "Remove the selected series from Kitsunarr", onclick: move |_| remove_open.set(true), "Remove…" }
+                    }
                     select {
                         class: "select",
                         "aria-label": "Quality profile",
+                        disabled: none_selected,
                         onchange: move |e: FormEvent| bulk_profile.set(e.value()),
                         option { value: "", "Set quality profile…" }
                         if let Some(Ok(list)) = &*profiles.read() {
@@ -476,16 +682,16 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     }
                     button {
                         class: "btn sm",
-                        disabled: bulk_profile().is_empty(),
+                        disabled: none_selected || bulk_profile().is_empty(),
                         onclick: move |_| {
                             if let Ok(id) = bulk_profile().parse::<i64>() {
-                                bulk.call(BulkEdit { ids: selected_ids(), quality_profile_id: Some(id), ..Default::default() });
+                                bulk.call(BulkEdit { quality_profile_id: Some(id), ..Default::default() });
                             }
                         },
                         "Apply profile"
                     }
                     div { class: "spacer" }
-                    button { class: "btn ghost sm", onclick: move |_| selected.write().clear(), "Clear" }
+                    button { class: "btn ghost sm", disabled: n_selected == 0, onclick: move |_| selected.write().clear(), "Clear" }
                 }
             }
         }
@@ -493,7 +699,7 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
             None => rsx! { Loading {} },
             Some(Err(e)) => rsx! { ErrorBox { message: e.to_string() } },
             Some(Ok(p)) if p.records.is_empty() => rsx! {
-                Empty { title: if search().is_empty() && !filtering() { format!("No {} yet", title.to_lowercase()) } else { "No matches".to_string() },
+                Empty { title: if search().is_empty() && !filtering() { "No series yet".to_string() } else { "No matches".to_string() },
                     if filtering() {
                         p { "No series match the selected filters." }
                         button { class: "btn", onclick: move |_| { filter.set(FilterRef::Preset("all".into())); combined.write().clear(); path.set(String::new()); }, "Clear filters" }
@@ -506,158 +712,61 @@ fn SeriesLibraryView(kind: MediaKind, title: &'static str) -> Element {
                     }
                 }
             },
-            Some(Ok(p)) => rsx! {
-                match view().as_str() {
-                    "table" => rsx! {
-                        SeriesTable {
-                            items: p.records.clone(),
-                            selected,
-                            sort_key: sort_key(),
-                            on_sort: move |k: String| { if sort_key() == k { descending.toggle(); } else { sort_key.set(k); } },
-                            columns: Some(columns()),
-                            tags: tag_list(),
-                        }
-                    },
-                    "overview" => rsx! {
-                        SeriesOverview { items: p.records.clone(), selected, columns: columns(), tags: tag_list() }
-                    },
-                    _ => rsx! {
-                        div { class: "media-grid",
-                            for item in p.records.iter() {
-                                SeriesCard { key: "{item.id}", item: item.clone(), selected: selected.read().contains(&item.id), grouped: group(), columns: columns(), tags: tag_list() }
+            Some(Ok(p)) => {
+                let first_index = u64::from(p.page.saturating_sub(1)) * u64::from(p.page_size);
+                let jump_bar = p.jump_bar.clone();
+                let has_jump_bar = !jump_bar.is_empty();
+                let footer = p.footer;
+                rsx! {
+                    div { class: if !has_jump_bar { "library-body" } else { "library-body has-jump-bar" },
+                        div { class: "library-entries",
+                            match view().as_str() {
+                                "table" => rsx! {
+                                    LibraryTable {
+                                        entries: p.records.clone(),
+                                        selected,
+                                        select_mode: select_mode(),
+                                        sort_key: sort_key(),
+                                        descending: descending(),
+                                        on_sort,
+                                        columns: columns(),
+                                        tags: tag_list(),
+                                        first_index,
+                                    }
+                                },
+                                "overview" => rsx! {
+                                    LibraryOverview { entries: p.records.clone(), selected, select_mode: select_mode(), columns: columns(), tags: tag_list(), first_index }
+                                },
+                                _ => rsx! {
+                                    LibraryPosters { entries: p.records.clone(), selected, select_mode: select_mode(), columns: columns(), tags: tag_list(), first_index }
+                                },
                             }
+                            Pagination { page: p.page, page_size: p.page_size, total: p.total_records, on_page: move |n| page.set(n) }
                         }
-                    },
-                }
-                Pagination { page: p.page, page_size: p.page_size, total: p.total_records, on_page: move |n| page.set(n) }
-            },
-        }
-    }
-}
-
-#[component]
-pub fn MoviesLibrary() -> Element {
-    let app = use_app();
-    let client = use_client();
-    let search = use_debounced(app.search, 300);
-    let mut page = use_signal(|| 1u32);
-    let mut sort_key = use_signal(|| "title".to_string());
-    let mut watched = use_signal(|| None::<bool>);
-    let view = use_view();
-    let columns = use_columns("movies", MOVIE_COLUMNS);
-    let tags = use_tags();
-    let tag_list = move || tags.read().clone().unwrap_or_default();
-    let mut selected = use_signal(HashSet::<i64>::new);
-    let mut busy = use_signal(|| false);
-    let mut edit_open = use_signal(|| false);
-    let mut tags_open = use_signal(|| false);
-    use_effect(move || {
-        let _ = search();
-        if *page.peek() != 1 {
-            page.set(1);
-        }
-        selected.write().clear();
-    });
-    let c0 = client.clone();
-    let mut data = use_resource(move || {
-        let _ = (app.library_rev)();
-        let q = LibraryQuery {
-            page: Some(page()),
-            page_size: Some(PAGE_SIZE),
-            sort_key: Some(sort_key()),
-            search: Some(search()).filter(|s| !s.trim().is_empty()),
-            watched: watched(),
-            ..Default::default()
-        };
-        let c = c0.clone();
-        async move { c.movies(&q).await }
-    });
-    let bulk = use_callback(move |(watch, monitor): (Option<bool>, Option<bool>)| {
-        let ids = selected.read().iter().copied().collect::<Vec<_>>();
-        if ids.is_empty() {
-            return;
-        }
-        let c = client.clone();
-        busy.set(true);
-        spawn(async move {
-            let result = if let Some(watched) = watch {
-                c.set_movies_watched(&ids, watched).await
-            } else {
-                c.bulk_edit_movies(&BulkEdit {
-                    ids,
-                    monitored: monitor,
-                    ..Default::default()
-                })
-                .await
-            };
-            match result {
-                Ok(r) => {
-                    app.success(format!("Updated {} items.", r.updated));
-                    selected.write().clear();
-                    data.restart();
-                }
-                Err(e) => app.error(&e),
-            }
-            busy.set(false);
-        });
-    });
-    let movie_ids = move || selected.read().iter().copied().collect::<Vec<_>>();
-    rsx! {
-        if edit_open() {
-            super::edit::BulkEditDialog { movie: true, ids: movie_ids(),
-                on_close: move |done: bool| { edit_open.set(false); if done { selected.write().clear(); data.restart(); } } }
-        }
-        if tags_open() {
-            super::edit::BulkTagsDialog { movie: true, ids: movie_ids(),
-                on_close: move |done: bool| { tags_open.set(false); if done { selected.write().clear(); data.restart(); } } }
-        }
-        div{class:"page-head",h1{class:"grow","Movies"}}
-        div{class:"toolbar",
-            select{class:"select","aria-label":"Sort by",value:sort_key(),onchange:move |e:FormEvent|{selected.write().clear();page.set(1);sort_key.set(e.value());},
-                option{value:"title","Title"}option{value:"added","Date added"}option{value:"year","Year"}option{value:"size","Size on disk"}option{value:"watchedAt","Watched date"}
-            }
-            select{class:"select","aria-label":"Filter by watched state",onchange:move |e:FormEvent|{selected.write().clear();page.set(1);watched.set(match e.value().as_str(){"yes"=>Some(true),"no"=>Some(false),_=>None});},
-                option{value:"all","All"}option{value:"yes","Watched"}option{value:"no","Unwatched"}
-            }
-            div{class:"spacer"}ColumnChooser{all:MOVIE_COLUMNS,columns}ViewSwitch{view}
-        }
-        if !selected.read().is_empty(){div{class:"alert info",role:"region","aria-label":"Movie bulk actions",
-            div{class:"row grow",
-                strong{"{selected.read().len()} selected"}
-                button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((Some(true),None)),"Mark watched"}
-                button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((Some(false),None)),"Mark unwatched"}
-                button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((None,Some(true))),"Monitor"}
-                button{class:"btn sm",disabled:busy(),onclick:move |_|bulk.call((None,Some(false))),"Unmonitor"}
-                button{class:"btn sm",disabled:busy(),title:"Monitoring and quality profile of the selected movies",onclick:move |_|edit_open.set(true),"Edit…"}
-                button{class:"btn sm",disabled:busy(),title:"Add, remove or replace the tags of the selected movies",onclick:move |_|tags_open.set(true),"Tags…"}
-                button{class:"btn ghost sm",disabled:busy(),onclick:move |_|selected.write().clear(),"Clear"}
-            }
-        }}
-        match &*data.read(){
-            None=>rsx!{Loading{}},Some(Err(e))=>rsx!{ErrorBox{message:e.to_string()}},
-            Some(Ok(p)) if p.records.is_empty()=>rsx!{
-                Empty{title:if search().trim().is_empty() && watched().is_none(){"No movies yet"}else{"No matches"},
-                    p{"Add a movie, or change the search and watched filter."}
-                    div{class:"row",style:"justify-content:center",Link{to:Route::AddMedia{},class:"btn primary","Add media"}Link{to:Route::ImportWizard{},class:"btn","Import library"}}
-                }
-            },
-            Some(Ok(p))=>rsx!{
-                if view()=="overview"{
-                    MovieOverview{items:p.records.clone(),selected,columns:columns(),tags:tag_list(),disabled:busy()}
-                }else if view()!="table"{
-                    div{class:"media-grid",
-                        for item in &p.records{
-                            div{key:"{item.id}",style:"position:relative;min-width:0",
-                                MovieCard{item:item.clone(),selected:selected.read().contains(&item.id),columns:columns(),tags:tag_list()}
-                                label{style:"position:absolute;top:.5rem;inset-inline-end:.5rem;padding:.3rem;background:var(--bg-elev);border-radius:var(--r-sm)",
-                                    input{r#type:"checkbox","aria-label":"Select {item.title}",disabled:busy(),checked:selected.read().contains(&item.id),onchange:{let id=item.id;move |e:FormEvent|{if e.checked(){selected.write().insert(id);}else{selected.write().remove(&id);}}}}
+                        // Tanukarr's jump bar (sorted by title): a letter opens the page it starts on.
+                        if has_jump_bar {
+                            nav { class: "jump-bar", "aria-label": "Jump to",
+                                for item in jump_bar {
+                                    button { key: "{item.character}", class: "btn ghost xs", onclick: move |_| jump(item.index), "{item.character}" }
                                 }
                             }
                         }
                     }
-                }else{MovieTable{items:p.records.clone(),selected,disabled:busy(),columns:Some(columns()),tags:tag_list()}}
-                Pagination{page:p.page,page_size:p.page_size,total:p.total_records,on_page:move |n|page.set(n)}
-            },
+                    // Tanukarr's footer: the whole library.
+                    div { class: "library-footer",
+                        dl { class: "footer-stats small",
+                            div { dt { "Series" } dd { "{footer.titles}" } }
+                            div { dt { "Ended" } dd { "{footer.ended}" } }
+                            div { dt { "Continuing" } dd { "{footer.continuing}" } }
+                            div { dt { "Monitored" } dd { "{footer.monitored}" } }
+                            div { dt { "Unmonitored" } dd { "{footer.unmonitored}" } }
+                            div { dt { "Episodes" } dd { "{footer.episodes}" } }
+                            div { dt { "Files" } dd { "{footer.files}" } }
+                            div { dt { "Total file size" } dd { {format_bytes(footer.size_on_disk)} } }
+                        }
+                    }
+                }
+            }
         }
     }
 }

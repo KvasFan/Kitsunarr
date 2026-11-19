@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Καμία από τις επιλ�
 Converted	Μετατράπηκε
 Cannot be converted: {problem}	Δεν μπορεί να μετατραπεί: {problem}
 {n} seasons, {m} files to move	Σεζόν: {n}, αρχεία προς μετακίνηση: {m}
+Monitored/Status	Παρακολούθηση/Κατάσταση
+Episode count	Αριθμός επεισοδίων
+Select multiple series	Επιλογή πολλών σειρών
+Stop selecting	Διακοπή επιλογής
+Show individual series	Εμφάνιση μεμονωμένων σειρών
+Show groups	Εμφάνιση ομάδων
+Edit movies…	Επεξεργασία ταινιών…
+Movie tags…	Ετικέτες ταινιών…
+{} seasons · {} movies	{} κύκλοι · {} ταινίες
+{} seasons · {} movies · {} specials	{} κύκλοι · {} ταινίες · {} ειδικά
+{}/{} episodes	{}/{} επεισόδια
+Total file size	Συνολικό μέγεθος αρχείων
+No series yet	Δεν υπάρχουν ακόμη σειρές

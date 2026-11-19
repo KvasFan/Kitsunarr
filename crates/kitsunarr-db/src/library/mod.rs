@@ -1,6 +1,7 @@
 //! Library repositories: series (TV/anime), episodes, files, movies and collections.
 
 pub mod collections;
+pub mod index;
 pub mod movies;
 pub mod series;
 pub mod stats;

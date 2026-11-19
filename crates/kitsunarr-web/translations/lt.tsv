@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Nė vieno pasirinkto serialo negal
 Converted	Konvertuota
 Cannot be converted: {problem}	Negalima konvertuoti: {problem}
 {n} seasons, {m} files to move	Sezonų: {n}, perkeliamų failų: {m}
+Monitored/Status	Stebėjimas/Būsena
+Episode count	Epizodų skaičius
+Select multiple series	Pasirinkti kelis serialus
+Stop selecting	Baigti rinktis
+Show individual series	Rodyti serialus atskirai
+Show groups	Rodyti grupes
+Edit movies…	Redaguoti filmus…
+Movie tags…	Filmų žymos…
+{} seasons · {} movies	Sezonai: {} · filmai: {}
+{} seasons · {} movies · {} specials	Sezonai: {} · filmai: {} · specialieji: {}
+{}/{} episodes	{}/{} epizodų
+Total file size	Bendras failų dydis
+No series yet	Serialų dar nėra

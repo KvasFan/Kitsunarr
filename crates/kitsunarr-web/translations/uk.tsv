@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Жоден із вибраних �
 Converted	Перетворено
 Cannot be converted: {problem}	Неможливо перетворити: {problem}
 {n} seasons, {m} files to move	Сезонів: {n}, файлів для переміщення: {m}
+Monitored/Status	Відстеження/Статус
+Episode count	Кількість епізодів
+Select multiple series	Вибрати кілька серіалів
+Stop selecting	Завершити вибір
+Show individual series	Показати серіали окремо
+Show groups	Показати групи
+Edit movies…	Редагувати фільми…
+Movie tags…	Теги фільмів…
+{} seasons · {} movies	Сезонів: {} · фільмів: {}
+{} seasons · {} movies · {} specials	Сезонів: {} · фільмів: {} · спецепізодів: {}
+{}/{} episodes	{}/{} епізодів
+Total file size	Загальний розмір файлів
+No series yet	Серіалів ще немає

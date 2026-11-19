@@ -12662,6 +12662,36 @@ async fn library_index_filters() {
         .await
         .unwrap();
     assert_eq!(raw["totalRecords"], 1);
+    // Tanukarr's single index: the same title, tagged by type, with the footer and jump bar.
+    let index = client
+        .library_index(&LibraryQuery {
+            group_anime_seasons: Some(true),
+            include_keys: Some(true),
+            ..Default::default()
+        })
+        .await
+        .unwrap();
+    assert_eq!((index.total_records, index.total_items), (1, 1));
+    assert!(matches!(
+        &index.records[0],
+        kitsunarr_domain::api::library::LibraryEntry::Series(s) if s.id == added.id
+    ));
+    assert_eq!(index.footer.titles, 1);
+    assert_eq!(index.keys.len(), 1);
+    assert_eq!(index.jump_bar.len(), 1);
+    let raw: serde_json::Value = reqwest::Client::new()
+        .get(format!(
+            "{}/api/v1/library?sortKey=title&sortDirection=desc",
+            server.base
+        ))
+        .header("X-Api-Key", &server.api_key)
+        .send()
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(raw["records"][0]["type"], "series");
     assert_eq!(
         client.series_path_filters(None).await.unwrap(),
         std::slice::from_ref(&root)

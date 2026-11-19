@@ -818,25 +818,31 @@ async fn first_run_setup_migration_and_library() {
             .for_element(Locator::Css(".media-card"))
             .await
             .unwrap();
+        // Tanukarr's single index: TV series and anime in one list.
+        wait_text(&client, "1–3 of 3").await;
         let cards = client.find_all(Locator::Css(".media-card")).await.unwrap();
-        assert_eq!(
-            cards.len(),
-            2,
-            "Breaking Bad and Chernobyl (Cowboy Bebop is anime)"
-        );
-        wait_text(&client, "1–2 of 2").await;
+        assert_eq!(cards.len(), 3, "Breaking Bad, Chernobyl and Cowboy Bebop");
+        for title in ["Breaking Bad", "Chernobyl", "Cowboy Bebop"] {
+            client
+                .find(Locator::XPath(&format!(
+                    "//a[contains(@class,'media-card')][contains(., {})]",
+                    xpath_literal(title)
+                )))
+                .await
+                .unwrap();
+        }
+        wait_text(&client, "Total file size").await;
+        client.find(Locator::Css("nav.jump-bar button")).await.unwrap();
         screenshot(&client, "07-library-series").await;
-        // Tanukarr's index filters: "Anime" leaves no TV series; clearing brings them back.
+        // Tanukarr's index filters: "Anime" keeps the anime; "All" brings the rest back.
+        select_value(&client, "select[aria-label='Filter']", "anime").await;
+        wait_text(&client, "1–1 of 1").await;
         client
-            .find(Locator::Css("select[aria-label='Filter']"))
-            .await
-            .unwrap()
-            .select_by_value("anime")
+            .find(Locator::XPath("//a[contains(@class,'media-card')][contains(., 'Cowboy Bebop')]"))
             .await
             .unwrap();
-        wait_text(&client, "No series match the selected filters.").await;
-        click_button(&client, "Clear filters").await;
-        wait_text(&client, "1–2 of 2").await;
+        select_value(&client, "select[aria-label='Filter']", "all").await;
+        wait_text(&client, "1–3 of 3").await;
         assert!(
             client
                 .find(Locator::Css("select[aria-label='Filter by path']"))
@@ -847,8 +853,37 @@ async fn first_run_setup_migration_and_library() {
                 .unwrap()
                 .contains("All paths")
         );
+        // The former anime page opens the list with the Anime filter.
         client.goto(&format!("{base}/anime")).await.unwrap();
+        wait_text(&client, "1–1 of 1").await;
         wait_text(&client, "Cowboy Bebop").await;
+        assert!(client.current_url().await.unwrap().path().ends_with("/series"));
+        select_value(&client, "select[aria-label='Filter']", "all").await;
+        wait_text(&client, "1–3 of 3").await;
+        // Sortable headers: the sorted column again reverses the order (and back).
+        click_button(&client, "Table").await;
+        let title_header =
+            Locator::XPath("//table[contains(@class,'library-table')]//th[contains(., 'Title')]");
+        wait_attr(&client, title_header, "aria-sort", "ascending").await;
+        client.find(title_header).await.unwrap().click().await.unwrap();
+        wait_attr(&client, title_header, "aria-sort", "descending").await;
+        client
+            .wait()
+            .for_element(Locator::XPath(
+                "//table[contains(@class,'library-table')]/tbody/tr[1][contains(., 'Cowboy Bebop')]",
+            ))
+            .await
+            .unwrap();
+        client.find(title_header).await.unwrap().click().await.unwrap();
+        wait_attr(&client, title_header, "aria-sort", "ascending").await;
+        client
+            .wait()
+            .for_element(Locator::XPath(
+                "//table[contains(@class,'library-table')]/tbody/tr[1][contains(., 'Breaking Bad')]",
+            ))
+            .await
+            .unwrap();
+        click_button(&client, "Posters").await;
 
         // Series detail with seasons and episodes.
         client.goto(&format!("{base}/series")).await.unwrap();
@@ -1323,6 +1358,31 @@ async fn first_run_setup_migration_and_library() {
         screenshot(&client, "11g-collection-editor").await;
         client.find(Locator::Css("article.media-card label.check")).await.unwrap().click().await.unwrap();
         client.wait().for_element(Locator::Css("article.media-card:first-child .poster:not(:has(.unmonitored))")).await.unwrap();
+        // Tanukarr's grouping is on by default: the group shows once, in place of its member.
+        client.goto(&format!("{base}/series")).await.unwrap();
+        let group_card = Locator::XPath("//a[contains(@class,'group-card')][contains(., 'E2E Group')]");
+        client.wait().for_element(group_card).await.unwrap();
+        client
+            .find(Locator::XPath("//a[contains(@class,'group-card')][contains(., 'seasons · 0 movies')][contains(., 'episodes')]"))
+            .await
+            .unwrap();
+        let member_card = "//a[contains(@class,'media-card')][not(contains(@class,'group-card'))][contains(., 'Breaking Bad')]";
+        assert!(client.find_all(Locator::XPath(member_card)).await.unwrap().is_empty(), "the member is inside its group");
+        screenshot(&client, "11h-library-groups").await;
+        // The toggle shows the group's titles one by one, then the group again.
+        click_button(&client, "Show individual series").await;
+        client.wait().for_element(Locator::XPath(member_card)).await.unwrap();
+        assert!(client.find_all(group_card).await.unwrap().is_empty());
+        click_button(&client, "Show groups").await;
+        client.wait().for_element(group_card).await.unwrap();
+        assert!(client.find_all(Locator::XPath(member_card)).await.unwrap().is_empty());
+        // The group opens its collection page.
+        client.find(group_card).await.unwrap().click().await.unwrap();
+        wait_text(&client, "Delete group").await;
+        // Later steps open the member's own card: show the titles one by one (remembered).
+        client.goto(&format!("{base}/series")).await.unwrap();
+        click_button(&client, "Show individual series").await;
+        client.wait().for_element(Locator::XPath(member_card)).await.unwrap();
         // A local film fixture exercises real file operations through the web UI.
         // Opening the server's disposable SQLite database only prepares the fixture.
         let film_root = media.join("movies");
@@ -1387,17 +1447,26 @@ async fn first_run_setup_migration_and_library() {
         click_button(&client,"Mark watched").await;
         client.wait().for_element(Locator::XPath("//button[normalize-space(.)='Mark unwatched']")).await.unwrap();
         screenshot(&client,"11o-movie-watched").await;
+        // Movies are in the same list; the former movie page opens it with the Movies filter,
+        // and the watched filters and bulk actions work in select mode.
+        client.goto(&format!("{base}/series")).await.unwrap();
+        client.wait().for_element(Locator::Css("a.media-card[href='/movies/900']")).await.unwrap();
+        client.find(Locator::XPath("//a[contains(@class,'media-card')][contains(., 'Chernobyl')]")).await.unwrap();
         client.goto(&format!("{base}/movies")).await.unwrap();click_button(&client,"Table").await;
-        client.wait().for_element(Locator::Css("select[aria-label='Filter by watched state']")).await.unwrap().select_by_value("yes").await.unwrap();
+        wait_text(&client,"1–1 of 1").await;
+        select_value(&client,"select[aria-label='Filter']","watched").await;
+        click_button(&client,"Select multiple series").await;
         client.wait().for_element(Locator::Css("input[aria-label='Select E2E Film']")).await.unwrap().click().await.unwrap();
         click_button(&client,"Mark unwatched").await;wait_text(&client,"No matches").await;
-        client.find(Locator::Css("select[aria-label='Filter by watched state']")).await.unwrap().select_by_value("all").await.unwrap();
+        select_value(&client,"select[aria-label='Filter']","movies").await;
         client.wait().for_element(Locator::Css("a[href='/movies/900']")).await.unwrap();
         click_button(&client,"Posters").await;
         client.wait().for_element(Locator::Css("input[aria-label='Select E2E Film']")).await.unwrap().click().await.unwrap();
         click_button(&client,"Mark watched").await;
         client.wait().for_element(Locator::Css("a.media-card .badge.success")).await.unwrap();
         screenshot(&client,"11p-movie-bulk-watched").await;
+        click_button(&client,"Stop selecting").await;
+        select_value(&client,"select[aria-label='Filter']","all").await;
         client.find(Locator::Css("a.media-card[href='/movies/900']")).await.unwrap().click().await.unwrap();
         click_button(&client,"Mark unwatched").await;
         client.wait().for_element(Locator::XPath("//button[normalize-space(.)='Mark watched']")).await.unwrap();
@@ -2107,8 +2176,10 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Quality profiles").await;
         wait_text(&client, "File qualities").await;
         screenshot(&client, "13a-statistics").await;
-        // The overview view, with a column chosen in the column chooser.
+        // The overview view, with a column chosen in the column chooser (the zoom pass opened
+        // /movies last, which left the Movies filter on).
         client.goto(&format!("{base}/series")).await.unwrap();
+        select_value(&client, "select[aria-label='Filter']", "all").await;
         click_button(&client, "Overview").await;
         client
             .wait()
@@ -2141,10 +2212,18 @@ async fn first_run_setup_migration_and_library() {
         wait_text(&client, "Interface settings saved.").await;
         client.goto(&format!("{base}/movies")).await.unwrap();
         click_button(&client, "Table").await;
+        // The Added column (hidden by default, as in Tanukarr).
+        client.find(Locator::Css("details.column-chooser > summary")).await.unwrap().click().await.unwrap();
+        client.wait().for_element(Locator::Css("input[aria-label='Column Added']")).await.unwrap().click().await.unwrap();
+        client.find(Locator::Css("details.column-chooser > summary")).await.unwrap().click().await.unwrap();
         // E2E Film was added on 2026-11-14 (the day may differ by the browser's time zone).
         wait_text(&client, "/11/2026").await;
         screenshot(&client, "13c-ui-date-format").await;
+        client.find(Locator::Css("details.column-chooser > summary")).await.unwrap().click().await.unwrap();
+        client.find(Locator::Css("input[aria-label='Column Added']")).await.unwrap().click().await.unwrap();
+        client.find(Locator::Css("details.column-chooser > summary")).await.unwrap().click().await.unwrap();
         click_button(&client, "Posters").await;
+        select_value(&client, "select[aria-label='Filter']", "all").await;
         client.goto(&format!("{base}/settings/ui")).await.unwrap();
         select_value(&client, "select[aria-label='Short date format']", "MMM D YYYY").await;
         client.find(Locator::XPath(relative_switch)).await.unwrap().click().await.unwrap();

@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Không có loạt phim nào đư�
 Converted	Đã chuyển đổi
 Cannot be converted: {problem}	Không thể chuyển đổi: {problem}
 {n} seasons, {m} files to move	{n} mùa, {m} tệp cần di chuyển
+Monitored/Status	Theo dõi/Trạng thái
+Episode count	Số tập
+Select multiple series	Chọn nhiều phim bộ
+Stop selecting	Dừng chọn
+Show individual series	Hiện từng phim bộ riêng
+Show groups	Hiện nhóm
+Edit movies…	Sửa phim lẻ…
+Movie tags…	Thẻ phim lẻ…
+{} seasons · {} movies	{} mùa · {} phim lẻ
+{} seasons · {} movies · {} specials	{} mùa · {} phim lẻ · {} tập đặc biệt
+{}/{} episodes	{}/{} tập
+Total file size	Tổng dung lượng tệp
+No series yet	Chưa có phim bộ nào

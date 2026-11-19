@@ -396,6 +396,28 @@ kbd { font-family: var(--mono); font-size: var(--fs-xs); padding: 1px 6px; borde
 .overview-details dt { color: var(--text-faint); }
 .overview-details dd { margin: 0; overflow-wrap: anywhere; }
 @media (max-width: 520px) { .overview-item { grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--sp-3); } }
+/* Tanukarr's index: select mode, sort menu, jump bar and footer. */
+.card-cell { position: relative; min-width: 0; }
+.card-select { position: absolute; top: .5rem; inset-inline-start: .5rem; z-index: 1; padding: .3rem; background: var(--bg-elev); border-radius: var(--r-sm); line-height: 0; }
+.btn.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+.sort-menu[open] > fieldset { inset-inline-start: auto; inset-inline-end: 0; max-height: 70vh; overflow-y: auto; }
+.sort-menu .sort-item { display: flex; width: 100%; gap: var(--sp-3); justify-content: space-between; text-align: start; }
+.sort-menu .sort-item.on { color: var(--accent); font-weight: 600; }
+.table .sort-dir { font-size: .75em; }
+.group-row td { background: var(--bg-elev-2); }
+.library-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-3); }
+.library-body.has-jump-bar { grid-template-columns: minmax(0, 1fr) auto; }
+.jump-bar { position: sticky; top: var(--sp-3); align-self: start; display: flex; flex-direction: column; gap: 2px; max-height: calc(100vh - 6rem); overflow-y: auto; }
+.jump-bar .btn { min-height: 0; padding: 1px 6px; font-size: var(--fs-xs, .75rem); }
+@media (max-width: 720px) {
+  .library-body.has-jump-bar { grid-template-columns: minmax(0, 1fr); }
+  .jump-bar { position: static; flex-direction: row; flex-wrap: wrap; order: -1; max-height: none; }
+}
+.library-footer { margin-top: var(--sp-4); padding-top: var(--sp-3); border-top: 1px solid var(--border); }
+.footer-stats { display: flex; flex-wrap: wrap; gap: var(--sp-2) var(--sp-5); margin: 0; }
+.footer-stats > div { display: flex; gap: 6px; }
+.footer-stats dt { color: var(--text-faint); }
+.footer-stats dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
 
 /* Naming: samples and the token picker. */
 .naming-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }

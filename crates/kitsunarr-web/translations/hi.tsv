@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	चुनी गई सीरी�
 Converted	बदला गया
 Cannot be converted: {problem}	बदला नहीं जा सकता: {problem}
 {n} seasons, {m} files to move	{n} सीज़न, ले जाने वाली {m} फ़ाइलें
+Monitored/Status	निगरानी/स्थिति
+Episode count	एपिसोड की संख्या
+Select multiple series	कई सीरीज़ चुनें
+Stop selecting	चयन बंद करें
+Show individual series	अलग-अलग सीरीज़ दिखाएँ
+Show groups	समूह दिखाएँ
+Edit movies…	फ़िल्में संपादित करें…
+Movie tags…	फ़िल्म टैग…
+{} seasons · {} movies	{} सीज़न · {} फ़िल्में
+{} seasons · {} movies · {} specials	{} सीज़न · {} फ़िल्में · {} स्पेशल
+{}/{} episodes	{}/{} एपिसोड
+Total file size	कुल फ़ाइल आकार
+No series yet	अभी तक कोई सीरीज़ नहीं

@@ -61,6 +61,7 @@ pub fn protected_routes() -> OpenApiRouter<AppState> {
         .routes(routes!(events::stream))
         // library
         .routes(routes!(library::stats))
+        .routes(routes!(library::index))
         .routes(routes!(library::list_series))
         .routes(routes!(library::series_path_filters))
         .routes(routes!(

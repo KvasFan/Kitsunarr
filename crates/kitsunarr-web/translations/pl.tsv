@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Żadnego z zaznaczonych seriali ni
 Converted	Przekonwertowano
 Cannot be converted: {problem}	Nie można przekonwertować: {problem}
 {n} seasons, {m} files to move	Sezony: {n}, pliki do przeniesienia: {m}
+Monitored/Status	Monitorowanie/Status
+Episode count	Liczba odcinków
+Select multiple series	Zaznacz wiele seriali
+Stop selecting	Zakończ zaznaczanie
+Show individual series	Pokaż pojedyncze seriale
+Show groups	Pokaż grupy
+Edit movies…	Edytuj filmy…
+Movie tags…	Tagi filmów…
+{} seasons · {} movies	Sezony: {} · filmy: {}
+{} seasons · {} movies · {} specials	Sezony: {} · filmy: {} · odcinki specjalne: {}
+{}/{} episodes	{}/{} odcinków
+Total file size	Łączny rozmiar plików
+No series yet	Brak seriali

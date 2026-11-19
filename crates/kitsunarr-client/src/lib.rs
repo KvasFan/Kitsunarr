@@ -11,8 +11,9 @@ use kitsunarr_domain::api::auth::{
 use kitsunarr_domain::api::error::ApiErrorBody;
 use kitsunarr_domain::api::library::{
     BulkEdit, BulkEditResult, CalendarEntry, CollectionDetail, CollectionEdit, CollectionItem,
-    CollectionMemberEdit, EpisodeItem, EpisodesMonitoredUpdate, HistoryItem, LibraryQuery,
-    LibraryStats, MovieDetail, MovieListItem, SeriesDetail, SeriesListItem, SeriesUpdate,
+    CollectionMemberEdit, EpisodeItem, EpisodesMonitoredUpdate, HistoryItem, LibraryIndex,
+    LibraryQuery, LibraryStats, MovieDetail, MovieListItem, SeriesDetail, SeriesListItem,
+    SeriesUpdate,
 };
 use kitsunarr_domain::api::metadata::{
     AddTitleRequest, CatalogueInfo, LibraryRef, MetadataSourcePreview, MetadataSourceRequest,
@@ -304,6 +305,10 @@ impl Client {
     // --- library ------------------------------------------------------------------------------
     pub async fn library_stats(&self) -> ClientResult<LibraryStats> {
         self.get("/library/stats").await
+    }
+    /// Tanukarr's series index: series, anime and movies in one list.
+    pub async fn library_index(&self, q: &LibraryQuery) -> ClientResult<LibraryIndex> {
+        self.get_query("/library", q).await
     }
     pub async fn series(&self, q: &LibraryQuery) -> ClientResult<Page<SeriesListItem>> {
         self.get_query("/series", q).await

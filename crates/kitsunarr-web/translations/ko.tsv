@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	선택한 시리즈 중 변환할 
 Converted	변환됨
 Cannot be converted: {problem}	변환할 수 없음: {problem}
 {n} seasons, {m} files to move	시즌 {n}개, 이동할 파일 {m}개
+Monitored/Status	모니터링/상태
+Episode count	에피소드 수
+Select multiple series	여러 시리즈 선택
+Stop selecting	선택 종료
+Show individual series	개별 시리즈 표시
+Show groups	그룹 표시
+Edit movies…	영화 편집…
+Movie tags…	영화 태그…
+{} seasons · {} movies	시즌 {}개 · 영화 {}편
+{} seasons · {} movies · {} specials	시즌 {}개 · 영화 {}편 · 스페셜 {}개
+{}/{} episodes	{}/{} 에피소드
+Total file size	전체 파일 크기
+No series yet	아직 시리즈가 없습니다

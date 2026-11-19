@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	هیچ‌یک از سریال‌ه
 Converted	تبدیل شد
 Cannot be converted: {problem}	قابل تبدیل نیست: {problem}
 {n} seasons, {m} files to move	{n} فصل، {m} فایل برای جابه‌جایی
+Monitored/Status	پایش/وضعیت
+Episode count	تعداد قسمت‌ها
+Select multiple series	انتخاب چند سریال
+Stop selecting	توقف انتخاب
+Show individual series	نمایش سریال‌ها به‌صورت جداگانه
+Show groups	نمایش گروه‌ها
+Edit movies…	ویرایش فیلم‌ها…
+Movie tags…	برچسب‌های فیلم…
+{} seasons · {} movies	{} فصل · {} فیلم
+{} seasons · {} movies · {} specials	{} فصل · {} فیلم · {} ویژه
+{}/{} episodes	{}/{} قسمت
+Total file size	حجم کل فایل‌ها
+No series yet	هنوز سریالی وجود ندارد

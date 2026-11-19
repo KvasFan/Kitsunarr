@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Нито един от избра�
 Converted	Преобразувано
 Cannot be converted: {problem}	Не може да бъде преобразуван: {problem}
 {n} seasons, {m} files to move	Сезони: {n}, файлове за преместване: {m}
+Monitored/Status	Наблюдение/Статус
+Episode count	Брой епизоди
+Select multiple series	Избиране на няколко сериала
+Stop selecting	Спиране на избирането
+Show individual series	Показване на отделните сериали
+Show groups	Показване на групите
+Edit movies…	Редактиране на филмите…
+Movie tags…	Тагове на филмите…
+{} seasons · {} movies	{} сезона · {} филма
+{} seasons · {} movies · {} specials	{} сезона · {} филма · {} специални
+{}/{} episodes	{}/{} епизода
+Total file size	Общ размер на файловете
+No series yet	Все още няма сериали

@@ -2,22 +2,26 @@
 //! "Combine filters"), applied by the server through [`LibraryQuery`].
 
 use kitsunarr_client::contracts::{CustomFilter, CustomFilterCondition};
-use kitsunarr_domain::SeriesType;
 use kitsunarr_domain::api::library::LibraryQuery;
+use kitsunarr_domain::{MediaKind, SeriesType};
 use serde_json::{Value, json};
 
 /// The custom filter list (Sonarr's `type`) of the series index.
 pub const FILTER_TYPE: &str = "series";
 
-/// Tanukarr's built-in series filters (key, label), "all" first.
+/// Tanukarr's built-in series filters (key, label) in its order, then Kitsunarr's movie
+/// filters (the former movie library: movies only, and their watched state).
 pub const PRESETS: &[(&str, &str)] = &[
+    ("anime", "Anime"),
     ("all", "All"),
     ("monitored", "Monitored only"),
     ("unmonitored", "Unmonitored only"),
     ("continuing", "Continuing only"),
     ("ended", "Ended only"),
     ("missing", "Missing episodes"),
-    ("anime", "Anime"),
+    ("movies", "Movies"),
+    ("watched", "Watched"),
+    ("unwatched", "Unwatched"),
 ];
 
 /// The conditions of a built-in filter, as Tanukarr writes them.
@@ -34,6 +38,9 @@ pub fn preset_conditions(key: &str) -> Vec<CustomFilterCondition> {
         "ended" => vec![c("status", json!("ended"))],
         "missing" => vec![c("missing", json!([true]))],
         "anime" => vec![c("seriesType", json!("anime"))],
+        "movies" => vec![c("mediaType", json!("movie"))],
+        "watched" => vec![c("watched", json!([true]))],
+        "unwatched" => vec![c("watched", json!([false]))],
         _ => Vec::new(),
     }
 }
@@ -119,6 +126,11 @@ fn apply_condition(c: &CustomFilterCondition, q: &mut LibraryQuery, applied: &mu
     match (c.key.as_str(), value) {
         ("monitored", Some(Value::Bool(b))) if equal => set(&mut q.monitored, *b, applied),
         ("missing", Some(Value::Bool(b))) if equal => set(&mut q.missing, *b, applied),
+        ("watched", Some(Value::Bool(b))) if equal => set(&mut q.watched, *b, applied),
+        // Tanukarr's media type: `movie` keeps the movies (the former movie library).
+        ("mediaType", Some(Value::String(s))) if equal && s == "movie" => {
+            set(&mut q.kind, MediaKind::Movie, applied)
+        }
         ("status", Some(Value::String(s))) if equal => set(&mut q.status, s.clone(), applied),
         ("seriesType", Some(Value::String(s))) if equal => match s.parse::<SeriesType>() {
             Ok(t) => set(&mut q.series_type, t, applied),
@@ -180,6 +192,12 @@ pub fn conditions_of(q: &LibraryQuery) -> Vec<CustomFilterCondition> {
     }
     if let Some(p) = q.provider {
         out.push(c("metadataSource", json!(p.as_str())));
+    }
+    if q.kind == Some(MediaKind::Movie) {
+        out.push(c("mediaType", json!("movie")));
+    }
+    if let Some(w) = q.watched {
+        out.push(c("watched", json!([w])));
     }
     out
 }
@@ -247,5 +265,28 @@ mod tests {
         assert_eq!(q.series_type, Some(SeriesType::Anime));
         assert_eq!(FilterRef::parse("custom:4"), FilterRef::Saved(4));
         assert_eq!(FilterRef::parse("ended").encode(), "ended");
+    }
+
+    #[test]
+    fn movie_filters_of_the_former_movie_library() {
+        let mut q = LibraryQuery::default();
+        let applied = apply(
+            &[
+                FilterRef::Preset("movies".into()),
+                FilterRef::Preset("unwatched".into()),
+            ],
+            &[],
+            &mut q,
+        );
+        assert!(!applied.conflict && applied.ignored.is_empty());
+        assert_eq!((q.kind, q.watched), (Some(MediaKind::Movie), Some(false)));
+        let mut again = LibraryQuery::default();
+        let round = saved(9, serde_json::to_value(conditions_of(&q)).unwrap());
+        apply(&[FilterRef::Saved(9)], &[round], &mut again);
+        assert_eq!(again, q);
+        assert_eq!(
+            PRESETS[0].0, "anime",
+            "Tanukarr lists the Anime filter first"
+        );
     }
 }

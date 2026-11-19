@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	A kiválasztott sorozatok közül 
 Converted	Átalakítva
 Cannot be converted: {problem}	Nem alakítható át: {problem}
 {n} seasons, {m} files to move	{n} évad, {m} áthelyezendő fájl
+Monitored/Status	Megfigyelés/Állapot
+Episode count	Epizódok száma
+Select multiple series	Több sorozat kiválasztása
+Stop selecting	Kiválasztás befejezése
+Show individual series	Sorozatok egyenként
+Show groups	Csoportok megjelenítése
+Edit movies…	Filmek szerkesztése…
+Movie tags…	Filmcímkék…
+{} seasons · {} movies	{} évad · {} film
+{} seasons · {} movies · {} specials	{} évad · {} film · {} különkiadás
+{}/{} episodes	{}/{} epizód
+Total file size	Fájlok teljes mérete
+No series yet	Még nincsenek sorozatok

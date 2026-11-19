@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Ingen av de valda serierna kan kon
 Converted	Konverterad
 Cannot be converted: {problem}	Kan inte konverteras: {problem}
 {n} seasons, {m} files to move	{n} säsonger, {m} filer att flytta
+Monitored/Status	Bevakad/Status
+Episode count	Antal avsnitt
+Select multiple series	Markera flera serier
+Stop selecting	Sluta markera
+Show individual series	Visa enskilda serier
+Show groups	Visa grupper
+Edit movies…	Redigera filmer…
+Movie tags…	Filmtaggar…
+{} seasons · {} movies	{} säsonger · {} filmer
+{} seasons · {} movies · {} specials	{} säsonger · {} filmer · {} specialavsnitt
+{}/{} episodes	{}/{} avsnitt
+Total file size	Total filstorlek
+No series yet	Inga serier ännu

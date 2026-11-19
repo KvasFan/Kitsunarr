@@ -106,7 +106,7 @@ pub fn AnimeConversionDialog(series_id: i64, on_close: EventHandler<()>) -> Elem
                         done.members.len()
                     ));
                     on_close.call(());
-                    nav.push(Route::AnimeLibrary {});
+                    nav.push(Route::SeriesLibrary {});
                 }
                 Ok(done) => outcome.set(Some(done)),
                 Err(e) => app.error(&e),

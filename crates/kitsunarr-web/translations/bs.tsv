@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Nijedna od odabranih serija se ne 
 Converted	Pretvoreno
 Cannot be converted: {problem}	Ne može se pretvoriti: {problem}
 {n} seasons, {m} files to move	Sezone: {n}, fajlovi za premještanje: {m}
+Monitored/Status	Praćenje/Status
+Episode count	Broj epizoda
+Select multiple series	Odaberi više serija
+Stop selecting	Prekini odabir
+Show individual series	Prikaži pojedinačne serije
+Show groups	Prikaži grupe
+Edit movies…	Uredi filmove…
+Movie tags…	Oznake filmova…
+{} seasons · {} movies	{} sezona · {} filmova
+{} seasons · {} movies · {} specials	{} sezona · {} filmova · {} specijala
+{}/{} episodes	{}/{} epizoda
+Total file size	Ukupna veličina datoteka
+No series yet	Još nema serija

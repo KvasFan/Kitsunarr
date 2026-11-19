@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Ingen af de valgte serier kan konv
 Converted	Konverteret
 Cannot be converted: {problem}	Kan ikke konverteres: {problem}
 {n} seasons, {m} files to move	{n} sæsoner, {m} filer, der skal flyttes
+Monitored/Status	Overvåget/Status
+Episode count	Antal episoder
+Select multiple series	Vælg flere serier
+Stop selecting	Stop markering
+Show individual series	Vis enkelte serier
+Show groups	Vis grupper
+Edit movies…	Rediger film…
+Movie tags…	Filmetiketter…
+{} seasons · {} movies	{} sæsoner · {} film
+{} seasons · {} movies · {} specials	{} sæsoner · {} film · {} specials
+{}/{} episodes	{}/{} episoder
+Total file size	Samlet filstørrelse
+No series yet	Ingen serier endnu

@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Mitään valituista sarjoista ei v
 Converted	Muunnettu
 Cannot be converted: {problem}	Ei voi muuntaa: {problem}
 {n} seasons, {m} files to move	{n} kautta, {m} siirrettävää tiedostoa
+Monitored/Status	Valvottu/Tila
+Episode count	Jaksojen määrä
+Select multiple series	Valitse useita sarjoja
+Stop selecting	Lopeta valinta
+Show individual series	Näytä sarjat erikseen
+Show groups	Näytä ryhmät
+Edit movies…	Muokkaa elokuvia…
+Movie tags…	Elokuvien tunnisteet…
+{} seasons · {} movies	{} kautta · {} elokuvaa
+{} seasons · {} movies · {} specials	{} kautta · {} elokuvaa · {} erikoisjaksoa
+{}/{} episodes	{}/{} jaksoa
+Total file size	Tiedostojen kokonaiskoko
+No series yet	Ei vielä sarjoja

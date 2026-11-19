@@ -41,6 +41,10 @@ pub struct LibraryQuery {
     /// among the titles the other filters keep; [`SeriesListItem::anime_group`] tells the rest.
     #[serde(default)]
     pub group_anime_seasons: Option<bool>,
+    /// Library index: also return every title the filters keep ([`LibraryIndex::keys`]), for
+    /// Tanukarr's "Select all".
+    #[serde(default)]
+    pub include_keys: Option<bool>,
 }
 
 impl LibraryQuery {
@@ -88,6 +92,96 @@ pub struct SeriesListItem {
     /// Tanukarr's index columns and overview view.
     #[serde(default)]
     pub index: IndexColumns,
+}
+
+/// A title of the library index: a series (TV or anime) or a movie.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct LibraryKey {
+    pub movie: bool,
+    pub id: i64,
+}
+
+/// One entry of the library index (Tanukarr's single series index lists series, anime and
+/// movies together, and an anime group once).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(tag = "type", rename_all = "camelCase")]
+pub enum LibraryEntry {
+    Series(SeriesListItem),
+    Movie(MovieListItem),
+    /// Tanukarr's grouped entry (`AnimeGroupSummary`): the members the filters keep.
+    Group(LibraryGroup),
+}
+
+/// An anime group (or manual group) shown once by "Group anime seasons".
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct LibraryGroup {
+    pub collection_id: i64,
+    pub title: String,
+    pub poster_url: Option<String>,
+    /// The members the filters keep, in group order (seasons, movies, specials).
+    pub members: Vec<LibraryKey>,
+    /// Native seasons, movies and specials of those members (the collection page's sections).
+    pub season_count: i64,
+    pub movie_count: i64,
+    pub special_count: i64,
+    /// Episodes (a movie counts as one) and those with a file, specials left out.
+    pub episode_count: i64,
+    pub episode_file_count: i64,
+    /// The group number of a group's only season (Tanukarr's "Season N").
+    pub single_season: Option<i32>,
+}
+
+/// A letter of Tanukarr's jump bar and the index of the first entry it starts.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct JumpBarItem {
+    pub character: String,
+    pub index: u64,
+}
+
+/// Tanukarr's series index footer: the whole library, whatever the filters.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct LibraryFooter {
+    pub titles: i64,
+    pub ended: i64,
+    pub continuing: i64,
+    pub monitored: i64,
+    pub unmonitored: i64,
+    pub episodes: i64,
+    pub files: i64,
+    pub size_on_disk: i64,
+}
+
+/// A page of the library index.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[cfg_attr(feature = "openapi", derive(utoipa::ToSchema))]
+#[serde(rename_all = "camelCase")]
+pub struct LibraryIndex {
+    pub page: u32,
+    pub page_size: u32,
+    /// Entries the filters keep (an anime group counts once when grouped).
+    pub total_records: u64,
+    pub records: Vec<LibraryEntry>,
+    /// Titles the filters keep, each group member counted (Tanukarr's "{count} / {total}").
+    pub filtered_items: u64,
+    /// Every title of the library, before the filters.
+    pub total_items: u64,
+    /// Some title the filters keep belongs to a group (Tanukarr shows the grouping toggle).
+    pub has_groups: bool,
+    /// Tanukarr's jump bar, when sorted by title.
+    pub jump_bar: Vec<JumpBarItem>,
+    pub footer: LibraryFooter,
+    /// Every title the filters keep, group members included (only with `includeKeys`).
+    #[serde(default)]
+    pub keys: Vec<LibraryKey>,
 }
 
 /// What Tanukarr's library index shows beyond the basic row (table columns and the overview

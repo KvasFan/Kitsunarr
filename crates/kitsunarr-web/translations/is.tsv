@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Ekki er hægt að breyta neinni af
 Converted	Breytt
 Cannot be converted: {problem}	Ekki hægt að breyta: {problem}
 {n} seasons, {m} files to move	{n} seríur, {m} skrár sem á að færa
+Monitored/Status	Vaktað/Staða
+Episode count	Fjöldi þátta
+Select multiple series	Velja margar þáttaraðir
+Stop selecting	Hætta að velja
+Show individual series	Sýna stakar þáttaraðir
+Show groups	Sýna hópa
+Edit movies…	Breyta kvikmyndum…
+Movie tags…	Merki kvikmynda…
+{} seasons · {} movies	{} seríur · {} kvikmyndir
+{} seasons · {} movies · {} specials	{} seríur · {} kvikmyndir · {} sérþættir
+{}/{} episodes	{}/{} þættir
+Total file size	Heildarstærð skráa
+No series yet	Engar þáttaraðir enn

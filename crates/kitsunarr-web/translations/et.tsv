@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Ühtegi valitud sarja ei saa teise
 Converted	Teisendatud
 Cannot be converted: {problem}	Ei saa teisendada: {problem}
 {n} seasons, {m} files to move	{n} hooaega, {m} teisaldatavat faili
+Monitored/Status	Jälgitav/Olek
+Episode count	Episoodide arv
+Select multiple series	Vali mitu sarja
+Stop selecting	Lõpeta valimine
+Show individual series	Näita sarju eraldi
+Show groups	Näita rühmi
+Edit movies…	Muuda filme…
+Movie tags…	Filmide sildid…
+{} seasons · {} movies	{} hooaega · {} filmi
+{} seasons · {} movies · {} specials	{} hooaega · {} filmi · {} eriepisoodi
+{}/{} episodes	{}/{} episoodi
+Total file size	Failide kogusuurus
+No series yet	Sarju veel pole

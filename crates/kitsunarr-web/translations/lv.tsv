@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Nevienu no atlasītajiem seriālie
 Converted	Pārveidots
 Cannot be converted: {problem}	Nevar pārveidot: {problem}
 {n} seasons, {m} files to move	Sezonas: {n}, pārvietojamie faili: {m}
+Monitored/Status	Uzraudzība/Statuss
+Episode count	Epizožu skaits
+Select multiple series	Atlasīt vairākus seriālus
+Stop selecting	Beigt atlasi
+Show individual series	Rādīt seriālus atsevišķi
+Show groups	Rādīt grupas
+Edit movies…	Rediģēt filmas…
+Movie tags…	Filmu tagi…
+{} seasons · {} movies	Sezonas: {} · filmas: {}
+{} seasons · {} movies · {} specials	Sezonas: {} · filmas: {} · speciālās: {}
+{}/{} episodes	{}/{} epizodes
+Total file size	Kopējais failu izmērs
+No series yet	Vēl nav seriālu

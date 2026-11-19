@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Cap de les sèries seleccionades e
 Converted	Convertida
 Cannot be converted: {problem}	No es pot convertir: {problem}
 {n} seasons, {m} files to move	{n} temporades, {m} fitxers per moure
+Monitored/Status	Monitorat/Estat
+Episode count	Nombre d'episodis
+Select multiple series	Selecciona diverses sèries
+Stop selecting	Deixa de seleccionar
+Show individual series	Mostra les sèries individuals
+Show groups	Mostra els grups
+Edit movies…	Edita les pel·lícules…
+Movie tags…	Etiquetes de les pel·lícules…
+{} seasons · {} movies	{} temporades · {} pel·lícules
+{} seasons · {} movies · {} specials	{} temporades · {} pel·lícules · {} especials
+{}/{} episodes	{}/{} episodis
+Total file size	Mida total dels fitxers
+No series yet	Encara no hi ha cap sèrie

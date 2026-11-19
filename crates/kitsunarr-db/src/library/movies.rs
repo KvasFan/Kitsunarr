@@ -414,6 +414,25 @@ fn push_filters(qb: &mut QueryBuilder<Sqlite>, q: &LibraryQuery) {
     }
 }
 
+/// The library rows of these movies (any order; unknown ids are skipped).
+pub(crate) async fn list_items_by_ids(db: &Database, ids: &[i64]) -> DbResult<Vec<MovieListItem>> {
+    if ids.is_empty() {
+        return Ok(Vec::new());
+    }
+    let mut qb = QueryBuilder::<Sqlite>::new("SELECT ");
+    qb.push(LIST_COLUMNS);
+    qb.push(
+        " FROM movies m JOIN quality_profiles qp ON qp.id = m.quality_profile_id WHERE m.id IN (",
+    );
+    let mut ids_sql = qb.separated(", ");
+    for id in ids {
+        ids_sql.push_bind(*id);
+    }
+    qb.push(")");
+    let rows: Vec<ListRow> = qb.build_query_as().fetch_all(db.pool()).await?;
+    Ok(rows.into_iter().map(ListRow::into_item).collect())
+}
+
 pub async fn list(db: &Database, q: &LibraryQuery) -> DbResult<Page<MovieListItem>> {
     let paging = q.page_request();
     let mut count_qb = QueryBuilder::<Sqlite>::new("SELECT COUNT(*) FROM movies m");

@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	لا يمكن تحويل أي من
 Converted	تم التحويل
 Cannot be converted: {problem}	لا يمكن التحويل: {problem}
 {n} seasons, {m} files to move	{n} من المواسم، {m} من الملفات المراد نقلها
+Monitored/Status	المراقبة/الحالة
+Episode count	عدد الحلقات
+Select multiple series	تحديد عدة مسلسلات
+Stop selecting	إيقاف التحديد
+Show individual series	عرض المسلسلات منفردة
+Show groups	عرض المجموعات
+Edit movies…	تعديل الأفلام…
+Movie tags…	وسوم الأفلام…
+{} seasons · {} movies	{} مواسم · {} أفلام
+{} seasons · {} movies · {} specials	{} مواسم · {} أفلام · {} حلقات خاصة
+{}/{} episodes	{}/{} حلقات
+Total file size	الحجم الإجمالي للملفات
+No series yet	لا توجد مسلسلات بعد

@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	選択したシリーズはどれ�
 Converted	変換済み
 Cannot be converted: {problem}	変換できません: {problem}
 {n} seasons, {m} files to move	{n} シーズン、移動するファイル {m} 件
+Monitored/Status	監視/ステータス
+Episode count	エピソード数
+Select multiple series	複数のシリーズを選択
+Stop selecting	選択を終了
+Show individual series	シリーズを個別に表示
+Show groups	グループを表示
+Edit movies…	映画を編集…
+Movie tags…	映画のタグ…
+{} seasons · {} movies	{} シーズン · {} 本の映画
+{} seasons · {} movies · {} specials	{} シーズン · {} 本の映画 · {} 本のスペシャル
+{}/{} episodes	{}/{} エピソード
+Total file size	ファイルの合計サイズ
+No series yet	まだシリーズがありません

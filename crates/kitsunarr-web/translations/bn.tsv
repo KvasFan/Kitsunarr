@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	নির্বাচিত কো
 Converted	রূপান্তরিত
 Cannot be converted: {problem}	রূপান্তর করা যাবে না: {problem}
 {n} seasons, {m} files to move	{n}টি সিজন, সরানোর {m}টি ফাইল
+Monitored/Status	মনিটর/অবস্থা
+Episode count	পর্বের সংখ্যা
+Select multiple series	একাধিক সিরিজ নির্বাচন করুন
+Stop selecting	নির্বাচন বন্ধ করুন
+Show individual series	আলাদা আলাদা সিরিজ দেখান
+Show groups	গ্রুপ দেখান
+Edit movies…	মুভি সম্পাদনা করুন…
+Movie tags…	মুভির ট্যাগ…
+{} seasons · {} movies	{}টি সিজন · {}টি মুভি
+{} seasons · {} movies · {} specials	{}টি সিজন · {}টি মুভি · {}টি বিশেষ পর্ব
+{}/{} episodes	{}/{}টি পর্ব
+Total file size	মোট ফাইলের আকার
+No series yet	এখনও কোনো সিরিজ নেই

@@ -538,7 +538,7 @@ fn normalized_path(path: &str) -> String {
 }
 
 /// The filters on the series aliased `a` (each starts with ` AND`).
-fn push_conditions(qb: &mut QueryBuilder<Sqlite>, q: &LibraryQuery, a: &str) {
+pub(crate) fn push_conditions(qb: &mut QueryBuilder<Sqlite>, q: &LibraryQuery, a: &str) {
     if let Some(kind) = q.kind {
         qb.push(format_args!(" AND {a}.media_kind = "))
             .push_bind(kind.as_str());
@@ -620,6 +620,10 @@ pub async fn path_filters(
     let mut qb = QueryBuilder::<Sqlite>::new("SELECT path FROM series");
     if let Some(kind) = kind {
         qb.push(" WHERE media_kind = ").push_bind(kind.as_str());
+    }
+    // The library index lists movies too (Tanukarr's movies are series).
+    if matches!(kind, None | Some(MediaKind::Movie)) {
+        qb.push(" UNION ALL SELECT path FROM movies");
     }
     let paths: Vec<String> = qb.build_query_scalar().fetch_all(db.pool()).await?;
     let mut folders: std::collections::BTreeSet<String> = roots.into_iter().collect();
@@ -832,6 +836,25 @@ type MembershipRow = (
     String,
     String,
 );
+
+/// The library rows of these series (any order; unknown ids are skipped).
+pub(crate) async fn list_items_by_ids(db: &Database, ids: &[i64]) -> DbResult<Vec<SeriesListItem>> {
+    if ids.is_empty() {
+        return Ok(Vec::new());
+    }
+    let mut qb = QueryBuilder::<Sqlite>::new("SELECT ");
+    qb.push(LIST_COLUMNS);
+    qb.push(
+        " FROM series s JOIN quality_profiles qp ON qp.id = s.quality_profile_id WHERE s.id IN (",
+    );
+    let mut ids_sql = qb.separated(", ");
+    for id in ids {
+        ids_sql.push_bind(*id);
+    }
+    qb.push(")");
+    let rows: Vec<ListRow> = qb.build_query_as().fetch_all(db.pool()).await?;
+    Ok(rows.into_iter().map(ListRow::into_item).collect())
+}
 
 pub async fn get_list_item(db: &Database, id: i64) -> DbResult<SeriesListItem> {
     let sql = format!(

@@ -10,8 +10,9 @@ use kitsunarr_domain::api::events::ServerEvent;
 use kitsunarr_domain::api::library::{
     BulkEdit, BulkEditResult, CalendarEntry, CalendarQuery, CollectionDetail, CollectionEdit,
     CollectionItem, CollectionMemberEdit, EpisodeItem, EpisodesMonitoredUpdate,
-    FileOperationResult, HistoryItem, LibraryQuery, LibraryStats, MovieDetail, MovieListItem,
-    MovieRenamePreview, RenamePreview, RenameRequest, SeriesDetail, SeriesListItem, SeriesUpdate,
+    FileOperationResult, HistoryItem, LibraryIndex, LibraryQuery, LibraryStats, MovieDetail,
+    MovieListItem, MovieRenamePreview, RenamePreview, RenameRequest, SeriesDetail, SeriesListItem,
+    SeriesUpdate,
 };
 use kitsunarr_domain::{Page, PageRequest};
 use serde::Deserialize;
@@ -32,6 +33,19 @@ pub async fn stats(State(state): State<AppState>) -> ApiResult<Json<LibraryStats
     Ok(Json(stats::library_stats(&state.db).await?))
 }
 
+/// Tanukarr's series index: series, anime and movies in one list, an anime group once when
+/// `groupAnimeSeasons` is set, with the jump bar and the footer statistics.
+#[utoipa::path(get, path = "/library", tag = "library", params(LibraryQuery),
+    responses((status = 200, body = LibraryIndex)))]
+pub async fn index(
+    State(state): State<AppState>,
+    Query(q): Query<LibraryQuery>,
+) -> ApiResult<Json<LibraryIndex>> {
+    Ok(Json(
+        kitsunarr_db::library::index::list(&state.db, &q).await?,
+    ))
+}
+
 #[utoipa::path(get, path = "/series", tag = "library", params(LibraryQuery),
     responses((status = 200, body = Page<SeriesListItem>)))]
 pub async fn list_series(
@@ -44,7 +58,7 @@ pub async fn list_series(
 #[derive(Deserialize, utoipa::IntoParams)]
 #[serde(rename_all = "camelCase")]
 pub struct PathFiltersQuery {
-    /// `series` or `anime`; every series when omitted.
+    /// `series`, `anime` or `movie`; every series and movie when omitted.
     pub kind: Option<kitsunarr_domain::MediaKind>,
 }
 

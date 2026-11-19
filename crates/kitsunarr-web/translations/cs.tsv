@@ -1932,3 +1932,16 @@ None of the selected series can be converted.	Žádný z vybraných seriálů ne
 Converted	Převedeno
 Cannot be converted: {problem}	Nelze převést: {problem}
 {n} seasons, {m} files to move	Řady: {n}, soubory k přesunutí: {m}
+Monitored/Status	Monitorováno/Stav
+Episode count	Počet epizod
+Select multiple series	Vybrat více seriálů
+Stop selecting	Ukončit výběr
+Show individual series	Zobrazit jednotlivé seriály
+Show groups	Zobrazit skupiny
+Edit movies…	Upravit filmy…
+Movie tags…	Štítky filmů…
+{} seasons · {} movies	Řady: {} · filmy: {}
+{} seasons · {} movies · {} specials	Řady: {} · filmy: {} · speciály: {}
+{}/{} episodes	{}/{} epizod
+Total file size	Celková velikost souborů
+No series yet	Zatím žádné seriály
